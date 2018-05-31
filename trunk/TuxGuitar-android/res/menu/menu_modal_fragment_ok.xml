@@ -7,5 +7,5 @@
         android:id="@+id/action_ok"
         android:title="@string/global_button_ok"
         android:icon="@drawable/ic_send_white_24dp"
-        android:showAsAction="always"/>
+        app:showAsAction="always"/>
 </menu>

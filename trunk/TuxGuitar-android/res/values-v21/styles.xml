@@ -1,14 +1,10 @@
 <resources>
 	
-    <style name="AppBaseTheme" parent="android:Theme.Material.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- API 21 theme customizations can go here. -->
     </style>
 
-    <style name="AppBaseWidget.Spinner" parent="android:Widget.Material.Spinner.Underlined">
-        <!-- API 21 theme customizations can go here. -->
-    </style>
-
-    <style name="AppBaseWidget.TextView" parent="android:Widget.Material.TextView">
+    <style name="AppBaseWidget.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
         <!-- API 21 theme customizations can go here. -->
     </style>
 </resources>

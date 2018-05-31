@@ -1,5 +1,15 @@
 package org.herac.tuxguitar.android.activity;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
+import android.view.View;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionAdapterManager;
 import org.herac.tuxguitar.android.action.impl.gui.TGBackAction;
@@ -28,22 +38,13 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuItem;
-import android.view.View;
-
-public class TGActivity extends Activity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 	private boolean destroyed;
 	private TGContext context;
 	private TGNavigationManager navigationManager;
 	private TGDrawerManager drawerManager;
+	private TGActivityActionBarController actionBar;
 	private TGActivityResultManager resultManager;
 	private TGActivityPermissionResultManager permissionResultManager;
 
@@ -52,6 +53,7 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		this.permissionResultManager = new TGActivityPermissionResultManager();
 		this.navigationManager = new TGNavigationManager(this);
 		this.drawerManager = new TGDrawerManager(this);
+		this.actionBar = new TGActivityActionBarController(this);
 	}
 
 	@Override
@@ -65,8 +67,8 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 		this.setContentView(R.layout.activity_tg);
 
 		this.registerForContextMenu(findViewById(R.id.root_layout));
-		this.getActionBar().setDisplayHomeAsUpEnabled(true);
-		this.getActionBar().setHomeButtonEnabled(true);
+		this.getActionBarController().setDisplayHomeAsUpEnabled(true);
+		this.getActionBarController().setHomeButtonEnabled(true);
 
 		this.resultManager.initialize();
 		this.permissionResultManager.initialize();
@@ -222,6 +224,10 @@ public class TGActivity extends Activity implements ActivityCompat.OnRequestPerm
 
 	public TGActivityPermissionResultManager getPermissionResultManager() {
 		return permissionResultManager;
+	}
+
+	public TGActivityActionBarController getActionBarController() {
+		return this.actionBar;
 	}
 
 	public TGContext findContext() {

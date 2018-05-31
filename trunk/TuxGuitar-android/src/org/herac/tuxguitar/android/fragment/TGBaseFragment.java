@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.activity.TGActivityActionBarController;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -66,6 +67,10 @@ public abstract class TGBaseFragment extends Fragment {
 		return ((TGActivity) getActivity());
 	}
 
+	public TGActivityActionBarController findActionBar() {
+		return this.findActivity().getActionBarController();
+	}
+
 	public boolean isReady() {
 		return (this.getView() != null && this.isVisible());
 	}
@@ -77,17 +82,17 @@ public abstract class TGBaseFragment extends Fragment {
 	public void createActionBar(boolean hasOptionsMenu, boolean showIcon, String title) {
 		this.setHasOptionsMenu(hasOptionsMenu);
 
-		this.getActivity().getActionBar().setDisplayUseLogoEnabled(showIcon);
-		this.getActivity().getActionBar().setDisplayShowHomeEnabled(showIcon);
-		this.getActivity().getActionBar().setDisplayShowTitleEnabled(title != null);
+		this.findActionBar().setDisplayUseLogoEnabled(showIcon);
+		this.findActionBar().setDisplayShowHomeEnabled(showIcon);
+		this.findActionBar().setDisplayShowTitleEnabled(title != null);
 
 		if( showIcon) {
-			this.getActivity().getActionBar().setLogo(R.drawable.ic_launcher);
-			this.getActivity().getActionBar().setLogo(R.drawable.ic_launcher);
+			this.findActionBar().setLogo(R.drawable.ic_launcher);
+			this.findActionBar().setLogo(R.drawable.ic_launcher);
 		}
 
 		if( title != null) {
-			this.getActivity().getActionBar().setTitle(title);
+			this.findActionBar().setTitle(title);
 		}
 	}
 

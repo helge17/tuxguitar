@@ -7,6 +7,7 @@ import org.herac.tuxguitar.android.menu.controller.TGMenuController;
 import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedBeatMenu;
 import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedMeasureMenu;
 import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedNoteMenu;
+import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedTrackMenu;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -16,8 +17,8 @@ public class TGSongViewSmartMenu {
 
 	public static final String REQUEST_SMART_MENU = "requestSmartMenu";
 
-	public static final String LEFT_AREA_SELECTED = "leftAreaSelected";
-	public static final String RIGHT_AREA_SELECTED = "rightAreaSelected";
+	public static final String TRACK_AREA_SELECTED = "trackAreaSelected";
+	public static final String MEASURE_AREA_SELECTED = "measureAreaSelected";
 
 	private TGSongViewController controller;
 
@@ -37,7 +38,9 @@ public class TGSongViewSmartMenu {
 		if(!MidiPlayer.getInstance(this.controller.getContext()).isRunning()) {
 			TGActivity activity = TGActivityController.getInstance(this.controller.getContext()).getActivity();
 			if (activity != null) {
-				if( Boolean.TRUE.equals(context.getAttribute(LEFT_AREA_SELECTED)) || Boolean.TRUE.equals(context.getAttribute(RIGHT_AREA_SELECTED))) {
+				if( Boolean.TRUE.equals(context.getAttribute(TRACK_AREA_SELECTED))) {
+					this.openCabMenuAction(activity, new TGSelectedTrackMenu(activity));
+				} else if( Boolean.TRUE.equals(context.getAttribute(MEASURE_AREA_SELECTED))) {
 					this.openCabMenuAction(activity, new TGSelectedMeasureMenu(activity));
 				} else{
 					TGNote note = this.controller.getCaret().getSelectedNote();

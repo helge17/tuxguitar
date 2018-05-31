@@ -11,8 +11,10 @@ import org.herac.tuxguitar.android.fragment.TGFragmentController;
 import org.herac.tuxguitar.android.fragment.impl.TGChannelListFragmentController;
 import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.android.view.dialog.info.TGSongInfoDialogController;
+import org.herac.tuxguitar.android.view.tablature.TGSongViewSmartMenu;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGMainDrawerActionHandler {
@@ -33,6 +35,13 @@ public class TGMainDrawerActionHandler {
 		return tgActionProcessor;
 	}
 
+	public TGActionProcessorListener createGoToTrackWithSmartMenuAction(TGTrack track) {
+		TGActionProcessorListener tgActionProcessor = this.createGoToTrackAction(track);
+		tgActionProcessor.setAttribute(TGSongViewSmartMenu.REQUEST_SMART_MENU, true);
+		tgActionProcessor.setAttribute(TGSongViewSmartMenu.TRACK_AREA_SELECTED, true);
+		return tgActionProcessor;
+	}
+
 	public TGActionProcessorListener createNewFileAction() {
 		return this.createAction(TGLoadTemplateAction.NAME);
 	}
@@ -48,7 +57,19 @@ public class TGMainDrawerActionHandler {
 	public TGActionProcessorListener createSaveFileAction() {
 		return this.createAction(TGSaveDocumentAction.NAME);
 	}
-	
+
+	public TGActionProcessorListener createAddTrackAction() {
+		return this.createAction(TGAddNewTrackAction.NAME);
+	}
+
+	public TGActionProcessorListener createOpenInstrumentsAction() {
+		return this.createFragmentAction(TGChannelListFragmentController.getInstance(this.mainDrawer.findContext()));
+	}
+
+	public TGActionProcessorListener createOpenInfoAction() {
+		return this.createDialogAction(new TGSongInfoDialogController());
+	}
+
 	public TGActionProcessorListener createFragmentAction(TGFragmentController<?> controller) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenFragmentAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_CONTROLLER, controller);
@@ -61,13 +82,5 @@ public class TGMainDrawerActionHandler {
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, controller);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.mainDrawer.findActivity());
 		return tgActionProcessor;
-	}
-	
-	public TGActionProcessorListener createOpenInstrumentsAction() {
-		return this.createFragmentAction(TGChannelListFragmentController.getInstance(this.mainDrawer.findContext()));
-	}
-	
-	public TGActionProcessorListener createOpenInfoAction() {
-		return this.createDialogAction(new TGSongInfoDialogController());
 	}
 }

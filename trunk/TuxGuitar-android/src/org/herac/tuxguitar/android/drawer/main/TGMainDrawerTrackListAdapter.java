@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.drawer.main;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
@@ -12,9 +12,9 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckedTextView;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 
@@ -48,7 +48,8 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_main_drawer_check_item, parent, false));
 		view.setOnClickListener(getMainDrawer().getActionHandler().createGoToTrackAction(item.getTrack()));
-		
+		view.setOnLongClickListener(getMainDrawer().getActionHandler().createGoToTrackWithSmartMenuAction(item.getTrack()));
+
 		CheckedTextView checkedTextView = (CheckedTextView) view.findViewById(R.id.main_drawer_check_item);
 		checkedTextView.setText(item.getLabel());
 		checkedTextView.setChecked(Boolean.TRUE.equals(item.getSelected()));
