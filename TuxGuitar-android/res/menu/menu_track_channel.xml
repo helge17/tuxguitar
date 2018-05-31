@@ -7,11 +7,11 @@
         android:id="@+id/track_channel_dlg_settings_button"
         android:title="@string/track_channel_dlg_settings_label"
         android:icon="@drawable/ic_settings_white_24dp"
-        android:showAsAction="always"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_ok"
         android:title="@string/global_button_ok"
         android:icon="@drawable/ic_send_white_24dp"
-        android:showAsAction="always"/>
+        app:showAsAction="always"/>
 </menu>

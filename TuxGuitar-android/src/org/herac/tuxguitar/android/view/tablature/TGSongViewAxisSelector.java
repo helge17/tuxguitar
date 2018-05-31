@@ -135,14 +135,10 @@ public class TGSongViewAxisSelector {
 
 		float leftX1 = measureX1;
 		float leftX2 = (leftX1 + measure.getHeaderImpl().getLeftSpacing(layout) + measure.getFirstNoteSpacing(layout) - noteWidth);
-		if( x >= leftX1 && x <= leftX2 ) {
-			map.put(TGSongViewSmartMenu.LEFT_AREA_SELECTED, true);
-		}
-
 		float rightX1 = (measureX2 - measure.getHeaderImpl().getRightSpacing(layout) + noteWidth);
 		float rightX2 = measureX2;
-		if( x >= rightX1 && x <= rightX2 ) {
-			map.put(TGSongViewSmartMenu.RIGHT_AREA_SELECTED, true);
+		if( x >= leftX1 && x <= leftX2 || x >= rightX1 && x <= rightX2) {
+			map.put(TGSongViewSmartMenu.MEASURE_AREA_SELECTED, true);
 		}
 
 		return map;

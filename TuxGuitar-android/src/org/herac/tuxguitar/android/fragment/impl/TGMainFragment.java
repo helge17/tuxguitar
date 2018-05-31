@@ -18,7 +18,7 @@ public class TGMainFragment extends TGCachedFragment {
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
 		this.attachInstance();
-		this.createActionBar(true, true, R.string.app_name);
+		this.createActionBar(true, false, R.string.app_name);
 	}
 	
 	@Override

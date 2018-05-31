@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.android.support</groupId>
-			<artifactId>gridlayout-v7</artifactId>
+			<artifactId>design</artifactId>
 			<version>25.0.0</version>
 			<type>aar</type>
 			<scope>compile</scope>

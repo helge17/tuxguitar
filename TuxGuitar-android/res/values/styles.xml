@@ -27,7 +27,9 @@
 		<item name="mainImageButtonStyle">@style/mainImageButtonStyle</item>
 		<item name="mainImageButtonPlayStyle">@style/TGImageButton.Play</item>
 		<item name="mainImageButtonStopStyle">@style/TGImageButton.Stop</item>
-		
+
+		<item name="mainFloatingButtonAddStyle">@style/TGFloatingButton.Add</item>
+
 		<item name="tabKeyBoardStyle">@style/tabKeyBoardStyle</item>
 		<item name="tabKeyBoardImageButtonKey0Style">@style/TGKeyBoardButton.Key0</item>
 		<item name="tabKeyBoardImageButtonKey1Style">@style/TGKeyBoardButton.Key1</item>
@@ -52,6 +54,7 @@
 		<item name="mainDrawerListItemStyle">@style/mainDrawerListItemStyle</item>
 		<item name="mainDrawerImageButtonMixerStyle">@style/TGImageButton.Mixer</item>
 		<item name="mainDrawerImageButtonInfoStyle">@style/TGImageButton.Info</item>
+		<item name="mainDrawerFloatingButtonAddTrackStyle">?attr/mainFloatingButtonAddStyle</item>
 		<item name="mainDrawerToolbarStyle">@style/mainDrawerToolbarStyle</item>
 		<item name="mainDrawerTransportPanelStyle">@style/mainDrawerTransportPanelStyle</item>
 
@@ -75,30 +78,20 @@
 		<!-- ========================================================= -->
 		<item name="android:textViewStyle">@style/TGWidget.TextView</item>
 		<item name="android:spinnerStyle">@style/TGWidget.Spinner</item>
-		<!--<item name="android:spinnerItemStyle">@style/TGWidget.SpinnerItem</item>-->
-
     </style>
 
 	<!-- ========================================================= -->
 	<!-- ==== WIDGET STYLES ====================================== -->
 	<!-- ========================================================= -->
-    <style name="TGWidget" parent="android:Widget">
-		<item name="android:padding">2dp</item>
-	</style>
+    <style name="TGWidget" parent="android:Widget" />
 
-	<style name="TGWidget.TextView" parent="AppBaseWidget.TextView" >
+	<style name="TGWidget.TextView" >
 		<item name="android:typeface">normal</item>
 		<item name="android:textStyle">normal</item>
 		<item name="android:textSize">18sp</item>
 	</style>
 
 	<style name="TGWidget.Spinner" parent="AppBaseWidget.Spinner" />
-
-	<!--<style name="TGWidget.SpinnerItem" >-->
-		<!--<item name="android:typeface">normal</item>-->
-		<!--<item name="android:textStyle">normal</item>-->
-		<!--<item name="android:textSize">18sp</item>-->
-	<!--</style>-->
 
 	<!-- ========================================================= -->
 	<!-- ==== IMAGE BUTTON ======================================= -->
@@ -141,6 +134,16 @@
 
 	<style name="TGImageButton.Stop" >
 		<item name="android:src">@drawable/ic_pause_circle_outline_white_24dp</item>
+	</style>
+
+	<!-- ========================================================= -->
+	<!-- ==== FLOATING BUTTON ======================================= -->
+	<!-- ========================================================= -->
+
+	<style name="TGFloatingButton" />
+
+	<style name="TGFloatingButton.Add">
+		<item name="android:src">@drawable/ic_add_white_24dp</item>
 	</style>
 
 	<!-- ========================================================= -->

@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.android.view.dialog.fragment;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.os.Bundle;
+
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.util.TGContext;
-
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.os.Bundle;
 
 public abstract class TGDialogFragment extends DialogFragment {
 	

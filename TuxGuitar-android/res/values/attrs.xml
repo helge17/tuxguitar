@@ -27,7 +27,9 @@
 		<attr name="mainImageButtonStyle" format="reference"/>
 		<attr name="mainImageButtonPlayStyle" format="reference"/>
 		<attr name="mainImageButtonStopStyle" format="reference"/>
-		
+
+		<attr name="mainFloatingButtonAddStyle" format="reference"/>
+
 		<attr name="tabKeyBoardStyle" format="reference"/>
 		<attr name="tabKeyBoardImageButtonKey0Style" format="reference"/>
 		<attr name="tabKeyBoardImageButtonKey1Style" format="reference"/>
@@ -53,6 +55,7 @@
 		<attr name="mainDrawerImageButtonStyle" format="reference"/>
 		<attr name="mainDrawerImageButtonMixerStyle" format="reference"/>
 		<attr name="mainDrawerImageButtonInfoStyle" format="reference"/>
+		<attr name="mainDrawerFloatingButtonAddTrackStyle" format="reference"/>
 		<attr name="mainDrawerToolbarStyle" format="reference"/>
 		<attr name="mainDrawerTransportPanelStyle" format="reference"/>
 

@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.android.view.dialog.message;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+
+import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 
 public class TGMessageDialog extends TGDialogFragment {
 	
