@@ -1,5 +1,11 @@
 package org.herac.tuxguitar.android.view.keyboard;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.FrameLayout;
+
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.TGActionProcessorListener;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
@@ -7,6 +13,7 @@ import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import org.herac.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.menu.controller.TGMenuController;
@@ -17,12 +24,6 @@ import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
 import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
 import org.herac.tuxguitar.util.TGContext;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
 public class TGTabKeyboard extends FrameLayout {
 
@@ -63,6 +64,8 @@ public class TGTabKeyboard extends FrameLayout {
 		findViewById(R.id.tab_kb_button_increment_duration).setOnClickListener(new TGActionProcessorListener(context, TGIncrementDurationAction.NAME));
 		findViewById(R.id.tab_kb_button_decrement_duration).setOnClickListener(new TGActionProcessorListener(context, TGDecrementDurationAction.NAME));
 		findViewById(R.id.tab_kb_button_set_duration).setOnClickListener(createContextMenuActionListener(new TGDurationMenu(this.findActivity())));
+
+		findViewById(R.id.tab_kb_button_select).setOnClickListener(new TGActionProcessorListener(context, TGShowSmartMenuAction.NAME));
 	}
 	
 	public TGActionProcessorListener createContextMenuActionListener(TGMenuController controller) {

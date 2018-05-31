@@ -59,6 +59,7 @@ import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
 import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.channel.TGAddChannelAction;
@@ -339,6 +340,7 @@ public class TGActionInstaller {
 		
 		//view actions
 		installAction(new TGToggleTabKeyboardAction(context));
+		installAction(new TGShowSmartMenuAction(context));
 
 		//storage
 		installAction(new TGUriReadAction(context));

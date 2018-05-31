@@ -50,7 +50,8 @@
 		<item name="tabKeyBoardImageButtonLeftStyle">@style/TGKeyBoardButton.Left</item>
 		<item name="tabKeyBoardImageButtonUpStyle">@style/TGKeyBoardButton.Up</item>
 		<item name="tabKeyBoardImageButtonDownStyle">@style/TGKeyBoardButton.Down</item>
-		
+		<item name="tabKeyBoardImageButtonSelectStyle">@style/TGKeyBoardButton.Select</item>
+
 		<item name="mainDrawerListItemStyle">@style/mainDrawerListItemStyle</item>
 		<item name="mainDrawerImageButtonMixerStyle">@style/TGImageButton.Mixer</item>
 		<item name="mainDrawerImageButtonInfoStyle">@style/TGImageButton.Info</item>
@@ -267,7 +268,11 @@
 	<style name="TGKeyBoardButton.Down" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
 	</style>
-	
+
+	<style name="TGKeyBoardButton.Select" >
+		<item name="android:src">@drawable/ic_keyboard_select_white_24dp</item>
+	</style>
+
 	<!-- ========================================================= -->
 	<!-- ==== DRAWER ============================================= -->
 	<!-- ========================================================= -->
