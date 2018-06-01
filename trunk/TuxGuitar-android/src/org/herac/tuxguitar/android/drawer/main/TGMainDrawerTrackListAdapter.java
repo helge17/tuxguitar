@@ -27,6 +27,7 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		
 		this.items = new ArrayList<TGMainDrawerTrackListItem>();
 		this.eventListener = new TGMainDrawerTrackListListener(this);
+		this.updateSelection();
 	}
 	
 	@Override
