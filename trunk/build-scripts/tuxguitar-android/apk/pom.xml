@@ -160,6 +160,7 @@
 					</sdk>
 					<assetsDirectory>${project.assets.directory}</assetsDirectory>
 					<dexCoreLibrary>true</dexCoreLibrary>
+					<dexMultiDex>true</dexMultiDex>
 				</configuration>
 				<executions>
 					<execution>
