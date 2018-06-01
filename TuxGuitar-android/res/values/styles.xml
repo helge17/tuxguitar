@@ -1,5 +1,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<!-- Overridable theme. -->
+	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar"/>
+	<style name="AppBaseWidget.Spinner" parent="Widget.AppCompat.Spinner.Underlined"/>
+
 	<!-- Application theme. -->
 	<style name="TGTheme" parent="AppBaseTheme">
 		<!-- ========================================================= -->
@@ -52,6 +56,7 @@
 		<item name="tabKeyBoardImageButtonDownStyle">@style/TGKeyBoardButton.Down</item>
 		<item name="tabKeyBoardImageButtonSelectStyle">@style/TGKeyBoardButton.Select</item>
 
+		<item name="mainDrawerStyle">@style/mainDrawerStyle</item>
 		<item name="mainDrawerListItemStyle">@style/mainDrawerListItemStyle</item>
 		<item name="mainDrawerImageButtonMixerStyle">@style/TGImageButton.Mixer</item>
 		<item name="mainDrawerImageButtonInfoStyle">@style/TGImageButton.Info</item>
@@ -276,7 +281,11 @@
 	<!-- ========================================================= -->
 	<!-- ==== DRAWER ============================================= -->
 	<!-- ========================================================= -->
-	
+
+	<style name="mainDrawerStyle" >
+		<item name="android:background">?attr/darkestColor</item>
+	</style>
+
 	<style name="mainDrawerListItemStyle" >
 	    <item name="android:layout_width">fill_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
