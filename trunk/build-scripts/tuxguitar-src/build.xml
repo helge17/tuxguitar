@@ -120,6 +120,7 @@
 				<exclude name="**/.*"/>
 				<exclude name="**/.*/**"/>
 				<exclude name="**/target/**"/>
+				<exclude name="**/build/**"/>
 				<exclude name="**/lang/last_additions/**"/>
 				<exclude name="**/src-test/**"/>
 				
