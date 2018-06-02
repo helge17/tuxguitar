@@ -1,0 +1,28 @@
+include ':apk',
+		':tuxguitar-android',
+		':tuxguitar-android-gervill',
+		':tuxguitar-android-gervill-plugin',
+		':tuxguitar-android-resources',
+		':tuxguitar-android-midi',
+		':tuxguitar-android-midi-plugin',
+		':tuxguitar-android-midimaster',
+		':tuxguitar-android-midimaster-plugin',
+		':tuxguitar-android-browser-saf',
+		':tuxguitar-android-browser-saf-plugin',
+		':tuxguitar-android-gdrive',
+		':tuxguitar-android-gdrive-plugin',
+		':tuxguitar-android-gervill-soundbank'
+
+project(':tuxguitar-android').projectDir = new File(settingsDir, '../../TuxGuitar-android')
+project(':tuxguitar-android-resources').projectDir = new File(settingsDir, '../../TuxGuitar-android-resources')
+project(':tuxguitar-android-gervill').projectDir = new File(settingsDir, '../../TuxGuitar-android-gervill')
+project(':tuxguitar-android-gervill-plugin').projectDir = new File(settingsDir, '../../TuxGuitar-android-gervill-plugin')
+project(':tuxguitar-android-midi').projectDir = new File(settingsDir, '../../TuxGuitar-android-midi')
+project(':tuxguitar-android-midi-plugin').projectDir = new File(settingsDir, '../../TuxGuitar-android-midi-plugin')
+project(':tuxguitar-android-midimaster').projectDir = new File(settingsDir, '../../TuxGuitar-android-midimaster')
+project(':tuxguitar-android-midimaster-plugin').projectDir = new File(settingsDir, '../../TuxGuitar-android-midimaster-plugin')
+project(':tuxguitar-android-browser-saf').projectDir = new File(settingsDir, '../../TuxGuitar-android-browser-saf')
+project(':tuxguitar-android-browser-saf-plugin').projectDir = new File(settingsDir, '../../TuxGuitar-android-browser-saf-plugin')
+project(':tuxguitar-android-gdrive').projectDir = new File(settingsDir, '../../TuxGuitar-android-gdrive')
+project(':tuxguitar-android-gdrive-plugin').projectDir = new File(settingsDir, '../../TuxGuitar-android-gdrive-plugin')
+project(':tuxguitar-android-gervill-soundbank').projectDir = new File(settingsDir, '../../TuxGuitar-android-gervill-soundbank')
