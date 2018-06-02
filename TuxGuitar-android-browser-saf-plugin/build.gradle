@@ -1,0 +1,9 @@
+apply plugin: 'java'
+
+sourceSets {
+	main {
+		resources.srcDirs = [
+			'share'
+		]
+	}
+}
