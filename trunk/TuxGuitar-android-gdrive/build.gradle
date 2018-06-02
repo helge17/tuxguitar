@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':tuxguitar-android')
+
+    compile 'com.google.android.gms:play-services-auth:8.3.0'
+    compile 'com.google.apis:google-api-services-drive:v2-rev240-1.22.0'
+    compile 'com.google.api-client:google-api-client:1.22.0'
+    compile 'com.google.api-client:google-api-client-android:1.22.0'
+    compile 'com.google.http-client:google-http-client:1.22.0'
+    compile 'com.google.http-client:google-http-client-android:1.22.0'
+    compile 'com.google.http-client:google-http-client-gson:1.22.0'
+    compile 'com.google.oauth-client:google-oauth-client:1.22.0'
+    compile 'com.google.code.gson:gson:2.7'
+}
