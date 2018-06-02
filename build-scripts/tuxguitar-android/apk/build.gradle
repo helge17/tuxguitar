@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+
+def plugins = [
+	'TuxGuitar-android-gervill-plugin',
+	'TuxGuitar-android-midi-plugin',
+	'TuxGuitar-android-midimaster-plugin',
+	'TuxGuitar-android-browser-saf-plugin',
+	'TuxGuitar-android-gdrive-plugin',
+	'TuxGuitar-compat',
+	'TuxGuitar-gtp',
+	'TuxGuitar-gpx',
+	'TuxGuitar-ptb',
+	'TuxGuitar-midi',
+	'TuxGuitar-lilypond',
+	'TuxGuitar-pdf',
+]
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+    
+    defaultConfig {
+        applicationId "tuxguitar.herac.org.tuxguitar"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode Integer.parseInt(new Date().format('yyMMddHH'))
+        versionName "SNAPSHOT"
+        setProperty("archivesBaseName", "tuxguitar-android-SNAPSHOT")
+    }
+	
+    dexOptions {
+        additionalParameters=['--core-library']
+    }
+	
+    sourceSets {
+        main {
+        	java.srcDirs = ['./build/generated/tuxguitar-android-apk-src/src']
+			resources.srcDirs = ['./build/generated/tuxguitar-android-apk-src/share']
+        }
+    }
+}
+
+task generateSources {
+ 	// copy plugins to tmp folder
+    plugins.each { String plugin ->
+	    copy {
+	        from '../../../' + plugin
+	        into './build/generated/tuxguitar-android-apk-src'
+	        
+	        exclude '**/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin'
+	    }
+    }
+    
+    // create unified /META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin file
+	List<String> fileNames = new ArrayList<String>()
+    plugins.each { String plugin ->
+        fileNames.add('../../../' + plugin + '/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
+    }
+	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin');
+ 	file.getParentFile().mkdirs();
+ 	file.text = files(fileNames).collect{it.getText()}.join("\n")
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.1.0'
+    compile project(':tuxguitar-android')
+    compile project(':tuxguitar-android-resources')
+    compile project(':tuxguitar-android-gervill')
+    compile project(':tuxguitar-android-midi')
+    compile project(':tuxguitar-android-midimaster')
+    compile project(':tuxguitar-android-browser-saf')
+    compile project(':tuxguitar-android-gdrive')
+    compile project(':tuxguitar-android-gervill-soundbank')
+    
+    provided 'com.itextpdf:itextpdf:5.5.10'
+    provided 'com.itextpdf.tool:xmlworker:1.1.1'
+    provided 'org.apache.commons:commons-compress:1.5'
+}
