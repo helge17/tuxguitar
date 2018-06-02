@@ -136,6 +136,7 @@
 		
 		<replace dir="${target.dir}/${package.name}" token="${source.version}" value="${dist.version}" >
 			<include name="**/*.xml"/>
+			<include name="**/*.gradle"/>
 			<include name="**/GNUmakefile"/>
 			<include name="**/DEBIAN/control"/>
 		</replace>
