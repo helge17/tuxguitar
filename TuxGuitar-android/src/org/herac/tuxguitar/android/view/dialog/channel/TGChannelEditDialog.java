@@ -2,8 +2,6 @@ package org.herac.tuxguitar.android.view.dialog.channel;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -103,17 +101,17 @@ public class TGChannelEditDialog extends TGModalFragment {
 	}
 	
 	public void appendListeners() {
+		this.getView().findViewById(R.id.channel_edit_dlg_name_value).setOnFocusChangeListener(createNameFocusChangeListener());
 		((Spinner) this.getView().findViewById(R.id.channel_edit_dlg_bank_value)).setOnItemSelectedListener(createBankSelectedListener());
 		((Spinner) this.getView().findViewById(R.id.channel_edit_dlg_program_value)).setOnItemSelectedListener(createProgramSelectedListener());
 		((CheckBox) this.getView().findViewById(R.id.channel_edit_dlg_percussion_value)).setOnCheckedChangeListener(createPercussionChangeListener());
-		((EditText) this.getView().findViewById(R.id.channel_edit_dlg_name_value)).addTextChangedListener(createNameChangedListener());
 		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_volume_value)).setOnSeekBarChangeListener(createVolumeChangeListener());
 		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_balance_value)).setOnSeekBarChangeListener(createBalanceChangeListener());
 		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_reverb_value)).setOnSeekBarChangeListener(createReverbChangeListener());
 		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_chorus_value)).setOnSeekBarChangeListener(createChorusChangeListener());
 		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_phaser_value)).setOnSeekBarChangeListener(createPhaserChangeListener());
 		((SeekBar) this.getView().findViewById(R.id.channel_edit_dlg_tremolo_value)).setOnSeekBarChangeListener(createTremoloChangeListener());
-		
+
 		TGEditorManager.getInstance(findContext()).addUpdateListener(this.eventListener);
 	}
 
@@ -200,7 +198,7 @@ public class TGChannelEditDialog extends TGModalFragment {
 	public String findNameValue() {
 		return this.getTextFieldValue(R.id.channel_edit_dlg_name_value);
 	}
-	
+
 	public void fillPercussionValue() {
 		this.setCheckBoxValue(R.id.channel_edit_dlg_percussion_value, this.getChannel().isPercussionChannel());
 	}
@@ -250,7 +248,7 @@ public class TGChannelEditDialog extends TGModalFragment {
 	
 	public void setTextFieldValue(int id, String value) {
 		if(!isSameValue(value, getTextFieldValue(id))) {
-			((EditText) this.getView().findViewById(id)).getText().append(value);
+			((EditText) this.getView().findViewById(id)).setText(value);
 		}
 	}
 	
@@ -297,10 +295,17 @@ public class TGChannelEditDialog extends TGModalFragment {
 		}
 		return ( v1 != null && v2 != null && v1.equals( v2 ) );
 	}
-	
+
+	public boolean isChannelNameUpdated() {
+		String value = this.findNameValue();
+
+		return (value != null && !value.equals(this.getChannel().getName()));
+	}
+
 	public TGActionProcessor createUpdateChannelAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGUpdateChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.getChannel());
+		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_NAME, this.findNameValue());
 		return tgActionProcessor;
 	}
 	
@@ -309,13 +314,7 @@ public class TGChannelEditDialog extends TGModalFragment {
 		tgActionProcessor.setAttribute(attributeName, attributeValue);
 		return tgActionProcessor;
 	}
-	
-	public TGActionProcessor createUpdateNameAction() {
-		TGActionProcessor tgActionProcessor = this.createUpdateChannelAction();
-		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_NAME, this.findNameValue());
-		return tgActionProcessor;
-	}
-	
+
 	public TGActionProcessor createUpdateBankAction() {
 		TGActionProcessor tgActionProcessor = this.createUpdateChannelAction();
 		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_BANK, this.findSelectedBank());
@@ -339,23 +338,16 @@ public class TGChannelEditDialog extends TGModalFragment {
 		return tgActionProcessor;
 	}
 
-	public TextWatcher createNameChangedListener() {
-		return new TextWatcher() {
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// nothing to do
-			}
-			
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				// nothing to do
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				createUpdateNameAction().process();
+	public View.OnFocusChangeListener createNameFocusChangeListener() {
+		return new View.OnFocusChangeListener() {
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus && isChannelNameUpdated()) {
+					createUpdateChannelAction().process();
+				}
 			}
 		};
 	}
-	
+
 	public OnItemSelectedListener createProgramSelectedListener() {
 		return new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
