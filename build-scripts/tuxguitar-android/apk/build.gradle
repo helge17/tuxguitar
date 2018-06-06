@@ -74,7 +74,7 @@ dependencies {
     compile project(':tuxguitar-android-gdrive')
     compile project(':tuxguitar-android-gervill-soundbank')
     
-    provided 'com.itextpdf:itextpdf:5.5.10'
-    provided 'com.itextpdf.tool:xmlworker:1.1.1'
-    provided 'org.apache.commons:commons-compress:1.5'
+    compile 'com.itextpdf:itextpdf:5.5.10'
+    compile 'com.itextpdf.tool:xmlworker:1.1.1'
+    compile 'org.apache.commons:commons-compress:1.5'
 }
