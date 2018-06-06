@@ -23,6 +23,7 @@ android {
         applicationId "tuxguitar.herac.org.tuxguitar"
         minSdkVersion 14
         targetSdkVersion 27
+        multiDexEnabled true
         versionCode Integer.parseInt(new Date().format('yyMMddHH'))
         versionName "SNAPSHOT"
         setProperty("archivesBaseName", "tuxguitar-android-SNAPSHOT")
