@@ -37,18 +37,17 @@
 			
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
+				
 				<category android:name="android.intent.category.DEFAULT" />
 				
-				<data android:scheme="" />
+				<data android:host="*" />
 				<data android:scheme="file" />
 				<data android:scheme="ftp" />
 				<data android:scheme="content" />
 				<data android:scheme="http" />
 				<data android:scheme="https" />
-				
 				<data android:mimeType="*/*" />
-				
-				<data android:host="*" />
 				
 				<data android:pathPattern=".*\\.tg" />
 				<data android:pathPattern=".*\\.gp" />
@@ -63,6 +62,8 @@
 			
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
+				
 				<category android:name="android.intent.category.DEFAULT" />
 				
 				<data android:mimeType="audio/x-tuxguitar" />

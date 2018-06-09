@@ -20,7 +20,7 @@ android {
     buildToolsVersion "27.0.3"
     
     defaultConfig {
-        applicationId "tuxguitar.herac.org.tuxguitar"
+        applicationId "org.herac.tuxguitar.android.application"
         minSdkVersion 14
         targetSdkVersion 27
         multiDexEnabled true
@@ -29,6 +29,12 @@ android {
         setProperty("archivesBaseName", "tuxguitar-android-SNAPSHOT")
     }
 	
+    buildTypes {
+        release {
+        	zipAlignEnabled true
+        }
+    }
+    
     dexOptions {
         additionalParameters=['--core-library']
     }
@@ -58,7 +64,7 @@ task generateSources {
         fileNames.add('../../../' + plugin + '/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
     }
 	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin');
- 	file.getParentFile().mkdirs();
+ 	file.getParentFile().mkdirs()
  	file.text = files(fileNames).collect{it.getText()}.join("\n")
 }
 
