@@ -1,0 +1,31 @@
+
+.JFXToolBar {
+	-fx-background-color: rgba(0,0,0,0);
+	-fx-padding: 4 0 4 0;
+}
+
+.JFXToolActionItem,
+.JFXToolCheckableItem,
+.JFXToolMenuItem,
+.JFXToolActionMenuItem {
+	-fx-background-color: rgba(0,0,0,0);
+    -fx-padding: 4 4 4 4;
+}
+
+.JFXToolActionItem:hover,
+.JFXToolCheckableItem:hover,
+.JFXToolMenuItem:hover,
+.JFXToolActionMenuItem:hover {
+    -fx-background-color: #aaaaaa,#ffffff;
+    -fx-background-insets: 0,1;
+    -fx-background-radius: 2;
+}
+
+.JFXToolActionItem:pressed,
+.JFXToolCheckableItem:pressed,
+.JFXToolMenuItem:pressed,
+.JFXToolActionMenuItem:pressed {
+    -fx-background-color: #aaaaaa,#cccccc;
+    -fx-background-insets: 0,1;
+    -fx-background-radius: 2;
+}

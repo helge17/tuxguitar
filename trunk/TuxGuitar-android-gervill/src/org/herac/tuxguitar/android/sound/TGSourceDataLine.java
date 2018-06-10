@@ -75,10 +75,10 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	
 	@Override
 	public void open(AudioFormat format, int bufferSize) throws LineUnavailableException {
-		this.bufferSize = DEFAULT_BUFFER_SIZE;//bufferSize;
+		this.bufferSize = bufferSize;
 		this.format = new TGAudioFormat(format);
 		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), this.bufferSize, AudioTrack.MODE_STREAM);
-		
+
 		super.open();
 	}
 

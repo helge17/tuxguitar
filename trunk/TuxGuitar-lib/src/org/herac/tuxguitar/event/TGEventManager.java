@@ -3,6 +3,7 @@ package org.herac.tuxguitar.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -28,6 +29,14 @@ public class TGEventManager {
 	}
 	
 	public void fireEvent(TGEvent event) throws TGEventException {
+		TGAbstractContext sourceContext = event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
+		if( sourceContext != null ) {
+			TGEventListener listener = sourceContext.getAttribute(TGEventListener.class.getName());
+			if( listener != null ) {
+				listener.processEvent(event);
+			}
+		}
+		
 		TGEventHandler handler = this.findEventHandler(event.getEventType());
 		if( handler != null ) {
 			handler.processEvent(event);
