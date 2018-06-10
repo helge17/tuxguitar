@@ -36,13 +36,16 @@ public class MidiEventPlayer{
 		if(event.getTick() > tick){
 			return false;
 		}
-		if(event.getTrack() != MidiEvent.ALL_TRACKS){
-			if(this.sequencer.getMidiTrackController().isMute(event.getTrack())){
-				return false;
+		if(event.getTick() > lastTick) {
+			if(event.getTrack() != MidiEvent.ALL_TRACKS){
+				if(this.sequencer.getMidiTrackController().isMute(event.getTrack())){
+					return false;
+				}
+				if(this.sequencer.getMidiTrackController().isAnySolo() && !this.sequencer.getMidiTrackController().isSolo(event.getTrack())){
+					return false;
+				}
 			}
-			if(this.sequencer.getMidiTrackController().isAnySolo() && !this.sequencer.getMidiTrackController().isSolo(event.getTrack())){
-				return false;
-			}
+			return true;
 		}
 		if(this.reset){
 			if(event.getType() == MidiEvent.MIDI_SYSTEM_EVENT){
@@ -55,7 +58,7 @@ public class MidiEventPlayer{
 				return true;
 			}
 		}
-		return (event.getTick() > lastTick);
+		return false;
 	}
 	
 	public void addEvent(MidiEvent event){
