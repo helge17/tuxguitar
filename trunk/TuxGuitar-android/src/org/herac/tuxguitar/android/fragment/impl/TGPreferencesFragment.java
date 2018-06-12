@@ -2,6 +2,7 @@ package org.herac.tuxguitar.android.fragment.impl;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -36,7 +37,8 @@ public class TGPreferencesFragment extends PreferenceFragment implements SharedP
 		this.addPreferencesFromResource(R.xml.preferences_main);
 		this.getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		this.createUpdateActionsMap();
-		this.createOutputPortValues();
+		this.createSafPreferences();
+		this.createOutputPortPreferences();
 	}
 
 	@Override
@@ -60,10 +62,16 @@ public class TGPreferencesFragment extends PreferenceFragment implements SharedP
 		this.updateActionsMap.put(TGStorageProperties.PROPERTY_SAF_PROVIDER, TGStorageLoadSettingsAction.NAME);
 	}
 
-	public void createOutputPortValues() {
-		String defaultValue = null;
-		List<String> entryNames = new ArrayList<String>();
-		List<String> entryValues = new ArrayList<String>();
+	public void createSafPreferences() {
+		CheckBoxPreference checkBoxPreference = (CheckBoxPreference) this.findPreference(TGStorageProperties.PROPERTY_SAF_PROVIDER);
+		checkBoxPreference.setChecked(new TGStorageProperties(this.findContext()).isUseSafProvider());
+	}
+
+	public void createOutputPortPreferences() {
+		String currentValue = null;
+		String currentLabel = null;
+		final List<String> entryNames = new ArrayList<String>();
+		final List<String> entryValues = new ArrayList<String>();
 
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.findContext());
 		List<MidiOutputPort> outputPorts = midiPlayer.listOutputPorts();
@@ -71,31 +79,35 @@ public class TGPreferencesFragment extends PreferenceFragment implements SharedP
 			entryNames.add(outputPort.getName());
 			entryValues.add(outputPort.getKey());
 			if( midiPlayer.isOutputPortOpen(outputPort.getKey()) ) {
-				defaultValue = outputPort.getKey();
+				currentValue = outputPort.getKey();
+				currentLabel = outputPort.getName();
 			}
 		}
 
-		ListPreference listPreference = (ListPreference) this.findPreference(TGTransportProperties.PROPERTY_MIDI_OUTPUT_PORT);
+		final ListPreference listPreference = (ListPreference) this.findPreference(TGTransportProperties.PROPERTY_MIDI_OUTPUT_PORT);
 		listPreference.setEntries(entryNames.toArray(new CharSequence[entryNames.size()]));
 		listPreference.setEntryValues(entryValues.toArray(new CharSequence[entryValues.size()]));
-		if( defaultValue != null ) {
-			listPreference.setValue(defaultValue);
+		if( currentValue != null ) {
+			listPreference.setValue(currentValue);
 		}
 		listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference, Object o) {
-				updatePreferenceSummary(preference, o.toString(), R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
+				int index = ( o != null ? entryValues.indexOf(o.toString()) : -1);
+				String selectedLabel = ( index >= 0 ? entryNames.get(index) : null);
+
+				updatePreferenceSummary(preference, selectedLabel, R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
 
 				return true;
 			}
 		});
-		updatePreferenceSummary(listPreference, defaultValue, R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
+		updatePreferenceSummary(listPreference, currentLabel, R.string.preferences_midi_output_port_summary, R.string.preferences_midi_output_port_summary_empty);
 	}
 
-	public void updatePreferenceSummary(Preference preference, String value, Integer summaryId, Integer emptySummaryId) {
-		if((value == null || value.isEmpty()) && emptySummaryId != null ) {
+	public void updatePreferenceSummary(Preference preference, String label, Integer summaryId, Integer emptySummaryId) {
+		if( label != null && !label.isEmpty() ) {
+			preference.setSummary(this.getActivity().getString(summaryId, label));
+		} else if (emptySummaryId != null) {
 			preference.setSummary(this.getActivity().getString(emptySummaryId));
-		} else {
-			preference.setSummary(this.getActivity().getString(summaryId, value));
 		}
 	}
 
