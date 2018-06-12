@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.android.midi.port.gervill;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	
@@ -20,7 +20,12 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	public List<MidiOutputPort> listPorts() {
 		if( this.ports == null ) {
 			this.ports = new ArrayList<MidiOutputPort>();
-			this.ports.add(new MidiOutputPortImpl(this.context));
+
+			MidiSettings midiSettings = new MidiSettings(context);
+			int count = midiSettings.getSoundBankCount();
+			for(int i = 0 ; i < count; i++) {
+				this.ports.add(new MidiOutputPortImpl(this.context, midiSettings.getSoundBankResource(i), midiSettings.getSoundBankName(i)));
+			}
 		}
 		return this.ports;
 	}

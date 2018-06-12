@@ -6,41 +6,51 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MidiOutputPortImpl extends GMOutputPort{
-	
-	private String key;
-	private String name;
+
+	private TGContext context;
 	private MidiSynthesizerManager synthManager;
-	
-	public MidiOutputPortImpl(TGContext context){
-		this.synthManager = new MidiSynthesizerManager(context);
-		this.key = this.synthManager.getSynth().getDeviceInfo().getName();
-		this.name = this.synthManager.getSynth().getDeviceInfo().getName();
+	private String soundBankResource;
+	private String soundBankName;
+
+	public MidiOutputPortImpl(TGContext context, String soundBankResource, String soundBankName) {
+		this.context = context;
+		this.soundBankName = soundBankName;
+		this.soundBankResource = soundBankResource;
 	}
-	
-	public String getKey() {
-		return this.key;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public void open(){
+
+	public void open() {
+		if( this.synthManager != null ) {
+			this.synthManager.close();
+		}
+		this.synthManager = new MidiSynthesizerManager(this.context, this.soundBankResource);
 		this.synthManager.open();
 	}
 	
 	public void close(){
-		this.synthManager.close();
+		if( this.synthManager != null ) {
+			this.synthManager.close();
+		}
 	}
 	
-	public GMReceiver getReceiver(){
-		return this.synthManager.getReceiver();
+	public GMReceiver getReceiver() {
+		if( this.synthManager != null ) {
+			return this.synthManager.getReceiver();
+		}
+		return null;
 	}
 	
 	public void check() throws MidiPlayerException{
-		if(!this.synthManager.isSynthesizerLoaded()){
+		if( this.synthManager == null || !this.synthManager.isSynthesizerLoaded()) {
 			throw new MidiPlayerException("jsa.error.midi.unavailable");
 		}
+	}
+
+	public String getKey() {
+		return ("tuxguitar-gervill." + this.soundBankResource);
+	}
+
+	public String getName() {
+		return ("Gervill (" + this.soundBankName + ")");
 	}
 }
 

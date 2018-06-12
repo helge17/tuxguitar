@@ -5,6 +5,7 @@ import android.app.Activity;
 import org.herac.tuxguitar.android.browser.config.TGBrowserProperties;
 import org.herac.tuxguitar.android.transport.TGTransportProperties;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.configuration.TGConfigManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
@@ -17,6 +18,7 @@ public class TGPropertiesAdapter {
 		addWriter(context, TGBrowserProperties.RESOURCE, createSharedPreferencesWriter(activity, TGBrowserProperties.MODULE, TGBrowserProperties.RESOURCE));
 		addReader(context, TGTransportProperties.RESOURCE, createSharedPreferencesReader(context, activity, TGTransportProperties.MODULE, TGTransportProperties.RESOURCE));
 		addWriter(context, TGTransportProperties.RESOURCE, createSharedPreferencesWriter(activity, TGTransportProperties.MODULE, TGTransportProperties.RESOURCE));
+		addReader(context, TGConfigManager.RESOURCE, new TGResourcePropertiesReader(context, null, null));
 	}
 	
 	public static void addFactory(TGContext context) {
@@ -32,7 +34,7 @@ public class TGPropertiesAdapter {
 	}
 
 	public static TGPropertiesReader createSharedPreferencesReader(TGContext context, Activity activity, String module, String resource) {
-		return new TGSharedPreferencesReader(activity, module, resource, new TGResourcePropertiesReader(context, resource));
+		return new TGSharedPreferencesReader(activity, module, resource, new TGResourcePropertiesReader(context, null, ("-" + resource)));
 	}
 
 	public static TGPropertiesWriter createSharedPreferencesWriter(Activity activity, String module, String resource) {

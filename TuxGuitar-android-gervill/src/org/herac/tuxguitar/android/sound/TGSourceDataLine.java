@@ -1,17 +1,18 @@
 package org.herac.tuxguitar.android.sound;
 
+import android.media.AudioManager;
+import android.media.AudioTrack;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-import android.media.AudioManager;
-import android.media.AudioTrack;
-
 public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 
-	private static final int DEFAULT_BUFFER_SIZE = 4096;
-	
+	private static final int BUFFER_SIZE = 1024;
+	private static final int BUFFER_COUNT = 10;
+
 	private int bufferSize;
 	private TGAudioFormat format;
 	private AudioTrack audioTrack;
@@ -75,16 +76,16 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	
 	@Override
 	public void open(AudioFormat format, int bufferSize) throws LineUnavailableException {
-		this.bufferSize = bufferSize;
+		this.bufferSize = BUFFER_SIZE;
 		this.format = new TGAudioFormat(format);
-		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), this.bufferSize, AudioTrack.MODE_STREAM);
+		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), (this.bufferSize * BUFFER_COUNT), AudioTrack.MODE_STREAM);
 
 		super.open();
 	}
 
 	@Override
 	public void open(AudioFormat format) throws LineUnavailableException {
-		this.open(format, DEFAULT_BUFFER_SIZE);
+		this.open(format, BUFFER_SIZE);
 	}
 
 	@Override
