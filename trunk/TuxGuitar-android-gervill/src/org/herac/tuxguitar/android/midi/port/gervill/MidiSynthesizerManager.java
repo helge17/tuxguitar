@@ -1,5 +1,15 @@
 package org.herac.tuxguitar.android.midi.port.gervill;
 
+import com.sun.media.sound.AudioSynthesizer;
+import com.sun.media.sound.ModelPatch;
+import com.sun.media.sound.SF2Instrument;
+import com.sun.media.sound.SoftSynthesizer;
+
+import org.herac.tuxguitar.gm.port.GMReceiver;
+import org.herac.tuxguitar.player.base.MidiControllers;
+import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.util.TGContext;
+
 import java.io.InputStream;
 
 import javax.sound.midi.Instrument;
@@ -9,20 +19,8 @@ import javax.sound.midi.Patch;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
-
-import com.sun.media.sound.AudioSynthesizer;
-import com.sun.media.sound.ModelPatch;
-import com.sun.media.sound.SF2Instrument;
-import com.sun.media.sound.SoftSynthesizer;
-
 public class MidiSynthesizerManager {
-	
-	private static final String SOUNDBANK_RESOUCE_PREFIX = "soundbank/instrument";
-	
+
 	private static final int PERCUSSION_BANK = 128;
 	private static final int PERCUSSION_CHANNEL = 9;
 	
@@ -33,10 +31,12 @@ public class MidiSynthesizerManager {
 	private AudioSynthesizer synth;
 	private GMReceiver receiver;
 	private MidiChannel[] channels;
+	private String resource;
 	private boolean synthesizerLoaded;
 	
-	public MidiSynthesizerManager(TGContext context) {
+	public MidiSynthesizerManager(TGContext context, String resource) {
 		this.context = context;
+		this.resource = resource;
 		this.synth = new SoftSynthesizer();
 		this.receiver = new MidiReceiverImpl(this);
 	}
@@ -87,7 +87,7 @@ public class MidiSynthesizerManager {
 	}
 	
 	public InputStream findResource(Patch patch) {
-		String resourceName = (SOUNDBANK_RESOUCE_PREFIX + "-" + patch.getBank() + "-" + patch.getProgram() + ".sf2");
+		String resourceName = (this.resource + "/instrument-" + patch.getBank() + "-" + patch.getProgram() + ".sf2");
 		
 		return TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName);
 	}

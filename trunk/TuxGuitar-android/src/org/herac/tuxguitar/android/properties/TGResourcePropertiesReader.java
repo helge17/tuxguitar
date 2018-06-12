@@ -14,18 +14,28 @@ import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 public class TGResourcePropertiesReader implements TGPropertiesReader {
 	
 	private TGContext context;
-	private String resource;
+	private String modulePrefix;
+	private String moduleSuffix;
 	
-	public TGResourcePropertiesReader(TGContext context, String resource) {
+	public TGResourcePropertiesReader(TGContext context, String modulePrefix, String moduleSuffix) {
 		this.context = context;
-		this.resource = resource;
+		this.modulePrefix = modulePrefix;
+		this.moduleSuffix = moduleSuffix;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void readProperties(TGProperties targetProperties, String module) throws TGPropertiesException {
 		try {
-			String resourceName = (module + "-" + this.resource + ".cfg");
-			InputStream inputStream = TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName);
+			StringBuilder resourceName = new StringBuilder();
+			if( this.modulePrefix != null ) {
+				resourceName.append(this.modulePrefix);
+			}
+			resourceName.append(module);
+			if( this.moduleSuffix != null ) {
+				resourceName.append(this.moduleSuffix);
+			}
+			resourceName.append(".cfg");
+			InputStream inputStream = TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName.toString());
 			if( inputStream != null ){
 				Properties properties = new Properties();
 				properties.load(inputStream);

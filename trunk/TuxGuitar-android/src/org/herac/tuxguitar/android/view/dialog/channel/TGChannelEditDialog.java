@@ -72,9 +72,9 @@ public class TGChannelEditDialog extends TGModalFragment {
 
 	public void updateItems() {
 		this.updateStates();
-		
+
 		this.fillPrograms();
-		
+
 		this.fillNameValue();
 		this.fillBankValue();
 		this.fillProgramValue();
@@ -362,10 +362,14 @@ public class TGChannelEditDialog extends TGModalFragment {
 	public OnItemSelectedListener createBankSelectedListener() {
 		return new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		    	createUpdateBankAction().process();
+				if(!getChannel().isPercussionChannel()) {
+					createUpdateBankAction().process();
+				}
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
-		    	createUpdateBankAction().process();
+				if(!getChannel().isPercussionChannel()) {
+					createUpdateBankAction().process();
+				}
 		    }
 		};
 	}
