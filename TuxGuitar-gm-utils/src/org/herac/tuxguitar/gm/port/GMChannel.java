@@ -14,11 +14,13 @@ public class GMChannel implements MidiChannel{
 	private GMReceiver receiver;
 	private GMChannelRoute route;
 	private GMChannelRouter router;
+	private GMProgram program;
 	
 	public GMChannel(int channelId, GMChannelRouter router, GMReceiver receiver){
 		this.receiver = receiver;
 		this.router = router;
 		this.route = new GMChannelRoute(channelId);
+		this.program = new GMProgram();
 		this.percussionChannel = false;
 	}
 	
@@ -43,6 +45,7 @@ public class GMChannel implements MidiChannel{
 	}
 	
 	public void sendProgramChange(int value) throws MidiPlayerException {
+		this.program.setProgram(value);
 		this.router.configureRoutes(this.route, this.percussionChannel);
 		this.receiver.sendProgramChange(this.route.getChannel1(), value);
 		if( this.route.getChannel1() != this.route.getChannel2() ){
@@ -51,6 +54,7 @@ public class GMChannel implements MidiChannel{
 	}
 
 	public void sendControlChange(int controller, int value) throws MidiPlayerException {
+		this.program.setController(controller, value);
 		if( controller == MidiControllers.BANK_SELECT ) {
 			this.percussionChannel = (value == PERCUSSION_BANK);
 			this.router.configureRoutes(this.route, this.percussionChannel);
@@ -63,12 +67,31 @@ public class GMChannel implements MidiChannel{
 	
 	public void sendParameter(String key, String value) throws MidiPlayerException{
 		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1)) {
-			this.route.setChannel1(Integer.parseInt(value));
+			this.program.setChannel1(Integer.parseInt(value));
+			this.route.setChannel1(this.program.getChannel1());
 			this.router.configureRoutes(this.route, this.percussionChannel);
 		}
 		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_2)) {
-			this.route.setChannel2(Integer.parseInt(value));
+			this.program.setChannel2(Integer.parseInt(value));
+			this.route.setChannel2(this.program.getChannel2());
 			this.router.configureRoutes(this.route, this.percussionChannel);
+		}
+	}
+	
+	public void sendProgramUpdated() throws MidiPlayerException {
+		if(!this.program.isSameChannel(this.route.getChannel1(), this.route.getChannel2())) {
+			this.program.setChannel1(this.route.getChannel1());
+			this.program.setChannel2(this.route.getChannel2());
+			
+			if( this.program.getProgram() != null ) {
+				this.sendProgramChange(this.program.getProgram());
+			}
+			for(int controller = 0; controller < this.program.getControllers().length ; controller ++) {
+				Integer value = this.program.getController(controller);
+				if( value != null ) {
+					this.sendControlChange(controller, value);
+				}
+			}
 		}
 	}
 	

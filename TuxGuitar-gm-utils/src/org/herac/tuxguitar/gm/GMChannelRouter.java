@@ -38,6 +38,10 @@ public class GMChannelRouter {
 	}
 	
 	public void configureRoutes(GMChannelRoute route, boolean percussionChannel) {
+		this.configureRoutes(route, percussionChannel, 0);
+	}
+	
+	public void configureRoutes(GMChannelRoute route, boolean percussionChannel, int level) {
 		List<GMChannelRoute> conflictingRoutes = null;
 		
 		this.removeRoute(route);
@@ -72,7 +76,7 @@ public class GMChannelRouter {
 			for(GMChannelRoute conflictingRoute : conflictingRoutes) {
 				conflictingRoute.setChannel1(GMChannelRoute.NULL_VALUE);
 				conflictingRoute.setChannel2(GMChannelRoute.NULL_VALUE);
-				configureRoutes(conflictingRoute, false);
+				configureRoutes(conflictingRoute, false, level + 1);
 			}
 		}
 		
@@ -80,7 +84,7 @@ public class GMChannelRouter {
 		List<GMChannelRoute> orphanRoutes = findOrphanRoutes();
 		for(GMChannelRoute orphanRoute : orphanRoutes) {
 			if(!this.getFreeChannels().isEmpty()) {
-				this.configureRoutes(orphanRoute, false);
+				this.configureRoutes(orphanRoute, false, level + 1);
 			}
 		}
 	}
