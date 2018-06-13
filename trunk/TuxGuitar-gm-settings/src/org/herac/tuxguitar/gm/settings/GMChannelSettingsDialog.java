@@ -41,7 +41,7 @@ public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.context = context;
 		this.song = song;
 		this.channel = channel;
-		this.router = synthesizer.getChannelRouter();
+		this.router = synthesizer.getRouter();
 	}
 	
 	public void open(final UIWindow parent) {
