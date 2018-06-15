@@ -34,25 +34,6 @@ import java.util.Map;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.Patch;
 
-import com.sun.media.sound.ModelChannelMixer;
-import com.sun.media.sound.ModelConnectionBlock;
-import com.sun.media.sound.ModelDestination;
-import com.sun.media.sound.ModelDirectedPlayer;
-import com.sun.media.sound.ModelDirector;
-import com.sun.media.sound.ModelIdentifier;
-import com.sun.media.sound.ModelInstrument;
-import com.sun.media.sound.ModelPerformer;
-import com.sun.media.sound.ModelSource;
-import com.sun.media.sound.ModelStandardTransform;
-import com.sun.media.sound.ModelTransform;
-import com.sun.media.sound.SoftControl;
-import com.sun.media.sound.SoftInstrument;
-import com.sun.media.sound.SoftMainMixer;
-import com.sun.media.sound.SoftPerformer;
-import com.sun.media.sound.SoftSynthesizer;
-import com.sun.media.sound.SoftTuning;
-import com.sun.media.sound.SoftVoice;
-
 
 
 /**
@@ -638,7 +619,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             }
         }
 
-        voiceNo = findFreeVoice(voiceNo);
+        voiceNo = findFreeVoice(Math.max(voiceNo, 0));
 
         if (voiceNo == -1)
             return;

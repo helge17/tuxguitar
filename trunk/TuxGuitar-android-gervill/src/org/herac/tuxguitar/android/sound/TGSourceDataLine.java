@@ -11,9 +11,8 @@ import javax.sound.sampled.SourceDataLine;
 public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 
 	private static final int BUFFER_SIZE = 1024;
-	private static final int BUFFER_COUNT = 10;
+	private static final int BUFFER_COUNT = 20;
 
-	private int bufferSize;
 	private TGAudioFormat format;
 	private AudioTrack audioTrack;
 	
@@ -59,7 +58,7 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 
 	@Override
 	public int getBufferSize() {
-		return this.bufferSize;
+		return BUFFER_SIZE;
 	}
 
 	@Override
@@ -75,17 +74,16 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	}
 	
 	@Override
-	public void open(AudioFormat format, int bufferSize) throws LineUnavailableException {
-		this.bufferSize = BUFFER_SIZE;
+	public void open(AudioFormat format) throws LineUnavailableException {
 		this.format = new TGAudioFormat(format);
-		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), (this.bufferSize * BUFFER_COUNT), AudioTrack.MODE_STREAM);
+		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), (this.getBufferSize() * BUFFER_COUNT), AudioTrack.MODE_STREAM);
 
 		super.open();
 	}
 
 	@Override
-	public void open(AudioFormat format) throws LineUnavailableException {
-		this.open(format, BUFFER_SIZE);
+	public void open(AudioFormat format, int bufferSize) throws LineUnavailableException {
+		this.open(format);
 	}
 
 	@Override
