@@ -10,12 +10,11 @@ import javax.sound.sampled.SourceDataLine;
 
 public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 
-	private static final int BUFFER_SIZE = 1024;
-	private static final int BUFFER_COUNT = 20;
+	private static final int BUFFER_SIZE = 4096;
 
 	private TGAudioFormat format;
 	private AudioTrack audioTrack;
-	
+
 	public TGSourceDataLine(Line.Info info) {
 		super(info);
 	}
@@ -76,7 +75,7 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	@Override
 	public void open(AudioFormat format) throws LineUnavailableException {
 		this.format = new TGAudioFormat(format);
-		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), (this.getBufferSize() * BUFFER_COUNT), AudioTrack.MODE_STREAM);
+		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, this.format.getSampleRateInHz(), this.format.getChannelConfig(), this.format.getAudioFormat(), BUFFER_SIZE, AudioTrack.MODE_STREAM);
 
 		super.open();
 	}
