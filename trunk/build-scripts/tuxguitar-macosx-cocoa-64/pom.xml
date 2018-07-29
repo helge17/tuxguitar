@@ -339,6 +339,9 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-macosx"/>
 								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="./src/resources"/>
+								</copy>
 								
 								<chmod file="${project.build.directory}/${project.finalName}/Contents/MacOS/tuxguitar.sh" perm="755" />
 							</target>

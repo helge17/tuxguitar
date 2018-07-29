@@ -4,10 +4,13 @@ DIR_NAME=`dirname "$0"`
 DIR_NAME=`cd "$DIR_NAME"; pwd`
 cd "${DIR_NAME}"
 ##JAVA
-if [ -z "$JAVA" ]; then
-	JAVA="${JAVA_HOME}/bin/java"
-	[ ! -f "${JAVA}" ] && JAVA="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java"
-	[ ! -f "${JAVA}" ] && JAVA="/usr/bin/java"
+JAVA_BUNDLED="./jre/bin/java"
+if [ -f "${JAVA_BUNDLED}" ]; then
+	JAVA="${JAVA_BUNDLED}"
+fi
+if [ -z ${JAVA} ]; then
+	[ -z ${JAVA_HOME} ] && JAVA_HOME=$(/usr/libexec/java_home)
+	[ ! -f "${JAVA}" ] && JAVA="${JAVA_HOME}/bin/java"
 	[ ! -f "${JAVA}" ] && JAVA="java"
 fi
 ##CLASSPATH
