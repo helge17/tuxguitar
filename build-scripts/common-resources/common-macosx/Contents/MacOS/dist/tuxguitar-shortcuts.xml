@@ -10,7 +10,7 @@
 	<shortcut keys="7" action="action.note.general.set-fret-number-7"/>
 	<shortcut keys="8" action="action.note.general.set-fret-number-8"/>
 	<shortcut keys="9" action="action.note.general.set-fret-number-9"/>
-	<shortcut keys="Del" action="action.beat.general.delete-note-or-rest"/>
+	<shortcut keys="BackSpace" action="action.beat.general.delete-note-or-rest"/>
 	<shortcut keys="Ins" action="action.beat.general.insert-rest"/>
 	<shortcut keys="+" action="action.note.duration.increment-duration"/>
 	<shortcut keys="-" action="action.note.duration.decrement-duration"/>
@@ -52,7 +52,7 @@
 	<shortcut keys="p" action="action.note.effect.change-palm-mute"/>
 	<shortcut keys="s" action="action.note.effect.change-slide"/>
 	<shortcut keys="v" action="action.note.effect.change-vibrato"/>
-	<shortcut keys="Command Del" action="action.note.general.clean-beat"/>
+	<shortcut keys="Command BackSpace" action="action.note.general.clean-beat"/>
 	<shortcut keys="Command Up" action="action.beat.general.voice-up"/>
 	<shortcut keys="Command Down" action="action.beat.general.voice-down"/>
 	<shortcut keys="Command a" action="action.beat.general.voice-auto"/>
@@ -66,7 +66,7 @@
 	<shortcut keys="Command Shift Ins" action="action.track.add-new"/>
 	<shortcut keys="Command Shift Up" action="action.track.go-previous"/>
 	<shortcut keys="Command Shift Down" action="action.track.go-next"/>
-	<shortcut keys="Command Shift Del" action="action.track.remove"/>
+	<shortcut keys="Command Shift BackSpace" action="action.track.remove"/>
 	<shortcut keys="F9" action="action.gui.open-transport-mode-dialog"/>
 	<shortcut keys="Space" action="action.transport.play"/>
 	<shortcut keys="Command m" action="action.view.show-mixer"/>

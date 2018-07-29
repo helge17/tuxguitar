@@ -4,16 +4,14 @@ DIR_NAME=`dirname "$0"`
 DIR_NAME=`cd "$DIR_NAME"; pwd`
 cd "${DIR_NAME}"
 ##JAVA
-if [ -z $JAVA ]; then
-	JAVA=${JAVA_HOME}/bin/java
-	[ ! -f ${JAVA} ] && JAVA=/usr/bin/java
-	[ ! -f ${JAVA} ] && JAVA=java
+JAVA_BUNDLED="./jre/bin/java"
+if [ -f "${JAVA_BUNDLED}" ]; then
+	JAVA="${JAVA_BUNDLED}"
 fi
-##MOZILLA_FIVE_HOME
-if [ -z $MOZILLA_FIVE_HOME ]; then
-	MOZILLA_FIVE_HOME=/usr/lib/firefox
-	[ ! -d ${MOZILLA_FIVE_HOME} ] && MOZILLA_FIVE_HOME=/usr/lib/mozilla
-	[ ! -d ${MOZILLA_FIVE_HOME} ] && MOZILLA_FIVE_HOME=/usr/lib/iceweasel
+if [ -z ${JAVA} ]; then
+	[ -z ${JAVA_HOME} ] && JAVA_HOME="/usr"
+	[ ! -f "${JAVA}" ] && JAVA="${JAVA_HOME}/bin/java"
+	[ ! -f "${JAVA}" ] && JAVA="java"
 fi
 ##LIBRARY_PATH
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:lib/
@@ -21,7 +19,6 @@ LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
-LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MOZILLA_FIVE_HOME}
 ##CLASSPATH
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar.jar
 CLASSPATH=${CLASSPATH}:./lib/tuxguitar-ui-toolkit.jar
@@ -45,6 +42,6 @@ VM_ARGS="-Xmx512m"
 ##EXPORT VARS
 export CLASSPATH
 export LD_LIBRARY_PATH
-export MOZILLA_FIVE_HOME
+export SWT_GTK3=0
 ##LAUNCH
 ${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$1" "$2"

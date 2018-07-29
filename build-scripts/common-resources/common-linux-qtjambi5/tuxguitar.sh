@@ -4,10 +4,14 @@ DIR_NAME=`dirname "$0"`
 DIR_NAME=`cd "$DIR_NAME"; pwd`
 cd "${DIR_NAME}"
 ##JAVA
-if [ -z $JAVA ]; then
-	JAVA=${JAVA_HOME}/bin/java
-	[ ! -f ${JAVA} ] && JAVA=/usr/bin/java
-	[ ! -f ${JAVA} ] && JAVA=java
+JAVA_BUNDLED="./jre/bin/java"
+if [ -f "${JAVA_BUNDLED}" ]; then
+	JAVA="${JAVA_BUNDLED}"
+fi
+if [ -z ${JAVA} ]; then
+	[ -z ${JAVA_HOME} ] && JAVA_HOME="/usr"
+	[ ! -f "${JAVA}" ] && JAVA="${JAVA_HOME}/bin/java"
+	[ ! -f "${JAVA}" ] && JAVA="java"
 fi
 ##LIBRARY_PATH
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:lib/
