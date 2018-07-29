@@ -64,7 +64,7 @@ public class TGSynthSongWriter implements TGSongWriter {
 				this.loadSynthPrograms(synthModel, tgSong);
 				
 				sequence.start();
-				while(sequence.getTick() < sequence.getLength()) {
+				while(!sequence.isEnded()) {
 					sequence.dispatchEvents();
 					
 					audioProcessor.process();
