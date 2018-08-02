@@ -343,7 +343,12 @@
 									<fileset dir="./src/resources"/>
 								</copy>
 								
-								<chmod file="${project.build.directory}/${project.finalName}/Contents/MacOS/tuxguitar.sh" perm="755" />
+								<chmod perm="755">
+									<fileset dir="${project.build.directory}/${project.finalName}/Contents/MacOS">
+										<include name="tuxguitar.sh"/>
+										<include name="jre/bin/*"/>
+									</fileset>
+								</chmod>
 							</target>
 						</configuration>
 						<goals>

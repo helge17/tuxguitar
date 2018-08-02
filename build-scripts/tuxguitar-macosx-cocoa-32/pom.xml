@@ -85,6 +85,12 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-editor-utils</artifactId>
+									<destFileName>tuxguitar-editor-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ui-toolkit</artifactId>
 									<destFileName>tuxguitar-ui-toolkit.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
@@ -93,12 +99,6 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ui-toolkit-swt</artifactId>
 									<destFileName>tuxguitar-ui-toolkit-swt.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-editor-utils</artifactId>
-									<destFileName>tuxguitar-editor-utils.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -339,8 +339,16 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-macosx"/>
 								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="./src/resources"/>
+								</copy>
 								
-								<chmod file="${project.build.directory}/${project.finalName}/Contents/MacOS/tuxguitar.sh" perm="755" />
+								<chmod perm="755">
+									<fileset dir="${project.build.directory}/${project.finalName}/Contents/MacOS">
+										<include name="tuxguitar.sh"/>
+										<include name="jre/bin/*"/>
+									</fileset>
+								</chmod>
 							</target>
 						</configuration>
 						<goals>
