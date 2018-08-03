@@ -119,6 +119,8 @@
 				
 				<exclude name="**/.*"/>
 				<exclude name="**/.*/**"/>
+				<exclude name="**/jre/**"/>
+				<exclude name="**/keystore/**"/>
 				<exclude name="**/target/**"/>
 				<exclude name="**/build/**"/>
 				<exclude name="**/lang/last_additions/**"/>
