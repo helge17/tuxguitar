@@ -126,6 +126,7 @@
 				<exclude name="**/lang/last_additions/**"/>
 				<exclude name="**/src-test/**"/>
 				
+				<exclude name="TuxGuitar*/bin/**"/>
 				<exclude name="TuxGuitar*/**/*.o"/>
 				<exclude name="TuxGuitar*/**/*.so"/>
 				<exclude name="TuxGuitar*/**/*.dll"/>
@@ -134,6 +135,7 @@
 				<exclude name="TuxGuitar*/**/*.jnilib"/>
 				<exclude name="TuxGuitar*/**/*.jar"/>
 				<exclude name="TuxGuitar*/**/*.zip"/>
+				<exclude name="TuxGuitar*/**/*.class"/>
 			</fileset>
 		</copy>
 		
