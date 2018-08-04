@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.herac.tuxguitar.ui.event.UILinkListener;
+import org.herac.tuxguitar.ui.jfx.event.JFXLinkListenerManager;
+import org.herac.tuxguitar.ui.jfx.resource.JFXFont;
+import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
+import org.herac.tuxguitar.ui.widget.UILinkLabel;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,13 +20,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
-import org.herac.tuxguitar.ui.event.UILinkListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXLinkListenerManager;
-import org.herac.tuxguitar.ui.widget.UILinkLabel;
-
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
 
 public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 	
@@ -74,7 +73,8 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			int sIndex = 0;
 			int eIndex = 0;
 			
-			FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
+			JFXFont font = (this.getFont() != null ? (JFXFont) this.getFont() : new JFXFont(Font.getDefault()));
+			JFXFontMetrics fontMetrics = font.getFontMetrics();
 			StringBuilder text = new StringBuilder();
 			StringBuilder line = new StringBuilder();
 			
@@ -84,7 +84,7 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			while(m.find()) {
 				sIndex = m.start();
 				if( sIndex > eIndex ) {
-					nodes.add(new Text(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, sIndex))));
+					nodes.add(this.createText(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, sIndex))));
 				}
 				eIndex = m.end();
 				
@@ -92,11 +92,19 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			}
 			
 			if( this.text.length() > eIndex ) {
-				nodes.add(new Text(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, this.text.length()))));
+				nodes.add(this.createText(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, this.text.length()))));
 			}
 			this.getControl().getChildren().addAll(nodes);
 			this.getControl().applyCss();
 		}
+	}
+	
+	public Text createText(String value) {
+		Text text = new Text(value);
+		if( this.getFont() != null ) {
+			text.setFont(((JFXFont) this.getFont()).getHandle());
+		}
+		return text;
 	}
 	
 	public Hyperlink createHyperlink(final String text, final String value) {
@@ -107,10 +115,13 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 				JFXLinkLabel.this.fireEvent(value);
 			}
 		});
+		if( this.getFont() != null ) {
+			hyperLink.setFont(((JFXFont) this.getFont()).getHandle());
+		}
 		return hyperLink;
 	}
 	
-	public String computeWrappedText(FontMetrics fontMetrics, StringBuilder textBuffer, StringBuilder lineBuffer, String text) {
+	public String computeWrappedText(JFXFontMetrics fontMetrics, StringBuilder textBuffer, StringBuilder lineBuffer, String text) {
 		if( this.getWrapWidth() != null && text != null && !text.isEmpty() ) {
 			int start = (textBuffer.length() + lineBuffer.length());
 			
@@ -118,7 +129,7 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			String[] words = text.split(space);
 			for(String word : words) {
 				if( lineBuffer.length() > 0 ) {
-					if( fontMetrics.computeStringWidth(lineBuffer.toString() + space + word) > this.getWrapWidth() ) {
+					if( fontMetrics.getWidth(lineBuffer.toString() + space + word) > this.getWrapWidth() ) {
 						textBuffer.append(lineBuffer);
 						textBuffer.append("\r\n");
 						lineBuffer.setLength(0);

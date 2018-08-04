@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.layout.Region;
-
+import org.herac.tuxguitar.ui.jfx.resource.JFXFont;
+import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
 import org.herac.tuxguitar.ui.widget.UIWrapLabel;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
 
 public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
 	
@@ -40,7 +40,8 @@ public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
 		if( this.getWrapWidth() == null ) {
 			this.getControl().setText(this.text);
 		} else {
-			FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(this.getControl().getFont());
+			JFXFont font = (this.getFont() != null ? (JFXFont) this.getFont() : new JFXFont(Font.getDefault()));
+			JFXFontMetrics fontMetrics = font.getFontMetrics();
 			
 			StringBuffer text = new StringBuffer();
 			StringBuffer line = new StringBuffer();
@@ -48,7 +49,7 @@ public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
 			String[] words = this.text.split(space);
 			for(String word : words) {
 				if( line.length() > 0 ) {
-					if( fontMetrics.computeStringWidth(line.toString() + space + word) > this.getWrapWidth() ) {
+					if( fontMetrics.getWidth(line.toString() + space + word) > this.getWrapWidth() ) {
 						text.append(line);
 						text.append("\n");
 						line = new StringBuffer();

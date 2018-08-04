@@ -10,6 +10,8 @@ import org.herac.tuxguitar.ui.resource.UIFontModel;
 
 public class JFXFont extends JFXComponent<UIFontModel> implements UIFont {
 	
+	private JFXFontMetrics fontMetrics;
+	
 	public JFXFont(String name, float height, boolean bold, boolean italic){
 		super(new UIFontModel(JFXFont.checkName(name), height, bold, italic));
 	}
@@ -36,6 +38,13 @@ public class JFXFont extends JFXComponent<UIFontModel> implements UIFont {
 	
 	public boolean isItalic() {
 		return this.getControl().isItalic();
+	}
+	
+	public JFXFontMetrics getFontMetrics() {
+		if( this.fontMetrics == null ) {
+			this.fontMetrics = new JFXFontMetrics(this.getHandle());
+		}
+		return this.fontMetrics;
 	}
 	
 	public Font getHandle() {
