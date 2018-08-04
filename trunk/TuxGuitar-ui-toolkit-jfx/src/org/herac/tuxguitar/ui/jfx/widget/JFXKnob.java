@@ -125,7 +125,7 @@ public class JFXKnob extends JFXCanvas implements UIKnob, UIMouseDragListener, U
 		
 		// knob
 		float ovalSize = (Math.min(bounds.getWidth(), bounds.getHeight()) - MARGIN);
-		float x = (bounds.getWidth()  / 2f);
+		float x = (bounds.getWidth() / 2f);
 		float y = (bounds.getHeight() / 2f);
 		
 		// value

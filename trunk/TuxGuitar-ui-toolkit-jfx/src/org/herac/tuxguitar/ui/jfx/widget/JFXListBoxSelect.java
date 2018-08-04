@@ -1,18 +1,16 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.Region;
-import javafx.scene.text.Font;
-
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
+import javafx.geometry.Insets;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
 
 public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectItem<T>>> implements UIListBoxSelect<T> {
 	
@@ -22,7 +20,7 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 	private static final float DEFAULT_CELL_BOTTOM = 4f;
 	
 	private Insets cellPadding;
-	private FontMetrics cellFontMetrics;
+	private JFXFontMetrics cellFontMetrics;
 	private JFXSelectionListenerChangeManager<JFXListBoxSelectItem<T>> selectionListener;
 	
 	public JFXListBoxSelect(JFXContainer<? extends Region> parent) {
@@ -97,16 +95,16 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 	
 	public float computeCellWidth(JFXListBoxSelectItem<T> item) {
 		Insets insets = this.computeCellPadding();
-		FontMetrics fontMetrics = this.computeCellFontMetrics();
+		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
 		
-		return (float)(fontMetrics.computeStringWidth(item.toString()) + insets.getLeft() + insets.getRight());
+		return (float)(fontMetrics.getWidth(item.toString()) + insets.getLeft() + insets.getRight());
 	}
 	
 	public float computeCellHeight(JFXListBoxSelectItem<T> item) {
 		Insets insets = this.computeCellPadding();
-		FontMetrics fontMetrics = this.computeCellFontMetrics();
+		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
 		
-		return (float)(fontMetrics.getLineHeight() + insets.getTop() + insets.getBottom() + 2);
+		return (float)(fontMetrics.getHeight() + insets.getTop() + insets.getBottom() + 2);
 	}
 	
 	public Insets computeCellPadding() {
@@ -116,9 +114,9 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		return this.cellPadding;
 	}
 	
-	public FontMetrics computeCellFontMetrics() {
+	public JFXFontMetrics computeCellFontMetrics() {
 		if( this.cellFontMetrics == null ) {
-			this.cellFontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(Font.getDefault());
+			this.cellFontMetrics = new JFXFontMetrics(Font.getDefault());
 		}
 		return this.cellFontMetrics;
 	}

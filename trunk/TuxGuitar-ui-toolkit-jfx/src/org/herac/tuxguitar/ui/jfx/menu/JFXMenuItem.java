@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.ui.jfx.menu;
 
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.ImageView;
-
 import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
 
 public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> implements UIMenuItem {
 	
@@ -47,7 +47,7 @@ public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> impleme
 	public void setText(String text) {
 		String textWithAccelerator = text;
 		if( this.getKeyConvination() != null ) {
-			textWithAccelerator += "\t" + this.getKeyConvination().toString() + "\u0000";
+			textWithAccelerator += "\t\t" + this.getKeyConvination().toString() + "\u0000";
 		}
 		this.getControl().setText(textWithAccelerator);
 	}

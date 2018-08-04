@@ -6,9 +6,6 @@ import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -20,8 +17,7 @@ public class JFXPainter extends JFXComponent<GraphicsContext> implements UIPaint
 	private boolean antialias;
 	private boolean pathEmpty;
 	private int alpha;
-	private Font font;
-	private FontMetrics fontMetrics;
+	private JFXFont font;
 	private JFXColor background;
 	private JFXColor foreground;
 	
@@ -111,11 +107,9 @@ public class JFXPainter extends JFXComponent<GraphicsContext> implements UIPaint
 	}
 	
 	public void setFont(UIFont font) {
-		this.font = this.toFont(font);
-		if( this.font != null ) {
-			this.fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(this.font);
-		}
-		this.getControl().setFont(this.font);
+		this.font = (JFXFont) font;
+		
+		this.getControl().setFont(this.toFont(this.font));
 	}
 	
 	public void setForeground(UIColor color) {
@@ -159,35 +153,27 @@ public class JFXPainter extends JFXComponent<GraphicsContext> implements UIPaint
 	}
 	
 	public float getFontSize(){
-		return (this.font != null ? (float)this.font.getSize() : 0);
+		return (this.font != null ? (float)this.font.getHeight() : 0);
 	}
 	
 	public float getFMTopLine() {
-		return (((this.getFMAscent() + 1f) / 10f) * 8f);
+		return (this.font != null ? this.font.getFontMetrics().getTopLine() : 0);
 	}
 	
 	public float getFMMiddleLine(){
-		return ((this.getFMTopLine() - this.getFMBaseLine()) / 2f);
+		return (this.font != null ? this.font.getFontMetrics().getMiddleLine() : 0);
 	}
 	
 	public float getFMBaseLine() {
-		return (this.fontMetrics != null ? this.fontMetrics.getBaseline() : 0);
-	}
-	
-	public float getFMAscent() {
-		return (this.fontMetrics != null ? this.fontMetrics.getAscent() : 0);
-	}
-	
-	public float getFMDescent() {
-		return (this.fontMetrics != null ? this.fontMetrics.getDescent() : 0);
+		return (this.font != null ? this.font.getFontMetrics().getBaseLine() : 0);
 	}
 	
 	public float getFMHeight() {
-		return (this.fontMetrics != null ? this.fontMetrics.getLineHeight() : 0);
+		return (this.font != null ? this.font.getFontMetrics().getHeight() : 0);
 	}
 	
-	public float getFMWidth( String text ) {
-		return (this.fontMetrics != null ? this.fontMetrics.computeStringWidth(text) : 0);
+	public float getFMWidth(String text) {
+		return (this.font != null ? this.font.getFontMetrics().getWidth(text) : 0);
 	}
 	
 	public Image toImage(UIImage image){

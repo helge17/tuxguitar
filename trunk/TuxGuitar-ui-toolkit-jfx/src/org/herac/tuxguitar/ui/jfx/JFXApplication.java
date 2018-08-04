@@ -26,7 +26,7 @@ public class JFXApplication extends JFXComponent<JFXApplicationHandle> implement
 	}
 
 	public void openUrl(URL url) {
-		//TODO
+		this.getControl().getHostServices().showDocument(url.toExternalForm());
 	}
 	
 	public void runInUiThread(Runnable runnable) {
