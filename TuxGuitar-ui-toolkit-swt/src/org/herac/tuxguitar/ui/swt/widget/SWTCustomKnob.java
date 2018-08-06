@@ -22,8 +22,8 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 	private static final int DEFAULT_MAXIMUM = 100;
 	private static final int DEFAULT_MINIMUM = 0;
 	private static final int DEFAULT_INCREMENT = 1;
-	private static final int DEFAULT_PACKED_WIDTH = 32;
-	private static final int DEFAULT_PACKED_HEIGHT = 32;
+	private static final float DEFAULT_PACKED_WIDTH = 32f;
+	private static final float DEFAULT_PACKED_HEIGHT = 32f;
 	
 	private static final float MARGIN = 2;
 	
@@ -116,8 +116,8 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 		}
 	}
 	
-	public void computePackedSize() {
-		this.computePackedSize(DEFAULT_PACKED_WIDTH, DEFAULT_PACKED_HEIGHT);
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		super.computePackedSize(fixedWidth != null ? fixedWidth : DEFAULT_PACKED_WIDTH, fixedHeight != null ? fixedHeight : DEFAULT_PACKED_HEIGHT);
 	}
 	
 	public void invalidate() {

@@ -84,28 +84,42 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 	}
 	
 	public void computePackedSize() {
+		Float packedWidth = this.getLayoutAttribute(PACKED_WIDTH);
+		
+		this.computePackedSize(packedWidth, null);
+	}
+	
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
-			this.control.computePackedSize();
+			this.control.computePackedSize(fixedWidth, fixedHeight);
 			
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
+		if( fixedWidth != null ) {
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null ) {
+			packedSize.setHeight(fixedHeight);
+		}
 		
-		Float packedWidth = this.getLayoutAttribute(PACKED_WIDTH);
 		Float minimumPackedWidth = this.getLayoutAttribute(MINIMUM_PACKED_WIDTH);
 		Float maximumPackedWidth = this.getLayoutAttribute(MAXIMUM_PACKED_WIDTH);
 		
-		if( packedWidth != null ) {
-			packedSize.setWidth(packedWidth);
-		}
 		if( minimumPackedWidth != null && minimumPackedWidth > packedSize.getWidth()) {
 			packedSize.setWidth(minimumPackedWidth);
 		}
 		if( maximumPackedWidth != null && maximumPackedWidth < packedSize.getWidth()) {
 			packedSize.setWidth(maximumPackedWidth);
 		}
-		this.setPackedSize(packedSize);
+		
+		if( this.control != null ) {
+			UISize controlPackedSize = this.control.getPackedSize();
+			if( packedSize.getWidth() != controlPackedSize.getWidth() || packedSize.getHeight() != controlPackedSize.getHeight() ) {
+				this.control.computePackedSize(packedSize.getWidth(), packedSize.getHeight());
+			}
+		}
 	}
 	
 	public void setSize(int width, int height) {
@@ -148,12 +162,6 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			return this.control.getPackedSize();
 		}
 		return new UISize();
-	}
-
-	public void setPackedSize(UISize size) {
-		if( this.control != null ) {
-			this.control.setPackedSize(size);
-		}
 	}
 
 	public UIRectangle getBounds() {

@@ -3,6 +3,7 @@ package org.herac.tuxguitar.ui.swt.widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.swt.event.SWTPaintListenerManager;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 
@@ -16,8 +17,10 @@ public class SWTCanvas extends SWTControl<Composite> implements UICanvas {
 		this.selectionListener = new SWTPaintListenerManager(this);
 	}
 	
-	public void computePackedSize() {
-		this.setPackedSize(this.getPackedSize());
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		UISize size = this.getPackedSize();
+		
+		this.setPackedSize(new UISize(fixedWidth != null ? fixedWidth : size.getWidth(), fixedHeight != null ? fixedHeight : size.getHeight()));
 	}
 	
 	public void addPaintListener(UIPaintListener listener) {

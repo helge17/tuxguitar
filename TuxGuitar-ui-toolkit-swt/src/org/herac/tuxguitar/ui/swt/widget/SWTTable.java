@@ -161,10 +161,10 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 		return this.getControl().getItemCount();
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.adjustColumnsWidth();
 		
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 	
 	public void adjustColumnsWidth() {

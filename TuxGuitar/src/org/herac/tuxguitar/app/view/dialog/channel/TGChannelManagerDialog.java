@@ -97,7 +97,7 @@ public class TGChannelManagerDialog implements TGEventListener {
 			}
 		});
 		
-		this.dialog.computePackedSize();
+		this.dialog.computePackedSize(null, null);
 		this.dialog.layout(new UIRectangle(this.createPreferredSize(this.dialog.getPackedSize())));
 		
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER);

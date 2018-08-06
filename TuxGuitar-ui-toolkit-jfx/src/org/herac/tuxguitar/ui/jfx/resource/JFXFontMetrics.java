@@ -1,10 +1,12 @@
 package org.herac.tuxguitar.ui.jfx.resource;
 
+import javafx.geometry.Bounds;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class JFXFontMetrics {
-
+	
+	private static final String TEXT = "1234567890";
 	private Text text;
 	
 	public JFXFontMetrics(Font font) {
@@ -25,20 +27,24 @@ public class JFXFontMetrics {
 	}
 	
 	public float getAscent() {
-		return (float) -this.text.getLayoutBounds().getMinY();
+		return (float) -this.getLayoutBounds(TEXT).getMinY();
 	}
 	
 	public float getDescent() {
-		return (float) this.text.getLayoutBounds().getMaxY();
+		return (float) this.getLayoutBounds(TEXT).getMaxY();
 	}
 	
 	public float getHeight() {
-		return (float) this.text.getLayoutBounds().getHeight();
+		return (float) this.getLayoutBounds(TEXT).getHeight();
 	}
 	
-	public float getWidth( String text ) {
+	public float getWidth(String text) {
+		return (float) this.getLayoutBounds(text).getWidth();
+	}
+	
+	public Bounds getLayoutBounds(String text) {
 		this.text.setText(text);
 		
-		return (float) this.text.getLayoutBounds().getWidth();
+		return this.text.getLayoutBounds();
 	}
 }

@@ -10,7 +10,7 @@ public class SWTText extends SWTControl<Text> {
 	public SWTText(SWTContainer<? extends Composite> parent, int style) {
 		super(new Text(parent.getControl(), SWT.BORDER  | style), parent);
 		
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 	}
 
 	public String getText() {
@@ -33,10 +33,18 @@ public class SWTText extends SWTControl<Text> {
 		this.getControl().setTextLimit(limit);
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = this.getPackedSize();
 		if( packedSize.getWidth() == 0f && packedSize.getHeight() == 0f ) {
-			super.computePackedSize();
+			super.computePackedSize(fixedWidth, fixedHeight);
+		} else {
+			if( fixedWidth != null && fixedWidth != packedSize.getWidth() ) {
+				packedSize.setWidth(fixedWidth);
+			}
+			if( fixedHeight != null && fixedHeight != packedSize.getHeight() ) {
+				packedSize.setHeight(fixedHeight);
+			}
+			this.setPackedSize(packedSize);
 		}
 	}
 }

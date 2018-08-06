@@ -2,6 +2,7 @@ package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.qt.event.QTPaintListenerManager;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.qtjambi.qt.core.QEvent.Type;
 import org.qtjambi.qt.gui.QPaintDeviceInterface;
@@ -22,6 +23,17 @@ public class QTCanvas extends QTWidget<QFrame> implements UICanvas {
 	
 	public QPaintDeviceInterface getPaintDeviceInterface() {
 		return this.getControl();
+	}
+	
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		UISize packedSize = this.getPackedSize();
+		if( fixedWidth != null ) {
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null ) {
+			packedSize.setHeight(fixedHeight);
+		}
+		this.setPackedSize(packedSize);
 	}
 	
 	public void addPaintListener(UIPaintListener listener) {

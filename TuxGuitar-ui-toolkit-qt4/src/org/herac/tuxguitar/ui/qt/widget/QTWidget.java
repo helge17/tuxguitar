@@ -148,7 +148,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		return new UISize(this.packedSize.getWidth(), this.packedSize.getHeight());
 	}
 
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		QSize qSize = this.getControl().sizeHint();
 		
 		this.packedSize.setWidth(qSize.width());

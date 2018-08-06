@@ -221,13 +221,13 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	}
 	
 	@Override
-	public void computePackedSize() {
-		super.computePackedSize();
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		super.computePackedSize(null, null);
 		
 		UIInset margin = this.getMargin();
 		UISize packedSize = this.getPackedSize();
-		packedSize.setWidth(packedSize.getWidth() + margin.getLeft() + margin.getRight());
-		packedSize.setHeight(packedSize.getHeight() + margin.getTop() + margin.getBottom());
+		packedSize.setWidth(fixedWidth != null ? fixedWidth : packedSize.getWidth() + margin.getLeft() + margin.getRight());
+		packedSize.setHeight(fixedHeight != null ? fixedHeight : packedSize.getHeight() + margin.getTop() + margin.getBottom());
 		this.setPackedSize(packedSize);
 	}
 	

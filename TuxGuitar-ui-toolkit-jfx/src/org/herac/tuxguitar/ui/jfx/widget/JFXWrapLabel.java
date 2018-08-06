@@ -67,9 +67,9 @@ public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
 		}
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.computeWrappedText();
 		
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 }

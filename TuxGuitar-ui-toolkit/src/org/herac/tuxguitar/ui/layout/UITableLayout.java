@@ -40,13 +40,6 @@ public class UITableLayout extends UIAbstractLayout {
 	public static final Integer ALIGN_RIGHT = ALIGN_ENDING;
 	public static final Integer ALIGN_BOTTOM = ALIGN_ENDING;
 	
-	public static final String PACKED_WIDTH = "packed_width";
-	public static final String PACKED_HEIGHT = "packed_height";
-	public static final String MINIMUM_PACKED_WIDTH = "minimum_packed_width";
-	public static final String MINIMUM_PACKED_HEIGHT = "minimum_packed_height";
-	public static final String MAXIMUM_PACKED_WIDTH = "maximum_packed_width";
-	public static final String MAXIMUM_PACKED_HEIGHT = "maximum_packed_height";
-	
 	public static final String IGNORE_INVISIBLE = "ignore_invisible";
 	
 	private List<UITableCellSize> xSizes;
@@ -84,13 +77,13 @@ public class UITableLayout extends UIAbstractLayout {
 		this.set(control, row, col, alignX, alignY, fillX, fillY, 1, 1);
 	}
 	
-	public UISize computePackedSize(UILayoutContainer container) {
+	public UISize getComputedPackedSize(UILayoutContainer container) {
 		this.xSizes.clear();
 		this.ySizes.clear();
 		
 		for(UIControl control : container.getChildren()) {
 			if(!(control instanceof UIWindow)) {
-				UISize packedSize = this.getPreferredSizeFor(control);
+				UISize packedSize = this.getPreferredControlSize(control);
 				
 				List<UITableCellSize> xRange = this.getSizes(this.xSizes, control, COL, COL_SPAN);
 				List<UITableCellSize> yRange = this.getSizes(this.ySizes, control, ROW, ROW_SPAN);
@@ -198,7 +191,7 @@ public class UITableLayout extends UIAbstractLayout {
 	
 	public UIRectangle getAlignedArea(UIControl control, UIRectangle cellArea) {
 		UIRectangle bounds = new UIRectangle();
-		UISize packedSize = this.getPreferredSizeFor(control);
+		UISize packedSize = this.getPreferredControlSize(control);
 		if( cellArea.getWidth() > packedSize.getWidth() ) {
 			Integer alignX = this.get(control, ALIGN_X, ALIGN_CENTER);
 			if( ALIGN_FILL.equals(alignX) ) {
@@ -248,7 +241,7 @@ public class UITableLayout extends UIAbstractLayout {
 		return bounds;
 	}
 	
-	public UISize getPreferredSizeFor(UIControl control) {
+	public UISize getPreferredControlSize(UIControl control) {
 		if(!control.isVisible() ) {
 			Boolean ignoreInvisibleDefault = this.get(IGNORE_INVISIBLE);
 			Boolean ignoreInvisible = this.get(control, IGNORE_INVISIBLE, ignoreInvisibleDefault);
@@ -256,35 +249,7 @@ public class UITableLayout extends UIAbstractLayout {
 				return new UISize(0f, 0f);
 			}
 		}
-		
-		Float packedWidth = this.get(control, PACKED_WIDTH);
-		Float packedHeight = this.get(control, PACKED_HEIGHT);
-		Float minimumPackedWidth = this.get(control, MINIMUM_PACKED_WIDTH);
-		Float minimumPackedHeight = this.get(control, MINIMUM_PACKED_HEIGHT);
-		Float maximumPackedWidth = this.get(control, MAXIMUM_PACKED_WIDTH);
-		Float maximumPackedHeight = this.get(control, MAXIMUM_PACKED_HEIGHT);
-		
-		UISize packedSize = control.getPackedSize();
-		UISize preferredSize = new UISize(packedSize.getWidth(), packedSize.getHeight());
-		if( packedWidth != null ) {
-			preferredSize.setWidth(packedWidth);
-		}
-		if( packedHeight != null ) {
-			preferredSize.setHeight(packedHeight);
-		}
-		if( minimumPackedWidth != null && minimumPackedWidth > preferredSize.getWidth()) {
-			preferredSize.setWidth(minimumPackedWidth);
-		}
-		if( minimumPackedHeight != null && minimumPackedHeight > preferredSize.getHeight()) {
-			preferredSize.setHeight(minimumPackedHeight);
-		}
-		if( maximumPackedWidth != null && maximumPackedWidth < preferredSize.getWidth()) {
-			preferredSize.setWidth(maximumPackedWidth);
-		}
-		if( maximumPackedHeight != null && maximumPackedHeight < preferredSize.getHeight()) {
-			preferredSize.setHeight(maximumPackedHeight);
-		}
-		return preferredSize;
+		return super.getPreferredControlSize(control);
 	}
 	
 	public void updateSizes(List<UITableCellSize> sizes, float excessSize) {

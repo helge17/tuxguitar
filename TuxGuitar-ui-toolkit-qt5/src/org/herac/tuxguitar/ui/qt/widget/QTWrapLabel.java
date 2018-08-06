@@ -19,10 +19,10 @@ public class QTWrapLabel extends QTLabel implements UIWrapLabel {
 		this.wrapWidth = wrapWidth;
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.getControl().setWordWrap(false);
 		
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 		
 		UISize packedSize = this.getPackedSize();
 		if( this.getWrapWidth() != null && packedSize.getWidth() > this.getWrapWidth() ) {

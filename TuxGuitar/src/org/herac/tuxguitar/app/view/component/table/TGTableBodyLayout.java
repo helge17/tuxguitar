@@ -3,7 +3,6 @@ package org.herac.tuxguitar.app.view.component.table;
 import java.util.List;
 
 import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 
@@ -15,7 +14,9 @@ public class TGTableBodyLayout extends UITableLayout {
 		super(0f);
 	}
 	
-	public UISize computePackedSize(UILayoutContainer container) {
+	public void computeChildrenPackedSize(UILayoutContainer container) {
+		super.computeChildrenPackedSize(container);
+		
 		this.rowHeight = 0f;
 		
 		List<UIControl> controls = container.getChildren();
@@ -29,9 +30,8 @@ public class TGTableBodyLayout extends UITableLayout {
 			this.set(control, UITableLayout.PACKED_HEIGHT, this.rowHeight);
 			this.set(control, UITableLayout.MARGIN, 0f);
 			this.set(control, UITableLayout.MARGIN_TOP, 1f);
+			this.computeChildPackedSize(control);
 		}
-		
-		return super.computePackedSize(container);
 	}
 	
 	public float getRowHeight() {

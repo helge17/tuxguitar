@@ -71,7 +71,7 @@ public class QTListBoxSelect<T> extends QTWidget<QListWidget> implements UIListB
 	}
 	
 	@Override
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		QContentsMargins margins = this.getControl().getContentsMargins();
 		
 		float width = (margins.left + margins.right);
@@ -87,6 +87,12 @@ public class QTListBoxSelect<T> extends QTWidget<QListWidget> implements UIListB
 		QScrollBar vScroll = this.getControl().verticalScrollBar();
 		if( vScroll != null && vScroll.isEnabled()) {
 			width += vScroll.sizeHint().width();
+		}
+		if( fixedWidth != null && fixedWidth != width ) {
+			width = fixedWidth;
+		}
+		if( fixedHeight != null && fixedHeight != height ) {
+			height = fixedHeight;
 		}
 		this.setPackedSize(new UISize(width, height));
 	}

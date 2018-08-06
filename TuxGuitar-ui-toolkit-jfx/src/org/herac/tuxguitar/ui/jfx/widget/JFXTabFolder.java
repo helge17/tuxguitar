@@ -140,14 +140,22 @@ public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
 		}
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		for(UIControl uiControl : this.getTabs()) {
-			uiControl.computePackedSize();
+			uiControl.computePackedSize(null, null);
 		}
 		
 		UISize packedSize = this.getPackedSize();
 		if( packedSize.getWidth() == 0f && packedSize.getHeight() == 0f ) {
-			super.computePackedSize();
+			super.computePackedSize(fixedWidth, fixedHeight);
+		} else {
+			if( fixedWidth != null && fixedWidth != packedSize.getWidth() ) {
+				packedSize.setWidth(fixedWidth);
+			}
+			if( fixedHeight != null && fixedHeight != packedSize.getHeight() ) {
+				packedSize.setHeight(fixedHeight);
+			}
+			this.setPackedSize(packedSize);
 		}
 	}
 }

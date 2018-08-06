@@ -144,18 +144,18 @@ public class JFXToolBar extends JFXControl<ToolBar> implements JFXContainer<Tool
 		
 		int position = 1;
 		for(UIControl uiControl : this.getChildren()) {
-			uiControl.computePackedSize();
+			uiControl.computePackedSize(null, null);
 			
 			this.layout.set(uiControl, UITableLayout.ROW, (Orientation.HORIZONTAL.equals(orientation) ? 1 : position ++));
 			this.layout.set(uiControl, UITableLayout.COL, (Orientation.VERTICAL.equals(orientation) ? 1 : position ++));
 		}
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.computeLayoutPositions();
 		
 		for(UIControl uiControl : this.getChildren()) {
-			uiControl.computePackedSize();
+			uiControl.computePackedSize(null, null);
 		}
 		
 		Insets padding = this.getPadding();
@@ -163,8 +163,8 @@ public class JFXToolBar extends JFXControl<ToolBar> implements JFXContainer<Tool
 		UISize packedSize = new UISize();
 		UISize packedContentSize = this.layout.computePackedSize(this);
 		
-		packedSize.setWidth((float) (padding.getLeft() + padding.getRight() + packedContentSize.getWidth()));
-		packedSize.setHeight((float) (padding.getTop() + padding.getBottom() + packedContentSize.getHeight()));
+		packedSize.setWidth(fixedWidth != null ? fixedWidth : (float) (padding.getLeft() + padding.getRight() + packedContentSize.getWidth()));
+		packedSize.setHeight(fixedHeight != null ? fixedHeight : (float) (padding.getTop() + padding.getBottom() + packedContentSize.getHeight()));
 		
 		this.setPackedSize(packedSize);
 		this.setPackedContentSize(packedContentSize);
@@ -188,12 +188,12 @@ public class JFXToolBar extends JFXControl<ToolBar> implements JFXContainer<Tool
 	}
 
 	public void layout(UIRectangle bounds) {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
 
 	public void pack() {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(new UIRectangle(this.getBounds().getPosition(), this.getPackedSize()));
 	}
 

@@ -37,7 +37,7 @@ public class TGWindowLayout extends UITableLayout {
 	public void setBounds(UILayoutContainer container, UIRectangle bounds) {
 		UISize packedContentSize = container.getPackedContentSize();
 		if( packedContentSize.getHeight() > bounds.getHeight() ) {
-			UISize preferredSize = this.getPreferredSizeFor(this.bottomContainer);
+			UISize preferredSize = this.getPreferredControlSize(this.bottomContainer);
 			this.set(this.bottomContainer, MAXIMUM_PACKED_HEIGHT, (preferredSize.getHeight() - (packedContentSize.getHeight() - bounds.getHeight())));
 			this.computePackedSize(container, false);
 		}

@@ -682,7 +682,7 @@ public class TGFretBoard {
 	
 	public void computePackedSize() {
 		this.control.getLayout().set(this.fretBoardComposite, UITableLayout.PACKED_HEIGHT, Float.valueOf(((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
-		this.control.computePackedSize();
+		this.control.computePackedSize(null, null);
 	}
 	
 	public void layout(float width){

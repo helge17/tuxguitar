@@ -14,7 +14,7 @@ public class JFXTextArea extends JFXEditableTextControl<TextArea> implements UIT
 		super(new TextArea(), parent);
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		if( this.getControl().getPrefWidth() == Region.USE_COMPUTED_SIZE ) {
 			this.getControl().setPrefWidth(DEFAULT_WIDTH);
 		}
@@ -22,6 +22,6 @@ public class JFXTextArea extends JFXEditableTextControl<TextArea> implements UIT
 			this.getControl().setPrefHeight(DEFAULT_HEIGHT);
 		}
 		
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 }

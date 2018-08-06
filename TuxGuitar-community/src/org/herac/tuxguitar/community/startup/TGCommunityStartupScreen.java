@@ -75,7 +75,7 @@ public class TGCommunityStartupScreen {
 		addTipComment(uiFactory, top, 2, 2, TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.tip-1"), WRAP_WIDTH);
 		addTipComment(uiFactory, top, 3, 2, TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.tip-2"), WRAP_WIDTH);
 		
-		top.computePackedSize();
+		top.computePackedSize(null, null);
 		//==============================================================//
 		
 		UITableLayout bottomLayout = new UITableLayout();

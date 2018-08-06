@@ -127,17 +127,17 @@ public class QTToolBar extends QTAbstractContainer<QToolBar> implements QTContai
 	}
 
 	public void layout(UIRectangle bounds) {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.computeIconSize();
 		
 		for(UIControl uiControl : this.getChildren()) {
-			uiControl.computePackedSize();
+			uiControl.computePackedSize(null, null);
 		}
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 
 	public void computeIconSize() {
