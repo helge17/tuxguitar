@@ -117,14 +117,13 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		return new UISize(this.packedSize.getWidth(), this.packedSize.getHeight());
 	}
 
-	public void computePackedSize(int wHint, int hHint) {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		int wHint = (fixedWidth != null ? fixedWidth.intValue() : SWT.DEFAULT);
+		int hHint = (fixedHeight != null ? fixedHeight.intValue() : SWT.DEFAULT);
+		
 		Point point = this.getControl().computeSize(wHint, hHint);
-		this.packedSize.setWidth(point.x);
-		this.packedSize.setHeight(point.y);
-	}
-
-	public void computePackedSize() {		
-		this.computePackedSize(SWT.DEFAULT, SWT.DEFAULT);
+		this.packedSize.setWidth(fixedWidth != null ? fixedWidth.intValue() : point.x);
+		this.packedSize.setHeight(fixedHeight != null ? fixedHeight.intValue() : point.y);
 	}
 
 	public void dispose() {

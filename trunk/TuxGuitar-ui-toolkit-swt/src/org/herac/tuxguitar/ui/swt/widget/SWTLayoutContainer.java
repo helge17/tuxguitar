@@ -65,18 +65,27 @@ public abstract class SWTLayoutContainer<T extends Composite> extends SWTControl
 		return new UIRectangle(area.x, area.y, area.width, area.height);
 	}
 
-	public void computePackedSize() {
-		for(UIControl uiControl : this.getChildren()) {
-			uiControl.computePackedSize();
-		}
-		
-		if( this.layout != null ) {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		if( this.layout != null ) {			
 			UISize packedContentSize = this.layout.computePackedSize(this);
 			Rectangle trim = this.getControl().computeTrim(0, 0, Math.round(packedContentSize.getWidth()), Math.round(packedContentSize.getHeight()));
 			
 			this.setPackedSize(new UISize(trim.width, trim.height));
 			this.setPackedContentSize(packedContentSize);
+		} else {
+			for(UIControl uiControl : this.getChildren()) {
+				uiControl.computePackedSize(null, null);
+			}
 		}
+		
+		UISize packedSize = this.getPackedSize();
+		if( fixedWidth != null && fixedWidth != packedSize.getWidth() ) {
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null && fixedHeight != packedSize.getHeight() ) {
+			packedSize.setHeight(fixedHeight);
+		}
+		this.setPackedSize(packedSize);
 	}
 
 	public void setBounds(UIRectangle bounds) {
@@ -97,12 +106,12 @@ public abstract class SWTLayoutContainer<T extends Composite> extends SWTControl
 	}
 
 	public void layout(UIRectangle bounds) {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
 
 	public void pack() {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(new UIRectangle(this.getBounds().getPosition(), this.getPackedSize()));
 	}
 }

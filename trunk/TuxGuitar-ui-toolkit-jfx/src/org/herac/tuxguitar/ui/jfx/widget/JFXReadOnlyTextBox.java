@@ -16,7 +16,7 @@ public class JFXReadOnlyTextBox extends JFXTextControl<TextArea> implements UIRe
 		this.getControl().setEditable(false);
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		if( this.getControl().getPrefWidth() == Region.USE_COMPUTED_SIZE ) {
 			this.getControl().setPrefWidth(DEFAULT_WIDTH);
 		}
@@ -24,7 +24,7 @@ public class JFXReadOnlyTextBox extends JFXTextControl<TextArea> implements UIRe
 			this.getControl().setPrefHeight(DEFAULT_HEIGHT);
 		}
 		
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 }
 

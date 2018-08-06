@@ -15,7 +15,7 @@ public class JFXDivider extends JFXRegion<Pane> implements UIDivider {
 	}
 	
 	@Override
-	public void computePackedSize() {
-		this.setPackedSize(new UISize(DEFAULT_PACKED_SIZE, DEFAULT_PACKED_SIZE));
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		this.setPackedSize(new UISize(fixedWidth != null ? fixedWidth : DEFAULT_PACKED_SIZE, fixedHeight != null ? fixedHeight : DEFAULT_PACKED_SIZE));
 	}
 }

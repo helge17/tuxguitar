@@ -24,8 +24,8 @@ public class SWTCustomScale extends SWTControl<Composite> implements UIScale, UI
 	private static final int DEFAULT_MAXIMUM = 100;
 	private static final int DEFAULT_MINIMUM = 0;
 	private static final int DEFAULT_INCREMENT = 1;
-	private static final int DEFAULT_PACKED_WIDTH = 32;
-	private static final int DEFAULT_PACKED_HEIGHT = 32;
+	private static final float DEFAULT_PACKED_WIDTH = 32f;
+	private static final float DEFAULT_PACKED_HEIGHT = 32f;
 	
 	private static final float MARGIN = 12;
 	private static final float TRACK_WIDTH = 8;
@@ -124,8 +124,8 @@ public class SWTCustomScale extends SWTControl<Composite> implements UIScale, UI
 		}
 	}
 	
-	public void computePackedSize() {
-		this.computePackedSize(DEFAULT_PACKED_WIDTH, DEFAULT_PACKED_HEIGHT);
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		super.computePackedSize(fixedWidth != null ? fixedWidth : DEFAULT_PACKED_WIDTH, fixedHeight != null ? fixedHeight : DEFAULT_PACKED_HEIGHT);
 	}
 	
 	public void invalidate() {

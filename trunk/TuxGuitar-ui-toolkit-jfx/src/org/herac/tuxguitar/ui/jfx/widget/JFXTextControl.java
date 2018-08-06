@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.jfx.property.JFXFontProperty;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UISize;
+
+import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.Region;
 
 public class JFXTextControl<T extends TextInputControl> extends JFXControl<T> {
 	
@@ -15,7 +15,7 @@ public class JFXTextControl<T extends TextInputControl> extends JFXControl<T> {
 		super(control, parent);
 		
 		this.fontProperty = new JFXFontProperty(this.getControl().fontProperty());
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 	}
 	
 	public UIFont getFont() {
@@ -43,10 +43,18 @@ public class JFXTextControl<T extends TextInputControl> extends JFXControl<T> {
 		this.getControl().appendText(text);
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = this.getPackedSize();
 		if( packedSize.getWidth() == 0f && packedSize.getHeight() == 0f ) {
-			super.computePackedSize();
+			super.computePackedSize(fixedWidth, fixedHeight);
+		} else {
+			if( fixedWidth != null && fixedWidth != packedSize.getWidth() ) {
+				packedSize.setWidth(fixedWidth);
+			}
+			if( fixedHeight != null && fixedHeight != packedSize.getHeight() ) {
+				packedSize.setHeight(fixedHeight);
+			}
+			this.setPackedSize(packedSize);
 		}
 	}
 }

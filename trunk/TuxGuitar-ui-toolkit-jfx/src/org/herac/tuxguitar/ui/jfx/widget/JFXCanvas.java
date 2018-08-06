@@ -8,6 +8,7 @@ import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
 import org.herac.tuxguitar.ui.jfx.resource.JFXPainter;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 
 import javafx.scene.canvas.Canvas;
@@ -51,8 +52,15 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 		this.redraw();
 	}
 	
-	public void computePackedSize() {
-		this.setPackedSize(this.getPackedSize());
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		UISize packedSize = this.getPackedSize();
+		if( fixedWidth != null ) {
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null ) {
+			packedSize.setHeight(fixedHeight);
+		}
+		this.setPackedSize(packedSize);
 	}
 	
 	public void redraw() {

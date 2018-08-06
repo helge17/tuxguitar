@@ -43,7 +43,6 @@ public class TGScaleDialog {
 		}
 		keys.setSelectedValue(scaleManager.getSelectionKey());
 		compositeLayout.set(keys, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-		compositeLayout.set(keys, UITableLayout.PACKED_WIDTH, 50f);
 		compositeLayout.set(keys, UITableLayout.PACKED_HEIGHT, 200f);
 		
 		final UIListBoxSelect<Integer> scales = uiFactory.createListBoxSelect(composite);

@@ -116,8 +116,8 @@ public class JFXKnob extends JFXCanvas implements UIKnob, UIMouseDragListener, U
 		}
 	}
 	
-	public void computePackedSize() {
-		this.setPackedSize(new UISize(DEFAULT_PACKED_WIDTH, DEFAULT_PACKED_HEIGHT));
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		this.setPackedSize(new UISize(fixedWidth != null ? fixedWidth : DEFAULT_PACKED_WIDTH, fixedHeight != null ? fixedHeight : DEFAULT_PACKED_HEIGHT));
 	}
 	
 	public void onPaint(UIPaintEvent event) {

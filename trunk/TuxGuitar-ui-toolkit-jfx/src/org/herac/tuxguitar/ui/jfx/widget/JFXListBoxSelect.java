@@ -8,9 +8,10 @@ import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Font;
 
 public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectItem<T>>> implements UIListBoxSelect<T> {
 	
@@ -20,6 +21,7 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 	private static final float DEFAULT_CELL_BOTTOM = 4f;
 	
 	private Insets cellPadding;
+	private Float scrollWidth;
 	private JFXFontMetrics cellFontMetrics;
 	private JFXSelectionListenerChangeManager<JFXListBoxSelectItem<T>> selectionListener;
 	
@@ -77,7 +79,7 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		return this.getControl().getItems().size();
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedContentSize = new UISize();
 		for(JFXListBoxSelectItem<T> selectItem : this.getControl().getItems()) {
 			packedContentSize.setWidth(Math.max(packedContentSize.getWidth(), this.computeCellWidth(selectItem)));
@@ -90,6 +92,18 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		packedSize.setWidth(packedContentSize.getWidth() + (float)(padding.getLeft() + padding.getRight()));
 		packedSize.setHeight(packedContentSize.getHeight() + (float)(padding.getTop() + padding.getBottom()));
 		
+		if( fixedWidth != null ) {
+			if( fixedHeight == null && packedSize.getWidth() > fixedWidth ) {
+				packedSize.setHeight(packedSize.getHeight() + this.getScrollWidth());
+			}
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null ) {
+			if( fixedWidth == null && packedSize.getHeight() > fixedHeight ) {
+				packedSize.setWidth(packedSize.getWidth() + this.getScrollWidth());
+			}
+			packedSize.setHeight(fixedHeight);
+		}
 		this.setPackedSize(packedSize);
 	}
 	
@@ -104,7 +118,7 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		Insets insets = this.computeCellPadding();
 		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
 		
-		return (float)(fontMetrics.getHeight() + insets.getTop() + insets.getBottom() + 2);
+		return (float)(fontMetrics.getHeight() + insets.getTop() + insets.getBottom() + 1f);
 	}
 	
 	public Insets computeCellPadding() {
@@ -114,9 +128,24 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		return this.cellPadding;
 	}
 	
+	public Float getScrollWidth() {
+		if( this.scrollWidth == null ) {
+			ScrollBar scrollBar = new ScrollBar();
+			scrollBar.setManaged(false);
+			scrollBar.applyCss();
+			
+			this.scrollWidth = Double.valueOf(scrollBar.getWidth()).floatValue();
+		}
+		return this.scrollWidth;
+	}
+	
 	public JFXFontMetrics computeCellFontMetrics() {
 		if( this.cellFontMetrics == null ) {
-			this.cellFontMetrics = new JFXFontMetrics(Font.getDefault());
+			ListCell<T> listCell = new ListCell<T>();
+			listCell.setManaged(false);
+			listCell.applyCss();
+			
+			this.cellFontMetrics = new JFXFontMetrics(listCell.getFont());
 		}
 		return this.cellFontMetrics;
 	}

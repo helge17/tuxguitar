@@ -66,15 +66,15 @@ public class JFXScrollBarPanel extends JFXPanel implements UIScrollBarPanel {
 	}
 	
 	@Override
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		if( this.vScrollBar != null ) {
-			this.vScrollBar.computePackedSize();
+			this.vScrollBar.computePackedSize(null, null);
 		}
 		if( this.hScrollBar != null ) {
-			this.hScrollBar.computePackedSize();
+			this.hScrollBar.computePackedSize(null, null);
 		}
 		
-		super.computePackedSize();
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 	
 	@Override

@@ -13,7 +13,7 @@ public class QTKnob extends QTAbstractSlider<QDial> implements UIKnob {
 		super(new QDial(parent.getContainerControl()), parent);
 	}
 	
-	public void computePackedSize() {
-		this.setPackedSize(new UISize(FIXED_SIZE, FIXED_SIZE));
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		this.setPackedSize(new UISize(fixedWidth != null ? fixedWidth : FIXED_SIZE, fixedHeight != null ? fixedHeight : FIXED_SIZE));
 	}
 }

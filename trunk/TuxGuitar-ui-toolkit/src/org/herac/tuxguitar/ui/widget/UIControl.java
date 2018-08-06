@@ -34,12 +34,10 @@ public interface UIControl extends UIComponent {
 	boolean isVisible();
 
 	void setVisible(boolean visible);
-
-	void computePackedSize();
+	
+	void computePackedSize(Float fixedWidth, Float fixedHeight);
 	
 	UISize getPackedSize();
-	
-	void setPackedSize(UISize size);
 	
 	UIRectangle getBounds();
 

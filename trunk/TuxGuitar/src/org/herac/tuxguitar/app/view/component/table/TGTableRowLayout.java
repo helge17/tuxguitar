@@ -14,7 +14,7 @@ public class TGTableRowLayout extends UIAbstractLayout {
 		this.row = row;
 	}
 	
-	public UISize computePackedSize(UILayoutContainer container) {
+	public UISize getComputedPackedSize(UILayoutContainer container) {
 		float minimumHeight = 0;
 		for(UIControl control : container.getChildren()) {
 			minimumHeight = Math.max(minimumHeight, control.getPackedSize().getHeight());

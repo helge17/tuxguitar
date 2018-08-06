@@ -25,7 +25,7 @@ public class UIScrollBarPanelLayout extends UIAbstractLayout {
 		this.set(DYNAMIC_PACKED_HEIGHT, dynamicPackedHeight);
 	}
 	
-	public UISize computePackedSize(UILayoutContainer container) {
+	public UISize getComputedPackedSize(UILayoutContainer container) {
 		UISize packedSize = new UISize();
 		UISize packedContentSize = this.getPackedContentSize(container);
 		if(!Boolean.TRUE.equals(this.get(DYNAMIC_PACKED_WIDTH))) {

@@ -70,18 +70,18 @@ public class QTToolCustomItem extends QTToolItem<QWidget> implements QTContainer
 		return children;
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = new UISize();
+		
+		Float packedWidth = (fixedWidth != null ? fixedWidth : (Float) this.getLayoutAttribute(PACKED_WIDTH));
+		Float minimumPackedWidth = this.getLayoutAttribute(MINIMUM_PACKED_WIDTH);
+		Float maximumPackedWidth = this.getLayoutAttribute(MAXIMUM_PACKED_WIDTH);
 		if( this.control != null ) {
-			this.control.computePackedSize();
+			this.control.computePackedSize(packedWidth, fixedHeight);
 			
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
-		
-		Float packedWidth = this.getLayoutAttribute(PACKED_WIDTH);
-		Float minimumPackedWidth = this.getLayoutAttribute(MINIMUM_PACKED_WIDTH);
-		Float maximumPackedWidth = this.getLayoutAttribute(MAXIMUM_PACKED_WIDTH);
 		
 		if( packedWidth != null ) {
 			packedSize.setWidth(packedWidth);
@@ -92,6 +92,10 @@ public class QTToolCustomItem extends QTToolItem<QWidget> implements QTContainer
 		if( maximumPackedWidth != null && maximumPackedWidth < packedSize.getWidth()) {
 			packedSize.setWidth(maximumPackedWidth);
 		}
+		if( fixedHeight != null ) {
+			packedSize.setHeight(fixedHeight);
+		}
+		
 		this.setPackedSize(packedSize);
 	}
 	

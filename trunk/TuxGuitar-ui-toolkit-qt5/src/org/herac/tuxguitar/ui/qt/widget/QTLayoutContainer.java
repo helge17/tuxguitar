@@ -92,19 +92,28 @@ public abstract class QTLayoutContainer<T extends QWidget> extends QTAbstractCon
 		this.setContainerChildMargins(this.getContainerControl().contentsMargins());
 	}
 	
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.computeMargins();
-		
-		for(UIControl uiControl : this.getChildren()) {
-			uiControl.computePackedSize();
-		}
 		
 		if( this.layout != null ) {
 			UISize packedContentSize = this.layout.computePackedSize(this);
 			
 			this.setPackedContentSize(packedContentSize);
 			this.computePackedSizeFor(packedContentSize);
+		} else {
+			for(UIControl uiControl : this.getChildren()) {
+				uiControl.computePackedSize(null, null);
+			}
 		}
+		
+		UISize packedSize = this.getPackedSize();
+		if( fixedWidth != null && fixedWidth != packedSize.getWidth() ) {
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null && fixedHeight != packedSize.getHeight() ) {
+			packedSize.setHeight(fixedHeight);
+		}
+		this.setPackedSize(packedSize);
 	}
 	
 	public void computePackedSizeFor(UISize packedContentSize) {
@@ -138,12 +147,12 @@ public abstract class QTLayoutContainer<T extends QWidget> extends QTAbstractCon
 	}
 
 	public void layout(UIRectangle bounds) {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
 
 	public void pack() {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(new UIRectangle(this.getBounds().getPosition(), this.getPackedSize()));
 	}
 }

@@ -35,11 +35,11 @@ public class SWTLinkLabel extends SWTControl<Link> implements UILinkLabel {
 		this.wrapWidth = wrapWidth;
 	}
 	
-	public void computePackedSize() {
-		super.computePackedSize();
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		super.computePackedSize(fixedWidth, fixedHeight);
 		
 		if( this.getWrapWidth() != null && this.getPackedSize().getWidth() > this.getWrapWidth() ) {
-			this.computePackedSize(Math.round(this.getWrapWidth()), SWT.DEFAULT);
+			super.computePackedSize(this.getWrapWidth(), null);
 		}
 	}
 	

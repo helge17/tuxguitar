@@ -52,13 +52,19 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 		return children;
 	}
 
-	public void computePackedSize() {
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
-			this.control.computePackedSize();
+			this.control.computePackedSize(fixedWidth, fixedHeight);
 			
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
+		}
+		if( fixedWidth != null ) {
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null ) {
+			packedSize.setHeight(fixedHeight);
 		}
 		this.setPackedSize(packedSize);
 	}
@@ -96,12 +102,6 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 		return new UISize();
 	}
 
-	public void setPackedSize(UISize size) {
-		if( this.control != null ) {
-			this.control.setPackedSize(size);
-		}
-	}
-
 	public UIRectangle getBounds() {
 		if( this.control != null ) {
 			return this.control.getBounds();
@@ -116,7 +116,7 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 	}
 	
 	public void layout(UIRectangle bounds) {
-		this.computePackedSize();
+		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
 	

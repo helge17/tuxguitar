@@ -110,13 +110,12 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 		return new UISize(this.packedSize.getWidth(), this.packedSize.getHeight());
 	}
 
-	public void computePackedSize(float wHint, float hHint) {
-		this.packedSize.setWidth((float) this.getControl().prefWidth(hHint));
-		this.packedSize.setHeight((float) this.getControl().prefHeight(wHint));
-	}
-	
-	public void computePackedSize() {
-		this.computePackedSize((float) Region.USE_COMPUTED_SIZE, (float) Region.USE_COMPUTED_SIZE);
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		double wHint = (fixedWidth != null ? fixedWidth : Region.USE_COMPUTED_SIZE);
+		double hHint = (fixedHeight != null ? fixedHeight : Region.USE_COMPUTED_SIZE);
+		
+		this.packedSize.setWidth(fixedWidth != null ? fixedWidth : (float) this.getControl().prefWidth(hHint));
+		this.packedSize.setHeight(fixedHeight != null ? fixedHeight : (float) this.getControl().prefHeight(wHint));
 	}
 
 	public void dispose() {

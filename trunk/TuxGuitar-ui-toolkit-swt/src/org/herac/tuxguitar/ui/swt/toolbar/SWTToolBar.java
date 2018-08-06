@@ -99,8 +99,8 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 		item.disposeControl();
 	}
 	
-	public void computePackedSize() {
-		super.computePackedSize();
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		super.computePackedSize(fixedWidth, fixedHeight);
 		
 		if(!this.toolCustomItems.isEmpty()) {
 			UISize defaultPackedSize = this.getPackedSize();
@@ -119,9 +119,9 @@ public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 			}
 			
 			if( this.horizontal ) {
-				defaultPackedSize.setWidth(packedSize);
+				defaultPackedSize.setWidth(fixedWidth != null ? fixedWidth : packedSize);
 			} else {
-				defaultPackedSize.setHeight(packedSize);
+				defaultPackedSize.setHeight(fixedHeight != null ? fixedHeight : packedSize);
 			}
 			
 			super.setPackedSize(defaultPackedSize);
