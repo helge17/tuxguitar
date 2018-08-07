@@ -39,7 +39,7 @@ public class TGClassLoader implements TGResourceLoader {
 				for( int i = 0; i < this.getFilePaths().length ; i ++ ){
 					File file = new File(this.getFilePaths()[i] + File.separator + name);
 					if( TGFileUtils.isExistentAndReadable( file ) ){
-						return new FileInputStream( file );
+						return new FileInputStream( file.getAbsoluteFile() );
 					}
 				}
 			}
@@ -55,7 +55,7 @@ public class TGClassLoader implements TGResourceLoader {
 				for( int i = 0; i < this.getFilePaths().length ; i ++ ){
 					File file = new File(this.getFilePaths()[i] + File.separator + name);
 					if( TGFileUtils.isExistentAndReadable( file ) ){
-						return file.toURI().toURL();
+						return file.getAbsoluteFile().toURI().toURL();
 					}
 				}
 			}
@@ -72,7 +72,7 @@ public class TGClassLoader implements TGResourceLoader {
 				for( int i = 0; i < this.getFilePaths().length ; i ++ ){
 					File file = new File(this.getFilePaths()[i] + File.separator + name);
 					if( TGFileUtils.isExistentAndReadable( file ) ){
-						vector.addElement( file.toURI().toURL() );
+						vector.addElement( file.getAbsoluteFile().toURI().toURL() );
 					}
 				}
 			}
@@ -91,7 +91,7 @@ public class TGClassLoader implements TGResourceLoader {
 	
 	public void addPath(String path){
 		try {
-			this.classLoader.addURL(new File(path).toURI().toURL());
+			this.classLoader.addURL(new File(path).getAbsoluteFile().toURI().toURL());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
