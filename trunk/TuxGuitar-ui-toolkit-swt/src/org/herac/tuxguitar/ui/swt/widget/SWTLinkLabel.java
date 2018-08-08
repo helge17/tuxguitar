@@ -11,8 +11,6 @@ public class SWTLinkLabel extends SWTControl<Link> implements UILinkLabel {
 	
 	private SWTLinkListenerManager linkListener;
 	
-	private Float wrapWidth;
-	
 	public SWTLinkLabel(SWTContainer<? extends Composite> parent) {
 		super(new Link(parent.getControl(), SWT.NORMAL), parent);
 		
@@ -25,22 +23,6 @@ public class SWTLinkLabel extends SWTControl<Link> implements UILinkLabel {
 
 	public void setText(String text) {
 		this.getControl().setText(text);
-	}
-	
-	public Float getWrapWidth() {
-		return wrapWidth;
-	}
-
-	public void setWrapWidth(Float wrapWidth) {
-		this.wrapWidth = wrapWidth;
-	}
-	
-	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
-		super.computePackedSize(fixedWidth, fixedHeight);
-		
-		if( this.getWrapWidth() != null && this.getPackedSize().getWidth() > this.getWrapWidth() ) {
-			super.computePackedSize(this.getWrapWidth(), null);
-		}
 	}
 	
 	public void addLinkListener(UILinkListener listener) {

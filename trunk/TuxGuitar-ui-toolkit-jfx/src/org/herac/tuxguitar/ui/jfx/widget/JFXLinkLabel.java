@@ -27,7 +27,6 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 	
 	private JFXLinkListenerManager linkListener;
 	private String text;
-	private Float wrapWidth;
 	
 	public JFXLinkLabel(JFXContainer<? extends Region> parent) {
 		super(new TextFlow(), parent);
@@ -41,18 +40,9 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 
 	public void setText(String text) {
 		this.text = text;
-		this.updateTextFlow();
-	}
-	
-	public Float getWrapWidth() {
-		return wrapWidth;
+		this.updateTextFlow(this.getPackedSize().getWidth());
 	}
 
-	public void setWrapWidth(Float wrapWidth) {
-		this.wrapWidth = wrapWidth;
-		this.updateTextFlow();
-	}
-	
 	public void fireEvent(String link) {
 		this.linkListener.fireEvent(link);
 	}
@@ -65,7 +55,7 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 		this.linkListener.removeListener(listener);
 	}
 	
-	public void updateTextFlow() {
+	public void updateTextFlow(Float fixedWidth) {
 		if(!this.getControl().getChildren().isEmpty() ) {
 			this.getControl().getChildren().clear();
 		}
@@ -84,15 +74,15 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			while(m.find()) {
 				sIndex = m.start();
 				if( sIndex > eIndex ) {
-					nodes.add(this.createText(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, sIndex))));
+					nodes.add(this.createText(this.computeWrappedText(fixedWidth, fontMetrics, text, line, this.text.substring(eIndex, sIndex))));
 				}
 				eIndex = m.end();
 				
-				nodes.add(this.createHyperlink(this.computeWrappedText(fontMetrics, text, line, m.group(2)), m.group(1)));
+				nodes.add(this.createHyperlink(this.computeWrappedText(fixedWidth, fontMetrics, text, line, m.group(2)), m.group(1)));
 			}
 			
 			if( this.text.length() > eIndex ) {
-				nodes.add(this.createText(this.computeWrappedText(fontMetrics, text, line, this.text.substring(eIndex, this.text.length()))));
+				nodes.add(this.createText(this.computeWrappedText(fixedWidth, fontMetrics, text, line, this.text.substring(eIndex, this.text.length()))));
 			}
 			this.getControl().getChildren().addAll(nodes);
 			this.getControl().applyCss();
@@ -121,15 +111,15 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 		return hyperLink;
 	}
 	
-	public String computeWrappedText(JFXFontMetrics fontMetrics, StringBuilder textBuffer, StringBuilder lineBuffer, String text) {
-		if( this.getWrapWidth() != null && text != null && !text.isEmpty() ) {
+	public String computeWrappedText(Float fixedWidth, JFXFontMetrics fontMetrics, StringBuilder textBuffer, StringBuilder lineBuffer, String text) {
+		if( fixedWidth != null && fixedWidth > 0 && text != null && !text.isEmpty() ) {
 			int start = (textBuffer.length() + lineBuffer.length());
 			
 			String space = (" ");
 			String[] words = text.split(space);
 			for(String word : words) {
 				if( lineBuffer.length() > 0 ) {
-					if( fontMetrics.getWidth(lineBuffer.toString() + space + word) > this.getWrapWidth() ) {
+					if( fontMetrics.getWidth(lineBuffer.toString() + space + word) > fixedWidth ) {
 						textBuffer.append(lineBuffer);
 						textBuffer.append("\r\n");
 						lineBuffer.setLength(0);
@@ -145,5 +135,12 @@ public class JFXLinkLabel extends JFXRegion<TextFlow> implements UILinkLabel {
 			return wrappedText;
 		}
 		return text;
+	}
+	
+	@Override
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		this.updateTextFlow(fixedWidth);
+		
+		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 }
