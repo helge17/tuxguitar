@@ -83,7 +83,6 @@ public class TGCommunityAuthDialog {
 		
 		final UILinkLabel joinLink = uiFactory.createLinkLabel(join);
 		joinLink.setText(TuxGuitar.getProperty("tuxguitar-community.auth-dialog.signup.tip"));
-		joinLink.setWrapWidth(320f);
 		joinLink.addLinkListener(new UILinkListener() {
 			public void onLinkSelect(final UILinkEvent event) {
 				new Thread( new Runnable() {
@@ -94,6 +93,7 @@ public class TGCommunityAuthDialog {
 			}
 		});
 		joinLayout.set(joinLink, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		joinLayout.set(joinLink, UITableLayout.PACKED_WIDTH, 320f);
 		
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);

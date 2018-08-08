@@ -150,8 +150,8 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		QSize qSize = this.getControl().sizeHint();
 		
-		this.packedSize.setWidth(qSize.width());
-		this.packedSize.setHeight(qSize.height());
+		this.packedSize.setWidth(fixedWidth != null ? fixedWidth : qSize.width());
+		this.packedSize.setHeight(fixedHeight != null ? fixedHeight : qSize.height());
 	}
 	
 	public void dispose() {

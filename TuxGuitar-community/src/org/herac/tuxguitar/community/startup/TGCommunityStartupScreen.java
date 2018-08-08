@@ -115,7 +115,7 @@ public class TGCommunityStartupScreen {
 	private void addTitle(UIFactory factory, UILayoutContainer parent, Integer row, Integer col, String text){
 		UILabel uiLabel = factory.createLabel(parent);
 		uiLabel.setText(text);
-		this.addLayout(uiLabel, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
+		this.addLayout(uiLabel, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false, null, null);
 		
 		UIFont defaultFont = uiLabel.getFont();
 		if( defaultFont != null ) {
@@ -132,13 +132,12 @@ public class TGCommunityStartupScreen {
 	private void addTipItem(UIFactory factory, UIContainer parent, Integer row, Integer col){
 		UILabel uiLabel = factory.createLabel(parent);
 		uiLabel.setText("\u066D");
-		this.addLayout(uiLabel, row, col, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		this.addLayout(uiLabel, row, col, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false, null, null);
 	}
 	
 	private void addComment(UIFactory factory, UIContainer parent, Integer row, Integer col, String text, Float wrapWidth){
 		final UILinkLabel uiLink = factory.createLinkLabel(parent);
 		uiLink.setText(text);
-		uiLink.setWrapWidth(wrapWidth);
 		uiLink.addLinkListener(new UILinkListener() {
 			public void onLinkSelect(final UILinkEvent event) {
 				new Thread( new Runnable() {
@@ -149,22 +148,24 @@ public class TGCommunityStartupScreen {
 			}
 		});
 		
-		this.addLayout(uiLink, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
+		this.addLayout(uiLink, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, wrapWidth, null);
 	}
 	
 	private void addTipComment(UIFactory factory, UIContainer parent, Integer row, Integer col, String text, Float wrapWidth){
 		UIPanel uiPanel = factory.createPanel(parent, false);
 		uiPanel.setLayout(new UITableLayout(0f));
 		
-		this.addLayout(uiPanel, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		this.addLayout(uiPanel, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, null, null);
 		this.addTipItem(factory, uiPanel, 1, 1);
 		this.addComment(factory, uiPanel, 1, 2, text, wrapWidth);
 	}
 	
-	private void addLayout(UIControl control, Integer row, Integer col, Integer alignX, Integer alignY, Boolean fillX, Boolean fillY) {
+	private void addLayout(UIControl control, Integer row, Integer col, Integer alignX, Integer alignY, Boolean fillX, Boolean fillY, Float fixedWidth, Float fixedHeight) {
 		UILayoutContainer uiParent = (UILayoutContainer) control.getParent();
 		UITableLayout uiLayout = (UITableLayout) uiParent.getLayout();
 		uiLayout.set(control, row, col, alignX, alignY, fillX, fillY);
+		uiLayout.set(control, UITableLayout.PACKED_WIDTH, fixedWidth);
+		uiLayout.set(control, UITableLayout.PACKED_HEIGHT, fixedHeight);
 	}
 	
 	public void setDisabled( boolean enabled ){

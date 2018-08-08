@@ -54,8 +54,8 @@ public class TGMessageDialog {
 		
 		UIWrapLabel uiMessage = uiFactory.createWrapLabel(uiPanel);
 		uiMessage.setText(message);
-		uiMessage.setWrapWidth(WRAP_WIDTH);
 		panelLayout.set(uiMessage, 1, 2, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
+		panelLayout.set(uiMessage, UITableLayout.PACKED_WIDTH, WRAP_WIDTH);
 		
 		//========================================================================
 		UITableLayout buttonsLayout = new UITableLayout();
