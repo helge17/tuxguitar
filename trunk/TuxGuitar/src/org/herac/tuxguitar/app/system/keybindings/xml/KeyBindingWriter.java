@@ -17,7 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -88,7 +88,7 @@ public class KeyBindingWriter {
 			Attr attrKeys = document.createAttribute(SHORTCUT_ATTRIBUTE_KEYS);
 			Attr attrAction = document.createAttribute(SHORTCUT_ATTRIBUTE_ACTION);
 			
-			attrKeys.setNodeValue(toString(keyBindingAction.getConvination()));
+			attrKeys.setNodeValue(toString(keyBindingAction.getCombination()));
 			attrAction.setNodeValue(keyBindingAction.getAction());
 			
 			node.getAttributes().setNamedItem(attrKeys);
@@ -97,9 +97,9 @@ public class KeyBindingWriter {
 		document.appendChild(shortcutsNode);
 	}
 	
-	private static String toString(UIKeyConvination convination) {
+	private static String toString(UIKeyCombination combination) {
 		StringBuffer fullMask = new StringBuffer();
-		for(UIKey key : convination.getKeys()){
+		for(UIKey key : combination.getKeys()){
 			if( fullMask.length() > 0 ) {
 				fullMask.append(KEY_SEPARATOR);
 			}

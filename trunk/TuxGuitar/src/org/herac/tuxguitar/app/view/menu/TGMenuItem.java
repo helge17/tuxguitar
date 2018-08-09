@@ -15,7 +15,7 @@ public abstract class TGMenuItem {
 	public abstract void showItems();
 	
 	public void setMenuItemTextAndAccelerator(UIMenuItem menuItem, String key,String action) {
-		menuItem.setKeyConvination(action != null ? KeyBindingActionManager.getInstance(this.findContext()).getKeyBindingForAction(action) : null);
+		menuItem.setKeyCombination(action != null ? KeyBindingActionManager.getInstance(this.findContext()).getKeyBindingForAction(action) : null);
 		menuItem.setText(TuxGuitar.getProperty(key));
 	}
 	

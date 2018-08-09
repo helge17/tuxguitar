@@ -1,19 +1,19 @@
 package org.herac.tuxguitar.ui.event;
 
 import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 
 public class UIKeyEvent extends UIEvent {
 	
-	private UIKeyConvination keyConvination;
+	private UIKeyCombination keyCombination;
 	
-	public UIKeyEvent(UIComponent control, UIKeyConvination keyConvination) {
+	public UIKeyEvent(UIComponent control, UIKeyCombination keyCombination) {
 		super(control);
 		
-		this.keyConvination = keyConvination;
+		this.keyCombination = keyCombination;
 	}
 
-	public UIKeyConvination getKeyConvination() {
-		return keyConvination;
+	public UIKeyCombination getKeyCombination() {
+		return keyCombination;
 	}
 }

@@ -3,13 +3,13 @@ package org.herac.tuxguitar.ui.qt.menu;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 
 import org.qtjambi.qt.core.QObject;
 
 public abstract class QTMenuItem<T extends QObject> extends QTComponent<T> implements UIMenuItem {
 	
-	private UIKeyConvination keyConvination;
+	private UIKeyCombination keyCombination;
 	private UIImage image;
 	private QTAbstractMenu<?> parent;
 	
@@ -31,12 +31,12 @@ public abstract class QTMenuItem<T extends QObject> extends QTComponent<T> imple
 		super.dispose();
 	}
 	
-	public UIKeyConvination getKeyConvination() {
-		return keyConvination;
+	public UIKeyCombination getKeyCombination() {
+		return keyCombination;
 	}
 
-	public void setKeyConvination(UIKeyConvination keyConvination) {
-		this.keyConvination = keyConvination;
+	public void setKeyCombination(UIKeyCombination keyCombination) {
+		this.keyCombination = keyCombination;
 	}
 
 	public UIImage getImage() {

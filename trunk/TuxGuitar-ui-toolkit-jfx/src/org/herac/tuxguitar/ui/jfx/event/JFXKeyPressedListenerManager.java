@@ -18,7 +18,7 @@ public class JFXKeyPressedListenerManager extends UIKeyPressedListenerManager im
 	
 	public void handle(KeyEvent event) {
 		if(!this.control.isIgnoreEvents()) {
-			this.onKeyPressed(new UIKeyEvent(this.control, JFXKey.getConvination(event)));
+			this.onKeyPressed(new UIKeyEvent(this.control, JFXKey.getCombination(event)));
 			
 			event.consume();
 		}

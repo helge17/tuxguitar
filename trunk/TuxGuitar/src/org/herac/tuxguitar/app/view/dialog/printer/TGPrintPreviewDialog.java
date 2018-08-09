@@ -19,7 +19,7 @@ import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
@@ -39,7 +39,7 @@ public class TGPrintPreviewDialog{
 	public static final String ATTRIBUTE_PAGES = (TGPrintPreviewDialog.class.getName() + "-pages");
 	public static final String ATTRIBUTE_SIZE = (TGPrintPreviewDialog.class.getName() + "-size");
 	
-	public static final UIKeyConvination ENTER_KEY_CONVINATION = new UIKeyConvination(Arrays.asList(UIKey.ENTER));
+	public static final UIKeyCombination ENTER_KEY_CONVINATION = new UIKeyCombination(Arrays.asList(UIKey.ENTER));
 	
 	private TGViewContext context;
 	private UIWindow dialog;
@@ -108,7 +108,7 @@ public class TGPrintPreviewDialog{
 		
 		this.currentText.addKeyReleasedListener(new UIKeyReleasedListener() {
 			public void onKeyReleased(UIKeyEvent event) {
-				if( event.getKeyConvination().equals(ENTER_KEY_CONVINATION)){
+				if( event.getKeyCombination().equals(ENTER_KEY_CONVINATION)){
 					try{
 						Integer number = new Integer(TGPrintPreviewDialog.this.currentText.getText());
 						changePage(number.intValue() - 1);
