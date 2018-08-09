@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.menu;
 
 import org.herac.tuxguitar.ui.UIComponent;
 import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 
 public interface UIMenuItem extends UIComponent {
 	
@@ -10,9 +10,9 @@ public interface UIMenuItem extends UIComponent {
 	
 	void setText(String text);
 	
-	UIKeyConvination getKeyConvination();
+	UIKeyCombination getKeyCombination();
 	
-	void setKeyConvination(UIKeyConvination keyConvination);
+	void setKeyCombination(UIKeyCombination keyCombination);
 	
 	UIImage getImage();
 	

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
 import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -38,11 +38,11 @@ public class KeyBindingActionManager {
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "shortcuts.xml";
 	}
 	
-	public String getActionForKeyBinding(UIKeyConvination kb){
+	public String getActionForKeyBinding(UIKeyCombination kb){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
-			if( keyBindingAction.getConvination() != null && kb.equals( keyBindingAction.getConvination() )){
+			if( keyBindingAction.getCombination() != null && kb.equals( keyBindingAction.getCombination() )){
 				if( isKeyBindingAvailable(keyBindingAction) ){
 					return keyBindingAction.getAction();
 				}
@@ -51,13 +51,13 @@ public class KeyBindingActionManager {
 		return null;
 	}
 	
-	public UIKeyConvination getKeyBindingForAction(String action){
+	public UIKeyCombination getKeyBindingForAction(String action){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
 			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
 			if(action.equals( keyBindingAction.getAction() )){
 				if( isKeyBindingAvailable(keyBindingAction) ){
-					return keyBindingAction.getConvination();
+					return keyBindingAction.getCombination();
 				}
 			}
 		}
@@ -89,7 +89,7 @@ public class KeyBindingActionManager {
 		control.addKeyPressedListener(this.listener);
 	}
 	
-	public void processKeyBinding(UIKeyConvination kb){
+	public void processKeyBinding(UIKeyCombination kb){
 		final String actionId = getActionForKeyBinding(kb);
 		if( actionId != null ){
 			new TGActionProcessor(this.context, actionId).process();

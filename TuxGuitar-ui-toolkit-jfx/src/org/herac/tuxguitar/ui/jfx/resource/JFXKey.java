@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.ui.jfx.resource;
 
+import org.herac.tuxguitar.ui.resource.UIKey;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
 
 public class JFXKey {
 	
@@ -86,27 +86,27 @@ public class JFXKey {
 		return new UIKey(keyCode.toString().toLowerCase());
 	}
 	
-	public static UIKeyConvination getConvination(KeyEvent keyEvent) {
-		UIKeyConvination keyConvination = new UIKeyConvination();
+	public static UIKeyCombination getCombination(KeyEvent keyEvent) {
+		UIKeyCombination keyCombination = new UIKeyCombination();
 		if( keyEvent.isAltDown() ) {
-			keyConvination.getKeys().add(UIKey.ALT);
+			keyCombination.getKeys().add(UIKey.ALT);
 		}
 		if( keyEvent.isShiftDown() ) {
-			keyConvination.getKeys().add(UIKey.SHIFT);
+			keyCombination.getKeys().add(UIKey.SHIFT);
 		}
 		if( keyEvent.isControlDown() ) {
-			keyConvination.getKeys().add(UIKey.CONTROL);
+			keyCombination.getKeys().add(UIKey.CONTROL);
 		}
 		if( keyEvent.isMetaDown() ) {
-			keyConvination.getKeys().add(UIKey.COMMAND);
+			keyCombination.getKeys().add(UIKey.COMMAND);
 		}
 		
 		UIKey principalKey = JFXKey.getKey(keyEvent);
-		if(!keyConvination.contains(principalKey)) {
-			keyConvination.getKeys().add(principalKey);
+		if(!keyCombination.contains(principalKey)) {
+			keyCombination.getKeys().add(principalKey);
 		}
 		
-		return keyConvination;
+		return keyCombination;
 	}
 	
 	private static class JFXKeyMap {

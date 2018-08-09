@@ -12,7 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
 import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -106,7 +106,7 @@ public class KeyBindingReader {
 					String keys = nodeKeys.getNodeValue();
 					
 					if (keys != null && action != null) {
-						UIKeyConvination uiKeyMask = new UIKeyConvination();
+						UIKeyCombination uiKeyMask = new UIKeyCombination();
 						
 						String[] keyCodes = keys.toString().split(KEY_SEPARATOR);
 						for(String keyCode : keyCodes) {

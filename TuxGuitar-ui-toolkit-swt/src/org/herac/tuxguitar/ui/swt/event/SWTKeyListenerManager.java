@@ -46,13 +46,13 @@ public class SWTKeyListenerManager implements KeyListener {
 
 	public void keyPressed(KeyEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.keyPressedListener.onKeyPressed(new UIKeyEvent(this.control, this.key.getConvination(e.keyCode, e.stateMask)));
+			this.keyPressedListener.onKeyPressed(new UIKeyEvent(this.control, this.key.getCombination(e.keyCode, e.stateMask)));
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.keyReleasedListener.onKeyReleased(new UIKeyEvent(this.control, this.key.getConvination(e.keyCode, e.stateMask)));
+			this.keyReleasedListener.onKeyReleased(new UIKeyEvent(this.control, this.key.getCombination(e.keyCode, e.stateMask)));
 		}
 	}
 }

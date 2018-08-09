@@ -18,7 +18,7 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UIImageView;
 import org.herac.tuxguitar.ui.widget.UILabel;
@@ -61,7 +61,7 @@ public class TGKeyBindingSelector {
 		panel.setFocus();
 		panel.addKeyReleasedListener(new UIKeyReleasedListener() {
 			public void onKeyReleased(UIKeyEvent event) {
-				TGKeyBindingSelector.this.handleSelection(event.getKeyConvination());
+				TGKeyBindingSelector.this.handleSelection(event.getKeyCombination());
 				
 				dialog.dispose();
 			}
@@ -117,8 +117,8 @@ public class TGKeyBindingSelector {
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	public void handleSelection(final UIKeyConvination kb) {
-		if( kb == null || kb.equals(this.keyBindingAction.getConvination()) || !this.editor.exists(kb) ){
+	public void handleSelection(final UIKeyCombination kb) {
+		if( kb == null || kb.equals(this.keyBindingAction.getCombination()) || !this.editor.exists(kb) ){
 			this.handler.handleSelection(kb);
 		}
 		

@@ -3,13 +3,13 @@ package org.herac.tuxguitar.ui.swt.menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuItem {
 	
-	private UIKeyConvination keyConvination;
+	private UIKeyCombination keyCombination;
 	private UIImage image;
 	private SWTMenu parent;
 	
@@ -45,19 +45,19 @@ public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuIte
 
 	public void setText(String text) {
 		String textWithAccelerator = text;
-		if( this.getKeyConvination() != null ) {
-			textWithAccelerator += "\t" + this.getKeyConvination().toString() + "\u0000";
+		if( this.getKeyCombination() != null ) {
+			textWithAccelerator += "\t" + this.getKeyCombination().toString() + "\u0000";
 		}
 		this.getControl().setText(textWithAccelerator);
 	}
 
-	public UIKeyConvination getKeyConvination() {
-		return keyConvination;
+	public UIKeyCombination getKeyCombination() {
+		return keyCombination;
 	}
 
-	public void setKeyConvination(UIKeyConvination keyConvination) {
-		if( this.keyConvination == null || !this.keyConvination.equals(keyConvination)) {
-			this.keyConvination = keyConvination;
+	public void setKeyCombination(UIKeyCombination keyCombination) {
+		if( this.keyCombination == null || !this.keyCombination.equals(keyCombination)) {
+			this.keyCombination = keyCombination;
 			
 			String text = this.getText();
 			if( text != null && text.length() > 0 ) {

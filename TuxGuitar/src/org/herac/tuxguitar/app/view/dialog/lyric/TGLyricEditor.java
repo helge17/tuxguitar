@@ -31,7 +31,7 @@ import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIKeyEvent;
 import org.herac.tuxguitar.ui.event.UIKeyPressedListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UILabel;
@@ -188,7 +188,7 @@ public class TGLyricEditor implements TGEventListener {
 		this.text.addKeyPressedListener(new UIKeyPressedListener() {
 			public void onKeyPressed(UIKeyEvent event) {
 				for(KeyBindingAction keyBinding : TGLyricEditor.this.keyBindings) {
-					if( event.getKeyConvination().equals(keyBinding.getConvination()) ){
+					if( event.getKeyCombination().equals(keyBinding.getCombination()) ){
 						new TGActionProcessorListener(TGLyricEditor.this.context, keyBinding.getAction()).processEvent(event);
 						return;
 					}
@@ -292,9 +292,9 @@ public class TGLyricEditor implements TGEventListener {
 	}
 	
 	public void loadKeyBinding(String actionId) {
-		UIKeyConvination keyConvination = KeyBindingActionManager.getInstance(this.context).getKeyBindingForAction(actionId);
-		if( keyConvination != null ) {
-			this.keyBindings.add(new KeyBindingAction(actionId, keyConvination));
+		UIKeyCombination keyCombination = KeyBindingActionManager.getInstance(this.context).getKeyBindingForAction(actionId);
+		if( keyCombination != null ) {
+			this.keyBindings.add(new KeyBindingAction(actionId, keyCombination));
 		}
 	}
 	

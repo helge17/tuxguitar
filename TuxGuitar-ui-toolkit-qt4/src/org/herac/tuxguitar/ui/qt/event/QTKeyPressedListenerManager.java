@@ -17,7 +17,7 @@ public class QTKeyPressedListenerManager extends UIKeyPressedListenerManager imp
 	}
 	
 	public void handle(QKeyEvent event) {
-		this.onKeyPressed(new UIKeyEvent(this.control, QTKey.getConvination(event)));
+		this.onKeyPressed(new UIKeyEvent(this.control, QTKey.getCombination(event)));
 	}
 	
 	public boolean handle(QEvent event) {

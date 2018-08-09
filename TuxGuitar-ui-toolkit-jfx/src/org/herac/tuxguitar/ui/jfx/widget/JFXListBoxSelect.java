@@ -111,14 +111,14 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		Insets insets = this.computeCellPadding();
 		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
 		
-		return (float)(fontMetrics.getWidth(item.toString()) + insets.getLeft() + insets.getRight());
+		return Float.valueOf(Math.round(fontMetrics.getWidth(item.toString()) + insets.getLeft() + insets.getRight() + 0.5f));
 	}
 	
 	public float computeCellHeight(JFXListBoxSelectItem<T> item) {
 		Insets insets = this.computeCellPadding();
 		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
 		
-		return (float)(fontMetrics.getHeight() + insets.getTop() + insets.getBottom() + 1f);
+		return Float.valueOf(Math.round(fontMetrics.getHeight() + insets.getTop() + insets.getBottom() + 0.5f));
 	}
 	
 	public Insets computeCellPadding() {

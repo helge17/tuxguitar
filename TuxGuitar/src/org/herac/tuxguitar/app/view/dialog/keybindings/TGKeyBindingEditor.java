@@ -20,7 +20,7 @@ import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UITable;
@@ -57,9 +57,9 @@ public class TGKeyBindingEditor {
 				final KeyBindingAction kbAction = TGKeyBindingEditor.this.table.getSelectedValue();
 				if( kbAction != null ){
 					TGKeyBindingSelector keyBindingSelector = new TGKeyBindingSelector(TGKeyBindingEditor.this, kbAction, new TGKeyBindingSelectorHandler() {
-						public void handleSelection(UIKeyConvination kb) {
+						public void handleSelection(UIKeyCombination kb) {
 							TGKeyBindingEditor.this.removeKeyBindingAction(kb);
-							kbAction.setConvination(kb);
+							kbAction.setCombination(kb);
 							TGKeyBindingEditor.this.updateTableItems();
 						}
 					});
@@ -117,10 +117,10 @@ public class TGKeyBindingEditor {
 		}
 	}
 	
-	public UIKeyConvination findKeyBinding(List<KeyBindingAction> keyBindingActions, String actionId) {
+	public UIKeyCombination findKeyBinding(List<KeyBindingAction> keyBindingActions, String actionId) {
 		for(KeyBindingAction keyBindingAction : keyBindingActions) {
 			if( keyBindingAction.getAction().equals(actionId)){
-				return (UIKeyConvination) keyBindingAction.getConvination().clone();
+				return (UIKeyCombination) keyBindingAction.getCombination().clone();
 			}
 		}
 		return null;
@@ -143,17 +143,17 @@ public class TGKeyBindingEditor {
 		for(KeyBindingAction kbAction : this.kbActions) {
 			UITableItem<KeyBindingAction> item = new UITableItem<KeyBindingAction>(kbAction);
 			item.setText(0, TuxGuitar.getProperty(kbAction.getAction()));
-			item.setText(1, (kbAction.getConvination() != null ? kbAction.getConvination().toString() : ""));
+			item.setText(1, (kbAction.getCombination() != null ? kbAction.getCombination().toString() : ""));
 			
 			this.table.addItem(item);
 		}
 		this.table.setSelectedValue(selection);
 	}
 	
-	public KeyBindingAction findKeyBindingAction(UIKeyConvination kb){
+	public KeyBindingAction findKeyBindingAction(UIKeyCombination kb){
 		if( kb != null ){
 			for(KeyBindingAction kbAction : this.kbActions){
-				if( kb.equals(kbAction.getConvination())){
+				if( kb.equals(kbAction.getCombination())){
 					return kbAction;
 				}
 			}
@@ -161,14 +161,14 @@ public class TGKeyBindingEditor {
 		return null;
 	}
 	
-	public void removeKeyBindingAction(UIKeyConvination kb){
+	public void removeKeyBindingAction(UIKeyCombination kb){
 		KeyBindingAction kbAction = this.findKeyBindingAction(kb);
 		if( kbAction != null ){
-			kbAction.setConvination(null);
+			kbAction.setCombination(null);
 		}
 	}
 	
-	public boolean exists(UIKeyConvination kb){
+	public boolean exists(UIKeyCombination kb){
 		KeyBindingAction kbAction = this.findKeyBindingAction(kb);
 		
 		return (kbAction != null);
@@ -177,7 +177,7 @@ public class TGKeyBindingEditor {
 	public void save(){
 		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
 		for(KeyBindingAction kbAction : this.kbActions){
-			if( kbAction.getAction() != null && kbAction.getConvination() != null){
+			if( kbAction.getAction() != null && kbAction.getCombination() != null){
 				list.add(kbAction);
 			}
 		}

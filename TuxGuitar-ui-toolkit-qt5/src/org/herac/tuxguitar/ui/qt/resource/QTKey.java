@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.resource;
 
 import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.qtjambi.qt.core.Qt.Key;
 import org.qtjambi.qt.core.Qt.KeyboardModifier;
 import org.qtjambi.qt.core.Qt.KeyboardModifiers;
@@ -65,29 +65,29 @@ public class QTKey {
 		return new UIKey(Character.toString((char) (keyEvent.key() & 0xffff)).toLowerCase());
 	}
 	
-	public static UIKeyConvination getConvination(QKeyEvent keyEvent) {
-		UIKeyConvination keyConvination = new UIKeyConvination();
+	public static UIKeyCombination getCombination(QKeyEvent keyEvent) {
+		UIKeyCombination keyCombination = new UIKeyCombination();
 		
 		KeyboardModifiers modifiers = keyEvent.modifiers();
 		if( modifiers.isSet(KeyboardModifier.AltModifier)) {
-			keyConvination.getKeys().add(UIKey.ALT);
+			keyCombination.getKeys().add(UIKey.ALT);
 		}
 		if( modifiers.isSet(KeyboardModifier.ShiftModifier)) {
-			keyConvination.getKeys().add(UIKey.SHIFT);
+			keyCombination.getKeys().add(UIKey.SHIFT);
 		}
 		if( modifiers.isSet(KeyboardModifier.ControlModifier)) {
-			keyConvination.getKeys().add(UIKey.CONTROL);
+			keyCombination.getKeys().add(UIKey.CONTROL);
 		}
 		if( modifiers.isSet(KeyboardModifier.MetaModifier)) {
-			keyConvination.getKeys().add(UIKey.COMMAND);
+			keyCombination.getKeys().add(UIKey.COMMAND);
 		}
 		
 		UIKey principalKey = QTKey.getKey(keyEvent);
-		if(!keyConvination.contains(principalKey)) {
-			keyConvination.getKeys().add(principalKey);
+		if(!keyCombination.contains(principalKey)) {
+			keyCombination.getKeys().add(principalKey);
 		}
 		
-		return keyConvination;
+		return keyCombination;
 	}
 	
 	private static class QTKeyMap {

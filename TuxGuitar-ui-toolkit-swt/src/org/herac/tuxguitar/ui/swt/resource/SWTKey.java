@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.swt.resource;
 
 import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyConvination;
+import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 
 public class SWTKey {
 	
@@ -72,26 +72,26 @@ public class SWTKey {
 //		return mask;
 //	}
 //	
-	public UIKeyConvination getConvination(int keyCode, int stateMask) {
-		UIKeyConvination keyConvination = new UIKeyConvination();
+	public UIKeyCombination getCombination(int keyCode, int stateMask) {
+		UIKeyCombination keyCombination = new UIKeyCombination();
 		if((stateMask & keyCode) == 0) {
 			if((stateMask & SWT.ALT) != 0) {
-				keyConvination.getKeys().add(UIKey.ALT);
+				keyCombination.getKeys().add(UIKey.ALT);
 			}
 			if((stateMask & SWT.SHIFT) != 0) {
-				keyConvination.getKeys().add(UIKey.SHIFT);
+				keyCombination.getKeys().add(UIKey.SHIFT);
 			}
 			if((stateMask & SWT.CONTROL) != 0) {
-				keyConvination.getKeys().add(UIKey.CONTROL);
+				keyCombination.getKeys().add(UIKey.CONTROL);
 			}
 			if((stateMask & SWT.COMMAND) != 0) {
-				keyConvination.getKeys().add(UIKey.COMMAND);
+				keyCombination.getKeys().add(UIKey.COMMAND);
 			}
 		}
 		
-		keyConvination.getKeys().add(this.getKey(keyCode));
+		keyCombination.getKeys().add(this.getKey(keyCode));
 		
-		return keyConvination;
+		return keyCombination;
 	}
 	
 	private static class SWTKeyMap {

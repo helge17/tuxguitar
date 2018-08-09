@@ -42,14 +42,21 @@ public class UIKey {
 		this.code = code;
 	}
 	
+	public String toString() {
+		return this.code;
+	}
+	
 	public boolean equals(Object o) {
 		if( o instanceof UIKey ) {
-			return this.toString().equals(o.toString());
+			return (this.hashCode() == o.hashCode());
 		}
 		return false;
 	}
 	
-	public String toString() {
-		return this.code;
+	public int hashCode() {
+		if( this.code != null ) {
+			return (UIKey.class.getName() + "-" + this.code).hashCode();
+		}
+		return 0;
 	}
 }

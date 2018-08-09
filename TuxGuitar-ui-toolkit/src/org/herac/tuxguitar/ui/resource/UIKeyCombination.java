@@ -3,13 +3,13 @@ package org.herac.tuxguitar.ui.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UIKeyConvination {
+public class UIKeyCombination {
 	
 	private static final String MASK_SEPARATOR = "+";
 	
 	private List<UIKey> keys;
 	
-	public UIKeyConvination(List<UIKey> keys) {
+	public UIKeyCombination(List<UIKey> keys) {
 		this.keys = new ArrayList<UIKey>();
 		
 		if( keys != null ) {
@@ -17,7 +17,7 @@ public class UIKeyConvination {
 		}
 	}
 	
-	public UIKeyConvination() {
+	public UIKeyCombination() {
 		this(new ArrayList<UIKey>());
 	}
 	
@@ -30,10 +30,10 @@ public class UIKeyConvination {
 	}
 	
 	public boolean equals(Object o) {
-		if( o instanceof UIKeyConvination ) {
-			UIKeyConvination keyConvination = (UIKeyConvination) o;
-			if( keyConvination.getKeys().size() == this.getKeys().size()) {
-				for(UIKey key : keyConvination.getKeys()) {
+		if( o instanceof UIKeyCombination ) {
+			UIKeyCombination keyCombination = (UIKeyCombination) o;
+			if( keyCombination.getKeys().size() == this.getKeys().size()) {
+				for(UIKey key : keyCombination.getKeys()) {
 					if(!this.contains(key)) {
 						return false;
 					}
@@ -60,6 +60,6 @@ public class UIKeyConvination {
 	}
 	
 	public Object clone(){
-		return new UIKeyConvination(this.getKeys());
+		return new UIKeyCombination(this.getKeys());
 	}
 }
