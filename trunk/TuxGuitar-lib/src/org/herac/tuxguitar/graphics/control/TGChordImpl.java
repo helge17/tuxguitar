@@ -242,12 +242,13 @@ public class TGChordImpl extends TGChord {
 			}else{
 				paintDiagram(painter,x - ( (this.diagramWidth - getFirstFretSpacing()) / 2) - getFirstFretSpacing() ,y);
 			}
+			y += this.diagramHeight;
 		}
 		if( (this.style & TGLayout.DISPLAY_CHORD_NAME) != 0 && getName() != null && getName().length() > 0){
 			painter.setFont(getFont());
 			painter.setForeground(getForegroundColor());
 			painter.setBackground(getBackgroundColor());
-			painter.drawString(getName(),x - (this.nameWidth / 2) , y + this.diagramHeight + painter.getFMTopLine());
+			painter.drawString(getName(),x - (this.nameWidth / 2) , y + painter.getFMTopLine());
 		}
 	}
 	
