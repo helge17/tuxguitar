@@ -17,8 +17,8 @@ public class GMChannel implements MidiChannel{
 	private GMProgram program;
 	
 	public GMChannel(int channelId, GMChannelRouter router, GMReceiver receiver){
-		this.receiver = receiver;
 		this.router = router;
+		this.receiver = new GMReceiverProxy(receiver);
 		this.route = new GMChannelRoute(channelId);
 		this.program = new GMProgram();
 		this.percussionChannel = false;
