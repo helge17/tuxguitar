@@ -156,8 +156,8 @@ public class TGPrintLayout extends TGLayout {
 			float fmTopLine = painter.getFMTopLine();
 			String pageNumber = Integer.toString(this.page);
 			
-			painter.setBackground(getResources().getColorWhite());
-			painter.setForeground(getResources().getColorBlack());
+			painter.setBackground(getLightColor(getResources().getBackgroundColor()));
+			painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 			painter.drawString(pageNumber, (x + getRight(painter, pageNumber)),(fmTopLine + y + getBottom(painter, pageNumber)));
 		}
 	}

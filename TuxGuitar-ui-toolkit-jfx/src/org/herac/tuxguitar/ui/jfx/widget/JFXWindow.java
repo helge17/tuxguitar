@@ -94,6 +94,15 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		this.getStage().getIcons().add(((JFXImage) image).getHandle());
 	}
 	
+	public void setImageFromParent() {
+		if( this.getParent() != null ) {
+			UIImage parentImage = ((JFXWindow) this.getParent()).getImage();
+			if( parentImage != null ) {
+				this.setImage(parentImage);
+			}
+		}
+	}
+	
 	public UIMenuBar getMenuBar() {
 		return this.menuBar;
 	}
@@ -112,6 +121,9 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	}
 	
 	public void open() {
+		if( this.getImage() == null ) {
+			this.setImageFromParent();
+		}
 		this.getStage().show();
 	}
 

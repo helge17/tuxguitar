@@ -58,6 +58,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_CHORD, (DEFAULT_FONT_NAME + ",7,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_GRACE, (DEFAULT_FONT_NAME + ",6,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_ABOUT_DIALOG_TITLE, (DEFAULT_FONT_NAME + ",36,true,true"));
+		loadProperty(properties, TGConfigKeys.COLOR_FOREGROUND,"0,0,0");
 		loadProperty(properties, TGConfigKeys.COLOR_BACKGROUND,"255,255,255");
 		loadProperty(properties, TGConfigKeys.COLOR_LINE,"214,214,214");
 		loadProperty(properties, TGConfigKeys.COLOR_SCORE_NOTE,"64,64,64");

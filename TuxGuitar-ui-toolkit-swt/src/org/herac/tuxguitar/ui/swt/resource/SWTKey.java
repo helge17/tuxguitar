@@ -52,26 +52,6 @@ public class SWTKey {
 		return new UIKey(Character.toString((char) (keyCode & 0xffff)));
 	}
 	
-//	public UIKeyMask getKeyMask(int keyCode, int stateMask) {
-//		UIKeyMask mask = new UIKeyMask();
-//		
-//		if((stateMask & keyCode) == 0) {
-//			if((stateMask & SWT.ALT) != 0) {
-//				mask.getKeys().add(UIKey.ALT);
-//			}
-//			if((stateMask & SWT.SHIFT) != 0) {
-//				mask.getKeys().add(UIKey.SHIFT);
-//			}
-//			if((stateMask & SWT.CONTROL) != 0) {
-//				mask.getKeys().add(UIKey.CONTROL);
-//			}
-//			if((stateMask & SWT.COMMAND) != 0) {
-//				mask.getKeys().add(UIKey.COMMAND);
-//			}
-//		}
-//		return mask;
-//	}
-//	
 	public UIKeyCombination getCombination(int keyCode, int stateMask) {
 		UIKeyCombination keyCombination = new UIKeyCombination();
 		if((stateMask & keyCode) == 0) {
@@ -89,7 +69,10 @@ public class SWTKey {
 			}
 		}
 		
-		keyCombination.getKeys().add(this.getKey(keyCode));
+		UIKey principalKey = this.getKey(keyCode);
+		if(!keyCombination.contains(principalKey)) {
+			keyCombination.getKeys().add(principalKey);
+		}
 		
 		return keyCombination;
 	}

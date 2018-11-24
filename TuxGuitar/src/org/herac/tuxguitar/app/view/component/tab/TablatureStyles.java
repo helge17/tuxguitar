@@ -44,6 +44,7 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_GRACE));
 		this.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD));
 		this.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
+		this.setForegroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_FOREGROUND));
 		this.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
 		this.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		this.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));

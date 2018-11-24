@@ -109,10 +109,6 @@ public class TGPrintPainter implements UIPainter {
 		this.handle.setAntialias(enabled);
 	}
 
-	public void setAdvanced(boolean advanced) {
-		this.handle.setAdvanced(advanced);
-	}
-
 	public float getFontSize() {
 		return this.handle.getFontSize();
 	}

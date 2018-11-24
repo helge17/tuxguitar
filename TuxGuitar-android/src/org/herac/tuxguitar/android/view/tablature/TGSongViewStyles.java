@@ -50,6 +50,7 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setGraceFont( new UIFontModel("sans-serif", 6 , false , false )  );
 		this.setChordFont( new UIFontModel("sans-serif", 8 , false , false )  );
 		this.setChordFretFont( new UIFontModel("sans-serif", 8 , false , false )  );
+		this.setForegroundColor( new UIColorModel(0, 0, 0 ));
 		this.setBackgroundColor( new UIColorModel(255, 255, 255 ));
 		this.setLineColor( new UIColorModel(200,200,200 ));
 		this.setScoreNoteColor( new UIColorModel(105, 105, 105 ) );

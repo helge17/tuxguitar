@@ -7,6 +7,7 @@ import org.herac.tuxguitar.ui.resource.UIColorModel;
 
 public class PrintLayoutStyles extends TGLayoutStyles {
 	
+	private static final UIColorModel DEFAULT_FOREGROUND_COLOR = new UIColorModel(0x00, 0x00, 0x00);
 	private static final UIColorModel DEFAULT_BACKGROUND_COLOR = new UIColorModel(0xff, 0xff, 0xff);
 	private static final int DEFAULT_SCORE_LINE_SPACING = 7;
 	private static final int DEFAULT_STRING_SPACING = 8;
@@ -75,6 +76,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		this.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		this.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
 		this.setMeasureNumberColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_MEASURE_NUMBER));
+		this.setForegroundColor(DEFAULT_FOREGROUND_COLOR);
 		this.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
 	}
 }

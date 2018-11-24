@@ -34,6 +34,7 @@ public class TGConfig{
 	public static final UIFontModel FONT_GRACE = new UIFontModel(DEFAULT_FONT_NAME, 6, false, false);
 	
 	public static final UIColorModel COLOR_LOADING_MESSAGE = new UIColorModel(200,200,200);
+	public static final UIColorModel COLOR_FOREGROUND = new UIColorModel(0,0,0);
 	public static final UIColorModel COLOR_BACKGROUND = new UIColorModel(255,255,255);
 	public static final UIColorModel COLOR_LINE = new UIColorModel(225,225,225);
 	public static final UIColorModel COLOR_SCORE_NOTE = new UIColorModel(0,0,0);
