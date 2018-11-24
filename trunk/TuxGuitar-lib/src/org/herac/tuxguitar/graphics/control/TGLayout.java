@@ -341,31 +341,31 @@ public abstract class TGLayout {
 	
 	public void setDivisionsStyle(UIPainter painter, boolean fill){
 		painter.setFont(getResources().getDefaultFont());
-		painter.setBackground( (fill ? getResources().getColorBlack() : getLightColor(getResources().getBackgroundColor())));
-		painter.setForeground(getResources().getColorBlack());
+		painter.setBackground( (fill ? getDarkColor(getResources().getForegroundColor()) : getLightColor(getResources().getBackgroundColor())));
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setTempoStyle(UIPainter painter, boolean fontStyle){
 		painter.setFont(getResources().getDefaultFont());
-		painter.setForeground(getResources().getColorBlack());
-		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getResources().getColorBlack() ));
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
+		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getDarkColor(getResources().getForegroundColor()) ));
 	}
 	
 	public void setTripletFeelStyle(UIPainter painter, boolean fontStyle){
 		painter.setFont(getResources().getDefaultFont());
-		painter.setForeground(getResources().getColorBlack());
-		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getResources().getColorBlack() ));
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
+		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getDarkColor(getResources().getForegroundColor()) ));
 	}
 	
 	public void setMeasurePlayingStyle(UIPainter painter){
-		painter.setBackground(getResources().getBackgroundColor());
-		painter.setForeground(getResources().getColorBlack());
+		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setLyricStyle(UIPainter painter,boolean playMode){
 		painter.setFont(getResources().getLyricFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
-		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getResources().getColorBlack()) );
+		painter.setForeground( (playMode ? getResources().getPlayNoteColor() : getDarkColor(getResources().getForegroundColor())) );
 	}
 	
 	public void setMarkerStyle(UIPainter painter, UIColor color){
@@ -377,20 +377,20 @@ public abstract class TGLayout {
 	public void setTextStyle(UIPainter painter){
 		painter.setFont(getResources().getTextFont());
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setTimeSignatureStyle(UIPainter painter){
-		painter.setForeground(getResources().getColorBlack());
-		painter.setBackground(getResources().getColorBlack());
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
+		painter.setBackground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setKeySignatureStyle(UIPainter painter){
-		painter.setBackground(getResources().getColorBlack());
+		painter.setBackground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setClefStyle(UIPainter painter){
-		painter.setBackground(getResources().getColorBlack());
+		painter.setBackground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setLineStyle(UIPainter painter){
@@ -484,14 +484,14 @@ public abstract class TGLayout {
 	}
 	
 	public void setRepeatEndingStyle(UIPainter painter){
-		painter.setForeground(getResources().getColorBlack());
+		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
 		painter.setFont(getResources().getDefaultFont());
 	}
 	
 	public void setChordStyle(TGChordImpl chord){
 		chord.setFont(getResources().getChordFont());
-		chord.setForegroundColor(getResources().getColorBlack());
+		chord.setForegroundColor(getDarkColor(getResources().getForegroundColor()));
 		chord.setBackgroundColor(getLightColor(getResources().getBackgroundColor()));
 		chord.setColor(getDarkColor(getResources().getLineColor()));
 		chord.setNoteColor(getDarkColor(getResources().getTabNoteColor()));

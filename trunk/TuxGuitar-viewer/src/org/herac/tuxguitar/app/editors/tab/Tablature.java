@@ -298,6 +298,7 @@ public class Tablature implements TGController {
 		styles.setGraceFont(TGConfig.FONT_GRACE);
 		styles.setChordFont(TGConfig.FONT_CHORD);
 		styles.setChordFretFont(TGConfig.FONT_CHORD_FRET);
+		styles.setForegroundColor(TGConfig.COLOR_FOREGROUND);
 		styles.setBackgroundColor(TGConfig.COLOR_BACKGROUND);
 		styles.setLineColor(TGConfig.COLOR_LINE);
 		styles.setScoreNoteColor(TGConfig.COLOR_SCORE_NOTE);

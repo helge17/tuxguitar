@@ -45,6 +45,7 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setChordFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
 		this.setChordFretFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
 		this.setMarkerFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));
+		this.setForegroundColor(new UIColorModel(0x00,0x00,0x00));
 		this.setBackgroundColor(new UIColorModel(0xff,0xff,0xff));
 		this.setLineColor(new UIColorModel(0x00,0x00,0x00));
 		this.setScoreNoteColor(new UIColorModel(0x00,0x00,0x00));

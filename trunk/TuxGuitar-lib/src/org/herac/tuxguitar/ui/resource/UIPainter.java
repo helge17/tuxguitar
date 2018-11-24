@@ -50,8 +50,6 @@ public interface UIPainter extends UIResource {
 	
 	void setAntialias(boolean enabled);
 	
-	void setAdvanced(boolean advanced);
-	
 	float getFontSize();
 	
 	float getFMBaseLine();
