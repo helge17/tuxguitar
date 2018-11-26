@@ -7,7 +7,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoToMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -152,13 +152,13 @@ public class TGMarkerList implements TGEventListener {
 	}
 	
 	public void addListeners(){
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
@@ -285,7 +285,7 @@ public class TGMarkerList implements TGEventListener {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
 		}
-		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		else if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIconsProcess.process();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

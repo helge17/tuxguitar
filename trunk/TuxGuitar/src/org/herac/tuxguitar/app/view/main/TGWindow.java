@@ -4,8 +4,9 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.system.TGDisposeAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.system.icons.TGSkinManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
@@ -119,8 +120,8 @@ public class TGWindow implements TGEventListener {
 	}
 	
 	private void createShellListeners() {
-		TGIconManager tgIconManager = TGIconManager.getInstance(this.context);
-		tgIconManager.addLoader(this);
+		TGSkinManager tgSkinManager = TGSkinManager.getInstance(this.context);
+		tgSkinManager.addLoader(this);
 	}
 	
 	public void loadDefaultCursor() {
@@ -185,7 +186,7 @@ public class TGWindow implements TGEventListener {
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+				if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 					loadIcons();
 				}
 			}

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
@@ -87,7 +86,7 @@ public class TGChordList {
 		this.control.setLayout(scrollBarLayout);
 		
 		this.canvas = uiFactory.createCanvas(this.control, false);
-		this.canvas.setBgColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		this.canvas.setBgColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		this.canvas.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
 				paintChords(event.getPainter());
@@ -124,7 +123,7 @@ public class TGChordList {
 	
 	private void fillBackground(UIPainter painter) {
 		UIRectangle bounds = this.canvas.getBounds();
-		painter.setBackground(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
 		painter.closePath();
@@ -143,10 +142,10 @@ public class TGChordList {
 			
 			UIColor color = getChordColor(chord);
 			chord.registerBuffer(this.resourceBuffer);
-			chord.setBackgroundColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+			chord.setBackgroundColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 			chord.setColor(color);
 			chord.setNoteColor(color);
-			chord.setTonicColor(this.dialog.getColor(TGColorManager.COLOR_DARK_RED));
+			chord.setTonicColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_TONIC));
 			chord.setFirstFretSpacing(CHORD_FIRST_FRET_SPACING);
 			chord.setStringSpacing(CHORD_STRING_SPACING);
 			chord.setFretSpacing(CHORD_FRET_SPACING);
@@ -173,9 +172,9 @@ public class TGChordList {
 	
 	private UIColor getChordColor(TGChordImpl chord){
 		if(this.selectedChord != null && this.selectedChord.equals(chord)){
-			return this.dialog.getColor(TGColorManager.COLOR_BLUE);
+			return this.dialog.getColor(TGChordStyleAdapter.COLOR_SELECTION);
 		}
-		return this.dialog.getColor(TGColorManager.COLOR_BLACK);
+		return this.dialog.getColor(TGChordStyleAdapter.COLOR_FOREGROUND);
 	}
 	
 	public void updateScroll() {

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
@@ -322,13 +322,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	}
 	
 	public void addListeners(){
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
@@ -593,7 +593,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
 		}
-		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		else if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIconsProcess.process();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

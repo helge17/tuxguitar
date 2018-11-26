@@ -11,7 +11,7 @@ import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.editor.EditorCache;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
@@ -110,14 +110,14 @@ public class TGTransportDialog implements TGEventListener {
 	}
 	
 	public void addListeners(){
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
@@ -472,7 +472,7 @@ public class TGTransportDialog implements TGEventListener {
 	}
 	
 	public void processEvent(final TGEvent event) {
-		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIconsProcess.process();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

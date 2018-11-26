@@ -2,8 +2,8 @@ package org.herac.tuxguitar.app.action.impl.system;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
+import org.herac.tuxguitar.app.system.icons.TGColorManager;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;

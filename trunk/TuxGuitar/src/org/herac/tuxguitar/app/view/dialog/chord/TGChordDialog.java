@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.color.TGColorManager;
+import org.herac.tuxguitar.app.system.icons.TGColorManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
@@ -57,6 +57,8 @@ public class TGChordDialog {
 		final UIFactory uiFactory = this.getUIFactory();
 		final UIWindow uiParent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
+		
+		TGChordStyleAdapter.appendColors(this.context.getContext());
 		
 		this.dialog = uiFactory.createWindow(uiParent, true, false);
 		this.dialog.setLayout(dialogLayout);
@@ -176,8 +178,8 @@ public class TGChordDialog {
 		}
 	}
 	
-	public UIColor getColor(int color) {
-		return TGColorManager.getInstance(this.context.getContext()).getColor(color);
+	public UIColor getColor(String colorId) {
+		return TGColorManager.getInstance(this.context.getContext()).getColor(colorId);
 	}
 	
 	private int[] findCurrentTuning(TGTrack track){
