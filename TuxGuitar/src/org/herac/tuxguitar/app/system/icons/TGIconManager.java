@@ -352,7 +352,7 @@ public class TGIconManager {
 		}
 	}
 	
-	public void disposeIcons(){
+	public void onSkinDisposed(){
 		this.disposeThemes();
 	}
 	
