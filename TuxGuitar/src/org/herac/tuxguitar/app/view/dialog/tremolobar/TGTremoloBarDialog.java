@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
+import org.herac.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
@@ -27,6 +28,7 @@ import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.widget.UIButton;
@@ -43,6 +45,24 @@ public class TGTremoloBarDialog{
 	private static final int Y_SPACING = 10;
 	private static final int X_LENGTH = TGEffectTremoloBar.MAX_POSITION_LENGTH + 1;
 	private static final int Y_LENGTH = (TGEffectTremoloBar.MAX_VALUE_LENGTH * 2) + 1;
+	
+	private static final String COLOR_BACKGROUND = "widget.bendEditor.backgroundColor";
+	private static final String COLOR_BORDER = "widget.bendEditor.border";
+	private static final String COLOR_BEND_LINE = "widget.bendEditor.bendLine";
+	private static final String COLOR_BEND_POINT = "widget.bendEditor.bendPoint";
+	private static final String COLOR_LINE_1 = "widget.bendEditor.line.1";
+	private static final String COLOR_LINE_2 = "widget.bendEditor.line.2";
+	private static final String COLOR_LINE_3 = "widget.bendEditor.line.3";
+	
+	private static final TGSkinnableColor[] SKINNABLE_COLORS = new TGSkinnableColor[] {
+		new TGSkinnableColor(COLOR_BACKGROUND, new UIColorModel(0xff, 0xff, 0xff)),
+		new TGSkinnableColor(COLOR_BORDER, new UIColorModel(0x00, 0x00, 0x00)),
+		new TGSkinnableColor(COLOR_BEND_POINT, new UIColorModel(0x00, 0x00, 0x00)),
+		new TGSkinnableColor(COLOR_BEND_LINE, new UIColorModel(0xc0, 0xc0, 0xc0)),
+		new TGSkinnableColor(COLOR_LINE_1, new UIColorModel(0xc0, 0xc0, 0xc0)),
+		new TGSkinnableColor(COLOR_LINE_2, new UIColorModel(0xff, 0x00, 0x00)),
+		new TGSkinnableColor(COLOR_LINE_3, new UIColorModel(0x00, 0x00, 0xff))
+	};
 	
 	private int[] x; 
 	private int[] y;
@@ -103,9 +123,10 @@ public class TGTremoloBarDialog{
 			
 			//-------------EDITOR---------------------------------------------------
 			this.colorManager = TGColorManager.getInstance(context.getContext());
+			this.colorManager.appendSkinnableColors(SKINNABLE_COLORS);
 			
 			this.editor = uiFactory.createCanvas(leftComposite, true);
-			this.editor.setBgColor(this.colorManager.getColor(TGColorManager.COLOR_WHITE));
+			this.editor.setBgColor(this.colorManager.getColor(COLOR_BACKGROUND));
 			this.editor.addPaintListener(new UIPaintListener() {
 				public void onPaint(UIPaintEvent event) {
 					paintEditor(event.getPainter());
@@ -200,7 +221,7 @@ public class TGTremoloBarDialog{
 		
 		painter.setLineStyleSolid();
 		painter.setLineWidth(2);
-		painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_GRAY));
+		painter.setForeground(this.colorManager.getColor(COLOR_BEND_LINE));
 		
 		UIPosition prevPoint = null;
 		for(UIPosition point : this.points) {
@@ -214,7 +235,7 @@ public class TGTremoloBarDialog{
 		}
 		
 		painter.setLineWidth(5);
-		painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
+		painter.setForeground(this.colorManager.getColor(COLOR_BEND_POINT));
 		
 		for(UIPosition point : this.points) {
 			painter.initPath();
@@ -228,9 +249,9 @@ public class TGTremoloBarDialog{
 	private void setStyleX(UIPainter painter,int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (X_LENGTH - 1)){
-			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
+			painter.setForeground(this.colorManager.getColor(COLOR_BORDER));
 		}else{
-			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLUE));
+			painter.setForeground(this.colorManager.getColor(COLOR_LINE_3));
 			if((i % 3) > 0){
 				painter.setLineStyleDot();
 			}
@@ -240,15 +261,15 @@ public class TGTremoloBarDialog{
 	private void setStyleY(UIPainter painter,int i){
 		painter.setLineStyleSolid();
 		if(i == 0 || i == (Y_LENGTH - 1)){
-			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
+			painter.setForeground(this.colorManager.getColor(COLOR_BORDER));
 		}
 		else if(i == (TGEffectTremoloBar.MAX_VALUE_LENGTH)){
-			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_BLACK));
+			painter.setForeground(this.colorManager.getColor(COLOR_BORDER));
 		}else{
-			painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_RED));
+			painter.setForeground(this.colorManager.getColor(COLOR_LINE_2));
 			if((i % 2) > 0){
 				painter.setLineStyleDot();
-				painter.setForeground(this.colorManager.getColor(TGColorManager.COLOR_GRAY));
+				painter.setForeground(this.colorManager.getColor(COLOR_LINE_1));
 			}
 		}
 	}
