@@ -77,6 +77,11 @@ public class TGSkinManager {
 		return properties;
 	}
 	
+	public void dispose() {
+		TGIconManager.getInstance(this.context).onSkinDisposed();
+		TGColorManager.getInstance(this.context).onSkinDisposed();
+	}
+	
 	public static TGSkinManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGSkinManager.class.getName(), new TGSingletonFactory<TGSkinManager>() {
 			public TGSkinManager createInstance(TGContext context) {

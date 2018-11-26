@@ -83,7 +83,11 @@ public class TGColorManager {
 		this.updateSkinnableColors();
 	}
 	
-	public void dispose() {
+	public void onSkinDisposed() {
+		this.disposeColors();
+	}
+	
+	public void disposeColors() {
 		if( this.colors != null ) {
 			for(UIColor uiColor : this.colors.values()) {
 				uiColor.dispose();
