@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.app.tools.custom.converter;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.main.TGWindow;
@@ -71,7 +71,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 		this.dialog.setBounds(new UIRectangle(0, 0, SHELL_WIDTH, SHELL_HEIGHT));
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
-				TuxGuitar.getInstance().getIconManager().removeLoader( TGConverterProcess.this );
+				TuxGuitar.getInstance().getSkinManager().removeLoader( TGConverterProcess.this );
 				TuxGuitar.getInstance().getLanguageManager().removeLoader( TGConverterProcess.this );
 			}
 		});
@@ -114,7 +114,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 		this.loadIcons(false);
 		this.loadProperties(false);
 		
-		TuxGuitar.getInstance().getIconManager().addLoader( this );
+		TuxGuitar.getInstance().getSkinManager().addLoader( this );
 		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
 		
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
@@ -238,7 +238,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	}
 
 	public void processEvent(TGEvent event) {
-		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIcons();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

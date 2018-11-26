@@ -10,7 +10,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogActio
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
@@ -87,7 +87,7 @@ public class TGTableViewer implements TGEventListener {
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 	}
 	
 	public void init(UIContainer parent){
@@ -601,7 +601,7 @@ public class TGTableViewer implements TGEventListener {
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadPropertiesProcess.process();
 		}
-		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		else if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIconsProcess.process();
 		}
 	}

@@ -18,6 +18,7 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.error.TGErrorAdapter;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.system.icons.TGSkinManager;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesAdapter;
@@ -283,6 +284,10 @@ public class TuxGuitar {
 	
 	public TGIconManager getIconManager(){
 		return TGIconManager.getInstance(this.context);
+	}
+	
+	public TGSkinManager getSkinManager(){
+		return TGSkinManager.getInstance(this.context);
 	}
 	
 	public TGCustomChordManager getCustomChordManager(){

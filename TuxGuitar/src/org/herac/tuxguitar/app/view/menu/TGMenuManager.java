@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.main.TGWindow;
@@ -191,7 +191,7 @@ public class TGMenuManager implements TGEventListener {
 	}
 	
 	public void appendListeners() {
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 		TuxGuitar.getInstance().getFileFormatManager().addFileFormatAvailabilityListener(this);
@@ -208,7 +208,7 @@ public class TGMenuManager implements TGEventListener {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
 		}
-		else if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		else if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIconsProcess.process();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

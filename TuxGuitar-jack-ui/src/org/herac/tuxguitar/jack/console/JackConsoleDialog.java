@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.jack.console;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
@@ -50,7 +50,7 @@ public class JackConsoleDialog implements TGEventListener {
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
-				TuxGuitar.getInstance().getIconManager().removeLoader( JackConsoleDialog.this );
+				TuxGuitar.getInstance().getSkinManager().removeLoader( JackConsoleDialog.this );
 				TuxGuitar.getInstance().getLanguageManager().removeLoader( JackConsoleDialog.this );
 			}
 		});
@@ -108,7 +108,7 @@ public class JackConsoleDialog implements TGEventListener {
 		this.loadIcons(false);
 		this.loadProperties(false);
 		
-		TuxGuitar.getInstance().getIconManager().addLoader( this );
+		TuxGuitar.getInstance().getSkinManager().addLoader( this );
 		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
 		
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
@@ -181,7 +181,7 @@ public class JackConsoleDialog implements TGEventListener {
 	}
 
 	public void processEvent(TGEvent event) {
-		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIcons();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

@@ -87,7 +87,7 @@ import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenKeyBindingEditorAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenPluginListDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
-import org.herac.tuxguitar.app.action.impl.settings.TGReloadIconsAction;
+import org.herac.tuxguitar.app.action.impl.settings.TGReloadSkinAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadLanguageAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadMidiDevicesAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
@@ -471,7 +471,7 @@ public class TGActionInstaller {
 		//system
 		installAction(new TGReloadSettingsAction(context));
 		installAction(new TGReloadTitleAction(context));
-		installAction(new TGReloadIconsAction(context));
+		installAction(new TGReloadSkinAction(context));
 		installAction(new TGReloadLanguageAction(context));
 		installAction(new TGReloadMidiDevicesAction(context));
 		installAction(new TGReloadStylesAction(context));

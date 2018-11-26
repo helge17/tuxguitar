@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChord;
@@ -126,7 +125,7 @@ public class TGChordEditor {
 		this.chordName = uiFactory.createTextField(nameComposite);
 		nameLayout.set(this.chordName, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false);
 		
-		this.canvas.setBgColor(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		this.canvas.setBgColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		this.canvas.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
 				paintEditor(event.getPainter());
@@ -159,12 +158,12 @@ public class TGChordEditor {
 		
 		// fill background
 		UIRectangle bounds = this.canvas.getBounds();
-		painter.setBackground(this.dialog.getColor(TGColorManager.COLOR_WHITE));
+		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
 		painter.closePath();
 		
-		painter.setForeground(this.dialog.getColor(TGColorManager.COLOR_BLACK));
+		painter.setForeground(this.dialog.getColor(TGChordStyleAdapter.COLOR_FOREGROUND));
 		
 		// dibujo el puente
 		painter.initPath();
@@ -194,7 +193,7 @@ public class TGChordEditor {
 		painter.closePath();
 		
 		// dibujo las notas
-		painter.setBackground(this.dialog.getColor(TGColorManager.COLOR_BLACK));
+		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_FOREGROUND));
 		
 		for(UIPosition point : this.points) {
 			painter.initPath(UIPainter.PATH_FILL);

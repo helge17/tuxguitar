@@ -18,7 +18,7 @@ public class TGReloadSettingsAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 		tgActionManager.execute(TGReloadTitleAction.NAME, context);
-		tgActionManager.execute(TGReloadIconsAction.NAME, context);
+		tgActionManager.execute(TGReloadSkinAction.NAME, context);
 		tgActionManager.execute(TGReloadLanguageAction.NAME, context);
 		tgActionManager.execute(TGReloadStylesAction.NAME, context);
 		tgActionManager.execute(TGReloadTableSettingsAction.NAME, context);

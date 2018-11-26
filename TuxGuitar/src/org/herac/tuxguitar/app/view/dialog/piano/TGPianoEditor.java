@@ -3,7 +3,7 @@ package org.herac.tuxguitar.app.view.dialog.piano;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerEvent;
 import org.herac.tuxguitar.app.editor.TGExternalBeatViewerManager;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.scale.ScaleEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
@@ -64,7 +64,7 @@ public class TGPianoEditor implements TGEventListener{
 	}
 	
 	public void addListeners(){
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getScaleManager().addListener(this);
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
@@ -72,7 +72,7 @@ public class TGPianoEditor implements TGEventListener{
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getScaleManager().removeListener(this); 
 		TuxGuitar.getInstance().getEditorManager().removeRedrawListener(this);
@@ -162,7 +162,7 @@ public class TGPianoEditor implements TGEventListener{
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+				if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 					loadIcons();
 				}
 				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

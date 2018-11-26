@@ -3,9 +3,9 @@
  */
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
-import org.herac.tuxguitar.app.system.color.TGColorManager;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.system.icons.TGColorManager;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;

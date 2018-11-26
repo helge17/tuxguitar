@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.event.TGEvent;
@@ -29,7 +29,7 @@ public class TGTray implements TGEventListener {
 		this.tray = this.display.getSystemTray();
 		this.icon = new TGTrayIcon();
 		this.menu = new TGTrayMenu(context);
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 	}
 	
@@ -93,7 +93,7 @@ public class TGTray implements TGEventListener {
 	}
 
 	public void processEvent(TGEvent event) {
-		if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+		if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIcons();
 		}
 		else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {

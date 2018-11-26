@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
@@ -166,18 +164,6 @@ public class TGIconManager {
 		this.loadIcons();
 	}
 	
-	public void addLoader(TGEventListener listener){
-		TGEventManager.getInstance(this.context).addListener(TGIconEvent.EVENT_TYPE, listener);
-	}
-	
-	public void removeLoader(TGEventListener listener){
-		TGEventManager.getInstance(this.context).removeListener(TGIconEvent.EVENT_TYPE, listener);
-	}
-	
-	private void fireChanges(){
-		TGEventManager.getInstance(this.context).fireEvent(new TGIconEvent());
-	}
-	
 	public TGIconTheme findIconTheme(String theme) {
 		if( this.themeCache.containsKey(theme) ) {
 			return this.themeCache.get(theme);
@@ -190,15 +176,6 @@ public class TGIconManager {
 	
 	public String findConfiguredThemeName() {
 		return TGSkinManager.getInstance(this.context).getCurrentSkin();
-	}
-	
-	public boolean shouldReload(){
-		return ( this.theme == null || !this.theme.getName().equals(findConfiguredThemeName()));
-	}
-	
-	public void reloadIcons(){
-		this.loadIcons();
-		this.fireChanges();
 	}
 	
 	public void loadIcons(){
@@ -377,6 +354,10 @@ public class TGIconManager {
 	
 	public void disposeIcons(){
 		this.disposeThemes();
+	}
+	
+	public void onSkinChange() {
+		this.loadIcons();
 	}
 	
 	public UIImage getDuration(int value){

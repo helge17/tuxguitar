@@ -9,7 +9,7 @@ import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.TGIconEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
@@ -160,13 +160,13 @@ public class TGMatrixEditor implements TGEventListener {
 	public void addListeners(){
 		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.toolbar);
 		TuxGuitar.getInstance().getKeyBindingManager().appendListenersTo(this.editor);
-		TuxGuitar.getInstance().getIconManager().addLoader(this);
+		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener( this );
 	}
 	
 	public void removeListeners(){
-		TuxGuitar.getInstance().getIconManager().removeLoader(this);
+		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeRedrawListener( this );
 	}
@@ -806,7 +806,7 @@ public class TGMatrixEditor implements TGEventListener {
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				if( TGIconEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+				if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 					loadIcons();
 				}
 				else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
