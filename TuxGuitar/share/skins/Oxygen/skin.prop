@@ -21,5 +21,8 @@
 #widget.bendEditor.line.1=128,128,128
 #widget.bendEditor.line.2=128,0,0
 #widget.bendEditor.line.3=0,0,128
-
+#
 #widget.printPreview.backgroundColor=${uiWidgetBackground}
+#
+#widget.transport.backgroundColor=0,0,0
+#widget.transport.foregroundColor=0,0,128

@@ -68,7 +68,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_CARET_2,"165,42,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_S_MARKER,"42,165,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_E_MARKER,"165,42,42");
-		loadProperty(properties, TGConfigKeys.COLOR_MEASURE_NUMBER,"255,0,0");
+		loadProperty(properties, TGConfigKeys.COLOR_MEASURE_NUMBER,"128,0,0");
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES,10);
 		loadProperty(properties, TGConfigKeys.LANGUAGE,"");
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STRING_SPACING,20);

@@ -11,6 +11,8 @@ import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.editor.EditorCache;
+import org.herac.tuxguitar.app.system.icons.TGColorManager;
+import org.herac.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.transport.TGTransport;
@@ -39,6 +41,7 @@ import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
@@ -61,6 +64,14 @@ public class TGTransportDialog implements TGEventListener {
 	public static final int STATUS_STOPPED = 1;
 	public static final int STATUS_PAUSED = 2;
 	public static final int STATUS_RUNNING = 3;
+	
+	private static final String COLOR_BACKGROUND = "widget.transport.backgroundColor";
+	private static final String COLOR_FOREGROUND = "widget.transport.foregroundColor";
+	
+	private static final TGSkinnableColor[] SKINNABLE_COLORS = new TGSkinnableColor[] {
+		new TGSkinnableColor(COLOR_BACKGROUND, new UIColorModel(0x00, 0x00, 0x00)),
+		new TGSkinnableColor(COLOR_FOREGROUND, new UIColorModel(0x00, 0x00, 0x80)),
+	};
 	
 	private TGContext context;
 	private UIWindow dialog;
@@ -167,8 +178,11 @@ public class TGTransportDialog implements TGEventListener {
 	private void initLabel(UILayoutContainer parent) {
 		final UIFactory factory = this.getUIFactory();
 		final UIFont font = factory.createFont("Minisystem", 24, false, false);
-		final UIColor background = factory.createColor(0x00, 0x00, 0x00);
-		final UIColor foreground = factory.createColor(0x00, 0x00, 0xff);
+		
+		TGColorManager tgColorManager = TGColorManager.getInstance(this.context);
+		tgColorManager.appendSkinnableColors(SKINNABLE_COLORS);
+		UIColor background = tgColorManager.getColor(COLOR_BACKGROUND);
+		UIColor foreground = tgColorManager.getColor(COLOR_FOREGROUND);
 		
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
 		
@@ -186,8 +200,6 @@ public class TGTransportDialog implements TGEventListener {
 		labelContainer.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				font.dispose();
-				background.dispose();
-				foreground.dispose();
 			}
 		});
 		labelContainerLayout.set(this.label, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
