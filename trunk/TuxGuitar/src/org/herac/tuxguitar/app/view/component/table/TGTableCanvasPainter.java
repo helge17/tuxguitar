@@ -29,6 +29,7 @@ public class TGTableCanvasPainter {
 		UIColor colorBlack = this.viewer.getUIFactory().createColor(COLOR_BLACK);
 		UIColor colorBackground = this.viewer.getColorModel().createBackground(this.viewer.getContext(), 3);
 		
+		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
 		painter.setBackground(colorBackground);
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.setAntialias(false);
@@ -43,7 +44,7 @@ public class TGTableCanvasPainter {
 		for(int j = 0;j < count;j++){
 			TGMeasureImpl measure = (TGMeasureImpl) this.track.getMeasure(j);
 			if(isRestMeasure(measure)){
-				painter.initPath();
+				painter.initPath(UIPainter.PATH_DRAW);
 				painter.setAntialias(false);
 				painter.addRectangle(x, y, size - 2, size - 1);
 				painter.closePath();
