@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.app.system.variables;
 
+import java.util.List;
+
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
@@ -19,5 +21,10 @@ public class TGVarAdapter {
 		tgExpressionResolver.setVariable(TGUserSharePath.NAME, new TGUserSharePath());
 		tgExpressionResolver.setVariable(TGConfigPath.NAME, new TGConfigPath());
 		tgExpressionResolver.setVariable(TGPluginConfigPath.NAME, new TGPluginConfigPath());
+		
+		List<TGVarColorAppearance> tgVarColorAppearances = TGVarColorAppearance.createVars(context);
+		for(TGVarColorAppearance tgVarColorAppearance : tgVarColorAppearances) {
+			tgExpressionResolver.setVariable(tgVarColorAppearance.getName(), tgVarColorAppearance);
+		}
 	}
 }

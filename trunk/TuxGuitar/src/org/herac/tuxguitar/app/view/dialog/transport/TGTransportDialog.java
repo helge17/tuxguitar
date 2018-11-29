@@ -166,7 +166,7 @@ public class TGTransportDialog implements TGEventListener {
 	
 	private void initLabel(UILayoutContainer parent) {
 		final UIFactory factory = this.getUIFactory();
-		final UIFont font = factory.createFont("Minisystem", 36, false, false);
+		final UIFont font = factory.createFont("Minisystem", 24, false, false);
 		final UIColor background = factory.createColor(0x00, 0x00, 0x00);
 		final UIColor foreground = factory.createColor(0x00, 0x00, 0xff);
 		

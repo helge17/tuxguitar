@@ -21,6 +21,8 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.appearance.UIAppearance;
+import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UIMouseUpListener;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
@@ -53,16 +55,6 @@ public class TGTremoloBarDialog{
 	private static final String COLOR_LINE_1 = "widget.bendEditor.line.1";
 	private static final String COLOR_LINE_2 = "widget.bendEditor.line.2";
 	private static final String COLOR_LINE_3 = "widget.bendEditor.line.3";
-	
-	private static final TGSkinnableColor[] SKINNABLE_COLORS = new TGSkinnableColor[] {
-		new TGSkinnableColor(COLOR_BACKGROUND, new UIColorModel(0xff, 0xff, 0xff)),
-		new TGSkinnableColor(COLOR_BORDER, new UIColorModel(0x00, 0x00, 0x00)),
-		new TGSkinnableColor(COLOR_BEND_POINT, new UIColorModel(0x00, 0x00, 0x00)),
-		new TGSkinnableColor(COLOR_BEND_LINE, new UIColorModel(0xc0, 0xc0, 0xc0)),
-		new TGSkinnableColor(COLOR_LINE_1, new UIColorModel(0xc0, 0xc0, 0xc0)),
-		new TGSkinnableColor(COLOR_LINE_2, new UIColorModel(0xff, 0x00, 0x00)),
-		new TGSkinnableColor(COLOR_LINE_3, new UIColorModel(0x00, 0x00, 0xff))
-	};
 	
 	private int[] x; 
 	private int[] y;
@@ -97,6 +89,7 @@ public class TGTremoloBarDialog{
 		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
 		if( measure != null && beat != null && note != null && string != null ) {
+			final UIAppearance appearance = TGApplication.getInstance(context.getContext()).getAppearance();;
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			final UITableLayout dialogLayout = new UITableLayout();
@@ -123,7 +116,15 @@ public class TGTremoloBarDialog{
 			
 			//-------------EDITOR---------------------------------------------------
 			this.colorManager = TGColorManager.getInstance(context.getContext());
-			this.colorManager.appendSkinnableColors(SKINNABLE_COLORS);
+			this.colorManager.appendSkinnableColors(new TGSkinnableColor[] {
+				new TGSkinnableColor(COLOR_BACKGROUND, appearance.getColorModel(UIColorAppearance.InputBackground)),
+				new TGSkinnableColor(COLOR_BORDER, appearance.getColorModel(UIColorAppearance.InputForeground)),
+				new TGSkinnableColor(COLOR_BEND_POINT, appearance.getColorModel(UIColorAppearance.InputForeground)),
+				new TGSkinnableColor(COLOR_BEND_LINE, new UIColorModel(0x80, 0x80, 0x80)),
+				new TGSkinnableColor(COLOR_LINE_1, new UIColorModel(0x80, 0x80, 0x80)),
+				new TGSkinnableColor(COLOR_LINE_2, new UIColorModel(0x80, 0x00, 0x00)),
+				new TGSkinnableColor(COLOR_LINE_3, new UIColorModel(0x00, 0x00, 0x80))
+			});
 			
 			this.editor = uiFactory.createCanvas(leftComposite, true);
 			this.editor.setBgColor(this.colorManager.getColor(COLOR_BACKGROUND));

@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
+import org.herac.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.appearance.UIAppearance;
+import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIKeyEvent;
 import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
@@ -35,6 +38,8 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 public class TGPrintPreviewDialog{
 	
 	private static final int SCROLL_INCREMENT = 50;
+	
+	private static final String COLOR_BACKGROUND = "widget.printPreview.backgroundColor";
 	
 	public static final String ATTRIBUTE_PAGES = (TGPrintPreviewDialog.class.getName() + "-pages");
 	public static final String ATTRIBUTE_SIZE = (TGPrintPreviewDialog.class.getName() + "-size");
@@ -142,20 +147,26 @@ public class TGPrintPreviewDialog{
 	}
 	
 	private void initPreviewComposite() {
+		final UIAppearance appearance = this.getUIAppearance();
 		final UIFactory factory = this.getUIFactory();
 		UITableLayout dialogLayout = (UITableLayout) this.dialog.getLayout();
 		UITableLayout previewLayout = new UITableLayout();
 		
+		TGColorManager colorManager = TGColorManager.getInstance(this.context.getContext());
+		colorManager.appendSkinnableColors(new TGSkinnableColor[] {
+			new TGSkinnableColor(COLOR_BACKGROUND, appearance.getColorModel(UIColorAppearance.WidgetBackground))
+		});
+		
 		this.previewComposite = factory.createScrollBarPanel(this.dialog, true, false, true);
 		this.previewComposite.setLayout(previewLayout);
-		this.previewComposite.setBgColor(TGColorManager.getInstance(this.context.getContext()).getColor(TGColorManager.COLOR_GRAY));
+		this.previewComposite.setBgColor(colorManager.getColor(COLOR_BACKGROUND));
 		this.previewComposite.setFocus();
 		dialogLayout.set(this.previewComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		dialogLayout.set(this.previewComposite, UITableLayout.PACKED_WIDTH, 0f);
 		dialogLayout.set(this.previewComposite, UITableLayout.PACKED_HEIGHT, 0f);
 		
 		this.pageComposite = factory.createCanvas(this.previewComposite, true);
-		this.pageComposite.setBgColor(TGColorManager.getInstance(this.context.getContext()).getColor(TGColorManager.COLOR_WHITE));
+		this.pageComposite.setBgColor(colorManager.getColor(TGColorManager.COLOR_WHITE));
 		this.pageComposite.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
 				if(TGPrintPreviewDialog.this.currentPage >= 0){
@@ -214,6 +225,10 @@ public class TGPrintPreviewDialog{
 
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context.getContext()).getFactory();
+	}
+	
+	public UIAppearance getUIAppearance() {
+		return TGApplication.getInstance(this.context.getContext()).getAppearance();
 	}
 	
 	public TGViewContext getContext() {

@@ -27,7 +27,7 @@ public class TGTableCanvasPainter {
 		boolean playing = TuxGuitar.getInstance().getPlayer().isRunning();
 		
 		UIColor colorBlack = this.viewer.getUIFactory().createColor(COLOR_BLACK);
-		UIColor colorBackground = this.viewer.getColorModel().createBackground(this.viewer.getContext(), 2);
+		UIColor colorBackground = this.viewer.getColorModel().createBackground(this.viewer.getContext(), 3);
 		
 		painter.setBackground(colorBackground);
 		painter.initPath(UIPainter.PATH_FILL);

@@ -3,24 +3,14 @@ package org.herac.tuxguitar.app.view.component.table;
 import org.herac.tuxguitar.app.system.icons.TGSkinManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.ui.appearance.UIAppearance;
+import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGTableColorModel {
-	
-	private static final UIColorModel[] DEFAULT_BACKGROUNDS = new UIColorModel[] {
-		new UIColorModel(255, 255, 255),
-		new UIColorModel(238, 238, 238),
-		new UIColorModel(192, 192, 192),
-	};
-	
-	private static final UIColorModel[] DEFAULT_FOREGROUNDS = new UIColorModel[] {
-		new UIColorModel(0, 0, 0),
-		new UIColorModel(0, 0, 0),
-		new UIColorModel(0, 0, 0),
-	};
 	
 	private UIColorModel[] backgrounds;
 	private UIColorModel[] foregrounds;
@@ -30,16 +20,31 @@ public class TGTableColorModel {
 	}
 	
 	public void resetColors(TGContext context) {
+		UIAppearance appearance = TGApplication.getInstance(context).getAppearance();;
 		TGProperties properties = TGSkinManager.getInstance(context).getCurrentSkinProperties();
 		
-		this.foregrounds = new UIColorModel[DEFAULT_FOREGROUNDS.length];
+		UIColorModel[] defaultForegrounds = new UIColorModel[] {
+			appearance.getColorModel(UIColorAppearance.WidgetLightForeground),
+			appearance.getColorModel(UIColorAppearance.WidgetHighlightForeground),
+			appearance.getColorModel(UIColorAppearance.WidgetSelectedForeground),
+			appearance.getColorModel(UIColorAppearance.WidgetSelectedForeground),
+		};
+		
+		UIColorModel[] defaultBackgrounds = new UIColorModel[] {
+			appearance.getColorModel(UIColorAppearance.WidgetLightBackground),
+			appearance.getColorModel(UIColorAppearance.WidgetHighlightBackground),
+			appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground),
+			appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground),
+		};
+		
+		this.foregrounds = new UIColorModel[defaultForegrounds.length];
 		for(int i = 0 ; i < this.foregrounds.length; i ++) {
-			this.foregrounds[i] = TGPropertiesUIUtil.getColorModelValue(properties, ("table.foreground." + i), DEFAULT_FOREGROUNDS[i]);
+			this.foregrounds[i] = TGPropertiesUIUtil.getColorModelValue(context, properties, ("table.foreground." + i), defaultForegrounds[i]);
 		}
 		
-		this.backgrounds = new UIColorModel[DEFAULT_BACKGROUNDS.length];
+		this.backgrounds = new UIColorModel[defaultBackgrounds.length];
 		for(int i = 0 ; i < this.backgrounds.length; i ++) {
-			this.backgrounds[i] = TGPropertiesUIUtil.getColorModelValue(properties, ("table.background." + i), DEFAULT_BACKGROUNDS[i]);
+			this.backgrounds[i] = TGPropertiesUIUtil.getColorModelValue(context, properties, ("table.background." + i), defaultBackgrounds[i]);
 		}
 	}
 	
@@ -52,7 +57,7 @@ public class TGTableColorModel {
 	}
 	
 	public UIColor[] createForegrounds(TGContext context) {
-		UIColor[] colors = new UIColor[DEFAULT_FOREGROUNDS.length];
+		UIColor[] colors = new UIColor[this.foregrounds.length];
 		for(int i = 0 ; i < this.foregrounds.length; i ++) {
 			colors[i] = this.createForeground(context, i);
 		}
@@ -60,7 +65,7 @@ public class TGTableColorModel {
 	}
 	
 	public UIColor[] createBackgrounds(TGContext context) {
-		UIColor[] colors = new UIColor[DEFAULT_BACKGROUNDS.length];
+		UIColor[] colors = new UIColor[this.backgrounds.length];
 		for(int i = 0 ; i < this.backgrounds.length; i ++) {
 			colors[i] = this.createBackground(context, i);
 		}

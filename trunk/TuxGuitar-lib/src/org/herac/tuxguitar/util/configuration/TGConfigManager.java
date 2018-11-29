@@ -36,6 +36,10 @@ public class TGConfigManager {
 		return this.properties;
 	}
 	
+	public TGContext getContext() {
+		return this.context;
+	}
+
 	public String getStringValue(String key) {
 		return TGPropertiesUtil.getStringValue(this.properties, key);
 	}

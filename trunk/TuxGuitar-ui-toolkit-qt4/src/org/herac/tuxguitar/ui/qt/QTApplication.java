@@ -4,6 +4,8 @@ import java.net.URL;
 
 import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.appearance.UIAppearance;
+import org.herac.tuxguitar.ui.qt.appearance.QTAppearance;
 
 import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.gui.QDesktopServices;
@@ -12,6 +14,7 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	
 	private Thread uiThread;
 	private UIFactory uiFactory;
+	private UIAppearance uiAppearance;
 	private QTEnvironment environment;
 	
 	public QTApplication(String name) {
@@ -19,6 +22,7 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 		
 		this.environment = new QTEnvironment();
 		this.uiFactory = new QTFactory();
+		this.uiAppearance = new QTAppearance();
 		
 		this.getControl().setApplicationName(name);
 	}
@@ -31,6 +35,10 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 	
 	public UIFactory getFactory() {
 		return this.uiFactory;
+	}
+	
+	public UIAppearance getAppearance() {
+		return this.uiAppearance;
 	}
 	
 	public void openUrl(URL url) {

@@ -6,6 +6,7 @@ import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.ui.UIApplicationFactory;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.appearance.UIAppearance;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGServiceReader;
@@ -18,11 +19,13 @@ public class TGApplication {
 	
 	private TGContext context;
 	private UIApplication application;
+	private UIAppearance appearance;
 	private UIFactory factory;
 	
 	public TGApplication(TGContext context) {
 		this.context = context;
 		this.application = this.lookupApplication().createApplication(NAME);
+		this.appearance = this.application.getAppearance();
 		this.factory = this.application.getFactory();
 	}
 	
@@ -35,11 +38,16 @@ public class TGApplication {
 	}
 	
 	public UIApplication getApplication() {
-		return application;
+		return this.application;
+	}
+
+	
+	public UIAppearance getAppearance() {
+		return this.appearance;
 	}
 
 	public UIFactory getFactory() {
-		return factory;
+		return this.factory;
 	}
 
 	public boolean isDisposed() {

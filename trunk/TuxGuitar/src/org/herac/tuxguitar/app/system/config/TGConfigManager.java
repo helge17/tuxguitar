@@ -28,7 +28,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	}
 	
 	public UIColorModel getColorModelConfigValue(String key){
-		return TGPropertiesUIUtil.getColorModelValue(this.getProperties(), key);
+		return TGPropertiesUIUtil.getColorModelValue(this.getContext(), this.getProperties(), key);
 	}
 	
 	public static TGConfigManager getInstance(TGContext context) {
