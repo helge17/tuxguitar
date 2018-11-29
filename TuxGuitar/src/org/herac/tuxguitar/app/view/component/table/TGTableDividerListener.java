@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.view.component.table;
 import org.herac.tuxguitar.ui.event.UIMouseDragListener;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 public class TGTableDividerListener implements UIMouseDragListener {
@@ -35,8 +36,15 @@ public class TGTableDividerListener implements UIMouseDragListener {
 	}
 	
 	private Float computeWidth(UIControl control, float move) {
+		UISize currentPackedSize = control.getPackedSize();
+		
+		control.computePackedSize(null, null);
+		UISize computedPackedSize = control.getPackedSize();
+		
+		control.computePackedSize(currentPackedSize.getWidth(), currentPackedSize.getHeight());
+		
 		float newWidth = (control.getBounds().getWidth() + move);
-		if( newWidth >= control.getPackedSize().getWidth()) {
+		if( newWidth >= computedPackedSize.getWidth()) {
 			return newWidth;
 		}
 		return null;

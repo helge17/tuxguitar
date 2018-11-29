@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
 import org.herac.tuxguitar.ui.event.UICloseListener;
+import org.herac.tuxguitar.ui.jfx.appearance.JFXAppearance;
 import org.herac.tuxguitar.ui.jfx.event.JFXCloseListenerManager;
 import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
 import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
@@ -43,7 +44,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		
 		this.stage = stage;
 		this.stage.setScene(new Scene(getControl()));
-		this.stage.getScene().getStylesheets().add("styles/styles.css");
+		this.stage.getScene().getStylesheets().add(JFXAppearance.CSS_RESOURCE);
 		this.stage.setWidth(DEFAULT_WINDOW_WIDTH);
 		this.stage.setHeight(DEFAULT_WINDOW_HEIGHT);
 		this.margin = new UIInset();

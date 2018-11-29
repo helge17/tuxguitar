@@ -2,6 +2,8 @@ package org.herac.tuxguitar.app.system.properties;
 
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
+import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGExpressionResolver;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGPropertiesUIUtil {
@@ -34,10 +36,12 @@ public class TGPropertiesUIUtil {
 		return TGPropertiesUIUtil.getFontModelValue(properties, key, null);
 	}
 	
-	public static UIColorModel getColorModelValue(TGProperties properties, String key, UIColorModel defaultValue) {
+	public static UIColorModel getColorModelValue(TGContext context, TGProperties properties, String key, UIColorModel defaultValue) {
 		try{
 			String value = properties.getValue(key);
-			if(value != null){
+			if( value != null) {
+				value = TGExpressionResolver.getInstance(context).resolve(value);
+				
 				String[] values = value.trim().split(",");
 				if(values != null && values.length == 3){
 					try{
@@ -57,8 +61,8 @@ public class TGPropertiesUIUtil {
 		return defaultValue;
 	}
 	
-	public static UIColorModel getColorModelValue(TGProperties properties, String key) {
-		return TGPropertiesUIUtil.getColorModelValue(properties, key, null);
+	public static UIColorModel getColorModelValue(TGContext context, TGProperties properties, String key) {
+		return TGPropertiesUIUtil.getColorModelValue(context, properties, key, null);
 	}
 	
 	public static void setValue(TGProperties properties, String key, UIFontModel value){

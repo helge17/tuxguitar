@@ -6,15 +6,19 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Display;
 import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.appearance.UIAppearance;
+import org.herac.tuxguitar.ui.swt.appearance.SWTAppearance;
 
 public class SWTApplication extends SWTComponent<Display> implements UIApplication {
 	
 	private UIFactory factory;
+	private UIAppearance appearance;
 	
 	public SWTApplication(String name) {
 		super(createDisplay(name));
 		
 		this.factory = new SWTFactory(this.getControl());
+		this.appearance = new SWTAppearance(this.getDisplay());
 	}
 	
 	public void dispose() {
@@ -27,6 +31,10 @@ public class SWTApplication extends SWTComponent<Display> implements UIApplicati
 	
 	public UIFactory getFactory() {
 		return this.factory;
+	}
+	
+	public UIAppearance getAppearance() {
+		return this.appearance;
 	}
 
 	public Display getDisplay() {

@@ -23,6 +23,7 @@ public class TGColorManager {
 	public static final String COLOR_BLUE = "blue";
 	public static final String COLOR_RED = "red";
 	public static final String COLOR_DARK_RED = "darkRed";
+	public static final String COLOR_DARK_BLUE = "darkBlue";
 	
 	private TGContext context;
 	private Map<String, UIColor> colors;
@@ -40,10 +41,11 @@ public class TGColorManager {
 		
 		this.colors.put(COLOR_WHITE, uiFactory.createColor(0xff, 0xff, 0xff));
 		this.colors.put(COLOR_BLACK, uiFactory.createColor(0x00, 0x00, 0x00));
-		this.colors.put(COLOR_GRAY, uiFactory.createColor(0xc0, 0xc0, 0xc0));
+		this.colors.put(COLOR_GRAY, uiFactory.createColor(0x80, 0x80, 0x80));
 		this.colors.put(COLOR_BLUE, uiFactory.createColor(0x00, 0x00, 0xff));
 		this.colors.put(COLOR_RED, uiFactory.createColor(0xff, 0x00, 0x00));
 		this.colors.put(COLOR_DARK_RED, uiFactory.createColor(0x80, 0x00, 0x00));
+		this.colors.put(COLOR_DARK_BLUE, uiFactory.createColor(0x00, 0x00, 0x80));
 	}
 	
 	public void appendSkinnableColors(TGSkinnableColor[] skinnableColors) {
@@ -63,7 +65,7 @@ public class TGColorManager {
 	
 	public void updateSkinnableColor(TGSkinnableColor skinnableColor, TGProperties skinProperties) {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
-		UIColor uiColor = uiFactory.createColor(TGPropertiesUIUtil.getColorModelValue(skinProperties, skinnableColor.getColorId(), skinnableColor.getDefaultModel()));
+		UIColor uiColor = uiFactory.createColor(TGPropertiesUIUtil.getColorModelValue(this.context, skinProperties, skinnableColor.getColorId(), skinnableColor.getDefaultModel()));
 		
 		if( this.colors.containsKey(skinnableColor.getColorId())) {
 			this.colors.remove(skinnableColor.getColorId()).dispose();
