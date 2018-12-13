@@ -4,15 +4,16 @@ import java.awt.Font;
 
 import org.herac.tuxguitar.ui.resource.UIFont;
 
-public class TGFontImpl implements UIFont {
+public class AWTFont implements UIFont {
 	
 	private Font handle;
+	private AWTFontMetrics fontMetrics;
 	
-	public TGFontImpl( Font handle ){
+	public AWTFont( Font handle ){
 		this.handle = handle;
 	}
 	
-	public TGFontImpl(String name, float height, boolean bold, boolean italic){
+	public AWTFont(String name, float height, boolean bold, boolean italic){
 		this( new Font(name, ( (bold ? Font.BOLD : 0) | (italic ? Font.ITALIC : 0)) , Math.round(height)) );
 	}
 	
@@ -42,5 +43,12 @@ public class TGFontImpl implements UIFont {
 	
 	public void dispose(){
 		this.handle = null;
+	}
+	
+	public AWTFontMetrics getFontMetrics() {
+		if( this.fontMetrics == null ) {
+			this.fontMetrics = new AWTFontMetrics(this.getHandle());
+		}
+		return this.fontMetrics;
 	}
 }

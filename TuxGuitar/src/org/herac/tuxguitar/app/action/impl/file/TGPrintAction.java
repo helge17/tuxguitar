@@ -64,7 +64,7 @@ public class TGPrintAction extends TGActionBase{
 		
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, printer.getResourceFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
-		printLayout.loadStyles(printer.getDpiScale(), 1f);
+		printLayout.loadStyles(printer.getDpiScale(), printer.getDpiFontScale());
 		printLayout.updateSong();
 		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, pageSize, pageMargins));
 		printLayout.getResourceBuffer().disposeAllResources();

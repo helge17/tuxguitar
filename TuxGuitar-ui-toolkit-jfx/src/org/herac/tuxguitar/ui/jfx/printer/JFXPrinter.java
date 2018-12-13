@@ -39,6 +39,10 @@ public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 		return 1f;
 	}
 	
+	public Float getDpiFontScale() {
+		return this.getDpiScale();
+	}
+	
 	public UIRectangle getBounds() {
 		UIRectangle bounds = new UIRectangle();
 		PageLayout pageLayout = this.getControl().getJobSettings().getPageLayout();

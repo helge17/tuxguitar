@@ -156,6 +156,8 @@ public class TGChordEditor {
 	private void paintEditor(UIPainter painter) {
 		int noteSize = (FRET_SPACING / 2);
 		
+		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
+		
 		// fill background
 		UIRectangle bounds = this.canvas.getBounds();
 		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));

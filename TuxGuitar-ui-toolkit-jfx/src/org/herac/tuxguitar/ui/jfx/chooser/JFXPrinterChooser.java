@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.ui.jfx.chooser;
 
-import javafx.print.PrinterJob;
-
 import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
 import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
 import org.herac.tuxguitar.ui.jfx.printer.JFXPrinter;
 import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
+
+import javafx.print.PrinterJob;
 
 public class JFXPrinterChooser implements UIPrinterChooser {
 

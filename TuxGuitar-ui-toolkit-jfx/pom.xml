@@ -32,5 +32,10 @@
 			<artifactId>tuxguitar-ui-toolkit</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-awt-graphics</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

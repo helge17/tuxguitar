@@ -67,9 +67,9 @@ public class TGSettingsEditor{
 		
 		//-------buttons-------------------------------------
 		UITableLayout buttonsLayout = new UITableLayout();
-		UIPanel buttons = uiFactory.createPanel(dialog, false);
+		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 		
 		UIButton buttonDefaults = uiFactory.createButton(buttons); 
 		buttonDefaults.setText(TuxGuitar.getProperty("defaults"));
@@ -111,7 +111,7 @@ public class TGSettingsEditor{
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
 		
 		UIToolBar toolBar = uiFactory.createVerticalToolBar(parent);
-		parentLayout.set(toolBar, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		parentLayout.set(toolBar, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
 		
 		UIPanel option = uiFactory.createPanel(parent, false);
 		option.setLayout(new UITableLayout(0f));

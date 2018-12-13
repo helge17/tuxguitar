@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
-import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
+import org.herac.tuxguitar.awt.graphics.AWTPainter;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
@@ -132,7 +132,7 @@ public class Caret {
 		this.setChanges(true);
 	}
 	
-	public void paintCaret(TGLayout layout,TGPainterImpl painter) {
+	public void paintCaret(TGLayout layout,AWTPainter painter) {
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && this.selectedBeat instanceof TGBeatImpl) {
 				org.herac.tuxguitar.graphics.control.TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;

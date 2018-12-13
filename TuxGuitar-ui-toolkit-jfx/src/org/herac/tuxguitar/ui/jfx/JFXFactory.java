@@ -8,11 +8,11 @@ import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
 import org.herac.tuxguitar.ui.chooser.UIFileChooser;
 import org.herac.tuxguitar.ui.chooser.UIFontChooser;
 import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
+import org.herac.tuxguitar.ui.jfx.chooser.AWTPrinterChooser;
 import org.herac.tuxguitar.ui.jfx.chooser.JFXColorChooser;
 import org.herac.tuxguitar.ui.jfx.chooser.JFXDirectoryChooser;
 import org.herac.tuxguitar.ui.jfx.chooser.JFXFileChooser;
 import org.herac.tuxguitar.ui.jfx.chooser.JFXFontChooser;
-import org.herac.tuxguitar.ui.jfx.chooser.JFXPrinterChooser;
 import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
 import org.herac.tuxguitar.ui.jfx.menu.JFXPopupMenu;
 import org.herac.tuxguitar.ui.jfx.resource.JFXResourceFactory;
@@ -289,7 +289,7 @@ public class JFXFactory implements UIFactory {
 	}
 	
 	public UIPrinterChooser createPrinterChooser(UIWindow parent) {
-		return new JFXPrinterChooser((JFXWindow) parent);
+		return new AWTPrinterChooser();
 	}
 	
 	public UIColor createColor(int red, int green, int blue) {

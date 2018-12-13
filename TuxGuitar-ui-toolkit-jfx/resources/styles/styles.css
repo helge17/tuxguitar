@@ -1,3 +1,8 @@
+.menu .label {
+    -fx-background-color: transparent;
+    -fx-font-family: Noto Sans;
+    -fx-font-size: 11px;
+}
 
 .JFXToolBar {
 	-fx-background-color: rgba(0,0,0,0);

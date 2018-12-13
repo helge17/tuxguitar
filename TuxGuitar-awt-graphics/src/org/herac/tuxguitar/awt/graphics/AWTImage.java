@@ -15,24 +15,24 @@ import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
-public class TGImageImpl implements UIImage {
+public class AWTImage implements UIImage {
 	
 	private Image handle;
 	
-	public TGImageImpl( Image handle ){
+	public AWTImage( Image handle ){
 		this.handle = handle;
 	}
 	
-	public TGImageImpl(float width , float height ){
+	public AWTImage(float width , float height ){
 		this(new BufferedImage(Math.round(width), Math.round(height), BufferedImage.TYPE_INT_RGB));
 	}
 	
-	public TGImageImpl(InputStream in) throws IOException{
+	public AWTImage(InputStream in) throws IOException{
 		this(ImageIO.read(in));
 	}
 	
 	public UIPainter createPainter() {
-		return new TGPainterImpl(this.handle);
+		return new AWTPainter(this.handle);
 	}
 	
 	public float getWidth() {
@@ -57,7 +57,7 @@ public class TGImageImpl implements UIImage {
 	
 	public void applyTransparency( final UIColor background ){
 		ImageFilter filter = new RGBImageFilter() {
-			public int markerRGB = (((TGColorImpl)background).getHandle().getRGB() | 0xFF000000);
+			public int markerRGB = (((AWTColor)background).getHandle().getRGB() | 0xFF000000);
 			
 			public final int filterRGB(int x, int y, int rgb) {
 				if ( ( rgb | 0xFF000000 ) == markerRGB ) {

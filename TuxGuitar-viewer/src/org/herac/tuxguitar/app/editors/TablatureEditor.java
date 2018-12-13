@@ -13,8 +13,9 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.measure.SelectMeasureAction;
 import org.herac.tuxguitar.app.editors.tab.Tablature;
 import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.awt.graphics.TGColorImpl;
-import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
+import org.herac.tuxguitar.awt.graphics.AWTColor;
+import org.herac.tuxguitar.awt.graphics.AWTFont;
+import org.herac.tuxguitar.awt.graphics.AWTPainter;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TablatureEditor extends Canvas {
@@ -71,16 +72,16 @@ public class TablatureEditor extends Canvas {
 
 		// Paint the tablature into the buffer.
 		if(this.loaded && this.started){
-			this.bufferGraphics.setBackground( ((TGColorImpl)this.tablature.getViewLayout().getResources().getBackgroundColor()).getHandle());
+			this.bufferGraphics.setBackground( ((AWTColor)this.tablature.getViewLayout().getResources().getBackgroundColor()).getHandle());
 			this.bufferGraphics.clearRect(0, 0, this.size.width, this.size.height);
-			this.tablature.paintTablature(new TGPainterImpl( this.bufferGraphics ));
+			this.tablature.paintTablature(new AWTPainter( this.bufferGraphics ));
 		}
 
 		// Paint a "loading" message.
 		else{
 			this.bufferGraphics.setBackground( Color.WHITE );
 			this.bufferGraphics.clearRect(0, 0, this.size.width, this.size.height);
-			this.paintLoading(new TGPainterImpl( this.bufferGraphics ));
+			this.paintLoading(new AWTPainter( this.bufferGraphics ));
 		}
 		
 		// Draw the buffer image
@@ -116,8 +117,8 @@ public class TablatureEditor extends Canvas {
 		return this.started;
 	}
 	
-	private void paintLoading(TGPainterImpl painter){
-		painter.setFont( TGConfig.FONT_LOADING_MESSAGE );
+	private void paintLoading(AWTPainter painter){
+		painter.setFont( new AWTFont(TGConfig.FONT_LOADING_MESSAGE) );
 		painter.setForeground(painter.createColor(TGConfig.COLOR_LOADING_MESSAGE));
 		String msg = "Loading ...";
 		float width = painter.getFMWidth(msg);
