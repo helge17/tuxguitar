@@ -5,15 +5,15 @@ import java.awt.Color;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 
-public class TGColorImpl implements UIColor{
+public class AWTColor implements UIColor{
 	
 	private UIColorModel model;
 	
-	public TGColorImpl(UIColorModel model){
+	public AWTColor(UIColorModel model){
 		this.model = model;
 	}
 	
-	public TGColorImpl(int red, int green, int blue ){
+	public AWTColor(int red, int green, int blue ){
 		this(new UIColorModel(red,green,blue));
 	}
 	

@@ -43,6 +43,10 @@ public class SWTPrinter extends SWTComponent<Printer> implements UIPrinter {
 		return 1.0f;
 	}
 	
+	public Float getDpiFontScale() {
+		return 1.0f;
+	}
+	
 	public UIRectangle getBounds() {
 		Rectangle area = this.getControl().getClientArea();
 		return new UIRectangle(area.x, area.y, area.width, area.height);

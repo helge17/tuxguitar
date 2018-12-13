@@ -28,6 +28,10 @@ public class QTPrinter extends QTComponent<QPrinter> implements UIPrinter {
 		return (this.getControl().logicalDpiX() / 100.0f);
 	}
 	
+	public Float getDpiFontScale() {
+		return 1.0f;
+	}
+	
 	public UIRectangle getBounds() {
 		UIRectangle bounds = new UIRectangle();
 		QRect pageRect = this.getControl().pageRect();

@@ -8,6 +8,8 @@ public interface UIPrinter extends UIComponent {
 	
 	Float getDpiScale();
 	
+	Float getDpiFontScale();
+	
 	Integer getStartPage();
 	
 	Integer getEndPage();

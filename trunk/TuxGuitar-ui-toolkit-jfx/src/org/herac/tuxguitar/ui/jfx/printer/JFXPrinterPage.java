@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.ui.jfx.printer;
 
-import javafx.scene.canvas.Canvas;
-
 import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.jfx.resource.JFXPainter;
 import org.herac.tuxguitar.ui.printer.UIPrinterPage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UISize;
+
+import javafx.scene.canvas.Canvas;
 
 public class JFXPrinterPage extends JFXComponent<Canvas> implements UIPrinterPage {
 	

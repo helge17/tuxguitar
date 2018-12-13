@@ -11,14 +11,14 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGException;
 
-public class TGResourceFactoryImpl implements UIResourceFactory {
+public class AWTResourceFactory implements UIResourceFactory {
 	
-	public TGResourceFactoryImpl(){
+	public AWTResourceFactory(){
 		super();
 	}
 	
 	public UIColor createColor( int red, int green, int blue ){
-		return new TGColorImpl( red, green , blue );
+		return new AWTColor( red, green , blue );
 	}
 	
 	public UIColor createColor( UIColorModel cm ){
@@ -26,7 +26,7 @@ public class TGResourceFactoryImpl implements UIResourceFactory {
 	}
 	
 	public UIFont createFont( String name, float height, boolean bold, boolean italic ){
-		return new TGFontImpl( name , height , bold , italic );
+		return new AWTFont( name , height , bold , italic );
 	}
 	
 	public UIFont createFont( UIFontModel fm ){
@@ -34,12 +34,12 @@ public class TGResourceFactoryImpl implements UIResourceFactory {
 	}
 	
 	public UIImage createImage( float width, float height ){
-		return new TGImageImpl( width, height );
+		return new AWTImage( width, height );
 	}
 
 	public UIImage createImage(InputStream inputStream) {
 		try {
-			return new TGImageImpl( inputStream );
+			return new AWTImage( inputStream );
 		} catch (IOException e) {
 			throw new TGException();
 		}

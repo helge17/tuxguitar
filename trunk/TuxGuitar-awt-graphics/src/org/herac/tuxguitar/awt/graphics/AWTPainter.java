@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.awt.graphics;
 
 import java.awt.BasicStroke;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -14,7 +13,7 @@ import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
-public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
+public class AWTPainter extends AWTAbstractPainter {
 	
 	private boolean pathEmpty;
 	
@@ -28,31 +27,31 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 	
 	private BasicStroke stroke;
 	
-	private TGColorImpl background;
+	private AWTColor background;
 	
-	private TGColorImpl foreground;
+	private AWTColor foreground;
 	
-	public TGPainterImpl(){
+	public AWTPainter(){
 		super();
 	}
 	
-	public TGPainterImpl(Graphics2D gc){
+	public AWTPainter(Graphics2D gc){
 		this.init(gc);
 	}
 	
-	public TGPainterImpl(Image image){
+	public AWTPainter(Image image){
 		this.init((Graphics2D)image.getGraphics());
 	}
 	
 	public void init(Graphics2D gc){
-		if(this.gc != null){
+		if( this.gc != null){
 			this.gc.dispose();
 		}
 		this.gc = gc;
 		this.alpha = 255;
-		this.background = new TGColorImpl(0xff, 0xff, 0xff);
-		this.foreground = new TGColorImpl(0x00, 0x00, 0x00);
-		this.stroke = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+		this.background = new AWTColor(0xff, 0xff, 0xff);
+		this.foreground = new AWTColor(0x00, 0x00, 0x00);
+		this.stroke = new BasicStroke(0f);
 	}
 	
 	public void initPath(int style){
@@ -71,12 +70,11 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 			System.out.println("Warning: Empty Path!");
 		}
 		if( (this.style & PATH_DRAW) != 0){
-			//this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			this.gc.setColor(this.foreground.getHandle(this.alpha));
 			this.gc.draw(this.path);
 		}
 		if( (this.style & PATH_FILL) != 0){
-			//this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			this.gc.setColor(this.background.getHandle(this.alpha));
 			this.gc.fill(this.path);
 		}
@@ -91,28 +89,29 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 	}
 	
 	public void dispose(){
-		this.gc.dispose();
-		this.gc = null;
-	}
-	
-	public void setFont(Font arg0) {
-		this.gc.setFont(arg0);
+		if( this.gc != null ) {
+			this.gc.dispose();
+			this.gc = null;
+		}
+		super.dispose();
 	}
 	
 	public void setFont(UIFont font) {
-		this.gc.setFont( ((TGFontImpl)font).getHandle() );
+		super.setFont(font);
+		this.gc.setFont( ((AWTFont)font).getHandle() );
 	}
 	
 	public void setBackground(UIColor color) {
-		this.background = (TGColorImpl) color;
+		this.background = (AWTColor) color;
 	}
 	
 	public void setForeground(UIColor color) {
-		this.foreground = (TGColorImpl) color;
+		this.foreground = (AWTColor) color;
 	}
 	
 	public void setLineWidth(float lineWidth) {
-		this.stroke = new BasicStroke(lineWidth, this.stroke.getEndCap(), this.stroke.getLineJoin(), this.stroke.getMiterLimit(), this.stroke.getDashArray(), this.stroke.getDashPhase());
+		float fixedWidth = (lineWidth == UIPainter.THINNEST_LINE_WIDTH ? 0.1f : lineWidth);
+		this.stroke = new BasicStroke(fixedWidth, this.stroke.getEndCap(), this.stroke.getLineJoin(), this.stroke.getMiterLimit(), this.stroke.getDashArray(), this.stroke.getDashPhase());
 		this.gc.setStroke(this.stroke);
 	}
 	
@@ -140,11 +139,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 		this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, (enabled ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF));
 	}
 	
-	public void setAdvanced(boolean advanced) {
-		this.gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, (advanced ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF));
-		this.gc.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, (advanced ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
-	}
-	
 	public void drawString(String string, float x, float y) {
 		this.setAntialias(true);
 		this.gc.setColor(this.foreground.getHandle());
@@ -153,14 +147,14 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 	
 	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float destX, float destY, float destWidth, float destHeight) {
 		this.setAntialias(false);
-		this.gc.drawImage(((TGImageImpl)image).getHandle(), toInt(destX), toInt(destY), toInt(destX + destWidth), toInt(destY + destHeight), toInt(srcX), toInt(srcY), toInt(srcX + srcWidth), toInt(srcY + srcHeight), null);		
+		this.gc.drawImage(((AWTImage)image).getHandle(), toInt(destX), toInt(destY), toInt(destX + destWidth), toInt(destY + destHeight), toInt(srcX), toInt(srcY), toInt(srcX + srcWidth), toInt(srcY + srcHeight), null);		
 	}
 
 	public void drawImage(UIImage image, float x, float y) {
 		float width = image.getWidth();
 		float height = image.getHeight();
 		this.setAntialias(false);
-		this.gc.drawImage(((TGImageImpl)image).getHandle(), toInt(x), toInt(y), toInt(x + width), toInt(y + height), 0, 0, toInt(width), toInt(height), null);		
+		this.gc.drawImage(((AWTImage)image).getHandle(), toInt(x), toInt(y), toInt(x + width), toInt(y + height), 0, 0, toInt(width), toInt(height), null);		
 	}
 	
 	public void cubicTo(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5) {
@@ -186,38 +180,6 @@ public class TGPainterImpl extends TGResourceFactoryImpl implements UIPainter{
 	public void addRectangle(float x,float y,float width,float height) {
 		this.path.append(new Rectangle2D.Float(x, y, width, height), true);
 		this.pathEmpty = false;
-	}
-	
-	public float getFontSize() {
-		return this.gc.getFont().getSize();
-	}
-	
-	public float getFMTopLine() {
-		return -(((this.getFMAscent() + 1f) / 10f) * 3f);
-	}
-	
-	public float getFMMiddleLine(){
-		return -(((this.getFMAscent() + 1f) / 10f) * 6.5f);
-	}
-	
-	public float getFMBaseLine() {
-		return -(this.getFMAscent() + 1f);
-	}
-	
-	public float getFMHeight() {
-		return this.gc.getFontMetrics().getHeight();
-	}
-	
-	public float getFMAscent() {
-		return this.gc.getFontMetrics().getAscent();
-	}
-	
-	public float getFMWidth(String text) {
-		return this.gc.getFontMetrics().stringWidth(text);
-	}
-
-	public boolean isDisposed() {
-		return (this.gc == null);
 	}
 	
 	public int toInt(float value) {

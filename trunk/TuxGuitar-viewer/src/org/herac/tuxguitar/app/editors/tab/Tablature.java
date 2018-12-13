@@ -6,9 +6,9 @@ import java.awt.Rectangle;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.editors.TGScrollBar;
 import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.awt.graphics.TGColorImpl;
-import org.herac.tuxguitar.awt.graphics.TGPainterImpl;
-import org.herac.tuxguitar.awt.graphics.TGResourceFactoryImpl;
+import org.herac.tuxguitar.awt.graphics.AWTColor;
+import org.herac.tuxguitar.awt.graphics.AWTPainter;
+import org.herac.tuxguitar.awt.graphics.AWTResourceFactory;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGController;
@@ -62,7 +62,7 @@ public class Tablature implements TGController {
 		this.caret.update(1,TGDuration.QUARTER_TIME,1);
 	}
 	
-	public synchronized void paintTablature(TGPainterImpl painter){
+	public synchronized void paintTablature(AWTPainter painter){
 		TuxGuitar.instance().lock();
 		this.setPainting(true);
 		try{
@@ -150,7 +150,7 @@ public class Tablature implements TGController {
 		TuxGuitar.instance().unlock();
 	}
 	
-	private void redrawPlayingMode(TGPainterImpl painter){
+	private void redrawPlayingMode(AWTPainter painter){
 		try{
 			TGMeasureImpl measure = TuxGuitar.instance().getEditorCache().getPlayMeasure();
 			TGBeatImpl beat = TuxGuitar.instance().getEditorCache().getPlayBeat();
@@ -210,7 +210,7 @@ public class Tablature implements TGController {
 	public void reloadStyles(){
 		if(this.getViewLayout() != null){
 			this.getViewLayout().loadStyles(1.0f);
-			this.component.setBackground(((TGColorImpl)getViewLayout().getResources().getBackgroundColor()).getHandle() );
+			this.component.setBackground(((AWTColor)getViewLayout().getResources().getBackgroundColor()).getHandle() );
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class Tablature implements TGController {
 	}
 
 	public UIResourceFactory getResourceFactory() {
-		return new TGResourceFactoryImpl();
+		return new AWTResourceFactory();
 	}
 	
 	public TGResourceBuffer getResourceBuffer(){
