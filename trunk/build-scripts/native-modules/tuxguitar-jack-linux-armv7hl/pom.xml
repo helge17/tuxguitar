@@ -20,11 +20,12 @@
 		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
 		<tuxguitar-jack.jni.rm>${tuxguitar.jni.rm}</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>${tuxguitar.jni.cc}</tuxguitar-jack.jni.cc>
-		<tuxguitar-jack.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-jack.jni.cflags>
+		<tuxguitar-jack.jni.cflags>${tuxguitar.jni.header.path} -fPIC</tuxguitar-jack.jni.cflags>
 		<tuxguitar-jack.jni.ldflags>-fPIC</tuxguitar-jack.jni.ldflags>
 		<tuxguitar-jack.jni.ldlibs>`pkg-config --libs jack`</tuxguitar-jack.jni.ldlibs>
 		<tuxguitar-jack.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-jack.jni.ldpath>

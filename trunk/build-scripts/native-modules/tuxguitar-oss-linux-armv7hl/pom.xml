@@ -19,10 +19,11 @@
 		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-oss.jni.path>${parent.relativePath}/TuxGuitar-oss/jni/</tuxguitar-oss.jni.path>
 		<tuxguitar-oss.jni.cc>${tuxguitar.jni.cc}</tuxguitar-oss.jni.cc>
-		<tuxguitar-oss.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-oss.jni.cflags>
+		<tuxguitar-oss.jni.cflags>${tuxguitar.jni.header.path} -fPIC</tuxguitar-oss.jni.cflags>
 		<tuxguitar-oss.jni.ldflags>-fPIC</tuxguitar-oss.jni.ldflags>
 		<tuxguitar-oss.jni.ldlibs></tuxguitar-oss.jni.ldlibs>
 		<tuxguitar-oss.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-oss.jni.ldpath>

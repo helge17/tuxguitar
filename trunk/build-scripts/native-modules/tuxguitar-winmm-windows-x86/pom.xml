@@ -20,11 +20,12 @@
 		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-winmm.jni.path>${parent.relativePath}/TuxGuitar-winmm/jni/</tuxguitar-winmm.jni.path>
 		<tuxguitar-winmm.jni.rm>${tuxguitar.jni.rm}</tuxguitar-winmm.jni.rm>
 		<tuxguitar-winmm.jni.cc>${tuxguitar.jni.cc}</tuxguitar-winmm.jni.cc>
-		<tuxguitar-winmm.jni.cflags>-I$(shell gcj -print-file-name=include/)</tuxguitar-winmm.jni.cflags>
+		<tuxguitar-winmm.jni.cflags>${tuxguitar.jni.header.path}</tuxguitar-winmm.jni.cflags>
 		<tuxguitar-winmm.jni.ldflags>-Wl,--kill-at</tuxguitar-winmm.jni.ldflags>
 		<tuxguitar-winmm.jni.ldlibs>-lwinmm</tuxguitar-winmm.jni.ldlibs>
 		<tuxguitar-winmm.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-winmm.jni.ldpath>
