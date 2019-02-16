@@ -18,6 +18,7 @@
 		<tuxguitar.jni.cxx>g++</tuxguitar.jni.cxx>
 		<tuxguitar.jni.rm>del</tuxguitar.jni.rm>
 		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-synth-vst-remote.client.path>${parent.relativePath}/TuxGuitar-synth-vst-remote/src-client/</tuxguitar-synth-vst-remote.client.path>
 		<tuxguitar-synth-vst-remote.client.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst-remote.client.cxx>

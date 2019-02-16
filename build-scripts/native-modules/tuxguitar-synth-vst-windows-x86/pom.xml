@@ -20,12 +20,13 @@
 		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-synth-vst.jni.path>${parent.relativePath}/TuxGuitar-synth-vst/jni/</tuxguitar-synth-vst.jni.path>
 		<tuxguitar-synth-vst.jni.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst.jni.cxx>
 		<tuxguitar-synth-vst.jni.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.jni.rm>
 		<tuxguitar-synth-vst.jni.vst.sdk>${basedir}/include/VST_SDK</tuxguitar-synth-vst.jni.vst.sdk>
-		<tuxguitar-synth-vst.jni.cflags>-I$(shell gcj -print-file-name=include/) -I${tuxguitar-synth-vst.jni.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst.jni.cflags>
+		<tuxguitar-synth-vst.jni.cflags>${tuxguitar.jni.header.path} -I${tuxguitar-synth-vst.jni.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst.jni.cflags>
 		<tuxguitar-synth-vst.jni.ldflags>-Wl,--kill-at</tuxguitar-synth-vst.jni.ldflags>
 		<tuxguitar-synth-vst.jni.ldlibs></tuxguitar-synth-vst.jni.ldlibs>
 		<tuxguitar-synth-vst.jni.ldpath></tuxguitar-synth-vst.jni.ldpath>

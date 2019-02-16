@@ -20,11 +20,12 @@
 		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-fluidsynth.jni.path>${parent.relativePath}/TuxGuitar-fluidsynth/jni/</tuxguitar-fluidsynth.jni.path>
 		<tuxguitar-fluidsynth.jni.rm>${tuxguitar.jni.rm}</tuxguitar-fluidsynth.jni.rm>
 		<tuxguitar-fluidsynth.jni.cc>${tuxguitar.jni.cc}</tuxguitar-fluidsynth.jni.cc>
-		<tuxguitar-fluidsynth.jni.cflags>-I$(shell gcj -print-file-name=include/) -fPIC</tuxguitar-fluidsynth.jni.cflags>
+		<tuxguitar-fluidsynth.jni.cflags>${tuxguitar.jni.header.path} -fPIC</tuxguitar-fluidsynth.jni.cflags>
 		<tuxguitar-fluidsynth.jni.ldflags>-fPIC</tuxguitar-fluidsynth.jni.ldflags>
 		<tuxguitar-fluidsynth.jni.ldlibs>-lfluidsynth</tuxguitar-fluidsynth.jni.ldlibs>
 		<tuxguitar-fluidsynth.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-fluidsynth.jni.ldpath>

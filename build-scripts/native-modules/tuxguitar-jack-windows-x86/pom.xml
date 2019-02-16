@@ -20,11 +20,12 @@
 		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
 		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
 		<tuxguitar-jack.jni.rm>${tuxguitar.jni.rm}</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>${tuxguitar.jni.cc}</tuxguitar-jack.jni.cc>
-		<tuxguitar-jack.jni.cflags>-I${basedir}/include -I$(shell gcj -print-file-name=include/)</tuxguitar-jack.jni.cflags>
+		<tuxguitar-jack.jni.cflags>-I${basedir}/include ${tuxguitar.jni.header.path}</tuxguitar-jack.jni.cflags>
 		<tuxguitar-jack.jni.ldflags>-Wl,--kill-at</tuxguitar-jack.jni.ldflags>
 		<tuxguitar-jack.jni.ldlibs>-ljack -lpthreadVC2</tuxguitar-jack.jni.ldlibs>
 		<tuxguitar-jack.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-jack.jni.ldpath>
