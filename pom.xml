@@ -319,7 +319,7 @@
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-				<version>4.9</version>
+				<version>4.6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
@@ -388,8 +388,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -441,6 +441,20 @@
 				<os>
 					<family>unix</family>
 					<name>linux</name>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<properties>
+				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>platform-freebsd-x86_64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>freebsd</name>
 					<arch>amd64</arch>
 				</os>
 			</activation>
