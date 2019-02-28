@@ -1,0 +1,11 @@
+- Install dependencies
+$ pkg install openjdk8 maven swt
+
+- Install extra dependencies to build native modules 
+$ pkg install gcc gmake fluidsynth
+
+- Build without native modules
+$ mvn clean package
+
+- Build with native modules
+$ mvn clean package -Dnative-modules
