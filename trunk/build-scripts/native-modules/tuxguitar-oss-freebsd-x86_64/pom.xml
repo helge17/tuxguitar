@@ -1,0 +1,132 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-oss-freebsd-x86_64</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
+		
+		<tuxguitar-oss.jni.path>${parent.relativePath}/TuxGuitar-oss/jni/</tuxguitar-oss.jni.path>
+		<tuxguitar-oss.jni.cc>${tuxguitar.jni.cc}</tuxguitar-oss.jni.cc>
+		<tuxguitar-oss.jni.cflags>${tuxguitar.jni.header.path} -m64 -fPIC</tuxguitar-oss.jni.cflags>
+		<tuxguitar-oss.jni.ldflags>-m64 -fPIC</tuxguitar-oss.jni.ldflags>
+		<tuxguitar-oss.jni.ldlibs></tuxguitar-oss.jni.ldlibs>
+		<tuxguitar-oss.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-oss.jni.ldpath>
+		<tuxguitar-oss.jni.library.name>tuxguitar-oss-jni</tuxguitar-oss.jni.library.name>
+		<tuxguitar-oss.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-oss.jni.library.prefix>
+		<tuxguitar-oss.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-oss.jni.library.suffix>
+	</properties>
+	
+	<modules>
+		<module>${parent.relativePath}/TuxGuitar-oss</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>compile-native</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="compile-native">
+								<exec dir="${tuxguitar-oss.jni.path}" executable="gmake" failonerror="true" >
+									<env key="CC" value="${tuxguitar-oss.jni.cc}" />
+									<env key="CFLAGS" value="${tuxguitar-oss.jni.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-oss.jni.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-oss.jni.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-oss.jni.ldpath}" />
+									<env key="LIBRARY_NAME" value="${tuxguitar-oss.jni.library.name}" />
+									<env key="LIBRARY_PREFIX" value="${tuxguitar-oss.jni.library.prefix}" />
+									<env key="LIBRARY_SUFFIX" value="${tuxguitar-oss.jni.library.suffix}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>clean-native</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="clean-native">
+								<exec dir="${tuxguitar-oss.jni.path}" executable="gmake" failonerror="true" >
+									<arg value="clean"/>
+									<env key="LIBRARY_NAME" value="${tuxguitar-oss.jni.library.name}" />
+									<env key="LIBRARY_PREFIX" value="${tuxguitar-oss.jni.library.prefix}" />
+									<env key="LIBRARY_SUFFIX" value="${tuxguitar-oss.jni.library.suffix}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>native-module-copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="copy-files">
+								<mkdir dir="${project.build.directory}/build/lib" />
+								<copy todir="${project.build.directory}/build/lib">
+									<fileset file="${tuxguitar-oss.jni.path}/${tuxguitar-oss.jni.library.prefix}${tuxguitar-oss.jni.library.name}${tuxguitar-oss.jni.library.suffix}" />
+								</copy>
+								<chmod file="${project.build.directory}/build/lib/${tuxguitar-oss.jni.library.prefix}${tuxguitar-oss.jni.library.name}${tuxguitar-oss.jni.library.suffix}" perm="775" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>native-module-copy-libs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-oss</artifactId>
+									<destFileName>tuxguitar-oss.jar</destFileName>
+									<outputDirectory>${project.build.directory}/build/share/plugins</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>

@@ -41,6 +41,7 @@
 				<include name="build-scripts/tuxguitar-macosx-cocoa-64/**"/>
 				<include name="build-scripts/tuxguitar-windows-x86/**"/>
 				<include name="build-scripts/tuxguitar-windows-x86-installer/**"/>
+				<include name="build-scripts/tuxguitar-freebsd-x86_64/**"/>
 				
 				<include name="TuxGuitar/**"/>
 				<include name="TuxGuitar-alsa/**"/>
