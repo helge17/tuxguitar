@@ -1,5 +1,5 @@
 - Install dependencies
-$ pkg install openjdk8 maven swt
+$ pkg install openjdk8 alsa-plugins maven swt
 
 - Install extra dependencies to build native modules 
 $ pkg install gcc gmake fluidsynth
