@@ -10,8 +10,9 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
-import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
+import org.herac.tuxguitar.app.system.icons.TGSkinManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
 import org.herac.tuxguitar.app.tools.browser.TGBrowserConnection;
@@ -99,7 +100,8 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		this.closeCollection(true);
 		
 		TGBrowserManager.getInstance(this.context).writeCollections();
-		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
+		TGSkinManager.getInstance(this.context).removeLoader(this);
+		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 	}
 	
 	public void show() {
@@ -128,7 +130,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		this.updateBars();
 		
 		TGBrowserManager.getInstance(this.context).setFactoryHandler(this);
-		TuxGuitar.getInstance().getSkinManager().addLoader(this);
+		TGSkinManager.getInstance(this.context).addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
