@@ -102,9 +102,10 @@ public class TGBeatGroup {
 			}else if ( (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){
 				this.direction = DIRECTION_DOWN;
 			}else{
-				int max = Math.abs(TGNotation.computePosition(layout, this.maxNote) + 3);
-				int min = Math.abs(TGNotation.computePosition(layout, this.minNote) - 3);
-				if( max > min){
+				int minPosition = TGNotation.computePosition(layout, this.minNote);
+				int maxPosition = TGNotation.computePosition(layout, this.maxNote);
+				int middlePosition = (maxPosition > minPosition ? (minPosition + ((maxPosition - minPosition) / 2)) : minPosition);
+				if( middlePosition > 3 ){
 					this.direction = DIRECTION_UP;
 				}else{
 					this.direction = DIRECTION_DOWN;
