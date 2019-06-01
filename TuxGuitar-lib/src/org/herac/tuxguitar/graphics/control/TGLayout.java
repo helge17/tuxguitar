@@ -1,8 +1,12 @@
 package org.herac.tuxguitar.graphics.control;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -69,13 +73,25 @@ public abstract class TGLayout {
 	private TGController controller;
 	private TGResources resources;
 	private TGDrumMap drumMap;
+	private Map<TGMeasureHeader, List<TGMeasureHeader>> updateDependants;
 	
-	public TGLayout(TGController controller,int style){
+	public void addUpdateDependant(TGMeasureHeader header, TGMeasureHeader dependant) {
+		if(!this.updateDependants.containsKey(header)) {
+			this.updateDependants.put(header, new ArrayList<TGMeasureHeader>());
+		}
+		List<TGMeasureHeader> updateDependants = this.updateDependants.get(header);
+		if(!updateDependants.contains(dependant)) {
+			updateDependants.add(dependant);
+		}
+	}
+	
+	public TGLayout(TGController controller,int style) {
 		this.controller = controller;
 		this.trackPositions = new ArrayList<TrackPosition>();
 		this.playModeEnabled = false;
 		this.resources = new TGResources(this);
 		this.drumMap = new TGDrumMap();
+		this.updateDependants = new HashMap<TGMeasureHeader, List<TGMeasureHeader>>();
 		this.style = style;
 		if((this.style & DISPLAY_TABLATURE) == 0 && (this.style & DISPLAY_SCORE) == 0 ){
 			this.style |= DISPLAY_TABLATURE;
@@ -163,6 +179,42 @@ public abstract class TGLayout {
 		}
 	}
 	
+	public void updateMeasureNumber(Integer number) {
+		this.updateMeasureNumbers(Collections.singletonList(number));
+	}
+	
+	public void updateMeasureNumbers(List<Integer> numbers) {
+		List<TGMeasureHeader> headersToUpdate = new ArrayList<TGMeasureHeader>();
+		for(Integer number : numbers) {
+			TGMeasureHeader header = getSongManager().getMeasureHeader(getSong(), number);
+			if( header != null && !headersToUpdate.contains(header)) {
+				headersToUpdate.add(header);
+			}
+			if( this.updateDependants.containsKey(header)) {
+				List<TGMeasureHeader> dependants = this.updateDependants.get(header);
+				for(TGMeasureHeader dependant : dependants) {
+					if(!headersToUpdate.contains(dependant)) {
+						headersToUpdate.add(dependant);
+					}
+				}
+				this.updateDependants.remove(header);
+			}
+		}
+		
+		Collections.sort(headersToUpdate, new Comparator<TGMeasureHeader>() {
+			public int compare(TGMeasureHeader o1, TGMeasureHeader o2) {
+				return Integer.valueOf(o1.getNumber()).compareTo(Integer.valueOf(o2.getNumber()));
+			}
+		});
+		
+		for(TGMeasureHeader header : headersToUpdate) {
+			int index = getSongManager().getMeasureHeaderIndex(getSong(), header);
+			if( index >= 0 ) {
+				updateMeasureIndex(index);
+			}
+		}
+	}
+	
 	private void updateMeasureIndex(int index) {
 		if( index >= 0 && index < getSong().countMeasureHeaders() ){
 			((TGMeasureHeaderImpl) getSong().getMeasureHeader( index )).update(this, index);
@@ -178,16 +230,6 @@ public abstract class TGLayout {
 				TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure( index );
 				track.update(this);
 				measure.update(this);
-			}
-		}
-	}
-	
-	public void updateMeasureNumber(int number) {
-		TGMeasureHeader header = getSongManager().getMeasureHeader(getSong(), number);
-		if( header != null ){
-			int index = getSongManager().getMeasureHeaderIndex(getSong(), header);
-			if( index >= 0 ){
-				updateMeasureIndex(index);
 			}
 		}
 	}

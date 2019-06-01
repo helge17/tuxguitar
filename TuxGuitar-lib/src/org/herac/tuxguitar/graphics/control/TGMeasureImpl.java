@@ -110,7 +110,7 @@ public class TGMeasureImpl extends TGMeasure{
 	/**
 	 * Compas anterior
 	 */
-	private TGMeasure prevMeasure;
+	private TGMeasureImpl previousMeasure;
 	/**
 	 * Boolean para saber si el compas esta en el area de pantalla
 	 */
@@ -398,13 +398,13 @@ public class TGMeasureImpl extends TGMeasure{
 	public void calculateMeasureChanges(TGLayout layout) {
 		this.paintClef = false;
 		this.paintKeySignature = false;
-		this.prevMeasure = (layout.isFirstMeasure(this) ? null : (TGMeasureImpl)layout.getSongManager().getTrackManager().getPrevMeasure(this));
+		this.previousMeasure = (layout.isFirstMeasure(this) ? null : (TGMeasureImpl) layout.getSongManager().getTrackManager().getPrevMeasure(this));
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
-			if(this.prevMeasure == null || getClef() != this.prevMeasure.getClef()){
+			if(this.previousMeasure == null || getClef() != this.previousMeasure.getClef()){
 				this.paintClef = true;
 				this.getHeaderImpl().notifyClefSpacing(calculateClefSpacing(layout));
 			}
-			if(this.prevMeasure == null || getKeySignature() != this.prevMeasure.getKeySignature()){
+			if(this.previousMeasure == null || getKeySignature() != this.previousMeasure.getKeySignature()){
 				this.paintKeySignature = true;
 				this.getHeaderImpl().notifyKeySignatureSpacing(calculateKeySignatureSpacing(layout));
 			}
@@ -939,7 +939,7 @@ public class TGMeasureImpl extends TGMeasure{
 			float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			int clefIndex = (this.getClef() - 1);
 			int currentKey = this.getKeySignature();
-			int previousKey = (this.prevMeasure != null ? this.prevMeasure.getKeySignature() : 0);
+			int previousKey = (this.previousMeasure != null ? this.previousMeasure.getKeySignature() : 0);
 			
 			layout.setKeySignatureStyle(painter);
 			
@@ -1078,8 +1078,8 @@ public class TGMeasureImpl extends TGMeasure{
 			float y1 = y - (( (1.0f * scale) + (2.5f * scale) ) + 2);
 			float y2 = y - (( (1.0f * scale) + (2.5f * scale) + (1.0f * scale)) + 2);
 			
-			if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.prevMeasure != null){
-				int previous = this.prevMeasure.getTripletFeel();
+			if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.previousMeasure != null){
+				int previous = this.previousMeasure.getTripletFeel();
 				if(previous == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
 					TGTripletFeelPainter.paintTripletFeel8(painter, x1, y2, scale );
 					TGTripletFeelPainter.paintTripletFeelNone8(painter, x2 , y1, scale );
@@ -1221,11 +1221,11 @@ public class TGMeasureImpl extends TGMeasure{
 			}else{
 				spacing += Math.round( ( 6f * layout.getScale() ) * (this.getKeySignature() - 7) ) ;
 			}
-			if( this.prevMeasure != null ){
-				if(this.prevMeasure.getKeySignature() <= 7){
-					spacing += Math.round( ( 6f * layout.getScale() ) * this.prevMeasure.getKeySignature() ) ;
+			if( this.previousMeasure != null ){
+				if(this.previousMeasure.getKeySignature() <= 7){
+					spacing += Math.round( ( 6f * layout.getScale() ) * this.previousMeasure.getKeySignature() ) ;
 				}else{
-					spacing += Math.round( ( 6f * layout.getScale() ) * (this.prevMeasure.getKeySignature() - 7) ) ;
+					spacing += Math.round( ( 6f * layout.getScale() ) * (this.previousMeasure.getKeySignature() - 7) ) ;
 				}
 			}
 			if( spacing > 0 ) {
@@ -1390,6 +1390,10 @@ public class TGMeasureImpl extends TGMeasure{
 			this.buffer = new TGMeasureBuffer();
 		}
 		return this.buffer;
+	}
+	
+	public TGMeasureImpl getPreviousMeasure() {
+		return this.previousMeasure;
 	}
 	
 	public String getMarkerRegistryKey() {
