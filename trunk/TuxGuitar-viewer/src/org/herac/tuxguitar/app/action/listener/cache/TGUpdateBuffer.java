@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.app.action.listener.cache;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -49,11 +48,7 @@ public class TGUpdateBuffer {
 	
 	public void applyUpdateMeasures() {
 		if(!this.updateSong) {
-			Collections.sort(this.updateMeasures);
-			
-			for(Integer number : this.updateMeasures) {
-				TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().updateMeasureNumber(number);
-			}
+			TuxGuitar.instance().getTablatureEditor().getTablature().getViewLayout().updateMeasureNumbers(this.updateMeasures);
 		}
 	}
 	

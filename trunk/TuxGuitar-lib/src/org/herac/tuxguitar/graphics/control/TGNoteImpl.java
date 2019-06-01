@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.graphics.control;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.herac.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
 import org.herac.tuxguitar.graphics.control.painters.TGNotePainter;
@@ -9,6 +8,7 @@ import org.herac.tuxguitar.graphics.control.painters.TGNumberPainter;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -492,37 +492,8 @@ public class TGNoteImpl extends TGNote {
 		if ((renderType & TGDrumMap.KIND_CLOSED) != 0) {
 			// override to not draw this for closed hi-hat if previous note had it
 			if (this.getValue() == 42) {
-				List<TGNote> lastNotes = null;
-				
-				// get note from last beat if it exists
-				if (this.getBeatImpl().getPreviousBeat() != null) {
-					lastNotes = this.getBeatImpl().getPreviousBeat().getVoice(this.getVoiceImpl().getIndex()).getNotes();
-				// if last beat doesn't exist, try getting it from last measure
-//				} else if (getMeasureImpl().getTrackImpl().getMeasure(getMeasureImpl().getNumber() - 2) != null) {
-//					TGMeasure lastMeasure = getMeasureImpl().getTrackImpl().getMeasure(getMeasureImpl().getNumber() - 2);
-//					
-//					// get last beat of measure
-//					if (lastMeasure.getBeat(lastMeasure.countBeats() - 1) != null) {
-//						// potential issue: if voice used for hi-hat is different in the measures
-//						lastNotes = lastMeasure.getBeat(lastMeasure.countBeats() - 1).getVoice(this.getVoiceImpl().getIndex()).getNotes();
-//					}
-				} 					
-				
-				boolean lastNoteAlsoClosedHiHat = false;
-				
-				// make sure not null
-				if (lastNotes != null) {
-					// loop through last notes until closed hi-hat is found (if it is found)
-					for (TGNote note : lastNotes) {
-						if (note.getValue() == 42) {
-							lastNoteAlsoClosedHiHat = true;
-							break;
-						}
-					}
-				}
-				
 				// if last note wasn't closed hi-hat, draw cross
-				if (!lastNoteAlsoClosedHiHat) {
+				if (!this.isLastBeatContainingValue(layout, this.getValue())) {
 					painter.initPath(UIPainter.PATH_DRAW);
 					painter.moveTo(fromX + (0.25f * scale), fromY + (-0.66f * scale));
 					painter.lineTo(fromX + (0.91f * scale), fromY + (-0.66f * scale));
@@ -546,6 +517,38 @@ public class TGNoteImpl extends TGNote {
 			painter.addCircle(fromX + (0.5f * scale), fromY + (0.425f * scale), scale * 1.6f);
 			painter.closePath();
 		}
+	}
+	
+	private boolean isLastBeatContainingValue(TGLayout layout, int value) {
+		TGBeat lastBeat = this.getBeatImpl().getPreviousBeat();
+		
+		// get note from last beat if it exists
+		if (lastBeat == null && this.getMeasureImpl().getPreviousMeasure() != null) {
+			TGMeasure lastMeasure = this.getMeasureImpl().getPreviousMeasure();
+			
+			layout.addUpdateDependant(lastMeasure.getHeader(), this.getMeasureImpl().getHeader());
+			
+			// get last beat of measure
+			if (lastMeasure.countBeats() > 0 ) {
+				lastBeat = lastMeasure.getBeat(lastMeasure.countBeats() - 1);
+			}
+		}
+		
+		// make sure not null
+		if (lastBeat != null) {
+			for(int v = 0 ; v < lastBeat.countVoices(); v ++){
+				TGVoice lastVoice = lastBeat.getVoice(v);
+				
+				// loop through last notes until closed hi-hat is found (if it is found)
+				for(int n = 0 ; n < lastVoice.countNotes(); n ++){
+					TGNoteImpl note = (TGNoteImpl) lastVoice.getNote(n);
+					if (note.getRealValue() == value) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	private TGNoteImpl getNoteForTie() {
