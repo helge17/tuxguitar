@@ -64,8 +64,6 @@ public class TGMeasureImpl extends TGMeasure{
 	public static final int ACCIDENTAL_FLAT_NOTES [] = new int[]{0,1,1,2,2,3,4,4,5,5,6,6};
 	public static final boolean ACCIDENTAL_NOTES[] = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
 	
-	public static final int SCORE_KEY_OFFSETS[] = new int[]{30,18,22,24};
-	
 	public static final int SCORE_KEY_SHARP_POSITIONS[][] = new int[][]{ 
 		new int[] { 1 , 4, 0, 3, 6, 2 , 5 } ,
 		new int[] { 3 , 6, 2, 5, 8, 4 , 7 } ,
@@ -276,7 +274,7 @@ public class TGMeasureImpl extends TGMeasure{
 					Iterator<TGNote> it = voice.getNotes().iterator();
 					while(it.hasNext()){
 						TGNoteImpl note = (TGNoteImpl)it.next();
-						voice.check(note);
+						voice.check(layout, note);
 					}
 					
 					if(!voice.isRestVoice()){
@@ -286,7 +284,7 @@ public class TGMeasureImpl extends TGMeasure{
 							groups[v] = new TGBeatGroup(v);
 							this.voiceGroups[v].add(groups[v]);
 						}
-						groups[v].check(voice);
+						groups[v].check(layout, voice);
 					}else{
 						for( int v2 = 0; v2 < TGBeat.MAX_VOICES; v2 ++){
 							if(v2 != voice.getIndex()){
@@ -904,14 +902,18 @@ public class TGMeasureImpl extends TGMeasure{
 	/**
 	 * Pinta la Clave
 	 */
-	private void paintClef(TGLayout layout,UIPainter painter,float fromX, float fromY) {
+	private void paintClef(TGLayout layout, UIPainter painter,float fromX, float fromY) {
 		//-----SCORE ------------------------------------//
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 && this.paintClef){
 			float x = (fromX + getHeaderImpl().getLeftSpacing(layout));
 			float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
 			layout.setClefStyle(painter);
 			painter.initPath(UIPainter.PATH_FILL);
-			if(this.getClef() == TGMeasure.CLEF_TREBLE){
+			
+			if(layout.getSongManager().isPercussionChannel(this.getTrack().getSong(), this.getTrack().getChannelId())) {
+				TGClefPainter.paintNeutral(painter, x, y, layout.getScoreLineSpacing());
+			}
+			else if(this.getClef() == TGMeasure.CLEF_TREBLE){
 				TGClefPainter.paintTreble(painter, x, y,layout.getScoreLineSpacing());
 			}
 			else if(this.getClef() == TGMeasure.CLEF_BASS){

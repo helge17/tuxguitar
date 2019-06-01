@@ -171,11 +171,11 @@ public class TGBeatImpl extends TGBeat{
 	}
 	
 	public void check( TGLayout layout , TGNoteImpl note){
-		int value = note.getRealValue();
-		if(this.maxNote == null || value > this.maxNote.getRealValue()){
+		int value = TGNotation.computePosition(layout, note);
+		if( this.maxNote == null || value > TGNotation.computePosition(layout, this.maxNote)){
 			this.maxNote = note;
 		}
-		if(this.minNote == null || value < this.minNote.getRealValue()){
+		if( this.minNote == null || value < TGNotation.computePosition(layout, this.minNote)){
 			this.minNote = note;
 		}
 		this.getUsedStrings();
