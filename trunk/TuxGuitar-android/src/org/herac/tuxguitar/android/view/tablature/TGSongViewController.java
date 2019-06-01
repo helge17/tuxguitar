@@ -1,10 +1,11 @@
 package org.herac.tuxguitar.android.view.tablature;
 
+import java.util.List;
+
 import org.herac.tuxguitar.android.graphics.TGResourceFactoryImpl;
 import org.herac.tuxguitar.android.transport.TGTransport;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.graphics.control.TGController;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
@@ -19,6 +20,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
@@ -90,8 +92,8 @@ public class TGSongViewController implements TGController {
 		this.disposeUnregisteredResources();
 	}
 
-	public void updateMeasure(int number) {
-		this.getLayout().updateMeasureNumber(number);
+	public void updateMeasures(List<Integer> numbers) {
+		this.getLayout().updateMeasureNumbers(numbers);
 		this.getCaret().update();
 		this.disposeUnregisteredResources();
 	}

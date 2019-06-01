@@ -1,9 +1,11 @@
 package org.herac.tuxguitar.editor;
 
+import java.util.List;
+
 import org.herac.tuxguitar.editor.event.TGDestroyEvent;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.thread.TGThreadManager;
@@ -79,14 +81,14 @@ public class TGEditorManager {
 		});
 	}
 	
-	public void updateMeasure(final int number){
-		this.updateMeasure(number, null);
+	public void updateMeasures(final List<Integer> numbers){
+		this.updateMeasures(numbers, null);
 	}
 	
-	public void updateMeasure(final int number, final TGAbstractContext sourceContext){
+	public void updateMeasures(final List<Integer> numbers, final TGAbstractContext sourceContext){
 		this.runLocked(new Runnable() {
 			public void run() {
-				doUpdateMeasure(number, sourceContext);
+				doUpdateMeasures(numbers, sourceContext);
 			}
 		});
 	}
@@ -167,8 +169,8 @@ public class TGEditorManager {
 		TGEventManager.getInstance(this.context).fireEvent(new TGUpdateEvent(type, context));
 	}
 	
-	private void doUpdateMeasure(int number, TGAbstractContext context){
-		TGEventManager.getInstance(this.context).fireEvent(new TGUpdateMeasureEvent(number, context));
+	private void doUpdateMeasures(List<Integer> numbers, TGAbstractContext context){
+		TGEventManager.getInstance(this.context).fireEvent(new TGUpdateMeasuresEvent(numbers, context));
 	}
 	
 	private void doDestroy(TGAbstractContext context){
