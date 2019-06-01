@@ -153,12 +153,12 @@ public class TGVoiceImpl extends TGVoice{
 		this.next = null;
 	}
 	
-	public void check(TGNoteImpl note){
-		int value = note.getRealValue();
-		if(this.maxNote == null || value > this.maxNote.getRealValue()){
+	public void check(TGLayout layout, TGNoteImpl note){
+		int value = TGNotation.computePosition(layout, note);
+		if( this.maxNote == null || value > TGNotation.computePosition(layout, this.maxNote)){
 			this.maxNote = note;
 		}
-		if(this.minNote == null || value < this.minNote.getRealValue()){
+		if( this.minNote == null || value < TGNotation.computePosition(layout, this.minNote)){
 			this.minNote = note;
 		}
 		this.getUsedStrings();
@@ -303,15 +303,15 @@ public class TGVoiceImpl extends TGVoice{
 						}
 						else if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 							int direction = voice.getBeatGroup().getDirection();
-							float y1 = voice.getBeatGroup().getY1(layout,voice.getMinNote(),getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
-							float y2 = voice.getBeatGroup().getY1(layout,voice.getMaxNote(),getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
+							float y1 = voice.getBeatGroup().getY1(layout, voice.getMaxNote(),getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
+							float y2 = voice.getBeatGroup().getY1(layout, voice.getMinNote(),getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
 							
 							if(direction == TGBeatGroup.DIRECTION_UP){
 								float position = (y1 + (lineSpacing * 2));
 								if( position > this.silenceY ){
 									this.silenceY = position;
 								}
-							}else if(direction == TGBeatGroup.DIRECTION_DOWN){
+							} else if(direction == TGBeatGroup.DIRECTION_DOWN){
 								float position = (y2 - (this.silenceHeight + lineSpacing));
 								if( position < this.silenceY ){
 									this.silenceY = position;
@@ -524,7 +524,7 @@ public class TGVoiceImpl extends TGVoice{
 			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0f);
 			float yMove = ((lineSpacing / 2f) + (((lineSpacing / 10f) * 1.20f)) * dir);
 			
-			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.maxNote.getScorePosY() : this.minNote.getScorePosY() );
+			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.minNote.getScorePosY() : this.maxNote.getScorePosY() );
 			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing, key, clef);
 			
 			painter.setLineWidth(layout.getLineWidth(0));

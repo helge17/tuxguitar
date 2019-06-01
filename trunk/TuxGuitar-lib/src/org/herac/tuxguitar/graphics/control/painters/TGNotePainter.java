@@ -5,6 +5,7 @@ import org.herac.tuxguitar.graphics.command.TGLineTo;
 import org.herac.tuxguitar.graphics.command.TGMoveTo;
 import org.herac.tuxguitar.graphics.command.TGPaintCommand;
 import org.herac.tuxguitar.graphics.command.TGPaintModel;
+import org.herac.tuxguitar.graphics.command.TGRectangle;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGNotePainter {
@@ -24,6 +25,36 @@ public class TGNotePainter {
 		new TGLineTo(0.65000004f, 0.0f),
 		new TGLineTo(0.1f, 0.5f),
 		new TGLineTo(0.65000004f, 1.0f)
+	);
+	
+	private static final TGPaintCommand PERCUSSION_X_MODEL = new TGPaintModel(
+		new TGMoveTo(0.166666666666666f, 0.0f),
+		new TGLineTo(1.166666666666666f, 1.0f),
+		new TGMoveTo(0.166666666666666f, 1.0f),
+		new TGLineTo(1.166666666666666f, 0.0f)
+	);
+	
+	private static final TGPaintCommand PERCUSSION_TRIANGLE_MODEL = new TGPaintModel(
+		new TGMoveTo(1.166666666666666f, 0.85f),
+		new TGLineTo(0.166666666666666f, 0.85f),
+		new TGLineTo(0.666666666666666f, (0.85f - 0.866025403784439f)),
+		new TGLineTo(1.166666666666666f, 0.85f)
+	);
+	
+	private static final TGPaintCommand PERCUSSION_CYMBAL_MODEL = new TGPaintModel(
+		new TGMoveTo(0.166666666666666f, 0.0f),
+		new TGLineTo(1.166666666666666f, 1.0f),
+		new TGMoveTo(0.166666666666666f, 1.0f),
+		new TGLineTo(1.166666666666666f, 0.0f),
+		
+		new TGMoveTo(0.166666666666666f, 0.0f),
+		new TGRectangle(0.166666666666666f, 0.0f, 0.25f, 0.25f),
+		new TGMoveTo((1.166666666666666f - (0.25f)), (1.0f - (0.25f))),
+		new TGRectangle((1.166666666666666f - 0.25f), (1.0f - 0.25f), 0.25f, 0.25f),
+		new TGMoveTo(0.166666666666666f, (1.0f - (0.25f))),
+		new TGRectangle(0.166666666666666f, (1.0f - 0.25f), 0.25f, 0.25f),
+		new TGMoveTo((1.166666666666666f - (0.25f)), 0.0f),
+		new TGRectangle((1.166666666666666f - 0.25f), 0.0f, 0.25f, 0.25f)
 	);
 	
 	private static final TGPaintCommand FOOTER_UP_MODEL = new TGPaintModel(
@@ -82,6 +113,18 @@ public class TGNotePainter {
 	
 	public static void paintHarmonic(UIPainter painter, float x, float y, float scale){
 		HARMONIC_MODEL.paint(painter, x, y, scale);
+	}
+	
+	public static void paintXNote(UIPainter painter, float x, float y, float scale) {
+		PERCUSSION_X_MODEL.paint(painter, x, y, scale);
+	}
+	
+	public static void paintTriangle(UIPainter painter, float x, float y, float scale) {
+		PERCUSSION_TRIANGLE_MODEL.paint(painter, x, y, scale);
+	}
+
+	public static void paintEffectCymbalXNote(UIPainter painter, float x, float y, float scale) {
+		PERCUSSION_CYMBAL_MODEL.paint(painter, x, y, scale);
 	}
 	
 	public static void paintFooter(UIPainter painter, float x, float y,int dir,float scale) {

@@ -348,6 +348,17 @@ public class TGClefPainter {
 		new TGCubicTo(0.5896894f, -0.44392997f, 0.59568065f, -0.44992122f, 0.6016719f, -0.45291623f)
 	);
 	
+	private static final TGPaintCommand NEUTRAL_MODEL = new TGPaintModel(
+		new TGMoveTo(0.0f, 1.0f),
+		new TGLineTo(0.0f, 3.0f),
+		new TGLineTo(0.5f, 3.0f),
+		new TGLineTo(0.5f, 1.0f),
+		new TGMoveTo(1.0f, 1.0f),
+		new TGLineTo(1.0f, 3.0f),
+		new TGLineTo(1.5f, 3.0f),
+		new TGLineTo(1.5f, 1.0f)
+	);
+	
 	public static void paintTreble(UIPainter painter, float x, float y,float scale){
 		TREBLE_MODEL.paint(painter, x, y, scale);
 	}
@@ -362,5 +373,9 @@ public class TGClefPainter {
 	
 	public static void paintTenor(UIPainter painter, float x, float y,float scale){
 		TENOR_MODEL.paint(painter, x, y, scale);
+	}
+	
+	public static void paintNeutral(UIPainter painter, float x, float y, float scale) {
+		NEUTRAL_MODEL.paint(painter, x, y, scale);
 	}
 }

@@ -68,12 +68,14 @@ public abstract class TGLayout {
 	
 	private TGController controller;
 	private TGResources resources;
+	private TGDrumMap drumMap;
 	
 	public TGLayout(TGController controller,int style){
 		this.controller = controller;
 		this.trackPositions = new ArrayList<TrackPosition>();
 		this.playModeEnabled = false;
 		this.resources = new TGResources(this);
+		this.drumMap = new TGDrumMap();
 		this.style = style;
 		if((this.style & DISPLAY_TABLATURE) == 0 && (this.style & DISPLAY_SCORE) == 0 ){
 			this.style |= DISPLAY_TABLATURE;
@@ -541,6 +543,10 @@ public abstract class TGLayout {
 		return this.resources;
 	}
 	
+	public TGDrumMap getDrumMap() {
+		return this.drumMap;
+	}
+
 	public float getHeight() {
 		return this.height;
 	}
