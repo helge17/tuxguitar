@@ -438,6 +438,7 @@ public class TGNoteImpl extends TGNote {
 		
 		if ((renderType & TGDrumMap.KIND_CYMBAL) != 0) {
 			// paint as X
+			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath(UIPainter.PATH_DRAW);
 			TGNotePainter.paintXNote(painter, fromX, fromY + 1, layout.getScoreLineSpacing() - 2);
 			painter.closePath();
@@ -476,6 +477,7 @@ public class TGNoteImpl extends TGNote {
 		
 		if ((renderType & TGDrumMap.KIND_EFFECT_CYMBAL) != 0) {
 			// paint as weird X thing
+			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath(UIPainter.PATH_DRAW);
 			TGNotePainter.paintEffectCymbalXNote(painter, fromX, fromY + 1, layout.getScoreLineSpacing() - 2);
 			painter.closePath();
@@ -484,6 +486,7 @@ public class TGNoteImpl extends TGNote {
 		// other render artifacts
 		// draw open hi-hat circle above note
 		if ((renderType & TGDrumMap.KIND_OPEN) != 0) {
+			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath(UIPainter.PATH_DRAW);
 			painter.addCircle(fromX + (0.58f * scale), fromY + (-0.66f * scale), 0.5f * scale);
 			painter.closePath();
@@ -494,6 +497,7 @@ public class TGNoteImpl extends TGNote {
 			if (this.getValue() == 42) {
 				// if last note wasn't closed hi-hat, draw cross
 				if (!this.isLastBeatContainingValue(layout, this.getValue())) {
+					painter.setLineWidth(layout.getLineWidth(1));
 					painter.initPath(UIPainter.PATH_DRAW);
 					painter.moveTo(fromX + (0.25f * scale), fromY + (-0.66f * scale));
 					painter.lineTo(fromX + (0.91f * scale), fromY + (-0.66f * scale));
@@ -503,6 +507,7 @@ public class TGNoteImpl extends TGNote {
 				}
 				// for all other cases, don't do this (e.g. muted triangle)
 			} else {
+				painter.setLineWidth(layout.getLineWidth(1));
 				painter.initPath(UIPainter.PATH_DRAW);
 				painter.moveTo(fromX + (0.25f * scale), fromY + (-0.66f * scale));
 				painter.lineTo(fromX + (0.91f * scale), fromY + (-0.66f * scale));
@@ -513,6 +518,7 @@ public class TGNoteImpl extends TGNote {
 		}
 		// draw circle around note
 		if ((renderType & TGDrumMap.KIND_CIRCLE_AROUND) != 0) {
+			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath(UIPainter.PATH_DRAW);
 			painter.addCircle(fromX + (0.5f * scale), fromY + (0.425f * scale), scale * 1.6f);
 			painter.closePath();
