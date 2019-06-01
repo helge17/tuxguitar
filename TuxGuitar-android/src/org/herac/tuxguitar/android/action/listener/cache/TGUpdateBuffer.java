@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.action.listener.cache;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
@@ -72,11 +71,7 @@ public class TGUpdateBuffer {
 	
 	public void applyUpdateMeasures(TGAbstractContext sourceContext) {
 		if(!this.updateSong && !this.updateSongLoaded && !this.updateSongSaved ) {
-			Collections.sort(this.updateMeasures);
-			
-			for(Integer number : this.updateMeasures) {
-				TGEditorManager.getInstance(this.context).updateMeasure(number, sourceContext);
-			}
+			TGEditorManager.getInstance(this.context).updateMeasures(this.updateMeasures, sourceContext);
 		}
 	}
 	

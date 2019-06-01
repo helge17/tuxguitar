@@ -2,6 +2,7 @@ package org.herac.tuxguitar.midiinput;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -381,7 +382,7 @@ static private	MiProvider	s_Instance;
 						songMgr.getMeasureManager().addChord(beat, chord);
 						
 						TGDocumentListManager.getInstance(TuxGuitar.getInstance().getContext()).findCurrentDocument().setUnsaved(true);
-						TuxGuitar.getInstance().getEditorManager().updateMeasure(measure.getNumber());
+						TuxGuitar.getInstance().getEditorManager().updateMeasures(Collections.singletonList(measure.getNumber()));
 						TuxGuitar.getInstance().getUndoableManager().addEdit(undoable.endUndo(measure));
 						TuxGuitar.getInstance().updateCache(true);
 						}

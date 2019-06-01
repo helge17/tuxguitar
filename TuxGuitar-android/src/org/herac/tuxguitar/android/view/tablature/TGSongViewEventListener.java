@@ -1,9 +1,11 @@
 package org.herac.tuxguitar.android.view.tablature;
 
+import java.util.List;
+
 import org.herac.tuxguitar.editor.event.TGDestroyEvent;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateMeasureEvent;
+import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGAbstractContext;
@@ -16,6 +18,7 @@ public class TGSongViewEventListener implements TGEventListener {
 		this.songView = songView;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
@@ -27,7 +30,7 @@ public class TGSongViewEventListener implements TGEventListener {
 			}
 		}
 		else if( type == TGUpdateEvent.MEASURE_UPDATED ){
-			this.songView.updateMeasure(((Integer) event.getAttribute(TGUpdateMeasureEvent.PROPERTY_MEASURE_NUMBER)).intValue());
+			this.songView.updateMeasures((List<Integer>) event.getAttribute(TGUpdateMeasuresEvent.PROPERTY_MEASURE_NUMBERS));
 		}
 		else if( type == TGUpdateEvent.SONG_UPDATED ){
 			this.songView.updateTablature();
