@@ -21,7 +21,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class TGMainSingleton {
 	
 	private static final Long CHECK_DELAY = 100L;
-	private static final Long LOCK_FILE_TIMEOUT = (CHECK_DELAY * 10);
+	private static final Long LOCK_FILE_TIMEOUT = (CHECK_DELAY * 50);
 	private static final String EMPTY_URL = "url:empty";
 	
 	public static void main(String[] args) {
@@ -43,6 +43,7 @@ public class TGMainSingleton {
 			if( this.tryLock() ) {
 				this.launchLockThread();
 				this.launchTuxGuitar(url);
+				this.unLock();
 			} else {
 				this.launchClientUrl(url);
 			}
@@ -86,6 +87,18 @@ public class TGMainSingleton {
 		return false;
 	}
 	
+	private void unLock() {
+		try{
+			File lockFile = this.getLockFile();
+			
+			if( lockFile.exists()) {
+				lockFile.delete();
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
+	
 	private void launchLockThread() {
 		final Object lock = new Object();
 		final File lockFile = this.getLockFile();
@@ -95,26 +108,27 @@ public class TGMainSingleton {
 			public void run() {
 				while( true ) {
 					try {
+						lockFile.setLastModified(new Date().getTime());
+						
 						if( TuxGuitar.getInstance().isInitialized() ) {
-							lockFile.setLastModified(new Date().getTime());
-							
-							List<File> processedFiles = new ArrayList<File>();
-							
 							File[] urlFiles = urlFolder.listFiles();
-							for(File urlFile : urlFiles) {
-								BufferedReader in = new BufferedReader(new FileReader(urlFile));
-								
-								String inputLine = in.readLine();
-								if( inputLine != null ) {
-									joinTuxGuitar(parseUrl(inputLine));
+							if( urlFiles != null ) {
+								List<File> processedFiles = new ArrayList<File>();
+								for(File urlFile : urlFiles) {
+									BufferedReader in = new BufferedReader(new FileReader(urlFile));
+									
+									String inputLine = in.readLine();
+									if( inputLine != null ) {
+										joinTuxGuitar(parseUrl(inputLine));
+									}
+									
+									in.close();
+									
+									processedFiles.add(urlFile);
 								}
-								
-								in.close();
-								
-								processedFiles.add(urlFile);
-							}
-							while(!processedFiles.isEmpty()) {
-								processedFiles.remove(0).delete();
+								while(!processedFiles.isEmpty()) {
+									processedFiles.remove(0).delete();
+								}
 							}
 						}
 						synchronized (lock) {
