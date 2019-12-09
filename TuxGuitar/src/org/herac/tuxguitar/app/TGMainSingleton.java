@@ -19,28 +19,28 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGMainSingleton {
-	
+
 	private static final Long CHECK_DELAY = 100L;
 	private static final Long LOCK_FILE_TIMEOUT = (CHECK_DELAY * 50);
 	private static final String EMPTY_URL = "url:empty";
-	
+
 	public static void main(String[] args) {
 		try {
 			ArgumentParser argumentParser = new ArgumentParser(args);
-			if(argumentParser.processAndExit()){
+			if (argumentParser.processAndExit()) {
 				return;
 			}
-			
+
 			TGMainSingleton tgMainSingleton = new TGMainSingleton();
 			tgMainSingleton.launchSingleton(argumentParser.getURL());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
-	
+
 	private void launchSingleton(URL url) {
 		try {
-			if( this.tryLock() ) {
+			if (this.tryLock()) {
 				this.launchLockThread();
 				this.launchTuxGuitar(url);
 				this.unLock();
@@ -52,82 +52,86 @@ public class TGMainSingleton {
 			t.printStackTrace();
 		}
 	}
-	
+
 	private void launchTuxGuitar(URL url) {
 		TuxGuitar.getInstance().createApplication(url);
 	}
-	
+
 	private void joinTuxGuitar(URL url) {
 		final TGContext context = TuxGuitar.getInstance().getContext();
 		TGSynchronizer.getInstance(context).executeLater(new Runnable() {
+
 			public void run() {
 				TGWindow.getInstance(context).moveToTop();
 			}
 		});
-		if( url != null ) {
+		if (url != null) {
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGReadURLAction.NAME);
 			tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
 			tgActionProcessor.process();
 		}
 	}
-	
+
 	private boolean tryLock() {
-		try{
+		try {
 			File lockFile = this.getLockFile();
-			
-			if(!lockFile.exists()) {
+
+			if (!lockFile.exists()) {
 				lockFile.getParentFile().mkdirs();
-				
+
 				return lockFile.createNewFile();
 			}
-			return (new Date().getTime()  > (lockFile.lastModified() + LOCK_FILE_TIMEOUT));
+			return (new Date().getTime() > (lockFile.lastModified() + LOCK_FILE_TIMEOUT));
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	private void unLock() {
-		try{
+		try {
 			File lockFile = this.getLockFile();
-			
-			if( lockFile.exists()) {
+
+			if (lockFile.exists()) {
 				lockFile.delete();
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
-	
+
 	private void launchLockThread() {
 		final Object lock = new Object();
 		final File lockFile = this.getLockFile();
 		final File urlFolder = this.getUrlFolder();
-		
+
 		new Thread(new Runnable() {
+
 			public void run() {
-				while( true ) {
+				while (true) {
 					try {
 						lockFile.setLastModified(new Date().getTime());
-						
-						if( TuxGuitar.getInstance().isInitialized() ) {
-							File[] urlFiles = urlFolder.listFiles();
-							if( urlFiles != null ) {
-								List<File> processedFiles = new ArrayList<File>();
-								for(File urlFile : urlFiles) {
-									BufferedReader in = new BufferedReader(new FileReader(urlFile));
-									
-									String inputLine = in.readLine();
-									if( inputLine != null ) {
-										joinTuxGuitar(parseUrl(inputLine));
+
+						if (TuxGuitar.getInstance().isInitialized()) {
+							if( urlFolder.exists() ) {
+								File[] urlFiles = urlFolder.listFiles();
+								if (urlFiles != null) {
+									List<File> processedFiles = new ArrayList<File>();
+									for (File urlFile : urlFiles) {
+										BufferedReader in = new BufferedReader(new FileReader(urlFile));
+	
+										String inputLine = in.readLine();
+										if (inputLine != null) {
+											joinTuxGuitar(parseUrl(inputLine));
+										}
+	
+										in.close();
+	
+										processedFiles.add(urlFile);
 									}
-									
-									in.close();
-									
-									processedFiles.add(urlFile);
-								}
-								while(!processedFiles.isEmpty()) {
-									processedFiles.remove(0).delete();
+									while (!processedFiles.isEmpty()) {
+										processedFiles.remove(0).delete();
+									}
 								}
 							}
 						}
@@ -143,39 +147,41 @@ public class TGMainSingleton {
 			}
 		}).start();
 	}
-	
-    public void launchClientUrl(URL url) {
-        try {
-        	String urlForm = (url != null ? url.toExternalForm() : EMPTY_URL);
-        	File urlFile = this.getUrlFile(new Date().getTime() + "-" + urlForm.hashCode());
-        	
-            PrintWriter printWriter = new PrintWriter(urlFile);
-            printWriter.println(urlForm);
-            printWriter.close();
-        } catch (IOException e) {
-        	e.printStackTrace();
-        } 
-    }
-    
-    public URL parseUrl(String spec) throws MalformedURLException {
-    	if(!EMPTY_URL.endsWith(spec)) {
-    		return new URL(spec);
-    	}
-    	return null;
-    }
+
+	public void launchClientUrl(URL url) {
+		try {
+			String urlForm = (url != null ? url.toExternalForm() : EMPTY_URL);
+			File urlFile = this.getUrlFile(new Date().getTime() + "-" + urlForm.hashCode());
+
+			urlFile.getParentFile().mkdirs();
+
+			PrintWriter printWriter = new PrintWriter(urlFile);
+			printWriter.println(urlForm);
+			printWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public URL parseUrl(String spec) throws MalformedURLException {
+		if (!EMPTY_URL.endsWith(spec)) {
+			return new URL(spec);
+		}
+		return null;
+	}
 
 	private File getTemporaryFolder() {
 		return new File(System.getProperty("java.io.tmpdir") + File.separator + "tuxguitar");
 	}
-	
+
 	private File getUrlFolder() {
 		return new File(this.getTemporaryFolder(), "url");
 	}
-	
+
 	private File getUrlFile(String hash) {
 		return new File(this.getUrlFolder(), "tuxguitar-url-" + hash + ".url");
 	}
-	
+
 	private File getLockFile() {
 		return new File(this.getTemporaryFolder(), "tuxguitar.lock");
 	}
