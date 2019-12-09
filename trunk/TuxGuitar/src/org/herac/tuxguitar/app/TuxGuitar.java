@@ -90,8 +90,8 @@ public class TuxGuitar {
 	}
 	
 	public static TuxGuitar getInstance() {
-		if (instance == null) {
-			synchronized (TuxGuitar.class) {
+		synchronized (TuxGuitar.class) {
+			if (instance == null) {
 				instance = new TuxGuitar();
 			}
 		}
