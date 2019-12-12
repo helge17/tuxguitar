@@ -145,6 +145,7 @@
 			<include name="**/*.gradle"/>
 			<include name="**/GNUmakefile"/>
 			<include name="**/DEBIAN/control"/>
+			<include name="**/Info.plist"/>
 		</replace>
 		
 		<echo>+------------------------------------------------------------------------------+</echo>
