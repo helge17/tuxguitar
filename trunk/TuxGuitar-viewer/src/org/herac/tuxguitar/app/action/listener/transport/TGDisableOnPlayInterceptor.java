@@ -33,16 +33,15 @@ public class TGDisableOnPlayInterceptor implements TGActionInterceptor {
 	}
 	
 	public boolean intercept(String id, TGActionContext context) throws TGActionException {
-		boolean intercepted = true;
-		boolean running = MidiPlayer.getInstance(this.context).isRunning();
-		if(!running || !this.containsActionId(id)){
-			intercepted = false;
-		}
+		boolean intercepted = false;
 		
-		if( intercepted ){
-			TuxGuitar.instance().updateCache(true);
+		if( this.containsActionId(id) ) {
+			intercepted = MidiPlayer.getInstance(this.context).isRunning();
+				
+			if( intercepted ){
+				TuxGuitar.instance().updateCache(true);
+			}
 		}
-		
 		return intercepted;
 	}
 }

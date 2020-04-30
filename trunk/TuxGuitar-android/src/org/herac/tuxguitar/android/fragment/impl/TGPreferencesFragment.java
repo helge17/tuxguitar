@@ -11,6 +11,7 @@ import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.storage.TGStorageLoadSettingsAction;
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
+import org.herac.tuxguitar.android.properties.TGSharedPreferencesUtil;
 import org.herac.tuxguitar.android.storage.TGStorageProperties;
 import org.herac.tuxguitar.android.transport.TGTransportProperties;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -25,7 +26,8 @@ import java.util.Map;
 
 public class TGPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-	private static final String PREFERENCES_NAME = "tuxguitar-settings";
+	public static final String MODULE = "tuxguitar";
+	public static final String RESOURCE = "settings";
 
 	private Map<String, String> updateActionsMap;
 
@@ -33,7 +35,7 @@ public class TGPreferencesFragment extends PreferenceFragment implements SharedP
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.getPreferenceManager().setSharedPreferencesName(PREFERENCES_NAME);
+		this.getPreferenceManager().setSharedPreferencesName(TGSharedPreferencesUtil.getSharedPreferencesName(this.getActivity(), MODULE, RESOURCE));
 		this.addPreferencesFromResource(R.xml.preferences_main);
 		this.getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		this.createUpdateActionsMap();

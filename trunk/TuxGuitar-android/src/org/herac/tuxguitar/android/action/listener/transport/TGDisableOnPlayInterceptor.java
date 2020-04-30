@@ -34,19 +34,18 @@ public class TGDisableOnPlayInterceptor implements TGActionInterceptor {
 	}
 	
 	public boolean intercept(String id, TGActionContext context) throws TGActionException {
-		boolean intercepted = true;
-		boolean running = MidiPlayer.getInstance(this.context).isRunning();
-		if(!running || !this.containsActionId(id)){
-			intercepted = false;
-		}
-		
-		if( intercepted ){
-			TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
-			if( activity != null ) {
-				activity.updateCache(true);
+		boolean intercepted = false;
+
+		if( this.containsActionId(id) ) {
+			intercepted = MidiPlayer.getInstance(this.context).isRunning();
+
+			if (intercepted) {
+				TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
+				if (activity != null) {
+					activity.updateCache(true);
+				}
 			}
 		}
-		
 		return intercepted;
 	}
 }
