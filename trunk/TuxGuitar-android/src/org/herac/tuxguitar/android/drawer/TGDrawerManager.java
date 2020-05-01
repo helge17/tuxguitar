@@ -1,8 +1,7 @@
 package org.herac.tuxguitar.android.drawer;
 
 import android.content.res.Configuration;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,9 @@ import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.fragment.TGFragmentController;
 import org.herac.tuxguitar.util.TGContext;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class TGDrawerManager {
 	

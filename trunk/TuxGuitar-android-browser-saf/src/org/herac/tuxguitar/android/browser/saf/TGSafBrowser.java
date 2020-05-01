@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
-import android.support.v4.provider.DocumentFile;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityController;
@@ -18,6 +17,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.documentfile.provider.DocumentFile;
 
 public class TGSafBrowser implements TGBrowser{
 	

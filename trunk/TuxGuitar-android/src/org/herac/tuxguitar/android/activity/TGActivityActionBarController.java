@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.android.activity;
 
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 
 public class TGActivityActionBarController {
 

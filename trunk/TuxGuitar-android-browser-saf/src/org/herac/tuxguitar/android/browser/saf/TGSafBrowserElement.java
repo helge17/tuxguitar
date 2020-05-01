@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.browser.saf;
 
-import android.support.v4.provider.DocumentFile;
-
 import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
+
+import androidx.documentfile.provider.DocumentFile;
 
 public class TGSafBrowserElement implements TGBrowserElement{
 	

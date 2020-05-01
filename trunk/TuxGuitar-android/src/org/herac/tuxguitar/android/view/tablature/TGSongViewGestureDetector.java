@@ -5,7 +5,7 @@ import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 
 import android.content.Context;
-import android.support.v4.view.GestureDetectorCompat;
+import androidx.core.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
