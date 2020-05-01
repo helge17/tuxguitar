@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
-import android.support.v4.provider.DocumentFile;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityController;
@@ -10,6 +9,8 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 import org.herac.tuxguitar.util.TGContext;
+
+import androidx.documentfile.provider.DocumentFile;
 
 public class TGSafBrowserFactory implements TGBrowserFactory{
 

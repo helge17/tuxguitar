@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.view.layout;
 
 import android.content.Context;
-import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
@@ -14,6 +13,8 @@ import org.herac.tuxguitar.util.TGContext;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class TGSingleFragmentLayout extends DrawerLayout implements TGDrawerViewBuilder {
 

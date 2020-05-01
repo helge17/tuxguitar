@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -27,16 +27,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':tuxguitar-android')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':tuxguitar-android')
 
-    compile 'com.google.android.gms:play-services-auth:8.3.0'
-    compile 'com.google.apis:google-api-services-drive:v2-rev240-1.22.0'
-    compile 'com.google.api-client:google-api-client:1.22.0'
-    compile 'com.google.api-client:google-api-client-android:1.22.0'
-    compile 'com.google.http-client:google-http-client:1.22.0'
-    compile 'com.google.http-client:google-http-client-android:1.22.0'
-    compile 'com.google.http-client:google-http-client-gson:1.22.0'
-    compile 'com.google.oauth-client:google-oauth-client:1.22.0'
-    compile 'com.google.code.gson:gson:2.7'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    implementation 'com.google.apis:google-api-services-drive:v2-rev240-1.22.0'
+    implementation 'com.google.api-client:google-api-client:1.22.0'
+    implementation 'com.google.api-client:google-api-client-android:1.22.0'
+    implementation 'com.google.http-client:google-http-client:1.22.0'
+    implementation 'com.google.http-client:google-http-client-android:1.22.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.22.0'
+    implementation 'com.google.oauth-client:google-oauth-client:1.22.0'
+    implementation 'com.google.code.gson:gson:2.7'
 }

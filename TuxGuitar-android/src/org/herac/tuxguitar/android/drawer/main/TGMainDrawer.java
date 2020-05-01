@@ -1,11 +1,12 @@
 package org.herac.tuxguitar.android.drawer.main;
 
 import android.content.Context;
-import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.google.android.material.tabs.TabLayout;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
@@ -37,6 +38,8 @@ public class TGMainDrawer extends RelativeLayout {
 	}
 	
 	public void onFinishInflate() {
+		super.onFinishInflate();
+
 		this.createTabs();
 		this.fillFileListView();
 		this.fillTrackListView();

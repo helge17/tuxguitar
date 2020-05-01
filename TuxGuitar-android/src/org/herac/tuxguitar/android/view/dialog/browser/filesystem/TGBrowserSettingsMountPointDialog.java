@@ -3,7 +3,6 @@ package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
@@ -15,6 +14,8 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AlertDialog;
 
 public class TGBrowserSettingsMountPointDialog extends TGDialogFragment {
 
