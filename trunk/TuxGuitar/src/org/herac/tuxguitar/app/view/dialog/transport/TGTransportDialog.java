@@ -218,9 +218,13 @@ public class TGTransportDialog implements TGEventListener {
 			}
 		});
 		this.tickProgress.addMouseUpListener(new UIMouseUpListener() {
-			public void onMouseUp(UIMouseEvent event) {
-				TGTransportDialog.this.gotoMeasure(getSongManager().getMeasureHeaderAt(getDocumentManager().getSong(), TGTransportDialog.this.tickProgress.getValue()),true);
-				TGTransportDialog.this.setEditingTickScale(false);
+			public void onMouseUp(final UIMouseEvent event) {
+				new TGSyncProcessLocked(TGTransportDialog.this.context, new Runnable() {
+					public void run() {
+						TGTransportDialog.this.gotoMeasure(getSongManager().getMeasureHeaderAt(getDocumentManager().getSong(), TGTransportDialog.this.tickProgress.getValue()),true);
+						TGTransportDialog.this.setEditingTickScale(false);
+					}
+				}).process();
 			}
 		});
 		this.tickProgress.addMouseMoveListener(new UIMouseMoveListener() {
