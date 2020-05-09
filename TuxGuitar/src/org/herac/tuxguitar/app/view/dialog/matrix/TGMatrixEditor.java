@@ -18,9 +18,9 @@ import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
@@ -275,7 +275,7 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 	
 	public void initEditor(){
-		TGMatrixMouseListener mouseListener = new TGMatrixMouseListener();
+		TGMatrixMouseListener mouseListener = new TGMatrixMouseListener(this.context);
 		UIFactory uiFactory = this.getUIFactory();
 		UITableLayout uiLayout = new UITableLayout(0f);
 		
@@ -869,35 +869,45 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	private class TGMatrixMouseListener implements UIMouseUpListener, UIMouseEnterListener, UIMouseExitListener, UIMouseMoveListener {
 		
-		public TGMatrixMouseListener(){
-			super();
+		private TGContext context;
+		
+		public TGMatrixMouseListener(TGContext context){
+			this.context = context;
 		}
 		
-		public void onMouseUp(UIMouseEvent event) {
+		public void onMouseUp(final UIMouseEvent event) {
 			getEditor().setFocus();
 			if( event.getButton() == 1 ){
-				if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
-					hit(event.getPosition().getX(), event.getPosition().getY());
+				new TGSyncProcessLocked(this.context, new Runnable() {
+					public void run() {
+						hit(event.getPosition().getX(), event.getPosition().getY());
+					}
+				}).process();
+			}
+		}
+		
+		public void onMouseMove(final UIMouseEvent event) {
+			new TGSyncProcessLocked(this.context, new Runnable() {
+				public void run() {
+					updateSelection(event.getPosition().getY());	
 				}
-			}
+			}).process();
 		}
 		
-		public void onMouseMove(UIMouseEvent event) {
-			if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
-				updateSelection(event.getPosition().getY());
-			}
+		public void onMouseExit(final UIMouseEvent event) {
+			new TGSyncProcessLocked(this.context, new Runnable() {
+				public void run() {
+					updateSelection(-1);	
+				}
+			}).process();
 		}
 		
-		public void onMouseExit(UIMouseEvent event) {
-			if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
-				updateSelection(-1);
-			}
-		}
-		
-		public void onMouseEnter(UIMouseEvent event) {
-			if(!TGEditorManager.getInstance(TGMatrixEditor.this.context).isLocked()){
-				redraw();
-			}
+		public void onMouseEnter(final UIMouseEvent event) {
+			new TGSyncProcessLocked(this.context, new Runnable() {
+				public void run() {
+					redraw();
+				}
+			}).process();
 		}
 	}
 	

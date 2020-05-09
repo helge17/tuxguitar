@@ -20,6 +20,7 @@ import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import org.herac.tuxguitar.graphics.control.TGNoteImpl;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -203,7 +204,7 @@ public class TGPiano {
 		this.image = makePianoImage();
 		this.canvas = getUIFactory().createCanvas(this.control, true);
 		this.canvas.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGPianoPainterListener()));
-		this.canvas.addMouseUpListener(new TGPianoMouseListener());
+		this.canvas.addMouseUpListener(new TGPianoMouseListener(this.context));
 		this.canvas.setFocus();
 	}
 	
@@ -593,20 +594,26 @@ public class TGPiano {
 	
 	private class TGPianoMouseListener implements UIMouseUpListener {
 		
-		public TGPianoMouseListener(){
-			super();
+		private TGContext context;
+		
+		public TGPianoMouseListener(TGContext context){
+			this.context = context;
 		}
 		
-		public void onMouseUp(UIMouseEvent event) {
+		public void onMouseUp(final UIMouseEvent event) {
 			getCanvas().setFocus();
 			if( event.getButton() == 1 ){
-				if(!TuxGuitar.getInstance().getPlayer().isRunning() && !TGEditorManager.getInstance(TGPiano.this.context).isLocked()){
-					if( getExternalBeat() == null ){
-						hit(event.getPosition().getX(), event.getPosition().getY());
-					}else{
-						setExternalBeat( null );
-						TuxGuitar.getInstance().updateCache(true);
-					}
+				if(!MidiPlayer.getInstance(this.context).isRunning()){
+					TGEditorManager.getInstance(this.context).asyncRunLocked(new Runnable() {
+						public void run() {
+							if( getExternalBeat() == null ){
+								hit(event.getPosition().getX(), event.getPosition().getY());
+							}else{
+								setExternalBeat( null );
+								TuxGuitar.getInstance().updateCache(true);
+							}
+						}
+					});
 				}
 			}else{
 				new TGActionProcessor(TGPiano.this.context, TGGoRightAction.NAME).process();

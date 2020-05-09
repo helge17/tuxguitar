@@ -20,6 +20,7 @@ import org.herac.tuxguitar.app.view.util.TGProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
 import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
+import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
@@ -258,27 +259,27 @@ public class TGTableViewer implements TGEventListener {
 					});
 					row.setMouseDownListenerLabel(new UIMouseDownListener() {
 						public void onMouseDown(UIMouseEvent event) {
-							if( track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber() ){
-								TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGGoToTrackAction.NAME);
-								tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
-								tgActionProcessor.process();
-							}
+							TGEditorManager.getInstance(getContext()).asyncRunLocked(new Runnable() {
+								public void run() {
+									if( track.getNumber() != getEditor().getTablature().getCaret().getTrack().getNumber() ){
+										TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGGoToTrackAction.NAME);
+										tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+										tgActionProcessor.process();
+									}
+								}
+							});
 						}
 					});
 					row.setMouseDoubleClickListenerLabel(new UIMouseDoubleClickListener() {
 						public void onMouseDoubleClick(UIMouseEvent event) {
-							new Thread(new Runnable() {
+							TGActionProcessor tgActionProcessor = new TGActionProcessor(TGTableViewer.this.context, TGGoToTrackAction.NAME);
+							tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+							tgActionProcessor.setOnFinish(new Runnable() {
 								public void run() {
-									TGActionProcessor tgActionProcessor = new TGActionProcessor(TGTableViewer.this.context, TGGoToTrackAction.NAME);
-									tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
-									tgActionProcessor.setOnFinish(new Runnable() {
-										public void run() {
-											new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGOpenTrackPropertiesDialogAction.NAME).process();
-										}
-									});
-									tgActionProcessor.process();
+									new TGActionProcessor(TuxGuitar.getInstance().getContext(), TGOpenTrackPropertiesDialogAction.NAME).process();
 								}
-							}).start();
+							});
+							tgActionProcessor.process();
 						}
 					});
 					
@@ -288,20 +289,24 @@ public class TGTableViewer implements TGEventListener {
 						}
 					});
 					row.setMouseDownListenerCanvas(new UIMouseDownListener() {
-						public void onMouseDown(UIMouseEvent event) {
-							int index = (int)((event.getPosition().getX() + getHScrollSelection()) / getTable().getRowHeight());
-							if( index >= 0 && index < track.countMeasures() ){
-								TGMeasure measure = track.getMeasure(index);
-								TGBeat beat = TuxGuitar.getInstance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
-								if( beat != null ){
-									TGActionProcessor tgActionProcessor = new TGActionProcessor(TGTableViewer.this.context, TGMoveToAction.NAME);
-									tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
-									tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-									tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-									tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, track.getString(1));
-									tgActionProcessor.process();
+						public void onMouseDown(final UIMouseEvent event) {
+							new TGSyncProcessLocked(getContext(), new Runnable() {
+								public void run() {
+									int index = (int)((event.getPosition().getX() + getHScrollSelection()) / getTable().getRowHeight());
+									if( index >= 0 && index < track.countMeasures() ){
+										TGMeasure measure = track.getMeasure(index);
+										TGBeat beat = TuxGuitar.getInstance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());
+										if( beat != null ){
+											TGActionProcessor tgActionProcessor = new TGActionProcessor(TGTableViewer.this.context, TGMoveToAction.NAME);
+											tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+											tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
+											tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
+											tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, track.getString(1));
+											tgActionProcessor.process();
+										}
+									}
 								}
-							}
+							}).process();
 						}
 					});
 					
@@ -549,7 +554,7 @@ public class TGTableViewer implements TGEventListener {
 				loadIcons();
 			}
 		});
-		this.updateMenuItemsProcess = new TGSyncProcess(this.context, new Runnable() {
+		this.updateMenuItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateMenuItems();
 			}
