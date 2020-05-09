@@ -400,7 +400,7 @@ public class TuxGuitar {
 	}
 	
 	public void playBeat( final TGBeat beat ){
-		TGThreadManager.getInstance(this.context).start(new Runnable() {
+		TGEditorManager.getInstance(this.context).asyncRunLocked(new Runnable() {
 			public void run() throws TGException {
 				if(!isDisposed() && !getPlayer().isRunning() ){
 					getPlayer().playBeat(beat);
