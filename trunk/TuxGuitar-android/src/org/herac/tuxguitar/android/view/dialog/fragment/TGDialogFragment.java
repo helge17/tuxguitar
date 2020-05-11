@@ -1,22 +1,25 @@
 package org.herac.tuxguitar.android.view.dialog.fragment;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
+import org.herac.tuxguitar.android.fragment.TGFragmentTransaction;
 import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.util.TGContext;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+
 public abstract class TGDialogFragment extends DialogFragment {
-	
+
 	public TGDialogFragment() {
 		super();
 	}
 
 	public abstract Dialog onCreateDialog();
-	
+
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		if( this.getDialogContext() != null ) {
 			return this.onCreateDialog();
@@ -29,7 +32,15 @@ public abstract class TGDialogFragment extends DialogFragment {
 		
 		super.onDestroy();
 	}
-	
+
+	public void show(FragmentManager manager, String tag) {
+		if( manager.isStateSaved() ) {
+			this.show(new TGFragmentTransaction(manager, true), tag);
+		} else {
+			super.show(manager, tag);
+		}
+	}
+
 	public String getDialogContextKey() {
 		return (TGDialogContext.class.getName() + "-" + this.getClass().getName());
 	}

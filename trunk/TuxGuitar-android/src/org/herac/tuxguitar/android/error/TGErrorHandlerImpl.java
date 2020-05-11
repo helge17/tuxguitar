@@ -3,9 +3,10 @@ package org.herac.tuxguitar.android.error;
 import android.os.Environment;
 
 import org.herac.tuxguitar.android.R;
+import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
 import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
 
 import java.io.BufferedWriter;
@@ -37,12 +38,12 @@ public class TGErrorHandlerImpl implements TGErrorHandler{
 	}
 	
 	public void showUserMessage(Throwable throwable) {
-		TGDialogContext tgDialogContext = new TGDialogContext();
-		tgDialogContext.setAttribute(TGMessageDialogController.ATTRIBUTE_TITLE, MSG_TITLE);
-		tgDialogContext.setAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE, this.createHumanErrorMessage(throwable));
-		
-		TGMessageDialogController tgMessageDialogController = new TGMessageDialogController();
-		tgMessageDialogController.showDialog(this.activity, tgDialogContext);
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.activity.findContext(), TGOpenDialogAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.activity);
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGMessageDialogController());
+		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_TITLE, MSG_TITLE);
+		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE, this.createHumanErrorMessage(throwable));
+		tgActionProcessor.processOnNewThread();
 	}
 	
 	public String createHumanErrorMessage(Throwable throwable) {

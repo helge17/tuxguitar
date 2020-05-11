@@ -68,6 +68,16 @@ public class TGLock {
 	}
 	
 	public boolean isLocked() {
-		return isLocked( this.threadManager.getThreadId() );
+		return this.isLocked( this.threadManager.getThreadId() );
+	}
+	
+	public boolean isUnderLockControl(Object thread) {
+		synchronized( this.lock ){
+			return (this.lockThread != null && !this.isLocked(thread));
+		}
+	}
+	
+	public boolean isUnderLockControl() {
+		return this.isUnderLockControl( this.threadManager.getThreadId() );
 	}
 }

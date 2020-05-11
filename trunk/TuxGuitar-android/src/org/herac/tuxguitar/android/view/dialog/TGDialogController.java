@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.android.view.dialog;
 
-import android.app.Activity;
+import org.herac.tuxguitar.android.activity.TGActivity;
 
 public interface TGDialogController {
 	
-	void showDialog(Activity activity, TGDialogContext dialogContext);
+	void showDialog(TGActivity activity, TGDialogContext dialogContext);
 }

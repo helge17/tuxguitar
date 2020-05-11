@@ -2,10 +2,6 @@ package org.herac.tuxguitar.android.fragment.impl;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.action.impl.storage.TGStorageLoadSettingsAction;
@@ -24,7 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TGPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
+import androidx.preference.PreferenceFragmentCompat;
+
+public class TGPreferencesFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	public static final String MODULE = "tuxguitar";
 	public static final String RESOURCE = "settings";
@@ -34,13 +36,6 @@ public class TGPreferencesFragment extends PreferenceFragment implements SharedP
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		this.getPreferenceManager().setSharedPreferencesName(TGSharedPreferencesUtil.getSharedPreferencesName(this.getActivity(), MODULE, RESOURCE));
-		this.addPreferencesFromResource(R.xml.preferences_main);
-		this.getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-		this.createUpdateActionsMap();
-		this.createSafPreferences();
-		this.createOutputPortPreferences();
 	}
 
 	@Override
@@ -48,6 +43,16 @@ public class TGPreferencesFragment extends PreferenceFragment implements SharedP
 		this.getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 
 		super.onDestroy();
+	}
+
+	@Override
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+		this.getPreferenceManager().setSharedPreferencesName(TGSharedPreferencesUtil.getSharedPreferencesName(this.getActivity(), MODULE, RESOURCE));
+		this.addPreferencesFromResource(R.xml.preferences_main);
+		this.getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		this.createUpdateActionsMap();
+		this.createSafPreferences();
+		this.createOutputPortPreferences();
 	}
 
 	@Override

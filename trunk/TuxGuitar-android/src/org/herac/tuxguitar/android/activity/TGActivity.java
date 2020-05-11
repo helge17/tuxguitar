@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -43,6 +46,13 @@ import org.herac.tuxguitar.util.plugin.TGPluginManager;
 public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 	private boolean destroyed;
+
+	@Nullable
+	@Override
+	public ActionBar getSupportActionBar() {
+		return super.getSupportActionBar();
+	}
+
 	private TGContext context;
 	private TGNavigationManager navigationManager;
 	private TGDrawerManager drawerManager;

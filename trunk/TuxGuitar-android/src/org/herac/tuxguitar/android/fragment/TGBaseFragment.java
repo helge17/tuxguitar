@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.android.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +13,8 @@ import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.activity.TGActivityActionBarController;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGContext;
+
+import androidx.fragment.app.Fragment;
 
 public abstract class TGBaseFragment extends Fragment {
 
