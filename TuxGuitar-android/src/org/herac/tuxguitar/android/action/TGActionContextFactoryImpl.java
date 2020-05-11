@@ -31,7 +31,7 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, tgCaret.getMeasure());
 			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, tgCaret.getMeasure().getHeader());
 			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, tgCaret.getSelectedBeat());
-			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE, tgCaret.getSelectedBeat().getVoice(tgCaret.getVoice()));
+			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE, tgCaret.getSelectedVoice());
 			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE, tgCaret.getSelectedNote());
 			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, tgCaret.getSelectedString());
 			tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION, tgCaret.getDuration());

@@ -42,8 +42,10 @@ public class Caret {
 	private TGTrackImpl selectedTrack;
 	private TGMeasureImpl selectedMeasure;
 	private TGBeat selectedBeat;
+	private TGVoice selectedVoice;
 	private TGNote selectedNote;
 	private TGDuration selectedDuration;
+	private TGString selectedString;
 	private long position;
 	private int string;
 	private int voice;
@@ -95,6 +97,7 @@ public class Caret {
 		this.updateDuration();
 		this.updateString();
 		this.updateNote();
+		this.updateVoice();
 		this.updateBeat();
 		this.checkTransport();
 		this.setChanges(true);
@@ -289,15 +292,7 @@ public class Caret {
 	}
 	
 	public TGString getSelectedString() {
-		List<TGString> strings = this.selectedTrack.getStrings();
-		Iterator<TGString> it = strings.iterator();
-		while (it.hasNext()) {
-			TGString instrumentString = (TGString) it.next();
-			if (instrumentString.getNumber() == this.string) {
-				return instrumentString;
-			}
-		}
-		return null;
+		return this.selectedString;
 	}
 	
 	public void changeDuration(TGDuration duration){
@@ -312,6 +307,16 @@ public class Caret {
 	private void updateString(){
 		if( this.string < 1 || this.string > getTrack().stringCount() ){
 			this.string = 1;
+		}
+		
+		// find selected string
+		List<?> strings = getTrack().getStrings();
+		Iterator<?> it = strings.iterator();
+		while (it.hasNext()) {
+			TGString instrumentString = (TGString) it.next();
+			if (instrumentString.getNumber() == this.string) {
+				this.selectedString = instrumentString;
+			}
 		}
 	}
 	
@@ -362,6 +367,14 @@ public class Caret {
 	
 	public TGSong getSong(){
 		return this.tablature.getSong();
+	}
+	
+	private void updateVoice(){
+		this.selectedVoice = this.getSelectedBeat().getVoice(this.getVoice());
+	}
+	
+	public TGVoice getSelectedVoice() {
+		return this.selectedVoice;
 	}
 	
 	public int getVoice() {

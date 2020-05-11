@@ -13,7 +13,7 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 public class TGNavigationManager {
 	
@@ -38,7 +38,7 @@ public class TGNavigationManager {
 	}
 	
 	public void processLoadFragment(TGNavigationFragment nf) {
-		FragmentManager fragmentManager = this.activity.getFragmentManager();
+		FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.content_frame, nf.getController().getFragment()).commitAllowingStateLoss();
 		
 		TGNavigationFragment backFrom = null;

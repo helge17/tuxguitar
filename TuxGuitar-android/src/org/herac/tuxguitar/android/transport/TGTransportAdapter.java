@@ -49,15 +49,15 @@ public class TGTransportAdapter {
 		MidiPlayer.getInstance(this.context).close();
 	}
 
-	public void playBeat( final TGBeat beat ){
-		new Thread(new Runnable() {
+	public void playBeat( final TGBeat beat ) {
+		TGEditorManager.getInstance(this.context).asyncRunLocked(new Runnable() {
 			public void run() throws TGException {
 				MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportAdapter.this.context);
 				if(!midiPlayer.isRunning() ){
 					midiPlayer.playBeat(beat);
 				}
 			}
-		}).start();
+		});
 	}
 
 	public void loadSettings() {

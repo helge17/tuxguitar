@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.android.view.dialog.fragment;
 
 import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.application.TGApplicationUtil;
 import org.herac.tuxguitar.android.fragment.TGCachedFragmentController;
 import org.herac.tuxguitar.android.fragment.TGFragmentController;
@@ -9,11 +10,9 @@ import org.herac.tuxguitar.android.view.dialog.TGDialogController;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
-import android.app.Activity;
-
 public abstract class TGModalFragmentController<T extends TGModalFragment> extends TGCachedFragmentController<T> implements TGDialogController {
 
-	public void showDialog(Activity activity, TGDialogContext dialogContext) {
+	public void showDialog(TGActivity activity, TGDialogContext dialogContext) {
 		TGContext context = TGApplicationUtil.findContext(activity);
 
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenFragmentAction.NAME);

@@ -31,8 +31,10 @@ public class TGCaret {
 	private TGTrackImpl selectedTrack;
 	private TGMeasureImpl selectedMeasure;
 	private TGBeat selectedBeat;
+	private TGVoice selectedVoice;
 	private TGNote selectedNote;
 	private TGDuration selectedDuration;
+	private TGString selectedString;
 	private long position;
 	private int string;
 	private int voice;
@@ -73,7 +75,7 @@ public class TGCaret {
 		TGMeasureImpl measure = findMeasure(realPosition,track);
 		TGBeat beat = findBeat(realPosition,measure);
 		if(track != null && measure != null && beat != null){
-			moveTo(track, measure, beat,string);
+			moveTo(track, measure, beat, string);
 		}
 		setVelocity(velocity);
 	}
@@ -87,6 +89,7 @@ public class TGCaret {
 		this.updateDuration();
 		this.updateString();
 		this.updateNote();
+		this.updateVoice();
 		this.updateBeat();
 		this.setChanges(true);
 	}
@@ -280,15 +283,7 @@ public class TGCaret {
 	}
 	
 	public TGString getSelectedString() {
-		List<?> strings = this.selectedTrack.getStrings();
-		Iterator<?> it = strings.iterator();
-		while (it.hasNext()) {
-			TGString instrumentString = (TGString) it.next();
-			if (instrumentString.getNumber() == this.string) {
-				return instrumentString;
-			}
-		}
-		return null;
+		return this.selectedString;
 	}
 	
 	private void updatePosition(){
@@ -298,6 +293,16 @@ public class TGCaret {
 	private void updateString(){
 		if( this.string < 1 || this.string > getTrack().stringCount() ){
 			this.string = 1;
+		}
+		
+		// find selected string
+		List<?> strings = getTrack().getStrings();
+		Iterator<?> it = strings.iterator();
+		while (it.hasNext()) {
+			TGString instrumentString = (TGString) it.next();
+			if (instrumentString.getNumber() == this.string) {
+				this.selectedString = instrumentString;
+			}
 		}
 	}
 	
@@ -344,6 +349,14 @@ public class TGCaret {
 	
 	public TGSong getSong(){
 		return this.tablature.getSong();
+	}
+	
+	private void updateVoice(){
+		this.selectedVoice = this.getSelectedBeat().getVoice(this.getVoice());
+	}
+	
+	public TGVoice getSelectedVoice() {
+		return this.selectedVoice;
 	}
 	
 	public int getVoice() {

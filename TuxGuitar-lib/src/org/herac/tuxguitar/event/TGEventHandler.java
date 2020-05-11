@@ -3,6 +3,8 @@ package org.herac.tuxguitar.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.util.TGAbstractContext;
+
 public class TGEventHandler {
 	
 	private Object lock;
@@ -15,6 +17,17 @@ public class TGEventHandler {
 	
 	public void processEvent(TGEvent event) throws TGEventException {
 		List<TGEventListener> listeners = new ArrayList<TGEventListener>();
+		
+		// find context listener
+		TGAbstractContext sourceContext = event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
+		if( sourceContext != null ) {
+			TGEventListener listener = sourceContext.getAttribute(TGEventListener.class.getName());
+			if( listener != null ) {
+				listeners.add(listener);
+			}
+		}
+		
+		// append listeners
 		synchronized (this.lock) {
 			listeners.addAll(this.listeners);
 		}

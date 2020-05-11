@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
@@ -240,9 +241,13 @@ public class TGTrackTuningDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				if( TGTrackTuningDialog.this.updateTrackTuning() ) {
-					TGTrackTuningDialog.this.dialog.dispose();
-				}
+				new TGSyncProcessLocked(getContext().getContext(), new Runnable() {
+					public void run() {
+						if( TGTrackTuningDialog.this.updateTrackTuning() ) {
+							TGTrackTuningDialog.this.dialog.dispose();
+						}
+					}
+				}).process();
 			}
 		});
 		parentLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
