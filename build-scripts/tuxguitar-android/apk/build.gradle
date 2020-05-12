@@ -69,9 +69,6 @@ task generateSources {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.multidex:multidex:2.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0'
     implementation project(':tuxguitar-android')
     implementation project(':tuxguitar-android-resources')
     implementation project(':tuxguitar-android-gervill')

@@ -202,7 +202,14 @@ public class TGEditorManager {
 		}
 		return false;
 	}
-	
+
+	public boolean isUnderLockControl(){
+		if( this.lockControl != null ) {
+			return this.lockControl.isUnderLockControl();
+		}
+		return false;
+	}
+
 	public void runLocked(Runnable runnable) {
 		this.lock();
 		try {

@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.drawer;
 
 import android.content.res.Configuration;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ public class TGDrawerManager {
 		this.activity = activity;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void initialize() {
 		this.drawerView = (ViewGroup) this.activity.findViewById(R.id.left_drawer);
 
@@ -42,7 +40,7 @@ public class TGDrawerManager {
 				TGDrawerManager.this.onVisibilityChanged();
 			}
 		};
-		this.drawerLayout.setDrawerListener(this.drawerToggle);
+		this.drawerLayout.addDrawerListener(this.drawerToggle);
 		
 		this.appendListeners();
 	}

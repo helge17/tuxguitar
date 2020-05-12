@@ -45,14 +45,16 @@ public class TGSongView extends View {
 	
 	@Override
 	protected void onFinishInflate() {
-		this.context = TGApplicationUtil.findContext(this);		
+		super.onFinishInflate();
+
+		this.context = TGApplicationUtil.findContext(this);
 		this.controller = TGSongViewController.getInstance(this.context);
 		this.controller.setSongView(this);
 		this.controller.getLayout().loadStyles(this.getDefaultScale());
 		this.controller.updateTablature();
 		this.gestureDetector = new TGSongViewGestureDetector(getContext(), this);
 	}
-	
+
 	public float getDefaultScale() {
 		return this.getResources().getDisplayMetrics().density;
 	}
