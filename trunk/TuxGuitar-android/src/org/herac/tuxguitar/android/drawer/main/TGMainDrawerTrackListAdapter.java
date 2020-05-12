@@ -6,6 +6,8 @@ import android.widget.CheckedTextView;
 
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
+import org.herac.tuxguitar.android.view.util.TGProcess;
+import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -21,13 +23,16 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 	private TGTrack selection;
 	private TGEventListener eventListener;
 	private List<TGMainDrawerTrackListItem> items;
+	private TGProcess updateSelectionProcess;
+	private TGProcess updateTracksProcess;
 	
 	public TGMainDrawerTrackListAdapter(TGMainDrawer mainDrawer) {
 		super(mainDrawer);
 		
 		this.items = new ArrayList<TGMainDrawerTrackListItem>();
 		this.eventListener = new TGMainDrawerTrackListListener(this);
-		this.updateSelection();
+		this.createSyncProcesses();
+		this.processUpdateSelection();
 	}
 	
 	@Override
@@ -58,7 +63,7 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		return view;
 	}
 	
-	public boolean isUpdateRequired() {
+	private boolean isUpdateRequired() {
 		TGSong song = TGDocumentManager.getInstance(getMainDrawer().findContext()).getSong();
 		if( song != null ) {
 			int count = song.countTracks();
@@ -91,11 +96,11 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		return false;
 	}
 	
-	public boolean isSelected(TGTrack track) {
+	private boolean isSelected(TGTrack track) {
 		return (this.selection != null && track != null && this.selection.equals(track) );
 	}
 	
-	public void updateTrackItems() {
+	private void updateTrackItems() {
 		this.items.clear();
 		
 		TGSong song = TGDocumentManager.getInstance(getMainDrawer().findContext()).getSong();
@@ -113,16 +118,38 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		}
 	}
 	
-	public void updateSelection() {
+	private void updateSelection() {
 		this.selection = TGSongViewController.getInstance(getMainDrawer().findContext()).getCaret().getTrack();
 		if( this.isUpdateRequired() ) {
 			this.updateTracks();
 		}
 	}
 	
-	public void updateTracks() {
+	private void updateTracks() {
 		this.updateTrackItems();
 		this.notifyDataSetChanged();
+	}
+	
+	private void createSyncProcesses() {
+		this.updateSelectionProcess = new TGSyncProcessLocked(this.getMainDrawer().findContext(), new Runnable() {
+			public void run() {
+				TGMainDrawerTrackListAdapter.this.updateSelection();
+			}
+		});
+		
+		this.updateTracksProcess = new TGSyncProcessLocked(this.getMainDrawer().findContext(), new Runnable() {
+			public void run() {
+				TGMainDrawerTrackListAdapter.this.updateTracks();
+			}
+		});
+	}
+	
+	public void processUpdateSelection() {
+		this.updateSelectionProcess.process();
+	}
+	
+	public void processUpdateTracks() {
+		this.updateTracksProcess.process();
 	}
 	
 	public void attachListeners() {
