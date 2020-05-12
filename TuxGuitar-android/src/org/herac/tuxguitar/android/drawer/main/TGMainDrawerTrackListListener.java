@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.android.drawer.main;
 
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -9,36 +7,19 @@ import org.herac.tuxguitar.event.TGEventListener;
 public class TGMainDrawerTrackListListener implements TGEventListener {
 	
 	private TGMainDrawerTrackListAdapter adapter;
-	private TGProcess updateSelection;
-	private TGProcess updateTracks;
 	
 	public TGMainDrawerTrackListListener(TGMainDrawerTrackListAdapter adapter) {
 		this.adapter = adapter;
-		this.createSyncProcesses();
-	}
-	
-	public void createSyncProcesses() {
-		this.updateSelection = new TGSyncProcessLocked(this.adapter.getMainDrawer().findContext(), new Runnable() {
-			public void run() {
-				TGMainDrawerTrackListListener.this.adapter.updateSelection();
-			}
-		});
-		
-		this.updateTracks = new TGSyncProcessLocked(this.adapter.getMainDrawer().findContext(), new Runnable() {
-			public void run() {
-				TGMainDrawerTrackListListener.this.adapter.updateTracks();
-			}
-		});
 	}
 	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
-			this.updateSelection.process();
+			this.adapter.processUpdateSelection();
 		}if( type == TGUpdateEvent.SONG_UPDATED ){
-			this.updateTracks.process();
+			this.adapter.processUpdateTracks();
 		}else if( type == TGUpdateEvent.SONG_LOADED ){
-			this.updateTracks.process();
+			this.adapter.processUpdateTracks();
 		}
 	}
 	
