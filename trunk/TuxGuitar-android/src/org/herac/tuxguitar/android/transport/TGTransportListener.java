@@ -57,7 +57,10 @@ public class TGTransportListener implements TGEventListener{
 	public void notifyStarted() {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
+				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
+					tgEditorManager.lock();
+					
 					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 					tgTransport.getCache().reset();
 					
@@ -69,6 +72,8 @@ public class TGTransportListener implements TGEventListener{
 					TGTransportListener.this.startLoop();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
+				} finally {
+					tgEditorManager.unlock();
 				}
 			}
 		});
