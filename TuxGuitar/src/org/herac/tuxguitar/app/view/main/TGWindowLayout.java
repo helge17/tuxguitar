@@ -48,7 +48,7 @@ public class TGWindowLayout extends UITableLayout {
 	public void configure() {
 		this.set(UITableLayout.MARGIN_TOP, 0f);
 		this.set(UITableLayout.IGNORE_INVISIBLE, true);
-		this.set(this.top, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, null, null, 0f);
+		this.set(this.top, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false, 1, 1, null, null, 0f);
 		this.set(this.topContainer, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		this.set(this.topContainer, UITableLayout.PACKED_HEIGHT, 0f);
 		this.set(this.divider, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, null, null, 0f);
