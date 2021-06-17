@@ -323,52 +323,58 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	
 	private void writeBeats(TGMeasure measure,TGBeatData data) throws IOException{
 		int count = measure.countBeats();
-		for(int i = 0; i < count; i ++){
-			TGBeat beat = measure.getBeat(i);
-			writeBeat(beat,data, (i + 1 < count ));
+		if( count > 0 ) {
+			for(int i = 0; i < count; i ++){
+				TGBeat beat = measure.getBeat(i);
+				writeBeat(beat, data, (i + 1 < count ));
+			}
+		} else {
+			writeBeat(null, data, false);
 		}
 	}
 	
 	private void writeBeat(TGBeat beat,TGBeatData data, boolean hasNext) throws IOException{
 		int header = hasNext ? BEAT_HAS_NEXT : 0;
 		
-		//Berifico si hay cambios en las voces
-		for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
-			int shift = (i * 2 );
-			if(!beat.getVoice(i).isEmpty()){
-				header |= ( BEAT_HAS_VOICE << shift ); 
+		if( beat != null ) {
+			//Berifico si hay cambios en las voces
+			for(int i = 0 ; i < TGBeat.MAX_VOICES; i ++ ){
+				int shift = (i * 2 );
+				if(!beat.getVoice(i).isEmpty()){
+					header |= ( BEAT_HAS_VOICE << shift ); 
+					
+					int flags = ( beat.getVoice(i).isRestVoice() ? 0 : VOICE_HAS_NOTES );
+					if(!beat.getVoice(i).getDuration().isEqual(data.getVoice(i).getDuration())){
+						flags |= VOICE_NEXT_DURATION;
+						data.getVoice(i).setDuration(beat.getVoice(i).getDuration());
+					}
+					if(beat.getVoice(i).getDirection() != TGVoice.DIRECTION_NONE ){
+						if(beat.getVoice(i).getDirection() == TGVoice.DIRECTION_UP ){
+							flags |= VOICE_DIRECTION_UP;
+						}
+						else if(beat.getVoice(i).getDirection() == TGVoice.DIRECTION_DOWN ){
+							flags |= VOICE_DIRECTION_DOWN;
+						}
+					}
+					if( data.getVoice(i).getFlags() != flags ){
+						header |= ( BEAT_HAS_VOICE_CHANGES << shift ); 
+						data.getVoice(i).setFlags( flags );
+					}
+				}
 				
-				int flags = ( beat.getVoice(i).isRestVoice() ? 0 : VOICE_HAS_NOTES );
-				if(!beat.getVoice(i).getDuration().isEqual(data.getVoice(i).getDuration())){
-					flags |= VOICE_NEXT_DURATION;
-					data.getVoice(i).setDuration(beat.getVoice(i).getDuration());
-				}
-				if(beat.getVoice(i).getDirection() != TGVoice.DIRECTION_NONE ){
-					if(beat.getVoice(i).getDirection() == TGVoice.DIRECTION_UP ){
-						flags |= VOICE_DIRECTION_UP;
-					}
-					else if(beat.getVoice(i).getDirection() == TGVoice.DIRECTION_DOWN ){
-						flags |= VOICE_DIRECTION_DOWN;
-					}
-				}
-				if( data.getVoice(i).getFlags() != flags ){
-					header |= ( BEAT_HAS_VOICE_CHANGES << shift ); 
-					data.getVoice(i).setFlags( flags );
-				}
 			}
-			
-		}
-		//Berifico si tiene stroke
-		if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
-			header |= BEAT_HAS_STROKE;
-		}
-		//Berifico si tiene acorde
-		if(beat.getChord() != null){
-			header |= BEAT_HAS_CHORD;
-		}
-		//Berifico si tiene texto
-		if(beat.getText() != null){
-			header |= BEAT_HAS_TEXT;
+			//Berifico si tiene stroke
+			if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
+				header |= BEAT_HAS_STROKE;
+			}
+			//Berifico si tiene acorde
+			if(beat.getChord() != null){
+				header |= BEAT_HAS_CHORD;
+			}
+			//Berifico si tiene texto
+			if(beat.getText() != null){
+				header |= BEAT_HAS_TEXT;
+			}
 		}
 		
 		// escribo la cabecera

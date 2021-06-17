@@ -188,7 +188,7 @@ public class TGChordList {
 	private UIFont getFont(){
 		if( this.font == null || this.font.isDisposed() ){
 			UIFont font = this.control.getFont();
-			UIFontModel model = new UIFontModel((font != null ? font.getName() : null), 7, true, false);
+			UIFontModel model = new UIFontModel((font != null ? font.getName() : UIFontModel.DEFAULT_NAME), 7, true, false);
 			
 			this.font = this.dialog.getUIFactory().createFont(model);
 		}

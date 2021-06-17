@@ -38,7 +38,7 @@ public class TGTableColumn {
 		return this.label;
 	}
 	
-	public void setTitle(String title){
-		this.label.setText(title);
+	public void setTitle(String title) {
+		this.label.setText(title != null ? title : "");
 	}
 }

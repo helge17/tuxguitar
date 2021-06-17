@@ -465,13 +465,14 @@ public class TGMatrixEditor implements TGEventListener {
 		if( this.clientArea != null ){
 			float minimumY = BORDER_HEIGHT;
 			float maximumY = (this.clientArea.getHeight() - BORDER_HEIGHT);
+			TGSongManager songManager = TGDocumentManager.getInstance(this.context).getSongManager();
 			
 			for( int v = 0; v < beat.countVoices(); v ++ ){
 				TGVoice voice = beat.getVoice(v);
 				for( int i = 0 ; i < voice.countNotes() ; i ++){
 					TGNoteImpl note = (TGNoteImpl)voice.getNote(i);
 					float x1 = (fromX + this.leftSpacing + (((beat.getStart() - measure.getStart()) * (this.timeWidth * measure.getTimeSignature().getNumerator())) / measure.getLength()) + 1);
-					float y1 = (fromY + (((this.maxNote - this.minNote) - (note.getRealValue() - this.minNote)) * this.lineHeight) + 1 );
+					float y1 = (fromY + (((this.maxNote - this.minNote) - (songManager.getMeasureManager().getRealNoteValue(note) - this.minNote)) * this.lineHeight) + 1 );
 					float x2 = (x1 + ((voice.getDuration().getTime() * this.timeWidth) / measure.getTimeSignature().getDenominator().getTime()) - 2 );
 					float y2 = (y1 + this.lineHeight - 2 );
 					
@@ -587,13 +588,14 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	private boolean removeNote(TGBeat beat,int value) {
 		TGMeasure measure = getMeasure();
+		TGSongManager songManager = TGDocumentManager.getInstance(this.context).getSongManager();
 		
 		for(int v = 0; v < beat.countVoices(); v ++){
 			TGVoice voice = beat.getVoice( v );
 			Iterator<TGNote> it = voice.getNotes().iterator();
 			while (it.hasNext()) {
 				TGNoteImpl note = (TGNoteImpl) it.next();
-				if( note.getRealValue() == value ) {
+				if( songManager.getMeasureManager().getRealNoteValue(note) == value ) {
 					TGString string = measure.getTrack().getString(note.getString());
 					
 					TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGDeleteNoteAction.NAME);

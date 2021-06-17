@@ -31,7 +31,7 @@ public class TGNoteImpl extends TGNote {
 	
 	public void update(TGLayout layout) {
 		if(!layout.getSongManager().isPercussionChannel(getMeasureImpl().getTrack().getSong(), getMeasureImpl().getTrack().getChannelId())) {
-			this.accidental = getMeasureImpl().getNoteAccidental( getRealValue() );
+			this.accidental = getMeasureImpl().getNoteAccidental( layout.getSongManager().getMeasureManager().getRealNoteValue(this) );
 		}
 		
 		this.tabPosY = ( (getString() * layout.getStringSpacing()) - layout.getStringSpacing() );
@@ -547,8 +547,8 @@ public class TGNoteImpl extends TGNote {
 				
 				// loop through last notes until closed hi-hat is found (if it is found)
 				for(int n = 0 ; n < lastVoice.countNotes(); n ++){
-					TGNoteImpl note = (TGNoteImpl) lastVoice.getNote(n);
-					if (note.getRealValue() == value) {
+					TGNote note = lastVoice.getNote(n);
+					if (layout.getSongManager().getMeasureManager().getRealNoteValue(note) == value) {
 						return true;
 					}
 				}
@@ -849,10 +849,6 @@ public class TGNoteImpl extends TGNote {
 			label = Integer.toString(note.getValue());
 		}
 		return (note.getEffect().isGhostNote() ? "(" + label + ")" : label);
-	}
-	
-	public int getRealValue(){
-		return (getValue() + getMeasureImpl().getTrack().getString(getString()).getValue());
 	}
 	
 	public float getScorePosY() {

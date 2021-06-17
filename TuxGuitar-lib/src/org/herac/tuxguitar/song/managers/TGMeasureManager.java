@@ -136,11 +136,6 @@ public class TGMeasureManager {
 		if( beat != null ){
 			addNote(beat, note, duration, start, voice);
 		}
-		
-//		TGBeat beat = getBeat(measure, start);
-//		if( beat != null ){
-//			addNote(beat, note, duration, voice);
-//		}
 	}
 	
 	public void addNote(TGBeat beat, TGNote note, TGDuration duration, int voice){
@@ -971,11 +966,19 @@ public class TGMeasureManager {
 			createSilences(measure, measure.getStart(), measure.getLength(), 0);
 			return;
 		}
+		
+		boolean hasVoices = false;
 		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
 			TGVoice voice = getFirstVoice( measure.getBeats() , v );
 			if( voice != null && voice.getBeat().getStart() > measure.getStart() ){
 				createSilences(measure, measure.getStart(), (voice.getBeat().getStart() - measure.getStart()), v);
 			}
+			hasVoices = (hasVoices || voice != null);
+		}
+		
+		if(!hasVoices) {
+			createSilences(measure, measure.getStart(), measure.getLength(), 0);
+			return;
 		}
 		
 		long[] start = new long[beat.countVoices()];
@@ -2056,5 +2059,26 @@ public class TGMeasureManager {
 		});
 		
 		return strings;
+	}
+	
+	public int getRealNoteValue(TGNote note) {
+		int value = note.getValue();
+		TGVoice voice = note.getVoice();
+		if( voice != null ) {
+			TGBeat beat = voice.getBeat();
+			if( beat != null ) {
+				TGMeasure measure = beat.getMeasure();
+				if( measure != null ) {
+					TGTrack track = measure.getTrack();
+					if( track != null ) {
+						TGString string = track.getString(note.getString());
+						if( string != null ) {
+							value += string.getValue();
+						}
+					}
+				}
+			}
+		}
+		return value;
 	}
 }
