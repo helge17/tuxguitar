@@ -60,7 +60,10 @@ public class TGTransportListener implements TGEventListener{
 	public void notifyStarted() {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
+				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
+					tgEditorManager.lock();
+					
 					TuxGuitar tuxguitar = TuxGuitar.getInstance();
 					tuxguitar.getEditorCache().reset();
 					tuxguitar.updateCache(true);
@@ -68,6 +71,8 @@ public class TGTransportListener implements TGEventListener{
 					TGTransportListener.this.startLoop();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
+				} finally {
+					tgEditorManager.unlock();
 				}
 			}
 		});
