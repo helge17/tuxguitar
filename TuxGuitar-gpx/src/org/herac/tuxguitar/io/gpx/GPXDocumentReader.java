@@ -28,7 +28,7 @@ public class GPXDocumentReader {
 	private Document xmlDocument;
 	private GPXDocument gpxDocument;
 	
-	public GPXDocumentReader(InputStream stream, Integer version) {
+	public GPXDocumentReader(InputStream stream, Integer version) throws GPXFormatException {
 		this.version = version;
 		this.xmlDocument = getDocument(stream);
 		this.gpxDocument = new GPXDocument();
@@ -38,13 +38,12 @@ public class GPXDocumentReader {
 		try {
 			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
 		} catch (Throwable throwable) {
-			throwable.printStackTrace();
+			throw new GPXFormatException("Invalid file format", throwable);
 		}
-		return null;
 	}
 	
-	public GPXDocument read(){
-		if( this.xmlDocument != null ){
+	public GPXDocument read() {
+		if( this.xmlDocument != null ) {
 			this.readScore();
 			this.readAutomations();
 			this.readTracks();
