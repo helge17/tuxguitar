@@ -32,10 +32,6 @@ public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 	}
 	
 	public Float getDpiScale() {
-//		PrintResolution printResolution = this.getControl().getJobSettings().getPrintResolution();
-//		if( printResolution != null ) {
-//			return (printResolution.getFeedResolution() / 100.0f);
-//		}
 		return 1f;
 	}
 	

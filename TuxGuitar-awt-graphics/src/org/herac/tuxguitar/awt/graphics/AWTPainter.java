@@ -15,11 +15,15 @@ import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class AWTPainter extends AWTAbstractPainter {
 	
+	private static final float DEFAULT_THINNEST_LINE_WIDTH = 1f;
+	
 	private boolean pathEmpty;
 	
 	private int style;
 	
 	private int alpha;
+	
+	private float thinnestLineWidth;
 	
 	private Graphics2D gc;
 	
@@ -35,20 +39,29 @@ public class AWTPainter extends AWTAbstractPainter {
 		super();
 	}
 	
+	public AWTPainter(Graphics2D gc, float thinnestLineWidth){
+		this.init(gc, thinnestLineWidth);
+	}
+	
 	public AWTPainter(Graphics2D gc){
-		this.init(gc);
+		this.init(gc, DEFAULT_THINNEST_LINE_WIDTH);
+	}
+	
+	public AWTPainter(Image image, float thinnestLineWidth){
+		this.init((Graphics2D)image.getGraphics(), thinnestLineWidth);
 	}
 	
 	public AWTPainter(Image image){
-		this.init((Graphics2D)image.getGraphics());
+		this.init((Graphics2D)image.getGraphics(), DEFAULT_THINNEST_LINE_WIDTH);
 	}
 	
-	public void init(Graphics2D gc){
+	public void init(Graphics2D gc, float thinnestLineWidth){
 		if( this.gc != null){
 			this.gc.dispose();
 		}
 		this.gc = gc;
 		this.alpha = 255;
+		this.thinnestLineWidth = thinnestLineWidth;
 		this.background = new AWTColor(0xff, 0xff, 0xff);
 		this.foreground = new AWTColor(0x00, 0x00, 0x00);
 		this.stroke = new BasicStroke(0f);
@@ -110,7 +123,7 @@ public class AWTPainter extends AWTAbstractPainter {
 	}
 	
 	public void setLineWidth(float lineWidth) {
-		float fixedWidth = (lineWidth == UIPainter.THINNEST_LINE_WIDTH ? 0.1f : lineWidth);
+		float fixedWidth = (lineWidth == UIPainter.THINNEST_LINE_WIDTH ? this.thinnestLineWidth : lineWidth);
 		this.stroke = new BasicStroke(fixedWidth, this.stroke.getEndCap(), this.stroke.getLineJoin(), this.stroke.getMiterLimit(), this.stroke.getDashArray(), this.stroke.getDashPhase());
 		this.gc.setStroke(this.stroke);
 	}

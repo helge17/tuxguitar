@@ -12,8 +12,6 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
-import com.sun.javafx.tk.Toolkit;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -31,7 +29,6 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	private static final float DEFAULT_WINDOW_WIDTH = 640f;
 	private static final float DEFAULT_WINDOW_HEIGHT = 480f;
 	
-	private boolean joined;
 	private Stage stage;
 	private UIImage image;
 	private UIMenuBar menuBar;
@@ -144,8 +141,6 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		if( this.getMenuBar() != null && !this.getMenuBar().isDisposed()) {
 			this.getMenuBar().dispose();
 		}
-		
-		this.leave();
 	}
 	
 	public boolean isVisible() {
@@ -242,18 +237,6 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		packedSize.setWidth(fixedWidth != null ? fixedWidth : packedSize.getWidth() + margin.getLeft() + margin.getRight());
 		packedSize.setHeight(fixedHeight != null ? fixedHeight : packedSize.getHeight() + margin.getTop() + margin.getBottom());
 		this.setPackedSize(packedSize);
-	}
-	
-	public void join() {
-		this.joined = true;
-		Toolkit.getToolkit().enterNestedEventLoop(this.getStage());
-	}
-	
-	public void leave() {
-		if( this.joined ) {
-			this.joined = false;
-			Toolkit.getToolkit().exitNestedEventLoop(this.getStage(), null);
-		}
 	}
 	
 	public void minimize() {
