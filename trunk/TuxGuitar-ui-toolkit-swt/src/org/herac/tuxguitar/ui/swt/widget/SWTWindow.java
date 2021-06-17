@@ -78,14 +78,6 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 		super.setBounds(bounds);
 	}
 	
-	public void join() {
-		while(!this.getControl().isDisposed() && !this.getControl().getDisplay().isDisposed()) {
-			if(!this.getControl().getDisplay().readAndDispatch()) {
-				this.getControl().getDisplay().sleep();
-			}
-		}
-	}
-
 	public void minimize() {
 		if((this.getControl().getStyle() & SWT.MIN) != 0) {
 			this.getControl().setMinimized(true);

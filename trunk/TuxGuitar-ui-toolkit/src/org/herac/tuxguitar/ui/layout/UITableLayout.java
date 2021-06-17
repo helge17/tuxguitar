@@ -81,33 +81,7 @@ public class UITableLayout extends UIAbstractLayout {
 		this.xSizes.clear();
 		this.ySizes.clear();
 		
-		for(UIControl control : container.getChildren()) {
-			if(!(control instanceof UIWindow)) {
-				UISize packedSize = this.getPreferredControlSize(control);
-				
-				List<UITableCellSize> xRange = this.getSizes(this.xSizes, control, COL, COL_SPAN);
-				List<UITableCellSize> yRange = this.getSizes(this.ySizes, control, ROW, ROW_SPAN);
-				
-				float margin = this.get(control, MARGIN, DEFAULT_CONTROL_MARGIN);
-				float marginTop = this.get(control, MARGIN_TOP, margin);
-				float marginBottom = this.get(control, MARGIN_BOTTOM, margin);
-				float marginLeft = this.get(control, MARGIN_LEFT, margin);
-				float marginRight = this.get(control, MARGIN_RIGHT, margin);
-				
-				float xPackedSize = ((marginLeft + packedSize.getWidth() + marginRight) / xRange.size());
-				float yPackedSize = ((marginTop + packedSize.getHeight() + marginBottom) / yRange.size());
-				
-				for(UITableCellSize xSize : xRange) {
-					xSize.packedSize = Math.max(xSize.packedSize, xPackedSize);
-					xSize.fillSize = (xSize.fillSize || Boolean.TRUE.equals(this.get(control, FILL_X)));
-				}
-				
-				for(UITableCellSize ySize : yRange) {
-					ySize.packedSize = Math.max(ySize.packedSize, yPackedSize);
-					ySize.fillSize = (ySize.fillSize || Boolean.TRUE.equals(this.get(control, FILL_Y)));
-				}
-			}
-		}
+		this.computeChildrenPackedSizes(container);
 		
 		float margin = this.get(MARGIN, DEFAULT_GLOBAL_MARGIN);
 		float marginTop = this.get(MARGIN_TOP, margin);
@@ -124,6 +98,91 @@ public class UITableLayout extends UIAbstractLayout {
 		}
 		
 		return packedSize;
+	}
+	
+	public void computeChildrenPackedSizes(UILayoutContainer container) {
+		// check first controls without colspan
+		for(UIControl control : container.getChildren()) {
+			if(!(control instanceof UIWindow)) {
+				if( this.get(control, COL_SPAN, 1) == 1 ) {				
+					this.computeControlPackedWidth(control);
+				}
+				if( this.get(control, ROW_SPAN, 1) == 1 ) {				
+					this.computeControlPackedHeight(control);
+				}
+			}
+		}
+		// check controls with colspan
+		for(UIControl control : container.getChildren()) {
+			if(!(control instanceof UIWindow)) {
+				if( this.get(control, COL_SPAN, 1) > 1 ) {				
+					this.computeControlPackedWidth(control);
+				}
+				if( this.get(control, ROW_SPAN, 1) > 1 ) {				
+					this.computeControlPackedHeight(control);
+				}
+			}
+		}
+	}
+	
+	public void computeControlPackedWidth(UIControl control) {
+		if(!(control instanceof UIWindow)) {				
+			UISize packedSize = this.getPreferredControlSize(control);
+			
+			List<UITableCellSize> range = this.getSizes(this.xSizes, control, COL, COL_SPAN);
+			
+			float margin = this.get(control, MARGIN, DEFAULT_CONTROL_MARGIN);
+			float marginLeft = this.get(control, MARGIN_LEFT, margin);
+			float marginRight = this.get(control, MARGIN_RIGHT, margin);
+			
+			float packedWidth = (marginLeft + packedSize.getWidth() + marginRight);
+			
+			float currentSize = 0;
+			for(UITableCellSize size : range) {
+				currentSize += size.packedSize;
+			}
+			
+			if( packedWidth > currentSize ) {
+				float packedWidthPerCell = (packedWidth / range.size());
+				for(UITableCellSize size : range) {
+					size.packedSize = Math.max(size.packedSize, packedWidthPerCell);
+				}
+			}
+			
+			for(UITableCellSize size : range) {
+				size.fillSize = (size.fillSize || Boolean.TRUE.equals(this.get(control, FILL_X)));
+			}
+		}
+	}
+	
+	public void computeControlPackedHeight(UIControl control) {
+		if(!(control instanceof UIWindow)) {				
+			UISize packedSize = this.getPreferredControlSize(control);
+			
+			List<UITableCellSize> range = this.getSizes(this.ySizes, control, ROW, ROW_SPAN);
+			
+			float margin = this.get(control, MARGIN, DEFAULT_CONTROL_MARGIN);
+			float marginTop = this.get(control, MARGIN_TOP, margin);
+			float marginBottom = this.get(control, MARGIN_BOTTOM, margin);
+			
+			float packedHeight = (marginTop + packedSize.getHeight() + marginBottom);
+			
+			float currentSize = 0;
+			for(UITableCellSize size : range) {
+				currentSize += size.packedSize;
+			}
+			
+			if( packedHeight > currentSize ) {
+				float packedHeightPerCell = (packedHeight / range.size());
+				for(UITableCellSize size : range) {
+					size.packedSize = Math.max(size.packedSize, packedHeightPerCell);
+				}
+			}
+			
+			for(UITableCellSize size : range) {
+				size.fillSize = (size.fillSize || Boolean.TRUE.equals(this.get(control, FILL_Y)));
+			}
+		}
 	}
 	
 	public void setBounds(UILayoutContainer container, UIRectangle bounds) {

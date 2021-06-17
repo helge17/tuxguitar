@@ -17,8 +17,6 @@ public interface UIWindow extends UILayoutContainer {
 	
 	void close();
 	
-	void join();
-	
 	void minimize();
 	
 	void maximize();

@@ -30,10 +30,6 @@ public class QTDialog extends QTAbstractWindow<QDialog> {
 		this.getControl().setWindowFlags(windowFlags.toArray(new WindowType[windowFlags.size()]));
 	}
 	
-	public void join() {
-		this.getControl().exec();
-	}
-	
 	public void setBounds(UIRectangle bounds) {
 		if(!this.resizable) {
 			int width = Math.round(bounds.getWidth());
