@@ -355,6 +355,7 @@ public class EditorKit {
 	}
 	
 	public boolean fillRemoveNoteContext(TGAbstractContext context) {
+		TGLayout layout = getTablature().getViewLayout();
 		TGVoice voice = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		Integer value = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VALUE);
 		
@@ -362,7 +363,7 @@ public class EditorKit {
 		while (it.hasNext()) {
 			TGNoteImpl note = (TGNoteImpl) it.next();
 			
-			if (note.getRealValue() == value.intValue()) {
+			if (layout.getSongManager().getMeasureManager().getRealNoteValue(note) == value.intValue()) {
 				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE, note);
 				
 				return true;

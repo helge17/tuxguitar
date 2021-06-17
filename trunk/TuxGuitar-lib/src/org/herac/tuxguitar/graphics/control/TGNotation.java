@@ -7,7 +7,7 @@ public class TGNotation {
 	private static final int SCORE_FLAT_POSITIONS[] = new int[]{7,6,6,5,5,4,3,3,2,2,1,1};
 	
 	public static int computePosition(TGLayout layout, TGNoteImpl note) {
-		int noteValue = note.getRealValue();
+		int noteValue = layout.getSongManager().getMeasureManager().getRealNoteValue(note);
 		
 		if (layout.getSongManager().isPercussionChannel(note.getMeasureImpl().getTrack().getSong(), note.getMeasureImpl().getTrack().getChannelId())) {
 			return layout.getDrumMap().getPosition(noteValue);

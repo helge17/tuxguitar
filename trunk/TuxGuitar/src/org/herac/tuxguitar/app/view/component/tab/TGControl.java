@@ -100,7 +100,7 @@ public class TGControl {
 		layout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 	}
 	
-	public void paintTablature(UIPainter painter){
+	public void paintTablature(UIPainter painter) {
 		this.setPainting(true);
 		try{
 			this.checkScroll();
