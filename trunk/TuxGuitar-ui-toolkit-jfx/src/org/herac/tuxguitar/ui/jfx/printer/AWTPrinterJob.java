@@ -8,7 +8,6 @@ import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.awt.graphics.AWTFont;
 import org.herac.tuxguitar.awt.graphics.AWTPainter;
 import org.herac.tuxguitar.ui.jfx.JFXComponent;
 import org.herac.tuxguitar.ui.printer.UIPrinterJob;
@@ -50,7 +49,7 @@ public class AWTPrinterJob extends JFXComponent<AWTPrinter> implements UIPrinter
 		}
 		
 		AWTPrinterPage awtPrinterPage = this.pages.get(pageIndex);
-		awtPrinterPage.getBuffer().process(new AWTPainter((Graphics2D) graphics));
+		awtPrinterPage.getBuffer().process(new AWTPainter((Graphics2D) graphics, 0.1f));
 		
 		return Printable.PAGE_EXISTS;
 	}
