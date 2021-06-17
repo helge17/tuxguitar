@@ -81,6 +81,7 @@ public class TGWindow implements TGEventListener {
 		TGTabFolder tgTabFolder = TGTabFolder.getInstance(this.context);
 		tgTabFolder.init(topContainer);
 		topContainerLayout.set(tgTabFolder.getControl(), 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		topContainerLayout.set(tgTabFolder.getControl(), UITableLayout.PACKED_WIDTH, 0f);
 		topContainerLayout.set(tgTabFolder.getControl(), UITableLayout.PACKED_HEIGHT, 0f);
 		
 		TGWindowDivider tgWindowDivider = new TGWindowDivider(this.context);
