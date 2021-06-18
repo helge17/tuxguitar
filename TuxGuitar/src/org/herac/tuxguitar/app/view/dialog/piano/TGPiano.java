@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -506,12 +507,12 @@ public class TGPiano {
 				this.image.dispose();
 				this.image = makePianoImage();
 			}
-			if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			if( MidiPlayer.getInstance(this.context).isRunning()){
 				this.beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
 			}else if(this.externalBeat != null){
 				this.beat = this.externalBeat;
 			}else{
-				this.beat = TuxGuitar.getInstance().getEditorCache().getEditBeat();
+				this.beat = TablatureEditor.getInstance(this.context).getTablature().getCaret().getSelectedBeat();
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
@@ -289,12 +290,12 @@ public class TGFretBoard {
 	
 	private void updateEditor(){
 		if( isVisible() ){
-			if(TuxGuitar.getInstance().getPlayer().isRunning()){
+			if( MidiPlayer.getInstance(this.context).isRunning()){
 				this.beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
 			}else if(this.externalBeat != null){
 				this.beat = this.externalBeat;
 			}else{
-				this.beat = TuxGuitar.getInstance().getEditorCache().getEditBeat();
+				this.beat = TablatureEditor.getInstance(this.context).getTablature().getCaret().getSelectedBeat();
 			}
 			
 			if (this.strings.length != getStringCount()) {
