@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.view.component.tab;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
@@ -140,8 +141,8 @@ public class TGControl {
 	
 	private void paintTablaturePlayMode(UIPainter painter){
 		try{
-			TGMeasureImpl measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
-			TGBeatImpl beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
+			TGMeasureImpl measure = TGTransport.getInstance(this.context).getCache().getPlayMeasure();
+			TGBeatImpl beat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
 			if(measure != null && measure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
 				this.moveScrollTo(measure);
 				

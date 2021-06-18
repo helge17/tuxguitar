@@ -10,12 +10,12 @@ import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAc
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.app.editor.EditorCache;
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
 import org.herac.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.transport.TGTransport;
+import org.herac.tuxguitar.app.transport.TGTransportCache;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
@@ -434,11 +434,11 @@ public class TGTransportDialog implements TGEventListener {
 		if(!isDisposed()){
 			MidiPlayer player = MidiPlayer.getInstance(this.context);
 			if(!isEditingTickScale() && player.isRunning()){
-				EditorCache editorCache = TuxGuitar.getInstance().getEditorCache();
+				TGTransportCache transportCache = TGTransport.getInstance(this.context).getCache();
 				
 				long time = System.currentTimeMillis();
 				if( time > this.redrawTime + PLAY_MODE_DELAY ){
-					long position = (editorCache.getPlayStart() + (player.getTickPosition() - editorCache.getPlayTick()));
+					long position = (transportCache.getPlayStart() + (player.getTickPosition() - transportCache.getPlayTick()));
 					this.updateTickLabel(Long.toString(position));
 					this.tickProgress.setValue((int)position);
 					this.redrawTime = time;

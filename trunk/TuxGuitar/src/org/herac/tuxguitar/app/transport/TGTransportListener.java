@@ -29,18 +29,18 @@ public class TGTransportListener implements TGEventListener{
 	
 	public boolean processLoop() {
 		try {
-			TuxGuitar tuxguitar = TuxGuitar.getInstance();
 			TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
+			TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 			MidiPlayer midiPlayer = MidiPlayer.getInstance(TGTransportListener.this.context);
 			if( midiPlayer.isRunning() ) {
 				tgEditorManager.lock();
 				try {
-					tuxguitar.getEditorCache().updatePlayMode();
+					tgTransport.getCache().updatePlayMode();
 				} finally {
 					tgEditorManager.unlock();
 				}
 				
-				if( tuxguitar.getEditorCache().shouldRedraw()) {
+				if( tgTransport.getCache().shouldRedraw()) {
 					tgEditorManager.redrawPlayingNewBeat();
 				} else {
 					if(!tgEditorManager.isLocked()) {
@@ -58,40 +58,33 @@ public class TGTransportListener implements TGEventListener{
 	}
 	
 	public void notifyStarted() {
-		TGThreadManager.getInstance(this.context).start(new Runnable() {
+		TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
+		tgEditorManager.asyncRunLocked(new Runnable() {
 			public void run() {
-				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
-					tgEditorManager.lock();
+					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
+					tgTransport.getCache().reset();
 					
-					TuxGuitar tuxguitar = TuxGuitar.getInstance();
-					tuxguitar.getEditorCache().reset();
-					tuxguitar.updateCache(true);
+					TuxGuitar.getInstance().updateCache(true);
 					
 					TGTransportListener.this.startLoop();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
-				} finally {
-					tgEditorManager.unlock();
 				}
 			}
 		});
 	}
 	
 	public void notifyStopped() {
-		TGThreadManager.getInstance(this.context).start(new Runnable() {
+		TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
+		tgEditorManager.asyncRunLocked(new Runnable() {
 			public void run() {
-				TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGTransportListener.this.context);
 				try {
-					tgEditorManager.lock();
-					
 					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 					tgTransport.gotoPlayerPosition();
-					TuxGuitar.getInstance().getEditorCache().reset();
+					tgTransport.getCache().reset();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
-				} finally {
-					tgEditorManager.unlock();
 				}
 			}
 		});

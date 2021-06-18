@@ -5,10 +5,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
@@ -53,7 +53,7 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 				tgDocumentListManager.findCurrentDocument().setUri(uri);
 			}
 			
-			TuxGuitar.getInstance().getEditorCache().reset();
+			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
 			// ------------------------------------------------------ //
 			

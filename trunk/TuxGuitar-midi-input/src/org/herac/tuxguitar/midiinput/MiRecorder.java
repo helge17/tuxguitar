@@ -131,6 +131,6 @@ static	private	MiRecorder	s_Instance;
 		f_Buffer.toTrack(f_Tempo, f_StartPosition, "Nuovo input MIDI");
 		}
 
-	TuxGuitar.getInstance().updateSong();
+	TuxGuitar.getInstance().getEditorManager().updateSong();
 	}
 }

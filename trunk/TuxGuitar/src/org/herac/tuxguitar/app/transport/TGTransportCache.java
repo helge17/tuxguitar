@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.editor;
+package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.util.MidiTickUtil;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
@@ -14,7 +14,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
-public class EditorCache {
+public class TGTransportCache {
 	
 	private TGContext context;
 	
@@ -28,7 +28,7 @@ public class EditorCache {
 	private TGBeatImpl playBeat;
 	private TGMeasureImpl playMeasure;
 	
-	public EditorCache(TGContext context){
+	public TGTransportCache(TGContext context){
 		this.context = context;
 		this.reset();
 	}
@@ -63,7 +63,7 @@ public class EditorCache {
 				long start = this.playStart + (tick - this.playTick);
 				if( this.playMeasure == null || start < this.playMeasure.getStart() || start > (this.playMeasure.getStart() + this.playMeasure.getLength()) ){
 					this.playMeasure = null;
-					start = MidiTickUtil.getStart(tick);
+					start = MidiTickUtil.getStart(this.context, tick);
 				}
 				
 				if(this.playMeasure == null || this.playBeatEnd == 0 || start > this.playBeatEnd || start < this.playStart || track.getNumber() != this.playTrack){

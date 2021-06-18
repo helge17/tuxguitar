@@ -17,6 +17,7 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
+import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.managers.TGMeasureManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -30,6 +31,7 @@ import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIResource;
+import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author julian
@@ -77,8 +79,11 @@ public class Caret {
 		update(trackNumber, position, string,getVelocity());
 	}
 	
-	public synchronized void update(int trackNumber,long position,int string,int velocity) {
-		long realPosition = ((TuxGuitar.getInstance().getPlayer().isRunning())?MidiTickUtil.getStart(TuxGuitar.getInstance().getPlayer().getTickPosition()):position);
+	public synchronized void update(int trackNumber, long position, int string, int velocity) {
+		TGContext context = this.tablature.getContext();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
+		
+		long realPosition = ((midiPlayer.isRunning()) ? MidiTickUtil.getStart(context, midiPlayer.getTickPosition()):position);
 		TGTrackImpl track = findTrack(trackNumber); 
 		TGMeasureImpl measure = findMeasure(realPosition,track);
 		TGBeat beat = findBeat(realPosition,measure);
@@ -137,9 +142,12 @@ public class Caret {
 		return beat;
 	}
 	
-	public synchronized void goToTickPosition(){
-		long start = MidiTickUtil.getStart(TuxGuitar.getInstance().getPlayer().getTickPosition());
-		this.update(this.selectedTrack.getNumber(),start,this.string);
+	public synchronized void goToTickPosition() {
+		TGContext context = this.tablature.getContext();
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
+		
+		long start = MidiTickUtil.getStart(context, midiPlayer.getTickPosition());
+		this.update(this.selectedTrack.getNumber(), start, this.string);
 		this.setChanges(true);
 	}
 	
