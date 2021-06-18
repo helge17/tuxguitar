@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogActi
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
@@ -450,7 +451,7 @@ public class TGTableViewer implements TGEventListener {
 	
 	public void redrawPlayingMode(){
 		if(!isDisposed()){
-			TGMeasure measure =  TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
+			TGMeasure measure =  TGTransport.getInstance(this.context).getCache().getPlayMeasure();
 			if(measure != null && measure.getTrack() != null){
 				this.updateTable();
 				int selectedTrack = measure.getTrack().getNumber();

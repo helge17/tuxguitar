@@ -12,7 +12,6 @@ import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.editor.EditorCache;
 import org.herac.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
@@ -76,8 +75,6 @@ public class TuxGuitar {
 	private TGContext context;
 	
 	private TGLanguageManager languageManager;
-	
-	private EditorCache editorCache;
 	
 	private TGMenuManager itemManager;
 	
@@ -223,13 +220,6 @@ public class TuxGuitar {
 		return TGChannelManagerDialog.getInstance(this.context);
 	}
 	
-	public EditorCache getEditorCache(){
-		if( this.editorCache == null ){
-			this.editorCache = new EditorCache(this.context);
-		}
-		return this.editorCache;
-	}
-	
 	public TGEditorManager getEditorManager(){
 		return TGEditorManager.getInstance(this.context);
 	}
@@ -362,21 +352,6 @@ public class TuxGuitar {
 		editorManager.redraw(sourceContext);
 	}
 	
-	public void redrawPlayingMode(){
-		if(!isDisposed() && !this.isLocked()){
-			this.lock();
-			this.getEditorCache().updatePlayMode();
-			
-			if( this.getEditorCache().shouldRedraw() ) {
-				this.getEditorManager().redrawPlayingNewBeat();
-			} else {
-				this.getEditorManager().redrawPlayingThread();
-			}
-			
-			this.unlock();
-		}
-	}
-	
 	public static String getProperty(String key) {
 		return TuxGuitar.getInstance().getLanguageManager().getProperty(key);
 	}
@@ -387,13 +362,6 @@ public class TuxGuitar {
 	
 	public boolean isDisposed(){
 		return (TGApplication.getInstance(this.context).isDisposed() || TGWindow.getInstance(this.context).isDisposed());
-	}
-	
-	public void updateSong(){
-		this.lock();
-		this.getEditorCache().reset();
-		this.getEditorManager().updateSong();
-		this.unlock();
 	}
 	
 	public void playBeat( final TGBeat beat ){

@@ -5,6 +5,7 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.util.TGSyncProcess;
@@ -189,11 +190,11 @@ public class Tablature implements TGController {
 	}
 	
 	public boolean isRunning(TGBeat beat) {
-		return ( isRunning( beat.getMeasure() ) && TuxGuitar.getInstance().getEditorCache().isPlaying(beat.getMeasure(),beat) );
+		return ( isRunning( beat.getMeasure() ) && TGTransport.getInstance(this.context).getCache().isPlaying(beat.getMeasure(),beat) );
 	}
 	
 	public boolean isRunning(TGMeasure measure) {
-		return ( measure.getTrack().equals(getCaret().getTrack()) && TuxGuitar.getInstance().getEditorCache().isPlaying( measure ) );
+		return ( measure.getTrack().equals(getCaret().getTrack()) && TGTransport.getInstance(this.context).getCache().isPlaying( measure ) );
 	}
 	
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader){

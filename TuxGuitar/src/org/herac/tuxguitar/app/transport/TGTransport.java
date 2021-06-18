@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.transport;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
@@ -17,11 +18,17 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGTransport {
 
 	private TGContext context;
+	private TGTransportCache cache;
 	
 	public TGTransport(TGContext context) {
 		this.context = context;
+		this.cache = new TGTransportCache(context);
 	}
 	
+	public TGTransportCache getCache() {
+		return this.cache;
+	}
+
 	public TGSongManager getSongManager(){
 		return TGDocumentManager.getInstance(this.context).getSongManager();
 	}
@@ -31,67 +38,71 @@ public class TGTransport {
 	}
 	
 	public void gotoFirst(){
-		gotoMeasure(getSongManager().getFirstMeasureHeader(getSong()),true);
+		gotoMeasure(getSongManager().getFirstMeasureHeader(getSong()), true);
 	}
 	
 	public void gotoLast(){
-		gotoMeasure(getSongManager().getLastMeasureHeader(getSong()),true) ;
+		gotoMeasure(getSongManager().getLastMeasureHeader(getSong()), true) ;
 	}
 	
 	public void gotoNext(){
-		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(this.context, player.getTickPosition()));
 		if(header != null){
 			gotoMeasure(getSongManager().getNextMeasureHeader(getSong(), header),true);
 		}
 	}
 	
 	public void gotoPrevious(){
-		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(this.context, player.getTickPosition()));
 		if(header != null){
 			gotoMeasure(getSongManager().getPrevMeasureHeader(getSong(), header),true);
 		}
 	}
 	
-	public void gotoCaretPosition() {
-		gotoMeasure(TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader(), false);
+	public void gotoMeasure(TGMeasureHeader header){
+		gotoMeasure(header, false);
 	}
 	
-	public void gotoMeasure(TGMeasureHeader header){
-		gotoMeasure(header,false);
+	public void gotoCaretPosition() {
+		gotoMeasure(TablatureEditor.getInstance(this.context).getTablature().getCaret().getMeasure().getHeader(), false);
 	}
 	
 	public void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
 		if(header != null){
 			TGMeasure playingMeasure = null;
-			if( TuxGuitar.getInstance().getPlayer().isRunning() ){
-				TuxGuitar.getInstance().getEditorCache().updatePlayMode();
-				playingMeasure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
+			MidiPlayer player = MidiPlayer.getInstance(this.context);
+			if( player.isRunning() ){
+				getCache().updatePlayMode();
+				playingMeasure = getCache().getPlayMeasure();
 			}
 			if( playingMeasure == null || playingMeasure.getHeader().getNumber() != header.getNumber() ){
-				TuxGuitar.getInstance().getPlayer().setTickPosition(MidiTickUtil.getTick(header.getStart()));
-				if(moveCaret){
-					TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
-					TuxGuitar.getInstance().updateCache(true);
+				player.setTickPosition(MidiTickUtil.getTick(this.context, header.getStart()));
+				if( moveCaret){
+					this.goToTickPosition();
 				}
 			}
 		}
 	}
 	
 	public void gotoPlayerPosition(){
-		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
-		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
-		if(header != null){
-			player.setTickPosition(MidiTickUtil.getTick(header.getStart()));
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(this.context, player.getTickPosition()));
+		if( header != null){
+			player.setTickPosition(MidiTickUtil.getTick(this.context, header.getStart()));
 		}
-		TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().goToTickPosition();
 		
+		this.goToTickPosition();
+	}
+	
+	public void goToTickPosition() {
+		TablatureEditor.getInstance(this.context).getTablature().getCaret().goToTickPosition();
 		TuxGuitar.getInstance().updateCache(true);
 	}
 	
 	public void play(){
-		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
 			try{
 				player.getMode().reset();
@@ -105,7 +116,7 @@ public class TGTransport {
 	}
 	
 	public void stop(){
-		MidiPlayer player = TuxGuitar.getInstance().getPlayer();
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
 			player.reset();
 			this.gotoPlayerPosition();

@@ -10,6 +10,7 @@ import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
@@ -291,7 +292,7 @@ public class TGFretBoard {
 	private void updateEditor(){
 		if( isVisible() ){
 			if( MidiPlayer.getInstance(this.context).isRunning()){
-				this.beat = TuxGuitar.getInstance().getEditorCache().getPlayBeat();
+				this.beat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
 			}else if(this.externalBeat != null){
 				this.beat = this.externalBeat;
 			}else{

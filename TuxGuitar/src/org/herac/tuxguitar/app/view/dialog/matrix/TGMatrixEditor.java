@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
+import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
@@ -707,7 +708,7 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	private TGMeasure getMeasure(){
 		if(TuxGuitar.getInstance().getPlayer().isRunning()){
-			TGMeasure measure = TuxGuitar.getInstance().getEditorCache().getPlayMeasure();
+			TGMeasure measure = TGTransport.getInstance(this.context).getCache().getPlayMeasure();
 			if(measure != null){
 				return measure;
 			}
