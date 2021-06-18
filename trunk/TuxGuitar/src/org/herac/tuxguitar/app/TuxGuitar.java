@@ -225,7 +225,7 @@ public class TuxGuitar {
 	
 	public EditorCache getEditorCache(){
 		if( this.editorCache == null ){
-			this.editorCache = new EditorCache();
+			this.editorCache = new EditorCache(this.context);
 		}
 		return this.editorCache;
 	}
@@ -355,14 +355,11 @@ public class TuxGuitar {
 	}
 	
 	public void updateCache(final boolean updateItems, final TGAbstractContext sourceContext){
-		this.lock();
-		this.getEditorCache().updateEditMode();
-		this.unlock();
-		
-		if( updateItems ){
-			getEditorManager().updateSelection(sourceContext);
+		TGEditorManager editorManager = TGEditorManager.getInstance(this.context);
+		if( updateItems ) {
+			editorManager.updateSelection(sourceContext);
 		}
-		getEditorManager().redraw(sourceContext);
+		editorManager.redraw(sourceContext);
 	}
 	
 	public void redrawPlayingMode(){
