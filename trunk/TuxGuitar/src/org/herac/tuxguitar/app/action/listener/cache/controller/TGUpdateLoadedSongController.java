@@ -9,6 +9,7 @@ import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.transport.TGTransport;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
@@ -53,6 +54,7 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 				tgDocumentListManager.findCurrentDocument().setUri(uri);
 			}
 			
+			TablatureEditor.getInstance(context).getTablature().resetCaret();
 			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
 			// ------------------------------------------------------ //

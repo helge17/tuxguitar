@@ -99,20 +99,20 @@ public class TGTabFolder implements TGEventListener {
 		}
 	}
 	
-	public void updateCaret() {
-		if(!this.isDisposed()) {
-			TGControl tgControl = this.findSelectedControl();
-			if( tgControl != null && !tgControl.isDisposed()) {
-				tgControl.resetScroll();
-				tgControl.getTablature().resetCaret();
-			}
-		}
-	}
+//	public void updateCaret() {
+//		if(!this.isDisposed()) {
+//			TGControl tgControl = this.findSelectedControl();
+//			if( tgControl != null && !tgControl.isDisposed()) {
+//				tgControl.resetScroll();
+//				tgControl.getTablature().resetCaret();
+//			}
+//		}
+//	}
 	
 	public void updateDocument() {
 		this.updateTabItems();
 		this.updateFocus();
-		this.updateCaret();
+//		this.updateCaret();
 	}
 	
 	public void updateSelection() {
