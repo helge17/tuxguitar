@@ -14,11 +14,11 @@ public abstract class TGBrowserActionCallBack<T> extends TGActionAsyncProcess im
 
 		this.onStart();
 	}
-
+	
 	public void onSuccess(T successData) {
 		this.callRunnableActionInNewThread(successData);
 	}
-
+	
 	public void callRunnableActionInNewThread(final T successData) {
 		new Thread(new Runnable() {
 			public void run() {
