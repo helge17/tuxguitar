@@ -177,7 +177,7 @@ public class TGDriveBrowser implements TGBrowser {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			
 		    MediaHttpDownloader downloader = new MediaHttpDownloader(this.httpTransport, this.drive.getRequestFactory().getInitializer());
-		    downloader.setDirectDownloadEnabled(true);
+		    downloader.setDirectDownloadEnabled(false);
 		    downloader.download(new GenericUrl(((TGDriveBrowserFile) element).getFile().getDownloadUrl()), outputStream);
 		    
 			outputStream.flush();
