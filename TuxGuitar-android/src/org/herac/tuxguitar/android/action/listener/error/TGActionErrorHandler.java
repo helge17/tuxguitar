@@ -4,8 +4,8 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionErrorEvent;
 import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
 import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcessFinishEvent;
 import org.herac.tuxguitar.android.action.TGActionAsyncProcessErrorEvent;
+import org.herac.tuxguitar.android.action.TGActionAsyncProcessFinishEvent;
 import org.herac.tuxguitar.android.action.TGActionAsyncProcessStartEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventException;
@@ -16,8 +16,9 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGActionErrorHandler implements TGEventListener {
 	
-	public static final String ATTRIBUTE_ACTION_LEVEL= (TGActionErrorHandler.class.getName() + "-level");
+	public static final String ATTRIBUTE_ACTION_LEVEL = (TGActionErrorHandler.class.getName() + "-level");
 	public static final String ATTRIBUTE_ERROR_HANDLER = TGErrorHandler.class.getName();
+	public static final String ATTRIBUTE_ERROR_HANDLED = "errorHandled";
 
 	private static final String[] PRE_EXEC_EVENTS = {
 			TGActionPreExecutionEvent.EVENT_TYPE,
@@ -83,6 +84,8 @@ public class TGActionErrorHandler implements TGEventListener {
 			TGErrorHandler errorHandler = actionContext.getAttribute(ATTRIBUTE_ERROR_HANDLER);
 
 			this.processError(throwable, errorHandler);
+			
+			actionContext.setAttribute(ATTRIBUTE_ERROR_HANDLED, true);
 		}
 	}
 
