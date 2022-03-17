@@ -2,7 +2,10 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 
 import java.util.List;
 
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTBeginSetProgramCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTCloseEffectUICommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTEndSetProgramCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetChunkCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetNumInputsCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetNumOutputsCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetNumParamsCommand;
@@ -17,6 +20,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTProcessRep
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSendMessagesCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetActiveCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetBlockSizeCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetChunkCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetParameterCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetSampleRateCommand;
 
@@ -110,6 +114,31 @@ public final class VSTEffect {
 			return new VSTGetParameterLabelCommand(this.getConnection(), index).safeProcess("");
 		}
 		return null;
+	}
+	
+	public void setChunk(byte[] chunk){
+		if(!this.isClosed() ){
+			new VSTSetChunkCommand(this.getConnection(), chunk).safeProcess();
+		}
+	}
+	
+	public byte[] getChunk(){
+		if(!this.isClosed() ){
+			return new VSTGetChunkCommand(this.getConnection()).safeProcess(null);
+		}
+		return null;
+	}
+	
+	public void beginSetProgram(){
+		if(!this.isClosed() ){
+			new VSTBeginSetProgramCommand(this.getConnection()).safeProcess();
+		}
+	}
+	
+	public void endSetProgram(){
+		if(!this.isClosed() ){
+			new VSTEndSetProgramCommand(this.getConnection()).safeProcess();
+		}
 	}
 	
 	public void openNativeEditor(){

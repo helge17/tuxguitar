@@ -43,6 +43,14 @@ void ProcessGetParameterNameCommand(VSTClientHandle *handle);
 
 void ProcessGetParameterLabelCommand(VSTClientHandle *handle);
 
+void ProcessSetChunkCommand(VSTClientHandle *handle);
+
+void ProcessGetChunkCommand(VSTClientHandle *handle);
+
+void ProcessBeginSetProgramCommand(VSTClientHandle *handle);
+
+void ProcessEndSetProgramCommand(VSTClientHandle *handle);
+
 void ProcessSendMessagesCommand(VSTClientHandle *handle);
 
 void ProcessReplacingCommand(VSTClientHandle *handle);

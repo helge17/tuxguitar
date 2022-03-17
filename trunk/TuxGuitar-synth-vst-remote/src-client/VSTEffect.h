@@ -35,6 +35,14 @@ void VSTEffect_getParameterName(VSTEffectHandle *handle, int index, const char* 
 
 void VSTEffect_getParameterLabel(VSTEffectHandle *handle, int index, const char* value);
 
+void VSTEffect_setChunk(VSTEffectHandle *handle, int length, char** value);
+
+void VSTEffect_getChunk(VSTEffectHandle *handle, int* length, char** value);
+
+void VSTEffect_beginSetProgram(VSTEffectHandle *handle);
+
+void VSTEffect_endSetProgram(VSTEffectHandle *handle);
+
 void VSTEffect_sendMessages(VSTEffectHandle *handle, unsigned char** messages, int length);
 
 void VSTEffect_sendProcessReplacing(VSTEffectHandle *handle, float** inputs, float** outputs, int blockSize);

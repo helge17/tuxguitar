@@ -50,9 +50,19 @@ void VSTEffect_closeEffect(VSTEffectHandle *handle)
 void VSTEffect_setActive(VSTEffectHandle *handle, int value)
 {
 	if( handle != NULL && handle->effect != NULL){
+		int vstVersion = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
+		if( vstVersion >= 2 && value == 0 ) {
+			handle->effect->dispatcher (handle->effect, effStopProcess, 0, value, NULL, 0);
+		}
+		
 		handle->effect->dispatcher (handle->effect, effMainsChanged, 0, value, NULL, 0);
+		
+		if( vstVersion >= 2 && value == 1 ) {
+			handle->effect->dispatcher (handle->effect, effStartProcess, 0, value, NULL, 0);
+		}
 	}
 }
+
 void VSTEffect_setUpdated(VSTEffectHandle *handle, bool value)
 {
 	if( handle != NULL ){
@@ -76,42 +86,42 @@ void VSTEffect_getNumParams(VSTEffectHandle *handle, int *value)
 
 void VSTEffect_getNumInputs(VSTEffectHandle *handle, int *value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		(*value) = handle->effect->numInputs;
 	}
 }
 
 void VSTEffect_getNumOutputs(VSTEffectHandle *handle, int *value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		(*value) = handle->effect->numOutputs;
 	}
 }
 
 void VSTEffect_setBlockSize(VSTEffectHandle *handle, int value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		handle->effect->dispatcher (handle->effect, effSetBlockSize, 0, value, 0, 0);
 	}
 }
 
 void VSTEffect_setSampleRate(VSTEffectHandle *handle, float value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		handle->effect->dispatcher (handle->effect, effSetSampleRate, 0, 0, 0, value);
 	}
 }
 
 void VSTEffect_setParameter(VSTEffectHandle *handle, int index, float value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		handle->effect->setParameter(handle->effect, index, value);
 	}
 }
 
 void VSTEffect_getParameter(VSTEffectHandle *handle, int index, float *value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		(*value) = handle->effect->getParameter(handle->effect, index);
 	}
 }
@@ -125,8 +135,43 @@ void VSTEffect_getParameterName(VSTEffectHandle *handle, int index, const char* 
 
 void VSTEffect_getParameterLabel(VSTEffectHandle *handle, int index, const char* value)
 {
-	if( handle != NULL && handle->effect != NULL){
+	if( handle != NULL && handle->effect != NULL) {
 		handle->effect->dispatcher (handle->effect, effGetParamLabel, index, 0, (void *) value, 0);
+	}
+}
+
+void VSTEffect_setChunk(VSTEffectHandle *handle, int length, char** value)
+{
+	if( handle != NULL && handle->effect != NULL) {
+		if (((handle->effect->flags & effFlagsProgramChunks) != 0)) {
+			handle->effect->dispatcher (handle->effect, effSetChunk, 0, length, value, 0);
+		}
+	}
+}
+
+void VSTEffect_getChunk(VSTEffectHandle *handle, int* length, char** value)
+{
+	if( handle != NULL && handle->effect != NULL) {
+		if (((handle->effect->flags & effFlagsProgramChunks) != 0)) {
+			(*length) = handle->effect->dispatcher (handle->effect, effGetChunk, 0, 0, value, 0);
+		} else {
+			(*length) = 0;
+		}
+	}
+}
+
+
+void VSTEffect_beginSetProgram(VSTEffectHandle *handle)
+{
+	if( handle != NULL && handle->effect != NULL) {
+		handle->effect->dispatcher (handle->effect, effBeginSetProgram, 0, 0, NULL, 0);
+	}
+}
+
+void VSTEffect_endSetProgram(VSTEffectHandle *handle)
+{
+	if( handle != NULL && handle->effect != NULL) {
+		handle->effect->dispatcher (handle->effect, effEndSetProgram, 0, 0, NULL, 0);
 	}
 }
 
