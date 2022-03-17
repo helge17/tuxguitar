@@ -26,6 +26,10 @@
 #define CMD_EFFECT_UI_CLOSE 15
 #define CMD_EFFECT_UI_IS_OPEN 16
 #define CMD_EFFECT_UI_IS_AVAILABLE 17
+#define CMD_EFFECT_GET_CHUNK 18
+#define CMD_EFFECT_SET_CHUNK 19
+#define CMD_EFFECT_BEGIN_SET_PROGRAM 20
+#define CMD_EFFECT_END_SET_PROGRAM 21
 
 int main(int argc, char *argv[]) 
 {
@@ -131,6 +135,18 @@ void ProcessCommand(VSTClientHandle *handle, int command)
 		break;
 		case CMD_EFFECT_GET_PARAMETER_LABEL:
 			ProcessGetParameterLabelCommand(handle);
+		break;
+		case CMD_EFFECT_SET_CHUNK:
+			ProcessSetChunkCommand(handle);
+		break;
+		case CMD_EFFECT_GET_CHUNK:
+			ProcessGetChunkCommand(handle);
+		break;
+		case CMD_EFFECT_BEGIN_SET_PROGRAM:
+			ProcessBeginSetProgramCommand(handle);
+		break;
+		case CMD_EFFECT_END_SET_PROGRAM:
+			ProcessEndSetProgramCommand(handle);
 		break;
 		case CMD_EFFECT_SEND_MESSAGES:
 			ProcessSendMessagesCommand(handle);
@@ -257,6 +273,40 @@ void ProcessGetParameterLabelCommand(VSTClientHandle *handle)
 	VSTSocketWrite(handle->socket, &length, 4);
 	
 	VSTSocketWrite(handle->socket, value, 255);
+}
+
+void ProcessGetChunkCommand(VSTClientHandle *handle)
+{
+	int length = 0;
+	char *value = 0;
+	
+	VSTEffect_getChunk(handle->effect, &length, &value);
+	
+	VSTSocketWrite(handle->socket, &length, 4);
+	if( length > 0 ) {
+		VSTSocketWrite(handle->socket, value, length);
+	}
+}
+
+void ProcessSetChunkCommand(VSTClientHandle *handle)
+{
+	int length = 0;
+	VSTSocketRead(handle->socket, &length, 4);
+	
+	char *value = malloc(sizeof(char) * length);
+	VSTSocketRead(handle->socket, value, length);
+	
+	VSTEffect_setChunk(handle->effect, length, &value);
+}
+
+void ProcessBeginSetProgramCommand(VSTClientHandle *handle)
+{
+	VSTEffect_beginSetProgram(handle->effect);
+}
+
+void ProcessEndSetProgramCommand(VSTClientHandle *handle)
+{
+	VSTEffect_endSetProgram(handle->effect);
 }
 
 void ProcessSendMessagesCommand(VSTClientHandle *handle)
