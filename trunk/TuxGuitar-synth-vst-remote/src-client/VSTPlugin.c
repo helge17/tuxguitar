@@ -11,6 +11,8 @@ void VSTPlugin_malloc(VSTPluginHandle **handle, const char *libraryPath)
 	if (library != NULL) {
 		(*handle) = (VSTPluginHandle *) malloc( sizeof(VSTPluginHandle) );
 		(*handle)->library = library;
+	} else {
+		(*handle) = NULL;
 	}
 }
 

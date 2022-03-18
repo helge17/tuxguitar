@@ -113,10 +113,10 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 						}
 					}
 				} else {
-					VSTLogger_log("Could not create window.\n");
+					VSTLogger_log("VSTClient -> could not create window.\n");
 				}
 			} else {
-				VSTLogger_log("Could not register class.\n");
+				VSTLogger_log("VSTClient -> could not register class.\n");
 			}
 			
 			effect_ui->editorOpen = false;
