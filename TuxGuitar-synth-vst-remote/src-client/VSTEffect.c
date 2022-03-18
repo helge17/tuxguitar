@@ -14,6 +14,8 @@ void VSTEffect_malloc(VSTEffectHandle **handle, VSTPluginHandle *plugin)
 		if( (*handle)->effect != NULL && (*handle)->effect->magic != kEffectMagic) {
 			(*handle)->effect = NULL;
 		}
+	} else {
+		(*handle) = NULL;
 	}
 }
 
@@ -50,15 +52,26 @@ void VSTEffect_closeEffect(VSTEffectHandle *handle)
 void VSTEffect_setActive(VSTEffectHandle *handle, int value)
 {
 	if( handle != NULL && handle->effect != NULL){
-		int vstVersion = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
-		if( vstVersion >= 2 && value == 0 ) {
-			handle->effect->dispatcher (handle->effect, effStopProcess, 0, value, NULL, 0);
-		}
-		
 		handle->effect->dispatcher (handle->effect, effMainsChanged, 0, value, NULL, 0);
-		
-		if( vstVersion >= 2 && value == 1 ) {
-			handle->effect->dispatcher (handle->effect, effStartProcess, 0, value, NULL, 0);
+	}
+}
+
+void VSTEffect_startProcess(VSTEffectHandle *handle)
+{
+	if( handle != NULL && handle->effect != NULL){
+		int vstVersion = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
+		if( vstVersion >= 2 ) {
+			handle->effect->dispatcher (handle->effect, effStartProcess, 0, 0, NULL, 0);
+		}
+	}
+}
+
+void VSTEffect_stopProcess(VSTEffectHandle *handle)
+{
+	if( handle != NULL && handle->effect != NULL){
+		int vstVersion = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
+		if( vstVersion >= 2 ) {
+			handle->effect->dispatcher (handle->effect, effStopProcess, 0, 0, NULL, 0);
 		}
 	}
 }
@@ -98,6 +111,13 @@ void VSTEffect_getNumOutputs(VSTEffectHandle *handle, int *value)
 	}
 }
 
+void VSTEffect_getVersion(VSTEffectHandle *handle, int *value)
+{
+	if( handle != NULL ){
+		(*value) = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
+	}
+}
+
 void VSTEffect_setBlockSize(VSTEffectHandle *handle, int value)
 {
 	if( handle != NULL && handle->effect != NULL) {
@@ -115,7 +135,11 @@ void VSTEffect_setSampleRate(VSTEffectHandle *handle, float value)
 void VSTEffect_setParameter(VSTEffectHandle *handle, int index, float value)
 {
 	if( handle != NULL && handle->effect != NULL) {
-		handle->effect->setParameter(handle->effect, index, value);
+		int vstVersion = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
+		if( vstVersion == 0 || handle->effect->dispatcher(handle->effect, effCanBeAutomated, 0, index, NULL, 0.0) > 0 ) {
+			
+			handle->effect->setParameter(handle->effect, index, value);
+		}
 	}
 }
 

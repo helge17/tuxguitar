@@ -21,7 +21,13 @@ void CreateSocket(VSTClientHandle *handle);
 
 void ProcessCommand(VSTClientHandle *handle, int command);
 
+void ProcessGetVersionCommand(VSTClientHandle *handle);
+
 void ProcessSetActiveCommand(VSTClientHandle *handle);
+
+void ProcessStartProcessCommand(VSTClientHandle *handle);
+
+void ProcessStopProcessCommand(VSTClientHandle *handle);
 
 void ProcessIsUpdatedCommand(VSTClientHandle *handle);
 

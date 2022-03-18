@@ -18,21 +18,21 @@ void VSTSocketCreate(VSTSocketHandle **handle, int port)
 	
 	VSTSocketHandleData *data = ((VSTSocketHandleData *) (*handle)->data);
 	
-	VSTLogger_log("Initialising Winsock...\n");
+	VSTLogger_log("VSTClient -> initialising Winsock...\n");
 	if( WSAStartup(MAKEWORD(2,2), &(data->wsa) ) != 0) {
-		VSTLogger_log("Failed. Error Code : %d",WSAGetLastError());
+		VSTLogger_log("VSTClient -> failed. Error Code : %d",WSAGetLastError());
 		return;
 	}
 	
-	VSTLogger_log("Initialised.\n");
+	VSTLogger_log("VSTClient -> initialised.\n");
 	
 	data->socket = socket(AF_INET , SOCK_STREAM , 0);
 	if( data->socket == INVALID_SOCKET) {
-		VSTLogger_log("Could not create socket : %d" , WSAGetLastError());
+		VSTLogger_log("VSTClient -> could not create socket : %d" , WSAGetLastError());
 		return;
 	}
  
-	VSTLogger_log("Socket created.\n");
+	VSTLogger_log("VSTClient -> socket created.\n");
     
 	struct sockaddr_in server;
 	server.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -41,7 +41,7 @@ void VSTSocketCreate(VSTSocketHandle **handle, int port)
 	
 	//Connect to remote server
 	if (connect(data->socket , (struct sockaddr *)&server , sizeof(server)) < 0) {
-		VSTLogger_log("connect failed. Error\n");
+		VSTLogger_log("VSTClient -> connect failed. Error\n");
 		return;
 	}
 	
@@ -53,7 +53,7 @@ void VSTSocketCreate(VSTSocketHandle **handle, int port)
 	
 	(*handle)->connected = true;
 	
-	VSTLogger_log("Socket Connected\n");
+	VSTLogger_log("VSTClient -> socket Connected\n");
 }
 
 void VSTSocketDestroy(VSTSocketHandle **handle)
@@ -77,13 +77,13 @@ void VSTSocketRead(VSTSocketHandle *handle, void *buffer, int length)
 			int read = recv(data->socket, (char *) buffer, length, MSG_WAITALL);
 			if( read == SOCKET_ERROR ) {
 				handle->connected = false;
-				VSTLogger_log("Disconnected with error: %d\n", WSAGetLastError());
+				VSTLogger_log("VSTClient -> disconnected with error: %d\n", WSAGetLastError());
 			}
 			else if( read == 0 ) {
 				time_t now = time(NULL);
 				if( now - data->time > 10 ) {
 					handle->connected = false;
-					VSTLogger_log("Time out: \n");
+					VSTLogger_log("VSTClient -> time out: \n");
 				}
 			}
 			else {
@@ -100,7 +100,7 @@ void VSTSocketWrite(VSTSocketHandle *handle, void *buffer, int length)
 		if( handle->connected ) {
 			if( send(data->socket, (char *) buffer, length, 0) < 0 ) {
 				handle->connected = false;
-				VSTLogger_log("Disconnected with error: %d\n", WSAGetLastError());
+				VSTLogger_log("VSTClient -> disconnected with error: %d\n", WSAGetLastError());
 			}
 		}
 	}

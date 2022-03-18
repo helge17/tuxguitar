@@ -23,11 +23,11 @@ void VSTSocketCreate(VSTSocketHandle **handle, int port)
 	//Create socket
 	data->socket = socket(AF_INET , SOCK_STREAM , 0);
 	if (data->socket == -1) {
-		VSTLogger_log("Could not create socket\n");
+		VSTLogger_log("VSTClient -> could not create socket\n");
 		return;
 	}
 	
-	VSTLogger_log("Socket created\n");
+	VSTLogger_log("VSTClient -> socket created\n");
 	
 	struct sockaddr_in server;
 	server.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -36,7 +36,7 @@ void VSTSocketCreate(VSTSocketHandle **handle, int port)
 	
 	//Connect to remote server
 	if (connect(data->socket , (struct sockaddr *) &server, sizeof(server)) < 0) {
-		VSTLogger_log("Connect failed. Error\n");
+		VSTLogger_log("VSTClient -> connect failed. Error\n");
 		return;
 	}
 	
@@ -48,7 +48,7 @@ void VSTSocketCreate(VSTSocketHandle **handle, int port)
 	
 	(*handle)->connected = true;
 	
-	VSTLogger_log("Socket connected\n");
+	VSTLogger_log("VSTClient -> socket connected\n");
 }
 
 void VSTSocketDestroy(VSTSocketHandle **handle)
@@ -71,7 +71,7 @@ void VSTSocketRead(VSTSocketHandle *handle, void *buffer, int length)
 			int read = recv(data->socket, buffer, length, MSG_WAITALL);
 			if( read == -1 ) {
 				handle->connected = false;
-				VSTLogger_log("Disconected\n");
+				VSTLogger_log("VSTClient -> disconected\n");
 			}
 			else if( read == 0 ) {
 				struct timespec now;
@@ -79,7 +79,7 @@ void VSTSocketRead(VSTSocketHandle *handle, void *buffer, int length)
 				
 				if( now.tv_sec - data->time.tv_sec > 10 ) {
 					handle->connected = false;
-					VSTLogger_log("Time out\n");
+					VSTLogger_log("VSTClient -> time out\n");
 				}
 			}
 			else {
@@ -96,7 +96,7 @@ void VSTSocketWrite(VSTSocketHandle *handle, void *buffer, int length)
 		if( handle->connected ) {
 			if( send(data->socket, buffer, length, MSG_WAITALL) < 0 ) {
 				handle->connected = false;
-				VSTLogger_log("Disconnected\n");
+				VSTLogger_log("VSTClient -> disconnected\n");
 			}
 		}
 	}

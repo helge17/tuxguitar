@@ -30,9 +30,13 @@
 #define CMD_EFFECT_SET_CHUNK 19
 #define CMD_EFFECT_BEGIN_SET_PROGRAM 20
 #define CMD_EFFECT_END_SET_PROGRAM 21
+#define CMD_EFFECT_START_PROCESS 22
+#define CMD_EFFECT_STOP_PROCESS 23
+#define CMD_EFFECT_GET_VERSION 24
 
 int main(int argc, char *argv[]) 
 {
+	VSTLogger_log("VSTClient -> starting\n");
 	VSTClientHandle *handle = (VSTClientHandle *) malloc( sizeof(VSTClientHandle) );
 	
 	ParseArguments(handle, argc, argv);
@@ -40,12 +44,15 @@ int main(int argc, char *argv[])
 	VSTSocketCreate(&(handle->socket), handle->serverPort);
 	
 	if( handle->socket->connected) {
-
 		VSTPlugin_malloc(&(handle->plugin), handle->filename);
 		VSTEffect_malloc(&(handle->effect), handle->plugin);
 		VSTEffectUI_malloc(handle->effect);
 		VSTEffect_openEffect(handle->effect);
-		
+
+		int vstVersion = 0;
+		VSTEffect_getVersion(handle->effect, &vstVersion);
+		VSTLogger_log("VSTClient -> plugin version: %d\n", vstVersion);
+
 		if( handle->effect != NULL && handle->effect->effect != NULL ) {
 			pthread_t thread;
 			if( pthread_create(&thread, NULL, VSTClient_processCommandsThread, handle)) {
@@ -53,7 +60,6 @@ int main(int argc, char *argv[])
 			}
 			
 			while(handle->socket->connected) {
-				// bla bla
 				VSTEffectUI_process(handle->effect);
 			}
 			
@@ -67,9 +73,8 @@ int main(int argc, char *argv[])
 	}
 	
     VSTSocketDestroy(&(handle->socket));
-    
-    VSTLogger_log("Ended\n");
-    
+	VSTLogger_log("VSTClient -> ended\n");
+	
     return 0;
 }
 
@@ -77,7 +82,7 @@ void* VSTClient_processCommandsThread(void* ptr)
 {
 	VSTClientHandle *handle = (VSTClientHandle *) ptr;
 
-	VSTLogger_log("Send session ID %d\n", handle->sessionId);
+	VSTLogger_log("VSTClient -> sending session ID %d\n", handle->sessionId);
 	VSTSocketWrite(handle->socket, &handle->sessionId, 4);
 	
 	int command = 0;
@@ -93,18 +98,29 @@ void* VSTClient_processCommandsThread(void* ptr)
 
 void ParseArguments(VSTClientHandle *handle, int argc , char *argv[])
 {
+	VSTLogger_log("VSTClient -> parsing arguments\n");
+	
 	handle->sessionId = atoi(argv[1]);
 	handle->serverPort = atoi(argv[2]);
 	handle->filename = (const char*) argv[3];
 	
-	VSTLogger_log("Plugin: %s\n", handle->filename);
+	VSTLogger_log("VSTClient -> plugin path: %s\n", handle->filename);
 }
 
 void ProcessCommand(VSTClientHandle *handle, int command) 
 {
 	switch(command) {
+		case CMD_EFFECT_GET_VERSION:
+			ProcessGetVersionCommand(handle);
+		break;
 		case CMD_EFFECT_SET_ACTIVE:
 			ProcessSetActiveCommand(handle);
+		break;
+		case CMD_EFFECT_START_PROCESS:
+			ProcessStartProcessCommand(handle);
+		break;
+		case CMD_EFFECT_STOP_PROCESS:
+			ProcessStopProcessCommand(handle);
 		break;
 		case CMD_EFFECT_IS_UPDATED:
 			ProcessIsUpdatedCommand(handle);
@@ -169,11 +185,28 @@ void ProcessCommand(VSTClientHandle *handle, int command)
 	}
 }
 
+void ProcessGetVersionCommand(VSTClientHandle *handle)
+{
+	int value = 0;
+	VSTEffect_getVersion(handle->effect, &value);
+	VSTSocketWrite(handle->socket, &value, 4);
+}
+
 void ProcessSetActiveCommand(VSTClientHandle *handle)
 {
 	int value = 0;
 	VSTSocketRead(handle->socket, &value, 4);
 	VSTEffect_setActive(handle->effect, value);
+}
+
+void ProcessStartProcessCommand(VSTClientHandle *handle)
+{
+	VSTEffect_startProcess(handle->effect);
+}
+
+void ProcessStopProcessCommand(VSTClientHandle *handle)
+{
+	VSTEffect_stopProcess(handle->effect);
 }
 
 void ProcessIsUpdatedCommand(VSTClientHandle *handle)
