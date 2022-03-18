@@ -28,7 +28,6 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 	private float[][] inputs;
 	private float[][] outputs;
 	private Map<String, String> appliedParameters;
-	private boolean parametersProcessed;
 	
 	public VSTAudioProcessor(TGContext context) {
 		this.context = context;
@@ -50,6 +49,8 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 					this.effect = new VSTEffect(VSTServer.getInstance(this.context).createSession(this.file.getAbsolutePath()));
 					this.effect.setBlockSize(BUFFER_SIZE);
 					this.effect.setSampleRate(SAMPLE_RATE);
+					this.effect.setActive(true);
+					this.effect.startProcess();
 					this.messages = new ArrayList<byte[]>();
 					this.inputs = new float[this.effect.getNumInputs()][BUFFER_SIZE];
 					this.outputs = new float[this.effect.getNumOutputs()][BUFFER_SIZE];
@@ -63,6 +64,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 	public void close(){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
+				this.effect.stopProcess();
 				this.effect.setActive(false);
 				this.effect.closeNativeEditor();
 				this.effect.close();
@@ -121,13 +123,13 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			this.open(new File(parameters.get(PARAM_FILE_NAME)));
 		}
 		if( this.isOpen() ) {
-			if( this.appliedParameters == null || !this.appliedParameters.equals(parameters) || !this.parametersProcessed) {
+			if( this.appliedParameters == null || !this.appliedParameters.equals(parameters)) {
 				this.appliedParameters = new HashMap<>(parameters);
 				
-				if( this.parametersProcessed ) {
+				int version = this.getEffect().getVersion();
+				if( version <= 2300 ) {
 					this.getEffect().setActive(false);
 				}
-				this.parametersProcessed = true;
 				
 				this.getEffect().beginSetProgram();
 				
@@ -149,7 +151,10 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 				}
 				
 				this.getEffect().endSetProgram();
-				this.getEffect().setActive(true);
+				
+				if( version <= 2300 ) {
+					this.getEffect().setActive(true);
+				}
 				
 				this.fireParamsEvent(VSTParamsEvent.ACTION_RESTORE, parameters);
 			}

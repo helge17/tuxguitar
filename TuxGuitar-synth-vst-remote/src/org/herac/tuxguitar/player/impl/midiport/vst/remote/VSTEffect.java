@@ -12,6 +12,7 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetNumPara
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetParameterCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetParameterLabelCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetParameterNameCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTGetVersionCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsEffectUIAvailableCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsEffectUIOpenCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTIsUpdatedCommand;
@@ -23,6 +24,8 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetBlockSi
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetChunkCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetParameterCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTSetSampleRateCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTStartProcessCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTStopProcessCommand;
 
 public final class VSTEffect {
 	
@@ -38,9 +41,28 @@ public final class VSTEffect {
 		}		
 	}
 	
+	public int getVersion(){
+		if(!this.isClosed() ){
+			return new VSTGetVersionCommand(this.getConnection()).safeProcess(0);
+		}
+		return 0;
+	}
+	
 	public void setActive(boolean value){
 		if(!this.isClosed() ){
 			new VSTSetActiveCommand(this.getConnection(), value).safeProcess();
+		}
+	}
+	
+	public void startProcess(){
+		if(!this.isClosed() ){
+			new VSTStartProcessCommand(this.getConnection()).safeProcess();
+		}
+	}
+	
+	public void stopProcess(){
+		if(!this.isClosed() ){
+			new VSTStopProcessCommand(this.getConnection()).safeProcess();
 		}
 	}
 	
