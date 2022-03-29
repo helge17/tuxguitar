@@ -11,15 +11,6 @@
 	<artifactId>tuxguitar-synth-lv2</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
-
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>share</directory>
-			</resource>
-		</resources>
-	</build>
 	
 	<dependencies>
 		<dependency>
