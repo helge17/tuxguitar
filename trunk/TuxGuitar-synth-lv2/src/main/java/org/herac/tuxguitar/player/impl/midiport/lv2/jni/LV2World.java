@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.player.impl.midiport.lv2.jni;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class LV2World extends LV2Object {
@@ -18,18 +17,9 @@ public class LV2World extends LV2Object {
 	}
 	
 	public List<LV2Plugin> getPlugins() {
-		List<LV2Plugin> plugins = null;//new ArrayList<LV2Plugin>();
+		List<LV2Plugin> plugins = null;
 		if( this.isInitialized()) {
 			plugins = this.getAllPlugins(this.getInstance());
-			
-			/*
-			List<Long> lilvPlugins = this.getLilvPlugins(this.getInstance());
-			if( lilvPlugins != null ) {
-				for(Long lilvPlugin : lilvPlugins) {
-					plugins.add(new LV2Plugin(this, lilvPlugin));
-				}
-			}
-			*/
 		}
 		return (plugins != null ? plugins : new ArrayList<LV2Plugin>());
 	}

@@ -81,7 +81,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 				if( plugin != null ) {
 					LV2AudioProcessorUI.this.processor.open(plugin.getUri());
 					LV2AudioProcessorUI.this.open(parent);
-					LV2AudioProcessorUI.this.callback.onChange();
+					LV2AudioProcessorUI.this.callback.onChange(false);
 				}
 			}
 		});
@@ -90,7 +90,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 	public void onUpdate() {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
-				LV2AudioProcessorUI.this.callback.onChange();
+				LV2AudioProcessorUI.this.callback.onChange(true);
 			}
 		});
 	}
