@@ -87,7 +87,7 @@ public abstract class VSTAbstractCommand<T> implements VSTCommand<T> {
 		synchronized (this.connection) {
 			try {
 				return this.process();
-			} catch (IOException e) {
+			} catch (Throwable e) {
 				this.getConnection().close();
 				
 				e.printStackTrace();
