@@ -111,7 +111,7 @@ public class LV2AudioProcessorDialog implements TGEventListener {
 					
 					LV2AudioProcessorDialog.this.labelParameterValue[index].setText(Float.toString(value));
 					LV2AudioProcessorDialog.this.processor.getInstance().setControlPortValue(portIndex, value);
-					LV2AudioProcessorDialog.this.callback.onChange(true);
+					LV2AudioProcessorDialog.this.callback.onChange(false);
 				}
 			});
 		}

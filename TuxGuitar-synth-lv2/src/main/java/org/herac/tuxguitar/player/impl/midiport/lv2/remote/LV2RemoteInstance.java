@@ -60,7 +60,7 @@ public class LV2RemoteInstance {
 	
 	public boolean processAudio(float[][] inputs, float[][] outputs) {
 		if(!this.isClosed() ){
-			return new LV2ProcessAudioCommand(this.getConnection(), inputs, outputs).safeProcess();
+			return new LV2ProcessAudioCommand(this.getConnection(), inputs, outputs).safeProcess(false);
 		}
 		return false;
 	}
