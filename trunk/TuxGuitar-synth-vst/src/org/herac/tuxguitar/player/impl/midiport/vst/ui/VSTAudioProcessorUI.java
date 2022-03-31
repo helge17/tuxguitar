@@ -97,7 +97,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 				if (file != null) {
 					VSTAudioProcessorUI.this.processor.open(file.getAbsolutePath());
 					VSTAudioProcessorUI.this.open(parent);
-					VSTAudioProcessorUI.this.callback.onChange(false);
+					VSTAudioProcessorUI.this.callback.onChange(true);
 					
 					vstSettings.setPluginPath(file.getParentFile().getAbsolutePath());
 					vstSettings.save();
