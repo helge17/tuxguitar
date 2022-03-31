@@ -129,7 +129,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 	public void openPlugin(UIWindow parent, File file) {
 		this.processor.open(file);
 		this.open(parent);
-		this.callback.onChange();
+		this.callback.onChange(false);
 	}
 	
 	public void openPluginInThread(final UIWindow parent, final File file) {
@@ -143,7 +143,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 	public void checkForUpdates() {
 		if( this.isOpen() ) {
 			if( this.processor.getEffect().isUpdated() ) {
-				this.callback.onChange();
+				this.callback.onChange(true);
 			}
 		}
 	}

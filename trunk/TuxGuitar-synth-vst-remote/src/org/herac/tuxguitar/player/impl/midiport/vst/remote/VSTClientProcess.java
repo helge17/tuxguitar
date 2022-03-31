@@ -2,10 +2,13 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.herac.tuxguitar.thread.TGThreadLoop;
 import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
@@ -49,28 +52,39 @@ public class VSTClientProcess {
 	public void startIOStreamThread() {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
-				try {
-					startIOStream();
-				} catch (VSTException e) {
-					e.printStackTrace();
-				}
+				startIOStreamLoop();
 			}
 		});
 	}
 	
-	public void startIOStream() throws VSTException {
-		try {
-			if( this.process != null ) {
-				String line = null;
-				BufferedReader reader = new BufferedReader(new InputStreamReader(this.process.getInputStream()));
-				while(this.isAlive()) {
-					if ((line = reader.readLine()) != null) {
-						System.out.println(line);
+	public void startIOStreamLoop() {
+		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
+			public Long process() {
+				try {
+					if( VSTClientProcess.this.isAlive() ) {
+						printIOStream(System.out, VSTClientProcess.this.process.getInputStream());
+						printIOStream(System.err, VSTClientProcess.this.process.getErrorStream());
+						
+						return 250l;
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+				return BREAK;
 			}
-		} catch (IOException e) {
-			throw new VSTException(e);
+		});
+	}
+	
+	public void printIOStream(PrintStream printStream, InputStream inputStream) {
+		try {
+			String line = null;
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			while(reader.ready() && (line = reader.readLine()) != null) {
+				printStream.println(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace(printStream);
 		}
 	}
 	
