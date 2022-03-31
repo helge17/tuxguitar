@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.view.util;
 
+import org.herac.tuxguitar.editor.util.TGSyncProcess;
 import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.util.TGContext;

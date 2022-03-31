@@ -1,8 +1,8 @@
 package org.herac.tuxguitar.app.view.component.tabfolder;
 
 import org.herac.tuxguitar.app.view.component.tab.TGControl;
-import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.editor.event.TGRedrawEvent;
+import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
