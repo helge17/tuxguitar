@@ -7,20 +7,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.app.view.util.TGProcess;
-import org.herac.tuxguitar.app.view.util.TGSyncProcess;
-import org.herac.tuxguitar.app.view.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
 import org.herac.tuxguitar.editor.event.TGUpdateEvent;
+import org.herac.tuxguitar.editor.util.TGProcess;
+import org.herac.tuxguitar.editor.util.TGSyncProcess;
+import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
@@ -367,7 +367,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				program.copyFrom(channel.getProgram());
 				program.removeOutput(output);
 				
-				this.onProgramUpdated(program, false);
+				this.onProgramUpdated(program);
 			}
 		}
 	}
@@ -384,7 +384,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				program.copyFrom(channel.getProgram());
 				program.addOutput(element);
 				
-				this.onProgramUpdated(program, false);
+				this.onProgramUpdated(program);
 			}
 		}
 	}
@@ -404,7 +404,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				program.copyFrom(channel.getProgram());
 				program.setReceiver(element);
 				
-				this.onProgramUpdated(program, false);
+				this.onProgramUpdated(program);
 			}
 		}
 	}
@@ -416,7 +416,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 	}
 	
-	public void onProgramUpdated(TGProgram program, boolean appliedChanges) {
+	public void onProgramUpdated(TGProgram program) {
 		TGSynthChannelProperties properties = new TGSynthChannelProperties();
 		TGProgramPropertiesUtil.setProgram(properties, TGSynthChannel.CUSTOM_PROGRAM_PREFIX, program);
 		TGFactory factory = TGDocumentManager.getInstance(TGSynthDialog.this.context).getSongManager().getFactory();
@@ -428,10 +428,10 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			parameter.setValue(entry.getValue());
 			parameters.add(parameter);
 		}
-		this.callUpdateChannelParametersAction(parameters, appliedChanges);
+		this.callUpdateChannelParametersAction(parameters);
 	}
 	
-	public void onProcessorUpdated(TGProgramElement source, TGAudioProcessor processor, boolean appliedChanges) {
+	public void onProcessorUpdated(TGProgramElement source, TGAudioProcessor processor) {
 		TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
 		if( channel != null ) {
 			TGProgram program = new TGProgram();
@@ -453,11 +453,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			if( element != null ) {
 				processor.storeParameters(element.getParameters());
 				
-				this.onProgramUpdated(program, appliedChanges);
-				
-				if( appliedChanges ) {
-					channel.getProgram().copyFrom(program);
-				}
+				this.onProgramUpdated(program);
 			}
 		}
 	}
@@ -498,11 +494,11 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	}
 	
 	public TGAudioProcessorUICallback createProcessorCallback(final TGProgramElement element, final TGAudioProcessor processor) {
-		return new TGAudioProcessorUICallback() {
-			public void onChange(boolean appliedChanges) {
-				onProcessorUpdated(element, processor, appliedChanges);
+		return new TGSynthDialogDelayedCallback(this.context, new Runnable() {
+			public void run() {
+				onProcessorUpdated(element, processor);
 			}
-		};
+		});
 	}
 	
 	public void loadMidiReceiver(TGProgram program) {
@@ -605,12 +601,11 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 	}
 	
-	public void callUpdateChannelParametersAction(List<TGChannelParameter> parameters, boolean appliedChanges) {
+	public void callUpdateChannelParametersAction(List<TGChannelParameter> parameters) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGUpdateChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel);
 		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_PARAMETERS, parameters);
-		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_APPLIED_CHANGES, appliedChanges);
 		tgActionProcessor.process();
 	}
 }
