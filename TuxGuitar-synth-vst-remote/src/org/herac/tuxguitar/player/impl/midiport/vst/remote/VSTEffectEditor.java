@@ -103,7 +103,7 @@ public class VSTEffectEditor implements TGEventListener {
 					
 					VSTEffectEditor.this.labelParameterValue[index].setText(Float.toString(selection));
 					VSTEffectEditor.this.effect.setParameter(index, selection);
-					VSTEffectEditor.this.callback.onChange(true);
+					VSTEffectEditor.this.callback.onChange(false);
 				}
 			});
 		}
