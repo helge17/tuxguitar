@@ -87,7 +87,7 @@ public abstract class LV2AbstractCommand<T> implements LV2Command<T> {
 		synchronized (this.getConnection()) {
 			try {
 				return this.process();
-			} catch (IOException e) {
+			} catch (Throwable e) {
 				this.getConnection().close();
 				
 				e.printStackTrace();
