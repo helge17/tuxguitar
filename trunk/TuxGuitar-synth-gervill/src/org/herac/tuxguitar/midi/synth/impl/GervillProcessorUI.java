@@ -249,7 +249,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		
 		this.processor.loadProgram(gervillProgram);
 		this.updateItems();
-		this.callback.onChange(true);
+		this.callback.onChange(false);
 	}
 	
 	@Override
