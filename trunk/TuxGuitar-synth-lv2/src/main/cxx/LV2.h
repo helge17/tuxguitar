@@ -7,18 +7,30 @@
 #include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
 #include <lv2/instance-access/instance-access.h>
 
+#ifndef MIN
+#    define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#endif
+
+#define SAMPLE_RATE 44100.00
+
 typedef uint32_t LV2Int32;
 
 typedef enum {
+	TYPE_UNKNOWN,
 	TYPE_CONTROL,
-	TYPE_AUDIO_IN,
-	TYPE_AUDIO_OUT,
-	TYPE_MIDI_IN,
-	TYPE_UNKNOWN
+	TYPE_AUDIO,
+	TYPE_MIDI
 } LV2PortType;
+
+typedef enum {
+	FLOW_UNKNOWN,
+	FLOW_IN,
+	FLOW_OUT,
+} LV2PortFlow;
 
 typedef struct {
 	LV2PortType type;
+	LV2PortFlow flow;
 	const LilvPort* lilvPort;
 } LV2Port;
 
@@ -46,9 +58,6 @@ typedef struct {
 	pthread_t* thread;
 } LV2Instance;
 
-typedef struct {
-	void* handle;
-	bool updated;
-} LV2UI;
+typedef struct LV2UIImpl LV2UI;
 
 #endif /* _Included_LV2 */

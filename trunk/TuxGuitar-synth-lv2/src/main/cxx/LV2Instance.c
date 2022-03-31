@@ -25,14 +25,14 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Int32 buffer
 				*((float *) (*handle)->connections[i]->dataLocation) = lilv_node_as_float(defaultValue);
 				lilv_node_free(defaultValue);
 			}
-			else if( (*handle)->plugin->ports[i]->type == TYPE_AUDIO_IN || (*handle)->plugin->ports[i]->type == TYPE_AUDIO_OUT) {
+			else if( (*handle)->plugin->ports[i]->type == TYPE_AUDIO ) {
 				(*handle)->connections[i]->dataLocation = malloc(sizeof(float) * (*handle)->bufferSize);
 				
 				for(int s = 0 ; s < (*handle)->bufferSize; s ++) {
 					((float *) (*handle)->connections[i]->dataLocation)[s] = 0.0f;
 				}
 			}
-			else if( (*handle)->plugin->ports[i]->type == TYPE_MIDI_IN ) {
+			else if( (*handle)->plugin->ports[i]->type == TYPE_MIDI ) {
 				(*handle)->connections[i]->dataLocation = malloc(sizeof(LV2_Atom_Sequence));
 			}
 			
@@ -87,7 +87,7 @@ void LV2Instance_setMidiMessages(LV2Instance *handle, void* midiMessages)
 {
 	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {
 		for (uint32_t i = 0; i < handle->plugin->portCount; i ++) {
-			if( handle->plugin->ports[i]->type == TYPE_MIDI_IN ) {
+			if( handle->plugin->ports[i]->type == TYPE_MIDI && handle->plugin->ports[i]->flow == FLOW_IN ) {
 				LV2_Atom_Sequence* lv2_Atom_Sequence = (LV2_Atom_Sequence*) handle->connections[i]->dataLocation;
 				lv2_Atom_Sequence->atom.size = 0;
 				
@@ -112,7 +112,7 @@ void LV2Instance_processAudio(LV2Instance *handle, float** inputs, float** outpu
 		LV2Int32 inputsLength = 0;
 		LV2Plugin_getAudioInputPortCount(handle->plugin, &inputsLength);
 		for (uint32_t i = 0; i < handle->plugin->portCount; i ++) {
-			if( handle->plugin->ports[i]->type == TYPE_AUDIO_IN ) {
+			if( handle->plugin->ports[i]->type == TYPE_AUDIO && handle->plugin->ports[i]->flow == FLOW_IN ) {
 				if( inputsIndex < inputsLength ) {
 					float* sourceBuffer = (float*) inputs[inputsIndex];
 					float* targetBuffer = (float*) handle->connections[i]->dataLocation;
@@ -132,7 +132,7 @@ void LV2Instance_processAudio(LV2Instance *handle, float** inputs, float** outpu
 		LV2Int32 outputsLength = 0;
 		LV2Plugin_getAudioOutputPortCount(handle->plugin, &outputsLength);
 		for (uint32_t i = 0; i < handle->plugin->portCount; i ++) {
-			if( handle->plugin->ports[i]->type == TYPE_AUDIO_OUT ) {
+			if( handle->plugin->ports[i]->type == TYPE_AUDIO && handle->plugin->ports[i]->flow == FLOW_OUT ) {
 				if( outputsIndex < outputsLength ) {
 					float* sourceBuffer = (float*) handle->connections[i]->dataLocation;
 					float* targetBuffer = (float*) outputs[outputsIndex];
