@@ -24,7 +24,6 @@ OBJECTS=\
 	LV2World.o\
 	LV2Plugin.o\
 	LV2Instance.o\
-	LV2UI.o\
 	LV2UIQt5.o\
 	LV2Socket_GNULinux.o\
 

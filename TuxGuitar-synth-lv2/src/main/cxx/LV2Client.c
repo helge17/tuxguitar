@@ -33,10 +33,12 @@ int main(int argc, char *argv[])
 	LV2Socket_create(&(handle->socket), handle->serverPort);
 	
 	if( handle->socket->connected) {
+		pthread_mutex_init(&handle->lock, NULL);
+
 		LV2World_malloc(&handle->world);
 		LV2World_getPluginByURI(handle->world, &handle->plugin, handle->pluginURI);
 		LV2Instance_malloc(&handle->instance, handle->plugin, handle->bufferSize);
-		LV2UI_malloc(&handle->ui, handle->instance);
+		LV2UI_malloc(&handle->ui, handle->instance, &handle->lock);
 		LV2Client_createBuffers(handle);
 
 		if( handle->plugin != NULL && handle->plugin->lilvPlugin != NULL ) {
@@ -57,9 +59,11 @@ int main(int argc, char *argv[])
 		LV2Instance_free(&handle->instance);
 		LV2Plugin_free(&handle->plugin);
 		LV2World_free(&handle->world);
+
+		pthread_mutex_destroy(&handle->lock);
 	}
 	
-    LV2Socket_destroy(&(handle->socket));
+    LV2Socket_destroy(&handle->socket);
 	LV2Logger_log("LV2Client -> ended\n");
 	
 	free(handle);
@@ -112,7 +116,11 @@ void* LV2Client_processCommandsThread(void* ptr)
 		
 		LV2Socket_read(handle->socket , &command , 4);
 		
-		LV2Client_processCommand(handle, command);
+		if( pthread_mutex_lock( &handle->lock ) == 0 ) {
+			LV2Client_processCommand(handle, command);
+
+			pthread_mutex_unlock( &handle->lock );
+		}
 	}
 	return NULL;
 }
@@ -229,27 +237,9 @@ void LV2Client_processProcessAudioCommand(LV2Client *handle)
 	if( value ) {
 		LV2UI_setUpdated(handle->ui, false);
 	}
-	/*
-	float** inputs = (float **)malloc((sizeof(float *) * inputLength));
-	for(int i = 0; i < inputLength; i++) {
-		inputs[i] = (float *) malloc((sizeof(float) * handle->instance->bufferSize));
-		LV2Socket_read(handle->socket, inputs[i], (4 * handle->instance->bufferSize));
-	}
 	
-	float** outputs = (float **)malloc((sizeof(float *) * outputLength));
-	for(int i = 0; i < outputLength; i++) {
-		outputs[i] = (float *) malloc((sizeof(float) * handle->instance->bufferSize));
-	}
-	
-	LV2Instance_processAudio(handle->instance, inputs, outputs);
-
-	for(int i = 0; i < outputLength; i++) {
-		LV2Socket_write(handle->socket, outputs[i], (4 * handle->instance->bufferSize));
-	}
-	
-	delete [] inputs;
-	delete [] outputs;
-	*/
+	// Process UI Controls
+	LV2UI_processAudio(handle->ui);
 }
 
 void LV2Client_processOpenUICommand(LV2Client *handle)

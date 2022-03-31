@@ -5,6 +5,7 @@
 #include "LV2Socket.h"
 
 typedef struct {
+	pthread_mutex_t lock;
 	LV2Int32 sessionId;
 	LV2Int32 serverPort;
 	LV2Int32 bufferSize;
