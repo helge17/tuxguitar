@@ -367,7 +367,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				program.copyFrom(channel.getProgram());
 				program.removeOutput(output);
 				
-				this.onProgramUpdated(program);
+				this.onProgramUpdated(program, false);
 			}
 		}
 	}
@@ -384,7 +384,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				program.copyFrom(channel.getProgram());
 				program.addOutput(element);
 				
-				this.onProgramUpdated(program);
+				this.onProgramUpdated(program, false);
 			}
 		}
 	}
@@ -404,7 +404,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				program.copyFrom(channel.getProgram());
 				program.setReceiver(element);
 				
-				this.onProgramUpdated(program);
+				this.onProgramUpdated(program, false);
 			}
 		}
 	}
@@ -416,7 +416,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 	}
 	
-	public void onProgramUpdated(TGProgram program) {
+	public void onProgramUpdated(TGProgram program, boolean appliedChanges) {
 		TGSynthChannelProperties properties = new TGSynthChannelProperties();
 		TGProgramPropertiesUtil.setProgram(properties, TGSynthChannel.CUSTOM_PROGRAM_PREFIX, program);
 		TGFactory factory = TGDocumentManager.getInstance(TGSynthDialog.this.context).getSongManager().getFactory();
@@ -428,10 +428,10 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			parameter.setValue(entry.getValue());
 			parameters.add(parameter);
 		}
-		this.callUpdateChannelParametersAction(parameters);
+		this.callUpdateChannelParametersAction(parameters, appliedChanges);
 	}
 	
-	public void onProcessorUpdated(TGProgramElement source, TGAudioProcessor processor) {
+	public void onProcessorUpdated(TGProgramElement source, TGAudioProcessor processor, boolean appliedChanges) {
 		TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
 		if( channel != null ) {
 			TGProgram program = new TGProgram();
@@ -453,7 +453,11 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			if( element != null ) {
 				processor.storeParameters(element.getParameters());
 				
-				this.onProgramUpdated(program);
+				this.onProgramUpdated(program, appliedChanges);
+				
+				if( appliedChanges ) {
+					channel.getProgram().copyFrom(program);
+				}
 			}
 		}
 	}
@@ -495,8 +499,8 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	
 	public TGAudioProcessorUICallback createProcessorCallback(final TGProgramElement element, final TGAudioProcessor processor) {
 		return new TGAudioProcessorUICallback() {
-			public void onChange() {
-				onProcessorUpdated(element, processor);
+			public void onChange(boolean appliedChanges) {
+				onProcessorUpdated(element, processor, appliedChanges);
 			}
 		};
 	}
@@ -601,11 +605,12 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 	}
 	
-	public void callUpdateChannelParametersAction(List<TGChannelParameter> parameters) {
+	public void callUpdateChannelParametersAction(List<TGChannelParameter> parameters, boolean appliedChanges) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGUpdateChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel);
 		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_PARAMETERS, parameters);
+		tgActionProcessor.setAttribute(TGUpdateChannelAction.ATTRIBUTE_APPLIED_CHANGES, appliedChanges);
 		tgActionProcessor.process();
 	}
 }
