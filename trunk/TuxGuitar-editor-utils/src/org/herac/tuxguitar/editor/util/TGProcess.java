@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.util;
+package org.herac.tuxguitar.editor.util;
 
 public interface TGProcess {
 	

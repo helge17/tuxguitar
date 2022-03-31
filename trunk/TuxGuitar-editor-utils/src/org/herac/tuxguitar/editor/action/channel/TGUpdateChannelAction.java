@@ -25,7 +25,6 @@ public class TGUpdateChannelAction extends TGActionBase{
 	public static final String ATTRIBUTE_TREMOLO = "tremolo";
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String ATTRIBUTE_PARAMETERS = "parameters";
-	public static final String ATTRIBUTE_APPLIED_CHANGES = "appliedChanges";
 	
 	public TGUpdateChannelAction(TGContext context) {
 		super(context, NAME);

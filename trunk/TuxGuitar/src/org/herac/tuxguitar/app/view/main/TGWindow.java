@@ -14,7 +14,7 @@ import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
 import org.herac.tuxguitar.app.view.toolbar.main.TGMainToolBar;
 import org.herac.tuxguitar.app.view.util.TGCursorController;
-import org.herac.tuxguitar.app.view.util.TGSyncProcess;
+import org.herac.tuxguitar.editor.util.TGSyncProcess;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.ui.UIFactory;

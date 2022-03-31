@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.util;
+package org.herac.tuxguitar.editor.util;
 
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.util.TGContext;
