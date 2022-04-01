@@ -20,6 +20,7 @@ import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class LV2AudioProcessorChooser {
 	
@@ -32,6 +33,14 @@ public class LV2AudioProcessorChooser {
 	}
 	
 	public void choose(final UIWindow parent, final LV2AudioProcessorChooserHandler handler) {
+		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+			public void run() {
+				LV2AudioProcessorChooser.this.chooseInCurrentThread(parent, handler);
+			}
+		});
+	}
+	
+	public void chooseInCurrentThread(final UIWindow parent, final LV2AudioProcessorChooserHandler handler) {
 		final List<LV2Plugin> plugins = this.world.getPlugins();
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
