@@ -36,6 +36,8 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
+import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
 import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
@@ -44,13 +46,13 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 import org.herac.tuxguitar.ui.widget.UILabel;
 import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIReadOnlyTextField;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UITable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
@@ -70,7 +72,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	private UIButton buttonOutputEdit;
 	private UIButton buttonOutputDelete;
 	private UIReadOnlyTextField receiver;
-	private UITable<TGProgramElement> outputs;
+	private UICheckTable<TGProgramElement> outputs;
 	
 	private TGProcess loadPropertiesProcess;
 	private TGProcess loadIconsProcess;
@@ -127,8 +129,15 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		compositeTable.setLayout(outputsLayout);
 		dialogLayout.set(compositeTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		this.outputs = uiFactory.createTable(compositeTable, true);
+		this.outputs = uiFactory.createCheckTable(compositeTable, true);
 		this.outputs.setColumns(1);
+		this.outputs.addCheckSelectionListener(new UICheckTableSelectionListener<TGProgramElement>() {
+			public void onSelect(UICheckTableSelectionEvent<TGProgramElement> event) {
+				if( event.getSelectedItem() != null ) {
+					onEnableOuput(event.getSelectedItem().getValue(), TGSynthDialog.this.outputs.isCheckedItem(event.getSelectedItem()));
+				}
+			}
+		});
 		this.outputs.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
 			public void onMouseDoubleClick(UIMouseEvent event) {
 				onEditElement(TGSynthDialog.this.outputs.getSelectedValue());
@@ -379,11 +388,29 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				TGProgramElement element = new TGProgramElement();
 				element.setId("custom-" + System.currentTimeMillis());
 				element.setType(type);
+				element.setEnabled(true);
 				
 				TGProgram program = new TGProgram();
 				program.copyFrom(channel.getProgram());
 				program.addOutput(element);
 				
+				this.onProgramUpdated(program);
+			}
+		}
+	}
+	
+	public void onEnableOuput(final TGProgramElement output, boolean enabled) {
+		if( output != null ) {
+			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
+			if( channel != null ) {
+				TGProgram program = new TGProgram();
+				program.copyFrom(channel.getProgram());
+				for(int i = 0; i < program.countOutputs(); i ++) {
+					TGProgramElement current = program.getOutput(i);
+					if( current.equals(output) ) {
+						current.setEnabled(enabled);
+					}
+				}
 				this.onProgramUpdated(program);
 			}
 		}
@@ -398,6 +425,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 					element = new TGProgramElement();
 					element.setId("custom-" + System.currentTimeMillis());
 					element.setType(type);
+					element.setEnabled(true);
 				}
 				
 				TGProgram program = new TGProgram();
@@ -517,6 +545,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				UITableItem<TGProgramElement> item = new UITableItem<TGProgramElement>(output);
 				item.setText(0, this.getProcessorLabel(output));
 				this.outputs.addItem(item);
+				this.outputs.setCheckedItem(item, Boolean.TRUE.equals(output.isEnabled()));
 			}
 		}
 		
