@@ -2,14 +2,16 @@
 #include <string.h>
 #include "LV2.h"
 #include "LV2Plugin.h"
+#include "LV2Feature.h"
+#include "LV2Logger.h"
 
-void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Int32 bufferSize)
+void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* feature, LV2Int32 bufferSize)
 {
 	(*handle) = NULL;
 	if( plugin != NULL && plugin->lilvPlugin != NULL ) {
 		(*handle) = (LV2Instance *) malloc(sizeof(LV2Instance));
 		(*handle)->plugin = plugin;
-		(*handle)->lilvInstance = lilv_plugin_instantiate((*handle)->plugin->lilvPlugin, 44100.00, NULL);
+		(*handle)->lilvInstance = lilv_plugin_instantiate((*handle)->plugin->lilvPlugin, 44100.00, LV2Feature_getFeatures(feature));
 		(*handle)->connections = (LV2PortConnection **) malloc(sizeof(LV2PortConnection) * ((*handle)->plugin->portCount));
 		(*handle)->bufferSize = (uint32_t) bufferSize;
 

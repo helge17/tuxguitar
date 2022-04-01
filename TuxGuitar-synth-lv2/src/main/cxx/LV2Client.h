@@ -13,6 +13,7 @@ typedef struct {
 	
 	LV2World *world;
 	LV2Plugin *plugin;
+	LV2Feature *feature;
 	LV2Instance *instance;
 	LV2UI *ui;
 	LV2Socket *socket;
