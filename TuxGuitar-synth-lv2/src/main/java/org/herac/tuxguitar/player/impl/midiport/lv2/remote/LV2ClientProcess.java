@@ -46,8 +46,6 @@ public class LV2ClientProcess {
 					cmdarray[i] = expressionResolver.resolve(cmdarray[i], variables);
 				}
 				this.process = Runtime.getRuntime().exec(cmdarray);
-//				this.process = Runtime.getRuntime().exec("top");
-				String s = ""; for(int i = 0 ; i < cmdarray.length; i ++) { s += cmdarray[i] + " "; } System.out.println(s);
 			}
 		} catch (IOException e) {
 			throw new LV2RemoteException(e);

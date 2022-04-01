@@ -88,7 +88,7 @@ public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 		}
 		if( this.isOpen() ) {
 			if( this.appliedParameters == null || !this.appliedParameters.equals(parameters)) {
-				this.appliedParameters = new HashMap<>(parameters);
+				this.appliedParameters = new HashMap<String, String>(parameters);
 				
 				List<Integer> portIndices = this.target.getPlugin().getControlPortIndices();
 				for(Integer portIndex : portIndices) {
@@ -112,7 +112,7 @@ public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 				parameters.put(PARAM_LV2_PARAM_PREFIX + portIndex, Float.toString(this.target.getInstance().getControlPortValue(portIndex)));
 			}
 			
-			this.appliedParameters = new HashMap<>(parameters);
+			this.appliedParameters = new HashMap<String, String>(parameters);
 			
 			this.fireParamsEvent(LV2ParamsEvent.ACTION_STORE, parameters);
 		}
