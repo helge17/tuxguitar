@@ -20,22 +20,16 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = [
-                    '../TuxGuitar-lib/src',
-                    '../TuxGuitar-editor-utils/src',
-                    '../TuxGuitar-gm-utils/src',
-                    './src'
-            ]
+            java.srcDirs = ['src']
             res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
         }
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation project(':tuxguitar-android')
+
     implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.gms:play-services-drive:8.1.0'
 }
