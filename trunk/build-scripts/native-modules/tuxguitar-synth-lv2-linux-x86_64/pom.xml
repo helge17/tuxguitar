@@ -1,0 +1,211 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-synth-lv2-linux-x86_64</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+	
+	<properties>
+		<tuxguitar.jni.cxx>g++</tuxguitar.jni.cxx>
+		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
+		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
+		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
+		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
+		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
+		
+		<tuxguitar-synth-lv2.jni.path>${parent.relativePath}/TuxGuitar-synth-lv2/src/main/jni/</tuxguitar-synth-lv2.jni.path>
+		<tuxguitar-synth-lv2.jni.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-lv2.jni.cxx>
+		<tuxguitar-synth-lv2.jni.rm>${tuxguitar.jni.rm}</tuxguitar-synth-lv2.jni.rm>
+		<tuxguitar-synth-lv2.jni.cflags>${tuxguitar.jni.header.path} -I/usr/include/lilv-0/lilv -m64 -fPIC -fpermissive</tuxguitar-synth-lv2.jni.cflags>
+		<tuxguitar-synth-lv2.jni.ldflags>-m64 -fPIC</tuxguitar-synth-lv2.jni.ldflags>
+		<tuxguitar-synth-lv2.jni.ldlibs>-llilv-0</tuxguitar-synth-lv2.jni.ldlibs>
+		<tuxguitar-synth-lv2.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.jni.ldpath>
+		<tuxguitar-synth-lv2.jni.library.name>tuxguitar-synth-lv2-jni</tuxguitar-synth-lv2.jni.library.name>
+		<tuxguitar-synth-lv2.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-synth-lv2.jni.library.prefix>
+		<tuxguitar-synth-lv2.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-synth-lv2.jni.library.suffix>
+		<tuxguitar-synth-lv2.jni.library.os>_GNULinux</tuxguitar-synth-lv2.jni.library.os>
+		
+		<tuxguitar-synth-lv2.ui.path>${parent.relativePath}/TuxGuitar-synth-lv2/src/main/cxx/</tuxguitar-synth-lv2.ui.path>
+		<tuxguitar-synth-lv2.ui.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-lv2.ui.cxx>
+		<tuxguitar-synth-lv2.ui.rm>${tuxguitar.jni.rm}</tuxguitar-synth-lv2.ui.rm>
+		<tuxguitar-synth-lv2.ui.cflags>-I/usr/include/lilv-0/lilv -I/usr/include/suil-0/suil -I`pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags` -m64 -fPIC -fpermissive</tuxguitar-synth-lv2.ui.cflags>
+		<tuxguitar-synth-lv2.ui.ldflags>-m64 -fPIC</tuxguitar-synth-lv2.ui.ldflags>
+		<tuxguitar-synth-lv2.ui.ldlibs>-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`</tuxguitar-synth-lv2.ui.ldlibs>
+		<tuxguitar-synth-lv2.ui.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.ui.ldpath>
+		<tuxguitar-synth-lv2.ui.binary.name>tuxguitar-synth-lv2-ui</tuxguitar-synth-lv2.ui.binary.name>
+		<tuxguitar-synth-lv2.ui.binary.prefix></tuxguitar-synth-lv2.ui.binary.prefix>
+		<tuxguitar-synth-lv2.ui.binary.suffix>.bin</tuxguitar-synth-lv2.ui.binary.suffix>
+		<tuxguitar-synth-lv2.ui.binary.os>_GNULinux</tuxguitar-synth-lv2.ui.binary.os>
+	</properties>
+	
+	<modules>
+		<module>${parent.relativePath}/TuxGuitar-synth-lv2</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>compile-native-jni</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="compile-native-jni">
+								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="make" failonerror="true" >
+									<env key="CXX" value="${tuxguitar-synth-lv2.jni.cxx}" />
+									<env key="CFLAGS" value="${tuxguitar-synth-lv2.jni.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-synth-lv2.jni.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-synth-lv2.jni.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-synth-lv2.jni.ldpath}" />
+									<env key="LIBRARY_NAME" value="${tuxguitar-synth-lv2.jni.library.name}" />
+									<env key="LIBRARY_PREFIX" value="${tuxguitar-synth-lv2.jni.library.prefix}" />
+									<env key="LIBRARY_SUFFIX" value="${tuxguitar-synth-lv2.jni.library.suffix}" />
+									<env key="LIBRARY_OS" value="${tuxguitar-synth-lv2.jni.library.os}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>compile-native-ui</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="compile-native-ui">
+								<exec dir="${tuxguitar-synth-lv2.ui.path}" executable="make" failonerror="true" >
+									<env key="CXX" value="${tuxguitar-synth-lv2.ui.cxx}" />
+									<env key="CFLAGS" value="${tuxguitar-synth-lv2.ui.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-synth-lv2.ui.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-synth-lv2.ui.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-synth-lv2.ui.ldpath}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.ui.binary.name}" />
+									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.ui.binary.prefix}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-lv2.ui.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-lv2.ui.binary.os}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>clean-native-jni</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="clean-native-jni">
+								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="make" failonerror="true" >
+									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-synth-lv2.jni.rm}" />
+									<env key="LIBRARY_NAME" value="${tuxguitar-synth-lv2.jni.library.name}" />
+									<env key="LIBRARY_PREFIX" value="${tuxguitar-synth-lv2.jni.library.prefix}" />
+									<env key="LIBRARY_SUFFIX" value="${tuxguitar-synth-lv2.jni.library.suffix}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>clean-native-ui</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="clean-native-ui">
+								<exec dir="${tuxguitar-synth-lv2.ui.path}" executable="make" failonerror="true" >
+									<arg value="clean"/>
+									<env key="RM" value="${tuxguitar-synth-lv2.ui.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.ui.binary.name}" />
+									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.ui.binary.prefix}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-lv2.ui.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-lv2.ui.binary.os}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>native-module-jni-copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="native-module-jni-copy">
+								<mkdir dir="${project.build.directory}/build/lib" />
+								<copy todir="${project.build.directory}/build/lib">
+									<fileset file="${tuxguitar-synth-lv2.jni.path}/${tuxguitar-synth-lv2.jni.library.prefix}${tuxguitar-synth-lv2.jni.library.name}${tuxguitar-synth-lv2.jni.library.suffix}" />
+								</copy>
+								<chmod file="${project.build.directory}/build/lib/${tuxguitar-synth-lv2.jni.library.prefix}${tuxguitar-synth-lv2.jni.library.name}${tuxguitar-synth-lv2.jni.library.suffix}" perm="775" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					
+					<execution>
+						<id>native-module-ui-copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="native-module-ui-copy">
+								<mkdir dir="${project.build.directory}/build" />
+								<mkdir dir="${project.build.directory}/build/lv2-client" />
+								
+								<copy todir="${project.build.directory}/build/lv2-client">
+									<fileset file="${tuxguitar-synth-lv2.ui.path}/${tuxguitar-synth-lv2.ui.binary.prefix}${tuxguitar-synth-lv2.ui.binary.name}${tuxguitar-synth-lv2.ui.binary.suffix}" />
+								</copy>
+								
+								<chmod file="${project.build.directory}/build/lv2-client/${tuxguitar-synth-lv2.ui.binary.prefix}${tuxguitar-synth-lv2.ui.binary.name}${tuxguitar-synth-lv2.ui.binary.suffix}" perm="775" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>native-module-copy-libs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-lv2</artifactId>
+									<destFileName>tuxguitar-synth-lv2.jar</destFileName>
+									<outputDirectory>${project.build.directory}/build/share/plugins</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
