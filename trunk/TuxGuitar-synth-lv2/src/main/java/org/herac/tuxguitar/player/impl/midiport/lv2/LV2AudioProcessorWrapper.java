@@ -42,7 +42,9 @@ public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 	
 	public void open(String uri) {
 		try {
-			if( this.target == null ) {
+			if( this.target == null || !this.target.isOpen() ) {
+				this.appliedParameters = null;
+				
 				List<LV2Plugin> plugins = this.world.getPlugins();
 				for(LV2Plugin plugin : plugins) {
 					if( plugin.getUri().equals(uri)) {

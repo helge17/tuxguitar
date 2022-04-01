@@ -40,7 +40,7 @@ public class LV2ProcessAudioCommand extends LV2AbstractCommand<Boolean> {
 		}
 
 		for(int c = 0; c < this.outputs.length; c ++) {
-			byte[] buffer = new byte[(this.outputs.length * this.outputs[0].length) * 4];
+			byte[] buffer = new byte[this.outputs[c].length * 4];
 			
 			this.readBytes(buffer);
 			
