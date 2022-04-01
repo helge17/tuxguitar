@@ -3,7 +3,7 @@
 
 #include <suil.h>
 
-void LV2UI_malloc(LV2UI **handle, LV2Instance *instance, pthread_mutex_t *lock);
+void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, pthread_mutex_t *lock);
 
 void LV2UI_free(LV2UI **handle);
 

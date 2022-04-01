@@ -54,9 +54,10 @@ typedef struct {
 	LV2Plugin* plugin;
 	LV2PortConnection** connections;
 	LV2Int32 bufferSize;
-	
 	pthread_t* thread;
 } LV2Instance;
+
+typedef struct LV2FeatureImpl LV2Feature;
 
 typedef struct LV2UIImpl LV2UI;
 

@@ -35,6 +35,7 @@
 #include "LV2.h"
 #include "LV2UI.h"
 #include "LV2Plugin.h"
+#include "LV2Feature.h"
 #include "LV2Instance.h"
 #include "LV2Logger.h"
 
@@ -42,6 +43,7 @@
 
 struct LV2UIImpl {
 	pthread_mutex_t* lock;
+	LV2Feature* feature;
 	LV2Instance* instance;
 	SuilHost* suilHost;
 	SuilInstance* suilInstance;
@@ -102,12 +104,13 @@ uint32_t LV2UI_getPortIndex(void* const controller, const char* symbol)
 	return LV2UI_INVALID_PORT_INDEX;
 }
 
-void LV2UI_malloc(LV2UI **handle, LV2Instance *instance, pthread_mutex_t *lock)
+void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, pthread_mutex_t *lock)
 {
 	if( instance != NULL ) {
 		(*handle) = (LV2UI *) malloc(sizeof(LV2UI));
 
 		(*handle)->lock = lock;
+		(*handle)->feature = feature;
 		(*handle)->instance = instance;
 		(*handle)->suilHost = NULL;
 		(*handle)->suilInstance = NULL;
@@ -265,7 +268,7 @@ void LV2UI_process(LV2UI *handle)
 					lilv_node_as_uri(handle->supported_ui_type),
 					bundlePath,
 					binaryPath,
-					NULL);
+					LV2Feature_getFeatures(handle->feature));
 
 				handle->window = new LV2MainWindow(handle);
 				handle->window->setWindowTitle(lilv_node_as_string(pluginName));

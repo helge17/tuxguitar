@@ -9,6 +9,7 @@
 #include "LV2UI.h"
 #include "LV2World.h"
 #include "LV2Plugin.h"
+#include "LV2Feature.h"
 #include "LV2Instance.h"
 #include "LV2Logger.h"
 #include "LV2Socket.h"
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
 	
 	LV2Client *handle = (LV2Client *) malloc( sizeof(LV2Client) );
 	LV2Client_parseArguments(handle, argc, argv);
-
+	
 	LV2Socket_create(&(handle->socket), handle->serverPort);
 	
 	if( handle->socket->connected) {
@@ -37,8 +38,9 @@ int main(int argc, char *argv[])
 
 		LV2World_malloc(&handle->world);
 		LV2World_getPluginByURI(handle->world, &handle->plugin, handle->pluginURI);
-		LV2Instance_malloc(&handle->instance, handle->plugin, handle->bufferSize);
-		LV2UI_malloc(&handle->ui, handle->instance, &handle->lock);
+		LV2Feature_malloc(&handle->feature);
+		LV2Instance_malloc(&handle->instance, handle->plugin, handle->feature, handle->bufferSize);
+		LV2UI_malloc(&handle->ui, handle->feature, handle->instance, &handle->lock);
 		LV2Client_createBuffers(handle);
 
 		if( handle->plugin != NULL && handle->plugin->lilvPlugin != NULL ) {
@@ -57,6 +59,7 @@ int main(int argc, char *argv[])
 		LV2Client_destroyBuffers(handle);
 		LV2UI_free(&handle->ui);
 		LV2Instance_free(&handle->instance);
+		LV2Feature_free(&handle->feature);
 		LV2Plugin_free(&handle->plugin);
 		LV2World_free(&handle->world);
 
@@ -118,7 +121,6 @@ void* LV2Client_processCommandsThread(void* ptr)
 		
 		if( pthread_mutex_lock( &handle->lock ) == 0 ) {
 			LV2Client_processCommand(handle, command);
-
 			pthread_mutex_unlock( &handle->lock );
 		}
 	}
@@ -220,17 +222,17 @@ void LV2Client_processProcessAudioCommand(LV2Client *handle)
 	LV2Int32 outputLength = 0;
 	LV2Plugin_getAudioInputPortCount(handle->plugin, &inputLength);
 	LV2Plugin_getAudioOutputPortCount(handle->plugin, &outputLength);
-
+	
 	for(int i = 0; i < inputLength; i++) {
 		LV2Socket_read(handle->socket, handle->inputsBuffer[i], (4 * handle->instance->bufferSize));
 	}
 	
 	LV2Instance_processAudio(handle->instance, handle->inputsBuffer, handle->outputsBuffer);
-
+	
 	for(int i = 0; i < outputLength; i++) {
 		LV2Socket_write(handle->socket, handle->outputsBuffer[i], (4 * handle->instance->bufferSize));
 	}
-
+	
 	bool value = 0;
 	LV2UI_isUpdated(handle->ui, &value);
 	LV2Socket_write(handle->socket, &value, 1);
