@@ -124,7 +124,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 		}
 		if( this.isOpen() ) {
 			if( this.appliedParameters == null || !this.appliedParameters.equals(parameters)) {
-				this.appliedParameters = new HashMap<>(parameters);
+				this.appliedParameters = new HashMap<String, String>(parameters);
 				
 				int version = this.getEffect().getVersion();
 				if( version <= 2300 ) {
@@ -174,7 +174,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			
 			parameters.put(PARAM_CHUNK, (chunk != null ? new String(Base64.getEncoder().encode(chunk)) : null));
 			
-			this.appliedParameters = new HashMap<>(parameters);
+			this.appliedParameters = new HashMap<String, String>(parameters);
 			
 			this.fireParamsEvent(VSTParamsEvent.ACTION_STORE, parameters);
 		}
