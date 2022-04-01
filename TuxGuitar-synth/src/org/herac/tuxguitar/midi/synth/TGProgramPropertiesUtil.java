@@ -32,10 +32,13 @@ public final class TGProgramPropertiesUtil {
 		TGProgramElement element = null;
 		String elementId = TGPropertiesUtil.getStringValue(properties, keyPrefix + ".id");
 		String elementType = TGPropertiesUtil.getStringValue(properties, keyPrefix + ".type");
+		boolean elementEnabled = TGPropertiesUtil.getBooleanValue(properties, keyPrefix + ".enabled", true);
+		
 		if( elementId != null && elementType != null ) {
 			element = new TGProgramElement();
 			element.setId(elementId);
 			element.setType(elementType);
+			element.setEnabled(elementEnabled);
 			
 			Integer paramCount = TGPropertiesUtil.getIntegerValue(properties, keyPrefix + ".param.count");
 			if( paramCount != null ) {
@@ -69,6 +72,7 @@ public final class TGProgramPropertiesUtil {
 		if( element.getId() != null && element.getType() != null ) {
 			TGPropertiesUtil.setValue(properties, prefix + ".id", element.getId());
 			TGPropertiesUtil.setValue(properties, prefix + ".type", element.getType());
+			TGPropertiesUtil.setValue(properties, prefix + ".enabled", element.isEnabled());
 			
 			Set<Entry<String, String>> parameters = element.getParameters().entrySet();
 			TGPropertiesUtil.setValue(properties, prefix + ".param.count", parameters.size());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.herac.tuxguitar.util.TGContext;
 
@@ -83,6 +84,9 @@ public class TGSynthChannelProcessor {
 	}
 	
 	public void addProcessor(TGProgramElement element, TGAudioProcessor processor) {
+		if( this.processorMap.containsKey(element) ) {
+			this.processorMap.remove(element);
+		}
 		this.processorMap.put(element, processor);
 		this.restoreParameters(element, processor);
 	}
@@ -138,6 +142,18 @@ public class TGSynthChannelProcessor {
 		}
 	}
 	
+	public TGProgramElement getElement(TGAudioProcessor processor) {
+		synchronized (this.lock) {
+			Set<Map.Entry<TGProgramElement, TGAudioProcessor>> entries = this.processorMap.entrySet();
+			for(Map.Entry<TGProgramElement, TGAudioProcessor> entry : entries) {
+				if( entry.getValue() != null && entry.getValue().equals(processor)) {
+					return entry.getKey();
+				}
+			}
+			return null;
+		}
+	}
+	
 	public TGAudioProcessor getAudioProcessor(TGProgramElement element) {
 		synchronized (this.lock) {
 			if( this.processorMap.containsKey(element)) {
@@ -180,11 +196,19 @@ public class TGSynthChannelProcessor {
 		synchronized (this.lock) {
 			if( this.processor != null && this.processor.isOpen() ){
 				this.buffer.clear();
-				this.processor.fillBuffer(this.buffer);
+				this.fillBuffer(this.buffer, this.processor);
 				for( int i = 0 ; i < this.countOutputs() ;i ++){
-					this.getOutput(i).fillBuffer(this.buffer);
+					this.fillBuffer(this.buffer, this.getOutput(i));
 				}
 				buffer.mix(this.buffer);
+			}
+		}
+	}
+	
+	public void fillBuffer(TGAudioBuffer buffer, TGAudioProcessor processor) {
+		synchronized (this.lock) {
+			if( this.isEnabled(processor) ) {
+				processor.fillBuffer(buffer);
 			}
 		}
 	}
@@ -200,6 +224,14 @@ public class TGSynthChannelProcessor {
 				}
 			}			
 			return false;
+		}
+	}
+	
+	public boolean isEnabled(TGAudioProcessor processor) {
+		synchronized (this.lock) {
+			TGProgramElement element = this.getElement(processor);
+			
+			return (element != null && element.isEnabled());
 		}
 	}
 }
