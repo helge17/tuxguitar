@@ -12,7 +12,7 @@ LDFLAGS?=
 LDLIBS?=-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`
 LDPATH?=-L/usr/lib
 BINARY_NAME?=tuxguitar-synth-lv2-ui
-BINARY_SUFFIX?=
+BINARY_SUFFIX?=.bin
 BINARY_OS?=_GNULinux
 ###############################################
 
