@@ -4,8 +4,10 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiTransmitter;
+import org.herac.tuxguitar.thread.TGThreadHandler;
 import org.herac.tuxguitar.thread.TGThreadLoop;
 import org.herac.tuxguitar.thread.TGThreadManager;
+import org.herac.tuxguitar.thread.TGThreadPriority;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSequencerImpl implements MidiSequencer {
@@ -183,16 +185,18 @@ public class MidiSequencerImpl implements MidiSequencer {
 
 	private class MidiTimer implements Runnable {
 
-		private static final long TIMER_DELAY = 15;
+		private static final long TIMER_DELAY = 10;
 
 		private MidiSequencerImpl sequencer;
-
+		private TGThreadHandler threadHandler;
+		
 		public MidiTimer(MidiSequencerImpl sequencer) {
 			this.sequencer = sequencer;
+			this.threadHandler = TGThreadManager.getInstance(this.sequencer.getContext());
 		}
-
+		
 		public void run() {
-			TGThreadManager.getInstance(this.sequencer.getContext()).loop(new TGThreadLoop() {
+			this.threadHandler.loop(new TGThreadLoop() {
 				public Long process() {
 					return (processLoop() ? TIMER_DELAY : BREAK);
 				}
@@ -209,7 +213,7 @@ public class MidiSequencerImpl implements MidiSequencer {
 		}
 
 		public void start() {
-			TGThreadManager.getInstance(this.sequencer.getContext()).start(this);
+			this.threadHandler.start(TGThreadPriority.HIGHT, this);
 		}
 	}
 }

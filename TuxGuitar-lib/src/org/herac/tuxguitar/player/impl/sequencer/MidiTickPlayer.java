@@ -4,7 +4,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 
 public class MidiTickPlayer {
 	
-	private static final int SECOND_IN_MILLIS = 1000;
+	private static final long SECOND_IN_NANOS = (1000 * 1000000);
 	
 	private int tempo;
 	private long tick;
@@ -19,9 +19,9 @@ public class MidiTickPlayer {
 	
 	public void process() {
 		this.lastTime = this.time;
-		this.time = System.currentTimeMillis();
+		this.time = System.nanoTime();
 		if(!this.tickChanged){
-			this.tick += (TGDuration.QUARTER_TIME * ((float)getTempo() * (float)(this.time - this.lastTime) / 60f) / SECOND_IN_MILLIS);
+			this.tick += Math.round((double) TGDuration.QUARTER_TIME * ((double)getTempo() * (double)(this.time - this.lastTime) / 60.00) / (double) SECOND_IN_NANOS);
 		}
 		this.tickChanged = false;
 	}
@@ -52,6 +52,6 @@ public class MidiTickPlayer {
 	}
 	
 	public void notifyTick(long tick){
-		this.tickLength = Math.max(this.tickLength,tick);
+		this.tickLength = Math.max(this.tickLength, tick);
 	}
 }

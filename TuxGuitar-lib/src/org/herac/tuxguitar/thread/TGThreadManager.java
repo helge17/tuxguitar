@@ -14,7 +14,13 @@ public class TGThreadManager implements TGThreadHandler {
 	
 	public void start(Runnable runnable) {
 		if( this.handler != null ) {
-			this.handler.start(runnable);
+			this.handler.start(TGThreadPriority.NORMAL, runnable);
+		}
+	}
+	
+	public void start(TGThreadPriority priority, Runnable runnable) {
+		if( this.handler != null ) {
+			this.handler.start(priority, runnable);
 		}
 	}
 	

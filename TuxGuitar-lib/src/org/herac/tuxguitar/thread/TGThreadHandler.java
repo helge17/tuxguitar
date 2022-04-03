@@ -2,7 +2,7 @@ package org.herac.tuxguitar.thread;
 
 public interface TGThreadHandler {
 	
-	void start(Runnable runnable);
+	void start(TGThreadPriority priority, Runnable runnable);
 	
 	void loop(TGThreadLoop loop);
 	
