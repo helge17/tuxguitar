@@ -3,101 +3,79 @@ package org.herac.tuxguitar.thread;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGException;
-
-public class TGMultiThreadHandler implements TGThreadHandler, Runnable {
+public class TGMultiThreadHandler implements TGThreadHandler {
 	
-	private static final int WORKER_COUNT = 10;
-	
-	private boolean running;
-	private Object mutex;
-	private List<Runnable> queue;
+	private TGThreadHandler defaultHandler;
+	private TGThreadHandler exclusiveHandler;
+	private List<Object>  exclusiveThreads;
 	
 	public TGMultiThreadHandler() {
-		this.mutex = new Object();
-		this.queue = new ArrayList<Runnable>();
-		this.running = true;
-		
-		this.initialize();
+		this.defaultHandler = new TGPooledThreadHandler();
+		this.exclusiveHandler = new TGExclusiveThreadHandler();
+		this.exclusiveThreads = new ArrayList<Object>();
 	}
 	
-	public void initialize() {		
-		for(int i = 0 ; i < WORKER_COUNT ; i ++) {
-			new Thread(this).start();
+	private Object getInternalThreadId() {
+		return Thread.currentThread().getId();
+	}
+	
+	private TGThreadHandler getTargetHandler() {
+		return (this.exclusiveThreads.contains(this.getInternalThreadId()) ? this.exclusiveHandler : this.defaultHandler);
+	}
+	
+	private void markAsExclusive() {
+		Object threadId = getInternalThreadId();
+		if(!this.exclusiveThreads.contains(threadId)) {
+			this.exclusiveThreads.add(threadId);
 		}
 	}
-
-	public void start(Runnable runnable) {
-		synchronized (this.mutex) {
-			this.queue.add(runnable);
-			this.mutex.notifyAll();
+	
+	private void unmarkAsExclusive() {
+		Object threadId = getInternalThreadId();
+		if( this.exclusiveThreads.contains(threadId)) {
+			this.exclusiveThreads.remove(threadId);
+		}
+	}
+	
+	public void start(TGThreadPriority priority, final Runnable runnable) {
+		if( priority == TGThreadPriority.HIGHT ) {
+			this.exclusiveHandler.start(priority, new TGExclusiveRunnable(this, runnable));
+		}
+		else {
+			this.defaultHandler.start(priority, runnable);
 		}
 	}
 	
 	public void loop(final TGThreadLoop loop) {
-		final Object mutex = new Object();
-		this.start(new Runnable() {
-			public void run() {
-				try {
-					Long timeout = loop.process();
-					if(!TGThreadLoop.BREAK.equals(timeout)) {
-						if( timeout != null && timeout > 0 ) {
-							synchronized(mutex) {
-								mutex.wait(timeout);
-							}
-						}
-						TGMultiThreadHandler.this.start(this);
-					}
-				} catch (InterruptedException e) {
-					throw new TGException(e.getMessage(), e);
-				}
-			}
-		});
-	}
-	
-	public void processNext() {
-		Runnable runnable = null;
-		synchronized (this.mutex) {
-			if(!this.queue.isEmpty()) {
-				runnable = this.queue.remove(0);
-			}
-		}
-		if( runnable != null ) {
-			runnable.run();
-		}
-	}
-	
-	public void waitForNextThread() {
-		try {
-			synchronized (this.mutex) {
-				if( this.queue.isEmpty()) {
-					this.mutex.wait();
-				} else {
-					Thread.yield();
-				}
-			}
-		} catch (InterruptedException e) {
-			throw new TGException(e.getMessage(), e);
-		}
-	}
-	
-	public void run() {
-		while(this.running || !this.queue.isEmpty()) {
-			this.processNext();
-			this.waitForNextThread();
-		}
+		this.getTargetHandler().loop(loop);
 	}
 	
 	public void yield() {
-		Thread.yield();
+		this.getTargetHandler().yield();
 	}
 	
 	public void dispose() {
-		this.running = false;
+		this.getTargetHandler().dispose();
 	}
 	
 	public Object getThreadId() {
-		return Thread.currentThread().getId();
+		return this.getTargetHandler().getThreadId();
+	}
+	
+	private static class TGExclusiveRunnable implements Runnable {
+		
+		private TGMultiThreadHandler handler;
+		private Runnable target;
+		
+		public TGExclusiveRunnable(TGMultiThreadHandler handler, Runnable target) {
+			this.handler = handler;
+			this.target = target;
+		}
+		
+		public void run() {
+			this.handler.markAsExclusive();
+			this.target.run();
+			this.handler.unmarkAsExclusive();
+		}
 	}
 }
-
