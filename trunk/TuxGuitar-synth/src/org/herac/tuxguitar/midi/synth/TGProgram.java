@@ -33,6 +33,26 @@ public class TGProgram {
 		}
 	}
 	
+	public void moveOutputUp(TGProgramElement output){
+		if( output != null ) {
+			int index = this.outputs.indexOf(output);
+			if( index >= 1 && index < this.outputs.size() ){
+				this.outputs.remove(output);
+				this.outputs.add(index - 1, output);
+			}
+		}
+	}
+	
+	public void moveOutputDown(TGProgramElement output){
+		if( output != null ) {
+			int index = this.outputs.indexOf(output);
+			if( index >= 0 && index < (this.outputs.size() - 1)){
+				this.outputs.remove(output);
+				this.outputs.add(index + 1, output);
+			}
+		}
+	}
+	
 	public TGProgramElement getOutput(int index){
 		if( index >= 0 && index < this.outputs.size() ){
 			return (TGProgramElement)this.outputs.get(index);
