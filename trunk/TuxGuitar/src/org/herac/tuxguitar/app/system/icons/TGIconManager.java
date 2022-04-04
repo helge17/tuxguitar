@@ -157,6 +157,8 @@ public class TGIconManager {
 	private UIImage listAdd;
 	private UIImage listEdit;
 	private UIImage listRemove;
+	private UIImage listMoveUp;
+	private UIImage listMoveDown;
 	
 	private TGIconManager(TGContext context){
 		this.context = context;
@@ -326,6 +328,8 @@ public class TGIconManager {
 		this.listAdd = loadIcon("list_add.png");
 		this.listEdit = loadIcon("list_edit.png");
 		this.listRemove = loadIcon("list_remove.png");
+		this.listMoveUp = loadIcon("list_move_up.png");
+		this.listMoveDown = loadIcon("list_move_down.png");
 	}
 	
 	private UIImage loadIcon(String name) {
@@ -925,7 +929,15 @@ public class TGIconManager {
 	}
 
 	public UIImage getListRemove() {
-		return listRemove;
+		return this.listRemove;
+	}
+	
+	public UIImage getListMoveUp() {
+		return this.listMoveUp;
+	}
+	
+	public UIImage getListMoveDown() {
+		return this.listMoveDown;
 	}
 
 	public static TGIconManager getInstance(TGContext context) {
