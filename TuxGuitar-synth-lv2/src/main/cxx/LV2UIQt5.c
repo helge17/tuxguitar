@@ -51,6 +51,7 @@ struct LV2UIImpl {
 	const LilvNode* supported_ui_type;
 	bool open;
 	bool updated;
+	bool ignoreEvents;
 	bool shouldRefresh;
 	float refreshRate;
 	uint32_t frameDelta;
@@ -79,13 +80,12 @@ class LV2MainWindow : public QMainWindow {
 void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buffer_size, uint32_t protocol, const void* buffer) 
 {
 	LV2UI *handle = (LV2UI *) controller;
-	if( handle != NULL && handle->instance != NULL ) {
+	if( handle != NULL && handle->instance != NULL && !handle->ignoreEvents) {
 		if ( protocol == 0 ) {
 
 			if( pthread_mutex_trylock(handle->lock) == 0 ) {
 				LV2Instance_setControlPortValue(handle->instance, port_index, *(float*)buffer);
 				LV2UI_setUpdated(handle, true);
-
 				pthread_mutex_unlock(handle->lock);
 			}
 		}
@@ -117,6 +117,7 @@ void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, pt
 		(*handle)->application = NULL;
 		(*handle)->window = NULL;
 		(*handle)->open = false;
+		(*handle)->ignoreEvents = false;
 		(*handle)->shouldRefresh = false;
 		(*handle)->supported_ui = NULL;
 		(*handle)->supported_ui_type = NULL;
@@ -210,7 +211,11 @@ void LV2UI_setControlPortValue(LV2UI *handle, LV2Int32 index, float value)
 {
 	if( handle != NULL && handle->open && handle->instance->plugin != NULL && handle->suilInstance != NULL ) {
 		if( index >= 0 && index < handle->instance->plugin->portCount && handle->instance->plugin->ports[index]->type == TYPE_CONTROL ) {
+			handle->ignoreEvents = true;
+
 			suil_instance_port_event(handle->suilInstance, index, sizeof(float), 0, &value);
+
+			handle->ignoreEvents = false;
 		}
 	}
 }
@@ -219,6 +224,8 @@ void LV2UI_setControlPortValues(LV2UI *handle, LV2PortFlow flow)
 {
 	if( handle != NULL && handle->window != NULL && handle->window->isVisible() ) {
 		if( handle->instance->plugin != NULL && handle->instance->plugin->ports != NULL && handle->suilInstance != NULL ) {
+			handle->ignoreEvents = true;
+
 			for (uint32_t i = 0; i < handle->instance->plugin->portCount; i ++) {
 				LV2Port* port = handle->instance->plugin->ports[i];
 				if( port->type == TYPE_CONTROL && (port->flow == flow || flow == FLOW_UNKNOWN)) {
@@ -227,6 +234,8 @@ void LV2UI_setControlPortValues(LV2UI *handle, LV2PortFlow flow)
 					suil_instance_port_event(handle->suilInstance, i, sizeof(float), 0, &currentValue);
 				}
 			}
+
+			handle->ignoreEvents = false;
 		}
 	}
 }
@@ -281,9 +290,9 @@ void LV2UI_process(LV2UI *handle)
 				lilv_free(bundlePath);
 			}
 			if(!handle->window->isVisible()) {
-				LV2UI_setControlPortValues(handle, FLOW_UNKNOWN);
-
 				handle->window->show();
+
+				LV2UI_setControlPortValues(handle, FLOW_UNKNOWN);
 			}
 			if( handle->shouldRefresh ) {
 				handle->shouldRefresh = false;

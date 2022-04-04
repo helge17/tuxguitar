@@ -71,6 +71,8 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	private UIButton buttonOutputAdd;
 	private UIButton buttonOutputEdit;
 	private UIButton buttonOutputDelete;
+	private UIButton buttonOutputMoveUp;
+	private UIButton buttonOutputMoveDown;
 	private UIReadOnlyTextField receiver;
 	private UICheckTable<TGProgramElement> outputs;
 	
@@ -174,9 +176,25 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 		
+		this.buttonOutputMoveUp = uiFactory.createButton(compositeButtons);
+		this.buttonOutputMoveUp.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				onMoveOutputUp(TGSynthDialog.this.outputs.getSelectedValue());
+			}
+		});
+		
+		this.buttonOutputMoveDown = uiFactory.createButton(compositeButtons);
+		this.buttonOutputMoveDown.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				onMoveOutputDown(TGSynthDialog.this.outputs.getSelectedValue());
+			}
+		});
+		
 		outputsButtonsLayout.set(this.buttonOutputAdd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
 		outputsButtonsLayout.set(this.buttonOutputDelete, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
-		outputsButtonsLayout.set(this.buttonOutputEdit, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, false, true);
+		outputsButtonsLayout.set(this.buttonOutputMoveUp, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
+		outputsButtonsLayout.set(this.buttonOutputMoveDown, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
+		outputsButtonsLayout.set(this.buttonOutputEdit, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, false, true);
 		
 		this.loadIcons();
 		this.loadProperties();
@@ -381,6 +399,32 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 	}
 	
+	public void onMoveOutputUp(TGProgramElement output) {
+		if( output != null ) {
+			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
+			if( channel != null ) {
+				TGProgram program = new TGProgram();
+				program.copyFrom(channel.getProgram());
+				program.moveOutputUp(output);
+				
+				this.onProgramUpdated(program);
+			}
+		}
+	}
+	
+	public void onMoveOutputDown(TGProgramElement output) {
+		if( output != null ) {
+			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
+			if( channel != null ) {
+				TGProgram program = new TGProgram();
+				program.copyFrom(channel.getProgram());
+				program.moveOutputDown(output);
+				
+				this.onProgramUpdated(program);
+			}
+		}
+	}
+	
 	public void onOutputSelected(String type) {
 		if( type != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -574,6 +618,8 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			this.buttonOutputAdd.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.add"));
 			this.buttonOutputEdit.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.edit"));
 			this.buttonOutputDelete.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.remove"));
+			this.buttonOutputMoveUp.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.move-up"));
+			this.buttonOutputMoveDown.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.move-down"));
 		}
 	}
 	
@@ -584,6 +630,8 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			this.buttonOutputAdd.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListAdd());
 			this.buttonOutputEdit.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListEdit());
 			this.buttonOutputDelete.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListRemove());
+			this.buttonOutputMoveUp.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListMoveUp());
+			this.buttonOutputMoveDown.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListMoveDown());
 		}
 	}
 	
