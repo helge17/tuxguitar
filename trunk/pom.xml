@@ -364,6 +364,14 @@
 			</dependency>
 			<!-- /SWT Platforms -->
 
+			<!-- gervill -->
+			<dependency>
+				<groupId>media.sound</groupId>
+				<artifactId>gervill</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<!-- /gervill -->
+			
 			<!-- iText -->
 			<dependency>
 				<groupId>com.itextpdf</groupId>
@@ -397,6 +405,11 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.2</version>
 			</plugin>
 		</plugins>
 	</build>
