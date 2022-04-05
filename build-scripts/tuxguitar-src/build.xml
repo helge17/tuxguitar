@@ -43,6 +43,7 @@
 				<include name="build-scripts/tuxguitar-windows-x86-installer/**"/>
 				<include name="build-scripts/tuxguitar-freebsd-x86_64/**"/>
 				
+				<include name="gervill/**"/>
 				<include name="TuxGuitar/**"/>
 				<include name="TuxGuitar-alsa/**"/>
 				<include name="TuxGuitar-ascii/**"/>
@@ -86,6 +87,7 @@
 				<include name="TuxGuitar-winmm/**"/>
 				<include name="TuxGuitar-synth/**"/>
 				<include name="TuxGuitar-synth-gervill/**"/>
+				<include name="TuxGuitar-synth-lv2/**"/>
 				<include name="TuxGuitar-synth-vst/**"/>
 				<include name="TuxGuitar-synth-vst-remote/**"/>
 				<include name="TuxGuitar-synth-export/**"/>
