@@ -20,6 +20,7 @@
 	</properties>
 
 	<modules>
+		<module>../../gervill</module>
 		<module>../../TuxGuitar</module>
 		<module>../../TuxGuitar-ui-toolkit</module>
 		<module>../../TuxGuitar-ui-toolkit-qt4</module>
@@ -71,6 +72,12 @@
 						<configuration>
 							<artifactItems>
 								<!-- LIBRARIES -->
+								<artifactItem>
+									<groupId>media.sound</groupId>
+									<artifactId>gervill</artifactId>
+									<destFileName>gervill.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar</artifactId>
