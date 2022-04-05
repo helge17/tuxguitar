@@ -31,4 +31,6 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle);
 
 LV2_URID LV2Feature_map(LV2_URID_Map_Handle mapHandle, const char* uri);
 
+LV2_Worker_Status LV2Feature_schedule_work(LV2_Worker_Schedule_Handle handle, uint32_t size, const void *data);
+
 #endif

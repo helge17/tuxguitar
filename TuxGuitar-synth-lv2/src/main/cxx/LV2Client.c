@@ -201,7 +201,7 @@ void LV2Client_processSetControlPortValueCommand(LV2Client *handle)
 
 void LV2Client_processProcessMidiMessagesCommand(LV2Client *handle)
 {
-	int length = 0;
+	LV2Int32 length = 0;
 	LV2Socket_read(handle->socket, &length, 4);
 	
 	unsigned char** messages = (unsigned char **) malloc((sizeof(unsigned char *) * length));
@@ -210,8 +210,8 @@ void LV2Client_processProcessMidiMessagesCommand(LV2Client *handle)
 		LV2Socket_read(handle->socket, messages[i], 4);
 	}
 	
-	//LV2Instance_setMidiMessages(handle->instance, ????);	
-	
+	//LV2Instance_setMidiMessages(handle->instance, messages, length);
+
 	delete [] messages;
 	
 }

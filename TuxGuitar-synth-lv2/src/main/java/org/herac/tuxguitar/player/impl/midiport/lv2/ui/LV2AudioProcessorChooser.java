@@ -13,9 +13,8 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
 import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
@@ -51,27 +50,24 @@ public class LV2AudioProcessorChooser {
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.dialog.title"));
 		
 		// ----------------------------------------------------------------------
-		UITableLayout typeGroupLayout = new UITableLayout();
-		UILegendPanel typeGroup = uiFactory.createLegendPanel(dialog);
-		typeGroup.setLayout(typeGroupLayout);
-		typeGroup.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.tip"));
-		dialogLayout.set(typeGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		UITableLayout pluginGroupLayout = new UITableLayout();
+		UILegendPanel pluginGroup = uiFactory.createLegendPanel(dialog);
+		pluginGroup.setLayout(pluginGroupLayout);
+		pluginGroup.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.tip"));
+		dialogLayout.set(pluginGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		UILabel pluginLabel = uiFactory.createLabel(typeGroup);
-		pluginLabel.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.plugin"));
-		typeGroupLayout.set(pluginLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
-		
-		final UIDropDownSelect<LV2Plugin> pluginCombo = uiFactory.createDropDownSelect(typeGroup);
-		typeGroupLayout.set(pluginCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+		final UIListBoxSelect<LV2Plugin> pluginList = uiFactory.createListBoxSelect(pluginGroup);
+		pluginGroupLayout.set(pluginList, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		pluginGroupLayout.set(pluginList, UITableLayout.PACKED_HEIGHT, 200f);
 		for(LV2Plugin plugin : plugins){
 			if( plugin.getName() != null ) {
-				pluginCombo.addItem(new UISelectItem<LV2Plugin>(plugin.getName(), plugin));
+				pluginList.addItem(new UISelectItem<LV2Plugin>(plugin.getName(), plugin));
 			} else {
 				System.err.println("Name not found: " + plugin.getUri());
 			}
 		}
 		if( plugins.size() > 0 ){
-			pluginCombo.setSelectedValue(plugins.get(0));
+			pluginList.setSelectedValue(plugins.get(0));
 		}
 		
 		//------------------BUTTONS----------------------------------------------
@@ -85,7 +81,7 @@ public class LV2AudioProcessorChooser {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				onSelectPlugin(handler, pluginCombo.getSelectedValue());
+				onSelectPlugin(handler, pluginList.getSelectedValue());
 				dialog.dispose();
 			}
 		});
