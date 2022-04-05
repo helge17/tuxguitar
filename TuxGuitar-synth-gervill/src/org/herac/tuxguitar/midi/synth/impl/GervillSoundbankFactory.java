@@ -10,9 +10,9 @@ import javax.sound.midi.Soundbank;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
-import com.sun.media.sound.EmergencySoundbank;
-import com.sun.media.sound.ModelPatch;
-import com.sun.media.sound.SF2Instrument;
+import media.sound.EmergencySoundbank;
+import media.sound.ModelPatch;
+import media.sound.SF2Instrument;
 
 public class GervillSoundbankFactory {
 	

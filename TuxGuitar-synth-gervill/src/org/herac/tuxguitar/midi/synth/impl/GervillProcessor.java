@@ -15,8 +15,8 @@ import org.herac.tuxguitar.midi.synth.TGAudioLine;
 import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
-import com.sun.media.sound.AudioSynthesizer;
-import com.sun.media.sound.SoftSynthesizer;
+import media.sound.AudioSynthesizer;
+import media.sound.SoftSynthesizer;
 
 public class GervillProcessor implements TGMidiProcessor {
 
@@ -120,15 +120,15 @@ public class GervillProcessor implements TGMidiProcessor {
 	
 	public Map<String, Object> createSynthInfo(){
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM, new Boolean(false));
+		map.put(SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM, false);
 		if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_SINGLE ) {
-			map.put(SYNTH_MIDI_CHANNELS_PARAM, new Integer(1));
+			map.put(SYNTH_MIDI_CHANNELS_PARAM, 1);
 		}
 		else if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_BEND ) {
-			map.put(SYNTH_MIDI_CHANNELS_PARAM, new Integer(2));
+			map.put(SYNTH_MIDI_CHANNELS_PARAM, 2);
 		}
 		else if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_VOICE ) {
-			map.put(SYNTH_MIDI_CHANNELS_PARAM, new Integer(16));
+			map.put(SYNTH_MIDI_CHANNELS_PARAM, 16);
 		}
 		return map;
 	}

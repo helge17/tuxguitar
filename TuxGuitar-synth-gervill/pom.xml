@@ -20,7 +20,7 @@
 			</resource>
 		</resources>
 	</build>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -40,6 +40,11 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-ui-toolkit</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>media.sound</groupId>
+			<artifactId>gervill</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
