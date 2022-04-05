@@ -22,6 +22,11 @@
 						<target>1.7</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.2.2</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
