@@ -14,6 +14,7 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 		(*handle)->lilvInstance = lilv_plugin_instantiate((*handle)->plugin->lilvPlugin, 44100.00, LV2Feature_getFeatures(feature));
 		(*handle)->connections = (LV2PortConnection **) malloc(sizeof(LV2PortConnection) * ((*handle)->plugin->portCount));
 		(*handle)->bufferSize = (uint32_t) bufferSize;
+		(*handle)->midiEventType = LV2Feature_map(feature, LV2_MIDI__MidiEvent);
 
 		for (uint32_t i = 0; i < (*handle)->plugin->portCount; i ++) {
 			(*handle)->connections[i] = (LV2PortConnection *) malloc(sizeof(LV2PortConnection));
@@ -85,22 +86,25 @@ void LV2Instance_setControlPortValue(LV2Instance *handle, LV2Int32 index, float 
 	}
 }
 
-void LV2Instance_setMidiMessages(LV2Instance *handle, void* midiMessages)
+void LV2Instance_setMidiMessages(LV2Instance *handle, unsigned char** messages, LV2Int32 length)
 {
 	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {
-		for (uint32_t i = 0; i < handle->plugin->portCount; i ++) {
+		for (LV2Int32 i = 0; i < handle->plugin->portCount; i ++) {
 			if( handle->plugin->ports[i]->type == TYPE_MIDI && handle->plugin->ports[i]->flow == FLOW_IN ) {
+				LV2Int32 offset = 0;
 				LV2_Atom_Sequence* lv2_Atom_Sequence = (LV2_Atom_Sequence*) handle->connections[i]->dataLocation;
 				lv2_Atom_Sequence->atom.size = 0;
-				
-				//....
-				
-				//lv2_atom_sequence_append_event
-				/*
-				for(uint32_t i = 0; i < messageCount; i++ ) {
-					ev->body.type == self->uris.midi_MidiEvent
+				for(LV2Int32 m = 0 ; m < length ; m ++) {
+
+					LV2_Atom_Event* lv2_Atom_Event = (LV2_Atom_Event*)((char*)LV2_ATOM_CONTENTS(LV2_Atom_Sequence, lv2_Atom_Sequence) + lv2_Atom_Sequence->atom.size);
+
+					lv2_Atom_Event->time.frames = 0;
+					lv2_Atom_Event->body.type = handle->midiEventType;
+					lv2_Atom_Event->body.size = 4;
+					memcpy(LV2_ATOM_BODY(&lv2_Atom_Event->body), messages[m], 4);
+
+					lv2_Atom_Sequence->atom.size += ((sizeof(LV2_Atom_Event) + 4) + 7) & (~7);
 				}
-				*/
 			}
 		}
 	}

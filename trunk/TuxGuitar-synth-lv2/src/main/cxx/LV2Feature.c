@@ -49,17 +49,29 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 {
 	if( handle != NULL ) {
 		if( handle->features == NULL ) {
-			LV2_Feature* mapFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
-			
+			// map feature
 			LV2_URID_Map* map = (LV2_URID_Map *) malloc(sizeof(LV2_URID_Map));
 			map->handle = handle;
 			map->map = LV2Feature_map;
+			
+			LV2_Feature* mapFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
 			mapFeature->URI = LV2_URID__map;
 			mapFeature->data = map;
 
+			// schedule feature
+			LV2_Worker_Schedule* schedule = (LV2_Worker_Schedule *) malloc(sizeof(LV2_Worker_Schedule));
+			schedule->handle = handle;
+			schedule->schedule_work = LV2Feature_schedule_work;
+
+			LV2_Feature* scheduleFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
+			scheduleFeature->URI = LV2_WORKER__schedule;
+			scheduleFeature->data = schedule;
+
+			// feature list
 			handle->features = (LV2_Feature**) malloc((sizeof(LV2_Feature) * 2));
 			handle->features[0] = mapFeature;
-			handle->features[1] = NULL;
+			handle->features[1] = scheduleFeature;
+			handle->features[2] = NULL;
 		}
 		return handle->features;
 	}
@@ -97,4 +109,9 @@ LV2_URID LV2Feature_map(LV2_URID_Map_Handle mapHandle, const char* uri)
 		return next->id;
 	}
 	return 0;
+}
+
+LV2_Worker_Status LV2Feature_schedule_work(LV2_Worker_Schedule_Handle handle, uint32_t size, const void *data)
+{
+	return LV2_WORKER_SUCCESS;
 }

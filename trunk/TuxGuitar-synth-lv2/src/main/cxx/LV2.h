@@ -2,10 +2,12 @@
 #define _Included_LV2
 
 #include <lilv.h>
+#include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
 #include <lv2/lv2plug.in/ns/ext/atom/atom.h>
 #include <lv2/lv2plug.in/ns/ext/midi/midi.h>
-#include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
-#include <lv2/instance-access/instance-access.h>
+#include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
+#include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
+#include <lv2/lv2plug.in/ns/ext/worker/worker.h>
 
 #ifndef MIN
 #    define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -54,6 +56,7 @@ typedef struct {
 	LV2Plugin* plugin;
 	LV2PortConnection** connections;
 	LV2Int32 bufferSize;
+	LV2_URID midiEventType;
 	pthread_t* thread;
 } LV2Instance;
 
