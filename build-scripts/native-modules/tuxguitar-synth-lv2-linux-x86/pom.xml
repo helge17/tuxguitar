@@ -27,7 +27,7 @@
 		<tuxguitar-synth-lv2.jni.rm>${tuxguitar.jni.rm}</tuxguitar-synth-lv2.jni.rm>
 		<tuxguitar-synth-lv2.jni.cflags>${tuxguitar.jni.header.path} -I/usr/include/lilv-0/lilv -m32 -fPIC -fpermissive</tuxguitar-synth-lv2.jni.cflags>
 		<tuxguitar-synth-lv2.jni.ldflags>-m32 -fPIC</tuxguitar-synth-lv2.jni.ldflags>
-		<tuxguitar-synth-lv2.jni.ldlibs>-llilv-0</tuxguitar-synth-lv2.jni.ldlibs>
+		<tuxguitar-synth-lv2.jni.ldlibs>-llilv-0 -lsuil-0</tuxguitar-synth-lv2.jni.ldlibs>
 		<tuxguitar-synth-lv2.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.jni.ldpath>
 		<tuxguitar-synth-lv2.jni.library.name>tuxguitar-synth-lv2-jni</tuxguitar-synth-lv2.jni.library.name>
 		<tuxguitar-synth-lv2.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-synth-lv2.jni.library.prefix>
