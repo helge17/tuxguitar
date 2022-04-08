@@ -8,9 +8,9 @@ typedef struct {
 	pthread_mutex_t lock;
 	LV2Int32 sessionId;
 	LV2Int32 serverPort;
-	LV2Int32 bufferSize;
 	const char *pluginURI;
 	
+	LV2Config *config;
 	LV2World *world;
 	LV2Plugin *plugin;
 	LV2Feature *feature;
@@ -25,6 +25,8 @@ typedef struct {
 int main(int argc, char *argv[]);
 
 void LV2Client_parseArguments(LV2Client *handle, int argc , char *argv[]);
+
+void LV2Client_createConfig(LV2Client *handle);
 
 void LV2Client_createBuffers(LV2Client *handle);
 

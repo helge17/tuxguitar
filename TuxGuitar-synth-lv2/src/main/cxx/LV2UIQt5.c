@@ -244,8 +244,8 @@ void LV2UI_processAudio(LV2UI *handle)
 {
 	if( handle != NULL && handle->window != NULL && handle->window->isVisible() ) {
 		if( handle->instance->plugin != NULL && handle->instance->plugin->ports != NULL && handle->suilInstance != NULL ) {
-			handle->frameDelta += handle->instance->bufferSize;
-			if( handle->frameDelta > (SAMPLE_RATE / handle->refreshRate) ) {
+			handle->frameDelta += handle->instance->config->bufferSize;
+			if( handle->frameDelta > (handle->instance->config->sampleRate / handle->refreshRate) ) {
 				handle->frameDelta = 0;
 				handle->shouldRefresh = true;
 			}
@@ -267,24 +267,35 @@ void LV2UI_process(LV2UI *handle)
 				handle->application->setQuitOnLastWindowClosed(true);
 				
 				handle->suilHost = suil_host_new(LV2UI_setPortData, LV2UI_getPortIndex, NULL, NULL);
+				
+				if( handle->suilHost != NULL ) {
+					handle->suilInstance = suil_instance_new(
+						handle->suilHost,
+						handle,
+						NATIVE_UI_TYPE_URI,
+						lilv_node_as_uri(lilv_plugin_get_uri(handle->instance->plugin->lilvPlugin)),
+						lilv_node_as_uri(lilv_ui_get_uri(handle->supported_ui)),
+						lilv_node_as_uri(handle->supported_ui_type),
+						bundlePath,
+						binaryPath,
+						LV2Feature_getFeatures(handle->feature));
+				}
 
-				handle->suilInstance = suil_instance_new(
-					handle->suilHost,
-					handle,
-					NATIVE_UI_TYPE_URI,
-					lilv_node_as_uri(lilv_plugin_get_uri(handle->instance->plugin->lilvPlugin)),
-					lilv_node_as_uri(lilv_ui_get_uri(handle->supported_ui)),
-					lilv_node_as_uri(handle->supported_ui_type),
-					bundlePath,
-					binaryPath,
-					LV2Feature_getFeatures(handle->feature));
-
-				handle->window = new LV2MainWindow(handle);
-				handle->window->setWindowTitle(lilv_node_as_string(pluginName));
-				handle->window->setCentralWidget(static_cast<QWidget*>(suil_instance_get_widget(handle->suilInstance)));
-				handle->window->setWindowFlags(Qt::WindowStaysOnTopHint);
-				handle->refreshRate = MIN(60, (float) QGuiApplication::primaryScreen()->refreshRate());
-
+				if( handle->suilInstance != NULL ) {
+					handle->window = new LV2MainWindow(handle);
+					handle->window->setWindowTitle(lilv_node_as_string(pluginName));
+					handle->window->setCentralWidget(static_cast<QWidget*>(suil_instance_get_widget(handle->suilInstance)));
+					handle->window->setWindowFlags(Qt::WindowStaysOnTopHint);
+					handle->refreshRate = MIN(60, (float) QGuiApplication::primaryScreen()->refreshRate());
+				}
+				else {
+					handle->application->exit();
+					handle->application = NULL;
+					handle->supported_ui = NULL;
+					handle->open = false;
+					return;
+				}
+				
 				lilv_node_free(pluginName);
 				lilv_free(binaryPath);
 				lilv_free(bundlePath);

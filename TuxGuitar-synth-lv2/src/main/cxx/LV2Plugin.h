@@ -17,4 +17,6 @@ void LV2Plugin_getAudioInputPortCount(LV2Plugin *handle, LV2Int32* count);
 
 void LV2Plugin_getAudioOutputPortCount(LV2Plugin *handle, LV2Int32* count);
 
+void LV2Plugin_getMidiInputPortCount(LV2Plugin *handle, LV2Int32* count);
+
 #endif
