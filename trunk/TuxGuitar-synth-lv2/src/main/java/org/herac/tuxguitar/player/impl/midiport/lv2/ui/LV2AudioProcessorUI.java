@@ -5,6 +5,7 @@ import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
 import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
 import org.herac.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessor.LV2AudioProcessorUpdateCallback;
 import org.herac.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessorWrapper;
+import org.herac.tuxguitar.player.impl.midiport.lv2.LV2PluginValidator;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
 import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.ui.widget.UIWindow;
@@ -13,13 +14,15 @@ import org.herac.tuxguitar.util.TGContext;
 public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGAudioProcessorUI {
 	
 	private TGContext context;
+	private LV2PluginValidator validator;
 	private LV2AudioProcessorWrapper processor;
 	private LV2AudioProcessorDialog dialog;
 	private TGAudioProcessorUICallback callback;
 	
-	public LV2AudioProcessorUI(TGContext context, LV2AudioProcessorWrapper processor, TGAudioProcessorUICallback callback) {
+	public LV2AudioProcessorUI(TGContext context, LV2AudioProcessorWrapper processor, LV2PluginValidator validator, TGAudioProcessorUICallback callback) {
 		this.context = context;
 		this.processor = processor;
+		this.validator = validator;
 		this.callback = callback;
 	}
 	
@@ -76,7 +79,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 	
 	public void choosePlugin(final UIWindow parent) {
 		LV2AudioProcessorChooser lv2AudioProcessorChooser = new LV2AudioProcessorChooser(this.context, this.processor.getWorld());
-		lv2AudioProcessorChooser.choose(parent, new LV2AudioProcessorChooser.LV2AudioProcessorChooserHandler() {
+		lv2AudioProcessorChooser.choose(parent, this.validator, new LV2AudioProcessorChooser.LV2AudioProcessorChooserHandler() {
 			public void onSelectPlugin(LV2Plugin plugin) {
 				if( plugin != null ) {
 					LV2AudioProcessorUI.this.processor.open(plugin.getUri());

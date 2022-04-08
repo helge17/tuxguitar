@@ -48,6 +48,13 @@ public class LV2Plugin extends LV2Object {
 		return 0;
 	}
 	
+	public int getMidiInputPortCount() {
+		if( this.isInitialized()) {
+			return this.getMidiInputPortCount(this.getInstance());
+		}
+		return 0;
+	}
+	
 	public LV2ControlPortInfo getControlPortInfo(int index) {
 		if( this.isInitialized()) {
 			return this.getControlPortInfo(this.getInstance(), index);
@@ -77,6 +84,8 @@ public class LV2Plugin extends LV2Object {
 	private native int getAudioInputPortCount(long instance);
 	
 	private native int getAudioOutputPortCount(long instance);
+	
+	private native int getMidiInputPortCount(long instance);
 	
 	private native LV2ControlPortInfo getControlPortInfo(long instance, int index);
 	

@@ -3,12 +3,16 @@ package org.herac.tuxguitar.player.impl.midiport.lv2.ui;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.player.impl.midiport.lv2.LV2PluginValidator;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
 import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
@@ -31,23 +35,24 @@ public class LV2AudioProcessorChooser {
 		this.world = world;
 	}
 	
-	public void choose(final UIWindow parent, final LV2AudioProcessorChooserHandler handler) {
+	public void choose(final UIWindow parent, final LV2PluginValidator validator, final LV2AudioProcessorChooserHandler handler) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
-				LV2AudioProcessorChooser.this.chooseInCurrentThread(parent, handler);
+				LV2AudioProcessorChooser.this.chooseInCurrentThread(parent, validator, handler);
 			}
 		});
 	}
 	
-	public void chooseInCurrentThread(final UIWindow parent, final LV2AudioProcessorChooserHandler handler) {
+	public void chooseInCurrentThread(final UIWindow parent, final LV2PluginValidator validator, final LV2AudioProcessorChooserHandler handler) {
 		final List<LV2Plugin> plugins = this.world.getPlugins();
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		
-		final UIWindow dialog = uiFactory.createWindow(parent, false, false);
+		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.dialog.title"));
+		dialog.setImage(TGIconManager.getInstance(this.context).getAppIcon());
 		
 		// ----------------------------------------------------------------------
 		UITableLayout pluginGroupLayout = new UITableLayout();
@@ -58,17 +63,22 @@ public class LV2AudioProcessorChooser {
 		
 		final UIListBoxSelect<LV2Plugin> pluginList = uiFactory.createListBoxSelect(pluginGroup);
 		pluginGroupLayout.set(pluginList, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		pluginGroupLayout.set(pluginList, UITableLayout.MINIMUM_PACKED_WIDTH, 200f);
 		pluginGroupLayout.set(pluginList, UITableLayout.PACKED_HEIGHT, 200f);
-		for(LV2Plugin plugin : plugins){
-			if( plugin.getName() != null ) {
+		for(LV2Plugin plugin : plugins) {
+			if( validator.validate(plugin)) {
 				pluginList.addItem(new UISelectItem<LV2Plugin>(plugin.getName(), plugin));
-			} else {
-				System.err.println("Name not found: " + plugin.getUri());
 			}
 		}
 		if( plugins.size() > 0 ){
 			pluginList.setSelectedValue(plugins.get(0));
 		}
+		pluginList.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
+			public void onMouseDoubleClick(UIMouseEvent event) {
+				onSelectPlugin(handler, pluginList.getSelectedValue());
+				dialog.dispose();
+			}
+		});
 		
 		//------------------BUTTONS----------------------------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
