@@ -286,9 +286,10 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		
-		final UIWindow dialog = uiFactory.createWindow(this.dialog, false, false);
+		final UIWindow dialog = uiFactory.createWindow(this.dialog, true, false);
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("synth-host.ui.audio.processor.dialog.title"));
+		dialog.setImage(TGIconManager.getInstance(this.context).getAppIcon());
 		
 		// ----------------------------------------------------------------------
 		UITableLayout typeGroupLayout = new UITableLayout();
@@ -625,6 +626,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	
 	public void loadIcons(){
 		if( this.isOpen()){
+			this.dialog.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getAppIcon());
 			this.buttonReceiverAdd.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListAdd());
 			this.buttonReceiverEdit.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListEdit());
 			this.buttonOutputAdd.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListAdd());
