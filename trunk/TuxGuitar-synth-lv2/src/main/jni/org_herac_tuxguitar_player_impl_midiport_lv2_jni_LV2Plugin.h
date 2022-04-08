@@ -57,6 +57,14 @@ JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin
+ * Method:    getMidiInputPortCount
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getMidiInputPortCount
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin
  * Method:    getControlPortInfo
  * Signature: (JI)Lorg/herac/tuxguitar/player/impl/midiport/lv2/jni/LV2ControlPortInfo;
  */
