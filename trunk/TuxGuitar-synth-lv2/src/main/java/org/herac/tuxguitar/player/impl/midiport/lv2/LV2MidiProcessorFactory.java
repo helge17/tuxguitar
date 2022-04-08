@@ -16,7 +16,7 @@ public class LV2MidiProcessorFactory implements TGMidiProcessorFactory {
 	}
 	
 	public String getType() {
-		return "LV2";
+		return "LV2 MIDI";
 	}
 	
 	public TGMidiProcessor createProcessor() {

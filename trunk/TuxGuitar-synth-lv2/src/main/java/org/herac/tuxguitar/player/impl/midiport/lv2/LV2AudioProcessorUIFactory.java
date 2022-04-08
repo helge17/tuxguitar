@@ -10,9 +10,11 @@ import org.herac.tuxguitar.util.TGContext;
 public class LV2AudioProcessorUIFactory implements TGAudioProcessorUIFactory {
 	
 	private TGContext context;
+	private LV2PluginValidator validator;
 	
 	public LV2AudioProcessorUIFactory(TGContext context) {
 		this.context = context;
+		this.validator = new LV2AudioPluginValidator();
 	}
 	
 	public String getType() {
@@ -20,6 +22,6 @@ public class LV2AudioProcessorUIFactory implements TGAudioProcessorUIFactory {
 	}
 	
 	public TGAudioProcessorUI create(TGAudioProcessor processor, TGAudioProcessorUICallback callback) {
-		return new LV2AudioProcessorUI(this.context, (LV2AudioProcessorWrapper) processor, callback);
+		return new LV2AudioProcessorUI(this.context, (LV2AudioProcessorWrapper) processor, this.validator, callback);
 	}
 }
