@@ -412,18 +412,12 @@
 						<phase>package</phase>
 						<inherited>true</inherited>
 						<configuration>
+							<classifier>share</classifier>
 							<classesDirectory>${project.rootPath}/TuxGuitar/share/</classesDirectory>
 							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-							<finalName>tuxguitar-share</finalName>
+							<finalName>tuxguitar</finalName>
 						</configuration>
 					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
 					<execution>
 						<id>tuxguitar-dist-windows-x86</id>
 						<goals>
@@ -432,9 +426,10 @@
 						<phase>package</phase>
 						<inherited>true</inherited>
 						<configuration>
+							<classifier>dist</classifier>
 							<classesDirectory>${project.build.directory}/tmp/dist/windows-x86</classesDirectory>
 							<outputDirectory>${project.build.directory}/${project.finalName}/lib/windows-x86</outputDirectory>
-							<finalName>tuxguitar-dist</finalName>
+							<finalName>tuxguitar</finalName>
 						</configuration>
 					</execution>
 					<execution>
@@ -445,9 +440,10 @@
 						<phase>package</phase>
 						<inherited>true</inherited>
 						<configuration>
+							<classifier>dist</classifier>
 							<classesDirectory>${project.build.directory}/tmp/dist/gnu-linux-x86</classesDirectory>
 							<outputDirectory>${project.build.directory}/${project.finalName}/lib/gnu-linux-x86</outputDirectory>
-							<finalName>tuxguitar-dist</finalName>
+							<finalName>tuxguitar</finalName>
 						</configuration>
 					</execution>
 					<execution>
@@ -458,9 +454,10 @@
 						<phase>package</phase>
 						<inherited>true</inherited>
 						<configuration>
+							<classifier>dist</classifier>
 							<classesDirectory>${project.build.directory}/tmp/dist/gnu-linux-x86-64</classesDirectory>
 							<outputDirectory>${project.build.directory}/${project.finalName}/lib/gnu-linux-x86-64</outputDirectory>
-							<finalName>tuxguitar-dist</finalName>
+							<finalName>tuxguitar</finalName>
 						</configuration>
 					</execution>
 					<execution>
@@ -471,9 +468,10 @@
 						<phase>package</phase>
 						<inherited>true</inherited>
 						<configuration>
+							<classifier>dist</classifier>
 							<classesDirectory>${project.build.directory}/tmp/dist/macosx-x86</classesDirectory>
 							<outputDirectory>${project.build.directory}/${project.finalName}/lib/macosx-x86</outputDirectory>
-							<finalName>tuxguitar-dist</finalName>
+							<finalName>tuxguitar</finalName>
 						</configuration>
 					</execution>
 					<execution>
@@ -484,9 +482,10 @@
 						<phase>package</phase>
 						<inherited>true</inherited>
 						<configuration>
+							<classifier>dist</classifier>
 							<classesDirectory>${project.build.directory}/tmp/dist/macosx-x86-64</classesDirectory>
 							<outputDirectory>${project.build.directory}/${project.finalName}/lib/macosx-x86-64</outputDirectory>
-							<finalName>tuxguitar-dist</finalName>
+							<finalName>tuxguitar</finalName>
 						</configuration>
 					</execution>
 				</executions>
