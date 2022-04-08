@@ -3,8 +3,12 @@
 
 #include <lilv.h>
 #include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
+#include <lv2/lv2plug.in/ns/ext/state/state.h>
+#include <lv2/lv2plug.in/ns/ext/options/options.h>
+#include <lv2/lv2plug.in/ns/ext/parameters/parameters.h>
 #include <lv2/lv2plug.in/ns/ext/atom/atom.h>
 #include <lv2/lv2plug.in/ns/ext/midi/midi.h>
+#include <lv2/lv2plug.in/ns/ext/buf-size/buf-size.h>
 #include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
 #include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
 #include <lv2/lv2plug.in/ns/ext/worker/worker.h>
@@ -13,9 +17,9 @@
 #    define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
-#define SAMPLE_RATE 44100.00
-
 typedef uint32_t LV2Int32;
+
+typedef float LV2Float64;
 
 typedef enum {
 	TYPE_UNKNOWN,
@@ -29,6 +33,11 @@ typedef enum {
 	FLOW_IN,
 	FLOW_OUT,
 } LV2PortFlow;
+
+typedef struct {
+	LV2Int32 bufferSize;
+	LV2Float64 sampleRate;
+} LV2Config;
 
 typedef struct {
 	LV2PortType type;
@@ -55,10 +64,12 @@ typedef struct {
 	LilvInstance* lilvInstance;
 	LV2Plugin* plugin;
 	LV2PortConnection** connections;
-	LV2Int32 bufferSize;
+	LV2Config *config;
 	LV2_URID midiEventType;
 	pthread_t* thread;
 } LV2Instance;
+
+typedef struct LV2WorkerImpl LV2Worker;
 
 typedef struct LV2FeatureImpl LV2Feature;
 

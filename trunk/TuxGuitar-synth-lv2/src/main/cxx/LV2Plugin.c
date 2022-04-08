@@ -12,7 +12,7 @@ void LV2Plugin_malloc(LV2Plugin **handle, LV2World* world, const LilvPlugin* lil
 		(*handle)->lilvPlugin = lilvPlugin;
 
 		(*handle)->portCount = lilv_plugin_get_num_ports((*handle)->lilvPlugin);
-		(*handle)->ports = (LV2Port **) malloc(sizeof(LV2Port) * ((*handle)->portCount));
+		(*handle)->ports = (LV2Port **) malloc(sizeof(LV2Port *) * ((*handle)->portCount));
 
 		for (uint32_t i = 0; i < (*handle)->portCount; i ++) {
 			(*handle)->ports[i] = (LV2Port *) malloc(sizeof(LV2Port));
@@ -134,4 +134,9 @@ void LV2Plugin_getAudioInputPortCount(LV2Plugin *handle, LV2Int32* count)
 void LV2Plugin_getAudioOutputPortCount(LV2Plugin *handle, LV2Int32* count) 
 {
 	LV2Plugin_getPortCount(handle, TYPE_AUDIO, FLOW_OUT, count);
+}
+
+void LV2Plugin_getMidiInputPortCount(LV2Plugin *handle, LV2Int32* count) 
+{
+	LV2Plugin_getPortCount(handle, TYPE_MIDI, FLOW_IN, count);
 }

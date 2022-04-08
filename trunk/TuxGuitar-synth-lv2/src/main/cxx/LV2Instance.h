@@ -1,7 +1,7 @@
 #ifndef _Included_LV2Instance
 #define _Included_LV2Instance
 
-void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* feature, LV2Int32 bufferSize);
+void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* feature, LV2Config *config);
 
 void LV2Instance_free(LV2Instance **handle);
 
