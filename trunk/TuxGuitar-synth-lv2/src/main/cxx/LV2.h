@@ -7,6 +7,7 @@
 #include <lv2/lv2plug.in/ns/ext/options/options.h>
 #include <lv2/lv2plug.in/ns/ext/parameters/parameters.h>
 #include <lv2/lv2plug.in/ns/ext/atom/atom.h>
+#include <lv2/lv2plug.in/ns/ext/atom/util.h>
 #include <lv2/lv2plug.in/ns/ext/midi/midi.h>
 #include <lv2/lv2plug.in/ns/ext/buf-size/buf-size.h>
 #include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
@@ -17,7 +18,15 @@
 #    define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
-typedef uint32_t LV2Int32;
+#ifndef MAX
+#    define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+
+#define EVENT_LENGTH 100
+#define EVENT_SIZE ((sizeof(LV2_Atom_Event) + 4) + 7)
+#define EVENT_SEQUENCE_SIZE (sizeof(LV2_Atom_Sequence) + (EVENT_SIZE * EVENT_LENGTH))
+
+typedef int32_t LV2Int32;
 
 typedef float LV2Float64;
 
@@ -25,7 +34,7 @@ typedef enum {
 	TYPE_UNKNOWN,
 	TYPE_CONTROL,
 	TYPE_AUDIO,
-	TYPE_MIDI
+	TYPE_EVENT
 } LV2PortType;
 
 typedef enum {
@@ -35,8 +44,9 @@ typedef enum {
 } LV2PortFlow;
 
 typedef struct {
-	LV2Int32 bufferSize;
 	LV2Float64 sampleRate;
+	LV2Int32 bufferSize;
+	LV2Int32 eventBufferSize;
 } LV2Config;
 
 typedef struct {
@@ -58,16 +68,19 @@ typedef struct {
 
 typedef struct {
 	void* dataLocation;
+	void* workBuffer;
 } LV2PortConnection;
 
 typedef struct {
-	LilvInstance* lilvInstance;
-	LV2Plugin* plugin;
-	LV2PortConnection** connections;
-	LV2Config *config;
-	LV2_URID midiEventType;
-	pthread_t* thread;
-} LV2Instance;
+	uint32_t index;
+	uint32_t protocol;
+	uint32_t size;
+	uint8_t  body[];
+} LV2ControlChange;
+
+typedef struct LV2LockImpl LV2Lock;
+
+typedef struct LV2InstanceImpl LV2Instance;
 
 typedef struct LV2WorkerImpl LV2Worker;
 

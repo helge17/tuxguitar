@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "LV2.h"
+#include "LV2Instance.h"
 #include "LV2Plugin.h"
 #include "LV2Feature.h"
 #include "LV2Logger.h"
@@ -14,11 +15,14 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 		(*handle)->config = config;
 		(*handle)->lilvInstance = lilv_plugin_instantiate((*handle)->plugin->lilvPlugin, (*handle)->config->sampleRate, LV2Feature_getFeatures(feature));
 		(*handle)->connections = (LV2PortConnection **) malloc(sizeof(LV2PortConnection *) * ((*handle)->plugin->portCount));
+		(*handle)->atomChunkType = LV2Feature_map(feature, LV2_ATOM__Chunk);
+		(*handle)->atomSequenceType = LV2Feature_map(feature, LV2_ATOM__Sequence);
 		(*handle)->midiEventType = LV2Feature_map(feature, LV2_MIDI__MidiEvent);
 
 		for (uint32_t i = 0; i < (*handle)->plugin->portCount; i ++) {
 			(*handle)->connections[i] = (LV2PortConnection *) malloc(sizeof(LV2PortConnection));
 			(*handle)->connections[i]->dataLocation = NULL;
+			(*handle)->connections[i]->workBuffer = NULL;
 			
 			if( (*handle)->plugin->ports[i]->type == TYPE_CONTROL ) {
 				(*handle)->connections[i]->dataLocation = malloc(sizeof(float));
@@ -35,8 +39,12 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 					((float *) (*handle)->connections[i]->dataLocation)[s] = 0.0f;
 				}
 			}
-			else if( (*handle)->plugin->ports[i]->type == TYPE_MIDI ) {
-				(*handle)->connections[i]->dataLocation = malloc(sizeof(LV2_Atom_Sequence));
+			else if( (*handle)->plugin->ports[i]->type == TYPE_EVENT ) {
+				(*handle)->connections[i]->dataLocation = malloc((*handle)->config->eventBufferSize);
+				(*handle)->connections[i]->workBuffer = malloc((*handle)->config->eventBufferSize);
+				
+				((LV2_Atom_Sequence *) (*handle)->connections[i]->dataLocation)->atom.size = 0;
+				((LV2_Atom_Sequence *) (*handle)->connections[i]->workBuffer)->atom.size = 0;
 			}
 			
 			if( (*handle)->connections[i]->dataLocation != NULL ) {
@@ -86,29 +94,50 @@ void LV2Instance_setControlPortValue(LV2Instance *handle, LV2Int32 index, float 
 	}
 }
 
+void LV2Instance_getConnectionBuffer(LV2Instance *handle, LV2Int32 index, void** buffer)
+{
+	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {
+		if( index >= 0 && index < handle->plugin->portCount && handle->plugin->ports[index]->type == TYPE_EVENT && handle->connections[index]->dataLocation != NULL ) {
+			(*buffer) = handle->connections[index]->dataLocation;
+		}
+	}
+}
+
+void LV2Instance_getWorkBuffer(LV2Instance *handle, LV2Int32 index, void** buffer)
+{
+	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {
+		if( index >= 0 && index < handle->plugin->portCount && handle->plugin->ports[index]->type == TYPE_EVENT && handle->connections[index]->workBuffer != NULL ) {
+			(*buffer) = handle->connections[index]->workBuffer;
+		}
+	}
+}
+
 void LV2Instance_setMidiMessages(LV2Instance *handle, unsigned char** messages, LV2Int32 length)
 {
 	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {
-		for (LV2Int32 i = 0; i < handle->plugin->portCount; i ++) {
-			if( handle->plugin->ports[i]->type == TYPE_MIDI && handle->plugin->ports[i]->flow == FLOW_IN ) {
-				LV2Int32 offset = 0;
-				LV2_Atom_Sequence* lv2_Atom_Sequence = (LV2_Atom_Sequence*) handle->connections[i]->dataLocation;
-				lv2_Atom_Sequence->atom.size = 0;
-				for(LV2Int32 m = 0 ; m < length ; m ++) {
-
-					LV2_Atom_Event* lv2_Atom_Event = (LV2_Atom_Event*)((char*)LV2_ATOM_CONTENTS(LV2_Atom_Sequence, lv2_Atom_Sequence) + lv2_Atom_Sequence->atom.size);
-
-					lv2_Atom_Event->time.frames = 0;
-					lv2_Atom_Event->body.type = handle->midiEventType;
-					lv2_Atom_Event->body.size = 4;
-					memcpy(LV2_ATOM_BODY(&lv2_Atom_Event->body), messages[m], 4);
-
-					lv2_Atom_Sequence->atom.size += ((sizeof(LV2_Atom_Event) + 4) + 7) & (~7);
-
-					LV2Logger_log("LV2Instance_setMidiMessages\n");
-				}
+		LV2_PLUGIN_PORT_BUFFER_FOREACH(handle, TYPE_EVENT, FLOW_IN, workBuffer, connectionBuffer, {
+			LV2_Atom_Sequence* seq = (LV2_Atom_Sequence *) workBuffer;
+			if( seq->atom.size == 0 ) {
+				lv2_atom_sequence_clear(seq);
 			}
-		}
+			
+			struct {
+				LV2_Atom atom;
+				uint8_t  msg[3];
+			} midiEvent;
+
+			for(LV2Int32 m = 0 ; m < length ; m ++) {
+				midiEvent.atom.type = handle->midiEventType;
+				midiEvent.atom.size = 3;
+				midiEvent.msg[0]    = messages[m][0];
+				midiEvent.msg[1]    = messages[m][1];
+				midiEvent.msg[2]    = messages[m][2];
+				
+				LV2_Atom_Event* event = lv2_atom_sequence_end(&seq->body, seq->atom.size);
+				memcpy((&event->body), &midiEvent, sizeof(midiEvent));
+				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + event->body.size);
+			}
+		})
 	}
 }
 
@@ -133,14 +162,39 @@ void LV2Instance_processAudio(LV2Instance *handle, float** inputs, float** outpu
 				inputsIndex ++;
 			}
 		}
-
+		
+		// copy events to lv2 buffer
+		LV2_PLUGIN_PORT_BUFFER_FOREACH(handle, TYPE_EVENT, FLOW_IN, workBuffer, connectionBuffer, {
+			lv2_atom_sequence_clear((LV2_Atom_Sequence *)connectionBuffer);
+			LV2_ATOM_SEQUENCE_FOREACH((LV2_Atom_Sequence *) workBuffer, ev) {
+				lv2_atom_sequence_append_event((LV2_Atom_Sequence *)connectionBuffer, handle->config->eventBufferSize, ev);
+			}
+			lv2_atom_sequence_clear((LV2_Atom_Sequence *)workBuffer);
+		})
+		
+		LV2_PLUGIN_PORT_BUFFER_FOREACH(handle, TYPE_EVENT, FLOW_OUT, workBuffer, connectionBuffer, {
+			((LV2_Atom_Sequence *)connectionBuffer)->atom.size = handle->config->eventBufferSize;
+		})
+		
 		// process lv2 buffers 
 		lilv_instance_run(handle->lilvInstance, handle->config->bufferSize);
+
+		// copy events from lv2 buffer
+		LV2_PLUGIN_PORT_BUFFER_FOREACH(handle, TYPE_EVENT, FLOW_OUT, workBuffer, connectionBuffer, {
+			LV2_ATOM_SEQUENCE_FOREACH((LV2_Atom_Sequence *) connectionBuffer, ev) {
+				LV2_Atom_Sequence* seq = (LV2_Atom_Sequence *) workBuffer;
+				if( seq->atom.size == 0 ) {
+					lv2_atom_sequence_clear(seq);
+				}
+				lv2_atom_sequence_append_event(seq, handle->config->eventBufferSize, ev);
+			}
+		})
 
 		// copy outputs from lv2 buffer
 		LV2Int32 outputsIndex = 0;
 		LV2Int32 outputsLength = 0;
 		LV2Plugin_getAudioOutputPortCount(handle->plugin, &outputsLength);
+		
 		for (uint32_t i = 0; i < handle->plugin->portCount; i ++) {
 			if( handle->plugin->ports[i]->type == TYPE_AUDIO && handle->plugin->ports[i]->flow == FLOW_OUT ) {
 				if( outputsIndex < outputsLength ) {

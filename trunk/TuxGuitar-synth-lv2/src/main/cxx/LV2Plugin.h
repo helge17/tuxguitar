@@ -19,4 +19,17 @@ void LV2Plugin_getAudioOutputPortCount(LV2Plugin *handle, LV2Int32* count);
 
 void LV2Plugin_getMidiInputPortCount(LV2Plugin *handle, LV2Int32* count);
 
+void LV2Plugin_getNextPortIndex(LV2Plugin *handle, LV2PortType portType, LV2PortFlow portFlow, LV2Int32* index);
+
+#define LV2_PLUGIN_PORT_INDEX_FOREACH(handle, portType, portFlow, portIndex, block) \
+	{\
+        LV2Int32 (portIndex) = -1;\
+        LV2Plugin_getNextPortIndex(handle, portType, portFlow, &(portIndex));\
+        while( (portIndex) >= 0 ) {\
+            block;\
+            LV2Plugin_getNextPortIndex(handle, portType, portFlow, &(portIndex));\
+        }\
+    }\
+    
 #endif
+

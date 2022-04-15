@@ -11,7 +11,7 @@ struct LV2FeatureImpl {
 	LV2URILinkedMap* uriMap;
     LV2_Feature** features;
 
-    LV2_Options_Option         options[4];
+    LV2_Options_Option options[4];
 };
 
 struct LV2URILinkImpl {

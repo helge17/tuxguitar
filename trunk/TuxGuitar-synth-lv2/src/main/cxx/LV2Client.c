@@ -13,6 +13,7 @@
 #include "LV2Instance.h"
 #include "LV2Logger.h"
 #include "LV2Socket.h"
+#include "LV2Lock.h"
 
 #define CMD_GET_CONTROL_PORT_VALUE 1
 #define CMD_SET_CONTROL_PORT_VALUE 2
@@ -34,13 +35,12 @@ int main(int argc, char *argv[])
 	LV2Socket_create(&(handle->socket), handle->serverPort);
 	
 	if( handle->socket->connected) {
-		pthread_mutex_init(&handle->lock, NULL);
-
+		LV2Lock_malloc(&handle->lock);
 		LV2World_malloc(&handle->world);
 		LV2World_getPluginByURI(handle->world, &handle->plugin, handle->pluginURI);
 		LV2Feature_malloc(&(handle->feature), handle->config);
 		LV2Instance_malloc(&handle->instance, handle->plugin, handle->feature, handle->config);
-		LV2UI_malloc(&handle->ui, handle->feature, handle->instance, &handle->lock);
+		LV2UI_malloc(&handle->ui, handle->feature, handle->instance, handle->lock);
 		LV2Client_createBuffers(handle);
 		LV2Feature_init(handle->feature, handle->instance);
 		if( handle->plugin != NULL && handle->plugin->lilvPlugin != NULL ) {
@@ -62,8 +62,7 @@ int main(int argc, char *argv[])
 		LV2Feature_free(&handle->feature);
 		LV2Plugin_free(&handle->plugin);
 		LV2World_free(&handle->world);
-
-		pthread_mutex_destroy(&handle->lock);
+		LV2Lock_free(&handle->lock);
 	}
 	
     LV2Socket_destroy(&handle->socket);
@@ -77,8 +76,9 @@ int main(int argc, char *argv[])
 void LV2Client_createConfig(LV2Client *handle)
 {
 	handle->config = (LV2Config *) malloc( sizeof(LV2Config) );
-	handle->config->bufferSize = 0;
 	handle->config->sampleRate = 44100.00;
+	handle->config->bufferSize = 0;
+	handle->config->eventBufferSize = 32768;
 }
 
 void LV2Client_createBuffers(LV2Client *handle)
@@ -126,9 +126,10 @@ void* LV2Client_processCommandsThread(void* ptr)
 		
 		LV2Socket_read(handle->socket , &command , 4);
 		
-		if( pthread_mutex_lock( &handle->lock ) == 0 ) {
+		
+		if( LV2Lock_lock(handle->lock) ) {
 			LV2Client_processCommand(handle, command);
-			pthread_mutex_unlock( &handle->lock );
+			LV2Lock_unlock(handle->lock);
 		}
 	}
 	return NULL;
@@ -213,8 +214,8 @@ void LV2Client_processProcessMidiMessagesCommand(LV2Client *handle)
 	
 	unsigned char** messages = (unsigned char **) malloc((sizeof(unsigned char *) * length));
 	for(int i = 0; i < length; i++) {
-		messages[i] = (unsigned char *) malloc((sizeof(unsigned char) * 4));
-		LV2Socket_read(handle->socket, messages[i], 4);
+		messages[i] = (unsigned char *) malloc((sizeof(unsigned char) * 3));
+		LV2Socket_read(handle->socket, messages[i], 3);
 	}
 	
 	LV2Instance_setMidiMessages(handle->instance, messages, length);

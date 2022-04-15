@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "LV2.h"
 #include "LV2Worker.h"
+#include "LV2Instance.h"
 #include "LV2Logger.h"
 
 void LV2Worker_malloc(LV2Worker **handle)

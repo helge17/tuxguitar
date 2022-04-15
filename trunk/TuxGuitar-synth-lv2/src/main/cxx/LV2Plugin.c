@@ -48,9 +48,7 @@ void LV2Plugin_malloc(LV2Plugin **handle, LV2World* world, const LilvPlugin* lil
 				(*handle)->ports[i]->type = TYPE_AUDIO;
 			}
 			else if( lilv_port_is_a((*handle)->lilvPlugin, (*handle)->ports[i]->lilvPort, lv2_AtomPort)) {
-				if( lilv_port_supports_event((*handle)->lilvPlugin, (*handle)->ports[i]->lilvPort, lv2_MidiEvent)) {
-					(*handle)->ports[i]->type = TYPE_MIDI;
-				}
+				(*handle)->ports[i]->type = TYPE_EVENT;
 			}
 		}
 
@@ -138,5 +136,19 @@ void LV2Plugin_getAudioOutputPortCount(LV2Plugin *handle, LV2Int32* count)
 
 void LV2Plugin_getMidiInputPortCount(LV2Plugin *handle, LV2Int32* count) 
 {
-	LV2Plugin_getPortCount(handle, TYPE_MIDI, FLOW_IN, count);
+	LV2Plugin_getPortCount(handle, TYPE_EVENT, FLOW_IN, count);
+}
+
+void LV2Plugin_getNextPortIndex(LV2Plugin *handle, LV2PortType portType, LV2PortFlow portFlow, LV2Int32* index)
+{
+	if( handle != NULL && handle->ports != NULL ) {
+		for (uint32_t i = ((*index) + 1); i < handle->portCount; i ++) {
+			if( handle->ports[i]->type == portType && handle->ports[i]->flow == portFlow ) {
+				(*index) = i;
+
+				return;
+			}
+		}
+	}
+	(*index) = -1;
 }
