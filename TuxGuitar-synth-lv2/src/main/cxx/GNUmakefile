@@ -20,6 +20,7 @@ BINARY_OS?=_GNULinux
 BINARY=$(BINARY_PREFIX)$(BINARY_NAME)$(BINARY_SUFFIX)
 OBJECTS=\
 	LV2Logger.o\
+	LV2Lock.o\
 	LV2Client.o\
 	LV2World.o\
 	LV2Plugin.o\

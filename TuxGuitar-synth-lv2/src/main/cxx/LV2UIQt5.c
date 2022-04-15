@@ -37,12 +37,13 @@
 #include "LV2Plugin.h"
 #include "LV2Feature.h"
 #include "LV2Instance.h"
+#include "LV2Lock.h"
 #include "LV2Logger.h"
 
 #define NATIVE_UI_TYPE_URI LV2_UI__Qt5UI
 
 struct LV2UIImpl {
-	pthread_mutex_t* lock;
+	LV2Lock* lock;
 	LV2Feature* feature;
 	LV2Instance* instance;
 	SuilHost* suilHost;
@@ -81,12 +82,30 @@ void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buf
 {
 	LV2UI *handle = (LV2UI *) controller;
 	if( handle != NULL && handle->instance != NULL && !handle->ignoreEvents) {
+		LV2_URID eventTransferURID = LV2Feature_map(handle->feature, LV2_ATOM__eventTransfer);
+
 		if ( protocol == 0 ) {
 
-			if( pthread_mutex_trylock(handle->lock) == 0 ) {
+			if( LV2Lock_trylock(handle->lock) ) {
 				LV2Instance_setControlPortValue(handle->instance, port_index, *(float*)buffer);
 				LV2UI_setUpdated(handle, true);
-				pthread_mutex_unlock(handle->lock);
+				LV2Lock_unlock(handle->lock);
+			}
+		} else if ( protocol == eventTransferURID ) {
+			if( LV2Lock_lock(handle->lock) ) {
+				LV2_Atom_Sequence *seq = NULL;
+				LV2Instance_getWorkBuffer(handle->instance, port_index, (void **)&seq);
+
+				if( seq->atom.size == 0 ) {
+					lv2_atom_sequence_clear(seq);
+				}
+				
+				LV2_Atom_Event* event = lv2_atom_sequence_end(&seq->body, seq->atom.size);
+				memcpy((&event->body), buffer, buffer_size);
+				event->body.size = buffer_size;
+				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + buffer_size);
+				
+				LV2Lock_unlock(handle->lock);
 			}
 		}
 	}
@@ -104,7 +123,7 @@ uint32_t LV2UI_getPortIndex(void* const controller, const char* symbol)
 	return LV2UI_INVALID_PORT_INDEX;
 }
 
-void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, pthread_mutex_t *lock)
+void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, LV2Lock* lock)
 {
 	if( instance != NULL ) {
 		(*handle) = (LV2UI *) malloc(sizeof(LV2UI));
@@ -220,22 +239,40 @@ void LV2UI_setControlPortValue(LV2UI *handle, LV2Int32 index, float value)
 	}
 }
 
-void LV2UI_setControlPortValues(LV2UI *handle, LV2PortFlow flow)
+void LV2UI_processPortEvents(LV2UI *handle, LV2PortFlow flow)
 {
 	if( handle != NULL && handle->window != NULL && handle->window->isVisible() ) {
 		if( handle->instance->plugin != NULL && handle->instance->plugin->ports != NULL && handle->suilInstance != NULL ) {
-			handle->ignoreEvents = true;
-
 			for (uint32_t i = 0; i < handle->instance->plugin->portCount; i ++) {
 				LV2Port* port = handle->instance->plugin->ports[i];
-				if( port->type == TYPE_CONTROL && (port->flow == flow || flow == FLOW_UNKNOWN)) {
-					float currentValue = 0;
-					LV2Instance_getControlPortValue(handle->instance, i, &currentValue);
-					suil_instance_port_event(handle->suilInstance, i, sizeof(float), 0, &currentValue);
+				
+				if( port->type == TYPE_CONTROL ) {
+					if((port->flow == flow || flow == FLOW_UNKNOWN)) {
+						float currentValue = 0;
+						LV2Instance_getControlPortValue(handle->instance, i, &currentValue);
+
+						handle->ignoreEvents = true;
+						suil_instance_port_event(handle->suilInstance, i, sizeof(float), 0, &currentValue);
+						handle->ignoreEvents = false;
+					}
+				}
+				else if( port->type == TYPE_EVENT && port->flow == FLOW_OUT ) {
+					if( LV2Lock_trylock(handle->lock) ) {
+
+						LV2_URID eventTransferURID = LV2Feature_map(handle->feature, LV2_ATOM__eventTransfer);
+						LV2_Atom_Sequence *sequence = NULL;
+						LV2Instance_getWorkBuffer(handle->instance, i, (void **)&sequence);
+						LV2_ATOM_SEQUENCE_FOREACH((LV2_Atom_Sequence *)sequence, ev) {
+							if( ev->body.size > 0 ) {
+								suil_instance_port_event(handle->suilInstance, i, sizeof(LV2_Atom) + ev->body.size, eventTransferURID, (const void*) &ev->body);
+							}
+						}
+						sequence->atom.size = 0;
+
+						LV2Lock_unlock(handle->lock);
+					}
 				}
 			}
-
-			handle->ignoreEvents = false;
 		}
 	}
 }
@@ -303,12 +340,12 @@ void LV2UI_process(LV2UI *handle)
 			if(!handle->window->isVisible()) {
 				handle->window->show();
 
-				LV2UI_setControlPortValues(handle, FLOW_UNKNOWN);
+				LV2UI_processPortEvents(handle, FLOW_UNKNOWN);
 			}
 			if( handle->shouldRefresh ) {
 				handle->shouldRefresh = false;
 
-				LV2UI_setControlPortValues(handle, FLOW_OUT);
+				LV2UI_processPortEvents(handle, FLOW_OUT);
 			}
 		} else {
 			if( handle->window != NULL && handle->window->isVisible()) {

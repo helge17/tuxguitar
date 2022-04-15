@@ -2,6 +2,7 @@
 #include <string.h>
 #include "LV2.h"
 #include "LV2Feature.h"
+#include "LV2Instance.h"
 #include "LV2Worker.h"
 #include "LV2Logger.h"
 
@@ -66,6 +67,12 @@ void LV2Feature_init(LV2Feature *handle, LV2Instance *instance)
 		///////////////////////////////////////////////////////////////////////////////////////////////
 
 		/// Load default state ///
+		
+
+		LilvNode* state_threadSafeRestore = lilv_new_uri(instance->plugin->world->lilvWorld, LV2_STATE__threadSafeRestore);
+		bool _has_state_interface = lilv_plugin_has_feature(instance->plugin->lilvPlugin, state_threadSafeRestore);
+		lilv_node_free(state_threadSafeRestore);
+		/*
 		LilvNode* state_iface_uri = lilv_new_uri(instance->plugin->world->lilvWorld, LV2_STATE__interface);
 		LilvNode* state_uri       = lilv_new_uri(instance->plugin->world->lilvWorld, LV2_STATE_URI);
 		bool _has_state_interface = (
@@ -74,7 +81,7 @@ void LV2Feature_init(LV2Feature *handle, LV2Instance *instance)
 			
 		lilv_node_free(state_uri);
 		lilv_node_free(state_iface_uri);
-
+		*/
 		const LV2_Feature* mapFeature = LV2Feature_getFeature(handle, LV2_URID__map);
 		LilvState* state = lilv_state_new_from_world(
 				instance->plugin->world->lilvWorld, 
