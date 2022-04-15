@@ -27,6 +27,7 @@ public class LV2SynthExtension extends TGSynthExtensionPlugin {
 		List<TGSynthExtension<?>> extensions = new ArrayList<TGSynthExtension<?>>();
 		try {
 			LV2World lv2World = new LV2World();
+			lv2World.getPlugins();
 			
 			extensions.add(new TGSynthExtension<TGMidiProcessorFactory>(TGMidiProcessorFactory.class, new LV2MidiProcessorFactory(context, lv2World)));
 			extensions.add(new TGSynthExtension<TGAudioProcessorFactory>(TGAudioProcessorFactory.class, new LV2AudioProcessorFactory(context, lv2World)));

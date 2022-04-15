@@ -5,6 +5,8 @@ import java.util.List;
 
 public class LV2World extends LV2Object {
 	
+	private List<LV2Plugin> plugins;
+	
 	public LV2World() {
 		this.setInstance(malloc());
 	}
@@ -17,11 +19,10 @@ public class LV2World extends LV2Object {
 	}
 	
 	public List<LV2Plugin> getPlugins() {
-		List<LV2Plugin> plugins = null;
-		if( this.isInitialized()) {
-			plugins = this.getAllPlugins(this.getInstance());
+		if( this.plugins == null && this.isInitialized()) {
+			this.plugins = this.getAllPlugins(this.getInstance());
 		}
-		return (plugins != null ? plugins : new ArrayList<LV2Plugin>());
+		return (this.plugins != null ? this.plugins : new ArrayList<LV2Plugin>());
 	}
 	
 	private native long malloc();
