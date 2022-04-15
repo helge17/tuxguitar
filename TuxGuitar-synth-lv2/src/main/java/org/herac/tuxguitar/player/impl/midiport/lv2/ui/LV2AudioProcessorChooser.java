@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.player.impl.midiport.lv2.ui;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -44,7 +45,7 @@ public class LV2AudioProcessorChooser {
 	}
 	
 	public void chooseInCurrentThread(final UIWindow parent, final LV2PluginValidator validator, final LV2AudioProcessorChooserHandler handler) {
-		final List<LV2Plugin> plugins = this.world.getPlugins();
+		final List<LV2Plugin> plugins = this.getSortedPlugins();
 		
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
@@ -109,6 +110,24 @@ public class LV2AudioProcessorChooser {
 		// ----------------------------------------------------------------------
 		
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+	
+	public List<LV2Plugin> getSortedPlugins() {
+		List<LV2Plugin> plugins = this.world.getPlugins();
+		plugins.sort(new Comparator<LV2Plugin>() {
+			public int compare(LV2Plugin p1, LV2Plugin p2) {
+				String n1 = p1.getName();
+				String n2 = p2.getName();
+				if( n1 == null ) {
+					n1 = "";
+				}
+				if( n2 == null ) {
+					n2 = "";
+				}
+				return n1.compareTo(n2);
+			}
+		});
+		return plugins;
 	}
 	
 	public void onSelectPlugin(final LV2AudioProcessorChooserHandler handler, final LV2Plugin plugin) {
