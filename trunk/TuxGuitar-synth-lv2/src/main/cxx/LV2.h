@@ -10,7 +10,7 @@
 #include <lv2/lv2plug.in/ns/ext/atom/util.h>
 #include <lv2/lv2plug.in/ns/ext/midi/midi.h>
 #include <lv2/lv2plug.in/ns/ext/buf-size/buf-size.h>
-#include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
+#include <lv2/lv2plug.in/ns/ext/data-access/data-access.h>
 #include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
 #include <lv2/lv2plug.in/ns/ext/worker/worker.h>
 

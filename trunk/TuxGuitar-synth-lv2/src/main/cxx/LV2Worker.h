@@ -1,14 +1,14 @@
 #ifndef _Included_LV2Worker
 #define _Included_LV2Worker
 
-#include <pthread.h>
+#include "LV2.h"
 
 typedef struct LV2WorkerQueueImpl LV2WorkerQueue;
 
 struct LV2WorkerImpl {
     bool running;
     pthread_t thread;
-    pthread_mutex_t lock;
+    LV2Lock* lock;
     LV2Instance* instance;
     LV2WorkerQueue* requestQueue;
     LV2WorkerQueue* responseQueue;

@@ -36,8 +36,10 @@ void LV2Feature_processAudio(LV2Feature *handle);
 
 const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle);
 
-const LV2_Feature* LV2Feature_getFeature(LV2Feature *handle, const char* uri);
+LV2_Feature* LV2Feature_getFeature(LV2Feature *handle, const char* uri);
 
 LV2_URID LV2Feature_map(LV2_URID_Map_Handle mapHandle, const char* uri);
+
+const char* LV2Feature_unmap(LV2_URID_Unmap_Handle unmapHandle, LV2_URID urid);
 
 #endif
