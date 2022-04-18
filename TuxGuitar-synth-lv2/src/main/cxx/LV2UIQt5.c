@@ -80,6 +80,8 @@ class LV2MainWindow : public QMainWindow {
 
 void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buffer_size, uint32_t protocol, const void* buffer) 
 {
+	LV2Logger_log("LV2UI_setPortData buffer_size %d\n", buffer_size);
+
 	LV2UI *handle = (LV2UI *) controller;
 	if( handle != NULL && handle->instance != NULL && !handle->ignoreEvents) {
 		LV2_URID eventTransferURID = LV2Feature_map(handle->feature, LV2_ATOM__eventTransfer);
@@ -102,8 +104,8 @@ void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buf
 				
 				LV2_Atom_Event* event = lv2_atom_sequence_end(&seq->body, seq->atom.size);
 				memcpy((&event->body), buffer, buffer_size);
-				event->body.size = buffer_size;
-				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + buffer_size);
+				event->time.frames = 0;
+				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + event->body.size);
 				
 				LV2Lock_unlock(handle->lock);
 			}

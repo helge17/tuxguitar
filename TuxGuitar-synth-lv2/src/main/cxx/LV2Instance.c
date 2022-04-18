@@ -135,6 +135,7 @@ void LV2Instance_setMidiMessages(LV2Instance *handle, unsigned char** messages, 
 				
 				LV2_Atom_Event* event = lv2_atom_sequence_end(&seq->body, seq->atom.size);
 				memcpy((&event->body), &midiEvent, sizeof(midiEvent));
+				event->time.frames = 0;
 				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + event->body.size);
 			}
 		})
@@ -162,7 +163,7 @@ void LV2Instance_processAudio(LV2Instance *handle, float** inputs, float** outpu
 				inputsIndex ++;
 			}
 		}
-		
+
 		// copy events to lv2 buffer
 		LV2_PLUGIN_PORT_BUFFER_FOREACH(handle, TYPE_EVENT, FLOW_IN, workBuffer, connectionBuffer, {
 			lv2_atom_sequence_clear((LV2_Atom_Sequence *)connectionBuffer);

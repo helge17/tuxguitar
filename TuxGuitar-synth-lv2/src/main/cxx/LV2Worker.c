@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "LV2.h"
 #include "LV2Worker.h"
+#include "LV2Lock.h"
 #include "LV2Instance.h"
 #include "LV2Logger.h"
 
@@ -15,13 +15,14 @@ void LV2Worker_malloc(LV2Worker **handle)
 	(*handle)->requestQueue = NULL;
 	(*handle)->responseQueue = NULL;
 
-	pthread_mutex_init(&(*handle)->lock, NULL);
+	LV2Lock_malloc(&(*handle)->lock);
 }
 
 void LV2Worker_free(LV2Worker **handle)
 {
 	if( (*handle) != NULL ) {
 		LV2Worker_stop((*handle));
+		LV2Lock_free(&(*handle)->lock);
 
 		free ((*handle));
 
@@ -104,10 +105,10 @@ LV2_Worker_Status LV2Worker_schedule(LV2_Worker_Schedule_Handle workerHandle, ui
 {
 	LV2Worker *handle = (LV2Worker *) workerHandle;
 	if( handle != NULL ) {
-		if( pthread_mutex_lock( &handle->lock ) == 0 ) {
+		if( LV2Lock_lock(handle->lock) ) {
 			LV2Worker_enqueue(handle, &(handle->requestQueue), size, data);
 			
-			pthread_mutex_unlock( &handle->lock );
+			LV2Lock_unlock(handle->lock);
 		}
 	}
 	return LV2_WORKER_SUCCESS;
@@ -117,10 +118,10 @@ LV2_Worker_Status LV2Worker_respond(LV2_Worker_Respond_Handle workerHandle, uint
 {
 	LV2Worker *handle = (LV2Worker *) workerHandle;
 	if( handle != NULL ) {
-		if( pthread_mutex_lock( &handle->lock ) == 0 ) {
+		if( LV2Lock_lock(handle->lock) ) {
 			LV2Worker_enqueue(handle, &(handle->responseQueue), size, data);
 			
-			pthread_mutex_unlock( &handle->lock );
+			LV2Lock_unlock(handle->lock);
 		}
 	}
 	return LV2_WORKER_SUCCESS;
@@ -132,7 +133,7 @@ void LV2Worker_processResponses(LV2Worker *handle)
 		LV2WorkerQueue* queue = NULL;
 		LV2_Worker_Interface* iface = NULL;
 		LV2_Handle lv2Handle = NULL;
-		if( pthread_mutex_lock( &handle->lock ) == 0 ) {
+		if( LV2Lock_lock(handle->lock) ) {
 			if( handle->running ) {
 				queue = handle->responseQueue;
 				iface = handle->iface;
@@ -140,7 +141,7 @@ void LV2Worker_processResponses(LV2Worker *handle)
 
 				handle->responseQueue = NULL;
 			}
-			pthread_mutex_unlock( &handle->lock );
+			LV2Lock_unlock(handle->lock);
 		}
 		
 		if( iface != NULL && lv2Handle != NULL ) {
@@ -166,13 +167,13 @@ void* LV2Worker_processThread(void* ptr)
 	if( handle != NULL ) {
 		while(handle->running) {
 			LV2WorkerQueue* queue = NULL;
-			if( pthread_mutex_trylock( &handle->lock ) == 0 ) {
+			if( LV2Lock_trylock(handle->lock) ) {
 				if( handle->running ) {
 					queue = handle->requestQueue;
 					
 					handle->requestQueue = NULL;
 				}
-				pthread_mutex_unlock( &handle->lock );
+				LV2Lock_unlock(handle->lock);
 			}
 
 			LV2WorkerQueue* next = queue;
