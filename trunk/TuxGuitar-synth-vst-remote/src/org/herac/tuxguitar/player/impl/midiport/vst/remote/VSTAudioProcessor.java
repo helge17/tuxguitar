@@ -2,7 +2,6 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,8 @@ import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.base64.Base64Decoder;
+import org.herac.tuxguitar.util.base64.Base64Encoder;
 
 public class VSTAudioProcessor implements TGAudioProcessor {
 	
@@ -136,7 +137,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 				if( parameters.containsKey(PARAM_CHUNK)) {
 					String chunkData = parameters.get(PARAM_CHUNK);
 					if( chunkData != null && chunkData.length() > 0 ) {
-						this.getEffect().setChunk(Base64.getDecoder().decode(chunkData));
+						this.getEffect().setChunk(Base64Decoder.decode(chunkData.getBytes()));
 					}
 				}
 				
@@ -172,7 +173,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			
 			byte[] chunk = this.getEffect().getChunk();
 			
-			parameters.put(PARAM_CHUNK, (chunk != null ? new String(Base64.getEncoder().encode(chunk)) : null));
+			parameters.put(PARAM_CHUNK, (chunk != null ? new String(Base64Encoder.encode(chunk)) : null));
 			
 			this.appliedParameters = new HashMap<String, String>(parameters);
 			
