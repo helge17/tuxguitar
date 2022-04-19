@@ -6,6 +6,7 @@ struct LV2InstanceImpl {
 	LV2Plugin* plugin;
 	LV2PortConnection** connections;
 	LV2Config *config;
+	LV2Feature *feature;
 	LV2_URID atomChunkType;
 	LV2_URID atomSequenceType;
 	LV2_URID midiEventType;
@@ -15,6 +16,10 @@ struct LV2InstanceImpl {
 void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* feature, LV2Config *config);
 
 void LV2Instance_free(LV2Instance **handle);
+
+void LV2Instance_getState(LV2Instance *handle, const char** value);
+
+void LV2Instance_setState(LV2Instance *handle, const char* value);
 
 void LV2Instance_getControlPortValue(LV2Instance *handle, LV2Int32 index, float *value);
 

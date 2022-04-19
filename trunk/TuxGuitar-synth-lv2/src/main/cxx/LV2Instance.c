@@ -13,6 +13,7 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 		(*handle) = (LV2Instance *) malloc(sizeof(LV2Instance));
 		(*handle)->plugin = plugin;
 		(*handle)->config = config;
+		(*handle)->feature = feature;
 		(*handle)->lilvInstance = lilv_plugin_instantiate((*handle)->plugin->lilvPlugin, (*handle)->config->sampleRate, LV2Feature_getFeatures(feature));
 		(*handle)->connections = (LV2PortConnection **) malloc(sizeof(LV2PortConnection *) * ((*handle)->plugin->portCount));
 		(*handle)->atomChunkType = LV2Feature_map(feature, LV2_ATOM__Chunk);
@@ -73,6 +74,43 @@ void LV2Instance_free(LV2Instance **handle)
 		free ( (*handle) );
 
 		(*handle) = NULL;
+	}
+}
+
+void LV2Instance_getState(LV2Instance *handle, const char** value)
+{
+	(*value) = NULL;
+	if( handle != NULL && handle->lilvInstance != NULL ) {
+		LV2_URID_Map* map = (LV2_URID_Map *) LV2Feature_getFeature(handle->feature, LV2_URID__map)->data;
+		LV2_URID_Unmap* unmap = (LV2_URID_Unmap *) LV2Feature_getFeature(handle->feature, LV2_URID__unmap)->data;
+
+		LilvState* const state = lilv_state_new_from_instance(
+			handle->plugin->lilvPlugin, 
+			handle->lilvInstance, 
+			map,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE,
+			LV2Feature_getFeatures(handle->feature));
+
+		if( state != NULL ) {
+			(*value) = lilv_state_to_string (handle->plugin->world->lilvWorld, map, unmap, state, "lv2:plugin:state", NULL);
+		}
+	}
+}
+
+void LV2Instance_setState(LV2Instance *handle, const char* value)
+{
+	if( handle != NULL && handle->lilvInstance != NULL ) {
+		LV2_URID_Map* map = (LV2_URID_Map *) LV2Feature_getFeature(handle->feature, LV2_URID__map)->data;
+		LilvState* state = lilv_state_new_from_string(handle->plugin->world->lilvWorld, map, value);
+		if( state != NULL ) {
+			lilv_state_restore(state, handle->lilvInstance, NULL, NULL, 0, NULL);
+		}
 	}
 }
 

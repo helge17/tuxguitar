@@ -34,6 +34,10 @@ void LV2Client_destroyBuffers(LV2Client *handle);
 
 void LV2Client_processCommand(LV2Client *handle, int command);
 
+void LV2Client_processGetState(LV2Client *handle);
+
+void LV2Client_processSetState(LV2Client *handle);
+
 void LV2Client_processGetControlPortValueCommand(LV2Client *handle);
 
 void LV2Client_processSetControlPortValueCommand(LV2Client *handle);

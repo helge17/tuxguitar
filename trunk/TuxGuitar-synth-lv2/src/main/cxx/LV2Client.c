@@ -15,6 +15,8 @@
 #include "LV2Socket.h"
 #include "LV2Lock.h"
 
+#define CMD_GET_STATE 10
+#define CMD_SET_STATE 20
 #define CMD_GET_CONTROL_PORT_VALUE 1
 #define CMD_SET_CONTROL_PORT_VALUE 2
 #define CMD_PROCESS_MIDI_MESSAGES 3
@@ -150,6 +152,12 @@ void LV2Client_parseArguments(LV2Client *handle, int argc , char *argv[])
 void LV2Client_processCommand(LV2Client *handle, int command) 
 {
 	switch(command) {
+		case CMD_GET_STATE:
+			LV2Client_processGetState(handle);
+		break;
+		case CMD_SET_STATE:
+			LV2Client_processSetState(handle);
+		break;
 		case CMD_GET_CONTROL_PORT_VALUE:
 			LV2Client_processGetControlPortValueCommand(handle);
 		break;
@@ -178,6 +186,27 @@ void LV2Client_processCommand(LV2Client *handle, int command)
 			LV2Client_processUIIsUpdatedCommand(handle);
 		break;
 	}
+}
+
+void LV2Client_processGetState(LV2Client *handle)
+{
+	const char *state = NULL;
+	LV2Instance_getState(handle->instance, &state);
+	
+	LV2Int32 length = strlen(state);
+	LV2Socket_write(handle->socket, &length, 4);
+	LV2Socket_write(handle->socket, (void *) state, length);
+}
+
+void LV2Client_processSetState(LV2Client *handle)
+{
+	LV2Int32 length = 0;
+	LV2Socket_read(handle->socket, &length, 4);
+
+	const char *state = (const char *) malloc(sizeof(char) * length);
+	LV2Socket_read(handle->socket, (void *) state, length);
+	
+	LV2Instance_setState(handle->instance, state);
 }
 
 void LV2Client_processGetControlPortValueCommand(LV2Client *handle)
