@@ -15,17 +15,17 @@
 #include "LV2Socket.h"
 #include "LV2Lock.h"
 
-#define CMD_GET_STATE 10
-#define CMD_SET_STATE 20
-#define CMD_GET_CONTROL_PORT_VALUE 1
-#define CMD_SET_CONTROL_PORT_VALUE 2
-#define CMD_PROCESS_MIDI_MESSAGES 3
-#define CMD_PROCESS_AUDIO 4
-#define CMD_UI_OPEN 5
-#define CMD_UI_CLOSE 6
-#define CMD_UI_IS_OPEN 7
-#define CMD_UI_IS_AVAILABLE 8
-#define CMD_UI_IS_UPDATED 9
+#define CMD_GET_STATE 1
+#define CMD_SET_STATE 2
+#define CMD_GET_CONTROL_PORT_VALUE 3
+#define CMD_SET_CONTROL_PORT_VALUE 4
+#define CMD_PROCESS_MIDI_MESSAGES 5
+#define CMD_PROCESS_AUDIO 6
+#define CMD_UI_OPEN 7
+#define CMD_UI_CLOSE 8
+#define CMD_UI_IS_OPEN 9
+#define CMD_UI_IS_AVAILABLE 10
+#define CMD_UI_IS_UPDATED 11
 
 int main(int argc, char *argv[]) 
 {
