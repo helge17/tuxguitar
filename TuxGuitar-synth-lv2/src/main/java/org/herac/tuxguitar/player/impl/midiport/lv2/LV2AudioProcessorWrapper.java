@@ -10,10 +10,13 @@ import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.base64.Base64Decoder;
+import org.herac.tuxguitar.util.base64.Base64Encoder;
 
 public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 	
 	public static final String PARAM_LV2_URI = "lv2.uri";
+	public static final String PARAM_LV2_STATE = "lv2.state";
 	public static final String PARAM_LV2_PARAM_PREFIX = "lv2.param.";
 	
 	private TGContext context;
@@ -90,6 +93,11 @@ public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 			if( this.appliedParameters == null || !this.appliedParameters.equals(parameters)) {
 				this.appliedParameters = new HashMap<String, String>(parameters);
 				
+				String state = parameters.get(PARAM_LV2_STATE);
+				if( state != null && state.length() > 0 ) {
+					this.target.getInstance().setState(new String(Base64Decoder.decode(state.getBytes())));
+				}
+				
 				List<Integer> portIndices = this.target.getPlugin().getControlPortIndices();
 				for(Integer portIndex : portIndices) {
 					String key = (PARAM_LV2_PARAM_PREFIX + portIndex);
@@ -110,6 +118,11 @@ public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 			List<Integer> portIndices = this.target.getPlugin().getControlPortIndices();
 			for(Integer portIndex : portIndices) {
 				parameters.put(PARAM_LV2_PARAM_PREFIX + portIndex, Float.toString(this.target.getInstance().getControlPortValue(portIndex)));
+			}
+			
+			String state = this.target.getInstance().getState();
+			if( state != null && state.length() > 0 ) {
+				parameters.put(PARAM_LV2_STATE, new String(Base64Encoder.encode(state.getBytes())));
 			}
 			
 			this.appliedParameters = new HashMap<String, String>(parameters);

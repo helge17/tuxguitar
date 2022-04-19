@@ -7,10 +7,12 @@ import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2CloseUICom
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2OpenUICommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessAudioCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetControlPortValueCommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetStateCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIAvailableCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIOpenCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessMidiMessageCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetControlPortValueCommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetStateCommand;
 import org.herac.tuxguitar.util.TGContext;
 
 public class LV2RemoteInstance {
@@ -37,6 +39,19 @@ public class LV2RemoteInstance {
 		if(!this.isClosed() ){
 			this.session.close();
 		}		
+	}
+	
+	public void setState(String state) {
+		if(!this.isClosed() ){
+			new LV2ProcessSetStateCommand(this.getConnection(), state).safeProcess();
+		}
+	}
+	
+	public String getState() {
+		if(!this.isClosed() ){
+			return new LV2ProcessGetStateCommand(this.getConnection()).safeProcess();
+		}
+		return null;
 	}
 	
 	public void setControlPortValue(int index, float value) {
