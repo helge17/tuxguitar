@@ -4,16 +4,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.LV2Connection;
+import org.herac.tuxguitar.midi.synth.remote.TGAbstractCommand;
+import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
-public class LV2ProcessAudioCommand extends LV2AbstractCommand<Boolean> {
+public class LV2ProcessAudioCommand extends TGAbstractCommand<Boolean> {
 	
-	public static final Integer COMMAND_ID = 4;
+	public static final Integer COMMAND_ID = 6;
 	
 	private float[][] inputs;
 	private float[][] outputs;
 	
-	public LV2ProcessAudioCommand(LV2Connection connection, float[][] inputs, float[][] outputs) {
+	public LV2ProcessAudioCommand(TGConnection connection, float[][] inputs, float[][] outputs) {
 		super(connection);
 		
 		this.inputs = inputs;
