@@ -10,6 +10,9 @@ public class TGSynthSettings {
 	private static final String AUDIO_BUFFER_SIZE = "synth.audio.buffer.size";
 	private static final String MIDI_PROGRAM_PREFIX = "synth.program";
 	
+	private static final Integer REMOTE_HOST_DEFAULT_SERVER_PORT_VALUE = 60982;
+	private static final String REMOTE_HOST_DEFAULT_SERVER_PORT = "synth.host.default.server.port";
+	
 	private TGContext context;
 	private TGConfigManager config;
 	
@@ -47,5 +50,9 @@ public class TGSynthSettings {
 	
 	public Integer getAudioBufferSize() {
 		return this.getConfig().getIntegerValue(AUDIO_BUFFER_SIZE, DEFAULT_AUDIO_BUFFER_SIZE);
+	}
+	
+	public Integer getRemoteHostServerPort() {
+		return this.getConfig().getIntegerValue(REMOTE_HOST_DEFAULT_SERVER_PORT, REMOTE_HOST_DEFAULT_SERVER_PORT_VALUE);
 	}
 }
