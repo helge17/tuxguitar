@@ -2,9 +2,13 @@ package org.herac.tuxguitar.player.impl.midiport.lv2.remote;
 
 import java.util.List;
 
+import org.herac.tuxguitar.midi.synth.remote.TGConnection;
+import org.herac.tuxguitar.midi.synth.remote.TGRemoteException;
+import org.herac.tuxguitar.midi.synth.remote.TGRemoteHost;
+import org.herac.tuxguitar.midi.synth.remote.TGSession;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2CloseUICommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2OpenUICommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessCloseUICommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessOpenUICommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessAudioCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetControlPortValueCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetStateCommand;
@@ -17,21 +21,21 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class LV2RemoteInstance {
 	
-	private LV2Session session;
+	private TGSession session;
 	
-	public LV2RemoteInstance(TGContext context, LV2Plugin plugin, int bufferSize) throws LV2RemoteException {
-		this.session = LV2RemoteHost.getInstance(context).createSession(plugin, bufferSize);
+	public LV2RemoteInstance(TGContext context, LV2Plugin plugin, int bufferSize) throws TGRemoteException {
+		this.session = TGRemoteHost.getInstance(context).createSession(new LV2ClientStarter(context, plugin, bufferSize));
 	}
 	
 	public boolean isClosed(){
 		return this.session.isClosed();
 	}
 	
-	public LV2Session getSession() {
+	public TGSession getSession() {
 		return this.session;
 	}
 	
-	public LV2Connection getConnection() {
+	public TGConnection getConnection() {
 		return this.session.getConnection();
 	}
 	
@@ -82,13 +86,13 @@ public class LV2RemoteInstance {
 	
 	public void openUI(){
 		if(!this.isClosed() ){
-			new LV2OpenUICommand(this.getConnection()).safeProcess();
+			new LV2ProcessOpenUICommand(this.getConnection()).safeProcess();
 		}
 	}
 	
 	public void closeUI(){
 		if(!this.isClosed() ){
-			new LV2CloseUICommand(this.getConnection()).safeProcess();
+			new LV2ProcessCloseUICommand(this.getConnection()).safeProcess();
 		}
 	}
 	

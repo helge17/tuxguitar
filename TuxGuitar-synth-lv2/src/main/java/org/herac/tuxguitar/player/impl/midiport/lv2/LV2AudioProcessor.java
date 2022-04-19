@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
+import org.herac.tuxguitar.midi.synth.remote.TGRemoteException;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.LV2RemoteException;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.LV2RemoteInstance;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -24,7 +24,7 @@ public class LV2AudioProcessor {
 	private float[][] inputs;
 	private float[][] outputs;
 	
-	public LV2AudioProcessor(TGContext context, LV2Plugin plugin) throws LV2RemoteException {
+	public LV2AudioProcessor(TGContext context, LV2Plugin plugin) throws TGRemoteException {
 		this.context = context;
 		this.plugin = plugin;
 		this.open();
@@ -36,7 +36,7 @@ public class LV2AudioProcessor {
 		}
 	}
 	
-	public void open() throws LV2RemoteException {
+	public void open() throws TGRemoteException {
 		synchronized (this.lock) {
 			if(!this.isOpen()){
 				this.instance = new LV2RemoteInstance(this.context, this.plugin, BUFFER_SIZE);

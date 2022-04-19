@@ -5,9 +5,7 @@ import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class LV2Settings {
 	
-	private static final Integer LV2_UI_SERVER_DEFAULT_PORT_VALUE = 60982;
-	private static final String LV2_UI_CLIENT_COMMAND = "lv2.ui.client.command";
-	private static final String LV2_UI_SERVER_DEFAULT_PORT = "lv2.ui.server.default.port";
+	private static final String LV2_CLIENT_COMMAND = "lv2.client.command";
 	
 	private TGContext context;
 	private TGConfigManager config;
@@ -27,11 +25,7 @@ public class LV2Settings {
 		this.getConfig().save();
 	}
 	
-	public String getUIClientCommand() {
-		return this.getConfig().getStringValue(LV2_UI_CLIENT_COMMAND);
-	}
-	
-	public Integer getUIServerPort() {
-		return this.getConfig().getIntegerValue(LV2_UI_SERVER_DEFAULT_PORT, LV2_UI_SERVER_DEFAULT_PORT_VALUE);
+	public String getClientCommand() {
+		return this.getConfig().getStringValue(LV2_CLIENT_COMMAND);
 	}
 }
