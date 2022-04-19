@@ -2,15 +2,16 @@ package org.herac.tuxguitar.player.impl.midiport.lv2.remote.command;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.LV2Connection;
+import org.herac.tuxguitar.midi.synth.remote.TGAbstractCommand;
+import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
-public class LV2ProcessGetControlPortValueCommand extends LV2AbstractCommand<Float> {
+public class LV2ProcessGetControlPortValueCommand extends TGAbstractCommand<Float> {
 	
-	public static final Integer COMMAND_ID = 1;
+	public static final Integer COMMAND_ID = 3;
 	
 	private Integer index;
 	
-	public LV2ProcessGetControlPortValueCommand(LV2Connection connection, Integer index) {
+	public LV2ProcessGetControlPortValueCommand(TGConnection connection, Integer index) {
 		super(connection);
 		
 		this.index = index;
