@@ -9,6 +9,7 @@ import java.util.Map;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
+import org.herac.tuxguitar.midi.synth.remote.TGRemoteHost;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.base64.Base64Decoder;
 import org.herac.tuxguitar.util.base64.Base64Encoder;
@@ -47,7 +48,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			if(!this.isOpen()) {
 				try {
 					this.file = file;
-					this.effect = new VSTEffect(VSTServer.getInstance(this.context).createSession(this.file.getAbsolutePath()));
+					this.effect = new VSTEffect(TGRemoteHost.getInstance(this.context).createSession(new VSTClientStarter(this.context, this.file.getAbsolutePath())));
 					this.effect.setBlockSize(BUFFER_SIZE);
 					this.effect.setSampleRate(SAMPLE_RATE);
 					this.effect.setActive(true);

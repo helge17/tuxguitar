@@ -2,16 +2,17 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote.command;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
+import org.herac.tuxguitar.midi.synth.remote.TGAbstractCommand;
+import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
-public class VSTSetParameterCommand extends VSTAbstractCommand<Void> {
+public class VSTSetParameterCommand extends TGAbstractCommand<Void> {
 	
 	public static final Integer COMMAND_ID = 8;
 	
 	private Integer index;
 	private Float value;
 	
-	public VSTSetParameterCommand(VSTConnection connection, Integer index, Float value) {
+	public VSTSetParameterCommand(TGConnection connection, Integer index, Float value) {
 		super(connection);
 		
 		this.index = index;
