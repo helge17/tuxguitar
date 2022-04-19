@@ -204,7 +204,7 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 
 			// feature list
 			LV2Int32 index = 0;
-			handle->features = (LV2_Feature**) malloc((sizeof(LV2_Feature *) * 8));
+			handle->features = (LV2_Feature**) malloc((sizeof(LV2_Feature *) * 12));
 			handle->features[index ++] = loadDefaultStateFeature;
 			handle->features[index ++] = powerOf2BlockLengthFeature;
 			handle->features[index ++] = fixedBlockLengthFeature;

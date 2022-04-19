@@ -107,6 +107,7 @@ void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buf
 				event->time.frames = 0;
 				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + event->body.size);
 				
+				LV2UI_setUpdated(handle, true);
 				LV2Lock_unlock(handle->lock);
 			}
 		}
@@ -324,7 +325,7 @@ void LV2UI_process(LV2UI *handle)
 					handle->window = new LV2MainWindow(handle);
 					handle->window->setWindowTitle(lilv_node_as_string(pluginName));
 					handle->window->setCentralWidget(static_cast<QWidget*>(suil_instance_get_widget(handle->suilInstance)));
-					handle->window->setWindowFlags(Qt::WindowStaysOnTopHint);
+					//handle->window->setWindowFlags(Qt::WindowStaysOnTopHint);
 					handle->refreshRate = MIN(60, (float) QGuiApplication::primaryScreen()->refreshRate());
 				}
 				else {
