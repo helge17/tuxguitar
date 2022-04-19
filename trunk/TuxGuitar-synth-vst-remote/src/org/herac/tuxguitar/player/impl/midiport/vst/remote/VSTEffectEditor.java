@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.midi.synth.remote.TGSession;
 import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
 import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.ui.UIFactory;
@@ -192,7 +193,7 @@ public class VSTEffectEditor implements TGEventListener {
 	
 	public void processEvent(TGEvent event) {
 		if( VSTParamsEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			VSTSession session = event.getAttribute(VSTParamsEvent.PROPERTY_SESSION);
+			TGSession session = event.getAttribute(VSTParamsEvent.PROPERTY_SESSION);
 			if( VSTParamsEvent.ACTION_RESTORE.equals(event.getAttribute(VSTParamsEvent.PROPERTY_ACTION))) {
 				if(!this.effect.isClosed() && this.effect.getSession().getId().equals(session.getId())) {
 					this.updateItemsUiThread();

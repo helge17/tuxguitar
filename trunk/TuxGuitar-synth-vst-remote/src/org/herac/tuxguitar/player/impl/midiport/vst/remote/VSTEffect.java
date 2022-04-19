@@ -2,6 +2,8 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 
 import java.util.List;
 
+import org.herac.tuxguitar.midi.synth.remote.TGConnection;
+import org.herac.tuxguitar.midi.synth.remote.TGSession;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTBeginSetProgramCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTCloseEffectUICommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTEndSetProgramCommand;
@@ -29,9 +31,9 @@ import org.herac.tuxguitar.player.impl.midiport.vst.remote.command.VSTStopProces
 
 public final class VSTEffect {
 	
-	private VSTSession session;
+	private TGSession session;
 	
-	public VSTEffect(VSTSession session) {
+	public VSTEffect(TGSession session) {
 		this.session = session;
 	}
 	
@@ -200,11 +202,11 @@ public final class VSTEffect {
 		return this.session.isClosed();
 	}
 	
-	public VSTSession getSession() {
+	public TGSession getSession() {
 		return this.session;
 	}
 	
-	public VSTConnection getConnection() {
+	public TGConnection getConnection() {
 		return this.session.getConnection();
 	}
 }

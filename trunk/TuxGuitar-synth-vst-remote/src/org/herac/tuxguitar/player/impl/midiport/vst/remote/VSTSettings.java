@@ -5,12 +5,9 @@ import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class VSTSettings {
 	
-	private static final Integer VST_PLUGIN_SERVER_DEFAULT_PORT_VALUE = 50982;
-	
 	private static final String VST_PLUGIN_PATH = "vst.plugin.path";
 	private static final String VST_PLUGIN_EXTENSIONS = "vst.plugin.extensions";
 	private static final String VST_PLUGIN_CLIENT_COMMAND_PREFIX = "vst.plugin.client.command.";
-	private static final String VST_PLUGIN_SERVER_DEFAULT_PORT = "vst.plugin.server.default.port";
 	
 	private TGContext context;
 	private TGConfigManager config;
@@ -48,9 +45,5 @@ public class VSTSettings {
 	
 	public String getPluginClientCommand(String pluginType) {
 		return this.getConfig().getStringValue(VST_PLUGIN_CLIENT_COMMAND_PREFIX + pluginType);
-	}
-	
-	public Integer getDefaultSocketPort() {
-		return this.getConfig().getIntegerValue(VST_PLUGIN_SERVER_DEFAULT_PORT, VST_PLUGIN_SERVER_DEFAULT_PORT_VALUE);
 	}
 }

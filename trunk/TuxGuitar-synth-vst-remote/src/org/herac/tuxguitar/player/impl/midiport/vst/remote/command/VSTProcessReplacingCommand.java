@@ -4,9 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.herac.tuxguitar.player.impl.midiport.vst.remote.VSTConnection;
+import org.herac.tuxguitar.midi.synth.remote.TGAbstractCommand;
+import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
-public class VSTProcessReplacingCommand extends VSTAbstractCommand<Float[][]> {
+public class VSTProcessReplacingCommand extends TGAbstractCommand<Float[][]> {
 	
 	public static final Integer COMMAND_ID = 13;
 	
@@ -14,7 +15,7 @@ public class VSTProcessReplacingCommand extends VSTAbstractCommand<Float[][]> {
 	private float[][] outputs;
 	private Integer blocksize;
 	
-	public VSTProcessReplacingCommand(VSTConnection connection, float[][] inputs, float[][] outputs, Integer blocksize) {
+	public VSTProcessReplacingCommand(TGConnection connection, float[][] inputs, float[][] outputs, Integer blocksize) {
 		super(connection);
 		
 		this.inputs = inputs;

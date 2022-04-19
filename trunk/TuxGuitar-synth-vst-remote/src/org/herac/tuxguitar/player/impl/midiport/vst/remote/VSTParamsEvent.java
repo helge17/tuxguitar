@@ -3,6 +3,7 @@ package org.herac.tuxguitar.player.impl.midiport.vst.remote;
 import java.util.Map;
 
 import org.herac.tuxguitar.event.TGEvent;
+import org.herac.tuxguitar.midi.synth.remote.TGSession;
 
 public class VSTParamsEvent extends TGEvent {
 	
@@ -14,7 +15,7 @@ public class VSTParamsEvent extends TGEvent {
 	public static final Integer ACTION_STORE = 1;
 	public static final Integer ACTION_RESTORE = 2;
 	
-	public VSTParamsEvent(VSTSession session, Integer action, Map<String, String> parameters) {
+	public VSTParamsEvent(TGSession session, Integer action, Map<String, String> parameters) {
 		super(EVENT_TYPE);
 		
 		this.setAttribute(PROPERTY_SESSION, session);
