@@ -91,7 +91,7 @@ public class TGAudioBuffer {
 					}
 					
 					float f1 = (((float) s1Value / Short.MAX_VALUE) * (1f - mixAmp));
-					float f2 = (((float) s2Value / Short.MAX_VALUE) * mixAmp);					
+					float f2 = (((float) s2Value / Short.MAX_VALUE) * mixAmp);
 					
 					mixedValue = (short) ((f1 + f2) * Short.MAX_VALUE);
 					
@@ -121,6 +121,25 @@ public class TGAudioBuffer {
 					
 					this.buffer[index++] = (byte) ((BIGENDIAN ? ((ampValue & 0xFF00) >> 8) : ((ampValue & 0x00FF) >> 0) ) & 0xFF);
 					this.buffer[index++] = (byte) ((BIGENDIAN ? ((ampValue & 0x00FF) >> 0) : ((ampValue & 0xFF00) >> 8) ) & 0xFF);
+				}
+			}
+		}
+	}
+	
+	public void balance(float[] volumes) {
+		int index = 0;
+		short sample = 0;
+		for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
+			for(int c = 0; c < CHANNELS; c++) {
+				if( c < volumes.length ) {
+					sample = 0;
+					for( int n = 0; n < 2; n ++){
+						sample |= ((this.buffer[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
+					}
+					sample = (short) (Math.round(Math.max(Math.min(sample * volumes[c], Short.MAX_VALUE), Short.MIN_VALUE)) & 0xFFFF);
+					
+					this.buffer[index++] = (byte) ((BIGENDIAN ? ((sample & 0xFF00) >> 8) : ((sample & 0x00FF) >> 0) ) & 0xFF);
+					this.buffer[index++] = (byte) ((BIGENDIAN ? ((sample & 0x00FF) >> 0) : ((sample & 0xFF00) >> 8) ) & 0xFF);
 				}
 			}
 		}
