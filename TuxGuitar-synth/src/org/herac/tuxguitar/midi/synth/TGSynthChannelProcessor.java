@@ -17,10 +17,10 @@ public class TGSynthChannelProcessor {
 	private Object lock;
 	
 	public TGSynthChannelProcessor() {
+		this.lock = new Object();
 		this.buffer = new TGAudioBuffer();
 		this.outputs = new ArrayList<TGAudioProcessor>();
 		this.processorMap = new HashMap<TGProgramElement, TGAudioProcessor>();
-		this.lock = new Object();
 	}
 	
 	public void open(TGContext context, TGProgram program) {
@@ -192,7 +192,7 @@ public class TGSynthChannelProcessor {
 		}
 	}
 	
-	public void fillBuffer(TGAudioBuffer buffer) {
+	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance) {
 		synchronized (this.lock) {
 			if( this.processor != null && this.processor.isOpen() ){
 				this.buffer.clear();
@@ -200,6 +200,8 @@ public class TGSynthChannelProcessor {
 				for( int i = 0 ; i < this.countOutputs() ;i ++){
 					this.fillBuffer(this.buffer, this.getOutput(i));
 				}
+				this.balance(this.buffer, volume, balance);
+				
 				buffer.mix(this.buffer);
 			}
 		}
@@ -210,6 +212,17 @@ public class TGSynthChannelProcessor {
 			if( this.isEnabled(processor) ) {
 				processor.fillBuffer(buffer);
 			}
+		}
+	}
+	
+	public void balance(TGAudioBuffer buffer, int volume, int balance) {
+		synchronized (this.lock) {
+			buffer.balance(new float[] {
+				// left channel
+				(volume / 127f) * ((127 - balance) / 127f),
+				// right channel
+				(volume / 127f) * ((balance) / 127f)
+			});
 		}
 	}
 	

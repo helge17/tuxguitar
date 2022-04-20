@@ -4,6 +4,7 @@ import org.herac.tuxguitar.player.base.MidiChannel;
 import org.herac.tuxguitar.player.base.MidiControllers;
 import org.herac.tuxguitar.player.base.MidiParameters;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
+import org.herac.tuxguitar.song.models.TGChannel;
 
 public class TGSynthChannel implements MidiChannel {
 	
@@ -12,6 +13,8 @@ public class TGSynthChannel implements MidiChannel {
 	private int id;
 	private int midiBank;
 	private int midiProgram;
+	private int volume;
+	private int balance;
 	private TGSynthModel synthesizer;
 	private TGSynthChannelProcessor processor;
 	private TGSynthChannelProperties parameters;
@@ -24,6 +27,8 @@ public class TGSynthChannel implements MidiChannel {
 		this.id = id;
 		this.midiBank = 0;
 		this.midiProgram = -1;
+		this.volume = TGChannel.DEFAULT_VOLUME;
+		this.balance = TGChannel.DEFAULT_BALANCE;
 		this.program = new TGProgram();
 		this.parameters = new TGSynthChannelProperties();
 		this.pendingEvents = new TGSynthChannelPendingQueue(this);
@@ -70,7 +75,7 @@ public class TGSynthChannel implements MidiChannel {
 	
 	public void fillBuffer(TGAudioBuffer buffer){
 		if( this.processor != null){
-			this.processor.fillBuffer(buffer);
+			this.processor.fillBuffer(buffer, this.volume, this.balance);
 		}
 	}
 	
@@ -103,6 +108,10 @@ public class TGSynthChannel implements MidiChannel {
 						this.closeProcessor();
 					}
 				}
+			} else if( controller == MidiControllers.VOLUME ){
+				this.volume = value;
+			} else if( controller == MidiControllers.BALANCE ){
+				this.balance = value;
 			} else if( this.processor != null && this.processor.getProcessor() != null ) {
 				this.processor.getProcessor().sendControlChange(controller, value);
 			} else {
