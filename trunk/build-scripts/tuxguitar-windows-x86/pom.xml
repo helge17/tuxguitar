@@ -370,7 +370,7 @@
 				<module>../native-modules/tuxguitar-winmm-windows-x86</module>
 				<module>../native-modules/tuxguitar-fluidsynth-windows-x86</module>
 				<module>../native-modules/tuxguitar-jack-windows-x86</module>
-				<module>../native-modules/tuxguitar-synth-vst-remote-windows-x86</module>
+				<module>../native-modules/tuxguitar-synth-vst-windows-x86</module>
 			</modules>
 			
 			<build>
@@ -396,7 +396,7 @@
 											<fileset dir="../native-modules/tuxguitar-jack-windows-x86/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-remote-windows-x86/target/build" />
+											<fileset dir="../native-modules/tuxguitar-synth-vst-windows-x86/target/build" />
 										</copy>
 										<!-- /PLUGINS FILES -->
 									</target>

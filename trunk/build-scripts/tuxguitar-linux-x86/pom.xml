@@ -380,7 +380,7 @@
 				<module>../native-modules/tuxguitar-oss-linux-x86</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux-x86</module>
 				<module>../native-modules/tuxguitar-synth-lv2-linux-x86</module>
-				<module>../native-modules/tuxguitar-synth-vst-remote-linux-x86</module>
+				<module>../native-modules/tuxguitar-synth-vst-linux-x86</module>
 			</modules>
 
 			<build>
@@ -412,7 +412,7 @@
 											<fileset dir="../native-modules/tuxguitar-synth-lv2-linux-x86/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-remote-linux-x86/target/build" />
+											<fileset dir="../native-modules/tuxguitar-synth-vst-linux-x86/target/build" />
 										</copy>
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.sh" perm="775" />
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="775" />
