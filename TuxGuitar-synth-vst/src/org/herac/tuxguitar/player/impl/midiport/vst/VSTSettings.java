@@ -18,7 +18,7 @@ public class VSTSettings {
 	
 	public TGConfigManager getConfig(){
 		if( this.config == null ){
-			this.config = new TGConfigManager(this.context, "tuxguitar-synth-vst-remote");
+			this.config = new TGConfigManager(this.context, "tuxguitar-synth-vst");
 		}
 		return this.config;
 	}
