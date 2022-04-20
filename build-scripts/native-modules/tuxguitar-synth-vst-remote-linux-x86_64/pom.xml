@@ -10,7 +10,7 @@
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-synth-vst-remote-linux-x86_64</artifactId>
+	<artifactId>tuxguitar-synth-vst-linux-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 	
@@ -20,33 +20,33 @@
 		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
-		<tuxguitar-synth-vst-remote.client.vst.sdk>${basedir}/include</tuxguitar-synth-vst-remote.client.vst.sdk>
+		<tuxguitar-synth-vst.client.vst.sdk>${basedir}/include</tuxguitar-synth-vst.client.vst.sdk>
 		
-		<tuxguitar-synth-vst-remote.client.so.path>${parent.relativePath}/TuxGuitar-synth-vst-remote/src-client/</tuxguitar-synth-vst-remote.client.so.path>
-		<tuxguitar-synth-vst-remote.client.so.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst-remote.client.so.cxx>
-		<tuxguitar-synth-vst-remote.client.so.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst-remote.client.so.rm>
-		<tuxguitar-synth-vst-remote.client.so.cflags>-I${tuxguitar-synth-vst-remote.client.vst.sdk} -m64 -fPIC -fpermissive</tuxguitar-synth-vst-remote.client.so.cflags>
-		<tuxguitar-synth-vst-remote.client.so.ldflags>-m64 -fPIC</tuxguitar-synth-vst-remote.client.so.ldflags>
-		<tuxguitar-synth-vst-remote.client.so.ldlibs>-ldl -lX11 -lrt -lpthread</tuxguitar-synth-vst-remote.client.so.ldlibs>
-		<tuxguitar-synth-vst-remote.client.so.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst-remote.client.so.ldpath>
-		<tuxguitar-synth-vst-remote.client.so.binary.name>tuxguitar-synth-vst-remote-jni</tuxguitar-synth-vst-remote.client.so.binary.name>
-		<tuxguitar-synth-vst-remote.client.so.binary.suffix>.bin</tuxguitar-synth-vst-remote.client.so.binary.suffix>
-		<tuxguitar-synth-vst-remote.client.so.binary.os>_GNULinux</tuxguitar-synth-vst-remote.client.so.binary.os>
+		<tuxguitar-synth-vst.client.so.path>${parent.relativePath}/TuxGuitar-synth-vst/src-client/</tuxguitar-synth-vst.client.so.path>
+		<tuxguitar-synth-vst.client.so.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst.client.so.cxx>
+		<tuxguitar-synth-vst.client.so.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.client.so.rm>
+		<tuxguitar-synth-vst.client.so.cflags>-I${tuxguitar-synth-vst.client.vst.sdk} -m64 -fPIC -fpermissive</tuxguitar-synth-vst.client.so.cflags>
+		<tuxguitar-synth-vst.client.so.ldflags>-m64 -fPIC</tuxguitar-synth-vst.client.so.ldflags>
+		<tuxguitar-synth-vst.client.so.ldlibs>-ldl -lX11 -lrt -lpthread</tuxguitar-synth-vst.client.so.ldlibs>
+		<tuxguitar-synth-vst.client.so.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst.client.so.ldpath>
+		<tuxguitar-synth-vst.client.so.binary.name>tuxguitar-synth-vst</tuxguitar-synth-vst.client.so.binary.name>
+		<tuxguitar-synth-vst.client.so.binary.suffix>.bin</tuxguitar-synth-vst.client.so.binary.suffix>
+		<tuxguitar-synth-vst.client.so.binary.os>_GNULinux</tuxguitar-synth-vst.client.so.binary.os>
 		
-		<tuxguitar-synth-vst-remote.client.dll.path>${parent.relativePath}/TuxGuitar-synth-vst-remote/src-client/</tuxguitar-synth-vst-remote.client.dll.path>
-		<tuxguitar-synth-vst-remote.client.dll.cxx>/usr/bin/i686-w64-mingw32-g++-win32</tuxguitar-synth-vst-remote.client.dll.cxx>
-		<tuxguitar-synth-vst-remote.client.dll.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst-remote.client.dll.rm>
-		<tuxguitar-synth-vst-remote.client.dll.cflags>-I${tuxguitar-synth-vst-remote.client.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst-remote.client.dll.cflags>
-		<tuxguitar-synth-vst-remote.client.dll.ldflags></tuxguitar-synth-vst-remote.client.dll.ldflags>
-		<tuxguitar-synth-vst-remote.client.dll.ldlibs>-static-libgcc -static-libstdc++ -static -lws2_32 -lpthread</tuxguitar-synth-vst-remote.client.dll.ldlibs>
-		<tuxguitar-synth-vst-remote.client.dll.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst-remote.client.dll.ldpath>
-		<tuxguitar-synth-vst-remote.client.dll.binary.name>tuxguitar-synth-vst-remote-jni</tuxguitar-synth-vst-remote.client.dll.binary.name>
-		<tuxguitar-synth-vst-remote.client.dll.binary.suffix>.exe</tuxguitar-synth-vst-remote.client.dll.binary.suffix>
-		<tuxguitar-synth-vst-remote.client.dll.binary.os>_Win32</tuxguitar-synth-vst-remote.client.dll.binary.os>
+		<tuxguitar-synth-vst.client.dll.path>${parent.relativePath}/TuxGuitar-synth-vst/src-client/</tuxguitar-synth-vst.client.dll.path>
+		<tuxguitar-synth-vst.client.dll.cxx>/usr/bin/i686-w64-mingw32-g++-win32</tuxguitar-synth-vst.client.dll.cxx>
+		<tuxguitar-synth-vst.client.dll.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.client.dll.rm>
+		<tuxguitar-synth-vst.client.dll.cflags>-I${tuxguitar-synth-vst.client.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst.client.dll.cflags>
+		<tuxguitar-synth-vst.client.dll.ldflags></tuxguitar-synth-vst.client.dll.ldflags>
+		<tuxguitar-synth-vst.client.dll.ldlibs>-static-libgcc -static-libstdc++ -static -lws2_32 -lpthread</tuxguitar-synth-vst.client.dll.ldlibs>
+		<tuxguitar-synth-vst.client.dll.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst.client.dll.ldpath>
+		<tuxguitar-synth-vst.client.dll.binary.name>tuxguitar-synth-vst</tuxguitar-synth-vst.client.dll.binary.name>
+		<tuxguitar-synth-vst.client.dll.binary.suffix>.exe</tuxguitar-synth-vst.client.dll.binary.suffix>
+		<tuxguitar-synth-vst.client.dll.binary.os>_Win32</tuxguitar-synth-vst.client.dll.binary.os>
 	</properties>
 	
 	<modules>
-		<module>${parent.relativePath}/TuxGuitar-synth-vst-remote</module>
+		<module>${parent.relativePath}/TuxGuitar-synth-vst</module>
 	</modules>
 	
 	<build>
@@ -65,41 +65,41 @@
 						<configuration>
 							<target name="compile-native">
 								<!-- Build gnulinux client -->
-								<exec dir="${tuxguitar-synth-vst-remote.client.so.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-vst.client.so.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-vst-remote.client.so.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.so.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.so.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.so.binary.os}" />
+									<env key="RM" value="${tuxguitar-synth-vst.client.so.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.so.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
 								</exec>
-								<exec dir="${tuxguitar-synth-vst-remote.client.so.path}" executable="make" failonerror="true" >
-									<env key="CXX" value="${tuxguitar-synth-vst-remote.client.so.cxx}" />
-									<env key="CFLAGS" value="${tuxguitar-synth-vst-remote.client.so.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-synth-vst-remote.client.so.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-synth-vst-remote.client.so.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-synth-vst-remote.client.so.ldpath}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.so.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.so.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.so.binary.os}" />
+								<exec dir="${tuxguitar-synth-vst.client.so.path}" executable="make" failonerror="true" >
+									<env key="CXX" value="${tuxguitar-synth-vst.client.so.cxx}" />
+									<env key="CFLAGS" value="${tuxguitar-synth-vst.client.so.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-synth-vst.client.so.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-synth-vst.client.so.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-synth-vst.client.so.ldpath}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.so.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
 								</exec>
 								
 								<!-- Build windows client -->
-								<exec dir="${tuxguitar-synth-vst-remote.client.dll.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-vst-remote.client.dll.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.dll.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.dll.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.dll.binary.os}" />
+									<env key="RM" value="${tuxguitar-synth-vst.client.dll.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.dll.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.dll.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.dll.binary.os}" />
 								</exec>
-								<exec dir="${tuxguitar-synth-vst-remote.client.dll.path}" executable="make" failonerror="true" >
-									<env key="CXX" value="${tuxguitar-synth-vst-remote.client.dll.cxx}" />
-									<env key="CFLAGS" value="${tuxguitar-synth-vst-remote.client.dll.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-synth-vst-remote.client.dll.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-synth-vst-remote.client.dll.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-synth-vst-remote.client.dll.ldpath}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.dll.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.dll.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.dll.binary.os}" />
+								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
+									<env key="CXX" value="${tuxguitar-synth-vst.client.dll.cxx}" />
+									<env key="CFLAGS" value="${tuxguitar-synth-vst.client.dll.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-synth-vst.client.dll.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-synth-vst.client.dll.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-synth-vst.client.dll.ldpath}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.dll.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.dll.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.dll.binary.os}" />
 								</exec>
 							</target>
 						</configuration>
@@ -113,20 +113,20 @@
 						</goals>
 						<configuration>
 							<target name="clean-native">
-								<exec dir="${tuxguitar-synth-vst-remote.client.so.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-vst.client.so.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-vst-remote.client.so.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.so.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.so.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.so.binary.os}" />
+									<env key="RM" value="${tuxguitar-synth-vst.client.so.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.so.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
 								</exec>
 								
-								<exec dir="${tuxguitar-synth-vst-remote.client.dll.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-vst-remote.client.dll.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst-remote.client.dll.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst-remote.client.dll.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst-remote.client.dll.binary.os}" />
+									<env key="RM" value="${tuxguitar-synth-vst.client.dll.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.dll.binary.name}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.dll.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.dll.binary.os}" />
 								</exec>
 							</target>
 						</configuration>
@@ -141,12 +141,12 @@
 								<mkdir dir="${project.build.directory}/build/vst-client" />
 								
 								<copy todir="${project.build.directory}/build/vst-client">
-									<fileset file="${tuxguitar-synth-vst-remote.client.so.path}/${tuxguitar-synth-vst-remote.client.so.binary.name}${tuxguitar-synth-vst-remote.client.so.binary.suffix}" />
-									<fileset file="${tuxguitar-synth-vst-remote.client.dll.path}/${tuxguitar-synth-vst-remote.client.dll.binary.name}${tuxguitar-synth-vst-remote.client.dll.binary.suffix}" />
+									<fileset file="${tuxguitar-synth-vst.client.so.path}/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" />
+									<fileset file="${tuxguitar-synth-vst.client.dll.path}/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" />
 								</copy>
 								
-								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst-remote.client.so.binary.name}${tuxguitar-synth-vst-remote.client.so.binary.suffix}" perm="775" />
-								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst-remote.client.dll.binary.name}${tuxguitar-synth-vst-remote.client.dll.binary.suffix}" perm="775" />
+								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" perm="775" />
+								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" perm="775" />
 							</target>
 						</configuration>
 						<goals>
@@ -171,8 +171,8 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-synth-vst-remote</artifactId>
-									<destFileName>tuxguitar-synth-vst-remote.jar</destFileName>
+									<artifactId>tuxguitar-synth-vst</artifactId>
+									<destFileName>tuxguitar-synth-vst.jar</destFileName>
 									<outputDirectory>${project.build.directory}/build/share/plugins</outputDirectory>
 								</artifactItem>
 							</artifactItems>
