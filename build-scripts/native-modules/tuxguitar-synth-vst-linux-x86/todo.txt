@@ -1,1 +1,0 @@
-- Copy VST3_SDK to include/VST_SDK
