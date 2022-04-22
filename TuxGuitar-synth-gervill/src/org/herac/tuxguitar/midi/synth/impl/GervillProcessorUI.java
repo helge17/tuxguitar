@@ -261,6 +261,13 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 	}
 	
 	@Override
+	public void focus() {
+		if( this.isOpen() ) {
+			this.dialog.moveToTop();
+		}
+	}
+	
+	@Override
 	public boolean isOpen() {
 		return (this.dialog != null && !this.dialog.isDisposed());
 	}

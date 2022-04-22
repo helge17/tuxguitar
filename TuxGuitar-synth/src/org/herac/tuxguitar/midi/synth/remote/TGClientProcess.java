@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.midi.synth.remote;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,9 +27,10 @@ public class TGClientProcess {
 	
 	public void startProcess(TGClientStarter starter, Integer sessionId, Integer serverPort) throws TGRemoteException {
 		try {
+			String workingDir = starter.getWorkingDir();
 			String[] cmdarray = starter.createClientCommand(sessionId, serverPort);
 			if( cmdarray != null && cmdarray.length > 0 ) {
-				this.process = Runtime.getRuntime().exec(cmdarray);
+				this.process = Runtime.getRuntime().exec(cmdarray, null, (workingDir != null ? new File(workingDir) : null));
 			}
 		} catch (IOException e) {
 			throw new TGRemoteException(e);

@@ -142,6 +142,8 @@
 								
 								<copy todir="${project.build.directory}/build/vst-client">
 									<fileset file="${tuxguitar-synth-vst.client.so.path}/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" />
+									
+									<fileset file="${tuxguitar-synth-vst.client.dll.path}/tuxguitar-synth-vst.ico" />
 									<fileset file="${tuxguitar-synth-vst.client.dll.path}/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" />
 								</copy>
 								

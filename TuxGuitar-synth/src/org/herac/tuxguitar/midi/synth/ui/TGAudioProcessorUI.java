@@ -11,4 +11,6 @@ public interface TGAudioProcessorUI {
 	void open(UIWindow parent);
 	
 	void close();
+	
+	void focus();
 }
