@@ -41,7 +41,7 @@
 		<tuxguitar-synth-lv2.ui.ldflags>-m32 -fPIC</tuxguitar-synth-lv2.ui.ldflags>
 		<tuxguitar-synth-lv2.ui.ldlibs>-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`</tuxguitar-synth-lv2.ui.ldlibs>
 		<tuxguitar-synth-lv2.ui.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.ui.ldpath>
-		<tuxguitar-synth-lv2.ui.binary.name>tuxguitar-synth-lv2-ui</tuxguitar-synth-lv2.ui.binary.name>
+		<tuxguitar-synth-lv2.ui.binary.name>tuxguitar-synth-lv2</tuxguitar-synth-lv2.ui.binary.name>
 		<tuxguitar-synth-lv2.ui.binary.prefix></tuxguitar-synth-lv2.ui.binary.prefix>
 		<tuxguitar-synth-lv2.ui.binary.suffix>.bin</tuxguitar-synth-lv2.ui.binary.suffix>
 		<tuxguitar-synth-lv2.ui.binary.os>_GNULinux</tuxguitar-synth-lv2.ui.binary.os>
@@ -169,6 +169,7 @@
 								<mkdir dir="${project.build.directory}/build/lv2-client" />
 								
 								<copy todir="${project.build.directory}/build/lv2-client">
+									<fileset file="${tuxguitar-synth-lv2.ui.path}/tuxguitar-synth-lv2.png" />
 									<fileset file="${tuxguitar-synth-lv2.ui.path}/${tuxguitar-synth-lv2.ui.binary.prefix}${tuxguitar-synth-lv2.ui.binary.name}${tuxguitar-synth-lv2.ui.binary.suffix}" />
 								</copy>
 								

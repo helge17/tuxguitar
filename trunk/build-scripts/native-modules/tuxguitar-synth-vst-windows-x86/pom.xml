@@ -94,6 +94,7 @@
 								<mkdir dir="${project.build.directory}/build/vst-client" />
 								
 								<copy todir="${project.build.directory}/build/vst-client">
+									<fileset file="${tuxguitar-synth-vst.client.path}/tuxguitar-synth-vst.ico" />
 									<fileset file="${tuxguitar-synth-vst.client.path}/${tuxguitar-synth-vst.client.binary.name}${tuxguitar-synth-vst.client.binary.suffix}" />
 								</copy>
 								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.binary.name}${tuxguitar-synth-vst.client.binary.suffix}" perm="775" />

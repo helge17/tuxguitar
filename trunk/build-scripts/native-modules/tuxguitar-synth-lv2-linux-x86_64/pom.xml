@@ -34,17 +34,17 @@
 		<tuxguitar-synth-lv2.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-synth-lv2.jni.library.suffix>
 		<tuxguitar-synth-lv2.jni.library.os>_GNULinux</tuxguitar-synth-lv2.jni.library.os>
 		
-		<tuxguitar-synth-lv2.ui.path>${parent.relativePath}/TuxGuitar-synth-lv2/src/main/cxx/</tuxguitar-synth-lv2.ui.path>
-		<tuxguitar-synth-lv2.ui.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-lv2.ui.cxx>
-		<tuxguitar-synth-lv2.ui.rm>${tuxguitar.jni.rm}</tuxguitar-synth-lv2.ui.rm>
-		<tuxguitar-synth-lv2.ui.cflags>-I/usr/include/lilv-0/lilv -I/usr/include/suil-0/suil -I`pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags` -m64 -fPIC -fpermissive</tuxguitar-synth-lv2.ui.cflags>
-		<tuxguitar-synth-lv2.ui.ldflags>-m64 -fPIC</tuxguitar-synth-lv2.ui.ldflags>
-		<tuxguitar-synth-lv2.ui.ldlibs>-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`</tuxguitar-synth-lv2.ui.ldlibs>
-		<tuxguitar-synth-lv2.ui.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.ui.ldpath>
-		<tuxguitar-synth-lv2.ui.binary.name>tuxguitar-synth-lv2-ui</tuxguitar-synth-lv2.ui.binary.name>
-		<tuxguitar-synth-lv2.ui.binary.prefix></tuxguitar-synth-lv2.ui.binary.prefix>
-		<tuxguitar-synth-lv2.ui.binary.suffix>.bin</tuxguitar-synth-lv2.ui.binary.suffix>
-		<tuxguitar-synth-lv2.ui.binary.os>_GNULinux</tuxguitar-synth-lv2.ui.binary.os>
+		<tuxguitar-synth-lv2.cxx.path>${parent.relativePath}/TuxGuitar-synth-lv2/src/main/cxx/</tuxguitar-synth-lv2.cxx.path>
+		<tuxguitar-synth-lv2.cxx.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-lv2.cxx.cxx>
+		<tuxguitar-synth-lv2.cxx.rm>${tuxguitar.jni.rm}</tuxguitar-synth-lv2.cxx.rm>
+		<tuxguitar-synth-lv2.cxx.cflags>-I/usr/include/lilv-0/lilv -I/usr/include/suil-0/suil -I`pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags` -m64 -fPIC -fpermissive</tuxguitar-synth-lv2.cxx.cflags>
+		<tuxguitar-synth-lv2.cxx.ldflags>-m64 -fPIC</tuxguitar-synth-lv2.cxx.ldflags>
+		<tuxguitar-synth-lv2.cxx.ldlibs>-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`</tuxguitar-synth-lv2.cxx.ldlibs>
+		<tuxguitar-synth-lv2.cxx.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.cxx.ldpath>
+		<tuxguitar-synth-lv2.cxx.binary.name>tuxguitar-synth-lv2-ui</tuxguitar-synth-lv2.cxx.binary.name>
+		<tuxguitar-synth-lv2.cxx.binary.prefix></tuxguitar-synth-lv2.cxx.binary.prefix>
+		<tuxguitar-synth-lv2.cxx.binary.suffix>.bin</tuxguitar-synth-lv2.cxx.binary.suffix>
+		<tuxguitar-synth-lv2.cxx.binary.os>_GNULinux</tuxguitar-synth-lv2.cxx.binary.os>
 	</properties>
 	
 	<modules>
@@ -89,16 +89,16 @@
 						</goals>
 						<configuration>
 							<target name="compile-native-ui">
-								<exec dir="${tuxguitar-synth-lv2.ui.path}" executable="make" failonerror="true" >
-									<env key="CXX" value="${tuxguitar-synth-lv2.ui.cxx}" />
-									<env key="CFLAGS" value="${tuxguitar-synth-lv2.ui.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-synth-lv2.ui.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-synth-lv2.ui.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-synth-lv2.ui.ldpath}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.ui.binary.name}" />
-									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.ui.binary.prefix}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-lv2.ui.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-lv2.ui.binary.os}" />
+								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="make" failonerror="true" >
+									<env key="CXX" value="${tuxguitar-synth-lv2.cxx.cxx}" />
+									<env key="CFLAGS" value="${tuxguitar-synth-lv2.cxx.cflags}" />
+									<env key="LDFLAGS" value="${tuxguitar-synth-lv2.cxx.ldflags}" />
+									<env key="LDLIBS" value="${tuxguitar-synth-lv2.cxx.ldlibs}" />
+									<env key="LDPATH" value="${tuxguitar-synth-lv2.cxx.ldpath}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.cxx.binary.name}" />
+									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.cxx.binary.prefix}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-lv2.cxx.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-lv2.cxx.binary.os}" />
 								</exec>
 							</target>
 						</configuration>
@@ -131,13 +131,13 @@
 						</goals>
 						<configuration>
 							<target name="clean-native-ui">
-								<exec dir="${tuxguitar-synth-lv2.ui.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-lv2.ui.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.ui.binary.name}" />
-									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.ui.binary.prefix}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-lv2.ui.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-lv2.ui.binary.os}" />
+									<env key="RM" value="${tuxguitar-synth-lv2.cxx.rm}" />
+									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.cxx.binary.name}" />
+									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.cxx.binary.prefix}" />
+									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-lv2.cxx.binary.suffix}" />
+									<env key="BINARY_OS" value="${tuxguitar-synth-lv2.cxx.binary.os}" />
 								</exec>
 							</target>
 						</configuration>
@@ -169,10 +169,11 @@
 								<mkdir dir="${project.build.directory}/build/lv2-client" />
 								
 								<copy todir="${project.build.directory}/build/lv2-client">
-									<fileset file="${tuxguitar-synth-lv2.ui.path}/${tuxguitar-synth-lv2.ui.binary.prefix}${tuxguitar-synth-lv2.ui.binary.name}${tuxguitar-synth-lv2.ui.binary.suffix}" />
+									<fileset file="${tuxguitar-synth-lv2.cxx.path}/tuxguitar-synth-lv2.png" />
+									<fileset file="${tuxguitar-synth-lv2.cxx.path}/${tuxguitar-synth-lv2.cxx.binary.prefix}${tuxguitar-synth-lv2.cxx.binary.name}${tuxguitar-synth-lv2.cxx.binary.suffix}" />
 								</copy>
 								
-								<chmod file="${project.build.directory}/build/lv2-client/${tuxguitar-synth-lv2.ui.binary.prefix}${tuxguitar-synth-lv2.ui.binary.name}${tuxguitar-synth-lv2.ui.binary.suffix}" perm="775" />
+								<chmod file="${project.build.directory}/build/lv2-client/${tuxguitar-synth-lv2.cxx.binary.prefix}${tuxguitar-synth-lv2.cxx.binary.name}${tuxguitar-synth-lv2.cxx.binary.suffix}" perm="775" />
 							</target>
 						</configuration>
 						<goals>

@@ -344,8 +344,12 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	
 	public void openProcessorUI(TGProgramElement element) {
 		TGAudioProcessorUI ui = this.getProcessorUI(element);
-		if( ui != null && !ui.isOpen()) {
-			ui.open(this.dialog);
+		if( ui != null ) {
+			if( ui.isOpen()) {
+				ui.focus();
+			} else {
+				ui.open(this.dialog);
+			}
 		}
 	}
 	
