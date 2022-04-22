@@ -156,6 +156,12 @@ public class VSTEffectEditor implements TGEventListener {
 		}
 	}
 	
+	public void focus() {
+		if( this.isOpen() ){
+			this.dialog.moveToTop();
+		}
+	}
+	
 	public void close() {
 		if( this.isOpen() ){
 			this.dialog.dispose();

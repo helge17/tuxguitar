@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTSetBlockSizeCommand extends TGAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 6;
+	public static final Integer COMMAND_ID = 9;
 	
 	private Integer value;
 	

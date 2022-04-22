@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTGetVersionCommand extends TGAbstractCommand<Integer> {
 	
-	public static final Integer COMMAND_ID = 24;
+	public static final Integer COMMAND_ID = 5;
 	
 	public VSTGetVersionCommand(TGConnection connection) {
 		super(connection);

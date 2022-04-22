@@ -86,6 +86,21 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 		}
 	}
 	
+	public void focus() {
+		if( this.processor.isOpen() ) {
+			if( this.processor.getEffect().isEditorAvailable()) {
+				if( this.processor.getEffect().isNativeEditorOpen() ) {
+					this.processor.getEffect().focusNativeEditor();
+				}
+			}
+			else {
+				if (this.editor != null && this.editor.isOpen()) {
+					this.editor.focus();
+				}
+			}
+		}
+	}
+	
 	public void choosePlugin(final UIWindow parent) {
 		final VSTSettings vstSettings = new VSTSettings(this.context);
 		String chooserPath = vstSettings.getPluginPath();

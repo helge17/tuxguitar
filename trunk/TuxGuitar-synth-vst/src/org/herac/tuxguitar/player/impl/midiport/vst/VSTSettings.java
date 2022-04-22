@@ -8,6 +8,7 @@ public class VSTSettings {
 	private static final String VST_PLUGIN_PATH = "vst.plugin.path";
 	private static final String VST_PLUGIN_EXTENSIONS = "vst.plugin.extensions";
 	private static final String VST_PLUGIN_CLIENT_COMMAND_PREFIX = "vst.plugin.client.command.";
+	private static final String VST_PLUGIN_CLIENT_WORKING_DIR = "vst.plugin.client.working.dir";
 	
 	private TGContext context;
 	private TGConfigManager config;
@@ -45,5 +46,9 @@ public class VSTSettings {
 	
 	public String getPluginClientCommand(String pluginType) {
 		return this.getConfig().getStringValue(VST_PLUGIN_CLIENT_COMMAND_PREFIX + pluginType);
+	}
+	
+	public String getWorkingDir() {
+		return this.getConfig().getStringValue(VST_PLUGIN_CLIENT_WORKING_DIR);
 	}
 }

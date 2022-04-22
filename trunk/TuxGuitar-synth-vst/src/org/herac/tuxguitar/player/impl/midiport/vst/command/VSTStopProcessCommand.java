@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTStopProcessCommand extends TGAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 23;
+	public static final Integer COMMAND_ID = 3;
 	
 	public VSTStopProcessCommand(TGConnection connection) {
 		super(connection);

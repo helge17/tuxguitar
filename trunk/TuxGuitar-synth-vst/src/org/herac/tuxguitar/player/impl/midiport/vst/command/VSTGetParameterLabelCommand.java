@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTGetParameterLabelCommand extends TGAbstractCommand<String> {
 	
-	public static final Integer COMMAND_ID = 11;
+	public static final Integer COMMAND_ID = 14;
 	
 	private Integer index;
 	

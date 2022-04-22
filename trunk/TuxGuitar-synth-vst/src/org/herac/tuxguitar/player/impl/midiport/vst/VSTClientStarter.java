@@ -14,11 +14,13 @@ public class VSTClientStarter implements TGClientStarter {
 	private static final String VARIABLE_VST_FILE_NAME = "vst.fileName";
 	
 	private TGContext context;
+	private VSTSettings settings;
 	private String fileName;
 	
 	public VSTClientStarter(TGContext context, String fileName) {
 		this.context = context;
 		this.fileName = fileName;
+		this.settings = new VSTSettings(this.context);
 	}
 	
 	@Override
@@ -44,8 +46,7 @@ public class VSTClientStarter implements TGClientStarter {
 	public String findClientCommand() throws VSTException {
 		String pluginType = this.findPluginType(this.fileName);
 		if( pluginType != null ) {
-			VSTSettings vstSettings = new VSTSettings(this.context);
-			return vstSettings.getPluginClientCommand(pluginType);
+			return this.settings.getPluginClientCommand(pluginType);
 		}
 		return null;
 	}
@@ -56,6 +57,14 @@ public class VSTClientStarter implements TGClientStarter {
 			if( index > 0 && (index + 1) < fileName.length()){
 				return fileName.substring(index + 1).trim().toLowerCase();
 			}
+		}
+		return null;
+	}
+	
+	public String getWorkingDir() {
+		String workingDir = this.settings.getWorkingDir();
+		if( workingDir != null ) {
+			return TGExpressionResolver.getInstance(this.context).resolve(workingDir);
 		}
 		return null;
 	}

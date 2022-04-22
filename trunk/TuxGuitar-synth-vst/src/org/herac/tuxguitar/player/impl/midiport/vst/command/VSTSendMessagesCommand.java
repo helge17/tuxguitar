@@ -8,7 +8,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTSendMessagesCommand extends TGAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 12;
+	public static final Integer COMMAND_ID = 19;
 	
 	private List<byte[]> messages;
 	

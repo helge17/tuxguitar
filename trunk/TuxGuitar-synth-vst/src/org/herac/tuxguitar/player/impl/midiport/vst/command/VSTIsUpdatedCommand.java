@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTIsUpdatedCommand extends TGAbstractCommand<Boolean> {
 	
-	public static final Integer COMMAND_ID = 2;
+	public static final Integer COMMAND_ID = 4;
 	
 	public VSTIsUpdatedCommand(TGConnection connection) {
 		super(connection);
