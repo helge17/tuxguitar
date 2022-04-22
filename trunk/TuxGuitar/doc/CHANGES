@@ -1,1 +1,6 @@
-TuxGuitar 1.5.5 is a bug fix release
+TuxGuitar 1.5.6 changes:
+
+* Fix TuxGuitar Sequencer latency issues
+* New LV2 effect extension for TuxGuitar Synthesizer
+* Improve VST/VSTi effect extension support for TuxGuitar Synthesizer
+* Several bugs fixed
