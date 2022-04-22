@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class LV2ProcessIsUIOpenCommand extends TGAbstractCommand<Boolean> {
 	
-	public static final Integer COMMAND_ID = 9;
+	public static final Integer COMMAND_ID = 10;
 	
 	public LV2ProcessIsUIOpenCommand(TGConnection connection) {
 		super(connection);

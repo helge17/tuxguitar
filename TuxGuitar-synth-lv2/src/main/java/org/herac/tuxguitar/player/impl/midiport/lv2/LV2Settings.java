@@ -6,6 +6,7 @@ import org.herac.tuxguitar.util.configuration.TGConfigManager;
 public class LV2Settings {
 	
 	private static final String LV2_CLIENT_COMMAND = "lv2.client.command";
+	private static final String LV2_CLIENT_WORKING_DIR = "lv2.client.working.dir";
 	
 	private TGContext context;
 	private TGConfigManager config;
@@ -27,5 +28,9 @@ public class LV2Settings {
 	
 	public String getClientCommand() {
 		return this.getConfig().getStringValue(LV2_CLIENT_COMMAND);
+	}
+	
+	public String getWorkingDir() {
+		return this.getConfig().getStringValue(LV2_CLIENT_WORKING_DIR);
 	}
 }
