@@ -8,7 +8,7 @@ mkdir -p logs
 (
 	echo "$(date "+%m%d%Y %T") : Starting work"
 	
-	./tuxguitar-synth-lv2-ui.bin "$1" "$2" "$3" "$4"
+	./tuxguitar-synth-lv2.bin "$1" "$2" "$3" "$4"
 	
 	echo error 1>&2 # test stderr
 	echo "$(date "+%m%d%Y %T") : Done"

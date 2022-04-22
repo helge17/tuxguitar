@@ -41,7 +41,7 @@
 		<tuxguitar-synth-lv2.cxx.ldflags>-m64 -fPIC</tuxguitar-synth-lv2.cxx.ldflags>
 		<tuxguitar-synth-lv2.cxx.ldlibs>-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`</tuxguitar-synth-lv2.cxx.ldlibs>
 		<tuxguitar-synth-lv2.cxx.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-lv2.cxx.ldpath>
-		<tuxguitar-synth-lv2.cxx.binary.name>tuxguitar-synth-lv2-ui</tuxguitar-synth-lv2.cxx.binary.name>
+		<tuxguitar-synth-lv2.cxx.binary.name>tuxguitar-synth-lv2</tuxguitar-synth-lv2.cxx.binary.name>
 		<tuxguitar-synth-lv2.cxx.binary.prefix></tuxguitar-synth-lv2.cxx.binary.prefix>
 		<tuxguitar-synth-lv2.cxx.binary.suffix>.bin</tuxguitar-synth-lv2.cxx.binary.suffix>
 		<tuxguitar-synth-lv2.cxx.binary.os>_GNULinux</tuxguitar-synth-lv2.cxx.binary.os>
