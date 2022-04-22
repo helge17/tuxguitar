@@ -65,6 +65,8 @@ void ProcessOpenEffectUICommand(VSTClientHandle *handle);
 
 void ProcessCloseEffectUICommand(VSTClientHandle *handle);
 
+void ProcessFocusEffectUICommand(VSTClientHandle *handle);
+
 void ProcessIsEffectUIOpenCommand(VSTClientHandle *handle);
 
 void ProcessIsEffectUIAvailableCommand(VSTClientHandle *handle);
