@@ -50,11 +50,11 @@ void LV2Client_processOpenUICommand(LV2Client *handle);
 
 void LV2Client_processCloseUICommand(LV2Client *handle);
 
+void LV2Client_processFocusUICommand(LV2Client *handle);
+
 void LV2Client_processUIIsOpenCommand(LV2Client *handle);
 
 void LV2Client_processUIIsAvailableCommand(LV2Client *handle);
-
-void LV2Client_processUIIsUpdatedCommand(LV2Client *handle);
 
 void* LV2Client_processCommandsThread(void* ptr);
 

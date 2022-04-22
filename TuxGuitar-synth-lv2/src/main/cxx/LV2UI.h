@@ -15,6 +15,8 @@ void LV2UI_open(LV2UI *handle);
 
 void LV2UI_close(LV2UI *handle);
 
+void LV2UI_focus(LV2UI *handle);
+
 void LV2UI_isUpdated(LV2UI *handle, bool *updated);
 
 void LV2UI_setUpdated(LV2UI *handle, bool updated);

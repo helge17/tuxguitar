@@ -52,6 +52,7 @@ struct LV2UIImpl {
 	const LilvNode* supported_ui_type;
 	bool open;
 	bool updated;
+	bool requestFocus;
 	bool ignoreEvents;
 	bool shouldRefresh;
 	float refreshRate;
@@ -215,6 +216,13 @@ void LV2UI_close(LV2UI *handle)
 	}
 }
 
+void LV2UI_focus(LV2UI *handle)
+{
+	if( handle != NULL && handle->open ) {
+		handle->requestFocus = true;
+	}
+}
+
 void LV2UI_isUpdated(LV2UI *handle, bool *updated)
 {
 	if( handle != NULL ){
@@ -323,6 +331,7 @@ void LV2UI_process(LV2UI *handle)
 
 				if( handle->suilInstance != NULL ) {
 					handle->window = new LV2MainWindow(handle);
+					handle->window->setWindowIcon(QIcon("./tuxguitar-synth-lv2.png"));
 					handle->window->setWindowTitle(lilv_node_as_string(pluginName));
 					handle->window->setCentralWidget(static_cast<QWidget*>(suil_instance_get_widget(handle->suilInstance)));
 					//handle->window->setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -349,6 +358,12 @@ void LV2UI_process(LV2UI *handle)
 				handle->shouldRefresh = false;
 
 				LV2UI_processPortEvents(handle, FLOW_OUT);
+			}
+			if( handle->requestFocus ) {
+				handle->requestFocus = false;
+
+				handle->window->raise();
+				handle->window->activateWindow();
 			}
 		} else {
 			if( handle->window != NULL && handle->window->isVisible()) {

@@ -23,9 +23,9 @@
 #define CMD_PROCESS_AUDIO 6
 #define CMD_UI_OPEN 7
 #define CMD_UI_CLOSE 8
-#define CMD_UI_IS_OPEN 9
-#define CMD_UI_IS_AVAILABLE 10
-#define CMD_UI_IS_UPDATED 11
+#define CMD_UI_FOCUS 9
+#define CMD_UI_IS_OPEN 10
+#define CMD_UI_IS_AVAILABLE 11
 
 int main(int argc, char *argv[]) 
 {
@@ -176,14 +176,14 @@ void LV2Client_processCommand(LV2Client *handle, int command)
 		case CMD_UI_CLOSE:
 			LV2Client_processCloseUICommand(handle);
 		break;
+		case CMD_UI_FOCUS:
+			LV2Client_processFocusUICommand(handle);
+		break;
 		case CMD_UI_IS_OPEN:
 			LV2Client_processUIIsOpenCommand(handle);
 		break;
 		case CMD_UI_IS_AVAILABLE:
 			LV2Client_processUIIsAvailableCommand(handle);
-		break;
-		case CMD_UI_IS_UPDATED:
-			LV2Client_processUIIsUpdatedCommand(handle);
 		break;
 	}
 }
@@ -293,6 +293,11 @@ void LV2Client_processCloseUICommand(LV2Client *handle)
 	LV2UI_close(handle->ui);
 }
 
+void LV2Client_processFocusUICommand(LV2Client *handle)
+{
+	LV2UI_focus(handle->ui);
+}
+
 void LV2Client_processUIIsOpenCommand(LV2Client *handle)
 {
 	bool value = 0;
@@ -307,12 +312,3 @@ void LV2Client_processUIIsAvailableCommand(LV2Client *handle)
 	LV2Socket_write(handle->socket, &value, 1);
 }
 
-void LV2Client_processUIIsUpdatedCommand(LV2Client *handle)
-{
-	bool value = 0;
-	LV2UI_isUpdated(handle->ui, &value);
-	if( value ) {
-		LV2UI_setUpdated(handle->ui, false);
-	}
-	LV2Socket_write(handle->socket, &value, 1);
-}
