@@ -4,11 +4,13 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include "VSTEffectUI.h"
+#include "VSTLogger.h"
 
 typedef struct {
 	Display *dpy;
 	bool editorOpen;
 	bool editorProcessRunning;
+	bool requestFocus;
 } VSTEffectHandleUI;
 
 void VSTEffectUI_malloc(VSTEffectHandle *effect)
@@ -61,6 +63,15 @@ void VSTEffectUI_closeEditor(VSTEffectHandle *effect)
 	}
 }
 
+void VSTEffectUI_focusEditor(VSTEffectHandle *effect)
+{
+	if( effect != NULL && effect->ui != NULL ) {
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
+		
+		handle->requestFocus = true;
+	}
+}
+
 void VSTEffectUI_isEditorOpen(VSTEffectHandle *effect, bool *value)
 {
 	(*value) = (effect != NULL && effect->ui != NULL ? ((VSTEffectHandleUI *) effect->ui)->editorOpen : false);
@@ -91,10 +102,6 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 			Atom windowTypeProp = XInternAtom(ui->dpy, "_NET_WM_WINDOW_TYPE", False);
 			Atom windowTypeValue = XInternAtom(ui->dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 			XChangeProperty(ui->dpy, win, windowTypeProp, XA_ATOM, 32, PropModeReplace, (unsigned char *)&windowTypeValue, 1);
-
-			Atom stateProp = XInternAtom(ui->dpy, "_NET_WM_STATE", False);
-			Atom stateValue = XInternAtom(ui->dpy, "_NET_WM_STATE_ABOVE", False);
-			XChangeProperty(ui->dpy, win, stateProp, XA_ATOM, 32, PropModeReplace, (unsigned char *) &stateValue, 1);
 
 			// ------------------------------------------------------------ //
 			char effect_name[256];
@@ -128,6 +135,10 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 			// ------------------------------------------------------------ //
 			XEvent event;
 			while(ui->editorOpen) {
+				if( ui->requestFocus) {
+					ui->requestFocus = false;
+					XRaiseWindow(ui->dpy, win);
+				}
 				if (XPending(ui->dpy)) {
 					XNextEvent(ui->dpy, &event);
 					if (event.type == ClientMessage) {

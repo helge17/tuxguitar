@@ -13,6 +13,8 @@ void VSTEffectUI_openEditor(VSTEffectHandle *effect);
 
 void VSTEffectUI_closeEditor(VSTEffectHandle *effect);
 
+void VSTEffectUI_focusEditor(VSTEffectHandle *effect);
+
 void VSTEffectUI_isEditorOpen(VSTEffectHandle *effect, bool *value);
 
 void VSTEffectUI_isEditorAvailable(VSTEffectHandle *effect, bool *value);

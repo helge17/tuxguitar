@@ -10,29 +10,30 @@
 #include "VSTEffectUI.h"
 
 #define CMD_EFFECT_SET_ACTIVE 1
-#define CMD_EFFECT_IS_UPDATED 2
-#define CMD_EFFECT_GET_NUM_PARAMS 3
-#define CMD_EFFECT_GET_NUM_INPUTS 4
-#define CMD_EFFECT_GET_NUM_OUTPUTS 5
-#define CMD_EFFECT_SET_BLOCK_SIZE 6
-#define CMD_EFFECT_SET_SAMPLE_RATE 7
-#define CMD_EFFECT_SET_PARAMETER 8
-#define CMD_EFFECT_GET_PARAMETER 9
-#define CMD_EFFECT_GET_PARAMETER_NAME 10
-#define CMD_EFFECT_GET_PARAMETER_LABEL 11
-#define CMD_EFFECT_SEND_MESSAGES 12
-#define CMD_EFFECT_PROCESS_REPLACING 13
-#define CMD_EFFECT_UI_OPEN 14
-#define CMD_EFFECT_UI_CLOSE 15
-#define CMD_EFFECT_UI_IS_OPEN 16
-#define CMD_EFFECT_UI_IS_AVAILABLE 17
-#define CMD_EFFECT_GET_CHUNK 18
-#define CMD_EFFECT_SET_CHUNK 19
-#define CMD_EFFECT_BEGIN_SET_PROGRAM 20
-#define CMD_EFFECT_END_SET_PROGRAM 21
-#define CMD_EFFECT_START_PROCESS 22
-#define CMD_EFFECT_STOP_PROCESS 23
-#define CMD_EFFECT_GET_VERSION 24
+#define CMD_EFFECT_START_PROCESS 2
+#define CMD_EFFECT_STOP_PROCESS 3
+#define CMD_EFFECT_IS_UPDATED 4
+#define CMD_EFFECT_GET_VERSION 5
+#define CMD_EFFECT_GET_NUM_PARAMS 6
+#define CMD_EFFECT_GET_NUM_INPUTS 7
+#define CMD_EFFECT_GET_NUM_OUTPUTS 8
+#define CMD_EFFECT_SET_BLOCK_SIZE 9
+#define CMD_EFFECT_SET_SAMPLE_RATE 10
+#define CMD_EFFECT_SET_PARAMETER 11
+#define CMD_EFFECT_GET_PARAMETER 12
+#define CMD_EFFECT_GET_PARAMETER_NAME 13
+#define CMD_EFFECT_GET_PARAMETER_LABEL 14
+#define CMD_EFFECT_GET_CHUNK 15
+#define CMD_EFFECT_SET_CHUNK 16
+#define CMD_EFFECT_BEGIN_SET_PROGRAM 17
+#define CMD_EFFECT_END_SET_PROGRAM 18
+#define CMD_EFFECT_SEND_MESSAGES 19
+#define CMD_EFFECT_PROCESS_REPLACING 20
+#define CMD_EFFECT_UI_IS_AVAILABLE 21
+#define CMD_EFFECT_UI_IS_OPEN 22
+#define CMD_EFFECT_UI_OPEN 23
+#define CMD_EFFECT_UI_CLOSE 24
+#define CMD_EFFECT_UI_FOCUS 25
 
 int main(int argc, char *argv[]) 
 {
@@ -94,6 +95,7 @@ void* VSTClient_processCommandsThread(void* ptr)
 		
 		ProcessCommand(handle, command);
 	}
+	return NULL;
 }
 
 void ParseArguments(VSTClientHandle *handle, int argc , char *argv[])
@@ -175,6 +177,9 @@ void ProcessCommand(VSTClientHandle *handle, int command)
 		break;
 		case CMD_EFFECT_UI_CLOSE:
 			ProcessCloseEffectUICommand(handle);
+		break;
+		case CMD_EFFECT_UI_FOCUS:
+			ProcessFocusEffectUICommand(handle);
 		break;
 		case CMD_EFFECT_UI_IS_OPEN:
 			ProcessIsEffectUIOpenCommand(handle);
@@ -326,7 +331,7 @@ void ProcessSetChunkCommand(VSTClientHandle *handle)
 	int length = 0;
 	VSTSocketRead(handle->socket, &length, 4);
 	
-	char *value = malloc(sizeof(char) * length);
+	char *value = (char *) malloc(sizeof(char) * length);
 	VSTSocketRead(handle->socket, value, length);
 	
 	VSTEffect_setChunk(handle->effect, length, &value);
@@ -397,6 +402,11 @@ void ProcessOpenEffectUICommand(VSTClientHandle *handle)
 void ProcessCloseEffectUICommand(VSTClientHandle *handle)
 {
 	VSTEffectUI_closeEditor(handle->effect);
+}
+
+void ProcessFocusEffectUICommand(VSTClientHandle *handle)
+{
+	VSTEffectUI_focusEditor(handle->effect);
 }
 
 void ProcessIsEffectUIOpenCommand(VSTClientHandle *handle)

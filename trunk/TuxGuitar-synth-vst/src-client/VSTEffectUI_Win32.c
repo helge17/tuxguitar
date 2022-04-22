@@ -6,12 +6,14 @@
 
 #define WM_CREATE_VST_UI (WM_USER + 1)
 #define WND_CLASS_NAME _T("tuxguitar-synth-vst-ui")
+#define WND_ICON_FILE _T("tuxguitar-synth-vst.ico")
 #define WND_DEFAULT_WIDTH 100
 #define WND_DEFAULT_HEIGHT 100
 
 typedef struct {
 	bool editorOpen;
 	bool editorProcessRunning;
+	bool requestFocus;
 } VSTEffectHandleUI;
 
 LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -62,6 +64,15 @@ void VSTEffectUI_closeEditor(VSTEffectHandle *effect)
 	}
 }
 
+void VSTEffectUI_focusEditor(VSTEffectHandle *effect)
+{
+	if( effect != NULL && effect->ui != NULL ) {
+		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
+		
+		handle->requestFocus = true;
+	}
+}
+
 void VSTEffectUI_isEditorOpen(VSTEffectHandle *effect, bool *value)
 {
 	(*value) = (effect != NULL && effect->ui != NULL ? ((VSTEffectHandleUI *) effect->ui)->editorOpen : false);
@@ -98,9 +109,12 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 				DWORD style = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX);
 				HWND hwnd = CreateWindow(WND_CLASS_NAME, NULL, style, 0, 0, WND_DEFAULT_WIDTH, WND_DEFAULT_HEIGHT, NULL, 0, hInstance, 0);
 				if( hwnd ) {
+					AllowSetForegroundWindow(ASFW_ANY);
 					ShowWindow(hwnd, SW_SHOW);
 					SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG) effect);
 					SendMessage(hwnd, WM_CREATE_VST_UI, 0, 0);
+					SendMessage(hwnd, WM_SETICON, ICON_BIG, LoadImage(nullptr, WND_ICON_FILE, IMAGE_ICON, 32, 32, LR_LOADFROMFILE));
+					SendMessage(hwnd, WM_SETICON, ICON_SMALL, LoadImage(nullptr, WND_ICON_FILE, IMAGE_ICON, 16, 16, LR_LOADFROMFILE));
 					
 					MSG msg;
 					int destroyed = 0;
@@ -110,6 +124,11 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 						if(!destroyed && !effect_ui->editorOpen) {
 							destroyed = 1;
 							DestroyWindow(hwnd);
+						}
+						if(!destroyed && effect_ui->requestFocus) {
+							effect_ui->requestFocus = false;
+							ShowWindow(hwnd, SW_HIDE);
+							ShowWindow(hwnd, SW_RESTORE);
 						}
 					}
 				} else {
@@ -169,7 +188,7 @@ LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM
 						height = wRect.bottom - wRect.top;
 						x = ((GetSystemMetrics(SM_CXSCREEN) - width) / 2);
 						y = ((GetSystemMetrics(SM_CYSCREEN) - height) / 2);
-						SetWindowPos (hwnd, HWND_TOPMOST, x, y, width, height, 0);
+						SetWindowPos (hwnd, HWND_TOP, x, y, width, height, 0);
 					}
 				}
 			}
