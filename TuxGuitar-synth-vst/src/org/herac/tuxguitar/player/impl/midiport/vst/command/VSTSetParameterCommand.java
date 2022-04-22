@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTSetParameterCommand extends TGAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 8;
+	public static final Integer COMMAND_ID = 11;
 	
 	private Integer index;
 	private Float value;

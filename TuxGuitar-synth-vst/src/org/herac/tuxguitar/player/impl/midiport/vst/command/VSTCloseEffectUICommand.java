@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTCloseEffectUICommand extends TGAbstractCommand<Void> {
 	
-	public static final Integer COMMAND_ID = 15;
+	public static final Integer COMMAND_ID = 24;
 	
 	public VSTCloseEffectUICommand(TGConnection connection) {
 		super(connection);

@@ -7,7 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTGetChunkCommand extends TGAbstractCommand<byte[]> {
 	
-	public static final Integer COMMAND_ID = 18;
+	public static final Integer COMMAND_ID = 15;
 	
 	public VSTGetChunkCommand(TGConnection connection) {
 		super(connection);

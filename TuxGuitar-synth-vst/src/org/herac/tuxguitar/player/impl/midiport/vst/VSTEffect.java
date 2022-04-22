@@ -7,6 +7,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGSession;
 import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTBeginSetProgramCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTCloseEffectUICommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTEndSetProgramCommand;
+import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTFocusEffectUICommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetChunkCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetNumInputsCommand;
 import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetNumOutputsCommand;
@@ -174,6 +175,12 @@ public final class VSTEffect {
 	public void closeNativeEditor(){
 		if(!this.isClosed() ){
 			new VSTCloseEffectUICommand(this.getConnection()).safeProcess();
+		}
+	}
+	
+	public void focusNativeEditor(){
+		if(!this.isClosed() ){
+			new VSTFocusEffectUICommand(this.getConnection()).safeProcess();
 		}
 	}
 	

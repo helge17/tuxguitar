@@ -9,7 +9,7 @@ import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTProcessReplacingCommand extends TGAbstractCommand<Float[][]> {
 	
-	public static final Integer COMMAND_ID = 13;
+	public static final Integer COMMAND_ID = 20;
 	
 	private float[][] inputs;
 	private float[][] outputs;
