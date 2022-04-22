@@ -77,6 +77,19 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 		}
 	}
 	
+	public void focus() {
+		if( this.processor.getTarget() != null && this.processor.getTarget().isOpen() ) {
+			if( this.processor.getTarget().getInstance().isUIAvailable() ) {
+				this.processor.getTarget().getInstance().focusUI();
+			}
+			else {
+				if (this.dialog != null && this.dialog.isOpen()) {
+					this.dialog.focus();
+				}
+			}
+		}
+	}
+	
 	public void choosePlugin(final UIWindow parent) {
 		LV2AudioProcessorChooser lv2AudioProcessorChooser = new LV2AudioProcessorChooser(this.context, this.processor.getWorld());
 		lv2AudioProcessorChooser.choose(parent, this.validator, new LV2AudioProcessorChooser.LV2AudioProcessorChooserHandler() {

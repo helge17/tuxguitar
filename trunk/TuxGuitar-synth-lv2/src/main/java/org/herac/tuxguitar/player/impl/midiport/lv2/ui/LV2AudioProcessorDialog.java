@@ -136,6 +136,12 @@ public class LV2AudioProcessorDialog implements TGEventListener {
 		TGEventManager.getInstance(this.context).removeListener(LV2ParamsEvent.EVENT_TYPE, this);
 	}
 	
+	public void focus() {
+		if( this.isOpen() ){
+			this.dialog.moveToTop();
+		}
+	}
+	
 	public void close() {
 		if( this.isOpen() ){
 			this.dialog.dispose();

@@ -7,14 +7,15 @@ import org.herac.tuxguitar.midi.synth.remote.TGRemoteException;
 import org.herac.tuxguitar.midi.synth.remote.TGRemoteHost;
 import org.herac.tuxguitar.midi.synth.remote.TGSession;
 import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessCloseUICommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessOpenUICommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessAudioCommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessCloseUICommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessFocusUICommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetControlPortValueCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetStateCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIAvailableCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIOpenCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessMidiMessageCommand;
+import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessOpenUICommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetControlPortValueCommand;
 import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetStateCommand;
 import org.herac.tuxguitar.util.TGContext;
@@ -93,6 +94,12 @@ public class LV2RemoteInstance {
 	public void closeUI(){
 		if(!this.isClosed() ){
 			new LV2ProcessCloseUICommand(this.getConnection()).safeProcess();
+		}
+	}
+	
+	public void focusUI(){
+		if(!this.isClosed() ){
+			new LV2ProcessFocusUICommand(this.getConnection()).safeProcess();
 		}
 	}
 	

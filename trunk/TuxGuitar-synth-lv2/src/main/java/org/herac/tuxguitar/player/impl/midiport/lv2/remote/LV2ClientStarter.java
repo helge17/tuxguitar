@@ -17,6 +17,7 @@ public class LV2ClientStarter implements TGClientStarter {
 	private static final String VARIABLE_LV2_PLUGIN_URI = "lv2.pluginUri";
 	
 	private TGContext context;
+	private LV2Settings settings;
 	private LV2Plugin plugin;
 	private Integer bufferSize;
 	
@@ -24,6 +25,7 @@ public class LV2ClientStarter implements TGClientStarter {
 		this.context = context;
 		this.plugin = plugin;
 		this.bufferSize = bufferSize;
+		this.settings = new LV2Settings(this.context);
 	}
 
 	@Override
@@ -47,7 +49,15 @@ public class LV2ClientStarter implements TGClientStarter {
 	}
 	
 	public String findClientCommand() {
-		return new LV2Settings(this.context).getClientCommand();
+		return this.settings.getClientCommand();
+	}
+	
+	public String getWorkingDir() {
+		String workingDir = this.settings.getWorkingDir();
+		if( workingDir != null ) {
+			return TGExpressionResolver.getInstance(this.context).resolve(workingDir);
+		}
+		return null;
 	}
 	
 	public Map<String, Object> createCommandVariables(Integer sessionId, Integer serverPort) {
