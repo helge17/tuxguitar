@@ -48,6 +48,10 @@
 								</copy>
 								
 								<chmod perm="755" file="${project.build.directory}/bundle/tuxguitar.sh" />
+								<chmod perm="755" file="${project.build.directory}/bundle/lib/*.so" />
+								<chmod perm="755" file="${project.build.directory}/bundle/lv2-client/*.sh" />
+								<chmod perm="755" file="${project.build.directory}/bundle/lv2-client/*.bin" />
+								<chmod perm="755" file="${project.build.directory}/bundle/vst-client/*.bin" />
 								<chmod perm="755" dir="${project.build.directory}/bundle/jre/bin" includes="**/*"/>
 							</target>
 						</configuration>

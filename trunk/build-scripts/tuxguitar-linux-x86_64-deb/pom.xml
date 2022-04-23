@@ -46,7 +46,6 @@
 								
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lib/*.so" perm="775" />
-								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.sh" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.bin" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/vst-client/*.bin" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/DEBIAN/postinst" perm="755" />
