@@ -186,6 +186,29 @@ void LV2UI_free(LV2UI **handle)
 	}
 }
 
+void LV2UI_isResizable(LV2UI *handle, bool* resizable)
+{
+	(*resizable) = true;
+
+	if( handle != NULL && handle->supported_ui != NULL ){
+		const LilvNode* s   = lilv_ui_get_uri(handle->supported_ui);
+		LilvNode*       p   = lilv_new_uri(handle->instance->plugin->world->lilvWorld, LV2_CORE__optionalFeature);
+		LilvNode*       fs  = lilv_new_uri(handle->instance->plugin->world->lilvWorld, LV2_UI__fixedSize);
+		LilvNode*       nrs = lilv_new_uri(handle->instance->plugin->world->lilvWorld, LV2_UI__noUserResize);
+
+		LilvNodes* fs_matches = lilv_world_find_nodes(handle->instance->plugin->world->lilvWorld, s, p, fs);
+		LilvNodes* nrs_matches = lilv_world_find_nodes(handle->instance->plugin->world->lilvWorld, s, p, nrs);
+
+		(*resizable) = (!fs_matches && !nrs_matches);
+
+		lilv_nodes_free(nrs_matches);
+		lilv_nodes_free(fs_matches);
+		lilv_node_free(nrs);
+		lilv_node_free(fs);
+		lilv_node_free(p);
+	}
+}
+
 void LV2UI_isAvailable(LV2UI *handle, bool* available)
 {
 	(*available) = false;
@@ -350,8 +373,24 @@ void LV2UI_process(LV2UI *handle)
 				lilv_free(bundlePath);
 			}
 			if(!handle->window->isVisible()) {
+				bool resizable = false;
+				LV2UI_isResizable(handle, &resizable);
+				if( resizable ){
+					QWidget* widget = handle->window->centralWidget();
+					widget->show();
+					widget->setMinimumSize(widget->width(), widget->height());
+					widget->setMaximumSize(widget->width(), widget->height());
+					handle->window->adjustSize();
+					handle->window->setFixedSize(handle->window->width(), handle->window->height());
+				}
 				handle->window->show();
-
+				
+				QPoint screenCenter = QGuiApplication::primaryScreen()->geometry().center();
+				QSize windowSize = handle->window->size();
+				if( windowSize.width() > 0 && windowSize.height() > 0 ) {
+					handle->window->move(screenCenter.x() - (windowSize.width() / 2), screenCenter.y() - (windowSize.height() / 2));
+				}
+				
 				LV2UI_processPortEvents(handle, FLOW_UNKNOWN);
 			}
 			if( handle->shouldRefresh ) {

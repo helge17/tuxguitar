@@ -2,6 +2,7 @@ Package: tuxguitar
 Version: SNAPSHOT-linux-i386
 Architecture: i386
 Depends: openjdk-16-jre | openjdk-14-jre | openjdk-13-jre | openjdk-11-jre | openjdk-9-jre | openjdk-8-jre | openjdk-7-jre | openjdk-6-jre | sun-java6-jre | sun-java5-jre | java-gcj-compat-headless | java-virtual-machine
+Recommends: guitarix-lv2
 Priority: optional
 Section: Multimedia
 Maintainer: Julian Casadesus <julian@casadesus.com.ar>
