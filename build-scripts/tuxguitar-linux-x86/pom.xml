@@ -414,7 +414,6 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-synth-vst-linux-x86/target/build" />
 										</copy>
-										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.sh" perm="775" />
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="775" />
 										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.bin" perm="775" />
 										
