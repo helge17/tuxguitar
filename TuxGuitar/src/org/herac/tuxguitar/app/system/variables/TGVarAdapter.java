@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.app.system.variables;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
@@ -8,23 +10,26 @@ import org.herac.tuxguitar.util.TGExpressionResolver;
 public class TGVarAdapter {
 
 	public static void initialize(TGContext context) {
-		TGExpressionResolver tgExpressionResolver = TGExpressionResolver.getInstance(context);
-		tgExpressionResolver.setVariable(TGVarAppName.NAME, new TGVarAppName());
-		tgExpressionResolver.setVariable(TGVarAppVersion.NAME, new TGVarAppVersion());
-		tgExpressionResolver.setVariable(TGVarFileName.NAME, new TGVarFileName(context));
-		tgExpressionResolver.setVariable(TGVarFilePath.NAME, new TGVarFilePath(context));
-		tgExpressionResolver.setVariable(TGVarSongName.NAME, new TGVarSongName(context));
-		tgExpressionResolver.setVariable(TGVarSongAuthor.NAME, new TGVarSongAuthor(context));
-		tgExpressionResolver.setVariable(TGVarSongAlbum.NAME, new TGVarSongAlbum(context));
-		tgExpressionResolver.setVariable(TGVarSongArtist.NAME, new TGVarSongArtist(context));
-		tgExpressionResolver.setVariable(TGHomePath.NAME, new TGHomePath());
-		tgExpressionResolver.setVariable(TGUserSharePath.NAME, new TGUserSharePath());
-		tgExpressionResolver.setVariable(TGConfigPath.NAME, new TGConfigPath());
-		tgExpressionResolver.setVariable(TGPluginConfigPath.NAME, new TGPluginConfigPath());
+		Map<String, Object> variables = new HashMap<String, Object>();
+		
+		variables.put(TGVarAppName.NAME, new TGVarAppName());
+		variables.put(TGVarAppVersion.NAME, new TGVarAppVersion());
+		variables.put(TGVarFileName.NAME, new TGVarFileName(context));
+		variables.put(TGVarFilePath.NAME, new TGVarFilePath(context));
+		variables.put(TGVarSongName.NAME, new TGVarSongName(context));
+		variables.put(TGVarSongAuthor.NAME, new TGVarSongAuthor(context));
+		variables.put(TGVarSongAlbum.NAME, new TGVarSongAlbum(context));
+		variables.put(TGVarSongArtist.NAME, new TGVarSongArtist(context));
+		variables.put(TGHomePath.NAME, new TGHomePath());
+		variables.put(TGUserSharePath.NAME, new TGUserSharePath());
+		variables.put(TGConfigPath.NAME, new TGConfigPath());
+		variables.put(TGPluginConfigPath.NAME, new TGPluginConfigPath());
 		
 		List<TGVarColorAppearance> tgVarColorAppearances = TGVarColorAppearance.createVars(context);
 		for(TGVarColorAppearance tgVarColorAppearance : tgVarColorAppearances) {
-			tgExpressionResolver.setVariable(tgVarColorAppearance.getName(), tgVarColorAppearance);
+			variables.put(tgVarColorAppearance.getName(), tgVarColorAppearance);
 		}
+		
+		TGExpressionResolver.getInstance(context).addResolver(new TGExpressionResolver.MapPropertyResolver(variables));
 	}
 }

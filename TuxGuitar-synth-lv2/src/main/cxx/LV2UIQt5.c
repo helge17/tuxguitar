@@ -357,7 +357,6 @@ void LV2UI_process(LV2UI *handle)
 					handle->window->setWindowIcon(QIcon("./tuxguitar-synth-lv2.png"));
 					handle->window->setWindowTitle(lilv_node_as_string(pluginName));
 					handle->window->setCentralWidget(static_cast<QWidget*>(suil_instance_get_widget(handle->suilInstance)));
-					//handle->window->setWindowFlags(Qt::WindowStaysOnTopHint);
 					handle->refreshRate = MIN(60, (float) QGuiApplication::primaryScreen()->refreshRate());
 				}
 				else {
