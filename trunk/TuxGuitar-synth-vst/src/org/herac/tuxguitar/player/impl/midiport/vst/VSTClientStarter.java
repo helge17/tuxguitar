@@ -33,7 +33,7 @@ public class VSTClientStarter implements TGClientStarter {
 				
 				String[] cmdarray = command.split(",");
 				for(int i = 0 ; i < cmdarray.length; i ++) {
-					cmdarray[i] = expressionResolver.resolve(cmdarray[i], variables);
+					cmdarray[i] = expressionResolver.resolve(cmdarray[i], new TGExpressionResolver.MapPropertyResolver(variables));
 				}
 				return cmdarray;
 			}
