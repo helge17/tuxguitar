@@ -70,6 +70,16 @@ void LV2Feature_init(LV2Feature *handle, LV2Instance *instance)
 		}
 		lilv_nodes_free(requiredFeatures);
 		///////////////////////////////////////////////////////////////////////////////////////////////
+		
+		/// Load data access handle ///
+		LV2_Extension_Data_Feature* dataAccess = (LV2_Extension_Data_Feature *) LV2Feature_getFeature(handle, LV2_DATA_ACCESS_URI)->data;
+		dataAccess->data_access = lilv_instance_get_descriptor(instance->lilvInstance)->extension_data;
+
+		/// Load instance access handle ///
+		LV2Feature_getFeature(handle, LV2_INSTANCE_ACCESS_URI)->data = lilv_instance_get_handle(instance->lilvInstance);
+
+		/// start worker ///
+		LV2Worker_start(handle->worker, instance);
 
 		/// Load default state ///
 		LilvNode* state_threadSafeRestore = lilv_new_uri(instance->plugin->world->lilvWorld, LV2_STATE__threadSafeRestore);
@@ -86,16 +96,6 @@ void LV2Feature_init(LV2Feature *handle, LV2Instance *instance)
 			}
 		}
 		lilv_node_free(state_threadSafeRestore);
-		
-		/// Load data access handle ///
-		LV2_Extension_Data_Feature* dataAccess = (LV2_Extension_Data_Feature *) LV2Feature_getFeature(handle, LV2_DATA_ACCESS_URI)->data;
-		dataAccess->data_access = lilv_instance_get_descriptor(instance->lilvInstance)->extension_data;
-
-		/// Load instance access handle ///
-		LV2Feature_getFeature(handle, LV2_INSTANCE_ACCESS_URI)->data = lilv_instance_get_handle(instance->lilvInstance);
-
-		/// start worker ///
-		LV2Worker_start(handle->worker, instance);
 	}
 }
 
@@ -184,11 +184,6 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 			optionsFeature->data = malloc(sizeof(options));
 			memcpy(optionsFeature->data, options, sizeof(options));
 
-			// idle feature
-			LV2_Feature* idleFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
-			idleFeature->URI = LV2_UI__idleInterface;
-			idleFeature->data = NULL;
-
 			// data-access feature
 			LV2_Extension_Data_Feature* dataAccess = (LV2_Extension_Data_Feature *) malloc(sizeof(LV2_Extension_Data_Feature));
 			dataAccess->data_access = NULL;
@@ -202,9 +197,19 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 			instanceAccessFeature->URI = LV2_INSTANCE_ACCESS_URI;
 			instanceAccessFeature->data = NULL;
 
+			// ui parent feature
+			LV2_Feature* uiParentFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
+			uiParentFeature->URI = LV2_UI__parent;
+			uiParentFeature->data = NULL;
+
+			// idle feature
+			LV2_Feature* idleFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
+			idleFeature->URI = LV2_UI__idleInterface;
+			idleFeature->data = NULL;
+
 			// feature list
 			LV2Int32 index = 0;
-			handle->features = (LV2_Feature**) malloc((sizeof(LV2_Feature *) * 12));
+			handle->features = (LV2_Feature**) malloc((sizeof(LV2_Feature *) * 13));
 			handle->features[index ++] = loadDefaultStateFeature;
 			handle->features[index ++] = powerOf2BlockLengthFeature;
 			handle->features[index ++] = fixedBlockLengthFeature;
@@ -213,9 +218,10 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 			handle->features[index ++] = unmapFeature;
 			handle->features[index ++] = scheduleFeature;
 			handle->features[index ++] = optionsFeature;
-			handle->features[index ++] = idleFeature;
 			handle->features[index ++] = dataAccessFeature;
 			handle->features[index ++] = instanceAccessFeature;
+			handle->features[index ++] = uiParentFeature;
+			handle->features[index ++] = idleFeature;
 			handle->features[index ++] = NULL;
 		}
 		return handle->features;
