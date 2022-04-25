@@ -340,6 +340,9 @@ void LV2UI_process(LV2UI *handle)
 				handle->suilHost = suil_host_new(LV2UI_setPortData, LV2UI_getPortIndex, NULL, NULL);
 				
 				if( handle->suilHost != NULL ) {
+					handle->window = new LV2MainWindow(handle);
+					LV2Feature_getFeature(handle->feature, LV2_UI__parent)->data = handle->window;
+
 					handle->suilInstance = suil_instance_new(
 						handle->suilHost,
 						handle,
@@ -353,7 +356,6 @@ void LV2UI_process(LV2UI *handle)
 				}
 
 				if( handle->suilInstance != NULL ) {
-					handle->window = new LV2MainWindow(handle);
 					handle->window->setWindowIcon(QIcon("./tuxguitar-synth-lv2.png"));
 					handle->window->setWindowTitle(lilv_node_as_string(pluginName));
 					handle->window->setCentralWidget(static_cast<QWidget*>(suil_instance_get_widget(handle->suilInstance)));
@@ -362,6 +364,7 @@ void LV2UI_process(LV2UI *handle)
 				else {
 					handle->application->exit();
 					handle->application = NULL;
+					handle->window = NULL;
 					handle->supported_ui = NULL;
 					handle->open = false;
 					return;
@@ -378,7 +381,6 @@ void LV2UI_process(LV2UI *handle)
 					QWidget* widget = handle->window->centralWidget();
 					widget->show();
 					widget->setMinimumSize(widget->width(), widget->height());
-					widget->setMaximumSize(widget->width(), widget->height());
 					handle->window->adjustSize();
 					handle->window->setFixedSize(handle->window->width(), handle->window->height());
 				}
