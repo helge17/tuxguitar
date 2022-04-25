@@ -45,6 +45,8 @@ int main(int argc, char *argv[])
 		LV2UI_malloc(&handle->ui, handle->feature, handle->instance, handle->lock);
 		LV2Client_createBuffers(handle);
 		LV2Feature_init(handle->feature, handle->instance);
+		LV2Instance_setDefaultState(handle->instance);
+
 		if( handle->plugin != NULL && handle->plugin->lilvPlugin != NULL ) {
 			pthread_t thread;
 			if( pthread_create(&thread, NULL, LV2Client_processCommandsThread, handle)) {

@@ -21,6 +21,8 @@ void LV2Instance_getState(LV2Instance *handle, const char** value);
 
 void LV2Instance_setState(LV2Instance *handle, const char* value);
 
+void LV2Instance_setDefaultState(LV2Instance *handle);
+
 void LV2Instance_getControlPortValue(LV2Instance *handle, LV2Int32 index, float *value);
 
 void LV2Instance_setControlPortValue(LV2Instance *handle, LV2Int32 index, float value);

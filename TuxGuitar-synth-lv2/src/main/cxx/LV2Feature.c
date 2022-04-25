@@ -80,22 +80,6 @@ void LV2Feature_init(LV2Feature *handle, LV2Instance *instance)
 
 		/// start worker ///
 		LV2Worker_start(handle->worker, instance);
-
-		/// Load default state ///
-		LilvNode* state_threadSafeRestore = lilv_new_uri(instance->plugin->world->lilvWorld, LV2_STATE__threadSafeRestore);
-		bool hasStateInterface = lilv_plugin_has_feature(instance->plugin->lilvPlugin, state_threadSafeRestore);
-		if( hasStateInterface ) {
-			LV2_Feature* mapFeature = LV2Feature_getFeature(handle, LV2_URID__map);
-			LilvState* state = lilv_state_new_from_world(
-					instance->plugin->world->lilvWorld, 
-					(LV2_URID_Map *) mapFeature->data, 
-					lilv_plugin_get_uri(instance->plugin->lilvPlugin));
-
-			if (state ) {
-				lilv_state_restore(state, instance->lilvInstance, NULL, NULL, 0, NULL);
-			}
-		}
-		lilv_node_free(state_threadSafeRestore);
 	}
 }
 
