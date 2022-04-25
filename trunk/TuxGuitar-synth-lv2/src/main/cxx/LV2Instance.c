@@ -114,6 +114,26 @@ void LV2Instance_setState(LV2Instance *handle, const char* value)
 	}
 }
 
+void LV2Instance_setDefaultState(LV2Instance *handle)
+{
+	if( handle != NULL && handle->lilvInstance != NULL ) {
+		LilvNode* state_threadSafeRestore = lilv_new_uri(handle->plugin->world->lilvWorld, LV2_STATE__threadSafeRestore);
+		bool hasStateInterface = lilv_plugin_has_feature(handle->plugin->lilvPlugin, state_threadSafeRestore);
+		if( hasStateInterface ) {
+			LV2_Feature* mapFeature = LV2Feature_getFeature(handle->feature, LV2_URID__map);
+			LilvState* state = lilv_state_new_from_world(
+					handle->plugin->world->lilvWorld, 
+					(LV2_URID_Map *) mapFeature->data, 
+					lilv_plugin_get_uri(handle->plugin->lilvPlugin));
+
+			if (state ) {
+				lilv_state_restore(state, handle->lilvInstance, NULL, NULL, 0, NULL);
+			}
+		}
+		lilv_node_free(state_threadSafeRestore);
+	}
+}
+
 void LV2Instance_getControlPortValue(LV2Instance *handle, LV2Int32 index, float* value)
 {
 	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {

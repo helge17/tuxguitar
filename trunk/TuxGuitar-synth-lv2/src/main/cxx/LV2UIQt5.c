@@ -313,13 +313,22 @@ void LV2UI_processPortEvents(LV2UI *handle, LV2PortFlow flow)
 
 void LV2UI_processAudio(LV2UI *handle)
 {
-	if( handle != NULL && handle->window != NULL && handle->window->isVisible() ) {
-		if( handle->instance->plugin != NULL && handle->instance->plugin->ports != NULL && handle->suilInstance != NULL ) {
-			handle->frameDelta += handle->instance->config->bufferSize;
-			if( handle->frameDelta > (handle->instance->config->sampleRate / handle->refreshRate) ) {
-				handle->frameDelta = 0;
-				handle->shouldRefresh = true;
+	if( handle != NULL ) {
+		if( handle->window != NULL && handle->window->isVisible() ) {
+			if( handle->instance->plugin != NULL && handle->instance->plugin->ports != NULL && handle->suilInstance != NULL ) {
+				handle->frameDelta += handle->instance->config->bufferSize;
+				if( handle->frameDelta > (handle->instance->config->sampleRate / handle->refreshRate) ) {
+					handle->frameDelta = 0;
+					handle->shouldRefresh = true;
+				}
 			}
+		} else {
+			// Otherwise clear the buffer.
+			LV2_PLUGIN_PORT_BUFFER_FOREACH(handle->instance, TYPE_EVENT, FLOW_OUT, workBuffer, connectionBuffer, {
+				LV2_ATOM_SEQUENCE_FOREACH((LV2_Atom_Sequence *) connectionBuffer, ev) {
+					((LV2_Atom_Sequence *) workBuffer)->atom.size = 0;
+				}
+			})
 		}
 	}
 }
@@ -375,13 +384,14 @@ void LV2UI_process(LV2UI *handle)
 				lilv_free(bundlePath);
 			}
 			if(!handle->window->isVisible()) {
+				QWidget* widget = handle->window->centralWidget();
+				widget->show();
+				widget->setMinimumSize(widget->width(), widget->height());
+				handle->window->adjustSize();
+				
 				bool resizable = false;
 				LV2UI_isResizable(handle, &resizable);
-				if( resizable ){
-					QWidget* widget = handle->window->centralWidget();
-					widget->show();
-					widget->setMinimumSize(widget->width(), widget->height());
-					handle->window->adjustSize();
+				if(!resizable ){
 					handle->window->setFixedSize(handle->window->width(), handle->window->height());
 				}
 				handle->window->show();
