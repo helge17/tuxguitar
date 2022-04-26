@@ -65,6 +65,23 @@ JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 	return jvalue;
 }
 
+JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getCategory(JNIEnv *env, jobject obj, jlong ptr)
+{
+	jstring jvalue = NULL;
+	
+	LV2Plugin *handle = NULL;
+	memcpy(&handle, &ptr, sizeof(handle));
+	if( handle != NULL ){
+		const char* value = NULL;
+		LV2Plugin_getCategory(handle, &value);
+		if( value != NULL ) {
+			jvalue = env->NewStringUTF(value);
+		}
+	}
+	
+	return jvalue;
+}
+
 JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getAudioInputPortCount(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jint value = 0;

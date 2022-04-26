@@ -9,6 +9,8 @@ void LV2Plugin_getUri(LV2Plugin *handle, const char** value);
 
 void LV2Plugin_getName(LV2Plugin *handle, const char** value);
 
+void LV2Plugin_getCategory(LV2Plugin *handle, const char** value);
+
 void LV2Plugin_getPortIndex(LV2Plugin *handle, LV2Int32* index, const char* symbol);
 
 void LV2Plugin_getPortCount(LV2Plugin *handle, LV2PortType portType, LV2PortFlow portFlow, LV2Int32* count);

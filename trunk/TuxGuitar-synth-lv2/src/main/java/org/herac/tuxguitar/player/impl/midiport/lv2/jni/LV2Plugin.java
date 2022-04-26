@@ -34,6 +34,13 @@ public class LV2Plugin extends LV2Object {
 		return null;
 	}
 
+	public String getCategory(){
+		if( this.isInitialized()) {
+			return this.getCategory(this.getInstance());
+		}
+		return null;
+	}
+	
 	public int getAudioInputPortCount() {
 		if( this.isInitialized()) {
 			return this.getAudioInputPortCount(this.getInstance());
@@ -80,6 +87,8 @@ public class LV2Plugin extends LV2Object {
 	private native String getUri(long instance);
 	
 	private native String getName(long instance);
+	
+	private native String getCategory(long instance);
 	
 	private native int getAudioInputPortCount(long instance);
 	

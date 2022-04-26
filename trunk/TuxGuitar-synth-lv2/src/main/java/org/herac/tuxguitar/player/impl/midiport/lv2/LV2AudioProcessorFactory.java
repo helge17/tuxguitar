@@ -16,7 +16,7 @@ public class LV2AudioProcessorFactory implements TGAudioProcessorFactory {
 	}
 	
 	public String getType() {
-		return "LV2";
+		return LV2Module.AUDIO_TYPE;
 	}
 	
 	public TGAudioProcessor createProcessor() {

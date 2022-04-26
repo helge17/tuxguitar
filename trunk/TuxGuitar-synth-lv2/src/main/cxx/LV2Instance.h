@@ -17,6 +17,8 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 
 void LV2Instance_free(LV2Instance **handle);
 
+void LV2Instance_reloadState(LV2Instance *handle);
+
 void LV2Instance_getState(LV2Instance *handle, const char** value);
 
 void LV2Instance_setState(LV2Instance *handle, const char* value);

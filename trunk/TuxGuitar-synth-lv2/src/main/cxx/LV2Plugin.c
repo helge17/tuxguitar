@@ -99,6 +99,18 @@ void LV2Plugin_getName(LV2Plugin *handle, const char** value)
 	}
 }
 
+void LV2Plugin_getCategory(LV2Plugin *handle, const char** value)
+{
+	(*value) = NULL;
+
+	if( handle != NULL && handle->lilvPlugin != NULL ){
+		const LilvPluginClass* pluginClass = lilv_plugin_get_class(handle->lilvPlugin);
+		const LilvNode* pluginClassLabel = lilv_plugin_class_get_label(pluginClass);
+
+		(*value) = lilv_node_as_string(pluginClassLabel);
+	}
+}
+
 void LV2Plugin_getPortIndex(LV2Plugin *handle, LV2Int32* index, const char* symbol) {
 	(*index) = -1;
 	

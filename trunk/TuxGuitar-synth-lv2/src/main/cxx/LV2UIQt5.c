@@ -186,29 +186,6 @@ void LV2UI_free(LV2UI **handle)
 	}
 }
 
-void LV2UI_isResizable(LV2UI *handle, bool* resizable)
-{
-	(*resizable) = true;
-
-	if( handle != NULL && handle->supported_ui != NULL ){
-		const LilvNode* s   = lilv_ui_get_uri(handle->supported_ui);
-		LilvNode*       p   = lilv_new_uri(handle->instance->plugin->world->lilvWorld, LV2_CORE__optionalFeature);
-		LilvNode*       fs  = lilv_new_uri(handle->instance->plugin->world->lilvWorld, LV2_UI__fixedSize);
-		LilvNode*       nrs = lilv_new_uri(handle->instance->plugin->world->lilvWorld, LV2_UI__noUserResize);
-
-		LilvNodes* fs_matches = lilv_world_find_nodes(handle->instance->plugin->world->lilvWorld, s, p, fs);
-		LilvNodes* nrs_matches = lilv_world_find_nodes(handle->instance->plugin->world->lilvWorld, s, p, nrs);
-
-		(*resizable) = (!fs_matches && !nrs_matches);
-
-		lilv_nodes_free(nrs_matches);
-		lilv_nodes_free(fs_matches);
-		lilv_node_free(nrs);
-		lilv_node_free(fs);
-		lilv_node_free(p);
-	}
-}
-
 void LV2UI_isAvailable(LV2UI *handle, bool* available)
 {
 	(*available) = false;
@@ -388,12 +365,7 @@ void LV2UI_process(LV2UI *handle)
 				widget->show();
 				widget->setMinimumSize(widget->width(), widget->height());
 				handle->window->adjustSize();
-				
-				bool resizable = false;
-				LV2UI_isResizable(handle, &resizable);
-				if(!resizable ){
-					handle->window->setFixedSize(handle->window->width(), handle->window->height());
-				}
+				handle->window->setFixedSize(handle->window->width(), handle->window->height());
 				handle->window->show();
 				
 				QPoint screenCenter = QGuiApplication::primaryScreen()->geometry().center();
@@ -403,6 +375,7 @@ void LV2UI_process(LV2UI *handle)
 				}
 				
 				LV2UI_processPortEvents(handle, FLOW_UNKNOWN);
+				LV2Instance_reloadState(handle->instance);
 			}
 			if( handle->shouldRefresh ) {
 				handle->shouldRefresh = false;
