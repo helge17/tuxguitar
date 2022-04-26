@@ -18,7 +18,7 @@ public class LV2AudioProcessorUIFactory implements TGAudioProcessorUIFactory {
 	}
 	
 	public String getType() {
-		return "LV2";
+		return LV2Module.AUDIO_TYPE;
 	}
 	
 	public TGAudioProcessorUI create(TGAudioProcessor processor, TGAudioProcessorUICallback callback) {

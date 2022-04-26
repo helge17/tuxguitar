@@ -41,6 +41,14 @@ JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 
 /*
  * Class:     org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin
+ * Method:    getCategory
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getCategory
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin
  * Method:    getAudioInputPortCount
  * Signature: (J)I
  */

@@ -77,6 +77,29 @@ void LV2Instance_free(LV2Instance **handle)
 	}
 }
 
+void LV2Instance_reloadState(LV2Instance *handle)
+{
+	if( handle != NULL && handle->lilvInstance != NULL ) {
+		LV2_URID_Map* map = (LV2_URID_Map *) LV2Feature_getFeature(handle->feature, LV2_URID__map)->data;
+		LilvState* const state = lilv_state_new_from_instance(
+			handle->plugin->lilvPlugin, 
+			handle->lilvInstance, 
+			map,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE,
+			LV2Feature_getFeatures(handle->feature));
+
+		if( state != NULL ) {
+			lilv_state_restore(state, handle->lilvInstance, NULL, NULL, 0, NULL);
+		}
+	}
+}
+
 void LV2Instance_getState(LV2Instance *handle, const char** value)
 {
 	(*value) = NULL;

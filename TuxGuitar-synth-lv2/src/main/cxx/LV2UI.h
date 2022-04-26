@@ -7,8 +7,6 @@ void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, LV
 
 void LV2UI_free(LV2UI **handle);
 
-void LV2UI_isResizable(LV2UI *handle, bool* resizable);
-
 void LV2UI_isAvailable(LV2UI *handle, bool* available);
 
 void LV2UI_isOpen(LV2UI *handle, bool *open);
