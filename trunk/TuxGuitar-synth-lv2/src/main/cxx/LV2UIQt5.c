@@ -81,8 +81,6 @@ class LV2MainWindow : public QMainWindow {
 
 void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buffer_size, uint32_t protocol, const void* buffer) 
 {
-	LV2Logger_log("LV2UI_setPortData buffer_size %d\n", buffer_size);
-
 	LV2UI *handle = (LV2UI *) controller;
 	if( handle != NULL && handle->instance != NULL && !handle->ignoreEvents) {
 		LV2_URID eventTransferURID = LV2Feature_map(handle->feature, LV2_ATOM__eventTransfer);
