@@ -7,7 +7,7 @@ QT5_INCLUDE_PATH?=`pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags`
 ###############################################
 CXX?=g++
 RM?=rm -f
-CFLAGS?=-I$(LILV_INCLUDE_PATH) -I$(SUIl_INCLUDE_PATH) -I$(QT5_INCLUDE_PATH)  -fPIC -fpermissive
+CFLAGS?=-I$(LILV_INCLUDE_PATH) -I$(SUIl_INCLUDE_PATH) -I$(QT5_INCLUDE_PATH)  -fPIC -fpermissive -g
 LDFLAGS?=
 LDLIBS?=-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`
 LDPATH?=-L/usr/lib
