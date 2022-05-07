@@ -54,6 +54,18 @@ public class UIRectangle {
 		return (this.size != null ? this.size.getHeight() : 0);
 	}
 	
+	public void copyFrom(UIRectangle rectangle) {
+		this.position.copyFrom(rectangle.getPosition());
+		this.size.copyFrom(rectangle.getSize());
+	}
+	
+	public UIRectangle clone() {
+		UIRectangle uiRectangle = new UIRectangle();
+		uiRectangle.copyFrom(this);
+		
+		return uiRectangle;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if( obj instanceof UIRectangle ) {

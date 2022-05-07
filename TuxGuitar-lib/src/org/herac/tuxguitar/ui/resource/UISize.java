@@ -30,6 +30,18 @@ public class UISize {
 		this.height = height;
 	}
 	
+	public void copyFrom(UISize size) {
+		this.setWidth(size.getWidth());
+		this.setHeight(size.getHeight());
+	}
+	
+	public UISize clone() {
+		UISize uiSize = new UISize();
+		uiSize.copyFrom(this);
+		
+		return uiSize;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if( obj instanceof UISize ) {
