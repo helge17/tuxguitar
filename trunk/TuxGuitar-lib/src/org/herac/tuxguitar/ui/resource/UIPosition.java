@@ -30,6 +30,18 @@ public class UIPosition {
 		this.y = y;
 	}
 	
+	public void copyFrom(UIPosition position) {
+		this.setX(position.getX());
+		this.setY(position.getY());
+	}
+	
+	public UIPosition clone() {
+		UIPosition uiPosition = new UIPosition();
+		uiPosition.copyFrom(this);
+		
+		return uiPosition;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if( obj instanceof UIPosition ) {
