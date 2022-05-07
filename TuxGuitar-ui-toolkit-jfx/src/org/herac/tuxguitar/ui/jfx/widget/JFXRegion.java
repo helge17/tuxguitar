@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.event.UIResizeListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
 import org.herac.tuxguitar.ui.jfx.property.JFXBackgroundProperty;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+
+import javafx.scene.layout.Region;
 
 public abstract class JFXRegion<T extends Region> extends JFXNode<T> {
 	

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.sun.javafx.css.converters.ColorConverter;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.WritableValue;
 import javafx.css.CssMetaData;
+import javafx.css.StyleConverter;
 import javafx.css.Styleable;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
@@ -69,7 +68,7 @@ public class JFXStyleableColor extends Parent {
 
 	private static class StyleableProperties {
 
-		private static final CssMetaData<JFXStyleableColor, Color> COLOR = new CssMetaData<JFXStyleableColor, Color>("-color", ColorConverter.getInstance(), DEFAULT_COLOR) {
+		private static final CssMetaData<JFXStyleableColor, Color> COLOR = new CssMetaData<JFXStyleableColor, Color>("-color", StyleConverter.getColorConverter(), DEFAULT_COLOR) {
 
 			@Override
 			public boolean isSettable(JFXStyleableColor n) {
