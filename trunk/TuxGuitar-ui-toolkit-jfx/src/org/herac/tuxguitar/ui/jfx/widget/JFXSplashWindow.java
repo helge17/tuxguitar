@@ -5,8 +5,6 @@ import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UISplashWindow;
 
-import com.sun.javafx.tk.Toolkit;
-
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -76,9 +74,9 @@ public class JFXSplashWindow extends JFXComponent<Stage> implements UISplashWind
 		
 		Platform.runLater(new Runnable() {
 			public void run() {
-				Toolkit.getToolkit().exitNestedEventLoop(key, null);
+				Platform.exitNestedEventLoop(key, null);
 			}
 		});
-		Toolkit.getToolkit().enterNestedEventLoop(key);
+		Platform.enterNestedEventLoop(key);
 	}
 }

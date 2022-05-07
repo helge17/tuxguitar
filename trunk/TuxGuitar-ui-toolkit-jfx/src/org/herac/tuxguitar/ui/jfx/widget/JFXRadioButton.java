@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.ui.jfx.widget;
 
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
 import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
+
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 
 public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioButton {
 	
