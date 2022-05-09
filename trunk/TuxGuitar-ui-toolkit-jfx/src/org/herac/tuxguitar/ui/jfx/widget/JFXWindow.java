@@ -257,19 +257,21 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	}
 	
 	public void computeMargin() {
-		float stateWidth = (float) this.getStage().getWidth();
-		float stateHeight = (float) this.getStage().getHeight();
-		
-		float sceneX = (float) this.getStage().getScene().getX();
-		float sceneY = (float) this.getStage().getScene().getY();
-		float sceneWidth = (float) this.getStage().getScene().getWidth();
-		float sceneHeight = (float) this.getStage().getScene().getHeight();
-
-		if( sceneWidth > 1 && stateWidth >= sceneWidth  && sceneHeight > 1 && stateHeight >= sceneHeight) {
-			this.margin.setLeft(sceneX);
-			this.margin.setTop(sceneY);
-			this.margin.setRight(stateWidth - sceneWidth - sceneX);
-			this.margin.setBottom(stateHeight - sceneHeight - sceneY);
+		if( this.margin.equals(new UIInset())) {
+			float stateWidth = (float) this.getStage().getWidth();
+			float stateHeight = (float) this.getStage().getHeight();
+			
+			float sceneX = (float) this.getStage().getScene().getX();
+			float sceneY = (float) this.getStage().getScene().getY();
+			float sceneWidth = (float) this.getStage().getScene().getWidth();
+			float sceneHeight = (float) this.getStage().getScene().getHeight();
+	
+			if( sceneWidth > 1 && stateWidth >= sceneWidth  && sceneHeight > 1 && stateHeight >= sceneHeight) {
+				this.margin.setLeft(sceneX);
+				this.margin.setTop(sceneY);
+				this.margin.setRight(stateWidth - sceneWidth - sceneX);
+				this.margin.setBottom(stateHeight - sceneHeight - sceneY);
+			}
 		}
 	}
 	
