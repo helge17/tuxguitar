@@ -75,13 +75,15 @@ public class GPXDocumentParser {
 	}
 	
 	private void parseTracks(TGSong tgSong){
+		TGSongManager tgSongManager = new TGSongManager(this.factory);
+		
 		List<GPXTrack> tracks = this.document.getTracks();
 		for( int i = 0 ; i < tracks.size(); i ++ ){
 			GPXTrack gpTrack = (GPXTrack) this.document.getTracks().get(i);
 			
 			TGChannel tgChannel = this.factory.newChannel();
-			tgChannel.setProgram((short)gpTrack.getGmProgram());
 			tgChannel.setBank( gpTrack.getGmChannel1() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+			tgChannel.setProgram( tgChannel.isPercussionChannel() ? (short) 0 : (short) gpTrack.getGmProgram());
 			
 			TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
 			gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
@@ -104,7 +106,7 @@ public class GPXDocumentParser {
 			}
 			if( tgChannel.getChannelId() <= 0 ){
 				tgChannel.setChannelId( tgSong.countChannels() + 1 );
-				tgChannel.setName(("#" + tgChannel.getChannelId()));
+				tgChannel.setName(tgSongManager.createChannelNameFromProgram(tgSong, tgChannel));
 				tgChannel.addParameter(gmChannel1Param);
 				tgChannel.addParameter(gmChannel2Param);
 				tgSong.addChannel(tgChannel);
