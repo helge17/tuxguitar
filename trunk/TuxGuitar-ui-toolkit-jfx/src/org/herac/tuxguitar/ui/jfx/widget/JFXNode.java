@@ -113,15 +113,6 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	}
 
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
-		this.computePackedSize(fixedWidth, fixedHeight, true);
-	}
-	
-	public void computePackedSize(Float fixedWidth, Float fixedHeight, boolean doSnapshot) {
-		if(!this.snapshotDone && doSnapshot) {
-			this.snapshotDone = true;
-			this.getControl().snapshot(null, null);
-		}
-		
 		double wHint = (fixedWidth != null ? fixedWidth : Region.USE_COMPUTED_SIZE);
 		double hHint = (fixedHeight != null ? fixedHeight : Region.USE_COMPUTED_SIZE);
 		
