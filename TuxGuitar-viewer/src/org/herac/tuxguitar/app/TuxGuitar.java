@@ -118,7 +118,6 @@ public class TuxGuitar {
 	public MidiPlayer getPlayer(){
 		if( this.player == null){
 			this.player = MidiPlayer.getInstance(this.context);
-			this.player.init(getDocumentManager());
 			try {
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(this.context));
 				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl());
