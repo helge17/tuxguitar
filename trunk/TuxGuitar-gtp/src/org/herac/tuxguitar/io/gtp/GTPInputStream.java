@@ -28,6 +28,8 @@ public abstract class GTPInputStream extends GTPFileFormat implements TGSongRead
 			this.init(handle.getFactory());
 			
 			handle.setSong(this.readSong());
+			
+			new GTPSongNormalizer(handle.getFactory(), handle.getSong()).process();
 		} catch (TGFileFormatException tgFormatException) {
 			throw tgFormatException;
 		} catch (Throwable throwable) {
