@@ -320,7 +320,6 @@ public class TuxGuitar {
 	
 	public void initMidiPlayer(){
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
-		midiPlayer.init(getDocumentManager());
 		midiPlayer.addListener( new TGTransportListener(this.context) );
 		try {
 			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(this.context), false);

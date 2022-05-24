@@ -11,6 +11,7 @@ import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
+import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -57,6 +58,12 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 			TablatureEditor.getInstance(context).getTablature().resetCaret();
 			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
+			// ------------------------------------------------------ //
+			
+			// Ensure percussion channel, required for features like metronome and count down 
+			TGDocumentManager tgDocumentManager = TGDocumentManager.getInstance(context);
+			tgDocumentManager.getSongManager().ensurePercussionChannel(tgDocumentManager.getSong());
+			
 			// ------------------------------------------------------ //
 			
 			this.findUpdateBuffer(context, actionContext).requestUpdateLoadedSong();
