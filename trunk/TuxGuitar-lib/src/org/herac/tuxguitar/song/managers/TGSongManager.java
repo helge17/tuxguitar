@@ -138,6 +138,14 @@ public class TGSongManager {
 		}
 		return tgChannel;
 	}
+
+	public TGChannel addPercussionChannel(TGSong tgSong){
+		TGChannel tgChannel = addChannel(tgSong, createChannel());
+		tgChannel.setBank(TGChannel.DEFAULT_PERCUSSION_BANK);
+		tgChannel.setProgram(TGChannel.DEFAULT_PERCUSSION_PROGRAM);
+		tgChannel.setName(this.createChannelNameFromProgram(tgSong, tgChannel));
+		return tgChannel;
+	}
 	
 	public void removeChannel(TGSong song, TGChannel channel){
 		if( channel != null ){
@@ -246,6 +254,12 @@ public class TGSongManager {
 		return false;
 	}
 	
+	public void ensurePercussionChannel(TGSong song) {
+		if(!this.isAnyPercussionChannel(song)) {
+			this.addPercussionChannel(song);
+		}
+	}
+	
 	public String createChannelName(TGSong song, TGChannel channel, String prefix) {
 		int number = 0;
 		
@@ -265,6 +279,9 @@ public class TGSongManager {
 	}
 	
 	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {
+		if( channel.isPercussionChannel() ) {
+			return this.createChannelName(song, channel, "DrumKit");
+		}
 		if( channel.getProgram() >= 0 && channel.getProgram() < TGChannelNames.DEFAULT_NAMES.length ) {
 			return this.createChannelName(song, channel, TGChannelNames.DEFAULT_NAMES[channel.getProgram()]);
 		}

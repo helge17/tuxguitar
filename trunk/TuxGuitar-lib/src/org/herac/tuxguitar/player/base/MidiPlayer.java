@@ -32,8 +32,6 @@ public class MidiPlayer{
 	
 	private TGContext context;
 	
-	private TGDocumentManager documentManager;
-	
 	private MidiSequencer sequencer;
 	
 	private MidiSynthesizerProxy synthesizerProxy;
@@ -90,6 +88,10 @@ public class MidiPlayer{
 		this.context = context;
 		this.lock = new TGLock(context);
 		this.volume = MAX_VOLUME;
+		this.outputPortProviders = new ArrayList<MidiOutputPortProvider>();
+		this.sequencerProviders = new ArrayList<MidiSequencerProvider>();
+		this.tryOpenFistDevice = false;
+		this.reset();
 	}
 	
 	public void lock() {
@@ -98,22 +100,6 @@ public class MidiPlayer{
 	
 	public void unlock() {
 		this.lock.unlock();
-	}
-	
-	public void init(TGDocumentManager documentManager) {
-		try {
-			this.lock();
-			
-			this.documentManager = documentManager;
-			this.outputPortProviders = new ArrayList<MidiOutputPortProvider>();
-			this.sequencerProviders = new ArrayList<MidiSequencerProvider>();
-			this.tryOpenFistDevice = false;
-			this.getSequencer();
-			this.getMode();
-			this.reset();
-		} finally {
-			this.unlock();
-		}
 	}
 	
 	public void reset(){
@@ -526,7 +512,7 @@ public class MidiPlayer{
 		try{
 			this.lock();
 			
-			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.documentManager.getSong(), this.documentManager.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
+			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
 			midiSequenceParser.setTempoPercent(getMode().getCurrentPercent());
 			midiSequenceParser.setSHeader( getLoopSHeader() );
 			midiSequenceParser.setEHeader( getLoopEHeader() );
@@ -1284,11 +1270,11 @@ public class MidiPlayer{
 	}
 	
 	public TGSongManager getSongManager(){
-		return this.documentManager.getSongManager();
+		return TGDocumentManager.getInstance(this.context).getSongManager();
 	}
 	
 	public TGSong getSong(){
-		return this.documentManager.getSong();
+		return TGDocumentManager.getInstance(this.context).getSong();
 	}
 	
 	public MidiPlayerMode getMode(){
