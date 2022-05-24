@@ -12,6 +12,10 @@
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
+	<properties>
+		<javafx.version>17.0.2</javafx.version>
+	</properties>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
@@ -36,6 +40,22 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-awt-graphics</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
+			<version>${javafx.version}</version>
 		</dependency>
 	</dependencies>
 </project>
