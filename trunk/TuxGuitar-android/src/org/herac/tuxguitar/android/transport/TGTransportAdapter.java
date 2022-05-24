@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.android.transport;
 
 import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
-import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.TGEditorManager;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -25,7 +24,6 @@ public class TGTransportAdapter {
 	public void initialize() {
 		try {
 			MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
-			midiPlayer.init(TGDocumentManager.getInstance(this.context));
 			midiPlayer.addListener(new TGTransportListener(this.context));
 			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(this.context), true);
 			
