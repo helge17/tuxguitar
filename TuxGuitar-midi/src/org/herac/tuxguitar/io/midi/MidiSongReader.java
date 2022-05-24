@@ -108,7 +108,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return (this.tracks.size() + 1);
 	}
 	
-	private void parseMessage(int trackNumber,long tick,MidiMessage message){
+	private void parseMessage(int trackNumber, long tick, MidiMessage message){
 		long parsedTick = parseTick(tick + this.resolution);
 		
 		//NOTE ON
@@ -141,7 +141,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return Math.abs(TGDuration.QUARTER_TIME * tick / this.resolution);
 	}
 	
-	private void parseNoteOn(int track,long tick,byte[] data){
+	private void parseNoteOn(int track, long tick, byte[] data){
 		int length = data.length;
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
 		int value = (length > 1)?(data[1] & 0xFF):0;
@@ -149,20 +149,20 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		if(velocity == 0){
 			parseNoteOff(track,tick,data);
 		}else if(value > 0){
-			makeTempNotesBefore(tick,track);
+			createTempNotesBefore(tick,track);
 			getTempChannel(channel).setTrack(track);
 			getTrackTuningHelper(track).checkValue(value);
 			this.tempNotes.add(new TempNote(track,channel,value,tick));
 		}
 	}
 	
-	private void parseNoteOff(int track,long tick,byte[] data){
+	private void parseNoteOff(int track, long tick, byte[] data){
 		int length = data.length;
 		
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		
-		makeNote(tick,track,channel,value);
+		createNote(tick,track,channel,value);
 	}
 	
 	private void parseProgramChange(byte[] data){
@@ -189,7 +189,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 	}
 	
-	private void parseTimeSignature(long tick,byte[] data){
+	private void parseTimeSignature(long tick, byte[] data){
 		if(data.length >= 2){
 			TGTimeSignature timeSignature = this.factory.newTimeSignature();
 			timeSignature.setNumerator(data[0]);
@@ -211,7 +211,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 	}
 	
-	private void parseTempo(long tick,byte[] data){
+	private void parseTempo(long tick, byte[] data){
 		if(data.length >= 3){
 			TGTempo tempo = TGTempo.fromUSQ(this.factory,(data[2] & 0xff) | ((data[1] & 0xff) << 8) | ((data[0] & 0xff) << 16));
 			getHeader(tick).setTempo(tempo);
@@ -272,7 +272,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return null;
 	}
 	
-	private TGMeasure getMeasure(TGTrack track,long tick){
+	private TGMeasure getMeasure(TGTrack track, long tick){
 		long realTick = (tick >= TGDuration.QUARTER_TIME)?tick:TGDuration.QUARTER_TIME;
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
@@ -315,10 +315,10 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return beat;
 	}
 	
-	private TempNote getTempNote(int track,int channel,int value,boolean purge){
+	private TempNote getTempNote(int track, int channel, int value, boolean purge){
 		for(int i = 0;i < this.tempNotes.size();i ++){
 			TempNote note = (TempNote)this.tempNotes.get(i);
-			if(note.getTrack() == track && note.getChannel() == channel && note.getValue() == value){
+			if( note.getTrack() == track && note.getChannel() == channel && note.getValue() == value ){
 				if(purge){
 					this.tempNotes.remove(i);
 				}
@@ -342,7 +342,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return helper;
 	}
 	
-	private void makeTempNotesBefore(long tick,int track){
+	private void createTempNotesBefore(long tick, int track){
 		long nextTick = tick;
 		boolean check = true;
 		while(check){
@@ -351,7 +351,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				TempNote note = (TempNote)this.tempNotes.get(i);
 				if(note.getTick() < nextTick && note.getTrack() == track){
 					nextTick = note.getTick() + (TGDuration.QUARTER_TIME * 5); //First beat + 4/4 measure;
-					makeNote(nextTick,track,note.getChannel(),note.getValue());
+					createNote(nextTick,track,note.getChannel(),note.getValue());
 					check = true;
 					break;
 				}
@@ -359,26 +359,33 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 	}
 	
-	private void makeNote(long tick,int track,int channel,int value){
-		TempNote tempNote = getTempNote(track,channel,value,true);
-		if(tempNote != null){
+	private void createNote(long tick, int track, int channel, int value){
+		TempNote tempNote = getTempNote(track, channel, value, true);
+		if( tempNote != null ) {
 			int nString = 0;
 			int nValue = (tempNote.getValue() + this.settings.getTranspose());
 			int nVelocity = 64;
 			long nStart = tempNote.getTick();
-			TGDuration minDuration = newDuration(MIN_DURATION_VALUE);
-			TGDuration nDuration = TGDuration.fromTime(this.factory,tick - tempNote.getTick(),minDuration);
 			
-			TGMeasure measure = getMeasure(getTrack(track),tempNote.getTick());
-			TGBeat beat = getBeat(measure, nStart);
-			beat.getVoice(0).getDuration().copyFrom(nDuration);
-			
-			TGNote note = this.factory.newNote();
-			note.setValue(nValue);
-			note.setString(nString);
-			note.setVelocity(nVelocity);
-			
-			beat.getVoice(0).addNote(note);
+			while(nStart < tick) {
+				TGMeasure measure = getMeasure(getTrack(track), nStart);
+				
+				TGDuration minDuration = newDuration(MIN_DURATION_VALUE);
+				TGDuration nDuration = TGDuration.fromTime(this.factory, Math.min(tick - nStart, measure.getLength()), minDuration);
+				
+				TGBeat beat = getBeat(measure, nStart);
+				beat.getVoice(0).getDuration().copyFrom(nDuration);
+				
+				TGNote note = this.factory.newNote();
+				note.setValue(nValue);
+				note.setString(nString);
+				note.setVelocity(nVelocity);
+				note.setTiedNote(nStart > tempNote.getTick());
+				
+				beat.getVoice(0).addNote(note);
+				
+				nStart = (measure.getStart() + measure.getLength());
+			}
 		}
 	}
 	
@@ -522,7 +529,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		private int value;
 		private long tick;
 		
-		public TempNote(int track, int channel, int value,long tick) {
+		public TempNote(int track, int channel, int value, long tick) {
 			this.track = track;
 			this.channel = channel;
 			this.value = value;
@@ -684,177 +691,178 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 		
 	}
-}
-
-class SongAdjuster{
-	private TGFactory factory;
-	private TGSong song;
-	private long minDurationTime;
 	
-	public SongAdjuster(TGFactory factory,TGSong song){
-		this.factory = factory;
-		this.song = song;
-		this.minDurationTime = 40;
-	}
-	
-	public TGSong adjustSong(){
-		Iterator<TGTrack> it = this.song.getTracks();
+	private class SongAdjuster {
 		
-		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();
-			adjustTrack(track);
-		}
-		return this.song;
-	}
-	
-	private void adjustTrack(TGTrack track){
-		Iterator<TGMeasure> it = track.getMeasures();
-		while(it.hasNext()){
-			TGMeasure measure = (TGMeasure)it.next();
-			process(measure);
-		}
-	}
-	
-	public void process(TGMeasure measure){
-		orderBeats(measure);
-		joinBeats(measure);
-		adjustStrings(measure);
-	}
-	
-	public void joinBeats(TGMeasure measure){
-		TGBeat previous = null;
-		boolean finish = true;
+		private TGFactory factory;
+		private TGSong song;
+		private long minDurationTime;
 		
-		long measureStart = measure.getStart();
-		long measureEnd = (measureStart + measure.getLength());
-		for(int i = 0;i < measure.countBeats();i++){
-			TGBeat beat = measure.getBeat( i );
-			long beatStart = beat.getStart();
-			long beatLength = beat.getVoice(0).getDuration().getTime();
-			if(previous != null){
-				long previousStart = previous.getStart();
-				long previousLength = previous.getVoice(0).getDuration().getTime();
-				
-				//if(previousStart == beatStart){
-				if(beatStart >= previousStart && (previousStart + this.minDurationTime) > beatStart ){
-					// add beat notes to previous
-					for(int n = 0;n < beat.getVoice(0).countNotes();n++){
-						TGNote note = beat.getVoice(0).getNote( n );
-						previous.getVoice(0).addNote( note );
+		public SongAdjuster(TGFactory factory, TGSong song) {
+			this.factory = factory;
+			this.song = song;
+			this.minDurationTime = 40;
+		}
+		
+		public TGSong adjustSong() {
+			Iterator<TGTrack> it = this.song.getTracks();
+			
+			while(it.hasNext()){
+				TGTrack track = (TGTrack)it.next();
+				adjustTrack(track);
+			}
+			return this.song;
+		}
+		
+		private void adjustTrack(TGTrack track) {
+			Iterator<TGMeasure> it = track.getMeasures();
+			while(it.hasNext()){
+				TGMeasure measure = (TGMeasure)it.next();
+				process(measure);
+			}
+		}
+		
+		public void process(TGMeasure measure){
+			orderBeats(measure);
+			joinBeats(measure);
+			adjustStrings(measure);
+		}
+		
+		public void joinBeats(TGMeasure measure) {
+			TGBeat previous = null;
+			boolean finish = true;
+			
+			long measureStart = measure.getStart();
+			long measureEnd = (measureStart + measure.getLength());
+			for(int i = 0;i < measure.countBeats();i++){
+				TGBeat beat = measure.getBeat( i );
+				long beatStart = beat.getStart();
+				long beatLength = beat.getVoice(0).getDuration().getTime();
+				if(previous != null){
+					long previousStart = previous.getStart();
+					long previousLength = previous.getVoice(0).getDuration().getTime();
+					
+					//if(previousStart == beatStart){
+					if(beatStart >= previousStart && (previousStart + this.minDurationTime) > beatStart ){
+						// add beat notes to previous
+						for(int n = 0;n < beat.getVoice(0).countNotes();n++){
+							TGNote note = beat.getVoice(0).getNote( n );
+							previous.getVoice(0).addNote( note );
+						}
+						
+						// add beat chord to previous
+						if(!previous.isChordBeat() && beat.isChordBeat()){
+							previous.setChord( beat.getChord() );
+						}
+						
+						// add beat text to previous
+						if(!previous.isTextBeat() && beat.isTextBeat()){
+							previous.setText( beat.getText() );
+						}
+						
+						// set the best duration
+						if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
+							previous.getVoice(0).getDuration().copyFrom(beat.getVoice(0).getDuration());
+						}
+						
+						measure.removeBeat(beat);
+						finish = false;
+						break;
 					}
 					
-					// add beat chord to previous
-					if(!previous.isChordBeat() && beat.isChordBeat()){
-						previous.setChord( beat.getChord() );
+					else if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
+						if(beat.getVoice(0).isRestVoice()){
+							measure.removeBeat(beat);
+							finish = false;
+							break;
+						}
+						TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
+						previous.getVoice(0).getDuration().copyFrom( duration );
 					}
-					
-					// add beat text to previous
-					if(!previous.isTextBeat() && beat.isTextBeat()){
-						previous.setText( beat.getText() );
-					}
-					
-					// set the best duration
-					if(beatLength > previousLength && (beatStart + beatLength) <= measureEnd){
-						previous.getVoice(0).getDuration().copyFrom(beat.getVoice(0).getDuration());
-					}
-					
-					measure.removeBeat(beat);
-					finish = false;
-					break;
 				}
-				
-				else if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
+				if( (beatStart + beatLength) > measureEnd ){
 					if(beat.getVoice(0).isRestVoice()){
 						measure.removeBeat(beat);
 						finish = false;
 						break;
 					}
-					TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-					previous.getVoice(0).getDuration().copyFrom( duration );
+					TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
+					beat.getVoice(0).getDuration().copyFrom( duration );
 				}
+				
+				previous = beat;
 			}
-			if( (beatStart + beatLength) > measureEnd ){
-				if(beat.getVoice(0).isRestVoice()){
-					measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-				beat.getVoice(0).getDuration().copyFrom( duration );
-			}
-			
-			previous = beat;
-		}
-		if(!finish){
-			joinBeats(measure);
-		}
-	}
-	
-	public void orderBeats(TGMeasure measure){
-		for(int i = 0;i < measure.countBeats();i++){
-			TGBeat minBeat = null;
-			for(int j = i;j < measure.countBeats();j++){
-				TGBeat beat = measure.getBeat(j);
-				if(minBeat == null || beat.getStart() < minBeat.getStart()){
-					minBeat = beat;
-				}
-			}
-			measure.moveBeat(i, minBeat);
-		}
-	}
-	
-	private void adjustStrings(TGMeasure measure){
-		for(int i = 0;i < measure.countBeats();i++){
-			TGBeat beat = measure.getBeat( i );
-			adjustStrings(beat);
-		}
-	}
-	
-	private void adjustStrings(TGBeat beat){
-		TGTrack track = beat.getMeasure().getTrack();
-		List<TGString> freeStrings = new ArrayList<TGString>( track.getStrings() );
-		List<TGNote> notesToRemove = new ArrayList<TGNote>();
-		
-		//ajusto las cuerdas
-		Iterator<TGNote> it = beat.getVoice(0).getNotes().iterator();
-		while(it.hasNext()){
-			TGNote note = (TGNote)it.next();
-			
-			int string = getStringForValue(freeStrings,note.getValue());
-			for(int j = 0;j < freeStrings.size();j ++){
-				TGString tempString = (TGString)freeStrings.get(j);
-				if(tempString.getNumber() == string){
-					note.setValue(note.getValue() - tempString.getValue());
-					note.setString(tempString.getNumber());
-					freeStrings.remove(j);
-					break;
-				}
-			}
-			
-			//Cannot have more notes on same string 
-			if(note.getString() < 1){
-				notesToRemove.add( note );
+			if(!finish){
+				joinBeats(measure);
 			}
 		}
 		
-		// Remove notes
-		while( notesToRemove.size() > 0 ){
-			beat.getVoice(0).removeNote( (TGNote)notesToRemove.get( 0 ) );
-			notesToRemove.remove( 0 );
-		}
-	}
-	
-	private int getStringForValue(List<TGString> strings,int value){
-		int minFret = -1;
-		int stringForValue = 0;
-		for(int i = 0;i < strings.size();i++){
-			TGString string = (TGString)strings.get(i);
-			int fret = value - string.getValue();
-			if(minFret < 0 || (fret >= 0 && fret < minFret)){
-				stringForValue = string.getNumber();
-				minFret = fret;
+		public void orderBeats(TGMeasure measure){
+			for(int i = 0;i < measure.countBeats();i++){
+				TGBeat minBeat = null;
+				for(int j = i;j < measure.countBeats();j++){
+					TGBeat beat = measure.getBeat(j);
+					if(minBeat == null || beat.getStart() < minBeat.getStart()){
+						minBeat = beat;
+					}
+				}
+				measure.moveBeat(i, minBeat);
 			}
 		}
-		return stringForValue;
+		
+		private void adjustStrings(TGMeasure measure){
+			for(int i = 0;i < measure.countBeats();i++){
+				TGBeat beat = measure.getBeat( i );
+				adjustStrings(beat);
+			}
+		}
+		
+		private void adjustStrings(TGBeat beat){
+			TGTrack track = beat.getMeasure().getTrack();
+			List<TGString> freeStrings = new ArrayList<TGString>( track.getStrings() );
+			List<TGNote> notesToRemove = new ArrayList<TGNote>();
+			
+			//ajusto las cuerdas
+			Iterator<TGNote> it = beat.getVoice(0).getNotes().iterator();
+			while(it.hasNext()){
+				TGNote note = (TGNote)it.next();
+				
+				int string = getStringForValue(freeStrings,note.getValue());
+				for(int j = 0;j < freeStrings.size();j ++){
+					TGString tempString = (TGString)freeStrings.get(j);
+					if(tempString.getNumber() == string){
+						note.setValue(note.getValue() - tempString.getValue());
+						note.setString(tempString.getNumber());
+						freeStrings.remove(j);
+						break;
+					}
+				}
+				
+				//Cannot have more notes on same string 
+				if(note.getString() < 1){
+					notesToRemove.add( note );
+				}
+			}
+			
+			// Remove notes
+			while( notesToRemove.size() > 0 ){
+				beat.getVoice(0).removeNote( (TGNote)notesToRemove.get( 0 ) );
+				notesToRemove.remove( 0 );
+			}
+		}
+		
+		private int getStringForValue(List<TGString> strings,int value){
+			int minFret = -1;
+			int stringForValue = 0;
+			for(int i = 0;i < strings.size();i++){
+				TGString string = (TGString)strings.get(i);
+				int fret = value - string.getValue();
+				if(minFret < 0 || (fret >= 0 && fret < minFret)){
+					stringForValue = string.getNumber();
+					minFret = fret;
+				}
+			}
+			return stringForValue;
+		}
 	}
 }
