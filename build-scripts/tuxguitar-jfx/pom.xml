@@ -16,6 +16,8 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-jfx</project.finalName>
+		<javafx.version>17.0.2</javafx.version>
+		<javafx.platform>linux</javafx.platform>
 	</properties>
 
 	<modules>
@@ -53,7 +55,7 @@
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
 	</modules>
-
+    
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -123,6 +125,31 @@
 								<!-- /LIBRARIES -->
 
 								<!-- 3RD PARTY LIBRARIES -->
+								<artifactItem>
+									<groupId>org.openjfx</groupId>
+									<artifactId>javafx-base</artifactId>
+									<destFileName>javafx-base.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<classifier>${javafx.platform}</classifier>
+									<version>${javafx.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.openjfx</groupId>
+									<artifactId>javafx-controls</artifactId>
+									<destFileName>javafx-controls.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<classifier>${javafx.platform}</classifier>
+									<version>${javafx.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.openjfx</groupId>
+									<artifactId>javafx-graphics</artifactId>
+									<destFileName>javafx-graphics.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<classifier>${javafx.platform}</classifier>
+									<version>${javafx.version}</version>
+								</artifactItem>
+								
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
