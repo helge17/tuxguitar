@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UITable;
@@ -167,6 +168,12 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 	
+	public void setBounds(UIRectangle bounds) {
+		super.setBounds(bounds);
+		
+		this.fillAvailableWidth();
+	}
+	
 	public void adjustColumnsWidth() {
 		TableColumn[] tableColumns = this.getControl().getColumns();
 		for(TableColumn tableColumn : tableColumns) {
@@ -188,7 +195,22 @@ public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 		if( column.getWidth() < minimumWidth ) {
 			column.setWidth(minimumWidth);
 		}
-		
+	}
+	
+	public void fillAvailableWidth() {
+		TableColumn[] columns = this.getControl().getColumns();
+		if( columns.length > 0 ) {
+			int availableWidth = this.getControl().getClientArea().width;
+			
+			for(TableColumn column : columns) {
+				availableWidth -= column.getWidth();
+			}
+			
+			if( availableWidth > 0 ) {
+				TableColumn lastColumn = columns[columns.length - 1];
+				lastColumn.setWidth(lastColumn.getWidth() + availableWidth);
+			}
+		}
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {
