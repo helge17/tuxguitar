@@ -2,30 +2,39 @@ package org.herac.tuxguitar.ui.jfx.widget;
 
 import java.util.List;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.Region;
-
 import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXCheckTableSelectionListenerManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
 import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManagerAsync;
+import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
 public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implements UICheckTable<T> {
 	
-	private static final Integer VERTICAL_SCROLL_SIZE = 18;
+	private static final float DEFAULT_CELL_LEFT = 8f;
+	private static final float DEFAULT_CELL_RIGHT = 8f;
 	
 	private JFXTableCellFactory<T> cellFactory;
 	private JFXTableCellValueFactory<T> cellValueFactory;
 	private JFXSelectionListenerChangeManager<UITableItem<T>> selectionListener;
 	private JFXCheckTableSelectionListenerManager<T> checkSelectionListener;
+	private JFXFontMetrics cellFontMetrics;
+	private Float scrollWidth;
 	
 	public JFXTable(JFXContainer<? extends Region> parent, boolean headerVisible, boolean checkable) {
 		super(new TableView<UITableItem<T>>(), parent);
@@ -39,6 +48,11 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		this.getControl().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		
 		this.getControl().widthProperty().addListener(new ChangeListener<Number>() {
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				JFXTable.this.fillAvailableWidth();
+			}
+		});
+		this.getControl().heightProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				JFXTable.this.fillAvailableWidth();
 			}
@@ -173,16 +187,104 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		if(!columns.isEmpty()) {
 			Insets padding = getControl().getPadding();
 			
-			double availableWidth = (this.getControl().getWidth() - (padding.getLeft() + padding.getRight() + VERTICAL_SCROLL_SIZE));
+			double availableWidth = (this.getControl().getWidth() - (padding.getLeft() + padding.getRight() + this.computeScrollWidth()));
 			for(TableColumn<UITableItem<T>, ?> column : columns) {
 				availableWidth -= column.getWidth();
 			}
+			
 			if( availableWidth > 0 ) {
 				TableColumn<UITableItem<T>, ?> lastColumn = columns.get(columns.size() - 1);
-				
 				lastColumn.prefWidthProperty().set(lastColumn.getWidth() + availableWidth);
 			}
 		}
+	}
+	
+	@Override
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		this.computeColumnsPackedWidth();
+		
+		super.computePackedSize(null, null);
+		
+		UISize packedSize = this.getPackedSize();
+		if( fixedWidth != null ) {
+			if( fixedHeight == null && packedSize.getWidth() > fixedWidth ) {
+				packedSize.setHeight(packedSize.getHeight() + this.computeScrollWidth());
+			}
+			packedSize.setWidth(fixedWidth);
+		}
+		if( fixedHeight != null ) {
+			if( fixedWidth == null && packedSize.getHeight() > fixedHeight ) {
+				packedSize.setWidth(packedSize.getWidth() + this.computeScrollWidth());
+			}
+			packedSize.setHeight(fixedHeight);
+		}
+		this.setPackedSize(packedSize);
+		
+		if( this.isVisible() ) {
+			this.fillAvailableWidth();
+		}
+	}
+	
+	public void computeColumnsPackedWidth() {
+		List<TableColumn<UITableItem<T>, ?>> columns = this.getControl().getColumns();
+		for(int c = 0; c < columns.size() ; c ++) {
+			TableColumn<UITableItem<T>, ?> column = columns.get(c);
+			
+			float prefWidth = (column.getText() != null ? this.computeHeaderCellTextWidth(column.getText()) : 0);
+			for(UITableItem<T> item : this.getControl().getItems()) {
+				String text = item.getText(c);
+				if( text != null ) {
+					prefWidth = Math.max(prefWidth, this.computeCellTextWidth(text));
+				}
+			}
+			columns.get(c).setPrefWidth(prefWidth);
+		}
+	}
+	
+	public float computeCellTextWidth(String text) {
+		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
+		
+		return Float.valueOf(Math.round(fontMetrics.getWidth(text) + DEFAULT_CELL_LEFT + DEFAULT_CELL_RIGHT + 0.5f));
+	}
+	
+	public float computeHeaderCellTextWidth(String text) {
+		JFXFontMetrics fontMetrics = this.computeHeaderCellFontMetrics();
+		
+		return Float.valueOf(Math.round(fontMetrics.getWidth(text) + DEFAULT_CELL_LEFT + DEFAULT_CELL_RIGHT + 0.5f));
+	}
+	
+	public JFXFontMetrics computeCellFontMetrics() {
+		if( this.cellFontMetrics == null ) {
+			TableCell<UITableItem<T>, JFXTableCellValue<T>> tableCell = new TableCell<UITableItem<T>, JFXTableCellValue<T>>();
+			tableCell.setManaged(false);
+			tableCell.applyCss();
+			
+			this.cellFontMetrics = new JFXFontMetrics(tableCell.getFont());
+		}
+		return this.cellFontMetrics;
+	}
+	
+	public JFXFontMetrics computeHeaderCellFontMetrics() {
+		if( this.cellFontMetrics == null ) {
+			TableCell<UITableItem<T>, JFXTableCellValue<T>> tableCell = new TableCell<UITableItem<T>, JFXTableCellValue<T>>();
+			tableCell.setManaged(false);
+			tableCell.applyCss();
+			
+			// lets assume header cell is bold.
+			this.cellFontMetrics = new JFXFontMetrics(Font.font(tableCell.getFont().getFamily(), FontWeight.BOLD, null, tableCell.getFont().getSize()));
+		}
+		return this.cellFontMetrics;
+	}
+	
+	public float computeScrollWidth() {
+		if( this.scrollWidth == null ) {
+			ScrollBar scrollBar = new ScrollBar();
+			scrollBar.setManaged(false);
+			scrollBar.applyCss();
+			
+			this.scrollWidth = Double.valueOf(scrollBar.getWidth()).floatValue();
+		}
+		return this.scrollWidth;
 	}
 	
 	public void addSelectionListener(UISelectionListener listener) {

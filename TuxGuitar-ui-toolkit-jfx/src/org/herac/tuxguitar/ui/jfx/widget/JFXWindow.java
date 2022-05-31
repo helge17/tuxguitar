@@ -5,6 +5,7 @@ import org.herac.tuxguitar.ui.jfx.appearance.JFXAppearance;
 import org.herac.tuxguitar.ui.jfx.event.JFXCloseListenerManager;
 import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
 import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
+import org.herac.tuxguitar.ui.jfx.util.JFXSyncProcess;
 import org.herac.tuxguitar.ui.menu.UIMenuBar;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIInset;
@@ -38,6 +39,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	private JFXCloseListenerManager closeListener;
 	private JFXSceneResizeListener sceneResizeListener;
 	private JFXStageResizeListener stageResizeListener;
+	private JFXSyncProcess layoutProcess;
 	
 	public JFXWindow(Stage stage, JFXContainer<? extends Pane> parent) {
 		super(new Pane(), parent);
@@ -50,6 +52,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		this.stage.setHeight(DEFAULT_WINDOW_HEIGHT);
 		this.margin = new UIInset();
 		
+		this.layoutProcess = new JFXSyncProcess(new JFXLayoutProcess(this));
 		this.closeListener = new JFXCloseListenerManager(this);
 		this.sceneResizeListener = new JFXSceneResizeListener(this);
 		this.stageResizeListener = new JFXStageResizeListener(this);
@@ -302,6 +305,10 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		this.getStage().setAlwaysOnTop(true);
 	}
 	
+	public void syncLayout() {
+		this.layoutProcess.process();
+	}
+	
 	public void addCloseListener(UICloseListener listener) {
 		this.closeListener.addListener(listener);
 	}
@@ -338,7 +345,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 			UIRectangle bounds = this.window.getSceneBounds();
 			if( this.bounds == null || !this.bounds.equals(bounds)) {
 				this.bounds = bounds;
-				this.window.layout();
+				this.window.syncLayout();
 			}
 		}
 	    
@@ -371,7 +378,20 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		}
 		
 	    public void changed(ObservableValue<? extends Number> observableValue, Number oldSize, Number newSize) {
-	    	this.window.layout();
+	    	this.window.syncLayout();
+		}
+	}
+	
+	private class JFXLayoutProcess implements Runnable {
+		
+		private JFXWindow window;
+		
+		public JFXLayoutProcess(JFXWindow window) {
+			this.window = window;
+		}
+		
+		public void run() {
+			this.window.layout();
 		}
 	}
 }
