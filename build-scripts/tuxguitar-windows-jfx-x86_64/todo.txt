@@ -1,0 +1,4 @@
+# Copy JRE bundle to ../common-resources/common-windows-x86_64/jre
+
+# Run maven
+mvn clean package
