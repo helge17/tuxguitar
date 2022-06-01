@@ -16,6 +16,8 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-windows-x86</project.finalName>
+		
+		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86</org.eclipse.swt.artifactId>
 	</properties>
 	
@@ -346,11 +348,54 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-windows"/>
 								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-windows-x86"/>
+								</copy>
+								
+								<copy todir="${project.build.directory}/bundle" overwrite="true">
+									<fileset dir="./src/resources"/>
+								</copy>
 							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>l4j-clui</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<outfile>${project.build.directory}/${project.finalName}/tuxguitar.exe</outfile>
+							<jar>${project.build.directory}/${project.finalName}/lib/tuxguitar.jar</jar>
+							<icon>${project.build.directory}/${project.finalName}/share/skins/Oxygen/icon.ico</icon>
+							<errTitle>encc</errTitle>
+							<classPath>
+								<mainClass>org.herac.tuxguitar.app.TGMainSingleton</mainClass>
+								<addDependencies>false</addDependencies>
+								<preCp>./lib/tuxguitar-lib.jar;./lib/tuxguitar-ui-toolkit.jar;./lib/tuxguitar-ui-toolkit-swt.jar;./lib/tuxguitar-editor-utils.jar;./lib/tuxguitar-gm-utils.jar;./lib/tuxguitar-awt-graphics.jar;./lib/swt.jar;./lib/gervill.jar;./lib/itext-pdf.jar;./lib/itext-xmlworker.jar;./lib/commons-compress.jar;./share;./dist</preCp>
+							</classPath>
+							<jre>
+								<minVersion>1.8.0</minVersion>
+								<path>./jre;%JAVA_HOME%;%PATH%</path>
+								<opts>
+									<opt>-Djava.library.path=lib</opt>
+									<opt>-Dtuxguitar.home.path=</opt>
+									<opt>-Dtuxguitar.share.path=share</opt>
+								</opts>
+							</jre>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
