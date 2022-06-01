@@ -1,4 +1,4 @@
-# Copy JRE bundle to src/resources/jre 
+# Copy JRE bundle to ../common-resources/common-windows-x86/jre
 
 # Run maven
 mvn clean package -Dproject.builder.executable={INSTALL_BUILDER_HOME}/bin/builder
