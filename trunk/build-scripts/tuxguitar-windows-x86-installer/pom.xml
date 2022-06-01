@@ -43,10 +43,6 @@
 								<copy todir="${project.build.directory}/bundle" overwrite="true">
 									<fileset dir="../tuxguitar-windows-x86/target/${project.bundleSourceName}" />
 								</copy>
-								
-								<copy todir="${project.build.directory}/bundle" overwrite="true">
-									<fileset dir="./src/resources"/>
-								</copy>
 							</target>
 						</configuration>
 						<goals>
