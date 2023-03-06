@@ -16,7 +16,7 @@
 
 	<properties>
 		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
-		<tuxguitar.jni.rm>del</tuxguitar.jni.rm>
+		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
 		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
