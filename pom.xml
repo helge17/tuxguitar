@@ -383,7 +383,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>
-				<version>1.5</version>
+				<version>1.19</version>
 			</dependency>
 			<!-- /commons compress -->
 		</dependencies>
