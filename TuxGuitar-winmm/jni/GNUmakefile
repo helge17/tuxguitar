@@ -1,5 +1,5 @@
 RM?=rm -f
-CFLAGS?=-mno-cygwin -I$(shell gcj -print-file-name=include/)
+CFLAGS?=-mno-cygwin -I../../build-scripts/native-modules/common-include
 LDFLAGS?=-mno-cygwin -Wl,--kill-at
 LDLIBS?=-lwinmm
 LDPATH?=

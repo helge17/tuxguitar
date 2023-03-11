@@ -1,4 +1,4 @@
-CFLAGS?=-I$(shell gcj -print-file-name=include/) -fPIC
+CFLAGS?=-I../../build-scripts/native-modules/common-include -fPIC
 LDFLAGS?=
 LDLIBS?=
 LDPATH?=
