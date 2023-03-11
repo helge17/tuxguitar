@@ -33,8 +33,6 @@
 				<include name="build-scripts/tuxguitar-linux-x86-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86-installer/**"/>
-				<include name="build-scripts/tuxguitar-linux-qt4-x86/**"/>
-				<include name="build-scripts/tuxguitar-linux-qt4-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-linux-qt5-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-linux-jfx-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-macosx-cocoa-32/**"/>
@@ -97,7 +95,6 @@
 				
 				<include name="TuxGuitar-ui-toolkit/**"/>
 				<include name="TuxGuitar-ui-toolkit-swt/**"/>
-				<include name="TuxGuitar-ui-toolkit-qt4/**"/>
 				<include name="TuxGuitar-ui-toolkit-qt5/**"/>
 				<include name="TuxGuitar-ui-toolkit-jfx/**"/>
 				
