@@ -463,6 +463,20 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>platform-macos-cocoa-64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>mac os x</name>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx.x86_64</org.eclipse.swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
 			<id>platform-freebsd-x86_64</id>
 			<activation>
 				<os>
