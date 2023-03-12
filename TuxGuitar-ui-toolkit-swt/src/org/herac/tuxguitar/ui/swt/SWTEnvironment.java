@@ -86,15 +86,7 @@ public class SWTEnvironment {
 		if( this.dropDownSelectAlternative == null ) {
 			this.dropDownSelectAlternative = this.getEnvValue(UIDropDownSelect.class.getName());
 		}
-		if( this.dropDownSelectAlternative == null ) {
-			// ---------------------------------------------------- //
-			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=487271 //
-			// ---------------------------------------------------- //
-			if( PLATFORM_GTK.equals(SWT.getPlatform()) && !SWT_GTK3_FALSE.equals(getEnvValue(SWT_GTK3)) ) {
-				this.dropDownSelectAlternative = SWTDropDownSelectLight.class.getName();
-			}
-		}
-		
+
 		// Default value
 		if( this.dropDownSelectAlternative == null ) {
 			this.dropDownSelectAlternative = SWTDropDownSelect.class.getName();
