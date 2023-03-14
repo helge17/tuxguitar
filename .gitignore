@@ -1,0 +1,6 @@
+.gradle/
+build/
+target/
+*.o
+*.bin
+**/jni/*.dll
