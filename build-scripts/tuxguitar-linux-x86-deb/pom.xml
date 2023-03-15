@@ -14,7 +14,7 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<project.dpkg.executable>dpkg</project.dpkg.executable>
+		<project.dpkg.executable>fakeroot</project.dpkg.executable>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.packageName>tuxguitar-${project.version}-linux-x86</project.packageName>
 	</properties>
@@ -44,6 +44,9 @@
 									<fileset dir="./src/resources"/>
 								</copy>
 								
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr"/>
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/bin"/>
+								<symlink link="${project.build.directory}/${project.packageName}/usr/bin/tuxguitar" resource="/opt/tuxguitar/tuxguitar.sh" overwrite="true"/>
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.bin" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/vst-client/*.bin" perm="775" />
@@ -65,6 +68,7 @@
 						<configuration>
 							<target name="package-bundle">
 								<exec dir="${project.basedir}" executable="${project.dpkg.executable}" failonerror="true" >
+									<arg value="dpkg"/>
 									<arg value="--build"/>
 									<arg value="${project.build.directory}/${project.packageName}"/>
 								</exec>
