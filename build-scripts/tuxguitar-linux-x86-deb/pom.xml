@@ -17,7 +17,6 @@
 		<project.dpkg.executable>dpkg</project.dpkg.executable>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.packageName>tuxguitar-${project.version}-linux-x86</project.packageName>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86</org.eclipse.swt.artifactId>
 	</properties>
 
 	<modules>
@@ -46,8 +45,6 @@
 								</copy>
 								
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
-								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lib/*.so" perm="775" />
-								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.sh" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.bin" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/vst-client/*.bin" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/DEBIAN/postinst" perm="755" />
