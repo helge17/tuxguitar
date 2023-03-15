@@ -46,7 +46,7 @@ public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuIte
 	public void setText(String text) {
 		String textWithAccelerator = text;
 		if( this.getKeyCombination() != null ) {
-			textWithAccelerator += "\t" + this.getKeyCombination().toString() + "\u0000";
+			textWithAccelerator += "\t" + this.getKeyCombination().toString();
 		}
 		this.getControl().setText(textWithAccelerator);
 	}
