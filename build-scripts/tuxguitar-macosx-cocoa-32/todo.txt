@@ -1,4 +1,0 @@
-# Copy JRE bundle to src/resources/Contents/MacOS/jre
-
-# Run maven
-mvn clean package
