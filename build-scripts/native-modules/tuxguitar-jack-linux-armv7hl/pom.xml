@@ -22,7 +22,7 @@
 		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
-		<tuxguitar-jack.jni.path>${parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
+		<tuxguitar-jack.jni.path>${project.parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
 		<tuxguitar-jack.jni.rm>${tuxguitar.jni.rm}</tuxguitar-jack.jni.rm>
 		<tuxguitar-jack.jni.cc>${tuxguitar.jni.cc}</tuxguitar-jack.jni.cc>
 		<tuxguitar-jack.jni.cflags>${tuxguitar.jni.header.path} -fPIC</tuxguitar-jack.jni.cflags>
@@ -35,8 +35,8 @@
 	</properties>
 	
 	<modules>
-		<module>${parent.relativePath}/TuxGuitar-jack</module>
-		<module>${parent.relativePath}/TuxGuitar-jack-ui</module>
+		<module>${project.parent.relativePath}/TuxGuitar-jack</module>
+		<module>${project.parent.relativePath}/TuxGuitar-jack-ui</module>
 	</modules>
 	
 	<build>

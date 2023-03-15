@@ -21,7 +21,7 @@
 		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
-		<tuxguitar-alsa.jni.path>${parent.relativePath}/TuxGuitar-alsa/jni/</tuxguitar-alsa.jni.path>
+		<tuxguitar-alsa.jni.path>${project.parent.relativePath}/TuxGuitar-alsa/jni/</tuxguitar-alsa.jni.path>
 		<tuxguitar-alsa.jni.cc>${tuxguitar.jni.cc}</tuxguitar-alsa.jni.cc>
 		<tuxguitar-alsa.jni.cflags>${tuxguitar.jni.header.path} -m32 -fPIC</tuxguitar-alsa.jni.cflags>
 		<tuxguitar-alsa.jni.ldflags>-m32 -fPIC</tuxguitar-alsa.jni.ldflags>
@@ -33,7 +33,7 @@
 	</properties>
 	
 	<modules>
-		<module>${parent.relativePath}/TuxGuitar-alsa</module>
+		<module>${project.parent.relativePath}/TuxGuitar-alsa</module>
 	</modules>
 	
 	<build>

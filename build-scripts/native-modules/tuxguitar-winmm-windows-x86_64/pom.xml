@@ -22,7 +22,7 @@
 		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
-		<tuxguitar-winmm.jni.path>${parent.relativePath}/TuxGuitar-winmm/jni/</tuxguitar-winmm.jni.path>
+		<tuxguitar-winmm.jni.path>${project.parent.relativePath}/TuxGuitar-winmm/jni/</tuxguitar-winmm.jni.path>
 		<tuxguitar-winmm.jni.rm>${tuxguitar.jni.rm}</tuxguitar-winmm.jni.rm>
 		<tuxguitar-winmm.jni.cc>${tuxguitar.jni.cc}</tuxguitar-winmm.jni.cc>
 		<tuxguitar-winmm.jni.cflags>${tuxguitar.jni.header.path}</tuxguitar-winmm.jni.cflags>
@@ -35,7 +35,7 @@
 	</properties>
 
 	<modules>
-		<module>${parent.relativePath}/TuxGuitar-winmm</module>
+		<module>${project.parent.relativePath}/TuxGuitar-winmm</module>
 	</modules>
 	
 	<build>

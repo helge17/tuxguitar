@@ -21,7 +21,7 @@
 		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
 		
-		<tuxguitar-oss.jni.path>${parent.relativePath}/TuxGuitar-oss/jni/</tuxguitar-oss.jni.path>
+		<tuxguitar-oss.jni.path>${project.parent.relativePath}/TuxGuitar-oss/jni/</tuxguitar-oss.jni.path>
 		<tuxguitar-oss.jni.cc>${tuxguitar.jni.cc}</tuxguitar-oss.jni.cc>
 		<tuxguitar-oss.jni.cflags>${tuxguitar.jni.header.path} -m32 -fPIC</tuxguitar-oss.jni.cflags>
 		<tuxguitar-oss.jni.ldflags>-m32 -fPIC</tuxguitar-oss.jni.ldflags>
@@ -33,7 +33,7 @@
 	</properties>
 	
 	<modules>
-		<module>${parent.relativePath}/TuxGuitar-oss</module>
+		<module>${project.parent.relativePath}/TuxGuitar-oss</module>
 	</modules>
 	
 	<build>
