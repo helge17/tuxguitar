@@ -26,7 +26,6 @@
 				<include name="build-scripts/common-resources/**"/>
 				<include name="build-scripts/native-modules/**"/>
 				<include name="build-scripts/tuxguitar-android/**"/>
-				<include name="build-scripts/tuxguitar-jws/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86/**"/>
 				<include name="build-scripts/tuxguitar-linux-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-linux-armv7hl/**"/>
