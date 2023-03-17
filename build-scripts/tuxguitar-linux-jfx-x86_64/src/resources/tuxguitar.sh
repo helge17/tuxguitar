@@ -34,7 +34,6 @@ CLASSPATH=${CLASSPATH}:./lib/gervill.jar
 CLASSPATH=${CLASSPATH}:./lib/itext-pdf.jar
 CLASSPATH=${CLASSPATH}:./lib/itext-xmlworker.jar
 CLASSPATH=${CLASSPATH}:./lib/commons-compress.jar
-CLASSPATH=${CLASSPATH}:./lib/icedtea-sound.jar
 CLASSPATH=${CLASSPATH}:./share/
 CLASSPATH=${CLASSPATH}:./dist/
 ##MAINCLASS
