@@ -258,12 +258,6 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-carbon-integration</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-audiounit</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
@@ -356,11 +350,6 @@
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
 				<version>4.4.2</version>
-			</dependency>
-			<dependency>
-				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.carbon.macosx</artifactId>
-				<version>3.7.2</version>
 			</dependency>
 			<!-- /SWT Platforms -->
 

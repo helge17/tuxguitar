@@ -47,7 +47,6 @@
 				<include name="TuxGuitar-AudioUnit/**"/>
 				<include name="TuxGuitar-awt-graphics/**"/>
 				<include name="TuxGuitar-browser-ftp/**"/>
-				<include name="TuxGuitar-carbon-integration/**"/>
 				<include name="TuxGuitar-cocoa-integration/**"/>
 				<include name="TuxGuitar-community/**"/>
 				<include name="TuxGuitar-compat/**"/>
