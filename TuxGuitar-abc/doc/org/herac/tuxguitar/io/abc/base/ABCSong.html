@@ -783,7 +783,7 @@ java.lang.Object
 <TD><CODE><B><A HREF="../../../../../../org/herac/tuxguitar/io/abc/base/ABCSong.html#setRhythm(java.lang.String)">setRhythm</A></B>(java.lang.String&nbsp;string)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Abc also includes a rhythm field, 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Abc also includes a rhythm field,
  R:, which is used for cataloguing and sorting collections of abc tunes:
  this is entirely free text (although there are obvious 'standard' entries eg R:reel, R:jig, R:schottische).</TD>
 </TR>
@@ -1454,7 +1454,7 @@ setRhythm</H3>
 <PRE>
 public void <B>setRhythm</B>(java.lang.String&nbsp;string)</PRE>
 <DL>
-<DD>Abc also includes a rhythm field, 
+<DD>Abc also includes a rhythm field,
  R:, which is used for cataloguing and sorting collections of abc tunes:
  this is entirely free text (although there are obvious 'standard' entries eg R:reel, R:jig, R:schottische).
 <P>
@@ -1549,12 +1549,12 @@ public void <B>addSymbols</B>(java.lang.String&nbsp;string)</PRE>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>string</CODE> - <p>
 	Adding many symbols to a line of music can make a tune difficult to read.<br>
-	In such cases, a symbol line (a line that contains only +...+ decorations and "..." chord symbols or annotations) can be used, 
+	In such cases, a symbol line (a line that contains only +...+ decorations and "..." chord symbols or annotations) can be used,
 	analogous to a lyrics line.<br>
-	A symbol line starts with s:, followed by a line of symbols.<br> 
+	A symbol line starts with s:, followed by a line of symbols.<br>
 	Matching of notes and symbols follows the rules defined in section Lyrics.<br>
-<pre> 
-	 Example: 
+<pre>
+	 Example:
 	   CDEF    | G'''AB'c
 	s: "^slow" | +f+ ** +fff+
 </pre><DT><B>See Also:</B><DD><A HREF="../../../../../../org/herac/tuxguitar/io/abc/base/ABCSong.html#addLyrics(java.lang.String)"><CODE>addLyrics(String)</CODE></A></DL>
@@ -1569,35 +1569,35 @@ public void <B>addLyrics</B>(java.lang.String&nbsp;string)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>string</CODE> - <p>
-	 The w field (lowercase w) in the body, supplies a line of lyrics to be aligned syllable 
+	 The w field (lowercase w) in the body, supplies a line of lyrics to be aligned syllable
    by syllable below the previous line of notes.<br>
    Syllables are not aligned on grace notes and tied notes are treated as two separate notes;
    slurred or beamed notes are also treated as separate notes in this context. <br>
-   Note that lyrics are always aligned to the beginning of the preceding music line.<br> 
+   Note that lyrics are always aligned to the beginning of the preceding music line.<br>
 	 It is possible for a music line to be followed by several w fields.<br>
    This can be used together with the part notation to create verses.<br>
-   The first w field is used the first time that part is played, then the second and so on.<br> 
+   The first w field is used the first time that part is played, then the second and so on.<br>
 	 The lyrics lines are treated as an ABC string.<br>
    Within the lyrics, the words should be separated by one or more spaces
    and to correctly align them the following symbols may be used:
    <p>
    <table>
-    <tr><th>Symbol</th><th>Meaning</th></tr> 
-	  <tr><td>-    (hyphen)</td><td>break between syllables within a word</td></tr> 
-	  <tr><td>_    (underscore)</td><td> last syllable is to be held for an extra note</td></tr> 
+    <tr><th>Symbol</th><th>Meaning</th></tr>
+	  <tr><td>-    (hyphen)</td><td>break between syllables within a word</td></tr>
+	  <tr><td>_    (underscore)</td><td> last syllable is to be held for an extra note</td></tr>
 	  <tr><td>*    </td><td>one note is skipped (i.e. * is equivalent to a blank syllable) </td></tr>
 	  <tr><td>~    </td><td>appears as a space; aligns multiple words under one note </td></tr>
 	  <tr><td>\-   </td><td>appears as hyphen; aligns multiple syllables under one note </td></tr>
 	  <tr><td>|    </td><td>advances to the next bar </td></tr>
    </table>
    <p>
-	 Note that if - is preceded by a space or another hyphen, it is regarded as a separate syllable.<br> 
+	 Note that if - is preceded by a space or another hyphen, it is regarded as a separate syllable.<br>
 	 When an underscore is used next to a hyphen, the hyphen must always come first. <br>
 	 If there are not as many syllables as notes in a measure, typing a | automatically advances to the next bar;
-	 if there are enough syllables the '|' is just ignored. 
+	 if there are enough syllables the '|' is just ignored.
 <p>
 	 <b>Some examples:</b>
-<pre> 
+<pre>
 	w: syll-a-ble    is aligned with three notes
 	w: syll-a--ble   is aligned with four notes
 	w: syll-a -ble   (equivalent to the previous line)
@@ -1609,9 +1609,9 @@ public void <B>addLyrics</B>(java.lang.String&nbsp;string)</PRE>
 	   Will~ye come to the Wa-x-ies dar-gle?
 </pre>
 <p>
-	 Please see section Continuation of input lines for the meaning of the backslash (\) character. 
+	 Please see section Continuation of input lines for the meaning of the backslash (\) character.
 <p>
-	 If a word starts with a digit, this is interpreted as numbering of a stanza and is pushed forward a bit.<br> 
+	 If a word starts with a digit, this is interpreted as numbering of a stanza and is pushed forward a bit.<br>
    In other words, use something like <br>
 	   w: 1.~Three blind mice<br>
 	 to put a number before Three.

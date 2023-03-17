@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -27,15 +27,15 @@
 			<type>aar</type>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.android</groupId>
 			<artifactId>android</artifactId>
-		    <version>25.0.0</version>
-		    <scope>provided</scope>
+			<version>25.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>

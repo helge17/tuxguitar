@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -15,7 +15,7 @@
 	<properties>
 		<project.unpacked.libraries.directory>${project.build.directory}/unpacked-libs</project.unpacked.libraries.directory>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -31,13 +31,13 @@
 			<type>aar</type>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- 3RD PARTY LIBRARIES -->
 		<dependency>
 			<groupId>com.android</groupId>
 			<artifactId>android</artifactId>
-		    <version>25.0.0</version>
-		    <scope>provided</scope>
+			<version>25.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android.gms</groupId>
@@ -47,56 +47,56 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.apis</groupId>
-		    <artifactId>google-api-services-drive</artifactId>
-		    <version>v2-rev240-1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-drive</artifactId>
+			<version>v2-rev240-1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.api-client</groupId>
-		    <artifactId>google-api-client</artifactId>
-		    <version>1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.api-client</groupId>
-		    <artifactId>google-api-client-android</artifactId>
-		    <version>1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client-android</artifactId>
+			<version>1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.http-client</groupId>
-		    <artifactId>google-http-client</artifactId>
-		    <version>1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client</artifactId>
+			<version>1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.http-client</groupId>
-		    <artifactId>google-http-client-android</artifactId>
-		    <version>1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-android</artifactId>
+			<version>1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.http-client</groupId>
-		    <artifactId>google-http-client-gson</artifactId>
-		    <version>1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-gson</artifactId>
+			<version>1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.oauth-client</groupId>
-		    <artifactId>google-oauth-client</artifactId>
-		    <version>1.22.0</version>
-		    <scope>provided</scope>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client</artifactId>
+			<version>1.22.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.7</version>
-		    <scope>provided</scope>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.7</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- /3RD PARTY LIBRARIES -->
 	</dependencies>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>

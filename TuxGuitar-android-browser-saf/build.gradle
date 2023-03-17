@@ -1,33 +1,33 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+	compileSdkVersion 30
+	buildToolsVersion "30.0.3"
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-    }
-    
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
+	defaultConfig {
+		minSdkVersion 16
+		targetSdkVersion 30
+		versionCode 1
+		versionName "1.0"
+	}
 
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            res.srcDirs = ['res']
-        }
-    }
+	buildTypes {
+		release {
+			minifyEnabled false
+		}
+	}
+
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+			res.srcDirs = ['res']
+		}
+	}
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':tuxguitar-android')
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
+	implementation project(':tuxguitar-android')
+	implementation 'androidx.appcompat:appcompat:1.0.0'
 }

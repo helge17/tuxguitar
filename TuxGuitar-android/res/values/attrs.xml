@@ -4,17 +4,17 @@
 		<!-- ========================================================= -->
 		<!-- ==== COLOR ============================================== -->
 		<!-- ========================================================= -->
-	    <attr name="darkestColor" format="reference|color"/>
-	    <attr name="darkColor" format="reference|color"/>
-	    <attr name="mediumColor" format="reference|color"/>
-	    <attr name="lightColor" format="reference|color"/>
-	    <attr name="lightestColor" format="reference|color"/>
-	    
+		<attr name="darkestColor" format="reference|color"/>
+		<attr name="darkColor" format="reference|color"/>
+		<attr name="mediumColor" format="reference|color"/>
+		<attr name="lightColor" format="reference|color"/>
+		<attr name="lightestColor" format="reference|color"/>
+
 		<!-- ========================================================= -->
 		<!-- ==== COLOR SELECTOR ===================================== -->
 		<!-- ========================================================= -->
-	    <attr name="textLightColorSelector" format="reference|color"/>
-	    
+		<attr name="textLightColorSelector" format="reference|color"/>
+
 		<!-- ========================================================= -->
 		<!-- ==== STYLE ============================================== -->
 		<!-- ========================================================= -->
@@ -23,7 +23,7 @@
 		<attr name="dialogVerticalSpacerStyle" format="reference"/>
 		<attr name="dialogImageButtonStyle" format="reference"/>
 		<attr name="dialogImageButtonSettingsStyle" format="reference"/>
-		
+
 		<attr name="mainImageButtonStyle" format="reference"/>
 		<attr name="mainImageButtonPlayStyle" format="reference"/>
 		<attr name="mainImageButtonStopStyle" format="reference"/>
@@ -62,14 +62,14 @@
 		<attr name="mainDrawerTransportPanelStyle" format="reference"/>
 
 		<attr name="browserSaveImageButtonStyle" format="reference"/>
-	
+
 		<attr name="browserElementIconStyle" format="reference"/>
 		<attr name="browserElementIconFileStyle" format="reference"/>
 		<attr name="browserElementIconFolderStyle" format="reference"/>
 		<attr name="browserElementNameStyle" format="reference"/>
 		<attr name="browserCollectionsDlgImageButtonSubmitStyle" format="reference"/>
 		<attr name="browserCollectionsDlgImageButtonDeleteStyle" format="reference"/>
-		
+
 		<attr name="channelListStyle" format="reference"/>
 		<attr name="channelListItemStyle" format="reference"/>
 		<attr name="channelListItemTextViewStyle" format="reference"/>

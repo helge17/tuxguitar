@@ -14,7 +14,7 @@
 		<item name="mediumColor">@color/mediumColor</item>
 		<item name="lightColor">@color/lightColor</item>
 		<item name="lightestColor">@color/lightestColor</item>
-		
+
 		<!-- ========================================================= -->
 		<!-- ==== COLOR SELECTOR ===================================== -->
 		<!-- ========================================================= -->
@@ -27,7 +27,7 @@
 		<item name="dialogVerticalSpacerStyle">@style/dialogVerticalSpacerStyle</item>
 		<item name="dialogImageButtonStyle">@style/dialogImageButtonStyle</item>
 		<item name="dialogImageButtonSettingsStyle">@style/TGImageButton.Settings</item>
-		
+
 		<item name="mainImageButtonStyle">@style/mainImageButtonStyle</item>
 		<item name="mainImageButtonPlayStyle">@style/TGImageButton.Play</item>
 		<item name="mainImageButtonStopStyle">@style/TGImageButton.Stop</item>
@@ -72,7 +72,7 @@
 		<item name="browserElementNameStyle">@style/browserElementNameStyle</item>
 		<item name="browserCollectionsDlgImageButtonSubmitStyle">@style/TGImageButton.Submit</item>
 		<item name="browserCollectionsDlgImageButtonDeleteStyle">@style/TGImageButton.Delete</item>
-		
+
 		<item name="channelListStyle">@style/channelListStyle</item>
 		<item name="channelListItemStyle">@style/channelListItemStyle</item>
 		<item name="channelListItemTextViewStyle">@style/channelListItemTextViewStyle</item>
@@ -84,12 +84,12 @@
 		<!-- ========================================================= -->
 		<item name="android:textViewStyle">@style/TGWidget.TextView</item>
 		<item name="android:spinnerStyle">@style/TGWidget.Spinner</item>
-    </style>
+	</style>
 
 	<!-- ========================================================= -->
 	<!-- ==== WIDGET STYLES ====================================== -->
 	<!-- ========================================================= -->
-    <style name="TGWidget" parent="android:Widget" />
+	<style name="TGWidget" parent="android:Widget" />
 
 	<style name="TGWidget.TextView" >
 		<item name="android:typeface">normal</item>
@@ -153,36 +153,36 @@
 	</style>
 
 	<!-- ========================================================= -->
-    <style name="dialogStyle" >
-        <item name="android:padding">10dp</item>
+	<style name="dialogStyle" >
+		<item name="android:padding">10dp</item>
 	</style>
-    
-    <style name="dialogVerticalSpacerStyle" >
-        <item name="android:layout_height">20dp</item>
+
+	<style name="dialogVerticalSpacerStyle" >
+		<item name="android:layout_height">20dp</item>
 	</style>
-	
+
 	<style name="dialogImageButtonStyle" >
-	    <item name="android:layout_width">36dp</item>
-	    <item name="android:layout_height">36dp</item>
-	    <item name="android:padding">6dip</item>
-	    <item name="android:background">?android:selectableItemBackground</item>
+		<item name="android:layout_width">36dp</item>
+		<item name="android:layout_height">36dp</item>
+		<item name="android:padding">6dip</item>
+		<item name="android:background">?android:selectableItemBackground</item>
 	</style>
-	
+
 	<!-- ========================================================= -->
 	<!-- ==== MAIN =============================================== -->
 	<!-- ========================================================= -->
-	
+
 	<style name="mainImageButtonStyle" >
-	    <item name="android:layout_width">36dp</item>
-	    <item name="android:layout_height">36dp</item>
-	    <item name="android:padding">6dip</item>
-	    <item name="android:background">?android:selectableItemBackground</item>
+		<item name="android:layout_width">36dp</item>
+		<item name="android:layout_height">36dp</item>
+		<item name="android:padding">6dip</item>
+		<item name="android:background">?android:selectableItemBackground</item>
 	</style>
-	
+
 	<!-- ========================================================= -->
 	<!-- ==== TAB KEYBOARD ======================================= -->
 	<!-- ========================================================= -->
-	
+
 	<style name="tabKeyBoardStyle" >
 		<item name="android:background">?attr/darkColor</item>
 	</style>
@@ -241,35 +241,35 @@
 	<style name="TGKeyBoardButton.Insert" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.Delete" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_left_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.Duration" >
 		<item name="android:src">@drawable/ic_music_note_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.DurationIncrement" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_up_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.DurationDecrement" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.Right" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.Left" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_left_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.Up" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_up_white_24dp</item>
 	</style>
-	
+
 	<style name="TGKeyBoardButton.Down" >
 		<item name="android:src">@drawable/ic_keyboard_arrow_down_white_24dp</item>
 	</style>
@@ -287,73 +287,73 @@
 	</style>
 
 	<style name="mainDrawerListItemStyle" >
-	    <item name="android:layout_width">fill_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textSize">16sp</item>
 		<item name="android:padding">8sp</item>
 		<item name="android:textColor">?attr/textLightColorSelector</item>
 	</style>
 
 	<style name="mainDrawerToolbarStyle" >
-	    <item name="android:background">?attr/mediumColor</item>
-	    <item name="android:textColor">?attr/textLightColorSelector</item>
-	    <item name="android:padding">0dp</item>
+		<item name="android:background">?attr/mediumColor</item>
+		<item name="android:textColor">?attr/textLightColorSelector</item>
+		<item name="android:padding">0dp</item>
 	</style>
-	
+
 	<style name="mainDrawerTransportPanelStyle" >
-	    <item name="android:background">?attr/mediumColor</item>
+		<item name="android:background">?attr/mediumColor</item>
 	</style>
-	
+
 	<!-- ========================================================= -->
 	<!-- ==== BROWSER ============================================ -->
 	<!-- ========================================================= -->
 
 	<style name="browserElementIconStyle" >
-	    <item name="android:layout_width">24dp</item>
-	    <item name="android:layout_height">24dp</item>
-	    <item name="android:scaleType">fitCenter</item>
+		<item name="android:layout_width">24dp</item>
+		<item name="android:layout_height">24dp</item>
+		<item name="android:scaleType">fitCenter</item>
 	</style>
-	
+
 	<style name="browserElementIconFileStyle" >
-	    <item name="android:src">@drawable/browser_file</item>
+		<item name="android:src">@drawable/browser_file</item>
 	</style>
-	
+
 	<style name="browserElementIconFolderStyle" >
-	    <item name="android:src">@drawable/browser_folder</item>
+		<item name="android:src">@drawable/browser_folder</item>
 	</style>
-	
+
 	<style name="browserElementNameStyle" >
-	    <item name="android:layout_width">fill_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textSize">16sp</item>
 		<item name="android:padding">8sp</item>
 	</style>
 	<!-- ========================================================= -->
 	<!-- ==== CHANNEL LIST ======================================= -->
 	<!-- ========================================================= -->
-	
+
 	<style name="channelListStyle" >
-	    <item name="android:background">?attr/darkestColor</item>
+		<item name="android:background">?attr/darkestColor</item>
 	</style>
-	
+
 	<style name="channelListItemStyle" >
-	    <item name="android:paddingTop">12dp</item>
+		<item name="android:paddingTop">12dp</item>
 		<item name="android:background">@drawable/background_selector_darkest</item>
 	</style>
-	
+
 	<style name="channelListItemTextViewStyle" >
 		<item name="android:typeface">normal</item>
 		<item name="android:textStyle">normal</item>
 		<item name="android:textSize">18sp</item>
 		<item name="android:textColor">?attr/textLightColorSelector</item>
 	</style>
-	
+
 	<style name="channelListItemImageButtonStyle" >
-	    <item name="android:layout_width">42dp</item>
-	    <item name="android:layout_height">42dp</item>
-	    <item name="android:scaleType">fitCenter</item>
+		<item name="android:layout_width">42dp</item>
+		<item name="android:layout_height">42dp</item>
+		<item name="android:scaleType">fitCenter</item>
 	</style>
-	
+
 	<style name="channelListItemDividerStyle">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">1dp</item>

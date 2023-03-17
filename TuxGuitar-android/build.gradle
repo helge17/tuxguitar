@@ -1,41 +1,41 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+	compileSdkVersion 30
+	buildToolsVersion "30.0.3"
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-    }
-    
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
+	defaultConfig {
+		minSdkVersion 16
+		targetSdkVersion 30
+		versionCode 1
+		versionName "1.0"
+	}
 
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = [
-                    '../TuxGuitar-lib/src',
-                    '../TuxGuitar-editor-utils/src',
-                    '../TuxGuitar-gm-utils/src',
-                    './src'
-            ]
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-    }
+	buildTypes {
+		release {
+			minifyEnabled false
+		}
+	}
+
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = [
+					'../TuxGuitar-lib/src',
+					'../TuxGuitar-editor-utils/src',
+					'../TuxGuitar-gm-utils/src',
+					'./src'
+			]
+			res.srcDirs = ['res']
+			assets.srcDirs = ['assets']
+		}
+	}
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.multidex:multidex:2.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
+	implementation 'androidx.multidex:multidex:2.0.0'
+	implementation 'androidx.appcompat:appcompat:1.0.0'
+	implementation 'androidx.preference:preference:1.1.0'
+	implementation 'com.google.android.material:material:1.1.0'
 }

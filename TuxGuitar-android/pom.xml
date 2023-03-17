@@ -18,8 +18,8 @@
 		<dependency>
 			<groupId>com.android</groupId>
 			<artifactId>android</artifactId>
-		    <version>25.0.0</version>
-		    <scope>provided</scope>
+			<version>25.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

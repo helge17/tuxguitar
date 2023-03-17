@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
@@ -8,20 +8,20 @@
 		<version>SNAPSHOT</version>
 		<relativePath>../../../</relativePath>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tuxguitar-synth-vst-linux-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
-	
+
 	<properties>
 		<tuxguitar.jni.cxx>g++</tuxguitar.jni.cxx>
 		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
 		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
-		
+
 		<tuxguitar-synth-vst.client.vst.sdk>${basedir}/include</tuxguitar-synth-vst.client.vst.sdk>
-		
+
 		<tuxguitar-synth-vst.client.so.path>${project.parent.relativePath}/TuxGuitar-synth-vst/src-client/</tuxguitar-synth-vst.client.so.path>
 		<tuxguitar-synth-vst.client.so.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst.client.so.cxx>
 		<tuxguitar-synth-vst.client.so.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.client.so.rm>
@@ -32,7 +32,7 @@
 		<tuxguitar-synth-vst.client.so.binary.name>tuxguitar-synth-vst</tuxguitar-synth-vst.client.so.binary.name>
 		<tuxguitar-synth-vst.client.so.binary.suffix>.bin</tuxguitar-synth-vst.client.so.binary.suffix>
 		<tuxguitar-synth-vst.client.so.binary.os>_GNULinux</tuxguitar-synth-vst.client.so.binary.os>
-		
+
 		<tuxguitar-synth-vst.client.dll.path>${project.parent.relativePath}/TuxGuitar-synth-vst/src-client/</tuxguitar-synth-vst.client.dll.path>
 		<tuxguitar-synth-vst.client.dll.cxx>/usr/bin/i686-w64-mingw32-g++-win32</tuxguitar-synth-vst.client.dll.cxx>
 		<tuxguitar-synth-vst.client.dll.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.client.dll.rm>
@@ -44,11 +44,11 @@
 		<tuxguitar-synth-vst.client.dll.binary.suffix>.exe</tuxguitar-synth-vst.client.dll.binary.suffix>
 		<tuxguitar-synth-vst.client.dll.binary.os>_Win32</tuxguitar-synth-vst.client.dll.binary.os>
 	</properties>
-	
+
 	<modules>
 		<module>${project.parent.relativePath}/TuxGuitar-synth-vst</module>
 	</modules>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -82,7 +82,7 @@
 									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
 									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
 								</exec>
-								
+
 								<!-- Build windows client -->
 								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
@@ -104,7 +104,7 @@
 							</target>
 						</configuration>
 					</execution>
-					
+
 					<execution>
 						<id>clean-native</id>
 						<phase>clean</phase>
@@ -120,7 +120,7 @@
 									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
 									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
 								</exec>
-								
+
 								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
 									<env key="RM" value="${tuxguitar-synth-vst.client.dll.rm}" />
@@ -131,7 +131,7 @@
 							</target>
 						</configuration>
 					</execution>
-					
+
 					<execution>
 						<id>native-module-copy</id>
 						<phase>package</phase>
@@ -139,14 +139,14 @@
 							<target name="copy-files">
 								<mkdir dir="${project.build.directory}/build" />
 								<mkdir dir="${project.build.directory}/build/vst-client" />
-								
+
 								<copy todir="${project.build.directory}/build/vst-client">
 									<fileset file="${tuxguitar-synth-vst.client.so.path}/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" />
-									
+
 									<fileset file="${tuxguitar-synth-vst.client.dll.path}/tuxguitar-synth-vst.ico" />
 									<fileset file="${tuxguitar-synth-vst.client.dll.path}/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" />
 								</copy>
-								
+
 								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" perm="775" />
 								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" perm="775" />
 							</target>
@@ -157,7 +157,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

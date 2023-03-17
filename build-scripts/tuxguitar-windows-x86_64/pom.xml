@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -16,11 +16,11 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-windows-x86_64</project.finalName>
-		
+
 		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</org.eclipse.swt.artifactId>
 	</properties>
-	
+
 	<modules>
 		<module>../../gervill</module>
 		<module>../../TuxGuitar</module>
@@ -58,7 +58,7 @@
 		<module>../../TuxGuitar-synth-export</module>
 		<module>../../TuxGuitar-debug-helper</module>
 	</modules>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -91,8 +91,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-lib</artifactId>
-                  					<destFileName>tuxguitar-lib.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-lib.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -115,8 +115,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
-                  					<destFileName>tuxguitar-gm-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-gm-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -125,7 +125,7 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /LIBRARIES -->
-								
+
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
 									<groupId>${org.eclipse.swt.groupId}</groupId>
@@ -133,7 +133,7 @@
 									<destFileName>swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -146,7 +146,7 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
@@ -154,8 +154,8 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
-								
-								<!-- PLUGINS  -->
+
+								<!-- PLUGINS -->
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ascii</artifactId>
@@ -319,7 +319,7 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->
-								
+
 							</artifactItems>
 						</configuration>
 					</execution>
@@ -348,7 +348,7 @@
 								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
-								
+
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common"/>
 								</copy>
@@ -358,7 +358,7 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-windows-x86_64"/>
 								</copy>
-								
+
 								<copy todir="${project.build.directory}/bundle" overwrite="true">
 									<fileset dir="./src/resources"/>
 								</copy>
@@ -370,7 +370,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>com.akathist.maven.plugins.launch4j</groupId>
 				<artifactId>launch4j-maven-plugin</artifactId>
@@ -408,7 +408,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>native-modules</id>
@@ -424,7 +424,7 @@
 				<module>../native-modules/tuxguitar-jack-windows-x86_64</module>
 				<module>../native-modules/tuxguitar-synth-vst-windows-x86</module>
 			</modules>
-			
+
 			<build>
 				<plugins>
 					<plugin>

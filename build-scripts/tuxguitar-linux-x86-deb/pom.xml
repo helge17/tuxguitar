@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -25,7 +25,7 @@
 
 	<build>
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -39,11 +39,11 @@
 								<copy todir="${project.build.directory}/${project.packageName}/opt/tuxguitar" overwrite="true">
 									<fileset dir="../tuxguitar-linux-x86/target/${project.packageName}" />
 								</copy>
-								
+
 								<copy todir="${project.build.directory}/${project.packageName}" overwrite="true">
 									<fileset dir="./src/resources"/>
 								</copy>
-								
+
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr"/>
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/bin"/>
 								<symlink link="${project.build.directory}/${project.packageName}/usr/bin/tuxguitar" resource="/opt/tuxguitar/tuxguitar.sh" overwrite="true"/>
@@ -62,7 +62,7 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					
+
 					<execution>
 						<id>package-bundle</id>
 						<phase>package</phase>
@@ -79,7 +79,7 @@
 							</target>
 						</configuration>
 					</execution>
-					
+
 					<execution>
 						<id>remove-bundle</id>
 						<phase>package</phase>

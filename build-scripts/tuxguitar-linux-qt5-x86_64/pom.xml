@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -126,9 +126,9 @@
 
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
-						            <groupId>org.qtjambi.qt</groupId>
-						            <artifactId>qtjambi</artifactId>
-						            <version>${org.qtjambi.qt.version}</version>
+									<groupId>org.qtjambi.qt</groupId>
+									<artifactId>qtjambi</artifactId>
+									<version>${org.qtjambi.qt.version}</version>
 									<destFileName>qtjambi.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
@@ -139,7 +139,7 @@
 									<destFileName>qtjambi-native.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -152,7 +152,7 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
@@ -348,7 +348,7 @@
 								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
-								
+
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common"/>
 								</copy>
@@ -361,7 +361,7 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-linux-qtjambi5"/>
 								</copy>
-								
+
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
 							</target>
 						</configuration>
@@ -425,7 +425,7 @@
 										</copy>
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="775" />
 										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.bin" perm="775" />
-										
+
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
 										<!-- /PLUGINS FILES -->
 									</target>

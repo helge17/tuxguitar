@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
@@ -8,7 +8,7 @@
 		<version>SNAPSHOT</version>
 		<relativePath>../../../</relativePath>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tuxguitar-winmm-windows-x86</artifactId>
 	<packaging>pom</packaging>
@@ -21,7 +21,7 @@
 		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
 		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
 		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
-		
+
 		<tuxguitar-winmm.jni.path>${project.parent.relativePath}/TuxGuitar-winmm/jni/</tuxguitar-winmm.jni.path>
 		<tuxguitar-winmm.jni.rm>${tuxguitar.jni.rm}</tuxguitar-winmm.jni.rm>
 		<tuxguitar-winmm.jni.cc>${tuxguitar.jni.cc}</tuxguitar-winmm.jni.cc>
@@ -37,7 +37,7 @@
 	<modules>
 		<module>${project.parent.relativePath}/TuxGuitar-winmm</module>
 	</modules>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -66,7 +66,7 @@
 							</target>
 						</configuration>
 					</execution>
-					
+
 					<execution>
 						<id>clean-native</id>
 						<phase>clean</phase>
@@ -85,7 +85,7 @@
 							</target>
 						</configuration>
 					</execution>
-					
+
 					<execution>
 						<id>native-module-copy</id>
 						<phase>package</phase>
@@ -104,7 +104,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

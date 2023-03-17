@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.herac.tuxguitar</groupId>
 	<artifactId>tuxguitar-pom</artifactId>
@@ -315,7 +315,7 @@
 				<artifactId>tuxguitar-ui-toolkit-swt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- SWT Platforms -->
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
@@ -371,7 +371,7 @@
 				<version>1.0</version>
 			</dependency>
 			<!-- /gervill -->
-			
+
 			<!-- iText -->
 			<dependency>
 				<groupId>com.itextpdf</groupId>
@@ -384,7 +384,7 @@
 				<version>5.5.13.1</version>
 			</dependency>
 			<!-- /iText -->
-			
+
 			<!-- commons compress -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -426,7 +426,7 @@
 		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 		<org.eclipse.swt.artifactId>org.eclipse.swt</org.eclipse.swt.artifactId>
 	</properties>
-	
+
 	<profiles>
 		<profile>
 			<id>platform-windows-all</id>

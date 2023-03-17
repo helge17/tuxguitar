@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -19,14 +19,14 @@
 		<project.bundleSourceName>tuxguitar-${project.version}-windows-x86</project.bundleSourceName>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86</org.eclipse.swt.artifactId>
 	</properties>
-	
+
 	<modules>
 		<module>../tuxguitar-windows-x86</module>
 	</modules>
-	
+
 	<build>
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -39,7 +39,7 @@
 							<target name="copy-files">
 								<mkdir dir="${project.build.directory}/" />
 								<mkdir dir="${project.build.directory}/bundle" />
-								
+
 								<copy todir="${project.build.directory}/bundle" overwrite="true">
 									<fileset dir="../tuxguitar-windows-x86/target/${project.bundleSourceName}" />
 								</copy>
@@ -49,7 +49,7 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					
+
 					<execution>
 						<id>package-installer</id>
 						<phase>package</phase>
@@ -66,7 +66,7 @@
 							</target>
 						</configuration>
 					</execution>
-					
+
 					<execution>
 						<id>remove-bundle</id>
 						<phase>package</phase>

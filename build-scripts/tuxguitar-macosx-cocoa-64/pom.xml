@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -146,7 +146,7 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
@@ -367,14 +367,14 @@
 								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS/share/soundfont" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
-								
+
 								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS" overwrite="true">
 									<fileset dir="../common-resources/common"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-macosx"/>
 								</copy>
-								
+
 								<chmod perm="755">
 									<fileset dir="${project.build.directory}/${project.finalName}/Contents/MacOS">
 										<include name="tuxguitar.sh"/>
