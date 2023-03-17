@@ -17,7 +17,7 @@
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-windows-x86_64</project.finalName>
 		
-		<org.eclipse.swt.groupId>org.eclipse.platform</org.eclipse.swt.groupId>
+		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</org.eclipse.swt.artifactId>
 	</properties>
 	
