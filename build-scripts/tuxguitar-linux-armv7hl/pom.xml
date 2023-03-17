@@ -51,6 +51,7 @@
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
 		<module>../../TuxGuitar-image</module>
+		<module>../../TuxGuitar-debug-helper</module>
 	</modules>
 
 	<build>
@@ -279,6 +280,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-image</artifactId>
 									<destFileName>tuxguitar-image.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-debug-helper</artifactId>
+									<destFileName>tuxguitar-debug-helper.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->

@@ -55,6 +55,7 @@
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
+		<module>../../TuxGuitar-debug-helper</module>
 	</modules>
 	
 	<build>
@@ -322,7 +323,13 @@
 									<destFileName>tuxguitar-synth-export.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
-								<!-- /PLUGINS  -->
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-debug-helper</artifactId>
+									<destFileName>tuxguitar-debug-helper.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<!-- /PLUGINS -->
 								
 							</artifactItems>
 						</configuration>
