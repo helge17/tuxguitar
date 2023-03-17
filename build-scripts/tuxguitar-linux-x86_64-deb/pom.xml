@@ -47,6 +47,10 @@
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr"/>
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/bin"/>
 								<symlink link="${project.build.directory}/${project.packageName}/usr/bin/tuxguitar" resource="/opt/tuxguitar/tuxguitar.sh" overwrite="true"/>
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share"/>
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/man"/>
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/man/man1"/>
+								<symlink link="${project.build.directory}/${project.packageName}/usr/share/man/man1/tuxguitar.1" resource="/opt/tuxguitar/share/man/man1/tuxguitar.1" overwrite="true"/>
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.bin" perm="775" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/vst-client/*.bin" perm="775" />

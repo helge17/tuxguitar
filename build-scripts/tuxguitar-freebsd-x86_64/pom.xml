@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
@@ -17,7 +17,7 @@
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-freebsd-x86_64</project.finalName>
 	</properties>
-	
+
 	<modules>
 		<module>../../gervill</module>
 		<module>../../TuxGuitar</module>
@@ -55,7 +55,7 @@
 		<module>../../TuxGuitar-synth-export</module>
 		<module>../../TuxGuitar-debug-helper</module>
 	</modules>
-	
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -88,8 +88,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-lib</artifactId>
-                  					<destFileName>tuxguitar-lib.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+							<destFileName>tuxguitar-lib.jar</destFileName>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -106,14 +106,14 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-editor-utils</artifactId>
-                  					<destFileName>tuxguitar-editor-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+							<destFileName>tuxguitar-editor-utils.jar</destFileName>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
-                  					<destFileName>tuxguitar-gm-utils.jar</destFileName>
-                  					<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+							<destFileName>tuxguitar-gm-utils.jar</destFileName>
+							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -122,7 +122,7 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /LIBRARIES -->
-								
+
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
@@ -136,7 +136,7 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-								
+
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
@@ -144,8 +144,8 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
-								
-								<!-- PLUGINS  -->
+
+								<!-- PLUGINS -->
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ascii</artifactId>
@@ -309,7 +309,7 @@
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->
-								
+
 							</artifactItems>
 						</configuration>
 					</execution>
@@ -321,6 +321,23 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 				<executions>
+					<execution>
+						<id>man-page</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="man-page">
+								<mkdir dir="${project.build.directory}/${project.finalName}/share"/>
+								<mkdir dir="${project.build.directory}/${project.finalName}/share/man"/>
+								<mkdir dir="${project.build.directory}/${project.finalName}/share/man/man1"/>
+								<exec dir="${project.basedir}" executable="docbook-to-man" output="${project.build.directory}/${project.finalName}/share/man/man1/tuxguitar.1" failonerror="true" >
+									<arg value="${project.rootPath}/misc/tuxguitar.sgml"/>
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
 					<execution>
 						<id>copy</id>
 						<phase>package</phase>
@@ -338,14 +355,14 @@
 								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
-								
+
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="./src/resources"/>
 								</copy>
-								
+
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
 							</target>
 						</configuration>
@@ -357,7 +374,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>native-modules</id>
@@ -367,11 +384,11 @@
 					<value>true</value>
 				</property>
 			</activation>
-			<modules>				
+			<modules>
 				<module>../native-modules/tuxguitar-oss-freebsd-x86_64</module>
 				<module>../native-modules/tuxguitar-fluidsynth-freebsd-x86_64</module>
 			</modules>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -391,7 +408,7 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-freebsd-x86_64/target/build" />
 										</copy>
-										
+
 										<chmod file="${project.build.directory}/${project.finalName}/lib/*.so" perm="775" />
 										<!-- /PLUGINS FILES -->
 									</target>
@@ -405,5 +422,5 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>	
+	</profiles>
 </project>
