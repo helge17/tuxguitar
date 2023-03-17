@@ -1,13 +1,15 @@
 [Desktop Entry]
-Version=1.0
-Name=tuxguitar
+Name=TuxGuitar
+GenericName=Guitar Tablature Editor
 Comment=Edit, playback guitar tablatures
 Comment[fr]=Edite, joue des tablatures de guitare
 Comment[es]=Edita, reproduce tablaturas de guitarra
-Exec=tuxguitar
-Icon=tuxguitar
-Terminal=false
+Comment[de]=Bearbeiten und abspielen von Gitarren-Tabulaturen
+Keywords=Guitar Pro;MIDI
 Type=Application
-Categories=AudioVideo;Audio;
-MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb;audio/midi;
-#eof "$Id: tuxguitar.desktop,v 1.2 2008/03/22 23:32:25 rzr Exp $"
+MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb
+Categories=AudioVideo;Audio
+Exec=tuxguitar %F
+Icon=/opt/tuxguitar/share/skins/Oxygen/icon-96x96.png
+Terminal=false
+StartupNotify=false
