@@ -147,8 +147,8 @@
 									<fileset file="${tuxguitar-synth-vst.client.dll.path}/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" />
 								</copy>
 
-								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" perm="775" />
-								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" perm="775" />
+								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" perm="755" />
+								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>

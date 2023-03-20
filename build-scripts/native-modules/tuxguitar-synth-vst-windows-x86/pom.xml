@@ -97,7 +97,7 @@
 									<fileset file="${tuxguitar-synth-vst.client.path}/tuxguitar-synth-vst.ico" />
 									<fileset file="${tuxguitar-synth-vst.client.path}/${tuxguitar-synth-vst.client.binary.name}${tuxguitar-synth-vst.client.binary.suffix}" />
 								</copy>
-								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.binary.name}${tuxguitar-synth-vst.client.binary.suffix}" perm="775" />
+								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.binary.name}${tuxguitar-synth-vst.client.binary.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>
