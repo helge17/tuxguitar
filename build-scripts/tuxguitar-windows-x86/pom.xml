@@ -358,10 +358,6 @@
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-windows-x86"/>
 								</copy>
-
-								<copy todir="${project.build.directory}/bundle" overwrite="true">
-									<fileset dir="./src/resources"/>
-								</copy>
 							</target>
 						</configuration>
 						<goals>
