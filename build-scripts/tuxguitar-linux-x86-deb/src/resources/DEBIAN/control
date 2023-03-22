@@ -1,9 +1,0 @@
-Package: tuxguitar
-Version: SNAPSHOT-linux-i386
-Architecture: i386
-Depends: default-jre
-Recommends: guitarix-lv2
-Priority: optional
-Section: Multimedia
-Maintainer: Julian Casadesus <julian@casadesus.com.ar>
-Description: TuxGuitar is a multitrack guitar tablature editor and player
