@@ -9,14 +9,13 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-x86_64</artifactId>
+	<artifactId>tuxguitar-freebsd-swt-x86_64</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-x86_64</project.finalName>
-		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
+		<project.finalName>tuxguitar-${project.version}-freebsd-swt-x86_64</project.finalName>
 	</properties>
 
 	<modules>
@@ -125,13 +124,6 @@
 								<!-- /LIBRARIES -->
 
 								<!-- 3RD PARTY LIBRARIES -->
-								<artifactItem>
-									<groupId>${org.eclipse.swt.groupId}</groupId>
-									<artifactId>${org.eclipse.swt.artifactId}</artifactId>
-									<destFileName>swt.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-								</artifactItem>
-
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -368,10 +360,7 @@
 									<fileset dir="../common-resources/common"/>
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux"/>
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux-swt"/>
+									<fileset dir="./src/resources"/>
 								</copy>
 
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
@@ -396,12 +385,8 @@
 				</property>
 			</activation>
 			<modules>
-				<module>../native-modules/tuxguitar-alsa-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-jack-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-oss-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-fluidsynth-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-synth-lv2-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-synth-vst-linux-x86_64</module>
+				<module>../native-modules/tuxguitar-oss-freebsd-x86_64</module>
+				<module>../native-modules/tuxguitar-fluidsynth-freebsd-x86_64</module>
 			</modules>
 
 			<build>
@@ -418,25 +403,11 @@
 									<target name="copy-files">
 										<!-- PLUGIN FILES -->
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-alsa-linux-x86_64/target/build" />
+											<fileset dir="../native-modules/tuxguitar-oss-freebsd-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-jack-linux-x86_64/target/build" />
+											<fileset dir="../native-modules/tuxguitar-fluidsynth-freebsd-x86_64/target/build" />
 										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-oss-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-lv2-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-linux-x86_64/target/build" />
-										</copy>
-										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="755" />
-										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.bin" perm="755" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>

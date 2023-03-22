@@ -26,15 +26,15 @@
 				<include name="build-scripts/common-resources/**"/>
 				<include name="build-scripts/native-modules/**"/>
 				<include name="build-scripts/tuxguitar-android/**"/>
-				<include name="build-scripts/tuxguitar-linux-x86_64/**"/>
-				<include name="build-scripts/tuxguitar-linux-x86_64-deb/**"/>
+				<include name="build-scripts/tuxguitar-linux-swt-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-linux-swt-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-qt5-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-linux-jfx-x86_64/**"/>
-				<include name="build-scripts/tuxguitar-macosx-cocoa-64/**"/>
-				<include name="build-scripts/tuxguitar-windows-x86_64/**"/>
-				<include name="build-scripts/tuxguitar-windows-x86_64-installer/**"/>
+				<include name="build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-windows-swt-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-windows-swt-x86_64-installer/**"/>
 				<include name="build-scripts/tuxguitar-windows-jfx-x86_64/**"/>
-				<include name="build-scripts/tuxguitar-freebsd-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-freebsd-swt-x86_64/**"/>
 				
 				<include name="gervill/**"/>
 				<include name="TuxGuitar/**"/>

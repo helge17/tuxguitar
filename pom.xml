@@ -398,7 +398,7 @@
 
 	<profiles>
 		<profile>
-			<id>platform-windows-all</id>
+			<id>platform-windows-swt-all</id>
 			<activation>
 				<os>
 					<family>windows</family>
@@ -410,7 +410,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>platform-linux-x86_64</id>
+			<id>platform-linux-swt-x86_64</id>
 			<activation>
 				<os>
 					<family>unix</family>
@@ -424,7 +424,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>platform-macos-cocoa-64</id>
+			<id>platform-macos-swt-cocoa-64</id>
 			<activation>
 				<os>
 					<family>unix</family>
@@ -438,7 +438,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>platform-freebsd-x86_64</id>
+			<id>platform-freebsd-swt-x86_64</id>
 			<activation>
 				<os>
 					<family>unix</family>

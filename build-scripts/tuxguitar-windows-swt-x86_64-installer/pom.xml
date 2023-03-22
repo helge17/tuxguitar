@@ -9,18 +9,18 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-windows-x86_64-installer</artifactId>
+	<artifactId>tuxguitar-windows-swt-x86_64-installer</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.builder.executable>builder</project.builder.executable>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.bundleSourceName>tuxguitar-${project.version}-windows-x86_64</project.bundleSourceName>
+		<project.bundleSourceName>tuxguitar-${project.version}-windows-swt-x86_64</project.bundleSourceName>
 	</properties>
 
 	<modules>
-		<module>../tuxguitar-windows-x86_64</module>
+		<module>../tuxguitar-windows-swt-x86_64</module>
 	</modules>
 
 	<build>
@@ -40,7 +40,7 @@
 								<mkdir dir="${project.build.directory}/bundle" />
 
 								<copy todir="${project.build.directory}/bundle" overwrite="true">
-									<fileset dir="../tuxguitar-windows-x86_64/target/${project.bundleSourceName}" />
+									<fileset dir="../tuxguitar-windows-swt-x86_64/target/${project.bundleSourceName}" />
 								</copy>
 							</target>
 						</configuration>

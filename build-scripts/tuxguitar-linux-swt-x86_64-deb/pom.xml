@@ -9,18 +9,17 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-x86_64-deb</artifactId>
+	<artifactId>tuxguitar-linux-swt-x86_64-deb</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<project.dpkg.executable>fakeroot</project.dpkg.executable>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.packageName>tuxguitar-${project.version}-linux-x86_64</project.packageName>
+		<project.packageName>tuxguitar-${project.version}-linux-swt-x86_64</project.packageName>
 	</properties>
 
 	<modules>
-		<module>../tuxguitar-linux-x86_64</module>
+		<module>../tuxguitar-linux-swt-x86_64</module>
 	</modules>
 
 	<build>
@@ -37,7 +36,7 @@
 						<configuration>
 							<target name="copy-bundle">
 								<copy todir="${project.build.directory}/${project.packageName}/opt/tuxguitar" overwrite="true">
-									<fileset dir="../tuxguitar-linux-x86_64/target/${project.packageName}" />
+									<fileset dir="../tuxguitar-linux-swt-x86_64/target/${project.packageName}" />
 								</copy>
 
 								<copy todir="${project.build.directory}/${project.packageName}" overwrite="true">
@@ -71,7 +70,7 @@
 						</goals>
 						<configuration>
 							<target name="package-bundle">
-								<exec dir="${project.basedir}" executable="${project.dpkg.executable}" failonerror="true" >
+								<exec dir="${project.basedir}" executable="fakeroot" failonerror="true" >
 									<arg value="dpkg"/>
 									<arg value="--build"/>
 									<arg value="${project.build.directory}/${project.packageName}"/>
