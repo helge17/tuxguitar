@@ -2,7 +2,7 @@
 	<shortName>tuxguitar</shortName>
 	<fullName>TuxGuitar</fullName>
 	<version>SNAPSHOT</version>
-	<installerFilename>${product_shortname}-${product_version}-windows-swt-x86_64-installer.${platform_exec_suffix}</installerFilename>
+	<installerFilename>${product_shortname}-${product_version}-windows-jfx-x86_64-installer.${platform_exec_suffix}</installerFilename>
 	<readmeFile></readmeFile>
 	<licenseFile>${build_project_directory}/../../target/bundle/doc/LICENSE</licenseFile>
 	<wrapLicenseFileText>1</wrapLicenseFileText>

@@ -30,10 +30,12 @@
 				<include name="build-scripts/tuxguitar-linux-swt-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-linux-qt5-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-linux-jfx-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-linux-jfx-x86_64-deb/**"/>
 				<include name="build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-windows-swt-x86_64/**"/>
 				<include name="build-scripts/tuxguitar-windows-swt-x86_64-installer/**"/>
 				<include name="build-scripts/tuxguitar-windows-jfx-x86_64/**"/>
+				<include name="build-scripts/tuxguitar-windows-jfx-x86_64-installer/**"/>
 				<include name="build-scripts/tuxguitar-freebsd-swt-x86_64/**"/>
 				
 				<include name="gervill/**"/>

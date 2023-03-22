@@ -113,8 +113,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-gm-utils</artifactId>
-							<destFileName>tuxguitar-gm-utils.jar</destFileName>
-							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-gm-utils.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
