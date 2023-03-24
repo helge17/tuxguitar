@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# Convert utf8 text file to Java unicode escaped format (\uHHHH)
+# Convert back to utf8 with uconv -x hex-any
+
 use strict;
 
 if ($#ARGV < 0){
