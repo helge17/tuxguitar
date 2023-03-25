@@ -1,11 +1,15 @@
 [Desktop Entry]
 Name=TuxGuitar
-GenericName=TuxGuitar
-Comment=TuxGuitar
+GenericName=Guitar Tablature Editor
+Comment=Edit, playback guitar tablatures
+Comment[fr]=Edite, joue des tablatures de guitare
+Comment[es]=Edita, reproduce tablaturas de guitarra
+Comment[de]=Bearbeiten und abspielen von Gitarren-Tabulaturen
+Keywords=Guitar Pro;MIDI
 Type=Application
 MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb
-Categories=Application;AudioVideo;
-Exec=/opt/tuxguitar/tuxguitar.sh %F
+Categories=AudioVideo;Audio
+Exec=tuxguitar %F
 Icon=/opt/tuxguitar/share/skins/Oxygen/icon-96x96.png
 Terminal=false
 StartupNotify=false
