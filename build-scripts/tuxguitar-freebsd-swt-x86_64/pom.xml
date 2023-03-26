@@ -385,7 +385,6 @@
 				</property>
 			</activation>
 			<modules>
-				<module>../native-modules/tuxguitar-oss-freebsd-x86_64</module>
 				<module>../native-modules/tuxguitar-fluidsynth-freebsd-x86_64</module>
 			</modules>
 
@@ -402,9 +401,6 @@
 								<configuration>
 									<target name="copy-files">
 										<!-- PLUGIN FILES -->
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-oss-freebsd-x86_64/target/build" />
-										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-freebsd-x86_64/target/build" />
 										</copy>

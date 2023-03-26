@@ -398,7 +398,6 @@
 			<modules>
 				<module>../native-modules/tuxguitar-alsa-linux-x86_64</module>
 				<module>../native-modules/tuxguitar-jack-linux-x86_64</module>
-				<module>../native-modules/tuxguitar-oss-linux-x86_64</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux-x86_64</module>
 				<module>../native-modules/tuxguitar-synth-lv2-linux-x86_64</module>
 				<module>../native-modules/tuxguitar-synth-vst-linux-x86_64</module>
@@ -422,9 +421,6 @@
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-jack-linux-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-oss-linux-x86_64/target/build" />
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-linux-x86_64/target/build" />
