@@ -328,7 +328,7 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-debug-helper</artifactId>
 									<destFileName>tuxguitar-debug-helper.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->
 
