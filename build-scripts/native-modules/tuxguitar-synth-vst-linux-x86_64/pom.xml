@@ -32,17 +32,6 @@
 		<tuxguitar-synth-vst.client.so.binary.name>tuxguitar-synth-vst</tuxguitar-synth-vst.client.so.binary.name>
 		<tuxguitar-synth-vst.client.so.binary.suffix>.bin</tuxguitar-synth-vst.client.so.binary.suffix>
 		<tuxguitar-synth-vst.client.so.binary.os>_GNULinux</tuxguitar-synth-vst.client.so.binary.os>
-
-		<tuxguitar-synth-vst.client.dll.path>${project.parent.relativePath}/TuxGuitar-synth-vst/src-client/</tuxguitar-synth-vst.client.dll.path>
-		<tuxguitar-synth-vst.client.dll.cxx>/usr/bin/i686-w64-mingw32-g++-win32</tuxguitar-synth-vst.client.dll.cxx>
-		<tuxguitar-synth-vst.client.dll.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.client.dll.rm>
-		<tuxguitar-synth-vst.client.dll.cflags>-I${tuxguitar-synth-vst.client.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst.client.dll.cflags>
-		<tuxguitar-synth-vst.client.dll.ldflags></tuxguitar-synth-vst.client.dll.ldflags>
-		<tuxguitar-synth-vst.client.dll.ldlibs>-static-libgcc -static-libstdc++ -static -lws2_32 -lpthread</tuxguitar-synth-vst.client.dll.ldlibs>
-		<tuxguitar-synth-vst.client.dll.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst.client.dll.ldpath>
-		<tuxguitar-synth-vst.client.dll.binary.name>tuxguitar-synth-vst</tuxguitar-synth-vst.client.dll.binary.name>
-		<tuxguitar-synth-vst.client.dll.binary.suffix>.exe</tuxguitar-synth-vst.client.dll.binary.suffix>
-		<tuxguitar-synth-vst.client.dll.binary.os>_Win32</tuxguitar-synth-vst.client.dll.binary.os>
 	</properties>
 
 	<modules>
@@ -64,7 +53,6 @@
 						</goals>
 						<configuration>
 							<target name="compile-native">
-								<!-- Build gnulinux client -->
 								<exec dir="${tuxguitar-synth-vst.client.so.path}" executable="make" failonerror="true" >
 									<arg value="clean"/>
 									<env key="RM" value="${tuxguitar-synth-vst.client.so.rm}" />
@@ -81,25 +69,6 @@
 									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.so.binary.name}" />
 									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
 									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
-								</exec>
-
-								<!-- Build windows client -->
-								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-vst.client.dll.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.dll.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.dll.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.dll.binary.os}" />
-								</exec>
-								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
-									<env key="CXX" value="${tuxguitar-synth-vst.client.dll.cxx}" />
-									<env key="CFLAGS" value="${tuxguitar-synth-vst.client.dll.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-synth-vst.client.dll.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-synth-vst.client.dll.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-synth-vst.client.dll.ldpath}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.dll.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.dll.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.dll.binary.os}" />
 								</exec>
 							</target>
 						</configuration>
@@ -120,14 +89,6 @@
 									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
 									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.so.binary.os}" />
 								</exec>
-
-								<exec dir="${tuxguitar-synth-vst.client.dll.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
-									<env key="RM" value="${tuxguitar-synth-vst.client.dll.rm}" />
-									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.dll.binary.name}" />
-									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.dll.binary.suffix}" />
-									<env key="BINARY_OS" value="${tuxguitar-synth-vst.client.dll.binary.os}" />
-								</exec>
 							</target>
 						</configuration>
 					</execution>
@@ -142,13 +103,8 @@
 
 								<copy todir="${project.build.directory}/build/vst-client">
 									<fileset file="${tuxguitar-synth-vst.client.so.path}/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" />
-
-									<fileset file="${tuxguitar-synth-vst.client.dll.path}/tuxguitar-synth-vst.ico" />
-									<fileset file="${tuxguitar-synth-vst.client.dll.path}/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" />
 								</copy>
-
 								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.so.binary.name}${tuxguitar-synth-vst.client.so.binary.suffix}" perm="755" />
-								<chmod file="${project.build.directory}/build/vst-client/${tuxguitar-synth-vst.client.dll.binary.name}${tuxguitar-synth-vst.client.dll.binary.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>
