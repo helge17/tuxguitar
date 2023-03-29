@@ -25,8 +25,8 @@
 		<tuxguitar-synth-vst.client.so.path>${project.parent.relativePath}/TuxGuitar-synth-vst/src-client/</tuxguitar-synth-vst.client.so.path>
 		<tuxguitar-synth-vst.client.so.cxx>${tuxguitar.jni.cxx}</tuxguitar-synth-vst.client.so.cxx>
 		<tuxguitar-synth-vst.client.so.rm>${tuxguitar.jni.rm}</tuxguitar-synth-vst.client.so.rm>
-		<tuxguitar-synth-vst.client.so.cflags>-I${tuxguitar-synth-vst.client.vst.sdk} -m64 -fPIC -fpermissive</tuxguitar-synth-vst.client.so.cflags>
-		<tuxguitar-synth-vst.client.so.ldflags>-m64 -fPIC</tuxguitar-synth-vst.client.so.ldflags>
+		<tuxguitar-synth-vst.client.so.cflags>-I${tuxguitar-synth-vst.client.vst.sdk} -fPIC -fpermissive</tuxguitar-synth-vst.client.so.cflags>
+		<tuxguitar-synth-vst.client.so.ldflags>-fPIC</tuxguitar-synth-vst.client.so.ldflags>
 		<tuxguitar-synth-vst.client.so.ldlibs>-ldl -lX11 -lrt -lpthread</tuxguitar-synth-vst.client.so.ldlibs>
 		<tuxguitar-synth-vst.client.so.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-synth-vst.client.so.ldpath>
 		<tuxguitar-synth-vst.client.so.binary.name>tuxguitar-synth-vst</tuxguitar-synth-vst.client.so.binary.name>
