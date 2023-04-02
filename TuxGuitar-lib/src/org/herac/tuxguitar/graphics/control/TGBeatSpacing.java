@@ -15,6 +15,7 @@ public class TGBeatSpacing extends TGSpacing {
 	public static final int POSITION_VIBRATO_EFFEC = 8;
 	public static final int POSITION_TRILL_EFFEC = 9;
 	public static final int POSITION_FADE_IN = 10;
+	public static final int POSITION_BEND_VALUE = 11;
 	
 	private static final int[] EFFECT_POSITIONS = new int[]{
 		POSITION_ACCENTUATED_EFFECT,
@@ -28,6 +29,7 @@ public class TGBeatSpacing extends TGSpacing {
 		POSITION_VIBRATO_EFFEC,
 		POSITION_TRILL_EFFEC,
 		POSITION_FADE_IN,
+		POSITION_BEND_VALUE,
 	};
 	
 	private static final int[][] POSITIONS = new int[][]{
