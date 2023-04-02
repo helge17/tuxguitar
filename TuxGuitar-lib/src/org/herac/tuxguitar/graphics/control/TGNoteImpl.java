@@ -647,6 +647,16 @@ public class TGNoteImpl extends TGNote {
 		}
 	}
 	
+	public float getEffectSpacing(TGLayout layout) {
+		if (getEffect().isBend()) return getBendSpacing(layout, getEffect().getBend());
+		return(0.0f);
+	}
+
+	private float getBendSpacing(TGLayout layout, TGEffectBend bend) {
+		// TODO !! call paintBend with null painter, paintBend shall return horizontal spacing (float)
+		return (20.0f * layout.getScale());
+	}
+	
 	private void paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY,UIInset margin, float spacing, TGEffectBend bend){
 		// fromX, fromY: top-left corner of drawing zone in current measure
 		float scale = layout.getScale();
