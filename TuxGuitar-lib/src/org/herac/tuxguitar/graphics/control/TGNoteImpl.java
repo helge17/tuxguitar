@@ -776,7 +776,6 @@ public class TGNoteImpl extends TGNote {
 					if (movement<0) movement = -movement;
 					if (movement % 4 != 0) xAmplitude -= 4.0f * scale;	// left shift except for short strings (n*full)
 					if (movement < sAmplitude.length) amplitude = sAmplitude[movement];
-					if (bend.getMovements().size()!=0 && bend.getMovements().get(0)<0 && bendReleaseConflicts()) xAmplitude += 6.0f * scale;
 					layout.setOfflineEffectStyle(painter);
 					painter.drawString(amplitude, xAmplitude, yAmplitude + painter.getFMTopLine());
 				}
