@@ -633,7 +633,7 @@ public class TGNoteImpl extends TGNote {
 			painter.drawString(value, (x - margin.getLeft() - painter.getFMWidth(value)), y + painter.getFMMiddleLine());
 		}
 		if(effect.isBend()){
-			paintBend(layout, painter, fromX, fromY, margin, spacing, effect.getBend());
+			paintBend(layout, painter, fromX+spacing, fromY, margin, effect.getBend());
 		}else if(effect.isTremoloBar()){
 			paintTremoloBar(layout, painter, (x + margin.getRight()), y);
 		}else if(effect.isSlide() || effect.isHammer()){
@@ -653,13 +653,21 @@ public class TGNoteImpl extends TGNote {
 	}
 
 	private float getBendSpacing(TGLayout layout, TGEffectBend bend) {
-		// TODO !! call paintBend with null painter, paintBend shall return horizontal spacing (float)
-		return (20.0f * layout.getScale());
+		return paintBend(layout, null, 0.0f, 0.0f, new UIInset() , bend);
 	}
 	
-	private void paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY,UIInset margin, float spacing, TGEffectBend bend){
-		// fromX, fromY: top-left corner of drawing zone in current measure
+	private float paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY, UIInset margin, TGEffectBend bend){
 		float scale = layout.getScale();
+		float ARROW_WIDTH = 12.0f * scale;
+		String sAmplitude[] = { "", "1/4", "1/2", "3/4", "f", "1"+"\u00BC", "1"+"\u00BD", "1"+"\u00BE", "2", "2"+"\u00BC", "2"+"\u00BD", "2"+"\u00BE", "3" };
+		boolean compactMode = getMeasureImpl().getCompactMode();
+		
+		float bendSpacing = 0.0f;
+		if (!compactMode) bendSpacing = (bend.getMovements().size()) * ARROW_WIDTH;
+		if (painter == null) return bendSpacing;
+		// do NOT attempt to go further if painter is null, other objects needed to draw might also be unavailable
+		
+		// fromX, fromY: top-left corner of drawing zone in current measure
 		TGSpacing bs = getBeatImpl().getBs();
 		TGSpacing ts = getMeasureImpl().getTs();
 		float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
@@ -667,17 +675,19 @@ public class TGNoteImpl extends TGNote {
 		// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
 		// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
 		
+		
 		float width = ( getVoiceImpl().getWidth() - (2.0f * scale) );
-		float xLeft   = fromX + getPosX() - margin.getLeft() - (4.0f * scale) + spacing;	// start of hold & release
-		float xCenter = fromX + getPosX() + spacing;
-		float xRight  = fromX + getPosX() + margin.getRight() + spacing;	// start of bend
-		float xMax    = fromX + getPosX() + width - (8.0f * scale) + spacing	;	// end of hold
+		float xLeft   = fromX + getPosX() - margin.getLeft() - (4.0f * scale);	// start of hold & release
+		float xCenter = fromX + getPosX();
+		float xRight  = fromX + getPosX() + margin.getRight() + 1.0f * scale;	// start of bend
+		float xMax    = fromX + getPosX() + width - (8.0f * scale)	;	// end of hold
 		float yAmplitude = bsY + bs.getPosition( TGBeatSpacing.POSITION_BEND_VALUE);
 		float yLow = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + getTabPosY();	// start of arrow (bend)
 		float yMiddle = yLow - 6.0f*scale;
 		float yHigh = yAmplitude  + 8.0f * scale;	// high position of arrows (bend/release), or dashed line (hold)
+
 		
-		if (bend.getFirstMovementAmplitude() == 0) {
+		if (bend.getMovements().size() == 0) {
 			// draw hold
 			painter.initPath();
 			float xHold = xLeft;
@@ -691,53 +701,75 @@ public class TGNoteImpl extends TGNote {
 			}
 			painter.closePath();
 		} else {
-			// arrow characteristics, default: bend
 			float x0 = xRight;
-			float y0 = yLow;
-			float y1 = yHigh;
-			float bendDirection = 1.0f;	// arrow direction : +1 if bend (default), -1 if release 
-			if (bend.getFirstMovementAmplitude() < 0) {
-				// release (warning, possible conflict with note played on higher string)
-				if (bendReleaseConflicts())  {
-					y1 = yLow;
-				} else {
-					x0 = xCenter - (3.0f * scale);
-					y1 = yMiddle;
+			boolean isFirstMovement = true;
+			for (int movement : bend.getMovements()) {
+				float y0 = yLow;
+				float y1 = yHigh;
+				float bendDirection = 1.0f;
+				if (movement < 0) {
+					// release (warning, possible conflict with note played on higher string)
+					if (compactMode && !bendReleaseConflicts())  {
+						x0 = xCenter - (3.0f * scale);
+						y1 = yMiddle;
+					} else {
+						y1 = yLow;
+					}
+					y0 = yHigh;
+					bendDirection = -1.0f;
 				}
-				y0 = yHigh;
-				bendDirection = -1.0f;
-			}
-			// draw arrow
-			layout.setTabEffectStyle(painter);
-			painter.setLineWidth(layout.getLineWidth(1));
-			painter.initPath();
-			painter.moveTo( x0, y0 );
-			painter.lineTo( x0 + (1.0f * scale), y0 );
-			painter.cubicTo(x0 + (1.0f * scale), y0,
-							x0 + (3.0f * scale), y0,
-							x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
-			painter.moveTo( x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
-			painter.lineTo( x0 + (3.0f * scale), y1);
-			painter.moveTo( x0 + (3.0f * scale), y1);
-			painter.lineTo( x0 + (1.0f * scale), y1 + 2.0f * bendDirection * scale);
-			painter.moveTo( x0 + (3.0f * scale), y1);
-			painter.lineTo( x0 + (5.0f * scale), y1 + 2.0f * bendDirection * scale);
-			painter.closePath();
-
-			// amplitude
-			if (!multipleBendConflicts()) {
-				String amplitude = "";
-				float xAmplitude = 4.0f * bendDirection * scale;	// small left/right shift
-				String sAmplitude[] = { "", "1/4", "1/2", "3/4", "f", "1"+"\u00BC", "1"+"\u00BD", "1"+"\u00BE", "2", "2"+"\u00BC", "2"+"\u00BD", "2"+"\u00BE", "3" };
-				int value = bend.getFirstMovementAmplitude();
-				if (value<0) value = -value;
-				if (value % 4 != 0) xAmplitude -= 4.0f * scale;	// left shift except for short strings (n*full)
-				if (value < sAmplitude.length) amplitude = sAmplitude[value];
-				if ((bend.getFirstMovementAmplitude()<0) && bendReleaseConflicts()) xAmplitude += 6.0f * scale;
-				layout.setOfflineEffectStyle(painter);
-				painter.drawString(amplitude, xCenter + xAmplitude, yAmplitude + painter.getFMTopLine());
+				// draw arrow
+				layout.setTabEffectStyle(painter);
+				painter.setLineWidth(layout.getLineWidth(1));
+				painter.initPath();
+				// pre-bend
+				if (!compactMode && isFirstMovement && movement<0)  {
+					painter.moveTo( x0, y0 );
+					painter.lineTo( x0, y1 );
+					painter.moveTo( x0, y0);
+					painter.lineTo( x0 - (2.0f * scale), y0 + 2.0f * scale);
+					painter.moveTo( x0, y0);
+					painter.lineTo( x0 + (2.0f * scale), y0 + 2.0f * scale);
+				}
+				painter.moveTo( x0, y0 );
+				float x1;
+				if (compactMode)  {
+					painter.lineTo( x0 + (1.0f * scale), y0 );
+					painter.cubicTo(x0 + (1.0f * scale), y0,
+									x0 + (3.0f * scale), y0,
+									x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
+					painter.moveTo( x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
+					painter.lineTo( x0 + (3.0f * scale), y1);
+					x1 = x0 + (3.0f * scale);
+				} else {
+					x1 = x0 + ARROW_WIDTH;
+					painter.cubicTo(x0 + (1.0f * scale), y0,
+									x1, y0,
+									x1 , y1);
+				}
+				painter.moveTo( x1, y1);
+				painter.lineTo( x1 - (2.0f * scale), y1 + 2.0f * bendDirection * scale);
+				painter.moveTo( x1, y1);
+				painter.lineTo( x1 + (2.0f * scale), y1 + 2.0f * bendDirection * scale);
+				painter.closePath();
+				// amplitude
+				if (!multipleBendConflicts() && (movement>0 || isFirstMovement))  {
+					String amplitude = "";
+					float xAmplitude = (movement > 0 ? x1 : x0);
+					if (movement<0) movement = -movement;
+					if (movement % 4 != 0) xAmplitude -= 4.0f * scale;	// left shift except for short strings (n*full)
+					if (movement < sAmplitude.length) amplitude = sAmplitude[movement];
+					if ((bend.getFirstMovementAmplitude()<0) && bendReleaseConflicts()) xAmplitude += 6.0f * scale;
+					layout.setOfflineEffectStyle(painter);
+					painter.drawString(amplitude, xAmplitude, yAmplitude + painter.getFMTopLine());
+				}
+				
+				if (compactMode) break;
+				isFirstMovement = false;
+				x0 = x1;
 			}
 		}
+		return(bendSpacing);
 	}
 	
 	private void paintTremoloBar(TGLayout layout,UIPainter painter,float fromX,float fromY){

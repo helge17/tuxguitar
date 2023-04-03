@@ -193,7 +193,9 @@ public class TGMeasureImpl extends TGMeasure{
 		this.setBufferCreated(false);
 		this.readyToPaint = true;
 	}
-	
+	public boolean getCompactMode() {
+		return this.compactMode;
+	}
 	private void checkCompactMode(TGLayout layout){
 		boolean compactMode = ( (layout.getStyle() & TGLayout.DISPLAY_COMPACT) != 0 );
 		if(compactMode && (layout.getStyle() & TGLayout.DISPLAY_MULTITRACK) != 0){

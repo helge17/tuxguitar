@@ -15,7 +15,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 /**
  * @author julian
  *
- * update guiv 2023-04-01, store amplitude and direction of first movement, for graphical representation
+ * update guiv 2023-04-02, store amplitudes and directions of bend movements, for graphical representation
  * 
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
@@ -28,7 +28,11 @@ public abstract class TGEffectBend {
 	
 	private List<BendPoint> points;
 	private int firstMovementAmplitude = 0;	// bend: positive, release: negative, hold: zero
-	
+	// list of movements to be displayed
+	// -1 means: release from 1*1/4
+	// +2 means: bend towards 2*1/4
+	private List<Integer> movements = new ArrayList<>();
+
 	public TGEffectBend(){
 		this.points = new ArrayList<BendPoint>();
 	}
@@ -36,6 +40,7 @@ public abstract class TGEffectBend {
 	public void addPoint(int position,int value){
 		this.points.add(new BendPoint(position,value));
 		updateFirstAmplitude();
+		updateMovements();
 	}
 	
 	public List<BendPoint> getPoints(){
@@ -44,6 +49,10 @@ public abstract class TGEffectBend {
 	
 	public int getFirstMovementAmplitude()  {
 		return this.firstMovementAmplitude;
+	}
+	
+	public List<Integer> getMovements()  {
+		return this.movements;
 	}
 	
 	public TGEffectBend clone(TGFactory factory){
@@ -105,5 +114,35 @@ public abstract class TGEffectBend {
 		if (up == down) firstMovementAmplitude = 0;
 		else if (up) firstMovementAmplitude = amplitude;
 		else firstMovementAmplitude = (-amplitude);
+	}
+	private void updateMovements()  {
+		movements.clear();
+		if (points.size() < 2) return ;
+		int start = points.get(0).getValue();
+		int current = points.get(1).getValue();
+		int i;
+		for (i=2; i<points.size();i++)  {
+			int next = points.get(i).getValue();
+			if ((next-current) * (current-start) < 0) {
+				// direction changed
+				if (current-start > 0) {
+					// end of bend movement
+					movements.add(current);
+				} else {
+					// end of release movement
+					movements.add(-start);
+				}
+				start = current;
+			}
+			current = next;
+		}
+		// last movement
+		if (current-start > 0) {
+			// end of bend movement
+			movements.add(current);
+		} else if (current-start<0) {
+			// end of release movement
+			movements.add(-start);
+		}
 	}
 }
