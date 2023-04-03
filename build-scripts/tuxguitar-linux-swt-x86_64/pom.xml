@@ -330,23 +330,6 @@
 				<version>1.7</version>
 				<executions>
 					<execution>
-						<id>man-page</id>
-						<phase>package</phase>
-						<configuration>
-							<target name="man-page">
-								<mkdir dir="${project.build.directory}/${project.finalName}/share"/>
-								<mkdir dir="${project.build.directory}/${project.finalName}/share/man"/>
-								<mkdir dir="${project.build.directory}/${project.finalName}/share/man/man1"/>
-								<exec dir="${project.basedir}" executable="docbook-to-man" output="${project.build.directory}/${project.finalName}/share/man/man1/tuxguitar.1" failonerror="true" >
-									<arg value="${project.rootPath}/misc/tuxguitar.sgml"/>
-								</exec>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>copy</id>
 						<phase>package</phase>
 						<configuration>
