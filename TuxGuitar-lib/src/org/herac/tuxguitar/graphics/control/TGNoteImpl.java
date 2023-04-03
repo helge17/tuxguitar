@@ -659,7 +659,7 @@ public class TGNoteImpl extends TGNote {
 	private float paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY, UIInset margin, TGEffectBend bend){
 		// fromX, fromY: top-left corner of drawing zone in current measure
 		float scale = layout.getScale();
-		float ARROW_WIDTH = 12.0f * scale;
+		float ARROW_WIDTH = 10.0f * scale;
 		String sAmplitude[] = { "", "1/4", "1/2", "3/4", "f", "1\u00BC", "1\u00BD", "1\u00BE", "2", "2\u00BC", "2\u00BD", "2\u00BE", "3" };
 		boolean compactMode = getMeasureImpl().getCompactMode();
 		boolean canPaint = (painter != null);
