@@ -27,10 +27,10 @@ public abstract class TGEffectBend {
 	public static final int MAX_VALUE_LENGTH = (SEMITONE_LENGTH * 12);
 	
 	private List<BendPoint> points;
-	private int firstMovementAmplitude = 0;	// bend: positive, release: negative, hold: zero
 	// list of movements to be displayed
 	// -1 means: release from 1*1/4
 	// +2 means: bend towards 2*1/4
+	// empty list means 'hold'
 	private List<Integer> movements = new ArrayList<>();
 
 	public TGEffectBend(){
@@ -39,16 +39,11 @@ public abstract class TGEffectBend {
 	
 	public void addPoint(int position,int value){
 		this.points.add(new BendPoint(position,value));
-		updateFirstAmplitude();
 		updateMovements();
 	}
 	
 	public List<BendPoint> getPoints(){
 		return this.points;
-	}
-	
-	public int getFirstMovementAmplitude()  {
-		return this.firstMovementAmplitude;
 	}
 	
 	public List<Integer> getMovements()  {
@@ -92,29 +87,6 @@ public abstract class TGEffectBend {
 		}
 	}
 	
-	private void updateFirstAmplitude()  {
-		if (points.size() < 2) return;
-		// bend amplitude to display: 1st max if bending, init value if releasing
-		boolean up = false;
-		boolean down = false;
-		int amplitude = points.get(0).getValue();
-		for (BendPoint nextPoint : points)  {
-			if (nextPoint.getValue() < amplitude)  {
-				if (!up)  {
-					// initial release
-					down = true;
-				}
-				break;
-			} else if (nextPoint.getValue() > amplitude)  {
-				// (still) bending
-				up = true;
-				amplitude = nextPoint.getValue();
-			}
-		}
-		if (up == down) firstMovementAmplitude = 0;
-		else if (up) firstMovementAmplitude = amplitude;
-		else firstMovementAmplitude = (-amplitude);
-	}
 	private void updateMovements()  {
 		movements.clear();
 		if (points.size() < 2) return ;

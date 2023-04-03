@@ -602,9 +602,9 @@ public class TGNoteImpl extends TGNote {
 		Iterator<TGNote> it = voice.getNotes().iterator();
 		while(it.hasNext()){
 			TGNoteImpl note = (TGNoteImpl)it.next();
-			if (note.getEffect().isBend()
-				&& ((note.getString() < getString())
-					|| (note.getEffect().getBend().getFirstMovementAmplitude() != getEffect().getBend().getFirstMovementAmplitude()))) return true;
+			if (note.getEffect().isBend() && ((note.getString() < getString())
+					|| (note.getEffect().getBend().getMovements().size() !=0 && getEffect().getBend().getMovements().size()!=0
+					    && note.getEffect().getBend().getMovements().get(0) != getEffect().getBend().getMovements().get(0)))) return true;
 		}
 		return false;
 	}
@@ -759,7 +759,7 @@ public class TGNoteImpl extends TGNote {
 					if (movement<0) movement = -movement;
 					if (movement % 4 != 0) xAmplitude -= 4.0f * scale;	// left shift except for short strings (n*full)
 					if (movement < sAmplitude.length) amplitude = sAmplitude[movement];
-					if ((bend.getFirstMovementAmplitude()<0) && bendReleaseConflicts()) xAmplitude += 6.0f * scale;
+					if (bend.getMovements().size()!=0 && bend.getMovements().get(0)<0 && bendReleaseConflicts()) xAmplitude += 6.0f * scale;
 					layout.setOfflineEffectStyle(painter);
 					painter.drawString(amplitude, xAmplitude, yAmplitude + painter.getFMTopLine());
 				}
