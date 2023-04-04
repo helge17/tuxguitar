@@ -602,9 +602,9 @@ public class TGNoteImpl extends TGNote {
 		Iterator<TGNote> it = voice.getNotes().iterator();
 		while(it.hasNext()){
 			TGNoteImpl note = (TGNoteImpl)it.next();
-			if (note.getEffect().isBend()
-				&& ((note.getString() < getString())
-					|| (note.getEffect().getBend().getFirstMovementAmplitude() != getEffect().getBend().getFirstMovementAmplitude()))) return true;
+			if (note.getEffect().isBend() && ((note.getString() < getString())
+					|| (note.getEffect().getBend().getMovements().size() !=0 && getEffect().getBend().getMovements().size()!=0
+					    && note.getEffect().getBend().getMovements().get(0) != getEffect().getBend().getMovements().get(0)))) return true;
 		}
 		return false;
 	}
@@ -657,72 +657,83 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	private float paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY, UIInset margin, TGEffectBend bend){
-		float scale = layout.getScale();
-		float ARROW_WIDTH = 12.0f * scale;
-		String sAmplitude[] = { "", "1/4", "1/2", "3/4", "f", "1"+"\u00BC", "1"+"\u00BD", "1"+"\u00BE", "2", "2"+"\u00BC", "2"+"\u00BD", "2"+"\u00BE", "3" };
-		boolean compactMode = getMeasureImpl().getCompactMode();
-		
-		float bendSpacing = 0.0f;
-		if (!compactMode) bendSpacing = (bend.getMovements().size()) * ARROW_WIDTH;
-		if (painter == null) return bendSpacing;
-		// do NOT attempt to go further if painter is null, other objects needed to draw might also be unavailable
-		
 		// fromX, fromY: top-left corner of drawing zone in current measure
-		TGSpacing bs = getBeatImpl().getBs();
-		TGSpacing ts = getMeasureImpl().getTs();
-		float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
-		float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
-		// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
-		// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
+		float scale = layout.getScale();
+		float ARROW_WIDTH = 10.0f * scale;
+		String sAmplitude[] = { "", "1/4", "1/2", "3/4", "f", "1\u00BC", "1\u00BD", "1\u00BE", "2", "2\u00BC", "2\u00BD", "2\u00BE", "3" };
+		boolean compactMode = getMeasureImpl().getCompactMode();
+		boolean canPaint = (painter != null);
 		
-		
+		// x
+		float bendSpacing = 0.0f;
 		float width = ( getVoiceImpl().getWidth() - (2.0f * scale) );
-		float xLeft   = fromX + getPosX() - margin.getLeft() - (4.0f * scale);	// start of hold & release
+		float xLeft   = fromX + getPosX() - margin.getLeft() - (4.0f * scale);	// start of hold
 		float xCenter = fromX + getPosX();
 		float xRight  = fromX + getPosX() + margin.getRight() + 1.0f * scale;	// start of bend
 		float xMax    = fromX + getPosX() + width - (8.0f * scale)	;	// end of hold
-		float yAmplitude = bsY + bs.getPosition( TGBeatSpacing.POSITION_BEND_VALUE);
-		float yLow = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + getTabPosY();	// start of arrow (bend)
-		float yMiddle = yLow - 6.0f*scale;
-		float yHigh = yAmplitude  + 8.0f * scale;	// high position of arrows (bend/release), or dashed line (hold)
-
+		// y
+		TGSpacing bs = getBeatImpl().getBs();
+		TGSpacing ts = getMeasureImpl().getTs();
+		float yAmplitude = 0.0f;
+		float yLow = 0.0f;
+		float yMiddle = 0.0f;
+		float yHigh = 0.0f;
+		if (bs==null || ts==null) {
+			// this case can occur when function is called not to paint, but just to compute spacing
+			canPaint = false;
+		} else {
+			float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
+			float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
+			// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
+			// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
+			yAmplitude = bsY + bs.getPosition( TGBeatSpacing.POSITION_BEND_VALUE);
+			yHigh = yAmplitude  + 8.0f * scale;	// high position of arrows (bend/release), or dashed line (hold)
+			yLow = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + getTabPosY();	// start of arrow (bend)
+			yMiddle = yLow - 6.0f*scale;
+		}
 		
 		if (bend.getMovements().size() == 0) {
 			// draw hold
-			painter.initPath();
-			float xHold = xLeft;
-			float xStep = 2.5f*scale;
-			while (xHold < xMax)  {
-				painter.moveTo( xHold, yHigh);
-				painter.lineTo( xHold + xStep , yHigh);
-				painter.moveTo( xHold + 2*xStep, yHigh);
-				painter.lineTo( xHold + 3*xStep, yHigh);
-				xHold += 4*xStep;
-			}
-			painter.closePath();
-		} else {
-			float x0 = xRight;
-			boolean isFirstMovement = true;
-			for (int movement : bend.getMovements()) {
-				float y0 = yLow;
-				float y1 = yHigh;
-				float bendDirection = 1.0f;
-				if (movement < 0) {
-					// release (warning, possible conflict with note played on higher string)
-					if (compactMode && !bendReleaseConflicts())  {
-						x0 = xCenter - (3.0f * scale);
-						y1 = yMiddle;
-					} else {
-						y1 = yLow;
-					}
-					y0 = yHigh;
-					bendDirection = -1.0f;
+			if (canPaint)  {
+				painter.initPath();
+				float xHold = xLeft;
+				float xStep = 2.5f*scale;
+				while (xHold < xMax)  {
+					painter.moveTo( xHold, yHigh);
+					painter.lineTo( xHold + xStep , yHigh);
+					painter.moveTo( xHold + 2*xStep, yHigh);
+					painter.lineTo( xHold + 3*xStep, yHigh);
+					xHold += 4*xStep;
 				}
-				// draw arrow
+				painter.closePath();
+			}
+			return bendSpacing;
+		}
+		// at least one movement (bend or release)
+		float x0 = xRight;
+		boolean isFirstMovement = true;
+		for (int movement : bend.getMovements()) {
+			float y0 = yLow;
+			float y1 = yHigh;
+			float bendDirection = 1.0f;
+			float x1 = 0.0f;
+			if (movement < 0) {
+				// release (warning, possible conflict with note played on higher string)
+				if (compactMode && !bendReleaseConflicts())  {
+					x0 = xCenter - (3.0f * scale);
+					y1 = yMiddle;
+				} else {
+					y1 = yLow;
+				}
+				y0 = yHigh;
+				bendDirection = -1.0f;
+			}
+			// draw 1st part of arrow
+			if (canPaint)  {
 				layout.setTabEffectStyle(painter);
 				painter.setLineWidth(layout.getLineWidth(1));
 				painter.initPath();
-				// pre-bend
+				// pre-bend arrow
 				if (!compactMode && isFirstMovement && movement<0)  {
 					painter.moveTo( x0, y0 );
 					painter.lineTo( x0, y1 );
@@ -732,21 +743,27 @@ public class TGNoteImpl extends TGNote {
 					painter.lineTo( x0 + (2.0f * scale), y0 + 2.0f * scale);
 				}
 				painter.moveTo( x0, y0 );
-				float x1;
-				if (compactMode)  {
-					painter.lineTo( x0 + (1.0f * scale), y0 );
+				painter.lineTo( x0 + (1.0f * scale), y0 );
+			}	
+			// 2nd part of arrow: different width whether compactMode or not -> update bendSpacing
+			if (compactMode) {
+				x1 = x0 + (3.0f * scale);
+				if (canPaint)  {
 					painter.cubicTo(x0 + (1.0f * scale), y0,
 									x0 + (3.0f * scale), y0,
 									x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
 					painter.moveTo( x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
 					painter.lineTo( x0 + (3.0f * scale), y1);
-					x1 = x0 + (3.0f * scale);
-				} else {
-					x1 = x0 + ARROW_WIDTH;
-					painter.cubicTo(x0 + (1.0f * scale), y0,
-									x1, y0,
-									x1 , y1);
 				}
+			} else {
+				x1 = x0 + ARROW_WIDTH;
+				bendSpacing += ARROW_WIDTH;
+				if (canPaint)  {
+					painter.cubicTo(x0 + (1.0f * scale), y0,     x1, y0,    x1 , y1);
+				}
+			}
+			// 3rd part of arrow (head) + amplitude
+			if (canPaint)  {
 				painter.moveTo( x1, y1);
 				painter.lineTo( x1 - (2.0f * scale), y1 + 2.0f * bendDirection * scale);
 				painter.moveTo( x1, y1);
@@ -759,15 +776,13 @@ public class TGNoteImpl extends TGNote {
 					if (movement<0) movement = -movement;
 					if (movement % 4 != 0) xAmplitude -= 4.0f * scale;	// left shift except for short strings (n*full)
 					if (movement < sAmplitude.length) amplitude = sAmplitude[movement];
-					if ((bend.getFirstMovementAmplitude()<0) && bendReleaseConflicts()) xAmplitude += 6.0f * scale;
 					layout.setOfflineEffectStyle(painter);
 					painter.drawString(amplitude, xAmplitude, yAmplitude + painter.getFMTopLine());
 				}
-				
-				if (compactMode) break;
-				isFirstMovement = false;
-				x0 = x1;
 			}
+			if (compactMode) break;
+			isFirstMovement = false;
+			x0 = x1;
 		}
 		return(bendSpacing);
 	}
