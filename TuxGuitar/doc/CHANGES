@@ -2,4 +2,4 @@ TuxGuitar 1.5.x changes:
 
 * Fix percussion channel issues in GP importer
 * Fix tied notes in MIDI importer
-
+* Enhance bend display

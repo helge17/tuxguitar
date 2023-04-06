@@ -16,9 +16,9 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
 public class TGNoteImpl extends TGNote {
-	
 	private float tabPosY;
 	
 	private float scorePosY;
@@ -41,12 +41,14 @@ public class TGNoteImpl extends TGNote {
 	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
 		float spacing = getBeatImpl().getSpacing(layout);
 		float tabMoveX = (2f * layout.getScale());
+		// fromX,fromY = top-left corner of drawing zone in current measure
+		// this leaves some space on the left (with respect to the measure bar)
 		
 		paintScoreNote(layout, painter, fromX, fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES),spacing);
 		if(!layout.isPlayModeEnabled()){
 			paintOfflineEffects(layout, painter,fromX,fromY, spacing);
 		}
-		paintTablatureNote(layout, painter, fromX + tabMoveX, fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE),spacing);
+		paintTablatureNote(layout, painter, fromX, fromY, spacing);
 	}
 	
 	private void paintOfflineEffects(TGLayout layout,UIPainter painter,float fromX, float fromY, float spacing){		
@@ -56,8 +58,11 @@ public class TGNoteImpl extends TGNote {
 		
 		float scale = layout.getScale();
 		float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
+		// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
 		float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
+		// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
 		
+		// in the following "offline effects", x,y = top-left corner of the effect drawing
 		layout.setOfflineEffectStyle(painter);
 		if(effect.isAccentuatedNote()){
 			float x = fromX + getPosX() + spacing;
@@ -197,13 +202,20 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	public void paintTablatureNote(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing) {
+		// fromX,fromY = top-left corner of display zone in current measure (not current note!), with some left distance to previous measure bar (or score start)
+		float fromXtab  = fromX + 2.0f*layout.getScale();
+		float fromYtab = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE);
+		// fromXtab,fromYtab = top-left corner of display zone within current measure, in tablature
+		// this includes some spacing on the left (x), and is fully aligned with 1st string (y)
+		
 		int style = layout.getStyle();
 		if((style & TGLayout.DISPLAY_TABLATURE) != 0) {
 			UIInset margin = new UIInset();
 			
 			float scale = layout.getScale();
-			float x = (fromX + getPosX() + spacing);
-			float y = (fromY + getTabPosY());
+			float x = (fromXtab + getPosX() + spacing);
+			float y = (fromYtab + getTabPosY());
+			// x,y = center of the displayed fret number in the tab (middle of the digits, vertically centered on the string)
 			float stringSpacing = layout.getStringSpacing();
 			
 			boolean running = (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout));
@@ -211,13 +223,17 @@ public class TGNoteImpl extends TGNote {
 			//-------------ligadura--------------------------------------
 			if (isTiedNote() && (style & TGLayout.DISPLAY_SCORE) == 0) {
 				float tX = 0;
-				float tY = (fromY + getTabPosY() + (stringSpacing / 2f));
+				float tY = (fromYtab + getTabPosY() + (stringSpacing / 2f));
+				// tY = in tab, just under fret digit, the top-right point of "tied to preceding note" drawing
+				
 				TGNoteImpl noteForTie = getNoteForTie();
 				if (noteForTie != null) {
-					tX = (fromX + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout) + (5.0f * scale));
+					tX = (fromXtab + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout) + (5.0f * scale));
 				}else{
-					tX = (fromX + this.getPosX() + this.getBeatImpl().getSpacing(layout) - (stringSpacing * 2));
+					tX = (fromXtab + this.getPosX() + this.getBeatImpl().getSpacing(layout) - (stringSpacing * 2));
 				}
+				// tX = left point of the "tied to preceding note" drawing, aligned on the right of the tied note (note n-1 or n-2... n-x) if any
+				// if no tied note, fixed distance from current
 				
 				float tWidth = (x - tX);
 				float tHeight1 = (stringSpacing / 3f);
@@ -238,14 +254,16 @@ public class TGNoteImpl extends TGNote {
 			//-------------efectos--------------------------------------
 			if(! layout.isPlayModeEnabled() ){
 				
-				paintEffects(layout, painter, margin, fromX, fromY, spacing);
+				paintEffects(layout, painter, margin, fromXtab, fromY, spacing);
 				
 				if((style & TGLayout.DISPLAY_SCORE) == 0){
 					
 					//-------------tremolo picking--------------------------------------
 					if(getEffect().isTremoloPicking()){
-						float y1 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
-						float y2 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
+						float y1 = (fromYtab + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
+						float y2 = (fromYtab + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
+						// y1 = top-level of "tremolo picking" under tab, displayed only if score is masked
+						// y2 = bottom-level
 						
 						layout.setTabEffectStyle(painter);
 						painter.setLineWidth(layout.getLineWidth(2));
@@ -265,6 +283,8 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	private void paintScoreNote(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing) {
+		// fromX,fromY = top left corner of 1st note of measure in score
+		
 		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			float scale = layout.getScoreLineSpacing();
 			float layoutScale = layout.getScale();
@@ -574,9 +594,38 @@ public class TGNoteImpl extends TGNote {
 		return null;
 	}
 	
+	// >=2 bent notes on same beat?
+	// conflict if there is another bend with different value, or with higher string
+	// this way, if all values are identical then one does not raise conflict and is drawn
+	private boolean multipleBendConflicts() {
+		TGVoice voice = getVoice();
+		Iterator<TGNote> it = voice.getNotes().iterator();
+		while(it.hasNext()){
+			TGNoteImpl note = (TGNoteImpl)it.next();
+			if (note.getEffect().isBend() && ((note.getString() < getString())
+					|| (note.getEffect().getBend().getMovements().size() !=0 && getEffect().getBend().getMovements().size()!=0
+					    && note.getEffect().getBend().getMovements().get(0) != getEffect().getBend().getMovements().get(0)))) return true;
+		}
+		return false;
+	}
+	// another possible bend conflict: releasing while playing a note on a higher string / releasing from string 1
+	private boolean bendReleaseConflicts()  {
+		if (getString()==1) return true;
+		TGVoice voice = getVoice();
+		Iterator<TGNote> it = voice.getNotes().iterator();
+		while(it.hasNext()){
+			TGNoteImpl note = (TGNoteImpl)it.next();
+			if (note.getString() < getString()) return true;
+		}
+		return false;
+	}
+	
 	private void paintEffects(TGLayout layout,UIPainter painter, UIInset margin, float fromX, float fromY, float spacing){
+		float fromYtab = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE);
 		float x = fromX + getPosX() + spacing;
-		float y = fromY + getTabPosY();
+		float y = fromYtab + getTabPosY();
+		// x,y = center of fret number in tab
+		
 		TGNoteEffect effect = getEffect();
 		if(effect.isGrace()){
 			layout.setTabGraceStyle(painter);
@@ -584,7 +633,7 @@ public class TGNoteImpl extends TGNote {
 			painter.drawString(value, (x - margin.getLeft() - painter.getFMWidth(value)), y + painter.getFMMiddleLine());
 		}
 		if(effect.isBend()){
-			paintBend(layout, painter, (x + margin.getRight()), y);
+			paintBend(layout, painter, fromX+spacing, fromY, margin, effect.getBend());
 		}else if(effect.isTremoloBar()){
 			paintTremoloBar(layout, painter, (x + margin.getRight()), y);
 		}else if(effect.isSlide() || effect.isHammer()){
@@ -598,24 +647,144 @@ public class TGNoteImpl extends TGNote {
 		}
 	}
 	
-	private void paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY){
+	public float getEffectSpacing(TGLayout layout) {
+		if (getEffect().isBend()) return getBendSpacing(layout, getEffect().getBend());
+		return(0.0f);
+	}
+
+	private float getBendSpacing(TGLayout layout, TGEffectBend bend) {
+		return paintBend(layout, null, 0.0f, 0.0f, new UIInset() , bend);
+	}
+	
+	private float paintBend(TGLayout layout,UIPainter painter,float fromX,float fromY, UIInset margin, TGEffectBend bend){
+		// fromX, fromY: top-left corner of drawing zone in current measure
 		float scale = layout.getScale();
-		float x = (fromX + (1.0f * scale));
-		float y = (fromY - (2.0f * scale));
+		float ARROW_WIDTH = 10.0f * scale;
+		String sAmplitude[] = { "", "1/4", "1/2", "3/4", "f", "1\u00BC", "1\u00BD", "1\u00BE", "2", "2\u00BC", "2\u00BD", "2\u00BE", "3" };
+		boolean compactMode = getMeasureImpl().getCompactMode();
+		boolean canPaint = (painter != null);
 		
-		layout.setTabEffectStyle(painter);
-		painter.setLineWidth(layout.getLineWidth(1));
-		painter.initPath();
-		painter.moveTo( x, y );
-		painter.lineTo( x + (1.0f * scale), y );
-		painter.cubicTo(x + (1.0f * scale), y,  x + (3.0f * scale), y , x + (3.0f * scale), y - (2.0f * scale));
-		painter.moveTo( x + (3.0f * scale), y - (2.0f * scale) );
-		painter.lineTo( x + (3.0f * scale), y - (12.0f * scale));
-		painter.moveTo( x + (3.0f * scale), y - (12.0f * scale));
-		painter.lineTo( x + (1.0f * scale), y - (10.0f * scale));
-		painter.moveTo( x + (3.0f * scale), y - (12.0f * scale));
-		painter.lineTo( x + (5.0f * scale), y - (10.0f * scale));
-		painter.closePath();
+		// x
+		float bendSpacing = 0.0f;
+		float width = ( getVoiceImpl().getWidth() - (2.0f * scale) );
+		float xLeft   = fromX + getPosX() - margin.getLeft() - (4.0f * scale);	// start of hold
+		float xCenter = fromX + getPosX();
+		float xRight  = fromX + getPosX() + margin.getRight() + 1.0f * scale;	// start of bend
+		float xMax    = fromX + getPosX() + width - (8.0f * scale)	;	// end of hold
+		// y
+		TGSpacing bs = getBeatImpl().getBs();
+		TGSpacing ts = getMeasureImpl().getTs();
+		float yAmplitude = 0.0f;
+		float yLow = 0.0f;
+		float yMiddle = 0.0f;
+		float yHigh = 0.0f;
+		if (bs==null || ts==null) {
+			// this case can occur when function is called not to paint, but just to compute spacing
+			canPaint = false;
+		} else {
+			float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
+			float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
+			// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
+			// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
+			yAmplitude = bsY + bs.getPosition( TGBeatSpacing.POSITION_BEND_VALUE);
+			yHigh = yAmplitude  + 8.0f * scale;	// high position of arrows (bend/release), or dashed line (hold)
+			yLow = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + getTabPosY();	// start of arrow (bend)
+			yMiddle = yLow - 6.0f*scale;
+		}
+		
+		if (bend.getMovements().size() == 0) {
+			// draw hold
+			if (canPaint)  {
+				painter.initPath();
+				float xHold = xLeft;
+				float xStep = 2.5f*scale;
+				while (xHold < xMax)  {
+					painter.moveTo( xHold, yHigh);
+					painter.lineTo( xHold + xStep , yHigh);
+					painter.moveTo( xHold + 2*xStep, yHigh);
+					painter.lineTo( xHold + 3*xStep, yHigh);
+					xHold += 4*xStep;
+				}
+				painter.closePath();
+			}
+			return bendSpacing;
+		}
+		// at least one movement (bend or release)
+		float x0 = xRight;
+		boolean isFirstMovement = true;
+		for (int movement : bend.getMovements()) {
+			float y0 = yLow;
+			float y1 = yHigh;
+			float bendDirection = 1.0f;
+			float x1 = 0.0f;
+			if (movement < 0) {
+				// release (warning, possible conflict with note played on higher string)
+				if (compactMode && !bendReleaseConflicts())  {
+					x0 = xCenter - (3.0f * scale);
+					y1 = yMiddle;
+				} else {
+					y1 = yLow;
+				}
+				y0 = yHigh;
+				bendDirection = -1.0f;
+			}
+			// draw 1st part of arrow
+			if (canPaint)  {
+				layout.setTabEffectStyle(painter);
+				painter.setLineWidth(layout.getLineWidth(1));
+				painter.initPath();
+				// pre-bend arrow
+				if (!compactMode && isFirstMovement && movement<0)  {
+					painter.moveTo( x0, y0 );
+					painter.lineTo( x0, y1 );
+					painter.moveTo( x0, y0);
+					painter.lineTo( x0 - (2.0f * scale), y0 + 2.0f * scale);
+					painter.moveTo( x0, y0);
+					painter.lineTo( x0 + (2.0f * scale), y0 + 2.0f * scale);
+				}
+				painter.moveTo( x0, y0 );
+				painter.lineTo( x0 + (1.0f * scale), y0 );
+			}	
+			// 2nd part of arrow: different width whether compactMode or not -> update bendSpacing
+			if (compactMode) {
+				x1 = x0 + (3.0f * scale);
+				if (canPaint)  {
+					painter.cubicTo(x0 + (1.0f * scale), y0,
+									x0 + (3.0f * scale), y0,
+									x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
+					painter.moveTo( x0 + (3.0f * scale), y0 - 2.0f * bendDirection * scale);
+					painter.lineTo( x0 + (3.0f * scale), y1);
+				}
+			} else {
+				x1 = x0 + ARROW_WIDTH;
+				bendSpacing += ARROW_WIDTH;
+				if (canPaint)  {
+					painter.cubicTo(x0 + (1.0f * scale), y0,     x1, y0,    x1 , y1);
+				}
+			}
+			// 3rd part of arrow (head) + amplitude
+			if (canPaint)  {
+				painter.moveTo( x1, y1);
+				painter.lineTo( x1 - (2.0f * scale), y1 + 2.0f * bendDirection * scale);
+				painter.moveTo( x1, y1);
+				painter.lineTo( x1 + (2.0f * scale), y1 + 2.0f * bendDirection * scale);
+				painter.closePath();
+				// amplitude
+				if (!multipleBendConflicts() && (movement>0 || isFirstMovement))  {
+					String amplitude = "";
+					float xAmplitude = (movement > 0 ? x1 : x0);
+					if (movement<0) movement = -movement;
+					if (movement % 4 != 0) xAmplitude -= 4.0f * scale;	// left shift except for short strings (n*full)
+					if (movement < sAmplitude.length) amplitude = sAmplitude[movement];
+					layout.setOfflineEffectStyle(painter);
+					painter.drawString(amplitude, xAmplitude, yAmplitude + painter.getFMTopLine());
+				}
+			}
+			if (compactMode) break;
+			isFirstMovement = false;
+			x0 = x1;
+		}
+		return(bendSpacing);
 	}
 	
 	private void paintTremoloBar(TGLayout layout,UIPainter painter,float fromX,float fromY){
@@ -718,6 +887,7 @@ public class TGNoteImpl extends TGNote {
 		float x = fromX;
 		float y = fromY + (2.0f * scale);
 		float width = ( getVoiceImpl().getWidth() - (2.0f * scale) );
+		
 		
 		int loops = Math.round(width / (6.0f * scale) );
 		if( loops > 0 ){
