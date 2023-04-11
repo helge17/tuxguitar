@@ -399,17 +399,18 @@
 							<jar>${project.build.directory}/${project.finalName}/lib/tuxguitar.jar</jar>
 							<icon>${project.build.directory}/${project.finalName}/share/skins/Oxygen/icon.ico</icon>
 							<errTitle>encc</errTitle>
+							<chdir>.</chdir>
 							<classPath>
 								<mainClass>org.herac.tuxguitar.app.TGMainSingleton</mainClass>
 								<addDependencies>false</addDependencies>
-								<preCp>./lib/tuxguitar-lib.jar;./lib/tuxguitar-ui-toolkit.jar;./lib/tuxguitar-ui-toolkit-jfx.jar;./lib/tuxguitar-editor-utils.jar;./lib/tuxguitar-gm-utils.jar;./lib/tuxguitar-awt-graphics.jar;./lib/javafx-base.jar;./lib/javafx-controls.jar;./lib/javafx-graphics.jar;./lib/gervill.jar;./lib/itext-pdf.jar;./lib/itext-xmlworker.jar;./lib/commons-compress.jar;./share;./dist</preCp>
+								<preCp>./lib/*;./share;./dist</preCp>
 							</classPath>
 							<jre>
 								<minVersion>1.8.0</minVersion>
 								<path>./jre;%JAVA_HOME%;%PATH%</path>
 								<opts>
 									<opt>-Djava.library.path=lib</opt>
-									<opt>-Dtuxguitar.home.path=</opt>
+									<opt>-Dtuxguitar.home.path=.</opt>
 									<opt>-Dtuxguitar.share.path=share</opt>
 								</opts>
 							</jre>

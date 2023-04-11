@@ -62,8 +62,8 @@
 				<folder>
 					<description>Program Files</description>
 					<destination>${installdir}</destination>
-                    <name>programfileswindows64</name>
-                    <platforms>windows-x64</platforms>
+					<name>programfileswindows64</name>
+					<platforms>windows-x64</platforms>
 					<distributionFileList>
 						<distributionFile>
 							<allowWildcards>1</allowWildcards>
