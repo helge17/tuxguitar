@@ -320,7 +320,7 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-tray</artifactId>
-									<destFileName>tuxguitar-tray</destFileName>
+									<destFileName>tuxguitar-tray.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->
