@@ -1,18 +1,18 @@
 #!/usr/bin/perl
 
-# Convert utf8 text file to Java unicode escaped format (\uHHHH)
-# Convert back to utf8 with uconv -x hex-any
-
 use strict;
 
-if ($#ARGV < 0){
-	print "** Please, specify a file to convert\n\n";
+if ($#ARGV != 0){
+	print "\n** This script converts a utf8 text file to Java unicode escaped format (\\uHHHH).\n";
+	print "** You can convert the Java unicode escaped format back to utf8 with: uconv -x hex-any <messages_XX.properties>\n";
+	print "** Usage: $0 <messages_XX.properties_utf8>\n";
+	print "** The output is sent to stdout.\n\n";
 	exit 1;
 }
 
 my $file = $ARGV[0];
 
-open(IN, "<:utf8", $file);
+open(IN, "<:utf8", $file) or die "\n** $file: $!.\n\n";
 my @data = <IN>;
 close(IN);
 
