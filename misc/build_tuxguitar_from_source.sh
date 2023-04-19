@@ -29,7 +29,7 @@ if [ -z $1 ] || [ $1 != "GO" ]; then
 fi
 
 # Check if we are in the TuxGuitar source directory
-if [ ! -e README ] || [ ! -e pom.xml ] || [ ! -d TuxGuitar ] || [ ! -d build-scripts ]; then
+if [ ! -e pom.xml ] || [ ! -d TuxGuitar ] || [ ! -d build-scripts ]; then
   echo
   echo "$COMMAND must be started in the TuxGuitar source directory!"
   echo
@@ -71,9 +71,19 @@ echo "# OK."
 echo -e "\n# Replacing g++..."
   sed -i "s|g++|i686-w64-mingw32-g++-win32|" build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/pom.xml
 echo "# OK."
-echo -e "\n# Remove probably unused files and directories..."
-  rm -r TuxGuitar-CoreAudio/
-  rm -r TuxGuitar-android-midimaster*/
+echo -e "\n# Remove some files and directories to find out if they are needed to build TuxGuitar..."
+  rm -r AUTHORS
+  rm -r LICENSE
+  rm -r README
+  rm -r CHANGES
+  rm -r TuxGuitar-android-gdrive-gdaa
+  rm -r TuxGuitar-android-midimaster*
+  #rm -r TuxGuitar-AudioUnit
+  rm -r TuxGuitar-abc
+  rm -r TuxGuitar-CoreAudio
+  rm -r TuxGuitar-midi-input
+  rm -r TuxGuitar-ui-toolkit-qt5
+  rm -r TuxGuitar-viewer
 echo "# OK."
 echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
 
@@ -127,13 +137,17 @@ install_eclipse_swt
 # -P native-modules: Build with native modules
 
 for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB package ..."
+  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ..."
   cd build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH-deb
   mvn --batch-mode -e clean verify -P native-modules
   cp -a target/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb $DIST_DIR
   cd - > /dev/null
+  # Create RPM from DEB
+  cd $DIST_DIR
+  fakeroot alien --verbose --keep-version --scripts --to-rpm tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb
+  cd - > /dev/null
   tar --owner=root --group=root --directory=build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB package done.\n"
+  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package done.\n"
 done
 
 }
