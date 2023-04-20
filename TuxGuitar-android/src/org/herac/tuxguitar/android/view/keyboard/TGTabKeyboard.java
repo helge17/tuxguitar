@@ -31,9 +31,11 @@ public class TGTabKeyboard extends FrameLayout {
 		super(context, attrs);
 	}
 
+	@Override
 	public void onFinishInflate() {
 		this.attachView();
 		this.addListeners();
+		super.onFinishInflate();
 	}
 	
 	public void attachView() {
