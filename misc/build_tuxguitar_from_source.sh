@@ -267,7 +267,7 @@ function build_tg_for_android {
 # Create signature key:
 #   cd ~/Software/TuxGuitar/
 #   pwgen 12 1 > github_helge17_apk-sign.storepass
-#   $ANDROID_HOME/jre/bin/keytool -genkeypair -dname 'CN=helge17' -v -keystore github_helge17_apk-sign.keystore -storepass:file github_helge17_apk-sign.storepass -validity 36500 -alias tuguitar
+#   $ANDROID_HOME/jre/bin/keytool -genkeypair -keyalg RSA -dname 'CN=helge17' -v -keystore github_helge17_apk-sign.keystore -storepass:file github_helge17_apk-sign.storepass -validity 36500 -alias tuguitar
 
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
 cd build-scripts/tuxguitar-android
@@ -277,7 +277,7 @@ export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
 cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
 cd $DIST_DIR
 cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
-$ANDROID_HOME/jre/bin/jarsigner -verbose -keystore ~/Software/TuxGuitar/github_helge17_apk-sign.keystore -storepass:file ~/Software/TuxGuitar/github_helge17_apk-sign.storepass tuxguitar-android-$TGVERSION-release-signed.apk tuguitar
+$ANDROID_HOME/build-tools/30.0.3/apksigner sign --ks-key-alias tuguitar --ks $HOME/Software/TuxGuitar/github_helge17_apk-sign.keystore --ks-pass file:$HOME/Software/TuxGuitar/github_helge17_apk-sign.storepass tuxguitar-android-$TGVERSION-release-signed.apk
 # Install apk on a phone connected via USB
 #$ANDROID_HOME/platform-tools/adb install tuxguitar-android-$TGVERSION-release-signed.apk
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
