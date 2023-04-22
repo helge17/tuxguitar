@@ -15,6 +15,10 @@ public class TGConverterPlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 		return "File format batch converter";
 	}
 	
+	protected String getItemLabel() {
+		return "batch.converter";
+	}
+	
 	public String getModuleId(){
 		return MODULE_ID;
 	}

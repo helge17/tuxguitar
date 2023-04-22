@@ -16,13 +16,15 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	protected abstract void doAction(TGContext context);
 	
 	protected abstract String getItemName() throws TGPluginException ;
+	protected abstract String getItemLabel() throws TGPluginException ;
 	
 	public void connect(TGContext context) throws TGPluginException {
 		try {
 			if( this.tool == null && this.toolAction == null ) {
 				String name = getItemName();
+				String label = getItemLabel();
 				
-				this.tool = new TGCustomTool(name, name);
+				this.tool = new TGCustomTool(name, name, label);
 				this.toolAction = new TGCustomToolAction(context, this.tool.getName());
 				
 				TuxGuitar.getInstance().getActionManager().mapAction(this.tool.getAction(), this.toolAction);
