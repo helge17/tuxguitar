@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.tools.custom.converter;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.util.TGContext;
 
 

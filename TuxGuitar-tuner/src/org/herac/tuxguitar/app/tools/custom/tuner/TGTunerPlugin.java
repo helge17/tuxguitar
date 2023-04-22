@@ -12,9 +12,9 @@ import org.herac.tuxguitar.util.TGContext;
  *
  */
 public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin {
-	
+
 	public static final String MODULE_ID = "tuxguitar-tuner";
-	
+
 	protected void doAction(TGContext context) {
 		List<TGString> strings = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().getStrings();
 		Iterator<TGString> it = strings.iterator();
@@ -27,13 +27,13 @@ public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolIt
 		}
 		TGTunerDialog dialog = new TGTunerDialog(context, tuning);
 		dialog.show();
-		
+
 	}
 
 	public String getModuleId(){
 		return MODULE_ID;
 	}
-	
+
 	protected String getItemName() {
 		return "Guitar Tuner";
 	}
