@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.app.view.menu.impl;
 
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenKeyBindingEditorAction;
@@ -25,6 +27,7 @@ public class ToolMenuItem extends TGMenuItem {
 	private UIMenuActionItem plugins;
 	private UIMenuActionItem config;
 	private UIMenuActionItem keyBindings;
+	private HashMap<UIMenuActionItem, String> pluginsMap = new HashMap<UIMenuActionItem, String>();	// plugins menu items and their names
 	
 	public ToolMenuItem(UIMenu parent) {
 		this.settingsMenuItem = parent.createSubMenuItem();
@@ -44,7 +47,7 @@ public class ToolMenuItem extends TGMenuItem {
 		while(it.hasNext()){
 			TGCustomTool tool = (TGCustomTool)it.next();
 			UIMenuActionItem uiMenuItem = this.settingsMenuItem.getMenu().createActionItem();
-			uiMenuItem.setText(tool.getName());
+			pluginsMap.put(uiMenuItem, tool.getLabel());
 			uiMenuItem.addSelectionListener(this.createActionProcessor(tool.getAction()));
 		}
 		
@@ -75,6 +78,10 @@ public class ToolMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.plugins, "tools.plugins", TGOpenPluginListDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.keyBindings, "tools.shortcuts", TGOpenKeyBindingEditorAction.NAME);
 		setMenuItemTextAndAccelerator(this.config, "tools.settings", TGOpenSettingsEditorAction.NAME);
+		// update labels for plugins menu items
+		for (Map.Entry<UIMenuActionItem, String> mapItem : pluginsMap.entrySet()) {
+			mapItem.getKey().setText(TuxGuitar.getProperty(mapItem.getValue()));
+		}
 	}
 	
 	public void loadIcons(){

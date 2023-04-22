@@ -35,6 +35,11 @@ public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolIt
 	}
 
 	protected String getItemName() {
-		return TuxGuitar.getProperty("tools.tuner");
+		return "Guitar Tuner";
 	}
+	
+	protected String getItemLabel() {
+		return "tuner.tuner";
+	}
+
 }
