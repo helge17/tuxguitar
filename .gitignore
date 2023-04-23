@@ -6,3 +6,6 @@ target/
 **/jni/*.dll
 **/jni/*.so
 build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/
+.classpath
+.settings/
+.project
