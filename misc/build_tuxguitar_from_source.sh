@@ -58,24 +58,30 @@ mkdir -p $DIST_DIR
 function prepare_source {
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ...\n"
+
+if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
+  echo -e "\n# Download the Steinberg SDK (VST_SDK_2.4) ..."
+  ( cd $SW_DIR/VST_SDK/V2 && git clone https://github.com/R-Tur/VST_SDK_2.4.git )
+  echo "# OK."
+fi
+
 echo -e "\n# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
-  # You can find the files here: https://github.com/R-Tur/VST_SDK_2.4
-  cp -a $SW_DIR/VST_SDK/V2/VST_SDK_2.4-master/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
-  cp -a $SW_DIR/VST_SDK/V2/VST_SDK_2.4-master/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
+  cp -a $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
+  cp -a $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
 echo "# OK."
+
 echo -e "\n# Change version from SNAPSHOT to $TGVERSION in config files..."
   find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name control -or -name Info.plist \) -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
   sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."
-echo -e "\n# Replacing g++..."
-  sed -i "s|g++|i686-w64-mingw32-g++-win32|" build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/pom.xml
-echo "# OK."
+
 echo -e "\n# Remove some files and directories to find out if they are needed to build TuxGuitar..."
   rm -r AUTHORS
   rm -r LICENSE
-  rm -r README
+  rm -r README.md
   rm -r CHANGES
+  rm -r INSTALL.md
   rm -r TuxGuitar-android-gdrive-gdaa
   rm -r TuxGuitar-android-midimaster*
   #rm -r TuxGuitar-AudioUnit
@@ -85,6 +91,7 @@ echo -e "\n# Remove some files and directories to find out if they are needed to
   rm -r TuxGuitar-ui-toolkit-qt5
   rm -r TuxGuitar-viewer
 echo "# OK."
+
 echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
 
 }
@@ -167,7 +174,7 @@ cp -ai $SW_DIR/$PA_JAVA build-scripts/common-resources/common-windows-$BUILD_ARC
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ..."
   cd build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
-  mvn --batch-mode -e clean verify -P native-modules -D tuxguitar.jni.cc=$TG_JNI_CC
+  mvn --batch-mode -e clean verify -P native-modules -D tuxguitar.jni.cc=$TG_JNI_CC -D tuxguitar.jni.cxx=$TG_JNI_CXX
   cp -a target/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH-installer.exe $DIST_DIR
   cd - > /dev/null
   (
@@ -289,9 +296,6 @@ echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
 
 # BSD 64 bit x86_64 build
 BUILD_ARCH=x86_64
-SWT_VERSION=4.13
-SWT_DATE=201909161045
-SWT_PLATFORM=gtk-linux
 [ `uname` == Linux ] && start_remote_bsd_build
 [ `uname` == FreeBSD ] && build_tg_for_bsd
 
@@ -316,6 +320,7 @@ SWT_VERSION=4.13
 SWT_DATE=201909161045
 SWT_PLATFORM=win32-win32
 TG_JNI_CC=x86_64-w64-mingw32-gcc
+TG_JNI_CXX=i686-w64-mingw32-g++-win32
 # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
 PA_JAVA=OpenJDK64_17.0.1-12.paf
 PA_LINK=https://download3.portableapps.com/portableapps/OpenJDK64/$PA_JAVA.exe
