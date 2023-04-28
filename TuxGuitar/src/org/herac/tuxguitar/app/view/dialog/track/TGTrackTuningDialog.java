@@ -58,6 +58,10 @@ public class TGTrackTuningDialog {
 	private UICheckBox stringTranspositionApplyToChords;
 	private UIDropDownSelect<Integer> offsetCombo;
 	private UISelectItem<TGTrackTuningGroupEntryModel> customPresetItem;
+	private UIButton buttonEdit;
+	private UIButton buttonDelete;
+	private UIButton buttonMoveUp;
+	private UIButton buttonMoveDown;
 
 	public TGTrackTuningDialog(TGViewContext context) {
 		this.context = context;
@@ -216,7 +220,7 @@ public class TGTrackTuningDialog {
 		panelLayout.set(this.tuningTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true);
 		panelLayout.set(this.tuningTable, UITableLayout.PACKED_WIDTH, 250f);
 		panelLayout.set(this.tuningTable, UITableLayout.PACKED_HEIGHT, 200f);
-		
+
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttonsPanel = factory.createPanel(panel, false);
 		buttonsPanel.setLayout(buttonsLayout);
@@ -230,7 +234,7 @@ public class TGTrackTuningDialog {
 			}
 		});
 		
-		UIButton buttonEdit = factory.createButton(buttonsPanel);
+		buttonEdit = factory.createButton(buttonsPanel);
 		buttonEdit.setImage(TGIconManager.getInstance(this.context.getContext()).getListEdit());
 		buttonEdit.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -238,19 +242,44 @@ public class TGTrackTuningDialog {
 			}
 		});
 
-		UIButton buttonDelete = factory.createButton(buttonsPanel);
+
+		buttonMoveUp = factory.createButton(buttonsPanel);
+		buttonMoveUp.setImage(TGIconManager.getInstance(this.context.getContext()).getArrowUp());
+		buttonMoveUp.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTrackTuningDialog.this.moveString(-1);
+			}
+		});
+
+		buttonMoveDown = factory.createButton(buttonsPanel);
+		buttonMoveDown.setImage(TGIconManager.getInstance(this.context.getContext()).getArrowDown());
+		buttonMoveDown.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTrackTuningDialog.this.moveString(1);
+			}
+		});
+
+		buttonDelete = factory.createButton(buttonsPanel);
 		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
 		buttonDelete.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.onRemoveTuningModel();
 			}
 		});
-		
+
+		this.tuningTable.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTrackTuningDialog.this.updateButtons();
+			}
+		});
+
 		buttonsLayout.set(buttonAdd, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
 		buttonsLayout.set(buttonDelete, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
-		buttonsLayout.set(buttonEdit, 1, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
+		buttonsLayout.set(buttonMoveUp, 1, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
+		buttonsLayout.set(buttonMoveDown, 1, 4, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
+		buttonsLayout.set(buttonEdit, 1, 5, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 	}
-	
+
 	private void initTuningOptions(UILayoutContainer parent, TGTrack track) {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
@@ -392,7 +421,17 @@ public class TGTrackTuningDialog {
 			removeTuningModel(model);
 		}
 	}
-	
+
+	private void moveString(int delta) {
+		final TGTrackTuningModel model = this.tuningTable.getSelectedValue();
+		if (model != null) {
+		    int index = this.tuning.indexOf(model);
+		    this.tuning.remove(index);
+		    this.tuning.add(index + delta, model);
+			this.updateTuningControls();
+		}
+	}
+
 	private boolean isUsingPreset(TGTrackTuningPresetModel preset) {
 		TGTrackTuningModel[] values = preset.getValues();
 		if( this.tuning.size() == values.length ) {
@@ -471,10 +510,21 @@ public class TGTrackTuningDialog {
 			this.tuningTable.setSelectedValue(selection);
 		}
 	}
+
+	private void updateButtons() {
+		TGTrackTuningModel model = this.tuningTable.getSelectedValue();
+		int index = model != null ? this.tuning.indexOf(model) : -1;
+		boolean selected = model != null;
+		buttonEdit.setEnabled(model != null);
+		buttonDelete.setEnabled(model != null);
+		buttonMoveUp.setEnabled(model != null && index > 0);
+		buttonMoveDown.setEnabled(model != null && index < this.tuning.size() - 1);
+	}
 	
 	private void updateTuningControls() {
 		this.updateTuningTable();
 		this.updateTuningPresetSelection();
+		this.updateButtons();
 	}
 	
 	private void updateTuningFromTrack(TGTrack track) {
