@@ -13,13 +13,8 @@ public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 	private JackConsoleDialog jackConsoleDialog;
 	
 	protected String getItemName() {
-		return "Jack Console";
-	}
-	
-	protected String getItemLabel() {
 		return "jack.console.title";
 	}
-
 	
 	protected void doAction(TGContext context) {
 		if( this.jackConsoleDialog == null ){

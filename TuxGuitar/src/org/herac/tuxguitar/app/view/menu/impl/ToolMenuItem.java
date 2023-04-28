@@ -47,7 +47,7 @@ public class ToolMenuItem extends TGMenuItem {
 		while(it.hasNext()){
 			TGCustomTool tool = (TGCustomTool)it.next();
 			UIMenuActionItem uiMenuItem = this.settingsMenuItem.getMenu().createActionItem();
-			pluginsMap.put(uiMenuItem, tool.getLabel());
+			pluginsMap.put(uiMenuItem, tool.getName());
 			uiMenuItem.addSelectionListener(this.createActionProcessor(tool.getAction()));
 		}
 		

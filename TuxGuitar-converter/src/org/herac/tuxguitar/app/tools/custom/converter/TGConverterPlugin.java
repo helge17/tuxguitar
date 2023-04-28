@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.app.tools.custom.converter;
 
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.util.TGContext;
 
 
@@ -13,10 +12,6 @@ public class TGConverterPlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 	}
 	
 	protected String getItemName() {
-		return "File format batch converter";
-	}
-	
-	protected String getItemLabel() {
 		return "batch.converter";
 	}
 	
