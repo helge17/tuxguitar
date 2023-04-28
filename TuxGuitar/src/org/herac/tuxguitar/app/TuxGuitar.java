@@ -50,6 +50,7 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
 import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.song.helpers.tuning.TuningManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.thread.TGMultiThreadHandler;
@@ -238,6 +239,10 @@ public class TuxGuitar {
 	
 	public ScaleManager getScaleManager(){
 		return ScaleManager.getInstance(this.context);
+	}
+	
+	public TuningManager getTuningManager(){
+		return TuningManager.getInstance(this.context);
 	}
 	
 	public TGSongManager getSongManager(){

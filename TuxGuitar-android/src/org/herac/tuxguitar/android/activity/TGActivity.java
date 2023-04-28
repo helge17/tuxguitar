@@ -51,6 +51,7 @@ import org.herac.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
 import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.song.helpers.tuning.TuningManager;
 import org.herac.tuxguitar.thread.TGMultiThreadHandler;
 import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
@@ -349,6 +350,10 @@ public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRe
 
 	public TGActivityResultManager getResultManager() {
 		return resultManager;
+	}
+
+	public TuningManager getTuningManager(){
+		return TuningManager.getInstance(this.findContext());
 	}
 
 	public TGActivityPermissionResultManager getPermissionResultManager() {

@@ -26,6 +26,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGTuning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,14 @@ import java.util.List;
 public class TGTrackTuningDialog extends TGModalFragment {
 
 	private List<TGTrackTuningModel> tuning;
-	private List<TGTrackTuningModel[]> tuningPresets;
+	private List<TGTrackTuningPresetModel> tuningPresets;
 	private TGTrackTuningActionHandler actionHandler;
 
 	public TGTrackTuningDialog() {
 		super(R.layout.view_track_tuning_dialog);
 
 		this.tuning = new ArrayList<TGTrackTuningModel>();
-		this.tuningPresets = new ArrayList<TGTrackTuningModel[]>();
+		this.tuningPresets = new ArrayList<TGTrackTuningPresetModel>();
 		this.actionHandler = new TGTrackTuningActionHandler(this);
 	}
 
@@ -109,7 +110,7 @@ public class TGTrackTuningDialog extends TGModalFragment {
 
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		selectableItems.add(new TGSelectableItem(null, this.findActivity().getString(R.string.track_tuning_dlg_preset_select_value)));
-		for(TGTrackTuningModel[] preset : this.tuningPresets) {
+		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
 			selectableItems.add(new TGSelectableItem(preset, this.createTuningPresetLabel(preset)));
 		}
 
@@ -125,10 +126,10 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 
-	public TGTrackTuningModel[] findSelectedPreset() {
+	public TGTrackTuningPresetModel findSelectedPreset() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_preset_value);
 
-		return (TGTrackTuningModel[]) ((TGSelectableItem)spinner.getSelectedItem()).getItem();
+		return (TGTrackTuningPresetModel) ((TGSelectableItem)spinner.getSelectedItem()).getItem();
 	}
 
 	public Boolean findOptionValue(int optionId) {
@@ -215,24 +216,25 @@ public class TGTrackTuningDialog extends TGModalFragment {
 
 	@SuppressWarnings("unchecked")
 	private void updateTuningPresetSelection() {
-		TGTrackTuningModel[] selection = null;
-		for(TGTrackTuningModel[] preset : this.tuningPresets) {
+		TGTrackTuningPresetModel selection = null;
+		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
 			if( this.isUsingPreset(preset)) {
 				selection = preset;
 			}
 		}
 
-		TGTrackTuningModel[] currentSelection = this.findSelectedPreset();
+		TGTrackTuningPresetModel currentSelection = this.findSelectedPreset();
 		if( selection != currentSelection ) {
 			Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_preset_value);
 			spinner.setSelection(((ArrayAdapter<TGSelectableItem>) spinner.getAdapter()).getPosition(new TGSelectableItem(selection, null)), false);
 		}
 	}
 
-	private boolean isUsingPreset(TGTrackTuningModel[] preset) {
-		if( this.tuning.size() == preset.length ) {
+	private boolean isUsingPreset(TGTrackTuningPresetModel preset) {
+		TGTrackTuningModel[] values = preset.getValues();
+		if( this.tuning.size() == values.length ) {
 			for(int i = 0 ; i < this.tuning.size(); i ++) {
-				if(!this.tuning.get(i).getValue().equals(preset[i].getValue())) {
+				if(!this.tuning.get(i).getValue().equals(values[i].getValue())) {
 					return false;
 				}
 			}
@@ -264,9 +266,9 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		this.updateTuningControls();
 	}
 
-	private void updateTuningFromPreset(TGTrackTuningModel[] preset) {
+	private void updateTuningFromPreset(TGTrackTuningPresetModel preset) {
 		List<TGTrackTuningModel> models = new ArrayList<TGTrackTuningModel>();
-		for(TGTrackTuningModel presetModel : preset) {
+		for(TGTrackTuningModel presetModel : preset.getValues()) {
 			TGTrackTuningModel model = new TGTrackTuningModel();
 			model.setValue(presetModel.getValue());
 			models.add(model);
@@ -301,7 +303,7 @@ public class TGTrackTuningDialog extends TGModalFragment {
 	}
 
 	private void onSelectPreset() {
-		TGTrackTuningModel[] models = this.findSelectedPreset();
+		TGTrackTuningPresetModel models = this.findSelectedPreset();
 		if( models != null ) {
 			this.updateTuningFromPreset(models);
 		}
@@ -313,31 +315,28 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		this.updateOptions(!percussionChannel);
 	}
 
-	public TGTrackTuningModel[] createTuningPreset(int[] values) {
+	public TGTrackTuningPresetModel createTuningPreset(TGTuning tuning) {
+		int[] values = tuning.getValues();
 		TGTrackTuningModel[] models = new TGTrackTuningModel[values.length];
 		for(int i = 0 ; i < models.length; i ++) {
 			models[i] = new TGTrackTuningModel();
 			models[i].setValue(values[i]);
 		}
-		return models;
+		TGTrackTuningPresetModel preset = new TGTrackTuningPresetModel();
+		preset.setName(tuning.getName());
+		preset.setValues(models);
+		return preset;
 	}
 
 	public void createTuningPresets() {
 		this.tuningPresets.clear();
-		for(int[] tuningValues : TGSongManager.DEFAULT_TUNING_VALUES) {
+		for(TGTuning tuningValues : findActivity().getTuningManager().getAllTunings()) {
 			this.tuningPresets.add(this.createTuningPreset(tuningValues));
 		}
 	}
 
-	public String createTuningPresetLabel(TGTrackTuningModel[] tuningPreset) {
-		StringBuilder label = new StringBuilder();
-		for(int i = 0 ; i < tuningPreset.length; i ++) {
-			if( i > 0 ) {
-				label.append(" ");
-			}
-			label.append(TGTrackTuningLabel.valueOf(tuningPreset[tuningPreset.length - i - 1].getValue()));
-		}
-		return label.toString();
+	public String createTuningPresetLabel(TGTrackTuningPresetModel tuningPreset) {
+		return tuningPreset.getName();
 	}
 
 	private boolean hasTuningChanges(List<TGString> newStrings) {

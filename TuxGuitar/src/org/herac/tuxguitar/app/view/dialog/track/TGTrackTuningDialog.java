@@ -13,6 +13,8 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
+import org.herac.tuxguitar.song.helpers.tuning.TuningGroup;
+import org.herac.tuxguitar.song.helpers.tuning.TuningPreset;
 import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -48,18 +50,20 @@ public class TGTrackTuningDialog {
 	private UIWindow dialog;
 	
 	private List<TGTrackTuningModel> tuning;
-	private List<TGTrackTuningModel[]> tuningPresets;
+	private List<TGTrackTuningPresetModel> tuningPresets;
 	private UITable<TGTrackTuningModel> tuningTable;
-	private UIDropDownSelect<TGTrackTuningModel[]> tuningPresetsSelect;
+	private List<UIDropDownSelect<TGTrackTuningGroupEntryModel>> tuningPresetSelects;
 	private UICheckBox stringTransposition;
 	private UICheckBox stringTranspositionTryKeepString;
 	private UICheckBox stringTranspositionApplyToChords;
 	private UIDropDownSelect<Integer> offsetCombo;
-	
+	private UISelectItem<TGTrackTuningGroupEntryModel> customPresetItem;
+
 	public TGTrackTuningDialog(TGViewContext context) {
 		this.context = context;
 		this.tuning = new ArrayList<TGTrackTuningModel>();
-		this.tuningPresets = new ArrayList<TGTrackTuningModel[]>();
+		this.tuningPresets = new ArrayList<TGTrackTuningPresetModel>();
+		this.tuningPresetSelects = new ArrayList<UIDropDownSelect<TGTrackTuningGroupEntryModel>>();
 	}
 	
 	public void show() {
@@ -103,7 +107,62 @@ public class TGTrackTuningDialog {
 			TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
 	}
-	
+
+	private TGTrackTuningGroupModel createTuningGroupModels(TuningGroup group) {
+	    if (group == null) {
+	    	return null;
+		}
+	    TGTrackTuningGroupModel model = new TGTrackTuningGroupModel();
+	    model.setName(group.getName());
+	    TGTrackTuningGroupEntryModel[] entries = new TGTrackTuningGroupEntryModel[group.getGroups().size() + group.getTunings().size()];
+	    int i = 0;
+		for (TuningGroup subGroup : group.getGroups()) {
+			TGTrackTuningGroupEntryModel entry = new TGTrackTuningGroupEntryModel();
+			TGTrackTuningGroupModel subGroupModel = createTuningGroupModels(subGroup);
+			subGroupModel.setEntry(entry);
+			entry.setGroup(subGroupModel);
+			entry.setParent(model);
+			entries[i++] = entry;
+		}
+		for (TuningPreset tuning : group.getTunings()) {
+			TGTrackTuningGroupEntryModel entry = new TGTrackTuningGroupEntryModel();
+			TGTrackTuningPresetModel preset = this.createTuningPreset(tuning);
+			preset.setEntry(entry);
+			entry.setPreset(preset);
+			entry.setParent(model);
+			entries[i++] = entry;
+			this.tuningPresets.add(preset);
+		}
+		model.setChildren(entries);
+		return model;
+    }
+
+	private void populatePresetDropDown(UIDropDownSelect<TGTrackTuningGroupEntryModel> select, TGTrackTuningGroupModel group) {
+		select.setIgnoreEvents(true);
+		select.removeItems();
+		if (group != null) {
+			if (group.getEntry() == null) {
+				select.addItem(this.customPresetItem);
+			}
+			for (TGTrackTuningGroupEntryModel entry : group.getChildren()) {
+				boolean wasEmpty = select.getItemCount() == (group.getEntry() == null ? 1 : 0);
+
+				String name = "";
+				if (entry.getGroup() != null) {
+					name = entry.getGroup().getName();
+				} else if (entry.getPreset() != null) {
+					name = this.createTuningPresetLabel(entry.getPreset());
+				}
+				select.addItem(new UISelectItem<TGTrackTuningGroupEntryModel>(name, entry));
+				if (wasEmpty) {
+					select.setSelectedValue(entry);
+				}
+			}
+		}
+		select.setEnabled(select.getItemCount() > 0);
+		select.setIgnoreEvents(false);
+	}
+
 	private void initTuningTable(UILayoutContainer parent) {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
@@ -112,21 +171,39 @@ public class TGTrackTuningDialog {
 		UIPanel panel = factory.createPanel(parent, false);
 		panel.setLayout(panelLayout);
 		parentLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
-		this.createTuningPresets();
-		this.tuningPresetsSelect = factory.createDropDownSelect(panel);
-		panelLayout.set(this.tuningPresetsSelect, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
-		
-		this.tuningPresetsSelect.addItem(new UISelectItem<TGTrackTuningModel[]>(TuxGuitar.getProperty("tuning.preset.select")));
-		for(TGTrackTuningModel[] tuningPreset : this.tuningPresets) {
-			this.tuningPresetsSelect.addItem(new UISelectItem<TGTrackTuningModel[]>(this.createTuningPresetLabel(tuningPreset), tuningPreset));
-		}
-		this.tuningPresetsSelect.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				TGTrackTuningDialog.this.onSelectPreset();
+
+		UITableLayout presetsLayout = new UITableLayout(0f);
+		UIPanel presetsPanel = factory.createPanel(panel, false);
+		presetsPanel.setLayout(presetsLayout);
+		panelLayout.set(presetsPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+
+		this.tuningPresets.clear();
+		this.customPresetItem = new UISelectItem<TGTrackTuningGroupEntryModel>(TuxGuitar.getProperty("tuning.preset.select"));
+		int treeDepth = TuxGuitar.getInstance().getTuningManager().getTreeDepth();
+		TGTrackTuningGroupModel tuningLeaf = createTuningGroupModels(TuxGuitar.getInstance().getTuningManager().getTuningsRoot());
+        for (int i = 0; i < treeDepth; i++) {
+            UIDropDownSelect<TGTrackTuningGroupEntryModel> presetSelect = factory.createDropDownSelect(presetsPanel);
+			this.tuningPresetSelects.add(presetSelect);
+			presetsLayout.set(presetSelect, 1+i, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+			if (tuningLeaf != null) {
+				this.populatePresetDropDown(presetSelect, tuningLeaf);
+
+				TGTrackTuningGroupModel nextLeaf = null;
+				for (TGTrackTuningGroupEntryModel entry : tuningLeaf.getChildren()) {
+					if (entry.getGroup() != null) {
+						nextLeaf = entry.getGroup();
+						break;
+					}
+				}
+				tuningLeaf = nextLeaf;
 			}
-		});
-		
+			presetSelect.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					TGTrackTuningDialog.this.onSelectPreset((UIDropDownSelect<TGTrackTuningGroupEntryModel>) event.getComponent());
+				}
+			});
+		}
+
 		this.tuningTable = factory.createTable(panel, true);
 		this.tuningTable.setColumns(2);
 		this.tuningTable.setColumnName(0, TuxGuitar.getProperty("tuning.label"));
@@ -263,10 +340,29 @@ public class TGTrackTuningDialog {
 		parentLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 	
-	private void onSelectPreset() {
-		TGTrackTuningModel[] models = this.tuningPresetsSelect.getSelectedValue();
-		if( models != null ) {
-			this.updateTuningFromPreset(models);
+	private void onSelectPreset(UIDropDownSelect<TGTrackTuningGroupEntryModel> select) {
+		TGTrackTuningGroupEntryModel model = select.getSelectedValue();
+		for (int i = this.tuningPresetSelects.indexOf(select); i < this.tuningPresetSelects.size(); i++) {
+			if( model == null ) {
+				if (i > 0) {
+					UIDropDownSelect<TGTrackTuningGroupEntryModel> child = this.tuningPresetSelects.get(i);
+					this.populatePresetDropDown(child, null);
+				}
+			} else {
+				if (model.getPreset() != null) {
+					this.updateTuningFromPreset(model.getPreset().getValues());
+					model = null;
+				} else if (model.getGroup() != null) {
+					UIDropDownSelect<TGTrackTuningGroupEntryModel> child = this.tuningPresetSelects.get(i);
+					this.populatePresetDropDown(child, model.getGroup());
+					TGTrackTuningGroupEntryModel[] entries = model.getGroup().getChildren();
+					if (entries.length > 0) {
+						model = entries[0];
+					} else {
+						model = null;
+					}
+				}
+			}
 		}
 	}
 	
@@ -297,10 +393,11 @@ public class TGTrackTuningDialog {
 		}
 	}
 	
-	private boolean isUsingPreset(TGTrackTuningModel[] preset) {
-		if( this.tuning.size() == preset.length ) {
+	private boolean isUsingPreset(TGTrackTuningPresetModel preset) {
+		TGTrackTuningModel[] values = preset.getValues();
+		if( this.tuning.size() == values.length ) {
 			for(int i = 0 ; i < this.tuning.size(); i ++) {
-				if(!this.tuning.get(i).getValue().equals(preset[i].getValue())) {
+				if(!this.tuning.get(i).getValue().equals(values[i].getValue())) {
 					return false;
 				}
 			}
@@ -310,15 +407,52 @@ public class TGTrackTuningDialog {
 	}
 	
 	private void updateTuningPresetSelection() {
-		TGTrackTuningModel[] selection = null;
-		for(TGTrackTuningModel[] preset : this.tuningPresets) {
+		TGTrackTuningPresetModel selection = null;
+		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
 			if( this.isUsingPreset(preset)) {
 				selection = preset;
 			}
 		}
-		this.tuningPresetsSelect.setIgnoreEvents(true);
-		this.tuningPresetsSelect.setSelectedValue(selection);
-		this.tuningPresetsSelect.setIgnoreEvents(false);
+		if (selection == null) {
+			int depth = 0;
+			for (UIDropDownSelect<TGTrackTuningGroupEntryModel> select : this.tuningPresetSelects) {
+				if (depth == 0) {
+					select.setIgnoreEvents(true);
+					select.setSelectedItem(this.customPresetItem);
+					select.setIgnoreEvents(false);
+				} else {
+				    this.populatePresetDropDown(select, null);
+				}
+				depth++;
+			}
+		} else {
+			List<TGTrackTuningGroupModel> path = new ArrayList<TGTrackTuningGroupModel>();
+			TGTrackTuningGroupModel leaf = selection.getEntry().getParent();
+			while (leaf != null) {
+				path.add(0, leaf);
+				if (leaf.getEntry() != null) {
+					leaf = leaf.getEntry().getParent();
+				} else {
+					leaf = null;
+				}
+			}
+			int depth = 0;
+			for (UIDropDownSelect<TGTrackTuningGroupEntryModel> select : this.tuningPresetSelects) {
+			    if (depth < path.size()) {
+					this.populatePresetDropDown(select, path.get(depth));
+					select.setIgnoreEvents(true);
+                    if (depth == path.size() - 1) {
+						select.setSelectedValue(selection.getEntry());
+					} else {
+						select.setSelectedValue(path.get(depth + 1).getEntry());
+					}
+					select.setIgnoreEvents(false);
+				} else {
+					this.populatePresetDropDown(select, null);
+				}
+				depth++;
+			}
+		}
 	}
 	
 	private void updateTuningTable() {
@@ -464,32 +598,31 @@ public class TGTrackTuningDialog {
 		}
 		return false;
 	}
-	
-	public String createTuningPresetLabel(TGTrackTuningModel[] tuningPreset) {
+
+	public String createTuningPresetLabel(TGTrackTuningPresetModel tuningPreset) {
 		StringBuilder label = new StringBuilder();
-		for(int i = 0 ; i < tuningPreset.length; i ++) {
+		label.append(tuningPreset.getName() + " - ");
+		TGTrackTuningModel[] values = tuningPreset.getValues();
+		for(int i = 0 ; i < values.length; i ++) {
 			if( i > 0 ) {
 				label.append(" ");
 			}
-			label.append(this.getValueLabel(tuningPreset[tuningPreset.length - i - 1].getValue()));
+			label.append(this.getValueLabel(values[values.length - i - 1].getValue()));
 		}
 		return label.toString();
 	}
-	
-	public TGTrackTuningModel[] createTuningPreset(int[] values) {
+
+	public TGTrackTuningPresetModel createTuningPreset(TuningPreset tuning) {
+		int[] values = tuning.getValues();
 		TGTrackTuningModel[] models = new TGTrackTuningModel[values.length];
 		for(int i = 0 ; i < models.length; i ++) {
 			models[i] = new TGTrackTuningModel();
 			models[i].setValue(values[i]);
 		}
-		return models;
-	}
-	
-	public void createTuningPresets() {
-		this.tuningPresets.clear();
-		for(int[] tuningValues : TGSongManager.DEFAULT_TUNING_VALUES) {
-			this.tuningPresets.add(this.createTuningPreset(tuningValues));
-		}
+		TGTrackTuningPresetModel preset = new TGTrackTuningPresetModel();
+		preset.setName(tuning.getName());
+		preset.setValues(models);
+		return preset;
 	}
 	
 	public String[] getValueLabels() {
