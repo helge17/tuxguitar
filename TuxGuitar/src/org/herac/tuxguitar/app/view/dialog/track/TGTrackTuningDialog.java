@@ -447,6 +447,7 @@ public class TGTrackTuningDialog {
 		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
 			if( this.isUsingPreset(preset)) {
 				selection = preset;
+				break;
 			}
 		}
 		if (selection == null) {

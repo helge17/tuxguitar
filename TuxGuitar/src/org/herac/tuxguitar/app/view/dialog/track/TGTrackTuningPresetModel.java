@@ -1,7 +1,5 @@
 package org.herac.tuxguitar.app.view.dialog.track;
 
-import org.herac.tuxguitar.song.helpers.tuning.TuningGroup;
-
 public class TGTrackTuningPresetModel {
 
 	private String name;
