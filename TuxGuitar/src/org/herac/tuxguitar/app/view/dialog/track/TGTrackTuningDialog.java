@@ -27,26 +27,16 @@ import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UITable;
-import org.herac.tuxguitar.ui.widget.UITableItem;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.ui.widget.*;
 
 public class TGTrackTuningDialog {
-	
+
 	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_TUNING);
 	private static final float MINIMUM_BUTTON_WIDTH = 80;
 	private static final float MINIMUM_BUTTON_HEIGHT = 25;
 	private static final int MAX_OCTAVES = 10;
 	private static final int MAX_NOTES = 12;
-	
+
 	private TGViewContext context;
 	private UIWindow dialog;
 
@@ -58,7 +48,7 @@ public class TGTrackTuningDialog {
 	private UICheckBox stringTransposition;
 	private UICheckBox stringTranspositionTryKeepString;
 	private UICheckBox stringTranspositionApplyToChords;
-	private UIDropDownSelect<Integer> offsetCombo;
+	private UISpinner offsetSpinner;
 	private UISelectItem<TGTrackTuningGroupEntryModel> customPresetItem;
 	private UIButton buttonEdit;
 	private UIButton buttonDelete;
@@ -70,11 +60,11 @@ public class TGTrackTuningDialog {
 		this.tuningPresets = new ArrayList<TGTrackTuningPresetModel>();
 		this.tuningPresetSelects = new ArrayList<UIDropDownSelect<TGTrackTuningGroupEntryModel>>();
 	}
-	
+
 	public void show() {
 		TGSongManager songManager = this.findSongManager();
 		TGTrack track = this.findTrack();
-		
+
 		if(!songManager.isPercussionChannel(track.getSong(), track.getChannelId())) {
 			this.tuning = getTuningFromTrack(track);
 			this.initialTuning = getTuningFromTrack(track);
@@ -82,32 +72,32 @@ public class TGTrackTuningDialog {
 			UIFactory factory = this.getUIFactory();
 			UIWindow parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			UITableLayout dialogLayout = new UITableLayout();
-			
+
 			this.dialog = factory.createWindow(parent, true, false);
 			this.dialog.setLayout(dialogLayout);
 			this.dialog.setText(TuxGuitar.getProperty("tuning"));
-			
+
 			UITableLayout leftPanelLayout = new UITableLayout();
 			UILegendPanel leftPanel = factory.createLegendPanel(this.dialog);
 			leftPanel.setLayout(leftPanelLayout);
 			leftPanel.setText(TuxGuitar.getProperty("tuning.strings"));
 			dialogLayout.set(leftPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			UITableLayout rightPanelLayout = new UITableLayout();
 			UILegendPanel rightPanel = factory.createLegendPanel(this.dialog);
 			rightPanel.setLayout(rightPanelLayout);
 			rightPanel.setText(TuxGuitar.getProperty("options"));
 			dialogLayout.set(rightPanel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			UITableLayout bottomPanelLayout = new UITableLayout(0f);
 			UIPanel bottomPanel = factory.createPanel(this.dialog, false);
 			bottomPanel.setLayout(bottomPanelLayout);
 			dialogLayout.set(bottomPanel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true, 1, 2);
-			
+
 			this.initTuningTable(leftPanel);
-			
+
 			this.initTuningOptions(rightPanel, track);
-			
+
 			this.initButtons(bottomPanel);
 
 			this.updateTuningControls();
@@ -174,7 +164,7 @@ public class TGTrackTuningDialog {
 	private void initTuningTable(UILayoutContainer parent) {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
-		
+
 		UITableLayout panelLayout = new UITableLayout();
 		UIPanel panel = factory.createPanel(parent, false);
 		panel.setLayout(panelLayout);
@@ -229,7 +219,7 @@ public class TGTrackTuningDialog {
 		UIPanel buttonsPanel = factory.createPanel(panel, false);
 		buttonsPanel.setLayout(buttonsLayout);
 		panelLayout.set(buttonsPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
-		
+
 		UIButton buttonAdd = factory.createButton(buttonsPanel);
 		buttonAdd.setImage(TGIconManager.getInstance(this.context.getContext()).getListAdd());
 		buttonAdd.addSelectionListener(new UISelectionListener() {
@@ -237,7 +227,7 @@ public class TGTrackTuningDialog {
 				TGTrackTuningDialog.this.onAddTuningModel();
 			}
 		});
-		
+
 		buttonEdit = factory.createButton(buttonsPanel);
 		buttonEdit.setImage(TGIconManager.getInstance(this.context.getContext()).getListEdit());
 		buttonEdit.addSelectionListener(new UISelectionListener() {
@@ -287,50 +277,49 @@ public class TGTrackTuningDialog {
 	private void initTuningOptions(UILayoutContainer parent, TGTrack track) {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
-		
+
 		UITableLayout panelLayout = new UITableLayout();
 		UIPanel panel = factory.createPanel(parent, false);
 		panel.setLayout(panelLayout);
 		parentLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UITableLayout topLayout = new UITableLayout(0f);
 		UIPanel top = factory.createPanel(panel, false);
 		top.setLayout(topLayout);
 		panelLayout.set(top, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true, 1, 1, null, null, 0f);
-		
+
 		UITableLayout bottomLayout = new UITableLayout(0f);
 		UIPanel bottom = factory.createPanel(panel, false);
 		bottom.setLayout(bottomLayout);
 		panelLayout.set(bottom, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true, 1, 1, null, null, 0f);
-		
+
 		//---------------------------------OFFSET--------------------------------
 		UILabel offsetLabel = factory.createLabel(top);
 		offsetLabel.setText(TuxGuitar.getProperty("tuning.offset") + ":");
 		topLayout.set(offsetLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
-		
-		this.offsetCombo = factory.createDropDownSelect(top);
-		for(int i = TGTrack.MIN_OFFSET;i <= TGTrack.MAX_OFFSET;i ++){
-			this.offsetCombo.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
-		}
-		this.offsetCombo.setSelectedValue(track.getOffset());
-		topLayout.set(this.offsetCombo, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
+		this.offsetSpinner = factory.createSpinner(top);
+		this.offsetSpinner.setMinimum(TGTrack.MIN_OFFSET);
+		this.offsetSpinner.setMaximum(TGTrack.MAX_OFFSET);
+		this.offsetSpinner.setValue(track.getOffset());
+		topLayout.set(this.offsetSpinner, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+
 		//---------------------------------OPTIONS----------------------------------
 		this.stringTransposition = factory.createCheckBox(bottom);
 		this.stringTransposition.setText(TuxGuitar.getProperty("tuning.strings.transpose"));
 		this.stringTransposition.setSelected( true );
 		bottomLayout.set(this.stringTransposition, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.stringTranspositionApplyToChords = factory.createCheckBox(bottom);
 		this.stringTranspositionApplyToChords.setText(TuxGuitar.getProperty("tuning.strings.transpose.apply-to-chords"));
 		this.stringTranspositionApplyToChords.setSelected( true );
 		bottomLayout.set(this.stringTranspositionApplyToChords, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.stringTranspositionTryKeepString = factory.createCheckBox(bottom);
 		this.stringTranspositionTryKeepString.setText(TuxGuitar.getProperty("tuning.strings.transpose.try-keep-strings"));
 		this.stringTranspositionTryKeepString.setSelected( true );
 		bottomLayout.set(this.stringTranspositionTryKeepString, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.stringTransposition.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				UICheckBox stringTransposition = TGTrackTuningDialog.this.stringTransposition;
@@ -341,11 +330,11 @@ public class TGTrackTuningDialog {
 			}
 		});
 	}
-	
+
 	private void initButtons(UILayoutContainer parent) {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
-		
+
 		UIButton buttonOK = factory.createButton(parent);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -361,7 +350,7 @@ public class TGTrackTuningDialog {
 			}
 		});
 		parentLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
-		
+
 		UIButton buttonCancel = factory.createButton(parent);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -372,7 +361,7 @@ public class TGTrackTuningDialog {
 		parentLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 		parentLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 	}
-	
+
 	private void onSelectPreset(UIDropDownSelect<TGTrackTuningGroupEntryModel> select) {
 		TGTrackTuningGroupEntryModel model = select.getSelectedValue();
 		for (int i = this.tuningPresetSelects.indexOf(select); i < this.tuningPresetSelects.size(); i++) {
@@ -398,7 +387,7 @@ public class TGTrackTuningDialog {
 			}
 		}
 	}
-	
+
 	private void onAddTuningModel() {
 		new TGTrackTuningChooserDialog(this).select(new TGTrackTuningChooserHandler() {
 			public void handleSelection(TGTrackTuningModel model) {
@@ -406,7 +395,7 @@ public class TGTrackTuningDialog {
 			}
 		});
 	}
-	
+
 	private void onEditTuningModel() {
 		final TGTrackTuningModel editingModel = this.tuningTable.getSelectedValue();
 		if( editingModel != null ) {
@@ -418,7 +407,7 @@ public class TGTrackTuningDialog {
 			}, editingModel);
 		}
 	}
-	
+
 	private void onRemoveTuningModel() {
 		TGTrackTuningModel model = this.tuningTable.getSelectedValue();
 		if( model != null ) {
@@ -452,7 +441,7 @@ public class TGTrackTuningDialog {
 		TGTrackTuningModel[] values = preset.getValues();
 		return areTuningsEqual(this.tuning, Arrays.asList(preset.getValues()));
 	}
-	
+
 	private void updateTuningPresetSelection() {
 		TGTrackTuningPresetModel selection = null;
 		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
@@ -501,19 +490,19 @@ public class TGTrackTuningDialog {
 			}
 		}
 	}
-	
+
 	private void updateTuningTable() {
 		TGTrackTuningModel selection = this.tuningTable.getSelectedValue();
-		
+
 		this.tuningTable.removeItems();
 		for(TGTrackTuningModel model : this.tuning) {
 			UITableItem<TGTrackTuningModel> item = new UITableItem<TGTrackTuningModel>(model);
 			item.setText(0, this.getValueLabel(model.getValue()));
 			item.setText(1, this.getValueLabel(model.getValue(), true));
-			
+
 			this.tuningTable.addItem(item);
 		}
-		
+
 		if( selection != null ) {
 			this.tuningTable.setSelectedValue(selection);
 		}
@@ -532,13 +521,13 @@ public class TGTrackTuningDialog {
 		stringTranspositionApplyToChords.setEnabled(!isDefault);
 		stringTranspositionTryKeepString.setEnabled(!isDefault);
 	}
-	
+
 	private void updateTuningControls() {
 		this.updateTuningTable();
 		this.updateTuningPresetSelection();
 		this.updateButtons();
 	}
-	
+
 	private static List<TGTrackTuningModel> getTuningFromTrack(TGTrack track) {
 		List<TGTrackTuningModel> tuning = new ArrayList<>();
 		for(int i = 0; i < track.stringCount(); i ++) {
@@ -549,26 +538,26 @@ public class TGTrackTuningDialog {
 		}
 		return tuning;
 	}
-	
+
 	private void addTuningModel(TGTrackTuningModel model) {
 		if( this.tuning.add(model)) {
 			this.updateTuningControls();
 		}
 	}
-	
+
 	private void removeTuningModel(TGTrackTuningModel model) {
 		if( this.tuning.remove(model)) {
 			this.updateTuningControls();
 		}
 	}
-	
+
 	private void updateTuningModels(List<TGTrackTuningModel> models) {
 		this.tuning.clear();
 		if( this.tuning.addAll(models)) {
 			this.updateTuningControls();
 		}
 	}
-	
+
 	private void updateTuningFromPreset(TGTrackTuningModel[] preset) {
 		List<TGTrackTuningModel> models = new ArrayList<TGTrackTuningModel>();
 		for(TGTrackTuningModel presetModel : preset) {
@@ -578,30 +567,30 @@ public class TGTrackTuningDialog {
 		}
 		this.updateTuningModels(models);
 	}
-	
+
 	private boolean updateTrackTuning() {
 		final TGSongManager songManager = this.findSongManager();
 		final TGSong song = this.findSong();
 		final TGTrack track = this.findTrack();
-		
+
 		final List<TGString> strings = new ArrayList<TGString>();
 		for(int i = 0; i < this.tuning.size(); i ++) {
 			strings.add(TGSongManager.newString(findSongManager().getFactory(),(i + 1), this.tuning.get(i).getValue()));
 		}
-		
-		final Integer offset = ((songManager.isPercussionChannel(song, track.getChannelId())) ? 0 : this.offsetCombo.getSelectedValue());
+
+		final Integer offset = ((songManager.isPercussionChannel(song, track.getChannelId())) ? 0 : this.offsetSpinner.getValue());
 		final boolean offsetChanges = (offset != null && !offset.equals(track.getOffset()));
 		final boolean tuningChanges = hasTuningChanges(track, strings);
 		final boolean transposeStrings = shouldTransposeStrings(track, track.getChannelId());
 		final boolean transposeApplyToChords = (transposeStrings && this.stringTranspositionApplyToChords.isSelected());
 		final boolean transposeTryKeepString = (transposeStrings && this.stringTranspositionTryKeepString.isSelected());
-		
+
 		if( this.validateTrackTuning(strings)) {
 			if( tuningChanges || offsetChanges ){
 				TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGChangeTrackTuningAction.NAME);
 				tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 				tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
-				
+
 				if( tuningChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, strings);
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_STRINGS, transposeStrings);
@@ -617,26 +606,26 @@ public class TGTrackTuningDialog {
 		}
 		return false;
 	}
-	
+
 	private boolean validateTrackTuning(List<TGString> strings) {
 		if( strings.size() < TGTrack.MIN_STRINGS || strings.size() > TGTrack.MAX_STRINGS ) {
 			TGMessageDialogUtil.errorMessage(this.getContext().getContext(), this.dialog, TuxGuitar.getProperty("tuning.strings.range-error", new String[] {Integer.toString(TGTrack.MIN_STRINGS), Integer.toString(TGTrack.MAX_STRINGS)}));
-			
+
 			return false;
 		}
 		return true;
 	}
-	
+
 	private boolean shouldTransposeStrings(TGTrack track, int selectedChannelId){
 		if( this.stringTransposition.isSelected()){
 			boolean percussionChannelNew = findSongManager().isPercussionChannel(track.getSong(), selectedChannelId);
 			boolean percussionChannelOld = findSongManager().isPercussionChannel(track.getSong(), track.getChannelId());
-			
+
 			return (!percussionChannelNew && !percussionChannelOld);
 		}
 		return false;
 	}
-	
+
 	private boolean hasTuningChanges(TGTrack track, List<TGString> newStrings){
 		List<TGString> oldStrings = track.getStrings();
 		//check the number of strings
@@ -685,7 +674,7 @@ public class TGTrackTuningDialog {
 		preset.setValues(models);
 		return preset;
 	}
-	
+
 	public String[] getValueLabels() {
 		String[] valueNames = new String[MAX_NOTES * MAX_OCTAVES];
 		for (int i = 0; i < valueNames.length; i++) {
@@ -693,43 +682,43 @@ public class TGTrackTuningDialog {
 		}
 		return valueNames;
 	}
-	
+
 	public String getValueLabel(Integer value) {
 		return this.getValueLabel(value, false);
 	}
-	
+
 	public String getValueLabel(Integer value, boolean octave) {
 		StringBuilder sb = new StringBuilder();
 		if( value != null ) {
 			sb.append(NOTE_NAMES[value % NOTE_NAMES.length]);
-			
+
 			if( octave ) {
 				sb.append(value / MAX_NOTES);
 			}
 		}
 		return sb.toString();
 	}
-	
+
 	public TGSongManager findSongManager() {
 		return this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 	}
-	
+
 	public TGSong findSong() {
 		return this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 	}
-	
+
 	public TGTrack findTrack() {
 		return this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 	}
-	
+
 	public TGViewContext getContext() {
 		return this.context;
 	}
-	
+
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context.getContext()).getFactory();
 	}
-	
+
 	public UIWindow getDialog() {
 		return this.dialog;
 	}
