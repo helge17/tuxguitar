@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.view.dialog.track;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -48,7 +49,8 @@ public class TGTrackTuningDialog {
 	
 	private TGViewContext context;
 	private UIWindow dialog;
-	
+
+	private List<TGTrackTuningModel> initialTuning;
 	private List<TGTrackTuningModel> tuning;
 	private List<TGTrackTuningPresetModel> tuningPresets;
 	private UITable<TGTrackTuningModel> tuningTable;
@@ -65,7 +67,6 @@ public class TGTrackTuningDialog {
 
 	public TGTrackTuningDialog(TGViewContext context) {
 		this.context = context;
-		this.tuning = new ArrayList<TGTrackTuningModel>();
 		this.tuningPresets = new ArrayList<TGTrackTuningPresetModel>();
 		this.tuningPresetSelects = new ArrayList<UIDropDownSelect<TGTrackTuningGroupEntryModel>>();
 	}
@@ -75,6 +76,9 @@ public class TGTrackTuningDialog {
 		TGTrack track = this.findTrack();
 		
 		if(!songManager.isPercussionChannel(track.getSong(), track.getChannelId())) {
+			this.tuning = getTuningFromTrack(track);
+			this.initialTuning = getTuningFromTrack(track);
+
 			UIFactory factory = this.getUIFactory();
 			UIWindow parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			UITableLayout dialogLayout = new UITableLayout();
@@ -105,9 +109,9 @@ public class TGTrackTuningDialog {
 			this.initTuningOptions(rightPanel, track);
 			
 			this.initButtons(bottomPanel);
-			
-			this.updateTuningFromTrack(track);
-			
+
+			this.updateTuningControls();
+
 			TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
 	}
@@ -432,17 +436,21 @@ public class TGTrackTuningDialog {
 		}
 	}
 
-	private boolean isUsingPreset(TGTrackTuningPresetModel preset) {
-		TGTrackTuningModel[] values = preset.getValues();
-		if( this.tuning.size() == values.length ) {
-			for(int i = 0 ; i < this.tuning.size(); i ++) {
-				if(!this.tuning.get(i).getValue().equals(values[i].getValue())) {
+	private static boolean areTuningsEqual(List<TGTrackTuningModel> a, List<TGTrackTuningModel> b) {
+		if(a.size() == b.size()) {
+			for(int i = 0 ; i < a.size(); i ++) {
+				if(!a.get(i).getValue().equals(b.get(i).getValue())) {
 					return false;
 				}
 			}
 			return true;
 		}
 		return false;
+	}
+
+	private boolean isUsingPreset(TGTrackTuningPresetModel preset) {
+		TGTrackTuningModel[] values = preset.getValues();
+		return areTuningsEqual(this.tuning, Arrays.asList(preset.getValues()));
 	}
 	
 	private void updateTuningPresetSelection() {
@@ -514,11 +522,15 @@ public class TGTrackTuningDialog {
 	private void updateButtons() {
 		TGTrackTuningModel model = this.tuningTable.getSelectedValue();
 		int index = model != null ? this.tuning.indexOf(model) : -1;
-		boolean selected = model != null;
 		buttonEdit.setEnabled(model != null);
 		buttonDelete.setEnabled(model != null);
 		buttonMoveUp.setEnabled(model != null && index > 0);
 		buttonMoveDown.setEnabled(model != null && index < this.tuning.size() - 1);
+
+		boolean isDefault = areTuningsEqual(this.tuning, this.initialTuning);
+		stringTransposition.setEnabled(!isDefault);
+		stringTranspositionApplyToChords.setEnabled(!isDefault);
+		stringTranspositionTryKeepString.setEnabled(!isDefault);
 	}
 	
 	private void updateTuningControls() {
@@ -527,16 +539,15 @@ public class TGTrackTuningDialog {
 		this.updateButtons();
 	}
 	
-	private void updateTuningFromTrack(TGTrack track) {
-		this.tuning.clear();
+	private static List<TGTrackTuningModel> getTuningFromTrack(TGTrack track) {
+		List<TGTrackTuningModel> tuning = new ArrayList<>();
 		for(int i = 0; i < track.stringCount(); i ++) {
 			TGString string = track.getString(i + 1);
 			TGTrackTuningModel model = new TGTrackTuningModel();
 			model.setValue(string.getValue());
-			this.tuning.add(model);
+			tuning.add(model);
 		}
-		
-		this.updateTuningControls();
+		return tuning;
 	}
 	
 	private void addTuningModel(TGTrackTuningModel model) {
