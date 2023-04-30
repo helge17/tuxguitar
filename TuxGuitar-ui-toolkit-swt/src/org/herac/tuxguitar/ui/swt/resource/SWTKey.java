@@ -52,13 +52,19 @@ public class SWTKey {
 		return new UIKey(Character.toString((char) (keyCode & 0xffff)));
 	}
 	
-	public UIKeyCombination getCombination(int keyCode, int stateMask) {
+	public UIKeyCombination getCombination(int keyCode, int stateMask, Character character) {
+		/* workaround for non-EN keyboards without numpad (typ. azerty laptop)
+		   with these keyboards, digits can be entered only with key combination, e.g. "shift+&" = "1"
+		   Shortcuts configuration dialog shows "1" as an active shortcut, so when user types "shift+&" this shall be considered "1"
+		   but, it's not possible to consider the typed character in all cases (even a non-printable character)
+		   Workaround: if typed character is a digit, override keyCode and ignore shift modifier */
 		UIKeyCombination keyCombination = new UIKeyCombination();
+		boolean isDigit = Character.isDigit(character);
 		if((stateMask & keyCode) == 0) {
 			if((stateMask & SWT.ALT) != 0) {
 				keyCombination.getKeys().add(UIKey.ALT);
 			}
-			if((stateMask & SWT.SHIFT) != 0) {
+			if((stateMask & SWT.SHIFT) != 0 && !isDigit) {
 				keyCombination.getKeys().add(UIKey.SHIFT);
 			}
 			if((stateMask & SWT.CONTROL) != 0) {
@@ -70,8 +76,11 @@ public class SWTKey {
 		}
 		
 		UIKey principalKey = this.getKey(keyCode);
-		if(!keyCombination.contains(principalKey)) {
+		if(!keyCombination.contains(principalKey) && !isDigit) {
 			keyCombination.getKeys().add(principalKey);
+		}
+		else if (isDigit)  {
+			keyCombination.getKeys().add(new UIKey(character.toString()));
 		}
 		
 		return keyCombination;
