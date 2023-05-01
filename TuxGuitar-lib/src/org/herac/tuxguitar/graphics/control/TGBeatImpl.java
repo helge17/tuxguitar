@@ -52,6 +52,7 @@ public class TGBeatImpl extends TGBeat{
 	private boolean vibrato;
 	private boolean trill;
 	private boolean fadeIn;
+	private boolean bend;
 	
 	public TGBeatImpl(TGFactory factory){
 		super(factory);
@@ -195,6 +196,7 @@ public class TGBeatImpl extends TGBeat{
 		this.fadeIn = false;
 		this.vibrato = false;
 		this.trill = false;
+		this.bend = false;
 	}
 	
 	public void updateEffectsSpacing(TGLayout layout,TGNoteEffect effect){
@@ -231,6 +233,9 @@ public class TGBeatImpl extends TGBeat{
 		if(effect.isTrill()){
 			this.trill = true;
 		}
+		if(effect.isBend()) {
+			this.bend = true;
+		}
 	}
 	
 	public float getEffectsSpacing(TGLayout layout){
@@ -266,6 +271,9 @@ public class TGBeatImpl extends TGBeat{
 		}
 		if(this.trill){
 			this.bs.setSize(TGBeatSpacing.POSITION_TRILL_EFFEC,layout.getEffectSpacing());
+		}
+		if(this.bend){
+			this.bs.setSize(TGBeatSpacing.POSITION_BEND_VALUE,layout.getEffectSpacing());
 		}
 		return this.bs.getSize();
 	}
