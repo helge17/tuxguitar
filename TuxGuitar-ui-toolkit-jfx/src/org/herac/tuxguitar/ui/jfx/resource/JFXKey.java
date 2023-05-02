@@ -87,11 +87,25 @@ public class JFXKey {
 	}
 	
 	public static UIKeyCombination getCombination(KeyEvent keyEvent) {
+		/* workaround for non-EN keyboards without numpad (typ. azerty laptop)
+		   with these keyboards, digits can be entered only with key combination, e.g. "shift+&" = "1"
+		   Shortcuts configuration dialog shows "1" as an active shortcut, so when user types "shift+&" this shall be considered "1"
+		   but, it's not possible to consider the typed character in all cases (even a non-printable character)
+		   Workaround: if typed character is a digit, override key code and ignore shift modifier */
 		UIKeyCombination keyCombination = new UIKeyCombination();
+		boolean isDigit=false;
+		if (keyEvent.getText() != null && keyEvent.getText().length()==1)  {
+			try {
+				Integer.parseInt(keyEvent.getText());
+				isDigit = true;
+			} catch(NumberFormatException e) {
+				// nothing to do
+			}
+		}
 		if( keyEvent.isAltDown() ) {
 			keyCombination.getKeys().add(UIKey.ALT);
 		}
-		if( keyEvent.isShiftDown() ) {
+		if( keyEvent.isShiftDown() && !isDigit) {
 			keyCombination.getKeys().add(UIKey.SHIFT);
 		}
 		if( keyEvent.isControlDown() ) {
@@ -102,8 +116,11 @@ public class JFXKey {
 		}
 		
 		UIKey principalKey = JFXKey.getKey(keyEvent);
-		if(!keyCombination.contains(principalKey)) {
+		if(!keyCombination.contains(principalKey) && !isDigit) {
 			keyCombination.getKeys().add(principalKey);
+		}
+		else if (isDigit)  {
+			keyCombination.getKeys().add(new UIKey(keyEvent.getText()));
 		}
 		
 		return keyCombination;
