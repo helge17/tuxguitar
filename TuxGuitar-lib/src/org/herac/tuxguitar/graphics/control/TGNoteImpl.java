@@ -678,7 +678,7 @@ public class TGNoteImpl extends TGNote {
 		float yLow = 0.0f;
 		float yMiddle = 0.0f;
 		float yHigh = 0.0f;
-		if (bs==null || ts==null) {
+		if (bs==null || ts==null || painter==null) {
 			// this case can occur when function is called not to paint, but just to compute spacing
 			canPaint = false;
 		} else {
