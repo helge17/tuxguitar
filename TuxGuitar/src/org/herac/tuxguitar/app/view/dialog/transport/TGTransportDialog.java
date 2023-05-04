@@ -70,7 +70,7 @@ public class TGTransportDialog implements TGEventListener {
 	
 	private static final TGSkinnableColor[] SKINNABLE_COLORS = new TGSkinnableColor[] {
 		new TGSkinnableColor(COLOR_BACKGROUND, new UIColorModel(0x00, 0x00, 0x00)),
-		new TGSkinnableColor(COLOR_FOREGROUND, new UIColorModel(0x00, 0x00, 0x80)),
+		new TGSkinnableColor(COLOR_FOREGROUND, new UIColorModel(0x00, 0x00, 0xFF)),
 	};
 	
 	private TGContext context;

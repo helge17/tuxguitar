@@ -61,6 +61,7 @@ echo -e "\n### Host: "`hostname -s`" ########### Hacks ...\n"
 
 if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
   echo -e "\n# Download the Steinberg SDK (VST_SDK_2.4) ..."
+  mkdir -p $SW_DIR/VST_SDK/V2
   ( cd $SW_DIR/VST_SDK/V2 && git clone https://github.com/R-Tur/VST_SDK_2.4.git )
   echo "# OK."
 fi
