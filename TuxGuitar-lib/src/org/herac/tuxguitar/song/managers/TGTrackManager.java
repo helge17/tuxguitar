@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -190,6 +193,27 @@ public class TGTrackManager {
 			getSongManager().getMeasureManager().moveOutOfBoundsBeatsToNewMeasure(measure,false);
 		}
 	}
+
+	public List<TGBeat> addBeats(TGTrack track, TGStoredBeatList beats, long start) {
+		TGMeasureManager measureManager = getSongManager().getMeasureManager();
+		TGFactory factory = getSongManager().getFactory();
+		List<TGBeat> results = new ArrayList<>();
+		TGMeasure startMeasure = getMeasureAt(track, start);
+		for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
+			for (TGBeat beat : measureManager.getBeatsBeforeEnd(measure.getBeats(), start)) {
+				beat.setStart(beat.getStart() + beats.getLength());
+			}
+		}
+		for (TGBeat beat : beats.getBeats()) {
+			TGBeat newBeat = beat.clone(factory);
+			newBeat.setStart(start + beat.getStart());
+		    measureManager.addBeat(startMeasure, newBeat);
+		    results.add(newBeat);
+		}
+        measureManager.orderBeats(startMeasure);
+		return results;
+	}
+
 	
 	public void changeKeySignature(TGTrack track,long start,int keySignature,boolean toEnd){
 		changeKeySignature(track,getMeasureAt(track,start),keySignature,toEnd);

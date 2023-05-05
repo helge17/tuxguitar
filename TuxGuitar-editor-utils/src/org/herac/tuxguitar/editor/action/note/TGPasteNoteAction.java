@@ -50,6 +50,7 @@ public class TGPasteNoteAction extends TGActionBase{
 					context.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
 					tgActionManager.execute(TGMoveBeatsAction.NAME, context);
 				}
+				trackManager.addBeats(track, beatList, start.getStart());
 				trackManager.moveOutOfBoundsBeatsToNewMeasure(track, start.getStart());
 			}
 		}
