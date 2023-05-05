@@ -39,6 +39,7 @@ public class Tablature implements TGController {
 	private TGSyncProcess disposeUnregisteredResources;
 	
 	private Caret caret;
+	private Selector selector;
 	private TGLayout viewLayout;
 	private EditorKit editorKit;
 	private Float scale;
@@ -48,6 +49,7 @@ public class Tablature implements TGController {
 		this.documentManager = documentManager;
 		this.scale = DEFAULT_SCALE;
 		this.caret = new Caret(this);
+		this.selector = new Selector(this);
 		this.editorKit = new EditorKit(this);
 		this.createSyncProcesses();
 	}
@@ -81,6 +83,7 @@ public class Tablature implements TGController {
 		this.getViewLayout().paint(painter, area, fromX, fromY);
 		this.getCaret().paintCaret(this.getViewLayout(), painter);
 		this.getEditorKit().paintSelection(this.getViewLayout(), painter);
+		this.getSelector().paintSelectedArea(this.getViewLayout(), painter);
 	}
 	
 	public Float getScale() {
@@ -91,6 +94,10 @@ public class Tablature implements TGController {
 		return this.caret;
 	}
 	
+	public Selector getSelector() {
+		return selector;
+	}
+
 	public EditorKit getEditorKit() {
 		return this.editorKit;
 	}

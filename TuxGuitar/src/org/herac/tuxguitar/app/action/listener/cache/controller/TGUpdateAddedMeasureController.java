@@ -11,6 +11,8 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGUpdateAddedMeasureController extends TGUpdateItemsController {
 
+	public static final String ATTRIBUTE_EXTEND_SELECTION = "extend-selection";
+
 	public TGUpdateAddedMeasureController() {
 		super();
 	}

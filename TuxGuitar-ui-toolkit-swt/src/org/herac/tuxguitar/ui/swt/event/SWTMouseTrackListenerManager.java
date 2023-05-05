@@ -2,6 +2,7 @@ package org.herac.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.ui.event.UIMouseEnterListener;
 import org.herac.tuxguitar.ui.event.UIMouseEnterListenerManager;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
@@ -44,13 +45,13 @@ public class SWTMouseTrackListenerManager implements MouseTrackListener {
 	
 	public void mouseEnter(MouseEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.mouseEnterListener.onMouseEnter(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+			this.mouseEnterListener.onMouseEnter(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 
 	public void mouseExit(MouseEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.mouseExitListener.onMouseExit(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+			this.mouseExitListener.onMouseExit(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 

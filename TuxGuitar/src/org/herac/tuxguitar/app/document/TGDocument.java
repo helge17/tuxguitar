@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.document;
 import java.net.URI;
 
 import org.herac.tuxguitar.editor.undo.TGUndoableBuffer;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGDocument {
@@ -12,6 +13,8 @@ public class TGDocument {
 	private TGUndoableBuffer undoableBuffer;
 	private boolean unsaved;
 	private boolean unwanted;
+	private TGBeat selectionStart;
+	private TGBeat selectionEnd;
 	
 	public TGDocument() {
 		super();
@@ -56,4 +59,21 @@ public class TGDocument {
 	public void setUnwanted(boolean unwanted) {
 		this.unwanted = unwanted;
 	}
+	
+	public TGBeat getSelectionStart() {
+		return selectionStart;
+	}
+
+	public void setSelectionStart(TGBeat selectionStart) {
+		this.selectionStart = selectionStart;
+	}
+
+	public TGBeat getSelectionEnd() {
+		return selectionEnd;
+	}
+
+	public void setSelectionEnd(TGBeat selectionEnd) {
+		this.selectionEnd = selectionEnd;
+	}
+
 }

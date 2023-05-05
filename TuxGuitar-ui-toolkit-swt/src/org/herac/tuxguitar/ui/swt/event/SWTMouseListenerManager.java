@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.ui.swt.event;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
@@ -56,19 +57,19 @@ public class SWTMouseListenerManager implements MouseListener {
 
 	public void mouseDoubleClick(MouseEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.mouseDoubleClickListener.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+			this.mouseDoubleClickListener.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 
 	public void mouseDown(MouseEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.mouseDownListener.onMouseDown(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+			this.mouseDownListener.onMouseDown(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 
 	public void mouseUp(MouseEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.mouseUpListener.onMouseUp(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button));
+			this.mouseUpListener.onMouseUp(new UIMouseEvent(this.control, new UIPosition(e.x, e.y), e.button, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 }

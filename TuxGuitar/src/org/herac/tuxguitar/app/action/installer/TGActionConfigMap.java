@@ -83,6 +83,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogActi
 import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
+import org.herac.tuxguitar.app.action.impl.selector.*;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenKeyBindingEditorAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenPluginListDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
@@ -357,6 +358,18 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGGoLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGGoUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGGoDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		
+		//selector actions
+		this.map(TGExtendSelectionLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGExtendSelectionRightAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGExtendSelectionPreviousAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGExtendSelectionNextAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGExtendSelectionFirstAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGExtendSelectionLastAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGSelectAllAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGClearSelectionAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGStartDragSelectionAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGUpdateDragSelectionAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		
 		//song actions
 		this.map(TGCopySongFromAction.NAME, LOCKABLE, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);

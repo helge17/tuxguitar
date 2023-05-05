@@ -30,6 +30,16 @@ public class UIPosition {
 		this.y = y;
 	}
 	
+	public void set(UIPosition position) {
+		this.x = position.getX();
+		this.y = position.getY();
+	}
+
+	public void add(UIPosition position) {
+		this.x += position.getX();
+		this.y += position.getY();
+	}
+	
 	public void copyFrom(UIPosition position) {
 		this.setX(position.getX());
 		this.setY(position.getY());

@@ -3,6 +3,7 @@ package org.herac.tuxguitar.ui.swt.event;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.ui.event.UIMouseDragListenerManager;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.resource.UIPosition;
@@ -19,7 +20,7 @@ public class SWTMouseDragListenerManager extends UIMouseDragListenerManager impl
 	
 	public void mouseMove(MouseEvent e) {
 		if(!this.control.isIgnoreEvents() && this.startPosition != null ) {
-			this.onMouseDrag(new UIMouseEvent(this.control, new UIPosition(e.x - this.startPosition.getX(), e.y - this.startPosition.getY()), e.button));
+			this.onMouseDrag(new UIMouseEvent(this.control, new UIPosition(e.x - this.startPosition.getX(), e.y - this.startPosition.getY()), e.button, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 	
