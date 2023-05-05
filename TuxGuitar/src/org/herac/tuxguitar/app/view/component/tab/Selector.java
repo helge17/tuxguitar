@@ -86,7 +86,7 @@ public class Selector {
 			track.paintBeatSelection(viewLayout, painter, start, end);
 		}
 	}
-/*
+
 	public TGNoteRange getNoteRange(Collection<Integer> voices) {
 		return new TGNoteRange(start, end, voices);
 	}
@@ -101,7 +101,7 @@ public class Selector {
 		}
 		return new TGBeatRange(beats);
 	}
-*/
+
 	private void saveState() {
 		TGDocumentListManager documents = TGDocumentListManager.getInstance(this.tablature.getContext());
 		TGDocument document = this.initial == null ? documents.findCurrentDocument() : documents.findDocument(this.initial.getMeasure().getTrack().getSong());

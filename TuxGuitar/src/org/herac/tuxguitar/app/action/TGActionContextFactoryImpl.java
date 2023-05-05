@@ -5,13 +5,15 @@ import org.herac.tuxguitar.action.TGActionContextFactory;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.document.TGDocumentManager;
 
 public class TGActionContextFactoryImpl implements TGActionContextFactory{
 
 	public TGActionContext createActionContext() throws TGActionException {
-		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
+		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
+		Caret caret = tablature.getCaret();
 		TGDocumentManager tgDocumentManager = TuxGuitar.getInstance().getDocumentManager();
 		
 		TGActionContext tgActionContext = new TGActionContextImpl();
@@ -30,6 +32,7 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, caret.getVelocity());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION, caret.getPosition());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, caret.getMeasure().getHeader().getMarker());
+		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE, tablature.getCurrentBeatRange());
 		
 		return tgActionContext;
 	}

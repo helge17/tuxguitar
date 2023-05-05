@@ -26,6 +26,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
 
 public class Tablature implements TGController {
@@ -96,6 +97,17 @@ public class Tablature implements TGController {
 	
 	public Selector getSelector() {
 		return selector;
+	}
+
+	public TGBeatRange getCurrentBeatRange() {
+		if (getSelector().isActive()) {
+			return getSelector().getBeatRange();
+		}
+        TGBeat beat = getCaret().getSelectedBeat();
+        if (beat != null) {
+            return TGBeatRange.single(beat);
+        }
+		return TGBeatRange.empty();
 	}
 
 	public EditorKit getEditorKit() {

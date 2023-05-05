@@ -200,6 +200,7 @@ import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
+import org.herac.tuxguitar.editor.action.note.TGCopyNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
@@ -363,6 +364,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeVelocityAction(context));
 		installAction(new TGCleanBeatAction(context));
 		installAction(new TGDecrementNoteSemitoneAction(context));
+		installAction(new TGCopyNoteAction(context));
 		installAction(new TGDeleteNoteAction(context));
 		installAction(new TGDeleteNoteOrRestAction(context));
 		installAction(new TGIncrementNoteSemitoneAction(context));
