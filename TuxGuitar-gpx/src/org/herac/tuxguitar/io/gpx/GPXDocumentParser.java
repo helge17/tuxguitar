@@ -158,6 +158,18 @@ public class GPXDocumentParser {
 			tgMeasureHeader.setNumber( i + 1 );
 			tgMeasureHeader.setRepeatOpen(mbar.isRepeatStart());
 			tgMeasureHeader.setRepeatClose(mbar.getRepeatCount());
+
+			int alternateEndings[] = mbar.getAlternateEndings();
+			if (alternateEndings != null) {
+				int repeatAlternative = 0;
+				for (int ae : alternateEndings) {
+					ae -= 1;
+					repeatAlternative |= 1 << ae;
+				}
+
+				tgMeasureHeader.setRepeatAlternative(repeatAlternative);
+			}
+
 			tgMeasureHeader.setTripletFeel(parseTripletFeel(mbar));
 			if( mbar.getTime() != null && mbar.getTime().length == 2){
 				tgMeasureHeader.getTimeSignature().setNumerator(mbar.getTime()[0]);

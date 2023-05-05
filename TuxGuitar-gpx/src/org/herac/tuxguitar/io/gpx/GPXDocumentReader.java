@@ -236,7 +236,9 @@ public class GPXDocumentReader {
 						masterBar.setAccidentalCount(this.getChildNodeIntegerContent(keyNode, "AccidentalCount") ); 
 						masterBar.setMode(this.getChildNodeContent(keyNode, "Mode") ); 
 					}
-					
+
+					masterBar.setAlternateEndings(getChildNodeIntegerContentArray(masterBarNode, "AlternateEndings"));
+
 					this.gpxDocument.getMasterBars().add( masterBar );
 				}
 			}
