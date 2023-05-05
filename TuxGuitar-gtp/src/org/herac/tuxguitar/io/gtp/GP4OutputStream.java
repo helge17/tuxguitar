@@ -171,6 +171,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		if (measure.getRepeatClose() > 0) {
 			flags |= 0x08;
 		}
+		if (measure.getRepeatAlternative() > 0) {
+			flags |= 0x10;
+		}
 		if (measure.hasMarker()) {
 			flags |= 0x20;
 		}
@@ -187,6 +190,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		}
 		if ((flags & 0x20) != 0) {
 			writeMarker(measure.getMarker());
+		}
+		if ((flags & 0x10) != 0) {
+			writeByte((byte)measure.getRepeatAlternative());
 		}
 	}
 	
