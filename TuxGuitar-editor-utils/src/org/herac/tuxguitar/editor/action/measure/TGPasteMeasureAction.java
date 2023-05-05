@@ -3,6 +3,7 @@ package org.herac.tuxguitar.editor.action.measure;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.editor.action.note.TGPasteNoteAction;
 import org.herac.tuxguitar.editor.clipboard.TGClipboard;
 import org.herac.tuxguitar.song.helpers.TGSongSegment;
 import org.herac.tuxguitar.song.helpers.TGSongSegmentHelper;
@@ -17,24 +18,18 @@ public class TGPasteMeasureAction extends TGActionBase{
 	
 	public static final String NAME = "action.measure.paste";
 	
-	public static final String ATTRIBUTE_PASTE_MODE = "pasteMode";
-	public static final String ATTRIBUTE_PASTE_COUNT = "pasteCount";
-	
-	public static final Integer TRANSFER_TYPE_REPLACE = 1;
-	public static final Integer TRANSFER_TYPE_INSERT = 2;
-	
 	public TGPasteMeasureAction(TGContext context) {
 		super(context, NAME);
 	}
 	
 	protected void processAction(TGActionContext context){
-		Integer pasteMode = context.getAttribute(ATTRIBUTE_PASTE_MODE);
-		Integer pasteCount = context.getAttribute(ATTRIBUTE_PASTE_COUNT);
+		Integer pasteMode = context.getAttribute(TGPasteNoteAction.ATTRIBUTE_PASTE_MODE);
+		Integer pasteCount = context.getAttribute(TGPasteNoteAction.ATTRIBUTE_PASTE_COUNT);
 		
 		if( pasteMode > 0 && pasteCount > 0 ) {
 			TGSongManager songManager = this.getSongManager(context);
 			TGSongSegmentHelper helper = new TGSongSegmentHelper(songManager);
-			TGSongSegment segment = TGClipboard.getInstance(this.getContext()).getData();
+			TGSongSegment segment = TGClipboard.getInstance(this.getContext()).getSegment();
 			if( segment != null ) {
 				segment = helper.createSegmentCopies(segment, pasteCount);
 				if(!segment.isEmpty()) {
@@ -47,7 +42,7 @@ public class TGPasteMeasureAction extends TGActionBase{
 					//la pego en la pista seleccionada
 					int toTrack = (segment.getTracks().size() == 1 ? track.getNumber() : 0);
 					
-					if( pasteMode.equals(TRANSFER_TYPE_REPLACE)) {
+					if( pasteMode.equals(TGPasteNoteAction.TRANSFER_TYPE_REPLACE)) {
 						int count = segment.getHeaders().size();
 						int freeSpace =  (track.countMeasures() - (measure.getNumber() - 1));
 						long theMove = (measure.getStart() - first.getStart());
@@ -55,12 +50,14 @@ public class TGPasteMeasureAction extends TGActionBase{
 						for(int i = freeSpace; i < count; i ++){
 							songManager.addNewMeasureBeforeEnd(song);
 						}
-						helper.replaceMeasures(song, segment.clone(songManager.getFactory()), theMove, toTrack);
-					} else if( pasteMode.equals(TRANSFER_TYPE_INSERT)) {
+						segment = segment.clone(songManager.getFactory());
+						helper.replaceMeasures(song, segment, theMove, toTrack);
+					} else if( pasteMode.equals(TGPasteNoteAction.TRANSFER_TYPE_INSERT)) {
 						int fromNumber = measure.getNumber();
 						long theMove = (measure.getStart() - first.getStart());
-						
-						helper.insertMeasures(song, segment.clone(songManager.getFactory()), fromNumber, theMove, toTrack);
+
+						segment = segment.clone(songManager.getFactory());
+						helper.insertMeasures(song, segment, fromNumber, theMove, toTrack);
 					}
 				}
 			}
