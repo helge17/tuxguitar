@@ -43,12 +43,14 @@ public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouse
 	}
 	
 	public void onMouseDown(UIMouseEvent event) {
-		this.position.set(event.getPosition());
-		this.startPosition = this.position.clone();
-		if (event.isShiftDown()) {
-			this.executeAction(TGUpdateDragSelectionAction.NAME, this.position.clone(), event, false);
-		} else {
-			this.executeAction(TGStartDragSelectionAction.NAME, this.position.clone(), event, false);
+		if (event.getButton() == 1) {
+			this.position.set(event.getPosition());
+			this.startPosition = this.position.clone();
+			if (event.isShiftDown()) {
+				this.executeAction(TGUpdateDragSelectionAction.NAME, this.position.clone(), event, false);
+			} else {
+				this.executeAction(TGStartDragSelectionAction.NAME, this.position.clone(), event, false);
+			}
 		}
 	}
 
