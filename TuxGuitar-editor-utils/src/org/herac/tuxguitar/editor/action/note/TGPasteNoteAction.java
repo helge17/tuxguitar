@@ -27,17 +27,13 @@ public class TGPasteNoteAction extends TGActionBase{
 	}
 	
 	protected void processAction(TGActionContext context){
-		Integer pasteMode = context.getAttribute(ATTRIBUTE_PASTE_MODE);
 		Integer pasteCount = context.getAttribute(ATTRIBUTE_PASTE_COUNT);
 
-		if (pasteMode == null) {
-			pasteMode = TRANSFER_TYPE_REPLACE;
-		}
 		if (pasteCount == null) {
 			pasteCount = 1;
 		}
 
-		if( pasteMode > 0 && pasteCount > 0 ) {
+		if( pasteCount > 0 ) {
 			TGStoredBeatList beatList = TGClipboard.getInstance(this.getContext()).getBeats();
 			if (beatList != null && beatList.getLength() > 0) {
 				TGSongManager songManager = this.getSongManager(context);
@@ -46,10 +42,8 @@ public class TGPasteNoteAction extends TGActionBase{
 				TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 
 				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-				if (pasteMode.equals(TRANSFER_TYPE_REPLACE)) {
-					context.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
-					tgActionManager.execute(TGMoveBeatsAction.NAME, context);
-				}
+				context.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
+				tgActionManager.execute(TGMoveBeatsAction.NAME, context);
 				trackManager.addBeats(track, beatList, start.getStart());
 				trackManager.moveOutOfBoundsBeatsToNewMeasure(track, start.getStart());
 			}
