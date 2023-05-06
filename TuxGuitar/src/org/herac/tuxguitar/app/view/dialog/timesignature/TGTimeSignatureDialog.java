@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.view.dialog.timesignature;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -123,6 +124,7 @@ public class TGTimeSignatureDialog {
 	}
 	
 	public void changeTimeSignature(TGContext context, TGSong song, TGMeasureHeader header, TGTimeSignature timeSignature, Boolean applyToEnd) {
+		TablatureEditor.getInstance(context).getTablature().getSelector().clearSelection();
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeTimeSignatureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);

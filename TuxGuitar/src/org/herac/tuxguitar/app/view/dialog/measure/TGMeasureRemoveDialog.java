@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.view.dialog.measure;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -103,6 +104,7 @@ public class TGMeasureRemoveDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
+				TablatureEditor.getInstance(context.getContext()).getTablature().getSelector().clearSelection();
 				processAction(context.getContext(), song, fromSpinner.getValue(), toSpinner.getValue());
 				dialog.dispose();
 			}
