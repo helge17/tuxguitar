@@ -76,7 +76,7 @@
 						<configuration>
 							<target name="clean-native">
 								<exec dir="${tuxguitar-winmm.jni.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-winmm.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-winmm.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-winmm.jni.library.prefix}" />

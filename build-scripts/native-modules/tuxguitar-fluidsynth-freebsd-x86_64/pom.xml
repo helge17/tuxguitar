@@ -76,7 +76,7 @@
 						<configuration>
 							<target name="clean-native">
 								<exec dir="${tuxguitar-fluidsynth.jni.path}" executable="gmake" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-fluidsynth.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-fluidsynth.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-fluidsynth.jni.library.prefix}" />

@@ -1,4 +1,3 @@
-
 * Soporte para multi idioma en notas y acordes (Do, Re, Mi, etc)
 
 * new file format plugins. (lilypond, rosegarden, noteedit, kguitar, xml.. etc)
@@ -9,7 +8,7 @@
 
 * Partitura de percusion
 
-* Preview effects 
+* Preview effects
 
 * Beat effects
 
@@ -18,4 +17,3 @@
 * multiple staff scores
 
 * MusicXML importer
-

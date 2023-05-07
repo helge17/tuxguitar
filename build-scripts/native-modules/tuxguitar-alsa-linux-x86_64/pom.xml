@@ -74,7 +74,7 @@
 						<configuration>
 							<target name="clean-native">
 								<exec dir="${tuxguitar-alsa.jni.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-alsa.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-alsa.jni.library.prefix}" />
 									<env key="LIBRARY_SUFFIX" value="${tuxguitar-alsa.jni.library.suffix}" />

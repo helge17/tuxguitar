@@ -58,9 +58,9 @@
 						<configuration>
 							<target name="package-installer">
 								<exec dir="${project.basedir}" executable="${project.builder.executable}" failonerror="true" >
-									<arg value="build"/>
-									<arg value="src/installbuilder/project.xml"/>
-									<arg value="windows-x64"/>
+									<arg value="build" />
+									<arg value="src/installbuilder/project.xml" />
+									<arg value="windows-x64" />
 								</exec>
 							</target>
 						</configuration>
