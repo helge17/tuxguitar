@@ -236,7 +236,9 @@ public class GPXDocumentReader {
 						masterBar.setAccidentalCount(this.getChildNodeIntegerContent(keyNode, "AccidentalCount") ); 
 						masterBar.setMode(this.getChildNodeContent(keyNode, "Mode") ); 
 					}
-					
+
+					masterBar.setAlternateEndings(getChildNodeIntegerContentArray(masterBarNode, "AlternateEndings"));
+
 					this.gpxDocument.getMasterBars().add( masterBar );
 				}
 			}
@@ -286,6 +288,10 @@ public class GPXDocumentReader {
 					GPXBeat beat = new GPXBeat();
 					beat.setId(getAttributeIntegerValue(beatNode, "id"));
 					beat.setDynamic(getChildNodeContent(beatNode, "Dynamic"));
+					String text = getChildNodeContent(beatNode, "FreeText");
+					if( text != null ){
+						beat.setText(text);
+					}
 					beat.setRhythmId(getAttributeIntegerValue(getChildNode(beatNode, "Rhythm"), "ref"));
 					beat.setTremolo( getChildNodeIntegerContentArray(beatNode, "Tremolo", "/"));
 					beat.setNoteIds( getChildNodeIntegerContentArray(beatNode, "Notes"));

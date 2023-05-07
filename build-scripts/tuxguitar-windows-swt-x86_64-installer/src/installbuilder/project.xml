@@ -6,11 +6,18 @@
 	<readmeFile></readmeFile>
 	<licenseFile>${build_project_directory}/../../target/bundle/doc/LICENSE</licenseFile>
 	<wrapLicenseFileText>1</wrapLicenseFileText>
-	<leftImage></leftImage>
-	<logoImage></logoImage>
-	<splashImage></splashImage>
+	<leftImage>../../../common-resources/common-windows-installer-icons/TG_logo_163x314.png</leftImage>
+	<logoImage>../../../common-resources/common-windows-installer-icons/TG_logo_48x48.png</logoImage>
+	<splashImage>../../../common-resources/common-windows-installer-icons/TG_splash_500x300.png</splashImage>
+	<windowsExecutableIcon>../../../common-resources/common-windows-installer-icons/TG_icon_install.ico</windowsExecutableIcon>
+	<productDisplayIcon>${installdir}/share/skins/Oxygen/icon.ico</productDisplayIcon>
+	<productUrlInfoAbout>https://github.com/helge17/tuxguitar/</productUrlInfoAbout>
+	<productComments>TuxGuitar is an Open Source multitrack tablature editor and player</productComments>
+	<productContact>https://github.com/helge17/tuxguitar/discussions</productContact>
+	<productUrlHelpLink>https://github.com/helge17/tuxguitar/issues</productUrlHelpLink>
+	<windowsUninstallerExecutableIcon>../../../common-resources/common-windows-installer-icons/TG_icon_uninstall.ico</windowsUninstallerExecutableIcon>
 	<defaultLanguage>en</defaultLanguage>
-	<allowLanguageSelection>0</allowLanguageSelection>
+	<allowLanguageSelection>1</allowLanguageSelection>
 	<postInstallationScript></postInstallationScript>
 	<postInstallationScriptArguments></postInstallationScriptArguments>
 	<showPostInstallationScriptResult>0</showPostInstallationScriptResult>
@@ -54,7 +61,7 @@
 					<platforms>windows-x64</platforms>
 					<windowsExec>${installdir}/tuxguitar.exe</windowsExec>
 					<windowsExecArgs></windowsExecArgs>
-					<windowsIcon>${installdir}/share/skins/Lavender/icon.ico</windowsIcon>
+					<windowsIcon>${installdir}/share/skins/Oxygen/icon.ico</windowsIcon>
 					<windowsPath>${installdir}/</windowsPath>
 				</shortcut>
 			</desktopShortcutList>
@@ -83,11 +90,11 @@
 					<windowsPath>${installdir}/</windowsPath>
 				</startMenuShortcut>
 				<startMenuShortcut>
-					<comment>Launch ${product_fullname}</comment>
-					<name>Launch ${product_fullname}</name>
+					<comment>${product_fullname}</comment>
+					<name>${product_fullname}</name>
 					<windowsExec>${installdir}/tuxguitar.exe</windowsExec>
 					<windowsExecArgs></windowsExecArgs>
-					<windowsIcon>${installdir}/share/skins/Lavender/icon.ico</windowsIcon>
+					<windowsIcon>${installdir}/share/skins/Oxygen/icon.ico</windowsIcon>
 					<windowsPath>${installdir}/</windowsPath>
 				</startMenuShortcut>
 			</startMenuShortcutList>
