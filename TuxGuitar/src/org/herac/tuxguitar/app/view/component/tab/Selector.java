@@ -87,6 +87,10 @@ public class Selector {
 		}
 	}
 
+	public TGNoteRange getNoteRange(Collection<Integer> voices) {
+		return new TGNoteRange(start, end, voices);
+	}
+
 	public TGBeatRange getBeatRange() {
 		if (!isActive()) {
 			return TGBeatRange.empty();

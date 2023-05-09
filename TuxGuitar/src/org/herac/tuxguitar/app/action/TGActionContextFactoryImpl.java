@@ -33,6 +33,7 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION, caret.getPosition());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, caret.getMeasure().getHeader().getMarker());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE, tablature.getCurrentBeatRange());
+		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, tablature.getCurrentNoteRange());
 		
 		return tgActionContext;
 	}

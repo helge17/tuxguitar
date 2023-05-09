@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
@@ -22,12 +23,14 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class Tablature implements TGController {
 	
@@ -109,7 +112,19 @@ public class Tablature implements TGController {
         }
 		return TGBeatRange.empty();
 	}
-
+	
+	public TGNoteRange getCurrentNoteRange() {
+	    int voice = getCaret().getVoice();
+		if (getSelector().isActive()) {
+			return getSelector().getNoteRange(Collections.singletonList(voice));
+		} else {
+			TGNote defaultNote = getCaret().getSelectedNote();
+			if (defaultNote != null && defaultNote.getVoice().getIndex() == voice) {
+				return TGNoteRange.single(defaultNote);
+			}
+		}
+		return TGNoteRange.empty();
+	}
 	public EditorKit getEditorKit() {
 		return this.editorKit;
 	}

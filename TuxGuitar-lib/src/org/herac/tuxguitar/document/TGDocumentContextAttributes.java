@@ -41,5 +41,6 @@ public final class TGDocumentContextAttributes {
 	public static final String ATTRIBUTE_FRET = "fret";
 	public static final String ATTRIBUTE_VALUE = "value";
 	public static final String ATTRIBUTE_BEAT_RANGE = "beat-range";
+	public static final String ATTRIBUTE_NOTE_RANGE = "note-range";
 	public static final String ATTRIBUTE_KEEP_SELECTION = "keep-selection";
 }
