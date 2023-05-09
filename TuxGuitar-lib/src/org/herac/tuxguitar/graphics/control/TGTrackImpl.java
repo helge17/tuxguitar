@@ -54,7 +54,7 @@ public class TGTrackImpl extends TGTrack{
 	public void setTabHeight(float tabHeight) {
 		this.tabHeight = tabHeight;
 	}
-	
+
 	public void paintBeatSelection(TGLayout viewLayout, UIPainter painter, TGBeat from, TGBeat to) {
 		TGMeasureImpl fromMeasure = (TGMeasureImpl) from.getMeasure();
 		TGMeasureImpl toMeasure = (TGMeasureImpl) to.getMeasure();
@@ -70,5 +70,4 @@ public class TGTrackImpl extends TGTrack{
 			toMeasure.paintSelectionEnd(viewLayout, painter, to);
 		}
 	}
-
 }

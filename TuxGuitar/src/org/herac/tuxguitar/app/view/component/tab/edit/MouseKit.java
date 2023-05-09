@@ -55,8 +55,10 @@ public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouse
 	}
 
 	public void onMouseUp(UIMouseEvent event) {
-		this.startPosition = null;
-		this.executeAction(TGMouseClickAction.NAME, this.position.clone(), event, false);
+		if (event.getButton() == 1) {
+			this.startPosition = null;
+			this.executeAction(TGMouseClickAction.NAME, this.position.clone(), event, false);
+		}
 	}
 
 	public void onMouseDrag(UIMouseEvent event) {

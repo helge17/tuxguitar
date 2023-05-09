@@ -400,7 +400,7 @@ public class TGLayoutStyles {
 	public void setPlayNoteColor(UIColorModel playNoteColor) {
 		this.playNoteColor = playNoteColor;
 	}
-	
+
 	public UIColorModel getSelectionColor() {
 		return selectionColor;
 	}

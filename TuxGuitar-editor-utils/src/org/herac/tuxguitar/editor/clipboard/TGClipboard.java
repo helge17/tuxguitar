@@ -27,7 +27,7 @@ public class TGClipboard {
 	public boolean hasContents() {
 		return this.segment != null || this.beats != null;
 	}
-	
+
 	public void setData(TGSongSegment data) {
 		this.segment = data;
 		this.beats = null;
@@ -38,7 +38,6 @@ public class TGClipboard {
 		this.segment = null;
 	}
 
-	
 	public static TGClipboard getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGClipboard.class.getName(), new TGSingletonFactory<TGClipboard>() {
 			public TGClipboard createInstance(TGContext context) {

@@ -108,7 +108,7 @@ public class TGResources {
 	public UIColor getTabNoteColor() {
 		return this.tabNoteColor;
 	}
-	
+
 	public UIColor getSelectionColor() {
 	    return this.selectionColor;
     }
