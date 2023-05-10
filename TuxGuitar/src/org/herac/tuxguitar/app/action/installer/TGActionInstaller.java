@@ -13,6 +13,8 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogActio
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
@@ -200,7 +202,6 @@ import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGCopyNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGPasteNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
@@ -281,6 +282,8 @@ public class TGActionInstaller {
 		installAction(new TGPrintPreviewAction(context));
 		
 		//edit actions
+		installAction(new TGCopyAction(context));
+		installAction(new TGPasteAction(context));
 		installAction(new TGUndoAction(context));
 		installAction(new TGRedoAction(context));
 		installAction(new TGSetMouseModeSelectionAction(context));
@@ -365,7 +368,6 @@ public class TGActionInstaller {
 		installAction(new TGChangeVelocityAction(context));
 		installAction(new TGCleanBeatAction(context));
 		installAction(new TGDecrementNoteSemitoneAction(context));
-		installAction(new TGCopyNoteAction(context));
 		installAction(new TGPasteNoteAction(context));
 		installAction(new TGDeleteNoteAction(context));
 		installAction(new TGDeleteNoteOrRestAction(context));

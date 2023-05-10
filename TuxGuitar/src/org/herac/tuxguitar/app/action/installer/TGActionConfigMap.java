@@ -12,6 +12,8 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogActio
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
@@ -221,7 +223,6 @@ import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGCopyNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGPasteNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteAction;
@@ -340,6 +341,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
 		
 		//edit actions
+		this.map(TGCopyAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGPasteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGUndoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGRedoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGSetMouseModeSelectionAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
@@ -424,7 +427,6 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGChangeVelocityAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedVelocityController(), UNDOABLE_MEASURE_GENERIC);
 		this.map(TGCleanBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGDecrementNoteSemitoneAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
-		this.map(TGCopyNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGPasteNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGDeleteNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGDeleteNoteOrRestAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
