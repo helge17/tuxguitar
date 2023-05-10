@@ -334,26 +334,26 @@
 						<configuration>
 							<target name="copy-files">
 								<copy todir="${project.build.directory}/${project.finalName}/share">
-									<fileset dir="${project.rootPath}/TuxGuitar/share/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
-									<fileset dir="${project.rootPath}/TuxGuitar/doc/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/doc/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist">
-									<fileset dir="${project.rootPath}/TuxGuitar/dist/"/>
+									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/share/soundfont" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar-resources/resources/soundfont" />
 								</copy>
 
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common"/>
+									<fileset dir="../common-resources/common" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="./src/resources"/>
+									<fileset dir="../common-resources/common-freebsd" />
 								</copy>
 
-								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
+								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
 							</target>
 						</configuration>
 						<goals>

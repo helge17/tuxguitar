@@ -77,7 +77,7 @@
 						<configuration>
 							<target name="clean-native">
 								<exec dir="${tuxguitar-jack.jni.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-jack.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-jack.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-jack.jni.library.prefix}" />

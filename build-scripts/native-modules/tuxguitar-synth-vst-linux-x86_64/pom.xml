@@ -54,7 +54,7 @@
 						<configuration>
 							<target name="compile-native">
 								<exec dir="${tuxguitar-synth-vst.client.so.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-synth-vst.client.so.rm}" />
 									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.so.binary.name}" />
 									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />
@@ -83,7 +83,7 @@
 						<configuration>
 							<target name="clean-native">
 								<exec dir="${tuxguitar-synth-vst.client.so.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-synth-vst.client.so.rm}" />
 									<env key="BINARY_NAME" value="${tuxguitar-synth-vst.client.so.binary.name}" />
 									<env key="BINARY_SUFFIX" value="${tuxguitar-synth-vst.client.so.binary.suffix}" />

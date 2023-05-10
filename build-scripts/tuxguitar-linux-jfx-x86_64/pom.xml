@@ -362,16 +362,13 @@
 								</copy>
 
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common"/>
+									<fileset dir="../common-resources/common" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux"/>
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="./src/resources"/>
+									<fileset dir="../common-resources/common-linux" />
 								</copy>
 
-								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755"/>
+								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
 							</target>
 						</configuration>
 						<goals>

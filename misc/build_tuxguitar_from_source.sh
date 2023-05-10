@@ -169,8 +169,8 @@ install_eclipse_swt
 get_java_win
 
 # Copy Java to get it integrated in the ZIP & INSTALL packages
-rm -rf build-scripts/common-resources/common-windows-$BUILD_ARCH/jre
-cp -ai $SW_DIR/$PA_JAVA build-scripts/common-resources/common-windows-$BUILD_ARCH/jre
+rm -rf build-scripts/common-resources/common-windows/jre
+cp -ai $SW_DIR/$PA_JAVA build-scripts/common-resources/common-windows/jre
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ..."
@@ -184,9 +184,6 @@ for GUI_TK in swt jfx; do
   )
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL done.\n"
 done
-
-# Remove Java again after the packages are built
-rm -r build-scripts/common-resources/common-windows-$BUILD_ARCH/jre
 
 }
 
@@ -255,8 +252,13 @@ for GUI_TK in swt; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ..."
   cd build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
   /usr/local/bin/mvn --batch-mode -e clean verify
+
+  # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
+  mkdir target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
+  cp -ai /usr/local/opt/openjdk/* target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
+
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app.tar.gz tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
   cd - > /dev/null
-  tar --uname=root --gname=root --directory=build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app.tar.gz tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"
 done
 

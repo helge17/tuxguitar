@@ -113,7 +113,7 @@
 						<configuration>
 							<target name="clean-native-jni">
 								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-synth-lv2.jni.rm}" />
 									<env key="LIBRARY_NAME" value="${tuxguitar-synth-lv2.jni.library.name}" />
 									<env key="LIBRARY_PREFIX" value="${tuxguitar-synth-lv2.jni.library.prefix}" />
@@ -132,7 +132,7 @@
 						<configuration>
 							<target name="clean-native-ui">
 								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="make" failonerror="true" >
-									<arg value="clean"/>
+									<arg value="clean" />
 									<env key="RM" value="${tuxguitar-synth-lv2.cxx.rm}" />
 									<env key="BINARY_NAME" value="${tuxguitar-synth-lv2.cxx.binary.name}" />
 									<env key="BINARY_PREFIX" value="${tuxguitar-synth-lv2.cxx.binary.prefix}" />

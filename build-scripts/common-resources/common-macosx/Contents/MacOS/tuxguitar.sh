@@ -4,13 +4,9 @@ TG_DIR=`dirname "$0"`
 TG_DIR=`cd "$TG_DIR"; pwd`
 cd "${TG_DIR}"
 ##JAVA
-JAVA=`which java`
+JAVA="./jre/bin/java"
 ##LIBRARY_PATH
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TG_DIR}/lib/
-LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/lib
-LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib
-LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jni
-LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 ##CLASSPATH
 CLASSPATH=${CLASSPATH}:${TG_DIR}/lib/*
 CLASSPATH=${CLASSPATH}:${TG_DIR}/share/
