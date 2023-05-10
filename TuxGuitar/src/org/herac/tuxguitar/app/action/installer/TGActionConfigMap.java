@@ -132,6 +132,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleViewAction;
 import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateAddedMeasureController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateAddedTrackController;
+import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateBeatRangeController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateChannelsController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateItemsController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateItemsOnSuccessController;
@@ -267,6 +268,7 @@ import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
 import org.herac.tuxguitar.editor.undo.impl.channel.TGUndoableChannelGenericController;
 import org.herac.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
 import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableAltRepeatController;
+import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableBeatRangeController;
 import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableClefController;
 import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableCloseRepeatController;
 import org.herac.tuxguitar.editor.undo.impl.custom.TGUndoableKeySignatureController;
@@ -289,6 +291,7 @@ import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackInfoController;
 import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackLyricsController;
 import org.herac.tuxguitar.editor.undo.impl.track.TGUndoableTrackSoloMuteController;
 
+
 public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	
 	public static final int LOCKABLE = 0x01;
@@ -304,11 +307,13 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
+	private static final TGUpdateController UPDATE_BEAT_RANGE_CTL = new TGUpdateBeatRangeController();
 	
 	private static final TGUndoableActionController UNDOABLE_SONG_GENERIC = new TGUndoableSongGenericController();
 	private static final TGUndoableActionController UNDOABLE_MEASURE_GENERIC = new TGUndoableMeasureGenericController();
 	private static final TGUndoableActionController UNDOABLE_TRACK_GENERIC = new TGUndoableTrackGenericController();
 	private static final TGUndoableActionController UNDOABLE_CHANNEL_GENERIC = new TGUndoableChannelGenericController();
+	private static final TGUndoableActionController UNDOABLE_BEAT_RANGE_GENERIC = new TGUndoableBeatRangeController();
 	
 	public TGActionConfigMap() {
 		this.createConfigMap();
@@ -429,7 +434,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGDecrementNoteSemitoneAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGPasteNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGDeleteNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
-		this.map(TGDeleteNoteOrRestAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGDeleteNoteOrRestAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_BEAT_RANGE_CTL, UNDOABLE_BEAT_RANGE_GENERIC);
 		this.map(TGIncrementNoteSemitoneAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGInsertRestBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGMoveBeatsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
