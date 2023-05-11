@@ -34,6 +34,6 @@ public class TGEditMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_set_voice_1, this.createActionProcessor(TGSetVoice1Action.NAME), true);
 		this.initializeItem(menu, R.id.action_set_voice_2, this.createActionProcessor(TGSetVoice2Action.NAME), true);
 		this.initializeItem(menu, R.id.action_copy, new TGMeasureCopyDialogController(), !running);
-		this.initializeItem(menu, R.id.action_paste, new TGMeasurePasteDialogController(), !running && TGClipboard.getInstance(findContext()).getData() != null);
+		this.initializeItem(menu, R.id.action_paste, new TGMeasurePasteDialogController(), !running && TGClipboard.getInstance(findContext()).getSegment() != null);
 	}
 }
