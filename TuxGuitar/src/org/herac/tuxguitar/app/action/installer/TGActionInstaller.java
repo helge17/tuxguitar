@@ -13,6 +13,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogActio
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
@@ -282,6 +283,7 @@ public class TGActionInstaller {
 		installAction(new TGPrintPreviewAction(context));
 		
 		//edit actions
+		installAction(new TGCutAction(context));
 		installAction(new TGCopyAction(context));
 		installAction(new TGPasteAction(context));
 		installAction(new TGUndoAction(context));

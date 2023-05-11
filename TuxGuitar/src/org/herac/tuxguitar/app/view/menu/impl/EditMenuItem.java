@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.view.menu.impl;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
@@ -8,6 +9,8 @@ import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
@@ -20,7 +23,8 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class EditMenuItem extends TGMenuItem{
 	
-	private UIMenuSubMenuItem editMenuItem; 
+	private UIMenuSubMenuItem editMenuItem;
+	private UIMenuActionItem cut;
 	private UIMenuActionItem copy;
 	private UIMenuActionItem paste;
 	private UIMenuActionItem undo;
@@ -37,6 +41,9 @@ public class EditMenuItem extends TGMenuItem{
 	
 	public void showItems() {
 		//---------------------------------------------------
+		//--CUT--
+		this.cut = this.editMenuItem.getMenu().createActionItem();
+		this.cut.addSelectionListener(this.createActionProcessor(TGCutAction.NAME));
 		//--COPY--
 		this.copy = this.editMenuItem.getMenu().createActionItem();
 		this.copy.addSelectionListener(this.createActionProcessor(TGCopyAction.NAME));
@@ -75,7 +82,9 @@ public class EditMenuItem extends TGMenuItem{
 	
 	public void update(){
 		EditorKit kit = TuxGuitar.getInstance().getTablatureEditor().getTablature().getEditorKit();
+		Tablature tablature = TablatureEditor.getInstance(findContext()).getTablature(); 
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		this.cut.setEnabled(!running && tablature.getSelector().isActive());
 		this.copy.setEnabled(!running);
 		this.paste.setEnabled(!running && TGClipboard.getInstance(findContext()).hasContents());
 		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
@@ -92,6 +101,7 @@ public class EditMenuItem extends TGMenuItem{
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.editMenuItem, "edit.menu", null);
+		setMenuItemTextAndAccelerator(this.cut, "edit.cut", TGCutAction.NAME);
 		setMenuItemTextAndAccelerator(this.copy, "edit.copy", TGCopyAction.NAME);
 		setMenuItemTextAndAccelerator(this.paste, "edit.paste", TGPasteAction.NAME);
 		setMenuItemTextAndAccelerator(this.undo, "edit.undo", TGUndoAction.NAME);

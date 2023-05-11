@@ -13,6 +13,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
@@ -346,6 +347,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
 		
 		//edit actions
+		this.map(TGCutAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGCopyAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGPasteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGUndoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);

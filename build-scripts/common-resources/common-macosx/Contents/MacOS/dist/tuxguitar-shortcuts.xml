@@ -19,6 +19,7 @@
 	<shortcut keys="Left" action="action.caret.go-left"/>
 	<shortcut keys="Right" action="action.caret.go-right"/>
 	<shortcut keys="F5" action="action.gui.open-song-info-dialog"/>
+	<shortcut keys="Command x" action="action.edit.cut"/>
 	<shortcut keys="Command c" action="action.edit.copy"/>
 	<shortcut keys="Command v" action="action.edit.paste"/>
 	<shortcut keys="Command y" action="action.edit.redo"/>
