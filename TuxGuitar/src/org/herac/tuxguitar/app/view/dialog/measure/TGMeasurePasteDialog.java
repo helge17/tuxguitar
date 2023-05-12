@@ -6,7 +6,6 @@ import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
-import org.herac.tuxguitar.editor.action.note.TGPasteNoteAction;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
@@ -78,9 +77,9 @@ public class TGMeasurePasteDialog {
 				int pasteMode = 0;
 				int pasteCount = countSpinner.getValue();
 				if( replace.isSelected() ){
-					pasteMode = TGPasteNoteAction.TRANSFER_TYPE_REPLACE;
+					pasteMode = TGPasteMeasureAction.TRANSFER_TYPE_REPLACE;
 				}else if(insert.isSelected()){
-					pasteMode = TGPasteNoteAction.TRANSFER_TYPE_INSERT;
+					pasteMode = TGPasteMeasureAction.TRANSFER_TYPE_INSERT;
 				}
 				processAction(context.getContext(), pasteMode, pasteCount);
 				
@@ -104,8 +103,8 @@ public class TGMeasurePasteDialog {
 	
 	public void processAction(TGContext context, Integer pasteMode, Integer pasteCount) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGPasteMeasureAction.NAME);
-		tgActionProcessor.setAttribute(TGPasteNoteAction.ATTRIBUTE_PASTE_MODE, pasteMode);
-		tgActionProcessor.setAttribute(TGPasteNoteAction.ATTRIBUTE_PASTE_COUNT, pasteCount);
+		tgActionProcessor.setAttribute(TGPasteMeasureAction.ATTRIBUTE_PASTE_MODE, pasteMode);
+		tgActionProcessor.setAttribute(TGPasteMeasureAction.ATTRIBUTE_PASTE_COUNT, pasteCount);
 		tgActionProcessor.process();
 	}
 }
