@@ -42,6 +42,7 @@ public class TGConfigKeys {
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
 	public static final String COLOR_TAB_NOTE = "color.tab.note";
 	public static final String COLOR_PLAY_NOTE = "color.play.note";
+	public static final String COLOR_SELECTION = "color.selection";
 	public static final String COLOR_CARET_1 = "color.caret.1";
 	public static final String COLOR_CARET_2 = "color.caret.2";
 	public static final String COLOR_LOOP_S_MARKER = "color.loop.s.marker";
