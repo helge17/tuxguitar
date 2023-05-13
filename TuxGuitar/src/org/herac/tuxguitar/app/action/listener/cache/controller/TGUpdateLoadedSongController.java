@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
@@ -38,7 +39,8 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 			
 			Boolean unwanted = Boolean.TRUE.equals(actionContext.getAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED));
 			TGDocumentListManager tgDocumentListManager = TGDocumentListManager.getInstance(context);
-			tgDocumentListManager.findCurrentDocument().setUnwanted(unwanted);
+			TGDocument document = tgDocumentListManager.findCurrentDocument();
+			document.setUnwanted(unwanted);
 			tgDocumentListManager.updateLoadedDocument();
 			
 			if( url != null ) {
@@ -58,6 +60,7 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 			TablatureEditor.getInstance(context).getTablature().resetCaret();
 			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
+			TablatureEditor.getInstance(context).getTablature().restoreStateFrom(document);
 			// ------------------------------------------------------ //
 			
 			// Ensure percussion channel, required for features like metronome and count down 

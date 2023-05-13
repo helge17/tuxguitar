@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.transport.TGTransport;
@@ -114,7 +115,7 @@ public class Tablature implements TGController {
 	}
 	
 	public TGNoteRange getCurrentNoteRange() {
-	    int voice = getCaret().getVoice();
+		int voice = getCaret().getVoice();
 		if (getSelector().isActive()) {
 			return getSelector().getNoteRange(Collections.singletonList(voice));
 		} else {
@@ -125,6 +126,12 @@ public class Tablature implements TGController {
 		}
 		return TGNoteRange.empty();
 	}
+	
+	public void restoreStateFrom(TGDocument document) {
+		//TODO this.getCaret().restoreStateFrom(document);
+		this.getSelector().restoreStateFrom(document);
+	}
+	
 	public EditorKit getEditorKit() {
 		return this.editorKit;
 	}
