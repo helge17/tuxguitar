@@ -1,11 +1,13 @@
 package org.herac.tuxguitar.app.view.component.table;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.util.TGBeatRange;
 
 public class TGTableCanvasPainter {
 	
@@ -13,6 +15,7 @@ public class TGTableCanvasPainter {
 	
 	private TGTableViewer viewer;
 	private TGTrack track;
+	private static final int SELECTION_ALPHA = 128;
 	
 	public TGTableCanvasPainter(TGTableViewer viewer,TGTrack track){
 		this.viewer = viewer;
@@ -39,6 +42,10 @@ public class TGTableCanvasPainter {
 		UIColor trackColor = this.viewer.getUIFactory().createColor(this.track.getColor().getR(), this.track.getColor().getG(), this.track.getColor().getB());
 		painter.setBackground(trackColor);
 		painter.setForeground(trackColor);
+
+		TGLayout layout = viewer.getEditor().getTablature().getViewLayout();
+		TGBeatRange beatRange = viewer.getEditor().getTablature().getSelector().getBeatRange();
+
 		
 		int count = this.track.countMeasures();
 		for(int j = 0;j < count;j++){
@@ -63,6 +70,24 @@ public class TGTableCanvasPainter {
 				painter.closePath();
 				painter.setBackground(trackColor);
 			}
+			
+			if (beatRange.containsMeasure(measure)) {
+				painter.setBackground(layout.getResources().getSelectionColor());
+				painter.setAlpha(SELECTION_ALPHA);
+				painter.initPath(UIPainter.PATH_FILL);
+				painter.addRectangle(x + 1.5f, y + 1.5f, size - 3f, size - 3f);
+				painter.closePath();
+/*
+				painter.setAlpha(SELECTION_BORDER_ALPHA);
+				painter.setForeground(getCaretColor(factory, trackColor, colorBackground, isRestMeasure));
+				painter.initPath(UIPainter.PATH_DRAW);
+				painter.addRectangle(x + 1.5f, y + 1.5f, size - 3f, size - 3f);
+				painter.closePath();
+*/
+				painter.setAlpha(255);
+				painter.setBackground(trackColor);
+			}
+			
 			x += size;
 		}
 		
