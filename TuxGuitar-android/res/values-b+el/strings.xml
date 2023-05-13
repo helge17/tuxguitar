@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- <string name="app_name"></string> -->
+	<string name="action_settings">Ρυθμίσεις</string>
+
+	<!-- =================================================================== -->
+	<!-- ========================= GLOBAL ================================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="global_error_message"></string> -->
+	<!-- <string name="global_exit_confirm_message"></string> -->
+
+	<string name="global_button_ok">Εντάξει</string>
+	<string name="global_button_cancel">Ακύρωση</string>
+	<string name="global_button_clean">Καθαρισμός</string>
+	<string name="global_button_remove">Αφαίρεση</string>
+	<string name="global_button_add">Πρόσθεση</string>
+	<string name="global_button_edit">Επεξεργασία</string>
+
+	<!-- <string name="global_spinner_select_option"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================== MENU =================================== -->
+	<!-- =================================================================== -->
+
+	<string name="action_menu_file">Αρχείο</string>
+	<string name="action_menu_edit">Επεξεργασία</string>
+	<string name="action_menu_view">Προβολή</string>
+	<string name="action_menu_transport">Αναπαραγωγέας</string>
+	<!-- <string name="action_menu_caret"></string> -->
+	<string name="action_menu_composition">Σύνθεση</string>
+	<string name="action_menu_track">Κομμάτι</string>
+	<string name="action_menu_measure">Μέτρο</string>
+	<!-- <string name="action_menu_beat"></string> -->
+	<string name="action_menu_duration">Διάρκεια</string>
+	<string name="action_menu_dynamic">Δυναμικές</string>
+	<string name="action_menu_effects">Εφέ</string>
+	<string name="action_menu_settings">Ρυθμίσεις</string>
+
+	<!-- <string name="action_tab_keyboard_toggle"></string> -->
+
+	<string name="action_file_new">Νέο</string>
+	<string name="action_file_open">Άνοιγμα</string>
+	<string name="action_file_save">Αποθήκευση</string>
+	<string name="action_file_save_as">Αποθήκευση Ως</string>
+
+	<string name="action_undo">Αναίρεση</string>
+	<string name="action_redo">Επανάληψη ενέργειας</string>
+	<string name="action_voice_1">Επιλογή Φωνής 1</string>
+	<string name="action_voice_2">Επιλογή Φωνής 2</string>
+	<string name="action_copy">Αντιγραφή</string>
+	<string name="action_paste">Προορισμός</string>
+
+	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_layout_show_score">Προβολή Παρτιτούρας</string>
+	<string name="action_view_layout_show_chord_name">Εμφάνιση των ονομάτων των συγχορδιών</string>
+	<string name="action_view_layout_show_chord_diagram">Εμφάνιση των διαγραμμάτων των συγχορδιών</string>
+
+	<string name="action_transport_play">Αναπαραγωγή Τραγουδιού</string>
+	<string name="action_transport_pause">Παύση</string>
+	<string name="action_transport_stop">Λήξη</string>
+
+	<!-- <string name="action_go_up"></string> -->
+	<!-- <string name="action_go_down"></string> -->
+	<!-- <string name="action_go_left"></string> -->
+	<!-- <string name="action_go_right"></string> -->
+
+	<string name="action_change_tempo">Αλλαγή Τέμπο</string>
+	<string name="action_change_clef">Αλλαγή Κλειδιού</string>
+	<string name="action_change_key_signature">Αλλαγή Ρυθμού</string>
+	<string name="action_change_time_signature">Αλλαγή Ρυθμού</string>
+	<string name="action_change_triplet_feel">Αλλαγή στο feeling του Τρίηχου</string>
+	<string name="action_change_repeat_open">Άνοιγμα Επανάληψης</string>
+	<string name="action_change_repeat_close">Κλείσιμο Επανάληψης</string>
+	<string name="action_change_repeat_alternative">Επαναλήψεις με εναλλαγές</string>
+	<string name="action_change_properties">Ιδιότητες</string>
+
+	<string name="action_track_add">Πρόσθεση Κομματιού</string>
+	<string name="action_track_remove">Αφαίρεση Κομματιού</string>
+	<string name="action_track_clone">Κλωνοποίηση Κομματιού</string>
+	<string name="action_track_move_up">Μετακίνηση κομματιού προς τα πάνω</string>
+	<string name="action_track_move_down">Μετακίνηση κομματιού προς τα κάτω</string>
+	<!-- <string name="action_track_change_mute"></string> -->
+	<!-- <string name="action_track_change_solo"></string> -->
+	<string name="action_track_set_name">Όνομα</string>
+	<!-- <string name="action_track_set_channel"></string> -->
+	<!-- <string name="action_track_change_tuning"></string> -->
+	<!-- <string name="action_track_change_string_count"></string> -->
+
+	<string name="action_measure_add">Πρόσθεση Μέτρου</string>
+	<string name="action_measure_clean">Καθαρισμός Μέτρου</string>
+	<string name="action_measure_remove">Αφαίρεση Μέτρου</string>
+
+	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_clean_beat">Καθαρισμός Beat</string>
+	<string name="action_decrement_note_semitone">Μείωση Ημιτονίου</string>
+	<string name="action_increment_note_semitone">Αύξηση Ημιτονίου</string>
+	<!-- <string name="action_delete_note_or_rest"></string> -->
+	<!-- <string name="action_insert_rest_beat"></string> -->
+	<string name="action_move_beats_left">Μετακίνησε Ένα Beat Αριστερά</string>
+	<string name="action_move_beats_right">Μετακίνησε Ένα Beat Δεξιά</string>
+	<string name="action_remove_unused_voice">Αφαίρεση Μη Χρησιμοποιούμενης Φωνής</string>
+	<!-- <string name="action_set_voice_auto"></string> -->
+	<!-- <string name="action_set_voice_down"></string> -->
+	<!-- <string name="action_set_voice_up"></string> -->
+	<!-- <string name="action_shift_note_down"></string> -->
+	<!-- <string name="action_shift_note_up"></string> -->
+	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_change_text">Εισαγωγή Κειμένου</string>
+
+	<string name="action_set_duration_whole">Ολόκληρο</string>
+	<string name="action_set_duration_half">Μισό</string>
+	<string name="action_set_duration_quarter">Τέταρτο</string>
+	<string name="action_set_duration_eighth">Όγδοο</string>
+	<string name="action_set_duration_sixteenth">Δέκατο έκτο</string>
+	<string name="action_set_duration_thirtysecond">Τριακοστό δεύτερο</string>
+	<string name="action_set_duration_sixtyfourth">Εξηκοστό τέταρτο</string>
+	<string name="action_set_duration_dotted">Παρεστιγμένο</string>
+	<string name="action_set_duration_doubledotted">Διπλό Παρεστιγμένο</string>
+	<string name="action_set_duration_division_type">Τύπος Διαίρεσης</string>
+
+	<!-- <string name="action_set_duration_division_type_1"></string> -->
+	<!-- <string name="action_set_duration_division_type_3"></string> -->
+	<!-- <string name="action_set_duration_division_type_5"></string> -->
+	<!-- <string name="action_set_duration_division_type_6"></string> -->
+	<!-- <string name="action_set_duration_division_type_7"></string> -->
+	<!-- <string name="action_set_duration_division_type_9"></string> -->
+	<!-- <string name="action_set_duration_division_type_10"></string> -->
+	<!-- <string name="action_set_duration_division_type_11"></string> -->
+	<!-- <string name="action_set_duration_division_type_12"></string> -->
+	<!-- <string name="action_set_duration_division_type_13"></string> -->
+
+	<!-- <string name="action_set_velocity_ppp"></string> -->
+	<!-- <string name="action_set_velocity_pp"></string> -->
+	<!-- <string name="action_set_velocity_p"></string> -->
+	<!-- <string name="action_set_velocity_mp"></string> -->
+	<!-- <string name="action_set_velocity_mf"></string> -->
+	<!-- <string name="action_set_velocity_f"></string> -->
+	<!-- <string name="action_set_velocity_ff"></string> -->
+	<!-- <string name="action_set_velocity_fff"></string> -->
+
+	<!-- <string name="action_change_vibrato"></string> -->
+	<!-- <string name="action_change_bend"></string> -->
+	<!-- <string name="action_change_dead_note"></string> -->
+	<!-- <string name="action_change_slide"></string> -->
+	<!-- <string name="action_change_hammer"></string> -->
+	<!-- <string name="action_change_tremolo_bar"></string> -->
+	<!-- <string name="action_change_ghost_note"></string> -->
+	<!-- <string name="action_change_accentuated_note"></string> -->
+	<!-- <string name="action_change_heavy_accentuated_note"></string> -->
+	<!-- <string name="action_change_harmonic"></string> -->
+	<!-- <string name="action_change_grace"></string> -->
+	<!-- <string name="action_change_trill"></string> -->
+	<!-- <string name="action_change_tremolo_picking"></string> -->
+	<!-- <string name="action_change_palm_mute"></string> -->
+	<!-- <string name="action_change_let_ring"></string> -->
+	<!-- <string name="action_change_staccato"></string> -->
+	<!-- <string name="action_change_tapping"></string> -->
+	<!-- <string name="action_change_slapping"></string> -->
+	<!-- <string name="action_change_popping"></string> -->
+	<!-- <string name="action_change_fade_in"></string> -->
+
+	<!-- <string name="action_channel_list_add"></string> -->
+	<!-- <string name="action_channel_list_item_edit"></string> -->
+	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
+
+	<string name="action_track_tuning_list_item_add">Πρόσθεση</string>
+	<string name="action_track_tuning_list_item_edit">Επεξεργασία</string>
+	<string name="action_track_tuning_list_item_remove">Αφαίρεση</string>
+	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= MAIN DRAWER =============================== -->
+	<!-- =================================================================== -->
+
+	<string name="main_drawer_file">Αρχείο</string>
+	<!-- <string name="main_drawer_tracks"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= Storage ================================= -->
+	<!-- =================================================================== -->
+
+	<string name="storage_default_filename">Χωρίς τίτλο</string>
+	<!-- <string name="storage_export_to"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= SAF Storage =============================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
+	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= BROWSER ================================= -->
+	<!-- =================================================================== -->
+
+	<string name="browser_refresh">Ανανέωση</string>
+	<string name="browser_back">Πίσω</string>
+	<!-- <string name="browser_root"></string> -->
+	<string name="browser_settings">Ρυθμίσεις</string>
+	<string name="browser_save_label">Αποθήκευση</string>
+	<!-- <string name="browser_add_collection"></string> -->
+	<!-- <string name="browser_remove_collection"></string> -->
+	<string name="browser_file_overwrite_question">Αυτός ο φάκελος υπάρχει ήδη. Επιθυμείτε να τον αντικαταστήσετε;</string>
+	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
+	<!-- <string name="browser_element_icon_description"></string> -->
+
+	<!-- collections -->
+	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<!-- <string name="browser_collections_dlg_add_label"></string> -->
+	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
+	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
+
+	<!-- filesystem -->
+	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
+
+	<string name="browser_settings_fs_dlg_title">Αρχείο Συλλογής Συστήματος</string>
+	<string name="browser_settings_fs_name_label">Όνομα:</string>
+	<string name="browser_settings_fs_path_label">Φάκελος:</string>
+
+	<string name="browser_settings_fs_error_title">Σφάλμα</string>
+	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
+	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->
+	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
+	<!-- <string name="browser_settings_fs_error_nonfolder_path"></string> -->
+
+	<!-- default filesystem location -->
+	<!-- <string name="browser_settings_fs_root_folder_title"></string> -->
+	<!-- <string name="browser_settings_fs_external_storage_title"></string> -->
+	<!-- <string name="browser_settings_fs_secondary_storage_title"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= PREFERENCES =============================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="preferences_midi_category_title"></string> -->
+	<!-- <string name="preferences_midi_output_port_title"></string> -->
+	<!-- <string name="preferences_midi_output_port_summary"></string> -->
+	<!-- <string name="preferences_midi_output_port_summary_empty"></string> -->
+
+	<!-- <string name="preferences_storage_category_title"></string> -->
+	<!-- <string name="preferences_storage_storage_use_saf_provider_title"></string> -->
+	<!-- <string name="preferences_storage_storage_use_saf_provider_summary"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= DIALOGS ================================= -->
+	<!-- =================================================================== -->
+
+	<!-- Confirm dialog -->
+	<!-- <string name="confirm_dlg_title"></string> -->
+
+	<!-- Tempo dialog -->
+	<string name="tempo_dlg_title">Αλλαγή Τέμπο</string>
+	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_options_apply_to_song">Εφάρμοσε αυτό το τέμπο σε ολόκληρο το τραγούδι</string>
+	<string name="tempo_dlg_options_apply_to_end">Εφάρμοσε αυτό το τέμπο στο τέλος</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Εφάρμοσε αυτό το τέμπο στο επόμενο σημάδι τέμπο</string>
+
+	<!-- Clef dialog -->
+	<string name="clef_dlg_title">Αλλαγή Κλειδιού</string>
+	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_value_treble">Σοπράνος (Treble)</string>
+	<string name="clef_dlg_clef_value_bass">Μπάσο (Bass)</string>
+	<string name="clef_dlg_clef_value_tenor">Τενόρος (Tenor)</string>
+	<string name="clef_dlg_clef_value_alto">Κοντράλτο (Alto)</string>
+	<string name="clef_dlg_options_apply_to_end">Εφάρμοσε αυτό το κλειδί στο τέλος</string>
+
+	<!-- Key Signature dialog -->
+	<string name="key_signature_dlg_title">Αλλαγή Ρυθμού</string>
+	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_value_natural">Φυσική</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">1 Δίεση</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">2 Διέσεις</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">3 Διέσεις</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">4 Διέσεις</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">5 Διέσεις</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">6 Διέσεις</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">7 Διέσεις</string>
+	<string name="key_signature_dlg_ks_value_flat_1">1 Ύφεση</string>
+	<string name="key_signature_dlg_ks_value_flat_2">2 Υφέσεις</string>
+	<string name="key_signature_dlg_ks_value_flat_3">3 Υφέσεις</string>
+	<string name="key_signature_dlg_ks_value_flat_4">4 Υφέσεις</string>
+	<string name="key_signature_dlg_ks_value_flat_5">5 Υφέσεις</string>
+	<string name="key_signature_dlg_ks_value_flat_6">6 Υφέσεις</string>
+	<string name="key_signature_dlg_ks_value_flat_7">7 Υφέσεις</string>
+	<string name="key_signature_dlg_options_apply_to_end">Εφαρμογή αυτής της κλίμακας στο τέλος</string>
+
+	<!-- Time Signature dialog -->
+	<string name="time_signature_dlg_title">Αλλαγή Ρυθμού</string>
+	<string name="time_signature_dlg_ts_numerator_label">Αριθμητής:</string>
+	<string name="time_signature_dlg_ts_denominator_label">Παρονομαστής:</string>
+	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+
+	<!-- Triplet Feel dialog -->
+	<string name="triplet_feel_dlg_title">Αλλαγή στο feeling του Τρίηχου</string>
+	<string name="triplet_feel_dlg_none">Χωρίς Feeling Τρίηχου</string>
+	<string name="triplet_feel_dlg_eighth">Feeling Τρίηχου 8ου</string>
+	<string name="triplet_feel_dlg_sixteenth">Feeling Τρίηχου 16ου</string>
+	<string name="triplet_feel_dlg_options_apply_to_end">Εφαρμογή αυτού του Feeling Τρίηχου στο τέλος</string>
+
+	<!-- Repeat Close dialog -->
+	<string name="repeat_close_dlg_title">Κλείσιμο Επανάληψης</string>
+	<string name="repeat_close_dlg_count_label">Επαναλήψεις</string>
+
+	<!-- Repeat Alternative dialog -->
+	<string name="repeat_alternative_dlg_title">Επαναλήψεις με εναλλαγές</string>
+
+	<!-- Song Properties dialog -->
+	<string name="song_properties_dlg_title">Ιδιότητες</string>
+	<string name="song_properties_dlg_name_label">Όνομα</string>
+	<string name="song_properties_dlg_artist_label">Καλλιτέχνης</string>
+	<string name="song_properties_dlg_album_label">Άλμπουμ</string>
+	<string name="song_properties_dlg_author_label">Συγγραφέας</string>
+	<string name="song_properties_dlg_date_label">Ημερομηνία</string>
+	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
+	<string name="song_properties_dlg_writer_label">Δημιουργός Ταμπλατούρας</string>
+	<string name="song_properties_dlg_transcriber_label">Μεταγράφηκε από</string>
+	<string name="song_properties_dlg_comments_label">Σχόλια</string>
+
+	<!-- Track name dialog -->
+	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_name_label">Όνομα:</string>
+
+	<!-- Track channel dialog -->
+	<!-- <string name="track_channel_dlg_title"></string> -->
+	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+
+	<!-- Track tuning dialog -->
+	<!-- <string name="track_tuning_dlg_title"></string> -->
+	<!-- <string name="track_tuning_dlg_value_label"></string> -->
+	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
+	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
+	<string name="track_tuning_dlg_options_transpose">Μεταφορά επηρεασμένων νότων.</string>
+	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Μεταφορά Συγχορδιών</string>
+	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Προσπάθεια διατήρησης των νότων στην ίδια χορδή</string>
+	<string name="track_tuning_dlg_error_title">Σφάλμα</string>
+	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->
+
+	<!-- <string name="track_string_count_dlg_title"></string> -->
+	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+
+	<!-- Measure add dialog -->
+	<string name="measure_add_dlg_title">Πρόσθεση Μέτρου</string>
+	<string name="measure_add_dlg_count_label">Προσθήκη Μετρητή:</string>
+	<string name="measure_add_dlg_options_before_position">Πρόσθεση μέτρου πριν από αυτή τη θέση</string>
+	<string name="measure_add_dlg_options_after_position">Πρόσθεση μέτρου μετά από αυτή τη θέση</string>
+	<string name="measure_add_dlg_options_at_end">Πρόσθεση μέτρου στο τέλος</string>
+
+	<!-- Measure remove dialog -->
+	<string name="measure_remove_dlg_title">Αφαίρεση Μέτρου</string>
+	<!-- <string name="measure_remove_dlg_from_label"></string> -->
+	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+
+	<!-- Measure clean dialog -->
+	<string name="measure_clean_dlg_title">Καθαρισμός Μέτρου</string>
+	<!-- <string name="measure_clean_dlg_from_label"></string> -->
+	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+
+	<!-- Measure copy dialog -->
+	<string name="measure_copy_dlg_title">Αντιγραφή Μέτρου</string>
+	<!-- <string name="measure_copy_dlg_from_label"></string> -->
+	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_options_all_tracks">Όλα τα κομμάτια</string>
+
+	<!-- Measure paste dialog -->
+	<string name="measure_paste_dlg_title">Προορισμός Μέτρου</string>
+	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_options_mode_replace">Προορισμός στο τέλος αυτού του Μέτρουυ</string>
+	<string name="measure_paste_dlg_options_mode_insert">Προορισμός σε νέο Μέτρο</string>
+
+	<!-- Text dialog -->
+	<string name="text_dlg_title">Εισαγωγή Κειμένου</string>
+
+	<!-- Bend dialog -->
+	<!-- <string name="bend_dlg_title"></string> -->
+	<!-- <string name="bend_dlg_preset_label"></string> -->
+	<!-- <string name="bend_dlg_preset_bend"></string> -->
+	<!-- <string name="bend_dlg_preset_bend_release"></string> -->
+	<!-- <string name="bend_dlg_preset_bend_release_bend"></string> -->
+	<!-- <string name="bend_dlg_preset_prebend"></string> -->
+	<!-- <string name="bend_dlg_preset_prebend_release"></string> -->
+
+	<!-- Tremolo Bar dialog -->
+	<!-- <string name="tremolo_bar_dlg_title"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_dip"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_dive"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_release_up"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_release_down"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_inverted_dip"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_return"></string> -->
+
+	<!-- Tremolo picking dialog -->
+	<!-- <string name="tremolo_picking_dlg_title"></string> -->
+	<string name="tremolo_picking_dlg_duration_8">Όγδοο</string>
+	<string name="tremolo_picking_dlg_duration_16">Δέκατο έκτο</string>
+	<string name="tremolo_picking_dlg_duration_32">Τριακοστό δεύτερο</string>
+
+	<!-- Trill dialog -->
+	<!-- <string name="trill_dlg_title"></string> -->
+	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_duration_16">Δέκατο έκτο</string>
+	<string name="trill_dlg_duration_32">Τριακοστό δεύτερο</string>
+	<string name="trill_dlg_duration_64">Εξηκοστό τέταρτο</string>
+
+	<!-- Grace dialog -->
+	<!-- <string name="grace_dlg_title"></string> -->
+	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<!-- <string name="grace_dlg_dead_note_label"></string> -->
+	<string name="grace_dlg_position_label">Θέση</string>
+	<!-- <string name="grace_dlg_position_before_beat"></string> -->
+	<!-- <string name="grace_dlg_position_on_beat"></string> -->
+	<string name="grace_dlg_duration_label">Διάρκεια</string>
+	<string name="grace_dlg_duration_16">Δέκατο έκτο</string>
+	<string name="grace_dlg_duration_32">Τριακοστό δεύτερο</string>
+	<string name="grace_dlg_duration_64">Εξηκοστό τέταρτο</string>
+	<string name="grace_dlg_dynamic_label">Δυναμικές</string>
+	<!-- <string name="grace_dlg_dynamic_ppp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_p"></string> -->
+	<!-- <string name="grace_dlg_dynamic_mp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_mf"></string> -->
+	<!-- <string name="grace_dlg_dynamic_f"></string> -->
+	<!-- <string name="grace_dlg_dynamic_ff"></string> -->
+	<!-- <string name="grace_dlg_dynamic_fff"></string> -->
+	<!-- <string name="grace_dlg_transition_label"></string> -->
+	<!-- <string name="grace_dlg_transition_none"></string> -->
+	<!-- <string name="grace_dlg_transition_bend"></string> -->
+	<!-- <string name="grace_dlg_transition_slide"></string> -->
+	<!-- <string name="grace_dlg_transition_hammer"></string> -->
+
+	<!-- Harmonic dialog -->
+	<!-- <string name="harmonic_dlg_title"></string> -->
+	<!-- <string name="harmonic_dlg_type_nh"></string> -->
+	<!-- <string name="harmonic_dlg_type_ah"></string> -->
+	<!-- <string name="harmonic_dlg_type_th"></string> -->
+	<!-- <string name="harmonic_dlg_type_ph"></string> -->
+	<!-- <string name="harmonic_dlg_type_sh"></string> -->
+
+	<!-- Stroke dialog -->
+	<!-- <string name="stroke_dlg_title"></string> -->
+	<string name="stroke_dlg_direction_label">Κατεύθυνση</string>
+	<!-- <string name="stroke_dlg_direction_none"></string> -->
+	<!-- <string name="stroke_dlg_direction_up"></string> -->
+	<!-- <string name="stroke_dlg_direction_down"></string> -->
+	<string name="stroke_dlg_duration_4">Τέταρτο</string>
+	<string name="stroke_dlg_duration_8">Όγδοο</string>
+	<string name="stroke_dlg_duration_16">Δέκατο έκτο</string>
+	<string name="stroke_dlg_duration_32">Τριακοστό δεύτερο</string>
+	<string name="stroke_dlg_duration_64">Εξηκοστό τέταρτο</string>
+
+	<!-- Channels view -->
+	<!-- <string name="channel_list"></string> -->
+
+	<!-- Channel edit dialog -->
+	<!-- <string name="channel_edit_dlg_title"></string> -->
+	<string name="channel_edit_dlg_name_label">Όνομα</string>
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<!-- <string name="channel_edit_dlg_program_label"></string> -->
+	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_volume_label">Ένταση</string>
+	<!-- <string name="channel_edit_dlg_balance_label"></string> -->
+	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
+	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
+	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
+	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+</resources>

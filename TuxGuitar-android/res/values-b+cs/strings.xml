@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- <string name="app_name"></string> -->
+	<!-- <string name="action_settings"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= GLOBAL ================================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="global_error_message"></string> -->
+	<!-- <string name="global_exit_confirm_message"></string> -->
+
+	<!-- <string name="global_button_ok"></string> -->
+	<string name="global_button_cancel">Zrušit</string>
+	<string name="global_button_clean">Smazat</string>
+	<string name="global_button_remove">Odebrat</string>
+	<string name="global_button_add">Přidat</string>
+	<string name="global_button_edit">Editovat</string>
+
+	<!-- <string name="global_spinner_select_option"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================== MENU =================================== -->
+	<!-- =================================================================== -->
+
+	<string name="action_menu_file">Soubor</string>
+	<string name="action_menu_edit">Editovat</string>
+	<string name="action_menu_view">Pohled</string>
+	<string name="action_menu_transport">Přehrávač</string>
+	<!-- <string name="action_menu_caret"></string> -->
+	<string name="action_menu_composition">Skladba</string>
+	<string name="action_menu_track">Stopa</string>
+	<string name="action_menu_measure">Takt</string>
+	<string name="action_menu_beat">Nota</string>
+	<string name="action_menu_duration">Délka</string>
+	<string name="action_menu_dynamic">Dynamika</string>
+	<string name="action_menu_effects">Efekty</string>
+	<!-- <string name="action_menu_settings"></string> -->
+
+	<!-- <string name="action_tab_keyboard_toggle"></string> -->
+
+	<string name="action_file_new">Nový</string>
+	<string name="action_file_open">Otevřít</string>
+	<string name="action_file_save">Uložit</string>
+	<string name="action_file_save_as">Uložit jako...</string>
+
+	<string name="action_undo">Zpět</string>
+	<string name="action_redo">Vpřed</string>
+	<!-- <string name="action_voice_1"></string> -->
+	<!-- <string name="action_voice_2"></string> -->
+	<string name="action_copy">Kopírovat</string>
+	<string name="action_paste">Vložit</string>
+
+	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_layout_show_score">Ukázat notaci</string>
+	<!-- <string name="action_view_layout_show_chord_name"></string> -->
+	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
+
+	<string name="action_transport_play">Přehrát skladbu</string>
+	<!-- <string name="action_transport_pause"></string> -->
+	<!-- <string name="action_transport_stop"></string> -->
+
+	<!-- <string name="action_go_up"></string> -->
+	<!-- <string name="action_go_down"></string> -->
+	<!-- <string name="action_go_left"></string> -->
+	<!-- <string name="action_go_right"></string> -->
+
+	<string name="action_change_tempo">Změnit tempo</string>
+	<string name="action_change_clef">Změnit klíč</string>
+	<string name="action_change_key_signature">Změnit předznamenání</string>
+	<string name="action_change_time_signature">Změnit časování skladby</string>
+	<!-- <string name="action_change_triplet_feel"></string> -->
+	<string name="action_change_repeat_open">Začátek repetice</string>
+	<string name="action_change_repeat_close">Konec repetice</string>
+	<!-- <string name="action_change_repeat_alternative"></string> -->
+	<string name="action_change_properties">Vlastnosti</string>
+
+	<string name="action_track_add">Přidat stopu</string>
+	<string name="action_track_remove">Odebrat stopu</string>
+	<string name="action_track_clone">Klonovat stopu</string>
+	<!-- <string name="action_track_move_up"></string> -->
+	<!-- <string name="action_track_move_down"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
+	<!-- <string name="action_track_change_solo"></string> -->
+	<string name="action_track_set_name">Jméno</string>
+	<!-- <string name="action_track_set_channel"></string> -->
+	<!-- <string name="action_track_change_tuning"></string> -->
+	<!-- <string name="action_track_change_string_count"></string> -->
+
+	<string name="action_measure_add">Přidat takt</string>
+	<string name="action_measure_clean">Vymazat obsah taktu</string>
+	<string name="action_measure_remove">Odebrat takt</string>
+
+	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_clean_beat">Čistá doba</string>
+	<string name="action_decrement_note_semitone">O půltón dolů</string>
+	<string name="action_increment_note_semitone">O půltón nahoru</string>
+	<!-- <string name="action_delete_note_or_rest"></string> -->
+	<!-- <string name="action_insert_rest_beat"></string> -->
+	<!-- <string name="action_move_beats_left"></string> -->
+	<!-- <string name="action_move_beats_right"></string> -->
+	<!-- <string name="action_remove_unused_voice"></string> -->
+	<!-- <string name="action_set_voice_auto"></string> -->
+	<!-- <string name="action_set_voice_down"></string> -->
+	<!-- <string name="action_set_voice_up"></string> -->
+	<!-- <string name="action_shift_note_down"></string> -->
+	<!-- <string name="action_shift_note_up"></string> -->
+	<!-- <string name="action_change_stroke"></string> -->
+	<!-- <string name="action_change_text"></string> -->
+
+	<string name="action_set_duration_whole">Celá</string>
+	<string name="action_set_duration_half">Půlová</string>
+	<string name="action_set_duration_quarter">Čtvrťová</string>
+	<string name="action_set_duration_eighth">Osminová</string>
+	<string name="action_set_duration_sixteenth">Šestnáctinová</string>
+	<string name="action_set_duration_thirtysecond">Dvaatřicetinová</string>
+	<string name="action_set_duration_sixtyfourth">Čtyřiašedesátinová</string>
+	<string name="action_set_duration_dotted">Nota s tečkou</string>
+	<string name="action_set_duration_doubledotted">Nota se dvěma tečkami</string>
+	<!-- <string name="action_set_duration_division_type"></string> -->
+
+	<!-- <string name="action_set_duration_division_type_1"></string> -->
+	<!-- <string name="action_set_duration_division_type_3"></string> -->
+	<!-- <string name="action_set_duration_division_type_5"></string> -->
+	<!-- <string name="action_set_duration_division_type_6"></string> -->
+	<!-- <string name="action_set_duration_division_type_7"></string> -->
+	<!-- <string name="action_set_duration_division_type_9"></string> -->
+	<!-- <string name="action_set_duration_division_type_10"></string> -->
+	<!-- <string name="action_set_duration_division_type_11"></string> -->
+	<!-- <string name="action_set_duration_division_type_12"></string> -->
+	<!-- <string name="action_set_duration_division_type_13"></string> -->
+
+	<!-- <string name="action_set_velocity_ppp"></string> -->
+	<!-- <string name="action_set_velocity_pp"></string> -->
+	<!-- <string name="action_set_velocity_p"></string> -->
+	<!-- <string name="action_set_velocity_mp"></string> -->
+	<!-- <string name="action_set_velocity_mf"></string> -->
+	<!-- <string name="action_set_velocity_f"></string> -->
+	<!-- <string name="action_set_velocity_ff"></string> -->
+	<!-- <string name="action_set_velocity_fff"></string> -->
+
+	<string name="action_change_vibrato">Vibráto</string>
+	<string name="action_change_bend">Vytažení</string>
+	<string name="action_change_dead_note">Zatlumená nota</string>
+	<string name="action_change_slide">Skluz (slide)</string>
+	<string name="action_change_hammer">Příraz/Odtrh</string>
+	<string name="action_change_tremolo_bar">Tremolo...</string>
+	<string name="action_change_ghost_note">Náznak noty</string>
+	<string name="action_change_accentuated_note">Akcent</string>
+	<string name="action_change_heavy_accentuated_note">Silný akcent</string>
+	<string name="action_change_harmonic">Flažolet</string>
+	<string name="action_change_grace">Příraz</string>
+	<string name="action_change_trill">Trylek</string>
+	<string name="action_change_tremolo_picking">Soustavné tremolo</string>
+	<string name="action_change_palm_mute">Tlumení dlaní</string>
+	<!-- <string name="action_change_let_ring"></string> -->
+	<!-- <string name="action_change_staccato"></string> -->
+	<!-- <string name="action_change_tapping"></string> -->
+	<string name="action_change_slapping">Slap</string>
+	<string name="action_change_popping">Trhnutí</string>
+	<!-- <string name="action_change_fade_in"></string> -->
+
+	<!-- <string name="action_channel_list_add"></string> -->
+	<!-- <string name="action_channel_list_item_edit"></string> -->
+	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
+
+	<string name="action_track_tuning_list_item_add">Přidat</string>
+	<string name="action_track_tuning_list_item_edit">Editovat</string>
+	<string name="action_track_tuning_list_item_remove">Odebrat</string>
+	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= MAIN DRAWER =============================== -->
+	<!-- =================================================================== -->
+
+	<string name="main_drawer_file">Soubor</string>
+	<!-- <string name="main_drawer_tracks"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= Storage ================================= -->
+	<!-- =================================================================== -->
+
+	<string name="storage_default_filename">Bez názvu</string>
+	<!-- <string name="storage_export_to"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= SAF Storage =============================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
+	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= BROWSER ================================= -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="browser_refresh"></string> -->
+	<!-- <string name="browser_back"></string> -->
+	<!-- <string name="browser_root"></string> -->
+	<!-- <string name="browser_settings"></string> -->
+	<string name="browser_save_label">Uložit</string>
+	<!-- <string name="browser_add_collection"></string> -->
+	<!-- <string name="browser_remove_collection"></string> -->
+	<string name="browser_file_overwrite_question">Tento soubor již existuje, opravdu ho chcete přepsat??</string>
+	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
+	<!-- <string name="browser_element_icon_description"></string> -->
+
+	<!-- collections -->
+	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<!-- <string name="browser_collections_dlg_add_label"></string> -->
+	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
+	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
+
+	<!-- filesystem -->
+	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
+
+	<!-- <string name="browser_settings_fs_dlg_title"></string> -->
+	<!-- <string name="browser_settings_fs_name_label"></string> -->
+	<!-- <string name="browser_settings_fs_path_label"></string> -->
+
+	<string name="browser_settings_fs_error_title">Chyba</string>
+	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
+	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->
+	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
+	<!-- <string name="browser_settings_fs_error_nonfolder_path"></string> -->
+
+	<!-- default filesystem location -->
+	<!-- <string name="browser_settings_fs_root_folder_title"></string> -->
+	<!-- <string name="browser_settings_fs_external_storage_title"></string> -->
+	<!-- <string name="browser_settings_fs_secondary_storage_title"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= PREFERENCES =============================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="preferences_midi_category_title"></string> -->
+	<!-- <string name="preferences_midi_output_port_title"></string> -->
+	<!-- <string name="preferences_midi_output_port_summary"></string> -->
+	<!-- <string name="preferences_midi_output_port_summary_empty"></string> -->
+
+	<!-- <string name="preferences_storage_category_title"></string> -->
+	<!-- <string name="preferences_storage_storage_use_saf_provider_title"></string> -->
+	<!-- <string name="preferences_storage_storage_use_saf_provider_summary"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= DIALOGS ================================= -->
+	<!-- =================================================================== -->
+
+	<!-- Confirm dialog -->
+	<!-- <string name="confirm_dlg_title"></string> -->
+
+	<!-- Tempo dialog -->
+	<string name="tempo_dlg_title">Změnit tempo</string>
+	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<!-- <string name="tempo_dlg_options_apply_to_song"></string> -->
+	<!-- <string name="tempo_dlg_options_apply_to_end"></string> -->
+	<!-- <string name="tempo_dlg_options_apply_to_next_marker"></string> -->
+
+	<!-- Clef dialog -->
+	<string name="clef_dlg_title">Změnit klíč</string>
+	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_value_treble">Houslový</string>
+	<string name="clef_dlg_clef_value_bass">Basový</string>
+	<string name="clef_dlg_clef_value_tenor">Tenorový</string>
+	<string name="clef_dlg_clef_value_alto">Altový</string>
+	<string name="clef_dlg_options_apply_to_end">Použít tento klíč až do konce</string>
+
+	<!-- Key Signature dialog -->
+	<string name="key_signature_dlg_title">Změnit předznamenání</string>
+	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_value_natural">Bez předznamenání</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">1 křízek</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">2 křížky</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">3 křížky</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">4 křížky</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">5 křížků</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">6 křížků</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">7 křížků</string>
+	<string name="key_signature_dlg_ks_value_flat_1">1 béčko</string>
+	<string name="key_signature_dlg_ks_value_flat_2">2 béčka</string>
+	<string name="key_signature_dlg_ks_value_flat_3">3 béčka</string>
+	<string name="key_signature_dlg_ks_value_flat_4">4 béčka</string>
+	<string name="key_signature_dlg_ks_value_flat_5">5 béčka</string>
+	<string name="key_signature_dlg_ks_value_flat_6">6 béček</string>
+	<string name="key_signature_dlg_ks_value_flat_7">7 béček</string>
+	<string name="key_signature_dlg_options_apply_to_end">Použít toto předznamenání až do konce</string>
+
+	<!-- Time Signature dialog -->
+	<string name="time_signature_dlg_title">Změnit časování skladby</string>
+	<string name="time_signature_dlg_ts_numerator_label">Čitatel:</string>
+	<string name="time_signature_dlg_ts_denominator_label">Jmenovatel:</string>
+	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+
+	<!-- Triplet Feel dialog -->
+	<!-- <string name="triplet_feel_dlg_title"></string> -->
+	<string name="triplet_feel_dlg_none">Žádné triolové cítění</string>
+	<string name="triplet_feel_dlg_eighth">Osminové trioly</string>
+	<string name="triplet_feel_dlg_sixteenth">Šestnáctinové trioly</string>
+	<string name="triplet_feel_dlg_options_apply_to_end">Použít toto triolové cítění až do konce</string>
+
+	<!-- Repeat Close dialog -->
+	<string name="repeat_close_dlg_title">Konec repetice</string>
+	<string name="repeat_close_dlg_count_label">Repetice</string>
+
+	<!-- Repeat Alternative dialog -->
+	<!-- <string name="repeat_alternative_dlg_title"></string> -->
+
+	<!-- Song Properties dialog -->
+	<string name="song_properties_dlg_title">Vlastnosti</string>
+	<string name="song_properties_dlg_name_label">Jméno</string>
+	<string name="song_properties_dlg_artist_label">Interpret</string>
+	<!-- <string name="song_properties_dlg_album_label"></string> -->
+	<string name="song_properties_dlg_author_label">Autor</string>
+	<!-- <string name="song_properties_dlg_date_label"></string> -->
+	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
+	<!-- <string name="song_properties_dlg_writer_label"></string> -->
+	<!-- <string name="song_properties_dlg_transcriber_label"></string> -->
+	<!-- <string name="song_properties_dlg_comments_label"></string> -->
+
+	<!-- Track name dialog -->
+	<!-- <string name="track_name_dlg_title"></string> -->
+	<!-- <string name="track_name_dlg_name_label"></string> -->
+
+	<!-- Track channel dialog -->
+	<!-- <string name="track_channel_dlg_title"></string> -->
+	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+
+	<!-- Track tuning dialog -->
+	<!-- <string name="track_tuning_dlg_title"></string> -->
+	<!-- <string name="track_tuning_dlg_value_label"></string> -->
+	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
+	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
+	<!-- <string name="track_tuning_dlg_options_transpose"></string> -->
+	<!-- <string name="track_tuning_dlg_options_transpose_apply_to_chords"></string> -->
+	<!-- <string name="track_tuning_dlg_options_transpose_try_keep_strings"></string> -->
+	<string name="track_tuning_dlg_error_title">Chyba</string>
+	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->
+
+	<!-- <string name="track_string_count_dlg_title"></string> -->
+	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+
+	<!-- Measure add dialog -->
+	<string name="measure_add_dlg_title">Přidat takt</string>
+	<!-- <string name="measure_add_dlg_count_label"></string> -->
+	<string name="measure_add_dlg_options_before_position">Přidat takt před současnou pozici</string>
+	<string name="measure_add_dlg_options_after_position">Přidat takt za současnou pozici</string>
+	<string name="measure_add_dlg_options_at_end">Přidat takt na konec</string>
+
+	<!-- Measure remove dialog -->
+	<string name="measure_remove_dlg_title">Odebrat takt</string>
+	<!-- <string name="measure_remove_dlg_from_label"></string> -->
+	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+
+	<!-- Measure clean dialog -->
+	<string name="measure_clean_dlg_title">Vymazat obsah taktu</string>
+	<!-- <string name="measure_clean_dlg_from_label"></string> -->
+	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+
+	<!-- Measure copy dialog -->
+	<string name="measure_copy_dlg_title">Kopírovat takt</string>
+	<!-- <string name="measure_copy_dlg_from_label"></string> -->
+	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_options_all_tracks">Všechny stopy</string>
+
+	<!-- Measure paste dialog -->
+	<string name="measure_paste_dlg_title">Vložit takt</string>
+	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_options_mode_replace">Vložit do tohoto taktu</string>
+	<string name="measure_paste_dlg_options_mode_insert">Vložit do následujícího taktu</string>
+
+	<!-- Text dialog -->
+	<!-- <string name="text_dlg_title"></string> -->
+
+	<!-- Bend dialog -->
+	<!-- <string name="bend_dlg_title"></string> -->
+	<!-- <string name="bend_dlg_preset_label"></string> -->
+	<string name="bend_dlg_preset_bend">Vytažení</string>
+	<string name="bend_dlg_preset_bend_release">Vytáhnout/Pustit</string>
+	<string name="bend_dlg_preset_bend_release_bend">Vytáhnout/Pustit/Vytáhnout</string>
+	<string name="bend_dlg_preset_prebend">Dopředu Vytáhnout</string>
+	<string name="bend_dlg_preset_prebend_release">Dopředu vytáhnout/Pustit</string>
+
+	<!-- Tremolo Bar dialog -->
+	<string name="tremolo_bar_dlg_title">Tremolo...</string>
+	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
+	<string name="tremolo_bar_dlg_preset_dip">Ponořit</string>
+	<string name="tremolo_bar_dlg_preset_dive">Potopit</string>
+	<string name="tremolo_bar_dlg_preset_release_up">Vytahnout</string>
+	<string name="tremolo_bar_dlg_preset_release_down">Zatahnout</string>
+	<string name="tremolo_bar_dlg_preset_inverted_dip">Vynořit</string>
+	<string name="tremolo_bar_dlg_preset_return">Vrátit</string>
+
+	<!-- Tremolo picking dialog -->
+	<string name="tremolo_picking_dlg_title">Soustavné tremolo</string>
+	<string name="tremolo_picking_dlg_duration_8">Osminová</string>
+	<string name="tremolo_picking_dlg_duration_16">Šestnáctinová</string>
+	<string name="tremolo_picking_dlg_duration_32">Dvaatřicetinová</string>
+
+	<!-- Trill dialog -->
+	<string name="trill_dlg_title">Soustavné tremolo</string>
+	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_duration_16">Šestnáctinová</string>
+	<string name="trill_dlg_duration_32">Dvaatřicetinová</string>
+	<string name="trill_dlg_duration_64">Čtyřiašedesátinová</string>
+
+	<!-- Grace dialog -->
+	<string name="grace_dlg_title">Příraz</string>
+	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_dead_note_label">Zatlumená nota</string>
+	<string name="grace_dlg_position_label">Poloha</string>
+	<string name="grace_dlg_position_before_beat">Před dobou</string>
+	<string name="grace_dlg_position_on_beat">Na dobu</string>
+	<string name="grace_dlg_duration_label">Délka</string>
+	<string name="grace_dlg_duration_16">Šestnáctinová</string>
+	<string name="grace_dlg_duration_32">Dvaatřicetinová</string>
+	<string name="grace_dlg_duration_64">Čtyřiašedesátinová</string>
+	<string name="grace_dlg_dynamic_label">Dynamika</string>
+	<!-- <string name="grace_dlg_dynamic_ppp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_p"></string> -->
+	<!-- <string name="grace_dlg_dynamic_mp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_mf"></string> -->
+	<!-- <string name="grace_dlg_dynamic_f"></string> -->
+	<!-- <string name="grace_dlg_dynamic_ff"></string> -->
+	<!-- <string name="grace_dlg_dynamic_fff"></string> -->
+	<string name="grace_dlg_transition_label">Přechod</string>
+	<string name="grace_dlg_transition_none">Žádný</string>
+	<string name="grace_dlg_transition_bend">Vytažení</string>
+	<string name="grace_dlg_transition_slide">Skluz (slide)</string>
+	<string name="grace_dlg_transition_hammer">Příklep</string>
+
+	<!-- Harmonic dialog -->
+	<string name="harmonic_dlg_title">Příraz</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Přirozený flažolet</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Umělý flažolet</string>
+	<string name="harmonic_dlg_type_th">[T.H] Flažolet tappingem</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Pinch flažolet</string>
+	<string name="harmonic_dlg_type_sh">[S.H] Semi-flažolet</string>
+
+	<!-- Stroke dialog -->
+	<!-- <string name="stroke_dlg_title"></string> -->
+	<!-- <string name="stroke_dlg_direction_label"></string> -->
+	<string name="stroke_dlg_direction_none">Žádný</string>
+	<!-- <string name="stroke_dlg_direction_up"></string> -->
+	<!-- <string name="stroke_dlg_direction_down"></string> -->
+	<string name="stroke_dlg_duration_4">Čtvrťová</string>
+	<string name="stroke_dlg_duration_8">Osminová</string>
+	<string name="stroke_dlg_duration_16">Šestnáctinová</string>
+	<string name="stroke_dlg_duration_32">Dvaatřicetinová</string>
+	<string name="stroke_dlg_duration_64">Čtyřiašedesátinová</string>
+
+	<!-- Channels view -->
+	<!-- <string name="channel_list"></string> -->
+
+	<!-- Channel edit dialog -->
+	<!-- <string name="channel_edit_dlg_title"></string> -->
+	<string name="channel_edit_dlg_name_label">Jméno</string>
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<!-- <string name="channel_edit_dlg_program_label"></string> -->
+	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_volume_label">Hlasitost</string>
+	<string name="channel_edit_dlg_balance_label">Vyvážení</string>
+	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
+	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
+	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
+	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+</resources>
