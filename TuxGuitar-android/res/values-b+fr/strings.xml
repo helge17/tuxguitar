@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- <string name="app_name"></string> -->
+	<string name="action_settings">Configuration</string>
+
+	<!-- =================================================================== -->
+	<!-- ========================= GLOBAL ================================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="global_error_message"></string> -->
+	<!-- <string name="global_exit_confirm_message"></string> -->
+
+	<string name="global_button_ok">Valider</string>
+	<string name="global_button_cancel">Annuler</string>
+	<string name="global_button_clean">Effacer</string>
+	<string name="global_button_remove">Supprimer</string>
+	<string name="global_button_add">Ajouter</string>
+	<string name="global_button_edit">Édition</string>
+
+	<string name="global_spinner_select_option">-- Sélectionner --</string>
+
+	<!-- =================================================================== -->
+	<!-- ========================== MENU =================================== -->
+	<!-- =================================================================== -->
+
+	<string name="action_menu_file">Fichier</string>
+	<string name="action_menu_edit">Édition</string>
+	<string name="action_menu_view">Affichage</string>
+	<string name="action_menu_transport">Lecteur</string>
+	<!-- <string name="action_menu_caret"></string> -->
+	<!-- <string name="action_menu_composition"></string> -->
+	<string name="action_menu_track">Piste</string>
+	<string name="action_menu_measure">Mesure</string>
+	<string name="action_menu_beat">Note</string>
+	<string name="action_menu_duration">Durée de la note ou du silence</string>
+	<string name="action_menu_dynamic">Expression</string>
+	<string name="action_menu_effects">Effets</string>
+	<string name="action_menu_settings">Configuration</string>
+
+	<!-- <string name="action_tab_keyboard_toggle"></string> -->
+
+	<string name="action_file_new">Nouveau</string>
+	<string name="action_file_open">Ouvrir</string>
+	<string name="action_file_save">Enregistrer</string>
+	<string name="action_file_save_as">Enregistrer sous...</string>
+
+	<string name="action_undo">Annuler</string>
+	<string name="action_redo">Rétablir</string>
+	<string name="action_voice_1">Sélectionner la voix 1</string>
+	<string name="action_voice_2">Sélectionner la voix 2</string>
+	<string name="action_copy">Copier</string>
+	<string name="action_paste">Coller</string>
+
+	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_layout_show_score">Afficher la portée</string>
+	<string name="action_view_layout_show_chord_name">Afficher le nom des accords</string>
+	<string name="action_view_layout_show_chord_diagram">Afficher les diagrammes d\&apos;accords</string>
+
+	<string name="action_transport_play">Lire le morceau</string>
+	<!-- <string name="action_transport_pause"></string> -->
+	<string name="action_transport_stop">Arrêt</string>
+
+	<string name="action_go_up">Déplacer le curseur vers le haut</string>
+	<string name="action_go_down">Déplacer le curseur vers le bas</string>
+	<string name="action_go_left">Déplacer le curseur vers la gauche</string>
+	<string name="action_go_right">Déplacer le curseur vers la droite</string>
+
+	<string name="action_change_tempo">Modifier le tempo</string>
+	<string name="action_change_clef">Modifier la clé</string>
+	<string name="action_change_key_signature">Modifier l\&apos;armure</string>
+	<string name="action_change_time_signature">Modifier le chiffrage</string>
+	<string name="action_change_triplet_feel">Modifier le shuffle</string>
+	<string name="action_change_repeat_open">Ouvrir une reprise</string>
+	<string name="action_change_repeat_close">Fermer une reprise</string>
+	<string name="action_change_repeat_alternative">Autres reprises</string>
+	<string name="action_change_properties">Propriétés de la piste</string>
+
+	<string name="action_track_add">Ajouter une piste</string>
+	<string name="action_track_remove">Supprimer la piste</string>
+	<string name="action_track_clone">Dupliquer la piste</string>
+	<string name="action_track_move_up">Déplacer la piste vers le haut</string>
+	<string name="action_track_move_down">Déplacer la piste vers le bas</string>
+	<string name="action_track_change_mute">Définir une piste muette</string>
+	<string name="action_track_change_solo">Définir une piste de solo</string>
+	<string name="action_track_set_name">Nom</string>
+	<!-- <string name="action_track_set_channel"></string> -->
+	<!-- <string name="action_track_change_tuning"></string> -->
+	<!-- <string name="action_track_change_string_count"></string> -->
+
+	<string name="action_measure_add">Ajouter une mesure</string>
+	<string name="action_measure_clean">Effacer la mesure</string>
+	<string name="action_measure_remove">Supprimer la mesure</string>
+
+	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_clean_beat">Effacer la note</string>
+	<string name="action_decrement_note_semitone">Diminuer d\&apos;un demi-ton</string>
+	<string name="action_increment_note_semitone">Augmenter d\&apos;un demi-ton</string>
+	<string name="action_delete_note_or_rest">Supprimer la note ou le silence</string>
+	<string name="action_insert_rest_beat">Insérer un silence</string>
+	<string name="action_move_beats_left">Déplacer vers la gauche</string>
+	<string name="action_move_beats_right">Déplacer vers la droite</string>
+	<string name="action_remove_unused_voice">Supprimer la voix inutilisée</string>
+	<!-- <string name="action_set_voice_auto"></string> -->
+	<!-- <string name="action_set_voice_down"></string> -->
+	<!-- <string name="action_set_voice_up"></string> -->
+	<!-- <string name="action_shift_note_down"></string> -->
+	<!-- <string name="action_shift_note_up"></string> -->
+	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_change_text">Insérer un texte</string>
+
+	<string name="action_set_duration_whole">Ronde</string>
+	<string name="action_set_duration_half">Blanche</string>
+	<string name="action_set_duration_quarter">Noire</string>
+	<string name="action_set_duration_eighth">Croche</string>
+	<string name="action_set_duration_sixteenth">Double-croche</string>
+	<string name="action_set_duration_thirtysecond">Triple-croche</string>
+	<string name="action_set_duration_sixtyfourth">Quadruple-croche</string>
+	<string name="action_set_duration_dotted">Pointée</string>
+	<string name="action_set_duration_doubledotted">Double pointée</string>
+	<string name="action_set_duration_division_type">Type de division</string>
+
+	<!-- <string name="action_set_duration_division_type_1"></string> -->
+	<!-- <string name="action_set_duration_division_type_3"></string> -->
+	<!-- <string name="action_set_duration_division_type_5"></string> -->
+	<!-- <string name="action_set_duration_division_type_6"></string> -->
+	<!-- <string name="action_set_duration_division_type_7"></string> -->
+	<!-- <string name="action_set_duration_division_type_9"></string> -->
+	<!-- <string name="action_set_duration_division_type_10"></string> -->
+	<!-- <string name="action_set_duration_division_type_11"></string> -->
+	<!-- <string name="action_set_duration_division_type_12"></string> -->
+	<!-- <string name="action_set_duration_division_type_13"></string> -->
+
+	<string name="action_set_velocity_ppp">Pianississimo</string>
+	<!-- <string name="action_set_velocity_pp"></string> -->
+	<!-- <string name="action_set_velocity_p"></string> -->
+	<string name="action_set_velocity_mp">Mezzo piano</string>
+	<string name="action_set_velocity_mf">Mezzo forte</string>
+	<!-- <string name="action_set_velocity_f"></string> -->
+	<!-- <string name="action_set_velocity_ff"></string> -->
+	<string name="action_set_velocity_fff">Fortississimo</string>
+
+	<!-- <string name="action_change_vibrato"></string> -->
+	<!-- <string name="action_change_bend"></string> -->
+	<!-- <string name="action_change_dead_note"></string> -->
+	<!-- <string name="action_change_slide"></string> -->
+	<!-- <string name="action_change_hammer"></string> -->
+	<string name="action_change_tremolo_bar">Tremolo bar</string>
+	<string name="action_change_ghost_note">Ghost note</string>
+	<string name="action_change_accentuated_note">Note accentuée</string>
+	<string name="action_change_heavy_accentuated_note">Note fortement accentuée</string>
+	<string name="action_change_harmonic">Harmonique</string>
+	<string name="action_change_grace">Grace note</string>
+	<string name="action_change_trill">Trille</string>
+	<string name="action_change_tremolo_picking">Tremolo picking</string>
+	<string name="action_change_palm_mute">Palm mute</string>
+	<string name="action_change_let_ring">Let ring</string>
+	<!-- <string name="action_change_staccato"></string> -->
+	<!-- <string name="action_change_tapping"></string> -->
+	<!-- <string name="action_change_slapping"></string> -->
+	<!-- <string name="action_change_popping"></string> -->
+	<string name="action_change_fade_in">Fade in</string>
+
+	<!-- <string name="action_channel_list_add"></string> -->
+	<!-- <string name="action_channel_list_item_edit"></string> -->
+	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
+
+	<string name="action_track_tuning_list_item_add">Ajouter</string>
+	<string name="action_track_tuning_list_item_edit">Édition</string>
+	<string name="action_track_tuning_list_item_remove">Supprimer</string>
+	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= MAIN DRAWER =============================== -->
+	<!-- =================================================================== -->
+
+	<string name="main_drawer_file">Fichier</string>
+	<!-- <string name="main_drawer_tracks"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= Storage ================================= -->
+	<!-- =================================================================== -->
+
+	<string name="storage_default_filename">Sans titre</string>
+	<!-- <string name="storage_export_to"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= SAF Storage =============================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
+	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= BROWSER ================================= -->
+	<!-- =================================================================== -->
+
+	<string name="browser_refresh">Actualiser</string>
+	<string name="browser_back">Précédent</string>
+	<!-- <string name="browser_root"></string> -->
+	<string name="browser_settings">Configuration</string>
+	<string name="browser_save_label">Enregistrer</string>
+	<!-- <string name="browser_add_collection"></string> -->
+	<!-- <string name="browser_remove_collection"></string> -->
+	<string name="browser_file_overwrite_question">Ce fichier existe déjà. Voulez-vous le remplacer ?</string>
+	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
+	<!-- <string name="browser_element_icon_description"></string> -->
+
+	<!-- collections -->
+	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<!-- <string name="browser_collections_dlg_add_label"></string> -->
+	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
+	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
+
+	<!-- filesystem -->
+	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
+
+	<string name="browser_settings_fs_dlg_title">Système de fichiers de collection</string>
+	<string name="browser_settings_fs_name_label">Nom:</string>
+	<string name="browser_settings_fs_path_label">Dossier:</string>
+
+	<string name="browser_settings_fs_error_title">Erreur</string>
+	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
+	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->
+	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
+	<!-- <string name="browser_settings_fs_error_nonfolder_path"></string> -->
+
+	<!-- default filesystem location -->
+	<!-- <string name="browser_settings_fs_root_folder_title"></string> -->
+	<!-- <string name="browser_settings_fs_external_storage_title"></string> -->
+	<!-- <string name="browser_settings_fs_secondary_storage_title"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ======================= PREFERENCES =============================== -->
+	<!-- =================================================================== -->
+
+	<!-- <string name="preferences_midi_category_title"></string> -->
+	<!-- <string name="preferences_midi_output_port_title"></string> -->
+	<!-- <string name="preferences_midi_output_port_summary"></string> -->
+	<!-- <string name="preferences_midi_output_port_summary_empty"></string> -->
+
+	<!-- <string name="preferences_storage_category_title"></string> -->
+	<!-- <string name="preferences_storage_storage_use_saf_provider_title"></string> -->
+	<!-- <string name="preferences_storage_storage_use_saf_provider_summary"></string> -->
+
+	<!-- =================================================================== -->
+	<!-- ========================= DIALOGS ================================= -->
+	<!-- =================================================================== -->
+
+	<!-- Confirm dialog -->
+	<string name="confirm_dlg_title">Confirmer</string>
+
+	<!-- Tempo dialog -->
+	<string name="tempo_dlg_title">Modifier le tempo</string>
+	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_options_apply_to_song">Appliquer ce tempo au morceau entier</string>
+	<string name="tempo_dlg_options_apply_to_end">Appliquer ce tempo jusqu\&apos;à la fin</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Appliquer ce tempo jusqu\&apos;au prochain marqueur de tempo</string>
+
+	<!-- Clef dialog -->
+	<string name="clef_dlg_title">Modifier la clé</string>
+	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_value_treble">sol</string>
+	<string name="clef_dlg_clef_value_bass">fa</string>
+	<string name="clef_dlg_clef_value_tenor">ut quatrième ligne</string>
+	<string name="clef_dlg_clef_value_alto">ut troisième ligne</string>
+	<string name="clef_dlg_options_apply_to_end">Appliquer cette clé jusqu\&apos;à la fin</string>
+
+	<!-- Key Signature dialog -->
+	<string name="key_signature_dlg_title">Modifier l\&apos;armure</string>
+	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_value_natural">sans altération</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">1 dièse</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">2 dièses</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">3 dièses</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">4 dièses</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">5 dièses</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">6 dièses</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">7 dièses</string>
+	<string name="key_signature_dlg_ks_value_flat_1">1 bémol</string>
+	<string name="key_signature_dlg_ks_value_flat_2">2 bémols</string>
+	<string name="key_signature_dlg_ks_value_flat_3">3 bémols</string>
+	<string name="key_signature_dlg_ks_value_flat_4">4 bémols</string>
+	<string name="key_signature_dlg_ks_value_flat_5">5 bémols</string>
+	<string name="key_signature_dlg_ks_value_flat_6">6 bémols</string>
+	<string name="key_signature_dlg_ks_value_flat_7">7 bémols</string>
+	<string name="key_signature_dlg_options_apply_to_end">Appliquer cette armure jusqu\&apos;à la fin</string>
+
+	<!-- Time Signature dialog -->
+	<string name="time_signature_dlg_title">Modifier le chiffrage</string>
+	<string name="time_signature_dlg_ts_numerator_label">Numérateur:</string>
+	<string name="time_signature_dlg_ts_denominator_label">Dénominateur:</string>
+	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+
+	<!-- Triplet Feel dialog -->
+	<string name="triplet_feel_dlg_title">Modifier le shuffle</string>
+	<string name="triplet_feel_dlg_none">Sans shuffle</string>
+	<string name="triplet_feel_dlg_eighth">Shuffle en croches</string>
+	<string name="triplet_feel_dlg_sixteenth">Shuffle en doubles-croches</string>
+	<string name="triplet_feel_dlg_options_apply_to_end">Appliquer le shuffle jusqu\&apos;à la fin</string>
+
+	<!-- Repeat Close dialog -->
+	<string name="repeat_close_dlg_title">Fermer une reprise</string>
+	<string name="repeat_close_dlg_count_label">Reprises</string>
+
+	<!-- Repeat Alternative dialog -->
+	<string name="repeat_alternative_dlg_title">Autres reprises</string>
+
+	<!-- Song Properties dialog -->
+	<string name="song_properties_dlg_title">Propriétés de la piste</string>
+	<string name="song_properties_dlg_name_label">Nom</string>
+	<string name="song_properties_dlg_artist_label">Interprète</string>
+	<!-- <string name="song_properties_dlg_album_label"></string> -->
+	<string name="song_properties_dlg_author_label">Auteur/compositeur</string>
+	<!-- <string name="song_properties_dlg_date_label"></string> -->
+	<string name="song_properties_dlg_copyright_label">Droits d\&apos;auteur</string>
+	<string name="song_properties_dlg_writer_label">Créateur de la tablature</string>
+	<string name="song_properties_dlg_transcriber_label">Transcrit par</string>
+	<string name="song_properties_dlg_comments_label">Commentaires</string>
+
+	<!-- Track name dialog -->
+	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_name_label">Nom:</string>
+
+	<!-- Track channel dialog -->
+	<!-- <string name="track_channel_dlg_title"></string> -->
+	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+
+	<!-- Track tuning dialog -->
+	<!-- <string name="track_tuning_dlg_title"></string> -->
+	<!-- <string name="track_tuning_dlg_value_label"></string> -->
+	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
+	<string name="track_tuning_dlg_preset_select_value">-- Préréglages --</string>
+	<string name="track_tuning_dlg_options_transpose">Transposer les notes</string>
+	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transposer les accords</string>
+	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Essayer de conserver les notes sur la même corde</string>
+	<string name="track_tuning_dlg_error_title">Erreur</string>
+	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<string name="track_tuning_dlg_empty_value_error">La valeur ne peut pas être nulle</string>
+
+	<!-- <string name="track_string_count_dlg_title"></string> -->
+	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+
+	<!-- Measure add dialog -->
+	<string name="measure_add_dlg_title">Ajouter une mesure</string>
+	<string name="measure_add_dlg_count_label">Ajouter le numéro:</string>
+	<string name="measure_add_dlg_options_before_position">Ajouter une mesure avant la position actuelle</string>
+	<string name="measure_add_dlg_options_after_position">Ajouter une mesure après la position actuelle</string>
+	<string name="measure_add_dlg_options_at_end">Ajouter une mesure à la fin</string>
+
+	<!-- Measure remove dialog -->
+	<string name="measure_remove_dlg_title">Supprimer la mesure</string>
+	<!-- <string name="measure_remove_dlg_from_label"></string> -->
+	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+
+	<!-- Measure clean dialog -->
+	<string name="measure_clean_dlg_title">Effacer la mesure</string>
+	<!-- <string name="measure_clean_dlg_from_label"></string> -->
+	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+
+	<!-- Measure copy dialog -->
+	<string name="measure_copy_dlg_title">Copier la mesure</string>
+	<!-- <string name="measure_copy_dlg_from_label"></string> -->
+	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_options_all_tracks">Toutes les pistes</string>
+
+	<!-- Measure paste dialog -->
+	<string name="measure_paste_dlg_title">Coller la mesure</string>
+	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_options_mode_replace">Coller sur la mesure actuelle</string>
+	<string name="measure_paste_dlg_options_mode_insert">Coller dans une nouvelle mesure</string>
+
+	<!-- Text dialog -->
+	<string name="text_dlg_title">Insérer un texte</string>
+
+	<!-- Bend dialog -->
+	<!-- <string name="bend_dlg_title"></string> -->
+	<!-- <string name="bend_dlg_preset_label"></string> -->
+	<!-- <string name="bend_dlg_preset_bend"></string> -->
+	<!-- <string name="bend_dlg_preset_bend_release"></string> -->
+	<!-- <string name="bend_dlg_preset_bend_release_bend"></string> -->
+	<!-- <string name="bend_dlg_preset_prebend"></string> -->
+	<!-- <string name="bend_dlg_preset_prebend_release"></string> -->
+
+	<!-- Tremolo Bar dialog -->
+	<string name="tremolo_bar_dlg_title">Tremolo bar</string>
+	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_dip"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_dive"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_release_up"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_release_down"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_inverted_dip"></string> -->
+	<string name="tremolo_bar_dlg_preset_return">Retour</string>
+
+	<!-- Tremolo picking dialog -->
+	<string name="tremolo_picking_dlg_title">Tremolo picking</string>
+	<string name="tremolo_picking_dlg_duration_8">Croche</string>
+	<string name="tremolo_picking_dlg_duration_16">Double-croche</string>
+	<string name="tremolo_picking_dlg_duration_32">Triple-croche</string>
+
+	<!-- Trill dialog -->
+	<string name="trill_dlg_title">Tremolo picking</string>
+	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_duration_16">Double-croche</string>
+	<string name="trill_dlg_duration_32">Triple-croche</string>
+	<string name="trill_dlg_duration_64">Quadruple-croche</string>
+
+	<!-- Grace dialog -->
+	<string name="grace_dlg_title">Grace note</string>
+	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<!-- <string name="grace_dlg_dead_note_label"></string> -->
+	<!-- <string name="grace_dlg_position_label"></string> -->
+	<string name="grace_dlg_position_before_beat">Avant le temps</string>
+	<string name="grace_dlg_position_on_beat">Sur le temps</string>
+	<string name="grace_dlg_duration_label">Durée de la note ou du silence</string>
+	<string name="grace_dlg_duration_16">Double-croche</string>
+	<string name="grace_dlg_duration_32">Triple-croche</string>
+	<string name="grace_dlg_duration_64">Quadruple-croche</string>
+	<string name="grace_dlg_dynamic_label">Expression</string>
+	<string name="grace_dlg_dynamic_ppp">Pianississimo</string>
+	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_p"></string> -->
+	<string name="grace_dlg_dynamic_mp">Mezzo piano</string>
+	<string name="grace_dlg_dynamic_mf">Mezzo forte</string>
+	<!-- <string name="grace_dlg_dynamic_f"></string> -->
+	<!-- <string name="grace_dlg_dynamic_ff"></string> -->
+	<string name="grace_dlg_dynamic_fff">Fortississimo</string>
+	<!-- <string name="grace_dlg_transition_label"></string> -->
+	<string name="grace_dlg_transition_none">Aucune</string>
+	<!-- <string name="grace_dlg_transition_bend"></string> -->
+	<!-- <string name="grace_dlg_transition_slide"></string> -->
+	<!-- <string name="grace_dlg_transition_hammer"></string> -->
+
+	<!-- Harmonic dialog -->
+	<string name="harmonic_dlg_title">Grace note</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Harmonique naturel</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Harmonique artificiel</string>
+	<string name="harmonic_dlg_type_th">[T.H] Harmonique frappé</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Harmonique pincé</string>
+	<string name="harmonic_dlg_type_sh">[S.H] Semi-harmonique</string>
+
+	<!-- Stroke dialog -->
+	<string name="stroke_dlg_title">Coups</string>
+	<string name="stroke_dlg_direction_label">Sens</string>
+	<string name="stroke_dlg_direction_none">Aucune</string>
+	<string name="stroke_dlg_direction_up">Coup vers le haut</string>
+	<string name="stroke_dlg_direction_down">Coup vers le bas</string>
+	<string name="stroke_dlg_duration_4">Noire</string>
+	<string name="stroke_dlg_duration_8">Croche</string>
+	<string name="stroke_dlg_duration_16">Double-croche</string>
+	<string name="stroke_dlg_duration_32">Triple-croche</string>
+	<string name="stroke_dlg_duration_64">Quadruple-croche</string>
+
+	<!-- Channels view -->
+	<!-- <string name="channel_list"></string> -->
+
+	<!-- Channel edit dialog -->
+	<!-- <string name="channel_edit_dlg_title"></string> -->
+	<string name="channel_edit_dlg_name_label">Nom</string>
+	<string name="channel_edit_dlg_bank_label">Banque</string>
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_program_label">Programme</string>
+	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<string name="channel_edit_dlg_percussion_label">Canal de percussions</string>
+	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
+	<!-- <string name="channel_edit_dlg_balance_label"></string> -->
+	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
+	<string name="channel_edit_dlg_reverb_label">Réverbe</string>
+	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
+	<string name="channel_edit_dlg_tremolo_label">Trémolo</string>
+</resources>
