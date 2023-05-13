@@ -3,104 +3,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-	
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="2">
-		
-		<TextView 
-			android:id="@+id/song_info_dlg_name_label"
-			android:text="@string/song_info_dlg_name_label" 
-			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<EditText
-			android:id="@+id/song_info_dlg_name_value"
-			android:inputType="text" 
-			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_artist_label"
-			android:text="@string/song_info_dlg_artist_label" 
-			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<EditText
-			android:id="@+id/song_info_dlg_artist_value"
-			android:inputType="text" 
-			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_album_label"
-			android:text="@string/song_info_dlg_album_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_name_label"
+			android:text="@string/song_properties_dlg_name_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
 
 		<EditText
-			android:id="@+id/song_info_dlg_album_value"
-			android:inputType="text" 
+			android:id="@+id/song_properties_dlg_name_value"
+			android:inputType="text"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_author_label"
-			android:text="@string/song_info_dlg_author_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_artist_label"
+			android:text="@string/song_properties_dlg_artist_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
-			android:id="@+id/song_info_dlg_author_value"
-			android:inputType="text" 
+			android:id="@+id/song_properties_dlg_artist_value"
+			android:inputType="text"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_date_label"
-			android:text="@string/song_info_dlg_date_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_album_label"
+			android:text="@string/song_properties_dlg_album_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
-			android:id="@+id/song_info_dlg_date_value"
-			android:inputType="text" 
+			android:id="@+id/song_properties_dlg_album_value"
+			android:inputType="text"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_copyright_label"
-			android:text="@string/song_info_dlg_copyright_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_author_label"
+			android:text="@string/song_properties_dlg_author_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
-			android:id="@+id/song_info_dlg_copyright_value"
-			android:inputType="text" 
+			android:id="@+id/song_properties_dlg_author_value"
+			android:inputType="text"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_writer_label"
-			android:text="@string/song_info_dlg_writer_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_date_label"
+			android:text="@string/song_properties_dlg_date_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
-			android:id="@+id/song_info_dlg_writer_value"
-			android:inputType="text" 
+			android:id="@+id/song_properties_dlg_date_value"
+			android:inputType="text"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_transcriber_label"
-			android:text="@string/song_info_dlg_transcriber_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_copyright_label"
+			android:text="@string/song_properties_dlg_copyright_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
-			android:id="@+id/song_info_dlg_transcriber_value"
-			android:inputType="text" 
+			android:id="@+id/song_properties_dlg_copyright_value"
+			android:inputType="text"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<TextView 
-			android:id="@+id/song_info_dlg_comments_label"
-			android:text="@string/song_info_dlg_comments_label" 
+
+		<TextView
+			android:id="@+id/song_properties_dlg_writer_label"
+			android:text="@string/song_properties_dlg_writer_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
-			android:id="@+id/song_info_dlg_comments_value"
+			android:id="@+id/song_properties_dlg_writer_value"
+			android:inputType="text"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/song_properties_dlg_transcriber_label"
+			android:text="@string/song_properties_dlg_transcriber_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<EditText
+			android:id="@+id/song_properties_dlg_transcriber_value"
+			android:inputType="text"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/song_properties_dlg_comments_label"
+			android:text="@string/song_properties_dlg_comments_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<EditText
+			android:id="@+id/song_properties_dlg_comments_value"
 			android:inputType="textMultiLine"
 			android:minLines="6"
 			android:maxLines="10"
 			android:layout_gravity="fill_horizontal|fill_vertical" />
-		
+
 	</GridLayout>
 
 </ScrollView>

@@ -28,7 +28,7 @@
         android:id="@+id/action_change_repeat_alternative"
         android:title="@string/action_change_repeat_alternative"/>
     <item
-        android:id="@+id/action_change_info"
-        android:title="@string/action_change_info"/>
+        android:id="@+id/action_change_properties"
+        android:title="@string/action_change_properties"/>
 
 </menu>

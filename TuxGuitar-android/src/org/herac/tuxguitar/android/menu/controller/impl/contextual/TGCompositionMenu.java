@@ -36,7 +36,7 @@ public class TGCompositionMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_change_key_signature, new TGKeySignatureDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_time_signature, new TGTimeSignatureDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_triplet_feel, new TGTripletFeelDialogController(), !running);
-		this.initializeItem(menu, R.id.action_change_info, new TGSongInfoDialogController(), !running);
+		this.initializeItem(menu, R.id.action_change_properties, new TGSongInfoDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_repeat_alternative, new TGRepeatAlternativeDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_repeat_close, new TGRepeatCloseDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_repeat_open, this.createActionProcessor(TGRepeatOpenAction.NAME), !running);

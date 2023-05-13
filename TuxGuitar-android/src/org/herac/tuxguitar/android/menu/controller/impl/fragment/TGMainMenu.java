@@ -31,10 +31,10 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGMainMenu implements TGMenuController {
-	
+
 	private TGContext context;
 	private TGToggleStyledIconHelper styledIconHelper;
-	
+
 	private TGMainMenu(TGContext context) {
 		this.context = context;
 		this.styledIconHelper = new TGToggleStyledIconHelper(context);
@@ -57,40 +57,40 @@ public class TGMainMenu implements TGMenuController {
 		menu.findItem(R.id.action_menu_measure).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGMeasureMenu(getActivity())));
 		menu.findItem(R.id.action_menu_beat).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGBeatMenu(getActivity())));
 		menu.findItem(R.id.action_menu_duration).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGDurationMenu(getActivity())));
-		menu.findItem(R.id.action_menu_effect).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
-		menu.findItem(R.id.action_menu_velocity).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGVelocityMenu(getActivity())));
+		menu.findItem(R.id.action_menu_effects).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
+		menu.findItem(R.id.action_menu_dynamic).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGVelocityMenu(getActivity())));
 		menu.findItem(R.id.action_menu_settings).setOnMenuItemClickListener(createFragmentActionProcessor(new TGPreferencesFragmentController()));
 	}
-	
+
 	public void fillStyledIconHandlers() {
 		this.styledIconHelper.addHandler(this.createStyledIconTransportHandler());
 	}
-	
+
 	public TGToggleStyledIconHandler createStyledIconTransportHandler() {
 		return new TGToggleStyledIconHandler() {
-			
+
 			public Integer getMenuItemId() {
 				return R.id.action_transport_play;
 			}
-			
+
 			public Integer resolveStyle() {
 				boolean running = MidiPlayer.getInstance(getContext()).isRunning();
 				return (running ? R.style.TGImageButton_Stop : R.style.TGImageButton_Play);
 			}
 		};
 	}
-	
+
 	public TGActionProcessorListener createActionProcessor(String actionId) {
 		return new TGActionProcessorListener(getContext(), actionId);
 	}
-	
+
 	public TGActionProcessorListener createFragmentActionProcessor(TGFragmentController<?> controller) {
 		TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(getContext(), TGOpenFragmentAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_CONTROLLER, controller);
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_ACTIVITY, getActivity());
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createContextMenuActionProcessor(TGMenuController controller) {
 		TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(getContext(), TGOpenMenuAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);

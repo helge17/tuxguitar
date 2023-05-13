@@ -26,7 +26,7 @@
             android:id="@+id/main_drawer_song_info"
             style="?attr/mainDrawerImageButtonInfoStyle"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/action_change_info"
+            android:contentDescription="@string/action_change_properties"
             android:gravity="right"/>
     </RelativeLayout>
 
