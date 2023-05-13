@@ -77,13 +77,6 @@ public class TGTableCanvasPainter {
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.addRectangle(x + 1.5f, y + 1.5f, size - 3f, size - 3f);
 				painter.closePath();
-/*
-				painter.setAlpha(SELECTION_BORDER_ALPHA);
-				painter.setForeground(getCaretColor(factory, trackColor, colorBackground, isRestMeasure));
-				painter.initPath(UIPainter.PATH_DRAW);
-				painter.addRectangle(x + 1.5f, y + 1.5f, size - 3f, size - 3f);
-				painter.closePath();
-*/
 				painter.setAlpha(255);
 				painter.setBackground(trackColor);
 			}
