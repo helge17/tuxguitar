@@ -82,8 +82,12 @@ public class Selector {
 
 	public void paintSelectedArea(TGLayout viewLayout, UIPainter painter) {
 		if (isActive()) {
+			int activeTrackNumber = tablature.getTrackSelection();
 			TGTrackImpl track = (TGTrackImpl) initial.getMeasure().getTrack();
-			track.paintBeatSelection(viewLayout, painter, start, end);
+			// paint only if track is displayed
+			if (activeTrackNumber < 0 || (activeTrackNumber==track.getNumber())) {
+				track.paintBeatSelection(viewLayout, painter, start, end);
+			}
 		}
 	}
 
