@@ -10,11 +10,11 @@
         android:id="@+id/action_redo"
         android:title="@string/action_redo"/>
     <item
-        android:id="@+id/action_set_voice_1"
-        android:title="@string/action_set_voice_1"/>
+        android:id="@+id/action_voice_1"
+        android:title="@string/action_voice_1"/>
     <item
-        android:id="@+id/action_set_voice_2"
-        android:title="@string/action_set_voice_2"/>
+        android:id="@+id/action_voice_2"
+        android:title="@string/action_voice_2"/>
     <item
         android:id="@+id/action_copy"
         android:title="@string/action_copy"/>

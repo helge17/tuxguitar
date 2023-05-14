@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.system.properties;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Properties;
 
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesException;
@@ -17,8 +18,9 @@ public class TGFilePropertiesReader extends TGPropertiesBaseHandler implements T
 		try {
 			File file = new File(getPrefix() + module + getSuffix());
 			if( file.exists() ){
-				((TGPropertiesImpl)properties).clear();
-				((TGPropertiesImpl)properties).load(new FileInputStream(file));
+				Properties newProperties = new Properties();
+				newProperties.load(new FileInputStream(file));
+				properties.update(newProperties);
 			}else{
 				TGFilePropertiesWriter tgFilePropertiesWriter = new TGFilePropertiesWriter(getPrefix(), getSuffix());
 				tgFilePropertiesWriter.writeProperties(properties, module);

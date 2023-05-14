@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.util.properties;
 
+import java.util.Properties;
+
 public interface TGProperties {
 	
 	public String getValue(String key);
@@ -9,5 +11,7 @@ public interface TGProperties {
 	public void remove(String key);
 	
 	public void clear();
+	
+	public void update(Properties newProperties);
 	
 }

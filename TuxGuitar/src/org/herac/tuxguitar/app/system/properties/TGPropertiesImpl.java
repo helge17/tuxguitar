@@ -38,4 +38,9 @@ public class TGPropertiesImpl implements TGProperties{
 	public void store(OutputStream outputStream, String comments) throws IOException{
 		this.properties.store(outputStream, comments);
 	}
+	
+	public void update(Properties newProperties) {
+		this.properties.putAll(newProperties);
+	}
+
 }

@@ -2,6 +2,7 @@ package org.herac.tuxguitar.midi.synth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.herac.tuxguitar.util.properties.TGProperties;
 
@@ -32,4 +33,13 @@ public class TGSynthChannelProperties implements TGProperties{
 	public void clear() {
 		this.properties.clear();
 	}
+
+	public void update(Properties newProperties) {
+		HashMap<String, String> newPropertiesMap = new HashMap<>();
+		for (Map.Entry<Object, Object> entry : newProperties.entrySet()) {
+			newPropertiesMap.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+			}
+		this.properties.putAll((Map<String, String>)newPropertiesMap);
+	}
+
 }
