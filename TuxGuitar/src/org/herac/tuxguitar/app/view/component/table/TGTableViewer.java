@@ -442,7 +442,7 @@ public class TGTableViewer implements TGEventListener {
 				this.resetTexts = false;
 			}
 			if( this.followScroll ){
-				this.followHorizontalScroll(getEditor().getTablature().getCaret().getMeasure().getNumber());
+				this.followHorizontalScroll(getEditor().getTablature().getCaret().getMeasure().getNumber(), 0);
 				this.followScroll = false;
 			}
 			getControl().redraw();
@@ -458,7 +458,7 @@ public class TGTableViewer implements TGEventListener {
 				int selectedMeasure = measure.getNumber();
 				if(this.selectedTrack != selectedTrack || this.selectedMeasure != selectedMeasure){
 					this.redrawRows(selectedTrack);
-					this.followHorizontalScroll(selectedMeasure);
+					this.followHorizontalScroll(selectedMeasure, 3);
 				}
 				this.selectedTrack = selectedTrack;
 				this.selectedMeasure = selectedMeasure;
@@ -466,18 +466,23 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
-	private void followHorizontalScroll(int selectedMeasure){
+	private void followHorizontalScroll(int selectedMeasure, int nbMeasuresMargin){
 		int hScrollSelection = this.hScroll.getValue();
 		int hScrollThumb = this.hScroll.getThumb();
 		
 		float measureSize = this.table.getRowHeight();
 		float measurePosition = ((selectedMeasure * measureSize) - measureSize);
 		
+		// reduce margin is window is very small to avoid left <-> right oscillations
+		while (hScrollThumb < 4 * nbMeasuresMargin* measureSize)  {
+			nbMeasuresMargin--;
+		}
+		
 		if((measurePosition - hScrollSelection) < 0 ){
 			this.hScroll.setValue(Math.max(Math.round(measurePosition), 0));
 		}
-		else if((measurePosition + measureSize - hScrollSelection ) > hScrollThumb){
-			this.hScroll.setValue(Math.max(Math.round(measurePosition + measureSize - hScrollThumb), 0));
+		else if((measurePosition + (1+nbMeasuresMargin)*measureSize - hScrollSelection ) > hScrollThumb){
+			this.hScroll.setValue(Math.max(Math.round(measurePosition - nbMeasuresMargin*measureSize), 0));
 		}
 	}
 	
