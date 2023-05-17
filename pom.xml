@@ -390,8 +390,9 @@
 		</repository>
 	</repositories>
 
-	<!-- We need a cross platform SWT version to compile projects -->
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- We need a cross platform SWT version to compile projects -->
 		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 		<org.eclipse.swt.artifactId>org.eclipse.swt</org.eclipse.swt.artifactId>
 	</properties>
