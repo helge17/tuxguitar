@@ -31,7 +31,6 @@ public class TGPasteAction extends TGActionBase {
 		if (clipboard.getSegment() != null) {
 			TGActionManager.getInstance(this.getContext()).execute(TGOpenMeasurePasteDialogAction.NAME, tgActionContext);
 		} else if (clipboard.getBeats() != null) {
-			//TGActionManager.getInstance(getContext()).execute(TGPasteNoteAction.NAME, tgActionContext);
 			TGStoredBeatList beatList = TGClipboard.getInstance(this.getContext()).getBeats();
 			if (beatList != null && beatList.getLength() > 0) {
 				TGSongManager songManager = this.getSongManager(tgActionContext);

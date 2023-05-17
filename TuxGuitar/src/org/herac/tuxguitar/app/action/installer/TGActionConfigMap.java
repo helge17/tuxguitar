@@ -348,7 +348,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//edit actions
 		this.map(TGCutAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGCopyAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGPasteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGPasteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGUndoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGRedoAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGSetMouseModeSelectionAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
