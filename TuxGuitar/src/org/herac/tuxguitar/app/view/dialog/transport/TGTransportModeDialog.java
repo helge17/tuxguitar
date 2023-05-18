@@ -34,12 +34,11 @@ public class TGTransportModeDialog {
 	
 	protected static final int MIN_SELECTION = 1;
 	protected static final int MAX_SELECTION = 500;
-	protected static final int[] DEFAULT_PERCENTS = new int[]{25, 50, 75, 100, 125, 150, 175, 200};
 	
 	private TGViewContext context;
 	protected UIRadioButton simple;
 	protected UICheckBox simpleLoop;
-	protected UIDropDownSelect<Integer> simplePercent;
+	protected UISpinner simplePercent;
 	
 	protected UIRadioButton custom;
 	protected UISpinner customFrom;
@@ -69,6 +68,7 @@ public class TGTransportModeDialog {
 		this.simple = uiFactory.createRadioButton(dialog);
 		this.simple.setText(TuxGuitar.getProperty("transport.mode.simple"));
 		this.simple.setSelected(mode.getType() == MidiPlayerMode.TYPE_SIMPLE);
+		this.simple.setFocus();
 		dialogLayout.set(this.simple, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		RadioSelectionAdapter simpleAdapter = new RadioSelectionAdapter(this.simple);
 		
@@ -83,14 +83,18 @@ public class TGTransportModeDialog {
 		simplePercentLabel.setText(TuxGuitar.getProperty("transport.mode.simple.tempo-percent"));
 		simpleLayout.set(simplePercentLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		simpleAdapter.addControl(simplePercentLabel);
-		
-		this.simplePercent = uiFactory.createDropDownSelect(simpleGroup);
-		for(int i = 0; i < DEFAULT_PERCENTS.length; i ++){
-			this.simplePercent.addItem(new UISelectItem<Integer>(Integer.toString(DEFAULT_PERCENTS[i]) + "%", DEFAULT_PERCENTS[i]));
-		}
-		this.simplePercent.setSelectedValue(mode.getSimplePercent());
+
+		this.simplePercent = uiFactory.createSpinner(simpleGroup);
+		this.simplePercent.setMinimum(MIN_SELECTION);
+		this.simplePercent.setMaximum(MAX_SELECTION);
+		this.simplePercent.setValue(mode.getSimplePercent());
 		simpleLayout.set(this.simplePercent, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		simpleAdapter.addControl(this.simplePercent);
+
+		UILabel tempoSimplePercentLabel = uiFactory.createLabel(simpleGroup);
+		tempoSimplePercentLabel.setText("%");
+		simpleLayout.set(tempoSimplePercentLabel, 1, 3, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		simpleAdapter.addControl(tempoSimplePercentLabel);
 		
 		this.simpleLoop = uiFactory.createCheckBox(simpleGroup);
 		this.simpleLoop.setText(TuxGuitar.getProperty("transport.mode.simple.loop"));
@@ -238,7 +242,7 @@ public class TGTransportModeDialog {
 	public void changeTransportMode() {
 		Integer type = (this.custom.isSelected() ? MidiPlayerMode.TYPE_CUSTOM : MidiPlayerMode.TYPE_SIMPLE );
 		Boolean loop = (type == MidiPlayerMode.TYPE_CUSTOM || (type == MidiPlayerMode.TYPE_SIMPLE && this.simpleLoop.isSelected()));
-		Integer simplePercent = this.simplePercent.getSelectedValue();
+		Integer simplePercent = this.simplePercent.getValue();
 		Integer loopSHeader = this.loopSHeader.getSelectedValue();
 		Integer loopEHeader = this.loopEHeader.getSelectedValue();
 		
