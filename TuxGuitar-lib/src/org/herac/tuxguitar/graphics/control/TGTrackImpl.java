@@ -7,7 +7,9 @@
 package org.herac.tuxguitar.graphics.control;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.ui.resource.UIPainter;
 
 /**
  * @author julian
@@ -51,5 +53,21 @@ public class TGTrackImpl extends TGTrack{
 	
 	public void setTabHeight(float tabHeight) {
 		this.tabHeight = tabHeight;
+	}
+
+	public void paintBeatSelection(TGLayout viewLayout, UIPainter painter, TGBeat from, TGBeat to) {
+		TGMeasureImpl fromMeasure = (TGMeasureImpl) from.getMeasure();
+		TGMeasureImpl toMeasure = (TGMeasureImpl) to.getMeasure();
+
+		if (fromMeasure.getNumber() == toMeasure.getNumber()) {
+			fromMeasure.paintInternalSelection(viewLayout, painter, from, to);
+		} else {
+			fromMeasure.paintSelectionStart(viewLayout, painter, from);
+			for (int i = fromMeasure.getNumber(); i < toMeasure.getNumber() - 1; i++) {
+				TGMeasureImpl measure = (TGMeasureImpl) this.getMeasure(i);
+				measure.paintFullSelection(viewLayout, painter);
+			}
+			toMeasure.paintSelectionEnd(viewLayout, painter, to);
+		}
 	}
 }

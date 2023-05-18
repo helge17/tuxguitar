@@ -19,6 +19,10 @@
 	<shortcut keys="Left" action="action.caret.go-left"/>
 	<shortcut keys="Right" action="action.caret.go-right"/>
 	<shortcut keys="F5" action="action.gui.open-song-info-dialog"/>
+	<shortcut keys="Control x" action="action.edit.cut"/>
+	<shortcut keys="Control c" action="action.edit.copy"/>
+	<shortcut keys="Control v" action="action.edit.paste"/>
+	<shortcut keys="Control r" action="action.edit.repeat"/>
 	<shortcut keys="Control y" action="action.edit.redo"/>
 	<shortcut keys="Control z" action="action.edit.undo"/>
 	<shortcut keys="Control 1" action="action.edit.voice-1"/>
@@ -35,12 +39,10 @@
 	<shortcut keys="Shift Ins" action="action.gui.open-marker-editor-dialog"/>
 	<shortcut keys="Alt Right" action="action.marker.go-next"/>
 	<shortcut keys="Alt Left" action="action.marker.go-previous"/>
-	<shortcut keys="Control c" action="action.gui.open-measure-copy-dialog"/>
 	<shortcut keys="Control Shift Left" action="action.measure.go-first"/>
 	<shortcut keys="Control Shift Right" action="action.measure.go-last"/>
 	<shortcut keys="Control Right" action="action.measure.go-next"/>
 	<shortcut keys="Control Left" action="action.measure.go-previous"/>
-	<shortcut keys="Control v" action="action.gui.open-measure-paste-dialog"/>
 	<shortcut keys="*" action="action.note.duration.change-dotted"/>
 	<shortcut keys="/" action="action.note.duration.change-division-type"/>
 	<shortcut keys="b" action="action.gui.open-bend-dialog"/>

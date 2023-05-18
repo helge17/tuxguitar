@@ -13,6 +13,10 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogActio
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGRepeatAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
@@ -85,6 +89,7 @@ import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenKeyBindingEditorAction;
+import org.herac.tuxguitar.app.action.impl.selector.*;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenPluginListDialogAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSkinAction;
@@ -278,6 +283,10 @@ public class TGActionInstaller {
 		installAction(new TGPrintPreviewAction(context));
 		
 		//edit actions
+		installAction(new TGCutAction(context));
+		installAction(new TGCopyAction(context));
+		installAction(new TGPasteAction(context));
+		installAction(new TGRepeatAction(context));
 		installAction(new TGUndoAction(context));
 		installAction(new TGRedoAction(context));
 		installAction(new TGSetMouseModeSelectionAction(context));
@@ -298,6 +307,18 @@ public class TGActionInstaller {
 		installAction(new TGGoLeftAction(context));
 		installAction(new TGGoUpAction(context));
 		installAction(new TGGoDownAction(context));
+		
+		//selector actions
+		installAction(new TGClearSelectionAction(context));
+		installAction(new TGExtendSelectionLeftAction(context));
+		installAction(new TGExtendSelectionRightAction(context));
+		installAction(new TGExtendSelectionPreviousAction(context));
+		installAction(new TGExtendSelectionNextAction(context));
+		installAction(new TGExtendSelectionFirstAction(context));
+		installAction(new TGExtendSelectionLastAction(context));
+		installAction(new TGSelectAllAction(context));
+		installAction(new TGStartDragSelectionAction(context));
+		installAction(new TGUpdateDragSelectionAction(context));
 		
 		//song actions
 		installAction(new TGCopySongFromAction(context));

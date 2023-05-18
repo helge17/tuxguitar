@@ -50,6 +50,7 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
 		this.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
 		this.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
+		this.setSelectionColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SELECTION));
 		this.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
 		this.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
 		this.setMeasureNumberColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_MEASURE_NUMBER));

@@ -2,6 +2,7 @@ package org.herac.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.SWT;
 import org.herac.tuxguitar.ui.event.UIMouseWheelEvent;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListenerManager;
 import org.herac.tuxguitar.ui.resource.UIPosition;
@@ -17,7 +18,7 @@ public class SWTMouseWheelListenerManager extends UIMouseWheelListenerManager im
 	
 	public void mouseScrolled(MouseEvent e) {
 		if(!this.control.isIgnoreEvents()) {
-			this.onMouseWheel(new UIMouseWheelEvent(this.control, new UIPosition(e.x, e.y), e.button, e.count));
+			this.onMouseWheel(new UIMouseWheelEvent(this.control, new UIPosition(e.x, e.y), e.button, e.count, (e.stateMask & SWT.SHIFT) != 0));
 		}
 	}
 }

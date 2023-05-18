@@ -95,7 +95,7 @@ public class MeasureMenuItem extends TGMenuItem {
 		this.cleanMeasure.setEnabled(!running);
 		this.removeMeasure.setEnabled(!running);
 		this.copyMeasure.setEnabled(!running);
-		this.pasteMeasure.setEnabled(!running && TGClipboard.getInstance(findContext()).getData() != null);
+		this.pasteMeasure.setEnabled(!running && TGClipboard.getInstance(findContext()).getSegment() != null);
 	}
 	
 	public void loadProperties(){

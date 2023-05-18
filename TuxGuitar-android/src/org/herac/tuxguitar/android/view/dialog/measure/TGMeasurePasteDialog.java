@@ -24,6 +24,12 @@ import android.widget.Spinner;
 
 public class TGMeasurePasteDialog extends TGModalFragment {
 
+	public static final String ATTRIBUTE_PASTE_MODE = "pasteMode";
+	public static final String ATTRIBUTE_PASTE_COUNT = "pasteCount";
+
+	public static final Integer TRANSFER_TYPE_REPLACE = 1;
+	public static final Integer TRANSFER_TYPE_INSERT = 2;
+
 	public TGMeasurePasteDialog() {
 		super(R.layout.view_measure_paste_dialog);
 	}
@@ -78,8 +84,8 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 	}
 	
 	public void fillOptions() {
-		this.fillOption(R.id.measure_paste_dlg_options_mode_replace, TGPasteMeasureAction.TRANSFER_TYPE_REPLACE, true);
-		this.fillOption(R.id.measure_paste_dlg_options_mode_insert, TGPasteMeasureAction.TRANSFER_TYPE_INSERT, false);
+		this.fillOption(R.id.measure_paste_dlg_options_mode_replace, TRANSFER_TYPE_REPLACE, true);
+		this.fillOption(R.id.measure_paste_dlg_options_mode_insert, TRANSFER_TYPE_INSERT, false);
 	}
 
 	public void fillOption(int id, Integer value, boolean selected) {
@@ -104,8 +110,8 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 	public void processAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGPasteMeasureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());
-		tgActionProcessor.setAttribute(TGPasteMeasureAction.ATTRIBUTE_PASTE_COUNT, this.findSelectedCount());
-		tgActionProcessor.setAttribute(TGPasteMeasureAction.ATTRIBUTE_PASTE_MODE, this.findSelectedMode());
+		tgActionProcessor.setAttribute(ATTRIBUTE_PASTE_COUNT, this.findSelectedCount());
+		tgActionProcessor.setAttribute(ATTRIBUTE_PASTE_MODE, this.findSelectedMode());
 		tgActionProcessor.process();
 	}
 

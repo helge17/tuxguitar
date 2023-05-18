@@ -6,12 +6,14 @@ public class UIMouseEvent extends UIEvent {
 	
 	private Integer button;
 	private UIPosition position;
+	private Boolean isShiftDown;
 	
-	public UIMouseEvent(UIComponent control, UIPosition position, Integer button) {
+	public UIMouseEvent(UIComponent control, UIPosition position, Integer button, Boolean isShiftDown) {
 		super(control);
 		
 		this.button = button;
 		this.position = position;
+		this.isShiftDown = isShiftDown;
 	}
 
 	public UIPosition getPosition() {
@@ -20,5 +22,9 @@ public class UIMouseEvent extends UIEvent {
 
 	public Integer getButton() {
 		return button;
+	}
+	
+	public Boolean isShiftDown()  {
+		return isShiftDown;
 	}
 }

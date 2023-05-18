@@ -31,6 +31,7 @@ public class TGResources {
 	private UIColor scoreNoteColor;
 	private UIColor tabNoteColor;
 	private UIColor playNoteColor;
+	private UIColor selectionColor;
 	private UIColor colorWhite;
 	private UIColor colorBlack;
 	private UIColor loopSMarkerColor;
@@ -107,7 +108,11 @@ public class TGResources {
 	public UIColor getTabNoteColor() {
 		return this.tabNoteColor;
 	}
-	
+
+	public UIColor getSelectionColor() {
+	    return this.selectionColor;
+    }
+
 	public UIColor getColorWhite() {
 		return this.colorWhite;
 	}
@@ -147,6 +152,7 @@ public class TGResources {
 		this.scoreNoteColor = getColor(style.getScoreNoteColor());
 		this.tabNoteColor = getColor(style.getTabNoteColor());
 		this.playNoteColor = getColor(style.getPlayNoteColor());
+		this.selectionColor = getColor(style.getSelectionColor());
 		this.loopSMarkerColor = getColor(style.getLoopSMarkerColor());
 		this.loopEMarkerColor = getColor(style.getLoopEMarkerColor());
 		this.measureNumberColor = getColor(style.getMeasureNumberColor());

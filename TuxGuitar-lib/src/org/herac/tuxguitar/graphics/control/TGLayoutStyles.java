@@ -48,6 +48,7 @@ public class TGLayoutStyles {
 	private UIColorModel scoreNoteColor;
 	private UIColorModel tabNoteColor;
 	private UIColorModel playNoteColor;
+	private UIColorModel selectionColor;
 	private UIColorModel loopSMarkerColor;
 	private UIColorModel loopEMarkerColor;
 	private UIColorModel measureNumberColor;
@@ -398,6 +399,14 @@ public class TGLayoutStyles {
 
 	public void setPlayNoteColor(UIColorModel playNoteColor) {
 		this.playNoteColor = playNoteColor;
+	}
+
+	public UIColorModel getSelectionColor() {
+		return selectionColor;
+	}
+
+	public void setSelectionColor(UIColorModel selectionColor) {
+		this.selectionColor = selectionColor;
 	}
 
 	public UIColorModel getLoopSMarkerColor() {

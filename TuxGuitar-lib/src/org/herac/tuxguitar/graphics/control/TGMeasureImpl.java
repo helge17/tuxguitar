@@ -78,6 +78,8 @@ public class TGMeasureImpl extends TGMeasure{
 		new int[] { 6, 3, 7, 4, 8, 5, 9 } ,
 	};
 	
+	private static final int SELECTION_ALPHA = 18;
+	
 	/**
 	 * Espacio por defecto de la clave
 	 */
@@ -1434,5 +1436,123 @@ public class TGMeasureImpl extends TGMeasure{
 			buffer.setResource(resourceKey, markerColor);
 		}
 		return markerColor;
+	}
+	public void paintInternalSelection(TGLayout layout, UIPainter painter, TGBeat from, TGBeat to) {
+		float x = getBeatLeftEdge(layout, (TGBeatImpl) from);
+		float y = getTopEdge(layout);
+		float width = getBeatRightEdge(layout, (TGBeatImpl) to) - x;
+		float height = getBottomEdge(layout) - y;
+
+		for (int style : new int[] {UIPainter.PATH_FILL, UIPainter.PATH_DRAW}) {
+			initSelectionPath(layout, painter, style);
+			painter.setAlpha(style == UIPainter.PATH_FILL ? SELECTION_ALPHA : 255);
+			painter.addRectangle(x, y, width, height);
+			painter.closePath();
+		}
+	}
+
+	public void paintSelectionStart(TGLayout layout, UIPainter painter, TGBeat from) {
+		float x1 = getBeatLeftEdge(layout, (TGBeatImpl) from);
+		float x2 = getRightEdge(layout);
+		float y1 = getTopEdge(layout);
+		float y2 = getBottomEdge(layout);
+
+		initSelectionPath(layout, painter, UIPainter.PATH_FILL);
+		painter.setAlpha(SELECTION_ALPHA);
+		painter.addRectangle(x1, y1, x2 - x1, y2 - y1);
+		painter.closePath();
+
+		initSelectionPath(layout, painter, UIPainter.PATH_DRAW);
+		painter.setAlpha(255);
+		painter.moveTo(x2, y2);
+		painter.lineTo(x1, y2);
+		painter.lineTo(x1, y1);
+		painter.lineTo(x2, y1);
+		painter.closePath();
+	}
+
+	private float getBeatLeftEdge(TGLayout layout, TGBeatImpl beat) {
+		return getPosX() + beat.getPosX() + beat.getSpacing(layout) + getHeaderImpl().getLeftSpacing(layout) * .5f;
+	}
+
+	public void paintSelectionEnd(TGLayout layout, UIPainter painter, TGBeat to) {
+		float x1 = getPosX();
+		float x2 = getBeatRightEdge(layout, (TGBeatImpl) to);
+		float y1 = getTopEdge(layout);
+		float y2 = getBottomEdge(layout);
+
+		initSelectionPath(layout, painter, UIPainter.PATH_FILL);
+		painter.setAlpha(SELECTION_ALPHA);
+		painter.addRectangle(x1, y1, x2 - x1, y2 - y1);
+		painter.closePath();
+
+		initSelectionPath(layout, painter, UIPainter.PATH_DRAW);
+		painter.setAlpha(255);
+		painter.moveTo(x1, y2);
+		painter.lineTo(x2, y2);
+		painter.lineTo(x2, y1);
+		painter.lineTo(x1, y1);
+		painter.closePath();
+	}
+
+	private float getBeatRightEdge(TGLayout layout, TGBeatImpl beat) {
+		return getPosX() + beat.getPosX() + beat.getSpacing(layout) + beat.getMinimumWidth() + getHeaderImpl().getLeftSpacing(layout) * .5f;
+	}
+
+	public void paintFullSelection(TGLayout layout, UIPainter painter) {
+		float x1 = getPosX();
+		float x2 = getRightEdge(layout);
+		float y1 = getTopEdge(layout);
+		float y2 = getBottomEdge(layout);
+
+		initSelectionPath(layout, painter, UIPainter.PATH_FILL);
+		painter.setAlpha(SELECTION_ALPHA);
+		painter.addRectangle(x1, y1, x2 - x1, y2 - y1);
+		painter.closePath();
+
+		initSelectionPath(layout, painter, UIPainter.PATH_DRAW);
+		painter.setAlpha(255);
+		painter.moveTo(x1, y1);
+		painter.lineTo(x2, y1);
+		painter.moveTo(x1, y2);
+		painter.lineTo(x2, y2);
+		painter.closePath();
+	}
+
+	private void initSelectionPath(TGLayout layout, UIPainter painter, int style) {
+		float scale = layout.getScale();
+		painter.setLineWidth(1f * scale);
+		painter.setForeground(layout.getResources().getSelectionColor());
+		painter.setBackground(layout.getResources().getSelectionColor());
+		painter.initPath(style);
+		painter.setAntialias(false);
+	}
+	
+	private float getRightEdge(TGLayout layout) {
+		return getPosX() + getWidth(layout) + getSpacing();
+	}
+
+	private float getTopEdge(TGLayout layout) {
+		int style = layout.getStyle();
+		if ((style & (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) == (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) {
+			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
+		} else if ((style & TGLayout.DISPLAY_SCORE) != 0) {
+			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
+		} else if ((style & TGLayout.DISPLAY_TABLATURE) != 0) {
+			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - layout.getStringSpacing());
+		}
+		return getPosY();
+	}
+
+	private float getBottomEdge(TGLayout layout) {
+		int style = layout.getStyle();
+		if ((style & (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) == (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) {
+			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
+		} else if ((style & TGLayout.DISPLAY_SCORE) != 0) {
+			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (layout.getScoreLineSpacing() * 5));
+		} else if ((style & TGLayout.DISPLAY_TABLATURE) != 0) {
+			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
+		}
+		return getPosY();
 	}
 }
