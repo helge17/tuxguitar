@@ -22,6 +22,7 @@
 	<shortcut keys="Command x" action="action.edit.cut"/>
 	<shortcut keys="Command c" action="action.edit.copy"/>
 	<shortcut keys="Command v" action="action.edit.paste"/>
+	<shortcut keys="Command r" action="action.edit.repeat"/>
 	<shortcut keys="Command y" action="action.edit.redo"/>
 	<shortcut keys="Command z" action="action.edit.undo"/>
 	<shortcut keys="Command 1" action="action.edit.voice-1"/>

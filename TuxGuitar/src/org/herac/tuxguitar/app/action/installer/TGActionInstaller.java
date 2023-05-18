@@ -16,6 +16,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAc
 import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGRepeatAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
@@ -285,6 +286,7 @@ public class TGActionInstaller {
 		installAction(new TGCutAction(context));
 		installAction(new TGCopyAction(context));
 		installAction(new TGPasteAction(context));
+		installAction(new TGRepeatAction(context));
 		installAction(new TGUndoAction(context));
 		installAction(new TGRedoAction(context));
 		installAction(new TGSetMouseModeSelectionAction(context));

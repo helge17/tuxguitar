@@ -4,6 +4,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGRepeatAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
@@ -27,6 +28,7 @@ public class EditMenuItem extends TGMenuItem{
 	private UIMenuActionItem cut;
 	private UIMenuActionItem copy;
 	private UIMenuActionItem paste;
+	private UIMenuActionItem repeat;
 	private UIMenuActionItem undo;
 	private UIMenuActionItem redo;
 	private UIMenuCheckableItem modeSelection;
@@ -50,6 +52,9 @@ public class EditMenuItem extends TGMenuItem{
 		//--PASTE--
 		this.paste = this.editMenuItem.getMenu().createActionItem();
 		this.paste.addSelectionListener(this.createActionProcessor(TGPasteAction.NAME));
+		//--REPEAT--
+		this.repeat = this.editMenuItem.getMenu().createActionItem();
+		this.repeat.addSelectionListener(this.createActionProcessor(TGRepeatAction.NAME));
 		//--UNDO--
 		this.undo = this.editMenuItem.getMenu().createActionItem();
 		this.undo.addSelectionListener(this.createActionProcessor(TGUndoAction.NAME));
@@ -87,6 +92,7 @@ public class EditMenuItem extends TGMenuItem{
 		this.cut.setEnabled(!running && tablature.getSelector().isActive());
 		this.copy.setEnabled(!running);
 		this.paste.setEnabled(!running && TGClipboard.getInstance(findContext()).hasContents());
+		this.repeat.setEnabled(!running && tablature.getSelector().isActive());
 		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
 		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
 		this.modeSelection.setChecked(kit.getMouseMode() == EditorKit.MOUSE_MODE_SELECTION);
@@ -104,6 +110,7 @@ public class EditMenuItem extends TGMenuItem{
 		setMenuItemTextAndAccelerator(this.cut, "edit.cut", TGCutAction.NAME);
 		setMenuItemTextAndAccelerator(this.copy, "edit.copy", TGCopyAction.NAME);
 		setMenuItemTextAndAccelerator(this.paste, "edit.paste", TGPasteAction.NAME);
+		setMenuItemTextAndAccelerator(this.repeat, "edit.repeat", TGRepeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.undo, "edit.undo", TGUndoAction.NAME);
 		setMenuItemTextAndAccelerator(this.redo, "edit.redo", TGRedoAction.NAME);
 		setMenuItemTextAndAccelerator(this.modeSelection, "edit.mouse-mode-selection", TGSetMouseModeSelectionAction.NAME);
