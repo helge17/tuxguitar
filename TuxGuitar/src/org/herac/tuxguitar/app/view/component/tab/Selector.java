@@ -42,9 +42,7 @@ public class Selector {
 	    if (initial == null || beat == null) {
 	    	initializeSelection(beat);
 		} else {
-	    	if (beat != initial) {
-	    		active = true;
-			}
+    		active = true;
 			if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber() || initialIsEarlierInTheSameMeasure(beat)) {
 				start = initial;
 				end = beat;
