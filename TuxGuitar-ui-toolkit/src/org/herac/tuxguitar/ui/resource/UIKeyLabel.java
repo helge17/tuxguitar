@@ -66,7 +66,7 @@ public class UIKeyLabel {
 		new UIKeyLabel(SPACE,"Space"),
 		new UIKeyLabel(ENTER,"Enter"),
 		new UIKeyLabel(BACKSPACE,"BackSpace"),
-		new UIKeyLabel(CONTROL, "Control"),
+		new UIKeyLabel(CONTROL, "Ctrl"),
 		new UIKeyLabel(SHIFT, "Shift"),
 		new UIKeyLabel(ALT,"Alt"),
 		new UIKeyLabel(COMMAND,"\u2318"),

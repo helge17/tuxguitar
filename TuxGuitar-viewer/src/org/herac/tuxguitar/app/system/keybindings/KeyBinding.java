@@ -148,7 +148,7 @@ class KeyConversion {
 		new KeyConversion("Down",KeyBindingConstants.DOWN),
 		new KeyConversion("Left",KeyBindingConstants.LEFT),
 		new KeyConversion("Right",KeyBindingConstants.RIGHT),
-		new KeyConversion("Control",KeyBindingConstants.CONTROL),
+		new KeyConversion("Ctrl",KeyBindingConstants.CONTROL),
 		new KeyConversion("Shift",KeyBindingConstants.SHIFT),
 		new KeyConversion("Alt",KeyBindingConstants.ALT),
 		new KeyConversion("Tab",KeyBindingConstants.TAB),

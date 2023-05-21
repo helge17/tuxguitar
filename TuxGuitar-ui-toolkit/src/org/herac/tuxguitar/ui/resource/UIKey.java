@@ -1,7 +1,8 @@
 package org.herac.tuxguitar.ui.resource;
 
 public class UIKey {
-	
+
+	// The stings defined here must match the SWT key names, otherwise the accelerators will not be displayed correctly in the menu
 	public static final UIKey F1 = new UIKey("F1");
 	public static final UIKey F2 = new UIKey("F2");
 	public static final UIKey F3 = new UIKey("F3");
@@ -24,7 +25,7 @@ public class UIKey {
 	public static final UIKey PAGE_DOWN = new UIKey("PgDn");
 	public static final UIKey END = new UIKey("End");
 	public static final UIKey ALT = new UIKey("Alt");
-	public static final UIKey CONTROL = new UIKey("Control");
+	public static final UIKey CONTROL = new UIKey("Ctrl");
 	public static final UIKey COMMAND = new UIKey("Command");
 	public static final UIKey SHIFT = new UIKey("Shift");
 	public static final UIKey TAB = new UIKey("Tab");

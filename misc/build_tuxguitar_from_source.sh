@@ -91,6 +91,7 @@ echo -e "\n# Remove some files and directories to find out if they are needed to
   rm -r TuxGuitar-midi-input
   rm -r TuxGuitar-ui-toolkit-qt5
   rm -r TuxGuitar-viewer
+  rm    TuxGuitar-ui-toolkit/src/org/herac/tuxguitar/ui/resource/UIKeyLabel.java
 echo "# OK."
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
