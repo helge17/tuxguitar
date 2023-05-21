@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S bash -l
 
 # Exit on error
 #set -e
@@ -210,6 +210,8 @@ scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-swt
 
 function build_tg_for_bsd {
 
+install_eclipse_swt
+
 #for GUI_TK in swt jfx; do
 for GUI_TK in swt; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
@@ -251,7 +253,7 @@ install_eclipse_swt
 for GUI_TK in swt; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ..."
   cd build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
-  /usr/local/bin/mvn --batch-mode -e clean verify
+  mvn --batch-mode -e clean verify
 
   # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
   mkdir target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
@@ -267,10 +269,10 @@ done
 function build_tg_for_android {
 
 # Install Android Studio from https://developer.android.com/studio/
-# Android Studio    downloaded to tuxguitar_build_dependencies/android-studio/android-studio-2020.3.1.25-linux.tar.gz   & installed in tuxguitar_build_dependencies/android-studio/android-studio-2020.3.1.25-linux
-# Android SDK Tools downloaded to tuxguitar_build_dependencies/android-studio/commandlinetools-linux-7583922_latest.zip & installed in tuxguitar_build_dependencies/android-studio/android-studio-2020.3.1.25-linux/cmdline-tools/latest/
+# Android Studio    downloaded to $SW_DIR/android-studio/android-studio-2020.3.1.25-linux.tar.gz   & installed in $SW_DIR/android-studio/android-studio-2020.3.1.25-linux
+# Android SDK Tools downloaded to $SW_DIR/android-studio/commandlinetools-linux-7583922_latest.zip & installed in $SW_DIR/android-studio/android-studio-2020.3.1.25-linux/cmdline-tools/latest/
 # Initial setup:
-#   export ANDROID_HOME=/home/$USER/Software/TuxGuitar/tuxguitar_build_dependencies/android-studio/android-studio-2020.3.1.25-linux
+#   export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
 #   cd $ANDROID_HOME/bin && ./studio.sh
 # Agree to all licenses:
 #   yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
@@ -299,6 +301,9 @@ echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
 
 # BSD 64 bit x86_64 build
 BUILD_ARCH=x86_64
+SWT_VERSION=4.13
+SWT_DATE=201909161045
+SWT_PLATFORM=gtk-linux
 [ `uname` == Linux ] && start_remote_bsd_build
 [ `uname` == FreeBSD ] && build_tg_for_bsd
 

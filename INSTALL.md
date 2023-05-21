@@ -85,16 +85,14 @@ $ tuxguitar
 
 ## Generic GNU/Linux
 
-On Non-Debian-based systems install the prerequisites using your package manager. Then download and install SWT, the TuxGuitar sources and the VST header files as described for Debian above.
+On Non-Debian-based systems install the prerequisites using your package manager. Then download and install SWT, download the TuxGuitar sources and the VST header files as described for Debian above.
 
-### Build and install
+### Build and Start TuxGuitar
 
 ```sh
 $ cd build-scripts/tuxguitar-linux-swt-x86_64
 $ mvn -e clean verify -P native-modules
 ```
-
-### Start TuxGuitar
 
 ```sh
 $ cd target/tuxguitar-*
@@ -139,7 +137,7 @@ $ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
 $ cd -
 ```
 
-### Build and install
+### Build and Start TuxGuitar
 
 ```sh
 $ cd build-scripts/tuxguitar-windows-swt-x86_64
@@ -152,23 +150,59 @@ To start TuxGuitar you need a Java Runtime Environment. You can get the one from
 
 ## Build on MacOS
 
-On MacOS you need [Homebrew](https://brew.sh) to build TuxGuitar. The basic steps are:
+On MacOS you need to download and install [Homebrew](https://brew.sh) to build TuxGuitar.
+
+### Install Prerequisites
 
 ```sh
-$ brew install oracle-jdk maven
-$ cd build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
-$ /usr/local/bin/mvn -e clean verify
+$ brew install openjdk maven wget
 ```
-The application will be located in the `build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder.
+
+### Download and install SWT for MacOS
+
+```sh
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-cocoa-macosx-x86_64.zip
+$ mkdir swt-4.13-cocoa-macosx-x86_64
+$ cd swt-4.13-cocoa-macosx-x86_64
+$ unzip ../swt-4.13-cocoa-macosx-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx.x86_64 -Dpackaging=jar -Dversion=4.13
+$ cd ..
+```
+
+### Get the TuxGuitar sources
+
+Same as for Debian (see above).
+
+### Build and Start TuxGuitar
+
+```sh
+$ cd build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
+$ mvn -e clean verify
+```
+
+The application is now located in the `build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
 
 ## Build on FreeBSD
 
-On FreeBSD you don't need to download SWT mnaually. The basic steps to build TuxGuitar are:
+### Install Prerequisites
 
 ```sh
-$ pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth
+$ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget
+```
+
+### Get SWT and the TuxGuitar sources
+
+FreeBSD needs the SWT package for Linux to build. Download and install SWT and download the TuxGuitar sources as described for Debian above.
+
+### Build and Start TuxGuitar
+
+
+```sh
 $ cd build-scripts/tuxguitar-freebsd-swt-x86_64
 $ mvn -e clean verify -P native-modules
 ```
 
-The application will be located in the `build-scripts/tuxguitar-freebsd-swt-x86_64/target/tuxguitar-SNAPSHOT-freebsd-swt-x86_64` folder.
+```sh
+$ cd target/tuxguitar-*
+$ ./tuxguitar.sh
+```
