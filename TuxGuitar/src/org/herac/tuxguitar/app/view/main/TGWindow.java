@@ -35,6 +35,7 @@ public class TGWindow implements TGEventListener {
 	private TGContext context;
 	private TGSyncProcess loadTitleProcess;
 	private TGCursorController cursorController;
+	private TGWindowDivider tableDivider;
 	
 	private UIWindow window;
 	
@@ -62,6 +63,11 @@ public class TGWindow implements TGEventListener {
 		this.loadInitialBounds();
 	}
 	
+	public TGWindowDivider getTableDivider() {
+		return tableDivider;
+	}
+
+	
 	private void createShellComposites(UIFactory uiFactory) {
 		TGConfigManager tgConfig = TGConfigManager.getInstance(this.context);
 		
@@ -87,9 +93,12 @@ public class TGWindow implements TGEventListener {
 		TGWindowDivider tgWindowDivider = new TGWindowDivider(this.context);
 		tgWindowDivider.createDivider(this.window);
 		
-		TGTableViewer tgTableViewer = TGTableViewer.getInstance(this.context);
-		tgTableViewer.init(this.window);
+		this.tableDivider = new TGWindowDivider(this.context);
+		this.tableDivider.createDivider(this.window);
 		
+		TGTableViewer tgTableViewer = TGTableViewer.getInstance(this.context);
+		tgTableViewer.init(this.window, tgConfig.getBooleanValue(TGConfigKeys.SHOW_TRACKS));
+
 		UIPanel bottom = uiFactory.createPanel(this.window, false);
 		bottom.setLayout(new UITableLayout(0f));
 		bottom.getLayout().set(UITableLayout.IGNORE_INVISIBLE, true);

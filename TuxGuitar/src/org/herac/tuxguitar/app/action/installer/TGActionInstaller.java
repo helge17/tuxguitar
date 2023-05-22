@@ -130,6 +130,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMainToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleTableViewerAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleViewAction;
 import org.herac.tuxguitar.editor.action.TGActionBase;
@@ -547,6 +548,7 @@ public class TGActionInstaller {
 		installAction(new TGToggleMarkerListAction(context));
 		installAction(new TGToggleMainToolbarAction(context));
 		installAction(new TGToggleEditToolbarAction(context));
+		installAction(new TGToggleTableViewerAction(context));
 		
 		installAction(new TGOpenDocumentationDialogAction(context));
 		installAction(new TGOpenAboutDialogAction(context));

@@ -154,6 +154,7 @@ public class TGIconManager {
 	private UIImage strokeDown;
 	private UIImage settings;
 	private UIImage toolbarEdit;
+	private UIImage tableViewer;
 	private UIImage listAdd;
 	private UIImage listEdit;
 	private UIImage listRemove;
@@ -325,6 +326,7 @@ public class TGIconManager {
 		this.strokeDown = loadIcon("stroke_down.png");
 		this.settings = loadIcon("settings.png");
 		this.toolbarEdit = loadIcon("toolbar_edit.png");
+		this.tableViewer = loadIcon("table_viewer.png");
 		this.listAdd = loadIcon("list_add.png");
 		this.listEdit = loadIcon("list_edit.png");
 		this.listRemove = loadIcon("list_remove.png");
@@ -886,6 +888,10 @@ public class TGIconManager {
 	
 	public UIImage getToolbarEdit() {
 		return this.toolbarEdit;
+	}
+	
+	public UIImage getTableViewer() {
+		return this.tableViewer;
 	}
 	
 	public UIImage getArrowUp() {
