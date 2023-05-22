@@ -3,7 +3,9 @@ package org.herac.tuxguitar.app.view.toolbar.main;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleTableViewerAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
 import org.herac.tuxguitar.app.view.dialog.channel.TGChannelManagerDialog;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
@@ -15,6 +17,7 @@ import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 public class TGMainToolBarSectionView extends TGMainToolBarSection {
 	
 	private UIToolCheckableItem showEditToolBar;
+	private UIToolCheckableItem showTrackTable;
 	private UIToolMenuItem menuItem;
 	
 	private UIMenuActionItem showFretBoard;
@@ -29,6 +32,9 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 		this.showEditToolBar = this.getToolBar().getControl().createCheckItem();
 		this.showEditToolBar.addSelectionListener(this.createActionProcessor(TGToggleEditToolbarAction.NAME));
 		
+		this.showTrackTable = this.getToolBar().getControl().createCheckItem();
+		this.showTrackTable.addSelectionListener(this.createActionProcessor(TGToggleTableViewerAction.NAME));
+
 		this.menuItem = this.getToolBar().getControl().createMenuItem();
 		
 		//--FRETBOARD--
@@ -49,6 +55,7 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 	
 	public void loadProperties(){
 		this.showEditToolBar.setToolTipText(this.getText("view.show-edit-toolbar"));
+		this.showTrackTable.setToolTipText(this.getText("view.show-table-viewer"));
 		this.menuItem.setToolTipText(this.getText("view"));
 		this.showFretBoard.setText(this.getText("view.show-fretboard", TGFretBoardEditor.getInstance(this.getToolBar().getContext()).isVisible()));
 		this.showInstruments.setText(this.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(this.getToolBar().getContext()).isDisposed())));
@@ -57,6 +64,7 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 	
 	public void loadIcons(){
 		this.showEditToolBar.setImage(this.getIconManager().getToolbarEdit());
+		this.showTrackTable.setImage(this.getIconManager().getTableViewer());
 		this.menuItem.setImage(this.getIconManager().getFretboard());
 		this.showFretBoard.setImage(this.getIconManager().getFretboard());
 		this.showInstruments.setImage(this.getIconManager().getInstruments());
@@ -65,6 +73,7 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 	
 	public void updateItems(){
 		this.showEditToolBar.setChecked(TGEditToolBar.getInstance(this.getToolBar().getContext()).isVisible());
+		this.showTrackTable.setChecked(TGTableViewer.getInstance(this.getToolBar().getContext()).isVisible());
 		this.showFretBoard.setText(this.getText("view.show-fretboard", TGFretBoardEditor.getInstance(this.getToolBar().getContext()).isVisible()));
 		this.showInstruments.setText(this.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(this.getToolBar().getContext()).isDisposed())));
 		this.showTransport.setText(this.getText("view.show-transport", (!TGTransportDialog.getInstance(this.getToolBar().getContext()).isDisposed())));

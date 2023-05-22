@@ -16,6 +16,7 @@ public class TGConfigKeys {
 	public static final String SHOW_MARKERS = "show.markers";
 	public static final String SHOW_MAIN_TOOLBAR = "show.main-toolbar";
 	public static final String SHOW_EDIT_TOOLBAR = "show.edit-toolbar";
+	public static final String SHOW_TRACKS = "show.tracks";
 	public static final String LAYOUT_MODE = "layout.mode";
 	public static final String LAYOUT_STYLE = "layout.style";
 	public static final String LANGUAGE = "language";

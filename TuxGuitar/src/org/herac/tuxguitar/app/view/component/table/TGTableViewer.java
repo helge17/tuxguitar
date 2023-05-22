@@ -92,14 +92,15 @@ public class TGTableViewer implements TGEventListener {
 		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 	}
 	
-	public void init(UIContainer parent){
+	public void init(UIContainer parent, boolean visible){
 		this.composite = this.getUIFactory().createScrollBarPanel(parent, true, true, true);
 		this.addColorModel();
+		this.loadConfig();
 		this.addLayout();
 		this.addTable();
 		this.addHScroll();
 		this.addVScroll();
-		this.loadConfig();
+		this.updateVisibility(visible);
 	}
 	
 	private void addLayout(){
@@ -624,4 +625,20 @@ public class TGTableViewer implements TGEventListener {
 			}
 		});
 	}
+
+	public void updateVisibility(boolean visible) {
+        this.composite.setVisible(visible);
+        TGWindow window = TGWindow.getInstance(context);
+        window.getTableDivider().setVisible(visible);
+        window.getWindow().layout();
+	}
+
+    public void toggleVisibility() {
+	    this.updateVisibility(!this.isVisible());
+    }
+
+    public boolean isVisible() {
+		return this.composite.isVisible();
+	}
+
 }

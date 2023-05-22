@@ -129,6 +129,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMainToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import org.herac.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
+import org.herac.tuxguitar.app.action.impl.view.TGToggleTableViewerAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleViewAction;
 import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
@@ -610,6 +611,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGToggleMarkerListAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGToggleMainToolbarAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGToggleEditToolbarAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGToggleTableViewerAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenDocumentationDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenAboutDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 	}

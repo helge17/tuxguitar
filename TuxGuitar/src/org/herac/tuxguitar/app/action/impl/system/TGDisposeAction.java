@@ -48,6 +48,7 @@ public class TGDisposeAction extends TGActionBase {
 		config.setValue(TGConfigKeys.SHOW_MARKERS,!TGMarkerList.getInstance(getContext()).isDisposed());
 		config.setValue(TGConfigKeys.SHOW_MAIN_TOOLBAR, TGMainToolBar.getInstance(getContext()).isVisible());
 		config.setValue(TGConfigKeys.SHOW_EDIT_TOOLBAR, TGEditToolBar.getInstance(getContext()).isVisible());
+		config.setValue(TGConfigKeys.SHOW_TRACKS, TGTableViewer.getInstance(getContext()).isVisible());
 		config.setValue(TGConfigKeys.MAXIMIZED, tgWindow.getWindow().isMaximized());
 		config.setValue(TGConfigKeys.WIDTH, tgWindow.getWindow().getBounds().getWidth());
 		config.setValue(TGConfigKeys.HEIGHT, tgWindow.getWindow().getBounds().getHeight());
