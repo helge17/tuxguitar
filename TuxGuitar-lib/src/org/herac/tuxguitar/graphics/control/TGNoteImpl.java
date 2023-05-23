@@ -303,6 +303,7 @@ public class TGNoteImpl extends TGNote {
 			//----------ligadura---------------------------------------
 			if (isTiedNote()) {
 				TGNoteImpl noteForTie = getNoteForTie();
+				float yDirection = ((direction == TGBeatGroup.DIRECTION_UP ? 1.0f : -1.0f));
 				float tX = x - (20.0f * layoutScale);
 				float tY = (y1 + (layout.getScoreLineSpacing() / 2f));
 				if (noteForTie != null) {
@@ -318,8 +319,8 @@ public class TGNoteImpl extends TGNote {
 				layout.setTiedStyle(painter, playing);
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.moveTo(tX, tY);
-				painter.cubicTo(tX, tY - tHeight1, tX + tWidth, tY - tHeight1, tX + tWidth, tY);
-				painter.cubicTo(tX + tWidth, tY - tHeight2, tX, tY - tHeight2, tX, tY);
+				painter.cubicTo(tX, tY + yDirection*tHeight1, tX + tWidth, tY + yDirection*tHeight1, tX + tWidth, tY);
+				painter.cubicTo(tX + tWidth, tY + yDirection*tHeight2, tX, tY + yDirection*tHeight2, tX, tY);
 				painter.closePath();
 			}
 			
