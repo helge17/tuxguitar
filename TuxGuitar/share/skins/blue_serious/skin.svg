@@ -2903,8 +2903,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="16"
-     inkscape:cx="126.5"
-     inkscape:cy="268.15625"
+     inkscape:cx="126.53125"
+     inkscape:cy="268.21875"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="943"
@@ -3709,7 +3709,7 @@
     <path
        id="path6613"
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.7569;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 111.72752,267.44224 c 8.70489,-7.7432 16.58074,0 16.58074,0 v 0" />
+       d="m 111.72752,273.79496 c 8.70489,7.7432 16.58074,0 16.58074,0 v 0" />
     <g
        id="g7524"
        transform="matrix(0.4620139,0,0,0.4620139,-96.715983,-138.41685)">
