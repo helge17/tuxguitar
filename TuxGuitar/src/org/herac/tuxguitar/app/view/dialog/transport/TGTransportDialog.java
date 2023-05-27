@@ -1,5 +1,11 @@
 package org.herac.tuxguitar.app.view.dialog.transport;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
@@ -32,6 +38,7 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
@@ -93,10 +100,12 @@ public class TGTransportDialog implements TGEventListener {
 	private boolean editingTickScale;
 	private long redrawTime;
 	private int status;
+	private TreeMap<Long, TGMeasureHeader> headerMap;
 	
 	public TGTransportDialog(TGContext context) {
 		this.context = context;
 		this.createSyncProcesses();
+		this.headerMap = new TreeMap<>();
 	}
 	
 	public void show() {
@@ -156,6 +165,7 @@ public class TGTransportDialog implements TGEventListener {
 		this.metronome = factory.createToggleButton(composite);
 		this.metronome.addSelectionListener(new TGActionProcessorListener(this.context , TGTransportMetronomeAction.NAME));
 		compositeLayout.set(this.metronome, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
+		compositeLayout.set(this.metronome, UITableLayout.MINIMUM_PACKED_WIDTH, 100f);
 		
 		this.mode = factory.createButton(composite);
 		this.mode.addSelectionListener(new TGActionProcessorListener(this.context , TGOpenTransportModeDialogAction.NAME));
@@ -304,6 +314,7 @@ public class TGTransportDialog implements TGEventListener {
 			}
 			
 			if( force || lastStatus != getStatus()){
+				updateHeaderMap();
 				if(getStatus() == STATUS_RUNNING){
 					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst2());
 					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast2());
@@ -318,6 +329,7 @@ public class TGTransportDialog implements TGEventListener {
 					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext2());
 					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop2());
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay2());
+					this.metronome.setText("");
 				}else if(getStatus() == STATUS_STOPPED){
 					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst1());
 					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast1());
@@ -325,6 +337,7 @@ public class TGTransportDialog implements TGEventListener {
 					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext1());
 					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop1());
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay1());
+					this.metronome.setText("");
 				}
 				this.loadPlayText();
 			}
@@ -442,6 +455,13 @@ public class TGTransportDialog implements TGEventListener {
 					this.updateTickLabel(Long.toString(position));
 					this.tickProgress.setValue((int)position);
 					this.redrawTime = time;
+					
+					TGSong song = TGDocumentManager.getInstance(context).getSong();
+					TGMeasureHeader first = song != null ? TablatureEditor.getInstance(context).getTablature().getSongManager().getFirstMeasureHeader(song) : null;
+					Map.Entry<Long, TGMeasureHeader> entry = headerMap.floorEntry(position);
+					TGMeasureHeader current = entry != null ? entry.getValue() : first;
+					Integer currentTempo = Math.round((float)current.getTempo().getValue()*(float)player.getMode().getCurrentPercent()/100.0f);
+					this.metronome.setText(currentTempo.toString());
 				}
 			}
 		}
@@ -508,5 +528,17 @@ public class TGTransportDialog implements TGEventListener {
 				return new TGTransportDialog(context);
 			}
 		});
+	}
+	
+	private void updateHeaderMap()  {
+		final TGSong song = TGDocumentManager.getInstance(context).getSong();
+		headerMap.clear();
+		SortedSet<TGMeasureHeader> headers = new TreeSet<>(Comparator.comparingLong(TGMeasureHeader::getStart));
+		for (int i = 0; i < song.countMeasureHeaders(); i++) {
+			headers.add(song.getMeasureHeader(i));
+		}
+		for (TGMeasureHeader header : headers) {
+			headerMap.put(header.getStart(), header);
+		}
 	}
 }
