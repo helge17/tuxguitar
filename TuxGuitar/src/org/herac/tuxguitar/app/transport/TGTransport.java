@@ -111,6 +111,7 @@ public class TGTransport {
 				TGErrorManager.getInstance(this.context).handleError(e);
 			}
 		}else{
+			gotoPlayerPosition();
 			player.pause();
 		}
 	}
