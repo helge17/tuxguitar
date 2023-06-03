@@ -15,6 +15,9 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGTable {
 	
+	private static final float DIVIDER_WIDTH = 2f;
+	
+	private final TGTableViewer viewer;
 	private TGContext context;
 	private UIPanel table;
 	private UIPanel columnControl;
@@ -26,8 +29,9 @@ public class TGTable {
 	private TGTableColumn columnCanvas;
 	private List<TGTableRow> rows;
 	
-	public TGTable(TGContext context, UILayoutContainer parent){
+	public TGTable(TGContext context, TGTableViewer viewer, UILayoutContainer parent){
 		this.context = context;
+		this.viewer = viewer;
 		this.rows = new ArrayList<TGTableRow>();
 		this.newTable(parent);
 	}
@@ -54,7 +58,11 @@ public class TGTable {
 	
 	public UIPanel getControl(){
 		return this.table;
-	}	
+	}
+	
+	public TGTableViewer getViewer() {
+		return viewer;
+	}
 
 	public void createTableLayout() {
 		UITableLayout uiLayout = new UITableLayout(0f);
@@ -70,9 +78,7 @@ public class TGTable {
 		
 		int columnIndex = 0;
 		this.createColumnHeaderLayout(uiLayout, this.columnNumber, ++columnIndex, false, null);
-		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnNumber, this.columnSoloMute), ++columnIndex);
 		this.createColumnHeaderLayout(uiLayout, this.columnSoloMute, ++columnIndex, false, null);
-		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnSoloMute, this.columnName), ++columnIndex);
 		this.createColumnHeaderLayout(uiLayout, this.columnName, ++columnIndex, false, 250f);
 		this.createColumnDividerLayout(uiLayout, dividerHelper.createDivider(this.columnName, this.columnInstrument), ++columnIndex);
 		this.createColumnHeaderLayout(uiLayout, this.columnInstrument, ++columnIndex, false, 250f);
@@ -84,7 +90,7 @@ public class TGTable {
 	
 	public void createColumnDividerLayout(UITableLayout uiLayout, UIDivider divider, int columnIndex) {
 		uiLayout.set(divider, 1, columnIndex, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-		uiLayout.set(divider, UITableLayout.PACKED_WIDTH, 2f);
+		uiLayout.set(divider, UITableLayout.PACKED_WIDTH, DIVIDER_WIDTH);
 		uiLayout.set(divider, UITableLayout.MARGIN, 0f);
 	}
 	
@@ -97,7 +103,11 @@ public class TGTable {
 	public void createRow(){
 		this.rows.add(new TGTableRow(this));
 	}
-	
+
+	public int getRowIndex(TGTableRow row) {
+		return this.rows.indexOf(row);
+	}
+
 	public float getRowHeight(){
 		return ((TGTableBodyLayout) this.rowControl.getLayout()).getRowHeight();
 	}

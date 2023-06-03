@@ -13,6 +13,7 @@ import org.herac.tuxguitar.ui.widget.UICanvas;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Region;
+import javafx.scene.control.Tooltip;
 
 public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 	
@@ -21,7 +22,6 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 	
 	public JFXCanvas(JFXContainer<? extends Region> parent, boolean bordered) {
 		super(new Canvas(), parent);
-		
 		this.paintListener = new JFXPaintListenerManagerAsync(this);
 		this.resizeListener = new JFXResizeListenerManager(this);
 	}
@@ -89,5 +89,9 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 			this.getControl().widthProperty().removeListener(this.resizeListener);
 			this.getControl().heightProperty().removeListener(this.resizeListener);
 		}
+	}
+	
+	public void setToolTipText(String text) {
+		Tooltip.install(this.getControl(), new Tooltip(text));
 	}
 }
