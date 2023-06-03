@@ -32,11 +32,11 @@ public class TGTableRowLayout extends UIAbstractLayout {
 		this.setBounds(this.row.getTable().getColumnCanvas(), this.row.getPainter(), rowHeight);
 	}
 	
-	public void setBounds(TGTableColumn column, TGTableRowCell cell, float rowHeight) {
+	public void setBounds(TGTableHeader column, TGTableRowCell cell, float rowHeight) {
 		this.setBounds(column, cell.getControl(), rowHeight);
 	}
 	
-	public void setBounds(TGTableColumn column, UIControl cell, float rowHeight) {
+	public void setBounds(TGTableHeader column, UIControl cell, float rowHeight) {
 		UIRectangle bounds = column.getControl().getBounds();
 		
 		cell.setBounds(new UIRectangle(bounds.getX(), 0, bounds.getWidth(), rowHeight));

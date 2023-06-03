@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
@@ -133,8 +131,6 @@ public class TGTableViewer implements TGEventListener {
 		this.table.getColumnName().getControl().addMouseUpListener(listener);
 		this.table.getColumnInstrument().getControl().addMouseUpListener(listener);
 		this.table.getColumnCanvas().getControl().addMouseUpListener(listener);
-		this.table.getColumnCanvas().getLabel().addMouseDoubleClickListener(new TGActionProcessorListener(this.context, TGOpenSongInfoDialogAction.NAME));
-		this.table.getColumnCanvas().getControl().addMouseDoubleClickListener(new TGActionProcessorListener(this.context, TGOpenSongInfoDialogAction.NAME));
 		
 		this.table.getColumnCanvas().getControl().addResizeListener(new UIResizeListener() {
 			public void onResize(UIResizeEvent event) {
@@ -174,7 +170,11 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void updateHScroll(){
-		int width = Math.round(getEditor().getTablature().getCaret().getTrack().countMeasures() * this.table.getRowHeight());
+		TGTrack track = getEditor().getTablature().getCaret().getTrack();
+		if (track == null) {
+			return;
+		}
+		int width = Math.round(track.countMeasures() * this.table.getRowHeight());
 		int canvasWidth = Math.round(this.table.getColumnCanvas().getControl().getBounds().getWidth());
 		this.hScroll.setIncrement(Math.round(this.table.getRowHeight()));
 		this.hScroll.setMaximum(Math.max((width - canvasWidth), 0));
@@ -432,7 +432,6 @@ public class TGTableViewer implements TGEventListener {
 	public void redraw() {
 		if(!isDisposed()){
 			this.updateTable();
-			this.table.getColumnCanvas().setTitle(TuxGuitar.getInstance().getDocumentManager().getSong().getName());
 			int selectedTrack = getEditor().getTablature().getCaret().getTrack().getNumber();
 			this.redrawRows(selectedTrack);
 			this.selectedTrack = selectedTrack;
@@ -461,6 +460,7 @@ public class TGTableViewer implements TGEventListener {
 				if(this.selectedTrack != selectedTrack || this.selectedMeasure != selectedMeasure){
 					this.redrawRows(selectedTrack);
 					this.followHorizontalScroll(selectedMeasure, 3);
+					this.table.getColumnCanvas().getControl().redraw();
 				}
 				this.selectedTrack = selectedTrack;
 				this.selectedMeasure = selectedMeasure;

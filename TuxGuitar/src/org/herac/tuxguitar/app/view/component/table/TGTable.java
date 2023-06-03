@@ -22,11 +22,11 @@ public class TGTable {
 	private UIPanel table;
 	private UIPanel columnControl;
 	private UIPanel rowControl;
-	private TGTableColumn columnNumber;
-	private TGTableColumn columnSoloMute;
-	private TGTableColumn columnName;
-	private TGTableColumn columnInstrument;
-	private TGTableColumn columnCanvas;
+	private TGTableHeaderLabel columnNumber;
+	private TGTableHeaderLabel columnSoloMute;
+	private TGTableHeaderLabel columnName;
+	private TGTableHeaderLabel columnInstrument;
+	private TGTableHeaderMeasures columnCanvas;
 	private List<TGTableRow> rows;
 	
 	public TGTable(TGContext context, TGTableViewer viewer, UILayoutContainer parent){
@@ -43,11 +43,11 @@ public class TGTable {
 		
 		this.columnControl = uiFactory.createPanel(this.table, false);
 		
-		this.columnNumber = new TGTableColumn(this);
-		this.columnSoloMute = new TGTableColumn(this);
-		this.columnName = new TGTableColumn(this);
-		this.columnInstrument = new TGTableColumn(this);
-		this.columnCanvas = new TGTableColumn(this);
+		this.columnNumber = new TGTableHeaderLabel(this);
+		this.columnSoloMute = new TGTableHeaderLabel(this);
+		this.columnName = new TGTableHeaderLabel(this);
+		this.columnInstrument = new TGTableHeaderLabel(this);
+		this.columnCanvas = new TGTableHeaderMeasures(this);
 		
 		this.rowControl = uiFactory.createPanel(this.table, false);
 		this.rowControl.setLayout(new TGTableBodyLayout());
@@ -94,12 +94,11 @@ public class TGTable {
 		uiLayout.set(divider, UITableLayout.MARGIN, 0f);
 	}
 	
-	public void createColumnHeaderLayout(UITableLayout uiLayout, TGTableColumn column, int columnIndex, Boolean fillX, Float minimumPackedWidth) {
+	private void createColumnHeaderLayout(UITableLayout uiLayout, TGTableHeader column, int columnIndex, Boolean fillX, Float minimumPackedWidth) {
 		uiLayout.set(column.getControl(), 1, columnIndex, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, fillX, false);
 		uiLayout.set(column.getControl(), UITableLayout.MINIMUM_PACKED_WIDTH, minimumPackedWidth);
 		uiLayout.set(column.getControl(), UITableLayout.MARGIN, 0f);
 	}
-	
 	public void createRow(){
 		this.rows.add(new TGTableRow(this));
 	}
@@ -124,23 +123,23 @@ public class TGTable {
 		return this.rowControl;
 	}
 	
-	public TGTableColumn getColumnInstrument() {
+	public TGTableHeaderLabel getColumnInstrument() {
 		return this.columnInstrument;
 	}
 	
-	public TGTableColumn getColumnName() {
+	public TGTableHeaderLabel getColumnName() {
 		return this.columnName;
 	}
 	
-	public TGTableColumn getColumnNumber() {
+	public TGTableHeaderLabel getColumnNumber() {
 		return this.columnNumber;
 	}
 	
-	public TGTableColumn getColumnSoloMute() {
+	public TGTableHeaderLabel getColumnSoloMute() {
 		return this.columnSoloMute;
 	}
 	
-	public TGTableColumn getColumnCanvas() {
+	public TGTableHeaderMeasures getColumnCanvas() {
 		return this.columnCanvas;
 	}
 	

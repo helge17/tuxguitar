@@ -12,7 +12,7 @@ public class TGTableDividerHelper {
 		this.table = table;
 	}
 
-	public UIDivider createDivider(TGTableColumn leftColumn, TGTableColumn rightColumn) {
+	public UIDivider createDivider(TGTableHeader leftColumn, TGTableHeader rightColumn) {
 		UIFactory uiFactory = this.table.getUIFactory();
 		UIDivider uiDivider = uiFactory.createVerticalDivider(this.table.getColumnControl());
 		uiDivider.addMouseDragListener(new TGTableDividerListener(this.table, leftColumn, rightColumn));
