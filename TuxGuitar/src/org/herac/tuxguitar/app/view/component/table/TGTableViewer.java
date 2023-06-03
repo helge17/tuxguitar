@@ -127,7 +127,7 @@ public class TGTableViewer implements TGEventListener {
 	
 	private void addTable(){
 		UIMouseUpListener listener = mouseFocusListener();
-		this.table = new TGTable(this.context, getControl());
+		this.table = new TGTable(this.context, this, getControl());
 		this.table.getColumnNumber().getControl().addMouseUpListener(listener);
 		this.table.getColumnSoloMute().getControl().addMouseUpListener(listener);
 		this.table.getColumnName().getControl().addMouseUpListener(listener);
@@ -218,16 +218,6 @@ public class TGTableViewer implements TGEventListener {
 		return new String();
 	}
 	
-	private String getSoloMute(TGTrack track){
-		if( track.isSolo() ){
-			return TuxGuitar.getProperty("track.short-solo-mute.s");
-		}
-		if( track.isMute() ){
-			return TuxGuitar.getProperty("track.short-solo-mute.m");
-		}
-		return TuxGuitar.getProperty("track.short-solo-mute.none");
-	}
-	
 	private void updateTable(){
 		if( this.update ){
 			this.updateTableMenu();
@@ -243,16 +233,16 @@ public class TGTableViewer implements TGEventListener {
 				final TGTableRow row = this.table.getRow(i);
 				if(row != null){
 					//Number
-					this.updateTableRow(row.getNumber(), track, Integer.toString(track.getNumber()));
+					this.updateTableTextRow(row.getNumber(), track, Integer.toString(track.getNumber()));
 					
 					//Solo-Mute
-					this.updateTableRow(row.getSoloMute(), track, getSoloMute(track));
+					this.updateTableButtonsRow(row.getSoloMute(), track);
 					
 					//Name
-					this.updateTableRow(row.getName(), track, track.getName());
+					this.updateTableTextRow(row.getName(), track, track.getName());
 					
 					//Instrument
-					this.updateTableRow(row.getInstrument(), track, getInstrument(track));
+					this.updateTableTextRow(row.getInstrument(), track, getInstrument(track));
 					
 					row.setMouseUpListenerLabel(new UIMouseUpListener() {
 						public void onMouseUp(UIMouseEvent event) {
@@ -347,12 +337,21 @@ public class TGTableViewer implements TGEventListener {
 		return false;
 	}
 	
-	private void updateTableRow(TGTableRowCell cell, TGTrack track, String label) {
-		cell.setText(label);
+	private void updateTableRow(TGTableRowCell cell, TGTrack track) {
 		cell.setData(TGTrack.class.getName(), track);
 		cell.setMenu((UIPopupMenu) this.menu.getMenu());
 	}
 	
+	private void updateTableTextRow(TGTableRowTextCell cell, TGTrack track, String label) {
+		cell.setText(label);
+		updateTableRow(cell, track);
+	}
+	
+	private void updateTableButtonsRow(TGTableRowButtonsCell cell, TGTrack track) {
+		cell.setSolo(track.isSolo());
+		cell.setMute(track.isMute());
+		updateTableRow(cell, track);
+	}	
 	private void updateTableMenu() {
 		this.disposeMenu();
 		this.createTrackMenu();
@@ -382,7 +381,9 @@ public class TGTableViewer implements TGEventListener {
 			TGTableRow row = this.table.getRow(i);
 			
 			row.getNumber().setText(Integer.toString(((TGTrack)row.getNumber().getData(TGTrack.class.getName())).getNumber()));
-			row.getSoloMute().setText(getSoloMute((TGTrack)row.getSoloMute().getData(TGTrack.class.getName())));
+			row.getSoloMute().setSolo(((TGTrack)row.getSoloMute().getData(TGTrack.class.getName())).isSolo());
+			row.getSoloMute().setMute(((TGTrack)row.getSoloMute().getData(TGTrack.class.getName())).isMute());
+
 			row.getName().setText(((TGTrack)row.getName().getData(TGTrack.class.getName())).getName());
 			row.getInstrument().setText(getInstrument((TGTrack)row.getInstrument().getData(TGTrack.class.getName())));
 		}
@@ -627,17 +628,17 @@ public class TGTableViewer implements TGEventListener {
 	}
 
 	public void updateVisibility(boolean visible) {
-        this.composite.setVisible(visible);
-        TGWindow window = TGWindow.getInstance(context);
-        window.getTableDivider().setVisible(visible);
-        window.getWindow().layout();
+		this.composite.setVisible(visible);
+		TGWindow window = TGWindow.getInstance(context);
+		window.getTableDivider().setVisible(visible);
+		window.getWindow().layout();
 	}
 
-    public void toggleVisibility() {
-	    this.updateVisibility(!this.isVisible());
-    }
+	public void toggleVisibility() {
+		this.updateVisibility(!this.isVisible());
+	}
 
-    public boolean isVisible() {
+	public boolean isVisible() {
 		return this.composite.isVisible();
 	}
 

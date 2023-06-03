@@ -158,6 +158,14 @@ public class TGIconManager {
 	private UIImage listAdd;
 	private UIImage listEdit;
 	private UIImage listRemove;
+	private UIImage solo;
+	private UIImage soloDisabled;
+	private UIImage soloDim;
+	private UIImage soloDisabledDim;
+	private UIImage mute;
+	private UIImage muteDisabled;
+	private UIImage muteDim;
+	private UIImage muteDisabledDim;
 	private UIImage listMoveUp;
 	private UIImage listMoveDown;
 	
@@ -330,6 +338,14 @@ public class TGIconManager {
 		this.listAdd = loadIcon("list_add.png");
 		this.listEdit = loadIcon("list_edit.png");
 		this.listRemove = loadIcon("list_remove.png");
+		this.solo = loadIcon("solo.png");
+		this.soloDisabled = loadIcon("solo-disabled.png");
+		this.soloDim = loadIcon("solo-dim.png");
+		this.soloDisabledDim = loadIcon("solo-disabled-dim.png");
+		this.mute = loadIcon("mute.png");
+		this.muteDisabled = loadIcon("mute-disabled.png");
+		this.muteDim = loadIcon("mute-dim.png");
+		this.muteDisabledDim = loadIcon("mute-disabled-dim.png");
 		this.listMoveUp = loadIcon("list_move_up.png");
 		this.listMoveDown = loadIcon("list_move_down.png");
 	}
@@ -936,6 +952,37 @@ public class TGIconManager {
 
 	public UIImage getListRemove() {
 		return this.listRemove;
+	}
+	
+	public UIImage getSolo() {
+		return solo;
+	}
+
+	public UIImage getSoloDisabled() {
+		return soloDisabled;
+	}
+
+	public UIImage getSoloDim() {
+		return soloDim;
+	}
+
+	public UIImage getSoloDisabledDim() {
+		return soloDisabledDim;
+	}
+	public UIImage getMute() {
+		return mute;
+	}
+
+	public UIImage getMuteDisabled() {
+		return muteDisabled;
+	}
+
+	public UIImage getMuteDim() {
+		return muteDim;
+	}
+
+	public UIImage getMuteDisabledDim() {
+		return muteDisabledDim;
 	}
 	
 	public UIImage getListMoveUp() {
