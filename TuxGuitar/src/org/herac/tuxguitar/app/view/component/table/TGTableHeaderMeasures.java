@@ -106,7 +106,7 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 			if (header.hasMarker()) {
 				final float margin = 1.0f;
 				TGIconManager iconManager = TGIconManager.getInstance(this.table.getViewer().getContext());
-				UIImage img = iconManager.getMarkerList();
+				UIImage img = iconManager.getMarker();
 				painter.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), x + margin, margin, cellSize - 2 * margin,
 						cellSize - 2 * margin);
 			}

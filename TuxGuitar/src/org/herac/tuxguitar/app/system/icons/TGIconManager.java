@@ -62,6 +62,7 @@ public class TGIconManager {
 	private UIImage transportMetronome;
 	private UIImage transportMode;
 	private UIImage markerList;
+	private UIImage marker;
 	private UIImage markerAdd;
 	private UIImage markerRemove;
 	private UIImage markerFirst;
@@ -282,6 +283,7 @@ public class TGIconManager {
 		this.transportMetronome = loadIcon("transport_metronome.png");
 		this.transportMode = loadIcon("transport_mode.png");
 		this.markerList = loadIcon("marker_list.png");
+		this.marker = loadIcon("marker.png");
 		this.markerAdd = loadIcon("marker_add.png");
 		this.markerRemove = loadIcon("marker_remove.png");
 		this.markerFirst = loadIcon("marker_first.png");
@@ -694,6 +696,10 @@ public class TGIconManager {
 		return this.markerList;
 	}
 	
+	public UIImage getMarker() {
+		return this.marker;
+	}
+
 	public UIImage getMarkerNext() {
 		return this.markerNext;
 	}
