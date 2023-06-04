@@ -12,10 +12,10 @@ public class TGTableDividerListener implements UIMouseDragListener {
 	public static final String RIGHT_CONTROL = "rightControl";
 	
 	private TGTable table;
-	private TGTableColumn leftColumn;
-	private TGTableColumn rightColumn;
+	private TGTableHeader leftColumn;
+	private TGTableHeader rightColumn;
 	
-	public TGTableDividerListener(TGTable table, TGTableColumn leftColumn, TGTableColumn rightColumn) {
+	public TGTableDividerListener(TGTable table, TGTableHeader leftColumn, TGTableHeader rightColumn) {
 		this.table = table;
 		this.leftColumn = leftColumn;
 		this.rightColumn = rightColumn;
