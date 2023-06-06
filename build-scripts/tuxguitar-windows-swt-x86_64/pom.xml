@@ -386,7 +386,7 @@
 							<headerType>gui</headerType>
 							<outfile>${project.build.directory}/${project.finalName}/tuxguitar.exe</outfile>
 							<jar>${project.build.directory}/${project.finalName}/lib/tuxguitar.jar</jar>
-							<icon>${project.build.directory}/${project.finalName}/share/skins/Oxygen/icon.ico</icon>
+							<icon>${project.build.directory}/${project.finalName}/dist/tuxguitar.ico</icon>
 							<errTitle>encc</errTitle>
 							<chdir>.</chdir>
 							<classPath>
