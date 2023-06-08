@@ -155,6 +155,12 @@ public class TGTableViewer implements TGEventListener {
 	
 	public void loadIcons() {
 		this.loadMenuIcons();
+		int rows = this.table.getRowCount();
+		for(int i = 0; i < rows; i ++){
+			TGTableRow row = this.table.getRow(i);
+			row.getSoloMute().loadIcons();
+		}
+		this.table.getColumnCanvas().loadIcons();
 	}
 	
 	public void fireUpdate(boolean newSong){

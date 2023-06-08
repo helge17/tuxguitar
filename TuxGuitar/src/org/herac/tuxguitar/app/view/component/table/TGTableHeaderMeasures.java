@@ -19,6 +19,7 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 
 	private TGTable table;
 	private UICanvas canvas;
+	private UIImage imgMarker;
 
 	public TGTableHeaderMeasures(TGTable table) {
 		this.table = table;
@@ -29,6 +30,7 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 		this.canvas.addMouseDownListener(this::headerClicked);
 
 		this.table.appendListeners(this.canvas);
+		loadIcons();
 	}
 
 	public UICanvas getControl() {
@@ -103,12 +105,10 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 		for (float x = -scrollX + j * cellSize; j < count && x < width; j++, x += cellSize) {
 			TGMeasureHeader header = song.getMeasureHeader(j);
 
-			if (header.hasMarker()) {
+			if (header.hasMarker() && this.imgMarker!=null) {
 				final float margin = 1.0f;
-				TGIconManager iconManager = TGIconManager.getInstance(this.table.getViewer().getContext());
-				UIImage img = iconManager.getMarker();
-				painter.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), x + margin, margin, cellSize - 2 * margin,
-						cellSize - 2 * margin);
+				painter.drawImage(this.imgMarker, 0, 0, this.imgMarker.getWidth(), this.imgMarker.getHeight(),
+						x + margin, margin, cellSize - 2 * margin, cellSize - 2 * margin);
 			}
 		}
 		colorBackground.dispose();
@@ -117,5 +117,10 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 
 	public UICanvas getPaintableControl() {
 		return getControl();
+	}
+	
+	public void loadIcons()  {
+		TGIconManager iconManager = TGIconManager.getInstance(this.table.getViewer().getContext());
+		this.imgMarker = iconManager.getMarker();
 	}
 }

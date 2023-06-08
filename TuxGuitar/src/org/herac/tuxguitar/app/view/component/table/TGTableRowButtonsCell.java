@@ -98,7 +98,7 @@ public class TGTableRowButtonsCell extends TGTableRowCell {
     this.muteButton.getControl().setToolTipText(TuxGuitar.getProperty("track.mute"));
   }
 
-  private void loadIcons() {
+  public void loadIcons() {
     TGIconManager iconManager = TGIconManager.getInstance(context);
     this.soloButton.setIcon(iconManager.getSoloDisabledDim());
     this.soloButton.setSelectedIcon(iconManager.getSoloDim());
