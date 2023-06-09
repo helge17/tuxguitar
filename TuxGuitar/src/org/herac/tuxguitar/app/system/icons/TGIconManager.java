@@ -64,7 +64,6 @@ public class TGIconManager {
 	private UIImage markerList;
 	private UIImage marker;
 	private UIImage markerAdd;
-	private UIImage markerRemove;
 	private UIImage markerFirst;
 	private UIImage markerLast;
 	private UIImage markerPrevious;
@@ -84,7 +83,6 @@ public class TGIconManager {
 	private UIImage optionStyle;
 	private UIImage optionSound;
 	private UIImage optionLanguage;
-	private UIImage optionToolbars;
 	private UIImage optionSkin;
 	private UIImage trackAdd;
 	private UIImage trackRemove;
@@ -235,7 +233,6 @@ public class TGIconManager {
 		this.optionSound = loadIcon("option_sound.png");
 		this.optionSkin = loadIcon("option_skin.png");
 		this.optionLanguage= loadIcon("option_language.png");
-		this.optionToolbars = loadIcon("option_toolbars.png");
 		this.compositionTimeSignature = loadIcon("timesignature.png");
 		this.compositionTempo = loadIcon("tempoicon.png");
 		this.compositionRepeatOpen = loadIcon("openrepeat.png");
@@ -285,7 +282,6 @@ public class TGIconManager {
 		this.markerList = loadIcon("marker_list.png");
 		this.marker = loadIcon("marker.png");
 		this.markerAdd = loadIcon("marker_add.png");
-		this.markerRemove = loadIcon("marker_remove.png");
 		this.markerFirst = loadIcon("marker_first.png");
 		this.markerLast = loadIcon("marker_last.png");
 		this.markerPrevious = loadIcon("marker_previous.png");
@@ -708,10 +704,6 @@ public class TGIconManager {
 		return this.markerPrevious;
 	}
 	
-	public UIImage getMarkerRemove() {
-		return this.markerRemove;
-	}
-	
 	public UIImage getInstruments() {
 		return this.instruments;
 	}
@@ -734,10 +726,6 @@ public class TGIconManager {
 	
 	public UIImage getOptionStyle() {
 		return this.optionStyle;
-	}
-	
-	public UIImage getOptionToolbars() {
-		return this.optionToolbars;
 	}
 	
 	public UIImage getOptionSkin() {
