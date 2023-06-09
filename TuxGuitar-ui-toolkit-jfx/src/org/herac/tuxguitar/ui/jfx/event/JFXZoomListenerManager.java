@@ -17,7 +17,7 @@ public class JFXZoomListenerManager extends UIZoomListenerManager implements Eve
 	
 	public void handle(ScrollEvent event) {
 		if(!this.control.isIgnoreEvents()) {
-			if( event.isControlDown() ) {
+			if( event.isControlDown() && event.getDeltaY()!=0) {
 				this.onZoom(new UIZoomEvent(this.control, (event.getDeltaY() > 0 ? 1 : -1)));
 				
 				event.consume();
