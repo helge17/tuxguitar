@@ -10,6 +10,6 @@ Type=Application
 MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb
 Categories=AudioVideo;Audio
 Exec=tuxguitar %F
-Icon=/opt/tuxguitar/share/skins/Oxygen/icon-96x96.png
+Icon=/opt/tuxguitar/share/skins/Oxygen/icon.png
 Terminal=false
 StartupNotify=false

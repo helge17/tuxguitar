@@ -72,12 +72,6 @@ public class TGIconManager {
 	private UIImage aboutLicense;
 	private UIImage aboutAuthors;
 	private UIImage appIcon;
-	private UIImage appIcon16;
-	private UIImage appIcon24;
-	private UIImage appIcon32;
-	private UIImage appIcon48;
-	private UIImage appIcon64;
-	private UIImage appIcon96;
 	private UIImage appSplash;
 	private UIImage optionMain;
 	private UIImage optionStyle;
@@ -218,12 +212,6 @@ public class TGIconManager {
 		this.editModeEdition = loadIcon("edit_mode_edition.png");
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
 		this.appIcon = loadIcon("icon.png");
-		this.appIcon16 = loadIcon("icon-16x16.png");
-		this.appIcon24 = loadIcon("icon-24x24.png");
-		this.appIcon32 = loadIcon("icon-32x32.png");
-		this.appIcon48 = loadIcon("icon-48x48.png");
-		this.appIcon64 = loadIcon("icon-64x64.png");
-		this.appIcon96 = loadIcon("icon-96x96.png");
 		this.appSplash = loadIcon("splash.png");
 		this.aboutDescription = loadIcon("about_description.png");
 		this.aboutLicense = loadIcon("about_license.png");
@@ -414,30 +402,6 @@ public class TGIconManager {
 	
 	public UIImage getAppIcon() {
 		return this.appIcon;
-	}
-	
-	public UIImage getAppIcon16() {
-		return this.appIcon16;
-	}
-	
-	public UIImage getAppIcon24() {
-		return this.appIcon24;
-	}
-	
-	public UIImage getAppIcon32() {
-		return this.appIcon32;
-	}
-	
-	public UIImage getAppIcon48() {
-		return this.appIcon48;
-	}
-	
-	public UIImage getAppIcon64() {
-		return this.appIcon64;
-	}
-	
-	public UIImage getAppIcon96() {
-		return this.appIcon96;
 	}
 	
 	public UIImage getAppSplash() {
