@@ -12,6 +12,7 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCustomTemplateAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
 import org.herac.tuxguitar.app.action.impl.file.TGImportSongAction;
@@ -45,6 +46,7 @@ public class FileMenuItem extends TGMenuItem {
 	private UIMenuActionItem newSongDefault;
 	private UIMenuActionItem open;
 	private UIMenuActionItem openURL;
+	private UIMenuActionItem customTemplate;
 	private UIMenuActionItem save;
 	private UIMenuActionItem saveAs;
 	private UIMenuActionItem close;
@@ -83,9 +85,12 @@ public class FileMenuItem extends TGMenuItem {
 		//--OPEN--
 		this.open = this.fileMenuItem.getMenu().createActionItem();
 		this.open.addSelectionListener(this.createActionProcessor(TGOpenFileAction.NAME));
-		//--OPEN--
+		//--OPEN URL--
 		this.openURL = this.fileMenuItem.getMenu().createActionItem();
 		this.openURL.addSelectionListener(this.createActionProcessor(TGOpenURLAction.NAME));
+		//-- CUSTOM TEMPLATE--
+		this.customTemplate = this.fileMenuItem.getMenu().createActionItem();
+		this.customTemplate.addSelectionListener(this.createActionProcessor(TGCustomTemplateAction.NAME));
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
 		//--CLOSE--
@@ -304,6 +309,7 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.newSongDefault, "file.new-song.default-template", TGLoadTemplateAction.NAME);
 		setMenuItemTextAndAccelerator(this.open, "file.open", TGOpenFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.openURL, "file.open-url", TGOpenURLAction.NAME);
+		setMenuItemTextAndAccelerator(this.customTemplate, "file.custom-template",TGCustomTemplateAction.NAME);
 		setMenuItemTextAndAccelerator(this.close, "file.close", TGCloseCurrentDocumentAction.NAME);
 		setMenuItemTextAndAccelerator(this.closeOthers, "file.close-others", TGCloseOtherDocumentsAction.NAME);
 		setMenuItemTextAndAccelerator(this.closeAll, "file.close-all", TGCloseAllDocumentsAction.NAME);

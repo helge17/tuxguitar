@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.template;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGUserFileUtils;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -50,19 +52,34 @@ public class TGTemplateManager {
 			e.printStackTrace();
 		}
 	}
-	
-	public TGTemplate getDefaultTemplate(){
+
+	public TGSong getDefaultTemplateAsSong() {
+		TGSong song = null;
 		TGTemplate tgTemplate = new TGTemplate();
 		tgTemplate.setName(new String());
+		if (TGUserFileUtils.isUserTemplateReadable()) {
+			tgTemplate.setResource(TGUserFileUtils.PATH_USER_TEMPLATE);
+			tgTemplate.setUserTemplate();
+			song = getTemplateAsSong(tgTemplate);
+			if (song != null) {
+				return song;
+			}
+		}
+		tgTemplate = new TGTemplate();
+		tgTemplate.setName(new String());
 		tgTemplate.setResource(TEMPLATE_DEFAULT_RESOURCE);
-		return tgTemplate;
+		return getTemplateAsSong(tgTemplate);
 	}
 	
 	public TGSong getTemplateAsSong(TGTemplate tgTemplate){
 		try{
 			if( tgTemplate != null && tgTemplate.getResource() != null ){
-				InputStream stream = TGResourceManager.getInstance(this.context).getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
-				
+				InputStream stream;
+				if (tgTemplate.isUserTemplate()) {
+					stream = new FileInputStream(tgTemplate.getResource());
+				} else {
+					stream = TGResourceManager.getInstance(this.context).getResourceAsStream(TEMPLATES_PREFIX + tgTemplate.getResource());
+				}
 				if( stream != null ) {
 					TGSongManager tgSongManager = TGDocumentManager.getInstance(this.context).getSongManager();
 					TGSongReaderHandle tgSongLoaderHandle = new TGSongReaderHandle();

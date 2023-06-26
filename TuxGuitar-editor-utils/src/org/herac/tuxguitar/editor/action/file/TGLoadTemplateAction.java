@@ -11,7 +11,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGLoadTemplateAction extends TGActionBase{
 	
-	public static final String NAME = "action.song.new-from-template";
+	public static final String NAME = "action.song.new";
 	
 	public static final String ATTRIBUTE_TEMPLATE = TGTemplate.class.getName();
 	
@@ -22,12 +22,10 @@ public class TGLoadTemplateAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		TGTemplateManager tgTemplateManager = TGTemplateManager.getInstance(getContext());
 		TGTemplate tgTemplate = context.getAttribute(ATTRIBUTE_TEMPLATE);
-		if( tgTemplate == null ) {
-			tgTemplate = tgTemplateManager.getDefaultTemplate();
-		}
-		
 		TGSong tgSong = null;
-		if( tgTemplate != null ){
+		if( tgTemplate == null ) {
+			tgSong = tgTemplateManager.getDefaultTemplateAsSong();
+		} else {
 			tgSong = tgTemplateManager.getTemplateAsSong(tgTemplate);
 		}
 		

@@ -37,6 +37,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCustomTemplateAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
 import org.herac.tuxguitar.app.action.impl.file.TGImportSongAction;
@@ -534,6 +535,7 @@ public class TGActionInstaller {
 		installAction(new TGOpenTrackPropertiesDialogAction(context));
 		installAction(new TGOpenScaleDialogAction(context));
 		installAction(new TGOpenURLAction(context));
+		installAction(new TGCustomTemplateAction(context));
 		installAction(new TGOpenTransportModeDialogAction(context));
 		installAction(new TGOpenMarkerEditorAction(context));
 		installAction(new TGOpenTransposeDialogAction(context) );
