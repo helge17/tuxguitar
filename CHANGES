@@ -1,15 +1,1 @@
-TuxGuitar 1.5.x changes:
-
-* Fix percussion channel issues in GP importer
-* Fix tied notes in MIDI importer
-* Enhance bend display
-* Add click & drag selection
-* Copy-paste and repeate selection
-* Adjust playback tempo in 1% steps
-* Imrove horizontal scrolling during playback
-* Add named tuning presets
-* Improve translations, add Android translations
-* Add basic support for hardware keyboards on Android
-* Provide RPM packages
-* Remove 32 bit builds for Linux and Windows
-* Many small improvements and cleanups
+TuxGuitar/doc/CHANGES

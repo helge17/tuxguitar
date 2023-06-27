@@ -78,11 +78,6 @@ echo -e "\n# Change version from SNAPSHOT to $TGVERSION in config files..."
 echo "# OK."
 
 echo -e "\n# Remove some files and directories to find out if they are needed to build TuxGuitar..."
-  rm -r AUTHORS
-  rm -r LICENSE
-  rm -r README.md
-  rm -r CHANGES
-  rm -r INSTALL.md
   rm -r TuxGuitar-android-gdrive-gdaa
   rm -r TuxGuitar-android-midimaster*
   #rm -r TuxGuitar-AudioUnit

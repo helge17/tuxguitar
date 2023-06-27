@@ -12,4 +12,5 @@ TuxGuitar 1.5.x changes:
 * Add basic support for hardware keyboards on Android
 * Provide RPM packages
 * Remove 32 bit builds for Linux and Windows
+* Add new skins
 * Many small improvements and cleanups
