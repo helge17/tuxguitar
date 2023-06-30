@@ -41,7 +41,12 @@ public class TGUserFileUtils {
 	}
 
 	private static String getUserTemplatePath() {
-		return getUserConfigDir() + File.separator + "user-template.tg";
+		String path = getUserConfigDir() + File.separator + "templates";
+		File directory = new File(path);
+		if (!isDirectoryAndReadable(directory)) {
+			tryCreateDirectory(directory);
+		}
+		return path + File.separator + "user-template.tg";
 	}
 	
 	private static String getUserConfigDir(){
