@@ -63,6 +63,9 @@ public class TGTemplateManager {
 			song = getTemplateAsSong(tgTemplate);
 			if (song != null) {
 				return song;
+			} else {
+				// user template readable, but cannot be used to create a new song. Corrupted?
+				TGUserFileUtils.deleteUserTemplate();
 			}
 		}
 		tgTemplate = new TGTemplate();
