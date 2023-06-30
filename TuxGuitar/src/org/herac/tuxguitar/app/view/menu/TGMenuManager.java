@@ -199,7 +199,7 @@ public class TGMenuManager implements TGEventListener {
 	
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
-		if( type == TGUpdateEvent.SELECTION ){
+		if( type == TGUpdateEvent.SELECTION || type == TGUpdateEvent.CUSTOM_TEMPLATE_CHANGED){
 			this.updateItemsProcess.process();
 		}
 	}
