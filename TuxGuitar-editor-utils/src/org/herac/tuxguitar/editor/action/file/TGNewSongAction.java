@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGNewSongAction extends TGActionBase{
 	
-	public static final String NAME = "action.song.new";
+	public static final String NAME = "action.song.new-default";
 	
 	public TGNewSongAction(TGContext context) {
 		super(context, NAME);

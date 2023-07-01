@@ -36,6 +36,8 @@ import org.herac.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentsAction;
 import org.herac.tuxguitar.app.action.impl.file.TGCloseOtherDocumentsAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCustomTemplateDeleteAction;
+import org.herac.tuxguitar.app.action.impl.file.TGCustomTemplateSelectAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
 import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
 import org.herac.tuxguitar.app.action.impl.file.TGImportSongAction;
@@ -327,8 +329,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//file actions
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
-		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
-		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT);
+		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT);
+		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGReadSongAction.NAME, LOCKABLE);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
@@ -598,6 +600,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenTrackPropertiesDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenScaleDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenURLAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGCustomTemplateSelectAction.NAME, LOCKABLE | SYNC_THREAD);
+		this.map(TGCustomTemplateDeleteAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGOpenTransportModeDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenMarkerEditorAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenTransposeDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);

@@ -4,6 +4,7 @@ public class TGTemplate {
 	
 	private String name;
 	private String resource;
+	private boolean isUserTemplate;
 	
 	public TGTemplate(){
 		super();
@@ -23,5 +24,13 @@ public class TGTemplate {
 
 	public void setResource(String resource) {
 		this.resource = resource;
+	}
+	
+	public void setUserTemplate() {
+		this.isUserTemplate = true;
+	}
+	
+	public boolean isUserTemplate() {
+		return this.isUserTemplate;
 	}
 }

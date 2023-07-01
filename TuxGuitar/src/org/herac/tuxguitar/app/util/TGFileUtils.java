@@ -18,26 +18,23 @@ import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLibraryLoader;
-import org.herac.tuxguitar.util.TGVersion;
+import org.herac.tuxguitar.util.TGUserFileUtils;
 
 public class TGFileUtils {
 
 	private static final String FILE_SCHEME = "file";
-
-	private static final String TG_HOME_PATH = "tuxguitar.home.path";
-	private static final String TG_CONFIG_PATH = "tuxguitar.config.path";
+	
 	private static final String TG_SHARE_PATH = "tuxguitar.share.path";
-	private static final String TG_USER_SHARE_PATH = "tuxguitar.user-share.path";
 	private static final String TG_CLASS_PATH = "tuxguitar.class.path";
 	private static final String TG_LIBRARY_PATH = "tuxguitar.library.path";
 	private static final String TG_LIBRARY_PREFIX = "tuxguitar.library.prefix";
 	private static final String TG_LIBRARY_EXTENSION = "tuxguitar.library.extension";
 
-	public static final String PATH_HOME = getHomePath();
-	public static final String PATH_USER_DIR = getDefaultUserAppDir();
-	public static final String PATH_USER_CONFIG = getUserConfigDir();
-	public static final String PATH_USER_PLUGINS_CONFIG = getUserPluginsConfigDir();
-	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
+	public static final String PATH_HOME = TGUserFileUtils.PATH_HOME;
+	public static final String PATH_USER_DIR = TGUserFileUtils.PATH_USER_DIR;
+	public static final String PATH_USER_CONFIG = TGUserFileUtils.PATH_USER_CONFIG;
+	public static final String PATH_USER_PLUGINS_CONFIG = TGUserFileUtils.PATH_USER_PLUGINS_CONFIG;
+	public static final String PATH_USER_SHARE_PATH = TGUserFileUtils.PATH_USER_SHARE_PATH;
 
 	//writable
 	public static final String[] TG_STATIC_SHARED_PATHS = getStaticSharedPaths();
@@ -175,95 +172,6 @@ public class TGFileUtils {
 		return null;
 	}
 
-	private static String getHomePath(){
-		// Look for the system property
-		String homePath = System.getProperty(TG_HOME_PATH);
-		if( homePath != null ) {
-			File file = new File(homePath).getAbsoluteFile();
-			if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
-				return file.getAbsolutePath();
-			}
-		}
-
-		// Default user dir
-		homePath = System.getProperty("user.dir");
-		if( homePath != null ) {
-			File file = new File(homePath).getAbsoluteFile();
-			if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
-				return file.getAbsolutePath();
-			}
-		}
-
-		return new File(".").getAbsolutePath();
-	}
-
-	private static String joinPath(String base, String ...entries) {
-		File file = new File(base);
-		for (String entry : entries) {
-			file = new File(file, entry);
-		}
-		return file.toString();
-	}
-
-	private static String getDefaultUserAppDir(){
-		String home = System.getProperty("user.home");
-		String folderName = "tuxguitar";
-		String os = System.getProperty("os.name");
-		if (os.equals("Mac OS X")) {
-			return joinPath(home, "Library", "Application Support", folderName);
-		}
-		if (os.contains("Windows")) {
-			return joinPath(home, "AppData", "Roaming", folderName);
-		}
-		return joinPath(home, ".config", folderName);
-	}
-
-	private static String getUserConfigDir(){
-		// Look for the system property
-		String configPath = System.getProperty(TG_CONFIG_PATH);
-
-		// Default System User Home
-		if( configPath == null ){
-			configPath = (getDefaultUserAppDir() + File.separator + "config");
-		}
-
-		// Check if the path exists
-		File file = new File(configPath);
-		if(!isExistentAndReadable( file )){
-			tryCreateDirectory( file );
-		}
-		return configPath;
-	}
-
-	private static String getUserPluginsConfigDir(){
-		String configPluginsPath = (getUserConfigDir() + File.separator + "plugins");
-
-		//Check if the path exists
-		File file = new File(configPluginsPath);
-		if(!isExistentAndReadable( file )){
-			tryCreateDirectory( file );
-		}
-
-		return configPluginsPath;
-	}
-
-	private static String getUserSharedPath(){
-		// Look for the system property
-		String userSharePath = System.getProperty(TG_USER_SHARE_PATH);
-
-		// Use configuration path as default.
-		if( userSharePath == null){
-			userSharePath = (getDefaultUserAppDir() + File.separator + "cache");
-		}
-
-		// Check if the path exists
-		File file = new File(userSharePath);
-		if(!isExistentAndReadable( file )){
-			tryCreateDirectory( file );
-		}
-		return userSharePath;
-	}
-
 	private static String[] getStaticSharedPaths(){
 		String staticSharedPaths = new String(PATH_USER_SHARE_PATH);
 		String staticSharedPathsProperty = System.getProperty(TG_SHARE_PATH);
@@ -278,26 +186,14 @@ public class TGFileUtils {
 	}
 
 	public static boolean isExistentAndReadable( File file ){
-		try{
-			return file.exists();
-		}catch(SecurityException se){
-			return false;
-		}
+		return TGUserFileUtils.isExistentAndReadable(file);
 	}
 
 	public static boolean isDirectoryAndReadable( File file ){
-		try{
-			return file.isDirectory();
-		}catch(SecurityException se){
-			return false;
-		}
+		return TGUserFileUtils.isDirectoryAndReadable(file);
 	}
 
 	public static boolean tryCreateDirectory( File file ){
-		try{
-			return file.mkdirs();
-		}catch(SecurityException se){
-			return false;
-		}
+		return TGUserFileUtils.tryCreateDirectory(file);
 	}
 }
