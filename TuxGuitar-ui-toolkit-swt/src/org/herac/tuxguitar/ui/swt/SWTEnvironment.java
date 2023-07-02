@@ -20,9 +20,6 @@ public class SWTEnvironment {
 	private static final String PLATFORM_WIN32 = "win32";
 	private static final String PLATFORM_COCOA = "cocoa";
 	
-	private static final String SWT_GTK3 = "SWT_GTK3";
-	private static final String SWT_GTK3_FALSE = "0";
-	
 	private static SWTEnvironment instance;
 	
 	private Display display;

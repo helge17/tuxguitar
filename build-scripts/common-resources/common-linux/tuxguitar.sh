@@ -16,6 +16,5 @@ VM_ARGS="-Xmx512m"
 ##EXPORT VARS
 export CLASSPATH
 export LD_LIBRARY_PATH
-export SWT_GTK3=0
 ##LAUNCH
 ${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$@"
