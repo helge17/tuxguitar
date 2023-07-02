@@ -141,7 +141,7 @@ $ cd -
 
 ```sh
 $ cd build-scripts/tuxguitar-windows-swt-x86_64
-$ mvn -e clean verify -P native-modules -D tuxguitar.jni.cc=x86_64-w64-mingw32-gcc -D tuxguitar.jni.cxx=i686-w64-mingw32-g++-win32
+$ mvn -e clean verify -P native-modules
 ```
 
 The Windows application is now located in the `build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.

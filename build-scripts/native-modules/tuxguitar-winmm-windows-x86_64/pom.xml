@@ -15,7 +15,7 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
+		<tuxguitar.jni.cc>x86_64-w64-mingw32-gcc</tuxguitar.jni.cc>
 		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
 		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
 		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>

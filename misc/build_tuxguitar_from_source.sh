@@ -170,7 +170,7 @@ cp -ai $SW_DIR/$PA_JAVA build-scripts/common-resources/common-windows/jre
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ..."
   cd build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
-  mvn --batch-mode -e clean verify -P native-modules -D tuxguitar.jni.cc=$TG_JNI_CC -D tuxguitar.jni.cxx=$TG_JNI_CXX
+  mvn --batch-mode -e clean verify -P native-modules
   cp -a target/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH-installer.exe $DIST_DIR
   cd - > /dev/null
   (
@@ -322,8 +322,6 @@ BUILD_ARCH=x86_64
 SWT_VERSION=4.13
 SWT_DATE=201909161045
 SWT_PLATFORM=win32-win32
-TG_JNI_CC=x86_64-w64-mingw32-gcc
-TG_JNI_CXX=i686-w64-mingw32-g++-win32
 # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
 PA_JAVA=OpenJDK64_17.0.1-12.paf
 PA_LINK=https://download3.portableapps.com/portableapps/OpenJDK64/$PA_JAVA.exe
