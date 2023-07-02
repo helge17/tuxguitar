@@ -25,7 +25,7 @@ public class TGDecrementNoteSemitoneAction extends TGActionBase {
 			TGSongManager songManager = getSongManager(context);
 			
 			if( songManager.getMeasureManager().moveSemitoneDown(measure, beat.getStart(), note.getString()) ){
-				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+				context.setAttribute(TGChangeNoteAction.ATTRIBUTE_SUCCESS, Boolean.TRUE);
 			}
 		}
 	}
