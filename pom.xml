@@ -325,11 +325,6 @@
 				<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
 				<version>4.13</version>
 			</dependency>
-			<dependency>
-				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
-				<version>4.4.2</version>
-			</dependency>
 			<!-- /SWT Platforms -->
 
 			<!-- gervill -->

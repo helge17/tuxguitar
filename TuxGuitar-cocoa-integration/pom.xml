@@ -49,7 +49,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${org.eclipse.swt.groupId}</groupId>
-			<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
+			<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
