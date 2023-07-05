@@ -7,7 +7,7 @@
 
 COMMAND=`basename $0`" $@"
 
-if [ -z $1 ] || [ $1 != "GO" ]; then
+function usage {
   echo
   echo "# USE AT YOUR OWN RISK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   echo "#"
@@ -20,11 +20,50 @@ if [ -z $1 ] || [ $1 != "GO" ]; then
   echo "# The script contains ugly hacks and modifies many source files, so only start it on a copy of"
   echo "# your sources!"
   echo "#"
-  echo "# To start building type:"
-  echo "#   $0 GO"
+  echo "# Usage: $COMMAND [OPTIONS]"
+  echo "#"
+  echo "# -l     Build for Linux"
+  echo "# -w     Build for Windows"
+  echo "# -m     Build for MacOS"
+  echo "# -b     Build for FreeBSD"
+  echo "# -a     Build for Android"
+  echo "# -A     Build for all"
+  echo "#"
+  echo "# -h     Display this help message and exit."
   echo "#"
   echo "# USE AT YOUR OWN RISK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   echo
+}
+
+# At least one command line option is required
+if [ "$1" = '' ]; then
+  usage
+  exit 1
+fi
+# Parse command line options
+while getopts "lwmbaA" CMDopt; do
+  case $CMDopt in
+    l) build_linux=1;;
+    w) build_windows=1;;
+    m) build_macos=1;;
+    b) build_bsd=1;;
+    a) build_android=1;;
+    A) build_linux=1
+       build_windows=1
+       build_macos=1
+       build_bsd=1
+       build_android=1
+       ;;
+    *) usage
+       [ $CMDopt == "h" ] && exit || exit 1
+       ;;
+  esac
+done
+# No argument should be left here
+shift $((OPTIND-1))
+if [ $1 ]; then
+  echo "Unknown argument $1."
+  usage
   exit 1
 fi
 
@@ -213,6 +252,7 @@ for GUI_TK in swt; do
   cd build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
   mvn --batch-mode -e clean verify -P native-modules
   cd - > /dev/null
+  rm -f $DIST_DIR/*
   tar --uname=root --gname=root --directory=build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
 done
@@ -254,6 +294,7 @@ for GUI_TK in swt; do
   mkdir target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
   cp -ai /usr/local/opt/openjdk/* target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
 
+  rm -f $DIST_DIR/*
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app.tar.gz tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
   cd - > /dev/null
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"
@@ -294,38 +335,52 @@ echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
 # Prepare source code. This is done on Linux for alle platforms.
 [ `uname` == Linux ] && prepare_source
 
+# First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
+
 # BSD 64 bit x86_64 build
-BUILD_ARCH=x86_64
-SWT_VERSION=4.13
-SWT_DATE=201909161045
-SWT_PLATFORM=gtk-linux
-[ `uname` == Linux ] && start_remote_bsd_build
-[ `uname` == FreeBSD ] && build_tg_for_bsd
+if [ $build_bsd ]; then
+  BUILD_ARCH=x86_64
+  SWT_VERSION=4.13
+  SWT_DATE=201909161045
+  SWT_PLATFORM=gtk-linux
+  [ `uname` == Linux ] && start_remote_bsd_build
+  [ `uname` == FreeBSD ] && build_tg_for_bsd
+fi
 
 # MacOS 64 bit x86_64 build
-BUILD_ARCH=x86_64
-SWT_VERSION=4.13
-SWT_DATE=201909161045
-SWT_PLATFORM=cocoa-macosx
-[ `uname` == Linux ] && start_remote_macos_build
-[ `uname` == Darwin ] && build_tg_for_macos
+if [ $build_macos ]; then
+  BUILD_ARCH=x86_64
+  SWT_VERSION=4.13
+  SWT_DATE=201909161045
+  SWT_PLATFORM=cocoa-macosx
+  [ `uname` == Linux ] && start_remote_macos_build
+  [ `uname` == Darwin ] && build_tg_for_macos
+fi
+
+# Then come the local builds.
 
 # Linux 64 bit x86_64 build
-BUILD_ARCH=x86_64
-SWT_VERSION=4.13
-SWT_DATE=201909161045
-SWT_PLATFORM=gtk-linux
-[ `uname` == Linux ] && build_tg_for_linux
+if [ $build_linux ]; then
+  BUILD_ARCH=x86_64
+  SWT_VERSION=4.13
+  SWT_DATE=201909161045
+  SWT_PLATFORM=gtk-linux
+  [ `uname` == Linux ] && build_tg_for_linux
+fi
 
 # Windows 64 bit x86_64 build
-BUILD_ARCH=x86_64
-SWT_VERSION=4.13
-SWT_DATE=201909161045
-SWT_PLATFORM=win32-win32
-# Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
-PA_JAVA=OpenJDK64_17.0.1-12.paf
-PA_LINK=https://download3.portableapps.com/portableapps/OpenJDK64/$PA_JAVA.exe
-[ `uname` == Linux ] && build_tg_for_windows
+if [ $build_windows ]; then
+  BUILD_ARCH=x86_64
+  SWT_VERSION=4.13
+  SWT_DATE=201909161045
+  SWT_PLATFORM=win32-win32
+  # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
+  PA_JAVA=OpenJDK64_17.0.1-12.paf
+  PA_LINK=https://download3.portableapps.com/portableapps/OpenJDK64/$PA_JAVA.exe
+  [ `uname` == Linux ] && build_tg_for_windows
+fi
 
 # Android build
-[ `uname` == Linux ] && build_tg_for_android
+if [ $build_android ]; then
+  [ `uname` == Linux ] && build_tg_for_android
+fi
