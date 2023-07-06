@@ -23,20 +23,27 @@ public class TGDeleteNoteOrRestAction extends TGActionBase {
 	
 	protected void processAction(TGActionContext context){
 		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
-		if (noteRange.isEmpty()) {
-			TGBeatRange beats = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
-			TGVoice voice = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
-			TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-			for (TGBeat beat : beats.getBeats()) {
-				removeNote(context, beat.getMeasure(), beat, voice, string.getNumber());
-			}
-		} else {
+		TGBeatRange beats = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
+		if (noteRange!=null && !noteRange.isEmpty()) {
 			for (TGNote note : noteRange.getNotes()) {
 				TGVoice voice = note.getVoice();
 				TGBeat beat = voice.getBeat();
 				TGMeasure measure = beat.getMeasure();
 				removeNote(context, measure, beat, voice, note.getString());
 			}
+		}
+		else if (beats!=null && !beats.isEmpty()) {
+			TGVoice voice = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
+			TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
+			for (TGBeat beat : beats.getBeats()) {
+				removeNote(context, beat.getMeasure(), beat, voice, string.getNumber());
+			}
+		} else {
+			TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
+			TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
+			TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
+			TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
+			removeNote(context, measure, beat, voice, string.getNumber());
 		}
 	}
 	private void removeNote(TGActionContext context, TGMeasure measure, TGBeat beat, TGVoice voice, int string) {
