@@ -7,7 +7,7 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGUpdateModifiedDurationController extends TGUpdateItemsController {
+public class TGUpdateModifiedDurationController extends TGUpdateBeatRangeController {
 
 	public TGUpdateModifiedDurationController() {
 		super();
