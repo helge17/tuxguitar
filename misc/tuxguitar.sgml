@@ -114,7 +114,7 @@ manpage.1: manpage.sgml
 <title>WWW</title>
 
 <para>
-http://www.tuxguitar.com.ar
+https://github.com/helge17/tuxguitar
 </para>
 </refsect1>
 
