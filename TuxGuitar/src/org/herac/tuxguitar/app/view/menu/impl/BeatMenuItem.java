@@ -6,6 +6,7 @@ import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
@@ -28,6 +29,7 @@ import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class BeatMenuItem extends TGMenuItem {
 	
@@ -171,12 +173,16 @@ public class BeatMenuItem extends TGMenuItem {
 	}
 	
 	public void update(){
-		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
+		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
+		Caret caret = tablature.getCaret();
 		TGBeat beat = caret.getSelectedBeat();
 		TGNote note = caret.getSelectedNote();
 		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.tiedNote.setEnabled(!running);
+		TGNoteRange noteRange = tablature.getCurrentNoteRange();
+		boolean atLeastOneNoteSelected = (note != null) || (noteRange!=null && !noteRange.isEmpty());
+		
 		this.tiedNote.setChecked(note != null && note.isTiedNote());
 		this.insertRestBeat.setEnabled(!running);
 		this.deleteNoteOrRest.setEnabled(!running);
@@ -189,8 +195,8 @@ public class BeatMenuItem extends TGMenuItem {
 		this.strokeUp.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
 		this.strokeDown.setEnabled(!running && !restBeat);
 		this.strokeDown.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
-		this.semitoneUp.setEnabled(!running && note != null);
-		this.semitoneDown.setEnabled(!running && note != null);
+		this.semitoneUp.setEnabled(!running && atLeastOneNoteSelected);
+		this.semitoneDown.setEnabled(!running && atLeastOneNoteSelected);
 		this.shiftUp.setEnabled(!running && note != null);
 		this.shiftDown.setEnabled(!running && note != null);
 		this.insertText.setEnabled(!running);
