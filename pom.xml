@@ -72,12 +72,6 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-community</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-compat</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>

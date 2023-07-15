@@ -121,6 +121,7 @@ echo -e "\n# Remove some files and directories to find out if they are needed to
   rm -r TuxGuitar-android-midimaster*
   #rm -r TuxGuitar-AudioUnit
   rm -r TuxGuitar-abc
+  rm -r TuxGuitar-community
   rm -r TuxGuitar-CoreAudio
   rm -r TuxGuitar-midi-input
   rm -r TuxGuitar-ui-toolkit-qt5
