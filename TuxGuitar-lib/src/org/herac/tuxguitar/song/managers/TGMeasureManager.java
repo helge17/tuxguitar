@@ -921,26 +921,35 @@ public class TGMeasureManager {
 	/**
 	 * Mueve la nota 1 semitono arriba
 	 */
+	public boolean canMoveSemitoneUp(TGMeasure measure,long start,int string){
+		return moveSemitone(measure, start, string,1, false);
+	}
+	
 	public boolean moveSemitoneUp(TGMeasure measure,long start,int string){
-		return moveSemitone(measure, start, string,1);
+		return moveSemitone(measure, start, string,1, true);
 	}
 	
 	/**
 	 * Mueve la nota 1 semitono abajo
 	 */
+	public boolean canMoveSemitoneDown(TGMeasure measure,long start,int string){
+		return moveSemitone(measure, start, string,-1, false);
+	}
 	public boolean moveSemitoneDown(TGMeasure measure,long start,int string){
-		return moveSemitone(measure, start, string,-1);
+		return moveSemitone(measure, start, string,-1, true);
 	}
 	
 	/**
 	 * Mueve la nota los semitonos indicados
 	 */
-	private boolean moveSemitone(TGMeasure measure,long start,int string,int semitones){
+	private boolean moveSemitone(TGMeasure measure,long start,int string,int semitones,boolean doAction){
 		TGNote note = getNote(measure,start,string);
 		if(note != null){
 			int newValue = (note.getValue() + semitones);
 			if( newValue >= 0 && (newValue < 30 || getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId())) ){
-				note.setValue(newValue);
+				if (doAction) {
+					note.setValue(newValue);
+				}
 				return true;
 			}
 		}

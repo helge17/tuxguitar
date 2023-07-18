@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.editor.action.note;
 
+import java.util.Iterator;
+
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
@@ -18,23 +20,31 @@ public abstract class TGTransposeNoteSemitoneAction extends TGActionBase {
 	}
 
 	protected abstract boolean transposeSemiTone(TGMeasureManager measureManager, TGMeasure measure, TGBeat beat, TGNote note);
+	protected abstract boolean canTransposeSemiTone(TGMeasureManager measureManager, TGMeasure measure, TGBeat beat, TGNote note);
 
 	protected void processAction(TGActionContext context){
-		boolean success = false;
 		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGSongManager songManager = getSongManager(context);
 		if (noteRange!=null && !noteRange.isEmpty()) {
-			TGSongManager songManager = getSongManager(context);
-			// count number of beats: if 1 single beat, set TGChangeNoteAction.ATTRIBUTE_SUCCESS to True, to play sound
-			boolean moreThanOneBeat = false;
-			TGBeat refBeat = null;
-			for (TGNote note : noteRange.getNotes()) {
+			// before doing the job, check it's possible for all notes
+			boolean success = true;
+			Iterator<TGNote> it = noteRange.getNotes().iterator();
+			while (it.hasNext() && success) {
+				TGNote note = it.next();
 				TGBeat beat = note.getVoice().getBeat();
 				TGMeasure measure = beat.getMeasure();
-				moreThanOneBeat |= (refBeat!=null && beat!=refBeat);
-				refBeat = beat;
-				success |= transposeSemiTone(songManager.getMeasureManager(), measure, beat, note);
+				success &= canTransposeSemiTone(songManager.getMeasureManager(), measure, beat, note);
 			}
 			if (success) {
+				boolean moreThanOneBeat = false;  // count number of beats: if 1 single beat then play sound
+				TGBeat refBeat = null;
+				for (TGNote note : noteRange.getNotes()) {
+					TGBeat beat = note.getVoice().getBeat();
+					TGMeasure measure = beat.getMeasure();
+					moreThanOneBeat |= (refBeat!=null && beat!=refBeat);
+					refBeat = beat;
+					transposeSemiTone(songManager.getMeasureManager(), measure, beat, note);
+				}
 				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 				if (moreThanOneBeat) {
 					context.setAttribute(TGChangeNoteAction.ATTRIBUTE_SUCCESS, Boolean.FALSE);
@@ -48,7 +58,6 @@ public abstract class TGTransposeNoteSemitoneAction extends TGActionBase {
 			if( note != null ){
 				TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
 				TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-				TGSongManager songManager = getSongManager(context);
 				
 				if (transposeSemiTone(songManager.getMeasureManager(), measure, beat, note)) {
 					context.setAttribute(TGChangeNoteAction.ATTRIBUTE_SUCCESS, Boolean.TRUE);

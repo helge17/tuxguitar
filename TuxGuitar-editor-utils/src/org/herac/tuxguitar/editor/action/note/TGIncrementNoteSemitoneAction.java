@@ -13,6 +13,11 @@ public class TGIncrementNoteSemitoneAction extends TGTransposeNoteSemitoneAction
 	public TGIncrementNoteSemitoneAction(TGContext context) {
 		super(context, NAME);
 	}
+	
+	@Override
+	protected boolean canTransposeSemiTone(TGMeasureManager measureManager, TGMeasure measure, TGBeat beat, TGNote note) {
+		return measureManager.canMoveSemitoneUp(measure, beat.getStart(), note.getString());
+	}
 	@Override
 	protected boolean transposeSemiTone(TGMeasureManager measureManager, TGMeasure measure, TGBeat beat, TGNote note) {
 		return measureManager.moveSemitoneUp(measure, beat.getStart(), note.getString());
