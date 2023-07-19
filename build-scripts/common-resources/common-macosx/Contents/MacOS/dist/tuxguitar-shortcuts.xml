@@ -71,6 +71,5 @@
 	<shortcut keys="Command Shift BackSpace" action="action.track.remove"/>
 	<shortcut keys="F9" action="action.gui.open-transport-mode-dialog"/>
 	<shortcut keys="Space" action="action.transport.play"/>
-	<shortcut keys="Command m" action="action.view.show-mixer"/>
 	<shortcut keys="Command t" action="action.gui.toggle-transport-dialog"/>
 </shortcuts>
