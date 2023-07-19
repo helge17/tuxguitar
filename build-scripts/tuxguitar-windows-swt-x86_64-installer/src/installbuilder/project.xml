@@ -203,6 +203,10 @@
 			<name></name>
 		</registryDelete>
 		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.gp</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
 			<key>HKEY_CLASSES_ROOT\.ptb</key>
 			<name></name>
 		</registryDelete>

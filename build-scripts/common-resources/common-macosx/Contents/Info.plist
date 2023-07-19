@@ -45,13 +45,12 @@
 			<dict>
 				<key>CFBundleTypeExtensions</key>
 				<array>
-					<string>gp</string>
 					<string>gtp</string>
-					<string>gp2</string>
 					<string>gp3</string>
 					<string>gp4</string>
 					<string>gp5</string>
 					<string>gpx</string>
+					<string>gp</string>
 				</array>
 				<key>CFBundleTypeIconFile</key>
 				<string>tgdoc.icns</string>
