@@ -1,10 +1,17 @@
 /* CSS Document */
 body {
-	color:#666666;
+	color:#222222;
 	background:#ffffff;
-	font-size: small;
 	text-align: left;
 	margin:0;
+}
+
+table {
+	margin:10px;
+}
+
+td.left {
+	min-width: 300px;
 }
 
 h1{
@@ -18,28 +25,22 @@ h2, h2 a, h2 a:hover{
 	margin: 0px 0px 4px 0px;
 	padding: 0px 0px 0px 0px;
 	color: #154374;
-	/*color: #cc6600;*/
-	font-size: 16px;
 }
 
-h3, h3 a, h3 a:hover{
+h3, h4, h5, h3 a, h4 a, h5 a, h3 a:hover, h4 a:hover, h5 a:hover{
 	margin: 0px 0px 4px 0px;
 	padding: 0px 0px 0px 0px;
 	color: #053364;
-	font-size: 12px;
-}
-
-h4, h4 a, h4 a:hover{
-	margin: 0px 0px 4px 0px;
-	padding: 0px 0px 0px 0px;
-	color: #053364;
-	font-size: 12px;
 }
 
 p{
 	margin: 0px 0px 15px 0px;
 	padding: 0px 0px 0px 0px;
-	color:#666666;
+	color:#222222;
+}
+
+ul{
+	padding-left: 20px;
 }
 
 a, a:hover {
@@ -48,10 +49,6 @@ a, a:hover {
 }
 
 #PageMenu {
-	width: 250px;
+	width: 230px;
 	margin-right: 10px;
-}
-
-#PageContent {
-	margin: 10px 0px 10px 0px;
 }
