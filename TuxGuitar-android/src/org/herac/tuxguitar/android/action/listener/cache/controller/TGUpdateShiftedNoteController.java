@@ -29,6 +29,7 @@ public class TGUpdateShiftedNoteController extends TGUpdateItemsController {
 				public void run() {
 					TGCaret tgCaret = TGSongViewController.getInstance(context).getCaret();
 					tgCaret.setStringNumber(tgString.getNumber());
+					tgCaret.update();
 				}
 			});
 		}

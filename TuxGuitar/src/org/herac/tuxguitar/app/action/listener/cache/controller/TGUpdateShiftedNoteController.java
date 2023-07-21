@@ -29,6 +29,7 @@ public class TGUpdateShiftedNoteController extends TGUpdateItemsController {
 				public void run() {
 					Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 					caret.setStringNumber(tgString.getNumber());
+					caret.update();
 				}
 			});
 		}
