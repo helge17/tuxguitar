@@ -25,6 +25,6 @@ TuxGuitar includes the following third party products:
 
 You can find ready to use installation packages for Linux, Windows, MacOS, FreeBDS and Android on
 
-[https://github.com/helge17/tuxguitar/releases/](https://github.com/helge17/tuxguitar/releases/)
+https://github.com/helge17/tuxguitar/releases/
 
 To build TuxGuitar from source, refer to the INSTALL.md file.
