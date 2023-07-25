@@ -9,7 +9,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGUpdateShiftedNoteController extends TGUpdateItemsController {
+public class TGUpdateShiftedNoteController extends TGUpdateNoteRangeController {
 
 	public TGUpdateShiftedNoteController() {
 		super();
