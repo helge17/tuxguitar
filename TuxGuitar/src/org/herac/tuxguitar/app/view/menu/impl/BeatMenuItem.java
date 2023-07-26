@@ -197,8 +197,8 @@ public class BeatMenuItem extends TGMenuItem {
 		this.strokeDown.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
 		this.semitoneUp.setEnabled(!running && atLeastOneNoteSelected);
 		this.semitoneDown.setEnabled(!running && atLeastOneNoteSelected);
-		this.shiftUp.setEnabled(!running && note != null);
-		this.shiftDown.setEnabled(!running && note != null);
+		this.shiftUp.setEnabled(!running && atLeastOneNoteSelected);
+		this.shiftDown.setEnabled(!running && atLeastOneNoteSelected);
 		this.insertText.setEnabled(!running);
 		this.moveBeatsLeft.setEnabled(!running);
 		this.moveBeatsRight.setEnabled(!running);
