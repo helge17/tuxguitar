@@ -8,7 +8,7 @@ import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGUpdateModifiedVelocityController extends TGUpdateItemsController {
+public class TGUpdateModifiedVelocityController extends TGUpdateNoteRangeController {
 
 	public TGUpdateModifiedVelocityController() {
 		super();
@@ -32,7 +32,6 @@ public class TGUpdateModifiedVelocityController extends TGUpdateItemsController 
 			});
 		}
 		
-		// Call super update.
 		super.update(context, actionContext);
 	}
 }
