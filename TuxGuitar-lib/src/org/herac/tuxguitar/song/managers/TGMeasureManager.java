@@ -1314,7 +1314,9 @@ public class TGMeasureManager {
 	 * Cambia el Velocity
 	 */
 	public void changeVelocity(int velocity,TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
+		changeVelocity(velocity, getNote(measure,start,string));
+	}
+	public void changeVelocity(int velocity, TGNote note){
 		if(note != null){
 			note.setVelocity(velocity);
 		}
