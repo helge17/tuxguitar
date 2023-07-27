@@ -45,11 +45,8 @@ public abstract class TGTransposeNoteSemitoneAction extends TGActionBase {
 					refBeat = beat;
 					transposeSemiTone(songManager.getMeasureManager(), measure, beat, note);
 				}
-				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
-				if (moreThanOneBeat) {
-					context.setAttribute(TGChangeNoteAction.ATTRIBUTE_SUCCESS, Boolean.FALSE);
-				} else {
-					context.setAttribute(TGChangeNoteAction.ATTRIBUTE_SUCCESS, Boolean.TRUE);
+				if (!moreThanOneBeat) {
+					context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 				}
 			}
 		}
@@ -60,7 +57,7 @@ public abstract class TGTransposeNoteSemitoneAction extends TGActionBase {
 				TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 				
 				if (transposeSemiTone(songManager.getMeasureManager(), measure, beat, note)) {
-					context.setAttribute(TGChangeNoteAction.ATTRIBUTE_SUCCESS, Boolean.TRUE);
+					context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 				}
 			}
 		}

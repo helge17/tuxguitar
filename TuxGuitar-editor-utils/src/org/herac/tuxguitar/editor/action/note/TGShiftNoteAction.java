@@ -8,6 +8,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.song.managers.TGMeasureManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -45,13 +46,20 @@ public abstract class TGShiftNoteAction extends TGActionBase {
 				success &= this.canShiftIndividualNote(measureManager, note);
 			}
 			if (success) {
+				boolean moreThanOneBeat = false;  // count number of beats: if 1 single beat then play sound
+				TGBeat refBeat = null;
 				for (TGNote note: listNotes) {
+					TGBeat beat = note.getVoice().getBeat();
+					moreThanOneBeat |= (refBeat!=null && beat!=refBeat);
+					refBeat = beat;
 					int nextString = this.shiftNote(measureManager, note);
 					if (caretNote == note){
 						context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, note.getVoice().getBeat().getMeasure().getTrack().getString(nextString));
 					}
 				}
-				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+				if (!moreThanOneBeat) {
+					context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+				}
 			}
 		} else if( caretNote != null && measure != null ){
 			int nextString = this.shiftNote(measureManager, caretNote);
