@@ -6,6 +6,7 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -29,6 +30,7 @@ import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISpinner;
 import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGBeatRange;
 
 public class TGTransportModeDialog {
 	
@@ -199,6 +201,12 @@ public class TGTransportModeDialog {
 		this.loopEHeader = uiFactory.createDropDownSelect(rangeGroup);
 		rangeLayout.set(this.loopEHeader, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		mHeaderRangeStatus.addControl(this.loopEHeader);
+		
+		final TGBeatRange beats = TablatureEditor.getInstance(context.getContext()).getTablature().getCurrentBeatRange();
+		if (beats!= null && !beats.isEmpty()) {
+			mode.setLoopSHeader(beats.firstMeasure().getNumber());
+			mode.setLoopEHeader(beats.lastMeasure().getNumber());
+		}
 		
 		MHeaderComboController mHeaderController = new MHeaderComboController(this.loopSHeader, this.loopEHeader);
 		mHeaderController.updateLoopSHeader( mode.getLoopSHeader() );
