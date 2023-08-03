@@ -7,6 +7,7 @@ import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
@@ -26,6 +27,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class NoteEffectsMenuItem extends TGMenuItem {
 	
@@ -159,6 +161,8 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 	public void update(){
 		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		TGNoteRange noteRange = TablatureEditor.getInstance(this.findContext()).getTablature().getCurrentNoteRange();
+
 		this.vibrato.setChecked(note != null && note.getEffect().isVibrato());
 		this.vibrato.setEnabled(!running && note != null);
 		this.bend.setChecked(note != null && note.getEffect().isBend());
@@ -171,8 +175,10 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.slide.setEnabled(!running && note != null);
 		this.hammer.setChecked(note != null && note.getEffect().isHammer());
 		this.hammer.setEnabled(!running && note != null);
-		this.ghostNote.setChecked(note != null && note.getEffect().isGhostNote());
-		this.ghostNote.setEnabled(!running && note != null);
+		
+		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
+		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
+		
 		this.accentuatedNote.setChecked(note != null && note.getEffect().isAccentuatedNote());
 		this.accentuatedNote.setEnabled(!running && note != null);
 		this.heavyAccentuatedNote.setChecked(note != null && note.getEffect().isHeavyAccentuatedNote());

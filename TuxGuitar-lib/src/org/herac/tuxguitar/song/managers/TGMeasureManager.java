@@ -1239,6 +1239,11 @@ public class TGMeasureManager {
 			note.getEffect().setGhostNote(!note.getEffect().isGhostNote());
 		}
 	}
+	public void setGhostNote(TGNote note, boolean value) {
+		if (note!= null) {
+			note.getEffect().setGhostNote(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un AccentuatedNote

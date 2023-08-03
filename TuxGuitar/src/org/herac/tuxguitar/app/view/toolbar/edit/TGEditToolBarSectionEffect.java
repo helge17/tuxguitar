@@ -23,6 +23,7 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	
@@ -185,12 +186,13 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	public void updateSectionItems() {
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
 		TGNote note = this.getTablature().getCaret().getSelectedNote();
+		TGNoteRange noteRange = this.getTablature().getCurrentNoteRange();
 		
 		this.deadNote.setEnabled(!running && note != null);
 		this.deadNote.setChecked(note != null && note.getEffect().isDeadNote());
 		
-		this.ghostNote.setEnabled(!running && note != null);
-		this.ghostNote.setChecked(note != null && note.getEffect().isGhostNote());
+		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
+		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
 		
 		this.accentuatedNote.setEnabled(!running && note != null);
 		this.accentuatedNote.setChecked(note != null && note.getEffect().isAccentuatedNote());
