@@ -188,8 +188,8 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		TGNote note = this.getTablature().getCaret().getSelectedNote();
 		TGNoteRange noteRange = this.getTablature().getCurrentNoteRange();
 		
-		this.deadNote.setEnabled(!running && note != null);
-		this.deadNote.setChecked(note != null && note.getEffect().isDeadNote());
+		this.deadNote.setEnabled(!running && !noteRange.isEmpty());
+		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
 		
 		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
 		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));

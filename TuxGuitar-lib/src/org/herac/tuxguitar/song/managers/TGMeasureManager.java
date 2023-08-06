@@ -1129,6 +1129,13 @@ public class TGMeasureManager {
 		note.getEffect().setDeadNote(!note.getEffect().isDeadNote());
 		note.setTiedNote(false);
 	}
+	public void setDeadNote(TGNote note, boolean value){
+		boolean oldValue = note.getEffect().isDeadNote();
+		note.getEffect().setDeadNote(value);
+		if (value != oldValue) {
+			note.setTiedNote(false);
+		}
+	}
 	
 	/** 
 	 * Agrega un slide
