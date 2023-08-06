@@ -1181,6 +1181,11 @@ public class TGMeasureManager {
 			note.getEffect().setPalmMute(!note.getEffect().isPalmMute());
 		}
 	}
+	public void setPalmMute(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setPalmMute(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un staccato
