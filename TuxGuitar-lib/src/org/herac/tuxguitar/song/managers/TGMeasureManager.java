@@ -1121,6 +1121,11 @@ public class TGMeasureManager {
 			note.getEffect().setVibrato(!note.getEffect().isVibrato());
 		}
 	}
+	public void setVibrato(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setVibrato(value);
+		}
+	}
 	
 	/** 
 	 * Agrega una nota muerta

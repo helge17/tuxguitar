@@ -163,8 +163,9 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGNoteRange noteRange = TablatureEditor.getInstance(this.findContext()).getTablature().getCurrentNoteRange();
 
-		this.vibrato.setChecked(note != null && note.getEffect().isVibrato());
-		this.vibrato.setEnabled(!running && note != null);
+		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
+		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
+		
 		this.bend.setChecked(note != null && note.getEffect().isBend());
 		this.bend.setEnabled(!running && note != null);
 		this.tremoloBar.setChecked(note != null && note.getEffect().isTremoloBar());
