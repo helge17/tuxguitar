@@ -1236,6 +1236,11 @@ public class TGMeasureManager {
 			note.getEffect().setSlapping(!note.getEffect().isSlapping());
 		}
 	}
+	public void setSlapping(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setSlapping(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un popping

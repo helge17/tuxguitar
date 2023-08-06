@@ -236,8 +236,8 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.tapping.setEnabled(!running && !noteRange.isEmpty());
 		this.tapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTapping()));
 		
-		this.slapping.setEnabled(!running && note != null);
-		this.slapping.setChecked(note != null && note.getEffect().isSlapping());
+		this.slapping.setEnabled(!running && !noteRange.isEmpty());
+		this.slapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlapping()));
 		
 		this.popping.setEnabled(!running && note != null);
 		this.popping.setChecked(note != null && note.getEffect().isPopping());
