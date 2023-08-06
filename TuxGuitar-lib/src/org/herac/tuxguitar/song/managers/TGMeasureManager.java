@@ -1166,6 +1166,11 @@ public class TGMeasureManager {
 			note.getEffect().setHammer(!note.getEffect().isHammer());
 		}
 	}
+	public void setHammerNote(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setHammer(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un palm-mute
