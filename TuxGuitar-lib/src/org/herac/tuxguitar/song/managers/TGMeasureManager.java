@@ -1221,6 +1221,11 @@ public class TGMeasureManager {
 			note.getEffect().setTapping(!note.getEffect().isTapping());
 		}
 	}
+	public void setTapping(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setTapping(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un slapping
