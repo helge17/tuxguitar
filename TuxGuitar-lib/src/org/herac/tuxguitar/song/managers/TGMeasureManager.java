@@ -1371,6 +1371,11 @@ public class TGMeasureManager {
 			note.getEffect().setFadeIn(!note.getEffect().isFadeIn());
 		}
 	}
+	public void setFadeIn(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setFadeIn(value);
+		}
+	}
 	
 	/** 
 	 * Cambia el Velocity

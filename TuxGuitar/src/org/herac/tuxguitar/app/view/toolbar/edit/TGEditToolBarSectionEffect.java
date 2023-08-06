@@ -242,7 +242,7 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.popping.setEnabled(!running && !noteRange.isEmpty());
 		this.popping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPopping()));
 		
-		this.fadeIn.setEnabled(!running && note != null);
-		this.fadeIn.setChecked(note != null && note.getEffect().isFadeIn());
+		this.fadeIn.setEnabled(!running && !noteRange.isEmpty());
+		this.fadeIn.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isFadeIn()));
 	}
 }
