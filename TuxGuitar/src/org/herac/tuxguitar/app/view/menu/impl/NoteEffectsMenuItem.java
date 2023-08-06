@@ -198,9 +198,9 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		
 		this.palmMute.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPalmMute()));
 		this.palmMute.setEnabled(!running && !noteRange.isEmpty());
+		this.staccato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isStaccato()));
+		this.staccato.setEnabled(!running && !noteRange.isEmpty());
 		
-		this.staccato.setChecked(note != null && note.getEffect().isStaccato());
-		this.staccato.setEnabled(!running && note != null);
 		this.tapping.setChecked(note != null && note.getEffect().isTapping());
 		this.tapping.setEnabled(!running && note != null);
 		this.slapping.setChecked(note != null && note.getEffect().isSlapping());

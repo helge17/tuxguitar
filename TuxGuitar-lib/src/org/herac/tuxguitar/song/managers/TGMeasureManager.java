@@ -1196,6 +1196,11 @@ public class TGMeasureManager {
 			note.getEffect().setStaccato(!note.getEffect().isStaccato());
 		}
 	}
+	public void setStaccato(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setStaccato(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un let-ring
