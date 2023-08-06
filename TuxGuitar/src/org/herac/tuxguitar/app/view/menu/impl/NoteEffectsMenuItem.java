@@ -173,9 +173,9 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		
 		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
 		this.deadNote.setEnabled(!running && !noteRange.isEmpty());
+		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
+		this.slide.setEnabled(!running && !noteRange.isEmpty());
 		
-		this.slide.setChecked(note != null && note.getEffect().isSlide());
-		this.slide.setEnabled(!running && note != null);
 		this.hammer.setChecked(note != null && note.getEffect().isHammer());
 		this.hammer.setEnabled(!running && note != null);
 		

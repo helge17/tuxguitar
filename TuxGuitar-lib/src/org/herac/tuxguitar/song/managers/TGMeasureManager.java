@@ -1151,6 +1151,11 @@ public class TGMeasureManager {
 			note.getEffect().setSlide(!note.getEffect().isSlide());
 		}
 	}
+	public void setSlideNote(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setSlide(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un hammer
