@@ -204,9 +204,9 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.tapping.setEnabled(!running && !noteRange.isEmpty());
 		this.slapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlapping()));
 		this.slapping.setEnabled(!running && !noteRange.isEmpty());
+		this.popping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPopping()));
+		this.popping.setEnabled(!running && !noteRange.isEmpty());
 		
-		this.popping.setChecked(note != null && note.getEffect().isPopping());
-		this.popping.setEnabled(!running && note != null);
 		this.fadeIn.setChecked(note != null && note.getEffect().isFadeIn());
 		this.fadeIn.setEnabled(!running && note != null);
 	}

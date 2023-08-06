@@ -1251,6 +1251,11 @@ public class TGMeasureManager {
 			note.getEffect().setPopping(!note.getEffect().isPopping());
 		}
 	}
+	public void setPopping(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setPopping(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un bend
