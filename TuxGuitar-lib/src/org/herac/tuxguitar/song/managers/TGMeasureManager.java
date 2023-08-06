@@ -1276,6 +1276,11 @@ public class TGMeasureManager {
 			note.getEffect().setHeavyAccentuatedNote(!note.getEffect().isHeavyAccentuatedNote());
 		}
 	}
+	public void setHeavyAccentuatedNote(TGNote note, boolean value){
+		if(note != null){
+			note.getEffect().setHeavyAccentuatedNote(value);
+		}
+	}
 	
 	/** 
 	 * Agrega un harmonic
