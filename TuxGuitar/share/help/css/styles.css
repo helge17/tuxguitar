@@ -14,37 +14,36 @@ td.left {
 	min-width: 300px;
 }
 
-h1{
+h1 {
 	margin: 0px 0px 10px 0px;
 	padding: 0px 0px 0px 0px;
 	color: #154374;
 	border-bottom: solid #d4d4d4 1px;
 }
 
-h2, h2 a, h2 a:hover{
+h2, h3, h4, h5 {
 	margin: 0px 0px 4px 0px;
 	padding: 0px 0px 0px 0px;
 	color: #154374;
 }
 
-h3, h4, h5, h3 a, h4 a, h5 a, h3 a:hover, h4 a:hover, h5 a:hover{
-	margin: 0px 0px 4px 0px;
-	padding: 0px 0px 0px 0px;
-	color: #053364;
-}
-
-p{
+p {
 	margin: 0px 0px 15px 0px;
 	padding: 0px 0px 0px 0px;
 	color:#222222;
 }
 
-ul{
+ul {
 	padding-left: 20px;
 }
 
-a, a:hover {
+a {
 	color: #154374;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #376596;
 	text-decoration: none;
 }
 
