@@ -200,8 +200,8 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
 		
-		this.harmonicNote.setEnabled(!running && note != null);
-		this.harmonicNote.setChecked(note != null && note.getEffect().isHarmonic());
+		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
+		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		
 		this.graceNote.setEnabled(!running && note != null);
 		this.graceNote.setChecked(note != null && note.getEffect().isGrace());

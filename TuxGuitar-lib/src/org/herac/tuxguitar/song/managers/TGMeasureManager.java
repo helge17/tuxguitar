@@ -1325,8 +1325,14 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un harmonic
 	 */
+	/*
 	public void changeHarmonicNote(TGMeasure measure,long start,int string,TGEffectHarmonic harmonic){
 		TGNote note = getNote(measure,start,string);
+		if(note != null){
+			note.getEffect().setHarmonic(harmonic);
+		}
+	}*/
+	public void setHarmonicNote(TGNote note, TGEffectHarmonic harmonic){
 		if(note != null){
 			note.getEffect().setHarmonic(harmonic);
 		}

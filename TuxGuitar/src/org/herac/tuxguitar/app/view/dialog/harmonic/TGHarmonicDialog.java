@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.app.view.dialog.harmonic;
 
+import java.util.Iterator;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -7,10 +9,8 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeHarmonicNoteAction;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -25,6 +25,7 @@ import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGHarmonicDialog {
 	
@@ -41,11 +42,9 @@ public class TGHarmonicDialog {
 	}
 	
 	public void show(final TGViewContext context){
-		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		if( measure != null && beat != null && note != null && string != null ) {
+		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		
+		if((noteRange != null) && !noteRange.isEmpty()) {
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			final UITableLayout dialogLayout = new UITableLayout();
@@ -66,7 +65,7 @@ public class TGHarmonicDialog {
 			this.typeButtons = new UIRadioButton[5];
 			UISelectionListener listener = new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					update(note, getSelectedType());
+					updateCombo(getHarmonic());
 				}
 			};
 			
@@ -106,7 +105,7 @@ public class TGHarmonicDialog {
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
 			buttonOK.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeHarmonic(context.getContext(), measure, beat, string, getHarmonic());
+					changeHarmonic(context.getContext(), noteRange, getHarmonic());
 					dialog.dispose();
 				}
 			});
@@ -114,10 +113,16 @@ public class TGHarmonicDialog {
 			
 			UIButton buttonClean = uiFactory.createButton(buttons);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
-			buttonClean.setEnabled( note.getEffect().isHarmonic());
+			boolean atLeastOneHarmonic = false;
+			Iterator<TGNote> it = noteRange.getNotes().iterator();
+			while (it.hasNext() && !atLeastOneHarmonic) {
+				TGNote nextNote = it.next();
+				atLeastOneHarmonic |= nextNote.getEffect().isHarmonic();
+			}
+			buttonClean.setEnabled(atLeastOneHarmonic);
 			buttonClean.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeHarmonic(context.getContext(), measure, beat, string, null);
+					changeHarmonic(context.getContext(), noteRange, null);
 					dialog.dispose();
 				}
 			});
@@ -133,7 +138,7 @@ public class TGHarmonicDialog {
 			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 			
-			this.initDefaults(note);
+			this.initDefaults(noteRange);
 			
 			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
@@ -149,33 +154,44 @@ public class TGHarmonicDialog {
 		uiLayout.set(this.typeButtons[index], (index + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
 	
-	protected void initDefaults(TGNote note){
-		int type = TGEffectHarmonic.TYPE_NATURAL;
-		if(note.getEffect().isHarmonic()){
-			type = note.getEffect().getHarmonic().getType();
-		}
-		else{
-			boolean naturalValid = false;
-			for(int i = 0;i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
-				if((note.getValue() % 12) == (TGEffectHarmonic.NATURAL_FREQUENCIES[i][0] % 12)  ){
-					naturalValid = true;
-					break;
-				}
+	private void initDefaults(TGNoteRange noteRange){
+		TGEffectHarmonic harmonic = null;
+		TGFactory factory = TuxGuitar.getInstance().getSongManager().getFactory();
+		boolean allNaturalHarmonicValid = noteRange.getNotes().stream().allMatch(n -> isNaturalValid(n));
+		this.typeButtons[0].setEnabled(allNaturalHarmonicValid);
+		// look for first note in selection with a harmonic which can be applied to whole selection
+		Iterator<TGNote> it = noteRange.getNotes().iterator();
+		while (it.hasNext() && (harmonic == null)) {
+			TGNote n = it.next();
+			if (n.getEffect().isHarmonic() && (allNaturalHarmonicValid || (n.getEffect().getHarmonic().getType()!=TGEffectHarmonic.TYPE_NATURAL))) {
+				harmonic = n.getEffect().getHarmonic().clone(factory);
 			}
-			if(!naturalValid){
-				this.typeButtons[0].setEnabled(false);
-				type = TGEffectHarmonic.TYPE_ARTIFICIAL;
-			}
-			
 		}
+		if (harmonic == null) {
+			// nothing found, create new
+			harmonic = factory.newEffectHarmonic();
+			harmonic.setType(allNaturalHarmonicValid ? TGEffectHarmonic.TYPE_NATURAL : TGEffectHarmonic.TYPE_ARTIFICIAL);
+		}
+		
 		for(int i = 0; i < this.typeButtons.length; i ++){
 			int data = ((Integer)this.typeButtons[i].getData(TYPE_DATA)).intValue();
-			this.typeButtons[i].setSelected((data == type));
+			this.typeButtons[i].setSelected((data == harmonic.getType()));
 		}
-		update(note,type);
+		updateCombo(harmonic);
 	}
 	
-	protected int getSelectedType(){
+	private boolean isNaturalValid(TGNote note) {
+		boolean naturalValid = false;
+		for(int i = 0;i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
+			if((note.getValue() % 12) == (TGEffectHarmonic.NATURAL_FREQUENCIES[i][0] % 12)  ){
+				naturalValid = true;
+				break;
+			}
+		}
+		return naturalValid;
+	}
+	
+	private int getSelectedType(){
 		for(int i = 0; i < this.typeButtons.length; i ++){
 			if(this.typeButtons[i].isSelected()){
 				return ((Integer)this.typeButtons[i].getData(TYPE_DATA)).intValue();
@@ -184,8 +200,8 @@ public class TGHarmonicDialog {
 		return 0;
 	}
 	
-	protected void update(TGNote note,int type){
-		TGEffectHarmonic h = note.getEffect().getHarmonic();
+	private void updateCombo(TGEffectHarmonic harmonic) {
+		int type = (harmonic == null) ? TGEffectHarmonic.TYPE_NATURAL : harmonic.getType();
 		this.harmonicDataCombo.removeItems();
 		this.harmonicDataCombo.setEnabled(type != TGEffectHarmonic.TYPE_NATURAL);
 		if( type != TGEffectHarmonic.TYPE_NATURAL ){
@@ -193,7 +209,7 @@ public class TGHarmonicDialog {
 			for(int i = 0; i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
 				this.harmonicDataCombo.addItem(new UISelectItem<Integer>(label + "(" + Integer.toString(TGEffectHarmonic.NATURAL_FREQUENCIES[i][0]) + ")", i));
 			}
-			this.harmonicDataCombo.setSelectedValue((h != null && h.getType() == type)?h.getData():0);
+			this.harmonicDataCombo.setSelectedValue(harmonic.getData());
 		}
 	}
 	
@@ -216,9 +232,9 @@ public class TGHarmonicDialog {
 		return new String();
 	}
 	
-	public TGEffectHarmonic getHarmonic(){
+	private TGEffectHarmonic getHarmonic(){
 		int type = getSelectedType();
-		if(	type > 0 ){
+		if( type > 0 ){
 			Integer data = this.harmonicDataCombo.getSelectedValue();
 			TGEffectHarmonic effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectHarmonic();
 			effect.setType(type);
@@ -228,11 +244,9 @@ public class TGHarmonicDialog {
 		return null;
 	}
 	
-	public void changeHarmonic(TGContext context, TGMeasure measure, TGBeat beat, TGString string, TGEffectHarmonic effect) {
+	private void changeHarmonic(TGContext context, TGNoteRange noteRange, TGEffectHarmonic effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeHarmonicNoteAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, noteRange);
 		tgActionProcessor.setAttribute(TGChangeHarmonicNoteAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
 	}
