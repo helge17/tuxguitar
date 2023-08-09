@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.io.gervill;
 
+import java.nio.charset.Charset;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiMessage;
@@ -84,6 +86,18 @@ public class MidiMessageUtils {
 		try {
 			ShortMessage message = new ShortMessage();
 			message.setMessage(ShortMessage.SYSTEM_RESET);
+			return message;
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static MidiMessage trackName(String name){
+		try {
+			byte[] bytes = name.getBytes(Charset.forName("UTF-8"));
+			MetaMessage message = new MetaMessage();
+			message.setMessage(0x03, bytes, bytes.length);
 			return message;
 		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();

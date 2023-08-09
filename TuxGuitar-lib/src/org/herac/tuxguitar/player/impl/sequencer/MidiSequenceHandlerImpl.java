@@ -33,6 +33,10 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 		this.seq.addEvent(MidiEvent.programChange(tick, track, channel, instrument));
 	}
 	
+	public void addTrackName(long tick, int track, String name) {
+		this.seq.addEvent(MidiEvent.trackName(tick, track, name));
+	}
+	
 	public void addTempoInUSQ(long tick,int track,int usq) {
 		this.seq.addEvent(MidiEvent.tempoInUSQ(tick, usq));
 	}

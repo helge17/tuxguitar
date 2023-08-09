@@ -17,4 +17,9 @@ public class MidiEvent {
 	public long getTick() {
 		return this.tick;
 	}
+	
+	@Override
+	public String toString() {
+		return "MidiEvent(" + this.message + ", " + this.tick + ")";
+	}
 }

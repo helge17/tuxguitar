@@ -26,6 +26,8 @@ public abstract class MidiSequenceHandler {
 	
 	public abstract void addTempoInUSQ(long tick, int track, int usq);
 	
+	public abstract void addTrackName(long tick, int track, String name);
+	
 	public abstract void addTimeSignature(long tick, int track, TGTimeSignature ts);
 	
 	public abstract void notifyFinish();

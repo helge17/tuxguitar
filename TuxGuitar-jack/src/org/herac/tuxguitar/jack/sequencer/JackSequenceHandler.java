@@ -33,6 +33,10 @@ public class JackSequenceHandler extends MidiSequenceHandler{
 		this.seq.addEvent(JackEvent.programChange(tick, track, channel, instrument));
 	}
 	
+	public void addTrackName(long tick, int track, String name) {
+		//not implemented
+	}
+	
 	public void addTempoInUSQ(long tick,int track,int usq) {
 		this.seq.addEvent(JackEvent.tempoInUSQ(tick, usq));
 	}

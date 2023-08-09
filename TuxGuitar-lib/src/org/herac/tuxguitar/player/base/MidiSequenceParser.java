@@ -137,7 +137,7 @@ public class MidiSequenceParser {
 			TGMeasure previous = null;
 			
 			this.addBend(sh,track.getNumber(),TGDuration.QUARTER_TIME,DEFAULT_BEND, tgChannel.getChannelId(), -1, false);
-			this.addChannel(sh, tgChannel, track.getNumber());
+			this.makeTrackChannel(sh, tgChannel, track);
 			
 			int mCount = sh.getMeasureHelpers().size();
 			for( int mIndex = 0 ; mIndex < mCount ; mIndex++ ){
@@ -154,25 +154,6 @@ public class MidiSequenceParser {
 				
 				previous = measure;
 			}
-		}
-	}
-	
-	private void addChannel(MidiSequenceHelper sh, TGChannel channel, int track) {
-		if((this.flags & ADD_MIXER_MESSAGES) != 0){
-			int channelId = channel.getChannelId();
-			long tick = getTick(TGDuration.QUARTER_TIME);
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.VOLUME, fix(channel.getVolume()));
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.BALANCE, fix(channel.getBalance()));
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.CHORUS, fix(channel.getChorus()));
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.REVERB, fix(channel.getReverb()));
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.PHASER, fix(channel.getPhaser()));
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.TREMOLO, fix(channel.getTremolo()));
-			sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.EXPRESSION, 127);
-			
-			if((this.flags & ADD_BANK_SELECT) != 0) {
-				sh.getSequence().addControlChange(tick, track, channelId, MidiControllers.BANK_SELECT, fix(channel.getBank(), 0, 128));
-			}
-			sh.getSequence().addProgramChange(tick, track, channelId, fix(channel.getProgram()));
 		}
 	}
 	
@@ -319,6 +300,27 @@ public class MidiSequenceParser {
 			sh.getSequence().addNoteOff(getTick(start + duration),track,channel,fix(key),fix(velocity), midiVoice, bendMode);
 		}
 	}
+	
+	private void makeTrackChannel(MidiSequenceHelper sh, TGChannel channel, TGTrack track) {
+		if((this.flags & ADD_MIXER_MESSAGES) != 0){
+			int channelId = channel.getChannelId();
+			long tick = getTick(TGDuration.QUARTER_TIME);
+			int trackNum = track.getNumber();
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.VOLUME,fix(channel.getVolume()));
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.BALANCE,fix(channel.getBalance()));
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.CHORUS,fix(channel.getChorus()));
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.REVERB,fix(channel.getReverb()));
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.PHASER,fix(channel.getPhaser()));
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.TREMOLO,fix(channel.getTremolo()));
+			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.EXPRESSION, 127);
+			if(!channel.isPercussionChannel()){
+				sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.BANK_SELECT, fix(channel.getBank()));
+			}
+			sh.getSequence().addProgramChange(tick,trackNum,channelId,fix(channel.getProgram()));
+			sh.getSequence().addTrackName(tick,trackNum,track.getName());
+		}
+	}
+	
 	public void addMetronome(MidiSequenceHelper sh,TGMeasureHeader header, long startMove){
 		if( (this.flags & ADD_METRONOME) != 0) {
 			if( this.metronomeChannelId >= 0 ){

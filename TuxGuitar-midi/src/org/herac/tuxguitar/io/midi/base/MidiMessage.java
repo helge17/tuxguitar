@@ -1,10 +1,13 @@
 package org.herac.tuxguitar.io.midi.base;
 
+import java.util.Arrays;
+
 public class MidiMessage{
 	
 	public static final int TYPE_SHORT = 1;
 	public static final int TYPE_META = 2;
 	
+	public static final int TRACK_NAME = 0x03;
 	public static final int NOTE_OFF = 0x80;
 	public static final int NOTE_ON = 0x90;
 	public static final int CONTROL_CHANGE = 0xB0;
@@ -61,5 +64,10 @@ public class MidiMessage{
 		MidiMessage message = new MidiMessage(TYPE_META,command);
 		message.setData(data);
 		return message;
+	}
+	
+	@Override
+	public String toString() {
+		return "MidiMessage(" + this.command + ", " + this.message + ", " + Arrays.toString(this.data) + ")";
 	}
 }

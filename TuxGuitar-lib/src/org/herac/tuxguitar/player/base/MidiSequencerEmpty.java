@@ -18,6 +18,9 @@ public class MidiSequencerEmpty implements MidiSequencer{
 	
 	public MidiSequenceHandler createSequence(int tracks) {
 		return new MidiSequenceHandler(tracks) {
+			public void addTrackName(long tick, int track, String name) {
+				// Not implemented
+			}
 			
 			public void notifyFinish() {
 				// Not implemented

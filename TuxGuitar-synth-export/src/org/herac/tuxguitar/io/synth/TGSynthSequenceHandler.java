@@ -7,7 +7,7 @@ import org.herac.tuxguitar.player.base.MidiSequenceHandler;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 
 public class TGSynthSequenceHandler extends MidiSequenceHandler{
-	
+
 	private List<TGSynthEvent> events;
 	
 	public TGSynthSequenceHandler(int tracks) {
@@ -39,7 +39,11 @@ public class TGSynthSequenceHandler extends MidiSequenceHandler{
 	public void addTempoInUSQ(long tick,int track,int usq) {
 		this.events.add(TGSynthEvent.tempoInUSQ(tick, usq));
 	}
-	
+
+	public void addTrackName(long tick, int track, String name) {
+		// not implemented
+	}
+
 	public void addTimeSignature(long tick,int track,TGTimeSignature ts) {
 		// not implemented
 	}

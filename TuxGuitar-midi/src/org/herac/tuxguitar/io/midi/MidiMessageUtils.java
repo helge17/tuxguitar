@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.io.midi;
 
+import java.nio.charset.Charset;
+
 import org.herac.tuxguitar.io.midi.base.MidiMessage;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 
@@ -43,6 +45,10 @@ public class MidiMessageUtils {
 	
 	public static MidiMessage systemReset(){
 		return MidiMessage.shortMessage(MidiMessage.SYSTEM_RESET);
+	}
+	
+	public static MidiMessage trackName(String trackName){
+		return MidiMessage.metaMessage(MidiMessage.TRACK_NAME, trackName.getBytes(Charset.forName("UTF-8")));
 	}
 	
 	public static MidiMessage tempoInUSQ(int usq){

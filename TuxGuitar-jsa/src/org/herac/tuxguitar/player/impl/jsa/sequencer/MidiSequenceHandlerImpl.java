@@ -64,6 +64,10 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 		addEvent(track,new MidiEvent(MidiMessageFactory.programChange(channel, instrument), tick ));
 	}
 	
+	public void addTrackName(long tick, int track, String name) {
+		addEvent(track, new MidiEvent(MidiMessageFactory.trackName(name), tick));
+	}
+	
 	public void addTempoInUSQ(long tick,int track,int usq) {
 		addEvent(track,new MidiEvent(MidiMessageFactory.tempoInUSQ(usq), tick ));
 	}

@@ -69,6 +69,15 @@ public class MidiMessageFactory {
 		return null;
 	}
 	
+	public static MidiMessage trackName(String name) {
+		try {
+			return new MidiTrackNameMessage(name);
+		} catch(InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static MidiMessage tempoInUSQ(int usq){
 		try {
 			return new MidiTempoInUsqMessage(usq);
