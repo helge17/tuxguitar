@@ -3,8 +3,6 @@ package org.herac.tuxguitar.editor.action.effect;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.util.TGContext;
@@ -31,12 +29,6 @@ public class TGChangeTappingAction extends TGActionBase {
 			for (TGNote note : noteRange.getNotes()) {
 				getSongManager(context).getMeasureManager().setTapping(note, newValue);
 			}
-		} else {
-			TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-			TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
-			TGString string = ((TGString) context.getAttribute(ATTRIBUTE_STRING));
-			
-			getSongManager(context).getMeasureManager().changeTapping(measure, beat.getStart(), string.getNumber());
 		}
 	}
 }

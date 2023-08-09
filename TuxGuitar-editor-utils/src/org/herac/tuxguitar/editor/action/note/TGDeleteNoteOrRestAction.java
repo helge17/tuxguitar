@@ -38,12 +38,6 @@ public class TGDeleteNoteOrRestAction extends TGActionBase {
 			for (TGBeat beat : beats.getBeats()) {
 				removeNote(context, beat.getMeasure(), beat, voice, string.getNumber());
 			}
-		} else {
-			TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
-			TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
-			TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-			TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
-			removeNote(context, measure, beat, voice, string.getNumber());
 		}
 	}
 	private void removeNote(TGActionContext context, TGMeasure measure, TGBeat beat, TGVoice voice, int string) {

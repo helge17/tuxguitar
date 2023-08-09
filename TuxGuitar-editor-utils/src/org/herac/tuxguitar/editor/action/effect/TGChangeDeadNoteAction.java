@@ -53,8 +53,5 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 			songManager.getMeasureManager().addNote(measure, beat.getStart(), note, noteDuration, voice.getIndex());
 			songManager.getMeasureManager().changeDeadNote(note);
 		}
-		else {
-			songManager.getMeasureManager().changeDeadNote(note);
-		}
 	}
 }
