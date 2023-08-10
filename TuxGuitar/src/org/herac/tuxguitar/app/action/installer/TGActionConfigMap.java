@@ -486,9 +486,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGChangeTremoloBarAction.NAME,           LOCKABLE | DISABLE_ON_PLAY,            UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE); // no shortcut (need to use dialog)
 		
 		this.map(TGChangeTremoloPickingAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
-		this.map(TGChangeTrillNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		
-		this.map(TGChangeVibratoNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE);
+		this.map(TGChangeTrillNoteAction.NAME,            LOCKABLE | DISABLE_ON_PLAY,            UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE); // no shortcut (need to use dialog)
+		this.map(TGChangeVibratoNoteAction.NAME,          LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE);
 		
 		//duration actions
 		this.map(TGSetDurationAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedDurationController(), UNDOABLE_BEAT_RANGE_GENERIC);

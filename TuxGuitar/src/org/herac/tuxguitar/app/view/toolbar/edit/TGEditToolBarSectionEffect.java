@@ -221,8 +221,8 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.hammer.setEnabled(!running && !noteRange.isEmpty());
 		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
 		
-		this.trill.setEnabled(!running && note != null);
-		this.trill.setChecked(note != null && note.getEffect().isTrill());
+		this.trill.setEnabled(!running && !noteRange.isEmpty());
+		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));
 		
 		this.tremoloPicking.setEnabled(!running && note != null);
 		this.tremoloPicking.setChecked(note != null && note.getEffect().isTremoloPicking());

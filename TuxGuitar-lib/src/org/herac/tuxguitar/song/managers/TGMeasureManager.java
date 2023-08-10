@@ -1348,8 +1348,7 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un trill
 	 */
-	public void changeTrillNote(TGMeasure measure,long start,int string,TGEffectTrill trill){
-		TGNote note = getNote(measure,start,string);
+	public void setTrillNote(TGNote note, TGEffectTrill trill){
 		if(note != null){
 			note.getEffect().setTrill(trill);
 		}
