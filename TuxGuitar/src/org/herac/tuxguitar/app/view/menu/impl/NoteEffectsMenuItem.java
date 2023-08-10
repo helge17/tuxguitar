@@ -190,9 +190,9 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
+		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
+		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
 		
-		this.graceNote.setChecked(note != null && note.getEffect().isGrace());
-		this.graceNote.setEnabled(!running && note != null);
 		this.trill.setChecked(note != null && note.getEffect().isTrill());
 		this.trill.setEnabled(!running && note != null);
 		this.tremoloPicking.setChecked(note != null && note.getEffect().isTremoloPicking());

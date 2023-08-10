@@ -203,8 +203,8 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		
-		this.graceNote.setEnabled(!running && note != null);
-		this.graceNote.setChecked(note != null && note.getEffect().isGrace());
+		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
+		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
 		
 		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
 		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));

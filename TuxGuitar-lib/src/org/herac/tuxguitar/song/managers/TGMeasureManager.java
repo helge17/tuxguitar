@@ -1341,8 +1341,7 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un grace
 	 */
-	public void changeGraceNote(TGMeasure measure,long start,int string,TGEffectGrace grace){
-		TGNote note = getNote(measure,start,string);
+	public void setGraceNote(TGNote note, TGEffectGrace grace){
 		if(note != null){
 			note.getEffect().setGrace(grace);
 		}
