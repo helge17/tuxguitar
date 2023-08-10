@@ -435,7 +435,7 @@
 	<string name="grace_dlg_transition_hammer">해머링</string>
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">꾸밈음</string>
+	<string name="harmonic_dlg_title">하모닉스</string>
 	<string name="harmonic_dlg_type_nh">[N.H] 자연 하모닉스</string>
 	<string name="harmonic_dlg_type_ah">[A.H] 인공 하모닉스</string>
 	<!-- <string name="harmonic_dlg_type_th"></string> -->

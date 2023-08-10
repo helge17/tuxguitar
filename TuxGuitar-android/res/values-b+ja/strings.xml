@@ -435,7 +435,7 @@
 	<string name="grace_dlg_transition_hammer">H - ハンマリング・オン</string>
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">♩ - 装飾音符</string>
+	<string name="harmonic_dlg_title">Harm. - ハーモニクス</string>
 	<string name="harmonic_dlg_type_nh">[N.H] Harm. - ハーモニクス</string>
 	<string name="harmonic_dlg_type_ah">[A.H] A.h - 人口ハーモニクス</string>
 	<string name="harmonic_dlg_type_th">[T.H] Both Hand Tapping Harm. - タッピング・ハーモニクス</string>

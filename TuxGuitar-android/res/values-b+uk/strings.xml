@@ -435,7 +435,7 @@
 	<!-- <string name="grace_dlg_transition_hammer"></string> -->
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">Форшлаг</string>
+	<string name="harmonic_dlg_title">Флажолет</string>
 	<string name="harmonic_dlg_type_nh">[N.H] Натуральний флажолет</string>
 	<string name="harmonic_dlg_type_ah">[A.H] Штучний флажолет</string>
 	<string name="harmonic_dlg_type_th">[T.H] Тепінговий флажолет</string>
