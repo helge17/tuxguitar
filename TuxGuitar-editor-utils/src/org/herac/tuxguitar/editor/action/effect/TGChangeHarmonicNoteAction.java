@@ -22,14 +22,9 @@ public class TGChangeHarmonicNoteAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		/*
-		TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-		TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
-		TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));*/
 		TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
 		TGEffectHarmonic harmonic = (TGEffectHarmonic) context.getAttribute(ATTRIBUTE_EFFECT);
 		
-		//getSongManager(context).getMeasureManager().changeHarmonicNote(measure, beat.getStart(), string.getNumber(), effect);
 		if ((noteRange != null) && !noteRange.isEmpty()) {
 			for (TGNote note : noteRange.getNotes()) {
 				getSongManager(context).getMeasureManager().setHarmonicNote(note, harmonic);
