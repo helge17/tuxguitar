@@ -1260,8 +1260,7 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un bend
 	 */
-	public void changeBendNote(TGMeasure measure,long start,int string,TGEffectBend bend){
-		TGNote note = getNote(measure,start,string);
+	public void setBendNote(TGNote note,TGEffectBend bend){
 		if(note != null){
 			note.getEffect().setBend(bend);
 		}

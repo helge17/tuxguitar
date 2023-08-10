@@ -209,8 +209,8 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
 		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
 		
-		this.bend.setEnabled(!running && note != null);
-		this.bend.setChecked(note != null && note.getEffect().isBend());
+		this.bend.setEnabled(!running && !noteRange.isEmpty());
+		this.bend.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isBend()));
 		
 		this.tremoloBar.setEnabled(!running && note != null);
 		this.tremoloBar.setChecked(note != null && note.getEffect().isTremoloBar());
