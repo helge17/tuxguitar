@@ -20,7 +20,6 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 import org.herac.tuxguitar.util.TGNoteRange;
@@ -185,7 +184,6 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	
 	public void updateSectionItems() {
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
-		TGNote note = this.getTablature().getCaret().getSelectedNote();
 		TGNoteRange noteRange = this.getTablature().getCurrentNoteRange();
 		
 		this.deadNote.setEnabled(!running && !noteRange.isEmpty());

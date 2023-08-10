@@ -57,7 +57,7 @@ public class TGGraceDialog {
 	
 	public void show(final TGViewContext context){
 		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
-		TGEffectGrace grace=null;
+		TGEffectGrace grace = null;
 		TGFactory factory = TuxGuitar.getInstance().getSongManager().getFactory();
 
 		if((noteRange != null) && !noteRange.isEmpty()) {

@@ -20,7 +20,7 @@ public class TGChangeBendNoteAction extends TGActionBase {
 	
 	protected void processAction(TGActionContext context){
 		TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
-		TGEffectBend effect = (TGEffectBend) context.getAttribute(TGChangeBendNoteAction.ATTRIBUTE_EFFECT);
+		TGEffectBend effect = (TGEffectBend) context.getAttribute(ATTRIBUTE_EFFECT);
 		
 		if ((noteRange != null) && !noteRange.isEmpty()) {
 			for (TGNote note : noteRange.getNotes()) {

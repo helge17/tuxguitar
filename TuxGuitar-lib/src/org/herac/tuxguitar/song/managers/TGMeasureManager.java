@@ -1115,12 +1115,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un vibrato
 	 */
-	public void changeVibratoNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setVibrato(!note.getEffect().isVibrato());
-		}
-	}
 	public void setVibrato(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setVibrato(value);
@@ -1145,12 +1139,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un slide
 	 */
-	public void changeSlideNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setSlide(!note.getEffect().isSlide());
-		}
-	}
 	public void setSlideNote(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setSlide(value);
@@ -1160,12 +1148,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un hammer
 	 */
-	public void changeHammerNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setHammer(!note.getEffect().isHammer());
-		}
-	}
 	public void setHammerNote(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setHammer(value);
@@ -1175,12 +1157,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un palm-mute
 	 */
-	public void changePalmMute(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setPalmMute(!note.getEffect().isPalmMute());
-		}
-	}
 	public void setPalmMute(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setPalmMute(value);
@@ -1190,12 +1166,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un staccato
 	 */
-	public void changeStaccato(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setStaccato(!note.getEffect().isStaccato());
-		}
-	}
 	public void setStaccato(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setStaccato(value);
@@ -1214,12 +1184,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un tapping
 	 */
-	public void changeTapping(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setTapping(!note.getEffect().isTapping());
-		}
-	}
 	public void setTapping(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setTapping(value);
@@ -1229,12 +1193,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un slapping
 	 */
-	public void changeSlapping(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setSlapping(!note.getEffect().isSlapping());
-		}
-	}
 	public void setSlapping(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setSlapping(value);
@@ -1244,12 +1202,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un popping
 	 */
-	public void changePopping(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setPopping(!note.getEffect().isPopping());
-		}
-	}
 	public void setPopping(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setPopping(value);
@@ -1277,12 +1229,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un GhostNote
 	 */
-	public void changeGhostNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){ 
-			note.getEffect().setGhostNote(!note.getEffect().isGhostNote());
-		}
-	}
 	public void setGhostNote(TGNote note, boolean value) {
 		if (note!= null) {
 			note.getEffect().setGhostNote(value);
@@ -1292,12 +1238,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un AccentuatedNote
 	 */
-	public void changeAccentuatedNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){ 
-			note.getEffect().setAccentuatedNote(!note.getEffect().isAccentuatedNote());
-		}
-	}
 	public void setAccentuatedNote(TGNote note, boolean value) {
 		if (note != null) {
 			note.getEffect().setAccentuatedNote(value);
@@ -1305,14 +1245,8 @@ public class TGMeasureManager {
 	}
 	
 	/** 
-	 * Agrega un GhostNote
+	 * Agrega un HeavyAccentuatedNote
 	 */
-	public void changeHeavyAccentuatedNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setHeavyAccentuatedNote(!note.getEffect().isHeavyAccentuatedNote());
-		}
-	}
 	public void setHeavyAccentuatedNote(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setHeavyAccentuatedNote(value);
@@ -1322,13 +1256,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un harmonic
 	 */
-	/*
-	public void changeHarmonicNote(TGMeasure measure,long start,int string,TGEffectHarmonic harmonic){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setHarmonic(harmonic);
-		}
-	}*/
 	public void setHarmonicNote(TGNote note, TGEffectHarmonic harmonic){
 		if(note != null){
 			note.getEffect().setHarmonic(harmonic);
@@ -1365,12 +1292,6 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un fadeIn
 	 */
-	public void changeFadeIn(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			note.getEffect().setFadeIn(!note.getEffect().isFadeIn());
-		}
-	}
 	public void setFadeIn(TGNote note, boolean value){
 		if(note != null){
 			note.getEffect().setFadeIn(value);
@@ -1380,9 +1301,6 @@ public class TGMeasureManager {
 	/** 
 	 * Cambia el Velocity
 	 */
-	public void changeVelocity(int velocity,TGMeasure measure,long start,int string){
-		changeVelocity(velocity, getNote(measure,start,string));
-	}
 	public void changeVelocity(int velocity, TGNote note){
 		if(note != null){
 			note.setVelocity(velocity);
