@@ -50,17 +50,5 @@ public abstract class TGTransposeNoteSemitoneAction extends TGActionBase {
 				}
 			}
 		}
-		else {
-			TGNote note = ((TGNote) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE));
-			if( note != null ){
-				TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
-				TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-				
-				if (transposeSemiTone(songManager.getMeasureManager(), measure, beat, note)) {
-					context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
-				}
-			}
-		}
 	}
-
 }

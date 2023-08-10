@@ -5,9 +5,11 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGChangeHarmonicNoteAction extends TGActionBase {
 	
@@ -20,11 +22,13 @@ public class TGChangeHarmonicNoteAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
-		TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-		TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
-		TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
-		TGEffectHarmonic effect = ((TGEffectHarmonic) context.getAttribute(ATTRIBUTE_EFFECT));
+		TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGEffectHarmonic harmonic = (TGEffectHarmonic) context.getAttribute(ATTRIBUTE_EFFECT);
 		
-		getSongManager(context).getMeasureManager().changeHarmonicNote(measure, beat.getStart(), string.getNumber(), effect);
+		if ((noteRange != null) && !noteRange.isEmpty()) {
+			for (TGNote note : noteRange.getNotes()) {
+				getSongManager(context).getMeasureManager().setHarmonicNote(note, harmonic);
+			}
+		}
 	}
 }

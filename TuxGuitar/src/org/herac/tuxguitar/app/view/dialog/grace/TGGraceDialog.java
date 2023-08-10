@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.app.view.dialog.grace;
 
+import java.util.Iterator;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -7,11 +9,9 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
-import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.ui.UIFactory;
@@ -27,6 +27,7 @@ import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UISpinner;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGGraceDialog {
 	
@@ -55,11 +56,11 @@ public class TGGraceDialog {
 	}
 	
 	public void show(final TGViewContext context){
-		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		if( measure != null && beat != null && note != null && string != null ) {
+		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGEffectGrace grace = null;
+		TGFactory factory = TuxGuitar.getInstance().getSongManager().getFactory();
+
+		if((noteRange != null) && !noteRange.isEmpty()) {
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			final UITableLayout dialogLayout = new UITableLayout();
@@ -68,21 +69,26 @@ public class TGGraceDialog {
 			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.grace-editor"));
 			
-			//-----defaults-------------------------------------------------
-			boolean dead = false;
-			boolean onBeat = false;
-			int fret = note.getValue();
-			int duration = 1;
-			int dynamic = TGVelocities.DEFAULT;
-			int transition = TGEffectGrace.TRANSITION_NONE;
-			if(note.getEffect().isGrace()){
-				dead = note.getEffect().getGrace().isDead();
-				fret = note.getEffect().getGrace().getFret();
-				onBeat = note.getEffect().getGrace().isOnBeat();
-				duration = note.getEffect().getGrace().getDuration();
-				dynamic = note.getEffect().getGrace().getDynamic();
-				transition = note.getEffect().getGrace().getTransition();
+			// look for first note with grace effect within selection to initialize dialog
+			Iterator<TGNote> it = noteRange.getNotes().iterator();
+			while (it.hasNext() && (grace == null)) {
+				TGNote n = it.next();
+				if (n.getEffect().isGrace()) {
+					grace = n.getEffect().getGrace();
+				}
 			}
+			if (grace == null) {
+				// nothing found, create new
+				grace = factory.newEffectGrace();
+			}
+			
+			//-----init-------------------------------------------------
+			boolean dead = grace.isDead();
+			boolean onBeat = grace.isOnBeat();
+			int fret = grace.getFret();
+			int duration = grace.getDuration();
+			int dynamic = grace.getDynamic();
+			int transition = grace.getTransition();
 			
 			//---------------------------------------------------
 			//------------------NOTE-----------------------------
@@ -240,7 +246,7 @@ public class TGGraceDialog {
 			buttonOK.setDefaultButton();
 			buttonOK.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeGrace(context.getContext(), measure, beat, string, getGrace());
+					changeGrace(context.getContext(), noteRange, getGrace());
 					dialog.dispose();
 				}
 			});
@@ -250,7 +256,7 @@ public class TGGraceDialog {
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
 			buttonClean.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeGrace(context.getContext(), measure, beat, string, null);
+					changeGrace(context.getContext(), noteRange, null);
 					dialog.dispose();
 				}
 			});
@@ -318,11 +324,9 @@ public class TGGraceDialog {
 		return effect;
 	}
 	
-	public void changeGrace(TGContext context, TGMeasure measure, TGBeat beat, TGString string, TGEffectGrace effect) {
+	public void changeGrace(TGContext context, TGNoteRange noteRange, TGEffectGrace effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeGraceNoteAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, noteRange);
 		tgActionProcessor.setAttribute(TGChangeGraceNoteAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
 	}

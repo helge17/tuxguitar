@@ -45,11 +45,6 @@ public class TGSetDurationAction extends TGActionBase {
 				TGMeasure measure = beat.getMeasure();
 				measureManager.changeDuration(measure, beat, duration.clone(factory), voice.getIndex(), true);
 			}
-		} else {
-			TGMeasure measure = (TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-			TGBeat beat = (TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-			TGVoice voice = (TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
-			songManager.getMeasureManager().changeDuration(measure, beat, duration.clone(songManager.getFactory()), voice.getIndex(), true);
 		}
 	}
 }

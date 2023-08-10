@@ -107,10 +107,10 @@ public class Tablature implements TGController {
 		if (getSelector().isActive()) {
 			return getSelector().getBeatRange();
 		}
-        TGBeat beat = getCaret().getSelectedBeat();
-        if (beat != null) {
-            return TGBeatRange.single(beat);
-        }
+		TGBeat beat = getCaret().getSelectedBeat();
+		if (beat != null) {
+			return TGBeatRange.single(beat);
+		}
 		return TGBeatRange.empty();
 	}
 	

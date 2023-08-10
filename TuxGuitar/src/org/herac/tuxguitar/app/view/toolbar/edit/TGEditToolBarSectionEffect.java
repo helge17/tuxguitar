@@ -20,9 +20,9 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	
@@ -184,63 +184,63 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	
 	public void updateSectionItems() {
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
-		TGNote note = this.getTablature().getCaret().getSelectedNote();
+		TGNoteRange noteRange = this.getTablature().getCurrentNoteRange();
 		
-		this.deadNote.setEnabled(!running && note != null);
-		this.deadNote.setChecked(note != null && note.getEffect().isDeadNote());
+		this.deadNote.setEnabled(!running && !noteRange.isEmpty());
+		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
 		
-		this.ghostNote.setEnabled(!running && note != null);
-		this.ghostNote.setChecked(note != null && note.getEffect().isGhostNote());
+		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
+		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
 		
-		this.accentuatedNote.setEnabled(!running && note != null);
-		this.accentuatedNote.setChecked(note != null && note.getEffect().isAccentuatedNote());
+		this.accentuatedNote.setEnabled(!running && !noteRange.isEmpty());
+		this.accentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isAccentuatedNote()));
 		
-		this.heavyAccentuatedNote.setEnabled(!running && note != null);
-		this.heavyAccentuatedNote.setChecked(note != null && note.getEffect().isHeavyAccentuatedNote());
+		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
+		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
 		
-		this.harmonicNote.setEnabled(!running && note != null);
-		this.harmonicNote.setChecked(note != null && note.getEffect().isHarmonic());
+		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
+		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		
-		this.graceNote.setEnabled(!running && note != null);
-		this.graceNote.setChecked(note != null && note.getEffect().isGrace());
+		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
+		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
 		
-		this.vibrato.setEnabled(!running && note != null);
-		this.vibrato.setChecked(note != null && note.getEffect().isVibrato());
+		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
+		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
 		
-		this.bend.setEnabled(!running && note != null);
-		this.bend.setChecked(note != null && note.getEffect().isBend());
+		this.bend.setEnabled(!running && !noteRange.isEmpty());
+		this.bend.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isBend()));
 		
-		this.tremoloBar.setEnabled(!running && note != null);
-		this.tremoloBar.setChecked(note != null && note.getEffect().isTremoloBar());
+		this.tremoloBar.setEnabled(!running && !noteRange.isEmpty());
+		this.tremoloBar.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloBar()));
 		
-		this.slide.setEnabled(!running && note != null);
-		this.slide.setChecked(note != null && note.getEffect().isSlide());
+		this.slide.setEnabled(!running && !noteRange.isEmpty());
+		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
 		
-		this.hammer.setEnabled(!running && note != null);
-		this.hammer.setChecked(note != null && note.getEffect().isHammer());
+		this.hammer.setEnabled(!running && !noteRange.isEmpty());
+		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
 		
-		this.trill.setEnabled(!running && note != null);
-		this.trill.setChecked(note != null && note.getEffect().isTrill());
+		this.trill.setEnabled(!running && !noteRange.isEmpty());
+		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));
 		
-		this.tremoloPicking.setEnabled(!running && note != null);
-		this.tremoloPicking.setChecked(note != null && note.getEffect().isTremoloPicking());
+		this.tremoloPicking.setEnabled(!running && !noteRange.isEmpty());
+		this.tremoloPicking.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloPicking()));
 		
-		this.palmMute.setEnabled(!running && note != null);
-		this.palmMute.setChecked(note != null && note.getEffect().isPalmMute());
+		this.palmMute.setEnabled(!running && !noteRange.isEmpty());
+		this.palmMute.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPalmMute()));
 		
-		this.staccato.setEnabled(!running && note != null);
-		this.staccato.setChecked(note != null && note.getEffect().isStaccato());
+		this.staccato.setEnabled(!running && !noteRange.isEmpty());
+		this.staccato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isStaccato()));
 		
-		this.tapping.setEnabled(!running && note != null);
-		this.tapping.setChecked(note != null && note.getEffect().isTapping());
+		this.tapping.setEnabled(!running && !noteRange.isEmpty());
+		this.tapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTapping()));
 		
-		this.slapping.setEnabled(!running && note != null);
-		this.slapping.setChecked(note != null && note.getEffect().isSlapping());
+		this.slapping.setEnabled(!running && !noteRange.isEmpty());
+		this.slapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlapping()));
 		
-		this.popping.setEnabled(!running && note != null);
-		this.popping.setChecked(note != null && note.getEffect().isPopping());
+		this.popping.setEnabled(!running && !noteRange.isEmpty());
+		this.popping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPopping()));
 		
-		this.fadeIn.setEnabled(!running && note != null);
-		this.fadeIn.setChecked(note != null && note.getEffect().isFadeIn());
+		this.fadeIn.setEnabled(!running && !noteRange.isEmpty());
+		this.fadeIn.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isFadeIn()));
 	}
 }

@@ -14,10 +14,7 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloBarAction;
 import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 import org.herac.tuxguitar.ui.UIFactory;
@@ -40,6 +37,7 @@ import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGTremoloBarDialog{
 	
@@ -84,11 +82,10 @@ public class TGTremoloBarDialog{
 	}
 	
 	public void show(final TGViewContext context){
-		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		if( measure != null && beat != null && note != null && string != null ) {
+		final TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGEffectTremoloBar tremoloBar = null;
+		
+		if( (noteRange != null) && !noteRange.isEmpty() ) {
 			final UIAppearance appearance = TGApplication.getInstance(context.getContext()).getAppearance();;
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -166,7 +163,7 @@ public class TGTremoloBarDialog{
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
 			buttonClean.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeTremoloBar(context.getContext(), measure, beat, string, null);
+					changeTremoloBar(context.getContext(), noteRange, null);
 					dialog.dispose();
 				}
 			});
@@ -177,7 +174,7 @@ public class TGTremoloBarDialog{
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
 			buttonOK.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeTremoloBar(context.getContext(), measure, beat, string, getTremoloBar());
+					changeTremoloBar(context.getContext(), noteRange, getTremoloBar());
 					dialog.dispose();
 				}
 			});
@@ -191,12 +188,20 @@ public class TGTremoloBarDialog{
 				}
 			});
 			rightCompositeLayout.set(buttonCancel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false, 1, 1, 80f, 25f, null);
-			
-			if(note.getEffect().isTremoloBar()){
-				setTremoloBar(note.getEffect().getTremoloBar());
-			}else{
-				setTremoloBar(presetItems.get(0).getValue());
+
+			// look for first note with tremoloBat effect within selection to initialize dialog
+			Iterator<TGNote> it = noteRange.getNotes().iterator();
+			while (it.hasNext() && (tremoloBar == null)) {
+				TGNote n = it.next();
+				if (n.getEffect().isTremoloBar()) {
+					tremoloBar = n.getEffect().getTremoloBar();
+				}
 			}
+			if (tremoloBar == null) {
+				// nothing found, create new
+				tremoloBar = presetItems.get(0).getValue();
+			}
+			setTremoloBar(tremoloBar);
 			
 			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
@@ -469,11 +474,9 @@ public class TGTremoloBarDialog{
 		return items;
 	}
 	
-	public void changeTremoloBar(TGContext context, TGMeasure measure, TGBeat beat, TGString string, TGEffectTremoloBar effect) {
+	public void changeTremoloBar(TGContext context, TGNoteRange noteRange, TGEffectTremoloBar effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeTremoloBarAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, noteRange);
 		tgActionProcessor.setAttribute(TGChangeTremoloBarAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
 	}

@@ -11,6 +11,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGChangeDeadNoteAction extends TGActionBase {
 	
@@ -22,15 +23,26 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 	
 	protected void processAction(TGActionContext context){
 		TGSongManager songManager = getSongManager(context);
-		TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-		TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
-		TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
 		TGNote note = ((TGNote) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE));
-		TGDuration duration = ((TGDuration) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION));
-		TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
-		int velocity = ((Integer) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY)).intValue();
+		TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
 		
-		if( note == null ){
+		if ((noteRange!=null) && !noteRange.isEmpty()) {
+			boolean newValue = true;
+			if (noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote())) {
+				newValue = false;
+			}
+			for (TGNote n : noteRange.getNotes()) {
+				songManager.getMeasureManager().setDeadNote(n, newValue);
+			}
+		}
+		else if( note == null ){
+			TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
+			TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
+			TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
+			TGDuration duration = ((TGDuration) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION));
+			TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
+			int velocity = ((Integer) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY)).intValue();
+			
 			note = songManager.getFactory().newNote();
 			note.setValue(0);
 			note.setVelocity(velocity);
@@ -39,7 +51,7 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 			TGDuration noteDuration = duration.clone(songManager.getFactory());
 						
 			songManager.getMeasureManager().addNote(measure, beat.getStart(), note, noteDuration, voice.getIndex());
+			songManager.getMeasureManager().changeDeadNote(note);
 		}
-		songManager.getMeasureManager().changeDeadNote(note);
 	}
 }
