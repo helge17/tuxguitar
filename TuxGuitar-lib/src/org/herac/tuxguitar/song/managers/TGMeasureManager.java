@@ -1357,8 +1357,7 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un tremolo picking
 	 */
-	public void changeTremoloPicking(TGMeasure measure,long start,int string,TGEffectTremoloPicking tremoloPicking){
-		TGNote note = getNote(measure,start,string);
+	public void setTremoloPicking(TGNote note,TGEffectTremoloPicking tremoloPicking){
 		if(note != null){
 			note.getEffect().setTremoloPicking(tremoloPicking);
 		}

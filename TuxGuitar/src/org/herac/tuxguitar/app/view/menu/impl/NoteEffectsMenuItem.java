@@ -175,7 +175,6 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.slide.setEnabled(!running && !noteRange.isEmpty());
 		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
 		this.hammer.setEnabled(!running && !noteRange.isEmpty());
-		
 		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
 		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
 		this.accentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isAccentuatedNote()));
@@ -192,10 +191,8 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
 		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));
 		this.trill.setEnabled(!running && !noteRange.isEmpty());
-		
-		this.tremoloPicking.setChecked(note != null && note.getEffect().isTremoloPicking());
-		this.tremoloPicking.setEnabled(!running && note != null);
-		
+		this.tremoloPicking.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloPicking()));
+		this.tremoloPicking.setEnabled(!running && !noteRange.isEmpty());
 		this.palmMute.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPalmMute()));
 		this.palmMute.setEnabled(!running && !noteRange.isEmpty());
 		this.staccato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isStaccato()));

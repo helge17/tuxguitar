@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.app.view.dialog.tremolopicking;
 
+import java.util.Iterator;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -7,11 +9,8 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
-import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -23,6 +22,7 @@ import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGTremoloPickingDialog {
 	
@@ -35,11 +35,9 @@ public class TGTremoloPickingDialog {
 	}
 	
 	public void show(final TGViewContext context){
-		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		final TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-		final TGString string = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		final TGNote note = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		if( measure != null && beat != null && note != null && string != null ) {
+		final TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+
+		if( (noteRange != null) && !noteRange.isEmpty() ) {
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			final UITableLayout dialogLayout = new UITableLayout();
@@ -48,10 +46,18 @@ public class TGTremoloPickingDialog {
 			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.tremolo-picking-editor"));
 			
-			//-----defaults-------------------------------------------------
-			int duration = TGDuration.EIGHTH;
-			if(note.getEffect().isTremoloPicking()){
-				duration = note.getEffect().getTremoloPicking().getDuration().getValue();
+			// look for first note with tremoloPicking effect within selection to initialize dialog
+			int duration = 0;
+			Iterator<TGNote> it = noteRange.getNotes().iterator();
+			while (it.hasNext() && (duration == 0)) {
+				TGNote n = it.next();
+				if (n.getEffect().isTremoloPicking()) {
+					duration = n.getEffect().getTremoloPicking().getDuration().getValue();
+				}
+			}
+			if (duration == 0) {
+				// nothing found, use default
+				duration = TGDuration.EIGHTH;
 			}
 			
 			//---------------------------------------------------
@@ -91,7 +97,7 @@ public class TGTremoloPickingDialog {
 			buttonOK.setDefaultButton();
 			buttonOK.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeTremoloPicking(context.getContext(), measure, beat, string, getTremoloPicking());
+					changeTremoloPicking(context.getContext(), noteRange, getTremoloPicking());
 					dialog.dispose();
 				}
 			});
@@ -101,7 +107,7 @@ public class TGTremoloPickingDialog {
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
 			buttonClean.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
-					changeTremoloPicking(context.getContext(), measure, beat, string, null);
+					changeTremoloPicking(context.getContext(), noteRange, null);
 					dialog.dispose();
 				}
 			});
@@ -135,11 +141,9 @@ public class TGTremoloPickingDialog {
 		return effect;
 	}
 	
-	public void changeTremoloPicking(TGContext context, TGMeasure measure, TGBeat beat, TGString string, TGEffectTremoloPicking effect) {
+	public void changeTremoloPicking(TGContext context, TGNoteRange noteRange, TGEffectTremoloPicking effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeTremoloPickingAction.NAME);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, noteRange);
 		tgActionProcessor.setAttribute(TGChangeTremoloPickingAction.ATTRIBUTE_EFFECT, effect);
 		tgActionProcessor.process();
 	}
