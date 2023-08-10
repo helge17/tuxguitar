@@ -1205,10 +1205,9 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un let-ring
 	 */
-	public void changeLetRing(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
+	public void setLetRing(TGNote note, boolean value){
 		if(note != null){
-			note.getEffect().setLetRing(!note.getEffect().isLetRing());
+			note.getEffect().setLetRing(value);
 		}
 	}
 	

@@ -181,10 +181,8 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.accentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
 		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
-		
-		this.letRing.setChecked(note != null && note.getEffect().isLetRing());
-		this.letRing.setEnabled(!running && note != null);
-		
+		this.letRing.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isLetRing()));
+		this.letRing.setEnabled(!running && !noteRange.isEmpty());
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
 		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
