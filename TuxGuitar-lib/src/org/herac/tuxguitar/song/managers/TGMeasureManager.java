@@ -1269,8 +1269,7 @@ public class TGMeasureManager {
 	/** 
 	 * Agrega un tremoloBar
 	 */
-	public void changeTremoloBar(TGMeasure measure,long start,int string,TGEffectTremoloBar tremoloBar){
-		TGNote note = getNote(measure,start,string);
+	public void setTremoloBar(TGNote note, TGEffectTremoloBar tremoloBar){
 		if(note != null){
 			note.getEffect().setTremoloBar(tremoloBar);
 		}

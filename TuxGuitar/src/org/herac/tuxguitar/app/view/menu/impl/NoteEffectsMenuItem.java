@@ -167,10 +167,8 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
 		this.bend.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isBend()));
 		this.bend.setEnabled(!running && !noteRange.isEmpty());
-		
-		this.tremoloBar.setChecked(note != null && note.getEffect().isTremoloBar());
-		this.tremoloBar.setEnabled(!running && note != null);
-		
+		this.tremoloBar.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloBar()));
+		this.tremoloBar.setEnabled(!running && !noteRange.isEmpty());
 		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
 		this.deadNote.setEnabled(!running && !noteRange.isEmpty());
 		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
