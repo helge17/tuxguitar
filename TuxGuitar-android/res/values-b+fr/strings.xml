@@ -435,11 +435,11 @@
 	<!-- <string name="grace_dlg_transition_hammer"></string> -->
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">Grace note</string>
-	<string name="harmonic_dlg_type_nh">[N.H] Harmonique naturel</string>
-	<string name="harmonic_dlg_type_ah">[A.H] Harmonique artificiel</string>
-	<string name="harmonic_dlg_type_th">[T.H] Harmonique frappé</string>
-	<string name="harmonic_dlg_type_ph">[P.H] Harmonique pincé</string>
+	<string name="harmonic_dlg_title">Harmonique</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Harmonique naturelle</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Harmonique artificielle</string>
+	<string name="harmonic_dlg_type_th">[T.H] Harmonique frappée</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Harmonique pincée</string>
 	<string name="harmonic_dlg_type_sh">[S.H] Semi-harmonique</string>
 
 	<!-- Stroke dialog -->

@@ -435,7 +435,7 @@
 	<string name="grace_dlg_transition_hammer">Legato</string>
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">Przednutka</string>
+	<string name="harmonic_dlg_title">Floażolet</string>
 	<string name="harmonic_dlg_type_nh">[N.H] Flażolety naturalne</string>
 	<string name="harmonic_dlg_type_ah">[A.H] Sztuczne flażolety</string>
 	<string name="harmonic_dlg_type_th">[T.H] Flażolety tapping</string>

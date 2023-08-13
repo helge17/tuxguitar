@@ -435,7 +435,7 @@
 	<string name="grace_dlg_transition_hammer">捶弦</string>
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">装饰音</string>
+	<string name="harmonic_dlg_title">泛音</string>
 	<string name="harmonic_dlg_type_nh">[N.H] 自然泛音</string>
 	<string name="harmonic_dlg_type_ah">[A.H] 人工泛音</string>
 	<string name="harmonic_dlg_type_th">[T.H] 拍弦泛音</string>

@@ -435,7 +435,7 @@
 	<string name="grace_dlg_transition_hammer">Příklep</string>
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">Příraz</string>
+	<string name="harmonic_dlg_title">Flažolet</string>
 	<string name="harmonic_dlg_type_nh">[N.H] Přirozený flažolet</string>
 	<string name="harmonic_dlg_type_ah">[A.H] Umělý flažolet</string>
 	<string name="harmonic_dlg_type_th">[T.H] Flažolet tappingem</string>
