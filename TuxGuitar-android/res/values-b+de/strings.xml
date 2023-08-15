@@ -32,7 +32,7 @@
 	<string name="action_menu_composition">Komposition</string>
 	<string name="action_menu_track">Spur</string>
 	<string name="action_menu_measure">Takt</string>
-	<string name="action_menu_beat">Note</string>
+	<string name="action_menu_beat">Taktschlag</string>
 	<string name="action_menu_duration">Notenlänge</string>
 	<string name="action_menu_dynamic">Dynamik</string>
 	<string name="action_menu_effects">Effekte</string>

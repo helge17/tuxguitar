@@ -435,7 +435,7 @@
 	<!-- <string name="grace_dlg_transition_hammer"></string> -->
 
 	<!-- Harmonic dialog -->
-	<!-- <string name="harmonic_dlg_title"></string> -->
+	<string name="harmonic_dlg_title">armonikoa</string>
 	<!-- <string name="harmonic_dlg_type_nh"></string> -->
 	<!-- <string name="harmonic_dlg_type_ah"></string> -->
 	<!-- <string name="harmonic_dlg_type_th"></string> -->

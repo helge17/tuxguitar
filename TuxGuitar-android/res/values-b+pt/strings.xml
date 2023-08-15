@@ -435,7 +435,7 @@
 	<!-- <string name="grace_dlg_transition_hammer"></string> -->
 
 	<!-- Harmonic dialog -->
-	<!-- <string name="harmonic_dlg_title"></string> -->
+	<string name="harmonic_dlg_title">Harmonico</string>
 	<string name="harmonic_dlg_type_nh">[N.H] Harmônico Natural</string>
 	<string name="harmonic_dlg_type_ah">[A.H] Harmônico Artificial</string>
 	<string name="harmonic_dlg_type_th">[T.H] Tapped Harmônico</string>
