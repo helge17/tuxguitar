@@ -1,6 +1,6 @@
 # Install TuxGuitar
 
-You can find ready to use installation packages for Linux, Windows, MacOS FreeBDS and Android on
+You can find ready to use installation packages for Linux, Windows, MacOS FreeBSD and Android on
 
 [https://github.com/helge17/tuxguitar/releases/](https://github.com/helge17/tuxguitar/releases/)
 
