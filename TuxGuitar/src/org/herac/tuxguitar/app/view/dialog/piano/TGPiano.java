@@ -122,16 +122,16 @@ public class TGPiano {
 		this.createToolSeparator(uiFactory, ++column);
 		
 		// duration
-		this.decrement = uiFactory.createButton(this.toolComposite);
-		this.decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
-		this.createToolItemLayout(this.decrement, ++column);
+		this.increment = uiFactory.createButton(this.toolComposite);
+		this.increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
+		this.createToolItemLayout(this.increment, ++column);
 		
 		this.durationLabel = uiFactory.createImageView(this.toolComposite);
 		this.createToolItemLayout(this.durationLabel, ++column);
 		
-		this.increment = uiFactory.createButton(this.toolComposite);
-		this.increment.addSelectionListener(new TGActionProcessorListener(this.context, TGIncrementDurationAction.NAME));
-		this.createToolItemLayout(this.increment, ++column);
+		this.decrement = uiFactory.createButton(this.toolComposite);
+		this.decrement.addSelectionListener(new TGActionProcessorListener(this.context, TGDecrementDurationAction.NAME));
+		this.createToolItemLayout(this.decrement, ++column);
 		
 		// separator
 		this.createToolSeparator(uiFactory, ++column);
@@ -560,8 +560,8 @@ public class TGPiano {
 	public void loadIcons(){
 		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
 		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
-		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
-		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
+		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
+		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		this.loadDurationImage(true);
 		this.control.layout();
