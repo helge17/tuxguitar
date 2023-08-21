@@ -5,15 +5,15 @@ import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGTransportPlayAction extends TGActionBase {
+public class TGTransportPlayPauseAction extends TGActionBase {
 	
 	public static final String NAME = "action.transport.play";
 	
-	public TGTransportPlayAction(TGContext context) {
+	public TGTransportPlayPauseAction(TGContext context) {
 		super(context, NAME);
 	}
 	
 	protected void processAction(TGActionContext context){
-		TGTransport.getInstance(getContext()).play();
+		TGTransport.getInstance(getContext()).playPause();
 	}
 }

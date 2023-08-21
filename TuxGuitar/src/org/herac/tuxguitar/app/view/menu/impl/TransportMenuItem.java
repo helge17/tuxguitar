@@ -4,7 +4,7 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
@@ -40,7 +40,7 @@ public class TransportMenuItem extends TGMenuItem {
 	
 	public void showItems(){
 		this.play = this.transportMenuItem.getMenu().createActionItem();
-		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayAction.NAME));
+		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayPauseAction.NAME));
 		
 		this.stop = this.transportMenuItem.getMenu().createActionItem();
 		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
@@ -85,7 +85,7 @@ public class TransportMenuItem extends TGMenuItem {
 	
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.transportMenuItem, "transport", null);
-		setMenuItemTextAndAccelerator(this.play, "transport.start", TGTransportPlayAction.NAME);
+		setMenuItemTextAndAccelerator(this.play, "transport.start", TGTransportPlayPauseAction.NAME);
 		setMenuItemTextAndAccelerator(this.stop, "transport.stop", TGTransportStopAction.NAME);
 		setMenuItemTextAndAccelerator(this.mode, "transport.mode", TGOpenTransportModeDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.metronome, "transport.metronome", TGTransportMetronomeAction.NAME);

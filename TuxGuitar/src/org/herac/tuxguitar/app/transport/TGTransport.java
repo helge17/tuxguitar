@@ -101,7 +101,7 @@ public class TGTransport {
 		TuxGuitar.getInstance().updateCache(true);
 	}
 	
-	public void play(){
+	public void playPause(){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
 			try{
@@ -116,6 +116,15 @@ public class TGTransport {
 		}
 	}
 	
+	public void playStop(){
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		if(!player.isRunning()){
+			this.playPause();
+		}else{
+			this.stop();
+		}
+	}
+
 	public void stop(){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){

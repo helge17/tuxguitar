@@ -14,7 +14,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
 import org.herac.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
@@ -273,7 +273,7 @@ public class TGTransportDialog implements TGEventListener {
 		this.stop.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportStopAction.NAME));
 		
 		this.play = this.toolBar.createActionItem();
-		this.play.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportPlayAction.NAME));
+		this.play.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportPlayPauseAction.NAME));
 		
 		this.next = this.toolBar.createActionItem();
 		this.next.addSelectionListener(new TGActionProcessorListener(this.context, TGGoNextMeasureAction.NAME));
