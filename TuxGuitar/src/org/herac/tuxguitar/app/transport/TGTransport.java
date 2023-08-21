@@ -104,27 +104,33 @@ public class TGTransport {
 	public void playPause(){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
-			try{
-				player.getMode().reset();
-				player.play();
-			}catch(MidiPlayerException e){
-				TGErrorManager.getInstance(this.context).handleError(e);
-			}
+			this.play();
 		}else{
-			gotoPlayerPosition();
-			player.pause();
+			this.pause();
 		}
 	}
-	
 	public void playStop(){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
-			this.playPause();
+			this.play();
 		}else{
 			this.stop();
 		}
 	}
-
+	private void play() {
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		try{
+			player.getMode().reset();
+			player.play();
+		}catch(MidiPlayerException e){
+			TGErrorManager.getInstance(this.context).handleError(e);
+		}
+	}
+	private void pause() {
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		gotoPlayerPosition();
+		player.pause();
+	}
 	public void stop(){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
