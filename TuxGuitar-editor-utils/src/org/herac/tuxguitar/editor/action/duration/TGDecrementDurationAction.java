@@ -18,8 +18,8 @@ public class TGDecrementDurationAction extends TGActionBase {
 	protected void processAction(TGActionContext context) {
 		TGDuration duration = ((TGDuration) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION));
 		
-		if( duration.getValue() > TGDuration.WHOLE ){
-			duration.setValue(duration.getValue() / 2);
+		if( duration.getValue() < TGDuration.SIXTY_FOURTH ){
+			duration.setValue(duration.getValue() * 2);
 			duration.setDotted(false);
 			duration.setDoubleDotted(false);
 			
