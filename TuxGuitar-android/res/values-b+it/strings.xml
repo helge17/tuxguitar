@@ -57,7 +57,7 @@
 	<string name="action_view_layout_show_chord_name">Abilita nome accordo</string>
 	<string name="action_view_layout_show_chord_diagram">Mostra schema accordo</string>
 
-	<string name="action_transport_play">Suona la canzone</string>
+	<string name="action_transport_play">Suona/pausa la canzone</string>
 	<string name="action_transport_pause">Pausa</string>
 	<string name="action_transport_stop">Ferma</string>
 

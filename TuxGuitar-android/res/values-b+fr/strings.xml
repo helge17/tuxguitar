@@ -57,7 +57,7 @@
 	<string name="action_view_layout_show_chord_name">Afficher le nom des accords</string>
 	<string name="action_view_layout_show_chord_diagram">Afficher les diagrammes d\&apos;accords</string>
 
-	<string name="action_transport_play">Lire le morceau</string>
+	<string name="action_transport_play">Lire le morceau / Pause</string>
 	<!-- <string name="action_transport_pause"></string> -->
 	<string name="action_transport_stop">Arrêt</string>
 

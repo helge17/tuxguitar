@@ -57,7 +57,7 @@
 	<string name="action_view_layout_show_chord_name">Akkordnamen anzeigen</string>
 	<string name="action_view_layout_show_chord_diagram">Akkordtabellen anzeigen</string>
 
-	<string name="action_transport_play">Wiedergabe starten</string>
+	<string name="action_transport_play">Wiedergabe starten/pausieren</string>
 	<!-- <string name="action_transport_pause"></string> -->
 	<string name="action_transport_stop">Stopp</string>
 

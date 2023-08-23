@@ -57,7 +57,7 @@
 	<string name="action_view_layout_show_chord_name">Show Chord Names</string>
 	<string name="action_view_layout_show_chord_diagram">Show Chord Diagrams</string>
 
-	<string name="action_transport_play">Play Song</string>
+	<string name="action_transport_play">Play/Pause Song</string>
 	<string name="action_transport_pause">Pause</string>
 	<string name="action_transport_stop">Stop</string>
 
