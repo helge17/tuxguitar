@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -45,7 +45,7 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
 		
 		this.play = this.getToolBar().getControl().createActionItem();
-		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayAction.NAME));
+		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayPauseAction.NAME));
 		
 		this.next = this.getToolBar().getControl().createActionItem();
 		this.next.addSelectionListener(new UISelectionListener() {

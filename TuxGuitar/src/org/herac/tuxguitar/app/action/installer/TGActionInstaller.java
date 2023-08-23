@@ -119,7 +119,8 @@ import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAc
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayStopAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
@@ -454,7 +455,8 @@ public class TGActionInstaller {
 		installAction(new TGUpdateChannelAction(context));
 		
 		//transport actions
-		installAction(new TGTransportPlayAction(context));
+		installAction(new TGTransportPlayPauseAction(context));
+		installAction(new TGTransportPlayStopAction(context));
 		installAction(new TGTransportStopAction(context));
 		installAction(new TGTransportMetronomeAction(context));
 		installAction(new TGTransportCountDownAction(context));

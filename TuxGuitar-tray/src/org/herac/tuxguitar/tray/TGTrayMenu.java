@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -33,7 +33,7 @@ public class TGTrayMenu {
 		this.play = new MenuItem(this.menu,SWT.PUSH);
 		this.play.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				new TGActionProcessor(TGTrayMenu.this.context, TGTransportPlayAction.NAME).process();
+				new TGActionProcessor(TGTrayMenu.this.context, TGTransportPlayPauseAction.NAME).process();
 			}
 		});
 		

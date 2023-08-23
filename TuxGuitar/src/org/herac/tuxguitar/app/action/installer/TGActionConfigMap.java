@@ -118,7 +118,8 @@ import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAc
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayStopAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
@@ -522,7 +523,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGUpdateChannelAction.NAME, LOCKABLE, new TGUpdateModifiedChannelController(), new TGUndoableModifyChannelController());
 		
 		//transport actions
-		this.map(TGTransportPlayAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportPlayPauseAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGTransportPlayStopAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGTransportStopAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGTransportMetronomeAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGTransportCountDownAction.NAME, LOCKABLE | SHORTCUT);
