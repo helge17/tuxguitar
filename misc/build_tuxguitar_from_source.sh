@@ -13,14 +13,14 @@ function usage {
   echo "#"
   echo "# TuxGuitar build script for https://github.com/helge17/tuxguitar"
   echo "#"
-  echo "# I use this script to build TuxGuitar for Linux and Windows on a Debian Bullseye system and on"
-  echo "# remote FreeBSD and MacOS systems."
+  echo "# I use this script to build TuxGuitar for Linux, Windows and Android on Debian Bullseye and"
+  echo "# on remote FreeBSD and MacOS systems."
   echo "# The script heavily depends on my build environment, so examine it carefully and modify it to"
   echo "# your needs before starting it on your computer!"
   echo "# The script contains ugly hacks and modifies many source files, so only start it on a copy of"
   echo "# your sources!"
   echo "#"
-  echo "# Usage: $COMMAND [OPTIONS]"
+  echo "# Usage: "`basename $0`" [OPTIONS]"
   echo "#"
   echo "# -l     Build for Linux"
   echo "# -w     Build for Windows"
@@ -29,19 +29,26 @@ function usage {
   echo "# -a     Build for Android"
   echo "# -A     Build for all"
   echo "#"
+  echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-snapshot,"
+  echo "# e.g. 2023-08-25-snapshot. This string will be part of the archive and package file names"
+  echo '# and shows up in the TuxGuitar "About" dialog.'
+  echo "#"
+  echo "# -r <release>"
+  echo "#        Set the build version to the given <release> string, e.g. 1.6.0beta1."
+  echo '#        If you use "SRC" as <release>, then the build version is extracted from the source'
+  echo "#        code, e.g. 1.6.0."
+  echo "#"
   echo "# -h     Display this help message and exit."
   echo "#"
   echo "# USE AT YOUR OWN RISK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   echo
 }
 
-# At least one command line option is required
-if [ "$1" = '' ]; then
-  usage
-  exit 1
-fi
+# Default build version
+TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-snapshot"
+
 # Parse command line options
-while getopts "lwmbaA" CMDopt; do
+while getopts "lwmbaAhr:" CMDopt; do
   case $CMDopt in
     l) build_linux=1;;
     w) build_windows=1;;
@@ -54,32 +61,29 @@ while getopts "lwmbaA" CMDopt; do
        build_bsd=1
        build_android=1
        ;;
+    r) TGVERSION="$OPTARG"
+       [ $TGVERSION == SRC ] && TGVERSION=`grep 'CURRENT = new TGVersion' TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
+       ;;
     *) usage
        [ $CMDopt == "h" ] && exit || exit 1
        ;;
   esac
 done
-# No argument should be left here
-shift $((OPTIND-1))
-if [ $1 ]; then
-  echo "Unknown argument $1."
+
+if [ ! $build_linux ] && [ ! $build_windows ] && [ ! $build_macos ] && [ ! $build_bsd ]&& [ ! $build_android ]; then
+  echo "You must specify at least one build target!"
   usage
   exit 1
 fi
 
 # Check if we are in the TuxGuitar source directory
 if [ ! -e pom.xml ] || [ ! -d TuxGuitar ] || [ ! -d build-scripts ]; then
-  echo
   echo "$COMMAND must be started in the TuxGuitar source directory!"
   echo
   exit 1
 fi
 
-# Build version
-TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-snapshot"
-#TGVERSION=`grep 'CURRENT = new TGVersion' TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
-
-# Software needed to build TuxGuitar is located in this directory 
+# Software needed to build TuxGuitar is located in this directory
 SW_DIR=~/Software/TuxGuitar/tuxguitar_build_dependencies
 
 # Binary packages are placed into this directory
@@ -89,6 +93,7 @@ mkdir -p $SW_DIR
 
 echo
 echo "### Host: "`hostname -s`" #################################################"
+echo "### Build version: $TGVERSION"
 echo "### Building TuxGuitar from source. All Builds will be placed into the dirctory"
 echo "### $DIST_DIR"
 echo "### Host: "`hostname -s`" #################################################"
