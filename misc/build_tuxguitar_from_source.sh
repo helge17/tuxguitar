@@ -205,6 +205,20 @@ function build_tg_for_windows {
 # To build the installer package you must install the VMware InstallBuilder for Linux from https://installbuilder.com/ and link the binary /opt/installbuilder-<version>/bin/builder to /usr/local/bin/builder
 # E.g. download installbuilder-enterprise-21.9.0-linux-x64-installer.run and link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
 
+# Create selfsigned Windows code signing certificate:
+#   cd ~/Software/TuxGuitar/
+#   openssl genrsa -out github_helge17_win-sign.key 4096
+#   openssl req -new -subj '/CN=helge17/' -x509 -days 36500 -key github_helge17_win-sign.key -out github_helge17_win-sign.crt
+#   pwgen 12 1 > github_helge17_win-sign.p12pass
+#   openssl pkcs12 -export -out github_helge17_win-sign.p12 -passout file:github_helge17_win-sign.p12pass -inkey github_helge17_win-sign.key -in github_helge17_win-sign.crt
+# Show content of the certificate and the pkcs12 container
+#   openssl x509 -in github_helge17_win-sign.crt -noout -text
+#   openssl pkcs12 -in github_helge17_win-sign.p12 -passin file:github_helge17_win-sign.p12pass -passout 'pass:DummyPass'
+
+# Set certificate for InstallBuilder
+export WIN_SIGN_P12_FILE=~/Software/TuxGuitar/github_helge17_win-sign.p12
+export WIN_SIGN_P12_PASS=`cat ~/Software/TuxGuitar/github_helge17_win-sign.p12pass`
+
 install_eclipse_swt
 get_java_win
 

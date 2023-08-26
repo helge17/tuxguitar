@@ -16,6 +16,9 @@
 	<productContact>https://github.com/helge17/tuxguitar/discussions</productContact>
 	<productUrlHelpLink>https://github.com/helge17/tuxguitar/issues</productUrlHelpLink>
 	<windowsUninstallerExecutableIcon>../../../common-resources/common-windows-installer-icons/TG_icon_uninstall.ico</windowsUninstallerExecutableIcon>
+	<windowsSigningPkcs12File>${env(WIN_SIGN_P12_FILE)}</windowsSigningPkcs12File>
+	<windowsSigningPkcs12Password>${env(WIN_SIGN_P12_PASS)}</windowsSigningPkcs12Password>
+	<windowsSigningHashingAlgorithms>sha256</windowsSigningHashingAlgorithms>
 	<defaultLanguage>en</defaultLanguage>
 	<allowLanguageSelection>1</allowLanguageSelection>
 	<postInstallationScript></postInstallationScript>
