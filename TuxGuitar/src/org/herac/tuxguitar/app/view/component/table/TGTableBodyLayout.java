@@ -9,6 +9,7 @@ import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 public class TGTableBodyLayout extends UITableLayout {
 	
 	private float rowHeight;
+	private boolean initialized;
 	
 	public TGTableBodyLayout() {
 		super(0f);
@@ -22,6 +23,7 @@ public class TGTableBodyLayout extends UITableLayout {
 		List<UIControl> controls = container.getChildren();
 		for(UIControl control : controls) {
 			this.rowHeight = Math.max(this.rowHeight, control.getPackedSize().getHeight());
+			initialized = true;
 		}
 		
 		int row = 0;
@@ -36,5 +38,9 @@ public class TGTableBodyLayout extends UITableLayout {
 	
 	public float getRowHeight() {
 		return this.rowHeight;
+	}
+	
+	public boolean isInitialized() {
+		return initialized;
 	}
 }
