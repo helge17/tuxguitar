@@ -81,12 +81,18 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 	}
 
 	public void paintControl(UIPainter painter) {
+		// table might not be initialized yet
+		if (!this.table.rowsAreInitialized()) {
+			return;
+		}
+
 		int scrollX = this.table.getViewer().getHScrollSelection();
 		float cellSize = this.table.getRowHeight();
 		float width = this.canvas.getBounds().getWidth();
 		Tablature tablature = this.table.getViewer().getEditor().getTablature();
 		TGSong song = tablature.getSong();
-
+		float markerMargin = 1.0f;
+		float markerSize = cellSize - 2 * markerMargin;
 		TGTableColorModel colorModel = this.table.getViewer().getColorModel();
 		UIColor colorBackground = colorModel.createBackground(this.table.getViewer().getContext(), 0);
 		UIColor colorForeground = colorModel.createForeground(this.table.getViewer().getContext(), 0);
@@ -104,11 +110,10 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 		int j = (int) Math.floor(scrollX / cellSize);
 		for (float x = -scrollX + j * cellSize; j < count && x < width; j++, x += cellSize) {
 			TGMeasureHeader header = song.getMeasureHeader(j);
-
-			if (header.hasMarker() && this.imgMarker!=null) {
-				final float margin = 1.0f;
+			// additional check (markerSize): is there enough room to draw marker?
+			if (header.hasMarker() && this.imgMarker!=null && markerSize>10.0f) {
 				painter.drawImage(this.imgMarker, 0, 0, this.imgMarker.getWidth(), this.imgMarker.getHeight(),
-						x + margin, margin, cellSize - 2 * margin, cellSize - 2 * margin);
+						x + markerMargin, markerMargin, markerSize, markerSize);
 			}
 		}
 		colorBackground.dispose();

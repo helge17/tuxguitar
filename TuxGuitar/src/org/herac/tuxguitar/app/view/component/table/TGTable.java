@@ -56,6 +56,10 @@ public class TGTable {
 		this.createColumnLayout();
 	}
 	
+	public boolean rowsAreInitialized() {
+		return ((TGTableBodyLayout) this.rowControl.getLayout()).isInitialized();
+	}
+	
 	public UIPanel getControl(){
 		return this.table;
 	}
