@@ -15,7 +15,7 @@ import org.herac.tuxguitar.util.TGException;
 public class TGDocumentationDialog {
 	
 	private static final String RESOURCE_PATH = "help";
-	private static final String TEMPORAL_PATH = System.getProperty("java.io.tmpdir") + File.separator + "tuxguitar";
+	private static final String TEMPORAL_PATH = System.getProperty("java.io.tmpdir") + File.separator + "tuxguitar" + "-" + System.getProperty("user.name");
 	
 	private TGViewContext context;
 	

@@ -171,7 +171,7 @@ public class TGMainSingleton {
 	}
 
 	private File getTemporaryFolder() {
-		return new File(System.getProperty("java.io.tmpdir") + File.separator + "tuxguitar");
+		return new File(System.getProperty("java.io.tmpdir") + File.separator + "tuxguitar" + "-" + System.getProperty("user.name"));
 	}
 
 	private File getUrlFolder() {
