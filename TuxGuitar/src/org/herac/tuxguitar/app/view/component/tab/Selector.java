@@ -107,14 +107,23 @@ public class Selector {
 	private void saveState() {
 		TGDocumentListManager documents = TGDocumentListManager.getInstance(this.tablature.getContext());
 		TGDocument document = this.initial == null ? documents.findCurrentDocument() : documents.findDocument(this.initial.getMeasure().getTrack().getSong());
-		document.setSelectionStart(this.getStartBeat());
-		document.setSelectionEnd(this.getEndBeat());
+		if (isActive()) {
+			document.setSelectionStart(this.getStartBeat());
+			document.setSelectionEnd(this.getEndBeat());
+		} else {
+			document.setSelectionStart(null);
+			document.setSelectionEnd(null);
+		}
 	}
 
 	public void restoreStateFrom(TGDocument document) {
 		TGBeat start = document.getSelectionStart();
 		TGBeat end = document.getSelectionEnd();
-		this.initializeSelection(start);
-		this.updateSelection(end);
+		if ((start!=null) && (end!=null)) {
+			this.initializeSelection(start);
+			this.updateSelection(end);
+		} else {
+			this.clearSelection();
+		}
 	}
 }
