@@ -246,19 +246,14 @@ function start_remote_bsd_build {
 BUILD_HOST=$USER@172.16.208.131
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD $BUILD_ARCH TAR.GZ on $BUILD_HOST ..."
 SRC_PATH=/home/$USER/tg-1.x-build-bsd
-BIN_PATH=/home/$USER/bin
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
-echo -e "\n# Copy this script to $BUILD_HOST:$BIN_PATH/ ..."
-ssh $BUILD_HOST mkdir -p $BIN_PATH
-scp -p $0 $BUILD_HOST:$BIN_PATH/
-echo "# OK."
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD $BUILD_ARCH TAR.GZ done."
 
-ssh $BUILD_HOST "cd $SRC_PATH && $BIN_PATH/$COMMAND"
-scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-swt-$BUILD_ARCH.tar.gz $DIST_DIR
+ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
+scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-$BUILD_ARCH.tar.gz $DIST_DIR
 
 }
 
@@ -284,19 +279,14 @@ function start_remote_macos_build {
 BUILD_HOST=$USER@172.16.208.132
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP on $BUILD_HOST ..."
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
-BIN_PATH=/Users/$USER/bin
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
-echo -e "\n# Copy this script to $BUILD_HOST:$BIN_PATH/ ..."
-ssh $BUILD_HOST mkdir -p $BIN_PATH
-scp -p $0 $BUILD_HOST:$BIN_PATH/
-echo "# OK."
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP done."
 
-ssh $BUILD_HOST "cd $SRC_PATH && $BIN_PATH/$COMMAND"
-scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-swt-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
+ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
+scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
 
 }
 
