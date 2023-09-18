@@ -43,4 +43,5 @@ public final class TGDocumentContextAttributes {
 	public static final String ATTRIBUTE_BEAT_RANGE = "beat-range";
 	public static final String ATTRIBUTE_NOTE_RANGE = "note-range";
 	public static final String ATTRIBUTE_KEEP_SELECTION = "keep-selection";
+	public static final String ATTRIBUTE_SELECTION_IS_ACTIVE = "selection-is-active";
 }

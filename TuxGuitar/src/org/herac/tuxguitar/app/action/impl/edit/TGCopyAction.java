@@ -3,8 +3,6 @@ package org.herac.tuxguitar.app.action.impl.edit;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.clipboard.TGClipboard;
@@ -21,8 +19,7 @@ public class TGCopyAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext tgActionContext){
-	    Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature(); 
-		if (tablature.getSelector().isActive()) {
+		if (Boolean.TRUE.equals(tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE))) {
 			TGBeatRange beats = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 			TGClipboard.getInstance(this.getContext()).setData(new TGStoredBeatList(beats.getBeats(), getSongManager(tgActionContext).getFactory()));
 		}
