@@ -29,7 +29,8 @@ public class TGMouseClickAction extends TGActionBase{
 				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, true);
 				actionManager.execute(TGMoveToAction.NAME, context);
 			}
-			if( editorKit.isMouseEditionAvailable() && editorKit.fillAddOrRemoveBeat(context) ) {
+			if( editorKit.isMouseEditionAvailable() && editorKit.fillAddOrRemoveBeat(context) &&
+					Boolean.FALSE==context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE)) {
 				
 				if( editorKit.fillRemoveNoteContext(context) ) {
 					
