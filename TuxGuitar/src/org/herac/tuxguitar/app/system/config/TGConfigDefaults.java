@@ -26,7 +26,7 @@ public class TGConfigDefaults{
 	}
 	
 	public static void loadProperties(TGProperties properties){
-		loadProperty(properties, TGConfigKeys.SKIN, "Lavender");
+		loadProperty(properties, TGConfigKeys.SKIN, "Oxygen");
 		loadProperty(properties, TGConfigKeys.WINDOW_TITLE, "${appname} - ${filename}");
 		loadProperty(properties, TGConfigKeys.SHOW_SPLASH, true);
 		loadProperty(properties, TGConfigKeys.MAXIMIZED, false);
