@@ -67,6 +67,8 @@ public class TGDocumentListManager {
 		document.setUndoableBuffer(new TGUndoableBuffer());
 		document.setUnsaved(false);
 		document.setUnwanted(false);
+		document.setCaretBeat(null);
+		document.setCaretString(0);
 		this.documents.add(document);
 		
 		return this.findDocument(song);

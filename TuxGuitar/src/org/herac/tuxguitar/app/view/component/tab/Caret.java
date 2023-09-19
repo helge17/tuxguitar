@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
@@ -106,6 +108,7 @@ public class Caret {
 		this.updateBeat();
 		this.checkTransport();
 		this.setChanges(true);
+		this.saveState();
 	}
 	
 	private TGTrackImpl findTrack(int number){
@@ -273,6 +276,7 @@ public class Caret {
 	public void setStringNumber(int number){
 		this.string = number;
 		this.updateNote();
+		this.saveState();
 	}
 	
 	public int getStringNumber(){
@@ -407,7 +411,24 @@ public class Caret {
 		this.disposeResource( this.color2 );
 		this.color2 = this.tablature.getResourceFactory().createColor(cm);
 	}
-	
+
+	private void saveState() {
+		TGDocument document = TGDocumentListManager.getInstance(this.tablature.getContext()).findDocument(selectedTrack.getSong());
+		document.setCaretBeat(this.getSelectedBeat());
+		document.setCaretString(this.getStringNumber());
+	}
+
+	public void restoreStateFrom(TGDocument document) {
+		TGBeat beat = document.getCaretBeat();
+		int stringNb = document.getCaretString();
+		if (beat != null && stringNb!=0) {
+			TGMeasureImpl measure = (TGMeasureImpl) beat.getMeasure();
+			this.moveTo((TGTrackImpl) measure.getTrack(), measure, beat, stringNb);
+		} else {
+			update(1, TGDuration.QUARTER_TIME, 1);
+		}
+	}
+
 	public void disposeResource(UIResource resource){
 		if( resource != null && !resource.isDisposed() ){
 			resource.dispose();

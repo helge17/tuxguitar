@@ -57,7 +57,6 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 				tgDocumentListManager.findCurrentDocument().setUri(uri);
 			}
 			
-			TablatureEditor.getInstance(context).getTablature().resetCaret();
 			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
 			TablatureEditor.getInstance(context).getTablature().restoreStateFrom(document);
