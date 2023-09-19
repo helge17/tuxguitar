@@ -29,6 +29,8 @@ function usage {
   echo "# -a     Build for Android"
   echo "# -A     Build for all"
   echo "#"
+  echo "# -g     Create a new Github release and upload the builds"
+  echo "#"
   echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-snapshot,"
   echo "# e.g. 2023-08-25-snapshot. This string will be part of the archive and package file names"
   echo '# and shows up in the TuxGuitar "About" dialog.'
@@ -48,7 +50,7 @@ function usage {
 TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-snapshot"
 
 # Parse command line options
-while getopts "lwmbaAhr:" CMDopt; do
+while getopts "lwmbaAghr:" CMDopt; do
   case $CMDopt in
     l) build_linux=1;;
     w) build_windows=1;;
@@ -61,6 +63,7 @@ while getopts "lwmbaAhr:" CMDopt; do
        build_bsd=1
        build_android=1
        ;;
+    g) copy_to_github=1;;
     r) TGVERSION="$OPTARG"
        [ $TGVERSION == SRC ] && TGVERSION=`grep 'CURRENT = new TGVersion' TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
        ;;
@@ -70,8 +73,7 @@ while getopts "lwmbaAhr:" CMDopt; do
   esac
 done
 
-if [ ! $build_linux ] && [ ! $build_windows ] && [ ! $build_macos ] && [ ! $build_bsd ]&& [ ! $build_android ]; then
-  echo "You must specify at least one build target!"
+if [ "$#" -lt 1 ]; then
   usage
   exit 1
 fi
@@ -83,11 +85,14 @@ if [ ! -e pom.xml ] || [ ! -d TuxGuitar ] || [ ! -d build-scripts ]; then
   exit 1
 fi
 
-# Software needed to build TuxGuitar is located in this directory
-SW_DIR=~/Software/TuxGuitar/tuxguitar_build_dependencies
+# TuxGuitar source directory
+SRC_DIR=`pwd`
 
 # Binary packages are placed into this directory
 DIST_DIR=`pwd`/00-Binary_Packages
+
+# Software needed to build TuxGuitar is located in this directory
+SW_DIR=~/Software/TuxGuitar/tuxguitar_build_dependencies
 
 mkdir -p $SW_DIR
 
@@ -101,6 +106,19 @@ mkdir -p $DIST_DIR
 
 function prepare_source {
 
+if [ -e .build-version ]; then
+  OLDVERSION=`cat .build-version`
+  if [ "$TGVERSION" == "$OLDVERSION" ]; then
+    echo -e "\n# Skipping hacks, sources are already prepared to build version $TGVERSION.\n"
+    return
+  else
+    echo -e "\n# Build version was already set to $OLDVERSION in a previous run of `basename $0`."
+    echo "# Please confirm that you want to build version $OLDVERSION with the option '-r $OLDVERSION'."
+    echo -e "\n### Host: "`hostname -s`" ########### Aborting build.\n"
+    exit 1
+  fi
+fi
+
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ...\n"
 
 if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
@@ -110,30 +128,33 @@ if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
   echo "# OK."
 fi
 
-echo -e "\n# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
-  cp -a $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
-  cp -a $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
+echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
+  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
+  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
 echo "# OK."
 
-echo -e "\n# Change version from SNAPSHOT to $TGVERSION in config files..."
+echo -e "\n# Change build version from SNAPSHOT to $TGVERSION in config files..."
   find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name control -or -name Info.plist \) -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
   sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."
 
 echo -e "\n# Remove some files and directories to find out if they are needed to build TuxGuitar..."
-  rm -r TuxGuitar-android-gdrive-gdaa
-  rm -r TuxGuitar-android-midimaster*
-  #rm -r TuxGuitar-AudioUnit
-  rm -r TuxGuitar-abc
-  rm -r TuxGuitar-community
-  rm -r TuxGuitar-CoreAudio
-  rm -r TuxGuitar-midi-input
-  rm -r TuxGuitar-ui-toolkit-qt5
-  rm -r TuxGuitar-viewer
+  rm -rf TuxGuitar-android-gdrive-gdaa
+  rm -rf TuxGuitar-android-midimaster*
+  #rm -rf TuxGuitar-AudioUnit
+  rm -rf TuxGuitar-abc
+  rm -rf TuxGuitar-community
+  rm -rf TuxGuitar-CoreAudio
+  rm -rf TuxGuitar-midi-input
+  rm -rf TuxGuitar-ui-toolkit-qt5
+  rm -rf TuxGuitar-viewer
 echo "# OK."
 
+echo $TGVERSION > .build-version
+
 echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
+echo
 
 }
 
@@ -147,9 +168,9 @@ SWT_FILE=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
 SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_FILE.zip
 SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH-$SWT_VERSION.jar
 if [ -e $SWT_DEST ]; then
-  echo -e "\n# $SWT_DEST is already installed."
+  echo "# $SWT_DEST is already installed."
 else
-  echo -e "\n# Installing $SWT_DEST from $SWT_LINK ..."
+  echo "# Installing $SWT_DEST from $SWT_LINK ..."
   if [ -e $SW_DIR/$SWT_FILE/swt.jar ]; then
     cd $SW_DIR/$SWT_FILE
   else
@@ -185,7 +206,7 @@ install_eclipse_swt
 # -P native-modules: Build with native modules
 
 for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ..."
+  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ...\n"
   cd build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH-deb
   mvn --batch-mode -e clean verify -P native-modules
   cp -a target/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb $DIST_DIR
@@ -342,7 +363,57 @@ echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
 
 }
 
-# Prepare source code. This is done on Linux for alle platforms.
+function copy_to_github {
+
+  # To edit the repository on Github with the gh command, you have to authenticate first. See 'man gh-auth' for details.
+
+  echo -e "### Host: "`hostname -s`" ########### Creating a new Github release and upload the builds $TGVERSION to Github ...\n"
+
+  cd $SRC_DIR
+
+  if [ -z "$(gh release list | grep "^$TGVERSION\s")" ]; then
+    echo "# Creating Github pre-release draft $TGVERSION ..."
+    REL_NOTES=$'The Windows packages include OpenJDK from portableapps.com.\nThe MacOS package includes OpenJDK from brew.sh.'
+    gh release create --prerelease --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
+    # It may take a few sec until the release is ready
+    sleep 5
+    echo "# OK."
+  else
+    echo "# Skipping creation of release $TGVERSION on Github, release already exists."
+  fi
+  echo
+
+  cd $DIST_DIR
+
+  cat /dev/null > tuxguitar-$TGVERSION.sha256
+  shopt -s nullglob
+  for TG_FILE in *.tar.gz *.deb *.rpm *.zip *.exe *-signed.apk; do
+    echo "# Creating sha256 checksum and uploading file $TG_FILE to release $TGVERSION ..."
+    sha256sum $TG_FILE >> tuxguitar-$TGVERSION.sha256
+    if gh release upload --clobber $TGVERSION $TG_FILE; then
+      echo "# OK."
+    else
+     echo "# Upload of file $TG_FILE failed!"
+    fi
+    echo
+  done
+  echo "# Uploading file tuxguitar-$TGVERSION.sha256 to release $TGVERSION ..."
+  if gh release upload --clobber $TGVERSION tuxguitar-$TGVERSION.sha256; then
+    echo "# OK."
+  else
+   echo "# Upload of file tuxguitar-$TGVERSION.sha256 failed!"
+  fi
+  echo
+
+  echo "# This draft won’t be seen by the public unless it’s published."
+  echo "# To published the draft, issue the command:"
+  echo "# $ gh release edit $TGVERSION --draft=false"
+  echo "# Then also the release tag will be created on Github."
+  echo -e "\n### Host: "`hostname -s`" ########### New Github pre-release draft created and uploads to Github done.\n"
+
+}
+
+# Prepare source code. This is done on Linux for all platforms.
 [ `uname` == Linux ] && prepare_source
 
 # First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
@@ -393,4 +464,9 @@ fi
 # Android build
 if [ $build_android ]; then
   [ `uname` == Linux ] && build_tg_for_android
+fi
+
+# Create a new Github release and upload the builds
+if [ $copy_to_github ]; then
+  [ `uname` == Linux ] && copy_to_github
 fi
