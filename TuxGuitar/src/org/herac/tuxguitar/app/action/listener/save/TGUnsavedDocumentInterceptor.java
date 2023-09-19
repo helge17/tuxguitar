@@ -29,7 +29,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 	
 	private static final String UNSAVED_INTERCEPTOR_DOCUMENTS = "unsavedInterceptor_documents";
 	private static final String UNSAVED_INTERCEPTOR_ACTION_ID = "unsavedInterceptor_actionId";
-	private static final String UNSAVED_INTERCEPTOR_BY_PASS = "unsavedInterceptor_byPass";
+	public static final String UNSAVED_INTERCEPTOR_BY_PASS = "unsavedInterceptor_byPass";
 	
 	private TGContext context;
 	private List<String> actionIds;
