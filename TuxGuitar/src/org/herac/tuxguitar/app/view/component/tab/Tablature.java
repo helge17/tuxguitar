@@ -128,7 +128,7 @@ public class Tablature implements TGController {
 	}
 	
 	public void restoreStateFrom(TGDocument document) {
-		//TODO this.getCaret().restoreStateFrom(document);
+		this.getCaret().restoreStateFrom(document);
 		this.getSelector().restoreStateFrom(document);
 	}
 	

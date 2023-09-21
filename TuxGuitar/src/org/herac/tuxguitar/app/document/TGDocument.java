@@ -13,6 +13,8 @@ public class TGDocument {
 	private TGUndoableBuffer undoableBuffer;
 	private boolean unsaved;
 	private boolean unwanted;
+	private TGBeat caretBeat;
+	private int caretString;
 	private TGBeat selectionStart;
 	private TGBeat selectionEnd;
 	
@@ -58,6 +60,22 @@ public class TGDocument {
 
 	public void setUnwanted(boolean unwanted) {
 		this.unwanted = unwanted;
+	}
+	
+	public TGBeat getCaretBeat() {
+		return caretBeat;
+	}
+
+	public void setCaretBeat(TGBeat caretBeat) {
+		this.caretBeat = caretBeat;
+	}
+
+	public int getCaretString() {
+		return caretString;
+	}
+
+	public void setCaretString(int caretString) {
+		this.caretString = caretString;
 	}
 	
 	public TGBeat getSelectionStart() {
