@@ -78,13 +78,14 @@ public class GP5OutputStream extends GTPOutputStream {
 				throw new TGFileFormatException("Empty Song!!!");
 			}
 			configureChannelRouter(song);
+			makeKeySignatures(song);
 			TGMeasureHeader header = song.getMeasureHeader(0);
 			writeStringByte(GP5_VERSION, 30, DEFAULT_VERSION_CHARSET);
 			writeInfo(song);
 			writeLyrics(song);
 			writePageSetup();
 			writeInt(header.getTempo().getValue());
-			writeInt(0);
+			writeInt(translateKeySignature(0));
 			writeByte((byte)0);
 			writeChannels(song);
 			for(int i = 0; i < 42; i ++){
@@ -188,9 +189,10 @@ public class GP5OutputStream extends GTPOutputStream {
 	
 	private void writeMeasureHeader(TGMeasureHeader measure, TGTimeSignature timeSignature) throws IOException {
 		int flags = 0;
-		if(measure.getNumber() == 1){
-			flags |= 0x40;
-		}
+            int index = measure.getNumber() - 1;
+            if (isNewKeySignature(index)) {
+                flags |= 0x40;
+            }
 		if (measure.getNumber() == 1 || !measure.getTimeSignature().isEqual(timeSignature)) {
 			flags |= 0x01;
 			flags |= 0x02;
@@ -225,7 +227,8 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeByte((byte)measure.getRepeatAlternative());
 		}
 		if ((flags & 0x40) != 0) {
-			skipBytes(2);
+			writeByte(translateKeySignature(index));
+			skipBytes(1);
 		}
 		if ((flags & 0x01) != 0) {
 			writeBytes( makeBeamEighthNoteBytes( measure.getTimeSignature() ));

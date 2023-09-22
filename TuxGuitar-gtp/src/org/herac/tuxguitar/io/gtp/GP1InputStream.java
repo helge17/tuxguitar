@@ -51,6 +51,7 @@ public class GP1InputStream extends GTPInputStream {
 	};
 	
 	private int trackCount;
+	private int keySignature;
 	
 	public GP1InputStream(GTPSettings settings){
 		super(settings, SUPPORTED_VERSIONS);
@@ -74,7 +75,7 @@ public class GP1InputStream extends GTPInputStream {
 			int tripletFeel = ((readInt() == 1)?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
 			
 			if(getVersion().getVersionCode() > 2){
-				readInt(); //key
+				this.keySignature = readInt(); //key
 			}
 			
 			for (int i = 0; i < this.trackCount; i++) {
@@ -197,6 +198,7 @@ public class GP1InputStream extends GTPInputStream {
 				start += length;
 			}
 			measure.setClef( getClef(track) );
+			measure.setKeySignature(this.keySignature);
 			track.addMeasure(measure);
 		}
 	}

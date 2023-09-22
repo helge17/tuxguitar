@@ -55,6 +55,8 @@ public class GP2InputStream extends GTPInputStream {
 		new short[]{8,9,9},
 	};
 	
+	private int keySignature;
+	
 	public GP2InputStream(GTPSettings settings){
 		super(settings, SUPPORTED_VERSIONS);
 	}
@@ -74,7 +76,7 @@ public class GP2InputStream extends GTPInputStream {
 			int tempo = readInt();
 			int tripletFeel = ((readInt() == 1)?TGMeasureHeader.TRIPLET_FEEL_EIGHTH:TGMeasureHeader.TRIPLET_FEEL_NONE);
 			
-			readInt(); //key
+			this.keySignature = readInt(); //key
 			
 			for (int i = 0; i < TRACK_COUNT; i++) {
 				TGChannel channel = getFactory().newChannel();
@@ -193,6 +195,7 @@ public class GP2InputStream extends GTPInputStream {
 				start += length;
 			}
 			measure.setClef( getClef(track) );
+			measure.setKeySignature(this.keySignature);
 			track.addMeasure(measure);
 		}
 	}
