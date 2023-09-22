@@ -21,6 +21,7 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWri
 	
 	private GMChannelRouter channelRouter;
 	private OutputStream outputStream;
+        private int[] keySignatures;
 	
 	public GTPOutputStream(GTPSettings settings){
 		super(settings);
@@ -175,4 +176,29 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWri
 		}
 		return false;
 	}
+	
+        protected void makeKeySignatures(TGSong song) {
+            this.keySignatures = new int[song.countMeasureHeaders()];
+            if (song.countTracks() > 0) {
+                TGTrack track = song.getTrack(0);
+                for (int i = 0; i < track.countMeasures(); i++) {
+                    this.keySignatures[i] = track.getMeasure(i).getKeySignature();
+                }
+            }
+        }
+
+        protected byte translateKeySignature(int index) {
+            int keySignature = this.keySignatures[index];
+            if (keySignature > 7) {
+                return (byte)(7 - keySignature);
+            }
+            return (byte)keySignature;
+        }
+
+        protected boolean isNewKeySignature(int index) {
+            if (index == 0) {
+                return true;
+            }
+            return this.keySignatures[index] != this.keySignatures[index - 1];
+        }
 }

@@ -52,6 +52,7 @@ public class GP4InputStream extends GTPInputStream {
 	
 	private int tripletFeel;
 	private int keySignature;
+	private int[] keySignatures;
 	
 	public GP4InputStream(GTPSettings settings){
 		super(settings, SUPPORTED_VERSIONS);
@@ -85,6 +86,11 @@ public class GP4InputStream extends GTPInputStream {
 			
 			int measures = readInt();
 			int tracks = readInt();
+
+                this.keySignatures = new int[measures];
+                if (measures > 0) {
+                    this.keySignatures[0] = this.keySignature;
+                }
 			
 			readMeasureHeaders(song, measures);
 			readTracks(song, tracks, channels, lyric, lyricTrack);
@@ -119,6 +125,9 @@ public class GP4InputStream extends GTPInputStream {
 		TGTimeSignature timeSignature = getFactory().newTimeSignature();
 		for (int i = 0; i < count; i++) {
 			song.addMeasureHeader(readMeasureHeader((i + 1),song,timeSignature));
+                if ((i + 1) < count) {
+                    this.keySignatures[i + 1] = this.keySignatures[i];
+                }
 		}
 	}
 	
@@ -326,7 +335,7 @@ public class GP4InputStream extends GTPInputStream {
 			header.setMarker(readMarker(number));
 		}
 		if ((flags & 0x40) != 0) {
-			this.keySignature = readKeySignature();
+			this.keySignatures[index] = readKeySignature();
 			this.skip(1);
 		}
 		return header;
@@ -339,7 +348,8 @@ public class GP4InputStream extends GTPInputStream {
 			nextNoteStart += readBeat(nextNoteStart, measure, track, tempo);
 		}
 		measure.setClef( getClef(track) );
-		measure.setKeySignature(this.keySignature);
+            int index = measure.getNumber() - 1;
+            measure.setKeySignature(this.keySignatures[index]);
 	}
 	
 	private TGNote readNote(TGString string, TGTrack track,TGNoteEffect effect)throws IOException {

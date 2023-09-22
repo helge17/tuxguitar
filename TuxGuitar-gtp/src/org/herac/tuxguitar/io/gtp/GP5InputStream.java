@@ -50,6 +50,7 @@ public class GP5InputStream extends GTPInputStream {
 	private static final float GP_BEND_POSITION = 60f;
 
 	private int keySignature;
+	private int[] keySignatures;
 	
 	public GP5InputStream(GTPSettings settings) {
 		super(settings, SUPPORTED_VERSIONS);
@@ -90,6 +91,11 @@ public class GP5InputStream extends GTPInputStream {
 			
 			int measures = readInt();
 			int tracks = readInt();
+			
+                this.keySignatures = new int[measures];
+                if (measures > 0) {
+                    this.keySignatures[0] = this.keySignature;
+                }
 			
 			readMeasureHeaders(song, measures);
 			readTracks(song, tracks, channels, lyric, lyricTrack);
@@ -136,6 +142,9 @@ public class GP5InputStream extends GTPInputStream {
 				skip(1);
 			}
 			song.addMeasureHeader(readMeasureHeader(i,timeSignature));
+                if ((i + 1) < count) {
+                    this.keySignatures[i + 1] = this.keySignatures[i];
+                }
 		}
 	}
 	
@@ -358,7 +367,7 @@ public class GP5InputStream extends GTPInputStream {
 			header.setRepeatAlternative(readUnsignedByte());
 		}
 		if ((flags & 0x40) != 0) {
-			this.keySignature = readKeySignature();
+			this.keySignatures[index] = readKeySignature();
 			this.skip(1);
 		}
 		if ((flags & 0x01) != 0 || (flags & 0x02) != 0) {
@@ -406,7 +415,8 @@ public class GP5InputStream extends GTPInputStream {
 			measure.removeBeat( beat );
 		}
 		measure.setClef( getClef(track) );
-		measure.setKeySignature(this.keySignature);
+            int index = measure.getNumber() - 1;
+            measure.setKeySignature(this.keySignatures[index]);
 	}
 	
 	private TGNote readNote(TGString string,TGTrack track,TGNoteEffect effect)throws IOException {
