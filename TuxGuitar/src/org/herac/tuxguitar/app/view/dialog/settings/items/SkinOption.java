@@ -67,19 +67,19 @@ public class SkinOption extends TGSettingsOption{
 		UITableLayout skinInfoLayout = new UITableLayout();
 		UIPanel skinInfoComposite = uiFactory.createPanel(getPanel(), false);
 		skinInfoComposite.setLayout(skinInfoLayout);
-		this.indent(skinInfoComposite, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+		this.indent(skinInfoComposite, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, true, false);
 		
 		showLabel(skinInfoComposite, TuxGuitar.getProperty("name") + ": ", true, 1, 1);
-		this.nameLabel = showLabel(skinInfoComposite, "" + ": ", false, 1, 2);
+		this.nameLabel = showLabel(skinInfoComposite, "-", false, 1, 2);
 		
 		showLabel(skinInfoComposite, TuxGuitar.getProperty("author") + ": ", true, 2, 1);
-		this.authorLabel = showLabel(skinInfoComposite, "" + ": ", false, 2, 2);
+		this.authorLabel = showLabel(skinInfoComposite, "-", false, 2, 2);
 		
 		showLabel(skinInfoComposite, TuxGuitar.getProperty("version") + ": ", true, 3, 1);
-		this.versionLabel = showLabel(skinInfoComposite, "" + ": ", false, 3, 2);
+		this.versionLabel = showLabel(skinInfoComposite, "-", false, 3, 2);
 		
 		showLabel(skinInfoComposite, TuxGuitar.getProperty("description") + ": ", true, 4, 1);
-		this.descriptionLabel = showLabel(skinInfoComposite, "" + ": ", false, 4, 2);
+		this.descriptionLabel = showLabel(skinInfoComposite, "-", false, 4, 2);
 		
 		UITableLayout skinPreviewLayout = new UITableLayout();
 		UIPanel skinPreviewComposite = uiFactory.createPanel(getPanel(), false);
