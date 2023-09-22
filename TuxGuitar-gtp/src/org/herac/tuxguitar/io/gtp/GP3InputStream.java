@@ -272,7 +272,7 @@ public class GP3InputStream extends GTPInputStream {
 			header.setMarker(readMarker(number));
 		}
 		if ((flags & 0x40) != 0) {
-			this.keySignatures[index] = readKeySignature();
+			this.keySignatures[number-1] = readKeySignature();
 			this.skip(1);
 		}
 		return header;
