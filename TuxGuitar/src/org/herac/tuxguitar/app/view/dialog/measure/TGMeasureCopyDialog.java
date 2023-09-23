@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.app.view.dialog.measure;
 
+import java.util.Iterator;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
@@ -25,13 +27,15 @@ import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMeasureCopyDialog {
+	// to memorize user preferences (used each time dialog is opened)
+	static boolean initCopyAllTracks = true;
+	static boolean initCopyMarkers = false;
 	
 	public void show(final TGViewContext context) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		final TGBeatRange beats = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
-		
 		
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -83,6 +87,28 @@ public class TGMeasureCopyDialog {
 		final int minSelection = 1;
 		final int maxSelection = track.countMeasures();
 		
+		
+		//------------ OPTIONS -----------------------------------------------
+		UICheckBox allTracks = null;
+		UITableLayout optionsLayout = new UITableLayout();
+		UILegendPanel options = uiFactory.createLegendPanel(dialog);
+		options.setLayout(optionsLayout);
+		options.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(options, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		int rowCheckBox = 1;
+		if( song.countTracks() > 1 ){
+			allTracks = uiFactory.createCheckBox(options);
+			allTracks.setText(TuxGuitar.getProperty("edit.all-tracks"));
+			allTracks.setSelected(initCopyAllTracks);
+			optionsLayout.set(allTracks, rowCheckBox, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			rowCheckBox++;
+		}
+		final UICheckBox allTracksFinal = allTracks;
+		final UICheckBox copyMarkers = uiFactory.createCheckBox(options);
+		copyMarkers.setText(TuxGuitar.getProperty("edit.copy-markers"));
+		copyMarkers.setSelected(initCopyMarkers);
+		optionsLayout.set(copyMarkers, rowCheckBox, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
 		fromSpinner.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				int fromSelection = fromSpinner.getValue();
@@ -90,9 +116,12 @@ public class TGMeasureCopyDialog {
 				
 				if(fromSelection < minSelection){
 					fromSpinner.setValue(minSelection);
+					fromSelection = minSelection;
 				}else if(fromSelection > toSelection){
 					fromSpinner.setValue(toSelection);
+					fromSelection = toSelection;
 				}
+				updateCopyMarkers(song, fromSelection, toSelection, copyMarkers);
 			}
 		});
 		toSpinner.addSelectionListener(new UISelectionListener() {
@@ -101,39 +130,34 @@ public class TGMeasureCopyDialog {
 				int fromSelection = fromSpinner.getValue();
 				if(toSelection < fromSelection){
 					toSpinner.setValue(fromSelection);
+					toSelection = fromSelection;
 				}else if(toSelection > maxSelection){
 					toSpinner.setValue(maxSelection);
+					toSelection = maxSelection;
 				}
+				updateCopyMarkers(song, fromSelection, toSelection, copyMarkers);
 			}
 		});
-		
-		//----------------------------------------------------------------------
-		UICheckBox allTracks = null;
-		if( song.countTracks() > 1 ){
-			UITableLayout optionsLayout = new UITableLayout();
-			UILegendPanel options = uiFactory.createLegendPanel(dialog);
-			options.setLayout(optionsLayout);
-			options.setText(TuxGuitar.getProperty("options"));
-			dialogLayout.set(options, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
-			allTracks = uiFactory.createCheckBox(options);
-			allTracks.setText(TuxGuitar.getProperty("edit.all-tracks"));
-			allTracks.setSelected(true);
-		}
-		final UICheckBox allTracksFinal = allTracks;
+		updateCopyMarkers(song, fromSpinner.getValue(), toSpinner.getValue(), copyMarkers);
 		
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, (allTracksFinal != null ? 3 : 2), 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				processAction(context.getContext(), fromSpinner.getValue(), toSpinner.getValue(), (allTracksFinal != null ? allTracksFinal.isSelected() : true));
+				if (allTracksFinal!=null) {
+					initCopyAllTracks = allTracksFinal.isSelected();
+				}
+				initCopyMarkers = copyMarkers.isSelected();
+				processAction(context.getContext(), fromSpinner.getValue(), toSpinner.getValue(),
+						(allTracksFinal != null ? allTracksFinal.isSelected() : false),
+						copyMarkers.isSelected());
 				dialog.dispose();
 			}
 		});
@@ -152,11 +176,26 @@ public class TGMeasureCopyDialog {
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
-	public void processAction(TGContext context, Integer measure1, Integer measure2, Boolean copyAllTracks) {
+	public void processAction(TGContext context, Integer measure1, Integer measure2, Boolean copyAllTracks, Boolean copyMarkers) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGCopyMeasureAction.NAME);
 		tgActionProcessor.setAttribute(TGCopyMeasureAction.ATTRIBUTE_MEASURE_NUMBER_1, measure1);
 		tgActionProcessor.setAttribute(TGCopyMeasureAction.ATTRIBUTE_MEASURE_NUMBER_2, measure2);
 		tgActionProcessor.setAttribute(TGCopyMeasureAction.ATTRIBUTE_ALL_TRACKS, copyAllTracks);
+		tgActionProcessor.setAttribute(TGCopyMeasureAction.ATTRIBUTE_COPY_MARKERS, copyMarkers);
 		tgActionProcessor.process();
+	}
+	
+	private void updateCopyMarkers(TGSong song, int from, int to, UICheckBox copyMarkers) {
+		boolean atLeastOneMarker = false;
+		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
+		while (headers.hasNext() && !atLeastOneMarker) {
+			TGMeasureHeader header = headers.next();
+			int measureNb = header.getNumber();
+			atLeastOneMarker = (measureNb>=from && measureNb<=to && header.getMarker() != null);
+		}
+		copyMarkers.setEnabled(atLeastOneMarker);
+		if (!atLeastOneMarker) {
+			copyMarkers.setSelected(false);
+		}
 	}
 }

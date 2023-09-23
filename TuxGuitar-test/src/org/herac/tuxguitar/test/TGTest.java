@@ -40,11 +40,13 @@ public abstract class TGTest {
 	//    with no suffix, action is launched but nothing is checked
 	// methods prefixed with "check" do not trigger any action, but check something
 	
-	// these need to be initialized by tests scenarios
+	static boolean TGisRunning;
 	protected boolean verbose;
 	
 	@BeforeAll
 	static void startTG() {
+		if (TGisRunning) return;
+		
 		TuxGuitar tg = TuxGuitar.getInstance();
 		assertNotNull(tg);
 		
@@ -58,8 +60,9 @@ public abstract class TGTest {
 				Thread.sleep(500);
 			}
 		});
+		TGisRunning = true;
 	}
-	
+
 	// VERY basic logging to console, TODO: improve!
 	protected void log(String s) {
 		if (verbose) System.out.printf("%s",s);
@@ -74,7 +77,6 @@ public abstract class TGTest {
 	
 	protected void doInsertMeasuresChecked(int from, int nb) {
 		TGTrack track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
-		
 		int nbMeasuresInit = track.countMeasures();
 		
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
