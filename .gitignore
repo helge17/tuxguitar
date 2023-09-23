@@ -9,3 +9,5 @@ build-scripts/native-modules/tuxguitar-synth-vst-*/include/
 .classpath
 .settings/
 .project
+build-scripts/tuxguitar-android/local.properties
+build-scripts/tuxguitar-android/.idea/
