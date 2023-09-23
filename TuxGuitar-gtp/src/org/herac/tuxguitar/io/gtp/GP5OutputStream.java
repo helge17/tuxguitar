@@ -189,10 +189,10 @@ public class GP5OutputStream extends GTPOutputStream {
 	
 	private void writeMeasureHeader(TGMeasureHeader measure, TGTimeSignature timeSignature) throws IOException {
 		int flags = 0;
-            int index = measure.getNumber() - 1;
-            if (isNewKeySignature(index)) {
-                flags |= 0x40;
-            }
+		int index = measure.getNumber() - 1;
+		if (isNewKeySignature(index)) {
+			flags |= 0x40;
+		}
 		if (measure.getNumber() == 1 || !measure.getTimeSignature().isEqual(timeSignature)) {
 			flags |= 0x01;
 			flags |= 0x02;

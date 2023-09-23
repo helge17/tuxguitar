@@ -160,10 +160,10 @@ public class GP4OutputStream extends GTPOutputStream{
 	
 	private void writeMeasureHeader(TGMeasureHeader measure, TGTimeSignature timeSignature) throws IOException {
 		int flags = 0;
-            int index = measure.getNumber() - 1;
-            if (isNewKeySignature(index)) {
-                flags |= 0x40;
-            }
+		int index = measure.getNumber() - 1;
+		if (isNewKeySignature(index)) {
+			flags |= 0x40;
+		}
 		if (measure.getNumber() == 1 || measure.getTimeSignature().getNumerator() != timeSignature.getNumerator()) {
 			flags |= 0x01;
 		}
@@ -199,10 +199,10 @@ public class GP4OutputStream extends GTPOutputStream{
 		if ((flags & 0x10) != 0) {
 			writeByte((byte)measure.getRepeatAlternative());
 		}
-            if ((flags & 0x40) != 0) {
-                writeByte(translateKeySignature(index));
-                skipBytes(1);
-            }
+		if ((flags & 0x40) != 0) {
+			writeByte(translateKeySignature(index));
+			skipBytes(1);
+		}
 	}
 	
 	private void writeTracks(TGSong song) throws IOException {

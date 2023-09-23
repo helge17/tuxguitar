@@ -87,10 +87,10 @@ public class GP4InputStream extends GTPInputStream {
 			int measures = readInt();
 			int tracks = readInt();
 
-                this.keySignatures = new int[measures];
-                if (measures > 0) {
-                    this.keySignatures[0] = this.keySignature;
-                }
+			this.keySignatures = new int[measures];
+			if (measures > 0) {
+				this.keySignatures[0] = this.keySignature;
+			}
 			
 			readMeasureHeaders(song, measures);
 			readTracks(song, tracks, channels, lyric, lyricTrack);
@@ -125,9 +125,9 @@ public class GP4InputStream extends GTPInputStream {
 		TGTimeSignature timeSignature = getFactory().newTimeSignature();
 		for (int i = 0; i < count; i++) {
 			song.addMeasureHeader(readMeasureHeader((i + 1),song,timeSignature));
-                if ((i + 1) < count) {
-                    this.keySignatures[i + 1] = this.keySignatures[i];
-                }
+			if ((i + 1) < count) {
+				this.keySignatures[i + 1] = this.keySignatures[i];
+			}
 		}
 	}
 	
@@ -282,7 +282,7 @@ public class GP4InputStream extends GTPInputStream {
 				TGMeasure measure = track.getMeasure( m );
 				for (int b = measure.countBeats() - 1; b >= 0; b--) {
 					TGBeat beat = measure.getBeat( b );
-					TGVoice voice = beat.getVoice(0);  
+					TGVoice voice = beat.getVoice(0);
 					for (int n = 0; n < voice.countNotes(); n ++) {
 						TGNote note = voice.getNote( n );
 						if (note.getString() == string) {
@@ -335,7 +335,7 @@ public class GP4InputStream extends GTPInputStream {
 			header.setMarker(readMarker(number));
 		}
 		if ((flags & 0x40) != 0) {
-			this.keySignatures[index] = readKeySignature();
+			this.keySignatures[number-1] = readKeySignature();
 			this.skip(1);
 		}
 		return header;
@@ -348,8 +348,8 @@ public class GP4InputStream extends GTPInputStream {
 			nextNoteStart += readBeat(nextNoteStart, measure, track, tempo);
 		}
 		measure.setClef( getClef(track) );
-            int index = measure.getNumber() - 1;
-            measure.setKeySignature(this.keySignatures[index]);
+		int index = measure.getNumber() - 1;
+		measure.setKeySignature(this.keySignatures[index]);
 	}
 	
 	private TGNote readNote(TGString string, TGTrack track,TGNoteEffect effect)throws IOException {
