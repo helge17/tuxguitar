@@ -448,7 +448,7 @@ public class GP5InputStream extends GTPInputStream {
 		}
 		skip(1);
 		if ((flags & 0x08) != 0) {
-			readNoteEffects(note.getEffect());
+			readNoteEffects(note.getEffect(), note.getValue());
 		}
 		return note;
 	}
@@ -571,7 +571,7 @@ public class GP5InputStream extends GTPInputStream {
 		}
 	}
 	
-	private void readNoteEffects(TGNoteEffect noteEffect) throws IOException {
+	private void readNoteEffects(TGNoteEffect noteEffect, int noteFret) throws IOException {
 		int flags1 = readUnsignedByte();
 		int flags2 = readUnsignedByte();
 		if ((flags1 & 0x01) != 0) {
@@ -588,7 +588,7 @@ public class GP5InputStream extends GTPInputStream {
 			readByte();
 		}
 		if ((flags2 & 0x10) != 0) {
-			readArtificialHarmonic(noteEffect);
+			readArtificialHarmonic(noteEffect, noteFret);
 		}
 		if ((flags2 & 0x20) != 0) {
 			readTrill(noteEffect);
@@ -680,7 +680,7 @@ public class GP5InputStream extends GTPInputStream {
 		}
 	}
 	
-	private void readArtificialHarmonic(TGNoteEffect effect) throws IOException{
+	private void readArtificialHarmonic(TGNoteEffect effect, int noteFret) throws IOException{
 		int type = readByte();
 		TGEffectHarmonic harmonic = getFactory().newEffectHarmonic();
 		harmonic.setData(0);
@@ -688,12 +688,17 @@ public class GP5InputStream extends GTPInputStream {
 			harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
 			effect.setHarmonic(harmonic);
 		}else if(type == 2){
-			skip(3);
+			skip(3); // Note: byte, Accidental: signed-byte, Octave: byte
 			harmonic.setType(TGEffectHarmonic.TYPE_ARTIFICIAL);
 			effect.setHarmonic(harmonic);
 		}else if(type == 3){
-			skip(1);
 			harmonic.setType(TGEffectHarmonic.TYPE_TAPPED);
+			int rightHandFret = readByte();
+			for (int i=0; i<TGEffectHarmonic.NATURAL_FREQUENCIES.length;i++) {
+				if (rightHandFret-noteFret == TGEffectHarmonic.NATURAL_FREQUENCIES[i][0]) {
+					harmonic.setData(i);
+				}
+			}
 			effect.setHarmonic(harmonic);
 		}else if(type == 4){
 			harmonic.setType(TGEffectHarmonic.TYPE_PINCH);
