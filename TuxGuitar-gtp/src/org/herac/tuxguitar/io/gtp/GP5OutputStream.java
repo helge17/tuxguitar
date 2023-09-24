@@ -36,6 +36,7 @@ import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
+import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
@@ -474,7 +475,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		}
 		skipBytes(1);
 		if ((flags & 0x08) != 0) {
-			writeNoteEffects(note.getEffect());
+			writeNoteEffects(note.getEffect(), note.getValue());
 		}
 	}
 	
@@ -554,7 +555,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		}
 	}
 	
-	private void writeNoteEffects(TGNoteEffect effect) throws IOException {
+	private void writeNoteEffects(TGNoteEffect effect, int fret) throws IOException {
 		int flags1 = 0;
 		int flags2 = 0;
 		if (effect.isBend()) {
@@ -609,7 +610,23 @@ public class GP5OutputStream extends GTPOutputStream {
 		}
 		
 		if ((flags2 & 0x10) != 0) {
-			writeByte((byte)1);
+			TGEffectHarmonic harmonic = effect.getHarmonic(); 
+			if (harmonic.isArtificial()) {
+				writeByte((byte)2);
+				writeByte((byte)0);
+				writeByte((byte)0);
+				writeByte((byte)0);
+			} else if (harmonic.isTapped()) {
+				writeByte((byte)3);
+				writeByte((byte)(fret + TGEffectHarmonic.NATURAL_FREQUENCIES[harmonic.getData()][0]) );
+			} else if (harmonic.isPinch()) {
+				writeByte((byte)4);
+			} else if (harmonic.isSemi()) {
+				writeByte((byte)5);
+			} else {
+				//default: natural
+				writeByte((byte)1);
+			}
 		}
 		
 		if ((flags2 & 0x20) != 0) {
