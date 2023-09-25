@@ -55,6 +55,10 @@ public abstract class TGDuration {
 	/**
 	 * Valor.
 	 */
+	
+	// the shortest possible note (highest value)
+	public static final int SHORTEST = SIXTY_FOURTH;
+	
 	private int value;
 	/**
 	 * Puntillo.
