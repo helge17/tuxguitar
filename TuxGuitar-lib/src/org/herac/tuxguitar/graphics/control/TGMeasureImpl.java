@@ -732,18 +732,25 @@ public class TGMeasureImpl extends TGMeasure{
 		float x1 = 0;
 		float x2 = 0;
 		
+		int tupletDuration = 0;	// sum of all notes durations within current tuplet, unit = fractions of the shortest possible note (to keep all data integers)
+		int tupletShortest=0;
+		
 		TGDivisionType divisionType = null;
 		Iterator<TGBeat> it = getBeats().iterator();
 		while(it.hasNext()) {
 			TGBeatImpl beat = (TGBeatImpl)it.next();
-			TGVoiceImpl voice = beat.getVoiceImpl(voiceIndex);				
+			TGVoiceImpl voice = beat.getVoiceImpl(voiceIndex);
 			if( !voice.isEmpty() ) {
-				if( divisionType != null && !voice.getDuration().getDivision().isEqual(divisionType) ) {
+				// end of tuplet?
+				if( divisionType != null &&
+						((!voice.getDuration().getDivision().isEqual(divisionType))
+						|| (tupletDuration!=0 && (tupletDuration == divisionType.getEnters()*divisionType.getTimes()*TGDuration.SHORTEST/tupletShortest)))) {
 					this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
-					
 					divisionType = null;
+					tupletDuration = 0;
+					tupletShortest = 0;
 				}
-				
+				// beginning of tuplet?
 				if(!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
 					x2 = (fromX + beat.getPosX() + beat.getSpacing(layout));
 					if( divisionType == null ) {
@@ -752,7 +759,14 @@ public class TGMeasureImpl extends TGMeasure{
 					}
 				}
 			}
+			// update current tuplet if any
+			if (divisionType!=null) {
+				int voiceDuration = voice.getDuration().getValue();
+				tupletDuration += (TGDuration.SHORTEST * divisionType.getTimes() / voiceDuration);
+				tupletShortest = voiceDuration > tupletShortest ? voiceDuration : tupletShortest;
+			}
 		}
+		// end of measure, with a tuplet already started?
 		if( divisionType != null ) {
 			this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
 		}
