@@ -41,12 +41,12 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 			}
 		});
 		
-		this.stop = this.getToolBar().getControl().createActionItem();
-		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
-		
 		this.play = this.getToolBar().getControl().createActionItem();
 		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayPauseAction.NAME));
 		
+		this.stop = this.getToolBar().getControl().createActionItem();
+		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
+
 		this.next = this.getToolBar().getControl().createActionItem();
 		this.next.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {

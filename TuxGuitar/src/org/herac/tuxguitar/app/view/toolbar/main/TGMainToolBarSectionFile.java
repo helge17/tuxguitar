@@ -34,12 +34,12 @@ public class TGMainToolBarSectionFile extends TGMainToolBarSection {
 		this.saveAsSong = this.getToolBar().getControl().createActionItem();
 		this.saveAsSong.addSelectionListener(this.createActionProcessor(TGSaveAsFileAction.NAME));
 		
-		this.printSong = this.getToolBar().getControl().createActionItem();
-		this.printSong.addSelectionListener(this.createActionProcessor(TGPrintAction.NAME));
-		
 		this.printPreviewSong = this.getToolBar().getControl().createActionItem();
 		this.printPreviewSong.addSelectionListener(this.createActionProcessor(TGPrintPreviewAction.NAME));
 		
+		this.printSong = this.getToolBar().getControl().createActionItem();
+		this.printSong.addSelectionListener(this.createActionProcessor(TGPrintAction.NAME));
+
 		this.loadIcons();
 		this.loadProperties();
 	}
@@ -49,8 +49,8 @@ public class TGMainToolBarSectionFile extends TGMainToolBarSection {
 		this.openSong.setToolTipText(this.getText("file.open"));
 		this.saveSong.setToolTipText(this.getText("file.save"));
 		this.saveAsSong.setToolTipText(this.getText("file.save-as"));
-		this.printSong.setToolTipText(this.getText("file.print"));
 		this.printPreviewSong.setToolTipText(this.getText("file.print-preview"));
+		this.printSong.setToolTipText(this.getText("file.print"));
 	}
 	
 	public void loadIcons(){
@@ -58,8 +58,8 @@ public class TGMainToolBarSectionFile extends TGMainToolBarSection {
 		this.openSong.setImage(this.getIconManager().getFileOpen());
 		this.saveSong.setImage(this.getIconManager().getFileSave());
 		this.saveAsSong.setImage(this.getIconManager().getFileSaveAs());
-		this.printSong.setImage(this.getIconManager().getFilePrint());
 		this.printPreviewSong.setImage(this.getIconManager().getFilePrintPreview());
+		this.printSong.setImage(this.getIconManager().getFilePrint());
 	}
 	
 	public void updateItems(){

@@ -55,6 +55,8 @@ public class EditMenuItem extends TGMenuItem{
 		//--REPEAT--
 		this.repeat = this.editMenuItem.getMenu().createActionItem();
 		this.repeat.addSelectionListener(this.createActionProcessor(TGRepeatAction.NAME));
+		//--SEPARATOR
+		this.editMenuItem.getMenu().createSeparator();
 		//--UNDO--
 		this.undo = this.editMenuItem.getMenu().createActionItem();
 		this.undo.addSelectionListener(this.createActionProcessor(TGUndoAction.NAME));

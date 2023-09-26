@@ -37,10 +37,6 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 
 		this.menuItem = this.getToolBar().getControl().createMenuItem();
 		
-		//--FRETBOARD--
-		this.showFretBoard = this.menuItem.getMenu().createActionItem();
-		this.showFretBoard.addSelectionListener(this.createActionProcessor(TGToggleFretBoardEditorAction.NAME));
-		
 		//--INSTRUMENTS--
 		this.showInstruments = this.menuItem.getMenu().createActionItem();
 		this.showInstruments.addSelectionListener(this.createActionProcessor(TGToggleChannelsDialogAction.NAME));
@@ -49,6 +45,10 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 		this.showTransport = this.menuItem.getMenu().createActionItem();
 		this.showTransport.addSelectionListener(this.createActionProcessor(TGToggleTransportDialogAction.NAME));
 		
+		//--FRETBOARD--
+		this.showFretBoard = this.menuItem.getMenu().createActionItem();
+		this.showFretBoard.addSelectionListener(this.createActionProcessor(TGToggleFretBoardEditorAction.NAME));
+
 		this.loadIcons();
 		this.loadProperties();
 	}
@@ -57,25 +57,25 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 		this.showEditToolBar.setToolTipText(this.getText("view.show-edit-toolbar"));
 		this.showTrackTable.setToolTipText(this.getText("view.show-table-viewer"));
 		this.menuItem.setToolTipText(this.getText("view"));
-		this.showFretBoard.setText(this.getText("view.show-fretboard", TGFretBoardEditor.getInstance(this.getToolBar().getContext()).isVisible()));
 		this.showInstruments.setText(this.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(this.getToolBar().getContext()).isDisposed())));
 		this.showTransport.setText(this.getText("view.show-transport", (!TGTransportDialog.getInstance(this.getToolBar().getContext()).isDisposed())));
+		this.showFretBoard.setText(this.getText("view.show-fretboard", TGFretBoardEditor.getInstance(this.getToolBar().getContext()).isVisible()));
 	}
 	
 	public void loadIcons(){
 		this.showEditToolBar.setImage(this.getIconManager().getToolbarEdit());
 		this.showTrackTable.setImage(this.getIconManager().getTableViewer());
 		this.menuItem.setImage(this.getIconManager().getFretboard());
-		this.showFretBoard.setImage(this.getIconManager().getFretboard());
 		this.showInstruments.setImage(this.getIconManager().getInstruments());
 		this.showTransport.setImage(this.getIconManager().getTransport());
+		this.showFretBoard.setImage(this.getIconManager().getFretboard());
 	}
 	
 	public void updateItems(){
 		this.showEditToolBar.setChecked(TGEditToolBar.getInstance(this.getToolBar().getContext()).isVisible());
 		this.showTrackTable.setChecked(TGTableViewer.getInstance(this.getToolBar().getContext()).isVisible());
-		this.showFretBoard.setText(this.getText("view.show-fretboard", TGFretBoardEditor.getInstance(this.getToolBar().getContext()).isVisible()));
 		this.showInstruments.setText(this.getText("view.show-instruments", (!TGChannelManagerDialog.getInstance(this.getToolBar().getContext()).isDisposed())));
 		this.showTransport.setText(this.getText("view.show-transport", (!TGTransportDialog.getInstance(this.getToolBar().getContext()).isDisposed())));
+		this.showFretBoard.setText(this.getText("view.show-fretboard", TGFretBoardEditor.getInstance(this.getToolBar().getContext()).isVisible()));
 	}
 }
