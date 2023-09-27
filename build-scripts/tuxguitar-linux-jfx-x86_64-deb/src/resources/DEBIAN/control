@@ -1,7 +1,7 @@
 Package: tuxguitar
 Version: SNAPSHOT-linux-jfx
 Architecture: amd64
-Depends: default-jre
+Depends: default-jre, liblilv-0-0
 Recommends: guitarix-lv2
 Priority: optional
 Section: Multimedia
