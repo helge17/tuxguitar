@@ -1,9 +1,9 @@
 Package: tuxguitar
 Version: SNAPSHOT-linux-jfx
 Architecture: amd64
-Depends: default-jre, liblilv-0-0
+Depends: default-jre, libasound2, libfluidsynth2 | libfluidsynth3, libjack0 | libjack-jackd2-0, liblilv-0-0
 Recommends: guitarix-lv2
 Priority: optional
 Section: Multimedia
-Maintainer: Julian Casadesus <julian@casadesus.com.ar>
+Maintainer: https://github.com/helge17/
 Description: TuxGuitar is a multitrack guitar tablature editor and player
