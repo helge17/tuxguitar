@@ -16,6 +16,7 @@ import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.resource.UIImage;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
@@ -41,6 +42,7 @@ public class SkinOption extends TGSettingsOption{
 	private UILabel descriptionLabel;
 	private UIImage preview;
 	private UICanvas previewArea;
+	private UIPanel skinInfoComposite;
 	
 	public SkinOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
 		super(configEditor, toolBar, parent,TuxGuitar.getProperty("settings.config.skin"), UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL);
@@ -65,7 +67,7 @@ public class SkinOption extends TGSettingsOption{
 		compositeLayout.set(this.combo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UITableLayout skinInfoLayout = new UITableLayout();
-		UIPanel skinInfoComposite = uiFactory.createPanel(getPanel(), false);
+		skinInfoComposite = uiFactory.createPanel(getPanel(), false);
 		skinInfoComposite.setLayout(skinInfoLayout);
 		this.indent(skinInfoComposite, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, true, false);
 		
@@ -162,6 +164,11 @@ public class SkinOption extends TGSettingsOption{
 					SkinOption.this.authorLabel.setText(info.getAuthor());
 					SkinOption.this.descriptionLabel.setText(info.getDescription());
 					SkinOption.this.versionLabel.setText((info.getDate() == null)?info.getVersion():info.getVersion() + " (" + info.getDate() + ")");
+					// resize skin info, considering new strings' lengths
+					SkinOption.this.skinInfoComposite.computePackedSize(null, null);
+					UIRectangle skinInfoRect = SkinOption.this.skinInfoComposite.getBounds();
+					skinInfoRect.setSize(SkinOption.this.skinInfoComposite.getPackedContentSize());
+					SkinOption.this.skinInfoComposite.setBounds(skinInfoRect);
 					if( info.getPreview() != null){
 						SkinOption.this.preview = TGFileUtils.loadImage(getViewContext().getContext(), info.getSkin(), info.getPreview());
 					}
