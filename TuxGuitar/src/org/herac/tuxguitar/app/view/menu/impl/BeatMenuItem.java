@@ -9,19 +9,19 @@ import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
-import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
-import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
-import org.herac.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
-import org.herac.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
+import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGRemoveUnusedVoiceAction;
 import org.herac.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
-import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
-import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
+import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
+import org.herac.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
+import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
+import org.herac.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
+import org.herac.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -54,9 +54,9 @@ public class BeatMenuItem extends TGMenuItem {
 	private UIMenuActionItem moveBeatsCustom;
 	
 	private DurationMenuItem durationMenuItem;
-	private ChordMenuItem chordMenuItem;
-	private NoteEffectsMenuItem effectMenuItem;
 	private DynamicMenuItem dynamicMenuItem;
+	private NoteEffectsMenuItem effectMenuItem;
+	private ChordMenuItem chordMenuItem;
 	
 	public BeatMenuItem(UIMenu parent) {
 		this.noteMenuItem = parent.createSubMenuItem();
@@ -67,6 +67,9 @@ public class BeatMenuItem extends TGMenuItem {
 		this.tiedNote = this.noteMenuItem.getMenu().createCheckItem();
 		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
 		
+		//--SEPARATOR--
+		this.noteMenuItem.getMenu().createSeparator();
+
 		//--Insert Rest Beat
 		this.insertRestBeat = this.noteMenuItem.getMenu().createActionItem();
 		this.insertRestBeat.addSelectionListener(this.createActionProcessor(TGInsertRestBeatAction.NAME));
@@ -79,25 +82,31 @@ public class BeatMenuItem extends TGMenuItem {
 		this.cleanBeat = this.noteMenuItem.getMenu().createActionItem();
 		this.cleanBeat.addSelectionListener(this.createActionProcessor(TGCleanBeatAction.NAME));
 		
+		//--SEPARATOR--
+		this.noteMenuItem.getMenu().createSeparator();
+
 		//--Remove Voice
 		this.removeVoice = this.noteMenuItem.getMenu().createActionItem();
 		this.removeVoice.addSelectionListener(this.createActionProcessor(TGRemoveUnusedVoiceAction.NAME));
+
+		//--SEPARATOR--
+		this.noteMenuItem.getMenu().createSeparator();
 		
 		//--Duration--
 		this.durationMenuItem = new DurationMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
 		this.durationMenuItem.showItems();
 		
-		//--Chord--
-		this.chordMenuItem = new ChordMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
-		this.chordMenuItem.showItems();
-		
-		//--Effects--
-		this.effectMenuItem = new NoteEffectsMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
-		this.effectMenuItem.showItems();
-		
 		//--Dynamic--
 		this.dynamicMenuItem = new DynamicMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
 		this.dynamicMenuItem.showItems();
+
+		//--Effects--
+		this.effectMenuItem = new NoteEffectsMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
+		this.effectMenuItem.showItems();
+
+		//--Chord--
+		this.chordMenuItem = new ChordMenuItem(this.noteMenuItem.getMenu().createSubMenuItem());
+		this.chordMenuItem.showItems();
 		
 		//--SEPARATOR--
 		this.noteMenuItem.getMenu().createSeparator();

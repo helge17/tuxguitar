@@ -15,8 +15,8 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 	
 	private static final String SECTION_TITLE = "composition";
 	
-	private UIToolActionItem tempo;
 	private UIToolActionItem timeSignature;
+	private UIToolActionItem tempo;
 	private UIToolCheckableItem repeatOpen;
 	private UIToolCheckableItem repeatClose;
 	private UIToolCheckableItem repeatAlternative;
@@ -28,12 +28,12 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 	public void createSectionToolBars() {
 		UIToolBar toolBar = this.createToolBar();
 		
-		this.tempo = toolBar.createActionItem();
-		this.tempo.addSelectionListener(this.createActionProcessor(TGOpenTempoDialogAction.NAME));
-		
 		this.timeSignature = toolBar.createActionItem();
 		this.timeSignature.addSelectionListener(this.createActionProcessor(TGOpenTimeSignatureDialogAction.NAME));
 		
+		this.tempo = toolBar.createActionItem();
+		this.tempo.addSelectionListener(this.createActionProcessor(TGOpenTempoDialogAction.NAME));
+
 		toolBar.createSeparator();
 		
 		this.repeatOpen = toolBar.createCheckItem();
@@ -50,8 +50,8 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGMeasure measure = this.getTablature().getCaret().getMeasure();
 		
-		this.tempo.setEnabled(!running);
 		this.timeSignature.setEnabled(!running);
+		this.tempo.setEnabled(!running);
 		this.repeatOpen.setEnabled( !running );
 		this.repeatOpen.setChecked(measure != null && measure.isRepeatOpen());
 		this.repeatClose.setEnabled( !running );
@@ -61,16 +61,16 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 	}
 	
 	public void loadSectionProperties() {
-		this.tempo.setToolTipText(this.getText("composition.tempo"));
 		this.timeSignature.setToolTipText(this.getText("composition.timesignature"));
+		this.tempo.setToolTipText(this.getText("composition.tempo"));
 		this.repeatOpen.setToolTipText(this.getText("repeat.open"));
 		this.repeatClose.setToolTipText(this.getText("repeat.close"));
 		this.repeatAlternative.setToolTipText(this.getText("repeat.alternative"));
 	}
 	
 	public void loadSectionIcons() {
-		this.tempo.setImage(this.getIconManager().getCompositionTempo());
 		this.timeSignature.setImage(this.getIconManager().getCompositionTimeSignature());
+		this.tempo.setImage(this.getIconManager().getCompositionTempo());
 		this.repeatOpen.setImage(this.getIconManager().getCompositionRepeatOpen());
 		this.repeatClose.setImage(this.getIconManager().getCompositionRepeatClose());
 		this.repeatAlternative.setImage(this.getIconManager().getCompositionRepeatAlternative());

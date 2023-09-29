@@ -1,24 +1,25 @@
 package org.herac.tuxguitar.app.view.toolbar.edit;
 
+import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenBendDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangePoppingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeSlappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeLetRingAction;
+import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
+import org.herac.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
+import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
+import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeSlappingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangePoppingAction;
+import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
@@ -28,17 +29,18 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	
 	private static final String SECTION_TITLE = "effects";
 	
-	private UIToolCheckableItem deadNote;
-	private UIToolCheckableItem ghostNote;
-	private UIToolCheckableItem accentuatedNote;
-	private UIToolCheckableItem heavyAccentuatedNote;
-	private UIToolCheckableItem harmonicNote;
-	private UIToolCheckableItem graceNote;
 	private UIToolCheckableItem vibrato;
 	private UIToolCheckableItem bend;
 	private UIToolCheckableItem tremoloBar;
 	private UIToolCheckableItem slide;
+	private UIToolCheckableItem deadNote;
 	private UIToolCheckableItem hammer;
+	private UIToolCheckableItem ghostNote;
+	private UIToolCheckableItem accentuatedNote;
+	private UIToolCheckableItem heavyAccentuatedNote;
+	private UIToolCheckableItem letRing;
+	private UIToolCheckableItem harmonicNote;
+	private UIToolCheckableItem graceNote;
 	private UIToolCheckableItem trill;
 	private UIToolCheckableItem tremoloPicking;
 	private UIToolCheckableItem palmMute;
@@ -55,10 +57,32 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	public void createSectionToolBars() {
 		UIToolBar toolBar = this.createToolBar();
 		
+		//--VIBRATO--
+		this.vibrato = toolBar.createCheckItem();
+		this.vibrato.addSelectionListener(this.createActionProcessor(TGChangeVibratoNoteAction.NAME));
+
+		//--BEND--
+		this.bend = toolBar.createCheckItem();
+		this.bend.addSelectionListener(this.createActionProcessor(TGOpenBendDialogAction.NAME));
+
+		//--TREMOLO BAR--
+		this.tremoloBar = toolBar.createCheckItem();
+		this.tremoloBar.addSelectionListener(this.createActionProcessor(TGOpenTremoloBarDialogAction.NAME));
+
+		//--SLIDE--
+		this.slide = toolBar.createCheckItem();
+		this.slide.addSelectionListener(this.createActionProcessor(TGChangeSlideNoteAction.NAME));
+
 		//--DEAD NOTE--
 		this.deadNote = toolBar.createCheckItem();
 		this.deadNote.addSelectionListener(this.createActionProcessor(TGChangeDeadNoteAction.NAME));
 		
+		toolBar = this.createToolBar();
+
+		//--HAMMER--
+		this.hammer = toolBar.createCheckItem();
+		this.hammer.addSelectionListener(this.createActionProcessor(TGChangeHammerNoteAction.NAME));
+
 		//--GHOST NOTE--
 		this.ghostNote = toolBar.createCheckItem();
 		this.ghostNote.addSelectionListener(this.createActionProcessor(TGChangeGhostNoteAction.NAME));
@@ -70,38 +94,20 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		//--HEAVY ACCENTUATED NOTE--
 		this.heavyAccentuatedNote = toolBar.createCheckItem();
 		this.heavyAccentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeHeavyAccentuatedNoteAction.NAME));
+
+		//LET RING--
+		this.letRing = toolBar.createCheckItem();
+		this.letRing.addSelectionListener(this.createActionProcessor(TGChangeLetRingAction.NAME));
 		
+		toolBar = this.createToolBar();
+
 		//--HARMONIC NOTE--
 		this.harmonicNote = toolBar.createCheckItem();
 		this.harmonicNote.addSelectionListener(this.createActionProcessor(TGOpenHarmonicDialogAction.NAME));
 		
-		toolBar = this.createToolBar();
-		
 		//--GRACE NOTE--
 		this.graceNote = toolBar.createCheckItem();
 		this.graceNote.addSelectionListener(this.createActionProcessor(TGOpenGraceDialogAction.NAME));
-		
-		//--VIBRATO--
-		this.vibrato = toolBar.createCheckItem();
-		this.vibrato.addSelectionListener(this.createActionProcessor(TGChangeVibratoNoteAction.NAME));
-		
-		//--BEND--
-		this.bend = toolBar.createCheckItem();
-		this.bend.addSelectionListener(this.createActionProcessor(TGOpenBendDialogAction.NAME));
-		
-		//--BEND--
-		this.tremoloBar = toolBar.createCheckItem();
-		this.tremoloBar.addSelectionListener(this.createActionProcessor(TGOpenTremoloBarDialogAction.NAME));
-		
-		//--SLIDE--
-		this.slide = toolBar.createCheckItem();
-		this.slide.addSelectionListener(this.createActionProcessor(TGChangeSlideNoteAction.NAME));
-		
-		toolBar = this.createToolBar();
-		
-		//--HAMMER--
-		this.hammer = toolBar.createCheckItem();
-		this.hammer.addSelectionListener(this.createActionProcessor(TGChangeHammerNoteAction.NAME));
 		
 		//--TRILL--
 		this.trill = toolBar.createCheckItem();
@@ -115,41 +121,42 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.palmMute = toolBar.createCheckItem();
 		this.palmMute.addSelectionListener(this.createActionProcessor(TGChangePalmMuteAction.NAME));
 		
-		//--STACCATO
+		toolBar = this.createToolBar();
+
+		//--STACCATO--
 		this.staccato = toolBar.createCheckItem();
 		this.staccato.addSelectionListener(this.createActionProcessor(TGChangeStaccatoAction.NAME));
 		
-		toolBar = this.createToolBar();
-		
-		//--TAPPING
+		//--TAPPING--
 		this.tapping = toolBar.createCheckItem();
 		this.tapping.addSelectionListener(this.createActionProcessor(TGChangeTappingAction.NAME));
 		
-		//--SLAPPING
+		//--SLAPPING--
 		this.slapping = toolBar.createCheckItem();
 		this.slapping.addSelectionListener(this.createActionProcessor(TGChangeSlappingAction.NAME));
 		
-		//--POPPING
+		//--POPPING--
 		this.popping = toolBar.createCheckItem();
 		this.popping.addSelectionListener(this.createActionProcessor(TGChangePoppingAction.NAME));
 		
-		//--FADE IN
+		//--FADE IN--
 		this.fadeIn = toolBar.createCheckItem();
 		this.fadeIn.addSelectionListener(this.createActionProcessor(TGChangeFadeInAction.NAME));
 	}
 	
 	public void loadSectionProperties() {
-		this.deadNote.setToolTipText(this.getText("effects.deadnote"));
-		this.ghostNote.setToolTipText(this.getText("effects.ghostnote"));
-		this.accentuatedNote.setToolTipText(this.getText("effects.accentuatednote"));
-		this.heavyAccentuatedNote.setToolTipText(this.getText("effects.heavyaccentuatednote"));
-		this.harmonicNote.setToolTipText(this.getText("effects.harmonic"));
-		this.graceNote.setToolTipText(this.getText("effects.grace"));
 		this.vibrato.setToolTipText(this.getText("effects.vibrato"));
 		this.bend.setToolTipText(this.getText("effects.bend"));
 		this.tremoloBar.setToolTipText(this.getText("effects.tremolo-bar"));
 		this.slide.setToolTipText(this.getText("effects.slide"));
+		this.deadNote.setToolTipText(this.getText("effects.deadnote"));
 		this.hammer.setToolTipText(this.getText("effects.hammer"));
+		this.ghostNote.setToolTipText(this.getText("effects.ghostnote"));
+		this.accentuatedNote.setToolTipText(this.getText("effects.accentuatednote"));
+		this.heavyAccentuatedNote.setToolTipText(this.getText("effects.heavyaccentuatednote"));
+		this.letRing.setToolTipText(this.getText("effects.let-ring"));
+		this.harmonicNote.setToolTipText(this.getText("effects.harmonic"));
+		this.graceNote.setToolTipText(this.getText("effects.grace"));
 		this.trill.setToolTipText(this.getText("effects.trill"));
 		this.tremoloPicking.setToolTipText(this.getText("effects.tremolo-picking"));
 		this.palmMute.setToolTipText(this.getText("effects.palm-mute"));
@@ -161,17 +168,18 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	}
 	
 	public void loadSectionIcons() {
-		this.deadNote.setImage(this.getIconManager().getEffectDead());
-		this.ghostNote.setImage(this.getIconManager().getEffectGhost());
-		this.accentuatedNote.setImage(this.getIconManager().getEffectAccentuated());
-		this.heavyAccentuatedNote.setImage(this.getIconManager().getEffectHeavyAccentuated());
-		this.harmonicNote.setImage(this.getIconManager().getEffectHarmonic());
-		this.graceNote.setImage(this.getIconManager().getEffectGrace());
 		this.vibrato.setImage(this.getIconManager().getEffectVibrato());
 		this.bend.setImage(this.getIconManager().getEffectBend());
 		this.tremoloBar.setImage(this.getIconManager().getEffectTremoloBar());
 		this.slide.setImage(this.getIconManager().getEffectSlide());
+		this.deadNote.setImage(this.getIconManager().getEffectDead());
 		this.hammer.setImage(this.getIconManager().getEffectHammer());
+		this.ghostNote.setImage(this.getIconManager().getEffectGhost());
+		this.accentuatedNote.setImage(this.getIconManager().getEffectAccentuated());
+		this.heavyAccentuatedNote.setImage(this.getIconManager().getEffectHeavyAccentuated());
+		this.letRing.setImage(this.getIconManager().getEffectLetRing());
+		this.harmonicNote.setImage(this.getIconManager().getEffectHarmonic());
+		this.graceNote.setImage(this.getIconManager().getEffectGrace());
 		this.trill.setImage(this.getIconManager().getEffectTrill());
 		this.tremoloPicking.setImage(this.getIconManager().getEffectTremoloPicking());
 		this.palmMute.setImage(this.getIconManager().getEffectPalmMute());
@@ -186,9 +194,24 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
 		TGNoteRange noteRange = this.getTablature().getCurrentNoteRange();
 		
+		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
+		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
+
+		this.bend.setEnabled(!running && !noteRange.isEmpty());
+		this.bend.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isBend()));
+
+		this.tremoloBar.setEnabled(!running && !noteRange.isEmpty());
+		this.tremoloBar.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloBar()));
+
+		this.slide.setEnabled(!running && !noteRange.isEmpty());
+		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
+
 		this.deadNote.setEnabled(!running && !noteRange.isEmpty());
 		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
-		
+
+		this.hammer.setEnabled(!running && !noteRange.isEmpty());
+		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
+
 		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
 		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
 		
@@ -197,27 +220,15 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		
 		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
+
+		this.letRing.setEnabled(!running && !noteRange.isEmpty());
+		this.letRing.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isLetRing()));
 		
 		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		
 		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
 		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
-		
-		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
-		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
-		
-		this.bend.setEnabled(!running && !noteRange.isEmpty());
-		this.bend.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isBend()));
-		
-		this.tremoloBar.setEnabled(!running && !noteRange.isEmpty());
-		this.tremoloBar.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloBar()));
-		
-		this.slide.setEnabled(!running && !noteRange.isEmpty());
-		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
-		
-		this.hammer.setEnabled(!running && !noteRange.isEmpty());
-		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
 		
 		this.trill.setEnabled(!running && !noteRange.isEmpty());
 		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));

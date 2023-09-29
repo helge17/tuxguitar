@@ -69,6 +69,7 @@ declare -A ICONS=(
   ["$TG/effect_ghost.svg"]="$S_ICON:effect_ghost.png"
   ["$TG/effect_accentuated.svg"]="$S_ICON:effect_accentuated.png"
   ["$TG/effect_heavy_accentuated.svg"]="$S_ICON:effect_heavy_accentuated.png"
+  ["$TG/effect_let_ring.svg"]="$S_ICON:effect_let_ring.png"
   ["$TG/effect_harmonic.svg"]="$S_ICON:effect_harmonic.png"
   ["$TG/effect_grace.svg"]="$S_ICON:effect_grace.png"
   ["$TG/effect_bend.svg"]="$S_ICON:effect_bend.png"

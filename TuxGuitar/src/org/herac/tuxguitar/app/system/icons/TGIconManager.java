@@ -114,6 +114,7 @@ public class TGIconManager {
 	private UIImage effectGhost;
 	private UIImage effectAccentuated;
 	private UIImage effectHeavyAccentuated;
+	private UIImage effectLetRing;
 	private UIImage effectHarmonic;
 	private UIImage effectGrace;
 	private UIImage effectBend;
@@ -287,6 +288,7 @@ public class TGIconManager {
 		this.effectGhost = loadIcon("effect_ghost.png");
 		this.effectAccentuated = loadIcon("effect_accentuated.png");
 		this.effectHeavyAccentuated = loadIcon("effect_heavy_accentuated.png");
+		this.effectLetRing = loadIcon("effect_let_ring.png");
 		this.effectHarmonic = loadIcon("effect_harmonic.png");
 		this.effectGrace = loadIcon("effect_grace.png");
 		this.effectBend = loadIcon("effect_bend.png");
@@ -544,6 +546,10 @@ public class TGIconManager {
 		return this.effectHeavyAccentuated;
 	}
 	
+	public UIImage getEffectLetRing() {
+		return this.effectLetRing;
+	}
+
 	public UIImage getEffectPalmMute() {
 		return this.effectPalmMute;
 	}

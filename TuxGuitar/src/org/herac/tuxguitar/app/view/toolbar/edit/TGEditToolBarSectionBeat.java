@@ -42,10 +42,14 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		
 		this.chordMenu = toolBar.createActionMenuItem();
 		this.chordMenu.addSelectionListener(this.createActionProcessor(TGOpenChordDialogAction.NAME));
-		
+
+		toolBar.createSeparator();
+
 		this.text = toolBar.createCheckItem();
 		this.text.addSelectionListener(this.createActionProcessor(TGOpenTextDialogAction.NAME));
-		
+
+		toolBar.createSeparator();
+
 		this.strokeUp = toolBar.createCheckItem();
 		this.strokeUp.addSelectionListener(this.createActionProcessor(TGOpenStrokeUpDialogAction.NAME));
 		
