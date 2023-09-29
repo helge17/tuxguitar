@@ -363,15 +363,15 @@ public class GP5InputStream extends GTPInputStream {
 		if ((flags & 0x20) != 0) {
 			header.setMarker(readMarker(header.getNumber()));
 		}
-		if ((flags & 0x10) != 0) {
-			header.setRepeatAlternative(readUnsignedByte());
-		}
 		if ((flags & 0x40) != 0) {
 			this.keySignatures[index] = readKeySignature();
 			this.skip(1);
 		}
 		if ((flags & 0x01) != 0 || (flags & 0x02) != 0) {
 			skip(4);
+		}
+		if ((flags & 0x10) != 0) {
+			header.setRepeatAlternative(readUnsignedByte());
 		}
 		if ((flags & 0x10) == 0) {
 			skip(1);

@@ -224,15 +224,15 @@ public class GP5OutputStream extends GTPOutputStream {
 		if ((flags & 0x20) != 0) {
 			writeMarker(measure.getMarker());
 		}
-		if ((flags & 0x10) != 0) {
-			writeByte((byte)measure.getRepeatAlternative());
-		}
 		if ((flags & 0x40) != 0) {
 			writeByte(translateKeySignature(index));
 			skipBytes(1);
 		}
 		if ((flags & 0x01) != 0) {
 			writeBytes( makeBeamEighthNoteBytes( measure.getTimeSignature() ));
+		}
+		if ((flags & 0x10) != 0) {
+			writeByte((byte)measure.getRepeatAlternative());
 		}
 		if((flags & 0x10) == 0){
 			writeByte((byte)0);
