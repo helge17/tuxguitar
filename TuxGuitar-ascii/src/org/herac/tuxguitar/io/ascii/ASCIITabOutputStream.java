@@ -121,7 +121,7 @@ public class ASCIITabOutputStream {
 			TGNote note = this.manager.getMeasureManager().getNote(beat, string.getNumber());
 			if(note != null){
 				outLength = (Integer.toString(note.getValue()).length() - 1);
-				this.out.drawNote(note.getValue());
+				this.out.drawNote(note.getValue(), note.getEffect() != null && note.getEffect().isDeadNote());
 			}
 			//dejo el espacio
 			else{
