@@ -12,9 +12,13 @@ public class ASCIIOutputStream {
 		this.writer = new PrintWriter(stream);
 	}
 	
-	public void drawNote(int fret){
+	public void drawNote(int fret, boolean isDeadNote){
 		movePoint(getPosX() + ((fret >=10 )?2:1),getPosY());
-		this.writer.print(fret);
+		if (isDeadNote) {
+			this.writer.print("X");
+		} else {
+			this.writer.print(fret);
+		}
 	}
 	
 	public void drawStringSegments(int count){
