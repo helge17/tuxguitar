@@ -29,14 +29,22 @@ function usage {
   echo "# -a     Build for Android"
   echo "# -A     Build for all"
   echo "#"
-  echo "# -g     Create a new Github release and upload the builds"
+  echo "# -g, -G Creates a new Github release and uploads the builds. The release will be marked as a"
+  echo "#        pre-release."
+  echo "#        -g keeps the release in draft status after the upload. The draft won’t be seen by the"
+  echo "#           public unless it is published manually, either in the Github web interface or with"
+  echo "#           the command"
+  echo "#           $ gh release edit <release> --draft=false"
+  echo "#           Then also the release tag will be created on Github."
+  echo "#        -G publishes the release immediately if all files were successfully uploaded. If one"
+  echo "#           or more uploads failed, the release remains in draft status (as with -g)."
   echo "#"
   echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-snapshot,"
   echo "# e.g. 2023-08-25-snapshot. This string will be part of the archive and package file names"
   echo '# and shows up in the TuxGuitar "About" dialog.'
   echo "#"
   echo "# -r <release>"
-  echo "#        Set the build version to the given <release> string, e.g. 1.6.0beta1."
+  echo "#        Sets the build version to the given <release> string, e.g. 1.6.0beta1."
   echo '#        If you use "SRC" as <release>, then the build version is extracted from the source'
   echo "#        code, e.g. 1.6.0."
   echo "#"
@@ -64,6 +72,9 @@ while getopts "lwmbaAghr:" CMDopt; do
        build_android=1
        ;;
     g) copy_to_github=1;;
+    G) copy_to_github=1
+       publish_release=1
+       ;;
     r) TGVERSION="$OPTARG"
        [ $TGVERSION == SRC ] && TGVERSION=`grep 'CURRENT = new TGVersion' TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
        ;;
@@ -367,7 +378,7 @@ function copy_to_github {
 
   # To edit the repository on Github with the gh command, you have to authenticate first. See 'man gh-auth' for details.
 
-  echo -e "### Host: "`hostname -s`" ########### Creating a new Github release and upload the builds $TGVERSION to Github ...\n"
+  echo -e "### Host: "`hostname -s`" ########### Creating a new Github pre-release and upload the builds $TGVERSION to Github ...\n"
 
   cd $SRC_DIR
 
@@ -386,30 +397,46 @@ function copy_to_github {
   cd $DIST_DIR
 
   cat /dev/null > tuxguitar-$TGVERSION.sha256
+  UPLOAD_OK=0
+  UPLOAD_FAIL=0
   shopt -s nullglob
   for TG_FILE in *.tar.gz *.deb *.rpm *.zip *.exe *-signed.apk; do
     echo "# Creating sha256 checksum and uploading file $TG_FILE to release $TGVERSION ..."
     sha256sum $TG_FILE >> tuxguitar-$TGVERSION.sha256
     if gh release upload --clobber $TGVERSION $TG_FILE; then
+      ((UPLOAD_OK++))
       echo "# OK."
     else
-     echo "# Upload of file $TG_FILE failed!"
+      ((UPLOAD_FAIL++))
+      echo "# Upload of file $TG_FILE failed!"
     fi
     echo
   done
   echo "# Uploading file tuxguitar-$TGVERSION.sha256 to release $TGVERSION ..."
   if gh release upload --clobber $TGVERSION tuxguitar-$TGVERSION.sha256; then
+    ((UPLOAD_OK++))
     echo "# OK."
   else
-   echo "# Upload of file tuxguitar-$TGVERSION.sha256 failed!"
+    ((UPLOAD_FAIL++))
+    echo "# Upload of file tuxguitar-$TGVERSION.sha256 failed!"
   fi
   echo
 
-  echo "# This draft won’t be seen by the public unless it’s published."
-  echo "# To published the draft, issue the command:"
-  echo "# $ gh release edit $TGVERSION --draft=false"
-  echo "# Then also the release tag will be created on Github."
-  echo -e "\n### Host: "`hostname -s`" ########### New Github pre-release draft created and uploads to Github done.\n"
+  echo "# $((UPLOAD_OK+UPLOAD_FAIL)) files processed, $UPLOAD_OK files uploaded successfully, $UPLOAD_FAIL uploads failed."
+  echo
+
+  if [ $publish_release ] && [ "$UPLOAD_FAIL" -eq 0 ]; then
+    echo "# Publishing release $TGVERSION ..."
+    if gh release edit $TGVERSION --draft=false; then
+      echo "# OK."
+    else
+      echo "# Publishing release $TGVERSION failed!"
+    fi
+  else
+    echo "# Keeping the release in draft status."
+  fi
+
+  echo -e "\n### Host: "`hostname -s`" ########### New Github pre-release created and uploads to Github done.\n"
 
 }
 
