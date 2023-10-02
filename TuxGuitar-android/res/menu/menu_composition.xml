@@ -4,6 +4,9 @@
     android:id="@+id/action_menu_composition" >
 
     <item
+        android:id="@+id/action_change_time_signature"
+        android:title="@string/action_change_time_signature"/>
+    <item
         android:id="@+id/action_change_tempo"
         android:title="@string/action_change_tempo"/>
     <item
@@ -12,9 +15,6 @@
     <item
         android:id="@+id/action_change_key_signature"
         android:title="@string/action_change_key_signature"/>
-    <item
-        android:id="@+id/action_change_time_signature"
-        android:title="@string/action_change_time_signature"/>
     <item
         android:id="@+id/action_change_triplet_feel"
         android:title="@string/action_change_triplet_feel"/>

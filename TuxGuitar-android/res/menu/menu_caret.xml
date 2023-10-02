@@ -15,4 +15,5 @@
     <item
         android:id="@+id/action_go_down"
         android:title="@string/action_go_down"/>
+
 </menu>

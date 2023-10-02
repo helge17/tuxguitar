@@ -10,17 +10,17 @@
         android:id="@+id/action_change_bend"
         android:title="@string/action_change_bend"/>
     <item
-        android:id="@+id/action_change_dead_note"
-        android:title="@string/action_change_dead_note"/>
+        android:id="@+id/action_change_tremolo_bar"
+        android:title="@string/action_change_tremolo_bar"/>
     <item
         android:id="@+id/action_change_slide"
         android:title="@string/action_change_slide"/>
     <item
+        android:id="@+id/action_change_dead_note"
+        android:title="@string/action_change_dead_note"/>
+    <item
         android:id="@+id/action_change_hammer"
         android:title="@string/action_change_hammer"/>
-    <item
-        android:id="@+id/action_change_tremolo_bar"
-        android:title="@string/action_change_tremolo_bar"/>
     <item
         android:id="@+id/action_change_ghost_note"
         android:title="@string/action_change_ghost_note"/>
@@ -30,6 +30,9 @@
     <item
         android:id="@+id/action_change_heavy_accentuated_note"
         android:title="@string/action_change_heavy_accentuated_note"/>
+    <item
+        android:id="@+id/action_change_let_ring"
+        android:title="@string/action_change_let_ring"/>
     <item
         android:id="@+id/action_change_harmonic"
         android:title="@string/action_change_harmonic"/>
@@ -46,9 +49,6 @@
         android:id="@+id/action_change_palm_mute"
         android:title="@string/action_change_palm_mute"/>
     <item
-        android:id="@+id/action_change_let_ring"
-        android:title="@string/action_change_let_ring"/>
-    <item
         android:id="@+id/action_change_staccato"
         android:title="@string/action_change_staccato"/>
     <item
@@ -63,4 +63,5 @@
     <item
         android:id="@+id/action_change_fade_in"
         android:title="@string/action_change_fade_in"/>
+
 </menu>

@@ -4,53 +4,53 @@
     android:id="@+id/action_menu_beat" >
 
     <item
-        android:id="@+id/action_change_text"
-        android:title="@string/action_change_text"/>
-    <item
         android:id="@+id/action_change_tied_note"
         android:checkable="true"
         android:title="@string/action_change_tied_note"/>
     <item
-        android:id="@+id/action_clean_beat"
-        android:title="@string/action_clean_beat"/>
-    <item
-        android:id="@+id/action_decrement_note_semitone"
-        android:title="@string/action_decrement_note_semitone"/>
-    <item
-        android:id="@+id/action_increment_note_semitone"
-        android:title="@string/action_increment_note_semitone"/>
+        android:id="@+id/action_insert_rest_beat"
+        android:title="@string/action_insert_rest_beat"/>
     <item
         android:id="@+id/action_delete_note_or_rest"
         android:title="@string/action_delete_note_or_rest"/>
     <item
-        android:id="@+id/action_insert_rest_beat"
-        android:title="@string/action_insert_rest_beat"/>
+        android:id="@+id/action_clean_beat"
+        android:title="@string/action_clean_beat"/>
+    <item
+        android:id="@+id/action_remove_unused_voice"
+        android:title="@string/action_remove_unused_voice"/>
+    <item
+        android:id="@+id/action_change_text"
+        android:title="@string/action_change_text"/>
+    <item
+        android:id="@+id/action_set_voice_auto"
+        android:title="@string/action_set_voice_auto"/>
+    <item
+        android:id="@+id/action_set_voice_up"
+        android:title="@string/action_set_voice_up"/>
+    <item
+        android:id="@+id/action_set_voice_down"
+        android:title="@string/action_set_voice_down"/>
+    <item
+        android:id="@+id/action_change_stroke"
+        android:title="@string/action_change_stroke"/>
+    <item
+        android:id="@+id/action_increment_note_semitone"
+        android:title="@string/action_increment_note_semitone"/>
+    <item
+        android:id="@+id/action_decrement_note_semitone"
+        android:title="@string/action_decrement_note_semitone"/>
+    <item
+        android:id="@+id/action_shift_note_up"
+        android:title="@string/action_shift_note_up"/>
+    <item
+        android:id="@+id/action_shift_note_down"
+        android:title="@string/action_shift_note_down"/>
     <item
         android:id="@+id/action_move_beats_left"
         android:title="@string/action_move_beats_left"/>
     <item
         android:id="@+id/action_move_beats_right"
         android:title="@string/action_move_beats_right"/>
-    <item
-        android:id="@+id/action_remove_unused_voice"
-        android:title="@string/action_remove_unused_voice"/>
-    <item
-        android:id="@+id/action_set_voice_auto"
-        android:title="@string/action_set_voice_auto"/>
-    <item
-        android:id="@+id/action_set_voice_down"
-        android:title="@string/action_set_voice_down"/>
-    <item
-        android:id="@+id/action_set_voice_up"
-        android:title="@string/action_set_voice_up"/>
-    <item
-        android:id="@+id/action_shift_note_down"
-        android:title="@string/action_shift_note_down"/>
-    <item
-        android:id="@+id/action_shift_note_up"
-        android:title="@string/action_shift_note_up"/>
-    <item
-        android:id="@+id/action_change_stroke"
-        android:title="@string/action_change_stroke"/>
-    
+
 </menu>

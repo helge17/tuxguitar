@@ -15,4 +15,5 @@
         android:id="@+id/action_view_layout_show_chord_diagram"
         android:checkable="true"
         android:title="@string/action_view_layout_show_chord_diagram"/>
+
 </menu>

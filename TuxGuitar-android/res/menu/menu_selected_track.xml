@@ -46,4 +46,5 @@
         android:id="@+id/action_track_change_string_count"
         android:title="@string/action_track_change_string_count"
         android:visible="false"/>
+
 </menu>

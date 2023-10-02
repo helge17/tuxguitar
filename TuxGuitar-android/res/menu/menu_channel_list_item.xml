@@ -6,10 +6,10 @@
         android:id="@+id/action_channel_list_item_edit"
         android:title="@string/action_channel_list_item_edit"
         android:icon="@drawable/ic_edit_white_24dp"/>
-    
     <item
         android:id="@+id/action_channel_list_item_remove"
         android:title="@string/action_channel_list_item_remove"
         android:icon="@drawable/ic_delete_white_24dp"
         android:visible="false"/>
+
 </menu>

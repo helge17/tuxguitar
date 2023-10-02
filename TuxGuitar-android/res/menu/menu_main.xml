@@ -35,13 +35,13 @@
         android:id="@+id/action_menu_duration"
         android:title="@string/action_menu_duration"/>
     <item
+        android:id="@+id/action_menu_dynamic"
+        android:title="@string/action_menu_dynamic"/>
+    <item
         android:id="@+id/action_menu_effects"
         android:title="@string/action_menu_effects"/>
     <item
-        android:id="@+id/action_menu_dynamic"
-        android:title="@string/action_menu_dynamic"/>
-
-    <item
         android:id="@+id/action_menu_settings"
         android:title="@string/action_menu_settings"/>
+
 </menu>

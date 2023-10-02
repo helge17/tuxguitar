@@ -33,4 +33,5 @@
     <item
         android:id="@+id/action_change_triplet_feel"
         android:title="@string/action_change_triplet_feel"/>
+
 </menu>

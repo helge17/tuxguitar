@@ -4,6 +4,12 @@
     android:id="@+id/action_menu_edit" >
 
     <item
+        android:id="@+id/action_copy"
+        android:title="@string/action_copy"/>
+    <item
+        android:id="@+id/action_paste"
+        android:title="@string/action_paste"/>
+    <item
         android:id="@+id/action_undo"
         android:title="@string/action_undo"/>
     <item
@@ -15,10 +21,5 @@
     <item
         android:id="@+id/action_voice_2"
         android:title="@string/action_voice_2"/>
-    <item
-        android:id="@+id/action_copy"
-        android:title="@string/action_copy"/>
-    <item
-        android:id="@+id/action_paste"
-        android:title="@string/action_paste"/>
+
 </menu>

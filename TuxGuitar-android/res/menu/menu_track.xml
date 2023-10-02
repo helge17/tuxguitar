@@ -7,11 +7,11 @@
         android:id="@+id/action_track_add"
         android:title="@string/action_track_add"/>
     <item
-        android:id="@+id/action_track_remove"
-        android:title="@string/action_track_remove"/>
-    <item
         android:id="@+id/action_track_clone"
         android:title="@string/action_track_clone"/>
+    <item
+        android:id="@+id/action_track_remove"
+        android:title="@string/action_track_remove"/>
     <item
         android:id="@+id/action_track_move_up"
         android:title="@string/action_track_move_up"/>
@@ -40,4 +40,5 @@
         android:id="@+id/action_track_change_string_count"
         android:title="@string/action_track_change_string_count"
         android:visible="false"/>
+
 </menu>

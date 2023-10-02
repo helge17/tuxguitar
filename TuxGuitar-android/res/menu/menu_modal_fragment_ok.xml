@@ -8,4 +8,5 @@
         android:title="@string/global_button_ok"
         android:icon="@drawable/ic_send_white_24dp"
         app:showAsAction="always"/>
+
 </menu>
