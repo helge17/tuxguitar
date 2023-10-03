@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
@@ -19,7 +20,7 @@ public class TGFileChooser {
 	
 	public static final String DEFAULT_OPEN_FILENAME = null;
 	
-	public static final String DEFAULT_SAVE_FILENAME = ("Untitled" + TGFileFormatUtils.DEFAULT_EXTENSION);
+	public static final String DEFAULT_SAVE_FILENAME = (TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION);
 	
 	public static TGFileFormat ALL_FORMATS = new TGFileFormat("All Files", "*/*", new String[]{"*"});
 	

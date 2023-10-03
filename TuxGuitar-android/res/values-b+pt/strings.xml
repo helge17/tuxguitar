@@ -182,7 +182,7 @@
 	<!-- ========================= Storage ================================= -->
 	<!-- =================================================================== -->
 
-	<string name="storage_default_filename">tuxguitar_file</string>
+	<!-- <string name="storage_default_filename"></string> -->
 	<!-- <string name="storage_export_to"></string> -->
 
 	<!-- =================================================================== -->

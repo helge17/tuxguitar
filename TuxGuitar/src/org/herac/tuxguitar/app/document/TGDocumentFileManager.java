@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
 import org.herac.tuxguitar.app.util.TGFileChooser;
 import org.herac.tuxguitar.app.util.TGFileUtils;
@@ -21,7 +22,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentFileManager {
 	
-	public static final String DEFAULT_FILENAME = ("Untitled" + TGFileFormatUtils.DEFAULT_EXTENSION);
+	public static final String DEFAULT_FILENAME = (TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION);
 	
 	private TGContext context;
 	
