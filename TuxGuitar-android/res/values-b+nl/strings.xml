@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Wis maat</string>
 	<string name="action_measure_remove">Verwijder maat</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Gekoppelde Noot</string>
 	<string name="action_clean_beat">Wis Beat</string>
 	<string name="action_decrement_note_semitone">Decrementeer Semitone</string>
 	<string name="action_increment_note_semitone">Incrementeer Semitone</string>

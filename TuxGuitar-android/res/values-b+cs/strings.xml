@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Vymazat obsah taktu</string>
 	<string name="action_measure_remove">Odebrat takt</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Ligatura</string>
 	<string name="action_clean_beat">Čistá doba</string>
 	<string name="action_decrement_note_semitone">O půltón dolů</string>
 	<string name="action_increment_note_semitone">O půltón nahoru</string>

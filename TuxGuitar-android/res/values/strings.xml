@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Clean Measure</string>
 	<string name="action_measure_remove">Remove Measure</string>
 
-	<string name="action_change_tied_note">Set Tied Note</string>
+	<string name="action_change_tied_note">Tied Note</string>
 	<string name="action_clean_beat">Clean Beat</string>
 	<string name="action_decrement_note_semitone">Decrement Semitone</string>
 	<string name="action_increment_note_semitone">Increment Semitone</string>
@@ -101,9 +101,9 @@
 	<string name="action_move_beats_left">Move one Beat left</string>
 	<string name="action_move_beats_right">Move one Beat right</string>
 	<string name="action_remove_unused_voice">Remove unused Voice</string>
-	<string name="action_set_voice_auto">Set Voice Auto</string>
-	<string name="action_set_voice_down">Set Voice Down</string>
-	<string name="action_set_voice_up">Set Voice Up</string>
+	<string name="action_set_voice_auto">Auto Stems</string>
+	<string name="action_set_voice_down">Stems down</string>
+	<string name="action_set_voice_up">Stems up</string>
 	<string name="action_shift_note_down">Shift Note Down</string>
 	<string name="action_shift_note_up">Shift Note Up</string>
 	<string name="action_change_stroke">Up/Down Stroke</string>

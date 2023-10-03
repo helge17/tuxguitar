@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">清除小節</string>
 	<string name="action_measure_remove">移除小節</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">連結音</string>
 	<string name="action_clean_beat">清除拍點</string>
 	<string name="action_decrement_note_semitone">減少半音</string>
 	<string name="action_increment_note_semitone">增加半音</string>
@@ -101,9 +101,9 @@
 	<string name="action_move_beats_left">把鼓點向左移(Move One Beat Left)</string>
 	<string name="action_move_beats_right">把鼓點向右移(Move One Beat Right)</string>
 	<string name="action_remove_unused_voice">移除沒用到的聲道</string>
-	<!-- <string name="action_set_voice_auto"></string> -->
-	<!-- <string name="action_set_voice_down"></string> -->
-	<!-- <string name="action_set_voice_up"></string> -->
+	<string name="action_set_voice_auto">自動點(Auto Stems)</string>
+	<string name="action_set_voice_down">下點(Stems Down)</string>
+	<string name="action_set_voice_up">上點(Stems Up)</string>
 	<!-- <string name="action_shift_note_down"></string> -->
 	<!-- <string name="action_shift_note_up"></string> -->
 	<!-- <string name="action_change_stroke"></string> -->

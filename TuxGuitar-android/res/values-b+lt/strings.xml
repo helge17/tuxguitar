@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Nuimti takto ženklą</string>
 	<string name="action_measure_remove">Pašalinti taktą</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Ligatūra</string>
 	<string name="action_clean_beat">Akcentavimo nuėmimas</string>
 	<string name="action_decrement_note_semitone">Sumažinti pustoniu</string>
 	<string name="action_increment_note_semitone">Padidinti pustoniu</string>
@@ -101,9 +101,9 @@
 	<string name="action_move_beats_left">Perkelti per takto dalį kairėn</string>
 	<string name="action_move_beats_right">Perkelti per takto dalį dešinėn</string>
 	<string name="action_remove_unused_voice">Nenaudojamo balso pašalinimas</string>
-	<!-- <string name="action_set_voice_auto"></string> -->
-	<!-- <string name="action_set_voice_down"></string> -->
-	<!-- <string name="action_set_voice_up"></string> -->
+	<string name="action_set_voice_auto">Automatinis penklinės papildymas linijomis</string>
+	<string name="action_set_voice_down">Linija po penkline</string>
+	<string name="action_set_voice_up">Linija virš penklinės</string>
 	<!-- <string name="action_shift_note_down"></string> -->
 	<!-- <string name="action_shift_note_up"></string> -->
 	<!-- <string name="action_change_stroke"></string> -->

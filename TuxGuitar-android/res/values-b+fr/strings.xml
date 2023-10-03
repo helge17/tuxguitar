@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Effacer la mesure</string>
 	<string name="action_measure_remove">Supprimer la mesure</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Note liée</string>
 	<string name="action_clean_beat">Effacer la note</string>
 	<string name="action_decrement_note_semitone">Diminuer d\&apos;un demi-ton</string>
 	<string name="action_increment_note_semitone">Augmenter d\&apos;un demi-ton</string>
@@ -101,9 +101,9 @@
 	<string name="action_move_beats_left">Déplacer vers la gauche</string>
 	<string name="action_move_beats_right">Déplacer vers la droite</string>
 	<string name="action_remove_unused_voice">Supprimer la voix inutilisée</string>
-	<!-- <string name="action_set_voice_auto"></string> -->
-	<!-- <string name="action_set_voice_down"></string> -->
-	<!-- <string name="action_set_voice_up"></string> -->
+	<string name="action_set_voice_auto">Hampes automatiques</string>
+	<string name="action_set_voice_down">Hampe basse</string>
+	<string name="action_set_voice_up">Hampe haute</string>
 	<!-- <string name="action_shift_note_down"></string> -->
 	<!-- <string name="action_shift_note_up"></string> -->
 	<!-- <string name="action_change_stroke"></string> -->
@@ -159,7 +159,7 @@
 	<!-- <string name="action_change_tapping"></string> -->
 	<!-- <string name="action_change_slapping"></string> -->
 	<!-- <string name="action_change_popping"></string> -->
-	<string name="action_change_fade_in">Fade in</string>
+	<!-- <string name="action_change_fade_in"></string> -->
 
 	<!-- <string name="action_channel_list_add"></string> -->
 	<!-- <string name="action_channel_list_item_edit"></string> -->

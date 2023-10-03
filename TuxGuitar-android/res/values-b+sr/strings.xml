@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Obriši sve iz takta</string>
 	<string name="action_measure_remove">Obriši takt</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Ligatura</string>
 	<string name="action_clean_beat">Očisti notu</string>
 	<string name="action_decrement_note_semitone">Poluton niže</string>
 	<string name="action_increment_note_semitone">Poluton višlje</string>
@@ -159,7 +159,7 @@
 	<string name="action_change_tapping">Taping</string>
 	<string name="action_change_slapping">Slep (bas)</string>
 	<string name="action_change_popping">Pop (bas)</string>
-	<string name="action_change_fade_in">Fade in</string>
+	<!-- <string name="action_change_fade_in"></string> -->
 
 	<!-- <string name="action_channel_list_add"></string> -->
 	<!-- <string name="action_channel_list_item_edit"></string> -->
@@ -390,8 +390,8 @@
 	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
 	<!-- <string name="tremolo_bar_dlg_preset_dip"></string> -->
 	<!-- <string name="tremolo_bar_dlg_preset_dive"></string> -->
-	<string name="tremolo_bar_dlg_preset_release_up">Release up</string>
-	<string name="tremolo_bar_dlg_preset_release_down">Release down</string>
+	<!-- <string name="tremolo_bar_dlg_preset_release_up"></string> -->
+	<!-- <string name="tremolo_bar_dlg_preset_release_down"></string> -->
 	<!-- <string name="tremolo_bar_dlg_preset_inverted_dip"></string> -->
 	<!-- <string name="tremolo_bar_dlg_preset_return"></string> -->
 

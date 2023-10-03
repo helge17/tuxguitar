@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Xoá ô nhịp</string>
 	<string name="action_measure_remove">Bỏ ô nhịp</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Nốt luyến</string>
 	<string name="action_clean_beat">Xoá nhịp</string>
 	<string name="action_decrement_note_semitone">Giảm nửa cung</string>
 	<string name="action_increment_note_semitone">Tăng nửa cung</string>

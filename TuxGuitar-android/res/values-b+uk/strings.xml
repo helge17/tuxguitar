@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Очистити такт</string>
 	<string name="action_measure_remove">Видалити такт</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Зв\&apos;язати ноти</string>
 	<string name="action_clean_beat">Очистити долю</string>
 	<string name="action_decrement_note_semitone">Півтоном вище</string>
 	<string name="action_increment_note_semitone">Півтоном нижче</string>

@@ -92,7 +92,7 @@
 	<string name="action_measure_clean">Καθαρισμός Μέτρου</string>
 	<string name="action_measure_remove">Αφαίρεση Μέτρου</string>
 
-	<!-- <string name="action_change_tied_note"></string> -->
+	<string name="action_change_tied_note">Σύζευξη</string>
 	<string name="action_clean_beat">Καθαρισμός Beat</string>
 	<string name="action_decrement_note_semitone">Μείωση Ημιτονίου</string>
 	<string name="action_increment_note_semitone">Αύξηση Ημιτονίου</string>
