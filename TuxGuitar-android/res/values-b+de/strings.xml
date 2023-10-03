@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">Notenhälse automatisch ausrichten</string>
 	<string name="action_set_voice_down">Notenhälse nach unten ausrichten</string>
 	<string name="action_set_voice_up">Notenhälse nach oben ausrichten</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">Um eine Saite nach unten verschieben</string>
+	<string name="action_shift_note_up">Um eine Saite nach oben verschieben</string>
+	<string name="action_change_stroke">Auf-/Abschlag</string>
 	<string name="action_change_text">Text einfügen</string>
 
 	<string name="action_set_duration_whole">Ganz</string>
@@ -443,7 +443,7 @@
 	<string name="harmonic_dlg_type_sh">[S.H] Halbes Flageolett</string>
 
 	<!-- Stroke dialog -->
-	<string name="stroke_dlg_title">Schlag</string>
+	<string name="stroke_dlg_title">Auf-/Abschlag</string>
 	<string name="stroke_dlg_direction_label">Händigkeit</string>
 	<string name="stroke_dlg_direction_none">Keiner</string>
 	<string name="stroke_dlg_direction_up">Aufschlag</string>

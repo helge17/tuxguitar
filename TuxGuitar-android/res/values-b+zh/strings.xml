@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">符杆方向(自动)</string>
 	<string name="action_set_voice_down">符杆向下</string>
 	<string name="action_set_voice_up">符杆向上</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">下移</string>
+	<string name="action_shift_note_up">上移</string>
+	<string name="action_change_stroke">扫弦</string>
 	<string name="action_change_text">插入文本</string>
 
 	<string name="action_set_duration_whole">全音符</string>

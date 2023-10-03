@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">自動點(Auto Stems)</string>
 	<string name="action_set_voice_down">下點(Stems Down)</string>
 	<string name="action_set_voice_up">上點(Stems Up)</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">下移</string>
+	<string name="action_shift_note_up">上移</string>
+	<string name="action_change_stroke">用力敲(Stroke)</string>
 	<string name="action_change_text">插入文字</string>
 
 	<string name="action_set_duration_whole">全音符</string>

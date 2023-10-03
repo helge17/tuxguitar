@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">Orientamento automatico dei gambi</string>
 	<string name="action_set_voice_down">Gambi verso il basso</string>
 	<string name="action_set_voice_up">Gambi verso l\&apos;alto</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">Sposta una corda in giù</string>
+	<string name="action_shift_note_up">Sposta una corda in su</string>
+	<string name="action_change_stroke">Battuta in su/giù</string>
 	<string name="action_change_text">Inserisci testo</string>
 
 	<string name="action_set_duration_whole">Semibreve</string>
@@ -443,7 +443,7 @@
 	<string name="harmonic_dlg_type_sh">[S.H] Semi armonico</string>
 
 	<!-- Stroke dialog -->
-	<string name="stroke_dlg_title">Battuta</string>
+	<string name="stroke_dlg_title">Battuta in su/giù</string>
 	<string name="stroke_dlg_direction_label">Lateralità</string>
 	<string name="stroke_dlg_direction_none">Nessuna</string>
 	<string name="stroke_dlg_direction_up">Battuta in su</string>

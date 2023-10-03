@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">Dirección de notas automática</string>
 	<string name="action_set_voice_down">Notas hacia abajo</string>
 	<string name="action_set_voice_up">Notas hacia arriba</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">Bajar una cuerda</string>
+	<string name="action_shift_note_up">Subir una cuerda</string>
+	<string name="action_change_stroke">Rasgueo</string>
 	<string name="action_change_text">Insertar Texto</string>
 
 	<string name="action_set_duration_whole">Redonda</string>

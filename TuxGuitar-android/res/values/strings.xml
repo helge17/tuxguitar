@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">Auto Stems</string>
 	<string name="action_set_voice_down">Stems down</string>
 	<string name="action_set_voice_up">Stems up</string>
-	<string name="action_shift_note_down">Shift Note Down</string>
-	<string name="action_shift_note_up">Shift Note Up</string>
-	<string name="action_change_stroke">Up/Down Stroke</string>
+	<string name="action_shift_note_down">Shift one String down</string>
+	<string name="action_shift_note_up">Shift one String up</string>
+	<string name="action_change_stroke">Up/Downstroke</string>
 	<string name="action_change_text">Insert Text</string>
 
 	<string name="action_set_duration_whole">Whole</string>
@@ -443,7 +443,7 @@
 	<string name="harmonic_dlg_type_sh">[S.H] Semi Harmonic</string>
 
 	<!-- Stroke dialog -->
-	<string name="stroke_dlg_title">Stroke</string>
+	<string name="stroke_dlg_title">Up/Downstroke</string>
 	<string name="stroke_dlg_direction_label">Direction</string>
 	<string name="stroke_dlg_direction_none">None</string>
 	<string name="stroke_dlg_direction_up">Upstroke</string>

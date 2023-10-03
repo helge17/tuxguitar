@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">자동 기둥 방향</string>
 	<string name="action_set_voice_down">기둥 내리기</string>
 	<string name="action_set_voice_up">기둥 올리기</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">아래로 이동</string>
+	<string name="action_shift_note_up">위로 이동</string>
+	<string name="action_change_stroke">스트로크</string>
 	<string name="action_change_text">텍스트 삽입</string>
 
 	<string name="action_set_duration_whole">온음표</string>

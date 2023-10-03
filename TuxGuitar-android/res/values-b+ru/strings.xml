@@ -104,9 +104,9 @@
 	<string name="action_set_voice_auto">Авторасстановка штилей</string>
 	<string name="action_set_voice_down">Штили вниз</string>
 	<string name="action_set_voice_up">Штили вверх</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_shift_note_down">Сдвинуть вниз</string>
+	<string name="action_shift_note_up">Сдвинуть вверх</string>
+	<string name="action_change_stroke">Удар</string>
 	<string name="action_change_text">Вставить текст</string>
 
 	<string name="action_set_duration_whole">Целая</string>

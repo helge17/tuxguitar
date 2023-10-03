@@ -104,8 +104,8 @@
 	<string name="action_set_voice_auto">Automatyczny kierunek ułożenia lasek</string>
 	<string name="action_set_voice_down">Laski nut w dół</string>
 	<string name="action_set_voice_up">Laski nut do góry</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
+	<string name="action_shift_note_down">Oktawę w dół</string>
+	<string name="action_shift_note_up">Oktawę w górę</string>
 	<!-- <string name="action_change_stroke"></string> -->
 	<string name="action_change_text">Wprowadź tekst</string>
 

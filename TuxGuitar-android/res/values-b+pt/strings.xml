@@ -104,8 +104,8 @@
 	<string name="action_set_voice_auto">Bastões Automáticos</string>
 	<string name="action_set_voice_down">Bastões para baixo</string>
 	<string name="action_set_voice_up">Bastões para cima</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
+	<string name="action_shift_note_down">Deslizar abaixo</string>
+	<string name="action_shift_note_up">Deslizar acima</string>
 	<!-- <string name="action_change_stroke"></string> -->
 	<string name="action_change_text">Inserir Texto</string>
 

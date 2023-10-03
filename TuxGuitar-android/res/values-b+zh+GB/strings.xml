@@ -104,8 +104,8 @@
 	<string name="action_set_voice_auto">自动</string>
 	<string name="action_set_voice_down">降低</string>
 	<string name="action_set_voice_up">升高</string>
-	<!-- <string name="action_shift_note_down"></string> -->
-	<!-- <string name="action_shift_note_up"></string> -->
+	<string name="action_shift_note_down">下移</string>
+	<string name="action_shift_note_up">上移</string>
 	<!-- <string name="action_change_stroke"></string> -->
 	<string name="action_change_text">插入文本</string>
 
