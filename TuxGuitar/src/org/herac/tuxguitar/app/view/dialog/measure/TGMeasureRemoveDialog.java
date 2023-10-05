@@ -21,6 +21,7 @@ import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UISpinner;
 import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMeasureRemoveDialog {
@@ -29,6 +30,7 @@ public class TGMeasureRemoveDialog {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
+		final TGBeatRange beats = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 		
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -47,6 +49,16 @@ public class TGMeasureRemoveDialog {
 		
 		int measureCount = song.countMeasureHeaders();
 		
+		int from;
+		int to;
+		if (beats!=null && !beats.isEmpty()) {
+			from = beats.firstMeasure().getNumber();
+			to = beats.lastMeasure().getNumber();
+		} else {
+			from = header.getNumber();
+			to = header.getNumber();
+		}
+		
 		UILabel fromLabel = uiFactory.createLabel(range);
 		fromLabel.setText(TuxGuitar.getProperty("edit.from"));
 		rangeLayout.set(fromLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
@@ -54,7 +66,7 @@ public class TGMeasureRemoveDialog {
 		final UISpinner fromSpinner = uiFactory.createSpinner(range);
 		fromSpinner.setMinimum(1);
 		fromSpinner.setMaximum(measureCount);
-		fromSpinner.setValue(header.getNumber());
+		fromSpinner.setValue(from);
 		rangeLayout.set(fromSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 180f, null, null);
 		
 		UILabel toLabel = uiFactory.createLabel(range);
@@ -64,7 +76,7 @@ public class TGMeasureRemoveDialog {
 		final UISpinner toSpinner = uiFactory.createSpinner(range);
 		toSpinner.setMinimum(1);
 		toSpinner.setMaximum(measureCount);
-		toSpinner.setValue(header.getNumber());
+		toSpinner.setValue(to);
 		rangeLayout.set(toSpinner, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 180f, null, null);
 		
 		final int minSelection = 1;
