@@ -14,6 +14,7 @@ public class TGConfigDefaults{
 	public static final String RESOURCE = "config-defaults";
 	public static final String MODULE = "tuxguitar";
 	
+	public static final String DEFAULT_SKIN = "Oxygen";
 	private static final String DEFAULT_FONT_NAME = UIFontModel.DEFAULT_NAME;
 	
 	public static TGProperties createDefaults(){
@@ -26,7 +27,7 @@ public class TGConfigDefaults{
 	}
 	
 	public static void loadProperties(TGProperties properties){
-		loadProperty(properties, TGConfigKeys.SKIN, "Oxygen");
+		loadProperty(properties, TGConfigKeys.SKIN, DEFAULT_SKIN);
 		loadProperty(properties, TGConfigKeys.WINDOW_TITLE, "${appname} - ${filename}");
 		loadProperty(properties, TGConfigKeys.SHOW_SPLASH, true);
 		loadProperty(properties, TGConfigKeys.MAXIMIZED, false);
