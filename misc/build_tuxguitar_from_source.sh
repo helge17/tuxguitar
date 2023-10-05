@@ -58,7 +58,7 @@ function usage {
 TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-snapshot"
 
 # Parse command line options
-while getopts "lwmbaAghr:" CMDopt; do
+while getopts "lwmbaAgGhr:" CMDopt; do
   case $CMDopt in
     l) build_linux=1;;
     w) build_windows=1;;
@@ -362,8 +362,8 @@ function build_tg_for_android {
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
 cd build-scripts/tuxguitar-android
 export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
-./gradlew                  # Hiermit wird die benötigte Gradle-Version und sonstiges Zeug ins Verzeichnis .gradle/ installiert.
-./gradlew assembleRelease  # Hier wird das APK gebaut
+./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
+./gradlew assembleRelease  # Build the APK
 cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
 cd $DIST_DIR
 cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
