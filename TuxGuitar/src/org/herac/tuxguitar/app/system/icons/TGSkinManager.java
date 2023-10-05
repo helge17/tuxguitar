@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.system.icons;
 
+import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -50,7 +51,17 @@ public class TGSkinManager {
 	}
 	
 	public String getCurrentSkin() {
-		return TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
+		String configuredSkin = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
+		// does skin exist?
+		TGProperties skinInfo = getSkinInfo(configuredSkin);
+		if (skinInfo.getValue("name") != null) {
+			return configuredSkin;
+		} else {
+			// Use case: user has upgraded TuxGuitar, and configured skin was deleted in the new version
+			// overwrite configured skin: replace by default
+			TGConfigManager.getInstance(this.context).setValue(TGConfigKeys.SKIN, TGConfigDefaults.DEFAULT_SKIN);
+			return TGConfigDefaults.DEFAULT_SKIN;
+		}
 	}
 	
 	public TGProperties getCurrentSkinInfo() {
