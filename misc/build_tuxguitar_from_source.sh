@@ -13,8 +13,8 @@ function usage {
   echo "#"
   echo "# TuxGuitar build script for https://github.com/helge17/tuxguitar"
   echo "#"
-  echo "# I use this script to build TuxGuitar for Linux, Windows and Android on Debian Bullseye and"
-  echo "# on remote FreeBSD and MacOS systems."
+  echo "# I use this script to build TuxGuitar for Linux, Windows and Android on Debian 12 (Bookworm)"
+  echo "# and on remote FreeBSD and MacOS systems."
   echo "# The script heavily depends on my build environment, so examine it carefully and modify it to"
   echo "# your needs before starting it on your computer!"
   echo "# The script contains ugly hacks and modifies many source files, so only start it on a copy of"
@@ -362,8 +362,9 @@ function build_tg_for_android {
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
 cd build-scripts/tuxguitar-android
 export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
-./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
-./gradlew assembleRelease  # Build the APK
+# Build did not work with the default Java version 17 from Debian 12 (Bookworm), but with Java 11 from Debian 11 (Bullseye)
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 ./gradlew assembleRelease  # Build the APK
 cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
 cd $DIST_DIR
 cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
