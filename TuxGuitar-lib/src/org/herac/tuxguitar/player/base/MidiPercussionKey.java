@@ -3,6 +3,14 @@ package org.herac.tuxguitar.player.base;
 public class MidiPercussionKey {
 	
 	public static final MidiPercussionKey[] PERCUSSION_KEY_LIST = new MidiPercussionKey[]{
+		new MidiPercussionKey(27,"High Q "),
+		new MidiPercussionKey(28,"Slap"),
+		new MidiPercussionKey(29,"Scratch Push"),
+		new MidiPercussionKey(30,"Scratch Pull"),
+		new MidiPercussionKey(31,"Sticks"),
+		new MidiPercussionKey(32,"Square Click"),
+		new MidiPercussionKey(33,"Metronome Click"),
+		new MidiPercussionKey(34,"Metronome Bell"),
 		new MidiPercussionKey(35,"Acoustic Bass Drum"),
 		new MidiPercussionKey(36,"Bass Drum 1"),
 		new MidiPercussionKey(37,"Side Stick"),
@@ -50,6 +58,12 @@ public class MidiPercussionKey {
 		new MidiPercussionKey(79,"Open Cuica"),
 		new MidiPercussionKey(80,"Mute Triangle"),
 		new MidiPercussionKey(81,"Open Triangle"),
+		new MidiPercussionKey(82,"Shaker"),
+		new MidiPercussionKey(83,"Jingle Bell"),
+		new MidiPercussionKey(84,"Belltree"),
+		new MidiPercussionKey(85,"Castanets"),
+		new MidiPercussionKey(86,"Mute Surdo"),
+		new MidiPercussionKey(87,"Open Surdo"),
 	};
 	
 	private int value;
