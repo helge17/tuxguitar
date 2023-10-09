@@ -638,6 +638,7 @@ public class TGMatrixEditor implements TGEventListener {
 						tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION, start);
 						tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_FRET, (value - string.getValue()));
 						tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string);
+						tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
 						tgActionProcessor.process();
 						
 						this.moveTo(beat, string);
