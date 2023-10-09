@@ -60,6 +60,7 @@ public class TGTransportModeDialog {
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		final TGBeatRange beats = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
+		boolean isSelectionActive = Boolean.TRUE.equals(this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE));
 		
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("transport.mode"));
@@ -202,7 +203,7 @@ public class TGTransportModeDialog {
 		rangeLayout.set(this.loopEHeader, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		mHeaderRangeStatus.addControl(this.loopEHeader);
 		
-		if (beats!= null && !beats.isEmpty()) {
+		if (isSelectionActive && beats!= null && !beats.isEmpty()) {
 			mode.setLoopSHeader(beats.firstMeasure().getNumber());
 			mode.setLoopEHeader(beats.lastMeasure().getNumber());
 		}
