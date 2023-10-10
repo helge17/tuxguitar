@@ -76,9 +76,9 @@
 	<string name="action_track_change_mute">Set Track mute</string>
 	<string name="action_track_change_solo">Set Track solo</string>
 	<string name="action_track_set_name">Name</string>
-	<string name="action_track_set_channel">Change Instrument</string>
-	<string name="action_track_change_tuning">Change Tuning</string>
-	<string name="action_track_change_string_count">Change Line Count</string>
+	<string name="action_track_set_channel">Instrument</string>
+	<string name="action_track_change_tuning">Tuning</string>
+	<string name="action_track_change_string_count">Line Count</string>
 
 	<string name="action_measure_add">Add Measure</string>
 	<string name="action_measure_clean">Clean Measure</string>
@@ -316,7 +316,7 @@
 	<string name="track_channel_dlg_settings_label">Edit Instruments</string>
 
 	<!-- Track tuning dialog -->
-	<string name="track_tuning_dlg_title">Change Tuning</string>
+	<string name="track_tuning_dlg_title">Tuning</string>
 	<string name="track_tuning_dlg_value_label">Value:</string>
 	<string name="track_tuning_dlg_preview_label">Label:</string>
 	<string name="track_tuning_dlg_offset_select_value">Offset #%1$d</string>
@@ -328,8 +328,8 @@
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
 	<string name="track_tuning_dlg_empty_value_error">Value can not be empty</string>
 
-	<string name="track_string_count_dlg_title">Change Line Count</string>
-	<string name="track_string_count_dlg_count_label">Lines</string>
+	<string name="track_string_count_dlg_title">Line Count</string>
+	<string name="track_string_count_dlg_count_label">Line Count</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Add Measure</string>

@@ -76,7 +76,7 @@
 	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
 	<string name="action_track_set_name">名稱</string>
-	<!-- <string name="action_track_set_channel"></string> -->
+	<string name="action_track_set_channel">樂器</string>
 	<!-- <string name="action_track_change_tuning"></string> -->
 	<!-- <string name="action_track_change_string_count"></string> -->
 

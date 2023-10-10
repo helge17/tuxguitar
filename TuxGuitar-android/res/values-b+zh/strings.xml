@@ -76,9 +76,9 @@
 	<string name="action_track_change_mute">声部静音</string>
 	<string name="action_track_change_solo">声部独奏</string>
 	<string name="action_track_set_name">名称</string>
-	<!-- <string name="action_track_set_channel"></string> -->
-	<!-- <string name="action_track_change_tuning"></string> -->
-	<!-- <string name="action_track_change_string_count"></string> -->
+	<string name="action_track_set_channel">乐器</string>
+	<string name="action_track_change_tuning">调整</string>
+	<string name="action_track_change_string_count">行数</string>
 
 	<string name="action_measure_add">新增小节</string>
 	<string name="action_measure_clean">清除小节内容</string>
@@ -316,7 +316,7 @@
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
-	<!-- <string name="track_tuning_dlg_title"></string> -->
+	<string name="track_tuning_dlg_title">调整</string>
 	<!-- <string name="track_tuning_dlg_value_label"></string> -->
 	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
@@ -328,8 +328,8 @@
 	<!-- <string name="track_tuning_dlg_range_error"></string> -->
 	<string name="track_tuning_dlg_empty_value_error">值不能为空</string>
 
-	<!-- <string name="track_string_count_dlg_title"></string> -->
-	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+	<string name="track_string_count_dlg_title">行数</string>
+	<string name="track_string_count_dlg_count_label">行数</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">新增小节</string>

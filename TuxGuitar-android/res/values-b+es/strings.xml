@@ -76,9 +76,9 @@
 	<string name="action_track_change_mute">Silenciar Pista</string>
 	<string name="action_track_change_solo">Dejar Pista Sola</string>
 	<string name="action_track_set_name">Nombre</string>
-	<!-- <string name="action_track_set_channel"></string> -->
-	<!-- <string name="action_track_change_tuning"></string> -->
-	<!-- <string name="action_track_change_string_count"></string> -->
+	<string name="action_track_set_channel">Instrumento</string>
+	<string name="action_track_change_tuning">Afinación</string>
+	<string name="action_track_change_string_count">Número de Líneas</string>
 
 	<string name="action_measure_add">Agregar compás</string>
 	<string name="action_measure_clean">Limpiar compás</string>
@@ -316,7 +316,7 @@
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
-	<!-- <string name="track_tuning_dlg_title"></string> -->
+	<string name="track_tuning_dlg_title">Afinación</string>
 	<!-- <string name="track_tuning_dlg_value_label"></string> -->
 	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
@@ -328,8 +328,8 @@
 	<!-- <string name="track_tuning_dlg_range_error"></string> -->
 	<string name="track_tuning_dlg_empty_value_error">Error: debe especificar una nota</string>
 
-	<!-- <string name="track_string_count_dlg_title"></string> -->
-	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+	<string name="track_string_count_dlg_title">Número de Líneas</string>
+	<string name="track_string_count_dlg_count_label">Número de Líneas</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Agregar compás</string>

@@ -76,8 +76,8 @@
 	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
 	<string name="action_track_set_name">Име</string>
-	<!-- <string name="action_track_set_channel"></string> -->
-	<!-- <string name="action_track_change_tuning"></string> -->
+	<string name="action_track_set_channel">Инструмент</string>
+	<string name="action_track_change_tuning">Фини настройки</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
 	<string name="action_measure_add">Добавяне на такт</string>
@@ -316,7 +316,7 @@
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
-	<!-- <string name="track_tuning_dlg_title"></string> -->
+	<string name="track_tuning_dlg_title">Фини настройки</string>
 	<!-- <string name="track_tuning_dlg_value_label"></string> -->
 	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
