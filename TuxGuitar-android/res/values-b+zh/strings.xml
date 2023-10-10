@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">三十二分音符</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">摇杆颤音</string>
+	<string name="trill_dlg_title">颤音</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">十六分音符</string>
 	<string name="trill_dlg_duration_32">三十二分音符</string>

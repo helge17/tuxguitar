@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Fusa</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Trêmolo Picking</string>
+	<!-- <string name="trill_dlg_title"></string> -->
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">Semicolcheia</string>
 	<string name="trill_dlg_duration_32">Fusa</string>

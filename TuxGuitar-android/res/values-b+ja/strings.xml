@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">32分音符</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Picking Tr. - ピッキング・トリル</string>
+	<string name="trill_dlg_title">tr. - トリル</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">16分音符</string>
 	<string name="trill_dlg_duration_32">32分音符</string>

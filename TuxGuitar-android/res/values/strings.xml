@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Thirty-Second</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Tremolo Picking</string>
+	<string name="trill_dlg_title">Trill</string>
 	<string name="trill_dlg_fret_label">Fret:</string>
 	<string name="trill_dlg_duration_16">Sixteenth</string>
 	<string name="trill_dlg_duration_32">Thirty-Second</string>

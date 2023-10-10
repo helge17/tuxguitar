@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Triple-croche</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Tremolo picking</string>
+	<string name="trill_dlg_title">Trille</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">Double-croche</string>
 	<string name="trill_dlg_duration_32">Triple-croche</string>

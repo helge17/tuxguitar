@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Trisdešimt antrinė</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Skambinimas tremolo</string>
+	<string name="trill_dlg_title">Trelė</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">Šešioliktinė</string>
 	<string name="trill_dlg_duration_32">Trisdešimt antrinė</string>

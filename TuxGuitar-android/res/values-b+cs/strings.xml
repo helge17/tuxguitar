@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Dvaatřicetinová</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Soustavné tremolo</string>
+	<string name="trill_dlg_title">Trylek</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">Šestnáctinová</string>
 	<string name="trill_dlg_duration_32">Dvaatřicetinová</string>

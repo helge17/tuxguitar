@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Тридцять друга</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Тремоло</string>
+	<string name="trill_dlg_title">Трель</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">Шістнадцята</string>
 	<string name="trill_dlg_duration_32">Тридцять друга</string>

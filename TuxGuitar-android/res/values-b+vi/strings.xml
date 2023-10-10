@@ -402,7 +402,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Móc ba</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Vê 1 nốt</string>
+	<string name="trill_dlg_title">Láy rền</string>
 	<!-- <string name="trill_dlg_fret_label"></string> -->
 	<string name="trill_dlg_duration_16">Móc kép</string>
 	<string name="trill_dlg_duration_32">Móc ba</string>
