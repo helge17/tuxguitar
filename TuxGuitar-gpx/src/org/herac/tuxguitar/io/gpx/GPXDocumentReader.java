@@ -35,8 +35,16 @@ public class GPXDocumentReader {
 	}
 	
 	private Document getDocument(InputStream stream) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		// CVE-2020-14940
 		try {
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			factory.setXIncludeAware(false);
+		} catch (Throwable throwable) {
+		}
+		
+		try {
+			return factory.newDocumentBuilder().parse(stream);
 		} catch (Throwable throwable) {
 			throw new GPXFormatException("Invalid file format", throwable);
 		}
@@ -309,25 +317,25 @@ public class GPXDocumentReader {
 									beat.setWhammyBarEnabled( getChildNode(propertyNode, "Enable") != null );
 								}
 								if( propertyName.equals("WhammyBarOriginValue") ){
-									beat.setWhammyBarOriginValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarOriginValue( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("WhammyBarMiddleValue") ){
-									beat.setWhammyBarMiddleValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarMiddleValue( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("WhammyBarDestinationValue") ){
-									beat.setWhammyBarDestinationValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarDestinationValue( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("WhammyBarOriginOffset") ){
-									beat.setWhammyBarOriginOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarOriginOffset( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("WhammyBarMiddleOffset1") ){
-									beat.setWhammyBarMiddleOffset1( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarMiddleOffset1( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("WhammyBarMiddleOffset2") ){
-									beat.setWhammyBarMiddleOffset2( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarMiddleOffset2( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("WhammyBarDestinationOffset") ){
-									beat.setWhammyBarDestinationOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									beat.setWhammyBarDestinationOffset( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("Brush") ){
 									beat.setBrush( getChildNodeContent(propertyNode, "Direction") );
@@ -408,25 +416,25 @@ public class GPXDocumentReader {
 									note.setBendEnabled( getChildNode(propertyNode, "Enable") != null );
 								}
 								if( propertyName.equals("BendOriginValue") ){
-									note.setBendOriginValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendOriginValue( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("BendMiddleValue") ){
-									note.setBendMiddleValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendMiddleValue( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("BendDestinationValue") ){
-									note.setBendDestinationValue( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendDestinationValue( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("BendOriginOffset") ){
-									note.setBendOriginOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendOriginOffset( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("BendMiddleOffset1") ){
-									note.setBendMiddleOffset1( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendMiddleOffset1( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("BendMiddleOffset2") ){
-									note.setBendMiddleOffset2( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendMiddleOffset2( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("BendDestinationOffset") ){
-									note.setBendDestinationOffset( new Integer(getChildNodeIntegerContent(propertyNode, "Float")) );
+									note.setBendDestinationOffset( Integer.valueOf(getChildNodeIntegerContent(propertyNode, "Float")) );
 								}
 								if( propertyName.equals("HopoOrigin") ){
 									note.setHammer(true);
