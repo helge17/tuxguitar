@@ -2,7 +2,6 @@
 <resources>
 
 	<!-- <string name="app_name"></string> -->
-	<string name="action_settings">Preferencias</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -14,9 +13,7 @@
 	<string name="global_button_ok">Aceptar</string>
 	<string name="global_button_cancel">Cancelar</string>
 	<string name="global_button_clean">Limpiar</string>
-	<string name="global_button_remove">Borrar</string>
 	<string name="global_button_add">Agregar</string>
-	<string name="global_button_edit">Edición</string>
 
 	<string name="global_spinner_select_option">-- Seleccionar --</string>
 
@@ -24,11 +21,8 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 
-	<string name="action_menu_file">Archivo</string>
 	<string name="action_menu_edit">Edición</string>
 	<string name="action_menu_view">Ver</string>
-	<string name="action_menu_transport">Reproductor</string>
-	<!-- <string name="action_menu_caret"></string> -->
 	<string name="action_menu_composition">Composición</string>
 	<string name="action_menu_track">Pista</string>
 	<string name="action_menu_measure">Compás</string>
@@ -58,8 +52,6 @@
 	<string name="action_view_layout_show_chord_diagram">Mostrar diagrama de acordes</string>
 
 	<string name="action_transport_play">Reproducir tema</string>
-	<string name="action_transport_pause">Pausar</string>
-	<string name="action_transport_stop">Parar</string>
 
 	<string name="action_go_up">Mover cursor hacia arriba</string>
 	<string name="action_go_down">Mover cursor hacia abajo</string>
@@ -166,10 +158,8 @@
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_add">Agregar</string>
 	<string name="action_track_tuning_list_item_edit">Edición</string>
 	<string name="action_track_tuning_list_item_remove">Borrar</string>
-	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -209,8 +199,6 @@
 
 	<!-- collections -->
 	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_add_label"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -324,7 +312,6 @@
 	<string name="track_name_dlg_name_label">Nombre:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_title"></string> -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 

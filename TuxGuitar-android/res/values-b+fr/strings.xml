@@ -2,7 +2,6 @@
 <resources>
 
 	<!-- <string name="app_name"></string> -->
-	<string name="action_settings">Configuration</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -14,9 +13,7 @@
 	<string name="global_button_ok">Valider</string>
 	<string name="global_button_cancel">Annuler</string>
 	<string name="global_button_clean">Effacer</string>
-	<string name="global_button_remove">Supprimer</string>
 	<string name="global_button_add">Ajouter</string>
-	<string name="global_button_edit">Édition</string>
 
 	<string name="global_spinner_select_option">-- Sélectionner --</string>
 
@@ -24,11 +21,8 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 
-	<string name="action_menu_file">Fichier</string>
 	<string name="action_menu_edit">Édition</string>
 	<string name="action_menu_view">Affichage</string>
-	<string name="action_menu_transport">Lecteur</string>
-	<!-- <string name="action_menu_caret"></string> -->
 	<!-- <string name="action_menu_composition"></string> -->
 	<string name="action_menu_track">Piste</string>
 	<string name="action_menu_measure">Mesure</string>
@@ -58,8 +52,6 @@
 	<string name="action_view_layout_show_chord_diagram">Afficher les diagrammes d\&apos;accords</string>
 
 	<string name="action_transport_play">Lire le morceau / Pause</string>
-	<!-- <string name="action_transport_pause"></string> -->
-	<string name="action_transport_stop">Arrêt</string>
 
 	<string name="action_go_up">Déplacer le curseur vers le haut</string>
 	<string name="action_go_down">Déplacer le curseur vers le bas</string>
@@ -166,10 +158,8 @@
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_add">Ajouter</string>
 	<string name="action_track_tuning_list_item_edit">Édition</string>
 	<string name="action_track_tuning_list_item_remove">Supprimer</string>
-	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -209,8 +199,6 @@
 
 	<!-- collections -->
 	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_add_label"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -324,7 +312,6 @@
 	<string name="track_name_dlg_name_label">Nom:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_title"></string> -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 

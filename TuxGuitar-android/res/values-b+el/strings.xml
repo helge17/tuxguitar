@@ -2,7 +2,6 @@
 <resources>
 
 	<!-- <string name="app_name"></string> -->
-	<string name="action_settings">Ρυθμίσεις</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -14,9 +13,7 @@
 	<string name="global_button_ok">Εντάξει</string>
 	<string name="global_button_cancel">Ακύρωση</string>
 	<string name="global_button_clean">Καθαρισμός</string>
-	<string name="global_button_remove">Αφαίρεση</string>
 	<string name="global_button_add">Πρόσθεση</string>
-	<string name="global_button_edit">Επεξεργασία</string>
 
 	<!-- <string name="global_spinner_select_option"></string> -->
 
@@ -24,11 +21,8 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 
-	<string name="action_menu_file">Αρχείο</string>
 	<string name="action_menu_edit">Επεξεργασία</string>
 	<string name="action_menu_view">Προβολή</string>
-	<string name="action_menu_transport">Αναπαραγωγέας</string>
-	<!-- <string name="action_menu_caret"></string> -->
 	<string name="action_menu_composition">Σύνθεση</string>
 	<string name="action_menu_track">Κομμάτι</string>
 	<string name="action_menu_measure">Μέτρο</string>
@@ -58,8 +52,6 @@
 	<string name="action_view_layout_show_chord_diagram">Εμφάνιση των διαγραμμάτων των συγχορδιών</string>
 
 	<string name="action_transport_play">Αναπαραγωγή Τραγουδιού</string>
-	<string name="action_transport_pause">Παύση</string>
-	<string name="action_transport_stop">Λήξη</string>
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -166,10 +158,8 @@
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_add">Πρόσθεση</string>
 	<string name="action_track_tuning_list_item_edit">Επεξεργασία</string>
 	<string name="action_track_tuning_list_item_remove">Αφαίρεση</string>
-	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -209,8 +199,6 @@
 
 	<!-- collections -->
 	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_add_label"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -324,7 +312,6 @@
 	<string name="track_name_dlg_name_label">Όνομα:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_title"></string> -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 

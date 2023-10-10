@@ -2,7 +2,6 @@
 <resources>
 
 	<!-- <string name="app_name"></string> -->
-	<string name="action_settings">環境設定/Settings</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -14,9 +13,7 @@
 	<!-- <string name="global_button_ok"></string> -->
 	<string name="global_button_cancel">キャンセル</string>
 	<string name="global_button_clean">除去</string>
-	<string name="global_button_remove">削除</string>
 	<string name="global_button_add">追加</string>
-	<string name="global_button_edit">編集</string>
 
 	<!-- <string name="global_spinner_select_option"></string> -->
 
@@ -24,11 +21,8 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 
-	<string name="action_menu_file">ファイル</string>
 	<string name="action_menu_edit">編集</string>
 	<string name="action_menu_view">表示</string>
-	<string name="action_menu_transport">プレーヤ</string>
-	<!-- <string name="action_menu_caret"></string> -->
 	<string name="action_menu_composition">拍子</string>
 	<string name="action_menu_track">トラック</string>
 	<string name="action_menu_measure">小節</string>
@@ -58,8 +52,6 @@
 	<string name="action_view_layout_show_chord_diagram">コード・ダイアグラムを表示</string>
 
 	<string name="action_transport_play">プレーヤ: 再生</string>
-	<string name="action_transport_pause">一時停止</string>
-	<string name="action_transport_stop">停止</string>
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -166,10 +158,8 @@
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_add">追加</string>
 	<string name="action_track_tuning_list_item_edit">編集</string>
 	<string name="action_track_tuning_list_item_remove">削除</string>
-	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -209,8 +199,6 @@
 
 	<!-- collections -->
 	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_add_label"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -324,7 +312,6 @@
 	<string name="track_name_dlg_name_label">名前:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_title"></string> -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 

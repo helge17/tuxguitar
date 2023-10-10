@@ -2,7 +2,6 @@
 <resources>
 
 	<!-- <string name="app_name"></string> -->
-	<string name="action_settings">Preferències</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -14,9 +13,7 @@
 	<string name="global_button_ok">Acceptar</string>
 	<string name="global_button_cancel">Cancel·lar</string>
 	<string name="global_button_clean">Neteja</string>
-	<string name="global_button_remove">Esborra</string>
 	<string name="global_button_add">Afegeix</string>
-	<string name="global_button_edit">Edició</string>
 
 	<!-- <string name="global_spinner_select_option"></string> -->
 
@@ -24,11 +21,8 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 
-	<string name="action_menu_file">Fitxer</string>
 	<string name="action_menu_edit">Edició</string>
 	<string name="action_menu_view">Veure</string>
-	<string name="action_menu_transport">Reproductor</string>
-	<!-- <string name="action_menu_caret"></string> -->
 	<string name="action_menu_composition">Composició</string>
 	<string name="action_menu_track">Pista</string>
 	<string name="action_menu_measure">Compàs</string>
@@ -58,8 +52,6 @@
 	<string name="action_view_layout_show_chord_diagram">Mostra els diagrames d\&apos;acords</string>
 
 	<string name="action_transport_play">Reprodueix tema</string>
-	<string name="action_transport_pause">Pausa</string>
-	<string name="action_transport_stop">Atura</string>
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -166,10 +158,8 @@
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_add">Afegeix</string>
 	<string name="action_track_tuning_list_item_edit">Edició</string>
 	<string name="action_track_tuning_list_item_remove">Esborra</string>
-	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -209,8 +199,6 @@
 
 	<!-- collections -->
 	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_add_label"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -324,7 +312,6 @@
 	<string name="track_name_dlg_name_label">Nom:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_title"></string> -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 

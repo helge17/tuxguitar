@@ -2,7 +2,6 @@
 <resources>
 
 	<!-- <string name="app_name"></string> -->
-	<string name="action_settings">Налашування</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -14,9 +13,7 @@
 	<string name="global_button_ok">Добре</string>
 	<string name="global_button_cancel">Відміна</string>
 	<string name="global_button_clean">Очистити</string>
-	<string name="global_button_remove">Видалити</string>
 	<string name="global_button_add">Додати</string>
-	<string name="global_button_edit">Редагування</string>
 
 	<!-- <string name="global_spinner_select_option"></string> -->
 
@@ -24,11 +21,8 @@
 	<!-- ========================== MENU =================================== -->
 	<!-- =================================================================== -->
 
-	<string name="action_menu_file">Файл</string>
 	<string name="action_menu_edit">Редагування</string>
 	<string name="action_menu_view">Вигляд</string>
-	<string name="action_menu_transport">Програвач</string>
-	<!-- <string name="action_menu_caret"></string> -->
 	<string name="action_menu_composition">Композиція</string>
 	<string name="action_menu_track">Доріжка</string>
 	<string name="action_menu_measure">Такт</string>
@@ -58,8 +52,6 @@
 	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
 
 	<string name="action_transport_play">Грати пісню</string>
-	<string name="action_transport_pause">Пауза</string>
-	<string name="action_transport_stop">Зупинити</string>
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -166,10 +158,8 @@
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_add">Додати</string>
 	<string name="action_track_tuning_list_item_edit">Редагування</string>
 	<string name="action_track_tuning_list_item_remove">Видалити</string>
-	<!-- <string name="action_track_tuning_list_item_remove_confirm_question"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -209,8 +199,6 @@
 
 	<!-- collections -->
 	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_add_label"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_label"></string> -->
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -324,7 +312,6 @@
 	<string name="track_name_dlg_name_label">Ім\&apos;я:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_title"></string> -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
