@@ -59,7 +59,12 @@ public class TGBrowserReader {
 	private static Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		
+		// CVE-2020-14940
+		try {
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			factory.setXIncludeAware(false);
+		} catch (Throwable throwable) {
+		}
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		document = builder.parse(file);
 		
