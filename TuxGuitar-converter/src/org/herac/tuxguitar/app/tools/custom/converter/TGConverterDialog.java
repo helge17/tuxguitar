@@ -224,9 +224,9 @@ public class TGConverterDialog implements TGEventListener{
 		if(!isDisposed()){
 			this.dialog.setText(TuxGuitar.getProperty("batch.converter"));
 			this.group.setText(TuxGuitar.getProperty("batch.converter.settings"));
-			this.inputFolderLabel.setText(TuxGuitar.getProperty("batch.converter.input.folder"));
-			this.outputFolderLabel.setText(TuxGuitar.getProperty("batch.converter.output.folder"));
-			this.outputFormatLabel.setText(TuxGuitar.getProperty("batch.converter.output.format"));
+			this.inputFolderLabel.setText(TuxGuitar.getProperty("batch.converter.input.folder") + ":");
+			this.outputFolderLabel.setText(TuxGuitar.getProperty("batch.converter.output.folder") + ":");
+			this.outputFormatLabel.setText(TuxGuitar.getProperty("batch.converter.output.format") + ":");
 			this.buttonOK.setText(TuxGuitar.getProperty("ok"));
 			this.buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 			if( layout ){

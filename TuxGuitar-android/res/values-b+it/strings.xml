@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<!-- <string name="action_change_fade_in"></string> -->
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Aggiungi</string>
+	<string name="action_channel_list_item_edit">Modifica</string>
+	<string name="action_channel_list_item_remove">Rimuovi</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Modifica</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Modifica velocità tempo</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">Velocità tempo:</string>
 	<string name="tempo_dlg_options_apply_to_song">Applica questo tempo all\&apos;intera canzone</string>
 	<string name="tempo_dlg_options_apply_to_end">Applica questo tempo alla fine</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">Applica questo tempo fino al prossimo indicatore</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Cambia chiave</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Chiave:</string>
 	<string name="clef_dlg_clef_value_treble">Chiave di sol</string>
 	<string name="clef_dlg_clef_value_bass">Chiave di basso</string>
 	<string name="clef_dlg_clef_value_tenor">Chiave di tenore</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Cambia tonalità</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Tonalità:</string>
 	<string name="key_signature_dlg_ks_value_natural">Naturale</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 Diesis</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 Diesis</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Modifica tempo</string>
 	<string name="time_signature_dlg_ts_numerator_label">Numeratore:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Denominatore:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Applica fino alla fine</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Modifica terzina</string>
@@ -290,46 +290,46 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Ripeti chiudi</string>
-	<string name="repeat_close_dlg_count_label">Ripetizioni</string>
+	<string name="repeat_close_dlg_count_label">Ripetizioni:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Ripeti alternative</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Proprietà</string>
-	<string name="song_properties_dlg_name_label">Nome</string>
-	<string name="song_properties_dlg_artist_label">Artista</string>
+	<string name="song_properties_dlg_name_label">Nome:</string>
+	<string name="song_properties_dlg_artist_label">Artista:</string>
 	<!-- <string name="song_properties_dlg_album_label"></string> -->
-	<string name="song_properties_dlg_author_label">Autore</string>
-	<string name="song_properties_dlg_date_label">Data</string>
+	<string name="song_properties_dlg_author_label">Autore:</string>
+	<string name="song_properties_dlg_date_label">Data:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<string name="song_properties_dlg_writer_label">Autore della tablatura</string>
-	<string name="song_properties_dlg_transcriber_label">Trascritto da</string>
-	<string name="song_properties_dlg_comments_label">Commenti</string>
+	<string name="song_properties_dlg_writer_label">Autore della tablatura:</string>
+	<string name="song_properties_dlg_transcriber_label">Trascritto da:</string>
+	<string name="song_properties_dlg_comments_label">Commenti:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Nome</string>
 	<string name="track_name_dlg_name_label">Nome:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
-	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Strumento:</string>
+	<string name="track_channel_dlg_settings_label">Strumenti</string>
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Accordatura</string>
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_value_label">Valore:</string>
+	<string name="track_tuning_dlg_preview_label">Nome:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<string name="track_tuning_dlg_preset_select_value">-- Preimpostazioni --</string>
 	<string name="track_tuning_dlg_options_transpose">Trasporri le note coinvolte</string>
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Trasporri accordi</string>
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Cerca di tenere le note sulla stessa corda</string>
 	<string name="track_tuning_dlg_error_title">Errore</string>
-	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<string name="track_tuning_dlg_range_error">Il numero delle corde deve essere fra %1$d e %2$d</string>
 	<string name="track_tuning_dlg_empty_value_error">Valore non può essere vuoto</string>
 
 	<string name="track_string_count_dlg_title">Numero righe</string>
-	<string name="track_string_count_dlg_count_label">Numero righe</string>
+	<string name="track_string_count_dlg_count_label">Numero righe:</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Aggiungi misura</string>
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Rimuovi misura</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Da:</string>
+	<string name="measure_remove_dlg_to_label">A:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Elimina misura</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Da:</string>
+	<string name="measure_clean_dlg_to_label">A:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Copia misura</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Da:</string>
+	<string name="measure_copy_dlg_to_label">A:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Tutte le tracce</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Incolla misura</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Numero:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Incolla nella misura corrente</string>
 	<string name="measure_paste_dlg_options_mode_insert">Incolla in una nuova misura</string>
 
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<!-- <string name="trill_dlg_title"></string> -->
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Tasto:</string>
 	<string name="trill_dlg_duration_16">Semicroma</string>
 	<string name="trill_dlg_duration_32">Biscroma</string>
 	<string name="trill_dlg_duration_64">Semibiscroma</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Appoggiatura</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Tasto:</string>
 	<string name="grace_dlg_dead_note_label">Nota stoppata</string>
 	<string name="grace_dlg_position_label">Posizione</string>
 	<string name="grace_dlg_position_before_beat">Prima della battuta</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">Battuta in su/giù</string>
-	<string name="stroke_dlg_direction_label">Lateralità</string>
+	<string name="stroke_dlg_direction_label">Lateralità:</string>
 	<string name="stroke_dlg_direction_none">Nessuna</string>
 	<string name="stroke_dlg_direction_up">Battuta in su</string>
 	<string name="stroke_dlg_direction_down">Battuta in giù</string>
@@ -445,17 +445,17 @@
 	<string name="channel_list">Strumenti</string>
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Nome</string>
-	<string name="channel_edit_dlg_bank_label">Banco</string>
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<string name="channel_edit_dlg_program_label">Programma</string>
+	<string name="channel_edit_dlg_title">Strumento</string>
+	<string name="channel_edit_dlg_name_label">Nome:</string>
+	<string name="channel_edit_dlg_program_label">Programma:</string>
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<string name="channel_edit_dlg_bank_label">Banco:</string>
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<string name="channel_edit_dlg_percussion_label">Traccia batteria</string>
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
-	<string name="channel_edit_dlg_balance_label">Bilanciamento</string>
+	<string name="channel_edit_dlg_balance_label">Bilanciamento:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
-	<string name="channel_edit_dlg_reverb_label">Riverbero</string>
+	<string name="channel_edit_dlg_reverb_label">Riverbero:</string>
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
 </resources>

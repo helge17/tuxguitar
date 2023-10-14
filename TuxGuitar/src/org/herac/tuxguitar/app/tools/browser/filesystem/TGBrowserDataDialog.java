@@ -53,14 +53,14 @@ public class TGBrowserDataDialog {
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 420f, null, null);
 		
 		final UILabel titleLabel = uiFactory.createLabel(group);
-		titleLabel.setText(TuxGuitar.getProperty("browser.collection.fs.name"));
+		titleLabel.setText(TuxGuitar.getProperty("browser.collection.fs.name") + ":");
 		groupLayout.set(titleLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UITextField titleValue = uiFactory.createTextField(group);
 		groupLayout.set(titleValue, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 2);
 		
 		final UILabel pathLabel = uiFactory.createLabel(group);
-		pathLabel.setText(TuxGuitar.getProperty("browser.collection.fs.path"));
+		pathLabel.setText(TuxGuitar.getProperty("browser.collection.fs.path") + ":");
 		groupLayout.set(pathLabel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UITextField pathValue = uiFactory.createTextField(group);

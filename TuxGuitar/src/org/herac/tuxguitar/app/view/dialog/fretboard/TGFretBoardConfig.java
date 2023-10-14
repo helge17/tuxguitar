@@ -176,18 +176,18 @@ public class TGFretBoardConfig {
 		
 		int groupRow = 0;
 		
-		final UIFontModel fontData = getFontChooser(window, group, TuxGuitar.getProperty("fretboard.font"), this.font, ++groupRow);
+		final UIFontModel fontData = getFontChooser(window, group, TuxGuitar.getProperty("fretboard.font") + ":", this.font, ++groupRow);
 		
 		// Color
-		final UIColorModel rgbBackground = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.background-color"), this.colorBackground, ++groupRow);
-		final UIColorModel rgbString = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.string-color"), this.colorString, ++groupRow);
-		final UIColorModel rgbFretPoint = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.fretpoint-color"), this.colorFretPoint, ++groupRow);
-		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.note-color"), this.colorNote, ++groupRow);
-		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.scale-note-color"), this.colorScale, ++groupRow);
+		final UIColorModel rgbBackground = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.background-color") + ":", this.colorBackground, ++groupRow);
+		final UIColorModel rgbString = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.string-color") + ":", this.colorString, ++groupRow);
+		final UIColorModel rgbFretPoint = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.fretpoint-color") + ":", this.colorFretPoint, ++groupRow);
+		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.note-color") + ":", this.colorNote, ++groupRow);
+		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.scale-note-color") + ":", this.colorScale, ++groupRow);
 		
 		
 		UILabel directionLabel = factory.createLabel(group);
-		directionLabel.setText(TuxGuitar.getProperty("fretboard.direction"));
+		directionLabel.setText(TuxGuitar.getProperty("fretboard.direction") + ":");
 		groupLayout.set(directionLabel, ++groupRow, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
 		
 		final UIDropDownSelect<Integer> directionCombo = factory.createDropDownSelect(group);

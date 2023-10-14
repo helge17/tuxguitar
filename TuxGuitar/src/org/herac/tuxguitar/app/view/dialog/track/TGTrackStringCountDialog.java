@@ -43,7 +43,7 @@ public class TGTrackStringCountDialog {
 			dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			UILabel rcountLabel = uiFactory.createLabel(group);
-			rcountLabel.setText(TuxGuitar.getProperty("track.string.count"));
+			rcountLabel.setText(TuxGuitar.getProperty("track.string.count") + ":");
 			groupLayout.set(rcountLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 			
 			final UISpinner countValue = uiFactory.createSpinner(group);

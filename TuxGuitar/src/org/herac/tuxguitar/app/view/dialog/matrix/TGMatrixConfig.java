@@ -183,21 +183,21 @@ public class TGMatrixConfig {
 		int groupRow = 0;
 		
 		// fonts
-		final UIFontModel fontData = getFontChooser(window, group, TuxGuitar.getProperty("matrix.font"), this.font, ++groupRow);
+		final UIFontModel fontData = getFontChooser(window, group, TuxGuitar.getProperty("matrix.font") + ":", this.font, ++groupRow);
 		
 		// colors
-		final UIColorModel rgbForeground = getColorChooser(window, group, TuxGuitar.getProperty("matrix.foreground-color"), this.colorForeground, ++groupRow);
+		final UIColorModel rgbForeground = getColorChooser(window, group, TuxGuitar.getProperty("matrix.foreground-color") + ":", this.colorForeground, ++groupRow);
 		
 		final UIColorModel rgbLines[] = new UIColorModel[]{
-			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-1"), this.colorLines[0], ++groupRow),
-			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-2"), this.colorLines[1], ++groupRow),
-			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-over"), this.colorLines[2], ++groupRow),
+			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-1") + ":", this.colorLines[0], ++groupRow),
+			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-2") + ":", this.colorLines[1], ++groupRow),
+			getColorChooser(window, group, TuxGuitar.getProperty("matrix.line-color-over") + ":", this.colorLines[2], ++groupRow),
 		};
 		
-		final UIColorModel rgbBorder = getColorChooser(window, group, TuxGuitar.getProperty("matrix.border-color"), this.colorBorder, ++groupRow);
-		final UIColorModel rgbPosition = getColorChooser(window, group, TuxGuitar.getProperty("matrix.position-color"), this.colorPosition, ++groupRow);
-		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("matrix.note-color"), this.colorNote, ++groupRow);
-		final UIColorModel rgbPlay = getColorChooser(window, group, TuxGuitar.getProperty("matrix.play-note-color"), this.colorPlay, ++groupRow);
+		final UIColorModel rgbBorder = getColorChooser(window, group, TuxGuitar.getProperty("matrix.border-color") + ":", this.colorBorder, ++groupRow);
+		final UIColorModel rgbPosition = getColorChooser(window, group, TuxGuitar.getProperty("matrix.position-color") + ":", this.colorPosition, ++groupRow);
+		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("matrix.note-color") + ":", this.colorNote, ++groupRow);
+		final UIColorModel rgbPlay = getColorChooser(window, group, TuxGuitar.getProperty("matrix.play-note-color") + ":", this.colorPlay, ++groupRow);
 		
 		// ------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);

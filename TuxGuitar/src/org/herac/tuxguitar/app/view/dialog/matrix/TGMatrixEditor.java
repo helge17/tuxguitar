@@ -209,7 +209,7 @@ public class TGMatrixEditor implements TGEventListener {
 		
 		// grids
 		this.gridsLabel = uiFactory.createLabel(this.toolbar);
-		this.gridsLabel.setText(TuxGuitar.getProperty("matrix.grids"));
+		this.gridsLabel.setText(TuxGuitar.getProperty("matrix.grids") + ":");
 		this.createToolItemLayout(this.gridsLabel, ++column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<Integer> divisionsCombo = uiFactory.createDropDownSelect(this.toolbar);

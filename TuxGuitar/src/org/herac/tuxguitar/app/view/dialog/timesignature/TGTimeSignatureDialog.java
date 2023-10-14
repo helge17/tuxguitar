@@ -52,7 +52,7 @@ public class TGTimeSignatureDialog {
 		
 		//numerator
 		UILabel numeratorLabel = uiFactory.createLabel(timeSignature);
-		numeratorLabel.setText(TuxGuitar.getProperty("composition.timesignature.Numerator"));
+		numeratorLabel.setText(TuxGuitar.getProperty("composition.timesignature.Numerator") + ":");
 		timeSignatureLayout.set(numeratorLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<Integer> numerator = uiFactory.createDropDownSelect(timeSignature);
@@ -64,7 +64,7 @@ public class TGTimeSignatureDialog {
 		
 		//denominator
 		UILabel denominatorLabel = uiFactory.createLabel(timeSignature);
-		denominatorLabel.setText(TuxGuitar.getProperty("composition.timesignature.denominator"));
+		denominatorLabel.setText(TuxGuitar.getProperty("composition.timesignature.denominator") + ":");
 		timeSignatureLayout.set(denominatorLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<Integer> denominator = uiFactory.createDropDownSelect(timeSignature);

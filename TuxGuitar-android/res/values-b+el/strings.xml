@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<!-- <string name="action_change_fade_in"></string> -->
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Πρόσθεση</string>
+	<string name="action_channel_list_item_edit">Επεξεργασία</string>
+	<string name="action_channel_list_item_remove">Αφαίρεση</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Επεξεργασία</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Αλλαγή Τέμπο</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">Τέμπο:</string>
 	<string name="tempo_dlg_options_apply_to_song">Εφάρμοσε αυτό το τέμπο σε ολόκληρο το τραγούδι</string>
 	<string name="tempo_dlg_options_apply_to_end">Εφάρμοσε αυτό το τέμπο στο τέλος</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">Εφάρμοσε αυτό το τέμπο στο επόμενο σημάδι τέμπο</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Αλλαγή Κλειδιού</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Κλειδί:</string>
 	<string name="clef_dlg_clef_value_treble">Σοπράνος (Treble)</string>
 	<string name="clef_dlg_clef_value_bass">Μπάσο (Bass)</string>
 	<string name="clef_dlg_clef_value_tenor">Τενόρος (Tenor)</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Αλλαγή Ρυθμού</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Κλίμακα:</string>
 	<string name="key_signature_dlg_ks_value_natural">Φυσική</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 Δίεση</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 Διέσεις</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Αλλαγή Ρυθμού</string>
 	<string name="time_signature_dlg_ts_numerator_label">Αριθμητής:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Παρονομαστής:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Στο τέλος</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Αλλαγή στο feeling του Τρίηχου</string>
@@ -290,29 +290,29 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Κλείσιμο Επανάληψης</string>
-	<string name="repeat_close_dlg_count_label">Επαναλήψεις</string>
+	<string name="repeat_close_dlg_count_label">Επαναλήψεις:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Επαναλήψεις με εναλλαγές</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Ιδιότητες</string>
-	<string name="song_properties_dlg_name_label">Όνομα</string>
-	<string name="song_properties_dlg_artist_label">Καλλιτέχνης</string>
-	<string name="song_properties_dlg_album_label">Άλμπουμ</string>
-	<string name="song_properties_dlg_author_label">Συγγραφέας</string>
-	<string name="song_properties_dlg_date_label">Ημερομηνία</string>
+	<string name="song_properties_dlg_name_label">Όνομα:</string>
+	<string name="song_properties_dlg_artist_label">Καλλιτέχνης:</string>
+	<string name="song_properties_dlg_album_label">Άλμπουμ:</string>
+	<string name="song_properties_dlg_author_label">Συγγραφέας:</string>
+	<string name="song_properties_dlg_date_label">Ημερομηνία:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<string name="song_properties_dlg_writer_label">Δημιουργός Ταμπλατούρας</string>
-	<string name="song_properties_dlg_transcriber_label">Μεταγράφηκε από</string>
-	<string name="song_properties_dlg_comments_label">Σχόλια</string>
+	<string name="song_properties_dlg_writer_label">Δημιουργός Ταμπλατούρας:</string>
+	<string name="song_properties_dlg_transcriber_label">Μεταγράφηκε από:</string>
+	<string name="song_properties_dlg_comments_label">Σχόλια:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Όνομα</string>
 	<string name="track_name_dlg_name_label">Όνομα:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Όργανο:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Αφαίρεση Μέτρου</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Από:</string>
+	<string name="measure_remove_dlg_to_label">Έως:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Καθαρισμός Μέτρου</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Από:</string>
+	<string name="measure_clean_dlg_to_label">Έως:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Αντιγραφή Μέτρου</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Από:</string>
+	<string name="measure_copy_dlg_to_label">Έως:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Όλα τα κομμάτια</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Προορισμός Μέτρου</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Μετρητής Προορισμού:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Προορισμός στο τέλος αυτού του Μέτρουυ</string>
 	<string name="measure_paste_dlg_options_mode_insert">Προορισμός σε νέο Μέτρο</string>
 
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<!-- <string name="stroke_dlg_title"></string> -->
-	<string name="stroke_dlg_direction_label">Κατεύθυνση</string>
+	<string name="stroke_dlg_direction_label">Κατεύθυνση:</string>
 	<!-- <string name="stroke_dlg_direction_none"></string> -->
 	<!-- <string name="stroke_dlg_direction_up"></string> -->
 	<!-- <string name="stroke_dlg_direction_down"></string> -->
@@ -445,14 +445,14 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Όνομα</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">Όργανο</string>
+	<string name="channel_edit_dlg_name_label">Όνομα:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">Ένταση</string>
+	<string name="channel_edit_dlg_volume_label">Ένταση:</string>
 	<!-- <string name="channel_edit_dlg_balance_label"></string> -->
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->

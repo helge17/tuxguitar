@@ -56,7 +56,7 @@ public class TGTunerSettingsDialog {
 		dialogLayout.set(sampleComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel sampleRateLabel = uiFactory.createLabel(sampleComposite);
-		sampleRateLabel.setText(TuxGuitar.getProperty("tuner.sample-rate"));
+		sampleRateLabel.setText(TuxGuitar.getProperty("tuner.sample-rate") + ":");
 		sampleLayout.set(sampleRateLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.sampleRateCombo = uiFactory.createDropDownSelect(sampleComposite);
@@ -69,7 +69,7 @@ public class TGTunerSettingsDialog {
 		sampleLayout.set(this.sampleRateCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		UILabel sampleSizeLabel = uiFactory.createLabel(sampleComposite);
-		sampleSizeLabel.setText(TuxGuitar.getProperty("tuner.sample-size"));
+		sampleSizeLabel.setText(TuxGuitar.getProperty("tuner.sample-size") + ":");
 		sampleLayout.set(sampleSizeLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.sampleSizeCombo = uiFactory.createDropDownSelect(sampleComposite);
@@ -87,7 +87,7 @@ public class TGTunerSettingsDialog {
 		
 		// buffer size
 		UILabel bufferSizeLabel = uiFactory.createLabel(analyzeComposite);
-		bufferSizeLabel.setText(TuxGuitar.getProperty("tuner.sampling-buffer-size"));
+		bufferSizeLabel.setText(TuxGuitar.getProperty("tuner.sampling-buffer-size") + ":");
 		analyzeLayout.set(bufferSizeLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.bufferSizeCombo = uiFactory.createDropDownSelect(analyzeComposite);
@@ -102,7 +102,7 @@ public class TGTunerSettingsDialog {
 		
 		// FFT buffer size
 		UILabel FFTSizeLabel = uiFactory.createLabel(analyzeComposite);
-		FFTSizeLabel.setText(TuxGuitar.getProperty("tuner.fourier-buffer-size"));
+		FFTSizeLabel.setText(TuxGuitar.getProperty("tuner.fourier-buffer-size") + ":");
 		analyzeLayout.set(FFTSizeLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		this.FFTSizeCombo = uiFactory.createDropDownSelect(analyzeComposite);

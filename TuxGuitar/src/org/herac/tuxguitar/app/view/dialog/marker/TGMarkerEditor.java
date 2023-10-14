@@ -67,7 +67,7 @@ public class TGMarkerEditor {
 		// Measure Number
 		final int measureCount = TuxGuitar.getInstance().getDocumentManager().getSong().countMeasureHeaders();
 		UILabel measureLabel = uiFactory.createLabel(group);
-		measureLabel.setText(TuxGuitar.getProperty("measure"));
+		measureLabel.setText(TuxGuitar.getProperty("measure") + ":");
 		groupLayout.set(measureLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
 		
 		this.measureSpinner = uiFactory.createSpinner(group);
@@ -88,7 +88,7 @@ public class TGMarkerEditor {
 		
 		// Title
 		UILabel titleLabel = uiFactory.createLabel(group);
-		titleLabel.setText(TuxGuitar.getProperty("title"));
+		titleLabel.setText(TuxGuitar.getProperty("title") + ":");
 		groupLayout.set(titleLabel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
 		
 		this.titleText = uiFactory.createTextField(group);
@@ -97,7 +97,7 @@ public class TGMarkerEditor {
 		
 		// Color
 		UILabel colorLabel = uiFactory.createLabel(group);
-		colorLabel.setText(TuxGuitar.getProperty("color"));
+		colorLabel.setText(TuxGuitar.getProperty("color") + ":");
 		groupLayout.set(colorLabel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
 		
 		this.colorButton = uiFactory.createButton(group);

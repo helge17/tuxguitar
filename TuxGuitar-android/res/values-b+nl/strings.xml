@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<!-- <string name="action_change_fade_in"></string> -->
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Toevoegen</string>
+	<string name="action_channel_list_item_edit">Bewerken</string>
+	<string name="action_channel_list_item_remove">Verwijderen</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Bewerken</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Wijzig Tijd Signature</string>
 	<!-- <string name="time_signature_dlg_ts_numerator_label"></string> -->
 	<!-- <string name="time_signature_dlg_ts_denominator_label"></string> -->
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Tot het eind</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Wijzig Triplet Feel</string>
@@ -290,17 +290,17 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Sluit Repeat</string>
-	<string name="repeat_close_dlg_count_label">Repetities</string>
+	<string name="repeat_close_dlg_count_label">Repetities:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Alternatieve Repeats</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Eigenschappen</string>
-	<string name="song_properties_dlg_name_label">Naam</string>
-	<string name="song_properties_dlg_artist_label">Artiest</string>
+	<string name="song_properties_dlg_name_label">Naam:</string>
+	<string name="song_properties_dlg_artist_label">Artiest:</string>
 	<!-- <string name="song_properties_dlg_album_label"></string> -->
-	<string name="song_properties_dlg_author_label">Auteur</string>
+	<string name="song_properties_dlg_author_label">Auteur:</string>
 	<!-- <string name="song_properties_dlg_date_label"></string> -->
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
 	<!-- <string name="song_properties_dlg_writer_label"></string> -->
@@ -308,7 +308,7 @@
 	<!-- <string name="song_properties_dlg_comments_label"></string> -->
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Naam</string>
 	<string name="track_name_dlg_name_label">Naam:</string>
 
 	<!-- Track channel dialog -->
@@ -340,18 +340,18 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Verwijder maat</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Van:</string>
+	<string name="measure_remove_dlg_to_label">Naar:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Wis maat</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Van:</string>
+	<string name="measure_clean_dlg_to_label">Naar:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Kopieer maat</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Van:</string>
+	<string name="measure_copy_dlg_to_label">Naar:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Alle Tracks</string>
 
 	<!-- Measure paste dialog -->
@@ -446,11 +446,11 @@
 
 	<!-- Channel edit dialog -->
 	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Naam</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_name_label">Naam:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
 	<!-- <string name="channel_edit_dlg_balance_label"></string> -->

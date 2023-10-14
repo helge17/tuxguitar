@@ -118,10 +118,10 @@ public class TGPianoConfig {
 		int groupRow = 0;
 		
 		// Color
-		final UIColorModel rgbNatural = getColorChooser(window, group, TuxGuitar.getProperty("piano.natural-key-color"), this.colorNatural, ++groupRow);
-		final UIColorModel rgbNotNatural = getColorChooser(window, group, TuxGuitar.getProperty("piano.not-natural-key-color"), this.colorNotNatural, ++groupRow);
-		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("piano.note-color"), this.colorNote, ++groupRow);
-		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("piano.scale-note-color"), this.colorScale, ++groupRow);
+		final UIColorModel rgbNatural = getColorChooser(window, group, TuxGuitar.getProperty("piano.natural-key-color") + ":", this.colorNatural, ++groupRow);
+		final UIColorModel rgbNotNatural = getColorChooser(window, group, TuxGuitar.getProperty("piano.not-natural-key-color") + ":", this.colorNotNatural, ++groupRow);
+		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("piano.note-color") + ":", this.colorNote, ++groupRow);
+		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("piano.scale-note-color") + ":", this.colorScale, ++groupRow);
 		
 		// ------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);

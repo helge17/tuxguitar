@@ -154,7 +154,7 @@
 	<string name="action_change_fade_in">Fade In  </string>
 
 	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
+	<string name="action_channel_list_item_edit">편집</string>
 	<!-- <string name="action_channel_list_item_remove"></string> -->
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
@@ -205,7 +205,7 @@
 	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
 
 	<!-- <string name="browser_settings_fs_dlg_title"></string> -->
-	<!-- <string name="browser_settings_fs_name_label"></string> -->
+	<string name="browser_settings_fs_name_label">이름:</string>
 	<!-- <string name="browser_settings_fs_path_label"></string> -->
 
 	<string name="browser_settings_fs_error_title">오류</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<!-- <string name="tempo_dlg_title"></string> -->
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">템포:</string>
 	<string name="tempo_dlg_options_apply_to_song">이 템포를 곡 전체에 적용</string>
 	<string name="tempo_dlg_options_apply_to_end">이 템포를 끝까지 적용</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">이 템포를 다음 템포 마커까지 적용</string>
 
 	<!-- Clef dialog -->
 	<!-- <string name="clef_dlg_title"></string> -->
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">음자리표:</string>
 	<string name="clef_dlg_clef_value_treble">높은</string>
 	<string name="clef_dlg_clef_value_bass">낮은</string>
 	<string name="clef_dlg_clef_value_tenor">테너</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<!-- <string name="key_signature_dlg_title"></string> -->
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">조표:</string>
 	<!-- <string name="key_signature_dlg_ks_value_natural"></string> -->
 	<string name="key_signature_dlg_ks_value_sharp_1">1 샤프</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 샤프</string>
@@ -279,7 +279,7 @@
 	<!-- <string name="time_signature_dlg_title"></string> -->
 	<string name="time_signature_dlg_ts_numerator_label">분자:</string>
 	<string name="time_signature_dlg_ts_denominator_label">분모:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">끝까지</string>
 
 	<!-- Triplet Feel dialog -->
 	<!-- <string name="triplet_feel_dlg_title"></string> -->
@@ -297,22 +297,22 @@
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">속성</string>
-	<string name="song_properties_dlg_name_label">이름</string>
-	<string name="song_properties_dlg_artist_label">아티스트</string>
-	<string name="song_properties_dlg_album_label">앨범</string>
+	<string name="song_properties_dlg_name_label">이름:</string>
+	<string name="song_properties_dlg_artist_label">아티스트:</string>
+	<string name="song_properties_dlg_album_label">앨범:</string>
 	<!-- <string name="song_properties_dlg_author_label"></string> -->
-	<string name="song_properties_dlg_date_label">날짜</string>
+	<string name="song_properties_dlg_date_label">날짜:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
 	<!-- <string name="song_properties_dlg_writer_label"></string> -->
 	<!-- <string name="song_properties_dlg_transcriber_label"></string> -->
 	<!-- <string name="song_properties_dlg_comments_label"></string> -->
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
-	<!-- <string name="track_name_dlg_name_label"></string> -->
+	<string name="track_name_dlg_title">이름</string>
+	<string name="track_name_dlg_name_label">이름:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">악기 :</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">마디 삭제하기</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">시작 마디:</string>
+	<string name="measure_remove_dlg_to_label">끝 마디:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">마디 비우기</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">시작 마디:</string>
+	<string name="measure_clean_dlg_to_label">끝 마디:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">마디 복사</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">시작 마디:</string>
+	<string name="measure_copy_dlg_to_label">끝 마디:</string>
 	<!-- <string name="measure_copy_dlg_options_all_tracks"></string> -->
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">마디 붙여넣기</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">붙여넣기 횟수:</string>
 	<string name="measure_paste_dlg_options_mode_replace">현재 마디에 붙여넣기</string>
 	<string name="measure_paste_dlg_options_mode_insert">새 마디에 붙여넣기</string>
 
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">스트로크</string>
-	<string name="stroke_dlg_direction_label">방향</string>
+	<string name="stroke_dlg_direction_label">방향:</string>
 	<!-- <string name="stroke_dlg_direction_none"></string> -->
 	<string name="stroke_dlg_direction_up">업스트로크</string>
 	<string name="stroke_dlg_direction_down">다운스트로크</string>
@@ -445,12 +445,12 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">이름</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">악기 </string>
+	<string name="channel_edit_dlg_name_label">이름:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
 	<!-- <string name="channel_edit_dlg_balance_label"></string> -->

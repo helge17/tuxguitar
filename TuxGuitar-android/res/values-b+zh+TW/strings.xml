@@ -153,9 +153,9 @@
 	<string name="action_change_popping">右手勾弦</string>
 	<string name="action_change_fade_in">淡入</string>
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">新增</string>
+	<string name="action_channel_list_item_edit">編輯</string>
+	<string name="action_channel_list_item_remove">移除</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">編輯</string>
@@ -205,7 +205,7 @@
 	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
 
 	<string name="browser_settings_fs_dlg_title">檔案總管的曲集</string>
-	<string name="browser_settings_fs_name_label">檔名:</string>
+	<string name="browser_settings_fs_name_label">名稱:</string>
 	<string name="browser_settings_fs_path_label">目錄:</string>
 
 	<string name="browser_settings_fs_error_title">錯誤</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">變更節拍</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">節奏:</string>
 	<string name="tempo_dlg_options_apply_to_song">將這個速度用於整首歌</string>
 	<string name="tempo_dlg_options_apply_to_end">將這個速度用到結束</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">將這個速度用在下一個速度段落(tempo marker)</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">變更譜號</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">譜號:</string>
 	<string name="clef_dlg_clef_value_treble">高音譜記號</string>
 	<string name="clef_dlg_clef_value_bass">低音譜記號</string>
 	<string name="clef_dlg_clef_value_tenor">次中音譜記號</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">變更調號</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">調號:</string>
 	<string name="key_signature_dlg_ks_value_natural">還原</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">升1</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">升2</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">變更拍子記號</string>
 	<string name="time_signature_dlg_ts_numerator_label">分子:</string>
 	<string name="time_signature_dlg_ts_denominator_label">分母:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">到結尾</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">改變三連音的感覺</string>
@@ -290,29 +290,29 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">結束反覆區段</string>
-	<string name="repeat_close_dlg_count_label">反複</string>
+	<string name="repeat_close_dlg_count_label">反複:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">任意的反覆</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">屬性</string>
-	<string name="song_properties_dlg_name_label">名稱</string>
-	<string name="song_properties_dlg_artist_label">演奏者</string>
-	<string name="song_properties_dlg_album_label">專輯</string>
-	<string name="song_properties_dlg_author_label">作者</string>
-	<string name="song_properties_dlg_date_label">日期</string>
-	<string name="song_properties_dlg_copyright_label">版權</string>
-	<string name="song_properties_dlg_writer_label">吉他譜作者</string>
-	<string name="song_properties_dlg_transcriber_label">改編</string>
-	<string name="song_properties_dlg_comments_label">註解</string>
+	<string name="song_properties_dlg_name_label">名稱:</string>
+	<string name="song_properties_dlg_artist_label">演奏者:</string>
+	<string name="song_properties_dlg_album_label">專輯:</string>
+	<string name="song_properties_dlg_author_label">作者:</string>
+	<string name="song_properties_dlg_date_label">日期:</string>
+	<string name="song_properties_dlg_copyright_label">版權:</string>
+	<string name="song_properties_dlg_writer_label">吉他譜作者:</string>
+	<string name="song_properties_dlg_transcriber_label">改編:</string>
+	<string name="song_properties_dlg_comments_label">註解:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
-	<string name="track_name_dlg_name_label">檔名:</string>
+	<string name="track_name_dlg_title">名稱</string>
+	<string name="track_name_dlg_name_label">名稱:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">樂器:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">移除小節</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">從:</string>
+	<string name="measure_remove_dlg_to_label">到:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">清除小節</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">從:</string>
+	<string name="measure_clean_dlg_to_label">到:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">複製小節</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">從:</string>
+	<string name="measure_copy_dlg_to_label">到:</string>
 	<string name="measure_copy_dlg_options_all_tracks">全部音軌</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">貼上小節</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">貼上的數目:</string>
 	<string name="measure_paste_dlg_options_mode_replace">貼在這個小節</string>
 	<string name="measure_paste_dlg_options_mode_insert">貼到新的小節</string>
 
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">顫音</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">琴格:</string>
 	<string name="trill_dlg_duration_16">十六分音符</string>
 	<string name="trill_dlg_duration_32">三十二分音符</string>
 	<string name="trill_dlg_duration_64">六十四分音符</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">裝飾音</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">琴格:</string>
 	<string name="grace_dlg_dead_note_label">悶音</string>
 	<string name="grace_dlg_position_label">位置</string>
 	<string name="grace_dlg_position_before_beat">拍前裝飾音</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">用力敲(Stroke)</string>
-	<string name="stroke_dlg_direction_label">方式</string>
+	<string name="stroke_dlg_direction_label">方式:</string>
 	<string name="stroke_dlg_direction_none">無</string>
 	<string name="stroke_dlg_direction_up">上擊(Upstroke)</string>
 	<string name="stroke_dlg_direction_down">下擊(Downstroke)</string>
@@ -445,17 +445,17 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">名稱</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">樂器</string>
+	<string name="channel_edit_dlg_name_label">名稱:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">音量</string>
-	<string name="channel_edit_dlg_balance_label">平衡</string>
-	<string name="channel_edit_dlg_chorus_label">一起發聲</string>
-	<string name="channel_edit_dlg_reverb_label">混響效果</string>
-	<string name="channel_edit_dlg_phaser_label">移相器</string>
-	<string name="channel_edit_dlg_tremolo_label">顫音/震音</string>
+	<string name="channel_edit_dlg_volume_label">音量:</string>
+	<string name="channel_edit_dlg_balance_label">平衡:</string>
+	<string name="channel_edit_dlg_chorus_label">一起發聲:</string>
+	<string name="channel_edit_dlg_reverb_label">混響效果:</string>
+	<string name="channel_edit_dlg_phaser_label">移相器:</string>
+	<string name="channel_edit_dlg_tremolo_label">顫音/震音:</string>
 </resources>

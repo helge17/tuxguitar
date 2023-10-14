@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<!-- <string name="action_change_fade_in"></string> -->
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Lisää</string>
+	<string name="action_channel_list_item_edit">Muokkaa</string>
+	<string name="action_channel_list_item_remove">Poista</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Muokkaa</string>
@@ -248,7 +248,7 @@
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Muuta nuottiavainta</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Nuottiavain:</string>
 	<string name="clef_dlg_clef_value_treble">G-avain</string>
 	<string name="clef_dlg_clef_value_bass">F-avain</string>
 	<string name="clef_dlg_clef_value_tenor">Tenori</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Muuta sävellajia</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Sävellaji:</string>
 	<string name="key_signature_dlg_ks_value_natural">Palautus</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 ylennys</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 ylennystä</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Muuta tahtilajia</string>
 	<string name="time_signature_dlg_ts_numerator_label">Osoittaja:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Nimittäjä:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Loppuun</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Muuta triolia</string>
@@ -290,29 +290,29 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Kertauksen lopetusmerkki</string>
-	<string name="repeat_close_dlg_count_label">Kertausmerkit</string>
+	<string name="repeat_close_dlg_count_label">Kertausmerkit:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Kertauksen vaihtoeht. maalit</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Ominaisuudet</string>
-	<string name="song_properties_dlg_name_label">Nimi</string>
-	<string name="song_properties_dlg_artist_label">Esittäjä</string>
-	<string name="song_properties_dlg_album_label">Albumi</string>
-	<string name="song_properties_dlg_author_label">Tekijä</string>
-	<string name="song_properties_dlg_date_label">Päivämäärä</string>
-	<string name="song_properties_dlg_copyright_label">Tekijänoikeus</string>
-	<string name="song_properties_dlg_writer_label">Tabulatuurin luoja</string>
-	<string name="song_properties_dlg_transcriber_label">Tekstityksen tekijä</string>
-	<string name="song_properties_dlg_comments_label">Kommentit</string>
+	<string name="song_properties_dlg_name_label">Nimi:</string>
+	<string name="song_properties_dlg_artist_label">Esittäjä:</string>
+	<string name="song_properties_dlg_album_label">Albumi:</string>
+	<string name="song_properties_dlg_author_label">Tekijä:</string>
+	<string name="song_properties_dlg_date_label">Päivämäärä:</string>
+	<string name="song_properties_dlg_copyright_label">Tekijänoikeus:</string>
+	<string name="song_properties_dlg_writer_label">Tabulatuurin luoja:</string>
+	<string name="song_properties_dlg_transcriber_label">Tekstityksen tekijä:</string>
+	<string name="song_properties_dlg_comments_label">Kommentit:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Nimi</string>
 	<string name="track_name_dlg_name_label">Nimi:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Instrumentti:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Poista tahti</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Mistä:</string>
+	<string name="measure_remove_dlg_to_label">Mihin:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Tyhjennä tahti</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Mistä:</string>
+	<string name="measure_clean_dlg_to_label">Mihin:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Kopioi tahti</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Mistä:</string>
+	<string name="measure_copy_dlg_to_label">Mihin:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Kaikki raidat</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Liitä tahti</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Liitä useita kertoja:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Liitä nykyiseen tahtiin</string>
 	<string name="measure_paste_dlg_options_mode_insert">Liitä uutena tahtina</string>
 
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Trilli</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Otelauta:</string>
 	<string name="trill_dlg_duration_16">Kuudestoistaosanuotti</string>
 	<string name="trill_dlg_duration_32">Kolmaskymmeneskahdesosanuotti</string>
 	<string name="trill_dlg_duration_64">Kuudeskymmenesneljäsosanuotti</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Etuhele</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Otelauta:</string>
 	<!-- <string name="grace_dlg_dead_note_label"></string> -->
 	<string name="grace_dlg_position_label">Sijainti</string>
 	<string name="grace_dlg_position_before_beat">Ennen iskua</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<!-- <string name="stroke_dlg_title"></string> -->
-	<string name="stroke_dlg_direction_label">Suunta</string>
+	<string name="stroke_dlg_direction_label">Suunta:</string>
 	<string name="stroke_dlg_direction_none">Ei mitään</string>
 	<!-- <string name="stroke_dlg_direction_up"></string> -->
 	<!-- <string name="stroke_dlg_direction_down"></string> -->
@@ -445,15 +445,15 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Nimi</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">Instrumentti</string>
+	<string name="channel_edit_dlg_name_label">Nimi:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">Äänenvoimakkuus</string>
-	<string name="channel_edit_dlg_balance_label">Tasapaino</string>
+	<string name="channel_edit_dlg_volume_label">Äänenvoimakkuus:</string>
+	<string name="channel_edit_dlg_balance_label">Tasapaino:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->

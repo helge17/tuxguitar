@@ -153,9 +153,9 @@
 	<string name="action_change_popping">ポッピング</string>
 	<string name="action_change_fade_in">＜ - フェードイン</string>
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">追加</string>
+	<string name="action_channel_list_item_edit">編集</string>
+	<string name="action_channel_list_item_remove">削除</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">編集</string>
@@ -205,7 +205,7 @@
 	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
 
 	<string name="browser_settings_fs_dlg_title">ファイル・システム・コレクション</string>
-	<string name="browser_settings_fs_name_label">名前:</string>
+	<string name="browser_settings_fs_name_label">トラック名:</string>
 	<string name="browser_settings_fs_path_label">フォルダ:</string>
 
 	<string name="browser_settings_fs_error_title">エラー</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">拍子: テンポ</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">テンポ:</string>
 	<string name="tempo_dlg_options_apply_to_song">全体に適用する</string>
 	<string name="tempo_dlg_options_apply_to_end">現小節から最後まで適用する</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">次のテンポチェンジまで適用する</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">拍子: 音部記号</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">音部記号:</string>
 	<string name="clef_dlg_clef_value_treble">ト音記号 - G - トレブル</string>
 	<string name="clef_dlg_clef_value_bass">ヘ音記号 - F - バス</string>
 	<string name="clef_dlg_clef_value_tenor">ハ音記号 - C - テノール</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">拍子: 調子記号</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">調子記号:</string>
 	<string name="key_signature_dlg_ks_value_natural">♮</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">♯</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">♯♯</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">拍子: 拍子記号</string>
 	<string name="time_signature_dlg_ts_numerator_label">分子:</string>
 	<string name="time_signature_dlg_ts_denominator_label">分母:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">最後まで適用する</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">拍子: スウィング・フィール</string>
@@ -290,29 +290,29 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">リピート終了</string>
-	<string name="repeat_close_dlg_count_label">リピート</string>
+	<string name="repeat_close_dlg_count_label">リピート:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">カッコ</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">トラックのプロパティ</string>
-	<string name="song_properties_dlg_name_label">トラック名</string>
-	<string name="song_properties_dlg_artist_label">アーティスト</string>
-	<string name="song_properties_dlg_album_label">アルバム</string>
-	<string name="song_properties_dlg_author_label">著作者</string>
-	<string name="song_properties_dlg_date_label">作成日</string>
-	<string name="song_properties_dlg_copyright_label">著作権</string>
-	<string name="song_properties_dlg_writer_label">TAB譜</string>
-	<string name="song_properties_dlg_transcriber_label">編曲</string>
-	<string name="song_properties_dlg_comments_label">コメント</string>
+	<string name="song_properties_dlg_name_label">トラック名:</string>
+	<string name="song_properties_dlg_artist_label">アーティスト:</string>
+	<string name="song_properties_dlg_album_label">アルバム:</string>
+	<string name="song_properties_dlg_author_label">著作者:</string>
+	<string name="song_properties_dlg_date_label">作成日:</string>
+	<string name="song_properties_dlg_copyright_label">著作権:</string>
+	<string name="song_properties_dlg_writer_label">TAB譜:</string>
+	<string name="song_properties_dlg_transcriber_label">編曲:</string>
+	<string name="song_properties_dlg_comments_label">コメント:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
-	<string name="track_name_dlg_name_label">名前:</string>
+	<string name="track_name_dlg_title">トラック名</string>
+	<string name="track_name_dlg_name_label">トラック名:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">楽器:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">削除 (範囲指定)</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">開始:</string>
+	<string name="measure_remove_dlg_to_label">終了:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">クリア (選択小節)</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">開始:</string>
+	<string name="measure_clean_dlg_to_label">終了:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">コピー (範囲指定)</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">開始:</string>
+	<string name="measure_copy_dlg_to_label">終了:</string>
 	<string name="measure_copy_dlg_options_all_tracks">すべてのトラック</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">貼り付け</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">貼り付ける総数:</string>
 	<string name="measure_paste_dlg_options_mode_replace">現在の小節から貼り付る</string>
 	<string name="measure_paste_dlg_options_mode_insert">新しい小節から貼り付る</string>
 
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">tr. - トリル</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">フレット:</string>
 	<string name="trill_dlg_duration_16">16分音符</string>
 	<string name="trill_dlg_duration_32">32分音符</string>
 	<string name="trill_dlg_duration_64">64分音符</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">♩ - 装飾音符</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">フレット:</string>
 	<string name="grace_dlg_dead_note_label">x - デッドノート/ブラッシング</string>
 	<string name="grace_dlg_position_label">ポジション</string>
 	<string name="grace_dlg_position_before_beat">拍の前</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<!-- <string name="stroke_dlg_title"></string> -->
-	<string name="stroke_dlg_direction_label">方向</string>
+	<string name="stroke_dlg_direction_label">方向:</string>
 	<string name="stroke_dlg_direction_none">なし</string>
 	<string name="stroke_dlg_direction_up">↓アップストローク</string>
 	<string name="stroke_dlg_direction_down">↑ダウンストローク</string>
@@ -445,15 +445,15 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">トラック名</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">楽器</string>
+	<string name="channel_edit_dlg_name_label">トラック名:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">ボリューム</string>
-	<string name="channel_edit_dlg_balance_label">バランス</string>
+	<string name="channel_edit_dlg_volume_label">ボリューム:</string>
+	<string name="channel_edit_dlg_balance_label">バランス:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->

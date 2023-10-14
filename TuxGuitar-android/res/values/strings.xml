@@ -153,9 +153,9 @@
 	<string name="action_change_popping">Popping</string>
 	<string name="action_change_fade_in">Fade in</string>
 
-	<string name="action_channel_list_add">Add Instrument</string>
-	<string name="action_channel_list_item_edit">Edit Instrument</string>
-	<string name="action_channel_list_item_remove">Remove Instrument</string>
+	<string name="action_channel_list_add">Add</string>
+	<string name="action_channel_list_item_edit">Edit</string>
+	<string name="action_channel_list_item_remove">Remove</string>
 	<string name="action_channel_list_item_remove_confirm_question">Are you sure you want to remove this instrument?</string>
 
 	<string name="action_track_tuning_list_item_edit">Edit</string>
@@ -290,30 +290,30 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Close Repeat</string>
-	<string name="repeat_close_dlg_count_label">Repetitions</string>
+	<string name="repeat_close_dlg_count_label">Repetitions:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Alternative Repeats</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Properties</string>
-	<string name="song_properties_dlg_name_label">Name</string>
-	<string name="song_properties_dlg_artist_label">Artist</string>
-	<string name="song_properties_dlg_album_label">Album</string>
-	<string name="song_properties_dlg_author_label">Author</string>
-	<string name="song_properties_dlg_date_label">Date</string>
-	<string name="song_properties_dlg_copyright_label">Copyright</string>
-	<string name="song_properties_dlg_writer_label">Tab Creator</string>
-	<string name="song_properties_dlg_transcriber_label">Transcribed by</string>
-	<string name="song_properties_dlg_comments_label">Comments</string>
+	<string name="song_properties_dlg_name_label">Name:</string>
+	<string name="song_properties_dlg_artist_label">Artist:</string>
+	<string name="song_properties_dlg_album_label">Album:</string>
+	<string name="song_properties_dlg_author_label">Author:</string>
+	<string name="song_properties_dlg_date_label">Date:</string>
+	<string name="song_properties_dlg_copyright_label">Copyright:</string>
+	<string name="song_properties_dlg_writer_label">Tab Creator:</string>
+	<string name="song_properties_dlg_transcriber_label">Transcribed by:</string>
+	<string name="song_properties_dlg_comments_label">Comments:</string>
 
 	<!-- Track name dialog -->
-	<string name="track_name_dlg_title">Track Name</string>
+	<string name="track_name_dlg_title">Name</string>
 	<string name="track_name_dlg_name_label">Name:</string>
 
 	<!-- Track channel dialog -->
 	<string name="track_channel_dlg_channel_label">Instrument:</string>
-	<string name="track_channel_dlg_settings_label">Edit Instruments</string>
+	<string name="track_channel_dlg_settings_label">Instruments</string>
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Tuning</string>
@@ -329,7 +329,7 @@
 	<string name="track_tuning_dlg_empty_value_error">Value can not be empty</string>
 
 	<string name="track_string_count_dlg_title">Line Count</string>
-	<string name="track_string_count_dlg_count_label">Line Count</string>
+	<string name="track_string_count_dlg_count_label">Line Count:</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Add Measure</string>
@@ -365,7 +365,7 @@
 
 	<!-- Bend dialog -->
 	<string name="bend_dlg_title">Pich Bend</string>
-	<string name="bend_dlg_preset_label">Preset</string>
+	<string name="bend_dlg_preset_label">Preset:</string>
 	<string name="bend_dlg_preset_bend">Bend</string>
 	<string name="bend_dlg_preset_bend_release">Bend/Release</string>
 	<string name="bend_dlg_preset_bend_release_bend">Bend/Release/Bend</string>
@@ -374,7 +374,7 @@
 
 	<!-- Tremolo Bar dialog -->
 	<string name="tremolo_bar_dlg_title">Tremolo Bar</string>
-	<string name="tremolo_bar_dlg_preset_label">Preset</string>
+	<string name="tremolo_bar_dlg_preset_label">Preset:</string>
 	<string name="tremolo_bar_dlg_preset_dip">Dip</string>
 	<string name="tremolo_bar_dlg_preset_dive">Dive</string>
 	<string name="tremolo_bar_dlg_preset_release_up">Release up</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">Up/Downstroke</string>
-	<string name="stroke_dlg_direction_label">Direction</string>
+	<string name="stroke_dlg_direction_label">Direction:</string>
 	<string name="stroke_dlg_direction_none">None</string>
 	<string name="stroke_dlg_direction_up">Upstroke</string>
 	<string name="stroke_dlg_direction_down">Downstroke</string>
@@ -445,17 +445,17 @@
 	<string name="channel_list">Instruments</string>
 
 	<!-- Channel edit dialog -->
-	<string name="channel_edit_dlg_title">Edit Instrument</string>
-	<string name="channel_edit_dlg_name_label">Name</string>
-	<string name="channel_edit_dlg_bank_label">Bank</string>
-	<string name="channel_edit_dlg_bank_value">Bank #%1$d</string>
-	<string name="channel_edit_dlg_program_label">Program</string>
+	<string name="channel_edit_dlg_title">Instrument</string>
+	<string name="channel_edit_dlg_name_label">Name:</string>
+	<string name="channel_edit_dlg_program_label">Program:</string>
 	<string name="channel_edit_dlg_program_value">Instrument #%1$d</string>
+	<string name="channel_edit_dlg_bank_label">Bank:</string>
+	<string name="channel_edit_dlg_bank_value">Bank #%1$d</string>
 	<string name="channel_edit_dlg_percussion_label">Percussion Channel</string>
-	<string name="channel_edit_dlg_volume_label">Volume</string>
-	<string name="channel_edit_dlg_balance_label">Balance</string>
-	<string name="channel_edit_dlg_chorus_label">Chorus</string>
-	<string name="channel_edit_dlg_reverb_label">Reverb</string>
-	<string name="channel_edit_dlg_phaser_label">Phaser</string>
-	<string name="channel_edit_dlg_tremolo_label">Tremolo</string>
+	<string name="channel_edit_dlg_volume_label">Volume:</string>
+	<string name="channel_edit_dlg_balance_label">Balance:</string>
+	<string name="channel_edit_dlg_chorus_label">Chorus:</string>
+	<string name="channel_edit_dlg_reverb_label">Reverb:</string>
+	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
+	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
 </resources>

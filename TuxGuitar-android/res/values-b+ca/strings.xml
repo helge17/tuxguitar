@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<!-- <string name="action_change_fade_in"></string> -->
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Afegeix</string>
+	<string name="action_channel_list_item_edit">Edició</string>
+	<string name="action_channel_list_item_remove">Esborra</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Edició</string>
@@ -248,7 +248,7 @@
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Canvia la clau</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Clau:</string>
 	<string name="clef_dlg_clef_value_treble">Agut</string>
 	<string name="clef_dlg_clef_value_bass">Baix</string>
 	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Canvia l\&apos;armadura</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Armadura:</string>
 	<!-- <string name="key_signature_dlg_ks_value_natural"></string> -->
 	<string name="key_signature_dlg_ks_value_sharp_1">1 Diesi</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 Diesis</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Canvia el signe de compàs</string>
 	<string name="time_signature_dlg_ts_numerator_label">Numerador:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Denominador:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Fins a la fi</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Aspecte de tresets</string>
@@ -290,25 +290,25 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Tanca repetició</string>
-	<string name="repeat_close_dlg_count_label">Repeticions</string>
+	<string name="repeat_close_dlg_count_label">Repeticions:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Repetició alternativa</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Propietats</string>
-	<string name="song_properties_dlg_name_label">Nom</string>
-	<string name="song_properties_dlg_artist_label">Artista</string>
-	<string name="song_properties_dlg_album_label">\00C0lbum</string>
-	<string name="song_properties_dlg_author_label">Autor</string>
-	<string name="song_properties_dlg_date_label">Data</string>
+	<string name="song_properties_dlg_name_label">Nom:</string>
+	<string name="song_properties_dlg_artist_label">Artista:</string>
+	<string name="song_properties_dlg_album_label">\00C0lbum:</string>
+	<string name="song_properties_dlg_author_label">Autor:</string>
+	<string name="song_properties_dlg_date_label">Data:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<string name="song_properties_dlg_writer_label">Creador de la tabulatura</string>
-	<string name="song_properties_dlg_transcriber_label">Transcrit per en/na</string>
-	<string name="song_properties_dlg_comments_label">Comentaris</string>
+	<string name="song_properties_dlg_writer_label">Creador de la tabulatura:</string>
+	<string name="song_properties_dlg_transcriber_label">Transcrit per en/na:</string>
+	<string name="song_properties_dlg_comments_label">Comentaris:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Nom</string>
 	<string name="track_name_dlg_name_label">Nom:</string>
 
 	<!-- Track channel dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Esborra compàs</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Des de:</string>
+	<string name="measure_remove_dlg_to_label">Fins a:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Neteja compàs</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Des de:</string>
+	<string name="measure_clean_dlg_to_label">Fins a:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Copia compàs</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Des de:</string>
+	<string name="measure_copy_dlg_to_label">Fins a:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Totes les pistes</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Enganxa compàs</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Enganxa comptador:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Enganxa al compás actual</string>
 	<string name="measure_paste_dlg_options_mode_insert">Enganxa a un nou compás</string>
 
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<!-- <string name="trill_dlg_title"></string> -->
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Celleta:</string>
 	<string name="trill_dlg_duration_16">Semicorxera</string>
 	<string name="trill_dlg_duration_32">Fusa</string>
 	<string name="trill_dlg_duration_64">Semifusa</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Appoggiatura</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Celleta:</string>
 	<!-- <string name="grace_dlg_dead_note_label"></string> -->
 	<string name="grace_dlg_position_label">Posició</string>
 	<string name="grace_dlg_position_before_beat">abans del Beat</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<!-- <string name="stroke_dlg_title"></string> -->
-	<string name="stroke_dlg_direction_label">Direcció</string>
+	<string name="stroke_dlg_direction_label">Direcció:</string>
 	<string name="stroke_dlg_direction_none">Cap</string>
 	<!-- <string name="stroke_dlg_direction_up"></string> -->
 	<!-- <string name="stroke_dlg_direction_down"></string> -->
@@ -446,14 +446,14 @@
 
 	<!-- Channel edit dialog -->
 	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Nom</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_name_label">Nom:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">Volum</string>
-	<string name="channel_edit_dlg_balance_label">Balanç</string>
+	<string name="channel_edit_dlg_volume_label">Volum:</string>
+	<string name="channel_edit_dlg_balance_label">Balanç:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->

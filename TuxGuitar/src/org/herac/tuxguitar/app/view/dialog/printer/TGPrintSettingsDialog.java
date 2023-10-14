@@ -46,7 +46,7 @@ public class TGPrintSettingsDialog {
 		dialogLayout.set(track, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
 		final UILabel trackLabel = uiFactory.createLabel(track);
-		trackLabel.setText(TuxGuitar.getProperty("track"));
+		trackLabel.setText(TuxGuitar.getProperty("track") + ":");
 		trackLayout.set(trackLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<Integer> trackCombo = uiFactory.createDropDownSelect(track);
@@ -78,7 +78,7 @@ public class TGPrintSettingsDialog {
 		final int maxSelection = song.countMeasureHeaders();
 		
 		UILabel fromLabel = uiFactory.createLabel(range);
-		fromLabel.setText(TuxGuitar.getProperty("edit.from"));
+		fromLabel.setText(TuxGuitar.getProperty("edit.from") + ":");
 		rangeLayout.set(fromLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner fromSpinner = uiFactory.createSpinner(range);
@@ -88,7 +88,7 @@ public class TGPrintSettingsDialog {
 		rangeLayout.set(fromSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 60f, null, null);
 		
 		UILabel toLabel = uiFactory.createLabel(range);
-		toLabel.setText(TuxGuitar.getProperty("edit.to"));
+		toLabel.setText(TuxGuitar.getProperty("edit.to") + ":");
 		rangeLayout.set(toLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner toSpinner = uiFactory.createSpinner(range);

@@ -42,7 +42,7 @@ public class TGTransposeDialog {
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel transpositionLabel = uiFactory.createLabel(group);
-		transpositionLabel.setText(TuxGuitar.getProperty("tools.transpose.semitones"));
+		transpositionLabel.setText(TuxGuitar.getProperty("tools.transpose.semitones") + ":");
 		groupLayout.set(transpositionLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<Integer> transpositionCombo = uiFactory.createDropDownSelect(group);

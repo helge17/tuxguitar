@@ -447,10 +447,10 @@
 	<!-- Channel edit dialog -->
 	<!-- <string name="channel_edit_dlg_title"></string> -->
 	<!-- <string name="channel_edit_dlg_name_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
 	<!-- <string name="channel_edit_dlg_balance_label"></string> -->

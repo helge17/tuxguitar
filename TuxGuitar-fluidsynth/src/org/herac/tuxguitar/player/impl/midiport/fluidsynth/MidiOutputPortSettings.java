@@ -109,7 +109,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		final List<String> audioDriverOptions = this.getAudioDriverOptions();
 		
 		UILabel lAudioDriver = uiFactory.createLabel(cAudio);
-		lAudioDriver.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.driver"));
+		lAudioDriver.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.driver") + ":");
 		cAudioLayout.set(lAudioDriver, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<String> cAudioDriver = uiFactory.createDropDownSelect(cAudio);
@@ -121,7 +121,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		final List<String> audioSampleFormatOptions = this.getAudioSampleFormatOptions();
 		
 		UILabel lAudioSampleFormat = uiFactory.createLabel(cAudio);
-		lAudioSampleFormat.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.sample-format"));
+		lAudioSampleFormat.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.sample-format") + ":");
 		cAudioLayout.set(lAudioSampleFormat, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<String> cAudioSampleFormat = uiFactory.createDropDownSelect(cAudio);
@@ -133,7 +133,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		final List<Integer> audioPeriodSizeOptions = this.getAudioPeriodSizeOptions();
 		
 		UILabel lAudioPeriodSize = uiFactory.createLabel(cAudio);
-		lAudioPeriodSize.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.period-size"));
+		lAudioPeriodSize.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.period-size") + ":");
 		cAudioLayout.set(lAudioPeriodSize, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<Integer> cAudioPeriodSize = uiFactory.createDropDownSelect(cAudio);
@@ -145,7 +145,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		final List<Integer> audioPeriodCountOptions = this.getAudioPeriodCountOptions();
 		
 		UILabel lAudioPeriodCount = uiFactory.createLabel(cAudio);
-		lAudioPeriodCount.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.periods"));
+		lAudioPeriodCount.setText(TuxGuitar.getProperty("fluidsynth.settings.audio.periods") + ":");
 		cAudioLayout.set(lAudioPeriodCount, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<Integer> cAudioPeriodCount = uiFactory.createDropDownSelect(cAudio);
@@ -164,7 +164,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		
 		// Synth Gain -------------------------------------------------------
 		UILabel lSynthGain = uiFactory.createLabel(cSynth);
-		lSynthGain.setText(TuxGuitar.getProperty("fluidsynth.settings.synth.gain"));
+		lSynthGain.setText(TuxGuitar.getProperty("fluidsynth.settings.synth.gain") + ":");
 		cSynthLayout.set(lSynthGain, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIScale sSynthGain = uiFactory.createHorizontalScale(cSynth);
@@ -176,7 +176,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		final List<Double> synthSampleRateOptions = this.getSynthSampleRateOptions();
 		
 		UILabel lSynthSampleRate = uiFactory.createLabel(cSynth);
-		lSynthSampleRate.setText(TuxGuitar.getProperty("fluidsynth.settings.synth.sample-rate"));
+		lSynthSampleRate.setText(TuxGuitar.getProperty("fluidsynth.settings.synth.sample-rate") + ":");
 		cSynthLayout.set(lSynthSampleRate, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<Double> cSynthSampleRate = uiFactory.createDropDownSelect(cSynth);
@@ -186,7 +186,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 		
 		// Synth Polyphony -------------------------------------------------------
 		UILabel lSynthPolyphony = uiFactory.createLabel(cSynth);
-		lSynthPolyphony.setText(TuxGuitar.getProperty("fluidsynth.settings.synth.polyphony"));
+		lSynthPolyphony.setText(TuxGuitar.getProperty("fluidsynth.settings.synth.polyphony") + ":");
 		cSynthLayout.set(lSynthPolyphony, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UISpinner sSynthPolyphony = uiFactory.createSpinner(cSynth);

@@ -47,7 +47,7 @@ public class TGRepeatCloseDialog {
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel repeatCloseLabel = uiFactory.createLabel(group);
-		repeatCloseLabel.setText(TuxGuitar.getProperty("repeat.number-of-repetitions"));
+		repeatCloseLabel.setText(TuxGuitar.getProperty("repeat.number-of-repetitions") + ":");
 		groupLayout.set(repeatCloseLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner repeatClose = uiFactory.createSpinner(group);

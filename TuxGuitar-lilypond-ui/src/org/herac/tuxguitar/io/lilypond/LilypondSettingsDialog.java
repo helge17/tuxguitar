@@ -86,7 +86,7 @@ public class LilypondSettingsDialog {
 		final int maxSelection = this.song.countMeasureHeaders();
 		
 		UILabel measureFromLabel = uiFactory.createLabel(measureRange);
-		measureFromLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.from"));
+		measureFromLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.from") + ":");
 		measureRangeLayout.set(measureFromLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UISpinner measureFromSpinner = uiFactory.createSpinner(measureRange);
@@ -96,7 +96,7 @@ public class LilypondSettingsDialog {
 		measureRangeLayout.set(measureFromSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 60f, null, null);
 		
 		UILabel measureToLabel = uiFactory.createLabel(measureRange);
-		measureToLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.to"));
+		measureToLabel.setText(TuxGuitar.getProperty("lilypond.options.measure-range.to") + ":");
 		measureRangeLayout.set(measureToLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UISpinner measureToSpinner = uiFactory.createSpinner(measureRange);

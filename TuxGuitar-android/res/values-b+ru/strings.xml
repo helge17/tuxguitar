@@ -153,9 +153,9 @@
 	<string name="action_change_popping">Поппинг</string>
 	<string name="action_change_fade_in">Нарастание звука</string>
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Добавить</string>
+	<string name="action_channel_list_item_edit">Правка</string>
+	<string name="action_channel_list_item_remove">Удалить</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Правка</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Изменить темп</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">Темп:</string>
 	<string name="tempo_dlg_options_apply_to_song">Применить этот темп ко всей композиции</string>
 	<string name="tempo_dlg_options_apply_to_end">Применить этот темп до конца</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">Применить этот темп до следующей метки</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Изменить ключ</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Ключ:</string>
 	<string name="clef_dlg_clef_value_treble">Скрипичный</string>
 	<string name="clef_dlg_clef_value_bass">Басовый</string>
 	<string name="clef_dlg_clef_value_tenor">Теноровый</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Изменить знаки при ключе</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Знаки при ключе:</string>
 	<string name="key_signature_dlg_ks_value_natural">Без знаков</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 диез</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 диеза</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Изменить размер</string>
 	<string name="time_signature_dlg_ts_numerator_label">Числитель:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Знаменатель:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">До конца</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Изменить режим триолей</string>
@@ -290,29 +290,29 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Закрыть репризу</string>
-	<string name="repeat_close_dlg_count_label">Повторы</string>
+	<string name="repeat_close_dlg_count_label">Повторы:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Варианты повтора</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Свойства</string>
-	<string name="song_properties_dlg_name_label">Имя</string>
-	<string name="song_properties_dlg_artist_label">Исполнитель</string>
-	<string name="song_properties_dlg_album_label">Альбом</string>
-	<string name="song_properties_dlg_author_label">Автор</string>
-	<string name="song_properties_dlg_date_label">Дата</string>
-	<string name="song_properties_dlg_copyright_label">Правообладатель</string>
-	<string name="song_properties_dlg_writer_label">Автор табулатуры</string>
-	<string name="song_properties_dlg_transcriber_label">Автор переложения</string>
-	<string name="song_properties_dlg_comments_label">Комментарии</string>
+	<string name="song_properties_dlg_name_label">Имя:</string>
+	<string name="song_properties_dlg_artist_label">Исполнитель:</string>
+	<string name="song_properties_dlg_album_label">Альбом:</string>
+	<string name="song_properties_dlg_author_label">Автор:</string>
+	<string name="song_properties_dlg_date_label">Дата:</string>
+	<string name="song_properties_dlg_copyright_label">Правообладатель:</string>
+	<string name="song_properties_dlg_writer_label">Автор табулатуры:</string>
+	<string name="song_properties_dlg_transcriber_label">Автор переложения:</string>
+	<string name="song_properties_dlg_comments_label">Комментарии:</string>
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Имя</string>
 	<string name="track_name_dlg_name_label">Имя:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Инструмент:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,23 +340,23 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Удалить</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">от:</string>
+	<string name="measure_remove_dlg_to_label">до:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Очистить</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">от:</string>
+	<string name="measure_clean_dlg_to_label">до:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Копировать</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">от:</string>
+	<string name="measure_copy_dlg_to_label">до:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Все треки</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Вставить</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Число повторов:</string>
 	<string name="measure_paste_dlg_options_mode_replace">В текущий такт</string>
 	<string name="measure_paste_dlg_options_mode_insert">В новый такт</string>
 
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Трель</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Лад:</string>
 	<string name="trill_dlg_duration_16">Шестнадцатая</string>
 	<string name="trill_dlg_duration_32">Тридцать вторая</string>
 	<string name="trill_dlg_duration_64">Шестьдесят четвертая</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Форшлаг</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Лад:</string>
 	<string name="grace_dlg_dead_note_label">Приглушенная нота</string>
 	<string name="grace_dlg_position_label">Позиция</string>
 	<string name="grace_dlg_position_before_beat">До удара</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">Удар</string>
-	<string name="stroke_dlg_direction_label">Направление</string>
+	<string name="stroke_dlg_direction_label">Направление:</string>
 	<string name="stroke_dlg_direction_none">Бeз перехода</string>
 	<string name="stroke_dlg_direction_up">Удар вверх</string>
 	<string name="stroke_dlg_direction_down">Удар вниз</string>
@@ -445,17 +445,17 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Имя</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">Инструмент</string>
+	<string name="channel_edit_dlg_name_label">Имя:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">Громкость</string>
-	<string name="channel_edit_dlg_balance_label">Баланс</string>
-	<string name="channel_edit_dlg_chorus_label">Хорус</string>
-	<string name="channel_edit_dlg_reverb_label">Реверберация</string>
-	<string name="channel_edit_dlg_phaser_label">Фэйзер</string>
-	<string name="channel_edit_dlg_tremolo_label">Тремоло</string>
+	<string name="channel_edit_dlg_volume_label">Громкость:</string>
+	<string name="channel_edit_dlg_balance_label">Баланс:</string>
+	<string name="channel_edit_dlg_chorus_label">Хорус:</string>
+	<string name="channel_edit_dlg_reverb_label">Реверберация:</string>
+	<string name="channel_edit_dlg_phaser_label">Фэйзер:</string>
+	<string name="channel_edit_dlg_tremolo_label">Тремоло:</string>
 </resources>

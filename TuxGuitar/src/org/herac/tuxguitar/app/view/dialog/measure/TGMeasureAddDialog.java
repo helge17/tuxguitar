@@ -44,7 +44,7 @@ public class TGMeasureAddDialog {
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel countLabel = uiFactory.createLabel(group);
-		countLabel.setText(TuxGuitar.getProperty("measure.add.count"));
+		countLabel.setText(TuxGuitar.getProperty("measure.add.count") + ":");
 		groupLayout.set(countLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner countSpinner = uiFactory.createSpinner(group);

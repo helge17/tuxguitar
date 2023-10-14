@@ -153,9 +153,9 @@
 	<string name="action_change_popping">Pop</string>
 	<string name="action_change_fade_in">Наростання гучності</string>
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Додати</string>
+	<string name="action_channel_list_item_edit">Редагування</string>
+	<string name="action_channel_list_item_remove">Видалити</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Редагування</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Змінити темп</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">Темп:</string>
 	<string name="tempo_dlg_options_apply_to_song">Застосувати цей темп до всієї пісні</string>
 	<string name="tempo_dlg_options_apply_to_end">Застосувати цей темп до кінця</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">Застосувати цей темп до наступної позначки темпу</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Змінити ключ</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Ключ:</string>
 	<string name="clef_dlg_clef_value_treble">Скрипковий</string>
 	<string name="clef_dlg_clef_value_bass">Басовий</string>
 	<string name="clef_dlg_clef_value_tenor">Тенор</string>
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Змінити позначку ключа</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Тональність:</string>
 	<string name="key_signature_dlg_ks_value_natural">Натуральна</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 дієз</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 дієзи</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Змінити позначки часу</string>
 	<string name="time_signature_dlg_ts_numerator_label">Чисельник:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Знаменник:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">До кінця</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Змінити тріолі</string>
@@ -290,17 +290,17 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Закрити репризу</string>
-	<string name="repeat_close_dlg_count_label">Повтори</string>
+	<string name="repeat_close_dlg_count_label">Повтори:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Альтернативні кінцівки</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Властивості</string>
-	<string name="song_properties_dlg_name_label">Ім\&apos;я</string>
-	<string name="song_properties_dlg_artist_label">Виконавець</string>
-	<string name="song_properties_dlg_album_label">Альбом</string>
-	<string name="song_properties_dlg_author_label">Автор</string>
+	<string name="song_properties_dlg_name_label">Ім\&apos;я:</string>
+	<string name="song_properties_dlg_artist_label">Виконавець:</string>
+	<string name="song_properties_dlg_album_label">Альбом:</string>
+	<string name="song_properties_dlg_author_label">Автор:</string>
 	<!-- <string name="song_properties_dlg_date_label"></string> -->
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
 	<!-- <string name="song_properties_dlg_writer_label"></string> -->
@@ -308,11 +308,11 @@
 	<!-- <string name="song_properties_dlg_comments_label"></string> -->
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
+	<string name="track_name_dlg_title">Ім\&apos;я</string>
 	<string name="track_name_dlg_name_label">Ім\&apos;я:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Інструмент:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,18 +340,18 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Видалити такт</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Із:</string>
+	<string name="measure_remove_dlg_to_label">До:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Очистити такт</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Із:</string>
+	<string name="measure_clean_dlg_to_label">До:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Копіювати такт</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Із:</string>
+	<string name="measure_copy_dlg_to_label">До:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Всіх треків</string>
 
 	<!-- Measure paste dialog -->
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Трель</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Лад:</string>
 	<string name="trill_dlg_duration_16">Шістнадцята</string>
 	<string name="trill_dlg_duration_32">Тридцять друга</string>
 	<string name="trill_dlg_duration_64">Шістдесят четверта</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Форшлаг</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Лад:</string>
 	<string name="grace_dlg_dead_note_label">Заглушена нота</string>
 	<string name="grace_dlg_position_label">Позиція</string>
 	<string name="grace_dlg_position_before_beat">Перед долею</string>
@@ -445,15 +445,15 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Ім\&apos;я</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">Інструмент</string>
+	<string name="channel_edit_dlg_name_label">Ім\&apos;я:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">Гучність</string>
-	<string name="channel_edit_dlg_balance_label">Баланс</string>
+	<string name="channel_edit_dlg_volume_label">Гучність:</string>
+	<string name="channel_edit_dlg_balance_label">Баланс:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->

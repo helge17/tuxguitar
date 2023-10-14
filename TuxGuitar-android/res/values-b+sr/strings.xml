@@ -153,9 +153,9 @@
 	<string name="action_change_popping">Pop (bas)</string>
 	<!-- <string name="action_change_fade_in"></string> -->
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Dodaj</string>
+	<string name="action_channel_list_item_edit">Obrada</string>
+	<string name="action_channel_list_item_remove">Ukloni</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Obrada</string>
@@ -205,7 +205,7 @@
 	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
 
 	<string name="browser_settings_fs_dlg_title">Kolekcija sa lokalnog diska</string>
-	<!-- <string name="browser_settings_fs_name_label"></string> -->
+	<string name="browser_settings_fs_name_label">Naziv:</string>
 	<!-- <string name="browser_settings_fs_path_label"></string> -->
 
 	<string name="browser_settings_fs_error_title">greška</string>
@@ -248,7 +248,7 @@
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Promeni ključ</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Ključ:</string>
 	<string name="clef_dlg_clef_value_treble">Violinski</string>
 	<string name="clef_dlg_clef_value_bass">Bas</string>
 	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Promeni tonalitet</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Tonalitet:</string>
 	<string name="key_signature_dlg_ks_value_natural">Prirodni (C-dur)</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 povisilica</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 povisilice</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Promeni vrstu takta</string>
 	<string name="time_signature_dlg_ts_numerator_label">Brojilac takta:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Imenilac takta:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Do kraja</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Promeni Utisak tripleta</string>
@@ -290,17 +290,17 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Zatvori ponavljanje</string>
-	<string name="repeat_close_dlg_count_label">Ponavljanja</string>
+	<string name="repeat_close_dlg_count_label">Ponavljanja:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Alternativni završeci</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Osobine</string>
-	<string name="song_properties_dlg_name_label">Naziv</string>
-	<string name="song_properties_dlg_artist_label">Interpretacija</string>
+	<string name="song_properties_dlg_name_label">Naziv:</string>
+	<string name="song_properties_dlg_artist_label">Interpretacija:</string>
 	<!-- <string name="song_properties_dlg_album_label"></string> -->
-	<string name="song_properties_dlg_author_label">Autor</string>
+	<string name="song_properties_dlg_author_label">Autor:</string>
 	<!-- <string name="song_properties_dlg_date_label"></string> -->
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
 	<!-- <string name="song_properties_dlg_writer_label"></string> -->
@@ -308,8 +308,8 @@
 	<!-- <string name="song_properties_dlg_comments_label"></string> -->
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
-	<!-- <string name="track_name_dlg_name_label"></string> -->
+	<string name="track_name_dlg_title">Naziv</string>
+	<string name="track_name_dlg_name_label">Naziv:</string>
 
 	<!-- Track channel dialog -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
@@ -340,18 +340,18 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Obriši takt</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Od:</string>
+	<string name="measure_remove_dlg_to_label">Do:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Obriši sve iz takta</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Od:</string>
+	<string name="measure_clean_dlg_to_label">Do:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Kopiraj takt</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Od:</string>
+	<string name="measure_copy_dlg_to_label">Do:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Sve staze</string>
 
 	<!-- Measure paste dialog -->
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<!-- <string name="trill_dlg_title"></string> -->
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Prag:</string>
 	<string name="trill_dlg_duration_16">Šesnaestina</string>
 	<string name="trill_dlg_duration_32">Trideset-dvojka</string>
 	<string name="trill_dlg_duration_64">Šesdeset-četvrtina</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Gratis nota</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Prag:</string>
 	<string name="grace_dlg_dead_note_label">Mrtva nota</string>
 	<string name="grace_dlg_position_label">Pozicija</string>
 	<string name="grace_dlg_position_before_beat">Pre udarca</string>
@@ -446,14 +446,14 @@
 
 	<!-- Channel edit dialog -->
 	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Naziv</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_name_label">Naziv:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
-	<string name="channel_edit_dlg_balance_label">Levo-desno</string>
+	<string name="channel_edit_dlg_balance_label">Levo-desno:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->

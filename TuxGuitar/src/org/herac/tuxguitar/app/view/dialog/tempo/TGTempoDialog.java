@@ -51,7 +51,7 @@ public class TGTempoDialog {
 		
 		TGTempo currentTempo = header.getTempo();
 		UILabel tempoLabel = uiFactory.createLabel(group);
-		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo"));
+		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo") + ":");
 		groupLayout.set(tempoLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		

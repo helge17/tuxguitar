@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<string name="action_change_fade_in">Beúsztatás</string>
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Hozzáad</string>
+	<string name="action_channel_list_item_edit">Szerkesztés</string>
+	<string name="action_channel_list_item_remove">Eltávolít</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Szerkesztés</string>
@@ -205,7 +205,7 @@
 	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
 
 	<!-- <string name="browser_settings_fs_dlg_title"></string> -->
-	<!-- <string name="browser_settings_fs_name_label"></string> -->
+	<string name="browser_settings_fs_name_label">Név:</string>
 	<!-- <string name="browser_settings_fs_path_label"></string> -->
 
 	<string name="browser_settings_fs_error_title">Hiba</string>
@@ -241,14 +241,14 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Tempó változtatása</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">Tempó:</string>
 	<!-- <string name="tempo_dlg_options_apply_to_song"></string> -->
 	<!-- <string name="tempo_dlg_options_apply_to_end"></string> -->
 	<!-- <string name="tempo_dlg_options_apply_to_next_marker"></string> -->
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Kulcs változtatása</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Kulcs:</string>
 	<string name="clef_dlg_clef_value_treble">Violin</string>
 	<string name="clef_dlg_clef_value_bass">Basszus</string>
 	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Elõjegyzés változtatása</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Elõjegyzés:</string>
 	<string name="key_signature_dlg_ks_value_natural">Nincs</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 kereszt</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 kereszt</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Ütemmutató változtatása</string>
 	<string name="time_signature_dlg_ts_numerator_label">Számláló:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Nevezõ:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">A darab végéig</string>
 
 	<!-- Triplet Feel dialog -->
 	<!-- <string name="triplet_feel_dlg_title"></string> -->
@@ -290,17 +290,17 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Ismétlés vége</string>
-	<string name="repeat_close_dlg_count_label">Ismétlések</string>
+	<string name="repeat_close_dlg_count_label">Ismétlések:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<!-- <string name="repeat_alternative_dlg_title"></string> -->
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Tulajdonságok</string>
-	<string name="song_properties_dlg_name_label">Név</string>
-	<string name="song_properties_dlg_artist_label">Elõadó</string>
+	<string name="song_properties_dlg_name_label">Név:</string>
+	<string name="song_properties_dlg_artist_label">Elõadó:</string>
 	<!-- <string name="song_properties_dlg_album_label"></string> -->
-	<string name="song_properties_dlg_author_label">Szerzõ</string>
+	<string name="song_properties_dlg_author_label">Szerzõ:</string>
 	<!-- <string name="song_properties_dlg_date_label"></string> -->
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
 	<!-- <string name="song_properties_dlg_writer_label"></string> -->
@@ -308,11 +308,11 @@
 	<!-- <string name="song_properties_dlg_comments_label"></string> -->
 
 	<!-- Track name dialog -->
-	<!-- <string name="track_name_dlg_title"></string> -->
-	<!-- <string name="track_name_dlg_name_label"></string> -->
+	<string name="track_name_dlg_title">Név</string>
+	<string name="track_name_dlg_name_label">Név:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Hangszer:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -340,18 +340,18 @@
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Ütem eltávolítása</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">Kezdete:</string>
+	<string name="measure_remove_dlg_to_label">Vége:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Csendes ütem</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">Kezdete:</string>
+	<string name="measure_clean_dlg_to_label">Vége:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Ütem másolása</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">Kezdete:</string>
+	<string name="measure_copy_dlg_to_label">Vége:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Minden Sáv</string>
 
 	<!-- Measure paste dialog -->
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Trilla</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Bund:</string>
 	<string name="trill_dlg_duration_16">Tizenhatod</string>
 	<string name="trill_dlg_duration_32">Harmincketted</string>
 	<string name="trill_dlg_duration_64">Hatvannegyed</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Díszítõhang</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Bund:</string>
 	<string name="grace_dlg_dead_note_label">Tompított hang</string>
 	<string name="grace_dlg_position_label">Pozíció</string>
 	<string name="grace_dlg_position_before_beat">Ütés elõtt</string>
@@ -445,15 +445,15 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
-	<string name="channel_edit_dlg_name_label">Név</string>
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
+	<string name="channel_edit_dlg_title">Hangszer</string>
+	<string name="channel_edit_dlg_name_label">Név:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
-	<string name="channel_edit_dlg_volume_label">Hangerõ</string>
-	<string name="channel_edit_dlg_balance_label">Balansz</string>
+	<string name="channel_edit_dlg_volume_label">Hangerõ:</string>
+	<string name="channel_edit_dlg_balance_label">Balansz:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->

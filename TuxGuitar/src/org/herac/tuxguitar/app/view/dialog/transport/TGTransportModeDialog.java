@@ -83,7 +83,7 @@ public class TGTransportModeDialog {
 		dialogLayout.set(simpleGroup, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel simplePercentLabel = uiFactory.createLabel(simpleGroup);
-		simplePercentLabel.setText(TuxGuitar.getProperty("transport.mode.simple.tempo-percent"));
+		simplePercentLabel.setText(TuxGuitar.getProperty("transport.mode.simple.tempo-percent") + ":");
 		simpleLayout.set(simplePercentLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		simpleAdapter.addControl(simplePercentLabel);
 
@@ -120,7 +120,7 @@ public class TGTransportModeDialog {
 		dialogLayout.set(customGroup, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel tempoLabel = uiFactory.createLabel(customGroup);
-		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo"));
+		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo") + ":");
 		customLayout.set(tempoLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		customAdapter.addControl(tempoLabel);
 		
@@ -154,7 +154,7 @@ public class TGTransportModeDialog {
 		customAdapter.addControl(tempoToPercentLabel);
 		
 		UILabel incrementLabel = uiFactory.createLabel(customGroup);
-		incrementLabel.setText(TuxGuitar.getProperty("transport.mode.trainer.increment-description"));
+		incrementLabel.setText(TuxGuitar.getProperty("transport.mode.trainer.increment-description") + ":");
 		customLayout.set(incrementLabel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true, 1, 4);
 		customAdapter.addControl(incrementLabel);
 		
@@ -186,7 +186,7 @@ public class TGTransportModeDialog {
 		mHeaderRangeStatus.addControl(rangeGroup);
 		
 		UILabel loopSLabel = uiFactory.createLabel(rangeGroup);
-		loopSLabel.setText(TuxGuitar.getProperty("transport.mode.loop-range.from"));
+		loopSLabel.setText(TuxGuitar.getProperty("transport.mode.loop-range.from") + ":");
 		rangeLayout.set(loopSLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		mHeaderRangeStatus.addControl(loopSLabel);
 		
@@ -195,7 +195,7 @@ public class TGTransportModeDialog {
 		mHeaderRangeStatus.addControl(this.loopSHeader);
 		
 		UILabel loopELabel = uiFactory.createLabel(rangeGroup);
-		loopELabel.setText(TuxGuitar.getProperty("transport.mode.loop-range.to"));
+		loopELabel.setText(TuxGuitar.getProperty("transport.mode.loop-range.to") + ":");
 		rangeLayout.set(loopELabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		mHeaderRangeStatus.addControl(loopELabel);
 		

@@ -13,7 +13,7 @@
 	<!-- <string name="global_button_ok"></string> -->
 	<string name="global_button_cancel">Abbrechen</string>
 	<string name="global_button_clean">Löschen</string>
-	<string name="global_button_add">Einfügen</string>
+	<string name="global_button_add">Hinzufügen</string>
 
 	<string name="global_spinner_select_option">-- Auswählen --</string>
 
@@ -68,7 +68,7 @@
 	<string name="action_change_repeat_alternative">Alternative Endungen</string>
 	<string name="action_change_properties">Eigenschaften</string>
 
-	<string name="action_track_add">Spur einfügen</string>
+	<string name="action_track_add">Spur hinzufügen</string>
 	<string name="action_track_remove">Spur entfernen</string>
 	<string name="action_track_clone">Spur duplizieren</string>
 	<string name="action_track_move_up">Spur nach oben verschieben</string>
@@ -80,7 +80,7 @@
 	<string name="action_track_change_tuning">Stimmung</string>
 	<string name="action_track_change_string_count">Anzahl Zeilen</string>
 
-	<string name="action_measure_add">Takt einfügen</string>
+	<string name="action_measure_add">Takt hinzufügen</string>
 	<string name="action_measure_clean">Takt leeren</string>
 	<string name="action_measure_remove">Takt löschen</string>
 
@@ -89,7 +89,7 @@
 	<string name="action_decrement_note_semitone">Um Halbton erniedrigen</string>
 	<string name="action_increment_note_semitone">Um Halbton erhöhen</string>
 	<string name="action_delete_note_or_rest">Note/Pause löschen</string>
-	<string name="action_insert_rest_beat">Pause einfügen</string>
+	<string name="action_insert_rest_beat">Pause hinzufügen</string>
 	<string name="action_move_beats_left">Um einen Schlag nach links verschieben</string>
 	<string name="action_move_beats_right">Um einen Schlag nach rechts verschieben</string>
 	<string name="action_remove_unused_voice">Ungenutzte Stimme entfernen</string>
@@ -99,7 +99,7 @@
 	<string name="action_shift_note_down">Um eine Saite nach unten verschieben</string>
 	<string name="action_shift_note_up">Um eine Saite nach oben verschieben</string>
 	<string name="action_change_stroke">Auf-/Abschlag</string>
-	<string name="action_change_text">Text einfügen</string>
+	<string name="action_change_text">Text hinzufügen</string>
 
 	<string name="action_set_duration_whole">Ganz</string>
 	<string name="action_set_duration_half">Halb</string>
@@ -153,9 +153,9 @@
 	<!-- <string name="action_change_popping"></string> -->
 	<string name="action_change_fade_in">Fade in (Einblenden)</string>
 
-	<!-- <string name="action_channel_list_add"></string> -->
-	<!-- <string name="action_channel_list_item_edit"></string> -->
-	<!-- <string name="action_channel_list_item_remove"></string> -->
+	<string name="action_channel_list_add">Hinzufügen</string>
+	<string name="action_channel_list_item_edit">Bearbeiten</string>
+	<string name="action_channel_list_item_remove">Entfernen</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
 	<string name="action_track_tuning_list_item_edit">Bearbeiten</string>
@@ -248,7 +248,7 @@
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Notenschlüssel ändern</string>
-	<!-- <string name="clef_dlg_clef_label"></string> -->
+	<string name="clef_dlg_clef_label">Notenschlüssel:</string>
 	<string name="clef_dlg_clef_value_treble">Sopran</string>
 	<!-- <string name="clef_dlg_clef_value_bass"></string> -->
 	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
@@ -257,7 +257,7 @@
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Vorzeichnung ändern</string>
-	<!-- <string name="key_signature_dlg_ks_label"></string> -->
+	<string name="key_signature_dlg_ks_label">Vorzeichnung:</string>
 	<string name="key_signature_dlg_ks_value_natural">Natürlich</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 Erhöhungszeichen</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 Erhöhungszeichen</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Taktart ändern</string>
 	<string name="time_signature_dlg_ts_numerator_label">Zähler:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Nenner:</string>
-	<!-- <string name="time_signature_dlg_options_apply_to_end"></string> -->
+	<string name="time_signature_dlg_options_apply_to_end">Diese Taktart bis zum Liedende benutzen</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Triolenfeeling ändern</string>
@@ -290,7 +290,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Wiederholung schließen</string>
-	<string name="repeat_close_dlg_count_label">Wiederholungen</string>
+	<string name="repeat_close_dlg_count_label">Wiederholungen:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Alternative Endungen</string>
@@ -298,14 +298,14 @@
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Eigenschaften</string>
 	<!-- <string name="song_properties_dlg_name_label"></string> -->
-	<string name="song_properties_dlg_artist_label">Künstler</string>
+	<string name="song_properties_dlg_artist_label">Künstler:</string>
 	<!-- <string name="song_properties_dlg_album_label"></string> -->
-	<string name="song_properties_dlg_author_label">Autor</string>
-	<string name="song_properties_dlg_date_label">Datum</string>
+	<string name="song_properties_dlg_author_label">Autor:</string>
+	<string name="song_properties_dlg_date_label">Datum:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<string name="song_properties_dlg_writer_label">Tab-Ersteller</string>
-	<string name="song_properties_dlg_transcriber_label">Transkribiert von</string>
-	<string name="song_properties_dlg_comments_label">Kommentare</string>
+	<string name="song_properties_dlg_writer_label">Tab-Ersteller:</string>
+	<string name="song_properties_dlg_transcriber_label">Transkribiert von:</string>
+	<string name="song_properties_dlg_comments_label">Kommentare:</string>
 
 	<!-- Track name dialog -->
 	<!-- <string name="track_name_dlg_title"></string> -->
@@ -313,55 +313,55 @@
 
 	<!-- Track channel dialog -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
-	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+	<string name="track_channel_dlg_settings_label">Instrumente</string>
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Stimmung</string>
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_value_label">Wert:</string>
+	<string name="track_tuning_dlg_preview_label">Bezeichnung:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<string name="track_tuning_dlg_preset_select_value">-- Voreinstellungen --</string>
 	<string name="track_tuning_dlg_options_transpose">Betroffene Noten transponieren</string>
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Akkorde transponieren</string>
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Versuche Noten auf der gleichen Saite zu lassen</string>
 	<string name="track_tuning_dlg_error_title">Fehler</string>
-	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<string name="track_tuning_dlg_range_error">Die Anzahl der Saiten muss zwischen %1$d und %2$d liegen</string>
 	<string name="track_tuning_dlg_empty_value_error">Wert darf nicht leer sein</string>
 
 	<string name="track_string_count_dlg_title">Anzahl Zeilen</string>
-	<string name="track_string_count_dlg_count_label">Anzahl Zeilen</string>
+	<string name="track_string_count_dlg_count_label">Anzahl Zeilen:</string>
 
 	<!-- Measure add dialog -->
-	<string name="measure_add_dlg_title">Takt einfügen</string>
+	<string name="measure_add_dlg_title">Takt hinzufügen</string>
 	<string name="measure_add_dlg_count_label">Anzahl:</string>
-	<string name="measure_add_dlg_options_before_position">Takt(e) vor aktueller Position einfügen</string>
-	<string name="measure_add_dlg_options_after_position">Takt(e) nach aktueller Position einfügen</string>
+	<string name="measure_add_dlg_options_before_position">Takt(e) vor aktueller Position hinzufügen</string>
+	<string name="measure_add_dlg_options_after_position">Takt(e) nach aktueller Position hinzufügen</string>
 	<string name="measure_add_dlg_options_at_end">Takt(e) am Ende hinzufügen</string>
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Takt löschen</string>
-	<!-- <string name="measure_remove_dlg_from_label"></string> -->
-	<!-- <string name="measure_remove_dlg_to_label"></string> -->
+	<string name="measure_remove_dlg_from_label">von:</string>
+	<string name="measure_remove_dlg_to_label">bis:</string>
 
 	<!-- Measure clean dialog -->
 	<string name="measure_clean_dlg_title">Takt leeren</string>
-	<!-- <string name="measure_clean_dlg_from_label"></string> -->
-	<!-- <string name="measure_clean_dlg_to_label"></string> -->
+	<string name="measure_clean_dlg_from_label">von:</string>
+	<string name="measure_clean_dlg_to_label">bis:</string>
 
 	<!-- Measure copy dialog -->
 	<string name="measure_copy_dlg_title">Takt kopieren</string>
-	<!-- <string name="measure_copy_dlg_from_label"></string> -->
-	<!-- <string name="measure_copy_dlg_to_label"></string> -->
+	<string name="measure_copy_dlg_from_label">von:</string>
+	<string name="measure_copy_dlg_to_label">bis:</string>
 	<string name="measure_copy_dlg_options_all_tracks">Alle Spuren</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Takt einfügen</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Anzahl:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Einfügen im aktuellen Takt</string>
 	<string name="measure_paste_dlg_options_mode_insert">Einfügen in neuen Takt</string>
 
 	<!-- Text dialog -->
-	<string name="text_dlg_title">Text einfügen</string>
+	<string name="text_dlg_title">Text hinzufügen</string>
 
 	<!-- Bend dialog -->
 	<!-- <string name="bend_dlg_title"></string> -->
@@ -390,14 +390,14 @@
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Triller</string>
-	<!-- <string name="trill_dlg_fret_label"></string> -->
+	<string name="trill_dlg_fret_label">Bund:</string>
 	<string name="trill_dlg_duration_16">Sechzehntel</string>
 	<string name="trill_dlg_duration_32">32tel</string>
 	<string name="trill_dlg_duration_64">64tel</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Vorschlagsnote</string>
-	<!-- <string name="grace_dlg_fret_label"></string> -->
+	<string name="grace_dlg_fret_label">Bund:</string>
 	<string name="grace_dlg_dead_note_label">Dead-Note (toter Ton)</string>
 	<!-- <string name="grace_dlg_position_label"></string> -->
 	<string name="grace_dlg_position_before_beat">Vor dem Schlag</string>
@@ -431,7 +431,7 @@
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">Auf-/Abschlag</string>
-	<string name="stroke_dlg_direction_label">Händigkeit</string>
+	<string name="stroke_dlg_direction_label">Händigkeit:</string>
 	<string name="stroke_dlg_direction_none">Keiner</string>
 	<string name="stroke_dlg_direction_up">Aufschlag</string>
 	<string name="stroke_dlg_direction_down">Abschlag</string>
@@ -447,15 +447,15 @@
 	<!-- Channel edit dialog -->
 	<!-- <string name="channel_edit_dlg_title"></string> -->
 	<!-- <string name="channel_edit_dlg_name_label"></string> -->
+	<string name="channel_edit_dlg_program_label">Programm:</string>
+	<!-- <string name="channel_edit_dlg_program_value"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<string name="channel_edit_dlg_program_label">Programm</string>
-	<!-- <string name="channel_edit_dlg_program_value"></string> -->
 	<string name="channel_edit_dlg_percussion_label">Schlagzeugspur</string>
-	<string name="channel_edit_dlg_volume_label">Lautstärke</string>
+	<string name="channel_edit_dlg_volume_label">Lautstärke:</string>
 	<!-- <string name="channel_edit_dlg_balance_label"></string> -->
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
-	<string name="channel_edit_dlg_reverb_label">Hall</string>
+	<string name="channel_edit_dlg_reverb_label">Hall:</string>
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
 </resources>

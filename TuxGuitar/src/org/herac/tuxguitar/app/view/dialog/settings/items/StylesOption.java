@@ -82,31 +82,31 @@ public class StylesOption extends TGSettingsOption {
 		mainSection.setLayout(new UITableLayout());
 		this.indent(mainSection, 2, 1);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.default"), false, 1, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.default") + ":", false, 1, 1);
 		this.defaultFontButton = this.createFontButton(mainSection, this.defaultFontData, 1, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.note"), false, 2, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.note") + ":", false, 2, 1);
 		this.noteFontButton = this.createFontButton(mainSection, this.noteFontData, 2, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.lyric"), false, 3, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.lyric") + ":", false, 3, 1);
 		this.lyricFontButton = this.createFontButton(mainSection, this.lyricFontData, 3, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.text"), false, 4, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.font.text") + ":", false, 4, 1);
 		this.textFontButton = this.createFontButton(mainSection, this.textFontData, 4, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.score-note"), false, 5, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.score-note") + ":", false, 5, 1);
 		this.scoreNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 5, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.tab-note"), false, 6, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.tab-note") + ":", false, 6, 1);
 		this.tabNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 6, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.play-note"), false, 7, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.play-note") + ":", false, 7, 1);
 		this.playNoteColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 7, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.selection"), false, 8, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.selection") + ":", false, 8, 1);
 		this.selectionColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 8, 2);
 		
-		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.lines"), false, 9, 1);
+		showLabel(mainSection, TuxGuitar.getProperty("settings.config.styles.color.lines") + ":", false, 9, 1);
 		this.linesColorButton = this.createColorButton(mainSection, TuxGuitar.getProperty("choose"), 9, 2);
 		
 		//=================================================== PRINTER STYLES ===================================================//
@@ -116,16 +116,16 @@ public class StylesOption extends TGSettingsOption {
 		printerSection.setLayout(new UITableLayout());
 		this.indent(printerSection, 4, 1);
 		
-		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.default"), false, 1, 1);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.default") + ":", false, 1, 1);
 		this.printerDefaultFontButton = this.createFontButton(printerSection, this.printerDefaultFontData, 1, 2);
 		
-		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.note"), false, 2, 1);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.note") + ":", false, 2, 1);
 		this.printerNoteFontButton = this.createFontButton(printerSection, this.printerNoteFontData, 2, 2);
 		
-		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.lyric"), false, 3, 1);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.lyric") + ":", false, 3, 1);
 		this.printerLyricFontButton = this.createFontButton(printerSection, this.printerLyricFontData, 3, 2);
 		
-		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.text"), false, 4, 1);
+		showLabel(printerSection, TuxGuitar.getProperty("settings.config.styles.font.text") + ":", false, 4, 1);
 		this.printerTextFontButton = this.createFontButton(printerSection, this.printerTextFontData, 4, 2);
 		
 		this.loadConfig();

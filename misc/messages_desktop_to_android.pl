@@ -45,8 +45,19 @@ sub special_cases {
     when ("effects.harmonic.tapped")          { return '[T.H] '.$_[1]; }
     when ("effects.harmonic.pinch")           { return '[P.H] '.$_[1]; }
     when ("effects.harmonic.semi")            { return '[S.H] '.$_[1]; }
-    default                                   { return $_[1]; }
-    # TODO: Consider colons or spaces at the end, placeholder %1$d, %2$d and {0}, {1} ,...
+    when ("tuning.strings.range-error") {
+      $_[1] =~ s/\{0\}/%1\$d/g;
+      $_[1] =~ s/\{1\}/%2\$d/g;
+      return $_[1];
+    }
+    default {
+      if ($_[2] =~ /:$/) {
+        # Desktop messages contain no colon at the end (the colon is attached in the Java code),
+        # in Android the colon is part of the message string
+        return $_[1].':';
+      }
+      return $_[1];
+    }
   }
 }
 
@@ -59,11 +70,7 @@ while (<MSGS_EN_DESKTOP>) {
   if (/^(.+?)=(.+)$/) {
     $key_desktop=$1;
     $val_desktop=$2;
-
-    $val_desktop=special_cases($key_desktop,$val_desktop);
-
     $msg_desktop{$key_desktop}=$val_desktop;
-
   }
 }
 
@@ -90,7 +97,7 @@ while (<MSGS_EN_ANDROID>) {
     #   measure.remove=Remove Measure                         ->  measure.remove=Takt löschen
     #   action.gui.open-measure-remove-dialog=Remove Measure  ->  action.gui.open-measure-remove-dialog=Takt entfernen
     foreach $key_desktop (sort keys %msg_desktop) {
-      $val_desktop=$msg_desktop{$key_desktop};
+      $val_desktop=special_cases($key_desktop,$msg_desktop{$key_desktop},$val_android);
       if ($val_android eq $val_desktop) {
         # Translation matches exactly
         printf KEY_LIST "%-60s %-60s %-s\n", $key_android, $key_desktop, $val_android;
@@ -150,7 +157,7 @@ foreach my $msgs_XX_desktop (glob("TuxGuitar/share/lang/messages_*.properties"))
         if ($msgs_xx_desktop_line =~ /^$key_desktop=(.+)$/) {
           $val_desktop=$1;
 
-          $val_desktop=special_cases($key_desktop,$val_desktop);
+          $val_desktop=special_cases($key_desktop,$val_desktop,$val_android);
 
           # Some characters have to be masked on Android
           $val_desktop=~s/&/&amp;/sg;

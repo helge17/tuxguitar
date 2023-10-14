@@ -310,7 +310,7 @@ public class TGLyricEditor implements TGEventListener {
 		if(!isDisposed()){
 			this.loadKeyBindings();
 			this.dialog.setText(TuxGuitar.getProperty("lyric.editor"));
-			this.fromLabel.setText(TuxGuitar.getProperty("edit.from"));
+			this.fromLabel.setText(TuxGuitar.getProperty("edit.from") + ":");
 			this.dialog.layout();
 		}
 	}

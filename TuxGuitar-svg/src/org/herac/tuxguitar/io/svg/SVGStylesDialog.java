@@ -45,7 +45,7 @@ public class SVGStylesDialog extends SVGStyles {
 		dialogLayout.set(track, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
 		final UILabel trackLabel = uiFactory.createLabel(track);
-		trackLabel.setText(TuxGuitar.getProperty("track"));
+		trackLabel.setText(TuxGuitar.getProperty("track") + ":");
 		trackLayout.set(trackLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<Integer> trackCombo = uiFactory.createDropDownSelect(track);
