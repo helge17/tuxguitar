@@ -325,8 +325,7 @@ function build_tg_for_macos {
 
 install_eclipse_swt
 
-#for GUI_TK in swt jfx; do
-for GUI_TK in swt; do
+for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ..."
   cd build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
   mvn --batch-mode -e clean verify
@@ -335,7 +334,6 @@ for GUI_TK in swt; do
   mkdir target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
   cp -ai /usr/local/opt/openjdk/* target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
 
-  rm -f $DIST_DIR/*
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app.tar.gz tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
   cd - > /dev/null
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"

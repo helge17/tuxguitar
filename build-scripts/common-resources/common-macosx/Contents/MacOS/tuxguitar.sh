@@ -16,7 +16,7 @@ MAINCLASS=org.herac.tuxguitar.app.TGMainSingleton
 ##JVM ARGUMENTS
 VM_ARGS="-Xmx512m"
 ##SWT ARGUMENTS
-SWT_ARGS="-XstartOnFirstThread"
+ls lib/*swt*.jar > /dev/null 2>&1 && SWT_ARGS="-XstartOnFirstThread"
 ##EXPORT VARS
 export CLASSPATH
 export LD_LIBRARY_PATH
