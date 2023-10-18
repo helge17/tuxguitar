@@ -8,7 +8,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-cocoa-integration</artifactId>
+	<artifactId>tuxguitar-tray-swt</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
@@ -25,6 +25,11 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-lib</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-gm-utils</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -49,7 +54,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${org.eclipse.swt.groupId}</groupId>
-			<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+			<artifactId>${org.eclipse.swt.artifactId}</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

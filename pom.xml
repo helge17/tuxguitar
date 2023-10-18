@@ -132,7 +132,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-image</artifactId>
+				<artifactId>tuxguitar-image-swt</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -222,7 +222,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-tray</artifactId>
+				<artifactId>tuxguitar-tray-swt</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -240,7 +240,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-cocoa-integration</artifactId>
+				<artifactId>tuxguitar-cocoa-integration-swt</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>

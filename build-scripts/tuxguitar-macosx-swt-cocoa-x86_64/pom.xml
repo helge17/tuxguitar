@@ -49,14 +49,14 @@
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
-		<module>../../TuxGuitar-image</module>
-		<module>../../TuxGuitar-cocoa-integration</module>
+		<module>../../TuxGuitar-image-swt</module>
+		<module>../../TuxGuitar-cocoa-integration-swt</module>
 		<module>../../TuxGuitar-AudioUnit</module>
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
 		<module>../../TuxGuitar-debug-helper</module>
-		<module>../../TuxGuitar-tray</module>
+		<module>../../TuxGuitar-tray-swt</module>
 	</modules>
 
 	<build>
@@ -284,14 +284,14 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-image</artifactId>
-									<destFileName>tuxguitar-image.jar</destFileName>
+									<artifactId>tuxguitar-image-swt</artifactId>
+									<destFileName>tuxguitar-image-swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-cocoa-integration</artifactId>
-									<destFileName>tuxguitar-cocoa-integration.jar</destFileName>
+									<artifactId>tuxguitar-cocoa-integration-swt</artifactId>
+									<destFileName>tuxguitar-cocoa-integration-swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -326,8 +326,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-tray</artifactId>
-									<destFileName>tuxguitar-tray.jar</destFileName>
+									<artifactId>tuxguitar-tray-swt</artifactId>
+									<destFileName>tuxguitar-tray-swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->

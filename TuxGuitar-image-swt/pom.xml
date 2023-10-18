@@ -8,7 +8,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-image</artifactId>
+	<artifactId>tuxguitar-image-swt</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
