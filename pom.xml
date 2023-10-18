@@ -372,13 +372,6 @@
 		</plugins>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://maven-eclipse.github.io/maven</url>
-		</repository>
-	</repositories>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- We need a cross platform SWT version to compile projects -->

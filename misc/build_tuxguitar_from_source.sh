@@ -171,8 +171,7 @@ echo
 
 function install_eclipse_swt {
 
-# The swt-repo https://maven-eclipse.github.io/maven in pom.xml is outdated.
-# I could not find any other repo for current swt versions, so swt must be installed manually.
+# I could not find any repo for current swt versions, so swt must be installed manually.
 # See https://github.com/pcarmona79/tuxguitar/issues/1
 
 SWT_FILE=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
