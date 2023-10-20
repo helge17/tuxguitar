@@ -150,7 +150,6 @@
 									<classifier>${javafx.platform}</classifier>
 									<version>${javafx.version}</version>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -163,7 +162,6 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>

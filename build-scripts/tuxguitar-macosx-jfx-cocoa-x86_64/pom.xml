@@ -95,12 +95,6 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-editor-utils</artifactId>
-									<destFileName>tuxguitar-editor-utils.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-ui-toolkit</artifactId>
 									<destFileName>tuxguitar-ui-toolkit.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
@@ -110,6 +104,12 @@
 									<artifactId>tuxguitar-ui-toolkit-jfx</artifactId>
 									<version>${project.version}</version>
 									<destFileName>tuxguitar-ui-toolkit-jfx.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-editor-utils</artifactId>
+									<destFileName>tuxguitar-editor-utils.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -151,7 +151,6 @@
 									<classifier>${javafx.platform}</classifier>
 									<version>${javafx.version}</version>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -164,7 +163,6 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>

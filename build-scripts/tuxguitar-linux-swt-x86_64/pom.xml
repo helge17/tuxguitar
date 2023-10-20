@@ -89,8 +89,8 @@
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-lib</artifactId>
-							<destFileName>tuxguitar-lib.jar</destFileName>
-							<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<destFileName>tuxguitar-lib.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
@@ -131,7 +131,6 @@
 									<destFileName>swt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
@@ -144,7 +143,6 @@
 									<destFileName>itext-xmlworker.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
