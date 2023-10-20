@@ -16,6 +16,7 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-freebsd-swt-x86_64</project.finalName>
+		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.freebsd.x86_64</org.eclipse.swt.artifactId>
 	</properties>
 
 	<modules>
@@ -124,6 +125,12 @@
 								<!-- /LIBRARIES -->
 
 								<!-- 3RD PARTY LIBRARIES -->
+								<artifactItem>
+									<groupId>${org.eclipse.swt.groupId}</groupId>
+									<artifactId>${org.eclipse.swt.artifactId}</artifactId>
+									<destFileName>swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
 								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>

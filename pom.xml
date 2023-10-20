@@ -319,6 +319,11 @@
 				<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
 				<version>4.13</version>
 			</dependency>
+			<dependency>
+				<groupId>${org.eclipse.swt.groupId}</groupId>
+				<artifactId>org.eclipse.swt.gtk.freebsd.x86_64</artifactId>
+				<version>4.21</version>
+			</dependency>
 			<!-- /SWT Platforms -->
 
 			<!-- gervill -->
@@ -431,7 +436,7 @@
 			</activation>
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.freebsd.x86_64</org.eclipse.swt.artifactId>
 			</properties>
 		</profile>
 	</profiles>

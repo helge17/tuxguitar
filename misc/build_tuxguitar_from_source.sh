@@ -171,25 +171,38 @@ echo
 
 function install_eclipse_swt {
 
-# I could not find any repo for current swt versions, so swt must be installed manually.
-# See https://github.com/pcarmona79/tuxguitar/issues/1
-
-SWT_FILE=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
-SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_FILE.zip
 SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH-$SWT_VERSION.jar
+
 if [ -e $SWT_DEST ]; then
+
   echo "# $SWT_DEST is already installed."
+
 else
-  echo "# Installing $SWT_DEST from $SWT_LINK ..."
-  if [ -e $SW_DIR/$SWT_FILE/swt.jar ]; then
-    cd $SW_DIR/$SWT_FILE
-  else
-    [ ! -e $SW_DIR/$SWT_FILE.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_FILE.zip
-    rm -rf $SW_DIR/$SWT_FILE && mkdir $SW_DIR/$SWT_FILE && cd $SW_DIR/$SWT_FILE && unzip ../$SWT_FILE.zip
+
+  if [ "$SWT_PLATFORM" = 'gtk-linux' ] || [ "$SWT_PLATFORM" = 'cocoa-macosx' ] || [ "$SWT_PLATFORM" = 'win32-win32' ]; then
+
+    # I could not find any repo for current SWT versions, so SWT must be installed manually.
+    # See https://github.com/pcarmona79/tuxguitar/issues/1
+    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
+    SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
+    SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
+
+    echo "# Installing $SWT_DEST from $SWT_LINK ..."
+    if [ ! -e $SWT_JARF ]; then
+      [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
+      rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
+    fi
+
+  elif [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
+
+    # On FreeBSD we use SWT from the OS
+    SWT_JARF=/usr/local/share/java/classes/swt.jar
+
   fi
-  mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH -Dpackaging=jar -Dversion=$SWT_VERSION
-  cd - > /dev/null
+
+  mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH -Dpackaging=jar -Dversion=$SWT_VERSION
   echo "# OK."
+
 fi
 
 }
@@ -446,9 +459,9 @@ function copy_to_github {
 # BSD 64 bit x86_64 build
 if [ $build_bsd ]; then
   BUILD_ARCH=x86_64
-  SWT_VERSION=4.13
-  SWT_DATE=201909161045
-  SWT_PLATFORM=gtk-linux
+  # SWT version in FreeBSD 13.2
+  SWT_VERSION=4.21
+  SWT_PLATFORM=gtk-freebsd
   [ `uname` == Linux ] && start_remote_bsd_build
   [ `uname` == FreeBSD ] && build_tg_for_bsd
 fi
