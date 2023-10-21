@@ -31,7 +31,7 @@ public class JackMidiPlayerStarter implements TGEventListener {
 	}
 	
 	public void start(){
-		TGTransport.getInstance(this.context).playPause();
+		TGTransport.getInstance(this.context).playPause(null, null);
 	}
 	
 	public void processCountDownStarted() {

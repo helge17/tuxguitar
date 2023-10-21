@@ -1,11 +1,13 @@
 package org.herac.tuxguitar.app.view.toolbar.main;
 
+import org.herac.tuxguitar.app.action.TGActionProcessorListener;
+import org.herac.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
 
 public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
@@ -28,18 +30,10 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 	
 	public void createSection() {
 		this.first = this.getToolBar().getControl().createActionItem();
-		this.first.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				TGTransport.getInstance(getToolBar().getContext()).gotoFirst();
-			}
-		});
+		this.first.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGGoFirstMeasureAction.NAME));
 		
 		this.previous = this.getToolBar().getControl().createActionItem();
-		this.previous.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				TGTransport.getInstance(getToolBar().getContext()).gotoPrevious();
-			}
-		});
+		this.previous.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGGoPreviousMeasureAction.NAME));
 		
 		this.play = this.getToolBar().getControl().createActionItem();
 		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayPauseAction.NAME));
@@ -48,18 +42,10 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
 
 		this.next = this.getToolBar().getControl().createActionItem();
-		this.next.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				TGTransport.getInstance(getToolBar().getContext()).gotoNext();
-			}
-		});
+		this.next.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGGoNextMeasureAction.NAME));
 		
 		this.last = this.getToolBar().getControl().createActionItem();
-		this.last.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				TGTransport.getInstance(getToolBar().getContext()).gotoLast();
-			}
-		});
+		this.last.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGGoLastMeasureAction.NAME));
 		
 		this.status = STATUS_STOPPED;
 		this.loadIcons();

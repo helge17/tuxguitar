@@ -12,7 +12,6 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.util.MidiTickUtil;
 import org.herac.tuxguitar.graphics.control.TGBeatImpl;
 import org.herac.tuxguitar.graphics.control.TGLayout;
@@ -106,7 +105,6 @@ public class Caret {
 		this.updateNote();
 		this.updateVoice();
 		this.updateBeat();
-		this.checkTransport();
 		this.setChanges(true);
 		this.saveState();
 	}
@@ -330,10 +328,6 @@ public class Caret {
 				this.selectedString = instrumentString;
 			}
 		}
-	}
-	
-	private void checkTransport(){
-		TGTransport.getInstance(this.tablature.getContext()).gotoMeasure(getMeasure().getHeader());
 	}
 	
 	public boolean hasChanges() {
