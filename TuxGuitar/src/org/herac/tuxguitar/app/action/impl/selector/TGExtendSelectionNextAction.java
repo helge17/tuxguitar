@@ -2,8 +2,6 @@ package org.herac.tuxguitar.app.action.impl.selector;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
-import org.herac.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.component.tab.Selector;
@@ -30,7 +28,7 @@ public class TGExtendSelectionNextAction extends TGActionBase {
 		Selector selector = tablature.getSelector();
 		Caret caret = tablature.getCaret();
 		if (!selector.isActive()) {
-		    selector.initializeSelection(caret.getSelectedBeat());
+			selector.initializeSelection(caret.getSelectedBeat());
 		}
 		TGMeasure currentMeasure = caret.getMeasure();
 		TGMeasureManager measureManager = getSongManager(context).getMeasureManager();
@@ -55,7 +53,7 @@ public class TGExtendSelectionNextAction extends TGActionBase {
 
 	private void moveToMeasureEnd(TGActionContext context, Caret caret) {
 		TGMeasureImpl measure = caret.getMeasure();
-	    TGBeat lastBeat = getSongManager(context).getMeasureManager().getLastBeat(measure.getBeats());
+		TGBeat lastBeat = getSongManager(context).getMeasureManager().getLastBeat(measure.getBeats());
 		caret.moveTo(caret.getTrack(), measure, lastBeat, caret.getSelectedString().getNumber());
 	}
 }

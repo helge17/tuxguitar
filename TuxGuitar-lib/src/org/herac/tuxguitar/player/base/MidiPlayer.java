@@ -72,6 +72,10 @@ public class MidiPlayer{
 	
 	private int loopEHeader;
 	
+	private TGBeat selectionStartBeat;
+	private TGBeat selectionEndBeat;
+	private boolean isNewSelection;
+	
 	private long loopSPosition;
 	
 	private boolean anySolo;
@@ -107,7 +111,11 @@ public class MidiPlayer{
 			this.lock();
 			
 			this.stop();
-			this.tickPosition = TGDuration.QUARTER_TIME;
+			if (this.selectionStartBeat!=null) {
+				this.tickPosition = this.selectionStartBeat.getStart();
+			} else {
+				this.tickPosition = TGDuration.QUARTER_TIME;
+			}
 			this.setChangeTickPosition(false);
 		} finally {
 			this.unlock();
@@ -328,7 +336,7 @@ public class MidiPlayer{
 		try {
 			this.lock();
 			
-			if( this.getMode().isLoop()){
+			if( this.getMode().isLoop() && (this.selectionEndBeat==null)){
 				this.stopSequencer();
 				this.setTickPosition(TGDuration.QUARTER_TIME);
 				this.getMode().notifyLoop();
@@ -351,15 +359,18 @@ public class MidiPlayer{
 				this.loopSHeader = -1;
 				this.loopEHeader = -1;
 				this.loopSPosition = TGDuration.QUARTER_TIME;
-				if( getMode().isLoop() ){
-					int hCount = this.getSong().countMeasureHeaders();
+				int hCount = this.getSong().countMeasureHeaders();
+				if( getMode().isLoop() && (this.selectionStartBeat==null || this.selectionEndBeat==null)){
 					this.loopSHeader = ( getMode().getLoopSHeader() <= hCount ? getMode().getLoopSHeader() : -1 ) ;
 					this.loopEHeader = ( getMode().getLoopEHeader() <= hCount ? getMode().getLoopEHeader() : -1 ) ;
-					if( this.loopSHeader > 0 && this.loopSHeader <= hCount ){
-						TGMeasureHeader header = this.getSongManager().getMeasureHeader( getSong(), this.loopSHeader );
-						if( header != null ){
-							this.loopSPosition = header.getStart();
-						}
+				} else if (this.selectionStartBeat!=null && this.selectionEndBeat!=null) {
+					this.loopSHeader = this.selectionStartBeat.getMeasure().getNumber();
+					this.loopEHeader = this.selectionEndBeat.getMeasure().getNumber();
+				}
+				if( this.loopSHeader > 0 && this.loopSHeader <= hCount ){
+					TGMeasureHeader header = this.getSongManager().getMeasureHeader( getSong(), this.loopSHeader );
+					if( header != null ){
+						this.loopSPosition = header.getStart();
 					}
 				}
 			}
@@ -493,9 +504,12 @@ public class MidiPlayer{
 	protected void changeTickPosition(){
 		try {
 			this.lock();
-			
 			if( this.isRunning()){
-				if( this.tickPosition < this.getLoopSPosition() ){
+				if (this.isNewSelection && this.selectionStartBeat!=null && this.selectionEndBeat!=null) {
+					this.tickPosition = this.selectionStartBeat.getMeasure().getStart();
+					this.isNewSelection = false;
+				}
+				else if( this.tickPosition < this.getLoopSPosition() ){
 					this.tickPosition = this.getLoopSPosition();
 				}
 				this.getSequencer().setTickPosition(this.tickPosition);
@@ -514,8 +528,13 @@ public class MidiPlayer{
 			
 			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
 			midiSequenceParser.setTempoPercent(getMode().getCurrentPercent());
-			midiSequenceParser.setSHeader( getLoopSHeader() );
-			midiSequenceParser.setEHeader( getLoopEHeader() );
+			if (this.selectionEndBeat!=null) {
+				midiSequenceParser.setSHeader( selectionStartBeat.getMeasure().getNumber() );
+				midiSequenceParser.setEHeader( selectionEndBeat.getMeasure().getNumber() );
+			} else {
+				midiSequenceParser.setSHeader( getLoopSHeader() );
+				midiSequenceParser.setEHeader( getLoopEHeader() );
+			}
 			midiSequenceParser.setMetronomeChannelId(getPercussionChannelId());
 			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
 			this.infoTrack = midiSequenceParser.getInfoTrack();
@@ -586,7 +605,7 @@ public class MidiPlayer{
 			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
 				TGChannel tgChannel = (TGChannel) tgChannels.next();
-				if(!newChannelIds.contains(new Integer(tgChannel.getChannelId())) ){
+				if(!newChannelIds.contains(Integer.valueOf(tgChannel.getChannelId())) ){
 					MidiChannel midiChannel = this.getSynthesizerProxy().openChannel(tgChannel.getChannelId());
 					if( midiChannel != null ){
 						this.getChannelRouter().addMidiChannel(tgChannel.getChannelId(), midiChannel);
@@ -1330,5 +1349,11 @@ public class MidiPlayer{
 				return new MidiPlayer(context);
 			}
 		});
+	}
+	
+	public void setSelection(TGBeat start, TGBeat end) {
+		this.isNewSelection = (this.selectionStartBeat!=start || this.selectionEndBeat!=end);
+		this.selectionStartBeat = start;
+		this.selectionEndBeat = end;
 	}
 }

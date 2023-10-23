@@ -7,6 +7,7 @@ import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -61,10 +62,6 @@ public class TGTransport {
 		}
 	}
 	
-	public void gotoMeasure(TGMeasureHeader header){
-		gotoMeasure(header, false);
-	}
-	
 	public void gotoCaretPosition() {
 		gotoMeasure(TablatureEditor.getInstance(this.context).getTablature().getCaret().getMeasure().getHeader(), false);
 	}
@@ -101,17 +98,23 @@ public class TGTransport {
 		TuxGuitar.getInstance().updateCache(true);
 	}
 	
-	public void playPause(){
+	public void playPause(TGBeat start, TGBeat end){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
+			if (start!=null) {
+				player.setSelection(start,end);
+			}
 			this.play();
 		}else{
 			this.pause();
 		}
 	}
-	public void playStop(){
+	public void playStop(TGBeat start, TGBeat end){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		if(!player.isRunning()){
+			if (start!=null) {
+				player.setSelection(start,end);
+			}
 			this.play();
 		}else{
 			this.stop();
@@ -120,6 +123,7 @@ public class TGTransport {
 	private void play() {
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		try{
+			gotoCaretPosition();
 			player.getMode().reset();
 			player.play();
 		}catch(MidiPlayerException e){

@@ -125,6 +125,37 @@ public abstract class TGTest {
 		}
 	}
 	
+	protected void doMouseShiftClick(int measureNb, int beatNb, int stringNb) {
+		TGActionManager tgActionManager = TGActionManager.getInstance(TuxGuitar.getInstance().getContext());
+		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
+		TGTrack track = tablature.getCaret().getTrack();
+		Selector selector = tablature.getSelector();
+
+		log(String.format("shift-clicking in measure %d, beat %d, string %d\n", measureNb, beatNb, stringNb));
+		// see MouseKit.onMouseDown and TGUpdateDragSelectionAction.processAction
+		TGActionContext context = tgActionManager.createActionContext();
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, track.getMeasure(measureNb-1));
+		TGBeat beat = track.getMeasure(measureNb-1).getBeat(beatNb);
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, track.getString(stringNb));
+		if (!selector.isActive() && tablature.getCaret().getSelectedBeat() != null) {
+			selector.initializeSelection(tablature.getCaret().getSelectedBeat());
+		}
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, true);
+		TGActionManager.getInstance(TuxGuitar.getInstance().getContext()).execute(TGMoveToAction.NAME, context);
+		if (selector.getStartBeat() != null && beat.getMeasure().getTrack() == selector.getStartBeat().getMeasure().getTrack()) {
+			selector.updateSelection(beat);
+		}
+		// onMouseUp (not all conditions)
+		if (MidiPlayer.getInstance(TuxGuitar.getInstance().getContext()).isRunning()) {
+			log("mouse up, midi player running\n");
+			context = tgActionManager.createActionContext();
+			context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, true);
+			TGActionManager.getInstance(TuxGuitar.getInstance().getContext()).execute(TGMoveToAction.NAME, context);
+		}
+	}
+	
 	protected void checkCaretPosition(int measureNb, int beatNb, int stringNb) {
 		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		log("checking caret position...");
