@@ -16,9 +16,6 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-linux-jfx-x86_64</project.finalName>
-
-		<javafx.version>17.0.2</javafx.version>
-		<javafx.platform>linux</javafx.platform>
 	</properties>
 
 	<modules>

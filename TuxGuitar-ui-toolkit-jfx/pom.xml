@@ -12,10 +12,6 @@
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
-	<properties>
-		<javafx.version>17.0.2</javafx.version>
-	</properties>
-
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>

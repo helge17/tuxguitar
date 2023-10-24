@@ -16,9 +16,6 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-macosx-jfx-cocoa-x86_64.app</project.finalName>
-
-		<javafx.version>17.0.2</javafx.version>
-		<javafx.platform>mac</javafx.platform>
 	</properties>
 
 	<modules>
