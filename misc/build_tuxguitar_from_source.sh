@@ -198,6 +198,18 @@ else
     # On FreeBSD we use SWT from the OS
     SWT_JARF=/usr/local/share/java/classes/swt.jar
 
+    # Ugly hack to also install JFX on FreeBSD
+    JFX_VER=14.0.2.1
+    JFX_DIR=$SW_DIR/OpenJFX
+    mkdir -p $JFX_DIR
+    for JFX_PKG in javafx-base javafx-controls javafx-graphics; do
+      if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VER.pom ]; then
+        wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER.pom
+        sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VER.pom
+      fi
+      mvn install:install-file -Dfile=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VER.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VER -Dclassifier=freebsd
+    done
+
   fi
 
   mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH -Dpackaging=jar -Dversion=$SWT_VERSION
@@ -305,14 +317,12 @@ function build_tg_for_bsd {
 
 install_eclipse_swt
 
-#for GUI_TK in swt jfx; do
-for GUI_TK in swt; do
+for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
   cd build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
   mvn --batch-mode -e clean verify -P native-modules
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
   cd - > /dev/null
-  rm -f $DIST_DIR/*
-  tar --uname=root --gname=root --directory=build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
 done
 

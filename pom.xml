@@ -443,6 +443,8 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.freebsd.x86_64</org.eclipse.swt.artifactId>
+				<javafx.version>14.0.2.1</javafx.version>
+				<javafx.platform>freebsd</javafx.platform>
 			</properties>
 		</profile>
 	</profiles>
