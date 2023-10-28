@@ -190,12 +190,19 @@ The application is now located in the `build-scripts/tuxguitar-macosx-swt-cocoa-
 $ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget
 ```
 
-### Get SWT and the TuxGuitar sources
+### Install SWT for FreeBSD
 
-FreeBSD needs the SWT package for Linux to build. Download and install SWT and download the TuxGuitar sources as described for Debian above.
+On FreeBSD we use SWT from the OS to build and run TuxGuitar. FreeBSD 13.2 comes with SWT version 4.21.
+
+```sh
+mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd.x86_64 -Dpackaging=jar -Dversion=4.21
+```
+
+### Get the TuxGuitar sources
+
+Same as for Debian (see above).
 
 ### Build and Start TuxGuitar
-
 
 ```sh
 $ cd build-scripts/tuxguitar-freebsd-swt-x86_64

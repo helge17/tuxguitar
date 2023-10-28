@@ -304,7 +304,7 @@ echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD $BU
 SRC_PATH=/home/$USER/tg-1.x-build-bsd
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
-rsync --verbose --archive --delete `pwd`/ $BUILD_HOST:$SRC_PATH/
+rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD $BUILD_ARCH TAR.GZ done."
 
@@ -321,6 +321,10 @@ for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
   cd build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
   mvn --batch-mode -e clean verify -P native-modules
+
+  # Copy local JFX libs into TAR.GZ package
+  [ "$GUI_TK" == "jfx" ] && cp -a /usr/local/openjfx14/lib/*.so target/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH/lib
+
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
   cd - > /dev/null
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
@@ -335,7 +339,7 @@ echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
-rsync --verbose --archive --delete `pwd`/ $BUILD_HOST:$SRC_PATH/
+rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP done."
 
