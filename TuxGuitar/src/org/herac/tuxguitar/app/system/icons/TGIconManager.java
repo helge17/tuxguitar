@@ -162,6 +162,9 @@ public class TGIconManager {
 	private UIImage muteDisabledDim;
 	private UIImage listMoveUp;
 	private UIImage listMoveDown;
+	private UIImage zoomOut;
+	private UIImage zoomReset;
+	private UIImage zoomIn;
 	
 	private TGIconManager(TGContext context){
 		this.context = context;
@@ -336,6 +339,9 @@ public class TGIconManager {
 		this.muteDisabledDim = loadIcon("mute-disabled-dim.png");
 		this.listMoveUp = loadIcon("list_move_up.png");
 		this.listMoveDown = loadIcon("list_move_down.png");
+		this.zoomOut = loadIcon("zoom_out.png");
+		this.zoomReset = loadIcon("zoom_reset.png");
+		this.zoomIn = loadIcon("zoom_in.png");
 	}
 	
 	private UIImage loadIcon(String name) {
@@ -955,6 +961,18 @@ public class TGIconManager {
 	
 	public UIImage getListMoveDown() {
 		return this.listMoveDown;
+	}
+	
+	public UIImage getZoomOut() {
+		return this.zoomOut;
+	}
+
+	public UIImage getZoomReset() {
+		return this.zoomReset;
+	}
+
+	public UIImage getZoomIn() {
+		return this.zoomIn;
 	}
 
 	public static TGIconManager getInstance(TGContext context) {
