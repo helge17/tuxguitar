@@ -15,6 +15,8 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListener;
+import org.herac.tuxguitar.ui.event.UIModifyEvent;
+import org.herac.tuxguitar.ui.event.UIModifyListener;
 import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -25,11 +27,13 @@ import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UITable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGKeyBindingEditor {
 	
 	private TGViewContext context;
+	private UITextField filterText;
 	private UIWindow dialog;
 	private UITable<KeyBindingAction> table;
 	private List<KeyBindingAction> kbActions;
@@ -47,6 +51,15 @@ public class TGKeyBindingEditor {
 		this.dialog = uiFactory.createWindow(uiParent, true, false);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
+		
+		this.filterText = uiFactory.createTextField(this.dialog);
+		this.filterText.addModifyListener(new UIModifyListener() {
+			@Override
+			public void onModify(UIModifyEvent event) {
+				TGKeyBindingEditor.this.updateTableItems();
+			}
+		});
+		dialogLayout.set(filterText, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		this.table = uiFactory.createTable(this.dialog, true);
 		this.table.setColumns(2);
@@ -67,7 +80,7 @@ public class TGKeyBindingEditor {
 				}
 			}
 		});
-		dialogLayout.set(this.table, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(this.table, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		dialogLayout.set(this.table, UITableLayout.MAXIMUM_PACKED_WIDTH, 500f);
 		dialogLayout.set(this.table, UITableLayout.PACKED_HEIGHT, 250f);
 		
@@ -77,7 +90,7 @@ public class TGKeyBindingEditor {
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
 		UIButton defaults = uiFactory.createButton(buttons);
 		defaults.setText(TuxGuitar.getProperty("defaults"));
@@ -145,7 +158,9 @@ public class TGKeyBindingEditor {
 			item.setText(0, TuxGuitar.getProperty(kbAction.getAction()));
 			item.setText(1, (kbAction.getCombination() != null ? kbAction.getCombination().toString() : ""));
 			
-			this.table.addItem(item);
+			if (item.getText(0).toLowerCase().contains(this.filterText.getText().toLowerCase())) {
+				this.table.addItem(item);
+			}
 		}
 		this.table.setSelectedValue(selection);
 	}
