@@ -340,7 +340,7 @@ public class TGIconManager {
 		this.listMoveUp = loadIcon("list_move_up.png");
 		this.listMoveDown = loadIcon("list_move_down.png");
 		this.zoomOut = loadIcon("zoom_out.png");
-		this.zoomReset = loadIcon("zoom_reset.png");
+		this.zoomReset = loadIcon("zoom_original.png");
 		this.zoomIn = loadIcon("zoom_in.png");
 	}
 	
