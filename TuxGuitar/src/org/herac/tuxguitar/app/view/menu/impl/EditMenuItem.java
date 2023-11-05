@@ -23,7 +23,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class EditMenuItem extends TGMenuItem{
-	
+
 	private UIMenuSubMenuItem editMenuItem;
 	private UIMenuActionItem cut;
 	private UIMenuActionItem copy;
@@ -36,60 +36,72 @@ public class EditMenuItem extends TGMenuItem{
 	private UIMenuCheckableItem notNaturalKey;
 	private UIMenuCheckableItem voice1;
 	private UIMenuCheckableItem voice2;
-	
+
 	public EditMenuItem(UIMenu parent) {
 		this.editMenuItem = parent.createSubMenuItem();
 	}
-	
+
 	public void showItems() {
-		//---------------------------------------------------
 		//--CUT--
 		this.cut = this.editMenuItem.getMenu().createActionItem();
 		this.cut.addSelectionListener(this.createActionProcessor(TGCutAction.NAME));
+
 		//--COPY--
 		this.copy = this.editMenuItem.getMenu().createActionItem();
 		this.copy.addSelectionListener(this.createActionProcessor(TGCopyAction.NAME));
+
 		//--PASTE--
 		this.paste = this.editMenuItem.getMenu().createActionItem();
 		this.paste.addSelectionListener(this.createActionProcessor(TGPasteAction.NAME));
+
 		//--REPEAT--
 		this.repeat = this.editMenuItem.getMenu().createActionItem();
 		this.repeat.addSelectionListener(this.createActionProcessor(TGRepeatAction.NAME));
-		//--SEPARATOR
+
+		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
+
 		//--UNDO--
 		this.undo = this.editMenuItem.getMenu().createActionItem();
 		this.undo.addSelectionListener(this.createActionProcessor(TGUndoAction.NAME));
+
 		//--REDO--
 		this.redo = this.editMenuItem.getMenu().createActionItem();
 		this.redo.addSelectionListener(this.createActionProcessor(TGRedoAction.NAME));
-		//--SEPARATOR
+
+		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
-		//--TABLATURE EDIT MODE
+
+		//--TABLATURE EDIT MODE--
 		this.modeSelection = this.editMenuItem.getMenu().createRadioItem();
 		this.modeSelection.addSelectionListener(this.createActionProcessor(TGSetMouseModeSelectionAction.NAME));
-		//--SCORE EDIT MODE
+
+		//--SCORE EDIT MODE--
 		this.modeEdition = this.editMenuItem.getMenu().createRadioItem();
 		this.modeEdition.addSelectionListener(this.createActionProcessor(TGSetMouseModeEditionAction.NAME));
-		//--NATURAL NOTES
+
+		//--NATURAL NOTES--
 		this.notNaturalKey = this.editMenuItem.getMenu().createCheckItem();
 		this.notNaturalKey.addSelectionListener(this.createActionProcessor(TGSetNaturalKeyAction.NAME));
-		//--SEPARATOR
+
+		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
-		//--VOICE 1
+
+		//--VOICE 1--
 		this.voice1 = this.editMenuItem.getMenu().createRadioItem();
 		this.voice1.addSelectionListener(this.createActionProcessor(TGSetVoice1Action.NAME));
-		//--VOICE 2
+
+		//--VOICE 2--
 		this.voice2 = this.editMenuItem.getMenu().createRadioItem();
 		this.voice2.addSelectionListener(this.createActionProcessor(TGSetVoice2Action.NAME));
-		
+
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void update(){
 		EditorKit kit = TuxGuitar.getInstance().getTablatureEditor().getTablature().getEditorKit();
-		Tablature tablature = TablatureEditor.getInstance(findContext()).getTablature(); 
+		Tablature tablature = TablatureEditor.getInstance(findContext()).getTablature();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.cut.setEnabled(!running && tablature.getSelector().isActive());
 		this.copy.setEnabled(!running);
@@ -106,7 +118,7 @@ public class EditMenuItem extends TGMenuItem{
 		this.voice1.setChecked(kit.getTablature().getCaret().getVoice() == 0);
 		this.voice2.setChecked(kit.getTablature().getCaret().getVoice() == 1);
 	}
-	
+
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.editMenuItem, "edit.menu", null);
 		setMenuItemTextAndAccelerator(this.cut, "edit.cut", TGCutAction.NAME);
@@ -121,9 +133,14 @@ public class EditMenuItem extends TGMenuItem{
 		setMenuItemTextAndAccelerator(this.voice1, "edit.voice-1", TGSetVoice1Action.NAME);
 		setMenuItemTextAndAccelerator(this.voice2, "edit.voice-2", TGSetVoice2Action.NAME);
 	}
-	
+
 	public void loadIcons(){
 		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getEditUndo());
 		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getEditRedo());
+		this.modeSelection.setImage(TuxGuitar.getInstance().getIconManager().getEditModeSelection());
+		this.modeEdition.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEdition());
+		this.notNaturalKey.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEditionNotNatural());
+		this.voice1.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice1());
+		this.voice2.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice2());
 	}
 }

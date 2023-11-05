@@ -30,7 +30,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 import org.herac.tuxguitar.util.TGNoteRange;
 
 public class NoteEffectsMenuItem extends TGMenuItem {
-	
+
 	private UIMenuSubMenuItem noteEffectsMenuItem;
 	private UIMenuCheckableItem vibrato;
 	private UIMenuCheckableItem bend;
@@ -52,112 +52,112 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 	private UIMenuCheckableItem slapping;
 	private UIMenuCheckableItem popping;
 	private UIMenuCheckableItem fadeIn;
-	
+
 	public NoteEffectsMenuItem(UIMenuSubMenuItem noteEffectsMenuItem) {
 		this.noteEffectsMenuItem = noteEffectsMenuItem;
 	}
-	
+
 	public NoteEffectsMenuItem(UIMenu parent) {
 		this(parent.createSubMenuItem());
 	}
-	
+
 	public void showItems(){
 		//--VIBRATO--
 		this.vibrato = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.vibrato.addSelectionListener(this.createActionProcessor(TGChangeVibratoNoteAction.NAME));
-		
+
 		//--BEND--
 		this.bend = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.bend.addSelectionListener(this.createActionProcessor(TGOpenBendDialogAction.NAME));
-		
+
 		//--BEND--
 		this.tremoloBar = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.tremoloBar.addSelectionListener(this.createActionProcessor(TGOpenTremoloBarDialogAction.NAME));
-		
+
 		//--SLIDE--
 		this.slide = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.slide.addSelectionListener(this.createActionProcessor(TGChangeSlideNoteAction.NAME));
-		
+
 		//--SLIDE--
 		this.deadNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.deadNote.addSelectionListener(this.createActionProcessor(TGChangeDeadNoteAction.NAME));
-		
+
 		//--HAMMER--
 		this.hammer = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.hammer.addSelectionListener(this.createActionProcessor(TGChangeHammerNoteAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.noteEffectsMenuItem.getMenu().createSeparator();
-		
+
 		//--GHOST NOTE--
 		this.ghostNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.ghostNote.addSelectionListener(this.createActionProcessor(TGChangeGhostNoteAction.NAME));
-		
+
 		//--ACCENTUATED NOTE--
 		this.accentuatedNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.accentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeAccentuatedNoteAction.NAME));
-		
+
 		//--HEAVY ACCENTUATED NOTE--
 		this.heavyAccentuatedNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.heavyAccentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeHeavyAccentuatedNoteAction.NAME));
-		
+
 		//--LET RING--
 		this.letRing = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.letRing.addSelectionListener(this.createActionProcessor(TGChangeLetRingAction.NAME));
-		
+
 		//--HARMONIC NOTE--
 		this.harmonicNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.harmonicNote.addSelectionListener(this.createActionProcessor(TGOpenHarmonicDialogAction.NAME));
-		
+
 		//--GRACE NOTE--
 		this.graceNote = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.graceNote.addSelectionListener(this.createActionProcessor(TGOpenGraceDialogAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.noteEffectsMenuItem.getMenu().createSeparator();
-		
+
 		//--TRILL--
 		this.trill = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.trill.addSelectionListener(this.createActionProcessor(TGOpenTrillDialogAction.NAME));
-		
+
 		//--TREMOLO PICKING--
 		this.tremoloPicking = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.tremoloPicking.addSelectionListener(this.createActionProcessor(TGOpenTremoloPickingDialogAction.NAME));
-		
+
 		//--PALM MUTE--
 		this.palmMute = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.palmMute.addSelectionListener(this.createActionProcessor(TGChangePalmMuteAction.NAME));
-		
-		//--STACCATO
+
+		//--STACCATO--
 		this.staccato = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.staccato.addSelectionListener(this.createActionProcessor(TGChangeStaccatoAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.noteEffectsMenuItem.getMenu().createSeparator();
-		
-		//--TAPPING
+
+		//--TAPPING--
 		this.tapping = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.tapping.addSelectionListener(this.createActionProcessor(TGChangeTappingAction.NAME));
-		
-		//--SLAPPING
+
+		//--SLAPPING--
 		this.slapping = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.slapping.addSelectionListener(this.createActionProcessor(TGChangeSlappingAction.NAME));
-		
-		//--POPPING
+
+		//--POPPING--
 		this.popping = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.popping.addSelectionListener(this.createActionProcessor(TGChangePoppingAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.noteEffectsMenuItem.getMenu().createSeparator();
-		
-		//--FADE IN
+
+		//--FADE IN--
 		this.fadeIn = this.noteEffectsMenuItem.getMenu().createCheckItem();
 		this.fadeIn.addSelectionListener(this.createActionProcessor(TGChangeFadeInAction.NAME));
-		
+
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void update(){
 		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
@@ -204,7 +204,7 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.fadeIn.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isFadeIn()));
 		this.fadeIn.setEnabled(!running && !noteRange.isEmpty());
 	}
-	
+
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.noteEffectsMenuItem, "effects", null);
 		setMenuItemTextAndAccelerator(this.vibrato, "effects.vibrato", TGChangeVibratoNoteAction.NAME);
@@ -228,8 +228,27 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.popping, "effects.popping", TGChangePoppingAction.NAME);
 		setMenuItemTextAndAccelerator(this.fadeIn, "effects.fade-in", TGChangeFadeInAction.NAME);
 	}
-	
+
 	public void loadIcons(){
-		//Nothing to do
+		this.vibrato.setImage(TuxGuitar.getInstance().getIconManager().getEffectVibrato());
+		this.bend.setImage(TuxGuitar.getInstance().getIconManager().getEffectBend());
+		this.tremoloBar.setImage(TuxGuitar.getInstance().getIconManager().getEffectTremoloBar());
+		this.deadNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectDead());
+		this.slide.setImage(TuxGuitar.getInstance().getIconManager().getEffectSlide());
+		this.hammer.setImage(TuxGuitar.getInstance().getIconManager().getEffectHammer());
+		this.ghostNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectGhost());
+		this.accentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectAccentuated());
+		this.heavyAccentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectHeavyAccentuated());
+		this.letRing.setImage(TuxGuitar.getInstance().getIconManager().getEffectLetRing());
+		this.harmonicNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectHarmonic());
+		this.graceNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectGrace());
+		this.trill.setImage(TuxGuitar.getInstance().getIconManager().getEffectTrill());
+		this.tremoloPicking.setImage(TuxGuitar.getInstance().getIconManager().getEffectTremoloPicking());
+		this.palmMute.setImage(TuxGuitar.getInstance().getIconManager().getEffectPalmMute());
+		this.staccato.setImage(TuxGuitar.getInstance().getIconManager().getEffectStaccato());
+		this.tapping.setImage(TuxGuitar.getInstance().getIconManager().getEffectTapping());
+		this.slapping.setImage(TuxGuitar.getInstance().getIconManager().getEffectSlapping());
+		this.popping.setImage(TuxGuitar.getInstance().getIconManager().getEffectPopping());
+		this.fadeIn.setImage(TuxGuitar.getInstance().getIconManager().getEffectFadeIn());
 	}
 }

@@ -42,7 +42,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 import org.herac.tuxguitar.util.TGUserFileUtils;
 
 public class FileMenuItem extends TGMenuItem {
-	
+
 	private UIMenuSubMenuItem fileMenuItem;
 	private UIMenuSubMenuItem newSong;
 	private UIMenuActionItem newSongDefault;
@@ -62,12 +62,12 @@ public class FileMenuItem extends TGMenuItem {
 	private UIMenuSubMenuItem historyItem;
 	private UIMenuActionItem[] historyFiles;
 	private UIMenuActionItem exit;
-	
+
 	private List<UIMenuActionItem> readerItems;
 	private List<UIMenuActionItem> writerItems;
 	private List<UIMenuActionItem> importItems;
 	private List<UIMenuActionItem> exportItems;
-	
+
 	public FileMenuItem(UIMenu parent) {
 		this.fileMenuItem = parent.createSubMenuItem();
 		this.readerItems = new ArrayList<UIMenuActionItem>();
@@ -75,62 +75,72 @@ public class FileMenuItem extends TGMenuItem {
 		this.importItems = new ArrayList<UIMenuActionItem>();
 		this.exportItems = new ArrayList<UIMenuActionItem>();
 	}
-	
+
 	public void showItems(){
-		//---------------------------------------------------
 		//--NEW--
 		this.newSong = this.fileMenuItem.getMenu().createSubMenuItem();
 		this.newSongDefault = this.newSong.getMenu().createActionItem();
 		this.newSongDefault.addSelectionListener(this.createNewSongFromTemplateActionProcessor(null));
-		// --predefined templates--
+
+		//--PREDEFINED TEMPLATES--
 		this.addNewSongTemplates();
-		
+
 		//--OPEN--
 		this.open = this.fileMenuItem.getMenu().createActionItem();
 		this.open.addSelectionListener(this.createActionProcessor(TGOpenFileAction.NAME));
+
 		//--OPEN URL--
 		this.openURL = this.fileMenuItem.getMenu().createActionItem();
 		this.openURL.addSelectionListener(this.createActionProcessor(TGOpenURLAction.NAME));
+
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
+
 		//-- CUSTOM TEMPLATE--
 		this.selectCustomTemplate = this.fileMenuItem.getMenu().createActionItem();
 		this.selectCustomTemplate.addSelectionListener(this.createActionProcessor(TGCustomTemplateSelectAction.NAME));
 		this.deleteCustomTemplate = this.fileMenuItem.getMenu().createActionItem();
 		this.deleteCustomTemplate.addSelectionListener(this.createActionProcessor(TGCustomTemplateDeleteAction.NAME));
+
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
+
 		//--CLOSE--
 		this.close = this.fileMenuItem.getMenu().createActionItem();
 		this.close.addSelectionListener(this.createActionProcessor(TGCloseCurrentDocumentAction.NAME));
+
 		//--CLOSE OTHERS--
 		this.closeOthers = this.fileMenuItem.getMenu().createActionItem();
 		this.closeOthers.addSelectionListener(this.createActionProcessor(TGCloseOtherDocumentsAction.NAME));
+
 		//--CLOSE ALL--
 		this.closeAll = this.fileMenuItem.getMenu().createActionItem();
 		this.closeAll.addSelectionListener(this.createActionProcessor(TGCloseAllDocumentsAction.NAME));
+
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
+
 		//--SAVE--
 		this.save = this.fileMenuItem.getMenu().createActionItem();
 		this.save.addSelectionListener(this.createActionProcessor(TGSaveFileAction.NAME));
+
 		//--SAVE AS--
 		this.saveAs = this.fileMenuItem.getMenu().createActionItem();
 		this.saveAs.addSelectionListener(this.createActionProcessor(TGSaveAsFileAction.NAME));
-		
-		//-- IMPORT | EXPORT --
+
+		//--IMPORT | EXPORT--
 		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.findContext());
 		List<TGSongReader> readers = fileFormatManager.findSongReaders(false);
 		List<TGSongWriter> writers = fileFormatManager.findSongWriters(false);
 		List<TGSongImporter> importers = fileFormatManager.getImporters();
 		List<TGSongExporter> exporters = fileFormatManager.getExporters();
-		
+
 		int countImporters = (readers.size() + importers.size());
 		int countExporters = (writers.size() + exporters.size());
 		if( ( countImporters + countExporters ) > 0 ){
 			//--SEPARATOR--
 			this.fileMenuItem.getMenu().createSeparator();
-			
+
 			//--IMPORT--
 			this.readerItems.clear();
 			this.importItems.clear();
@@ -138,7 +148,7 @@ public class FileMenuItem extends TGMenuItem {
 				this.importItem = this.fileMenuItem.getMenu().createSubMenuItem();
 				this.addImporters(readers, importers);
 			}
-			
+
 			//--EXPORT--
 			this.writerItems.clear();
 			this.exportItems.clear();
@@ -147,65 +157,67 @@ public class FileMenuItem extends TGMenuItem {
 				this.addExporters(writers, exporters);
 			}
 		}
-		
+
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
-		
+
 		//--PRINT PREVIEW--
 		this.printPreview = this.fileMenuItem.getMenu().createActionItem();
 		this.printPreview.addSelectionListener(this.createActionProcessor(TGPrintPreviewAction.NAME));
+
 		//--PRINT--
 		this.print = this.fileMenuItem.getMenu().createActionItem();
 		this.print.addSelectionListener(this.createActionProcessor(TGPrintAction.NAME));
+
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
-		
+
 		//--HISTORY--
 		this.historyItem = this.fileMenuItem.getMenu().createSubMenuItem();
 		this.updateHistoryFiles();
+
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
+
 		//--EXIT--
 		this.exit = this.fileMenuItem.getMenu().createActionItem();
 		this.exit.addSelectionListener(this.createActionProcessor(TGExitAction.NAME));
-		
-		//---------------------------------------------------
-		
+
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	private void addNewSongTemplates() {
 		TGTemplateManager templateManager = TGTemplateManager.getInstance(this.findContext());
 		if( templateManager.countTemplates() > 0 ){
 			//--SEPARATOR--
 			this.newSong.getMenu().createSeparator();
-			
+
 			Iterator<TGTemplate> it = templateManager.getTemplates();
 			while( it.hasNext() ){
 				TGTemplate tgTemplate = (TGTemplate)it.next();
-				
+
 				UIMenuActionItem uiMenuItem = this.newSong.getMenu().createActionItem();
 				uiMenuItem.setText(tgTemplate.getName());
 				uiMenuItem.addSelectionListener(this.createNewSongFromTemplateActionProcessor(tgTemplate));
 			}
 		}
 	}
-	
+
 	private void addImporters(List<TGSongReader> readers, List<TGSongImporter> importers) {
-		// readers 
+		// readers
 		for(TGSongReader reader : readers) {
 			UIMenuActionItem uiMenuItem = this.importItem.getMenu().createActionItem();
 			uiMenuItem.setData(TGFileFormat.class.getName(), reader.getFileFormat());
 			uiMenuItem.addSelectionListener(this.createOpenFileActionProcessor(reader.getFileFormat()));
 			this.readerItems.add( uiMenuItem );
 		}
-		
+
 		// separator
 		if(!readers.isEmpty() && !importers.isEmpty() ){
 			this.importItem.getMenu().createSeparator();
 		}
-		
+
 		// importers
 		for(TGSongImporter importer : importers) {
 			UIMenuActionItem uiMenuItem = this.importItem.getMenu().createActionItem();
@@ -214,7 +226,7 @@ public class FileMenuItem extends TGMenuItem {
 			this.importItems.add( uiMenuItem );
 		}
 	}
-	
+
 	private void addExporters(List<TGSongWriter> writers, List<TGSongExporter> exporters) {
 		// writers
 		for(TGSongWriter writer : writers) {
@@ -223,12 +235,12 @@ public class FileMenuItem extends TGMenuItem {
 			uiMenuItem.addSelectionListener(this.createSaveAsFileActionProcessor(writer.getFileFormat()));
 			this.writerItems.add( uiMenuItem );
 		}
-		
+
 		// separator
 		if(!writers.isEmpty() && !exporters.isEmpty() ){
 			this.exportItem.getMenu().createSeparator();
 		}
-		
+
 		// exporters
 		for(TGSongExporter exporter : exporters){
 			UIMenuActionItem uiMenuItem = this.exportItem.getMenu().createActionItem();
@@ -237,13 +249,13 @@ public class FileMenuItem extends TGMenuItem {
 			this.exportItems.add( uiMenuItem );
 		}
 	}
-	
+
 	private void disposeHistoryFiles(){
 		for(int i = 0;i < this.historyFiles.length; i++){
 			this.historyFiles[i].dispose();
 		}
 	}
-	
+
 	private void updateHistoryFiles(){
 		List<URL> urls = TGFileHistory.getInstance(this.findContext()).getURLs();
 		this.historyFiles = new UIMenuActionItem[urls.size()];
@@ -255,44 +267,44 @@ public class FileMenuItem extends TGMenuItem {
 		}
 		this.historyItem.setEnabled(this.historyFiles.length > 0);
 	}
-	
+
 	public TGActionProcessorListener createOpenUrlActionProcessor(URL url) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGReadURLAction.NAME);
 		tgActionProcessorListener.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
 		return tgActionProcessorListener;
 	}
-	
+
 	public TGActionProcessorListener createNewSongFromTemplateActionProcessor(TGTemplate template) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGLoadTemplateAction.NAME);
 		tgActionProcessorListener.setAttribute(TGLoadTemplateAction.ATTRIBUTE_TEMPLATE, template);
 		return tgActionProcessorListener;
 	}
-	
-	
+
+
 	public TGActionProcessorListener createOpenFileActionProcessor(TGFileFormat fileFormat) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGOpenFileAction.NAME);
 		tgActionProcessorListener.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, fileFormat);
 		return tgActionProcessorListener;
 	}
-	
+
 	public TGActionProcessorListener createSaveAsFileActionProcessor(TGFileFormat fileFormat) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGSaveAsFileAction.NAME);
 		tgActionProcessorListener.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT, fileFormat);
 		return tgActionProcessorListener;
 	}
-	
+
 	public TGActionProcessorListener createImportSongActionProcessor(TGSongImporter importer) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGImportSongAction.NAME);
 		tgActionProcessorListener.setAttribute(TGImportSongAction.ATTRIBUTE_PROVIDER, importer);
 		return tgActionProcessorListener;
 	}
-	
+
 	public TGActionProcessorListener createExportSongActionProcessor(TGSongExporter exporter) {
 		TGActionProcessorListener tgActionProcessorListener = this.createActionProcessor(TGExportSongAction.NAME);
 		tgActionProcessorListener.setAttribute(TGExportSongAction.ATTRIBUTE_PROVIDER, exporter);
 		return tgActionProcessorListener;
 	}
-	
+
 	private String decode(String url){
 		try {
 			return URLDecoder.decode(url, "UTF-8");
@@ -301,7 +313,7 @@ public class FileMenuItem extends TGMenuItem {
 		}
 		return url;
 	}
-	
+
 	public void update(){
 		TGFileHistory fileHistory = TGFileHistory.getInstance(this.findContext());
 		if( fileHistory.isChanged()){
@@ -311,7 +323,7 @@ public class FileMenuItem extends TGMenuItem {
 		}
 		deleteCustomTemplate.setEnabled(TGUserFileUtils.isUserTemplateReadable());
 	}
-	
+
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.fileMenuItem, "file", null);
 		setMenuItemTextAndAccelerator(this.newSong, "file.new", null);
@@ -329,15 +341,15 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.print, "file.print", TGPrintAction.NAME);
 		setMenuItemTextAndAccelerator(this.historyItem, "file.history", null);
 		setMenuItemTextAndAccelerator(this.exit, "file.exit", TGExitAction.NAME);
-		
+
 		if( this.importItem != null ){
 			setMenuItemTextAndAccelerator(this.importItem, "file.import", null);
-			
+
 			for(UIMenuActionItem item : this.readerItems) {
 				TGFileFormat fileFormat = item.getData(TGFileFormat.class.getName());
 				item.setText(TuxGuitar.getProperty("file.import") + " " + fileFormat.getName());
 			}
-			
+
 			for(UIMenuActionItem item : this.importItems) {
 				TGSongImporter itemImporter = item.getData(TGSongImporter.class.getName());
 				item.setText(itemImporter.getImportName());
@@ -345,19 +357,19 @@ public class FileMenuItem extends TGMenuItem {
 		}
 		if( this.exportItem != null ){
 			setMenuItemTextAndAccelerator(this.exportItem, "file.export", null);
-			
+
 			for(UIMenuActionItem item : this.writerItems) {
 				TGFileFormat fileFormat = item.getData(TGFileFormat.class.getName());
 				item.setText(TuxGuitar.getProperty("file.export") + " " + fileFormat.getName());
 			}
-			
+
 			for(UIMenuActionItem item : this.exportItems) {
 				TGSongExporter itemExporter = item.getData(TGSongExporter.class.getName());
 				item.setText(itemExporter.getExportName());
 			}
 		}
 	}
-	
+
 	public void loadIcons(){
 		this.newSong.setImage(TuxGuitar.getInstance().getIconManager().getFileNew());
 		this.open.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());

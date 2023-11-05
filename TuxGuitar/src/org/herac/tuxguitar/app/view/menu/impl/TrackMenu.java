@@ -21,7 +21,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 
 public class TrackMenu extends TGMenuItem {
-	
+
 	private UIMenu menu;
 	private UIMenuActionItem first;
 	private UIMenuActionItem last;
@@ -36,70 +36,86 @@ public class TrackMenu extends TGMenuItem {
 	private UIMenuCheckableItem changeSolo;
 	private UIMenuActionItem lyrics;
 	private UIMenuActionItem properties;
-	
+
 	public TrackMenu(UIMenu menu) {
 		this.menu = menu;
 	}
-	
+
 	public UIMenu getMenu() {
 		return this.menu;
 	}
-	
+
 	public void showItems(){
 		if(!isDisposed()){
-			//--First--
+			//--FIRST--
 			this.first = this.menu.createActionItem();
 			this.first.addSelectionListener(this.createActionProcessor(TGGoFirstTrackAction.NAME));
-			//--previous--
+
+			//--PREVIOUS--
 			this.previous = this.menu.createActionItem();
 			this.previous.addSelectionListener(this.createActionProcessor(TGGoPreviousTrackAction.NAME));
-			//--next--
+
+			//--NEXT--
 			this.next = this.menu.createActionItem();
 			this.next.addSelectionListener(this.createActionProcessor(TGGoNextTrackAction.NAME));
-			//--last--
+
+			//--LAST--
 			this.last = this.menu.createActionItem();
 			this.last.addSelectionListener(this.createActionProcessor(TGGoLastTrackAction.NAME));
-			//--SEPARATOR
+
+			//--SEPARATOR--
 			this.menu.createSeparator();
+
 			//--ADD TRACK--
 			this.addTrack = this.menu.createActionItem();
 			this.addTrack.addSelectionListener(this.createActionProcessor(TGAddNewTrackAction.NAME));
+
 			//--CLONE TRACK--
 			this.cloneTrack = this.menu.createActionItem();
 			this.cloneTrack.addSelectionListener(this.createActionProcessor(TGCloneTrackAction.NAME));
+
 			//--REMOVE TRACK--
 			this.removeTrack = this.menu.createActionItem();
 			this.removeTrack.addSelectionListener(this.createActionProcessor(TGRemoveTrackAction.NAME));
-			//--SEPARATOR
+
+			//--SEPARATOR--
 			this.menu.createSeparator();
+
 			//--MOVE UP--
 			this.moveUp = this.menu.createActionItem();
 			this.moveUp.addSelectionListener(this.createActionProcessor(TGMoveTrackUpAction.NAME));
+
 			//--MOVE DOWN--
 			this.moveDown = this.menu.createActionItem();
 			this.moveDown.addSelectionListener(this.createActionProcessor(TGMoveTrackDownAction.NAME));
-			//--SEPARATOR
+
+			//--SEPARATOR--
 			this.menu.createSeparator();
+
 			//--SOLO--
 			this.changeSolo = this.menu.createCheckItem();
 			this.changeSolo.addSelectionListener(this.createActionProcessor(TGChangeTrackSoloAction.NAME));
+
 			//--MUTE--
 			this.changeMute = this.menu.createCheckItem();
 			this.changeMute.addSelectionListener(this.createActionProcessor(TGChangeTrackMuteAction.NAME));
-			//--SEPARATOR
+
+			//--SEPARATOR--
 			this.menu.createSeparator();
+
 			//--LYRICS--
 			this.lyrics = this.menu.createActionItem();
 			this.lyrics.addSelectionListener(this.createActionProcessor(TGToggleLyricEditorAction.NAME));
+
 			//--PROPERTIES--
 			this.properties = this.menu.createActionItem();
 			this.properties.addSelectionListener(this.createActionProcessor(TGOpenTrackPropertiesDialogAction.NAME));
-			
+
 			this.loadIcons();
 			this.loadProperties();
 		}
 	}
-	
+
 	public void loadProperties(){
 		if(!isDisposed()){
 			setMenuItemTextAndAccelerator(this.first, "track.first", TGGoFirstTrackAction.NAME);
@@ -117,7 +133,7 @@ public class TrackMenu extends TGMenuItem {
 			setMenuItemTextAndAccelerator(this.properties, "track.properties", TGOpenTrackPropertiesDialogAction.NAME);
 		}
 	}
-	
+
 	public void update(){
 		if(!isDisposed()){
 			TGTrackImpl track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
@@ -139,15 +155,16 @@ public class TrackMenu extends TGMenuItem {
 			this.changeMute.setChecked(track.isMute());
 		}
 	}
-	
+
 	public void loadIcons(){
-		//Nothing to do
+		this.addTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackAdd());
+		this.removeTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackRemove());
 	}
-	
+
 	public boolean isDisposed(){
 		return (this.menu == null || this.menu.isDisposed());
 	}
-	
+
 	public void dispose(){
 		if(!isDisposed()){
 			this.menu.dispose();

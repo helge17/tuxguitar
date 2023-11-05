@@ -25,7 +25,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class DurationMenuItem  extends TGMenuItem {
-	
+
 	private UIMenuSubMenuItem durationMenuItem;
 	private UIMenuActionItem whole;
 	private UIMenuActionItem half;
@@ -37,66 +37,66 @@ public class DurationMenuItem  extends TGMenuItem {
 	private UIMenuActionItem dotted;
 	private UIMenuActionItem doubleDotted;
 	private UIMenuActionItem division;
-	
+
 	public DurationMenuItem(UIMenuSubMenuItem durationMenuItem) {
 		this.durationMenuItem = durationMenuItem;
 	}
-	
+
 	public DurationMenuItem(UIMenu parent) {
 		this(parent.createSubMenuItem());
 	}
-	
+
 	public void showItems(){
-		//--whole--
+		//--WHOLE--
 		this.whole = this.durationMenuItem.getMenu().createActionItem();
 		this.whole.addSelectionListener(this.createActionProcessor(TGSetWholeDurationAction.NAME));
-		
-		//--half--
+
+		//--HALF--
 		this.half = this.durationMenuItem.getMenu().createActionItem();
 		this.half.addSelectionListener(this.createActionProcessor(TGSetHalfDurationAction.NAME));
-		
-		//--quarter--
+
+		//--QUARTER--
 		this.quarter = this.durationMenuItem.getMenu().createActionItem();
 		this.quarter.addSelectionListener(this.createActionProcessor(TGSetQuarterDurationAction.NAME));
-		
-		//--Eighth--
+
+		//--EIGHTH--
 		this.eighth = this.durationMenuItem.getMenu().createActionItem();
 		this.eighth.addSelectionListener(this.createActionProcessor(TGSetEighthDurationAction.NAME));
-		
-		//--sixteenth--
+
+		//--SIXTEENTH--
 		this.sixteenth = this.durationMenuItem.getMenu().createActionItem();
 		this.sixteenth.addSelectionListener(this.createActionProcessor(TGSetSixteenthDurationAction.NAME));
-		
-		//--thirtySecond--
+
+		//--THIRTY SECOND--
 		this.thirtySecond = this.durationMenuItem.getMenu().createActionItem();
 		this.thirtySecond.addSelectionListener(this.createActionProcessor(TGSetThirtySecondDurationAction.NAME));
-		
-		//--sixtyFourth--
+
+		//--SIXTY FOURTH--
 		this.sixtyFourth = this.durationMenuItem.getMenu().createActionItem();
 		this.sixtyFourth.addSelectionListener(this.createActionProcessor(TGSetSixtyFourthDurationAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.durationMenuItem.getMenu().createSeparator();
-		
-		//--dotted---
+
+		//--DOTTED--
 		this.dotted = this.durationMenuItem.getMenu().createActionItem();
 		this.dotted.addSelectionListener(this.createActionProcessor(TGChangeDottedDurationAction.NAME));
-		
+
 		this.doubleDotted = this.durationMenuItem.getMenu().createActionItem();
 		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
-		
-		//--division---
+
+		//--DIVISION--
 		this.division = this.durationMenuItem.getMenu().createActionItem();
 		this.division.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				DurationMenuItem.this.toggleDivisionType();
 			}
 		});
-		
+
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void update(){
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.whole.setEnabled(!running);
@@ -110,7 +110,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.doubleDotted.setEnabled(!running);
 		this.division.setEnabled(!running);
 	}
-	
+
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.durationMenuItem, "duration", null);
 		setMenuItemTextAndAccelerator(this.whole, "duration.whole", TGSetWholeDurationAction.NAME);
@@ -124,7 +124,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.doubleDotted, "duration.doubledotted", TGChangeDoubleDottedDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.division, "duration.division-type", TGSetDivisionTypeDurationAction.NAME);
 	}
-	
+
 	public void loadIcons() {
 		this.whole.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.WHOLE));
 		this.half.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.HALF));
@@ -137,21 +137,21 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
 		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType());
 	}
-	
+
 	private void toggleDivisionType() {
 		TGDuration duration = TablatureEditor.getInstance(this.findContext()).getTablature().getCaret().getDuration();
 		TGDivisionType divisionType = (duration.getDivision().isEqual(TGDivisionType.NORMAL) ? TGDivisionType.TRIPLET : TGDivisionType.NORMAL);
-		
+
 		this.createDivisionTypeAction(this.createDivisionType(divisionType)).process();
 	}
-	
+
 	private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc) {
 		TGFactory tgFactory = TGDocumentManager.getInstance(this.findContext()).getSongManager().getFactory();
 		TGDivisionType tgDivisionTypeDst = tgFactory.newDivisionType();
 		tgDivisionTypeDst.copyFrom(tgDivisionTypeSrc);
 		return tgDivisionTypeDst;
 	}
-	
+
 	private TGActionProcessorListener createDivisionTypeAction(TGDivisionType tgDivisionType){
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);
 		tgActionProcessor.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, tgDivisionType);

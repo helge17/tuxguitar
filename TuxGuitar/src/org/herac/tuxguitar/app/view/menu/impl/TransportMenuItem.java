@@ -17,13 +17,13 @@ import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class TransportMenuItem extends TGMenuItem {
-	
+
 	private static final int STATUS_STOPPED = 1;
 	private static final int STATUS_PAUSED = 2;
 	private static final int STATUS_RUNNING = 3;
-	
+
 	private UIMenuSubMenuItem transportMenuItem;
-	
+
 	private UIMenuActionItem play;
 	private UIMenuActionItem stop;
 	private UIMenuCheckableItem metronome;
@@ -31,46 +31,53 @@ public class TransportMenuItem extends TGMenuItem {
 	private UIMenuActionItem mode;
 	private UIMenuCheckableItem loopSHeader;
 	private UIMenuCheckableItem loopEHeader;
-	
+
 	private int status;
-	
+
 	public TransportMenuItem(UIMenu parent) {
 		this.transportMenuItem = parent.createSubMenuItem();
 	}
-	
+
 	public void showItems(){
+		//--PLAY--
 		this.play = this.transportMenuItem.getMenu().createActionItem();
 		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayPauseAction.NAME));
-		
+
+		//--STOP--
 		this.stop = this.transportMenuItem.getMenu().createActionItem();
 		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.transportMenuItem.getMenu().createSeparator();
-		
+
+		//--METRONOME--
 		this.metronome = this.transportMenuItem.getMenu().createCheckItem();
 		this.metronome.addSelectionListener(this.createActionProcessor(TGTransportMetronomeAction.NAME));
-		
+
+		//--COUNTDOWN--
 		this.countDown = this.transportMenuItem.getMenu().createCheckItem();
 		this.countDown.addSelectionListener(this.createActionProcessor(TGTransportCountDownAction.NAME));
-		
+
+		//--MODE--
 		this.mode = this.transportMenuItem.getMenu().createActionItem();
 		this.mode.addSelectionListener(this.createActionProcessor(TGOpenTransportModeDialogAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.transportMenuItem.getMenu().createSeparator();
-		
+
+		//--LOOP START--
 		this.loopSHeader = this.transportMenuItem.getMenu().createCheckItem();
 		this.loopSHeader.addSelectionListener(this.createActionProcessor(TGTransportSetLoopSHeaderAction.NAME));
-		
+
+		//--LOOP END--
 		this.loopEHeader = this.transportMenuItem.getMenu().createCheckItem();
 		this.loopEHeader.addSelectionListener(this.createActionProcessor(TGTransportSetLoopEHeaderAction.NAME));
-		
+
 		this.status = STATUS_STOPPED;
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void update(){
 		TGMeasure measure = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
@@ -82,7 +89,7 @@ public class TransportMenuItem extends TGMenuItem {
 		this.loopEHeader.setChecked( measure != null && measure.getNumber() == pm.getLoopEHeader() );
 		this.loadIcons(false);
 	}
-	
+
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.transportMenuItem, "transport", null);
 		setMenuItemTextAndAccelerator(this.play, "transport.start", TGTransportPlayPauseAction.NAME);
@@ -93,16 +100,16 @@ public class TransportMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.loopSHeader, "transport.set-loop-start", TGTransportSetLoopSHeaderAction.NAME);
 		setMenuItemTextAndAccelerator(this.loopEHeader, "transport.set-loop-end", TGTransportSetLoopEHeaderAction.NAME);
 	}
-	
+
 	public void loadIcons(){
 		this.loadIcons(true);
 		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
 		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getTransportMetronome());
 	}
-	
+
 	public void loadIcons(boolean force){
 		int lastStatus = this.status;
-		
+
 		if(TuxGuitar.getInstance().getPlayer().isRunning()){
 			this.status = STATUS_RUNNING;
 		}else if(TuxGuitar.getInstance().getPlayer().isPaused()){
@@ -110,7 +117,7 @@ public class TransportMenuItem extends TGMenuItem {
 		}else{
 			this.status = STATUS_STOPPED;
 		}
-		
+
 		if(force || lastStatus != this.status){
 			if(this.status == STATUS_RUNNING){
 				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
