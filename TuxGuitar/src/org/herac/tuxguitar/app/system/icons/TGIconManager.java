@@ -20,6 +20,10 @@ public class TGIconManager {
 	private Map<String, TGIconTheme> themeCache;
 	
 	private UIImage[] durations;
+	private UIImage editCut;
+	private UIImage editCopy;
+	private UIImage editPaste;
+	private UIImage editRepeat;
 	private UIImage editUndo;
 	private UIImage editRedo;
 	private UIImage editVoice1;
@@ -208,6 +212,10 @@ public class TGIconManager {
 		this.fileSaveAs = loadIcon("save-as.png");
 		this.filePrint = loadIcon("print.png");
 		this.filePrintPreview = loadIcon("print-preview.png");
+		this.editCut = loadIcon("edit_cut.png");
+		this.editCopy = loadIcon("edit_copy.png");
+		this.editPaste = loadIcon("edit_paste.png");
+		this.editRepeat = loadIcon("edit_repeat.png");
 		this.editUndo = loadIcon("edit_undo.png");
 		this.editRedo = loadIcon("edit_redo.png");
 		this.editVoice1 = loadIcon("edit_voice_1.png");
@@ -500,6 +508,22 @@ public class TGIconManager {
 		return this.editModeSelection;
 	}
 	
+	public UIImage getEditCut() {
+		return this.editCut;
+	}
+
+	public UIImage getEditCopy() {
+		return this.editCopy;
+	}
+
+	public UIImage getEditPaste() {
+		return this.editPaste;
+	}
+
+	public UIImage getEditRepeat() {
+		return this.editRepeat;
+	}
+
 	public UIImage getEditRedo() {
 		return this.editRedo;
 	}

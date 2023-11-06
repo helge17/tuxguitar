@@ -135,6 +135,10 @@ public class EditMenuItem extends TGMenuItem{
 	}
 
 	public void loadIcons(){
+		this.cut.setImage(TuxGuitar.getInstance().getIconManager().getEditCut());
+		this.copy.setImage(TuxGuitar.getInstance().getIconManager().getEditCopy());
+		this.paste.setImage(TuxGuitar.getInstance().getIconManager().getEditPaste());
+		this.repeat.setImage(TuxGuitar.getInstance().getIconManager().getEditRepeat());
 		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getEditUndo());
 		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getEditRedo());
 		this.modeSelection.setImage(TuxGuitar.getInstance().getIconManager().getEditModeSelection());
