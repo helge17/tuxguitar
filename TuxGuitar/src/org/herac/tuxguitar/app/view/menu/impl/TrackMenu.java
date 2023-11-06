@@ -157,6 +157,10 @@ public class TrackMenu extends TGMenuItem {
 	}
 
 	public void loadIcons(){
+		this.first.setImage(TuxGuitar.getInstance().getIconManager().getTrackFirst());
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTrackPrevious());
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getTrackNext());
+		this.last.setImage(TuxGuitar.getInstance().getIconManager().getTrackLast());
 		this.addTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackAdd());
 		this.removeTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackRemove());
 	}

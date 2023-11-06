@@ -82,6 +82,10 @@ public class TGIconManager {
 	private UIImage optionSound;
 	private UIImage optionLanguage;
 	private UIImage optionSkin;
+	private UIImage trackFirst;
+	private UIImage trackLast;
+	private UIImage trackPrevious;
+	private UIImage trackNext;
 	private UIImage trackAdd;
 	private UIImage trackRemove;
 	private UIImage fretboard;
@@ -239,6 +243,10 @@ public class TGIconManager {
 		this.compositionRepeatClose = loadIcon("closerepeat.png");
 		this.compositionRepeatAlternative = loadIcon("repeat_alternative.png");
 		this.songProperties = loadIcon("song_properties.png");
+		this.trackFirst = loadIcon("track_first.png");
+		this.trackLast = loadIcon("track_last.png");
+		this.trackPrevious = loadIcon("track_previous.png");
+		this.trackNext = loadIcon("track_next.png");
 		this.trackAdd = loadIcon("track_add.png");
 		this.trackRemove = loadIcon("track_remove.png");
 		this.durationDotted = loadIcon("dotted.png");
@@ -736,6 +744,22 @@ public class TGIconManager {
 		return this.songProperties;
 	}
 	
+	public UIImage getTrackFirst() {
+		return this.trackFirst;
+	}
+
+	public UIImage getTrackLast() {
+		return this.trackLast;
+	}
+
+	public UIImage getTrackPrevious() {
+		return this.trackPrevious;
+	}
+
+	public UIImage getTrackNext() {
+		return this.trackNext;
+	}
+
 	public UIImage getTrackAdd() {
 		return this.trackAdd;
 	}
