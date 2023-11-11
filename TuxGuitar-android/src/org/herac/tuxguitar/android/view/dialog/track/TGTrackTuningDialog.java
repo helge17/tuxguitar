@@ -330,7 +330,7 @@ public class TGTrackTuningDialog extends TGModalFragment {
 
 	public void createTuningPresets() {
 		this.tuningPresets.clear();
-		for(TGTuning tuningValues : findActivity().getTuningManager().getAllTunings()) {
+		for(TGTuning tuningValues : findActivity().getTuningManager().getTgTunings()) {
 			this.tuningPresets.add(this.createTuningPreset(tuningValues));
 		}
 	}

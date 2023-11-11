@@ -1,59 +1,74 @@
 package org.herac.tuxguitar.song.helpers.tuning;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.helpers.tuning.xml.TuningReader;
+import org.herac.tuxguitar.song.helpers.tuning.xml.TuningWriter;
 import org.herac.tuxguitar.song.models.TGTuning;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGUserFileUtils;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TuningManager {
+
+	static String TG_TUNING_FILE = "tunings" + File.separator + "tunings.xml";
 	
 	private TGContext context;
 	
-	private List<TGTuning> allTunings;
-	private TuningGroup tuningsRoot;
-	private int treeDepth;
+	private TuningGroup tgTuningsGroup;
+	private TuningGroup customTuningsGroup;
 
 	private TuningManager(TGContext context){
 		this.context = context;
-		this.allTunings = new ArrayList<TGTuning>();
-		this.tuningsRoot = new TuningGroup();
+		this.tgTuningsGroup = new TuningGroup();
+		this.customTuningsGroup = new TuningGroup();
 		this.loadTunings();
 	}
 	
-	public List<TGTuning> getAllTunings() {
-		return this.allTunings;
+	public TuningGroup getTgTuningsGroup() {
+		return this.tgTuningsGroup;
 	}
 	
-	public TuningGroup getTuningsRoot() {
-		return this.tuningsRoot;
+	public TuningGroup getCustomTuningsGroup() {
+		return this.customTuningsGroup;
 	}
-	public int getTreeDepth() { return this.treeDepth; }
 	
-	private void addTuningsToAll(int depth, String prefix, TuningGroup group) {
-		if (!group.getTunings().isEmpty()) {
-			this.treeDepth = Math.max(depth, this.treeDepth);
-		}
-		for (TuningPreset tuning : group.getTunings()) {
-			TGTuning prefixedTuning = new TGTuning();
-			prefixedTuning.setName(prefix + tuning.getName());
-			prefixedTuning.setValues(tuning.getValues());
-			this.allTunings.add(prefixedTuning);
-		}
+	private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group) {
+		List<TGTuning> list = new ArrayList<TGTuning>();
 		for (TuningGroup subGroup : group.getGroups()) {
-			addTuningsToAll(depth + 1, prefix + subGroup.getName() + " / ", subGroup);
+			String groupPrefix = (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
+			list.addAll(getTuningsInGroup(groupPrefix, subGroup));
 		}
+		for (TuningPreset preset : group.getTunings()) {
+			TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
+			list.add((TGTuning)tgTuning);
+		}
+		return(list);
+	}
+	
+	// flat list of tunings, prefixed with group names (recursively)
+	public List<TGTuning> getTgTunings() {
+		return (getTuningsInGroup("", tgTuningsGroup));
+	}
+	
+	public void saveCustomTunings(TuningGroup group) {
+		TuningWriter.write(group, TGUserFileUtils.PATH_USER_TUNINGS);
 	}
 	
 	private void loadTunings(){
 		try{
-			new TuningReader().loadTunings(this.tuningsRoot, TGResourceManager.getInstance(this.context).getResourceAsStream("tunings/tunings.xml") );
-			addTuningsToAll(1, "", this.tuningsRoot);
+			TuningReader tuningReader = new TuningReader();
+			tuningReader.loadTunings(this.tgTuningsGroup, TGResourceManager.getInstance(this.context).getResourceAsStream(TG_TUNING_FILE) );
+			File file = new File(TGUserFileUtils.PATH_USER_TUNINGS);
+			if (TGUserFileUtils.isExistentAndReadable(file)) {
+				tuningReader.loadTunings(this.customTuningsGroup, new FileInputStream(TGUserFileUtils.PATH_USER_TUNINGS));
+			}
 		} catch (Throwable e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}
