@@ -89,7 +89,9 @@ public class ToolMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		//Nothing to do
+		this.plugins.setImage(TuxGuitar.getInstance().getIconManager().getToolsPlugins());
+		this.keyBindings.setImage(TuxGuitar.getInstance().getIconManager().getToolsShortcuts());
+		this.config.setImage(TuxGuitar.getInstance().getIconManager().getToolsSettings());
 	}
 
 	public void update(){

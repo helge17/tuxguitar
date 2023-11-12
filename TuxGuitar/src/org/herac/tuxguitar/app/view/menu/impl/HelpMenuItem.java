@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.view.menu.impl;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
@@ -37,7 +38,8 @@ public class HelpMenuItem extends TGMenuItem{
 	}
 
 	public void loadIcons(){
-		//Nothing to do
+		this.doc.setImage(TuxGuitar.getInstance().getIconManager().getHelpDoc());
+		this.about.setImage(TuxGuitar.getInstance().getIconManager().getHelpAbout());
 	}
 
 	public void update(){

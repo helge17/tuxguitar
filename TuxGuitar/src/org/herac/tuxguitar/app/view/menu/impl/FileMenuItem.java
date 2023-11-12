@@ -373,9 +373,18 @@ public class FileMenuItem extends TGMenuItem {
 	public void loadIcons(){
 		this.newSong.setImage(TuxGuitar.getInstance().getIconManager().getFileNew());
 		this.open.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+		this.close.setImage(TuxGuitar.getInstance().getIconManager().getFileClose());
 		this.save.setImage(TuxGuitar.getInstance().getIconManager().getFileSave());
 		this.saveAs.setImage(TuxGuitar.getInstance().getIconManager().getFileSaveAs());
+		if( this.importItem != null ){
+			this.importItem.setImage(TuxGuitar.getInstance().getIconManager().getFileImport());
+		}
+		if( this.exportItem != null ){
+			this.exportItem.setImage(TuxGuitar.getInstance().getIconManager().getFileExport());
+		}
 		this.printPreview.setImage(TuxGuitar.getInstance().getIconManager().getFilePrintPreview());
 		this.print.setImage(TuxGuitar.getInstance().getIconManager().getFilePrint());
+		this.historyItem.setImage(TuxGuitar.getInstance().getIconManager().getFileHistory());
+		this.exit.setImage(TuxGuitar.getInstance().getIconManager().getFileExit());
 	}
 }

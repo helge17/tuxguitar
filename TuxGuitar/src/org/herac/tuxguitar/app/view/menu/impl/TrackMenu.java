@@ -163,6 +163,8 @@ public class TrackMenu extends TGMenuItem {
 		this.last.setImage(TuxGuitar.getInstance().getIconManager().getTrackLast());
 		this.addTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackAdd());
 		this.removeTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackRemove());
+		this.changeSolo.setImage(TuxGuitar.getInstance().getIconManager().getTrackSolo());
+		this.changeMute.setImage(TuxGuitar.getInstance().getIconManager().getTrackMute());
 	}
 
 	public boolean isDisposed(){

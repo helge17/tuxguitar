@@ -13,12 +13,12 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGIconManager {
-	
+
 	private TGContext context;
-	
+
 	private TGIconTheme theme;
 	private Map<String, TGIconTheme> themeCache;
-	
+
 	private UIImage[] durations;
 	private UIImage editCut;
 	private UIImage editCopy;
@@ -31,6 +31,8 @@ public class TGIconManager {
 	private UIImage editModeSelection;
 	private UIImage editModeEdition;
 	private UIImage editModeEditionNotNatural;
+	private UIImage helpDoc;
+	private UIImage helpAbout;
 	private UIImage layoutPage;
 	private UIImage layoutLinear;
 	private UIImage layoutMultitrack;
@@ -88,6 +90,8 @@ public class TGIconManager {
 	private UIImage trackNext;
 	private UIImage trackAdd;
 	private UIImage trackRemove;
+	private UIImage trackSolo;
+	private UIImage trackMute;
 	private UIImage fretboard;
 	private UIImage fretboardFirstFret;
 	private UIImage fretboardFret;
@@ -102,10 +106,15 @@ public class TGIconManager {
 	private UIImage divisionType;
 	private UIImage fileNew;
 	private UIImage fileOpen;
+	private UIImage fileClose;
 	private UIImage fileSave;
 	private UIImage fileSaveAs;
+	private UIImage fileImport;
+	private UIImage fileExport;
 	private UIImage filePrint;
 	private UIImage filePrintPreview;
+	private UIImage fileHistory;
+	private UIImage fileExit;
 	private UIImage chord;
 	private UIImage text;
 	private UIImage noteTied;
@@ -155,6 +164,7 @@ public class TGIconManager {
 	private UIImage strokeUp;
 	private UIImage strokeDown;
 	private UIImage settings;
+	private UIImage toolbarMain;
 	private UIImage toolbarEdit;
 	private UIImage tableViewer;
 	private UIImage listAdd;
@@ -164,6 +174,9 @@ public class TGIconManager {
 	private UIImage soloDisabled;
 	private UIImage soloDim;
 	private UIImage soloDisabledDim;
+	private UIImage toolsPlugins;
+	private UIImage toolsShortcuts;
+	private UIImage toolsSettings;
 	private UIImage mute;
 	private UIImage muteDisabled;
 	private UIImage muteDim;
@@ -173,27 +186,27 @@ public class TGIconManager {
 	private UIImage zoomOut;
 	private UIImage zoomReset;
 	private UIImage zoomIn;
-	
+
 	private TGIconManager(TGContext context){
 		this.context = context;
 		this.themeCache = new HashMap<String, TGIconTheme>();
 		this.loadIcons();
 	}
-	
+
 	public TGIconTheme findIconTheme(String theme) {
 		if( this.themeCache.containsKey(theme) ) {
 			return this.themeCache.get(theme);
 		}
-		
+
 		this.themeCache.put(theme, new TGIconTheme(theme));
-		
+
 		return this.findIconTheme(theme);
 	}
-	
+
 	public String findConfiguredThemeName() {
 		return TGSkinManager.getInstance(this.context).getCurrentSkin();
 	}
-	
+
 	public void loadIcons(){
 		this.theme = this.findIconTheme(this.findConfiguredThemeName());
 		this.durations = new UIImage[]{
@@ -212,10 +225,15 @@ public class TGIconManager {
 		this.layoutCompact = loadIcon("layout_compact.png");
 		this.fileNew = loadIcon("new.png");
 		this.fileOpen = loadIcon("open.png");
+		this.fileClose = loadIcon("close.png");
 		this.fileSave = loadIcon("save.png");
 		this.fileSaveAs = loadIcon("save-as.png");
+		this.fileImport = loadIcon("import.png");
+		this.fileExport = loadIcon("export.png");
 		this.filePrint = loadIcon("print.png");
 		this.filePrintPreview = loadIcon("print-preview.png");
+		this.fileHistory = loadIcon("history.png");
+		this.fileExit = loadIcon("exit.png");
 		this.editCut = loadIcon("edit_cut.png");
 		this.editCopy = loadIcon("edit_copy.png");
 		this.editPaste = loadIcon("edit_paste.png");
@@ -227,6 +245,8 @@ public class TGIconManager {
 		this.editModeSelection = loadIcon("edit_mode_selection.png");
 		this.editModeEdition = loadIcon("edit_mode_edition.png");
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
+		this.helpDoc = loadIcon("help_doc.png");
+		this.helpAbout = loadIcon("help_about.png");
 		this.appIcon = loadIcon("icon.png");
 		this.appSplash = loadIcon("splash.png");
 		this.aboutDescription = loadIcon("about_description.png");
@@ -249,6 +269,8 @@ public class TGIconManager {
 		this.trackNext = loadIcon("track_next.png");
 		this.trackAdd = loadIcon("track_add.png");
 		this.trackRemove = loadIcon("track_remove.png");
+		this.trackSolo = loadIcon("track_solo.png");
+		this.trackMute = loadIcon("track_mute.png");
 		this.durationDotted = loadIcon("dotted.png");
 		this.durationDoubleDotted = loadIcon("doubledotted.png");
 		this.divisionType = loadIcon("division-type.png");
@@ -340,6 +362,7 @@ public class TGIconManager {
 		this.strokeUp = loadIcon("stroke_up.png");
 		this.strokeDown = loadIcon("stroke_down.png");
 		this.settings = loadIcon("settings.png");
+		this.toolbarMain = loadIcon("toolbar_main.png");
 		this.toolbarEdit = loadIcon("toolbar_edit.png");
 		this.tableViewer = loadIcon("table_viewer.png");
 		this.listAdd = loadIcon("list_add.png");
@@ -349,6 +372,9 @@ public class TGIconManager {
 		this.soloDisabled = loadIcon("solo-disabled.png");
 		this.soloDim = loadIcon("solo-dim.png");
 		this.soloDisabledDim = loadIcon("solo-disabled-dim.png");
+		this.toolsPlugins = loadIcon("tools_plugins.png");
+		this.toolsShortcuts = loadIcon("tools_shortcuts.png");
+		this.toolsSettings = loadIcon("tools_settings.png");
 		this.mute = loadIcon("mute.png");
 		this.muteDisabled = loadIcon("mute-disabled.png");
 		this.muteDim = loadIcon("mute-dim.png");
@@ -359,39 +385,39 @@ public class TGIconManager {
 		this.zoomReset = loadIcon("zoom_original.png");
 		this.zoomIn = loadIcon("zoom_in.png");
 	}
-	
+
 	private UIImage loadIcon(String name) {
 		UIImage image = this.theme.getResource(name);
 		if( image == null ) {
 			image = TGFileUtils.loadImage(this.context, this.theme.getName(), name);
-			
+
 			this.theme.setResource(name, image);
 		}
 		return image;
 	}
-	
+
 	public void disposeThemes() {
 		List<String> themes = new ArrayList<String>(this.themeCache.keySet());
 		for(String theme : themes) {
 			this.disposeTheme(this.themeCache.remove(theme));
 		}
 	}
-	
+
 	public void disposeTheme(TGIconTheme theme) {
 		List<UIImage> uiImages = new ArrayList<UIImage>(theme.getResources().values());
 		for(UIImage uiImage : uiImages) {
 			uiImage.dispose();
 		}
 	}
-	
+
 	public void onSkinDisposed(){
 		this.disposeThemes();
 	}
-	
+
 	public void onSkinChange() {
 		this.loadIcons();
 	}
-	
+
 	public UIImage getDuration(int value){
 		switch(value){
 		case TGDuration.WHOLE:
@@ -415,107 +441,107 @@ public class TGIconManager {
 	public UIImage getAboutAuthors() {
 		return this.aboutAuthors;
 	}
-	
+
 	public UIImage getAboutDescription() {
 		return this.aboutDescription;
 	}
-	
+
 	public UIImage getAboutLicense() {
 		return this.aboutLicense;
 	}
-	
+
 	public UIImage getAppIcon() {
 		return this.appIcon;
 	}
-	
+
 	public UIImage getAppSplash() {
 		return this.appSplash;
 	}
-	
+
 	public UIImage getChord() {
 		return this.chord;
 	}
-	
+
 	public UIImage getText() {
 		return this.text;
 	}
-	
+
 	public UIImage getCompositionRepeatClose() {
 		return this.compositionRepeatClose;
 	}
-	
+
 	public UIImage getCompositionRepeatAlternative() {
 		return this.compositionRepeatAlternative;
 	}
-	
+
 	public UIImage getCompositionRepeatOpen() {
 		return this.compositionRepeatOpen;
 	}
-	
+
 	public UIImage getCompositionTempo() {
 		return this.compositionTempo;
 	}
-	
+
 	public UIImage getCompositionTimeSignature() {
 		return this.compositionTimeSignature;
 	}
-	
+
 	public UIImage getDurationDotted() {
 		return this.durationDotted;
 	}
-	
+
 	public UIImage getDurationDoubleDotted() {
 		return this.durationDoubleDotted;
 	}
-	
+
 	public UIImage getDivisionType() {
 		return this.divisionType;
 	}
-	
+
 	public UIImage getDynamicF() {
 		return this.dynamicF;
 	}
-	
+
 	public UIImage getDynamicFF() {
 		return this.dynamicFF;
 	}
-	
+
 	public UIImage getDynamicFFF() {
 		return this.dynamicFFF;
 	}
-	
+
 	public UIImage getDynamicMF() {
 		return this.dynamicMF;
 	}
-	
+
 	public UIImage getDynamicMP() {
 		return this.dynamicMP;
 	}
-	
+
 	public UIImage getDynamicP() {
 		return this.dynamicP;
 	}
-	
+
 	public UIImage getDynamicPP() {
 		return this.dynamicPP;
 	}
-	
+
 	public UIImage getDynamicPPP() {
 		return this.dynamicPPP;
 	}
-	
+
 	public UIImage getEditModeEdition() {
 		return this.editModeEdition;
 	}
-	
+
 	public UIImage getEditModeEditionNotNatural() {
 		return this.editModeEditionNotNatural;
 	}
-	
+
 	public UIImage getEditModeSelection() {
 		return this.editModeSelection;
 	}
-	
+
 	public UIImage getEditCut() {
 		return this.editCut;
 	}
@@ -535,55 +561,63 @@ public class TGIconManager {
 	public UIImage getEditRedo() {
 		return this.editRedo;
 	}
-	
+
 	public UIImage getEditUndo() {
 		return this.editUndo;
 	}
-	
+
 	public UIImage getEditVoice1() {
 		return this.editVoice1;
 	}
-	
+
 	public UIImage getEditVoice2() {
 		return this.editVoice2;
 	}
-	
+
+	public UIImage getHelpDoc() {
+		return this.helpDoc;
+	}
+
+	public UIImage getHelpAbout() {
+		return this.helpAbout;
+	}
+
 	public UIImage getEffectAccentuated() {
 		return this.effectAccentuated;
 	}
-	
+
 	public UIImage getEffectBend() {
 		return this.effectBend;
 	}
-	
+
 	public UIImage getEffectDead() {
 		return this.effectDead;
 	}
-	
+
 	public UIImage getEffectFadeIn() {
 		return this.effectFadeIn;
 	}
-	
+
 	public UIImage getEffectGhost() {
 		return this.effectGhost;
 	}
-	
+
 	public UIImage getEffectGrace() {
 		return this.effectGrace;
 	}
-	
+
 	public UIImage getEffectHammer() {
 		return this.effectHammer;
 	}
-	
+
 	public UIImage getEffectHarmonic() {
 		return this.effectHarmonic;
 	}
-	
+
 	public UIImage getEffectHeavyAccentuated() {
 		return this.effectHeavyAccentuated;
 	}
-	
+
 	public UIImage getEffectLetRing() {
 		return this.effectLetRing;
 	}
@@ -591,115 +625,135 @@ public class TGIconManager {
 	public UIImage getEffectPalmMute() {
 		return this.effectPalmMute;
 	}
-	
+
 	public UIImage getEffectPopping() {
 		return this.effectPopping;
 	}
-	
+
 	public UIImage getEffectSlapping() {
 		return this.effectSlapping;
 	}
-	
+
 	public UIImage getEffectSlide() {
 		return this.effectSlide;
 	}
-	
+
 	public UIImage getEffectStaccato() {
 		return this.effectStaccato;
 	}
-	
+
 	public UIImage getEffectTapping() {
 		return this.effectTapping;
 	}
-	
+
 	public UIImage getEffectTremoloBar() {
 		return this.effectTremoloBar;
 	}
-	
+
 	public UIImage getEffectTremoloPicking() {
 		return this.effectTremoloPicking;
 	}
-	
+
 	public UIImage getEffectTrill() {
 		return this.effectTrill;
 	}
-	
+
 	public UIImage getEffectVibrato() {
 		return this.effectVibrato;
 	}
-	
+
 	public UIImage getFileNew() {
 		return this.fileNew;
 	}
-	
+
 	public UIImage getFileOpen() {
 		return this.fileOpen;
 	}
-	
+
+	public UIImage getFileClose() {
+		return this.fileClose;
+	}
+
 	public UIImage getFilePrint() {
 		return this.filePrint;
 	}
-	
+
 	public UIImage getFilePrintPreview() {
 		return this.filePrintPreview;
 	}
-	
+
+	public UIImage getFileHistory() {
+		return this.fileHistory;
+	}
+
+	public UIImage getFileExit() {
+		return this.fileExit;
+	}
+
 	public UIImage getFileSave() {
 		return this.fileSave;
 	}
-	
+
 	public UIImage getFileSaveAs() {
 		return this.fileSaveAs;
 	}
-	
+
+	public UIImage getFileImport() {
+		return this.fileImport;
+	}
+
+	public UIImage getFileExport() {
+		return this.fileExport;
+	}
+
 	public UIImage getFretboard() {
 		return this.fretboard;
 	}
-	
+
 	public UIImage getFretboardFirstFret() {
 		return this.fretboardFirstFret;
 	}
-	
+
 	public UIImage getFretboardFret() {
 		return this.fretboardFret;
 	}
-	
+
 	public UIImage getLayoutLinear() {
 		return this.layoutLinear;
 	}
-	
+
 	public UIImage getLayoutMultitrack() {
 		return this.layoutMultitrack;
 	}
-	
+
 	public UIImage getLayoutPage() {
 		return this.layoutPage;
 	}
-	
+
 	public UIImage getLayoutScore() {
 		return this.layoutScore;
 	}
-	
+
 	public UIImage getLayoutCompact() {
 		return this.layoutCompact;
 	}
-	
+
 	public UIImage getMarkerAdd() {
 		return this.markerAdd;
 	}
-	
+
 	public UIImage getMarkerFirst() {
 		return this.markerFirst;
 	}
-	
+
 	public UIImage getMarkerLast() {
 		return this.markerLast;
 	}
-	
+
 	public UIImage getMarkerList() {
 		return this.markerList;
 	}
-	
+
 	public UIImage getMarker() {
 		return this.marker;
 	}
@@ -707,43 +761,43 @@ public class TGIconManager {
 	public UIImage getMarkerNext() {
 		return this.markerNext;
 	}
-	
+
 	public UIImage getMarkerPrevious() {
 		return this.markerPrevious;
 	}
-	
+
 	public UIImage getInstruments() {
 		return this.instruments;
 	}
-	
+
 	public UIImage getNoteTied() {
 		return this.noteTied;
 	}
-	
+
 	public UIImage getOptionLanguage() {
 		return this.optionLanguage;
 	}
-	
+
 	public UIImage getOptionMain() {
 		return this.optionMain;
 	}
-	
+
 	public UIImage getOptionSound() {
 		return this.optionSound;
 	}
-	
+
 	public UIImage getOptionStyle() {
 		return this.optionStyle;
 	}
-	
+
 	public UIImage getOptionSkin() {
 		return this.optionSkin;
 	}
-	
+
 	public UIImage getSongProperties() {
 		return this.songProperties;
 	}
-	
+
 	public UIImage getTrackFirst() {
 		return this.trackFirst;
 	}
@@ -763,151 +817,159 @@ public class TGIconManager {
 	public UIImage getTrackAdd() {
 		return this.trackAdd;
 	}
-	
+
 	public UIImage getTrackRemove() {
 		return this.trackRemove;
 	}
-	
+
+	public UIImage getTrackSolo() {
+		return this.trackSolo;
+	}
+
+	public UIImage getTrackMute() {
+		return this.trackMute;
+	}
+
 	public UIImage getTransport() {
 		return this.transport;
 	}
-	
+
 	public UIImage getTransportFirst1() {
 		return this.transportFirst1;
 	}
-	
+
 	public UIImage getTransportFirst2() {
 		return this.transportFirst2;
 	}
-	
+
 	public UIImage getTransportIconFirst1() {
 		return this.transportIconFirst1;
 	}
-	
+
 	public UIImage getTransportIconFirst2() {
 		return this.transportIconFirst2;
 	}
-	
+
 	public UIImage getTransportIconLast1() {
 		return this.transportIconLast1;
 	}
-	
+
 	public UIImage getTransportIconLast2() {
 		return this.transportIconLast2;
 	}
-	
+
 	public UIImage getTransportIconNext1() {
 		return this.transportIconNext1;
 	}
-	
+
 	public UIImage getTransportIconNext2() {
 		return this.transportIconNext2;
 	}
-	
+
 	public UIImage getTransportIconPause() {
 		return this.transportIconPause;
 	}
-	
+
 	public UIImage getTransportIconPlay1() {
 		return this.transportIconPlay1;
 	}
-	
+
 	public UIImage getTransportIconPlay2() {
 		return this.transportIconPlay2;
 	}
-	
+
 	public UIImage getTransportIconPrevious1() {
 		return this.transportIconPrevious1;
 	}
-	
+
 	public UIImage getTransportIconPrevious2() {
 		return this.transportIconPrevious2;
 	}
-	
+
 	public UIImage getTransportIconStop1() {
 		return this.transportIconStop1;
 	}
-	
+
 	public UIImage getTransportIconStop2() {
 		return this.transportIconStop2;
 	}
-	
+
 	public UIImage getTransportLast1() {
 		return this.transportLast1;
 	}
-	
+
 	public UIImage getTransportLast2() {
 		return this.transportLast2;
 	}
-	
+
 	public UIImage getTransportNext1() {
 		return this.transportNext1;
 	}
-	
+
 	public UIImage getTransportNext2() {
 		return this.transportNext2;
 	}
-	
+
 	public UIImage getTransportPause() {
 		return this.transportPause;
 	}
-	
+
 	public UIImage getTransportPlay1() {
 		return this.transportPlay1;
 	}
-	
+
 	public UIImage getTransportPlay2() {
 		return this.transportPlay2;
 	}
-	
+
 	public UIImage getTransportPrevious1() {
 		return this.transportPrevious1;
 	}
-	
+
 	public UIImage getTransportPrevious2() {
 		return this.transportPrevious2;
 	}
-	
+
 	public UIImage getTransportStop1() {
 		return this.transportStop1;
 	}
-	
+
 	public UIImage getTransportStop2() {
 		return this.transportStop2;
 	}
-	
+
 	public UIImage getTransportMetronome() {
 		return this.transportMetronome;
 	}
-	
+
 	public UIImage getTransportMode() {
 		return this.transportMode;
 	}
-	
+
 	public UIImage getBrowserBack() {
 		return this.browserBack;
 	}
-	
+
 	public UIImage getBrowserFile() {
 		return this.browserFile;
 	}
-	
+
 	public UIImage getBrowserFolder() {
 		return this.browserFolder;
 	}
-	
+
 	public UIImage getBrowserRefresh() {
 		return this.browserRefresh;
 	}
-	
+
 	public UIImage getBrowserRoot() {
 		return this.browserRoot;
 	}
-	
+
 	public UIImage getBrowserNew() {
 		return this.browserNew;
 	}
-	
+
 	public UIImage getStrokeUp() {
 		return this.strokeUp;
 	}
@@ -919,15 +981,19 @@ public class TGIconManager {
 	public UIImage getSettings() {
 		return this.settings;
 	}
-	
+
+	public UIImage getToolbarMain() {
+		return this.toolbarMain;
+	}
+
 	public UIImage getToolbarEdit() {
 		return this.toolbarEdit;
 	}
-	
+
 	public UIImage getTableViewer() {
 		return this.tableViewer;
 	}
-	
+
 	public UIImage getArrowUp() {
 		return this.arrowUp;
 	}
@@ -971,7 +1037,7 @@ public class TGIconManager {
 	public UIImage getListRemove() {
 		return this.listRemove;
 	}
-	
+
 	public UIImage getSolo() {
 		return solo;
 	}
@@ -987,6 +1053,19 @@ public class TGIconManager {
 	public UIImage getSoloDisabledDim() {
 		return soloDisabledDim;
 	}
+
+	public UIImage getToolsPlugins() {
+		return toolsPlugins;
+	}
+
+	public UIImage getToolsShortcuts() {
+		return toolsShortcuts;
+	}
+
+	public UIImage getToolsSettings() {
+		return toolsSettings;
+	}
+
 	public UIImage getMute() {
 		return mute;
 	}
@@ -1002,15 +1081,15 @@ public class TGIconManager {
 	public UIImage getMuteDisabledDim() {
 		return muteDisabledDim;
 	}
-	
+
 	public UIImage getListMoveUp() {
 		return this.listMoveUp;
 	}
-	
+
 	public UIImage getListMoveDown() {
 		return this.listMoveDown;
 	}
-	
+
 	public UIImage getZoomOut() {
 		return this.zoomOut;
 	}

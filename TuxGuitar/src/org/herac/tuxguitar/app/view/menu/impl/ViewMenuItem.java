@@ -202,6 +202,7 @@ public class ViewMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
+		this.showMainToolbar.setImage(TuxGuitar.getInstance().getIconManager().getToolbarMain());
 		this.showEditToolbar.setImage(TuxGuitar.getInstance().getIconManager().getToolbarEdit());
 		this.showTableViewer.setImage(TuxGuitar.getInstance().getIconManager().getTableViewer());
 		this.showInstruments.setImage(TuxGuitar.getInstance().getIconManager().getInstruments());
