@@ -17,6 +17,7 @@ public class TGUserFileUtils {
 	public static final String PATH_USER_PLUGINS_CONFIG = getUserPluginsConfigDir();
 	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
 	public static final String PATH_USER_TEMPLATE = getUserTemplatePath();
+	public static final String PATH_USER_TUNINGS = getUserTuningsPath();
 	
 	private static String getHomePath(){
 		// Look for the system property
@@ -162,4 +163,7 @@ public class TGUserFileUtils {
 		return new File(PATH_USER_TEMPLATE).delete();
 	}
 	
+	private static String getUserTuningsPath() {
+		return getUserConfigDir() + File.separator + "tunings.xml";
+	}
 }

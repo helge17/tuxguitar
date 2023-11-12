@@ -1,22 +1,21 @@
 package org.herac.tuxguitar.song.helpers.tuning;
 
-public class TuningPreset {
-    private TuningGroup parent;
-    private String name;
-    private int[] values;
+import org.herac.tuxguitar.song.models.TGTuning;
 
-    public TuningPreset(TuningGroup parent, String name, int[] values) {
-        this.parent = parent;
-        this.name = name;
-        this.values = values;
-    }
-    public TuningGroup getParent() {
-        return this.parent;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public int[] getValues() {
-        return this.values;
-    }
+public class TuningPreset extends TGTuning {
+	private TuningGroup parent;
+	
+	public TuningPreset(TuningGroup parent, String name, int[] values) {
+		this.parent = parent;
+		this.setName(name);
+		this.setValues(values);
+	}
+	
+	public TuningGroup getParent() {
+		return this.parent;
+	}
+	
+	public void setParent(TuningGroup group) {
+		this.parent = group;
+	}
 }
