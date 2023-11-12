@@ -90,24 +90,31 @@ public class TGTrackTuningDialog {
 			this.dialog.setLayout(dialogLayout);
 			this.dialog.setText(TuxGuitar.getProperty("tuning"));
 			
-			UITableLayout leftPanelLayout = new UITableLayout();
-			UILegendPanel leftPanel = factory.createLegendPanel(this.dialog);
-			leftPanel.setLayout(leftPanelLayout);
-			leftPanel.setText(TuxGuitar.getProperty("tuning.strings"));
-			dialogLayout.set(leftPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			UITableLayout leftUpperPanelLayout = new UITableLayout();
+			UILegendPanel leftUpperPanel = factory.createLegendPanel(this.dialog);
+			leftUpperPanel.setLayout(leftUpperPanelLayout);
+			leftUpperPanel.setText(TuxGuitar.getProperty("tuning.presets"));
+			dialogLayout.set(leftUpperPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
+			UITableLayout leftLowerPanelLayout = new UITableLayout();
+			UILegendPanel leftLowerPanel = factory.createLegendPanel(this.dialog);
+			leftLowerPanel.setLayout(leftLowerPanelLayout);
+			leftLowerPanel.setText(TuxGuitar.getProperty("tuning.strings"));
+			dialogLayout.set(leftLowerPanel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
 			UITableLayout rightPanelLayout = new UITableLayout();
 			UILegendPanel rightPanel = factory.createLegendPanel(this.dialog);
 			rightPanel.setLayout(rightPanelLayout);
 			rightPanel.setText(TuxGuitar.getProperty("options"));
-			dialogLayout.set(rightPanel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			dialogLayout.set(rightPanel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 2, 1);
 			
 			UITableLayout bottomPanelLayout = new UITableLayout(0f);
 			UIPanel bottomPanel = factory.createPanel(this.dialog, false);
 			bottomPanel.setLayout(bottomPanelLayout);
-			dialogLayout.set(bottomPanel, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true, 1, 2);
+			dialogLayout.set(bottomPanel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true, 1, 2);
 			
-			this.initTuningTable(leftPanel);
+			this.initTuningPresets(leftUpperPanel);
+			this.initTuningStringTable(leftLowerPanel);
 			this.initTuningOptions(rightPanel, track);
 			this.initButtons(bottomPanel);
 			this.updateTuningControls();
@@ -184,18 +191,27 @@ public class TGTrackTuningDialog {
 		return label.toString();
 	}
 	
-	private void initTuningTable(UILayoutContainer parent) {
+	private void initTuningPresets(UILayoutContainer parent) {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
-		
+
 		UITableLayout panelLayout = new UITableLayout();
 		UIPanel panel = factory.createPanel(parent, false);
 		panel.setLayout(panelLayout);
 		parentLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		presetsPanel = factory.createPanel(panel, false);
 		panelLayout.set(presetsPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
-		panelLayout.set(presetsPanel, UITableLayout.PACKED_HEIGHT, 120f);
+	}
+
+	private void initTuningStringTable(UILayoutContainer parent) {
+		UIFactory factory = this.getUIFactory();
+		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
+
+		UITableLayout panelLayout = new UITableLayout();
+		UIPanel panel = factory.createPanel(parent, false);
+		panel.setLayout(panelLayout);
+		parentLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		this.tuningTable = factory.createTable(panel, true);
 		this.tuningTable.setColumns(2);
