@@ -74,6 +74,15 @@ public class TGIconManager {
 	private UIImage markerLast;
 	private UIImage markerPrevious;
 	private UIImage markerNext;
+	private UIImage measureFirst;
+	private UIImage measureLast;
+	private UIImage measurePrevious;
+	private UIImage measureNext;
+	private UIImage measureAdd;
+	private UIImage measureClean;
+	private UIImage measureRemove;
+	private UIImage measureCopy;
+	private UIImage measurePaste;
 	private UIImage aboutDescription;
 	private UIImage aboutLicense;
 	private UIImage aboutAuthors;
@@ -316,6 +325,15 @@ public class TGIconManager {
 		this.markerLast = loadIcon("marker_last.png");
 		this.markerPrevious = loadIcon("marker_previous.png");
 		this.markerNext = loadIcon("marker_next.png");
+		this.measureFirst = loadIcon("measure_first.png");
+		this.measureLast = loadIcon("measure_last.png");
+		this.measurePrevious = loadIcon("measure_previous.png");
+		this.measureNext = loadIcon("measure_next.png");
+		this.measureAdd = loadIcon("measure_add.png");
+		this.measureClean = loadIcon("measure_clean.png");
+		this.measureRemove = loadIcon("measure_remove.png");
+		this.measureCopy = loadIcon("measure_copy.png");
+		this.measurePaste = loadIcon("measure_paste.png");
 		this.instruments = loadIcon("mixer.png");
 		this.dynamicPPP = loadIcon("dynamic_ppp.png");
 		this.dynamicPP = loadIcon("dynamic_pp.png");
@@ -758,12 +776,48 @@ public class TGIconManager {
 		return this.marker;
 	}
 
+	public UIImage getMarkerPrevious() {
+		return this.markerPrevious;
+	}
+
 	public UIImage getMarkerNext() {
 		return this.markerNext;
 	}
 
-	public UIImage getMarkerPrevious() {
-		return this.markerPrevious;
+	public UIImage getMeasureFirst() {
+		return this.measureFirst;
+	}
+
+	public UIImage getMeasureLast() {
+		return this.measureLast;
+	}
+
+	public UIImage getMeasurePrevious() {
+		return this.measurePrevious;
+	}
+
+	public UIImage getMeasureNext() {
+		return this.measureNext;
+	}
+
+	public UIImage getMeasureAdd() {
+		return this.measureAdd;
+	}
+
+	public UIImage getMeasureClean() {
+		return this.measureClean;
+	}
+
+	public UIImage getMeasureRemove() {
+		return this.measureRemove;
+	}
+
+	public UIImage getMeasureCopy() {
+		return this.measureCopy;
+	}
+
+	public UIImage getMeasurePaste() {
+		return this.measurePaste;
 	}
 
 	public UIImage getInstruments() {

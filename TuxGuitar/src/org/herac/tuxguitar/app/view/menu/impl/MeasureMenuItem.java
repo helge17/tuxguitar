@@ -111,6 +111,14 @@ public class MeasureMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		//Nothing to do
+		this.first.setImage(TuxGuitar.getInstance().getIconManager().getMeasureFirst());
+		this.last.setImage(TuxGuitar.getInstance().getIconManager().getMeasureLast());
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getMeasurePrevious());
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getMeasureNext());
+		this.addMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureAdd());
+		this.cleanMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureClean());
+		this.removeMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureRemove());
+		this.copyMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureCopy());
+		this.pasteMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasurePaste());
 	}
 }
