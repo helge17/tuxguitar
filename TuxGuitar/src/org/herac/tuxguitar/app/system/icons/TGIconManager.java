@@ -37,6 +37,7 @@ public class TGIconManager {
 	private UIImage layoutLinear;
 	private UIImage layoutMultitrack;
 	private UIImage layoutScore;
+	private UIImage layoutTablature;
 	private UIImage layoutCompact;
 	private UIImage transport;
 	private UIImage transportFirst1;
@@ -66,7 +67,10 @@ public class TGIconManager {
 	private UIImage transportIconPlay2;
 	private UIImage transportIconPause;
 	private UIImage transportMetronome;
+	private UIImage transportCountIn;
 	private UIImage transportMode;
+	private UIImage transportLoopStart;
+	private UIImage transportLoopEnd;
 	private UIImage markerList;
 	private UIImage marker;
 	private UIImage markerAdd;
@@ -98,6 +102,7 @@ public class TGIconManager {
 	private UIImage trackPrevious;
 	private UIImage trackNext;
 	private UIImage trackAdd;
+	private UIImage trackClone;
 	private UIImage trackRemove;
 	private UIImage trackSolo;
 	private UIImage trackMute;
@@ -106,6 +111,9 @@ public class TGIconManager {
 	private UIImage fretboardFret;
 	private UIImage compositionTimeSignature;
 	private UIImage compositionTempo;
+	private UIImage compositionClef;
+	private UIImage compositionKeySignature;
+	private UIImage compositionTripletFeel;
 	private UIImage compositionRepeatOpen;
 	private UIImage compositionRepeatClose;
 	private UIImage compositionRepeatAlternative;
@@ -128,6 +136,8 @@ public class TGIconManager {
 	private UIImage text;
 	private UIImage noteTied;
 	private UIImage instruments;
+	private UIImage matrix;
+	private UIImage piano;
 	private UIImage dynamicPPP;
 	private UIImage dynamicPP;
 	private UIImage dynamicP;
@@ -231,6 +241,7 @@ public class TGIconManager {
 		this.layoutLinear = loadIcon("layout_linear.png");
 		this.layoutMultitrack = loadIcon("layout_multitrack.png");
 		this.layoutScore = loadIcon("layout_score.png");
+		this.layoutTablature = loadIcon("layout_tablature.png");
 		this.layoutCompact = loadIcon("layout_compact.png");
 		this.fileNew = loadIcon("new.png");
 		this.fileOpen = loadIcon("open.png");
@@ -268,6 +279,9 @@ public class TGIconManager {
 		this.optionLanguage= loadIcon("option_language.png");
 		this.compositionTimeSignature = loadIcon("timesignature.png");
 		this.compositionTempo = loadIcon("tempoicon.png");
+		this.compositionClef = loadIcon("clef.png");
+		this.compositionKeySignature = loadIcon("keysignature.png");
+		this.compositionTripletFeel = loadIcon("tripletfeel.png");
 		this.compositionRepeatOpen = loadIcon("openrepeat.png");
 		this.compositionRepeatClose = loadIcon("closerepeat.png");
 		this.compositionRepeatAlternative = loadIcon("repeat_alternative.png");
@@ -277,6 +291,7 @@ public class TGIconManager {
 		this.trackPrevious = loadIcon("track_previous.png");
 		this.trackNext = loadIcon("track_next.png");
 		this.trackAdd = loadIcon("track_add.png");
+		this.trackClone = loadIcon("track_clone.png");
 		this.trackRemove = loadIcon("track_remove.png");
 		this.trackSolo = loadIcon("track_solo.png");
 		this.trackMute = loadIcon("track_mute.png");
@@ -317,7 +332,10 @@ public class TGIconManager {
 		this.transportIconPlay2 = loadIcon("transport_icon_play_2.png");
 		this.transportIconPause = loadIcon("transport_icon_pause.png");
 		this.transportMetronome = loadIcon("transport_metronome.png");
+		this.transportCountIn = loadIcon("transport_count_in.png");
 		this.transportMode = loadIcon("transport_mode.png");
+		this.transportLoopStart = loadIcon("transport_loop_start.png");
+		this.transportLoopEnd = loadIcon("transport_loop_end.png");
 		this.markerList = loadIcon("marker_list.png");
 		this.marker = loadIcon("marker.png");
 		this.markerAdd = loadIcon("marker_add.png");
@@ -335,6 +353,8 @@ public class TGIconManager {
 		this.measureCopy = loadIcon("measure_copy.png");
 		this.measurePaste = loadIcon("measure_paste.png");
 		this.instruments = loadIcon("mixer.png");
+		this.matrix = loadIcon("matrix.png");
+		this.piano = loadIcon("piano.png");
 		this.dynamicPPP = loadIcon("dynamic_ppp.png");
 		this.dynamicPP = loadIcon("dynamic_pp.png");
 		this.dynamicP = loadIcon("dynamic_p.png");
@@ -498,6 +518,18 @@ public class TGIconManager {
 
 	public UIImage getCompositionTempo() {
 		return this.compositionTempo;
+	}
+
+	public UIImage getCompositionClef() {
+		return this.compositionClef;
+	}
+
+	public UIImage getCompositionKeySignature() {
+		return this.compositionKeySignature;
+	}
+
+	public UIImage getCompositionTripletFeel() {
+		return this.compositionTripletFeel;
 	}
 
 	public UIImage getCompositionTimeSignature() {
@@ -752,6 +784,10 @@ public class TGIconManager {
 		return this.layoutScore;
 	}
 
+	public UIImage getLayoutTablature() {
+		return this.layoutTablature;
+	}
+
 	public UIImage getLayoutCompact() {
 		return this.layoutCompact;
 	}
@@ -824,6 +860,14 @@ public class TGIconManager {
 		return this.instruments;
 	}
 
+	public UIImage getMatrix() {
+		return this.matrix;
+	}
+
+	public UIImage getPiano() {
+		return this.piano;
+	}
+
 	public UIImage getNoteTied() {
 		return this.noteTied;
 	}
@@ -870,6 +914,10 @@ public class TGIconManager {
 
 	public UIImage getTrackAdd() {
 		return this.trackAdd;
+	}
+
+	public UIImage getTrackClone() {
+		return this.trackClone;
 	}
 
 	public UIImage getTrackRemove() {
@@ -996,8 +1044,20 @@ public class TGIconManager {
 		return this.transportMetronome;
 	}
 
+	public UIImage getTransportCountIn() {
+		return this.transportCountIn;
+	}
+
 	public UIImage getTransportMode() {
 		return this.transportMode;
+	}
+
+	public UIImage getTransportLoopStart() {
+		return this.transportLoopStart;
+	}
+
+	public UIImage getTransportLoopEnd() {
+		return this.transportLoopEnd;
 	}
 
 	public UIImage getBrowserBack() {

@@ -103,8 +103,11 @@ public class TransportMenuItem extends TGMenuItem {
 
 	public void loadIcons(){
 		this.loadIcons(true);
-		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
 		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getTransportMetronome());
+		this.countDown.setImage(TuxGuitar.getInstance().getIconManager().getTransportCountIn());
+		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
+		this.loopSHeader.setImage(TuxGuitar.getInstance().getIconManager().getTransportLoopStart());
+		this.loopEHeader.setImage(TuxGuitar.getInstance().getIconManager().getTransportLoopEnd());
 	}
 
 	public void loadIcons(boolean force){

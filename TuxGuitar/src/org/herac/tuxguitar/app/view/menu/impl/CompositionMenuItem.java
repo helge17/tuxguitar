@@ -107,6 +107,9 @@ public class CompositionMenuItem extends TGMenuItem {
 	public void loadIcons() {
 		this.timeSignature.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTimeSignature());
 		this.tempo.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTempo());
+		this.clef.setImage(TuxGuitar.getInstance().getIconManager().getCompositionClef());
+		this.keySignature.setImage(TuxGuitar.getInstance().getIconManager().getCompositionKeySignature());
+		this.tripletFeel.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTripletFeel());
 		this.repeatOpen.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatOpen());
 		this.repeatClose.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatClose());
 		this.repeatAlternative.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatAlternative());

@@ -162,6 +162,7 @@ public class TrackMenu extends TGMenuItem {
 		this.next.setImage(TuxGuitar.getInstance().getIconManager().getTrackNext());
 		this.last.setImage(TuxGuitar.getInstance().getIconManager().getTrackLast());
 		this.addTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackAdd());
+		this.cloneTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackClone());
 		this.removeTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackRemove());
 		this.changeSolo.setImage(TuxGuitar.getInstance().getIconManager().getTrackSolo());
 		this.changeMute.setImage(TuxGuitar.getInstance().getIconManager().getTrackMute());

@@ -208,10 +208,13 @@ public class ViewMenuItem extends TGMenuItem {
 		this.showInstruments.setImage(TuxGuitar.getInstance().getIconManager().getInstruments());
 		this.showTransport.setImage(TuxGuitar.getInstance().getIconManager().getTransport());
 		this.showFretBoard.setImage(TuxGuitar.getInstance().getIconManager().getFretboard());
+		this.showPiano.setImage(TuxGuitar.getInstance().getIconManager().getPiano());
+		this.showMatrix.setImage(TuxGuitar.getInstance().getIconManager().getMatrix());
 		this.pageLayout.setImage(TuxGuitar.getInstance().getIconManager().getLayoutPage());
 		this.linearLayout.setImage(TuxGuitar.getInstance().getIconManager().getLayoutLinear());
 		this.multitrack.setImage(TuxGuitar.getInstance().getIconManager().getLayoutMultitrack());
 		this.scoreEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutScore());
+		this.tablatureEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutTablature());
 		this.compact.setImage(TuxGuitar.getInstance().getIconManager().getLayoutCompact());
 		this.zoomIn.setImage(TuxGuitar.getInstance().getIconManager().getZoomIn());
 		this.zoomOut.setImage(TuxGuitar.getInstance().getIconManager().getZoomOut());
