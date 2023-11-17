@@ -21,8 +21,6 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIModifyEvent;
-import org.herac.tuxguitar.ui.event.UIModifyListener;
 import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -142,6 +140,36 @@ public class TGTrackTuningDialog {
 		return(null);
 	}
 	
+	// return first matching occurrence (several presets may have the same name)
+	private TuningPreset findTuningInGroup(String tuningName, TuningGroup group) {
+		if (group.getGroups() != null && !group.getGroups().isEmpty()) {
+			for (TuningGroup searchGroup : group.getGroups() ) {
+				TuningPreset found = findTuningInGroup(tuningName, searchGroup);
+				if (found != null) {
+					return(found);
+				}
+			}
+		}
+		else {
+			for (TuningPreset preset : group.getTunings()) {
+				if (tuningName.equals(preset.getName())) {
+					return(preset);
+				}
+			}
+		}
+		return(null);
+	}
+	
+	private String findUnsavedPresetName() {
+		String name = TuxGuitar.getProperty("file.save.default-name") + " ";
+		int n=1;
+		TuningGroup customTuningsGroup = allTuningsGroup.getGroups().get(0);
+		
+		while (findTuningInGroup(name + String.valueOf(n), customTuningsGroup) != null) {
+			n++;
+		}
+		return(name + String.valueOf(n));
+	}
 	private void populateGroupsDropDown(UIDropDownSelect<TuningGroup> select, TuningGroup group, TuningGroup groupToSelect) {
 		select.setIgnoreEvents(true);
 		select.removeItems();
@@ -202,6 +230,8 @@ public class TGTrackTuningDialog {
 
 		presetsPanel = factory.createPanel(panel, false);
 		panelLayout.set(presetsPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+		// height margin: effective height could be variable, depending if buttons are displayed or not.
+		panelLayout.set(presetsPanel, UITableLayout.PACKED_HEIGHT, 110f);
 	}
 
 	private void initTuningStringTable(UILayoutContainer parent) {
@@ -364,6 +394,7 @@ public class TGTrackTuningDialog {
 			if (currentSelectedPreset==null || isCustomTuningPreset(currentSelectedPreset)) {
 				buttonPresetDelete = factory.createButton(presetsPanel);
 				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
+				buttonPresetDelete.setToolTipText(TuxGuitar.getProperty("tuning.preset.delete"));
 				buttonPresetDelete.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
 						TGTrackTuningDialog.this.onDeletePreset();
@@ -372,6 +403,7 @@ public class TGTrackTuningDialog {
 				presetsPanelLayout.set(buttonPresetDelete, 1+nDropDown, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				buttonPresetSave = factory.createButton(presetsPanel);
 				buttonPresetSave.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSave());
+				buttonPresetSave.setToolTipText(TuxGuitar.getProperty("tuning.preset.save"));
 				buttonPresetSave.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
 						TGTrackTuningDialog.this.onSavePreset();
@@ -379,20 +411,17 @@ public class TGTrackTuningDialog {
 				});
 				presetsPanelLayout.set(buttonPresetSave, 1+nDropDown, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				newPresetName = factory.createTextField(presetsPanel);
-				newPresetName.setEnabled(false);
-				newPresetName.addModifyListener(new UIModifyListener() {
-					public void onModify(UIModifyEvent event) {
-						buttonPresetSaveAs.setEnabled(!TGTrackTuningDialog.this.newPresetName.getText().equals(""));
-					}
-				});
+				newPresetName.setEnabled(true);
 				presetsPanelLayout.set(newPresetName, 2+nDropDown, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);				
 				buttonPresetSaveAs = factory.createButton(presetsPanel);
 				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSaveAs());
+				buttonPresetSaveAs.setToolTipText(TuxGuitar.getProperty("tuning.preset.saveas"));
 				buttonPresetSaveAs.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
 						TGTrackTuningDialog.this.onSavePresetAs();
 					}
 				});
+				buttonPresetSaveAs.setEnabled(true);
 				presetsPanelLayout.set(buttonPresetSaveAs, 2+nDropDown, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 			}
 			presetsPanel.layout();
@@ -407,14 +436,8 @@ public class TGTrackTuningDialog {
 			buttonPresetDelete.setEnabled(currentSelectedPreset!=null);
 			buttonPresetSave.setEnabled(isModifiedTuning);
 			if (this.isNewPreset) {
-				newPresetName.setEnabled(true);
-				newPresetName.setIgnoreEvents(false);
-			} else {
-				newPresetName.setText("");
-				newPresetName.setEnabled(false);
-				newPresetName.setIgnoreEvents(true);
+				newPresetName.setText(findUnsavedPresetName());
 			}
-			buttonPresetSaveAs.setEnabled(!newPresetName.getText().equals(""));
 		}
 	}
 	
