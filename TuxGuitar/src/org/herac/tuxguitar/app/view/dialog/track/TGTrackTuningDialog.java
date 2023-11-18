@@ -230,6 +230,8 @@ public class TGTrackTuningDialog {
 
 		presetsPanel = factory.createPanel(panel, false);
 		panelLayout.set(presetsPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+		// width margin: effective width depends on the length of the user-defined tuning names.
+		panelLayout.set(presetsPanel, UITableLayout.PACKED_WIDTH, 450f);
 		// height margin: effective height could be variable, depending if buttons are displayed or not.
 		panelLayout.set(presetsPanel, UITableLayout.PACKED_HEIGHT, 110f);
 	}
@@ -412,6 +414,8 @@ public class TGTrackTuningDialog {
 				presetsPanelLayout.set(buttonPresetSave, 1+nDropDown, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				newPresetName = factory.createTextField(presetsPanel);
 				newPresetName.setEnabled(true);
+				// if preset name gets to long, it might break the UI layout
+				newPresetName.setTextLimit(20);
 				presetsPanelLayout.set(newPresetName, 2+nDropDown, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);				
 				buttonPresetSaveAs = factory.createButton(presetsPanel);
 				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSaveAs());
