@@ -432,6 +432,7 @@ public class TGTrackTuningDialog {
 		}
 		// enable/disable buttons if needed (custom tuning or no tuning selected)
 		updatePresetsButtons();
+		updateTuningButtons();
 	}
 	
 	private void updatePresetsButtons() {
