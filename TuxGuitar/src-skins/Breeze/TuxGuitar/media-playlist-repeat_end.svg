@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 16 16"
    version="1.1"
-   id="svg9"
+   viewBox="0 0 22 22"
+   id="svg139"
    sodipodi:docname="media-playlist-repeat_end.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs13" />
   <sodipodi:namedview
-     id="namedview11"
+     id="namedview141"
      pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
+     bordercolor="#000000"
+     borderopacity="0.25"
      inkscape:showpageshadow="2"
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="46.4375"
-     inkscape:cx="7.6339166"
-     inkscape:cy="7.9892328"
+     inkscape:zoom="33.772727"
+     inkscape:cx="11"
+     inkscape:cy="10.985195"
      inkscape:window-width="1920"
      inkscape:window-height="1021"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg9" />
-  <style
-     type="text/css"
-     id="current-color-scheme">
-        .ColorScheme-Text {
-            color:#232629;
-        }
-    </style>
-  <g
+     inkscape:current-layer="svg139" />
+  <defs
+     id="defs135">
+    <style
+       id="current-color-scheme"
+       type="text/css">
+            .ColorScheme-Text {
+              color:#232629;
+            }
+        </style>
+  </defs>
+  <path
      class="ColorScheme-Text"
+     d="m 18,11 v 1 c 0,1.108 -0.892,2 -2,2 H 6 V 12 L 3,14.5 6,17 v -2 h 10 c 1.662,0 3,-1.338 3,-3 v -1 z"
      fill="currentColor"
-     id="g7">
-    <path
-       d="m5 14v-2h6a3 3 0 0 0 3-3v-1h-1v1a2 2 0 0 1 -2 2h-6v-2l-3.33398438 2.5z"
-       id="path5" />
-  </g>
+     id="path137"
+     sodipodi:nodetypes="csscccccsscc" />
 </svg>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 16 16"
+   viewBox="0 0 22 22"
    version="1.1"
-   id="svg6"
+   id="svg135"
    sodipodi:docname="transport_count_in.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -10,7 +10,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
-     id="namedview8"
+     id="namedview137"
      pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
@@ -19,19 +19,18 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
-     showguides="true"
-     inkscape:zoom="43.9375"
-     inkscape:cx="9.0241821"
-     inkscape:cy="8.3186344"
+     inkscape:zoom="38"
+     inkscape:cx="5.5921053"
+     inkscape:cy="11"
      inkscape:window-width="1920"
-     inkscape:window-height="888"
+     inkscape:window-height="1021"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg6">
+     inkscape:current-layer="svg135">
     <inkscape:grid
        type="xygrid"
-       id="grid10" />
+       id="grid1278" />
   </sodipodi:namedview>
   <defs
      id="defs3051">
@@ -43,8 +42,45 @@
       }
       </style>
   </defs>
-  <path
-     id="text170"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.0028px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#232629;stroke-width:0.583567;fill-opacity:1"
-     d="M 11.003906 1.9296875 C 10.686446 1.9296875 10.399347 1.9887555 10.142578 2.1054688 C 9.8904776 2.2175134 9.6667813 2.3541796 9.4707031 2.5175781 L 9.7988281 2.9316406 C 9.9902378 2.7822477 10.177302 2.6660648 10.359375 2.5820312 C 10.546116 2.4979977 10.761143 2.4550781 11.003906 2.4550781 C 11.265344 2.4550781 11.477226 2.5271506 11.640625 2.671875 C 11.804024 2.8119309 11.886719 3.0194787 11.886719 3.2949219 C 11.886719 3.5190113 11.840655 3.7265591 11.751953 3.9179688 C 11.663251 4.1047099 11.534064 4.2961093 11.361328 4.4921875 C 11.188593 4.6882657 10.974757 4.9139151 10.722656 5.1660156 L 9.4140625 6.4882812 L 9.4140625 7 L 12.71875 7 L 12.71875 6.4394531 L 10.191406 6.4394531 L 10.191406 6.4121094 L 11.234375 5.3828125 C 11.491144 5.130712 11.71484 4.8952021 11.90625 4.6757812 C 12.09766 4.4516919 12.248093 4.2248517 12.355469 3.9960938 C 12.462845 3.7673358 12.515625 3.5212032 12.515625 3.2597656 C 12.515625 2.8442666 12.38015 2.5205358 12.109375 2.2871094 C 11.8386 2.0490144 11.470759 1.9296875 11.003906 1.9296875 z M 5.140625 2 L 3.7890625 3.0507812 L 4.1113281 3.4628906 L 4.6425781 3.0292969 C 4.7359487 2.9499319 4.812356 2.8853382 4.8730469 2.8339844 C 4.9337377 2.7826306 5.0014754 2.7192277 5.0761719 2.6445312 C 5.0668348 2.7752501 5.0613092 2.9001026 5.0566406 3.0214844 C 5.0519721 3.1428661 5.0488281 3.3051126 5.0488281 3.5058594 L 5.0488281 7 L 5.6503906 7 L 5.6503906 2 L 5.140625 2 z M 4.6640625 8.9296875 C 4.3279284 8.9296875 4.0258718 8.9812767 3.7597656 9.0839844 C 3.498328 9.186692 3.2789666 9.3072098 3.1015625 9.4472656 L 3.4101562 9.8691406 C 3.5968974 9.7477589 3.787106 9.6457712 3.9785156 9.5664062 C 4.1699253 9.4870413 4.3991472 9.4472656 4.6699219 9.4472656 C 4.9500336 9.4472656 5.172539 9.5150033 5.3359375 9.6503906 C 5.499336 9.7811094 5.5820312 9.968174 5.5820312 10.210938 C 5.5820313 10.495718 5.4745179 10.725702 5.2597656 10.898438 C 5.0496818 11.071173 4.7389555 11.15625 4.328125 11.15625 L 3.8378906 11.15625 L 3.8378906 11.681641 L 4.3203125 11.681641 C 4.7638227 11.681641 5.1068459 11.752522 5.3496094 11.892578 C 5.5970414 12.027965 5.7207031 12.251662 5.7207031 12.564453 C 5.7207031 12.872576 5.6206686 13.115565 5.4199219 13.292969 C 5.2238437 13.465704 4.9013038 13.552734 4.453125 13.552734 C 4.2290356 13.552734 3.9966697 13.524772 3.7539062 13.46875 C 3.5111428 13.408059 3.2843025 13.325364 3.0742188 13.222656 L 3.0742188 13.796875 C 3.279634 13.899583 3.4946606 13.970464 3.71875 14.007812 C 3.9428394 14.049829 4.185828 14.070312 4.4472656 14.070312 C 4.8907758 14.070313 5.2511383 14.00691 5.53125 13.880859 C 5.8160302 13.754809 6.026722 13.579558 6.1621094 13.355469 C 6.2974967 13.126711 6.3652344 12.867574 6.3652344 12.578125 C 6.3652344 12.246659 6.2683438 11.978853 6.0722656 11.773438 C 5.8761874 11.568022 5.5772747 11.441217 5.1757812 11.394531 L 5.1757812 11.367188 C 5.4932412 11.301828 5.7448995 11.170688 5.9316406 10.974609 C 6.1183818 10.773863 6.2109375 10.506056 6.2109375 10.169922 C 6.2109375 9.8104452 6.082941 9.5127233 5.8261719 9.2792969 C 5.5740713 9.0458704 5.1869377 8.9296875 4.6640625 8.9296875 z M 11.560547 8.9726562 L 9.2070312 12.339844 L 9.2070312 12.865234 L 11.601562 12.865234 L 11.601562 14 L 12.197266 14 L 12.197266 12.865234 L 12.925781 12.865234 L 12.925781 12.3125 L 12.197266 12.3125 L 12.197266 8.9726562 L 11.560547 8.9726562 z M 11.609375 9.6308594 L 11.636719 9.6308594 C 11.63205 9.7849208 11.626525 9.9483582 11.617188 10.121094 C 11.60785 10.289161 11.601562 10.493565 11.601562 10.736328 L 11.601562 12.3125 L 9.8085938 12.3125 L 11.308594 10.175781 C 11.359948 10.105753 11.412728 10.020676 11.46875 9.9179688 C 11.524772 9.8152611 11.572027 9.7195614 11.609375 9.6308594 z " />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:9.80394px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Heavy';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#232629;stroke-width:1.4"
+     x="4.41394"
+     y="10"
+     id="text1334"><tspan
+       sodipodi:role="line"
+       id="tspan1332"
+       x="4.41394"
+       y="10"
+       style="stroke-width:1.4">1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:9.80394px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Heavy';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#232629;stroke-width:1.4"
+     x="12.125266"
+     y="10"
+     id="text1334-8"><tspan
+       sodipodi:role="line"
+       id="tspan1479"
+       x="12.125266"
+       y="10">2</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:9.80394px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Heavy';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#232629;stroke-width:1.4"
+     x="4.0315862"
+     y="18.90196"
+     id="text1334-8-6"><tspan
+       sodipodi:role="line"
+       id="tspan1520"
+       x="4.0315862"
+       y="18.90196">3</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:9.80394px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Heavy';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#232629;stroke-width:1.4"
+     x="12.03703"
+     y="19"
+     id="text1334-8-6-1"><tspan
+       sodipodi:role="line"
+       id="tspan1561"
+       x="12.03703"
+       y="19">4</tspan></text>
 </svg>

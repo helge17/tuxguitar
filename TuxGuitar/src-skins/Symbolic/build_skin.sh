@@ -18,12 +18,12 @@ DARK_DIR=$THIS_DIR/../../share/skins/$DARK
 SKIN_CSS=$THIS_DIR/build_style.css
 DARK_CSS=$THIS_DIR/build_style_dark.css
 
-S_ICON=20x20     # Size of icons in menues and toolbars
+S_ICON=16x16+3   # Size of icons in menues and toolbars
 S_INFO=60x60     # Size of icons in warnings and settings dialog
 S_LOGO=96x96     # Size of TuxGuitar logo
 
 declare -A ICONS=(
-  # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
+  # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png
   # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
   # Icon path/file.png --copy---> $SKIN_DIR/file1.png                $DARK_DIR/file2.png
   ["$TG/1.svg"]="$S_ICON:1.png"
@@ -269,6 +269,24 @@ for icon in "${!ICONS[@]}"; do
         echo -n "Converting to $DARK_DIR/$png_icon ... "
         cp -p $SKIN_DIR/$png_icon $DARK_DIR
         echo "done."
+      fi
+    elif [[ $out_icon =~ ([0-9]+)"x"([0-9]+)"+"([0-9]+)":"(.+) ]]; then
+      width=${BASH_REMATCH[1]}
+      height=${BASH_REMATCH[2]}
+      margin=${BASH_REMATCH[3]}
+      png_icon=${BASH_REMATCH[4]}
+      page_width=$(( $width + 2 * margin ))
+      page_height=$(( $height + 2 * margin ))
+      if [[ $icon =~ ^.+\.svg$ ]]; then
+        echo -n "Converting to $SKIN_DIR/$png_icon ... "
+        rsvg-convert --stylesheet=$SKIN_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $SKIN_DIR/$png_icon
+        echo "done."
+        echo -n "Converting to $DARK_DIR/$png_icon ... "
+        rsvg-convert --stylesheet=$DARK_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $DARK_DIR/$png_icon
+        echo "done."
+      elif [[ $icon =~ ^.+\.png$ ]]; then
+        echo "Margin not supported for PNGs."
+        exit 1
       fi
     else
       echo -n "Copying to $out_icon ... "

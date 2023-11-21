@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 16 16"
+   viewBox="0 0 22 22"
    version="1.1"
    id="svg6"
    sodipodi:docname="dashboard-show_piano.svg"
@@ -12,22 +12,26 @@
   <sodipodi:namedview
      id="namedview8"
      pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
+     bordercolor="#000000"
+     borderopacity="0.25"
      inkscape:showpageshadow="2"
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     inkscape:zoom="46.4375"
-     inkscape:cx="7.6877524"
-     inkscape:cy="8.7644684"
-     inkscape:window-width="1920"
-     inkscape:window-height="1021"
-     inkscape:window-x="0"
+     showgrid="true"
+     inkscape:zoom="33.772727"
+     inkscape:cx="12.643338"
+     inkscape:cy="11.888291"
+     inkscape:window-width="1102"
+     inkscape:window-height="928"
+     inkscape:window-x="818"
      inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg6" />
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg6">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1279" />
+  </sodipodi:namedview>
   <defs
      id="defs3051">
     <style
@@ -39,8 +43,37 @@
       </style>
   </defs>
   <path
-     id="path361-3"
      style="fill:currentColor;fill-opacity:1;stroke:none"
+     d="M 3,3 V 19 H 19 V 3 Z M 4,4 H 18 V 18 H 4 Z"
      class="ColorScheme-Text"
-     d="M 2 2 L 2 14 L 14 14 L 14 2 L 2 2 z M 3 3 L 4 3 L 4 11.019531 L 5 11.019531 L 5 13 L 3 13 L 3 3 z M 7 3 L 9 3 L 9 11.019531 L 10 11.019531 L 10 13 L 6 13 L 6 11.019531 L 7 11.019531 L 7 3 z M 12 3 L 13 3 L 13 13 L 11 13 L 11 11.019531 L 12 11.019531 L 12 3 z " />
+     id="path4"
+     sodipodi:nodetypes="cccccccccc" />
+  <rect
+     style="fill:#232629;stroke-width:1.5667"
+     id="rect1483-3"
+     width="3"
+     height="9"
+     x="6"
+     y="4" />
+  <rect
+     style="fill:#232629;stroke-width:1.08711"
+     id="rect1483-3-5"
+     width="1"
+     height="13"
+     x="7"
+     y="5" />
+  <rect
+     style="fill:#232629;stroke-width:1.5667"
+     id="rect1483-3-6"
+     width="3"
+     height="9"
+     x="13"
+     y="4" />
+  <rect
+     style="fill:#232629;stroke-width:1.08711"
+     id="rect1483-3-5-0"
+     width="1"
+     height="13"
+     x="14"
+     y="5" />
 </svg>
