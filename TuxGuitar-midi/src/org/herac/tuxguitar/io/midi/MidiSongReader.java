@@ -54,23 +54,37 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	}
 	
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
+		this.settings = null;
+		try {
+			this.settings = handle.getContext().getAttribute(MidiSettings.class.getName());
+		}
+		catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+		if( this.settings == null ) {
+			this.settings = MidiSettings.getDefaults();
+		}
 		try {
 			this.factory = handle.getFactory();
-			this.settings = handle.getContext().getAttribute(MidiSettings.class.getName());
-			if( this.settings == null ) {
-				this.settings = MidiSettings.getDefaults();
-			}
 			
 			MidiSequence sequence = new MidiFileReader().getSequence(handle.getInputStream());
 			initFields(sequence);
-			for(int i = 0; i < sequence.countTracks(); i++){
-				MidiTrack track = sequence.getTrack(i);
+			for(int seqTrackNb = 0; seqTrackNb < sequence.countTracks(); seqTrackNb++){
+				MidiTrack track = sequence.getTrack(seqTrackNb);
 				int trackNumber = getNextTrackNumber();
-				int events = track.size();
-				for(int j = 0;j < events;j ++){
-					MidiEvent event = track.get(j);
-					parseMessage(i,trackNumber,event.getTick(),event.getMessage());
+				int eventsCount = track.size();
+				// group simultaneous events in a list, then process the list
+				long previousTick = -1;
+				List<MidiEvent> tickEvents = new ArrayList<MidiEvent>();
+				for(int eventNb = 0;eventNb < eventsCount;eventNb ++){
+					MidiEvent event = track.get(eventNb);
+					if (event.getTick() > previousTick) {
+						parseEvents(tickEvents, seqTrackNb, trackNumber);
+					}
+					tickEvents.add(event);
+					previousTick = event.getTick();
 				}
+				parseEvents(tickEvents, seqTrackNb, trackNumber);
 			}
 			
 			TGSongManager tgSongManager = new TGSongManager(this.factory);
@@ -96,6 +110,40 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}
+	}
+	
+	// parse list of simultaneous events: parse "note off" events first, to avoid creating false notes
+	private void parseEvents(List<MidiEvent> events, int seqTrackNb, int trackNumber) {
+		List<MidiEvent> handledEvents = new ArrayList<MidiEvent>();
+		// parse noteOff events
+		for (MidiEvent event : events) {
+			if (isNoteOff(event)) {
+				parseMessage(seqTrackNb,trackNumber,event.getTick(),event.getMessage());
+				handledEvents.add(event);
+			}
+		}
+		// cleanup list
+		for (MidiEvent event : handledEvents) {
+			events.remove(event);
+		}
+		// parse remaining events
+		for (MidiEvent event : events) {
+			parseMessage(seqTrackNb,trackNumber,event.getTick(),event.getMessage());
+		}
+		events.clear();
+	}
+	
+	private boolean isNoteOff(MidiEvent event) {
+		MidiMessage message = event.getMessage();
+		if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.NOTE_OFF) {
+			return(true);
+		}
+		if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.NOTE_ON){
+			int length = message.getData().length;
+			int velocity = (length > 2)?(message.getData()[2] & 0xFF):0;
+			return(velocity == 0);
+		}
+		return(false);
 	}
 	
 	private void initFields(MidiSequence sequence){
