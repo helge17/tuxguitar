@@ -29,6 +29,7 @@ import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
@@ -47,6 +48,10 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 		return "FTP";
 	}
 	
+	public UIImage getIcon(){
+		return TuxGuitar.getInstance().getIconManager().getBrowserFolderRemote();
+	}
+
 	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserSettings settings) {
 		handler.onCreateBrowser(new TGBrowserImpl(TGBrowserSettingsModel.createInstance(settings)));
 	}

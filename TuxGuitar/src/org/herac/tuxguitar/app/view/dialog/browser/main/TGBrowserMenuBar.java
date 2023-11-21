@@ -55,6 +55,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.menuFileItem.getMenu().createSeparator();
 		
 		this.exit = this.menuFileItem.getMenu().createActionItem();
+		this.exit.setImage(TuxGuitar.getInstance().getIconManager().getFileExit());
 		this.exit.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				getBrowser().dispose();
@@ -72,10 +73,12 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.openItem.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
 		
 		this.removeItem = this.menuCollectionItem.getMenu().createSubMenuItem();
+		this.removeItem.setImage(TuxGuitar.getInstance().getIconManager().getListRemove());
 		
 		this.menuCollectionItem.getMenu().createSeparator();
 		
 		this.close = this.menuCollectionItem.getMenu().createActionItem();
+		this.close.setImage(TuxGuitar.getInstance().getIconManager().getFileClose());
 		this.close.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				closeCollection();
@@ -155,6 +158,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 			if( collection.getData() != null) {
 				UIMenuActionItem openItem = this.openItem.getMenu().createActionItem();
 				openItem.setText(collection.getData().getTitle());
+				openItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
 				openItem.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
 						openCollection(collection);
@@ -163,6 +167,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 				
 				UIMenuActionItem removeItem = this.removeItem.getMenu().createActionItem();
 				removeItem.setText(collection.getData().getTitle());
+				removeItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
 				removeItem.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
 						removeCollection(collection);
@@ -183,6 +188,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 			final TGBrowserFactory bookType = (TGBrowserFactory)bookTypes.next();
 			UIMenuActionItem item = this.newItem.getMenu().createActionItem();
 			item.setText(bookType.getName());
+			item.setImage(bookType.getIcon());
 			item.addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
 					newCollection( bookType.getType());

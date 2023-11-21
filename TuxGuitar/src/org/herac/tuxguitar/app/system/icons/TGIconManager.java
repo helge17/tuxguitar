@@ -169,6 +169,8 @@ public class TGIconManager {
 	private UIImage browserNew;
 	private UIImage browserFile;
 	private UIImage browserFolder;
+	private UIImage browserFolderRemote;
+	private UIImage browserCollection;
 	private UIImage browserRoot;
 	private UIImage browserBack;
 	private UIImage browserRefresh;
@@ -386,6 +388,8 @@ public class TGIconManager {
 		this.browserNew = loadIcon("browser_new.png");
 		this.browserFile = loadIcon("browser_file.png");
 		this.browserFolder = loadIcon("browser_folder.png");
+		this.browserFolderRemote = loadIcon("browser_folder_remote.png");
+		this.browserCollection = loadIcon("browser_collection.png");
 		this.browserRoot = loadIcon("browser_root.png");
 		this.browserBack = loadIcon("browser_back.png");
 		this.browserRefresh = loadIcon("browser_refresh.png");
@@ -1070,6 +1074,14 @@ public class TGIconManager {
 
 	public UIImage getBrowserFolder() {
 		return this.browserFolder;
+	}
+
+	public UIImage getBrowserFolderRemote() {
+		return this.browserFolderRemote;
+	}
+
+	public UIImage getBrowserCollection() {
+		return this.browserCollection;
 	}
 
 	public UIImage getBrowserRefresh() {

@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
@@ -21,6 +22,10 @@ public class TGBrowserFactoryImpl implements TGBrowserFactory{
 	
 	public String getName(){
 		return TuxGuitar.getProperty("browser.factory.fs.name");
+	}
+
+	public UIImage getIcon(){
+		return TuxGuitar.getInstance().getIconManager().getBrowserFolder();
 	}
 
 	public void createSettings(TGBrowserFactorySettingsHandler handler) {
