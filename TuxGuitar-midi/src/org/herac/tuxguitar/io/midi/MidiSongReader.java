@@ -208,7 +208,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}else if(value > 0){
 			createTempNotesBefore(tick,track);
 			getTempChannel(channel).addTrack(track);
-			getTrackTuningHelper(track).checkValue(value);
+			getTrackTuningHelper(track).checkValue(value + this.settings.getTranspose());
 			this.tempNotes.add(new TempNote(track,channel,value,tick));
 		}
 	}
