@@ -1,1 +1,59 @@
-../../Symbolic/TuxGuitar/firstfret.svg
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg4881" width="4" height="150" version="1.1" viewBox="0 0 4 150" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <metadata id="metadata4885">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs id="defs4877">
+  <linearGradient id="linearGradient7051" x1="1" x2="1" y1="89" y2="90" gradientUnits="userSpaceOnUse">
+   <stop id="stop7045" stop-color="#c0c0c0" offset="0"/>
+   <stop id="stop7047" stop-color="#808080" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient7059" cx="89" cy="-3" r=".5" gradientTransform="matrix(2,0,0,2,-89,3)" gradientUnits="userSpaceOnUse">
+   <stop id="stop7053" stop-color="#c0c0c0" offset="0"/>
+   <stop id="stop7055" stop-color="#808080" offset="1"/>
+  </radialGradient>
+  <linearGradient id="linearGradient7067" x1="3" x2="4" y1="45" y2="45" gradientTransform="matrix(1 0 0 1.6818 0 -60.682)" gradientUnits="userSpaceOnUse">
+   <stop id="stop7061" stop-color="#c0c0c0" offset="0"/>
+   <stop id="stop7063" stop-color="#808080" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient7075" x1="1" x2="1" y1="1" gradientTransform="translate(0,-60)" gradientUnits="userSpaceOnUse">
+   <stop id="stop7069" stop-color="#c0c0c0" offset="0"/>
+   <stop id="stop7071" stop-color="#e0e0e0" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient7083" cx="3" cy="1" r=".5" gradientTransform="matrix(2 4.6924e-8 -4.6924e-8 2 -3 -61)" gradientUnits="userSpaceOnUse">
+   <stop id="stop7077" stop-color="#c0c0c0" offset="0"/>
+   <stop id="stop7079" stop-color="#e0e0e0" stop-opacity=".71967" offset="1"/>
+  </radialGradient>
+  <filter id="filter932" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+   <feImage id="feImage934" result="result1" xlink:href="#path7019-6"/>
+   <feBlend id="feBlend964" in="result1" in2="SourceGraphic" mode="multiply"/>
+  </filter>
+  <linearGradient id="linearGradient999" x2="1" gradientUnits="userSpaceOnUse">
+   <stop id="stop1001" stop-color="#f7f7f7" offset="0"/>
+   <stop id="stop1003" stop-color="#8a8a8a" offset="1"/>
+  </linearGradient>
+  <filter id="filter1018" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+   <feComponentTransfer id="feComponentTransfer1323">
+    <feFuncR id="feFuncR1325" amplitude="1.5" exponent="2" intercept="0.67000000000000004" offset="-0.29999999999999999" slope="-0.33000000000000002" type="gamma"/>
+    <feFuncG id="feFuncG1327" amplitude="1.5" exponent="2" intercept="0.67000000000000004" offset="-0.29999999999999999" slope="0.93000000000000005" type="gamma"/>
+    <feFuncB id="feFuncB1329" amplitude="1.5" exponent="2" intercept="0.67000000000000004" offset="-0.29999999999999999" slope="-0.33000000000000002" type="gamma"/>
+    <feFuncA id="feFuncA1331" type="identity"/>
+   </feComponentTransfer>
+  </filter>
+ </defs>
+ <g id="g1014" transform="translate(0,60)" filter="url(#filter1018)">
+  <path id="path7019" d="m3-60a1 1 0 0 1 1 1h-1z" fill="url(#radialGradient7083)" filter="url(#filter932)" style="paint-order:markers fill stroke"/>
+  <rect id="rect7021" y="-60" width="3" height="1" fill="url(#linearGradient7075)" style="paint-order:markers fill stroke"/>
+  <rect id="rect7023" x="3" y="-59" width="1" height="148" fill="url(#linearGradient7067)" style="paint-order:markers fill stroke"/>
+  <path id="path7019-7" transform="rotate(90)" d="m89-4a1 1 0 0 1 1 1h-1z" fill="url(#radialGradient7059)" style="paint-order:markers fill stroke"/>
+  <rect id="rect7021-5" y="89" width="3" height="1" fill="url(#linearGradient7051)" style="paint-order:markers fill stroke"/>
+  <path id="path7019-6" d="m1.9615e-8 0a1 1 0 0 1 1 1h-1z" fill="url(#linearGradient999)" style="paint-order:markers fill stroke"/>
+  <rect id="rect7043" y="-59" width="3" height="148" fill="#c0c0c0" style="paint-order:markers fill stroke"/>
+ </g>
+</svg>

@@ -1,40 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   height="16px"
-   viewBox="0 0 16 16"
-   width="16px"
-   version="1.1"
-   id="svg135"
-   sodipodi:docname="media-playlist-repeat-song-symbolic_end.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs139" />
-  <sodipodi:namedview
-     id="namedview137"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     inkscape:zoom="46.4375"
-     inkscape:cx="7.6339166"
-     inkscape:cy="7.9892328"
-     inkscape:window-width="1920"
-     inkscape:window-height="1021"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg135" />
-  <path
-     d="m 14,2 c -1.105469,0 -2,0.894531 -2,2 0,1.105469 0.894531,2 2,2 1.105469,0 2,-0.894531 2,-2 0,-1.105469 -0.894531,-2 -2,-2 z m 1,5 c -0.550781,0 -1,0.449219 -1,1 v 1.007812 c 0,1.125 -0.875,2 -2,2 H 8 V 9 H 7 v 0.00781 C 6.734375,9.003906 6.480469,9.109375 6.292969,9.292969 l -2,2 c -0.390625,0.390625 -0.390625,1.023437 0,1.414062 l 2,2 C 6.480469,14.890625 6.734375,14.996094 7,14.992188 V 15 h 1 v -1.992188 h 4 c 2.199219,0 4,-1.804687 4,-4 V 8 C 16,7.449219 15.550781,7 15,7 Z"
-     fill="#2e3436"
-     id="path133"
-     sodipodi:nodetypes="ssssssssscccccsscccccssss" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg135" width="16px" height="16px" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <path id="path133" d="m14 2c-1.1055 0-2 0.89453-2 2s0.89453 2 2 2 2-0.89453 2-2-0.89453-2-2-2zm1 5c-0.55078 0-1 0.44922-1 1v1.0078c0 1.125-0.875 2-2 2h-4v-2.0078h-1v0.00781c-0.26562-0.003904-0.51953 0.10156-0.70703 0.28516l-2 2c-0.39062 0.39062-0.39062 1.0234 0 1.4141l2 2c0.1875 0.18359 0.44141 0.28906 0.70703 0.28516v0.007812h1v-1.9922h4c2.1992 0 4-1.8047 4-4v-1.0078c0-0.55078-0.44922-1-1-1z" fill="#2e3436"/>
 </svg>

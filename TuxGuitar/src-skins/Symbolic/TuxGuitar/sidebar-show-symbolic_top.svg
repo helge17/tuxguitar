@@ -1,55 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   height="16px"
-   viewBox="0 0 16 16"
-   width="16px"
-   version="1.1"
-   id="svg10"
-   sodipodi:docname="sidebar-show-symbolic_top.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs14" />
-  <sodipodi:namedview
-     id="namedview12"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="true"
-     inkscape:zoom="65.672542"
-     inkscape:cx="8.5195423"
-     inkscape:cy="8.0551169"
-     inkscape:window-width="1920"
-     inkscape:window-height="1021"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g8">
-    <inkscape:grid
-       type="xygrid"
-       id="grid120" />
-  </sodipodi:namedview>
-  <g
-     fill="#2e3436"
-     id="g8">
-    <path
-       d="M 15,6.502613 H 1 V 2 h 14 z m 0,0"
-       fill-opacity="0.34902"
-       id="path2"
-       style="stroke-width:1.02499" />
-    <path
-       d="M 3,15 C 1.355469,15 0,13.644531 0,12 V 4 C 0,2.355469 1.355469,1 3,1 h 10 c 1.644531,0 3,1.355469 3,3 v 8 c 0,1.644531 -1.355469,3 -3,3 z m 0,-2 h 10 c 0.570312,0 1,-0.429688 1,-1 V 4 C 14,3.429688 13.570312,3 13,3 H 3 C 2.429688,3 2,3.429688 2,4 v 8 c 0,0.570312 0.429688,1 1,1 z m 0,0"
-       id="path4" />
-    <path
-       d="M 1,6 V 7 H 15 V 6 Z m 0,0"
-       id="path6"
-       style="stroke-width:1.08012" />
-  </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg10" width="16px" height="16px" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <g id="g8" fill="#2e3436">
+  <path id="path2" d="m15 6.5026h-14v-4.5026h14z" fill-opacity=".34902" stroke-width="1.025"/>
+  <path id="path4" d="m3 15c-1.6445 0-3-1.3555-3-3v-8c0-1.6445 1.3555-3 3-3h10c1.6445 0 3 1.3555 3 3v8c0 1.6445-1.3555 3-3 3zm0-2h10c0.57031 0 1-0.42969 1-1v-8c0-0.57031-0.42969-1-1-1h-10c-0.57031 0-1 0.42969-1 1v8c0 0.57031 0.42969 1 1 1z"/>
+  <path id="path6" d="m1 6v1h14v-1z" stroke-width="1.0801"/>
+ </g>
 </svg>

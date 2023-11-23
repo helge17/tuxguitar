@@ -16,8 +16,9 @@ DARK=$SKIN-dark
 SKIN_DIR=$THIS_DIR/../../share/skins/$SKIN
 DARK_DIR=$THIS_DIR/../../share/skins/$DARK
 
+# Breeze/KDE icons are aligned on a 22x22 grid, so we can use this resolution for the PNG images
 S_ICON=22x22     # Size of icons in menues and toolbars
-S_INFO=60x60     # Size of icons in warnings and settings dialog
+S_INFO=64x64     # Size of icons in warnings and settings dialog
 S_LOGO=96x96     # Size of TuxGuitar logo
 
 declare -A ICONS=(

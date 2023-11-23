@@ -1,43 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   height="16px"
-   viewBox="0 0 16 16"
-   width="16px"
-   version="1.1"
-   id="svg4"
-   sodipodi:docname="layout_multitrack.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs8" />
-  <sodipodi:namedview
-     id="namedview6"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="true"
-     inkscape:zoom="46.4375"
-     inkscape:cx="7.9892328"
-     inkscape:cy="7.9892328"
-     inkscape:window-width="1920"
-     inkscape:window-height="1021"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg4">
-    <inkscape:grid
-       type="xygrid"
-       id="grid284" />
-  </sodipodi:namedview>
-  <path
-     id="path2"
-     fill="#2e3436"
-     d="M 4 0 C 2.3554722 0 1 1.3554722 1 3 L 1 13 C 1 14.644527 2.3554722 16 4 16 L 6 16 L 7 16 L 12 16 C 13.644527 16 15 14.644527 15 13 L 15 6 L 15 5 C 15 4.7343756 14.894531 4.4804684 14.707031 4.2929688 L 10.707031 0.29296875 C 10.519531 0.10546913 10.265625 0 10 0 L 4 0 z M 4 2 L 9.5859375 2 L 10.585938 3 L 4 3 L 4 5 L 12 5 L 12 4.4140625 L 13 5.4140625 L 13 6 L 13 13 C 13 13.57031 12.57031 14 12 14 L 12 12 L 4 12 L 4 14 C 3.4296892 14 3 13.57031 3 13 L 3 3 C 3 2.4296892 3.4296892 2 4 2 z M 4 6 L 4 8 L 12 8 L 12 6 L 4 6 z M 4 9 L 4 11 L 12 11 L 12 9 L 4 9 z " />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg4" width="16px" height="16px" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <path id="path2" d="m4 0c-1.6445 0-3 1.3555-3 3v10c0 1.6445 1.3555 3 3 3h2 1 5c1.6445 0 3-1.3555 3-3v-7-1c0-0.26562-0.10547-0.51953-0.29297-0.70703l-4-4c-0.1875-0.1875-0.44141-0.29297-0.70703-0.29297h-6zm0 2h5.5859l1 1h-6.5859v2h8v-0.58594l1 1v0.58594 7c0 0.57031-0.42969 1-1 1v-2h-8v2c-0.57031 0-1-0.42969-1-1v-10c0-0.57031 0.42969-1 1-1zm0 4v2h8v-2h-8zm0 3v2h8v-2h-8z" fill="#2e3436"/>
 </svg>

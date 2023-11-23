@@ -1,51 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   viewBox="0 0 16 16"
-   version="1.1"
-   id="svg239"
-   sodipodi:docname="mixer.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview241"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="true"
-     inkscape:zoom="52.25"
-     inkscape:cx="10.870813"
-     inkscape:cy="8"
-     inkscape:window-width="1920"
-     inkscape:window-height="1021"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg239">
-    <inkscape:grid
-       type="xygrid"
-       id="grid360" />
-  </sodipodi:namedview>
-  <defs
-     id="defs3051">
-    <style
-       type="text/css"
-       id="current-color-scheme">
-      .ColorScheme-Text {
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg239" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <defs id="defs3051">
+  <style id="current-color-scheme" type="text/css">.ColorScheme-Text {
         color:#232629;
-      }
-      </style>
-  </defs>
-  <path
-     style="fill:currentColor;fill-opacity:1;stroke:none"
-     d="m 3.5,7 v 7 h 1 V 7 Z m 0,-5 v 2 h 1 V 2 Z m -1,3 v 1 h 3 V 5 Z m 5,7 v 2 h 1 v -2 z m 0,-10 v 7 h 1 V 2 Z m -1,8 v 1 h 3 v -1 z m 5,-3 v 7 h 1 V 7 Z m 0,-5 v 2 h 1 V 2 Z m -1,3 v 1 h 3 V 5 Z"
-     class="ColorScheme-Text"
-     id="path237"
-     sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccccc" />
+      }</style>
+ </defs>
+ <path id="path237" class="ColorScheme-Text" d="m3.5 7v7h1v-7zm0-5v2h1v-2zm-1 3v1h3v-1zm5 7v2h1v-2zm0-10v7h1v-7zm-1 8v1h3v-1zm5-3v7h1v-7zm0-5v2h1v-2zm-1 3v1h3v-1z" fill="currentColor"/>
 </svg>

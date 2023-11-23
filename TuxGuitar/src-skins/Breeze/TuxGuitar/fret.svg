@@ -1,1 +1,38 @@
-../../Symbolic/TuxGuitar/fret.svg
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg1497" width="4" height="150" version="1.1" viewBox="0 0 4 150" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata id="metadata1501">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs id="defs1485">
+  <linearGradient id="linearGradient6698" x1="4" x2="8" y1="45" y2="45" gradientTransform="matrix(.5 0 0 1.6667 0 -60)" gradientUnits="userSpaceOnUse">
+   <stop id="stop1471" stop-color="#b2b2b2" offset="0"/>
+   <stop id="stop1473" stop-color="#9d9d9d" offset=".75"/>
+   <stop id="stop1475" stop-color="#8b8b8b" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient6702" x1="4" x2="8" y1="45" y2="45" gradientTransform="matrix(.5 0 0 1.6667 -4 -60)" gradientUnits="userSpaceOnUse">
+   <stop id="stop1478" stop-color="#b2b2b2" offset="0"/>
+   <stop id="stop1480" stop-color="#e4e4e4" offset=".75"/>
+   <stop id="stop1482" stop-color="#a6a6a6" offset="1"/>
+  </linearGradient>
+  <filter id="filter2046" color-interpolation-filters="sRGB">
+   <feComponentTransfer id="feComponentTransfer2048">
+    <feFuncR id="feFuncR2050" amplitude="1.2" offset="-0.40000000000000002" type="gamma"/>
+    <feFuncG id="feFuncG2052" amplitude="1.2" offset="-0.40000000000000002" type="gamma"/>
+    <feFuncB id="feFuncB2054" amplitude="1.2" offset="-0.40000000000000002" type="gamma"/>
+    <feFuncA id="feFuncA2056" type="identity"/>
+   </feComponentTransfer>
+  </filter>
+ </defs>
+ <g id="g1495" transform="translate(0,60)" filter="url(#filter2046)">
+  <rect id="rect1487" transform="scale(-1,1)" x="-2" y="-60" width="2" height="150" fill="url(#linearGradient6702)" stroke-width="1.291" style="paint-order:markers fill stroke"/>
+  <rect id="rect1489" x="2" y="-60" width="2" height="150" fill="url(#linearGradient6698)" stroke-width="1.291" style="paint-order:markers fill stroke"/>
+  <path id="path1491" d="m0 90a2 2 0 0 1 2-2 2 2 0 0 1 2 2" fill="#888" style="paint-order:markers fill stroke"/>
+  <path id="path1493" d="m4-60a2 2 0 0 1-2 2 2 2 0 0 1-2-2" fill="#dedede" style="paint-order:markers fill stroke"/>
+ </g>
+</svg>
