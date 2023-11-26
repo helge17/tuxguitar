@@ -27,7 +27,7 @@ misc/build_tuxguitar_from_source.sh
 ### Install Prerequisites
 
 ```sh
-$ sudo apt install wget unzip git build-essential default-jdk maven libfluidsynth-dev libjack-jackd2-dev libasound2-dev libgtk-3-dev liblilv-dev libsuil-dev qtbase5-dev
+$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev libgtk-3-dev liblilv-dev libsuil-dev qtbase5-dev
 ```
 
 ### Download and install SWT for Linux
