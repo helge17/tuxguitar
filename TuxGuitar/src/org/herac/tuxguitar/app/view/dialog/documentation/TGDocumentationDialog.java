@@ -6,10 +6,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.resource.TGResourceManager;
+import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.widget.UIBrowser;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGException;
 
 public class TGDocumentationDialog {
@@ -24,14 +30,26 @@ public class TGDocumentationDialog {
 	}
 	
 	public void show() {
+		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
+		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
+		final UITableLayout dialogLayout = new UITableLayout();
+		final UIWindow dialog = uiFactory.createWindow(uiParent, false, true);
+		UIBrowser browser;
+		
+		dialog.setLayout(dialogLayout);
+		dialog.setText(TuxGuitar.getProperty("help.doc"));
+		
 		try {
 			URL url = getIndexUrl();
-			if( url != null ){
-				TGApplication.getInstance(this.context.getContext()).getApplication().openUrl(url);
-			}
+			browser = uiFactory.createBrowser(dialog);
+			browser.loadUrl(url);
 		} catch (Throwable throwable ) {
 			throw new TGException(throwable);
 		}
+		
+		dialogLayout.set(browser, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
 	
 	private URL getIndexUrl() throws Throwable{

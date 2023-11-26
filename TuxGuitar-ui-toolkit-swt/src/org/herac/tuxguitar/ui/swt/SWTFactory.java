@@ -28,6 +28,7 @@ import org.herac.tuxguitar.ui.swt.menu.SWTMenuBar;
 import org.herac.tuxguitar.ui.swt.menu.SWTPopupMenu;
 import org.herac.tuxguitar.ui.swt.resource.SWTResourceFactory;
 import org.herac.tuxguitar.ui.swt.toolbar.SWTToolBar;
+import org.herac.tuxguitar.ui.swt.widget.SWTBrowser;
 import org.herac.tuxguitar.ui.swt.widget.SWTButton;
 import org.herac.tuxguitar.ui.swt.widget.SWTCanvas;
 import org.herac.tuxguitar.ui.swt.widget.SWTCheckBox;
@@ -66,6 +67,7 @@ import org.herac.tuxguitar.ui.swt.widget.SWTToggleButton;
 import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.ui.swt.widget.SWTWrapLabel;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIBrowser;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UICheckBox;
@@ -375,5 +377,10 @@ public class SWTFactory implements UIFactory {
 
 	public UIImage createImage(InputStream inputStream) {
 		return this.resourceFactory.createImage(inputStream);
+	}
+
+	@SuppressWarnings("unchecked")
+	public UIBrowser createBrowser(UIWindow parent) {
+		return new SWTBrowser((SWTContainer<Composite>) parent);
 	}
 }
