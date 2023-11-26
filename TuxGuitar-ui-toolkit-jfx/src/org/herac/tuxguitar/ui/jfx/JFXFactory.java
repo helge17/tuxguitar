@@ -17,6 +17,7 @@ import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
 import org.herac.tuxguitar.ui.jfx.menu.JFXPopupMenu;
 import org.herac.tuxguitar.ui.jfx.resource.JFXResourceFactory;
 import org.herac.tuxguitar.ui.jfx.toolbar.JFXToolBar;
+import org.herac.tuxguitar.ui.jfx.widget.JFXBrowser;
 import org.herac.tuxguitar.ui.jfx.widget.JFXButton;
 import org.herac.tuxguitar.ui.jfx.widget.JFXCanvas;
 import org.herac.tuxguitar.ui.jfx.widget.JFXCheckBox;
@@ -58,6 +59,7 @@ import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIBrowser;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UICheckBox;
@@ -314,5 +316,9 @@ public class JFXFactory implements UIFactory {
 
 	public UIImage createImage(InputStream inputStream) {
 		return this.resourceFactory.createImage(inputStream);
+	}
+
+	public UIBrowser createBrowser(UIWindow parent) {
+		return new JFXBrowser((JFXWindow) parent);
 	}
 }

@@ -149,6 +149,22 @@
 									<version>${javafx.version}</version>
 								</artifactItem>
 								<artifactItem>
+									<groupId>org.openjfx</groupId>
+									<artifactId>javafx-web</artifactId>
+									<destFileName>javafx-web.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+									<classifier>${javafx.platform}</classifier>
+									<version>${javafx.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.openjfx</groupId>
+									<artifactId>javafx-media</artifactId>
+									<destFileName>javafx-media.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+									<classifier>${javafx.platform}</classifier>
+									<version>${javafx.version}</version>
+								</artifactItem>
+								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
 									<destFileName>itext-pdf.jar</destFileName>

@@ -10,6 +10,7 @@ import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.widget.UIButton;
+import org.herac.tuxguitar.ui.widget.UIBrowser;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UICheckBox;
 import org.herac.tuxguitar.ui.widget.UICheckTable;
@@ -138,4 +139,6 @@ public interface UIFactory extends UIResourceFactory {
 	UIDirectoryChooser createDirectoryChooser(UIWindow parent);
 	
 	UIPrinterChooser createPrinterChooser(UIWindow parent);
+	
+	UIBrowser createBrowser(UIWindow parent);
 }
