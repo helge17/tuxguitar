@@ -32,24 +32,41 @@ public class TGDocumentationDialog {
 	public void show() {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
-		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, false, true);
-		UIBrowser browser;
-		
-		dialog.setLayout(dialogLayout);
-		dialog.setText(TuxGuitar.getProperty("help.doc"));
+		UIBrowser browser = null;
+		boolean isEmbeddedBrowserAvailable;
+		URL url = null;
 		
 		try {
-			URL url = getIndexUrl();
-			browser = uiFactory.createBrowser(dialog);
-			browser.loadUrl(url);
+			url = getIndexUrl();
 		} catch (Throwable throwable ) {
 			throw new TGException(throwable);
 		}
+		if (url==null) {
+			// no content identified, no need to go any further
+			return;
+		}
+		// try to create embedded browser, and to load url
+		try {
+			browser = uiFactory.createBrowser(dialog);
+			browser.loadUrl(url);
+			isEmbeddedBrowserAvailable = true;
+		} catch (Throwable throwable ) {
+			isEmbeddedBrowserAvailable = false;
+		}
 		
-		dialogLayout.set(browser, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
-		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
+		if (isEmbeddedBrowserAvailable) {
+			// display in dialog
+			final UITableLayout dialogLayout = new UITableLayout();
+			
+			dialog.setLayout(dialogLayout);
+			dialog.setText(TuxGuitar.getProperty("help.doc"));
+			dialogLayout.set(browser, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
+		} else {
+			// call external browser
+			TGApplication.getInstance(this.context.getContext()).getApplication().openUrl(url);
+		}
 	}
 	
 	private URL getIndexUrl() throws Throwable{
