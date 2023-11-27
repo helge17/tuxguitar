@@ -18,8 +18,10 @@ DARK_DIR=$THIS_DIR/../../share/skins/$DARK
 
 # Breeze/KDE icons are aligned on a 22x22 grid, so we can use this resolution for the PNG images
 S_ICON=22x22     # Size of icons in menues and toolbars
+S_PLAY=36x36     # Size of icons in player
 S_INFO=64x64     # Size of icons in warnings and settings dialog
 S_LOGO=96x96     # Size of TuxGuitar logo
+S_TRAC=16x16     # Size of icons in track table
 
 declare -A ICONS=(
   # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png
@@ -114,9 +116,9 @@ declare -A ICONS=(
   ["$DT/actions/22/zoom-original.svg"]="$S_ICON:zoom_original.png"
   ["$DT/actions/22/zoom-out.svg"]="$S_ICON:zoom_out.png"
   ["$DT/actions/22/list-add.svg"]="$S_ICON:list_add.png $S_ICON:track_add.png $S_ICON:measure_add.png"
-  ["$DT/actions/22/list-remove.svg"]="$S_ICON:list_remove.png $S_ICON:track_remove.png $S_ICON:measure_remove.png 14x14:mute-disabled.png 14x14:mute-disabled-dim.png 14x14:solo-disabled.png 14x14:solo-disabled-dim.png"
-  ["$DT/devices/22/audio-headphones.svg"]="$S_ICON:track_solo.png 14x14:solo.png 14x14:solo-dim.png"
-  ["$DT/status/22/audio-volume-muted.svg"]="$S_ICON:track_mute.png 14x14:mute.png 14x14:mute-dim.png"
+  ["$DT/actions/22/list-remove.svg"]="$S_ICON:list_remove.png $S_ICON:track_remove.png $S_ICON:measure_remove.png $S_TRAC:mute-disabled.png $S_TRAC:mute-disabled-dim.png $S_TRAC:solo-disabled.png $S_TRAC:solo-disabled-dim.png"
+  ["$DT/devices/22/audio-headphones.svg"]="$S_ICON:track_solo.png $S_TRAC:solo.png $S_TRAC:solo-dim.png"
+  ["$DT/status/22/audio-volume-muted.svg"]="$S_ICON:track_mute.png $S_TRAC:mute.png $S_TRAC:mute-dim.png"
   ["$DT/actions/22/document-edit.svg"]="$S_ICON:list_edit.png $S_ICON:edit_mode_edition.png"
   ["$DT/actions/22/go-down-skip.svg"]="$S_ICON:list_move_up.png"
   ["$DT/actions/22/go-up-skip.svg"]="$S_ICON:list_move_down.png"
@@ -124,13 +126,13 @@ declare -A ICONS=(
   ["$DT/actions/22/sidebar-expand-left.svg"]="$S_ICON:toolbar_edit.png"
   ["$TG/sidebar-expand-left_bottom.svg"]="$S_ICON:table_viewer.png"
   ["$DT/devices/22/multimedia-player-ipod-mini-blue.svg"]="$S_ICON:transport.png"
-  ["$DT/actions/22/media-playback-start.svg"]="$S_ICON:transport_play_1.png $S_ICON:transport_play_2.png $S_ICON:transport_icon_play_1.png $S_ICON:transport_icon_play_2.png"
-  ["$DT/actions/22/media-playback-pause.svg"]="$S_ICON:transport_pause.png $S_ICON:transport_icon_pause.png"
-  ["$DT/actions/22/media-playback-stop.svg"]="$S_ICON:transport_stop_1.png $S_ICON:transport_stop_2.png $S_ICON:transport_icon_stop_1.png $S_ICON:transport_icon_stop_2.png"
-  ["$DT/actions/22/media-seek-forward.svg"]="$S_ICON:transport_next_1.png $S_ICON:transport_next_2.png $S_ICON:transport_icon_next_1.png $S_ICON:transport_icon_next_2.png"
-  ["$DT/actions/22/media-seek-backward.svg"]="$S_ICON:transport_previous_1.png $S_ICON:transport_previous_2.png $S_ICON:transport_icon_previous_1.png $S_ICON:transport_icon_previous_2.png"
-  ["$DT/actions/22/media-skip-backward.svg"]="$S_ICON:transport_first_1.png $S_ICON:transport_first_2.png $S_ICON:transport_icon_first_1.png $S_ICON:transport_icon_first_2.png"
-  ["$DT/actions/22/media-skip-forward.svg"]="$S_ICON:transport_last_1.png $S_ICON:transport_last_2.png $S_ICON:transport_icon_last_1.png $S_ICON:transport_icon_last_2.png"
+  ["$DT/actions/22/media-playback-start.svg"]="$S_PLAY:transport_play_1.png $S_PLAY:transport_play_2.png $S_ICON:transport_icon_play_1.png $S_ICON:transport_icon_play_2.png"
+  ["$DT/actions/22/media-playback-pause.svg"]="$S_PLAY:transport_pause.png $S_ICON:transport_icon_pause.png"
+  ["$DT/actions/22/media-playback-stop.svg"]="$S_PLAY:transport_stop_1.png $S_PLAY:transport_stop_2.png $S_ICON:transport_icon_stop_1.png $S_ICON:transport_icon_stop_2.png"
+  ["$DT/actions/22/media-seek-forward.svg"]="$S_PLAY:transport_next_1.png $S_PLAY:transport_next_2.png $S_ICON:transport_icon_next_1.png $S_ICON:transport_icon_next_2.png"
+  ["$DT/actions/22/media-seek-backward.svg"]="$S_PLAY:transport_previous_1.png $S_PLAY:transport_previous_2.png $S_ICON:transport_icon_previous_1.png $S_ICON:transport_icon_previous_2.png"
+  ["$DT/actions/22/media-skip-backward.svg"]="$S_PLAY:transport_first_1.png $S_PLAY:transport_first_2.png $S_ICON:transport_icon_first_1.png $S_ICON:transport_icon_first_2.png"
+  ["$DT/actions/22/media-skip-forward.svg"]="$S_PLAY:transport_last_1.png $S_PLAY:transport_last_2.png $S_ICON:transport_icon_last_1.png $S_ICON:transport_icon_last_2.png"
   ["$DT/actions/22/media-playlist-repeat.svg"]="$S_ICON:transport_mode.png"
   ["$TG/media-playlist-repeat_start.svg"]="$S_ICON:transport_loop_start.png"
   ["$TG/media-playlist-repeat_end.svg"]="$S_ICON:transport_loop_end.png"
