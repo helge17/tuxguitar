@@ -198,23 +198,46 @@ else
     # On FreeBSD we use SWT from the OS
     SWT_JARF=/usr/local/share/java/classes/swt.jar
 
-    # Ugly hack to also install JFX on FreeBSD
-    # pre-requisite, run as root: pkg install openjfx14
-    JFX_VER=14.0.2.1
-    JFX_DIR=$SW_DIR/OpenJFX
-    mkdir -p $JFX_DIR
-    for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
-      if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VER.pom ]; then
-        wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER.pom
-        sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VER.pom
-      fi
-      mvn install:install-file -Dfile=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VER.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VER -Dclassifier=freebsd
-    done
-
   fi
 
   mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH -Dpackaging=jar -Dversion=$SWT_VERSION
   echo "# OK."
+
+fi
+
+}
+
+function install_eclipse_jfx {
+
+# On FreeBSD we also install JFX from the OS
+if [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
+
+  JFX_VER=14.0.2.1
+  JFX_DIR=$SW_DIR/OpenJFX
+
+  for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
+
+    JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER-freebsd.jar
+    JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
+
+    if [ -e $JFX_DEST ]; then
+
+      echo "# $JFX_DEST is already installed."
+
+    else
+
+      echo "# Installing $JFX_DEST from $JFX_JARF ..."
+      mkdir -p $JFX_DIR
+      if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VER.pom ]; then
+        wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER.pom
+        sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VER.pom
+      fi
+      mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VER.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VER -Dclassifier=freebsd
+      echo "# OK."
+
+    fi
+
+  done
 
 fi
 
@@ -317,6 +340,7 @@ scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-$
 function build_tg_for_bsd {
 
 install_eclipse_swt
+install_eclipse_jfx
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
