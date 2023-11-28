@@ -199,10 +199,11 @@ else
     SWT_JARF=/usr/local/share/java/classes/swt.jar
 
     # Ugly hack to also install JFX on FreeBSD
+    # pre-requisite, run as root: pkg install openjfx14
     JFX_VER=14.0.2.1
     JFX_DIR=$SW_DIR/OpenJFX
     mkdir -p $JFX_DIR
-    for JFX_PKG in javafx-base javafx-controls javafx-graphics; do
+    for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
       if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VER.pom ]; then
         wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER.pom
         sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VER.pom
