@@ -309,7 +309,8 @@ cp -ai $SW_DIR/$PA_JAVA build-scripts/common-resources/common-windows/jre
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ..."
   cd build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
-  mvn --batch-mode -e clean verify -P native-modules
+  # As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
+  mvn --batch-mode -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
   cp -a target/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH-installer.exe $DIST_DIR
   cd - > /dev/null
   (

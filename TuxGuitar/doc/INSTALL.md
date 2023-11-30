@@ -139,9 +139,11 @@ $ cd -
 
 ### Build and Start TuxGuitar
 
+As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
+
 ```sh
 $ cd build-scripts/tuxguitar-windows-swt-x86_64
-$ mvn -e clean verify -P native-modules
+$ mvn -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
 ```
 
 The Windows application is now located in the `build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
