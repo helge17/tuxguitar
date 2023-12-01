@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1>Default key-bindings (shortcuts)</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1>Default key-bindings (shortcuts)</h1>
         <p>This is the list of the default key bindings (keyboard shortcuts) in TuxGuitar.</p>
         <p>Of course, these key bindings list can be modified in the <strong><a href="tools_keybinding.html">Tools → Shortcuts</a></strong> dialog.</p>
         <h2 id="edit_actions">Edit Actions</h2>

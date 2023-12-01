@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1>Note effects</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1>Note effects</h1>
         <p>As you already know, playing guitar (and any other instrument) isn’t just playing the notes in the right duration and dynamics. There are several "tricks" that are unique for any instrument. TuxGuitar supports effects specific for guitar and bass guitar.</p>
         <p>Almost all note effects have an icon on the toolbar, but also can be accessed in <strong>Beat → Effects</strong> menu. If several notes are selected with click &amp; drag then effect is applied on all selected notes. Else, the effect is applied on the current cursor position.</p>
         <p><img src="images/effects.png" /></p>

@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1 id="sound_in_tuxguitar">Sound in TuxGuitar</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1 id="sound_in_tuxguitar">Sound in TuxGuitar</h1>
         <p>First to mention, TuxGuitar is written in Java programming language. There is dedicated layer in Java for MIDI sound, which uses "soundbanks". In TuxGuitar prior to version 1.0, using the soundbanks was the only way to play the sound, and it was totally independent of your system MIDI settings.</p>
         <p>Since the version 1.0 there are some plugins that enable connection between TuxGuitar and the system MIDI devices. You need the plugin depending on your operating system and audio properties. These plugins are included in your distribution package, so there is no need to download them manually. TuxGuitar has a suitable plugin for your OS enabled by default, but you may switch to another one in the <a href="tools_plugins.html">plugins dialog</a>.</p>
         <h3 id="java_sound">Java Sound</h3>

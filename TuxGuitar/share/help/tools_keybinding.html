@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1>Key bindings editor</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1>Key bindings editor</h1>
         <p>Using the key bindings editor, you can change a shortcut for almost every action in TuxGuitar. It allows you to view and change default key bindings, as well to add new ones.</p>
         <p>Key bindings editor dialog is accessed through the <strong>Tools → Shortcuts</strong> menu.</p>
         <p><img src="images/keybinding_editor.png" /></p>

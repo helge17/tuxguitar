@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1>Chord Editor</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1>Chord Editor</h1>
         <p>This is a dialog that allows you to get a chord based on its theory, recognize a chord based on the tab, memorize or get a chord from a library, and a few more things. This is also the only way to add a chord name or/and diagram in the tab.</p>
         <p><img src="images/chord_dialog.png" /></p>
         <p>As you can see, the chord dialog consists of many things, but is still easy to use. Nevertheless, every feature of the dialog will be explained here.</p>

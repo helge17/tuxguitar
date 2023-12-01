@@ -22,7 +22,7 @@ h1 {
 }
 
 h2, h3, h4, h5 {
-	margin: 0px 0px 4px 0px;
+	margin: 10px 0px 4px 0px;
 	padding: 0px 0px 0px 0px;
 	color: #154374;
 }
@@ -45,6 +45,15 @@ a {
 a:hover {
 	color: #376596;
 	text-decoration: none;
+}
+
+button {
+	line-height: 0;
+	padding: 0;
+}
+#NavBar {
+	text-align: left;
+	margin: 0px 0px 10px 20px;
 }
 
 #PageMenu {

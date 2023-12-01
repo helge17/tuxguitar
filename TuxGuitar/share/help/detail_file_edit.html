@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1>File and edit functions</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1>File and edit functions</h1>
         <p>Many entries in the <strong>File</strong> and the <strong>Edit</strong> pulldown menus are the same as in many other programs, but there are also some TuxGuitar specific actions.</p>
         <h2 id="file_management">File Management</h2>
         <p>All file related actions are summarized under the <strong>File</strong> pulldown menu. The most important function are also accessible in the main toolbar:</p>

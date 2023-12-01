@@ -9,6 +9,18 @@
 <body>
   <table>
     <tr>
+      <td valign="bottom">
+         <div id="NavBar">
+           <button onclick="history.back()"><img src="images/browser_back.png" /></button>
+           <button onclick="window.location.href='index.html';"><img src="images/browser_root.png" /></button>
+           <button onclick="history.forward()"><img src="images/browser_forward.png" /></button>
+         </div>
+      </td>
+      <td valign="top">
+        <h1>Editing a whole song</h1>
+      </td>
+    </tr>
+    <tr>
       <td valign="top">
         <div id="PageMenu">
           <ul>
@@ -73,7 +85,6 @@
         </div>
       </td>
       <td valign="top">
-        <h1>Editing a whole song</h1>
         <p>Song is consisted out of tracks, so when you are editing a song most of the time you edit the tracks, one by one, which is explained in the <a href="editing_track.html">Editing a track</a> section. But there are some options that affect the song as a whole.</p>
         <h2 id="managing_the_tracks">Managing the tracks</h2>
         <p>Each song consists of one or more tracks. In any moment you can add or remove a track, create new one by copying contents of the selected one (clone track).</p>
