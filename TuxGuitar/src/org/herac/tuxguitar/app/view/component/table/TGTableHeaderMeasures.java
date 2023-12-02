@@ -93,10 +93,8 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 		TGSong song = tablature.getSong();
 		float markerMargin = 1.0f;
 		float markerSize = cellSize - 2 * markerMargin;
-		TGTableColorModel colorModel = this.table.getViewer().getColorModel();
-		UIColor colorBackground = colorModel.createBackground(this.table.getViewer().getContext(), 0);
-		UIColor colorForeground = colorModel.createForeground(this.table.getViewer().getContext(), 0);
-
+		UIColor colorBackground = this.table.getViewer().getColorModel().getColor(TGTableColorModel.HEADER);
+		
 		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
 		painter.setBackground(colorBackground);
 		painter.initPath(UIPainter.PATH_FILL);
@@ -116,8 +114,6 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 						x + markerMargin, markerMargin, markerSize, markerSize);
 			}
 		}
-		colorBackground.dispose();
-		colorForeground.dispose();
 	}
 
 	public UICanvas getPaintableControl() {

@@ -1,8 +1,11 @@
 package org.herac.tuxguitar.app.view.component.table;
 
+import java.util.HashMap;
+
 import org.herac.tuxguitar.app.system.icons.TGSkinManager;
 import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
 import org.herac.tuxguitar.app.ui.TGApplication;
+import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.appearance.UIAppearance;
 import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
 import org.herac.tuxguitar.ui.resource.UIColor;
@@ -12,8 +15,19 @@ import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGTableColorModel {
 	
-	private UIColorModel[] backgrounds;
-	private UIColorModel[] foregrounds;
+	public static final int DEFAULT = 0;
+	public static final int CARET = 1;
+	public static final int HEADER = 2;
+	public static final int EVEN_LINE_BACKGROUND = 3;
+	public static final int EVEN_LINE_FOREGROUND = 4;
+	public static final int ODD_LINE_BACKGROUND = 5;
+	public static final int ODD_LINE_FOREGROUND = 6;
+	public static final int SELECTED_LINE_BACKGROUND = 7;
+	public static final int SELECTED_LINE_FOREGROUND = 8;
+	public static final int CELL_BACKGROUND = 9;
+	public static final int CELL_REST_MEASURE = 10;
+	
+	private UIColor[] colors;
 	
 	public TGTableColorModel() {
 		super();
@@ -22,53 +36,52 @@ public class TGTableColorModel {
 	public void resetColors(TGContext context) {
 		UIAppearance appearance = TGApplication.getInstance(context).getAppearance();;
 		TGProperties properties = TGSkinManager.getInstance(context).getCurrentSkinProperties();
+		UIFactory factory = TGApplication.getInstance(context).getFactory();
+		UIColorModel[] colorModels = new UIColorModel[11];
+
+		// names of properties which are configurable by skin
+		HashMap<Integer, String> colorProperties = new HashMap<Integer, String>();
+		colorProperties.put(CARET, "table.caret");
+		colorProperties.put(EVEN_LINE_BACKGROUND, "table.even-line.background");
+		colorProperties.put(EVEN_LINE_FOREGROUND, "table.even-line.foreground");
+		colorProperties.put(ODD_LINE_BACKGROUND, "table.odd-line.background");
+		colorProperties.put(ODD_LINE_FOREGROUND, "table.odd-line.foreground");
+		colorProperties.put(CELL_BACKGROUND, "table.cell.background");
+		colorProperties.put(CELL_REST_MEASURE, "table.cell.rest-measure");
 		
-		UIColorModel[] defaultForegrounds = new UIColorModel[] {
-			appearance.getColorModel(UIColorAppearance.WidgetLightForeground),
-			appearance.getColorModel(UIColorAppearance.WidgetHighlightForeground),
-			appearance.getColorModel(UIColorAppearance.WidgetSelectedForeground),
-			appearance.getColorModel(UIColorAppearance.WidgetSelectedForeground),
-		};
+		// defaults
+		colorModels[DEFAULT] = new UIColorModel(0x00, 0x00, 0x00);	// BLACK
+		colorModels[CARET] = new UIColorModel(0x00, 0x00, 0x00);	// BLACK
+		colorModels[HEADER] = appearance.getColorModel(UIColorAppearance.WidgetBackground);
+		colorModels[EVEN_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetHighlightBackground);
+		colorModels[EVEN_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetHighlightForeground);
+		colorModels[ODD_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetLightBackground);
+		colorModels[ODD_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetLightForeground);
+		colorModels[SELECTED_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground);
+		colorModels[SELECTED_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetSelectedForeground);
+		colorModels[CELL_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetLightBackground);
+		colorModels[CELL_REST_MEASURE] = appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground);
 		
-		UIColorModel[] defaultBackgrounds = new UIColorModel[] {
-			appearance.getColorModel(UIColorAppearance.WidgetLightBackground),
-			appearance.getColorModel(UIColorAppearance.WidgetHighlightBackground),
-			appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground),
-			appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground),
-		};
-		
-		this.foregrounds = new UIColorModel[defaultForegrounds.length];
-		for(int i = 0 ; i < this.foregrounds.length; i ++) {
-			this.foregrounds[i] = TGPropertiesUIUtil.getColorModelValue(context, properties, ("table.foreground." + i), defaultForegrounds[i]);
+		// (re)define colors (override defaults by user parameter if relevant)
+		if (this.colors!=null) {
+			for (int i=0; i<this.colors.length; i++) {
+				if (this.colors[i]!=null) {
+					this.colors[i].dispose();
+				}
+			}
 		}
-		
-		this.backgrounds = new UIColorModel[defaultBackgrounds.length];
-		for(int i = 0 ; i < this.backgrounds.length; i ++) {
-			this.backgrounds[i] = TGPropertiesUIUtil.getColorModelValue(context, properties, ("table.background." + i), defaultBackgrounds[i]);
+		this.colors = new UIColor[colorModels.length];
+		for (int i=0; i<colorModels.length; i++) {
+			if (colorProperties.get(i)==null) {
+				this.colors[i] = factory.createColor(colorModels[i]);
+			} else {
+				this.colors[i] = factory.createColor(TGPropertiesUIUtil.getColorModelValue(context, properties, colorProperties.get(i), colorModels[i]));
+			}
 		}
 	}
 	
-	public UIColor createForeground(TGContext context, int index) {
-		return TGApplication.getInstance(context).getFactory().createColor(this.foregrounds[index]);
-	}
-	
-	public UIColor createBackground(TGContext context, int index) {
-		return TGApplication.getInstance(context).getFactory().createColor(this.backgrounds[index]);
-	}
-	
-	public UIColor[] createForegrounds(TGContext context) {
-		UIColor[] colors = new UIColor[this.foregrounds.length];
-		for(int i = 0 ; i < this.foregrounds.length; i ++) {
-			colors[i] = this.createForeground(context, i);
-		}
-		return colors;
-	}
-	
-	public UIColor[] createBackgrounds(TGContext context) {
-		UIColor[] colors = new UIColor[this.backgrounds.length];
-		for(int i = 0 ; i < this.backgrounds.length; i ++) {
-			colors[i] = this.createBackground(context, i);
-		}
-		return colors;
+	public UIColor getColor(int colorIndex) {
+		if (colorIndex < 0 || colorIndex >= this.colors.length) return (this.colors[DEFAULT]);
+		return(this.colors[colorIndex]);
 	}
 }
