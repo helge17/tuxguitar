@@ -31,8 +31,8 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class TGChordSelector {
 	
 	public static final String[][] KEY_NAMES = new String[][]{
-		TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_CHORD),
-		TGMusicKeyUtils.getFlatKeyNames(TGMusicKeyUtils.PREFIX_CHORD),
+		TGMusicKeyUtils.sharpKeyNames,
+		TGMusicKeyUtils.flatKeyNames,
 	};
 	
 	private TGChordDialog dialog;

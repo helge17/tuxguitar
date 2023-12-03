@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
@@ -36,15 +37,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class MusicXMLWriter {
-	
-	private static final String[] NOTE_NAMES = new String[]{"C","D","E","F","G","A","B"};
-	
-	private static final int NOTE_SHARPS[] = new int[]{0,0,1,1,2,3,3,4,4,5,5,6};
-	
-	private static final int NOTE_FLATS[] = new int[]{0,1,1,2,2,3,4,4,5,5,6,6};
-	
-	private static final boolean[] NOTE_ALTERATIONS = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
-	
+
 	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
 	
 	private static final int DURATION_DIVISIONS = (int)TGDuration.QUARTER_TIME;
@@ -181,20 +174,27 @@ public class MusicXMLWriter {
 				this.writeTimeSignature(measureAttributes,measure.getTimeSignature());
 			}
 			if(tuningChanges){
-				this.writeTuning(measureAttributes, measure.getTrack());
+				this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
 			}
 		}
 	}
 	
-	private void writeTuning(Node parent, TGTrack track){
+	private void writeTuning(Node parent, TGTrack track, int keySignature){
 		Node staffDetailsNode = this.addNode(parent,"staff-details");
 		this.addNode(staffDetailsNode, "staff-lines", Integer.toString( track.stringCount() ));
 		for( int i = track.stringCount() ; i > 0 ; i --){
 			TGString string = track.getString( i );
 			Node stringNode = this.addNode(staffDetailsNode, "staff-tuning");
 			this.addAttribute(stringNode, "line", Integer.toString( (track.stringCount() - string.getNumber()) + 1 ) );
-			this.addNode(stringNode, "tuning-step", NOTE_NAMES[ NOTE_SHARPS[ (string.getValue() % 12) ] ] );
-			this.addNode(stringNode, "tuning-octave", Integer.toString(string.getValue() / 12) );
+			this.writeNote(stringNode, "tuning-", string.getValue(), keySignature);
+		}
+	}
+	
+	private void writeNote(Node parent, String prefix, int value, int keySignature) {
+		this.addNode(parent,prefix+"step", keySignature <= 7 ? TGMusicKeyUtils.sharpNoteShortName(value) : TGMusicKeyUtils.flatNoteShortName(value));
+		this.addNode(parent,prefix+"octave", String.valueOf(TGMusicKeyUtils.noteOctave(value)));
+		if(!TGMusicKeyUtils.isNaturalNote(value)){
+			this.addNode(parent,prefix+"alter", ( keySignature <= 7 ? "1" : "-1" ) );
 		}
 	}
 	
@@ -268,12 +268,7 @@ public class MusicXMLWriter {
 					int value = (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
 					
 					Node pitchNode = this.addNode(noteNode,"pitch");
-					this.addNode(pitchNode,"step",NOTE_NAMES[ (ks <= 7 ? NOTE_SHARPS[value % 12] : NOTE_FLATS[value % 12] )]);
-					this.addNode(pitchNode,"octave",Integer.toString(value / 12));
-					if(NOTE_ALTERATIONS[ value % 12 ]){
-						this.addNode(pitchNode,"alter", ( ks <= 7 ? "1" : "-1" ) );
-					}
-					
+					this.writeNote(pitchNode, "", value, ks);
 					Node technicalNode = this.addNode(this.addNode(noteNode, "notations"), "technical");
 					this.addNode(technicalNode,"fret", Integer.toString( note.getValue() ));
 					this.addNode(technicalNode,"string", Integer.toString( note.getString() ));

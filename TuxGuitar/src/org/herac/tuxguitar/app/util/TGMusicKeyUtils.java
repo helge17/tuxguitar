@@ -1,110 +1,60 @@
 package org.herac.tuxguitar.app.util;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-
 public class TGMusicKeyUtils {
-	
-	public static final String PREFIX_CHORD = "chord";
-	
-	public static final String PREFIX_SCALE = "scale";
-	
-	public static final String PREFIX_TUNING = "tuning";
-	
-	public static final String PREFIX_FRETBOARD = "fretboard";
-	
-	public static final String PREFIX_MATRIX = "matrix";
-	
-	private static final String[][] DEFAULT_KEY_NAMES = new String[][]{
-		{"C","C#","Cb"},
-		{"D","D#","Db"},
-		{"E","E#","Eb"},
-		{"F","F#","Fb"},
-		{"G","G#","Gb"},
-		{"A","A#","Ab"},
-		{"B","B#","Bb"}
-	};
-	
-	public static String[] getSharpKeyNames(String prefix){
-		return new TGMusicKeyNames(true,prefix).getNames();
-	}
-	
-	public static String[] getFlatKeyNames(String prefix){
-		return new TGMusicKeyNames(false,prefix).getNames();
-	}
-	
-	protected static void loadKeyNames(String[] names,String prefix,boolean sharp){
-		if(sharp){
-			loadSharpKeyNames(names, prefix);
-		}else{
-			loadFlatKeyNames(names, prefix);
-		}
-	}
-	
-	private static void loadSharpKeyNames(String[] names,String prefix){
-		names[0] = getName(prefix,0,0);
-		names[1] = getName(prefix,0,1);
-		names[2] = getName(prefix,1,0);
-		names[3] = getName(prefix,1,1);
-		names[4] = getName(prefix,2,0);
-		names[5] = getName(prefix,3,0);
-		names[6] = getName(prefix,3,1);
-		names[7] = getName(prefix,4,0);
-		names[8] = getName(prefix,4,1);
-		names[9] = getName(prefix,5,0);
-		names[10] = getName(prefix,5,1);
-		names[11] = getName(prefix,6,0);
-	}
-	
-	private static void loadFlatKeyNames(String[] names,String prefix){
-		names[0] = getName(prefix,0,0);
-		names[1] = getName(prefix,1,2);
-		names[2] = getName(prefix,1,0);
-		names[3] = getName(prefix,2,2);
-		names[4] = getName(prefix,2,0);
-		names[5] = getName(prefix,3,0);
-		names[6] = getName(prefix,4,2);
-		names[7] = getName(prefix,4,0);
-		names[8] = getName(prefix,5,2);
-		names[9] = getName(prefix,5,0);
-		names[10] = getName(prefix,6,2);
-		names[11] = getName(prefix,6,0);
-	}
-	
-	private static String getName(String prefix,int key,int signature){
-		String resource = ("key." + prefix + "." + key + "." + signature);
-		return TuxGuitar.getInstance().getLanguageManager().getProperty(resource, DEFAULT_KEY_NAMES[key][signature]);
-	}
-}
 
-class TGMusicKeyNames implements TGEventListener{
+	public static final int MIN_MIDI_NOTE = 12;		// C0
+	public static final int MAX_MIDI_NOTE = 127;	// G9, 7-bits limitation
+
+	public static final String sharpKeyNames[] = new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+	public static final String flatKeyNames[] = new String[] {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
 	
-	private boolean sharp;
-	private String prefix;
-	private String[] names;
+	private static boolean naturalNote[] = new boolean[] {true, false, true, false, true, true, false, true, false, true, false, true};
 	
-	public TGMusicKeyNames(boolean sharp,String prefix){
-		this.sharp = sharp;
-		this.prefix = prefix;
-		this.names = new String[12];
-		this.loadProperties();
-		
-		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
+	// note name, without octave, sharp alterations 
+	// e.g. 70 -> "A#"
+	public static String sharpNoteName(int midiNote) {
+		if (midiNote < MIN_MIDI_NOTE || midiNote > MAX_MIDI_NOTE) return null;
+		return sharpKeyNames[midiNote % 12];
 	}
 	
-	public String[] getNames(){
-		return this.names;
-	}
-	
-	public void loadProperties() {
-		TGMusicKeyUtils.loadKeyNames(this.names, this.prefix, this.sharp);
+	// note name, without octave, flat alterations
+	// e.g. 70 -> "Bb"
+	public static String flatNoteName(int midiNote) {
+		if (midiNote < MIN_MIDI_NOTE || midiNote > MAX_MIDI_NOTE) return null;
+		return flatKeyNames[midiNote % 12];
 	}
 
-	public void processEvent(TGEvent event) {
-		if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-			this.loadProperties();
-		}
+	// note name, without octave, sharp alterations omitted
+	// e.g. 70 -> "A"
+	public static String sharpNoteShortName(int midiNote) {
+		if (midiNote < MIN_MIDI_NOTE || midiNote > MAX_MIDI_NOTE) return null;
+		return sharpKeyNames[midiNote % 12].substring(0,1);
 	}
+	
+	// note name, without octave, flat alterations omitted
+	// e.g. 70 -> "B"
+	public static String flatNoteShortName(int midiNote) {
+		if (midiNote < MIN_MIDI_NOTE || midiNote > MAX_MIDI_NOTE) return null;
+		return flatKeyNames[midiNote % 12].substring(0,1);
+	}
+	
+	// note octave
+	// e.g. 69 -> 4
+	public static int noteOctave(int midiNote) {
+		if (midiNote < MIN_MIDI_NOTE || midiNote > MAX_MIDI_NOTE) return 0;
+		return (midiNote/12) - 1;
+	}
+	
+	// note name, with octave, sharp alterations
+	// e.g. 70 -> "A#4"
+	public static String sharpNoteFullName(int midiNote) {
+		if (midiNote < MIN_MIDI_NOTE || midiNote > MAX_MIDI_NOTE) return null;
+		return sharpNoteName(midiNote) + String.valueOf(noteOctave(midiNote));
+	}
+	
+	// returns true if in [A,B,C,D,E,F,G], else false (if A#/Bb, etc)
+	public static boolean isNaturalNote(int midiNote) {
+		return naturalNote[midiNote % 12];
+	}
+	
 }

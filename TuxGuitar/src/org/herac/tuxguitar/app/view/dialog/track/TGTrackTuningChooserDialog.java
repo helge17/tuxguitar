@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.view.dialog.track;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
+import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -44,14 +45,10 @@ public class TGTrackTuningChooserDialog {
 		final UIDropDownSelect<Integer> tuningValueControl = uiFactory.createDropDownSelect(panel);
 		tuningValueControl.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("tuning.value.select")));
 		
-		String[] tuningTexts = getValueLabels();
-		for(int value = 0 ; value < tuningTexts.length ; value ++) {
-			tuningValueControl.addItem(new UISelectItem<Integer>(tuningTexts[value], value));
+		for(int value = TGMusicKeyUtils.MIN_MIDI_NOTE ; value <= TGMusicKeyUtils.MAX_MIDI_NOTE ; value ++) {
+			tuningValueControl.addItem(new UISelectItem<Integer>(TGMusicKeyUtils.sharpNoteFullName(value), value));
 		}
 		
-		for (int i = 1; i <= 32; i++) {
-			tuningValueControl.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
-		}
 		tuningValueControl.setSelectedValue(model != null ? model.getValue() : null);
 		panelLayout.set(tuningValueControl, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
 
@@ -61,8 +58,8 @@ public class TGTrackTuningChooserDialog {
 		panelLayout.set(tuningSpinnerLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_RIGHT, false, true);
 
 		final UISpinner tuningValueSpinner = uiFactory.createSpinner(panel);
-		tuningValueSpinner.setMinimum(0);
-		tuningValueSpinner.setMaximum(tuningTexts.length - 1);
+		tuningValueSpinner.setMinimum(TGMusicKeyUtils.MIN_MIDI_NOTE);
+		tuningValueSpinner.setMaximum(TGMusicKeyUtils.MAX_MIDI_NOTE);
 		tuningValueSpinner.setValue(model != null ? model.getValue() : 0);
 		panelLayout.set(tuningValueSpinner, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
 
@@ -73,20 +70,20 @@ public class TGTrackTuningChooserDialog {
 		
 		final UIReadOnlyTextField tuningLabelControl = uiFactory.createReadOnlyTextField(panel);
 		if( model != null ) {
-			tuningLabelControl.setText(getValueLabel(model.getValue()));
+			tuningLabelControl.setText(TGMusicKeyUtils.sharpNoteName(model.getValue()));
 		}
 		panelLayout.set(tuningLabelControl, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
 		
 		tuningValueControl.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				tuningLabelControl.setText(getValueLabel(tuningValueControl.getSelectedValue()));
+				tuningLabelControl.setText(TGMusicKeyUtils.sharpNoteName(tuningValueControl.getSelectedValue()));
 				tuningValueSpinner.setValue(tuningValueControl.getSelectedValue());
 			}
 		});
 		tuningValueSpinner.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				tuningValueControl.setSelectedValue(tuningValueSpinner.getValue());
-				tuningLabelControl.setText(getValueLabel(tuningValueControl.getSelectedValue()));
+				tuningLabelControl.setText(TGMusicKeyUtils.sharpNoteName(tuningValueControl.getSelectedValue()));
 			}
 		});
 
@@ -134,11 +131,4 @@ public class TGTrackTuningChooserDialog {
 		return true;
 	}
 	
-	private String[] getValueLabels() {
-		return this.tuningDialog.getValueLabels();
-	}
-	
-	private String getValueLabel(Integer value) {
-		return this.tuningDialog.getValueLabel(value);
-	}
 }

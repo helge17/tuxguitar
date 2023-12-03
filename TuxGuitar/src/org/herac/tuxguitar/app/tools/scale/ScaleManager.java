@@ -17,7 +17,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class ScaleManager {
 	
-	private static final String[] KEY_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_SCALE);
+	private static final String[] KEY_NAMES = TGMusicKeyUtils.sharpKeyNames;
 	
 	private static final String KEY_SEPARATOR = ",";
 	
