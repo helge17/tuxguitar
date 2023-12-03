@@ -1,8 +1,5 @@
 package org.herac.tuxguitar.app.view.component.table;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.track.TGGoToTrackAction;
@@ -43,8 +40,6 @@ import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIResource;
 import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
@@ -59,8 +54,6 @@ public class TGTableViewer implements TGEventListener {
 	private UIScrollBarPanel composite;
 	private UIScrollBar hScroll;
 	private UIScrollBar vScroll;
-	private UIColor[] backgrounds;
-	private UIColor[] foregrounds;
 	private TrackMenu menu;
 	private TGTable table;
 	private TGProcess redrawProcess;
@@ -76,7 +69,6 @@ public class TGTableViewer implements TGEventListener {
 	private boolean update;
 	private boolean followScroll;
 	private boolean resetTexts;
-	private boolean resetColors;
 	
 	public TGTableViewer(TGContext context) {
 		this.context = context;
@@ -399,43 +391,23 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
-	private List<UIResource> resetColors() {
-		if( this.resetColors || this.backgrounds == null || this.foregrounds == null) {
-			this.resetColors = false;
-			
-			List<UIResource> disposableResources = new ArrayList<UIResource>();
-			if( this.backgrounds != null ) {
-				for(UIColor uiColor : this.backgrounds) {
-					disposableResources.add(uiColor);
-				}
-			}
-			if( this.foregrounds != null ) {
-				for(UIColor uiColor : this.foregrounds) {
-					disposableResources.add(uiColor);
-				}
-			}
-			
-			this.backgrounds = this.colorModel.createBackgrounds(this.context);
-			this.foregrounds = this.colorModel.createForegrounds(this.context);
-		}
-		return null;
-	}
-	
 	private void redrawRows(int selectedTrack) {
-		List<UIResource> disposableResources = this.resetColors();
-		
 		int rows = this.table.getRowCount();
 		for(int i = 0; i < rows; i ++){
 			TGTableRow row = this.table.getRow(i); 
 			row.getPainter().redraw();
 			if(this.selectedTrack != selectedTrack){
-				row.setBgColor( this.backgrounds[ ((selectedTrack - 1) == i) ? 2: ( i % 2 ) ] );
-				row.setFgColor( this.foregrounds[ ((selectedTrack - 1) == i) ? 2: ( i % 2 ) ] );
+				if (selectedTrack-1 == i) {
+					row.setBgColor(colorModel.getColor(TGTableColorModel.SELECTED_LINE_BACKGROUND));
+					row.setFgColor(colorModel.getColor(TGTableColorModel.SELECTED_LINE_FOREGROUND));
+				} else if (i % 2 == 0) {
+					row.setBgColor(colorModel.getColor(TGTableColorModel.ODD_LINE_BACKGROUND));
+					row.setFgColor(colorModel.getColor(TGTableColorModel.ODD_LINE_FOREGROUND));
+				} else {
+					row.setBgColor(colorModel.getColor(TGTableColorModel.EVEN_LINE_BACKGROUND));
+					row.setFgColor(colorModel.getColor(TGTableColorModel.EVEN_LINE_FOREGROUND));
+				}
 			}
-		}
-		
-		if( disposableResources != null ) {
-			this.disposeResources(disposableResources.toArray(new UIResource[disposableResources.size()]));
 		}
 	}
 	
@@ -501,7 +473,6 @@ public class TGTableViewer implements TGEventListener {
 	public void loadConfig() {
 		this.autoSizeEnabled = TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
 		this.colorModel.resetColors(this.context);
-		this.resetColors = true;
 		this.trackCount = 0;
 	}
 	
@@ -515,13 +486,6 @@ public class TGTableViewer implements TGEventListener {
 		this.menu.update();
 	}
 	
-	public void disposeColors() {
-		this.disposeResources(this.backgrounds);
-		this.disposeResources(this.foregrounds);
-		this.backgrounds = null;
-		this.foregrounds = null;
-	}
-	
 	public void disposeMenu() {
 		if( this.menu != null && !this.menu.isDisposed() ) {
 			this.menu.dispose();
@@ -529,17 +493,10 @@ public class TGTableViewer implements TGEventListener {
 		}
 	}
 	
-	public void disposeResources(UIResource[] resources) {
-		for(int i = 0; i < resources.length; i++){
-			resources[i].dispose();
-		}
-	}
-	
 	public void dispose(){
 		if(!this.isDisposed()){
 			this.getControl().dispose();
 			this.disposeMenu();
-			this.disposeColors();
 		}
 	}
 	

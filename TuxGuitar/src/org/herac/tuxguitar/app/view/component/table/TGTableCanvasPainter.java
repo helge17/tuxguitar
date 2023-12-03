@@ -5,13 +5,10 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.util.TGBeatRange;
 
 public class TGTableCanvasPainter {
-	
-	private static final UIColorModel COLOR_BLACK = new UIColorModel(0x00, 0x00, 0x00);
 	
 	private TGTableViewer viewer;
 	private TGTrack track;
@@ -29,8 +26,7 @@ public class TGTableCanvasPainter {
 		float width = row.getPainter().getBounds().getWidth();
 		boolean playing = TuxGuitar.getInstance().getPlayer().isRunning();
 		
-		UIColor colorBlack = this.viewer.getUIFactory().createColor(COLOR_BLACK);
-		UIColor colorBackground = this.viewer.getColorModel().createBackground(this.viewer.getContext(), 3);
+		UIColor colorBackground = this.viewer.getColorModel().getColor(TGTableColorModel.CELL_BACKGROUND);
 		
 		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
 		painter.setBackground(colorBackground);
@@ -40,8 +36,6 @@ public class TGTableCanvasPainter {
 		painter.closePath();
 		
 		UIColor trackColor = this.viewer.getUIFactory().createColor(this.track.getColor().getR(), this.track.getColor().getG(), this.track.getColor().getB());
-		painter.setBackground(trackColor);
-		painter.setForeground(trackColor);
 
 		TGLayout layout = viewer.getEditor().getTablature().getViewLayout();
 		TGBeatRange beatRange = viewer.getEditor().getTablature().getSelector().getBeatRange();
@@ -51,19 +45,20 @@ public class TGTableCanvasPainter {
 		for(int j = 0;j < count;j++){
 			TGMeasureImpl measure = (TGMeasureImpl) this.track.getMeasure(j);
 			if(isRestMeasure(measure)){
-				painter.initPath(UIPainter.PATH_DRAW);
-				painter.setAntialias(false);
-				painter.addRectangle(x, y, size - 2, size - 1);
-				painter.closePath();
+				painter.setBackground(viewer.getColorModel().getColor(TGTableColorModel.CELL_REST_MEASURE));
+				painter.setForeground(viewer.getColorModel().getColor(TGTableColorModel.CELL_REST_MEASURE));
 			}else{
-				painter.initPath(UIPainter.PATH_FILL);
-				painter.setAntialias(false);
-				painter.addRectangle(x,y,size - 1,size );
-				painter.closePath();
+				painter.setBackground(trackColor);
+				painter.setForeground(trackColor);
 			}
+			painter.initPath(UIPainter.PATH_FILL);
+			painter.setAntialias(false);
+			painter.addRectangle(x,y,size - 1,size );
+			painter.closePath();
+			
 			boolean hasCaret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().equals(measure);
 			if((playing && measure.isPlaying(this.viewer.getEditor().getTablature().getViewLayout())) || (!playing && hasCaret)){
-				painter.setBackground(colorBlack);
+				painter.setBackground(viewer.getColorModel().getColor(TGTableColorModel.CARET));
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
 				painter.addRectangle(x + 4, y + 4, size - 9, size - 8);
@@ -85,8 +80,6 @@ public class TGTableCanvasPainter {
 		}
 		
 		trackColor.dispose();
-		colorBackground.dispose();
-		colorBlack.dispose();
 	}
 	
 	private boolean isRestMeasure(TGMeasureImpl measure){
