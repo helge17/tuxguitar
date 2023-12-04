@@ -81,7 +81,6 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
-	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_MATRIX);
 	private static final MidiPercussionKey[] PERCUSSIONS = TuxGuitar.getInstance().getPlayer().getPercussionKeys();
 	private static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
@@ -383,7 +382,7 @@ public class TGMatrixEditor implements TGEventListener {
 					}
 					names = new String[this.maxNote - this.minNote + 1];
 					for(int i = 0; i < names.length;i ++){
-						names[i] = (NOTE_NAMES[ (this.maxNote - i) % 12] + ((this.maxNote - i) / 12 ) );
+						names[i] = TGMusicKeyUtils.sharpNoteFullName(this.maxNote-i);
 					}
 				}
 				

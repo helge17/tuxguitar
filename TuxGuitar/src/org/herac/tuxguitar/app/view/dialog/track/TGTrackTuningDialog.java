@@ -30,11 +30,8 @@ import org.herac.tuxguitar.ui.widget.*;
 
 public class TGTrackTuningDialog {
 
-	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_TUNING);
 	private static final float MINIMUM_BUTTON_WIDTH = 80;
 	private static final float MINIMUM_BUTTON_HEIGHT = 25;
-	private static final int MAX_OCTAVES = 10;
-	private static final int MAX_NOTES = 12;
 
 	private TGViewContext context;
 	private UIWindow dialog;
@@ -214,7 +211,7 @@ public class TGTrackTuningDialog {
 			if( i > 0 ) {
 				label.append(" ");
 			}
-		label.append(getValueLabel(values[values.length - i - 1]));
+		label.append(TGMusicKeyUtils.sharpNoteName(values[values.length - i - 1]));
 		}
 		return label.toString();
 	}
@@ -694,8 +691,8 @@ public class TGTrackTuningDialog {
 		this.tuningTable.removeItems();
 		for(TGTrackTuningModel model : this.tuning) {
 			UITableItem<TGTrackTuningModel> item = new UITableItem<TGTrackTuningModel>(model);
-			item.setText(0, this.getValueLabel(model.getValue()));
-			item.setText(1, this.getValueLabel(model.getValue(), true));
+			item.setText(0, TGMusicKeyUtils.sharpNoteName(model.getValue()));
+			item.setText(1, TGMusicKeyUtils.sharpNoteFullName(model.getValue()));
 			
 			this.tuningTable.addItem(item);
 		}
@@ -827,30 +824,6 @@ public class TGTrackTuningDialog {
 			}
 		}
 		return false;
-	}
-	
-	public String[] getValueLabels() {
-		String[] valueNames = new String[MAX_NOTES * MAX_OCTAVES];
-		for (int i = 0; i < valueNames.length; i++) {
-			valueNames[i] = this.getValueLabel(i, true);
-		}
-		return valueNames;
-	}
-	
-	public String getValueLabel(Integer value) {
-		return this.getValueLabel(value, false);
-	}
-	
-	private String getValueLabel(Integer value, boolean octave) {
-		StringBuilder sb = new StringBuilder();
-		if( value != null ) {
-			sb.append(NOTE_NAMES[value % NOTE_NAMES.length]);
-			
-			if( octave ) {
-				sb.append(value / MAX_NOTES);
-			}
-		}
-		return sb.toString();
 	}
 	
 	private TGSongManager findSongManager() {

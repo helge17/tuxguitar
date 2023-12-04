@@ -51,7 +51,6 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGTrackPropertiesDialog implements TGEventListener {
 	
-	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_TUNING);
 	private static final float MINIMUM_LEFT_CONTROLS_WIDTH = 180;
 	private static final float MINIMUM_BUTTON_WIDTH = 80;
 	private static final float MINIMUM_BUTTON_HEIGHT = 25;
@@ -259,7 +258,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			if( i > 0 ) {
 				label.append(" ");
 			}
-			label.append(NOTE_NAMES[tuning.get(tuning.size() - i - 1).getValue() % NOTE_NAMES.length]);
+			label.append(TGMusicKeyUtils.sharpNoteName(tuning.get(tuning.size() - i - 1).getValue()));
 		}
 		
 		boolean enabled = !this.isPercussionChannel();

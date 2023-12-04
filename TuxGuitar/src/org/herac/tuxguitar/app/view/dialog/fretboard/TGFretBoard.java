@@ -61,7 +61,6 @@ public class TGFretBoard {
 	public static final int BOTTOM_SPACING = 10;
 	
 	private static final int STRING_SPACING = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.FRETBOARD_STRING_SPACING);
-	private static final String[] NOTE_NAMES = TGMusicKeyUtils.getSharpKeyNames(TGMusicKeyUtils.PREFIX_FRETBOARD);
 	
 	private TGContext context;
 	private TGFretBoardConfig config;
@@ -414,7 +413,7 @@ public class TGFretBoard {
 					int y = this.strings[i];
 					
 					if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_SCALE) != 0 ){
-						paintKeyText(painter,this.config.getColorScale(),x,y,NOTE_NAMES[noteIndex]);
+						paintKeyText(painter,this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteIndex));
 					}
 					else{
 						paintKeyOval(painter,this.config.getColorScale(),x,y);
@@ -446,7 +445,7 @@ public class TGFretBoard {
 						
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNote(), x, y, NOTE_NAMES[ (realValue % 12) ]);
+							paintKeyText(painter,this.config.getColorNote(), x, y, TGMusicKeyUtils.sharpNoteName(realValue));
 						}
 						else{
 							paintKeyOval(painter,this.config.getColorNote(), x, y);
