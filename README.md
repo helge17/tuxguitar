@@ -16,7 +16,6 @@ TuxGuitar includes the following third party products:
 
 * SWT version: SWT (Standard Widget Toolkit): https://www.eclipse.org/swt/
 * JFX version: JavaFX (Java client application platform): https://openjfx.io/
-* QT version: QtJambi (Java Bindings for Qt): https://www.qtjambi.io/
 * Gervill (Software Synthesizer): https://gervill.dev.java.net/
 * iText (Free Java-PDF library): https://itextpdf.com/
 * Magic Sound Font v2.0 - Contributed by Dennis Deutschmann

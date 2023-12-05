@@ -53,14 +53,14 @@ $ cd tuxguitar
 The Debian version must start with a number:
 
 ```sh
-$ sed -i "s/SNAPSHOT/9.99-snapshot/" build-scripts/tuxguitar-linux-swt-x86_64-deb/src/resources/DEBIAN/control
+$ sed -i "s/SNAPSHOT/9.99-snapshot/" desktop/build-scripts/tuxguitar-linux-swt-x86_64-deb/src/resources/DEBIAN/control
 ```
 
 For the (outdated) VST plugin you need some additional header files:
 
 ```sh
-$ mkdir build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
-$ cd build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
+$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
+$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
 $ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
     wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
   done
@@ -70,7 +70,7 @@ $ cd -
 ### Build and install
 
 ```sh
-$ cd build-scripts/tuxguitar-linux-swt-x86_64-deb
+$ cd desktop/build-scripts/tuxguitar-linux-swt-x86_64-deb
 $ mvn -e clean verify -P native-modules
 $ sudo dpkg -i target/tuxguitar-*.deb
 ```
@@ -90,7 +90,7 @@ On Non-Debian-based systems install the prerequisites using your package manager
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd build-scripts/tuxguitar-linux-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-linux-swt-x86_64
 $ mvn -e clean verify -P native-modules
 ```
 
@@ -129,8 +129,8 @@ Same as for Debian (see above).
 Download the VST header files:
 
 ```sh
-$ mkdir build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ cd build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
+$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
+$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
 $ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
     wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
   done
@@ -142,11 +142,11 @@ $ cd -
 As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
 
 ```sh
-$ cd build-scripts/tuxguitar-windows-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-windows-swt-x86_64
 $ mvn -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
 ```
 
-The Windows application is now located in the `build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
+The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
 
 To start TuxGuitar you need a Java Runtime Environment. You can get the one from [portableapps.com](https://portableapps.com/apps/utilities/OpenJDK64) and extract it to a subfolder named `jre`. Then you should be able to start TuxGuitar by double-clicking on `tuxguitar.exe` or `tuxguitar.bat`.
 
@@ -178,11 +178,11 @@ Same as for Debian (see above).
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
+$ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
 $ mvn -e clean verify
 ```
 
-The application is now located in the `build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
+The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
 
 ## Build on FreeBSD
 
@@ -207,7 +207,7 @@ Same as for Debian (see above).
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd build-scripts/tuxguitar-freebsd-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-freebsd-swt-x86_64
 $ mvn -e clean verify -P native-modules
 ```
 

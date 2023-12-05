@@ -5,9 +5,9 @@ target/
 *.bin
 **/jni/*.dll
 **/jni/*.so
-build-scripts/native-modules/tuxguitar-synth-vst-*/include/
+desktop/build-scripts/native-modules/tuxguitar-synth-vst-*/include/
 .classpath
 .settings/
 .project
-build-scripts/tuxguitar-android/local.properties
-build-scripts/tuxguitar-android/.idea/
+android/build-scripts/tuxguitar-android/local.properties
+android/build-scripts/tuxguitar-android/.idea/
