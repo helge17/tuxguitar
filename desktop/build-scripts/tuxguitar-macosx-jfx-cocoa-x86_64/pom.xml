@@ -25,7 +25,7 @@
 		<module>../../TuxGuitar-ui-toolkit-jfx</module>
 		<module>../../../common/TuxGuitar-lib</module>
 		<module>../../../common/TuxGuitar-editor-utils</module>
-		<module>../../TuxGuitar-gm-utils</module>
+		<module>../../../common/TuxGuitar-gm-utils</module>
 		<module>../../TuxGuitar-ascii</module>
 		<module>../../TuxGuitar-browser-ftp</module>
 		<module>../../../common/TuxGuitar-compat</module>

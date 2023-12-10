@@ -90,7 +90,7 @@ if [ "$#" -lt 1 ]; then
 fi
 
 # Check if we are in the TuxGuitar source directory
-if [ ! -e pom.xml ] || [ ! -d TuxGuitar ] || [ ! -d build-scripts ]; then
+if [ ! -e desktop/pom.xml ] || [ ! -d desktop/TuxGuitar ] || [ ! -d desktop/build-scripts ] || [ ! -d android/build-scripts ]; then
   echo "$COMMAND must be started in the TuxGuitar source directory!"
   echo
   exit 1
@@ -140,26 +140,14 @@ if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
 fi
 
 echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
-  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
-  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
+  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
+  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
 echo "# OK."
 
 echo -e "\n# Change build version from SNAPSHOT to $TGVERSION in config files..."
   find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name control -or -name Info.plist \) -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
-  sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
-echo "# OK."
-
-echo -e "\n# Remove some files and directories to find out if they are needed to build TuxGuitar..."
-  rm -rf TuxGuitar-android-gdrive-gdaa
-  rm -rf TuxGuitar-android-midimaster*
-  #rm -rf TuxGuitar-AudioUnit
-  rm -rf TuxGuitar-abc
-  rm -rf TuxGuitar-community
-  rm -rf TuxGuitar-CoreAudio
-  rm -rf TuxGuitar-midi-input
-  rm -rf TuxGuitar-ui-toolkit-qt5
-  rm -rf TuxGuitar-viewer
+  sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."
 
 echo $TGVERSION > .build-version
@@ -266,7 +254,7 @@ install_eclipse_swt
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ...\n"
-  cd build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH-deb
+  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH-deb
   mvn --batch-mode -e clean verify -P native-modules
   cp -a target/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb $DIST_DIR
   cd - > /dev/null
@@ -274,7 +262,7 @@ for GUI_TK in swt jfx; do
   cd $DIST_DIR
   fakeroot alien --verbose --keep-version --scripts --to-rpm tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb
   cd - > /dev/null
-  tar --owner=root --group=root --directory=build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
+  tar --owner=root --group=root --directory=desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package done.\n"
 done
 
@@ -303,18 +291,18 @@ install_eclipse_swt
 get_java_win
 
 # Copy Java to get it integrated in the ZIP & INSTALL packages
-rm -rf build-scripts/common-resources/common-windows/jre
-cp -ai $SW_DIR/$PA_JAVA build-scripts/common-resources/common-windows/jre
+rm -rf desktop/build-scripts/common-resources/common-windows/jre
+cp -ai $SW_DIR/$PA_JAVA desktop/build-scripts/common-resources/common-windows/jre
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ..."
-  cd build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
+  cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
   # As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
   mvn --batch-mode -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
   cp -a target/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH-installer.exe $DIST_DIR
   cd - > /dev/null
   (
-    cd build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH/target
+    cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH/target
     zip -r $DIST_DIR/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH.zip tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH
   )
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL done.\n"
@@ -345,7 +333,7 @@ install_eclipse_jfx
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
-  cd build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
+  cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
   mvn --batch-mode -e clean verify -P native-modules
 
   # Copy local JFX libs into TAR.GZ package
@@ -380,7 +368,7 @@ install_eclipse_swt
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ..."
-  cd build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
+  cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
   mvn --batch-mode -e clean verify
 
   # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
@@ -410,7 +398,7 @@ function build_tg_for_android {
 #   $ANDROID_HOME/jre/bin/keytool -genkeypair -keyalg RSA -dname 'CN=helge17' -v -keystore github_helge17_apk-sign.keystore -storepass:file github_helge17_apk-sign.storepass -validity 36500 -alias tuguitar
 
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
-cd build-scripts/tuxguitar-android
+cd android/build-scripts/tuxguitar-android
 export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
 # Build did not work with the default Java version 17 from Debian 12 (Bookworm), but with Java 11 from Debian 11 (Bullseye)
 JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
