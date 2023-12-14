@@ -1,0 +1,111 @@
+body#md {
+    position: absolute;
+    font-family: sans-serif;
+    left: 20px;
+    right: 0px;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    color: #222222;
+    font-size: medium;
+    padding-right: 20px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.md a:link, .md a:visited {
+    font-family: inherit;
+    color: #154374;
+    text-decoration: none;
+}
+
+.md .longTOC {
+    width: 170px;
+    display: block;
+    border-right: 3px solid #154374;
+    overflow-y:scroll;
+    font-size: small;
+    font-family: inherit;
+    background: #FFF;
+    
+    position: absolute;
+    top: 90px;
+    left:-190px;
+    bottom:0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.scrolled .md .longTOC {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    border-left: 10px solid #fff; 
+}
+
+
+/* no numbering of headings */
+.md h1:before, .md h2:before, .md h3:before, .md h4:before, .md h5:before, .md h6:before { content: none; }
+
+.md .longTOC a {
+    color: #000;
+}
+
+.md .tocHeader, .md .tocNumber {
+    display: none;
+}
+
+.md a,
+.md div.title, contents, .md .tocHeader,
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6,
+.md .nonumberh1, .md .nonumberh2, .md .nonumberh3, .md .nonumberh4, .md .nonumberh5, .md .nonumberh6,
+.md .shortTOC, .md .mediumTOC, .md .longTOC {
+    font-family: inherit;
+}
+
+
+.md div.title, .md h1, .md h2, .md h3, .md h4 {
+    font-family: inherit;
+    font-weight: 800;
+}
+
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+    color: #154374;
+    border-color: inherit;
+}
+
+.md h2, .md h3, .md h4 {
+    border: none;
+}
+
+.md .tocTop {
+    display: inline;
+}
+
+.md div.title, .md div.subtitle {
+    text-align: left;
+}
+
+.md div.title {
+    position: absolute;
+    top: -14px;
+    left:-20px;
+    right: 0px;
+    font-weight: 900;
+    padding-left: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-shadow: 0px 0px 5px #ffffff;
+    background-color: #154374;
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: contain;
+    color: #fff;
+    font-size: 45px;
+    z-index: 10;
+}
+
+.md div.afterTitles {
+    height: 90px;
+}
