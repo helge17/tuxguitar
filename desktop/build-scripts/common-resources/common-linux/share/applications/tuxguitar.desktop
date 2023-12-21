@@ -1,10 +1,15 @@
 [Desktop Entry]
 Name=TuxGuitar
 GenericName=Guitar Tablature Editor
-Comment=Edit, playback guitar tablatures
-Comment[fr]=Edite, joue des tablatures de guitare
-Comment[es]=Edita, reproduce tablaturas de guitarra
+GenericName[fr]=Editeur de tablature de guitare
+GenericName[es]=Editor de tablaturas de guitarra
+GenericName[de]=Editor für Gitarren-Tabulaturen
+GenericName[it]=Editor per tablature di chitarra
+Comment=Edit and playback guitar tablatures
+Comment[fr]=Edite et joue des tablatures de guitare
+Comment[es]=Edita y reproduce tablaturas de guitarra
 Comment[de]=Bearbeiten und abspielen von Gitarren-Tabulaturen
+Comment[it]=Modifica e riproduci tablature di chitarra
 Keywords=Guitar Pro;MIDI
 Type=Application
 MimeType=audio/x-tuxguitar;audio/x-gtp;audio/x-ptb
