@@ -21,6 +21,9 @@ public abstract class TGChannel {
 	public static final short DEFAULT_PHASER = 0;
 	public static final short DEFAULT_TREMOLO = 0;
 	
+	public static final short MIN_VOLUME = 0;
+	public static final short MAX_VOLUME = 127;
+	
 	private int channelId;
 	private short bank;
 	private short program;

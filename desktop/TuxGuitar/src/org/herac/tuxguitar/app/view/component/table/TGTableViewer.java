@@ -41,6 +41,7 @@ import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.widget.UIContainer;
+import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 import org.herac.tuxguitar.ui.widget.UIWindow;
@@ -51,7 +52,10 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGTableViewer implements TGEventListener {
 	
 	private TGContext context;
-	private UIScrollBarPanel composite;
+	private UIPanel composite;
+	private UIScrollBarPanel trackTableComposite;
+	private UIScrollBarPanel volumeComposite;
+	private TGTableMixer mixer;
 	private UIScrollBar hScroll;
 	private UIScrollBar vScroll;
 	private TrackMenu menu;
@@ -84,7 +88,19 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	public void init(UIContainer parent, boolean visible){
-		this.composite = this.getUIFactory().createScrollBarPanel(parent, true, true, true);
+		this.composite = this.getUIFactory().createPanel(parent, false);
+		UITableLayout uiLayout = new UITableLayout();
+		this.composite.setLayout(uiLayout);
+		
+		// volume controls
+		this.volumeComposite = this.getUIFactory().createScrollBarPanel(this.composite, true, false, false);
+		uiLayout.set(volumeComposite, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_FILL, false, true, 1, 1, null, null, 0f);
+		volumeComposite.setLayout(new UIScrollBarPanelLayout(false, true, false, true, false, true));
+		this.mixer = new TGTableMixer(this.volumeComposite, this.getUIFactory(), context);
+		
+		// track table
+		this.trackTableComposite = this.getUIFactory().createScrollBarPanel(this.composite, true, true, true);
+		uiLayout.set(this.trackTableComposite, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		this.addColorModel();
 		this.loadConfig();
 		this.addLayout();
@@ -95,11 +111,11 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	private void addLayout(){
-		getControl().setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, false));
+		this.trackTableComposite.setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, true));
 	}
 	
 	private void addHScroll(){
-		this.hScroll = getControl().getHScroll();
+		this.hScroll = this.trackTableComposite.getHScroll();
 		this.hScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTableViewer.this.redrawProcess.process();
@@ -108,17 +124,24 @@ public class TGTableViewer implements TGEventListener {
 	}
 	
 	private void addVScroll(){
-		this.vScroll = getControl().getVScroll();
+		this.vScroll = this.trackTableComposite.getVScroll();
 		this.vScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGTableViewer.this.getControl().layout();
+				TGTableViewer.this.trackTableComposite.layout();
+			}
+		});
+		
+		this.volumeComposite.getVScroll().addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGTableViewer.this.volumeComposite.layout();
 			}
 		});
 	}
 	
 	private void addTable(){
 		UIMouseUpListener listener = mouseFocusListener();
-		this.table = new TGTable(this.context, this, getControl());
+		this.table = new TGTable(this.context, this, this.trackTableComposite);
 		this.table.getColumnNumber().getControl().addMouseUpListener(listener);
 		this.table.getColumnSoloMute().getControl().addMouseUpListener(listener);
 		this.table.getColumnName().getControl().addMouseUpListener(listener);
@@ -222,6 +245,7 @@ public class TGTableViewer implements TGEventListener {
 			this.updateTableMenu();
 			
 			TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
+			this.mixer.update(song);
 			int count = song.countTracks();
 			this.table.removeRowsAfter(count);
 			for(int i = this.table.getRowCount(); i < count; i ++){
@@ -324,15 +348,18 @@ public class TGTableViewer implements TGEventListener {
 	private boolean resizeTable(int trackCount) {
 		UIWindow uiWindow = TGWindow.getInstance(this.context).getWindow();
 		if(!this.autoSizeEnabled ) {
-			Float packedHeight = uiWindow.getLayout().get(this.getControl(), UITableLayout.PACKED_HEIGHT);
+			Float packedHeight = this.composite.getLayout().get(this.trackTableComposite, UITableLayout.PACKED_HEIGHT);
 			if( packedHeight == null ) {
-				uiWindow.getLayout().set(this.getControl(), UITableLayout.PACKED_HEIGHT, 150f);
+				uiWindow.getLayout().set(this.composite, UITableLayout.PACKED_HEIGHT, 150f);
 				uiWindow.layout();
 				return true;
 			}
 		}
 		else if(this.trackCount != trackCount){
-			uiWindow.getLayout().set(this.getControl(), UITableLayout.PACKED_HEIGHT, null);
+			float tableHeight = this.composite.getLayout().computePackedSize(this.trackTableComposite).getHeight();
+			// arbitrary margin (for scroll bar)
+			tableHeight += 12.0;
+			uiWindow.getLayout().set(this.composite, UITableLayout.PACKED_HEIGHT, tableHeight);
 			uiWindow.layout();
 			return true;
 		}
@@ -428,7 +455,7 @@ public class TGTableViewer implements TGEventListener {
 				this.followHorizontalScroll(getEditor().getTablature().getCaret().getMeasure().getNumber(), 0);
 				this.followScroll = false;
 			}
-			getControl().redraw();
+			this.trackTableComposite.redraw();
 		}
 	}
 	
@@ -476,7 +503,7 @@ public class TGTableViewer implements TGEventListener {
 		this.trackCount = 0;
 	}
 	
-	public UIScrollBarPanel getControl() {
+	public UIPanel getControl() {
 		return this.composite;
 	}
 	
@@ -564,7 +591,7 @@ public class TGTableViewer implements TGEventListener {
 		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItems();
 			this.updateMenuItemsProcess.process();
-		}else if( type == TGUpdateEvent.SONG_UPDATED ){
+		}else if( (type == TGUpdateEvent.SONG_UPDATED) || (type == TGUpdateEvent.VOLUME_CHANGED) ){
 			this.fireUpdate( false );
 		}else if( type == TGUpdateEvent.SONG_LOADED ){
 			this.fireUpdate( true );
@@ -595,7 +622,7 @@ public class TGTableViewer implements TGEventListener {
 	}
 
 	public void updateVisibility(boolean visible) {
-		this.composite.setVisible(visible);
+		getControl().setVisible(visible);
 		TGWindow window = TGWindow.getInstance(context);
 		window.getTableDivider().setVisible(visible);
 		window.getWindow().layout();
@@ -606,7 +633,7 @@ public class TGTableViewer implements TGEventListener {
 	}
 
 	public boolean isVisible() {
-		return this.composite.isVisible();
+		return getControl().isVisible();
 	}
 
 }
