@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
+import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -22,6 +23,7 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 	private UIToolActionItem next;
 	private UIToolActionItem stop;
 	private UIToolActionItem play;
+	private UIToolActionItem mode;
 	private int status;
 	
 	public TGMainToolBarSectionTransport(TGMainToolBar toolBar) {
@@ -47,6 +49,9 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 		this.last = this.getToolBar().getControl().createActionItem();
 		this.last.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGGoLastMeasureAction.NAME));
 		
+		this.mode = this.getToolBar().getControl().createActionItem();
+		this.mode.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGOpenTransportModeDialogAction.NAME));
+
 		this.status = STATUS_STOPPED;
 		this.loadIcons();
 		this.loadProperties();
@@ -63,6 +68,7 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 		this.last.setToolTipText(this.getText("transport.last"));
 		this.previous.setToolTipText(this.getText("transport.previous"));
 		this.next.setToolTipText(this.getText("transport.next"));
+		this.mode.setToolTipText(this.getText("transport.mode"));
 	}
 	
 	public void loadIcons(){
@@ -108,5 +114,6 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 				this.play.setToolTipText(this.getText("transport.start"));
 			}
 		}
+		this.mode.setImage(this.getIconManager().getTransportMode());
 	}
 }
