@@ -155,6 +155,10 @@ label #cancel {
   transition: all .5s;
 }
 
+.title::-webkit-scrollbar {
+  display: none;
+}
+
 section {
   position: fixed;
   top: 46px;
