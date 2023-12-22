@@ -5,6 +5,8 @@ import java.util.List;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.editor.event.TGUpdateEvent;
+import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
@@ -35,6 +37,7 @@ public class TGUpdateChannelAction extends TGActionBase{
 		TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGChannel channel = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL);
 		TGChannel channelClone = channel.clone(songManager.getFactory());
+		short oldVolume = channel.getVolume();
 		
 		channelClone.setBank(((Short) findAttribute(context, ATTRIBUTE_BANK, Short.valueOf(channel.getBank()))).shortValue());
 		channelClone.setProgram(((Short) findAttribute(context, ATTRIBUTE_PROGRAM, Short.valueOf(channel.getProgram()))).shortValue());
@@ -55,6 +58,10 @@ public class TGUpdateChannelAction extends TGActionBase{
 		}
 		
 		songManager.updateChannel(song, channelClone);
+		
+		if (oldVolume != channelClone.getVolume()) {
+			TGEventManager.getInstance(getContext()).fireEvent(new TGUpdateEvent(TGUpdateEvent.VOLUME_CHANGED, getContext()));
+		}
 	}
 	
 	private Object findAttribute(TGActionContext context, String attribute, Object defaultValue) {

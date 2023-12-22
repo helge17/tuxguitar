@@ -14,6 +14,7 @@ public class TGUpdateEvent extends TGEvent {
 	public static final int SONG_LOADED = 4;
 	public static final int SONG_SAVED = 5;
 	public static final int CUSTOM_TEMPLATE_CHANGED = 6;
+	public static final int VOLUME_CHANGED = 7;
 	
 	public TGUpdateEvent(int updateMode, TGAbstractContext context) {
 		super(EVENT_TYPE, context);

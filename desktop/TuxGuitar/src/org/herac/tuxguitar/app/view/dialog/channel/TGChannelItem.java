@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
+import org.herac.tuxguitar.app.util.TGContinuousControl;
+import org.herac.tuxguitar.app.util.TGContinousControlSelectionListener;
 import org.herac.tuxguitar.player.base.MidiInstrument;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -26,7 +28,7 @@ import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGChannelItem {
+public class TGChannelItem implements TGContinuousControl{
 	
 	private static final int MINIMUM_KNOB_VALUE = 0;
 	private static final int MAXIMUM_KNOB_VALUE = 127;
@@ -145,11 +147,11 @@ public class TGChannelItem {
 		controllerScalesComposite.setLayout(controllerScalesLayout);
 		col3Layout.set(controllerScalesComposite, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, false, true, 1, 1, null, null, 0f);
 		
-		TGKnobSelectionListener scaleSelectionListener = new TGKnobSelectionListener(this);
+		TGContinousControlSelectionListener scaleSelectionListener = new TGContinousControlSelectionListener(this);
 		
 		this.volumeScale = uiFactory.createKnob(controllerScalesComposite);
-		this.volumeScale.setMinimum(MINIMUM_KNOB_VALUE);
-		this.volumeScale.setMaximum(MAXIMUM_KNOB_VALUE);
+		this.volumeScale.setMinimum(TGChannel.MIN_VOLUME);
+		this.volumeScale.setMaximum(TGChannel.MAX_VOLUME);
 		this.volumeScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.volumeScale.addSelectionListener(scaleSelectionListener);
 		controllerScalesLayout.set(this.volumeScale, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
@@ -368,6 +370,10 @@ public class TGChannelItem {
 		if(!this.isDisposed()) {
 			this.getComposite().dispose();
 		}
+	}
+	
+	public void doActionWhenStable() {
+		this.updateChannel(false);
 	}
 	
 	public void updateChannel(boolean percussionChanged){
