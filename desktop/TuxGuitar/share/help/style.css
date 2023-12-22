@@ -10,7 +10,7 @@
 }
 
 .header {
-  position: fixed;
+  position: absolute;
   width: 250px;
   height: 46px;
   left: -250px;
@@ -22,7 +22,7 @@
 }
 
 .sidebar {
-  position: fixed;
+  position: absolute;
   width: 250px;
   height: calc(100vh - 46px);
   top: 46px;
@@ -94,7 +94,7 @@ ul li:hover a {
 
 label #hamburger,
 label #cancel {
-  position: fixed;
+  position: absolute;
   top: 5px;
   width: 35px;
   border-radius: 3px;
@@ -144,7 +144,7 @@ label #cancel {
 }
 
 .title {
-  position: fixed;
+  position: absolute;
   left: 50px;
   width: calc(100vw - 50px);
   height: 43px;
@@ -160,7 +160,7 @@ label #cancel {
 }
 
 section {
-  position: fixed;
+  position: absolute;
   top: 46px;
   width: calc(100vw - 40px);
   height: calc(100vh - 86px);
@@ -212,7 +212,7 @@ img {
 }
 
 td.left {
-  min-width: 300px;
+  min-width: 250px;
 }
 
 td.right {
