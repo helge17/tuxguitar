@@ -106,4 +106,6 @@ public class TGConfigKeys {
 	public static final String STYLE_LOOP_MARKER_SPACING = "style.loopMarkerSpacing";
 	public static final String STYLE_LINE_WIDTHS = "style.lineWidths";
 	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
+	
+	public static final String HOMEPAGE_URL = "homepage.url";
 }
