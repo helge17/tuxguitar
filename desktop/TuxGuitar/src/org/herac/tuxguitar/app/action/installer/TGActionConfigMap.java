@@ -49,6 +49,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import org.herac.tuxguitar.app.action.impl.help.TGHelpGoHomeAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
@@ -624,6 +625,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGToggleTableViewerAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenDocumentationDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenAboutDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGHelpGoHomeAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 	}
 	
 	private void map(String actionId, int flags) {

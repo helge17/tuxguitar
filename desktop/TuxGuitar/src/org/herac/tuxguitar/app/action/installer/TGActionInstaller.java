@@ -50,6 +50,7 @@ import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import org.herac.tuxguitar.app.action.impl.help.TGHelpGoHomeAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import org.herac.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
 import org.herac.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
@@ -558,6 +559,7 @@ public class TGActionInstaller {
 		
 		installAction(new TGOpenDocumentationDialogAction(context));
 		installAction(new TGOpenAboutDialogAction(context));
+		installAction(new TGHelpGoHomeAction(context));
 	}
 	
 	public void installAction(TGActionBase action) {

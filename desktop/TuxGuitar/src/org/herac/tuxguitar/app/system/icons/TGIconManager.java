@@ -33,6 +33,7 @@ public class TGIconManager {
 	private UIImage editModeEditionNotNatural;
 	private UIImage helpDoc;
 	private UIImage helpAbout;
+	private UIImage goHome;
 	private UIImage layoutPage;
 	private UIImage layoutLinear;
 	private UIImage layoutMultitrack;
@@ -269,6 +270,7 @@ public class TGIconManager {
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
 		this.helpDoc = loadIcon("help_doc.png");
 		this.helpAbout = loadIcon("help_about.png");
+		this.goHome = loadIcon("browser_root.png");
 		this.appIcon = loadIcon("icon.png");
 		this.appSplash = loadIcon("splash.png");
 		this.aboutDescription = loadIcon("about_description.png");
@@ -634,6 +636,10 @@ public class TGIconManager {
 
 	public UIImage getHelpAbout() {
 		return this.helpAbout;
+	}
+	
+	public UIImage getGoHome() {
+		return this.goHome;
 	}
 
 	public UIImage getEffectAccentuated() {
