@@ -79,6 +79,9 @@ task generateSources {
 	plugins.each { String plugin ->
 		fileNames.add('../../../' + plugin + '/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
 	}
+	plugins_common.each { String plugin ->
+		fileNames.add('../../../../common/' + plugin + '/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
+	}
 	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin');
  	file.getParentFile().mkdirs()
  	file.text = files(fileNames).collect{it.getText()}.join("\n")
