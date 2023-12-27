@@ -5,14 +5,15 @@ use File::Basename;
 use feature "switch";
 
 $COMMAND=basename($0);
+$SCRIPT_DIR=dirname($0);
 
 if (!getopts('h') || $opt_h) {
 
   print "\n#\n";
   print "# This script extracts the messages in all languages from the desktop version in\n";
-  print "#  desktop/TuxGuitar/share/lang/messages_*.properties\n";
+  print "#  $SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages_*.properties\n";
   print "# and writes them to the Android message files in\n";
-  print "#  android/TuxGuitar-android/res/values-b+*/strings.xml\n";
+  print "#  $SCRIPT_DIR/../android/TuxGuitar-android/res/values-b+*/strings.xml\n";
   print "#\n";
   print "# Usage: $COMMAND [OPTIONS]\n";
   print "#\n";
@@ -32,8 +33,8 @@ if (!getopts('h') || $opt_h) {
 STDOUT->autoflush(1);
 
 # https://developer.android.com/training/basics/supporting-devices/languages
-my $msgs_en_android="android/TuxGuitar-android/res/values/strings.xml";
-my $msgs_en_desktop="desktop/TuxGuitar/share/lang/messages.properties";
+my $msgs_en_android="$SCRIPT_DIR/../android/TuxGuitar-android/res/values/strings.xml";
+my $msgs_en_desktop="$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages.properties";
 
 open(MSGS_EN_ANDROID, "<", $msgs_en_android) or die "\n** $msgs_en_android: $!.\n\n";
 open(MSGS_EN_DESKTOP, "<", $msgs_en_desktop) or die "\n** $msgs_en_desktop: $!.\n\n";
@@ -120,18 +121,18 @@ print "\nOK.\n";
 
 ################## Fill val_android for all languages with the content of val_desktop according to the above mapping
 
-print "Write Android language files to android/TuxGuitar-android/res/:\n";
+print "Write Android language files to $SCRIPT_DIR/../android/TuxGuitar-android/res/:\n";
 
-foreach my $msgs_XX_desktop (glob("desktop/TuxGuitar/share/lang/messages_*.properties")) {
+foreach my $msgs_XX_desktop (glob("$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages_*.properties")) {
 
   # Read and convert \uHHHH to utf8 using uconv
   @msgs_XX_desktop_content=`uconv -x hex-any $msgs_XX_desktop`;
 
-  $msgs_XX_desktop =~ /desktop\/TuxGuitar\/share\/lang\/messages_(.*).properties/;
+  $msgs_XX_desktop =~ /$SCRIPT_DIR\/\.\.\/desktop\/TuxGuitar\/share\/lang\/messages_(.*).properties/;
   (my $lang=$1)=~s/_/+/g;
   print "$lang ";
 
-  my $langdir="android/TuxGuitar-android/res/values-b+".$lang;
+  my $langdir="$SCRIPT_DIR/../android/TuxGuitar-android/res/values-b+".$lang;
   mkdir $langdir;
   my $msgs_XX_android="$langdir/strings.xml";
 
