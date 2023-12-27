@@ -1,7 +1,9 @@
 package org.herac.tuxguitar.app.system.language;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
@@ -70,7 +72,7 @@ public class TGResourceBundle {
 			while (enumeration.hasMoreElements()) {
 				URL url = (URL) enumeration.nextElement();
 				Properties properties = new Properties();
-				properties.load( url.openStream() );
+				properties.load( new InputStreamReader(url.openStream(),StandardCharsets.UTF_8) );
 				p.putAll(properties);
 			}
 		} catch (IOException e) {
