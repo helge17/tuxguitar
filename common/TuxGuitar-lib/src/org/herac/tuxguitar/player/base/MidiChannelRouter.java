@@ -82,7 +82,7 @@ public class MidiChannelRouter implements MidiReceiver{
 	}
 	
 	public MidiChannel getMidiChannel(int channelId){
-		Integer key = new Integer(channelId);
+		Integer key = Integer.valueOf(channelId);
 		if( this.midiChannels.containsKey(key) ){
 			return (MidiChannel)this.midiChannels.get(key);
 		}
@@ -90,14 +90,14 @@ public class MidiChannelRouter implements MidiReceiver{
 	}
 	
 	public void removeMidiChannel(int channelId){
-		Integer key = new Integer(channelId);
+		Integer key = Integer.valueOf(channelId);
 		if( this.midiChannels.containsKey(key) ){
 			this.midiChannels.remove(key);
 		}
 	}
 	
 	public void addMidiChannel(int channelId, MidiChannel midiChannel){
-		Integer key = new Integer(channelId);
+		Integer key = Integer.valueOf(channelId);
 		if( this.midiChannels.containsKey(key) ){
 			this.midiChannels.remove(key);
 		}

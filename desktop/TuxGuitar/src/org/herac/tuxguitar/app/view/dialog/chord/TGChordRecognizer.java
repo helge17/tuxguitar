@@ -135,7 +135,7 @@ public class TGChordRecognizer {
 		for (int i=0; i<tuning.length; i++) {
 			int fret = chord.getStrings()[i];
 			if (fret!=-1) {
-				Integer note = new Integer((tuning[tuning.length-1-i] + fret) % 12);
+				Integer note = Integer.valueOf((tuning[tuning.length-1-i] + fret) % 12);
 				Iterator<Integer> it = notesInside.iterator();
 				boolean found=false;
 				while (it.hasNext())

@@ -115,7 +115,7 @@ public class TGPrintPreviewDialog{
 			public void onKeyReleased(UIKeyEvent event) {
 				if( event.getKeyCombination().equals(ENTER_KEY_CONVINATION)){
 					try{
-						Integer number = new Integer(TGPrintPreviewDialog.this.currentText.getText());
+						Integer number = Integer.valueOf(TGPrintPreviewDialog.this.currentText.getText());
 						changePage(number.intValue() - 1);
 					}catch(NumberFormatException exception){
 						changePage(TGPrintPreviewDialog.this.currentPage);

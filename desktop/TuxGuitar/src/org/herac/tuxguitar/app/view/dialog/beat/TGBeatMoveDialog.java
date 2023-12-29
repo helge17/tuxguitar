@@ -213,21 +213,21 @@ public class TGBeatMoveDialog {
 	@SuppressWarnings("unchecked")
 	public UISelectItem<Integer>[] createMoveDirections() {
 		return new UISelectItem[] {		
-			new UISelectItem<Integer>(TuxGuitar.getProperty("beat.move-custom.dialog.direction.right"), new Integer(1)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("beat.move-custom.dialog.direction.left") , new Integer(-1)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("beat.move-custom.dialog.direction.right"), Integer.valueOf(1)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("beat.move-custom.dialog.direction.left") , Integer.valueOf(-1)),
 		};
 	}
 	
 	@SuppressWarnings("unchecked")
 	public UISelectItem<Integer>[] createMoveDurations() {
 		return new UISelectItem[] {		
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.whole") , new Integer(TGDuration.WHOLE)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.half") , new Integer(TGDuration.HALF)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.quarter") , new Integer(TGDuration.QUARTER)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.eighth") , new Integer(TGDuration.EIGHTH)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.sixteenth") , new Integer(TGDuration.SIXTEENTH)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.thirtysecond") , new Integer(TGDuration.THIRTY_SECOND)),
-			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.sixtyfourth") , new Integer(TGDuration.SIXTY_FOURTH)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.whole") , Integer.valueOf(TGDuration.WHOLE)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.half") , Integer.valueOf(TGDuration.HALF)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.quarter") , Integer.valueOf(TGDuration.QUARTER)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.eighth") , Integer.valueOf(TGDuration.EIGHTH)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.sixteenth") , Integer.valueOf(TGDuration.SIXTEENTH)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.thirtysecond") , Integer.valueOf(TGDuration.THIRTY_SECOND)),
+			new UISelectItem<Integer>(TuxGuitar.getProperty("duration.sixtyfourth") , Integer.valueOf(TGDuration.SIXTY_FOURTH)),
 		};
 	}
 	
@@ -247,7 +247,7 @@ public class TGBeatMoveDialog {
 		UISelectItem<int[]>[] comboItems = new UISelectItem[ types.length + 1 ];
 		comboItems[0] = new UISelectItem<int[]>( TuxGuitar.getProperty("beat.move-custom.dialog.duration.division-type.normal") , new int[] { 1  , 1} );
 		for( int i = 0 ; i < types.length ; i ++ ){ 
-			comboItems[i + 1] = new UISelectItem<int[]>(new Integer(types[i].getEnters()).toString(),new int[]{types[i].getEnters(),types[i].getTimes()});
+			comboItems[i + 1] = new UISelectItem<int[]>(Integer.valueOf(types[i].getEnters()).toString(),new int[]{types[i].getEnters(),types[i].getTimes()});
 		}
 		
 		return comboItems;

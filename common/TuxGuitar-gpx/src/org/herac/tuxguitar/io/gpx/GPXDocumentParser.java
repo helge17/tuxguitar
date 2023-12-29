@@ -434,7 +434,7 @@ public class GPXDocumentParser {
 				bend.addPoint(parseBendPosition(note.getBendOriginOffset()), parseBendValue(note.getBendOriginValue()));
 			}
 			if( note.getBendMiddleValue() != null ){
-				Integer defaultMiddleOffset = new Integer(Math.round(GP_BEND_POSITION / 2));
+				Integer defaultMiddleOffset = Integer.valueOf(Math.round(GP_BEND_POSITION / 2));
 				if( note.getBendMiddleOffset1() == null || note.getBendMiddleOffset1().intValue() != 12 ){
 					Integer offset = (note.getBendMiddleOffset1() != null ? note.getBendMiddleOffset1() : defaultMiddleOffset);
 					bend.addPoint(parseBendPosition(offset), parseBendValue(note.getBendMiddleValue()));
@@ -481,7 +481,7 @@ public class GPXDocumentParser {
 					}
 				}
 				if(!hiddenPoint ){
-					Integer defaultMiddleOffset = new Integer(Math.round(GP_WHAMMY_BAR_POSITION / 2));
+					Integer defaultMiddleOffset = Integer.valueOf(Math.round(GP_WHAMMY_BAR_POSITION / 2));
 					Integer offset1 = (beat.getWhammyBarMiddleOffset1() != null ? beat.getWhammyBarMiddleOffset1() : defaultMiddleOffset);
 					if( beat.getWhammyBarOriginOffset() == null || offset1.intValue() >= beat.getWhammyBarOriginOffset().intValue() ){
 						tremoloBar.addPoint(parseTremoloBarPosition(offset1), parseTremoloBarValue(beat.getWhammyBarMiddleValue()));

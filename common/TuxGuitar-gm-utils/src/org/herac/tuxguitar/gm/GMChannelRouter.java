@@ -137,7 +137,7 @@ public class GMChannelRouter {
 				}
 				
 				if( isFreeChannel ){
-					freeChannels.add(new Integer(ch));
+					freeChannels.add(Integer.valueOf(ch));
 				}
 			}
 		}
