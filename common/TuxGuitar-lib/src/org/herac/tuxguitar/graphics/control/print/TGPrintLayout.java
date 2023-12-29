@@ -358,7 +358,7 @@ public class TGPrintLayout extends TGLayout {
 		}
 		
 		public void addMeasure(int index){
-			this.measures.add(new Integer(index));
+			this.measures.add(Integer.valueOf(index));
 			this.lastIndex = index;
 		}
 	}

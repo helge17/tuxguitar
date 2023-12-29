@@ -128,7 +128,7 @@ public class TGTunerSettingsDialog {
 		this.noiseGate.setIncrement(1);
 		this.noiseGate.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGTunerSettingsDialog.this.noiseGateValue.setText(new Integer(TGTunerSettingsDialog.this.noiseGate.getValue()).toString()+"%");
+				TGTunerSettingsDialog.this.noiseGateValue.setText(Integer.valueOf(TGTunerSettingsDialog.this.noiseGate.getValue()).toString()+"%");
 				noiseGateComposite.layout();
 			}
 		});
@@ -195,7 +195,7 @@ public class TGTunerSettingsDialog {
 			this.bufferSizeCombo.setSelectedValue(settings.getBufferSize());
 			
 			this.noiseGate.setValue((int)Math.round(settings.getThreshold()*100));
-			this.noiseGateValue.setText(new Integer(this.noiseGate.getValue()).toString()+"%");
+			this.noiseGateValue.setText(Integer.valueOf(this.noiseGate.getValue()).toString()+"%");
 		} catch (Exception ex) {
 			if (!loadedDefaults) {
 				TGMessageDialogUtil.errorMessage(getContext(), dialog, "Failed to load TuxGuitar settings.\nLoading defaults.");

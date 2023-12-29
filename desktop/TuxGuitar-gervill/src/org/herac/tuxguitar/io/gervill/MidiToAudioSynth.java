@@ -74,7 +74,7 @@ public class MidiToAudioSynth {
 	
 	private Map<String, Object> getDefaultInfo(){
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(SYNTHESIZER_LOAD_DEFAULT_SOUNDBANK_PARAM, new Boolean(false));
+		map.put(SYNTHESIZER_LOAD_DEFAULT_SOUNDBANK_PARAM, Boolean.valueOf(false));
 		return map;
 	}
 	
@@ -131,7 +131,7 @@ public class MidiToAudioSynth {
 	
 	private Patch createModelPatch(int bank, int program, boolean percussion) throws Throwable {
 		Class<?>[] constructorSignature = new Class[]{int.class, int.class, boolean.class};
-		Object[] constructorArguments = new Object[]{new Integer(bank), new Integer(program), new Boolean(percussion)};
+		Object[] constructorArguments = new Object[]{Integer.valueOf(bank), Integer.valueOf(program), Boolean.valueOf(percussion)};
 		
 		ClassLoader classLoader = getClass().getClassLoader();
 		Class<?> classInstance = classLoader.loadClass(MODEL_PATCH_CLASSNAME);

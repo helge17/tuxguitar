@@ -493,7 +493,7 @@ public class TGChordCreatorUtil {
 			
 			for (int i = 0; i < this.tuning.length; i++) {
 				lastLevelCombination.add(new ArrayList<Integer>());
-				lastLevelCombination.get(i).add(new Integer(i));
+				lastLevelCombination.get(i).add(Integer.valueOf(i));
 			}
 		}
 		
@@ -504,7 +504,7 @@ public class TGChordCreatorUtil {
 			
 			while (it.hasNext()) {
 				List<Integer> combination = it.next();
-				Integer currentInteger = new Integer(current);
+				Integer currentInteger = Integer.valueOf(current);
 				if (((Integer) combination.get(combination.size() - 1))
 						.intValue() < current
 						&& !combination.contains(currentInteger)) {
@@ -987,11 +987,11 @@ public class TGChordCreatorUtil {
 		
 		// open or not not open chord,
 		// index finger is always on lowest fret possible
-		fingers[0].add(new Integer(min));
+		fingers[0].add(Integer.valueOf(min));
 		
 		for (int i=lastZeroIndex; i<positions.length; i++)
 				if (positions[i]==min) {
-					fingers[0].add(new Integer(i));
+					fingers[0].add(Integer.valueOf(i));
 					positions[i]=-1;
 				}
 		
@@ -1001,8 +1001,8 @@ public class TGChordCreatorUtil {
 		for (int i=0; i<positions.length; i++) {
 			if (positions[i]!=0 && positions[i]!=-1) {
 				if (finger<4) {
-					fingers[finger].add(new Integer(positions[i]));
-					fingers[finger].add(new Integer(i));
+					fingers[finger].add(Integer.valueOf(positions[i]));
+					fingers[finger].add(Integer.valueOf(i));
 					positions[i]=-1;
 				}
 				finger++;
