@@ -27,7 +27,3 @@ You can find ready to use installation packages for Linux, Windows, MacOS, FreeB
 https://github.com/helge17/tuxguitar/releases/
 
 To build TuxGuitar from source, refer to the INSTALL.md file.
-
-## Contribute
-
-If you want to contribute, see here: [Contribute](contribute.md#contribute)
