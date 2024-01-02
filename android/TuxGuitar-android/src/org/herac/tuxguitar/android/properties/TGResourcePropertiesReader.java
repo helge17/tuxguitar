@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.android.properties;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -38,7 +40,7 @@ public class TGResourcePropertiesReader implements TGPropertiesReader {
 			InputStream inputStream = TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName.toString());
 			if( inputStream != null ){
 				Properties properties = new Properties();
-				properties.load(inputStream);
+				properties.load(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
 				Iterator<?> it = properties.entrySet().iterator();
 				while( it.hasNext() ) {
 					Map.Entry<String, ?> entry = (Map.Entry<String, ?>) it.next();

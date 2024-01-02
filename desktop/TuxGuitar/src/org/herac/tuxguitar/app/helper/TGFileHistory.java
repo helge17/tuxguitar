@@ -2,11 +2,14 @@ package org.herac.tuxguitar.app.helper;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -93,7 +96,7 @@ public class TGFileHistory {
 			if( new File(getHistoryFileName()).exists() ){
 				InputStream inputStream = new FileInputStream(getHistoryFileName());
 				Properties properties = new Properties();
-				properties.load(inputStream);
+				properties.load(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
 				
 				this.chooserPath = (String)properties.getProperty("history.path");
 				
@@ -123,7 +126,7 @@ public class TGFileHistory {
 			if(this.chooserPath != null){
 				properties.put("history.path",this.chooserPath);
 			}
-			properties.store(new FileOutputStream(getHistoryFileName()),"History Files");
+			properties.store(new OutputStreamWriter(new FileOutputStream(getHistoryFileName()),StandardCharsets.UTF_8),"History Files");
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {

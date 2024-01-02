@@ -2,7 +2,10 @@ package org.herac.tuxguitar.app.system.properties;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.herac.tuxguitar.util.properties.TGProperties;
@@ -32,11 +35,11 @@ public class TGPropertiesImpl implements TGProperties{
 	}
 	
 	public void load(InputStream inputStream) throws IOException {
-		this.properties.load(inputStream);
+		this.properties.load(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
 	}
 	
 	public void store(OutputStream outputStream, String comments) throws IOException{
-		this.properties.store(outputStream, comments);
+		this.properties.store(new OutputStreamWriter(outputStream,StandardCharsets.UTF_8), comments);
 	}
 	
 	public void update(Properties newProperties) {
