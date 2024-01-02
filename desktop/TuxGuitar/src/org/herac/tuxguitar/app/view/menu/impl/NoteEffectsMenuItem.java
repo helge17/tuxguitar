@@ -23,7 +23,6 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
 import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
-import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
@@ -159,7 +158,6 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 	}
 
 	public void update(){
-		TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGNoteRange noteRange = TablatureEditor.getInstance(this.findContext()).getTablature().getCurrentNoteRange();
 
