@@ -5,7 +5,6 @@ import org.herac.tuxguitar.app.view.component.tab.Selector;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;

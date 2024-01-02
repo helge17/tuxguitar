@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.ui.swt.widget.SWTCustomKnob;
 import org.herac.tuxguitar.ui.swt.widget.SWTCustomScale;
 import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
-import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelectLight;
 import org.herac.tuxguitar.ui.swt.widget.SWTScale;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 import org.herac.tuxguitar.ui.widget.UIKnob;

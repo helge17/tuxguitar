@@ -2,8 +2,6 @@ package org.herac.tuxguitar.song.helpers;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGNoteRange;
-
 import java.util.ArrayList;
 import java.util.List;
 
