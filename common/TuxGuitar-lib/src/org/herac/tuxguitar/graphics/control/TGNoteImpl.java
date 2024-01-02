@@ -40,7 +40,6 @@ public class TGNoteImpl extends TGNote {
 	
 	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
 		float spacing = getBeatImpl().getSpacing(layout);
-		float tabMoveX = (2f * layout.getScale());
 		// fromX,fromY = top-left corner of drawing zone in current measure
 		// this leaves some space on the left (with respect to the measure bar)
 		

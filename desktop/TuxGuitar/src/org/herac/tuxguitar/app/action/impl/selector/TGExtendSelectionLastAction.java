@@ -2,7 +2,6 @@ package org.herac.tuxguitar.app.action.impl.selector;
 
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
@@ -11,7 +10,6 @@ import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGExtendSelectionLastAction extends TGActionBase {
