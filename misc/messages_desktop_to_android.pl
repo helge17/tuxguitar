@@ -7,13 +7,15 @@ use feature "switch";
 $COMMAND=basename($0);
 $SCRIPT_DIR=dirname($0);
 
+my $messages_list = "$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages_*.properties";
+
 if (!getopts('h') || $opt_h) {
 
   print "\n#\n";
   print "# This script extracts the messages in all languages from the desktop version in\n";
-  print "#  $SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages_*.properties\n";
+  print "#   $messages_list\n";
   print "# and writes them to the Android message files in\n";
-  print "#  $SCRIPT_DIR/../android/TuxGuitar-android/res/values-b+*/strings.xml\n";
+  print "#   $SCRIPT_DIR/../android/TuxGuitar-android/res/values-b+*/strings.xml\n";
   print "#\n";
   print "# Usage: $COMMAND [OPTIONS]\n";
   print "#\n";
@@ -36,8 +38,8 @@ STDOUT->autoflush(1);
 my $msgs_en_android="$SCRIPT_DIR/../android/TuxGuitar-android/res/values/strings.xml";
 my $msgs_en_desktop="$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages.properties";
 
-open(MSGS_EN_ANDROID, "<", $msgs_en_android) or die "\n** $msgs_en_android: $!.\n\n";
-open(MSGS_EN_DESKTOP, "<", $msgs_en_desktop) or die "\n** $msgs_en_desktop: $!.\n\n";
+open(MSGS_EN_ANDROID, "<", $msgs_en_android) or die "\n** Error opening $msgs_en_android: $!.\n\n";
+open(MSGS_EN_DESKTOP, "<", $msgs_en_desktop) or die "\n** Error opening $msgs_en_desktop: $!.\n\n";
 
 sub special_cases {
   given ($_[0]) {
@@ -80,7 +82,7 @@ my $key_list="/tmp/keys_android-keys_desktop-values_android.csv";
 print "Write mapping of the english messages of the desktop and the Android version to\n";
 print "$key_list ";
 
-open(KEY_LIST, ">", $key_list) or die "\n** $key_list: $!.\n\n";
+open(KEY_LIST, ">", $key_list) or die "\n** Error opening $key_list: $!.\n\n";
 my %keys_desktop=();
 
 printf KEY_LIST "%-60s %-60s %-s\n", "# keys_android", "keys_desktop", "values_android";
@@ -123,7 +125,7 @@ print "\nOK.\n";
 
 print "Write Android language files to $SCRIPT_DIR/../android/TuxGuitar-android/res/:\n";
 
-foreach my $msgs_XX_desktop (glob("$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages_*.properties")) {
+foreach my $msgs_XX_desktop (glob("$messages_list")) {
 
   # Read and convert \uHHHH to utf8 using uconv
   @msgs_XX_desktop_content=`uconv -x hex-any $msgs_XX_desktop`;
@@ -136,7 +138,7 @@ foreach my $msgs_XX_desktop (glob("$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/m
   mkdir $langdir;
   my $msgs_XX_android="$langdir/strings.xml";
 
-  open(MSGS_XX_ANDROID, ">", $msgs_XX_android) or die "\n** $msgs_XX_android: $!.\n\n";
+  open(MSGS_XX_ANDROID, ">", $msgs_XX_android) or die "\n** Error opening $msgs_XX_android: $!.\n\n";
 
   seek MSGS_EN_ANDROID,0,0;
   while (<MSGS_EN_ANDROID>) {
