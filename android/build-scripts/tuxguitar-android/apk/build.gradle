@@ -29,7 +29,7 @@ android {
 
 	defaultConfig {
 		applicationId "org.herac.tuxguitar.android.application"
-		minSdkVersion 16
+		minSdkVersion 19
 		targetSdkVersion 30
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
