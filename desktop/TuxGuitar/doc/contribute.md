@@ -15,8 +15,6 @@ After some weeks we were able to build tuxguitar for different operating systems
 
 * **Commentator**: You enjoy communicating with others. Then liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
 
-* **Backer**: A warm welcome. If you want the project to last and you are familiar with the financing of such projects, take us by the hand.
-
 ## Get in contact
 
 In order to get in contact with other contributors just use the github discussion functionality. 
@@ -26,7 +24,7 @@ In order to get in contact with other contributors just use the github discussio
 You do no need to have any development skills to contribute, here are a few examples of what you can provide to the community.
 
 ### Test the application
-Work-in-progress *snapshots* are published quite frequently, see [releases](https://github.com/helge17/tuxguitar/releases). Try to always use the most recent shapshot, and create an issue if you find a bug. Before creating a new issue, just take care that it does not already exist. Don't forget to include following information in issue's description:
+Work-in-progress *snapshots* are published quite frequently, see [releases](https://github.com/helge17/tuxguitar/releases). Try to always use the most recent snapshot, and create an issue if you find a bug. Before creating a new issue, just take care that it does not already exist. Don't forget to include following information in issue's description:
 
 - the version of the app, e.g. "2024-01-01-snapshot"
 - the operating system and its version, e.g. "Windows 11", or "Ubuntu 22.04"
@@ -108,7 +106,7 @@ eclipse-workspace/externals$ unzip ../swt-4.13-gtk-linux-x86_64.zip
 eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.x86_64 -Dpackaging=jar -Dversion=4.13
 ```
 ### Import the launch configurations for building, running and debugging
-In order to make it easy for you, we stored example launch configurations in the repository. You have to import them. Go to Menu File->Import and select Run/Debug->Launch configuration. Import the configurations located in **eclipse-workspace/git/tuxguitar/development.** You can use the as a starting point. You might need to adjust the them to fullfill your folder structure.
+In order to make it easy for you, we stored example launch configurations in the repository. You have to import them. Go to Menu File->Import and select Run/Debug->Launch configuration. Import the configurations located in **eclipse-workspace/git/tuxguitar/development.** You can use them as a starting point. You might need to adjust them to fullfill your folder structure.
 
 Congratulations. You can now build, run and debug Tuxguitar SWT.
 
