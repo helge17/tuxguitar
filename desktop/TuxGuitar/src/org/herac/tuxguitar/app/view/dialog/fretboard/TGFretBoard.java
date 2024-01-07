@@ -404,8 +404,8 @@ public class TGFretBoard {
 			TGString string = track.getString(i + 1);
 			for (int j = 0; j < this.frets.length; j++) {
 				
-				int noteIndex = ((string.getValue() + j) %  12 );
-				if(TuxGuitar.getInstance().getScaleManager().getScale().getNote(noteIndex)){
+				int noteValue = string.getValue() + j;
+				if(TuxGuitar.getInstance().getScaleManager().getScale().getNote(noteValue)){
 					int x = this.frets[j];
 					if(j > 0){
 						x -= ((x - this.frets[j - 1]) / 2);
@@ -413,7 +413,7 @@ public class TGFretBoard {
 					int y = this.strings[i];
 					
 					if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_SCALE) != 0 ){
-						paintKeyText(painter,this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteIndex));
+						paintKeyText(painter,this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteValue));
 					}
 					else{
 						paintKeyOval(painter,this.config.getColorScale(),x,y);
