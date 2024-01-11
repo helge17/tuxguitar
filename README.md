@@ -30,4 +30,4 @@ To build TuxGuitar from source, refer to the [INSTALL.md](INSTALL.md) file.
 
 ## Contribute
 
-If you want to contribute, see here: [Contribute](desktop/TuxGuitar/doc/contribute.md)
+If you want to contribute, see here: [Contribute](doc/contribute.md)

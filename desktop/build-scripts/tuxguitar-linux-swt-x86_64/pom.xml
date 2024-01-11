@@ -336,7 +336,7 @@
 									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
-									<fileset dir="${project.rootPath}/TuxGuitar/doc/" />
+									<fileset dir="${project.rootPath}/../doc/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
