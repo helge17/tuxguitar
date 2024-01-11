@@ -252,18 +252,21 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	}
 	
 	private void updateTuningText() {
-		StringBuilder label = new StringBuilder(); 
+		StringBuilder label = new StringBuilder();
+		boolean isValid = true;
 		List<TGString> tuning = this.findTrack().getStrings();
 		for(int i = 0 ; i < tuning.size(); i ++) {
 			if( i > 0 ) {
 				label.append(" ");
 			}
-			label.append(TGMusicKeyUtils.sharpNoteName(tuning.get(tuning.size() - i - 1).getValue()));
+			String noteName = TGMusicKeyUtils.sharpNoteName(tuning.get(tuning.size() - i - 1).getValue());
+			isValid &= (noteName!=null);
+			label.append(noteName);
 		}
 		
 		boolean enabled = !this.isPercussionChannel();
 		
-		this.tuningText.setText(label.toString());
+		this.tuningText.setText((enabled && isValid) ? label.toString() : "");
 		this.tuningText.setEnabled(enabled);
 	}
 	
