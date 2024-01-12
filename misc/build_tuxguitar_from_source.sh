@@ -76,7 +76,7 @@ while getopts "lwmbaAgGhr:" CMDopt; do
        publish_release=1
        ;;
     r) TGVERSION="$OPTARG"
-       [ $TGVERSION == SRC ] && TGVERSION=`grep 'CURRENT = new TGVersion' TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
+       [ $TGVERSION == SRC ] && TGVERSION=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
        ;;
     *) usage
        [ $CMDopt == "h" ] && exit || exit 1
