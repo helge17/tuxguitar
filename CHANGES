@@ -1,3 +1,30 @@
+TuxGuitar 1.6.1 (2024-mm-dd) changes:
+
+* Add volume controls for tracks
+* Add possibility to save custom tuning presets
+* Add embedded help viewer
+* Add responsive design to help pages
+* Add many new icons to the menus
+* Update and sharpen the skin icons
+* Align order of main toolbar items with main menu entries
+* Add zoom controls in main toolbar
+* Add shortcuts for "zoom in" and "zoom out" actions
+* Save/restore caret position when switching song
+* Copy measures: new option to copy markers, options are saved
+* Security fix for CVE-2020-14940
+* Add a text filter in Key Binding Editor
+* Save Key Signature in GP5 format
+* Improved import/export of harmonics in GP5 format
+* Fix Alternative repeats in GP5 format
+* MIDI import, parsing of simultaneous events: "note off" first
+* Fix MIDI import with transposition
+* Additional percussion sounds in Matrix Editor
+* Improved representation of tuplets
+* Correction of "Major Thirds" tuning
+* Fix selection in score edition mode
+* Documentation on how you can contribute
+* More small improvements and code cleanup
+
 TuxGuitar 1.6.0 (2023-09-06) changes:
 
 * Add click & drag selection
