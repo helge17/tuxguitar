@@ -81,9 +81,9 @@ public class TGMatrixEditor implements TGEventListener {
 	
 	private static final int BORDER_HEIGHT = 20;
 	private static final int SCROLL_INCREMENT = 50;
-	private static final MidiPercussionKey[] PERCUSSIONS = TuxGuitar.getInstance().getPlayer().getPercussionKeys();
 	private static final int[] DIVISIONS = new int[] {1,2,3,4,6,8,16};
 	
+	private MidiPercussionKey[] percussions;
 	private TGContext context;
 	private TGMatrixConfig config;
 	private UIWindow dialog;
@@ -120,6 +120,7 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 	
 	public void show(){
+		this.percussions = TuxGuitar.getInstance().getPlayer().getPercussionKeys();
 		this.config = new TGMatrixConfig(this.context);
 		this.config.load();
 		
@@ -368,11 +369,11 @@ public class TGMatrixEditor implements TGEventListener {
 				this.maxNote = 0;
 				this.minNote = 127;
 				if( TuxGuitar.getInstance().getSongManager().isPercussionChannel(getCaret().getSong(), measure.getTrack().getChannelId()) ){
-					names = new String[PERCUSSIONS.length];
+					names = new String[this.percussions.length];
 					for(int i = 0; i < names.length;i ++){
-						this.minNote = Math.min(this.minNote,PERCUSSIONS[i].getValue());
-						this.maxNote = Math.max(this.maxNote,PERCUSSIONS[i].getValue());
-						names[i] = PERCUSSIONS[names.length - i -1].getName();
+						this.minNote = Math.min(this.minNote,this.percussions[i].getValue());
+						this.maxNote = Math.max(this.maxNote,this.percussions[i].getValue());
+						names[i] = this.percussions[names.length - i -1].getName();
 					}
 				}else{
 					for(int sNumber = 1; sNumber <= measure.getTrack().stringCount();sNumber ++){

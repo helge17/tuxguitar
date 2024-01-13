@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.io.base.TGFileFormatManager;
@@ -13,13 +14,15 @@ import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMessagesManager;
 import org.herac.tuxguitar.util.TGUserFileUtils;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTemplateManager {
 	
-	private static final String TEMPLATE_DEFAULT_RESOURCE = "template-default.tg";
+	private static final String TEMPLATE_DEFAULT_RESOURCE = "template-default";
+	private static final String TEMPLATE_EXTENSION = ".tg";
 	
 	private static final String TEMPLATES_PREFIX = "templates/";
 	private static final String TEMPLATES_CONFIG_PATH = (TEMPLATES_PREFIX + "templates.xml");
@@ -68,10 +71,32 @@ public class TGTemplateManager {
 				TGUserFileUtils.deleteUserTemplate();
 			}
 		}
-		tgTemplate = new TGTemplate();
-		tgTemplate.setName(new String());
-		tgTemplate.setResource(TEMPLATE_DEFAULT_RESOURCE);
-		return getTemplateAsSong(tgTemplate);
+		// no user-defined template, try to load language-specific template
+		// default
+		String templateFileName = TEMPLATE_DEFAULT_RESOURCE + TEMPLATE_EXTENSION;
+		tgTemplate.setResource(templateFileName);
+		song = getTemplateAsSong(tgTemplate);
+		
+		// locale-specific if it exists
+		Locale locale = TGMessagesManager.getInstance().getLocale();
+		String baseName = TEMPLATE_DEFAULT_RESOURCE + "_" + locale.getLanguage();
+		tgTemplate.setResource(baseName + TEMPLATE_EXTENSION);
+		TGSong localeSong = getTemplateAsSong(tgTemplate);
+		song = (localeSong==null ? song : localeSong);
+		
+		if (!"".equals(locale.getCountry())) {
+			baseName = baseName + "_" + locale.getCountry();
+			tgTemplate.setResource(baseName + TEMPLATE_EXTENSION);
+			localeSong = getTemplateAsSong(tgTemplate);
+			song = (localeSong==null ? song : localeSong);
+			if (!"".equals(locale.getVariant())) {
+				baseName = baseName + "_" + locale.getVariant();
+				tgTemplate.setResource(baseName + TEMPLATE_EXTENSION);
+				localeSong = getTemplateAsSong(tgTemplate);
+				song = (localeSong==null ? song : localeSong);
+			}
+		}
+		return song;
 	}
 	
 	public TGSong getTemplateAsSong(TGTemplate tgTemplate){

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.language;
+package org.herac.tuxguitar.resource;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +8,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGResourceBundle {

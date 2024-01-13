@@ -31,7 +31,7 @@ public class TGSongReaderHelper extends TGSongPersistenceHelper {
 			}
 			
 			if(!success) {
-				throw new TGFileFormatException("Unsupported file format");
+				throw new TGFileFormatException(TGFileFormatException.UNSUPPORTED_FORMAT);
 			}
 		} catch(TGFileFormatException tgFileFormatException) {
 			throw tgFileFormatException;

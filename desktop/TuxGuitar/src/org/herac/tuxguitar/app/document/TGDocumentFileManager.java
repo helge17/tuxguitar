@@ -22,8 +22,6 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentFileManager {
 	
-	public static final String DEFAULT_FILENAME = (TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION);
-	
 	private TGContext context;
 	
 	public TGDocumentFileManager(TGContext context) {
@@ -53,8 +51,7 @@ public class TGDocumentFileManager {
 		if( chooserPath == null ) {
 			chooserPath = TGFileHistory.getInstance(this.context).getChooserPath();
 		}
-		
-		String fileName = this.createFileName(formats, DEFAULT_FILENAME, true);
+		String fileName = this.createFileName(formats, this.getDefaultFileName(), true);
 		String defaultExtension = TGFileFormatUtils.DEFAULT_EXTENSION;
 		
 		TGFileChooser.getInstance(this.context).openChooser(handler, formats, TGFileChooserDialog.STYLE_SAVE, fileName, chooserPath, defaultExtension);
@@ -67,7 +64,7 @@ public class TGDocumentFileManager {
 		else {
 			String fullPath = null;
 			String path = this.getCurrentFilePath();
-			String file = this.getCurrentFileName(DEFAULT_FILENAME);
+			String file = this.getCurrentFileName(this.getDefaultFileName());
 			if( path != null && file != null ) {
 				fullPath = (path + File.separator + file);
 			}
@@ -188,4 +185,9 @@ public class TGDocumentFileManager {
 			}
 		});
 	}
+	
+	private String getDefaultFileName() {
+		return TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION;
+	}
+	
 }

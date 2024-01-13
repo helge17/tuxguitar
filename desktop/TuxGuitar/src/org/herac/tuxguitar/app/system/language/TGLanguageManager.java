@@ -6,7 +6,6 @@
  */
 package org.herac.tuxguitar.app.system.language;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -14,7 +13,9 @@ import java.util.Locale;
 import org.herac.tuxguitar.app.util.TGFileUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
+import org.herac.tuxguitar.resource.TGResourceBundle;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMessagesManager;
 
 /**
  * @author julian
@@ -27,7 +28,6 @@ public class TGLanguageManager {
 	public static final String EXTENSION = ".properties";
 	
 	private TGContext context;
-	private TGResourceBundle resources;
 	private String[] languages;
 	
 	public TGLanguageManager(TGContext context) {
@@ -51,7 +51,7 @@ public class TGLanguageManager {
 		try {
 			String baseName = (PACKAGE + "." + PREFIX);
 			Locale locale = getLocale(lang);
-			this.resources = TGResourceBundle.getBundle(this.context, baseName, locale);
+			TGMessagesManager.getInstance().setResources(TGResourceBundle.getBundle(this.context, baseName, locale));
 			this.fireChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,53 +79,8 @@ public class TGLanguageManager {
 		}
 		return false;
 	}
-	
-	public String getProperty(String key,String value) {
-		try {
-			String property = this.resources.getString(key);
-			return (property == null ? value : property );
-		}catch(Throwable throwable){
-			return value;
-		}
-	}
-	
-	public String getProperty(String key) {
-		return this.getProperty(key,key);
-	}
-	
-	public String getProperty(String key, Object[] arguments) {
-		return getProperty(key,key,arguments);
-	}
-	
-	public String getProperty(String key,String value, Object[] arguments) {
-		String property = this.getProperty(key,value);
-		return ( arguments != null ? MessageFormat.format(property, arguments) : property );
-	}
-	
 	public String[] getLanguages() {
 		return this.languages;
-	}
-	
-	public String getLanguage() {
-		if(this.resources != null){
-			Locale locale = this.resources.getLocale();
-			boolean language = (locale.getLanguage() != null && locale.getLanguage().length() > 0);
-			boolean country = (locale.getCountry() != null && locale.getCountry().length() > 0);
-			boolean variant = (locale.getVariant() != null && locale.getVariant().length() > 0);
-			
-			String localeId = new String();
-			if( language ){
-				localeId += locale.getLanguage();
-			}
-			if( country ){
-				localeId += "_" + locale.getCountry();
-			}
-			if( variant ){
-				localeId += "_" + ( country ? locale.getVariant() : ("_" + locale.getVariant()) );
-			}
-			return localeId;
-		}
-		return null;
 	}
 	
 	/**

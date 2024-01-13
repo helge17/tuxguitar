@@ -15,6 +15,6 @@ public class TGVarFileName {
 	}
 	
 	public String toString() {
-		return TGDocumentFileManager.getInstance(this.context).getCurrentFileName(TGFileChooser.DEFAULT_SAVE_FILENAME);
+		return TGDocumentFileManager.getInstance(this.context).getCurrentFileName(TGFileChooser.getDefaultSaveFileName());
 	}
 }
