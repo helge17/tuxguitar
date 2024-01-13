@@ -60,7 +60,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			
 			TGFileFormat fileFormat = new TGFileFormatDetectorImpl(SUPPORTED_FORMAT).getFileFormat(this.dataInputStream);
 			if( fileFormat == null || !fileFormat.equals(this.getFileFormat()) ) {
-				throw new TGFileFormatException("Unsupported Version");
+				throw new TGFileFormatException(TGFileFormatException.UNSUPPORTED_VERSION);
 			}
 			
 			TGSong song = this.read();

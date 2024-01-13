@@ -7,6 +7,7 @@ import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.language.TGLanguageManager;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMessagesManager;
 
 public class TGReloadLanguageAction extends TGActionBase {
 	
@@ -22,7 +23,7 @@ public class TGReloadLanguageAction extends TGActionBase {
 		
 		boolean changed = Boolean.TRUE.equals(context.getAttribute(TGReloadSettingsAction.ATTRIBUTE_FORCE));
 		if(!changed){
-			String languageLoaded = languageManager.getLanguage();
+			String languageLoaded = TGMessagesManager.getInstance().getLanguage();
 			String languageConfigured = config.getStringValue(TGConfigKeys.LANGUAGE);
 			if( languageLoaded == null && languageConfigured == null ){
 				changed = false;

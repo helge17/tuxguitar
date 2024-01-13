@@ -21,6 +21,7 @@ import org.herac.tuxguitar.thread.TGThreadLoop;
 import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.TGMessagesManager;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -1261,11 +1262,11 @@ public class MidiPlayer{
 	}
 	
 	public MidiInstrument[] getInstruments(){
-		return MidiInstrument.INSTRUMENT_LIST;
+		return TGMessagesManager.getInstruments();
 	}
 	
 	public MidiPercussionKey[] getPercussionKeys(){
-		return MidiPercussionKey.PERCUSSION_KEY_LIST;
+		return TGMessagesManager.getMidiPercussionKeys();
 	}
 	
 	public int getLoopSHeader() {

@@ -50,6 +50,7 @@ import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.resource.TGResourceBundle;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.helpers.tuning.TuningManager;
 import org.herac.tuxguitar.thread.TGMultiThreadHandler;
@@ -57,6 +58,7 @@ import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.TGMessagesManager;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
@@ -64,7 +66,11 @@ import org.herac.tuxguitar.util.plugin.TGPluginManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.util.Locale;
+
 public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+
+	private static String LANGUAGE_RESOURCE = "lang/messages";
 
 	private boolean destroyed;
 	private TGContext context;
@@ -199,6 +205,8 @@ public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRe
 		this.registerForContextMenu(findViewById(R.id.root_layout));
 		this.getActionBarController().setDisplayHomeAsUpEnabled(true);
 		this.getActionBarController().setHomeButtonEnabled(true);
+
+		TGMessagesManager.getInstance().setResources(TGResourceBundle.getBundle(context, LANGUAGE_RESOURCE, Locale.getDefault()));
 
 		this.resultManager.initialize();
 		this.permissionResultManager.initialize();

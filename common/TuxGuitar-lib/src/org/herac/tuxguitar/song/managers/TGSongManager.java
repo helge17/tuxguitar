@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelNames;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMarker;
@@ -17,6 +16,7 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGMessagesManager;
 
 public class TGSongManager {
 	
@@ -280,10 +280,10 @@ public class TGSongManager {
 	
 	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {
 		if( channel.isPercussionChannel() ) {
-			return this.createChannelName(song, channel, "DrumKit");
+			return this.createChannelName(song, channel, TGMessagesManager.getProperty("instrument.drumkit"));
 		}
-		if( channel.getProgram() >= 0 && channel.getProgram() < TGChannelNames.DEFAULT_NAMES.length ) {
-			return this.createChannelName(song, channel, TGChannelNames.DEFAULT_NAMES[channel.getProgram()]);
+		if( channel.getProgram() >= 0 && channel.getProgram() < TGMessagesManager.getMidiInstrumentsNumber() ) {
+			return this.createChannelName(song, channel, TGMessagesManager.getMidiInstrument(channel.getProgram()).getName());
 		}
 		return this.createDefaultChannelName(song, channel);
 	}
@@ -408,7 +408,7 @@ public class TGSongManager {
 	
 	public String getDefaultTrackName(TGTrack tgTrack){
 		if( tgTrack != null && tgTrack.getNumber() > 0 ){
-			return new String("Track " + tgTrack.getNumber());
+			return new String(TGMessagesManager.getProperty("track") + " " + tgTrack.getNumber());
 		}
 		return new String();
 	}

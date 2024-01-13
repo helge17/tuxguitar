@@ -20,9 +20,7 @@ public class TGFileChooser {
 	
 	public static final String DEFAULT_OPEN_FILENAME = null;
 	
-	public static final String DEFAULT_SAVE_FILENAME = (TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION);
-	
-	public static TGFileFormat ALL_FORMATS = new TGFileFormat("All Files", "*/*", new String[]{"*"});
+	public static TGFileFormat ALL_FORMATS = new TGFileFormat(TuxGuitar.getProperty("file.all-files"), "*/*", new String[]{"*"});
 	
 	private TGContext context;
 	
@@ -87,4 +85,9 @@ public class TGFileChooser {
 			}
 		});
 	}
+	
+	public static String getDefaultSaveFileName() {
+		return TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION;
+	}
+
 }

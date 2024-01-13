@@ -98,7 +98,7 @@ public class TGDocumentListManager {
 				return decodedFileName;
 			}
 		}
-		return TGFileChooser.DEFAULT_SAVE_FILENAME;
+		return TGFileChooser.getDefaultSaveFileName();
 	}
 	
 	public void removeDocument(TGDocument document) {

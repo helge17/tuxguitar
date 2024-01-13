@@ -59,6 +59,7 @@ import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGLock;
+import org.herac.tuxguitar.util.TGMessagesManager;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.error.TGErrorHandler;
 import org.herac.tuxguitar.util.error.TGErrorManager;
@@ -357,11 +358,11 @@ public class TuxGuitar {
 	}
 	
 	public static String getProperty(String key) {
-		return TuxGuitar.getInstance().getLanguageManager().getProperty(key);
+		return TGMessagesManager.getProperty(key);
 	}
 	
 	public static String getProperty(String key,String[] arguments) {
-		return  TuxGuitar.getInstance().getLanguageManager().getProperty(key,arguments);
+		return TGMessagesManager.getProperty(key,arguments);
 	}
 	
 	public boolean isDisposed(){

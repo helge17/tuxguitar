@@ -3,9 +3,9 @@ package org.herac.tuxguitar.app.view.dialog.about;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMessagesManager;
 
 public class TGAboutContentReader {
 	
@@ -23,7 +23,7 @@ public class TGAboutContentReader {
 	}
 	
 	public StringBuffer read(String doc){
-		String lang = TuxGuitar.getInstance().getLanguageManager().getLanguage();
+		String lang = TGMessagesManager.getInstance().getLanguage();
 		InputStream is = TGResourceManager.getInstance(this.context).getResourceAsStream(PREFIX + doc + "_" + lang + EXTENSION);
 		if( is == null){
 			is = TGResourceManager.getInstance(this.context).getResourceAsStream(PREFIX + doc + EXTENSION);
