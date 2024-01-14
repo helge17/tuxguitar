@@ -1,7 +1,9 @@
 package org.herac.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.graphics.Point;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 
@@ -86,6 +88,11 @@ public class SWTScrollBar extends SWTEventReceiver<ScrollBar> implements UIScrol
 	
 	public int getThumb() {
 		return (this.thumb != null ? this.thumb : -1);
+	}
+	
+	public UISize getSize() {
+		Point point = this.getControl().getSize();
+		return (new UISize((float)point.x, (float)point.y));
 	}
 	
 	public void updateRangeValues() {

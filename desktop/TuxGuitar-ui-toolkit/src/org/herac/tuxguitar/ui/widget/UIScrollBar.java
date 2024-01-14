@@ -2,6 +2,7 @@ package org.herac.tuxguitar.ui.widget;
 
 import org.herac.tuxguitar.ui.UIComponent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.resource.UISize;
 
 public interface UIScrollBar extends UIComponent {
 	
@@ -24,6 +25,8 @@ public interface UIScrollBar extends UIComponent {
 	void setThumb(int thumb);
 	
 	int getThumb();
+	
+	UISize getSize();
 	
 	void addSelectionListener(UISelectionListener listener);
 	
