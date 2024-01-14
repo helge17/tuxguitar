@@ -16,13 +16,15 @@ TuxGuitar 1.6.1 (2024-mm-dd) changes:
 * Save Key Signature in GP5 format
 * Improved import/export of harmonics in GP5 format
 * Fix Alternative repeats in GP5 format
-* MIDI import, parsing of simultaneous events: "note off" first
-* Fix MIDI import with transposition
+* Fix bugs for MIDI import: transposition, order of MIDI events
+* Fix erroneous octave in tuning editor, Matrix Editor and MusicXML export
 * Additional percussion sounds in Matrix Editor
 * Improved representation of tuplets
 * Correction of "Major Thirds" tuning
 * Fix selection in score edition mode
 * Documentation on how you can contribute
+* Improved translations
+* Improved visual aspect of tracks table
 * More small improvements and code cleanup
 
 TuxGuitar 1.6.0 (2023-09-06) changes:
