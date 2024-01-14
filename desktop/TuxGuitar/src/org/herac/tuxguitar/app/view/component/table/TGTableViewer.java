@@ -357,8 +357,9 @@ public class TGTableViewer implements TGEventListener {
 		}
 		else if(this.trackCount != trackCount){
 			float tableHeight = this.composite.getLayout().computePackedSize(this.trackTableComposite).getHeight();
-			// arbitrary margin (for scroll bar)
-			tableHeight += 12.0;
+			// margin for scroll bar
+			tableHeight += this.trackTableComposite.getHScroll().getSize().getHeight();
+
 			uiWindow.getLayout().set(this.composite, UITableLayout.PACKED_HEIGHT, tableHeight);
 			uiWindow.layout();
 			return true;

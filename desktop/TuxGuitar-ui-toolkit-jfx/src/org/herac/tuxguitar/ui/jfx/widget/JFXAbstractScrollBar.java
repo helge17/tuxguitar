@@ -2,6 +2,7 @@ package org.herac.tuxguitar.ui.jfx.widget;
 
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import org.herac.tuxguitar.ui.resource.UISize;
 
 import javafx.geometry.Orientation;
 import javafx.scene.control.ScrollBar;
@@ -72,6 +73,10 @@ public abstract class JFXAbstractScrollBar extends JFXControl<ScrollBar> {
 	
 	public int getThumb() {
 		return (this.thumb != null ? this.thumb : -1);
+	}
+	
+	public UISize getSize() {
+		return (new UISize((float)this.getControl().getWidth(), (float)this.getControl().getHeight()));
 	}
 	
 	public void updateVisibleAmount() {
