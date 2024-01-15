@@ -348,6 +348,8 @@ done
 
 function start_remote_macos_build {
 
+# 172.16.208.132: MacOS 11 x86_64 (Big Sur)
+# 172.16.208.133: MacOS 14 x86_64 (Sonoma)
 BUILD_HOST=$USER@172.16.208.132
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP on $BUILD_HOST ..."
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
@@ -358,7 +360,14 @@ echo "# OK."
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP done."
 
 ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
-scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
+# On my MacOS 14 VM, the outgoing transfer rate via scp is terribly slow.
+# Without -X options:                 ~ 15KB/s  (always!!!)
+# With -X nrequests=1 -X buffer=2048: ~ 250KB/s (bridged -> WLAN -> Linux system), 5MB/s (NAT -> local VMware host)
+# The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the MacOS system or on the target system.
+# Incoming transfers via scp are OK, outgoing transfers via https are also OK.
+# Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed doplex and speed settings,...) did not help.
+# MacOS 11 is fine and the -X options do not harm.
+scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
 
 }
 
