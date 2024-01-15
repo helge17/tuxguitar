@@ -76,8 +76,17 @@ public class TGTrackTuningChooserDialog {
 		
 		tuningValueControl.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				tuningLabelControl.setText(TGMusicKeyUtils.sharpNoteName(tuningValueControl.getSelectedValue()));
-				tuningValueSpinner.setValue(tuningValueControl.getSelectedValue());
+				int noteValue = -1;
+				try {
+					noteValue = tuningValueControl.getSelectedValue();
+				} catch (NullPointerException e) {
+					// 1st item of list selected ("tuning.value.select"), ignore
+				}
+				String noteName = TGMusicKeyUtils.sharpNoteName(noteValue);
+				if (noteName != null) {
+					tuningLabelControl.setText(noteName);
+					tuningValueSpinner.setValue(tuningValueControl.getSelectedValue());
+				}
 			}
 		});
 		tuningValueSpinner.addSelectionListener(new UISelectionListener() {

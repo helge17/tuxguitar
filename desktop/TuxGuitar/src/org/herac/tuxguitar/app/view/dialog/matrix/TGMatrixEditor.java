@@ -381,6 +381,8 @@ public class TGMatrixEditor implements TGEventListener {
 						this.minNote = Math.min(this.minNote,string.getValue());
 						this.maxNote = Math.max(this.maxNote,(string.getValue() + 20));
 					}
+					this.minNote = Math.max(this.minNote, TGMusicKeyUtils.MIN_MIDI_NOTE);
+					this.maxNote = Math.min(this.maxNote, TGMusicKeyUtils.MAX_MIDI_NOTE);
 					names = new String[this.maxNote - this.minNote + 1];
 					for(int i = 0; i < names.length;i ++){
 						names[i] = TGMusicKeyUtils.sharpNoteFullName(this.maxNote-i);
