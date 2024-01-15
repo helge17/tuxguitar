@@ -30,6 +30,8 @@ misc/build_tuxguitar_from_source.sh
 $ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev libgtk-3-dev liblilv-dev libsuil-dev qtbase5-dev
 ```
 
+In order for Asian characters to be displayed correctly, you may also need to install the `fonts-wqy-zenhei` font package.
+
 ### Download and install SWT for Linux
 
 ```sh
@@ -191,6 +193,8 @@ The application is now located in the `desktop/build-scripts/tuxguitar-macosx-sw
 ```sh
 $ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget
 ```
+
+In order for Asian characters to be displayed correctly, you may also need to install the `wqy-fonts-20100803_10,1` font package.
 
 ### Install SWT for FreeBSD
 
