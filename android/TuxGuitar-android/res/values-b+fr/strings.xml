@@ -318,9 +318,9 @@
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Accordage</string>
 	<string name="track_tuning_dlg_value_label">Valeur:</string>
-	<string name="track_tuning_dlg_preview_label">Étiquette:</string>
+	<string name="track_tuning_dlg_preview_label">Libellé:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
-	<string name="track_tuning_dlg_preset_select_value">-- Préréglages --</string>
+	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_options_transpose">Transposer les notes</string>
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transposer les accords</string>
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Essayer de conserver les notes sur la même corde</string>

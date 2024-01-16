@@ -12,7 +12,7 @@
 
 	<!-- <string name="global_button_ok"></string> -->
 	<string name="global_button_cancel">Annulla</string>
-	<string name="global_button_clean">Elimina</string>
+	<string name="global_button_clean">Svuota</string>
 	<string name="global_button_add">Aggiungi</string>
 
 	<string name="global_spinner_select_option">-- Seleziona --</string>
@@ -81,11 +81,11 @@
 	<string name="action_track_change_string_count">Numero righe</string>
 
 	<string name="action_measure_add">Aggiungi misura</string>
-	<string name="action_measure_clean">Elimina misura</string>
+	<string name="action_measure_clean">Svuota misura</string>
 	<string name="action_measure_remove">Rimuovi misura</string>
 
 	<string name="action_change_tied_note">Nota legata</string>
-	<string name="action_clean_beat">Elimina battuta</string>
+	<string name="action_clean_beat">Svuota battuta</string>
 	<string name="action_decrement_note_semitone">Abbassa di un semitono</string>
 	<string name="action_increment_note_semitone">Aumenta di un semitono</string>
 	<string name="action_delete_note_or_rest">Elimina nota o pausa</string>
@@ -186,7 +186,7 @@
 	<!-- ========================= BROWSER ================================= -->
 	<!-- =================================================================== -->
 
-	<string name="browser_refresh">Pulisci</string>
+	<string name="browser_refresh">Ricarica</string>
 	<string name="browser_back">Indietro</string>
 	<!-- <string name="browser_root"></string> -->
 	<string name="browser_settings">Impostazioni</string>
@@ -320,7 +320,7 @@
 	<string name="track_tuning_dlg_value_label">Valore:</string>
 	<string name="track_tuning_dlg_preview_label">Nome:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
-	<string name="track_tuning_dlg_preset_select_value">-- Preimpostazioni --</string>
+	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_options_transpose">Trasporri le note coinvolte</string>
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Trasporri accordi</string>
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Cerca di tenere le note sulla stessa corda</string>
@@ -344,7 +344,7 @@
 	<string name="measure_remove_dlg_to_label">A:</string>
 
 	<!-- Measure clean dialog -->
-	<string name="measure_clean_dlg_title">Elimina misura</string>
+	<string name="measure_clean_dlg_title">Svuota misura</string>
 	<string name="measure_clean_dlg_from_label">Da:</string>
 	<string name="measure_clean_dlg_to_label">A:</string>
 

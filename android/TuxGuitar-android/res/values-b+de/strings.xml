@@ -320,7 +320,7 @@
 	<string name="track_tuning_dlg_value_label">Wert:</string>
 	<string name="track_tuning_dlg_preview_label">Bezeichnung:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
-	<string name="track_tuning_dlg_preset_select_value">-- Voreinstellungen --</string>
+	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_options_transpose">Betroffene Noten transponieren</string>
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Akkorde transponieren</string>
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Versuche Noten auf der gleichen Saite zu lassen</string>
