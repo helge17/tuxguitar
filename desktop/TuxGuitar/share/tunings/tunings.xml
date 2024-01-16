@@ -8,7 +8,7 @@
 			<tuning name="C# Tuning" notes="61,56,52,47,42,37" />
 			<tuning name="C Tuning" notes="60,55,51,46,41,36" />
 			<tuning name="B Tuning" notes="59,54,50,45,40,35" />
-			<tuning name="A# Tuning" notes="59,54,50,45,40,35" />
+			<tuning name="A# Tuning" notes="58,53,49,44,39,34" />
 			<tuning name="F Tuning" notes="65,60,56,51,46,41" />
 			<tuning name="Dropped D" notes="64,59,55,50,45,38" />
 			<tuning name="Dropped C#" notes="63,58,54,49,44,37" />
@@ -47,6 +47,12 @@
 			<tuning name="E Tuning" notes="43,38,33,28" />
 			<tuning name="Dropped D" notes="43,38,33,26" />
 			<tuning name="Tenor" notes="48,43,38,33" />
+			<tuning name="D# Tuning" notes="42,37,32,27" />
+			<tuning name="D Tuning" notes="41,36,31,26" />
+			<tuning name="C# Tuning" notes="40,35,30,25" />
+			<tuning name="C Tuning" notes="39,34,29,24" />
+			<tuning name="B Tuning" notes="38,33,28,23" />
+			<tuning name="A# Tuning" notes="37,32,27,22" />
 		</group>
 		<group name="5-String">
 			<tuning name="B Tuning" notes="43,38,33,28,23" />
