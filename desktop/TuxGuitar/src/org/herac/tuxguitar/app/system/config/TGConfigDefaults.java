@@ -88,9 +88,9 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_NOTE,"42,85,128");
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_SCALE,"128,32,32");
 		loadProperty(properties, TGConfigKeys.MATRIX_FONT, (DEFAULT_FONT_NAME + ",8,true,false"));
-		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_FOREGROUND,"190,190,190");
-		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_BORDER,"25,25,25");
-		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_POSITION,"190,190,190");
+		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_FOREGROUND,"0,0,0");
+		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_BORDER,"214,214,214");
+		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_POSITION,"0,0,0");
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_NOTE,"42,85,128");
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_PLAY_NOTE,"128,32,32");
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_LINE_1,"255,255,255");
