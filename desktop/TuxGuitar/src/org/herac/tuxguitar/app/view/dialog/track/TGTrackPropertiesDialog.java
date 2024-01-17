@@ -177,6 +177,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 				TGTrackPropertiesDialog.this.updateTrackChannel();
 			}
 		});
+		this.updateChannelSelect();
 		legendLayout.set(this.channelSelect, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		
 		UIButton settings = factory.createButton(legendPanel);
