@@ -13,7 +13,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class TGNote {
+public abstract class TGNote implements Comparable<TGNote>{
 	private int value;
 	private int velocity;
 	private int string;
@@ -85,5 +85,9 @@ public abstract class TGNote {
 		note.setTiedNote(isTiedNote());
 		note.setEffect(getEffect().clone(factory));
 		return note;
+	}
+	
+	public int compareTo(TGNote note) {
+		return Integer.valueOf(this.value).compareTo(Integer.valueOf(note.getValue()));
 	}
 }
