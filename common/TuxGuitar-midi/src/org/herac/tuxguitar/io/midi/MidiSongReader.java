@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.midi;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -892,25 +893,27 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			List<TGString> freeStrings = new ArrayList<TGString>( track.getStrings() );
 			List<TGNote> notesToRemove = new ArrayList<TGNote>();
 			
-			//ajusto las cuerdas
-			Iterator<TGNote> it = beat.getVoice(0).getNotes().iterator();
+			// try to find one string for each note in beat
+			List<TGNote> listNotes = beat.getVoice(0).getNotes();
+			Collections.sort(listNotes);
+			Iterator<TGNote> it = listNotes.iterator();
 			while(it.hasNext()){
 				TGNote note = (TGNote)it.next();
 				
 				int string = getStringForValue(freeStrings,note.getValue());
-				for(int j = 0;j < freeStrings.size();j ++){
-					TGString tempString = (TGString)freeStrings.get(j);
-					if(tempString.getNumber() == string){
-						note.setValue(note.getValue() - tempString.getValue());
-						note.setString(tempString.getNumber());
-						freeStrings.remove(j);
-						break;
-					}
-				}
-				
-				//Cannot have more notes on same string 
-				if(note.getString() < 1){
+				if (string<0) {
+					// can't find a string for this note, so discard it
 					notesToRemove.add( note );
+				} else {
+					for(int j = 0;j < freeStrings.size();j ++){
+						TGString tempString = (TGString)freeStrings.get(j);
+						if(tempString.getNumber() == string){
+							note.setValue(note.getValue() - tempString.getValue());
+							note.setString(tempString.getNumber());
+							freeStrings.remove(j);
+							break;
+						}
+					}
 				}
 			}
 			
@@ -923,11 +926,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		
 		private int getStringForValue(List<TGString> strings,int value){
 			int minFret = -1;
-			int stringForValue = 0;
+			int stringForValue = -1;
 			for(int i = 0;i < strings.size();i++){
 				TGString string = (TGString)strings.get(i);
 				int fret = value - string.getValue();
-				if(minFret < 0 || (fret >= 0 && fret < minFret)){
+				if(fret >= 0 && (minFret<0 || fret < minFret)){
 					stringForValue = string.getNumber();
 					minFret = fret;
 				}
