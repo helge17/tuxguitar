@@ -85,7 +85,7 @@
     <h2 id="music_and_sheet">Music and sheet</h2>
     <table>
       <tr>
-        <td class="left"><strong>MIDI</strong> (.mid)</td><td>import and export</td>
+        <td class="left"><strong>MIDI</strong> (.mid)</td><td>import (see below) and export</td>
       </tr>
       <tr>
         <td class="left"><strong>Scalable Vector Graphics</strong> (.svg)</td><td>export</td>
@@ -106,6 +106,38 @@
         <td class="left"><strong>ASCII Text</strong> (.txt)</td><td>export</td>
       </tr>
     </table>
+
+    <h2 id="midiFileImport">MIDI file import</h2>
+    <p>MIDI file import feature is provided for convenience, because this file format is very widely used across the musicians' world. However, please consider that TuxGuitar is fundamentally a <strong>tablature</strong> editor, not a <strong>MIDI</strong> editor, so do not expect magic results in all cases.</p>
+    <p>A MIDI file encodes <i>sound</i>, under the form of successive events. TuxGuitar stores, displays and plays <i>tablatures</i> for fretted strings instruments, which is a slightly different concept. TuxGuitar does a translation when importing a MIDI file, but in general it requires some manual adaptation activity to finetune the result. In some cases where MIDI file is not well suited for guitar or bass, this adaptation work might be very significant or even unfeasible.</p>
+    <p>This section describes a few examples of limitations (list is not exhaustive).</p>
+    <h3>Unplayable notes combinations</h3>
+    <p>A pianist has 10 fingers, a guitarist usually 6 strings only. So, a 10-notes chord cannot be imported: notes will be discarded. Even with less notes it's easy to find unplayable combinations: (E2+G2) cannot be played simultaneously on a standard tuned guitar, as both notes conflict on the lowest string.</p>
+    <h3>Imprecise rhythm issues</h3>
+    <p>Some MIDI files on the Internet are recorded from a human interpretation performed with a MIDI instrument (typ. a keyboard). But a human is far from a perfect metronome, even more when the musician adds his/her own touch and feeling. While very pleasing to hear, such interpretations cannot fit well in the very strict canvas of a musical score. In such a case, don't be suprised to see very uncommon rhythm patterns in the imported files: very short notes or rests at suprising places, 7- or 11-tuplets, inconsistent tied notes, etc.</p>
+    <h3>Fingering</h3>
+    <p>MIDI files contain no information about number of strings or fingering. TuxGuitar tries to select an appropriate number of strings and tuning preset considering lowest and highest notes of track, but this result may not always be the best possible choice. Allocation of notes to strings is somehow arbitrary, generally looking for the smallest fret number for each note in a beat. This does not consider the mechanics of a guitarist's hands and fingers, so it can lead to very sub-optimal choices in many cases. You can expect a manual rework to be required most of the times.</p>
+    <h3>MIDI file types</h3>
+    <p>
+    There are 2 different MIDI file types:</p>
+    <ul>
+      <li>- A type 0 file contains one single <i>MIDI track</i>, possibly with sounds played by different instruments</li>
+      <li>- A type 1 file can contain 1 or more <i>MIDI track(s)</i>, with 1 single instrument per track</li>
+    </ul>
+    <p>Currently, TuxGuitar can import rather correctly type 1 files and type 0 files with one single instrument. When importing a multi-instruments type 0 file, TuxGuitar merges everything into a single <i>TuxGuitar track</i>. Undesirable side effects should logically occur, like notes loss and/or incorrect tuning selection.
+    In this case, consider converting to type 1 with an external MIDI application before import.</p>
+
+    <h3>Instrument range</h3>
+    <p>This is probably the most critical point. Note: this section is not applicable to percussion tracks.</p>
+    <p>Make sure the song you want to import is adapted to guitar or bass in terms of range. Trying to import a piccolo track might lead to catastrophic results, notes being far too high for a guitar. If you can, check notes ranges in your MIDI file before importing it. For information:</p>
+    <ul>
+      <li>- A standard tuned 6-strings 24-frets guitar can play midi notes 40 (E2) to 88 (E6)</li>
+      <li>- A standard tuned 4-strings 24-frets bass can play midi notes 28 (E1) to 67 (G4)</li>
+    There is a small additional margin, since TuxGuitar can select an alternative tuning preset to make more notes fit in the tablature.
+    </ul>
+    <p>A classical symptom of an improper notes range is an unexpected (or even unrealistic) tuning preset chosen by TuxGuitar. Take care, this may not be immediately visible on the tablature. So, just after importing it's highly recommended to manually check the tuning of each track. If one track is tuned with 6 identical strings... definitely something went wrong: fix the issue before trying to go any further (see <i>transposition</i> below).</p>
+    <p>Another classical symptom of improper range is notes loss, either immediately after import or when trying to change one track's tuning. TuxGuitar will delete all notes it cannot find a place for on a 30-frets instrument.</p>
+    <p>In case the input file notes range is not adapted, consider transposing through dedicated dialog directly when importing file. Note that transposition will apply to all tracks in song. If you need to transpose only one track in a multi-tracks song, consider splitting your file into multiple files with an external MIDI application before importing. You can then re-assemble in TuxGuitar with copy/paste.</p>
   </section>
 </body>
 </html>
