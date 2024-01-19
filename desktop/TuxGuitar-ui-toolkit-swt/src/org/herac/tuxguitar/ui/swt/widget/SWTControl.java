@@ -58,7 +58,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	private SWTFocusListenerManager focusListener;
 	private SWTZoomListenerManager zoomListener;
 	
-	private UISize packedSize;
+	protected UISize packedSize;
 	private UIColor bgColor;
 	private UIColor fgColor;
 	private UIFont font;
