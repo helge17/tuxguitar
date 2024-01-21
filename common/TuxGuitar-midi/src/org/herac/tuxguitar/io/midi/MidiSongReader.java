@@ -896,6 +896,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			// try to find one string for each note in beat
 			List<TGNote> listNotes = beat.getVoice(0).getNotes();
 			Collections.sort(listNotes);
+			Collections.reverse(listNotes);
 			Iterator<TGNote> it = listNotes.iterator();
 			while(it.hasNext()){
 				TGNote note = (TGNote)it.next();
