@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.app.action.impl.edit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionContext;
@@ -11,11 +12,14 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.note.TGMoveBeatsAction;
 import org.herac.tuxguitar.editor.clipboard.TGClipboard;
+import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.managers.TGTrackManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGPasteAction extends TGActionBase {
@@ -28,28 +32,57 @@ public class TGPasteAction extends TGActionBase {
 	
 	protected void processAction(TGActionContext tgActionContext){
 		TGClipboard clipboard = TGClipboard.getInstance(getContext());
+		TGStoredBeatList beatList = TGClipboard.getInstance(this.getContext()).getBeats();
 		if (clipboard.getSegment() != null) {
 			TGActionManager.getInstance(this.getContext()).execute(TGOpenMeasurePasteDialogAction.NAME, tgActionContext);
-		} else if (clipboard.getBeats() != null) {
-			TGStoredBeatList beatList = TGClipboard.getInstance(this.getContext()).getBeats();
-			if (beatList != null && beatList.getLength() > 0) {
-				TGSongManager songManager = this.getSongManager(tgActionContext);
-				TGTrackManager trackManager = songManager.getTrackManager();
-				TGBeat start = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
-				TGTrack track = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		} else if (beatList != null && beatList.getLength() > 0) {
+			TGSongManager songManager = this.getSongManager(tgActionContext);
+			TGTrackManager trackManager = songManager.getTrackManager();
+			TGBeat start = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+			TGTrack destTrack = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 
-				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-				tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
-				tgActionManager.execute(TGMoveBeatsAction.NAME, tgActionContext);
-				List<TGBeat> newBeats = trackManager.addBeats(track, beatList, start.getStart());
-				trackManager.moveOutOfBoundsBeatsToNewMeasure(track, start.getStart());
-				
-				// re-select new beats
-				if (newBeats.size()>0)  {	// test is theoretically useless, just a precaution
-					Selector selector = TablatureEditor.getInstance(getContext()).getTablature().getSelector();
-					selector.initializeSelection(newBeats.get(0));
-					selector.updateSelection(newBeats.get(newBeats.size()-1));
+			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
+			tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
+			tgActionManager.execute(TGMoveBeatsAction.NAME, tgActionContext);
+			
+			// TODO, BUG here: source and destination tracks may not have the same tuning
+			// even not the same number of strings
+			// yet, "beats" are pasted: beat contains voices, voice contains notes, note contains (string number + fret number)
+			// if not the same tuning, notes can change
+			// also possible to create a note on the 5th string of a 4 string instrument
+			
+			// yet a simplistic workaround: remove notes on non-existing strings
+			TGFactory factory = getSongManager(tgActionContext).getFactory();
+			int maxString = destTrack.getStrings().size();	// max string number (included), strings are numbered 1 to n
+			List <TGBeat> beatsToPaste = new ArrayList<TGBeat>();
+			for (TGBeat beat : beatList.getBeats()) {
+				TGBeat newBeat = beat.clone(factory);
+				for (int i=0; i<2; i++) {
+					TGVoice voice = newBeat.getVoice(i);
+					if (voice !=null) {
+						List<TGNote>notesToDelete = new ArrayList<TGNote>();
+						for (TGNote note : voice.getNotes()) {
+							if (note.getString() > maxString) {
+								notesToDelete.add(note);
+							}
+						}
+						for (TGNote note : notesToDelete) {
+							voice.removeNote(note);
+						}
+					}
 				}
+				beatsToPaste.add(newBeat);
+			}
+			TGStoredBeatList beatsListToPaste = new TGStoredBeatList(beatsToPaste, factory);
+			
+			List<TGBeat> newBeats = trackManager.addBeats(destTrack, beatsListToPaste, start.getStart());
+			trackManager.moveOutOfBoundsBeatsToNewMeasure(destTrack, start.getStart());
+			
+			// re-select new beats
+			if (newBeats.size()>0)  {	// test is theoretically useless, just a precaution
+				Selector selector = TablatureEditor.getInstance(getContext()).getTablature().getSelector();
+				selector.initializeSelection(newBeats.get(0));
+				selector.updateSelection(newBeats.get(newBeats.size()-1));
 			}
 		}
 	}
