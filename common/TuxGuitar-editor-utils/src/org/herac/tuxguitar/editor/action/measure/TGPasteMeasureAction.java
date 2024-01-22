@@ -61,6 +61,12 @@ public class TGPasteMeasureAction extends TGActionBase{
 						int fromNumber = measure.getNumber();
 						long theMove = (measure.getStart() - first.getStart());
 
+						// TODO, BUG here: source and destination tracks may not have the same tuning
+						// even not the same number of strings
+						// yet, measures are pasted: measure contains beats, beat contains voices, voice contains notes, note contains (string number + fret number)
+						// if not the same tuning, notes can change
+						// also possible to create a note on the 5th string of a 4 string instrument
+						
 						segment = segment.clone(songManager.getFactory());
 						helper.insertMeasures(song, segment, fromNumber, theMove, toTrack);
 					}
