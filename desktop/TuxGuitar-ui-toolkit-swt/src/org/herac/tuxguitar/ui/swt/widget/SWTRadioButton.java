@@ -60,4 +60,14 @@ public class SWTRadioButton extends SWTControl<Button> implements UIRadioButton 
 			this.getControl().removeSelectionListener(this.selectionListener);
 		}
 	}
+
+	// 01/2024, workaround for an external bug visible in Linux SWT/KDE configuration
+	// to be deleted one day
+	// see https://github.com/helge17/tuxguitar/issues/52
+	@Override
+	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
+		super.computePackedSize(fixedWidth, fixedHeight);
+		this.packedSize.setWidth(this.packedSize.getWidth() + 10.0f);
+	}
+
 }
