@@ -1,7 +1,5 @@
 * {
-  padding: 0;
   margin: 0;
-  list-style: none;
   text-decoration: none;
   font-size: 14px;
   font-family: sans-serif;
@@ -42,6 +40,11 @@
   transition: .4s;
 }
 
+.menu {
+  padding: 0;
+  list-style: none;
+}
+
 .menu1 {
   line-height: 30px;
   font-size: 18px;
@@ -77,6 +80,10 @@ button {
 
 #forward {
   background: url(images/browser_forward.png);
+}
+
+ul {
+  padding-left: 20px;
 }
 
 ul li:hover a {

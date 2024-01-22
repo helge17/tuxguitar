@@ -18,7 +18,7 @@
     <h1>Measure and beat</h1>
   </div>
   <div class="sidebar">
-    <ul>
+    <ul class="menu">
       <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
       <li class="menu1">Introduction</li>
       <li class="menu2"><a href="about.html">About</a></li>
@@ -95,13 +95,11 @@
     <ul>
       <li><strong>Beat → Insert Rest Beat</strong> inserts one rest before the current cursor position. This only works within a single measure in the current track as long as there is an empty beat at the end of the measure. All notes on the right of the cursor are shifted to the right.</li>
       <li><strong>Beat → Delete Note or Rest</strong>: The result of this function depends on the content of the beat:</li>
-      <li>
-        <ul>
-          <li>If no notes are selected, only the note on the current cursor position is deleted.</li>
-          <li>If one or more entire beats are selected, all notes are deleted in the selected area.</li>
-          <li>If the selected beats are already empty (i.e. they only contain a pause), all notes on the right of the selection are shifted to the left. As "Insert Rest Beat", this function only works within one measure.</li>
-        </ul>
-      </li>
+      <ul>
+        <li>If no notes are selected, only the note on the current cursor position is deleted.</li>
+        <li>If one or more entire beats are selected, all notes are deleted in the selected area.</li>
+        <li>If the selected beats are already empty (i.e. they only contain a pause), all notes on the right of the selection are shifted to the left. As "Insert Rest Beat", this function only works within one measure.</li>
+      </ul>
       <li><strong>Beat → Clean Beat</strong>: Same as "Delete Note or Rest", but if the selected beats are already empty, it simply does nothing.</li><!-- <li><strong>Beat → Remove unused Voice</strong>: t.b.d.</li> -->
       <li><strong>Beat → Auto Stems</strong>/<strong>Stems up</strong>/<strong>Stems down</strong>: Here you can control the orientation of the note stems. You can let TuxGuitar decide about the stem orientation or force the note stems in the beat where the cursor is to go up or down.</li>
       <li><strong>Beat → Semitone up</strong>/<strong>down</strong>: These menu items shift all notes in the selected beats one semitone up or down, as log as all notes can be shifted.</li>
