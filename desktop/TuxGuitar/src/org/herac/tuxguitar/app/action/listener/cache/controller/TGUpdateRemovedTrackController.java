@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.action.listener.cache.controller;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
 import org.herac.tuxguitar.song.models.TGTrack;
@@ -18,6 +19,9 @@ public class TGUpdateRemovedTrackController extends TGUpdateSongController {
 	public void update(final TGContext context, TGActionContext actionContext) {
 		if( Boolean.TRUE.equals( actionContext.getAttribute(TGRemoveTrackAction.ATTRIBUTE_SUCCESS)) ) {			
 			final TGTrack tgTrack = (TGTrack) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+			
+			// clear selection (corresponding track may have been deleted)
+			TablatureEditor.getInstance(context).getTablature().getSelector().clearSelection();
 			
 			// Update caret position to previous track
 			this.findUpdateBuffer(context, actionContext).doPostUpdate(new Runnable() {
