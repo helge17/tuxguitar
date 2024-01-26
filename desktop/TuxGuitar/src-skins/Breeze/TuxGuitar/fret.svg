@@ -30,9 +30,9 @@
   </filter>
  </defs>
  <g id="g1495" transform="translate(0,60)" filter="url(#filter2046)">
-  <rect id="rect1487" transform="scale(-1,1)" x="-2" y="-60" width="2" height="150" fill="url(#linearGradient6702)" stroke-width="1.291" style="paint-order:markers fill stroke"/>
-  <rect id="rect1489" x="2" y="-60" width="2" height="150" fill="url(#linearGradient6698)" stroke-width="1.291" style="paint-order:markers fill stroke"/>
-  <path id="path1491" d="m0 90a2 2 0 0 1 2-2 2 2 0 0 1 2 2" fill="#888" style="paint-order:markers fill stroke"/>
-  <path id="path1493" d="m4-60a2 2 0 0 1-2 2 2 2 0 0 1-2-2" fill="#dedede" style="paint-order:markers fill stroke"/>
+  <rect id="rect1487" transform="scale(-1,1)" x="-2" y="-60" width="2" height="150" style="fill:url(#linearGradient6702);stroke-width:1.29099452;paint-order:markers fill stroke"/>
+  <rect id="rect1489" x="2" y="-60" width="2" height="150" style="fill:url(#linearGradient6698);stroke-width:1.29099452;paint-order:markers fill stroke"/>
+  <path id="path1491" d="m 0,90 a 2,2 0 0 1 2,-2 2,2 0 0 1 2,2" style="fill:#888888;fill-opacity:1;paint-order:markers fill stroke"/>
+  <path id="path1493" d="m 4,-60 a 2,2 0 0 1 -2,2 2,2 0 0 1 -2,-2" style="fill:#dedede;paint-order:markers fill stroke"/>
  </g>
 </svg>
