@@ -12,6 +12,7 @@ TuxGuitar 1.6.1 (2024-mm-dd) changes:
 * Save/restore caret position when switching song
 * Copy measures: new option to copy markers, options are saved
 * Security fix for CVE-2020-14940
+* Built against libfluidsynth3 on Linux
 * Add a text filter in Key Binding Editor
 * Save Key Signature in GP5 format
 * Improved import/export of harmonics in GP5 format

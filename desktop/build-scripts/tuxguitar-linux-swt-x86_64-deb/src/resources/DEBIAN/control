@@ -1,7 +1,7 @@
 Package: tuxguitar
 Version: SNAPSHOT-linux-swt
 Architecture: amd64
-Depends: default-jre, libasound2, libfluidsynth2 | libfluidsynth3, libjack0 | libjack-jackd2-0, liblilv-0-0, libwebkit2gtk-4.0-37
+Depends: default-jre, libasound2, libfluidsynth3, libjack0 | libjack-jackd2-0, liblilv-0-0, libwebkit2gtk-4.0-37
 Recommends: fonts-wqy-zenhei, guitarix-lv2
 Priority: optional
 Section: Multimedia
