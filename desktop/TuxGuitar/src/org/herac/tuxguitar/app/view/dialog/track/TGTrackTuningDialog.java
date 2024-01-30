@@ -539,6 +539,7 @@ public class TGTrackTuningDialog {
 		this.currentSelectedPreset = select.getSelectedValue();
 		updateTuningTable(select.getSelectedValue());
 		updatePresetsButtons();
+		updateTuningButtons();
 	}
 	
 	private void onSavePreset() {
