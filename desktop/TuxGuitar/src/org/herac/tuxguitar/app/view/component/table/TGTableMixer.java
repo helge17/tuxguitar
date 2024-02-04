@@ -88,6 +88,11 @@ public class TGTableMixer {
 		}
 	}
 	
+	public void updateInstrumentsNames() {
+		for (VolumeControl control : this.volumeControls) {
+			control.instrumentLabel.setText(control.getChannel().getName());
+		}
+	}
 
 	private class VolumeControl implements TGContinuousControl {
 		private UIScale volumeScale;
