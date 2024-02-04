@@ -14,10 +14,6 @@ public class TGShiftNoteDownAction extends TGShiftNoteAction {
 	}
 
 	@Override
-	protected boolean canShiftIndividualNote(TGMeasureManager measureManager, TGNote note) {
-		return measureManager.canShiftIndividualNoteDown(note.getVoice().getBeat().getMeasure(), note.getVoice().getBeat().getStart(), note.getString());
-	}
-	@Override
 	protected int shiftNote(TGMeasureManager measureManager, TGNote note) {
 		return measureManager.shiftNoteDown(note.getVoice().getBeat().getMeasure(), note.getVoice().getBeat().getStart(), note.getString());
 	}

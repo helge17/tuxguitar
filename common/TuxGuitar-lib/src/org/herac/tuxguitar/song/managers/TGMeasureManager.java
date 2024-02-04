@@ -879,52 +879,33 @@ public class TGMeasureManager {
 		}
 	}
 	/**
-	 * test if one note can be shifted 1 string up, not considering other notes of same beat
-	 */
-	public boolean canShiftIndividualNoteUp(TGMeasure measure,long start,int string){
-		return (shiftNote(measure, start, string,-1, true) > 0);
-	}
-	/**
-	 * Mueve la nota a la cuerda de arriba
+	 * try to shift note one string up, returns new string number in case of success else 0
 	 */
 	public int shiftNoteUp(TGMeasure measure,long start,int string){
-		return shiftNote(measure, start, string,-1, false);
+		return shiftNote(measure, start, string,-1);
 	}
 	/**
-	 * test if one note can be shifted 1 string down, not considering other notes of same beat
-	 */
-	public boolean canShiftIndividualNoteDown(TGMeasure measure,long start,int string){
-		return (shiftNote(measure, start, string,1, true) > 0);
-	}
-	/**
-	 * Mueve la nota a la cuerda de abajo
+	 * try to shift note one string down, returns new string number in case of success else 0
 	 */
 	public int shiftNoteDown(TGMeasure measure,long start,int string){
-		return shiftNote(measure, start, string,1, false);
+		return shiftNote(measure, start, string,1);
 	}
 	
 	/**
-	 * Mueve la nota a la siguiente cuerda
+	 * try to shift note one string up/down, returns new string number in case of success else 0
 	 */
-	private int shiftNote(TGMeasure measure,long start,int string,int move, boolean testIndividualNote){
+	private int shiftNote(TGMeasure measure,long start,int string,int move){
 		TGNote note = getNote(measure,start,string);
 		if(note != null){
 			int nextStringNumber = (note.getString() + move);
-			if (!testIndividualNote) {
-				while(getNote(measure,start,nextStringNumber) != null){
-					nextStringNumber += move;
-				}
-			}
-			if(nextStringNumber >= 1 && nextStringNumber <= measure.getTrack().stringCount()){
+			if ((getNote(measure,start,nextStringNumber) == null) && (nextStringNumber >= 1) && (nextStringNumber <= measure.getTrack().stringCount())){
 				TGString currentString = measure.getTrack().getString(note.getString());
 				TGString nextString = measure.getTrack().getString(nextStringNumber);
 				int noteValue = (note.getValue() + currentString.getValue());
 				boolean percussionChannel = getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId());
 				if(noteValue >= nextString.getValue() && ((nextString.getValue() + 30 > noteValue) || percussionChannel) ){
-					if (!testIndividualNote) {
-						note.setValue(noteValue - nextString.getValue());
-						note.setString(nextString.getNumber());
-					}
+					note.setValue(noteValue - nextString.getValue());
+					note.setString(nextString.getNumber());
 					return note.getString();
 				}
 			}
