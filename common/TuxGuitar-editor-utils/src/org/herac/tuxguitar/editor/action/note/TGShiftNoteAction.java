@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.editor.action.note;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionContext;
@@ -20,7 +19,6 @@ public abstract class TGShiftNoteAction extends TGActionBase {
 	}
 	
 	protected boolean sortStringsAscending;
-	protected abstract boolean canShiftIndividualNote(TGMeasureManager measureManager, TGNote note);
 	protected abstract int shiftNote(TGMeasureManager measureManager, TGNote note);
 
 	protected void processAction(TGActionContext context){
@@ -35,27 +33,19 @@ public abstract class TGShiftNoteAction extends TGActionBase {
 			} else {
 				Collections.sort(listNotes, (n1,n2) -> n2.getString()-n1.getString());
 			}
-			boolean success = true;
-			Iterator<TGNote> it = listNotes.iterator();
-			while (it.hasNext() && success) {
-				TGNote note = it.next();
-				success &= this.canShiftIndividualNote(measureManager, note);
+			boolean moreThanOneBeat = false;  // count number of beats: if 1 single beat then play sound
+			TGBeat refBeat = null;
+			for (TGNote note: listNotes) {
+				TGBeat beat = note.getVoice().getBeat();
+				moreThanOneBeat |= (refBeat!=null && beat!=refBeat);
+				refBeat = beat;
+				int nextString = this.shiftNote(measureManager, note);
+				if (caretNote == note && nextString != 0){
+					context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, note.getVoice().getBeat().getMeasure().getTrack().getString(nextString));
+				}
 			}
-			if (success) {
-				boolean moreThanOneBeat = false;  // count number of beats: if 1 single beat then play sound
-				TGBeat refBeat = null;
-				for (TGNote note: listNotes) {
-					TGBeat beat = note.getVoice().getBeat();
-					moreThanOneBeat |= (refBeat!=null && beat!=refBeat);
-					refBeat = beat;
-					int nextString = this.shiftNote(measureManager, note);
-					if (caretNote == note){
-						context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, note.getVoice().getBeat().getMeasure().getTrack().getString(nextString));
-					}
-				}
-				if (!moreThanOneBeat) {
-					context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
-				}
+			if (!moreThanOneBeat) {
+				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 			}
 		}
 	}
