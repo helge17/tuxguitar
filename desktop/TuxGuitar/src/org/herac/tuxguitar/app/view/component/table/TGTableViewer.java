@@ -417,6 +417,7 @@ public class TGTableViewer implements TGEventListener {
 			row.getName().setText(((TGTrack)row.getName().getData(TGTrack.class.getName())).getName());
 			row.getInstrument().setText(getInstrument((TGTrack)row.getInstrument().getData(TGTrack.class.getName())));
 		}
+		this.mixer.updateInstrumentsNames();
 	}
 	
 	private void redrawRows(int selectedTrack) {
@@ -450,13 +451,16 @@ public class TGTableViewer implements TGEventListener {
 			
 			if( this.resetTexts ){
 				this.resetTextsValues();
-				this.resetTexts = false;
 			}
 			if( this.followScroll ){
 				this.followHorizontalScroll(getEditor().getTablature().getCaret().getMeasure().getNumber(), 0);
 				this.followScroll = false;
 			}
 			this.trackTableComposite.redraw();
+			if( this.resetTexts ){
+				this.resetTexts = false;
+				this.getControl().layout();
+			}
 		}
 	}
 	
