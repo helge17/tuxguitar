@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.app.system.config;
 
 public class TGConfigKeys {
-	
+
 	public static final String SKIN = "skin";
 	public static final String WINDOW_TITLE = "window.title";
 	public static final String SHOW_SPLASH = "show.splash";
@@ -24,11 +24,11 @@ public class TGConfigKeys {
 	public static final String EDITOR_NATURAL_KEY_MODE = "editor.natural.key.mode";
 	public static final String FONT_DEFAULT = "font.default";
 	public static final String FONT_NOTE = "font.note";
+	public static final String FONT_LYRIC = "font.lyric";
+	public static final String FONT_TEXT = "font.text";
 	public static final String FONT_CHORD = "font.chord";
 	public static final String FONT_CHORD_FRET = "font.chord-fret";
 	public static final String FONT_GRACE = "font.grace";
-	public static final String FONT_LYRIC = "font.lyric";
-	public static final String FONT_TEXT = "font.text";
 	public static final String FONT_MARKER = "font.marker";
 	public static final String FONT_PRINTER_DEFAULT = "font.printer.default";
 	public static final String FONT_PRINTER_NOTE = "font.printer.note";
@@ -68,17 +68,16 @@ public class TGConfigKeys {
 	public static final String MATRIX_GRIDS = "matrix.grids";
 	public static final String MATRIX_FONT = "matrix.font";
 	public static final String MATRIX_COLOR_FOREGROUND = "matrix.color.foreground";
-	public static final String MATRIX_COLOR_LINE_1= "matrix.color.line-1";
-	public static final String MATRIX_COLOR_LINE_2= "matrix.color.line-2";
-	public static final String MATRIX_COLOR_LINE_3= "matrix.color.line-3";
+	public static final String MATRIX_COLOR_LINE_1 = "matrix.color.line-1";
+	public static final String MATRIX_COLOR_LINE_2 = "matrix.color.line-2";
+	public static final String MATRIX_COLOR_LINE_3 = "matrix.color.line-3";
 	public static final String MATRIX_COLOR_BORDER = "matrix.color.border";
 	public static final String MATRIX_COLOR_POSITION = "matrix.color.position";
 	public static final String MATRIX_COLOR_NOTE = "matrix.color.note";
 	public static final String MATRIX_COLOR_PLAY_NOTE = "matrix.color.play-note";
 	public static final String TABLE_AUTO_SIZE = "table.auto-size";
-	public static final String BROWSER_LINES_VISIBLE = "browser.lines-visible";
 	public static final String FORCE_OS_DEFAULTS = "painter.force-os-defaults";
-	
+
 	public static final String STYLE_MIN_BUFFER_SEPARATOR = "style.minBufferSeparator";
 	public static final String STYLE_MIN_TOP_SPACING = "style.minTopSpacing";
 	public static final String STYLE_MIN_SCORE_TAB_SPACING = "style.minScoreTabSpacing";
@@ -106,6 +105,6 @@ public class TGConfigKeys {
 	public static final String STYLE_LOOP_MARKER_SPACING = "style.loopMarkerSpacing";
 	public static final String STYLE_LINE_WIDTHS = "style.lineWidths";
 	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
-	
+
 	public static final String HOMEPAGE_URL = "homepage.url";
 }
