@@ -40,19 +40,22 @@ function usage {
   echo "#           or more uploads failed, the release remains in draft status (as with -g)."
   echo "#"
   echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-snapshot,"
-  echo "# e.g. 2023-08-25-snapshot. This string will be part of the archive and package file names"
-  echo '# and shows up in the TuxGuitar "About" dialog.'
+  echo "# today that would be $TGVERSION. This string will be part of the archive and package file names"
+  echo '# and shows up in the TuxGuitar "About" dialog and the help pages.'
   echo "#"
   echo "# -r <release>"
   echo "#        Sets the build version to the given <release> string, e.g. 1.6.0beta1."
   echo '#        If you use "SRC" as <release>, then the build version is extracted from the source'
-  echo "#        code, e.g. 1.6.0."
+  echo "#        code. The current version is $TGSRCVER."
   echo "#"
   echo "# -h     Display this help message and exit."
   echo "#"
   echo "# USE AT YOUR OWN RISK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   echo
 }
+
+# Current release version
+TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
 
 # Default build version
 TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-snapshot"
@@ -76,7 +79,7 @@ while getopts "lwmbaAgGhr:" CMDopt; do
        publish_release=1
        ;;
     r) TGVERSION="$OPTARG"
-       [ $TGVERSION == SRC ] && TGVERSION=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
+       [ $TGVERSION == SRC ] && TGVERSION=$TGSRCVER
        ;;
     *) usage
        [ $CMDopt == "h" ] && exit || exit 1
@@ -145,7 +148,7 @@ echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
 echo "# OK."
 
 echo -e "\n# Change build version from SNAPSHOT to $TGVERSION in config files..."
-  find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist \) -and -not -path "./website/*" -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
+  find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
   sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."
