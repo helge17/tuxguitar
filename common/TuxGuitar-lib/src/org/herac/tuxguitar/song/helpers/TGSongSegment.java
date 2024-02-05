@@ -6,6 +6,7 @@ import java.util.List;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGString;
 
 public class TGSongSegment {
 	
@@ -25,8 +26,12 @@ public class TGSongSegment {
 		return this.tracks;
 	}
 	
-	public void addTrack(int track, List<TGMeasure> measures){
-		this.tracks.add(new TGTrackSegment(track, measures));
+	public void addTrack(int track, List<TGMeasure> measures, List<TGString> strings, boolean isPercussionTrack){
+		List<Integer> trackStringsValues = new ArrayList<Integer>();
+		for (TGString string : strings) {
+			trackStringsValues.add(string.getValue());
+		}
+		this.tracks.add(new TGTrackSegment(track, measures, trackStringsValues, isPercussionTrack));
 	}
 	
 	public boolean isEmpty(){

@@ -2,7 +2,6 @@ package org.herac.tuxguitar.io.midi;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +48,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	private MidiSettings settings;
 	private TGFactory factory;
 	private String sequenceName = "";
+	private TGSongManager tgSongManager;
 	
 	public MidiSongReader() {
 		super();
@@ -88,7 +88,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				parseEvents(tickEvents, seqTrackNb, trackNumber);
 			}
 			
-			TGSongManager tgSongManager = new TGSongManager(this.factory);
+			tgSongManager = new TGSongManager(this.factory);
 			TGSong tgSong = this.factory.newSong();
 			tgSong.setName(sequenceName);
 			
@@ -434,7 +434,6 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	private void createNote(long tick, int track, int channel, int value){
 		TempNote tempNote = getTempNote(track, channel, value, true);
 		if( tempNote != null ) {
-			int nString = 0;
 			int nValue = (tempNote.getValue() + this.settings.getTranspose());
 			int nVelocity = 64;
 			long nStart = tempNote.getTick();
@@ -450,7 +449,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				
 				TGNote note = this.factory.newNote();
 				note.setValue(nValue);
-				note.setString(nString);
+				note.setString(1);
 				note.setVelocity(nVelocity);
 				note.setTiedNote(nStart > tempNote.getTick());
 				
@@ -882,61 +881,13 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 		
 		private void adjustStrings(TGMeasure measure){
-			for(int i = 0;i < measure.countBeats();i++){
-				TGBeat beat = measure.getBeat( i );
-				adjustStrings(beat);
-			}
+			TGString string = this.factory.newString();
+			string.setNumber(1);
+			string.setValue(0);
+			List<Integer> strings = new ArrayList<Integer>();
+			strings.add(string.getValue());
+			tgSongManager.getTrackManager().allocateNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings());
 		}
 		
-		private void adjustStrings(TGBeat beat){
-			TGTrack track = beat.getMeasure().getTrack();
-			List<TGString> freeStrings = new ArrayList<TGString>( track.getStrings() );
-			List<TGNote> notesToRemove = new ArrayList<TGNote>();
-			
-			// try to find one string for each note in beat
-			List<TGNote> listNotes = beat.getVoice(0).getNotes();
-			Collections.sort(listNotes);
-			Collections.reverse(listNotes);
-			Iterator<TGNote> it = listNotes.iterator();
-			while(it.hasNext()){
-				TGNote note = (TGNote)it.next();
-				
-				int string = getStringForValue(freeStrings,note.getValue());
-				if (string<0) {
-					// can't find a string for this note, so discard it
-					notesToRemove.add( note );
-				} else {
-					for(int j = 0;j < freeStrings.size();j ++){
-						TGString tempString = (TGString)freeStrings.get(j);
-						if(tempString.getNumber() == string){
-							note.setValue(note.getValue() - tempString.getValue());
-							note.setString(tempString.getNumber());
-							freeStrings.remove(j);
-							break;
-						}
-					}
-				}
-			}
-			
-			// Remove notes
-			while( notesToRemove.size() > 0 ){
-				beat.getVoice(0).removeNote( (TGNote)notesToRemove.get( 0 ) );
-				notesToRemove.remove( 0 );
-			}
-		}
-		
-		private int getStringForValue(List<TGString> strings,int value){
-			int minFret = -1;
-			int stringForValue = -1;
-			for(int i = 0;i < strings.size();i++){
-				TGString string = (TGString)strings.get(i);
-				int fret = value - string.getValue();
-				if(fret >= 0 && (minFret<0 || fret < minFret)){
-					stringForValue = string.getNumber();
-					minFret = fret;
-				}
-			}
-			return stringForValue;
-		}
 	}
 }

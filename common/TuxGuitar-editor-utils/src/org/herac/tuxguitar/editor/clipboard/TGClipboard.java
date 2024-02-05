@@ -8,9 +8,8 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGClipboard {
 	
-	private TGSongSegment segment;
-
-	private TGStoredBeatList beats;
+	private TGSongSegment segment;		// if measures are copied
+	private TGStoredBeatList beats;		// if selection is copied
 	
 	private TGClipboard() {
 		super();
@@ -23,7 +22,7 @@ public class TGClipboard {
 	public TGStoredBeatList getBeats() {
 		return beats;
 	}
-
+	
 	public boolean hasContents() {
 		return this.segment != null || this.beats != null;
 	}
