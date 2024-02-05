@@ -16,7 +16,7 @@ misc/build_tuxguitar_from_source.sh
 
 ## Prerequisites
 
-- JDK 7 or higher
+- JDK 9 or higher
 - Maven 3.3 or higher
 - Fluidsynth (optional)
 - JACK (optional)
