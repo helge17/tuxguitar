@@ -7,6 +7,8 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.clipboard.TGClipboard;
 import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
+import org.herac.tuxguitar.song.managers.TGSongManager;
+import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -21,7 +23,10 @@ public class TGCopyAction extends TGActionBase {
 	protected void processAction(TGActionContext tgActionContext){
 		if (Boolean.TRUE.equals(tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE))) {
 			TGBeatRange beats = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
-			TGClipboard.getInstance(this.getContext()).setData(new TGStoredBeatList(beats.getBeats(), getSongManager(tgActionContext).getFactory()));
+			TGTrack track = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+			TGSongManager songManager = getSongManager(tgActionContext);
+			TGClipboard.getInstance(this.getContext()).setData(
+				new TGStoredBeatList(beats.getBeats(), track.getStrings(), songManager.isPercussionChannel(track.getSong(), track.getChannelId()), songManager.getFactory()));
 		}
 		else {
 			TGActionManager.getInstance(this.getContext()).execute(TGOpenMeasureCopyDialogAction.NAME, tgActionContext);

@@ -33,7 +33,7 @@ public class TGSongSegmentHelper {
 			for(int number = number1; number <= number2;number ++){
 				measures.add(this.sm.getTrackManager().getMeasure(track, number));
 			}
-			segment.addTrack(track.getNumber(),measures);
+			segment.addTrack(track.getNumber(),measures, track.getStrings(), sm.isPercussionChannel(song, track.getChannelId()));
 		}
 		return segment.clone(this.sm.getFactory());
 	}
@@ -47,7 +47,7 @@ public class TGSongSegmentHelper {
 			segment.getHeaders().add( this.sm.getMeasureHeader(song, number) );
 			measures.add(this.sm.getTrackManager().getMeasure(track, number));
 		}
-		segment.addTrack(track.getNumber(),measures);
+		segment.addTrack(track.getNumber(),measures, track.getStrings(), sm.isPercussionChannel(song, track.getChannelId()));
 		return segment.clone(this.sm.getFactory());
 	}
 	
@@ -77,31 +77,35 @@ public class TGSongSegmentHelper {
 		Iterator<TGTrack> tracksIt = song.getTracks();
 		while (tracksIt.hasNext()) {
 			TGTrack currTrack = (TGTrack) tracksIt.next();
+			TGTrackSegment tSegment = null;
 			List<TGMeasure> measures = null;
 			
 			Iterator<TGTrackSegment> tracks = segment.getTracks().iterator();
 			while(tracks.hasNext()){
-				TGTrackSegment tSegment = (TGTrackSegment)tracks.next();
+				tSegment = (TGTrackSegment)tracks.next();
 				
 				if(  ((track > 0 && segment.getTracks().size() == 1)?track:tSegment.getTrack()) == currTrack.getNumber()){
 					measures = tSegment.getMeasures();
 					break;
 				}
 			}
-			if(measures == null){
-				TGTrackManager tm = this.sm.getTrackManager();
-				TGMeasure measure = (fromNumber > 1 ? tm.getMeasure(currTrack , (fromNumber - 1) ) : tm.getMeasure(currTrack, headerNumber ));
-				int clef = ( measure != null ? measure.getClef() : TGMeasure.DEFAULT_CLEF );
-				int keySignature = ( measure != null ? measure.getKeySignature() : TGMeasure.DEFAULT_KEY_SIGNATURE );
-				measures = getEmptyMeasures(segment.getHeaders().size(), clef, keySignature);
+			if (tSegment != null) {
+				if ((measures == null) || (tSegment.isPercussionTrack() != this.sm.isPercussionChannel(song, currTrack.getChannelId()))) {
+					TGTrackManager tm = this.sm.getTrackManager();
+					TGMeasure measure = (fromNumber > 1 ? tm.getMeasure(currTrack , (fromNumber - 1) ) : tm.getMeasure(currTrack, headerNumber ));
+					int clef = ( measure != null ? measure.getClef() : TGMeasure.DEFAULT_CLEF );
+					int keySignature = ( measure != null ? measure.getKeySignature() : TGMeasure.DEFAULT_KEY_SIGNATURE );
+					measures = getEmptyMeasures(segment.getHeaders().size(), clef, keySignature);
+				}
+				else {
+					this.sm.getTrackManager().allocateMeasureNotesToStrings(tSegment.getStringValues(), measures, currTrack.getStrings());
+				}
 			}
-			
 			for(int i = 0;i < measures.size();i++){
 				TGMeasure measure = (TGMeasure)measures.get(i);
 				measure.setHeader((TGMeasureHeader)headers.get(i));
 				this.sm.getMeasureManager().moveAllBeats(measure,move);
 			}
-			
 			insertMeasures(currTrack,measures);
 		}
 	}
@@ -148,8 +152,10 @@ public class TGSongSegmentHelper {
 					measure.setHeader((TGMeasureHeader)measureHeaders.get(i));
 					this.sm.getMeasureManager().moveAllBeats(measure,move);
 					this.sm.getMeasureManager().removeVoicesOutOfTime(measure);
-					this.sm.getMeasureManager().removeNotesAfterString(measure, currTrack.stringCount());
-					this.sm.getTrackManager().replaceMeasure(currTrack,measure);
+					if ((tSegment.isPercussionTrack() == this.sm.isPercussionChannel(song, currTrack.getChannelId()))) {
+						this.sm.getTrackManager().allocateMeasureNotesToStrings(tSegment.getStringValues(), measure, currTrack.getStrings());
+						this.sm.getTrackManager().replaceMeasure(currTrack,measure);
+					}
 				}
 			}
 		}

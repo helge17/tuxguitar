@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.song.managers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,12 +12,15 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGTrackManager {
 	
 	private TGSongManager songManager;
+	private final int MAX_FRET = 29;	//included
 	
 	public TGTrackManager(TGSongManager songManager){
 		this.songManager = songManager;
@@ -344,6 +348,168 @@ public class TGTrackManager {
 			TGMeasure measure = (TGMeasure)it.next();
 			this.songManager.getMeasureManager().orderBeats(measure);
 		}
+	}
+	
+	public void allocateMeasureNotesToStrings(List<Integer> fromStringValues, List<TGMeasure> measures, List<TGString> toStrings) {
+		List<TGBeat> beats = new ArrayList<TGBeat>();
+		for (TGMeasure measure : measures) {
+			beats.addAll(measure.getBeats());
+		}
+		this.allocateNotesToStrings(fromStringValues, beats, toStrings);
+	}
+	
+	public void allocateMeasureNotesToStrings(List<Integer> fromStringValues, TGMeasure measure, List<TGString> toStrings) {
+		this.allocateNotesToStrings(fromStringValues, measure.getBeats(), toStrings);
+	}
+	
+	public void allocateNotesToStrings(List<Integer> fromStringValues, List<TGBeat> beats, List<TGString> toStrings) {
+		if (fromStringValues==null || fromStringValues.isEmpty() || beats==null || beats.isEmpty() || toStrings==null || toStrings.isEmpty()) {
+			return;
+		}
+		// don't move any note if tuning did not change
+		if (!this.tuningChanged(fromStringValues, toStrings)) {
+			return;
+		}
+		for (TGBeat beat : beats) {
+			beat.removeChord();
+			allocateNotesToStrings(fromStringValues, beat, toStrings);
+		}
+	}
+	
+	private void allocateNotesToStrings(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
+		if (!this.allocateNotesToClosestString(fromStringValues, beat, toStrings)) {
+			this.allocateNotesToLowestFret(fromStringValues, beat, toStrings);
+		}
+	}
+	
+	// try to allocate each note to the closest string in new tuning
+	// "closest" in terms of string pitch (not string number)
+	// objective is to keep "fingering pattern" globally unchanged (typ. use case: new tuning is 1/2 tone higher for all strings)
+	// returns true in case of success, else false
+	private boolean allocateNotesToClosestString(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
+		// only possible if old tuning is valid
+		boolean oldTuningIsValid = true;
+		for (int stringValue : fromStringValues) {
+			oldTuningIsValid &= (stringValue!=0);
+		}
+		if (!oldTuningIsValid) {
+			return false;
+		}
+		
+		List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
+		TGBeat newBeat = beat.clone(getSongManager().getFactory());
+		boolean ok = true;
+		
+		for (int voiceIndex=0; voiceIndex<newBeat.countVoices(); voiceIndex++) {
+			TGVoice voice = newBeat.getVoice(voiceIndex);
+			if (ok) {
+				for (TGNote note : voice.getNotes()) {
+					// look for closest string
+					int noteStringValue = fromStringValues.get(note.getString()-1);
+					int minDistance = -1;
+					TGString closestString = null;
+					for (TGString string : toStrings) {
+						int distance = Math.abs(noteStringValue - string.getValue());
+						if (minDistance<0 || distance<minDistance) {
+							closestString = string;
+							minDistance = distance;
+						}
+					}
+					if (freeStrings.contains(closestString)) {
+						int newFret = noteStringValue + note.getValue() - closestString.getValue();
+						if (newFret>=0 && newFret<=MAX_FRET) {
+							note.setValue(newFret);
+							note.setString(closestString.getNumber());
+							freeStrings.remove(closestString);
+						}
+						else {
+							// can't place note on closest string, note does not fit
+							ok = false;
+							break;
+						}
+					}
+					else {
+						// can't place note on closest string, already occupied, abort
+						ok = false;
+						break;
+					}
+				}
+			}
+		}
+		if (ok) {
+			// all notes found a place: keep this result
+			for (int voiceIndex=0; voiceIndex<newBeat.countVoices(); voiceIndex++) {
+				beat.setVoice(voiceIndex, newBeat.getVoice(voiceIndex));
+			}
+		}
+		return ok;
+	}
+	
+	// allocate each note to the lowest possible fret, discard notes with no place found
+	private void allocateNotesToLowestFret(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
+		TGFactory factory = getSongManager().getFactory();
+		List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
+		List<TGNote> notesToRemove = new ArrayList<TGNote>();
+		for (int i=0; i<beat.countVoices(); i++) {
+			TGVoice voice = beat.getVoice(i);
+			// allocating notes to lowest possible fret means to highest possible string
+			// so, process highest notes first to maximize probability to find a place for each note
+			// move all notes to a single "zero" string first, to enable sorting by fret number
+			List<TGNote> listNotes = new ArrayList<TGNote>();
+			while (voice.getNotes().size() != 0) {
+				TGNote note = voice.getNote(0);
+				TGNote tmpNote = note.clone(factory);
+				tmpNote.setValue(fromStringValues.get(tmpNote.getString()-1) + tmpNote.getValue());
+				tmpNote.setString(0);
+				listNotes.add(tmpNote);
+				voice.removeNote(note);
+			}
+			Collections.sort(listNotes);
+			Collections.reverse(listNotes);
+			for (TGNote note : listNotes) {
+				int minFret = -1;
+				TGString newString = null;
+				for (TGString string : freeStrings) {
+					int fret = note.getValue() - string.getValue();
+					if (fret>=0 && fret<=MAX_FRET && (minFret<0 || fret<minFret) ) {
+						newString = string;
+						minFret = fret;
+					}
+				}
+				if (newString != null) {
+					note.setValue(note.getValue() - newString.getValue());
+					note.setString(newString.getNumber());
+					freeStrings.remove(newString);
+				}
+				else {
+					// can't find a string for this note, so discard it
+					notesToRemove.add( note );
+				}
+			}
+			// Remove notes with no allocation found
+			while( notesToRemove.size() > 0 ){
+				listNotes.remove(notesToRemove.get(0));
+				notesToRemove.remove( 0 );
+			}
+			// move the valid ones back into voice
+			for (TGNote note : listNotes) {
+				voice.addNote(note);
+			}
+		}
+	}
+	
+	private boolean tuningChanged(List<Integer> fromStringValues, List<TGString> toStrings) {
+		if ((fromStringValues==null) != (toStrings==null)) return true;
+		// lists are both null or neither
+		if (fromStringValues==null) return false;
+		// lists are not null
+		if (fromStringValues.size() != toStrings.size()) return true;
+		for (int i=0; i<fromStringValues.size(); i++) {
+			// if toStrings are not sorted by number, consider tuning changed
+			if (toStrings.get(i).getNumber() != (i+1)) return true;
+			if (toStrings.get(i).getValue() != fromStringValues.get(i)) return true;
+		}
+		return false;
 	}
 	
 	public void transposeNotes(TGTrack track, int transposition , boolean tryKeepString, boolean applyToChords, int applyToString){
