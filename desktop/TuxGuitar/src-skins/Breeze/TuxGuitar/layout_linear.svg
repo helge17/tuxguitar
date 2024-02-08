@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="svg6" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
- <defs id="defs3051">
-  <style id="current-color-scheme" type="text/css">.ColorScheme-Text {
-        color:#232629;
-      }</style>
- </defs>
- <path id="path4" class="ColorScheme-Text" d="m3 2v12h10v-9l-3-3h-7zm1 1h5v1h-4v1h4v1h3v1h-7v1h7v5h-8v-10z" fill="currentColor"/>
+<svg id="svg6" width="22" height="22" version="1.2" xmlns="http://www.w3.org/2000/svg">
+ <path id="path4" class="ColorScheme-Text" d="m4 3v16h1 13v-1-9.5938-1.4062-0.0078125l-3.9922-3.9922-0.007812 0.0097656v-0.0097656h-1-8-1zm1 1h8v1h-7v1h7v1h-7v1h7 1 3v2h-11v1h11v1h-11v1h11v5h-12v-14z" fill="#232629"/>
 </svg>
