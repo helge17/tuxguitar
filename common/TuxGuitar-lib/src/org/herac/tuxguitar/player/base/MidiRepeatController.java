@@ -45,6 +45,7 @@ public class MidiRepeatController {
 		if( (this.sHeader != -1 && header.getNumber() < this.sHeader) || ( this.eHeader != -1 && header.getNumber() > this.eHeader ) ){
 			this.shouldPlay = false;
 			this.index ++;
+			this.repeatNumber += header.getRepeatClose();
 			return;
 		}
 		
