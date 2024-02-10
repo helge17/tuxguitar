@@ -6,6 +6,12 @@
 #set -x
 
 COMMAND=`basename $0`" $@"
+SCRIPT_DIR=`dirname $0`
+
+# TuxGuitar source directory
+SRC_DIR=$SCRIPT_DIR/..
+
+cd $SRC_DIR
 
 function usage {
   echo
@@ -36,17 +42,19 @@ function usage {
   echo "#           the command"
   echo "#           $ gh release edit <release> --draft=false"
   echo "#           Then also the release tag will be created on Github."
-  echo "#        -G publishes the release immediately if all files were successfully uploaded. If one"
-  echo "#           or more uploads failed, the release remains in draft status (as with -g)."
+  echo "#           After that you also have to sync the website manually."
+  echo "#        -G publishes the release immediately and syncs the website folder to the webserver if"
+  echo "#           all files were successfully uploaded. If one or more uploads failed, the release"
+  echo "#           remains in draft status and the website is not synced (as with -g)."
   echo "#"
   echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-snapshot,"
-  echo "# today that would be $TGVERSION. This string will be part of the archive and package file names"
-  echo '# and shows up in the TuxGuitar "About" dialog and the help pages.'
+  echo "# today that would be $TGVERSION. This string will be part of the archive and package"
+  echo '# file names and shows up in the TuxGuitar "About" dialog and the help pages.'
   echo "#"
   echo "# -r <release>"
   echo "#        Sets the build version to the given <release> string, e.g. 1.6.0beta1."
-  echo '#        If you use "SRC" as <release>, then the build version is extracted from the source'
-  echo "#        code. The current version is $TGSRCVER."
+  echo "#        If you use REL or the current source version $TGSRCVER as <release>, then a few"
+  echo '#        preliminary checks will be done before the build starts.'
   echo "#"
   echo "# -h     Display this help message and exit."
   echo "#"
@@ -54,7 +62,7 @@ function usage {
   echo
 }
 
-# Current release version
+# Current source version
 TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
 
 # Default build version
@@ -79,7 +87,11 @@ while getopts "lwmbaAgGhr:" CMDopt; do
        publish_release=1
        ;;
     r) TGVERSION="$OPTARG"
-       [ $TGVERSION == SRC ] && TGVERSION=$TGSRCVER
+       if [ $TGVERSION == $TGSRCVER ]; then
+         echo -e "\n# The given build version '-r $TGVERSION' is the same as the version in the source code. Asuming '-r REL'."
+       elif [ $TGVERSION == "REL" ]; then
+         TGVERSION=$TGSRCVER
+       fi
        ;;
     *) usage
        [ $CMDopt == "h" ] && exit || exit 1
@@ -91,16 +103,6 @@ if [ "$#" -lt 1 ]; then
   usage
   exit 1
 fi
-
-# Check if we are in the TuxGuitar source directory
-if [ ! -e desktop/pom.xml ] || [ ! -d desktop/TuxGuitar ] || [ ! -d desktop/build-scripts ] || [ ! -d android/build-scripts ]; then
-  echo "$COMMAND must be started in the TuxGuitar source directory!"
-  echo
-  exit 1
-fi
-
-# TuxGuitar source directory
-SRC_DIR=`pwd`
 
 # Binary packages are placed into this directory
 DIST_DIR=`pwd`/00-Binary_Packages
@@ -117,6 +119,71 @@ echo "### Building TuxGuitar from source. All Builds will be placed into the dir
 echo "### $DIST_DIR"
 echo "### Host: "`hostname -s`" #################################################"
 mkdir -p $DIST_DIR
+
+function release_checks_before_prepare_source {
+
+  echo -e "\n### Host: "`hostname -s`" ########### Building official release $TGVERSION, starting release checks ...\n"
+
+  echo -n "# Checking newest entry in CHANGES file ... "
+  if [ -n "$(head -1 CHANGES | grep "^TuxGuitar ${TGVERSION//\./\\\.} ([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) changes:$")" ]; then
+    echo -e "found:"
+    head -1 CHANGES
+    echo -e "# OK.\n"
+  else
+    echo -e "first line not matching \"TuxGuitar $TGVERSION (YYYY-MM-DD) changes:\"."
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  fi
+
+  echo -n "# Checking download and help links on website ... "
+  if [ "$(grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html | wc -l)" -eq 2 ]; then
+    echo -e "found:"
+    grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html
+    echo -e "# OK.\n"
+  else
+    echo -e "not found:"
+    grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  fi
+
+  echo -n "# Checking for local source changes ... "
+  if [ -n "$(git status --ignored=traditional --porcelain)" ]; then
+    echo -e "found:\n"
+    git status --ignored=traditional
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  else
+    echo -e "none found, OK.\n"
+  fi
+
+  echo -n "# Checking for local commits not pushed to origin/master ... "
+  if [ -n "$(git log origin/master..HEAD)" ]; then
+    echo -e "found:\n"
+    git log origin/master..HEAD
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  else
+    echo -e "none found, OK.\n"
+  fi
+
+  echo -n "# Fetching origin/master to local branch ... "
+  git fetch
+  echo -e "OK.\n"
+
+  echo -n "# Checking for commits in origin/master not pulled locally ... "
+  if [ -n "$(git log HEAD..origin/master)" ]; then
+    echo -e "found:\n"
+    git log HEAD..origin/master
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  else
+    echo -e "none found, OK.\n"
+  fi
+
+  echo -e "\n### Host: "`hostname -s`" ########### Successfully finished release checks."
+
+}
 
 function prepare_source {
 
@@ -147,7 +214,7 @@ echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
   cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
 echo "# OK."
 
-echo -e "\n# Change build version from SNAPSHOT to $TGVERSION in config files..."
+echo -e "\n# Change build version from SNAPSHOT to $TGVERSION in config files ..."
   find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
   sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
@@ -157,6 +224,19 @@ echo $TGVERSION > .build-version
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
 echo
+
+}
+
+function release_checks_after_prepare_source {
+
+  echo -n "# Searching differences between help files in package and local website folder ... "
+  if `diff -qr desktop/TuxGuitar/share/help/ website/files/$TGVERSION/desktop/help/ > /dev/null 2>&1`; then
+    echo -e "none found, OK.\n"
+  else
+    echo -e "found:\n"
+    diff -r desktop/TuxGuitar/share/help/ website/files/$TGVERSION/desktop/help/
+    echo -e "\n### Aborting build.\n"
+  fi
 
 }
 
@@ -368,7 +448,7 @@ ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
 # With -X nrequests=1 -X buffer=2048: ~ 250KB/s (bridged -> WLAN -> Linux system), 5MB/s (NAT -> local VMware host)
 # The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the MacOS system or on the target system.
 # Incoming transfers via scp are OK, outgoing transfers via https are also OK.
-# Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed doplex and speed settings,...) did not help.
+# Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed doplex and speed settings, ...) did not help.
 # MacOS 11 is fine and the -X options do not harm.
 scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
 
@@ -480,6 +560,9 @@ function copy_to_github {
     echo "# Publishing release $TGVERSION ..."
     if gh release edit $TGVERSION --draft=false; then
       echo "# OK."
+      echo -e "\n# Syncing website folder to webserver ...\n"
+      $SCRIPT_DIR/sync_website.sh
+      echo -e "\n# done."
     else
       echo "# Publishing release $TGVERSION failed!"
     fi
@@ -491,8 +574,12 @@ function copy_to_github {
 
 }
 
-# Prepare source code. This is done on Linux for all platforms.
-[ `uname` == Linux ] && prepare_source
+# Check and prepare source code. This is done on Linux for all platforms.
+if [ `uname` == Linux ]; then
+  [ $TGVERSION == $TGSRCVER ] && release_checks_before_prepare_source
+  prepare_source
+  [ $TGVERSION == $TGSRCVER ] && release_checks_after_prepare_source
+fi
 
 # First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
 
