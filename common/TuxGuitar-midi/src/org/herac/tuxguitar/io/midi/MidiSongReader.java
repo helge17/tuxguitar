@@ -788,14 +788,14 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			Iterator<TGMeasure> it = track.getMeasures();
 			while(it.hasNext()){
 				TGMeasure measure = (TGMeasure)it.next();
-				process(measure);
+				process(measure, tgSongManager.isPercussionChannel(track.getSong(), track.getChannelId()));
 			}
 		}
 		
-		public void process(TGMeasure measure){
+		public void process(TGMeasure measure, boolean isPercussionTrack){
 			orderBeats(measure);
 			joinBeats(measure);
-			adjustStrings(measure);
+			adjustStrings(measure, isPercussionTrack);
 		}
 		
 		public void joinBeats(TGMeasure measure) {
@@ -880,13 +880,17 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			}
 		}
 		
-		private void adjustStrings(TGMeasure measure){
+		private void adjustStrings(TGMeasure measure, boolean isPercussionTrack){
 			TGString string = this.factory.newString();
 			string.setNumber(1);
 			string.setValue(0);
 			List<Integer> strings = new ArrayList<Integer>();
 			strings.add(string.getValue());
-			tgSongManager.getTrackManager().allocateNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings());
+			if (isPercussionTrack) {
+				tgSongManager.getTrackManager().allocatePercussionNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings());
+			} else {
+				tgSongManager.getTrackManager().allocateNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings());
+			}
 		}
 		
 	}
