@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.graphics.control.TGDrumMap;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -447,23 +448,14 @@ public class TGTrackManager {
 	
 	// allocate each note to the lowest possible fret, discard notes with no place found
 	private void allocateNotesToLowestFret(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
-		TGFactory factory = getSongManager().getFactory();
 		List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
-		List<TGNote> notesToRemove = new ArrayList<TGNote>();
 		for (int i=0; i<beat.countVoices(); i++) {
 			TGVoice voice = beat.getVoice(i);
 			// allocating notes to lowest possible fret means to highest possible string
 			// so, process highest notes first to maximize probability to find a place for each note
 			// move all notes to a single "zero" string first, to enable sorting by fret number
-			List<TGNote> listNotes = new ArrayList<TGNote>();
-			while (voice.getNotes().size() != 0) {
-				TGNote note = voice.getNote(0);
-				TGNote tmpNote = note.clone(factory);
-				tmpNote.setValue(fromStringValues.get(tmpNote.getString()-1) + tmpNote.getValue());
-				tmpNote.setString(0);
-				listNotes.add(tmpNote);
-				voice.removeNote(note);
-			}
+			List<TGNote> listNotes = voice.getNotes();
+			moveNotesToStringZero(fromStringValues, listNotes);
 			Collections.sort(listNotes);
 			Collections.reverse(listNotes);
 			for (TGNote note : listNotes) {
@@ -481,20 +473,74 @@ public class TGTrackManager {
 					note.setString(newString.getNumber());
 					freeStrings.remove(newString);
 				}
-				else {
-					// can't find a string for this note, so discard it
-					notesToRemove.add( note );
-				}
 			}
 			// Remove notes with no allocation found
-			while( notesToRemove.size() > 0 ){
-				listNotes.remove(notesToRemove.get(0));
-				notesToRemove.remove( 0 );
+			removeUnallocatedNotes(voice);
+		}
+	}
+	
+	public void allocatePercussionNotesToStrings(List<Integer> fromStringValues, List<TGBeat> beats, List<TGString> toStrings) {
+		TGDrumMap drumMap = new TGDrumMap();
+		for (TGBeat beat : beats) {
+			List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
+			for (int i=0; i<beat.countVoices(); i++) {
+				TGVoice voice = beat.getVoice(i);
+				List <TGNote> listNotes = voice.getNotes();
+				// sort by ascending preferred string number
+				Collections.sort(listNotes, (a,b) -> (drumMap.getPreferredStringNumber(a.getValue()) - drumMap.getPreferredStringNumber(b.getValue())));
+				moveNotesToStringZero(fromStringValues, listNotes);
+				for (TGNote note : listNotes) {
+					// try to allocate to preferred string
+					int preferred = drumMap.getPreferredStringNumber(note.getValue());
+					TGString newString = null;
+					for (TGString string : freeStrings) {
+						if (string.getNumber() == preferred) {
+							newString = string;
+							note.setString(preferred);
+							freeStrings.remove(newString);
+							break;
+						}
+					}
+					// if not possible, try to find closest string
+					if (newString == null) {
+						int minDistance = -1;
+						for (TGString string : freeStrings) {
+							int distance = Math.abs(string.getNumber() - preferred);
+							if (distance <= minDistance || minDistance<0) {
+								newString = string;
+								minDistance = distance;
+							}
+						}
+						if (newString!=null) {
+							// found a place
+							note.setString(newString.getNumber());
+							freeStrings.remove(newString);
+						}
+					}
+				}
+				// Remove notes with no allocation found
+				this.removeUnallocatedNotes(voice);
 			}
-			// move the valid ones back into voice
-			for (TGNote note : listNotes) {
-				voice.addNote(note);
+		}
+	}
+	
+	private void moveNotesToStringZero(List<Integer> fromStringValues, List<TGNote> listNotes) {
+		for (TGNote note : listNotes) {
+			note.setValue(fromStringValues.get(note.getString()-1) + note.getValue());
+			note.setString(0);
+		}
+	}
+	
+	private void removeUnallocatedNotes(TGVoice voice) {
+		List<TGNote> toRemove = new ArrayList<TGNote>();
+		for (TGNote note : voice.getNotes()) {
+			if (note.getString()==0) {
+				toRemove.add(note);
 			}
+		}
+		while(toRemove.size() > 0 ){
+			voice.removeNote(toRemove.get(0));
+			toRemove.remove( 0 );
 		}
 	}
 	
