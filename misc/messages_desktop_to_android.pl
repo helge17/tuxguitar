@@ -127,8 +127,7 @@ print "Write Android language files to $SCRIPT_DIR/../android/TuxGuitar-android/
 
 foreach my $msgs_XX_desktop (glob("$messages_list")) {
 
-  # Read and convert \uHHHH to utf8 using uconv
-  @msgs_XX_desktop_content=`uconv -x hex-any $msgs_XX_desktop`;
+  @msgs_XX_desktop_content=`cat $msgs_XX_desktop`;
 
   $msgs_XX_desktop =~ /$SCRIPT_DIR\/\.\.\/desktop\/TuxGuitar\/share\/lang\/messages_(.*).properties/;
   (my $lang=$1)=~s/_/+/g;
