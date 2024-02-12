@@ -7,6 +7,7 @@
 
 COMMAND=`basename $0`" $@"
 SCRIPT_DIR=`dirname $0`
+SCRIPT_DIR=`cd "$SCRIPT_DIR"; pwd`
 
 # TuxGuitar source directory
 SRC_DIR=$SCRIPT_DIR/..
