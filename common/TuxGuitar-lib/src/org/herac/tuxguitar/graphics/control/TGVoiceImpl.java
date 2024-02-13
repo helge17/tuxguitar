@@ -656,16 +656,17 @@ public class TGVoiceImpl extends TGVoice{
 	public void setHiddenSilence(boolean hiddenSilence) {
 		this.hiddenSilence = hiddenSilence;
 	}
-	
-	public float getVoiceEffectSpacing(TGLayout layout)  {
-		float voiceEs = 0.0f;
+
+	public float getEffectWidth(TGLayout layout)  {
+		float voiceEffectWidth = 0.0f;
 		Iterator<TGNote> it = getNotes().iterator();
 		while(it.hasNext()){
 			TGNoteImpl note = (TGNoteImpl)it.next();
 			this.check(layout, note);
-			float noteEs = note.getEffectSpacing(layout);
-			if (noteEs>voiceEs) voiceEs = noteEs;
+			float noteEffectWidth = note.getEffectWidth(layout);
+			if (noteEffectWidth>voiceEffectWidth) voiceEffectWidth = noteEffectWidth;
 		}
-		return voiceEs;
+		return voiceEffectWidth;
 	}
+
 }
