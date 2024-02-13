@@ -647,12 +647,12 @@ public class TGNoteImpl extends TGNote {
 		}
 	}
 	
-	public float getEffectSpacing(TGLayout layout) {
-		if (getEffect().isBend()) return getBendSpacing(layout, getEffect().getBend());
+	public float getEffectWidth(TGLayout layout) {
+		if (getEffect().isBend()) return getBendWidth(layout, getEffect().getBend());
 		return(0.0f);
 	}
 
-	private float getBendSpacing(TGLayout layout, TGEffectBend bend) {
+	private float getBendWidth(TGLayout layout, TGEffectBend bend) {
 		return paintBend(layout, null, 0.0f, 0.0f, new UIInset() , bend);
 	}
 	
@@ -665,7 +665,7 @@ public class TGNoteImpl extends TGNote {
 		boolean canPaint = (painter != null);
 		
 		// x
-		float bendSpacing = 0.0f;
+		float bendWidth = 0.0f;
 		float width = ( getVoiceImpl().getWidth() - (2.0f * scale) );
 		float xLeft   = fromX + getPosX() - margin.getLeft() - (4.0f * scale);	// start of hold
 		float xCenter = fromX + getPosX();
@@ -707,7 +707,7 @@ public class TGNoteImpl extends TGNote {
 				}
 				painter.closePath();
 			}
-			return bendSpacing;
+			return bendWidth;
 		}
 		// at least one movement (bend or release)
 		float x0 = xRight;
@@ -757,7 +757,7 @@ public class TGNoteImpl extends TGNote {
 				}
 			} else {
 				x1 = x0 + ARROW_WIDTH;
-				bendSpacing += ARROW_WIDTH;
+				bendWidth += ARROW_WIDTH;
 				if (canPaint)  {
 					painter.cubicTo(x0 + (1.0f * scale), y0,     x1, y0,    x1 , y1);
 				}
@@ -784,7 +784,7 @@ public class TGNoteImpl extends TGNote {
 			isFirstMovement = false;
 			x0 = x1;
 		}
-		return(bendSpacing);
+		return(bendWidth);
 	}
 	
 	private void paintTremoloBar(TGLayout layout,UIPainter painter,float fromX,float fromY){

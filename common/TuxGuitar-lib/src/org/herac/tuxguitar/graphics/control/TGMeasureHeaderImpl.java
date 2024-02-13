@@ -27,6 +27,8 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 	
 	private float maxWidth;
 	
+	private float maxEffectWidth;
+	
 	public TGMeasureHeaderImpl(TGFactory factory){
 		super(factory);
 	}
@@ -37,6 +39,7 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 		this.maxQuarterSpacing = 0;
 		this.maxClefSpacing = 0;
 		this.maxKeySignatureSpacing = 0;
+		this.maxEffectWidth = 0;
 	}
 	
 	public void update(TGLayout layout, int index) {
@@ -142,6 +145,14 @@ public class TGMeasureHeaderImpl extends TGMeasureHeader{
 	
 	public void notifyWidth(float width){
 		this.maxWidth = ((width > this.maxWidth)?width:this.maxWidth);
+	}
+	
+	public void notifyEffectWidth(float effectWidth) {
+		this.maxEffectWidth = (effectWidth > this.maxEffectWidth ? effectWidth : this.maxEffectWidth);
+	}
+	
+	public float getMaxEffectWidth() {
+		return this.maxEffectWidth;
 	}
 	
 	public float getMaxWidth(){
