@@ -219,8 +219,7 @@ public class TGMeasureImpl extends TGMeasure{
 			this.width = this.widthBeats;
 		}
 		else{
-			float quartersInSignature = ((1f / ((float)this.getTimeSignature().getDenominator().getValue())) * 4f) * ((float)this.getTimeSignature().getNumerator());
-			this.width = (this.getMaxQuarterSpacing(layout) * quartersInSignature);
+			this.width = this.getMaxQuarterSpacing(layout) * this.getTimeSignature().getQuartersInSignature();
 			this.width += this.getMaxEffectWidth(layout);
 		}
 		
@@ -454,6 +453,16 @@ public class TGMeasureImpl extends TGMeasure{
 		float spacing = getFirstNoteSpacing(layout);
 		float tmpX = spacing;
 		this.effectWidth = 0.0f;
+		for (TGBeat beat : getBeats()) {
+			float beatEffectWidth = 0.0f;
+			for (int i=0; i< beat.countVoices();i++) {
+				float voiceEffectWidth = ((TGVoiceImpl)beat.getVoice(i)).getEffectWidth(layout);
+				beatEffectWidth = (voiceEffectWidth > beatEffectWidth ? voiceEffectWidth : beatEffectWidth);
+			}
+			this.effectWidth += beatEffectWidth;
+		}
+		
+		float noteEffectOffset = 0.0f;
 		for (int i = 0; i < countBeats(); i++) {
 			TGBeatImpl beat = (TGBeatImpl) getBeat(i);
 			beat.registerBuffer(layout);
@@ -464,7 +473,7 @@ public class TGMeasureImpl extends TGMeasure{
 				tmpX += beat.getMinimumWidth();
 			}
 			else{
-				float quarterWidth = getMaxQuarterSpacing(layout);
+				float quarterWidth = getMaxQuarterSpacing(layout) + (this.getMaxEffectWidth(layout)-this.effectWidth)/this.getTimeSignature().getQuartersInSignature();
 				float x1 = (spacing + getDisplayPosition(beat.getStart(), quarterWidth));
 				float minimumWidth = -1;
 				for(int v = 0 ; v < beat.countVoices(); v ++){
@@ -478,7 +487,7 @@ public class TGMeasureImpl extends TGMeasure{
 						voice.setWidth( width );
 					}
 				}
-				beat.setPosX( x1 + this.effectWidth);
+				beat.setPosX( x1 + noteEffectOffset);
 				beat.setWidth( minimumWidth );
 			}
 			
@@ -517,7 +526,7 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 			if (!this.compactMode) {
 				beat.setWidth(beat.getMinimumWidth() + beatEffectWidth);
-				this.effectWidth += beatEffectWidth;
+				noteEffectOffset += beatEffectWidth;
 			}
 			float bsSize = beat.getEffectsSpacing(layout);
 			if( bsSize > this.beatEffectVerticalSpacing ){
