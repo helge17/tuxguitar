@@ -427,7 +427,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx.x86_64</org.eclipse.swt.artifactId>
-				<javafx.version>17.0.2</javafx.version>
+				<javafx.version>21.0.2</javafx.version>
 				<javafx.platform>mac</javafx.platform>
 			</properties>
 		</profile>
