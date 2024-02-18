@@ -2,6 +2,7 @@
 
 #include "org_herac_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI.h"
 
+#include <CoreServices/CoreServices.h>
 #include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h>
 
