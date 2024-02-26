@@ -1576,4 +1576,8 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		return getPosY();
 	}
+	
+	public boolean isLineFeed() {
+		return getHeaderImpl().isLineFeed();
+	}
 }

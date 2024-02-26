@@ -248,20 +248,22 @@ public class TGPrintLayout extends TGLayout {
 	private TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {
 		TempLine line = new TempLine();
 		int measureCount = track.countMeasures();
+		boolean lineFeed = false;
 		for (int measureIdx = fromIndex; measureIdx < measureCount; measureIdx++) {
 			TGMeasureImpl measure= (TGMeasureImpl) track.getMeasure(measureIdx);
 			if( measure.getNumber() >= this.settings.getFromMeasure() && measure.getNumber() <= this.settings.getToMeasure()){
 				
 				//verifico si tengo que bajar de linea
-				if((line.tempWith + measure.getWidth(this)) >= getMaxWidth() ){
+				line.fullLine = (line.tempWith + measure.getWidth(this)) >= getMaxWidth();
+				if (line.fullLine || lineFeed){
 					if( line.measures.isEmpty() ) {
 						this.addToTempLine(line, ts, measure, measureIdx);
 					}
-					line.fullLine = true;
 					return line;
 				}
 				
 				this.addToTempLine(line, ts, measure, measureIdx);
+				if (measureIdx+1<measureCount) lineFeed = ((TGMeasureImpl)track.getMeasure(measureIdx+1)).isLineFeed();
 			}
 		}
 		
