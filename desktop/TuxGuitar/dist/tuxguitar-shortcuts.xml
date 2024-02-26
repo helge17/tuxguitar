@@ -25,6 +25,7 @@
 	<shortcut keys="Ctrl r" action="action.edit.repeat"/>
 	<shortcut keys="Ctrl y" action="action.edit.redo"/>
 	<shortcut keys="Ctrl z" action="action.edit.undo"/>
+	<shortcut keys="Ctrl a" action="action.selection.select-all"/>
 	<shortcut keys="Ctrl 1" action="action.edit.voice-1"/>
 	<shortcut keys="Ctrl 2" action="action.edit.voice-2"/>
 	<shortcut keys="Alt F4" action="action.file.exit"/>
@@ -57,7 +58,6 @@
 	<shortcut keys="Ctrl Del" action="action.note.general.clean-beat"/>
 	<shortcut keys="Ctrl Up" action="action.beat.general.voice-up"/>
 	<shortcut keys="Ctrl Down" action="action.beat.general.voice-down"/>
-	<shortcut keys="Ctrl a" action="action.beat.general.voice-auto"/>
 	<shortcut keys="Shift Left" action="action.note.general.decrement-semitone"/>
 	<shortcut keys="Shift Right" action="action.note.general.increment-semitone"/>
 	<shortcut keys="Shift Down" action="action.note.general.shift-down"/>

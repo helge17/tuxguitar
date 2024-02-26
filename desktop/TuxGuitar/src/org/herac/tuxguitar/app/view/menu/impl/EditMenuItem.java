@@ -10,6 +10,14 @@ import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import org.herac.tuxguitar.app.action.impl.selector.TGClearSelectionAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionFirstAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionLastAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionLeftAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionNextAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionPreviousAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionRightAction;
+import org.herac.tuxguitar.app.action.impl.selector.TGSelectAllAction;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
@@ -31,6 +39,15 @@ public class EditMenuItem extends TGMenuItem{
 	private UIMenuActionItem repeat;
 	private UIMenuActionItem undo;
 	private UIMenuActionItem redo;
+	private UIMenuActionItem selectAll;
+	private UIMenuActionItem selectNone;
+	private UIMenuSubMenuItem extendSelection;
+	private UIMenuActionItem extendSelectionLeft;
+	private UIMenuActionItem extendSelectionRight;
+	private UIMenuActionItem extendSelectionPrevious;
+	private UIMenuActionItem extendSelectionNext;
+	private UIMenuActionItem extendSelectionFirst;
+	private UIMenuActionItem extendSelectionLast;
 	private UIMenuCheckableItem modeSelection;
 	private UIMenuCheckableItem modeEdition;
 	private UIMenuCheckableItem notNaturalKey;
@@ -71,6 +88,30 @@ public class EditMenuItem extends TGMenuItem{
 
 		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
+		
+		//--Selection--
+		this.selectAll = this.editMenuItem.getMenu().createActionItem();
+		this.selectAll.addSelectionListener(this.createActionProcessor(TGSelectAllAction.NAME));
+		
+		this.selectNone = this.editMenuItem.getMenu().createActionItem();
+		this.selectNone.addSelectionListener(this.createActionProcessor(TGClearSelectionAction.NAME));
+		
+		this.extendSelection = this.editMenuItem.getMenu().createSubMenuItem();
+		this.extendSelectionLeft = this.extendSelection.getMenu().createActionItem();
+		this.extendSelectionLeft.addSelectionListener(this.createActionProcessor(TGExtendSelectionLeftAction.NAME));
+		this.extendSelectionRight = this.extendSelection.getMenu().createActionItem();
+		this.extendSelectionRight.addSelectionListener(this.createActionProcessor(TGExtendSelectionRightAction.NAME));
+		this.extendSelectionPrevious = this.extendSelection.getMenu().createActionItem();
+		this.extendSelectionPrevious.addSelectionListener(this.createActionProcessor(TGExtendSelectionPreviousAction.NAME));
+		this.extendSelectionNext = this.extendSelection.getMenu().createActionItem();
+		this.extendSelectionNext.addSelectionListener(this.createActionProcessor(TGExtendSelectionNextAction.NAME));
+		this.extendSelectionFirst = this.extendSelection.getMenu().createActionItem();
+		this.extendSelectionFirst.addSelectionListener(this.createActionProcessor(TGExtendSelectionFirstAction.NAME));
+		this.extendSelectionLast = this.extendSelection.getMenu().createActionItem();
+		this.extendSelectionLast.addSelectionListener(this.createActionProcessor(TGExtendSelectionLastAction.NAME));
+		
+		//--SEPARATOR--
+		this.editMenuItem.getMenu().createSeparator();
 
 		//--TABLATURE EDIT MODE--
 		this.modeSelection = this.editMenuItem.getMenu().createRadioItem();
@@ -109,6 +150,15 @@ public class EditMenuItem extends TGMenuItem{
 		this.repeat.setEnabled(!running && tablature.getSelector().isActive());
 		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
 		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
+		this.selectAll.setEnabled(!running);
+		this.selectNone.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelection.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelectionLeft.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelectionRight.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelectionPrevious.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelectionNext.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelectionFirst.setEnabled(!running && tablature.getSelector().isActive());
+		this.extendSelectionLast.setEnabled(!running && tablature.getSelector().isActive());
 		this.modeSelection.setChecked(kit.getMouseMode() == EditorKit.MOUSE_MODE_SELECTION);
 		this.modeSelection.setEnabled(!running);
 		this.modeEdition.setChecked(kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
@@ -127,6 +177,15 @@ public class EditMenuItem extends TGMenuItem{
 		setMenuItemTextAndAccelerator(this.repeat, "edit.repeat", TGRepeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.undo, "edit.undo", TGUndoAction.NAME);
 		setMenuItemTextAndAccelerator(this.redo, "edit.redo", TGRedoAction.NAME);
+		setMenuItemTextAndAccelerator(this.selectAll, "action.selection.select-all", TGSelectAllAction.NAME);
+		setMenuItemTextAndAccelerator(this.selectNone, "action.selection.clear", TGClearSelectionAction.NAME);
+		setMenuItemTextAndAccelerator(this.extendSelection, "edit.selection.extend", null);
+		setMenuItemTextAndAccelerator(this.extendSelectionLeft, "action.selection.extend-left", TGExtendSelectionLeftAction.NAME);
+		setMenuItemTextAndAccelerator(this.extendSelectionRight, "action.selection.extend-right", TGExtendSelectionRightAction.NAME);
+		setMenuItemTextAndAccelerator(this.extendSelectionPrevious, "action.selection.extend-previous", TGExtendSelectionPreviousAction.NAME);
+		setMenuItemTextAndAccelerator(this.extendSelectionNext, "action.selection.extend-next", TGExtendSelectionNextAction.NAME);
+		setMenuItemTextAndAccelerator(this.extendSelectionFirst, "action.selection.extend-first", TGExtendSelectionFirstAction.NAME);
+		setMenuItemTextAndAccelerator(this.extendSelectionLast, "action.selection.extend-last", TGExtendSelectionLastAction.NAME);
 		setMenuItemTextAndAccelerator(this.modeSelection, "edit.mouse-mode-selection", TGSetMouseModeSelectionAction.NAME);
 		setMenuItemTextAndAccelerator(this.modeEdition, "edit.mouse-mode-edition", TGSetMouseModeEditionAction.NAME);
 		setMenuItemTextAndAccelerator(this.notNaturalKey, "edit.not-natural-key", TGSetNaturalKeyAction.NAME);
