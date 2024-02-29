@@ -7,7 +7,7 @@ import org.herac.tuxguitar.io.base.TGSongWriterHandle;
 
 public class MusicXMLSongWriter implements TGSongWriter {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("MusicXML", "application/vnd.recordare.musicxml+xml", new String[]{"xml"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("MusicXML", "application/vnd.recordare.musicxml+xml", new String[]{"musicxml"});
 	
 	public MusicXMLSongWriter() {
 		super();
