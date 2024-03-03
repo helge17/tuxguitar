@@ -22,12 +22,10 @@ TuxGuitar includes the following third party products:
 
 ## Installation
 
-You can find ready to use installation packages for Linux, Windows, MacOS, FreeBSD and Android on
+You can find ready to use installation packages for Linux, Windows, MacOS, FreeBSD and Android here: [releases](https://github.com/helge17/tuxguitar/releases/)
 
-https://github.com/helge17/tuxguitar/releases/
-
-To build TuxGuitar from source code, refer to the INSTALL.md file.
+To build TuxGuitar from source code, refer to the [INSTALL.md](INSTALL.md) file.
 
 ## Contribute
 
-If you want to contribute to TuxGuitar, you will find a helpful description in the file contribute.md.
+If you want to contribute to TuxGuitar, you will find a helpful description in the file [contribute.md](doc/contribute.md).
