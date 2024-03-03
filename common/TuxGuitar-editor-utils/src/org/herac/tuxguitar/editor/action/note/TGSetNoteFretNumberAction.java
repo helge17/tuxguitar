@@ -40,7 +40,7 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 			if( lastAddedStart == start.longValue() && lastAddedString == string.getNumber() ){
 				if( lastAddedFret > 0 && lastAddedFret < 10 && time <  ( lastAddedTime + DELAY ) ){
 					int newFret = ( ( lastAddedFret * 10 ) + fret );
-					if( newFret < 30 || getSongManager(context).isPercussionChannel(song, track.getChannelId()) ){
+					if( newFret <= track.getMaxFret() || getSongManager(context).isPercussionChannel(song, track.getChannelId()) ){
 						fret = newFret;
 					}
 				}

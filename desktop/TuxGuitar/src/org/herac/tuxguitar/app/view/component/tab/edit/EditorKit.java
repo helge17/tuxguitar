@@ -264,7 +264,7 @@ public class EditorKit {
 				TGMeasureImpl measure = this.getTablature().getCaret().getMeasure();
 				if(measure.getTs() != null){
 					int minValue = track.getString(track.stringCount()).getValue();
-					int maxValue = track.getString(1).getValue() + 29; //Max frets = 29
+					int maxValue = track.getString(1).getValue() + track.getMaxFret();
 					
 					float lineSpacing = this.getTablature().getViewLayout().getScoreLineSpacing();
 					
@@ -428,7 +428,7 @@ public class EditorKit {
 			if( measure != null && measure.getTs() != null && measure.getTrack().stringCount() > 0 ){
 				float scale = layout.getScale();
 				int minValue = measure.getTrack().getString(measure.getTrack().stringCount()).getValue();
-				int maxValue = measure.getTrack().getString(1).getValue() + 29;
+				int maxValue = measure.getTrack().getString(1).getValue() + measure.getTrack().getMaxFret();
 				float lineSpacing = layout.getScoreLineSpacing();
 				float width = (int)(10.0f * scale);
 				float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);

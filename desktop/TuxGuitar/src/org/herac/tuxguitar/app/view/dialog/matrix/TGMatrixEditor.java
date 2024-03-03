@@ -379,7 +379,7 @@ public class TGMatrixEditor implements TGEventListener {
 					for(int sNumber = 1; sNumber <= measure.getTrack().stringCount();sNumber ++){
 						TGString string = measure.getTrack().getString(sNumber);
 						this.minNote = Math.min(this.minNote,string.getValue());
-						this.maxNote = Math.max(this.maxNote,(string.getValue() + 20));
+						this.maxNote = Math.max(this.maxNote,(string.getValue() + measure.getTrack().getMaxFret()));
 					}
 					this.minNote = Math.max(this.minNote, TGMusicKeyUtils.MIN_MIDI_NOTE);
 					this.maxNote = Math.min(this.maxNote, TGMusicKeyUtils.MAX_MIDI_NOTE);

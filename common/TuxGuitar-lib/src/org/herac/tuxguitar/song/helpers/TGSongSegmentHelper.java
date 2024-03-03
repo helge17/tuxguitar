@@ -98,7 +98,7 @@ public class TGSongSegmentHelper {
 					measures = getEmptyMeasures(segment.getHeaders().size(), clef, keySignature);
 				}
 				else {
-					this.sm.getTrackManager().allocateMeasureNotesToStrings(tSegment.getStringValues(), measures, currTrack.getStrings());
+					this.sm.getTrackManager().allocateMeasureNotesToStrings(tSegment.getStringValues(), measures, currTrack.getStrings(), currTrack.getMaxFret());
 				}
 			}
 			for(int i = 0;i < measures.size();i++){
@@ -153,7 +153,7 @@ public class TGSongSegmentHelper {
 					this.sm.getMeasureManager().moveAllBeats(measure,move);
 					this.sm.getMeasureManager().removeVoicesOutOfTime(measure);
 					if ((tSegment.isPercussionTrack() == this.sm.isPercussionChannel(song, currTrack.getChannelId()))) {
-						this.sm.getTrackManager().allocateMeasureNotesToStrings(tSegment.getStringValues(), measure, currTrack.getStrings());
+						this.sm.getTrackManager().allocateMeasureNotesToStrings(tSegment.getStringValues(), measure, currTrack.getStrings(), currTrack.getMaxFret());
 						this.sm.getTrackManager().replaceMeasure(currTrack,measure);
 					}
 				}
