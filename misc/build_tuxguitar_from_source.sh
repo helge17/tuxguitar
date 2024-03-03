@@ -14,6 +14,8 @@ SRC_DIR=$SCRIPT_DIR/..
 
 cd $SRC_DIR
 
+GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+
 function usage {
   echo
   echo "# USE AT YOUR OWN RISK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -48,8 +50,8 @@ function usage {
   echo "#           all files were successfully uploaded. If one or more uploads failed, the release"
   echo "#           remains in draft status and the website is not synced (as with -g)."
   echo "#"
-  echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-snapshot,"
-  echo "# today that would be $TGVERSION. This string will be part of the archive and package"
+  echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-<git-branch>,"
+  echo "# currently that would be $TGVERSION. This string will be part of the archive and package"
   echo '# file names and shows up in the TuxGuitar "About" dialog and the help pages.'
   echo "#"
   echo "# -r <release>"
@@ -67,7 +69,7 @@ function usage {
 TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
 
 # Default build version
-TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-snapshot"
+TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-$GIT_BRANCH"
 
 # Parse command line options
 while getopts "lwmbaAgGhr:" CMDopt; do
