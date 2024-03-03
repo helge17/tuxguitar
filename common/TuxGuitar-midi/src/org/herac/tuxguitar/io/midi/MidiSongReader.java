@@ -788,17 +788,17 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			Iterator<TGMeasure> it = track.getMeasures();
 			while(it.hasNext()){
 				TGMeasure measure = (TGMeasure)it.next();
-				process(measure, tgSongManager.isPercussionChannel(track.getSong(), track.getChannelId()));
+				process(measure, tgSongManager.isPercussionChannel(track.getSong(), track.getChannelId()), track.getMaxFret());
 			}
 		}
 		
-		public void process(TGMeasure measure, boolean isPercussionTrack){
+		private void process(TGMeasure measure, boolean isPercussionTrack, int maxFret){
 			orderBeats(measure);
 			joinBeats(measure);
-			adjustStrings(measure, isPercussionTrack);
+			adjustStrings(measure, isPercussionTrack, maxFret);
 		}
 		
-		public void joinBeats(TGMeasure measure) {
+		private void joinBeats(TGMeasure measure) {
 			TGBeat previous = null;
 			boolean finish = true;
 			
@@ -867,7 +867,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			}
 		}
 		
-		public void orderBeats(TGMeasure measure){
+		private void orderBeats(TGMeasure measure){
 			for(int i = 0;i < measure.countBeats();i++){
 				TGBeat minBeat = null;
 				for(int j = i;j < measure.countBeats();j++){
@@ -880,7 +880,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			}
 		}
 		
-		private void adjustStrings(TGMeasure measure, boolean isPercussionTrack){
+		private void adjustStrings(TGMeasure measure, boolean isPercussionTrack, int maxFret){
 			TGString string = this.factory.newString();
 			string.setNumber(1);
 			string.setValue(0);
@@ -889,7 +889,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			if (isPercussionTrack) {
 				tgSongManager.getTrackManager().allocatePercussionNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings());
 			} else {
-				tgSongManager.getTrackManager().allocateNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings());
+				tgSongManager.getTrackManager().allocateNotesToStrings(strings, measure.getBeats(), measure.getTrack().getStrings(), maxFret);
 			}
 		}
 		

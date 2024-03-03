@@ -898,12 +898,13 @@ public class TGMeasureManager {
 		TGNote note = getNote(measure,start,string);
 		if(note != null){
 			int nextStringNumber = (note.getString() + move);
-			if ((getNote(measure,start,nextStringNumber) == null) && (nextStringNumber >= 1) && (nextStringNumber <= measure.getTrack().stringCount())){
-				TGString currentString = measure.getTrack().getString(note.getString());
-				TGString nextString = measure.getTrack().getString(nextStringNumber);
+			TGTrack track = measure.getTrack();
+			if ((getNote(measure,start,nextStringNumber) == null) && (nextStringNumber >= 1) && (nextStringNumber <= track.stringCount())){
+				TGString currentString = track.getString(note.getString());
+				TGString nextString = track.getString(nextStringNumber);
 				int noteValue = (note.getValue() + currentString.getValue());
-				boolean percussionChannel = getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId());
-				if(noteValue >= nextString.getValue() && ((nextString.getValue() + 30 > noteValue) || percussionChannel) ){
+				boolean percussionChannel = getSongManager().isPercussionChannel(track.getSong(), track.getChannelId());
+				if(noteValue >= nextString.getValue() && ((nextString.getValue() + track.getMaxFret() >= noteValue) || percussionChannel) ){
 					note.setValue(noteValue - nextString.getValue());
 					note.setString(nextString.getNumber());
 					return note.getString();
@@ -941,7 +942,7 @@ public class TGMeasureManager {
 		TGNote note = getNote(measure,start,string);
 		if(note != null){
 			int newValue = (note.getValue() + semitones);
-			if( newValue >= 0 && (newValue < 30 || getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId())) ){
+			if( newValue >= 0 && (newValue <= measure.getTrack().getMaxFret() || getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId())) ){
 				if (doAction) {
 					note.setValue(newValue);
 				}
@@ -1817,7 +1818,7 @@ public class TGMeasureManager {
 					List<TGString> strings = getSortedStringsByValue(track, ( transposition > 0 ? 1 : -1 ) ) ;
 					for( int i = 0 ; i < measure.countBeats() ; i ++ ){
 						TGBeat beat = measure.getBeat( i );
-						transposeNotes( beat, strings, transposition , tryKeepString, applyToChords, applyToString );
+						transposeNotes( beat, strings, transposition , tryKeepString, applyToChords, applyToString, track.getMaxFret());
 					}
 				}
 			}
@@ -1844,7 +1845,7 @@ public class TGMeasureManager {
 								if( transposition != 0 ){
 									int applyToString = notes[i].getString();
 									List<TGString> strings = getSortedStringsByValue(track, ( transposition > 0 ? 1 : -1 ) ) ;
-									transposeNotes( beat, strings, transposition , tryKeepString, applyToChords, applyToString );
+									transposeNotes( beat, strings, transposition , tryKeepString, applyToChords, applyToString, track.getMaxFret() );
 								}
 							}
 						}
@@ -1854,7 +1855,7 @@ public class TGMeasureManager {
 		}
 	}
 	
-	public void transposeNotes( TGBeat beat, List<TGString> strings, int transposition , boolean tryKeepString, boolean applyToChord, int applyToString){
+	public void transposeNotes( TGBeat beat, List<TGString> strings, int transposition , boolean tryKeepString, boolean applyToChord, int applyToString, int maxFret){
 		if( transposition != 0 ){
 			List<TGNote> notes = getNotes(beat);
 			
@@ -1870,7 +1871,7 @@ public class TGMeasureManager {
 						}
 					}
 					if( note != null ){
-						transposeNote(note, notes, strings, transposition, tryKeepString, false );
+						transposeNote(note, notes, strings, transposition, tryKeepString, false, maxFret );
 					}
 					
 					if( applyToChord && beat.isChordBeat() ){
@@ -1886,15 +1887,13 @@ public class TGMeasureManager {
 		}
 	}
 	
-	private boolean transposeNote( TGNote note, List<TGNote> notes, List<TGString> strings , int transposition , boolean tryKeepString, boolean forceChangeString ){
+	private boolean transposeNote( TGNote note, List<TGNote> notes, List<TGString> strings , int transposition , boolean tryKeepString, boolean forceChangeString, int maxFret ){
 		boolean canTransposeFret = false;
-		
-		int maximumFret = 29;
 		
 		int transposedFret = ( note.getValue() + transposition );
 		
 		// Check if transposition could be done without change the string
-		if( transposedFret >= 0 && transposedFret <= maximumFret ){
+		if( transposedFret >= 0 && transposedFret <= maxFret ){
 			// Do it now if keep string is the priority
 			if( !forceChangeString && tryKeepString ){
 				note.setValue( transposedFret );
@@ -1928,9 +1927,9 @@ public class TGMeasureManager {
 			}
 			
 			int transposedStringFret = ( transposedValue - nextString.getValue() );
-			if( transposedStringFret >= 0 && transposedStringFret <= maximumFret ){
+			if( transposedStringFret >= 0 && transposedStringFret <= maxFret ){
 				if( nextOwner != null ){
-					if( ! transposeNote(nextOwner, notes, strings, 0 , tryKeepString , !canTransposeFret ) ){
+					if( ! transposeNote(nextOwner, notes, strings, 0 , tryKeepString , !canTransposeFret, maxFret ) ){
 						// Note was removed.
 						nextOwner = null ;
 					}

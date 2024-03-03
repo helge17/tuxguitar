@@ -11,6 +11,7 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeTrillNoteAction;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -39,6 +40,7 @@ public class TGTrillDialog {
 	
 	public void show(final TGViewContext context){
 		final TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGTrack track = (TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		
 		if( (noteRange != null) && !noteRange.isEmpty() ) {
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
@@ -80,7 +82,7 @@ public class TGTrillDialog {
 			
 			this.fretSpinner = uiFactory.createSpinner(noteGroup);
 			this.fretSpinner.setValue(fret);
-			this.fretSpinner.setMaximum(30);
+			this.fretSpinner.setMaximum(track.getMaxFret());
 			this.fretSpinner.setMinimum(0);
 			noteLayout.set(this.fretSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			

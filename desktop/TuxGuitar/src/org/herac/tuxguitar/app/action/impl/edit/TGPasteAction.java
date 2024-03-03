@@ -48,7 +48,8 @@ public class TGPasteAction extends TGActionBase {
 				// clone clipboard content before modifying it, so it can be re-pasted later
 				TGStoredBeatList beatsListToPaste = beatList.clone(factory);
 				// then adapt notes to destination track (tuning might differ from source track)
-				trackManager.allocateNotesToStrings(beatsListToPaste.getStringValues(), beatsListToPaste.getBeats(), destTrack.getStrings());
+				trackManager.allocateNotesToStrings(beatsListToPaste.getStringValues(), beatsListToPaste.getBeats(),
+						destTrack.getStrings(), destTrack.getMaxFret());
 				
 				// paste
 				List<TGBeat> newBeats = trackManager.addBeats(destTrack, beatsListToPaste, start.getStart());
