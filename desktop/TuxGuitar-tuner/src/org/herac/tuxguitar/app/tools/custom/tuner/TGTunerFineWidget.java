@@ -6,6 +6,7 @@ package org.herac.tuxguitar.app.tools.custom.tuner;
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
+import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
@@ -108,7 +109,7 @@ public class TGTunerFineWidget {
 	public void setWantedTone(int tone) {
 		this.panel.setEnabled(true);
 		this.currentNoteValue = tone;
-		this.currentNoteString = TGTunerRoughWidget.TONESSTRING[tone%12]+(int)Math.floor(tone/12);
+		this.currentNoteString = TGMusicKeyUtils.sharpNoteFullName(tone);
 		this.redraw();
 		
 	}
