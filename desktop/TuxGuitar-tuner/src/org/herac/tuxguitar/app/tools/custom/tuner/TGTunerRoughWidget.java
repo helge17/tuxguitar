@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
+import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
@@ -33,7 +34,6 @@ public class TGTunerRoughWidget {
 	private final int boundaryHeight = 16;
 	private final int markerHeight = 12;
 	private final int markerWidth = 4;
-	static String[] TONESSTRING = {"C","C#","D","D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 	
 	
 	public TGTunerRoughWidget(TGContext context, UIFactory factory, UILayoutContainer parent) {
@@ -78,7 +78,7 @@ public class TGTunerRoughWidget {
 			painter.moveTo(i,compositeSize.getHeight()/2-this.boundaryHeight/2);
 			painter.lineTo(i, compositeSize.getHeight()/2+this.boundaryHeight/2);
 			painter.closePath();
-			painter.drawString(TONESSTRING[currentTone%12], i, compositeSize.getHeight()/2-this.boundaryHeight/2-20);
+			painter.drawString(TGMusicKeyUtils.sharpKeyNames[currentTone%12], i, compositeSize.getHeight()/2-this.boundaryHeight/2-20);
 			currentTone++;
 		}
 		
