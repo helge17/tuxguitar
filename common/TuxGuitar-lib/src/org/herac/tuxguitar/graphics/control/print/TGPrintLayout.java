@@ -28,7 +28,7 @@ public class TGPrintLayout extends TGLayout {
 	private UIFont songAuthorFont;
 	
 	public TGPrintLayout(TGController controller, TGPrintSettings settings){
-		super(controller,( settings.getStyle() | DISPLAY_COMPACT ) );
+		super(controller, settings.getStyle());
 		this.settings = settings;
 	}
 	
