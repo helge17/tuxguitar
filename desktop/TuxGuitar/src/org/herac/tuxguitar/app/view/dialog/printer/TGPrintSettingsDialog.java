@@ -153,6 +153,12 @@ public class TGPrintSettingsDialog {
 		blackAndWhite.setSelected(true);
 		optionsLayout.set(blackAndWhite, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
+		final UICheckBox compactMode = uiFactory.createCheckBox(options);
+		compactMode.setText(TuxGuitar.getProperty("export.compact"));
+		compactMode.setSelected(true);
+		optionsLayout.set(compactMode, 6, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
+		
 		tablatureEnabled.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				if(!tablatureEnabled.isSelected()){
@@ -185,6 +191,7 @@ public class TGPrintSettingsDialog {
 				style |= (chordNameEnabled.isSelected() ? TGLayout.DISPLAY_CHORD_NAME : 0);
 				style |= (chordDiagramEnabled.isSelected() ? TGLayout.DISPLAY_CHORD_DIAGRAM : 0);
 				style |= (blackAndWhite.isSelected() ? TGLayout.DISPLAY_MODE_BLACK_WHITE : 0);
+				style |= (compactMode.isSelected() ? TGLayout.DISPLAY_COMPACT : 0);
 				
 				Integer selectedTrack = (!trackAllCheck.isSelected() ? trackCombo.getSelectedValue() : null);
 				
