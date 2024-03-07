@@ -578,7 +578,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			if (trackChannel != null && trackChannel.isPercussionChannel()) {
 				track.setStrings(songManager.createPercussionStrings(6));
 			} else {
-				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings());
+				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings(track.getMaxFret()));
 			}
 		}
 	}
@@ -696,10 +696,8 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			}
 		}
 		
-		public List<TGString> getStrings() {
+		public List<TGString> getStrings(int maxFret) {
 			List<TGString> strings = new ArrayList<TGString>();
-			
-			int maxFret = 24;
 			
 			if(this.minValue >= 40 && this.maxValue <= 64 + maxFret){
 				strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
