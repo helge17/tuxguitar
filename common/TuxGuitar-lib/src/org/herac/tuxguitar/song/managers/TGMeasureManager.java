@@ -1878,7 +1878,7 @@ public class TGMeasureManager {
 						TGChord chord = beat.getChord();
 						int chordString = ( string.getNumber() - 1 );
 						if( chord.getFretValue( chordString ) >= 0 ){
-							transposeChordNote(chord, chordString, strings, transposition, tryKeepString, false);
+							transposeChordNote(chord, chordString, strings, transposition, tryKeepString, false, maxFret);
 						}
 						chord.setFirstFret( -1 );
 					}
@@ -1957,10 +1957,8 @@ public class TGMeasureManager {
 		return false;
 	}
 	
-	private boolean transposeChordNote( TGChord chord, int chordString, List<TGString> strings , int transposition , boolean tryKeepString, boolean forceChangeString ){
+	private boolean transposeChordNote( TGChord chord, int chordString, List<TGString> strings , int transposition , boolean tryKeepString, boolean forceChangeString, int maximumFret ){
 		boolean canTransposeFret = false;
-		
-		int maximumFret = 24;
 		
 		int noteValue = chord.getFretValue( chordString );
 		int noteString = (chordString + 1 );
@@ -2005,7 +2003,7 @@ public class TGMeasureManager {
 			int transposedStringFret = ( transposedValue - nextString.getValue() );
 			if( transposedStringFret >= 0 && transposedStringFret <= maximumFret ){
 				if( nextChordString >= 0 ){
-					transposeChordNote(chord, nextChordString , strings, 0 , tryKeepString , !canTransposeFret );
+					transposeChordNote(chord, nextChordString , strings, 0 , tryKeepString , !canTransposeFret , maximumFret);
 				}
 				if( nextChordString < 0 || chord.getFretValue( nextChordString ) < 0 ){
 					chord.addFretValue( chordString , -1 );
