@@ -299,13 +299,6 @@ public class TGTrackManager {
 		}
 	}
 	
-	public void changeInstrumentStrings(TGTrack track, List<TGString> strings){
-		if(strings.size() < track.getStrings().size()){
-			removeNotesAfterString(track,strings.size());
-		}
-		track.setStrings(strings);
-	}
-	
 	public void removeNotesAfterString(TGTrack track,int string){
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
@@ -347,6 +340,13 @@ public class TGTrackManager {
 		while(it.hasNext()){
 			TGMeasure measure = (TGMeasure)it.next();
 			this.songManager.getMeasureManager().orderBeats(measure);
+		}
+	}
+	
+	public void allocateNotesToStrings(List<Integer> fromStringValues, TGTrack track, List<TGString> toStrings) {
+		Iterator<TGMeasure> it = track.getMeasures();
+		while (it.hasNext()) {
+			this.allocateMeasureNotesToStrings(fromStringValues, it.next(), toStrings, track.getMaxFret());
 		}
 	}
 	
