@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.editor.action.track;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.action.TGActionContext;
@@ -16,9 +17,6 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 	
 	public static final String ATTRIBUTE_OFFSET = "offset";
 	public static final String ATTRIBUTE_STRINGS = "strings";
-	public static final String ATTRIBUTE_TRANSPOSE_STRINGS = "transposeStrings";
-	public static final String ATTRIBUTE_TRANSPOSE_TRY_KEEP_STRINGS = "transposeTryKeepString";
-	public static final String ATTRIBUTE_TRANSPOSE_APPLY_TO_CHORDS = "transposeApplyToChords";
 	
 	public TGChangeTrackTuningAction(TGContext context) {
 		super(context, NAME);
@@ -32,16 +30,32 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 		if( track != null ) {
 			TGSongManager songManager = getSongManager(context);
 			if( strings != null ){
-				int[] transpositions = createTranspositions(track, strings);
-				
-				songManager.getTrackManager().changeInstrumentStrings(track, strings);
-				
-				Boolean transposeStrings = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_TRANSPOSE_STRINGS));
-				if( Boolean.TRUE.equals(transposeStrings) ){
-					boolean transposeTryKeepString = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_TRANSPOSE_TRY_KEEP_STRINGS));
-					boolean transposeApplyToChords = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_TRANSPOSE_APPLY_TO_CHORDS));
-					
-					songManager.getTrackManager().transposeNotes(track, transpositions, transposeTryKeepString, transposeApplyToChords );
+				int transposition = 0; // did all strings change by the same value? if so, set variable to a non-zero value
+				if (track.getStrings().size() == strings.size()) {
+					transposition = track.getString(1).getValue() - strings.get(0).getValue();
+					for (int i=1; i<strings.size();i++) {
+						if ((track.getString(i+1).getValue() - strings.get(i).getValue()) != transposition) {
+							transposition = 0;
+							break;
+						}
+					}
+				}
+				if (transposition != 0) {
+					// same number of strings, all shifted by the same value
+					int[] transpositions = new int[strings.size()];
+					for (int i=0; i<strings.size();i++) {
+						transpositions[i] = transposition;
+					}
+					track.setStrings(strings);
+					songManager.getTrackManager().transposeNotes(track, transpositions, true, true );
+				} else {
+					// reallocate notes to strings
+					List<Integer> fromStrings = new ArrayList<Integer>();
+					for (int i=1; i<=track.getStrings().size(); i++) {
+						fromStrings.add(track.getString(i).getValue());
+					}
+					track.setStrings(strings);
+					songManager.getTrackManager().allocateNotesToStrings(fromStrings, track, strings);
 				}
 			}
 			if( offset != null ) {
