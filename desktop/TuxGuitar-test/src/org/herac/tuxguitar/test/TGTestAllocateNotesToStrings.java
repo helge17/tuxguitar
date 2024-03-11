@@ -17,6 +17,8 @@ import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGTestAllocateNotesToStrings {
 	
+	private static final int MAX_FRET = 29;
+	
 	private static TGString stringE2;
 	private static TGString stringA2;
 	private static TGString stringD3;
@@ -62,7 +64,7 @@ public class TGTestAllocateNotesToStrings {
 		List<TGString> toStrings = new ArrayList<TGString>();
 		toStrings.add(stringE2);
 		
-		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings);
+		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
 		
 		assertEquals(1, beats.get(0).getVoice(0).countNotes());
 		assertEquals(1, beats.get(0).getVoice(0).getNote(0).getString());
@@ -96,7 +98,7 @@ public class TGTestAllocateNotesToStrings {
 		toStrings.add(stringA2);
 		toStrings.add(stringE2);
 		
-		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings);
+		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
 		
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(2, voice.countNotes());
@@ -104,15 +106,20 @@ public class TGTestAllocateNotesToStrings {
 		assertTrue(beatContainsNote(beats.get(0), 2, 12));
 		
 		// same test, but different order of notes in original chord
-		while (voice.countNotes() > 0) {
-			voice.removeNote(voice.getNote(0));
-		}
+		beat = factory.newBeat();
+		noteE3 = factory.newNote();
+		noteE3.setString(2);
+		noteE3.setValue(2);
 		beat.getVoice(0).addNote(noteE3);
+		noteG3 = factory.newNote();
+		noteG3.setString(1);
+		noteG3.setValue(0);
 		beat.getVoice(0).addNote(noteG3);
-		beats.clear();
+		
+		beats = new ArrayList<TGBeat>();
 		beats.add(beat);
 
-		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings);
+		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
 		
 		voice = beats.get(0).getVoice(0);
 		assertEquals(2, voice.countNotes());
@@ -172,7 +179,7 @@ public class TGTestAllocateNotesToStrings {
 		toStrings.add(stringA2);
 		toStrings.add(stringE2);
 
-		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings);
+		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
 		
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(6, voice.countNotes());
@@ -207,7 +214,7 @@ public class TGTestAllocateNotesToStrings {
 		toStrings.add(stringG3);
 		toStrings.add(stringD3);
 		
-		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings);
+		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
 		
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(1, voice.countNotes());
@@ -239,7 +246,7 @@ public class TGTestAllocateNotesToStrings {
 		List<TGString> toStrings = new ArrayList<TGString>();
 		toStrings.add(stringA2);
 		
-		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings);
+		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
 		
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(1, voice.countNotes());
