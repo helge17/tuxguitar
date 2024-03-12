@@ -166,13 +166,44 @@ public class MusicXMLWriter {
 			if (!isTablature) {
 				this.writeDirection(measureNode, measure, previous);
 			}
+			
+			this.writeBarline(measureNode, measure);
+			
 			this.writeBeats(measureNode, measure, isTablature);
 			
 			previous = measure;
 		}
 	}
+	
+	private void writeBarline(Node parent, TGMeasure measure) {
+		boolean needBarline = measure.isRepeatOpen() || (measure.getRepeatClose() > 0);
+		
+		// TODO: 
+		// add, when available in tuxguitar; alternate repeat, bar-style, coda, wavy-line etc..
+		// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/barline/
+		
+		if (needBarline) {
+			Node barLine = this.addNode(parent,"barline");
+			
+			if (measure.isRepeatOpen()) {
+				Node repeat = this.addNode(barLine,"repeat");
+				this.addAttribute(repeat, "direction", "forward");				
+			}
+			
+			if (measure.getRepeatClose() > 0) {
+				Node repeat = this.addNode(barLine,"repeat");
+				this.addAttribute(repeat, "direction", "backward");
+				this.addAttribute(repeat, "times", Integer.toString(measure.getRepeatClose()));							
+			}
 
-	private void writeMeasureAttributes(Node parent,TGMeasure measure, TGMeasure previous, boolean isTablature){
+			// TODO:
+			// add, when available in tuxguitar, winged, after-jump
+			// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/repeat/
+
+		}
+	}
+
+	private void writeMeasureAttributes(Node parent, TGMeasure measure, TGMeasure previous, boolean isTablature){
 		boolean divisionChanges = (previous == null);
 		boolean keyChanges = (previous == null || measure.getKeySignature() != previous.getKeySignature());
 		boolean clefChanges = (previous == null || measure.getClef() != previous.getClef());
