@@ -98,10 +98,13 @@ This walkthrough assumes that you will be using the Eclipse Development Environm
 Eclipse supports many processes around software projects, even writing documentation in markdown.  For information about downloading and installing it see <https://eclipse.org>.
 Our examples and screenshots here are from Eclipse Version 2023-12.
 
-Important note: this section still needs to be completed. Known limitations:
+*Important note*: this section still needs to be completed. Known limitations:
 
 - this procedure does not enable to build the *native modules* in Eclipse. Therefore, before sending a pull request it is highly recommended to build the application as defined in [install.md](../INSTALL.md), that is with `-P native-modules` option active.
-- this procedure does not enable to include TuxGuitar plugins in debug configuration
+- ~~this procedure does not enable to include TuxGuitar plugins in debug configuration~~
+
+To get the enable the plugins in debug configuration make sure to set the `Working directory` in the `Run` configuration, `Arguments` tab to `other`, "${workspace_loc}/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt-x86_64/target/tuxguitar-SNAPSHOT-linux-swt-x86_64". To make debugging work, add "gm-settings-SNAPSHOT.jar" and "gm-utils-SNAPSHOT.jar to the `dependencies` tab of the `Run` configuration.
+
 
 #### Fork the origin tuxguitar repository
 Because you do not have rights to push to this repository directly, you must first fork this repo to create a space for you to make your edits, then create a pull request once your changes are complete.  If your pull request is accepted, it will be merged in a future version of the software.  See the [instructions on forking a repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) from GitHub.
@@ -116,7 +119,7 @@ In the next step you will probably only **see the master branch. It has to been 
 
 <img src="images/contribute/eclipse-git-clone-step2.png" width="50%" alt="Git Clone Step 2, select branches">
 
-As a last step you have to choose where on your local drive the repo should be placed. In my case, I created a folder named "git" in my Eclipse workspace.
+As a last step you have to choose where on your local drive the repo should be placed. In my case, I created a folder named <a name="git_folder_name"></a> "git" in my Eclipse workspace.
 
 <img src="images/contribute/eclipse-git-clone-step3.png" width="50%" alt="Git Clone Step 3, select local folder">
 
@@ -150,5 +153,7 @@ eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=o
 ```
 #### Import the launch configurations for building, running and debugging
 In order to make it easy for you, we stored example launch configurations in the repository.  To import them, go to Menu File->Import and select Run/Debug->Launch configuration.  Import the configurations located in **eclipse-workspace/git/tuxguitar/development.** You can use them as a starting point.  You might need to adjust them to fullfill your folder structure.
+
+If you did not use "git" as name in the [Make a local copy of the forked repository](#git_folder_name) step, the `Run/Debug` configuration needs to be adjusted accordingly. The change for the "Run" configuration can be found in the `Arguments` tab of the run configuration, under `Working directory`. The change of the `Maven Build` can be found in the `Main` tab, `Base directory`.
 
 Congratulations.  You can now build, run and debug Tuxguitar SWT.
