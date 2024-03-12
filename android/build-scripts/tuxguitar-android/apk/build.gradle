@@ -33,8 +33,8 @@ android {
 		targetSdkVersion 30
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
-		versionName "SNAPSHOT"
-		setProperty("archivesBaseName", "tuxguitar-android-SNAPSHOT")
+		versionName "2024-03-12-Issue#269"
+		setProperty("archivesBaseName", "tuxguitar-android-2024-03-12-Issue#269")
 	}
 
 	buildTypes {

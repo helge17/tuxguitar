@@ -3,6 +3,6 @@
     package="org.herac.tuxguitar.android.midimaster"
     android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="SNAPSHOT" >
+    android:versionName="2024-03-12-Issue#269" >
 
 </manifest>

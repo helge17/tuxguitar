@@ -11,3 +11,5 @@ desktop/build-scripts/native-modules/tuxguitar-synth-vst-*/include/
 .project
 android/build-scripts/tuxguitar-android/local.properties
 android/build-scripts/tuxguitar-android/.idea/
+desktop/build-scripts/*
+00-Binary_Packages/

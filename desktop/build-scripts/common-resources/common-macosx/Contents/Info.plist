@@ -5,7 +5,7 @@
 		<key>CFBundleExecutable</key>
 		<string>tuxguitar.sh</string>
 		<key>CFBundleGetInfoString</key>
-		<string>TuxGuitar SNAPSHOT</string>
+		<string>TuxGuitar 2024-03-12-Issue#269</string>
 		<key>CFBundleIconFile</key>
 		<string>icon.icns</string>
 		<key>CFBundleIdentifier</key>
@@ -17,11 +17,11 @@
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>SNAPSHOT</string>
+		<string>2024-03-12-Issue#269</string>
 		<key>CFBundleSignature</key>
 		<string>?????</string>
 		<key>CFBundleVersion</key>
-		<string>SNAPSHOT</string>
+		<string>2024-03-12-Issue#269</string>
 		<key>NSPrincipalClass</key>
 		<string>NSApplication</string>
 		<key>CFBundleDocumentTypes</key>

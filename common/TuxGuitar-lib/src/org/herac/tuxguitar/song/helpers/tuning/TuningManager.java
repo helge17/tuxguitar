@@ -13,6 +13,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TuningManager {
@@ -56,7 +57,28 @@ public class TuningManager {
 	public List<TGTuning> getTgTunings() {
 		return (getTuningsInGroup("", tgTuningsGroup));
 	}
+
+  public List<TGTuning> getPrioritizedTgTunings() {
+    return getPrioritizedTuningsInGroup("", tgTuningsGroup);
+  }
 	
+	private List<TGTuning> getPrioritizedTuningsInGroup(String prefix, TuningGroup group) {
+    List<TGTuning> tunings = new ArrayList<TGTuning>();
+
+    for (TuningGroup subGroup : group.getGroups()) {
+      String groupPrefix = (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
+      tunings.addAll(getPrioritizedTuningsInGroup(groupPrefix, subGroup));
+    }
+
+    for (TuningPreset preset : group.getTunings()) {
+      TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
+      tunings.add((TGTuning) tgTuning);
+      Collections.sort(tunings);
+    } 
+
+    return tunings;
+  }
+
 	public void saveCustomTunings(TuningGroup group) {
 		TuningWriter.write(group, TGUserFileUtils.PATH_USER_TUNINGS);
 	}

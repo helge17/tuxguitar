@@ -3,7 +3,7 @@
 	package="org.herac.tuxguitar.android.application"
 	android:installLocation="auto"
 	android:versionCode="1"
-	android:versionName="SNAPSHOT" >
+	android:versionName="2024-03-12-Issue#269" >
 
 	<uses-sdk android:minSdkVersion="19" />
 

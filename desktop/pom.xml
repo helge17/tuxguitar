@@ -5,7 +5,7 @@
 	<groupId>org.herac.tuxguitar</groupId>
 	<artifactId>tuxguitar-pom</artifactId>
 	<packaging>pom</packaging>
-	<version>SNAPSHOT</version>
+	<version>2024-03-12-Issue#269</version>
 	<name>${project.artifactId}</name>
 
 	<dependencyManagement>

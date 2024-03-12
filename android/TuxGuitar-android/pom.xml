@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.herac.tuxguitar</groupId>
 		<artifactId>tuxguitar-pom</artifactId>
-		<version>SNAPSHOT</version>
+		<version>2024-03-12-Issue#269</version>
 	</parent>
 
 	<artifactId>tuxguitar-android-lib</artifactId>

@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
-		<version>SNAPSHOT</version>
+		<version>2024-03-12-Issue#269</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
