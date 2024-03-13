@@ -27,42 +27,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentRight="true"
-		android:layout_above="@+id/track_tuning_dlg_space1"/>
-
-	<Space
-		android:id="@+id/track_tuning_dlg_space1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
-		android:layout_above="@+id/track_tuning_dlg_options_transpose"
-		style="?attr/dialogVerticalSpacerStyle" />
-
-	<CheckBox
-		android:id="@+id/track_tuning_dlg_options_transpose"
-		android:text="@string/track_tuning_dlg_options_transpose"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
-		android:layout_above="@+id/track_tuning_dlg_options_transpose_apply_to_chords"/>
-
-	<CheckBox
-		android:id="@+id/track_tuning_dlg_options_transpose_apply_to_chords"
-		android:text="@string/track_tuning_dlg_options_transpose_apply_to_chords"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
-		android:layout_above="@+id/track_tuning_dlg_options_transpose_try_keep_strings" />
-
-	<CheckBox
-		android:id="@+id/track_tuning_dlg_options_transpose_try_keep_strings"
-		android:text="@string/track_tuning_dlg_options_transpose_try_keep_strings"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
