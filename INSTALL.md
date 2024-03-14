@@ -87,7 +87,7 @@ $ tuxguitar
 
 ## Generic GNU/Linux
 
-On Non-Debian-based systems install the prerequisites using your package manager. Then download and install SWT, download the TuxGuitar sources and the VST header files as described for Debian above.
+On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT, download the TuxGuitar sources and the VST header files as described for Debian above.
 
 ### Build and Start TuxGuitar
 
@@ -108,7 +108,7 @@ The Windows version is cross compiled on Ubuntu/Debian with [Mingw-w64](https://
 ### Install Prerequisites
 
 ```sh
-$ sudo apt install default-jdk maven gcc-mingw-w64-x86-64 g++-mingw-w64-i686-win32
+$ sudo apt install wget unzip git default-jdk maven gcc-mingw-w64-x86-64 g++-mingw-w64-i686-win32
 ```
 
 ### Download and install SWT for Windows
@@ -191,7 +191,7 @@ The application is now located in the `desktop/build-scripts/tuxguitar-macosx-sw
 ### Install Prerequisites
 
 ```sh
-$ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget
+$ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git
 ```
 
 In order for Asian characters to be displayed correctly, you may also need to install the `wqy-fonts-20100803_10,1` font package.
