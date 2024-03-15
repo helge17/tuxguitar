@@ -35,11 +35,11 @@ In order for Asian characters to be displayed correctly, you may also need to in
 ### Download and install SWT for Linux
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-gtk-linux-x86_64.zip
-$ mkdir swt-4.13-gtk-linux-x86_64
-$ cd swt-4.13-gtk-linux-x86_64
-$ unzip ../swt-4.13-gtk-linux-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.x86_64 -Dpackaging=jar -Dversion=4.13
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-gtk-linux-x86_64.zip
+$ mkdir swt-4.21-gtk-linux-x86_64
+$ cd swt-4.21-gtk-linux-x86_64
+$ unzip ../swt-4.21-gtk-linux-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.x86_64 -Dpackaging=jar -Dversion=4.21
 $ cd ..
 ```
 
