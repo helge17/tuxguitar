@@ -611,8 +611,8 @@ fi
 # Linux 64 bit x86_64 build
 if [ $build_linux ]; then
   BUILD_ARCH=x86_64
-  SWT_VERSION=4.13
-  SWT_DATE=201909161045
+  SWT_VERSION=4.21
+  SWT_DATE=202109060500
   SWT_PLATFORM=gtk-linux
   [ `uname` == Linux ] && build_tg_for_linux
 fi
