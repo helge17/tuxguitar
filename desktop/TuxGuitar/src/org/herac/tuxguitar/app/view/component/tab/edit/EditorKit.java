@@ -25,6 +25,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.util.TGAbstractContext;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 public class EditorKit {
 	
@@ -34,7 +35,10 @@ public class EditorKit {
 	public static final int MOUSE_MODE_SELECTION = 1;
 	public static final int MOUSE_MODE_EDITION = 2;
 	
-	private static final int FIRST_LINE_VALUES[] = new int[] {65,45,52,55};
+	// TODO: move these clef-specific attributes in a dedicated class representing Clef object
+	// first line note: treble -> F4, bass -> A2, tenor -> E3, alto -> G3
+	private static final int FIRST_LINE_NOTE_INDEX[] = new int[] {3,5,2,4};
+	private static final int FIRST_LINE_NOTE_OCTAVE[] = new int[] {4,2,3,3};
 	
 	private int mouseMode;
 	private boolean natural;
@@ -257,57 +261,58 @@ public class EditorKit {
 		float x = context.getAttribute(ATTRIBUTE_X);
 		float y = context.getAttribute(ATTRIBUTE_Y);
 		
-//		if(!this.getTablature().isPainting()){
-			TGLayout.TrackPosition pos = this.getTablature().getViewLayout().getTrackPositionAt(y) ;
-			if( pos != null){
-				TGTrackImpl track = this.getTablature().getCaret().getTrack();
-				TGMeasureImpl measure = this.getTablature().getCaret().getMeasure();
-				if(measure.getTs() != null){
-					int minValue = track.getString(track.stringCount()).getValue();
-					int maxValue = track.getString(1).getValue() + track.getMaxFret();
-					
-					float lineSpacing = this.getTablature().getViewLayout().getScoreLineSpacing();
-					
-					float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-					float bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
-					
-					float y1 = (pos.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
-					float y2 = (y1 + (lineSpacing * 5));
-					
-					if(y >= (y1 - topHeight) && y  < (y2 + bottomHeight)){
-						
-						int value = 0;
-						int tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
-						double limit = (topHeight / (lineSpacing / 2.00));
-						for(int i = 0;i < limit;i ++){
-							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
+		TGLayout.TrackPosition pos = this.getTablature().getViewLayout().getTrackPositionAt(y) ;
+		if( pos != null){
+			TGTrackImpl track = this.getTablature().getCaret().getTrack();
+			TGMeasureImpl measure = this.getTablature().getCaret().getMeasure();
+			if(measure.getTs() != null){
+				int minValue = track.getString(track.stringCount()).getValue();
+				int maxValue = track.getString(1).getValue() + track.getMaxFret();
+				float lineSpacing = this.getTablature().getViewLayout().getScoreLineSpacing();
+				float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+				float bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
+				float yFirstLine = (pos.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+				float yLastLine = (yFirstLine + (lineSpacing * 4));
+				
+				if(y >= (yFirstLine - topHeight) && y  < (yLastLine + bottomHeight)){
+					int keySignature = measure.getKeySignature();
+					// find note pitch, by comparison with first line note
+					int noteIndexFirstLine = FIRST_LINE_NOTE_INDEX[measure.getClef()-1];
+					int octaveFirstLine = FIRST_LINE_NOTE_OCTAVE[measure.getClef()-1];
+					// distance of selected note to first line note, in number of notes (1 note = lineSpacing/2)
+					int noteIndexOffset = Math.round(2 * (yFirstLine - y) / lineSpacing);
+					// get selected note index and octave
+					int noteIndex = TGMusicKeyUtils.noteIndexAddInterval(noteIndexFirstLine, noteIndexOffset);
+					int noteOctave =TGMusicKeyUtils.noteOctaveAddInterval(noteIndexFirstLine, octaveFirstLine, noteIndexOffset);
+					// get selected note value, considering alteration and edition mode
+					int noteValue = TGMusicKeyUtils.midiNote(noteIndex, noteOctave);
+					int noteAlteration = TGMusicKeyUtils.noteIndexAlteration(noteIndex, keySignature);
+					if (isNatural()) {
+						// normal edition mode, keep note alteration
+						if (noteAlteration == TGMusicKeyUtils.SHARP) {
+							noteValue++;
+						} else if (noteAlteration == TGMusicKeyUtils.FLAT) {
+							noteValue--;
 						}
-						
-						float minorDistance = 0;
-						for(float posY = (y1 - topHeight); posY <= (y2 + bottomHeight); posY += (lineSpacing / 2.00)){
-							if(tempValue > 0){
-								float distanceY = Math.abs(y - posY);
-								if(value == 0 || distanceY < minorDistance){
-									value = tempValue;
-									minorDistance = distanceY;
-								}
-								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
-							}
+					// sharp/flat edition mode: don't consider alteration if present, and add one if absent
+					} else if (noteAlteration == TGMusicKeyUtils.NATURAL) {
+						if (keySignature<=7) {
+							noteValue++;
+						} else {
+							noteValue--;
 						}
-						if(value >= minValue && value <= maxValue){
-							TGVoiceImpl voice = findBestVoice(measure, x);
-							if( voice != null ){
-								value = getRealValue(value);
-								
-								context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE, voice);
-								context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VALUE, value);
-								return true;
-							}
+					}
+					if(noteValue >= minValue && noteValue <= maxValue){
+						TGVoiceImpl voice = findBestVoice(measure, x);
+						if( voice != null ){
+							context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE, voice);
+							context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VALUE, noteValue);
+							return true;
 						}
 					}
 				}
 			}
-//		}
+		}
 		return false;
 	}
 	
@@ -327,31 +332,6 @@ public class EditorKit {
 			return Math.min( ( beatStart + ( Math.round(x - beatX) * beatLength / Math.round(voice.getWidth()) ) ), (beatEnd - 1 ) );
 		}
 		return beatStart;
-	}
-	
-	private int getRealValue(int value){
-		int realValue = value;
-		int key = this.getTablature().getCaret().getMeasure().getKeySignature();
-		if(key <= 7){
-			if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_SHARP_NOTES[realValue % 12]] == TGMeasureImpl.SHARP && this.isNatural()){
-				realValue ++;
-			}
-			else if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_SHARP_NOTES[realValue % 12]] != TGMeasureImpl.SHARP && !this.isNatural()){
-				if(TGMeasureImpl.ACCIDENTAL_NOTES[(realValue + 1) % 12]){
-					realValue ++;
-				}
-			}
-		}else if(key > 7 ){
-			if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_FLAT_NOTES[realValue % 12]] == TGMeasureImpl.FLAT && this.isNatural()){
-				realValue --;
-			}
-			else if(TGMeasureImpl.KEY_SIGNATURES[key][TGMeasureImpl.ACCIDENTAL_FLAT_NOTES[realValue % 12]] != TGMeasureImpl.FLAT && !this.isNatural()){
-				if(TGMeasureImpl.ACCIDENTAL_NOTES[(realValue - 1) % 12]){
-					realValue --;
-				}
-			}
-		}
-		return realValue;
 	}
 	
 	public boolean fillRemoveNoteContext(TGAbstractContext context) {
@@ -421,7 +401,8 @@ public class EditorKit {
 	public void resetSelectedMeasure(){
 		this.selectedMeasure = null;
 	}
-	
+
+	// draw horizontal segments above and below score
 	public void paintSelection(TGLayout layout, UIPainter painter) {
 		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			TGMeasureImpl measure = this.selectedMeasure;
@@ -433,12 +414,11 @@ public class EditorKit {
 				float width = (int)(10.0f * scale);
 				float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				float bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
-				int tempValue = 0;
 				
 				float x1 = 0;
 				float x2 = 0;
-				float y1 = (measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
-				float y2 = (y1 + (lineSpacing * 5));
+				float yFirstLine = (measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
+				float yLastLine = (yFirstLine + (lineSpacing * 4));
 				
 				for(int b = 0 ; b < measure.countBeats() ; b++ ){
 					TGBeatImpl beat = (TGBeatImpl)measure.getBeat(b);
@@ -447,12 +427,30 @@ public class EditorKit {
 						x2 = x1 + width;
 						
 						painter.setForeground(layout.getResources().getLineColor());
-						
-						tempValue = FIRST_LINE_VALUES[measure.getClef() - 1];
-						for(float y = (y1 - lineSpacing); y >= (y1 - topHeight); y -= lineSpacing){
-							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
-							tempValue += (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue + 1) % 12])?2:1;
-							if( tempValue > maxValue ){
+						// reference: first line of score, move up line per line (2 notes) until too high
+						int noteIndex=FIRST_LINE_NOTE_INDEX[measure.getClef()-1];
+						int noteOctave=FIRST_LINE_NOTE_OCTAVE[measure.getClef() -1];
+						for(float y = (yFirstLine - lineSpacing); y >= (yFirstLine - topHeight); y -= lineSpacing){
+							noteOctave = TGMusicKeyUtils.noteOctaveAddInterval(noteIndex, noteOctave, 2);
+							noteIndex = TGMusicKeyUtils.noteIndexAddInterval(noteIndex, 2);
+							if (TGMusicKeyUtils.midiNote(noteIndex, noteOctave) > maxValue) {
+								break;
+							}
+							
+							painter.initPath();
+							painter.setAntialias(false);
+							painter.moveTo(x1, y);
+							painter.lineTo(x2, y);
+							painter.closePath();
+						}
+						// reference: last line of score, move down line per line (2 notes) until too low
+						noteIndex=TGMusicKeyUtils.noteIndexAddInterval(FIRST_LINE_NOTE_INDEX[measure.getClef()-1], -8);
+						noteOctave=TGMusicKeyUtils.noteOctaveAddInterval(
+								FIRST_LINE_NOTE_INDEX[measure.getClef()-1], FIRST_LINE_NOTE_OCTAVE[measure.getClef()-1], -8);
+						for(float y = yLastLine + lineSpacing; y <= (yLastLine + bottomHeight); y += lineSpacing){
+							noteOctave = TGMusicKeyUtils.noteOctaveAddInterval(noteIndex, noteOctave, -2);
+							noteIndex = TGMusicKeyUtils.noteIndexAddInterval(noteIndex, -2);
+							if (TGMusicKeyUtils.midiNote(noteIndex, noteOctave) < minValue) {
 								break;
 							}
 							painter.initPath();
@@ -460,22 +458,6 @@ public class EditorKit {
 							painter.moveTo(x1, y);
 							painter.lineTo(x2, y);
 							painter.closePath();
-						}
-						
-						tempValue = FIRST_LINE_VALUES[measure.getClef() - 1] - 14;
-						for(float y = y2; y <= (y2 + bottomHeight); y += lineSpacing){
-							if(tempValue > 0){
-								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
-								tempValue -= (TGMeasureImpl.ACCIDENTAL_NOTES[(tempValue - 1) % 12])?2:1;
-								if( tempValue < minValue ){
-									break;
-								}
-								painter.initPath();
-								painter.setAntialias(false);
-								painter.moveTo(x1, y);
-								painter.lineTo(x2, y);
-								painter.closePath();
-							}
 						}
 					}
 				}

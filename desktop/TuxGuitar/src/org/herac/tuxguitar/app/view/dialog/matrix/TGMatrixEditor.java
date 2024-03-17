@@ -13,7 +13,6 @@ import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
 import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
@@ -70,6 +69,7 @@ import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISeparator;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.util.TGSynchronizer;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -376,6 +376,7 @@ public class TGMatrixEditor implements TGEventListener {
 						names[i] = this.percussions[names.length - i -1].getName();
 					}
 				}else{
+					int keySignature = getCaret().getMeasure().getKeySignature();
 					for(int sNumber = 1; sNumber <= measure.getTrack().stringCount();sNumber ++){
 						TGString string = measure.getTrack().getString(sNumber);
 						this.minNote = Math.min(this.minNote,string.getValue());
@@ -385,7 +386,7 @@ public class TGMatrixEditor implements TGEventListener {
 					this.maxNote = Math.min(this.maxNote, TGMusicKeyUtils.MAX_MIDI_NOTE);
 					names = new String[this.maxNote - this.minNote + 1];
 					for(int i = 0; i < names.length;i ++){
-						names[i] = TGMusicKeyUtils.sharpNoteFullName(this.maxNote-i);
+						names[i] = TGMusicKeyUtils.noteFullName(this.maxNote-i, keySignature);
 					}
 				}
 				

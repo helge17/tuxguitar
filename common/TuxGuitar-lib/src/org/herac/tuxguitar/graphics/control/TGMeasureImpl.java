@@ -27,6 +27,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 /**
  * @author julian
@@ -34,35 +35,6 @@ import org.herac.tuxguitar.ui.resource.UIResourceFactory;
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class TGMeasureImpl extends TGMeasure{
-	
-	public static final int NATURAL = 1;
-	public static final int SHARP = 2;
-	public static final int FLAT = 3;
-	
-	public static final int KEY_SIGNATURES[][] = new int[][]{
-		//------------NATURAL------------------------------------
-		{NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL}, // NATURAL
-		//------------SHARPS------------------------------------
-		{NATURAL,NATURAL,NATURAL,SHARP,NATURAL,NATURAL,NATURAL},   // 1 SHARP
-		{SHARP,NATURAL,NATURAL,SHARP,NATURAL,NATURAL,NATURAL},     // 2 SHARPS
-		{SHARP,NATURAL,NATURAL,SHARP,SHARP,NATURAL,NATURAL},       // 3 SHARPS
-		{SHARP,SHARP,NATURAL,SHARP,SHARP,NATURAL,NATURAL},         // 4 SHARPS
-		{SHARP,SHARP,NATURAL,SHARP,SHARP,SHARP,NATURAL},           // 5 SHARPS
-		{SHARP,SHARP,SHARP,SHARP,SHARP,SHARP,NATURAL},             // 6 SHARPS
-		{SHARP,SHARP,SHARP,SHARP,SHARP,SHARP,SHARP},               // 7 SHARPS
-		//------------FLATS------------------------------------
-		{NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,NATURAL,FLAT},    // 1 FLAT
-		{NATURAL,NATURAL,FLAT,NATURAL,NATURAL,NATURAL,FLAT},       // 2 FLATS
-		{NATURAL,NATURAL,FLAT,NATURAL,NATURAL,FLAT,FLAT},          // 3 FLATS
-		{NATURAL,FLAT,FLAT,NATURAL,NATURAL,FLAT,FLAT},             // 4 FLATS
-		{NATURAL,FLAT,FLAT,NATURAL,FLAT,FLAT,FLAT},                // 5 FLATS
-		{FLAT,FLAT,FLAT,NATURAL,FLAT,FLAT,FLAT},                   // 6 FLATS
-		{FLAT,FLAT,FLAT,FLAT,FLAT,FLAT,FLAT},                      // 7 FLATS
-	};
-	
-	public static final int ACCIDENTAL_SHARP_NOTES[] = new int[]{0,0,1,1,2,3,3,4,4,5,5,6};
-	public static final int ACCIDENTAL_FLAT_NOTES [] = new int[]{0,1,1,2,2,3,4,4,5,5,6,6};
-	public static final boolean ACCIDENTAL_NOTES[] = new boolean[]{false,true,false,true,false,false,true,false,true,false,true,false};
 	
 	public static final int SCORE_KEY_SHARP_POSITIONS[][] = new int[][]{ 
 		new int[] { 1 , 4, 0, 3, 6, 2 , 5 } ,
@@ -564,27 +536,23 @@ public class TGMeasureImpl extends TGMeasure{
 		return displayPosition;
 	}
 	
+	// returns note accidental to display, considering key signature and preceding notes in measure
 	public int getNoteAccidental(int noteValue){
 		if( noteValue >= 0 && noteValue < 128 ){
-			int key = getKeySignature();
-			int note = (noteValue % 12);
-			int octave = (noteValue / 12);
-			int accidentalValue = (key <= 7 ? SHARP : FLAT );
-			int [] accidentalNotes = (key <= 7 ? ACCIDENTAL_SHARP_NOTES : ACCIDENTAL_FLAT_NOTES );
-			boolean isAccidentalNote = ACCIDENTAL_NOTES[ note ];
-			boolean isAccidentalKey = KEY_SIGNATURES[key][accidentalNotes[ note ]] == accidentalValue;
-			
-			if(isAccidentalKey != isAccidentalNote && !this.registeredAccidentals[ octave ][ accidentalNotes[ note ] ]){
-				this.registeredAccidentals[ octave ][ accidentalNotes[note ]  ] = true;
-				return (isAccidentalNote ? accidentalValue : NATURAL);
+			int keySignature = getKeySignature();
+			int noteIndex = TGMusicKeyUtils.noteIndex(noteValue, keySignature);
+			int octave = TGMusicKeyUtils.noteOctave(noteValue, keySignature);
+			int accidentalValue = TGMusicKeyUtils.noteAccidental(noteValue, keySignature);
+			if (accidentalValue!=TGMusicKeyUtils.NONE && !this.registeredAccidentals[octave][noteIndex]) {
+				this.registeredAccidentals[octave][noteIndex] = true;
+				return accidentalValue;
 			}
-			
-			if(isAccidentalKey == isAccidentalNote && this.registeredAccidentals[ octave ][ accidentalNotes[ note ] ]){
-				this.registeredAccidentals[ octave ][ accidentalNotes[ note ]  ] = false;
-				return (isAccidentalNote ? accidentalValue : NATURAL);
+			if (accidentalValue==TGMusicKeyUtils.NONE && this.registeredAccidentals[octave][noteIndex]) {
+				this.registeredAccidentals[octave][noteIndex] = false;
+				return TGMusicKeyUtils.noteAlteration(noteValue, keySignature);
 			}
 		}
-		return 0;
+		return TGMusicKeyUtils.NONE;
 	}
 	
 	private void checkValue(TGLayout layout, TGNoteImpl note, int direction){

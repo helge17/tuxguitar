@@ -7,7 +7,6 @@ import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -48,6 +47,7 @@ import org.herac.tuxguitar.ui.widget.UIReadOnlyTextField;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackPropertiesDialog implements TGEventListener {
 	

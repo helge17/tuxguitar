@@ -12,7 +12,6 @@ import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
@@ -53,6 +52,7 @@ import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISeparator;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGFretBoard {
 	
@@ -428,6 +428,7 @@ public class TGFretBoard {
 	private void paintNotes(UIPainter painter) {
 		if(this.beat != null){
 			TGTrack track = getTrack();
+			int keySignature = this.beat.getMeasure().getKeySignature();
 			
 			for(int v = 0; v < this.beat.countVoices(); v ++){
 				TGVoice voice = this.beat.getVoice( v );
@@ -445,7 +446,7 @@ public class TGFretBoard {
 						
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNote(), x, y, TGMusicKeyUtils.sharpNoteName(realValue));
+							paintKeyText(painter,this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature));
 						}
 						else{
 							paintKeyOval(painter,this.config.getColorNote(), x, y);
