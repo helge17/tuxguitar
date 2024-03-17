@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.tools.scale.xml.ScaleReader;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.models.TGScale;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;

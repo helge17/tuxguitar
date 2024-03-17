@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.app.view.dialog.chord;
 
 import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -19,6 +18,7 @@ import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISeparator;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 import org.herac.tuxguitar.util.TGException;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**

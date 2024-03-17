@@ -13,7 +13,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
@@ -31,6 +30,7 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.util.TGVersion;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -246,11 +246,12 @@ public class MusicXMLWriter {
 	}
 	
 	private void writeNote(Node parent, String prefix, int value, int keySignature) {
-		this.addNode(parent,prefix+"step", keySignature <= 7 ? TGMusicKeyUtils.sharpNoteShortName(value) : TGMusicKeyUtils.flatNoteShortName(value));
-		if(!TGMusicKeyUtils.isNaturalNote(value)){
-			this.addNode(parent,prefix+"alter", ( keySignature <= 7 ? "1" : "-1" ) );
+		this.addNode(parent,prefix+"step", TGMusicKeyUtils.noteShortName(value,keySignature));
+		int alteration = TGMusicKeyUtils.noteAlteration(value, keySignature);
+		if(alteration != TGMusicKeyUtils.NATURAL){
+			this.addNode(parent,prefix+"alter", ( alteration == TGMusicKeyUtils.SHARP ? "1" : "-1" ) );
 		}
-		this.addNode(parent,prefix+"octave", String.valueOf(TGMusicKeyUtils.noteOctave(value)));
+		this.addNode(parent,prefix+"octave", String.valueOf(TGMusicKeyUtils.noteOctave(value, keySignature)));
 	}
 	
 	private void writeTimeSignature(Node parent, TGTimeSignature ts){

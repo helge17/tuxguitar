@@ -16,6 +16,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
 public class TGNoteImpl extends TGNote {
@@ -326,19 +327,19 @@ public class TGNoteImpl extends TGNote {
 			layout.setScoreNoteStyle(painter,playing);
 			
 			//----------sostenido--------------------------------------
-			if(this.accidental == TGMeasureImpl.NATURAL){
+			if(this.accidental == TGMusicKeyUtils.NATURAL){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintNatural(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
 				painter.closePath();
 			}
-			else if(this.accidental == TGMeasureImpl.SHARP){
+			else if(this.accidental == TGMusicKeyUtils.SHARP){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintSharp(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
 				painter.closePath();
 			}
-			else if(this.accidental == TGMeasureImpl.FLAT){
+			else if(this.accidental == TGMusicKeyUtils.FLAT){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintFlat(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);

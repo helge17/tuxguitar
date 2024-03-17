@@ -1,7 +1,6 @@
 package org.herac.tuxguitar.app.tools.custom.tuner;
 
 import org.herac.tuxguitar.app.system.icons.TGColorManager;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListener;
@@ -13,6 +12,7 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
