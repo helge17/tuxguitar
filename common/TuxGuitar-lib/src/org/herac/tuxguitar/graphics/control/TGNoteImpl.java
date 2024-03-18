@@ -36,7 +36,7 @@ public class TGNoteImpl extends TGNote {
 		}
 		
 		this.tabPosY = ( (getString() * layout.getStringSpacing()) - layout.getStringSpacing() );
-		this.scorePosY = getVoiceImpl().getBeatGroup().getY1(layout,this,getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
+		this.scorePosY = getVoiceImpl().getBeatGroup().getY1(layout,this);
 	}
 	
 	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
@@ -289,8 +289,6 @@ public class TGNoteImpl extends TGNote {
 			float scale = layout.getScoreLineSpacing();
 			float layoutScale = layout.getScale();
 			int direction = getVoiceImpl().getBeatGroup().getDirection();
-			int key = getMeasureImpl().getKeySignature();
-			int clef = getMeasureImpl().getClef();
 			
 			float x = ( fromX + getPosX() + spacing );
 			float y1 = ( fromY + getScorePosY() ) ;
@@ -384,7 +382,7 @@ public class TGNoteImpl extends TGNote {
 				if( getVoice().getDuration().getValue() >= TGDuration.HALF ){
 					layout.setScoreNoteFooterStyle(painter);
 					float xMove = ((direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0));
-					float y2 = (fromY + getVoiceImpl().getBeatGroup().getY2(layout,getPosX() + spacing, key, clef));
+					float y2 = (fromY + getVoiceImpl().getBeatGroup().getY2(layout,getPosX() + spacing));
 					
 					//staccato
 					if (getEffect().isStaccato()) {
