@@ -4,7 +4,6 @@ def plugins = [
 	'TuxGuitar-android-gervill-plugin',
 	'TuxGuitar-android-midi-plugin',
 	'TuxGuitar-android-browser-saf-plugin',
-	'TuxGuitar-android-gdrive-plugin',
 ]
 
 def plugins_common = [
@@ -94,7 +93,6 @@ dependencies {
 	implementation project(':tuxguitar-android-gervill')
 	implementation project(':tuxguitar-android-midi')
 	implementation project(':tuxguitar-android-browser-saf')
-	implementation project(':tuxguitar-android-gdrive')
 	implementation project(':tuxguitar-android-gervill-soundbank')
 	
 	implementation 'com.itextpdf:itextpdf:5.5.10'

@@ -11,11 +11,6 @@
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
 	
-	<!-- Required by google drive -->
-	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="android.permission.USE_CREDENTIALS" />
-	
 	<application
 		android:name="org.herac.tuxguitar.android.application.TGApplication"
 		android:allowBackup="true"
@@ -77,9 +72,5 @@
 				<data android:mimeType="audio/midi" />
 			</intent-filter>
 		</activity>
-		
-		<meta-data
-			android:name="com.google.android.gms.version"
-			android:value="@integer/google_play_services_version" />
 	</application>
 </manifest>
