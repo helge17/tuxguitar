@@ -303,8 +303,8 @@ public class TGVoiceImpl extends TGVoice{
 						}
 						else if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 							int direction = voice.getBeatGroup().getDirection();
-							float y1 = voice.getBeatGroup().getY1(layout, voice.getMaxNote(),getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
-							float y2 = voice.getBeatGroup().getY1(layout, voice.getMinNote(),getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
+							float y1 = voice.getBeatGroup().getY1(layout, voice.getMaxNote());
+							float y2 = voice.getBeatGroup().getY1(layout, voice.getMinNote());
 							
 							if(direction == TGBeatGroup.DIRECTION_UP){
 								float position = (y1 + (lineSpacing * 2));
@@ -517,15 +517,13 @@ public class TGVoiceImpl extends TGVoice{
 			float lineSpacing = layout.getScoreLineSpacing();
 			int direction = this.group.getDirection();
 			int dir = (direction == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
-			int key = getBeat().getMeasure().getKeySignature();
-			int clef = getBeat().getMeasure().getClef();
 			
 			float scoreNoteWidth = layout.getScoreNoteWidth();
 			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0f);
 			float yMove = ((lineSpacing / 2f) + (((lineSpacing / 10f) * 1.20f)) * dir);
 			
 			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.minNote.getScorePosY() : this.maxNote.getScorePosY() );
-			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing, key, clef);
+			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing);
 			
 			painter.setLineWidth(layout.getLineWidth(0));
 			painter.initPath(UIPainter.PATH_FILL);
@@ -544,7 +542,7 @@ public class TGVoiceImpl extends TGVoice{
 					
 					if((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT || joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT) && !joinedGreaterThanQuarter){
 						float hX = (fromX + xMove + getPosX() + spacing - (0.5f * scale));
-						float hY = ((fromY + this.group.getY2(layout,getPosX() + spacing,key,clef)) - ( (lineSpacing * 2)* dir )) ;
+						float hY = ((fromY + this.group.getY2(layout,getPosX() + spacing)) - ( (lineSpacing * 2)* dir )) ;
 						for(int i = 0; i <= index; i ++){
 							painter.initPath(UIPainter.PATH_FILL);
 							TGNotePainter.paintFooter(painter, hX, (hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
@@ -593,8 +591,8 @@ public class TGVoiceImpl extends TGVoice{
 									pathInitialized = true;
 									painter.initPath(UIPainter.PATH_FILL);
 								}
-								hY1 = fromY + this.group.getY2(layout, currHX1, key, clef);
-								hY2 = fromY + this.group.getY2(layout, currHX2, key, clef);
+								hY1 = fromY + this.group.getY2(layout, currHX1);
+								hY2 = fromY + this.group.getY2(layout, currHX2);
 								
 								painter.moveTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
 								painter.lineTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) + hLineWidth);

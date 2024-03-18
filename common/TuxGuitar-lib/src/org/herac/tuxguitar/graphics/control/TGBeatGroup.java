@@ -118,27 +118,27 @@ public class TGBeatGroup {
 		return this.voices;
 	}
 	
-	public float getY1(TGLayout layout, TGNoteImpl note, int key, int clef){
+	public float getY1(TGLayout layout, TGNoteImpl note){
 		float scale = (layout.getScoreLineSpacing() / 2f);
 		float scoreLineY = (TGNotation.computePosition(layout, note) * scale);
 		
 		return scoreLineY;
 	}
 	
-	public float getY2(TGLayout layout, float x, int key, int clef){
+	public float getY2(TGLayout layout, float x){
 		float maxDistance = (10f * layout.getScale());
 		float upOffset = TGBeatGroup.getUpOffset(layout);
 		float downOffset = TGBeatGroup.getDownOffset(layout);
 		if(this.direction == DIRECTION_DOWN){
 			if( this.maxNote != this.firstMaxNote && this.maxNote != this.lastMaxNote ){
-				return (getY1(layout, this.maxNote, key, clef) + downOffset);
+				return (getY1(layout, this.maxNote) + downOffset);
 			}
 			
 			float y = 0;
 			float x1 = this.firstMaxNote.getPosX() + this.firstMaxNote.getBeatImpl().getSpacing(layout);
 			float x2 = this.lastMaxNote.getPosX() + this.lastMaxNote.getBeatImpl().getSpacing(layout);
-			float y1 =  (getY1(layout, this.firstMaxNote, key, clef) +  downOffset);
-			float y2 =  (getY1(layout, this.lastMaxNote, key, clef) +  downOffset);
+			float y1 =  (getY1(layout, this.firstMaxNote) +  downOffset);
+			float y2 =  (getY1(layout, this.lastMaxNote) +  downOffset);
 			
 			if( y1 > y2 && (y1 - y2) > maxDistance ) {
 				y2 = (y1 - maxDistance);
@@ -152,13 +152,13 @@ public class TGBeatGroup {
 			}
 			return y1 - y;
 		}else if(this.minNote != this.firstMinNote && this.minNote != this.lastMinNote){
-			return (getY1(layout, this.minNote, key, clef) - upOffset);
+			return (getY1(layout, this.minNote) - upOffset);
 		}else{
 			float y = 0;
 			float x1 = this.firstMinNote.getPosX() + this.firstMinNote.getBeatImpl().getSpacing(layout);
 			float x2 = this.lastMinNote.getPosX() + this.lastMinNote.getBeatImpl().getSpacing(layout);
-			float y1 = (getY1(layout,this.firstMinNote, key, clef) - upOffset);
-			float y2 = (getY1(layout,this.lastMinNote, key, clef) - upOffset);
+			float y1 = (getY1(layout,this.firstMinNote) - upOffset);
+			float y2 = (getY1(layout,this.lastMinNote) - upOffset);
 			
 			if( y1 < y2 && (y2 - y1) > maxDistance ) {
 				y2 = (y1 + maxDistance);
