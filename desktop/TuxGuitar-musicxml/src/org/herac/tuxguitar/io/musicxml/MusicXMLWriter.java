@@ -16,7 +16,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
+import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
+import org.herac.tuxguitar.io.musicxml.MusicXMLLyricWriter.MusicXMLMeasureLyric;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -38,8 +40,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
 
-public class MusicXMLWriter {
 
+public class MusicXMLWriter {
+	
 	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
 	
 	private static final int DURATION_DIVISIONS = (int)TGDuration.QUARTER_TIME;
@@ -137,7 +140,6 @@ public class MusicXMLWriter {
 			scoreParts = this.addNode(partList,"score-part");
 			this.addAttribute(scoreParts, "id", "P" + track.getNumber() + TABLATURE_SUFFIX);
 			this.addNode(scoreParts, "part-name", track.getName());
-
 		}
 	}
 	
@@ -149,17 +151,20 @@ public class MusicXMLWriter {
 			this.writeTrack(track, parent, true);	// tablature
 		}
 	}
-
+	
 	private void writeTrack(TGTrack track, Node parent, boolean isTablature){
 		Node part = this.addAttribute(this.addNode(parent,"part"), "id", "P" + track.getNumber() + (isTablature ? TABLATURE_SUFFIX : ""));
 		
 		TGMeasure previous = null;
+		
+		MusicXMLLyricWriter lyricWriter = new MusicXMLLyricWriter(track);
 		
 		Iterator<TGMeasure> measures = track.getMeasures();
 		while(measures.hasNext()){
 			// TODO: Add multivoice support.
 			TGMeasure srcMeasure = (TGMeasure)measures.next();
 			TGMeasure measure = new TGVoiceJoiner(this.manager.getFactory(),srcMeasure).process();
+			
 			Node measureNode = this.addAttribute(this.addNode(part,"measure"), "number",Integer.toString(measure.getNumber()));
 			
 			this.writeMeasureAttributes(measureNode, measure, previous, isTablature);
@@ -168,8 +173,11 @@ public class MusicXMLWriter {
 			}
 			
 			this.writeBarline(measureNode, measure);
+
+			TGMeasureImpl measureImpl = (TGMeasureImpl) srcMeasure;
 			
-			this.writeBeats(measureNode, measure, isTablature);
+			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(measureImpl);
+			this.writeBeats(measureNode, measure, isTablature, measureLyrics);
 			
 			previous = measure;
 		}
@@ -307,27 +315,44 @@ public class MusicXMLWriter {
 		}
 	}
 	
-	private void writeBeats(Node parent, TGMeasure measure, boolean isTablature){
+
+	private void writeBeats(Node parent, TGMeasure measure, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
 		int ks = measure.getKeySignature();
 		int beatCount = measure.countBeats();
+		
+		int lyricIndex = 0;
+		
 		for(int b = 0; b < beatCount; b ++){
 			TGBeat beat = measure.getBeat( b );
 			TGVoice voice = beat.getVoice(0);
+			
 			if(voice.isRestVoice()){
 				Node noteNode = this.addNode(parent,"note");
 				this.addNode(noteNode,"rest");
 				this.writeDuration(noteNode, voice.getDuration(), false);
-			}
-			else{
+			
+			} else {
 				int noteCount = voice.countNotes();
+				
 				for(int n = 0; n < noteCount; n ++){
 					TGNote note = voice.getNote( n );
 					
 					Node noteNode = this.addNode(parent,"note");
+					
 					int value = (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
 					
 					if(n > 0){
 						this.addNode(noteNode,"chord");
+					} else {
+						// Attach lyric to the first note
+						try {
+							MusicXMLMeasureLyric measureLyric = lyrics[lyricIndex++];
+							writeLyric(noteNode, measureLyric);
+						} catch (Exception e) {
+							// ignore
+							// can be out of bound? when there are more lyrics than text
+							// can be null if there is an offset
+						}
 					}
 					
 					Node pitchNode = this.addNode(noteNode,"pitch");
@@ -341,6 +366,15 @@ public class MusicXMLWriter {
 					}
 				}
 			}
+		}
+	}
+	
+	private void writeLyric(Node parent, MusicXMLMeasureLyric measureLyric) {
+		if (measureLyric.text.length() > 0) {
+			Node lyricNode = this.addNode(parent, "lyric");
+
+			this.addNode(lyricNode,"syllabic", measureLyric.syllabic.toString());
+			this.addNode(lyricNode,"text", measureLyric.text);
 		}
 	}
 	
