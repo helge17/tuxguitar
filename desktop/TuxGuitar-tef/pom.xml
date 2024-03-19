@@ -11,6 +11,8 @@
 	<artifactId>tuxguitar-tef</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
+	<groupId>org.herac.tuxguitar</groupId>
+	<version>1.6.2-SNAPSHOT</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

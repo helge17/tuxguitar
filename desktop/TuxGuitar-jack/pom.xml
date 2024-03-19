@@ -11,6 +11,8 @@
 	<artifactId>tuxguitar-jack</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
+	<groupId>org.herac.tuxguitar</groupId>
+	<version>SNAPSHOT</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
