@@ -40,6 +40,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
 
+// Note: The order of elements is important
+// see https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/
 
 public class MusicXMLWriter {
 	
@@ -136,10 +138,12 @@ public class MusicXMLWriter {
 				this.addNode(midiInstrument, "midi-program",Integer.toString(channel.getProgram() + 1));
 			}
 			
-			// tab
-			scoreParts = this.addNode(partList,"score-part");
-			this.addAttribute(scoreParts, "id", "P" + track.getNumber() + TABLATURE_SUFFIX);
-			this.addNode(scoreParts, "part-name", track.getName());
+			// tab (if not a drums track)
+			if(!this.manager.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+				scoreParts = this.addNode(partList,"score-part");
+				this.addAttribute(scoreParts, "id", "P" + track.getNumber() + TABLATURE_SUFFIX);
+				this.addNode(scoreParts, "part-name", track.getName());
+			}
 		}
 	}
 	
@@ -148,7 +152,10 @@ public class MusicXMLWriter {
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
 			this.writeTrack(track, parent, false);	// score
-			this.writeTrack(track, parent, true);	// tablature
+			
+			if(!this.manager.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+				this.writeTrack(track, parent, true);	// tablature
+			}
 		}
 	}
 	
@@ -195,7 +202,7 @@ public class MusicXMLWriter {
 			
 			if (measure.isRepeatOpen()) {
 				Node repeat = this.addNode(barLine,"repeat");
-				this.addAttribute(repeat, "direction", "forward");				
+				this.addAttribute(repeat, "direction", "forward");
 			}
 			
 			if (measure.getRepeatClose() > 0) {
@@ -333,9 +340,7 @@ public class MusicXMLWriter {
 			
 			} else {
 				int noteCount = voice.countNotes();
-
-				// Note: The order of elements is important 
-				// see https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/note/
+				
 				for(int n = 0; n < noteCount; n ++){
 					TGNote note = voice.getNote( n );
 					
@@ -346,7 +351,7 @@ public class MusicXMLWriter {
 					if(n > 0){
 						this.addNode(noteNode,"chord");
 					}
-										
+					
 					Node pitchNode = this.addNode(noteNode,"pitch");
 					this.writeNote(pitchNode, "", value, ks);
 					this.writeDuration(noteNode, voice.getDuration(), note.isTiedNote());
@@ -365,7 +370,7 @@ public class MusicXMLWriter {
 							// ignore
 							// can be out of bound? when there are more lyrics than text
 							// can be null if there is an offset
-						}											
+						}
 					}
 				}
 			}
