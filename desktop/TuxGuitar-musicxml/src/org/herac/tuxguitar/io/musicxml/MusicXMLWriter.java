@@ -333,7 +333,9 @@ public class MusicXMLWriter {
 			
 			} else {
 				int noteCount = voice.countNotes();
-				
+
+				// Note: The order of elements is important 
+				// see https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/note/
 				for(int n = 0; n < noteCount; n ++){
 					TGNote note = voice.getNote( n );
 					
@@ -343,18 +345,8 @@ public class MusicXMLWriter {
 					
 					if(n > 0){
 						this.addNode(noteNode,"chord");
-					} else {
-						// Attach lyric to the first note
-						try {
-							MusicXMLMeasureLyric measureLyric = lyrics[lyricIndex++];
-							writeLyric(noteNode, measureLyric);
-						} catch (Exception e) {
-							// ignore
-							// can be out of bound? when there are more lyrics than text
-							// can be null if there is an offset
-						}
 					}
-					
+										
 					Node pitchNode = this.addNode(noteNode,"pitch");
 					this.writeNote(pitchNode, "", value, ks);
 					this.writeDuration(noteNode, voice.getDuration(), note.isTiedNote());
@@ -363,6 +355,17 @@ public class MusicXMLWriter {
 						Node technicalNode = this.addNode(this.addNode(noteNode, "notations"), "technical");
 						this.addNode(technicalNode,"fret", Integer.toString( note.getValue() ));
 						this.addNode(technicalNode,"string", Integer.toString( note.getString() ));
+					
+					} else if(n==0) {
+						// Attach lyric to the first note
+						try {
+							MusicXMLMeasureLyric measureLyric = lyrics[lyricIndex++];
+							writeLyric(noteNode, measureLyric);
+						} catch (Exception e) {
+							// ignore
+							// can be out of bound? when there are more lyrics than text
+							// can be null if there is an offset
+						}											
 					}
 				}
 			}
