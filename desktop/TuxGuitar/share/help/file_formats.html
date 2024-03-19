@@ -135,6 +135,23 @@
     <p>Another typical symptom of an incorrect note range is the loss of notes, either directly after import or when you try to change the tuning of a track. TuxGuitar will delete any notes it can't place on a 30 frets instrument.</p>
     <h3 id="transposition">Transposition</h3>
     <p>If the note range of the input file has not been adjusted, you can transpose it directly when importing the file using the corresponding dialog. Please note that the transposition is applied to all tracks in the song. If you only need to transpose one track in a multi-track song, you should split your file into several files using an external MIDI application before importing. Afterwards, you can copy/paste the tracks together again in TuxGuitar.</p>
+
+    <h2 id="MusicXML output">MusicXML export</h2>
+    <p>
+      <h3>Lyrics</h3>
+      <p>
+        To get the best output for lyrics, in the MusicXML export, do the following:<br/>
+      <ul>
+        <li>
+          Make sure the syllables, in one word, are appended with a hyphen (the '-' character).
+          <p>
+            <h4>Example:</h4>
+            "Halelujah" becomes "Ha- le- lu- ja". Notice the space after the hyphen, and there is no hyphen after 'ja'. This lyric will be spread over 4 notes.
+          </p>
+        </li>
+      </ul>
+      </p>
+    </p>
   </section>
 </body>
 </html>
