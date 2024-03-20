@@ -16,7 +16,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.herac.tuxguitar.gm.GMChannelRoute;
 import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.musicxml.MusicXMLLyricWriter.MusicXMLMeasureLyric;
 import org.herac.tuxguitar.song.factory.TGFactory;
@@ -181,9 +180,7 @@ public class MusicXMLWriter {
 			
 			this.writeBarline(measureNode, measure);
 
-			TGMeasureImpl measureImpl = (TGMeasureImpl) srcMeasure;
-			
-			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(measureImpl);
+			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(srcMeasure);
 			this.writeBeats(measureNode, measure, isTablature, measureLyrics);
 			
 			previous = measure;

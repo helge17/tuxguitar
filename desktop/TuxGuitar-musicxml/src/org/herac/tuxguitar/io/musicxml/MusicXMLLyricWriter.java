@@ -3,7 +3,8 @@ package org.herac.tuxguitar.io.musicxml;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
+import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 /**
@@ -121,16 +122,22 @@ public class MusicXMLLyricWriter {
 	}
 	/**
 	 * State machine, use only sequential calls to get lyrics from track.
-	 * @param measureImpl
+	 * @param measure
 	 * @return returns an Array containing the text and syllabics for the passed in measure.
 	 */
-	public MusicXMLMeasureLyric[] generateLyricList(TGMeasureImpl measureImpl) {
+	public MusicXMLMeasureLyric[] generateLyricList(TGMeasure measure) {
 
-		if (measureImpl.getNumber() < lyricFrom) {
+		if (measure.getNumber() < lyricFrom) {
 			return null;
 		}
 		
-		int number = measureImpl.getNotEmptyBeats();
+		// number of not empty beats
+		int number = 0;
+		for (TGBeat beat : measure.getBeats()) {
+			if (!beat.isRestBeat()) {
+				number++;
+			}
+		}
 		
 		ArrayList<MusicXMLMeasureLyric> measureLyrics = new ArrayList<MusicXMLMeasureLyric>();
 		
