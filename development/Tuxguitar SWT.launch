@@ -26,5 +26,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="tuxguitar"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
     <booleanAttribute key="org.eclipse.jdt.launching.STOP_IN_MAIN" value="true"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dtuxguitar.home.path=&quot;${workspace_loc}/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt-x86_64/target/tuxguitar-SNAPSHOT-linux-swt-x86_64/&quot;&#10;-Dtuxguitar.share.path=&quot;share/&quot;"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dtuxguitar.home.path=&quot;${workspace_loc}/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt-x86_64/target/tuxguitar-9.99-SNAPSHOT-linux-swt-x86_64/&quot;&#10;-Dtuxguitar.share.path=&quot;share/&quot;"/>
 </launchConfiguration>

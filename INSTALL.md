@@ -52,12 +52,6 @@ $ cd tuxguitar
 
 ### Hacks
 
-The Debian version must start with a number:
-
-```sh
-$ sed -i "s/SNAPSHOT/9.99-snapshot/" desktop/build-scripts/tuxguitar-linux-swt-x86_64-deb/src/resources/DEBIAN/control
-```
-
 For the (outdated) VST plugin you need some additional header files:
 
 ```sh
@@ -148,7 +142,7 @@ $ cd desktop/build-scripts/tuxguitar-windows-swt-x86_64
 $ mvn -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
 ```
 
-The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
+The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-9.99-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
 
 To start TuxGuitar you need a Java Runtime Environment. You can get the one from [portableapps.com](https://portableapps.com/apps/utilities/OpenJDK64) and extract it to a subfolder named `jre`. Then you should be able to start TuxGuitar by double-clicking on `tuxguitar.exe` or `tuxguitar.bat`.
 
@@ -184,7 +178,7 @@ $ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
 $ mvn -e clean verify
 ```
 
-The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
+The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
 
 ## Build on FreeBSD
 

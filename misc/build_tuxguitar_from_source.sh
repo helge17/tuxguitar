@@ -217,8 +217,8 @@ echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
   cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
 echo "# OK."
 
-echo -e "\n# Change build version from SNAPSHOT to $TGVERSION in config files ..."
-  find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i "s/SNAPSHOT/$TGVERSION/" '{}' \;
+echo -e "\n# Change build version from 9.99-SNAPSHOT to $TGVERSION in config files ..."
+  find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i "s/9.99-SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
   sed -i "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/org/herac/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."
