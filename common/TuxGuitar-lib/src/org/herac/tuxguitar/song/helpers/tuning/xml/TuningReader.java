@@ -76,12 +76,18 @@ public class TuningReader {
 				}
 				
 				TuningPreset tuning = new TuningPreset(group, name, noteValues);
+
         // Add priority attribute if available
-        String prioStr = params.getNamedItem(PRIORITY_ATTRIBUTE).getNodeValue();
-        if (prioStr != null && !prioStr.equals(""))
-          tuning.setPriority(Integer.parseInt(prioStr));
+        if (params.getNamedItem(PRIORITY_ATTRIBUTE) != null) {
+          String prioStr = params.getNamedItem(PRIORITY_ATTRIBUTE).getNodeValue();
+          // make sure priority string is valid
+          if (prioStr != null && !prioStr.equals("") && prioStr.matches("\\d+"))
+            tuning.setPriority(Integer.parseInt(prioStr));
+        }
 
 				group.getTunings().add(tuning);
+				
+				System.out.print(group.getTunings().toString());
 
 			} else if (nodeName.equals(GROUP_TAG)) {
 				NamedNodeMap params = child.getAttributes();

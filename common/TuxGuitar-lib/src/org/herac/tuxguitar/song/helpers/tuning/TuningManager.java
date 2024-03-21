@@ -48,6 +48,9 @@ public class TuningManager {
 		}
 		for (TuningPreset preset : group.getTunings()) {
 			TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
+      if (preset.getPriority() != null)
+        tgTuning.setPriority(preset.getPriority().intValue());
+
 			list.add((TGTuning)tgTuning);
 		}
 		return(list);
@@ -59,26 +62,11 @@ public class TuningManager {
 	}
 
   public List<TGTuning> getPrioritizedTgTunings() {
-    return getPrioritizedTuningsInGroup("", tgTuningsGroup);
+    List<TGTuning> prioritiezedTunings = getTuningsInGroup("", tgTuningsGroup);
+    Collections.sort(prioritiezedTunings);
+    return prioritiezedTunings;
   }
 	
-	private List<TGTuning> getPrioritizedTuningsInGroup(String prefix, TuningGroup group) {
-    List<TGTuning> tunings = new ArrayList<TGTuning>();
-
-    for (TuningGroup subGroup : group.getGroups()) {
-      String groupPrefix = (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
-      tunings.addAll(getPrioritizedTuningsInGroup(groupPrefix, subGroup));
-    }
-
-    for (TuningPreset preset : group.getTunings()) {
-      TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
-      tunings.add((TGTuning) tgTuning);
-      Collections.sort(tunings);
-    } 
-
-    return tunings;
-  }
-
 	public void saveCustomTunings(TuningGroup group) {
 		TuningWriter.write(group, TGUserFileUtils.PATH_USER_TUNINGS);
 	}
@@ -86,7 +74,11 @@ public class TuningManager {
 	private void loadTunings(){
 		try{
 			TuningReader tuningReader = new TuningReader();
-			tuningReader.loadTunings(this.tgTuningsGroup, TGResourceManager.getInstance(this.context).getResourceAsStream(TG_TUNING_FILE) );
+
+      String defaultTuningFilePath = TGUserFileUtils.PATH_HOME + File.separator + "share" + File.separator + TG_TUNING_FILE;
+
+			tuningReader.loadTunings(this.tgTuningsGroup, new FileInputStream(defaultTuningFilePath));
+
 			File file = new File(TGUserFileUtils.PATH_USER_TUNINGS);
 			if (TGUserFileUtils.isExistentAndReadable(file)) {
 				tuningReader.loadTunings(this.customTuningsGroup, new FileInputStream(TGUserFileUtils.PATH_USER_TUNINGS));
