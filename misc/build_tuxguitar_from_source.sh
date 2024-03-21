@@ -14,6 +14,7 @@ SRC_DIR=$SCRIPT_DIR/..
 
 cd $SRC_DIR
 
+# Current git branch
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 function usage {
@@ -281,7 +282,7 @@ fi
 
 }
 
-function install_eclipse_jfx {
+function install_openjfx {
 
 # On FreeBSD we also install JFX from the OS
 if [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
@@ -340,15 +341,22 @@ install_eclipse_swt
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ...\n"
+
   cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH-deb
   mvn --batch-mode -e clean verify -P native-modules
-  cp -a target/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb $DIST_DIR
+
+  TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
+
+  cp -a target/$TARGET.deb $DIST_DIR
   cd - > /dev/null
+
   # Create RPM from DEB
   cd $DIST_DIR
-  fakeroot alien --verbose --keep-version --scripts --to-rpm tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.deb
+  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET.deb
   cd - > /dev/null
-  tar --owner=root --group=root --directory=desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
+
+  tar --owner=root --group=root --directory=desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
+
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package done.\n"
 done
 
@@ -357,7 +365,7 @@ done
 function build_tg_for_windows {
 
 # To build the installer package you must install the VMware InstallBuilder for Linux from https://installbuilder.com/ and link the binary /opt/installbuilder-<version>/bin/builder to /usr/local/bin/builder
-# E.g. download installbuilder-enterprise-21.9.0-linux-x64-installer.run and link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
+# E.g. download and start installbuilder-enterprise-21.9.0-linux-x64-installer.run, then link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
 
 # Create selfsigned Windows code signing certificate:
 #   cd ~/Software/TuxGuitar/
@@ -382,15 +390,21 @@ cp -ai $SW_DIR/$PA_JAVA desktop/build-scripts/common-resources/common-windows/jr
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ..."
+
   cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
   # As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
   mvn --batch-mode -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
-  cp -a target/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH-installer.exe $DIST_DIR
+
+  TARGET=tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH
+
+  cp -a target/$TARGET-installer.exe $DIST_DIR
   cd - > /dev/null
+
   (
     cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH/target
-    zip -r $DIST_DIR/tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH.zip tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH
+    zip -r $DIST_DIR/$TARGET.zip $TARGET
   )
+
   echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL done.\n"
 done
 
@@ -415,18 +429,22 @@ scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-$
 function build_tg_for_bsd {
 
 install_eclipse_swt
-install_eclipse_jfx
+install_openjfx
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
+
   cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
   mvn --batch-mode -e clean verify -P native-modules
 
-  # Copy local JFX libs into TAR.GZ package
-  [ "$GUI_TK" == "jfx" ] && cp -a /usr/local/openjfx14/lib/*.so target/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH/lib
+  TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
 
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH.tar.gz tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
+  # Copy local JFX libs into TAR.GZ package
+  [ "$GUI_TK" == "jfx" ] && cp -a /usr/local/openjfx14/lib/*.so target/$TARGET/lib
+
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
   cd - > /dev/null
+
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
 done
 
@@ -451,7 +469,7 @@ ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
 # With -X nrequests=1 -X buffer=2048: ~ 250KB/s (bridged -> WLAN -> Linux system), 5MB/s (NAT -> local VMware host)
 # The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the MacOS system or on the target system.
 # Incoming transfers via scp are OK, outgoing transfers via https are also OK.
-# Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed doplex and speed settings, ...) did not help.
+# Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed duplex and speed settings, ...) did not help.
 # MacOS 11 is fine and the -X options do not harm.
 scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
 
@@ -463,15 +481,19 @@ install_eclipse_swt
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ..."
+
   cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
   mvn --batch-mode -e clean verify
 
-  # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  mkdir target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
-  cp -ai /usr/local/opt/openjdk/* target/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app/Contents/MacOS/jre
+  TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
 
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app.tar.gz tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
+  # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
+  mkdir target/$TARGET/Contents/MacOS/jre
+  cp -ai /usr/local/opt/openjdk/* target/$TARGET/Contents/MacOS/jre
+
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
   cd - > /dev/null
+
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"
 done
 
