@@ -702,71 +702,43 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		public List<TGString> getStrings(int maxFret) {
 			List<TGString> strings = new ArrayList<TGString>();
 
-      TuningManager tuningManager = TuningManager.getInstance(new TGContext());
-      List<TGTuning> tunings = tuningManager.getPrioritizedTgTunings();
+                        TuningManager tuningManager = TuningManager.getInstance(new TGContext());
+                        List<TGTuning> tunings = tuningManager.getPrioritizedTgTunings();
 			
-      // E Standard
+                        // E Standard
 			if(this.minValue >= 40 && this.maxValue <= 64 + maxFret){
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 59));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 55));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 50));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 45));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,6, 40));
-        int[] notes = tunings.get(0).getValues();
-        for ( int i = 0; i < notes.length; i++ ) {
-				  strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
-        }
+                                int[] notes = tunings.get(0).getValues();
+                                for ( int i = 0; i < notes.length; i++ ) {
+                                        strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
+                                }
 			}
-      // Drop D
+                        // Drop D
 			else if(this.minValue >= 38 && this.maxValue <= 64 + maxFret){
-        int[] notes = tunings.get(1).getValues();
-        for ( int i = 0; i < notes.length; i++ ) {
-				  strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
-        }
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 59));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 55));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 50));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 45));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,6, 38));
+                                int[] notes = tunings.get(1).getValues();
+                                for ( int i = 0; i < notes.length; i++ ) {
+                                        strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
+                                }
 			}
-      // 7-String, B Standrd
+                        // 7-String, B Standrd
 			else if(this.minValue >= 35 && this.maxValue <= 64 + maxFret){
-        int[] notes = tunings.get(2).getValues();
-        for ( int i = 0; i < notes.length; i++ ) {
-				  strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
-        }
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 59));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 55));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 50));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 45));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,6, 40));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,7, 35));
+                                int[] notes = tunings.get(2).getValues();
+                                for ( int i = 0; i < notes.length; i++ ) {
+                                        strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
+                                }
 			}
-      // Bass, E Standard
+                              // Bass, E Standard
 			else if(this.minValue >= 28 && this.maxValue <= 43 + maxFret){
-        int[] notes = tunings.get(3).getValues();
-        for ( int i = 0; i < notes.length; i++ ) {
-				  strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
-        }
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 43));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 38));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 33));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 28));
+                                int[] notes = tunings.get(3).getValues();
+                                for ( int i = 0; i < notes.length; i++ ) {
+                                        strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
+                                }
 			}
-      // Bass 5-string, B Standard
+                        // Bass 5-string, B Standard
 			else if(this.minValue >= 23 && this.maxValue <= 43 + maxFret){
-        int[] notes = tunings.get(4).getValues();
-        for ( int i = 0; i < notes.length; i++ ) {
+                                int[] notes = tunings.get(4).getValues();
+                                for ( int i = 0; i < notes.length; i++ ) {
 				  strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
-        }
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 43));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 38));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 33));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 28));
-				// strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 23));
+                                }
 			}else{
 				int stringCount = 6;
 				int stringSpacing = ((this.maxValue - (maxFret - 4) - this.minValue) / stringCount);
