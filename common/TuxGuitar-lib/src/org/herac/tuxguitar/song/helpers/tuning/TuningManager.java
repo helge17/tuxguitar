@@ -40,29 +40,35 @@ public class TuningManager {
                 return this.customTuningsGroup;
         }
         
-        private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group) {
+        private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group, boolean isPrioritized) {
                 List<TGTuning> list = new ArrayList<TGTuning>();
                 for (TuningGroup subGroup : group.getGroups()) {
                         String groupPrefix = (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
-                        list.addAll(getTuningsInGroup(groupPrefix, subGroup));
+                        list.addAll(getTuningsInGroup(groupPrefix, subGroup, isPrioritized));
                 }
                 for (TuningPreset preset : group.getTunings()) {
                         TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
-                        if (preset.getPriority() != null)
-                                tgTuning.setPriority(preset.getPriority().intValue());
 
-                        list.add((TGTuning)tgTuning);
+                        if (!isPrioritized)
+                                list.add((TGTuning)tgTuning);
+                        else { 
+                                if (preset.getPriority() != null) {
+                                        tgTuning.setPriority(preset.getPriority().intValue());
+                                        list.add((TGTuning)tgTuning);
+                                }
+                        }
+
                 }
                 return(list);
         }
         
         // flat list of tunings, prefixed with group names (recursively)
         public List<TGTuning> getTgTunings() {
-                return (getTuningsInGroup("", tgTuningsGroup));
+                return (getTuningsInGroup("", tgTuningsGroup, false));
         }
 
         public List<TGTuning> getPrioritizedTgTunings() {
-                List<TGTuning> prioritiezedTunings = getTuningsInGroup("", tgTuningsGroup);
+                List<TGTuning> prioritiezedTunings = getTuningsInGroup("", tgTuningsGroup, true);
                 Collections.sort(prioritiezedTunings);
                 return prioritiezedTunings;
         }
