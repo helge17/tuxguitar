@@ -287,12 +287,11 @@ function install_openjfx {
 # On FreeBSD we also install JFX from the OS
 if [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
 
-  JFX_VER=14.0.2.1
   JFX_DIR=$SW_DIR/OpenJFX
 
   for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
 
-    JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER-freebsd.jar
+    JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION-freebsd.jar
     JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
 
     if [ -e $JFX_DEST ]; then
@@ -303,11 +302,11 @@ if [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
 
       echo "# Installing $JFX_DEST from $JFX_JARF ..."
       mkdir -p $JFX_DIR
-      if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VER.pom ]; then
-        wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VER/$JFX_PKG-$JFX_VER.pom
-        sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VER.pom
+      if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
+        wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
+        sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
       fi
-      mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VER.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VER -Dclassifier=freebsd
+      mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VERSION.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VERSION -Dclassifier=freebsd
       echo "# OK."
 
     fi
@@ -611,9 +610,10 @@ fi
 # BSD 64 bit x86_64 build
 if [ $build_bsd ]; then
   BUILD_ARCH=x86_64
-  # SWT version in FreeBSD 13.2
+  # SWT & JFX versions in FreeBSD 13.2
   SWT_VERSION=4.21
   SWT_PLATFORM=gtk-freebsd
+  JFX_VERSION=14.0.2.1
   [ `uname` == Linux ] && start_remote_bsd_build
   [ `uname` == FreeBSD ] && build_tg_for_bsd
 fi
