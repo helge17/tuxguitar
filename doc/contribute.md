@@ -89,6 +89,10 @@ For each {platform, ui framework} couple, one Maven project is defined in a `pom
 
 Note: only x86_64 architecture is supported in this repo.
 
+### Submit a contribution
+If you want to implement one feature request or to fix an issue, mention it explicitly in issue's discussion, so that others do not try to address it in parallel.
+To submit a contribution, follow the github [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request. Take care to `squash` your commits before submitting a pull request, except if there is a good reason not to do so (intermediate development commits have a low added value in master's history). If your pull request implements or fixes an issue, make this explicit in pull request's description (e.g. "should fix issue #xxx").
+
 ### Setup Eclipse IDE
 
 We will now focus on the **developer** role and show our suggested method to easily clone the repository, install necessary tooling, import the project and finally import, build and run the Linux/SWT configuration.  Normally, you **will not need more than 30 minutes**.
