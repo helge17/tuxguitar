@@ -30,7 +30,7 @@ import org.herac.tuxguitar.util.TGVersion;
 
 public class TGAboutDialog {
 	
-	private static final String RELEASE_NAME = (TGApplication.NAME + " " + TGVersion.CURRENT.getVersion());
+	private static final String RELEASE_NAME = (TGApplication.NAME + " 2024-03-12-Issue#269");
 	private static final String PROPERTY_PREFIX = ("help.about.");
 	
 	private static final float IMAGE_WIDTH = 100;
