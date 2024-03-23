@@ -80,11 +80,12 @@ public class CompositionMenuItem extends TGMenuItem {
 	}
 
 	public void update(){
+		boolean isPercussion = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack().isPercussion();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.timeSignature.setEnabled(!running);
 		this.tempo.setEnabled(!running);
-		this.clef.setEnabled(!running);
-		this.keySignature.setEnabled(!running);
+		this.clef.setEnabled(!running && !isPercussion);
+		this.keySignature.setEnabled(!running && !isPercussion);
 		this.tripletFeel.setEnabled(!running);
 		this.repeatOpen.setEnabled(!running);
 		this.repeatClose.setEnabled(!running);

@@ -40,7 +40,7 @@ public class TGPasteAction extends TGActionBase {
 			TGTrack destTrack = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 			
 			// don't copy paste between percussion/non-percussion tracks
-			if (beatList.isPercussionTrack() == songManager.isPercussionChannel(destTrack.getSong(), destTrack.getChannelId())) {
+			if (beatList.isPercussionTrack() == destTrack.isPercussion()) {
 				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 				tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
 				tgActionManager.execute(TGMoveBeatsAction.NAME, tgActionContext);

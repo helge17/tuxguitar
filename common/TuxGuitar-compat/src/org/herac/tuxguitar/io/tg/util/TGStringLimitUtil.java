@@ -43,7 +43,7 @@ public class TGStringLimitUtil {
 	
 	private static List<TGString> createDefaultStrings(TGTrack track, int count) {
 		TGSongManager songManager = new TGSongManager();
-		if( songManager.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+		if( track.isPercussion() ) {
 			return  songManager.createPercussionStrings(count);
 		}
 		return songManager.createDefaultInstrumentStrings(count);

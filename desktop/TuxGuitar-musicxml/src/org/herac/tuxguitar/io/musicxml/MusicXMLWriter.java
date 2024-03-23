@@ -138,7 +138,7 @@ public class MusicXMLWriter {
 			}
 			
 			// tab (if not a drums track)
-			if(!this.manager.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+			if(!track.isPercussion() ) {
 				scoreParts = this.addNode(partList,"score-part");
 				this.addAttribute(scoreParts, "id", "P" + track.getNumber() + TABLATURE_SUFFIX);
 				this.addNode(scoreParts, "part-name", track.getName());
@@ -152,7 +152,7 @@ public class MusicXMLWriter {
 			TGTrack track = (TGTrack)tracks.next();
 			this.writeTrack(track, parent, false);	// score
 			
-			if(!this.manager.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+			if(!track.isPercussion() ) {
 				this.writeTrack(track, parent, true);	// tablature
 			}
 		}

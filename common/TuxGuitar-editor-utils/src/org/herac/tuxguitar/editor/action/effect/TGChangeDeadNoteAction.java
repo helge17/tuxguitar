@@ -9,6 +9,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGNoteRange;
@@ -25,8 +26,9 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 		TGSongManager songManager = getSongManager(context);
 		TGNote note = ((TGNote) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE));
 		TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		
-		if ((noteRange!=null) && !noteRange.isEmpty()) {
+		if ((noteRange!=null) && !noteRange.isEmpty() && !track.isPercussion()) {
 			boolean newValue = true;
 			if (noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote())) {
 				newValue = false;
@@ -35,7 +37,7 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 				songManager.getMeasureManager().setDeadNote(n, newValue);
 			}
 		}
-		else if( note == null ){
+		else if( note == null && !track.isPercussion()){
 			TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 			TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
 			TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));

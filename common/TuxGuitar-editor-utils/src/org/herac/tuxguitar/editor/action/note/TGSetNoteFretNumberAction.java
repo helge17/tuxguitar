@@ -4,7 +4,6 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
@@ -28,7 +27,6 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 	}
 	
 	protected void processAction(TGActionContext context){
-		TGSong song = (TGSong) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGTrack track = (TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		TGString string = (TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
 		Long start = (Long) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION);
@@ -40,7 +38,7 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 			if( lastAddedStart == start.longValue() && lastAddedString == string.getNumber() ){
 				if( lastAddedFret > 0 && lastAddedFret < 10 && time <  ( lastAddedTime + DELAY ) ){
 					int newFret = ( ( lastAddedFret * 10 ) + fret );
-					if( newFret <= track.getMaxFret() || getSongManager(context).isPercussionChannel(song, track.getChannelId()) ){
+					if( newFret <= track.getMaxFret() || track.isPercussion() ){
 						fret = newFret;
 					}
 				}

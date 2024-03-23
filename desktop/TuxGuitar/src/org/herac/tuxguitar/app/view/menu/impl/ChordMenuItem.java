@@ -62,6 +62,11 @@ public class ChordMenuItem extends TGMenuItem {
 		}
 	}
 
+	public void setEnabled(boolean enabled) {
+		this.chordMenuItem.setEnabled(enabled);
+	}
+
+	
 	public void update(){
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		if(this.lastEdit != TuxGuitar.getInstance().getCustomChordManager().getLastEdit()){

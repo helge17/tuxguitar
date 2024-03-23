@@ -291,7 +291,7 @@ public class TGTrackManager {
 				removeNotesAfterString(track, count);
 			}
 			
-			if( getSongManager().isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+			if( track.isPercussion() ) {
 				track.setStrings(getSongManager().createPercussionStrings(count));
 			} else {
 				track.setStrings(getSongManager().createDefaultInstrumentStrings(count));

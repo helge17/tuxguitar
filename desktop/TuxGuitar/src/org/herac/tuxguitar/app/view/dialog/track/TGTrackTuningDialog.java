@@ -66,10 +66,9 @@ public class TGTrackTuningDialog {
 	}
 
 	public void show() {
-		TGSongManager songManager = this.findSongManager();
 		TGTrack track = this.findTrack();
 		
-		if(!songManager.isPercussionChannel(track.getSong(), track.getChannelId())) {
+		if(!track.isPercussion()) {
 			this.tuning = getTuningFromTrack(track);
 			
 			UIFactory factory = this.getUIFactory();

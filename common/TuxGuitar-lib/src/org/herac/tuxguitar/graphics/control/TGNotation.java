@@ -10,7 +10,7 @@ public class TGNotation {
 	public static int computePosition(TGLayout layout, TGNoteImpl note) {
 		int noteValue = layout.getSongManager().getMeasureManager().getRealNoteValue(note);
 		
-		if (layout.getSongManager().isPercussionChannel(note.getMeasureImpl().getTrack().getSong(), note.getMeasureImpl().getTrack().getChannelId())) {
+		if (note.getMeasureImpl().getTrack().isPercussion()) {
 			return layout.getDrumMap().getPosition(noteValue);
 		}
 		int clefPosition = SCORE_CLEF_OFFSETS[note.getMeasureImpl().getClef() - 1];
