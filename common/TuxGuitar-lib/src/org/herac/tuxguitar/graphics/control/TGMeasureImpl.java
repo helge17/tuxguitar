@@ -923,7 +923,7 @@ public class TGMeasureImpl extends TGMeasure{
 			layout.setClefStyle(painter);
 			painter.initPath(UIPainter.PATH_FILL);
 			
-			if(layout.getSongManager().isPercussionChannel(this.getTrack().getSong(), this.getTrack().getChannelId())) {
+			if(this.getTrack().isPercussion()) {
 				TGClefPainter.paintNeutral(painter, x, y, layout.getScoreLineSpacing());
 			}
 			else if(this.getClef() == TGMeasure.CLEF_TREBLE){

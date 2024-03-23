@@ -139,6 +139,17 @@ public abstract class TGTrack {
 		this.channelId = channelId;
 	}
 	
+	public boolean isPercussion() {
+		Iterator<TGChannel> it = getSong().getChannels();
+		while (it.hasNext()) {
+			TGChannel channel = it.next();
+			if (channel.getChannelId() == this.channelId) {
+				return (channel.isPercussionChannel());
+			}
+		}
+		return false;
+	}
+	
 	public TGLyric getLyrics() {
 		return this.lyrics;
 	}

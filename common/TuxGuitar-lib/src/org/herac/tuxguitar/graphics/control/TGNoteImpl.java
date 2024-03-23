@@ -31,7 +31,7 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	public void update(TGLayout layout) {
-		if(!layout.getSongManager().isPercussionChannel(getMeasureImpl().getTrack().getSong(), getMeasureImpl().getTrack().getChannelId())) {
+		if(!getMeasureImpl().getTrack().isPercussion()) {
 			this.accidental = getMeasureImpl().getNoteAccidental( layout.getSongManager().getMeasureManager().getRealNoteValue(this) );
 		}
 		
@@ -351,7 +351,7 @@ public class TGNoteImpl extends TGNote {
 				TGNotePainter.paintHarmonic(painter, x, y1 + (1f * (scale / 10f)), (layout.getScoreLineSpacing() - ((scale / 10f) * 2f)));
 				painter.closePath();
 			}
-			else if (layout.getSongManager().isPercussionChannel(getMeasureImpl().getTrack().getSong(), getMeasureImpl().getTrack().getChannelId())) {
+			else if (getMeasureImpl().getTrack().isPercussion()) {
 				this.paintPercussionScoreNote(layout, painter, x, y1);
 			}
 			else {

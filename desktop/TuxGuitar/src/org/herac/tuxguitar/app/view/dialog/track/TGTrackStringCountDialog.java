@@ -7,7 +7,6 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
-import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -24,10 +23,9 @@ import org.herac.tuxguitar.util.TGContext;
 public class TGTrackStringCountDialog {
 	
 	public void show(final TGViewContext context) {
-		final TGSongManager songManager = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		
-		if( songManager.isPercussionChannel(track.getSong(), track.getChannelId())) {
+		if( track.isPercussion()) {
 			final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			final UITableLayout dialogLayout = new UITableLayout();

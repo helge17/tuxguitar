@@ -786,7 +786,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			Iterator<TGMeasure> it = track.getMeasures();
 			while(it.hasNext()){
 				TGMeasure measure = (TGMeasure)it.next();
-				process(measure, tgSongManager.isPercussionChannel(track.getSong(), track.getChannelId()), track.getMaxFret());
+				process(measure, track.isPercussion(), track.getMaxFret());
 			}
 		}
 		

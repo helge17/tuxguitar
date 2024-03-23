@@ -903,8 +903,7 @@ public class TGMeasureManager {
 				TGString currentString = track.getString(note.getString());
 				TGString nextString = track.getString(nextStringNumber);
 				int noteValue = (note.getValue() + currentString.getValue());
-				boolean percussionChannel = getSongManager().isPercussionChannel(track.getSong(), track.getChannelId());
-				if(noteValue >= nextString.getValue() && ((nextString.getValue() + track.getMaxFret() >= noteValue) || percussionChannel) ){
+				if(noteValue >= nextString.getValue() && ((nextString.getValue() + track.getMaxFret() >= noteValue) || track.isPercussion()) ){
 					note.setValue(noteValue - nextString.getValue());
 					note.setString(nextString.getNumber());
 					return note.getString();
@@ -942,7 +941,7 @@ public class TGMeasureManager {
 		TGNote note = getNote(measure,start,string);
 		if(note != null){
 			int newValue = (note.getValue() + semitones);
-			if( newValue >= 0 && (newValue <= measure.getTrack().getMaxFret() || getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId())) ){
+			if( newValue >= 0 && (newValue <= measure.getTrack().getMaxFret() || measure.getTrack().isPercussion()) ){
 				if (doAction) {
 					note.setValue(newValue);
 				}

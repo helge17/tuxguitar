@@ -852,7 +852,7 @@ public class TGMatrixEditor implements TGEventListener {
 			int track = measure.getTrack().getNumber();
 			int numerator = measure.getTimeSignature().getNumerator();
 			int denominator = measure.getTimeSignature().getDenominator().getValue();
-			boolean percussion = TuxGuitar.getInstance().getSongManager().isPercussionChannel(measure.getTrack().getSong(), measure.getTrack().getChannelId());
+			boolean percussion = measure.getTrack().isPercussion();
 			if( width != this.width || height != this.height || this.track != track || this.numerator != numerator || this.denominator != denominator || this.percussion != percussion ){
 				disposeBuffer();
 			}
