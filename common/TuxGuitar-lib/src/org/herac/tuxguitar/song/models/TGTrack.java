@@ -140,6 +140,7 @@ public abstract class TGTrack {
 	}
 	
 	public boolean isPercussion() {
+		if (getSong()==null) return false;
 		Iterator<TGChannel> it = getSong().getChannels();
 		while (it.hasNext()) {
 			TGChannel channel = it.next();
