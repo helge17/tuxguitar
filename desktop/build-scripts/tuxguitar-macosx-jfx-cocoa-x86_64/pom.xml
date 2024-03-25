@@ -186,7 +186,7 @@
 									<groupId>commons-io</groupId>
 									<artifactId>commons-io</artifactId>
 									<destFileName>commons-io.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
 
