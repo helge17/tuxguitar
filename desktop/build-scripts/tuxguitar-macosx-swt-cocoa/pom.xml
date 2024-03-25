@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-macosx-swt-cocoa-${os.arch}.app</project.finalName>
+		<project.finalName>tuxguitar-${project.version}-macosx-swt-cocoa.app</project.finalName>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx</org.eclipse.swt.artifactId>
 	</properties>
 

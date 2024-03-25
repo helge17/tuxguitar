@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.packageName>tuxguitar-${project.version}-linux-swt-${os.arch}</project.packageName>
+		<project.packageName>tuxguitar-${project.version}-linux-swt</project.packageName>
 	</properties>
 
 	<modules>

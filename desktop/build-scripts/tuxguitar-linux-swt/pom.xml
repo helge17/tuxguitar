@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-swt-${os.arch}</project.finalName>
+		<project.finalName>tuxguitar-${project.version}-linux-swt</project.finalName>
 		<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux</org.eclipse.swt.artifactId>
 	</properties>
 

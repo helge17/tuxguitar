@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-macosx-jfx-cocoa-${os.arch}.app</project.finalName>
+		<project.finalName>tuxguitar-${project.version}-macosx-jfx-cocoa.app</project.finalName>
 	</properties>
 
 	<modules>

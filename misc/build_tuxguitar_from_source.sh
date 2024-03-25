@@ -332,7 +332,7 @@ fi
 
 function build_tg_for_linux {
 
-BUILD_ARCH=`mvn -B help:system | grep '^os\.arch=' | awk -F = '{ print $2 }'`
+BUILD_ARCH=`dpkg --print-architecture`
 
 install_eclipse_swt
 
@@ -346,17 +346,20 @@ for GUI_TK in swt jfx; do
   cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-deb
   mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
+  TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK
 
-  cp -a target/$TARGET.deb $DIST_DIR
+  cp -a target/$TARGET.deb $DIST_DIR/$TARGET-$BUILD_ARCH.deb
+  cd - > /dev/null
+
+  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK
+  rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
+  tar --owner=root --group=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
   cd - > /dev/null
 
   # Create RPM from DEB
   cd $DIST_DIR
-  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET.deb
+  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET-$BUILD_ARCH.deb
   cd - > /dev/null
-
-  tar --owner=root --group=root --directory=desktop/build-scripts/tuxguitar-linux-$GUI_TK/target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
 
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package done.\n"
 done
@@ -432,7 +435,7 @@ scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-*
 
 function build_tg_for_bsd {
 
-BUILD_ARCH=`mvn -B help:system | grep '^os\.arch=' | awk -F = '{ print $2 }'`
+BUILD_ARCH=`uname -m`
 
 install_eclipse_swt
 install_openjfx
@@ -443,12 +446,13 @@ for GUI_TK in swt jfx; do
   cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK
   mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
+  TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK
 
   # Copy local JFX libs into TAR.GZ package
   [ "$GUI_TK" == "jfx" ] && cp -a /usr/local/openjfx14/lib/*.so target/$TARGET/lib
 
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
+  rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
   cd - > /dev/null
 
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
@@ -484,7 +488,7 @@ scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tu
 
 function build_tg_for_macos {
 
-BUILD_ARCH=`mvn -B help:system | grep '^os\.arch=' | awk -F = '{ print $2 }'`
+BUILD_ARCH=`uname -m`
 
 install_eclipse_swt
 
@@ -494,13 +498,14 @@ for GUI_TK in swt jfx; do
   cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
   mvn --batch-mode -e clean verify
 
-  TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
+  TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
   # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  mkdir target/$TARGET/Contents/MacOS/jre
-  cp -ai /usr/local/opt/openjdk/* target/$TARGET/Contents/MacOS/jre
+  mkdir target/$TARGET.app/Contents/MacOS/jre
+  cp -ai /usr/local/opt/openjdk/* target/$TARGET.app/Contents/MacOS/jre
 
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
+  rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
   cd - > /dev/null
 
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"

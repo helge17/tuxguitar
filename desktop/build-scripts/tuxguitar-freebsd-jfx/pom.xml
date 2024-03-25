@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-freebsd-jfx-${os.arch}</project.finalName>
+		<project.finalName>tuxguitar-${project.version}-freebsd-jfx</project.finalName>
 	</properties>
 
 	<modules>

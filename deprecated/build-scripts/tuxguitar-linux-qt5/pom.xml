@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-qt5-${os.arch}</project.finalName>
+		<project.finalName>tuxguitar-${project.version}-linux-qt5</project.finalName>
 		<org.qtjambi.qt.version>5.5.1</org.qtjambi.qt.version>
 	</properties>
 
