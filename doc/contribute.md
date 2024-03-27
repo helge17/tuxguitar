@@ -87,7 +87,7 @@ Application is essentially developed in Java, however some *native modules* can 
 
 For each {platform, ui framework} couple, one Maven project is defined in a `pom.xml` file. All Maven projects are located in [desktop/build-scripts](../desktop/build-scripts) folder. Each pom file defines all the successive build steps.
 
-Note: only x86_64 architecture is supported in this repo.
+Note: It should be possible to build TuxGuitar also on some other architectures, but only x86_64 architecture is supported in this repo.
 
 ### Submit a contribution
 If you want to implement one feature request or to fix an issue, mention it explicitly in issue's discussion, so that others do not try to address it in parallel.
@@ -130,7 +130,7 @@ After you finished you will see a percent value showing the progress of the loca
 
 #### Import the SWT Maven project
 
-In order to build the SWT variant of TuxGuitar, you have to import the maven project in question.  To do so, open the Java perspective and go to File->Import and choose Maven->Existing Maven Projects. You have to import the swt project you will find in your local git repository, e.g. "..../eclipse-workspace/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt-x86_64"   
+In order to build the SWT variant of TuxGuitar, you have to import the maven project in question.  To do so, open the Java perspective and go to File->Import and choose Maven->Existing Maven Projects. You have to import the swt project you will find in your local git repository, e.g. "..../eclipse-workspace/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt"
 
 <img src="images/contribute/eclipse-maven-swt-import.png" width="50%" alt="Maven SWT import">
 
@@ -150,7 +150,7 @@ eclipse-workspace$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4
 eclipse-workspace/externals$ mkdir swt-4.21-gtk-linux-x86_64
 eclipse-workspace/externals$ cd swt-4.21-gtk-linux-x86_64
 eclipse-workspace/externals$ unzip ../swt-4.21-gtk-linux-x86_64.zip
-eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.x86_64 -Dpackaging=jar -Dversion=4.21
+eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.21
 ```
 #### Import the launch configurations for building, running and debugging
 In order to make it easy for you, we stored example launch configurations in the repository.  To import them, go to Menu File->Import and select Run/Debug->Launch configuration.  Import the configurations located in **eclipse-workspace/git/tuxguitar/development.** You can use them as a starting point.  You might need to adjust them to fullfill your folder structure.

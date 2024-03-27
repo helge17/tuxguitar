@@ -214,7 +214,7 @@ if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
 fi
 
 echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
-  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include/
+  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include/
   cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
 echo "# OK."
 
@@ -246,7 +246,7 @@ function release_checks_after_prepare_source {
 
 function install_eclipse_swt {
 
-SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH-$SWT_VERSION.jar
+SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}-$SWT_VERSION.jar
 
 if [ -e $SWT_DEST ]; then
 
@@ -258,7 +258,7 @@ else
 
     # I could not find any repo for current SWT versions, so SWT must be installed manually.
     # See https://github.com/pcarmona79/tuxguitar/issues/1
-    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
+    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-`uname -m`
     SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
     SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
 
@@ -275,7 +275,7 @@ else
 
   fi
 
-  mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.}.$BUILD_ARCH -Dpackaging=jar -Dversion=$SWT_VERSION
+  mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.} -Dpackaging=jar -Dversion=$SWT_VERSION
   echo "# OK."
 
 fi
@@ -332,6 +332,8 @@ fi
 
 function build_tg_for_linux {
 
+BUILD_ARCH=`dpkg --print-architecture`
+
 install_eclipse_swt
 
 # --batch-mode:      Disables output color to avoid problems when you redirect the output to a file
@@ -341,20 +343,23 @@ install_eclipse_swt
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ...\n"
 
-  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH-deb
+  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-deb
   mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK-$BUILD_ARCH
+  TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK
 
-  cp -a target/$TARGET.deb $DIST_DIR
+  cp -a target/$TARGET.deb $DIST_DIR/$TARGET-$BUILD_ARCH.deb
+  cd - > /dev/null
+
+  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK
+  rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
+  tar --owner=root --group=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
   cd - > /dev/null
 
   # Create RPM from DEB
   cd $DIST_DIR
-  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET.deb
+  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET-$BUILD_ARCH.deb
   cd - > /dev/null
-
-  tar --owner=root --group=root --directory=desktop/build-scripts/tuxguitar-linux-$GUI_TK-$BUILD_ARCH/target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
 
   echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package done.\n"
 done
@@ -362,6 +367,8 @@ done
 }
 
 function build_tg_for_windows {
+
+BUILD_ARCH=x86_64
 
 # To build the installer package you must install the VMware InstallBuilder for Linux from https://installbuilder.com/ and link the binary /opt/installbuilder-<version>/bin/builder to /usr/local/bin/builder
 # E.g. download and start installbuilder-enterprise-21.9.0-linux-x64-installer.run, then link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
@@ -392,7 +399,7 @@ for GUI_TK in swt jfx; do
 
   cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
   # As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
-  mvn --batch-mode -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
+  mvn --batch-mode -e clean verify -P native-modules -P -platform-linux -P platform-windows
 
   TARGET=tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH
 
@@ -412,20 +419,23 @@ done
 function start_remote_bsd_build {
 
 BUILD_HOST=$USER@172.16.208.131
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD $BUILD_ARCH TAR.GZ on $BUILD_HOST ..."
+
+echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ on $BUILD_HOST ..."
 SRC_PATH=/home/$USER/tg-1.x-build-bsd
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD $BUILD_ARCH TAR.GZ done."
+echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ done."
 
 ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
-scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-$BUILD_ARCH.tar.gz $DIST_DIR
+scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-*.tar.gz $DIST_DIR
 
 }
 
 function build_tg_for_bsd {
+
+BUILD_ARCH=`uname -m`
 
 install_eclipse_swt
 install_openjfx
@@ -433,15 +443,16 @@ install_openjfx
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ..."
 
-  cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK-$BUILD_ARCH
+  cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK
   mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK-$BUILD_ARCH
+  TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK
 
   # Copy local JFX libs into TAR.GZ package
   [ "$GUI_TK" == "jfx" ] && cp -a /usr/local/openjfx14/lib/*.so target/$TARGET/lib
 
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
+  rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
   cd - > /dev/null
 
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
@@ -454,13 +465,14 @@ function start_remote_macos_build {
 # 172.16.208.132: MacOS 11 x86_64 (Big Sur)
 # 172.16.208.133: MacOS 14 x86_64 (Sonoma)
 BUILD_HOST=$USER@172.16.208.132
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP on $BUILD_HOST ..."
+
+echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS APP on $BUILD_HOST ..."
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS $BUILD_ARCH APP done."
+echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS APP done."
 
 ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
 # On my MacOS 14 VM, the outgoing transfer rate via scp is terribly slow.
@@ -470,27 +482,30 @@ ssh $BUILD_HOST "cd $SRC_PATH && misc/$COMMAND"
 # Incoming transfers via scp are OK, outgoing transfers via https are also OK.
 # Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed duplex and speed settings, ...) did not help.
 # MacOS 11 is fine and the -X options do not harm.
-scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-$BUILD_ARCH.app.tar.gz $DIST_DIR
+scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-*.app.tar.gz $DIST_DIR
 
 }
 
 function build_tg_for_macos {
+
+BUILD_ARCH=`uname -m`
 
 install_eclipse_swt
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ..."
 
-  cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa-$BUILD_ARCH
+  cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
   mvn --batch-mode -e clean verify
 
-  TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa-$BUILD_ARCH.app
+  TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
   # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  mkdir target/$TARGET/Contents/MacOS/jre
-  cp -ai /usr/local/opt/openjdk/* target/$TARGET/Contents/MacOS/jre
+  mkdir target/$TARGET.app/Contents/MacOS/jre
+  cp -ai /usr/local/opt/openjdk/* target/$TARGET.app/Contents/MacOS/jre
 
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET.tar.gz $TARGET
+  rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
+  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
   cd - > /dev/null
 
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"
@@ -499,6 +514,8 @@ done
 }
 
 function build_tg_for_android {
+
+BUILD_ARCH=`dpkg --print-architecture`
 
 # Install Android Studio from https://developer.android.com/studio/
 # Android Studio    downloaded to $SW_DIR/android-studio/android-studio-2020.3.1.25-linux.tar.gz   & installed in $SW_DIR/android-studio/android-studio-2020.3.1.25-linux
@@ -517,8 +534,8 @@ echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
 cd android/build-scripts/tuxguitar-android
 export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
 # Build did not work with the default Java version 17 from Debian 12 (Bookworm), but with Java 11 from Debian 11 (Bullseye)
-JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
-JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 ./gradlew assembleRelease  # Build the APK
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$BUILD_ARCH ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$BUILD_ARCH ./gradlew assembleRelease  # Build the APK
 cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
 cd $DIST_DIR
 cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
@@ -607,9 +624,8 @@ fi
 
 # First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
 
-# BSD 64 bit x86_64 build
+# BSD
 if [ $build_bsd ]; then
-  BUILD_ARCH=x86_64
   # SWT & JFX versions in FreeBSD 13.2
   SWT_VERSION=4.21
   SWT_PLATFORM=gtk-freebsd
@@ -618,9 +634,8 @@ if [ $build_bsd ]; then
   [ `uname` == FreeBSD ] && build_tg_for_bsd
 fi
 
-# MacOS 64 bit x86_64 build
+# MacOS
 if [ $build_macos ]; then
-  BUILD_ARCH=x86_64
   SWT_VERSION=4.13
   SWT_DATE=201909161045
   SWT_PLATFORM=cocoa-macosx
@@ -630,9 +645,8 @@ fi
 
 # Then come the local builds.
 
-# Linux 64 bit x86_64 build
+# Linux
 if [ $build_linux ]; then
-  BUILD_ARCH=x86_64
   SWT_VERSION=4.21
   SWT_DATE=202109060500
   SWT_PLATFORM=gtk-linux
@@ -641,7 +655,6 @@ fi
 
 # Windows 64 bit x86_64 build
 if [ $build_windows ]; then
-  BUILD_ARCH=x86_64
   SWT_VERSION=4.13
   SWT_DATE=201909161045
   SWT_PLATFORM=win32-win32

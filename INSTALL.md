@@ -35,11 +35,11 @@ In order for Asian characters to be displayed correctly, you may also need to in
 ### Download and install SWT for Linux
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-gtk-linux-x86_64.zip
-$ mkdir swt-4.21-gtk-linux-x86_64
-$ cd swt-4.21-gtk-linux-x86_64
-$ unzip ../swt-4.21-gtk-linux-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.x86_64 -Dpackaging=jar -Dversion=4.21
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-gtk-linux-`uname -m`.zip
+$ mkdir swt-4.21-gtk-linux-`uname -m`
+$ cd swt-4.21-gtk-linux-`uname -m`
+$ unzip ../swt-4.21-gtk-linux-`uname -m`.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.21
 $ cd ..
 ```
 
@@ -55,8 +55,8 @@ $ cd tuxguitar
 For the (outdated) VST plugin you need some additional header files:
 
 ```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
+$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include
+$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include
 $ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
     wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
   done
@@ -66,7 +66,7 @@ $ cd -
 ### Build and install
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-linux-swt-x86_64-deb
+$ cd desktop/build-scripts/tuxguitar-linux-swt-deb
 $ mvn -e clean verify -P native-modules
 $ sudo dpkg -i target/tuxguitar-*.deb
 ```
@@ -86,7 +86,7 @@ On Non-Debian-based systems install the prerequisites and git using your package
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-linux-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-linux-swt
 $ mvn -e clean verify -P native-modules
 ```
 
@@ -139,7 +139,7 @@ As we are building the Windows version on Linux, we explicitly deactivate the Li
 
 ```sh
 $ cd desktop/build-scripts/tuxguitar-windows-swt-x86_64
-$ mvn -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
+$ mvn -e clean verify -P native-modules -P -platform-linux -P platform-windows
 ```
 
 The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-9.99-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
@@ -163,7 +163,7 @@ $ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/
 $ mkdir swt-4.13-cocoa-macosx-x86_64
 $ cd swt-4.13-cocoa-macosx-x86_64
 $ unzip ../swt-4.13-cocoa-macosx-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx.x86_64 -Dpackaging=jar -Dversion=4.13
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.13
 $ cd ..
 ```
 
@@ -174,11 +174,11 @@ Same as for Debian (see above).
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
+$ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa
 $ mvn -e clean verify
 ```
 
-The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
+The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
 
 ## Build on FreeBSD
 
@@ -195,7 +195,7 @@ In order for Asian characters to be displayed correctly, you may also need to in
 On FreeBSD we use SWT from the OS to build and run TuxGuitar. FreeBSD 13.2 comes with SWT version 4.21.
 
 ```sh
-mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd.x86_64 -Dpackaging=jar -Dversion=4.21
+mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd -Dpackaging=jar -Dversion=4.21
 ```
 
 ### Get the TuxGuitar sources
@@ -205,7 +205,7 @@ Same as for Debian (see above).
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-freebsd-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-freebsd-swt
 $ mvn -e clean verify -P native-modules
 ```
 
