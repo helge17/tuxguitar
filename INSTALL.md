@@ -8,7 +8,9 @@ You can find ready to use installation packages for Linux, Windows, MacOS, FreeB
 
 ## Warning
 
-The following instructions may not be complete. For hints and workarounds needed to build TuxGuitar, see the script
+The following instructions have been roughly tested on the x86_64/amd64 architecture. They may also work on some other hardware platforms like aarch64/arm64 or ppc64le/ppc64el, but this depends heavily on the availability of SWT and other prerequisites on these platforms.
+
+For hints and workarounds needed to build TuxGuitar, see the script
 
 ```sh
 misc/build_tuxguitar_from_source.sh
@@ -112,7 +114,7 @@ $ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/
 $ mkdir swt-4.13-win32-win32-x86_64
 $ cd swt-4.13-win32-win32-x86_64
 $ unzip ../swt-4.13-win32-win32-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32.x86_64 -Dpackaging=jar -Dversion=4.13
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.13
 $ cd ..
 ```
 
@@ -140,6 +142,7 @@ As we are building the Windows version on Linux, we explicitly deactivate the Li
 ```sh
 $ cd desktop/build-scripts/tuxguitar-windows-swt-x86_64
 $ mvn -e clean verify -P native-modules -P -platform-linux -P platform-windows
+$ cd -
 ```
 
 The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-9.99-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
@@ -159,10 +162,10 @@ $ brew install openjdk maven wget
 ### Download and install SWT for MacOS
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-cocoa-macosx-x86_64.zip
-$ mkdir swt-4.13-cocoa-macosx-x86_64
-$ cd swt-4.13-cocoa-macosx-x86_64
-$ unzip ../swt-4.13-cocoa-macosx-x86_64.zip
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-cocoa-macosx-`uname -m`.zip
+$ mkdir swt-4.13-cocoa-macosx-`uname -m`
+$ cd swt-4.13-cocoa-macosx-`uname -m`
+$ unzip ../swt-4.13-cocoa-macosx-`uname -m`.zip
 $ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.13
 $ cd ..
 ```
@@ -176,9 +179,10 @@ Same as for Debian (see above).
 ```sh
 $ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa
 $ mvn -e clean verify
+$ cd -
 ```
 
-The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
+The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app` folder. Start TuxGuitar by double-clicking on the folder.
 
 ## Build on FreeBSD
 
