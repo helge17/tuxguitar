@@ -13,6 +13,7 @@ import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
+import org.herac.tuxguitar.player.base.MidiPlayerLoop;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -31,6 +32,7 @@ import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGBeatRange;
 
@@ -51,6 +53,9 @@ public class TGTransportModeDialog {
 	
 	protected UIDropDownSelect<Integer> loopSHeader;
 	protected UIDropDownSelect<Integer> loopEHeader;
+
+	protected UIDropDownSelect<MidiPlayerLoop> presetSelect;
+	protected String presetSetName;
 	
 	public TGTransportModeDialog(TGViewContext context){
 		this.context = context;
@@ -63,6 +68,13 @@ public class TGTransportModeDialog {
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		final TGBeatRange beats = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
+		// final MidiPlayerLoop[] loops = new MidiPlayerLoop[5];
+
+
+		// for (int i=0; i < loops.length; i++) {
+		// 	loops[i] = new MidiPlayerLoop();
+		// }
+
 		boolean isSelectionActive = Boolean.TRUE.equals(this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE));
 		
 		dialog.setLayout(dialogLayout);
@@ -205,6 +217,66 @@ public class TGTransportModeDialog {
 		this.loopEHeader = uiFactory.createDropDownSelect(rangeGroup);
 		rangeLayout.set(this.loopEHeader, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		mHeaderRangeStatus.addControl(this.loopEHeader);
+
+
+		UILabel presetLabel = uiFactory.createLabel(rangeGroup);
+		presetLabel.setText(TuxGuitar.getProperty("transport.mode.preset") + ":");
+		rangeLayout.set(presetLabel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		mHeaderRangeStatus.addControl(presetLabel);
+		
+
+		UILabel presetNameLabel = uiFactory.createLabel(rangeGroup);
+		presetNameLabel.setText("name label" + ":");
+		rangeLayout.set(presetNameLabel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		mHeaderRangeStatus.addControl(presetNameLabel);
+		
+		UITextField presetNameText = uiFactory.createTextField(rangeGroup);
+		presetNameText.setText("");
+		rangeLayout.set(presetNameText, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+
+
+
+
+		this.presetSelect = uiFactory.createDropDownSelect(rangeGroup);
+		rangeLayout.set(this.presetSelect, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		mHeaderRangeStatus.addControl(this.presetSelect);
+		// this.presetSelect.addSelectionListener(new UISelectionListener() {
+		// 	public void onSelect(UISelectionEvent event) {
+		// 		// load beginning and end
+		// 		System.out.print("\n\nselected" + mode.getLoopSHeader() + " " + mode.getLoopEHeader());
+				
+		// 		System.out.print("\n\nselected" + presetSelect.getSelectedValue().getTitle());
+		// 	}
+		// });
+
+
+
+
+		UIButton buttonLoad = uiFactory.createButton(rangeGroup);
+		buttonLoad.setText(TuxGuitar.getProperty("transport.mode.load"));
+		buttonLoad.setDefaultButton();
+
+
+		UIButton buttonSave = uiFactory.createButton(rangeGroup);
+		buttonSave.setText(TuxGuitar.getProperty("transport.mode.save"));
+		buttonSave.setDefaultButton();
+		buttonSave.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				System.out.print("\n\nsaving beginning and endsss" + presetNameText.getText() + "" +  loopSHeader.getSelectedValue() + " " + loopSHeader.getSelectedValue());
+
+				MidiPlayerLoop port = new MidiPlayerLoop();
+				port.setTitle(presetNameText.getText());
+				port.setStart(loopSHeader.getSelectedValue());
+				port.setEnd(loopEHeader.getSelectedValue());
+
+				UISelectItem<MidiPlayerLoop> item = new UISelectItem<MidiPlayerLoop>(port.getTitle(), port);
+
+				presetSelect.addItem(item);
+
+			}
+		});
+		rangeLayout.set(buttonSave, 5, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		mHeaderRangeStatus.addControl(buttonSave);
 		
 		if (isSelectionActive && beats!= null && !beats.isEmpty()) {
 			mode.setLoopSHeader(beats.firstMeasure().getNumber());
@@ -215,6 +287,19 @@ public class TGTransportModeDialog {
 		mHeaderController.updateLoopSHeader( mode.getLoopSHeader() );
 		mHeaderController.updateLoopEHeader( mode.getLoopSHeader() , mode.getLoopEHeader() );
 		mHeaderController.appendListener();
+
+		buttonLoad.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				// load beginning and end
+				System.out.print("\n\nloading beginning and end" + mode.getLoopSHeader() + " " + mode.getLoopEHeader());
+
+				System.out.print("\n\nloading saved val" + presetSelect.getSelectedItem().getValue().getLoopSHeader() + " " + presetSelect.getSelectedItem().getValue().getLoopEHeader());
+				mHeaderController.updateLoopSHeader( presetSelect.getSelectedItem().getValue().getLoopSHeader() );
+				mHeaderController.updateLoopEHeader( presetSelect.getSelectedItem().getValue().getLoopSHeader(), presetSelect.getSelectedItem().getValue().getLoopEHeader() );
+			}
+		});
+		rangeLayout.set(buttonLoad, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		mHeaderRangeStatus.addControl(buttonLoad);
 		
 		simpleAdapter.update();
 		customAdapter.update();
@@ -244,7 +329,7 @@ public class TGTransportModeDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
@@ -364,6 +449,8 @@ public class TGTransportModeDialog {
 		public void update(){
 			// Check enabled
 			this.enabled = this.customLoop.isSelected();
+			System.out.print("\n\n\n\nprintinggg " + this.customLoop.isSelected());
+
 			if( !this.enabled ){
 				if( this.simpleMode.isSelected() ){
 					this.enabled = this.simpleLoop.isSelected();
@@ -378,6 +465,27 @@ public class TGTransportModeDialog {
 		
 		public void onSelect(UISelectionEvent event) {
 			this.update();
+		}
+	}
+
+	private class MHeaderPresetsController {
+		protected UIDropDownSelect<MidiPlayerLoop> presetSelect;
+		protected MidiPlayerLoop[] presetList;
+
+		public MHeaderPresetsController(UIDropDownSelect<MidiPlayerLoop> presetSelect){
+			this.presetSelect = presetSelect;
+
+			this.presetList = new MidiPlayerLoop[5];
+
+			for (int i=0; i < presetList.length; i++) {
+				this.presetList[i] = new MidiPlayerLoop();
+			}
+
+			this.presetSelect.removeItems();
+
+			for (int i=0; i < presetList.length; i++) {
+				this.presetSelect.addItem(new UISelectItem<MidiPlayerLoop>(presetList[i].getTitle()));
+			}
 		}
 	}
 	
