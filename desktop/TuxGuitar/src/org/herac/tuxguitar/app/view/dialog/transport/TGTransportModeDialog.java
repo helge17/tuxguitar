@@ -324,11 +324,7 @@ public class TGTransportModeDialog {
 		this.presetTable.setColumns(2);
 		this.presetTable.setColumnName(0, TuxGuitar.getProperty("tuning.label"));
 		this.presetTable.setColumnName(1, TuxGuitar.getProperty("tuning.value"));
-		this.presetTable.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
-			public void onMouseDoubleClick(UIMouseEvent event) {
-				//TGTransportModeDialog.this.onEditTuningModel();
-			}
-		});
+
 		panelLayout.set(this.presetTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true);
 		panelLayout.set(this.presetTable, UITableLayout.PACKED_WIDTH, 320f);
 		panelLayout.set(this.presetTable, UITableLayout.PACKED_HEIGHT, 200f);
@@ -474,27 +470,6 @@ public class TGTransportModeDialog {
 			this.update();
 		}
 	}
-
-	// private class MHeaderPresetsController {
-	// 	protected UIDropDownSelect<MidiPlayerLoop> presetSelect;
-	// 	protected MidiPlayerLoop[] presetList;
-
-	// 	public MHeaderPresetsController(UIDropDownSelect<MidiPlayerLoop> presetSelect){
-	// 		this.presetSelect = presetSelect;
-
-	// 		this.presetList = new MidiPlayerLoop[5];
-
-	// 		for (int i=0; i < presetList.length; i++) {
-	// 			this.presetList[i] = new MidiPlayerLoop();
-	// 		}
-
-	// 		this.presetSelect.removeItems();
-
-	// 		for (int i=0; i < presetList.length; i++) {
-	// 			this.presetSelect.addItem(new UISelectItem<MidiPlayerLoop>(presetList[i].getTitle()));
-	// 		}
-	// 	}
-	// }
 	
 	private class MHeaderComboController {
 		
@@ -587,8 +562,6 @@ public class TGTransportModeDialog {
 
 	private void updateTuningControls() {
 		this.updatePresetTable();
-		//this.updatePresetsPanel(null, findTuningInGroup(this.tuning, this.allTuningsGroup));
-		//this.updateTuningButtons();
 	}
 
 	private void removePreset(TGMeasuresInterval preset) {
@@ -609,13 +582,11 @@ public class TGTransportModeDialog {
 
 
 	private void onAddPreset() {
-		// get beginning and end and add preset to list
 		TGSong song = TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGMeasureHeader startHeader = song.getMeasureHeader( this.loopSHeader.getSelectedValue() - 1 );
 		TGMeasureHeader endHeader = song.getMeasureHeader( this.loopEHeader.getSelectedValue() - 1 );
 		TGMeasuresInterval preset = new TGMeasuresInterval();
 
-		// preset.setTitle());
 		preset.setStart(startHeader);
 		preset.setEnd(endHeader);
 
@@ -630,15 +601,9 @@ public class TGTransportModeDialog {
 		System.out.print("\n\n\n\nloading " + selection);
 		
 		if( selection != null ) {
-			// this.presetTable.setSelectedValue(selection);
-		this.mHeaderController.updateLoopSHeader( selection.getStart().getNumber() );
-		this.mHeaderController.updateLoopEHeader( selection.getStart().getNumber(), selection.getEnd().getNumber() );
-
+			this.mHeaderController.updateLoopSHeader( selection.getStart().getNumber() );
+			this.mHeaderController.updateLoopEHeader( selection.getStart().getNumber(), selection.getEnd().getNumber() );
 		}
-
-			// 		System.out.print("\n\nloading saved val" + presetSelect.getSelectedItem().getValue().getStart().getNumber());// + " " + presetSelect.getSelectedItem().getValue().getEnd().getMarker().getMeasure());
-
-
 	}
 
 	public UIFactory getUIFactory() {
