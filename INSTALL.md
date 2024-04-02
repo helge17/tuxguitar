@@ -52,19 +52,6 @@ $ git clone https://github.com/helge17/tuxguitar.git
 $ cd tuxguitar
 ```
 
-### Hacks
-
-For the (outdated) VST plugin you need some additional header files:
-
-```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include
-$ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
-    wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
-  done
-$ cd -
-```
-
 ### Build and install
 
 ```sh
@@ -83,7 +70,7 @@ $ tuxguitar
 
 ## Generic GNU/Linux
 
-On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT, download the TuxGuitar sources and the VST header files as described for Debian above.
+On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT and download the TuxGuitar sources as described for Debian above.
 
 ### Build and Start TuxGuitar
 
@@ -121,19 +108,6 @@ $ cd ..
 ### Get the TuxGuitar sources
 
 Same as for Debian (see above).
-
-### Hacks
-
-Download the VST header files:
-
-```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
-    wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
-  done
-$ cd -
-```
 
 ### Build and Start TuxGuitar
 
