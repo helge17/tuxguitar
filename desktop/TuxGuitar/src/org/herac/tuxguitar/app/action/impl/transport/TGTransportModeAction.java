@@ -35,6 +35,7 @@ public class TGTransportModeAction extends TGActionBase {
 		mode.setCustomPercentIncrement((Integer)context.getAttribute(ATTRIBUTE_CUSTOM_PERCENT_INCREMENT));
 		mode.setLoopSHeader( ( mode.isLoop() ? (Integer)context.getAttribute(ATTRIBUTE_LOOP_S_HEADER) : -1 ) );
 		mode.setLoopEHeader( ( mode.isLoop() ? (Integer)context.getAttribute(ATTRIBUTE_LOOP_E_HEADER) : -1 ) );
+		mode.setLoopEHeader( ( mode.isLoop() ? (Integer)context.getAttribute(ATTRIBUTE_LOOP_E_HEADER) : -1 ) );
 		mode.reset();
 	}
 }

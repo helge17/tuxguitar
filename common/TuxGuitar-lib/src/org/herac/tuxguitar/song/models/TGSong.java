@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.TGMeasuresInterval;
+
 
 /**
  * @author julian
@@ -32,6 +34,7 @@ public abstract class TGSong {
 	private List<TGTrack> tracks;
 	private List<TGMeasureHeader> measureHeaders;
 	private List<TGChannel> channels;
+	private List<TGMeasuresInterval> measuresIntervals;
 	
 	public TGSong() {
 		this.name = new String();
@@ -46,6 +49,7 @@ public abstract class TGSong {
 		this.tracks = new ArrayList<TGTrack>();
 		this.channels = new ArrayList<TGChannel>();
 		this.measureHeaders = new ArrayList<TGMeasureHeader>();
+		this.measuresIntervals = new ArrayList<TGMeasuresInterval>();
 	}
 	
 	public String getName() {
@@ -149,6 +153,34 @@ public abstract class TGSong {
 		return this.measureHeaders.iterator();
 	}
 	
+	public int countMeasuresIntervals(){
+		return this.measuresIntervals.size();
+	}
+	
+	public void addMeasuresIntervals(TGMeasuresInterval measuresIntervals){
+		this.addMeasuresIntervals(countMeasuresIntervals(),measuresIntervals);
+	}
+	
+	public void addMeasuresIntervals(int index,TGMeasuresInterval measuresIntervals){
+		this.measuresIntervals.add(index,measuresIntervals);
+	}
+	
+	public void removeMeasuresIntervals(int index){
+		this.measuresIntervals.remove(index);
+	}
+	
+	public void removeMeasuresIntervals(TGMeasuresInterval measuresIntervals){
+		this.measuresIntervals.remove(measuresIntervals);
+	}
+	
+	public TGMeasuresInterval getMeasuresIntervals(int index){
+		return this.measuresIntervals.get(index);
+	}
+	
+	public Iterator<TGMeasuresInterval> getMeasuresIntervals() {
+		return this.measuresIntervals.iterator();
+	}
+
 	public int countTracks(){
 		return this.tracks.size();
 	}
