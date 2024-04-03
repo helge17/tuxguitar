@@ -22,7 +22,7 @@ misc/build_tuxguitar_from_source.sh
 - Maven 3.3 or higher
 - Fluidsynth (optional)
 - JACK (optional)
-- Eclipse SWT 4.13
+- Eclipse SWT 4.21
 
 ## Build on Debian/Ubuntu Linux
 
@@ -97,11 +97,11 @@ $ sudo apt install wget unzip git default-jdk maven gcc-mingw-w64-x86-64 g++-min
 ### Download and install SWT for Windows
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-win32-win32-x86_64.zip
-$ mkdir swt-4.13-win32-win32-x86_64
-$ cd swt-4.13-win32-win32-x86_64
-$ unzip ../swt-4.13-win32-win32-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.13
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-win32-win32-x86_64.zip
+$ mkdir swt-4.21-win32-win32-x86_64
+$ cd swt-4.21-win32-win32-x86_64
+$ unzip ../swt-4.21-win32-win32-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.21
 $ cd ..
 ```
 
