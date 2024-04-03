@@ -18,6 +18,7 @@ import org.herac.tuxguitar.io.midi.base.MidiSequence;
 import org.herac.tuxguitar.io.midi.base.MidiTrack;
 import org.herac.tuxguitar.player.base.MidiControllers;
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.helpers.tuning.TuningManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -32,6 +33,8 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGTuning;
+import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	
@@ -698,45 +701,20 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		
 		public List<TGString> getStrings(int maxFret) {
 			List<TGString> strings = new ArrayList<TGString>();
+
+			TuningManager tuningManager = TuningManager.getInstance(new TGContext());
+			List<TGTuning> tunings = tuningManager.getPriorityTgTunings();
 			
-			if(this.minValue >= 40 && this.maxValue <= 64 + maxFret){
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 59));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 55));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 50));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 45));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,6, 40));
-			}
-			else if(this.minValue >= 38 && this.maxValue <= 64 + maxFret){
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 59));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 55));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 50));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 45));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,6, 38));
-			}
-			else if(this.minValue >= 35 && this.maxValue <= 64 + maxFret){
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 64));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 59));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 55));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 50));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 45));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,6, 40));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,7, 35));
-			}
-			else if(this.minValue >= 28 && this.maxValue <= 43 + maxFret){
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 43));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 38));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 33));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 28));
-			}
-			else if(this.minValue >= 23 && this.maxValue <= 43 + maxFret){
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,1, 43));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,2, 38));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,3, 33));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,4, 28));
-				strings.add(TGSongManager.newString(MidiSongReader.this.factory,5, 23));
-			}else{
+			for (TGTuning tuning : tunings) 
+				if (tuning.isWithinRange(this.minValue, this.maxValue - maxFret)) {
+					int [] notes = tuning.getValues();
+					for (int i = 0; i < notes.length; i++)
+						strings.add(TGSongManager.newString(MidiSongReader.this.factory, i+1, notes[i]));
+					// if we find a tuning in range, we don't need to search any further, break out of the loop.
+					break;
+				}
+
+			if (strings.isEmpty()) {
 				int stringCount = 6;
 				int stringSpacing = ((this.maxValue - (maxFret - 4) - this.minValue) / stringCount);
 				if(stringSpacing > 5){
@@ -750,6 +728,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 					strings.add(TGSongManager.newString(MidiSongReader.this.factory,strings.size() + 1,maxStringValue));
 				}
 			}
+			
 			
 			return strings;
 		}
