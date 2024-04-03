@@ -160,7 +160,7 @@ public class TGFretBoardConfig {
 		this.colorKeyTextBackground.dispose();
 	}
 	
-	public void configure(UIWindow parent) {
+	public void configure(UIWindow parent, boolean isPercussion) {
 		final UIFactory factory = getUIFactory();
 		final UITableLayout windowLayout = new UITableLayout();
 		final UIWindow window = factory.createWindow(parent, true, false);
@@ -205,12 +205,14 @@ public class TGFretBoardConfig {
 		
 		final UICheckBox displayTextNote = factory.createCheckBox(group);
 		displayTextNote.setText(TuxGuitar.getProperty("fretboard.display-note-text"));
-		displayTextNote.setSelected( (this.style & DISPLAY_TEXT_NOTE) != 0 );
+		displayTextNote.setSelected(!isPercussion && ((this.style & DISPLAY_TEXT_NOTE) != 0) );
+		displayTextNote.setEnabled( !isPercussion );
 		groupLayout.set(displayTextNote, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UICheckBox displayTextScale = factory.createCheckBox(group);
 		displayTextScale.setText(TuxGuitar.getProperty("fretboard.display-scale-text"));
-		displayTextScale.setSelected( (this.style & DISPLAY_TEXT_SCALE) != 0 );
+		displayTextScale.setSelected(!isPercussion && ((this.style & DISPLAY_TEXT_SCALE) != 0) );
+		displayTextScale.setEnabled( !isPercussion );
 		groupLayout.set(displayTextScale, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		// ------------------BUTTONS--------------------------
