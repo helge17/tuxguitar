@@ -57,7 +57,7 @@ public class PDFSongWriter implements TGSongWriter {
 			
 			TGLayoutStyles styles = handle.getContext().getAttribute(TGLayoutStyles.class.getName());
 			if( styles == null ) {
-				styles = new PDFLayoutStyles();
+				styles = new PDFLayoutStyles(this.context);
 			}
 			
 			TGSongManager manager = new TGSongManager(new TGFactoryImpl());

@@ -50,7 +50,7 @@ TuxGuitar is available in many languages, but yours may be missing.  We also reg
 Translation files are available:
 
 - [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar/share/lang) for main application
-- [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang) and [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) for plugins
+- there for plugins: [tuner](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [batch file converter](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang), [jack](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) and [pdf export](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-pdf-ui/share/lang)
 
 Translation files for the Android application are derived from the files above.
 
