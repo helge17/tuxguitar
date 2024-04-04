@@ -170,7 +170,8 @@ public class Caret {
 					
 					painter.initPath();
 					painter.setAntialias(false);
-					painter.addRectangle(x, y, width, height);
+					painter.addRectangle(x, y, width+1.0f, height+1.0f);
+					painter.addRectangle(x+1, y+1, width-1.0f, height-1.0f);
 					painter.closePath();
 				}
 				else if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
