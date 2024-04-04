@@ -2,10 +2,12 @@ package org.herac.tuxguitar.io.pdf;
 
 import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.util.TGContext;
 
 public class PDFLayoutStylesUI extends PDFLayoutStyles {
 	
-	public PDFLayoutStylesUI(TGConfigManager config) {
+	public PDFLayoutStylesUI(TGConfigManager config, TGContext context) {
+		super(context);
 		this.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		this.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
 		this.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
