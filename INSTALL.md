@@ -22,7 +22,7 @@ misc/build_tuxguitar_from_source.sh
 - Maven 3.3 or higher
 - Fluidsynth (optional)
 - JACK (optional)
-- Eclipse SWT 4.21
+- Eclipse SWT 4
 
 ## Build on Debian/Ubuntu Linux
 
@@ -37,11 +37,11 @@ In order for Asian characters to be displayed correctly, you may also need to in
 ### Download and install SWT for Linux
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-gtk-linux-`uname -m`.zip
-$ mkdir swt-4.21-gtk-linux-`uname -m`
-$ cd swt-4.21-gtk-linux-`uname -m`
-$ unzip ../swt-4.21-gtk-linux-`uname -m`.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.21
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-gtk-linux-`uname -m`.zip
+$ mkdir swt-4.26-gtk-linux-`uname -m`
+$ cd swt-4.26-gtk-linux-`uname -m`
+$ unzip ../swt-4.26-gtk-linux-`uname -m`.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.26
 $ cd ..
 ```
 
