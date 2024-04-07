@@ -71,8 +71,8 @@
 		</dependency>
 		<dependency>
 			<groupId>${org.eclipse.swt.groupId}</groupId>
-			<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-			<version>4.21</version>
+			<artifactId>org.eclipse.swt.gtk.linux</artifactId>
+			<version>4.26</version>
 		</dependency>
 	</dependencies>
 </project>

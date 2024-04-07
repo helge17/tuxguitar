@@ -4,6 +4,7 @@ import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
 import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
+import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialog;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialogController;
 import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsHandler;
@@ -13,9 +14,10 @@ import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
+import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
-public class PDFSettingsHandler implements TGPersistenceSettingsHandler {
+public class PDFSettingsHandler implements TGPersistenceSettingsHandler, TGPluginSettingsHandler{
 
 	private TGContext context;
 	
@@ -32,7 +34,7 @@ public class PDFSettingsHandler implements TGPersistenceSettingsHandler {
 	}
 	
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
-		TGLayoutStyles tgLayoutStyles = new PDFLayoutStylesUI(TGConfigManager.getInstance(this.context));
+		TGLayoutStyles tgLayoutStyles = new PDFLayoutStylesUI(TGConfigManager.getInstance(this.context), this.context);
 		context.setAttribute(TGLayoutStyles.class.getName(), tgLayoutStyles);
 		
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
@@ -45,5 +47,10 @@ public class PDFSettingsHandler implements TGPersistenceSettingsHandler {
 			}
 		});
 		tgActionProcessor.process();
+	}
+
+	@Override
+	public void openSettingsDialog(UIWindow parent) {
+		new PDFSettingsDialog(this.context).configure(parent);
 	}
 }
