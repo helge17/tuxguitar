@@ -19,7 +19,7 @@ typedef struct{
 	jobject options;
 }fluid_settings_foreach_option_data;
 
-void fluid_settings_foreach_option_callback(void *data, char *name, char *option)
+void fluid_settings_foreach_option_callback(void *data, const char *name, const char *option)
 {
 	fluid_settings_foreach_option_data* handle = (fluid_settings_foreach_option_data *)data;
 	

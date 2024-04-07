@@ -26,7 +26,7 @@ public class TGCopyAction extends TGActionBase {
 			TGTrack track = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 			TGSongManager songManager = getSongManager(tgActionContext);
 			TGClipboard.getInstance(this.getContext()).setData(
-				new TGStoredBeatList(beats.getBeats(), track.getStrings(), songManager.isPercussionChannel(track.getSong(), track.getChannelId()), songManager.getFactory()));
+				new TGStoredBeatList(beats.getBeats(), track.getStrings(), track.isPercussion(), songManager.getFactory()));
 		}
 		else {
 			TGActionManager.getInstance(this.getContext()).execute(TGOpenMeasureCopyDialogAction.NAME, tgActionContext);

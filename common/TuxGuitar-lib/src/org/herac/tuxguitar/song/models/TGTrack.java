@@ -19,6 +19,8 @@ public abstract class TGTrack {
 	public static final int MAX_OFFSET = 24;
 	public static final int MIN_OFFSET = -24;
 	
+	private final int MAX_FRET = 29;	// included
+	
 	private int number;
 	private int offset;
 	private int channelId;
@@ -137,6 +139,18 @@ public abstract class TGTrack {
 		this.channelId = channelId;
 	}
 	
+	public boolean isPercussion() {
+		if (getSong()==null) return false;
+		Iterator<TGChannel> it = getSong().getChannels();
+		while (it.hasNext()) {
+			TGChannel channel = it.next();
+			if (channel.getChannelId() == this.channelId) {
+				return (channel.isPercussionChannel());
+			}
+		}
+		return false;
+	}
+	
 	public TGLyric getLyrics() {
 		return this.lyrics;
 	}
@@ -159,6 +173,10 @@ public abstract class TGTrack {
 	
 	public void setSong(TGSong song) {
 		this.song = song;
+	}
+	
+	public int getMaxFret() {
+		return this.MAX_FRET; // yet always the default value, TODO: make it configurable
 	}
 	
 	public void clear(){

@@ -83,7 +83,6 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		this.fillTuningListView();
 		this.fillOffset(track);
 		this.fillPreset();
-		this.fillOptions(songManager, song, track);
 
 		this.updateTuningFromTrack(track);
 		this.updateItems(percussionChannel);
@@ -176,42 +175,13 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		});
 	}
 
-	public void fillOptions(final TGSongManager songManager, final TGSong song, final TGTrack track) {
-		CheckBox stringTransposition = (CheckBox) this.getView().findViewById(R.id.track_tuning_dlg_options_transpose);
-		stringTransposition.setChecked(true);
-		stringTransposition.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				onTransposeOptionChanged(songManager, song, track);
-			}
-		});
-		((CheckBox) this.getView().findViewById(R.id.track_tuning_dlg_options_transpose_apply_to_chords)).setChecked(true);
-		((CheckBox) this.getView().findViewById(R.id.track_tuning_dlg_options_transpose_try_keep_strings)).setChecked(true);
-	}
-	
 	public void updateItems(boolean percussionChannel) {
 		this.updateOffset(!percussionChannel);
-		this.updateOptions(!percussionChannel);
 	}
 	
 	public void updateOffset(boolean enabled) {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_offset_value);
 		spinner.setEnabled(enabled);
-	}
-	
-	public void updateOptions(boolean enabled) {
-		CheckBox stringTransposition = (CheckBox) this.getView().findViewById(R.id.track_tuning_dlg_options_transpose);
-		CheckBox stringTranspositionApplyToChords = (CheckBox) this.getView().findViewById(R.id.track_tuning_dlg_options_transpose_apply_to_chords);
-		CheckBox stringTranspositionTryKeepString = (CheckBox) this.getView().findViewById(R.id.track_tuning_dlg_options_transpose_try_keep_strings);
-		
-		boolean stringTranspositionChecked = stringTransposition.isChecked();
-		
-		stringTransposition.setEnabled(enabled);
-		stringTranspositionApplyToChords.setEnabled(enabled && stringTranspositionChecked);
-		stringTranspositionTryKeepString.setEnabled(enabled && stringTranspositionChecked);
-		if(!stringTranspositionChecked ) {
-			stringTranspositionApplyToChords.setChecked(false);
-			stringTranspositionTryKeepString.setChecked(false);
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -309,12 +279,6 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		}
 	}
 
-	public void onTransposeOptionChanged(TGSongManager songManager, TGSong song, TGTrack track) {
-		boolean percussionChannel = songManager.isPercussionChannel(song, track.getChannelId());
-		
-		this.updateOptions(!percussionChannel);
-	}
-
 	public TGTrackTuningPresetModel createTuningPreset(TGTuning tuning) {
 		int[] values = tuning.getValues();
 		TGTrackTuningModel[] models = new TGTrackTuningModel[values.length];
@@ -382,9 +346,6 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		if( this.validateTrackTuning(tuning)) {
 			if (this.hasTuningChanges(tuning)) {
 				tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, tuning);
-				tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_STRINGS, findOptionValue(R.id.track_tuning_dlg_options_transpose));
-				tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_APPLY_TO_CHORDS, findOptionValue(R.id.track_tuning_dlg_options_transpose_apply_to_chords));
-				tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_TRY_KEEP_STRINGS, findOptionValue(R.id.track_tuning_dlg_options_transpose_try_keep_strings));
 			}
 
 			Integer offset = this.findSelectedOffset();

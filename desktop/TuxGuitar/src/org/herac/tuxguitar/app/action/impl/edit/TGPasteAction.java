@@ -40,7 +40,7 @@ public class TGPasteAction extends TGActionBase {
 			TGTrack destTrack = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 			
 			// don't copy paste between percussion/non-percussion tracks
-			if (beatList.isPercussionTrack() == songManager.isPercussionChannel(destTrack.getSong(), destTrack.getChannelId())) {
+			if (beatList.isPercussionTrack() == destTrack.isPercussion()) {
 				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 				tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
 				tgActionManager.execute(TGMoveBeatsAction.NAME, tgActionContext);
@@ -48,7 +48,8 @@ public class TGPasteAction extends TGActionBase {
 				// clone clipboard content before modifying it, so it can be re-pasted later
 				TGStoredBeatList beatsListToPaste = beatList.clone(factory);
 				// then adapt notes to destination track (tuning might differ from source track)
-				trackManager.allocateNotesToStrings(beatsListToPaste.getStringValues(), beatsListToPaste.getBeats(), destTrack.getStrings());
+				trackManager.allocateNotesToStrings(beatsListToPaste.getStringValues(), beatsListToPaste.getBeats(),
+						destTrack.getStrings(), destTrack.getMaxFret());
 				
 				// paste
 				List<TGBeat> newBeats = trackManager.addBeats(destTrack, beatsListToPaste, start.getStart());

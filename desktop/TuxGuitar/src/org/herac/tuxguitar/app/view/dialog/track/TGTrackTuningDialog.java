@@ -7,7 +7,6 @@ import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.app.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
@@ -27,6 +26,7 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.widget.*;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackTuningDialog {
 
@@ -38,12 +38,8 @@ public class TGTrackTuningDialog {
 	
 	private TuningGroup allTuningsGroup;	// group #0 = custom tuning presets, other groups = TuxGuitar's tuning presets
 
-	private List<TGTrackTuningModel> initialTuning;
 	private List<TGTrackTuningModel> tuning;
 	private UITable<TGTrackTuningModel> tuningTable;
-	private UICheckBox stringTransposition;
-	private UICheckBox stringTranspositionTryKeepString;
-	private UICheckBox stringTranspositionApplyToChords;
 	private UISpinner offsetSpinner;
 	private UIButton buttonEdit;
 	private UIButton buttonDelete;
@@ -70,12 +66,10 @@ public class TGTrackTuningDialog {
 	}
 
 	public void show() {
-		TGSongManager songManager = this.findSongManager();
 		TGTrack track = this.findTrack();
 		
-		if(!songManager.isPercussionChannel(track.getSong(), track.getChannelId())) {
+		if(!track.isPercussion()) {
 			this.tuning = getTuningFromTrack(track);
-			this.initialTuning = getTuningFromTrack(track);
 			
 			UIFactory factory = this.getUIFactory();
 			UIWindow parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -457,11 +451,6 @@ public class TGTrackTuningDialog {
 		top.setLayout(topLayout);
 		panelLayout.set(top, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true, 1, 1, null, null, 0f);
 		
-		UITableLayout bottomLayout = new UITableLayout(0f);
-		UIPanel bottom = factory.createPanel(panel, false);
-		bottom.setLayout(bottomLayout);
-		panelLayout.set(bottom, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true, 1, 1, null, null, 0f);
-		
 		//---------------------------------OFFSET--------------------------------
 		UILabel offsetLabel = factory.createLabel(top);
 		offsetLabel.setText(TuxGuitar.getProperty("tuning.offset") + ":");
@@ -473,31 +462,6 @@ public class TGTrackTuningDialog {
 		this.offsetSpinner.setValue(track.getOffset());
 		topLayout.set(this.offsetSpinner, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 		
-		//---------------------------------OPTIONS----------------------------------
-		this.stringTransposition = factory.createCheckBox(bottom);
-		this.stringTransposition.setText(TuxGuitar.getProperty("tuning.strings.transpose"));
-		this.stringTransposition.setSelected( true );
-		bottomLayout.set(this.stringTransposition, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
-		this.stringTranspositionApplyToChords = factory.createCheckBox(bottom);
-		this.stringTranspositionApplyToChords.setText(TuxGuitar.getProperty("tuning.strings.transpose.apply-to-chords"));
-		this.stringTranspositionApplyToChords.setSelected( true );
-		bottomLayout.set(this.stringTranspositionApplyToChords, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
-		this.stringTranspositionTryKeepString = factory.createCheckBox(bottom);
-		this.stringTranspositionTryKeepString.setText(TuxGuitar.getProperty("tuning.strings.transpose.try-keep-strings"));
-		this.stringTranspositionTryKeepString.setSelected( true );
-		bottomLayout.set(this.stringTranspositionTryKeepString, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
-		this.stringTransposition.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				UICheckBox stringTransposition = TGTrackTuningDialog.this.stringTransposition;
-				UICheckBox stringTranspositionApplyToChords = TGTrackTuningDialog.this.stringTranspositionApplyToChords;
-				UICheckBox stringTranspositionTryKeepString = TGTrackTuningDialog.this.stringTranspositionTryKeepString;
-				stringTranspositionApplyToChords.setEnabled((stringTransposition.isEnabled() && stringTransposition.isSelected()));
-				stringTranspositionTryKeepString.setEnabled((stringTransposition.isEnabled() && stringTransposition.isSelected()));
-			}
-		});
 	}
 	
 	private void initButtons(UILayoutContainer parent) {
@@ -674,18 +638,6 @@ public class TGTrackTuningDialog {
 		return(true);
 	}
 	
-	private static boolean areTuningsEqual(List<TGTrackTuningModel> a, List<TGTrackTuningModel> b) {
-		if(a.size() == b.size()) {
-			for(int i = 0 ; i < a.size(); i ++) {
-				if(!a.get(i).getValue().equals(b.get(i).getValue())) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-	
 	private void updateTuningTable() {
 		TGTrackTuningModel selection = this.tuningTable.getSelectedValue();
 		
@@ -710,11 +662,6 @@ public class TGTrackTuningDialog {
 		buttonDelete.setEnabled(model != null);
 		buttonMoveUp.setEnabled(model != null && index > 0);
 		buttonMoveDown.setEnabled(model != null && index < this.tuning.size() - 1);
-		
-		boolean isDefault = areTuningsEqual(this.tuning, this.initialTuning);
-		stringTransposition.setEnabled(!isDefault);
-		stringTranspositionApplyToChords.setEnabled(!isDefault);
-		stringTranspositionTryKeepString.setEnabled(!isDefault);
 	}
 	
 	private void updateTuningControls() {
@@ -759,9 +706,6 @@ public class TGTrackTuningDialog {
 		final Integer offset = ((songManager.isPercussionChannel(song, track.getChannelId())) ? 0 : this.offsetSpinner.getValue());
 		final boolean offsetChanges = (offset != null && !offset.equals(track.getOffset()));
 		final boolean tuningChanges = hasTuningChanges(track, strings);
-		final boolean transposeStrings = shouldTransposeStrings(track, track.getChannelId());
-		final boolean transposeApplyToChords = (transposeStrings && this.stringTranspositionApplyToChords.isSelected());
-		final boolean transposeTryKeepString = (transposeStrings && this.stringTranspositionTryKeepString.isSelected());
 		
 		if( this.validateTrackTuning(strings)) {
 			if( tuningChanges || offsetChanges ){
@@ -771,9 +715,6 @@ public class TGTrackTuningDialog {
 				
 				if( tuningChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, strings);
-					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_STRINGS, transposeStrings);
-					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_TRY_KEEP_STRINGS, transposeTryKeepString);
-					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TRANSPOSE_APPLY_TO_CHORDS, transposeApplyToChords);
 				}
 				if( offsetChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
@@ -792,16 +733,6 @@ public class TGTrackTuningDialog {
 			return false;
 		}
 		return true;
-	}
-	
-	private boolean shouldTransposeStrings(TGTrack track, int selectedChannelId){
-		if( this.stringTransposition.isSelected()){
-			boolean percussionChannelNew = findSongManager().isPercussionChannel(track.getSong(), selectedChannelId);
-			boolean percussionChannelOld = findSongManager().isPercussionChannel(track.getSong(), track.getChannelId());
-			
-			return (!percussionChannelNew && !percussionChannelOld);
-		}
-		return false;
 	}
 	
 	private boolean hasTuningChanges(TGTrack track, List<TGString> newStrings){

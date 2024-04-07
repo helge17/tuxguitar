@@ -73,15 +73,16 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 	
 	public void updateSectionItems() {
 		TGBeat beat = this.getTablature().getCaret().getSelectedBeat();
-		
+		boolean isPercussion = this.getTablature().getCaret().getTrack().isPercussion();
+
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
 		
-		this.chordMenu.setEnabled(!running);
+		this.chordMenu.setEnabled(!running && !isPercussion);
 		this.text.setEnabled(!running);
 		this.text.setChecked(beat.isTextBeat());
-		this.strokeUp.setEnabled(!running && !beat.isRestBeat());
+		this.strokeUp.setEnabled(!running && !beat.isRestBeat() && !isPercussion);
 		this.strokeUp.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
-		this.strokeDown.setEnabled(!running && !beat.isRestBeat());
+		this.strokeDown.setEnabled(!running && !beat.isRestBeat() && !isPercussion);
 		this.strokeDown.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
 		this.updateMenuItems();
 	}

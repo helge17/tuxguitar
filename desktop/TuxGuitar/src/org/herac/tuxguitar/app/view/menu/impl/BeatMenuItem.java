@@ -19,6 +19,7 @@ import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import org.herac.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
 import org.herac.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
@@ -188,10 +189,11 @@ public class BeatMenuItem extends TGMenuItem {
 		TGNote note = caret.getSelectedNote();
 		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
-		this.tiedNote.setEnabled(!running);
+		TGTrackImpl track = caret.getTrack();
 		TGNoteRange noteRange = tablature.getCurrentNoteRange();
 		boolean atLeastOneNoteSelected = (note != null) || (noteRange!=null && !noteRange.isEmpty());
 
+		this.tiedNote.setEnabled(!running);
 		this.tiedNote.setChecked(note != null && note.isTiedNote());
 		this.insertRestBeat.setEnabled(!running);
 		this.deleteNoteOrRest.setEnabled(!running);
@@ -200,9 +202,9 @@ public class BeatMenuItem extends TGMenuItem {
 		this.voiceAuto.setEnabled(!running && !restBeat);
 		this.voiceUp.setEnabled(!running && !restBeat);
 		this.voiceDown.setEnabled(!running && !restBeat);
-		this.strokeUp.setEnabled(!running && !restBeat);
+		this.strokeUp.setEnabled(!running && !restBeat && !track.isPercussion());
 		this.strokeUp.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
-		this.strokeDown.setEnabled(!running && !restBeat);
+		this.strokeDown.setEnabled(!running && !restBeat && !track.isPercussion());
 		this.strokeDown.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
 		this.semitoneUp.setEnabled(!running && atLeastOneNoteSelected);
 		this.semitoneDown.setEnabled(!running && atLeastOneNoteSelected);
@@ -213,8 +215,15 @@ public class BeatMenuItem extends TGMenuItem {
 		this.moveBeatsRight.setEnabled(!running);
 		this.moveBeatsCustom.setEnabled(!running);
 		this.durationMenuItem.update();
-		this.chordMenuItem.update();
-		this.effectMenuItem.update();
+		if (track.isPercussion()) {
+			this.chordMenuItem.setEnabled(false);
+			this.effectMenuItem.setEnabled(false);
+		} else {
+			this.chordMenuItem.setEnabled(true);
+			this.effectMenuItem.setEnabled(true);
+			this.chordMenuItem.update();
+			this.effectMenuItem.update();
+		}
 		this.dynamicMenuItem.update();
 	}
 
