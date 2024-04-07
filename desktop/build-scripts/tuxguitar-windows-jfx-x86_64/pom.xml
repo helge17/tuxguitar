@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
-		<version>SNAPSHOT</version>
+		<version>9.99-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
 
@@ -178,6 +178,12 @@
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
 									<destFileName>commons-compress.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>commons-io</groupId>
+									<artifactId>commons-io</artifactId>
+									<destFileName>commons-io.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
@@ -431,7 +437,6 @@
 				<module>../native-modules/tuxguitar-winmm-windows-x86_64</module>
 				<module>../native-modules/tuxguitar-fluidsynth-windows-x86_64</module>
 				<module>../native-modules/tuxguitar-jack-windows-x86_64</module>
-				<module>../native-modules/tuxguitar-synth-vst-windows-x86</module>
 			</modules>
 
 			<build>
@@ -455,9 +460,6 @@
 										</copy>
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-jack-windows-x86_64/target/build" />
-										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-windows-x86/target/build" />
 										</copy>
 										<!-- /PLUGINS FILES -->
 									</target>

@@ -21,7 +21,6 @@ import org.herac.tuxguitar.song.models.TGVoice;
 public class TGTrackManager {
 	
 	private TGSongManager songManager;
-	private final int MAX_FRET = 29;	//included
 	
 	public TGTrackManager(TGSongManager songManager){
 		this.songManager = songManager;
@@ -292,19 +291,12 @@ public class TGTrackManager {
 				removeNotesAfterString(track, count);
 			}
 			
-			if( getSongManager().isPercussionChannel(track.getSong(), track.getChannelId()) ) {
+			if( track.isPercussion() ) {
 				track.setStrings(getSongManager().createPercussionStrings(count));
 			} else {
 				track.setStrings(getSongManager().createDefaultInstrumentStrings(count));
 			}
 		}
-	}
-	
-	public void changeInstrumentStrings(TGTrack track, List<TGString> strings){
-		if(strings.size() < track.getStrings().size()){
-			removeNotesAfterString(track,strings.size());
-		}
-		track.setStrings(strings);
 	}
 	
 	public void removeNotesAfterString(TGTrack track,int string){
@@ -351,19 +343,26 @@ public class TGTrackManager {
 		}
 	}
 	
-	public void allocateMeasureNotesToStrings(List<Integer> fromStringValues, List<TGMeasure> measures, List<TGString> toStrings) {
+	public void allocateNotesToStrings(List<Integer> fromStringValues, TGTrack track, List<TGString> toStrings) {
+		Iterator<TGMeasure> it = track.getMeasures();
+		while (it.hasNext()) {
+			this.allocateMeasureNotesToStrings(fromStringValues, it.next(), toStrings, track.getMaxFret());
+		}
+	}
+	
+	public void allocateMeasureNotesToStrings(List<Integer> fromStringValues, List<TGMeasure> measures, List<TGString> toStrings, int maxFret) {
 		List<TGBeat> beats = new ArrayList<TGBeat>();
 		for (TGMeasure measure : measures) {
 			beats.addAll(measure.getBeats());
 		}
-		this.allocateNotesToStrings(fromStringValues, beats, toStrings);
+		this.allocateNotesToStrings(fromStringValues, beats, toStrings, maxFret);
 	}
 	
-	public void allocateMeasureNotesToStrings(List<Integer> fromStringValues, TGMeasure measure, List<TGString> toStrings) {
-		this.allocateNotesToStrings(fromStringValues, measure.getBeats(), toStrings);
+	public void allocateMeasureNotesToStrings(List<Integer> fromStringValues, TGMeasure measure, List<TGString> toStrings, int maxFret) {
+		this.allocateNotesToStrings(fromStringValues, measure.getBeats(), toStrings, maxFret);
 	}
 	
-	public void allocateNotesToStrings(List<Integer> fromStringValues, List<TGBeat> beats, List<TGString> toStrings) {
+	public void allocateNotesToStrings(List<Integer> fromStringValues, List<TGBeat> beats, List<TGString> toStrings, int maxFret) {
 		if (fromStringValues==null || fromStringValues.isEmpty() || beats==null || beats.isEmpty() || toStrings==null || toStrings.isEmpty()) {
 			return;
 		}
@@ -373,13 +372,13 @@ public class TGTrackManager {
 		}
 		for (TGBeat beat : beats) {
 			beat.removeChord();
-			allocateNotesToStrings(fromStringValues, beat, toStrings);
+			allocateNotesToStrings(fromStringValues, beat, toStrings, maxFret);
 		}
 	}
 	
-	private void allocateNotesToStrings(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
-		if (!this.allocateNotesToClosestString(fromStringValues, beat, toStrings)) {
-			this.allocateNotesToLowestFret(fromStringValues, beat, toStrings);
+	private void allocateNotesToStrings(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings, int maxFret) {
+		if (!this.allocateNotesToClosestString(fromStringValues, beat, toStrings, maxFret)) {
+			this.allocateNotesToLowestFret(fromStringValues, beat, toStrings, maxFret);
 		}
 	}
 	
@@ -387,7 +386,7 @@ public class TGTrackManager {
 	// "closest" in terms of string pitch (not string number)
 	// objective is to keep "fingering pattern" globally unchanged (typ. use case: new tuning is 1/2 tone higher for all strings)
 	// returns true in case of success, else false
-	private boolean allocateNotesToClosestString(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
+	private boolean allocateNotesToClosestString(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings, int maxFret) {
 		// only possible if old tuning is valid
 		boolean oldTuningIsValid = true;
 		for (int stringValue : fromStringValues) {
@@ -418,7 +417,7 @@ public class TGTrackManager {
 					}
 					if (freeStrings.contains(closestString)) {
 						int newFret = noteStringValue + note.getValue() - closestString.getValue();
-						if (newFret>=0 && newFret<=MAX_FRET) {
+						if (newFret>=0 && newFret<=maxFret) {
 							note.setValue(newFret);
 							note.setString(closestString.getNumber());
 							freeStrings.remove(closestString);
@@ -447,7 +446,7 @@ public class TGTrackManager {
 	}
 	
 	// allocate each note to the lowest possible fret, discard notes with no place found
-	private void allocateNotesToLowestFret(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings) {
+	private void allocateNotesToLowestFret(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings, int maxFret) {
 		List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
 		for (int i=0; i<beat.countVoices(); i++) {
 			TGVoice voice = beat.getVoice(i);
@@ -463,7 +462,7 @@ public class TGTrackManager {
 				TGString newString = null;
 				for (TGString string : freeStrings) {
 					int fret = note.getValue() - string.getValue();
-					if (fret>=0 && fret<=MAX_FRET && (minFret<0 || fret<minFret) ) {
+					if (fret>=0 && fret<=maxFret && (minFret<0 || fret<minFret) ) {
 						newString = string;
 						minFret = fret;
 					}

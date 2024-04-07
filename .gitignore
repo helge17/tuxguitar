@@ -1,11 +1,11 @@
 .gradle/
 build/
+doc/javadoc/
 target/
 *.o
 *.bin
 **/jni/*.dll
 **/jni/*.so
-desktop/build-scripts/native-modules/tuxguitar-synth-vst-*/include/
 .classpath
 .settings/
 .project

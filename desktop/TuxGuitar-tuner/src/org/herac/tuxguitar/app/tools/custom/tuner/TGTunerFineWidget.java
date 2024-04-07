@@ -18,6 +18,7 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
@@ -108,7 +109,7 @@ public class TGTunerFineWidget {
 	public void setWantedTone(int tone) {
 		this.panel.setEnabled(true);
 		this.currentNoteValue = tone;
-		this.currentNoteString = TGTunerRoughWidget.TONESSTRING[tone%12]+(int)Math.floor(tone/12);
+		this.currentNoteString = TGMusicKeyUtils.sharpNoteFullName(tone);
 		this.redraw();
 		
 	}

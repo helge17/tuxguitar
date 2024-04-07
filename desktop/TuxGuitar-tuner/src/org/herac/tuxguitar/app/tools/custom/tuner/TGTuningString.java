@@ -8,6 +8,8 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
+
 
 /**
  * @author Nikola Kolarovic <johnny47ns@yahoo.com>
@@ -26,7 +28,7 @@ public class TGTuningString {
 		this.listener = listener;
 		
 		this.stringButton = factory.createToggleButton(parent);
-		this.stringButton.setText("--------- "+TGTunerRoughWidget.TONESSTRING[string%12]+(int)Math.floor(string/12)+" ---------");
+		this.stringButton.setText("--------- "+ TGMusicKeyUtils.sharpNoteFullName(string)+" ---------");
 	}
 
 	

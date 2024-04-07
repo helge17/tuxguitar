@@ -58,7 +58,8 @@ public abstract class TGMeasure {
 	}
 	
 	public int getKeySignature() {
-		return this.keySignature;
+		if (getTrack()==null) return this.keySignature;
+		return getTrack().isPercussion() ? 0 : this.keySignature;
 	}
 	
 	public void setKeySignature(int keySignature) {

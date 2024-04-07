@@ -1,7 +1,7 @@
 <project>
 	<shortName>tuxguitar</shortName>
 	<fullName>TuxGuitar</fullName>
-	<version>SNAPSHOT</version>
+	<version>9.99-SNAPSHOT</version>
 	<installerFilename>${product_shortname}-${product_version}-windows-jfx-x86_64-installer.${platform_exec_suffix}</installerFilename>
 	<readmeFile></readmeFile>
 	<licenseFile>${build_project_directory}/../../target/bundle/doc/LICENSE</licenseFile>

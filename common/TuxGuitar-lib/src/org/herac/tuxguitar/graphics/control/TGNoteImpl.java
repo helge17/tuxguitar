@@ -16,6 +16,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.ui.resource.UIInset;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
 public class TGNoteImpl extends TGNote {
@@ -30,12 +31,12 @@ public class TGNoteImpl extends TGNote {
 	}
 	
 	public void update(TGLayout layout) {
-		if(!layout.getSongManager().isPercussionChannel(getMeasureImpl().getTrack().getSong(), getMeasureImpl().getTrack().getChannelId())) {
+		if(!getMeasureImpl().getTrack().isPercussion()) {
 			this.accidental = getMeasureImpl().getNoteAccidental( layout.getSongManager().getMeasureManager().getRealNoteValue(this) );
 		}
 		
 		this.tabPosY = ( (getString() * layout.getStringSpacing()) - layout.getStringSpacing() );
-		this.scorePosY = getVoiceImpl().getBeatGroup().getY1(layout,this,getMeasureImpl().getKeySignature(),getMeasureImpl().getClef());
+		this.scorePosY = getVoiceImpl().getBeatGroup().getY1(layout,this);
 	}
 	
 	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
@@ -288,8 +289,6 @@ public class TGNoteImpl extends TGNote {
 			float scale = layout.getScoreLineSpacing();
 			float layoutScale = layout.getScale();
 			int direction = getVoiceImpl().getBeatGroup().getDirection();
-			int key = getMeasureImpl().getKeySignature();
-			int clef = getMeasureImpl().getClef();
 			
 			float x = ( fromX + getPosX() + spacing );
 			float y1 = ( fromY + getScorePosY() ) ;
@@ -326,19 +325,19 @@ public class TGNoteImpl extends TGNote {
 			layout.setScoreNoteStyle(painter,playing);
 			
 			//----------sostenido--------------------------------------
-			if(this.accidental == TGMeasureImpl.NATURAL){
+			if(this.accidental == TGMusicKeyUtils.NATURAL){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintNatural(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
 				painter.closePath();
 			}
-			else if(this.accidental == TGMeasureImpl.SHARP){
+			else if(this.accidental == TGMusicKeyUtils.SHARP){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintSharp(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
 				painter.closePath();
 			}
-			else if(this.accidental == TGMeasureImpl.FLAT){
+			else if(this.accidental == TGMusicKeyUtils.FLAT){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintFlat(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
@@ -352,7 +351,7 @@ public class TGNoteImpl extends TGNote {
 				TGNotePainter.paintHarmonic(painter, x, y1 + (1f * (scale / 10f)), (layout.getScoreLineSpacing() - ((scale / 10f) * 2f)));
 				painter.closePath();
 			}
-			else if (layout.getSongManager().isPercussionChannel(getMeasureImpl().getTrack().getSong(), getMeasureImpl().getTrack().getChannelId())) {
+			else if (getMeasureImpl().getTrack().isPercussion()) {
 				this.paintPercussionScoreNote(layout, painter, x, y1);
 			}
 			else {
@@ -383,7 +382,7 @@ public class TGNoteImpl extends TGNote {
 				if( getVoice().getDuration().getValue() >= TGDuration.HALF ){
 					layout.setScoreNoteFooterStyle(painter);
 					float xMove = ((direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0));
-					float y2 = (fromY + getVoiceImpl().getBeatGroup().getY2(layout,getPosX() + spacing, key, clef));
+					float y2 = (fromY + getVoiceImpl().getBeatGroup().getY2(layout,getPosX() + spacing));
 					
 					//staccato
 					if (getEffect().isStaccato()) {

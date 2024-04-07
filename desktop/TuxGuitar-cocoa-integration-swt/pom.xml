@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
-		<version>SNAPSHOT</version>
+		<version>9.99-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -49,7 +49,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${org.eclipse.swt.groupId}</groupId>
-			<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+			<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

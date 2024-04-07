@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
-		<version>SNAPSHOT</version>
+		<version>9.99-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -71,8 +71,8 @@
 		</dependency>
 		<dependency>
 			<groupId>${org.eclipse.swt.groupId}</groupId>
-			<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-			<version>4.13</version>
+			<artifactId>org.eclipse.swt.gtk.linux</artifactId>
+			<version>4.26</version>
 		</dependency>
 	</dependencies>
 </project>

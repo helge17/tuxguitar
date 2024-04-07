@@ -1,6 +1,12 @@
-TuxGuitar SNAPSHOT changes:
+TuxGuitar 9.99-SNAPSHOT changes:
 
 * ...
+
+TuxGuitar 1.6.2 (2024-04-01) changes:
+
+* Delete VST plugin due to licensing and security concerns. See
+  https://github.com/helge17/tuxguitar/issues/312
+  for details.
 
 TuxGuitar 1.6.1 (2024-02-02) changes:
 

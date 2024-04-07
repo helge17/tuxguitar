@@ -87,7 +87,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineFeedAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
@@ -424,7 +424,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGChangeTrackPropertiesAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		
 		//measure actions
-		this.map(TGToggleLineFeedAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGToggleLineBreakAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
 		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);

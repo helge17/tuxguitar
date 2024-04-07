@@ -28,7 +28,7 @@ public class TGPrintLayout extends TGLayout {
 	private UIFont songAuthorFont;
 	
 	public TGPrintLayout(TGController controller, TGPrintSettings settings){
-		super(controller,( settings.getStyle() | DISPLAY_COMPACT ) );
+		super(controller, settings.getStyle());
 		this.settings = settings;
 	}
 	
@@ -248,14 +248,14 @@ public class TGPrintLayout extends TGLayout {
 	private TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {
 		TempLine line = new TempLine();
 		int measureCount = track.countMeasures();
-		boolean lineFeed = false;
+		boolean lineBreak = false;
 		for (int measureIdx = fromIndex; measureIdx < measureCount; measureIdx++) {
 			TGMeasureImpl measure= (TGMeasureImpl) track.getMeasure(measureIdx);
 			if( measure.getNumber() >= this.settings.getFromMeasure() && measure.getNumber() <= this.settings.getToMeasure()){
 				
 				//verifico si tengo que bajar de linea
 				line.fullLine = (line.tempWith + measure.getWidth(this)) >= getMaxWidth();
-				if (line.fullLine || lineFeed){
+				if (line.fullLine || lineBreak){
 					if( line.measures.isEmpty() ) {
 						this.addToTempLine(line, ts, measure, measureIdx);
 					}
@@ -263,7 +263,7 @@ public class TGPrintLayout extends TGLayout {
 				}
 				
 				this.addToTempLine(line, ts, measure, measureIdx);
-				if (measureIdx+1<measureCount) lineFeed = ((TGMeasureImpl)track.getMeasure(measureIdx+1)).isLineFeed();
+				if (measureIdx+1<measureCount) lineBreak = ((TGMeasureImpl)track.getMeasure(measureIdx+1)).isLineBreak();
 			}
 		}
 		

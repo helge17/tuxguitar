@@ -29,7 +29,7 @@ public abstract class TGMeasureHeader {
 	private int repeatClose;
 	private int tripletFeel;
 	private TGSong song;
-	private boolean lineFeed;
+	private boolean lineBreak;
 	
 	public TGMeasureHeader(TGFactory factory){
 		this.number = 0;
@@ -143,16 +143,16 @@ public abstract class TGMeasureHeader {
 		this.song = song;
 	}
 	
-	public void toggleLineFeed() {
-		this.lineFeed = !this.lineFeed;
+	public void toggleLineBreak() {
+		this.lineBreak = !this.lineBreak;
 	}
 	
-	public boolean isLineFeed() {
-		return this.lineFeed;
+	public boolean isLineBreak() {
+		return this.lineBreak;
 	}
 	
-	public void setLineFeed(boolean lineFeed) {
-		this.lineFeed = lineFeed;
+	public void setLineBreak(boolean lineBreak) {
+		this.lineBreak = lineBreak;
 	}
 	
 	
@@ -167,7 +167,7 @@ public abstract class TGMeasureHeader {
 		this.getTempo().copyFrom(header.getTempo());
 		this.setMarker(header.hasMarker() ? header.getMarker().clone(factory) : null);
 		this.checkMarker();
-		this.setLineFeed(header.isLineFeed());
+		this.setLineBreak(header.isLineBreak());
 		
 	}
 	

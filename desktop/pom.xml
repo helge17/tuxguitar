@@ -5,7 +5,7 @@
 	<groupId>org.herac.tuxguitar</groupId>
 	<artifactId>tuxguitar-pom</artifactId>
 	<packaging>pom</packaging>
-	<version>SNAPSHOT</version>
+	<version>9.99-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 
 	<dependencyManagement>
@@ -282,12 +282,6 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-synth-vst</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-synth-export</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
@@ -306,22 +300,22 @@
 			<!-- SWT Platforms -->
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+				<artifactId>org.eclipse.swt.gtk.linux</artifactId>
+				<version>4.26</version>
+			</dependency>
+			<dependency>
+				<groupId>${org.eclipse.swt.groupId}</groupId>
+				<artifactId>org.eclipse.swt.win32.win32</artifactId>
+				<version>4.21</version>
+			</dependency>
+			<dependency>
+				<groupId>${org.eclipse.swt.groupId}</groupId>
+				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
 				<version>4.13</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-				<version>4.13</version>
-			</dependency>
-			<dependency>
-				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-				<version>4.13</version>
-			</dependency>
-			<dependency>
-				<groupId>${org.eclipse.swt.groupId}</groupId>
-				<artifactId>org.eclipse.swt.gtk.freebsd.x86_64</artifactId>
+				<artifactId>org.eclipse.swt.gtk.freebsd</artifactId>
 				<version>4.21</version>
 			</dependency>
 			<!-- /SWT Platforms -->
@@ -353,6 +347,11 @@
 				<artifactId>commons-compress</artifactId>
 				<version>1.26.0</version>
 			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.15.1</version>
+			</dependency>
 			<!-- /commons compress -->
 		</dependencies>
 	</dependencyManagement>
@@ -379,14 +378,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- We need a cross platform SWT version to compile projects -->
-		<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-		<org.eclipse.swt.artifactId>org.eclipse.swt</org.eclipse.swt.artifactId>
 	</properties>
 
 	<profiles>
 		<profile>
-			<id>platform-windows-all</id>
+			<id>platform-windows</id>
 			<activation>
 				<os>
 					<family>windows</family>
@@ -394,55 +390,52 @@
 			</activation>
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-				<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</org.eclipse.swt.artifactId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32</org.eclipse.swt.artifactId>
 				<javafx.version>17.0.2</javafx.version>
 				<javafx.platform>win</javafx.platform>
 			</properties>
 		</profile>
 		<profile>
-			<id>platform-linux-x86_64</id>
+			<id>platform-linux</id>
 			<activation>
 				<os>
 					<family>unix</family>
 					<name>linux</name>
-					<arch>amd64</arch>
 				</os>
 			</activation>
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</org.eclipse.swt.artifactId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux</org.eclipse.swt.artifactId>
 				<javafx.version>17.0.2</javafx.version>
 				<javafx.platform>linux</javafx.platform>
 			</properties>
 		</profile>
 		<profile>
-			<id>platform-macos-cocoa-64</id>
+			<id>platform-macos-cocoa</id>
 			<activation>
 				<os>
 					<family>unix</family>
 					<name>mac os x</name>
-					<arch>x86_64</arch>
 				</os>
 			</activation>
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-				<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx.x86_64</org.eclipse.swt.artifactId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx</org.eclipse.swt.artifactId>
 				<javafx.version>21.0.2</javafx.version>
 				<javafx.platform>mac</javafx.platform>
 			</properties>
 		</profile>
 		<profile>
-			<id>platform-freebsd-x86_64</id>
+			<id>platform-freebsd</id>
 			<activation>
 				<os>
 					<family>unix</family>
 					<name>freebsd</name>
-					<arch>amd64</arch>
 				</os>
 			</activation>
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
-				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.freebsd.x86_64</org.eclipse.swt.artifactId>
+				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.freebsd</org.eclipse.swt.artifactId>
 				<javafx.version>14.0.2.1</javafx.version>
 				<javafx.platform>freebsd</javafx.platform>
 			</properties>

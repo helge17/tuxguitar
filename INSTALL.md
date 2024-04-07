@@ -8,7 +8,9 @@ You can find ready to use installation packages for Linux, Windows, MacOS, FreeB
 
 ## Warning
 
-The following instructions may not be complete. For hints and workarounds needed to build TuxGuitar, see the script
+The following instructions have been roughly tested on the x86_64/amd64 architecture. They may also work on some other hardware platforms like aarch64/arm64 or ppc64le/ppc64el, but this depends heavily on the availability of SWT and other prerequisites on these platforms.
+
+For hints and workarounds needed to build TuxGuitar, see the script
 
 ```sh
 misc/build_tuxguitar_from_source.sh
@@ -20,14 +22,14 @@ misc/build_tuxguitar_from_source.sh
 - Maven 3.3 or higher
 - Fluidsynth (optional)
 - JACK (optional)
-- Eclipse SWT 4.13
+- Eclipse SWT 4
 
 ## Build on Debian/Ubuntu Linux
 
 ### Install Prerequisites
 
 ```sh
-$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev libgtk-3-dev liblilv-dev libsuil-dev qtbase5-dev
+$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
 ```
 
 In order for Asian characters to be displayed correctly, you may also need to install the `fonts-wqy-zenhei` font package.
@@ -35,11 +37,11 @@ In order for Asian characters to be displayed correctly, you may also need to in
 ### Download and install SWT for Linux
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-gtk-linux-x86_64.zip
-$ mkdir swt-4.13-gtk-linux-x86_64
-$ cd swt-4.13-gtk-linux-x86_64
-$ unzip ../swt-4.13-gtk-linux-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux.x86_64 -Dpackaging=jar -Dversion=4.13
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-gtk-linux-`uname -m`.zip
+$ mkdir swt-4.26-gtk-linux-`uname -m`
+$ cd swt-4.26-gtk-linux-`uname -m`
+$ unzip ../swt-4.26-gtk-linux-`uname -m`.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.26
 $ cd ..
 ```
 
@@ -50,29 +52,10 @@ $ git clone https://github.com/helge17/tuxguitar.git
 $ cd tuxguitar
 ```
 
-### Hacks
-
-The Debian version must start with a number:
-
-```sh
-$ sed -i "s/SNAPSHOT/9.99-snapshot/" desktop/build-scripts/tuxguitar-linux-swt-x86_64-deb/src/resources/DEBIAN/control
-```
-
-For the (outdated) VST plugin you need some additional header files:
-
-```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux-x86_64/include
-$ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
-    wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
-  done
-$ cd -
-```
-
 ### Build and install
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-linux-swt-x86_64-deb
+$ cd desktop/build-scripts/tuxguitar-linux-swt-deb
 $ mvn -e clean verify -P native-modules
 $ sudo dpkg -i target/tuxguitar-*.deb
 ```
@@ -87,12 +70,12 @@ $ tuxguitar
 
 ## Generic GNU/Linux
 
-On Non-Debian-based systems install the prerequisites using your package manager. Then download and install SWT, download the TuxGuitar sources and the VST header files as described for Debian above.
+On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT and download the TuxGuitar sources as described for Debian above.
 
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-linux-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-linux-swt
 $ mvn -e clean verify -P native-modules
 ```
 
@@ -108,17 +91,17 @@ The Windows version is cross compiled on Ubuntu/Debian with [Mingw-w64](https://
 ### Install Prerequisites
 
 ```sh
-$ sudo apt install default-jdk maven gcc-mingw-w64-x86-64 g++-mingw-w64-i686-win32
+$ sudo apt install wget unzip git default-jdk maven gcc-mingw-w64-x86-64 g++-mingw-w64-i686-win32
 ```
 
 ### Download and install SWT for Windows
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-win32-win32-x86_64.zip
-$ mkdir swt-4.13-win32-win32-x86_64
-$ cd swt-4.13-win32-win32-x86_64
-$ unzip ../swt-4.13-win32-win32-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32.x86_64 -Dpackaging=jar -Dversion=4.13
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-win32-win32-x86_64.zip
+$ mkdir swt-4.21-win32-win32-x86_64
+$ cd swt-4.21-win32-win32-x86_64
+$ unzip ../swt-4.21-win32-win32-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.21
 $ cd ..
 ```
 
@@ -126,29 +109,17 @@ $ cd ..
 
 Same as for Debian (see above).
 
-### Hacks
-
-Download the VST header files:
-
-```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
-    wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
-  done
-$ cd -
-```
-
 ### Build and Start TuxGuitar
 
 As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
 
 ```sh
 $ cd desktop/build-scripts/tuxguitar-windows-swt-x86_64
-$ mvn -e clean verify -P native-modules -P -platform-linux-x86_64 -P platform-windows-all
+$ mvn -e clean verify -P native-modules -P -platform-linux -P platform-windows
+$ cd -
 ```
 
-The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
+The Windows application is now located in the `desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-9.99-SNAPSHOT-windows-swt-x86_64` folder. Copy it to your Windows machine.
 
 To start TuxGuitar you need a Java Runtime Environment. You can get the one from [portableapps.com](https://portableapps.com/apps/utilities/OpenJDK64) and extract it to a subfolder named `jre`. Then you should be able to start TuxGuitar by double-clicking on `tuxguitar.exe` or `tuxguitar.bat`.
 
@@ -165,11 +136,11 @@ $ brew install openjdk maven wget
 ### Download and install SWT for MacOS
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-cocoa-macosx-x86_64.zip
-$ mkdir swt-4.13-cocoa-macosx-x86_64
-$ cd swt-4.13-cocoa-macosx-x86_64
-$ unzip ../swt-4.13-cocoa-macosx-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx.x86_64 -Dpackaging=jar -Dversion=4.13
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-cocoa-macosx-`uname -m`.zip
+$ mkdir swt-4.13-cocoa-macosx-`uname -m`
+$ cd swt-4.13-cocoa-macosx-`uname -m`
+$ unzip ../swt-4.13-cocoa-macosx-`uname -m`.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.13
 $ cd ..
 ```
 
@@ -180,18 +151,19 @@ Same as for Debian (see above).
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64
+$ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa
 $ mvn -e clean verify
+$ cd -
 ```
 
-The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa-x86_64/target/tuxguitar-SNAPSHOT-macosx-swt-cocoa-x86_64.app` folder. Start TuxGuitar by double-clicking on the folder.
+The application is now located in the `desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app` folder. Start TuxGuitar by double-clicking on the folder.
 
 ## Build on FreeBSD
 
 ### Install Prerequisites
 
 ```sh
-$ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget
+$ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git
 ```
 
 In order for Asian characters to be displayed correctly, you may also need to install the `wqy-fonts-20100803_10,1` font package.
@@ -201,7 +173,7 @@ In order for Asian characters to be displayed correctly, you may also need to in
 On FreeBSD we use SWT from the OS to build and run TuxGuitar. FreeBSD 13.2 comes with SWT version 4.21.
 
 ```sh
-mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd.x86_64 -Dpackaging=jar -Dversion=4.21
+mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd -Dpackaging=jar -Dversion=4.21
 ```
 
 ### Get the TuxGuitar sources
@@ -211,7 +183,7 @@ Same as for Debian (see above).
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-freebsd-swt-x86_64
+$ cd desktop/build-scripts/tuxguitar-freebsd-swt
 $ mvn -e clean verify -P native-modules
 ```
 

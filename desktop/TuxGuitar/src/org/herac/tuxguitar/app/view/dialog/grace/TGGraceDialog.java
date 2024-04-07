@@ -12,6 +12,7 @@ import org.herac.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 import org.herac.tuxguitar.ui.UIFactory;
@@ -57,6 +58,7 @@ public class TGGraceDialog {
 	
 	public void show(final TGViewContext context){
 		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+		TGTrack track = (TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		TGEffectGrace grace = null;
 		TGFactory factory = TuxGuitar.getInstance().getSongManager().getFactory();
 
@@ -105,6 +107,7 @@ public class TGGraceDialog {
 			
 			this.fretSpinner = uiFactory.createSpinner(noteGroup);
 			this.fretSpinner.setValue(fret);
+			this.fretSpinner.setMaximum(track.getMaxFret());
 			noteLayout.set(this.fretSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			this.deadButton = uiFactory.createCheckBox(noteGroup);
