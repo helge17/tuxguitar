@@ -6,18 +6,18 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.graphics.control.TGMeasureHeaderImpl;
 import org.herac.tuxguitar.util.TGContext;
 
-public class TGToggleLineFeedAction extends TGActionBase {
+public class TGToggleLineBreakAction extends TGActionBase {
 	
-	public static final String NAME = "action.measure.toggle-linefeed";
+	public static final String NAME = "action.measure.toggle-linebreak";
 	
-	public TGToggleLineFeedAction(TGContext context) {
+	public TGToggleLineBreakAction(TGContext context) {
 		super(context, NAME);
 	}
 
 	@Override
 	protected void processAction(TGActionContext context) {
 		TGMeasureHeaderImpl header = (TGMeasureHeaderImpl) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-		header.toggleLineFeed();
+		header.toggleLineBreak();
 	}
 
 }

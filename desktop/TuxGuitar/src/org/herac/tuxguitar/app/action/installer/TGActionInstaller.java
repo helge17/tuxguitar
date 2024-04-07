@@ -88,7 +88,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineFeedAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
@@ -356,7 +356,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeTrackPropertiesAction(context));
 		
 		//measure actions
-		installAction(new TGToggleLineFeedAction(context));
+		installAction(new TGToggleLineBreakAction(context));
 		installAction(new TGAddMeasureAction(context));
 		installAction(new TGAddMeasureListAction(context));
 		installAction(new TGCleanMeasureAction(context));
