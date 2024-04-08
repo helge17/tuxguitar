@@ -1,37 +1,46 @@
 package org.herac.tuxguitar.cocoa.opendoc;
 
+/*
+ * Plugin to open documents on macOS when TuxGuitar is launched by macOS Finder
+ * specific to macOS/SWT version of TuxGuitar
+ * 
+ * On macOS, when TuxGuitar is launched by double-clicking a file, no argument is passed to the launch script.
+ * Need to register a listener to SWT OpenDocument event
+ * This plugin must be initialized early (just after Display creation), and from UI thread
+ * 
+ * Known limitation:
+ * no openDoc event is ever sent by SWT to an instance of TuxGuitar launched manually from command line.
+ * So, if TuxGuitar is launched from command line, double-clicking a file will NOT open the file.
+ * 
+ */
+
 import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
+import org.herac.tuxguitar.util.plugin.TGEarlyInitPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
-public class OpenDocPlugin implements TGPlugin {
-	
+public class OpenDocPlugin implements TGEarlyInitPlugin {
+
 	private OpenDocListener openDocListener;
-	
-	public void setEnabled(boolean enabled) throws TGPluginException {
-		try {
-			if( this.openDocListener != null ){
-				this.openDocListener.setEnabled(enabled);
-			}else if(enabled){
-				this.openDocListener = new OpenDocListener();
-				this.openDocListener.setEnabled(true);
-				this.openDocListener.init();
-			}
-		} catch( Throwable throwable ){
-			throw new TGPluginException( throwable );
-		}
-	}
-	
+
+	@Override
 	public String getModuleId() {
 		return TGCocoaIntegrationPlugin.MODULE_ID;
 	}
-	
-	public void connect(TGContext context) throws TGPluginException {
-		this.setEnabled(true);
+
+	@Override
+	public void earlyInit(TGContext context) throws TGPluginException {
+		this.openDocListener = new OpenDocListener(context);
 	}
 
-	public void disconnect(TGContext context) throws TGPluginException {
-		this.setEnabled(false);
+	@Override
+	public void connect(TGContext context) throws TGPluginException {
+		// nothing to do here, initialization is done in .earlyInit()
 	}
+
+	@Override
+	public void disconnect(TGContext context) throws TGPluginException {
+		this.openDocListener.disconnect();
+	}
+
 }

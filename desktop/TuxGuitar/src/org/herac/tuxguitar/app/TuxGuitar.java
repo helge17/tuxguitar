@@ -55,6 +55,7 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.thread.TGMultiThreadHandler;
 import org.herac.tuxguitar.thread.TGThreadManager;
+import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
@@ -114,7 +115,11 @@ public class TuxGuitar {
 	
 	private void createUIContext(final URL url) {
 		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context));
-		TGApplication.getInstance(TuxGuitar.this.context).getApplication().start(new Runnable() {
+		
+		UIApplication app = TGApplication.getInstance(TuxGuitar.this.context).getApplication();
+		getPluginManager().earlyInitPlugins();
+		
+		app.start(new Runnable() {
 			public void run() {
 				// display splash screen
 				TGSplash.getInstance(TuxGuitar.this.context).init();

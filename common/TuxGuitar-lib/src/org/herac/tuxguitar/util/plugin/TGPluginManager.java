@@ -15,6 +15,7 @@ public class TGPluginManager {
 	
 	private static final String PLUGIN_ERROR_ON_LOOKUP = "An error ocurred when trying to lookup plugin";
 	private static final String PLUGIN_ERROR_ON_CONNECT = "An error ocurred when trying to connect plugin";
+	private static final String PLUGIN_ERROR_ON_EARLY_INIT = "An error ocurred when trying to initialize plugin early";
 	private static final String PLUGIN_ERROR_ON_DISCONNECT = "An error ocurred when trying to disconnect plugin";
 	private static final String PLUGIN_ERROR_ON_GET_STATUS = "An error ocurred when trying to get plugin status";
 	private static final String PLUGIN_ERROR_ON_SET_STATUS = "An error ocurred when trying to set plugin status";
@@ -67,6 +68,13 @@ public class TGPluginManager {
 		}
 	}
 	
+	public void earlyInitPlugins() {
+		for(TGPlugin plugin : this.plugins) {
+			if( this.isEnabled(plugin.getModuleId()) && TGEarlyInitPlugin.class.isAssignableFrom(plugin.getClass())) {
+				this.earlyInitPlugin((TGEarlyInitPlugin) plugin);
+			}
+		}
+	}
 	public void connectPlugins(String moduleId) {
 		for(TGPlugin plugin : this.plugins) {
 			if( plugin.getModuleId().equals(moduleId) ) {
@@ -90,6 +98,18 @@ public class TGPluginManager {
 			TGErrorManager.getInstance(this.context).handleError(exception);
 		} catch(Throwable throwable) {
 			TGErrorManager.getInstance(this.context).handleError(new TGPluginException(PLUGIN_ERROR_ON_CONNECT, throwable));
+		}
+	}
+	
+	public void earlyInitPlugin(TGEarlyInitPlugin tgPlugin) {
+		try {
+			tgPlugin.earlyInit(this.context);
+		} catch(TGPluginException exception) {
+			exception.printStackTrace();
+			TGErrorManager.getInstance(this.context).handleError(exception);
+		} catch(Throwable throwable) {
+			throwable.printStackTrace();
+			TGErrorManager.getInstance(this.context).handleError(new TGPluginException(PLUGIN_ERROR_ON_EARLY_INIT, throwable));
 		}
 	}
 	
