@@ -4,7 +4,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 
 public class MidiFileFormat {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Midi", "audio/midi", new String[]{"mid","midi"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("MIDI", "audio/midi", new String[]{"mid","midi"});
 	
 	public MidiFileFormat() {
 		super();
