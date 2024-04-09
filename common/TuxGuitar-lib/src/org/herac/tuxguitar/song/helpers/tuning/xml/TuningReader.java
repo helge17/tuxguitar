@@ -20,6 +20,7 @@ public class TuningReader {
 	static final String GROUP_TAG = "group";
 	static final String NAME_ATTRIBUTE = "name";
 	static final String NOTES_ATTRIBUTE = "notes";
+	static final String PRIORITY_ATTRIBUTE = "priority";
 	static final String KEY_SEPARATOR = ",";
 	
 	public void loadTunings(TuningGroup group, InputStream stream){
@@ -74,6 +75,15 @@ public class TuningReader {
 				}
 				
 				TuningPreset tuning = new TuningPreset(group, name, noteValues);
+				
+				// Add priority attribute if available
+				if (params.getNamedItem(PRIORITY_ATTRIBUTE) != null) {
+					String prioStr = params.getNamedItem(PRIORITY_ATTRIBUTE).getNodeValue();
+					// make sure priority string is valid
+					if (prioStr != null && !prioStr.equals("") && prioStr.matches("\\d+"))
+						tuning.setPriority(Integer.parseInt(prioStr));
+				}
+				
 				group.getTunings().add(tuning);
 			} else if (nodeName.equals(GROUP_TAG)) {
 				NamedNodeMap params = child.getAttributes();
