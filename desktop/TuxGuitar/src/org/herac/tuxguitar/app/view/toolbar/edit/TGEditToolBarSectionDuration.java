@@ -222,7 +222,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	}
 	
 	private UIMenuCheckableItem createDivisionTypeMenuItem(TGDivisionType divisionType) {
-		UIMenuCheckableItem uiMenuItem = this.divisionTypeItem.getMenu().createCheckItem();
+		UIMenuCheckableItem uiMenuItem = this.divisionTypeItem.getMenu().createRadioItem();
 		uiMenuItem.setData(TGDivisionType.class.getName(), divisionType);
 		uiMenuItem.addSelectionListener(this.createDivisionTypeAction(divisionType));
 		
