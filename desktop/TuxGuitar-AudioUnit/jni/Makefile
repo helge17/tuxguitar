@@ -1,7 +1,6 @@
-SDK = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-JAVA_FRAMEWORK = $(SDK)/System/Library/Frameworks/JavaRuntimeSupport.framework
+CXX = g++
 
-INCLUDES = -I $(JAVA_FRAMEWORK)/Headers/ -I ../../build-scripts/native-modules/common-include/
+INCLUDES = -I ../../build-scripts/native-modules/common-include/
 
 LIBRARIES = -framework CoreAudio -framework JavaRuntimeSupport -framework AudioUnit -framework AudioToolbox -framework CoreServices
 
@@ -12,9 +11,9 @@ FILENAME = org_herac_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI.cp
 all:	$(LIBRARY)
 
 $(LIBRARY):	clean
-	g++ $(INCLUDES) -isysroot $(SDK) -arch x86_64 $(LIBRARIES) -msse -bundle -o intel_$(LIBRARY) $(FILENAME)
-	# TODO ARM binary: g++ ...
-	# TODO universal binary: lipo -create intel_$(LIBRARY) arm_$(LIBRARY) -output $(LIBRARY)
+	$(CXX) $(INCLUDES) -arch x86_64 $(LIBRARIES) -msse -bundle -o intel64_$(LIBRARY) $(FILENAME)
+	$(CXX) $(INCLUDES) -arch arm64 $(LIBRARIES) -bundle -o arm64_$(LIBRARY) $(FILENAME)
+	lipo -create intel64_$(LIBRARY) arm64_$(LIBRARY) -output ../../build-scripts/common-resources/common-macosx/Contents/MacOS/lib/$(LIBRARY)
 
 clean:
-	rm -f intel_$(LIBRARY) arm_$(LIBRARY) $(LIBRARY)
+	rm -f intel64_$(LIBRARY) arm64_$(LIBRARY) $(LIBRARY)
