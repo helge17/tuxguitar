@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.song.models;
 
+import java.util.Arrays;
+
 public class TGTuning implements Comparable<TGTuning> {
 
 	private String name;
@@ -32,7 +34,11 @@ public class TGTuning implements Comparable<TGTuning> {
 		if (values.length == 0)
 			return false;
 		
-		return (minVal >= values[values.length - 1]) && (maxVal <= values[0]);
+		int[] tmp = values.clone();
+		// sort note value from low to high
+		Arrays.sort(tmp);
+		
+		return (minVal >= tmp[0]) && (maxVal <= tmp[values.length - 1]);
 
 	}
 	

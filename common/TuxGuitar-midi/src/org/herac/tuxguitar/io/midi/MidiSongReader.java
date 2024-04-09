@@ -52,9 +52,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	private TGFactory factory;
 	private String sequenceName = "";
 	private TGSongManager tgSongManager;
+	private TGContext context;
 	
-	public MidiSongReader() {
+	public MidiSongReader(TGContext context) {
 		super();
+		this.context = context;
 	}
 	
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
@@ -702,10 +704,10 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		public List<TGString> getStrings(int maxFret) {
 			List<TGString> strings = new ArrayList<TGString>();
 
-			TuningManager tuningManager = TuningManager.getInstance(new TGContext());
+			TuningManager tuningManager = TuningManager.getInstance(MidiSongReader.this.context);
 			List<TGTuning> tunings = tuningManager.getPriorityTgTunings();
 			
-			for (TGTuning tuning : tunings) 
+			for (TGTuning tuning : tunings) {
 				if (tuning.isWithinRange(this.minValue, this.maxValue - maxFret)) {
 					int [] notes = tuning.getValues();
 					for (int i = 0; i < notes.length; i++)
@@ -713,6 +715,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 					// if we find a tuning in range, we don't need to search any further, break out of the loop.
 					break;
 				}
+			}
 
 			if (strings.isEmpty()) {
 				int stringCount = 6;

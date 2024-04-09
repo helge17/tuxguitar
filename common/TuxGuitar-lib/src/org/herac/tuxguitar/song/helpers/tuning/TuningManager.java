@@ -82,11 +82,7 @@ public class TuningManager {
 	private void loadTunings(){
 		try{
 			TuningReader tuningReader = new TuningReader();
-			
-			String defaultTuningFilePath = TGUserFileUtils.PATH_HOME + File.separator + "share" + File.separator + TG_TUNING_FILE;
-			
-			tuningReader.loadTunings(this.tgTuningsGroup, new FileInputStream(defaultTuningFilePath) );
-			
+			tuningReader.loadTunings(this.tgTuningsGroup, TGResourceManager.getInstance(this.context).getResourceAsStream(TG_TUNING_FILE) );
 			File file = new File(TGUserFileUtils.PATH_USER_TUNINGS);
 			if (TGUserFileUtils.isExistentAndReadable(file)) {
 				tuningReader.loadTunings(this.customTuningsGroup, new FileInputStream(TGUserFileUtils.PATH_USER_TUNINGS));
