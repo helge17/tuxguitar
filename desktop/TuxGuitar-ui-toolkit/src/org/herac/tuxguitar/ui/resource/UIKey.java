@@ -36,7 +36,7 @@ public class UIKey {
 	public static final UIKey DOWN = new UIKey("Down");
 	public static final UIKey LEFT = new UIKey("Left");
 	public static final UIKey RIGHT = new UIKey("Right");
-	public static final UIKey NUMPAD_ENTER = new UIKey("Num Enter");
+	public static final UIKey NUMPAD_ENTER = new UIKey("NumEnter");
 
 	private String code;
 	

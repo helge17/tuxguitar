@@ -11,7 +11,7 @@
 	<shortcut keys="8" action="action.note.general.set-fret-number-8"/>
 	<shortcut keys="9" action="action.note.general.set-fret-number-9"/>
 	<shortcut keys="BackSpace" action="action.beat.general.delete-note-or-rest"/>
-	<shortcut keys="Ins" action="action.beat.general.insert-rest"/>
+	<shortcut keys="NumEnter" action="action.beat.general.insert-rest"/>
 	<shortcut keys="+" action="action.note.duration.increment-duration"/>
 	<shortcut keys="-" action="action.note.duration.decrement-duration"/>
 	<shortcut keys="Up" action="action.caret.go-up"/>
@@ -36,7 +36,7 @@
 	<shortcut keys="F1" action="action.gui.open-documentation-dialog"/>
 	<shortcut keys="a" action="action.gui.open-chord-dialog"/>
 	<shortcut keys="t" action="action.gui.open-text-dialog"/>
-	<shortcut keys="Shift Ins" action="action.gui.open-marker-editor-dialog"/>
+	<shortcut keys="Shift NumEnter" action="action.gui.open-marker-editor-dialog"/>
 	<shortcut keys="Alt Right" action="action.marker.go-next"/>
 	<shortcut keys="Alt Left" action="action.marker.go-previous"/>
 	<shortcut keys="Command Shift Left" action="action.measure.go-first"/>
@@ -65,7 +65,7 @@
 	<shortcut keys="l" action="action.note.general.tied"/>
 	<shortcut keys="F7" action="action.settings.configure"/>
 	<shortcut keys="Command b" action="action.gui.toggle-browser-dialog"/>
-	<shortcut keys="Command Shift Ins" action="action.track.add-new"/>
+	<shortcut keys="Command Shift NumEnter" action="action.track.add-new"/>
 	<shortcut keys="Command Shift Up" action="action.track.go-previous"/>
 	<shortcut keys="Command Shift Down" action="action.track.go-next"/>
 	<shortcut keys="Command Shift BackSpace" action="action.track.remove"/>
