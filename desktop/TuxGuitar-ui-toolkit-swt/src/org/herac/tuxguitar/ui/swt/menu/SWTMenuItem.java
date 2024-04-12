@@ -6,6 +6,7 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import org.herac.tuxguitar.util.TGKeyBindFormatter;
 
 public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuItem {
 	
@@ -46,7 +47,8 @@ public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuIte
 	public void setText(String text) {
 		String textWithAccelerator = text;
 		if( this.getKeyCombination() != null ) {
-			textWithAccelerator += "\t" + this.getKeyCombination().toString();
+			String accelerator = TGKeyBindFormatter.getInstance().format(this.getKeyCombination().getKeyStrings());
+			textWithAccelerator += "\t" + accelerator;
 		}
 		this.getControl().setText(textWithAccelerator);
 	}
