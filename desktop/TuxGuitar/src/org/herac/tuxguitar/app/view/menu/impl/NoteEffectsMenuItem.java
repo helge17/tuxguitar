@@ -164,19 +164,20 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 	public void update(){
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGNoteRange noteRange = TablatureEditor.getInstance(this.findContext()).getTablature().getCurrentNoteRange();
+		boolean isPercussion = TablatureEditor.getInstance(this.findContext()).getTablature().getCaret().getTrack().isPercussion();
 
 		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
-		this.vibrato.setEnabled(!running && !noteRange.isEmpty());
+		this.vibrato.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.bend.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isBend()));
-		this.bend.setEnabled(!running && !noteRange.isEmpty());
+		this.bend.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.tremoloBar.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloBar()));
-		this.tremoloBar.setEnabled(!running && !noteRange.isEmpty());
+		this.tremoloBar.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
-		this.deadNote.setEnabled(!running && !noteRange.isEmpty());
+		this.deadNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
-		this.slide.setEnabled(!running && !noteRange.isEmpty());
+		this.slide.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
-		this.hammer.setEnabled(!running && !noteRange.isEmpty());
+		this.hammer.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
 		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
 		this.accentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isAccentuatedNote()));
@@ -184,27 +185,27 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
 		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.letRing.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isLetRing()));
-		this.letRing.setEnabled(!running && !noteRange.isEmpty());
+		this.letRing.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
-		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty());
+		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
 		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
 		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));
-		this.trill.setEnabled(!running && !noteRange.isEmpty());
+		this.trill.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.tremoloPicking.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloPicking()));
 		this.tremoloPicking.setEnabled(!running && !noteRange.isEmpty());
 		this.palmMute.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPalmMute()));
-		this.palmMute.setEnabled(!running && !noteRange.isEmpty());
+		this.palmMute.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.staccato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isStaccato()));
-		this.staccato.setEnabled(!running && !noteRange.isEmpty());
+		this.staccato.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.tapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTapping()));
-		this.tapping.setEnabled(!running && !noteRange.isEmpty());
+		this.tapping.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.slapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlapping()));
-		this.slapping.setEnabled(!running && !noteRange.isEmpty());
+		this.slapping.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.popping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPopping()));
-		this.popping.setEnabled(!running && !noteRange.isEmpty());
+		this.popping.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.fadeIn.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isFadeIn()));
-		this.fadeIn.setEnabled(!running && !noteRange.isEmpty());
+		this.fadeIn.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 	}
 
 	public void loadProperties(){

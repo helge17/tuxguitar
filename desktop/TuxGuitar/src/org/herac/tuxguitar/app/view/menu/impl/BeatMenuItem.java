@@ -215,14 +215,12 @@ public class BeatMenuItem extends TGMenuItem {
 		this.moveBeatsRight.setEnabled(!running);
 		this.moveBeatsCustom.setEnabled(!running);
 		this.durationMenuItem.update();
+		this.effectMenuItem.update();
 		if (track.isPercussion()) {
 			this.chordMenuItem.setEnabled(false);
-			this.effectMenuItem.setEnabled(false);
 		} else {
 			this.chordMenuItem.setEnabled(true);
-			this.effectMenuItem.setEnabled(true);
 			this.chordMenuItem.update();
-			this.effectMenuItem.update();
 		}
 		this.dynamicMenuItem.update();
 	}
