@@ -903,9 +903,20 @@ public class TGMeasureManager {
 				TGString currentString = track.getString(note.getString());
 				TGString nextString = track.getString(nextStringNumber);
 				int noteValue = (note.getValue() + currentString.getValue());
-				if(noteValue >= nextString.getValue() && ((nextString.getValue() + track.getMaxFret() >= noteValue) || track.isPercussion()) ){
+				boolean canMove = noteValue >= nextString.getValue();
+				canMove &= ((nextString.getValue() + track.getMaxFret() >= noteValue) || track.isPercussion());
+				int graceValue = 0;
+				if (note.getEffect().isGrace()) {
+					graceValue = note.getEffect().getGrace().getFret() + currentString.getValue();
+					canMove &= (graceValue >= nextString.getValue());
+					canMove &= ((nextString.getValue() + track.getMaxFret() >= graceValue) || track.isPercussion());
+				}
+				if (canMove) {
 					note.setValue(noteValue - nextString.getValue());
 					note.setString(nextString.getNumber());
+					if (note.getEffect().isGrace()) {
+						note.getEffect().getGrace().setFret(graceValue-nextString.getValue());
+					}
 					return note.getString();
 				}
 			}
