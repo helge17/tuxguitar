@@ -311,7 +311,7 @@
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
-				<version>4.13</version>
+				<version>4.14</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
