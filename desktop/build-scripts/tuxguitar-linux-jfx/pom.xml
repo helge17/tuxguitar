@@ -404,7 +404,6 @@
 				<module>../native-modules/tuxguitar-jack-linux</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux</module>
 				<module>../native-modules/tuxguitar-synth-lv2-linux</module>
-				<module>../native-modules/tuxguitar-synth-vst-linux</module>
 			</modules>
 
 			<build>
@@ -432,11 +431,7 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-synth-lv2-linux/target/build" />
 										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-linux/target/build" />
-										</copy>
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="755" />
-										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.bin" perm="755" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>

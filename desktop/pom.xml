@@ -282,12 +282,6 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-synth-vst</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-synth-export</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
@@ -307,12 +301,12 @@
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux</artifactId>
-				<version>4.21</version>
+				<version>4.26</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.win32.win32</artifactId>
-				<version>4.13</version>
+				<version>4.21</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>

@@ -10,16 +10,19 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.editor.clipboard.TGClipboard;
 import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class MeasureMenuItem extends TGMenuItem {
 
 	private UIMenuSubMenuItem measureMenuItem;
+	private UIMenuCheckableItem lineBreak;
 	private UIMenuActionItem first;
 	private UIMenuActionItem last;
 	private UIMenuActionItem next;
@@ -35,6 +38,13 @@ public class MeasureMenuItem extends TGMenuItem {
 	}
 
 	public void showItems(){
+		//--LINEBREAK--
+		this.lineBreak = this.measureMenuItem.getMenu().createCheckItem();
+		this.lineBreak.addSelectionListener(this.createActionProcessor(TGToggleLineBreakAction.NAME));
+		
+		//--SEPARATOR--
+		this.measureMenuItem.getMenu().createSeparator();
+
 		//--FIRST--
 		this.first = this.measureMenuItem.getMenu().createActionItem();
 		this.first.addSelectionListener(this.createActionProcessor(TGGoFirstMeasureAction.NAME));
@@ -86,6 +96,8 @@ public class MeasureMenuItem extends TGMenuItem {
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		boolean isFirst = (measure.getNumber() == 1);
 		boolean isLast = (measure.getNumber() == measure.getTrack().countMeasures());
+		this.lineBreak.setEnabled(!running);
+		this.lineBreak.setChecked(measure.isLineBreak());
 		this.first.setEnabled(!isFirst);
 		this.previous.setEnabled(!isFirst);
 		this.next.setEnabled(!isLast);
@@ -99,6 +111,7 @@ public class MeasureMenuItem extends TGMenuItem {
 
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.measureMenuItem, "measure", null);
+		setMenuItemTextAndAccelerator(this.lineBreak, "measure.linebreak", TGToggleLineBreakAction.NAME);
 		setMenuItemTextAndAccelerator(this.first, "measure.first", TGGoFirstMeasureAction.NAME);
 		setMenuItemTextAndAccelerator(this.last, "measure.last", TGGoLastMeasureAction.NAME);
 		setMenuItemTextAndAccelerator(this.previous, "measure.previous", TGGoPreviousMeasureAction.NAME);

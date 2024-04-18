@@ -206,18 +206,6 @@ fi
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ...\n"
 
-if [ ! -e $SW_DIR/VST_SDK/V2/VST_SDK_2.4 ]; then
-  echo -e "\n# Download the Steinberg SDK (VST_SDK_2.4) ..."
-  mkdir -p $SW_DIR/VST_SDK/V2
-  ( cd $SW_DIR/VST_SDK/V2 && git clone https://github.com/R-Tur/VST_SDK_2.4.git )
-  echo "# OK."
-fi
-
-echo "# Copy header files of the Steinberg SDK (VST_SDK_2.4) in place ..."
-  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include/
-  cp -Ta $SW_DIR/VST_SDK/V2/VST_SDK_2.4/pluginterfaces/vst2.x/ desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include/
-echo "# OK."
-
 echo -e "\n# Change build version from 9.99-SNAPSHOT to $TGVERSION in config files ..."
   find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i "s/9.99-SNAPSHOT/$TGVERSION/" '{}' \;
   # Also set the version in the "Help - About" dialog
@@ -647,16 +635,17 @@ fi
 
 # Linux
 if [ $build_linux ]; then
-  SWT_VERSION=4.21
-  SWT_DATE=202109060500
+  # SWT version in Debian 12
+  SWT_VERSION=4.26
+  SWT_DATE=202211231800
   SWT_PLATFORM=gtk-linux
   [ `uname` == Linux ] && build_tg_for_linux
 fi
 
 # Windows 64 bit x86_64 build
 if [ $build_windows ]; then
-  SWT_VERSION=4.13
-  SWT_DATE=201909161045
+  SWT_VERSION=4.21
+  SWT_DATE=202109060500
   SWT_PLATFORM=win32-win32
   # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
   PA_JAVA=OpenJDK64_17.0.1-12.paf

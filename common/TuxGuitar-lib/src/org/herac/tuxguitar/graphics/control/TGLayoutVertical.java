@@ -172,19 +172,21 @@ public class TGLayoutVertical extends TGLayout{
 		}
 		
 		int measureCount = track.countMeasures();
+		boolean lineBreak = false;
 		for (int measureIdx = fromIndex; measureIdx < measureCount; measureIdx++) {
 			TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(measureIdx);
 			
 			//verifico si tengo que bajar de linea
-			if((line.tempWith + measure.getWidth(this)) >= this.maximumWidth ){
+			line.fullLine = (line.tempWith + measure.getWidth(this)) >= this.maximumWidth;
+			if(line.fullLine || lineBreak){
 				if( line.measures.isEmpty() ) {
 					this.addToTempLine(line, ts, measure, measureIdx);
 				}
-				line.fullLine = true;
 				return line;
 			}
 			
 			this.addToTempLine(line, ts, measure, measureIdx);
+			if (measureIdx+1<measureCount) lineBreak = ((TGMeasureImpl)track.getMeasure(measureIdx+1)).isLineBreak();
 		}
 		
 		return line;

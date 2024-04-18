@@ -22,14 +22,14 @@ misc/build_tuxguitar_from_source.sh
 - Maven 3.3 or higher
 - Fluidsynth (optional)
 - JACK (optional)
-- Eclipse SWT 4.13
+- Eclipse SWT 4
 
 ## Build on Debian/Ubuntu Linux
 
 ### Install Prerequisites
 
 ```sh
-$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev libgtk-3-dev liblilv-dev libsuil-dev qtbase5-dev
+$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
 ```
 
 In order for Asian characters to be displayed correctly, you may also need to install the `fonts-wqy-zenhei` font package.
@@ -37,11 +37,11 @@ In order for Asian characters to be displayed correctly, you may also need to in
 ### Download and install SWT for Linux
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-gtk-linux-`uname -m`.zip
-$ mkdir swt-4.21-gtk-linux-`uname -m`
-$ cd swt-4.21-gtk-linux-`uname -m`
-$ unzip ../swt-4.21-gtk-linux-`uname -m`.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.21
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-gtk-linux-`uname -m`.zip
+$ mkdir swt-4.26-gtk-linux-`uname -m`
+$ cd swt-4.26-gtk-linux-`uname -m`
+$ unzip ../swt-4.26-gtk-linux-`uname -m`.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.26
 $ cd ..
 ```
 
@@ -50,19 +50,6 @@ $ cd ..
 ```sh
 $ git clone https://github.com/helge17/tuxguitar.git
 $ cd tuxguitar
-```
-
-### Hacks
-
-For the (outdated) VST plugin you need some additional header files:
-
-```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-linux/include
-$ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
-    wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
-  done
-$ cd -
 ```
 
 ### Build and install
@@ -83,7 +70,7 @@ $ tuxguitar
 
 ## Generic GNU/Linux
 
-On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT, download the TuxGuitar sources and the VST header files as described for Debian above.
+On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT and download the TuxGuitar sources as described for Debian above.
 
 ### Build and Start TuxGuitar
 
@@ -110,30 +97,17 @@ $ sudo apt install wget unzip git default-jdk maven gcc-mingw-w64-x86-64 g++-min
 ### Download and install SWT for Windows
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/swt-4.13-win32-win32-x86_64.zip
-$ mkdir swt-4.13-win32-win32-x86_64
-$ cd swt-4.13-win32-win32-x86_64
-$ unzip ../swt-4.13-win32-win32-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.13
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-win32-win32-x86_64.zip
+$ mkdir swt-4.21-win32-win32-x86_64
+$ cd swt-4.21-win32-win32-x86_64
+$ unzip ../swt-4.21-win32-win32-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.21
 $ cd ..
 ```
 
 ### Get the TuxGuitar sources
 
 Same as for Debian (see above).
-
-### Hacks
-
-Download the VST header files:
-
-```sh
-$ mkdir desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ cd desktop/build-scripts/native-modules/tuxguitar-synth-vst-windows-x86/include
-$ for hfile in aeffect.h aeffectx.h vstfxstore.h; do
-    wget https://raw.githubusercontent.com/R-Tur/VST_SDK_2.4/master/pluginterfaces/vst2.x/$hfile
-  done
-$ cd -
-```
 
 ### Build and Start TuxGuitar
 

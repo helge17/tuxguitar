@@ -468,17 +468,19 @@ public class TGFretBoard {
 	}
 	
 	private void paintKeyText(UIPainter painter, UIColor foreground, int x, int y, String text) {
-		painter.setBackground(this.config.getColorKeyTextBackground());
-		painter.setForeground(foreground);
-		painter.setFont(this.config.getFont());
-		
-		float fmWidth = painter.getFMWidth(text);
-		float fmHeight = painter.getFMHeight();
-		
-		painter.initPath(UIPainter.PATH_FILL);
-		painter.addRectangle(x - (fmWidth / 2f), y - (fmHeight / 2f), fmWidth, fmHeight);
-		painter.closePath();
-		painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
+		if (!getTrack().isPercussion()) {
+			painter.setBackground(this.config.getColorKeyTextBackground());
+			painter.setForeground(foreground);
+			painter.setFont(this.config.getFont());
+			
+			float fmWidth = painter.getFMWidth(text);
+			float fmHeight = painter.getFMHeight();
+			
+			painter.initPath(UIPainter.PATH_FILL);
+			painter.addRectangle(x - (fmWidth / 2f), y - (fmHeight / 2f), fmWidth, fmHeight);
+			painter.closePath();
+			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
+		}
 	}
 	
 	protected void paintEditor(UIPainter painter) {
@@ -697,7 +699,7 @@ public class TGFretBoard {
 	}
 	
 	public void configure(){
-		this.config.configure(TGWindow.getInstance(this.context).getWindow());
+		this.config.configure(TGWindow.getInstance(this.context).getWindow(), getTrack().isPercussion());
 	}
 	
 	public void reloadFromConfig(){

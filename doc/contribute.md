@@ -50,7 +50,7 @@ TuxGuitar is available in many languages, but yours may be missing.  We also reg
 Translation files are available:
 
 - [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar/share/lang) for main application
-- [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang) and [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) for plugins
+- there for plugins: [tuner](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [batch file converter](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang), [jack](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) and [pdf export](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-pdf-ui/share/lang)
 
 Translation files for the Android application are derived from the files above.
 
@@ -146,11 +146,11 @@ To have all foreign packages in your Eclipse workspace, create a folder named "e
 eclipse-workspace$ sudo apt install maven
 eclipse-workspace$ mkdir externals
 eclipse-workspace$ cd externals
-eclipse-workspace$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-gtk-linux-x86_64.zip
-eclipse-workspace/externals$ mkdir swt-4.21-gtk-linux-x86_64
-eclipse-workspace/externals$ cd swt-4.21-gtk-linux-x86_64
-eclipse-workspace/externals$ unzip ../swt-4.21-gtk-linux-x86_64.zip
-eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.21
+eclipse-workspace$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-gtk-linux-x86_64.zip
+eclipse-workspace/externals$ mkdir swt-4.26-gtk-linux-x86_64
+eclipse-workspace/externals$ cd swt-4.26-gtk-linux-x86_64
+eclipse-workspace/externals$ unzip ../swt-4.26-gtk-linux-x86_64.zip
+eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.26
 ```
 #### Import the launch configurations for building, running and debugging
 In order to make it easy for you, we stored example launch configurations in the repository.  To import them, go to Menu File->Import and select Run/Debug->Launch configuration.  Import the configurations located in **eclipse-workspace/git/tuxguitar/development.** You can use them as a starting point.  You might need to adjust them to fullfill your folder structure.

@@ -1544,4 +1544,8 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		return getPosY();
 	}
+	
+	public boolean isLineBreak() {
+		return getHeaderImpl().isLineBreak();
+	}
 }

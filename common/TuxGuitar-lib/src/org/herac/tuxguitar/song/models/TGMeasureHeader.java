@@ -29,6 +29,7 @@ public abstract class TGMeasureHeader {
 	private int repeatClose;
 	private int tripletFeel;
 	private TGSong song;
+	private boolean lineBreak;
 	
 	public TGMeasureHeader(TGFactory factory){
 		this.number = 0;
@@ -142,6 +143,19 @@ public abstract class TGMeasureHeader {
 		this.song = song;
 	}
 	
+	public void toggleLineBreak() {
+		this.lineBreak = !this.lineBreak;
+	}
+	
+	public boolean isLineBreak() {
+		return this.lineBreak;
+	}
+	
+	public void setLineBreak(boolean lineBreak) {
+		this.lineBreak = lineBreak;
+	}
+	
+	
 	public void copyFrom(TGFactory factory, TGMeasureHeader header){
 		this.setNumber(header.getNumber());
 		this.setStart(header.getStart());
@@ -153,6 +167,8 @@ public abstract class TGMeasureHeader {
 		this.getTempo().copyFrom(header.getTempo());
 		this.setMarker(header.hasMarker() ? header.getMarker().clone(factory) : null);
 		this.checkMarker();
+		this.setLineBreak(header.isLineBreak());
+		
 	}
 	
 	public TGMeasureHeader clone(TGFactory factory){
@@ -160,4 +176,5 @@ public abstract class TGMeasureHeader {
 		tgMeasureHeader.copyFrom(factory, this);
 		return tgMeasureHeader;
 	}
+
 }

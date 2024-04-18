@@ -2,19 +2,34 @@
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
 	<mime-type type="audio/x-tuxguitar">
 		<comment>TuxGuitar file</comment>
+		<comment xml:lang="de">TuxGuitar-Datei</comment>
+		<comment xml:lang="it">File di TuxGuitar</comment>
 		<glob pattern="*.tg"/>
 	</mime-type>
 	<mime-type type="audio/x-gtp">
 		<comment>GuitarPro file</comment>
+		<comment xml:lang="de">GuitarPro-Datei</comment>
+		<comment xml:lang="it">File di GuitarPro</comment>
 		<glob pattern="*.gtp"/>
 		<glob pattern="*.gp3"/>
 		<glob pattern="*.gp4"/>
 		<glob pattern="*.gp5"/>
-		<glob pattern="*.gpx"/>
 		<glob pattern="*.gp"/>
+	</mime-type>
+	<mime-type type="audio/x-gtp">
+		<comment>GuitarPro file</comment>
+		<comment xml:lang="de">GuitarPro-Datei</comment>
+		<comment xml:lang="it">File di GuitarPro</comment>
+		<!-- The file extension gpx is also used for GPX geographic data. GuitarPro gpx files always begin with "BCFZ" -->
+		<magic priority="50">
+			<match value="BCFZ" type="string" offset="0" />
+		</magic>
+		<glob pattern="*.gpx"/>
 	</mime-type>
 	<mime-type type="audio/x-ptb">
 		<comment>PowerTab file</comment>
+		<comment xml:lang="de">PowerTab-Datei</comment>
+		<comment xml:lang="it">File di PowerTab</comment>
 		<glob pattern="*.ptb"/>
 	</mime-type>
 </mime-info>
