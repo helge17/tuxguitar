@@ -1,11 +1,13 @@
 package org.herac.tuxguitar.app.view.dialog.transport;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
+import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
@@ -15,9 +17,12 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGMeasuresInterval;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.ui.UIFactory;
+import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
@@ -26,11 +31,15 @@ import org.herac.tuxguitar.ui.widget.UICheckBox;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 import org.herac.tuxguitar.ui.widget.UILabel;
+import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UISpinner;
+import org.herac.tuxguitar.ui.widget.UITable;
+import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGBeatRange;
 
@@ -40,6 +49,12 @@ public class TGTransportModeDialog {
 	protected static final int MAX_SELECTION = 500;
 	
 	private TGViewContext context;
+	private List<TGMeasuresInterval> presets;
+
+	private UITable<TGMeasuresInterval> presetTable;
+
+	private MHeaderComboController mHeaderController;
+
 	protected UIRadioButton simple;
 	protected UICheckBox simpleLoop;
 	protected UISpinner simplePercent;
@@ -51,6 +66,9 @@ public class TGTransportModeDialog {
 	
 	protected UIDropDownSelect<Integer> loopSHeader;
 	protected UIDropDownSelect<Integer> loopEHeader;
+
+	protected UIDropDownSelect<TGMeasuresInterval> presetSelect;
+	protected String presetSetName;
 	
 	public TGTransportModeDialog(TGViewContext context){
 		this.context = context;
@@ -64,7 +82,19 @@ public class TGTransportModeDialog {
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		final TGBeatRange beats = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 		boolean isSelectionActive = Boolean.TRUE.equals(this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE));
-		
+		TGSong song = TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+
+		this.presets = new ArrayList<>();
+
+		Iterator<TGMeasuresInterval> presets = song.getMeasuresIntervals();
+
+		while(presets.hasNext()){
+			TGMeasuresInterval preset = (TGMeasuresInterval)presets.next();
+
+			this.presets.add(preset);
+		}
+
+
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("transport.mode"));
 		
@@ -205,17 +235,20 @@ public class TGTransportModeDialog {
 		this.loopEHeader = uiFactory.createDropDownSelect(rangeGroup);
 		rangeLayout.set(this.loopEHeader, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		mHeaderRangeStatus.addControl(this.loopEHeader);
-		
+
+
+		this.initPresetTable(rangeGroup);
+
 		if (isSelectionActive && beats!= null && !beats.isEmpty()) {
 			mode.setLoopSHeader(beats.firstMeasure().getNumber());
 			mode.setLoopEHeader(beats.lastMeasure().getNumber());
 		}
 		
-		MHeaderComboController mHeaderController = new MHeaderComboController(this.loopSHeader, this.loopEHeader);
-		mHeaderController.updateLoopSHeader( mode.getLoopSHeader() );
-		mHeaderController.updateLoopEHeader( mode.getLoopSHeader() , mode.getLoopEHeader() );
-		mHeaderController.appendListener();
-		
+		this.mHeaderController = new MHeaderComboController(this.loopSHeader, this.loopEHeader);
+		this.mHeaderController.updateLoopSHeader( mode.getLoopSHeader() );
+		this.mHeaderController.updateLoopEHeader( mode.getLoopSHeader() , mode.getLoopEHeader() );
+		this.mHeaderController.appendListener();
+
 		simpleAdapter.update();
 		customAdapter.update();
 		mHeaderRangeStatus.update();
@@ -244,7 +277,7 @@ public class TGTransportModeDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
@@ -276,6 +309,61 @@ public class TGTransportModeDialog {
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_S_HEADER, (loop && loopSHeader != null ? loopSHeader : -1 ));
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_E_HEADER, (loop && loopEHeader != null ? loopEHeader : -1 ));
 		tgActionProcessor.process();
+	}
+
+	private void initPresetTable(UILayoutContainer parent) {
+		UIFactory factory = this.getUIFactory();
+		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
+
+		UITableLayout panelLayout = new UITableLayout();
+		UIPanel panel = factory.createPanel(parent, false);
+		panel.setLayout(panelLayout);
+		parentLayout.set(panel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		this.presetTable = factory.createTable(panel, true);
+		this.presetTable.setColumns(2);
+		this.presetTable.setColumnName(0, TuxGuitar.getProperty("tuning.label"));
+		this.presetTable.setColumnName(1, TuxGuitar.getProperty("tuning.value"));
+
+		panelLayout.set(this.presetTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true);
+		panelLayout.set(this.presetTable, UITableLayout.PACKED_WIDTH, 320f);
+		panelLayout.set(this.presetTable, UITableLayout.PACKED_HEIGHT, 200f);
+		
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttonsPanel = factory.createPanel(panel, false);
+		buttonsPanel.setLayout(buttonsLayout);
+		panelLayout.set(buttonsPanel, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
+		
+		UIButton buttonAdd = factory.createButton(buttonsPanel);
+		buttonAdd.setImage(TGIconManager.getInstance(this.context.getContext()).getListAdd());
+		buttonAdd.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTransportModeDialog.this.onAddPreset();
+			}
+		});
+
+		UIButton buttonDelete = factory.createButton(buttonsPanel);
+		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
+		buttonDelete.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTransportModeDialog.this.onRemovePreset();
+			}
+		});
+		
+		UIButton buttonEdit = factory.createButton(buttonsPanel);
+		buttonEdit.setImage(TGIconManager.getInstance(this.context.getContext()).getListEdit());
+		buttonEdit.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGTransportModeDialog.this.onLoadPreset();
+			}
+		});	
+		
+		
+		buttonsLayout.set(buttonAdd, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
+		buttonsLayout.set(buttonDelete, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
+		buttonsLayout.set(buttonEdit, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
+
+		this.loadPresetTable();
 	}
 	
 	private class RadioSelectionAdapter implements UISelectionListener {
@@ -364,6 +452,8 @@ public class TGTransportModeDialog {
 		public void update(){
 			// Check enabled
 			this.enabled = this.customLoop.isSelected();
+			System.out.print("\n\n\n\nprintinggg " + this.customLoop.isSelected());
+
 			if( !this.enabled ){
 				if( this.simpleMode.isSelected() ){
 					this.enabled = this.simpleLoop.isSelected();
@@ -439,5 +529,84 @@ public class TGTransportModeDialog {
 				}
 			});
 		}
+	}
+
+	private void loadPresetTable() {
+		this.presetTable.removeItems();
+		for(TGMeasuresInterval preset : this.presets) {
+			UITableItem<TGMeasuresInterval> item = new UITableItem<TGMeasuresInterval>(preset);
+			item.setText(0, preset.getTitle());
+			item.setText(1, preset.getStart().getNumber() + " - " + preset.getEnd().getNumber());
+			
+			this.presetTable.addItem(item);
+		}
+	}
+
+	private void updatePresetTable() {
+		TGMeasuresInterval selection = this.presetTable.getSelectedValue();
+		
+		this.presetTable.removeItems();
+		for(TGMeasuresInterval preset : this.presets) {
+			UITableItem<TGMeasuresInterval> item = new UITableItem<TGMeasuresInterval>(preset);
+			item.setText(0, preset.getTitle());
+			item.setText(1, preset.getStart().getNumber() + " - " + preset.getEnd().getNumber());
+			
+			this.presetTable.addItem(item);
+		}
+		
+		if( selection != null ) {
+			this.presetTable.setSelectedValue(selection);
+		}
+	}
+	
+
+	private void updateTuningControls() {
+		this.updatePresetTable();
+	}
+
+	private void removePreset(TGMeasuresInterval preset) {
+		if( this.presets.remove(preset)) {
+			this.updateTuningControls();
+			TGSong song = TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+
+			song.removeMeasuresIntervals(preset);
+		}
+	}
+
+	private void onRemovePreset() {
+		TGMeasuresInterval preset = this.presetTable.getSelectedValue();
+		if( preset != null ) {
+			removePreset(preset);
+		}
+	}
+
+
+	private void onAddPreset() {
+		TGSong song = TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		TGMeasureHeader startHeader = song.getMeasureHeader( this.loopSHeader.getSelectedValue() - 1 );
+		TGMeasureHeader endHeader = song.getMeasureHeader( this.loopEHeader.getSelectedValue() - 1 );
+		TGMeasuresInterval preset = new TGMeasuresInterval();
+
+		preset.setStart(startHeader);
+		preset.setEnd(endHeader);
+
+		this.presets.add(preset);
+		this.updateTuningControls();
+
+		song.addMeasuresIntervals(preset);
+	}
+	
+	private void onLoadPreset() {
+		TGMeasuresInterval selection = this.presetTable.getSelectedValue();
+		System.out.print("\n\n\n\nloading " + selection);
+		
+		if( selection != null ) {
+			this.mHeaderController.updateLoopSHeader( selection.getStart().getNumber() );
+			this.mHeaderController.updateLoopEHeader( selection.getStart().getNumber(), selection.getEnd().getNumber() );
+		}
+	}
+
+	public UIFactory getUIFactory() {
+		return TGApplication.getInstance(this.context.getContext()).getFactory();
 	}
 }
