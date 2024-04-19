@@ -9,6 +9,7 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
+import org.herac.tuxguitar.player.base.MidiPercussionKey;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -107,7 +108,19 @@ public class TGGraceDialog {
 			
 			this.fretSpinner = uiFactory.createSpinner(noteGroup);
 			this.fretSpinner.setValue(fret);
-			this.fretSpinner.setMaximum(track.getMaxFret());
+			if (track.isPercussion()) {
+				MidiPercussionKey[] percussionKeys = TuxGuitar.getInstance().getPlayer().getPercussionKeys();
+				int max=0;
+				int min=-1;
+				for (MidiPercussionKey key : percussionKeys) {
+					max = key.getValue() > max ? key.getValue() : max;
+					min = (min<0 || key.getValue()<min) ? key.getValue() : min;
+				}
+				this.fretSpinner.setMinimum(min);
+				this.fretSpinner.setMaximum(max);
+			} else {
+				this.fretSpinner.setMaximum(track.getMaxFret());
+			}
 			noteLayout.set(this.fretSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			this.deadButton = uiFactory.createCheckBox(noteGroup);
