@@ -76,6 +76,8 @@ public class MidiPlayer{
 	private TGBeat selectionStartBeat;
 	private TGBeat selectionEndBeat;
 	private boolean isNewSelection;
+	private long startTick = TGDuration.QUARTER_TIME;
+	private Long selectionStartTick = null;
 	
 	private long loopSPosition;
 	
@@ -112,11 +114,7 @@ public class MidiPlayer{
 			this.lock();
 			
 			this.stop();
-			if (this.selectionStartBeat!=null) {
-				this.tickPosition = this.selectionStartBeat.getStart();
-			} else {
-				this.tickPosition = TGDuration.QUARTER_TIME;
-			}
+			this.tickPosition = this.startTick;
 			this.setChangeTickPosition(false);
 		} finally {
 			this.unlock();
@@ -197,6 +195,16 @@ public class MidiPlayer{
 			this.setMetronomeEnabled(isMetronomeEnabled());
 			this.getCountDown().setTempoPercent(getMode().getCurrentPercent());
 			this.changeTickPosition();
+			if (this.selectionStartBeat==null || this.selectionEndBeat==null) {
+				// nothing selected
+				this.selectionStartTick = null;
+				this.startTick = this.tickPosition;
+			} else {
+				if (this.selectionStartTick == null) {
+					this.selectionStartTick = this.tickPosition;
+					this.startTick = this.tickPosition;
+				}
+			}
 			
 			TGThreadManager.getInstance(this.context).start(new Runnable() {
 				public void run() {
