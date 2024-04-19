@@ -83,6 +83,10 @@ public class TGGraceDialog {
 			if (grace == null) {
 				// nothing found, create new
 				grace = factory.newEffectGrace();
+				// initialize fret value with first note (arbitrarily)
+				if (!noteRange.getNotes().isEmpty()) {
+					grace.setFret(noteRange.getNotes().get(0).getValue());
+				}
 			}
 			
 			//-----init-------------------------------------------------
