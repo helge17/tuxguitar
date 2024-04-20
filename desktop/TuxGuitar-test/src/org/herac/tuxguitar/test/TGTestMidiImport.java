@@ -3,6 +3,7 @@ package org.herac.tuxguitar.test;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.io.base.TGSongReaderHandle;
 import org.herac.tuxguitar.io.midi.MidiSongReader;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,8 @@ public class TGTestMidiImport extends TGTest {
 	}
 	
 	// see https://github.com/helge17/tuxguitar/issues/150
+	// take care, access to configuration file for tunings definition is required for this test to succeed
+	// add in run configuration the VM parameter: "-Dtuxguitar.share.path="(path to built version of tuxguitar)/share/"
 	@Test
 	void issue150() {
 		byte[] ionianScaleBytes = {
@@ -42,7 +45,7 @@ public class TGTestMidiImport extends TGTest {
 		TGSongReaderHandle handle = new TGSongReaderHandle();
 		handle.setInputStream(stream);
 		handle.setFactory(new TGFactory());
-		new MidiSongReader().read(handle);
+		new MidiSongReader(TuxGuitar.getInstance().getContext()).read(handle);
 
 		// check vs. expected values
 		int[] expectedStrings = {2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2};
