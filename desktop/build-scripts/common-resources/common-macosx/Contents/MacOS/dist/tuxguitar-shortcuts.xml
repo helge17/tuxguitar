@@ -25,11 +25,12 @@
 	<shortcut keys="Command r" action="action.edit.repeat"/>
 	<shortcut keys="Command y" action="action.edit.redo"/>
 	<shortcut keys="Command z" action="action.edit.undo"/>
+	<shortcut keys="Command a" action="action.selection.select-all"/>
 	<shortcut keys="Command 1" action="action.edit.voice-1"/>
 	<shortcut keys="Command 2" action="action.edit.voice-2"/>
-	<shortcut keys="Alt F4" action="action.file.exit"/>
 	<shortcut keys="Command n" action="action.song.new"/>
 	<shortcut keys="Command o" action="action.file.open"/>
+	<shortcut keys="Command w" action="action.file.close-current"/>
 	<shortcut keys="Command p" action="action.file.print"/>
 	<shortcut keys="Command s" action="action.file.save"/>
 	<shortcut keys="F12" action="action.file.save-as"/>
@@ -57,7 +58,6 @@
 	<shortcut keys="Command BackSpace" action="action.note.general.clean-beat"/>
 	<shortcut keys="Command Up" action="action.beat.general.voice-up"/>
 	<shortcut keys="Command Down" action="action.beat.general.voice-down"/>
-	<shortcut keys="Command a" action="action.beat.general.voice-auto"/>
 	<shortcut keys="Shift Left" action="action.note.general.decrement-semitone"/>
 	<shortcut keys="Shift Right" action="action.note.general.increment-semitone"/>
 	<shortcut keys="Shift Down" action="action.note.general.shift-down"/>
