@@ -5,14 +5,11 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.app.view.dialog.settings.items.LanguageOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.MainOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.SkinOption;
