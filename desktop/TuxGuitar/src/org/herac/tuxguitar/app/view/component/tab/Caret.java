@@ -56,8 +56,9 @@ public class Caret {
 	private boolean restBeat;
 	private boolean changes;
 	
-	private UIColor color1;
-	private UIColor color2;
+	private UIColor colorCurrentVoice;
+	private UIColor colorOtherVoice;
+	private int alpha;
 	
 	public Caret(Tablature tablature) {
 		this.tablature = tablature;
@@ -168,10 +169,13 @@ public class Caret {
 					float y = (this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - yMargin);
 					this.setPaintStyle(painter, expectedVoice);
 					
-					painter.initPath();
 					painter.setAntialias(false);
-					painter.addRectangle(x, y, width, height);
-					painter.closePath();
+					for (int style : new int[] {UIPainter.PATH_FILL, UIPainter.PATH_DRAW}) {
+						painter.initPath(style);
+						painter.setAlpha(style == UIPainter.PATH_FILL ? this.alpha : 255);
+						painter.addRoundedRectangle(x, y, width, height, 2f);
+						painter.closePath();
+					}
 				}
 				else if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
 					float line = this.tablature.getViewLayout().getScoreLineSpacing();
@@ -197,9 +201,10 @@ public class Caret {
 	}
 	
 	public void setPaintStyle(UIPainter painter, boolean expectedVoice){
-		UIColor foreground = ( expectedVoice ? this.color1 : this.color2 );
-		if( foreground != null ){
-			painter.setForeground( foreground );
+		UIColor color = ( expectedVoice ? this.colorCurrentVoice : this.colorOtherVoice );
+		if( color != null ){
+			painter.setForeground(color);
+			painter.setBackground(color);
 		}
 	}
 	
@@ -396,14 +401,18 @@ public class Caret {
 		return this.restBeat;
 	}
 	
-	public void setColor1(UIColorModel cm){
-		this.disposeResource( this.color1 );
-		this.color1 = this.tablature.getResourceFactory().createColor(cm);
+	public void setColorCurrentVoice(UIColorModel cm){
+		this.disposeResource( this.colorCurrentVoice );
+		this.colorCurrentVoice = this.tablature.getResourceFactory().createColor(cm);
 	}
 	
-	public void setColor2(UIColorModel cm){
-		this.disposeResource( this.color2 );
-		this.color2 = this.tablature.getResourceFactory().createColor(cm);
+	public void setColorOtherVoice(UIColorModel cm){
+		this.disposeResource( this.colorOtherVoice );
+		this.colorOtherVoice = this.tablature.getResourceFactory().createColor(cm);
+	}
+	
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
 	}
 
 	private void saveState() {
@@ -430,7 +439,7 @@ public class Caret {
 	}
 	
 	public void dispose(){
-		this.disposeResource( this.color1 );
-		this.disposeResource( this.color2 );
+		this.disposeResource( this.colorCurrentVoice );
+		this.disposeResource( this.colorOtherVoice );
 	}
 }
