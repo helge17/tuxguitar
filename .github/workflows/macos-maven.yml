@@ -16,8 +16,11 @@ on: [push]
 #    branches: [ "master" ]
 
 jobs:
-  build-macOS-13:
-    runs-on: macos-13
+  build-macOS:
+    strategy:
+      matrix:
+          os: [macos-12, macos-13, macos-14]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
