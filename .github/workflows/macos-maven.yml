@@ -32,6 +32,9 @@ jobs:
       run: mkdir mkdir swt-4.14-cocoa-macosx-`uname -m` && cd swt-4.14-cocoa-macosx-`uname -m` && unzip ../swt-4.14-cocoa-macosx-`uname -m`.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.14
     - name: Build with Maven
       run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify
+    - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
     - uses: actions/upload-artifact@v4
       with:
         name: Package-MacOS
