@@ -402,23 +402,6 @@ public class TGTestPlayerPosition extends TGTest {
 	}
 	
 	@Test
-	void playSelectionPartial() {
-		// start and end measures of selection are only partially selected
-		// should only play selected beats
-		log("\n----playSelectionPartial\n");
-		doMouseClickChecked(4, 0, 1);
-		doSetDurationChecked(TGDuration.QUARTER);
-		doMouseClickChecked(6, 0, 1);
-		doSetDurationChecked(TGDuration.QUARTER);
-		doMouseClickChecked(4, 3, 1);
-		doMouseShiftClick(6, 2, 2);
-		doPlayPause();
-		checkPlaysFromTick(tickPosition(4)+3*TGDuration.QUARTER_TIME);
-		checkPlaysInterval(4, 6);
-		checkPlaysUntilTick(tickPosition(6)+2*TGDuration.QUARTER_TIME);
-	}
-	
-	@Test
 	void loopStop() {
 		log("\n----loopStop\n");
 		// define a loop

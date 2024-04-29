@@ -137,10 +137,7 @@ public class TGTransport {
 	}
 	public void stop(){
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
-		if(!player.isRunning()){
-			player.reset();
-			this.gotoPlayerPosition();
-		}else{
+		if(player.isRunning()){
 			player.reset();
 		}
 	}

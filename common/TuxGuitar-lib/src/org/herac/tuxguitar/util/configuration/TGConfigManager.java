@@ -14,9 +14,25 @@ public class TGConfigManager {
 	private String module;
 	
 	public TGConfigManager(TGContext context, String module){
+		this(context,module, null);
+	}
+	
+	/* Since TuxGuitar 1.6.0, user configuration files are preserved when user upgrades TuxGuitar version
+	 * Therefore, it is possible to find in a user configuration file some deprecated parameters
+	 * Such parameter names SHALL NOT be re-used again in a future version, to avoid possible confusion.
+	 * When depreciating an old parameter, add its name in a list of obsoleteKeys, and provide it here
+	 * Depreciated parameters will then be deleted from user's configuration file
+	 */
+	
+	public TGConfigManager(TGContext context, String module, String[] obsoleteKeys){
 		this.context = context;
 		this.module = module;
 		this.initialize();
+		if (obsoleteKeys != null) {
+			for (String key : obsoleteKeys) {
+				this.properties.remove(key);
+			}
+		}
 	}
 	
 	public void initialize(){
