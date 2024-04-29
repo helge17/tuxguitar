@@ -11,8 +11,8 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	
 	public static final String CONFIGURATION_MODULE = "tuxguitar";
 	
-	public TGConfigManager(TGContext context){
-		super(context, CONFIGURATION_MODULE);
+	private TGConfigManager(TGContext context, String[] obsoleteKeys){
+		super(context, CONFIGURATION_MODULE, obsoleteKeys);
 	}
 	
 	public void setValue(String key, UIColorModel model){
@@ -34,7 +34,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	public static TGConfigManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGConfigManager.class.getName(), new TGSingletonFactory<TGConfigManager>() {
 			public TGConfigManager createInstance(TGContext context) {
-				return new TGConfigManager(context);
+				return new TGConfigManager(context, TGConfigKeys.OBSOLETE_KEYS);
 			}
 		});
 	}

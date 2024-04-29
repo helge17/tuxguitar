@@ -69,8 +69,9 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_TAB_NOTE, "64,64,64");
 		loadProperty(properties, TGConfigKeys.COLOR_PLAY_NOTE, "255,0,0");
 		loadProperty(properties, TGConfigKeys.COLOR_SELECTION, "116,152,208");
-		loadProperty(properties, TGConfigKeys.COLOR_CARET_1, "127,127,127");
-		loadProperty(properties, TGConfigKeys.COLOR_CARET_2, "165,42,42");
+		loadProperty(properties, TGConfigKeys.COLOR_CARET_CURRENT_VOICE, "5,5,5");
+		loadProperty(properties, TGConfigKeys.COLOR_CARET_OTHER_VOICE, "200,10,10");
+		loadProperty(properties, TGConfigKeys.COLOR_CARET_ALPHA, "12");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_S_MARKER, "42,165,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_E_MARKER, "165,42,42");
 		loadProperty(properties, TGConfigKeys.COLOR_MEASURE_NUMBER, "128,0,0");
