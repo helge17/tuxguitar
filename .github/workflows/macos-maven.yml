@@ -16,10 +16,8 @@ on: [push]
 #    branches: [ "master" ]
 
 jobs:
-  build macOS 13:
-
+  build-macOS-13:
     runs-on: macos-13
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
