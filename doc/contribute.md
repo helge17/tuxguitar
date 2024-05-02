@@ -49,10 +49,10 @@ TuxGuitar is available in many languages, but yours may be missing.  We also reg
 
 Translation files are available:
 
-- [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar/share/lang) for main application
+- [here](https://github.com/helge17/tuxguitar/tree/master/common/resources/lang) for main application (desktop and Android)
 - there for plugins: [tuner](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [batch file converter](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang), [jack](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) and [pdf export](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-pdf-ui/share/lang)
 
-Translation files for the Android application are derived from the files above.
+Other translation files specific to Android are present, these are derived from the files above.
 
 The easiest way to update one translation is probably to open the English "messages.properties" file and the corresponding file for your language side by side.  Those files can be edited with any standard text editor.  Every line starting with a "#" character will be ignored and corresponding message will be displayed in English.  To translate a string: add the translated text after the "=" sign, remove the leading "# " and you're done.
 
