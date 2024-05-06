@@ -97,11 +97,11 @@ $ sudo apt install wget unzip git default-jdk maven gcc-mingw-w64-x86-64 g++-min
 ### Download and install SWT for Windows
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.21-202109060500/swt-4.21-win32-win32-x86_64.zip
-$ mkdir swt-4.21-win32-win32-x86_64
-$ cd swt-4.21-win32-win32-x86_64
-$ unzip ../swt-4.21-win32-win32-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.21
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-win32-win32-x86_64.zip
+$ mkdir swt-4.26-win32-win32-x86_64
+$ cd swt-4.26-win32-win32-x86_64
+$ unzip ../swt-4.26-win32-win32-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.26
 $ cd ..
 ```
 

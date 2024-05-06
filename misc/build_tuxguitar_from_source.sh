@@ -644,8 +644,8 @@ fi
 
 # Windows 64 bit x86_64 build
 if [ $build_windows ]; then
-  SWT_VERSION=4.21
-  SWT_DATE=202109060500
+  SWT_VERSION=4.26
+  SWT_DATE=202211231800
   SWT_PLATFORM=win32-win32
   # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
   PA_JAVA=OpenJDK64_17.0.1-12.paf
