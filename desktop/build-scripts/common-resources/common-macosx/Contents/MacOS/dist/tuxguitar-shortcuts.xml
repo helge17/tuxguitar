@@ -63,7 +63,7 @@
 	<shortcut keys="Shift Down" action="action.note.general.shift-down"/>
 	<shortcut keys="Shift Up" action="action.note.general.shift-up"/>
 	<shortcut keys="l" action="action.note.general.tied"/>
-	<shortcut keys="F7" action="action.settings.configure"/>
+	<shortcut keys="F7" action="action.gui.open-settings-editor"/>
 	<shortcut keys="Command b" action="action.gui.toggle-browser-dialog"/>
 	<shortcut keys="Command Shift NumEnter" action="action.track.add-new"/>
 	<shortcut keys="Command Shift Up" action="action.track.go-previous"/>
