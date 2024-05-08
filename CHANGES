@@ -1,6 +1,21 @@
 TuxGuitar 9.99-SNAPSHOT changes:
 
-* ...
+* Fixed stuck splash screen on Linux/Wayland
+* Fixed "Save As" file type on Windows
+* Made caret more visible
+* Adapated copy-paste function to better handle different tuning presets
+* Enabled files to be opened with double-click in Finder on MacOS
+* Display menu accelerators correctly on MacOS
+* Removed confirmation "Do you want to apply changes now?"
+* Made marker font configurable
+* Simplified "Change Tuning" dialog
+* Improved MusicXML, MIDI and PDF export
+* Added menu entries for advanced selection features
+* Changed Ctrl+A shortcut to "Select Entire Track"
+* Improved note spacing
+* Improved editing and display of percussion tracks
+* Removed broken "Export to Gervill Audio File" Plugin
+* Many small improvements and cleanups
 
 TuxGuitar 1.6.2 (2024-04-01) changes:
 
