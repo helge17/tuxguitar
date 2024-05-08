@@ -278,9 +278,6 @@ public abstract class TGLayout {
 	public void paintPlayMode(UIPainter painter, TGMeasureImpl measure, TGBeatImpl beat){
 		this.playModeEnabled = true;
 		
-		//pinto el compas
-		measure.paintPlayMode(this, painter);
-		
 		//pinto el pulso
 		if( beat != null ){
 			beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this), measure.getPosY());
@@ -293,7 +290,12 @@ public abstract class TGLayout {
 	}
 	
 	public void fillBackground(UIPainter painter, UIRectangle area) {
-		painter.setBackground(this.getLightColor(this.getResources().getBackgroundColor()));
+		fillBackground(painter, area, false);
+	}
+
+	public void fillBackground(UIPainter painter, UIRectangle area, boolean isPlaying) {
+		UIColor background = isPlaying ? this.getResources().getBackgroundColorPlaying() : this.getResources().getBackgroundColor();
+		painter.setBackground(this.getLightColor(background));
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight());
 		painter.closePath();
@@ -399,11 +401,6 @@ public abstract class TGLayout {
 		painter.setFont(getResources().getDefaultFont());
 		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 		painter.setBackground( ( fontStyle ? getLightColor(getResources().getBackgroundColor()) : getDarkColor(getResources().getForegroundColor()) ));
-	}
-	
-	public void setMeasurePlayingStyle(UIPainter painter){
-		painter.setBackground(getLightColor(getResources().getBackgroundColor()));
-		painter.setForeground(getDarkColor(getResources().getForegroundColor()));
 	}
 	
 	public void setLyricStyle(UIPainter painter,boolean playMode){
@@ -533,10 +530,14 @@ public abstract class TGLayout {
 		painter.setFont(getResources().getDefaultFont());
 	}
 	
-	public void setChordStyle(TGChordImpl chord){
+	public void setChordStyle(TGChordImpl chord, boolean isPlaying){
 		chord.setFont(getResources().getChordFont());
 		chord.setForegroundColor(getDarkColor(getResources().getForegroundColor()));
-		chord.setBackgroundColor(getLightColor(getResources().getBackgroundColor()));
+		if (isPlaying) {
+			chord.setBackgroundColor(getResources().getBackgroundColorPlaying());
+		} else {
+			chord.setBackgroundColor(getLightColor(getResources().getBackgroundColor()));
+		}
 		chord.setColor(getDarkColor(getResources().getLineColor()));
 		chord.setNoteColor(getDarkColor(getResources().getTabNoteColor()));
 		chord.setTonicColor(getDarkColor(getResources().getTabNoteColor()));

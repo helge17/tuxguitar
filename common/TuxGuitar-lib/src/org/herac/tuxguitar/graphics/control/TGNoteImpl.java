@@ -1005,7 +1005,7 @@ public class TGNoteImpl extends TGNote {
 		uiRectangle.getSize().setWidth(margin.getLeft() + margin.getRight());
 		uiRectangle.getSize().setHeight(margin.getTop() + margin.getBottom());
 		
-		layout.fillBackground(painter, uiRectangle);
+		layout.fillBackground(painter, uiRectangle, getMeasureImpl().isPlaying(layout));
 	}
 	
 	public String getNoteLabel(TGNote note) {
