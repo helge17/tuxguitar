@@ -69,6 +69,7 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
@@ -488,6 +489,7 @@ public class TGActionInstaller {
 		installAction(new TGSetLayoutScaleIncrementAction(context));
 		installAction(new TGSetLayoutScaleDecrementAction(context));
 		installAction(new TGSetLayoutScaleResetAction(context));
+		installAction(new TGToggleHighlightPlayedBeatAction(context));
 		
 		//tools
 		installAction(new TGSelectScaleAction(context));
