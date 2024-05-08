@@ -299,7 +299,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
+	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY, boolean highlightPlayedBeat) {
 		if(!layout.isPlayModeEnabled() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			paintExtraLines(painter, layout,fromX, fromY);
 		}
@@ -315,7 +315,7 @@ public class TGBeatImpl extends TGBeat{
 				paintStroke(layout, painter, fromX, fromY);
 			}
 		}
-		if(layout.isPlayModeEnabled() && isPlaying(layout)){
+		if(layout.isPlayModeEnabled() && isPlaying(layout) && highlightPlayedBeat){
 			TGMeasureImpl measureImpl = getMeasureImpl();
 			UIRectangle playedMeasure = measureImpl.getVerticalPosition(layout);
 			float scale = layout.getScale();

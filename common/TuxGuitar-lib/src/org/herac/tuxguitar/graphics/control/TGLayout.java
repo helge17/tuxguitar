@@ -30,6 +30,7 @@ public abstract class TGLayout {
 	public static final int DISPLAY_CHORD_NAME = 0x10;
 	public static final int DISPLAY_CHORD_DIAGRAM = 0x20;
 	public static final int DISPLAY_MODE_BLACK_WHITE = 0x40;
+	public static final int HIGHLIGHT_PLAYED_BEAT = 0x80;
 	
 	private int style;
 	private float scale;
@@ -280,7 +281,8 @@ public abstract class TGLayout {
 		
 		//pinto el pulso
 		if( beat != null ){
-			beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this), measure.getPosY());
+			beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this),
+					measure.getPosY(), (this.style & HIGHLIGHT_PLAYED_BEAT)!=0);
 		}
 		
 		//pinto los lyrics

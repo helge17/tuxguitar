@@ -699,7 +699,7 @@ public class TGMeasureImpl extends TGMeasure{
 		Iterator<TGBeat> it = getBeats().iterator();
 		while(it.hasNext()) {
 			TGBeatImpl beat = (TGBeatImpl)it.next();
-			beat.paint(layout, painter, x, fromY);
+			beat.paint(layout, painter, x, fromY, false);
 		}
 		
 		this.paintDivisionTypes(layout, painter, x, fromY);
