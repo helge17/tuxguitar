@@ -2,6 +2,7 @@ TuxGuitar 9.99-SNAPSHOT changes:
 
 * Fixed stuck splash screen on Linux/Wayland
 * Fixed "Save As" file type on Windows
+* "Currently played beat" highlight improved
 * Made caret more visible
 * Adapated copy-paste function to better handle different tuning presets
 * Enabled files to be opened with double-click in Finder on MacOS

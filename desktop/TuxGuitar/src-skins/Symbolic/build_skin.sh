@@ -44,6 +44,7 @@ declare -A ICONS=(
   ["$TG/layout_score.svg"]="$S_ICOS:layout_score.png"
   ["$TG/layout_tablature.svg"]="$S_ICOS:layout_tablature.png"
   ["$TG/layout_compact.svg"]="$S_ICOS:layout_compact.png"
+  ["$TG/layout_highlight_played_beat.svg"]="$S_ICOS:layout_highlight_played_beat.png"
   ["$TG/edit_voice_1.svg"]="$S_ICOB:edit_voice_1.png"
   ["$TG/edit_voice_2.svg"]="$S_ICOB:edit_voice_2.png"
   ["$DT/actions/edit-select-symbolic.svg"]="$S_ICOS:edit_mode_selection.png"

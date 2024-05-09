@@ -224,6 +224,7 @@ public class ViewMenuItem extends TGMenuItem {
 		this.scoreEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutScore());
 		this.tablatureEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutTablature());
 		this.compact.setImage(TuxGuitar.getInstance().getIconManager().getLayoutCompact());
+		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getLayoutHighlightPlayedBeat());
 		this.zoomIn.setImage(TuxGuitar.getInstance().getIconManager().getZoomIn());
 		this.zoomOut.setImage(TuxGuitar.getInstance().getIconManager().getZoomOut());
 		this.zoomReset.setImage(TuxGuitar.getInstance().getIconManager().getZoomReset());

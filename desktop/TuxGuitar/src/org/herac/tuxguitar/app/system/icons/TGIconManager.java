@@ -40,6 +40,7 @@ public class TGIconManager {
 	private UIImage layoutScore;
 	private UIImage layoutTablature;
 	private UIImage layoutCompact;
+	private UIImage layoutHighlightPlayedBeat;
 	private UIImage transport;
 	private UIImage transportFirst1;
 	private UIImage transportFirst2;
@@ -246,6 +247,7 @@ public class TGIconManager {
 		this.layoutScore = loadIcon("layout_score.png");
 		this.layoutTablature = loadIcon("layout_tablature.png");
 		this.layoutCompact = loadIcon("layout_compact.png");
+		this.layoutHighlightPlayedBeat = loadIcon("layout_highlight_played_beat.png");
 		this.fileNew = loadIcon("new.png");
 		this.fileOpen = loadIcon("open.png");
 		this.fileClose = loadIcon("close.png");
@@ -800,6 +802,10 @@ public class TGIconManager {
 
 	public UIImage getLayoutCompact() {
 		return this.layoutCompact;
+	}
+
+	public UIImage getLayoutHighlightPlayedBeat() {
+		return this.layoutHighlightPlayedBeat;
 	}
 
 	public UIImage getMarkerAdd() {
