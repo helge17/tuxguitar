@@ -50,7 +50,7 @@ public class TGSongViewController implements TGController {
 		this.resourceFactory = new TGResourceFactoryImpl();
 		this.bufferController = new TGSongViewBufferController(this);
 		this.layoutPainter = new TGSongViewLayoutPainter(this);
-		this.layout = new TGLayoutVertical(this, TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT);
+		this.layout = new TGLayoutVertical(this, TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT | TGLayout.HIGHLIGHT_PLAYED_BEAT);
 		this.caret = new TGCaret(this);
 		this.scroll = new TGScroll();
 		this.smartMenu = new TGSongViewSmartMenu(this);

@@ -226,7 +226,7 @@ public class TGChordImpl extends TGChord {
 	}
 	
 	public void paint(TGLayout layout, UIPainter painter, float fromX, float fromY) {
-		layout.setChordStyle(this);
+		layout.setChordStyle(this, this.getBeatImpl().getMeasureImpl().isPlaying(layout));
 		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
 		this.setEditing(false);
 		this.update(painter, layout.getComponent().getResourceFactory(), (layout.isBufferEnabled() ? layout.getResourceBuffer() : null));

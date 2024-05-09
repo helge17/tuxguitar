@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
@@ -20,6 +21,7 @@ public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 	private UIMenuActionItem multitrack;
 	private UIMenuActionItem scoreEnabled;
 	private UIMenuActionItem compact;
+	private UIMenuActionItem highlightPlayedBeat;
 	
 	public TGMainToolBarSectionLayout(TGMainToolBar toolBar) {
 		super(toolBar);
@@ -43,6 +45,9 @@ public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 		this.compact = this.menuItem.getMenu().createActionItem();
 		this.compact.addSelectionListener(this.createActionProcessor(TGSetCompactViewAction.NAME));
 		
+		this.highlightPlayedBeat = this.menuItem.getMenu().createActionItem();
+		this.highlightPlayedBeat.addSelectionListener(this.createActionProcessor(TGToggleHighlightPlayedBeatAction.NAME));
+		
 		this.loadIcons();
 		this.loadProperties();
 	}
@@ -57,6 +62,7 @@ public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 		this.multitrack.setText(this.getText("view.layout.multitrack", ( (style & TGLayout.DISPLAY_MULTITRACK) != 0 )));
 		this.scoreEnabled.setText(this.getText("view.layout.score-enabled", ( (style & TGLayout.DISPLAY_SCORE) != 0 )));
 		this.compact.setText(this.getText("view.layout.compact", ( (style & TGLayout.DISPLAY_COMPACT) != 0 )));
+		this.highlightPlayedBeat.setText(this.getText("view.layout.highlight-played-beat", ( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 )));
 	}
 	
 	public void loadIcons(){
@@ -78,5 +84,6 @@ public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 		this.scoreEnabled.setText(this.getText("view.layout.score-enabled", ( (style & TGLayout.DISPLAY_SCORE) != 0 )));
 		this.compact.setText(this.getText("view.layout.compact", ( (style & TGLayout.DISPLAY_COMPACT) != 0 )));
 		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || this.getSong().countTracks() == 1);
+		this.highlightPlayedBeat.setText(this.getText("view.layout.highlight-played-beat", ( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 )));
 	}
 }
