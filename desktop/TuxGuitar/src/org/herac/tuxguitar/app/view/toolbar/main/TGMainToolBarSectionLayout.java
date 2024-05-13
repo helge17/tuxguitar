@@ -72,6 +72,7 @@ public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 		this.multitrack.setImage(this.getIconManager().getLayoutMultitrack());
 		this.scoreEnabled.setImage(this.getIconManager().getLayoutScore());
 		this.compact.setImage(this.getIconManager().getLayoutCompact());
+		this.highlightPlayedBeat.setImage(this.getIconManager().getLayoutHighlightPlayedBeat());
 	}
 	
 	public void updateItems(){
