@@ -134,6 +134,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_DURATION_WIDTHS, new float[] {30f, 25f, 21f, 20f, 19f,18f});
 
 		loadProperty(properties, TGConfigKeys.HOMEPAGE_URL, "https://tuxguitar.app");
+		loadProperty(properties, TGConfigKeys.CONFIG_APP_VERSION, "");
 	}
 
 	private static void loadProperty(TGProperties properties, String key,String value){
