@@ -324,6 +324,7 @@ public class TGBeatImpl extends TGBeat{
 			float width = this.effectWidth + leftSpacing + rightSpacing;
 			int style = layout.getStyle();
 			float yHighestNote = 0;
+			float yLowestNote = 0;
 			if ( (style & TGLayout.DISPLAY_SCORE) != 0) {
 				for( int v = 0; v < MAX_VOICES; v ++){
 					TGVoiceImpl voice = (TGVoiceImpl)getVoice(v);
@@ -331,15 +332,26 @@ public class TGBeatImpl extends TGBeat{
 						Iterator<TGNote> it = voice.getNotes().iterator();
 						while(it.hasNext()){
 							TGNoteImpl note = (TGNoteImpl)it.next();
-							yHighestNote = (note.getScorePosY()<yHighestNote) ? note.getScorePosY() : yHighestNote;
+							yHighestNote = Math.min(note.getScorePosY(), yHighestNote);
+							yLowestNote = Math.max(note.getScorePosY(), yLowestNote);
 						}
 					}
 				}
 			}
+			float y1 = playedMeasure.getY();
+			float y2 = y1 + playedMeasure.getHeight();
+			// adapt to lowest note, only if tablature is not displayed
+			if ((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0) {
+				y2 = Math.max(y2, y1 + yLowestNote + 3*layout.getScoreLineSpacing());
+			}
+			// adapt to highest note, only if score is displayed
+			if ((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0) {
+				y1 += yHighestNote;
+			}
 			painter.setLineWidth(layout.getLineWidth(1));
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.addRoundedRectangle(fromX+getPosX()-leftSpacing+getSpacing(layout), playedMeasure.getY()+yHighestNote, width , playedMeasure.getHeight()-yHighestNote, 3f*scale);
+			painter.addRoundedRectangle(fromX+getPosX()-leftSpacing+getSpacing(layout), y1, width , y2-y1, 3f*scale);
 			painter.closePath();
 		}
 	}
