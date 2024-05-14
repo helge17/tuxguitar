@@ -4,6 +4,7 @@ import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.util.TGContext;
+import org.herac.tuxguitar.util.TGVersion;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
@@ -29,6 +30,11 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	
 	public UIColorModel getColorModelConfigValue(String key){
 		return TGPropertiesUIUtil.getColorModelValue(this.getContext(), this.getProperties(), key);
+	}
+	
+	public void save(){
+		setValue(TGConfigKeys.CONFIG_APP_VERSION, TGVersion.CURRENT.toString());
+		super.save();
 	}
 	
 	public static TGConfigManager getInstance(TGContext context) {

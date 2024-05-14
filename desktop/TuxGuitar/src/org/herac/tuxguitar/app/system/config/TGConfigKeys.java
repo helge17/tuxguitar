@@ -121,4 +121,5 @@ public class TGConfigKeys {
 	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
 
 	public static final String HOMEPAGE_URL = "homepage.url";
+	public static final String CONFIG_APP_VERSION = "config.app.version";
 }
