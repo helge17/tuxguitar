@@ -8,6 +8,10 @@ import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
+import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.graphics.control.TGLayout;
+import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -31,6 +35,7 @@ public class TransportMenuItem extends TGMenuItem {
 	private UIMenuActionItem mode;
 	private UIMenuCheckableItem loopSHeader;
 	private UIMenuCheckableItem loopEHeader;
+	private UIMenuCheckableItem highlightPlayedBeat;
 
 	private int status;
 
@@ -73,6 +78,13 @@ public class TransportMenuItem extends TGMenuItem {
 		this.loopEHeader = this.transportMenuItem.getMenu().createCheckItem();
 		this.loopEHeader.addSelectionListener(this.createActionProcessor(TGTransportSetLoopEHeaderAction.NAME));
 
+		//--SEPARATOR--
+		this.transportMenuItem.getMenu().createSeparator();
+
+		//--HIGHLIGHT PLAYED BEAT--
+		this.highlightPlayedBeat = this.transportMenuItem.getMenu().createCheckItem();
+		this.highlightPlayedBeat.addSelectionListener(this.createActionProcessor(TGToggleHighlightPlayedBeatAction.NAME));
+
 		this.status = STATUS_STOPPED;
 		this.loadIcons();
 		this.loadProperties();
@@ -87,6 +99,9 @@ public class TransportMenuItem extends TGMenuItem {
 		this.loopSHeader.setChecked( measure != null && measure.getNumber() == pm.getLoopSHeader() );
 		this.loopEHeader.setEnabled( pm.isLoop() );
 		this.loopEHeader.setChecked( measure != null && measure.getNumber() == pm.getLoopEHeader() );
+		Tablature tablature = TablatureEditor.getInstance(this.findContext()).getTablature();
+		int style = tablature.getViewLayout().getStyle();
+		this.highlightPlayedBeat.setChecked( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 );
 		this.loadIcons(false);
 	}
 
@@ -99,6 +114,7 @@ public class TransportMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.countDown, "transport.count-down", TGTransportCountDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.loopSHeader, "transport.set-loop-start", TGTransportSetLoopSHeaderAction.NAME);
 		setMenuItemTextAndAccelerator(this.loopEHeader, "transport.set-loop-end", TGTransportSetLoopEHeaderAction.NAME);
+		setMenuItemTextAndAccelerator(this.highlightPlayedBeat, "view.layout.highlight-played-beat", TGToggleHighlightPlayedBeatAction.NAME);
 	}
 
 	public void loadIcons(){
@@ -108,6 +124,7 @@ public class TransportMenuItem extends TGMenuItem {
 		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
 		this.loopSHeader.setImage(TuxGuitar.getInstance().getIconManager().getTransportLoopStart());
 		this.loopEHeader.setImage(TuxGuitar.getInstance().getIconManager().getTransportLoopEnd());
+		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getLayoutHighlightPlayedBeat());
 	}
 
 	public void loadIcons(boolean force){

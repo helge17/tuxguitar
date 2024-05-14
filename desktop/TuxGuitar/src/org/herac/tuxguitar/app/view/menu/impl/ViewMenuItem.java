@@ -13,7 +13,6 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
@@ -54,7 +53,6 @@ public class ViewMenuItem extends TGMenuItem {
 	private UIMenuCheckableItem scoreEnabled;
 	private UIMenuCheckableItem tablatureEnabled;
 	private UIMenuCheckableItem compact;
-	private UIMenuCheckableItem highlightPlayedBeat;
 	private UIMenuActionItem zoomIn;
 	private UIMenuActionItem zoomOut;
 	private UIMenuActionItem zoomReset;
@@ -127,10 +125,6 @@ public class ViewMenuItem extends TGMenuItem {
 		this.compact = this.layoutMenuItem.getMenu().createCheckItem();
 		this.compact.addSelectionListener(this.createActionProcessor(TGSetCompactViewAction.NAME));
 
-		//--HIGHLIGHT PLAYED BEAT--
-		this.highlightPlayedBeat = this.layoutMenuItem.getMenu().createCheckItem();
-		this.highlightPlayedBeat.addSelectionListener(this.createActionProcessor(TGToggleHighlightPlayedBeatAction.NAME));
-
 		this.layoutMenuItem.getMenu().createSeparator();
 
 		//--CHORD STYLE--
@@ -178,7 +172,6 @@ public class ViewMenuItem extends TGMenuItem {
 		this.tablatureEnabled.setChecked( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
 		this.compact.setChecked( (style & TGLayout.DISPLAY_COMPACT) != 0 );
 		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || tablature.getViewLayout().getSong().countTracks() == 1);
-		this.highlightPlayedBeat.setChecked( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 );
 		this.chordName.setChecked( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
 		this.chordDiagram.setChecked( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
 		this.zoomReset.setEnabled(!Tablature.DEFAULT_SCALE.equals(tablature.getScale()));
@@ -200,7 +193,6 @@ public class ViewMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.scoreEnabled, "view.layout.score-enabled", TGSetScoreEnabledAction.NAME);
 		setMenuItemTextAndAccelerator(this.tablatureEnabled, "view.layout.tablature-enabled", TGSetTablatureEnabledAction.NAME);
 		setMenuItemTextAndAccelerator(this.compact, "view.layout.compact", TGSetCompactViewAction.NAME);
-		setMenuItemTextAndAccelerator(this.highlightPlayedBeat, "view.layout.highlight-played-beat", TGToggleHighlightPlayedBeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.chordMenuItem, "view.layout.chord-style", null);
 		setMenuItemTextAndAccelerator(this.chordName, "view.layout.chord-name", TGSetChordNameEnabledAction.NAME);
 		setMenuItemTextAndAccelerator(this.chordDiagram, "view.layout.chord-diagram", TGSetChordDiagramEnabledAction.NAME);
@@ -224,7 +216,6 @@ public class ViewMenuItem extends TGMenuItem {
 		this.scoreEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutScore());
 		this.tablatureEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutTablature());
 		this.compact.setImage(TuxGuitar.getInstance().getIconManager().getLayoutCompact());
-		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getLayoutHighlightPlayedBeat());
 		this.zoomIn.setImage(TuxGuitar.getInstance().getIconManager().getZoomIn());
 		this.zoomOut.setImage(TuxGuitar.getInstance().getIconManager().getZoomOut());
 		this.zoomReset.setImage(TuxGuitar.getInstance().getIconManager().getZoomReset());
