@@ -290,6 +290,7 @@ public class StylesOption extends TGSettingsOption {
 			getConfig().setValue(TGConfigKeys.COLOR_SCORE_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_SCORE_NOTE));
 			getConfig().setValue(TGConfigKeys.COLOR_TAB_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_TAB_NOTE));
 			getConfig().setValue(TGConfigKeys.COLOR_PLAY_NOTE, getDefaults().getValue(TGConfigKeys.COLOR_PLAY_NOTE));
+			getConfig().setValue(TGConfigKeys.COLOR_BACKGROUND_PLAYING, getDefaults().getValue(TGConfigKeys.COLOR_BACKGROUND_PLAYING));
 			getConfig().setValue(TGConfigKeys.COLOR_SELECTION, getDefaults().getValue(TGConfigKeys.COLOR_SELECTION));
 			getConfig().setValue(TGConfigKeys.COLOR_LINE, getDefaults().getValue(TGConfigKeys.COLOR_LINE));
 		}
