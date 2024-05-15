@@ -13,12 +13,10 @@ DT=Gnome
 DT_URL=https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master
 SKIN=Symbolic
 DARK=$SKIN-dark
-SKIN_DIR=$THIS_DIR/../../share/skins/$SKIN
-DARK_DIR=$THIS_DIR/../../share/skins/$DARK
-SKIN_CSS=$THIS_DIR/build_style.css
-DARK_CSS=$THIS_DIR/build_style_dark.css
+SKIN_DIR=`realpath $THIS_DIR/../../share/skins/$SKIN`
+DARK_DIR=`realpath $THIS_DIR/../../share/skins/$DARK`
 
-# Symbolic/Gnome icons are aligned on a 16x16 grid, so we keep this resolution for the PNG images to make them look sharp and add a 3px margin to get the size of 22x22px
+# Icon sizes: Symbolic/Gnome icons are aligned on a 16x16 grid, so we keep this resolution for the PNG images to make them look sharp and add a 3px margin to get the size of 22x22px
 S_ICOS=16x16+3   # Size of icons in menues and toolbars
 # Icons shared with KDE/Breeze are aligned on a 22x22 grid
 S_ICOB=22x22     # Size of icons in menues and toolbars
@@ -27,10 +25,14 @@ S_INFO=64x64     # Size of icons in warnings and settings dialog
 S_LOGO=96x96     # Size of TuxGuitar logo
 S_TRAC=16x16     # Size of icons in track table
 
+# Icon colors are defined in the CSS files
+SKIN_CSS=$THIS_DIR/build_style.css       # Color of icons for TuxGuitar in normal mode
+DARK_CSS=$THIS_DIR/build_style_dark.css  # Color of icons for TuxGuitar in dark mode
+
 declare -A ICONS=(
   # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png
   # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
-  # Icon path/file.png --copy---> $SKIN_DIR/file1.png                $DARK_DIR/file2.png
+  # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
   ["$TG/1.svg"]="$S_ICOB:1.png"
   ["$TG/2.svg"]="$S_ICOB:2.png"
   ["$TG/4.svg"]="$S_ICOB:4.png"
@@ -242,7 +244,14 @@ for file in COPYING COPYING_CCBYSA3 COPYING_LGPL; do
   fi
 done
 
-# Processing files
+# Convert single SVG icon to PNG
+function convert_svg_to_png {
+  echo -n "Converting to $OUT_FILE ... "
+  rsvg-convert --stylesheet=$OUT_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $OUT_FILE
+  echo "done."
+}
+
+# Processing input files
 for icon in "${!ICONS[@]}"; do
 
   echo "# Processing file $icon:"
@@ -255,49 +264,51 @@ for icon in "${!ICONS[@]}"; do
     echo "done."
   fi
 
-  # Convert icon to PNG (normal and dark)
+  # Generate output files
   for out_icon in ${ICONS[$icon]}; do
-    if [[ $out_icon =~ ([0-9]+)"x"([0-9]+)":"(.+) ]]; then
+    # Examples, $margin is optional:
+    # $out_icon          $width x   $height +   $margin  :  $png_icon
+    # 22x24+2:img1.png   22     x   24      +   2        :  img1.png
+    # 26x28:img2.png     26     x   28                   :  img2.png
+    if [[ $out_icon =~ ([0-9]+)"x"([0-9]+)("+"([0-9]+))?":"(.+) ]]; then
       width=${BASH_REMATCH[1]}
       height=${BASH_REMATCH[2]}
-      png_icon=${BASH_REMATCH[3]}
+      margin=${BASH_REMATCH[4]}
+      png_icon=${BASH_REMATCH[5]}
       if [[ $icon =~ ^.+\.svg$ ]]; then
-        echo -n "Converting to $SKIN_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$SKIN_CSS --width=$width --height=$height $THIS_DIR/$icon > $SKIN_DIR/$png_icon
-        echo "done."
-        echo -n "Converting to $DARK_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$DARK_CSS --width=$width --height=$height $THIS_DIR/$icon > $DARK_DIR/$png_icon
-        echo "done."
+        # If no margin is given, set it to zero
+        [ $margin ] || margin=0
+        page_width=$(( $width + 2 * $margin ))
+        page_height=$(( $height + 2 * $margin ))
+        # Normal skin
+        OUT_CSS=$SKIN_CSS
+        OUT_FILE=$SKIN_DIR/$png_icon
+        convert_svg_to_png
+        # Dark skin
+        OUT_CSS=$DARK_CSS
+        OUT_FILE=$DARK_DIR/$png_icon
+        convert_svg_to_png
       elif [[ $icon =~ ^.+\.png$ ]]; then
         echo -n "Converting to $SKIN_DIR/$png_icon ... "
+        if [ $margin ]; then
+          echo -e "\n\nError: Margin $margin given, but margin is not supported for PNGs."
+          echo -e "\nAborting.\n"
+          exit 1
+        fi
         gm convert -scale $width"x"$height! $THIS_DIR/$icon $SKIN_DIR/$png_icon
         echo "done."
         echo -n "Converting to $DARK_DIR/$png_icon ... "
         cp -p $SKIN_DIR/$png_icon $DARK_DIR
         echo "done."
       fi
-    elif [[ $out_icon =~ ([0-9]+)"x"([0-9]+)"+"([0-9]+)":"(.+) ]]; then
-      width=${BASH_REMATCH[1]}
-      height=${BASH_REMATCH[2]}
-      margin=${BASH_REMATCH[3]}
-      png_icon=${BASH_REMATCH[4]}
-      page_width=$(( $width + 2 * margin ))
-      page_height=$(( $height + 2 * margin ))
-      if [[ $icon =~ ^.+\.svg$ ]]; then
-        echo -n "Converting to $SKIN_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$SKIN_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $SKIN_DIR/$png_icon
-        echo "done."
-        echo -n "Converting to $DARK_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$DARK_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $DARK_DIR/$png_icon
-        echo "done."
-      elif [[ $icon =~ ^.+\.png$ ]]; then
-        echo "Margin not supported for PNGs."
-        exit 1
-      fi
-    else
+    elif [[ $out_icon =~ .+/.+ ]]; then
       echo -n "Copying to $out_icon ... "
       cp -p $THIS_DIR/$icon $out_icon
       echo "done."
+    else
+      echo -e "\nError: $out_icon does not contain a /, this is probably wrong."
+      echo -e "\nAborting.\n"
+      exit 1
     fi
   done
 
