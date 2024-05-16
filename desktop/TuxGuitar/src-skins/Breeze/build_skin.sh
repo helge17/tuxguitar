@@ -26,10 +26,12 @@ S_TRAC=16x16     # Size of icons in track table
 # Icon colors
 C_DFLT=#232629   # Default color of Breeze icons
 C_NORM=$C_DFLT   # Color of icons for TuxGuitar in normal mode
+C_N_HI=20%       # Modify brightness for highlighted icons, normal mode
 C_DARK=#eff0f1   # Color of icons for TuxGuitar in dark mode
+C_D_HI=-20%      # Modify brightness for highlighted icons, dark mode
 
 declare -A ICONS=(
-  # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png
+  # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png width3xheight3+margin3-H:TuxGuitar_icon3.png
   # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
   # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
   ["$TG/1.svg"]="$S_ICON:1.png"
@@ -122,9 +124,9 @@ declare -A ICONS=(
   ["$DT/actions/22/zoom-original.svg"]="$S_ICON:zoom_original.png"
   ["$DT/actions/22/zoom-out.svg"]="$S_ICON:zoom_out.png"
   ["$DT/actions/22/list-add.svg"]="$S_ICON:list_add.png $S_ICON:track_add.png $S_ICON:measure_add.png"
-  ["$DT/actions/22/list-remove.svg"]="$S_ICON:list_remove.png $S_ICON:track_remove.png $S_ICON:measure_remove.png $S_TRAC:mute-disabled.png $S_TRAC:mute-disabled-dim.png $S_TRAC:solo-disabled.png $S_TRAC:solo-disabled-dim.png"
-  ["$DT/devices/22/audio-headphones.svg"]="$S_ICON:track_solo.png $S_TRAC:solo.png $S_TRAC:solo-dim.png"
-  ["$DT/status/22/audio-volume-muted.svg"]="$S_ICON:track_mute.png $S_TRAC:mute.png $S_TRAC:mute-dim.png"
+  ["$DT/actions/22/list-remove.svg"]="$S_ICON:list_remove.png $S_ICON:track_remove.png $S_ICON:measure_remove.png $S_TRAC-H:mute-disabled.png $S_TRAC:mute-disabled-dim.png $S_TRAC-H:solo-disabled.png $S_TRAC:solo-disabled-dim.png"
+  ["$DT/devices/22/audio-headphones.svg"]="$S_ICON:track_solo.png $S_TRAC-H:solo.png $S_TRAC:solo-dim.png"
+  ["$DT/status/22/audio-volume-muted.svg"]="$S_ICON:track_mute.png $S_TRAC-H:mute.png $S_TRAC:mute-dim.png"
   ["$DT/actions/22/document-edit.svg"]="$S_ICON:list_edit.png $S_ICON:edit_mode_edition.png"
   ["$DT/actions/22/go-down-skip.svg"]="$S_ICON:list_move_up.png"
   ["$DT/actions/22/go-up-skip.svg"]="$S_ICON:list_move_down.png"
@@ -248,6 +250,11 @@ done
 function convert_svg_to_png {
   echo -n "Converting to $OUT_FILE ... "
   sed -e "s/$C_DFLT/$OUT_COLR/g" $THIS_DIR/$icon | rsvg-convert --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin > $OUT_FILE
+  if [ "$hili" ]; then
+    # Modify icon brightness (man convert)
+    gm convert -operator all add $OUT_HILI $OUT_FILE $OUT_FILE.hili
+    mv $OUT_FILE.hili $OUT_FILE
+  fi
   echo "done."
 }
 
@@ -266,15 +273,16 @@ for icon in "${!ICONS[@]}"; do
 
   # Generate output files
   for out_icon in ${ICONS[$icon]}; do
-    # Examples, $margin is optional:
-    # $out_icon          $width x   $height +   $margin  :  $png_icon
-    # 22x24+2:img1.png   22     x   24      +   2        :  img1.png
-    # 26x28:img2.png     26     x   28                   :  img2.png
-    if [[ $out_icon =~ ([0-9]+)"x"([0-9]+)("+"([0-9]+))?":"(.+) ]]; then
+    # Examples, $margin and $hili are  optional:
+    # $out_icon          $width x   $height +   $margin   $hili :  $png_icon
+    # 22x24+2:img1.png   22     x   24      +   2               :  img1.png
+    # 26x28:img2.png     26     x   28                    -H    :  img2.png
+    if [[ $out_icon =~ ([0-9]+)"x"([0-9]+)("+"([0-9]+))?("-H")?":"(.+) ]]; then
       width=${BASH_REMATCH[1]}
       height=${BASH_REMATCH[2]}
       margin=${BASH_REMATCH[4]}
-      png_icon=${BASH_REMATCH[5]}
+      hili=${BASH_REMATCH[5]}
+      png_icon=${BASH_REMATCH[6]}
       if [[ $icon =~ ^.+\.svg$ ]]; then
         # If no margin is given, set it to zero
         [ $margin ] || margin=0
@@ -282,10 +290,12 @@ for icon in "${!ICONS[@]}"; do
         page_height=$(( $height + 2 * $margin ))
         # Normal skin
         OUT_COLR=$C_NORM
+        OUT_HILI=$C_N_HI
         OUT_FILE=$SKIN_DIR/$png_icon
         convert_svg_to_png
         # Dark skin
         OUT_COLR=$C_DARK
+        OUT_HILI=$C_D_HI
         OUT_FILE=$DARK_DIR/$png_icon
         convert_svg_to_png
       elif [[ $icon =~ ^.+\.png$ ]]; then
