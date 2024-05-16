@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.io.gpx.score.GPXAutomation;
 import org.herac.tuxguitar.io.gpx.score.GPXBar;
 import org.herac.tuxguitar.io.gpx.score.GPXBeat;
@@ -621,7 +620,7 @@ public class GPXDocumentParser {
 					TGVoice voice = tgBeat.getVoice( v );
 					Iterator<TGNote> it = voice.getNotes().iterator();
 					while (it.hasNext()) {
-						TGNoteImpl note = (TGNoteImpl) it.next();
+						TGNote note = it.next();
 						if (note.getString() == string.getNumber()) {
 							emptyString = false;
 							break;
