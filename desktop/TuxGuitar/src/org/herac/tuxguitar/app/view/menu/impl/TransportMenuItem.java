@@ -22,10 +22,6 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class TransportMenuItem extends TGMenuItem {
 
-	private static final int STATUS_STOPPED = 1;
-	private static final int STATUS_PAUSED = 2;
-	private static final int STATUS_RUNNING = 3;
-
 	private UIMenuSubMenuItem transportMenuItem;
 
 	private UIMenuActionItem play;
@@ -37,7 +33,7 @@ public class TransportMenuItem extends TGMenuItem {
 	private UIMenuCheckableItem loopEHeader;
 	private UIMenuCheckableItem highlightPlayedBeat;
 
-	private int status;
+	private boolean isRunning;
 
 	public TransportMenuItem(UIMenu parent) {
 		this.transportMenuItem = parent.createSubMenuItem();
@@ -85,7 +81,7 @@ public class TransportMenuItem extends TGMenuItem {
 		this.highlightPlayedBeat = this.transportMenuItem.getMenu().createCheckItem();
 		this.highlightPlayedBeat.addSelectionListener(this.createActionProcessor(TGToggleHighlightPlayedBeatAction.NAME));
 
-		this.status = STATUS_STOPPED;
+		this.isRunning = false;
 		this.loadIcons();
 		this.loadProperties();
 	}
@@ -103,6 +99,7 @@ public class TransportMenuItem extends TGMenuItem {
 		int style = tablature.getViewLayout().getStyle();
 		this.highlightPlayedBeat.setChecked( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 );
 		this.loadIcons(false);
+		this.play.setText(TuxGuitar.getProperty(isRunning ? "transport.pause" : "transport.start"));
 	}
 
 	public void loadProperties(){
@@ -128,26 +125,16 @@ public class TransportMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(boolean force){
-		int lastStatus = this.status;
+		boolean lastStatusRunning = this.isRunning;
 
-		if(TuxGuitar.getInstance().getPlayer().isRunning()){
-			this.status = STATUS_RUNNING;
-		}else if(TuxGuitar.getInstance().getPlayer().isPaused()){
-			this.status = STATUS_PAUSED;
-		}else{
-			this.status = STATUS_STOPPED;
-		}
+		this.isRunning = TuxGuitar.getInstance().getPlayer().isRunning();
 
-		if(force || lastStatus != this.status){
-			if(this.status == STATUS_RUNNING){
-				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
+		if(force || lastStatusRunning != isRunning){
+			this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop());
+			if(this.isRunning){
 				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPause());
-			}else if(this.status == STATUS_PAUSED){
-				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop2());
-				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay2());
-			}else if(this.status == STATUS_STOPPED){
-				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop1());
-				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay1());
+			} else {
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay());
 			}
 		}
 	}
