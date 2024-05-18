@@ -42,31 +42,19 @@ public class TGIconManager {
 	private UIImage layoutCompact;
 	private UIImage layoutHighlightPlayedBeat;
 	private UIImage transport;
-	private UIImage transportFirst1;
-	private UIImage transportFirst2;
-	private UIImage transportLast1;
-	private UIImage transportLast2;
-	private UIImage transportPrevious1;
-	private UIImage transportPrevious2;
-	private UIImage transportNext1;
-	private UIImage transportNext2;
-	private UIImage transportStop1;
-	private UIImage transportStop2;
-	private UIImage transportPlay1;
-	private UIImage transportPlay2;
+	private UIImage transportFirst;
+	private UIImage transportLast;
+	private UIImage transportPrevious;
+	private UIImage transportNext;
+	private UIImage transportStop;
+	private UIImage transportPlay;
 	private UIImage transportPause;
-	private UIImage transportIconFirst1;
-	private UIImage transportIconFirst2;
-	private UIImage transportIconLast1;
-	private UIImage transportIconLast2;
-	private UIImage transportIconPrevious1;
-	private UIImage transportIconPrevious2;
-	private UIImage transportIconNext1;
-	private UIImage transportIconNext2;
-	private UIImage transportIconStop1;
-	private UIImage transportIconStop2;
-	private UIImage transportIconPlay1;
-	private UIImage transportIconPlay2;
+	private UIImage transportIconFirst;
+	private UIImage transportIconLast;
+	private UIImage transportIconPrevious;
+	private UIImage transportIconNext;
+	private UIImage transportIconStop;
+	private UIImage transportIconPlay;
 	private UIImage transportIconPause;
 	private UIImage transportMetronome;
 	private UIImage transportCountIn;
@@ -311,31 +299,19 @@ public class TGIconManager {
 		this.text = loadIcon("text.png");
 		this.noteTied = loadIcon("tiednote.png");
 		this.transport = loadIcon("transport.png");
-		this.transportFirst1 = loadIcon("transport_first_1.png");
-		this.transportFirst2 = loadIcon("transport_first_2.png");
-		this.transportLast1 = loadIcon("transport_last_1.png");
-		this.transportLast2 = loadIcon("transport_last_2.png");
-		this.transportPrevious1 = loadIcon("transport_previous_1.png");
-		this.transportPrevious2 = loadIcon("transport_previous_2.png");
-		this.transportNext1 = loadIcon("transport_next_1.png");
-		this.transportNext2 = loadIcon("transport_next_2.png");
-		this.transportStop1 = loadIcon("transport_stop_1.png");
-		this.transportStop2 = loadIcon("transport_stop_2.png");
-		this.transportPlay1 = loadIcon("transport_play_1.png");
-		this.transportPlay2 = loadIcon("transport_play_2.png");
+		this.transportFirst = loadIcon("transport_first_1.png");
+		this.transportLast = loadIcon("transport_last_1.png");
+		this.transportPrevious = loadIcon("transport_previous_1.png");
+		this.transportNext = loadIcon("transport_next_1.png");
+		this.transportStop = loadIcon("transport_stop_1.png");
+		this.transportPlay = loadIcon("transport_play_1.png");
 		this.transportPause = loadIcon("transport_pause.png");
-		this.transportIconFirst1 = loadIcon("transport_icon_first_1.png");
-		this.transportIconFirst2 = loadIcon("transport_icon_first_2.png");
-		this.transportIconLast1 = loadIcon("transport_icon_last_1.png");
-		this.transportIconLast2 = loadIcon("transport_icon_last_2.png");
-		this.transportIconPrevious1 = loadIcon("transport_icon_previous_1.png");
-		this.transportIconPrevious2 = loadIcon("transport_icon_previous_2.png");
-		this.transportIconNext1 = loadIcon("transport_icon_next_1.png");
-		this.transportIconNext2 = loadIcon("transport_icon_next_2.png");
-		this.transportIconStop1 = loadIcon("transport_icon_stop_1.png");
-		this.transportIconStop2 = loadIcon("transport_icon_stop_2.png");
-		this.transportIconPlay1 = loadIcon("transport_icon_play_1.png");
-		this.transportIconPlay2 = loadIcon("transport_icon_play_2.png");
+		this.transportIconFirst = loadIcon("transport_icon_first_1.png");
+		this.transportIconLast = loadIcon("transport_icon_last_1.png");
+		this.transportIconPrevious = loadIcon("transport_icon_previous_1.png");
+		this.transportIconNext = loadIcon("transport_icon_next_1.png");
+		this.transportIconStop = loadIcon("transport_icon_stop_1.png");
+		this.transportIconPlay = loadIcon("transport_icon_play_1.png");
 		this.transportIconPause = loadIcon("transport_icon_pause.png");
 		this.transportMetronome = loadIcon("transport_metronome.png");
 		this.transportCountIn = loadIcon("transport_count_in.png");
@@ -952,108 +928,60 @@ public class TGIconManager {
 		return this.transport;
 	}
 
-	public UIImage getTransportFirst1() {
-		return this.transportFirst1;
+	public UIImage getTransportFirst() {
+		return this.transportFirst;
 	}
 
-	public UIImage getTransportFirst2() {
-		return this.transportFirst2;
+	public UIImage getTransportIconFirst() {
+		return this.transportIconFirst;
 	}
 
-	public UIImage getTransportIconFirst1() {
-		return this.transportIconFirst1;
+	public UIImage getTransportIconLast() {
+		return this.transportIconLast;
 	}
 
-	public UIImage getTransportIconFirst2() {
-		return this.transportIconFirst2;
-	}
-
-	public UIImage getTransportIconLast1() {
-		return this.transportIconLast1;
-	}
-
-	public UIImage getTransportIconLast2() {
-		return this.transportIconLast2;
-	}
-
-	public UIImage getTransportIconNext1() {
-		return this.transportIconNext1;
-	}
-
-	public UIImage getTransportIconNext2() {
-		return this.transportIconNext2;
+	public UIImage getTransportIconNext() {
+		return this.transportIconNext;
 	}
 
 	public UIImage getTransportIconPause() {
 		return this.transportIconPause;
 	}
 
-	public UIImage getTransportIconPlay1() {
-		return this.transportIconPlay1;
+	public UIImage getTransportIconPlay() {
+		return this.transportIconPlay;
 	}
 
-	public UIImage getTransportIconPlay2() {
-		return this.transportIconPlay2;
+	public UIImage getTransportIconPrevious() {
+		return this.transportIconPrevious;
 	}
 
-	public UIImage getTransportIconPrevious1() {
-		return this.transportIconPrevious1;
+	public UIImage getTransportIconStop() {
+		return this.transportIconStop;
 	}
 
-	public UIImage getTransportIconPrevious2() {
-		return this.transportIconPrevious2;
+	public UIImage getTransportLast() {
+		return this.transportLast;
 	}
 
-	public UIImage getTransportIconStop1() {
-		return this.transportIconStop1;
-	}
-
-	public UIImage getTransportIconStop2() {
-		return this.transportIconStop2;
-	}
-
-	public UIImage getTransportLast1() {
-		return this.transportLast1;
-	}
-
-	public UIImage getTransportLast2() {
-		return this.transportLast2;
-	}
-
-	public UIImage getTransportNext1() {
-		return this.transportNext1;
-	}
-
-	public UIImage getTransportNext2() {
-		return this.transportNext2;
+	public UIImage getTransportNext() {
+		return this.transportNext;
 	}
 
 	public UIImage getTransportPause() {
 		return this.transportPause;
 	}
 
-	public UIImage getTransportPlay1() {
-		return this.transportPlay1;
+	public UIImage getTransportPlay() {
+		return this.transportPlay;
 	}
 
-	public UIImage getTransportPlay2() {
-		return this.transportPlay2;
+	public UIImage getTransportPrevious() {
+		return this.transportPrevious;
 	}
 
-	public UIImage getTransportPrevious1() {
-		return this.transportPrevious1;
-	}
-
-	public UIImage getTransportPrevious2() {
-		return this.transportPrevious2;
-	}
-
-	public UIImage getTransportStop1() {
-		return this.transportStop1;
-	}
-
-	public UIImage getTransportStop2() {
-		return this.transportStop2;
+	public UIImage getTransportStop() {
+		return this.transportStop;
 	}
 
 	public UIImage getTransportMetronome() {

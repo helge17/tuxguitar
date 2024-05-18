@@ -68,8 +68,8 @@ public class TGTrayMenu {
 	
 	public void loadIcons(){
 		if(this.menu != null && !this.menu.isDisposed()){
-			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconStop1()).getHandle());
-			this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPlay1()).getHandle());
+			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconStop()).getHandle());
+			this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPlay()).getHandle());
 		}
 	}
 	
