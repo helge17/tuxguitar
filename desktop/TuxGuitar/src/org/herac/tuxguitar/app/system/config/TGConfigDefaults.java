@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.app.system.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardConfig;
@@ -14,6 +17,8 @@ public class TGConfigDefaults{
 	public static final String RESOURCE = "config-defaults";
 	public static final String MODULE = "tuxguitar";
 
+	private static List<String> keys = new ArrayList<String>();
+	
 	public static final String DEFAULT_SKIN = "Oxygen";
 	private static final String DEFAULT_FONT_NAME = UIFontModel.DEFAULT_NAME;
 
@@ -137,19 +142,39 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.CONFIG_APP_VERSION, "");
 	}
 
+	public static List<String> getKeys() {
+		if (keys.isEmpty()) {
+			loadProperties(null);
+		}
+		return keys;
+	}
+	
 	private static void loadProperty(TGProperties properties, String key,String value){
-		properties.setValue(key,value);
+		if (properties != null) {
+			properties.setValue(key,value);
+		}
+		keys.add(key);
 	}
 
 	private static void loadProperty(TGProperties properties, String key,int value){
-		properties.setValue(key,Integer.toString(value));
+		if (properties != null) {
+			properties.setValue(key,Integer.toString(value));
+		}
+		keys.add(key);
 	}
 
 	private static void loadProperty(TGProperties properties, String key,boolean value){
-		properties.setValue(key,Boolean.toString(value));
+		if (properties != null) {
+			properties.setValue(key,Boolean.toString(value));
+		}
+		keys.add(key);
 	}
 
 	private static void loadProperty(TGProperties properties, String key, float[] value) {
-		TGPropertiesUtil.setValue(properties, key, value);
+		if (properties != null) {
+			TGPropertiesUtil.setValue(properties, key, value);
+		}
+		keys.add(key);
 	}
+	
 }

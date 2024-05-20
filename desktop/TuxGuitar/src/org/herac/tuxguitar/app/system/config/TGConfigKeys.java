@@ -1,15 +1,6 @@
 package org.herac.tuxguitar.app.system.config;
 
 public class TGConfigKeys {
-	
-	/* list of obsolete configuration key names
-	 * these keys were used in previous versions of TuxGuitar, and SHALL NOT be re-used for new configuration parameters 
-	 * as old values (with an old signification) can be found in user's configuration file (when user upgrades TuxGuitar from an old version)
-	 */
-	static final String[] OBSOLETE_KEYS = {
-			"color.caret.1",
-			"color.caret.2",
-			};
 
 	// valid configuration key names
 	public static final String SKIN = "skin";

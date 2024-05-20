@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.app.system.config;
 
+import java.util.List;
+
 import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
 import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
@@ -13,8 +15,8 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	
 	public static final String CONFIGURATION_MODULE = "tuxguitar";
 	
-	private TGConfigManager(TGContext context, String[] obsoleteKeys){
-		super(context, CONFIGURATION_MODULE, obsoleteKeys);
+	private TGConfigManager(TGContext context, List<String> validKeys){
+		super(context, CONFIGURATION_MODULE, validKeys);
 	}
 	
 	public void setValue(String key, UIColorModel model){
@@ -53,7 +55,7 @@ public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGCo
 	public static TGConfigManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGConfigManager.class.getName(), new TGSingletonFactory<TGConfigManager>() {
 			public TGConfigManager createInstance(TGContext context) {
-				return new TGConfigManager(context, TGConfigKeys.OBSOLETE_KEYS);
+				return new TGConfigManager(context, TGConfigDefaults.getKeys());
 			}
 		});
 	}
