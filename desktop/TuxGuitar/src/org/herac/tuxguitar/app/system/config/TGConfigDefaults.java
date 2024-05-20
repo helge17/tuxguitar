@@ -108,7 +108,6 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_NOTE, "42,85,128");
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_PLAY_NOTE, "128,32,32");
 		loadProperty(properties, TGConfigKeys.TABLE_AUTO_SIZE, true);
-		loadProperty(properties, TGConfigKeys.FORCE_OS_DEFAULTS, true);
 
 		loadProperty(properties, TGConfigKeys.STYLE_MIN_BUFFER_SEPARATOR, 20);
 		loadProperty(properties, TGConfigKeys.STYLE_MIN_TOP_SPACING, 30);
