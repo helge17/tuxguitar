@@ -46,6 +46,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	
 	private List<UIToolCheckableItem> durationToolItems;
 	private List<UIMenuCheckableItem> divisionTypeMenuItems;
+	private List<TGActionProcessorListener> divisionTypeProcessors;
 	
 	private Map<Integer, String> durationNameKeys;
 	private Map<Integer, String> durationActions;
@@ -84,8 +85,10 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		});
 		
 		this.divisionTypeMenuItems = new ArrayList<UIMenuCheckableItem>();
+		this.divisionTypeProcessors = new ArrayList<TGActionProcessorListener>();
 		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
 			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
+			this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
 		}
 		
 		this.tiedNote = toolBar2.createCheckItem();
@@ -224,15 +227,29 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	private UIMenuCheckableItem createDivisionTypeMenuItem(TGDivisionType divisionType) {
 		UIMenuCheckableItem uiMenuItem = this.divisionTypeItem.getMenu().createRadioItem();
 		uiMenuItem.setData(TGDivisionType.class.getName(), divisionType);
-		uiMenuItem.addSelectionListener(this.createDivisionTypeAction(divisionType));
 		
 		return uiMenuItem;
 	}
 	
+	/* radio buttons generate events both when they are selected AND unselected (at least in SWT configuration)
+	 * the only relevant event is when radio button is selected by user
+	 * so, only keep selectionListener defined for non-selected radio buttons
+	 */
 	private void updateDivisionTypeMenuItems(TGDivisionType selection, boolean running) {
-		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
+		for(int i=0; i< this.divisionTypeMenuItems.size(); i++) {
+			UIMenuCheckableItem uiMenuItem = this.divisionTypeMenuItems.get(i);
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
-			uiMenuItem.setChecked(divisionType.isEqual(selection));
+			if (divisionType.isEqual(selection)) {
+				uiMenuItem.setChecked(true);
+				if (uiMenuItem.hasSelectionListener()) {
+					uiMenuItem.removeSelectionListener(this.divisionTypeProcessors.get(i));
+				}
+			} else {
+				uiMenuItem.setChecked(false);
+				if (!uiMenuItem.hasSelectionListener()) {
+					uiMenuItem.addSelectionListener(this.divisionTypeProcessors.get(i));
+				}
+			}
 		}
 	}
 	

@@ -17,4 +17,9 @@ public class JFXMenuCheckableItem extends JFXMenuActionItem implements UIMenuChe
 	public void setChecked(boolean checked) {
 		((CheckMenuItem) this.getControl()).setSelected(checked);
 	}
+
+	public boolean hasSelectionListener() {
+		return (!this.selectionListener.isEmpty());
+	}
+	
 }
