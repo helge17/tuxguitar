@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.util.TGContext;
@@ -110,7 +111,7 @@ public class TGIconManager {
 	private UIImage songProperties;
 	private UIImage durationDotted;
 	private UIImage durationDoubleDotted;
-	private UIImage divisionType;
+	private Map<Integer,UIImage> divisionTypes;
 	private UIImage fileNew;
 	private UIImage fileOpen;
 	private UIImage fileClose;
@@ -291,7 +292,12 @@ public class TGIconManager {
 		this.trackMute = loadIcon("track_mute.png");
 		this.durationDotted = loadIcon("dotted.png");
 		this.durationDoubleDotted = loadIcon("doubledotted.png");
-		this.divisionType = loadIcon("division-type.png");
+		this.divisionTypes = new HashMap<Integer, UIImage>();
+		this.divisionTypes.put(TGDivisionType.NORMAL.getEnters(), loadIcon("division-type-none.png"));
+		for (int i = 0; i < TGDivisionType.ALTERED_DIVISION_TYPES.length; i++) {
+			Integer enters = TGDivisionType.ALTERED_DIVISION_TYPES[i].getEnters();
+			this.divisionTypes.put(enters, loadIcon("division-type-" + String.valueOf(enters) + ".png"));
+		}
 		this.fretboard = loadIcon("fretboard.png");
 		this.fretboardFirstFret = loadIcon("firstfret.png");
 		this.fretboardFret = loadIcon("fret.png");
@@ -528,8 +534,8 @@ public class TGIconManager {
 		return this.durationDoubleDotted;
 	}
 
-	public UIImage getDivisionType() {
-		return this.divisionType;
+	public UIImage getDivisionType(int divisionTypeEnters) {
+		return this.divisionTypes.get(divisionTypeEnters);
 	}
 
 	public UIImage getDynamicF() {
