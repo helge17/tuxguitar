@@ -135,7 +135,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.sixtyFourth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
-		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType());
+		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType(0));
 	}
 
 	private void toggleDivisionType() {

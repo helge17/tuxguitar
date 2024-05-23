@@ -86,6 +86,8 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		
 		this.divisionTypeMenuItems = new ArrayList<UIMenuCheckableItem>();
 		this.divisionTypeProcessors = new ArrayList<TGActionProcessorListener>();
+		this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.NORMAL));
+		this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.NORMAL));
 		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
 			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
 			this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
@@ -125,7 +127,6 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	public void loadSectionIcons() {
 		this.dotted.setImage(this.getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(this.getIconManager().getDurationDoubleDotted());
-		this.divisionTypeItem.setImage(this.getIconManager().getDivisionType());
 		this.tiedNote.setImage(this.getIconManager().getNoteTied());
 		this.loadDurationToolIcons();
 	}
@@ -251,12 +252,17 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 				}
 			}
 		}
+		this.divisionTypeItem.setImage(this.getIconManager().getDivisionType(selection.getEnters()));
 	}
 	
 	private void loadDivisionTypeMenuProperties() {
 		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
-			uiMenuItem.setText(Integer.toString(divisionType.getEnters()));
+			if (TGDivisionType.NORMAL.equals(divisionType)) {
+				uiMenuItem.setText(TuxGuitar.getProperty("duration.division-type.normal"));
+			} else {
+				uiMenuItem.setText(Integer.toString(divisionType.getEnters()));
+			}
 		}
 	}
 	
