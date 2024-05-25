@@ -106,8 +106,8 @@
 	<string name="action_set_duration_quarter">Viertel</string>
 	<string name="action_set_duration_eighth">Achtel</string>
 	<string name="action_set_duration_sixteenth">Sechzehntel</string>
-	<string name="action_set_duration_thirtysecond">32tel</string>
-	<string name="action_set_duration_sixtyfourth">64tel</string>
+	<string name="action_set_duration_thirtysecond">Zweiunddreißigstel</string>
+	<string name="action_set_duration_sixtyfourth">Vierundsechzigstel</string>
 	<string name="action_set_duration_dotted">Punktiert</string>
 	<string name="action_set_duration_doubledotted">Doppelt punktiert</string>
 	<string name="action_set_duration_division_type">Aufteilung</string>
@@ -386,14 +386,14 @@
 	<!-- <string name="tremolo_picking_dlg_title"></string> -->
 	<string name="tremolo_picking_dlg_duration_8">Achtel</string>
 	<string name="tremolo_picking_dlg_duration_16">Sechzehntel</string>
-	<string name="tremolo_picking_dlg_duration_32">32tel</string>
+	<string name="tremolo_picking_dlg_duration_32">Zweiunddreißigstel</string>
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Triller</string>
 	<string name="trill_dlg_fret_label">Bund:</string>
 	<string name="trill_dlg_duration_16">Sechzehntel</string>
-	<string name="trill_dlg_duration_32">32tel</string>
-	<string name="trill_dlg_duration_64">64tel</string>
+	<string name="trill_dlg_duration_32">Zweiunddreißigstel</string>
+	<string name="trill_dlg_duration_64">Vierundsechzigstel</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Vorschlagsnote</string>
@@ -404,8 +404,8 @@
 	<string name="grace_dlg_position_on_beat">Auf dem Schlag</string>
 	<string name="grace_dlg_duration_label">Notenlänge</string>
 	<string name="grace_dlg_duration_16">Sechzehntel</string>
-	<string name="grace_dlg_duration_32">32tel</string>
-	<string name="grace_dlg_duration_64">64tel</string>
+	<string name="grace_dlg_duration_32">Zweiunddreißigstel</string>
+	<string name="grace_dlg_duration_64">Vierundsechzigstel</string>
 	<string name="grace_dlg_dynamic_label">Dynamik</string>
 	<!-- <string name="grace_dlg_dynamic_ppp"></string> -->
 	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
@@ -438,8 +438,8 @@
 	<string name="stroke_dlg_duration_4">Viertel</string>
 	<string name="stroke_dlg_duration_8">Achtel</string>
 	<string name="stroke_dlg_duration_16">Sechzehntel</string>
-	<string name="stroke_dlg_duration_32">32tel</string>
-	<string name="stroke_dlg_duration_64">64tel</string>
+	<string name="stroke_dlg_duration_32">Zweiunddreißigstel</string>
+	<string name="stroke_dlg_duration_64">Vierundsechzigstel</string>
 
 	<!-- Channels view -->
 	<string name="channel_list">Instrumente</string>
