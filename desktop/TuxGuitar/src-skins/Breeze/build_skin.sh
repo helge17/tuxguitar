@@ -62,7 +62,6 @@ declare -A ICONS=(
   ["$TG/repeat_alternative.svg"]="$S_ICON:repeat_alternative.png"
   ["$TG/dotted.svg"]="$S_ICON:dotted.png"
   ["$TG/doubledotted.svg"]="$S_ICON:doubledotted.png"
-  ["$TG/division-type.svg"]="$S_ICON:division-type.png"
   ["$TG/division-type-none.svg"]="$S_ICON:division-type-none.png"
   ["$TG/division-type-3.svg"]="$S_ICON:division-type-3.png"
   ["$TG/division-type-5.svg"]="$S_ICON:division-type-5.png"
