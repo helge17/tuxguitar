@@ -353,6 +353,9 @@
 								<copy todir="${project.build.directory}/${project.finalName}/share" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}/share" overwrite="true">
+									<fileset dir="${project.rootPath}/../common/resources/" />
+								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc" overwrite="true">
 									<fileset dir="${project.rootPath}/../doc/" />
 								</copy>
