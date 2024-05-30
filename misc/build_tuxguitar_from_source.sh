@@ -636,8 +636,8 @@ fi
 # Linux
 if [ $build_linux ]; then
   # SWT version in Debian 12
-  SWT_VERSION=4.26
-  SWT_DATE=202211231800
+  SWT_VERSION=4.21
+  SWT_DATE=202109060500
   SWT_PLATFORM=gtk-linux
   [ `uname` == Linux ] && build_tg_for_linux
 fi
