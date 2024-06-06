@@ -120,6 +120,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.doubleDotted.setChecked(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled(!running);
 		this.division.setEnabled(!running);
+		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType(duration.getDivision().getEnters()));
 	}
 
 	public void loadProperties(){
