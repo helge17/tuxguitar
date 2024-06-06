@@ -21,21 +21,22 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.menu.UIMenu;
+import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class DurationMenuItem  extends TGMenuItem {
 
 	private UIMenuSubMenuItem durationMenuItem;
-	private UIMenuActionItem whole;
-	private UIMenuActionItem half;
-	private UIMenuActionItem quarter;
-	private UIMenuActionItem eighth;
-	private UIMenuActionItem sixteenth;
-	private UIMenuActionItem thirtySecond;
-	private UIMenuActionItem sixtyFourth;
-	private UIMenuActionItem dotted;
-	private UIMenuActionItem doubleDotted;
+	private UIMenuCheckableItem whole;
+	private UIMenuCheckableItem half;
+	private UIMenuCheckableItem quarter;
+	private UIMenuCheckableItem eighth;
+	private UIMenuCheckableItem sixteenth;
+	private UIMenuCheckableItem thirtySecond;
+	private UIMenuCheckableItem sixtyFourth;
+	private UIMenuCheckableItem dotted;
+	private UIMenuCheckableItem doubleDotted;
 	private UIMenuActionItem division;
 
 	public DurationMenuItem(UIMenuSubMenuItem durationMenuItem) {
@@ -48,41 +49,41 @@ public class DurationMenuItem  extends TGMenuItem {
 
 	public void showItems(){
 		//--WHOLE--
-		this.whole = this.durationMenuItem.getMenu().createActionItem();
+		this.whole = this.durationMenuItem.getMenu().createCheckItem();
 		this.whole.addSelectionListener(this.createActionProcessor(TGSetWholeDurationAction.NAME));
 
 		//--HALF--
-		this.half = this.durationMenuItem.getMenu().createActionItem();
+		this.half = this.durationMenuItem.getMenu().createCheckItem();
 		this.half.addSelectionListener(this.createActionProcessor(TGSetHalfDurationAction.NAME));
 
 		//--QUARTER--
-		this.quarter = this.durationMenuItem.getMenu().createActionItem();
+		this.quarter = this.durationMenuItem.getMenu().createCheckItem();
 		this.quarter.addSelectionListener(this.createActionProcessor(TGSetQuarterDurationAction.NAME));
 
 		//--EIGHTH--
-		this.eighth = this.durationMenuItem.getMenu().createActionItem();
+		this.eighth = this.durationMenuItem.getMenu().createCheckItem();
 		this.eighth.addSelectionListener(this.createActionProcessor(TGSetEighthDurationAction.NAME));
 
 		//--SIXTEENTH--
-		this.sixteenth = this.durationMenuItem.getMenu().createActionItem();
+		this.sixteenth = this.durationMenuItem.getMenu().createCheckItem();
 		this.sixteenth.addSelectionListener(this.createActionProcessor(TGSetSixteenthDurationAction.NAME));
 
 		//--THIRTY SECOND--
-		this.thirtySecond = this.durationMenuItem.getMenu().createActionItem();
+		this.thirtySecond = this.durationMenuItem.getMenu().createCheckItem();
 		this.thirtySecond.addSelectionListener(this.createActionProcessor(TGSetThirtySecondDurationAction.NAME));
 
 		//--SIXTY FOURTH--
-		this.sixtyFourth = this.durationMenuItem.getMenu().createActionItem();
+		this.sixtyFourth = this.durationMenuItem.getMenu().createCheckItem();
 		this.sixtyFourth.addSelectionListener(this.createActionProcessor(TGSetSixtyFourthDurationAction.NAME));
 
 		//--SEPARATOR--
 		this.durationMenuItem.getMenu().createSeparator();
 
 		//--DOTTED--
-		this.dotted = this.durationMenuItem.getMenu().createActionItem();
+		this.dotted = this.durationMenuItem.getMenu().createCheckItem();
 		this.dotted.addSelectionListener(this.createActionProcessor(TGChangeDottedDurationAction.NAME));
 
-		this.doubleDotted = this.durationMenuItem.getMenu().createActionItem();
+		this.doubleDotted = this.durationMenuItem.getMenu().createCheckItem();
 		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
 
 		//--DIVISION--
@@ -98,15 +99,25 @@ public class DurationMenuItem  extends TGMenuItem {
 	}
 
 	public void update(){
+		TGDuration duration = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		this.whole.setChecked(duration.getValue() == TGDuration.WHOLE);
 		this.whole.setEnabled(!running);
+		this.half.setChecked(duration.getValue() == TGDuration.HALF);
 		this.half.setEnabled(!running);
+		this.quarter.setChecked(duration.getValue() == TGDuration.QUARTER);
 		this.quarter.setEnabled(!running);
+		this.eighth.setChecked(duration.getValue() == TGDuration.EIGHTH);
 		this.eighth.setEnabled(!running);
+		this.sixteenth.setChecked(duration.getValue() == TGDuration.SIXTEENTH);
 		this.sixteenth.setEnabled(!running);
+		this.thirtySecond.setChecked(duration.getValue() == TGDuration.THIRTY_SECOND);
 		this.thirtySecond.setEnabled(!running);
+		this.sixtyFourth.setChecked(duration.getValue() == TGDuration.SIXTY_FOURTH);
 		this.sixtyFourth.setEnabled(!running);
+		this.dotted.setChecked(duration.isDotted());
 		this.dotted.setEnabled(!running);
+		this.doubleDotted.setChecked(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled(!running);
 		this.division.setEnabled(!running);
 	}
