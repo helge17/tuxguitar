@@ -2,7 +2,7 @@ package org.herac.tuxguitar.util;
 
 public class TGVersion implements Comparable<TGVersion> {
 	
-	public static final TGVersion CURRENT = new TGVersion(1,6,3);
+	public static final TGVersion CURRENT = new TGVersion(1,6,4);
 	
 	private int major;
 	private int minor;
