@@ -10,7 +10,7 @@
 	<!-- <string name="global_error_message"></string> -->
 	<!-- <string name="global_exit_confirm_message"></string> -->
 
-	<!-- <string name="global_button_ok"></string> -->
+	<string name="global_button_ok">OK</string>
 	<string name="global_button_cancel">Anuluj</string>
 	<string name="global_button_clean">Wyczyść</string>
 	<string name="global_button_add">Dodaj</string>
@@ -40,16 +40,16 @@
 	<string name="action_file_save_as">Zapisz jako</string>
 
 	<string name="action_undo">Cofnij</string>
-	<string name="action_redo">Przywróć</string>
+	<string name="action_redo">Ponów</string>
 	<string name="action_voice_1">Wybierz głos 1</string>
 	<string name="action_voice_2">Wybierz głos 2</string>
 	<string name="action_copy">Kopiuj</string>
-	<string name="action_paste">Wstaw</string>
+	<string name="action_paste">Wklej</string>
 
 	<!-- <string name="action_view_channel_list"></string> -->
-	<string name="action_view_layout_show_score">Pokaż zapis nutowy</string>
-	<!-- <string name="action_view_layout_show_chord_name"></string> -->
-	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
+	<string name="action_view_layout_show_score">Pokaż partyturę</string>
+	<string name="action_view_layout_show_chord_name">Pokaż nazwy akordów</string>
+	<string name="action_view_layout_show_chord_diagram">Pokaż diagramy akordów</string>
 
 	<string name="action_transport_play">Odtwarzaj</string>
 
@@ -73,10 +73,10 @@
 	<string name="action_track_clone">Powiel ścieżkę</string>
 	<string name="action_track_move_up">Przesuń w górę</string>
 	<string name="action_track_move_down">Przesuń w dół</string>
-	<!-- <string name="action_track_change_mute"></string> -->
-	<!-- <string name="action_track_change_solo"></string> -->
+	<string name="action_track_change_mute">Cisza</string>
+	<string name="action_track_change_solo">Solo</string>
 	<string name="action_track_set_name">Nazwa</string>
-	<!-- <string name="action_track_set_channel"></string> -->
+	<string name="action_track_set_channel">Instrument</string>
 	<string name="action_track_change_tuning">Strojenie</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
@@ -86,29 +86,29 @@
 
 	<string name="action_change_tied_note">Ligatura</string>
 	<string name="action_clean_beat">Wyczyść wartość</string>
-	<string name="action_decrement_note_semitone">Pół tonu w dół</string>
-	<string name="action_increment_note_semitone">Pół tonu w górę</string>
-	<!-- <string name="action_delete_note_or_rest"></string> -->
-	<!-- <string name="action_insert_rest_beat"></string> -->
+	<string name="action_decrement_note_semitone">O półton w dół</string>
+	<string name="action_increment_note_semitone">O półton w górę</string>
+	<string name="action_delete_note_or_rest">Usuń nutę lub pauzę</string>
+	<string name="action_insert_rest_beat">Wstaw pauzę</string>
 	<string name="action_move_beats_left">Przesuń jedno uderzenie w lewo</string>
 	<string name="action_move_beats_right">Przesuń jedno uderzenie w prawo</string>
 	<string name="action_remove_unused_voice">Usuń nieużywany głos</string>
-	<string name="action_set_voice_auto">Automatyczny kierunek ułożenia lasek</string>
-	<string name="action_set_voice_down">Laski nut w dół</string>
-	<string name="action_set_voice_up">Laski nut do góry</string>
+	<string name="action_set_voice_auto">Automatyczny kierunek ułożenia laseczek</string>
+	<string name="action_set_voice_down">Laseczki nut w dół</string>
+	<string name="action_set_voice_up">Laseczki nut w górę</string>
 	<string name="action_shift_note_down">Oktawę w dół</string>
 	<string name="action_shift_note_up">Oktawę w górę</string>
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_change_stroke">Uderzenie</string>
 	<string name="action_change_text">Wprowadź tekst</string>
 
-	<string name="action_set_duration_whole">cała nuta</string>
-	<string name="action_set_duration_half">półnuta</string>
-	<string name="action_set_duration_quarter">ćwierćnuta</string>
-	<string name="action_set_duration_eighth">ósemka</string>
-	<string name="action_set_duration_sixteenth">szestnastka</string>
-	<string name="action_set_duration_thirtysecond">trzydziestodwójka</string>
-	<string name="action_set_duration_sixtyfourth">sześćdziesięcioczwórka</string>
-	<string name="action_set_duration_dotted">kropka</string>
+	<string name="action_set_duration_whole">Cała nuta</string>
+	<string name="action_set_duration_half">Półnuta</string>
+	<string name="action_set_duration_quarter">Ćwierćnuta</string>
+	<string name="action_set_duration_eighth">Ósemka</string>
+	<string name="action_set_duration_sixteenth">Szesnastka</string>
+	<string name="action_set_duration_thirtysecond">Trzydziestodwójka</string>
+	<string name="action_set_duration_sixtyfourth">Sześćdziesięcioczwórka</string>
+	<string name="action_set_duration_dotted">Kropka</string>
 	<string name="action_set_duration_doubledotted">Podwójna kropka</string>
 	<string name="action_set_duration_division_type">Rodzaj podziału</string>
 
@@ -123,35 +123,35 @@
 	<!-- <string name="action_set_duration_division_type_12"></string> -->
 	<!-- <string name="action_set_duration_division_type_13"></string> -->
 
-	<!-- <string name="action_set_velocity_ppp"></string> -->
-	<!-- <string name="action_set_velocity_pp"></string> -->
-	<!-- <string name="action_set_velocity_p"></string> -->
-	<!-- <string name="action_set_velocity_mp"></string> -->
-	<!-- <string name="action_set_velocity_mf"></string> -->
-	<!-- <string name="action_set_velocity_f"></string> -->
-	<!-- <string name="action_set_velocity_ff"></string> -->
-	<!-- <string name="action_set_velocity_fff"></string> -->
+	<string name="action_set_velocity_ppp">Piano pianissimo</string>
+	<string name="action_set_velocity_pp">Pianissimo</string>
+	<string name="action_set_velocity_p">Piano</string>
+	<string name="action_set_velocity_mp">Mezzo piano</string>
+	<string name="action_set_velocity_mf">Mezzo forte</string>
+	<string name="action_set_velocity_f">Forte</string>
+	<string name="action_set_velocity_ff">Fortissimo</string>
+	<string name="action_set_velocity_fff">Forte fortissimo</string>
 
-	<string name="action_change_vibrato">Wibrato</string>
+	<string name="action_change_vibrato">Vibrato</string>
 	<string name="action_change_bend">Podciągnięcie</string>
 	<string name="action_change_dead_note">Tłumiona nuta</string>
-	<string name="action_change_slide">Glissando (Slide)</string>
-	<string name="action_change_hammer">Legato (Hammer-on/Pull-off)</string>
-	<string name="action_change_tremolo_bar">Tremolo (&quot;wajcha&quot;)</string>
-	<string name="action_change_ghost_note">Cicha nuta(&quot;duch&quot;)</string>
+	<string name="action_change_slide">Glissando (slide)</string>
+	<string name="action_change_hammer">Legato (hammer-on/pull-off)</string>
+	<string name="action_change_tremolo_bar">Wajcha tremolo</string>
+	<string name="action_change_ghost_note">Cicha nuta (&quot;duch&quot;)</string>
 	<string name="action_change_accentuated_note">Akcent</string>
 	<string name="action_change_heavy_accentuated_note">Mocny akcent</string>
-	<string name="action_change_harmonic">Floażolet</string>
+	<string name="action_change_harmonic">Flażolet</string>
 	<string name="action_change_grace">Przednutka</string>
 	<string name="action_change_trill">Ozdobnik</string>
 	<string name="action_change_tremolo_picking">Uderzenie tremolo</string>
-	<string name="action_change_palm_mute">Tłumienie dłonią(pizzicato)</string>
-	<!-- <string name="action_change_let_ring"></string> -->
-	<!-- <string name="action_change_staccato"></string> -->
-	<!-- <string name="action_change_tapping"></string> -->
-	<string name="action_change_slapping">Slap(&quot;klang&quot;)</string>
-	<string name="action_change_popping">Popping(Bartok pizz.)</string>
-	<string name="action_change_fade_in">Zgłaśniane</string>
+	<string name="action_change_palm_mute">Palm muting</string>
+	<string name="action_change_let_ring">Wybrzmienie</string>
+	<string name="action_change_staccato">Staccato</string>
+	<string name="action_change_tapping">Tapping</string>
+	<string name="action_change_slapping">Slapping (klang)</string>
+	<string name="action_change_popping">Popping (pizzicato bartokowskie)</string>
+	<string name="action_change_fade_in">Zgłośnienie</string>
 
 	<string name="action_channel_list_add">Dodaj</string>
 	<string name="action_channel_list_item_edit">Edycja</string>
@@ -172,7 +172,7 @@
 	<!-- ========================= Storage ================================= -->
 	<!-- =================================================================== -->
 
-	<string name="storage_default_filename">Tabulaturka</string>
+	<string name="storage_default_filename">Bez nazwy</string>
 	<!-- <string name="storage_export_to"></string> -->
 
 	<!-- =================================================================== -->
@@ -187,13 +187,13 @@
 	<!-- =================================================================== -->
 
 	<string name="browser_refresh">Odśwież</string>
-	<string name="browser_back">Powrót</string>
+	<string name="browser_back">Wróć</string>
 	<!-- <string name="browser_root"></string> -->
 	<string name="browser_settings">Ustawienia</string>
 	<string name="browser_save_label">Zapisz</string>
 	<!-- <string name="browser_add_collection"></string> -->
 	<!-- <string name="browser_remove_collection"></string> -->
-	<string name="browser_file_overwrite_question">Plik istnieje, nadpisać go ??</string>
+	<string name="browser_file_overwrite_question">Plik już istnieje. Chcesz go zastąpić?</string>
 	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
 	<!-- <string name="browser_element_icon_description"></string> -->
 
@@ -206,7 +206,7 @@
 
 	<string name="browser_settings_fs_dlg_title">Kolekcja lokalna</string>
 	<string name="browser_settings_fs_name_label">Nazwa:</string>
-	<string name="browser_settings_fs_path_label">Ścieżk:</string>
+	<string name="browser_settings_fs_path_label">Ścieżka:</string>
 
 	<string name="browser_settings_fs_error_title">Błąd</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
@@ -237,14 +237,14 @@
 	<!-- =================================================================== -->
 
 	<!-- Confirm dialog -->
-	<!-- <string name="confirm_dlg_title"></string> -->
+	<string name="confirm_dlg_title">Potwierdź</string>
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Zmień tempo</string>
-	<!-- <string name="tempo_dlg_tempo_label"></string> -->
+	<string name="tempo_dlg_tempo_label">Tempo:</string>
 	<!-- <string name="tempo_dlg_options_apply_to_song"></string> -->
-	<!-- <string name="tempo_dlg_options_apply_to_end"></string> -->
-	<!-- <string name="tempo_dlg_options_apply_to_next_marker"></string> -->
+	<string name="tempo_dlg_options_apply_to_end">Pozycja do końca</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Pozycja do następnej</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Zmień klucz</string>
@@ -263,16 +263,16 @@
 	<string name="key_signature_dlg_ks_value_sharp_2">2 Krzyżyki</string>
 	<string name="key_signature_dlg_ks_value_sharp_3">3 Krzyżyki</string>
 	<string name="key_signature_dlg_ks_value_sharp_4">4 Krzyżyki</string>
-	<string name="key_signature_dlg_ks_value_sharp_5">5 Krzyżyki</string>
-	<string name="key_signature_dlg_ks_value_sharp_6">6 Krzyżyki</string>
-	<string name="key_signature_dlg_ks_value_sharp_7">7 Krzyżyki</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">5 Krzyżyków</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">6 Krzyżyków</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">7 Krzyżyków</string>
 	<string name="key_signature_dlg_ks_value_flat_1">1 Bemol</string>
 	<string name="key_signature_dlg_ks_value_flat_2">2 Bemole</string>
 	<string name="key_signature_dlg_ks_value_flat_3">3 Bemole</string>
 	<string name="key_signature_dlg_ks_value_flat_4">4 Bemole</string>
-	<string name="key_signature_dlg_ks_value_flat_5">5 Bemole</string>
-	<string name="key_signature_dlg_ks_value_flat_6">6 Bemole</string>
-	<string name="key_signature_dlg_ks_value_flat_7">7 Bemole</string>
+	<string name="key_signature_dlg_ks_value_flat_5">5 Bemoli</string>
+	<string name="key_signature_dlg_ks_value_flat_6">6 Bemoli</string>
+	<string name="key_signature_dlg_ks_value_flat_7">7 Bemoli</string>
 	<string name="key_signature_dlg_options_apply_to_end">Używaj tej tonacji do końca</string>
 
 	<!-- Time Signature dialog -->
@@ -299,7 +299,7 @@
 	<string name="song_properties_dlg_title">Właściwości</string>
 	<string name="song_properties_dlg_name_label">Nazwa:</string>
 	<string name="song_properties_dlg_artist_label">Kompozytor:</string>
-	<!-- <string name="song_properties_dlg_album_label"></string> -->
+	<string name="song_properties_dlg_album_label">Album:</string>
 	<string name="song_properties_dlg_author_label">Autor:</string>
 	<string name="song_properties_dlg_date_label">Data:</string>
 	<string name="song_properties_dlg_copyright_label">Prawa autorskie:</string>
@@ -312,18 +312,18 @@
 	<string name="track_name_dlg_name_label">Nazwa:</string>
 
 	<!-- Track channel dialog -->
-	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<string name="track_channel_dlg_channel_label">Instrument:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Strojenie</string>
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_value_label">Wartość:</string>
+	<string name="track_tuning_dlg_preview_label">Etykieta:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_options_transpose"></string> -->
 	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transponuj akordy</string>
-	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Próbuj zachować dźwięki na tej samej strunie</string>
+	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Próbuj zachować nuty na tej samej strunie</string>
 	<string name="track_tuning_dlg_error_title">Błąd</string>
 	<!-- <string name="track_tuning_dlg_range_error"></string> -->
 	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->
@@ -333,7 +333,7 @@
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Dodaj takt</string>
-	<string name="measure_add_dlg_count_label">Ilość dodanych:</string>
+	<string name="measure_add_dlg_count_label">Liczba dodanych:</string>
 	<string name="measure_add_dlg_options_before_position">Dodaj takt przed bieżącym</string>
 	<string name="measure_add_dlg_options_after_position">Dodaj takt za bieżącym</string>
 	<string name="measure_add_dlg_options_at_end">Dodaj takt na końcu</string>
@@ -356,7 +356,7 @@
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Wstaw takt</string>
-	<string name="measure_paste_dlg_count_label">Ilość wstawianych:</string>
+	<string name="measure_paste_dlg_count_label">Liczba wstawianych:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Wstaw w bieżącym takcie</string>
 	<string name="measure_paste_dlg_options_mode_insert">Wstaw w nowym takcie</string>
 
@@ -367,13 +367,13 @@
 	<!-- <string name="bend_dlg_title"></string> -->
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Podciągnięcie</string>
-	<string name="bend_dlg_preset_bend_release">podciąganie/powrót</string>
-	<string name="bend_dlg_preset_bend_release_bend">podciąganie/powrót/podciąganie</string>
-	<string name="bend_dlg_preset_prebend">podciąganie przed uderzeniem</string>
-	<string name="bend_dlg_preset_prebend_release">podciąganie przed uderzeniem/powrót</string>
+	<string name="bend_dlg_preset_bend_release">Podciągnięcie/powrót</string>
+	<string name="bend_dlg_preset_bend_release_bend">Podciągnięcie/powrót/podciągnięcie</string>
+	<string name="bend_dlg_preset_prebend">Podciągnięcie przed uderzeniem</string>
+	<string name="bend_dlg_preset_prebend_release">Podciągnięcie przed uderzeniem/powrót</string>
 
 	<!-- Tremolo Bar dialog -->
-	<string name="tremolo_bar_dlg_title">Tremolo (&quot;wajcha&quot;)</string>
+	<string name="tremolo_bar_dlg_title">Wajcha tremolo</string>
 	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
 	<string name="tremolo_bar_dlg_preset_dip">Obniżenie</string>
 	<string name="tremolo_bar_dlg_preset_dive">Opuszczenie w dół</string>
@@ -384,16 +384,16 @@
 
 	<!-- Tremolo picking dialog -->
 	<string name="tremolo_picking_dlg_title">Uderzenie tremolo</string>
-	<string name="tremolo_picking_dlg_duration_8">ósemka</string>
-	<string name="tremolo_picking_dlg_duration_16">szestnastka</string>
-	<string name="tremolo_picking_dlg_duration_32">trzydziestodwójka</string>
+	<string name="tremolo_picking_dlg_duration_8">Ósemka</string>
+	<string name="tremolo_picking_dlg_duration_16">Szesnastka</string>
+	<string name="tremolo_picking_dlg_duration_32">Trzydziestodwójka</string>
 
 	<!-- Trill dialog -->
 	<string name="trill_dlg_title">Ozdobnik</string>
 	<string name="trill_dlg_fret_label">Próg:</string>
-	<string name="trill_dlg_duration_16">szestnastka</string>
-	<string name="trill_dlg_duration_32">trzydziestodwójka</string>
-	<string name="trill_dlg_duration_64">sześćdziesięcioczwórka</string>
+	<string name="trill_dlg_duration_16">Szesnastka</string>
+	<string name="trill_dlg_duration_32">Trzydziestodwójka</string>
+	<string name="trill_dlg_duration_64">Sześćdziesięcioczwórka</string>
 
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Przednutka</string>
@@ -403,59 +403,59 @@
 	<string name="grace_dlg_position_before_beat">Przed główną wartością</string>
 	<string name="grace_dlg_position_on_beat">Na głównej wartości</string>
 	<string name="grace_dlg_duration_label">Wartość</string>
-	<string name="grace_dlg_duration_16">szestnastka</string>
-	<string name="grace_dlg_duration_32">trzydziestodwójka</string>
-	<string name="grace_dlg_duration_64">sześćdziesięcioczwórka</string>
+	<string name="grace_dlg_duration_16">Szesnastka</string>
+	<string name="grace_dlg_duration_32">Trzydziestodwójka</string>
+	<string name="grace_dlg_duration_64">Sześćdziesięcioczwórka</string>
 	<string name="grace_dlg_dynamic_label">Dynamika</string>
-	<!-- <string name="grace_dlg_dynamic_ppp"></string> -->
-	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
-	<!-- <string name="grace_dlg_dynamic_p"></string> -->
-	<!-- <string name="grace_dlg_dynamic_mp"></string> -->
-	<!-- <string name="grace_dlg_dynamic_mf"></string> -->
-	<!-- <string name="grace_dlg_dynamic_f"></string> -->
-	<!-- <string name="grace_dlg_dynamic_ff"></string> -->
-	<!-- <string name="grace_dlg_dynamic_fff"></string> -->
+	<string name="grace_dlg_dynamic_ppp">Piano pianissimo</string>
+	<string name="grace_dlg_dynamic_pp">Pianissimo</string>
+	<string name="grace_dlg_dynamic_p">Piano</string>
+	<string name="grace_dlg_dynamic_mp">Mezzo piano</string>
+	<string name="grace_dlg_dynamic_mf">Mezzo forte</string>
+	<string name="grace_dlg_dynamic_f">Forte</string>
+	<string name="grace_dlg_dynamic_ff">Fortissimo</string>
+	<string name="grace_dlg_dynamic_fff">Forte fortissimo</string>
 	<string name="grace_dlg_transition_label">Artykulacja</string>
 	<string name="grace_dlg_transition_none">Naturalnie</string>
 	<string name="grace_dlg_transition_bend">Podciągnięcie</string>
-	<string name="grace_dlg_transition_slide">Glissando (Slide)</string>
+	<string name="grace_dlg_transition_slide">Glissando (slide)</string>
 	<string name="grace_dlg_transition_hammer">Legato</string>
 
 	<!-- Harmonic dialog -->
-	<string name="harmonic_dlg_title">Floażolet</string>
+	<string name="harmonic_dlg_title">Flażolet</string>
 	<string name="harmonic_dlg_type_nh">[N.H] Flażolety naturalne</string>
-	<string name="harmonic_dlg_type_ah">[A.H] Sztuczne flażolety</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Flażolety sztuczne</string>
 	<string name="harmonic_dlg_type_th">[T.H] Flażolety tapping</string>
 	<string name="harmonic_dlg_type_ph">[P.H] Flażolety wyciskane</string>
 	<string name="harmonic_dlg_type_sh">[S.H] Pół-flażolety</string>
 
 	<!-- Stroke dialog -->
-	<!-- <string name="stroke_dlg_title"></string> -->
+	<string name="stroke_dlg_title">Uderzenie</string>
 	<string name="stroke_dlg_direction_label">Kierunek:</string>
 	<string name="stroke_dlg_direction_none">Naturalnie</string>
 	<string name="stroke_dlg_direction_up">Uderzenie strun w górę</string>
 	<string name="stroke_dlg_direction_down">Uderzenie strun w dół</string>
-	<string name="stroke_dlg_duration_4">ćwierćnuta</string>
-	<string name="stroke_dlg_duration_8">ósemka</string>
-	<string name="stroke_dlg_duration_16">szestnastka</string>
-	<string name="stroke_dlg_duration_32">trzydziestodwójka</string>
-	<string name="stroke_dlg_duration_64">sześćdziesięcioczwórka</string>
+	<string name="stroke_dlg_duration_4">Ćwierćnuta</string>
+	<string name="stroke_dlg_duration_8">Ósemka</string>
+	<string name="stroke_dlg_duration_16">Szesnastka</string>
+	<string name="stroke_dlg_duration_32">Trzydziestodwójka</string>
+	<string name="stroke_dlg_duration_64">Sześćdziesięcioczwórka</string>
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<!-- <string name="channel_edit_dlg_title"></string> -->
+	<string name="channel_edit_dlg_title">Instrument</string>
 	<string name="channel_edit_dlg_name_label">Nazwa:</string>
-	<!-- <string name="channel_edit_dlg_program_label"></string> -->
+	<string name="channel_edit_dlg_program_label">Program:</string>
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<string name="channel_edit_dlg_bank_label">Bank:</string>
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_percussion_label">Kanał perkusji</string>
 	<string name="channel_edit_dlg_volume_label">Głośność:</string>
 	<string name="channel_edit_dlg_balance_label">Balans:</string>
-	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
-	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
-	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
-	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+	<string name="channel_edit_dlg_chorus_label">Chorus:</string>
+	<string name="channel_edit_dlg_reverb_label">Pogłos:</string>
+	<string name="channel_edit_dlg_phaser_label">Fazer:</string>
+	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
 </resources>

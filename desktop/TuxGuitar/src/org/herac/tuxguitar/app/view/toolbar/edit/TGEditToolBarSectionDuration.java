@@ -86,11 +86,9 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		
 		this.divisionTypeMenuItems = new ArrayList<UIMenuCheckableItem>();
 		this.divisionTypeProcessors = new ArrayList<TGActionProcessorListener>();
-		this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.NORMAL));
-		this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.NORMAL));
-		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
-			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
-			this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
+		for( int i = 0 ; i < TGDivisionType.DIVISION_TYPES.length ; i ++ ){
+			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.DIVISION_TYPES[i]));
+			this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.DIVISION_TYPES[i]));
 		}
 		
 		this.tiedNote = toolBar2.createCheckItem();
@@ -216,10 +214,10 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	private void toggleDivisionType() {
 		TGDuration duration = TablatureEditor.getInstance(this.getToolBar().getContext()).getTablature().getCaret().getDuration();
 		TGDivisionType divisionType = null;
-		if( duration.getDivision().isEqual(TGDivisionType.NORMAL)){
-			divisionType = this.createDivisionType(TGDivisionType.TRIPLET);
+		if( duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
+			divisionType = this.createDivisionType(TGDivisionType.DIVISION_TYPES[1]);
 		}else{
-			divisionType = this.createDivisionType(TGDivisionType.NORMAL);
+			divisionType = this.createDivisionType(TGDivisionType.DIVISION_TYPES[0]);
 		}
 		
 		this.createDivisionTypeAction(divisionType).process();
@@ -258,11 +256,11 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	private void loadDivisionTypeMenuProperties() {
 		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
-			if (TGDivisionType.NORMAL.equals(divisionType)) {
-				uiMenuItem.setText(TuxGuitar.getProperty("duration.division-type.normal"));
-			} else {
-				uiMenuItem.setText(Integer.toString(divisionType.getEnters()));
+			String name = TuxGuitar.getProperty("duration.division-type." + Integer.toString(divisionType.getEnters()));
+			if( name.isEmpty() ) {
+				name = Integer.toString(divisionType.getEnters());
 			}
+			uiMenuItem.setText(name);
 		}
 	}
 	

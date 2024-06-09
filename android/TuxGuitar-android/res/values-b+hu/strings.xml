@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">Hatvannegyed</string>
 	<string name="action_set_duration_dotted">Nyújtott</string>
 	<string name="action_set_duration_doubledotted">Duplán nyújtott</string>
-	<!-- <string name="action_set_duration_division_type"></string> -->
+	<string name="action_set_duration_division_type">Osztott ritmus</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->

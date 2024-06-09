@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">六十四分音符</string>
 	<string name="action_set_duration_dotted">附點</string>
 	<string name="action_set_duration_doubledotted">雙附點</string>
-	<string name="action_set_duration_division_type">分小節方式(2/4，3/4，4/4)</string>
+	<string name="action_set_duration_division_type">分小節方式</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->

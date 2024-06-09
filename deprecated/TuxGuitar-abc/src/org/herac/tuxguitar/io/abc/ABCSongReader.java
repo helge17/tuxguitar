@@ -389,7 +389,7 @@ public class ABCSongReader extends ABCFileFormat implements TGSongReader {
 	
 	private long getStart(TGDuration duration, TGMeasure measure,int position){
 		float fixedPosition = (position*64)/ABCSong.TICKS_PER_QUART;
-		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.NORMAL)){
+		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
 			fixedPosition = (( fixedPosition - (fixedPosition % 64)) + ((((fixedPosition % 64) * 2) * 2) / 3) );
 		}
 		long start = ((long) (measure.getStart() + ( (fixedPosition * TGDuration.QUARTER_TIME)  / 64)) );

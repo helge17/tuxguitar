@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">Шістдесят четверта</string>
 	<string name="action_set_duration_dotted">Із крапкою</string>
 	<string name="action_set_duration_doubledotted">Із подвійною крапкою</string>
-	<!-- <string name="action_set_duration_division_type"></string> -->
+	<string name="action_set_duration_division_type">Триплет</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->

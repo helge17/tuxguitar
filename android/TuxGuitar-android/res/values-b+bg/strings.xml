@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">Шестдесетичетвъртина</string>
 	<string name="action_set_duration_dotted">Удължена</string>
 	<string name="action_set_duration_doubledotted">Двойно удължена</string>
-	<!-- <string name="action_set_duration_division_type"></string> -->
+	<string name="action_set_duration_division_type">Триола</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->

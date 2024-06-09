@@ -60,7 +60,7 @@
 
 	<string name="action_change_tempo">Tempo ändern</string>
 	<string name="action_change_clef">Notenschlüssel ändern</string>
-	<string name="action_change_key_signature">Vorzeichnung ändern</string>
+	<string name="action_change_key_signature">Tonart ändern</string>
 	<string name="action_change_time_signature">Taktart ändern</string>
 	<string name="action_change_triplet_feel">Triolenfeeling ändern</string>
 	<string name="action_change_repeat_open">Wiederholung öffnen</string>
@@ -110,12 +110,12 @@
 	<string name="action_set_duration_sixtyfourth">Vierundsechzigstel</string>
 	<string name="action_set_duration_dotted">Punktiert</string>
 	<string name="action_set_duration_doubledotted">Doppelt punktiert</string>
-	<string name="action_set_duration_division_type">Aufteilung</string>
+	<string name="action_set_duration_division_type">Unterteilung</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
+	<string name="action_set_duration_division_type_3">3 - Triole</string>
+	<string name="action_set_duration_division_type_5">5 - Quintole</string>
+	<string name="action_set_duration_division_type_6">6 - Sextole</string>
 	<!-- <string name="action_set_duration_division_type_7"></string> -->
 	<!-- <string name="action_set_duration_division_type_9"></string> -->
 	<!-- <string name="action_set_duration_division_type_10"></string> -->
@@ -256,24 +256,24 @@
 	<string name="clef_dlg_options_apply_to_end">Diesen Notenschlüssel bis zum Liedende verwenden</string>
 
 	<!-- Key Signature dialog -->
-	<string name="key_signature_dlg_title">Vorzeichnung ändern</string>
-	<string name="key_signature_dlg_ks_label">Vorzeichnung:</string>
-	<string name="key_signature_dlg_ks_value_natural">Natürlich</string>
-	<string name="key_signature_dlg_ks_value_sharp_1">1 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_sharp_2">2 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_sharp_3">3 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_sharp_4">4 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_sharp_5">5 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_sharp_6">6 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_sharp_7">7 Erhöhungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_1">1 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_2">2 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_3">3 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_4">4 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_5">5 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_6">6 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_ks_value_flat_7">7 Erniedrigungszeichen</string>
-	<string name="key_signature_dlg_options_apply_to_end">Diese Vorzeichnung bis zum Liedende verwenden</string>
+	<string name="key_signature_dlg_title">Tonart ändern</string>
+	<string name="key_signature_dlg_ks_label">Tonart:</string>
+	<string name="key_signature_dlg_ks_value_natural">C-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">G-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">D-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">A-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">E-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">H-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">Fis-Dur</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">Cis-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_1">F-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_2">B-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_3">Es-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_4">As-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_5">Des-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_6">Ges-Dur</string>
+	<string name="key_signature_dlg_ks_value_flat_7">Ces-Dur</string>
+	<string name="key_signature_dlg_options_apply_to_end">Diese Tonart bis zum Liedende verwenden</string>
 
 	<!-- Time Signature dialog -->
 	<string name="time_signature_dlg_title">Taktart ändern</string>

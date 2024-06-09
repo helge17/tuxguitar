@@ -374,7 +374,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		if (changeTempo) {
 			flags |= 0x10;
 		}
-		if (!duration.getDivision().isEqual(TGDivisionType.NORMAL)) {
+		if (!duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])) {
 			flags |= 0x20;
 		}
 		if (voice.isEmpty() || voice.isRestVoice()) {

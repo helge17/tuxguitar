@@ -243,14 +243,7 @@ public abstract class TGDuration {
 		TGFactory factory = new TGFactory();
 		HashMap<Long, TGDuration> durationHashMap = new HashMap<Long, TGDuration>();
 		
-		// Create an array of all known DivisionTypes
-		TGDivisionType[] allDivisionTypes = new TGDivisionType[TGDivisionType.ALTERED_DIVISION_TYPES.length + 1];
-		allDivisionTypes[0] = TGDivisionType.NORMAL;
-		for (int i = 1; i < allDivisionTypes.length; i++) {
-			allDivisionTypes[i] = TGDivisionType.ALTERED_DIVISION_TYPES[i - 1];
-		}
-		
-		for(TGDivisionType tmpDivisionType : allDivisionTypes)
+		for(TGDivisionType tmpDivisionType : TGDivisionType.DIVISION_TYPES)
 		{
 			for (int i = 0; i < 3; i++)
 			{

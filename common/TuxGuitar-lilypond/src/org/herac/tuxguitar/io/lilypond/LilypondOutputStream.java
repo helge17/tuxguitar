@@ -466,7 +466,7 @@ public class LilypondOutputStream {
 					this.temp.setDivisionTypeOpen(false);
 				}
 
-				if(!this.temp.isDivisionTypeOpen() && !divisionType.isEqual(TGDivisionType.NORMAL)){
+				if(!this.temp.isDivisionTypeOpen() && !divisionType.isEqual(TGDivisionType.DIVISION_TYPES[0])){
 					this.writer.print("\\times " + divisionType.getTimes() + "/" + divisionType.getEnters() + " {");
 					this.temp.setDivisionTypeOpen(true);
 				}

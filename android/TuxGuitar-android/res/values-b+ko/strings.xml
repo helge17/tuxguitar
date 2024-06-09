@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">64분음표</string>
 	<string name="action_set_duration_dotted">점음표</string>
 	<string name="action_set_duration_doubledotted">겹점음표</string>
-	<!-- <string name="action_set_duration_division_type"></string> -->
+	<string name="action_set_duration_division_type">셋잇단음표</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->
