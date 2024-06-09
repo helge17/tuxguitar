@@ -53,7 +53,7 @@ public class TGDurationMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_set_duration_dotted, this.createActionProcessor(TGChangeDottedDurationAction.NAME), !running, duration.isDotted());
 		this.initializeItem(menu, R.id.action_set_duration_doubledotted, this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME), !running, duration.isDoubleDotted());
 		
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_1, TGDivisionType.DIVISION_TYPES[0], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_1, TGDivisionType.NORMAL, duration, running);
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_3, TGDivisionType.DIVISION_TYPES[1], duration, running);
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_5, TGDivisionType.DIVISION_TYPES[2], duration, running);
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_6, TGDivisionType.DIVISION_TYPES[3], duration, running);

@@ -484,10 +484,10 @@ public class TGMeasureImpl extends TGMeasure{
 					}
 					voice.update(layout);
 					
-					if(!this.division1 && (v % 2 == 0) && !voice.getDuration().getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
+					if(!this.division1 && (v % 2 == 0) && !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
 						this.division1 = true;
 					}
-					if(!this.division2 && (v % 2 == 1) && !voice.getDuration().getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
+					if(!this.division2 && (v % 2 == 1) && !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
 						this.division2 = true;
 					}
 					if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 || (voice.isRestVoice() && !voice.isHiddenSilence()) ){
@@ -736,7 +736,7 @@ public class TGMeasureImpl extends TGMeasure{
 					tupletShortest = 0;
 				}
 				// beginning of tuplet?
-				if(!voice.getDuration().getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])) {
+				if(!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
 					x2 = (fromX + beat.getPosX() + beat.getSpacing(layout));
 					if( divisionType == null ) {
 						divisionType = voice.getDuration().getDivision();

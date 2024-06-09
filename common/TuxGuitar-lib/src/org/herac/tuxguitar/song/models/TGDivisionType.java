@@ -28,6 +28,9 @@ public abstract class TGDivisionType {
 		newDivisionType(12,8),
 		newDivisionType(13,8),
 	};
+
+	// Alias for better code readability
+	public static final TGDivisionType NORMAL = DIVISION_TYPES[0];
 	
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos

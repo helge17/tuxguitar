@@ -143,7 +143,7 @@ public class TESongParser {
 	
 	private long getStart(TGDuration duration, TGMeasure measure,int position){
 		float fixedPosition = position;
-		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
+		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.NORMAL)){
 			fixedPosition = (( fixedPosition - (fixedPosition % 64)) + ((((fixedPosition % 64) * 2) * 2) / 3) );
 		}
 		long start = ((long) (measure.getStart() + ( (fixedPosition * TGDuration.QUARTER_TIME)  / 64)) );

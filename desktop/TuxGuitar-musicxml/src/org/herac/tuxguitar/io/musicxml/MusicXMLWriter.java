@@ -413,7 +413,7 @@ public class MusicXMLWriter {
 				this.addNode(parent,"dot");
 			}
 			
-			if(!duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
+			if(!duration.getDivision().isEqual(TGDivisionType.NORMAL)){
 				Node divisionType = this.addNode(parent,"time-modification");
 				this.addNode(divisionType,"actual-notes",Integer.toString(duration.getDivision().getEnters()));
 				this.addNode(divisionType,"normal-notes",Integer.toString(duration.getDivision().getTimes()));

@@ -429,7 +429,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		int header = 0;
 		header = (duration.isDotted())?header |= DURATION_DOTTED:header;
 		header = (duration.isDoubleDotted())?header |= DURATION_DOUBLE_DOTTED:header;
-		header = (!duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0]))?header |= DURATION_NO_TUPLET:header;
+		header = (!duration.getDivision().isEqual(TGDivisionType.NORMAL))?header |= DURATION_NO_TUPLET:header;
 		writeHeader(header);
 		
 		//escribo el valor

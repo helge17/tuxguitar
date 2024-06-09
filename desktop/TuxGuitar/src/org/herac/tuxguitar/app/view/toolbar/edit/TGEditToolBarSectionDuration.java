@@ -214,10 +214,10 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	private void toggleDivisionType() {
 		TGDuration duration = TablatureEditor.getInstance(this.getToolBar().getContext()).getTablature().getCaret().getDuration();
 		TGDivisionType divisionType = null;
-		if( duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])){
+		if( duration.getDivision().isEqual(TGDivisionType.NORMAL)){
 			divisionType = this.createDivisionType(TGDivisionType.DIVISION_TYPES[1]);
 		}else{
-			divisionType = this.createDivisionType(TGDivisionType.DIVISION_TYPES[0]);
+			divisionType = this.createDivisionType(TGDivisionType.NORMAL);
 		}
 		
 		this.createDivisionTypeAction(divisionType).process();
