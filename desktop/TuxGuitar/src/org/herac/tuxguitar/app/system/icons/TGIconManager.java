@@ -293,9 +293,8 @@ public class TGIconManager {
 		this.durationDotted = loadIcon("dotted.png");
 		this.durationDoubleDotted = loadIcon("doubledotted.png");
 		this.divisionTypes = new HashMap<Integer, UIImage>();
-		this.divisionTypes.put(TGDivisionType.NORMAL.getEnters(), loadIcon("division-type-none.png"));
-		for (int i = 0; i < TGDivisionType.ALTERED_DIVISION_TYPES.length; i++) {
-			Integer enters = TGDivisionType.ALTERED_DIVISION_TYPES[i].getEnters();
+		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
+			Integer enters = TGDivisionType.DIVISION_TYPES[i].getEnters();
 			this.divisionTypes.put(enters, loadIcon("division-type-" + String.valueOf(enters) + ".png"));
 		}
 		this.fretboard = loadIcon("fretboard.png");

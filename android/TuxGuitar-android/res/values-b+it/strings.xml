@@ -110,12 +110,12 @@
 	<string name="action_set_duration_sixtyfourth">Semibiscroma</string>
 	<string name="action_set_duration_dotted">Punto</string>
 	<string name="action_set_duration_doubledotted">Doppio punto</string>
-	<string name="action_set_duration_division_type">Divisione</string>
+	<string name="action_set_duration_division_type">Gruppo irregolare</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
+	<string name="action_set_duration_division_type_3">3 - Terzina</string>
+	<string name="action_set_duration_division_type_5">5 - Quintina</string>
+	<string name="action_set_duration_division_type_6">6 - Sestina</string>
 	<!-- <string name="action_set_duration_division_type_7"></string> -->
 	<!-- <string name="action_set_duration_division_type_9"></string> -->
 	<!-- <string name="action_set_duration_division_type_10"></string> -->
@@ -258,21 +258,21 @@
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Cambia tonalità</string>
 	<string name="key_signature_dlg_ks_label">Tonalità:</string>
-	<string name="key_signature_dlg_ks_value_natural">Naturale</string>
-	<string name="key_signature_dlg_ks_value_sharp_1">1 Diesis</string>
-	<string name="key_signature_dlg_ks_value_sharp_2">2 Diesis</string>
-	<string name="key_signature_dlg_ks_value_sharp_3">3 Diesis</string>
-	<string name="key_signature_dlg_ks_value_sharp_4">4 Diesis</string>
-	<string name="key_signature_dlg_ks_value_sharp_5">5 Diesis</string>
-	<string name="key_signature_dlg_ks_value_sharp_6">6 Diesis</string>
-	<string name="key_signature_dlg_ks_value_sharp_7">7 Diesis</string>
-	<string name="key_signature_dlg_ks_value_flat_1">1 Bemolle</string>
-	<string name="key_signature_dlg_ks_value_flat_2">2 Bemolli</string>
-	<string name="key_signature_dlg_ks_value_flat_3">3 Bemolli</string>
-	<string name="key_signature_dlg_ks_value_flat_4">4 Bemolli</string>
-	<string name="key_signature_dlg_ks_value_flat_5">5 Bemolli</string>
-	<string name="key_signature_dlg_ks_value_flat_6">6 Bemolli</string>
-	<string name="key_signature_dlg_ks_value_flat_7">7 Bemolli</string>
+	<string name="key_signature_dlg_ks_value_natural">Do maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">Sol maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">Re maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">La maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">Mi maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">Si maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">Fa diesis maggiore</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">Do diesis maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_1">Fa maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_2">Si bemolle maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_3">Mi bemolle maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_4">La bemolle maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_5">Re bemolle maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_6">Sol bemolle maggiore</string>
+	<string name="key_signature_dlg_ks_value_flat_7">Do bemolle maggiore</string>
 	<string name="key_signature_dlg_options_apply_to_end">Applica questa tonalità fino alla fine</string>
 
 	<!-- Time Signature dialog -->
@@ -284,8 +284,8 @@
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Modifica terzina</string>
 	<string name="triplet_feel_dlg_none">Non suonare come terzina</string>
-	<string name="triplet_feel_dlg_eighth">Terzina 8th</string>
-	<string name="triplet_feel_dlg_sixteenth">Terzina 16th</string>
+	<string name="triplet_feel_dlg_eighth">Terzina di ottavi</string>
+	<string name="triplet_feel_dlg_sixteenth">Terzina di sedicesimi</string>
 	<string name="triplet_feel_dlg_options_apply_to_end">Applica &quot;Suona come terzina&quot; fino alla fine</string>
 
 	<!-- Repeat Close dialog -->

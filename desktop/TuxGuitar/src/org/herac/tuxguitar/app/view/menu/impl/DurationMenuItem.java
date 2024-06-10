@@ -22,7 +22,6 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class DurationMenuItem  extends TGMenuItem {
@@ -37,7 +36,8 @@ public class DurationMenuItem  extends TGMenuItem {
 	private UIMenuCheckableItem sixtyFourth;
 	private UIMenuCheckableItem dotted;
 	private UIMenuCheckableItem doubleDotted;
-	private UIMenuActionItem division;
+
+	private DivisionMenuItem divisionMenuItem;
 
 	public DurationMenuItem(UIMenuSubMenuItem durationMenuItem) {
 		this.durationMenuItem = durationMenuItem;
@@ -83,16 +83,16 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.dotted = this.durationMenuItem.getMenu().createCheckItem();
 		this.dotted.addSelectionListener(this.createActionProcessor(TGChangeDottedDurationAction.NAME));
 
+		//--DOUBLE-DOTTED--
 		this.doubleDotted = this.durationMenuItem.getMenu().createCheckItem();
 		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
 
+		//--SEPARATOR--
+		this.durationMenuItem.getMenu().createSeparator();
+
 		//--DIVISION--
-		this.division = this.durationMenuItem.getMenu().createActionItem();
-		this.division.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				DurationMenuItem.this.toggleDivisionType();
-			}
-		});
+		this.divisionMenuItem = new DivisionMenuItem(this.durationMenuItem.getMenu().createSubMenuItem());
+		this.divisionMenuItem.showItems();
 
 		this.loadIcons();
 		this.loadProperties();
@@ -119,8 +119,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.dotted.setEnabled(!running);
 		this.doubleDotted.setChecked(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled(!running);
-		this.division.setEnabled(!running);
-		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType(duration.getDivision().getEnters()));
+		this.divisionMenuItem.update();
 	}
 
 	public void loadProperties(){
@@ -134,7 +133,8 @@ public class DurationMenuItem  extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.sixtyFourth, "duration.sixtyfourth", TGSetSixtyFourthDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.dotted, "duration.dotted", TGChangeDottedDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.doubleDotted, "duration.doubledotted", TGChangeDoubleDottedDurationAction.NAME);
-		setMenuItemTextAndAccelerator(this.division, "duration.division-type", TGSetDivisionTypeDurationAction.NAME);
+
+		this.divisionMenuItem.loadProperties();
 	}
 
 	public void loadIcons() {
@@ -147,26 +147,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.sixtyFourth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
-		this.division.setImage(TuxGuitar.getInstance().getIconManager().getDivisionType(3));
-	}
 
-	private void toggleDivisionType() {
-		TGDuration duration = TablatureEditor.getInstance(this.findContext()).getTablature().getCaret().getDuration();
-		TGDivisionType divisionType = (duration.getDivision().isEqual(TGDivisionType.NORMAL) ? TGDivisionType.TRIPLET : TGDivisionType.NORMAL);
-
-		this.createDivisionTypeAction(this.createDivisionType(divisionType)).process();
-	}
-
-	private TGDivisionType createDivisionType(TGDivisionType tgDivisionTypeSrc) {
-		TGFactory tgFactory = TGDocumentManager.getInstance(this.findContext()).getSongManager().getFactory();
-		TGDivisionType tgDivisionTypeDst = tgFactory.newDivisionType();
-		tgDivisionTypeDst.copyFrom(tgDivisionTypeSrc);
-		return tgDivisionTypeDst;
-	}
-
-	private TGActionProcessorListener createDivisionTypeAction(TGDivisionType tgDivisionType){
-		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);
-		tgActionProcessor.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, tgDivisionType);
-		return tgActionProcessor;
+		this.divisionMenuItem.loadIcons();
 	}
 }

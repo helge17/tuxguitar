@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">64e</string>
 	<!-- <string name="action_set_duration_dotted"></string> -->
 	<string name="action_set_duration_doubledotted">Dubbel Dotted</string>
-	<!-- <string name="action_set_duration_division_type"></string> -->
+	<string name="action_set_duration_division_type">Tupleto</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->

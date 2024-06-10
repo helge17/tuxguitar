@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">Móc bốn</string>
 	<string name="action_set_duration_dotted">Chấm</string>
 	<string name="action_set_duration_doubledotted">Hai chấm</string>
-	<!-- <string name="action_set_duration_division_type"></string> -->
+	<string name="action_set_duration_division_type">Chùm ba</string>
 
 	<!-- <string name="action_set_duration_division_type_1"></string> -->
 	<!-- <string name="action_set_duration_division_type_3"></string> -->

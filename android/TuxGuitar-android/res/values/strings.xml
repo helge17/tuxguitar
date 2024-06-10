@@ -110,12 +110,12 @@
 	<string name="action_set_duration_sixtyfourth">Sixty-Fourth</string>
 	<string name="action_set_duration_dotted">Dotted</string>
 	<string name="action_set_duration_doubledotted">Double-Dotted</string>
-	<string name="action_set_duration_division_type">Division Type</string>
+	<string name="action_set_duration_division_type">Division Type (Tuplet)</string>
 
 	<string name="action_set_duration_division_type_1">Normal</string>
-	<string name="action_set_duration_division_type_3">3</string>
-	<string name="action_set_duration_division_type_5">5</string>
-	<string name="action_set_duration_division_type_6">6</string>
+	<string name="action_set_duration_division_type_3">3 - Triplet</string>
+	<string name="action_set_duration_division_type_5">5 - Quintuplet</string>
+	<string name="action_set_duration_division_type_6">6 - Sextuplet</string>
 	<string name="action_set_duration_division_type_7">7</string>
 	<string name="action_set_duration_division_type_9">9</string>
 	<string name="action_set_duration_division_type_10">10</string>
