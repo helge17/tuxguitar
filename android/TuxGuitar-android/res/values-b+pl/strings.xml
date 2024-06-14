@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- <string name="app_name"></string> -->
+	<string name="app_name">TuxGuitar</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= GLOBAL ================================== -->
@@ -65,7 +65,7 @@
 	<string name="action_change_triplet_feel">Zmień rytm triolowy</string>
 	<string name="action_change_repeat_open">Początek repetycji</string>
 	<string name="action_change_repeat_close">Koniec repetycji</string>
-	<string name="action_change_repeat_alternative">Volta (alternatywne powtórzenie)</string>
+	<string name="action_change_repeat_alternative">Volta (alternatywna repetycja)</string>
 	<string name="action_change_properties">Właściwości</string>
 
 	<string name="action_track_add">Dodaj ścieżkę</string>
@@ -93,13 +93,13 @@
 	<string name="action_move_beats_left">Przesuń jedno uderzenie w lewo</string>
 	<string name="action_move_beats_right">Przesuń jedno uderzenie w prawo</string>
 	<string name="action_remove_unused_voice">Usuń nieużywany głos</string>
-	<string name="action_set_voice_auto">Automatyczny kierunek ułożenia laseczek</string>
-	<string name="action_set_voice_down">Laseczki nut w dół</string>
-	<string name="action_set_voice_up">Laseczki nut w górę</string>
+	<string name="action_set_voice_auto">Automatyczny kierunek laseczek</string>
+	<string name="action_set_voice_down">Laseczki w dół</string>
+	<string name="action_set_voice_up">Laseczki w górę</string>
 	<string name="action_shift_note_down">Oktawę w dół</string>
 	<string name="action_shift_note_up">Oktawę w górę</string>
 	<string name="action_change_stroke">Uderzenie</string>
-	<string name="action_change_text">Wprowadź tekst</string>
+	<string name="action_change_text">Wstaw tekst</string>
 
 	<string name="action_set_duration_whole">Cała nuta</string>
 	<string name="action_set_duration_half">Półnuta</string>
@@ -110,14 +110,14 @@
 	<string name="action_set_duration_sixtyfourth">Sześćdziesięcioczwórka</string>
 	<string name="action_set_duration_dotted">Kropka</string>
 	<string name="action_set_duration_doubledotted">Podwójna kropka</string>
-	<string name="action_set_duration_division_type">Rodzaj podziału</string>
+	<string name="action_set_duration_division_type">Typ podziału</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
-	<!-- <string name="action_set_duration_division_type_7"></string> -->
-	<!-- <string name="action_set_duration_division_type_9"></string> -->
+	<string name="action_set_duration_division_type_1">-</string>
+	<string name="action_set_duration_division_type_3">3 - Triola</string>
+	<string name="action_set_duration_division_type_5">5 - Kwintola</string>
+	<string name="action_set_duration_division_type_6">6 - Sekstola</string>
+	<string name="action_set_duration_division_type_7">7 - Septola</string>
+	<string name="action_set_duration_division_type_9">9 - Nowemola</string>
 	<!-- <string name="action_set_duration_division_type_10"></string> -->
 	<!-- <string name="action_set_duration_division_type_11"></string> -->
 	<!-- <string name="action_set_duration_division_type_12"></string> -->
@@ -134,23 +134,23 @@
 
 	<string name="action_change_vibrato">Vibrato</string>
 	<string name="action_change_bend">Podciągnięcie</string>
-	<string name="action_change_dead_note">Tłumiona nuta</string>
+	<string name="action_change_dead_note">Nuta wytłumiona</string>
 	<string name="action_change_slide">Glissando (slide)</string>
 	<string name="action_change_hammer">Legato (hammer-on/pull-off)</string>
 	<string name="action_change_tremolo_bar">Wajcha tremolo</string>
-	<string name="action_change_ghost_note">Cicha nuta (&quot;duch&quot;)</string>
+	<string name="action_change_ghost_note">Nuta nieakcentowana (&quot;duch&quot;)</string>
 	<string name="action_change_accentuated_note">Akcent</string>
 	<string name="action_change_heavy_accentuated_note">Mocny akcent</string>
 	<string name="action_change_harmonic">Flażolet</string>
 	<string name="action_change_grace">Przednutka</string>
-	<string name="action_change_trill">Ozdobnik</string>
-	<string name="action_change_tremolo_picking">Uderzenie tremolo</string>
+	<string name="action_change_trill">Tryl</string>
+	<string name="action_change_tremolo_picking">Tremolo</string>
 	<string name="action_change_palm_mute">Palm muting</string>
 	<string name="action_change_let_ring">Wybrzmienie</string>
 	<string name="action_change_staccato">Staccato</string>
 	<string name="action_change_tapping">Tapping</string>
 	<string name="action_change_slapping">Slapping (klang)</string>
-	<string name="action_change_popping">Popping (pizzicato bartokowskie)</string>
+	<string name="action_change_popping">Popping</string>
 	<string name="action_change_fade_in">Zgłośnienie</string>
 
 	<string name="action_channel_list_add">Dodaj</string>
@@ -204,9 +204,9 @@
 	<!-- filesystem -->
 	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
 
-	<string name="browser_settings_fs_dlg_title">Kolekcja lokalna</string>
+	<string name="browser_settings_fs_dlg_title">Kolekcja w systemie plików</string>
 	<string name="browser_settings_fs_name_label">Nazwa:</string>
-	<string name="browser_settings_fs_path_label">Ścieżka:</string>
+	<string name="browser_settings_fs_path_label">Folder:</string>
 
 	<string name="browser_settings_fs_error_title">Błąd</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
@@ -243,8 +243,8 @@
 	<string name="tempo_dlg_title">Zmień tempo</string>
 	<string name="tempo_dlg_tempo_label">Tempo:</string>
 	<!-- <string name="tempo_dlg_options_apply_to_song"></string> -->
-	<string name="tempo_dlg_options_apply_to_end">Pozycja do końca</string>
-	<string name="tempo_dlg_options_apply_to_next_marker">Pozycja do następnej</string>
+	<string name="tempo_dlg_options_apply_to_end">Zastosuj to tempo do końca</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Zastosuj to tempo do następnego znacznika tempa</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Zmień klucz</string>
@@ -253,12 +253,12 @@
 	<string name="clef_dlg_clef_value_bass">Basowy</string>
 	<string name="clef_dlg_clef_value_tenor">Tenorowy</string>
 	<string name="clef_dlg_clef_value_alto">Altowy</string>
-	<string name="clef_dlg_options_apply_to_end">Używaj tego klucza do końca</string>
+	<string name="clef_dlg_options_apply_to_end">Zastosuj ten klucz do końca</string>
 
 	<!-- Key Signature dialog -->
 	<string name="key_signature_dlg_title">Zmień tonację</string>
 	<string name="key_signature_dlg_ks_label">Tonacja:</string>
-	<string name="key_signature_dlg_ks_value_natural">Bez znaków</string>
+	<string name="key_signature_dlg_ks_value_natural">Bez znaków przykluczowych</string>
 	<string name="key_signature_dlg_ks_value_sharp_1">1 Krzyżyk</string>
 	<string name="key_signature_dlg_ks_value_sharp_2">2 Krzyżyki</string>
 	<string name="key_signature_dlg_ks_value_sharp_3">3 Krzyżyki</string>
@@ -273,32 +273,32 @@
 	<string name="key_signature_dlg_ks_value_flat_5">5 Bemoli</string>
 	<string name="key_signature_dlg_ks_value_flat_6">6 Bemoli</string>
 	<string name="key_signature_dlg_ks_value_flat_7">7 Bemoli</string>
-	<string name="key_signature_dlg_options_apply_to_end">Używaj tej tonacji do końca</string>
+	<string name="key_signature_dlg_options_apply_to_end">Zastosuj tę tonację do końca</string>
 
 	<!-- Time Signature dialog -->
 	<string name="time_signature_dlg_title">Zmień metrum</string>
 	<string name="time_signature_dlg_ts_numerator_label">Liczba wartości:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Podstawa metryczna:</string>
-	<string name="time_signature_dlg_options_apply_to_end">Do końca</string>
+	<string name="time_signature_dlg_options_apply_to_end">Zastosuj to metrum końca</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Zmień rytm triolowy</string>
 	<string name="triplet_feel_dlg_none">Równy rytm</string>
 	<string name="triplet_feel_dlg_eighth">Triole ósemkowe</string>
 	<string name="triplet_feel_dlg_sixteenth">Triole szesnastkowe</string>
-	<string name="triplet_feel_dlg_options_apply_to_end">Używaj rytmu triolowego do końca</string>
+	<string name="triplet_feel_dlg_options_apply_to_end">Zastosuj ten rytm triolowy do końca</string>
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Koniec repetycji</string>
 	<string name="repeat_close_dlg_count_label">Repetycje:</string>
 
 	<!-- Repeat Alternative dialog -->
-	<string name="repeat_alternative_dlg_title">Volta (alternatywne powtórzenie)</string>
+	<string name="repeat_alternative_dlg_title">Volta (alternatywna repetycja)</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Właściwości</string>
 	<string name="song_properties_dlg_name_label">Nazwa:</string>
-	<string name="song_properties_dlg_artist_label">Kompozytor:</string>
+	<string name="song_properties_dlg_artist_label">Artysta:</string>
 	<string name="song_properties_dlg_album_label">Album:</string>
 	<string name="song_properties_dlg_author_label">Autor:</string>
 	<string name="song_properties_dlg_date_label">Data:</string>
@@ -333,9 +333,9 @@
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Dodaj takt</string>
-	<string name="measure_add_dlg_count_label">Liczba dodanych:</string>
-	<string name="measure_add_dlg_options_before_position">Dodaj takt przed bieżącym</string>
-	<string name="measure_add_dlg_options_after_position">Dodaj takt za bieżącym</string>
+	<string name="measure_add_dlg_count_label">Liczba taktów:</string>
+	<string name="measure_add_dlg_options_before_position">Dodaj takt przed bieżącą pozycją</string>
+	<string name="measure_add_dlg_options_after_position">Dodaj takt po bieżącej pozycji</string>
 	<string name="measure_add_dlg_options_at_end">Dodaj takt na końcu</string>
 
 	<!-- Measure remove dialog -->
@@ -356,40 +356,40 @@
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Wstaw takt</string>
-	<string name="measure_paste_dlg_count_label">Liczba wstawianych:</string>
+	<string name="measure_paste_dlg_count_label">Liczba taktów:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Wstaw w bieżącym takcie</string>
 	<string name="measure_paste_dlg_options_mode_insert">Wstaw w nowym takcie</string>
 
 	<!-- Text dialog -->
-	<string name="text_dlg_title">Wprowadź tekst</string>
+	<string name="text_dlg_title">Wstaw tekst</string>
 
 	<!-- Bend dialog -->
 	<!-- <string name="bend_dlg_title"></string> -->
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Podciągnięcie</string>
-	<string name="bend_dlg_preset_bend_release">Podciągnięcie/powrót</string>
-	<string name="bend_dlg_preset_bend_release_bend">Podciągnięcie/powrót/podciągnięcie</string>
-	<string name="bend_dlg_preset_prebend">Podciągnięcie przed uderzeniem</string>
-	<string name="bend_dlg_preset_prebend_release">Podciągnięcie przed uderzeniem/powrót</string>
+	<string name="bend_dlg_preset_bend_release">Podciągnięcie i opuszczenie</string>
+	<string name="bend_dlg_preset_bend_release_bend">Podciągnięcie, opuszczenie i podciągnięcie</string>
+	<string name="bend_dlg_preset_prebend">Podciągnięcie przed zagraniem dźwięku</string>
+	<string name="bend_dlg_preset_prebend_release">Podciągnięcie przed zagraniem dźwięku i opuszczenie</string>
 
 	<!-- Tremolo Bar dialog -->
 	<string name="tremolo_bar_dlg_title">Wajcha tremolo</string>
 	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
-	<string name="tremolo_bar_dlg_preset_dip">Obniżenie</string>
-	<string name="tremolo_bar_dlg_preset_dive">Opuszczenie w dół</string>
-	<string name="tremolo_bar_dlg_preset_release_up">Zwolnienie z góry</string>
-	<string name="tremolo_bar_dlg_preset_release_down">Zwolnienie z dołu</string>
-	<string name="tremolo_bar_dlg_preset_inverted_dip">Podciągnięcie</string>
-	<string name="tremolo_bar_dlg_preset_return">Powrót</string>
+	<string name="tremolo_bar_dlg_preset_dip">Krótkie opuszczenie i podciągnięcie z wajchą</string>
+	<string name="tremolo_bar_dlg_preset_dive">Długie opuszczenie i podciągnięcie z wajchą</string>
+	<string name="tremolo_bar_dlg_preset_release_up">Opadanie w górę</string>
+	<string name="tremolo_bar_dlg_preset_release_down">Opadanie w dół</string>
+	<string name="tremolo_bar_dlg_preset_inverted_dip">Podciągnięcie i opuszczenie z wajchą</string>
+	<string name="tremolo_bar_dlg_preset_return">Wrócenie wajchą do pozycji wyjściowej</string>
 
 	<!-- Tremolo picking dialog -->
-	<string name="tremolo_picking_dlg_title">Uderzenie tremolo</string>
+	<string name="tremolo_picking_dlg_title">Tremolo</string>
 	<string name="tremolo_picking_dlg_duration_8">Ósemka</string>
 	<string name="tremolo_picking_dlg_duration_16">Szesnastka</string>
 	<string name="tremolo_picking_dlg_duration_32">Trzydziestodwójka</string>
 
 	<!-- Trill dialog -->
-	<string name="trill_dlg_title">Ozdobnik</string>
+	<string name="trill_dlg_title">Tryl</string>
 	<string name="trill_dlg_fret_label">Próg:</string>
 	<string name="trill_dlg_duration_16">Szesnastka</string>
 	<string name="trill_dlg_duration_32">Trzydziestodwójka</string>
@@ -398,7 +398,7 @@
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Przednutka</string>
 	<string name="grace_dlg_fret_label">Próg:</string>
-	<string name="grace_dlg_dead_note_label">Tłumiona nuta</string>
+	<string name="grace_dlg_dead_note_label">Nuta wytłumiona</string>
 	<string name="grace_dlg_position_label">Pozycja</string>
 	<string name="grace_dlg_position_before_beat">Przed główną wartością</string>
 	<string name="grace_dlg_position_on_beat">Na głównej wartości</string>
@@ -416,23 +416,23 @@
 	<string name="grace_dlg_dynamic_ff">Fortissimo</string>
 	<string name="grace_dlg_dynamic_fff">Forte fortissimo</string>
 	<string name="grace_dlg_transition_label">Artykulacja</string>
-	<string name="grace_dlg_transition_none">Naturalnie</string>
+	<string name="grace_dlg_transition_none">Brak</string>
 	<string name="grace_dlg_transition_bend">Podciągnięcie</string>
 	<string name="grace_dlg_transition_slide">Glissando (slide)</string>
 	<string name="grace_dlg_transition_hammer">Legato</string>
 
 	<!-- Harmonic dialog -->
 	<string name="harmonic_dlg_title">Flażolet</string>
-	<string name="harmonic_dlg_type_nh">[N.H] Flażolety naturalne</string>
-	<string name="harmonic_dlg_type_ah">[A.H] Flażolety sztuczne</string>
-	<string name="harmonic_dlg_type_th">[T.H] Flażolety tapping</string>
-	<string name="harmonic_dlg_type_ph">[P.H] Flażolety wyciskane</string>
-	<string name="harmonic_dlg_type_sh">[S.H] Pół-flażolety</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Flażolet naturalny</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Flażolet sztuczny</string>
+	<string name="harmonic_dlg_type_th">[T.H] Flażolet tappingowy</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Flażolet wyciskany</string>
+	<string name="harmonic_dlg_type_sh">[S.H] Półflażolet</string>
 
 	<!-- Stroke dialog -->
 	<string name="stroke_dlg_title">Uderzenie</string>
 	<string name="stroke_dlg_direction_label">Kierunek:</string>
-	<string name="stroke_dlg_direction_none">Naturalnie</string>
+	<string name="stroke_dlg_direction_none">Brak</string>
 	<string name="stroke_dlg_direction_up">Uderzenie strun w górę</string>
 	<string name="stroke_dlg_direction_down">Uderzenie strun w dół</string>
 	<string name="stroke_dlg_duration_4">Ćwierćnuta</string>
