@@ -256,11 +256,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	private void loadDivisionTypeMenuProperties() {
 		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
-			String name = TuxGuitar.getProperty("duration.division-type." + Integer.toString(divisionType.getEnters()));
-			if( name.isEmpty() ) {
-				name = Integer.toString(divisionType.getEnters());
-			}
-			uiMenuItem.setText(name);
+			uiMenuItem.setText(TuxGuitar.getProperty("duration.division-type." + Integer.toString(divisionType.getEnters())));
 		}
 	}
 	
