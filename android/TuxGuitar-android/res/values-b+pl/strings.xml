@@ -44,7 +44,7 @@
 	<string name="action_voice_1">Wybierz głos 1</string>
 	<string name="action_voice_2">Wybierz głos 2</string>
 	<string name="action_copy">Kopiuj</string>
-	<string name="action_paste">Wklej</string>
+	<string name="action_paste">Wstaw</string>
 
 	<!-- <string name="action_view_channel_list"></string> -->
 	<string name="action_view_layout_show_score">Pokaż partyturę</string>
@@ -110,7 +110,7 @@
 	<string name="action_set_duration_sixtyfourth">Sześćdziesięcioczwórka</string>
 	<string name="action_set_duration_dotted">Kropka</string>
 	<string name="action_set_duration_doubledotted">Podwójna kropka</string>
-	<string name="action_set_duration_division_type">Typ podziału</string>
+	<string name="action_set_duration_division_type">Typ podziału (grupa niemiarowa)</string>
 
 	<string name="action_set_duration_division_type_1">-</string>
 	<string name="action_set_duration_division_type_3">3 - Triola</string>
@@ -118,10 +118,10 @@
 	<string name="action_set_duration_division_type_6">6 - Sekstola</string>
 	<string name="action_set_duration_division_type_7">7 - Septola</string>
 	<string name="action_set_duration_division_type_9">9 - Nowemola</string>
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_10">10</string>
+	<string name="action_set_duration_division_type_11">11</string>
+	<string name="action_set_duration_division_type_12">12</string>
+	<string name="action_set_duration_division_type_13">13</string>
 
 	<string name="action_set_velocity_ppp">Piano pianissimo</string>
 	<string name="action_set_velocity_pp">Pianissimo</string>
@@ -188,17 +188,17 @@
 
 	<string name="browser_refresh">Odśwież</string>
 	<string name="browser_back">Wróć</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">Strona główna</string>
 	<string name="browser_settings">Ustawienia</string>
 	<string name="browser_save_label">Zapisz</string>
-	<!-- <string name="browser_add_collection"></string> -->
-	<!-- <string name="browser_remove_collection"></string> -->
+	<string name="browser_add_collection">Nowy</string>
+	<string name="browser_remove_collection">Usuń</string>
 	<string name="browser_file_overwrite_question">Plik już istnieje. Chcesz go zastąpić?</string>
 	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Przeglądarka kolekcji</string>
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -242,7 +242,7 @@
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Zmień tempo</string>
 	<string name="tempo_dlg_tempo_label">Tempo:</string>
-	<!-- <string name="tempo_dlg_options_apply_to_song"></string> -->
+	<string name="tempo_dlg_options_apply_to_song">Zastosuj to tempo w całym utworze</string>
 	<string name="tempo_dlg_options_apply_to_end">Zastosuj to tempo do końca</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">Zastosuj to tempo do następnego znacznika tempa</string>
 
@@ -364,7 +364,7 @@
 	<string name="text_dlg_title">Wstaw tekst</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Podciągnięcie</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Podciągnięcie</string>
 	<string name="bend_dlg_preset_bend_release">Podciągnięcie i opuszczenie</string>
@@ -419,7 +419,7 @@
 	<string name="grace_dlg_transition_none">Brak</string>
 	<string name="grace_dlg_transition_bend">Podciągnięcie</string>
 	<string name="grace_dlg_transition_slide">Glissando (slide)</string>
-	<string name="grace_dlg_transition_hammer">Legato</string>
+	<string name="grace_dlg_transition_hammer">Legato (hammer-on/pull-off)</string>
 
 	<!-- Harmonic dialog -->
 	<string name="harmonic_dlg_title">Flażolet</string>
