@@ -105,6 +105,9 @@ public class TGControl {
 	public void paintTablature(UIPainter painter) {
 		this.setPainting(true);
 		try{
+			boolean isPlaying = MidiPlayer.getInstance(this.context).isRunning();
+			this.hScroll.setVisible(!isPlaying);
+			this.vScroll.setVisible(!isPlaying);
 			this.checkScroll();
 			
 			int oldWidth = this.width;
@@ -122,7 +125,7 @@ public class TGControl {
 			
 			this.updateScroll();
 			
-			if( MidiPlayer.getInstance(this.context).isRunning()){
+			if( isPlaying ){
 				this.paintTablaturePlayMode(painter);
 			}
 			// Si no estoy reproduciendo y hay cambios
