@@ -77,6 +77,9 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		this.doubleDotted = toolBar2.createCheckItem();
 		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
 		
+		this.tiedNote = toolBar2.createCheckItem();
+		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
+
 		this.divisionTypeItem = toolBar2.createActionMenuItem();
 		this.divisionTypeItem.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -90,9 +93,6 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.DIVISION_TYPES[i]));
 			this.divisionTypeProcessors.add(this.createDivisionTypeAction(TGDivisionType.DIVISION_TYPES[i]));
 		}
-		
-		this.tiedNote = toolBar2.createCheckItem();
-		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
 	}
 	
 	public void updateSectionItems() {

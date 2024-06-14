@@ -3,6 +3,8 @@ package org.herac.tuxguitar.app.view.menu.impl;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
+import org.herac.tuxguitar.app.view.component.tab.Caret;
+import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
@@ -15,7 +17,9 @@ import org.herac.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
 import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
+import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
@@ -36,6 +40,7 @@ public class DurationMenuItem  extends TGMenuItem {
 	private UIMenuCheckableItem sixtyFourth;
 	private UIMenuCheckableItem dotted;
 	private UIMenuCheckableItem doubleDotted;
+	private UIMenuCheckableItem tiedNote;
 
 	private DivisionMenuItem divisionMenuItem;
 
@@ -90,6 +95,13 @@ public class DurationMenuItem  extends TGMenuItem {
 		//--SEPARATOR--
 		this.durationMenuItem.getMenu().createSeparator();
 
+		//--TIED NOTE--
+		this.tiedNote = this.durationMenuItem.getMenu().createCheckItem();
+		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
+
+		//--SEPARATOR--
+		this.durationMenuItem.getMenu().createSeparator();
+
 		//--DIVISION--
 		this.divisionMenuItem = new DivisionMenuItem(this.durationMenuItem.getMenu().createSubMenuItem());
 		this.divisionMenuItem.showItems();
@@ -99,7 +111,10 @@ public class DurationMenuItem  extends TGMenuItem {
 	}
 
 	public void update(){
-		TGDuration duration = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration();
+		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
+		Caret caret = tablature.getCaret();
+		TGDuration duration = caret.getDuration();
+		TGNote note = caret.getSelectedNote();
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.whole.setChecked(duration.getValue() == TGDuration.WHOLE);
 		this.whole.setEnabled(!running);
@@ -119,6 +134,9 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.dotted.setEnabled(!running);
 		this.doubleDotted.setChecked(duration.isDoubleDotted());
 		this.doubleDotted.setEnabled(!running);
+		this.tiedNote.setChecked(note != null && note.isTiedNote());
+		this.tiedNote.setEnabled(!running);
+
 		this.divisionMenuItem.update();
 	}
 
@@ -133,6 +151,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.sixtyFourth, "duration.sixtyfourth", TGSetSixtyFourthDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.dotted, "duration.dotted", TGChangeDottedDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.doubleDotted, "duration.doubledotted", TGChangeDoubleDottedDurationAction.NAME);
+		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", TGChangeTiedNoteAction.NAME);
 
 		this.divisionMenuItem.loadProperties();
 	}
@@ -147,6 +166,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.sixtyFourth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
 		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
+		this.tiedNote.setImage(TuxGuitar.getInstance().getIconManager().getNoteTied());
 
 		this.divisionMenuItem.loadIcons();
 	}
