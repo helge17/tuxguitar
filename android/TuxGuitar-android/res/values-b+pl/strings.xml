@@ -362,7 +362,7 @@
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Wstaw takt</string>
-	<string name="measure_paste_dlg_count_label">Liczba wstawianych:</string>
+	<string name="measure_paste_dlg_count_label">Liczba taktów:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Wstaw w bieżącym takcie</string>
 	<string name="measure_paste_dlg_options_mode_insert">Wstaw w nowym takcie</string>
 
