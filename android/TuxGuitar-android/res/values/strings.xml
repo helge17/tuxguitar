@@ -112,12 +112,12 @@
 	<string name="action_set_duration_doubledotted">Double-Dotted</string>
 	<string name="action_set_duration_division_type">Division Type (Tuplet)</string>
 
-	<string name="action_set_duration_division_type_1">Normal</string>
+	<string name="action_set_duration_division_type_1">-</string>
 	<string name="action_set_duration_division_type_3">3 - Triplet</string>
 	<string name="action_set_duration_division_type_5">5 - Quintuplet</string>
 	<string name="action_set_duration_division_type_6">6 - Sextuplet</string>
-	<string name="action_set_duration_division_type_7">7</string>
-	<string name="action_set_duration_division_type_9">9</string>
+	<string name="action_set_duration_division_type_7">7 - Septuplet</string>
+	<string name="action_set_duration_division_type_9">9 - Nonuplet</string>
 	<string name="action_set_duration_division_type_10">10</string>
 	<string name="action_set_duration_division_type_11">11</string>
 	<string name="action_set_duration_division_type_12">12</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Change Time Signature</string>
 	<string name="time_signature_dlg_ts_numerator_label">Numerator:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Denominator:</string>
-	<string name="time_signature_dlg_options_apply_to_end">Apply to the end</string>
+	<string name="time_signature_dlg_options_apply_to_end">Apply this Time Signature to the end</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Change Triplet Feel</string>
@@ -326,7 +326,7 @@
 	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Try to keep Notes at same String</string>
 	<string name="track_tuning_dlg_error_title">Error</string>
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
-	<string name="track_tuning_dlg_empty_value_error">Value can not be empty</string>
+	<string name="track_tuning_dlg_empty_value_error">Value cannot be empty</string>
 
 	<string name="track_string_count_dlg_title">Line Count</string>
 	<string name="track_string_count_dlg_count_label">Line Count:</string>
@@ -358,7 +358,7 @@
 	<string name="measure_paste_dlg_title">Paste Measure</string>
 	<string name="measure_paste_dlg_count_label">Paste Count:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Paste at the Current Measure</string>
-	<string name="measure_paste_dlg_options_mode_insert">Paste in new Measure</string>
+	<string name="measure_paste_dlg_options_mode_insert">Paste in New Measure</string>
 
 	<!-- Text dialog -->
 	<string name="text_dlg_title">Insert Text</string>
@@ -458,4 +458,5 @@
 	<string name="channel_edit_dlg_reverb_label">Reverb:</string>
 	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
 	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
+
 </resources>
