@@ -112,4 +112,5 @@ public class TGConfigKeys {
 
 	public static final String HOMEPAGE_URL = "homepage.url";
 	public static final String CONFIG_APP_VERSION = "config.app.version";
+	public static final String HIDE_SCROLLBARS_WHEN_PLAYING = "view.hide-scrollbars-when-playing";
 }

@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.view.component.tab;
 
 import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.system.config.TGConfigKeys;
 import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.ui.TGApplication;
@@ -45,10 +46,12 @@ public class TGControl {
 	protected long lastHScrollTime;
 	
 	private boolean painting;
+	private boolean hideScrollbarsWhenPlaying;
 	
 	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
+		this.hideScrollbarsWhenPlaying = TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.HIDE_SCROLLBARS_WHEN_PLAYING);
 		this.initialize(parent);
 	}
 	
@@ -106,8 +109,10 @@ public class TGControl {
 		this.setPainting(true);
 		try{
 			boolean isPlaying = MidiPlayer.getInstance(this.context).isRunning();
-			this.hScroll.setVisible(!isPlaying);
-			this.vScroll.setVisible(!isPlaying);
+			if (hideScrollbarsWhenPlaying) {
+				this.hScroll.setVisible(!isPlaying);
+				this.vScroll.setVisible(!isPlaying);
+			}
 			this.checkScroll();
 			
 			int oldWidth = this.width;

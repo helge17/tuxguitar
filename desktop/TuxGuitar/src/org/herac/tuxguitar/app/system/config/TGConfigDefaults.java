@@ -139,6 +139,7 @@ public class TGConfigDefaults{
 
 		loadProperty(properties, TGConfigKeys.HOMEPAGE_URL, "https://tuxguitar.app");
 		loadProperty(properties, TGConfigKeys.CONFIG_APP_VERSION, "");
+		loadProperty(properties, TGConfigKeys.HIDE_SCROLLBARS_WHEN_PLAYING, false);
 	}
 
 	public static List<String> getKeys() {
