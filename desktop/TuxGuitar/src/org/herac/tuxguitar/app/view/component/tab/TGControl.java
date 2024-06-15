@@ -168,13 +168,35 @@ public class TGControl {
 		}
 	}
 	
+	/* Warning: only update scrollbars if at least one attribute has changed
+	 * else it creates a significant performance issue in Linux/SWT configuration:
+	 * - updating scrollbar generates a SWT event to repaint this.canvas, because scrollbars are transparent
+	 * - it calls this.paintTablature
+	 * - which in turn call this.updateScroll
+	 * if scrollbars are updated here, it creates a recursive loop: paintTablature -> updateScroll -> paintTablature -> ...
+	 * this leads to repainting the tab about 60 times per second, creating a significant CPU load
+	 * see https://github.com/helge17/tuxguitar/issues/403
+	 */
 	public void updateScroll(){
 		UIRectangle bounds = this.canvas.getBounds();
 		
-		this.hScroll.setMaximum(Math.max(Math.round(this.width - bounds.getWidth()), 0));
-		this.vScroll.setMaximum(Math.max(Math.round(this.height - bounds.getHeight()), 0));
-		this.hScroll.setThumb(Math.round(bounds.getWidth()));
-		this.vScroll.setThumb(Math.round(bounds.getHeight()));
+		int value;
+		value = Math.max(Math.round(this.width - bounds.getWidth()), 0);
+		if (this.hScroll.getMaximum() != value) {
+			this.hScroll.setMaximum(value);
+		}
+		value = Math.max(Math.round(this.height - bounds.getHeight()), 0);
+		if (this.vScroll.getMaximum() != value) {
+			this.vScroll.setMaximum(value);
+		}
+		value = Math.round(bounds.getWidth());
+		if (this.hScroll.getThumb() != value) {
+			this.hScroll.setThumb(value);
+		}
+		value = Math.round(bounds.getHeight());
+		if (this.vScroll.getThumb() != value) {
+			this.vScroll.setThumb(value);
+		}
 	}
 	
 	public void moveScrollTo(TGMeasureImpl measure){
