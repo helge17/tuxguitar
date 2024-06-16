@@ -55,7 +55,7 @@ public class DivisionMenuItem extends TGMenuItem {
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.divisionMenuItem, "duration.division-type", null);
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
-			setMenuItemTextAndAccelerator(this.divisionTypeMenuItems[i], TuxGuitar.getProperty("duration.division-type." + Integer.toString(TGDivisionType.DIVISION_TYPES[i].getEnters())), null);
+			setMenuItemTextAndAccelerator(this.divisionTypeMenuItems[i], "duration.division-type." + Integer.toString(TGDivisionType.DIVISION_TYPES[i].getEnters()), null);
 		}
 	}
 
