@@ -62,25 +62,17 @@ public class TGMessagesManager {
 		}
 	}
 	
-	public static String getProperty(String key,String value) {
+	public static String getProperty(String key) {
 		try {
 			String property = getInstance().resources.getString(key);
-			return (property == null ? value : property );
+			return (property == null ? key : property );
 		}catch(Throwable throwable){
-			return value;
+			return key;
 		}
 	}
 	
-	public static String getProperty(String key) {
-		return getProperty(key,key);
-	}
-	
 	public static String getProperty(String key, Object[] arguments) {
-		return getProperty(key,key,arguments);
-	}
-	
-	public static String getProperty(String key,String value, Object[] arguments) {
-		String property = getProperty(key,value);
+		String property = getProperty(key);
 		return ( arguments != null ? MessageFormat.format(property, arguments) : property );
 	}
 	
