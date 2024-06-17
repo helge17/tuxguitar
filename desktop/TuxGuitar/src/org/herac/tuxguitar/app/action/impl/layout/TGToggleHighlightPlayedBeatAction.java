@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGToggleHighlightPlayedBeatAction extends TGActionBase {
 	
-	public static final String NAME = "action.view.layout-highlight-played-beat";
+	public static final String NAME = "action.transport.highlight-played-beat";
 
 	public TGToggleHighlightPlayedBeatAction(TGContext context) {
 		super(context, NAME);

@@ -63,7 +63,7 @@
 	<shortcut keys="Shift Right" action="action.note.general.increment-semitone"/>
 	<shortcut keys="Shift Down" action="action.note.general.shift-down"/>
 	<shortcut keys="Shift Up" action="action.note.general.shift-up"/>
-	<shortcut keys="l" action="action.note.general.tied"/>
+	<shortcut keys="l" action="action.note.duration.tied"/>
 	<shortcut keys="F7" action="action.gui.open-settings-editor"/>
 	<shortcut keys="Ctrl b" action="action.gui.toggle-browser-dialog"/>
 	<shortcut keys="Ctrl Shift Ins" action="action.track.add-new"/>

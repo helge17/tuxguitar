@@ -151,7 +151,7 @@ public class DurationMenuItem  extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.sixtyFourth, "duration.sixtyfourth", TGSetSixtyFourthDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.dotted, "duration.dotted", TGChangeDottedDurationAction.NAME);
 		setMenuItemTextAndAccelerator(this.doubleDotted, "duration.doubledotted", TGChangeDoubleDottedDurationAction.NAME);
-		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", TGChangeTiedNoteAction.NAME);
+		setMenuItemTextAndAccelerator(this.tiedNote, "duration.tiednote", TGChangeTiedNoteAction.NAME);
 
 		this.divisionMenuItem.loadProperties();
 	}

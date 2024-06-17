@@ -117,7 +117,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		this.dotted.setToolTipText(this.getText("duration.dotted"));
 		this.doubleDotted.setToolTipText(this.getText("duration.doubledotted"));
 		this.divisionTypeItem.setToolTipText(this.getText("duration.division-type"));
-		this.tiedNote.setToolTipText(this.getText("note.tiednote"));
+		this.tiedNote.setToolTipText(this.getText("duration.tiednote"));
 		this.loadDurationToolProperties(duration.getValue());
 		this.loadDivisionTypeMenuProperties();
 	}

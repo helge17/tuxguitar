@@ -236,7 +236,7 @@ public class TGIconManager {
 		this.layoutScore = loadIcon("layout_score.png");
 		this.layoutTablature = loadIcon("layout_tablature.png");
 		this.layoutCompact = loadIcon("layout_compact.png");
-		this.layoutHighlightPlayedBeat = loadIcon("layout_highlight_played_beat.png");
+		this.layoutHighlightPlayedBeat = loadIcon("highlight_played_beat.png");
 		this.fileNew = loadIcon("new.png");
 		this.fileOpen = loadIcon("open.png");
 		this.fileClose = loadIcon("close.png");
