@@ -296,7 +296,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Fermer une reprise</string>
-	<string name="repeat_close_dlg_count_label">Reprises:</string>
+	<string name="repeat_close_dlg_count_label">Nombre de reprises:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Autres reprises</string>
@@ -327,9 +327,6 @@
 	<string name="track_tuning_dlg_preview_label">Libellé:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
-	<string name="track_tuning_dlg_options_transpose">Transposer les notes</string>
-	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transposer les accords</string>
-	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Essayer de conserver les notes sur la même corde</string>
 	<string name="track_tuning_dlg_error_title">Erreur</string>
 	<string name="track_tuning_dlg_range_error">Le nombre de cordes doit être compris entre %1$d et %2$d</string>
 	<string name="track_tuning_dlg_empty_value_error">La valeur ne peut pas être nulle</string>

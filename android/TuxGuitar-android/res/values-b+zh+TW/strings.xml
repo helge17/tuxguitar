@@ -296,7 +296,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">結束反覆區段</string>
-	<string name="repeat_close_dlg_count_label">反複:</string>
+	<string name="repeat_close_dlg_count_label">反複次數:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">任意的反覆</string>
@@ -327,9 +327,6 @@
 	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
-	<string name="track_tuning_dlg_options_transpose">因移調受影響的音符</string>
-	<string name="track_tuning_dlg_options_transpose_apply_to_chords">移調和弦</string>
-	<string name="track_tuning_dlg_options_transpose_try_keep_strings">試著保留音符在同一根弦上</string>
 	<string name="track_tuning_dlg_error_title">錯誤</string>
 	<!-- <string name="track_tuning_dlg_range_error"></string> -->
 	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->

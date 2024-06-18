@@ -296,7 +296,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Koniec repetycji</string>
-	<string name="repeat_close_dlg_count_label">Repetycje:</string>
+	<string name="repeat_close_dlg_count_label">Liczba repetycji:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Volta (alternatywna repetycja)</string>
@@ -327,9 +327,6 @@
 	<string name="track_tuning_dlg_preview_label">Etykieta:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
-	<string name="track_tuning_dlg_options_transpose">Transponuj wymuszone nuty</string>
-	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transponuj akordy</string>
-	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Próbuj zachować nuty na tej samej strunie</string>
 	<string name="track_tuning_dlg_error_title">Błąd</string>
 	<string name="track_tuning_dlg_range_error">Liczba strun musi być między %1$d i %2$d</string>
 	<string name="track_tuning_dlg_empty_value_error">Wartość nie może być pusta</string>

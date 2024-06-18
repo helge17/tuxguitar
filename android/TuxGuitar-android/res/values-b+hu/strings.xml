@@ -296,7 +296,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Ismétlés vége</string>
-	<string name="repeat_close_dlg_count_label">Ismétlések:</string>
+	<string name="repeat_close_dlg_count_label">Ismétlések száma:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<!-- <string name="repeat_alternative_dlg_title"></string> -->
@@ -327,9 +327,6 @@
 	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
-	<!-- <string name="track_tuning_dlg_options_transpose"></string> -->
-	<!-- <string name="track_tuning_dlg_options_transpose_apply_to_chords"></string> -->
-	<!-- <string name="track_tuning_dlg_options_transpose_try_keep_strings"></string> -->
 	<string name="track_tuning_dlg_error_title">Hiba</string>
 	<!-- <string name="track_tuning_dlg_range_error"></string> -->
 	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->

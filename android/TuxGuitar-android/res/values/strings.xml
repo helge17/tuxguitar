@@ -290,7 +290,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Close Repeat</string>
-	<string name="repeat_close_dlg_count_label">Repetitions:</string>
+	<string name="repeat_close_dlg_count_label">Number of Repetitions:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Alternative Repeats</string>
@@ -321,9 +321,6 @@
 	<string name="track_tuning_dlg_preview_label">Label:</string>
 	<string name="track_tuning_dlg_offset_select_value">Offset #%1$d</string>
 	<string name="track_tuning_dlg_preset_select_value">-- Presets --</string>
-	<string name="track_tuning_dlg_options_transpose">Transpose affected Notes</string>
-	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transpose Chords</string>
-	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Try to keep Notes at same String</string>
 	<string name="track_tuning_dlg_error_title">Error</string>
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
 	<string name="track_tuning_dlg_empty_value_error">Value cannot be empty</string>
