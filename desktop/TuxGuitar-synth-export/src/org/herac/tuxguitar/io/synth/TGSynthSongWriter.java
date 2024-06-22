@@ -12,6 +12,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.midi.synth.TGAudioBufferProcessor;
 import org.herac.tuxguitar.midi.synth.TGAudioLine;
 import org.herac.tuxguitar.midi.synth.TGSynthModel;
@@ -72,6 +73,7 @@ public class TGSynthSongWriter implements TGSongWriter {
 					duration += audioProcessor.getBuffer().getLength();
 					sequence.forward();
 				}
+				duration = duration / TGAudioBuffer.CHANNELS;
 				ByteArrayInputStream byteBuffer = new ByteArrayInputStream(audioBuffer.toByteArray());
 				AudioInputStream sourceStream = new AudioInputStream(byteBuffer, TGAudioLine.AUDIO_FORMAT, duration);
 				AudioInputStream targetStream = AudioSystem.getAudioInputStream(settings.getFormat(), sourceStream);
