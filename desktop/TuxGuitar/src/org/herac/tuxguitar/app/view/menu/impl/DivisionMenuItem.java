@@ -2,7 +2,6 @@ package org.herac.tuxguitar.app.view.menu.impl;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -13,7 +12,6 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class DivisionMenuItem extends TGMenuItem {
@@ -34,7 +32,7 @@ public class DivisionMenuItem extends TGMenuItem {
 
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			final int j = i;
-			this.divisionTypeMenuItems[j] = this.divisionMenuItem.getMenu().createCheckItem();
+			this.divisionTypeMenuItems[j] = this.divisionMenuItem.getMenu().createRadioItem();
 			this.divisionTypeMenuItems[j].addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
 					DivisionMenuItem.this.createDivisionTypeAction(DivisionMenuItem.this.createDivisionType(TGDivisionType.DIVISION_TYPES[j])).process();

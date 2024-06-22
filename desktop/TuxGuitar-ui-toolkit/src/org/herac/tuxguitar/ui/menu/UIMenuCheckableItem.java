@@ -6,5 +6,4 @@ public interface UIMenuCheckableItem extends UIMenuActionItem {
 
 	void setChecked(boolean checked);
 	
-	boolean hasSelectionListener();
 }
