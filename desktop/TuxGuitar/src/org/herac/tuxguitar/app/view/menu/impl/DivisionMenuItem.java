@@ -2,7 +2,6 @@ package org.herac.tuxguitar.app.view.menu.impl;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
@@ -13,7 +12,6 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class DivisionMenuItem extends TGMenuItem {
