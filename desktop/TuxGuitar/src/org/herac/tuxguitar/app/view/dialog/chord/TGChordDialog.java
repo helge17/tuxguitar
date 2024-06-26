@@ -82,7 +82,7 @@ public class TGChordDialog {
 		int[] tuning = findCurrentTuning(measure.getTrack());
 		
 		//---------------SELECTOR--------------------------------
-		this.selector = new TGChordSelector(this, topComposite, tuning);
+		this.selector = new TGChordSelector(this, topComposite, tuning, measure.getKeySignature()<=7);
 		topLayout.set(this.selector.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		//---------------EDITOR--------------------------------
