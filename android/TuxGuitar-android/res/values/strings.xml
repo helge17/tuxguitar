@@ -98,7 +98,7 @@
 	<string name="action_set_voice_up">Stems up</string>
 	<string name="action_shift_note_down">Shift one String down</string>
 	<string name="action_shift_note_up">Shift one String up</string>
-	<string name="action_change_stroke">Up/Downstroke</string>
+	<string name="action_change_stroke">Up/Downstroke (brush)</string>
 	<string name="action_change_text">Insert Text</string>
 
 	<string name="action_set_duration_whole">Whole</string>
@@ -427,11 +427,11 @@
 	<string name="harmonic_dlg_type_sh">[S.H] Semi Harmonic</string>
 
 	<!-- Stroke dialog -->
-	<string name="stroke_dlg_title">Up/Downstroke</string>
+	<string name="stroke_dlg_title">Up/Downstroke (brush)</string>
 	<string name="stroke_dlg_direction_label">Direction:</string>
 	<string name="stroke_dlg_direction_none">None</string>
-	<string name="stroke_dlg_direction_up">Upstroke</string>
-	<string name="stroke_dlg_direction_down">Downstroke</string>
+	<string name="stroke_dlg_direction_up">Upstroke (brush)</string>
+	<string name="stroke_dlg_direction_down">Downstroke (brush)</string>
 	<string name="stroke_dlg_duration_4">Quarter</string>
 	<string name="stroke_dlg_duration_8">Eighth</string>
 	<string name="stroke_dlg_duration_16">Sixteenth</string>
