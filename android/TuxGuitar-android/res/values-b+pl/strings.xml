@@ -124,10 +124,10 @@
 	<string name="action_set_duration_division_type_6">6 - Sekstola</string>
 	<string name="action_set_duration_division_type_7">7 - Septola</string>
 	<string name="action_set_duration_division_type_9">9 - Nowemola</string>
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_10">10 - Decymola</string>
+	<string name="action_set_duration_division_type_11">11 - Undecymola</string>
+	<string name="action_set_duration_division_type_12">12 - Duodecymola</string>
+	<string name="action_set_duration_division_type_13">13 - Tercdecymola</string>
 
 	<string name="action_set_velocity_ppp">Piano pianissimo</string>
 	<string name="action_set_velocity_pp">Pianissimo</string>
