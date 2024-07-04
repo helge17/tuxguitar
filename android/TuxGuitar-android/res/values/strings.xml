@@ -118,10 +118,10 @@
 	<string name="action_set_duration_division_type_6">6 - Sextuplet</string>
 	<string name="action_set_duration_division_type_7">7 - Septuplet</string>
 	<string name="action_set_duration_division_type_9">9 - Nonuplet</string>
-	<string name="action_set_duration_division_type_10">10</string>
-	<string name="action_set_duration_division_type_11">11</string>
-	<string name="action_set_duration_division_type_12">12</string>
-	<string name="action_set_duration_division_type_13">13</string>
+	<string name="action_set_duration_division_type_10">10 - Decuplet</string>
+	<string name="action_set_duration_division_type_11">11 - Undecuplet</string>
+	<string name="action_set_duration_division_type_12">12 - Dodecuplet</string>
+	<string name="action_set_duration_division_type_13">13 - Tridecuplet</string>
 
 	<string name="action_set_velocity_ppp">Piano Pianissimo</string>
 	<string name="action_set_velocity_pp">Pianissimo</string>
