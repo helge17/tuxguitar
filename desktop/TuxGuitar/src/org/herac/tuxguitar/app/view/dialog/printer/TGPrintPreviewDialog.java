@@ -81,7 +81,8 @@ public class TGPrintPreviewDialog{
 			this.dialog.addDisposeListener(disposeListener);
 		}
 		
-		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_MAXIMIZED);
+		this.dialog.setBounds(new UIRectangle(new UISize(this.size.getWidth() + 80f, 600f)));
+		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
 	
 	private void initToolBar(){
