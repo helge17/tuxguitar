@@ -16,4 +16,5 @@ public class SWTMenuCheckableItem extends SWTMenuActionItem implements UIMenuChe
 	public void setChecked(boolean checked) {
 		this.getControl().setSelection(checked);
 	}
+
 }

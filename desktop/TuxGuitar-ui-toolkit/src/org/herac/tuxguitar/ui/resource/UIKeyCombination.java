@@ -3,10 +3,10 @@ package org.herac.tuxguitar.ui.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.herac.tuxguitar.util.TGKeyBindFormatter;
+
 public class UIKeyCombination {
-	
-	private static final String MASK_SEPARATOR = "+";
-	
+
 	private List<UIKey> keys;
 	
 	public UIKeyCombination(List<UIKey> keys) {
@@ -24,7 +24,15 @@ public class UIKeyCombination {
 	public List<UIKey> getKeys() {
 		return this.keys;
 	}
-	
+
+	public List<String> getKeyStrings() {
+		List<String> keyStrings = new ArrayList<>();
+		for (UIKey key : keys) {
+			keyStrings.add(key.toString());
+		}
+		return keyStrings;
+	}
+
 	public boolean contains(UIKey key) {
 		return this.keys.contains(key);
 	}
@@ -43,22 +51,11 @@ public class UIKeyCombination {
 		}
 		return false;
 	}
-	
-	public String toString(String separator) {
-		StringBuffer fullMask = new StringBuffer();
-		for(UIKey key : this.getKeys()){
-			if( fullMask.length() > 0 ) {
-				fullMask.append(separator);
-			}
-			fullMask.append(key.toString());
-		}
-		return fullMask.toString();
-	}
-	
+
 	public String toString() {
-		return this.toString(MASK_SEPARATOR);
+		return TGKeyBindFormatter.defaultTranslate(getKeyStrings());
 	}
-	
+
 	public Object clone(){
 		return new UIKeyCombination(this.getKeys());
 	}

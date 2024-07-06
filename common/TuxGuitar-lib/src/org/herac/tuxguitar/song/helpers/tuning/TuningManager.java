@@ -13,6 +13,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TuningManager {
@@ -39,22 +40,39 @@ public class TuningManager {
 		return this.customTuningsGroup;
 	}
 	
-	private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group) {
+	private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group, boolean isPrioritized) {
 		List<TGTuning> list = new ArrayList<TGTuning>();
 		for (TuningGroup subGroup : group.getGroups()) {
 			String groupPrefix = (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
-			list.addAll(getTuningsInGroup(groupPrefix, subGroup));
+			list.addAll(getTuningsInGroup(groupPrefix, subGroup, isPrioritized));
 		}
 		for (TuningPreset preset : group.getTunings()) {
 			TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
-			list.add((TGTuning)tgTuning);
+			
+			// Add every tunings if we don't want a priority list.
+			if (!isPrioritized)
+				list.add((TGTuning)tgTuning);
+			
+			// If we want a priority list, we only add the ones that have priority value,
+			// discard ones that don't
+			if (isPrioritized && preset.getPriority() != null) {
+				tgTuning.setPriority(preset.getPriority());
+				list.add((TGTuning)tgTuning);
+			}
 		}
 		return(list);
 	}
 	
 	// flat list of tunings, prefixed with group names (recursively)
 	public List<TGTuning> getTgTunings() {
-		return (getTuningsInGroup("", tgTuningsGroup));
+		return (getTuningsInGroup("", tgTuningsGroup, false));
+	}
+	
+	public List<TGTuning> getPriorityTgTunings() {
+		List<TGTuning> priorityTunings = getTuningsInGroup("", tgTuningsGroup, true);
+		Collections.sort(priorityTunings);
+		
+		return priorityTunings;
 	}
 	
 	public void saveCustomTunings(TuningGroup group) {

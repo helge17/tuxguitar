@@ -35,17 +35,17 @@ public class MidiSettingsDialog {
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		
 		dialog.setLayout(dialogLayout);
-		dialog.setText("Options");
+		dialog.setText(TuxGuitar.getProperty("options"));
 		
 		//------------------TRACK SELECTION------------------
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(dialog);
 		group.setLayout(groupLayout);
-		group.setText("Transpose notes");
+		group.setText(TuxGuitar.getProperty("export.transpose-notes"));
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
 		
 		final UILabel transposeLabel = uiFactory.createLabel(group);
-		transposeLabel.setText("Transpose:");
+		transposeLabel.setText(TuxGuitar.getProperty("export.transpose") + ":");
 		groupLayout.set(transposeLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 		
 		final UIDropDownSelect<Integer> transposeCombo = uiFactory.createDropDownSelect(group);

@@ -49,10 +49,10 @@ TuxGuitar is available in many languages, but yours may be missing.  We also reg
 
 Translation files are available:
 
-- [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar/share/lang) for main application
+- [here](https://github.com/helge17/tuxguitar/tree/master/common/resources/lang) for main application (desktop and Android)
 - there for plugins: [tuner](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [batch file converter](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang), [jack](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) and [pdf export](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-pdf-ui/share/lang)
 
-Translation files for the Android application are derived from the files above.
+Other translation files specific to Android are present, these are derived from the files above.
 
 The easiest way to update one translation is probably to open the English "messages.properties" file and the corresponding file for your language side by side.  Those files can be edited with any standard text editor.  Every line starting with a "#" character will be ignored and corresponding message will be displayed in English.  To translate a string: add the translated text after the "=" sign, remove the leading "# " and you're done.
 
@@ -105,7 +105,7 @@ Our examples and screenshots here are from Eclipse Version 2023-12.
 Important note: this section still needs to be completed. Known limitations:
 
 - this procedure does not enable to build the *native modules* in Eclipse. Therefore, before sending a pull request it is highly recommended to build the application as defined in [install.md](../INSTALL.md), that is with `-P native-modules` option active.
-- this procedure does not enable to include TuxGuitar plugins in debug configuration
+- this procedure does not enable to include the *native modules* and associated plugins in debug configuration
 
 #### Fork the origin tuxguitar repository
 Because you do not have rights to push to this repository directly, you must first fork this repo to create a space for you to make your edits, then create a pull request once your changes are complete.  If your pull request is accepted, it will be merged in a future version of the software.  See the [instructions on forking a repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) from GitHub.
@@ -152,7 +152,50 @@ eclipse-workspace/externals$ cd swt-4.26-gtk-linux-x86_64
 eclipse-workspace/externals$ unzip ../swt-4.26-gtk-linux-x86_64.zip
 eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.26
 ```
-#### Import the launch configurations for building, running and debugging
-In order to make it easy for you, we stored example launch configurations in the repository.  To import them, go to Menu File->Import and select Run/Debug->Launch configuration.  Import the configurations located in **eclipse-workspace/git/tuxguitar/development.** You can use them as a starting point.  You might need to adjust them to fullfill your folder structure.
+
+#### Define run configuration
+Go to Menu Run->Run Configurations..., right-click on "Maven Build", select "New Configuration" and give your configuration a name.
+In Main tab, Base Directory section, click on "Workspace" and browse to "tuxguitar-linux-swt".
+In Goals field, type `clean verify`:
+
+<img src="images/contribute/eclipse-run.png" width="50%" alt="Run configuration">
+
+Then, at the bottom-right click Apply, then Run. After a short delay (a few tens of seconds) you should see "BUILD SUCCESS".
+
+#### Define debug configuration
+Note: this section is still work-in-progress. Its objective is to re-create a debug environment as close as possible to the *real* application.
+In *real* application, all dependencies are stored in different folders during the build process, as defined by the `pom.xml` file:
+
+- `.jar` files for the different modules - except plugins - are stored in `lib` folder
+- `.jar` files for plugins are stored in `share/plugins` folder
+- other dependencies (help files, translations, skins, configuration files, etc.) are stored in subfolders of `share` folder
+
+Path to `lib` folder is provided to the Java environment by a `classpath` argument in the command line. Path to `share` folder is provided to TuxGuitar by a `-Dtuxguitar.share.path` argument in the command line. Installation folder is also provided by a command line argument: `-Dtuxguitar.home.path`.
+Procedure described in this section aims at recreating a similar environment for the debug configuration.
+
+Go to Menu Run->Debug Configurations..., right-click on "Java Application", select "New Configuration" and give your configuration a name.
+In Main tab, Project section, click on "Browse..." and select "tuxguitar". In Main class section, click on "Search..." and select "TGMainSingleton - org.herac.tuxguitar.app":
+
+<img src="images/contribute/eclipse-debug-main.png" width="50%" alt="Debug configuration - main">
+
+In "Arguments" tab, "VM arguments" section, type:
+```
+-Dtuxguitar.share.path="(path to your tuxguitar source folder)/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/share/"
+-Dtuxguitar.home.path=="(path to your tuxguitar source folder)/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/"
+```
+
+Take care to customize these field considering your path to tuxguitar source folder. Example:
+
+<img src="images/contribute/eclipse-debug-arguments.png" width="50%" alt="Debug configuration - arguments">
+
+Note: take care, in screenshot above the full content of "VM arguments" field is not visible (need to scroll down to see `-Dtuxguitar.home.path` parameter).
+
+In Dependencies tab, Classpath Entries, delete both "tuxguitar" and "Maven Dependencies" items.
+Then, click on "Add External JARs...", browse to folder `tuxguitar/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/lib/`, and select all files. Screenshot below does not show the complete list of jar files (truncated).
+
+<img src="images/contribute/eclipse-debug-dependencies.png" width="50%" alt="Debug configuration - dependencies">
+
+Then, at the bottom-right click Apply, then Debug.
+
 
 Congratulations.  You can now build, run and debug Tuxguitar SWT.

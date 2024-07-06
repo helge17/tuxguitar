@@ -40,6 +40,7 @@ import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
@@ -223,6 +224,14 @@ public class TGTableViewer implements TGEventListener {
 		return this.hScroll.getValue();
 	}
 	
+	public UISize getTableHScrollSize() {
+		return this.trackTableComposite.getHScroll().getSize();
+	}
+	
+	public UISize getTableVScrollSize() {
+		return this.trackTableComposite.getVScroll().getSize();
+	}
+	
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context).getFactory();
 	}
@@ -358,7 +367,7 @@ public class TGTableViewer implements TGEventListener {
 		else if(this.trackCount != trackCount){
 			float tableHeight = this.composite.getLayout().computePackedSize(this.trackTableComposite).getHeight();
 			// margin for scroll bar
-			tableHeight += this.trackTableComposite.getHScroll().getSize().getHeight();
+			tableHeight += getTableHScrollSize().getHeight();
 
 			uiWindow.getLayout().set(this.composite, UITableLayout.PACKED_HEIGHT, tableHeight);
 			uiWindow.layout();

@@ -213,13 +213,13 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.hammer.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.hammer.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHammer()));
 
-		this.ghostNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
+		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
 		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
 		
-		this.accentuatedNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
+		this.accentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.accentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isAccentuatedNote()));
 		
-		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
+		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
 
 		this.letRing.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
@@ -228,13 +228,13 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
 		
-		this.graceNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
+		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
 		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
 		
 		this.trill.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));
 		
-		this.tremoloPicking.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
+		this.tremoloPicking.setEnabled(!running && !noteRange.isEmpty());
 		this.tremoloPicking.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloPicking()));
 		
 		this.palmMute.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);

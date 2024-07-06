@@ -68,6 +68,7 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
@@ -349,9 +350,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGExportSongAction.NAME, LOCKABLE);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
 		this.map(TGCloseDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
-		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
-		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE);
-		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT);
+		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
+		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGExitAction.NAME, LOCKABLE | SYNC_THREAD);
 		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
@@ -554,6 +555,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetCompactViewAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGToggleHighlightPlayedBeatAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		
 		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		this.map(TGSetLayoutScaleIncrementAction.NAME, LOCKABLE | SHORTCUT | SYNC_THREAD, UPDATE_SONG_CTL);

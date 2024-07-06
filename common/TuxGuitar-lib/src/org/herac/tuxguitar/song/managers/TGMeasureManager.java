@@ -903,9 +903,20 @@ public class TGMeasureManager {
 				TGString currentString = track.getString(note.getString());
 				TGString nextString = track.getString(nextStringNumber);
 				int noteValue = (note.getValue() + currentString.getValue());
-				if(noteValue >= nextString.getValue() && ((nextString.getValue() + track.getMaxFret() >= noteValue) || track.isPercussion()) ){
+				boolean canMove = noteValue >= nextString.getValue();
+				canMove &= ((nextString.getValue() + track.getMaxFret() >= noteValue) || track.isPercussion());
+				int graceValue = 0;
+				if (note.getEffect().isGrace()) {
+					graceValue = note.getEffect().getGrace().getFret() + currentString.getValue();
+					canMove &= (graceValue >= nextString.getValue());
+					canMove &= ((nextString.getValue() + track.getMaxFret() >= graceValue) || track.isPercussion());
+				}
+				if (canMove) {
 					note.setValue(noteValue - nextString.getValue());
 					note.setString(nextString.getNumber());
+					if (note.getEffect().isGrace()) {
+						note.getEffect().getGrace().setFret(graceValue-nextString.getValue());
+					}
 					return note.getString();
 				}
 			}
@@ -992,10 +1003,21 @@ public class TGMeasureManager {
 			uncompletedLength[v] = 0;
 		}
 		
+		long[] voiceBeatStartOffset = new long[beat.countVoices()];
+		
 		while (beat != null) {
 			for( int v = 0; v < beat.countVoices(); v ++ ){
 				TGVoice voice = beat.getVoice( v );
 				if( !voice.isEmpty() ){
+					//region Correct voiceEnd
+					long beatRealStart = beat.getStart() + voiceBeatStartOffset[v];
+					long voiceRealStart = getRealStart(measure, beatRealStart);
+					if(voiceRealStart != beatRealStart) {
+						voiceBeatStartOffset[v] += (voiceRealStart-beatRealStart);
+					}
+					long voiceRealEnd = getRealStart(measure, voiceRealStart + voice.getDuration().getTime());
+					//endregion
+					
 					long voiceEnd = (beat.getStart() + voice.getDuration().getTime());
 					long nextPosition = (measure.getStart() + measure.getLength());
 					
@@ -1003,7 +1025,7 @@ public class TGMeasureManager {
 					if(nextVoice != null){
 						nextPosition = nextVoice.getBeat().getStart();
 					}
-					if( voiceEnd < nextPosition ){
+					if( voiceRealEnd < nextPosition ){
 						start[v] = voiceEnd;
 						uncompletedLength[v] = (nextPosition - voiceEnd);
 					}
@@ -1052,25 +1074,35 @@ public class TGMeasureManager {
 		}
 	}
 	
-	public long getRealStart(TGMeasure measure,long currStart){
-		long beatLength = TGSongManager.getDivisionLength(measure.getHeader());
+	/**
+	 * The purpose of this method seems to be correcting note durations 
+	 * mainly due to rounding errors caused by tuplets.
+	 * However, this method can return incorrect corrections.
+	 * In order to prevent this, increasing the value of `TGDuration.QUARTER_TIME` 
+	 * seems to be the best solution.
+	 */
+	public long getRealStart(TGMeasure measure, long currStart){
 		long start = currStart;
-		boolean startBeat = (start % beatLength == 0);
-		if(!startBeat){
-			TGDuration minDuration = getSongManager().getFactory().newDuration();
-			minDuration.setValue(TGDuration.SIXTY_FOURTH);
-			minDuration.getDivision().setEnters(3);
-			minDuration.getDivision().setTimes(2);
-			for(int i = 0;i < minDuration.getTime();i++){
-				start ++;
-				startBeat = (start % beatLength == 0);
-				if(startBeat){
-				   break;
-				}
-			}
-			if(!startBeat){
-				start = currStart;
-			}
+		long offset = TGDuration.QUARTER_TIME / 2;
+		// The value of `threshold` is dependent on the value of
+		// `TGDuration.QUARTER_TIME` and the tuplets that are expected to be supported.
+		long threshold = 0;
+		
+		 // Local variable to suppress warnings
+		long quaterTimeConstant = TGDuration.QUARTER_TIME;
+		if(quaterTimeConstant == 960) {
+			// Smallest value that will correctly handle 64th 13-tuplet notes
+			threshold = 12;
+		}
+		
+		if(threshold == 0) {
+			// Simply skip the computation
+			return currStart;
+		}
+		
+		long diff = (offset - (start % offset)) % offset;
+		if(diff <= threshold) {
+			start += diff;
 		}
 		return start;
 	}
@@ -1290,16 +1322,11 @@ public class TGMeasureManager {
 	
 	public static List<TGDuration> createDurations(TGFactory factory,long time){
 		List<TGDuration> durations = new ArrayList<TGDuration>();
-		TGDuration minimum = factory.newDuration();
-		minimum.setValue(TGDuration.SIXTY_FOURTH);
-		minimum.setDotted(false);
-		minimum.setDoubleDotted(false);
-		minimum.getDivision().setEnters(3);
-		minimum.getDivision().setTimes(2);
+		TGDuration minimum = TGDuration.getShortestDuration(factory);
 		
 		long missingTime = time;
-		while( missingTime > minimum.getTime() ){
-			TGDuration duration = TGDuration.fromTime(factory, missingTime, minimum ,  10);
+		while( missingTime >= minimum.getTime() ){
+			TGDuration duration = TGDuration.fromTime(factory, missingTime, minimum);
 			durations.add( duration.clone(factory) );
 			missingTime -= duration.getTime();
 		}

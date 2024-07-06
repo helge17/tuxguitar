@@ -62,25 +62,26 @@ public class TGMessagesManager {
 		}
 	}
 	
-	public static String getProperty(String key,String value) {
+	public static String getProperty(String key) {
 		try {
 			String property = getInstance().resources.getString(key);
-			return (property == null ? value : property );
+			if (property == null) {
+				// Some instrument and percussion names may not exist, but for all other messages a warning will be displayed if the
+				// message is missing in both messages.properties and messages_LANG.properties.
+				if (!key.startsWith(INSTRUMENT_NAME_PREFIX) && !key.startsWith(PERCUSSION_NAME_PREFIX)) {
+					System.err.println("Message " + key + " not found");
+				}
+				return key;
+			} else {
+				return property;
+			}
 		}catch(Throwable throwable){
-			return value;
+			return key;
 		}
 	}
 	
-	public static String getProperty(String key) {
-		return getProperty(key,key);
-	}
-	
 	public static String getProperty(String key, Object[] arguments) {
-		return getProperty(key,key,arguments);
-	}
-	
-	public static String getProperty(String key,String value, Object[] arguments) {
-		String property = getProperty(key,value);
+		String property = getProperty(key);
 		return ( arguments != null ? MessageFormat.format(property, arguments) : property );
 	}
 	

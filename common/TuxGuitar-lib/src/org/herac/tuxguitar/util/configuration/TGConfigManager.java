@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.util.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.properties.TGProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
@@ -14,9 +17,32 @@ public class TGConfigManager {
 	private String module;
 	
 	public TGConfigManager(TGContext context, String module){
+		this(context,module, null);
+	}
+	
+	/* Since TuxGuitar 1.6.0, user configuration files are preserved when user upgrades TuxGuitar version
+	 * Therefore, it is possible to find in a user configuration file some deprecated parameters
+	 * It's also possible to find parameters created by future version of application
+	 * (if user downgrades app version)
+	 * 
+	 * To keep in user config file only properties with specific keys, use "validKeys" argument
+	 */
+	
+	public TGConfigManager(TGContext context, String module, List<String> validKeys){
+		List<String> toRemove = new ArrayList<String>();
 		this.context = context;
 		this.module = module;
 		this.initialize();
+		if ( (validKeys != null) && (this.properties.getStringKeys() != null) ) {
+			for (String key : this.properties.getStringKeys() ) {
+				if (!validKeys.contains(key) ) {
+					toRemove.add((String)key);
+				}
+			}
+		}
+		for (String key : toRemove) {
+			this.properties.remove(key);
+		}
 	}
 	
 	public void initialize(){

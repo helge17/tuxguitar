@@ -14,8 +14,8 @@
 	<scale name="Whole-Half Scale" keys="1,3,4,6,7,9,10,12" />
 	<scale name="Half-Whole Scale" keys="1,2,4,5,7,8,10,11" />
 	<scale name="Whole Tone Scale" keys="1,3,5,7,9,11" />
-	<scale name="Augmented fifth Scale" keys="1,3,5,6,8,9,10,12" />
-	<scale name="Algerian Scale" keys="1,3,4,7,8,9,12"  />
+	<scale name="Augmented Fifth Scale" keys="1,3,5,6,8,9,10,12" />
+	<scale name="Algerian Scale" keys="1,3,4,7,8,9,12" />
 	<scale name="Arabian Scale" keys="1,3,5,6,7,9,11" />
 	<scale name="Balinese Scale" keys="1,2,4,8,9" />
 	<scale name="Bartok Scale" keys="1,3,5,7,8,10,11" />
@@ -111,7 +111,7 @@
 	<scale name="Ab SCALE: Mixolydian b2 (Purva Melakarta n° 16, Nicolas SLONIMSKY n°1054)" keys="1,2,5,6,8,10,11" />
 	<scale name="Ab SCALE: Aeolian b1" keys="1,4,5,7,9,10,12" />
 	<scale name="Ab SCALE: Locian b7" keys="1,2,4,6,7,9,10" />
-	<scale name="Eb SCALE: Ionian b3 (Purva Melakarta n° 23, Nicolas SLONIMSKY n°1042, Melodic Minor Scale,)" keys="1,3,4,6,8,10,12" />
+	<scale name="Eb SCALE: Ionian b3 (Purva Melakarta n° 23, Nicolas SLONIMSKY n°1042, Melodic Minor Scale)" keys="1,3,4,6,8,10,12" />
 	<scale name="Eb SCALE: Dorian b2 (Purva Melakarta n° 10, Nicolas SLONIMSKY n°1037)" keys="1,2,4,6,8,10,11" />
 	<scale name="Eb SCALE: Phrygian b1 (Nicolas SLONIMSKY n°1066, Lydien Augmenté)" keys="1,3,5,7,9,10,12" />
 	<scale name="Eb SCALE: Lydian b7 (Uttara Melakarta n° 28, Nicolas SLONIMSKY n°1046, Bartok Scale)" keys="1,3,5,7,8,10,11" />
@@ -253,7 +253,7 @@
 	<scale name="B#C#Gb SCALE: Dorian #6#7b4" keys="1,3,4,5,8,11,12" />
 	<scale name="B#C#Gb SCALE: Aeolian #2#3b7" keys="1,4,5,6,8,9,10" />
 	<scale name="DbEbb SCALE: Ionian b2bb3 (Purva Melakarta n° 5)" keys="1,2,3,6,8,10,12" />
-	<scale name="DbEbb SCALE: Dorian b1bb2 (Enigmatic) " keys="1,2,5,7,9,11,12" />
+	<scale name="DbEbb SCALE: Dorian b1bb2 (Enigmatic)" keys="1,2,5,7,9,11,12" />
 	<scale name="DbEbb SCALE: Phrygian b7bb1" keys="1,4,6,8,10,11,12" />
 	<scale name="DbEbb SCALE: Lydian b6bb7 (Uttara Melakarta n° 25)" keys="1,3,5,7,8,9,10" />
 	<scale name="DbEbb SCALE: Mixolydian b5bb6" keys="1,3,5,6,7,8,11" />
@@ -272,7 +272,7 @@
 	<scale name="A#DbEb SCALE: Aeolian #1b4b5" keys="1,2,3,4,6,8,10" />
 	<scale name="A#B#C#Eb SCALE: Mixolydian #2#3#4b6" keys="1,4,6,7,8,9,11" />
 	<scale name="C#D#GbAb SCALE: Locrian #2#3b6b7" keys="1,3,5,6,7,8,10" />
-	<scale name="GbA#C#D# SCALE: Locrian b6#7#2#3"  keys="1,3,5,6,7,8,12" />
-	<scale name="GbA#C#D# SCALE: Phrygian b3#4#6#7 (Uttara Melakarta n° 5)"  keys="1,2,3,7,8,10,12" />
+	<scale name="GbA#C#D# SCALE: Locrian b6#7#2#3" keys="1,3,5,6,7,8,12" />
+	<scale name="GbA#C#D# SCALE: Phrygian b3#4#6#7 (Uttara Melakarta n° 5)" keys="1,2,3,7,8,10,12" />
 	<scale name="EbFbGbb SCALE: Aeolian b5b6bb7" keys="1,3,4,6,7,8,9" />
 </scales>

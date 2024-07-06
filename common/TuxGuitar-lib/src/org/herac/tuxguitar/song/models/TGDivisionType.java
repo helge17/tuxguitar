@@ -16,12 +16,9 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  */
 public abstract class TGDivisionType {
 	
-	public static final TGDivisionType NORMAL = newDivisionType(1,1);
-	
-	public static final TGDivisionType TRIPLET = newDivisionType(3,2);
-	
-	public static final TGDivisionType[] ALTERED_DIVISION_TYPES = new TGDivisionType[]{
-		newDivisionType(3,2),
+	public static final TGDivisionType[] DIVISION_TYPES = new TGDivisionType[]{
+		newDivisionType(1,1),	// normal
+		newDivisionType(3,2),	// Triplet
 		newDivisionType(5,4),
 		newDivisionType(6,4),
 		newDivisionType(7,4),
@@ -31,6 +28,9 @@ public abstract class TGDivisionType {
 		newDivisionType(12,8),
 		newDivisionType(13,8),
 	};
+
+	// Alias for better code readability
+	public static final TGDivisionType NORMAL = DIVISION_TYPES[0];
 	
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos

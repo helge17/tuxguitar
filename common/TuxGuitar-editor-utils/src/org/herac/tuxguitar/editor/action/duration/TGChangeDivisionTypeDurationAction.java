@@ -23,7 +23,7 @@ public class TGChangeDivisionTypeDurationAction extends TGActionBase {
 		TGSongManager songManager = this.getSongManager(context);
 		TGDivisionType divisionType = songManager.getFactory().newDivisionType();
 		if( duration.getDivision().isEqual(TGDivisionType.NORMAL)){
-			divisionType.copyFrom(TGDivisionType.TRIPLET);
+			divisionType.copyFrom(TGDivisionType.DIVISION_TYPES[1]);
 		}else{
 			divisionType.copyFrom(TGDivisionType.NORMAL);
 		}

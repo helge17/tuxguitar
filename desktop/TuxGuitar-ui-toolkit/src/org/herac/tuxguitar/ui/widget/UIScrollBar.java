@@ -31,4 +31,6 @@ public interface UIScrollBar extends UIComponent {
 	void addSelectionListener(UISelectionListener listener);
 	
 	void removeSelectionListener(UISelectionListener listener);
+	
+	void setVisible(boolean visible);
 }

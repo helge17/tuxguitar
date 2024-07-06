@@ -1,7 +1,9 @@
 package org.herac.tuxguitar.io.musicxml;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,7 +20,6 @@ import org.herac.tuxguitar.gm.GMChannelRouter;
 import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.musicxml.MusicXMLLyricWriter.MusicXMLMeasureLyric;
-import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
@@ -57,8 +58,6 @@ public class MusicXMLWriter {
 		DURATION_DIVISIONS / 8, // THIRTY_SECOND
 		DURATION_DIVISIONS / 16, // SIXTY_FOURTH
 	};
-	
-	private static final String TABLATURE_SUFFIX = "-tab";
 	
 	private TGSongManager manager;
 	
@@ -120,7 +119,6 @@ public class MusicXMLWriter {
 			TGTrack track = (TGTrack)tracks.next();
 			TGChannel channel = this.manager.getChannel(song, track.getChannelId());
 			
-			// score
 			Node scoreParts = this.addNode(partList,"score-part");
 			this.addAttribute(scoreParts, "id", "P" + track.getNumber());
 			
@@ -136,13 +134,6 @@ public class MusicXMLWriter {
 				this.addNode(midiInstrument, "midi-channel",Integer.toString(gmChannelRoute != null ? gmChannelRoute.getChannel1() + 1 : 16));
 				this.addNode(midiInstrument, "midi-program",Integer.toString(channel.getProgram() + 1));
 			}
-			
-			// tab (if not a drums track)
-			if(!track.isPercussion() ) {
-				scoreParts = this.addNode(partList,"score-part");
-				this.addAttribute(scoreParts, "id", "P" + track.getNumber() + TABLATURE_SUFFIX);
-				this.addNode(scoreParts, "part-name", track.getName());
-			}
 		}
 	}
 	
@@ -150,16 +141,12 @@ public class MusicXMLWriter {
 		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
 			TGTrack track = (TGTrack)tracks.next();
-			this.writeTrack(track, parent, false);	// score
-			
-			if(!track.isPercussion() ) {
-				this.writeTrack(track, parent, true);	// tablature
-			}
+			this.writeTrack(track, parent);
 		}
 	}
 	
-	private void writeTrack(TGTrack track, Node parent, boolean isTablature){
-		Node part = this.addAttribute(this.addNode(parent,"part"), "id", "P" + track.getNumber() + (isTablature ? TABLATURE_SUFFIX : ""));
+	private void writeTrack(TGTrack track, Node parent){
+		Node part = this.addAttribute(this.addNode(parent,"part"), "id", "P" + track.getNumber());
 		
 		TGMeasure previous = null;
 		
@@ -167,24 +154,42 @@ public class MusicXMLWriter {
 		
 		Iterator<TGMeasure> measures = track.getMeasures();
 		while(measures.hasNext()){
-			// TODO: Add multivoice support.
-			TGMeasure srcMeasure = (TGMeasure)measures.next();
-			TGMeasure measure = new TGVoiceJoiner(this.manager.getFactory(),srcMeasure).process();
-			
+			TGMeasure measure = (TGMeasure)measures.next();
 			Node measureNode = this.addAttribute(this.addNode(part,"measure"), "number",Integer.toString(measure.getNumber()));
 			
-			this.writeMeasureAttributes(measureNode, measure, previous, isTablature);
-			if (!isTablature) {
-				this.writeDirection(measureNode, measure, previous);
-			}
+			this.writeMeasureAttributes(measureNode, measure, previous, track.isPercussion());
+
+			this.writeDirection(measureNode, measure, previous);
 			
 			this.writeBarline(measureNode, measure);
 
-			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(srcMeasure);
-			this.writeBeats(measureNode, measure, isTablature, measureLyrics);
+			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(measure);
+
+			// score
+			boolean measureIsEmpty = true;
+			for (int nVoice=0; nVoice<TGBeat.MAX_VOICES; nVoice++) {
+				// assuming lyrics are attached to voice 0
+				this.writeBeats(measureNode, measure, nVoice, measureIsEmpty, false, nVoice==0 ? measureLyrics : null);
+				measureIsEmpty = false;
+			}
+			// tab
+			if (!track.isPercussion()) {
+				measureIsEmpty = true;
+				backToMeasureStart(measureNode, measure);
+				for (int nVoice=0; nVoice<TGBeat.MAX_VOICES; nVoice++) {
+					this.writeBeats(measureNode, measure, nVoice, measureIsEmpty, true, null);
+					measureIsEmpty = false;
+				}
+			}
 			
 			previous = measure;
 		}
+	}
+	
+	private void backToMeasureStart(Node parent, TGMeasure measure) {
+		Node backupNode = this.addNode(parent, "backup");
+		TGTimeSignature ts = measure.getTimeSignature();
+		this.addNode(backupNode, "duration", String.valueOf((int)(TGDuration.QUARTER * DURATION_DIVISIONS * ts.getNumerator() / ts.getDenominator().getValue())));
 	}
 	
 	private void writeBarline(Node parent, TGMeasure measure) {
@@ -215,12 +220,13 @@ public class MusicXMLWriter {
 		}
 	}
 
-	private void writeMeasureAttributes(Node parent, TGMeasure measure, TGMeasure previous, boolean isTablature){
+	private void writeMeasureAttributes(Node parent, TGMeasure measure, TGMeasure previous, boolean isPercussion){
 		boolean divisionChanges = (previous == null);
 		boolean keyChanges = (previous == null || measure.getKeySignature() != previous.getKeySignature());
 		boolean clefChanges = (previous == null || measure.getClef() != previous.getClef());
 		boolean timeSignatureChanges = (previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature()));
-		if ((!isTablature) && (divisionChanges || keyChanges || clefChanges || timeSignatureChanges)){
+		
+		if (divisionChanges || keyChanges || clefChanges || timeSignatureChanges) {
 			Node measureAttributes = this.addNode(parent,"attributes");
 			if(divisionChanges){
 				this.addNode(measureAttributes,"divisions",Integer.toString(DURATION_DIVISIONS));
@@ -232,15 +238,10 @@ public class MusicXMLWriter {
 				this.writeTimeSignature(measureAttributes,measure.getTimeSignature());
 			}
 			if(clefChanges){
-				this.writeClef(measureAttributes,measure.getClef());
+				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
 			}
-		}
-		if (isTablature && (previous==null || measure.getNumber() == 1)) {
-			Node measureAttributes = this.addNode(parent,"attributes");
-			if (previous==null) {
-				this.writeTabClef(measureAttributes);
-			}
-			if (measure.getNumber() == 1) {
+			
+			if (!isPercussion && (previous==null || measure.getNumber() == 1)) {
 				this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
 			}
 		}
@@ -248,6 +249,7 @@ public class MusicXMLWriter {
 	
 	private void writeTuning(Node parent, TGTrack track, int keySignature){
 		Node staffDetailsNode = this.addNode(parent,"staff-details");
+		this.addAttribute(staffDetailsNode, "number", "2");
 		this.addNode(staffDetailsNode, "staff-lines", Integer.toString( track.stringCount() ));
 		for( int i = track.stringCount() ; i > 0 ; i --){
 			TGString string = track.getString( i );
@@ -281,9 +283,17 @@ public class MusicXMLWriter {
 		this.addNode(key,"fifths",Integer.toString( value ));
 	}
 	
-	private void writeClef(Node parent, int clef){
+	private void writeClef(Node parent, int clef, boolean isPercussion){
+		// first clef: score
 		Node node = this.addNode(parent,"clef");
-		if(clef == TGMeasure.CLEF_TREBLE){
+		if (!isPercussion) {
+			this.addAttribute(node, "number", "1");
+		}
+		
+		if (isPercussion) {
+			this.addNode(node,"sign","percussion");
+		}
+		else if(clef == TGMeasure.CLEF_TREBLE){
 			this.addNode(node,"sign","G");
 			this.addNode(node,"line","2");
 			this.addNode(node, "clef-octave-change", String.valueOf(-1));
@@ -291,6 +301,7 @@ public class MusicXMLWriter {
 		else if(clef == TGMeasure.CLEF_BASS){
 			this.addNode(node,"sign","F");
 			this.addNode(node,"line","4");
+			this.addNode(node, "clef-octave-change", String.valueOf(-1));
 		}
 		else if(clef == TGMeasure.CLEF_TENOR){
 			this.addNode(node,"sign","G");
@@ -300,11 +311,13 @@ public class MusicXMLWriter {
 			this.addNode(node,"sign","G");
 			this.addNode(node,"line","2");
 		}
-	}
-	
-	private void writeTabClef(Node parent){
-		Node node = this.addNode(parent,"clef");
-		this.addNode(node, "sign", "TAB");
+		
+		// second clef: tablature
+		if (!isPercussion) {
+			node = this.addNode(parent,"clef");
+			this.addAttribute(node, "number", "2");
+			this.addNode(node, "sign", "TAB");
+		}
 	}
 	
 	private void writeDirection(Node parent, TGMeasure measure, TGMeasure previous){
@@ -320,21 +333,39 @@ public class MusicXMLWriter {
 	}
 	
 
-	private void writeBeats(Node parent, TGMeasure measure, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
+	private void writeBeats(Node parent, TGMeasure measure, int nVoice, boolean measureIsEmpty, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
 		int ks = measure.getKeySignature();
 		int beatCount = measure.countBeats();
-		
 		int lyricIndex = 0;
+		// store first rest beats of voice in list, before finding possibly a non-empty beat
+		List<TGBeat> firstBeats = new ArrayList<TGBeat>();
+		boolean wroteSomething = false;
+		long lastWrittenNoteEnd = 0;	// tick of last (non-empty) beat corresponding to voice
 		
 		for(int b = 0; b < beatCount; b ++){
 			TGBeat beat = measure.getBeat( b );
-			TGVoice voice = beat.getVoice(0);
+			TGVoice voice = beat.getVoice(nVoice);
 			
+			if (voice.isRestVoice() && !wroteSomething) {
+				firstBeats.add(beat);
+				continue;
+			}
+			// here, something has been found to be written
+			// need to rewind to measure start?
+			if (!measureIsEmpty && !wroteSomething) {
+				backToMeasureStart(parent, measure);
+			}
+			// need to insert rests before?
+			if (!firstBeats.isEmpty()) {
+				for (TGBeat restBeat : firstBeats) {
+					insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
+				}
+				firstBeats.clear();
+			}
 			if(voice.isRestVoice()){
-				Node noteNode = this.addNode(parent,"note");
-				this.addNode(noteNode,"rest");
-				this.writeDuration(noteNode, voice.getDuration(), false);
-			
+				if (beat.getStart() >= lastWrittenNoteEnd) {
+					insertRest(parent, voice.getDuration(), nVoice, isTablature);
+				}
 			} else {
 				int noteCount = voice.countNotes();
 				
@@ -351,7 +382,8 @@ public class MusicXMLWriter {
 					
 					Node pitchNode = this.addNode(noteNode,"pitch");
 					this.writeNote(pitchNode, "", value, ks);
-					this.writeDuration(noteNode, voice.getDuration(), note.isTiedNote());
+					this.writeDurationAndVoice(noteNode, voice.getDuration(), note.isTiedNote(), nVoice);
+					this.addNode(noteNode, "staff", isTablature ? "2" : "1");
 					
 					if (isTablature) {
 						Node technicalNode = this.addNode(this.addNode(noteNode, "notations"), "technical");
@@ -369,10 +401,26 @@ public class MusicXMLWriter {
 							// can be null if there is an offset
 						}
 					}
+					lastWrittenNoteEnd = beat.getStart() + voice.getDuration().getTime();
 				}
+				wroteSomething = true;
+			}
+		}
+		// empty measure? If so, fill with rests
+		if (!wroteSomething && measureIsEmpty && !firstBeats.isEmpty()) {
+			for (TGBeat restBeat : firstBeats) {
+				insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
 			}
 		}
 	}
+	
+	private void insertRest(Node parent, TGDuration duration, int nVoice, boolean isTablature) {
+		Node noteRestNode = this.addNode(parent,"note");
+		this.addNode(noteRestNode,"rest");
+		this.writeDurationAndVoice(noteRestNode, duration, false, nVoice);
+		this.addNode(noteRestNode, "staff", isTablature ? "2" : "1");
+	}
+
 	
 	private void writeLyric(Node parent, MusicXMLMeasureLyric measureLyric) {
 		if (measureLyric.text.length() > 0) {
@@ -383,7 +431,7 @@ public class MusicXMLWriter {
 		}
 	}
 	
-	private void writeDuration(Node parent, TGDuration duration, boolean isTiedNote){
+	private void writeDurationAndVoice(Node parent, TGDuration duration, boolean isTiedNote, int nVoice){
 		int index = duration.getIndex();
 		if( index >=0 && index <= 6 ){
 			int value = (DURATION_VALUES[ index ] * duration.getDivision().getTimes() / duration.getDivision().getEnters());
@@ -398,6 +446,7 @@ public class MusicXMLWriter {
 			if(isTiedNote){
 				this.addAttribute(this.addNode(parent,"tie"),"type","stop");
 			}
+			this.addNode(parent, "voice", String.valueOf(nVoice+1));
 
 			this.addNode(parent,"type",DURATION_NAMES[ index ]);
 			
@@ -467,117 +516,5 @@ public class MusicXMLWriter {
 		}
 	}
 	
-	private static class TGVoiceJoiner {
-		private TGFactory factory;
-		private TGMeasure measure;
-		
-		public TGVoiceJoiner(TGFactory factory,TGMeasure measure){
-			this.factory = factory;
-			this.measure = measure.clone(factory, measure.getHeader());
-			this.measure.setTrack( measure.getTrack() );
-		}
-		
-		public TGMeasure process(){
-			this.orderBeats();
-			this.joinBeats();
-			return this.measure;
-		}
-		
-		public void joinBeats(){
-			TGBeat previous = null;
-			boolean finish = true;
-			
-			long measureStart = this.measure.getStart();
-			long measureEnd = (measureStart + this.measure.getLength());
-			for(int i = 0;i < this.measure.countBeats();i++){
-				TGBeat beat = this.measure.getBeat( i );
-				TGVoice voice = beat.getVoice(0);
-				for(int v = 1; v < beat.countVoices(); v++ ){
-					TGVoice currentVoice = beat.getVoice(v);
-					if(!currentVoice.isEmpty()){
-						for(int n = 0 ; n < currentVoice.countNotes() ; n++ ){
-							TGNote note = currentVoice.getNote( n );
-							voice.addNote( note );
-						}
-					}
-				}
-				if( voice.isEmpty() ){
-					this.measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				
-				long beatStart = beat.getStart();
-				if(previous != null){
-					long previousStart = previous.getStart();
-					
-					TGDuration previousBestDuration = null;
-					for(int v = /*1*/0; v < previous.countVoices(); v++ ){
-						TGVoice previousVoice = previous.getVoice(v);
-						if(!previousVoice.isEmpty()){
-							long length = previousVoice.getDuration().getTime();
-							if( (previousStart + length) <= beatStart){
-								if( previousBestDuration == null || length > previousBestDuration.getTime() ){
-									previousBestDuration = previousVoice.getDuration();
-								}
-							}
-						}
-					}
-					
-					if(previousBestDuration != null){
-						previous.getVoice(0).getDuration().copyFrom( previousBestDuration );
-					}else{
-						if(voice.isRestVoice()){
-							this.measure.removeBeat(beat);
-							finish = false;
-							break;
-						}
-						TGDuration duration = TGDuration.fromTime(this.factory, (beatStart - previousStart) );
-						previous.getVoice(0).getDuration().copyFrom( duration );
-					}
-				}
-				
-				TGDuration beatBestDuration = null;
-				for(int v = /*1*/0; v < beat.countVoices(); v++ ){
-					TGVoice currentVoice = beat.getVoice(v);
-					if(!currentVoice.isEmpty()){
-						long length = currentVoice.getDuration().getTime();
-						if( (beatStart + length) <= measureEnd ){
-							if( beatBestDuration == null || length > beatBestDuration.getTime() ){
-								beatBestDuration = currentVoice.getDuration();
-							}
-						}
-					}
-				}
-				
-				if(beatBestDuration == null){
-					if(voice.isRestVoice()){
-						this.measure.removeBeat(beat);
-						finish = false;
-						break;
-					}
-					TGDuration duration = TGDuration.fromTime(this.factory, (measureEnd - beatStart) );
-					voice.getDuration().copyFrom( duration );
-				}
-				previous = beat;
-			}
-			if(!finish){
-				joinBeats();
-			}
-		}
-		
-		public void orderBeats(){
-			for(int i = 0;i < this.measure.countBeats();i++){
-				TGBeat minBeat = null;
-				for(int j = i;j < this.measure.countBeats();j++){
-					TGBeat beat = this.measure.getBeat(j);
-					if(minBeat == null || beat.getStart() < minBeat.getStart()){
-						minBeat = beat;
-					}
-				}
-				this.measure.moveBeat(i, minBeat);
-			}
-		}
-	}
 
 }
