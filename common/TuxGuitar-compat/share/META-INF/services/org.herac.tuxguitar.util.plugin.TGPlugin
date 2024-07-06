@@ -10,5 +10,3 @@ org.herac.tuxguitar.io.tg.v13.TGSongWriterPluginImpl
 org.herac.tuxguitar.io.tg.v12.TGSongWriterPluginImpl
 org.herac.tuxguitar.io.tg.v11.TGSongWriterPluginImpl
 org.herac.tuxguitar.io.tg.v10.TGSongWriterPluginImpl
-
-org.herac.tuxguitar.io.tg.dev.TGSongReaderPluginImpl
