@@ -6,8 +6,12 @@ import java.net.URL;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
 import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
 import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
@@ -23,14 +27,28 @@ public class TGReadURLAction extends TGActionBase {
 	}
 	
 	protected void processAction(TGActionContext context){
+		TGDocumentListManager docListManager = TGDocumentListManager.getInstance(getContext());
 		try {
 			URL url = context.getAttribute(ATTRIBUTE_URL);
-			InputStream stream = (TGFileUtils.isLocalFile(url) ? url.openStream() : TGFileFormatUtils.getInputStream(url.openStream()));
-			context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(url.getFile()));
-			context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
-			
-			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-			tgActionManager.execute(TGReadSongAction.NAME, context);
+			TGDocument alreadyOpenedDoc = null;
+			for (TGDocument doc : docListManager.getDocuments()) {
+				if (url.toURI().equals(doc.getUri())) {
+					alreadyOpenedDoc = doc;
+					break;
+				}
+			}
+			if (alreadyOpenedDoc != null) {
+				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, alreadyOpenedDoc.getSong());
+				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
+				tgActionManager.execute(TGLoadSongAction.NAME, context);
+			} else {
+				InputStream stream = (TGFileUtils.isLocalFile(url) ? url.openStream() : TGFileFormatUtils.getInputStream(url.openStream()));
+				context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(url.getFile()));
+				context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
+				
+				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
+				tgActionManager.execute(TGReadSongAction.NAME, context);
+			}
 		} catch (Throwable e) {
 			throw new TGActionException(e.getMessage(), e);
 		}

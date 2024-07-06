@@ -313,8 +313,8 @@ public class MidiSequenceParser {
 			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.PHASER,fix(channel.getPhaser()));
 			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.TREMOLO,fix(channel.getTremolo()));
 			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.EXPRESSION, 127);
-			if(!channel.isPercussionChannel()){
-				sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.BANK_SELECT, fix(channel.getBank()));
+			if((this.flags & ADD_BANK_SELECT) != 0) {
+				sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.BANK_SELECT, fix(channel.getBank(), 0, 128));
 			}
 			sh.getSequence().addProgramChange(tick,trackNum,channelId,fix(channel.getProgram()));
 			sh.getSequence().addTrackName(tick,trackNum,track.getName());

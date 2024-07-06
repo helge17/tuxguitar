@@ -31,7 +31,6 @@
 		<module>../../TuxGuitar-browser-ftp</module>
 		<module>../../TuxGuitar-compat</module>
 		<module>../../TuxGuitar-converter</module>
-		<module>../../TuxGuitar-gervill</module>
 		<module>../../TuxGuitar-gm-settings</module>
 		<module>../../TuxGuitar-gtp</module>
 		<module>../../TuxGuitar-gtp-ui</module>
@@ -181,12 +180,6 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-converter</artifactId>
 									<destFileName>tuxguitar-converter.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-gervill</artifactId>
-									<destFileName>tuxguitar-gervill.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

@@ -31,7 +31,6 @@
 		<module>../../TuxGuitar-browser-ftp</module>
 		<module>../../../common/TuxGuitar-compat</module>
 		<module>../../TuxGuitar-converter</module>
-		<module>../../TuxGuitar-gervill</module>
 		<module>../../TuxGuitar-gm-settings</module>
 		<module>../../../common/TuxGuitar-gtp</module>
 		<module>../../TuxGuitar-gtp-ui</module>
@@ -180,12 +179,6 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-converter</artifactId>
 									<destFileName>tuxguitar-converter.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-gervill</artifactId>
-									<destFileName>tuxguitar-gervill.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -340,6 +333,9 @@
 							<target name="copy-files">
 								<copy todir="${project.build.directory}/${project.finalName}/share">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}/share">
+									<fileset dir="${project.rootPath}/../common/resources/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
 									<fileset dir="${project.rootPath}/../doc/" />

@@ -417,9 +417,18 @@ public class TGTrackManager {
 					}
 					if (freeStrings.contains(closestString)) {
 						int newFret = noteStringValue + note.getValue() - closestString.getValue();
-						if (newFret>=0 && newFret<=maxFret) {
+						boolean canMove = newFret>=0 && newFret<=maxFret;
+						int newGraceFret = 0;
+						if (note.getEffect().isGrace()) {
+							newGraceFret = noteStringValue + note.getEffect().getGrace().getFret() - closestString.getValue();
+							canMove &= (newGraceFret>=0 && newGraceFret<=maxFret);
+						}
+						if (canMove) {
 							note.setValue(newFret);
 							note.setString(closestString.getNumber());
+							if (note.getEffect().isGrace()) {
+								note.getEffect().getGrace().setFret(newGraceFret);
+							}
 							freeStrings.remove(closestString);
 						}
 						else {
@@ -462,7 +471,12 @@ public class TGTrackManager {
 				TGString newString = null;
 				for (TGString string : freeStrings) {
 					int fret = note.getValue() - string.getValue();
-					if (fret>=0 && fret<=maxFret && (minFret<0 || fret<minFret) ) {
+					boolean canMove = (fret>=0 && fret<=maxFret);
+					if (note.getEffect().isGrace()) {
+						int graceFret = note.getEffect().getGrace().getFret() - string.getValue();
+						canMove &= (graceFret>=0 & graceFret<=maxFret);
+					}
+					if (canMove && (minFret<0 || fret<minFret) ) {
 						newString = string;
 						minFret = fret;
 					}
@@ -470,6 +484,9 @@ public class TGTrackManager {
 				if (newString != null) {
 					note.setValue(note.getValue() - newString.getValue());
 					note.setString(newString.getNumber());
+					if (note.getEffect().isGrace()) {
+						note.getEffect().getGrace().setFret(note.getEffect().getGrace().getFret() - newString.getValue());
+					}
 					freeStrings.remove(newString);
 				}
 			}
@@ -526,6 +543,9 @@ public class TGTrackManager {
 	private void moveNotesToStringZero(List<Integer> fromStringValues, List<TGNote> listNotes) {
 		for (TGNote note : listNotes) {
 			note.setValue(fromStringValues.get(note.getString()-1) + note.getValue());
+			if (note.getEffect().isGrace()) {
+				note.getEffect().getGrace().setFret(fromStringValues.get(note.getString()-1) + note.getEffect().getGrace().getFret());
+			}
 			note.setString(0);
 		}
 	}

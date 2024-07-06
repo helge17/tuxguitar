@@ -6,8 +6,8 @@ use File::Basename;
 $COMMAND=basename($0);
 $SCRIPT_DIR=dirname($0);
 
-my $messages_list = "$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages_*.properties";
-my $messages_dflt = "$SCRIPT_DIR/../desktop/TuxGuitar/share/lang/messages.properties";
+my $messages_list = "$SCRIPT_DIR/../common/resources/lang/messages_*.properties";
+my $messages_dflt = "$SCRIPT_DIR/../common/resources/lang/messages.properties";
 
 if (!getopts('h') || $opt_h) {
 

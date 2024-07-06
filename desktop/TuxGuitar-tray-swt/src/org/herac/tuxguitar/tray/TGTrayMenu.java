@@ -53,14 +53,15 @@ public class TGTrayMenu {
 				new TGActionProcessor(TGTrayMenu.this.context, TGExitAction.NAME).process();
 			}
 		});
-		
-		this.loadProperties();
-		this.loadIcons();
 	}
 	
 	public void loadProperties(){
 		if(this.menu != null && !this.menu.isDisposed()){
-			this.play.setText(TuxGuitar.getProperty("transport.start"));
+			if(TuxGuitar.getInstance().getPlayer().isRunning()){
+				this.play.setText(TuxGuitar.getProperty("transport.pause"));
+			} else {
+				this.play.setText(TuxGuitar.getProperty("transport.start"));
+			}
 			this.stop.setText(TuxGuitar.getProperty("transport.stop"));
 			this.exit.setText(TuxGuitar.getProperty("file.exit"));
 		}
@@ -68,13 +69,19 @@ public class TGTrayMenu {
 	
 	public void loadIcons(){
 		if(this.menu != null && !this.menu.isDisposed()){
-			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconStop1()).getHandle());
-			this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPlay1()).getHandle());
+			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconStop()).getHandle());
+			if(TuxGuitar.getInstance().getPlayer().isRunning()){
+				this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPause()).getHandle());
+			} else {
+				this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPlay()).getHandle());
+			}
 		}
 	}
 	
 	public void show(){
 		if(this.menu != null && !this.menu.isDisposed()){
+			this.loadProperties();
+			this.loadIcons();
 			this.menu.setVisible(true);
 		}
 	}

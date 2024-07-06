@@ -30,6 +30,23 @@ public interface UIPainter extends UIResource {
 	
 	void addRectangle(float x,float y,float width,float height);
 	
+	default void addRoundedRectangle(float x1, float y1, float w, float h, float br) {
+		//control point
+		float cp =  (float) (br - br * 4.*(Math.sqrt(2.)-1.)/3.);
+		float x2 = x1 + w;
+		float y2 = y1 + h;
+		
+		moveTo(x1 + br, y1);
+		cubicTo(x1 + cp, y1, x1, y1 + cp, x1, y1 + br);
+		lineTo(x1, y2 - br);
+		cubicTo(x1, y2 - cp, x1 + cp, y2, x1 + br, y2);
+		lineTo(x2 - br, y2);
+		cubicTo(x2 - cp, y2, x2, y2 - cp, x2, y2 - br);
+		lineTo(x2, y1 + br);
+		cubicTo(x2, y1 + cp, x2 - cp, y1, x2 - br, y1);
+		lineTo(x1 + br, y1);
+	}
+	
 	void setFont(UIFont font);
 	
 	void setForeground(UIColor color);

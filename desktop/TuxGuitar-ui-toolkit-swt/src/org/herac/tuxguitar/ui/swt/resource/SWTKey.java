@@ -35,12 +35,12 @@ public class SWTKey {
 		new SWTKeyMap(SWT.TAB, UIKey.TAB),
 		new SWTKeyMap(SWT.BS, UIKey.BACKSPACE),
 		new SWTKeyMap(SWT.SPACE, UIKey.SPACE),
-		new SWTKeyMap(0xd, UIKey.ENTER),
-		new SWTKeyMap(0x1000050, UIKey.ENTER),
-		new SWTKeyMap(0x1000001, UIKey.UP),
-		new SWTKeyMap(0x1000002, UIKey.DOWN),
-		new SWTKeyMap(0x1000003, UIKey.LEFT),
-		new SWTKeyMap(0x1000004, UIKey.RIGHT)
+		new SWTKeyMap(SWT.CR, UIKey.ENTER),
+		new SWTKeyMap(SWT.KEYPAD_CR, UIKey.NUMPAD_ENTER),
+		new SWTKeyMap(SWT.ARROW_UP, UIKey.UP),
+		new SWTKeyMap(SWT.ARROW_DOWN, UIKey.DOWN),
+		new SWTKeyMap(SWT.ARROW_LEFT, UIKey.LEFT),
+		new SWTKeyMap(SWT.ARROW_RIGHT, UIKey.RIGHT)
 	};
 	
 	public UIKey getKey(int keyCode) {

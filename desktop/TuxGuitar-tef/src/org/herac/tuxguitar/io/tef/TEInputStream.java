@@ -31,9 +31,8 @@ public class TEInputStream {
 		
 		this.readInfo();
 		
-		this.song.setMeasures((this.readByte() & 0xff));
+		this.song.setMeasures((this.readByte() & 0xff) + ((this.readByte() & 0xff) << 8));
 		
-		this.skip(1);
 		this.readTimeSignature();
 		
 		this.skip(15);

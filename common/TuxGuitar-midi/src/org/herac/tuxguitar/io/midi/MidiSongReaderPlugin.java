@@ -17,7 +17,7 @@ public class MidiSongReaderPlugin extends TGSongReaderPlugin {
 	}
 
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
-		return new MidiSongReader();
+		return new MidiSongReader(context);
 	}
 
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {

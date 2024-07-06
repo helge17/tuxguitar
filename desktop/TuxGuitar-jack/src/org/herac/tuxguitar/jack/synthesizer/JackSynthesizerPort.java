@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.jack.synthesizer;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
@@ -34,7 +35,7 @@ public class JackSynthesizerPort implements MidiOutputPort{
 		if(!this.jackClient.isOpen() ){
 			this.open();
 			if(!this.jackClient.isOpen() ){
-				throw new MidiPlayerException("Jack server not running?");
+				throw new MidiPlayerException(TuxGuitar.getProperty("jack.error.not-running"));
 			}
 		}
 	}

@@ -104,7 +104,7 @@ public class PDFSettingsDialog {
 	private void addSetting(String key, String settingName, UITableLayout layout, UIFactory uiFactory, UILegendPanel panel) {
 		nbSettings++;
 		UILabel label = uiFactory.createLabel(panel);
-		label.setText(settingName);
+		label.setText(settingName + ":");
 		layout.set(label, nbSettings, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 
 		UISpinner spinner = uiFactory.createSpinner(panel);

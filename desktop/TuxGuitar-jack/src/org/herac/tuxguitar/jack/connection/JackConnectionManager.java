@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.jack.JackPortFlags;
 import org.herac.tuxguitar.jack.JackPortTypes;
@@ -56,7 +57,7 @@ public class JackConnectionManager {
 			}
 		}
 		if(!this.isJackClientOpen() && !quiet){
-			throw new TGException("Jack server not running?");
+			throw new TGException(TuxGuitar.getProperty("jack.error.not-running"));
 		}
 	}
 	

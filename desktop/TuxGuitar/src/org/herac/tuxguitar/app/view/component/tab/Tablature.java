@@ -192,8 +192,9 @@ public class Tablature implements TGController {
 	public void loadCaretStyles() {
 		TGConfigManager config = TGConfigManager.getInstance(this.context);
 		
-		getCaret().setColor1(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_1));
-		getCaret().setColor2(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_2));
+		getCaret().setColorCurrentVoice(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_CURRENT_VOICE));
+		getCaret().setColorOtherVoice(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_OTHER_VOICE));
+		getCaret().setAlpha(config.getIntegerValue(TGConfigKeys.COLOR_CARET_ALPHA));
 	}
 	
 	public void scale(Float scale) {

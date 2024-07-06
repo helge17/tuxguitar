@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.system.config;
 
 public class TGConfigKeys {
 
+	// valid configuration key names
 	public static final String SKIN = "skin";
 	public static final String WINDOW_TITLE = "window.title";
 	public static final String SHOW_SPLASH = "show.splash";
@@ -39,13 +40,17 @@ public class TGConfigKeys {
 	public static final String FONT_ABOUT_DIALOG_TITLE = "font.about.dialog.title";
 	public static final String COLOR_FOREGROUND = "color.foreground";
 	public static final String COLOR_BACKGROUND = "color.background";
+	
+	public static final String COLOR_BACKGROUND_PLAYING = "color.background.playing";
+	
 	public static final String COLOR_LINE = "color.line";
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
 	public static final String COLOR_TAB_NOTE = "color.tab.note";
 	public static final String COLOR_PLAY_NOTE = "color.play.note";
 	public static final String COLOR_SELECTION = "color.selection";
-	public static final String COLOR_CARET_1 = "color.caret.1";
-	public static final String COLOR_CARET_2 = "color.caret.2";
+	public static final String COLOR_CARET_CURRENT_VOICE = "color.caret.voice.current";
+	public static final String COLOR_CARET_OTHER_VOICE = "color.caret.voice.other";
+	public static final String COLOR_CARET_ALPHA = "color.caret.alpha";
 	public static final String COLOR_LOOP_S_MARKER = "color.loop.s.marker";
 	public static final String COLOR_LOOP_E_MARKER = "color.loop.e.marker";
 	public static final String COLOR_MEASURE_NUMBER = "color.measure.number";
@@ -76,7 +81,6 @@ public class TGConfigKeys {
 	public static final String MATRIX_COLOR_NOTE = "matrix.color.note";
 	public static final String MATRIX_COLOR_PLAY_NOTE = "matrix.color.play-note";
 	public static final String TABLE_AUTO_SIZE = "table.auto-size";
-	public static final String FORCE_OS_DEFAULTS = "painter.force-os-defaults";
 
 	public static final String STYLE_MIN_BUFFER_SEPARATOR = "style.minBufferSeparator";
 	public static final String STYLE_MIN_TOP_SPACING = "style.minTopSpacing";
@@ -107,4 +111,5 @@ public class TGConfigKeys {
 	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
 
 	public static final String HOMEPAGE_URL = "homepage.url";
+	public static final String CONFIG_APP_VERSION = "config.app.version";
 }

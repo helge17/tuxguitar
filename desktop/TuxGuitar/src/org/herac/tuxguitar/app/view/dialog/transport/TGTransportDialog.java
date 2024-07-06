@@ -68,10 +68,6 @@ public class TGTransportDialog implements TGEventListener {
 	
 	private static final int PLAY_MODE_DELAY = 250;
 	
-	public static final int STATUS_STOPPED = 1;
-	public static final int STATUS_PAUSED = 2;
-	public static final int STATUS_RUNNING = 3;
-	
 	private static final String COLOR_BACKGROUND = "widget.transport.backgroundColor";
 	private static final String COLOR_FOREGROUND = "widget.transport.foregroundColor";
 	
@@ -99,7 +95,7 @@ public class TGTransportDialog implements TGEventListener {
 	private TGProcess redrawPlayModeProcess;
 	private boolean editingTickScale;
 	private long redrawTime;
-	private int status;
+	private boolean isRunning;
 	private TreeMap<Long, TGMeasureHeader> headerMap;
 	
 	public TGTransportDialog(TGContext context) {
@@ -288,55 +284,28 @@ public class TGTransportDialog implements TGEventListener {
 		this.loadProperties();
 	}
 	
-	public int getStatus() {
-		return this.status;
-	}
-	
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	
 	public void updateItems(){
 		this.updateItems(false);
 	}
 	
 	public void updateItems(boolean force){
 		if(!isDisposed()){
-			int lastStatus = getStatus();
+			boolean lastStatusRunning = isRunning;
 			
 			MidiPlayer player = MidiPlayer.getInstance(this.context);
-			if( player.isRunning()){
-				setStatus(STATUS_RUNNING);
-			}else if( player.isPaused()){
-				setStatus(STATUS_PAUSED);
-			}else{
-				setStatus(STATUS_STOPPED);
-			}
+			isRunning = player.isRunning();
 			
-			if( force || lastStatus != getStatus()){
+			if( force || lastStatusRunning != isRunning){
 				updateHeaderMap();
-				if(getStatus() == STATUS_RUNNING){
-					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst2());
-					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast2());
-					this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious2());
-					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext2());
-					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop2());
+				this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst());
+				this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast());
+				this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious());
+				this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext());
+				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop());
+				if(isRunning){
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPause());
-				}else if(getStatus() == STATUS_PAUSED){
-					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst2());
-					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast2());
-					this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious2());
-					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext2());
-					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop2());
-					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay2());
-					this.metronome.setText("");
-				}else if(getStatus() == STATUS_STOPPED){
-					this.first.setImage(TuxGuitar.getInstance().getIconManager().getTransportFirst1());
-					this.last.setImage(TuxGuitar.getInstance().getIconManager().getTransportLast1());
-					this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTransportPrevious1());
-					this.next.setImage(TuxGuitar.getInstance().getIconManager().getTransportNext1());
-					this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop1());
-					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay1());
+				} else {
+					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay());
 					this.metronome.setText("");
 				}
 				this.loadPlayText();
@@ -366,7 +335,7 @@ public class TGTransportDialog implements TGEventListener {
 	}
 	
 	public void loadPlayText(){
-		String property = TuxGuitar.getProperty( (getStatus() == STATUS_RUNNING ? "transport.pause" : "transport.start") );
+		String property = TuxGuitar.getProperty( (isRunning ? "transport.pause" : "transport.start") );
 		this.play.setToolTipText(property);
 	}
 	

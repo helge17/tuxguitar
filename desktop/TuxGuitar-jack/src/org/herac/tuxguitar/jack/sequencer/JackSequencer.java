@@ -1,5 +1,6 @@
 package org.herac.tuxguitar.jack.sequencer;
 
+import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.jack.JackClient;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.base.MidiSequenceHandler;
@@ -189,7 +190,7 @@ public class JackSequencer implements MidiSequencer{
 		if(!this.jackClient.isOpen() || !this.jackClient.isTransportOpen() ){
 			this.open();
 			if(!this.jackClient.isOpen() || !this.jackClient.isTransportOpen() ){
-				throw new MidiPlayerException("Jack server not running?");
+				throw new MidiPlayerException(TuxGuitar.getProperty("jack.error.not-running"));
 			}
 		}
 	}

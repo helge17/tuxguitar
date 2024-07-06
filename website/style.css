@@ -23,15 +23,15 @@ body#md {
     width: 170px;
     display: block;
     border-right: 3px solid #154374;
-    overflow-y:scroll;
+    overflow-y: scroll;
     font-size: small;
     font-family: inherit;
     background: #FFF;
     
     position: absolute;
     top: 90px;
-    left:-190px;
-    bottom:0px;
+    left: -190px;
+    bottom: 0px;
     margin: 0px;
     padding: 0px;
 }
@@ -40,7 +40,7 @@ body#md {
     position: fixed;
     left: 0px;
     top: 0px;
-    border-left: 10px solid #fff; 
+    border-left: 10px solid #fff;
 }
 
 
@@ -89,7 +89,7 @@ body#md {
 .md div.title {
     position: absolute;
     top: -14px;
-    left:-20px;
+    left: -20px;
     right: 0px;
     font-weight: 900;
     padding-left: 10px;

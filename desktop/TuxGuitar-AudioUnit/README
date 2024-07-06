@@ -1,0 +1,5 @@
+This plugin is for using the native Quicktime synthesizer in TuxGuitar on MacOS.
+
+The jni lib is currently not built during the Maven run. It can be rebuilt manually with
+$ cd jni
+$ make

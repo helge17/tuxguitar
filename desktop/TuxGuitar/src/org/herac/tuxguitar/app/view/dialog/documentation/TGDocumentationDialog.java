@@ -14,6 +14,8 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
+import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIBrowser;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGException;
@@ -61,6 +63,7 @@ public class TGDocumentationDialog {
 			
 			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("help.doc"));
+			dialog.setBounds(new UIRectangle(new UISize(820f, 660f)));
 			dialogLayout.set(browser, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 		} else {

@@ -11,6 +11,9 @@ public class JFXMenuBar extends JFXAbstractMenu<MenuBar> implements UIMenuBar {
 	
 	public JFXMenuBar(JFXWindow window) {
 		super(new MenuBar());
+
+		// Move menu to the system menu bar, mainly on MacOS
+		super.getControl().setUseSystemMenuBar(true);
 		
 		window.setMenuBar(this);
 	}

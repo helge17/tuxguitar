@@ -16,7 +16,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 public class TGChangeTiedNoteAction extends TGActionBase {
 	
-	public static final String NAME = "action.note.general.tied";
+	public static final String NAME = "action.note.duration.tied";
 	
 	public TGChangeTiedNoteAction(TGContext context) {
 		super(context, NAME);

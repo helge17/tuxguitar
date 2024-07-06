@@ -17,7 +17,7 @@ public abstract class TGBeat {
 	
 	public static final int MAX_VOICES = 2;
 	
-	private long start;
+	private long start;		// does not consider repeats
 	private TGMeasure measure;
 	private TGChord chord;
 	private TGText text;

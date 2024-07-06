@@ -5,14 +5,11 @@ import java.util.List;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
 import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.app.view.dialog.settings.items.LanguageOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.MainOption;
 import org.herac.tuxguitar.app.view.dialog.settings.items.SkinOption;
@@ -77,7 +74,7 @@ public class TGSettingsEditor{
 			public void onSelect(UISelectionEvent event) {
 				dispose();
 				setDefaults();
-				applyConfigWithConfirmation(true);
+				applyConfig(true);
 			}
 		});
 		buttonsLayout.set(buttonDefaults, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -89,7 +86,7 @@ public class TGSettingsEditor{
 			public void onSelect(UISelectionEvent event) {
 				updateOptions();
 				dispose();
-				applyConfigWithConfirmation(false);
+				applyConfig(false);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -175,20 +172,6 @@ public class TGSettingsEditor{
 			option.updateDefaults();
 		}
 		this.config.save();
-	}
-	
-	protected void applyConfigWithConfirmation(final boolean force) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGOpenViewAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
-		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("settings.config.apply-changes-question"));
-		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_NO);
-		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_NO);
-		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, new Runnable() {
-			public void run() {
-				applyConfig(force);
-			}
-		});
-		tgActionProcessor.process();
 	}
 	
 	protected void applyConfig(final boolean force) {
