@@ -62,7 +62,6 @@ You do not need to follow all steps described in this document to submit an upda
 A feature you would really love is currently missing?  You can create a dedicated issue.  In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature.  Stay tuned, we might have questions for you before trying to implement something.
 Please remember that this project is maintained by volunteers only, so some requests may not be implemented and most will take time.  Be patient and polite when making or responding to requests.
 
-
 ## How to contribute (developers)
 
 TuxGuitar provides Android and desktop applications:
