@@ -22,10 +22,12 @@ With some effort, we were able to build TuxGuitar for different operating system
 ## Get in contact
 
 In order to get in contact with other contributors just use the GitHub discussion functionality.
+<br>
 
 ## How to contribute (non-developers)
 
 You do no need to have any development skills to contribute - below are a few examples of what you can provide to the community.
+<br>
 
 ### Test the application
 
