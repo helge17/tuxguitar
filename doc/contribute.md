@@ -72,6 +72,7 @@ TuxGuitar provides Android and desktop applications:
 - files specific to Android application are located in [android](../android) folder;
 - files specific to desktop applications are located in [desktop](../desktop) folder;
 - files common to Android and desktop applications are located in [common](../common) folder.
+<br>
 
 ### Android application
 TODO: this section needs to be completed.
