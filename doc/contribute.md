@@ -17,6 +17,7 @@ With some effort, we were able to build TuxGuitar for different operating system
 - **Translator**: You speak a language other than English, or several of them? There's always something to be done in this area.
 
 - **Commentator**: Do you enjoy communicating with others? Liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
+<br>
 
 ## Get in contact
 
