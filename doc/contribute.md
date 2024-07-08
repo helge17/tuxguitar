@@ -3,6 +3,8 @@
 This GitHub repository was made by developers who had seen that the project on SourceForge was no longer being maintained. The founder of TuxGuitar had not answered any questions and his website containing developer information and download links was offline.
 
 With some effort, we were able to build TuxGuitar for different operating systems and now (beginning of 2024) we can tell how to setup the SWT project in Eclipse in a Linux environment. The information shown here is subject to change as development progresses. This is a starting point.
+<br>
+<br>
 
 ## Introduction
 
@@ -15,10 +17,12 @@ With some effort, we were able to build TuxGuitar for different operating system
 * **Translator**: You speak a language other than English, or several of them? There's always something to be done in this area.
 
 * **Commentator**: Do you enjoy communicating with others? Liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
+<br>
 
 ## Get in contact
 
 In order to get in contact with other contributors just use the GitHub discussion functionality.
+<br>
 
 ## How to contribute (non-developers)
 
@@ -59,6 +63,7 @@ You do not need to follow all steps described in this document to submit an upda
 
 A feature you would really love is currently missing? You can create a dedicated issue. In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature. Stay tuned, we might have questions for you before trying to implement something.
 Please remember that this project is maintained by volunteers only, so some requests may not be implemented and most will take time. Be patient and polite when making or responding to requests.
+<br>
 
 ## How to contribute (developers)
 
