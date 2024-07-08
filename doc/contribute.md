@@ -18,10 +18,12 @@ With some effort, we were able to build TuxGuitar for different operating system
 
 * **Commentator**: Do you enjoy communicating with others? Liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
 <br>
+<br>
 
 ## Get in contact
 
 In order to get in contact with other contributors just use the GitHub discussion functionality.
+<br>
 <br>
 
 ## How to contribute (non-developers)
@@ -63,6 +65,7 @@ You do not need to follow all steps described in this document to submit an upda
 
 A feature you would really love is currently missing? You can create a dedicated issue. In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature. Stay tuned, we might have questions for you before trying to implement something.
 Please remember that this project is maintained by volunteers only, so some requests may not be implemented and most will take time. Be patient and polite when making or responding to requests.
+<br>
 <br>
 
 ## How to contribute (developers)
