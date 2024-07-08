@@ -18,7 +18,6 @@ With some effort, we were able to build TuxGuitar for different operating system
 
 - **Commentator**: Do you enjoy communicating with others? Liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
 <br>
-<br>
 
 ## Get in contact
 
