@@ -27,7 +27,6 @@ In order to get in contact with other contributors just use the GitHub discussio
 ## How to contribute (non-developers)
 
 You do no need to have any development skills to contribute - below are a few examples of what you can provide to the community.
-<br>
 
 ### Test the application
 
