@@ -77,6 +77,7 @@ TuxGuitar provides Android and desktop applications:
 - files common to Android and desktop applications are located in [common](../common) folder.
 
 ### Android application
+
 TODO: this section needs to be completed.
 Android project can be opened with Android studio. It is located here: [android/build-scripts/tuxguitar-android](../android/build-scripts/tuxguitar-android).
 
