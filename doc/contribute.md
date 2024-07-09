@@ -90,7 +90,7 @@ TuxGuitar is available in different flavors:
 
 Note: only the SWT variants are included in the official releases, JavaFX variants support is not guaranteed.
 
-Application is essentially developed in Java, however some *native modules* can also include parts developed in another language (e.g. C). Application is built using Maven. For detailed build instructions please refer to [install.md](../INSTALL.md) file.
+Application is essentially developed in Java, however, some *native modules* can also include parts developed in another language (e.g. C). Application is built using Maven. For detailed build instructions please refer to [install.md](../INSTALL.md) file.
 
 For each {platform, ui framework} couple, one Maven project is defined in a `pom.xml` file. All Maven projects are located in [desktop/build-scripts](../desktop/build-scripts) folder. Each pom file defines all the successive build steps.
 
@@ -99,13 +99,13 @@ Note: it should be possible to build TuxGuitar also on some other architectures,
 ### Submit a contribution
 
 If you want to implement one feature request or to fix an issue, mention it explicitly in issue's discussion, so that others do not try to address it in parallel.
-To submit a contribution, follow the GitHub [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request. Take care to `squash` your commits before submitting a pull request, except if there is a good reason not to do so (intermediate development commits have a low added value in master's history). If your pull request implements or fixes an issue, make this explicit in pull request's description (e.g. "should fix issue #xxx").
+To submit a contribution, follow the GitHub [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request. Take care to `squash` your commits before submitting a pull request, except if there is a good reason not to do so (intermediate development commits have a low added value in the master's history). If your pull request implements or fixes an issue, make this explicit in the pull request's description (e.g. "should fix issue #xxx").
 
 ### Setup Eclipse IDE
 
 We will now focus on the **developer** role and show our suggested method to easily clone the repository, install necessary tooling, import the project and finally import, build and run the Linux/SWT configuration. Normally, you **will not need more than 30 minutes**.
 
-This walkthrough assumes that you will be using the Eclipse Development Environment and a Unix based system. You're welcome to use another environment or OS, but instructions will not be provided.
+This walkthrough assumes that you will be using the Eclipse Development Environment and a Unix-based system. You're welcome to use another environment or OS, but instructions will not be provided.
 
 Eclipse supports many processes around software projects, even writing documentation in markdown. For information about downloading and installing it see <https://eclipse.org>.
 Our examples and screenshots here are from Eclipse Version 2023-12.
@@ -181,7 +181,7 @@ In *real* application, all dependencies are stored in different folders during t
 - `.jar` files for plugins are stored in `share/plugins` folder;
 - other dependencies (help files, translations, skins, configuration files, etc.) are stored in subfolders of `share` folder.
 
-Path to `lib` folder is provided to the Java environment by a `classpath` argument in the command line. Path to `share` folder is provided to TuxGuitar by a `-Dtuxguitar.share.path` argument in the command line. Installation folder is also provided by a command line argument: `-Dtuxguitar.home.path`.
+Path to `lib` folder is provided to the Java environment by a `classpath` argument in the command line. Path to `share` folder is provided to TuxGuitar by a `-Dtuxguitar.share.path` argument in the command line. The installation folder is also provided by a command line argument: `-Dtuxguitar.home.path`.
 Procedure described in this section aims at recreating a similar environment for the debug configuration.
 
 Go to Menu Run -> Debug Configurations..., right-click on "Java Application", select "New Configuration" and give your configuration a name.
