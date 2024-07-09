@@ -8,15 +8,15 @@ With some effort, we were able to build TuxGuitar for different operating system
 
 ## Introduction
 
-- **General**: To contribute, you need nothing more than to enjoy opensource and do the community a favor.
+* **General**: To contribute, you need nothing more than to enjoy opensource and do the community a favor.
 
-- **Developer**: As a developer, there may be features you wish the software had and want to add them yourself. Or you have discovered a bug and know how to fix it.
+* **Developer**: As a developer, there may be features you wish the software had and want to add them yourself. Or you have discovered a bug and know how to fix it.
 
-- **Writer**: It's always good to have people around who can express themselves well and are able to write easy-to-read documentation. A warm welcome.
+* **Writer**: It's always good to have people around who can express themselves well and are able to write easy-to-read documentation. A warm welcome.
 
-- **Translator**: You speak a language other than English, or several of them? There's always something to be done in this area.
+* **Translator**: You speak a language other than English, or several of them? There's always something to be done in this area.
 
-- **Commentator**: Do you enjoy communicating with others? Liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
+* **Commentator**: Do you enjoy communicating with others? Liven up our discussions and collect answers to frequently asked questions. Make first contact with participants of our discussions and keep them happy.
 <br>
 <br>
 
