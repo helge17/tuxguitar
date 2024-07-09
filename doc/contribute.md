@@ -8,7 +8,7 @@ With some effort, we were able to build TuxGuitar for different operating system
 
 ## Introduction
 
-* **General**: To contribute, you need nothing more than to enjoy opensource and do the community a favor.
+* **General**: To contribute, you need nothing more than to enjoy open source and do the community a favor.
 
 * **Developer**: As a developer, there may be features you wish the software had and want to add them yourself. Or you have discovered a bug and know how to fix it.
 
@@ -63,7 +63,7 @@ You do not need to follow all steps described in this document to submit an upda
 
 ### Suggest improvements
 
-A feature you would really love is currently missing? You can create a dedicated issue. In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature. Stay tuned, we might have questions for you before trying to implement something.
+A feature you would love is currently missing? You can create a dedicated issue. In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature. Stay tuned, we might have questions for you before trying to implement something.
 Please remember that this project is maintained by volunteers only, so some requests may not be implemented and most will take time. Be patient and polite when making or responding to requests.
 <br>
 <br>
@@ -86,7 +86,7 @@ Android project can be opened with Android studio. It is located here: [android/
 TuxGuitar is available in different flavors:
 
 - platform: FreeBSD, Linux (.tar.gz), Linux (.deb), MacOS, Windows (standalone version), Windows (installable version);
-- ui framework: SWT, JavaFX.
+- UI framework: SWT, JavaFX.
 
 Note: only the SWT variants are included in the official releases, JavaFX variants support is not guaranteed.
 
