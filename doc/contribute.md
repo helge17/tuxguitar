@@ -133,13 +133,13 @@ As a last step, you have to choose where on your local drive the repo should be 
 
 <img src="images/contribute/eclipse-git-clone-step3.png" width="50%" alt="Git Clone Step 3, Select local folder">
 
-After you finished you will see a percent value showing the progress of the local copy. Once this background job has finished, you will see the structure of your local repository. Something like this:
+After you finish you will see a percent value showing the progress of the local copy. Once this background job has finished, you will see the structure of your local repository. Something like this:
 
 <img src="images/contribute/eclipse-git-repository.png" width="50%" alt="Git repository in Eclipse">
 
 #### Import the SWT Maven project
 
-In order to build the SWT variant of TuxGuitar, you have to import the maven project in question. To do so, open the Java perspective and go to File -> Import and choose Maven -> Existing Maven Projects. You have to import the SWT project you will find in your local git repository, e.g. "..../eclipse-workspace/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt".
+In order to build the SWT variant of TuxGuitar, you have to import the Maven project in question. To do so, open the Java perspective and go to File -> Import and choose Maven -> Existing Maven Projects. You have to import the SWT project you will find in your local git repository, e.g. "..../eclipse-workspace/git/tuxguitar/desktop/build-scripts/tuxguitar-linux-swt".
 
 <img src="images/contribute/eclipse-maven-swt-import.png" width="50%" alt="Maven SWT import">
 
