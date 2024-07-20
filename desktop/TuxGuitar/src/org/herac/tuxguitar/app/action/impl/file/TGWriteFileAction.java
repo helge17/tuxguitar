@@ -9,6 +9,7 @@ import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
+import org.herac.tuxguitar.io.base.TGFileFormatManager;
 import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -17,6 +18,8 @@ public class TGWriteFileAction extends TGActionBase {
 	public static final String NAME = "action.file.write";
 	
 	public static final String ATTRIBUTE_FILE_NAME = "fileName";
+	// file export: boolean attribute, set to true if writing to a non commonFileFormat
+	public static final String ATTRIBUTE_FILE_EXPORT = "fileExport";
 	
 	public TGWriteFileAction(TGContext context) {
 		super(context, NAME);
@@ -27,7 +30,9 @@ public class TGWriteFileAction extends TGActionBase {
 			String fileName = context.getAttribute(ATTRIBUTE_FILE_NAME);
 			
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, new FileOutputStream(new File(fileName)));
-			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(fileName));
+			String formatCode = TGFileFormatUtils.getFileFormatCode(fileName);
+			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT_CODE, formatCode);
+			context.setAttribute(ATTRIBUTE_FILE_EXPORT, !TGFileFormatManager.getInstance(getContext()).isCommonWriteFileFormat(formatCode));
 			
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGWriteSongAction.NAME, context);

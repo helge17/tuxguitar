@@ -312,6 +312,17 @@ public class TGFileFormatManager {
 		return this.commonWriteFileFormats.contains(fileFormat);
 	}
 	
+	public boolean isCommonWriteFileFormat(String formatCode){
+		for (TGFileFormat fileFormat : this.commonWriteFileFormats) {
+			for (String supportedFormatCode : fileFormat.getSupportedFormats()) {
+				if (supportedFormatCode.equals(formatCode)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public void fireFileFormatAvailabilityEvent(){
 		TGEventManager.getInstance(this.context).fireEvent(new TGFileFormatAvailabilityEvent());
 	}
