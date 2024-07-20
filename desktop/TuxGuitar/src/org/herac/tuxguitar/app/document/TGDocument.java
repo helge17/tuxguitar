@@ -13,6 +13,7 @@ public class TGDocument {
 	private TGUndoableBuffer undoableBuffer;
 	private boolean unsaved;
 	private boolean unwanted;
+	private boolean foreignFormatConfirmed;
 	private TGBeat caretBeat;
 	private int caretString;
 	private TGBeat selectionStart;
@@ -92,6 +93,14 @@ public class TGDocument {
 
 	public void setSelectionEnd(TGBeat selectionEnd) {
 		this.selectionEnd = selectionEnd;
+	}
+	
+	public boolean isForeignFormatConfirmed() {
+		return foreignFormatConfirmed;
+	}
+	
+	public void confirmForeignFormat() {
+		this.foreignFormatConfirmed = true;
 	}
 
 }

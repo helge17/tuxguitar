@@ -8,6 +8,7 @@ import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
 import org.herac.tuxguitar.io.tg.TGSongReaderImpl;
 import org.herac.tuxguitar.io.tg.TGSongWriterImpl;
+import org.herac.tuxguitar.io.tg.TGStream;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -318,6 +319,15 @@ public class TGFileFormatManager {
 				if (supportedFormatCode.equals(formatCode)) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean isNativeWriteFileFormat(String formatCode) {
+		for (String supportedFormatCode : TGStream.TG_FORMAT.getSupportedFormats()) {
+			if (supportedFormatCode.equals(formatCode)) {
+				return true;
 			}
 		}
 		return false;
