@@ -71,7 +71,7 @@ void LV2Socket_read(LV2Socket *handle, void *buffer, int length)
 			int read = recv(data->socket, buffer, length, MSG_WAITALL);
 			if( read == -1 ) {
 				handle->connected = false;
-				LV2Logger_log("LV2Client -> disconected\n");
+				LV2Logger_log("LV2Client -> disconnected\n");
 			}
 			else if( read == 0 ) {
 				struct timespec now;
