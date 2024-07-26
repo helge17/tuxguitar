@@ -1,7 +1,13 @@
 TuxGuitar 9.99-SNAPSHOT changes:
 
+* Fixed performance issue on newer Linux versions
 * Updated Polish translation
 * Reworked duration and division menus
+* Show dead note correctly in score
+* The chord editor now considers the current key signature when opening
+* Fixed bug when switching between page and linear layout
+* Added a text filter in plugin list
+* More small improvements and cleanups
 
 TuxGuitar 1.6.3 (2024-06-06) changes:
 
