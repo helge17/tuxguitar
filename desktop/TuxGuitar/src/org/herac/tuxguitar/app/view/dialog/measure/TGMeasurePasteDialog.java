@@ -38,7 +38,7 @@ public class TGMeasurePasteDialog {
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel countLabel = uiFactory.createLabel(group);
-		countLabel.setText(TuxGuitar.getProperty("edit.paste.count"));
+		countLabel.setText(TuxGuitar.getProperty("edit.paste.count") + ":");
 		groupLayout.set(countLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner countSpinner = uiFactory.createSpinner(group);
