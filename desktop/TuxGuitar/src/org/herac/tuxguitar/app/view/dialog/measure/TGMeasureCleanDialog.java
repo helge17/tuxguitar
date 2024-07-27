@@ -50,7 +50,7 @@ public class TGMeasureCleanDialog {
 		int measureCount = song.countMeasureHeaders();
 		
 		UILabel fromLabel = uiFactory.createLabel(range);
-		fromLabel.setText(TuxGuitar.getProperty("edit.from"));
+		fromLabel.setText(TuxGuitar.getProperty("edit.from") + ":");
 		rangeLayout.set(fromLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		int from;
@@ -70,7 +70,7 @@ public class TGMeasureCleanDialog {
 		rangeLayout.set(fromSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 180f, null, null);
 		
 		UILabel toLabel = uiFactory.createLabel(range);
-		toLabel.setText(TuxGuitar.getProperty("edit.to"));
+		toLabel.setText(TuxGuitar.getProperty("edit.to") + ":");
 		rangeLayout.set(toLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner toSpinner = uiFactory.createSpinner(range);
