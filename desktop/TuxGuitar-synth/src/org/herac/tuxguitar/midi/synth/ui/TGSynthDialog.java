@@ -237,7 +237,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		dialogLayout.set(typeGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel typeLabel = uiFactory.createLabel(typeGroup);
-		typeLabel.setText(TuxGuitar.getProperty("synth-host.ui.midi.processor.type"));
+		typeLabel.setText(TuxGuitar.getProperty("synth-host.ui.midi.processor.type") + ":");
 		typeGroupLayout.set(typeLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<String> typeCombo = uiFactory.createDropDownSelect(typeGroup);
@@ -299,7 +299,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		dialogLayout.set(typeGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		UILabel typeLabel = uiFactory.createLabel(typeGroup);
-		typeLabel.setText(TuxGuitar.getProperty("synth-host.ui.audio.processor.type"));
+		typeLabel.setText(TuxGuitar.getProperty("synth-host.ui.audio.processor.type") + ":");
 		typeGroupLayout.set(typeLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UIDropDownSelect<String> typeCombo = uiFactory.createDropDownSelect(typeGroup);
