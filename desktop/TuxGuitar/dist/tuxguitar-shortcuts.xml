@@ -33,6 +33,7 @@
 	<shortcut keys="Ctrl o" action="action.file.open"/>
 	<shortcut keys="Ctrl w" action="action.file.close-current"/>
 	<shortcut keys="Ctrl p" action="action.file.print"/>
+	<shortcut keys="Ctrl Shift p" action="action.file.print-preview"/>
 	<shortcut keys="Ctrl s" action="action.file.save"/>
 	<shortcut keys="F12" action="action.file.save-as"/>
 	<shortcut keys="F1" action="action.gui.open-documentation-dialog"/>
@@ -41,6 +42,8 @@
 	<shortcut keys="Shift Ins" action="action.gui.open-marker-editor-dialog"/>
 	<shortcut keys="Alt Right" action="action.marker.go-next"/>
 	<shortcut keys="Alt Left" action="action.marker.go-previous"/>
+	<shortcut keys="Alt Shift Right" action="action.marker.go-last"/>
+	<shortcut keys="Alt Shift Left" action="action.marker.go-first"/>
 	<shortcut keys="Ctrl Shift Left" action="action.measure.go-first"/>
 	<shortcut keys="Ctrl Shift Right" action="action.measure.go-last"/>
 	<shortcut keys="Ctrl Right" action="action.measure.go-next"/>

@@ -71,7 +71,7 @@ void VSTSocketRead(VSTSocketHandle *handle, void *buffer, int length)
 			int read = recv(data->socket, buffer, length, MSG_WAITALL);
 			if( read == -1 ) {
 				handle->connected = false;
-				VSTLogger_log("VSTClient -> disconected\n");
+				VSTLogger_log("VSTClient -> disconnected\n");
 			}
 			else if( read == 0 ) {
 				struct timespec now;

@@ -259,7 +259,7 @@ public class Caret {
 	 * Luego de mover el Caret. cambia la duracion seleccionada por la del componente. solo si lo que resta del compas no esta vacio
 	 */
 	private void updateDuration() {
-		if (this.selectedBeat != null && !this.selectedBeat.getVoice(getVoice()).isRestVoice()) {
+		if (this.selectedBeat != null) {
 			this.selectedDuration.copyFrom(this.selectedBeat.getVoice(getVoice()).getDuration());
 		}
 	}

@@ -2,7 +2,6 @@ package org.herac.tuxguitar.util;
 
 // stores translated messages for modules common to desktop and Android apps
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -82,7 +81,20 @@ public class TGMessagesManager {
 	
 	public static String getProperty(String key, Object[] arguments) {
 		String property = getProperty(key);
-		return ( arguments != null ? MessageFormat.format(property, arguments) : property );
+		// guiv42 07/2024, don't use MessageFormat.format(), as property may include characters which have a specific meaning in this context
+		// typ. apostrophe
+		// see https://github.com/helge17/tuxguitar/issues/468
+		if ((arguments == null) || (arguments.length == 0))
+			return property;
+		String newProperty = new String(property);
+		try {
+			for (int i=0; i<arguments.length; i++) {
+				newProperty = newProperty.replace("{" + String.valueOf(i) + "}", String.valueOf(arguments[i]));
+			}
+		} catch (Throwable e) {
+			return property;
+		}
+		return newProperty;
 	}
 	
 	public static MidiInstrument getMidiInstrument(int index) {
