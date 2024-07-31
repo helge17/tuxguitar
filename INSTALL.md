@@ -29,7 +29,7 @@ misc/build_tuxguitar_from_source.sh
 ### Install Prerequisites
 
 ```sh
-$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
+$ sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.1-0 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
 ```
 
 In order for Asian characters to be displayed correctly, you may also need to install the `fonts-wqy-zenhei` font package.
