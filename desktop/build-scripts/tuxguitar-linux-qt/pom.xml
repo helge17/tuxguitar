@@ -16,7 +16,7 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-linux-qt5</project.finalName>
-		<org.qtjambi.qt.version>5.5.1</org.qtjambi.qt.version>
+		<io.qtjambi.version>5.5.1</io.qtjambi.version>
 	</properties>
 
 	<modules>
@@ -124,16 +124,16 @@
 
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
-									<groupId>org.qtjambi.qt</groupId>
+									<groupId>io.qtjambi</groupId>
 									<artifactId>qtjambi</artifactId>
-									<version>${org.qtjambi.qt.version}</version>
+									<version>${io.qtjambi.version}</version>
 									<destFileName>qtjambi.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.qtjambi.qt</groupId>
+									<groupId>io.qtjambi</groupId>
 									<artifactId>qtjambi-native-linux64-gcc</artifactId>
-									<version>${org.qtjambi.qt.version}</version>
+									<version>${io.qtjambi.version}</version>
 									<destFileName>qtjambi-native.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>

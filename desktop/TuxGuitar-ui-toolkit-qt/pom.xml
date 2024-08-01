@@ -33,7 +33,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.qtjambi.qt</groupId>
+			<groupId>io.qtjambi</groupId>
 			<artifactId>qtjambi</artifactId>
 			<version>5.5.1</version>
 		</dependency>
