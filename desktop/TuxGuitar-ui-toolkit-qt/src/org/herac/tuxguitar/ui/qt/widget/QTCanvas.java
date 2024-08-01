@@ -5,7 +5,7 @@ import org.herac.tuxguitar.ui.qt.event.QTPaintListenerManager;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import io.qt.core.QEvent.Type;
-import io.qt.gui.QPaintDeviceInterface;
+import io.qt.gui.QPaintDevice;
 import io.qt.widgets.QFrame;
 import io.qt.widgets.QFrame.Shape;
 
@@ -21,7 +21,7 @@ public class QTCanvas extends QTWidget<QFrame> implements UICanvas {
 		this.getControl().setFrameShape(bordered ? Shape.StyledPanel : Shape.NoFrame);
 	}
 	
-	public QPaintDeviceInterface getPaintDeviceInterface() {
+	public QPaintDevice getPaintDeviceInterface() {
 		return this.getControl();
 	}
 	
