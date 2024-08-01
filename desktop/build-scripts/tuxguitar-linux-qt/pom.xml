@@ -132,6 +132,13 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>io.qtjambi</groupId>
+									<artifactId>qtjambi-printsupport</artifactId>
+									<version>${io.qtjambi.version}</version>
+									<destFileName>qtjambi-printsupport.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.qtjambi</groupId>
 									<artifactId>qtjambi-native-linux-x64</artifactId>
 									<version>${io.qtjambi.version}</version>
 									<destFileName>qtjambi-native.jar</destFileName>
