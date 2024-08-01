@@ -1,0 +1,27 @@
+package org.herac.tuxguitar.ui.qt.event;
+
+import org.herac.tuxguitar.ui.event.UIKeyEvent;
+import org.herac.tuxguitar.ui.event.UIKeyPressedListenerManager;
+import org.herac.tuxguitar.ui.qt.QTComponent;
+import org.herac.tuxguitar.ui.qt.resource.QTKey;
+import org.qtjambi.qt.core.QEvent;
+import org.qtjambi.qt.gui.QKeyEvent;
+
+public class QTKeyPressedListenerManager extends UIKeyPressedListenerManager implements QTEventHandler {
+	
+	private QTComponent<?> control;
+	
+	public QTKeyPressedListenerManager(QTComponent<?> control) {
+		this.control = control;
+	}
+	
+	public void handle(QKeyEvent event) {
+		this.onKeyPressed(new UIKeyEvent(this.control, QTKey.getCombination(event)));
+	}
+	
+	public boolean handle(QEvent event) {
+		this.handle((QKeyEvent) event);
+		
+		return true;
+	}
+}
