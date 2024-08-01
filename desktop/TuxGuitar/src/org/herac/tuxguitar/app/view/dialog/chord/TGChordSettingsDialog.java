@@ -89,7 +89,7 @@ public class TGChordSettingsDialog {
 	
 	private void initTypeCombo(UIFactory factory, UILayoutContainer parent, int row) {
 		UILabel label = factory.createLabel(parent);
-		label.setText(TuxGuitar.getProperty("chord.settings.type"));
+		label.setText(TuxGuitar.getProperty("chord.settings.type") + ":");
 		
 		this.typeCombo = factory.createDropDownSelect(parent);
 		this.typeCombo.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("chord.settings.type.most-common"), 0));
@@ -105,7 +105,7 @@ public class TGChordSettingsDialog {
 	
 	private void initChordsToDisplay(UIFactory factory, UILayoutContainer parent, int row) {
 		UILabel label = factory.createLabel(parent);
-		label.setText(TuxGuitar.getProperty("chord.settings.chords-to-display"));
+		label.setText(TuxGuitar.getProperty("chord.settings.chords-to-display") + ":");
 		
 		this.chordsToDisplay = factory.createSpinner(parent);
 		this.chordsToDisplay.setMinimum(1);
@@ -135,7 +135,7 @@ public class TGChordSettingsDialog {
 		uiLayout.set(group, row, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 2);
 		
 		UILabel minFretLabel = factory.createLabel(group);
-		minFretLabel.setText(TuxGuitar.getProperty("chord.settings.minimum-fret"));
+		minFretLabel.setText(TuxGuitar.getProperty("chord.settings.minimum-fret") + ":");
 		
 		this.minFret = factory.createSpinner(group);
 		this.minFret.setMinimum(0);
@@ -143,7 +143,7 @@ public class TGChordSettingsDialog {
 		this.minFret.setValue(TGChordSettings.instance().getFindChordsMin());
 		
 		UILabel maxFretLabel = factory.createLabel(group);
-		maxFretLabel.setText(TuxGuitar.getProperty("chord.settings.maximum-fret"));
+		maxFretLabel.setText(TuxGuitar.getProperty("chord.settings.maximum-fret") + ":");
 		
 		this.maxFret = factory.createSpinner(group);
 		this.maxFret.setMinimum(2);
