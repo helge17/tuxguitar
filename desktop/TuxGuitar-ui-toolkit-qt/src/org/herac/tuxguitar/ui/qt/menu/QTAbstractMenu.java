@@ -11,10 +11,10 @@ import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 
-import org.qtjambi.qt.core.QObject;
-import org.qtjambi.qt.widgets.QAction;
-import org.qtjambi.qt.widgets.QMenu;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.core.QObject;
+import io.qt.widgets.QAction;
+import io.qt.widgets.QMenu;
+import io.qt.widgets.QWidget;
 
 public abstract class QTAbstractMenu<T extends QWidget> extends QTComponent<T> implements UIMenu {
 	

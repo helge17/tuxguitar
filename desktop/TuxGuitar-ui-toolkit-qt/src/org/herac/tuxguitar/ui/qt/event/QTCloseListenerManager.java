@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UICloseEvent;
 import org.herac.tuxguitar.ui.event.UICloseListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public class QTCloseListenerManager extends UICloseListenerManager implements QTEventHandler {
 	

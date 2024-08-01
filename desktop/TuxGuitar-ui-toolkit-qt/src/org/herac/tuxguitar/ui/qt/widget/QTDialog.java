@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.qtjambi.qt.core.Qt.WindowType;
-import org.qtjambi.qt.widgets.QDialog;
+import io.qt.core.Qt.WindowType;
+import io.qt.widgets.QDialog;
 
 public class QTDialog extends QTAbstractWindow<QDialog> {
 	

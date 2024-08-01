@@ -6,15 +6,15 @@ import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIFontAlignment;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.qtjambi.qt.core.QRect;
-import org.qtjambi.qt.core.Qt.PenStyle;
-import org.qtjambi.qt.gui.QBrush;
-import org.qtjambi.qt.gui.QColor;
-import org.qtjambi.qt.gui.QFont;
-import org.qtjambi.qt.gui.QImage;
-import org.qtjambi.qt.gui.QPainter;
-import org.qtjambi.qt.gui.QPainterPath;
-import org.qtjambi.qt.gui.QPen;
+import io.qt.core.QRect;
+import io.qt.core.Qt.PenStyle;
+import io.qt.gui.QBrush;
+import io.qt.gui.QColor;
+import io.qt.gui.QFont;
+import io.qt.gui.QImage;
+import io.qt.gui.QPainter;
+import io.qt.gui.QPainterPath;
+import io.qt.gui.QPen;
 
 public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	

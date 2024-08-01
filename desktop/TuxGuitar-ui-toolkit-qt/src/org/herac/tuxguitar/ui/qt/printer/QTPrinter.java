@@ -6,8 +6,8 @@ import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.qt.resource.QTResourceFactory;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.qtjambi.qt.core.QRect;
-import org.qtjambi.qt.printsupport.QPrinter;
+import io.qt.core.QRect;
+import io.qt.printsupport.QPrinter;
 
 public class QTPrinter extends QTComponent<QPrinter> implements UIPrinter {
 	

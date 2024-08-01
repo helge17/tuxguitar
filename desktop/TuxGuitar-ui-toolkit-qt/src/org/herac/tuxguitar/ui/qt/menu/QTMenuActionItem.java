@@ -7,8 +7,8 @@ import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 
-import org.qtjambi.qt.widgets.QAction;
-import org.qtjambi.qt.widgets.QApplication;
+import io.qt.widgets.QAction;
+import io.qt.widgets.QApplication;
 
 public class QTMenuActionItem extends QTMenuItem<QAction> implements UIMenuActionItem {
 	

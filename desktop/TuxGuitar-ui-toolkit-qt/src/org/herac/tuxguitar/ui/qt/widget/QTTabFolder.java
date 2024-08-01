@@ -9,7 +9,7 @@ import org.herac.tuxguitar.ui.qt.event.QTTabFolderCloseListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTTabFolderSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UITabFolder;
 import org.herac.tuxguitar.ui.widget.UITabItem;
-import org.qtjambi.qt.widgets.QTabWidget;
+import io.qt.widgets.QTabWidget;
 
 public class QTTabFolder extends QTWidget<QTabWidget> implements UITabFolder {
 	

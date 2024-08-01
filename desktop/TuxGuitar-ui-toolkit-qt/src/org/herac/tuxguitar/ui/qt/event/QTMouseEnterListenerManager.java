@@ -4,8 +4,8 @@ import org.herac.tuxguitar.ui.event.UIMouseEnterListenerManager;
 import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.gui.QHoverEvent;
+import io.qt.core.QEvent;
+import io.qt.gui.QHoverEvent;
 
 public class QTMouseEnterListenerManager extends UIMouseEnterListenerManager implements QTEventHandler {
 	

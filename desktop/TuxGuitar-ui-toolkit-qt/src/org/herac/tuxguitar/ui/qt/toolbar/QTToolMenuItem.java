@@ -5,9 +5,9 @@ import org.herac.tuxguitar.ui.menu.UIPopupMenu;
 import org.herac.tuxguitar.ui.qt.menu.QTPopupMenu;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
-import org.qtjambi.qt.core.QPoint;
-import org.qtjambi.qt.core.QSize;
-import org.qtjambi.qt.widgets.QToolButton;
+import io.qt.core.QPoint;
+import io.qt.core.QSize;
+import io.qt.widgets.QToolButton;
 
 public class QTToolMenuItem extends QTToolAbstractButtonItem<QToolButton> implements UIToolMenuItem {
 	

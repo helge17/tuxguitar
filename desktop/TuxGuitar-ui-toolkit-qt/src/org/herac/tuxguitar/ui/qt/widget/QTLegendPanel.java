@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.qtjambi.qt.widgets.QGroupBox;
+import io.qt.widgets.QGroupBox;
 
 public class QTLegendPanel extends QTLayoutContainer<QGroupBox> implements UILegendPanel {
 	

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.widget;
 import org.herac.tuxguitar.ui.event.UIModifyListener;
 import org.herac.tuxguitar.ui.qt.event.QTModifyListenerManager;
 import org.herac.tuxguitar.ui.widget.UITextField;
-import org.qtjambi.qt.widgets.QLineEdit;
+import io.qt.widgets.QLineEdit;
 
 public class QTTextField extends QTWidget<QLineEdit> implements UITextField {
 	

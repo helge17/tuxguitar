@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.herac.tuxguitar.ui.resource.UICursor;
-import org.qtjambi.qt.core.Qt.CursorShape;
-import org.qtjambi.qt.gui.QCursor;
+import io.qt.core.Qt.CursorShape;
+import io.qt.gui.QCursor;
 
 public class QTCursor {
 	

@@ -7,7 +7,7 @@ import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.qtjambi.qt.widgets.QComboBox;
+import io.qt.widgets.QComboBox;
 
 public class QTDropDownSelect<T> extends QTWidget<QComboBox> implements UIDropDownSelect<T> {
 	

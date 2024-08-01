@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UILabel;
-import org.qtjambi.qt.widgets.QLabel;
+import io.qt.widgets.QLabel;
 
 public class QTLabel extends QTWidget<QLabel> implements UILabel {
 	

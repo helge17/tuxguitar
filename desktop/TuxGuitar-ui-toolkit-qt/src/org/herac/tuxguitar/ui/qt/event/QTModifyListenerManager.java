@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UIModifyEvent;
 import org.herac.tuxguitar.ui.event.UIModifyListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public class QTModifyListenerManager extends UIModifyListenerManager implements QTEventHandler, QTSignalHandler {
 	

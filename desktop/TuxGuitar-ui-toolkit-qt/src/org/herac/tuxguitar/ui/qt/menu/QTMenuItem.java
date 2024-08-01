@@ -5,7 +5,7 @@ import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 
-import org.qtjambi.qt.core.QObject;
+import io.qt.core.QObject;
 
 public abstract class QTMenuItem<T extends QObject> extends QTComponent<T> implements UIMenuItem {
 	

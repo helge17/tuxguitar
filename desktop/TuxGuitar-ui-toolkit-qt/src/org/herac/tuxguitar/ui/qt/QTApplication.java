@@ -6,8 +6,8 @@ import org.herac.tuxguitar.ui.UIApplication;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.appearance.UIAppearance;
 import org.herac.tuxguitar.ui.qt.appearance.QTAppearance;
-import org.qtjambi.qt.core.QUrl;
-import org.qtjambi.qt.gui.QDesktopServices;
+import io.qt.core.QUrl;
+import io.qt.gui.QDesktopServices;
 
 public class QTApplication extends QTComponent<QTApplicationHandle> implements UIApplication {
 	

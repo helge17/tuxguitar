@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public class QTSelectionListenerManager extends UISelectionListenerManager implements QTEventHandler, QTSignalHandler {
 	

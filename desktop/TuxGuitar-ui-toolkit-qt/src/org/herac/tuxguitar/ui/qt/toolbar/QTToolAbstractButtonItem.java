@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.qt.toolbar;
 
 import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
-import org.qtjambi.qt.widgets.QAbstractButton;
+import io.qt.widgets.QAbstractButton;
 
 public class QTToolAbstractButtonItem<T extends QAbstractButton> extends QTToolItem<T> {
 	

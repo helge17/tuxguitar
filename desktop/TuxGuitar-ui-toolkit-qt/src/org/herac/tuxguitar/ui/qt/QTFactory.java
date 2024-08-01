@@ -93,7 +93,7 @@ import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.ui.widget.UIWrapLabel;
-import org.qtjambi.qt.core.Qt.Orientation;
+import io.qt.core.Qt.Orientation;
 
 public class QTFactory implements UIFactory {
 	

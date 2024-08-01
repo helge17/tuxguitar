@@ -7,8 +7,8 @@ import org.herac.tuxguitar.ui.qt.event.QTMenuHideListenerManager;
 import org.herac.tuxguitar.ui.qt.event.QTMenuShowListenerManager;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 
-import org.qtjambi.qt.core.QPoint;
-import org.qtjambi.qt.widgets.QMenu;
+import io.qt.core.QPoint;
+import io.qt.widgets.QMenu;
 
 public class QTPopupMenu extends QTMenu implements UIPopupMenu {
 	

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.resource;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.qtjambi.qt.core.Qt.MouseButton;
+import io.qt.core.Qt.MouseButton;
 
 public class QTMouseButton {
 	

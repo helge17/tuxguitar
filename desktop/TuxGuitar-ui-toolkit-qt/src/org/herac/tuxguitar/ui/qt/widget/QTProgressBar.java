@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UIProgressBar;
-import org.qtjambi.qt.widgets.QProgressBar;
+import io.qt.widgets.QProgressBar;
 
 public class QTProgressBar extends QTWidget<QProgressBar> implements UIProgressBar {
 	

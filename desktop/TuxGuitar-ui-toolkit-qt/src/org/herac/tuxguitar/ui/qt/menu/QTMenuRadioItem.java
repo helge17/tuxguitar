@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.qt.menu;
 
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 
-import org.qtjambi.qt.widgets.QActionGroup;
+import io.qt.widgets.QActionGroup;
 
 public class QTMenuRadioItem extends QTMenuCheckableItem implements UIMenuCheckableItem {
 	

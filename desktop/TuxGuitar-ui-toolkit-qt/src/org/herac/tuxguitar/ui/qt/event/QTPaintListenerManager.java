@@ -4,8 +4,8 @@ import org.herac.tuxguitar.ui.event.UIPaintEvent;
 import org.herac.tuxguitar.ui.event.UIPaintListenerManager;
 import org.herac.tuxguitar.ui.qt.resource.QTPainter;
 import org.herac.tuxguitar.ui.qt.widget.QTCanvas;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.gui.QPainter;
+import io.qt.core.QEvent;
+import io.qt.gui.QPainter;
 
 public class QTPaintListenerManager extends UIPaintListenerManager implements QTEventHandler {
 	

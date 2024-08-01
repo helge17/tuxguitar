@@ -7,9 +7,9 @@ import org.herac.tuxguitar.ui.chooser.UIFileChooser;
 import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
 import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import org.qtjambi.qt.widgets.QDialog;
-import org.qtjambi.qt.widgets.QFileDialog;
-import org.qtjambi.qt.widgets.QFileDialog.FileMode;
+import io.qt.widgets.QDialog;
+import io.qt.widgets.QFileDialog;
+import io.qt.widgets.QFileDialog.FileMode;
 
 public class QTFileChooser implements UIFileChooser {
 	

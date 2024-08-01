@@ -6,9 +6,9 @@ import java.util.List;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
 import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import org.qtjambi.qt.widgets.QDialog;
-import org.qtjambi.qt.widgets.QFileDialog;
-import org.qtjambi.qt.widgets.QFileDialog.FileMode;
+import io.qt.widgets.QDialog;
+import io.qt.widgets.QFileDialog;
+import io.qt.widgets.QFileDialog.FileMode;
 
 public class QTDirectoryChooser implements UIDirectoryChooser {
 

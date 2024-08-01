@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.toolbar;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.qtjambi.qt.widgets.QToolButton;
+import io.qt.widgets.QToolButton;
 
 public class QTToolActionItem extends QTToolAbstractButtonItem<QToolButton> implements UIToolActionItem {
 	

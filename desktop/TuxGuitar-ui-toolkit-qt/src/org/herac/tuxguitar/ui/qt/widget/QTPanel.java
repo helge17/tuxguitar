@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.qtjambi.qt.widgets.QFrame;
+import io.qt.widgets.QFrame;
 
 public class QTPanel extends QTAbstractPanel<QFrame> implements UIPanel {
 	

@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UISeparator;
-import org.qtjambi.qt.core.Qt.Orientation;
-import org.qtjambi.qt.widgets.QFrame;
-import org.qtjambi.qt.widgets.QFrame.Shape;
+import io.qt.core.Qt.Orientation;
+import io.qt.widgets.QFrame;
+import io.qt.widgets.QFrame.Shape;
 
 public class QTSeparator extends QTWidget<QFrame> implements UISeparator {
 	

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIDivider;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.widgets.QWidget;
 
 public class QTDivider extends QTWidget<QWidget> implements UIDivider {
 	

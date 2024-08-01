@@ -44,16 +44,16 @@ import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
-import org.qtjambi.qt.core.QEvent.Type;
-import org.qtjambi.qt.core.QPoint;
-import org.qtjambi.qt.core.QRect;
-import org.qtjambi.qt.core.QSize;
-import org.qtjambi.qt.gui.QColor;
-import org.qtjambi.qt.gui.QFont;
-import org.qtjambi.qt.gui.QPalette;
-import org.qtjambi.qt.gui.QPalette.ColorRole;
-import org.qtjambi.qt.widgets.QApplication;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.core.QEvent.Type;
+import io.qt.core.QPoint;
+import io.qt.core.QRect;
+import io.qt.core.QSize;
+import io.qt.gui.QColor;
+import io.qt.gui.QFont;
+import io.qt.gui.QPalette;
+import io.qt.gui.QPalette.ColorRole;
+import io.qt.widgets.QApplication;
+import io.qt.widgets.QWidget;
 
 public abstract class QTWidget<T extends QWidget> extends QTComponent<T> implements UIControl {
 	

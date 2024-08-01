@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.widgets.QWidget;
 
 public interface QTContainer extends UIContainer {
 	

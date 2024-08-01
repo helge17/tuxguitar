@@ -3,8 +3,8 @@ package org.herac.tuxguitar.ui.qt.widget;
 import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UISplashWindow;
-import org.qtjambi.qt.widgets.QApplication;
-import org.qtjambi.qt.widgets.QSplashScreen;
+import io.qt.widgets.QApplication;
+import io.qt.widgets.QSplashScreen;
 
 public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashWindow {
 	

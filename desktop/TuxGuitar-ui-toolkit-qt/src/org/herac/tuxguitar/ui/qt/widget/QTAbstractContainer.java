@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.ui.widget.UIControl;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.widgets.QWidget;
 
 public abstract class QTAbstractContainer<T extends QWidget> extends QTWidget<T> implements QTContainer {
 	

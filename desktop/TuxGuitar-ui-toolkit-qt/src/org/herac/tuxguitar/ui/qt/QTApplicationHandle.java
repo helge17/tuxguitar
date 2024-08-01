@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.ui.qt;
 
-import org.qtjambi.qt.widgets.QApplication;
+import io.qt.widgets.QApplication;
 
 public class QTApplicationHandle {
 	

@@ -27,7 +27,7 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
 import org.herac.tuxguitar.ui.widget.UIControl;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.widgets.QWidget;
 
 public class QTToolCustomItem extends QTToolItem<QWidget> implements QTContainer, UIToolCustomItem {
 	

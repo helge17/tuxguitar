@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.ui.qt.event;
 
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public interface QTEventHandler {
 	

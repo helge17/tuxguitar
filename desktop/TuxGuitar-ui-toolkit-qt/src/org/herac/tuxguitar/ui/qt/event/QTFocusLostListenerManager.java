@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UIFocusEvent;
 import org.herac.tuxguitar.ui.event.UIFocusLostListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public class QTFocusLostListenerManager extends UIFocusLostListenerManager implements QTEventHandler {
 	

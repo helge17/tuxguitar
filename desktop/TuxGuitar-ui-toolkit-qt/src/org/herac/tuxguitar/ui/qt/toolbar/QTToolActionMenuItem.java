@@ -5,7 +5,7 @@ import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
-import org.qtjambi.qt.core.Qt.ArrowType;
+import io.qt.core.Qt.ArrowType;
 
 public class QTToolActionMenuItem extends QTComponent<Void> implements UIToolActionMenuItem {
 	

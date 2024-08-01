@@ -2,9 +2,9 @@ package org.herac.tuxguitar.ui.qt.menu;
 
 import org.herac.tuxguitar.ui.menu.UIMenuBar;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import org.qtjambi.qt.widgets.QAction;
-import org.qtjambi.qt.widgets.QMenu;
-import org.qtjambi.qt.widgets.QMenuBar;
+import io.qt.widgets.QAction;
+import io.qt.widgets.QMenu;
+import io.qt.widgets.QMenuBar;
 
 public class QTMenuBar extends QTAbstractMenu<QMenuBar> implements UIMenuBar {
 	

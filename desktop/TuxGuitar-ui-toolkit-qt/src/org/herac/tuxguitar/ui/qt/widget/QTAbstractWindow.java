@@ -10,10 +10,10 @@ import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.core.QEvent.Type;
-import org.qtjambi.qt.core.QMargins;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.core.QEvent;
+import io.qt.core.QEvent.Type;
+import io.qt.core.QMargins;
+import io.qt.widgets.QWidget;
 
 public abstract class QTAbstractWindow<T extends QWidget> extends QTLayoutContainer<T> implements UIWindow {
 	

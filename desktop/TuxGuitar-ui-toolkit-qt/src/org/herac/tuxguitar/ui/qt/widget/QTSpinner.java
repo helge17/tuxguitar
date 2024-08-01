@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.widget;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UISpinner;
-import org.qtjambi.qt.widgets.QSpinBox;
+import io.qt.widgets.QSpinBox;
 
 public class QTSpinner extends QTWidget<QSpinBox> implements UISpinner {
 	

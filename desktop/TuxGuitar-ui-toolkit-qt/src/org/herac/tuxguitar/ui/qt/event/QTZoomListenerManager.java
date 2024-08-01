@@ -3,9 +3,9 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UIZoomEvent;
 import org.herac.tuxguitar.ui.event.UIZoomListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.core.Qt.KeyboardModifier;
-import org.qtjambi.qt.gui.QWheelEvent;
+import io.qt.core.QEvent;
+import io.qt.core.Qt.KeyboardModifier;
+import io.qt.gui.QWheelEvent;
 
 public class QTZoomListenerManager extends UIZoomListenerManager implements QTEventHandler {
 	

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UIPasswordField;
-import org.qtjambi.qt.widgets.QLineEdit.EchoMode;
+import io.qt.widgets.QLineEdit.EchoMode;
 
 public class QTPasswordField extends QTTextField implements UIPasswordField {
 	

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.widget;
 import org.herac.tuxguitar.ui.event.UIModifyListener;
 import org.herac.tuxguitar.ui.qt.event.QTModifyListenerManager;
 import org.herac.tuxguitar.ui.widget.UITextArea;
-import org.qtjambi.qt.widgets.QPlainTextEdit;
+import io.qt.widgets.QPlainTextEdit;
 
 public class QTTextArea extends QTWidget<QPlainTextEdit> implements UITextArea {
 	

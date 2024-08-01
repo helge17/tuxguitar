@@ -4,10 +4,10 @@ import org.herac.tuxguitar.ui.event.UIPaintListener;
 import org.herac.tuxguitar.ui.qt.event.QTPaintListenerManager;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UICanvas;
-import org.qtjambi.qt.core.QEvent.Type;
-import org.qtjambi.qt.gui.QPaintDeviceInterface;
-import org.qtjambi.qt.widgets.QFrame;
-import org.qtjambi.qt.widgets.QFrame.Shape;
+import io.qt.core.QEvent.Type;
+import io.qt.gui.QPaintDeviceInterface;
+import io.qt.widgets.QFrame;
+import io.qt.widgets.QFrame.Shape;
 
 public class QTCanvas extends QTWidget<QFrame> implements UICanvas {
 	

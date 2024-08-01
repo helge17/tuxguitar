@@ -21,14 +21,14 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 import org.herac.tuxguitar.ui.widget.UIControl;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.core.QEvent.Type;
-import org.qtjambi.qt.core.QRect;
-import org.qtjambi.qt.core.QSize;
-import org.qtjambi.qt.core.Qt.Orientation;
-import org.qtjambi.qt.widgets.QAction;
-import org.qtjambi.qt.widgets.QToolBar;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.core.QEvent;
+import io.qt.core.QEvent.Type;
+import io.qt.core.QRect;
+import io.qt.core.QSize;
+import io.qt.core.Qt.Orientation;
+import io.qt.widgets.QAction;
+import io.qt.widgets.QToolBar;
+import io.qt.widgets.QWidget;
 
 public class QTToolBar extends QTAbstractContainer<QToolBar> implements QTContainer, UIToolBar {
 	

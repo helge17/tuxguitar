@@ -5,9 +5,9 @@ import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
 import org.herac.tuxguitar.ui.qt.resource.QTFont;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.qtjambi.qt.gui.QFont;
-import org.qtjambi.qt.widgets.QDialog;
-import org.qtjambi.qt.widgets.QFontDialog;
+import io.qt.gui.QFont;
+import io.qt.widgets.QDialog;
+import io.qt.widgets.QFontDialog;
 
 public class QTFontChooser implements UIFontChooser {
 	

@@ -12,14 +12,14 @@ import org.herac.tuxguitar.ui.qt.event.QTTableDoubleClickListenerManager;
 import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
-import org.qtjambi.qt.core.Qt.CheckState;
-import org.qtjambi.qt.core.Qt.FocusPolicy;
-import org.qtjambi.qt.core.Qt.ItemFlag;
-import org.qtjambi.qt.widgets.QAbstractItemView.SelectionBehavior;
-import org.qtjambi.qt.widgets.QAbstractItemView.SelectionMode;
-import org.qtjambi.qt.widgets.QHeaderView.ResizeMode;
-import org.qtjambi.qt.widgets.QTableWidget;
-import org.qtjambi.qt.widgets.QTableWidgetItem;
+import io.qt.core.Qt.CheckState;
+import io.qt.core.Qt.FocusPolicy;
+import io.qt.core.Qt.ItemFlag;
+import io.qt.widgets.QAbstractItemView.SelectionBehavior;
+import io.qt.widgets.QAbstractItemView.SelectionMode;
+import io.qt.widgets.QHeaderView.ResizeMode;
+import io.qt.widgets.QTableWidget;
+import io.qt.widgets.QTableWidgetItem;
 
 public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T> {
 	

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UIDisposeEvent;
 import org.herac.tuxguitar.ui.event.UIDisposeListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public class QTDisposeListenerManager extends UIDisposeListenerManager implements QTEventHandler {
 	

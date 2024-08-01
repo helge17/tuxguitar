@@ -5,11 +5,11 @@ import java.io.InputStream;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.qtjambi.qt.gui.QIcon;
-import org.qtjambi.qt.gui.QImage;
-import org.qtjambi.qt.gui.QImageReader;
-import org.qtjambi.qt.gui.QPainter;
-import org.qtjambi.qt.gui.QPixmap;
+import io.qt.gui.QIcon;
+import io.qt.gui.QImage;
+import io.qt.gui.QImageReader;
+import io.qt.gui.QPainter;
+import io.qt.gui.QPixmap;
 
 public class QTImage extends QTComponent<QImage> implements UIImage {
 	

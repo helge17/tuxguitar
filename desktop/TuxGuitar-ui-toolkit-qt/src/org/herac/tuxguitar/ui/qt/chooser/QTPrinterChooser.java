@@ -4,9 +4,9 @@ import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
 import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
 import org.herac.tuxguitar.ui.qt.printer.QTPrinter;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import org.qtjambi.qt.printsupport.QPrintDialog;
-import org.qtjambi.qt.printsupport.QPrinter;
-import org.qtjambi.qt.widgets.QDialog;
+import io.qt.printsupport.QPrintDialog;
+import io.qt.printsupport.QPrinter;
+import io.qt.widgets.QDialog;
 
 public class QTPrinterChooser implements UIPrinterChooser {
 

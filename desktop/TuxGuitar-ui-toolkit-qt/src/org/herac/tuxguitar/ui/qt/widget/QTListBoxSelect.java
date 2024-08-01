@@ -8,10 +8,10 @@ import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.qtjambi.qt.core.QMargins;
-import org.qtjambi.qt.widgets.QListWidget;
-import org.qtjambi.qt.widgets.QListWidgetItem;
-import org.qtjambi.qt.widgets.QScrollBar;
+import io.qt.core.QMargins;
+import io.qt.widgets.QListWidget;
+import io.qt.widgets.QListWidgetItem;
+import io.qt.widgets.QScrollBar;
 
 public class QTListBoxSelect<T> extends QTWidget<QListWidget> implements UIListBoxSelect<T> {
 	

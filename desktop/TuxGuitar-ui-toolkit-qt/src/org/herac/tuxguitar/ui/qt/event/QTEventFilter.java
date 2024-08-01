@@ -3,9 +3,9 @@ package org.herac.tuxguitar.ui.qt.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.core.QEvent.Type;
-import org.qtjambi.qt.core.QObject;
+import io.qt.core.QEvent;
+import io.qt.core.QEvent.Type;
+import io.qt.core.QObject;
 
 public class QTEventFilter extends QObject {
 	

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.ui.qt.event;
 import org.herac.tuxguitar.ui.event.UIMenuEvent;
 import org.herac.tuxguitar.ui.event.UIMenuHideListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.qtjambi.qt.core.QEvent;
+import io.qt.core.QEvent;
 
 public class QTMenuHideListenerManager extends UIMenuHideListenerManager implements QTEventHandler, QTSignalHandler {
 	

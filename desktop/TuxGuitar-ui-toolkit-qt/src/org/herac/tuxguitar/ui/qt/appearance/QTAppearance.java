@@ -6,9 +6,9 @@ import java.util.Map;
 import org.herac.tuxguitar.ui.appearance.UIAppearance;
 import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.qtjambi.qt.gui.QColor;
-import org.qtjambi.qt.gui.QPalette;
-import org.qtjambi.qt.widgets.QApplication;
+import io.qt.gui.QColor;
+import io.qt.gui.QPalette;
+import io.qt.widgets.QApplication;
 
 public class QTAppearance implements UIAppearance {
 

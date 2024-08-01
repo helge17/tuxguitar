@@ -4,9 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.qtjambi.qt.core.QBuffer;
-import org.qtjambi.qt.core.QByteArray;
-import org.qtjambi.qt.core.QIODevice;
+import io.qt.core.QBuffer;
+import io.qt.core.QByteArray;
+import io.qt.core.QIODevice;
 
 public class QTInputStream extends QBuffer {
 	

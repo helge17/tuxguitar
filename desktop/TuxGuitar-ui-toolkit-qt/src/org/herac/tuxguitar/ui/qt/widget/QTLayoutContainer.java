@@ -5,9 +5,9 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.qtjambi.qt.core.QMargins;
-import org.qtjambi.qt.core.QSize;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.core.QMargins;
+import io.qt.core.QSize;
+import io.qt.widgets.QWidget;
 
 public abstract class QTLayoutContainer<T extends QWidget> extends QTAbstractContainer<T> implements UILayoutContainer {
 	

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.toolbar;
 
-import org.qtjambi.qt.widgets.QAction;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.widgets.QAction;
+import io.qt.widgets.QWidget;
 
 public class QTToolSeparatorItem extends QTToolItem<QWidget> {
 	

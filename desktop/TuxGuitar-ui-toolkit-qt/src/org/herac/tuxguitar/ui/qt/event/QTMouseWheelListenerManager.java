@@ -4,8 +4,8 @@ import org.herac.tuxguitar.ui.event.UIMouseWheelEvent;
 import org.herac.tuxguitar.ui.event.UIMouseWheelListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.gui.QWheelEvent;
+import io.qt.core.QEvent;
+import io.qt.gui.QWheelEvent;
 
 public class QTMouseWheelListenerManager extends UIMouseWheelListenerManager implements QTEventHandler {
 	

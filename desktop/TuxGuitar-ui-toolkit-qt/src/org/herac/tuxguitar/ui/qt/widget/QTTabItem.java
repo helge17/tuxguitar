@@ -12,7 +12,7 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UITabItem;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.widgets.QWidget;
 
 public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabItem {
 	

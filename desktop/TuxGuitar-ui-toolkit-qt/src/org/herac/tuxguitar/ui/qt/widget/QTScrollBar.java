@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.ui.qt.widget;
 
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
-import org.qtjambi.qt.widgets.QScrollBar;
+import io.qt.widgets.QScrollBar;
 
 public class QTScrollBar extends QTAbstractSlider<QScrollBar> implements UIScrollBar {
 	

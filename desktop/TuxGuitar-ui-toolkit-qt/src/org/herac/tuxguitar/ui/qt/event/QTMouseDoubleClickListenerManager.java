@@ -5,8 +5,8 @@ import org.herac.tuxguitar.ui.event.UIMouseEvent;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.qt.resource.QTMouseButton;
 import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.gui.QMouseEvent;
+import io.qt.core.QEvent;
+import io.qt.gui.QMouseEvent;
 
 public class QTMouseDoubleClickListenerManager extends UIMouseDoubleClickListenerManager implements QTEventHandler {
 	

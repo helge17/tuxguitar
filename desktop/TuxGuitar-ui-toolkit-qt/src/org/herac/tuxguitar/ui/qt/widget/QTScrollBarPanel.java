@@ -3,10 +3,10 @@ package org.herac.tuxguitar.ui.qt.widget;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
-import org.qtjambi.qt.core.QMargins;
-import org.qtjambi.qt.core.Qt.ScrollBarPolicy;
-import org.qtjambi.qt.widgets.QAbstractScrollArea;
-import org.qtjambi.qt.widgets.QWidget;
+import io.qt.core.QMargins;
+import io.qt.core.Qt.ScrollBarPolicy;
+import io.qt.widgets.QAbstractScrollArea;
+import io.qt.widgets.QWidget;
 
 public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> implements UIScrollBarPanel {
 	

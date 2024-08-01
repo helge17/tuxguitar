@@ -4,8 +4,8 @@ import org.herac.tuxguitar.ui.event.UIKeyEvent;
 import org.herac.tuxguitar.ui.event.UIKeyReleasedListenerManager;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.qt.resource.QTKey;
-import org.qtjambi.qt.core.QEvent;
-import org.qtjambi.qt.gui.QKeyEvent;
+import io.qt.core.QEvent;
+import io.qt.gui.QKeyEvent;
 
 public class QTKeyReleasedListenerManager extends UIKeyReleasedListenerManager implements QTEventHandler {
 	

@@ -2,10 +2,10 @@ package org.herac.tuxguitar.ui.qt.resource;
 
 import org.herac.tuxguitar.ui.resource.UIKey;
 import org.herac.tuxguitar.ui.resource.UIKeyCombination;
-import org.qtjambi.qt.core.Qt.Key;
-import org.qtjambi.qt.core.Qt.KeyboardModifier;
-import org.qtjambi.qt.core.Qt.KeyboardModifiers;
-import org.qtjambi.qt.gui.QKeyEvent;
+import io.qt.core.Qt.Key;
+import io.qt.core.Qt.KeyboardModifier;
+import io.qt.core.Qt.KeyboardModifiers;
+import io.qt.gui.QKeyEvent;
 
 public class QTKey {
 	

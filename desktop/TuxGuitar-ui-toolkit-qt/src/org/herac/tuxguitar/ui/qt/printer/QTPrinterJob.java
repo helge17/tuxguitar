@@ -4,7 +4,7 @@ import org.herac.tuxguitar.ui.printer.UIPrinterJob;
 import org.herac.tuxguitar.ui.printer.UIPrinterPage;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 import org.herac.tuxguitar.ui.qt.resource.QTPainter;
-import org.qtjambi.qt.gui.QPainter;
+import io.qt.gui.QPainter;
 
 public class QTPrinterJob extends QTComponent<QTPrinter> implements UIPrinterJob {
 	
