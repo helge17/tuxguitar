@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.ui.qt.toolbar;
 
-import io.qt.widgets.QAction;
+import io.qt.gui.QAction;
 import io.qt.widgets.QWidget;
 
 public class QTToolSeparatorItem extends QTToolItem<QWidget> {

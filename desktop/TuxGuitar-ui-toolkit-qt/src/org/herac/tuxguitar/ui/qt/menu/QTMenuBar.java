@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.qt.menu;
 
 import org.herac.tuxguitar.ui.menu.UIMenuBar;
 import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import io.qt.widgets.QAction;
+import io.qt.gui.QAction;
 import io.qt.widgets.QMenu;
 import io.qt.widgets.QMenuBar;
 

@@ -12,7 +12,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 import org.herac.tuxguitar.ui.qt.QTComponent;
 
 import io.qt.core.QObject;
-import io.qt.widgets.QAction;
+import io.qt.gui.QAction;
 import io.qt.widgets.QMenu;
 import io.qt.widgets.QWidget;
 

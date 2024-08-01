@@ -1,6 +1,6 @@
 package org.herac.tuxguitar.ui.qt.menu;
 
-import io.qt.widgets.QAction;
+import io.qt.gui.QAction;
 import io.qt.widgets.QMenu;
 
 public class QTMenu extends QTAbstractMenu<QMenu> {

@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.qt.menu;
 
 import org.herac.tuxguitar.ui.UIComponent;
 
-import io.qt.widgets.QAction;
+import io.qt.gui.QAction;
 
 public class QTMenuSeparatorItem extends QTMenuItem<QAction> implements UIComponent {
 	

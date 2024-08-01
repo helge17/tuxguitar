@@ -26,7 +26,7 @@ import io.qt.core.QEvent.Type;
 import io.qt.core.QRect;
 import io.qt.core.QSize;
 import io.qt.core.Qt.Orientation;
-import io.qt.widgets.QAction;
+import io.qt.gui.QAction;
 import io.qt.widgets.QToolBar;
 import io.qt.widgets.QWidget;
 
