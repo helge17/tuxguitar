@@ -9,42 +9,42 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-linux-qt5</artifactId>
+	<artifactId>tuxguitar-linux-qt</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
-		<project.finalName>tuxguitar-${project.version}-linux-qt5</project.finalName>
-		<io.qtjambi.version>5.5.1</io.qtjambi.version>
+		<project.finalName>tuxguitar-${project.version}-linux-qt</project.finalName>
+		<io.qtjambi.version>6.6.2</io.qtjambi.version>
 	</properties>
 
 	<modules>
 		<module>../../gervill</module>
 		<module>../../TuxGuitar</module>
 		<module>../../TuxGuitar-ui-toolkit</module>
-		<module>../../TuxGuitar-ui-toolkit-qt5</module>
-		<module>../../TuxGuitar-lib</module>
-		<module>../../TuxGuitar-editor-utils</module>
-		<module>../../TuxGuitar-gm-utils</module>
+		<module>../../TuxGuitar-ui-toolkit-qt</module>
+		<module>../../../common/TuxGuitar-lib</module>
+		<module>../../../common/TuxGuitar-editor-utils</module>
+		<module>../../../common/TuxGuitar-gm-utils</module>
 		<module>../../TuxGuitar-ascii</module>
 		<module>../../TuxGuitar-browser-ftp</module>
-		<module>../../TuxGuitar-compat</module>
+		<module>../../../common/TuxGuitar-compat</module>
 		<module>../../TuxGuitar-converter</module>
 		<module>../../TuxGuitar-gm-settings</module>
-		<module>../../TuxGuitar-gtp</module>
+		<module>../../../common/TuxGuitar-gtp</module>
 		<module>../../TuxGuitar-gtp-ui</module>
-		<module>../../TuxGuitar-gpx</module>
+		<module>../../../common/TuxGuitar-gpx</module>
 		<module>../../TuxGuitar-jsa</module>
-		<module>../../TuxGuitar-lilypond</module>
+		<module>../../../common/TuxGuitar-lilypond</module>
 		<module>../../TuxGuitar-lilypond-ui</module>
-		<module>../../TuxGuitar-midi</module>
+		<module>../../../common/TuxGuitar-midi</module>
 		<module>../../TuxGuitar-midi-ui</module>
 		<module>../../TuxGuitar-musicxml</module>
 		<module>../../TuxGuitar-awt-graphics</module>
-		<module>../../TuxGuitar-pdf</module>
+		<module>../../../common/TuxGuitar-pdf</module>
 		<module>../../TuxGuitar-pdf-ui</module>
-		<module>../../TuxGuitar-ptb</module>
+		<module>../../../common/TuxGuitar-ptb</module>
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
@@ -97,9 +97,9 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-ui-toolkit-qt5</artifactId>
+									<artifactId>tuxguitar-ui-toolkit-qt</artifactId>
 									<version>${project.version}</version>
-									<destFileName>tuxguitar-ui-toolkit-qt5.jar</destFileName>
+									<destFileName>tuxguitar-ui-toolkit-qt.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -132,7 +132,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>io.qtjambi</groupId>
-									<artifactId>qtjambi-native-linux64-gcc</artifactId>
+									<artifactId>qtjambi-native-linux-x64</artifactId>
 									<version>${io.qtjambi.version}</version>
 									<destFileName>qtjambi-native.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
@@ -153,6 +153,12 @@
 									<groupId>org.apache.commons</groupId>
 									<artifactId>commons-compress</artifactId>
 									<destFileName>commons-compress.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>commons-io</groupId>
+									<artifactId>commons-io</artifactId>
+									<destFileName>commons-io.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
@@ -323,6 +329,9 @@
 								<copy todir="${project.build.directory}/${project.finalName}/share">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}/share">
+									<fileset dir="${project.rootPath}/../common/resources/" />
+								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
 									<fileset dir="${project.rootPath}/../doc/" />
 								</copy>
@@ -338,9 +347,6 @@
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-linux" />
-								</copy>
-								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
-									<fileset dir="../common-resources/common-linux-qtjambi5" />
 								</copy>
 
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
@@ -369,7 +375,6 @@
 				<module>../native-modules/tuxguitar-jack-linux</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux</module>
 				<module>../native-modules/tuxguitar-synth-lv2-linux</module>
-				<module>../native-modules/tuxguitar-synth-vst-linux</module>
 			</modules>
 
 			<build>
@@ -397,11 +402,7 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-synth-lv2-linux/target/build" />
 										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-synth-vst-linux/target/build" />
-										</copy>
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="755" />
-										<chmod file="${project.build.directory}/${project.finalName}/vst-client/*.bin" perm="755" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>
