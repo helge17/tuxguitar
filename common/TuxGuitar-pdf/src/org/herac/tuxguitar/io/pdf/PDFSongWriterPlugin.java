@@ -10,7 +10,7 @@ public class PDFSongWriterPlugin extends TGSongWriterPlugin{
 	public static final String MODULE_ID = "tuxguitar-pdf";
 	
 	public PDFSongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	public String getModuleId(){

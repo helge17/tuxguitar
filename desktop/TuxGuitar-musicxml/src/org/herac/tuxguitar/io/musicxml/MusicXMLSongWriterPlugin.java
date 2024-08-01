@@ -10,7 +10,7 @@ public class MusicXMLSongWriterPlugin extends TGSongWriterPlugin{
 	public static final String MODULE_ID = "tuxguitar-musicxml";
 	
 	public MusicXMLSongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	public String getModuleId(){

@@ -93,8 +93,13 @@ public class TGFileChooserDialog {
 	public List<UIFileChooserFormat> createSupportedFormats(List<TGFileFormat> formats) {
 		List<UIFileChooserFormat> supportedFormats = new ArrayList<UIFileChooserFormat>();
 		
-		UIFileChooserFormat allSupportedFormats = new UIFileChooserFormat(TuxGuitar.getProperty("file.supported-formats"));
-		supportedFormats.add(allSupportedFormats);
+		UIFileChooserFormat allSupportedFormats;
+		if (formats.size() == 1) {
+			allSupportedFormats = new UIFileChooserFormat(formats.get(0).getName());
+		} else {
+			allSupportedFormats = new UIFileChooserFormat(TuxGuitar.getProperty("file.supported-formats"));
+			supportedFormats.add(allSupportedFormats);
+		}
 		
 		for(TGFileFormat format : formats) {
 			supportedFormats.add(new UIFileChooserFormat(format.getName(), Arrays.asList(format.getSupportedFormats())));

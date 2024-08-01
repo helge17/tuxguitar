@@ -10,7 +10,7 @@ public class TGSynthSongWriterPlugin extends TGSongWriterPlugin {
 	public static final String MODULE_ID = "tuxguitar-synth-export";
 	
 	public TGSynthSongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {

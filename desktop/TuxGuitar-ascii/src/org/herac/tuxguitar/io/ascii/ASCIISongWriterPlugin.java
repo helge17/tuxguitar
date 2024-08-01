@@ -10,7 +10,7 @@ public class ASCIISongWriterPlugin extends TGSongWriterPlugin {
 	public static final String MODULE_ID = "tuxguitar-ascii";
 	
 	public ASCIISongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	public String getModuleId() {

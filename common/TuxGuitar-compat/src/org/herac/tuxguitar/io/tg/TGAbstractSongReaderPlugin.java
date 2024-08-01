@@ -5,7 +5,7 @@ import org.herac.tuxguitar.io.plugin.TGSongReaderPlugin;
 public abstract class TGAbstractSongReaderPlugin extends TGSongReaderPlugin {
 	
 	public TGAbstractSongReaderPlugin() {
-		super(true);
+		super(false);
 	}
 	
 	public String getModuleId(){

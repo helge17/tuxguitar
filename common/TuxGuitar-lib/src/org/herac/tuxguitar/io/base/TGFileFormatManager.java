@@ -8,6 +8,7 @@ import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
 import org.herac.tuxguitar.io.tg.TGSongReaderImpl;
 import org.herac.tuxguitar.io.tg.TGSongWriterImpl;
+import org.herac.tuxguitar.io.tg.TGStream;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -22,7 +23,7 @@ public class TGFileFormatManager {
 	
 	private List<TGFileFormatDetector> fileFormatDetectors;
 	private List<TGFileFormat> commonReadFileFormats;
-	private List<TGFileFormat> commonWriteFileFormats;
+	private TGFileFormat nativeWriteFileFormat;
 	
 	private TGFileFormatManager(TGContext context){
 		this.context = context;
@@ -32,7 +33,7 @@ public class TGFileFormatManager {
 		this.importers = new ArrayList<TGSongImporter>();
 		this.fileFormatDetectors = new ArrayList<TGFileFormatDetector>();
 		this.commonReadFileFormats = new ArrayList<TGFileFormat>();
-		this.commonWriteFileFormats = new ArrayList<TGFileFormat>();
+		this.nativeWriteFileFormat = TGStream.TG_FORMAT;
 		this.addDefaults();
 	}
 	
@@ -41,7 +42,6 @@ public class TGFileFormatManager {
 		this.addWriter(new TGSongWriterImpl());
 		this.addFileFormatDetector(new TGFileFormatDetectorImpl(TGSongReaderImpl.SUPPORTED_FORMAT));
 		this.addCommonReadFileFormat(TGSongReaderImpl.TG_FORMAT);
-		this.addCommonWriteFileFormat(TGSongWriterImpl.TG_FORMAT);
 	}
 	
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
@@ -64,10 +64,10 @@ public class TGFileFormatManager {
 		return readers;
 	}
 	
-	public List<TGSongWriter> findSongWriters(Boolean commonFileFormats) {
+	public List<TGSongWriter> findSongWriters(Boolean nativeFileFormat) {
 		List<TGSongWriter> writers = new ArrayList<TGSongWriter>();
 		for(TGSongWriter writer : this.writers) {
-			if( commonFileFormats == null || commonFileFormats.equals(this.isCommonWriteFileFormat(writer.getFileFormat()))){
+			if( nativeFileFormat == null || nativeFileFormat.equals(this.isNativeWriteFileFormat(writer.getFileFormat()))){
 				writers.add(writer);
 			}
 		}
@@ -296,28 +296,14 @@ public class TGFileFormatManager {
 		return this.commonReadFileFormats.contains(fileFormat);
 	}
 	
-	public void addCommonWriteFileFormat(TGFileFormat fileFormat){
-		if(!this.commonWriteFileFormats.contains(fileFormat)){
-			this.commonWriteFileFormats.add(fileFormat);
-		}
+	public boolean isNativeWriteFileFormat(TGFileFormat fileFormat){
+		return this.nativeWriteFileFormat.equals(fileFormat);
 	}
 	
-	public void removeCommonWriteFileFormat(TGFileFormat fileFormat){
-		if( this.commonWriteFileFormats.contains(fileFormat)){
-			this.commonWriteFileFormats.remove(fileFormat);
-		}
-	}
-	
-	public boolean isCommonWriteFileFormat(TGFileFormat fileFormat){
-		return this.commonWriteFileFormats.contains(fileFormat);
-	}
-	
-	public boolean isCommonWriteFileFormat(String formatCode){
-		for (TGFileFormat fileFormat : this.commonWriteFileFormats) {
-			for (String supportedFormatCode : fileFormat.getSupportedFormats()) {
-				if (supportedFormatCode.equals(formatCode)) {
-					return true;
-				}
+	public boolean isNativeWriteFileFormat(String formatCode){
+		for (String supportedFormatCode : this.nativeWriteFileFormat.getSupportedFormats()) {
+			if (supportedFormatCode.equals(formatCode)) {
+				return true;
 			}
 		}
 		return false;
