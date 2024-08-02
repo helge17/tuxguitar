@@ -23,7 +23,7 @@ public class TGFileFormatManager {
 	
 	private List<TGFileFormatDetector> fileFormatDetectors;
 	private List<TGFileFormat> commonReadFileFormats;
-	private TGFileFormat nativeWriteFileFormat;
+	private TGFileFormat nativeFileFormat;
 	
 	private TGFileFormatManager(TGContext context){
 		this.context = context;
@@ -33,7 +33,7 @@ public class TGFileFormatManager {
 		this.importers = new ArrayList<TGSongImporter>();
 		this.fileFormatDetectors = new ArrayList<TGFileFormatDetector>();
 		this.commonReadFileFormats = new ArrayList<TGFileFormat>();
-		this.nativeWriteFileFormat = TGStream.TG_FORMAT;
+		this.nativeFileFormat = TGStream.TG_FORMAT;
 		this.addDefaults();
 	}
 	
@@ -57,8 +57,16 @@ public class TGFileFormatManager {
 	public List<TGSongReader> findSongReaders(Boolean commonFileFormats) {
 		List<TGSongReader> readers = new ArrayList<TGSongReader>();
 		for(TGSongReader reader : this.readers) {
-			if( commonFileFormats == null || commonFileFormats.equals(this.isCommonReadFileFormat(reader.getFileFormat()))){
-				readers.add(reader);
+			if (commonFileFormats == null) {
+ 				readers.add(reader);
+			} else if (commonFileFormats) {
+				if (this.isCommonReadFileFormat(reader.getFileFormat())) {
+					readers.add(reader);
+				}
+			} else {
+				if (!this.isCommonReadFileFormat(reader.getFileFormat()) && !this.isNativeFileFormat(reader.getFileFormat().getSupportedFormats()) ) {
+					readers.add(reader);
+				}
 			}
 		}
 		return readers;
@@ -67,7 +75,7 @@ public class TGFileFormatManager {
 	public List<TGSongWriter> findSongWriters(Boolean nativeFileFormat) {
 		List<TGSongWriter> writers = new ArrayList<TGSongWriter>();
 		for(TGSongWriter writer : this.writers) {
-			if( nativeFileFormat == null || nativeFileFormat.equals(this.isNativeWriteFileFormat(writer.getFileFormat()))){
+			if( nativeFileFormat == null || nativeFileFormat.equals(this.isNativeFileFormat(writer.getFileFormat()))){
 				writers.add(writer);
 			}
 		}
@@ -296,17 +304,30 @@ public class TGFileFormatManager {
 		return this.commonReadFileFormats.contains(fileFormat);
 	}
 	
-	public boolean isNativeWriteFileFormat(TGFileFormat fileFormat){
-		return this.nativeWriteFileFormat.equals(fileFormat);
+	public boolean isNativeFileFormat(TGFileFormat fileFormat){
+		return this.nativeFileFormat.equals(fileFormat);
 	}
 	
-	public boolean isNativeWriteFileFormat(String formatCode){
-		for (String supportedFormatCode : this.nativeWriteFileFormat.getSupportedFormats()) {
+	public boolean isNativeFileFormat(String formatCode){
+		for (String supportedFormatCode : this.nativeFileFormat.getSupportedFormats()) {
 			if (supportedFormatCode.equals(formatCode)) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public boolean isNativeFileFormat(String[] supportedFormats) {
+		for (String supportedFormat : supportedFormats) {
+			boolean supported = false;
+			for (String supportedNativeFormat : this.nativeFileFormat.getSupportedFormats()) {
+				supported |= (supportedFormat.equals(supportedNativeFormat));
+			}
+			if (!supported) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public void fireFileFormatAvailabilityEvent(){

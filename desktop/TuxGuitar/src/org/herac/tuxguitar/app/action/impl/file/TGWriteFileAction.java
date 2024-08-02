@@ -32,7 +32,7 @@ public class TGWriteFileAction extends TGActionBase {
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, new FileOutputStream(new File(fileName)));
 			String formatCode = TGFileFormatUtils.getFileFormatCode(fileName);
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT_CODE, formatCode);
-			context.setAttribute(ATTRIBUTE_FILE_EXPORT, !TGFileFormatManager.getInstance(getContext()).isNativeWriteFileFormat(formatCode));
+			context.setAttribute(ATTRIBUTE_FILE_EXPORT, !TGFileFormatManager.getInstance(getContext()).isNativeFileFormat(formatCode));
 			
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGWriteSongAction.NAME, context);
