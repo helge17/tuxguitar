@@ -11,7 +11,7 @@ public class TESongReaderPlugin extends TGSongReaderPlugin {
 	public static final String MODULE_ID = "tuxguitar-tef";
 	
 	public TESongReaderPlugin() {
-		super(false);
+		super(true);
 	}
 	
 	public String getModuleId(){
