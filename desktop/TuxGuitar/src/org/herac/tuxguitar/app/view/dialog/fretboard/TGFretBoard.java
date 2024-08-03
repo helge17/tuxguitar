@@ -413,7 +413,7 @@ public class TGFretBoard {
 					int y = this.strings[i];
 					
 					if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_SCALE) != 0 ){
-						paintKeyText(painter,this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteValue));
+						paintKeyText(painter,this.config.getColorScaleText(), this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteValue));
 					}
 					else{
 						paintKeyOval(painter,this.config.getColorScale(),x,y);
@@ -446,7 +446,7 @@ public class TGFretBoard {
 						
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature));
+							paintKeyText(painter,this.config.getColorNoteText(), this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature));
 						}
 						else{
 							paintKeyOval(painter,this.config.getColorNote(), x, y);
@@ -459,26 +459,27 @@ public class TGFretBoard {
 	}
 	
 	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
-		int size = getOvalSize();
+		this.paintKeyOval(painter, background, x, y, this.getOvalSize());
+	}
+	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y, int ovalSize) {
 		painter.setBackground(background);
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.moveTo(x, y);
-		painter.addCircle(x, y, size);
+		painter.addCircle(x, y, ovalSize);
 		painter.closePath();
 	}
 	
-	private void paintKeyText(UIPainter painter, UIColor foreground, int x, int y, String text) {
+	private void paintKeyText(UIPainter painter, UIColor foreground, UIColor background, int x, int y, String text) {
 		if (!getTrack().isPercussion()) {
-			painter.setBackground(this.config.getColorKeyTextBackground());
+			painter.setBackground(background);
 			painter.setForeground(foreground);
 			painter.setFont(this.config.getFont());
 			
 			float fmWidth = painter.getFMWidth(text);
 			float fmHeight = painter.getFMHeight();
-			
-			painter.initPath(UIPainter.PATH_FILL);
-			painter.addRectangle(x - (fmWidth / 2f), y - (fmHeight / 2f), fmWidth, fmHeight);
-			painter.closePath();
+			int ovalSize = (int)Math.max(fmWidth, fmHeight) + STRING_SPACING/10;
+			ovalSize = Math.min(ovalSize, this.getMaxOvalSize());
+			this.paintKeyOval(painter, background, x, y, ovalSize);
 			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
 		}
 	}
@@ -586,6 +587,10 @@ public class TGFretBoard {
 	
 	private int getOvalSize(){
 		return ((STRING_SPACING / 2) + (STRING_SPACING / 10));
+	}
+	
+	private int getMaxOvalSize() {
+		return (STRING_SPACING - STRING_SPACING/10);
 	}
 	
 	private void addNote(int fret, int string) {

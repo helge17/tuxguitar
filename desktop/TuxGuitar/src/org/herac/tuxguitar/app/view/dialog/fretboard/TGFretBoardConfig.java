@@ -54,7 +54,8 @@ public class TGFretBoardConfig {
 	private UIColor colorFretPoint;
 	private UIColor colorNote;
 	private UIColor colorScale;
-	private UIColor colorKeyTextBackground;
+	private UIColor colorNoteText;
+	private UIColor colorScaleText;
 	
 	public TGFretBoardConfig(TGContext context){
 		this.context = context;
@@ -88,10 +89,14 @@ public class TGFretBoardConfig {
 		return this.colorScale;
 	}
 	
-	public UIColor getColorKeyTextBackground() {
-		return colorKeyTextBackground;
+	public UIColor getColorNoteText() {
+		return colorNoteText;
 	}
 
+	public UIColor getColorScaleText() {
+		return colorScaleText;
+	}
+	
 	public int getDirection(){
 		return this.direction;
 	}
@@ -115,7 +120,16 @@ public class TGFretBoardConfig {
 		this.colorFretPoint = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
-		this.colorKeyTextBackground = createColor(factory, new UIColorModel(0xff, 0xff, 0xff));
+		this.colorNoteText = createColor(factory, this.colorForeground(this.colorNote));
+		this.colorScaleText = createColor(factory, this.colorForeground(this.colorScale));
+	}
+	
+	private UIColorModel colorForeground(UIColor colorBackground) {
+		int brightness = colorBackground.getRed() + colorBackground.getGreen() + colorBackground.getBlue();
+		if (brightness > 3 * 0x80) {
+			return new UIColorModel(0x00, 0x00, 0x00);
+		}
+		return new UIColorModel(0xff, 0xff, 0xff);
 	}
 	
 	public void defaults(){
@@ -157,7 +171,8 @@ public class TGFretBoardConfig {
 		this.colorFretPoint.dispose();
 		this.colorNote.dispose();
 		this.colorScale.dispose();
-		this.colorKeyTextBackground.dispose();
+		this.colorNoteText.dispose();
+		this.colorScaleText.dispose();
 	}
 	
 	public void configure(UIWindow parent, boolean isPercussion) {
