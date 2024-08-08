@@ -79,6 +79,22 @@
 				<key>LSTypeIsPackage</key>
 				<false />
 			</dict>
+			<dict>
+				<key>CFBundleTypeExtensions</key>
+				<array>
+					<string>tef</string>
+				</array>
+				<key>CFBundleTypeIconFile</key>
+				<string>tgdoc.icns</string>
+				<key>CFBundleTypeName</key>
+				<string>TablEdit Document</string>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>LSIsAppleDefaultForType</key>
+				<true />
+				<key>LSTypeIsPackage</key>
+				<false />
+			</dict>
 		</array>
 	</dict>
 </plist>

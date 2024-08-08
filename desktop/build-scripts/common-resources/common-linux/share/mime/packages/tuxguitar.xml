@@ -32,4 +32,10 @@
 		<comment xml:lang="it">File di PowerTab</comment>
 		<glob pattern="*.ptb"/>
 	</mime-type>
+	<mime-type type="audio/x-tef">
+		<comment>TablEdit file</comment>
+		<comment xml:lang="de">TablEdit-Datei</comment>
+		<comment xml:lang="it">File di TablEdit</comment>
+		<glob pattern="*.tef"/>
+	</mime-type>
 </mime-info>
