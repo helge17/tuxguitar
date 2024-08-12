@@ -23,7 +23,7 @@ public class TGUpdateSavedSongController extends TGUpdateItemsController {
 		
 		TGDocument tgDocument = TGDocumentListManager.getInstance(context).findCurrentDocument();
 		tgDocument.setUnwanted(false);
-		if (!Boolean.TRUE.equals(actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_FILE_EXPORT) )) {
+		if (Boolean.TRUE.equals(actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_NATIVE_FILE_FORMAT) )) {
 			tgDocument.setUnsaved(false);
 		}
 		
