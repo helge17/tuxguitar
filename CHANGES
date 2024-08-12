@@ -8,6 +8,8 @@ TuxGuitar 9.99-SNAPSHOT changes:
 * The chord editor now considers the current key signature when opening
 * Fixed bug when switching between page and linear layout
 * Added a text filter in plugin list
+* Improved notes names display on fretboard
+* Configurable fretboard size
 * More small improvements and cleanups
 
 TuxGuitar 1.6.3 (2024-06-06) changes:
