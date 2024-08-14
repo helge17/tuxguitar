@@ -290,7 +290,7 @@ public class GP4OutputStream extends GTPOutputStream{
 		else if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
 			flags |= 0x08;
 		}
-		if (!duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])) {
+		if (!duration.getDivision().isEqual(TGDivisionType.NORMAL)) {
 			flags |= 0x20;
 		}
 		if (changeTempo) {

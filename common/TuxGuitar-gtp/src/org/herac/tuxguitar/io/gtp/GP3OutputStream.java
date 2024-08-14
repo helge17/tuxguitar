@@ -217,7 +217,7 @@ public class GP3OutputStream extends GTPOutputStream {
 		if (duration.isDotted() || duration.isDoubleDotted() ) {
 			flags |= 0x01;
 		}
-		if (!duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])) {
+		if (!duration.getDivision().isEqual(TGDivisionType.NORMAL)) {
 			flags |= 0x20;
 		}
 		if(beat.isTextBeat()){
