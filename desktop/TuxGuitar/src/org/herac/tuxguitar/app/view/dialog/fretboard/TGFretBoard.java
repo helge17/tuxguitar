@@ -182,8 +182,8 @@ public class TGFretBoard {
 		
 		// fretboard height
 		this.smaller = uiFactory.createButton(this.toolComposite);
-		this.smaller.setImage(TuxGuitar.getInstance().getIconManager().getZoomOut());
-		this.smaller.setToolTipText(TuxGuitar.getProperty("view.zoom.out"));
+		this.smaller.setImage(TuxGuitar.getInstance().getIconManager().getFretboardSmaller());
+		this.smaller.setToolTipText(TuxGuitar.getProperty("fretboard.smaller"));
 		this.smaller.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGFretBoard.this.updateStringSpacing(-STRING_SPACING_INCREMENT);
@@ -191,8 +191,8 @@ public class TGFretBoard {
 		});
 		this.createToolItemLayout(this.smaller, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 		this.bigger = uiFactory.createButton(this.toolComposite);
-		this.bigger.setImage(TuxGuitar.getInstance().getIconManager().getZoomIn());
-		this.bigger.setToolTipText(TuxGuitar.getProperty("view.zoom.in"));
+		this.bigger.setImage(TuxGuitar.getInstance().getIconManager().getFretboardBigger());
+		this.bigger.setToolTipText(TuxGuitar.getProperty("fretboard.bigger"));
 		this.bigger.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGFretBoard.this.updateStringSpacing(STRING_SPACING_INCREMENT);
@@ -701,7 +701,9 @@ public class TGFretBoard {
 		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.right-mode"), TGFretBoardConfig.DIRECTION_RIGHT));
 		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.left-mode"), TGFretBoardConfig.DIRECTION_LEFT));
 		this.handSelector.setSelectedItem(new UISelectItem<Integer>(null, selection));
-		
+
+		this.smaller.setToolTipText(TuxGuitar.getProperty("fretboard.smaller"));
+		this.bigger.setToolTipText(TuxGuitar.getProperty("fretboard.bigger"));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.loadScaleName();
@@ -715,6 +717,8 @@ public class TGFretBoard {
 		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
 		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.smaller.setImage(TuxGuitar.getInstance().getIconManager().getFretboardSmaller());
+		this.bigger.setImage(TuxGuitar.getInstance().getIconManager().getFretboardBigger());
 		this.loadDurationImage(true);
 		this.control.layout();
 		this.layout(this.control.getChildArea().getWidth());
