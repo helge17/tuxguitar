@@ -1,16 +1,14 @@
-package org.herac.tuxguitar.test;
+package org.herac.tuxguitar.util;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TGTestMusicKeyUtils {
-	
+public class TestMusicKeyUtils {
+
 	@Test
 	public void checkNotesNames() {
 		assertEquals("A",TGMusicKeyUtils.sharpNoteName(69));
@@ -275,4 +273,5 @@ public class TGTestMusicKeyUtils {
 		assertEquals(3, TGMusicKeyUtils.noteOctaveAddInterval(3, 4, -8)); // F4-8 = octave 3
 
 	}
+
 }
