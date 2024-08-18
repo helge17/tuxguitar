@@ -5,6 +5,7 @@
 		<comment xml:lang="de">TuxGuitar-Datei</comment>
 		<comment xml:lang="it">File di TuxGuitar</comment>
 		<glob pattern="*.tg"/>
+		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="audio/x-gtp">
 		<comment>GuitarPro file</comment>
@@ -15,6 +16,7 @@
 		<glob pattern="*.gp4"/>
 		<glob pattern="*.gp5"/>
 		<glob pattern="*.gp"/>
+		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="audio/x-gtp">
 		<comment>GuitarPro file</comment>
@@ -25,17 +27,20 @@
 			<match value="BCFZ" type="string" offset="0" />
 		</magic>
 		<glob pattern="*.gpx"/>
+		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="audio/x-ptb">
 		<comment>PowerTab file</comment>
 		<comment xml:lang="de">PowerTab-Datei</comment>
 		<comment xml:lang="it">File di PowerTab</comment>
 		<glob pattern="*.ptb"/>
+		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="audio/x-tef">
 		<comment>TablEdit file</comment>
 		<comment xml:lang="de">TablEdit-Datei</comment>
 		<comment xml:lang="it">File di TablEdit</comment>
 		<glob pattern="*.tef"/>
+		<icon name="tuxguitar"/>
 	</mime-type>
 </mime-info>
