@@ -29,7 +29,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 
 public class GP1InputStream extends GTPInputStream {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 1", "audio/x-gtp", new String[]{"gtp"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 1", "application/x-gtp", new String[]{"gtp"});
 	
 	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
 		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITARE PRO v1", 0),

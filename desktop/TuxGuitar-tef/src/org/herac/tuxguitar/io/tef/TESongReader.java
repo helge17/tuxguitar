@@ -14,7 +14,7 @@ public class TESongReader implements TGSongReader {
 	}
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("TablEdit", "audio/x-tef", new String[]{"tef"});
+		return new TGFileFormat("TablEdit", "application/x-tef", new String[]{"tef"});
 	}
 	
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
