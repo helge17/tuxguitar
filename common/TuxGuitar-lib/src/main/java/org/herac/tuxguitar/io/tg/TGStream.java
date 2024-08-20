@@ -1,5 +1,7 @@
 package org.herac.tuxguitar.io.tg;
 
+import java.io.InputStream;
+
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -9,6 +11,11 @@ import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class TGStream {
+	
+	// stub
+	public InputStream getDecompressedContent(InputStream inputStream) {
+		return null;
+	}
 	
 	public static final String TG_FORMAT_NAME = ("TuxGuitar File Format");
 	

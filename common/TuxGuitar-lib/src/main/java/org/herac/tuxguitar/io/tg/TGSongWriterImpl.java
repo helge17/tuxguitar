@@ -42,6 +42,11 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	
 	private DataOutputStream dataOutputStream;
 	
+	//stub
+	public void writeContent(TGSongWriterHandle handle) {
+		
+	}
+	
 	public TGFileFormat getFileFormat(){
 		return TG_FORMAT;
 	}

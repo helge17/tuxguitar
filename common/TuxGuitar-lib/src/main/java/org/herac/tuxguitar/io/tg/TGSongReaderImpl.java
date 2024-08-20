@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.tg;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
@@ -42,6 +43,10 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 	
 	private DataInputStream dataInputStream;
 	private TGFactory factory;
+	
+	// stub
+	public void readContent(TGSongReaderHandle handle, InputStream inputStream) {
+	}
 	
 	public TGSongReaderImpl() {
 		super();
