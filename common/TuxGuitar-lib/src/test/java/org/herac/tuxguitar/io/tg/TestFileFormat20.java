@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.herac.tuxguitar.io.base.TGFileFormat;
+import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.io.base.TGSongReaderHandle;
 import org.herac.tuxguitar.io.base.TGSongStreamContext;
@@ -50,6 +51,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
+import org.herac.tuxguitar.util.TGMessagesManager;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
@@ -77,12 +79,11 @@ public class TestFileFormat20 {
 		assertTrue(detectsFormat("Untitled_extended_21.tg"));
 	}
 	
-	/* TODO new minor version
 	@Test
 	void canOpenCompatibleExtendedFormat() throws IOException {
 		// compressed xml + version file
 		// check context attribute has been set to suggest app upgrade to user
-		TGSongReaderHandle  handle = readSong("Untitled_extended_21.zip", true);
+		TGSongReaderHandle  handle = readSong("Untitled_extended_21.tg", true);
 		assertNotNull(handle.getSong());
 		assertTrue(handle.isNewerFileFormatDetected()); 
 	}
@@ -90,16 +91,15 @@ public class TestFileFormat20 {
 	@Test
 	void canOpenValidFile() throws IOException {
 		// test with expected format version, flag shall not be set
-		TGSongReaderHandle handle = readSong("Untitled_20.zip", true);
+		TGSongReaderHandle handle = readSong("Untitled_20.tg", true);
 		assertNotNull(handle.getSong());
 		assertFalse(handle.isNewerFileFormatDetected()); 
 	}
-	*/
 	
 	@Test
 	void invalidFile() throws FileNotFoundException {
 		// invalid version
-		assertFalse(validatesSchema("Untitled_extended_30.xml", false));
+		assertFalse(validatesSchema("Untitled_extended_30.tg", true));
 		
 		// not even an xml file (just random bytes)
 		assertFalse(validatesSchema("randomBytes.xml", false));
@@ -114,20 +114,19 @@ public class TestFileFormat20 {
 		assertFalse(detectsFormat("invalidVersion.tg"));
 	}
 	
-	/* TODO new major version
 	@Test
 	void newMajorVersionIsDetected () throws IOException {
 		// positive test: new major version detected
 		boolean exceptionCaught = false;
 		TGSongReaderHandle handle = new TGSongReaderHandle();
 		handle.setContext(new TGSongStreamContext());
-		handle.setInputStream(getClass().getClassLoader().getResource("Untitled_extended_30.zip").openStream());
+		handle.setInputStream(getClass().getClassLoader().getResource("Untitled_extended_30.tg").openStream());
 		handle.setFactory(new TGFactory());
-		org.herac.tuxguitar.io.devfileformat.TGNewerFormatSongReaderImpl songReader = new TGNewerFormatSongReaderImpl();
+		TGSongReaderImpl songReader = new TGSongReaderImpl();
 		try {
 			songReader.read(handle);
 		} catch(TGFileFormatException e) {
-			assertEquals(TuxGuitar.getProperty("error.new-major-version"), e.getMessage());
+			assertEquals(TGMessagesManager.getProperty("error.new-major-version"), e.getMessage());
 			exceptionCaught = true;
 		}
 		assertTrue(exceptionCaught);
@@ -137,20 +136,19 @@ public class TestFileFormat20 {
 		handle = new TGSongReaderHandle();
 		handle.setSong(null);
 		handle.setContext(new TGSongStreamContext());
-		handle.setInputStream(getClass().getClassLoader().getResource("notTuxGuitar.zip").openStream());
+		handle.setInputStream(getClass().getClassLoader().getResource("notTuxGuitar.tg").openStream());
 		handle.setFactory(new TGFactory());
-		songReader = new TGNewerFormatSongReaderImpl();
+		songReader = new TGSongReaderImpl();
 		try {
 			songReader.read(handle);
 		} catch(TGFileFormatException e) {
-			assertFalse(TuxGuitar.getProperty("error.new-major-version").equals(e.getMessage()));
+			assertFalse(TGMessagesManager.getProperty("error.new-major-version").equals(e.getMessage()));
 			exceptionCaught = true;
 		}
 		assertTrue(exceptionCaught);
 	}
-	 */
 	
-	// manually writted xml file to check syntax
+	// manually written xml file to check syntax
 	@Test
 	void openValidXMLFile() throws IOException {
 		TGSongReaderHandle handle = readSong("test_20.xml", false);

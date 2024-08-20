@@ -6,9 +6,13 @@ import java.net.URL;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.action.TGActionException;
 import org.herac.tuxguitar.action.TGActionManager;
+import org.herac.tuxguitar.app.TuxGuitar;
+import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.util.TGFileUtils;
+import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialog;
+import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialogController;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
@@ -48,6 +52,16 @@ public class TGReadURLAction extends TGActionBase {
 				
 				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 				tgActionManager.execute(TGReadSongAction.NAME, context);
+				
+				// if a newer version of file format was detected, warn user (recommend app upgrade)
+				if (Boolean.TRUE.equals(context.getAttribute(TGReadSongAction.IS_NEWER_FILE_FORMAT))) {
+					context.setAttribute(TGMessageDialog.ATTRIBUTE_TITLE, TuxGuitar.getProperty("warning"));
+					context.setAttribute(TGMessageDialog.ATTRIBUTE_STYLE, TGMessageDialog.STYLE_WARNING);
+					context.setAttribute(TGMessageDialog.ATTRIBUTE_MESSAGE,TuxGuitar.getProperty("warning.new-minor-version"));
+					context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGMessageDialogController());
+					tgActionManager.execute(TGOpenViewAction.NAME, context);
+				}
+
 			}
 		} catch (Throwable e) {
 			throw new TGActionException(e.getMessage(), e);

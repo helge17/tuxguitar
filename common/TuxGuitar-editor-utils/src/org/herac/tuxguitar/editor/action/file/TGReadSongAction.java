@@ -16,6 +16,7 @@ import org.herac.tuxguitar.util.TGContext;
 public class TGReadSongAction extends TGSongPersistenceActionBase {
 	
 	public static final String NAME = "action.song.read";
+	public static final String IS_NEWER_FILE_FORMAT = "action.song.read.newerFileFormat";
 	
 	public static final String ATTRIBUTE_INPUT_STREAM = InputStream.class.getName();
 	
@@ -38,7 +39,7 @@ public class TGReadSongAction extends TGSongPersistenceActionBase {
 			tgSongLoaderHandle.getContext().setAttribute(ATTRIBUTE_FORMAT_CODE, context.getAttribute(ATTRIBUTE_FORMAT_CODE));
 			
 			TGFileFormatManager.getInstance(getContext()).read(tgSongLoaderHandle);
-			
+			context.setAttribute(IS_NEWER_FILE_FORMAT, tgSongLoaderHandle.isNewerFileFormatDetected());
 			context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, tgSongLoaderHandle.getSong());
 			context.setAttribute(ATTRIBUTE_FORMAT, tgSongLoaderHandle.getFormat());
 			

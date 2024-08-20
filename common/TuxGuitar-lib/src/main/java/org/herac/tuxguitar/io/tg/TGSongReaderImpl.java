@@ -33,6 +33,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
+import org.herac.tuxguitar.util.TGMessagesManager;
 import org.herac.tuxguitar.util.TGVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -50,15 +51,15 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
 		try {
 			InputStream[] versionAndContent = this.getDecompressedVersionAndContent(handle.getInputStream());
-			/* TODO
 			TGVersion version = this.getFileFormatVersion(versionAndContent[0]);
-			if (version.getMajor() != FILE_FORMAT_TGVERSION.getMajor()) {
+			if (version.getMajor() < FILE_FORMAT_TGVERSION.getMajor()) {
 				throw new TGFileFormatException();
+			} else if (version.getMajor() > FILE_FORMAT_TGVERSION.getMajor()) {
+				throw new TGFileFormatException(TGMessagesManager.getProperty("error.new-major-version"));
 			}
 			if (version.getMinor() > FILE_FORMAT_TGVERSION.getMinor()) {
 				handle.setNewerFileFormatDetected(true);
 			}
-			*/
 			this.readContent(handle, versionAndContent[1]);
 		} catch (TGFileFormatException | IOException e) {
 			throw new TGFileFormatException(e);
