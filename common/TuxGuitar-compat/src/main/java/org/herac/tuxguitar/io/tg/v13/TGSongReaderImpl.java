@@ -7,7 +7,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongReader;
 import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
+import org.herac.tuxguitar.io.tg.v15.TGFileFormatDetectorImpl;
 import org.herac.tuxguitar.io.tg.TGFileFormatVersion;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;

@@ -3,7 +3,7 @@ package org.herac.tuxguitar.io.tg.v12;
 import org.herac.tuxguitar.io.base.TGFileFormatDetector;
 import org.herac.tuxguitar.io.base.TGSongReader;
 import org.herac.tuxguitar.io.tg.TGAbstractSongReaderPlugin;
-import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
+import org.herac.tuxguitar.io.tg.v15.TGFileFormatDetectorImpl;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 

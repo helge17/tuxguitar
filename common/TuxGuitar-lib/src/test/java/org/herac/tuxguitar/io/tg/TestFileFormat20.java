@@ -153,7 +153,7 @@ public class TestFileFormat20 {
 	// manually writted xml file to check syntax
 	@Test
 	void openValidXMLFile() throws IOException {
-		TGSongReaderHandle handle = readSong("test.xml", false);
+		TGSongReaderHandle handle = readSong("test_20.xml", false);
 		TGSong song = handle.getSong();
 		assertEquals("TGSong.name", song.getName());
 		assertEquals("TGSong.artist", song.getArtist());
@@ -438,13 +438,13 @@ public class TestFileFormat20 {
 	@Test
 	public void writtenFileValidatesSchema() throws FileNotFoundException, Throwable {
 		// without compression
-		assertTrue(validatesSchema(new ByteArrayInputStream(tg15ToXml("Untitled_15.tg", false)), false));
-		assertTrue(validatesSchema(new ByteArrayInputStream(tg15ToXml("reference_15.tg", false)), false));
+		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("Untitled_20.tg", false)), false));
+		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("reference_20.tg", false)), false));
 		// with compression
-		assertTrue(detectsFormat(new ByteArrayInputStream(tg15ToXml("Untitled_15.tg", true))));
-		assertTrue(validatesSchema(new ByteArrayInputStream(tg15ToXml("Untitled_15.tg", true)), true));
-		assertTrue(detectsFormat(new ByteArrayInputStream(tg15ToXml("reference_15.tg", true))));
-		assertTrue(validatesSchema(new ByteArrayInputStream(tg15ToXml("reference_15.tg", true)), true));
+		assertTrue(detectsFormat(new ByteArrayInputStream(tg20ToXml("Untitled_20.tg", true))));
+		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("Untitled_20.tg", true)), true));
+		assertTrue(detectsFormat(new ByteArrayInputStream(tg20ToXml("reference_20.tg", true))));
+		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("reference_20.tg", true)), true));
 	}
 	
 	private boolean validatesSchema(InputStream inputStream, boolean compressed) {
@@ -493,7 +493,7 @@ public class TestFileFormat20 {
 		return handle;
 	}
 	
-	private byte[] tg15ToXml(String resourceFileName, boolean compressed) throws FileNotFoundException, Throwable {
+	private byte[] tg20ToXml(String resourceFileName, boolean compressed) throws FileNotFoundException, Throwable {
 		TGFactory factory = new TGFactory();
 		// load original tg file
 		File original = new File(getClass().getClassLoader().getResource(resourceFileName).getFile());

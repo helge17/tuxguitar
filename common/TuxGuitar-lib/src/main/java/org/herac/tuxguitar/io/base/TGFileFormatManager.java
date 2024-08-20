@@ -39,7 +39,7 @@ public class TGFileFormatManager {
 	private void addDefaults(){
 		this.addReader(new TGSongReaderImpl());
 		this.addWriter(new TGSongWriterImpl());
-		this.addFileFormatDetector(new TGFileFormatDetectorImpl(TGSongReaderImpl.SUPPORTED_FORMAT));
+		this.addFileFormatDetector(new TGFileFormatDetectorImpl());
 		this.addCommonReadFileFormat(TGSongReaderImpl.TG_FORMAT);
 		this.addCommonWriteFileFormat(TGSongWriterImpl.TG_FORMAT);
 	}
