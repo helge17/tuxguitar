@@ -445,6 +445,47 @@ public class TestFileFormat20 {
 		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("reference_20.tg", true)), true));
 	}
 	
+	// new feature introduced in format version 2.0
+	@Test
+	public void checkLineBreak() throws IOException {
+		// read ref file (no line break)
+		TGSongReaderHandle handle = readSong("reference_20.tg", true);
+		TGSong song = handle.getSong();
+		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
+		while (headers.hasNext()) {
+			assertFalse(headers.next().isLineBreak());
+		}
+		// add one line break
+		song.getMeasureHeader(4).setLineBreak(true);
+		// save song under xml format in byte buffer
+		TGFactory factory = new TGFactory();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		TGSongWriterHandle handleWrite = new TGSongWriterHandle();
+		handleWrite.setFactory(factory);
+		handleWrite.setSong(song);
+		handleWrite.setOutputStream(outputStream);
+		TGSongWriterImpl writer = new TGSongWriterImpl();
+		writer.writeContent(handleWrite);
+		// re-read
+		byte[] bufferXml = outputStream.toByteArray();
+		// check file validates xsd schema
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		// check lineBreak is here
+		TGSongReaderHandle handleRead = new TGSongReaderHandle();
+		handleRead.setFactory(factory);
+		handleRead.setInputStream(new ByteArrayInputStream(bufferXml));
+		TGSongReaderImpl reader = new TGSongReaderImpl();
+		reader.readContent(handleRead, handleRead.getInputStream());
+		song = handleRead.getSong();
+		headers = song.getMeasureHeaders();
+		TGMeasureHeader header = null;
+		while (headers.hasNext()) {
+			header = headers.next();
+			assertEquals(header.isLineBreak(), (header.getNumber() == 5));
+		}
+		assertTrue(header.getNumber() > 5);
+	}
+	
 	private boolean validatesSchema(InputStream inputStream, boolean compressed) {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema = null;

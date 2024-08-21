@@ -192,6 +192,10 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			if (node != null) {
 				header.setTripletFeel(this.tripletsReadMap.get(node.getTextContent()));
 			}
+			// lineBreak
+			if (getChildNode(nodeMeasureHeader, TAG_LINE_BREAK) != null) {
+				header.setLineBreak(true);
+			}
 			// next measureHeader
 			song.addMeasureHeader(header);
 			headerStart += header.getLength();

@@ -180,6 +180,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (header.getTripletFeel() != TGMeasureHeader.TRIPLET_FEEL_NONE) {
 			this.addNode(nodeMeasureHeader, TAG_TRIPLET_FEEL, this.tripletsWriteMap.get(header.getTripletFeel()));
 		}
+		if (header.isLineBreak()) {
+			this.addNode(nodeMeasureHeader, TAG_LINE_BREAK);
+		}
 		this.addNode(nodeMeasureHeader, "measureHeaderExtension");
 	}
 	

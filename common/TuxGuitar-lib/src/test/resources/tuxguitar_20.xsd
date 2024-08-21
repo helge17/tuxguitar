@@ -170,6 +170,7 @@
       <xs:element name="repeatAlternative" type="repeatAlternativeType" minOccurs="0"/>
       <xs:element name="marker" type="markerType" minOccurs="0"/>
       <xs:element name="tripletFeel" type="tripletFeelType" minOccurs="0"/>
+      <xs:element name="lineBreak" minOccurs="0" maxOccurs="1"/>
       <xs:element name="measureHeaderExtension"/>
       <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
