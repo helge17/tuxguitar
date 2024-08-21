@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.test;
+package org.herac.tuxguitar.song.managers;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.managers.TGTrackManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVoice;
 
-public class TGTestAllocateNotesToStrings {
+public class TestAllocateNotesToStrings {
 	
 	private static final int MAX_FRET = 29;
 	

@@ -1,11 +1,10 @@
-package org.herac.tuxguitar.test;
+package org.herac.tuxguitar.util;
 
-import org.herac.tuxguitar.util.TGVersion;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TGTestVersion {
+public class TestVersion {
 	
 	private void assertIsInvalid(TGVersion version) {
 		assertEquals(0, version.getMajor());
