@@ -1,7 +1,7 @@
-TuxGuitar 9.99-SNAPSHOT changes:
+TuxGuitar 1.6.4 (2024-08-23) changes:
 
 * Fixed performance issue on newer Linux versions
-* Updated Polish translation
+* Updated Polish and Russian translation
 * Reworked duration and division menus
 * Reworked file open/save/import/export behaviour
 * Show dead note correctly in score
