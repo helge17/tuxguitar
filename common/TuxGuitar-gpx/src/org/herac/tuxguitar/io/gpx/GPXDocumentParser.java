@@ -22,6 +22,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -187,6 +188,16 @@ public class GPXDocumentParser {
 				}
 				tgMeasureHeader.getTempo().setValue( tgTempo );
 			}
+			
+			String markerText = mbar.getMarkerText();
+			if ((markerText != null) && !("".equals(markerText))) {
+				markerText = markerText.replace("\n", "");
+				TGMarker marker = this.factory.newMarker();
+				marker.setMeasure(tgMeasureHeader.getNumber());
+				marker.setTitle(markerText);
+				tgMeasureHeader.setMarker(marker);
+			}
+			
 			tgSong.addMeasureHeader(tgMeasureHeader);
 			
 			for( int t = 0 ; t < tgSong.countTracks() ; t ++ ){

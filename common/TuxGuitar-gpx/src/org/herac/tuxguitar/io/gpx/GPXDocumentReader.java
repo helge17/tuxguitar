@@ -271,6 +271,10 @@ public class GPXDocumentReader {
 					}
 
 					masterBar.setAlternateEndings(getChildNodeIntegerContentArray(masterBarNode, "AlternateEndings"));
+					Node sectionNode = getChildNode(masterBarNode, "Section");
+					if (sectionNode != null) {
+						masterBar.setMarkerText(getChildNodeContent(sectionNode, "Text"));
+					}
 
 					this.gpxDocument.getMasterBars().add( masterBar );
 				}
