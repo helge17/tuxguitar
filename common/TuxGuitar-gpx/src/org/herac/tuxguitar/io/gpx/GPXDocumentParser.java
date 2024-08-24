@@ -81,7 +81,7 @@ public class GPXDocumentParser {
 			GPXTrack gpTrack = (GPXTrack) this.document.getTracks().get(i);
 			
 			TGChannel tgChannel = this.factory.newChannel();
-			tgChannel.setBank( gpTrack.getGmChannel1() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+			tgChannel.setBank( gpTrack.getGmChannel1() == GPXDocument.DEFAULT_PERCUSSION_CHANNNEL ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 			tgChannel.setProgram( tgChannel.isPercussionChannel() ? (short) 0 : (short) gpTrack.getGmProgram());
 			
 			TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
@@ -90,7 +90,7 @@ public class GPXDocumentParser {
 			
 			TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
 			gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
-			gmChannel2Param.setValue(Integer.toString(gpTrack.getGmChannel1() != 9 ? gpTrack.getGmChannel2() : gpTrack.getGmChannel1()));
+			gmChannel2Param.setValue(Integer.toString(gpTrack.getGmChannel1() != GPXDocument.DEFAULT_PERCUSSION_CHANNNEL ? gpTrack.getGmChannel2() : gpTrack.getGmChannel1()));
 			
 			for( int c = 0 ; c < tgSong.countChannels() ; c ++ ){
 				TGChannel tgChannelAux = tgSong.getChannel(c);

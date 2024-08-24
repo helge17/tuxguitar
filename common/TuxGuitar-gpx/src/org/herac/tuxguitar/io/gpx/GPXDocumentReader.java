@@ -126,10 +126,12 @@ public class GPXDocumentReader {
 							track.setGmChannel2(getChildNodeIntegerContent(gmNode, "SecondaryChannel", this.getFreeGmChannel(track)));
 						}
 					} else if (this.version == GP7) {
+						int primaryChannel = -1;
+						int secondaryChannel = -1;
 						Node midiConnectionNode = getChildNode(trackNode, "MidiConnection");
 						if( midiConnectionNode != null ){
-							track.setGmChannel1(getChildNodeIntegerContent(midiConnectionNode, "PrimaryChannel", this.getFreeGmChannel(null)));
-							track.setGmChannel2(getChildNodeIntegerContent(midiConnectionNode, "SecondaryChannel", this.getFreeGmChannel(track)));
+							primaryChannel = getChildNodeIntegerContent(midiConnectionNode, "PrimaryChannel", -1);
+							secondaryChannel = getChildNodeIntegerContent(midiConnectionNode, "SecondaryChannel", -1);
 						}
 						NodeList soundsNodes = getChildNodeList(trackNode, "Sounds");
 						if( soundsNodes != null ){
@@ -142,6 +144,29 @@ public class GPXDocumentReader {
 									}
 								}
 							}
+						}
+						if ((primaryChannel >= 0) && (secondaryChannel >= 0)) {
+							track.setGmChannel1(primaryChannel);
+							track.setGmChannel2(secondaryChannel);
+						}
+						else {
+							// unusual .gp file, gm channels are not defined
+							// Need to guess if track is percussion or not
+							boolean isPercussion = false;
+							Node instrumentSetNode = getChildNode(trackNode, "InstrumentSet");
+							if (instrumentSetNode != null) {
+								isPercussion |= (getChildNodeContent(instrumentSetNode, "Name").toLowerCase().contains("drum"));
+								isPercussion |= (getChildNodeContent(instrumentSetNode, "Type").toLowerCase().contains("drum"));
+							}
+							isPercussion &= (track.getGmProgram() == 0);
+							if (isPercussion) {
+								track.setGmChannel1(GPXDocument.DEFAULT_PERCUSSION_CHANNNEL);
+								track.setGmChannel2(GPXDocument.DEFAULT_PERCUSSION_CHANNNEL);
+							} else {
+								track.setGmChannel1(this.getFreeGmChannel(null));
+								track.setGmChannel2(this.getFreeGmChannel(track));
+							}
+							
 						}
 					}
 					
@@ -582,7 +607,7 @@ public class GPXDocumentReader {
 			for (GPXTrack track : this.gpxDocument.getTracks()) {
 				isGmChannelUsed |= ((track.getGmChannel1() == gmChannel) || (track.getGmChannel2() == gmChannel));
 			}
-		} while (isGmChannelUsed);
+		} while (isGmChannelUsed || (gmChannel==GPXDocument.DEFAULT_PERCUSSION_CHANNNEL));
 
 		return gmChannel;
 	}
