@@ -1,12 +1,15 @@
-TuxGuitar 9.99-SNAPSHOT changes:
+TuxGuitar 1.6.4 (2024-08-23) changes:
 
 * Fixed performance issue on newer Linux versions
-* Updated Polish translation
+* Updated Polish and Russian translation
 * Reworked duration and division menus
+* Reworked file open/save/import/export behaviour
 * Show dead note correctly in score
 * The chord editor now considers the current key signature when opening
 * Fixed bug when switching between page and linear layout
 * Added a text filter in plugin list
+* Improved notes names display on fretboard
+* Configurable fretboard size
 * More small improvements and cleanups
 
 TuxGuitar 1.6.3 (2024-06-06) changes:

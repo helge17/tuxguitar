@@ -100,6 +100,8 @@ public class TGIconManager {
 	private UIImage fretboard;
 	private UIImage fretboardFirstFret;
 	private UIImage fretboardFret;
+	private UIImage fretboardSmaller;
+	private UIImage fretboardBigger;
 	private UIImage compositionTimeSignature;
 	private UIImage compositionTempo;
 	private UIImage compositionClef;
@@ -300,6 +302,8 @@ public class TGIconManager {
 		this.fretboard = loadIcon("fretboard.png");
 		this.fretboardFirstFret = loadIcon("firstfret.png");
 		this.fretboardFret = loadIcon("fret.png");
+		this.fretboardSmaller = loadIcon("fretboard_smaller.png");
+		this.fretboardBigger = loadIcon("fretboard_bigger.png");
 		this.chord = loadIcon("chord.png");
 		this.text = loadIcon("text.png");
 		this.noteTied = loadIcon("tiednote.png");
@@ -759,6 +763,14 @@ public class TGIconManager {
 
 	public UIImage getFretboardFret() {
 		return this.fretboardFret;
+	}
+
+	public UIImage getFretboardSmaller() {
+		return this.fretboardSmaller;
+	}
+
+	public UIImage getFretboardBigger() {
+		return this.fretboardBigger;
 	}
 
 	public UIImage getLayoutLinear() {

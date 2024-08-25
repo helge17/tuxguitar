@@ -39,7 +39,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GP5InputStream extends GTPInputStream {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 5", "audio/x-gtp", new String[]{"gp5"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 5", "application/x-gtp", new String[]{"gp5"});
 	
 	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
 		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v5.00", 0),

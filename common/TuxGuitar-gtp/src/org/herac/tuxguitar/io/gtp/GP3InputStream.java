@@ -36,7 +36,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
 
 public class GP3InputStream extends GTPInputStream {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 3", "audio/x-gtp", new String[]{"gp3"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 3", "application/x-gtp", new String[]{"gp3"});
 	
 	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
 		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v3.00", 0)

@@ -6,6 +6,8 @@ import java.util.List;
 
 public class GPXDocument {
 	
+	public static final int DEFAULT_PERCUSSION_CHANNNEL = 9;
+	
 	private GPXScore score;
 	private List<GPXTrack> tracks;
 	private List<GPXMasterBar> masterBars;

@@ -48,7 +48,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				
-				<data android:mimeType="audio/x-tuxguitar" />
+				<data android:mimeType="application/x-tuxguitar" />
 			</intent-filter>
 		</activity>
 	</application>

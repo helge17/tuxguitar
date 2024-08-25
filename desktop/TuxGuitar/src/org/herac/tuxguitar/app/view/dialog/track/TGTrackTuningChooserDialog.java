@@ -39,7 +39,7 @@ public class TGTrackTuningChooserDialog {
 		
 		// value
 		UILabel tuningValueLabel = uiFactory.createLabel(panel);
-		tuningValueLabel.setText(TuxGuitar.getProperty("tuning.value"));
+		tuningValueLabel.setText(TuxGuitar.getProperty("tuning.value") + ":");
 		panelLayout.set(tuningValueLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_RIGHT, false, true);
 		
 		final UIDropDownSelect<Integer> tuningValueControl = uiFactory.createDropDownSelect(panel);
@@ -54,7 +54,7 @@ public class TGTrackTuningChooserDialog {
 
 		// value spinner
 		UILabel tuningSpinnerLabel = uiFactory.createLabel(panel);
-		tuningSpinnerLabel.setText(TuxGuitar.getProperty("tuning.midi-note"));
+		tuningSpinnerLabel.setText(TuxGuitar.getProperty("tuning.midi-note") + ":");
 		panelLayout.set(tuningSpinnerLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_RIGHT, false, true);
 
 		final UISpinner tuningValueSpinner = uiFactory.createSpinner(panel);
@@ -65,7 +65,7 @@ public class TGTrackTuningChooserDialog {
 
 		// label
 		UILabel tuningLabelLabel = uiFactory.createLabel(panel);
-		tuningLabelLabel.setText(TuxGuitar.getProperty("tuning.label"));
+		tuningLabelLabel.setText(TuxGuitar.getProperty("tuning.label") + ":");
 		panelLayout.set(tuningLabelLabel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_RIGHT, false, true);
 		
 		final UIReadOnlyTextField tuningLabelControl = uiFactory.createReadOnlyTextField(panel);

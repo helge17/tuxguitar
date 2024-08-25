@@ -70,7 +70,7 @@ public class GP5OutputStream extends GTPOutputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 5", "audio/x-gtp", new String[]{"gp5"});
+		return new TGFileFormat("Guitar Pro 5", "application/x-gtp", new String[]{"gp5"});
 	}
 	
 	public void writeSong(TGSong song){

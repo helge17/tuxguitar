@@ -22,7 +22,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 
 public class PTInputStream implements TGSongReader{
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("PowerTab", "audio/x-ptb", new String[]{"ptb"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("PowerTab", "application/x-ptb", new String[]{"ptb"});
 	
 	private InputStream stream;
 	private PTSong song;

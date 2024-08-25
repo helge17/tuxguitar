@@ -22,8 +22,8 @@ public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 	public void update(TGContext context, TGActionContext actionContext) {
 		try {
 			String fileName = actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME);
-			// update document uri only if file was "saved", not "exported"
-			if( (fileName != null) && !Boolean.TRUE.equals(actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_FILE_EXPORT)) ) {
+			// update document uri only for native file format
+			if( (fileName != null) && Boolean.TRUE.equals(actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_NATIVE_FILE_FORMAT)) ) {
 				URI uri = new File(fileName).toURI();
 				URL url = uri.toURL();
 				

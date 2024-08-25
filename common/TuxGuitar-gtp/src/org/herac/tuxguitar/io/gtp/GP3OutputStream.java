@@ -42,7 +42,7 @@ public class GP3OutputStream extends GTPOutputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 3", "audio/x-gtp", new String[]{"gp3"});
+		return new TGFileFormat("Guitar Pro 3", "application/x-gtp", new String[]{"gp3"});
 	}
 	
 	public void writeSong(TGSong song) {
@@ -217,7 +217,7 @@ public class GP3OutputStream extends GTPOutputStream {
 		if (duration.isDotted() || duration.isDoubleDotted() ) {
 			flags |= 0x01;
 		}
-		if (!duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[0])) {
+		if (!duration.getDivision().isEqual(TGDivisionType.NORMAL)) {
 			flags |= 0x20;
 		}
 		if(beat.isTextBeat()){

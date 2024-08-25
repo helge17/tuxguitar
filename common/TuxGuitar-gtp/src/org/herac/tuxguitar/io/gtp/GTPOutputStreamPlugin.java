@@ -5,7 +5,7 @@ import org.herac.tuxguitar.io.plugin.TGSongWriterPlugin;
 public abstract class GTPOutputStreamPlugin extends TGSongWriterPlugin{
 	
 	public GTPOutputStreamPlugin(){
-		super(true);
+		super();
 	}
 	
 	public String getModuleId(){

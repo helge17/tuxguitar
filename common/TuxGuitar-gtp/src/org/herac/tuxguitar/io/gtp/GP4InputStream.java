@@ -39,7 +39,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class GP4InputStream extends GTPInputStream {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 4", "audio/x-gtp", new String[]{"gp4"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 4", "application/x-gtp", new String[]{"gp4"});
 	
 	public static final GTPFileFormatVersion[] SUPPORTED_VERSIONS = new GTPFileFormatVersion[] {
 		new GTPFileFormatVersion(FILE_FORMAT, "FICHIER GUITAR PRO v4.00", 0),

@@ -18,8 +18,7 @@ public class TGWriteFileAction extends TGActionBase {
 	public static final String NAME = "action.file.write";
 	
 	public static final String ATTRIBUTE_FILE_NAME = "fileName";
-	// file export: boolean attribute, set to true if writing to a non commonFileFormat
-	public static final String ATTRIBUTE_FILE_EXPORT = "fileExport";
+	public static final String ATTRIBUTE_NATIVE_FILE_FORMAT = "nativeFileFormat";
 	
 	public TGWriteFileAction(TGContext context) {
 		super(context, NAME);
@@ -32,7 +31,7 @@ public class TGWriteFileAction extends TGActionBase {
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, new FileOutputStream(new File(fileName)));
 			String formatCode = TGFileFormatUtils.getFileFormatCode(fileName);
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT_CODE, formatCode);
-			context.setAttribute(ATTRIBUTE_FILE_EXPORT, !TGFileFormatManager.getInstance(getContext()).isCommonWriteFileFormat(formatCode));
+			context.setAttribute(ATTRIBUTE_NATIVE_FILE_FORMAT, TGFileFormatManager.getInstance(getContext()).isNativeFileFormat(formatCode));
 			
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGWriteSongAction.NAME, context);

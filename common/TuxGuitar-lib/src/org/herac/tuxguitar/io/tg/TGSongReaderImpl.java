@@ -484,7 +484,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			readDivisionType(duration.getDivision());
 		}
 		else{
-			duration.getDivision().copyFrom(TGDivisionType.DIVISION_TYPES[0]);
+			duration.getDivision().copyFrom(TGDivisionType.NORMAL);
 		}
 	}
 	

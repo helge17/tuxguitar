@@ -16,12 +16,12 @@
 	<!-- <string name="global_error_message"></string> -->
 	<!-- <string name="global_exit_confirm_message"></string> -->
 
-	<string name="global_button_ok">Ок</string>
+	<string name="global_button_ok">ОК</string>
 	<string name="global_button_cancel">Отмена</string>
 	<string name="global_button_clean">Очистить</string>
 	<string name="global_button_add">Добавить</string>
 
-	<!-- <string name="global_spinner_select_option"></string> -->
+	<string name="global_spinner_select_option">-- Выбор --</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================== MENU =================================== -->
@@ -52,17 +52,17 @@
 	<string name="action_copy">Копировать</string>
 	<string name="action_paste">Вставить</string>
 
-	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_channel_list">Инструменты</string>
 	<string name="action_view_layout_show_score">Показать партитуру</string>
 	<string name="action_view_layout_show_chord_name">Показать названия аккордов</string>
 	<string name="action_view_layout_show_chord_diagram">Показать диаграммы аккордов</string>
 
 	<string name="action_transport_play">Проиграть мелодию</string>
 
-	<!-- <string name="action_go_up"></string> -->
-	<!-- <string name="action_go_down"></string> -->
-	<!-- <string name="action_go_left"></string> -->
-	<!-- <string name="action_go_right"></string> -->
+	<string name="action_go_up">Переместить курсор вверх</string>
+	<string name="action_go_down">Переместить курсор вниз</string>
+	<string name="action_go_left">Переместить курсор влево</string>
+	<string name="action_go_right">Переместить курсор вправо</string>
 
 	<string name="action_change_tempo">Изменить темп</string>
 	<string name="action_change_clef">Изменить ключ</string>
@@ -79,12 +79,12 @@
 	<string name="action_track_clone">Клонировать</string>
 	<string name="action_track_move_up">Переместить трек выше</string>
 	<string name="action_track_move_down">Переместить трек ниже</string>
-	<!-- <string name="action_track_change_mute"></string> -->
-	<!-- <string name="action_track_change_solo"></string> -->
+	<string name="action_track_change_mute">Установить трек как заглушённый</string>
+	<string name="action_track_change_solo">Установить трек как соло</string>
 	<string name="action_track_set_name">Имя</string>
 	<string name="action_track_set_channel">Инструмент</string>
 	<string name="action_track_change_tuning">Строй</string>
-	<!-- <string name="action_track_change_string_count"></string> -->
+	<string name="action_track_change_string_count">Количество линий</string>
 
 	<string name="action_measure_add">Добавить</string>
 	<string name="action_measure_clean">Очистить</string>
@@ -94,8 +94,8 @@
 	<string name="action_clean_beat">Очистить</string>
 	<string name="action_decrement_note_semitone">Уменьшить на полутон</string>
 	<string name="action_increment_note_semitone">Увеличить на полутон</string>
-	<!-- <string name="action_delete_note_or_rest"></string> -->
-	<!-- <string name="action_insert_rest_beat"></string> -->
+	<string name="action_delete_note_or_rest">Удалить ноту или паузу</string>
+	<string name="action_insert_rest_beat">Вставить долю паузы</string>
 	<string name="action_move_beats_left">Переместить на долю влево</string>
 	<string name="action_move_beats_right">Переместить на долю вправо</string>
 	<string name="action_remove_unused_voice">Удалить неиспользуемый голос</string>
@@ -116,18 +116,18 @@
 	<string name="action_set_duration_sixtyfourth">Шестьдесят четвертая</string>
 	<string name="action_set_duration_dotted">Точка</string>
 	<string name="action_set_duration_doubledotted">Двойная точка</string>
-	<string name="action_set_duration_division_type">Тип деления</string>
+	<string name="action_set_duration_division_type">Тип деления (n-оль)</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
-	<!-- <string name="action_set_duration_division_type_7"></string> -->
-	<!-- <string name="action_set_duration_division_type_9"></string> -->
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_1">-</string>
+	<string name="action_set_duration_division_type_3">3</string>
+	<string name="action_set_duration_division_type_5">5</string>
+	<string name="action_set_duration_division_type_6">6</string>
+	<string name="action_set_duration_division_type_7">7</string>
+	<string name="action_set_duration_division_type_9">9</string>
+	<string name="action_set_duration_division_type_10">10</string>
+	<string name="action_set_duration_division_type_11">11</string>
+	<string name="action_set_duration_division_type_12">12</string>
+	<string name="action_set_duration_division_type_13">13</string>
 
 	<string name="action_set_velocity_ppp">Максимально тихо</string>
 	<string name="action_set_velocity_pp">Очень тихо</string>
@@ -140,9 +140,9 @@
 
 	<string name="action_change_vibrato">Вибрато</string>
 	<string name="action_change_bend">Бэнд</string>
-	<string name="action_change_dead_note">Приглушенная нота</string>
+	<string name="action_change_dead_note">Приглушённая нота</string>
 	<string name="action_change_slide">Слайд</string>
-	<!-- <string name="action_change_hammer"></string> -->
+	<string name="action_change_hammer">Восходящее легато/Нисходящее легато </string>
 	<string name="action_change_tremolo_bar">Рычаг тремоло</string>
 	<string name="action_change_ghost_note">Нота-призрак</string>
 	<string name="action_change_accentuated_note">Акцентированная нота</string>
@@ -152,7 +152,7 @@
 	<string name="action_change_trill">Трель</string>
 	<string name="action_change_tremolo_picking">Тремоло медиатором</string>
 	<string name="action_change_palm_mute">Глушение ладонью</string>
-	<!-- <string name="action_change_let_ring"></string> -->
+	<string name="action_change_let_ring">Продолжение звучания</string>
 	<string name="action_change_staccato">Стаккато</string>
 	<string name="action_change_tapping">Тэппинг</string>
 	<string name="action_change_slapping">Слэп</string>
@@ -243,7 +243,7 @@
 	<!-- =================================================================== -->
 
 	<!-- Confirm dialog -->
-	<!-- <string name="confirm_dlg_title"></string> -->
+	<string name="confirm_dlg_title">Подтвердить</string>
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Изменить темп</string>
@@ -319,20 +319,20 @@
 
 	<!-- Track channel dialog -->
 	<string name="track_channel_dlg_channel_label">Инструмент:</string>
-	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+	<string name="track_channel_dlg_settings_label">Инструменты</string>
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Строй</string>
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_value_label">Значение:</string>
+	<string name="track_tuning_dlg_preview_label">Подпись:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Ошибка</string>
-	<!-- <string name="track_tuning_dlg_range_error"></string> -->
-	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->
+	<string name="track_tuning_dlg_range_error">Количество струн должно находиться в диапазоне от %1$d до %2$d</string>
+	<string name="track_tuning_dlg_empty_value_error">Значение не может быть пустым</string>
 
-	<!-- <string name="track_string_count_dlg_title"></string> -->
-	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+	<string name="track_string_count_dlg_title">Количество линий</string>
+	<string name="track_string_count_dlg_count_label">Количество линий:</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Добавить</string>
@@ -378,12 +378,12 @@
 	<!-- Tremolo Bar dialog -->
 	<string name="tremolo_bar_dlg_title">Рычаг тремоло</string>
 	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_dip"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_dive"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_release_up"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_release_down"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_inverted_dip"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_return"></string> -->
+	<string name="tremolo_bar_dlg_preset_dip">Дип</string>
+	<string name="tremolo_bar_dlg_preset_dive">Дайв</string>
+	<string name="tremolo_bar_dlg_preset_release_up">Отпустить вверх</string>
+	<string name="tremolo_bar_dlg_preset_release_down">Отпустить вниз</string>
+	<string name="tremolo_bar_dlg_preset_inverted_dip">Инвертированный дип</string>
+	<string name="tremolo_bar_dlg_preset_return">Вернуть</string>
 
 	<!-- Tremolo picking dialog -->
 	<string name="tremolo_picking_dlg_title">Тремоло медиатором</string>
@@ -401,7 +401,7 @@
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Форшлаг</string>
 	<string name="grace_dlg_fret_label">Лад:</string>
-	<string name="grace_dlg_dead_note_label">Приглушенная нота</string>
+	<string name="grace_dlg_dead_note_label">Приглушённая нота</string>
 	<string name="grace_dlg_position_label">Позиция</string>
 	<string name="grace_dlg_position_before_beat">До удара</string>
 	<string name="grace_dlg_position_on_beat">Во время удара</string>
@@ -445,16 +445,16 @@
 	<string name="stroke_dlg_duration_64">Шестьдесят четвертая</string>
 
 	<!-- Channels view -->
-	<!-- <string name="channel_list"></string> -->
+	<string name="channel_list">Инструменты</string>
 
 	<!-- Channel edit dialog -->
 	<string name="channel_edit_dlg_title">Инструмент</string>
 	<string name="channel_edit_dlg_name_label">Имя:</string>
-	<!-- <string name="channel_edit_dlg_program_label"></string> -->
+	<string name="channel_edit_dlg_program_label">Программа:</string>
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<string name="channel_edit_dlg_bank_label">Банк:</string>
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_percussion_label">Канал перкуссии</string>
 	<string name="channel_edit_dlg_volume_label">Громкость:</string>
 	<string name="channel_edit_dlg_balance_label">Баланс:</string>
 	<string name="channel_edit_dlg_chorus_label">Хорус:</string>
