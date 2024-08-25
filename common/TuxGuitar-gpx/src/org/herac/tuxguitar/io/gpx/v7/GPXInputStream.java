@@ -9,7 +9,7 @@ import org.herac.tuxguitar.io.gpx.GPXDocumentReader;
 
 public class GPXInputStream implements TGSongReader {
 	
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 7", "audio/x-gtp", new String[]{"gp"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Guitar Pro 7", "application/x-gtp", new String[]{"gp"});
 	
 	public TGFileFormat getFileFormat() {
 		return FILE_FORMAT;

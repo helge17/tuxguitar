@@ -50,6 +50,7 @@
 				<data android:pathPattern=".*\\.gpx" />
 				<data android:pathPattern=".*\\.gp" />
 				<data android:pathPattern=".*\\.ptb" />
+				<data android:pathPattern=".*\\.tef" />
 				<data android:pathPattern=".*\\.mid" />
 			</intent-filter>
 			
@@ -59,15 +60,16 @@
 				
 				<category android:name="android.intent.category.DEFAULT" />
 				
-				<data android:mimeType="audio/x-tuxguitar" />
-				<data android:mimeType="audio/x-tg" />
-				<data android:mimeType="audio/x-gtp" />
-				<data android:mimeType="audio/x-gp3" />
-				<data android:mimeType="audio/x-gp4" />
-				<data android:mimeType="audio/x-gp5" />
-				<data android:mimeType="audio/x-gpx" />
-				<data android:mimeType="audio/x-gp" />
-				<data android:mimeType="audio/x-ptb" />
+				<data android:mimeType="application/x-tuxguitar" />
+				<data android:mimeType="application/x-tg" />
+				<data android:mimeType="application/x-gtp" />
+				<data android:mimeType="application/x-gp3" />
+				<data android:mimeType="application/x-gp4" />
+				<data android:mimeType="application/x-gp5" />
+				<data android:mimeType="application/x-gpx" />
+				<data android:mimeType="application/x-gp" />
+				<data android:mimeType="application/x-ptb" />
+				<data android:mimeType="application/x-tef" />
 				<data android:mimeType="audio/x-midi" />
 				<data android:mimeType="audio/midi" />
 			</intent-filter>

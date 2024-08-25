@@ -8,7 +8,7 @@ public class TGStream {
 	
 	protected static final String TG_FORMAT_CODE = ("tg");
 	
-	protected static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 0.8", "audio/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
+	protected static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 0.8", "application/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
 	
 	protected static final int CHANNEL_SOLO = 0x01;
 	

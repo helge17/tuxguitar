@@ -10,7 +10,7 @@ public class LilypondSongWriterPlugin extends TGSongWriterPlugin {
 	public static final String MODULE_ID = "tuxguitar-lilypond";
 	
 	public LilypondSongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	public String getModuleId(){

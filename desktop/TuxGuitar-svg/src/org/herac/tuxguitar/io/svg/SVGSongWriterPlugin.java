@@ -10,7 +10,7 @@ public class SVGSongWriterPlugin extends TGSongWriterPlugin {
 	public static final String MODULE_ID = "tuxguitar-svg";
 	
 	public SVGSongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	public String getModuleId(){
