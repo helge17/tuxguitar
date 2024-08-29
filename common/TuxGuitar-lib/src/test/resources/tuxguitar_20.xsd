@@ -211,6 +211,7 @@
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>
+    <xs:attribute name="empty" type="xs:boolean"/>
   </xs:complexType>
 
   <xs:complexType name="pointsListType">

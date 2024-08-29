@@ -395,7 +395,7 @@ public class TestFileFormat20 {
 		assertFalse(voice.getDuration().isDoubleDotted());
 		assertEquals(TGDivisionType.DIVISION_TYPES[1].getEnters(), voice.getDuration().getDivision().getEnters());
 		assertEquals(TGDivisionType.DIVISION_TYPES[1].getTimes(), voice.getDuration().getDivision().getTimes());
-		assertFalse(voice.isEmpty());
+		assertTrue(voice.isEmpty());
 		
 		// track 1, other measures
 		for (int i=0; i<3; i++) {

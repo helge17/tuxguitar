@@ -282,6 +282,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.writeNote(note, previousNote, this.addNode(nodeVoice, TAG_NOTE));
 			previousNote = note;
 		}
+		if (voice.getNotes().size() == 0) {
+			this.addAttributeBool(nodeVoice, TAG_EMPTY, voice.isEmpty());
+		}
 		this.addNode(nodeVoice, "voiceExtension");
 	}
 	

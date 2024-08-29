@@ -336,7 +336,6 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 	
 	private void readVoices(TGBeat beat, Node nodeVoice) {
 		int index = 0;
-		boolean emptyVoices = true;
 		while (nodeVoice != null) {
 			TGVoice voice = beat.getVoice(index);
 			Node nodeDirection = nodeVoice.getAttributes().getNamedItem(TAG_DIRECTION);
@@ -356,20 +355,14 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 				voice.getDuration().getDivision().setTimes(readAttributeInt(nodeDivisionType, TAG_TIMES));
 			}
 			this.readNotes(voice, nodeVoice);
-			emptyVoices &= voice.isEmpty();
+			voice.setEmpty(voice.getNotes().size() == 0);
+			Node nodeEmpty = nodeVoice.getAttributes().getNamedItem(TAG_EMPTY);
+			if (nodeEmpty != null) {
+				voice.setEmpty("true".equals(nodeEmpty.getNodeValue()));
+			}
 			beat.setVoice(index, voice);
 			index++;
 			nodeVoice = getSiblingNode(nodeVoice.getNextSibling(), TAG_VOICE);
-		}
-		// empirical:
-		// - a voice with no note but "empty" attribute "false" corresponds to a displayed rest
-		// - so, empty beat is coded with voices without notes, but first voice has "empty" attribute false
-		if (emptyVoices) {
-			beat.getVoice(0).setEmpty(false);
-		} else {
-			for (int i=0; i<TGBeat.MAX_VOICES; i++) {
-				beat.getVoice(i).setEmpty(false);
-			}
 		}
 	}
 	

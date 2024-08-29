@@ -114,6 +114,7 @@ public class TGStream {
 	protected static final String TAG_DIVISIONTYPE = "divisionType";
 	protected static final String TAG_ENTERS = "enters";
 	protected static final String TAG_TIMES = "times";
+	protected static final String TAG_EMPTY = "empty";
 	protected static final String TAG_NOTE = "note";
 	protected static final String TAG_VELOCITY = "velocity";
 	protected static final String TAG_TIEDNOTE = "tiedNote";
