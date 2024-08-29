@@ -206,7 +206,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		}
 		Node nodeLyric = this.addNode(nodeTrack, TAG_TGLYRIC, track.getLyrics().getLyrics());
 		this.addAttributeInt(nodeLyric, TAG_FROM, track.getLyrics().getFrom());
-		// TODO measures
 		this.writeMeasures(track.getMeasures(), nodeTrack);
 		
 		this.addNode(nodeTrack, "trackExtension");
@@ -285,6 +284,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (voice.getNotes().size() == 0) {
 			this.addAttributeBool(nodeVoice, TAG_EMPTY, voice.isEmpty());
 		}
+		if (voice.getDirection() != TGVoice.DIRECTION_NONE) {
+			this.addAttribute(nodeVoice, TAG_DIRECTION, mapWriteDirection.get(voice.getDirection()));
+		}
 		this.addNode(nodeVoice, "voiceExtension");
 	}
 	
@@ -346,7 +348,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		}
 		this.addNode(nodeNote, "noteExtension");
 		this.addAttributeInt(nodeNote, TAG_VALUE, note.getValue());
-		// TODO velocity, requires precedingNote
 		this.addAttributeInt(nodeNote, TAG_STRING, note.getString());
 		if (note.isTiedNote()) {
 			this.addAttributeBool(nodeNote, TAG_TIEDNOTE, true);
