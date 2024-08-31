@@ -1,6 +1,5 @@
 package org.herac.tuxguitar.song.managers;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,16 +16,15 @@ public class TestAllocateNotesToStrings {
 	
 	private static final int MAX_FRET = 29;
 	
-	private static TGString stringE2;
-	private static TGString stringA2;
-	private static TGString stringD3;
-	private static TGString stringG3;
-	private static TGString stringB3;
-	private static TGString stringE4;
-	private static TGFactory factory;
+	private TGString stringE2;
+	private TGString stringA2;
+	private TGString stringD3;
+	private TGString stringG3;
+	private TGString stringB3;
+	private TGString stringE4;
+	private TGFactory factory;
 	
-	@BeforeAll
-	static void init() {
+	public TestAllocateNotesToStrings() {
 		factory = new TGFactory();
 		stringE2 = factory.newString();
 		stringE2.setValue(40);
@@ -40,11 +38,10 @@ public class TestAllocateNotesToStrings {
 		stringB3.setValue(59);
 		stringE4 = factory.newString();
 		stringE4.setValue(64);
-		
 	}
 	
 	@Test
-	public void move1note() {
+	public void testMove1note() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
 		
 		List<Integer> fromStrings = new ArrayList<Integer>();
@@ -70,7 +67,7 @@ public class TestAllocateNotesToStrings {
 	}
 
 	@Test
-	public void move1chord() {
+	public void testMove1chord() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
@@ -127,7 +124,7 @@ public class TestAllocateNotesToStrings {
 	}
 	
 	@Test
-	public void distributeNotes() {
+	public void testDistributeNotes() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
@@ -190,7 +187,7 @@ public class TestAllocateNotesToStrings {
 	}
 	
 	@Test
-	public void noTuningChange() {
+	public void testNoTuningChange() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
@@ -220,7 +217,7 @@ public class TestAllocateNotesToStrings {
 	}
 	
 	@Test
-	public void toTrackWithLessStrings() {
+	public void testToTrackWithLessStrings() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
