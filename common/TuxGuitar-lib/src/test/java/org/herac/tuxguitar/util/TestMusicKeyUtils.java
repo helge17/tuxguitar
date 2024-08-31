@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestMusicKeyUtils {
 
 	@Test
-	public void checkNotesNames() {
+	public void testCheckNotesNames() {
 		assertEquals("A",TGMusicKeyUtils.sharpNoteName(69));
 		assertEquals("A#",TGMusicKeyUtils.sharpNoteName(70));
 		assertEquals("A",TGMusicKeyUtils.sharpNoteName(81));
@@ -66,7 +66,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkNotesOctave() {
+	public void testCheckNotesOctave() {
 		assertEquals(3, TGMusicKeyUtils.noteOctave(59));
 		assertEquals(4, TGMusicKeyUtils.noteOctave(60));
 		assertEquals(4, TGMusicKeyUtils.noteOctave(71));
@@ -87,7 +87,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkNoteIsNatural() {
+	public void testCheckNoteIsNatural() {
 		assertTrue(TGMusicKeyUtils.isNaturalNote(60));
 		assertFalse(TGMusicKeyUtils.isNaturalNote(61));
 		assertTrue(TGMusicKeyUtils.isNaturalNote(62));
@@ -104,7 +104,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkNotesPosition() {
+	public void testCheckNotesPosition() {
 		
 		// D# or Eb?
 		// zero or more sharps -> D#
@@ -204,7 +204,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkNoteIndexToMidi(){
+	public void testCheckNoteIndexToMidi(){
 		// A4 -> 69, etc
 		assertEquals(69, TGMusicKeyUtils.midiNote(5,4));
 		assertEquals(60, TGMusicKeyUtils.midiNote(0,4));
@@ -216,7 +216,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkNoteIndexAlteration() {
+	public void testCheckNoteIndexAlteration() {
 		// all naturals, all sharps, all flats
 		for (int i=0; i<7; i++) {
 			assertEquals(TGMusicKeyUtils.NATURAL, TGMusicKeyUtils.noteIndexAlteration(i, 0));
@@ -236,7 +236,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkAlterations() {
+	public void testCheckAlterations() {
 		assertEquals(TGMusicKeyUtils.NATURAL, TGMusicKeyUtils.noteAlteration(60, 0));
 		for (int key=0; key<=7; key++) {
 			assertEquals(TGMusicKeyUtils.SHARP, TGMusicKeyUtils.noteAlteration(61, key));
@@ -260,7 +260,7 @@ public class TestMusicKeyUtils {
 	}
 	
 	@Test
-	public void checkAddInterval() {
+	public void testCheckAddInterval() {
 		// notes indexes (i.e. C, D, ... B)
 		assertEquals(2, TGMusicKeyUtils.noteIndexAddInterval(0, 2)); // C+2 = E
 		assertEquals(0, TGMusicKeyUtils.noteIndexAddInterval(0, 7)); // C+7 = C

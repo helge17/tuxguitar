@@ -63,7 +63,7 @@ public class TestFileFormat20 {
 	private static final String XSD_SCHEMA = "tuxguitar_20.xsd";
 	
 	@Test
-	void recognizeValidFile() throws FileNotFoundException {
+	public void testRecognizeValidFile() throws FileNotFoundException {
 		assertTrue(validatesSchema("Untitled_20.xml", false));
 		assertTrue(validatesSchema("Untitled_20.tg", true));
 		assertTrue(detectsFormat("Untitled_20.tg"));
@@ -73,14 +73,14 @@ public class TestFileFormat20 {
 	}
 	
 	@Test
-	void xmlCanBeExtended() throws FileNotFoundException {
+	public void testXmlCanBeExtended() throws FileNotFoundException {
 		assertTrue(validatesSchema("test_extended_21.xml", false));
 		assertTrue(validatesSchema("Untitled_extended_21.xml", false));
 		assertTrue(detectsFormat("Untitled_extended_21.tg"));
 	}
 	
 	@Test
-	void canOpenCompatibleExtendedFormat() throws IOException {
+	public void testCanOpenCompatibleExtendedFormat() throws IOException {
 		// compressed xml + version file
 		// check context attribute has been set to suggest app upgrade to user
 		TGSongReaderHandle  handle = readSong("Untitled_extended_21.tg", true);
@@ -89,7 +89,7 @@ public class TestFileFormat20 {
 	}
 	
 	@Test
-	void canOpenValidFile() throws IOException {
+	public void testCanOpenValidFile() throws IOException {
 		// test with expected format version, flag shall not be set
 		TGSongReaderHandle handle = readSong("Untitled_20.tg", true);
 		assertNotNull(handle.getSong());
@@ -97,7 +97,7 @@ public class TestFileFormat20 {
 	}
 	
 	@Test
-	void invalidFile() throws FileNotFoundException {
+	public void testInvalidFile() throws FileNotFoundException {
 		// invalid version
 		assertFalse(validatesSchema("Untitled_extended_30.tg", true));
 		
@@ -115,7 +115,7 @@ public class TestFileFormat20 {
 	}
 	
 	@Test
-	void newMajorVersionIsDetected () throws IOException {
+	public void testNewMajorVersionIsDetected () throws IOException {
 		// positive test: new major version detected
 		boolean exceptionCaught = false;
 		TGSongReaderHandle handle = new TGSongReaderHandle();
@@ -150,7 +150,7 @@ public class TestFileFormat20 {
 	
 	// manually written xml file to check syntax
 	@Test
-	void openValidXMLFile() throws IOException {
+	public void testOpenValidXMLFile() throws IOException {
 		TGSongReaderHandle handle = readSong("test_20.xml", false);
 		TGSong song = handle.getSong();
 		assertEquals("TGSong.name", song.getName());
@@ -434,7 +434,7 @@ public class TestFileFormat20 {
 	}
 
 	@Test
-	public void writtenFileValidatesSchema() throws FileNotFoundException, Throwable {
+	public void testWrittenFileValidatesSchema() throws FileNotFoundException, Throwable {
 		// without compression
 		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("Untitled_20.tg", false)), false));
 		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("reference_20.tg", false)), false));
@@ -447,7 +447,7 @@ public class TestFileFormat20 {
 	
 	// new feature introduced in format version 2.0
 	@Test
-	public void checkLineBreak() throws IOException {
+	public void testCheckLineBreak() throws IOException {
 		// read ref file (no line break)
 		TGSongReaderHandle handle = readSong("reference_20.tg", true);
 		TGSong song = handle.getSong();

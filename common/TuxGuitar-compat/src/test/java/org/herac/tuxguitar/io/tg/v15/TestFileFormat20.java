@@ -30,7 +30,7 @@ public class TestFileFormat20 {
 	 * version 1.6.3 introduced a modification (79512b9): keySignature is NOT stored for percussion tracks (meaningless) 
 	 * binary comparison between .tg files written by versions before and after 1.6.3 already fails
 	 */
-	public void fileFormatEquivalence() throws FileNotFoundException, Throwable {
+	public void testFileFormatEquivalence() throws FileNotFoundException, Throwable {
 		assertTrue(xmlFileIsEquivalent("Untitled_15.tg", false));
 		assertTrue(xmlFileIsEquivalent("Untitled_15.tg", true));
 		// "reference" file is a .tg file containing many (all?) different elements of a TuxGuitar file

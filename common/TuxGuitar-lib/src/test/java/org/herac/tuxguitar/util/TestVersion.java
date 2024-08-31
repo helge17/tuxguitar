@@ -13,7 +13,7 @@ public class TestVersion {
 	}
 	
 	@Test
-	public void versionFromString() {
+	public void testVersionFromString() {
 		TGVersion version = new TGVersion("1.2.3");
 		assertEquals(1, version.getMajor());
 		assertEquals(2, version.getMinor());
@@ -35,7 +35,7 @@ public class TestVersion {
 	}
 	
 	@Test
-	public void ordering() {
+	public void testOrdering() {
 		assertTrue(new TGVersion(1,2,3).compareTo(new TGVersion("")) > 0);
 		assertTrue(new TGVersion("").compareTo(new TGVersion(1,2,3)) < 0);
 
