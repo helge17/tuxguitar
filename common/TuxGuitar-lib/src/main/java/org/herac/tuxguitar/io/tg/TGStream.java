@@ -15,7 +15,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
-import org.apache.commons.io.IOUtils;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -333,13 +332,18 @@ public class TGStream {
 				if (zipEntry.getName().equals(fileNames[i])) {
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 					BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-					IOUtils.copy(zipInputStream, bufferedOutputStream);
+					byte[] bytes = new byte[1024];
+					int len;
+					while ((len = zipInputStream.read(bytes)) >= 0) {
+						bufferedOutputStream.write(bytes, 0, len);
+					}
 					bufferedOutputStream.flush();
 					byte buffer[] = outputStream.toByteArray();
 					streams[i] = new ByteArrayInputStream(buffer);
 				}
 			}
 		}
+		zipInputStream.close();
 		return streams;
 	}
 

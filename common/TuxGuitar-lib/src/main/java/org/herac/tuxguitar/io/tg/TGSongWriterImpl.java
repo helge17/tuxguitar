@@ -59,7 +59,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	@Override
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		this.writeXMLDocument(handle);
-		ArchiveOutputStream<ZipArchiveEntry> outputStream;
+		ArchiveOutputStream outputStream;
 		try {
 			outputStream = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, handle.getOutputStream());
 			// version

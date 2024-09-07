@@ -115,5 +115,5 @@ dependencies {
 	
 	implementation 'com.itextpdf:itextpdf:5.5.10'
 	implementation 'com.itextpdf.tool:xmlworker:1.1.1'
-	implementation 'org.apache.commons:commons-compress:1.26.0'
+	implementation 'org.apache.commons:commons-compress:1.5'
 }
