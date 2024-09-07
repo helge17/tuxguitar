@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WARNING THIS IS NOT A VALID SONG FILE
+     just a hand-written file to check xml syntax parsing
+     xml is supposed to be well-formed and to validate xsd schema,
+     but song parameters are not supposed to be consistent
+     there are notes on undefined strings, measures with invalid duration, etc.
+     -->
+<TuxGuitarFile>
+    <TGVersion major="2" minor="0" revision="0"/>
+
+    <TGSong>
+        <name>TGSong.name</name>
+        <artist>TGSong.artist</artist>
+        <album>TGSong.album</album>
+        <author>TGSong.author</author>
+        <date>TGSong.date</date>
+        <copyright>TGSong.copyright</copyright>
+        <writer>TGSong.writer</writer>
+        <transcriber>TGSong.transcriber</transcriber>
+        <comments>TGSong.comments</comments>
+        <TGChannel>
+            <id>1</id>
+            <bank>0</bank>
+            <program>25</program>
+            <volume>127</volume>
+            <balance>64</balance>
+            <chorus>10</chorus>
+            <reverb>20</reverb>
+            <phaser>30</phaser>
+            <tremolo>40</tremolo>
+            <name>ChannelName</name>
+            <TGChannelParameter key="param1.key" value="param1.value"/>
+            <TGChannelParameter key="param2.key" value="param2.value"/>
+            <channelExtension/>
+            <newChannelElement attr="a">aaa</newChannelElement>
+        </TGChannel>
+        <TGChannel>
+            <id>2</id>
+            <bank>0</bank>
+            <program>25</program>
+            <volume>127</volume>
+            <balance>64</balance>
+            <chorus>0</chorus>
+            <reverb>0</reverb>
+            <phaser>0</phaser>
+            <tremolo>0</tremolo>
+            <name>ChannelName2</name>
+            <channelExtension/>
+        </TGChannel>
+        <TGMeasureHeader>
+            <timeSignature numerator="3" denominator="8"/>
+            <tempo>110</tempo>
+            <repeatOpen/>
+            <measureHeaderExtension/>
+            <newMeasureHeaderElement>xxx</newMeasureHeaderElement>
+        </TGMeasureHeader>
+        <TGMeasureHeader>
+            <repeatAlternative>
+                <alternative>1</alternative>
+                <alternative>3</alternative>
+            </repeatAlternative>
+            <marker R="255" G="1" B="2">header2.marker</marker>
+            <measureHeaderExtension/>
+        </TGMeasureHeader>
+        <TGMeasureHeader>
+            <tempo>40</tempo>
+            <repeatClose>1</repeatClose>
+            <tripletFeel>eighth</tripletFeel>
+            <measureHeaderExtension/>
+        </TGMeasureHeader>
+        <TGMeasureHeader>
+            <measureHeaderExtension/>
+        </TGMeasureHeader>
+        <TGTrack>
+            <name>Track1.name</name>
+            <soloMute>solo</soloMute>
+            <channelId>1</channelId>
+            <offset>-1</offset>
+            <color R="10" G="20" B="30"/>
+            <TGString>200</TGString>
+            <TGString>100</TGString>
+            <TGString>50</TGString>
+            <TGLyric from="2">test lyrics</TGLyric>
+            <TGMeasure>
+                <clef>treble</clef>
+                <keySignature>8</keySignature>
+                <TGBeat>
+                    <start>960</start>
+                    <stroke direction="up" value="2"/>
+                    <chord>
+                        <name>Bm</name>
+                        <firstFret>2</firstFret>
+                        <string>2</string>
+                        <string>3</string>
+                        <string>4</string>
+                        <string>4</string>
+                        <string>2</string>
+                        <string/>
+                        <chordExtension/>
+                        <newChordElement attr="a">newChordElement</newChordElement>
+                    </chord>
+                    <text>Beat1.text</text>
+                    <voice direction="up">
+                        <duration value="8" dotted="doubleDotted"/>
+                        <note value="12" velocity="90" string="1">
+                            <vibrato/>
+                            <deadNote/>
+                            <ghostNote/>
+                            <noteExtension/>
+                            <newNoteElement/>
+                        </note>
+                        <note value="1" string="2" tiedNote="true">
+                            <heavyAccentuatedNote/>
+                            <noteExtension/>
+                        </note>
+                        <note value="3" string="3">
+                            <bend>
+                                <point position="1" value="2"/>
+                                <point position="3" value="4"/>
+                            </bend>
+                            <noteExtension/>
+                        </note>
+                        <note value="4" string="4">
+                            <tremoloBar>
+                                <point position="5" value="6"/>
+                                <point position="7" value="8"/>
+                            </tremoloBar>
+                            <noteExtension/>
+                        </note>
+                        <note value="5" string="5">
+                            <harmonic type="A.H" data="12"/>
+                            <noteExtension/>
+                        </note>
+                        <note value="6" string="6">
+                            <grace fret="5" duration="64" dynamic="50" transition="slide" onBeat="true" dead="false"/>
+                            <noteExtension/>
+                        </note>
+                        <voiceExtension/>
+                        <newVoiceElement/>
+                    </voice>
+                    <voice>
+                        <duration value="2">
+                            <divisionType enters="3" times="2"/>
+                        </duration>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                    <newBeatElement/>
+                    <newBeatElement/>
+                </TGBeat>
+                <measureExtension/>
+                <newMeasureElement attr="a">nme</newMeasureElement>
+            </TGMeasure>
+            <TGMeasure>
+                <TGBeat>
+                    <start>2000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <TGMeasure>
+                <TGBeat>
+                    <start>3000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <TGMeasure>
+                <TGBeat>
+                    <start>4000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <trackExtension/>
+            <newTrackElement>www</newTrackElement>
+            <anotherNewTrackElement>xxx</anotherNewTrackElement>
+        </TGTrack>
+        <TGTrack>
+            <name>Track2.name</name>
+            <channelId>2</channelId>
+            <color R="21" G="22" B="23"/>
+            <TGString>200</TGString>
+            <TGString>100</TGString>
+            <TGMeasure>
+                <clef>bass</clef>
+                <TGBeat>
+                    <start>5000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <note value="1" string="2">
+                            <trill fret="3" duration="32"/>
+                            <noteExtension/>
+                        </note>
+                        <note value="2" string="3">
+                            <tremoloPicking duration="16"/>
+                            <noteExtension/>
+                        </note>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <TGMeasure>
+                <TGBeat>
+                    <start>6000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <TGMeasure>
+                <TGBeat>
+                    <start>7000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <TGMeasure>
+                <TGBeat>
+                    <start>8000</start> <!-- warning, stub -->
+                    <voice>
+                        <duration value="8"/>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <trackExtension/>
+        </TGTrack>
+        <songExtension/>
+        <songExtension2 se2Attr="se2Attr">songExtension2</songExtension2>
+    </TGSong>
+
+</TuxGuitarFile>

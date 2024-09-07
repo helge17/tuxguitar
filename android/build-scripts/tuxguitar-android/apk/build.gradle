@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 
+// different path structure for the different plugins:
+
+// android-specific plugins
 def plugins = [
 	'TuxGuitar-android-gervill-plugin',
 	'TuxGuitar-android-midi-plugin',
 	'TuxGuitar-android-browser-saf-plugin',
 ]
-
+// plugins shared with desktop app, without unit tests
 def plugins_common = [
-		'TuxGuitar-compat',
 		'TuxGuitar-gtp',
 		'TuxGuitar-gpx',
 		'TuxGuitar-ptb',
@@ -15,7 +17,8 @@ def plugins_common = [
 		'TuxGuitar-lilypond',
 		'TuxGuitar-pdf',
 ]
-
+// plugins shared with desktop app, and including unit tests are handled on case-by-case basis
+// see below
 
 android {
 	compileSdkVersion 30
@@ -55,7 +58,7 @@ android {
 }
 
 task generateSources {
- 	// copy plugins to tmp folder
+ 	// copy android-specific plugins to tmp folder
 	plugins.each { String plugin ->
 		copy {
 			from '../../../' + plugin
@@ -64,6 +67,7 @@ task generateSources {
 			exclude '**/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin'
 		}
 	}
+	// copy to tmp folder plugins shared with desktop app, without unit tests
 	plugins_common.each { String plugin ->
 		copy {
 			from '../../../../common/' + plugin
@@ -72,15 +76,29 @@ task generateSources {
 			exclude '**/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin'
 		}
 	}
+	// specific case: plugin shared with desktop app, including unit tests
+	copy {
+		from '../../../../common/TuxGuitar-compat/share/META-INF/tuxguitar-compat.info'
+		into './build/generated/tuxguitar-android-apk-src/share/META-INF/'
+	}
+	copy {
+		from '../../../../common/TuxGuitar-compat/src/main/java'
+		into './build/generated/tuxguitar-android-apk-src/src'
+	}
 
 	// create unified /META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin file
 	List<String> fileNames = new ArrayList<String>()
+	// android-specific plugins
 	plugins.each { String plugin ->
 		fileNames.add('../../../' + plugin + '/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
 	}
+	// plugins shared with desktop app, without unit tests
 	plugins_common.each { String plugin ->
 		fileNames.add('../../../../common/' + plugin + '/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
 	}
+	// plugins shared with desktop app, and including unit tests
+	fileNames.add('../../../../common/TuxGuitar-compat/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin')
+
 	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/org.herac.tuxguitar.util.plugin.TGPlugin');
  	file.getParentFile().mkdirs()
  	file.text = files(fileNames).collect{it.getText()}.join("\n")

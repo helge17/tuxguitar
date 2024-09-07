@@ -22,6 +22,7 @@ public class TGConverter {
 	public static final int SLEEP_TIME = 20;
 	
 	public static final int FILE_OK = 250;
+	public static final int FILE_OK_NEW_VERSION = 251;
 	public static final int FILE_BAD = 403;
 	public static final int FILE_COULDNT_WRITE = 401;
 	public static final int FILE_NOT_FOUND = 404;
@@ -48,8 +49,8 @@ public class TGConverter {
 			
 			TGSongManager manager = new TGSongManager();
 			TGSong song = null;
+			TGSongReaderHandle tgSongLoaderHandle = new TGSongReaderHandle();
 			try {
-				TGSongReaderHandle tgSongLoaderHandle = new TGSongReaderHandle();
 				tgSongLoaderHandle.setFactory(manager.getFactory());
 				tgSongLoaderHandle.setInputStream(new FileInputStream(fileName));
 				tgSongLoaderHandle.setContext(new TGSongStreamContext());
@@ -78,8 +79,11 @@ public class TGConverter {
 						tgSongWriterHandle.setContext(new TGSongStreamContext());
 						TGFileFormatManager.getInstance(this.context).write(tgSongWriterHandle);
 					}
-					
-					this.getListener().notifyFileResult(convertFileName,FILE_OK);
+					if (tgSongLoaderHandle.isNewerFileFormatDetected()) {
+						this.getListener().notifyFileResult(convertFileName,FILE_OK_NEW_VERSION);
+					} else {
+						this.getListener().notifyFileResult(convertFileName,FILE_OK);
+					}
 				} catch (TGFileFormatException e) {
 					this.getListener().notifyFileResult(fileName,FILE_COULDNT_WRITE);
 				}

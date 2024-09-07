@@ -211,9 +211,12 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	}
 	
 	public void appendLogMessage(int result, String fileName) {
-		String message = (TuxGuitar.getProperty( "batch.converter.messages." + (result == TGConverter.FILE_OK ? "ok" : "failed") ) + EOL);
+		String message = (TuxGuitar.getProperty( "batch.converter.messages." + ((result == TGConverter.FILE_OK || result == TGConverter.FILE_OK_NEW_VERSION)? "ok" : "failed") ) + EOL);
 		
 		switch (result) {
+			case TGConverter.FILE_OK_NEW_VERSION :
+				message += ( TuxGuitar.getProperty("warning.new-minor-version") + EOL );
+			break;
 			case TGConverter.FILE_COULDNT_WRITE :
 				message += ( TuxGuitar.getProperty("batch.converter.messages.couldnt-write", new String[] {fileName}) + EOL );
 				break;

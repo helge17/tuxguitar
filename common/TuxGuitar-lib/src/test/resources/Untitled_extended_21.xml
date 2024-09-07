@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- manually generated file, to emulate a compatible upgrade of 2.0 file format -->
+<TuxGuitarFile>
+    <TGVersion major="2" minor="0" revision="0"/>
+    <TGSong>
+        <name/>
+        <artist/>
+        <album/>
+        <author/>
+        <date/>
+        <copyright/>
+        <writer/>
+        <transcriber/>
+        <comments/>
+        <TGChannel>
+            <id>1</id>
+            <bank>128</bank>
+            <program>0</program>
+            <volume>127</volume>
+            <balance>64</balance>
+            <chorus>0</chorus>
+            <reverb>0</reverb>
+            <phaser>0</phaser>
+            <tremolo>0</tremolo>
+            <name>DrumKit</name>
+            <channelExtension/>
+        </TGChannel>
+        <TGChannel>
+            <id>2</id>
+            <bank>0</bank>
+            <program>25</program>
+            <volume>127</volume>
+            <balance>64</balance>
+            <chorus>0</chorus>
+            <reverb>0</reverb>
+            <phaser>0</phaser>
+            <tremolo>0</tremolo>
+            <name>Steel String Acoustic Guitar 1</name>
+            <channelExtension/>
+        </TGChannel>
+        <TGMeasureHeader>
+            <timeSignature denominator="4" numerator="4"/>
+            <tempo>120</tempo>
+            <measureHeaderExtension/>
+        </TGMeasureHeader>
+        <TGTrack>
+            <name>Track 1</name>
+            <channelId>2</channelId>
+            <color B="0" G="0" R="255"/>
+            <TGString>64</TGString>
+            <TGString>59</TGString>
+            <TGString>55</TGString>
+            <TGString>50</TGString>
+            <TGString>45</TGString>
+            <TGString>40</TGString>
+            <TGLyric from="1"/>
+            <TGMeasure>
+                <clef>treble</clef>
+                <keySignature>0</keySignature>
+                <TGBeat>
+                    <start>960</start>
+                    <voice>
+                        <duration value="1">
+                            <divisionType enters="1" times="1"/>
+                        </duration>
+                        <voiceExtension/>
+                    </voice>
+                    <voice>
+                        <duration value="4">
+                            <divisionType enters="1" times="1"/>
+                        </duration>
+                        <voiceExtension/>
+                    </voice>
+                    <beatExtension/>
+                </TGBeat>
+                <measureExtension/>
+            </TGMeasure>
+            <trackExtension/>
+        </TGTrack>
+        <songExtension/>
+        <newSongElement>simulating compatible version update</newSongElement>
+        <songExtension/>
+    </TGSong>
+</TuxGuitarFile>
