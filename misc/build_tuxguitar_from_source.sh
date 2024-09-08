@@ -67,7 +67,7 @@ function usage {
 }
 
 # Current source version
-TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
+TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/main/java/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
 
 # Default build version
 TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-$GIT_BRANCH"
