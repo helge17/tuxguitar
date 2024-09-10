@@ -569,7 +569,7 @@ function copy_to_github {
       RELEASE_TYPE=--latest
     else
       echo "# Creating Github pre-release draft $TGVERSION ..."
-      REL_NOTES=$'**Warning:** This is a development snapshot and may not be stable.\n\n'
+      REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground. It uses a new file format which is still under development and cannot be read by older versions. We cannot guarantee that the files saved with this version are error-free and compatible with future TuxGuitar versions!\n\n'
       RELEASE_TYPE=--prerelease
     fi
     REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe MacOS package includes OpenJDK from brew.sh.'
