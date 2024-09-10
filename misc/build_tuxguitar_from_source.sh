@@ -39,8 +39,7 @@ function usage {
   echo "# -a     Build for Android"
   echo "# -A     Build for all"
   echo "#"
-  echo "# -g, -G Creates a new Github release and uploads the builds. The release will be marked as a"
-  echo "#        pre-release."
+  echo "# -g, -G Create a new Github release and upload the builds."
   echo "#        -g keeps the release in draft status after the upload. The draft won’t be seen by the"
   echo "#           public unless it is published manually, either in the Github web interface or with"
   echo "#           the command"
@@ -54,11 +53,13 @@ function usage {
   echo "# By default (without the -r option) the version of the build will be <YYYY-MM-DD>-<git-branch>,"
   echo "# currently that would be $TGVERSION. This string will be part of the archive and package"
   echo '# file names and shows up in the TuxGuitar "About" dialog and the help pages.'
+  echo '# The release will also be marked as a pre-release by default.'
   echo "#"
   echo "# -r <release>"
   echo "#        Sets the build version to the given <release> string, e.g. 1.6.0beta1."
   echo "#        If you use REL or the current source version $TGSRCVER as <release>, then a few"
-  echo '#        preliminary checks will be done before the build starts.'
+  echo '#        preliminary checks will be done before the build starts and the release will be'
+  echo '#        marked as latest release.'
   echo "#"
   echo "# -h     Display this help message and exit."
   echo "#"
@@ -128,6 +129,15 @@ function release_checks_before_prepare_source {
 
   echo -e "\n### Host: "`hostname -s`" ########### Building official release $TGVERSION, starting release checks ...\n"
 
+  echo -n "# Checking if local HEAD branch is master ... "
+  if [ "$GIT_BRANCH" == "master" ]; then
+    echo -e "OK.\n"
+  else
+    echo -e " no.\n\nHEAD branch is $GIT_BRANCH. Please switch local HEAD to master."
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  fi
+
   echo -n "# Checking newest entry in CHANGES file ... "
   if [ -n "$(head -1 CHANGES | grep "^TuxGuitar ${TGVERSION//\./\\\.} ([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) changes:$")" ]; then
     echo -e "found:"
@@ -145,8 +155,7 @@ function release_checks_before_prepare_source {
     grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html
     echo -e "# OK.\n"
   else
-    echo -e "not found:"
-    grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html
+    echo -e "not found."
     echo -e "\n### Aborting build.\n"
     exit 1
   fi
@@ -183,6 +192,18 @@ function release_checks_before_prepare_source {
     exit 1
   else
     echo -e "none found, OK.\n"
+  fi
+
+  echo "# Check for updated Android translations:"
+  $SCRIPT_DIR/messages_desktop_to_android.pl
+  if [ -n "$(git status --ignored=traditional --porcelain)" ]; then
+    echo -e "Android translations have changed:\n"
+    git status --ignored=traditional
+    echo -e "\nPlease commit the new translations."
+    echo -e "\n### Aborting build.\n"
+    exit 1
+  else
+    echo -e "Android translations are up to date, OK.\n"
   fi
 
   echo -e "\n### Host: "`hostname -s`" ########### Successfully finished release checks."
@@ -543,9 +564,16 @@ function copy_to_github {
   cd $SRC_DIR
 
   if [ -z "$(gh release list | grep "^$TGVERSION\s")" ]; then
-    echo "# Creating Github pre-release draft $TGVERSION ..."
-    REL_NOTES=$'The Windows packages include OpenJDK from portableapps.com.\nThe MacOS package includes OpenJDK from brew.sh.'
-    gh release create --prerelease --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
+    if [ $TGVERSION == $TGSRCVER ]; then
+      echo "# Creating Github latest release draft $TGVERSION ..."
+      RELEASE_TYPE=--latest
+    else
+      echo "# Creating Github pre-release draft $TGVERSION ..."
+      REL_NOTES=$'**Warning:** This is a development snapshot and may not be stable.\n\n'
+      RELEASE_TYPE=--prerelease
+    fi
+    REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe MacOS package includes OpenJDK from brew.sh.'
+    gh release create $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
     echo "# OK."
