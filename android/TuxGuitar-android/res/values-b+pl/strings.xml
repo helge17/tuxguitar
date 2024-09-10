@@ -57,7 +57,7 @@
 	<string name="action_view_layout_show_chord_name">Pokaż nazwy akordów</string>
 	<string name="action_view_layout_show_chord_diagram">Pokaż diagramy akordów</string>
 
-	<string name="action_transport_play">Odtwarzaj/zapauzuj utwór</string>
+	<string name="action_transport_play">Odtwarzaj/wstrzymaj utwór</string>
 
 	<string name="action_go_up">Przesuń kursor w górę</string>
 	<string name="action_go_down">Przesuń kursor w dół</string>
