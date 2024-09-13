@@ -18,6 +18,9 @@ def plugins_common = [
 
 
 android {
+
+	namespace = 'org.herac.tuxguitar.android.application'
+
 	compileSdkVersion 30
 	buildToolsVersion "30.0.3"
 
@@ -40,10 +43,6 @@ android {
 		release {
 			zipAlignEnabled true
 		}
-	}
-	
-	dexOptions {
-		additionalParameters=['--core-library']
 	}
 
 	sourceSets {

@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 
 android {
+
+	namespace = 'org.herac.tuxguitar.android'
+
 	compileSdkVersion 30
 	buildToolsVersion "30.0.3"
 
