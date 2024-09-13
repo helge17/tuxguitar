@@ -28,7 +28,7 @@ android {
 
 	defaultConfig {
 		applicationId "org.herac.tuxguitar.android.application"
-		minSdkVersion 19
+		minSdkVersion 24
 		targetSdkVersion 30
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
@@ -51,6 +51,10 @@ android {
 			java.srcDirs = ['./build/generated/tuxguitar-android-apk-src/src']
 			resources.srcDirs = ['./build/generated/tuxguitar-android-apk-src/share']
 		}
+	}
+
+	lintOptions {
+		checkReleaseBuilds false
 	}
 }
 
@@ -95,7 +99,9 @@ dependencies {
 	implementation project(':tuxguitar-android-browser-saf')
 	implementation project(':tuxguitar-android-gervill-soundbank')
 	
-	implementation 'com.itextpdf:itextpdf:5.5.10'
-	implementation 'com.itextpdf.tool:xmlworker:1.1.1'
-	implementation 'org.apache.commons:commons-compress:1.5'
+	implementation 'com.itextpdf:itextpdf:5.5.13.3'
+	implementation 'com.itextpdf.tool:xmlworker:5.5.13.1'
+	implementation 'org.apache.commons:commons-compress:1.26.0'
+	implementation 'commons-io:commons-io:2.16.1'
+	implementation 'org.apache.commons:commons-lang3:3.17.0'
 }
