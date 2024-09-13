@@ -32,7 +32,7 @@ android {
 	defaultConfig {
 		applicationId "org.herac.tuxguitar.android.application"
 		minSdkVersion 24
-		targetSdkVersion 30
+		targetSdkVersion 31
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
 		versionName "9.99-SNAPSHOT"
@@ -50,10 +50,6 @@ android {
 			java.srcDirs = ['./build/generated/tuxguitar-android-apk-src/src']
 			resources.srcDirs = ['./build/generated/tuxguitar-android-apk-src/share']
 		}
-	}
-
-	lintOptions {
-		checkReleaseBuilds false
 	}
 }
 
