@@ -535,6 +535,7 @@ public class MidiSequenceParser {
 					}
 					if(letRing && !letRingBeatChanged){
 						realDuration += ( voice.getDuration().getTime() );
+						lastEnd += voice.getDuration().getTime();
 					}
 					letRingBeatChanged = false;
 				}
