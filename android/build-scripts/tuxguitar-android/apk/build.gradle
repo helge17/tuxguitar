@@ -21,8 +21,7 @@ android {
 
 	namespace = 'org.herac.tuxguitar.android.application'
 
-	compileSdkVersion 30
-	buildToolsVersion "30.0.3"
+	compileSdkVersion 31
 
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_8
