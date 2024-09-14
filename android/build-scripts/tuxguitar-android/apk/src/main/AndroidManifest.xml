@@ -30,47 +30,84 @@
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
-				
 				<category android:name="android.intent.category.DEFAULT" />
-				
-				<data android:host="*" />
-				<data android:scheme="file" />
-				<data android:scheme="ftp" />
-				<data android:scheme="content" />
-				<data android:scheme="http" />
-				<data android:scheme="https" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<category android:name="android.intent.category.OPENABLE" />
 				<data android:mimeType="*/*" />
-				
-				<data android:pathPattern=".*\\.tg" />
-				<data android:pathPattern=".*\\.gtp" />
-				<data android:pathPattern=".*\\.gp3" />
-				<data android:pathPattern=".*\\.gp4" />
-				<data android:pathPattern=".*\\.gp5" />
-				<data android:pathPattern=".*\\.gpx" />
-				<data android:pathPattern=".*\\.gp" />
-				<data android:pathPattern=".*\\.ptb" />
-				<data android:pathPattern=".*\\.tef" />
-				<data android:pathPattern=".*\\.mid" />
-			</intent-filter>
-			
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<action android:name="android.intent.action.EDIT" />
-				
-				<category android:name="android.intent.category.DEFAULT" />
-				
+				<data android:scheme="content" />
+				<data android:scheme="file" />
+				<data android:host="*" />
+
 				<data android:mimeType="application/x-tuxguitar" />
-				<data android:mimeType="application/x-tg" />
+				<data android:pathPattern=".*\\.tg" />
+				<data android:pathPattern=".*\\..*\\.tg" />
+				<data android:pathPattern=".*\\..*\\..*\\.tg" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.tg" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.tg" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.tg" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.tg" />
+
 				<data android:mimeType="application/x-gtp" />
-				<data android:mimeType="application/x-gp3" />
-				<data android:mimeType="application/x-gp4" />
-				<data android:mimeType="application/x-gp5" />
-				<data android:mimeType="application/x-gpx" />
-				<data android:mimeType="application/x-gp" />
+				<data android:pathPattern=".*\\.gtp" />
+				<data android:pathPattern=".*\\..*\\.gtp" />
+				<data android:pathPattern=".*\\..*\\..*\\.gtp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.gtp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gtp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gtp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gtp" />
+				<data android:pathPattern=".*\\.gp3" />
+				<data android:pathPattern=".*\\..*\\.gp3" />
+				<data android:pathPattern=".*\\..*\\..*\\.gp3" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.gp3" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gp3" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gp3" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gp3" />
+				<data android:pathPattern=".*\\.gp4" />
+				<data android:pathPattern=".*\\..*\\.gp4" />
+				<data android:pathPattern=".*\\..*\\..*\\.gp4" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.gp4" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gp4" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gp4" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gp4" />
+				<data android:pathPattern=".*\\.gp5" />
+				<data android:pathPattern=".*\\..*\\.gp5" />
+				<data android:pathPattern=".*\\..*\\..*\\.gp5" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.gp5" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gp5" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gp5" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gp5" />
+				<data android:pathPattern=".*\\.gpx" />
+				<data android:pathPattern=".*\\..*\\.gpx" />
+				<data android:pathPattern=".*\\..*\\..*\\.gpx" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.gpx" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gpx" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gpx" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gpx" />
+				<data android:pathPattern=".*\\.gp" />
+				<data android:pathPattern=".*\\..*\\.gp" />
+				<data android:pathPattern=".*\\..*\\..*\\.gp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.gp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gp" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gp" />
+
 				<data android:mimeType="application/x-ptb" />
+				<data android:pathPattern=".*\\.ptb" />
+				<data android:pathPattern=".*\\..*\\.ptb" />
+				<data android:pathPattern=".*\\..*\\..*\\.ptb" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.ptb" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.ptb" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.ptb" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.ptb" />
+
 				<data android:mimeType="application/x-tef" />
-				<data android:mimeType="audio/x-midi" />
-				<data android:mimeType="audio/midi" />
+				<data android:pathPattern=".*\\.tef" />
+				<data android:pathPattern=".*\\..*\\.tef" />
+				<data android:pathPattern=".*\\..*\\..*\\.tef" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.tef" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.tef" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.tef" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.tef" />
 			</intent-filter>
 		</activity>
 	</application>
