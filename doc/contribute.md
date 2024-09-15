@@ -78,8 +78,19 @@ TuxGuitar provides Android and desktop applications:
 
 ### Android application
 
-TODO: this section needs to be completed.
-Android project can be opened with Android Studio. It is located here: [android/build-scripts/tuxguitar-android](../android/build-scripts/tuxguitar-android).
+This section was updated in September 2024. It describes how to import TuxGuitar project in Android Studio, in a Linux environment.
+
+- make sure you have a JDK for Java 11 installed. This is distribution-dependent, in my case I installed `java-11-openjdk-devel` package
+- download and install Android Studio. This section was written for Android Studio "Koala feature drop 2024.1.2"
+- from Android Studio, open project located here: [android/build-scripts/tuxguitar-android](../android/build-scripts/tuxguitar-android)
+- in menu File/Settings, select "Build, Execution, Deployment / Build Tools / Gradle". In field "Gradle JDK", select JDK 11 previously installed. If it isn't displayed in list, browse to the installation folder. Settings window should look like this:
+
+<img src="images/contribute/android-studio-settings.png" width="50%" alt="Android Studio, Gradle settings">
+
+- type OK
+- In menu "File", select "Sync Project with Gradle Files"
+
+Then you should be able to build and run application with dedicated buttons in toolbar.
 
 ### Desktop application
 
