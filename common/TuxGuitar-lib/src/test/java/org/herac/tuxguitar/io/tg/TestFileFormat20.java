@@ -518,7 +518,7 @@ public class TestFileFormat20 {
 		return detectsFormat(new FileInputStream(xml));
 	}
 	
-	private TGSongReaderHandle readSong(String resourceFileName, boolean compressed) throws IOException {
+	public TGSongReaderHandle readSong(String resourceFileName, boolean compressed) throws IOException {
 		TGSongReaderHandle handle = new TGSongReaderHandle();
 		handle.setContext(new TGSongStreamContext());
 		handle.setInputStream(getClass().getClassLoader().getResource(resourceFileName).openStream());
