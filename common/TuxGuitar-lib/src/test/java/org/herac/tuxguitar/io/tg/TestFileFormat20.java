@@ -448,6 +448,8 @@ public class TestFileFormat20 {
 	// new feature introduced in format version 2.0
 	@Test
 	public void testCheckLineBreak() throws IOException {
+		TGFactory factory = new TGFactory();
+		
 		// read ref file (no line break)
 		TGSongReaderHandle handle = readSong("reference_20.tg", true);
 		TGSong song = handle.getSong();
@@ -458,25 +460,11 @@ public class TestFileFormat20 {
 		// add one line break
 		song.getMeasureHeader(4).setLineBreak(true);
 		// save song under xml format in byte buffer
-		TGFactory factory = new TGFactory();
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		TGSongWriterHandle handleWrite = new TGSongWriterHandle();
-		handleWrite.setFactory(factory);
-		handleWrite.setSong(song);
-		handleWrite.setOutputStream(outputStream);
-		TGSongWriterImpl writer = new TGSongWriterImpl();
-		writer.writeContent(handleWrite);
-		// re-read
-		byte[] bufferXml = outputStream.toByteArray();
+		byte[] bufferXml = saveToXml(song, factory);
 		// check file validates xsd schema
 		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
-		// check lineBreak is here
-		TGSongReaderHandle handleRead = new TGSongReaderHandle();
-		handleRead.setFactory(factory);
-		handleRead.setInputStream(new ByteArrayInputStream(bufferXml));
-		TGSongReaderImpl reader = new TGSongReaderImpl();
-		reader.readContent(handleRead, handleRead.getInputStream());
-		song = handleRead.getSong();
+		// re-read, check lineBreak is here
+		song = readFromXml(bufferXml, factory);
 		headers = song.getMeasureHeaders();
 		TGMeasureHeader header = null;
 		while (headers.hasNext()) {
@@ -484,6 +472,46 @@ public class TestFileFormat20 {
 			assertEquals(header.isLineBreak(), (header.getNumber() == 5));
 		}
 		assertTrue(header.getNumber() > 5);
+	}
+	
+	@Test
+	public void testMaxFret() throws IOException {
+		TGFactory factory = new TGFactory();
+		TGSongReaderHandle handle = readSong("reference_20.tg", true);
+		TGSong song = handle.getSong();
+		assertEquals(TGTrack.DEFAULT_MAX_FRET, song.getTrack(0).getMaxFret());
+		assertEquals(TGTrack.DEFAULT_MAX_FRET, song.getTrack(2).getMaxFret());
+		song.getTrack(0).setMaxFret(TGTrack.DEFAULT_MAX_FRET+1);
+		song.getTrack(1).setMaxFret(TGTrack.DEFAULT_MAX_FRET+2); // shall be discarded: percussion track
+		song.getTrack(2).setMaxFret(TGTrack.DEFAULT_MAX_FRET+3);
+		// save, and re-read
+		byte[] bufferXml = saveToXml(song, factory);
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		song = readFromXml(bufferXml, factory);
+		assertEquals(TGTrack.DEFAULT_MAX_FRET+1, song.getTrack(0).getMaxFret());
+		assertEquals(TGTrack.DEFAULT_MAX_FRET, song.getTrack(1).getMaxFret());
+		assertEquals(TGTrack.DEFAULT_MAX_FRET+3, song.getTrack(2).getMaxFret());
+	}
+
+	
+	private byte[] saveToXml(TGSong song, TGFactory factory) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		TGSongWriterHandle handleWrite = new TGSongWriterHandle();
+		handleWrite.setFactory(factory);
+		handleWrite.setSong(song);
+		handleWrite.setOutputStream(outputStream);
+		TGSongWriterImpl writer = new TGSongWriterImpl();
+		writer.writeContent(handleWrite);
+		return outputStream.toByteArray();
+	}
+	
+	private TGSong readFromXml(byte[] bufferXml, TGFactory factory) {
+		TGSongReaderHandle handleRead = new TGSongReaderHandle();
+		handleRead.setFactory(factory);
+		handleRead.setInputStream(new ByteArrayInputStream(bufferXml));
+		TGSongReaderImpl reader = new TGSongReaderImpl();
+		reader.readContent(handleRead, handleRead.getInputStream());
+		return handleRead.getSong();
 	}
 	
 	private boolean validatesSchema(InputStream inputStream, boolean compressed) {

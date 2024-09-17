@@ -212,6 +212,10 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			TGTrack track = this.factory.newTrack();
 			track.setNumber(number);
 			track.setSong(song);
+			Node nodeMaxFret = nodeTrack.getAttributes().getNamedItem(TAG_MAXFRET);
+			if (nodeMaxFret!=null) {
+				track.setMaxFret(readInt(nodeMaxFret));
+			}
 			Node nodeElement = getChildNode(nodeTrack, TAG_NAME);
 			track.setName(nodeElement.getTextContent());
 			Node node = getSiblingNode(nodeElement, TAG_SOLOMUTE);
