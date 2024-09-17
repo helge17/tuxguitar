@@ -542,11 +542,10 @@ BUILD_ARCH=`dpkg --print-architecture`
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
 cd android/build-scripts/tuxguitar-android
 export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
-# Build did not work with the default Java version 17 from Debian 12 (Bookworm), but with Java 11 from Debian 11 (Bullseye)
 echo -e "\n# Executing gradlew:"
-JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$BUILD_ARCH ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
+./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
 echo -e "\n# Executing gradlew assembleRelease:"
-JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$BUILD_ARCH ./gradlew assembleRelease  # Build the APK
+./gradlew assembleRelease  # Build the APK
 cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
 cd $DIST_DIR
 cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
