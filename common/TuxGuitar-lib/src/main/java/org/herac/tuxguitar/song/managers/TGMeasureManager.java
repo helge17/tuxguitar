@@ -244,6 +244,30 @@ public class TGMeasureManager {
 		}
 	}
 	
+	public void removeNotesAfterFret(TGMeasure measure,int fret){
+		List<TGNote> notesToRemove = new ArrayList<TGNote>();
+		
+		Iterator<TGBeat> beats = measure.getBeats().iterator();
+		while(beats.hasNext()){
+			TGBeat beat = beats.next();
+			for(int v = 0; v < beat.countVoices(); v ++){
+				TGVoice voice = beat.getVoice( v );
+				Iterator<TGNote> notes = voice.getNotes().iterator();
+				while(notes.hasNext()){
+					TGNote note = notes.next();
+					if(note.getValue() > fret){
+						notesToRemove.add(note);
+					}
+				}
+			}
+		}
+		Iterator<TGNote> it = notesToRemove.iterator();
+		while(it.hasNext()){
+			TGNote note = it.next();
+			removeNote(note);
+		}
+	}
+	
 	/**
 	 * Retorna Todas las Notas en la posicion Start
 	 */

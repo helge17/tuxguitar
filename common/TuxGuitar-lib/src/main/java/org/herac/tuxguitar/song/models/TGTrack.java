@@ -19,7 +19,7 @@ public abstract class TGTrack {
 	public static final int MAX_OFFSET = 24;
 	public static final int MIN_OFFSET = -24;
 	
-	private final int MAX_FRET = 29;	// included
+	public static final int DEFAULT_MAX_FRET = 29;	// included
 	
 	private int number;
 	private int offset;
@@ -32,6 +32,7 @@ public abstract class TGTrack {
 	private TGColor color;
 	private TGLyric lyrics;
 	private TGSong song;
+	private int maxFret;
 	
 	public TGTrack(TGFactory factory) {
 		this.number = 0;
@@ -44,6 +45,7 @@ public abstract class TGTrack {
 		this.strings = new ArrayList<TGString>();
 		this.color = factory.newColor();
 		this.lyrics = factory.newLyric();
+		this.maxFret = DEFAULT_MAX_FRET;
 	}
 	
 	public int getNumber() {
@@ -73,6 +75,15 @@ public abstract class TGTrack {
 			return this.measures.get(index);
 		}
 		return null;
+	}
+	
+	public int getHighestFret() {
+		int highestFret = -1;
+		for (TGMeasure measure : this.measures) {
+			int measureHighestFret = measure.getHighestFret();
+			highestFret = (measureHighestFret > highestFret ? measureHighestFret : highestFret);
+		}
+		return highestFret;
 	}
 	
 	public void removeMeasure(int index){
@@ -175,8 +186,12 @@ public abstract class TGTrack {
 		this.song = song;
 	}
 	
+	public void setMaxFret(int maxFret) {
+		this.maxFret = maxFret;
+	}
+	
 	public int getMaxFret() {
-		return this.MAX_FRET; // yet always the default value, TODO: make it configurable
+		return this.maxFret;
 	}
 	
 	public void clear(){

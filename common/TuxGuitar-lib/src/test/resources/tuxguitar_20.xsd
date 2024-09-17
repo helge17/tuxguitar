@@ -343,6 +343,7 @@
       <xs:element name="trackExtension"/>
       <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
+    <xs:attribute name="maxFret" type="xs:positiveInteger"/>
   </xs:complexType>
 
   <xs:complexType name="measureType">

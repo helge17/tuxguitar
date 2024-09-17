@@ -5,9 +5,12 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.TGActionProcessorListener;
 import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
+import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
+import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
@@ -45,6 +48,7 @@ import org.herac.tuxguitar.ui.widget.UILegendPanel;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UIReadOnlyTextField;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
+import org.herac.tuxguitar.ui.widget.UISpinner;
 import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGMusicKeyUtils;
@@ -54,6 +58,8 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	private static final float MINIMUM_LEFT_CONTROLS_WIDTH = 180;
 	private static final float MINIMUM_BUTTON_WIDTH = 80;
 	private static final float MINIMUM_BUTTON_HEIGHT = 25;
+	private static final int MIN_MAXFRET_NUMER = 12;
+	private static final int MAX_MAXFRET_NUMBER = 39;
 	
 	private TGViewContext context;
 	private UIWindow dialog;
@@ -62,6 +68,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	private UIColor colorButtonBg;
 	private UIDropDownSelect<Integer> channelSelect;
 	private UIReadOnlyTextField tuningText;
+	private UISpinner maxFretNumber;
 	private TGProcess updateItemsProcess;
 	
 	public TGTrackPropertiesDialog(TGViewContext context) {
@@ -101,7 +108,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		});
 		this.dialog.addCloseListener(new UICloseListener() {
 			public void onClose(UICloseEvent event) {
-				TGTrackPropertiesDialog.this.updateTrackName();
+				TGTrackPropertiesDialog.this.updateTrackNameMaxfret();
 				TGTrackPropertiesDialog.this.dialog.dispose();
 			}
 		});
@@ -126,7 +133,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		this.nameText.setText(track.getName());
 		this.nameText.addFocusLostListener(new UIFocusLostListener() {
 			public void onFocusLost(UIFocusEvent event) {
-				TGTrackPropertiesDialog.this.updateTrackName();
+				TGTrackPropertiesDialog.this.updateTrackNameMaxfret();
 			}
 		});
 		
@@ -199,6 +206,18 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		tuningSettings.setToolTipText(TuxGuitar.getProperty("settings"));
 		tuningSettings.addSelectionListener(this.createOpenViewAction(TGOpenTrackTuningDialogAction.NAME));
 		legendLayout.set(tuningSettings, 4, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
+		
+		//-------------- max fret number ---------------
+		UILabel maxFretLabel = factory.createLabel(legendPanel);
+		maxFretLabel.setText(TuxGuitar.getProperty("track.maxFret") + ":");
+		legendLayout.set(maxFretLabel, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+
+		this.maxFretNumber = factory.createSpinner(legendPanel);
+		this.maxFretNumber.setMinimum(MIN_MAXFRET_NUMER);
+		this.maxFretNumber.setMaximum(MAX_MAXFRET_NUMBER);
+		this.maxFretNumber.setValue(track.getMaxFret());
+		legendLayout.set(this.maxFretNumber,5,2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+		
 	}
 	
 	public TGActionProcessorListener createOpenViewAction(String actionId) {
@@ -220,7 +239,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		buttonClose.setText(TuxGuitar.getProperty("close"));
 		buttonClose.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGTrackPropertiesDialog.this.updateTrackName();
+				TGTrackPropertiesDialog.this.updateTrackNameMaxfret();
 				TGTrackPropertiesDialog.this.dialog.dispose();
 			}
 		});
@@ -233,6 +252,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			this.updateChannelSelect();
 			this.updateTuningText();
 			this.updateColorButton();
+			this.updateMaxFretControl();
 		}
 	}
 	
@@ -285,13 +305,17 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		this.channelSelect.setIgnoreEvents(false);
 	}
 	
+	private void updateMaxFretControl() {
+		this.maxFretNumber.setVisible(!findTrack().isPercussion());
+	}
+	
 	private int getSelectedChannelId(){
 		Integer selectedValue = this.channelSelect.getSelectedValue();	
 		return (selectedValue != null ? selectedValue : -1);
 	}
 	
-	private void updateTrackName() {
-		this.updateTrackInfo(this.nameText.getText(), this.findTrack().getColor());
+	private void updateTrackNameMaxfret() {
+		this.updateTrackInfo(this.nameText.getText(), this.findTrack().getColor(), this.maxFretNumber.getValue());
 	}
 	
 	private void updateTrackColor(UIColorModel selection) {
@@ -300,21 +324,41 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		tgColor.setG(selection.getGreen());
 		tgColor.setB(selection.getBlue());
 		
-		this.updateTrackInfo(this.findTrack().getName(), tgColor);
+		this.updateTrackInfo(this.findTrack().getName(), tgColor, this.findTrack().getMaxFret());
 	}
 	
-	private void updateTrackInfo(String name, TGColor color) {
+	private void updateTrackInfo(String name, TGColor color, int maxFret) {
 		TGSong song = this.findSong();
 		TGTrack track = this.findTrack();
 		
-		if( this.hasInfoChanges(name, color) ){
+		if( this.hasInfoChanges(name, color, maxFret) ){
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGSetTrackInfoAction.NAME);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 			tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_NAME, name);
 			tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_COLOR, color);
 			tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_OFFSET, track.getOffset());
-			tgActionProcessor.process();
+			tgActionProcessor.setAttribute(TGSetTrackInfoAction.ATTRIBUTE_TRACK_MAXFRET, maxFret);
+			// checking if notes may be lost (reduction of maxFret)
+			if ((maxFret<track.getMaxFret()) && (maxFret<track.getHighestFret())) {
+				// warning dialog: OK/Cancel
+				TGActionProcessor tgActionProcessorConfirm = new TGActionProcessor(this.context.getContext(), TGOpenViewAction.NAME);
+				tgActionProcessorConfirm.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
+				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("track.confirm.reduce-fret-number", new String[] {String.valueOf(maxFret)}));
+				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_CANCEL);
+				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_CANCEL);
+				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, 
+						new Runnable() {
+							public void run() {
+								tgActionProcessor.process();
+							}
+						});
+				tgActionProcessorConfirm.process();
+			}
+			else {
+				// no risk to delete any note, just proceed
+				tgActionProcessor.process();
+			}
 		}
 	}
 	
@@ -334,12 +378,15 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		}
 	}
 	
-	private boolean hasInfoChanges(String name, TGColor color){
+	private boolean hasInfoChanges(String name, TGColor color, int maxFret){
 		TGTrack track = this.findTrack();
 		if(!name.equals(track.getName())){
 			return true;
 		}
 		if(!color.isEqual(track.getColor())){
+			return true;
+		}
+		if (maxFret != track.getMaxFret()) {
 			return true;
 		}
 		return false;

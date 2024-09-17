@@ -188,6 +188,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	
 	private void writeTrack(TGTrack track, Node nodeTrack) {
 		this.addNode(nodeTrack, TAG_NAME, track.getName());
+		if (!track.isPercussion()) {
+			this.addAttributeInt(nodeTrack, TAG_MAXFRET, track.getMaxFret());
+		}
 		if (track.isMute()) {
 			this.addNode(nodeTrack, TAG_SOLOMUTE, VAL_MUTE);
 		} else if (track.isSolo()) {

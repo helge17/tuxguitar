@@ -275,6 +275,11 @@ public class TGTrackManager {
 		track.setSolo(track.isMute() ? false : track.isSolo());
 	}
 	
+	public void changeInfo(TGTrack track,String name,TGColor color,int offset, int maxFret){
+		this.changeInfo(track, name, color, offset);
+		this.removeNotesAfterFret(track, maxFret);
+		track.setMaxFret(maxFret);
+	}
 	public void changeInfo(TGTrack track,String name,TGColor color,int offset){
 		track.setName(name);
 		track.setOffset(offset);
@@ -304,6 +309,14 @@ public class TGTrackManager {
 		while(it.hasNext()){
 			TGMeasure measure = (TGMeasure)it.next();
 			getSongManager().getMeasureManager().removeNotesAfterString(measure,string);
+		}
+	}
+	
+	public void removeNotesAfterFret(TGTrack track,int fret){
+		Iterator<TGMeasure> it = track.getMeasures();
+		while(it.hasNext()){
+			TGMeasure measure = (TGMeasure)it.next();
+			getSongManager().getMeasureManager().removeNotesAfterFret(measure,fret);
 		}
 	}
 	

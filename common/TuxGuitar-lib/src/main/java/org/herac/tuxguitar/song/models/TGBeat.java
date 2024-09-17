@@ -63,6 +63,15 @@ public abstract class TGBeat {
 		return null;
 	}
 	
+	public int getHighestFret() {
+		int highestFret = -1;
+		for (int i=0; i<this.countVoices(); i++) {
+			int voiceHighestFret = this.getVoice(i).getHighestFret(); 
+			highestFret = (voiceHighestFret > highestFret ? voiceHighestFret : highestFret);
+		}
+		return highestFret;
+	}
+	
 	public int countVoices(){
 		return this.voices.length;
 	}

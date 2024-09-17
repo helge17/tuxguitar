@@ -14,6 +14,7 @@ public class TGSetTrackInfoAction extends TGActionBase {
 	public static final String ATTRIBUTE_TRACK_NAME = "name";
 	public static final String ATTRIBUTE_TRACK_OFFSET = "offset";
 	public static final String ATTRIBUTE_TRACK_COLOR = "color";
+	public static final String ATTRIBUTE_TRACK_MAXFRET = "maxFret";
 	
 	public TGSetTrackInfoAction(TGContext context) {
 		super(context, NAME);
@@ -25,8 +26,13 @@ public class TGSetTrackInfoAction extends TGActionBase {
 			String name = ((String) context.getAttribute(ATTRIBUTE_TRACK_NAME));
 			Integer offset = ((Integer) context.getAttribute(ATTRIBUTE_TRACK_OFFSET));
 			TGColor color = ((TGColor) context.getAttribute(ATTRIBUTE_TRACK_COLOR));
+			Integer maxFret = (Integer) context.getAttribute(ATTRIBUTE_TRACK_MAXFRET);
 			
-			getSongManager(context).getTrackManager().changeInfo(track, name, color, offset);
+			if (maxFret == null) {
+				getSongManager(context).getTrackManager().changeInfo(track, name, color, offset);
+			} else {
+				getSongManager(context).getTrackManager().changeInfo(track, name, color, offset, maxFret);
+			}
 		}
 	}
 }

@@ -111,6 +111,14 @@ public abstract class TGVoice {
 		return this.notes.isEmpty();
 	}
 	
+	public int getHighestFret() {
+		int highestFret=-1;
+		for (TGNote note : this.notes) {
+			highestFret = (note.getValue() > highestFret ? note.getValue() : highestFret);
+		}
+		return highestFret;
+	}
+	
 	public TGVoice clone(TGFactory factory){
 		TGVoice voice = factory.newVoice(getIndex());
 		voice.setEmpty(isEmpty());
