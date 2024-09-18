@@ -425,7 +425,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGChangeTrackPropertiesAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		
 		//measure actions
-		this.map(TGToggleLineBreakAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGToggleLineBreakAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
 		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
