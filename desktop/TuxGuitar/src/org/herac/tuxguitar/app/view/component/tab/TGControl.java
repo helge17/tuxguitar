@@ -104,6 +104,7 @@ public class TGControl {
 	
 	public void paintTablature(UIPainter painter) {
 		boolean isPlaying;
+		boolean moved = false;
 		TGMeasureImpl playedMeasure = null;
 
 		this.painting = true;
@@ -127,6 +128,7 @@ public class TGControl {
 					if(this.tablature.getCaret().hasChanges()){
 						this.tablature.getCaret().setChanges(false);
 						this.moveTo(this.tablature.getCaret().getMeasure());
+						moved = true;
 					} else {
 						this.scrollX = this.hScroll.getValue();
 						this.scrollY = this.vScroll.getValue();
@@ -152,8 +154,9 @@ public class TGControl {
 				this.vScroll.setVisible(false);
 			} else {
 				this.updateScrollBars();
-				if (wasPlaying) {
-					// player just stopped, redefine scrollbars positions considering position where player stopped
+				if (wasPlaying || moved) {
+					// player just stopped, or caret moved
+					// redefine scrollbars positions considering current position
 					this.hScroll.setValue(this.scrollX);
 					this.vScroll.setValue(this.scrollY);
 				}
