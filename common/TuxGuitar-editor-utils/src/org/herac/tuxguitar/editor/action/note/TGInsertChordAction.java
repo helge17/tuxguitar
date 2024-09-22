@@ -33,25 +33,23 @@ public class TGInsertChordAction extends TGActionBase {
 		
 		boolean restBeat = beat.isRestBeat();
 		if(!restBeat || chord.countNotes() > 0 ) {
-			// Add the chord notes to the tablature if this is a "rest" beat
-			if( restBeat ){
+			// Replace voice notes with chord notes in the tablature
+			voice.clearNotes();
+			Iterator<TGString> it = track.getStrings().iterator();
+			while (it.hasNext()) {
+				TGString string = (TGString) it.next();
 				
-				Iterator<TGString> it = track.getStrings().iterator();
-				while (it.hasNext()) {
-					TGString string = (TGString) it.next();
+				int value = chord.getFretValue(string.getNumber() - 1);
+				if (value >= 0) {
+					TGNote note = songManager.getFactory().newNote();
+					note.setValue(value);
+					note.setVelocity(velocity);
+					note.setString(string.getNumber());
 					
-					int value = chord.getFretValue(string.getNumber() - 1);
-					if (value >= 0) {
-						TGNote note = songManager.getFactory().newNote();
-						note.setValue(value);
-						note.setVelocity(velocity);
-						note.setString(string.getNumber());
-						
-						TGDuration duration = songManager.getFactory().newDuration();
-						duration.copyFrom(voice.getDuration());
-						
-						songManager.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
-					}
+					TGDuration duration = songManager.getFactory().newDuration();
+					duration.copyFrom(voice.getDuration());
+					
+					songManager.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
 				}
 			}
 			
