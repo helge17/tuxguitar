@@ -199,6 +199,7 @@ public class TGControl {
 			}
 		} else {
 			this.hScroll.setVisible(false);
+			this.scrollX = 0;
 		}
 		int vMax = Math.max(Math.round(this.height - bounds.getHeight()), 0);
 		int vThumb = Math.round(bounds.getHeight());
@@ -212,6 +213,7 @@ public class TGControl {
 			}
 		} else {
 			this.vScroll.setVisible(false);
+			this.scrollY = 0;
 		}
 	}
 
