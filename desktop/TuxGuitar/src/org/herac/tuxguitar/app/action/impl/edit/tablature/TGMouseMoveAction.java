@@ -4,6 +4,7 @@ import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMouseMoveAction extends TGActionBase{
@@ -19,5 +20,8 @@ public class TGMouseMoveAction extends TGActionBase{
 		if( editorKit .updateSelectedMeasure(context) ) {
 			context.setAttribute(ATTRIBUTE_SUCCESS, true);
 		}
+		// do not update caret position when updating measures following this action
+		// else it would trigger an unexpected caret movement
+		context.setAttribute(TGUpdateMeasuresEvent.PROPERTY_UPDATE_CARET, Boolean.FALSE);
 	}
 }

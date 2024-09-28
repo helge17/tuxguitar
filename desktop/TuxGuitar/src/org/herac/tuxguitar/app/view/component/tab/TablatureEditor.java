@@ -10,6 +10,7 @@ import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.ui.menu.UIPopupMenu;
+import org.herac.tuxguitar.util.TGAbstractContext;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
@@ -56,7 +57,13 @@ public class TablatureEditor implements TGEventListener{
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.MEASURE_UPDATED ){
-			getTablature().updateMeasures((List<Integer>) event.getAttribute(TGUpdateMeasuresEvent.PROPERTY_MEASURE_NUMBERS));
+			Boolean updateCaret = true;
+			TGAbstractContext eventContext = event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
+			if (eventContext != null) {
+				// defaults to TRUE if undefined in event context
+				updateCaret = (!Boolean.FALSE.equals(eventContext.getAttribute(TGUpdateMeasuresEvent.PROPERTY_UPDATE_CARET)));
+			}
+			getTablature().updateMeasures((List<Integer>) event.getAttribute(TGUpdateMeasuresEvent.PROPERTY_MEASURE_NUMBERS), updateCaret);
 		} else if( type == TGUpdateEvent.SONG_UPDATED ){
 			getTablature().updateTablature();
 		} else if( type == TGUpdateEvent.SONG_LOADED ){

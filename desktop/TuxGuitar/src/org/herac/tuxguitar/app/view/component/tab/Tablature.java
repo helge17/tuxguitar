@@ -73,9 +73,11 @@ public class Tablature implements TGController {
 		this.disposeUnregisteredResources.process();
 	}
 	
-	public void updateMeasures(List<Integer> numbers){
+	public void updateMeasures(List<Integer> numbers, boolean updateCaret){
 		this.getViewLayout().updateMeasureNumbers(numbers);
-		this.getCaret().update();
+		if (!numbers.isEmpty() || updateCaret) {
+			this.getCaret().update();
+		}
 		this.disposeUnregisteredResources.process();
 	}
 	
