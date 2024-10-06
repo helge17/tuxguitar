@@ -470,6 +470,7 @@ public class TGTableViewer implements TGEventListener {
 				this.resetTexts = false;
 				this.getControl().layout();
 			}
+			this.table.getColumnCanvas().getControl().redraw();
 		}
 	}
 	
