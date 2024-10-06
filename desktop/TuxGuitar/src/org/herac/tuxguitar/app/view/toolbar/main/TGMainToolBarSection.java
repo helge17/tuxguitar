@@ -8,21 +8,25 @@ import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.toolbar.model.TGToolBarSection;
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.util.TGContext;
 
 public abstract class TGMainToolBarSection implements TGToolBarSection {
 	
 	private static final String SELECTED_CHAR = "\u2713";
 	
-	private TGMainToolBar toolBar;
+	private TGContext context;
+	private UIToolBar toolBar;
 	
-	public TGMainToolBarSection(TGMainToolBar toolBar) {
+	public TGMainToolBarSection(TGContext context, UIToolBar toolBar) {
+		this.context = context;
 		this.toolBar = toolBar;
 	}
 	
 	public abstract void createSection();
 	
 	public TGActionProcessorListener createActionProcessor(String actionId) {
-		return new TGActionProcessorListener(this.toolBar.getContext(), actionId);
+		return new TGActionProcessorListener(this.context, actionId);
 	}
 	
 	public String getText(String key) {
@@ -42,14 +46,19 @@ public abstract class TGMainToolBarSection implements TGToolBarSection {
 	}
 	
 	public Tablature getTablature() {
-		return TablatureEditor.getInstance(this.toolBar.getContext()).getTablature();
+		return TablatureEditor.getInstance(this.context).getTablature();
 	}
 	
 	public TGSong getSong() {
-		return TGDocumentManager.getInstance(this.toolBar.getContext()).getSong();
+		return TGDocumentManager.getInstance(this.context).getSong();
 	}
-
-	public TGMainToolBar getToolBar() {
+	
+	public TGContext getContext() {
+		return this.context;
+	}
+	
+	public UIToolBar getToolBar() {
 		return this.toolBar;
 	}
+
 }

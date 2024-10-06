@@ -3,6 +3,8 @@ package org.herac.tuxguitar.player.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.herac.tuxguitar.document.TGDocumentManager;
 import org.herac.tuxguitar.event.TGEventListener;
@@ -28,67 +30,41 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class MidiPlayer{
 	
 	public static final int MAX_VOLUME = 10;
-	
 	private static final long TIMER_DELAY = 10;
 	
 	private TGContext context;
-	
 	private MidiSequencer sequencer;
-	
 	private MidiSynthesizerProxy synthesizerProxy;
-	
 	private MidiChannelRouter channelRouter;
-	
 	private MidiTransmitter outputTransmitter;
-	
 	private MidiOutputPort outputPort;
-	
 	private MidiPlayerMode mode;
-	
 	private MidiPlayerCountDown countDown;
-	
 	private String sequencerKey;
-	
 	private String outputPortKey;
-	
 	private List<MidiOutputPortProvider> outputPortProviders;
-	
 	private List<MidiSequencerProvider> sequencerProviders;
-	
 	private int volume;
-	
 	private boolean running;
-	
 	private boolean paused;
-	
 	private boolean changeTickPosition;
-	
 	private boolean metronomeEnabled;
-	
 	private int metronomeTrack;
-	
 	private int infoTrack;
-	
 	private int loopSHeader;
-	
 	private int loopEHeader;
-	
 	private TGBeat selectionStartBeat;
 	private TGBeat selectionEndBeat;
 	private boolean isNewSelection;
 	private long startTick = TGDuration.QUARTER_TIME;
 	private Long selectionStartTick = null;
-	
 	private long loopSPosition;
-	
 	private boolean anySolo;
-	
 	protected long tickLength;
-	
 	protected long tickPosition;
-	
 	private boolean tryOpenFistDevice;
-	
+	private TreeMap<Long, Integer> tempoMap;	// ordered map of ticks where tempo changes
+	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (ms) where tempo changes, not considering tempo defined by player mode
 	protected TGLock lock;
 	
 	private MidiPlayer(TGContext context) {
@@ -98,6 +74,8 @@ public class MidiPlayer{
 		this.outputPortProviders = new ArrayList<MidiOutputPortProvider>();
 		this.sequencerProviders = new ArrayList<MidiSequencerProvider>();
 		this.tryOpenFistDevice = false;
+		this.tempoMap = new TreeMap<Long, Integer>();
+		this.timestampMap = new TreeMap<Long, Long>();
 		this.reset();
 	}
 	
@@ -510,6 +488,29 @@ public class MidiPlayer{
 		}
 	}
 	
+	public int getCurrentTempo() {
+		try {
+			this.lock();
+			Map.Entry<Long, Integer> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
+			return lastTempo.getValue() * getMode().getCurrentPercent()/100;
+		} finally {
+			this.unlock();
+		}
+	}
+	
+	// does not consider tempo alteration defined in player mode
+	public long getCurrentTimestamp() {
+		try {
+			this.lock();
+			Map.Entry<Long, Integer> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
+			Map.Entry<Long, Long> lastTimestamp = this.timestampMap.floorEntry(this.tickPosition);
+			long t = lastTimestamp.getValue();
+			return t + 60l*1000l*(this.tickPosition - lastTempo.getKey()) / TGDuration.QUARTER_TIME / lastTempo.getValue();
+		} finally {
+			this.unlock();
+		}
+	}
+	
 	protected void changeTickPosition(){
 		try {
 			this.lock();
@@ -546,6 +547,8 @@ public class MidiPlayer{
 			}
 			midiSequenceParser.setMetronomeChannelId(getPercussionChannelId());
 			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
+			this.tempoMap = midiSequenceParser.getTempoMap();
+			this.timestampMap = midiSequenceParser.getTimestampMap();
 			this.infoTrack = midiSequenceParser.getInfoTrack();
 			this.metronomeTrack = midiSequenceParser.getMetronomeTrack();
 		} catch (MidiPlayerException e) {

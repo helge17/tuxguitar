@@ -3,6 +3,8 @@ package org.herac.tuxguitar.player.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -51,6 +53,8 @@ public class MidiSequenceParser {
 	private int transpose;
 	private int sHeader;
 	private int eHeader;
+	private TreeMap<Long, Integer> tempoMap;	// ordered map of ticks where tempo changes
+	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (in ms) where tempo changes
 	
 	public MidiSequenceParser(TGSong song, TGSongManager songManager, int flags) {
 		this.song = song;
@@ -61,6 +65,8 @@ public class MidiSequenceParser {
 		this.sHeader = -1;
 		this.eHeader = -1;
 		this.firstTickMove = (int) ((flags & ADD_FIRST_TICK_MOVE) != 0 ? -TGDuration.QUARTER_TIME : 0);
+		this.tempoMap = new TreeMap<Long, Integer>();
+		this.timestampMap = new TreeMap<Long, Long>();
 	}
 	
 	public int getInfoTrack(){
@@ -69,6 +75,14 @@ public class MidiSequenceParser {
 	
 	public int getMetronomeTrack(){
 		return this.metronomeTrack;
+	}
+	
+	public TreeMap<Long, Integer> getTempoMap() {
+		return this.tempoMap;
+	}
+	
+	public TreeMap<Long, Long> getTimestampMap() {
+		return this.timestampMap;
 	}
 	
 	private long getTick(long tick){
@@ -493,8 +507,18 @@ public class MidiSequenceParser {
 			}
 		}
 		if (addTempo) {
+			long tick = getTick(currMeasure.getStart() + startMove);
 			int usq = (int)(currMeasure.getTempo().getInUSQ() * 100.00 / this.tempoPercent );
-			sh.getSequence().addTempoInUSQ(getTick(currMeasure.getStart() + startMove), getInfoTrack(), usq);
+			sh.getSequence().addTempoInUSQ(tick, getInfoTrack(), usq);
+			if (this.timestampMap.isEmpty()) {
+				this.timestampMap.put(tick, 0l);
+			} else {
+				long t = this.timestampMap.lastEntry().getValue();
+				Map.Entry<Long,Integer> lastTempoEntry = this.tempoMap.lastEntry();
+				t += 60l*1000l*(tick - lastTempoEntry.getKey()) / TGDuration.QUARTER_TIME / lastTempoEntry.getValue();
+				this.timestampMap.put(tick,t);
+			}
+			this.tempoMap.put(tick, currMeasure.getTempo().getValue());
 		}
 	}
 	

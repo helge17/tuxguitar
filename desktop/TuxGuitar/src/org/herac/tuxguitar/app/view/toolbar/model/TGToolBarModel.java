@@ -36,7 +36,7 @@ public abstract class TGToolBarModel implements TGEventListener {
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
 	
-	public void createSyncProcesses() {		
+	public void createSyncProcesses() {
 		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateItems();

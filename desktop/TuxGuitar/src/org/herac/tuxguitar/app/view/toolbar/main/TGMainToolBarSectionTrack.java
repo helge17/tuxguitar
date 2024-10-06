@@ -4,21 +4,23 @@ import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTrack extends TGMainToolBarSection {
 	
 	private UIToolActionItem add;
 	private UIToolActionItem remove;
 	
-	public TGMainToolBarSectionTrack(TGMainToolBar toolBar) {
-		super(toolBar);
+	public TGMainToolBarSectionTrack(TGContext context, UIToolBar toolBar) {
+		super(context, toolBar);
 	}
 	
 	public void createSection() {
-		this.add = this.getToolBar().getControl().createActionItem();
+		this.add = this.getToolBar().createActionItem();
 		this.add.addSelectionListener(this.createActionProcessor(TGAddNewTrackAction.NAME));
 		
-		this.remove = this.getToolBar().getControl().createActionItem();
+		this.remove = this.getToolBar().createActionItem();
 		this.remove.addSelectionListener(this.createActionProcessor(TGRemoveTrackAction.NAME));
 		
 		this.loadIcons();
@@ -36,7 +38,7 @@ public class TGMainToolBarSectionTrack extends TGMainToolBarSection {
 	}
 	
 	public void updateItems(){
-		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
+		boolean running = MidiPlayer.getInstance(this.getContext()).isRunning();
 		this.add.setEnabled(!running);
 		this.remove.setEnabled(!running);
 	}
