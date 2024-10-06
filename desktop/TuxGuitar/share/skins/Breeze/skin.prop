@@ -23,5 +23,5 @@
 #
 #widget.printPreview.backgroundColor=${uiWidgetBackground}
 #
-#widget.transport.backgroundColor=0,0,0
-#widget.transport.foregroundColor=0,0,128
+widget.transport.backgroundColor=0,0,0
+widget.transport.foregroundColor=240,240,240

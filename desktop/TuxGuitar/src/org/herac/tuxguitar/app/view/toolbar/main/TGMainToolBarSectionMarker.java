@@ -7,7 +7,9 @@ import org.herac.tuxguitar.app.action.impl.marker.TGGoPreviousMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionMarker extends TGMainToolBarSection {
 	
@@ -20,12 +22,12 @@ public class TGMainToolBarSectionMarker extends TGMainToolBarSection {
 	private UIMenuActionItem next;
 	private UIMenuActionItem last;
 	
-	public TGMainToolBarSectionMarker(TGMainToolBar toolBar) {
-		super(toolBar);
+	public TGMainToolBarSectionMarker(TGContext context, UIToolBar toolBar) {
+		super(context, toolBar);
 	}
 	
 	public void createSection() {
-		this.menuItem = this.getToolBar().getControl().createMenuItem();
+		this.menuItem = this.getToolBar().createMenuItem();
 		
 		//--ADD--
 		this.add = this.menuItem.getMenu().createActionItem();
