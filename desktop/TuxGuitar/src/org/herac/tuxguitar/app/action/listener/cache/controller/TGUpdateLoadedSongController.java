@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
@@ -13,7 +14,9 @@ import org.herac.tuxguitar.app.transport.TGTransport;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.app.view.main.TGWindow;
 import org.herac.tuxguitar.document.TGDocumentManager;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.player.base.MidiPlayer;
+import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 
@@ -60,6 +63,13 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
 			TablatureEditor.getInstance(context).getTablature().restoreStateFrom(document);
+			MidiPlayerMode restoredMode = document.getMidiPlayerMode();
+			if (restoredMode != null) {
+				TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGTransportModeAction.NAME);
+				tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_PLAYER_MODE, restoredMode);
+				tgActionProcessor.process();
+			}
+			
 			// ------------------------------------------------------ //
 			
 			// Ensure percussion channel, required for features like metronome and count down 
