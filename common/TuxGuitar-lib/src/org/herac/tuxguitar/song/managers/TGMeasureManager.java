@@ -2095,4 +2095,21 @@ public class TGMeasureManager {
 		}
 		return value;
 	}
+	
+	public void removeOverlappingRestBeats(TGMeasure measure) {
+		List<TGBeat> beatsToRemove = new ArrayList<TGBeat>();
+		for (TGBeat refBeat : measure.getBeats()) {
+			for (TGBeat beat : measure.getBeats()) {
+				if (beat.isRestBeat() && !refBeat.isRestBeat() && (!beatsToRemove.contains(beat)) 
+					&& (beat.getEnd() > refBeat.getStart()) && (beat.getStart() < refBeat.getEnd())) {
+						beatsToRemove.add(beat);
+				}
+			}
+		}
+		while (beatsToRemove.size()>0) {
+			this.removeBeat(beatsToRemove.get(0));
+			beatsToRemove.remove(0);
+		}
+
+	}
 }
