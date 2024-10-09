@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.graphics.control.TGDrumMap;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
@@ -201,27 +199,87 @@ public class TGTrackManager {
 			getSongManager().getMeasureManager().moveOutOfBoundsBeatsToNewMeasure(measure,false);
 		}
 	}
-
-	public List<TGBeat> addBeats(TGTrack track, TGStoredBeatList beats, long start) {
+	
+	public List<TGBeat> replaceBeats(TGTrack track, List<TGBeat> beatsToInsert, long start) {
+		// cannot just remove then insert beats: removing beats shifts left all following measures
+		// and this may break some structures (e.g. split notes over several measures)
+		// need to replace beats *in situ*
+		List<TGBeat> updatedBeats = new ArrayList<TGBeat>();
 		TGMeasureManager measureManager = getSongManager().getMeasureManager();
-		TGFactory factory = getSongManager().getFactory();
-		List<TGBeat> results = new ArrayList<>();
-		TGMeasure startMeasure = getMeasureAt(track, start);
-		for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
-			for (TGBeat beat : measureManager.getBeatsBeforeEnd(measure.getBeats(), start)) {
-				beat.setStart(beat.getStart() + beats.getLength());
+		
+		Long nextUpdateStart = start;	// start time of next available beat to update
+		for (TGBeat beatToInsert : beatsToInsert) {
+			TGBeat updatedBeat = null;
+			TGMeasure updatedMeasure = null;
+			if (nextUpdateStart != null) {
+				TGMeasure startMeasure = getMeasureAt(track, nextUpdateStart);
+				long updateStart = nextUpdateStart;
+				nextUpdateStart = null;
+				// make some room, to make sure beat update is safe (modification remains local)
+				long clearedTime = 0;
+				long neededClearTime = beatToInsert.getDurationTime();
+				boolean enoughRoomAvailable = false;
+				for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
+					if (!enoughRoomAvailable) {
+						for (TGBeat beat : measureManager.getBeatsBeforeEnd(measure.getBeats(), updateStart)) {
+							if (!enoughRoomAvailable) {
+								if (updatedBeat == null) {
+									// first beat cleared: update shall take place here
+									updatedBeat = beat;
+									updatedMeasure = measure;
+								}
+								for (int i=0; i<beat.countVoices(); i++) {
+									beat.getVoice(i).clearNotes();
+								}
+								clearedTime += beat.getShortestVoiceDurationTime();
+								enoughRoomAvailable = (clearedTime >= neededClearTime);
+							}
+						}
+					}
+				}
+				if (enoughRoomAvailable) {
+					// OK to update beat
+					for (int i=0; i<beatToInsert.countVoices(); i++) {
+						// Warning: after this, measure may be invalid
+						// Typically this can create overlapping beats
+						// This overlapping can only concern rest beat(s), since enough room was made available before doing this
+						measureManager.changeDuration(updatedMeasure, updatedBeat, beatToInsert.getVoice(i).getDuration(), i, true);
+					}
+					// replace all beat attributes, except start
+					long updatedStart = updatedBeat.getStart();
+					updatedBeat.copyFrom(beatToInsert, songManager.getFactory());
+					updatedBeat.setStart(updatedStart);
+					// now, some cleanup is needed in measure
+					measureManager.removeOverlappingRestBeats(updatedMeasure);
+					// recompute measure to consider new beat duration, this may split updated beat in several beats over measures boundaries
+					// this can create overlapping rest beats in following measure(s), or missing rest beats
+					// note: several following measures may be impacted (e.g. when inserting a whole in measure with time signature 1/4)
+					measureManager.moveOutOfBoundsBeatsToNewMeasure(updatedMeasure);
+					
+					updatedBeats.add(updatedBeat);
+					// look for next beat available for update
+					startMeasure = getMeasureAt(track, updatedBeat.getStart());
+					long expectedStart = updatedBeat.getStart() + beatToInsert.getShortestVoiceDurationTime();
+					boolean found=false;
+					for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
+						// need to cleanup measures following the updated one, possibly impacted by updated beat duration change
+						measureManager.autoCompleteSilences(measure);
+						measureManager.removeOverlappingRestBeats(measure);
+						if (!found) {
+							for (TGBeat beat : measureManager.getBeatsBeforeEnd(measure.getBeats(), updatedBeat.getStart())) {
+								if (beat.getStart() >= expectedStart) {
+									nextUpdateStart = beat.getStart();
+									found=true;
+									break;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
-		for (TGBeat beat : beats.getBeats()) {
-			TGBeat newBeat = beat.clone(factory);
-			newBeat.setStart(start + beat.getStart());
-		    measureManager.addBeat(startMeasure, newBeat);
-		    results.add(newBeat);
-		}
-        measureManager.orderBeats(startMeasure);
-		return results;
+		return updatedBeats;
 	}
-
 	
 	public void changeKeySignature(TGTrack track,long start,int keySignature,boolean toEnd){
 		changeKeySignature(track,getMeasureAt(track,start),keySignature,toEnd);

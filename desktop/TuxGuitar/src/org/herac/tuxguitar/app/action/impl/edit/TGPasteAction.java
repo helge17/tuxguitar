@@ -9,13 +9,16 @@ import org.herac.tuxguitar.app.view.component.tab.Selector;
 import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.note.TGMoveBeatsAction;
 import org.herac.tuxguitar.editor.clipboard.TGClipboard;
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
+import org.herac.tuxguitar.song.managers.TGMeasureManager;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.managers.TGTrackManager;
 import org.herac.tuxguitar.song.models.TGBeat;
+import org.herac.tuxguitar.song.models.TGMeasure;
+import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
@@ -32,7 +35,7 @@ public class TGPasteAction extends TGActionBase {
 		TGStoredBeatList beatList = TGClipboard.getInstance(this.getContext()).getBeats();
 		if (clipboard.getSegment() != null) {
 			TGActionManager.getInstance(this.getContext()).execute(TGOpenMeasurePasteDialogAction.NAME, tgActionContext);
-		} else if (beatList != null && beatList.getLength() > 0) {
+		} else if (beatList != null && beatList.getBeats().size() > 0) {
 			TGFactory factory = getSongManager(tgActionContext).getFactory();
 			TGSongManager songManager = this.getSongManager(tgActionContext);
 			TGTrackManager trackManager = songManager.getTrackManager();
@@ -41,22 +44,34 @@ public class TGPasteAction extends TGActionBase {
 			
 			// don't copy paste between percussion/non-percussion tracks
 			if (beatList.isPercussionTrack() == destTrack.isPercussion()) {
-				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-				tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, -beatList.getLength());
-				tgActionManager.execute(TGMoveBeatsAction.NAME, tgActionContext);
-				
 				// clone clipboard content before modifying it, so it can be re-pasted later
 				TGStoredBeatList beatsListToPaste = beatList.clone(factory);
 				// then adapt notes to destination track (tuning might differ from source track)
 				trackManager.allocateNotesToStrings(beatsListToPaste.getStringValues(), beatsListToPaste.getBeats(),
 						destTrack.getStrings(), destTrack.getMaxFret());
 				
-				// paste
-				List<TGBeat> newBeats = trackManager.addBeats(destTrack, beatsListToPaste, start.getStart());
-				trackManager.moveOutOfBoundsBeatsToNewMeasure(destTrack, start.getStart());
+				// replace beats at required position
+				List<TGBeat> newBeats = trackManager.replaceBeats(destTrack, beatsListToPaste.getBeats(), start.getStart());
+				
+				// need to add extra beats at the end? (e.g. when pasting at end of song)
+				if (beatsListToPaste.getBeats().size() > newBeats.size()) {
+					TGMeasureManager measureManager = songManager.getMeasureManager();
+					TGSong song = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+					TGMeasureHeader newHeader = songManager.addNewMeasureBeforeEnd(song);
+					TGMeasure newMeasure = destTrack.getMeasure(newHeader.getNumber()-1);
+					long beatStart = newHeader.getStart();
+					for (int i=newBeats.size(); i<beatsListToPaste.getBeats().size(); i++) {
+						TGBeat beatToInsert = beatsListToPaste.getBeats().get(i);
+						beatToInsert.setStart(beatStart);
+						beatStart += beatToInsert.getShortestVoiceDurationTime();
+						measureManager.addBeat(newMeasure, beatToInsert);
+						newBeats.add(beatToInsert);
+					}
+					trackManager.moveOutOfBoundsBeatsToNewMeasure(destTrack, newHeader.getStart());
+				}
 				
 				// re-select new beats
-				if (newBeats.size()>0)  {	// test is theoretically useless, just a precaution
+				if ((newBeats!=null) && (newBeats.size()>0))  {	// test is theoretically useless, just a precaution
 					Selector selector = TablatureEditor.getInstance(getContext()).getTablature().getSelector();
 					selector.initializeSelection(newBeats.get(0));
 					selector.updateSelection(newBeats.get(newBeats.size()-1));
