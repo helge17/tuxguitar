@@ -541,12 +541,12 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 	
 	// returns note accidental to display, considering key signature and preceding notes in measure
-	public int getNoteAccidental(int noteValue){
+	public int getNoteAccidental(int noteValue, boolean altEnharmonic){
 		if( noteValue >= 0 && noteValue < 128 ){
 			int keySignature = getKeySignature();
-			int noteIndex = TGMusicKeyUtils.noteIndex(noteValue, keySignature);
-			int octave = TGMusicKeyUtils.noteOctave(noteValue, keySignature);
-			int accidentalValue = TGMusicKeyUtils.noteAccidental(noteValue, keySignature);
+			int noteIndex = TGMusicKeyUtils.noteIndex(noteValue, keySignature, altEnharmonic);
+			int octave = TGMusicKeyUtils.noteOctave(noteValue, keySignature, altEnharmonic);
+			int accidentalValue = TGMusicKeyUtils.noteAccidental(noteValue, keySignature, altEnharmonic);
 			if (accidentalValue!=TGMusicKeyUtils.NONE && !this.registeredAccidentals[octave][noteIndex]) {
 				this.registeredAccidentals[octave][noteIndex] = true;
 				return accidentalValue;

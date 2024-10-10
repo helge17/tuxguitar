@@ -230,6 +230,7 @@ import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.editor.action.note.TGToggleNoteEnharmonicAction;
 import org.herac.tuxguitar.editor.action.song.TGClearSongAction;
 import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
 import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
@@ -400,6 +401,7 @@ public class TGActionInstaller {
 		for( int i = 0 ; i < 10 ; i ++ ){
 			installAction(new TGSetNoteFretNumberAction(context, i));
 		}
+		installAction(new TGToggleNoteEnharmonicAction(context));
 		
 		//effect actions
 		installAction(new TGChangeAccentuatedNoteAction(context));

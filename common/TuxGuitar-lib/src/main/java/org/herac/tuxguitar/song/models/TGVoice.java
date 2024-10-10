@@ -119,6 +119,12 @@ public abstract class TGVoice {
 		return highestFret;
 	}
 	
+	public void resetAltEnharmonic() {
+		for (TGNote note : this.notes) {
+			note.resetAltEnharmonic();
+		}
+	}
+	
 	public TGVoice clone(TGFactory factory){
 		TGVoice voice = factory.newVoice(getIndex());
 		voice.setEmpty(isEmpty());

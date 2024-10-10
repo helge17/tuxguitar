@@ -15,8 +15,8 @@ public class TGNotation {
 		}
 		int clefPosition = SCORE_CLEF_OFFSETS[note.getMeasureImpl().getClef() - 1];
 		int keySignature = note.getMeasureImpl().getKeySignature();
-		int noteIndex = TGMusicKeyUtils.noteIndex(noteValue, keySignature);
-		int noteOctave = TGMusicKeyUtils.noteOctave(noteValue, keySignature);
+		int noteIndex = TGMusicKeyUtils.noteIndex(noteValue, keySignature, note.isAltEnharmonic());
+		int noteOctave = TGMusicKeyUtils.noteOctave(noteValue, keySignature, note.isAltEnharmonic());
 		return (clefPosition - noteIndex - 7*noteOctave);
 	}
 }

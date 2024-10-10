@@ -10,6 +10,7 @@
 	<shortcut keys="7" action="action.note.general.set-fret-number-7"/>
 	<shortcut keys="8" action="action.note.general.set-fret-number-8"/>
 	<shortcut keys="9" action="action.note.general.set-fret-number-9"/>
+	<shortcut keys="e" action="action.note.general.toggle-enharmonic"/>
 	<shortcut keys="Del" action="action.beat.general.delete-note-or-rest"/>
 	<shortcut keys="Ins" action="action.beat.general.insert-rest"/>
 	<shortcut keys="+" action="action.note.duration.increment-duration"/>

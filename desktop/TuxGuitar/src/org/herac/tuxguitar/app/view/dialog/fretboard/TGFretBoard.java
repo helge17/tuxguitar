@@ -486,7 +486,7 @@ public class TGFretBoard {
 						
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNoteText(), this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature));
+							paintKeyText(painter,this.config.getColorNoteText(), this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
 						}
 						else{
 							paintKeyOval(painter,this.config.getColorNote(), x, y);

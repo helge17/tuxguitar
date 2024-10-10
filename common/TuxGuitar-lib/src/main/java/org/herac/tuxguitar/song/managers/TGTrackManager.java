@@ -233,6 +233,7 @@ public class TGTrackManager {
 	public void changeKeySignature(TGTrack track,TGMeasure measure,int keySignature,boolean toEnd){
 		//asigno el nuevo Key
 		measure.setKeySignature(keySignature);
+		measure.resetAltEnharmonic();
 		
 		if(toEnd){
 			List<TGMeasure> measures = getMeasuresBeforeEnd(track,measure.getStart() + 1);
@@ -240,6 +241,7 @@ public class TGTrackManager {
 			while(it.hasNext()){
 				TGMeasure nextMeasure = (TGMeasure)it.next();
 				nextMeasure.setKeySignature(keySignature);
+				nextMeasure.resetAltEnharmonic();
 			}
 		}
 	}

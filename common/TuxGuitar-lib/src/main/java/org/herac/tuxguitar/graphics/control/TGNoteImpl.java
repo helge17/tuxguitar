@@ -32,7 +32,7 @@ public class TGNoteImpl extends TGNote {
 	
 	public void update(TGLayout layout) {
 		if(!getMeasureImpl().getTrack().isPercussion()) {
-			this.accidental = getMeasureImpl().getNoteAccidental( layout.getSongManager().getMeasureManager().getRealNoteValue(this) );
+			this.accidental = getMeasureImpl().getNoteAccidental( layout.getSongManager().getMeasureManager().getRealNoteValue(this), this.isAltEnharmonic() );
 		}
 		
 		this.tabPosY = ( (getString() * layout.getStringSpacing()) - layout.getStringSpacing() );

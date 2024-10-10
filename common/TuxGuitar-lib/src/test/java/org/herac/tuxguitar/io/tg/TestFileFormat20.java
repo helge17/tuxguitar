@@ -493,6 +493,21 @@ public class TestFileFormat20 {
 		assertEquals(TGTrack.DEFAULT_MAX_FRET+3, song.getTrack(2).getMaxFret());
 	}
 
+	@Test
+	public void testAlternativeEnharmonic() throws IOException {
+		TGFactory factory = new TGFactory();
+		TGSongReaderHandle handle = readSong("reference_20.tg", true);
+		TGSong song = handle.getSong();
+		TGNote note = song.getTrack(0).getMeasure(1).getBeat(0).getVoice(0).getNote(0);
+		assertFalse(note.isAltEnharmonic());
+		note.toggleAltEnharmonic();
+		// save, and re-read
+		byte[] bufferXml = saveToXml(song, factory);
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		song = readFromXml(bufferXml, factory);
+		note = song.getTrack(0).getMeasure(1).getBeat(0).getVoice(0).getNote(0);
+		assertTrue(note.isAltEnharmonic());
+	}
 	
 	private byte[] saveToXml(TGSong song, TGFactory factory) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -349,6 +349,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			Node nodeTremoloPicking = this.addNode(nodeNote, TAG_TREMOLOPICKING);
 			this.addAttributeInt(nodeTremoloPicking, TAG_DURATION, effect.getTremoloPicking().getDuration().getValue());
 		}
+		if (note.isAltEnharmonic()) {
+			this.addNode(nodeNote, TAG_ALT_ENHARMONIC);
+		}
 		this.addNode(nodeNote, "noteExtension");
 		this.addAttributeInt(nodeNote, TAG_VALUE, note.getValue());
 		this.addAttributeInt(nodeNote, TAG_STRING, note.getString());

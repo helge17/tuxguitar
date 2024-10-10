@@ -156,6 +156,12 @@ public abstract class TGMeasure {
 		this.beats.clear();
 	}
 	
+	public void resetAltEnharmonic() {
+		for (TGBeat beat : this.beats) {
+			beat.resetAltEnharmonic();
+		}
+	}
+	
 	public void copyFrom(TGFactory factory, TGMeasure measure){
 		this.clef = measure.getClef();
 		this.keySignature = measure.getKeySignature();
