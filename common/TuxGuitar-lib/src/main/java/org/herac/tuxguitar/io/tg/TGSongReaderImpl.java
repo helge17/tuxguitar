@@ -426,6 +426,9 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			if (node != null) {
 				this.readTremoloPicking(note, node);
 			}
+			if (this.hasChild(nodeNote, TAG_ALT_ENHARMONIC)) {
+				note.toggleAltEnharmonic();
+			}
 			voice.addNote(note);
 			nodeNote = getSiblingNode(nodeNote.getNextSibling(), TAG_NOTE);
 		}

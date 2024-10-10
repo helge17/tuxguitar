@@ -139,6 +139,7 @@ public class TGStream {
 	protected static final String TAG_GRACE = "grace";
 	protected static final String TAG_TRILL = "trill";
 	protected static final String TAG_TREMOLOPICKING = "tremoloPicking";
+	protected static final String TAG_ALT_ENHARMONIC = "alternativeEnharmonic";
 	protected static final String TAG_POINT = "point";
 	protected static final String TAG_POSITION = "position";
 	protected static final String TAG_TYPE = "type";

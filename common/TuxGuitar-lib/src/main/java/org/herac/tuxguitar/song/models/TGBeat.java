@@ -124,6 +124,13 @@ public abstract class TGBeat {
 		return true;
 	}
 	
+	public void resetAltEnharmonic() {
+		for(int v = 0; v < this.countVoices() ; v ++ ){
+			TGVoice voice = this.getVoice( v );
+				voice.resetAltEnharmonic();
+		}
+	}
+	
 	public TGBeat clone(TGFactory factory){
 		TGBeat beat = factory.newBeat();
 		beat.setStart(getStart());

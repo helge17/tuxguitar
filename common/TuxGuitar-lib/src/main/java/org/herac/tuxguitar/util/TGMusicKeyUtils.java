@@ -189,6 +189,55 @@ public class TGMusicKeyUtils {
 		return NATURAL;
 	}
 	
+	// ----- note name and octave: considering keySignature and alternative enharmonic representation -------
+	
+	public static String noteName(int midiNote, int keySignature, boolean altEnharmonic) {
+		String normalName = noteName(midiNote, keySignature);
+		if (!altEnharmonic) return normalName;
+		String name = noteName(midiNote, 7);
+		if (!name.equals(normalName)) return name;
+		return noteName(midiNote, 14);
+	}
+	public static String noteShortName(int midiNote, int keySignature, boolean altEnharmonic) {
+		String normalShortName = noteShortName(midiNote, keySignature);
+		if (!altEnharmonic) return normalShortName;
+		String shortName = noteShortName(midiNote, 7);
+		if (!shortName.equals(normalShortName)) return shortName;
+		return noteShortName(midiNote, 14);
+	}
+	public static int noteOctave(int midiNote, int keySignature, boolean altEnharmonic) {
+		int normalOctave = noteOctave(midiNote, keySignature);
+		if (!altEnharmonic) return normalOctave;
+		int octave = noteOctave(midiNote, 7);
+		if (octave != normalOctave) return octave;
+		return noteOctave(midiNote,14);
+	}
+	public static int noteIndex(int midiNote, int keySignature, boolean altEnharmonic) {
+		int normalIndex = noteIndex(midiNote, keySignature);
+		if (!altEnharmonic) return normalIndex;
+		int index = noteIndex(midiNote, 7);
+		if (index != normalIndex) return index;
+		return noteIndex(midiNote, 14);
+	}
+	public static int noteAccidental(int midiNote, int keySignature, boolean altEnharmonic) {
+		int normalAccidental = noteAccidental(midiNote, keySignature);
+		if (!altEnharmonic) {
+			return normalAccidental;
+		}
+		int accidental;
+		int index = noteIndex(midiNote, keySignature);
+		if (noteIndex(midiNote,7) != index) {
+			accidental = noteAlteration(midiNote, 7);
+			return (accidental == NONE ? SHARP : accidental);
+		}
+		else if (noteIndex(midiNote,14) != index) {
+			accidental = noteAlteration(midiNote, 14);
+			return (accidental == NONE ? FLAT : accidental);
+		}
+		return normalAccidental;
+	}
+		
+		// ----- additions of offset -------
 	// addition of offset to note index, ex: C-1->B, C+1->D
 	public static int noteIndexAddInterval(int noteIndex, int offset) {
 		int index = (noteIndex + offset) % 7;

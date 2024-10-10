@@ -300,6 +300,7 @@
       <xs:element name="grace" type="graceType" minOccurs="0"/>
       <xs:element name="trill" type="trillType" minOccurs="0"/>
       <xs:element name="tremoloPicking" type="tremoloPickingType" minOccurs="0"/>
+      <xs:element name="alternativeEnharmonic" minOccurs="0"/>
       <xs:element name="noteExtension"/>
       <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>

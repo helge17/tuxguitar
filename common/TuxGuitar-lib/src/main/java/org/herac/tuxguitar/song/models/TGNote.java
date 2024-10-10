@@ -20,6 +20,7 @@ public abstract class TGNote implements Comparable<TGNote>{
 	private boolean tiedNote;
 	private TGNoteEffect effect;
 	private TGVoice voice;
+	private boolean altEnharmonic;	// set this to true to change enharmonic representation (e.g. to change A# into Bb)
 	
 	public TGNote(TGFactory factory) {
 		this.value = 0;
@@ -27,6 +28,7 @@ public abstract class TGNote implements Comparable<TGNote>{
 		this.string = 1;
 		this.tiedNote = false;
 		this.effect = factory.newEffect();
+		this.altEnharmonic = false;
 	}
 	
 	public int getValue() {
@@ -77,6 +79,18 @@ public abstract class TGNote implements Comparable<TGNote>{
 		this.voice = voice;
 	}
 	
+	public boolean isAltEnharmonic() {
+		return this.altEnharmonic;
+	}
+	
+	public void toggleAltEnharmonic() {
+		this.altEnharmonic = !this.altEnharmonic;
+	}
+	
+	public void resetAltEnharmonic() {
+		this.altEnharmonic = false;
+	}
+	
 	public TGNote clone(TGFactory factory){
 		TGNote note = factory.newNote();
 		note.setValue(getValue());
@@ -84,6 +98,7 @@ public abstract class TGNote implements Comparable<TGNote>{
 		note.setString(getString());
 		note.setTiedNote(isTiedNote());
 		note.setEffect(getEffect().clone(factory));
+		note.altEnharmonic = isAltEnharmonic();
 		return note;
 	}
 	
