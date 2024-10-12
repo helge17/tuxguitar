@@ -2,17 +2,19 @@ package org.herac.tuxguitar.app.view.toolbar.main;
 
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionComposition extends TGMainToolBarSection {
 	
 	private UIToolActionItem properties;
 	
-	public TGMainToolBarSectionComposition(TGMainToolBar toolBar) {
-		super(toolBar);
+	public TGMainToolBarSectionComposition(TGContext context, UIToolBar toolBar) {
+		super(context, toolBar);
 	}
 	
 	public void createSection() {
-		this.properties = this.getToolBar().getControl().createActionItem();
+		this.properties = this.getToolBar().createActionItem();
 		this.properties.addSelectionListener(this.createActionProcessor(TGOpenSongInfoDialogAction.NAME));
 		
 		this.loadIcons();
