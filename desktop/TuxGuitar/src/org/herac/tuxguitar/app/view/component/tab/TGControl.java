@@ -40,8 +40,15 @@ public class TGControl {
 	
 	private int scrollX;
 	private int scrollY;
-	protected long lastVScrollTime;
-	protected long lastHScrollTime;
+	private int lastScrollX;
+	private int lastScrollY;
+	private TGMeasureImpl lastPaintedPlayedMeasure = null;
+	private TGBeatImpl lastPaintedPLayedBeat = null;
+	private float lastCanvasWidth;
+	private float lastCanvasHeight;
+	private float lastScale;
+	private int lastLayoutStyle;
+	private int lastLayoutMode;
 	
 	private boolean painting;
 	private boolean wasPlaying;
@@ -110,13 +117,18 @@ public class TGControl {
 		this.painting = true;
 		try{
 			isPlaying = MidiPlayer.getInstance(this.context).isRunning();
-			int oldWidth = this.width;
-			int oldHeight = this.height;
+			float canvasWidth = this.canvas.getBounds().getWidth();
+			float canvasHeight = this.canvas.getBounds().getHeight();
+			float scale = this.tablature.getScale();
 			
 			// determine position in tab (which part shall be displayed): scroll x, y
 			if (isPlaying) {
 				playedMeasure = TGTransport.getInstance(this.context).getCache().getPlayMeasure();
-				if(playedMeasure != null && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
+				this.scrollX = this.hScroll.getValue();
+				this.scrollY = this.vScroll.getValue();
+				// if user did not move scrollbars, follow player
+				if ((this.scrollX==this.lastScrollX) && (this.scrollY==this.lastScrollY)
+						&& (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
 					moveTo(playedMeasure);
 				}
 			} else {
@@ -135,38 +147,50 @@ public class TGControl {
 					}
 				}
 			}
-			
-			this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
-			
-			this.width = Math.round(this.tablature.getViewLayout().getWidth());
-			this.height = Math.round(this.tablature.getViewLayout().getHeight());
+			// performance optimization: while playing, only paint full tablature when needed
+			// i.e. scrolled OR playedMeasure changed OR canvas size changed (window resized, track table visible state changed)
+			// OR zoom in/out OR changed layout
+			// else, painting only the playedMeasure is sufficient, don't repaint everything
+			if ((!isPlaying) || (this.scrollX!=this.lastScrollX) || (this.scrollY!=this.lastScrollY)
+					|| (playedMeasure!=this.lastPaintedPlayedMeasure)
+					|| (canvasWidth!=this.lastCanvasWidth) || (canvasHeight!=this.lastCanvasHeight)
+					|| (scale != this.lastScale) || (this.tablature.getViewLayout().getStyle() != this.lastLayoutStyle)
+					|| (this.tablature.getViewLayout().getMode() != this.lastLayoutMode)) {
+				this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
+				this.width = Math.round(this.tablature.getViewLayout().getWidth());
+				this.height = Math.round(this.tablature.getViewLayout().getHeight());
+				this.lastPaintedPlayedMeasure = playedMeasure;
+			}
 			
 			// highlight played beat
 			if ( (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())
 					&& !playedMeasure.isOutOfBounds() ){
 				TGBeatImpl playedBeat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
-				this.tablature.getViewLayout().paintPlayMode(painter, playedMeasure, playedBeat);
-			}
-			
-			// update scrollbars
-			if (isPlaying) {
-				this.hScroll.setVisible(false);
-				this.vScroll.setVisible(false);
-			} else {
-				this.updateScrollBars();
-				if (wasPlaying || moved) {
-					// player just stopped, or caret moved
-					// redefine scrollbars positions considering current position
-					this.hScroll.setValue(this.scrollX);
-					this.vScroll.setValue(this.scrollY);
+				if (playedBeat != lastPaintedPLayedBeat) {
+					this.tablature.getViewLayout().paintPlayMode(painter, playedMeasure, playedBeat);
+					this.lastPaintedPLayedBeat = playedBeat;
 				}
 			}
 			
-			// tab resized?
-			if ((this.width != oldWidth) || (this.height != oldHeight)) {
-				redraw();
+			// update scrollbars
+			this.updateScrollBars();
+			if (wasPlaying || moved) {
+				// player just stopped, or caret moved
+				// redefine scrollbars positions considering current position
+				this.hScroll.setValue(this.scrollX);
+				this.vScroll.setValue(this.scrollY);
 			}
-			
+			this.lastScale = scale;
+			this.lastCanvasWidth = canvasWidth;
+			this.lastCanvasHeight = canvasHeight;
+			this.lastScrollX = this.scrollX;
+			this.lastScrollY = this.scrollY;
+			if (!isPlaying ) {
+				this.lastPaintedPlayedMeasure = null;
+				this.lastPaintedPLayedBeat = null;
+			}
+			this.lastLayoutStyle = this.tablature.getViewLayout().getStyle();
+			this.lastLayoutMode = this.tablature.getViewLayout().getMode();
 			this.wasPlaying = isPlaying;
 			
 		}catch(Throwable throwable){
