@@ -188,7 +188,7 @@ public class TestLetRing {
 		List<NoteTiming> notes = new ArrayList<NoteTiming>();
 		int nEventNoteOn=0;
 		// look for 1st note of measure
-		MidiEvent eventNoteOn = this.events.getFirst();
+		MidiEvent eventNoteOn = this.events.get(0);
 		while ((nEventNoteOn < this.events.size()) && 
 				((eventNoteOn.getTick()<(getMeasureTick(nMeasure)) || (eventNoteOn.getType()!=MidiEvent.MIDI_EVENT_NOTEON))) ) {
 			nEventNoteOn ++;
