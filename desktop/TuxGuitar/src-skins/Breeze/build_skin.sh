@@ -111,6 +111,7 @@ declare -A ICONS=(
   ["$TG/effect_fade_in.svg"]="$S_ICON:effect_fade_in.png"
   ["$TG/stroke_up.svg"]="$S_ICON:stroke_up.png"
   ["$TG/stroke_down.svg"]="$S_ICON:stroke_down.png"
+  ["$TG/alt_enharmonic.svg"]="$S_ICON:alt_enharmonic.png"
   ["$DT/actions/22/configure.svg"]="$S_ICON:settings.png"
   ["$DT/actions/22/document-new.svg"]="$S_ICON:new.png"
   ["$DT/actions/22/document-open.svg"]="$S_ICON:open.png"

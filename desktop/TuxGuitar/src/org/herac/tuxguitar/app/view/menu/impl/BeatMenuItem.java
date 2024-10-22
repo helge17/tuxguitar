@@ -228,6 +228,6 @@ public class BeatMenuItem extends TGMenuItem {
 		this.insertText.setImage(TuxGuitar.getInstance().getIconManager().getText());
 		this.strokeUp.setImage(TuxGuitar.getInstance().getIconManager().getStrokeUp());
 		this.strokeDown.setImage(TuxGuitar.getInstance().getIconManager().getStrokeDown());
-		this.altEnharmonic.setImage(TuxGuitar.getInstance().getIconManager().getCompositionKeySignature());
+		this.altEnharmonic.setImage(TuxGuitar.getInstance().getIconManager().getAltEnharmonic());
 	}
 }

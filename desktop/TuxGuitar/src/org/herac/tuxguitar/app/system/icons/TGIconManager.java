@@ -21,6 +21,7 @@ public class TGIconManager {
 	private Map<String, TGIconTheme> themeCache;
 
 	private UIImage[] durations;
+	private UIImage altEnharmonic;
 	private UIImage editCut;
 	private UIImage editCopy;
 	private UIImage editPaste;
@@ -392,6 +393,7 @@ public class TGIconManager {
 		this.statusInfo = loadIcon("status_info.png");
 		this.strokeUp = loadIcon("stroke_up.png");
 		this.strokeDown = loadIcon("stroke_down.png");
+		this.altEnharmonic = loadIcon("alt_enharmonic.png");
 		this.settings = loadIcon("settings.png");
 		this.toolbarMain = loadIcon("toolbar_main.png");
 		this.toolbarEdit = loadIcon("toolbar_edit.png");
@@ -1059,6 +1061,10 @@ public class TGIconManager {
 
 	public UIImage getStrokeDown() {
 		return this.strokeDown;
+	}
+
+	public UIImage getAltEnharmonic() {
+		return this.altEnharmonic;
 	}
 
 	public UIImage getSettings() {
