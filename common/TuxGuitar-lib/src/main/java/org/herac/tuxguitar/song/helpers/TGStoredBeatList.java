@@ -9,7 +9,6 @@ import java.util.List;
 
 public class TGStoredBeatList {
 	private List<TGBeat> beats;
-	private long length = 0;
 	private List<Integer> stringValues;
 	private boolean isPercussionTrack;
 	
@@ -23,7 +22,6 @@ public class TGStoredBeatList {
 			beat = beat.clone(factory);
 			beat.setStart(beat.getStart() - first);
 			beat.setMeasure(null);
-			this.length += beat.getVoice(0).getDuration().getTime();
 			this.beats.add(beat);
 		}
 		this.stringValues = new ArrayList<Integer>();
@@ -37,9 +35,6 @@ public class TGStoredBeatList {
 	
 	public List<TGBeat> getBeats() {
 		return beats;
-	}
-	public long getLength() {
-		return length;
 	}
 	
 	public List<Integer> getStringValues() {

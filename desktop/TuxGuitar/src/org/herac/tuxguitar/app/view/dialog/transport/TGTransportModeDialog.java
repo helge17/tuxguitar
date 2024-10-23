@@ -6,6 +6,8 @@ import java.util.List;
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
+import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
@@ -267,15 +269,22 @@ public class TGTransportModeDialog {
 		}
 		
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGTransportModeAction.NAME);
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_TYPE, type);
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP, loop);
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_SIMPLE_PERCENT, (simplePercent != null ? simplePercent : MidiPlayerMode.DEFAULT_TEMPO_PERCENT));
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_FROM, this.customFrom.getValue());
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_TO, this.customTo.getValue());
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_CUSTOM_PERCENT_INCREMENT, this.customIncrement.getValue());
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_S_HEADER, (loop && loopSHeader != null ? loopSHeader : -1 ));
-		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_E_HEADER, (loop && loopEHeader != null ? loopEHeader : -1 ));
+		MidiPlayerMode mode = new MidiPlayerMode();
+		mode.setType(type);
+		mode.setLoop(loop);
+		mode.setSimplePercent(simplePercent != null ? simplePercent : MidiPlayerMode.DEFAULT_TEMPO_PERCENT);
+		mode.setCustomPercentFrom(this.customFrom.getValue());
+		mode.setCustomPercentTo(this.customTo.getValue());
+		mode.setCustomPercentIncrement(this.customIncrement.getValue());
+		mode.setLoopSHeader(loop && loopSHeader != null ? loopSHeader : -1 );
+		mode.setLoopEHeader(loop && loopEHeader != null ? loopEHeader : -1 );
+		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_PLAYER_MODE, mode);
 		tgActionProcessor.process();
+		
+		TGDocument document = TGDocumentListManager.getInstance(context.getContext()).findCurrentDocument();
+		if (document != null) {
+			document.setMidiPlayerMode(mode);
+		}
 	}
 	
 	private class RadioSelectionAdapter implements UISelectionListener {

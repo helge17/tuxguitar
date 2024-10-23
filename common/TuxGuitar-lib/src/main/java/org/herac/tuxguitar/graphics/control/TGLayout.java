@@ -279,6 +279,8 @@ public abstract class TGLayout {
 	public void paintPlayMode(UIPainter painter, TGMeasureImpl measure, TGBeatImpl beat){
 		this.playModeEnabled = true;
 		
+		measure.paintMeasure(this, painter);
+		
 		//pinto el pulso
 		if( beat != null ){
 			beat.paint(this,painter,measure.getPosX()  + measure.getHeaderImpl().getLeftSpacing(this),

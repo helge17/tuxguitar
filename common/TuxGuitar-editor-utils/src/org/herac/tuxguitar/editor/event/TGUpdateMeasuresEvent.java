@@ -7,6 +7,7 @@ import org.herac.tuxguitar.util.TGAbstractContext;
 public class TGUpdateMeasuresEvent extends TGUpdateEvent {
 	
 	public static final String PROPERTY_MEASURE_NUMBERS = "measureNumbers";
+	public static final String PROPERTY_UPDATE_CARET = "updateMeasuresUpdateCaret";
 	
 	public TGUpdateMeasuresEvent(List<Integer> numbers, TGAbstractContext context) {
 		super(MEASURE_UPDATED, context);

@@ -122,4 +122,18 @@ public class MidiPlayerMode{
 	public void setLoopEHeader(int loopEHeader) {
 		this.loopEHeader = loopEHeader;
 	}
+	
+	public void copyFrom(MidiPlayerMode mode) {
+		if (mode != null) {
+			this.type = mode.getType();
+			this.loop = mode.isLoop();
+			this.loopSHeader = mode.getLoopSHeader();
+			this.loopEHeader = mode.getLoopEHeader();
+			this.simplePercent = mode.getSimplePercent();
+			this.customPercentFrom = mode.getCustomPercentFrom();
+			this.customPercentTo = mode.getCustomPercentTo();
+			this.customPercentIncrement = mode.getCustomPercentIncrement();
+			this.currentPercent = mode.getCurrentPercent();
+		}
+	}
 }
