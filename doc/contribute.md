@@ -82,7 +82,7 @@ This section was updated in September 2024. It describes how to import the TuxGu
 
 - download and install Android Studio. This section was written for Android Studio "Koala feature drop 2024.1.2";
 - from Android Studio, open project located here: [android/build-scripts/tuxguitar-android](../android/build-scripts/tuxguitar-android);
-- in menu File -> Settings, select "Build, Execution, Deployment / Build Tools / Gradle". In the field "Gradle JDK", select "jbr-17"
+- in menu File -> Settings, select "Build, Execution, Deployment / Build Tools / Gradle". In the field "Gradle JDK", select "jbr-17".
 
 Settings window should look like this:
 
