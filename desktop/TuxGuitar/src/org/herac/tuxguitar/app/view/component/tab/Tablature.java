@@ -243,12 +243,16 @@ public class Tablature implements TGController {
 	
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader){
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
-		return ( pm.isLoop() && pm.getLoopSHeader() == measureHeader.getNumber() );
+		return ( pm.isLoop() &&
+				(pm.getLoopSHeader() == measureHeader.getNumber()
+					|| (pm.getLoopSHeader() == -1 && measureHeader.getNumber()==1)) );
 	}
 	
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader){
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
-		return ( pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber() );
+		return ( pm.isLoop() &&
+				(pm.getLoopEHeader() == measureHeader.getNumber()
+					|| (pm.getLoopEHeader() == -1 && measureHeader.getNumber()==measureHeader.getSong().countMeasureHeaders())) );
 	}
 	
 	public TGLayoutStyles getStyles() {
