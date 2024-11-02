@@ -191,7 +191,7 @@ public class PTSongParser {
 		}
 		
 		if( beat.getMultiBarRest() > 1){
-			// Multibar Rests, must allways have measure duration.
+			// Multibar Rests, must always have measure duration.
 			long start = this.helper.getStartHelper().getBarStart();
 			long duration = (beat.getMultiBarRest() * this.helper.getStartHelper().getBarLength());
 			
