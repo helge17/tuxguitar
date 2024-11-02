@@ -156,10 +156,18 @@ public class TGControl {
 					|| (canvasWidth!=this.lastCanvasWidth) || (canvasHeight!=this.lastCanvasHeight)
 					|| (scale != this.lastScale) || (this.tablature.getViewLayout().getStyle() != this.lastLayoutStyle)
 					|| (this.tablature.getViewLayout().getMode() != this.lastLayoutMode)) {
+				int lastWidth = this.width;
+				int lastHeight = this.height;
 				this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
 				this.width = Math.round(this.tablature.getViewLayout().getWidth());
 				this.height = Math.round(this.tablature.getViewLayout().getHeight());
 				this.lastPaintedPlayedMeasure = playedMeasure;
+				// if measure position changed AND scale or size changed, need to reconsider measure position (can only be done *after* tablature is updated)
+				if (moved && (scale != this.lastScale) || (lastWidth != this.width) || (lastHeight != this.height)) {
+					// move to caret measure and redraw a second time
+					this.moveTo(this.tablature.getCaret().getMeasure());
+					this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
+				}
 			}
 			
 			// highlight played beat
