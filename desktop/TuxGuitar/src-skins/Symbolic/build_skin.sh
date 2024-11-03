@@ -17,9 +17,9 @@ SKIN_DIR=`realpath $THIS_DIR/../../share/skins/$SKIN`
 DARK_DIR=`realpath $THIS_DIR/../../share/skins/$DARK`
 
 # Icon sizes: Symbolic/Gnome icons are aligned on a 16x16 grid, so we keep this resolution for the PNG images to make them look sharp and add a 3px margin to get the size of 22x22px
-S_ICOS=16x16+3   # Size of icons in menues and toolbars
+S_ICOS=16x16+3   # Size of icons in menus and toolbars
 # Icons shared with KDE/Breeze are aligned on a 22x22 grid
-S_ICOB=22x22     # Size of icons in menues and toolbars
+S_ICOB=22x22     # Size of icons in menus and toolbars
 S_PLAY=36x36     # Size of icons in player
 S_INFO=64x64     # Size of icons in warnings and settings dialog
 S_LOGO=96x96     # Size of TuxGuitar logo

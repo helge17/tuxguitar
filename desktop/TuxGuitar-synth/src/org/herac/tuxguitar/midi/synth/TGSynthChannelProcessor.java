@@ -231,8 +231,8 @@ public class TGSynthChannelProcessor {
 			if( this.processor != null && this.processor.isBusy()) {
 				return true;
 			}
-			for(TGAudioProcessor procesor : this.outputs) {
-				if( procesor.isBusy() ) {
+			for(TGAudioProcessor processor : this.outputs) {
+				if( processor.isBusy() ) {
 					return true;
 				}
 			}			

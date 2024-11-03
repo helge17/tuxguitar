@@ -26,7 +26,7 @@ public class GTPSongNormalizer {
 		for(int i = 0; i < this.song.countChannels(); i ++) {
 			TGChannel channel = this.song.getChannel(i);
 			
-			// Sometimes percussion channels don't have correctly setted percussion bank
+			// Sometimes percussion channels don't have correctly set percussion bank
 			if(!channel.isPercussionChannel()) {
 				for( int n = 0 ; n < channel.countParameters() ; n ++ ){
 					TGChannelParameter channelParameter = channel.getParameter( n );

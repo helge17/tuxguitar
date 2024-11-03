@@ -213,7 +213,7 @@ public class MidiSequencerImpl implements MidiSequencer {
 		}
 
 		public void start() {
-			this.threadHandler.start(TGThreadPriority.HIGHT, this);
+			this.threadHandler.start(TGThreadPriority.HIGH, this);
 		}
 	}
 }

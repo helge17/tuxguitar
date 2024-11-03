@@ -22,7 +22,7 @@ TuxGuitar 1.6.3 (2024-06-06) changes:
 * Improved button in toolbar for tuplets
 * "Currently played beat" highlight improved
 * Made caret more visible
-* Adapated copy-paste function to better handle different tuning presets
+* Adapted copy-paste function to better handle different tuning presets
 * Enabled files to be opened with double-click in Finder on MacOS
 * Display menu accelerators correctly on MacOS
 * Removed confirmation "Do you want to apply changes now?"

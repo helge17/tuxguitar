@@ -166,7 +166,7 @@ public class TGChordRecognizer {
 				
 				//ChordDatabase.ChordInfo info = (ChordDatabase.ChordInfo)chordItr.next();
 				boolean foundNote = false;
-				for (int i=0; i<info.getRequiredNotes().length; i++) { // go through all the requred notes
+				for (int i=0; i<info.getRequiredNotes().length; i++) { // go through all the required notes
 					Iterator<Integer> nit = notesInside.iterator();
 					while (nit.hasNext()) // go through all the needed notes
 						if (((Integer)nit.next()).intValue() == (tonic+info.getRequiredNotes()[i]-1)%12) {

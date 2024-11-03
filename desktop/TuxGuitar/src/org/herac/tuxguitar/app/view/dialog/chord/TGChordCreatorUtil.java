@@ -996,7 +996,7 @@ public class TGChordCreatorUtil {
 				}
 		
 		// other fingers
-		// if not zero-fret, occupy fingers respectivly
+		// if not zero-fret, occupy fingers respectively
 		int finger=1;
 		for (int i=0; i<positions.length; i++) {
 			if (positions[i]!=0 && positions[i]!=-1) {

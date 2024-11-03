@@ -70,7 +70,7 @@ public class DLSInfo {
      */
     public String artist = null;
     /**
-     * (ICMS) Names of persons or orginizations who commissioned the file.
+     * (ICMS) Names of persons or organizations who commissioned the file.
      */
     public String commissioned = null;
     /**
@@ -93,8 +93,8 @@ public class DLSInfo {
      */
     public String subject = null;
     /**
-     * (ISRC) Name of person or orginization who supplied
-     *        orginal material for the file.
+     * (ISRC) Name of person or organization who supplied
+     *        original material for the file.
      */
     public String source = null;
     /**

@@ -102,7 +102,7 @@ import javax.sound.midi.spi.SoundbankReader;
  * is optional.
  *
  * <p>If the provider class is specified, and it can be
- * successully retrieved from the installed providers,
+ * successfully retrieved from the installed providers,
  * the list of
  * <code>MidiDevice.Info</code> objects is retrieved
  * from the provider. Otherwise, or when these devices
@@ -1082,7 +1082,7 @@ public class MidiSystem {
 //     * This method wraps {@link #getDefaultDevice}. It catches the
 //     * <code>IllegalArgumentException</code> thrown by
 //     * <code>getDefaultDevice</code> and instead throws a
-//     * <code>MidiUnavailableException</code>, with the catched
+//     * <code>MidiUnavailableException</code>, with the caught
 //     * exception chained.
 //     *
 //     * @param deviceClass The requested device type, one of Synthesizer.class,
@@ -1439,7 +1439,7 @@ public class MidiSystem {
 //                  ! (device instanceof Synthesizer) ) ||
 //                 ((device instanceof Sequencer) && allowSequencer) ||
 //                 ((device instanceof Synthesizer) && allowSynthesizer)) {
-//                // And of cource, the device has to be able to provide
+//                // And of course, the device has to be able to provide
 //                // Receivers or Transmitters.
 //                if ((deviceClass == Receiver.class &&
 //                     device.getMaxReceivers() != 0) ||
