@@ -27,7 +27,7 @@ public class TGTunerSettings {
 	
 	
 	
-	/** default settings, if faild to load from properties */
+	/** default settings, if failed to load from properties */
 	public static TGTunerSettings getDefaults() {
 		TGTunerSettings retValue = new TGTunerSettings();
 		retValue.setSampleRate(11025);

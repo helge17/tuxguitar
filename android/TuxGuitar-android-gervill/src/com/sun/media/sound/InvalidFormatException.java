@@ -26,7 +26,7 @@ package com.sun.media.sound;
 
 /**
  * This exception is used when a reader is used to read file of a format
- * it doesn't unterstand or support.
+ * it doesn't understand or support.
  *
  * @author Karl Helgason
  */

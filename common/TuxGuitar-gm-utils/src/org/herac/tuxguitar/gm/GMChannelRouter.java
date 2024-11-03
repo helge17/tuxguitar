@@ -46,7 +46,7 @@ public class GMChannelRouter {
 		
 		this.removeRoute(route);
 		
-		// Allways channel 9 for percussions
+		// Always channel 9 for percussions
 		if( percussionChannel ){
 			route.setChannel1(PERCUSSION_CHANNEL);
 			route.setChannel2(PERCUSSION_CHANNEL);

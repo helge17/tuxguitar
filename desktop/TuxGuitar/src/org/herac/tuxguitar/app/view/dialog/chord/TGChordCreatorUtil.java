@@ -83,7 +83,7 @@ public class TGChordCreatorUtil {
 	
 	private int chordTonic;
 	
-	/** current tunning */
+	/** current tuning */
 	private int[] tuning;
 	
 	private TGChordCreatorUtil(long processId,TGChordCreatorListener listener){
@@ -804,7 +804,7 @@ public class TGChordCreatorUtil {
 		// required notes count should decrease the penalty
 		int noteCount = (this.alteration == 0 ? 0 : 1+ this.alteration)+currentIndex+ (this.bassTonic == this.chordTonic ? 0 : 1);
 		
-		// sometimes, when noteCount is bigger then tunning length, this pennalty will become positive, which may help
+		// sometimes, when noteCount is bigger then tuning length, this penalty will become positive, which may help
 		return -TGChordSettings.instance().getRequiredBasicsGrade()
 				* (this.tuning.length - noteCount) / this.tuning.length * 2;
 		

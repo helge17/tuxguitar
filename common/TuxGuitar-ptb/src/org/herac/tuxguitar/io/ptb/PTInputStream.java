@@ -183,7 +183,7 @@ public class PTInputStream implements TGSongReader{
 		readByte();//capo
 		
 		// Tuning
-		readString();//tunningName
+		readString();//tuningName
 		
 		//bit 7 = Music notation offset sign, bits 6 to 1 = Music notation offset value, bit 0 = display sharps or flats;
 		readByte();  //offset

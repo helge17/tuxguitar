@@ -332,7 +332,7 @@ public class LilypondOutputStream {
 				this.addRepeatOpen(song, measure.getHeader(),indent);
 			}
 		}
-		// Open a repeat alternative only if this measure isn't who openned the repeat.
+		// Open a repeat alternative only if this measure isn't who opened the repeat.
 		if(!measure.isRepeatOpen() && measure.getHeader().getRepeatAlternative() > 0){
 			this.addRepeatAlternativeOpen(indent);
 		}
@@ -348,7 +348,7 @@ public class LilypondOutputStream {
 		if(measure.getRepeatClose() > 0){
 			this.addRepeatClose(indent);
 		}
-		// If is last, we close any openned repeat
+		// If is last, we close any opened repeat
 		if(isLast){
 			this.addRepeatClose(indent);
 			this.addRepeatAlternativeClose(indent);
