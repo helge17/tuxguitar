@@ -213,23 +213,22 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 	
 	private void paintTimestampTempo(UIPainter painter) {
 		String time;
-		long tMs;
 		int tempo;
 		
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
 		if (midiPlayer.isRunning()) {
-			tMs = this.timestamp;
+			long tMs = this.timestamp;
+			time = String.format("%d:%02d:%02d.%01d", tMs/3600000, (tMs / 60000) % 60 , (tMs / 1000) % 60 , (tMs/100) % 10);
 			tempo = midiPlayer.getCurrentTempo();
 			this.tempoLabel.setIgnoreEvents(true);
 		} else {
 			// don't display timestamp while not playing, it's meaningless (e.g. repeats not considered, etc.)
-			tMs = 0;
+			time = "-:--:--.-";
 			tempo = TablatureEditor.getInstance(getContext()).getTablature().getCaret().getMeasure().getTempo().getValue();
 			this.tempoLabel.setIgnoreEvents(false);
 		}
 		this.tempoLabel.setText("= " + String.valueOf(tempo));
 		
-		time = String.format("%d:%02d:%02d.%01d", tMs/3600000, (tMs / 60000) % 60 , (tMs / 1000) % 60 , (tMs/100) % 10);
 		
 		painter.setFont(this.font);
 		float newWidth;
