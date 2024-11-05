@@ -665,8 +665,8 @@ fi
 
 # MacOS (on MacOS, remote or local)
 if [ $build_macos ]; then
-  SWT_VERSION=4.14
-  SWT_DATE=201912100610
+  SWT_VERSION=4.26
+  SWT_DATE=202211231800
   SWT_PLATFORM=cocoa-macosx
   [ `uname` == Linux ] && start_remote_macos_build
   [ `uname` == Darwin ] && build_tg_for_macos
