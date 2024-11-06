@@ -4,14 +4,11 @@ import java.lang.reflect.Method;
 
 import org.eclipse.swt.internal.C;
 import org.eclipse.swt.internal.Callback;
-import org.eclipse.swt.internal.cocoa.NSButton;
 import org.eclipse.swt.internal.cocoa.NSControl;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
 import org.eclipse.swt.internal.cocoa.NSString;
-import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.internal.cocoa.OS;
-import org.herac.tuxguitar.cocoa.toolbar.MacToolbarDelegate;
 
 public class TGCocoa {
 	
@@ -35,7 +32,7 @@ public class TGCocoa {
 	}
 	
 	public static final boolean class_addIvar(long cls, byte[] name, long size, byte alignment, byte[] types) throws Throwable{
-		return boolValue(invokeMethod(OS.class, "class_addIvar", new Object[] { osType(cls), name, osType(size), new Byte(alignment), types }));
+		return boolValue(invokeMethod(OS.class, "class_addIvar", new Object[] { osType(cls), name, osType(size), Byte.valueOf(alignment), types }));
 	}
 	
 	public static final long object_setInstanceVariable(Object idValue, byte[] name, long value) throws Throwable{
@@ -60,10 +57,6 @@ public class TGCocoa {
 	
 	public static final NSMenuItem getMenuItemAtIndex(NSMenu menu, long index) throws Throwable{
 		return (NSMenuItem)invokeMethod(NSMenu.class, menu, "itemAtIndex", new Object[] { osType(index) });
-	}
-	
-	public static final NSButton getStandardWindowButton(NSWindow nsWindow, long index) throws Throwable{
-		return (NSButton)invokeMethod(NSWindow.class, nsWindow, "standardWindowButton", new Object[] { osType(index) });
 	}
 	
 	public static final String getNSStringValue( long pointer ) throws Throwable {
@@ -93,10 +86,6 @@ public class TGCocoa {
 		invokeMethod(OS.class, "DeleteGlobalRef", new Object[] { osType(ref) } );
 	}
 	
-	public static final MacToolbarDelegate newMacToolbarDelegate() throws Throwable{
-		return (MacToolbarDelegate)Class.forName( MacToolbarDelegate.class.getName() ).newInstance();
-	}
-	
 	private static Object invokeMethod(Class<?> clazz, String methodName, Object[] args) throws Throwable {
 		return invokeMethod(clazz, null, methodName, args);
 	}
@@ -120,7 +109,7 @@ public class TGCocoa {
 	}
 	
 	private static Object osType( long value ) {
-		return ( C.PTR_SIZEOF == 8 ? ((Object)new Long(value)) : ((Object)new Integer((int)value)) );
+		return ( C.PTR_SIZEOF == 8 ? ((Object)Long.valueOf(value)) : ((Object)Integer.valueOf((int)value)) );
 	}
 	
 	private static long longValue(Object object) {
