@@ -9,7 +9,9 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
 import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 	
@@ -21,12 +23,12 @@ public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 	private UIMenuActionItem scoreEnabled;
 	private UIMenuActionItem compact;
 	
-	public TGMainToolBarSectionLayout(TGMainToolBar toolBar) {
-		super(toolBar);
+	public TGMainToolBarSectionLayout(TGContext context, UIToolBar toolBar) {
+		super(context, toolBar);
 	}
 	
 	public void createSection() {
-		this.menuItem = this.getToolBar().getControl().createMenuItem();
+		this.menuItem = this.getToolBar().createMenuItem();
 		
 		this.pageLayout = this.menuItem.getMenu().createActionItem();
 		this.pageLayout.addSelectionListener(this.createActionProcessor(TGSetPageLayoutAction.NAME));
