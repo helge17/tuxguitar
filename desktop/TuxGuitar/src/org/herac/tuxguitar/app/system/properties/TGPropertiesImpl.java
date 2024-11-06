@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.herac.tuxguitar.util.properties.TGProperties;
 
@@ -44,6 +46,16 @@ public class TGPropertiesImpl implements TGProperties{
 	
 	public void update(Properties newProperties) {
 		this.properties.putAll(newProperties);
+	}
+	
+	public Set<String> getStringKeys() {
+		HashSet<String> stringKeySet = new HashSet<String>();
+		for (Object key : this.properties.keySet()) {
+			if (key instanceof String) {
+				stringKeySet.add((String)key);
+			}
+		}
+		return stringKeySet;
 	}
 
 }

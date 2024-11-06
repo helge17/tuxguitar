@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.graphics.control.TGNoteImpl;
 import org.herac.tuxguitar.io.gpx.score.GPXAutomation;
 import org.herac.tuxguitar.io.gpx.score.GPXBar;
 import org.herac.tuxguitar.io.gpx.score.GPXBeat;
@@ -23,6 +22,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -82,7 +82,7 @@ public class GPXDocumentParser {
 			GPXTrack gpTrack = (GPXTrack) this.document.getTracks().get(i);
 			
 			TGChannel tgChannel = this.factory.newChannel();
-			tgChannel.setBank( gpTrack.getGmChannel1() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+			tgChannel.setBank( gpTrack.getGmChannel1() == GPXDocument.DEFAULT_PERCUSSION_CHANNNEL ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 			tgChannel.setProgram( tgChannel.isPercussionChannel() ? (short) 0 : (short) gpTrack.getGmProgram());
 			
 			TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
@@ -91,7 +91,7 @@ public class GPXDocumentParser {
 			
 			TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
 			gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
-			gmChannel2Param.setValue(Integer.toString(gpTrack.getGmChannel1() != 9 ? gpTrack.getGmChannel2() : gpTrack.getGmChannel1()));
+			gmChannel2Param.setValue(Integer.toString(gpTrack.getGmChannel1() != GPXDocument.DEFAULT_PERCUSSION_CHANNNEL ? gpTrack.getGmChannel2() : gpTrack.getGmChannel1()));
 			
 			for( int c = 0 ; c < tgSong.countChannels() ; c ++ ){
 				TGChannel tgChannelAux = tgSong.getChannel(c);
@@ -117,11 +117,11 @@ public class GPXDocumentParser {
 			tgTrack.setName(gpTrack.getName());
 			tgTrack.setChannelId(tgChannel.getChannelId());
 			
-			if( gpTrack.getTunningPitches() != null ){
-				for( int s = 1; s <= gpTrack.getTunningPitches().length ; s ++ ){
+			if( gpTrack.getTuningPitches() != null ){
+				for( int s = 1; s <= gpTrack.getTuningPitches().length ; s ++ ){
 					TGString tgString = this.factory.newString();
 					tgString.setNumber(s);
-					tgString.setValue(gpTrack.getTunningPitches()[ gpTrack.getTunningPitches().length - s ]);
+					tgString.setValue(gpTrack.getTuningPitches()[ gpTrack.getTuningPitches().length - s ]);
 					tgTrack.getStrings().add(tgString);
 				}
 			}else if( tgChannel.isPercussionChannel() ){
@@ -188,6 +188,16 @@ public class GPXDocumentParser {
 				}
 				tgMeasureHeader.getTempo().setValue( tgTempo );
 			}
+			
+			String markerText = mbar.getMarkerText();
+			if ((markerText != null) && !("".equals(markerText))) {
+				markerText = markerText.replace("\n", "");
+				TGMarker marker = this.factory.newMarker();
+				marker.setMeasure(tgMeasureHeader.getNumber());
+				marker.setTitle(markerText);
+				tgMeasureHeader.setMarker(marker);
+			}
+			
 			tgSong.addMeasureHeader(tgMeasureHeader);
 			
 			for( int t = 0 ; t < tgSong.countTracks() ; t ++ ){
@@ -621,7 +631,7 @@ public class GPXDocumentParser {
 					TGVoice voice = tgBeat.getVoice( v );
 					Iterator<TGNote> it = voice.getNotes().iterator();
 					while (it.hasNext()) {
-						TGNoteImpl note = (TGNoteImpl) it.next();
+						TGNote note = it.next();
 						if (note.getString() == string.getNumber()) {
 							emptyString = false;
 							break;

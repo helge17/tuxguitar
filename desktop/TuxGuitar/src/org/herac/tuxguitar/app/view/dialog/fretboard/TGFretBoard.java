@@ -60,7 +60,9 @@ public class TGFretBoard {
 	public static final int TOP_SPACING = 10;
 	public static final int BOTTOM_SPACING = 10;
 	
-	private static final int STRING_SPACING = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.FRETBOARD_STRING_SPACING);
+	private static final int STRING_SPACING_MIN = 10;
+	private static final int STRING_SPACING_MAX = 60;
+	private static final int STRING_SPACING_INCREMENT = 2;
 	
 	private TGContext context;
 	private TGFretBoardConfig config;
@@ -74,16 +76,18 @@ public class TGFretBoard {
 	private UIButton increment;
 	private UIButton decrement;
 	private UIButton settings;
+	private UIButton smaller;
+	private UIButton bigger;
 	private UIImage fretBoard;
-	
 	private TGBeat beat;
 	private TGBeat externalBeat;
-	
 	private int[] frets;
 	private int[] strings;
 	private float fretSpacing;
 	private boolean changes;
 	private UISize lastSize;
+	private int stringSpacing;
+	private int lastStringSpacing;
 	private int duration;
 	protected UIDropDownSelect<Integer> handSelector;
 	protected UICanvas fretBoardComposite;
@@ -92,6 +96,7 @@ public class TGFretBoard {
 		this.context = context;
 		this.config = new TGFretBoardConfig(context);
 		this.config.load();
+		this.stringSpacing = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.FRETBOARD_STRING_SPACING);
 		this.control = getUIFactory().createPanel(parent, false);
 		
 		this.initToolBar();
@@ -175,6 +180,26 @@ public class TGFretBoard {
 		this.scaleName = uiFactory.createLabel(this.toolComposite);
 		this.createToolItemLayout(this.scaleName, ++column, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 		
+		// fretboard height
+		this.smaller = uiFactory.createButton(this.toolComposite);
+		this.smaller.setImage(TuxGuitar.getInstance().getIconManager().getFretboardSmaller());
+		this.smaller.setToolTipText(TuxGuitar.getProperty("fretboard.smaller"));
+		this.smaller.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGFretBoard.this.updateStringSpacing(-STRING_SPACING_INCREMENT);
+			}
+		});
+		this.createToolItemLayout(this.smaller, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
+		this.bigger = uiFactory.createButton(this.toolComposite);
+		this.bigger.setImage(TuxGuitar.getInstance().getIconManager().getFretboardBigger());
+		this.bigger.setToolTipText(TuxGuitar.getProperty("fretboard.bigger"));
+		this.bigger.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGFretBoard.this.updateStringSpacing(STRING_SPACING_INCREMENT);
+			}
+		});
+		this.createToolItemLayout(this.bigger, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
+		
 		// settings
 		this.settings = uiFactory.createButton(this.toolComposite);
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
@@ -184,10 +209,24 @@ public class TGFretBoard {
 				configure();
 			}
 		});
-		this.createToolItemLayout(this.settings, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
+		this.createToolItemLayout(this.settings, ++column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 		
 		this.toolComposite.getLayout().set(goLeft, UITableLayout.MARGIN_LEFT, 0f);
 		this.toolComposite.getLayout().set(this.settings, UITableLayout.MARGIN_RIGHT, 0f);
+	}
+	
+	private void updateStringSpacing(int increment) {
+		this.lastStringSpacing = this.stringSpacing;
+		this.stringSpacing += increment;
+		this.stringSpacing = Math.min(this.stringSpacing, STRING_SPACING_MAX);
+		this.stringSpacing = Math.max(this.stringSpacing, STRING_SPACING_MIN);
+		this.smaller.setEnabled(this.stringSpacing > STRING_SPACING_MIN);
+		this.bigger.setEnabled(this.stringSpacing < STRING_SPACING_MAX);
+		if (this.stringSpacing != this.lastStringSpacing) {
+			TuxGuitar.getInstance().getConfig().setValue(TGConfigKeys.FRETBOARD_STRING_SPACING,this.stringSpacing);
+			this.setChanges(true);
+			this.updateEditor();
+		}
 	}
 	
 	private void createToolBarLayout(){
@@ -284,7 +323,7 @@ public class TGFretBoard {
 		this.strings = new int[count];
 		
 		for (int i = 0; i < this.strings.length; i++) {
-			this.strings[i] = fromY + (STRING_SPACING * i);
+			this.strings[i] = fromY + (this.stringSpacing * i);
 		}
 	}
 	
@@ -298,7 +337,7 @@ public class TGFretBoard {
 				this.beat = TablatureEditor.getInstance(this.context).getTablature().getCaret().getSelectedBeat();
 			}
 			
-			if (this.strings.length != getStringCount()) {
+			if ((this.strings.length != getStringCount()) || (this.stringSpacing != this.lastStringSpacing)) {
 				disposeFretBoardImage();
 				initStrings(getStringCount());
 				//Fuerzo a cambiar el ancho
@@ -318,6 +357,7 @@ public class TGFretBoard {
 			}
 			this.lastSize.setWidth(clientWidth);
 			this.lastSize.setHeight(clientHeight);
+			this.lastStringSpacing = this.stringSpacing;
 		}
 	}
 	
@@ -326,7 +366,7 @@ public class TGFretBoard {
 			UIFactory factory = getUIFactory();
 			UIRectangle area = this.control.getChildArea();
 			
-			this.fretBoard = factory.createImage(area.getWidth(), ((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
+			this.fretBoard = factory.createImage(area.getWidth(), (this.stringSpacing * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
 			
 			UIPainter painterBuffer = this.fretBoard.createPainter();
 			
@@ -379,8 +419,8 @@ public class TGFretBoard {
 			if (fret == 0) {
 				int size = getOvalSize();
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
-				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - STRING_SPACING;
-				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + STRING_SPACING;
+				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - this.stringSpacing;
+				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + this.stringSpacing;
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.addCircle(x, y1, size);
 				painter.addCircle(x, y2, size);
@@ -413,7 +453,7 @@ public class TGFretBoard {
 					int y = this.strings[i];
 					
 					if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_SCALE) != 0 ){
-						paintKeyText(painter,this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteValue));
+						paintKeyText(painter,this.config.getColorScaleText(), this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteValue));
 					}
 					else{
 						paintKeyOval(painter,this.config.getColorScale(),x,y);
@@ -446,7 +486,7 @@ public class TGFretBoard {
 						
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature));
+							paintKeyText(painter,this.config.getColorNoteText(), this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature));
 						}
 						else{
 							paintKeyOval(painter,this.config.getColorNote(), x, y);
@@ -459,26 +499,27 @@ public class TGFretBoard {
 	}
 	
 	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
-		int size = getOvalSize();
+		this.paintKeyOval(painter, background, x, y, this.getOvalSize());
+	}
+	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y, int ovalSize) {
 		painter.setBackground(background);
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.moveTo(x, y);
-		painter.addCircle(x, y, size);
+		painter.addCircle(x, y, ovalSize);
 		painter.closePath();
 	}
 	
-	private void paintKeyText(UIPainter painter, UIColor foreground, int x, int y, String text) {
+	private void paintKeyText(UIPainter painter, UIColor foreground, UIColor background, int x, int y, String text) {
 		if (!getTrack().isPercussion()) {
-			painter.setBackground(this.config.getColorKeyTextBackground());
+			painter.setBackground(background);
 			painter.setForeground(foreground);
 			painter.setFont(this.config.getFont());
 			
 			float fmWidth = painter.getFMWidth(text);
 			float fmHeight = painter.getFMHeight();
-			
-			painter.initPath(UIPainter.PATH_FILL);
-			painter.addRectangle(x - (fmWidth / 2f), y - (fmHeight / 2f), fmWidth, fmHeight);
-			painter.closePath();
+			int ovalSize = (int)Math.max(fmWidth, fmHeight) + this.stringSpacing/10;
+			ovalSize = Math.min(ovalSize, this.getMaxOvalSize());
+			this.paintKeyOval(painter, background, x, y, ovalSize);
 			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
 		}
 	}
@@ -585,7 +626,11 @@ public class TGFretBoard {
 	}
 	
 	private int getOvalSize(){
-		return ((STRING_SPACING / 2) + (STRING_SPACING / 10));
+		return ((this.stringSpacing / 2) + (this.stringSpacing / 10));
+	}
+	
+	private int getMaxOvalSize() {
+		return (this.stringSpacing - this.stringSpacing/10);
 	}
 	
 	private void addNote(int fret, int string) {
@@ -656,7 +701,9 @@ public class TGFretBoard {
 		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.right-mode"), TGFretBoardConfig.DIRECTION_RIGHT));
 		this.handSelector.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("fretboard.left-mode"), TGFretBoardConfig.DIRECTION_LEFT));
 		this.handSelector.setSelectedItem(new UISelectItem<Integer>(null, selection));
-		
+
+		this.smaller.setToolTipText(TuxGuitar.getProperty("fretboard.smaller"));
+		this.bigger.setToolTipText(TuxGuitar.getProperty("fretboard.bigger"));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.scale.setText(TuxGuitar.getProperty("scale"));
 		this.loadScaleName();
@@ -670,6 +717,8 @@ public class TGFretBoard {
 		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
 		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
 		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.smaller.setImage(TuxGuitar.getInstance().getIconManager().getFretboardSmaller());
+		this.bigger.setImage(TuxGuitar.getInstance().getIconManager().getFretboardBigger());
 		this.loadDurationImage(true);
 		this.control.layout();
 		this.layout(this.control.getChildArea().getWidth());
@@ -686,7 +735,7 @@ public class TGFretBoard {
 	}
 	
 	public void computePackedSize() {
-		this.control.getLayout().set(this.fretBoardComposite, UITableLayout.PACKED_HEIGHT, Float.valueOf(((STRING_SPACING) * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
+		this.control.getLayout().set(this.fretBoardComposite, UITableLayout.PACKED_HEIGHT, Float.valueOf((this.stringSpacing * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
 		this.control.computePackedSize(null, null);
 	}
 	

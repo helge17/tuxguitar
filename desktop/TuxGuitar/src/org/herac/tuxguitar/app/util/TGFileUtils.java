@@ -122,7 +122,7 @@ public class TGFileUtils {
 			if( stream != null ){
 				return uiFactory.createImage(stream);
 			}
-			System.err.println(name + ": not found");
+			System.err.println("Icon " + name + " not found in skin " + skin);
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>File and edit functions - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.3</p>
+  </div>
+  <div class="title">
+    <h1>File and edit functions</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><strong>File and edit functions</strong></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>Many entries in the <strong>File</strong> and the <strong>Edit</strong> pulldown menus are the same as in many other programs, but there are also some TuxGuitar specific actions.</p>
+    <h2 id="file_management">File Management</h2>
+    <p>All file related actions are summarized under the <strong>File</strong> pulldown menu. The most important function are also accessible in the main toolbar:</p>
+    <img src="images/file_menu.png" />
+    <h3>Creating new files</h3>
+    <p>The menu item <strong>File → New → New Song</strong> (or the keyboard shortcut <strong>Ctrl+N</strong>) by default opens a new tab containing a song with only one empty guitar track. This template is also used when you start TuxGuitar without any specific file.</p>
+    <p>You can set your own template by selecting a TuxGuitar file under <strong>File → Set custom template</strong>. From now on, new songs will be created with your selected template. The menu item <strong>File → Revert to default template</strong> goes back to the default one-guitar-track template.</p>
+    <p>There are two more predefined templates you can create new files from: <strong>File → New → Blues Trio</strong> and <strong>File → New → Classical Guitar Duo</strong>.</p>
+    <h3>Open, close, save and print files</h3>
+    <p>All other entries in the <strong>File</strong> menu are quite self-explanatory:</p>
+    <ul>
+      <li><strong>File → Open</strong> (<strong>Ctrl+O</strong>): Opens a file from the local computer.</li>
+      <li><strong>File → Open URL</strong>: Here you can enter the URL of an online file TuxGuitar can open. You can view and play the file in the same manner as if it was opened from a local folder. Of course, you cannot save the file back on the same URL, you can save it only as a local file.</li>
+      <li><strong>File → Close</strong>: Closes the current tab.</li>
+      <li><strong>File → Close Others</strong>: Closes all but the file in the active tab.</li>
+      <li><strong>File → Close All</strong>: Closes all tabs and open a new file from the default or your custom template.</li>
+      <li><strong>File → Save</strong> (<strong>Ctrl+S</strong>): Saves the file in the active tab. If the song has never been saved yet, the <strong>Save As</strong> dialog opens.</li>
+      <li><strong>File → Save As</strong> (<strong>F12</strong>): Saves the file in the active tab to a new file.</li>
+      <li><strong>File → Import</strong>: Here you can import Tef or MIDI files into TuxGuitar.</li>
+      <li><strong>File → Export</strong>: Songs can be exported as SVG, Audio (WAF and others), MIDI, Lilypond, MusicXML, PDF, ASCII or old TuxGuitar formats.</li>
+      <li><strong>File → Print Preview</strong>: Opens a new window where you can see how the file would be printed.</li>
+      <li><strong>File → Print</strong> (<strong>Ctrl+P</strong>): Prints the file. You can choose to only print one or all tracks, select a mesure range and various other options.</li>
+      <li><strong>File → History</strong>: Here you can directly access up to 10 recently opened files.</li>
+    </ul>
+    <h3>Exit TuxGuitar</h3>
+    <p>The <strong>File → Exit</strong> menu item quits TuxGuitar. Even if it is not stated in the menu, <strong>Alt+F4</strong> closes the current program in most desktop environments.</p>
+    <p>Nothing too complex here, so let’s move right along.</p>
+    <h2>Basic editing</h2>
+    <p>Here we are explaining all actions under the <strong>Edit</strong> pulldown menu.</p>
+    <h3>Cut, Copy and Paste</h3>
+    <ul>
+      <li><strong>Edit → Cut</strong> (<strong>Ctrl+X</strong>): Deletes the current selection and copies the content into the clipboard. This only works on selections.</li>
+      <li><strong>Edit → Copy</strong> (<strong>Ctrl+C</strong>): Copies the current selection into the clipboard. If nothing is selected, a dialog opens where you can choose the mesures to copy and wheather to copy these measures only from the current track or from all tracks.</li>
+      <li><strong>Edit → Paste</strong> (<strong>Ctrl+V</strong>): Inserts the copied notes or measures at the current cursor position. When a selection is pasted, the previous content will be overwritten. If you paste previously copied measures, you can select whether to overwrite the current content of the target measures or to insert new measures.</li>
+      <li><strong>Edit → Repeat</strong> (<strong>Ctrl+R</strong>): Here you can copy the current selection into the clipboard and insert it directly after that in one step.</li>
+    </ul>
+    <h3 id="undo_redo">Undo/Redo</h3>
+    <p><strong>Edit → Undo</strong> (<strong>Ctrl+Z</strong>) will undo your last action, <strong>Edit → Redo</strong> (<strong>Ctrl+Y</strong>) will redo what you have just undone.</p>
+    <img src="images/edit_menu.png" />
+    <h2 id="edit_mode">Edit Mode (applies only to Score Editing)</h2>
+    <p>Now we’re getting a little more interesting. The remaining menu items in the <strong>Edit</strong> pulldown menu lay down some options for those who prefer to edit via the score staff instead of using tablature. Keep in mind that these settings only affect the score staff (the upper set of lines with standard musical notation on them). If you only edit via the tablature staff, you can pretty ignore these settings, because they will not make any difference in your workflow.</p>
+    <img src="images/edit_mode.png" />
+    <p>If your score staff is not visible, you can enable it in the <strong><a href="detail_view.html#layout">View</a></strong> menu.</p>
+    <h3 id="selection_mode">Selection Mode</h3>
+    <p>The menu item <strong>Edit → Selection Mode</strong> (or the third icon in the <strong>Edit</strong> section of the Edit Toolbar) will put you into "Selection Mode". In this mode, you can click your mouse anywhere in the score staff, and it will simply move your playback cursor to that location, without making any changes to the score itself. Good for quickly moving around in your score without worrying about accidently altering notes.</p>
+    <h3 id="score_edition_mode">Score Edition Mode</h3>
+    <p>Clicking on <strong>Edit → Score Edition Mode</strong> (the fourth icon) will put you into "Score Edition Mode". With this mode selected, you can enter notes into the score staff simply by clicking where you want the note to go. You can insert notes into lines or spaces, and they will take on the duration you currently have selected in the <a href="detail_measure_beat.html#note_duration">note duration</a> menu. One note: this option alone will only insert natural-pitched notes (i.e., no flats or sharps). If you want to insert sharps/flats or change pre-existing notes to sharps/flats, you will need to enter Sharp/Flat Mode.</p>
+    <h3 id="sharp_flat_mode">Sharp/Flat Mode</h3>
+    <p><strong>Edit → Sharp/Flat Mode</strong> is simply a sub-option of the Score Edition Mode. You must use Sharp/Flat Mode if you want to enter sharp or flat notes or change pre-existing notes to sharp or flat.</p>
+    <h3>Voice selection</h3>
+    <p>The last two entries in the <strong>Edit</strong> menu (or the first two icons in the Edit Toolbar) select the voice you want to edit: Voice 1 or voice 2.</p>
+  </section>
+</body>
+</html>

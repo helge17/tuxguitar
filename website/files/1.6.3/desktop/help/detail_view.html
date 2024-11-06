@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>View and layout - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.3</p>
+  </div>
+  <div class="title">
+    <h1 id="view">View and layout</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><strong>View and layout</strong></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>With the <strong>View</strong> pulldown menu and the related toolbar icons you can customize the appearance of TuxGuitar's main window and open different dialogs.</p>
+    <p>You can change the current view also during playback.</p>
+    <h2>Enable and disable toolbars and track table</h2>
+    <p>The first three entries in the <strong>View</strong> menu let you show and hide the main elements of the TuxGuitar window:</p>
+    <ul>
+      <li><strong>View → Show Main Toolbar</strong>: Toggles the main toolbar just below the pulldown menu.</li>
+      <li><strong>View → Show Edit Toolbar</strong>: Enables and disables the edit toolbar on the left side of the main window.</li>
+      <li><strong>View → Show Track Table</strong>: Shows the track table on the bottom.</li>
+    </ul>
+    <img src="images/toolbars_on_off.png" />
+    <h2>Open and close more dialogs</h2>
+    <p>Other external dialogs are:</p>
+    <ul>
+      <li><strong>View → Show Instruments</strong>: In the <a href="editing_song.html#instruments_dialog">instruments settings</a> you can change the volume and some effects of the instruments in your tab, change panning and assign MIDI channel.</li>
+      <li><strong>View → Show Player</strong>: Here you can show the <a href="start_playing.html#playback">Player control</a> window, where you can control the song playback.</li>
+      <li><strong>View → Show Fretboard</strong>: The Fretboard on the bottom of the main window is useful to view the exact spots where you should put your fingers in each moment. You can even click on the fretboard to edit your tab. Fretboard view is available for both right- and left-handed guitars.</li>
+      <li><strong>View → Show Piano</strong>: Opens a separate window with a piano keyboard. Now you can enter the notes by clicking on the piano keys.</li>
+      <li><strong>View → Show Matrix</strong>: Opens the <a href="edit_matrix.html">Matrix Editor</a> for percussion tracks.</li>
+    </ul>
+    <img src="images/view.png" />
+    <h2 id="layout">Layout</h2>
+    <p>There are several layout types in TuxGuitar. You can switch between them with the Layout icons on the edit toolbar or in the <strong>View</strong> pulldown menu. They all change the view of tablature and scores in the main editor window.</p>
+    <img src="images/layout.png" />
+    <p>The first button in the list is <strong>Page Layout</strong>. Its alternative is the second button: <strong>Linear Layout</strong>. Page layout displays the tablature and scores like on the paper sheets, with line breaks. On the other side, linear view views the instrument in a single line, expanding to the right.</p>
+    <p>The third button enables <strong>Multitrack</strong> view. When enabled, all the tracks will be displayed in the main window. Depending on your previous choice (Page or Linear Layout) you will see a different view. In my personal experience, good combinations are Linear+Multitrack, and Page Layout without Multitrack (for single instrument view).</p>
+    <p>The fourth button is <strong>Show Scores</strong>. It simply views the scores (notation) above your tab line.</p>
+    <p><strong>Show Tablature</strong> enables or disables the tablature line in the main view.</p>
+    <p>The last button enables the <strong>Compact</strong> view. You would like to enable it when you consider your view too wide. Note that in this mode some details may be hidden (e.g. <i>Bend</i> effect details).</p>
+    <p>In the submenu <strong><a href="edit_chord.html#chord_style">View → Chord Style</a></strong> you can choose how chords are displayed in the main tab view.</p>
+    <h2 id="zoom">Zoom</h2>
+    <p>The last section in the <strong>View</strong> pulldown menu controls how big or small the scores and tablatures are shown: <strong>Zoom in</strong> to enlarge, <strong>Zoom out</strong> to shrink or <strong>Reset</strong> the zoom to turn back to the default size.</p>
+    <p>As in many other programs, you can also zoom in and out by using the <strong>mouse wheel</strong> and pressing the <strong>Ctrl</strong> key at the same time.</p>
+  </section>
+</body>
+</html>

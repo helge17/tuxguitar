@@ -73,9 +73,11 @@ public class Tablature implements TGController {
 		this.disposeUnregisteredResources.process();
 	}
 	
-	public void updateMeasures(List<Integer> numbers){
+	public void updateMeasures(List<Integer> numbers, boolean updateCaret){
 		this.getViewLayout().updateMeasureNumbers(numbers);
-		this.getCaret().update();
+		if (!numbers.isEmpty() || updateCaret) {
+			this.getCaret().update();
+		}
 		this.disposeUnregisteredResources.process();
 	}
 	
@@ -241,12 +243,16 @@ public class Tablature implements TGController {
 	
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader){
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
-		return ( pm.isLoop() && pm.getLoopSHeader() == measureHeader.getNumber() );
+		return ( pm.isLoop() &&
+				(pm.getLoopSHeader() == measureHeader.getNumber()
+					|| (pm.getLoopSHeader() == -1 && measureHeader.getNumber()==1)) );
 	}
 	
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader){
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
-		return ( pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber() );
+		return ( pm.isLoop() &&
+				(pm.getLoopEHeader() == measureHeader.getNumber()
+					|| (pm.getLoopEHeader() == -1 && measureHeader.getNumber()==measureHeader.getSong().countMeasureHeaders())) );
 	}
 	
 	public TGLayoutStyles getStyles() {

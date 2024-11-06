@@ -160,7 +160,7 @@ public class TGBeatMoveDialog {
 		move2Controls.add( type2Combo );
 		
 		UILabel division2Label = uiFactory.createLabel(move2);
-		division2Label.setText(TuxGuitar.getProperty("beat.move-custom.dialog.duration.division-type") + ":");
+		division2Label.setText(TuxGuitar.getProperty("duration.division-type") + ":");
 		move2Layout.set(division2Label, 4, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
 		move2Controls.add( division2Label );
 		
@@ -242,12 +242,15 @@ public class TGBeatMoveDialog {
 	
 	@SuppressWarnings("unchecked")
 	public UISelectItem<int[]>[] createDivisionTypes(){
-		TGDivisionType[] types = TGDivisionType.ALTERED_DIVISION_TYPES;
+		TGDivisionType[] types = TGDivisionType.DIVISION_TYPES;
 		
-		UISelectItem<int[]>[] comboItems = new UISelectItem[ types.length + 1 ];
-		comboItems[0] = new UISelectItem<int[]>( TuxGuitar.getProperty("beat.move-custom.dialog.duration.division-type.normal") , new int[] { 1  , 1} );
-		for( int i = 0 ; i < types.length ; i ++ ){ 
-			comboItems[i + 1] = new UISelectItem<int[]>(Integer.valueOf(types[i].getEnters()).toString(),new int[]{types[i].getEnters(),types[i].getTimes()});
+		UISelectItem<int[]>[] comboItems = new UISelectItem[ types.length ];
+		for( int i = 0 ; i < types.length ; i ++ ){
+			String name = TuxGuitar.getProperty("duration.division-type." + Integer.valueOf(types[i].getEnters()).toString());
+			if( name.isEmpty() ) {
+				name = Integer.valueOf(types[i].getEnters()).toString();
+			}
+			comboItems[i] = new UISelectItem<int[]>(name, new int[]{types[i].getEnters(),types[i].getTimes()});
 		}
 		
 		return comboItems;

@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.app.action.listener.cache.controller;
 
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
 import org.herac.tuxguitar.app.document.TGDocument;
 import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.app.helper.TGFileHistory;
@@ -22,7 +23,9 @@ public class TGUpdateSavedSongController extends TGUpdateItemsController {
 		
 		TGDocument tgDocument = TGDocumentListManager.getInstance(context).findCurrentDocument();
 		tgDocument.setUnwanted(false);
-		tgDocument.setUnsaved(false);
+		if (Boolean.TRUE.equals(actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_NATIVE_FILE_FORMAT) )) {
+			tgDocument.setUnsaved(false);
+		}
 		
 		TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
 		tgFileHistory.reset(null);

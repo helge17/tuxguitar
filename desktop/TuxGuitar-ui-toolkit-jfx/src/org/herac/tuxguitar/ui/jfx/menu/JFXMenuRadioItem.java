@@ -17,4 +17,6 @@ public class JFXMenuRadioItem extends JFXMenuActionItem implements UIMenuCheckab
 	public void setChecked(boolean checked) {
 		((RadioMenuItem) this.getControl()).setSelected(checked);
 	}
+	
+
 }

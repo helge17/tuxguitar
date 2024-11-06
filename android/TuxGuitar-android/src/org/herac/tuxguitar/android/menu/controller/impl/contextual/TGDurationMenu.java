@@ -54,15 +54,15 @@ public class TGDurationMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_set_duration_doubledotted, this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME), !running, duration.isDoubleDotted());
 		
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_1, TGDivisionType.NORMAL, duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_3, TGDivisionType.ALTERED_DIVISION_TYPES[0], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_5, TGDivisionType.ALTERED_DIVISION_TYPES[1], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_6, TGDivisionType.ALTERED_DIVISION_TYPES[2], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_7, TGDivisionType.ALTERED_DIVISION_TYPES[3], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_9, TGDivisionType.ALTERED_DIVISION_TYPES[4], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_10, TGDivisionType.ALTERED_DIVISION_TYPES[5], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_11, TGDivisionType.ALTERED_DIVISION_TYPES[6], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_12, TGDivisionType.ALTERED_DIVISION_TYPES[7], duration, running);
-		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_13, TGDivisionType.ALTERED_DIVISION_TYPES[8], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_3, TGDivisionType.DIVISION_TYPES[1], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_5, TGDivisionType.DIVISION_TYPES[2], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_6, TGDivisionType.DIVISION_TYPES[3], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_7, TGDivisionType.DIVISION_TYPES[4], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_9, TGDivisionType.DIVISION_TYPES[5], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_10, TGDivisionType.DIVISION_TYPES[6], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_11, TGDivisionType.DIVISION_TYPES[7], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_12, TGDivisionType.DIVISION_TYPES[8], duration, running);
+		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_13, TGDivisionType.DIVISION_TYPES[9], duration, running);
 	}
 	
 	public void initializeDivisionItem(Menu menu, int id, TGDivisionType divisionType, TGDuration duration, boolean running) {

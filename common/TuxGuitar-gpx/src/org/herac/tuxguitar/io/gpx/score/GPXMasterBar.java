@@ -11,6 +11,7 @@ public class GPXMasterBar {
 	private String mode;
 	private String tripletFeel;
 	private int[] alternateEndings;
+	private String markerText;
 	
 	public GPXMasterBar(){
 		this.accidentalCount = 0;
@@ -80,5 +81,13 @@ public class GPXMasterBar {
 
 	public void setAlternateEndings(int alternateEndings[]) {
 		this.alternateEndings = alternateEndings;
+	}
+	
+	public String getMarkerText() {
+		return this.markerText;
+	}
+	
+	public void setMarkerText(String text) {
+		this.markerText = text;
 	}
 }

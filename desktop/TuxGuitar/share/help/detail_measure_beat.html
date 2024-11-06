@@ -63,20 +63,21 @@
     <p><strong>Measure → Paste Measure</strong> will insert the previously copied measure(s) once or multiple times, depending on the given "Paste Count".</p>
     <p>If you previously only copied measures from one single track, these measures will be inserted in the currently opened track at the current cursor position.</p>
     <p>If you copied measure(s) from all tracks, then the notes and tablatures will be inserted in all tracks. If you paste the measure(s) into another song, the tracks will be filled up from the first to the last track, as long as there are tracks left in the destination song.</p>
-    <p>If you choose to paste the notes and tablatures into the current measure(s), all present content will be overwritten. In case you select "Paste in new Measure", the notes and tablatures will be pasted to newly inserted measure(s) after the current cursor position. Your song will now be longer than before.</p>
+    <p>If you choose to paste the notes and tablatures into the current measure(s), all present content will be overwritten. In case you select "Paste in New Measure", the notes and tablatures will be pasted to newly inserted measure(s) after the current cursor position. Your song will now be longer than before.</p>
     <h2 id="notes_beats">Notes and beats</h2>
     <p>Finally, the <strong>Beat</strong> menu lets you edit the single sounds: Notes and tablatures.</p>
     <h3 id="note_duration">Note Duration</h3>
-    <p>The note duration is set in the submenu <strong>Beat → Duration</strong> or the "Duration" edit toolbar section.</p>
+    <p>The note duration is set in the submenu <strong>Beat → Duration</strong> or the <strong>Duration</strong> edit toolbar section.</p>
     <img src="images/duration.png" />
     <p>The first seven entries simply change the selected note(s) to whatever you select, ranging from whole note to sixty-fourth note. This comes in handy if you need to make a change that is more than one note increment (i.e., quarter note to sixteenth note). You can alternately use the +/- keys on a standard numeric keypad to move one increment at a time.</p>
-    <p>The next three menu entries will change the note’s values to dotted, double-dotted, and a wide variety of "division type" values.</p>
     <p>If you do not understand the difference between the various note durations, you may want to research it a bit before you begin editing tabs, as you may find yourself quickly getting lost. Any basic music theory guide should cover these topics. A good starting place (as always) is the Wikipedia’s pages on music theory and music notation:</p>
     <ul>
       <li><b>https://en.wikipedia.org/wiki/Music_theory</b></li>
       <li><b>https://en.wikipedia.org/wiki/List_of_musical_symbols</b></li>
     </ul>
-    <p>Clicking on the menu entriy <strong>Beat → Tied Note</strong> or the last icon in the Duration toolbar will "tie" the currently selected note to the one before it. This feature basically takes the value of two notes and combines them into one. The most common use for this feature is when you have a note that begins in one measure and ends in the next. Tying notes is really just a way of keeping the score clean and organized. If you need more information, you may want to research musical notation via the links above.</p>
+    <p>The next two menu entries will change the note’s values to <strong>Dotted</strong> or <strong>Double-Dotted</strong>.</p>
+    <p>Clicking on the menu entry <strong>Tied Note</strong> or the next icon in the Duration toolbar will "tie" the currently selected note to the one before it. This feature basically takes the value of two notes and combines them into one. The most common use for this feature is when you have a note that begins in one measure and ends in the next. Tying notes is really just a way of keeping the score clean and organized. If you need more information, you may want to research musical notation via the links above.</p>
+    <p>The last entry contains a sub menu where you can select a wide variety of <strong>Division Types</strong> (<strong>Tuplets</strong>). A tuplet lets you divide a group of regular notes into a different number of shorter notes.</p>
     <h3 id="note_dynamics">Note dynamic</h3>
     <p>By selecting a different icon than the current in the <strong>Dynamic</strong> toolbar section or the <strong>Beat → Dynamic</strong> submenu, you change the dynamics of the note you are editing. They gradually scale from <em>Piano Pianissimo</em> (<strong>ppp</strong>), which is the most silent, to the <em>Forte Fortissimo</em> (<strong>fff</strong>) which is loudest.</p>
     <img src="images/dynamic.png" />
@@ -90,7 +91,7 @@
     <p>You can enter previously saved chords directly into your tablature from the Chord Library, accessible from the small down arrow on the right of the Chord Editor icon in the toolbar or from the <strong>Beat → Chord</strong> submenu:</p>
     <img src="images/insert_named_chord.png" />
     <p>The menu entry <strong>Beat → Insert Text</strong> (or the "<strong>T</strong>" icon) lets you add a text note to the selected beat. It is most often used as a note to the player or a comment to the tab. It is displayed above the note it is assigned to.</p>
-    <p>With <strong>Beat → Upstroke</strong>/<strong>Downstroke</strong> (or the two arrow icons) you can add up- or downstroke to the selected beat.</p>
+    <p>With <strong>Beat → Upstroke</strong>/<strong>Downstroke (brush)</strong> (or the two arrow icons) you can add a brush up- or downstroke to the selected beat.</p>
     <h3 id="shift_beats">Shift beats around</h3>
     <ul>
       <li><strong>Beat → Insert Rest Beat</strong> inserts one rest before the current cursor position. This only works within a single measure in the current track as long as there is an empty beat at the end of the measure. All notes on the right of the cursor are shifted to the right.</li>
@@ -102,7 +103,7 @@
       </ul>
       <li><strong>Beat → Clean Beat</strong>: Same as "Delete Note or Rest", but if the selected beats are already empty, it simply does nothing.</li><!-- <li><strong>Beat → Remove unused Voice</strong>: t.b.d.</li> -->
       <li><strong>Beat → Auto Stems</strong>/<strong>Stems up</strong>/<strong>Stems down</strong>: Here you can control the orientation of the note stems. You can let TuxGuitar decide about the stem orientation or force the note stems in the beat where the cursor is to go up or down.</li>
-      <li><strong>Beat → Semitone up</strong>/<strong>down</strong>: These menu items shift all notes in the selected beats one semitone up or down, as log as all notes can be shifted.</li>
+      <li><strong>Beat → Semitone up</strong>/<strong>down</strong>: These menu items shift all notes in the selected beats one semitone up or down, as long as all notes can be shifted.</li>
       <li><strong>Beat → Shift one String up</strong>/<strong>down</strong> let you shift all selected notes one string up or down, but only if all selected notes can be shifted.</li>
       <li><strong>Beat → Move one Beat left</strong>: Cleans the beat at the current cursor position in the current track and moves all beats after the cursor one beat to the left.</li>
       <li><strong>Beat → Move one Beat right</strong>: Inserts a rest beat at the current cursor position and moves all beats after the cursor one beat to the right.</li>

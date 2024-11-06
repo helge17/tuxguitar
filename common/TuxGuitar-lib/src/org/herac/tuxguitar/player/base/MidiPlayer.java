@@ -449,7 +449,7 @@ public class MidiPlayer{
 		return false;
 	}
 	
-	public boolean isPaused() {
+	private boolean isPaused() {
 		try {
 			this.lock();
 			
@@ -459,7 +459,7 @@ public class MidiPlayer{
 		}
 	}
 	
-	public void setPaused(boolean paused) {
+	private void setPaused(boolean paused) {
 		try {
 			this.lock();
 			

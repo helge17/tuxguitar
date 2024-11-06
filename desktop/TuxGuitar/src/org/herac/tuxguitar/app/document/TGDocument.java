@@ -3,6 +3,7 @@ package org.herac.tuxguitar.app.document;
 import java.net.URI;
 
 import org.herac.tuxguitar.editor.undo.TGUndoableBuffer;
+import org.herac.tuxguitar.player.base.MidiPlayerMode;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGSong;
 
@@ -17,6 +18,7 @@ public class TGDocument {
 	private int caretString;
 	private TGBeat selectionStart;
 	private TGBeat selectionEnd;
+	private MidiPlayerMode midiPlayerMode;
 	
 	public TGDocument() {
 		super();
@@ -92,6 +94,14 @@ public class TGDocument {
 
 	public void setSelectionEnd(TGBeat selectionEnd) {
 		this.selectionEnd = selectionEnd;
+	}
+	
+	public MidiPlayerMode getMidiPlayerMode() {
+		return this.midiPlayerMode;
+	}
+	
+	public void setMidiPlayerMode(MidiPlayerMode mode) {
+		this.midiPlayerMode = mode;
 	}
 
 }

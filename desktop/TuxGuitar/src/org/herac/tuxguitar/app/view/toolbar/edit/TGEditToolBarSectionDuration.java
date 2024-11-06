@@ -76,6 +76,9 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		this.doubleDotted = toolBar2.createCheckItem();
 		this.doubleDotted.addSelectionListener(this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME));
 		
+		this.tiedNote = toolBar2.createCheckItem();
+		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
+
 		this.divisionTypeItem = toolBar2.createActionMenuItem();
 		this.divisionTypeItem.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -84,12 +87,11 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		});
 		
 		this.divisionTypeMenuItems = new ArrayList<UIMenuCheckableItem>();
-		for( int i = 0 ; i < TGDivisionType.ALTERED_DIVISION_TYPES.length ; i ++ ){
-			this.divisionTypeMenuItems.add(this.createDivisionTypeMenuItem(TGDivisionType.ALTERED_DIVISION_TYPES[i]));
+		for( int i = 0 ; i < TGDivisionType.DIVISION_TYPES.length ; i ++ ){
+			UIMenuCheckableItem item = this.createDivisionTypeMenuItem(TGDivisionType.DIVISION_TYPES[i]);
+			this.divisionTypeMenuItems.add(item);
+			item.addSelectionListener(this.createDivisionTypeAction(TGDivisionType.DIVISION_TYPES[i]));
 		}
-		
-		this.tiedNote = toolBar2.createCheckItem();
-		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
 	}
 	
 	public void updateSectionItems() {
@@ -114,7 +116,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		this.dotted.setToolTipText(this.getText("duration.dotted"));
 		this.doubleDotted.setToolTipText(this.getText("duration.doubledotted"));
 		this.divisionTypeItem.setToolTipText(this.getText("duration.division-type"));
-		this.tiedNote.setToolTipText(this.getText("note.tiednote"));
+		this.tiedNote.setToolTipText(this.getText("duration.tiednote"));
 		this.loadDurationToolProperties(duration.getValue());
 		this.loadDivisionTypeMenuProperties();
 	}
@@ -122,7 +124,6 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	public void loadSectionIcons() {
 		this.dotted.setImage(this.getIconManager().getDurationDotted());
 		this.doubleDotted.setImage(this.getIconManager().getDurationDoubleDotted());
-		this.divisionTypeItem.setImage(this.getIconManager().getDivisionType());
 		this.tiedNote.setImage(this.getIconManager().getNoteTied());
 		this.loadDurationToolIcons();
 	}
@@ -213,7 +214,7 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 		TGDuration duration = TablatureEditor.getInstance(this.getToolBar().getContext()).getTablature().getCaret().getDuration();
 		TGDivisionType divisionType = null;
 		if( duration.getDivision().isEqual(TGDivisionType.NORMAL)){
-			divisionType = this.createDivisionType(TGDivisionType.TRIPLET);
+			divisionType = this.createDivisionType(TGDivisionType.DIVISION_TYPES[1]);
 		}else{
 			divisionType = this.createDivisionType(TGDivisionType.NORMAL);
 		}
@@ -224,22 +225,24 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	private UIMenuCheckableItem createDivisionTypeMenuItem(TGDivisionType divisionType) {
 		UIMenuCheckableItem uiMenuItem = this.divisionTypeItem.getMenu().createRadioItem();
 		uiMenuItem.setData(TGDivisionType.class.getName(), divisionType);
-		uiMenuItem.addSelectionListener(this.createDivisionTypeAction(divisionType));
 		
 		return uiMenuItem;
 	}
 	
+
 	private void updateDivisionTypeMenuItems(TGDivisionType selection, boolean running) {
-		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
+		for(int i=0; i< this.divisionTypeMenuItems.size(); i++) {
+			UIMenuCheckableItem uiMenuItem = this.divisionTypeMenuItems.get(i);
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
 			uiMenuItem.setChecked(divisionType.isEqual(selection));
 		}
+		this.divisionTypeItem.setImage(this.getIconManager().getDivisionType(selection.getEnters()));
 	}
 	
 	private void loadDivisionTypeMenuProperties() {
 		for(UIMenuCheckableItem uiMenuItem : this.divisionTypeMenuItems) {
 			TGDivisionType divisionType = uiMenuItem.getData(TGDivisionType.class.getName());
-			uiMenuItem.setText(Integer.toString(divisionType.getEnters()));
+			uiMenuItem.setText(TuxGuitar.getProperty("duration.division-type." + Integer.toString(divisionType.getEnters())));
 		}
 	}
 	

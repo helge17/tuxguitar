@@ -8,7 +8,6 @@ import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
@@ -35,7 +34,6 @@ import org.herac.tuxguitar.util.TGNoteRange;
 public class BeatMenuItem extends TGMenuItem {
 
 	private UIMenuSubMenuItem noteMenuItem;
-	private UIMenuCheckableItem tiedNote;
 	private UIMenuActionItem insertRestBeat;
 	private UIMenuActionItem deleteNoteOrRest;
 	private UIMenuActionItem cleanBeat;
@@ -64,13 +62,6 @@ public class BeatMenuItem extends TGMenuItem {
 	}
 
 	public void showItems(){
-		//--TIED NOTE--
-		this.tiedNote = this.noteMenuItem.getMenu().createCheckItem();
-		this.tiedNote.addSelectionListener(this.createActionProcessor(TGChangeTiedNoteAction.NAME));
-
-		//--SEPARATOR--
-		this.noteMenuItem.getMenu().createSeparator();
-
 		//--INSERT REST BEAT--
 		this.insertRestBeat = this.noteMenuItem.getMenu().createActionItem();
 		this.insertRestBeat.addSelectionListener(this.createActionProcessor(TGInsertRestBeatAction.NAME));
@@ -193,8 +184,6 @@ public class BeatMenuItem extends TGMenuItem {
 		TGNoteRange noteRange = tablature.getCurrentNoteRange();
 		boolean atLeastOneNoteSelected = (note != null) || (noteRange!=null && !noteRange.isEmpty());
 
-		this.tiedNote.setEnabled(!running);
-		this.tiedNote.setChecked(note != null && note.isTiedNote());
 		this.insertRestBeat.setEnabled(!running);
 		this.deleteNoteOrRest.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
@@ -229,7 +218,6 @@ public class BeatMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.noteMenuItem, "beat", null);
 		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", TGCleanBeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.removeVoice, "beat.voice.remove-unused", TGRemoveUnusedVoiceAction.NAME);
-		setMenuItemTextAndAccelerator(this.tiedNote, "note.tiednote", TGChangeTiedNoteAction.NAME);
 		setMenuItemTextAndAccelerator(this.insertRestBeat, "beat.insert-rest", TGInsertRestBeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.deleteNoteOrRest, "beat.delete-note-or-rest", TGDeleteNoteOrRestAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceAuto, "beat.voice-auto", TGSetVoiceAutoAction.NAME);
@@ -253,7 +241,6 @@ public class BeatMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.tiedNote.setImage(TuxGuitar.getInstance().getIconManager().getNoteTied());
 		this.insertText.setImage(TuxGuitar.getInstance().getIconManager().getText());
 		this.strokeUp.setImage(TuxGuitar.getInstance().getIconManager().getStrokeUp());
 		this.strokeDown.setImage(TuxGuitar.getInstance().getIconManager().getStrokeDown());

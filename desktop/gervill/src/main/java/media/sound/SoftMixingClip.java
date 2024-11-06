@@ -38,7 +38,7 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 
 /**
- * Clip implemention for the SoftMixingMixer.
+ * Clip implementation for the SoftMixingMixer.
  * 
  * @author Karl Helgason
  */
@@ -306,7 +306,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
             IOException {
         if (isOpen()) {
             throw new IllegalStateException("Clip is already open with format "
-                    + getFormat() + " and frame lengh of " + getFrameLength());
+                    + getFormat() + " and frame length of " + getFrameLength());
         }
         if (AudioFloatConverter.getConverter(stream.getFormat()) == null)
             throw new IllegalArgumentException("Invalid format : "
@@ -348,7 +348,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
             if (isOpen()) {
                 throw new IllegalStateException(
                         "Clip is already open with format " + getFormat()
-                                + " and frame lengh of " + getFrameLength());
+                                + " and frame length of " + getFrameLength());
             }
             if (AudioFloatConverter.getConverter(format) == null)
                 throw new IllegalArgumentException("Invalid format : "

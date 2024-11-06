@@ -29,9 +29,40 @@ public class KeyBindingActionManager {
 	}
 	
 	public void init(){
-		List<KeyBindingAction> enabled = KeyBindingReader.getKeyBindings(getUserFileName());
-		this.keyBindingsActions.addAll( (enabled != null ? enabled : KeyBindingActionDefaults.getDefaultKeyBindings(this.context)) );
+		this.keyBindingsActions.addAll(this.merge(KeyBindingActionDefaults.getDefaultKeyBindings(this.context), KeyBindingReader.getKeyBindings(getUserFileName())));
 		this.listener = new KeyBindingListener(this);
+	}
+	
+	public List<KeyBindingAction>merge(List<KeyBindingAction> defaultsBindings, List<KeyBindingAction> userBindings) {
+		if (userBindings == null) {
+			return defaultsBindings;
+		}
+		List<KeyBindingAction> list = userBindings;
+		// add new default bindings, if no conflict with user-defined ones
+		for (KeyBindingAction defaultAction : defaultsBindings) {
+			boolean conflict = false;
+			for (KeyBindingAction userAction : userBindings) {
+				conflict |= (userAction.getAction().equals(defaultAction.getAction()));
+				conflict |= (userAction.getCombination().equals(defaultAction.getCombination()));
+				if (conflict) break;
+			}
+			if (!conflict) {
+				list.add(defaultAction);
+			}
+		}
+		
+		
+		// remove actions with empty key combinations
+		List<KeyBindingAction> toRemove = new ArrayList<KeyBindingAction>();
+		for (KeyBindingAction action : list) {
+			if (action.getCombination().getKeys().isEmpty()) {
+				toRemove.add(action);
+			}
+		}
+		for (KeyBindingAction action : toRemove) {
+			list.remove(action);
+		}
+		return list;
 	}
 	
 	private String getUserFileName(){

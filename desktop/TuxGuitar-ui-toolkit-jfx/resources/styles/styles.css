@@ -34,3 +34,12 @@
   -fx-background-insets: 0,1;
   -fx-background-radius: 2;
 }
+
+.JFXToolActionItem:selected,
+.JFXToolCheckableItem:selected,
+.JFXToolMenuItem:selected,
+.JFXToolActionMenuItem:selected {
+  -fx-background-color: #bcbcbc,#d5d5d5;
+  -fx-background-insets: 0,1;
+  -fx-background-radius: 2;
+}

@@ -98,7 +98,7 @@
 	<string name="action_set_voice_up">Stems up</string>
 	<string name="action_shift_note_down">Shift one String down</string>
 	<string name="action_shift_note_up">Shift one String up</string>
-	<string name="action_change_stroke">Up/Downstroke</string>
+	<string name="action_change_stroke">Up/Downstroke (brush)</string>
 	<string name="action_change_text">Insert Text</string>
 
 	<string name="action_set_duration_whole">Whole</string>
@@ -110,18 +110,18 @@
 	<string name="action_set_duration_sixtyfourth">Sixty-Fourth</string>
 	<string name="action_set_duration_dotted">Dotted</string>
 	<string name="action_set_duration_doubledotted">Double-Dotted</string>
-	<string name="action_set_duration_division_type">Division Type</string>
+	<string name="action_set_duration_division_type">Division Type (Tuplet)</string>
 
-	<string name="action_set_duration_division_type_1">Normal</string>
-	<string name="action_set_duration_division_type_3">3</string>
-	<string name="action_set_duration_division_type_5">5</string>
-	<string name="action_set_duration_division_type_6">6</string>
-	<string name="action_set_duration_division_type_7">7</string>
-	<string name="action_set_duration_division_type_9">9</string>
-	<string name="action_set_duration_division_type_10">10</string>
-	<string name="action_set_duration_division_type_11">11</string>
-	<string name="action_set_duration_division_type_12">12</string>
-	<string name="action_set_duration_division_type_13">13</string>
+	<string name="action_set_duration_division_type_1">-</string>
+	<string name="action_set_duration_division_type_3">3 - Triplet</string>
+	<string name="action_set_duration_division_type_5">5 - Quintuplet</string>
+	<string name="action_set_duration_division_type_6">6 - Sextuplet</string>
+	<string name="action_set_duration_division_type_7">7 - Septuplet</string>
+	<string name="action_set_duration_division_type_9">9 - Nonuplet</string>
+	<string name="action_set_duration_division_type_10">10 - Decuplet</string>
+	<string name="action_set_duration_division_type_11">11 - Undecuplet</string>
+	<string name="action_set_duration_division_type_12">12 - Dodecuplet</string>
+	<string name="action_set_duration_division_type_13">13 - Tridecuplet</string>
 
 	<string name="action_set_velocity_ppp">Piano Pianissimo</string>
 	<string name="action_set_velocity_pp">Pianissimo</string>
@@ -279,7 +279,7 @@
 	<string name="time_signature_dlg_title">Change Time Signature</string>
 	<string name="time_signature_dlg_ts_numerator_label">Numerator:</string>
 	<string name="time_signature_dlg_ts_denominator_label">Denominator:</string>
-	<string name="time_signature_dlg_options_apply_to_end">Apply to the end</string>
+	<string name="time_signature_dlg_options_apply_to_end">Apply this Time Signature to the end</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Change Triplet Feel</string>
@@ -290,7 +290,7 @@
 
 	<!-- Repeat Close dialog -->
 	<string name="repeat_close_dlg_title">Close Repeat</string>
-	<string name="repeat_close_dlg_count_label">Repetitions:</string>
+	<string name="repeat_close_dlg_count_label">Number of Repetitions:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Alternative Repeats</string>
@@ -321,12 +321,9 @@
 	<string name="track_tuning_dlg_preview_label">Label:</string>
 	<string name="track_tuning_dlg_offset_select_value">Offset #%1$d</string>
 	<string name="track_tuning_dlg_preset_select_value">-- Presets --</string>
-	<string name="track_tuning_dlg_options_transpose">Transpose affected Notes</string>
-	<string name="track_tuning_dlg_options_transpose_apply_to_chords">Transpose Chords</string>
-	<string name="track_tuning_dlg_options_transpose_try_keep_strings">Try to keep Notes at same String</string>
 	<string name="track_tuning_dlg_error_title">Error</string>
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
-	<string name="track_tuning_dlg_empty_value_error">Value can not be empty</string>
+	<string name="track_tuning_dlg_empty_value_error">Value cannot be empty</string>
 
 	<string name="track_string_count_dlg_title">Line Count</string>
 	<string name="track_string_count_dlg_count_label">Line Count:</string>
@@ -358,7 +355,7 @@
 	<string name="measure_paste_dlg_title">Paste Measure</string>
 	<string name="measure_paste_dlg_count_label">Paste Count:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Paste at the Current Measure</string>
-	<string name="measure_paste_dlg_options_mode_insert">Paste in new Measure</string>
+	<string name="measure_paste_dlg_options_mode_insert">Paste in New Measure</string>
 
 	<!-- Text dialog -->
 	<string name="text_dlg_title">Insert Text</string>
@@ -430,11 +427,11 @@
 	<string name="harmonic_dlg_type_sh">[S.H] Semi Harmonic</string>
 
 	<!-- Stroke dialog -->
-	<string name="stroke_dlg_title">Up/Downstroke</string>
+	<string name="stroke_dlg_title">Up/Downstroke (brush)</string>
 	<string name="stroke_dlg_direction_label">Direction:</string>
 	<string name="stroke_dlg_direction_none">None</string>
-	<string name="stroke_dlg_direction_up">Upstroke</string>
-	<string name="stroke_dlg_direction_down">Downstroke</string>
+	<string name="stroke_dlg_direction_up">Upstroke (brush)</string>
+	<string name="stroke_dlg_direction_down">Downstroke (brush)</string>
 	<string name="stroke_dlg_duration_4">Quarter</string>
 	<string name="stroke_dlg_duration_8">Eighth</string>
 	<string name="stroke_dlg_duration_16">Sixteenth</string>
@@ -458,4 +455,5 @@
 	<string name="channel_edit_dlg_reverb_label">Reverb:</string>
 	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
 	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
+
 </resources>

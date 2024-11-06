@@ -68,6 +68,7 @@ import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import org.herac.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
+import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
 import org.herac.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
@@ -552,6 +553,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetCompactViewAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGToggleHighlightPlayedBeatAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		
 		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		this.map(TGSetLayoutScaleIncrementAction.NAME, LOCKABLE | SHORTCUT | SYNC_THREAD, UPDATE_SONG_CTL);

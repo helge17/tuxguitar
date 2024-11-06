@@ -211,7 +211,7 @@ public interface Synthesizer extends MidiDevice {
      * @param from the <code>Instrument</code> object to be replaced
      * @param to the <code>Instrument</code> object to be used in place
      * of the old instrument, it should be loaded into the synthesizer
-     * @return <code>true</code> if the instrument succeessfully remapped,
+     * @return <code>true</code> if the instrument successfully remapped,
      * <code>false</code> if feature is not implemented by synthesizer
      * @throws <code>IllegalArgumentException</code> if instrument
      * <code>from</code> or instrument <code>to</code> aren't supported by

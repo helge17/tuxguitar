@@ -19,7 +19,7 @@ import org.herac.tuxguitar.ui.swt.SWTComponent;
 
 public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 	
-	/** On swt-carbon (and maybe another platform) advanced mode must be allways true **/
+	/** On swt-carbon (and maybe another platform) advanced mode must be always true **/
 	private static final boolean FORCE_OS_DEFAULTS = Boolean.TRUE.toString().equals(System.getProperty("swt.painter.force-os-defaults"));
 	
 	private boolean pathEmpty;

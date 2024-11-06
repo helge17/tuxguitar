@@ -40,11 +40,18 @@ public class TGControl {
 	
 	private int scrollX;
 	private int scrollY;
-	private boolean resetScroll;
-	protected long lastVScrollTime;
-	protected long lastHScrollTime;
+	private int lastScrollX;
+	private int lastScrollY;
+	private TGMeasureImpl lastPaintedPlayedMeasure = null;
+	private TGBeatImpl lastPaintedPLayedBeat = null;
+	private float lastCanvasWidth;
+	private float lastCanvasHeight;
+	private float lastScale;
+	private int lastLayoutStyle;
+	private int lastLayoutMode;
 	
 	private boolean painting;
+	private boolean wasPlaying;
 	
 	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
@@ -52,7 +59,7 @@ public class TGControl {
 		this.initialize(parent);
 	}
 	
-	public void initialize(UIContainer parent) {
+	private void initialize(UIContainer parent) {
 		UIFactory factory = TGApplication.getInstance(this.context).getFactory();
 		UITableLayout layout = new UITableLayout(0f);
 		
@@ -103,85 +110,146 @@ public class TGControl {
 	}
 	
 	public void paintTablature(UIPainter painter) {
-		this.setPainting(true);
+		boolean isPlaying;
+		boolean moved = false;
+		TGMeasureImpl playedMeasure = null;
+
+		this.painting = true;
 		try{
-			this.checkScroll();
+			isPlaying = MidiPlayer.getInstance(this.context).isRunning();
+			float canvasWidth = this.canvas.getBounds().getWidth();
+			float canvasHeight = this.canvas.getBounds().getHeight();
+			float scale = this.tablature.getScale();
 			
-			int oldWidth = this.width;
-			int oldHeight = this.height;
-			
-			UIRectangle area = createRectangle(this.canvas.getBounds());
-			
-			this.scrollX = this.hScroll.getValue();
-			this.scrollY = this.vScroll.getValue();
-			
-			this.tablature.paintTablature(painter, area, -this.scrollX, -this.scrollY);
-			
-			this.width = Math.round(this.tablature.getViewLayout().getWidth());
-			this.height = Math.round(this.tablature.getViewLayout().getHeight());
-			
-			this.updateScroll();
-			
-			if( MidiPlayer.getInstance(this.context).isRunning()){
-				this.paintTablaturePlayMode(painter);
-			}
-			// Si no estoy reproduciendo y hay cambios
-			// muevo el scroll al compas que tiene el caret
-			else if(this.tablature.getCaret().hasChanges() || (this.width != oldWidth || this.height != oldHeight)){
-				// Mover el scroll puede necesitar redibujar
-				// por eso es importante desmarcar los cambios antes de hacer el moveScrollTo
-				this.tablature.getCaret().setChanges(false);
-				
-				this.moveScrollTo(this.tablature.getCaret().getMeasure(), area);
-			}
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
-		}
-		this.setPainting(false);
-	}
-	
-	private void paintTablaturePlayMode(UIPainter painter){
-		try{
-			TGMeasureImpl measure = TGTransport.getInstance(this.context).getCache().getPlayMeasure();
-			TGBeatImpl beat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
-			if(measure != null && measure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
-				this.moveScrollTo(measure);
-				
-				if(!measure.isOutOfBounds()){
-					this.tablature.getViewLayout().paintPlayMode(painter, measure, beat);
+			// determine position in tab (which part shall be displayed): scroll x, y
+			if (isPlaying) {
+				playedMeasure = TGTransport.getInstance(this.context).getCache().getPlayMeasure();
+				this.scrollX = this.hScroll.getValue();
+				this.scrollY = this.vScroll.getValue();
+				// if user did not move scrollbars, follow player
+				if ((this.scrollX==this.lastScrollX) && (this.scrollY==this.lastScrollY)
+						&& (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
+					moveTo(playedMeasure);
+				}
+			} else {
+				// if (wasPlaying): keep position in tab unchanged
+				// new scrollbar attributes shall be defined from position in tab, not the opposite
+				// else :
+				if (!wasPlaying) {
+					// follow caret movement or user actions on scrollbars
+					if(this.tablature.getCaret().hasChanges()){
+						this.tablature.getCaret().setChanges(false);
+						this.moveTo(this.tablature.getCaret().getMeasure());
+						moved = true;
+					} else {
+						this.scrollX = this.hScroll.getValue();
+						this.scrollY = this.vScroll.getValue();
+					}
 				}
 			}
+			// performance optimization: while playing, only paint full tablature when needed
+			// i.e. scrolled OR playedMeasure changed OR canvas size changed (window resized, track table visible state changed)
+			// OR zoom in/out OR changed layout
+			// else, painting only the playedMeasure is sufficient, don't repaint everything
+			if ((!isPlaying) || (this.scrollX!=this.lastScrollX) || (this.scrollY!=this.lastScrollY)
+					|| (playedMeasure!=this.lastPaintedPlayedMeasure)
+					|| (canvasWidth!=this.lastCanvasWidth) || (canvasHeight!=this.lastCanvasHeight)
+					|| (scale != this.lastScale) || (this.tablature.getViewLayout().getStyle() != this.lastLayoutStyle)
+					|| (this.tablature.getViewLayout().getMode() != this.lastLayoutMode)) {
+				int lastWidth = this.width;
+				int lastHeight = this.height;
+				this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
+				this.width = Math.round(this.tablature.getViewLayout().getWidth());
+				this.height = Math.round(this.tablature.getViewLayout().getHeight());
+				this.lastPaintedPlayedMeasure = playedMeasure;
+				// if measure position changed AND scale or size changed, need to reconsider measure position (can only be done *after* tablature is updated)
+				if (moved && (scale != this.lastScale) || (lastWidth != this.width) || (lastHeight != this.height)) {
+					// move to caret measure and redraw a second time
+					this.moveTo(this.tablature.getCaret().getMeasure());
+					this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
+				}
+			}
+			
+			// highlight played beat
+			if ( (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())
+					&& !playedMeasure.isOutOfBounds() ){
+				TGBeatImpl playedBeat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
+				if (playedBeat != lastPaintedPLayedBeat) {
+					this.tablature.getViewLayout().paintPlayMode(painter, playedMeasure, playedBeat);
+					this.lastPaintedPLayedBeat = playedBeat;
+				}
+			}
+			
+			// update scrollbars
+			this.updateScrollBars();
+			if (wasPlaying || moved) {
+				// player just stopped, or caret moved
+				// redefine scrollbars positions considering current position
+				this.hScroll.setValue(this.scrollX);
+				this.vScroll.setValue(this.scrollY);
+			}
+			this.lastScale = scale;
+			this.lastCanvasWidth = canvasWidth;
+			this.lastCanvasHeight = canvasHeight;
+			this.lastScrollX = this.scrollX;
+			this.lastScrollY = this.scrollY;
+			if (!isPlaying ) {
+				this.lastPaintedPlayedMeasure = null;
+				this.lastPaintedPLayedBeat = null;
+			}
+			this.lastLayoutStyle = this.tablature.getViewLayout().getStyle();
+			this.lastLayoutMode = this.tablature.getViewLayout().getMode();
+			this.wasPlaying = isPlaying;
+			
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
+		this.painting = false;
 	}
 	
-	public void resetScroll(){
-		this.resetScroll = true;
-	}
-	
-	public void checkScroll(){
-		if( this.resetScroll ){
-			this.hScroll.setValue(0);
-			this.vScroll.setValue(0);
-			this.resetScroll = false;
-		}
-	}
-	
-	public void updateScroll(){
+	/* Warning: only update scrollbars if at least one attribute has changed
+	 * else it creates a significant performance issue in Linux/SWT configuration:
+	 * - updating scrollbar generates a SWT event to repaint this.canvas, because scrollbars are transparent
+	 * - it calls this.paintTablature
+	 * - which in turn call this.updateScroll
+	 * if scrollbars are updated here, it creates a recursive loop: paintTablature -> updateScroll -> paintTablature -> ...
+	 * this leads to repainting the tab about 60 times per second, creating a significant CPU load
+	 * see https://github.com/helge17/tuxguitar/issues/403
+	 */
+	private void updateScrollBars(){
 		UIRectangle bounds = this.canvas.getBounds();
 		
-		this.hScroll.setMaximum(Math.max(Math.round(this.width - bounds.getWidth()), 0));
-		this.vScroll.setMaximum(Math.max(Math.round(this.height - bounds.getHeight()), 0));
-		this.hScroll.setThumb(Math.round(bounds.getWidth()));
-		this.vScroll.setThumb(Math.round(bounds.getHeight()));
+		int hMax = Math.max(Math.round(this.width - bounds.getWidth()), 0);
+		int hThumb = Math.round(bounds.getWidth());
+		if (hMax>0) {
+			this.hScroll.setVisible(true);
+			if (this.hScroll.getMaximum() != hMax) {
+				this.hScroll.setMaximum(hMax);
+			}
+			if (this.hScroll.getThumb() != hThumb) {
+				this.hScroll.setThumb(hThumb);
+			}
+		} else {
+			this.hScroll.setVisible(false);
+			this.scrollX = 0;
+		}
+		int vMax = Math.max(Math.round(this.height - bounds.getHeight()), 0);
+		int vThumb = Math.round(bounds.getHeight());
+		if (vMax>0) {
+			this.vScroll.setVisible(true);
+			if (this.vScroll.getMaximum() != vMax) {
+				this.vScroll.setMaximum(vMax);
+			}
+			if (this.vScroll.getThumb() != vThumb) {
+				this.vScroll.setThumb(vThumb);
+			}
+		} else {
+			this.vScroll.setVisible(false);
+			this.scrollY = 0;
+		}
 	}
-	
-	public void moveScrollTo(TGMeasureImpl measure){
-		this.moveScrollTo(measure, createRectangle(this.canvas.getBounds()));
-	}
-	
-	public void moveScrollTo(TGMeasureImpl measure, UIRectangle area) {
+
+	private void moveTo(TGMeasureImpl measure) {
 		if( measure != null && measure.getTs() != null ){
 			int mX = Math.round(measure.getPosX());
 			int mY = Math.round(measure.getPosY());
@@ -191,26 +259,18 @@ public class TGControl {
 			int marginHeight = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
 			boolean playMode = MidiPlayer.getInstance(this.context).isRunning();
 			
-			//Solo se ajusta si es necesario
-			Integer hScrollValue = this.computeScrollValue(this.scrollX, mX, mWidth, marginWidth, Math.round(area.getWidth()), this.width, playMode);
+			Integer hScrollValue = this.computeScrollValue(this.scrollX, mX, mWidth, marginWidth, Math.round(this.canvas.getBounds().getWidth()), this.width, playMode);
 			if( hScrollValue != null ) {
-				this.hScroll.setValue(hScrollValue);
+				this.scrollX = hScrollValue;
 			}
-			
-			//Solo se ajusta si es necesario
-			Integer vScrollValue = this.computeScrollValue(this.scrollY, mY, mHeight, marginHeight, Math.round(area.getHeight()), this.height, playMode);
+			Integer vScrollValue = this.computeScrollValue(this.scrollY, mY, mHeight, marginHeight, Math.round(this.canvas.getBounds().getHeight()), this.height, playMode);
 			if( vScrollValue != null ) {
-				this.vScroll.setValue(vScrollValue);
-			}
-			
-			// Si cambio el valor de algun scroll redibuja la pantalla
-			if( this.scrollX != this.hScroll.getValue() || this.scrollY != this.vScroll.getValue() ){
-				redraw();
+				this.scrollY = vScrollValue;
 			}
 		}
 	}
 	
-	public Integer computeScrollValue(int scrollPos, int mPos, int mSize, int mMargin, int areaSize, int fullSize, boolean playMode) {
+	private Integer computeScrollValue(int scrollPos, int mPos, int mSize, int mMargin, int areaSize, int fullSize, boolean playMode) {
 		Integer value = null;
 		
 		// when position is less than scroll
@@ -237,37 +297,17 @@ public class TGControl {
 	
 	public void redraw(){
 		if(!this.isDisposed() ){
-			this.setPainting(true);
+			this.painting = true;
 			this.canvas.redraw();
 		}
 	}
 	
 	public void redrawPlayingMode() {
-		if(!this.isDisposed() && !this.isPainting() && MidiPlayer.getInstance(this.context).isRunning()) {
+		if(!this.isDisposed() && !this.painting && MidiPlayer.getInstance(this.context).isRunning()) {
 			this.redraw();
 		}
 	}
 	
-	public boolean isPainting() {
-		return this.painting;
-	}
-	
-	public void setPainting(boolean painting) {
-		this.painting = painting;
-	}
-
-	public TGContext getContext() {
-		return this.context;
-	}
-	
-	public Tablature getTablature() {
-		return tablature;
-	}
-	
-	public UIContainer getContainer() {
-		return container;
-	}
-
 	public UICanvas getCanvas() {
 		return canvas;
 	}
@@ -276,7 +316,4 @@ public class TGControl {
 		return (this.container == null || this.container.isDisposed() || this.canvas == null || this.canvas.isDisposed());
 	}
 	
-	public UIRectangle createRectangle(UIRectangle rectangle){
-		return new UIRectangle(rectangle.getX(),rectangle.getY(),rectangle.getWidth(),rectangle.getHeight());
-	}
 }

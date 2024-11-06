@@ -52,16 +52,16 @@ public class TGChordSelector {
 	
 	private boolean refresh;
 	
-	public TGChordSelector(TGChordDialog dialog, UIContainer parent, int[] tuning) {
+	public TGChordSelector(TGChordDialog dialog, UIContainer parent, int[] tuning, boolean useSharpNames) {
 		this.dialog = dialog;
 		this.tuning = tuning;
 		this.refresh = true;
 		
-		this.createControl(parent);
+		this.createControl(parent, useSharpNames);
 	}
 	
 	
-	public void createControl(UIContainer parent) {
+	public void createControl(UIContainer parent, boolean useSharpNames) {
 		UIFactory uiFactory = this.dialog.getUIFactory();
 		UITableLayout uiLayout = new UITableLayout();
 		
@@ -124,7 +124,7 @@ public class TGChordSelector {
 		initChordWidgets();
 		
 		// fill the List widgets with text
-		insertTonicNames(true);
+		insertTonicNames(useSharpNames);
 		
 		for(int i = 0 ; i < TGChordDatabase.length(); i ++) {
 			this.chordList.addItem(new UISelectItem<Integer>(TGChordDatabase.get(i).getName(), i));

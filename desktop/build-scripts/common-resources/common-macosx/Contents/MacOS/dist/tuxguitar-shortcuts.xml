@@ -32,6 +32,7 @@
 	<shortcut keys="Command o" action="action.file.open"/>
 	<shortcut keys="Command w" action="action.file.close-current"/>
 	<shortcut keys="Command p" action="action.file.print"/>
+	<shortcut keys="Command Shift p" action="action.file.print-preview"/>
 	<shortcut keys="Command s" action="action.file.save"/>
 	<shortcut keys="F12" action="action.file.save-as"/>
 	<shortcut keys="F1" action="action.gui.open-documentation-dialog"/>
@@ -40,6 +41,8 @@
 	<shortcut keys="Shift NumEnter" action="action.gui.open-marker-editor-dialog"/>
 	<shortcut keys="Alt Right" action="action.marker.go-next"/>
 	<shortcut keys="Alt Left" action="action.marker.go-previous"/>
+	<shortcut keys="Alt Shift Right" action="action.marker.go-last"/>
+	<shortcut keys="Alt Shift Left" action="action.marker.go-first"/>
 	<shortcut keys="Command Shift Left" action="action.measure.go-first"/>
 	<shortcut keys="Command Shift Right" action="action.measure.go-last"/>
 	<shortcut keys="Command Right" action="action.measure.go-next"/>
@@ -62,8 +65,8 @@
 	<shortcut keys="Shift Right" action="action.note.general.increment-semitone"/>
 	<shortcut keys="Shift Down" action="action.note.general.shift-down"/>
 	<shortcut keys="Shift Up" action="action.note.general.shift-up"/>
-	<shortcut keys="l" action="action.note.general.tied"/>
-	<shortcut keys="F7" action="action.settings.configure"/>
+	<shortcut keys="l" action="action.note.duration.tied"/>
+	<shortcut keys="F7" action="action.gui.open-settings-editor"/>
 	<shortcut keys="Command b" action="action.gui.toggle-browser-dialog"/>
 	<shortcut keys="Command Shift NumEnter" action="action.track.add-new"/>
 	<shortcut keys="Command Shift Up" action="action.track.go-previous"/>

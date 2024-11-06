@@ -12,6 +12,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
 import org.herac.tuxguitar.midi.synth.TGAudioBufferProcessor;
 import org.herac.tuxguitar.midi.synth.TGAudioLine;
 import org.herac.tuxguitar.midi.synth.TGSynthModel;
@@ -55,7 +56,6 @@ public class TGSynthSongWriter implements TGSongWriter {
 			TGSynthSequenceHandler midiSequenceHandler = new TGSynthSequenceHandler(tgSong.countTracks());
 			midiSequenceParser.parse(midiSequenceHandler);
 			if(!midiSequenceHandler.getEvents().isEmpty()) {
-				
 				TGSynthModel synthModel = new TGSynthModel(this.context);
 				TGAudioBufferProcessor audioProcessor = new TGAudioBufferProcessor(synthModel);
 				ByteArrayOutputStream audioBuffer = new ByteArrayOutputStream();
@@ -64,17 +64,16 @@ public class TGSynthSongWriter implements TGSongWriter {
 				this.loadSynthPrograms(synthModel, tgSong);
 				
 				sequence.start();
+				long duration = 0;
 				while(!sequence.isEnded()) {
 					sequence.dispatchEvents();
 					
 					audioProcessor.process();
 					audioBuffer.write(audioProcessor.getBuffer().getBuffer(), 0, audioProcessor.getBuffer().getLength());
-					
+					duration += audioProcessor.getBuffer().getLength();
 					sequence.forward();
 				}
-				
-				long duration = (long) (TGAudioLine.AUDIO_FORMAT.getFrameRate() * ((sequence.getLength() / 1000.00)));
-				
+				duration = duration / TGAudioBuffer.CHANNELS;
 				ByteArrayInputStream byteBuffer = new ByteArrayInputStream(audioBuffer.toByteArray());
 				AudioInputStream sourceStream = new AudioInputStream(byteBuffer, TGAudioLine.AUDIO_FORMAT, duration);
 				AudioInputStream targetStream = AudioSystem.getAudioInputStream(settings.getFormat(), sourceStream);

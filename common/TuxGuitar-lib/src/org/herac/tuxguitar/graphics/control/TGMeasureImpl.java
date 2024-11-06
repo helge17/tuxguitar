@@ -26,6 +26,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.ui.resource.UIColor;
 import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
@@ -129,6 +130,8 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean[][] registeredAccidentals;
 	
 	private boolean readyToPaint;
+	
+	private boolean wasPlayingWhenLastPainted;
 	
 	@SuppressWarnings("unchecked")
 	public TGMeasureImpl(TGMeasureHeader header) {
@@ -283,6 +286,7 @@ public class TGMeasureImpl extends TGMeasure{
 					previousVoices[v] = voice;
 				}
 			}
+			beat.setEffectWidth(beatEffectWidth);
 			if (emptyBeat){
 				System.out.println( "Empty Beat !!!!!! " + beat.getStart() + "  " + i);
 			}
@@ -620,13 +624,16 @@ public class TGMeasureImpl extends TGMeasure{
 			boolean bufferEnabled = layout.isBufferEnabled();
 			TGResourceBuffer resourceBuffer = layout.getResourceBuffer();
 			
-			if(!bufferEnabled || shouldRepaintBuffer(resourceBuffer)){
+			UIColor background = this.isPlaying(layout) ? layout.getResources().getBackgroundColorPlaying() : layout.getResources().getBackgroundColor();
+			painter.setBackground(background);
+			
+			if(!bufferEnabled || shouldRepaintBuffer(resourceBuffer, this.isPlaying(layout))){
 				UIPainter bufferPainter = painter;
 				float x = (bufferEnabled ? 0 : getPosX());
 				float y = (bufferEnabled ? 0 : getPosY());
 				if( bufferEnabled ){
 					UIResourceFactory factory = layout.getComponent().getResourceFactory();
-					bufferPainter = getBuffer().createBuffer(resourceBuffer, factory, getWidth(layout) + getSpacing(), getTs().getSize(), layout.getResources().getBackgroundColor());
+					bufferPainter = getBuffer().createBuffer(resourceBuffer, factory, getWidth(layout) + getSpacing(), getTs().getSize(), background);
 				}
 				layout.paintLines(getTrackImpl(), getTs(), bufferPainter, x, y, getWidth(layout) + getSpacing());
 				paintTimeSignature(layout, bufferPainter, x, y);
@@ -639,7 +646,7 @@ public class TGMeasureImpl extends TGMeasure{
 				setBufferCreated(true);
 			}
 			if( bufferEnabled ){
-				painter.setBackground(layout.getResources().getBackgroundColor());
+				painter.setBackground(background);
 				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY());
 			}
 			
@@ -649,13 +656,13 @@ public class TGMeasureImpl extends TGMeasure{
 			this.paintTripletFeel(layout,painter);
 			this.paintDivisions(layout,painter);
 			this.paintRepeatEnding(layout,painter);
-			this.paintPlayMode(layout,painter);
 			this.paintLoopMarker(layout, painter);
 		}
+		this.wasPlayingWhenLastPainted = this.isPlaying(layout);
 	}
 	
-	private boolean shouldRepaintBuffer(TGResourceBuffer resourceBuffer){
-		return (!isBufferCreated() || getBuffer().isDisposed(resourceBuffer));
+	private boolean shouldRepaintBuffer(TGResourceBuffer resourceBuffer, boolean isPlaying){
+		return (!isBufferCreated() || getBuffer().isDisposed(resourceBuffer) || (isPlaying != this.wasPlayingWhenLastPainted));
 	}
 	
 	public void paintRepeatEnding(TGLayout layout,UIPainter painter){
@@ -692,7 +699,7 @@ public class TGMeasureImpl extends TGMeasure{
 		Iterator<TGBeat> it = getBeats().iterator();
 		while(it.hasNext()) {
 			TGBeatImpl beat = (TGBeatImpl)it.next();
-			beat.paint(layout, painter, x, fromY);
+			beat.paint(layout, painter, x, fromY, false);
 		}
 		
 		this.paintDivisionTypes(layout, painter, x, fromY);
@@ -1158,34 +1165,22 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 	
-	public void paintPlayMode(TGLayout layout,UIPainter painter){
-		if(layout.isPlayModeEnabled() && isPlaying(layout)){
-			float scale = layout.getScale();
-			float width = getWidth(layout) + getSpacing();
-			float y1 = getPosY();
-			float y2 = getPosY();
-			int style = layout.getStyle();
-			if( (style & (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) == (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE) ){
-				y1 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
-				y2 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
-			}else if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
-				y1 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
-				y2 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (layout.getScoreLineSpacing() * 5));
-			} else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
-				y1 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - layout.getStringSpacing());
-				y2 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
-			}
-			layout.setMeasurePlayingStyle(painter);
-			// Don't uncomment "lineStyle" until be sure SWT bug has fixed.
-			// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=225725
-			//painter.setLineStyle(SWT.LINE_DASH);
-			painter.setLineWidth(layout.getLineWidth(1));
-			painter.initPath();
-			painter.setAntialias(false);
-			painter.addRectangle(getPosX() + (5f * scale),y1,width - (10f * scale),(y2 - y1));
-			painter.closePath();
-			//painter.setLineStyle(SWT.LINE_SOLID);
+	// returns vertical position of measure, only y data is relevant
+	public UIRectangle getVerticalPosition(TGLayout layout){
+		float y1 = getPosY();
+		float y2 = y1;
+		int style = layout.getStyle();
+		if( (style & (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) == (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE) ){
+			y1 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
+			y2 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
+		}else if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
+			y1 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
+			y2 += (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (layout.getScoreLineSpacing() * 5));
+		} else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
+			y1 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - layout.getStringSpacing());
+			y2 += (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
 		}
+		return new UIRectangle(0,y1,0,y2-y1);
 	}
 	
 	/**

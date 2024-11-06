@@ -96,6 +96,12 @@ public abstract class TGVoice {
 		this.notes.remove(note);
 	}
 	
+	public void clearNotes() {
+		while (this.notes.size()>0) {
+			this.removeNote(this.getNote(0));
+		}
+	}
+	
 	public TGNote getNote(int index){
 		if(index >= 0 && index < countNotes()){
 			return this.notes.get(index);

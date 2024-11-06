@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.util.properties;
 
 import java.util.Properties;
+import java.util.Set;
 
 public interface TGProperties {
 	
@@ -13,5 +14,7 @@ public interface TGProperties {
 	public void clear();
 	
 	public void update(Properties newProperties);
+	
+	public Set<String> getStringKeys();
 	
 }

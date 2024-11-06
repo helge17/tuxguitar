@@ -33,7 +33,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 public class TGSongReaderImpl implements TGSongReader {
 	
 	public static final String TG_VERSION = "TG_DEVEL-0.01";
-	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 0.7", "audio/x-tuxguitar", new String[]{"tg"});
+	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 0.7", "application/x-tuxguitar", new String[]{"tg"});
 	public static final TGFileFormatVersion SUPPORTED_FORMAT = new TGFileFormatVersion(TG_FORMAT, TG_VERSION);
 	
 	private DataInputStream dataInputStream;

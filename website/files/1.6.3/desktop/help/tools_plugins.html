@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Plugins - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.3</p>
+  </div>
+  <div class="title">
+    <h1 id="plugins_dialog">Plugins dialog</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><strong>Plugins dialog</strong></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>TuxGuitar supports plugins. Some of the plugins are delivered with the distribution, but there are plugins you can download and enable manually.</p>
+    <p>There are several types of the plugins:</p>
+    <ol>
+      <li>File Format plugins (PowerTab, Lilypond, MIDI, MusicXML) are included by default</li>
+      <li>Sound plugins (Java Sound Api, Fluidsynth, ALSA, Jack) are recommended depending on your OS</li>
+      <li>other plugins</li>
+    </ol>
+    <p>The plugins dialog is accessed through the <strong>Tools → Plugins</strong> menu. In the dialog you can enable or disable all installed plugins. Some of the plugins can also be configured with the "Configure" button. The "Info" button shows the version, author and description of the selected plugin.</p>
+    <img src="images/plugins_dialog.png" />
+    <p>Plugins are single *.jar files. You can install any TuxGuitar plugin by simply copying it to the <em>$TUXGUITAR_DIR</em>\share\plugins\ folder and enabling it in the dialog.</p>
+    <p>Maybe the easiest way to contribute to TuxGuitar functionality is to write a plugin, because it doesn’t need synchronization with the other TuxGuitar developers.</p>
+  </section>
+</body>
+</html>

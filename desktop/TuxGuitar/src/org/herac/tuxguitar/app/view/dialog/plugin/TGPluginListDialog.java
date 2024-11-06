@@ -16,12 +16,15 @@ import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
 import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
+import org.herac.tuxguitar.ui.event.UIModifyEvent;
+import org.herac.tuxguitar.ui.event.UIModifyListener;
 import org.herac.tuxguitar.ui.layout.UITableLayout;
 import org.herac.tuxguitar.ui.resource.UICursor;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 import org.herac.tuxguitar.ui.widget.UITableItem;
+import org.herac.tuxguitar.ui.widget.UITextField;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPlugin;
@@ -30,8 +33,10 @@ import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGPluginListDialog {
 	
+	private UITextField filterText;
 	private static final float TABLE_WIDTH = 400;
 	private static final float TABLE_HEIGHT = 300;
+	private UICheckTable<String> table;
 	
 	public void show(final TGViewContext context) {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
@@ -41,37 +46,32 @@ public class TGPluginListDialog {
 		
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("plugins"));
+
+		this.filterText = uiFactory.createTextField(dialog);
+		this.filterText.addModifyListener(new UIModifyListener() {
+			@Override
+			public void onModify(UIModifyEvent event) {
+				TGPluginListDialog.this.updateTableItems(context.getContext());
+			}
+		});
+		dialogLayout.set(filterText, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
-		final UICheckTable<String> table = uiFactory.createCheckTable(dialog, true);
+		this.table = uiFactory.createCheckTable(dialog, true);
 		table.setColumns(2);
 		table.setColumnName(0, TuxGuitar.getProperty("plugin.column.enabled"));
 		table.setColumnName(1, TuxGuitar.getProperty("plugin.column.name"));
 		
-		dialogLayout.set(table, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(table, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		dialogLayout.set(table, UITableLayout.PACKED_WIDTH, TABLE_WIDTH);
 		dialogLayout.set(table, UITableLayout.PACKED_HEIGHT, TABLE_HEIGHT);
 		
-		Iterator<String> it = getModuleIds().iterator();
-		while(it.hasNext()){
-			String moduleId = (String)it.next();
-			TGPluginInfo pluginInfo = new TGPluginInfo(context.getContext(), moduleId);
-			
-			String pluginName = pluginInfo.getName();
-			if( pluginName == null ){
-				pluginName = moduleId;
-			}
-			
-			UITableItem<String> item = new UITableItem<String>(moduleId);
-			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin"));
-			table.addItem(item);
-			table.setCheckedItem(item, TuxGuitar.getInstance().getPluginManager().isEnabled(moduleId));
-		}
-		
+		this.updateTableItems(context.getContext());
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UIButton buttonSetup = uiFactory.createButton(buttons);
 		buttonSetup.setText(TuxGuitar.getProperty("configure"));
@@ -133,6 +133,28 @@ public class TGPluginListDialog {
 		});
 		
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+
+	public void updateTableItems(TGContext context) {
+		table.removeItems();
+
+		Iterator<String> it = getModuleIds().iterator();
+		while(it.hasNext()){
+			String moduleId = (String)it.next();
+			TGPluginInfo pluginInfo = new TGPluginInfo(context, moduleId);
+
+			String pluginName = pluginInfo.getName();
+			if( pluginName == null ){
+				pluginName = moduleId;
+			}
+
+			UITableItem<String> item = new UITableItem<String>(moduleId);
+			item.setText(1, (pluginName != null ? pluginName : "Undefined Plugin"));
+			if (item.getText(1).toLowerCase().contains(this.filterText.getText().toLowerCase())) {
+				table.addItem(item);
+				table.setCheckedItem(item, TuxGuitar.getInstance().getPluginManager().isEnabled(moduleId));
+			}
+		}
 	}
 	
 	private List<String> getModuleIds(){

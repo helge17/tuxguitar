@@ -9,7 +9,7 @@ import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 
 public class JFXMenuActionItem extends JFXMenuItem<MenuItem> implements UIMenuActionItem {
 	
-	private JFXSelectionListenerManager<ActionEvent> selectionListener;
+	protected JFXSelectionListenerManager<ActionEvent> selectionListener;
 	
 	public JFXMenuActionItem(MenuItem item, JFXMenuItemContainer parent) {
 		super(item, parent);

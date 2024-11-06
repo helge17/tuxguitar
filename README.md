@@ -16,16 +16,16 @@ TuxGuitar includes the following third party products:
 
 * SWT version: SWT (Standard Widget Toolkit): https://www.eclipse.org/swt/
 * JFX version: JavaFX (Java client application platform): https://openjfx.io/
-* Gervill (Software Synthesizer): https://gervill.dev.java.net/
+* Gervill (Java Software Synthesizer)
 * iText (Free Java-PDF library): https://itextpdf.com/
 * Magic Sound Font v2.0 - Contributed by Dennis Deutschmann
 
 ## Installation
 
-You can find ready to use installation packages for Linux, Windows, MacOS, FreeBSD and Android here: [releases](https://github.com/helge17/tuxguitar/releases/)
+You can find ready to use installation packages for Linux, Windows, MacOS, FreeBSD and Android here: [releases](https://github.com/helge17/tuxguitar/releases/).
 
 To build TuxGuitar from source code, refer to the [INSTALL.md](INSTALL.md) file.
 
 ## Contribute
 
-If you want to contribute to TuxGuitar, you will find a helpful description in the file [contribute.md](doc/contribute.md).
+If you want to contribute to TuxGuitar, you will find a helpful description in the [contribute.md](doc/contribute.md) file.

@@ -60,7 +60,7 @@ public class FFT {
 	 *
 	 * @param double [] xr is the real part of the data to be transformed
 	 * @param double [] xi is the imaginary part of the data to be transformed
-	 * (normally zero unless inverse transofrm is effect).
+	 * (normally zero unless inverse transform is effect).
 	 * @param boolean invFlag which is true if inverse transform is being
 	 * applied. false for a forward transform.
 	 */

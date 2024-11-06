@@ -273,7 +273,7 @@ public class MidiSequenceParser {
 								}
 							}
 						}
-						//Artifical/Tapped/Pinch/Semi
+						//Artificial/Tapped/Pinch/Semi
 						else{
 							if( note.getEffect().getHarmonic().isSemi() && !percussionChannel ){
 								addNote(sh,track.getNumber(),Math.min(127,orig), start, duration,Math.max(TGVelocities.MIN_VELOCITY,velocity - (TGVelocities.VELOCITY_INCREMENT * 3)),channel,midiVoice,bendMode);
@@ -521,6 +521,19 @@ public class MidiSequenceParser {
 					for (int n = 0; n < noteCount; n++) {
 						TGNote nextNote = voice.getNote( n );
 						if (!nextNote.equals(note) || mIndex != m ) {
+							if (letRing) {
+								// end of letRing chain?
+								if (!nextNote.getEffect().isLetRing()) {
+									if ((mIndex == m) || (nextNote.isTiedNote()) ) {
+										realDuration += voice.getDuration().getTime();
+									}
+									return applyDurationEffects(note, tempo, realDuration);
+								}
+								if ((mIndex != m) && !(nextNote.isTiedNote())) {
+									// measure changed, found a non tied note, end of letRing
+									return applyDurationEffects(note, tempo, realDuration);
+								}
+							}
 							if (nextNote.getString() == note.getString()) {
 								if (nextNote.isTiedNote()) {
 									realDuration += (mh.getMove() + beat.getStart() - lastEnd) + (nextNote.getVoice().getDuration().getTime());
@@ -535,6 +548,7 @@ public class MidiSequenceParser {
 					}
 					if(letRing && !letRingBeatChanged){
 						realDuration += ( voice.getDuration().getTime() );
+						lastEnd += voice.getDuration().getTime();
 					}
 					letRingBeatChanged = false;
 				}

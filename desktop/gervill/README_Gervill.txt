@@ -9,7 +9,7 @@ Introduction:
    Audio Synthesis Engine Project.
       
    
-Hightlight of features:
+Highlight of features:
 -----------------------   
 
    * Downloadable Sound Level 2.2
@@ -60,7 +60,7 @@ Audio/Implementation Features:
     Control rate:  147 Hz
     Max Polyphony: 64
     Latency:       400 msec 
-                  (can be as low as 70 msec on windows plaform)
+                  (can be as low as 70 msec on windows platform)
             
 * Audio formats supported:
     Mono/Stereo.
@@ -97,7 +97,7 @@ Audio/Implementation Features:
   and it is the real location where active voice parameters are located.
 
 * Support midi time stamping in the Receiver interface.
-  And it is to be used with conjuction with 
+  And it is to be used in conjunction with
   getMicrosecondPosition() method in the synthesizer class.
 
 * Two global effect engine are included: Chorus and Reverb
@@ -113,7 +113,7 @@ MIDI Features:
 * The synthesizer is fully General Midi Level 2 compatible.
 
 * Full support for MIDI tuning standard.
-  Sysex mesages messages from programs like 
+  Sysex messages from programs like
   Scala (http://www.xs4all.nl/~huygensf/scala/).
   This enables all kinds of microtuning.
 
@@ -399,4 +399,4 @@ Control#    Function#       Transmitted (Y/N)   Recognized (Y/N)    Remarks
 125 Omni Mode On                        N       N   
 126 Poly Mode Off                       N       Y   
 127 Poly Mode On                        N       Y       
-    
+

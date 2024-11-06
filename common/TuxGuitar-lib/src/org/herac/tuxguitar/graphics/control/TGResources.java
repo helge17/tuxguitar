@@ -27,6 +27,7 @@ public class TGResources {
 	private UIFont chordFretFont;
 	private UIColor foregroundColor;
 	private UIColor backgroundColor;
+	private UIColor backgroundColorPlaying;
 	private UIColor lineColor;
 	private UIColor scoreNoteColor;
 	private UIColor tabNoteColor;
@@ -93,6 +94,10 @@ public class TGResources {
 		return this.backgroundColor;
 	}
 	
+	public UIColor getBackgroundColorPlaying() {
+		return this.backgroundColorPlaying;
+	}
+	
 	public UIColor getLineColor() {
 		return this.lineColor;
 	}
@@ -148,6 +153,7 @@ public class TGResources {
 	private void initColors(TGLayoutStyles style){
 		this.foregroundColor = getColor(style.getForegroundColor());
 		this.backgroundColor = getColor(style.getBackgroundColor());
+		this.backgroundColorPlaying = getColor(style.getBackgroundColorPlaying());
 		this.lineColor = getColor(style.getLineColor());
 		this.scoreNoteColor = getColor(style.getScoreNoteColor());
 		this.tabNoteColor = getColor(style.getTabNoteColor());

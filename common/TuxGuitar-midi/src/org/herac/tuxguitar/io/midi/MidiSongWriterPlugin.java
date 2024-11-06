@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public class MidiSongWriterPlugin extends TGSongWriterPlugin {
 	
 	public MidiSongWriterPlugin() {
-		super(false);
+		super();
 	}
 	
 	public String getModuleId(){

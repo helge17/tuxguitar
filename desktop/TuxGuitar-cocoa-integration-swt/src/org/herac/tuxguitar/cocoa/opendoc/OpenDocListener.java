@@ -60,7 +60,7 @@ public class OpenDocListener implements Listener, TGActionInterceptor {
 		this.enabled = false;
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			// need to executeLater for 2 reasons:
-			// - remove swt event listener: shall be done from UI tread
+			// - remove swt event listener: shall be done from UI thread
 			// - remove action interceptor: cannot be done when an action is currently intercepted and action is continued
 			public void run() {
 				try {

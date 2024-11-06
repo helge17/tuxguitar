@@ -58,6 +58,7 @@ public class TGConverter {
 				
 				song = tgSongLoaderHandle.getSong();
 			} catch (TGFileFormatException e) {
+				e.printStackTrace();
 				this.getListener().notifyFileResult(fileName,FILE_BAD);
 			}
 			

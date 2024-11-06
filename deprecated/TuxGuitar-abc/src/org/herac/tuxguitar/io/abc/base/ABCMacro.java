@@ -26,7 +26,7 @@ package org.herac.tuxguitar.io.abc.base;
  *  <p>
  *  When you play the tune, the program searches the tune header for macro definitions, 
  *  then does a search and replace on its internal copy of the text before passing that 
- *  to the parser which plays the tune. Every occurence of ~G3 in the tune is replaced 
+ *  to the parser which plays the tune. Every occurrence of ~G3 in the tune is replaced
  *  by G{A}G{F}G, and that is what gets played. Only ~G3 notes are affected,
  *  ~G2, ~g3, ~F3 etc. are ignored. 
  *  <p>

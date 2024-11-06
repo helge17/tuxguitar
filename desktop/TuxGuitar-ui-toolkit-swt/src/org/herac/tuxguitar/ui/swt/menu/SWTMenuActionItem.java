@@ -7,7 +7,7 @@ import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 
 public class SWTMenuActionItem extends SWTMenuItem implements UIMenuActionItem {
 	
-	private SWTSelectionListenerManager selectionListener;
+	protected SWTSelectionListenerManager selectionListener;
 	
 	public SWTMenuActionItem(MenuItem item, SWTMenu parent) {
 		super(item, parent);

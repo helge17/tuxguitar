@@ -13,10 +13,6 @@ import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
 
 public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 	
-	private static final int STATUS_STOPPED = 1;
-	private static final int STATUS_PAUSED = 2;
-	private static final int STATUS_RUNNING = 3;
-	
 	private UIToolActionItem first;
 	private UIToolActionItem last;
 	private UIToolActionItem previous;
@@ -24,7 +20,7 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 	private UIToolActionItem stop;
 	private UIToolActionItem play;
 	private UIToolActionItem mode;
-	private int status;
+	private boolean isRunning;
 	
 	public TGMainToolBarSectionTransport(TGMainToolBar toolBar) {
 		super(toolBar);
@@ -52,7 +48,7 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 		this.mode = this.getToolBar().getControl().createActionItem();
 		this.mode.addSelectionListener(new TGActionProcessorListener(this.getToolBar().getContext(), TGOpenTransportModeDialogAction.NAME));
 
-		this.status = STATUS_STOPPED;
+		this.isRunning = false;
 		this.loadIcons();
 		this.loadProperties();
 	}
@@ -76,41 +72,22 @@ public class TGMainToolBarSectionTransport extends TGMainToolBarSection {
 	}
 	
 	public void loadIcons(boolean force){
-		int lastStatus = this.status;
+		boolean lastStatusRunning = this.isRunning;
 		
 		MidiPlayer player = MidiPlayer.getInstance(this.getToolBar().getContext());
-		if( player.isRunning()){
-			this.status = STATUS_RUNNING;
-		}else if(player.isPaused()){
-			this.status = STATUS_PAUSED;
-		}else{
-			this.status = STATUS_STOPPED;
-		}
+		this.isRunning = player.isRunning();
 		
-		if(force || lastStatus != this.status){
-			if( this.status == STATUS_RUNNING ){
-				this.first.setImage(this.getIconManager().getTransportIconFirst2());
-				this.last.setImage(this.getIconManager().getTransportIconLast2());
-				this.previous.setImage(this.getIconManager().getTransportIconPrevious2());
-				this.next.setImage(this.getIconManager().getTransportIconNext2());
-				this.stop.setImage(this.getIconManager().getTransportIconStop2());
+		if(force || lastStatusRunning != this.isRunning){
+			this.first.setImage(this.getIconManager().getTransportIconFirst());
+			this.last.setImage(this.getIconManager().getTransportIconLast());
+			this.previous.setImage(this.getIconManager().getTransportIconPrevious());
+			this.next.setImage(this.getIconManager().getTransportIconNext());
+			this.stop.setImage(this.getIconManager().getTransportIconStop());
+			if( this.isRunning ){
 				this.play.setImage(this.getIconManager().getTransportIconPause());
 				this.play.setToolTipText(this.getText("transport.pause"));
-			}else if( this.status == STATUS_PAUSED ){
-				this.first.setImage(this.getIconManager().getTransportIconFirst2());
-				this.last.setImage(this.getIconManager().getTransportIconLast2());
-				this.previous.setImage(this.getIconManager().getTransportIconPrevious2());
-				this.next.setImage(this.getIconManager().getTransportIconNext2());
-				this.stop.setImage(this.getIconManager().getTransportIconStop2());
-				this.play.setImage(this.getIconManager().getTransportIconPlay2());
-				this.play.setToolTipText(this.getText("transport.start"));
-			}else if( this.status == STATUS_STOPPED ){
-				this.first.setImage(this.getIconManager().getTransportIconFirst1());
-				this.last.setImage(this.getIconManager().getTransportIconLast1());
-				this.previous.setImage(this.getIconManager().getTransportIconPrevious1());
-				this.next.setImage(this.getIconManager().getTransportIconNext1());
-				this.stop.setImage(this.getIconManager().getTransportIconStop1());
-				this.play.setImage(this.getIconManager().getTransportIconPlay1());
+			} else {
+				this.play.setImage(this.getIconManager().getTransportIconPlay());
 				this.play.setToolTipText(this.getText("transport.start"));
 			}
 		}

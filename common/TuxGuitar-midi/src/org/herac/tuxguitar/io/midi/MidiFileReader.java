@@ -40,7 +40,7 @@ public class MidiFileReader implements MidiFileHeader{
 			throw new MidiFileException("corrupt MIDI file: number of tracks must be positive");
 		}
 		if (type == 0 && trackCount != 1){
-			throw new MidiFileException("corrupt MIDI file:  type 0 files must contain exactely one track");
+			throw new MidiFileException("corrupt MIDI file: type 0 files must contain exactly one track");
 		}
 		float divisionType = -1.0F;
 		int resolution = -1;

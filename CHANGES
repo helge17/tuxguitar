@@ -1,6 +1,40 @@
-TuxGuitar 9.99-SNAPSHOT changes:
+TuxGuitar 1.6.4 (2024-08-23) changes:
 
-* ...
+* Fixed performance issue on newer Linux versions
+* Updated Polish and Russian translation
+* Reworked duration and division menus
+* Reworked file open/save/import/export behaviour
+* Show dead note correctly in score
+* The chord editor now considers the current key signature when opening
+* Fixed bug when switching between page and linear layout
+* Added a text filter in plugin list
+* Improved notes names display on fretboard
+* Configurable fretboard size
+* More small improvements and cleanups
+
+TuxGuitar 1.6.3 (2024-06-06) changes:
+
+* Fixed stuck splash screen on Linux/Wayland
+* Fixed "Save As" file type on Windows
+* Fixed audio export of percussion tracks
+* Fixed several batch converter issues
+* Updated dependencies for compatibility with Ubuntu 24.04 LTS
+* Improved button in toolbar for tuplets
+* "Currently played beat" highlight improved
+* Made caret more visible
+* Adapted copy-paste function to better handle different tuning presets
+* Enabled files to be opened with double-click in Finder on MacOS
+* Display menu accelerators correctly on MacOS
+* Removed confirmation "Do you want to apply changes now?"
+* Made marker font configurable
+* Simplified "Change Tuning" dialog
+* Improved MusicXML, MIDI and PDF export
+* Added menu entries for advanced selection features
+* Changed Ctrl+A shortcut to "Select Entire Track"
+* Improved note spacing
+* Improved editing and display of percussion tracks
+* Removed broken "Export to Gervill Audio File" Plugin
+* Many small improvements and cleanups
 
 TuxGuitar 1.6.2 (2024-04-01) changes:
 

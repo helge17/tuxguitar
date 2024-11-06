@@ -115,19 +115,55 @@ public abstract class TGBeat {
 		return true;
 	}
 	
+	// duration (time) of shortest voice
+	public long getShortestVoiceDurationTime() {
+		long time = -1;
+		for (int v=0; v<this.countVoices(); v++) {
+			TGVoice voice = this.getVoice(v);
+			if (!voice.isEmpty()) {
+				if ((time<0) || (voice.getDuration().getTime()<time)) {
+					time = voice.getDuration().getTime();
+				}
+			}
+		}
+		return time;
+	}
+	
+	// duration (time) of longest voice
+	public long getDurationTime() {
+		long time = 0;
+		for (int v=0; v<this.countVoices(); v++) {
+			TGVoice voice = this.getVoice(v);
+			if (!voice.isEmpty()) {
+				if (voice.getDuration().getTime() > time) {
+					time = voice.getDuration().getTime();
+				}
+			}
+		}
+		return time;
+	}
+	
+	public long getEnd() {
+		return this.getStart() + this.getDurationTime();
+	}
+	
+	public void copyFrom(TGBeat beat, TGFactory factory) {
+		this.setStart(beat.getStart());
+		this.getStroke().copyFrom(beat.getStroke());
+		for( int i = 0 ; i < beat.voices.length ; i ++ ){
+			this.setVoice(i, beat.voices[i].clone(factory));
+		}
+		if(beat.chord != null){
+			this.setChord( beat.chord.clone(factory));
+		}
+		if(beat.text != null){
+			this.setText( beat.text.clone(factory));
+		}
+	}
+	
 	public TGBeat clone(TGFactory factory){
 		TGBeat beat = factory.newBeat();
-		beat.setStart(getStart());
-		beat.getStroke().copyFrom(getStroke());
-		for( int i = 0 ; i < this.voices.length ; i ++ ){
-			beat.setVoice(i, this.voices[i].clone(factory));
-		}
-		if(this.chord != null){
-			beat.setChord( this.chord.clone(factory));
-		}
-		if(this.text != null){
-			beat.setText( this.text.clone(factory));
-		}
+		beat.copyFrom(this, factory);
 		return beat;
 	}
 }

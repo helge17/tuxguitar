@@ -1,15 +1,6 @@
 package org.herac.tuxguitar.app.system.config;
 
 public class TGConfigKeys {
-	
-	/* list of obsolete configuration key names
-	 * these keys were used in previous versions of TuxGuitar, and SHALL NOT be re-used for new configuration parameters 
-	 * as old values (with an old signification) can be found in user's configuration file (when user upgrades TuxGuitar from an old version)
-	 */
-	static final String[] OBSOLETE_KEYS = {
-			"color.caret.1",
-			"color.caret.2",
-			};
 
 	// valid configuration key names
 	public static final String SKIN = "skin";
@@ -49,6 +40,9 @@ public class TGConfigKeys {
 	public static final String FONT_ABOUT_DIALOG_TITLE = "font.about.dialog.title";
 	public static final String COLOR_FOREGROUND = "color.foreground";
 	public static final String COLOR_BACKGROUND = "color.background";
+	
+	public static final String COLOR_BACKGROUND_PLAYING = "color.background.playing";
+	
 	public static final String COLOR_LINE = "color.line";
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
 	public static final String COLOR_TAB_NOTE = "color.tab.note";
@@ -87,7 +81,6 @@ public class TGConfigKeys {
 	public static final String MATRIX_COLOR_NOTE = "matrix.color.note";
 	public static final String MATRIX_COLOR_PLAY_NOTE = "matrix.color.play-note";
 	public static final String TABLE_AUTO_SIZE = "table.auto-size";
-	public static final String FORCE_OS_DEFAULTS = "painter.force-os-defaults";
 
 	public static final String STYLE_MIN_BUFFER_SEPARATOR = "style.minBufferSeparator";
 	public static final String STYLE_MIN_TOP_SPACING = "style.minTopSpacing";
@@ -118,4 +111,5 @@ public class TGConfigKeys {
 	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
 
 	public static final String HOMEPAGE_URL = "homepage.url";
+	public static final String CONFIG_APP_VERSION = "config.app.version";
 }

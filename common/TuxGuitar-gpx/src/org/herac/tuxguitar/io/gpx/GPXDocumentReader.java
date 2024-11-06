@@ -122,14 +122,16 @@ public class GPXDocumentReader {
 						Node gmNode = getChildNode(trackNode, "GeneralMidi");
 						if( gmNode != null ){
 							track.setGmProgram(getChildNodeIntegerContent(gmNode, "Program"));
-							track.setGmChannel1(getChildNodeIntegerContent(gmNode, "PrimaryChannel"));
-							track.setGmChannel2(getChildNodeIntegerContent(gmNode, "SecondaryChannel"));
+							track.setGmChannel1(getChildNodeIntegerContent(gmNode, "PrimaryChannel", this.getFreeGmChannel(null)));
+							track.setGmChannel2(getChildNodeIntegerContent(gmNode, "SecondaryChannel", this.getFreeGmChannel(track)));
 						}
 					} else if (this.version == GP7) {
+						int primaryChannel = -1;
+						int secondaryChannel = -1;
 						Node midiConnectionNode = getChildNode(trackNode, "MidiConnection");
 						if( midiConnectionNode != null ){
-							track.setGmChannel1(getChildNodeIntegerContent(midiConnectionNode, "PrimaryChannel"));
-							track.setGmChannel2(getChildNodeIntegerContent(midiConnectionNode, "SecondaryChannel"));
+							primaryChannel = getChildNodeIntegerContent(midiConnectionNode, "PrimaryChannel", -1);
+							secondaryChannel = getChildNodeIntegerContent(midiConnectionNode, "SecondaryChannel", -1);
 						}
 						NodeList soundsNodes = getChildNodeList(trackNode, "Sounds");
 						if( soundsNodes != null ){
@@ -142,6 +144,29 @@ public class GPXDocumentReader {
 									}
 								}
 							}
+						}
+						if ((primaryChannel >= 0) && (secondaryChannel >= 0)) {
+							track.setGmChannel1(primaryChannel);
+							track.setGmChannel2(secondaryChannel);
+						}
+						else {
+							// unusual .gp file, gm channels are not defined
+							// Need to guess if track is percussion or not
+							boolean isPercussion = false;
+							Node instrumentSetNode = getChildNode(trackNode, "InstrumentSet");
+							if (instrumentSetNode != null) {
+								isPercussion |= (getChildNodeContent(instrumentSetNode, "Name").toLowerCase().contains("drum"));
+								isPercussion |= (getChildNodeContent(instrumentSetNode, "Type").toLowerCase().contains("drum"));
+							}
+							isPercussion &= (track.getGmProgram() == 0);
+							if (isPercussion) {
+								track.setGmChannel1(GPXDocument.DEFAULT_PERCUSSION_CHANNNEL);
+								track.setGmChannel2(GPXDocument.DEFAULT_PERCUSSION_CHANNNEL);
+							} else {
+								track.setGmChannel1(this.getFreeGmChannel(null));
+								track.setGmChannel2(this.getFreeGmChannel(track));
+							}
+							
 						}
 					}
 					
@@ -163,7 +188,7 @@ public class GPXDocumentReader {
 							Node propertyNode = propertiesNode.item( p );
 							if (propertyNode.getNodeName().equals("Property") ){ 
 								if( getAttributeValue(propertyNode, "name").equals("Tuning") ){
-									track.setTunningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
+									track.setTuningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
 								}
 							}
 						}
@@ -246,6 +271,10 @@ public class GPXDocumentReader {
 					}
 
 					masterBar.setAlternateEndings(getChildNodeIntegerContentArray(masterBarNode, "AlternateEndings"));
+					Node sectionNode = getChildNode(masterBarNode, "Section");
+					if (sectionNode != null) {
+						masterBar.setMarkerText(getChildNodeContent(sectionNode, "Text"));
+					}
 
 					this.gpxDocument.getMasterBars().add( masterBar );
 				}
@@ -569,5 +598,21 @@ public class GPXDocumentReader {
 	
 	private int[] getChildNodeIntegerContentArray(Node node, String name ){
 		return getChildNodeIntegerContentArray(node, name, (" ") );
+	}
+
+	private int getFreeGmChannel(GPXTrack trackToCheck) {
+		int gmChannel = 0;
+
+		boolean isGmChannelUsed;
+		do {
+			gmChannel += 1;
+
+			isGmChannelUsed = trackToCheck != null && ((trackToCheck.getGmChannel1() == gmChannel) || (trackToCheck.getGmChannel2() == gmChannel));
+			for (GPXTrack track : this.gpxDocument.getTracks()) {
+				isGmChannelUsed |= ((track.getGmChannel1() == gmChannel) || (track.getGmChannel2() == gmChannel));
+			}
+		} while (isGmChannelUsed || (gmChannel==GPXDocument.DEFAULT_PERCUSSION_CHANNNEL));
+
+		return gmChannel;
 	}
 }

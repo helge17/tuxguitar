@@ -1,12 +1,16 @@
 package org.herac.tuxguitar.graphics.control;
 
+import java.util.Iterator;
+
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
+import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.ui.resource.UIPainter;
+import org.herac.tuxguitar.ui.resource.UIRectangle;
 
 public class TGBeatImpl extends TGBeat{
 	/**
@@ -40,6 +44,7 @@ public class TGBeatImpl extends TGBeat{
 	private TGBeatGroup group;
 	
 	private TGBeatSpacing bs;
+	private float effectWidth;
 	
 	private boolean accentuated;
 	private boolean heavyAccentuated;
@@ -72,6 +77,10 @@ public class TGBeatImpl extends TGBeat{
 	
 	public void setWidth(float width) {
 		this.width = width;
+	}
+	
+	public void setEffectWidth(float width) {
+		this.effectWidth = width;
 	}
 	
 	public TGNoteImpl getMinNote(){
@@ -290,7 +299,7 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
-	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY) {
+	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY, boolean highlightPlayedBeat) {
 		if(!layout.isPlayModeEnabled() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			paintExtraLines(painter, layout,fromX, fromY);
 		}
@@ -305,6 +314,45 @@ public class TGBeatImpl extends TGBeat{
 			if(getStroke().getDirection() != TGStroke.STROKE_NONE){
 				paintStroke(layout, painter, fromX, fromY);
 			}
+		}
+		if(layout.isPlayModeEnabled() && isPlaying(layout) && highlightPlayedBeat){
+			TGMeasureImpl measureImpl = getMeasureImpl();
+			UIRectangle playedMeasure = measureImpl.getVerticalPosition(layout);
+			float scale = layout.getScale();
+			float leftSpacing = 8f* scale;
+			float rightSpacing = 15f* scale;
+			float width = this.effectWidth + leftSpacing + rightSpacing;
+			int style = layout.getStyle();
+			float yHighestNote = 0;
+			float yLowestNote = 0;
+			if ( (style & TGLayout.DISPLAY_SCORE) != 0) {
+				for( int v = 0; v < MAX_VOICES; v ++){
+					TGVoiceImpl voice = (TGVoiceImpl)getVoice(v);
+					if(!voice.isEmpty()){
+						Iterator<TGNote> it = voice.getNotes().iterator();
+						while(it.hasNext()){
+							TGNoteImpl note = (TGNoteImpl)it.next();
+							yHighestNote = Math.min(note.getScorePosY(), yHighestNote);
+							yLowestNote = Math.max(note.getScorePosY(), yLowestNote);
+						}
+					}
+				}
+			}
+			float y1 = playedMeasure.getY();
+			float y2 = y1 + playedMeasure.getHeight();
+			// adapt to lowest note, only if tablature is not displayed
+			if ((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0) {
+				y2 = Math.max(y2, y1 + yLowestNote + 3*layout.getScoreLineSpacing());
+			}
+			// adapt to highest note, only if score is displayed
+			if ((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0) {
+				y1 += yHighestNote;
+			}
+			painter.setLineWidth(layout.getLineWidth(1));
+			painter.initPath();
+			painter.setAntialias(false);
+			painter.addRoundedRectangle(fromX+getPosX()-leftSpacing+getSpacing(layout), y1, width , y2-y1, 3f*scale);
+			painter.closePath();
 		}
 	}
 	

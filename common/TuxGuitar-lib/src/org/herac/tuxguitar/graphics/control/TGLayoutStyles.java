@@ -44,6 +44,7 @@ public class TGLayoutStyles {
 	private UIFontModel chordFretFont;
 	private UIColorModel foregroundColor;
 	private UIColorModel backgroundColor;
+	private UIColorModel backgroundColorPlaying;
 	private UIColorModel lineColor;
 	private UIColorModel scoreNoteColor;
 	private UIColorModel tabNoteColor;
@@ -367,6 +368,17 @@ public class TGLayoutStyles {
 
 	public void setBackgroundColor(UIColorModel backgroundColor) {
 		this.backgroundColor = backgroundColor;
+	}
+
+	public UIColorModel getBackgroundColorPlaying() {
+		if (this.backgroundColorPlaying !=  null) {
+			return this.backgroundColorPlaying;
+		}
+		return backgroundColor;
+	}
+
+	public void setBackgroundColorPlaying(UIColorModel backgroundColorPlaying) {
+		this.backgroundColorPlaying = backgroundColorPlaying;
 	}
 
 	public UIColorModel getLineColor() {

@@ -355,14 +355,19 @@ public class TGNoteImpl extends TGNote {
 				this.paintPercussionScoreNote(layout, painter, x, y1);
 			}
 			else {
-				boolean fill = (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
+				boolean isDeadNote = (this.getEffect()!=null && this.getEffect().isDeadNote());
+				boolean fill = !isDeadNote && (getVoice().getDuration().getValue() >= TGDuration.QUARTER);
 				float noteX = (fill ? (x - (0.60f * (scale / 10f))) : x);
 				float noteY = (fill ? (y1 + (0.60f * (scale / 10f))) : (y1 + (1f * (scale / 10f))));
 				float noteScale = (fill ? ((layout.getScoreLineSpacing() - ((scale / 10f) * 1f) )) : ((layout.getScoreLineSpacing() - ((scale / 10f) * 2f) )));
 				
 				painter.setLineWidth(layout.getLineWidth(1));
 				painter.initPath((fill ? UIPainter.PATH_FILL : UIPainter.PATH_DRAW));
-				TGNotePainter.paintNote(painter, noteX, noteY, noteScale);
+				if (isDeadNote) {
+					TGNotePainter.paintXNote(painter, noteX, noteY, noteScale);
+				} else {
+					TGNotePainter.paintNote(painter, noteX, noteY, noteScale);
+				}
 				painter.closePath();
 			}
 			
@@ -1005,7 +1010,7 @@ public class TGNoteImpl extends TGNote {
 		uiRectangle.getSize().setWidth(margin.getLeft() + margin.getRight());
 		uiRectangle.getSize().setHeight(margin.getTop() + margin.getBottom());
 		
-		layout.fillBackground(painter, uiRectangle);
+		layout.fillBackground(painter, uiRectangle, getMeasureImpl().isPlaying(layout));
 	}
 	
 	public String getNoteLabel(TGNote note) {

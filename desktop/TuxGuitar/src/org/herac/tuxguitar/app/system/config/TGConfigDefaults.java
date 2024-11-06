@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.app.system.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
 import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardConfig;
@@ -14,6 +17,8 @@ public class TGConfigDefaults{
 	public static final String RESOURCE = "config-defaults";
 	public static final String MODULE = "tuxguitar";
 
+	private static List<String> keys = new ArrayList<String>();
+	
 	public static final String DEFAULT_SKIN = "Oxygen";
 	private static final String DEFAULT_FONT_NAME = UIFontModel.DEFAULT_NAME;
 
@@ -43,7 +48,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.SHOW_EDIT_TOOLBAR, true);
 		loadProperty(properties, TGConfigKeys.SHOW_TRACKS, true);
 		loadProperty(properties, TGConfigKeys.LAYOUT_MODE, TGLayout.MODE_VERTICAL);
-		loadProperty(properties, TGConfigKeys.LAYOUT_STYLE, (TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT | TGLayout.DISPLAY_CHORD_DIAGRAM));
+		loadProperty(properties, TGConfigKeys.LAYOUT_STYLE, (TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT | TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.HIGHLIGHT_PLAYED_BEAT));
 		loadProperty(properties, TGConfigKeys.LANGUAGE, "");
 		loadProperty(properties, TGConfigKeys.EDITOR_MOUSE_MODE, EditorKit.MOUSE_MODE_SELECTION);
 		loadProperty(properties, TGConfigKeys.EDITOR_NATURAL_KEY_MODE, true);
@@ -64,6 +69,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.FONT_ABOUT_DIALOG_TITLE, (DEFAULT_FONT_NAME + ",36,true,true"));
 		loadProperty(properties, TGConfigKeys.COLOR_FOREGROUND, "0,0,0");
 		loadProperty(properties, TGConfigKeys.COLOR_BACKGROUND, "255,255,255");
+		loadProperty(properties, TGConfigKeys.COLOR_BACKGROUND_PLAYING, "255,242,242");
 		loadProperty(properties, TGConfigKeys.COLOR_LINE, "214,214,214");
 		loadProperty(properties, TGConfigKeys.COLOR_SCORE_NOTE, "64,64,64");
 		loadProperty(properties, TGConfigKeys.COLOR_TAB_NOTE, "64,64,64");
@@ -102,7 +108,6 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_NOTE, "42,85,128");
 		loadProperty(properties, TGConfigKeys.MATRIX_COLOR_PLAY_NOTE, "128,32,32");
 		loadProperty(properties, TGConfigKeys.TABLE_AUTO_SIZE, true);
-		loadProperty(properties, TGConfigKeys.FORCE_OS_DEFAULTS, true);
 
 		loadProperty(properties, TGConfigKeys.STYLE_MIN_BUFFER_SEPARATOR, 20);
 		loadProperty(properties, TGConfigKeys.STYLE_MIN_TOP_SPACING, 30);
@@ -133,21 +138,42 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_DURATION_WIDTHS, new float[] {30f, 25f, 21f, 20f, 19f,18f});
 
 		loadProperty(properties, TGConfigKeys.HOMEPAGE_URL, "https://tuxguitar.app");
+		loadProperty(properties, TGConfigKeys.CONFIG_APP_VERSION, "");
 	}
 
+	public static List<String> getKeys() {
+		if (keys.isEmpty()) {
+			loadProperties(null);
+		}
+		return keys;
+	}
+	
 	private static void loadProperty(TGProperties properties, String key,String value){
-		properties.setValue(key,value);
+		if (properties != null) {
+			properties.setValue(key,value);
+		}
+		keys.add(key);
 	}
 
 	private static void loadProperty(TGProperties properties, String key,int value){
-		properties.setValue(key,Integer.toString(value));
+		if (properties != null) {
+			properties.setValue(key,Integer.toString(value));
+		}
+		keys.add(key);
 	}
 
 	private static void loadProperty(TGProperties properties, String key,boolean value){
-		properties.setValue(key,Boolean.toString(value));
+		if (properties != null) {
+			properties.setValue(key,Boolean.toString(value));
+		}
+		keys.add(key);
 	}
 
 	private static void loadProperty(TGProperties properties, String key, float[] value) {
-		TGPropertiesUtil.setValue(properties, key, value);
+		if (properties != null) {
+			TGPropertiesUtil.setValue(properties, key, value);
+		}
+		keys.add(key);
 	}
+	
 }

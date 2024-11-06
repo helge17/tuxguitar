@@ -42,7 +42,7 @@ public class GP3OutputStream extends GTPOutputStream {
 	}
 	
 	public TGFileFormat getFileFormat(){
-		return new TGFileFormat("Guitar Pro 3", "audio/x-gtp", new String[]{"gp3"});
+		return new TGFileFormat("Guitar Pro 3", "application/x-gtp", new String[]{"gp3"});
 	}
 	
 	public void writeSong(TGSong song) {

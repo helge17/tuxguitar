@@ -13,24 +13,28 @@ DT=Gnome
 DT_URL=https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master
 SKIN=Symbolic
 DARK=$SKIN-dark
-SKIN_DIR=$THIS_DIR/../../share/skins/$SKIN
-DARK_DIR=$THIS_DIR/../../share/skins/$DARK
-SKIN_CSS=$THIS_DIR/build_style.css
-DARK_CSS=$THIS_DIR/build_style_dark.css
+SKIN_DIR=`realpath $THIS_DIR/../../share/skins/$SKIN`
+DARK_DIR=`realpath $THIS_DIR/../../share/skins/$DARK`
 
-# Symbolic/Gnome icons are aligned on a 16x16 grid, so we keep this resolution for the PNG images to make them look sharp and add a 3px margin to get the size of 22x22px
-S_ICOS=16x16+3   # Size of icons in menues and toolbars
+# Icon sizes: Symbolic/Gnome icons are aligned on a 16x16 grid, so we keep this resolution for the PNG images to make them look sharp and add a 3px margin to get the size of 22x22px
+S_ICOS=16x16+3   # Size of icons in menus and toolbars
 # Icons shared with KDE/Breeze are aligned on a 22x22 grid
-S_ICOB=22x22     # Size of icons in menues and toolbars
+S_ICOB=22x22     # Size of icons in menus and toolbars
 S_PLAY=36x36     # Size of icons in player
 S_INFO=64x64     # Size of icons in warnings and settings dialog
 S_LOGO=96x96     # Size of TuxGuitar logo
 S_TRAC=16x16     # Size of icons in track table
 
+# Icon colors are defined in the CSS files
+SKIN_CSS=$THIS_DIR/build_style.css       # Color of icons for TuxGuitar in normal mode
+C_N_HI=40%                               # Modify brightness for highlighted icons, normal mode
+DARK_CSS=$THIS_DIR/build_style_dark.css  # Color of icons for TuxGuitar in dark mode
+C_D_HI=-30%                              # Modify brightness for highlighted icons, dark mode
+
 declare -A ICONS=(
-  # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png
+  # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png width3xheight3+margin3-H:TuxGuitar_icon3.png
   # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
-  # Icon path/file.png --copy---> $SKIN_DIR/file1.png                $DARK_DIR/file2.png
+  # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
   ["$TG/1.svg"]="$S_ICOB:1.png"
   ["$TG/2.svg"]="$S_ICOB:2.png"
   ["$TG/4.svg"]="$S_ICOB:4.png"
@@ -44,6 +48,7 @@ declare -A ICONS=(
   ["$TG/layout_score.svg"]="$S_ICOS:layout_score.png"
   ["$TG/layout_tablature.svg"]="$S_ICOS:layout_tablature.png"
   ["$TG/layout_compact.svg"]="$S_ICOS:layout_compact.png"
+  ["$TG/highlight_played_beat.svg"]="$S_ICOS:highlight_played_beat.png"
   ["$TG/edit_voice_1.svg"]="$S_ICOB:edit_voice_1.png"
   ["$TG/edit_voice_2.svg"]="$S_ICOB:edit_voice_2.png"
   ["$DT/actions/edit-select-symbolic.svg"]="$S_ICOS:edit_mode_selection.png"
@@ -58,8 +63,19 @@ declare -A ICONS=(
   ["$TG/repeat_alternative.svg"]="$S_ICOB:repeat_alternative.png"
   ["$TG/dotted.svg"]="$S_ICOB:dotted.png"
   ["$TG/doubledotted.svg"]="$S_ICOB:doubledotted.png"
-  ["$TG/division-type.svg"]="$S_ICOB:division-type.png"
+  ["$TG/division-type-1.svg"]="$S_ICOB:division-type-1.png"
+  ["$TG/division-type-3.svg"]="$S_ICOB:division-type-3.png"
+  ["$TG/division-type-5.svg"]="$S_ICOB:division-type-5.png"
+  ["$TG/division-type-6.svg"]="$S_ICOB:division-type-6.png"
+  ["$TG/division-type-7.svg"]="$S_ICOB:division-type-7.png"
+  ["$TG/division-type-9.svg"]="$S_ICOB:division-type-9.png"
+  ["$TG/division-type-10.svg"]="$S_ICOB:division-type-10.png"
+  ["$TG/division-type-11.svg"]="$S_ICOB:division-type-11.png"
+  ["$TG/division-type-12.svg"]="$S_ICOB:division-type-12.png"
+  ["$TG/division-type-13.svg"]="$S_ICOB:division-type-13.png"
   ["$TG/fretboard.svg"]="$S_ICOS:fretboard.png"
+  ["$TG/fretboard_smaller.svg"]="$S_ICOS:fretboard_smaller.png"
+  ["$TG/fretboard_bigger.svg"]="$S_ICOS:fretboard_bigger.png"
   ["$TG/firstfret.svg"]="1x50:firstfret.png"
   ["$TG/fret.svg"]="2x45:fret.png"
   ["$TG/chord.svg"]="$S_ICOB:chord.png"
@@ -120,9 +136,9 @@ declare -A ICONS=(
   ["$DT/actions/zoom-original-symbolic.svg"]="$S_ICOS:zoom_original.png"
   ["$DT/actions/zoom-out-symbolic.svg"]="$S_ICOS:zoom_out.png"
   ["$DT/actions/list-add-symbolic.svg"]="$S_ICOS:list_add.png $S_ICOS:track_add.png $S_ICOS:measure_add.png"
-  ["$DT/actions/list-remove-symbolic.svg"]="$S_ICOS:list_remove.png $S_ICOS:track_remove.png $S_ICOS:measure_remove.png $S_TRAC:mute-disabled.png $S_TRAC:mute-disabled-dim.png $S_TRAC:solo-disabled.png $S_TRAC:solo-disabled-dim.png"
-  ["$DT/devices/audio-headphones-symbolic.svg"]="$S_ICOS:track_solo.png $S_TRAC:solo.png $S_TRAC:solo-dim.png"
-  ["$DT/status/audio-volume-muted-symbolic.svg"]="$S_ICOS:track_mute.png $S_TRAC:mute.png $S_TRAC:mute-dim.png"
+  ["$DT/actions/list-remove-symbolic.svg"]="$S_ICOS:list_remove.png $S_ICOS:track_remove.png $S_ICOS:measure_remove.png $S_TRAC-H:mute-disabled.png $S_TRAC:mute-disabled-dim.png $S_TRAC-H:solo-disabled.png $S_TRAC:solo-disabled-dim.png"
+  ["$DT/devices/audio-headphones-symbolic.svg"]="$S_ICOS:track_solo.png $S_TRAC-H:solo.png $S_TRAC:solo-dim.png"
+  ["$DT/status/audio-volume-muted-symbolic.svg"]="$S_ICOS:track_mute.png $S_TRAC-H:mute.png $S_TRAC:mute-dim.png"
   ["$DT/actions/document-edit-symbolic.svg"]="$S_ICOS:list_edit.png $S_ICOS:edit_mode_edition.png"
   ["$DT/ui/pan-up-symbolic.svg"]="$S_ICOS:list_move_up.png"
   ["$DT/ui/pan-down-symbolic.svg"]="$S_ICOS:list_move_down.png"
@@ -130,13 +146,13 @@ declare -A ICONS=(
   ["$DT/actions/sidebar-show-symbolic.svg"]="$S_ICOS:toolbar_edit.png"
   ["$TG/sidebar-show-symbolic_bottom.svg"]="$S_ICOS:table_viewer.png"
   ["$DT/devices/multimedia-player-symbolic.svg"]="$S_ICOS:transport.png"
-  ["$DT/actions/media-playback-start-symbolic.svg"]="$S_PLAY:transport_play_1.png $S_PLAY:transport_play_2.png $S_ICOS:transport_icon_play_1.png $S_ICOS:transport_icon_play_2.png"
+  ["$DT/actions/media-playback-start-symbolic.svg"]="$S_PLAY:transport_play.png $S_ICOS:transport_icon_play.png"
   ["$DT/actions/media-playback-pause-symbolic.svg"]="$S_PLAY:transport_pause.png $S_ICOS:transport_icon_pause.png"
-  ["$DT/actions/media-playback-stop-symbolic.svg"]="$S_PLAY:transport_stop_1.png $S_PLAY:transport_stop_2.png $S_ICOS:transport_icon_stop_1.png $S_ICOS:transport_icon_stop_2.png"
-  ["$DT/actions/media-seek-forward-symbolic.svg"]="$S_PLAY:transport_next_1.png $S_PLAY:transport_next_2.png $S_ICOS:transport_icon_next_1.png $S_ICOS:transport_icon_next_2.png"
-  ["$DT/actions/media-seek-backward-symbolic.svg"]="$S_PLAY:transport_previous_1.png $S_PLAY:transport_previous_2.png $S_ICOS:transport_icon_previous_1.png $S_ICOS:transport_icon_previous_2.png"
-  ["$DT/actions/media-skip-backward-symbolic.svg"]="$S_PLAY:transport_first_1.png $S_PLAY:transport_first_2.png $S_ICOS:transport_icon_first_1.png $S_ICOS:transport_icon_first_2.png"
-  ["$DT/actions/media-skip-forward-symbolic.svg"]="$S_PLAY:transport_last_1.png $S_PLAY:transport_last_2.png $S_ICOS:transport_icon_last_1.png $S_ICOS:transport_icon_last_2.png"
+  ["$DT/actions/media-playback-stop-symbolic.svg"]="$S_PLAY:transport_stop.png $S_ICOS:transport_icon_stop.png"
+  ["$DT/actions/media-seek-forward-symbolic.svg"]="$S_PLAY:transport_next.png $S_ICOS:transport_icon_next.png"
+  ["$DT/actions/media-seek-backward-symbolic.svg"]="$S_PLAY:transport_previous.png $S_ICOS:transport_icon_previous.png"
+  ["$DT/actions/media-skip-backward-symbolic.svg"]="$S_PLAY:transport_first.png $S_ICOS:transport_icon_first.png"
+  ["$DT/actions/media-skip-forward-symbolic.svg"]="$S_PLAY:transport_last.png $S_ICOS:transport_icon_last.png"
   ["$DT/status/media-playlist-repeat-song-symbolic.svg"]="$S_ICOS:transport_mode.png"
   ["$TG/media-playlist-repeat-song-symbolic_start.svg"]="$S_ICOS:transport_loop_start.png"
   ["$TG/media-playlist-repeat-song-symbolic_end.svg"]="$S_ICOS:transport_loop_end.png"
@@ -241,7 +257,19 @@ for file in COPYING COPYING_CCBYSA3 COPYING_LGPL; do
   fi
 done
 
-# Processing files
+# Convert single SVG icon to PNG
+function convert_svg_to_png {
+  echo -n "Converting to $OUT_FILE ... "
+  rsvg-convert --stylesheet=$OUT_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $OUT_FILE
+  if [ "$hili" ]; then
+    # Modify icon brightness (man convert)
+    gm convert -operator all add $OUT_HILI $OUT_FILE $OUT_FILE.hili
+    mv $OUT_FILE.hili $OUT_FILE
+  fi
+  echo "done."
+}
+
+# Processing input files
 for icon in "${!ICONS[@]}"; do
 
   echo "# Processing file $icon:"
@@ -254,49 +282,54 @@ for icon in "${!ICONS[@]}"; do
     echo "done."
   fi
 
-  # Convert icon to PNG (normal and dark)
+  # Generate output files
   for out_icon in ${ICONS[$icon]}; do
-    if [[ $out_icon =~ ([0-9]+)"x"([0-9]+)":"(.+) ]]; then
+    # Examples, $margin and $hili are  optional:
+    # $out_icon          $width x   $height +   $margin   $hili :  $png_icon
+    # 22x24+2:img1.png   22     x   24      +   2               :  img1.png
+    # 26x28:img2.png     26     x   28                    -H    :  img2.png
+    if [[ $out_icon =~ ([0-9]+)"x"([0-9]+)("+"([0-9]+))?("-H")?":"(.+) ]]; then
       width=${BASH_REMATCH[1]}
       height=${BASH_REMATCH[2]}
-      png_icon=${BASH_REMATCH[3]}
+      margin=${BASH_REMATCH[4]}
+      hili=${BASH_REMATCH[5]}
+      png_icon=${BASH_REMATCH[6]}
       if [[ $icon =~ ^.+\.svg$ ]]; then
-        echo -n "Converting to $SKIN_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$SKIN_CSS --width=$width --height=$height $THIS_DIR/$icon > $SKIN_DIR/$png_icon
-        echo "done."
-        echo -n "Converting to $DARK_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$DARK_CSS --width=$width --height=$height $THIS_DIR/$icon > $DARK_DIR/$png_icon
-        echo "done."
+        # If no margin is given, set it to zero
+        [ $margin ] || margin=0
+        page_width=$(( $width + 2 * $margin ))
+        page_height=$(( $height + 2 * $margin ))
+        # Normal skin
+        OUT_CSS=$SKIN_CSS
+        OUT_HILI=$C_N_HI
+        OUT_FILE=$SKIN_DIR/$png_icon
+        convert_svg_to_png
+        # Dark skin
+        OUT_CSS=$DARK_CSS
+        OUT_HILI=$C_D_HI
+        OUT_FILE=$DARK_DIR/$png_icon
+        convert_svg_to_png
       elif [[ $icon =~ ^.+\.png$ ]]; then
         echo -n "Converting to $SKIN_DIR/$png_icon ... "
+        if [ $margin ]; then
+          echo -e "\n\nError: Margin $margin given, but margin is not supported for PNGs."
+          echo -e "\nAborting.\n"
+          exit 1
+        fi
         gm convert -scale $width"x"$height! $THIS_DIR/$icon $SKIN_DIR/$png_icon
         echo "done."
         echo -n "Converting to $DARK_DIR/$png_icon ... "
         cp -p $SKIN_DIR/$png_icon $DARK_DIR
         echo "done."
       fi
-    elif [[ $out_icon =~ ([0-9]+)"x"([0-9]+)"+"([0-9]+)":"(.+) ]]; then
-      width=${BASH_REMATCH[1]}
-      height=${BASH_REMATCH[2]}
-      margin=${BASH_REMATCH[3]}
-      png_icon=${BASH_REMATCH[4]}
-      page_width=$(( $width + 2 * margin ))
-      page_height=$(( $height + 2 * margin ))
-      if [[ $icon =~ ^.+\.svg$ ]]; then
-        echo -n "Converting to $SKIN_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$SKIN_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $SKIN_DIR/$png_icon
-        echo "done."
-        echo -n "Converting to $DARK_DIR/$png_icon ... "
-        rsvg-convert --stylesheet=$DARK_CSS --width=$width --height=$height --page-width=$page_width --page-height=$page_height --left=$margin --top=$margin $THIS_DIR/$icon > $DARK_DIR/$png_icon
-        echo "done."
-      elif [[ $icon =~ ^.+\.png$ ]]; then
-        echo "Margin not supported for PNGs."
-        exit 1
-      fi
-    else
+    elif [[ $out_icon =~ .+/.+ ]]; then
       echo -n "Copying to $out_icon ... "
       cp -p $THIS_DIR/$icon $out_icon
       echo "done."
+    else
+      echo -e "\nError: $out_icon does not contain a /, this is probably wrong."
+      echo -e "\nAborting.\n"
+      exit 1
     fi
   done
 
