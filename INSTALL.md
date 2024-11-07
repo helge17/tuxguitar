@@ -16,6 +16,8 @@ For hints and workarounds needed to build TuxGuitar, see the script
 misc/build_tuxguitar_from_source.sh
 ```
 
+You can also try to build TuxGuitar using the [GitHub Actions](https://docs.github.com/en/actions) defined in the `.github` folder.
+
 ## Prerequisites
 
 - JDK 9 or higher
