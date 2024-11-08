@@ -100,7 +100,6 @@
 								<copy todir="${project.build.directory}/build/lib">
 									<fileset file="${tuxguitar-fluidsynth.jni.path}/${tuxguitar-fluidsynth.jni.library.prefix}${tuxguitar-fluidsynth.jni.library.name}${tuxguitar-fluidsynth.jni.library.suffix}" />
 								</copy>
-								<chmod file="${project.build.directory}/build/lib/${tuxguitar-fluidsynth.jni.library.prefix}${tuxguitar-fluidsynth.jni.library.name}${tuxguitar-fluidsynth.jni.library.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>
