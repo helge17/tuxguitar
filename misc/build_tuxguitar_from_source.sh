@@ -468,7 +468,7 @@ function start_remote_macos_build {
 
 # 172.16.208.132: MacOS 11 x86_64 (Big Sur)
 # 172.16.208.133: MacOS 14 x86_64 (Sonoma)
-BUILD_HOST=$USER@172.16.208.132
+BUILD_HOST=$USER@172.16.208.133
 
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS APP on $BUILD_HOST ..."
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
@@ -665,8 +665,8 @@ fi
 
 # MacOS (on MacOS, remote or local)
 if [ $build_macos ]; then
-  SWT_VERSION=4.26
-  SWT_DATE=202211231800
+  SWT_VERSION=4.33
+  SWT_DATE=202409030240
   SWT_PLATFORM=cocoa-macosx
   [ `uname` == Linux ] && start_remote_macos_build
   [ `uname` == Darwin ] && build_tg_for_macos
