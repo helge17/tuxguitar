@@ -95,7 +95,6 @@
 								<copy todir="${project.build.directory}/build/lib">
 									<fileset file="${tuxguitar-winmm.jni.path}/${tuxguitar-winmm.jni.library.prefix}${tuxguitar-winmm.jni.library.name}${tuxguitar-winmm.jni.library.suffix}" />
 								</copy>
-								<chmod file="${project.build.directory}/build/lib/${tuxguitar-winmm.jni.library.prefix}${tuxguitar-winmm.jni.library.name}${tuxguitar-winmm.jni.library.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>

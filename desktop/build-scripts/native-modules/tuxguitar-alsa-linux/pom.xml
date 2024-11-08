@@ -92,7 +92,6 @@
 								<copy todir="${project.build.directory}/build/lib">
 									<fileset file="${tuxguitar-alsa.jni.path}/${tuxguitar-alsa.jni.library.prefix}${tuxguitar-alsa.jni.library.name}${tuxguitar-alsa.jni.library.suffix}" />
 								</copy>
-								<chmod file="${project.build.directory}/build/lib/${tuxguitar-alsa.jni.library.prefix}${tuxguitar-alsa.jni.library.name}${tuxguitar-alsa.jni.library.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>

@@ -152,7 +152,6 @@
 								<copy todir="${project.build.directory}/build/lib">
 									<fileset file="${tuxguitar-synth-lv2.jni.path}/${tuxguitar-synth-lv2.jni.library.prefix}${tuxguitar-synth-lv2.jni.library.name}${tuxguitar-synth-lv2.jni.library.suffix}" />
 								</copy>
-								<chmod file="${project.build.directory}/build/lib/${tuxguitar-synth-lv2.jni.library.prefix}${tuxguitar-synth-lv2.jni.library.name}${tuxguitar-synth-lv2.jni.library.suffix}" perm="755" />
 							</target>
 						</configuration>
 						<goals>
