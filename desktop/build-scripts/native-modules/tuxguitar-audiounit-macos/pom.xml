@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>org.herac.tuxguitar</groupId>
+		<version>9.99-SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-audiounit-macos</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<tuxguitar-audiounit.jni.path>${project.parent.relativePath}/TuxGuitar-AudioUnit/jni/</tuxguitar-audiounit.jni.path>
+	</properties>
+
+	<modules>
+		<module>${project.parent.relativePath}/TuxGuitar-AudioUnit</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>compile-native</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="compile-native">
+								<exec dir="${tuxguitar-audiounit.jni.path}" executable="make" failonerror="true" >
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>clean-native</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="clean-native">
+								<exec dir="${tuxguitar-audiounit.jni.path}" executable="make" failonerror="true" >
+									<arg value="clean" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>native-module-copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target name="copy-files">
+								<mkdir dir="${project.build.directory}/build/Contents/MacOS/lib" />
+								<copy todir="${project.build.directory}/build/Contents/MacOS/lib">
+									<fileset file="${tuxguitar-audiounit.jni.path}/libtuxguitar-audiounit-jni.jnilib" />
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.5.0</version>
+				<executions>
+					<execution>
+						<id>native-module-copy-libs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-audiounit</artifactId>
+									<destFileName>tuxguitar-audiounit.jar</destFileName>
+									<outputDirectory>${project.build.directory}/build/Contents/MacOS/share/plugins</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

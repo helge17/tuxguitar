@@ -152,7 +152,7 @@ Same as for Debian (see above).
 
 ```sh
 $ cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa
-$ mvn -e clean verify
+$ mvn -e clean verify -P native-modules
 $ cd -
 ```
 

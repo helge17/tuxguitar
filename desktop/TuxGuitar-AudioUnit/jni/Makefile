@@ -13,7 +13,7 @@ all:	$(LIBRARY)
 $(LIBRARY):	clean
 	$(CXX) $(INCLUDES) -arch x86_64 $(LIBRARIES) -msse -bundle -o intel64_$(LIBRARY) $(FILENAME)
 	$(CXX) $(INCLUDES) -arch arm64 $(LIBRARIES) -bundle -o arm64_$(LIBRARY) $(FILENAME)
-	lipo -create intel64_$(LIBRARY) arm64_$(LIBRARY) -output ../../build-scripts/common-resources/common-macosx/Contents/MacOS/lib/$(LIBRARY)
+	lipo -create intel64_$(LIBRARY) arm64_$(LIBRARY) -output $(LIBRARY)
 
 clean:
 	rm -f intel64_$(LIBRARY) arm64_$(LIBRARY) $(LIBRARY)

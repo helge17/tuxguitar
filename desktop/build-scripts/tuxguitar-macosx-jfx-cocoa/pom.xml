@@ -47,7 +47,6 @@
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
-		<module>../../TuxGuitar-AudioUnit</module>
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
@@ -312,12 +311,6 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-audiounit</artifactId>
-									<destFileName>tuxguitar-audiounit.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-synth</artifactId>
 									<destFileName>tuxguitar-synth.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
@@ -405,4 +398,46 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>native-modules</id>
+			<activation>
+				<property>
+					<name>native-modules</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../native-modules/tuxguitar-audiounit-macos</module>
+			</modules>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<id>native-module-copy</id>
+								<phase>package</phase>
+								<configuration>
+									<target name="copy-files">
+										<!-- PLUGIN FILES -->
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="../native-modules/tuxguitar-audiounit-macos/target/build" />
+										</copy>
+										<!-- /PLUGINS FILES -->
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
