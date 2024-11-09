@@ -500,7 +500,7 @@ for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ...\n"
 
   cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
-  mvn --batch-mode -e clean verify
+  mvn --batch-mode -e clean verify -P native-modules
 
   TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
