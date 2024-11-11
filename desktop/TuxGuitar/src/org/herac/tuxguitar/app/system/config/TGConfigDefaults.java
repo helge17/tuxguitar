@@ -36,8 +36,8 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.WINDOW_TITLE, "${appname} - ${filename}");
 		loadProperty(properties, TGConfigKeys.SHOW_SPLASH, true);
 		loadProperty(properties, TGConfigKeys.MAXIMIZED, false);
-		loadProperty(properties, TGConfigKeys.WIDTH, 960);
-		loadProperty(properties, TGConfigKeys.HEIGHT, 600);
+		loadProperty(properties, TGConfigKeys.WIDTH, 1200);
+		loadProperty(properties, TGConfigKeys.HEIGHT, 675);
 		loadProperty(properties, TGConfigKeys.SHOW_INSTRUMENTS, false);
 		loadProperty(properties, TGConfigKeys.SHOW_TRANSPORT, false);
 		loadProperty(properties, TGConfigKeys.SHOW_FRETBOARD, false);
