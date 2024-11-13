@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=TuxGuitar Synth
-plugin.description=TuxGuitar Synth
+plugin.name=TuxGuitar Synthesizer output plugin
+plugin.description=The TuxGuitar Synthesizer lets you add various effects to your\ninstruments (see extension plugins).
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=1.0

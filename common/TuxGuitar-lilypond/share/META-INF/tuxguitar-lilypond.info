@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=Lilypond exporter
-plugin.description=Lilypond exporter plugin
+plugin.name=LilyPond file export plugin
+plugin.description=Plugin to export tablatures in the LilyPond (LY) file format
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>, updates by b4dc0d3r
 plugin.version=1.1

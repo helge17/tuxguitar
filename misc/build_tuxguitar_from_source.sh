@@ -37,7 +37,7 @@ function usage {
   echo "# TuxGuitar build script for https://github.com/helge17/tuxguitar"
   echo "#"
   echo "# I use this script to build TuxGuitar for Linux, Windows and Android on Debian 12 (Bookworm)"
-  echo "# and on FreeBSD and MacOS."
+  echo "# and on FreeBSD and macOS."
   echo "#"
   echo "# The script heavily depends on my build environment, so examine it carefully and modify it to"
   echo "# your needs before starting it on your computer!"
@@ -49,7 +49,7 @@ function usage {
   echo "# -l      Build for Linux"
   echo "# -w      Build for Windows"
   echo "# -a      Build for Android"
-  echo "# -m      Build for MacOS"
+  echo "# -m      Build for macOS"
   echo "# -b      Build for FreeBSD"
   echo "# -A      Build for all OS"
   echo "# -g, -G  Upload the builds to Github"
@@ -58,8 +58,8 @@ function usage {
   echo "#"
   echo "# -l, -w and -a build TuxGuitar for Linux/Windows/Android on the local Linux (Debian) system."
   echo "#"
-  echo "# -m, -b: When started on Linux, the script connects to a remote MacOS/FreeBSD system to"
-  echo "#         build TuxGuitar. When started on MacOS/FreeBSD, TuxGuitar is built on the local"
+  echo "# -m, -b: When started on Linux, the script connects to a remote macOS/FreeBSD system to"
+  echo "#         build TuxGuitar. When started on macOS/FreeBSD, TuxGuitar is built on the local"
   echo "#         system."
   echo "#"
   echo "# -A: Same as -lwamb"
@@ -466,26 +466,26 @@ done
 
 function start_remote_macos_build {
 
-# 172.16.208.132: MacOS 11 x86_64 (Big Sur)
-# 172.16.208.133: MacOS 14 x86_64 (Sonoma)
+# 172.16.208.132: macOS 11 x86_64 (Big Sur)
+# 172.16.208.133: macOS 14 x86_64 (Sonoma)
 BUILD_HOST=$USER@172.16.208.132
 
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS APP on $BUILD_HOST ..."
+echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP on $BUILD_HOST ..."
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
 echo "# OK."
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for MacOS APP done."
+echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP done."
 
 ssh $BUILD_HOST "cd $SRC_PATH && misc/$SCRIPT -m -r $TGVERSION"
-# On my MacOS 14 VM, the outgoing transfer rate via scp is terribly slow.
+# On my macOS 14 VM, the outgoing transfer rate via scp is terribly slow.
 # Without -X options:                 ~ 15KB/s  (always!!!)
 # With -X nrequests=1 -X buffer=2048: ~ 250KB/s (bridged -> WLAN -> Linux system), 5MB/s (NAT -> local VMware host)
-# The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the MacOS system or on the target system.
+# The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the macOS system or on the target system.
 # Incoming transfers via scp are OK, outgoing transfers via https are also OK.
 # Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed duplex and speed settings, ...) did not help.
-# MacOS 11 is fine and the -X options do not harm.
+# macOS 11 is fine and the -X options do not harm.
 scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-*.app.tar.gz $DIST_DIR
 
 }
@@ -497,7 +497,7 @@ BUILD_ARCH=`uname -m`
 install_eclipse_swt
 
 for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP ...\n"
+  echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP ...\n"
 
   cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
   mvn --batch-mode -e clean verify -P native-modules
@@ -512,7 +512,7 @@ for GUI_TK in swt jfx; do
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
   cd - > /dev/null
 
-  echo -e "\n### Host: "`hostname -s`" ########### Building MacOS $GUI_TK $BUILD_ARCH APP done.\n"
+  echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP done.\n"
 done
 
 }
@@ -568,7 +568,7 @@ function copy_to_github {
       REL_NOTES=$'**Warning:** This is a development snapshot and may not be stable.\n\n'
       RELEASE_TYPE=--prerelease
     fi
-    REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe MacOS package includes OpenJDK from brew.sh.'
+    REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
     gh release create $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
@@ -631,8 +631,8 @@ function copy_to_github {
 [ "$#" -lt 1 ] && usage && exit 1
 [ $build_linux ]    && [ `uname` != Linux ]   && echo -e "\nError: Linux version can only be built on Linux."            && abort_build
 [ $build_windows ]  && [ `uname` != Linux ]   && echo -e "\nError: Windows version can only be built on Linux."          && abort_build
-[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: MacOS version cannot be built on/from FreeBSD."       && abort_build
-[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from MacOS."       && abort_build
+[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannnot be built on/from FreeBSD."      && abort_build
+[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannnot be built on/from macOS."      && abort_build
 [ $build_android ]  && [ `uname` != Linux ]   && echo -e "\nError: Android version can only be built on Linux."          && abort_build
 [ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new Github release can only be created from Linux." && abort_build
 
@@ -663,7 +663,7 @@ if [ $build_bsd ]; then
   [ `uname` == FreeBSD ] && build_tg_for_bsd
 fi
 
-# MacOS (on MacOS, remote or local)
+# macOS (on macOS, remote or local)
 if [ $build_macos ]; then
   SWT_VERSION=4.14
   SWT_DATE=201912100610

@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=Image exporter
-plugin.description=Image exporter
+plugin.name=Image file export plugin
+plugin.description=This plugin lets you export your tabs as PNG, JPEG or BMP images.
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=0.1

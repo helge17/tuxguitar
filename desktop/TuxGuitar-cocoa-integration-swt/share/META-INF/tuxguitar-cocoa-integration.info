@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=Cocoa Integration Plugin
-plugin.description=Cocoa Integration Plugin
+plugin.name=macOS Cocoa integration plugin
+plugin.description=This plugin improves the integration of TuxGuitar into the macOS\ndesktop environment.
 plugin.author=Auria & Julian Casadesus
 plugin.version=1.0

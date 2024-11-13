@@ -8,9 +8,9 @@
 		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="application/x-gtp">
-		<comment>GuitarPro file</comment>
-		<comment xml:lang="de">GuitarPro-Datei</comment>
-		<comment xml:lang="it">File di GuitarPro</comment>
+		<comment>Guitar Pro file</comment>
+		<comment xml:lang="de">Guitar-Pro-Datei</comment>
+		<comment xml:lang="it">File di Guitar Pro</comment>
 		<glob pattern="*.gtp"/>
 		<glob pattern="*.gp3"/>
 		<glob pattern="*.gp4"/>
@@ -19,10 +19,10 @@
 		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="application/x-gtp">
-		<comment>GuitarPro file</comment>
-		<comment xml:lang="de">GuitarPro-Datei</comment>
-		<comment xml:lang="it">File di GuitarPro</comment>
-		<!-- The file extension gpx is also used for GPX geographic data. GuitarPro gpx files always begin with "BCFZ" -->
+		<comment>Guitar Pro file</comment>
+		<comment xml:lang="de">Guitar-Pro-Datei</comment>
+		<comment xml:lang="it">File di Guitar Pro</comment>
+		<!-- The file extension gpx is also used for GPX geographic data. Guitar Pro gpx files always begin with "BCFZ" -->
 		<magic priority="50">
 			<match value="BCFZ" type="string" offset="0" />
 		</magic>

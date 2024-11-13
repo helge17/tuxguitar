@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=TuxGuitar Synth - LV2 Extension
-plugin.description=TuxGuitar Synth - LV2 Extension
+plugin.name=TuxGuitar Synthesizer - LV2 extension
+plugin.description=LV2 audio processing for the TuxGuitar Synthesizer
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=1.0
