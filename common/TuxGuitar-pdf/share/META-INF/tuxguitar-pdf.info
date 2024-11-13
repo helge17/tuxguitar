@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=PDF file format exporter
-plugin.description=TuxGuitar-pdf is an \"iText\" based *.pdf exporter plugin.\niText Homepage: https://itextpdf.com/
+plugin.name=PDF file export plugin
+plugin.description=This plugin lets you export your tabs as PDF file.
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=1.0

@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=BatchConverter
-plugin.description=Converts folder containing various tab formats into wanted file format.\nDepending on your loaded file format plugins, you can read and write.
+plugin.name=Batch File Converter
+plugin.description=This plugin converts all tabs in the given input folder from various\nformats into the given output file format and saves them in the\noutput folder.
 plugin.author=Nikola Kolarovic & Julian Casadesus
 plugin.version=1.0

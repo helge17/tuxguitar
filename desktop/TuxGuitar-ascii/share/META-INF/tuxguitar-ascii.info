@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=ASCII tab exporter
-plugin.description=ASCII tab exporter
+plugin.name=ASCII tab export plugin
+plugin.description=This plugin lets you export your tabs as ASCII text.
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=1.0

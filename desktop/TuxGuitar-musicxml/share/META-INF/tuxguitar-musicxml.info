@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=MusicXML exporter
-plugin.description=MusicXML exporter plugin
+plugin.name=MusicXML file export plugin
+plugin.description=This plugin lets you export your tabs as MusicXML file.
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=1.0

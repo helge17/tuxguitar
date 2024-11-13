@@ -1,4 +1,4 @@
-The CoreAudio plugin was for using the native Quicktime synthesizer in TuxGuitar on MacOS. It has been replaced by the AudioUnit plugin.
+The Core Audio plugin was for using the native Quicktime synthesizer in TuxGuitar on macOS. It has been replaced by the Audio Unit output plugin.
 
 +------------------------------------+
 | To install the provided binaries:  |

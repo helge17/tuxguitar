@@ -1,6 +1,6 @@
 # Install TuxGuitar
 
-You can find ready to use installation packages for Linux, Windows, MacOS, FreeBSD and Android on
+You can find ready to use installation packages for Linux, Windows, macOS, FreeBSD and Android on
 
 [https://github.com/helge17/tuxguitar/releases/](https://github.com/helge17/tuxguitar/releases/)
 
@@ -20,8 +20,8 @@ misc/build_tuxguitar_from_source.sh
 
 - JDK 9 or higher
 - Maven 3.3 or higher
-- Fluidsynth (optional)
-- JACK (optional)
+- FluidSynth (optional)
+- Jack (optional)
 - Eclipse SWT 4
 
 ## Build on Debian/Ubuntu Linux
@@ -123,9 +123,9 @@ The Windows application is now located in the `desktop/build-scripts/tuxguitar-w
 
 To start TuxGuitar you need a Java Runtime Environment. You can get the one from [portableapps.com](https://portableapps.com/apps/utilities/OpenJDK64) and extract it to a subfolder named `jre`. Then you should be able to start TuxGuitar by double-clicking on `tuxguitar.exe` or `tuxguitar.bat`.
 
-## Build on MacOS
+## Build on macOS
 
-On MacOS you need to download and install [Homebrew](https://brew.sh) to build TuxGuitar.
+On macOS you need to download and install [Homebrew](https://brew.sh) to build TuxGuitar.
 
 ### Install Prerequisites
 
@@ -133,7 +133,7 @@ On MacOS you need to download and install [Homebrew](https://brew.sh) to build T
 $ brew install openjdk maven wget
 ```
 
-### Download and install SWT for MacOS
+### Download and install SWT for macOS
 
 ```sh
 $ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.33-202409030240/swt-4.33-cocoa-macosx-`uname -m`.zip

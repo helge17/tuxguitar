@@ -1,5 +1,5 @@
 ### Plugin Information ###
-plugin.name=SVG exporter
-plugin.description=SVG exporter plugin
+plugin.name=SVG file export plugin
+plugin.description=This plugin lets you export your tabs as Scalable Vector Graphics (SVG).
 plugin.author=Julian Casadesus <julian@casadesus.com.ar>
 plugin.version=1.0

@@ -64,6 +64,6 @@ public class MidiOutputPortImpl extends GMOutputPort{
 		if( extensionIndex > 0 ){
 			name = name.substring( 0, extensionIndex );
 		}
-		return ("TG Fluidsynth " + "[" + name + "]");
+		return ("TG FluidSynth " + "[" + name + "]");
 	}
 }
