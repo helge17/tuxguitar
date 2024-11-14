@@ -109,7 +109,6 @@
 	<parameterList>
 		<directoryParameter>
 			<name>installdir</name>
-			<title></title>
 			<description>Installer.Parameter.installdir.description</description>
 			<explanation>Installer.Parameter.installdir.explanation</explanation>
 			<value>${platform_install_prefix}/${product_shortname}</value>
@@ -121,6 +120,16 @@
 			<mustBeWritable>yes</mustBeWritable>
 			<mustExist>0</mustExist>
 			<width>30</width>
+			<!-- If we found an existing installation in the selected directory we set installationType=upgrade -->
+			<postShowPageActionList>
+				<setInstallerVariable>
+					<name>project.installationType</name>
+					<value>upgrade</value>
+					<ruleList>
+						<fileTest condition="exists" path="${installdir}"/>
+					</ruleList>
+				</setInstallerVariable>
+			</postShowPageActionList>
 		</directoryParameter>
 	</parameterList>
 	<platformOptionsList />
