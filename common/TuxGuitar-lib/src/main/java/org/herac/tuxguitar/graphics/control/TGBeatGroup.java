@@ -7,7 +7,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGBeatGroup {
 	
-	public static final int DIRECTION_NOT_SETTED = 0;
+	public static final int DIRECTION_NOT_SET = 0;
 	public static final int DIRECTION_UP = 1;
 	public static final int DIRECTION_DOWN = 2;
 	
@@ -27,7 +27,7 @@ public class TGBeatGroup {
 	public TGBeatGroup(int voice){
 		this.voice = voice;
 		this.voices = new ArrayList<TGVoice>();
-		this.direction = DIRECTION_NOT_SETTED;
+		this.direction = DIRECTION_NOT_SET;
 		this.firstMinNote = null;
 		this.firstMaxNote = null;
 		this.lastMinNote = null;
@@ -96,7 +96,7 @@ public class TGBeatGroup {
 	}
 	
 	public void finish(TGLayout layout, TGMeasureImpl measure){
-		if( this.direction == DIRECTION_NOT_SETTED ){
+		if( this.direction == DIRECTION_NOT_SET ){
 			if (measure.getNotEmptyVoices() > 1 ){
 				this.direction = this.voice == 0 ? DIRECTION_UP : DIRECTION_DOWN;
 			}else if ( (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){

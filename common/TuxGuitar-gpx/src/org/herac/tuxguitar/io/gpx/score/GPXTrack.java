@@ -3,7 +3,7 @@ package org.herac.tuxguitar.io.gpx.score;
 public class GPXTrack {
 	
 	private int id;
-	private int[] tunningPitches;
+	private int[] tuningPitches;
 	private int[] color;
 	private String name;
 	
@@ -23,12 +23,12 @@ public class GPXTrack {
 		this.id = id;
 	}
 	
-	public int[] getTunningPitches() {
-		return this.tunningPitches;
+	public int[] getTuningPitches() {
+		return this.tuningPitches;
 	}
 	
-	public void setTunningPitches(int[] tunningPitches) {
-		this.tunningPitches = tunningPitches;
+	public void setTuningPitches(int[] tuningPitches) {
+		this.tuningPitches = tuningPitches;
 	}
 
 	public String getName() {

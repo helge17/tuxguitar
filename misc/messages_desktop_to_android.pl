@@ -21,7 +21,7 @@ if (!getopts('h') || $opt_h) {
   print "#\n";
   print "# -h     Display this help message and exit.\n";
   print "#\n";
-  print "# The script uses the following logic to determine the corresponding stings:\n";
+  print "# The script uses the following logic to determine the corresponding strings:\n";
   print "# Same english text => Entries mean the same, e.g.:\n";
   print "#   messages.properties:   key_desktop=english bla bla\n";
   print '#   strings.xml:           <string name="key_android">english bla bla</string>'."\n";

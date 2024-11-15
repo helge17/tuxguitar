@@ -216,7 +216,7 @@ public class TGTunerSettingsDialog {
 				settings.setThreshold((float)this.noiseGate.getValue()/100);
 				settings.setWaitPeriod(100); // TODO: hard coded?
 				
-				this.checkBufferValues(settings); // check if they are divisable with buffer size
+				this.checkBufferValues(settings); // check if they are divisible with buffer size
 				
 				this.tunerDialog.getTuner().setSettings(settings);
 			}

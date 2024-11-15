@@ -117,11 +117,11 @@ public class GPXDocumentParser {
 			tgTrack.setName(gpTrack.getName());
 			tgTrack.setChannelId(tgChannel.getChannelId());
 			
-			if( gpTrack.getTunningPitches() != null ){
-				for( int s = 1; s <= gpTrack.getTunningPitches().length ; s ++ ){
+			if( gpTrack.getTuningPitches() != null ){
+				for( int s = 1; s <= gpTrack.getTuningPitches().length ; s ++ ){
 					TGString tgString = this.factory.newString();
 					tgString.setNumber(s);
-					tgString.setValue(gpTrack.getTunningPitches()[ gpTrack.getTunningPitches().length - s ]);
+					tgString.setValue(gpTrack.getTuningPitches()[ gpTrack.getTuningPitches().length - s ]);
 					tgTrack.getStrings().add(tgString);
 				}
 			}else if( tgChannel.isPercussionChannel() ){

@@ -287,7 +287,7 @@ public class MidiSequenceParser {
 								}
 							}
 						}
-						//Artifical/Tapped/Pinch/Semi
+						//Artificial/Tapped/Pinch/Semi
 						else{
 							if( note.getEffect().getHarmonic().isSemi() && !percussionChannel ){
 								addNote(sh,track.getNumber(),Math.min(127,orig), start, duration,Math.max(TGVelocities.MIN_VELOCITY,velocity - (TGVelocities.VELOCITY_INCREMENT * 3)),channel,midiVoice,bendMode);

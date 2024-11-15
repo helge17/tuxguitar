@@ -13,12 +13,12 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGPluginManager {
 	
-	private static final String PLUGIN_ERROR_ON_LOOKUP = "An error ocurred when trying to lookup plugin";
-	private static final String PLUGIN_ERROR_ON_CONNECT = "An error ocurred when trying to connect plugin";
-	private static final String PLUGIN_ERROR_ON_EARLY_INIT = "An error ocurred when trying to initialize plugin early";
-	private static final String PLUGIN_ERROR_ON_DISCONNECT = "An error ocurred when trying to disconnect plugin";
-	private static final String PLUGIN_ERROR_ON_GET_STATUS = "An error ocurred when trying to get plugin status";
-	private static final String PLUGIN_ERROR_ON_SET_STATUS = "An error ocurred when trying to set plugin status";
+	private static final String PLUGIN_ERROR_ON_LOOKUP = "An error occurred when trying to lookup plugin";
+	private static final String PLUGIN_ERROR_ON_CONNECT = "An error occurred when trying to connect plugin";
+	private static final String PLUGIN_ERROR_ON_EARLY_INIT = "An error occurred when trying to initialize plugin early";
+	private static final String PLUGIN_ERROR_ON_DISCONNECT = "An error occurred when trying to disconnect plugin";
+	private static final String PLUGIN_ERROR_ON_GET_STATUS = "An error occurred when trying to get plugin status";
+	private static final String PLUGIN_ERROR_ON_SET_STATUS = "An error occurred when trying to set plugin status";
 	
 	private TGContext context;
 	private List<TGPlugin> plugins;

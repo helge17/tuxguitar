@@ -188,7 +188,7 @@ public class GPXDocumentReader {
 							Node propertyNode = propertiesNode.item( p );
 							if (propertyNode.getNodeName().equals("Property") ){ 
 								if( getAttributeValue(propertyNode, "name").equals("Tuning") ){
-									track.setTunningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
+									track.setTuningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
 								}
 							}
 						}

@@ -10,7 +10,7 @@ public class TGExclusiveThreadHandler implements TGThreadHandler {
 	
 	public void start(TGThreadPriority priority, Runnable runnable) {
 		Thread thread = new Thread(runnable);
-		thread.setPriority(priority == TGThreadPriority.HIGHT ? Thread.MAX_PRIORITY : Thread.NORM_PRIORITY);
+		thread.setPriority(priority == TGThreadPriority.HIGH ? Thread.MAX_PRIORITY : Thread.NORM_PRIORITY);
 		thread.start();
 	}
 	

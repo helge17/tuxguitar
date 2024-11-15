@@ -86,7 +86,7 @@ public class TGTuner extends Thread {
 					}
 					
 					/////////////////////////////////////////////////////////////
-					// TODO: look at the benchmark, uncoment the other one and comment the first one
+					// TODO: look at the benchmark, uncomment the other one and comment the first one
 					cycles++;
 					long startTime = System.currentTimeMillis();
 					

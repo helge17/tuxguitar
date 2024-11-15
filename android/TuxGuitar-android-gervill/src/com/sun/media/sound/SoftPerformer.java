@@ -695,7 +695,7 @@ public class SoftPerformer {
         // Add connection blocks from modelperformer
         for (ModelConnectionBlock connection : performer_connections)
             connmap.put(extractKeys(connection), connection);
-        // seperate connection blocks : Init time, Midi Time, Midi/Control Time,
+        // separate connection blocks : Init time, Midi Time, Midi/Control Time,
         // Control Time
         List<ModelConnectionBlock> connections = new ArrayList<ModelConnectionBlock>();
 

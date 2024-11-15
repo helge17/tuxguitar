@@ -8,7 +8,7 @@ import org.herac.tuxguitar.player.base.MidiControllers;
 import org.herac.tuxguitar.player.base.MidiOutputPort;
 
 public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
-	private boolean open; // unncessary
+	private boolean open; // unnecessary
     private boolean connected;	
 	private List<MidiOutputPort> ports;
 	
