@@ -38,7 +38,7 @@ public class TGMultiThreadHandler implements TGThreadHandler {
 	}
 	
 	public void start(TGThreadPriority priority, final Runnable runnable) {
-		if( priority == TGThreadPriority.HIGHT ) {
+		if( priority == TGThreadPriority.HIGH ) {
 			this.exclusiveHandler.start(priority, new TGExclusiveRunnable(this, runnable));
 		}
 		else {

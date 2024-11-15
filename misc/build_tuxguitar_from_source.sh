@@ -112,7 +112,7 @@ while getopts "lwambAgGhr:" CMDopt; do
        ;;
     r) TGVERSION="$OPTARG"
        if [ $TGVERSION == $TGSRCVER ]; then
-         echo -e "\n# The given build version '-r $TGVERSION' is the same as the version in the source code. Asuming '-r REL'."
+         echo -e "\n# The given build version '-r $TGVERSION' is the same as the version in the source code. Assuming '-r REL'."
        elif [ $TGVERSION == "REL" ]; then
          TGVERSION=$TGSRCVER
        fi
@@ -631,8 +631,8 @@ function copy_to_github {
 [ "$#" -lt 1 ] && usage && exit 1
 [ $build_linux ]    && [ `uname` != Linux ]   && echo -e "\nError: Linux version can only be built on Linux."            && abort_build
 [ $build_windows ]  && [ `uname` != Linux ]   && echo -e "\nError: Windows version can only be built on Linux."          && abort_build
-[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannnot be built on/from FreeBSD."      && abort_build
-[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannnot be built on/from macOS."      && abort_build
+[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: MacOS version cannot be built on/from FreeBSD."       && abort_build
+[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from MacOS."       && abort_build
 [ $build_android ]  && [ `uname` != Linux ]   && echo -e "\nError: Android version can only be built on Linux."          && abort_build
 [ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new Github release can only be created from Linux." && abort_build
 
@@ -641,7 +641,7 @@ mkdir -p $SW_DIR
 echo
 echo "### Host: "`hostname -s`" #################################################"
 echo "### Build version: $TGVERSION"
-echo "### Building TuxGuitar from source. All Builds will be placed into the dirctory"
+echo "### Building TuxGuitar from source. All Builds will be placed into the directory"
 echo "### $DIST_DIR"
 echo "### Host: "`hostname -s`" #################################################"
 mkdir -p $DIST_DIR

@@ -26,7 +26,7 @@ package media.sound;
 
 /**
  * This exception is used when a reader is used to read RIFF file of a format it
- * doesn't unterstand or support.
+ * doesn't understand or support.
  *
  * @author Karl Helgason
  */

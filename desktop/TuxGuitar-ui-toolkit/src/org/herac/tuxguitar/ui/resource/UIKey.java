@@ -2,7 +2,7 @@ package org.herac.tuxguitar.ui.resource;
 
 public class UIKey {
 
-	// The stings defined here must match the SWT key names, otherwise the accelerators will not be displayed correctly in the menu
+	// The strings defined here must match the SWT key names, otherwise the accelerators will not be displayed correctly in the menu
 	public static final UIKey F1 = new UIKey("F1");
 	public static final UIKey F2 = new UIKey("F2");
 	public static final UIKey F3 = new UIKey("F3");

@@ -25,7 +25,7 @@ public class ServiceProvider {
 			providers.add(it.next());
 		}
     	if( providers.isEmpty() ) {
-    		throw new RuntimeException("Invaid provider class: " + providerClass);
+		throw new RuntimeException("Invalid provider class: " + providerClass);
     	}
     	
         return providers;

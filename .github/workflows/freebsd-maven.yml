@@ -1,0 +1,49 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: FreeBSD Java CI with Maven
+
+on: [push]
+#on:
+#  push:
+#    branches: [ "master" ]
+#  pull_request:
+#    branches: [ "master" ]
+
+jobs:
+  build-freebsd:
+    runs-on: ubuntu-latest
+    name: A job to build on FreeBSD
+    steps:
+    - uses: actions/checkout@v4
+    - name: Exec in FreeBSD
+      uses: vmactions/freebsd-vm@v1
+      with:
+        usesh: true
+        prepare: |
+          pkg install -y curl openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git
+      # wqy-fonts-20100803_10,1
+      
+        run: |
+          pwd
+          ls -lah
+          whoami
+          env
+          freebsd-version
+          mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd -Dpackaging=jar -Dversion=4.21
+          cd desktop/build-scripts/tuxguitar-freebsd-swt && mvn -e clean verify -P native-modules
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: Package-FreeBSD
+        path: desktop/build-scripts/tuxguitar-freebsd-swt/target/tuxguitar-9.99-SNAPSHOT-*
+    
+
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+    ##- name: Update dependency graph
+    ##  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
