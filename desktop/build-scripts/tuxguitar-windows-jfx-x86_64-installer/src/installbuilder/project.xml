@@ -45,7 +45,6 @@
 	<uninstallerName></uninstallerName>
 	<validatorProgram></validatorProgram>
 	<vendor>TuxGuitar</vendor>
-	<rebootRequired>1</rebootRequired>
 	<componentList>
 		<component>
 			<name>default</name>
