@@ -1,3 +1,14 @@
+TuxGuitar 9.99-SNAPSHOT changes:
+
+* Restore scrollbars during playback
+* Better support for upgrading an existing installation on Windows
+* Improved GP import
+* Save/restore player mode when switching tabs
+* Fix paste selection issue
+* Fix playback of alternative repeats
+* Correctly consider new default shortcuts after an upgrade
+* Minor improvements and cleanups
+
 TuxGuitar 1.6.4 (2024-08-23) changes:
 
 * Fixed performance issue on newer Linux versions
