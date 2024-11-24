@@ -112,8 +112,16 @@ public class MidiSequenceParser {
 		
 		this.addDefaultMessages(helper, this.song);
 		
+		boolean existsSoloTrack = false;
 		for (int i = 0; i < this.song.countTracks(); i++) {
-			addTrack(helper, this.song.getTrack(i));
+			existsSoloTrack |= this.song.getTrack(i).isSolo();
+		}
+		
+		for (int i = 0; i < this.song.countTracks(); i++) {
+			TGTrack track = this.song.getTrack(i);
+			if (!track.isMute() && (!existsSoloTrack || track.isSolo())) {
+				addTrack(helper, track);
+			}
 		}
 		sequence.notifyFinish();
 	}
