@@ -199,8 +199,8 @@ public class MidiSequenceParser {
 						addFadeIn(sh,track.getNumber(), start, duration, tgChannel.getVolume(), channel);
 					}
 					//---Grace---
-					if(note.getEffect().isGrace() && !percussionChannel ){
-						bendMode = true;
+					if(note.getEffect().isGrace()) {
+						bendMode = !percussionChannel;
 						int graceKey = track.getOffset() + note.getEffect().getGrace().getFret() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue();
 						int graceLength = note.getEffect().getGrace().getDurationTime();
 						int graceVelocity = note.getEffect().getGrace().getDynamic();
