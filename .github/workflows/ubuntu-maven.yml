@@ -27,7 +27,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name : install package
-      run: sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.0-37 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
+      run: sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.1-0 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
     - name : Download SWT
       run: curl -o swt-4.26-gtk-linux-`uname -m`.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-gtk-linux-`uname -m`.zip
     - name : install SWT
