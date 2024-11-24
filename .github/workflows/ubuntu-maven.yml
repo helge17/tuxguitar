@@ -26,6 +26,8 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+    - name : update repos
+      run: sudo apt-get update
     - name : install package
       run: sudo apt install wget unzip git build-essential default-jdk maven libwebkit2gtk-4.1-0 libfluidsynth-dev libjack-jackd2-dev libasound2-dev liblilv-dev libsuil-dev qtbase5-dev
     - name : Download SWT
