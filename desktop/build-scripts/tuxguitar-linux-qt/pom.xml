@@ -16,7 +16,7 @@
 	<properties>
 		<project.rootPath>${project.parent.relativePath}</project.rootPath>
 		<project.finalName>tuxguitar-${project.version}-linux-qt</project.finalName>
-		<io.qtjambi.version>6.6.2</io.qtjambi.version>
+		<io.qt.version>6.4.2</io.qt.version>
 	</properties>
 
 	<modules>
@@ -126,21 +126,21 @@
 								<artifactItem>
 									<groupId>io.qtjambi</groupId>
 									<artifactId>qtjambi</artifactId>
-									<version>${io.qtjambi.version}</version>
+									<version>${io.qt.version}</version>
 									<destFileName>qtjambi.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>io.qtjambi</groupId>
 									<artifactId>qtjambi-printsupport</artifactId>
-									<version>${io.qtjambi.version}</version>
+									<version>${io.qt.version}</version>
 									<destFileName>qtjambi-printsupport.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>io.qtjambi</groupId>
 									<artifactId>qtjambi-native-linux-x64</artifactId>
-									<version>${io.qtjambi.version}</version>
+									<version>${io.qt.version}</version>
 									<destFileName>qtjambi-native.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
 								</artifactItem>
@@ -357,6 +357,12 @@
 								</copy>
 
 								<chmod file="${project.build.directory}/${project.finalName}/tuxguitar.sh" perm="755" />
+
+								<!-- QT LIBRARIES FROM OS -->
+								<copy file="/usr/lib/x86_64-linux-gnu/libQt6Core.so.${io.qt.version}"     tofile="${project.build.directory}/${project.finalName}/lib/libQt6Core.so.6"/>
+								<copy file="/usr/lib/x86_64-linux-gnu/libQt6Gui.so.${io.qt.version}"      tofile="${project.build.directory}/${project.finalName}/lib/libQt6Gui.so.6"/>
+								<copy file="/usr/lib/x86_64-linux-gnu/libQt6Widgets.so.${io.qt.version}"  tofile="${project.build.directory}/${project.finalName}/lib/libQt6Widgets.so.6"/>
+								<!-- /QT LIBRARIES FROM OS -->
 							</target>
 						</configuration>
 						<goals>
