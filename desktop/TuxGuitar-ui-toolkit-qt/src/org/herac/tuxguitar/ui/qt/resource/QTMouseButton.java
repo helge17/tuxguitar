@@ -17,7 +17,7 @@ public class QTMouseButton {
 		Map<MouseButton, Integer> cursorMap = new HashMap<MouseButton, Integer>();
 		cursorMap.put(MouseButton.NoButton, 0);
 		cursorMap.put(MouseButton.LeftButton, 1);
-		cursorMap.put(MouseButton.MidButton, 2);
+// TODO QT 5->6 //		cursorMap.put(MouseButton.MidButton, 2);
 		cursorMap.put(MouseButton.RightButton, 3);
 		
 		return cursorMap;

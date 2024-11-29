@@ -16,7 +16,7 @@ public class QTMouseExitListenerManager extends UIMouseExitListenerManager imple
 	}
 	
 	public void handle(QHoverEvent event) {
-		this.onMouseExit(new UIMouseEvent(this.control, new UIPosition(event.pos().x(), event.pos().y()), 0));
+// TODO QT 5->6 //		this.onMouseExit(new UIMouseEvent(this.control, new UIPosition(event.pos().x(), event.pos().y()), 0));
 	}
 	
 	public boolean handle(QEvent event) {

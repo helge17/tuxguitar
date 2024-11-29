@@ -1,5 +1,8 @@
 package org.herac.tuxguitar.ui.qt;
 
+import io.qt.core.QMetaObject;
+import io.qt.core.Qt;
+import io.qt.core.Qt.ConnectionType;
 import io.qt.widgets.QApplication;
 
 public class QTApplicationHandle {
@@ -29,6 +32,6 @@ public class QTApplicationHandle {
 	}
 	
 	public void invokeLater(Runnable runnable) {
-		QApplication.invokeLater(runnable);
+		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
 }

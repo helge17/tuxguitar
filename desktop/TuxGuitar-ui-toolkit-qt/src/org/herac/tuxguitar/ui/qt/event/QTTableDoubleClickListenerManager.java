@@ -19,6 +19,6 @@ public class QTTableDoubleClickListenerManager extends UIMouseDoubleClickListene
 	}
 	
 	public void handle(QTableWidgetItem item) {
-		this.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition(), QTMouseButton.getMouseButton(MouseButton.LeftButton)));
+// TODO QT 5->6 //		this.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition(), QTMouseButton.getMouseButton(MouseButton.LeftButton)));
 	}
 }

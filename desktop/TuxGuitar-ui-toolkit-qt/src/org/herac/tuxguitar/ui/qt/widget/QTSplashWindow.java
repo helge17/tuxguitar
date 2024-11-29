@@ -47,8 +47,8 @@ public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashW
 	}
 	
 	public void processPendingEvents() {
-		if (QApplication.hasPendingEvents()) {
+// TODO QT 5->6 //		if (QApplication.hasPendingEvents()) {
 			QApplication.processEvents();
-		}
+// TODO QT 5->6 //		}
 	}
 }

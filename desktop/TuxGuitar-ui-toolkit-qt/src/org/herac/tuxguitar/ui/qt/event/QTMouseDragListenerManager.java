@@ -30,7 +30,7 @@ public class QTMouseDragListenerManager extends UIMouseDragListenerManager imple
 			float dragX = (float)(event.getPosition().getX()  - this.startPosition.getX());
 			float dragY = (float)(event.getPosition().getY()  - this.startPosition.getY());
 			
-			this.onMouseDrag(new UIMouseEvent(this.control, new UIPosition(dragX, dragY), event.getButton()));
+// TODO QT 5->6 //			this.onMouseDrag(new UIMouseEvent(this.control, new UIPosition(dragX, dragY), event.getButton()));
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class QTMouseWheelListenerManager extends UIMouseWheelListenerManager imp
 	}
 	
 	public void handle(QWheelEvent event) {
-		this.onMouseWheel(new UIMouseWheelEvent(this.control, new UIPosition(event.x(), event.y()), 2, event.delta()));
+// TODO QT 5->6 //		this.onMouseWheel(new UIMouseWheelEvent(this.control, new UIPosition(event.x(), event.y()), 2, event.delta()));
 	}
 	
 	public boolean handle(QEvent event) {

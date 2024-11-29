@@ -54,6 +54,9 @@ import io.qt.gui.QPalette;
 import io.qt.gui.QPalette.ColorRole;
 import io.qt.widgets.QApplication;
 import io.qt.widgets.QWidget;
+import io.qt.core.QMetaObject;
+import io.qt.core.Qt;
+import io.qt.core.Qt.ConnectionType;
 
 public abstract class QTWidget<T extends QWidget> extends QTComponent<T> implements UIControl {
 	
@@ -271,13 +274,14 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	}
 
 	public void redraw() {
-		QApplication.invokeLater(new Runnable() {
+		Runnable runnable = new Runnable() {
 			public void run() {
 				if(!QTWidget.this.isDisposed()) {
 					QTWidget.this.repaint();
 				}
 			}
-		});
+		};
+		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
 	
 	public void repaint() {
@@ -295,26 +299,28 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	}
 	
 	public void showLater() {
-		QApplication.invokeLater(new Runnable() {
+		Runnable runnable = new Runnable() {
 			public void run() {
 				if(!QTWidget.this.isDisposed()) {
 					QTWidget.this.show();
 				}
 			}
-		});
+		};
+		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
 	
 	public void openPopupMenu(final UIPosition pos) {
-		if( this.popupMenu != null ) {
-			QApplication.invokeLater(new Runnable() {
+// TODO QT 5->6 //		if( this.popupMenu != null ) {
+			Runnable runnable = new Runnable() {
 				public void run() {
 					if(!QTWidget.this.isDisposed() && QTWidget.this.popupMenu != null ) {
 						QPoint position = QTWidget.this.getControl().mapToGlobal(new QPoint(Math.round(pos.getX()), Math.round(pos.getY())));
 						QTWidget.this.popupMenu.open(new UIPosition(position.x(), position.y()));
 					}
 				}
-			});
-		}
+// TODO QT 5->6 //		}
+		};
+		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
 	
 	public boolean isIgnoreEvents() {

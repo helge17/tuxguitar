@@ -151,9 +151,9 @@ public class QTToolBar extends QTAbstractContainer<QToolBar> implements QTContai
 				}
 			}
 		}
-		if(!this.getControl().iconSize().equals(iconSize)) {
+// TODO QT 5->6 //		if(!this.getControl().iconSize().equals(iconSize)) {
 			this.getControl().setIconSize(iconSize);
-		}
+// TODO QT 5->6 //		}
 	}
 	
 	public void setBounds(UIRectangle bounds) {

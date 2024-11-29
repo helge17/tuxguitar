@@ -17,7 +17,7 @@ public class QTZoomListenerManager extends UIZoomListenerManager implements QTEv
 	
 	public boolean handle(QWheelEvent event) {
 		if( event.modifiers().isSet(KeyboardModifier.ControlModifier) ) {
-			this.onZoom(new UIZoomEvent(this.control, (event.delta() > 0 ? 1 : -1)));
+// TODO QT 5->6 //			this.onZoom(new UIZoomEvent(this.control, (event.delta() > 0 ? 1 : -1)));
 			
 			return true;
 		}

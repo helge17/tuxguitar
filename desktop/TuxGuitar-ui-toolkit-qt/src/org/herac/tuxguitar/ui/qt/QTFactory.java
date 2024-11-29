@@ -60,6 +60,7 @@ import org.herac.tuxguitar.ui.resource.UIFontModel;
 import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.ui.widget.UIBrowser;
 import org.herac.tuxguitar.ui.widget.UIButton;
 import org.herac.tuxguitar.ui.widget.UICanvas;
 import org.herac.tuxguitar.ui.widget.UICheckBox;
@@ -313,5 +314,9 @@ public class QTFactory implements UIFactory {
 
 	public UIImage createImage(InputStream inputStream) {
 		return this.resourceFactory.createImage(inputStream);
+	}
+	public UIBrowser createBrowser(UIWindow parent) {
+		// TODO QT 5->6 - see commit 24c3ecb1770ae06b9324f167d75147a2cea694f7
+		return null;
 	}
 }

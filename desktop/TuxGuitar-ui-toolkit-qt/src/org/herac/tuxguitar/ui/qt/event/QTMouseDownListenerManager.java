@@ -17,7 +17,7 @@ public class QTMouseDownListenerManager extends UIMouseDownListenerManager imple
 	}
 	
 	public void handle(QMouseEvent event) {
-		this.onMouseDown(new UIMouseEvent(this.control, new UIPosition(event.x(), event.y()), QTMouseButton.getMouseButton(event.button())));
+// TODO QT 5->6 //		this.onMouseDown(new UIMouseEvent(this.control, new UIPosition(event.x(), event.y()), QTMouseButton.getMouseButton(event.button())));
 	}
 	
 	public boolean handle(QEvent event) {

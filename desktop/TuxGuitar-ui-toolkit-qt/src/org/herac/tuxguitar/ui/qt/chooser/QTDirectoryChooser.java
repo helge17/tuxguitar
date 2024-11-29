@@ -33,7 +33,7 @@ public class QTDirectoryChooser implements UIDirectoryChooser {
 			dialog.selectFile(this.defaultPath.getAbsolutePath());
 		}
 		
-		dialog.setFileMode(FileMode.DirectoryOnly);
+// TODO QT 5->6 //		dialog.setFileMode(FileMode.DirectoryOnly);
 		
 		if( dialog.exec() == QDialog.DialogCode.Accepted.value() ) {
 			List<String> selectedFiles = dialog.selectedFiles();

@@ -7,6 +7,9 @@ import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import org.herac.tuxguitar.ui.qt.resource.QTImage;
 import org.herac.tuxguitar.ui.resource.UIImage;
 
+import io.qt.core.QMetaObject;
+import io.qt.core.Qt;
+import io.qt.core.Qt.ConnectionType;
 import io.qt.gui.QAction;
 import io.qt.widgets.QApplication;
 
@@ -64,13 +67,14 @@ public class QTMenuActionItem extends QTMenuItem<QAction> implements UIMenuActio
 		}
 		
 		public void handle() {
-			QApplication.invokeLater(new Runnable() {
+			Runnable runnable = new Runnable() {
 				public void run() {
 					if(!QTAsyncSelectionListenerManager.this.getControl().isDisposed()) {
 						QTAsyncSelectionListenerManager.super.handle();
 					}
 				}
-			});
+			};
+			QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 		}
 	}
 }

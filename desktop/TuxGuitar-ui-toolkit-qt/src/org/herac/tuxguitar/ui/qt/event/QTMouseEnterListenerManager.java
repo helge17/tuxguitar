@@ -16,7 +16,7 @@ public class QTMouseEnterListenerManager extends UIMouseEnterListenerManager imp
 	}
 	
 	public void handle(QHoverEvent event) {
-		this.onMouseEnter(new UIMouseEvent(this.control, new UIPosition(event.pos().x(), event.pos().y()), 0));
+// TODO QT 5->6 //		this.onMouseEnter(new UIMouseEvent(this.control, new UIPosition(event.pos().x(), event.pos().y()), 0));
 	}
 	
 	public boolean handle(QEvent event) {

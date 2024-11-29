@@ -185,7 +185,8 @@ public class QTPainter extends QTComponent<QPainter> implements UIPainter {
 	}
 	
 	public float getFMWidth( String text ){
-		return this.getControl().fontMetrics().width(text);
+// TODO QT 5->6 //		return this.getControl().fontMetrics().width(text);
+		return 10;
 	}
 	
 	public QRect toRect(float x, float y, float width, float height) {
