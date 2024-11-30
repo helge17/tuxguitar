@@ -31,6 +31,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDivisionType;
+import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -151,7 +152,13 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		Node node = this.addNode(nodeMeasureHeader, TAG_TIME_SIGNATURE);
 		this.addAttributeInt(node, TAG_NUMERATOR ,header.getTimeSignature().getNumerator());
 		this.addAttributeInt(node, TAG_DENOMINATOR ,header.getTimeSignature().getDenominator().getValue());
-		this.addNodeInt(nodeMeasureHeader, TAG_TEMPO, header.getTempo().getValue());
+		Node nodeTempo = this.addNodeInt(nodeMeasureHeader, TAG_TEMPO, header.getTempo().getRawValue());
+		if (header.getTempo().getBase() != TGDuration.QUARTER) {
+			this.addAttributeInt(nodeTempo, TAG_TEMPO_BASE, header.getTempo().getBase());
+		}
+		if (header.getTempo().isDotted()) {
+			this.addAttribute(nodeTempo, TAG_TEMPO_DOTTED, "true");
+		}
 		if (header.isRepeatOpen()) {
 			this.addNode(nodeMeasureHeader, TAG_REPEAT_OPEN);
 		}

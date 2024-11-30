@@ -135,6 +135,8 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		int timeSignatureNumerator = 4;
 		int timeSignatureDenominator = 4;
 		int tempoValue = 120;
+		int tempoBase = TGDuration.QUARTER;
+		boolean tempoDotted = false;
 		int number = 1;
 		long headerStart = TGDuration.QUARTER_TIME;
 		while (nodeMeasureHeader != null) {
@@ -155,8 +157,16 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			node = getChildNode(nodeMeasureHeader, TAG_TEMPO);
 			if (node != null) {
 				tempoValue = readInt(node);
+				Node nodeBase = node.getAttributes().getNamedItem(TAG_TEMPO_BASE);
+				if (nodeBase != null) {
+					tempoBase = this.readInt(nodeBase);
+				}
+				Node nodeDotted = node.getAttributes().getNamedItem(TAG_TEMPO_DOTTED);
+				if (nodeDotted != null) {
+					tempoDotted = nodeDotted.getTextContent().equals("true");
+				}
 			}
-			header.getTempo().setValue(tempoValue);
+			header.getTempo().setValueBase(tempoValue, tempoBase, tempoDotted);
 			
 			// repeats
 			header.setRepeatOpen(getChildNode(nodeMeasureHeader, TAG_REPEAT_OPEN) != null);

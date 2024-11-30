@@ -3,8 +3,10 @@ package org.herac.tuxguitar.io.lilypond;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -31,11 +33,14 @@ public class LilypondOutputStream {
 
 	private static final String[] LILYPOND_KEY_SIGNATURES = new String[]{ "c","g","d","a","e","b","fis","cis","f","bes","ees","aes", "des", "ges","ces" };
 
+	private Map<Integer, String> durations;
+
 	private static final String INDENT = new String("   ");
 
 	// anything over high C should be printed 8vb
 	private static final int MAX_PITCH = 72;
 
+	
 	private TGSongManager manager;
 
 	private PrintWriter writer;
@@ -45,6 +50,12 @@ public class LilypondOutputStream {
 	private LilypondTempData temp;
 
 	public LilypondOutputStream(OutputStream stream,LilypondSettings settings){
+		this.durations = new HashMap<Integer, String>();
+		this.durations.put(TGDuration.WHOLE, "1");
+		this.durations.put(TGDuration.HALF, "2");
+		this.durations.put(TGDuration.QUARTER, "4");
+		this.durations.put(TGDuration.EIGHTH, "8");
+		this.durations.put(TGDuration.SIXTEENTH, "16");
 		this.writer = new PrintWriter(stream);
 		this.temp = new LilypondTempData();
 		this.settings = settings;
@@ -302,7 +313,7 @@ public class LilypondOutputStream {
 	}
 
 	private void addMeasure(TGSong song, TGMeasure measure,TGMeasure previous,int voice,int indent,boolean isLast){
-		if(previous == null || measure.getTempo().getValue() != previous.getTempo().getValue()){
+		if(previous == null || !measure.getTempo().isEqual(previous.getTempo()) ){
 			this.addTempo(measure.getTempo(),indent);
 		}
 
@@ -405,7 +416,12 @@ public class LilypondOutputStream {
 	}
 
 	private void addTempo(TGTempo tempo,int indent){
-		this.writer.println(indent(indent) + "\\tempo 4=" + tempo.getValue());
+		String tempoString = "\\tempo " + this.durations.get(tempo.getBase());
+		if (tempo.isDotted()) {
+			tempoString += ".";
+		}
+		tempoString += "="+ tempo.getRawValue();
+		this.writer.println(indent(indent) + tempoString);
 	}
 
 	private void addTimeSignature(TGTimeSignature ts,int indent){

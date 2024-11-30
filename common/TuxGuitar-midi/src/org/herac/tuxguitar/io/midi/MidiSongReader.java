@@ -327,7 +327,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		TGMeasureHeader header = this.factory.newHeader();
 		header.setNumber((last != null)?last.getNumber() + 1:1);
 		header.setStart((last != null)?(last.getStart() + last.getLength()):TGDuration.QUARTER_TIME);
-		header.getTempo().setValue(  (last != null)?last.getTempo().getValue():120 );
+		header.getTempo().setQuarterValue(  (last != null)?last.getTempo().getQuarterValue():120 );
 		if(last != null){
 			header.getTimeSignature().copyFrom(last.getTimeSignature());
 		}else{

@@ -157,7 +157,7 @@ public class GP5InputStream extends GTPInputStream {
 	
 	private void readMeasures(TGSong song, int measures, int tracks, int tempoValue) throws IOException{
 		TGTempo tempo = getFactory().newTempo();
-		tempo.setValue(tempoValue);
+		tempo.setQuarterValue(tempoValue);
 		long start = TGDuration.QUARTER_TIME;
 		for (int i = 0; i < measures; i++) {
 			TGMeasureHeader header = song.getMeasureHeader(i);
@@ -348,7 +348,7 @@ public class GP5InputStream extends GTPInputStream {
 		TGMeasureHeader header = getFactory().newHeader();
 		header.setNumber( (index + 1) );
 		header.setStart(0);
-		header.getTempo().setValue(120);
+		header.getTempo().setQuarterValue(120);
 		header.setRepeatOpen( ((flags & 0x04) != 0) );
 		if ((flags & 0x01) != 0) {
 			timeSignature.setNumerator(readByte());
@@ -755,7 +755,7 @@ public class GP5InputStream extends GTPInputStream {
 			readByte();
 		}
 		if(tempoValue >= 0){
-			tempo.setValue(tempoValue);
+			tempo.setQuarterValue(tempoValue);
 			skip(1);
 			if(getVersion().getVersionCode() > 0){
 				skip(1);

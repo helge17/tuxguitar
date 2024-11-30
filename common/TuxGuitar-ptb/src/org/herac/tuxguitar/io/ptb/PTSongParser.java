@@ -180,7 +180,7 @@ public class PTSongParser {
 	
 	private void parseTempo(TGSong tgSong, PTTempo tempo){
 		TGMeasure measure = getMeasure(tgSong, 1,this.helper.getStartHelper().getMaxStart());
-		measure.getTempo().setValue( tempo.getTempo() );
+		measure.getTempo().setQuarterValue( tempo.getTempo() );
 		measure.getHeader().setTripletFeel(tempo.getTripletFeel());
 	}
 	

@@ -18,6 +18,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.thread.TGThreadLoop;
 import org.herac.tuxguitar.thread.TGThreadManager;
@@ -63,7 +64,7 @@ public class MidiPlayer{
 	protected long tickLength;
 	protected long tickPosition;
 	private boolean tryOpenFistDevice;
-	private TreeMap<Long, Integer> tempoMap;	// ordered map of ticks where tempo changes
+	private TreeMap<Long, TGTempo> tempoMap;	// ordered map of ticks where tempo changes
 	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (ms) where tempo changes, not considering tempo defined by player mode
 	protected TGLock lock;
 	
@@ -74,7 +75,7 @@ public class MidiPlayer{
 		this.outputPortProviders = new ArrayList<MidiOutputPortProvider>();
 		this.sequencerProviders = new ArrayList<MidiSequencerProvider>();
 		this.tryOpenFistDevice = false;
-		this.tempoMap = new TreeMap<Long, Integer>();
+		this.tempoMap = new TreeMap<Long, TGTempo>();
 		this.timestampMap = new TreeMap<Long, Long>();
 		this.reset();
 	}
@@ -488,11 +489,12 @@ public class MidiPlayer{
 		}
 	}
 	
-	public int getCurrentTempo() {
+	public TGTempo getCurrentTempo() {
 		try {
 			this.lock();
-			Map.Entry<Long, Integer> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
-			return lastTempo.getValue() * getMode().getCurrentPercent()/100;
+			Map.Entry<Long, TGTempo> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
+			
+			return lastTempo.getValue();
 		} finally {
 			this.unlock();
 		}
@@ -502,14 +504,15 @@ public class MidiPlayer{
 	public long getCurrentTimestamp() {
 		try {
 			this.lock();
-			Map.Entry<Long, Integer> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
+			Map.Entry<Long, TGTempo> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
 			Map.Entry<Long, Long> lastTimestamp = this.timestampMap.floorEntry(this.tickPosition);
 			long t = lastTimestamp.getValue();
-			return t + 60l*1000l*(this.tickPosition - lastTempo.getKey()) / TGDuration.QUARTER_TIME / lastTempo.getValue();
+			return t + lastTempo.getValue().getTicksInMillis(this.tickPosition - lastTempo.getKey());
 		} finally {
 			this.unlock();
 		}
 	}
+	
 	
 	protected void changeTickPosition(){
 		try {

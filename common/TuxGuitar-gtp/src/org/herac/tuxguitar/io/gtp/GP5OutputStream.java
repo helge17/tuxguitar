@@ -85,7 +85,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeInfo(song);
 			writeLyrics(song);
 			writePageSetup();
-			writeInt(header.getTempo().getValue());
+			writeInt(header.getTempo().getQuarterValue());
 			writeInt(translateKeySignature(0));
 			writeByte((byte)0);
 			writeChannels(song);
@@ -289,7 +289,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			for (int j = 0; j < song.countTracks(); j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = track.getMeasure(i);
-				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
+				writeMeasure(measure, (header.getTempo().getQuarterValue() != tempo.getQuarterValue()) );
 				skipBytes(1);
 			}
 			tempo.copyFrom( header.getTempo() );
@@ -717,7 +717,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeByte((byte) 0xff); //int phaser
 		writeByte((byte) 0xff); //int tremolo
 		writeStringByteSizeOfInteger(""); //tempo name
-		writeInt((tempo != null)?tempo.getValue():-1); //tempo value
+		writeInt((tempo != null)?tempo.getQuarterValue():-1); //tempo value
 		if((tempo != null)){
 			skipBytes(1);
 		}
