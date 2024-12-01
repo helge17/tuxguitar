@@ -37,8 +37,11 @@ declare -A ICONS=(
   # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
   ["$TG/1.svg"]="$S_ICOB:1.png"
   ["$TG/2.svg"]="$S_ICOB:2.png"
+  ["$TG/2dotted.svg"]="$S_ICOB:2dotted.png"
   ["$TG/4.svg"]="$S_ICOB:4.png"
+  ["$TG/4dotted.svg"]="$S_ICOB:4dotted.png"
   ["$TG/8.svg"]="$S_ICOB:8.png"
+  ["$TG/8dotted.svg"]="$S_ICOB:8dotted.png"
   ["$TG/16.svg"]="$S_ICOB:16.png"
   ["$TG/32.svg"]="$S_ICOB:32.png"
   ["$TG/64.svg"]="$S_ICOB:64.png"
