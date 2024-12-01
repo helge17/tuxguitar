@@ -199,7 +199,8 @@ declare -A ICONS=(
   ["$TG/skin-preview-dark.png"]="$DARK_DIR/skin-preview.png"
   ["$TG/skin.info"]="$SKIN_DIR/skin.info"
   ["$TG/skin-dark.info"]="$DARK_DIR/skin.info"
-  ["$TG/skin.prop"]="$SKIN_DIR/skin.prop $DARK_DIR/skin.prop"
+  ["$TG/skin.prop"]="$SKIN_DIR/skin.prop"
+  ["$TG/skin-dark.prop"]="$DARK_DIR/skin.prop"
 
 )
 
