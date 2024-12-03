@@ -105,7 +105,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	}
 
 	
-	// split duration into a list of valid durations (longest first)
+	// split duration into a list of valid durations
 	// all computations done on precise durations
 	public static List<Long> splitPreciseDuration(long durationToSplit, long max, long preferred) {
 		if ((preferred > 0) && (preferred <=max)) {

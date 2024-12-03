@@ -1116,39 +1116,6 @@ public class TGMeasureManager {
 		}
 	}
 	
-	/**
-	 * The purpose of this method seems to be correcting note durations 
-	 * mainly due to rounding errors caused by tuplets.
-	 * However, this method can return incorrect corrections.
-	 * In order to prevent this, increasing the value of `TGDuration.QUARTER_TIME` 
-	 * seems to be the best solution.
-	 */
-	public long getRealStart(TGMeasure measure, long currStart){
-		long start = currStart;
-		long offset = TGDuration.QUARTER_TIME / 2;
-		// The value of `threshold` is dependent on the value of
-		// `TGDuration.QUARTER_TIME` and the tuplets that are expected to be supported.
-		long threshold = 0;
-		
-		 // Local variable to suppress warnings
-		long quaterTimeConstant = TGDuration.QUARTER_TIME;
-		if(quaterTimeConstant == 960) {
-			// Smallest value that will correctly handle 64th 13-tuplet notes
-			threshold = 12;
-		}
-		
-		if(threshold == 0) {
-			// Simply skip the computation
-			return currStart;
-		}
-		
-		long diff = (offset - (start % offset)) % offset;
-		if(diff <= threshold) {
-			start += diff;
-		}
-		return start;
-	}
-	
 	/** 
 	 * Liga la nota
 	 */
