@@ -15,7 +15,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * @author julian
  *
  */
-public abstract class TGDuration {
+public abstract class TGDuration implements Comparable<TGDuration> {
 	/**
 	 * [ES] tiempo por defecto de la Negra.<br>
 	 * [EN] The number of fractions a quarter note can be divided into.
@@ -70,7 +70,7 @@ public abstract class TGDuration {
 	private static final Map<Long, TGDuration> durationMap;
 	
 	static {
-		WHOLE_PRECISE_DURATION = SHORTEST * 4; // to consider double-dotted
+		WHOLE_PRECISE_DURATION = SHORTEST;
 		divisionTypes = new ArrayList<TGDivisionType>();
 		for (TGDivisionType dt : TGDivisionType.DIVISION_TYPES) {
 			WHOLE_PRECISE_DURATION = lcm(WHOLE_PRECISE_DURATION, dt.getEnters());
@@ -103,6 +103,82 @@ public abstract class TGDuration {
 	public static Long getPreciseStartingPoint() {
 		return toPreciseTime(getStartingPoint());
 	}
+
+	
+	// split duration into a list of valid durations (longest first)
+	// all computations done on precise durations
+	public static List<Long> splitPreciseDuration(long durationToSplit, long max, long preferred) {
+		if ((preferred > 0) && (preferred <=max)) {
+			// fill with preferred duration, then try to fill with anything that can fit
+			Long remaining = durationToSplit;
+			List<Long> list = new ArrayList<Long>();
+			while ( remaining >= preferred ) {
+				list.add(preferred);
+				remaining -= preferred;
+			}
+			// if something remains, try to split with no preferred constraint
+			List<Long> remainingList = splitPreciseDuration(remaining, max);
+			if (remainingList != null) {
+				list.addAll(remainingList);
+				return list;
+			}
+		}
+		// if could not split with preferred duration, try without this constraint
+		return splitPreciseDuration(durationToSplit, max);
+	}
+	
+	// objective: split input precise duration D into a list of precise durations di such as:
+	// - sum of all di == D
+	// - each di corresponds to a valid note duration
+	// - each di is less than or equal to specified max
+	// - for one time division, all di are identical. E.g. [3*eighths triplet] instead  of [1 quarter triplet + 1 eighth triplet]
+	// - di with highest denominator of time division appear first in returned list (i.e. quintuplets before triplets)
+	//
+	// if not all criteria can be fulfilled, null is returned
+	public static List<Long> splitPreciseDuration(long durationToSplit, long max) {
+		long D = durationToSplit;
+		List<Long> list = new ArrayList<Long>();
+		
+		// look for all division types, starting with longest divisions
+		for (TGDivisionType dt : divisionTypes) {
+			if ((dt.getEnters()==1) || (D % dt.getEnters() != 0)) {
+				// D contains notes with this time division
+				long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
+				if (base > max)  {
+					return null;
+				}
+				long toSubstract;
+				if (dt.getEnters() == 1) {
+					toSubstract = D;
+				} else {
+					// substract as many occurrences of base to D so that D does not contain any more duration with this time division
+					toSubstract = base;
+					while( ((D-toSubstract) % dt.getEnters() != 0) && (toSubstract <= D)) {
+						toSubstract += base;
+					}
+				}
+				if ((toSubstract % base != 0) || (toSubstract > D)) {
+					return null;
+				}
+				// number of occurrences of base duration
+				long nBase = toSubstract / base;
+				// look for longest note duration with this time division that can fit in toSubstract (successive powers of 2)
+				long n=1;
+				while ((nBase % 2 == 0) && (n*base <= max)) {
+					n *= 2;
+					nBase /= 2;
+				}
+				for (int i=0; i<nBase; i++) {
+					list.add(n* base);
+				}
+				D -= toSubstract;
+			}
+		}
+		if (D != 0) {
+			return null;
+		}
+		return list;
+	}
 	
 	private static long gcd(long a, long b) {
 		// Euclid algorithm
@@ -112,8 +188,6 @@ public abstract class TGDuration {
 	private static long lcm(long a, long b) {
 		return a * b / gcd(a,b);
 	}
-	
-	
 	
 	public TGDuration(TGFactory factory){
 		this.value = QUARTER;
@@ -282,6 +356,16 @@ public abstract class TGDuration {
 		this.setDoubleDotted(duration.isDoubleDotted());
 		this.getDivision().copyFrom(duration.getDivision());
 	}
+
+	@Override
+	public int compareTo(TGDuration duration) {
+		if (duration == null) return 1;
+		if ((this.getPreciseTime() >= 0) && (duration.getPreciseTime() >= 0)) {
+			return Long.valueOf(this.getPreciseTime()).compareTo(Long.valueOf(duration.getPreciseTime()));
+		}
+		return (Long.valueOf(this.getTime()).compareTo(Long.valueOf(duration.getTime())));
+	}
+
 	
 	private static Map<Long, TGDuration> createDurationMap() {
 		TGFactory factory = new TGFactory();

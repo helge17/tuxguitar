@@ -2,7 +2,11 @@ package org.herac.tuxguitar.song.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
 import org.junit.jupiter.api.Test;
@@ -15,7 +19,7 @@ public class TestTGDuration {
 	public void testPreciseDuration() {
 		
 		// manually computed, to update if new time divisions are added
-		assertEquals(64*4*3*5*7*3*11*13, TGDuration.WHOLE_PRECISE_DURATION);
+		assertEquals(64*3*5*7*3*11*13, TGDuration.WHOLE_PRECISE_DURATION);
 		
 		TGDuration d = factory.newDuration();
 		
@@ -178,19 +182,6 @@ public class TestTGDuration {
 				}
 			}
 		}
-
-
-		/*
-		assertEquals(960, TGDuration.toTicks(new Fraction(1,4)));
-		assertEquals(960*4, TGDuration.toTicks(new Fraction(1,1)));
-		assertEquals(960/4, TGDuration.toTicks(new Fraction(1,16)));
-		
-		assertEquals(0, TGDuration.toFraction(960).compareTo(new Fraction(1,4)));
-		assertEquals(0, TGDuration.toFraction(2*960).compareTo(new Fraction(1,2)));
-		
-		assertEquals(960, TGDuration.toTicks(TGDuration.getPreciseStartingPoint()));
-		*/
-
 	}
 	
 	// conversions approximate time <-> precise time
@@ -202,4 +193,55 @@ public class TestTGDuration {
 		assertEquals(TGDuration.toPreciseTime(960), TGDuration.getPreciseStartingPoint());
 	}
 
+	@Test
+	public void testSplitDuration() {
+		TGDuration duration = factory.newDuration();
+		
+		// use case: 1 measures at 8/4, total duration = 2 * whole
+		// instantiate 1 note: quarter with time division 9:8, duration = 1/4 * 8/9 = 2/9
+		// split the remaining space (=16/9) into rests
+		// expected:
+		//   1 * thirty-second 9:8 = (1/32) * (8/9) = 1/36
+		//   remains 16/9 - 1/36 = 7/4
+		//   7 quarters 1:1 = 7 * 1/4
+		List<Long> list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*16/9, 2*TGDuration.WHOLE_PRECISE_DURATION);
+		assertEquals(8, list.size());
+		assertTrue(list.get(0) == TGDuration.WHOLE_PRECISE_DURATION/36);
+		for (int i=1; i<8; i++) {
+			assertTrue(list.get(i) == TGDuration.WHOLE_PRECISE_DURATION/4);
+		}
+		
+
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*13/15, TGDuration.WHOLE_PRECISE_DURATION);
+		assertNotNull(list);
+		long sum = 0;
+		for(int i=0; i<list.size(); i++) {
+			sum += list.get(i);
+			duration.setPreciseValue(list.get(i));	// to check selected duration is valid
+		}
+		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION*13/15);
+		
+		
+		// test max
+		list = TGDuration.splitPreciseDuration(3*TGDuration.WHOLE_PRECISE_DURATION, TGDuration.WHOLE_PRECISE_DURATION);
+		assertNotNull(list);
+		assertEquals(3, list.size());
+		assertTrue(list.get(0) == TGDuration.WHOLE_PRECISE_DURATION);
+		assertTrue(list.get(1) == TGDuration.WHOLE_PRECISE_DURATION);
+		assertTrue(list.get(2) == TGDuration.WHOLE_PRECISE_DURATION);
+		
+		// something impossible to split
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/(64*3), TGDuration.WHOLE_PRECISE_DURATION);
+		assertNull(list);
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/17, TGDuration.WHOLE_PRECISE_DURATION);
+		assertNull(list);
+		
+		// trivial case
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*3/4, TGDuration.WHOLE_PRECISE_DURATION/4);
+		assertEquals(3, list.size());
+		assertTrue(list.get(0) == TGDuration.WHOLE_PRECISE_DURATION/4);
+		assertTrue(list.get(1) == TGDuration.WHOLE_PRECISE_DURATION/4);
+		assertTrue(list.get(2) == TGDuration.WHOLE_PRECISE_DURATION/4);
+		
+	}
 }
