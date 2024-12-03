@@ -58,6 +58,8 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 		return this.preciseStart;
 	}
 	
+	// try as much as possible NOT to use this method
+	// use .setPreciseStart instead when possible
 	public void setStart(long start) {
 		this.start = start;
 		// cannot deduce preciseStart from start (possible rounding errors)
@@ -184,7 +186,11 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	}
 	
 	public void copyFrom(TGBeat beat, TGFactory factory) {
-		this.setStart(beat.getStart());
+		if (beat.getPreciseStart() >= 0) {
+			this.setPreciseStart(beat.getPreciseStart());
+		} else {
+			this.setStart(beat.getStart());
+		}
 		this.getStroke().copyFrom(beat.getStroke());
 		for( int i = 0 ; i < beat.voices.length ; i ++ ){
 			this.setVoice(i, beat.voices[i].clone(factory));
