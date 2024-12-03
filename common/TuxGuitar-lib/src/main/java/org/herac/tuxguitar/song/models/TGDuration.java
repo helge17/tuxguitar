@@ -1,20 +1,19 @@
 /*
  * Created on 29-nov-2005
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package org.herac.tuxguitar.song.models;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
 /**
  * @author julian
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGDuration {
 	/**
@@ -24,39 +23,18 @@ public abstract class TGDuration {
 	 *      of all note durations including all supported tuplets.
 	 */
 	public static final long QUARTER_TIME = 960;
+	// unit for precise duration = lcm of all possible durations
+	// to make sure computation of durations is performed on integers without rounding issues
+	public static long WHOLE_PRECISE_DURATION;
 	/**
-	 * Redonda.
+	 * Possible duration values, as fractions of a whole
 	 */
 	public static final int WHOLE = 1;
-	
-	/**
-	 * Blanca.
-	 */
 	public static final int HALF = 2;
-	
-	/**
-	 * Negra.
-	 */
 	public static final int QUARTER = 4;
-	
-	/**
-	 * Corchea.
-	 */
 	public static final int EIGHTH = 8;
-	
-	/**
-	 * Semi-Corchea.
-	 */
 	public static final int SIXTEENTH = 16;
-	
-	/**
-	 * Fusa.
-	 */
 	public static final int THIRTY_SECOND = 32;
-	
-	/**
-	 * Semi-Fusa.
-	 */
 	public static final int SIXTY_FOURTH = 64;
 	
 	/**
@@ -66,6 +44,7 @@ public abstract class TGDuration {
 	
 	/**
 	 * Valor.
+	 * Value, shall be one of the constants defined above
 	 */
 	private int value;
 	/**
@@ -80,17 +59,61 @@ public abstract class TGDuration {
 	 * DivisionType.
 	 */
 	private TGDivisionType divisionType;
+
+	private static List<TGDivisionType> divisionTypes;
 	
 	/**
 	 * Map containing all note durations that are
 	 * expected to be supported.<br>
-	 * Key = duration time
+	 * Key = duration precise time
 	 */
 	private static final Map<Long, TGDuration> durationMap;
 	
 	static {
+		WHOLE_PRECISE_DURATION = SHORTEST * 4; // to consider double-dotted
+		divisionTypes = new ArrayList<TGDivisionType>();
+		for (TGDivisionType dt : TGDivisionType.DIVISION_TYPES) {
+			WHOLE_PRECISE_DURATION = lcm(WHOLE_PRECISE_DURATION, dt.getEnters());
+			// list of division types: only consider "prime" values (e.g. do not consider 6:4)
+			if (gcd(dt.getEnters(), dt.getTimes()) == 1) {
+				divisionTypes.add(dt);
+			}
+		}
+		// sort division types, shortest division first (=highest .enters value)
+		Collections.sort(divisionTypes,
+				(TGDivisionType dt1, TGDivisionType dt2) -> (Integer.valueOf(dt2.getEnters()).compareTo(Integer.valueOf(dt1.getEnters()))));
 		durationMap = createDurationMap();
 	}
+	
+	// precise to approximate time (possible rounding error)
+	public static long toTime(long preciseTime) {
+		return QUARTER_TIME * QUARTER * preciseTime / WHOLE_PRECISE_DURATION;
+	}
+	
+	// approximate to precise time
+	public static long toPreciseTime(long ticks) {
+		return ticks * WHOLE_PRECISE_DURATION / (QUARTER_TIME * QUARTER) ;
+	}
+	
+	// convention: starting point of song is 1 quarter
+	public static Long getStartingPoint() {
+		return QUARTER_TIME;
+	}
+	
+	public static Long getPreciseStartingPoint() {
+		return toPreciseTime(getStartingPoint());
+	}
+	
+	private static long gcd(long a, long b) {
+		// Euclid algorithm
+		if (b == 0) return a;
+		return gcd(b, a % b);
+	}
+	private static long lcm(long a, long b) {
+		return a * b / gcd(a,b);
+	}
+	
+	
 	
 	public TGDuration(TGFactory factory){
 		this.value = QUARTER;
@@ -105,6 +128,15 @@ public abstract class TGDuration {
 	
 	public void setValue(int value) {
 		this.value = value;
+	}
+	
+	public void setPreciseValue(Long preciseValue) {
+		TGDuration duration = durationMap.get(preciseValue);
+		if (duration == null) {
+			// invalid!
+			throw new IllegalArgumentException();
+		}
+		this.copyFrom(duration);
 	}
 	
 	public boolean isDotted() {
@@ -222,6 +254,18 @@ public abstract class TGDuration {
 		return index;
 	}
 	
+	public long getPreciseTime() {
+		long preciseDuration = WHOLE_PRECISE_DURATION / this.value;
+		if (this.dotted) {
+			preciseDuration = preciseDuration * 3 / 2;
+		}
+		else if (this.doubleDotted) {
+			preciseDuration = preciseDuration * 7 / 4;
+		}
+		preciseDuration = preciseDuration * this.divisionType.getTimes() / this.divisionType.getEnters();
+		return preciseDuration;
+	}
+	
 	public boolean isEqual(TGDuration d){
 		return (getValue() == d.getValue() && isDotted() == d.isDotted() && isDoubleDotted() == d.isDoubleDotted() && getDivision().isEqual(d.getDivision()));
 	}
@@ -243,6 +287,9 @@ public abstract class TGDuration {
 		TGFactory factory = new TGFactory();
 		HashMap<Long, TGDuration> durationHashMap = new HashMap<Long, TGDuration>();
 		
+		// several valid TGDuration instances may have the exact same duration
+		// priority : not dotted, then dotted, then double-dotted
+		
 		for(TGDivisionType tmpDivisionType : TGDivisionType.DIVISION_TYPES)
 		{
 			for (int i = 0; i < 3; i++)
@@ -260,6 +307,7 @@ public abstract class TGDuration {
 						tmpDuration.setDoubleDotted(true);
 					}
 					else {
+						// default (executed first)
 						tmpDuration.setDotted(false);
 						tmpDuration.setDoubleDotted(false);
 					}
@@ -269,7 +317,7 @@ public abstract class TGDuration {
 					tmpDuration.getDivision().setTimes(tmpDivisionType.getTimes());
 					
 					TGDuration entry = tmpDuration;
-					long key = entry.getTime();
+					long key = entry.getPreciseTime();
 					if(!durationHashMap.containsKey(key)) {
 						durationHashMap.put(key, entry);
 					}
