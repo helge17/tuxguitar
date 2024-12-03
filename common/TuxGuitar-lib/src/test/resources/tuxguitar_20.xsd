@@ -161,10 +161,25 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="tempoType">
+    <xs:simpleContent>
+      <xs:extension base="uint15">
+        <xs:attribute name="base" type="durationValueType" use="optional"/>
+        <xs:attribute name="dotted" use="optional">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="true"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
   <xs:complexType name="measureHeaderType">
     <xs:sequence>
       <xs:element name="timeSignature" type="timeSignatureType" minOccurs="0"/>
-      <xs:element name="tempo" type="uint15" minOccurs="0"/>
+      <xs:element name="tempo" type="tempoType" minOccurs="0"/>
       <xs:element name="repeatOpen" minOccurs="0"/>
       <xs:element name="repeatClose" type="uint15" minOccurs="0"/>
       <xs:element name="repeatAlternative" type="repeatAlternativeType" minOccurs="0"/>

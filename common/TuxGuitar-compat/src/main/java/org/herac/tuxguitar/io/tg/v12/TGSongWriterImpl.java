@@ -195,7 +195,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 				header |= MEASURE_HEADER_TIMESIGNATURE;
 			}
 			//Tempo
-			if(measureheader.getTempo().getValue() != lastMeasureHeader.getTempo().getValue()){
+			if(measureheader.getTempo().getQuarterValue() != lastMeasureHeader.getTempo().getQuarterValue()){
 				header |= MEASURE_HEADER_TEMPO;
 			}
 			//Triplet Feel
@@ -471,7 +471,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	
 	private void writeTempo(TGTempo tempo){
 		//escribo el valor
-		writeShort((short)tempo.getValue());
+		writeShort((short)tempo.getQuarterValue());
 	}
 	
 	private void writeTimeSignature(TGTimeSignature timeSignature){

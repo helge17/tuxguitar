@@ -14,7 +14,7 @@ import org.herac.tuxguitar.editor.event.TGRedrawEvent;
 import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
 import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.chooser.UIFontChooser;
 import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
@@ -69,6 +69,9 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 	private long timestamp = -1;
 	private float yTimestamp;
 	private boolean fontChanged;
+	private int currentTempoBase;
+	private boolean currentTempoDotted;
+	private int currentTempoValue;
 
 	public TGMainToolBarTransport(TGContext context, UIPanel parentPanel, UIWindow parentWindow) {
 		super(context);
@@ -184,11 +187,20 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 	@Override
 	// called when skin changes
 	public void loadIcons() {
+		this.loadColors();
+		this.updateTempoIcon();
+	}
+	
+	private void loadColors() {
 		TGColorManager tgColorManager = TGColorManager.getInstance(this.getContext());
 		this.backgroundColor = tgColorManager.getColor(COLOR_BACKGROUND);
 		this.foregroundColor = tgColorManager.getColor(COLOR_FOREGROUND);
-		
-		this.tempoImage.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
+	}
+	
+	private void updateTempoIcon() {
+		if (this.currentTempoBase != 0) {
+			this.tempoImage.setImage(TuxGuitar.getInstance().getIconManager().getDuration(this.currentTempoBase, this.currentTempoDotted));
+		}
 	}
 	
 	@Override
@@ -213,23 +225,32 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 	
 	private void paintTimestampTempo(UIPainter painter) {
 		String time;
-		int tempo;
+		TGTempo tempo;
+		int tempoPercent = 100;
 		
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
 		if (midiPlayer.isRunning()) {
 			long tMs = this.timestamp;
 			time = String.format("%d:%02d:%02d.%01d", tMs/3600000, (tMs / 60000) % 60 , (tMs / 1000) % 60 , (tMs/100) % 10);
 			tempo = midiPlayer.getCurrentTempo();
+			tempoPercent = midiPlayer.getMode().getCurrentPercent();
 			this.tempoLabel.setIgnoreEvents(true);
 		} else {
 			// don't display timestamp while not playing, it's meaningless (e.g. repeats not considered, etc.)
 			time = "-:--:--.-";
-			tempo = TablatureEditor.getInstance(getContext()).getTablature().getCaret().getMeasure().getTempo().getValue();
+			tempo = TablatureEditor.getInstance(getContext()).getTablature().getCaret().getMeasure().getTempo();
 			this.tempoLabel.setIgnoreEvents(false);
 		}
-		this.tempoLabel.setText("= " + String.valueOf(tempo));
-		
-		
+		if ((tempo.getBase() != this.currentTempoBase) || (tempo.isDotted() != this.currentTempoDotted)) {
+			this.currentTempoBase = tempo.getBase();
+			this.currentTempoDotted = tempo.isDotted();
+			this.updateTempoIcon();
+		}
+		int tempoValue = tempo.getRawValue()*tempoPercent/100;
+		if (tempoValue != this.currentTempoValue) {
+			this.currentTempoValue = tempoValue;
+			this.tempoLabel.setText("= " + String.valueOf(this.currentTempoValue));
+		}
 		painter.setFont(this.font);
 		float newWidth;
 		float newHeight;
@@ -263,7 +284,7 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 			newHeight = size.getHeight();
 		}
 		if (this.backgroundColor.isDisposed() || this.foregroundColor.isDisposed()) {
-			loadIcons();
+			this.loadColors();
 		}
 		painter.setBackground(this.backgroundColor);
 		painter.initPath(UIPainter.PATH_FILL);

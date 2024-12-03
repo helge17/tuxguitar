@@ -429,7 +429,7 @@ public class TGTransportDialog implements TGEventListener {
 					TGMeasureHeader first = song != null ? TablatureEditor.getInstance(context).getTablature().getSongManager().getFirstMeasureHeader(song) : null;
 					Map.Entry<Long, TGMeasureHeader> entry = headerMap.floorEntry(position);
 					TGMeasureHeader current = entry != null ? entry.getValue() : first;
-					Integer currentTempo = Math.round((float)current.getTempo().getValue()*(float)player.getMode().getCurrentPercent()/100.0f);
+					Integer currentTempo = Math.round((float)current.getTempo().getRawValue()*(float)player.getMode().getCurrentPercent()/100.0f);
 					this.metronome.setText(currentTempo.toString());
 				}
 			}

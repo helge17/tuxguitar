@@ -21,6 +21,7 @@ public class TGIconManager {
 	private Map<String, TGIconTheme> themeCache;
 
 	private UIImage[] durations;
+	private UIImage[] durationsDotted;
 	private UIImage altEnharmonic;
 	private UIImage editCut;
 	private UIImage editCopy;
@@ -233,6 +234,11 @@ public class TGIconManager {
 			loadIcon("32.png"),
 			loadIcon("64.png")
 		};
+		this.durationsDotted = new UIImage[]{
+				loadIcon("2dotted.png"),
+				loadIcon("4dotted.png"),
+				loadIcon("8dotted.png"),
+			};
 		this.layoutPage = loadIcon("layout_page.png");
 		this.layoutLinear = loadIcon("layout_linear.png");
 		this.layoutMultitrack = loadIcon("layout_multitrack.png");
@@ -450,7 +456,11 @@ public class TGIconManager {
 	public void onSkinChange() {
 		this.loadIcons();
 	}
-
+	
+	public UIImage getDuration(int value, boolean dotted){
+		return dotted ? getDurationDotted(value) : getDuration(value);
+	}
+	
 	public UIImage getDuration(int value){
 		switch(value){
 		case TGDuration.WHOLE:
@@ -467,6 +477,18 @@ public class TGIconManager {
 			return this.durations[5];
 		case TGDuration.SIXTY_FOURTH:
 			return this.durations[6];
+		}
+		return null;
+	}
+
+	public UIImage getDurationDotted(int value){
+		switch(value){
+		case TGDuration.HALF:
+			return this.durationsDotted[0];
+		case TGDuration.QUARTER:
+			return this.durationsDotted[1];
+		case TGDuration.EIGHTH:
+			return this.durationsDotted[2];
 		}
 		return null;
 	}

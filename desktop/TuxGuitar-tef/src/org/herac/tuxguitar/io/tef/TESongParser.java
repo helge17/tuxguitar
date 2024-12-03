@@ -55,7 +55,7 @@ public class TESongParser {
 	}
 	
 	private void addTracksAndHeaders(TGSong song, int tracks,int measures,int tempo){
-		this.manager.getFirstMeasureHeader(song).getTempo().setValue(tempo);
+		this.manager.getFirstMeasureHeader(song).getTempo().setQuarterValue(tempo);
 		
 		while(song.countTracks() < tracks){
 			this.manager.addTrack(song);

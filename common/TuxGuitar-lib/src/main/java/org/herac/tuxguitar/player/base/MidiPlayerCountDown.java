@@ -30,7 +30,7 @@ public class MidiPlayerCountDown {
 				if( header != null ){
 					Object timerLock = new Object();
 					
-					int  tgTempo = ((header.getTempo().getValue() * this.getTempoPercent()) / DEFAULT_TEMPO_PERCENT);
+					int  tgTempo = ((header.getTempo().getQuarterValue() * this.getTempoPercent()) / DEFAULT_TEMPO_PERCENT);
 					long tgLength = header.getTimeSignature().getDenominator().getTime();
 					long tickLength = (long)(1000.00 * (60.00 / tgTempo * tgLength) / TGDuration.QUARTER_TIME);
 					long tickStart = System.currentTimeMillis();

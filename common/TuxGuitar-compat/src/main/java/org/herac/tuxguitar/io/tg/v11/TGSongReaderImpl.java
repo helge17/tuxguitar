@@ -436,7 +436,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 	
 	private void readTempo(TGTempo tempo){
 		//leo el valor
-		tempo.setValue(readShort());
+		tempo.setQuarterValue(readShort());
 	}
 	
 	private void readTimeSignature(TGTimeSignature timeSignature){

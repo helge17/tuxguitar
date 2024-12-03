@@ -75,6 +75,8 @@ public class TGStream {
 	protected static final String TAG_NUMERATOR = "numerator";
 	protected static final String TAG_DENOMINATOR = "denominator";
 	protected static final String TAG_TEMPO = "tempo";
+	protected static final String TAG_TEMPO_BASE = "base";
+	protected static final String TAG_TEMPO_DOTTED = "dotted";
 	protected static final String TAG_REPEAT_OPEN = "repeatOpen";
 	protected static final String TAG_REPEAT_CLOSE = "repeatClose";
 	protected static final String TAG_REPEAT_ALTERNATIVE = "repeatAlternative";
