@@ -19,7 +19,7 @@ jobs:
   build-macOS:
     strategy:
       matrix:
-          os: [macos-12, macos-13]
+          os: [macos-13]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
