@@ -41,8 +41,9 @@ public class PDFSettingsHandler implements TGPersistenceSettingsHandler, TGPlugi
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG));
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintSettingsDialogController());
 		tgActionProcessor.setAttribute(TGPrintSettingsDialog.ATTRIBUTE_HANDLER, new TGPrintSettingsHandler() {
-			public void updatePrintSettings(TGPrintSettings styles) {
-				context.setAttribute(TGPrintSettings.class.getName(), styles);
+			public void updatePrintSettings(TGPrintSettings styles, int zoomValue) {
+				context.setAttribute(TGPrintSettings.ATTRIBUTE_PRINT_STYLES, styles);
+				context.setAttribute(TGPrintSettings.ATTRIBUTE_PRINT_ZOOM, zoomValue);
 				callback.run();
 			}
 		});

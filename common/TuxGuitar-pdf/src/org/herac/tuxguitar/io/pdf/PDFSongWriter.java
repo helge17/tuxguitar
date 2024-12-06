@@ -50,9 +50,13 @@ public class PDFSongWriter implements TGSongWriter {
 	
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try{
-			TGPrintSettings settings = handle.getContext().getAttribute(TGPrintSettings.class.getName());
+			TGPrintSettings settings = handle.getContext().getAttribute(TGPrintSettings.ATTRIBUTE_PRINT_STYLES);
 			if( settings == null ) {
 				settings = getDefaultStyles(handle.getSong());
+			}
+			Integer zoomValue = handle.getContext().getAttribute(TGPrintSettings.ATTRIBUTE_PRINT_ZOOM);
+			if (zoomValue == null) {
+				zoomValue = 100;
 			}
 			
 			TGLayoutStyles styles = handle.getContext().getAttribute(TGLayoutStyles.class.getName());
@@ -71,7 +75,7 @@ public class PDFSongWriter implements TGSongWriter {
 			
 			TGPrintLayout layout = new TGPrintLayout(controller, settings);
 			
-			layout.loadStyles(1f);
+			layout.loadStyles(((float)zoomValue)/100f);
 			layout.updateSong();
 			layout.makeDocument(new PDFDocument(this.context, pageSize, pageMargins, handle.getOutputStream()));
 			

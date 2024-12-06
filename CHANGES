@@ -1,5 +1,6 @@
 TuxGuitar 9.99-SNAPSHOT changes:
 
+* Add zoom control for Print/Export to pdf
 * Restore scrollbars during playback
 * Better support for upgrading an existing installation on Windows
 * Improved GP import
