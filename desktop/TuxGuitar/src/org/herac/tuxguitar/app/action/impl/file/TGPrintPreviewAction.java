@@ -38,8 +38,6 @@ public class TGPrintPreviewAction extends TGActionBase{
 	
 	public static final String NAME = "action.file.print-preview";
 	
-	public static final String ATTRIBUTE_STYLES = TGPrintSettings.class.getName();
-	
 	private static final int PAGE_WIDTH = 850;
 	private static final int PAGE_HEIGHT = 1050;
 	private static final int MARGIN_TOP = 20;
@@ -52,11 +50,15 @@ public class TGPrintPreviewAction extends TGActionBase{
 	}
 	
 	protected void processAction(final TGActionContext context) {
-		TGPrintSettings styles = context.getAttribute(ATTRIBUTE_STYLES);
+		TGPrintSettings styles = context.getAttribute(TGPrintSettings.ATTRIBUTE_PRINT_STYLES);
 		if( styles == null ) {
 			this.configureStyles(context);
 			
 			return;
+		}
+		Integer zoomValue = context.getAttribute(TGPrintSettings.ATTRIBUTE_PRINT_ZOOM);
+		if (zoomValue == null) {
+			zoomValue = 100;
 		}
 		
 		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
@@ -67,7 +69,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 		
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, this.getUIFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
-		printLayout.loadStyles(1f);
+		printLayout.loadStyles(((float)zoomValue)/100f);
 		printLayout.updateSong();
 		printLayout.makeDocument(new PrintDocumentImpl(pageSize, pageMargins));
 		printLayout.getResourceBuffer().disposeAllResources();
@@ -76,8 +78,9 @@ public class TGPrintPreviewAction extends TGActionBase{
 	public void configureStyles(final TGActionContext context) {
 		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintSettingsDialogController());
 		context.setAttribute(TGPrintSettingsDialog.ATTRIBUTE_HANDLER, new TGPrintSettingsHandler() {
-			public void updatePrintSettings(TGPrintSettings styles) {
-				context.setAttribute(ATTRIBUTE_STYLES, styles);
+			public void updatePrintSettings(TGPrintSettings styles, int zoomValue) {
+				context.setAttribute(TGPrintSettings.ATTRIBUTE_PRINT_STYLES, styles);
+				context.setAttribute(TGPrintSettings.ATTRIBUTE_PRINT_ZOOM, zoomValue);
 				executeActionInNewThread(TGPrintPreviewAction.NAME, context);
 			}
 		});

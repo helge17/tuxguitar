@@ -4,6 +4,10 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 
 public class TGPrintSettings {
 	
+	// context attributes
+	public static final String ATTRIBUTE_PRINT_STYLES = "attribute.print.settings.styles";
+	public static final String ATTRIBUTE_PRINT_ZOOM = "attribute.print.settings.zoom";
+	
 	public static final int ALL_TRACKS = -1;
 	
 	private int trackNumber;
