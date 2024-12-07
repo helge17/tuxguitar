@@ -133,7 +133,7 @@ public class TGPrintSettingsDialog {
 		dialogLayout.set(options, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
 		UILabel zoomLabel = uiFactory.createLabel(options);
-		zoomLabel.setText(TuxGuitar.getProperty("print.zoom"));
+		zoomLabel.setText(TuxGuitar.getProperty("print.zoom") + ":");
 		optionsLayout.set(zoomLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 		
 		final UISpinner zoomSpinner = uiFactory.createSpinner(options);
