@@ -8,14 +8,16 @@ public class TEComponentNote extends TEComponent{
 	
 	private int dynamic;
 	
-	private int effect;
+	private int effect1;
+	private int effect2;
 	
-	public TEComponentNote(int position,int measure, int string, int fret, int duration, int dynamic, int effect) {
+	public TEComponentNote(int position,int measure, int string, int fret, int duration, int dynamic, int effect1, int effect2) {
 		super(position, measure, string);
 		this.fret = fret;
 		this.duration = duration;
 		this.dynamic = dynamic;
-		this.effect = effect;
+		this.effect1 = effect1;
+		this.effect2 = effect2;
 	}
 	
 	public int getDuration() {
@@ -26,8 +28,12 @@ public class TEComponentNote extends TEComponent{
 		return this.dynamic;
 	}
 	
-	public int getEffect() {
-		return this.effect;
+	public int getEffect1() {
+		return this.effect1;
+	}
+
+	public int getEffect2() {
+		return this.effect2;
 	}
 	
 	public int getFret() {

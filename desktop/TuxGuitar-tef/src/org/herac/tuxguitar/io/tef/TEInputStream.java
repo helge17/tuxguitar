@@ -225,13 +225,14 @@ public class TEInputStream {
 			
 			if( ((data[2] & 0xff) & 0x1f) > 0  && ((data[2] & 0xff) & 0x1f) <= 25 ){
 				int duration = (data[3] & 0xf);
-				int dynamic =  (data[3] >> 4);
-				int effect = data[4];
+				int dynamic =  ((data[3] & 0xff) >> 4);
+				int effect1 = data[4];
+				int effect2 = data[5];
 				int fret = (((data[2] & 0xff) & 0x1f) - 1);
 				if((((data[2] & 0xff) >> 5) & 0x01) != 0 ) {
 					fret += (data[5] & 0xff);
 				}
-				this.song.getComponents().add( new TEComponentNote(position, measure, string ,fret,duration,dynamic,effect ) );
+				this.song.getComponents().add( new TEComponentNote(position, measure, string ,fret,duration,dynamic,effect1,effect2 ) );
 			}
 			else if( ((data[2] & 0xff) & 0x1f) == 27 ){
 				//TIME SIGNATURE CHANGE
