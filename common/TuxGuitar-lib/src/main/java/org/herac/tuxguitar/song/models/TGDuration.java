@@ -107,37 +107,37 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	
 	// split duration into a list of valid durations
 	// all computations done on precise durations
-	public static List<Long> splitPreciseDuration(long durationToSplit, long max, long preferred) {
-		if ((preferred > 0) && (preferred <=max)) {
+	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long maxTime, TGDuration preferredDuration, TGFactory factory) {
+		if ((preferredDuration != null) && (preferredDuration.getPreciseTime() <=maxTime)) {
+			long preferredTime = preferredDuration.getPreciseTime();
 			// fill with preferred duration, then try to fill with anything that can fit
-			Long remaining = durationToSplit;
-			List<Long> list = new ArrayList<Long>();
-			while ( remaining >= preferred ) {
-				list.add(preferred);
-				remaining -= preferred;
+			Long remainingTime = timeToSplit;
+			List<TGDuration> list = new ArrayList<TGDuration>();
+			while ( remainingTime >= preferredTime ) {
+				list.add(preferredDuration.clone(factory));
+				remainingTime -= preferredTime;
 			}
-			// if something remains, try to split with no preferred constraint
-			List<Long> remainingList = splitPreciseDuration(remaining, max);
+			// if something remains, try to split with no preferred duration constraint
+			List<TGDuration> remainingList = splitPreciseDuration(remainingTime, maxTime, factory);
 			if (remainingList != null) {
 				list.addAll(remainingList);
 				return list;
 			}
 		}
 		// if could not split with preferred duration, try without this constraint
-		return splitPreciseDuration(durationToSplit, max);
+		return splitPreciseDuration(timeToSplit, maxTime, factory);
 	}
 	
-	// objective: split input precise duration D into a list of precise durations di such as:
-	// - sum of all di == D
-	// - each di corresponds to a valid note duration
+	// objective: split input precise duration D into a list of durations di such as:
+	// - sum of precise durations of all di == D
 	// - each di is less than or equal to specified max
 	// - for one time division, all di are identical. E.g. [3*eighths triplet] instead  of [1 quarter triplet + 1 eighth triplet]
 	// - di with highest denominator of time division appear first in returned list (i.e. quintuplets before triplets)
 	//
 	// if not all criteria can be fulfilled, null is returned
-	public static List<Long> splitPreciseDuration(long durationToSplit, long max) {
-		long D = durationToSplit;
-		List<Long> list = new ArrayList<Long>();
+	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory) {
+		long D = timeToSplit;
+		List<TGDuration> list = new ArrayList<TGDuration>();
 		
 		// look for all division types, starting with longest divisions
 		for (TGDivisionType dt : divisionTypes) {
@@ -169,7 +169,9 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 					nBase /= 2;
 				}
 				for (int i=0; i<nBase; i++) {
-					list.add(n* base);
+					TGDuration duration = factory.newDuration();
+					duration.setPreciseValue(n* base);
+					list.add(duration);
 				}
 				D -= toSubstract;
 			}

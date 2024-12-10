@@ -204,44 +204,43 @@ public class TestTGDuration {
 		//   1 * thirty-second 9:8 = (1/32) * (8/9) = 1/36
 		//   remains 16/9 - 1/36 = 7/4
 		//   7 quarters 1:1 = 7 * 1/4
-		List<Long> list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*16/9, 2*TGDuration.WHOLE_PRECISE_DURATION);
+		List<TGDuration> list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*16/9, 2*TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertEquals(8, list.size());
-		assertTrue(list.get(0) == TGDuration.WHOLE_PRECISE_DURATION/36);
+		assertEquals(list.get(0).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/36);
 		for (int i=1; i<8; i++) {
-			assertTrue(list.get(i) == TGDuration.WHOLE_PRECISE_DURATION/4);
+			assertEquals(list.get(i).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
 		}
 		
 
-		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*13/15, TGDuration.WHOLE_PRECISE_DURATION);
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*13/15, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
 		long sum = 0;
 		for(int i=0; i<list.size(); i++) {
-			sum += list.get(i);
-			duration.setPreciseValue(list.get(i));	// to check selected duration is valid
+			sum += list.get(i).getPreciseTime();
 		}
 		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION*13/15);
 		
 		
 		// test max
-		list = TGDuration.splitPreciseDuration(3*TGDuration.WHOLE_PRECISE_DURATION, TGDuration.WHOLE_PRECISE_DURATION);
+		list = TGDuration.splitPreciseDuration(3*TGDuration.WHOLE_PRECISE_DURATION, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
 		assertEquals(3, list.size());
-		assertTrue(list.get(0) == TGDuration.WHOLE_PRECISE_DURATION);
-		assertTrue(list.get(1) == TGDuration.WHOLE_PRECISE_DURATION);
-		assertTrue(list.get(2) == TGDuration.WHOLE_PRECISE_DURATION);
+		assertEquals(list.get(0).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION);
+		assertEquals(list.get(1).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION);
+		assertEquals(list.get(2).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION);
 		
 		// something impossible to split
-		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/(64*3), TGDuration.WHOLE_PRECISE_DURATION);
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/(64*3), TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNull(list);
-		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/17, TGDuration.WHOLE_PRECISE_DURATION);
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/17, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNull(list);
 		
 		// trivial case
-		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*3/4, TGDuration.WHOLE_PRECISE_DURATION/4);
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*3/4, TGDuration.WHOLE_PRECISE_DURATION/4, factory);
 		assertEquals(3, list.size());
-		assertTrue(list.get(0) == TGDuration.WHOLE_PRECISE_DURATION/4);
-		assertTrue(list.get(1) == TGDuration.WHOLE_PRECISE_DURATION/4);
-		assertTrue(list.get(2) == TGDuration.WHOLE_PRECISE_DURATION/4);
+		assertEquals(list.get(0).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
+		assertEquals(list.get(1).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
+		assertEquals(list.get(2).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
 		
 	}
 }
