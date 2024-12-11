@@ -44,7 +44,8 @@
 		<module>../../../common/TuxGuitar-pdf</module>
 		<module>../../TuxGuitar-pdf-ui</module>
 		<module>../../../common/TuxGuitar-ptb</module>
-		<module>../../TuxGuitar-tef</module>
+		<module>../../TuxGuitar-tef2</module>
+		<module>../../TuxGuitar-tef3</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
 		<module>../../TuxGuitar-synth</module>
@@ -293,8 +294,14 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>tuxguitar-tef</artifactId>
-									<destFileName>tuxguitar-tef.jar</destFileName>
+									<artifactId>tuxguitar-tef2</artifactId>
+									<destFileName>tuxguitar-tef2.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-tef3</artifactId>
+									<destFileName>tuxguitar-tef3.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

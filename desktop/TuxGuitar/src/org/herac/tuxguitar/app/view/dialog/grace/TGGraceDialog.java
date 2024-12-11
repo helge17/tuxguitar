@@ -162,17 +162,17 @@ public class TGGraceDialog {
 			
 			this.durationButton1 = uiFactory.createRadioButton(durationGroup);
 			this.durationButton1.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
-			this.durationButton1.setSelected(duration == 1);
+			this.durationButton1.setSelected(duration == TGEffectGrace.DURATION_SIXTY_FOURTH);
 			durationLayout.set(this.durationButton1, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			this.durationButton2 = uiFactory.createRadioButton(durationGroup);
 			this.durationButton2.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
-			this.durationButton2.setSelected(duration == 2);
+			this.durationButton2.setSelected(duration == TGEffectGrace.DURATION_THIRTY_SECOND);
 			durationLayout.set(this.durationButton2, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			this.durationButton3 = uiFactory.createRadioButton(durationGroup);
 			this.durationButton3.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
-			this.durationButton3.setSelected(duration == 3);
+			this.durationButton3.setSelected(duration == TGEffectGrace.DURATION_SIXTEENTH);
 			durationLayout.set(this.durationButton3, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 			
 			//---------------------------------------------------
@@ -305,11 +305,11 @@ public class TGGraceDialog {
 		
 		//duration
 		if(this.durationButton1.isSelected()){
-			effect.setDuration(1);
+			effect.setDuration(TGEffectGrace.DURATION_SIXTY_FOURTH);
 		}else if(this.durationButton2.isSelected()){
-			effect.setDuration(2);
+			effect.setDuration(TGEffectGrace.DURATION_THIRTY_SECOND);
 		}else if(this.durationButton3.isSelected()){
-			effect.setDuration(3);
+			effect.setDuration(TGEffectGrace.DURATION_SIXTEENTH);
 		}
 		//velocity
 		if(this.pppButton.isSelected()){
