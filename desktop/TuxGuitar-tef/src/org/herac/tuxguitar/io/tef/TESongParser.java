@@ -157,19 +157,64 @@ public class TESongParser {
 	
 	private TGDuration getDuration(int duration){
 		TGDuration tgDuration = this.manager.getFactory().newDuration();
+
+		// Filler numbers: 20, 23, 26, 29 = Sixteenth Note. No Dot.
+		// Filler numbers: 21, 24, 27, 30 = Sixtyfourth Note. No Dot.
+		// 31 = Dotted whole note.
+		switch (duration) {
+			case 20: // intentional fall-through
+			case 23: // intentional fall-through
+			case 26: // intentional fall-through
+			case 29:
+				tgDuration.setValue(TGDuration.SIXTEENTH);
+				return tgDuration;
+
+			case 21: // intentional fall-through
+			case 24: // intentional fall-through
+			case 27: // intentional fall-through
+			case 30:
+				tgDuration.setValue(TGDuration.SIXTY_FOURTH);
+				return tgDuration;
+
+			case 31:
+				tgDuration.setValue(TGDuration.WHOLE);
+				tgDuration.setDotted(true);
+				return tgDuration;
+
+			default:
+				break;
+		}
 		
+		int durationOfSixtyFourthNote = 18;
+		boolean isDoubleDotted = duration > durationOfSixtyFourthNote;
+
+		if (isDoubleDotted) {
+			duration -= durationOfSixtyFourthNote;
+			tgDuration.setDoubleDotted(true);
+
+			// 19 = Half Double Dotted
+			// 22 = Quarter Double Dotted
+			// 25 = Eighth Double Dotted
+			// 28 = Sixteenth Double Dotted
+		}
+
 		int value = TGDuration.WHOLE;
+
 		for(int i = 0; i <  ( duration / 3); i ++){
 			value = (value * 2);
 		}
 		if( (duration % 3) == 1){
 			value = (value * 2);
-			tgDuration.setDotted(true);
+
+			if (!isDoubleDotted) {
+				tgDuration.setDotted(true);
+			}
 		}
 		else if( (duration % 3) == 2){
 			tgDuration.getDivision().setEnters(3);
 			tgDuration.getDivision().setTimes(2);
 		}
+		
 		tgDuration.setValue(value);
 		
 		return tgDuration;
@@ -199,21 +244,21 @@ public class TESongParser {
 
 	private int getVelocityFromDynamic(int dynamic) {
 		switch (dynamic) {
-			case 0b0000: // 0
+			case 0:
 				return TGVelocities.FORTE_FORTISSIMO;
-			case 0b0010: // 2
+			case 1:
 				return TGVelocities.FORTISSIMO;
-			case 0b0100: // 4
+			case 2:
 				return TGVelocities.FORTE;
-			case 0b0110: // 6
+			case 3:
 				return TGVelocities.MEZZO_FORTE;
-			case 0b1000: // 8
+			case 4:
 				return TGVelocities.MEZZO_PIANO;
-			case 0b1010: // 10
+			case 5:
 				return TGVelocities.PIANO;
-			case 0b1100: // 12
+			case 6:
 				return TGVelocities.PIANISSIMO;
-			case 0b1110: // 16
+			case 7:
 				return TGVelocities.PIANO_PIANISSIMO;
 			default: 
 				return TGVelocities.DEFAULT;

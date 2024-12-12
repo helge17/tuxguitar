@@ -224,8 +224,8 @@ public class TEInputStream {
 			position -= tsMove;
 			
 			if( ((data[2] & 0xff) & 0x1f) > 0  && ((data[2] & 0xff) & 0x1f) <= 25 ){
-				int duration = (data[3] & 0xf);
-				int dynamic =  ((data[3] & 0xff) >> 4);
+				int duration = (data[3] & 0x1f);
+				int dynamic =  ((data[3] & 0xff) >> 5);
 				int effect1 = data[4];
 				int effect2 = data[5];
 				int fret = (((data[2] & 0xff) & 0x1f) - 1);
