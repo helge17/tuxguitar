@@ -23,6 +23,10 @@ import org.herac.tuxguitar.ui.widget.UISpinner;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGPrintSettingsDialog {
+	
+	// zoom: percentage
+	private final static int MIN_ZOOM_VALUE = 50;
+	private final static int MAX_ZOOM_VALUE = 200;
 
 	public static final String ATTRIBUTE_HANDLER = TGPrintSettingsHandler.class.getName();
 	
@@ -121,42 +125,52 @@ public class TGPrintSettingsDialog {
 			}
 		});
 		
-		//------------------CHECK OPTIONS--------------------
+		//------------------OPTIONS--------------------
 		UITableLayout optionsLayout = new UITableLayout();
 		UILegendPanel options = uiFactory.createLegendPanel(dialog);
 		options.setLayout(optionsLayout);
 		options.setText(TuxGuitar.getProperty("options"));
 		dialogLayout.set(options, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 300f, null, null);
 		
+		UILabel zoomLabel = uiFactory.createLabel(options);
+		zoomLabel.setText(TuxGuitar.getProperty("print.zoom") + ":");
+		optionsLayout.set(zoomLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
+		
+		final UISpinner zoomSpinner = uiFactory.createSpinner(options);
+		zoomSpinner.setMinimum(MIN_ZOOM_VALUE);
+		zoomSpinner.setMaximum(MAX_ZOOM_VALUE);
+		zoomSpinner.setValue(100);
+		optionsLayout.set(zoomSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 60f, null, null);
+		
 		final UICheckBox tablatureEnabled = uiFactory.createCheckBox(options);
 		tablatureEnabled.setText(TuxGuitar.getProperty("export.tablature-enabled"));
 		tablatureEnabled.setSelected(true);
-		optionsLayout.set(tablatureEnabled, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		optionsLayout.set(tablatureEnabled, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UICheckBox scoreEnabled = uiFactory.createCheckBox(options);
 		scoreEnabled.setText(TuxGuitar.getProperty("export.score-enabled"));
 		scoreEnabled.setSelected(true);
-		optionsLayout.set(scoreEnabled, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		optionsLayout.set(scoreEnabled, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UICheckBox chordNameEnabled = uiFactory.createCheckBox(options);
 		chordNameEnabled.setText(TuxGuitar.getProperty("export.chord-name-enabled"));
 		chordNameEnabled.setSelected(true);
-		optionsLayout.set(chordNameEnabled, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		optionsLayout.set(chordNameEnabled, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UICheckBox chordDiagramEnabled = uiFactory.createCheckBox(options);
 		chordDiagramEnabled.setText(TuxGuitar.getProperty("export.chord-diagram-enabled"));
 		chordDiagramEnabled.setSelected(true);
-		optionsLayout.set(chordDiagramEnabled, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		optionsLayout.set(chordDiagramEnabled, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UICheckBox blackAndWhite = uiFactory.createCheckBox(options);
 		blackAndWhite.setText(TuxGuitar.getProperty("export.black-and-white"));
 		blackAndWhite.setSelected(true);
-		optionsLayout.set(blackAndWhite, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		optionsLayout.set(blackAndWhite, 6, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		
 		final UICheckBox compactMode = uiFactory.createCheckBox(options);
 		compactMode.setText(TuxGuitar.getProperty("export.compact"));
 		compactMode.setSelected(true);
-		optionsLayout.set(compactMode, 6, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		optionsLayout.set(compactMode, 7, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		
 		tablatureEnabled.addSelectionListener(new UISelectionListener() {
@@ -200,10 +214,11 @@ public class TGPrintSettingsDialog {
 				printStyles.setFromMeasure(fromSpinner.getValue());
 				printStyles.setToMeasure(toSpinner.getValue());
 				printStyles.setStyle(style);
+				int zoom = zoomSpinner.getValue();
 				
 				dialog.dispose();
 				
-				handler.updatePrintSettings(printStyles);
+				handler.updatePrintSettings(printStyles, zoom);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);

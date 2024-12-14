@@ -647,9 +647,9 @@ echo "### Host: "`hostname -s`" ################################################
 mkdir -p $DIST_DIR
 
 # Check and prepare source code
-[ $TGVERSION == $TGSRCVER ] && release_checks_before_prepare_source
+[ `uname` == Linux ] && [ "$TGVERSION" == "$TGSRCVER" ] && release_checks_before_prepare_source
 prepare_source
-[ $TGVERSION == $TGSRCVER ] && release_checks_after_prepare_source
+[ `uname` == Linux ] && [ "$TGVERSION" == "$TGSRCVER" ] && release_checks_after_prepare_source
 
 # First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
 

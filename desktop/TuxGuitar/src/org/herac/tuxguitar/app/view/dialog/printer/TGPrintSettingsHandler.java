@@ -4,5 +4,5 @@ import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 
 public interface TGPrintSettingsHandler {
 
-	void updatePrintSettings(TGPrintSettings settings);
+	void updatePrintSettings(TGPrintSettings settings, int zoomValue);
 }

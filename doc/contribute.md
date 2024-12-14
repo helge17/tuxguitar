@@ -99,7 +99,7 @@ Then you should be able to build and run application with dedicated buttons in t
 
 TuxGuitar is available in different flavors:
 
-- platform: FreeBSD, Linux (.tar.gz), Linux (.deb), MacOS, Windows (standalone version), Windows (installable version);
+- platform: FreeBSD, Linux (.tar.gz), Linux (.deb), macOS, Windows (standalone version), Windows (installable version);
 - UI framework: SWT, JavaFX.
 
 Note: only the SWT variants are included in the official releases, JavaFX variants support is not guaranteed.

@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>First steps - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.5</p>
+  </div>
+  <div class="title">
+    <h1>The first steps</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><strong>The first steps</strong></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <h2>Creating a new file</h2>
+    <p>The first thing you need to do is make sure you have a brand-new file to work on. When you launch TuxGuitar, you should already have a blank tablature document ready for editing. However, if you need to start over with another blank document, all you have to do is click the <strong>New</strong> button.</p>
+    <img src="images/new_file.png" />
+    <p>Wow. That was easy. Now that we have blank document, we just need to set up our first track. Then the real fun can begin.</p>
+    <h2>Preparing your first track for playback</h2>
+    <p>At the bottom of the window you should see the main volume control(s) and the track table as shown below.</p>
+    <img src="images/song_table.png" />
+    <p>The track table is a very useful yet compact information center which provides quick access to many of the most important aspects of your song. There is a lot to be said about the track list, but we will not dig too deep into it right now, lest we should confuse newcomers. So, for now, let it suffice to say that the track window will help us stay organized while we edit our tablature.</p>
+    <p>As you have probably noticed, there is already one track ready for you when you start a new tab document. You can just think of tracks as instruments. If you have a song with two guitars and one bassline that need transcribing, you will need three tracks. Fairly simple concept. It gets better though: Each track will play back a sound when you play the file in TuxGuitar. Now, let’s get into setting this up: Double-click anywhere on "Track 1" or "Steel String Guitar 1" to open the track properties dialog, as seen below.</p>
+    <h2 id="track_properties">Using the Track Properties Dialog</h2>
+    <p>The Properties dialog is where we will go to setup how we want each track to playback.</p>
+    <img src="images/track_properties.png" />
+    <h3>Name of the track</h3>
+    <p>Whatever you type in here is what will show up in the track list we looked at earlier. As you can see, we have named our track "Rhythm Guitar", but you can name it anything you like. You can also set the color the track will display in the track list.</p>
+    <h3>Instrument settings</h3>
+    <p>From the Properties dialog you can open the Instruments settings shown below:</p>
+    <img src="images/track_properties_instruments.png" />
+    <p>Here you set up the sound that your tracks will play back from your soundbank. TuxGuitar comes with its own soundbank called "Magic Sound Font 2.0", but you can use others as well. Most soundbanks have a plethora of sounds which go far beyond just guitars, so be as creative as you want.</p>
+    <p>You can check <strong>Percussion Channel</strong> to have it play drum sounds if you wish to include them in the tabs. Furthermore, you can adjust the volume and balance of the instruments or add effects like reverb and chorus.</p>
+    <h3>Tuning</h3>
+    <p>This one is pretty self-explanatory. You can select your stringed instrument, the number of strings on it (i.e., 4 if you’re a bass player, 3 if you’re in The Presidents of The United States of America) and the tuning of the instrument, in case you use alternate tunings. It is important to make sure you have your tuning correct, otherwise the actual score staff of your tabs will be inaccurate, and nobody wants that.</p>
+    <img src="images/track_properties_tuning.png" />
+    <p>Once you have everything set to your liking, close the Properties dialogs. Now, if you look at your track list again, you will see that your changes have taken affect. And with that, you are ready to start editing tabs with sound.</p>
+  </section>
+</body>
+</html>
