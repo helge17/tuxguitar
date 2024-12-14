@@ -25,6 +25,10 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVelocities;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
+import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 
 public class TESongParser {
 	
@@ -153,19 +157,64 @@ public class TESongParser {
 	
 	private TGDuration getDuration(int duration){
 		TGDuration tgDuration = this.manager.getFactory().newDuration();
+
+		// Filler numbers: 20, 23, 26, 29 = Sixteenth Note. No Dot.
+		// Filler numbers: 21, 24, 27, 30 = Sixtyfourth Note. No Dot.
+		// 31 = Dotted whole note.
+		switch (duration) {
+			case 20: // intentional fall-through
+			case 23: // intentional fall-through
+			case 26: // intentional fall-through
+			case 29:
+				tgDuration.setValue(TGDuration.SIXTEENTH);
+				return tgDuration;
+
+			case 21: // intentional fall-through
+			case 24: // intentional fall-through
+			case 27: // intentional fall-through
+			case 30:
+				tgDuration.setValue(TGDuration.SIXTY_FOURTH);
+				return tgDuration;
+
+			case 31:
+				tgDuration.setValue(TGDuration.WHOLE);
+				tgDuration.setDotted(true);
+				return tgDuration;
+
+			default:
+				break;
+		}
 		
+		int durationOfSixtyFourthNote = 18;
+		boolean isDoubleDotted = duration > durationOfSixtyFourthNote;
+
+		if (isDoubleDotted) {
+			duration -= durationOfSixtyFourthNote;
+			tgDuration.setDoubleDotted(true);
+
+			// 19 = Half Double Dotted
+			// 22 = Quarter Double Dotted
+			// 25 = Eighth Double Dotted
+			// 28 = Sixteenth Double Dotted
+		}
+
 		int value = TGDuration.WHOLE;
+
 		for(int i = 0; i <  ( duration / 3); i ++){
 			value = (value * 2);
 		}
 		if( (duration % 3) == 1){
 			value = (value * 2);
-			tgDuration.setDotted(true);
+
+			if (!isDoubleDotted) {
+				tgDuration.setDotted(true);
+			}
 		}
 		else if( (duration % 3) == 2){
 			tgDuration.getDivision().setEnters(3);
 			tgDuration.getDivision().setTimes(2);
 		}
+		
 		tgDuration.setValue(value);
 		
 		return tgDuration;
@@ -183,11 +232,197 @@ public class TESongParser {
 		TGNote tgNote = this.manager.getFactory().newNote();
 		tgNote.setString( string + 1 );
 		tgNote.setValue( value );
+		tgNote.setVelocity( getVelocityFromDynamic( note.getDynamic() ) );
+
+		this.applyTechniques(note, tgNote);
 		
 		TGDuration tgDuration = getDuration( note.getDuration() );
 		TGBeat tgBeat = getBeat(tgMeasure, getStart(tgDuration, tgMeasure, note.getPosition()));
 		tgBeat.getVoice(0).getDuration().copyFrom(tgDuration);
 		tgBeat.getVoice(0).addNote(tgNote);
+	}
+
+	private int getVelocityFromDynamic(int dynamic) {
+		switch (dynamic) {
+			case 0:
+				return TGVelocities.FORTE_FORTISSIMO;
+			case 1:
+				return TGVelocities.FORTISSIMO;
+			case 2:
+				return TGVelocities.FORTE;
+			case 3:
+				return TGVelocities.MEZZO_FORTE;
+			case 4:
+				return TGVelocities.MEZZO_PIANO;
+			case 5:
+				return TGVelocities.PIANO;
+			case 6:
+				return TGVelocities.PIANISSIMO;
+			case 7:
+				return TGVelocities.PIANO_PIANISSIMO;
+			default: 
+				return TGVelocities.DEFAULT;
+		}
+	}
+
+	private void applyTechniques(TEComponentNote teNote, TGNote tgNote) {
+		switch (teNote.getEffect1()) {
+			case 1:
+				tgNote.getEffect().setHammer(true);
+				break;
+			case 3:
+				tgNote.getEffect().setSlide(true);
+				break;
+			case 4: // Choke
+				break;
+			case 5: // Brush
+				break;
+			case 6:
+			{
+				TGEffectHarmonic harmonic = this.manager.getFactory().newEffectHarmonic();
+				harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
+				tgNote.getEffect().setHarmonic(harmonic);
+				break;
+			}
+			case 7:
+			{
+				TGEffectHarmonic harmonic = this.manager.getFactory().newEffectHarmonic();
+				harmonic.setType(TGEffectHarmonic.TYPE_ARTIFICIAL);
+				tgNote.getEffect().setHarmonic(harmonic);
+				break;
+			}
+			case 8:
+				tgNote.getEffect().setPalmMute(true);
+				break;
+			case 9:
+				tgNote.getEffect().setTapping(true);
+				break;
+			case 10:
+				tgNote.getEffect().setVibrato(true);
+				break;
+			case 11:
+			{
+				TGEffectTremoloPicking tremPicking = this.manager.getFactory().newEffectTremoloPicking();
+				// No duration information in the TEF file.
+				tgNote.getEffect().setTremoloPicking(tremPicking);
+				break;
+			}
+			case 12:
+			{
+				TGEffectBend bend = this.manager.getFactory().newEffectBend();
+				bend.addPoint(0, 0);
+				bend.addPoint(6, 2);
+				bend.addPoint(12, 2);
+				tgNote.getEffect().setBend(bend);
+				break;
+			}
+			case 13:
+			{
+				TGEffectBend bend = this.manager.getFactory().newEffectBend();
+				bend.addPoint(0, 0);
+				bend.addPoint(3, 2);
+				bend.addPoint(6, 2);
+				bend.addPoint(9, 0);
+				bend.addPoint(12, 0);
+				tgNote.getEffect().setBend(bend);
+				break;
+			}
+			case 14: // Roll / Arpeggio.
+				break;
+			case 15:
+				tgNote.getEffect().setDeadNote(true);
+				break;
+			default:
+				break;
+		}
+
+		int lowerFourBitsEffect2 = teNote.getEffect2() & 0x0F;
+		int upperFourBitsEffect2 = (teNote.getEffect2() & 0xFF) >> 4;
+		switch (lowerFourBitsEffect2) {
+			case 1:
+				tgNote.getEffect().setLetRing(true);
+				break;
+			case 2:
+				tgNote.getEffect().setSlapping(true);
+				break;
+			case 3:  // Rasgueado
+				break;
+			case 4:
+				tgNote.getEffect().setGhostNote(true);
+				break;
+			case 5: // Tremolo Up or down
+				break;
+			case 6: // Tremolo Dive-Return
+				break;
+			case 7:
+				tgNote.getEffect().setStaccato(true);
+				break;
+			case 8:
+				tgNote.getEffect().setFadeIn(true);
+				break;
+			case 9: // Fade-out
+				break;
+			default:
+				break;
+		}
+
+		// Rasgueado. Has specific handling for second byte effect.
+		if (lowerFourBitsEffect2 == 3) {
+			switch (upperFourBitsEffect2) {
+				case 0: // Four Strokes
+					break;
+				case 1: // Five Strokes
+					break;
+				case 2: // Triplet
+					break;
+				case 5: // Double Triplet
+					break;
+				case 11: // Variation
+					break;
+				default:
+					break;
+			}
+
+		} else {
+			switch (upperFourBitsEffect2) {
+				case 1: // Hammer-on
+				case 2: // Pull-off
+					tgNote.getEffect().setHammer(true);
+					break;
+				case 3: // Roll / Arpeggio
+					break;
+				case 5: // Brush
+					break;
+				case 6:
+				{
+					TGEffectHarmonic harmonic = this.manager.getFactory().newEffectHarmonic();
+					harmonic.setType(TGEffectHarmonic.TYPE_NATURAL);
+					tgNote.getEffect().setHarmonic(harmonic);
+					break;
+				}
+				case 7:
+				{
+					TGEffectHarmonic harmonic = this.manager.getFactory().newEffectHarmonic();
+					harmonic.setType(TGEffectHarmonic.TYPE_ARTIFICIAL);
+					tgNote.getEffect().setHarmonic(harmonic);
+					break;
+				}
+				case 8:
+					tgNote.getEffect().setLetRing(true);
+					break;
+				case 9:
+					tgNote.getEffect().setGhostNote(true);
+					break;
+				case 10:
+					tgNote.getEffect().setDeadNote(true);
+					break;
+				case 11: // Variation
+					break;
+				default:
+					break;
+			}
+		}
+		
 	}
 	
 	private void addChord(TEChord[] chords,TEComponentChord component,TGTrack tgTrack,TGMeasure tgMeasure){
