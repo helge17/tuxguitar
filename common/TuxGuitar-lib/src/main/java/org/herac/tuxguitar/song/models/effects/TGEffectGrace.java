@@ -13,6 +13,12 @@ public abstract class TGEffectGrace {
 	public static final int TRANSITION_BEND = 2;
 	
 	public static final int TRANSITION_HAMMER = 3;
+
+	public static final int DURATION_SIXTY_FOURTH = 1;
+
+	public static final int DURATION_THIRTY_SECOND = 2;
+
+	public static final int DURATION_SIXTEENTH = 3;
 	
 	private int fret;
 	private int duration;
