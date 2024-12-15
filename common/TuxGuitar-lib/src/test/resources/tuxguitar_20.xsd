@@ -286,7 +286,13 @@
 
   <xs:complexType name="trillType">
     <xs:attribute name="fret" type="uint8" use="required"/>
-    <xs:attribute name="duration" type="durationValueType" use="required"/>
+    <xs:attribute name="duration" use="required">
+      <xs:simpleType>
+        <xs:restriction base="durationValueType">
+          <xs:minInclusive value = "4"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="tremoloPickingType">
