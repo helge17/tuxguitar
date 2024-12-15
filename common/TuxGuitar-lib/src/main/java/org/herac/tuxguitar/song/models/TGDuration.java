@@ -19,12 +19,15 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	/**
 	 * [ES] tiempo por defecto de la Negra.<br>
 	 * [EN] The number of fractions a quarter note can be divided into.
-	 *      This value should be equal to the Lowest Common Denominator (LCD)
-	 *      of all note durations including all supported tuplets.
+	 *      unit for imprecise time duration (legacy)
+	 *      exposed to rounding errors for some time divisions (tuplets)
 	 */
 	public static final long QUARTER_TIME = 960;
-	// unit for precise duration = lcm of all possible durations
-	// to make sure computation of durations is performed on integers without rounding issues
+	/**
+	 * the number of fractions a whole note can be divided into, without any rounding issue
+	 * unit for precise duration = least common multiple of all possible time divisions (fractions of time)
+	 * to make sure computation of durations is performed on integers for all supported tuplets
+	 */
 	public static long WHOLE_PRECISE_DURATION;
 	/**
 	 * Possible duration values, as fractions of a whole

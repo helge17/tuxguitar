@@ -195,8 +195,6 @@ public class TestTGDuration {
 
 	@Test
 	public void testSplitDuration() {
-		TGDuration duration = factory.newDuration();
-		
 		// use case: 1 measures at 8/4, total duration = 2 * whole
 		// instantiate 1 note: quarter with time division 9:8, duration = 1/4 * 8/9 = 2/9
 		// split the remaining space (=16/9) into rests
