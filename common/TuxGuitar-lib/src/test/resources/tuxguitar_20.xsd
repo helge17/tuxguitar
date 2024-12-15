@@ -143,8 +143,6 @@
       <xs:element name="tremolo" type="uint8"/>
       <xs:element name="name" type="xs:string"/>
       <xs:element name="TGChannelParameter" type="keyValuePair" minOccurs ="0" maxOccurs="unbounded"/>
-      <xs:element name="channelExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -186,8 +184,6 @@
       <xs:element name="marker" type="markerType" minOccurs="0"/>
       <xs:element name="tripletFeel" type="tripletFeelType" minOccurs="0"/>
       <xs:element name="lineBreak" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="measureHeaderExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -215,8 +211,6 @@
         </xs:complexType>
       </xs:element>
       <xs:element name="note" type="noteType" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="voiceExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
     <xs:attribute name="direction">
       <xs:simpleType>
@@ -322,8 +316,6 @@
       <xs:element name="trill" type="trillType" minOccurs="0"/>
       <xs:element name="tremoloPicking" type="tremoloPickingType" minOccurs="0"/>
       <xs:element name="alternativeEnharmonic" minOccurs="0"/>
-      <xs:element name="noteExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
     <xs:attribute name="value" type="uint8" use="required"/>
     <xs:attribute name="velocity" type="uint8"/>
@@ -362,8 +354,6 @@
       <xs:element name="TGString" type="uint8" maxOccurs="unbounded"/>
       <xs:element name="TGLyric" type="lyricType" minOccurs="0"/>
       <xs:element name="TGMeasure" type="measureType" maxOccurs="unbounded"/>
-      <xs:element name="trackExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
     <xs:attribute name="maxFret" type="xs:positiveInteger"/>
   </xs:complexType>
@@ -382,8 +372,6 @@
       </xs:element>
       <xs:element name="keySignature" type="keySignatureType" minOccurs="0"/>
       <xs:element name="TGBeat" type="beatType" minOccurs="1" maxOccurs="unbounded"/>
-      <xs:element name="measureExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -410,15 +398,11 @@
             <xs:element name="name" type="xs:string"/>
             <xs:element name="firstFret" type="uint8"/>
             <xs:element name="string" type="chordStringType" maxOccurs="unbounded"/>
-            <xs:element name="chordExtension"/>
-            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="text" type="xs:string" minOccurs="0"/>
       <xs:element name="voice" type="voiceType" maxOccurs="unbounded"/>
-      <xs:element name="beatExtension"/>
-      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -441,8 +425,6 @@
               <xs:element name="TGChannel" type="channelType" minOccurs ="1" maxOccurs="16"/>
               <xs:element name="TGMeasureHeader" type="measureHeaderType" minOccurs ="1" maxOccurs="unbounded"/>
               <xs:element name="TGTrack" type="trackType" minOccurs ="1" maxOccurs="unbounded"/>
-              <xs:element name="songExtension"/>
-              <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
