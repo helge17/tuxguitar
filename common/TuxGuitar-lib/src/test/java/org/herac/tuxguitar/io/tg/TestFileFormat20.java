@@ -74,10 +74,12 @@ public class TestFileFormat20 {
 	}
 	
 	@Test
-	public void testXmlCanBeExtended() throws FileNotFoundException {
-		assertTrue(validatesSchema("test_extended_21.xml", false));
-		assertTrue(validatesSchema("Untitled_extended_21.xml", false));
+	public void testXmlCanBeExtended() throws IOException {
+		TGSongReaderHandle handle = readSong("Untitled_extended_21.xml", false);
+		assertNotNull(handle.getSong());
 		assertTrue(detectsFormat("Untitled_extended_21.tg"));
+		handle = readSong("Untitled_extended_21.tg", true);
+		assertNotNull(handle.getSong());
 	}
 	
 	@Test
