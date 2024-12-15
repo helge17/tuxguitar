@@ -2,6 +2,7 @@ package org.herac.tuxguitar.song.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -189,10 +190,36 @@ public class TGTrackManager {
 		List<TGMeasure> measures = getMeasuresBeforeEnd(track,measureStart);
 		for( int i = 0 ; i < measures.size() ; i ++ ){
 			TGMeasure measure = (TGMeasure)measures.get(i);
-			if( moveStart + theMove < moveStart ){
-				getSongManager().getMeasureManager().removeBeatsBetween(measure, moveStart, (moveStart + Math.abs(theMove)));
+			HashMap<Long, List<TGNote>> deletedNotesMap = null;
+
+			if( theMove < 0 ){
+				deletedNotesMap = new HashMap<>();
+				List<TGBeat> beatsToRemove = getSongManager().getMeasureManager().getBeatsBeetween(measure.getBeats(), moveStart, moveStart + Math.abs(theMove));
+
+				for (TGBeat beat : beatsToRemove) {
+					List<TGNote> notesOnBeat = getSongManager().getMeasureManager().getNotes(beat);
+					deletedNotesMap.put(beat.getStart() + theMove, notesOnBeat);
+					getSongManager().getMeasureManager().removeBeat(beat);
+				}
 			}
+
 			getSongManager().getMeasureManager().moveBeats(measure, moveStart, theMove);
+
+			if (deletedNotesMap != null) {
+				List<TGBeat> newBeats = getSongManager().getMeasureManager().getBeatsBeetween(measure.getBeats(), moveStart + theMove, moveStart);
+				for (TGBeat beat : newBeats) {
+					List<TGNote> removedNotesOnBeat = deletedNotesMap.get(beat.getStart());
+					if (removedNotesOnBeat != null) {
+						getSongManager().getMeasureManager().cleanBeatNotes(beat); // Remove any notes that were on this beat prior to the left move.
+
+						for (TGNote note : removedNotesOnBeat) {
+							int voiceIndex = note.getVoice().getIndex();
+							TGVoice voice = beat.getVoice(voiceIndex);
+							voice.addNote(note);
+						}
+					}
+				}
+			}
 		}
 		for( int i = 0 ; i < measures.size() ; i ++ ){
 			TGMeasure measure = (TGMeasure)measures.get(i);
