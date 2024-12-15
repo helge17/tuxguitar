@@ -725,11 +725,11 @@ public class LilypondOutputStream {
 				TGString string = measure.getTrack().getString(note.getString());
 				TGEffectGrace grace = note.getEffect().getGrace();
 
-				if( duration < TGDuration.SIXTY_FOURTH && grace.getDuration() == 1 ){
+				if( duration < TGDuration.SIXTY_FOURTH && grace.getDuration() == TGEffectGrace.DURATION_SIXTY_FOURTH ){
 					duration = TGDuration.SIXTY_FOURTH;
-				}else if( duration < TGDuration.THIRTY_SECOND && grace.getDuration() == 2 ){
+				}else if( duration < TGDuration.THIRTY_SECOND && grace.getDuration() == TGEffectGrace.DURATION_THIRTY_SECOND ){
 					duration = TGDuration.THIRTY_SECOND;
-				}else if( duration < TGDuration.SIXTEENTH && grace.getDuration() == 3 ){
+				}else if( duration < TGDuration.SIXTEENTH && grace.getDuration() == TGEffectGrace.DURATION_SIXTEENTH ){
 					duration = TGDuration.SIXTEENTH;
 				}
 				if( i > 0 ){

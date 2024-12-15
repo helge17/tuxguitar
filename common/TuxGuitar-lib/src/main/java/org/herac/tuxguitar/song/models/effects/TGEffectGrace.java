@@ -14,10 +14,10 @@ public abstract class TGEffectGrace {
 	
 	public static final int TRANSITION_HAMMER = 3;
 
+	// grace duration: do NOT change these values
+	// this encoding is implicitly used by several file formats, including external (GP)
 	public static final int DURATION_SIXTY_FOURTH = 1;
-
 	public static final int DURATION_THIRTY_SECOND = 2;
-
 	public static final int DURATION_SIXTEENTH = 3;
 	
 	private int fret;
@@ -85,8 +85,14 @@ public abstract class TGEffectGrace {
 	}
 	
 	public int getDurationTime(){
-		//return (int)(((float)TGDuration.QUARTER_TIME / 16.00 ) * (float)getDuration());
-		return (int)((TGDuration.QUARTER_TIME / 16.00 ) * getDuration());
+		if (getDuration() == DURATION_SIXTEENTH) {
+			return (int)(TGDuration.QUARTER_TIME / 4);
+		}
+		if (getDuration() == DURATION_THIRTY_SECOND) {
+			return (int)(TGDuration.QUARTER_TIME / 8);
+		}
+		// default: 64th
+		return (int)(TGDuration.QUARTER_TIME / 16);
 	}
 	
 	public TGEffectGrace clone(TGFactory factory){
