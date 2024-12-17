@@ -130,12 +130,9 @@ public class MidiSequenceParser {
 		for (int i = 0; i < this.song.countTracks(); i++) {
 			existsSoloTrack |= this.song.getTrack(i).isSolo();
 		}
-		
 		for (int i = 0; i < this.song.countTracks(); i++) {
 			TGTrack track = this.song.getTrack(i);
-			if (!track.isMute() && (!existsSoloTrack || track.isSolo())) {
-				addTrack(helper, track);
-			}
+			addTrack(helper, track, !track.isMute() && (!existsSoloTrack || track.isSolo()));
 		}
 		sequence.notifyFinish();
 	}
@@ -153,7 +150,7 @@ public class MidiSequenceParser {
 		}
 	}
 	
-	private void addTrack(MidiSequenceHelper sh, TGTrack track) {
+	private void addTrack(MidiSequenceHelper sh, TGTrack track, boolean shallPlay) {
 		TGChannel tgChannel = this.songManager.getChannel(this.song, track.getChannelId() );
 		if( tgChannel != null ){
 			TGMeasure previous = null;
@@ -171,9 +168,10 @@ public class MidiSequenceParser {
 					addTempo(sh,measure, previous, mh.getMove());
 					addMetronome(sh,measure.getHeader(), mh.getMove() );
 				}
-				//agrego los pulsos
-				addBeats( sh, tgChannel, track, measure, mIndex, mh.getMove() );
-				
+				if (shallPlay) {
+					//agrego los pulsos
+					addBeats( sh, tgChannel, track, measure, mIndex, mh.getMove() );
+				}
 				previous = measure;
 			}
 		}
