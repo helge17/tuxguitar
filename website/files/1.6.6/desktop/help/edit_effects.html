@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Note effects - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.6</p>
+  </div>
+  <div class="title">
+    <h1>Note effects</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><strong>Note effects</strong></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>As you already know, playing guitar (and any other instrument) isn’t just playing the notes in the right duration and dynamics. There are several "tricks" that are unique for any instrument. TuxGuitar supports effects specific for guitar and bass guitar.</p>
+    <p>Almost all note effects have an icon on the toolbar, but also can be accessed in <strong>Beat → Effects</strong> menu. If several notes are selected with click &amp; drag then effect is applied on all selected notes. Else, the effect is applied on the current cursor position.</p>
+    <img src="images/effects.png" />
+    <h2 id="vibrato">Vibrato</h2>
+    <p>Vibrato is a note playing technique which makes the frequency (pitch) of a note oscillate a little bit in either direction (lower or higher). It makes the tone more colorful and accentuated. On guitar vibrato is played by slightly moving the finger upside-down or in left-right direction, which plays the sound in slightly higher pitch according to your moves.</p>
+    <p>In TuxGuitar vibrato effect has no special parameters - applying vibrato effect on a note will make a typical vibrato effect and mark the tone with the "vibrating waves" in the tab view.</p>
+    <h2 id="bend">Bend</h2>
+    <p>String bending effect modifies the pitch of the played tone, but much more than the <a href="#vibrato">vibrato</a> effect. Most often the result of bending a note is gradual pitch shift to another note. By the nature of bending that note has higher frequency then the note on the same fret without bend, because you <strong>bend</strong> the string thus adding more tension to the string.</p>
+    <p>In TuxGuitar, applying a bend effect to the note opens the Bend Editor dialog, which allows you fine tuning of the bend, showing you exactly how much tension your finger should use. Of course, the result of your modification can be heard.</p>
+    <img src="images/effects_bend.png" />
+    <p>First, notice the list box on the right of the dialog. Those are the presets which are most often used: <strong>Bend</strong>, <strong>Bend/Release</strong>, <strong>Bend/Release/Bend</strong>, <strong>Pre-Bend</strong> and <strong>Pre-Bend/Release</strong>. <strong>Bend</strong> only makes gradual transition to the target note, while <strong>Bend/Release</strong> also returns it to the beginning note. <strong>Pre-Bend</strong> is played when you first bend (add tension) to the string, and <em>after that</em> pick the string, so the first tone heard has higher pitch, and then gradually returns to the original note. You should notice that all the presets make bend 1 note (2 frets) higher, so you may need some intervention in the Editor to make the bend sound properly.</p>
+    <p>The Editor allows you fine bend tuning by drawing a graphic function of the bending amount (or pitch modulation/string tension). It works by placing dots in a diagram which are automatically connected with lines. The higher the dot is placed, the greater the bending amount will be. Notice that the diagram is separated horizontally with gray and red lines. Each full red line represents the pitch shift by 1 tone (2 frets), and each dashed red line represents the pitch shift by a semitone (1 fret). Gray line represents the pitch shift of 1/4 of a tone, which is 1/2 of a fret which is called a non-tempered note or "blue" note. The vertical blue lines divide the note duration on quarters, and dashed blue lines divide your note duration in 1/12 segments. You can place the dot only on intersection of a blue line and red/gray line. Left or right click can be used to place or remove a dot.</p>
+    <p>So, the bend represented on the picture above is a complex one: the first peak is almost a 2-tone bend/release (it is a slight <em>underbend</em>, because it bends for 3.5 frets), the second one is a slight bend shift to one higher half-tone (1 fret) and back, and the third bends one whole-tone (2 frets) and stays there for a little while.</p>
+    <p>If you have an existing bend effect applied to the note and click on the "Clean" button in the dialog, the effect will be removed.</p>
+    <p>A bend effect will be displayed with a curved up arrow in the tab view and a number indicating the pitch shift of the note.</p>
+    <h2 id="tremolo_bar">Tremolo Bar</h2>
+    <p>Tremolo bar is a term in TuxGuitar for all the effects you can make with a guitar tremolo arm. It allows note pitch shift in both directions and with a higher range of modulation. With tremolo bar effect TuxGuitar can modify the original note very precisely with the modulation diagram, allowing the pitch change up and down whole octave (8 tones, 12 frets) from the original tone.</p>
+    <p>When you apply tremolo bar effect on a note, Tremolo bar Editor dialog appears, very similar to the editor for the <a href="#bend">bend effect</a>.</p>
+    <img src="images/effects_tremolobar.png" />
+    <p>There are some presets in the list box placed on the right side of the dialog. <strong>Dip</strong> effect slowly lowers the pitch and then returns back. The opposite effect is <strong>Inverted Dip</strong> which increases the pitch and returns back. <strong>Dive</strong> slowly lowers the pitch but doesn’t return back. The opposite effect is <strong>Return</strong>. <strong>Release up</strong> starts from the lower pitch and gradually returns to the original tone. <strong>Release down</strong> also ends at the original tone but starts at higher pitch. Note that all the presets have pitch offset of 1 tone (2 frets), so you might need to modify the tremolo bar diagram to get the desired effect.</p>
+    <p>Tremolo bar diagram editor consists of red and gray horizontal lines. Each red line represents one whole tone pitch offset (2 frets), and gray one semitone offset (1 fret). It is important to notice the black horizontal line in the middle: that is the frequency of your original tone (to which you applied the effect). There are 6 red lines in both directions from the black line, which means you can modify the original pitch up and down 8 tones (12 frets). Vertical blue lines separate the tone duration into small pieces. You can place the dot only on intersection of a blue line and red/gray line. Left click places a dot, and right click on the dot removes it.</p>
+    <p>So, the tremolo bar represented on the picture above is a complex one: First tremolo bar increases the pitch by one tone (2 frets), returns back to the original tone, quickly increases to +2 tone offset (4 frets) and then dives and dives until the tone is one octave (12 frets) lower than the original one.</p>
+    <p>If you have an existing tremolo arm effect applied to the note and click on the "Clean" button in the dialog, the effect will be removed.</p>
+    <p>When tremolo arm effect is applied to a note, besides the note in the tab view will be displayed an "<strong>x</strong>" with an arrow pointing down.</p>
+    <h2 id="slide">Slide</h2>
+    <p>A slide is a guitar technique where the player sounds one note, and then moves (slides) their finger up or down the fretboard to another fret. If done properly, the notes between should also sound.</p>
+    <p>In TuxGuitar Slide connects the current note with the next note on the same string. Then in tab view you can see a line connecting two notes (upwards or downwards).</p>
+    <h2 id="dead_note">Dead Note</h2>
+    <p>Dead note (sometimes referred as rake) is a playing effect which produces more of a percussive effect than a regular note with its pitch. Dead note has short and "clicking" sound. It is used very often by guitar players.</p>
+    <p>Because of the MIDI standard, all MIDI tab editing applications (Guitar Pro, TablEdit, TuxGuitar...) have a little bit different dead note implementation - it is not exactly dead. It is short, it is percussive, but you can adjust the pitch of the dead note.</p>
+    <p>So, in TuxGuitar, if you put a dead note in the scores, it will be heard like a muted zero-fret string. If you put a regular fret value and mark that note as dead, it will become a dead note, but will retain the previous pitch.</p>
+    <p>Dead note is marked with "<strong>X</strong>" sign in the tab.</p>
+    <h2 id="hammer_on_pull_off">Hammer-on/Pull-off</h2>
+    <p>Hammer-on and pull-off are playing techniques which assume playing another note on the same string but without picking a string again. Heavy usage of hammer-on/pull-off in a short period is often referred as legato style. Hammer-on refers to the transition between a previous note and a note with a higher pitch. Pull-off is exactly the opposite, transition between a previous note and a note with a lower pitch.</p>
+    <p>In TuxGuitar <strong>Hammer-on</strong> and <strong>Pull-off</strong> are treated and displayed as the same effect. When you apply the effect, a connecting arc will be displayed between the current note and the next note <strong>on the same string</strong>, which marks that notes should be played with hammer-on/pull-off technique.</p>
+    <h2 id="ghost_note">Ghost Note</h2>
+    <p>Ghost note is effect that changes note’s dynamics (loudness) to <strong>more quiet</strong>. The difference between a Ghost note and lesser dynamics is seen only visually, while it sounds the same.</p>
+    <p>Ghost note is marked by a note between parentheses <strong>( )</strong>.</p>
+    <h2 id="accentuated_and_heavy_accentuated_note">Accentuated and Heavy Accentuated Note</h2>
+    <p>Like Ghost note, these effects change the note’s volume. Accentuated note gives it a little louder dynamics, and heavy accentuated note makes the note even louder.</p>
+    <p>Accentuated note is marked with a "<strong>&gt;</strong>" sign, and heavy accentuated with "<strong>^</strong>" sign.</p>
+    <h2 id="harmonics">Let Ring</h2>
+    <p>If a note is marked <strong>LR</strong> (Let Ring), you should let the note last longer than its normal duration, i.e. let the tone fade out.</p>
+    <h2 id="harmonics">Harmonics</h2>
+    <p>Guitar harmonics are somewhat special note effects because the result is a note with different pitch.</p>
+    <p>After you choose harmonics effect, the following dialog appears.</p>
+    <img src="images/effects_harmonic_editor.png" />
+    <p>If you wrote a note on fret 3, 4, 5, 7, 9, 12, 16, 19... you will get the option to choose the <strong>Natural Harmonic</strong> effect. It would sound like natural harmonic on the same fret and string.</p>
+    <p>Otherwise, if you choose <strong>Artificial</strong>, <strong>Pinched</strong>, <strong>Tapped</strong> or <strong>Semi</strong> harmonics, you should choose a value from the combo box on the bottom of the dialog. If you chose artificial harmonic, you would be able to choose between these values:</p>
+    <p align="center"></p>
+    <table border="1px">
+      <tr>
+        <td><strong>A.H(12)</strong></td>
+        <td>Artificial harmonic one octave (12 frets) higher than the original note</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>A.H(9)</strong></td>
+        <td>Artificial harmonic two octaves+major third (28 frets) higher than the original note</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>A.H(5)</strong></td>
+        <td>Artificial harmonic two octaves (24 frets) higher than the original note</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>A.H(7)</strong></td>
+        <td>Artificial harmonic octave+fifth (19 frets) higher than the original note</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>A.H(4)</strong></td>
+        <td>Artificial harmonic two octaves+major third (28 frets) higher than the original note</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>A.H(3)</strong></td>
+        <td>Artificial harmonic two octaves+fifth (31 frets) higher than the original note</td>
+      </tr>
+    </table><br />
+    <p>Note that A.H(4) and A.H(9) sound the same... The number besides denotes the "fret offset" between the original note and the harmonic "hot spot".</p>
+    <p>The difference between <strong>Artificial</strong>, <strong>Pinched</strong> and <strong>Tapped Harmonics</strong> is only in the playing technique, but <strong>Semi Harmonics</strong> even sound different on TuxGuitar - you can hear the original note along with the harmonic note.</p>
+    <h2 id="grace_note">Grace Note</h2>
+    <p>Grace note is a music ornament. You can hear it very often in music, and it sounds like an attempt to play a note as <em>short</em> as possible. Grace notes in tabs are displayed smaller than the regular notes and seem to have no duration. In sheet music grace notes are represented as a small note before a regular note, sometimes with a slash through the note stem.</p>
+    <p>In TuxGuitar grace note can be applied on a position where a note already exists. Choosing to insert a grace note brings you the grace note editor dialog.</p>
+    <img src="images/effects_grace.png" />
+    <p>On guitar, grace notes are most usually played on the same string as the ordinary note, so you will first want to enter the <strong>fret</strong> on which grace note is played. If you check a <a href="#dead_note">dead note</a>, muted percussive note will be played instead. Select the <strong>Position</strong> of the grace note. "Before beat" places your grace note before the ordinary note, which is played in exact time it is displayed in tab/scores. If you choose "On beat", grace note will be played on beat and original note immediately after grace note.</p>
+    <p>Next you can choose note <strong>Duration</strong>. "As short as possible" is welcome, so 1/64 note is default, but you can also pick 1/32 and 1/16 note if it suits your needs. <strong>Dynamics</strong> of the grace note is also an important property. By default, dynamics of a "normal" note is selected, but in editor dialog you can make grace note louder or more quiet than the succeeding note.</p>
+    <p>At last, you can choose type of the <strong>Transition</strong>, which marks the playing style. The default transition is <strong>None</strong>, which marks no distinct transition. Other available transitions are <strong>Bend</strong> and <strong>Slide</strong> (which also affects the way note is heard), and a <strong>Hammer</strong> to mark that grace note is played by hammer-on/pull-off technique.</p>
+    <p>If you have an existing grace note effect applied to the note and click on the "Clean" button in the dialog, the effect will be removed.</p>
+    <h2 id="trill">Trill</h2>
+    <p>A rapid series of hammer-ons and pull-offs between a single pair of notes is called a trill. So, you can write all the trills manually, but TuxGuitar has the trill editor, which sometimes reduces the writing time.</p>
+    <p>Trill effect is applied on an existing note, which is considered the first note in a trill. Then the <strong>Trill Editor</strong> appears and allows you to choose the second note, and a duration between the hammer-ons and pull-offs. If there is existing trill effect and you select "Clean" on the trill editor, the effect will be removed.</p>
+    <p>Trill effect is marked in a tab with "<strong>tr</strong>" mark and a wave along the note duration.</p>
+    <h2 id="tremolo_picking">Tremolo Picking</h2>
+    <p>Tremolo picking means that the same note is picked in a rapid manner.</p>
+    <p>So, it would be the same if you write dozens of notes by yourself or use a tremolo picking effect, but if you apply the effect the tab will look nicer and it may save some time. Applying the tremolo picking effect on a current note will bring the tremolo picking editor, which allows you to choose how frequently it will be picked. If you already have a tremolo effect and click on "Clean" in the editor, the effect will be removed.</p>
+    <p>Tremolo picking effect is marked with three diagonal lines (<strong>≡</strong>) in scores or tab.</p>
+    <h2 id="palm_mute">Palm Mute</h2>
+    <p>Palm mute is an effect which is produced by placing the palm of a picking hand across the strings very close to the bridge. The strings retain their pitch, but the sound is more or less muted.</p>
+    <p>In TuxGuitar you can apply a palm mute effect on any note. It is removed the same way.</p>
+    <p>Palm mute effect is displayed with a <strong>P.M</strong> sign in scores or tab.</p>
+    <h2 id="staccato">Staccato</h2>
+    <p>Staccato is a playing technique where the player plays in a distinctive, "hopping" manner, trying to make note duration shorter than it should be normally.</p>
+    <p>In TuxGuitar the <strong>Staccato</strong> effect makes the note duration 50% of its original duration. When staccato effect is applied, a dot shows up above the note in the scores view. When applied again, it is cleared.</p>
+    <h2 id="tapping">Tapping</h2>
+    <p>Tapping is a guitar playing technique used more often on electric instruments. It is played using both hands on the fretboard, with a picking hand making hard hammer-ons and pull-offs.</p>
+    <p>In TuxGuitar <strong>Tapping</strong> has no effect on the sound. Instead, it just marks the tone which should be tapped with a picking hand. Tapped note is marked with the letter <strong>T</strong> above tapped note. Tapped notes can be combined with a Slide, Bend or hammer-on/pull-off if you need.</p>
+    <h2 id="slapping_and_popping">Slapping and Popping</h2>
+    <p>Slapping and popping are techniques most commonly used on bass guitar. Slapping assumes hitting a string with the thumb of the strumming hand near the base of the guitar’s neck. Popping is often combined with slapping and assumes snapping the strings (usually) with the index or middle finger of the same hand.</p>
+    <p>In TuxGuitar both <strong>Slapping</strong> and <strong>Popping</strong> don’t really affect the sound, but only mark the style of playing. Above the slapping notes the letter <strong>S</strong> is placed, and above popping the letter <strong>P</strong>.</p>
+    <h2 id="fade_in">Fade in</h2>
+    <p><strong>Fade in</strong> is an effect which gradually increases the volume of a note, from zero to the current volume (depends on note dynamics). The effect is applied to each note independently and cleared in the same way. Note with a fade in is marked with a <strong>&lt;</strong> sign above the tab.</p>
+  </section>
+</body>
+</html>
