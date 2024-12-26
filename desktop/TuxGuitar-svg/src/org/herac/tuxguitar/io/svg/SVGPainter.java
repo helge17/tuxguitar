@@ -74,6 +74,22 @@ public class SVGPainter extends SVGResourceFactory implements UIPainter {
 		this.svgBuffer.append("font-size=\"" + this.svgFont.getHeight() + "\" ");
 		this.svgBuffer.append("fill=\"" + this.svgForeground.toHexString() +"\" ");
 		this.svgBuffer.append(">");
+
+		/** 
+		 * Escape XML special characters before print
+		 * 
+		 * & - &amp;
+		 * < - &lt;
+		 * > - &gt;
+		 * " - &quot;
+		 * ' - &apos;
+		 */
+		string = string.replaceAll("[&]", "&amp;");
+		string = string.replaceAll("[<]", "&lt;");
+		string = string.replaceAll("[>]", "&gt;");
+		string = string.replaceAll("[\"]", "&quot;");
+		string = string.replaceAll("[']", "&apos;");
+		
 		this.svgBuffer.append( string );
 		this.svgBuffer.append("</text>");
 	}
