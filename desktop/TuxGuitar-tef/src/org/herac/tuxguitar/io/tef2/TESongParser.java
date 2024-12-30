@@ -7,7 +7,9 @@ import java.util.Iterator;
 import org.herac.tuxguitar.io.tef2.base.TEChord;
 import org.herac.tuxguitar.io.tef2.base.TEComponent;
 import org.herac.tuxguitar.io.tef2.base.TEComponentChord;
+import org.herac.tuxguitar.io.tef2.base.TEComponentEnding;
 import org.herac.tuxguitar.io.tef2.base.TEComponentNote;
+import org.herac.tuxguitar.io.tef2.base.TEComponentTempoChange;
 import org.herac.tuxguitar.io.tef2.base.TESong;
 import org.herac.tuxguitar.io.tef2.base.TETimeSignature;
 import org.herac.tuxguitar.io.tef2.base.TETrack;
@@ -24,6 +26,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -127,6 +130,12 @@ public class TESongParser {
 						}
 						else if(component instanceof TEComponentChord){
 							addChord(song.getChords(),(TEComponentChord)component,tgTrack,tgMeasure);
+						}
+						else if (component instanceof TEComponentTempoChange){
+							addTempoChange((TEComponentTempoChange)component, tgSong, tgMeasure);
+						}
+						else if (component instanceof TEComponentEnding){
+							addEnding((TEComponentEnding)component, tgMeasure);
 						}
 					}
 					offset += strings;
@@ -440,6 +449,30 @@ public class TESongParser {
 				TGBeat tgBeat = getBeat(tgMeasure, getStart(null, tgMeasure, component.getPosition()));
 				tgBeat.setChord(tgChord);
 			}
+		}
+	}
+
+	private void addTempoChange(TEComponentTempoChange tempoChange,TGSong tgSong, TGMeasure tgMeasure){
+		TGTempo newTempoEvent = this.manager.getFactory().newTempo();
+		newTempoEvent.copyFrom(tgMeasure.getTempo());
+		newTempoEvent.setQuarterValue(tempoChange.getBpm());
+
+		this.manager.changeTempos(tgSong, tgMeasure.getHeader(), newTempoEvent, true);
+	}
+
+	private void addEnding(TEComponentEnding ending,TGMeasure tgMeasure){
+		TGMeasureHeader measureHeader = tgMeasure.getHeader();
+
+		if (ending.getIsOpenBracket()) {
+			measureHeader.setRepeatOpen(true);
+		}
+
+		int endingNumber = ending.getEndingNumber();
+
+		if (ending.getIsCloseBracket() && endingNumber >= 2) {
+			measureHeader.setRepeatClose(endingNumber - 1);
+		} else if (measureHeader.getRepeatClose() == 0 && endingNumber != 0) {
+			measureHeader.setRepeatAlternative(1 << (endingNumber - 1));
 		}
 	}
 	

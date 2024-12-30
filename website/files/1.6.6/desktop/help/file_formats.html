@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>File formats - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.6</p>
+  </div>
+  <div class="title">
+    <h1 id="supported_file_formats">Supported file formats in TuxGuitar</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><strong>Supported file formats</strong></li>
+    </ul>
+  </div>
+  <section>
+    <p>Besides TuxGuitar’s own file format (with *.tg extension), TuxGuitar can work with various tablature and music file formats.</p>
+    <p>We strongly recommend that you use TuxGuitar’s own file format for your songs. The other formats may not support all features of TuxGuitar. These formats are mainly intended for exchanging files with other programs.</p>
+    <h2 id="tablatures">Tablatures</h2>
+    <table>
+      <tr>
+        <td class="left"><strong>Guitar Pro 1</strong> and <strong>2</strong> (.gtp)</td><td>load</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Guitar Pro 3</strong> (.gp3)</td><td>load and export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Guitar Pro 4</strong> (.gp4)</td><td>load and export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Guitar Pro 5</strong> (.gp5)</td><td>load and export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Guitar Pro 6</strong> (.gpx)</td><td>load</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Guitar Pro 7</strong> (.gp)</td><td>load</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>PowerTab</strong> (.ptb)</td><td>load</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>TablEdit v2</strong> (.tef)</td><td>load</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>LilyPond</strong> (.ly)</td><td>export</td>
+      </tr>
+    </table>
+    <h2 id="music_and_sheet">Music and sheet</h2>
+    <table>
+      <tr>
+        <td class="left"><strong>MIDI</strong> (.mid)</td><td>import (see below) and export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Scalable Vector Graphics</strong> (.svg)</td><td>export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Audio</strong> (.wav, .au, .aif/.aiff)</td><td>export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>LilyPond</strong> (.ly)</td><td>export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>MusicXML</strong> (.xml)</td><td>export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>Adobe PDF</strong> (.pdf)</td><td>export</td>
+      </tr>
+      <tr>
+        <td class="left"><strong>ASCII Text</strong> (.txt)</td><td>export</td>
+      </tr>
+    </table>
+    <h2 id="midiFileImport">MIDI file import</h2>
+    <p>The feature for importing MIDI files is provided for convenience, as this file format is very common in the world of musicians. However, please bear in mind that TuxGuitar is basically a <strong>tablature</strong> editor and not a <strong>MIDI</strong> editor, so don’t expect magical results.</p>
+    <p>A MIDI file encodes <i>sound</i> in the form of sequential events. TuxGuitar stores, displays and plays <i>tablatures</i> for string instruments with frets, which is a slightly different concept. TuxGuitar performs a translation when importing a MIDI file, but manual adjustment is generally required to fine-tune the result. In some cases, where the MIDI file is not well suited for guitar or bass, this customization work may be extensive or even not feasible.</p>
+    <p>This section describes some examples of limitations (the list is not exhaustive).</p>
+    <h3>Unplayable note combinations</h3>
+    <p>A pianist can play with 10 fingers simultaneously, a guitarist normally only on 6 strings at the same time. A piano chord with 10 notes can therefore not be imported completely: Some notes have to be discarded. But even with fewer notes, unplayable combinations can occur: (E2+G2) cannot be played simultaneously on a standard tuned guitar, as both notes are on the same (the lowest) string.</p>
+    <h3>Inaccurate rhythm</h3>
+    <p>Some MIDI files on the Internet are recordings of musicians playing a MIDI-capable instrument (e.g. a keyboard). However, a human being is not a perfect metronome, especially if the musician brings in his or her own mood and feeling. Such interpretations can be very pleasant to listen to, but do not fit well into the very strict framework of a music score. In such a case, you should not be surprised if you find very unusual rhythm patterns in the imported files: very short notes or rests in surprising places, 7- or 11-tuplets, inconsistent tied notes, etc.</p>
+    <h3>Fingering</h3>
+    <p>MIDI files do not contain any information about the number of strings or fingering. TuxGuitar tries to select a suitable number of strings and tuning preset based on the lowest and highest notes of the track, but the result is not always the best possible choice. The assignment of notes to strings is somehow arbitrary and generally looks for the lowest fret number for each note in a beat. This does not take into account the arrangement of a guitarist’s hands and fingers and can therefore lead to sub-optimal decisions in many cases. You can assume that in most cases manual editing of the imported song will be necessary.</p>
+    <h3>MIDI file types</h3>
+    <p>There are two different MIDI file types:</p>
+    <ul>
+      <li>A type 0 file contains a <i>single MIDI track</i>, possibly with sounds played by different instruments.</li>
+      <li>A type 1 file can contain one or <i>more MIDI track(s)</i>, with one instrument per track.</li>
+    </ul>
+    <p>Currently, TuxGuitar can import type 1 files quite correctly. Type 0 files are also correctly imported <i>if they contain a single instrument</i>. When importing a type 0 file with multiple instruments, TuxGuitar merges everything into a <i>single track</i>. This can of course lead to unwanted side effects, such as the loss of notes and/or incorrect tuning selection. In this case, you should consider converting the file to type 1 with an external MIDI application before importing it.</p>
+    <h3>Instrument range</h3>
+    <p>This is probably the most critical point. Note: This section does not apply to percussion tracks.</p>
+    <p>Before importing a song, make sure that the song is suitable for guitar or bass in terms of range. Trying to import a piccolo track can lead to disastrous results as the notes are far too high for a guitar. If you can, check the note ranges in your MIDI file before you import it. Take the following into account:</p>
+    <ul>
+      <li>A standard tuned 6-string guitar with 24 frets can play midi notes 40 (E2) to 88 (E6).</li>
+      <li>A standard tuned 4-string bass with 24 frets can play midi notes 28 (E1) to 67 (G4).</li>
+    </ul>
+    <p>In practice, there is a little extra tolerance as TuxGuitar can select an alternative tuning preset to allow more notes to fit into the tablature.</p>
+    <p>A typical symptom of an inappropriate note range occurs when TuxGuitar selects an unexpected (or even unrealistic) tuning preset. Be careful, this may not be immediately visible in the tablature. Therefore, it is highly recommended to manually check the tuning of each track directly after importing. If a track is tuned with 6 identical strings, well, then something has definitely gone wrong: Fix the issue before you try to continue (see <a href="#transposition">transposition</a> below).</p>
+    <p>Another typical symptom of an incorrect note range is the loss of notes, either directly after import or when you try to change the tuning of a track. TuxGuitar will delete any notes it can’t place on a 30 frets instrument.</p>
+    <h3 id="transposition">Transposition</h3>
+    <p>If the note range of the input file has not been adjusted, you can transpose it directly when importing the file using the corresponding dialog. Please note that the transposition is applied to all tracks in the song. If you only need to transpose one track in a multi-track song, you should split your file into several files using an external MIDI application before importing. Afterwards, you can copy/paste the tracks together again in TuxGuitar.</p>
+
+    <h2 id="MusicXML output">MusicXML export</h2>
+    <p>
+      <h3>Lyrics</h3>
+      <p>
+        To get the best output for lyrics, in the MusicXML export, do the following:<br/>
+      <ul>
+        <li>
+          Make sure the syllables, in one word, are appended with a hyphen (the '-' character).
+          <p>
+            <h4>Example:</h4>
+            "Halelujah" becomes "Ha- le- lu- ja". Notice the space after the hyphen, and there is no hyphen after 'ja'. This lyric will be spread over 4 notes.
+          </p>
+        </li>
+      </ul>
+      </p>
+    </p>
+
+    <h2 id="PDF Export">PDF Export</h2>
+    <p>
+      It is possible to fine-tune the export of PDF documents. In "Tools" menu, select "Plugins", browse to "PDF file format exporter" and click "Configure".
+      <p><img src="images/pdf_export.png" alt="pdf export settings"/></p>
+      Default parameters are a good trade-off, but in specific context you might want to alter some parameters.
+    </p>
+  </section>
+</body>
+</html>
