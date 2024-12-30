@@ -5,7 +5,9 @@ import java.io.InputStream;
 
 import org.herac.tuxguitar.io.tef.base.TEChord;
 import org.herac.tuxguitar.io.tef.base.TEComponentChord;
+import org.herac.tuxguitar.io.tef.base.TEComponentEnding;
 import org.herac.tuxguitar.io.tef.base.TEComponentNote;
+import org.herac.tuxguitar.io.tef.base.TEComponentTempoChange;
 import org.herac.tuxguitar.io.tef.base.TEInfo;
 import org.herac.tuxguitar.io.tef.base.TEPercussion;
 import org.herac.tuxguitar.io.tef.base.TERepeat;
@@ -251,9 +253,22 @@ public class TEInputStream {
 			else if( ((data[2] & 0xff) & 0x1f) == 29 ){
 				//SCALE DIAGRAM | SPECIAL CHAR | SYNCOPATION CHANGE
 			}
-			else if( ((data[2] & 0xff) & 0x1f) == 30 ){
-				//TEMPO CHANGE | VOICE CHANGE | DRUM EVENT | CRESCENDO ACCENT | REPEAT/ENDING
+			else if ((data[2] & 0xff) == 0xFE) {
+				// TEMPO CHANGE
+				int bpm = (data[4] << 8) | (data[3] & 0xff);
+				this.song.getComponents().add( new TEComponentTempoChange(position, measure, string, bpm));
 			}
+			else if ((data[2] & 0xff) == 0x5E) {
+				// REPEAT/ENDING
+				boolean isOpenBracket = (data[4] & 0x40) > 0;
+				boolean isCloseBracket = (data[4] & 0x80) > 0;
+				int endingNumber = data[4] & 0x7;
+				this.song.getComponents().add( new TEComponentEnding(position, measure, string, isOpenBracket, isCloseBracket, endingNumber));
+			}
+			else if( ((data[2] & 0xff) & 0x1f) == 30 ){
+				// VOICE CHANGE | DRUM EVENT | CRESCENDO ACCENT
+			}
+
 			mIndex = measure;
 		}
 	}
