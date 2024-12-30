@@ -124,6 +124,10 @@ public abstract class TGMeasure {
 		return this.header.getStart();
 	}
 	
+	public long getPreciseStart() {
+		return this.header.getPreciseStart();
+	}
+	
 	public TGTempo getTempo() {
 		return this.header.getTempo();
 	}
@@ -142,6 +146,10 @@ public abstract class TGMeasure {
 	
 	public long getLength() {
 		return this.header.getLength();
+	}
+	
+	public long getPreciseLength() {
+		return this.header.getPreciseLength();
 	}
 	
 	public TGMarker getMarker(){
