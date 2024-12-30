@@ -12,9 +12,11 @@ public class TESongReader implements TGSongReader {
 	public TESongReader(){
 		super();
 	}
+
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("TablEdit v2", "application/x-tef", new String[]{"tef"});
 	
 	public TGFileFormat getFileFormat() {
-		return new TGFileFormat("TablEdit", "application/x-tef", new String[]{"tef"});
+		return FILE_FORMAT;
 	}
 	
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {

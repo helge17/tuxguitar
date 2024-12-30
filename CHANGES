@@ -1,3 +1,8 @@
+TuxGuitar 1.6.6 (2024-12-27) changes:
+
+* Fixed several issues when first track is muted
+* Improved TEF v2 import
+
 TuxGuitar 1.6.5 (2024-12-14) changes:
 
 * Add zoom control for Print/Export to pdf
