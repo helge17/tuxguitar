@@ -12,6 +12,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.ui.resource.UIColor;
+import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
@@ -80,8 +81,12 @@ public class SVGController implements TGController {
 			svgPainter.closePath();
 			svgBackground.dispose();
 			
+			// Paint header with song info first
+			float headerOffset = 0f;
+			headerOffset += this.paintHeader(svgPainter, svgBounds, 0f, 10f);
+			
 			// Paint the TGSong
-			this.tgLayout.paint(svgPainter, svgBounds, 0, 0);
+			this.tgLayout.paint(svgPainter, svgBounds, 0, headerOffset);
 			
 			// Closes the painter
 			svgPainter.dispose();
@@ -92,6 +97,117 @@ public class SVGController implements TGController {
 		}
 	}
 	
+	public float paintHeader(
+		UIPainter svgPainter, 
+		UIRectangle svgBounds,
+		float startX, float startY
+	) {
+		float headerOffset = 0f;
+		float marginLeft = this.tgLayout.getFirstMeasureSpacing();
+		float marginRight = 5f;
+		float widthMinusMargin = 
+				svgBounds.getWidth() - (marginLeft + marginRight);
+		float fmTopLine = Math.round(svgPainter.getFMTopLine());
+
+		String songName = getSong().getName();
+		String songAuthor = getSong().getAuthor();
+		String artistName = getSong().getArtist();
+		String albumName = getSong().getAlbum();
+		String releaseYear = getSong().getDate();
+		String copyright = getSong().getCopyright();
+		String transcriber = getSong().getTranscriber();
+		String tabCreator = getSong().getWriter();
+		
+		if( songName != null && songName.length() > 0 ){
+
+			svgPainter.setFont(getSongNameFont());
+			svgPainter.drawString(
+				songName, 
+				startX + alignCenter(svgPainter, widthMinusMargin, songName),
+				fmTopLine + startY + Math.round(headerOffset)
+			);
+			headerOffset += 20.0f * tgLayout.getScale();
+		}
+
+		if( artistName != null && artistName.length() > 0 ){
+
+			svgPainter.setFont(getArtistFont());
+			svgPainter.drawString(
+				artistName, 
+				startX + alignCenter(svgPainter, widthMinusMargin, artistName),
+				fmTopLine + startY + Math.round(headerOffset)
+			);
+			headerOffset += 10.0f * tgLayout.getScale();
+		}
+		
+		if( (albumName != null && albumName.length() > 0) ||
+			(releaseYear != null && releaseYear.length() > 0) ){
+			
+			String albumNameReleaseYear = "";
+			if( albumName != null && albumName.length() > 0 )
+				albumNameReleaseYear += "Recorded on " + albumName + " ";
+			if( releaseYear != null && releaseYear.length() > 0 )
+				albumNameReleaseYear += "(" + releaseYear + ")";
+		
+			svgPainter.setFont(getAlbumNameYearFont());
+			svgPainter.drawString(
+				albumNameReleaseYear,
+				startX + alignCenter(svgPainter, widthMinusMargin, albumNameReleaseYear),
+				startY + fmTopLine + Math.round(headerOffset)
+			);
+			headerOffset += 20.0f * tgLayout.getScale();
+		}
+		
+		if( songAuthor != null && songAuthor.length() > 0 ){
+
+			svgPainter.setFont(getSongAuthorFont());
+			svgPainter.drawString(
+				songAuthor,
+				startX + alignRight(svgPainter, widthMinusMargin, songAuthor),
+				fmTopLine + startY + Math.round(headerOffset)
+			);
+			headerOffset += 10.0f * tgLayout.getScale();
+		}
+
+		if( copyright != null && copyright.length() > 0 ){
+
+			copyright = "Copyrighted by " + copyright;
+			svgPainter.setFont(getSongAuthorFont());
+			svgPainter.drawString(
+				copyright,
+				startX + alignRight(svgPainter, widthMinusMargin, copyright),
+				fmTopLine + startY + Math.round(headerOffset)
+			);
+			headerOffset += 10.0f * tgLayout.getScale();
+		}
+		
+		if( transcriber != null && transcriber.length() > 0 ){
+
+			transcriber = "Transcribed by " + transcriber;
+			svgPainter.setFont(getSongAuthorFont());
+			svgPainter.drawString(
+				transcriber,
+				startX + alignRight(svgPainter, widthMinusMargin, transcriber),
+				fmTopLine + startY + Math.round(headerOffset)
+			);
+			headerOffset += 10.0f * tgLayout.getScale();
+		}
+
+		if( tabCreator != null && tabCreator.length() > 0 ){
+
+			tabCreator = "Created by " + tabCreator;
+			svgPainter.setFont(getSongAuthorFont());
+			svgPainter.drawString(
+				tabCreator,
+				startX + alignRight(svgPainter, widthMinusMargin, tabCreator),
+				fmTopLine + startY + Math.round(headerOffset)
+			);
+			headerOffset += 20.0f * tgLayout.getScale();
+		}
+
+		return headerOffset;
+	}
+
 	public TGLayoutStyles getStyles() {
 		return this.tgStyles.getStyles();
 	}
@@ -115,4 +231,73 @@ public class SVGController implements TGController {
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader) {
 		return false;
 	}
+
+	private float alignCenter(
+		UIPainter svgPainter, 
+		float widthMinusMargin, 
+		String text
+	) {
+		
+		// For some reason, getFMWidth(text) outputs a value that has 1.5 times
+		// more pixels than the actual SVG rendering.
+		// 0.65f is a temporary fix to calibrate it back to the correct value.
+		return (( widthMinusMargin - 0.65f * svgPainter.getFMWidth(text) ) / 2 );
+	}
+	
+	private float alignRight(
+		UIPainter svgPainter,
+		float widthMinusMargin,
+		String text
+	) {
+		return widthMinusMargin - 0.65f * svgPainter.getFMWidth(text);
+	}
+	
+	private UIFont getSongNameFont() {
+		String textFont = this.tgStyles.getStyles().getTextFont().getName();
+
+		UIFont songNameFont = this.tgResourceFactory.createFont(
+			textFont,
+			16.0f * this.tgLayout.getFontScale(), 
+			true, false
+		);
+
+		return songNameFont;
+	}
+
+	private UIFont getArtistFont() {
+		String textFont = this.tgStyles.getStyles().getTextFont().getName();
+
+		UIFont artistFont = this.tgResourceFactory.createFont(
+			textFont,
+			12.0f * this.tgLayout.getFontScale(), 
+			true, false
+		);
+
+		return artistFont;
+	}
+
+	private UIFont getAlbumNameYearFont() {
+		String textFont = this.tgStyles.getStyles().getTextFont().getName();
+		
+		UIFont albumNameYearFont = this.tgResourceFactory.createFont(
+			textFont,
+			10.0f * this.tgLayout.getFontScale(),
+			true, false
+		);
+
+		return albumNameYearFont;
+	}
+
+	private UIFont getSongAuthorFont() {
+		String textFont = this.tgStyles.getStyles().getTextFont().getName();
+		
+		UIFont songAuthorFont = this.tgResourceFactory.createFont(
+			textFont,
+			8.0f * this.tgLayout.getFontScale(),
+			true, false
+		);
+
+		return songAuthorFont;
+	}
+
 }
