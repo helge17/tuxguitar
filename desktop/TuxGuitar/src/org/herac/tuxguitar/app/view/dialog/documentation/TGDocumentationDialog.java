@@ -54,6 +54,7 @@ public class TGDocumentationDialog {
 			browser.loadUrl(url);
 			isEmbeddedBrowserAvailable = true;
 		} catch (Throwable throwable ) {
+			throwable.printStackTrace();
 			isEmbeddedBrowserAvailable = false;
 		}
 		
