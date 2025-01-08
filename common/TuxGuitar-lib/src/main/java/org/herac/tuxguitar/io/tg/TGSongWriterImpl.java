@@ -26,6 +26,7 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
@@ -58,6 +59,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	
 	@Override
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
+		new TGSongManager().updatePreciseStart(handle.getSong());
 		this.writeXMLDocument(handle);
 		ArchiveOutputStream<ZipArchiveEntry> outputStream;
 		try {
@@ -235,7 +237,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 	
 	private void writeBeat(TGBeat beat, Node nodeBeat) {
-		this.addNodeLong(nodeBeat, TAG_START, beat.getStart());
+		this.addNodeLong(nodeBeat, TAG_PRECISE_START, beat.getPreciseStart());
 		TGStroke stroke = beat.getStroke();
 		if (stroke.getDirection() != TGStroke.STROKE_NONE) {
 			Node nodeStroke = this.addNode(nodeBeat, TAG_STROKE);

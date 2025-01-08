@@ -100,7 +100,7 @@ public class TGStream {
 	protected static final String TAG_CLEF = "clef";
 	protected static final String TAG_KEYSIGNATURE = "keySignature";
 	protected static final String TAG_TGBEAT = "TGBeat";
-	protected static final String TAG_START = "start";
+	protected static final String TAG_PRECISE_START = "preciseStart";
 	protected static final String TAG_STROKE = "stroke";
 	protected static final String TAG_DIRECTION = "direction";
 	protected static final String TAG_CHORD = "chord";

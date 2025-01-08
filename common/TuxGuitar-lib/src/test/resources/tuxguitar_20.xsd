@@ -368,7 +368,7 @@
 
   <xs:complexType name="beatType">
     <xs:sequence>
-      <xs:element name="start" type="nonNegativeInteger"/>
+      <xs:element name="preciseStart" type="nonNegativeInteger"/>
       <xs:element name="stroke" minOccurs="0">
         <xs:complexType>
           <xs:attribute name="direction">
