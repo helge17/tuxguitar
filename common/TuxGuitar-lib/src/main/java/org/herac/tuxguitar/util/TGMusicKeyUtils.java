@@ -1,5 +1,10 @@
 package org.herac.tuxguitar.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.herac.tuxguitar.song.models.TGScale;
+
 /*
  * This class provides generic static methods for notes manipulation:
  * - conversion from note pitch to note name, octave, alteration, accidental
@@ -159,7 +164,7 @@ public class TGMusicKeyUtils {
 	}
 	
 	// midi note accidental, considering keySignature: none, flat, natural, sharp
-	// returns none if not is altered with an alteration present in keySignature
+	// returns none if note is altered with an alteration present in keySignature
 	public static int noteAccidental(int midiNote, int keySignature) {
 		int alteration = noteAlteration(midiNote, keySignature);
 		// compare with expected alteration considering keySignature
@@ -259,4 +264,53 @@ public class TGMusicKeyUtils {
 		return 12*(1+octave) + semiTonesToC[noteIndex];
 	}
 	
+	// returns -1 if invalid:
+	// - if scale base note is sharp and key signature holds only flats (and vice-versa)
+	// - if several notes in the scale have the same name (e.g. A and A# in the scale -> invalid)
+	private static int getNbAccidentals(TGScale scale, int keySignature) {
+		if ((scale.getAlteration()==SHARP) && (keySignature>7)) return -1;
+		if ((scale.getAlteration()==FLAT) && (keySignature<=7)) return -1;
+
+		List<String> notesNames = new ArrayList<String>();
+		int nbAccidentals = 0;
+		
+		for (int i=0; i<12; i++) {
+			int value = MIN_MIDI_NOTE + scale.getKey() + i;
+			if (scale.getNote(value)) {
+				String shortName = noteShortName(value, keySignature);
+				if (notesNames.contains(shortName)) {
+					return -1;
+				}
+				notesNames.add(shortName);
+				if ( noteAccidental(value, keySignature) != NONE ) {
+					nbAccidentals++;
+				}
+			}
+		}
+		return nbAccidentals;
+	}
+	
+	// try to guess key signature from scale
+	public static int getKeySignature(TGScale scale) {
+		// 0 ?
+		if (getNbAccidentals(scale, 0) == 0) {
+			return 0;
+		}
+		
+		int bestKeySignature = 0;	// default
+		int nbAccidentalsMin = 8;	// max +1
+		for (int i = 7; i>0; i--) {
+			// flat / sharp
+			for (int j=7; j>=0; j-=7) {
+				int keySignature = i + j;
+				int nbAccidentals = getNbAccidentals(scale, keySignature);
+				if ((nbAccidentals >= 0) && (nbAccidentals <= nbAccidentalsMin)) {
+					nbAccidentalsMin = nbAccidentals;
+					bestKeySignature = keySignature;
+				}
+			}
+		}
+		return bestKeySignature;
+	}
+
 }

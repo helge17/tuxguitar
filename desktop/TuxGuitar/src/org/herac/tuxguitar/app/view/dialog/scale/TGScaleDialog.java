@@ -41,7 +41,7 @@ public class TGScaleDialog {
 		for(int i = 0;i < keyNames.length;i ++){
 			keys.addItem(new UISelectItem<Integer>(keyNames[i], i));
 		}
-		keys.setSelectedValue(scaleManager.getSelectionKey());
+		keys.setSelectedValue(scaleManager.getSelectionKeyIndex());
 		compositeLayout.set(keys, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 		compositeLayout.set(keys, UITableLayout.PACKED_HEIGHT, 200f);
 		
@@ -51,7 +51,7 @@ public class TGScaleDialog {
 		for(int i = 0;i < scaleNames.length;i ++){
 			scales.addItem(new UISelectItem<Integer>(scaleNames[i], i));
 		}
-		scales.setSelectedValue(scaleManager.getSelectionIndex());
+		scales.setSelectedValue(scaleManager.getScaleIndex());
 		
 		compositeLayout.set(scales, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		compositeLayout.set(scales, UITableLayout.PACKED_HEIGHT, 200f);
