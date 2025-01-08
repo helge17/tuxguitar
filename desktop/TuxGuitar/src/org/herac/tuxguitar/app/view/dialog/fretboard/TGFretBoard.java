@@ -27,6 +27,7 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGScale;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -271,9 +272,9 @@ public class TGFretBoard {
 	}
 	
 	private void loadScaleName() {
-		int scaleKey = TuxGuitar.getInstance().getScaleManager().getSelectionKey();
-		int scaleIndex = TuxGuitar.getInstance().getScaleManager().getSelectionIndex();
-		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKey );
+		int scaleKeyIndex = TuxGuitar.getInstance().getScaleManager().getSelectionKeyIndex();
+		int scaleIndex = TuxGuitar.getInstance().getScaleManager().getScaleIndex();
+		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKeyIndex );
 		String name = TuxGuitar.getInstance().getScaleManager().getScaleName( scaleIndex );
 		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
 	}
@@ -439,13 +440,15 @@ public class TGFretBoard {
 	
 	private void paintScale(UIPainter painter) {
 		TGTrack track = getTrack();
+		TGScale scale = TuxGuitar.getInstance().getScaleManager().getScale();
+		int keySignature = TGMusicKeyUtils.getKeySignature(scale);
 		
 		for (int i = 0; i < this.strings.length; i++) {
 			TGString string = track.getString(i + 1);
 			for (int j = 0; j < this.frets.length; j++) {
 				
 				int noteValue = string.getValue() + j;
-				if(TuxGuitar.getInstance().getScaleManager().getScale().getNote(noteValue)){
+				if(scale.getNote(noteValue)){
 					int x = this.frets[j];
 					if(j > 0){
 						x -= ((x - this.frets[j - 1]) / 2);
@@ -453,7 +456,8 @@ public class TGFretBoard {
 					int y = this.strings[i];
 					
 					if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_SCALE) != 0 ){
-						paintKeyText(painter,this.config.getColorScaleText(), this.config.getColorScale(),x,y,TGMusicKeyUtils.sharpNoteName(noteValue));
+						String noteName = TGMusicKeyUtils.noteName(noteValue, keySignature);
+						paintKeyText(painter,this.config.getColorScaleText(), this.config.getColorScale(),x,y,noteName);
 					}
 					else{
 						paintKeyOval(painter,this.config.getColorScale(),x,y);

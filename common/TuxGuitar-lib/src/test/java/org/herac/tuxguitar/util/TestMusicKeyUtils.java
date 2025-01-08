@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.models.TGScale;
+
 public class TestMusicKeyUtils {
 
 	@Test
@@ -411,6 +414,52 @@ public class TestMusicKeyUtils {
 				}
 			}
 		}
+	}
+	
+	@Test
+	public void testScaleKeySignature() {
+		TGFactory factory = new TGFactory();
+		// major scale
+		TGScale scale = factory.newScale();
+		scale.setNote(0, true);
+		scale.setNote(2, true);
+		scale.setNote(4, true);
+		scale.setNote(5, true);
+		scale.setNote(7, true);
+		scale.setNote(9, true);
+		scale.setNote(11, true);
+		
+		scale.setKeyName("C");
+		assertEquals(0, TGMusicKeyUtils.getKeySignature(scale));
+
+		scale.setKeyName("D");
+		assertEquals(2, TGMusicKeyUtils.getKeySignature(scale));
+		
+		scale.setKeyName("Eb");
+		assertEquals(7 + 3, TGMusicKeyUtils.getKeySignature(scale));
+
+		scale.setKeyName("F");
+		assertEquals(7 + 1, TGMusicKeyUtils.getKeySignature(scale));
+		
+		scale.setKeyName("C#");
+		assertEquals(7, TGMusicKeyUtils.getKeySignature(scale));
+		
+		// minor scale
+		scale.clear();
+		scale.setNote(0, true);
+		scale.setNote(2, true);
+		scale.setNote(3, true);
+		scale.setNote(5, true);
+		scale.setNote(7, true);
+		scale.setNote(8, true);
+		scale.setNote(10, true);
+		
+		scale.setKeyName("A");
+		assertEquals(0, TGMusicKeyUtils.getKeySignature(scale));
+		
+		scale.setKeyName("C");
+		assertEquals(7+3, TGMusicKeyUtils.getKeySignature(scale));
+
 	}
 
 }
