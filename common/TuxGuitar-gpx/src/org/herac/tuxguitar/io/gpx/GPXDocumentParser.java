@@ -186,7 +186,7 @@ public class GPXDocumentParser {
 				}else if( gpTempoAutomation.getValue()[1] == 5 ){
 					tgTempo = (tgTempo + (tgTempo * 2));
 				}
-				tgMeasureHeader.getTempo().setValue( tgTempo );
+				tgMeasureHeader.getTempo().setQuarterValue( tgTempo );
 			}
 			
 			String markerText = mbar.getMarkerText();

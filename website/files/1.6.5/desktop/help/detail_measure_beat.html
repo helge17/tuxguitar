@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Measure and beat - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.5</p>
+  </div>
+  <div class="title">
+    <h1>Measure and beat</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><strong>Measure and beat</strong></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>Now we are going into the details: Edit measures, notes and tablatures.</p>
+    <h2>Measure navigation</h2>
+    <p>With the first four items in the <strong>Measure</strong> menu you can navigate through the song. You can also use keyboard <a href="tools_shortcuts.html#measure_navigation">shortcuts</a> for this.</p>
+    <h2>Edit measures</h2>
+    <p><strong>Measure → Add Measure</strong> adds one or more measures before or after the current cursor position or at the end of the song in all tracks, depending on your choice in the dialog that opens.</p>
+    <p><strong>Measure → Clean Measure</strong> removes all notes from the given measure(s) in the current track. The measure(s) itself will be preserved.</p>
+    <p><strong>Measure → Remove Measure</strong> removes the given measures(s) from all tracks. The song will in effect be shortened by the given number of measures(s).</p>
+    <img src="images/detail_a_c_r_measure.png" />
+    <p><strong>Measure → Copy Measure</strong> will copy the given measures(s) to the clipboard. If your song has more than one track, you can choose to copy the given measure(s) only from the current track or from all tracks. You can also specify whether the markers should be copied or not.</p>
+    <img src="images/detail_c_p_measure.png" />
+    <p><strong>Measure → Paste Measure</strong> will insert the previously copied measure(s) once or multiple times, depending on the given "Paste Count".</p>
+    <p>If you previously only copied measures from one single track, these measures will be inserted in the currently opened track at the current cursor position.</p>
+    <p>If you copied measure(s) from all tracks, then the notes and tablatures will be inserted in all tracks. If you paste the measure(s) into another song, the tracks will be filled up from the first to the last track, as long as there are tracks left in the destination song.</p>
+    <p>If you choose to paste the notes and tablatures into the current measure(s), all present content will be overwritten. In case you select "Paste in New Measure", the notes and tablatures will be pasted to newly inserted measure(s) after the current cursor position. Your song will now be longer than before.</p>
+    <h2 id="notes_beats">Notes and beats</h2>
+    <p>Finally, the <strong>Beat</strong> menu lets you edit the single sounds: Notes and tablatures.</p>
+    <h3 id="note_duration">Note Duration</h3>
+    <p>The note duration is set in the submenu <strong>Beat → Duration</strong> or the <strong>Duration</strong> edit toolbar section.</p>
+    <img src="images/duration.png" />
+    <p>The first seven entries simply change the selected note(s) to whatever you select, ranging from whole note to sixty-fourth note. This comes in handy if you need to make a change that is more than one note increment (i.e., quarter note to sixteenth note). You can alternately use the +/- keys on a standard numeric keypad to move one increment at a time.</p>
+    <p>If you do not understand the difference between the various note durations, you may want to research it a bit before you begin editing tabs, as you may find yourself quickly getting lost. Any basic music theory guide should cover these topics. A good starting place (as always) is the Wikipedia’s pages on music theory and music notation:</p>
+    <ul>
+      <li><b>https://en.wikipedia.org/wiki/Music_theory</b></li>
+      <li><b>https://en.wikipedia.org/wiki/List_of_musical_symbols</b></li>
+    </ul>
+    <p>The next two menu entries will change the note’s values to <strong>Dotted</strong> or <strong>Double-Dotted</strong>.</p>
+    <p>Clicking on the menu entry <strong>Tied Note</strong> or the next icon in the Duration toolbar will "tie" the currently selected note to the one before it. This feature basically takes the value of two notes and combines them into one. The most common use for this feature is when you have a note that begins in one measure and ends in the next. Tying notes is really just a way of keeping the score clean and organized. If you need more information, you may want to research musical notation via the links above.</p>
+    <p>The last entry contains a sub menu where you can select a wide variety of <strong>Division Types</strong> (<strong>Tuplets</strong>). A tuplet lets you divide a group of regular notes into a different number of shorter notes.</p>
+    <h3 id="note_dynamics">Note dynamic</h3>
+    <p>By selecting a different icon than the current in the <strong>Dynamic</strong> toolbar section or the <strong>Beat → Dynamic</strong> submenu, you change the dynamics of the note you are editing. They gradually scale from <em>Piano Pianissimo</em> (<strong>ppp</strong>), which is the most silent, to the <em>Forte Fortissimo</em> (<strong>fff</strong>) which is loudest.</p>
+    <img src="images/dynamic.png" />
+    <h3 id="note_effects">Note effects</h3>
+    <p>The effects in the <strong>Effects</strong> toolbar and the <strong>Beat → Effects</strong> submenu are applied to the note under the cursor positioned in the tab. Make sure you have enabled the tablature view to use these effects (menu <strong>View → Show Tablature</strong>).</p>
+    <img src="images/effects.png" />
+    <p>All note effects are described in detail on a <a href="edit_effects.html">separate page</a>.</p>
+    <h3 id="edit_beat">Edit the whole beat</h3>
+    <p><strong>Beat → Chord → Insert Chord</strong> (the first icon in the Beat toolbar) gives you access to the <a href="edit_chord.html">Chord Editor</a>. The Chord Editor is a handy time-saving tool used to search, build, and insert chord formations into your tablature.</p>
+    <img src="images/beat.png" />
+    <p>You can enter previously saved chords directly into your tablature from the Chord Library, accessible from the small down arrow on the right of the Chord Editor icon in the toolbar or from the <strong>Beat → Chord</strong> submenu:</p>
+    <img src="images/insert_named_chord.png" />
+    <p>The menu entry <strong>Beat → Insert Text</strong> (or the "<strong>T</strong>" icon) lets you add a text note to the selected beat. It is most often used as a note to the player or a comment to the tab. It is displayed above the note it is assigned to.</p>
+    <p>With <strong>Beat → Upstroke</strong>/<strong>Downstroke (brush)</strong> (or the two arrow icons) you can add a brush up- or downstroke to the selected beat.</p>
+    <h3 id="shift_beats">Shift beats around</h3>
+    <ul>
+      <li><strong>Beat → Insert Rest Beat</strong> inserts one rest before the current cursor position. This only works within a single measure in the current track as long as there is an empty beat at the end of the measure. All notes on the right of the cursor are shifted to the right.</li>
+      <li><strong>Beat → Delete Note or Rest</strong>: The result of this function depends on the content of the beat:</li>
+      <ul>
+        <li>If no notes are selected, only the note on the current cursor position is deleted.</li>
+        <li>If one or more entire beats are selected, all notes are deleted in the selected area.</li>
+        <li>If the selected beats are already empty (i.e. they only contain a pause), all notes on the right of the selection are shifted to the left. As "Insert Rest Beat", this function only works within one measure.</li>
+      </ul>
+      <li><strong>Beat → Clean Beat</strong>: Same as "Delete Note or Rest", but if the selected beats are already empty, it simply does nothing.</li><!-- <li><strong>Beat → Remove unused Voice</strong>: t.b.d.</li> -->
+      <li><strong>Beat → Auto Stems</strong>/<strong>Stems up</strong>/<strong>Stems down</strong>: Here you can control the orientation of the note stems. You can let TuxGuitar decide about the stem orientation or force the note stems in the beat where the cursor is to go up or down.</li>
+      <li><strong>Beat → Semitone up</strong>/<strong>down</strong>: These menu items shift all notes in the selected beats one semitone up or down, as long as all notes can be shifted.</li>
+      <li><strong>Beat → Shift one String up</strong>/<strong>down</strong> let you shift all selected notes one string up or down, but only if all selected notes can be shifted.</li>
+      <li><strong>Beat → Move one Beat left</strong>: Cleans the beat at the current cursor position in the current track and moves all beats after the cursor one beat to the left.</li>
+      <li><strong>Beat → Move one Beat right</strong>: Inserts a rest beat at the current cursor position and moves all beats after the cursor one beat to the right.</li>
+      <li><strong>Beat → Custom Beat Move</strong>: Here you can move all beats after the cursor to the left or to the right and also control the duration of the displacement.</li>
+    </ul>
+  </section>
+</body>
+</html>

@@ -1064,11 +1064,11 @@ public class TGMeasureImpl extends TGMeasure{
 			float imgX = x;
 			float imgY = (y - (Math.round(scale * 3.5f ) + 2));
 			
-			TGTempoPainter.paintTempo(painter, imgX, imgY, scale);
+			TGTempoPainter.paintTempo(painter, imgX, imgY, scale, getTempo().getBase(), getTempo().isDotted());
 			
 			layout.setTempoStyle(painter, true);
-			String value = (" = " + getTempo().getValue());
-			float fontX = x + (Math.round( (1.33f * scale) ) + 1 );
+			String value = (" = " + getTempo().getRawValue());
+			float fontX = x + (Math.round( (1.75f * scale) ) + 1 );
 			float fontY = (y - (0.75f * scale) + painter.getFMBaseLine());
 			painter.drawString(value , fontX, fontY);
 		}

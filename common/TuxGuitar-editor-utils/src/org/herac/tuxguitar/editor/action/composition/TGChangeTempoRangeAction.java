@@ -19,6 +19,8 @@ public class TGChangeTempoRangeAction extends TGActionBase {
 	
 	public static final String ATTRIBUTE_APPLY_TO = "applyTo";
 	public static final String ATTRIBUTE_TEMPO = "tempoValue";
+	public static final String ATTRIBUTE_TEMPO_BASE = "tempoBase";
+	public static final String ATTRIBUTE_TEMPO_BASE_DOTTED = "tempoBaseDotted";
 	
 	public static final int MIN_TEMPO = 30;
 	public static final int MAX_TEMPO = 320;
@@ -34,23 +36,25 @@ public class TGChangeTempoRangeAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		int applyTo = ((Integer) context.getAttribute(ATTRIBUTE_APPLY_TO)).intValue();
 		int tempoValue = ((Integer) context.getAttribute(ATTRIBUTE_TEMPO)).intValue();
+		int tempoBase = ((Integer) context.getAttribute(ATTRIBUTE_TEMPO_BASE)).intValue();
+		boolean tempoBaseDotted = ((Boolean) context.getAttribute(ATTRIBUTE_TEMPO_BASE_DOTTED)).booleanValue();
 		if( tempoValue >= MIN_TEMPO && MAX_TEMPO <= 320 ){
 			TGSongManager tgSongManager = getSongManager(context);
 			TGSong tgSong = ((TGSong) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG));
 			TGMeasureHeader tgHeader = (TGMeasureHeader) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 			TGTempo tgTempo = tgSongManager.getFactory().newTempo();
-			tgTempo.setValue(tempoValue);
+			tgTempo.setValueBase(tempoValue, tempoBase, tempoBaseDotted);
 			
 			long start = (applyTo == APPLY_TO_ALL ? TGDuration.QUARTER_TIME : ((TGMeasureHeader) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER)).getStart());
 			boolean toEnd = (applyTo == APPLY_TO_ALL || applyTo == APPLY_TO_END);
 			
 			TGMeasureHeader startHeader = tgSongManager.getMeasureHeaderAt(tgSong, start);
 			if( startHeader != null ) {
-				int oldValue = startHeader.getTempo().getValue();
+				TGTempo oldTempo = startHeader.getTempo();
 				Iterator<?> it = tgSongManager.getMeasureHeadersAfter(tgSong, startHeader.getNumber() - 1).iterator();
 				while(it.hasNext()){
 					TGMeasureHeader nextHeader = (TGMeasureHeader)it.next();
-					if( toEnd || nextHeader.getTempo().getValue() == oldValue ){
+					if( toEnd || nextHeader.getTempo().isEqual(oldTempo) ){
 						context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, nextHeader);
 						context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TEMPO, tgTempo);
 						

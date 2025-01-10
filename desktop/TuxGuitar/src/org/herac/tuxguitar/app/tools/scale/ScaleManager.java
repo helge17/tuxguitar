@@ -10,14 +10,13 @@ import org.herac.tuxguitar.event.TGEventManager;
 import org.herac.tuxguitar.resource.TGResourceManager;
 import org.herac.tuxguitar.song.models.TGScale;
 import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class ScaleManager {
 	
-	private static final String[] KEY_NAMES = TGMusicKeyUtils.sharpKeyNames;
+	private static final String[] KEY_NAMES = new String[]    {"C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A",  "A#", "Bb", "B"};
 	
 	private static final String KEY_SEPARATOR = ",";
 	
@@ -29,16 +28,16 @@ public class ScaleManager {
 	
 	private TGScale scale;
 	
-	private int selectionIndex;
+	private int scaleIndex;
 	
-	private int selectionKey;
+	private int selectionKeyIndex;
 	
 	private ScaleManager(TGContext context){
 		this.context = context;
 		this.scales = new ArrayList<ScaleInfo>();
 		this.scale = TuxGuitar.getInstance().getSongManager().getFactory().newScale();
-		this.selectionKey = 0;
-		this.selectionIndex = NONE_SELECTION;
+		this.selectionKeyIndex = 0;
+		this.scaleIndex = NONE_SELECTION;
 		this.loadScales();
 	}
 	
@@ -54,13 +53,13 @@ public class ScaleManager {
 		TGEventManager.getInstance(this.context).fireEvent(new ScaleEvent());
 	}
 	
-	public void selectScale(int index, int key){
-		if( index == NONE_SELECTION ){
+	public void selectScale(int scaleIndex, int keyIndex){
+		if( scaleIndex == NONE_SELECTION ){
 			getScale().clear();
 		}
-		else if(index >= 0 && index < this.scales.size()){
+		else if(scaleIndex >= 0 && scaleIndex < this.scales.size()){
 			getScale().clear();
-			ScaleInfo info = (ScaleInfo)this.scales.get(index);
+			ScaleInfo info = (ScaleInfo)this.scales.get(scaleIndex);
 			String[] keys = info.getKeys().split(KEY_SEPARATOR);
 			for (int i = 0; i < keys.length; i ++){
 				int note = (Integer.parseInt(keys[i]) - 1);
@@ -68,10 +67,10 @@ public class ScaleManager {
 					getScale().setNote(note,true);
 				}
 			}
-			getScale().setKey(key);
+			getScale().setKeyName(KEY_NAMES[keyIndex]);
 		}
-		this.selectionIndex = index;
-		this.selectionKey = key;
+		this.scaleIndex = scaleIndex;
+		this.selectionKeyIndex = keyIndex;
 		this.fireListeners();
 	}
 	
@@ -117,12 +116,12 @@ public class ScaleManager {
 		return KEY_NAMES;
 	}
 	
-	public int getSelectionIndex() {
-		return this.selectionIndex;
+	public int getScaleIndex() {
+		return this.scaleIndex;
 	}
 	
-	public int getSelectionKey() {
-		return this.selectionKey;
+	public int getSelectionKeyIndex() {
+		return this.selectionKeyIndex;
 	}
 	
 	private void loadScales(){

@@ -320,7 +320,7 @@ public class TGSongReaderImpl implements TGSongReader {
 	
 	private void readTempo(TGTempo tempo){
 		//leo el valor
-		tempo.setValue(readInt());
+		tempo.setQuarterValue(readInt());
 	}
 	
 	private void readTimeSignature(TGTimeSignature timeSignature){

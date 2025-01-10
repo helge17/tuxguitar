@@ -569,7 +569,7 @@ function copy_to_github {
       RELEASE_TYPE=--prerelease
     fi
     REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
-    gh release create $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
+    gh release create --target $GIT_BRANCH $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
     echo "# OK."
@@ -647,9 +647,9 @@ echo "### Host: "`hostname -s`" ################################################
 mkdir -p $DIST_DIR
 
 # Check and prepare source code
-[ $TGVERSION == $TGSRCVER ] && release_checks_before_prepare_source
+[ `uname` == Linux ] && [ "$TGVERSION" == "$TGSRCVER" ] && release_checks_before_prepare_source
 prepare_source
-[ $TGVERSION == $TGSRCVER ] && release_checks_after_prepare_source
+[ `uname` == Linux ] && [ "$TGVERSION" == "$TGSRCVER" ] && release_checks_after_prepare_source
 
 # First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
 

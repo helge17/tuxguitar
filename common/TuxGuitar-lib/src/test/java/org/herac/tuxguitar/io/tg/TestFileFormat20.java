@@ -43,6 +43,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGStroke;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
@@ -73,10 +74,12 @@ public class TestFileFormat20 {
 	}
 	
 	@Test
-	public void testXmlCanBeExtended() throws FileNotFoundException {
-		assertTrue(validatesSchema("test_extended_21.xml", false));
-		assertTrue(validatesSchema("Untitled_extended_21.xml", false));
+	public void testXmlCanBeExtended() throws IOException {
+		TGSongReaderHandle handle = readSong("Untitled_extended_21.xml", false);
+		assertNotNull(handle.getSong());
 		assertTrue(detectsFormat("Untitled_extended_21.tg"));
+		handle = readSong("Untitled_extended_21.tg", true);
+		assertNotNull(handle.getSong());
 	}
 	
 	@Test
@@ -197,7 +200,7 @@ public class TestFileFormat20 {
 		// header 1
 		TGMeasureHeader header = headers.next();
 		assertEquals(song, header.getSong());
-		assertEquals(110, header.getTempo().getValue());
+		assertEquals(110, header.getTempo().getQuarterValue());
 		assertEquals(3, header.getTimeSignature().getNumerator());
 		assertEquals(8, header.getTimeSignature().getDenominator().getValue());
 		assertTrue(header.isRepeatOpen());
@@ -208,7 +211,7 @@ public class TestFileFormat20 {
 		// header 2
 		assertTrue(headers.hasNext());
 		header = headers.next();
-		assertEquals(110, header.getTempo().getValue());
+		assertEquals(110, header.getTempo().getQuarterValue());
 		assertEquals(3, header.getTimeSignature().getNumerator());
 		assertEquals(8, header.getTimeSignature().getDenominator().getValue());
 		assertFalse(header.isRepeatOpen());
@@ -226,7 +229,7 @@ public class TestFileFormat20 {
 		// header 3
 		assertTrue(headers.hasNext());
 		header = headers.next();
-		assertEquals(40, header.getTempo().getValue());
+		assertEquals(40, header.getTempo().getQuarterValue());
 		assertEquals(1, header.getRepeatClose());
 		assertEquals(TGMeasureHeader.TRIPLET_FEEL_EIGHTH,header.getTripletFeel());
 		// header 4
@@ -507,6 +510,29 @@ public class TestFileFormat20 {
 		song = readFromXml(bufferXml, factory);
 		note = song.getTrack(0).getMeasure(1).getBeat(0).getVoice(0).getNote(0);
 		assertTrue(note.isAltEnharmonic());
+	}
+	
+	@Test
+	public void testTempoBase() throws IOException {
+		TGFactory factory = new TGFactory();
+		TGSongReaderHandle handle = readSong("reference_20.tg", true);
+		TGSong song = handle.getSong();
+		song.getMeasureHeader(10).getTempo().setValueBase(60, TGDuration.HALF, false);
+		song.getMeasureHeader(20).getTempo().setValueBase(40, TGDuration.EIGHTH, true);
+		// save, and re-read
+		byte[] bufferXml = saveToXml(song, factory);
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		song = readFromXml(bufferXml, factory);
+		
+		TGTempo tempo = song.getMeasureHeader(10).getTempo();
+		assertEquals(60, tempo.getRawValue());
+		assertEquals(TGDuration.HALF, tempo.getBase());
+		assertFalse(tempo.isDotted());
+		
+		tempo = song.getMeasureHeader(20).getTempo();
+		assertEquals(40, tempo.getRawValue());
+		assertEquals(TGDuration.EIGHTH, tempo.getBase());
+		assertTrue(tempo.isDotted());
 	}
 	
 	private byte[] saveToXml(TGSong song, TGFactory factory) {

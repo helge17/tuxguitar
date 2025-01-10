@@ -18,6 +18,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.io.IOUtils;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
+import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -75,6 +76,8 @@ public class TGStream {
 	protected static final String TAG_NUMERATOR = "numerator";
 	protected static final String TAG_DENOMINATOR = "denominator";
 	protected static final String TAG_TEMPO = "tempo";
+	protected static final String TAG_TEMPO_BASE = "base";
+	protected static final String TAG_TEMPO_DOTTED = "dotted";
 	protected static final String TAG_REPEAT_OPEN = "repeatOpen";
 	protected static final String TAG_REPEAT_CLOSE = "repeatClose";
 	protected static final String TAG_REPEAT_ALTERNATIVE = "repeatAlternative";
@@ -207,9 +210,9 @@ public class TGStream {
 		this.mapWriteTransition = this.revertMap(this.mapReadTransition);
 		
 		this.mapReadGraceDuration = new HashMap<Integer, Integer>();
-		this.mapReadGraceDuration.put(64, 1);
-		this.mapReadGraceDuration.put(32, 2);
-		this.mapReadGraceDuration.put(16, 3);
+		this.mapReadGraceDuration.put(TGDuration.SIXTY_FOURTH, TGEffectGrace.DURATION_SIXTY_FOURTH);
+		this.mapReadGraceDuration.put(TGDuration.THIRTY_SECOND, TGEffectGrace.DURATION_THIRTY_SECOND);
+		this.mapReadGraceDuration.put(TGDuration.SIXTEENTH, TGEffectGrace.DURATION_SIXTEENTH);
 		this.mapWriteGraceDuration = this.revertMap(this.mapReadGraceDuration);
 	}
 	

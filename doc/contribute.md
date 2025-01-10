@@ -99,7 +99,7 @@ Then you should be able to build and run application with dedicated buttons in t
 
 TuxGuitar is available in different flavors:
 
-- platform: FreeBSD, Linux (.tar.gz), Linux (.deb), MacOS, Windows (standalone version), Windows (installable version);
+- platform: FreeBSD, Linux (.tar.gz), Linux (.deb), macOS, Windows (standalone version), Windows (installable version);
 - UI framework: SWT, JavaFX.
 
 Note: only the SWT variants are included in the official releases, JavaFX variants support is not guaranteed.
@@ -143,7 +143,7 @@ In the next step, you will probably only **see the master branch. It has to been
 
 <img src="images/contribute/eclipse-git-clone-step2.png" width="50%" alt="Git Clone Step 2, Select branches">
 
-As a last step, you have to choose where on your local drive the repo should be placed. In my case, I created a folder named "git" in my Eclipse workspace.
+As a last step, you have to choose where on your local drive the repo should be placed. In my case, I created a folder named "git" in my Eclipse workspace. Make sure the absolute path to your project folder only contains ascii characters (no accented characters, etc.), else the unit tests will fail at build stage.
 
 <img src="images/contribute/eclipse-git-clone-step3.png" width="50%" alt="Git Clone Step 3, Select local folder">
 

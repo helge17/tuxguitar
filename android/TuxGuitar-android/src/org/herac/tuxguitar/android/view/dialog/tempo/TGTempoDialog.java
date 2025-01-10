@@ -51,7 +51,7 @@ public class TGTempoDialog extends TGModalFragment {
 		
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.tempo_dlg_tempo_value);
 		spinner.setAdapter(arrayAdapter);
-		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(tempo.getValue())));
+		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(tempo.getRawValue())));
 
 		int applyToDefault = TGChangeTempoRangeAction.APPLY_TO_ALL;
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.tempo_dlg_options_apply_to_song), TGChangeTempoRangeAction.APPLY_TO_ALL, applyToDefault);
@@ -97,6 +97,8 @@ public class TGTempoDialog extends TGModalFragment {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, this.getHeader());
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO, this.parseTempoValue());
+		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE, this.getHeader().getTempo().getBase());
+		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE_DOTTED, this.getHeader().getTempo().isDotted());
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_APPLY_TO, this.parseApplyTo());
 		tgActionProcessor.processOnNewThread();
 	}

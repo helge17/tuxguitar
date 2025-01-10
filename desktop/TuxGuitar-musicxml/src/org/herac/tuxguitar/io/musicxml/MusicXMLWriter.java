@@ -2,8 +2,10 @@ package org.herac.tuxguitar.io.musicxml;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,6 +31,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVoice;
@@ -46,6 +49,7 @@ import org.w3c.dom.Node;
 public class MusicXMLWriter {
 	
 	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
+	private Map<Integer, String> durations;	// duration name per TGDuration value
 	
 	private static final int DURATION_DIVISIONS = (int)TGDuration.QUARTER_TIME;
 	
@@ -67,6 +71,12 @@ public class MusicXMLWriter {
 	
 	public MusicXMLWriter(OutputStream stream){
 		this.stream = stream;
+		this.durations = new HashMap<Integer, String>();
+		this.durations.put(TGDuration.WHOLE, DURATION_NAMES[0]);
+		this.durations.put(TGDuration.HALF, DURATION_NAMES[1]);
+		this.durations.put(TGDuration.QUARTER, DURATION_NAMES[2]);
+		this.durations.put(TGDuration.EIGHTH, DURATION_NAMES[3]);
+		this.durations.put(TGDuration.SIXTEENTH, DURATION_NAMES[4]);
 	}
 	
 	public void writeSong(TGSong song) throws TGFileFormatException{
@@ -321,14 +331,18 @@ public class MusicXMLWriter {
 	}
 	
 	private void writeDirection(Node parent, TGMeasure measure, TGMeasure previous){
-		boolean tempoChanges = (previous == null || measure.getTempo().getValue() != previous.getTempo().getValue());
+		boolean tempoChanges = (previous == null || !measure.getTempo().isEqual(previous.getTempo()));
 		
 		if(tempoChanges){
 			Node direction = this.addAttribute(this.addNode(parent,"direction"),"placement","above");
 			Node directionType = this.addNode(direction, "direction-type");
 			Node metronome = this.addNode(directionType, "metronome");
-			this.addNode(metronome, "beat-unit", "quarter");
-			this.addNode(metronome, "per-minute", String.valueOf(measure.getTempo().getValue()));
+			TGTempo tempo = measure.getTempo();
+			this.addNode(metronome, "beat-unit", this.durations.get(tempo.getBase()));
+			if (tempo.isDotted()) {
+				this.addNode(metronome, "beat-unit-dot");
+			}
+			this.addNode(metronome, "per-minute", String.valueOf(measure.getTempo().getRawValue()));
 		}
 	}
 	

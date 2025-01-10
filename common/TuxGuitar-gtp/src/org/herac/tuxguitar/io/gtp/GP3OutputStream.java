@@ -56,7 +56,7 @@ public class GP3OutputStream extends GTPOutputStream {
 			writeStringByte(GP3_VERSION, 30, DEFAULT_VERSION_CHARSET);
 			writeInfo(song);
 			writeBoolean( (header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH) );
-			writeInt(header.getTempo().getValue());
+			writeInt(header.getTempo().getQuarterValue());
 			writeInt(translateKeySignature(0));
 			writeChannels(song);
 			writeInt(song.countMeasureHeaders());
@@ -118,7 +118,7 @@ public class GP3OutputStream extends GTPOutputStream {
 			for (int j = 0; j < song.countTracks(); j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = track.getMeasure(i);
-				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
+				writeMeasure(measure, (header.getTempo().getQuarterValue() != tempo.getQuarterValue()) );
 			}
 			tempo.copyFrom( header.getTempo() );
 		}
@@ -456,7 +456,7 @@ public class GP3OutputStream extends GTPOutputStream {
 		for (int i = 0; i < 7; i++) {
 			writeByte((byte) -1);
 		}
-		writeInt(tempo.getValue());
+		writeInt(tempo.getQuarterValue());
 		writeByte((byte) 0);
 	}
 	

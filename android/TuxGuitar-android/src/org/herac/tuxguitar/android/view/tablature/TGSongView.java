@@ -229,7 +229,7 @@ public class TGSongView extends View {
 	public UIPainter createBufferedPainter(UIRectangle area) {
 		if( this.bufferedBitmap == null || this.bufferedBitmap.getWidth() != area.getWidth() || this.bufferedBitmap.getHeight() != area.getHeight() ) {
 			this.recycleBuffer();
-			this.bufferedBitmap = Bitmap.createBitmap(Math.round(area.getWidth()), Math.round(area.getHeight()), Bitmap.Config.ARGB_4444);
+			this.bufferedBitmap = Bitmap.createBitmap(Math.round(area.getWidth()), Math.round(area.getHeight()), Bitmap.Config.ARGB_8888);
 		}
 		return createPainter(new Canvas(this.bufferedBitmap));
 	}

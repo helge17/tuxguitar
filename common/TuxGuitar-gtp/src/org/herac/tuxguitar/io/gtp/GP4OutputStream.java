@@ -70,7 +70,7 @@ public class GP4OutputStream extends GTPOutputStream{
 			writeInfo(song);
 			writeBoolean( (header.getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH) );
 			writeLyrics(song);
-			writeInt(header.getTempo().getValue());
+			writeInt(header.getTempo().getQuarterValue());
 			writeInt(translateKeySignature(0));
 			writeByte((byte)0);
 			writeChannels(song);
@@ -121,7 +121,7 @@ public class GP4OutputStream extends GTPOutputStream{
 			for (int j = 0; j < song.countTracks(); j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = track.getMeasure(i);
-				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
+				writeMeasure(measure, (header.getTempo().getQuarterValue() != tempo.getQuarterValue()) );
 			}
 			tempo.copyFrom( header.getTempo() );
 		}
@@ -606,7 +606,7 @@ public class GP4OutputStream extends GTPOutputStream{
 		for (int i = 0; i < 7; i++) {
 			writeByte((byte) -1);
 		}
-		writeInt(tempo.getValue());
+		writeInt(tempo.getQuarterValue());
 		writeByte((byte) 0);
 		writeUnsignedByte(1);
 	}

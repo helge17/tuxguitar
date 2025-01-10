@@ -32,6 +32,7 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGChannelParameter;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDivisionType;
+import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
@@ -125,7 +126,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		while (tracks.hasNext()) {
 			this.writeTrack(tracks.next(), this.addNode(nodeSong, TAG_TGTRACK));
 		}
-		this.addNode(nodeSong, "songExtension");
 	}
 	
 	private void writeChannel(TGChannel channel, Node nodeChannel) {
@@ -146,14 +146,19 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.addAttribute(nodeParameter, TAG_KEY, parameter.getKey());
 			this.addAttribute(nodeParameter, TAG_VALUE, parameter.getValue());
 		}
-		this.addNode(nodeChannel, "channelExtension");
 	}
 	
 	private void writeMeasureHeader(TGMeasureHeader header, Node nodeMeasureHeader) {
 		Node node = this.addNode(nodeMeasureHeader, TAG_TIME_SIGNATURE);
 		this.addAttributeInt(node, TAG_NUMERATOR ,header.getTimeSignature().getNumerator());
 		this.addAttributeInt(node, TAG_DENOMINATOR ,header.getTimeSignature().getDenominator().getValue());
-		this.addNodeInt(nodeMeasureHeader, TAG_TEMPO, header.getTempo().getValue());
+		Node nodeTempo = this.addNodeInt(nodeMeasureHeader, TAG_TEMPO, header.getTempo().getRawValue());
+		if (header.getTempo().getBase() != TGDuration.QUARTER) {
+			this.addAttributeInt(nodeTempo, TAG_TEMPO_BASE, header.getTempo().getBase());
+		}
+		if (header.getTempo().isDotted()) {
+			this.addAttribute(nodeTempo, TAG_TEMPO_DOTTED, "true");
+		}
 		if (header.isRepeatOpen()) {
 			this.addNode(nodeMeasureHeader, TAG_REPEAT_OPEN);
 		}
@@ -185,7 +190,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (header.isLineBreak()) {
 			this.addNode(nodeMeasureHeader, TAG_LINE_BREAK);
 		}
-		this.addNode(nodeMeasureHeader, "measureHeaderExtension");
 	}
 	
 	private void writeTrack(TGTrack track, Node nodeTrack) {
@@ -213,7 +217,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		this.addAttributeInt(nodeLyric, TAG_FROM, track.getLyrics().getFrom());
 		this.writeMeasures(track.getMeasures(), nodeTrack);
 		
-		this.addNode(nodeTrack, "trackExtension");
 	}
 	
 	private void writeMeasures(Iterator<TGMeasure> measures, Node nodeTrack) {
@@ -231,7 +234,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			for (TGBeat beat : beats) {
 				this.writeBeat(beat, this.addNode(nodeMeasure, TAG_TGBEAT));
 			}
-			this.addNode(nodeMeasure, "measureExtension");
 			precedingMeasure = measure;
 		}
 	}
@@ -256,7 +258,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 					this.addNode(nodeChord, TAG_STRING);
 				}
 			}
-			this.addNode(nodeChord, "chordExtension");
 		}
 		if ((beat.getText()!=null) && !beat.getText().getValue().equals("")) {
 			this.addNode(nodeBeat, TAG_TEXT, beat.getText().getValue());
@@ -264,7 +265,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		for (int i=0; i<TGBeat.MAX_VOICES; i++) {
 			this.writeVoice(beat.getVoice(i), this.addNode(nodeBeat, TAG_VOICE));
 		}
-		this.addNode(nodeBeat, "beatExtension");
 	}
 	
 	private void writeVoice (TGVoice voice, Node nodeVoice) {
@@ -292,7 +292,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (voice.getDirection() != TGVoice.DIRECTION_NONE) {
 			this.addAttribute(nodeVoice, TAG_DIRECTION, mapWriteDirection.get(voice.getDirection()));
 		}
-		this.addNode(nodeVoice, "voiceExtension");
 	}
 	
 	private void writeNote(TGNote note, TGNote previousNote, Node nodeNote) {
@@ -354,7 +353,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (note.isAltEnharmonic()) {
 			this.addNode(nodeNote, TAG_ALT_ENHARMONIC);
 		}
-		this.addNode(nodeNote, "noteExtension");
 		this.addAttributeInt(nodeNote, TAG_VALUE, note.getValue());
 		this.addAttributeInt(nodeNote, TAG_STRING, note.getString());
 		if (note.isTiedNote()) {

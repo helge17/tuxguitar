@@ -11,6 +11,7 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
 import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGSong;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.util.TGContext;
 import org.junit.jupiter.api.Test;
 
@@ -25,13 +26,13 @@ public class TestSequenceParser {
 		MidiSequenceHandlerImpl seqHandler = new MidiSequenceHandlerImpl(sequencer,1);
 		parser.parse(seqHandler);
 		
-		TreeMap<Long,Integer> tempoMap = parser.getTempoMap();
+		TreeMap<Long,TGTempo> tempoMap = parser.getTempoMap();
 		assertEquals(4, tempoMap.size());
 		Long quarterTime = TGDuration.QUARTER_TIME;
-		assertEquals(110, tempoMap.get(quarterTime));	// measure 1
-		assertEquals(130, tempoMap.get(quarterTime*8));	// measure 3
-		assertEquals(160, tempoMap.get(quarterTime*29));	// measure 6 (repeatx2 => measures 3 and 4 are played 3 times)
-		assertEquals(180, tempoMap.get(quarterTime*34));	// measure 8
+		assertEquals(110, tempoMap.get(quarterTime).getRawValue());	// measure 1
+		assertEquals(130, tempoMap.get(quarterTime*8).getRawValue());	// measure 3
+		assertEquals(160, tempoMap.get(quarterTime*29).getRawValue());	// measure 6 (repeatx2 => measures 3 and 4 are played 3 times)
+		assertEquals(180, tempoMap.get(quarterTime*34).getRawValue());	// measure 8
 		
 		TreeMap<Long,Long> timestampMap = parser.getTimestampMap();
 		assertEquals(4, tempoMap.size());

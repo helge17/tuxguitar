@@ -3,6 +3,7 @@ package org.herac.tuxguitar.android.properties;
 import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import androidx.core.content.pm.PackageInfoCompat;
 
 public class TGSharedPreferencesUtil {
 	
@@ -15,7 +16,8 @@ public class TGSharedPreferencesUtil {
 		try {
 			PackageInfo packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
 			if( packageInfo != null ) {
-				prefix.append("-" + packageInfo.versionCode);
+				prefix.append("-" + PackageInfoCompat.getLongVersionCode(packageInfo));
+
 			}
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace();

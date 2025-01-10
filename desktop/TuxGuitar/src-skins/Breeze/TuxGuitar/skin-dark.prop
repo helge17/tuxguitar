@@ -1,0 +1,27 @@
+# tracks table configurable colors: R,G,B
+#table.caret=
+#table.even-line.background=
+#table.even-line.foreground=
+#table.odd-line.background=
+#table.odd-line.foreground=
+#table.cell.background=
+#table.cell.rest-measure=
+#
+#widget.chordEditor.backgroundColor=${uiInputBackground}
+#widget.chordEditor.foregroundColor=${uiInputForeground}
+#widget.chordEditor.selectionColor=${uiInputSelectedBackground}
+#widget.chordEditor.tonicColor=128,0,0
+#
+#widget.bendEditor.backgroundColor=${uiInputBackground}
+#widget.bendEditor.border=${uiInputForeground}
+#widget.bendEditor.bendPoint=${uiInputForeground}
+#widget.bendEditor.bendLine=128,128,128
+#
+#widget.bendEditor.line.1=128,128,128
+#widget.bendEditor.line.2=128,0,0
+#widget.bendEditor.line.3=0,0,128
+#
+#widget.printPreview.backgroundColor=${uiWidgetBackground}
+#
+widget.transport.backgroundColor=240,240,240
+widget.transport.foregroundColor=0,0,0

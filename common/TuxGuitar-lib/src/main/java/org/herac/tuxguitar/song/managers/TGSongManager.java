@@ -500,11 +500,11 @@ public class TGSongManager {
 	}
 	
 	public void changeTempos(TGSong song, TGMeasureHeader header,TGTempo tempo,boolean toEnd){
-		int oldValue = header.getTempo().getValue();
+		TGTempo oldTempo = header.getTempo();
 		Iterator<TGMeasureHeader> it = getMeasureHeadersAfter(song, header.getNumber() - 1).iterator();
 		while(it.hasNext()){
 			TGMeasureHeader nextHeader = it.next();
-			if(toEnd || nextHeader.getTempo().getValue() == oldValue){
+			if(toEnd || nextHeader.getTempo().isEqual(oldTempo)){
 				changeTempo(nextHeader,tempo);
 			}else{
 				break;

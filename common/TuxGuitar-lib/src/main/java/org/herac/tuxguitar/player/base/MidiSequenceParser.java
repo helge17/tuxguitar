@@ -53,7 +53,7 @@ public class MidiSequenceParser {
 	private int transpose;
 	private int sHeader;
 	private int eHeader;
-	private TreeMap<Long, Integer> tempoMap;	// ordered map of ticks where tempo changes
+	private TreeMap<Long, TGTempo> tempoMap;	// ordered map of ticks where tempo changes
 	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (in ms) where tempo changes
 	
 	public MidiSequenceParser(TGSong song, TGSongManager songManager, int flags) {
@@ -65,7 +65,7 @@ public class MidiSequenceParser {
 		this.sHeader = -1;
 		this.eHeader = -1;
 		this.firstTickMove = (int) ((flags & ADD_FIRST_TICK_MOVE) != 0 ? -TGDuration.QUARTER_TIME : 0);
-		this.tempoMap = new TreeMap<Long, Integer>();
+		this.tempoMap = new TreeMap<Long, TGTempo>();
 		this.timestampMap = new TreeMap<Long, Long>();
 	}
 	
@@ -77,7 +77,7 @@ public class MidiSequenceParser {
 		return this.metronomeTrack;
 	}
 	
-	public TreeMap<Long, Integer> getTempoMap() {
+	public TreeMap<Long, TGTempo> getTempoMap() {
 		return this.tempoMap;
 	}
 	
@@ -126,8 +126,13 @@ public class MidiSequenceParser {
 		
 		this.addDefaultMessages(helper, this.song);
 		
+		boolean existsSoloTrack = false;
 		for (int i = 0; i < this.song.countTracks(); i++) {
-			addTrack(helper, this.song.getTrack(i));
+			existsSoloTrack |= this.song.getTrack(i).isSolo();
+		}
+		for (int i = 0; i < this.song.countTracks(); i++) {
+			TGTrack track = this.song.getTrack(i);
+			addTrack(helper, track, !track.isMute() && (!existsSoloTrack || track.isSolo()));
 		}
 		sequence.notifyFinish();
 	}
@@ -145,7 +150,7 @@ public class MidiSequenceParser {
 		}
 	}
 	
-	private void addTrack(MidiSequenceHelper sh, TGTrack track) {
+	private void addTrack(MidiSequenceHelper sh, TGTrack track, boolean shallPlay) {
 		TGChannel tgChannel = this.songManager.getChannel(this.song, track.getChannelId() );
 		if( tgChannel != null ){
 			TGMeasure previous = null;
@@ -163,9 +168,10 @@ public class MidiSequenceParser {
 					addTempo(sh,measure, previous, mh.getMove());
 					addMetronome(sh,measure.getHeader(), mh.getMove() );
 				}
-				//agrego los pulsos
-				addBeats( sh, tgChannel, track, measure, mIndex, mh.getMove() );
-				
+				if (shallPlay) {
+					//agrego los pulsos
+					addBeats( sh, tgChannel, track, measure, mIndex, mh.getMove() );
+				}
 				previous = measure;
 			}
 		}
@@ -205,8 +211,8 @@ public class MidiSequenceParser {
 						addFadeIn(sh,track.getNumber(), start, duration, tgChannel.getVolume(), channel);
 					}
 					//---Grace---
-					if(note.getEffect().isGrace() && !percussionChannel ){
-						bendMode = true;
+					if(note.getEffect().isGrace()) {
+						bendMode = !percussionChannel;
 						int graceKey = track.getOffset() + note.getEffect().getGrace().getFret() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue();
 						int graceLength = note.getEffect().getGrace().getDurationTime();
 						int graceVelocity = note.getEffect().getGrace().getDynamic();
@@ -514,11 +520,11 @@ public class MidiSequenceParser {
 				this.timestampMap.put(tick, 0l);
 			} else {
 				long t = this.timestampMap.lastEntry().getValue();
-				Map.Entry<Long,Integer> lastTempoEntry = this.tempoMap.lastEntry();
-				t += 60l*1000l*(tick - lastTempoEntry.getKey()) / TGDuration.QUARTER_TIME / lastTempoEntry.getValue();
+				Map.Entry<Long,TGTempo> lastTempoEntry = this.tempoMap.lastEntry();
+				t += lastTempoEntry.getValue().getTicksInMillis(tick - lastTempoEntry.getKey());
 				this.timestampMap.put(tick,t);
 			}
-			this.tempoMap.put(tick, currMeasure.getTempo().getValue());
+			this.tempoMap.put(tick, currMeasure.getTempo());
 		}
 	}
 	
@@ -599,7 +605,7 @@ public class MidiSequenceParser {
 	}
 	
 	private long applyStaticDuration(TGTempo tempo, long duration, long maximum ){
-		long value = ( tempo.getValue() * duration / 60 );
+		long value = ( tempo.getQuarterValue() * duration / 60 );
 		return (value < maximum ? value : maximum );
 	}
 	

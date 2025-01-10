@@ -32,7 +32,6 @@
             <name>ChannelName</name>
             <TGChannelParameter key="param1.key" value="param1.value"/>
             <TGChannelParameter key="param2.key" value="param2.value"/>
-            <channelExtension/>
         </TGChannel>
         <TGChannel>
             <id>2</id>
@@ -45,13 +44,11 @@
             <phaser>0</phaser>
             <tremolo>0</tremolo>
             <name>ChannelName2</name>
-            <channelExtension/>
         </TGChannel>
         <TGMeasureHeader>
             <timeSignature numerator="3" denominator="8"/>
             <tempo>110</tempo>
             <repeatOpen/>
-            <measureHeaderExtension/>
         </TGMeasureHeader>
         <TGMeasureHeader>
             <repeatAlternative>
@@ -59,16 +56,13 @@
                 <alternative>3</alternative>
             </repeatAlternative>
             <marker R="255" G="1" B="2">header2.marker</marker>
-            <measureHeaderExtension/>
         </TGMeasureHeader>
         <TGMeasureHeader>
             <tempo>40</tempo>
             <repeatClose>1</repeatClose>
             <tripletFeel>eighth</tripletFeel>
-            <measureHeaderExtension/>
         </TGMeasureHeader>
         <TGMeasureHeader>
-            <measureHeaderExtension/>
         </TGMeasureHeader>
         <TGTrack>
             <name>Track1.name</name>
@@ -95,7 +89,6 @@
                         <string>4</string>
                         <string>2</string>
                         <string/>
-                        <chordExtension/>
                     </chord>
                     <text>Beat1.text</text>
                     <voice direction="up">
@@ -104,80 +97,60 @@
                             <vibrato/>
                             <deadNote/>
                             <ghostNote/>
-                            <noteExtension/>
                         </note>
                         <note value="1" string="2" tiedNote="true">
                             <heavyAccentuatedNote/>
-                            <noteExtension/>
                         </note>
                         <note value="3" string="3">
                             <bend>
                                 <point position="1" value="2"/>
                                 <point position="3" value="4"/>
                             </bend>
-                            <noteExtension/>
                         </note>
                         <note value="4" string="4">
                             <tremoloBar>
                                 <point position="5" value="6"/>
                                 <point position="7" value="8"/>
                             </tremoloBar>
-                            <noteExtension/>
                         </note>
                         <note value="5" string="5">
                             <harmonic type="A.H" data="12"/>
-                            <noteExtension/>
                         </note>
                         <note value="6" string="6">
                             <grace fret="5" duration="64" dynamic="50" transition="slide" onBeat="true" dead="false"/>
-                            <noteExtension/>
                         </note>
-                        <voiceExtension/>
                     </voice>
                     <voice>
                         <duration value="2">
                             <divisionType enters="3" times="2"/>
                         </duration>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
                     <preciseStart>1000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
                     <preciseStart>2000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
                     <preciseStart>3000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
-            <trackExtension/>
         </TGTrack>
         <TGTrack>
             <name>Track2.name</name>
@@ -193,54 +166,38 @@
                         <duration value="8"/>
                         <note value="1" string="2">
                             <trill fret="3" duration="32"/>
-                            <noteExtension/>
                         </note>
                         <note value="2" string="3">
                             <tremoloPicking duration="16"/>
-                            <noteExtension/>
                         </note>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
                     <preciseStart>5000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
                     <preciseStart>6000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
                     <preciseStart>7000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
-                        <voiceExtension/>
                     </voice>
-                    <beatExtension/>
                 </TGBeat>
-                <measureExtension/>
             </TGMeasure>
-            <trackExtension/>
         </TGTrack>
-        <songExtension/>
     </TGSong>
 
 </TuxGuitarFile>

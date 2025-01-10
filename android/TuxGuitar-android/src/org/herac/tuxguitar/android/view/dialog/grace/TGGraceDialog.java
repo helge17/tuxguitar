@@ -158,9 +158,9 @@ public class TGGraceDialog extends TGModalFragment {
 			selection = note.getEffect().getGrace().getDuration();
 		}
 		
-		this.fillDuration(R.id.grace_dlg_duration_16, 1, selection);
-		this.fillDuration(R.id.grace_dlg_duration_32, 2, selection);
-		this.fillDuration(R.id.grace_dlg_duration_64, 3, selection);
+		this.fillDuration(R.id.grace_dlg_duration_16, TGEffectGrace.DURATION_SIXTEENTH, selection);
+		this.fillDuration(R.id.grace_dlg_duration_32, TGEffectGrace.DURATION_THIRTY_SECOND, selection);
+		this.fillDuration(R.id.grace_dlg_duration_64, TGEffectGrace.DURATION_SIXTY_FOURTH, selection);
 	}
 
 	public void fillDuration(int id, int value, int selection) {
@@ -170,7 +170,7 @@ public class TGGraceDialog extends TGModalFragment {
 	}
 	
 	public int findSelectedDuration() {
-		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_duration_group), 1);
+		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_duration_group), TGEffectGrace.DURATION_SIXTEENTH);
 	}
 	
 	public void fillDynamics() {
