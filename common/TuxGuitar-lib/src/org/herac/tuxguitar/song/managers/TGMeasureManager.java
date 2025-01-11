@@ -1906,9 +1906,13 @@ public class TGMeasureManager {
 						if( chord.getFretValue( chordString ) >= 0 ){
 							transposeChordNote(chord, chordString, strings, transposition, tryKeepString, false, maxFret);
 						}
-						chord.setFirstFret( -1 );
 					}
 				}
+			}
+			if( applyToChord && beat.isChordBeat() ){
+				TGChord chord = beat.getChord();
+				chord.setFirstFret( -1 );
+				chord.setName("");
 			}
 		}
 	}
