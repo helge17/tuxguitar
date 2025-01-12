@@ -16,6 +16,7 @@ import org.herac.tuxguitar.ui.resource.UIFont;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import org.herac.tuxguitar.util.TGMessagesManager;
 
 public class TGPrintLayout extends TGLayout {
 	
@@ -135,70 +136,96 @@ public class TGPrintLayout extends TGLayout {
 			if( songName != null && songName.length() > 0 ){
 				painter.setFont(getSongNameFont());
 				painter.drawString(songName,(x + getCenter(painter,songName)), (fmTopLine + y));
-				
 				headerOffset += (20.0f * getScale());
 			}
 			
-			if( artistName != null && artistName.length() > 0 ) {
+			if (artistName != null && artistName.length() > 0) {
+
 				painter.setFont(getArtistFont());
-				painter.drawString(artistName,(x + getCenter(painter, artistName)), (fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (10.0f * getScale());
+				painter.drawString(
+					artistName,
+					x + getCenter(painter, artistName),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 10.0f * getScale();
 			}
 
-			if( (albumName != null && albumName.length() > 0) || 
-					(releaseYear != null && releaseYear.length() > 0) ) {
+			if ((albumName != null && albumName.length() > 0) || 
+				(releaseYear != null && releaseYear.length() > 0)) {
+
 				String albumNameReleaseYear = "";
-				
-				if( albumName != null && albumName.length() > 0)
-					albumNameReleaseYear += "Recorded on " + albumName + " ";
-				
-				if( releaseYear != null && releaseYear.length() > 0)
+				if( albumName != null && albumName.length() > 0 )
+					albumNameReleaseYear += TGMessagesManager.getProperty("composition.album") + " " + albumName + " ";
+				if( releaseYear != null && releaseYear.length() > 0 )
 					albumNameReleaseYear += "(" + releaseYear + ")";
 
 				painter.setFont(getAlbumNameYearFont());
-				painter.drawString(albumNameReleaseYear, (x + getCenter(painter, albumNameReleaseYear)), (fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (20.0f * getScale());
+				painter.drawString(
+					albumNameReleaseYear,
+					x + getCenter(painter, albumNameReleaseYear),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 20.0f * getScale();
 			}
 			
-			if( trackName != null && trackName.length() > 0 ) {
-				trackName = "(track " + trackName + ")";
+			if (trackName != null && trackName.length() > 0) {
+
+				trackName = TGMessagesManager.getProperty("track") + " " + trackName;
 				painter.setFont(getTrackNameFont());
-				painter.drawString(trackName,(x + getCenter(painter,trackName)),(fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (20.0f * getScale());
+				painter.drawString(
+					trackName,
+					x + getCenter(painter,trackName),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 20.0f * getScale();
 			}
 			
-			if( songAuthor != null && songAuthor.length() > 0 ){
+			if (songAuthor != null && songAuthor.length() > 0) {
+
+				songAuthor = TGMessagesManager.getProperty("composition.author") + " " + songAuthor;
 				painter.setFont(getSongAuthorFont());
-				painter.drawString(songAuthor,(x + getRight(painter, songAuthor)),(fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (10.0f * getScale());
+				painter.drawString(
+					songAuthor,
+					x + getRight(painter, songAuthor),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 10.0f * getScale();
 			}
 
-			if( copyright != null && copyright.length() > 0) {
-				copyright = "Copyrighted by " + copyright;
+			if (copyright != null && copyright.length() > 0) {
+
+				copyright = TGMessagesManager.getProperty("composition.copyright") + " " + copyright;
 				painter.setFont(getSongAuthorFont());
-				painter.drawString(copyright, (x + getRight(painter, copyright)),(fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (10.0f * getScale());
+				painter.drawString(
+					copyright,
+					x + getRight(painter, copyright),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 10.0f * getScale();
 			}
 			
-			if( transcriber != null && transcriber.length() > 0) {
-				transcriber = "Transcribed by " + transcriber;
+			if (transcriber != null && transcriber.length() > 0) {
+
+				transcriber = TGMessagesManager.getProperty("composition.transcriber") + " " + transcriber;
 				painter.setFont(getSongAuthorFont());
-				painter.drawString(transcriber, (x + getRight(painter, transcriber)),(fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (10.0f * getScale());
+				painter.drawString(
+					transcriber,
+					x + getRight(painter, transcriber),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 10.0f * getScale();
 			}
 
-			if( tabCreator != null && tabCreator.length() > 0) {
-				tabCreator = "Created by " + tabCreator;
+			if( tabCreator != null && tabCreator.length() > 0 ){
+
+				tabCreator = TGMessagesManager.getProperty("composition.writer") + " " + tabCreator;
 				painter.setFont(getSongAuthorFont());
-				painter.drawString(tabCreator, (x + getRight(painter, tabCreator)),(fmTopLine + y + Math.round(headerOffset)));
-				
-				headerOffset += (20.0f * getScale());
+				painter.drawString(
+					tabCreator,
+					x + getRight(painter, tabCreator),
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 20.0f * getScale();
 			}
 		}
 		return headerOffset;
@@ -372,8 +399,15 @@ public class TGPrintLayout extends TGLayout {
 	
 	public UIFont getSongAuthorFont() {
 		UIResourceFactory factory = this.getComponent().getResourceFactory();
-		if( factory != null && ( this.songAuthorFont == null || this.songAuthorFont.isDisposed() ) ){
-			this.songAuthorFont = factory.createFont(this.getResources().getDefaultFont().getName(), (8.0f * getFontScale()), true, false);
+
+		if( factory != null && 
+			(this.songAuthorFont == null || this.songAuthorFont.isDisposed()) ){
+
+			this.songAuthorFont = factory.createFont(
+				this.getResources().getDefaultFont().getName(), 
+				8.0f * getFontScale(),
+				true, false
+			);
 		}
 		return this.songAuthorFont;
 	}
@@ -389,8 +423,14 @@ public class TGPrintLayout extends TGLayout {
 	public UIFont getArtistFont() {
 		UIResourceFactory factory = this.getComponent().getResourceFactory();
 		
-		if( factory != null && ( this.artistFont == null || this.artistFont.isDisposed() ) ) {
-			this.artistFont = factory.createFont(this.getResources().getDefaultFont().getName(), (12.0f * getFontScale()), true, false);
+		if( factory != null && 
+			(this.artistFont == null || this.artistFont.isDisposed()) ){
+
+			this.artistFont = factory.createFont(
+				this.getResources().getDefaultFont().getName(),
+				12.0f * getFontScale(),
+				true, false
+			);
 		}
 		
 		return this.artistFont;
@@ -399,8 +439,14 @@ public class TGPrintLayout extends TGLayout {
 	public UIFont getAlbumNameYearFont() {
 		UIResourceFactory factory = this.getComponent().getResourceFactory();
 		
-		if( factory != null && ( this.albumNameYearFont == null || this.albumNameYearFont.isDisposed() ) ) {
-			this.albumNameYearFont = factory.createFont(this.getResources().getDefaultFont().getName(), (10.0f * getFontScale()), true, false);
+		if( factory != null && 
+			(this.albumNameYearFont == null || this.albumNameYearFont.isDisposed()) ){
+
+			this.albumNameYearFont = factory.createFont(
+				this.getResources().getDefaultFont().getName(),
+				10.0f * getFontScale(),
+				true, false
+			);
 		}
 		
 		return this.albumNameYearFont;
@@ -420,7 +466,9 @@ public class TGPrintLayout extends TGLayout {
 		if( this.artistFont != null && !this.artistFont.isDisposed() ){
 			this.artistFont.dispose();
 		}
-		if( this.albumNameYearFont != null && !this.albumNameYearFont.isDisposed() ){
+		if( this.albumNameYearFont != null && 
+			!this.albumNameYearFont.isDisposed() ){
+
 			this.albumNameYearFont.dispose();
 		}
 	}
