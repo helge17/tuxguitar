@@ -5,6 +5,7 @@
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>org.herac.tuxguitar</groupId>
 		<version>9.99-SNAPSHOT</version>
+		<relativePath>../../desktop/</relativePath>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>

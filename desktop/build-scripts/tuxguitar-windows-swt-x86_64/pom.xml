@@ -27,7 +27,7 @@
 		<module>../../../common/TuxGuitar-lib</module>
 		<module>../../../common/TuxGuitar-editor-utils</module>
 		<module>../../../common/TuxGuitar-gm-utils</module>
-		<module>../../TuxGuitar-ascii</module>
+		<module>../../../common/TuxGuitar-ascii</module>
 		<module>../../TuxGuitar-browser-ftp</module>
 		<module>../../../common/TuxGuitar-compat</module>
 		<module>../../TuxGuitar-converter</module>
