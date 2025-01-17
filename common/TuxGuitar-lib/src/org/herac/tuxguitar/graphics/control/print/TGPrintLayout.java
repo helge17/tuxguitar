@@ -147,7 +147,7 @@ public class TGPrintLayout extends TGLayout {
 					x + getCenter(painter, artistName),
 					fmTopLine + y + Math.round(headerOffset)
 				);
-				headerOffset += 10.0f * getScale();
+				headerOffset += 20.0f * getScale();
 			}
 
 			if ((albumName != null && albumName.length() > 0) || 
