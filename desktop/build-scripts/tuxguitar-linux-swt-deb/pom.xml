@@ -51,11 +51,13 @@
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/man/man1" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/mime" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/mime/packages" />
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/metainfo" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/pixmaps" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/bin/tuxguitar" resource="/opt/tuxguitar/tuxguitar.sh" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/applications/tuxguitar.desktop" resource="/opt/tuxguitar/share/applications/tuxguitar.desktop" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/man/man1/tuxguitar.1" resource="/opt/tuxguitar/share/man/man1/tuxguitar.1" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/mime/packages/tuxguitar.xml" resource="/opt/tuxguitar/share/mime/packages/tuxguitar.xml" overwrite="true" />
+								<symlink link="${project.build.directory}/${project.packageName}/usr/share/metainfo/org.herac.tuxguitar.metainfo.xml" resource="/opt/tuxguitar/share/metainfo/org.herac.tuxguitar.metainfo.xml" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/pixmaps/tuxguitar.png" resource="/opt/tuxguitar/share/pixmaps/tuxguitar.png" overwrite="true" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.bin" perm="755" />
