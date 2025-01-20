@@ -13,10 +13,7 @@ public class TESongReader implements TGSongReader {
 		super();
 	}
 
-	// do not associate a file extension (.tef) here:
-	// since tef v2 files can only be identified by extension and not by content, make sure ".tef" is only associated to tef v2
-	// tef v3 should be identified by file content (thanks to TEFileFormatDetector)
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("TablEdit v3", "application/x-tef", new String[] {});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("TablEdit v3", "application/x-tef", new String[] {"tef"});
 	
 	public TGFileFormat getFileFormat() {
 		return FILE_FORMAT;
