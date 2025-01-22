@@ -26,6 +26,7 @@ import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -267,7 +268,8 @@ public class GPXDocumentParser {
 							TGVoice tgVoice = tgBeat.getVoice( v % tgBeat.countVoices() );
 							tgVoice.setEmpty(false);
 							tgBeat.getStroke().setDirection( this.parseStroke(beat) );
-
+							tgBeat.getPickStroke().setDirection( this.parsePickStroke(beat) );
+							
 							if (beat.getText().length() > 0) {
 								TGText text = this.factory.newText();
 								text.setValue(beat.getText().trim());
@@ -568,6 +570,17 @@ public class GPXDocumentParser {
 			tgStroke = TGStroke.STROKE_UP;
 		}
 		return tgStroke;
+	}
+	
+	private int parsePickStroke(GPXBeat beat){
+		int tgPickStroke = TGPickStroke.PICK_STROKE_NONE;
+		String pickStroke = beat.getPickStroke();
+		if ( pickStroke.equals("Down")){
+			tgPickStroke = TGPickStroke.PICK_STROKE_DOWN;
+		}else if ( pickStroke.equals("Up")){
+			tgPickStroke = TGPickStroke.PICK_STROKE_UP;
+		}
+		return tgPickStroke;
 	}
 	
 	private int parseDynamic(GPXBeat beat){

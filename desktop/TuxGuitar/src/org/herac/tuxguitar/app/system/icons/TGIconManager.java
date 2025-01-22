@@ -179,6 +179,8 @@ public class TGIconManager {
 	private UIImage statusInfo;
 	private UIImage strokeUp;
 	private UIImage strokeDown;
+	private UIImage pickStrokeUp;
+	private UIImage pickStrokeDown;
 	private UIImage settings;
 	private UIImage toolbarMain;
 	private UIImage toolbarEdit;
@@ -399,6 +401,8 @@ public class TGIconManager {
 		this.statusInfo = loadIcon("status_info.png");
 		this.strokeUp = loadIcon("stroke_up.png");
 		this.strokeDown = loadIcon("stroke_down.png");
+		this.pickStrokeUp = loadIcon("pick_stroke_up.png");
+		this.pickStrokeDown = loadIcon("pick_stroke_down.png");
 		this.altEnharmonic = loadIcon("alt_enharmonic.png");
 		this.settings = loadIcon("settings.png");
 		this.toolbarMain = loadIcon("toolbar_main.png");
@@ -1085,6 +1089,14 @@ public class TGIconManager {
 		return this.strokeDown;
 	}
 
+	public UIImage getPickStrokeUp() {
+		return this.pickStrokeUp;
+	}
+	
+	public UIImage getPickStrokeDown() {
+		return this.pickStrokeDown;
+	}
+	
 	public UIImage getAltEnharmonic() {
 		return this.altEnharmonic;
 	}

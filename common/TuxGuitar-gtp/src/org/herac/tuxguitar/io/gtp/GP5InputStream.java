@@ -21,6 +21,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -567,7 +568,12 @@ public class GP5InputStream extends GTPInputStream {
 			} 
 		}
 		if ((flags2 & 0x02) != 0) {
-			readByte();
+			int direction = readByte();
+			if ((direction & 0x01) != 0){
+				beat.getPickStroke().setDirection( TGPickStroke.PICK_STROKE_UP );
+			}else if((direction & 0x02) != 0){
+				beat.getPickStroke().setDirection( TGPickStroke.PICK_STROKE_DOWN );
+			}
 		}
 	}
 	

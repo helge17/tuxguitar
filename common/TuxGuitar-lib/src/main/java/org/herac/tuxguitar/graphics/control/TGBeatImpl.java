@@ -7,6 +7,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.ui.resource.UIPainter;
@@ -314,6 +315,9 @@ public class TGBeatImpl extends TGBeat{
 			if(getStroke().getDirection() != TGStroke.STROKE_NONE){
 				paintStroke(layout, painter, fromX, fromY);
 			}
+			if(getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE){
+				paintPickStroke(layout, painter, fromX, fromY);
+			}
 		}
 		if(layout.isPlayModeEnabled() && isPlaying(layout) && highlightPlayedBeat){
 			TGMeasureImpl measureImpl = getMeasureImpl();
@@ -447,6 +451,35 @@ public class TGBeatImpl extends TGBeat{
 		}
 	}
 	
+	public void paintPickStroke(TGLayout layout, UIPainter painter, float fromX, float fromY){
+		float scale = layout.getScale();
+		float x = (fromX + getPosX() + getSpacing(layout));
+		float y = (fromY + getPaintPosition(TGTrackSpacing.POSITION_PICK_STROKES));
+		
+		if( getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP ) {
+			painter.setLineWidth(layout.getLineWidth(0));
+			painter.initPath();
+			painter.moveTo( x - 3.0f * scale, y );
+			painter.lineTo( x, y + 8.0f * scale );
+			painter.moveTo( x + 3.0f * scale, y );
+			painter.lineTo( x, y + 8.0f * scale );
+			painter.closePath();
+		} else if( getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_DOWN ) {
+			painter.setLineWidth(layout.getLineWidth(0));
+			painter.initPath();
+			painter.moveTo( x - 3.0f * scale, y + 6.0f * scale);
+			painter.lineTo( x - 3.0f * scale, y );
+			painter.moveTo( x + 3.0f * scale, y );
+			painter.lineTo( x + 3.0f * scale, y + 6.0f * scale);
+			painter.closePath();
+			painter.setLineWidth(layout.getLineWidth(2));
+			painter.initPath();
+			painter.moveTo( x - 3.0f * scale, y );
+			painter.lineTo( x + 3.0f * scale, y );
+			painter.closePath();
+		}
+	}
+
 	public float getPaintPosition(int index){
 		return getMeasureImpl().getTs().getPosition(index);
 	}
