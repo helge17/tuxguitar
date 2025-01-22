@@ -132,6 +132,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_REPEAT_ENDING_SPACING, 20);
 		loadProperty(properties, TGConfigKeys.STYLE_EFFECT_SPACING, 8);
 		loadProperty(properties, TGConfigKeys.STYLE_DIVISION_TYPE_SPACING, 10);
+		loadProperty(properties, TGConfigKeys.STYLE_PICK_STROKE_SPACING, 10);
 		loadProperty(properties, TGConfigKeys.STYLE_TEXT_SPACING, 15);
 		loadProperty(properties, TGConfigKeys.STYLE_MARKER_SPACING, 15);
 		loadProperty(properties, TGConfigKeys.STYLE_LOOP_MARKER_SPACING, 5);

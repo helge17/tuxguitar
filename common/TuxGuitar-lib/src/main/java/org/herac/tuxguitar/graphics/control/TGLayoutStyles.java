@@ -29,6 +29,7 @@ public class TGLayoutStyles {
 	private float repeatEndingSpacing;
 	private float effectSpacing;
 	private float divisionTypeSpacing;
+	private float pickStrokeSpacing;
 	private float textSpacing;
 	private float markerSpacing;
 	private float loopMarkerSpacing;
@@ -248,6 +249,14 @@ public class TGLayoutStyles {
 
 	public void setDivisionTypeSpacing(float divisionTypeSpacing) {
 		this.divisionTypeSpacing = divisionTypeSpacing;
+	}
+
+	public float getPickStrokeSpacing() {
+		return pickStrokeSpacing;
+	}
+
+	public void setPickStrokeSpacing(float pickStrokeSpacing) {
+		this.pickStrokeSpacing = pickStrokeSpacing;
 	}
 
 	public float getTextSpacing() {

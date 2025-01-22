@@ -119,7 +119,11 @@ public abstract class TGBeat {
 	public TGPickStroke getPickStroke() {
 		return this.pickStroke;
 	}
-
+	
+	public boolean isPickStroke() {
+		return (this.pickStroke.getDirection() != TGPickStroke.PICK_STROKE_NONE);
+	}
+	
 	public boolean isRestBeat(){
 		for(int v = 0; v < this.countVoices() ; v ++ ){
 			TGVoice voice = this.getVoice( v );

@@ -126,6 +126,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean chord;
 	private boolean division1;
 	private boolean division2;
+	private boolean pickStroke;
 	
 	private boolean[][] registeredAccidentals;
 	
@@ -516,6 +517,9 @@ public class TGMeasureImpl extends TGMeasure{
 			if(!this.text && beat.isTextBeat()){
 				this.text = true;
 			}
+			if(!this.pickStroke && beat.isPickStroke()) {
+				this.pickStroke = true;
+			}
 		}
 		
 		if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
@@ -582,6 +586,7 @@ public class TGMeasureImpl extends TGMeasure{
 		this.chord = false;
 		this.division1 = false;
 		this.division2 = false;
+		this.pickStroke = false;
 		this.beatEffectVerticalSpacing = 0.0f;
 		this.effectWidth = 0.0f;
 	}
@@ -607,6 +612,9 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		if(this.division2){
 			ts.setSize(TGTrackSpacing.POSITION_DIVISION_TYPE_2,layout.getDivisionTypeSpacing());
+		}
+		if(this.pickStroke){
+			ts.setSize(TGTrackSpacing.POSITION_PICK_STROKES,layout.getPickStrokeSpacing());
 		}
 		if( this.beatEffectVerticalSpacing > 0 ){
 			ts.setSize(TGTrackSpacing.POSITION_EFFECTS, this.beatEffectVerticalSpacing );

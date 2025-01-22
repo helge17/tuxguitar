@@ -32,6 +32,7 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setMarkerSpacing(config.getIntegerValue(TGConfigKeys.STYLE_MARKER_SPACING));
 		this.setLoopMarkerSpacing(config.getIntegerValue(TGConfigKeys.STYLE_LOOP_MARKER_SPACING));
 		this.setDivisionTypeSpacing(config.getIntegerValue(TGConfigKeys.STYLE_DIVISION_TYPE_SPACING));
+		this.setPickStrokeSpacing(config.getIntegerValue(TGConfigKeys.STYLE_PICK_STROKE_SPACING));
 		this.setEffectSpacing(config.getIntegerValue(TGConfigKeys.STYLE_EFFECT_SPACING));
 		this.setLineWidths(config.getFloatArrayValue(TGConfigKeys.STYLE_LINE_WIDTHS));
 		this.setDurationWidths(config.getFloatArrayValue(TGConfigKeys.STYLE_DURATION_WIDTHS));
