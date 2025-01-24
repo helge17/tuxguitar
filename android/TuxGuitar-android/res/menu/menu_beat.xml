@@ -35,6 +35,9 @@
         android:id="@+id/action_change_stroke"
         android:title="@string/action_change_stroke"/>
     <item
+        android:id="@+id/action_change_pickstroke"
+        android:title="@string/action_change_pickstroke"/>
+    <item
         android:id="@+id/action_increment_note_semitone"
         android:title="@string/action_increment_note_semitone"/>
     <item
