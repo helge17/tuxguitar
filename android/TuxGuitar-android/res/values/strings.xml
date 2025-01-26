@@ -99,6 +99,7 @@
 	<string name="action_shift_note_down">Shift one String down</string>
 	<string name="action_shift_note_up">Shift one String up</string>
 	<string name="action_change_stroke">Up/Downstroke (brush)</string>
+	<string name="action_change_pickstroke">Pick stroke up/down</string>
 	<string name="action_change_text">Insert Text</string>
 
 	<string name="action_set_duration_whole">Whole</string>
@@ -437,6 +438,13 @@
 	<string name="stroke_dlg_duration_16">Sixteenth</string>
 	<string name="stroke_dlg_duration_32">Thirty-Second</string>
 	<string name="stroke_dlg_duration_64">Sixty-Fourth</string>
+
+	<!-- Pick stroke dialog -->
+	<string name="pickstroke_dlg_title">Pick stroke Up/Down</string>
+	<string name="pickstroke_dlg_direction_label">Direction:</string>
+	<string name="pickstroke_dlg_direction_none">None</string>
+	<string name="pickstroke_dlg_direction_up">Up</string>
+	<string name="pickstroke_dlg_direction_down">Down</string>
 
 	<!-- Channels view -->
 	<string name="channel_list">Instruments</string>

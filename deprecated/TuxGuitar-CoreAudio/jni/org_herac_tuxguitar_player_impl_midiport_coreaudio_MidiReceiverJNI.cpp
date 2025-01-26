@@ -150,7 +150,7 @@ void pitchBend(int channel, short value)
 	OSStatus result;
 	UInt32 pitchChange = kMidiMessage_PitchBend << 4 | channel;
 
-	__Require_noErr (result = MusicDeviceMIDIEvent(synthUnit, pitchChange, value & 0x7f, (value & 0x3f80) >> 7, 0), home);
+	__Require_noErr (result = MusicDeviceMIDIEvent(synthUnit, pitchChange, 0, value, 0), home);
 home:
 		return;
 }

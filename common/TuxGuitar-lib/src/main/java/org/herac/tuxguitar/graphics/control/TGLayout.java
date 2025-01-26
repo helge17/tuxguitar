@@ -60,6 +60,7 @@ public abstract class TGLayout {
 	private float repeatEndingSpacing;
 	private float effectSpacing;
 	private float divisionTypeSpacing;
+	private float pickStrokeSpacing;
 	private float textSpacing;
 	private float markerSpacing;
 	private float loopMarkerSpacing;
@@ -139,6 +140,7 @@ public abstract class TGLayout {
 		this.markerSpacing = (styles.getMarkerSpacing() * getScale());
 		this.loopMarkerSpacing = (styles.getLoopMarkerSpacing() * getScale());
 		this.divisionTypeSpacing = (styles.getDivisionTypeSpacing() * getScale());
+		this.pickStrokeSpacing = (styles.getPickStrokeSpacing() * getScale());
 		this.effectSpacing = (styles.getEffectSpacing() * getScale());
 		
 		this.lineWidths = new float[styles.getLineWidths() != null ? styles.getLineWidths().length : 0];
@@ -716,6 +718,10 @@ public abstract class TGLayout {
 	
 	public float getDivisionTypeSpacing() {
 		return this.divisionTypeSpacing;
+	}
+	
+	public float getPickStrokeSpacing() {
+		return this.pickStrokeSpacing;
 	}
 	
 	public float getTextSpacing() {

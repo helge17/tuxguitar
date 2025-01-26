@@ -41,6 +41,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGTempo;
@@ -533,6 +534,25 @@ public class TestFileFormat20 {
 		assertEquals(40, tempo.getRawValue());
 		assertEquals(TGDuration.EIGHTH, tempo.getBase());
 		assertTrue(tempo.isDotted());
+	}
+	
+	@Test
+	public void testPickStroke() throws IOException {
+		TGFactory factory = new TGFactory();
+		TGSongReaderHandle handle = readSong("reference_20.tg", true);
+		TGSong song = handle.getSong();
+		
+		song.getTrack(0).getMeasure(2).getBeat(0).getPickStroke().setDirection(TGPickStroke.PICK_STROKE_DOWN);
+		song.getTrack(0).getMeasure(2).getBeat(1).getPickStroke().setDirection(TGPickStroke.PICK_STROKE_UP);
+		// save, and re-read
+		byte[] bufferXml = saveToXml(song, factory);
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		song = readFromXml(bufferXml, factory);
+		
+		assertEquals(TGPickStroke.PICK_STROKE_DOWN, song.getTrack(0).getMeasure(2).getBeat(0).getPickStroke().getDirection());
+		assertEquals(TGPickStroke.PICK_STROKE_UP, song.getTrack(0).getMeasure(2).getBeat(1).getPickStroke().getDirection());
+		assertEquals(TGPickStroke.PICK_STROKE_NONE, song.getTrack(0).getMeasure(2).getBeat(2).getPickStroke().getDirection());
+		
 	}
 	
 	private byte[] saveToXml(TGSong song, TGFactory factory) {

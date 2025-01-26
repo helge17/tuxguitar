@@ -21,6 +21,7 @@ import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
@@ -152,6 +153,7 @@ public class TGStream {
 	protected static final String TAG_ONBEAT = "onBeat";
 	protected static final String TAG_DEAD = "dead";
 	protected static final String TAG_TRANSITION = "transition";
+	protected static final String TAG_PICK_STROKE = "pickStroke";
 
 	protected Map<String, Integer> tripletsReadMap;
 	protected Map<Integer, String> tripletsWriteMap;
@@ -159,6 +161,8 @@ public class TGStream {
 	protected Map<Integer, String> mapWriteClefs;
 	protected Map<String, Integer> mapReadStroke;
 	protected Map<Integer, String> mapWriteStroke;
+	protected Map<String, Integer> mapReadPickStroke;
+	protected Map<Integer, String> mapWritePickStroke;
 	protected Map<String, Integer> mapReadDirection;
 	protected Map<Integer, String> mapWriteDirection;
 	protected Map<String, Integer> harmonicReadMap;
@@ -188,6 +192,11 @@ public class TGStream {
 		this.mapReadStroke.put("up", TGStroke.STROKE_UP);
 		this.mapReadStroke.put("down", TGStroke.STROKE_DOWN);
 		this.mapWriteStroke = this.revertMap(this.mapReadStroke);
+		
+		this.mapReadPickStroke = new HashMap<String, Integer>();
+		this.mapReadPickStroke.put("up", TGPickStroke.PICK_STROKE_UP);
+		this.mapReadPickStroke.put("down", TGPickStroke.PICK_STROKE_DOWN);
+		this.mapWritePickStroke = this.revertMap(this.mapReadPickStroke);
 		
 		this.mapReadDirection = new HashMap<String, Integer>();
 		this.mapReadDirection.put("up", TGVoice.DIRECTION_UP);

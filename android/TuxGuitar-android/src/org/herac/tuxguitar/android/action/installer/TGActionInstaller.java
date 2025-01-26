@@ -128,6 +128,8 @@ import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
@@ -264,6 +266,8 @@ public class TGActionInstaller {
 		installAction(new TGSetVoiceUpAction(context));
 		installAction(new TGShiftNoteDownAction(context));
 		installAction(new TGShiftNoteUpAction(context));
+		installAction(new TGChangePickStrokeDownAction(context));
+		installAction(new TGChangePickStrokeUpAction(context));
 		installAction(new TGChangeStrokeAction(context));
 		installAction(new TGInsertTextAction(context));
 		installAction(new TGRemoveTextAction(context));

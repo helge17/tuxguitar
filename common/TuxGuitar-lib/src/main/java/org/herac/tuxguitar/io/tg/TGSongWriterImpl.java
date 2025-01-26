@@ -37,6 +37,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -245,6 +246,10 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			Node nodeStroke = this.addNode(nodeBeat, TAG_STROKE);
 			this.addAttribute(nodeStroke, TAG_DIRECTION , this.mapWriteStroke.get(stroke.getDirection()));
 			this.addAttributeInt(nodeStroke, TAG_VALUE, stroke.getValue());
+		}
+		TGPickStroke pickStroke = beat.getPickStroke();
+		if (pickStroke.getDirection() != TGPickStroke.PICK_STROKE_NONE) {
+			this.addNode(nodeBeat, TAG_PICK_STROKE, this.mapWritePickStroke.get(pickStroke.getDirection()));
 		}
 		TGChord chord = beat.getChord();
 		if (chord != null) {

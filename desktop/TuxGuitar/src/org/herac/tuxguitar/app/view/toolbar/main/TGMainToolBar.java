@@ -52,7 +52,7 @@ public class TGMainToolBar extends TGToolBarModel {
 		transportLayout.set(centerToolBar.getTimestamp(), 1,3, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		transportLayout.set(centerToolBar.getTimestamp(), UITableLayout.PACKED_WIDTH, TGMainToolBarTransport.TIMESTAMP_MIN_WIDTH);
 		transportLayout.set(centerToolBar.getTimestamp(), UITableLayout.PACKED_HEIGHT, TGMainToolBarTransport.TIMESTAMP_MIN_HEIGHT);
-		transportLayout.set(centerToolBar.getTempoImage(), 1,4, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, true);
+		transportLayout.set(centerToolBar.getTempoImage(), 1,4, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		transportLayout.set(centerToolBar.getTempoLabel(), 1,5, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		
 		UIToolBar centerRightToolBar = uiFactory.createHorizontalToolBar(this.panel);

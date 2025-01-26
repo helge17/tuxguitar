@@ -27,11 +27,13 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	private TGText text;
 	private TGVoice[] voices;
 	private TGStroke stroke;
+	private TGPickStroke pickStroke;
 	
 	public TGBeat(TGFactory factory) {
 		this.preciseStart = TGDuration.getPreciseStartingPoint();
 		this.start = TGDuration.getStartingPoint();
 		this.stroke = factory.newStroke();
+		this.pickStroke = factory.newPickStroke();
 		this.voices = new TGVoice[ MAX_VOICES ];
 		for( int i = 0 ; i < MAX_VOICES ; i ++ ){
 			this.setVoice(i, factory.newVoice(i));
@@ -136,6 +138,14 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 		return this.stroke;
 	}
 	
+	public TGPickStroke getPickStroke() {
+		return this.pickStroke;
+	}
+	
+	public boolean isPickStroke() {
+		return (this.pickStroke.getDirection() != TGPickStroke.PICK_STROKE_NONE);
+	}
+	
 	public boolean isRestBeat(){
 		for(int v = 0; v < this.countVoices() ; v ++ ){
 			TGVoice voice = this.getVoice( v );
@@ -192,6 +202,7 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 			this.setStart(beat.getStart());
 		}
 		this.getStroke().copyFrom(beat.getStroke());
+		this.getPickStroke().copyFrom(beat.getPickStroke());
 		for( int i = 0 ; i < beat.voices.length ; i ++ ){
 			this.setVoice(i, beat.voices[i].clone(factory));
 		}
