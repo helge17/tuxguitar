@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">下移</string>
 	<string name="action_shift_note_up">上移</string>
 	<string name="action_change_stroke">用力敲(Stroke)</string>
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">插入文字</string>
 
 	<string name="action_set_duration_whole">全音符</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">十六分音符</string>
 	<string name="stroke_dlg_duration_32">三十二分音符</string>
 	<string name="stroke_dlg_duration_64">六十四分音符</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<string name="pickstroke_dlg_direction_label">方式:</string>
+	<string name="pickstroke_dlg_direction_none">無</string>
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->

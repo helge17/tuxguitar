@@ -443,8 +443,8 @@
 	<string name="pickstroke_dlg_title">Pick stroke Up/Down</string>
 	<string name="pickstroke_dlg_direction_label">Direction:</string>
 	<string name="pickstroke_dlg_direction_none">None</string>
-	<string name="pickstroke_dlg_direction_up">Up</string>
-	<string name="pickstroke_dlg_direction_down">Down</string>
+	<string name="pickstroke_dlg_direction_up">Pick upstroke</string>
+	<string name="pickstroke_dlg_direction_down">Pick downstroke</string>
 
 	<!-- Channels view -->
 	<string name="channel_list">Instruments</string>

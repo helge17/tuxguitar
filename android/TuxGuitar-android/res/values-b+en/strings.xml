@@ -105,6 +105,7 @@
 	<!-- <string name="action_shift_note_down"></string> -->
 	<!-- <string name="action_shift_note_up"></string> -->
 	<!-- <string name="action_change_stroke"></string> -->
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<!-- <string name="action_change_text"></string> -->
 
 	<!-- <string name="action_set_duration_whole"></string> -->
@@ -443,6 +444,13 @@
 	<!-- <string name="stroke_dlg_duration_16"></string> -->
 	<!-- <string name="stroke_dlg_duration_32"></string> -->
 	<!-- <string name="stroke_dlg_duration_64"></string> -->
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_label"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_none"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->

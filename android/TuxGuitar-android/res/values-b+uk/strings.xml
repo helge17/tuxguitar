@@ -105,6 +105,7 @@
 	<!-- <string name="action_shift_note_down"></string> -->
 	<string name="action_shift_note_up">Струною вище</string>
 	<!-- <string name="action_change_stroke"></string> -->
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Вставити текст</string>
 
 	<string name="action_set_duration_whole">Ціла</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">Шістнадцята</string>
 	<string name="stroke_dlg_duration_32">Тридцять друга</string>
 	<string name="stroke_dlg_duration_64">Шістдесят четверта</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_label"></string> -->
+	<string name="pickstroke_dlg_direction_none">Нема</string>
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->

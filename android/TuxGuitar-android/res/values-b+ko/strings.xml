@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">아래로 이동</string>
 	<string name="action_shift_note_up">위로 이동</string>
 	<string name="action_change_stroke">스트로크</string>
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">텍스트 삽입</string>
 
 	<string name="action_set_duration_whole">온음표</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">16분음표</string>
 	<string name="stroke_dlg_duration_32">32분음표</string>
 	<string name="stroke_dlg_duration_64">64분음표</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<string name="pickstroke_dlg_direction_label">방향:</string>
+	<!-- <string name="pickstroke_dlg_direction_none"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->

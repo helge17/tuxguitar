@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">Hari bat beheruntz</string>
 	<string name="action_shift_note_up">Hari bat goruntz</string>
 	<!-- <string name="action_change_stroke"></string> -->
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Textua idatzi</string>
 
 	<string name="action_set_duration_whole">Biribila</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">Semi-Kortxea</string>
 	<string name="stroke_dlg_duration_32">Fusa</string>
 	<string name="stroke_dlg_duration_64">Semi-Fusa</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<string name="pickstroke_dlg_direction_label">Norabidea:</string>
+	<string name="pickstroke_dlg_direction_none">Ezer</string>
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->

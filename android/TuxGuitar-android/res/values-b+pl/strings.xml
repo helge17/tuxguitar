@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">Oktawę w dół</string>
 	<string name="action_shift_note_up">Oktawę w górę</string>
 	<string name="action_change_stroke">Uderzenie strun</string>
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Wstaw tekst</string>
 
 	<string name="action_set_duration_whole">Cała nuta</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">Szesnastka</string>
 	<string name="stroke_dlg_duration_32">Trzydziestodwójka</string>
 	<string name="stroke_dlg_duration_64">Sześćdziesięcioczwórka</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<string name="pickstroke_dlg_direction_label">Kierunek:</string>
+	<string name="pickstroke_dlg_direction_none">Brak</string>
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<string name="channel_list">Instrumenty</string>
