@@ -82,6 +82,8 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 				divisionTypes.add(dt);
 			}
 		}
+		// for dotted and double-dotted, enable finer grain division
+		WHOLE_PRECISE_DURATION *= 4;
 		// sort division types, shortest division first (=highest .enters value)
 		Collections.sort(divisionTypes,
 				(TGDivisionType dt1, TGDivisionType dt2) -> (Integer.valueOf(dt2.getEnters()).compareTo(Integer.valueOf(dt1.getEnters()))));
@@ -146,37 +148,78 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		for (TGDivisionType dt : divisionTypes) {
 			if ((dt.getEnters()==1) || (D % dt.getEnters() != 0)) {
 				// D contains notes with this time division
-				long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
-				if (base > max)  {
-					return null;
-				}
-				long toSubstract;
-				if (dt.getEnters() == 1) {
-					toSubstract = D;
-				} else {
-					// substract as many occurrences of base to D so that D does not contain any more duration with this time division
-					toSubstract = base;
-					while( ((D-toSubstract) % dt.getEnters() != 0) && (toSubstract <= D)) {
-						toSubstract += base;
+				boolean foundDurationWithTimeDivision = false;
+				
+				// try successively to match with no dotted/no double-dotted, then with dotted, then with double-dotted
+				for (int subDivision = 1; subDivision <= 4 && !foundDurationWithTimeDivision; subDivision*=2) {
+					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
+					base /= subDivision;
+					
+					if (base > max)  {
+						break;
+					}
+					long toSubtract;
+					if (dt.getEnters() == 1) {
+						toSubtract = D;
+					} else {
+						// subtract as many occurrences of base to D so that D does not contain any more duration with this time division
+						toSubtract = base;
+						while( ((D-toSubtract) % dt.getEnters() != 0) && (toSubtract <= D)) {
+							toSubtract += base;
+						}
+					}
+					// if the amount of time to subtract removes the contribution of time division, then let's go
+					if ((toSubtract % base == 0) && (toSubtract <= D)) {
+						// number of occurrences of base duration
+						long nBase = toSubtract / base;
+						// look for longest note duration with this time division that can fit (successive powers of 2)
+						long n=1;
+						while ((nBase % 2 == 0) && (n*base <= max)) {
+							n *= 2;
+							nBase /= 2;
+						}
+						// handle subDivision: no dot / dotted / double-dotted
+						boolean ok = false;
+						boolean dotted = false;
+						boolean doubleDotted = false;
+						switch (subDivision) {
+						case 1:
+							// base =  shortest
+							ok = true;
+							break;
+						case 2:
+							// base = shortest /2, only a multiple of 3 is valid
+							// n * 3 * base = n * shortest * 3/2 = n * dotted shortest
+							ok = (nBase % 3 == 0); 
+							dotted = true;
+							nBase /= 3;
+							base *= 2;
+							break;
+						case 4:
+							// base = shortest /4, only a multiple of 7 is valid
+							// n * 7 * base = n * shortest * 7/4 =  n * double-dotted shortest
+							ok = (nBase % 7 == 0);
+							doubleDotted = true;
+							nBase /= 7;
+							base *=4 ;
+							break;
+						default:
+							return null;
+						}
+						
+						if (ok) {
+							for (int i=0; i<nBase; i++) {
+								TGDuration duration = factory.newDuration();
+								duration.setPreciseValue(n* base);
+								duration.setDotted(dotted);
+								duration.setDoubleDotted(doubleDotted);
+								list.add(duration);
+							}
+							D -= toSubtract;
+							foundDurationWithTimeDivision = true;
+						}
 					}
 				}
-				if ((toSubstract % base != 0) || (toSubstract > D)) {
-					return null;
-				}
-				// number of occurrences of base duration
-				long nBase = toSubstract / base;
-				// look for longest note duration with this time division that can fit in toSubstract (successive powers of 2)
-				long n=1;
-				while ((nBase % 2 == 0) && (n*base <= max)) {
-					n *= 2;
-					nBase /= 2;
-				}
-				for (int i=0; i<nBase; i++) {
-					TGDuration duration = factory.newDuration();
-					duration.setPreciseValue(n* base);
-					list.add(duration);
-				}
-				D -= toSubstract;
 			}
 		}
 		if (D != 0) {

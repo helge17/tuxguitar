@@ -78,7 +78,7 @@
                 <clef>treble</clef>
                 <keySignature>8</keySignature>
                 <TGBeat>
-                    <preciseStart>720720</preciseStart>
+                    <preciseStart>2882880</preciseStart>
                     <stroke direction="up" value="2"/>
                     <chord>
                         <name>Bm</name>
