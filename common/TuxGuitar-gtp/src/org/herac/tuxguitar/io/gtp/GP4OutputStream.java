@@ -25,6 +25,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -284,11 +285,10 @@ public class GP4OutputStream extends GTPOutputStream{
 		if(beat.isTextBeat()){
 			flags |= 0x04;
 		}
-		if ( beat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
-			flags |= 0x08;
-		}
-		else if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
-			flags |= 0x08;
+		if ( (beat.getStroke().getDirection() != TGStroke.STROKE_NONE ) ||
+		     (beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE) ||
+		     effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
+				flags |= 0x08;
 		}
 		if (!duration.getDivision().isEqual(TGDivisionType.NORMAL)) {
 			flags |= 0x20;
@@ -447,6 +447,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
 			flags1 |= 0x40;
 		}
+		if(beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE){
+			flags2 |= 0x02;
+		}
 		writeUnsignedByte(flags1);
 		writeUnsignedByte(flags2);
 		
@@ -465,6 +468,9 @@ public class GP4OutputStream extends GTPOutputStream{
 		if ((flags1 & 0x40) != 0) {
 			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_DOWN ? toStrokeValue(beat.getStroke()) : 0 ) );
 			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_UP ? toStrokeValue(beat.getStroke()) : 0 ) );
+		}
+		if ((flags2 & 0x02) != 0) {
+			writeUnsignedByte( (beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP ? 1 : 2 ) );
 		}
 	}
 	

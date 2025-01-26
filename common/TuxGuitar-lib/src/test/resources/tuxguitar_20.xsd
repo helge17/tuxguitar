@@ -392,6 +392,14 @@
           <xs:attribute name="value" type="uint8"/>
         </xs:complexType>
       </xs:element>
+      <xs:element name="pickStroke" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="up"/>
+            <xs:enumeration value="down"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
       <xs:element name="chord" minOccurs="0">
         <xs:complexType>
           <xs:sequence>

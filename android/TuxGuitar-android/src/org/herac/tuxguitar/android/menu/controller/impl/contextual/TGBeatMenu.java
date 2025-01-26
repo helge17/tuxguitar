@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
+import org.herac.tuxguitar.android.view.dialog.pickstroke.TGPickStrokeDialogController;
 import org.herac.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
 import org.herac.tuxguitar.android.view.dialog.text.TGTextDialogController;
 import org.herac.tuxguitar.android.view.tablature.TGCaret;
@@ -61,6 +62,7 @@ public class TGBeatMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_shift_note_down, this.createActionProcessor(TGShiftNoteDownAction.NAME), (!running && note != null));
 		this.initializeItem(menu, R.id.action_shift_note_up, this.createActionProcessor(TGShiftNoteUpAction.NAME), (!running && note != null));
 		this.initializeItem(menu, R.id.action_change_stroke, new TGStrokeDialogController(), !running);
+		this.initializeItem(menu, R.id.action_change_pickstroke, new TGPickStrokeDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_text, new TGTextDialogController(), !running);
 	}
 }

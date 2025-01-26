@@ -341,6 +341,9 @@ public class GPXDocumentReader {
 							Node propertyNode = propertyNodes.item( p );
 							if (propertyNode.getNodeName().equals("Property") ){ 
 								String propertyName = getAttributeValue(propertyNode, "name");
+								if( propertyName.equals("PickStroke") ){
+									beat.setPickStroke( getChildNodeContent(propertyNode, "Direction") );
+								}
 								
 								if( propertyName.equals("WhammyBar") ){
 									beat.setWhammyBarEnabled( getChildNode(propertyNode, "Enable") != null );

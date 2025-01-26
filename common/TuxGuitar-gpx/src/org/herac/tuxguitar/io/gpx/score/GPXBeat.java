@@ -9,6 +9,7 @@ public class GPXBeat {
 	private boolean slapped;
 	private boolean popped;
 	private String brush;	// up stroke, down stroke
+	private String pickStroke;
 	private int[] tremolo; // 1/8, 1/4, etc.
 	private String fadding;
 	private String text;
@@ -28,6 +29,7 @@ public class GPXBeat {
 		this.popped = false;
 		this.tremolo = null;
 		this.brush = new String();
+		this.pickStroke = new String();
 		this.text = new String();
 	}
 	
@@ -85,6 +87,14 @@ public class GPXBeat {
 
 	public void setBrush(String brush) {
 		this.brush = brush;
+	}
+	
+	public String getPickStroke() {
+		return pickStroke;
+	}
+	
+	public void setPickStroke(String pickStroke) {
+		this.pickStroke = pickStroke;
 	}
 
 	public int[] getTremolo() {

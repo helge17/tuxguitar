@@ -12,6 +12,7 @@ import org.herac.tuxguitar.song.models.TGChord;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.song.models.TGText;
@@ -185,6 +186,7 @@ public class TGMeasureManager {
 			if(checkRestBeat && beat.isRestBeat()){
 				//Anulo un posible stroke
 				beat.getStroke().setDirection( TGStroke.STROKE_NONE );
+				beat.getPickStroke().setDirection( TGPickStroke.PICK_STROKE_NONE );
 				
 				//Borro un posible acorde
 				if( beat.getMeasure() != null ){
@@ -777,6 +779,7 @@ public class TGMeasureManager {
 	
 	public void cleanBeat(TGBeat beat){
 		beat.getStroke().setDirection( TGStroke.STROKE_NONE );
+		beat.getPickStroke().setDirection( TGPickStroke.PICK_STROKE_NONE );
 		if( beat.getText() != null ){
 			beat.removeText();
 		}
@@ -999,6 +1002,32 @@ public class TGMeasureManager {
 		return false;
 	}
 	
+	public boolean changePickStrokeUp(TGMeasure measure, long start){
+		TGBeat beat = getBeat(measure, start);
+		if( beat != null ){
+			if (beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_UP){
+				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_UP);
+			} else {
+				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public boolean changePickStrokeDown(TGMeasure measure, long start){
+		TGBeat beat = getBeat(measure, start);
+		if( beat != null ){
+			if (beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_DOWN){
+				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_DOWN);
+			} else {
+				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	public void autoCompleteSilences(TGMeasure measure){
 		TGBeat beat = getFirstBeat( measure.getBeats() );
 		if( beat == null ){
@@ -1645,6 +1674,10 @@ public class TGMeasureManager {
 					if( currentBeat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
 						beat.getStroke().copyFrom( currentBeat.getStroke() );
 						currentBeat.getStroke().setDirection(TGStroke.STROKE_NONE);
+					}
+					if( currentBeat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE ){
+						beat.getPickStroke().copyFrom( currentBeat.getPickStroke() );
+						currentBeat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
 					}
 				}
 				// Make sure to remove another voice instance from old beat.

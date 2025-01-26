@@ -37,6 +37,7 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setMarkerSpacing(15);
 		this.setLoopMarkerSpacing(5);
 		this.setDivisionTypeSpacing(10);
+		this.setPickStrokeSpacing(10);
 		this.setEffectSpacing(8);
 		
 		this.setLineWidths(new float[] {0, 1, 2, 3, 4, 5});

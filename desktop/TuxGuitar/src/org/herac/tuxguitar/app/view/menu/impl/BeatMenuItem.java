@@ -8,6 +8,8 @@ import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
 import org.herac.tuxguitar.app.view.component.tab.Caret;
 import org.herac.tuxguitar.app.view.component.tab.Tablature;
 import org.herac.tuxguitar.app.view.menu.TGMenuItem;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
 import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
 import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
@@ -26,6 +28,7 @@ import org.herac.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
 import org.herac.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGStroke;
 import org.herac.tuxguitar.ui.menu.UIMenu;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
@@ -46,6 +49,8 @@ public class BeatMenuItem extends TGMenuItem {
 	private UIMenuActionItem voiceDown;
 	private UIMenuCheckableItem strokeUp;
 	private UIMenuCheckableItem strokeDown;
+	private UIMenuCheckableItem pickStrokeUp;
+	private UIMenuCheckableItem pickStrokeDown;
 	private UIMenuActionItem shiftUp;
 	private UIMenuActionItem shiftDown;
 	private UIMenuCheckableItem altEnharmonic;
@@ -117,6 +122,12 @@ public class BeatMenuItem extends TGMenuItem {
 		this.strokeDown = this.noteMenuItem.getMenu().createCheckItem();
 		this.strokeDown.addSelectionListener(this.createActionProcessor(TGOpenStrokeDownDialogAction.NAME));
 
+		this.pickStrokeUp = this.noteMenuItem.getMenu().createCheckItem();
+		this.pickStrokeUp.addSelectionListener(this.createActionProcessor(TGChangePickStrokeUpAction.NAME));
+
+		this.pickStrokeDown = this.noteMenuItem.getMenu().createCheckItem();
+		this.pickStrokeDown.addSelectionListener(this.createActionProcessor(TGChangePickStrokeDownAction.NAME));
+
 		this.noteMenuItem.getMenu().createSeparator();
 
 		this.altEnharmonic = this.noteMenuItem.getMenu().createCheckItem();
@@ -176,6 +187,10 @@ public class BeatMenuItem extends TGMenuItem {
 		this.strokeUp.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_UP );
 		this.strokeDown.setEnabled(!running && !restBeat && !track.isPercussion());
 		this.strokeDown.setChecked( beat != null && beat.getStroke().getDirection() == TGStroke.STROKE_DOWN );
+		this.pickStrokeUp.setEnabled(!running && !restBeat);
+		this.pickStrokeUp.setChecked( beat != null && beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP );
+		this.pickStrokeDown.setEnabled(!running && !restBeat);
+		this.pickStrokeDown.setChecked( beat != null && beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_DOWN );
 		this.altEnharmonic.setEnabled(!running && ((style & TGLayout.DISPLAY_SCORE) != 0));
 		this.altEnharmonic.setChecked((note!=null) && (note.isAltEnharmonic()));
 		this.semitoneUp.setEnabled(!running && atLeastOneNoteSelected);
@@ -208,6 +223,8 @@ public class BeatMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.voiceDown, "beat.voice-down", TGSetVoiceDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.strokeUp, "beat.stroke-up", TGOpenStrokeUpDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.strokeDown, "beat.stroke-down", TGOpenStrokeDownDialogAction.NAME);
+		setMenuItemTextAndAccelerator(this.pickStrokeUp, "beat.pick-stroke-up", TGChangePickStrokeUpAction.NAME);
+		setMenuItemTextAndAccelerator(this.pickStrokeDown, "beat.pick-stroke-down", TGChangePickStrokeDownAction.NAME);
 		setMenuItemTextAndAccelerator(this.altEnharmonic, "note.alternative-enharmonic", TGToggleNoteEnharmonicAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneUp, "note.semitone-up", TGIncrementNoteSemitoneAction.NAME);
 		setMenuItemTextAndAccelerator(this.semitoneDown, "note.semitone-down", TGDecrementNoteSemitoneAction.NAME);

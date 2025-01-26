@@ -230,6 +230,8 @@ import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
@@ -444,6 +446,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//beat actions
 		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangePickStrokeUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangePickStrokeDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeVelocityAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedVelocityController(), UNDOABLE_NOTE_RANGE);
 		this.map(TGCleanBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_BEAT_RANGE_CTL, UNDOABLE_BEAT_RANGE_GENERIC);
