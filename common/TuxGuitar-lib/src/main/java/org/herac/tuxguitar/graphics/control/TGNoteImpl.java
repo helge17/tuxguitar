@@ -676,21 +676,16 @@ public class TGNoteImpl extends TGNote {
 		float xRight  = fromX + getPosX() + margin.getRight() + 1.0f * scale;	// start of bend
 		float xMax    = fromX + getPosX() + width - (8.0f * scale)	;	// end of hold
 		// y
-		TGSpacing bs = getBeatImpl().getBs();
 		TGSpacing ts = getMeasureImpl().getTs();
 		float yAmplitude = 0.0f;
 		float yLow = 0.0f;
 		float yMiddle = 0.0f;
 		float yHigh = 0.0f;
-		if (bs==null || ts==null || painter==null) {
+		if (ts==null || painter==null) {
 			// this case can occur when function is called not to paint, but just to compute spacing
 			canPaint = false;
 		} else {
-			float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
-			float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
-			// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
-			// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
-			yAmplitude = bsY + bs.getPosition( TGBeatSpacing.POSITION_BEND_VALUE);
+			yAmplitude = fromY + ts.getPosition(TGTrackSpacing.POSITION_BEND);
 			yHigh = yAmplitude  + 8.0f * scale;	// high position of arrows (bend/release), or dashed line (hold)
 			yLow = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + getTabPosY();	// start of arrow (bend)
 			yMiddle = yLow - 6.0f*scale;

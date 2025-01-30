@@ -106,6 +106,7 @@ public class TGConfigKeys {
 	public static final String STYLE_EFFECT_SPACING = "style.effectSpacing";
 	public static final String STYLE_DIVISION_TYPE_SPACING = "style.divisionTypeSpacing";
 	public static final String STYLE_PICK_STROKE_SPACING = "style.pickStrokeSpacing";
+	public static final String STYLE_BEND_SPACING = "style.bendSpacing";
 	public static final String STYLE_TEXT_SPACING = "style.textSpacing";
 	public static final String STYLE_MARKER_SPACING = "style.markerSpacing";
 	public static final String STYLE_LOOP_MARKER_SPACING = "style.loopMarkerSpacing";

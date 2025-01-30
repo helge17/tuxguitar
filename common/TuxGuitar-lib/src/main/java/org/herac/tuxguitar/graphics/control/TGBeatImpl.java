@@ -123,6 +123,10 @@ public class TGBeatImpl extends TGBeat{
 		return this.joinedGreaterThanQuarter;
 	}
 	
+	public boolean isBend() {
+		return this.bend;
+	}
+	
 	public void setJoinedGreaterThanQuarter(boolean joinedGreaterThanQuarter) {
 		this.joinedGreaterThanQuarter = joinedGreaterThanQuarter;
 	}
@@ -281,9 +285,6 @@ public class TGBeatImpl extends TGBeat{
 		}
 		if(this.trill){
 			this.bs.setSize(TGBeatSpacing.POSITION_TRILL_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.bend){
-			this.bs.setSize(TGBeatSpacing.POSITION_BEND_VALUE,layout.getEffectSpacing());
 		}
 		return this.bs.getSize();
 	}
