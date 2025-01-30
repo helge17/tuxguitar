@@ -256,31 +256,31 @@ public class TGBeatImpl extends TGBeat{
 			this.bs.setSize(TGBeatSpacing.POSITION_HEAVY_ACCENTUATED_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.harmonic){
-			this.bs.setSize(TGBeatSpacing.POSITION_HARMONIC_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_HARMONIC_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.tapping){
-			this.bs.setSize(TGBeatSpacing.POSITION_TAPPING_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_TAPPING_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.slapping){
-			this.bs.setSize(TGBeatSpacing.POSITION_SLAPPING_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_SLAPPING_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.popping){
-			this.bs.setSize(TGBeatSpacing.POSITION_POPPING_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_POPPING_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.palmMute){
-			this.bs.setSize(TGBeatSpacing.POSITION_PALM_MUTE_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_PALM_MUTE_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.letRing){
-			this.bs.setSize(TGBeatSpacing.POSITION_LET_RING_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_LET_RING_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.fadeIn){
-			this.bs.setSize(TGBeatSpacing.POSITION_FADE_IN,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_FADE_IN_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.vibrato){
-			this.bs.setSize(TGBeatSpacing.POSITION_VIBRATO_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_VIBRATO_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.trill){
-			this.bs.setSize(TGBeatSpacing.POSITION_TRILL_EFFEC,layout.getEffectSpacing());
+			this.bs.setSize(TGBeatSpacing.POSITION_TRILL_EFFECT,layout.getEffectSpacing());
 		}
 		if(this.bend){
 			this.bs.setSize(TGBeatSpacing.POSITION_BEND_VALUE,layout.getEffectSpacing());
