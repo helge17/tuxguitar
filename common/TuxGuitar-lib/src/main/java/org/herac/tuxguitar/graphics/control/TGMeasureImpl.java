@@ -323,9 +323,10 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		
 		long divisionLength = getDivisionLength();
-		long start = getStart();
-		long start1 = (manager.getMeasureManager().getRealStart(this, b1.getBeat().getStart()) - start);
-		long start2 = (manager.getMeasureManager().getRealStart(this, b2.getBeat().getStart()) - start);
+		manager.getMeasureManager().updateBeatsPreciseStart(this);
+		long preciseStart = getPreciseStart();
+		long start1 = TGDuration.toTime(b1.getBeat().getPreciseStart() - preciseStart);
+		long start2 = TGDuration.toTime(b2.getBeat().getPreciseStart() - preciseStart);
 		
 		if(b1.getDuration().getValue() < TGDuration.EIGHTH || b2.getDuration().getValue() < TGDuration.EIGHTH ){
 			return ( start1 == start2);

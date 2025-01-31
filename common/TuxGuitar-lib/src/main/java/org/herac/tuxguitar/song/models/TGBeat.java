@@ -1,8 +1,5 @@
 /*
  * Created on 23-nov-2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package org.herac.tuxguitar.song.models;
 
@@ -10,14 +7,21 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 
 /**
  * @author julian
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class TGBeat {
+
+// Comparable: to be able to sort beats per start value
+public abstract class TGBeat implements Comparable<TGBeat> {
 	
 	public static final int MAX_VOICES = 2;
 	
-	private long start;		// does not consider repeats
+	/*
+	 * beat start can be defined under 2 different formats:
+	 * - start: legacy, can lead to rounding errors
+	 * - preciseStart: with absolute precision. Warning, may not always be defined (negative if not defined)
+	 * None of these values consider repeats. They only consider previous measures (i.e. measures with lower measure numbers) and beats
+	 */
+	private long start;
+	private long preciseStart;
 	private TGMeasure measure;
 	private TGChord chord;
 	private TGText text;
@@ -26,7 +30,8 @@ public abstract class TGBeat {
 	private TGPickStroke pickStroke;
 	
 	public TGBeat(TGFactory factory) {
-		this.start = TGDuration.QUARTER_TIME;
+		this.preciseStart = TGDuration.getPreciseStartingPoint();
+		this.start = TGDuration.getStartingPoint();
 		this.stroke = factory.newStroke();
 		this.pickStroke = factory.newPickStroke();
 		this.voices = new TGVoice[ MAX_VOICES ];
@@ -44,11 +49,28 @@ public abstract class TGBeat {
 	}
 	
 	public long getStart() {
+		// prefer precise start if available
+		if (this.preciseStart >= 0) {
+			return TGDuration.toTime(this.preciseStart);
+		}
 		return this.start;
 	}
 	
+	public long getPreciseStart() {
+		return this.preciseStart;
+	}
+	
+	// try as much as possible NOT to use this method
+	// use .setPreciseStart instead when possible
 	public void setStart(long start) {
 		this.start = start;
+		// cannot deduce preciseStart from start (possible rounding errors)
+		this.preciseStart = -1;
+	}
+	
+	public void setPreciseStart(long pStart) {
+		this.preciseStart = pStart;
+		this.start = TGDuration.toTime(pStart);
 	}
 	
 	public void setVoice(int index, TGVoice voice){
@@ -174,7 +196,11 @@ public abstract class TGBeat {
 	}
 	
 	public void copyFrom(TGBeat beat, TGFactory factory) {
-		this.setStart(beat.getStart());
+		if (beat.getPreciseStart() >= 0) {
+			this.setPreciseStart(beat.getPreciseStart());
+		} else {
+			this.setStart(beat.getStart());
+		}
 		this.getStroke().copyFrom(beat.getStroke());
 		this.getPickStroke().copyFrom(beat.getPickStroke());
 		for( int i = 0 ; i < beat.voices.length ; i ++ ){
@@ -192,5 +218,14 @@ public abstract class TGBeat {
 		TGBeat beat = factory.newBeat();
 		beat.copyFrom(this, factory);
 		return beat;
+	}
+	
+	@Override
+	public int compareTo(TGBeat beat) {
+		if (beat == null) return 1;
+		if ((this.preciseStart >= 0) && (beat.getPreciseStart() >= 0)) {
+			return Long.valueOf(this.preciseStart).compareTo(Long.valueOf(beat.getPreciseStart()));
+		}
+		return (Long.valueOf(this.getStart()).compareTo(Long.valueOf(beat.getStart())));
 	}
 }

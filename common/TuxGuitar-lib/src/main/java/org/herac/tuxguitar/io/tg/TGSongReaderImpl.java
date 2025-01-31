@@ -307,7 +307,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		Node nodeBeat = getChildNode(nodeMeasure, TAG_TGBEAT);
 		while (nodeBeat != null) {
 			TGBeat beat = this.factory.newBeat();
-			beat.setStart(readInt(getChildNode(nodeBeat, TAG_START)));
+			beat.setPreciseStart(readInt(getChildNode(nodeBeat, TAG_PRECISE_START)));
 			// stroke
 			Node node = getChildNode(nodeBeat, TAG_STROKE);
 			if (node != null) {
