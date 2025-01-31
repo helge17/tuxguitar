@@ -76,12 +76,12 @@ public class TGNoteImpl extends TGNote {
 		}
 		if(effect.isFadeIn()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_FADE_IN ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_FADE_IN_EFFECT ));
 			paintFadeIn(layout, painter, x, y);
 		}
 		if(effect.isHarmonic() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_HARMONIC_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_HARMONIC_EFFECT ));
 			String key = new String();
 			key = effect.getHarmonic().isNatural() ? TGEffectHarmonic.KEY_NATURAL : key;
 			key = effect.getHarmonic().isArtificial() ? TGEffectHarmonic.KEY_ARTIFICIAL : key;
@@ -92,37 +92,37 @@ public class TGNoteImpl extends TGNote {
 		}
 		if(effect.isTapping()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TAPPING_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TAPPING_EFFECT ));
 			painter.drawString("T", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isSlapping()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_SLAPPING_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_SLAPPING_EFFECT ));
 			painter.drawString("S", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isPopping()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_POPPING_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_POPPING_EFFECT ));
 			painter.drawString("P", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isPalmMute()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_PALM_MUTE_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_PALM_MUTE_EFFECT ));
 			painter.drawString("P.M", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isLetRing()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_LET_RING_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_LET_RING_EFFECT ));
 			painter.drawString("L.R", x, (y + painter.getFMTopLine() + (2f * scale)));
 		}
 		if(effect.isVibrato()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_VIBRATO_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_VIBRATO_EFFECT ));
 			paintVibrato(layout, painter, x, y);
 		}
 		if(effect.isTrill()){
 			float x = fromX + getPosX() + spacing;
-			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TRILL_EFFEC ));
+			float y = (bsY + bs.getPosition( TGBeatSpacing.POSITION_TRILL_EFFECT ));
 			paintTrill(layout, painter, x, y);
 		}
 	}
@@ -676,21 +676,16 @@ public class TGNoteImpl extends TGNote {
 		float xRight  = fromX + getPosX() + margin.getRight() + 1.0f * scale;	// start of bend
 		float xMax    = fromX + getPosX() + width - (8.0f * scale)	;	// end of hold
 		// y
-		TGSpacing bs = getBeatImpl().getBs();
 		TGSpacing ts = getMeasureImpl().getTs();
 		float yAmplitude = 0.0f;
 		float yLow = 0.0f;
 		float yMiddle = 0.0f;
 		float yHigh = 0.0f;
-		if (bs==null || ts==null || painter==null) {
+		if (ts==null || painter==null) {
 			// this case can occur when function is called not to paint, but just to compute spacing
 			canPaint = false;
 		} else {
-			float tsY = (fromY + ts.getPosition(TGTrackSpacing.POSITION_EFFECTS));
-			float bsY = (tsY + (ts.getSize(TGTrackSpacing.POSITION_EFFECTS) - bs.getSize( )));
-			// tsY = top level of space to display "offline" effects (effects displayed ABOVE tab)
-			// bsY = top level of 1st empty space for "offline" effects (i.e. y where to draw the next one)
-			yAmplitude = bsY + bs.getPosition( TGBeatSpacing.POSITION_BEND_VALUE);
+			yAmplitude = fromY + ts.getPosition(TGTrackSpacing.POSITION_BEND);
 			yHigh = yAmplitude  + 8.0f * scale;	// high position of arrows (bend/release), or dashed line (hold)
 			yLow = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + getTabPosY();	// start of arrow (bend)
 			yMiddle = yLow - 6.0f*scale;

@@ -127,6 +127,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean division1;
 	private boolean division2;
 	private boolean pickStroke;
+	private boolean bend;
 	
 	private boolean[][] registeredAccidentals;
 	
@@ -520,6 +521,9 @@ public class TGMeasureImpl extends TGMeasure{
 			if(!this.pickStroke && beat.isPickStroke()) {
 				this.pickStroke = true;
 			}
+			if (!this.bend && beat.isBend()) {
+				this.bend = true;
+			}
 		}
 		
 		if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
@@ -587,6 +591,7 @@ public class TGMeasureImpl extends TGMeasure{
 		this.division1 = false;
 		this.division2 = false;
 		this.pickStroke = false;
+		this.bend = false;
 		this.beatEffectVerticalSpacing = 0.0f;
 		this.effectWidth = 0.0f;
 	}
@@ -618,6 +623,10 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		if( this.beatEffectVerticalSpacing > 0 ){
 			ts.setSize(TGTrackSpacing.POSITION_EFFECTS, this.beatEffectVerticalSpacing );
+		}
+		// bends are only displayed if tab is shown
+		if (this.bend && (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 ) {
+			ts.setSize(TGTrackSpacing.POSITION_BEND, layout.getBendSpacing());
 		}
 	}
 	

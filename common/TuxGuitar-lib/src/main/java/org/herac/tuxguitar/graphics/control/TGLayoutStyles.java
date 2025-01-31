@@ -30,6 +30,7 @@ public class TGLayoutStyles {
 	private float effectSpacing;
 	private float divisionTypeSpacing;
 	private float pickStrokeSpacing;
+	private float bendSpacing;
 	private float textSpacing;
 	private float markerSpacing;
 	private float loopMarkerSpacing;
@@ -252,11 +253,19 @@ public class TGLayoutStyles {
 	}
 
 	public float getPickStrokeSpacing() {
-		return pickStrokeSpacing;
+		return this.pickStrokeSpacing;
 	}
-
+	
 	public void setPickStrokeSpacing(float pickStrokeSpacing) {
 		this.pickStrokeSpacing = pickStrokeSpacing;
+	}
+
+	public float getBendSpacing() {
+		return this.bendSpacing;
+	}
+
+	public void setBendSpacing(float bendSpacing) {
+		this.bendSpacing = bendSpacing;
 	}
 
 	public float getTextSpacing() {
