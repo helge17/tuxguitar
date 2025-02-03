@@ -16,43 +16,43 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class ASCIITabOutputStream {
-	
+
 	private static final String[] TONIC_NAMES = new String[]{"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
-	
+
 	private static final int MAX_LINE_LENGTH = 80;
-	
+
 	private TGSongManager manager;
 	private PrintStream stream;
 	private ASCIIOutputStream out;
-	
+
 	public ASCIITabOutputStream(PrintStream stream){
 		this.stream = stream;
 	}
-	
+
 	public ASCIITabOutputStream(OutputStream stream){
 		this(new PrintStream(stream));
 	}
-	
+
 	public ASCIITabOutputStream(String fileName) throws FileNotFoundException{
 		this(new FileOutputStream(fileName));
 	}
-	
+
 	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
-		
+
 		this.out = new ASCIIOutputStream(this.stream);
 		this.drawSong(song);
 		this.out.flush();
 		this.out.close();
 	}
-	
+
 	private void drawSong(TGSong song){
 		//Propiedades de cancion
 		this.out.drawStringLine("Title: " + song.getName());
 		this.out.drawStringLine("Artist: " + song.getArtist());
 		this.out.drawStringLine("Album: " + song.getAlbum());
 		this.out.drawStringLine("Author: " + song.getAuthor());
-		
+
 		Iterator<TGTrack> it = song.getTracks();
 		while(it.hasNext()){
 			TGTrack track = (TGTrack)it.next();
@@ -61,12 +61,12 @@ public class ASCIITabOutputStream {
 			this.out.nextLine();
 		}
 	}
-	
+
 	private void drawTrack(TGTrack track){
 		//Propiedades de pista
 		this.out.nextLine();
 		this.out.drawStringLine("Track " + track.getNumber() + ": " + track.getName());
-		
+
 		//Obtengo los nombres de la afinacion, y el ancho maximo que ocupa
 		String[] tuning = new String[track.getStrings().size()];
 		int maxTuningLength = 1;
@@ -75,26 +75,24 @@ public class ASCIITabOutputStream {
 			tuning[i] = TONIC_NAMES[(string.getValue() % TONIC_NAMES.length)];
 			maxTuningLength = Math.max(maxTuningLength,tuning[i].length());
 		}
-		
+
 		int nextMeasure = 0;
 		boolean eof = false;
 		while(!eof){
 			this.out.nextLine();
 			int index = nextMeasure;
-			for(int i = 0; i < track.getStrings().size();i++){
-				TGString string = (TGString)track.getStrings().get(i);
-				
+			for(int currentString = 0; currentString < track.getStrings().size();currentString++){
 				//Dibujo la afinacion de la cuerda
-				this.out.drawTuneSegment(tuning[i],maxTuningLength);
+				this.out.drawTuneSegment(tuning[currentString],maxTuningLength);
 				int measureCount = track.countMeasures();
 				for(int j = index; j < measureCount; j++){
 					TGMeasure measure = track.getMeasure(j);
-					drawMeasure(measure,string);
+					drawMeasure(measure,currentString, track.getStrings().size());
 					nextMeasure = (j + 1);
-					
+
 					//Calculo si era el ultimo compas
 					eof = (this.manager.getTrackManager().isLastMeasure(measure));
-					
+
 					//Si se supero el ancho maximo, bajo de linea
 					if(this.out.getPosX() > MAX_LINE_LENGTH){
 						break;
@@ -108,36 +106,44 @@ public class ASCIITabOutputStream {
 		}
 		this.out.nextLine();
 	}
-	
-	private void drawMeasure(TGMeasure measure,TGString string){
+
+	private void drawMeasure(TGMeasure measure, int currentString, int stringCount){
 		//Abro el compas
 		this.out.drawBarSegment();
 		this.out.drawStringSegments(1);
 		TGBeat beat = this.manager.getMeasureManager().getFirstBeat( measure.getBeats() );
 		while(beat != null){
 			int outLength = 0;
-			
-			//Si hay una nota en la misma cuerda, la dibujo
-			TGNote note = this.manager.getMeasureManager().getNote(beat, string.getNumber());
-			if(note != null){
-				outLength = (Integer.toString(note.getValue()).length() - 1);
-				this.out.drawNote(note.getValue(), note.getEffect() != null && note.getEffect().isDeadNote());
-			}
-			//dejo el espacio
-			else{
-				this.out.drawStringSegments(1);
-			}
-			
+			int maxOutLength=0;
 			TGBeat nextBeat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
-			
-			long length = (nextBeat != null ? nextBeat.getStart() - beat.getStart() : (measure.getStart() + measure.getLength()) - beat.getStart());
+			TGNote nextNote=(nextBeat != null ? this.manager.getMeasureManager().getNote(nextBeat, currentString+1) : null);
+
+			//Si hay una nota en la misma cuerda, la dibujo
+			TGNote note = this.manager.getMeasureManager().getNote(beat, currentString+1);
+			outLength=this.out.drawNote(note, nextNote, true);
+			for(int checkedString = 0; checkedString < stringCount;checkedString++){
+				int checkedOutLength=this.out.drawNote(
+						this.manager.getMeasureManager().getNote(beat, checkedString+1),
+						(nextBeat != null ? this.manager.getMeasureManager().getNote(nextBeat, checkedString+1) : null),
+						false);
+				if (checkedOutLength>maxOutLength) {
+					maxOutLength=checkedOutLength;
+				}
+			}
+
+
 			//Agrego espacios correspondientes hasta el proximo pulso.
-			this.out.drawStringSegments(getDurationScaping(length) - outLength);
-			
+			long length = (nextBeat != null ? nextBeat.getStart() - beat.getStart() : (measure.getStart() + measure.getLength()) - beat.getStart());
+			int beatWidth=getDurationScaping(length);
+			if (beatWidth<=maxOutLength) {
+				beatWidth=maxOutLength+1;
+			}
+			this.out.drawStringSegments(beatWidth - outLength);
+
 			beat = nextBeat;
 		}
 	}
-	
+
 	private int getDurationScaping(long length){
 		int spacing = 6;
 		if(length <= (TGDuration.QUARTER_TIME / 8)){
