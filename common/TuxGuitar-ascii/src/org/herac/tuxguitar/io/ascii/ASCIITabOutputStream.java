@@ -118,7 +118,6 @@ public class ASCIITabOutputStream {
 			TGBeat nextBeat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
 			TGNote nextNote=(nextBeat != null ? this.manager.getMeasureManager().getNote(nextBeat, currentString+1) : null);
 
-			//Si hay una nota en la misma cuerda, la dibujo
 			TGNote note = this.manager.getMeasureManager().getNote(beat, currentString+1);
 			outLength=this.out.drawNote(note, nextNote, true);
 			for(int checkedString = 0; checkedString < stringCount;checkedString++){

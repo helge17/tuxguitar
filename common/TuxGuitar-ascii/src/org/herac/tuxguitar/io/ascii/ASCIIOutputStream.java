@@ -9,11 +9,11 @@ public class ASCIIOutputStream {
 	private PrintWriter writer;
 	private int x;
 	private int y;
-	
+
 	public ASCIIOutputStream(PrintStream stream){
 		this.writer = new PrintWriter(stream);
 	}
-	
+
 	public int drawNote(TGNote note, TGNote nextNote, boolean printNote){
 		int printWidth=0;
 		if (note!=null) {
@@ -21,7 +21,7 @@ public class ASCIIOutputStream {
 			int fret=note.getValue();
 			if (note.getEffect().isDeadNote()) {
 				noteString.append("X");
-				printWidth+=1;
+				++printWidth;
 			} else {
 				noteString.append(fret);
 				printWidth+=(fret >=10 )?2:1;
@@ -30,7 +30,7 @@ public class ASCIIOutputStream {
 				if (nextNote.getValue()>fret) {
 					noteString.append("h");
 				} else {
-					noteString.append("p");			
+					noteString.append("p");
 				}
 				++printWidth;
 			}
@@ -38,7 +38,7 @@ public class ASCIIOutputStream {
 				if (nextNote.getValue()>fret) {
 					noteString.append("/");
 				} else {
-					noteString.append("\\");			
+					noteString.append("\\");
 				}
 				++printWidth;
 			}
@@ -47,9 +47,9 @@ public class ASCIIOutputStream {
 				// bend.getMovements().size()==0 means hold bend, not handled yet
 				if (bend.getMovements().size()>0) {
 					int movement=bend.getMovements().get(0);
+					// rounding of division by 2 is intentional to avoid fractional frets like 12b12.5 in the ASCII notation
 					int bendNote=fret+Math.abs(movement)/2;
 					if (movement<0) {
-						movement=-movement;
 						noteString.insert(0, "r");
 						noteString.insert(0, bendNote);
 					} else {
@@ -63,22 +63,22 @@ public class ASCIIOutputStream {
 
 			if (printNote) {
 				this.writer.print(noteString.toString());
-				movePoint(getPosX() + printWidth,getPosY());					
+				movePoint(getPosX() + printWidth,getPosY());
 			}
 		}
 		return printWidth;
 	}
-	
+
 	public void drawStringSegments(int count){
 		if (count<0) {
 			count=0;
 		}
-		movePoint(getPosX() + count,getPosY());		
+		movePoint(getPosX() + count,getPosY());
 		for(int i = 0; i < count;i ++){
 			this.writer.print("-");
 		}
 	}
-	
+
 	public void drawTuneSegment(String tune,int maxLength){
 		for(int i = tune.length();i < maxLength;i ++){
 			drawSpace();
@@ -86,44 +86,44 @@ public class ASCIIOutputStream {
 		movePoint(getPosX() + tune.length(),getPosY());
 		this.writer.print(tune);
 	}
-	
+
 	public void drawBarSegment(){
 		movePoint(getPosX() + 1,getPosY());
 		this.writer.print("|");
 	}
-	
+
 	public void nextLine(){
 		movePoint(0,getPosY() + 1);
 		this.writer.println("");
 	}
-	
+
 	public void drawStringLine(String s){
 		movePoint(0,getPosY() + 1);
 		this.writer.println(s);
 	}
-	
+
 	public void drawSpace(){
 		movePoint(getPosX() + 1,getPosY());
 		this.writer.print(" ");
 	}
-	
+
 	private void movePoint(int x,int y){
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public int getPosX(){
 		return this.x;
 	}
-	
+
 	public int getPosY(){
 		return this.y;
 	}
-	
+
 	public void flush(){
 		this.writer.flush();
 	}
-	
+
 	public void close(){
 		this.writer.close();
 	}
