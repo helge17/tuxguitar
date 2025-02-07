@@ -15,16 +15,15 @@ public class ASCIIOutputStream {
 	}
 
 	public int drawNote(TGNote note, TGNote nextNote, boolean printNote){
-		int printWidth=0;
+		StringBuffer noteString=new StringBuffer();
 		if (note!=null) {
-			StringBuffer noteString=new StringBuffer();
 			int fret=note.getValue();
 			if (note.getEffect().isDeadNote()) {
 				noteString.append("X");
-				++printWidth;
+			} else if (note.getEffect().isBend() && (note.getEffect().getBend().getMovements().size()==0)) { // bend.getMovements().size()==0 means hold bend
+				noteString.append("H");
 			} else {
 				noteString.append(fret);
-				printWidth+=(fret >=10 )?2:1;
 			}
 			if (note.getEffect().isHammer() && (nextNote !=null)) {
 				if (nextNote.getValue()>fret) {
@@ -32,7 +31,6 @@ public class ASCIIOutputStream {
 				} else {
 					noteString.append("p");
 				}
-				++printWidth;
 			}
 			if (note.getEffect().isSlide() && (nextNote !=null)) {
 				if (nextNote.getValue()>fret) {
@@ -40,11 +38,10 @@ public class ASCIIOutputStream {
 				} else {
 					noteString.append("\\");
 				}
-				++printWidth;
 			}
 			if (note.getEffect().isBend()) {
 				TGEffectBend bend=note.getEffect().getBend();
-				// bend.getMovements().size()==0 means hold bend, not handled yet
+				// bend.getMovements().size()==0 means hold bend and is handled above
 				if (bend.getMovements().size()>0) {
 					int movement=bend.getMovements().get(0);
 					// rounding of division by 2 is intentional to avoid fractional frets like 12b12.5 in the ASCII notation
@@ -56,17 +53,16 @@ public class ASCIIOutputStream {
 						noteString.append("b");
 						noteString.append(bendNote);
 					}
-					++printWidth;
-					printWidth+=(bendNote >=10 )?2:1;
 				}
 			}
 
 			if (printNote) {
 				this.writer.print(noteString.toString());
-				movePoint(getPosX() + printWidth,getPosY());
+				movePoint(getPosX() + noteString.length(),getPosY());
 			}
 		}
-		return printWidth;
+
+		return noteString.length();
 	}
 
 	public void drawStringSegments(int count){
