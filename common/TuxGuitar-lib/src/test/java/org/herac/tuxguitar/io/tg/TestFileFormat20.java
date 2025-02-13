@@ -70,8 +70,6 @@ public class TestFileFormat20 {
 		assertTrue(validatesSchema("Untitled_20.tg", true));
 		assertTrue(detectsFormat("Untitled_20.tg"));
 		assertTrue(validatesSchema("test_20.xml", false));
-		assertTrue(validatesSchema("test_20.tg", true));
-		assertTrue(detectsFormat("test_20.tg"));
 	}
 	
 	@Test

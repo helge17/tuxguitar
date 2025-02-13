@@ -161,7 +161,7 @@
             <TGMeasure>
                 <clef>bass</clef>
                 <TGBeat>
-                    <preciseStart>4000000</preciseStart> <!-- warning, stub -->
+                    <preciseStart>2882880</preciseStart>
                     <voice>
                         <duration value="8"/>
                         <note value="1" string="2">

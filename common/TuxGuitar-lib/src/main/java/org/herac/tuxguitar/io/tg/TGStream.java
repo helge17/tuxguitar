@@ -321,6 +321,10 @@ public class TGStream {
 		return Integer.valueOf(node.getTextContent());
 	}
 	
+	protected long readLong(Node node) {
+		return Long.valueOf(node.getTextContent());
+	}
+	
 	public InputStream getDecompressedContent(InputStream inputStream) throws IOException {
 		return this.getDecompressedFile(inputStream, CONTENT_FILE_NAME);
 	}

@@ -58,7 +58,7 @@
                 <clef>treble</clef>
                 <keySignature>0</keySignature>
                 <TGBeat>
-                    <preciseStart>720720</preciseStart>
+                    <preciseStart>2882880</preciseStart>
                     <voice>
                         <duration value="1">
                             <divisionType enters="1" times="1"/>

@@ -84,6 +84,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 	
 	public void writeContent(TGSongWriterHandle handle) throws TGFileFormatException {
+		new TGSongManager().updatePreciseStart(handle.getSong());
 		this.writeXMLDocument(handle);
 		this.saveDocument(handle.getOutputStream());
 	}

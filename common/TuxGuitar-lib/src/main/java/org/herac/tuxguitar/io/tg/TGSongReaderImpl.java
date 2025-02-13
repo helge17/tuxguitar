@@ -274,6 +274,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		track.setStrings(list);
 	}
 	private void readMeasures(TGTrack track, Node nodeTrack) {
+		boolean isFirstMeasure = true;
 		Node nodeMeasure = getChildNode(nodeTrack, TAG_TGMEASURE);
 		int index = 1;
 		int clef = TGMeasure.CLEF_TREBLE;	// default
@@ -292,7 +293,8 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 				keySignature = readInt(node);
 			}
 			measure.setKeySignature(keySignature);
-			this.readBeats(measure, nodeMeasure);
+			this.readBeats(measure, nodeMeasure, isFirstMeasure);
+			isFirstMeasure = false;
 			track.addMeasure(measure);
 			index++;
 			nodeMeasure = getSiblingNode(nodeMeasure.getNextSibling(), TAG_TGMEASURE);
@@ -303,11 +305,18 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 	}
 	
-	private void readBeats(TGMeasure measure, Node nodeMeasure) {
+	private void readBeats(TGMeasure measure, Node nodeMeasure, boolean isFirst) {
+		boolean isFirstBeat = isFirst;
 		Node nodeBeat = getChildNode(nodeMeasure, TAG_TGBEAT);
 		while (nodeBeat != null) {
 			TGBeat beat = this.factory.newBeat();
-			beat.setPreciseStart(readInt(getChildNode(nodeBeat, TAG_PRECISE_START)));
+			long preciseStart = readLong(getChildNode(nodeBeat, TAG_PRECISE_START));
+			// force explicit incompatibility with intermediate development snapshots
+			if (isFirstBeat && (preciseStart != TGDuration.getPreciseStartingPoint())) {
+				throw new TGFileFormatException();
+			}
+			isFirstBeat = false;
+			beat.setPreciseStart(preciseStart);
 			// stroke
 			Node node = getChildNode(nodeBeat, TAG_STROKE);
 			if (node != null) {
