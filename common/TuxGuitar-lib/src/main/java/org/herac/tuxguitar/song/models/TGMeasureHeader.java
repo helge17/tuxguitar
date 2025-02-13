@@ -20,7 +20,16 @@ public abstract class TGMeasureHeader {
 	public static final int TRIPLET_FEEL_SIXTEENTH = 3;
 	
 	private int number;
+	/*
+	 * measureHeader start can be defined under 2 different formats:
+	 * - start
+	 * - preciseStart
+	 * for measure headers there is a bijection between these values, no possible rounding error
+	 * since all measure durations are a multiple of a base duration (power of 2)
+	 * None of these values consider repeats. They only consider previous measures (i.e. measures with lower measure numbers) and beats
+	 */
 	private long start;
+	private long preciseStart;
 	private TGTimeSignature timeSignature;
 	private TGTempo tempo;
 	private TGMarker marker;
@@ -33,7 +42,8 @@ public abstract class TGMeasureHeader {
 	
 	public TGMeasureHeader(TGFactory factory){
 		this.number = 0;
-		this.start = TGDuration.QUARTER_TIME;
+		this.preciseStart = TGDuration.getPreciseStartingPoint();
+		this.start = TGDuration.getStartingPoint();
 		this.timeSignature = factory.newTimeSignature();
 		this.tempo = factory.newTempo();
 		this.marker = null;
@@ -85,8 +95,22 @@ public abstract class TGMeasureHeader {
 		return this.start;
 	}
 	
+	public long getPreciseStart() {
+		return this.preciseStart;
+	}
+	
 	public void setStart(long start) {
 		this.start = start;
+		// preciseStart can be deduced from start, no possible rounding error here,
+		// as all measures duration correctly divide value used for tick definition
+		// (time signature denominator is a power of 2)
+		this.start = start;
+		this.preciseStart = TGDuration.toPreciseTime(start);
+	}
+	
+	public void setPreciseStart(long pStart) {
+		this.preciseStart = pStart;
+		this.start = TGDuration.toTime(pStart);
 	}
 	
 	public int getTripletFeel() {
@@ -133,6 +157,10 @@ public abstract class TGMeasureHeader {
 	
 	public long getLength(){
 		return getTimeSignature().getNumerator() * getTimeSignature().getDenominator().getTime();
+	}
+	
+	public long getPreciseLength() {
+		return getTimeSignature().getNumerator() * TGDuration.WHOLE_PRECISE_DURATION / getTimeSignature().getDenominator().getValue();
 	}
 	
 	public TGSong getSong() {

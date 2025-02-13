@@ -30,7 +30,7 @@ public class TestLetRing {
 	// load test song, and fill MIDI events list
 	public TestLetRing() throws IOException {
 		TGContext context = new TGContext();
-		TGSong song = new TestFileFormat20().readSong("letRing.tg", true).getSong();
+		TGSong song = new TestFileFormat20().readSong("letRing_20.tg", true).getSong();
 		MidiSequenceParser parser = new MidiSequenceParser(song, new TGSongManager(), 0);
 		MidiSequencerImplForTest sequencer = new MidiSequencerImplForTest(context);
 		MidiSequenceHandlerImpl seqHandler = new MidiSequenceHandlerImpl(sequencer,1);

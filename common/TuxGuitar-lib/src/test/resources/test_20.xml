@@ -78,7 +78,7 @@
                 <clef>treble</clef>
                 <keySignature>8</keySignature>
                 <TGBeat>
-                    <start>960</start>
+                    <preciseStart>2882880</preciseStart>
                     <stroke direction="up" value="2"/>
                     <chord>
                         <name>Bm</name>
@@ -129,7 +129,7 @@
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
-                    <start>2000</start> <!-- warning, stub -->
+                    <preciseStart>1000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
                     </voice>
@@ -137,7 +137,7 @@
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
-                    <start>3000</start> <!-- warning, stub -->
+                    <preciseStart>2000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
                     </voice>
@@ -145,7 +145,7 @@
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
-                    <start>4000</start> <!-- warning, stub -->
+                    <preciseStart>3000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
                     </voice>
@@ -161,7 +161,7 @@
             <TGMeasure>
                 <clef>bass</clef>
                 <TGBeat>
-                    <start>5000</start> <!-- warning, stub -->
+                    <preciseStart>2882880</preciseStart>
                     <voice>
                         <duration value="8"/>
                         <note value="1" string="2">
@@ -175,7 +175,7 @@
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
-                    <start>6000</start> <!-- warning, stub -->
+                    <preciseStart>5000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
                     </voice>
@@ -183,7 +183,7 @@
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
-                    <start>7000</start> <!-- warning, stub -->
+                    <preciseStart>6000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
                     </voice>
@@ -191,7 +191,7 @@
             </TGMeasure>
             <TGMeasure>
                 <TGBeat>
-                    <start>8000</start> <!-- warning, stub -->
+                    <preciseStart>7000000</preciseStart> <!-- warning, stub -->
                     <voice>
                         <duration value="8"/>
                     </voice>

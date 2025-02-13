@@ -104,7 +104,7 @@ public class TGStream {
 	protected static final String TAG_CLEF = "clef";
 	protected static final String TAG_KEYSIGNATURE = "keySignature";
 	protected static final String TAG_TGBEAT = "TGBeat";
-	protected static final String TAG_START = "start";
+	protected static final String TAG_PRECISE_START = "preciseStart";
 	protected static final String TAG_STROKE = "stroke";
 	protected static final String TAG_DIRECTION = "direction";
 	protected static final String TAG_CHORD = "chord";
@@ -319,6 +319,10 @@ public class TGStream {
 	
 	protected int readInt(Node node) {
 		return Integer.valueOf(node.getTextContent());
+	}
+	
+	protected long readLong(Node node) {
+		return Long.valueOf(node.getTextContent());
 	}
 	
 	public InputStream getDecompressedContent(InputStream inputStream) throws IOException {
