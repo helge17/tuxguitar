@@ -15,11 +15,24 @@ import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
+import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTempo;
 
 public class TGTempoDialog extends TGModalFragment {
+
+	// possible tempo bases:
+	private final TempoBase tempoBase[] = {
+			new TempoBase(TGDuration.WHOLE, false),
+			new TempoBase(TGDuration.HALF, true),
+			new TempoBase(TGDuration.HALF, false),
+			new TempoBase(TGDuration.QUARTER, true),
+			new TempoBase(TGDuration.QUARTER, false),
+			new TempoBase(TGDuration.EIGHTH, true),
+			new TempoBase(TGDuration.EIGHTH, false),
+			new TempoBase(TGDuration.SIXTEENTH, false)
+			};
 
 	public TGTempoDialog() {
 		super(R.layout.view_tempo_dialog);
@@ -46,6 +59,27 @@ public class TGTempoDialog extends TGModalFragment {
 	@SuppressLint("InflateParams")
 	public void onPostInflateView() {
 		TGTempo tempo = this.getHeader().getTempo();
+
+		final RadioButton[] tempoBaseButton = new RadioButton[tempoBase.length];
+		RadioGroup tempoBaseGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_tempo_base);
+		for (int i=0; i<tempoBase.length; i++) {
+			tempoBaseButton[i] = new RadioButton(getContext());
+			tempoBaseGroup.addView(tempoBaseButton[i]);
+			tempoBaseButton[i].setId(i);
+			String iconName = "duration_" + tempoBase[i].base;
+			if(tempoBase[i].dotted) iconName += "dotted";
+			int iconId = getContext().getResources().getIdentifier(iconName, "drawable", getContext().getPackageName());
+			tempoBaseButton[i].setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(iconId, null), null, null, null);
+			String buttonText = " 1/" + tempoBase[i].base;
+			if(tempoBase[i].dotted) buttonText += "•";
+			tempoBaseButton[i].setText(buttonText);
+			if ( (tempo.getBase() == tempoBase[i].base) && (tempo.isDotted() == tempoBase[i].dotted) ) {
+				tempoBaseButton[i].setChecked(true);
+			} else {
+				tempoBaseButton[i].setChecked(false);
+			}
+		}
+
 		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createTempoValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
@@ -79,6 +113,16 @@ public class TGTempoDialog extends TGModalFragment {
 		return ((Integer) spinner.getSelectedItem()).intValue();
 	}
 
+	public int parseTempoBase() {
+		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_tempo_base);
+		return tempoBase[radioGroup.getCheckedRadioButtonId()].base;
+	}
+
+	public boolean parseTempoBaseDotted() {
+		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_tempo_base);
+		return tempoBase[radioGroup.getCheckedRadioButtonId()].dotted;
+	}
+
 	public Integer parseApplyTo() {
 		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_options_group);
 
@@ -97,8 +141,8 @@ public class TGTempoDialog extends TGModalFragment {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, this.getHeader());
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO, this.parseTempoValue());
-		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE, this.getHeader().getTempo().getBase());
-		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE_DOTTED, this.getHeader().getTempo().isDotted());
+		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE, this.parseTempoBase());
+		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE_DOTTED, this.parseTempoBaseDotted());
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_APPLY_TO, this.parseApplyTo());
 		tgActionProcessor.processOnNewThread();
 	}
@@ -109,5 +153,15 @@ public class TGTempoDialog extends TGModalFragment {
 
 	public TGMeasureHeader getHeader() {
 		return getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
+	}
+
+	private class TempoBase {
+		private int base;
+		private boolean dotted;
+
+		TempoBase(int base, boolean dotted) {
+			this.base = base;
+			this.dotted = dotted;
+		}
 	}
 }
