@@ -7,10 +7,10 @@ import org.herac.tuxguitar.app.view.util.TGDialogUtil;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
-import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.song.models.TGTempoBase;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
@@ -30,16 +30,7 @@ public class TGTempoDialog {
 	private static final int MAX_TEMPO = 320;
 	
 	// possible tempo bases:
-	private final TempoBase tempoBase[] = {
-			new TempoBase(TGDuration.WHOLE, false),
-			new TempoBase(TGDuration.HALF, true),
-			new TempoBase(TGDuration.HALF, false),
-			new TempoBase(TGDuration.QUARTER, true),
-			new TempoBase(TGDuration.QUARTER, false),
-			new TempoBase(TGDuration.EIGHTH, true),
-			new TempoBase(TGDuration.EIGHTH, false),
-			new TempoBase(TGDuration.SIXTEENTH, false)
-			};
+	private final TGTempoBase tempoBase[] = TGTempoBase.getTempoBases();
 	
 	private int selectedBase;
 	private boolean selectedDotted;
@@ -70,15 +61,15 @@ public class TGTempoDialog {
 		radioButtonsPanel.setLayout(radioButtonsLayout);
 		for (int i=0; i<tempoBase.length; i++) {
 			UIRadioButton button = uiFactory.createRadioButton(radioButtonsPanel);
-			button.setImage(TuxGuitar.getInstance().getIconManager().getDuration(tempoBase[i].base, tempoBase[i].dotted));
-			if ( (currentTempo.getBase() == tempoBase[i].base) && (currentTempo.isDotted() == tempoBase[i].dotted) ) {
+			button.setImage(TuxGuitar.getInstance().getIconManager().getDuration(tempoBase[i].getBase(), tempoBase[i].isDotted()));
+			if ( (currentTempo.getBase() == tempoBase[i].getBase()) && (currentTempo.isDotted() == tempoBase[i].isDotted()) ) {
 				button.setSelected(true);
-				this.selectedBase = tempoBase[i].base;
-				this.selectedDotted = tempoBase[i].dotted;
+				this.selectedBase = tempoBase[i].getBase();
+				this.selectedDotted = tempoBase[i].isDotted();
 			} else {
 				button.setSelected(false);
 			}
-			button.addSelectionListener(this.createSelectionListener(tempoBase[i].base, tempoBase[i].dotted));
+			button.addSelectionListener(this.createSelectionListener(tempoBase[i].getBase(), tempoBase[i].isDotted()));
 			
 			radioButtonsLayout.set(button, 1, i+1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, true, 1, 1, 60f, null, null);
 		}
@@ -187,13 +178,4 @@ public class TGTempoDialog {
 		tgActionProcessor.processOnNewThread();
 	}
 	
-	private class TempoBase {
-		private int base;
-		private boolean dotted;
-		
-		TempoBase(int base, boolean dotted) {
-			this.base = base;
-			this.dotted = dotted;
-		}
-	}
 }
