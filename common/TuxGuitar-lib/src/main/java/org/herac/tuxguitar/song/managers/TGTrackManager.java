@@ -243,7 +243,9 @@ public class TGTrackManager {
 						// Warning: after this, measure may be invalid
 						// Typically this can create overlapping beats
 						// This overlapping can only concern rest beat(s), since enough room was made available before doing this
-						measureManager.changeDuration(updatedMeasure, updatedBeat, beatToInsert.getVoice(i).getDuration(), i, true);
+						if (!beatToInsert.getVoice(i).isEmpty()) {
+							measureManager.changeDuration(updatedMeasure, updatedBeat, beatToInsert.getVoice(i).getDuration(), i, true);
+						}
 					}
 					// replace all beat attributes, except start
 					long updatedStart = updatedBeat.getStart();
