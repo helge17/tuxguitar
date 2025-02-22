@@ -385,6 +385,13 @@ public class TGChordImpl extends TGChord {
 		}
 		int firstFret = (zero && maximum < MAX_FRETS)?1:minimum;
 		setFirstFret( Math.max(firstFret,1) );
+		// delete notes if out of the grid
+		for (int i = 0; i < getStrings().length; i++) {
+			int fretValue = getFretValue(i);
+			if (fretValue - firstFret >= MAX_FRETS-1) {
+				getStrings()[i] = -1;
+			}
+		}
 	}
 	
 	private boolean isTonicFret(int stringIndex, int fret){

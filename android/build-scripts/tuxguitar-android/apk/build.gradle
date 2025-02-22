@@ -16,6 +16,7 @@ def plugins_common = [
 		'TuxGuitar-midi',
 		'TuxGuitar-lilypond',
 		'TuxGuitar-pdf',
+		'TuxGuitar-ascii',
 ]
 // plugins shared with desktop app, and including unit tests are handled on case-by-case basis
 // see below

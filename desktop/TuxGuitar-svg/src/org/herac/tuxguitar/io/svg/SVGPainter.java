@@ -65,15 +65,36 @@ public class SVGPainter extends SVGResourceFactory implements UIPainter {
 	}
 	
 	public void drawString(String string, float x, float y) {
+		this.drawString(string, x, y, "start");
+	}
+	
+	public void drawString(String string, float x, float y, String textAnchor) {
 		this.setAdvanced(false);
 		this.svgBuffer.append("\r\n");
 		this.svgBuffer.append("<text ");
 		this.svgBuffer.append("x='" + x + "' ");
 		this.svgBuffer.append("y='" + y + "' ");
+		this.svgBuffer.append("text-anchor=\"" + textAnchor + "\" ");
 		this.svgBuffer.append("font-family=\""+ this.svgFont.getName() + "\" ");
 		this.svgBuffer.append("font-size=\"" + this.svgFont.getHeight() + "\" ");
 		this.svgBuffer.append("fill=\"" + this.svgForeground.toHexString() +"\" ");
 		this.svgBuffer.append(">");
+
+		/** 
+		 * Escape XML special characters before print
+		 * 
+		 * & - &amp;
+		 * < - &lt;
+		 * > - &gt;
+		 * " - &quot;
+		 * ' - &apos;
+		 */
+		string = string.replaceAll("[&]", "&amp;");
+		string = string.replaceAll("[<]", "&lt;");
+		string = string.replaceAll("[>]", "&gt;");
+		string = string.replaceAll("[\"]", "&quot;");
+		string = string.replaceAll("[']", "&apos;");
+		
 		this.svgBuffer.append( string );
 		this.svgBuffer.append("</text>");
 	}

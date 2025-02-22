@@ -357,7 +357,7 @@ public class TGChordEditor {
 				this.firstFrets[this.maxStrings - string] = true;
 			} else if (realValue >= 0) {
 				realValue -= (getFret() - 1);
-				if (realValue > 0 && realValue <= TGChordImpl.MAX_FRETS) {
+				if (realValue > 0) {
 					this.addPoint(new UIPosition(this.strings[this.maxStrings - string], this.frets[realValue - 1]));
 				}
 			}
@@ -401,7 +401,9 @@ public class TGChordEditor {
 			this.setFret((short)chord.getFirstFret());
 			for (int i = 0; i < chord.getStrings().length; i++) {
 				int fretValue = chord.getFretValue(i);
-				this.addValue(fretValue, i + 1);
+				if (fretValue - chord.getFirstFret() < TGChordImpl.MAX_FRETS-1) {
+					this.addValue(fretValue, i + 1);
+				}
 			}
 			
 			String name = chord.getName();

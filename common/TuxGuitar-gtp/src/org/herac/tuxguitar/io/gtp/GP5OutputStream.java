@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -516,7 +517,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		skipBytes(4);
 		writeInt( chord.getFirstFret() );
 		for (int i = 0; i < 7; i++) {
-			writeInt( (i < chord.countStrings() ? chord.getFretValue(i) : -1 ) ) ;
+			boolean isValid = (i < chord.countStrings());
+			isValid &= (chord.getFretValue(i) - chord.getFirstFret() < TGChordImpl.MAX_FRETS-1);
+			writeInt( ( isValid ? chord.getFretValue(i) : -1 ) ) ;
 		}
 		this.skipBytes(32);
 	}
