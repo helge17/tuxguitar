@@ -17,10 +17,10 @@ public class TGStoredBeatList {
 		long first = -1;
 		for (TGBeat beat : range) {
 			if (first == -1) {
-				first = beat.getStart();
+				first = beat.getPreciseStart();
 			}
 			beat = beat.clone(factory);
-			beat.setStart(beat.getStart() - first);
+			beat.setPreciseStart(beat.getPreciseStart() - first);
 			beat.setMeasure(null);
 			this.beats.add(beat);
 		}

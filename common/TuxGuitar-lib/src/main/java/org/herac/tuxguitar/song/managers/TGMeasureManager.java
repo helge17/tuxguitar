@@ -384,12 +384,25 @@ public class TGMeasureManager {
 		for(int v = 0; v < beat.countVoices(); v ++){
 			TGVoice voice = beat.getVoice( v );
 			if( !voice.isEmpty() ){
-				if(minimumDuration == null || (voice.getDuration().compareTo(minimumDuration)  < 0 )){
+				if(minimumDuration == null || (voice.getDuration().compareTo(minimumDuration) < 0 )){
 					minimumDuration = voice.getDuration();
 				}
 			}
 		}
 		return minimumDuration;
+	}
+	
+	public TGDuration getMaximumDuration(TGBeat beat){
+		TGDuration maximumDuration = null;
+		for(int v = 0; v < beat.countVoices(); v ++){
+			TGVoice voice = beat.getVoice( v );
+			if( !voice.isEmpty() ){
+				if(maximumDuration == null || (voice.getDuration().compareTo(maximumDuration) > 0 )){
+					maximumDuration = voice.getDuration();
+				}
+			}
+		}
+		return maximumDuration;
 	}
 	
 	public TGBeat getBeat(TGTrack track,long start) {
@@ -537,6 +550,18 @@ public class TGMeasureManager {
 		while(it.hasNext()){
 			TGBeat current = it.next();
 			if (current.getStart() >= fromStart) {
+				list.add(current);
+			}
+		}
+		return list;
+	}
+	
+	public List<TGBeat> getBeatsBeforeEndPrecise(List<TGBeat> beats,long fromPreciseStart) {
+		List<TGBeat> list = new ArrayList<TGBeat>();
+		Iterator<TGBeat> it = beats.iterator();
+		while(it.hasNext()){
+			TGBeat current = it.next();
+			if (current.getPreciseStart() >= fromPreciseStart) {
 				list.add(current);
 			}
 		}
@@ -2196,8 +2221,10 @@ public class TGMeasureManager {
 		List<TGBeat> beatsToRemove = new ArrayList<TGBeat>();
 		for (TGBeat refBeat : measure.getBeats()) {
 			for (TGBeat beat : measure.getBeats()) {
+				long beatPreciseEnd = beat.getPreciseStart() + this.getMaximumDuration(beat).getPreciseTime();
+				long refBeatPreciseEnd = refBeat.getPreciseStart() + this.getMaximumDuration(refBeat).getPreciseTime();
 				if (beat.isRestBeat() && !refBeat.isRestBeat() && (!beatsToRemove.contains(beat)) 
-					&& (beat.getEnd() > refBeat.getStart()) && (beat.getStart() < refBeat.getEnd())) {
+					&& (beatPreciseEnd > refBeat.getPreciseStart()) && (beat.getPreciseStart() < refBeatPreciseEnd)) {
 						beatsToRemove.add(beat);
 				}
 			}
