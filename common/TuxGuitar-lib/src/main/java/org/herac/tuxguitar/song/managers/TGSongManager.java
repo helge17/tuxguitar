@@ -1045,11 +1045,14 @@ public class TGSongManager {
 	public void updatePreciseStart(TGSong song) {
 		Iterator<TGTrack> itTrack = song.getTracks();
 		while (itTrack.hasNext()) {
-			TGTrack track = itTrack.next();
-			Iterator<TGMeasure> itMeasures = track.getMeasures();
-			while(itMeasures.hasNext()) {
-				getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
-			}
+			this.updatePreciseStart(itTrack.next());
+		}
+	}
+	
+	public void updatePreciseStart(TGTrack track) {
+		Iterator<TGMeasure> itMeasures = track.getMeasures();
+		while(itMeasures.hasNext()) {
+			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
 		}
 	}
 }

@@ -310,11 +310,6 @@ public class Caret {
 		return this.selectedString;
 	}
 	
-	public void changeDuration(TGDuration duration){
-		getSongManager().getMeasureManager().changeDuration(getMeasure(),getSelectedBeat(),duration,getVoice(), true);
-		setChanges(true);
-	}
-	
 	private void updatePosition(){
 		this.position = getSelectedBeat().getStart();
 	}

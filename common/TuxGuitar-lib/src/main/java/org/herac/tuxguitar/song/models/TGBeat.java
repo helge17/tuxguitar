@@ -162,38 +162,6 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 				voice.resetAltEnharmonic();
 		}
 	}
-
-	// duration (time) of shortest voice
-	public long getShortestVoiceDurationTime() {
-		long time = -1;
-		for (int v=0; v<this.countVoices(); v++) {
-			TGVoice voice = this.getVoice(v);
-			if (!voice.isEmpty()) {
-				if ((time<0) || (voice.getDuration().getTime()<time)) {
-					time = voice.getDuration().getTime();
-				}
-			}
-		}
-		return time;
-	}
-	
-	// duration (time) of longest voice
-	public long getDurationTime() {
-		long time = 0;
-		for (int v=0; v<this.countVoices(); v++) {
-			TGVoice voice = this.getVoice(v);
-			if (!voice.isEmpty()) {
-				if (voice.getDuration().getTime() > time) {
-					time = voice.getDuration().getTime();
-				}
-			}
-		}
-		return time;
-	}
-	
-	public long getEnd() {
-		return this.getStart() + this.getDurationTime();
-	}
 	
 	public void copyFrom(TGBeat beat, TGFactory factory) {
 		if (beat.getPreciseStart() >= 0) {
