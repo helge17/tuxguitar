@@ -115,5 +115,8 @@
     <item
         android:id="@+id/action_change_stroke"
         android:title="@string/action_change_stroke"/>
+    <item
+        android:id="@+id/action_change_pickstroke"
+        android:title="@string/action_change_pickstroke"/>
 
 </menu>
