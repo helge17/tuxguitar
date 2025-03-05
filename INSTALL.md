@@ -172,7 +172,7 @@ In order for Asian characters to be displayed correctly, you may also need to in
 
 ### Install SWT for FreeBSD
 
-On FreeBSD we use SWT from the OS to build and run TuxGuitar. FreeBSD 13.2 comes with SWT version 4.21.
+On FreeBSD we use SWT from the OS to build and run TuxGuitar. FreeBSD 14.2 comes with SWT version 4.21.
 
 ```sh
 mvn install:install-file -Dfile=/usr/local/share/java/classes/swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.freebsd -Dpackaging=jar -Dversion=4.21

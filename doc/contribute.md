@@ -104,7 +104,7 @@ TuxGuitar is available in different flavors:
 
 Note: only the SWT variants are included in the official releases, JavaFX variants support is not guaranteed.
 
-Application is essentially developed in Java, however, some *native modules* can also include parts developed in another language (e.g. C). The application is built using Maven. For detailed build instructions please refer to [install.md](../INSTALL.md) file.
+Application is essentially developed in Java, however, some *native modules* can also include parts developed in another language (e.g. C). The application is built using Maven. For detailed build instructions please refer to [INSTALL.md](../INSTALL.md) file.
 
 For each {platform, UI framework} couple, one Maven project is defined in a `pom.xml` file. All Maven projects are located in the [desktop/build-scripts](../desktop/build-scripts) folder. Each pom file defines all the successive build steps.
 
@@ -126,7 +126,7 @@ Our examples and screenshots here are from Eclipse Version 2023-12.
 
 Important note: this section still needs to be completed. Known limitations:
 
-- this procedure does not enable to build the *native modules* in Eclipse. Therefore, before sending a pull request it is highly recommended to build the application as defined in [install.md](../INSTALL.md), that is with `-P native-modules` option active;
+- this procedure does not enable to build the *native modules* in Eclipse. Therefore, before sending a pull request it is highly recommended to build the application as defined in [INSTALL.md](../INSTALL.md), that is with `-P native-modules` option active;
 - this procedure does not enable to include the *native modules* and associated plugins in debug configuration.
 
 #### Fork the origin TuxGuitar repository
