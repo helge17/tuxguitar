@@ -1,6 +1,8 @@
 package org.herac.tuxguitar.app.action.impl.transport;
 
 import org.herac.tuxguitar.action.TGActionContext;
+import org.herac.tuxguitar.app.document.TGDocument;
+import org.herac.tuxguitar.app.document.TGDocumentListManager;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.player.base.MidiPlayer;
@@ -22,7 +24,14 @@ public class TGTransportSetLoopEHeaderAction extends TGActionBase {
 			MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
 			MidiPlayerMode pm = midiPlayer.getMode();
 			if( pm.isLoop() ){
-				pm.setLoopEHeader( pm.getLoopEHeader() != measure.getNumber() ? measure.getNumber() : -1 );
+				int measureNb = pm.getLoopEHeader() != measure.getNumber() ? measure.getNumber() : -1;
+				pm.setLoopEHeader( measureNb );
+				
+				TGDocument document = TGDocumentListManager.getInstance(getContext()).findCurrentDocument();
+				if ((document != null) && (document.getMidiPlayerMode() != null)){
+					document.getMidiPlayerMode().setLoopEHeader(measureNb);
+				}
+				
 			}
 		}
 	}

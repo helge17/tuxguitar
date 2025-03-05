@@ -125,7 +125,7 @@ public class GP1InputStream extends GTPInputStream {
 				TGMeasureHeader header = getFactory().newHeader();
 				header.setStart( (previous == null)?TGDuration.QUARTER_TIME:(previous.getStart() + previous.getLength()) );
 				header.setNumber( (previous == null)?1:previous.getNumber() + 1 );
-				header.getTempo().setValue( (previous == null)?tempo:previous.getTempo().getValue() );
+				header.getTempo().setQuarterValue( (previous == null)?tempo:previous.getTempo().getQuarterValue() );
 				header.setTripletFeel(tripletFeel);
 				readTrackMeasures(song,header,lastReadedStarts);
 				previous = header;

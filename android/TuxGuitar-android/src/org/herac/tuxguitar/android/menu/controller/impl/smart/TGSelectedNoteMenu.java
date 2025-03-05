@@ -9,6 +9,7 @@ import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
 import org.herac.tuxguitar.android.view.dialog.bend.TGBendDialogController;
 import org.herac.tuxguitar.android.view.dialog.grace.TGGraceDialogController;
 import org.herac.tuxguitar.android.view.dialog.harmonic.TGHarmonicDialogController;
+import org.herac.tuxguitar.android.view.dialog.pickstroke.TGPickStrokeDialogController;
 import org.herac.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
 import org.herac.tuxguitar.android.view.dialog.text.TGTextDialogController;
 import org.herac.tuxguitar.android.view.dialog.tremoloBar.TGTremoloBarDialogController;
@@ -83,5 +84,6 @@ public class TGSelectedNoteMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_set_voice_down, this.createActionProcessor(TGSetVoiceDownAction.NAME), true);
 		this.initializeItem(menu, R.id.action_set_voice_up, this.createActionProcessor(TGSetVoiceUpAction.NAME), true);
 		this.initializeItem(menu, R.id.action_change_stroke, new TGStrokeDialogController(), true);
+		this.initializeItem(menu, R.id.action_change_pickstroke, new TGPickStrokeDialogController(), true);
 	}
 }

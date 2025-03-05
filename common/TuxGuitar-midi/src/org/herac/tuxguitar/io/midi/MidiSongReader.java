@@ -225,7 +225,8 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		int channel = (length > 0)?((data[0] & 0xFF) & 0x0F):0;
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		
-		createNote(tick,track,channel,value);
+		// create note, and purge it from pending notes list
+		createNote(tick,track,channel,value, true);
 	}
 	
 	private void parseProgramChange(byte[] data){
@@ -327,7 +328,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		TGMeasureHeader header = this.factory.newHeader();
 		header.setNumber((last != null)?last.getNumber() + 1:1);
 		header.setStart((last != null)?(last.getStart() + last.getLength()):TGDuration.QUARTER_TIME);
-		header.getTempo().setValue(  (last != null)?last.getTempo().getValue():120 );
+		header.getTempo().setQuarterValue(  (last != null)?last.getTempo().getQuarterValue():120 );
 		if(last != null){
 			header.getTimeSignature().copyFrom(last.getTimeSignature());
 		}else{
@@ -420,24 +421,14 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	}
 	
 	private void createTempNotesBefore(long tick, int track){
-		long nextTick = tick;
-		boolean check = true;
-		while(check){
-			check = false;
-			for(int i = 0;i < this.tempNotes.size();i ++){
-				TempNote note = (TempNote)this.tempNotes.get(i);
-				if(note.getTick() < nextTick && note.getTrack() == track){
-					nextTick = note.getTick() + (TGDuration.QUARTER_TIME * 5); //First beat + 4/4 measure;
-					createNote(nextTick,track,note.getChannel(),note.getValue());
-					check = true;
-					break;
-				}
-			}
+		for (TempNote note : this.tempNotes) {
+			// create note, but keep it in pending notes list until corresponding noteOff event is found
+			createNote(tick, track,note.getChannel(),note.getValue(), false);
 		}
 	}
 	
-	private void createNote(long tick, int track, int channel, int value){
-		TempNote tempNote = getTempNote(track, channel, value, true);
+	private void createNote(long tick, int track, int channel, int value, boolean purge){
+		TempNote tempNote = getTempNote(track, channel, value, purge);
 		if( tempNote != null ) {
 			int nValue = (tempNote.getValue() + this.settings.getTranspose());
 			int nVelocity = 64;
@@ -456,11 +447,15 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				note.setValue(nValue);
 				note.setString(1);
 				note.setVelocity(nVelocity);
-				note.setTiedNote(nStart > tempNote.getTick());
+				note.setTiedNote((nStart > tempNote.getTick()) || tempNote.shallBeTied());
 				
 				beat.getVoice(0).addNote(note);
 				
 				nStart = (measure.getStart() + measure.getLength());
+				if (!purge) {
+					tempNote.setTick(tick);
+					tempNote.setShallBeTied();
+				}
 			}
 		}
 	}
@@ -599,12 +594,14 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		private int channel;
 		private int value;
 		private long tick;
+		private boolean shallBeTied;
 		
 		public TempNote(int track, int channel, int value, long tick) {
 			this.track = track;
 			this.channel = channel;
 			this.value = value;
 			this.tick = tick;
+			this.shallBeTied = false;
 		}
 		
 		public int getChannel() {
@@ -621,6 +618,18 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		
 		public int getValue() {
 			return this.value;
+		}
+		
+		public void setTick(long tick) {
+			this.tick = tick;
+		}
+		
+		public void setShallBeTied() {
+			this.shallBeTied = true;
+		}
+		
+		public boolean shallBeTied() {
+			return this.shallBeTied;
 		}
 	}
 	

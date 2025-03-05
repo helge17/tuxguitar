@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>TuxGuitar tablature file</xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="nonNegativeInteger">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="uint8">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="255"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="uint15">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="32767"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="offsetType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="-24"/>
+      <xs:maxInclusive value="24"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="keySignatureType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="14"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="chordStringType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:length value="0"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="uint8"/>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="durationValueType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="8"/>
+      <xs:enumeration value="16"/>
+      <xs:enumeration value="32"/>
+      <xs:enumeration value="64"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tripletFeelType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="eighth"/>
+      <xs:enumeration value="sixteenth"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="transitionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="slide"/>
+      <xs:enumeration value="bend"/>
+      <xs:enumeration value="hammer"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="timeSignatureType">
+    <xs:attribute name="numerator" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="1"/>
+          <xs:maxInclusive value="32"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="denominator" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:enumeration value="1"/>
+          <xs:enumeration value="2"/>
+          <xs:enumeration value="4"/>
+          <xs:enumeration value="8"/>
+          <xs:enumeration value="16"/>
+          <xs:enumeration value="32"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="markerType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="R" type="uint8" use="required"/>
+        <xs:attribute name="G" type="uint8" use="required"/>
+        <xs:attribute name="B" type="uint8" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="colorType">
+    <xs:attribute name="R" type="uint8" use="required"/>
+    <xs:attribute name="G" type="uint8" use="required"/>
+    <xs:attribute name="B" type="uint8" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="TGVersionType">
+    <xs:attribute name="major" type="nonNegativeInteger" use="required"/>
+    <xs:attribute name="minor" type="nonNegativeInteger" use="required"/>
+    <xs:attribute name="revision" type="nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="keyValuePair">
+    <xs:attribute name="key" type="xs:string" use="required"/>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="channelType">
+    <xs:sequence>
+      <xs:element name="id" type="uint15"/>
+      <xs:element name="bank" type="uint8"/>
+      <xs:element name="program" type="uint8"/>
+      <xs:element name="volume" type="uint8"/>
+      <xs:element name="balance" type="uint8"/>
+      <xs:element name="chorus" type="uint8"/>
+      <xs:element name="reverb" type="uint8"/>
+      <xs:element name="phaser" type="uint8"/>
+      <xs:element name="tremolo" type="uint8"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="TGChannelParameter" type="keyValuePair" minOccurs ="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="repeatAlternativeType">
+    <xs:sequence>
+      <xs:element name="alternative" minOccurs ="1" maxOccurs="8">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="8"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tempoType">
+    <xs:simpleContent>
+      <xs:extension base="uint15">
+        <xs:attribute name="base" type="durationValueType" use="optional"/>
+        <xs:attribute name="dotted" use="optional">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="true"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="measureHeaderType">
+    <xs:sequence>
+      <xs:element name="timeSignature" type="timeSignatureType" minOccurs="0"/>
+      <xs:element name="tempo" type="tempoType" minOccurs="0"/>
+      <xs:element name="repeatOpen" minOccurs="0"/>
+      <xs:element name="repeatClose" type="uint15" minOccurs="0"/>
+      <xs:element name="repeatAlternative" type="repeatAlternativeType" minOccurs="0"/>
+      <xs:element name="marker" type="markerType" minOccurs="0"/>
+      <xs:element name="tripletFeel" type="tripletFeelType" minOccurs="0"/>
+      <xs:element name="lineBreak" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="voiceType">
+    <xs:sequence>
+      <xs:element name="duration">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="divisionType" minOccurs="0">
+              <xs:complexType>
+                <xs:attribute name="enters" type="uint8" use="required"/>
+                <xs:attribute name="times" type="uint8" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="value" type="durationValueType" use="required"/>
+          <xs:attribute name="dotted">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="dotted"/>
+                <xs:enumeration value="doubleDotted"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="note" type="noteType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="direction">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="up"/>
+          <xs:enumeration value="down"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="empty" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="pointsListType">
+    <xs:sequence>
+      <xs:element name="point" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="position" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="12"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="value" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="12"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="harmonicType">
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="N.H"/>
+          <xs:enumeration value="A.H"/>
+          <xs:enumeration value="T.H"/>
+          <xs:enumeration value="P.H"/>
+          <xs:enumeration value="S.H"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="data" type="uint8" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="graceType">
+    <xs:attribute name="fret" type="uint8" use="required"/>
+    <xs:attribute name="duration" use="required">
+      <xs:simpleType>
+        <xs:restriction base="durationValueType">
+          <xs:minInclusive value = "16"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="dynamic" type="uint8" use="required"/>
+    <xs:attribute name="transition" type="transitionType" use="required"/>
+    <xs:attribute name="onBeat" type="xs:boolean" use="required"/>
+    <xs:attribute name="dead" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="trillType">
+    <xs:attribute name="fret" type="uint8" use="required"/>
+    <xs:attribute name="duration" use="required">
+      <xs:simpleType>
+        <xs:restriction base="durationValueType">
+          <xs:minInclusive value = "4"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="tremoloPickingType">
+    <xs:attribute name="duration" type="durationValueType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="noteType">
+    <xs:sequence>
+      <xs:element name="vibrato" minOccurs="0"/>
+      <xs:element name="deadNote" minOccurs="0"/>
+      <xs:element name="slide" minOccurs="0"/>
+      <xs:element name="hammer" minOccurs="0"/>
+      <xs:element name="ghostNote" minOccurs="0"/>
+      <xs:element name="accentuatedNote" minOccurs="0"/>
+      <xs:element name="heavyAccentuatedNote" minOccurs="0"/>
+      <xs:element name="palmMute" minOccurs="0"/>
+      <xs:element name="staccato" minOccurs="0"/>
+      <xs:element name="tapping" minOccurs="0"/>
+      <xs:element name="slapping" minOccurs="0"/>
+      <xs:element name="popping" minOccurs="0"/>
+      <xs:element name="fadeIn" minOccurs="0"/>
+      <xs:element name="letRing" minOccurs="0"/>
+      <xs:element name="bend" type="pointsListType" minOccurs="0"/>
+      <xs:element name="tremoloBar" type="pointsListType" minOccurs="0"/>
+      <xs:element name="harmonic" type="harmonicType" minOccurs="0"/>
+      <xs:element name="grace" type="graceType" minOccurs="0"/>
+      <xs:element name="trill" type="trillType" minOccurs="0"/>
+      <xs:element name="tremoloPicking" type="tremoloPickingType" minOccurs="0"/>
+      <xs:element name="alternativeEnharmonic" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="value" type="uint8" use="required"/>
+    <xs:attribute name="velocity" type="uint8"/>
+    <xs:attribute name="string" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="tiedNote" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="lyricType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="from" type="nonNegativeInteger" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="trackType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="soloMute" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="solo"/>
+            <xs:enumeration value="mute"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="channelId" type="uint15"/>
+      <xs:element name="offset" type="offsetType" minOccurs="0"/>
+      <xs:element name="color" type="colorType"/>
+      <xs:element name="TGString" type="uint8" maxOccurs="unbounded"/>
+      <xs:element name="TGLyric" type="lyricType" minOccurs="0"/>
+      <xs:element name="TGMeasure" type="measureType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="maxFret" type="xs:positiveInteger"/>
+  </xs:complexType>
+
+  <xs:complexType name="measureType">
+    <xs:sequence>
+      <xs:element name="clef" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="treble"/>
+            <xs:enumeration value="bass"/>
+            <xs:enumeration value="tenor"/>
+            <xs:enumeration value="alto"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="keySignature" type="keySignatureType" minOccurs="0"/>
+      <xs:element name="TGBeat" type="beatType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="beatType">
+    <xs:sequence>
+      <xs:element name="preciseStart" type="nonNegativeInteger"/>
+      <xs:element name="stroke" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="direction">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none"/>
+                <xs:enumeration value="up"/>
+                <xs:enumeration value="down"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="value" type="uint8"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="pickStroke" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="up"/>
+            <xs:enumeration value="down"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="chord" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="firstFret" type="uint8"/>
+            <xs:element name="string" type="chordStringType" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="text" type="xs:string" minOccurs="0"/>
+      <xs:element name="voice" type="voiceType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TuxGuitarFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TGVersion" type="TGVersionType"/>
+        <xs:element name="TGSong">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="name" type="xs:string"/>
+              <xs:element name="artist" type="xs:string"/>
+              <xs:element name="album" type="xs:string"/>
+              <xs:element name="author" type="xs:string"/>
+              <xs:element name="date" type="xs:string"/>
+              <xs:element name="copyright" type="xs:string"/>
+              <xs:element name="writer" type="xs:string"/>
+              <xs:element name="transcriber" type="xs:string"/>
+              <xs:element name="comments" type="xs:string"/>
+              <xs:element name="TGChannel" type="channelType" minOccurs ="1" maxOccurs="16"/>
+              <xs:element name="TGMeasureHeader" type="measureHeaderType" minOccurs ="1" maxOccurs="unbounded"/>
+              <xs:element name="TGTrack" type="trackType" minOccurs ="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

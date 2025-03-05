@@ -195,9 +195,9 @@ public class TGPiano {
 	}
 	
 	private void loadScaleName() {
-		int scaleKey = TuxGuitar.getInstance().getScaleManager().getSelectionKey();
-		int scaleIndex = TuxGuitar.getInstance().getScaleManager().getSelectionIndex();
-		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKey );
+		int scaleKeyIndex = TuxGuitar.getInstance().getScaleManager().getSelectionKeyIndex();
+		int scaleIndex = TuxGuitar.getInstance().getScaleManager().getScaleIndex();
+		String key = TuxGuitar.getInstance().getScaleManager().getKeyName( scaleKeyIndex );
 		String name = TuxGuitar.getInstance().getScaleManager().getScaleName( scaleIndex );
 		this.scaleName.setText( ( key != null && name != null ) ? ( key + " - " + name ) : "" );
 	}

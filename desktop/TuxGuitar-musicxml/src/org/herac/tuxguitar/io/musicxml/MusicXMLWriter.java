@@ -33,6 +33,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
+import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.song.models.TGVelocities;
@@ -54,6 +55,7 @@ import org.w3c.dom.Node;
 public class MusicXMLWriter{
 	
 	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
+	private Map<Integer, String> durations;	// duration name per TGDuration value
 	
 	private static final int DURATION_DIVISIONS = (int)TGDuration.QUARTER_TIME;
 	
@@ -75,6 +77,12 @@ public class MusicXMLWriter{
 	
 	public MusicXMLWriter(OutputStream stream){
 		this.stream = stream;
+		this.durations = new HashMap<Integer, String>();
+		this.durations.put(TGDuration.WHOLE, DURATION_NAMES[0]);
+		this.durations.put(TGDuration.HALF, DURATION_NAMES[1]);
+		this.durations.put(TGDuration.QUARTER, DURATION_NAMES[2]);
+		this.durations.put(TGDuration.EIGHTH, DURATION_NAMES[3]);
+		this.durations.put(TGDuration.SIXTEENTH, DURATION_NAMES[4]);
 	}
 	
 	public void writeSong(TGSong song) throws TGFileFormatException{
@@ -422,7 +430,9 @@ public class MusicXMLWriter{
 		boolean needsDirectionNode = false;
 		Node direction = this.addAttribute(this.addNode(parent,"direction"),"placement","above");
 
-		boolean tempoChanges = (previous == null || measure.getTempo().getValue() != previous.getTempo().getValue());
+		boolean tempoChanges = (previous == null || 
+				measure.getTempo().getRawValue() != previous.getTempo().getRawValue() || 
+				measure.getTempo().getBase() != previous.getTempo().getBase());
 		
 		// TODO: Add coda, and segno support once added elsewhere.
 		// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/direction-type/
@@ -430,17 +440,19 @@ public class MusicXMLWriter{
 		if(tempoChanges){
 			Node directionType = this.addNode(direction, "direction-type");
 			Node metronome = this.addNode(directionType, "metronome");
-			this.addNode(metronome, "beat-unit", "quarter");
-			this.addNode(metronome, "per-minute", String.valueOf(measure.getTempo().getValue()));
-
+			TGTempo tempo = measure.getTempo();
+			this.addNode(metronome, "beat-unit", this.durations.get(tempo.getBase()));
+			if (tempo.isDotted()) {
+				this.addNode(metronome, "beat-unit-dot");
+			}
+			this.addNode(metronome, "per-minute", String.valueOf(measure.getTempo().getRawValue()));
 			needsDirectionNode = true;
 		}
 
 		TGMarker measureMarker = measure.getHeader().getMarker();
 		if (measureMarker != null){
 			Node directionType = this.addNode(direction, "direction-type");
-			Node rehearsal = this.addNode(directionType, "rehearsal", measureMarker.getTitle());
-			
+			this.addNode(directionType, "rehearsal", measureMarker.getTitle());			
 			needsDirectionNode = true;
 		}
 

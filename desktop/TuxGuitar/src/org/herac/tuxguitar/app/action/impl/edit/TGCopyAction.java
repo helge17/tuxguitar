@@ -25,6 +25,7 @@ public class TGCopyAction extends TGActionBase {
 			TGBeatRange beats = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 			TGTrack track = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 			TGSongManager songManager = getSongManager(tgActionContext);
+			songManager.updatePreciseStart(track);
 			TGClipboard.getInstance(this.getContext()).setData(
 				new TGStoredBeatList(beats.getBeats(), track.getStrings(), track.isPercussion(), songManager.getFactory()));
 		}

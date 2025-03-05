@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.gm.GMChannelRoute;
+import org.herac.tuxguitar.graphics.control.TGChordImpl;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 import org.herac.tuxguitar.song.models.TGBeat;
@@ -25,6 +26,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -85,7 +87,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			writeInfo(song);
 			writeLyrics(song);
 			writePageSetup();
-			writeInt(header.getTempo().getValue());
+			writeInt(header.getTempo().getQuarterValue());
 			writeInt(translateKeySignature(0));
 			writeByte((byte)0);
 			writeChannels(song);
@@ -289,7 +291,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			for (int j = 0; j < song.countTracks(); j++) {
 				TGTrack track = song.getTrack(j);
 				TGMeasure measure = track.getMeasure(i);
-				writeMeasure(measure, (header.getTempo().getValue() != tempo.getValue()) );
+				writeMeasure(measure, (header.getTempo().getQuarterValue() != tempo.getQuarterValue()) );
 				skipBytes(1);
 			}
 			tempo.copyFrom( header.getTempo() );
@@ -365,7 +367,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		if (voice.getIndex() == 0 && beat.isTextBeat()) {
 			flags |= 0x04;
 		}
-		if ( beat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
+		if ( (beat.getStroke().getDirection() != TGStroke.STROKE_NONE) ||
+			     (beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE) ||
+			     effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
 			flags |= 0x08;
 		}
 		else if (effect.isTremoloBar() || effect.isTapping() || effect.isSlapping() || effect.isPopping() || effect.isFadeIn()) {
@@ -513,7 +517,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		skipBytes(4);
 		writeInt( chord.getFirstFret() );
 		for (int i = 0; i < 7; i++) {
-			writeInt( (i < chord.countStrings() ? chord.getFretValue(i) : -1 ) ) ;
+			boolean isValid = (i < chord.countStrings());
+			isValid &= (chord.getFretValue(i) - chord.getFirstFret() < TGChordImpl.MAX_FRETS-1);
+			writeInt( ( isValid ? chord.getFretValue(i) : -1 ) ) ;
 		}
 		this.skipBytes(32);
 	}
@@ -534,6 +540,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		if(beat.getStroke().getDirection() != TGStroke.STROKE_NONE){
 			flags1 |= 0x40;
 		}
+		if(beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE){
+			flags2 |= 0x02;
+		}
 		writeUnsignedByte(flags1);
 		writeUnsignedByte(flags2);
 		
@@ -552,6 +561,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		if ((flags1 & 0x40) != 0) {
 			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_UP ? toStrokeValue(beat.getStroke()) : 0 ) );
 			writeUnsignedByte( (beat.getStroke().getDirection() == TGStroke.STROKE_DOWN ? toStrokeValue(beat.getStroke()) : 0 ) );
+		}
+		if ((flags2 & 0x02) != 0) {
+			writeUnsignedByte( (beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP ? 1 : 2 ) );
 		}
 	}
 	
@@ -717,7 +729,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeByte((byte) 0xff); //int phaser
 		writeByte((byte) 0xff); //int tremolo
 		writeStringByteSizeOfInteger(""); //tempo name
-		writeInt((tempo != null)?tempo.getValue():-1); //tempo value
+		writeInt((tempo != null)?tempo.getQuarterValue():-1); //tempo value
 		if((tempo != null)){
 			skipBytes(1);
 		}

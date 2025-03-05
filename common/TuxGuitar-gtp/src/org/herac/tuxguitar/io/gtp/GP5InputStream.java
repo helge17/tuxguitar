@@ -21,6 +21,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGNoteEffect;
+import org.herac.tuxguitar.song.models.TGPickStroke;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGStroke;
@@ -157,7 +158,7 @@ public class GP5InputStream extends GTPInputStream {
 	
 	private void readMeasures(TGSong song, int measures, int tracks, int tempoValue) throws IOException{
 		TGTempo tempo = getFactory().newTempo();
-		tempo.setValue(tempoValue);
+		tempo.setQuarterValue(tempoValue);
 		long start = TGDuration.QUARTER_TIME;
 		for (int i = 0; i < measures; i++) {
 			TGMeasureHeader header = song.getMeasureHeader(i);
@@ -348,7 +349,7 @@ public class GP5InputStream extends GTPInputStream {
 		TGMeasureHeader header = getFactory().newHeader();
 		header.setNumber( (index + 1) );
 		header.setStart(0);
-		header.getTempo().setValue(120);
+		header.getTempo().setQuarterValue(120);
 		header.setRepeatOpen( ((flags & 0x04) != 0) );
 		if ((flags & 0x01) != 0) {
 			timeSignature.setNumerator(readByte());
@@ -567,7 +568,12 @@ public class GP5InputStream extends GTPInputStream {
 			} 
 		}
 		if ((flags2 & 0x02) != 0) {
-			readByte();
+			int direction = readByte();
+			if ((direction & 0x01) != 0){
+				beat.getPickStroke().setDirection( TGPickStroke.PICK_STROKE_UP );
+			}else if((direction & 0x02) != 0){
+				beat.getPickStroke().setDirection( TGPickStroke.PICK_STROKE_DOWN );
+			}
 		}
 	}
 	
@@ -755,7 +761,7 @@ public class GP5InputStream extends GTPInputStream {
 			readByte();
 		}
 		if(tempoValue >= 0){
-			tempo.setValue(tempoValue);
+			tempo.setQuarterValue(tempoValue);
 			skip(1);
 			if(getVersion().getVersionCode() > 0){
 				skip(1);

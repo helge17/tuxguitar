@@ -25,7 +25,7 @@ DIST_DIR=`pwd`/00-Binary_Packages
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 # Current source version
-TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
+TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/main/java/org/herac/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
 
 # Default build version
 TGVERSION=`date +%Y`-`date +%m`-`date +%d`"-$GIT_BRANCH"
@@ -468,7 +468,7 @@ function start_remote_macos_build {
 
 # 172.16.208.132: macOS 11 x86_64 (Big Sur)
 # 172.16.208.133: macOS 14 x86_64 (Sonoma)
-BUILD_HOST=$USER@172.16.208.132
+BUILD_HOST=$USER@172.16.208.133
 
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP on $BUILD_HOST ..."
 SRC_PATH=/Users/$USER/tg-1.x-build-macos
@@ -565,11 +565,11 @@ function copy_to_github {
       RELEASE_TYPE=--latest
     else
       echo "# Creating Github pre-release draft $TGVERSION ..."
-      REL_NOTES=$'**Warning:** This is a development snapshot and may not be stable.\n\n'
+      REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground. It uses a **new file format** which is still under development and cannot be read by older versions. We cannot guarantee that the files saved with this version are error-free and compatible with future TuxGuitar versions!\n\n'
       RELEASE_TYPE=--prerelease
     fi
     REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
-    gh release create $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
+    gh release create --target $GIT_BRANCH $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
     echo "# OK."
@@ -647,15 +647,15 @@ echo "### Host: "`hostname -s`" ################################################
 mkdir -p $DIST_DIR
 
 # Check and prepare source code
-[ $TGVERSION == $TGSRCVER ] && release_checks_before_prepare_source
+[ `uname` == Linux ] && [ "$TGVERSION" == "$TGSRCVER" ] && release_checks_before_prepare_source
 prepare_source
-[ $TGVERSION == $TGSRCVER ] && release_checks_after_prepare_source
+[ `uname` == Linux ] && [ "$TGVERSION" == "$TGSRCVER" ] && release_checks_after_prepare_source
 
 # First, we start the remote builds to avoid copying all locally created binaries to the remote hosts.
 
 # BSD (on BSD, remote or local)
 if [ $build_bsd ]; then
-  # SWT & JFX versions in FreeBSD 13.2
+  # SWT & JFX versions in FreeBSD 14.2
   SWT_VERSION=4.21
   SWT_PLATFORM=gtk-freebsd
   JFX_VERSION=14.0.2.1
@@ -665,8 +665,8 @@ fi
 
 # macOS (on macOS, remote or local)
 if [ $build_macos ]; then
-  SWT_VERSION=4.14
-  SWT_DATE=201912100610
+  SWT_VERSION=4.33
+  SWT_DATE=202409030240
   SWT_PLATFORM=cocoa-macosx
   [ `uname` == Linux ] && start_remote_macos_build
   [ `uname` == Darwin ] && build_tg_for_macos

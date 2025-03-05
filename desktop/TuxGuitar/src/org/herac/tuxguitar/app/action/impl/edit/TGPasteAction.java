@@ -51,7 +51,7 @@ public class TGPasteAction extends TGActionBase {
 						destTrack.getStrings(), destTrack.getMaxFret());
 				
 				// replace beats at required position
-				List<TGBeat> newBeats = trackManager.replaceBeats(destTrack, beatsListToPaste.getBeats(), start.getStart());
+				List<TGBeat> newBeats = trackManager.replaceBeats(destTrack, beatsListToPaste.getBeats(), start.getPreciseStart());
 				
 				// need to add extra beats at the end? (e.g. when pasting at end of song)
 				if (beatsListToPaste.getBeats().size() > newBeats.size()) {
@@ -59,11 +59,11 @@ public class TGPasteAction extends TGActionBase {
 					TGSong song = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 					TGMeasureHeader newHeader = songManager.addNewMeasureBeforeEnd(song);
 					TGMeasure newMeasure = destTrack.getMeasure(newHeader.getNumber()-1);
-					long beatStart = newHeader.getStart();
+					long beatPreciseStart = newHeader.getPreciseStart();
 					for (int i=newBeats.size(); i<beatsListToPaste.getBeats().size(); i++) {
 						TGBeat beatToInsert = beatsListToPaste.getBeats().get(i);
-						beatToInsert.setStart(beatStart);
-						beatStart += beatToInsert.getShortestVoiceDurationTime();
+						beatToInsert.setPreciseStart(beatPreciseStart);
+						beatPreciseStart += measureManager.getMinimumDuration(beatToInsert) .getPreciseTime();
 						measureManager.addBeat(newMeasure, beatToInsert);
 						newBeats.add(beatToInsert);
 					}

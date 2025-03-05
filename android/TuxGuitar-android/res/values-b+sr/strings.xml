@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">Na žicu dole</string>
 	<string name="action_shift_note_up">Na žicu gore</string>
 	<!-- <string name="action_change_stroke"></string> -->
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Ubaci tekst</string>
 
 	<string name="action_set_duration_whole">Cela</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">Šesnaestina</string>
 	<string name="stroke_dlg_duration_32">Trideset-dvojka</string>
 	<string name="stroke_dlg_duration_64">Šesdeset-četvrtina</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_label"></string> -->
+	<string name="pickstroke_dlg_direction_none">Obična</string>
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->

@@ -266,6 +266,7 @@ void controlChange(int channel, int controller, int value)
 
 void pitchBend(int channel, short value)
 {
+	value *= 128; // tg has the center at 64, but audiounit at 8192
 	UInt7 lsb = value & 0x7F; // extract the 7 least significant bytes
 	UInt7 msb = (value >> 7) & 0x7F; // extract the 7 most significant bytes
 	player->pitchBend(lsb, msb, channel);

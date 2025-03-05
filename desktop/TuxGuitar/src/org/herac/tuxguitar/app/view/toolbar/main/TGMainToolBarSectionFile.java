@@ -7,6 +7,8 @@ import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionFile extends TGMainToolBarSection {
 	
@@ -17,27 +19,27 @@ public class TGMainToolBarSectionFile extends TGMainToolBarSection {
 	private UIToolActionItem printSong;
 	private UIToolActionItem printPreviewSong;
 	
-	public TGMainToolBarSectionFile(TGMainToolBar toolBar) {
-		super(toolBar);
+	public TGMainToolBarSectionFile(TGContext context, UIToolBar toolBar) {
+		super(context, toolBar);
 	}
 	
 	public void createSection() {
-		this.newSong = this.getToolBar().getControl().createActionItem();
+		this.newSong = this.getToolBar().createActionItem();
 		this.newSong.addSelectionListener(this.createActionProcessor(TGLoadTemplateAction.NAME));
 		
-		this.openSong = this.getToolBar().getControl().createActionItem();
+		this.openSong = this.getToolBar().createActionItem();
 		this.openSong.addSelectionListener(this.createActionProcessor(TGOpenFileAction.NAME));
 		
-		this.saveSong = this.getToolBar().getControl().createActionItem();
+		this.saveSong = this.getToolBar().createActionItem();
 		this.saveSong.addSelectionListener(this.createActionProcessor(TGSaveFileAction.NAME));
 		
-		this.saveAsSong = this.getToolBar().getControl().createActionItem();
+		this.saveAsSong = this.getToolBar().createActionItem();
 		this.saveAsSong.addSelectionListener(this.createActionProcessor(TGSaveAsFileAction.NAME));
 		
-		this.printPreviewSong = this.getToolBar().getControl().createActionItem();
+		this.printPreviewSong = this.getToolBar().createActionItem();
 		this.printPreviewSong.addSelectionListener(this.createActionProcessor(TGPrintPreviewAction.NAME));
 		
-		this.printSong = this.getToolBar().getControl().createActionItem();
+		this.printSong = this.getToolBar().createActionItem();
 		this.printSong.addSelectionListener(this.createActionProcessor(TGPrintAction.NAME));
 
 		this.loadIcons();

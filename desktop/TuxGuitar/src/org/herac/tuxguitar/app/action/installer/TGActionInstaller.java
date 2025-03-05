@@ -89,6 +89,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
@@ -206,6 +207,8 @@ import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
@@ -229,6 +232,7 @@ import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.editor.action.note.TGToggleNoteEnharmonicAction;
 import org.herac.tuxguitar.editor.action.song.TGClearSongAction;
 import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
 import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
@@ -356,6 +360,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeTrackPropertiesAction(context));
 		
 		//measure actions
+		installAction(new TGToggleLineBreakAction(context));
 		installAction(new TGAddMeasureAction(context));
 		installAction(new TGAddMeasureListAction(context));
 		installAction(new TGCleanMeasureAction(context));
@@ -373,6 +378,8 @@ public class TGActionInstaller {
 		
 		//beat actions
 		installAction(new TGChangeNoteAction(context));
+		installAction(new TGChangePickStrokeDownAction(context));
+		installAction(new TGChangePickStrokeUpAction(context));
 		installAction(new TGChangeTiedNoteAction(context));
 		installAction(new TGChangeVelocityAction(context));
 		installAction(new TGCleanBeatAction(context));
@@ -398,6 +405,7 @@ public class TGActionInstaller {
 		for( int i = 0 ; i < 10 ; i ++ ){
 			installAction(new TGSetNoteFretNumberAction(context, i));
 		}
+		installAction(new TGToggleNoteEnharmonicAction(context));
 		
 		//effect actions
 		installAction(new TGChangeAccentuatedNoteAction(context));

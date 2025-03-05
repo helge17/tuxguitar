@@ -18,8 +18,12 @@ import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTempo;
+import org.herac.tuxguitar.song.models.TGTempoBase;
 
 public class TGTempoDialog extends TGModalFragment {
+
+	// possible tempo bases:
+	private final TGTempoBase tempoBase[] = TGTempoBase.getTempoBases();
 
 	public TGTempoDialog() {
 		super(R.layout.view_tempo_dialog);
@@ -46,12 +50,33 @@ public class TGTempoDialog extends TGModalFragment {
 	@SuppressLint("InflateParams")
 	public void onPostInflateView() {
 		TGTempo tempo = this.getHeader().getTempo();
+
+		final RadioButton[] tempoBaseButton = new RadioButton[tempoBase.length];
+		RadioGroup tempoBaseGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_tempo_base);
+		for (int i=0; i<tempoBase.length; i++) {
+			tempoBaseButton[i] = new RadioButton(getContext());
+			tempoBaseGroup.addView(tempoBaseButton[i]);
+			tempoBaseButton[i].setId(i);
+			String iconName = "duration_" + tempoBase[i].getBase();
+			if(tempoBase[i].isDotted()) iconName += "dotted";
+			int iconId = getContext().getResources().getIdentifier(iconName, "drawable", getContext().getPackageName());
+			tempoBaseButton[i].setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(iconId, null), null, null, null);
+			String buttonText = " 1/" + tempoBase[i].getBase();
+			if(tempoBase[i].isDotted()) buttonText += "•";
+			tempoBaseButton[i].setText(buttonText);
+			if ( (tempo.getBase() == tempoBase[i].getBase()) && (tempo.isDotted() == tempoBase[i].isDotted()) ) {
+				tempoBaseButton[i].setChecked(true);
+			} else {
+				tempoBaseButton[i].setChecked(false);
+			}
+		}
+
 		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createTempoValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.tempo_dlg_tempo_value);
 		spinner.setAdapter(arrayAdapter);
-		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(tempo.getValue())));
+		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(tempo.getRawValue())));
 
 		int applyToDefault = TGChangeTempoRangeAction.APPLY_TO_ALL;
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.tempo_dlg_options_apply_to_song), TGChangeTempoRangeAction.APPLY_TO_ALL, applyToDefault);
@@ -79,6 +104,16 @@ public class TGTempoDialog extends TGModalFragment {
 		return ((Integer) spinner.getSelectedItem()).intValue();
 	}
 
+	public int parseTempoBase() {
+		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_tempo_base);
+		return tempoBase[radioGroup.getCheckedRadioButtonId()].getBase();
+	}
+
+	public boolean parseTempoBaseDotted() {
+		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_tempo_base);
+		return tempoBase[radioGroup.getCheckedRadioButtonId()].isDotted();
+	}
+
 	public Integer parseApplyTo() {
 		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.tempo_dlg_options_group);
 
@@ -97,6 +132,8 @@ public class TGTempoDialog extends TGModalFragment {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, this.getHeader());
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO, this.parseTempoValue());
+		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE, this.parseTempoBase());
+		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_TEMPO_BASE_DOTTED, this.parseTempoBaseDotted());
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_APPLY_TO, this.parseApplyTo());
 		tgActionProcessor.processOnNewThread();
 	}
@@ -107,5 +144,15 @@ public class TGTempoDialog extends TGModalFragment {
 
 	public TGMeasureHeader getHeader() {
 		return getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
+	}
+
+	private class TempoBase {
+		private int base;
+		private boolean dotted;
+
+		TempoBase(int base, boolean dotted) {
+			this.base = base;
+			this.dotted = dotted;
+		}
 	}
 }

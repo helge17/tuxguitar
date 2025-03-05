@@ -1,8 +1,10 @@
 Package: tuxguitar
 Version: 9.99-SNAPSHOT-linux-swt
 Depends: default-jre, libasound2, libfluidsynth3, libjack0 | libjack-jackd2-0, liblilv-0-0
-Recommends: fonts-wqy-zenhei, guitarix-lv2, libwebkit2gtk-4.0-37 | libwebkit2gtk-4.1-0
+Recommends: fonts-wqy-zenhei, guitarix-lv2, libswt-webkit-gtk-4-jni
 Priority: optional
 Section: Multimedia
 Maintainer: https://github.com/helge17/
 Description: TuxGuitar is a multitrack guitar tablature editor and player
+ TuxGuitar is a multitrack guitar tablature editor and player written in
+ Java. It can open GuitarPro, PowerTab and TablEdit files.

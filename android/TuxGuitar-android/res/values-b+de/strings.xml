@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">Um eine Saite nach unten verschieben</string>
 	<string name="action_shift_note_up">Um eine Saite nach oben verschieben</string>
 	<string name="action_change_stroke">Auf-/Abschlag (streichen)</string>
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Text hinzufügen</string>
 
 	<string name="action_set_duration_whole">Ganz</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">Sechzehntel</string>
 	<string name="stroke_dlg_duration_32">Zweiunddreißigstel</string>
 	<string name="stroke_dlg_duration_64">Vierundsechzigstel</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<string name="pickstroke_dlg_direction_label">Händigkeit:</string>
+	<string name="pickstroke_dlg_direction_none">Keiner</string>
+	<string name="pickstroke_dlg_direction_up">Plektrum-Aufschlag</string>
+	<string name="pickstroke_dlg_direction_down">Plektrum-Abschlag</string>
 
 	<!-- Channels view -->
 	<string name="channel_list">Instrumente</string>

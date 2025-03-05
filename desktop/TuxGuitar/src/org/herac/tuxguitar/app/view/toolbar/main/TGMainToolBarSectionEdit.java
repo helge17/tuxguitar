@@ -5,21 +5,23 @@ import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
 import org.herac.tuxguitar.editor.undo.TGUndoableManager;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import org.herac.tuxguitar.ui.toolbar.UIToolBar;
+import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionEdit extends TGMainToolBarSection {
 	
 	private UIToolActionItem undo;
 	private UIToolActionItem redo;
 	
-	public TGMainToolBarSectionEdit(TGMainToolBar toolBar) {
-		super(toolBar);
+	public TGMainToolBarSectionEdit(TGContext context, UIToolBar toolBar) {
+		super(context, toolBar);
 	}
 	
 	public void createSection() {
-		this.undo = this.getToolBar().getControl().createActionItem();
+		this.undo = this.getToolBar().createActionItem();
 		this.undo.addSelectionListener(this.createActionProcessor(TGUndoAction.NAME));
 		
-		this.redo = this.getToolBar().getControl().createActionItem();
+		this.redo = this.getToolBar().createActionItem();
 		this.redo.addSelectionListener(this.createActionProcessor(TGRedoAction.NAME));
 		
 		this.loadIcons();
@@ -27,8 +29,8 @@ public class TGMainToolBarSectionEdit extends TGMainToolBarSection {
 	}
 	
 	public void updateItems() {
-		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
-		TGUndoableManager undoableManager = TGUndoableManager.getInstance(this.getToolBar().getContext());
+		boolean running = MidiPlayer.getInstance(this.getContext()).isRunning();
+		TGUndoableManager undoableManager = TGUndoableManager.getInstance(this.getContext());
 		
 		this.undo.setEnabled(!running && undoableManager.canUndo());
 		this.redo.setEnabled(!running && undoableManager.canRedo());

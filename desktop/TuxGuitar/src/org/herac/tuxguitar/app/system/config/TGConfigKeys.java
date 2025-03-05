@@ -38,6 +38,7 @@ public class TGConfigKeys {
 	public static final String FONT_PRINTER_CHORD = "font.printer.chord";
 	public static final String FONT_PRINTER_GRACE = "font.printer.grace";
 	public static final String FONT_ABOUT_DIALOG_TITLE = "font.about.dialog.title";
+	public static final String FONT_MAINTOOLBAR_TIMESTAMP = "font.main-toolbar.timestamp";
 	public static final String COLOR_FOREGROUND = "color.foreground";
 	public static final String COLOR_BACKGROUND = "color.background";
 	
@@ -104,6 +105,8 @@ public class TGConfigKeys {
 	public static final String STYLE_REPEAT_ENDING_SPACING = "style.repeatEndingSpacing";
 	public static final String STYLE_EFFECT_SPACING = "style.effectSpacing";
 	public static final String STYLE_DIVISION_TYPE_SPACING = "style.divisionTypeSpacing";
+	public static final String STYLE_PICK_STROKE_SPACING = "style.pickStrokeSpacing";
+	public static final String STYLE_BEND_SPACING = "style.bendSpacing";
 	public static final String STYLE_TEXT_SPACING = "style.textSpacing";
 	public static final String STYLE_MARKER_SPACING = "style.markerSpacing";
 	public static final String STYLE_LOOP_MARKER_SPACING = "style.loopMarkerSpacing";

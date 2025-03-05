@@ -36,8 +36,8 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.WINDOW_TITLE, "${appname} - ${filename}");
 		loadProperty(properties, TGConfigKeys.SHOW_SPLASH, true);
 		loadProperty(properties, TGConfigKeys.MAXIMIZED, false);
-		loadProperty(properties, TGConfigKeys.WIDTH, 960);
-		loadProperty(properties, TGConfigKeys.HEIGHT, 600);
+		loadProperty(properties, TGConfigKeys.WIDTH, 1200);
+		loadProperty(properties, TGConfigKeys.HEIGHT, 675);
 		loadProperty(properties, TGConfigKeys.SHOW_INSTRUMENTS, false);
 		loadProperty(properties, TGConfigKeys.SHOW_TRANSPORT, false);
 		loadProperty(properties, TGConfigKeys.SHOW_FRETBOARD, false);
@@ -67,6 +67,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_CHORD, (DEFAULT_FONT_NAME + ",7,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_PRINTER_GRACE, (DEFAULT_FONT_NAME + ",6,false,false"));
 		loadProperty(properties, TGConfigKeys.FONT_ABOUT_DIALOG_TITLE, (DEFAULT_FONT_NAME + ",36,true,true"));
+		loadProperty(properties, TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP, ("Monospace,16.0,false,false"));
 		loadProperty(properties, TGConfigKeys.COLOR_FOREGROUND, "0,0,0");
 		loadProperty(properties, TGConfigKeys.COLOR_BACKGROUND, "255,255,255");
 		loadProperty(properties, TGConfigKeys.COLOR_BACKGROUND_PLAYING, "255,242,242");
@@ -131,6 +132,8 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_REPEAT_ENDING_SPACING, 20);
 		loadProperty(properties, TGConfigKeys.STYLE_EFFECT_SPACING, 8);
 		loadProperty(properties, TGConfigKeys.STYLE_DIVISION_TYPE_SPACING, 10);
+		loadProperty(properties, TGConfigKeys.STYLE_PICK_STROKE_SPACING, 8);
+		loadProperty(properties, TGConfigKeys.STYLE_BEND_SPACING, 8);
 		loadProperty(properties, TGConfigKeys.STYLE_TEXT_SPACING, 15);
 		loadProperty(properties, TGConfigKeys.STYLE_MARKER_SPACING, 15);
 		loadProperty(properties, TGConfigKeys.STYLE_LOOP_MARKER_SPACING, 5);

@@ -19,7 +19,7 @@ jobs:
   build-macOS:
     strategy:
       matrix:
-          os: [macos-12, macos-13]
+          os: [macos-13]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -30,9 +30,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name : Download SWT
-      run: curl -o swt-4.14-cocoa-macosx-`uname -m`.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.14-201912100610/swt-4.14-cocoa-macosx-`uname -m`.zip
+      run: curl -o swt-4.33-cocoa-macosx-`uname -m`.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.33-202409030240/swt-4.33-cocoa-macosx-`uname -m`.zip
     - name : install SWT
-      run: mkdir swt-4.14-cocoa-macosx-`uname -m` && cd swt-4.14-cocoa-macosx-`uname -m` && unzip ../swt-4.14-cocoa-macosx-`uname -m`.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.14
+      run: mkdir swt-4.33-cocoa-macosx-`uname -m` && cd swt-4.33-cocoa-macosx-`uname -m` && unzip ../swt-4.33-cocoa-macosx-`uname -m`.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.33
     - name: Build with Maven
       run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify
     - uses: actions/upload-artifact@v4

@@ -105,6 +105,7 @@
 	<string name="action_shift_note_down">Сдвинуть вниз</string>
 	<string name="action_shift_note_up">Сдвинуть вверх</string>
 	<string name="action_change_stroke">Удар</string>
+	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Вставить текст</string>
 
 	<string name="action_set_duration_whole">Целая</string>
@@ -443,6 +444,13 @@
 	<string name="stroke_dlg_duration_16">Шестнадцатая</string>
 	<string name="stroke_dlg_duration_32">Тридцать вторая</string>
 	<string name="stroke_dlg_duration_64">Шестьдесят четвертая</string>
+
+	<!-- Pick stroke dialog -->
+	<!-- <string name="pickstroke_dlg_title"></string> -->
+	<string name="pickstroke_dlg_direction_label">Направление:</string>
+	<string name="pickstroke_dlg_direction_none">Бeз перехода</string>
+	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
+	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
 
 	<!-- Channels view -->
 	<string name="channel_list">Инструменты</string>

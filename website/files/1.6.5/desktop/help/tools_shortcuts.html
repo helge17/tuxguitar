@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Default shortcuts - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script> 
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 1.6.5</p>
+  </div>
+  <div class="title">
+    <h1>Default key-bindings (shortcuts)</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><strong>Default shortcuts</strong></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>This is the list of the default key bindings (keyboard shortcuts) in TuxGuitar.</p>
+    <p>Of course, these key bindings list can be modified in the <strong><a href="tools_keybinding.html">Tools → Shortcuts</a></strong> dialog.</p>
+    <h2 id="edit_actions">Edit Actions</h2>
+    <table>
+      <tr>
+        <td class="left">Cut selection</td>
+        <td class="right">Ctrl+X</td>
+      </tr>
+      <tr>
+        <td class="left">Copy measure/selection</td>
+        <td class="right">Ctrl+C</td>
+      </tr>
+      <tr>
+        <td class="left">Paste measure/selection</td>
+        <td class="right">Ctrl+V</td>
+      </tr>
+      <tr>
+        <td class="left">Repeat last action</td>
+        <td class="right">Ctrl+R</td>
+      </tr>
+      <tr>
+        <td class="left">Undo last action</td>
+        <td class="right">Ctrl+Z</td>
+      </tr>
+      <tr>
+        <td class="left">Redo last action</td>
+        <td class="right">Ctrl+Y</td>
+      </tr>
+      <tr>
+        <td class="left">Select entire track</td>
+        <td class="right">Ctrl+A</td>
+      </tr>
+      <tr>
+        <td class="left">Select voice 1</td>
+        <td class="right">Ctrl+1</td>
+      </tr>
+      <tr>
+        <td class="left">Select voice 2</td>
+        <td class="right">Ctrl+2</td>
+      </tr>
+      <tr>
+        <td class="left">Song properties</td>
+        <td class="right">F5</td>
+      </tr>
+    </table>
+    <h2 id="track_actions">Track Actions</h2>
+    <table>
+      <tr>
+        <td class="left">View next track</td>
+        <td class="right">Ctrl+Shift+Down</td>
+      </tr>
+      <tr>
+        <td class="left">View previous track</td>
+        <td class="right">Ctrl+Shift+Up</td>
+      </tr>
+      <tr>
+        <td class="left">Add track</td>
+        <td class="right">Ctrl+Shift+Ins</td>
+      </tr>
+      <tr>
+        <td class="left">Delete track</td>
+        <td class="right">Ctrl+Shift+Del</td>
+      </tr>
+    </table>
+    <h2 id="playback_controls">Playback Controls</h2>
+    <table>
+      <tr>
+        <td class="left">Play / Pause</td>
+        <td class="right">Space</td>
+      </tr>
+    </table>
+    <h2 id="measure_navigation">Measure navigation</h2>
+    <p>These shortcuts can also be used during Playback.</p>
+    <table>
+      <tr>
+        <td class="left">Go to first measure</td>
+        <td class="right">Ctrl+Shift+Left</td>
+      </tr>
+      <tr>
+        <td class="left">Go to previous measure</td>
+        <td class="right">Ctrl+Left</td>
+      </tr>
+      <tr>
+        <td class="left">Go to next measure</td>
+        <td class="right">Ctrl+Right</td>
+      </tr>
+      <tr>
+        <td class="left">Go to last measure</td>
+        <td class="right">Ctrl+Shift+Right</td>
+      </tr>
+    </table>
+    <h2 id="beat_actions">Beat Actions</h2>
+    <table>
+      <tr>
+        <td class="left">Clean beat</td>
+        <td class="right">Ctrl+Del</td>
+      </tr>
+      <tr>
+        <td class="left">Insert note</td>
+        <td class="right">Number <strong>0</strong>-<strong>29</strong></td>
+      </tr>
+      <tr>
+        <td class="left">Insert rest beat</td>
+        <td class="right">Ins</td>
+      </tr>
+      <tr>
+        <td class="left">Delete note/selection</td>
+        <td class="right">Del</td>
+      </tr>
+      <tr>
+        <td class="left">Tied note</td>
+        <td class="right">L</td>
+      </tr>
+      <tr>
+        <td class="left">Dotted note</td>
+        <td class="right">*</td>
+      </tr>
+      <tr>
+        <td class="left">Triplet note</td>
+        <td class="right">/</td>
+      </tr>
+      <tr>
+        <td class="left">Insert text</td>
+        <td class="right">T</td>
+      </tr>
+      <tr>
+        <td class="left">Move note on string above</td>
+        <td class="right">Shift+Up</td>
+      </tr>
+      <tr>
+        <td class="left">Move note on string below</td>
+        <td class="right">Shift+Down</td>
+      </tr>
+      <tr>
+        <td class="left">Set Stems up</td>
+        <td class="right">Ctrl+Up</td>
+      </tr>
+      <tr>
+        <td class="left">Set Stems down</td>
+        <td class="right">Ctrl+Down</td>
+      </tr>
+      <tr>
+        <td class="left">Increase note pitch</td>
+        <td class="right">Shift+Right</td>
+      </tr>
+      <tr>
+        <td class="left">Decrease note pitch</td>
+        <td class="right">Shift+Left</td>
+      </tr>
+      <tr>
+        <td class="left">Increment note duration</td>
+        <td class="right">+</td>
+      </tr>
+      <tr>
+        <td class="left">Decrement note duration</td>
+        <td class="right">-</td>
+      </tr>
+    </table>
+    <h2 id="note_effects">Note Effects</h2>
+    <p>Can be applied only when your cursor is positioned on the existing note in a tablature.</p>
+    <table>
+      <tr>
+        <td class="left">Bend note</td>
+        <td class="right">B</td>
+      </tr>
+      <tr>
+        <td class="left">Ghost note</td>
+        <td class="right">O</td>
+      </tr>
+      <tr>
+        <td class="left">Hammer on/Pull off</td>
+        <td class="right">H</td>
+      </tr>
+      <tr>
+        <td class="left">Slide up/down</td>
+        <td class="right">S</td>
+      </tr>
+      <tr>
+        <td class="left">Vibrato</td>
+        <td class="right">V</td>
+      </tr>
+      <tr>
+        <td class="left">Dead note</td>
+        <td class="right">X</td>
+      </tr>
+      <tr>
+        <td class="left">Palm mute</td>
+        <td class="right">P</td>
+      </tr>
+      <tr>
+        <td class="left">Fade in</td>
+        <td class="right">F</td>
+      </tr>
+      <tr>
+        <td class="left">Grace note</td>
+        <td class="right">G</td>
+      </tr>
+    </table>
+    <h2 id="marker_actions">Marker Actions</h2>
+    <table>
+      <tr>
+        <td class="left">Add marker</td>
+        <td class="right">Shift+Ins</td>
+      </tr>
+      <tr>
+        <td class="left">Go to first marker</td>
+        <td class="right">Alt+Shift+Left</td>
+      </tr>
+      <tr>
+        <td class="left">Go to previous marker</td>
+        <td class="right">Alt+Left</td>
+      </tr>
+      <tr>
+        <td class="left">Go to next marker</td>
+        <td class="right">Alt+Right</td>
+      </tr>
+      <tr>
+        <td class="left">Go to last marker</td>
+        <td class="right">Alt+Shift+Right</td>
+      </tr>
+    </table>
+    <h2 id="dialogs">Dialogs</h2>
+    <table>
+      <tr>
+        <td class="left">Custom chord dialog</td>
+        <td class="right">A</td>
+      </tr>
+      <tr>
+        <td class="left">Settings</td>
+        <td class="right">F7</td>
+      </tr>
+      <tr>
+        <td class="left">Transport</td>
+        <td class="right">Ctrl+T</td>
+      </tr>
+      <tr>
+        <td class="left">Collection Browser</td>
+        <td class="right">Ctrl+B</td>
+      </tr>
+      <tr>
+        <td class="left">Play Mode</td>
+        <td class="right">F9</td>
+      </tr>
+      <tr>
+        <td class="left">Help</td>
+        <td class="right">F1</td>
+      </tr>
+    </table>
+    <h2 id="application">Application</h2>
+    <table>
+      <tr>
+        <td class="left">New file</td>
+        <td class="right">Ctrl+N</td>
+      </tr>
+      <tr>
+        <td class="left">Open file</td>
+        <td class="right">Ctrl+O</td>
+      </tr>
+      <tr>
+        <td class="left">Save file</td>
+        <td class="right">Ctrl+S</td>
+      </tr>
+      <tr>
+        <td class="left">Close current file</td>
+        <td class="right">Ctrl+W</td>
+      </tr>
+      <tr>
+        <td class="left">Save as</td>
+        <td class="right">F12</td>
+      </tr>
+      <tr>
+        <td class="left">Print tablature</td>
+        <td class="right">Ctrl+P</td>
+      </tr>
+      <tr>
+        <td class="left">Print preview</td>
+        <td class="right">Ctrl+Shift+P</td>
+      </tr>
+      <tr>
+        <td class="left">Exit TuxGuitar</td>
+        <td class="right">Alt+F4</td>
+      </tr>
+    </table>
+  </section>
+</body>
+</html>

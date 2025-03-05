@@ -88,6 +88,7 @@ import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogActio
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
+import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
@@ -229,6 +230,8 @@ import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
+import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
@@ -252,6 +255,7 @@ import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
 import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import org.herac.tuxguitar.editor.action.note.TGToggleNoteEnharmonicAction;
 import org.herac.tuxguitar.editor.action.song.TGClearSongAction;
 import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
 import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
@@ -414,7 +418,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGMoveTrackDownAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL, new TGUndoableMoveTrackDownController());
 		this.map(TGMoveTrackUpAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL, new TGUndoableMoveTrackUpController());
 		this.map(TGRemoveTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, new TGUpdateRemovedTrackController(), new TGUndoableRemoveTrackController());
-		this.map(TGSetTrackInfoAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL, new TGUndoableTrackInfoController());
+		this.map(TGSetTrackInfoAction.NAME, LOCKABLE, UPDATE_SONG_CTL, new TGUndoableTrackInfoController());
 		this.map(TGSetTrackNameAction.NAME, LOCKABLE);
 		this.map(TGSetTrackChannelAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 		this.map(TGSetTrackStringCountAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
@@ -424,6 +428,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGChangeTrackPropertiesAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		
 		//measure actions
+		this.map(TGToggleLineBreakAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
 		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
@@ -441,6 +446,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//beat actions
 		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangePickStrokeUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangePickStrokeDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeVelocityAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedVelocityController(), UNDOABLE_NOTE_RANGE);
 		this.map(TGCleanBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_BEAT_RANGE_CTL, UNDOABLE_BEAT_RANGE_GENERIC);
@@ -466,6 +473,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		for( int i = 0 ; i < 10 ; i ++ ){
 			this.map(TGSetNoteFretNumberAction.getActionName(i), LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		}
+		this.map(TGToggleNoteEnharmonicAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		
 		//effect actions
 		this.map(TGChangeDeadNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_BEAT_RANGE_CTL, UNDOABLE_NOTE_RANGE); // beat range controller: can create new note
@@ -513,7 +521,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		
 		//composition actions
 		this.map(TGChangeInfoAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateSongInfoController(), new TGUndoableSongInfoController());
-		this.map(TGRepeatOpenAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableOpenRepeatController());
+		this.map(TGRepeatOpenAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, new TGUndoableOpenRepeatController());
 		this.map(TGRepeatCloseAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableCloseRepeatController());
 		this.map(TGRepeatAlternativeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableAltRepeatController());
 		

@@ -9,6 +9,14 @@
 		android:layout_height="wrap_content"
 		android:columnCount="2" >
 
+		<RadioGroup
+			android:id="@+id/tempo_dlg_tempo_base" />
+
+		<Space
+			android:layout_gravity="fill"
+			android:layout_columnSpan="2"
+			style="?attr/dialogVerticalSpacerStyle" />
+
 		<TextView
 			android:id="@+id/tempo_dlg_tempo_label"
 			android:text="@string/tempo_dlg_tempo_label"
