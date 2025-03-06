@@ -70,6 +70,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		this.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
 		this.setMarkerFont(config.getFontModelConfigValue(TGConfigKeys.FONT_MARKER));
 		this.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
+		this.setLineColorInvalid(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
 		this.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
 		this.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
 		this.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));

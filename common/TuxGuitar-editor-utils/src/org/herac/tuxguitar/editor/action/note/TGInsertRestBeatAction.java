@@ -3,6 +3,7 @@ package org.herac.tuxguitar.editor.action.note;
 import org.herac.tuxguitar.action.TGActionContext;
 import org.herac.tuxguitar.document.TGDocumentContextAttributes;
 import org.herac.tuxguitar.editor.action.TGActionBase;
+import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.song.models.TGMeasure;
@@ -22,14 +23,18 @@ public class TGInsertRestBeatAction extends TGActionBase {
 		TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
 		TGDuration duration = ((TGDuration) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION));
 		TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-
-		if( voice.isEmpty() ){
-			getSongManager(context).getMeasureManager().addSilence(beat, duration.clone(getSongManager(context).getFactory()), voice.getIndex());
+		TGSongManager songManager = getSongManager(context);
+		
+		if (songManager.isFreeEditionMode(measure)) {
+			songManager.getMeasureManager().insertRestBeatWithoutControl(beat, voice.getIndex());
+		}
+		else if( voice.isEmpty() ){
+			songManager.getMeasureManager().addSilence(beat, duration.clone(getSongManager(context).getFactory()), voice.getIndex());
 		}
 		else {
 			long start = beat.getStart();
 			long length = voice.getDuration().getTime();
-			getSongManager(context).getMeasureManager().moveVoices(measure, start, length, voice.getIndex(), beat.getVoice(voice.getIndex()).getDuration());
+			songManager.getMeasureManager().moveVoices(measure, start, length, voice.getIndex(), beat.getVoice(voice.getIndex()).getDuration());
 		}
 	}
 }

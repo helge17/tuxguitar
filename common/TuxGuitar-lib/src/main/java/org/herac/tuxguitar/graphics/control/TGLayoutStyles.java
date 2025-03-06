@@ -48,6 +48,7 @@ public class TGLayoutStyles {
 	private UIColorModel backgroundColor;
 	private UIColorModel backgroundColorPlaying;
 	private UIColorModel lineColor;
+	private UIColorModel lineColorInvalid;
 	private UIColorModel scoreNoteColor;
 	private UIColorModel tabNoteColor;
 	private UIColorModel playNoteColor;
@@ -403,8 +404,16 @@ public class TGLayoutStyles {
 		return lineColor;
 	}
 
+	public UIColorModel getLineColorInvalid() {
+		return lineColorInvalid;
+	}
+
 	public void setLineColor(UIColorModel lineColor) {
 		this.lineColor = lineColor;
+	}
+
+	public void setLineColorInvalid(UIColorModel lineColor) {
+		this.lineColorInvalid = lineColor;
 	}
 
 	public UIColorModel getScoreNoteColor() {

@@ -21,7 +21,7 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	 * None of these values consider repeats. They only consider previous measures (i.e. measures with lower measure numbers) and beats
 	 */
 	private long start;
-	private long preciseStart;
+	private Long preciseStart;
 	private TGMeasure measure;
 	private TGChord chord;
 	private TGText text;
@@ -50,22 +50,33 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 
 	public long getStart() {
 		// prefer precise start if available
-		if (this.preciseStart >= 0) {
+		if (this.preciseStart != null) {
 			return TGDuration.toTime(this.preciseStart);
 		}
 		return this.start;
 	}
 
-	public long getPreciseStart() {
+	public Long getPreciseStart() {
 		return this.preciseStart;
 	}
-
-	// try as much as possible NOT to use this method
-	// use .setPreciseStart instead when possible
+	
+	/**
+	 * Deprecated: define beat "approximative" start
+	 * 
+	 * Resolution of beat start = one midi tick, not precise enough to handle all possible tuplets
+	 * Only use for legacy purposes (e.g. import old/foreign file formats)
+	 * When this method needs to be called (for historical reasons), make sure to update preciseStart attribute afterwards
+	 * Dedicated methods are available for that in TGMeasureManager
+	 * 
+	 * Replace by .setPreciseStart (refer to TGDuration)
+	 * 
+	 * @param start
+	 */
+	@Deprecated
 	public void setStart(long start) {
 		this.start = start;
 		// cannot deduce preciseStart from start (possible rounding errors)
-		this.preciseStart = -1;
+		this.preciseStart = null;
 	}
 
 	public void setPreciseStart(long pStart) {
@@ -164,7 +175,7 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	}
 
 	public void copyFrom(TGBeat beat, TGFactory factory) {
-		if (beat.getPreciseStart() >= 0) {
+		if (beat.getPreciseStart() != null) {
 			this.setPreciseStart(beat.getPreciseStart());
 		} else {
 			this.setStart(beat.getStart());
@@ -191,7 +202,7 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	@Override
 	public int compareTo(TGBeat beat) {
 		if (beat == null) return 1;
-		if ((this.preciseStart >= 0) && (beat.getPreciseStart() >= 0)) {
+		if ((this.preciseStart != null) && (beat.getPreciseStart() >= 0)) {
 			return Long.valueOf(this.preciseStart).compareTo(Long.valueOf(beat.getPreciseStart()));
 		}
 		return (Long.valueOf(this.getStart()).compareTo(Long.valueOf(beat.getStart())));

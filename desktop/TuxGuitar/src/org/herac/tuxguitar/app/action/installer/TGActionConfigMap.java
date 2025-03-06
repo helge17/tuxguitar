@@ -14,6 +14,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialog
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGOpenMeasureErrorsDialogAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGRepeatAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
@@ -21,6 +22,7 @@ import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import org.herac.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMenuShownAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
@@ -154,6 +156,7 @@ import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateModified
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateModifiedVelocityController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateNoteRangeController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdatePlayerTracksController;
+import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateReadSongController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedMeasureController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedTrackController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateSavedSongController;
@@ -225,6 +228,7 @@ import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import org.herac.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import org.herac.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -318,6 +322,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
 	private static final TGUpdateController UPDATE_SONG_CTL = new TGUpdateSongController();
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
+	private static final TGUpdateController UPDATE_SONG_READ_CTL = new TGUpdateReadSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
 	private static final TGUpdateController UPDATE_NOTE_RANGE_CTL = new TGUpdateNoteRangeController();
@@ -342,7 +347,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
 		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
-		this.map(TGReadSongAction.NAME, LOCKABLE);
+		this.map(TGReadSongAction.NAME, LOCKABLE, UPDATE_SONG_READ_CTL);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
 		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
@@ -372,6 +377,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetNaturalKeyAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGSetVoice1Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGSetVoice2Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGToggleFreeEditionModeAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasureErrorsDialogAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 
 		//tablature actions
 		this.map(TGMouseClickAction.NAME, LOCKABLE);
