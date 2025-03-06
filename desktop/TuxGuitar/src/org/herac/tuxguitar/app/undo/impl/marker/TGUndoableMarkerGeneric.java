@@ -13,15 +13,15 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableMarkerGeneric extends TGUndoableEditBase {
-	
+
 	private int doAction;
 	private TGMarker undoMarker;
 	private TGMarker redoMarker;
-	
+
 	private TGUndoableMarkerGeneric(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -33,7 +33,7 @@ public class TGUndoableMarkerGeneric extends TGUndoableEditBase {
 		}
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -45,36 +45,36 @@ public class TGUndoableMarkerGeneric extends TGUndoableEditBase {
 		}
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableMarkerGeneric startUndo(TGContext context, TGMarker marker){
 		TGUndoableMarkerGeneric undoable = new TGUndoableMarkerGeneric(context);
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoMarker = (marker != null ? marker.clone(getSongManager(context).getFactory()) : null);
-		
+
 		return undoable;
 	}
-	
+
 	public TGUndoableMarkerGeneric endUndo(TGMarker marker){
 		this.redoMarker = (marker != null ? marker.clone(getSongManager().getFactory()) : null);
-		
+
 		return this;
 	}
-	
+
 	public void updateMarker(TGActionContext context, TGSong song, TGMarker marker) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGUpdateMarkerAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, marker);
 		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
-	
+
 	public void removeMarker(TGActionContext context, TGSong song, TGMarker marker) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRemoveMarkerAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);

@@ -18,7 +18,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class TGChordXMLReader {
-	
+
 	public static List<TGChord> getChords(String fileName) {
 		List<TGChord> chords = new ArrayList<TGChord>();
 		try{
@@ -32,7 +32,7 @@ public class TGChordXMLReader {
 		}
 		return chords;
 	}
-	
+
 	private static Document getDocument(File file) {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -54,10 +54,10 @@ public class TGChordXMLReader {
 		}
 		return document;
 	}
-	
+
 	/**
 	 * Read shortcuts from xml file
-	 * 
+	 *
 	 * @param shortcutsNode
 	 * @return
 	 */
@@ -68,24 +68,24 @@ public class TGChordXMLReader {
 				Node chordItem = chordList.item(i);
 				if (chordItem.getNodeName().equals(TGChordXML.CHORD_TAG)) {
 					NamedNodeMap chordAttributes = chordItem.getAttributes();
-					
+
 					String name = chordAttributes.getNamedItem(TGChordXML.CHORD_NAME_ATTRIBUTE).getNodeValue();
 					String strings = chordAttributes.getNamedItem(TGChordXML.CHORD_STRINGS_ATTRIBUTE).getNodeValue();
 					String firstFret = chordAttributes.getNamedItem(TGChordXML.CHORD_FIRST_FRET_ATTRIBUTE).getNodeValue();
-					
+
 					TGChord chord = TuxGuitar.getInstance().getSongManager().getFactory().newChord(Integer.parseInt(strings));
 					chord.setName(name);
 					chord.setFirstFret(Integer.parseInt(firstFret));
-					
+
 					NodeList stringList = chordItem.getChildNodes();
 					for (int j = 0; j < stringList.getLength(); j++) {
 						Node stringItem = stringList.item(j);
 						if (stringItem.getNodeName().equals(TGChordXML.STRING_TAG)) {
 							NamedNodeMap stringAttributes = stringItem.getAttributes();
-							
+
 							String number = stringAttributes.getNamedItem(TGChordXML.STRING_NUMBER_ATTRIBUTE).getNodeValue();
 							String fret = stringAttributes.getNamedItem(TGChordXML.STRING_FRET_ATTRIBUTE).getNodeValue();
-							
+
 							chord.addFretValue(Integer.parseInt(number),Integer.parseInt(fret));
 						}
 					}

@@ -63,7 +63,7 @@ import org.xml.sax.SAXException;
 
 public class TestFileFormat20 {
 	private static final String XSD_SCHEMA = "tuxguitar_20.xsd";
-	
+
 	@Test
 	public void testRecognizeValidFile() throws FileNotFoundException {
 		assertTrue(validatesSchema("Untitled_20.xml", false));
@@ -71,7 +71,7 @@ public class TestFileFormat20 {
 		assertTrue(detectsFormat("Untitled_20.tg"));
 		assertTrue(validatesSchema("test_20.xml", false));
 	}
-	
+
 	@Test
 	public void testXmlCanBeExtended() throws IOException {
 		TGSongReaderHandle handle = readSong("Untitled_extended_21.xml", false);
@@ -80,42 +80,42 @@ public class TestFileFormat20 {
 		handle = readSong("Untitled_extended_21.tg", true);
 		assertNotNull(handle.getSong());
 	}
-	
+
 	@Test
 	public void testCanOpenCompatibleExtendedFormat() throws IOException {
 		// compressed xml + version file
 		// check context attribute has been set to suggest app upgrade to user
 		TGSongReaderHandle  handle = readSong("Untitled_extended_21.tg", true);
 		assertNotNull(handle.getSong());
-		assertTrue(handle.isNewerFileFormatDetected()); 
+		assertTrue(handle.isNewerFileFormatDetected());
 	}
-	
+
 	@Test
 	public void testCanOpenValidFile() throws IOException {
 		// test with expected format version, flag shall not be set
 		TGSongReaderHandle handle = readSong("Untitled_20.tg", true);
 		assertNotNull(handle.getSong());
-		assertFalse(handle.isNewerFileFormatDetected()); 
+		assertFalse(handle.isNewerFileFormatDetected());
 	}
-	
+
 	@Test
 	public void testInvalidFile() throws FileNotFoundException {
 		// invalid version
 		assertFalse(validatesSchema("Untitled_extended_30.tg", true));
-		
+
 		// not even an xml file (just random bytes)
 		assertFalse(validatesSchema("randomBytes.xml", false));
-		
+
 		// valid xml, but not TuxGuitar
 		assertFalse(validatesSchema("notTuxGuitar.xml", false));
-		
+
 		// correct xml, but no version file
 		assertFalse(detectsFormat("noVersion.tg"));
-		
+
 		// correct xml, but invalid version file
 		assertFalse(detectsFormat("invalidVersion.tg"));
 	}
-	
+
 	@Test
 	public void testNewMajorVersionIsDetected () throws IOException {
 		// positive test: new major version detected
@@ -132,7 +132,7 @@ public class TestFileFormat20 {
 			exceptionCaught = true;
 		}
 		assertTrue(exceptionCaught);
-		
+
 		// negative test: new major version NOT detected
 		exceptionCaught = false;
 		handle = new TGSongReaderHandle();
@@ -149,7 +149,7 @@ public class TestFileFormat20 {
 		}
 		assertTrue(exceptionCaught);
 	}
-	
+
 	// manually written xml file to check syntax
 	@Test
 	public void testOpenValidXMLFile() throws IOException {
@@ -192,7 +192,7 @@ public class TestFileFormat20 {
 		assertEquals("ChannelName2", channel.getName());
 		parameters = channel.getParameters();
 		assertFalse(parameters.hasNext());
-		
+
 		// measure headers
 		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		assertTrue(headers.hasNext());
@@ -236,7 +236,7 @@ public class TestFileFormat20 {
 		header = headers.next();
 		// no more
 		assertFalse(headers.hasNext());
-		
+
 		// Track1
 		Iterator<TGTrack> tracks = song.getTracks();
 		assertTrue(tracks.hasNext());
@@ -387,7 +387,7 @@ public class TestFileFormat20 {
 		assertEquals(TGEffectGrace.TRANSITION_SLIDE, grace.getTransition());
 		assertTrue(grace.isOnBeat());
 		assertFalse(grace.isDead());
-		
+
 		// track1, measure 1, beat1, voice 2
 		voice = beat.getVoice(1);
 		assertEquals(beat, voice.getBeat());
@@ -398,7 +398,7 @@ public class TestFileFormat20 {
 		assertEquals(TGDivisionType.DIVISION_TYPES[1].getEnters(), voice.getDuration().getDivision().getEnters());
 		assertEquals(TGDivisionType.DIVISION_TYPES[1].getTimes(), voice.getDuration().getDivision().getTimes());
 		assertTrue(voice.isEmpty());
-		
+
 		// track 1, other measures
 		for (int i=0; i<3; i++) {
 			assertTrue(measures.hasNext());
@@ -406,7 +406,7 @@ public class TestFileFormat20 {
 			assertEquals(i+2, measure.getNumber());
 		}
 		assertFalse(measures.hasNext());
-		
+
 		// Track2
 		assertTrue(tracks.hasNext());
 		track = tracks.next();
@@ -430,7 +430,7 @@ public class TestFileFormat20 {
 		TGEffectTremoloPicking tremoloPicking = effect.getTremoloPicking();
 		assertNotNull(tremoloPicking);
 		assertEquals(16, tremoloPicking.getDuration().getValue());
-		
+
 		// no more tracks
 		assertFalse(tracks.hasNext());
 	}
@@ -446,12 +446,12 @@ public class TestFileFormat20 {
 		assertTrue(detectsFormat(new ByteArrayInputStream(tg20ToXml("reference_20.tg", true))));
 		assertTrue(validatesSchema(new ByteArrayInputStream(tg20ToXml("reference_20.tg", true)), true));
 	}
-	
+
 	// new feature introduced in format version 2.0
 	@Test
 	public void testCheckLineBreak() throws IOException {
 		TGFactory factory = new TGFactory();
-		
+
 		// read ref file (no line break)
 		TGSongReaderHandle handle = readSong("reference_20.tg", true);
 		TGSong song = handle.getSong();
@@ -475,7 +475,7 @@ public class TestFileFormat20 {
 		}
 		assertTrue(header.getNumber() > 5);
 	}
-	
+
 	@Test
 	public void testMaxFret() throws IOException {
 		TGFactory factory = new TGFactory();
@@ -510,7 +510,7 @@ public class TestFileFormat20 {
 		note = song.getTrack(0).getMeasure(1).getBeat(0).getVoice(0).getNote(0);
 		assertTrue(note.isAltEnharmonic());
 	}
-	
+
 	@Test
 	public void testTempoBase() throws IOException {
 		TGFactory factory = new TGFactory();
@@ -522,37 +522,37 @@ public class TestFileFormat20 {
 		byte[] bufferXml = saveToXml(song, factory);
 		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
 		song = readFromXml(bufferXml, factory);
-		
+
 		TGTempo tempo = song.getMeasureHeader(10).getTempo();
 		assertEquals(60, tempo.getRawValue());
 		assertEquals(TGDuration.HALF, tempo.getBase());
 		assertFalse(tempo.isDotted());
-		
+
 		tempo = song.getMeasureHeader(20).getTempo();
 		assertEquals(40, tempo.getRawValue());
 		assertEquals(TGDuration.EIGHTH, tempo.getBase());
 		assertTrue(tempo.isDotted());
 	}
-	
+
 	@Test
 	public void testPickStroke() throws IOException {
 		TGFactory factory = new TGFactory();
 		TGSongReaderHandle handle = readSong("reference_20.tg", true);
 		TGSong song = handle.getSong();
-		
+
 		song.getTrack(0).getMeasure(2).getBeat(0).getPickStroke().setDirection(TGPickStroke.PICK_STROKE_DOWN);
 		song.getTrack(0).getMeasure(2).getBeat(1).getPickStroke().setDirection(TGPickStroke.PICK_STROKE_UP);
 		// save, and re-read
 		byte[] bufferXml = saveToXml(song, factory);
 		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
 		song = readFromXml(bufferXml, factory);
-		
+
 		assertEquals(TGPickStroke.PICK_STROKE_DOWN, song.getTrack(0).getMeasure(2).getBeat(0).getPickStroke().getDirection());
 		assertEquals(TGPickStroke.PICK_STROKE_UP, song.getTrack(0).getMeasure(2).getBeat(1).getPickStroke().getDirection());
 		assertEquals(TGPickStroke.PICK_STROKE_NONE, song.getTrack(0).getMeasure(2).getBeat(2).getPickStroke().getDirection());
-		
+
 	}
-	
+
 	private byte[] saveToXml(TGSong song, TGFactory factory) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		TGSongWriterHandle handleWrite = new TGSongWriterHandle();
@@ -563,7 +563,7 @@ public class TestFileFormat20 {
 		writer.writeContent(handleWrite);
 		return outputStream.toByteArray();
 	}
-	
+
 	private TGSong readFromXml(byte[] bufferXml, TGFactory factory) {
 		TGSongReaderHandle handleRead = new TGSongReaderHandle();
 		handleRead.setFactory(factory);
@@ -572,7 +572,7 @@ public class TestFileFormat20 {
 		reader.readContent(handleRead, handleRead.getInputStream());
 		return handleRead.getSong();
 	}
-	
+
 	private boolean validatesSchema(InputStream inputStream, boolean compressed) {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema = null;
@@ -592,19 +592,19 @@ public class TestFileFormat20 {
 		File xml = new File(getClass().getClassLoader().getResource(resourceFileName).getFile());
 		return validatesSchema(new FileInputStream(xml), compressed);
 	}
-	
+
 	private boolean detectsFormat(InputStream inputStream) {
 		TGFileFormatDetectorImpl formatDetector = new TGFileFormatDetectorImpl();
 		TGFileFormat format = null;
 		format = formatDetector.getFileFormat(inputStream);
 		return (format != null);
 	}
-	
+
 	private boolean detectsFormat(String resourceFileName) throws FileNotFoundException {
 		File xml = new File(getClass().getClassLoader().getResource(resourceFileName).getFile());
 		return detectsFormat(new FileInputStream(xml));
 	}
-	
+
 	public TGSongReaderHandle readSong(String resourceFileName, boolean compressed) throws IOException {
 		TGSongReaderHandle handle = new TGSongReaderHandle();
 		handle.setContext(new TGSongStreamContext());
@@ -618,7 +618,7 @@ public class TestFileFormat20 {
 		}
 		return handle;
 	}
-	
+
 	private byte[] tg20ToXml(String resourceFileName, boolean compressed) throws FileNotFoundException, Throwable {
 		TGFactory factory = new TGFactory();
 		// load original tg file
@@ -628,7 +628,7 @@ public class TestFileFormat20 {
 		handleRead.setFactory(factory);
 		handleRead.setInputStream(new ByteArrayInputStream(bufferOriginal));
 		new TGSongReaderImpl().read(handleRead);
-		
+
 		// save song under xml format in byte buffer
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		TGSongWriterHandle handleWrite = new TGSongWriterHandle();

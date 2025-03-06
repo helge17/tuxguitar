@@ -16,7 +16,7 @@ public class VSTSynthExtension extends TGSynthExtensionPlugin {
 	public String getModuleId() {
 		return VSTModule.MODULE_ID;
 	}
-	
+
 	@Override
 	public List<TGSynthExtension<?>> createExtensions(TGContext context) throws TGPluginException {
 		List<TGSynthExtension<?>> extensions = new ArrayList<TGSynthExtension<?>>();
@@ -24,7 +24,7 @@ public class VSTSynthExtension extends TGSynthExtensionPlugin {
 		extensions.add(new TGSynthExtension<TGAudioProcessorFactory>(TGAudioProcessorFactory.class, new VSTAudioProcessorFactory(context)));
 		extensions.add(new TGSynthExtension<TGAudioProcessorUIFactory>(TGAudioProcessorUIFactory.class, new VSTMidiProcessorUIFactory(context)));
 		extensions.add(new TGSynthExtension<TGAudioProcessorUIFactory>(TGAudioProcessorUIFactory.class, new VSTAudioProcessorUIFactory(context)));
-		
+
 		return extensions;
 	}
 }

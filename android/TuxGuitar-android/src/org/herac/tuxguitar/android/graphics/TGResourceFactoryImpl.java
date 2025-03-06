@@ -14,15 +14,15 @@ public class TGResourceFactoryImpl implements UIResourceFactory {
 	public UIColor createColor(UIColorModel colorModel) {
 		return new TGColorImpl(colorModel);
 	}
-	
+
 	public UIColor createColor(int red, int green, int blue) {
 		return createColor(new UIColorModel(red, green, blue));
 	}
-	
+
 	public UIFont createFont(UIFontModel fontModel) {
 		return new TGFontImpl(fontModel);
 	}
-	
+
 	public UIFont createFont(String name, float height, boolean bold, boolean italic) {
 		return createFont(new UIFontModel(name, height, bold, italic));
 	}

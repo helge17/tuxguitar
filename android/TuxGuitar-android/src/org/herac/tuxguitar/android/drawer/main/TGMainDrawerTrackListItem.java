@@ -7,7 +7,7 @@ public class TGMainDrawerTrackListItem {
 	private TGTrack track;
 	private String label;
 	private Boolean selected;
-	
+
 	public TGMainDrawerTrackListItem() {
 		super();
 	}

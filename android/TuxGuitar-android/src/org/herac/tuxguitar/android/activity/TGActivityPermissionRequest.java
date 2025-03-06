@@ -45,14 +45,14 @@ public class TGActivityPermissionRequest {
 		this.addResultHandlers();
 		this.checkPermissionsAsyncTask(false).execute((Void) null);
 	}
-	
+
 	private void onPermissionGranted() {
 		this.removeResultHandlers();
 		if( this.onPermissionGranted != null ) {
 			this.createThreadRunnable(this.onPermissionGranted).run();
 		}
 	}
-	
+
 	private void onPermissionDenied() {
 		this.removeResultHandlers();
 		if( this.onPermissionDenied != null ) {

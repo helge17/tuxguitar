@@ -10,15 +10,15 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGInsertMeasuresAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.insert";
-	
+
 	public static final String ATTRIBUTE_SONG_SEGMENT = TGSongSegment.class.getName();
-	
+
 	public static final String ATTRIBUTE_FROM_NUMBER = "fromNumber";
 	public static final String ATTRIBUTE_TO_TRACK = "toTrack";
 	public static final String ATTRIBUTE_THE_MOVE = "theMove";
-	
+
 	public TGInsertMeasuresAction(TGContext context) {
 		super(context, NAME);
 	}

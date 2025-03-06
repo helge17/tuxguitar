@@ -8,15 +8,15 @@ import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UIScale;
 
 public class SWTScale extends SWTControl<Scale> implements UIScale {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	public SWTScale(SWTContainer<? extends Composite> parent, int orientation) {
 		super(new Scale(parent.getControl(), SWT.BORDER | orientation), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
-	
+
 	public void setValue(int value) {
 		this.getControl().setSelection(this.parseValue(value));
 	}
@@ -56,7 +56,7 @@ public class SWTScale extends SWTControl<Scale> implements UIScale {
 		}
 		return value;
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().addSelectionListener(this.selectionListener);

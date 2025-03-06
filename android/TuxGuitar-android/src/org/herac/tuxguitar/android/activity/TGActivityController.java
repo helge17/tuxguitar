@@ -7,11 +7,11 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGActivityController {
 
 	private TGActivity activity;
-	
+
 	public TGActivityController() {
 		super();
 	}
-	
+
 	public TGActivity getActivity() {
 		return activity;
 	}

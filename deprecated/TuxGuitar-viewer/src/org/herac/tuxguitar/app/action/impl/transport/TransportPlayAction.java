@@ -12,13 +12,13 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TransportPlayAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.transport.play";
-	
+
 	public TransportPlayAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
 		if(!player.isRunning()){
@@ -35,7 +35,7 @@ public class TransportPlayAction extends TGActionBase {
 			updateCaretPosition();
 		}
 	}
-	
+
 	protected void playThread() {
 		new Thread(new Runnable() {
 			public void run() {
@@ -55,14 +55,14 @@ public class TransportPlayAction extends TGActionBase {
 			}
 		}).start();
 	}
-	
+
 	protected void updateCaretPosition(){
 		TGDocumentManager documentManager = TGDocumentManager.getInstance(getContext());
 		TGSong song = documentManager.getSong();
 		TGMeasureHeader header = documentManager.getSongManager().getMeasureHeaderAt(song, MidiTickUtil.getStart(TuxGuitar.instance().getPlayer().getTickPosition()));
 		TuxGuitar.instance().getTransport().gotoMeasure(header, true);
 	}
-	
+
 	protected void updateTransportPosition(){
 		TGMeasureHeader header = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader();
 		TuxGuitar.instance().getTransport().gotoMeasure(header, false);

@@ -7,9 +7,9 @@ import org.herac.tuxguitar.ui.event.UIDisposeListenerManager;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTDisposeListenerManager extends UIDisposeListenerManager implements DisposeListener {
-	
+
 	private SWTEventReceiver<?> control;
-	
+
 	public SWTDisposeListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}

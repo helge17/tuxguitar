@@ -13,9 +13,9 @@ import java.util.Set;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGPropertiesImpl implements TGProperties{
-	
+
 	private Properties properties;
-	
+
 	public TGPropertiesImpl(){
 		this.properties = new Properties();
 	}
@@ -27,27 +27,27 @@ public class TGPropertiesImpl implements TGProperties{
 	public void setValue(String key, String value) {
 		this.properties.setProperty(key, value);
 	}
-	
+
 	public void remove(String key) {
 		this.properties.remove(key);
 	}
-	
+
 	public void clear() {
 		this.properties.clear();
 	}
-	
+
 	public void load(InputStream inputStream) throws IOException {
 		this.properties.load(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
 	}
-	
+
 	public void store(OutputStream outputStream, String comments) throws IOException{
 		this.properties.store(new OutputStreamWriter(outputStream,StandardCharsets.UTF_8), comments);
 	}
-	
+
 	public void update(Properties newProperties) {
 		this.properties.putAll(newProperties);
 	}
-	
+
 	public Set<String> getStringKeys() {
 		HashSet<String> stringKeySet = new HashSet<String>();
 		for (Object key : this.properties.keySet()) {

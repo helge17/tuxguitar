@@ -1,11 +1,11 @@
 package org.herac.tuxguitar.ui.resource;
 
 public class UIFontAlignment {
-	
+
 	private float top;
 	private float middle;
 	private float bottom;
-	
+
 	public UIFontAlignment(float top, float middle, float bottom){
 		this.top = top;
 		this.middle = middle;
@@ -15,7 +15,7 @@ public class UIFontAlignment {
 	public UIFontAlignment(){
 		this(0f, 0f, 0f);
 	}
-	
+
 	public float getTop() {
 		return top;
 	}

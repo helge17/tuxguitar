@@ -10,17 +10,17 @@ import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 import org.herac.tuxguitar.ui.resource.UIPosition;
 
 public class JFXMouseUpListenerManager extends UIMouseUpListenerManager implements EventHandler<MouseEvent> {
-	
+
 	private JFXEventReceiver<?> control;
-	
+
 	public JFXMouseUpListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
-	
+
 	public void handle(MouseEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onMouseUp(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton()), event.isShiftDown()));
-			
+
 			event.consume();
 		}
 	}

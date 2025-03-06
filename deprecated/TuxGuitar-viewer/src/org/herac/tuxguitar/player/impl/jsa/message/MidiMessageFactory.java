@@ -7,14 +7,14 @@ import javax.sound.midi.ShortMessage;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiMessageFactory {
-	
+
 	private static int fixValue(int value){
 		int fixedValue = value;
 		fixedValue = Math.min(fixedValue,127);
 		fixedValue = Math.max(fixedValue,0);
 		return fixedValue;
 	}
-	
+
 	public static MidiMessage noteOn(int channel,int note,int velocity, int voice, boolean bendMode){
 		try {
 			return new MidiNoteOnMessage(channel, fixValue(note), fixValue(velocity), voice, bendMode);
@@ -32,7 +32,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage pitchBend(int channel,int value, int voice, boolean bendMode){
 		try {
 			return new MidiPitchBendMessage(channel, fixValue(value), voice, bendMode);
@@ -59,7 +59,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage systemReset(){
 		try {
 			return new MidiSystemResetMessage();
@@ -68,7 +68,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage tempoInUSQ(int usq){
 		try {
 			return new MidiTempoInUsqMessage(usq);
@@ -77,7 +77,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage timeSignature(TGTimeSignature tgTimeSignature){
 		try {
 			return new MidiTimeSignatureMessage(tgTimeSignature);
@@ -97,7 +97,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage noteOffGM(int channel,int note,int velocity){
 		try {
 			ShortMessage shortMessage = new ShortMessage();
@@ -108,7 +108,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage pitchBendGM(int channel,int value){
 		try {
 			ShortMessage shortMessage = new ShortMessage();
@@ -119,7 +119,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage controlChangeGM(int channel,int controller,int value){
 		try {
 			ShortMessage shortMessage = new ShortMessage();
@@ -130,7 +130,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage programChangeGM(int channel,int instrument){
 		try {
 			ShortMessage shortMessage = new ShortMessage();
@@ -141,7 +141,7 @@ public class MidiMessageFactory {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage systemResetGM(){
 		try {
 			ShortMessage shortMessage = new ShortMessage();

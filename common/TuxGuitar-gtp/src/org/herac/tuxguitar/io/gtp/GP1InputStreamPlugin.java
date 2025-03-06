@@ -10,7 +10,7 @@ public class GP1InputStreamPlugin extends GTPInputStreamPlugin{
 	public GP1InputStreamPlugin() {
 		super();
 	}
-	
+
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
 		return new GP1InputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}

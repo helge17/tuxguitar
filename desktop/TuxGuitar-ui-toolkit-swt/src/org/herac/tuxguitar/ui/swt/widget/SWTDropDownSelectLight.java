@@ -15,17 +15,17 @@ import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
 import org.herac.tuxguitar.ui.widget.UISelectItem;
 
 public class SWTDropDownSelectLight<T> extends SWTControl<Combo> implements UIDropDownSelect<T> {
-	
+
 	private List<UISelectItem<T>> uiItems;
 	private SWTDropDownComboEventListener selectionListener;
 	private int currentIndex;
-	
+
 	public SWTDropDownSelectLight(SWTContainer<? extends Composite> parent) {
 		super(new Combo(parent.getControl(), SWT.DROP_DOWN), parent);
-		
+
 		this.uiItems = new ArrayList<UISelectItem<T>>();
 		this.selectionListener = new SWTDropDownComboEventListener(this);
-		
+
 		this.setCurrentIndex(-1);
 		this.getControl().addModifyListener(this.selectionListener);
 		this.getControl().addSelectionListener(this.selectionListener);
@@ -43,11 +43,11 @@ public class SWTDropDownSelectLight<T> extends SWTControl<Combo> implements UIDr
 		UISelectItem<T> selectedItem = this.getSelectedItem();
 		return (selectedItem != null ? selectedItem.getValue() : null);
 	}
-	
+
 	public void setSelectedValue(T value) {
 		this.setSelectedItem(new UISelectItem<T>(null, value));
 	}
-	
+
 	public UISelectItem<T> getSelectedItem() {
 		int index = this.getControl().getSelectionIndex();
 		return (index >= 0 && index < this.uiItems.size() ? this.uiItems.get(index) : null);
@@ -64,7 +64,7 @@ public class SWTDropDownSelectLight<T> extends SWTControl<Combo> implements UIDr
 		this.uiItems.add(item);
 		this.getControl().add(item.getText());
 	}
-	
+
 	public void removeItem(UISelectItem<T> item) {
 		int index = (item != null ? this.uiItems.indexOf(item) : -1);
 		if( index >= 0 && index < this.uiItems.size() ) {
@@ -72,14 +72,14 @@ public class SWTDropDownSelectLight<T> extends SWTControl<Combo> implements UIDr
 			this.uiItems.remove(item);
 		}
 	}
-	
+
 	public void removeItems() {
 		List<UISelectItem<T>> uiItems = new ArrayList<UISelectItem<T>>(this.uiItems);
 		for(UISelectItem<T> uiItem : uiItems) {
 			this.removeItem(uiItem);
 		}
 	}
-	
+
 	public int getItemCount() {
 		return this.uiItems.size();
 	}
@@ -91,16 +91,16 @@ public class SWTDropDownSelectLight<T> extends SWTControl<Combo> implements UIDr
 	public void removeSelectionListener(UISelectionListener listener) {
 		this.selectionListener.removeListener(listener);
 	}
-	
+
 	private static class SWTDropDownComboEventListener extends SWTSelectionListenerManager implements ModifyListener {
-		
+
 		public SWTDropDownComboEventListener(SWTDropDownSelectLight<?> control) {
 			super(control);
 		}
-		
+
 		public void widgetSelected(SelectionEvent e) {
 			this.getDropDownControl().setCurrentIndex(this.getDropDownControl().getControl().getSelectionIndex());
-			
+
 			super.widgetSelected(e);
 		}
 
@@ -110,7 +110,7 @@ public class SWTDropDownSelectLight<T> extends SWTControl<Combo> implements UIDr
 				control.getControl().select(control.getCurrentIndex());
 			}
 		}
-		
+
 		public SWTDropDownSelectLight<?> getDropDownControl() {
 			return (SWTDropDownSelectLight<?>) this.getControl();
 		}

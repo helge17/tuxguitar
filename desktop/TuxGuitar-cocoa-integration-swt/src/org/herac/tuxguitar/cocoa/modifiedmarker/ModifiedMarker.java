@@ -13,34 +13,34 @@ import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class ModifiedMarker implements TGEventListener {
-	
+
 	private TGContext context;
 	private boolean enabled;
-	
+
 	public ModifiedMarker(TGContext context){
 		this.context = context;
 	}
-	
+
 	public void init() throws Throwable{
 	    TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
-	
+
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-		
+
 		if (!enabled) setFrameState(false);
 	}
-	
+
 	private void setFrameState(boolean modified) {
 	    Shell shell = ((SWTWindow) TGWindow.getInstance(this.context).getWindow()).getControl();
    	    NSWindow nsWindow = shell.view.window();
         nsWindow.setDocumentEdited(modified);
 	}
-	
+
 	private boolean isUnsavedFile() {
 		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
 		if( document != null ) {
@@ -48,7 +48,7 @@ public class ModifiedMarker implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	/** From 'TGEventListener' */
 	public void processEvent(TGEvent event) {
 		if( this.isEnabled() && TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {

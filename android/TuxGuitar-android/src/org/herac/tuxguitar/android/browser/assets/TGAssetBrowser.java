@@ -13,68 +13,68 @@ import java.util.Collections;
 import java.util.List;
 
 public class TGAssetBrowser implements TGBrowser{
-	
+
 	private TGContext context;
 	private TGAssetBrowserElement element;
 	private TGAssetBrowserSettings data;
-	
+
 	public TGAssetBrowser(TGContext context, TGAssetBrowserSettings data){
 		this.context = context;
 		this.data = data;
 	}
-	
+
 	public void open(TGBrowserCallBack<Object> cb){
 		try{
 			this.element = null;
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void close(TGBrowserCallBack<Object> cb){
 		try{
 			this.element = null;
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try{
 			this.element = (TGAssetBrowserElement) element;
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdRoot(TGBrowserCallBack<Object> cb) {
 		try{
 			this.element = new TGAssetBrowserElement(this.context, null, this.data.getPath());
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			if( this.element != null && this.element.getParent() != null ){
 				this.element = this.element.getParent();
 			}
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try {
 			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
@@ -106,7 +106,7 @@ public class TGAssetBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void getOutputStream(TGBrowserCallBack<OutputStream> cb, TGBrowserElement element) {
 		try {
 			throw new TGBrowserException("No writable file system");
@@ -114,7 +114,7 @@ public class TGAssetBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public boolean isWritable() {
 		return false;
 	}

@@ -7,6 +7,6 @@ public interface UIFontChooser {
 	void setText(String text);
 
 	void setDefaultModel(UIFontModel defaultModel);
-	
+
 	void choose(UIFontChooserHandler selectionHandler);
 }

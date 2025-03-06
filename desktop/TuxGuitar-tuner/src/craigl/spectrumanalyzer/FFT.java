@@ -24,7 +24,7 @@ public class FFT {
 	 */
 
 	private static final double TWOPI = 2.0 * Math.PI;
-	
+
 	// Limits on the number of bits this algorithm can utilize
 	private static final int LOG2_MAXFFTSIZE = 15;
 	private static final int MAXFFTSIZE = 1 << LOG2_MAXFFTSIZE;
@@ -78,7 +78,7 @@ public class FFT {
 					c = Math.cos(ang);
 					s = Math.sin(ang);
 					kn2 = k + n2;
-					
+
 					if (invFlag)
 						s = -s;
 

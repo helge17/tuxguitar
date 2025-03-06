@@ -4,7 +4,7 @@ import org.herac.tuxguitar.ui.widget.UIProgressBar;
 import io.qt.widgets.QProgressBar;
 
 public class QTProgressBar extends QTWidget<QProgressBar> implements UIProgressBar {
-	
+
 	public QTProgressBar(QTContainer parent) {
 		super(new QProgressBar(parent.getContainerControl()), parent);
 	}

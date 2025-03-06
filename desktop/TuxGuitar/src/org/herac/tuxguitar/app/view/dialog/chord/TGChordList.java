@@ -47,11 +47,11 @@ import org.herac.tuxguitar.ui.widget.UIScrollBar;
 import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 /**
  * @author julian
- * 
+ *
  * Component that shows the list of (alternative) chords - bottom of the screen
  */
 public class TGChordList {
-	
+
 	private static final int SCROLL_INCREMENT = 25;
 	private static final float MIN_HEIGHT = 160f;
 	private static final float CHORD_FIRST_FRET_SPACING = 12;
@@ -59,7 +59,7 @@ public class TGChordList {
 	private static final float CHORD_FRET_SPACING = 10;
 	private static final float CHORD_NOTE_SIZE = 6;
 	private static final float CHORD_LINE_WIDTH = 1f;
-	
+
 	private TGChordDialog dialog;
 	private TGBeat beat;
 	private TGResourceBuffer resourceBuffer;
@@ -69,7 +69,7 @@ public class TGChordList {
 	private UIScrollBarPanel control;
 	private UICanvas canvas;
 	private UIFont font;
-	
+
 	public TGChordList(TGChordDialog dialog, UIContainer parent, TGBeat beat) {
 		this.graphicChords = new ArrayList<TGChord>();
 		this.resourceBuffer = new TGResourceBuffer();
@@ -77,14 +77,14 @@ public class TGChordList {
 		this.beat = beat;
 		this.createControl(parent);
 	}
-	
+
 	public void createControl(UIContainer parent) {
 		final UIFactory uiFactory = this.dialog.getUIFactory();
-		
+
 		UITableLayout scrollBarLayout = new UITableLayout(0f);
 		this.control = uiFactory.createScrollBarPanel(parent, true, false, true);
 		this.control.setLayout(scrollBarLayout);
-		
+
 		this.canvas = uiFactory.createCanvas(this.control, false);
 		this.canvas.setBgColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		this.canvas.addPaintListener(new UIPaintListener() {
@@ -100,7 +100,7 @@ public class TGChordList {
 			}
 		});
 		scrollBarLayout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, MIN_HEIGHT, 0f);
-		
+
 		final UIScrollBar uiScrollBar = this.control.getVScroll();
 		uiScrollBar.setIncrement(SCROLL_INCREMENT);
 		uiScrollBar.addSelectionListener(new UISelectionListener() {
@@ -108,7 +108,7 @@ public class TGChordList {
 				redraw();
 			}
 		});
-		
+
 		this.control.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				disposeChords();
@@ -116,11 +116,11 @@ public class TGChordList {
 			}
 		});
 	}
-	
+
 	public void redraw(){
 		this.canvas.redraw();
 	}
-	
+
 	private void fillBackground(UIPainter painter) {
 		UIRectangle bounds = this.canvas.getBounds();
 		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
@@ -128,10 +128,10 @@ public class TGChordList {
 		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
 		painter.closePath();
 	}
-	
+
 	private void paintChords(UIPainter painter) {
 		this.fillBackground(painter);
-		
+
 		float maxHeight = 0;
 		float fromX = 15;
 		float fromY = 10;
@@ -139,7 +139,7 @@ public class TGChordList {
 		Iterator<TGChord> it = this.graphicChords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
-			
+
 			UIColor color = getChordColor(chord);
 			chord.registerBuffer(this.resourceBuffer);
 			chord.setBackgroundColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
@@ -162,39 +162,39 @@ public class TGChordList {
 			chord.setPosX( fromX );
 			chord.setPosY( fromY - vScroll);
 			chord.paint(painter,(chord.getWidth() / 2),0);
-			
+
 			fromX += chord.getWidth() + 10;
 			maxHeight = Math.max(maxHeight,chord.getHeight());
 		}
 		this.height = (fromY + maxHeight + 10);
 		this.updateScroll();
 	}
-	
+
 	private UIColor getChordColor(TGChordImpl chord){
 		if(this.selectedChord != null && this.selectedChord.equals(chord)){
 			return this.dialog.getColor(TGChordStyleAdapter.COLOR_SELECTION);
 		}
 		return this.dialog.getColor(TGChordStyleAdapter.COLOR_FOREGROUND);
 	}
-	
+
 	public void updateScroll() {
 		UIRectangle bounds = this.canvas.getBounds();
-		
+
 		UIScrollBar uiScrollBar = this.control.getVScroll();
 		uiScrollBar.setMaximum(Math.max(Math.round(this.height - bounds.getHeight()), 0));
 		uiScrollBar.setThumb(Math.round(bounds.getHeight()));
 	}
-	
+
 	private UIFont getFont(){
 		if( this.font == null || this.font.isDisposed() ){
 			UIFont font = this.control.getFont();
 			UIFontModel model = new UIFontModel((font != null ? font.getName() : UIFontModel.DEFAULT_NAME), 7, true, false);
-			
+
 			this.font = this.dialog.getUIFactory().createFont(model);
 		}
 		return this.font;
 	}
-	
+
 	private TGChordImpl getChord(float x, float y, boolean setAsSelected) {
 		Iterator<TGChord> it = this.graphicChords.iterator();
 		while (it.hasNext()) {
@@ -216,11 +216,11 @@ public class TGChordList {
 		}
 		return null;
 	}
-	
+
 	public void setChords(List<TGChord> chords) {
 		this.disposeChords();
 		this.selectedChord = null;
-		
+
 		Iterator<TGChord> it = chords.iterator();
 		while (it.hasNext()) {
 			TGChordImpl chord = (TGChordImpl) it.next();
@@ -230,26 +230,26 @@ public class TGChordList {
 		}
 		this.redraw();
 	}
-	
+
 	public void disposeFont(){
 		if(this.font != null){
 			this.font.dispose();
 		}
 	}
-	
+
 	public void disposeChords(){
 		this.graphicChords.clear();
 		this.resourceBuffer.disposeAllResources();
 	}
-	
+
 	public UIScrollBarPanel getControl() {
 		return control;
 	}
-	
+
 	public UICanvas getComposite(){
 		return this.canvas;
 	}
-	
+
 	public TGChordDialog getDialog(){
 		return this.dialog;
 	}

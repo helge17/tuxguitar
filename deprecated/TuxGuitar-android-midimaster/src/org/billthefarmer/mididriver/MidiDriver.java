@@ -31,15 +31,15 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 
 public class MidiDriver implements Runnable {
-	
+
 	private static final int SAMPLE_RATE = 22050;
 	private static final int BUFFER_SIZE = 64;
-	
+
 	private Object mutex;
 	private Thread thread;
 	private AudioTrack audioTrack;
 	private List<byte[]> queuedEvents;
-	
+
 	public MidiDriver() {
 		this.mutex = new Object();
 		this.queuedEvents = new ArrayList<byte[]>();
@@ -50,7 +50,7 @@ public class MidiDriver implements Runnable {
 		this.thread = new Thread(this, "MidiDriver");
 		this.thread.start();
 	}
-	
+
 	// Stop
 	public void stop() {
 		Thread t = this.thread;
@@ -66,7 +66,7 @@ public class MidiDriver implements Runnable {
 	public void run() {
 		processMidi();
 	}
-	
+
 	// Process MidiDriver
 	private void processMidi() {
 		int status = 0;
@@ -81,7 +81,7 @@ public class MidiDriver implements Runnable {
 
 		// Create audio track
 		this.audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE, AudioTrack.MODE_STREAM);
-		
+
 		// Check audiotrack
 		if( audioTrack == null ) {
 			this.shutdown();
@@ -102,7 +102,7 @@ public class MidiDriver implements Runnable {
 
 		// Keep running until stopped
 		while( this.thread != null ) {
-			
+
 			// Write the midi events
 			synchronized (this.mutex) {
 				for(byte[] queuedEvent : this.queuedEvents) {
@@ -110,7 +110,7 @@ public class MidiDriver implements Runnable {
 				}
 				this.queuedEvents.clear();
 			}
-			
+
 			// Render the audio
 			if (this.render(buffer) == 0) {
 				break;
@@ -139,7 +139,7 @@ public class MidiDriver implements Runnable {
 			this.queuedEvents.add(event);
 		}
 	}
-	
+
 	// Native midi methods
 	private native int init();
 

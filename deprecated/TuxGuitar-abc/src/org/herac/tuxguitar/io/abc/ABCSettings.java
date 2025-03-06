@@ -1,17 +1,17 @@
 package org.herac.tuxguitar.io.abc;
 
 public class ABCSettings {
-	
+
 	public static final int ALL_TRACKS = -1;
 	public static final int FIRST_MEASURE = -1;
 	public static final int LAST_MEASURE = -1;
 	public static final int AUTO_MEASURES = 0;
 	public static final int AUTO_TRACK = 0;
 	public static final int NO_TRACK = -2;
-	
+
 	private int x = 1;
 	private int track;
-	private int measureFrom;	
+	private int measureFrom;
 	private int measureTo;
 	private int measuresPerLine;
 	private int diagramTrack;
@@ -29,87 +29,87 @@ public class ABCSettings {
 	private boolean chordEnabled;
 	private boolean droneEnabled;
 	private boolean textEnabled;
-	
+
 	public ABCSettings(){
 		super();
 	}
-	
+
 	public int getMeasureFrom() {
 		return this.measureFrom;
 	}
-	
+
 	public void setMeasureFrom(int measureFrom) {
 		this.measureFrom = measureFrom;
 	}
-	
+
 	public int getMeasureTo() {
 		return this.measureTo;
 	}
-	
+
 	public void setMeasureTo(int measureTo) {
 		this.measureTo = measureTo;
 	}
-	
+
 	public int getTrack() {
 		return this.track;
 	}
-	
+
 	public void setTrack(int track) {
 		this.track = track;
 	}
-	
+
 	public boolean isTrackGroupEnabled() {
 		return this.trackGroupEnabled;
 	}
-	
+
 	public void setTrackGroupEnabled(boolean trackGroupEnabled) {
 		this.trackGroupEnabled = trackGroupEnabled;
 	}
-	
+
 	public boolean isTrackNameEnabled() {
 		return this.trackNameEnabled;
 	}
-	
+
 	public void setTrackNameEnabled(boolean trackNameEnabled) {
 		this.trackNameEnabled = trackNameEnabled;
 	}
-	
+
 	public boolean isScoreEnabled() {
 		return this.scoreEnabled;
 	}
-	
+
 	public void setScoreEnabled(boolean scoreEnabled) {
 		this.scoreEnabled = scoreEnabled;
 	}
-	
+
 	public boolean isTablatureEnabled() {
 		return this.tablatureEnabled;
 	}
-	
+
 	public void setTablatureEnabled(boolean tablatureEnabled) {
 		this.tablatureEnabled = tablatureEnabled;
 	}
-	
+
 	public boolean isLyricsEnabled() {
 		return this.lyricsEnabled;
 	}
-	
+
 	public void setLyricsEnabled(boolean lyricsEnabled) {
 		this.lyricsEnabled = lyricsEnabled;
 	}
-	
+
 	public boolean isChordDiagramEnabled() {
 		return this.chordDiagramEnabled;
 	}
-	
+
 	public void setChordDiagramEnabled(boolean chordDiagramEnabled) {
 		this.chordDiagramEnabled = chordDiagramEnabled;
 	}
-	
+
 	public boolean isTextEnabled() {
 		return this.textEnabled;
 	}
-	
+
 	public void setTextEnabled(boolean textEnabled) {
 		this.textEnabled = textEnabled;
 	}
@@ -120,7 +120,7 @@ public class ABCSettings {
 			this.setTablatureEnabled( true );
 		}
 	}
-	
+
 	public static ABCSettings getDefaults(){
 		ABCSettings settings = new ABCSettings();
 		settings.setX(1);

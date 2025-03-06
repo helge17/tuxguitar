@@ -10,9 +10,9 @@ import org.herac.tuxguitar.graphics.command.TGPaintModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGNumberPainter {
-	
+
 	private static final float MARGIN = 0.1f;
-	
+
 	private static final TGPaintModel[] NUMBER_MODELS = new TGPaintModel[] {
 		// 0
 		new TGPaintModel(
@@ -70,7 +70,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.2533849f, 0.0019342429f, 0.26692453f, 0.007736951f, 0.29013535f, 0.01740813f),
 			new TGCubicTo(0.29013535f, 0.01740813f, 0.33462277f, 0.03288202f, 0.3520309f, 0.03288202f)
 		),
-		
+
 		// 2
 		new TGPaintModel(
 			new TGMoveTo(0.45914397f, 0.99805444f),
@@ -118,7 +118,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.7354085f, 0.8229573f, 0.7101167f, 0.86770433f, 0.65758747f, 0.92023355f),
 			new TGCubicTo(0.6070038f, 0.9727627f, 0.54085594f, 0.99805456f, 0.45914388f, 0.99805456f)
 		),
-		
+
 		// 3
 		new TGPaintModel(
 			new TGMoveTo(0.5252918f, 0.47081712f),
@@ -169,7 +169,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.581712f, 0.41050583f, 0.55447465f, 0.4241245f, 0.5428015f, 0.43385214f),
 			new TGCubicTo(0.5428015f, 0.43385214f, 0.5252918f, 0.45525292f, 0.5252918f, 0.47081712f)
 		),
-	
+
 		// 4
 		new TGPaintModel(
 			new TGMoveTo(0.45136186f, 0.027237354f),
@@ -219,7 +219,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.34435794f, 0.011673094f, 0.3638132f, 0.015564145f, 0.38521397f, 0.02140072f),
 			new TGCubicTo(0.40856028f, 0.02529177f, 0.42996106f, 0.027237296f, 0.45136184f, 0.027237296f)
 		),
-		
+
 		// 5
 		new TGPaintModel(
 			new TGMoveTo(0.09143969f, 0.0019455253f),
@@ -259,7 +259,7 @@ public class TGNumberPainter {
 			new TGLineTo(0.06031117f, 0.033073843f),
 			new TGCubicTo(0.06031117f, 0.011673065f, 0.070038795f, 0.0019454379f, 0.091439575f, 0.0019454379f)
 		),
-		
+
 		// 6
 		new TGPaintModel(
 			new TGMoveTo(0.34046692f, 0.48832685f),
@@ -297,7 +297,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.2315175f, 0.34046692f, 0.2315175f, 0.36381322f, 0.23346302f, 0.39688715f),
 			new TGCubicTo(0.23540854f, 0.4299611f, 0.23540854f, 0.4533074f, 0.23540854f, 0.4688716f)
 		),
-		
+
 		// 7
 		new TGPaintModel(
 			new TGMoveTo(0.13539653f, 0.17988396f),
@@ -344,7 +344,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.32301733f, 0.29400384f, 0.2804641f, 0.27466148f, 0.23984517f, 0.237911f),
 			new TGCubicTo(0.19922622f, 0.19922628f, 0.16440997f, 0.17988393f, 0.13539642f, 0.17988393f)
 		),
-		
+
 		// 8
 		new TGPaintModel(
 			new TGMoveTo(0.5175097f, 0.4241245f),
@@ -377,7 +377,7 @@ public class TGNumberPainter {
 			new TGCubicTo(0.52140075f, 0.86964977f, 0.53696495f, 0.83073926f, 0.53696495f, 0.7859922f),
 			new TGCubicTo(0.53696495f, 0.729572f, 0.51361865f, 0.68871593f, 0.46887156f, 0.66342413f)
 		),
-		
+
 		// 9
 		new TGPaintModel(
 			new TGMoveTo(0.34046692f, 0.51167315f),
@@ -416,15 +416,15 @@ public class TGNumberPainter {
 			new TGCubicTo(0.44552532f, 0.5700389f, 0.44552532f, 0.5466926f, 0.44552532f, 0.5311284f)
 		),
 	};
-	
+
 	public static TGPaintModel get(int index) {
 		return NUMBER_MODELS[index];
 	}
-	
+
 	public static void paint(int index, UIPainter painter, float x, float y, float scale) {
 		NUMBER_MODELS[index].paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintDigits(int number, UIPainter painter, float x, float y, float scale) {
 		float xMove = 0;
 		List<Integer> digits = TGNumberPainter.getDigits(number);
@@ -432,24 +432,24 @@ public class TGNumberPainter {
 			painter.initPath(UIPainter.PATH_FILL);
 			TGNumberPainter.paint(digit, painter, (x + xMove), y, scale);
 			painter.closePath();
-			
+
 			xMove += ((TGNumberPainter.get(digit).getWidth() * scale) + MARGIN * scale);
 		}
 	}
-	
+
 	public static void fillDigits(int number, List<Integer> digits) {
 		if(number / 10 > 0) {
 			TGNumberPainter.fillDigits(number / 10, digits);
 		}
 		digits.add(number % 10);
 	}
-	
+
 	public static List<Integer> getDigits(int number) {
 		List<Integer> digits = new ArrayList<Integer>();
 		TGNumberPainter.fillDigits(number, digits);
 		return digits;
 	}
-	
+
 	public static float getDigitsWidth(int number, float scale) {
 		float width = 0;
 		List<Integer> digits = TGNumberPainter.getDigits(number);

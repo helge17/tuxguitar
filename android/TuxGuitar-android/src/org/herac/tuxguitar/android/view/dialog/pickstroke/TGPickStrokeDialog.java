@@ -47,7 +47,7 @@ public class TGPickStrokeDialog extends TGModalFragment {
 	public void onPostInflateView() {
 		this.fillDirection();
 	}
-	
+
 	public TGSelectableItem[] createDirectionValues() {
 		TGSelectableItem[] selectableItems = new TGSelectableItem[] {
 			new TGSelectableItem(Integer.valueOf( TGPickStroke.PICK_STROKE_NONE ), getString(R.string.pickstroke_dlg_direction_none)),
@@ -56,7 +56,7 @@ public class TGPickStrokeDialog extends TGModalFragment {
 		};
 		return selectableItems;
 	}
-	
+
 	public void fillDirection() {
 		TGBeat beat = this.getBeat();
 
@@ -64,16 +64,16 @@ public class TGPickStrokeDialog extends TGModalFragment {
 
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDirectionValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.pickstroke_dlg_direction_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
-		
+
 	}
-	
+
 	public int findSelectedDirection() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.pickstroke_dlg_direction_value);
-		
+
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
 

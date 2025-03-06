@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXRhythm {
-	
+
 	private int id;
 	private int augmentationDotCount;
 	private int primaryTupletNum;
 	private int primaryTupletDen;
 	private String noteValue;
-	
+
 	public GPXRhythm(){
 		super();
 	}

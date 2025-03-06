@@ -18,7 +18,7 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGTripletFeelDialog extends TGModalFragment {
-	
+
 	public TGTripletFeelDialog() {
 		super(R.layout.view_triplet_feel_dialog);
 	}
@@ -48,11 +48,11 @@ public class TGTripletFeelDialog extends TGModalFragment {
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.triplet_feel_dlg_none), TGMeasureHeader.TRIPLET_FEEL_NONE, header.getTripletFeel());
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.triplet_feel_dlg_eighth), TGMeasureHeader.TRIPLET_FEEL_EIGHTH, header.getTripletFeel());
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.triplet_feel_dlg_sixteenth), TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH, header.getTripletFeel());
-		
+
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.triplet_feel_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
 	}
-	
+
 	public void updateRadio(RadioButton button, Integer value, Integer selection) {
 		button.setTag(Integer.valueOf(value));
 		button.setChecked(selection != null && selection.equals(value));
@@ -69,12 +69,12 @@ public class TGTripletFeelDialog extends TGModalFragment {
 		}
 		return TGMeasureHeader.TRIPLET_FEEL_NONE;
 	}
-	
+
 	public Boolean parseApplyToEnd() {
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.triplet_feel_dlg_options_apply_to_end);
 		return Boolean.valueOf(applyToEnd.isChecked());
 	}
-	
+
 	public void changeTripletFeel() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTripletFeelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXNote {
-	
+
 	private int id;
 	private int fret;
 	private int string;
@@ -20,7 +20,7 @@ public class GPXNote {
 	private Integer bendMiddleOffset1;
 	private Integer bendMiddleOffset2;
 	private Integer bendDestinationOffset;
-	
+
 	private boolean hammer;
 	private boolean ghost;
 	private boolean slide;
@@ -31,7 +31,7 @@ public class GPXNote {
 	private boolean tieDestination;
 	private boolean mutedEnabled;
 	private boolean palmMutedEnabled;
-	
+
 	private int harmonicFret;
 	private String harmonicType;
 
@@ -53,51 +53,51 @@ public class GPXNote {
 		this.harmonicType = "";
 		this.harmonicFret = -1;
 	}
-	
+
 	public int getId() {
 		return this.id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getFret() {
 		return this.fret;
 	}
-	
+
 	public void setFret(int fret) {
 		this.fret = fret;
 	}
-	
+
 	public int getString() {
 		return this.string;
 	}
-	
+
 	public void setString(int string) {
 		this.string = string;
 	}
-	
+
 	public int getTone() {
 		return tone;
 	}
-	
+
 	public void setTone(int tone) {
 		this.tone = tone;
 	}
-	
+
 	public int getOctave() {
 		return octave;
 	}
-	
+
 	public void setOctave(int octave) {
 		this.octave = octave;
 	}
-	
+
 	public boolean isTieDestination() {
 		return tieDestination;
 	}
-	
+
 	public void setTieDestination(boolean tieDestination) {
 		this.tieDestination = tieDestination;
 	}
@@ -269,7 +269,7 @@ public class GPXNote {
 	public void setTapped(boolean tapped) {
 		this.tapped = tapped;
 	}
-	
+
 	public int getHarmonicFret() {
 		return harmonicFret;
 	}

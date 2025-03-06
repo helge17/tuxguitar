@@ -15,7 +15,7 @@ import org.herac.tuxguitar.song.factory.TGFactory;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class TGDivisionType {
-	
+
 	public static final TGDivisionType[] DIVISION_TYPES = new TGDivisionType[]{
 		newDivisionType(1,1),	// normal
 		newDivisionType(3,2),	// Triplet
@@ -31,7 +31,7 @@ public abstract class TGDivisionType {
 
 	// Alias for better code readability
 	public static final TGDivisionType NORMAL = DIVISION_TYPES[0];
-	
+
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos
 	 */
@@ -40,52 +40,52 @@ public abstract class TGDivisionType {
 	 * Tiempos
 	 */
 	private int times;
-	
+
 	public TGDivisionType(){
 		this.enters = 1;
 		this.times = 1;
 	}
-	
+
 	public int getEnters() {
 		return this.enters;
 	}
-	
+
 	public void setEnters(int enters) {
 		this.enters = enters;
 	}
-	
+
 	public int getTimes() {
 		return this.times;
 	}
-	
+
 	public void setTimes(int times) {
 		this.times = times;
 	}
-	
+
 	public long convertTime(long time){
 		return time * this.times / this.enters;
 	}
-	
+
 	public boolean isEqual(TGDivisionType divisionType){
 		return (divisionType.getEnters() == getEnters() && divisionType.getTimes() == getTimes());
 	}
-	
+
 	public TGDivisionType clone(TGFactory factory){
 		TGDivisionType tgDivisionType = factory.newDivisionType();
 		tgDivisionType.copyFrom(this);
 		return tgDivisionType;
 	}
-	
+
 	public void copyFrom(TGDivisionType divisionType){
 		this.setEnters(divisionType.getEnters());
 		this.setTimes(divisionType.getTimes());
 	}
-	
+
 	private static TGDivisionType newDivisionType(int enters,int times){
 		TGDivisionType divisionType = new TGFactory().newDivisionType();
 		divisionType.setEnters(enters);
 		divisionType.setTimes(times);
 		return divisionType;
 	}
-	
+
 }

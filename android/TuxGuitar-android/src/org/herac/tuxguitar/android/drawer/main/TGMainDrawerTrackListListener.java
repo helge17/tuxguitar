@@ -5,13 +5,13 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 
 public class TGMainDrawerTrackListListener implements TGEventListener {
-	
+
 	private TGMainDrawerTrackListAdapter adapter;
-	
+
 	public TGMainDrawerTrackListListener(TGMainDrawerTrackListAdapter adapter) {
 		this.adapter = adapter;
 	}
-	
+
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
@@ -22,7 +22,7 @@ public class TGMainDrawerTrackListListener implements TGEventListener {
 			this.adapter.processUpdateTracks();
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);

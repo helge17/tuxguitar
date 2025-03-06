@@ -9,13 +9,13 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin {
-	
+
 	private JackConsoleDialog jackConsoleDialog;
-	
+
 	protected String getItemName() {
 		return "jack.console.title";
 	}
-	
+
 	protected void doAction(TGContext context) {
 		if( this.jackConsoleDialog == null ){
 			JackConnectionManager jackConnectionManager = findConnectionManager(context);
@@ -27,7 +27,7 @@ public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 			this.jackConsoleDialog.show();
 		}
 	}
-	
+
 	private JackConnectionManager findConnectionManager(TGContext context) {
 		JackConnectionPlugin plugin = findConnectionPlugin(context);
 		if( plugin != null ){
@@ -35,7 +35,7 @@ public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 		}
 		return null;
 	}
-	
+
 	private JackConnectionPlugin findConnectionPlugin(TGContext context){
 		List<JackConnectionPlugin> pluginInstances = TGPluginManager.getInstance(context).getPluginInstances(JackConnectionPlugin.class);
 		if( pluginInstances != null && !pluginInstances.isEmpty() ){
@@ -43,7 +43,7 @@ public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGTo
 		}
 		return null;
 	}
-	
+
 	public String getModuleId(){
 		return JackPlugin.MODULE_ID;
 	}

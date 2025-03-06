@@ -49,7 +49,7 @@ import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 
 public class TESongParser {
-	
+
 	private static final int[][] PERCUSSION_TUNINGS = new int[][]{
 		new int[]{ 49, 41, 32 },
 		new int[]{ 49, 51, 42, 50 },
@@ -57,9 +57,9 @@ public class TESongParser {
 		new int[]{ 49, 51, 42, 50, 45, 37 },
 		new int[]{ 49, 51, 42, 50, 45, 37, 41 },
 	};
-	
+
 	private TGSongManager manager;
-	
+
 	public TESongParser(TGFactory factory) {
 		this.manager = new TGSongManager(factory);
 	}
@@ -72,7 +72,7 @@ public class TESongParser {
 		this.addMeasures(tgSong, teSong);
 		this.sortComponents(teSong);
 		this.addComponents(tgSong, teSong);
-		
+
 		return new TGSongAdjuster(this.manager, tgSong).process();
 	}
 
@@ -95,7 +95,7 @@ public class TESongParser {
 		for (int i = 0; i < totalTeTracks; i++) {
 			TGTrack tgTrack = tgSong.getTrack(i);
 			TETrack teTrack = teSong.getTracks().get(i);
-			
+
 			TGChannel tgChannel = this.manager.addChannel(tgSong);
 			tgChannel.setVolume((short)((  (15 - teTrack.getVolume()) * 127) / 15));
 			tgChannel.setBalance((short)(( teTrack.getPan() * 127) / 15));
@@ -104,7 +104,7 @@ public class TESongParser {
 			tgChannel.setName(this.manager.createChannelNameFromProgram(tgSong, tgChannel));
 			tgChannel.setChorus((short)(teSong.getFileMetadata().getToneChorus() << 8));
 			tgChannel.setReverb((short)(teSong.getFileMetadata().getToneReverb() << 8));
-			
+
 			tgTrack.setChannelId(tgChannel.getChannelId());
 
 			tgTrack.setOffset(teTrack.getCapo());
@@ -121,10 +121,10 @@ public class TESongParser {
 				tgLyrics.setLyrics(teLyrics.getLyrics());
 				tgTrack.setLyrics(tgLyrics);
 			}
-			
+
 			tgTrack.getStrings().clear();
 			byte tuning[] = teTrack.getTuning();
-			
+
 			for(int stringIdx = 0; stringIdx < tuning.length; stringIdx++) {
 				if(stringIdx >= 7) {
 					break;
@@ -191,7 +191,7 @@ public class TESongParser {
 			}
 		}
 	}
-	
+
 	private void addComponents(TGSong tgSong, TESong teSong){
 		List<TETrack> teTracks = teSong.getTracks();
 		Iterator<TEComponentBase> it = teSong.getComponents().iterator();
@@ -206,7 +206,7 @@ public class TESongParser {
 
 		while(it.hasNext()){
 			TEComponentBase component = (TEComponentBase)it.next();
-			
+
 			int measure = component.getPosition().getMeasure();
 
 			if (measure < 0 || measure >= tgSong.countMeasureHeaders()) {
@@ -282,7 +282,7 @@ public class TESongParser {
 			}
 		});
 	}
-	
+
 	private TGBeat getBeat(TGMeasure measure, long start){
 		TGBeat beat = this.manager.getMeasureManager().getBeat(measure, start);
 		if(beat == null){
@@ -292,7 +292,7 @@ public class TESongParser {
 		}
 		return beat;
 	}
-	
+
 	// TablEdit uses a 16th note grid.
 	// Anything smaller than a 16th note is padded with rests to be a 16th note.
 	// So a 1/64th note is actually 1/64th note, with 3 1/64th note rests after it.
@@ -304,10 +304,10 @@ public class TESongParser {
 		float sizePerGridPosition = TGDuration.QUARTER_TIME * durationOfSixteenthNote;
 
 		long gridPosition = (long) (measureStart + (sizePerGridPosition * positionInMeasure));
-		
+
 		return gridPosition;
 	}
-	
+
 	private TGDuration getDuration(int duration){
 		TGDuration tgDuration = this.manager.getFactory().newDuration();
 
@@ -337,7 +337,7 @@ public class TESongParser {
 			default:
 				break;
 		}
-		
+
 		int durationOfSixtyFourthNote = 18;
 		boolean isDoubleDotted = duration > durationOfSixtyFourthNote;
 
@@ -367,9 +367,9 @@ public class TESongParser {
 			tgDuration.getDivision().setEnters(3);
 			tgDuration.getDivision().setTimes(2);
 		}
-		
+
 		tgDuration.setValue(value);
-		
+
 		return tgDuration;
 	}
 
@@ -391,11 +391,11 @@ public class TESongParser {
 				return TGVelocities.PIANISSIMO;
 			case PPP:
 				return TGVelocities.PIANO_PIANISSIMO;
-			default: 
+			default:
 				return TGVelocities.DEFAULT;
 		}
 	}
-	
+
 	private TGNote addNote(TETrack track, TEComponentNote teNote, TGBeat tgBeat){
 		int value = teNote.getFret();
 		int string = teNote.getPosition().getString();
@@ -406,7 +406,7 @@ public class TESongParser {
 				value += PERCUSSION_TUNINGS[tuning][string];
 			}
 		}
-		
+
 		TGNote tgNote = this.manager.getFactory().newNote();
 		tgNote.setString(string + 1);
 		tgNote.setValue(value);
@@ -425,7 +425,7 @@ public class TESongParser {
 			default:
 				break;
 		}
-		
+
 		TGDuration tgDuration = this.getDuration(teNote.getDuration().getValue());
 		TGVoice tgVoice = tgBeat.getVoice(voiceIndex);
 
@@ -447,7 +447,7 @@ public class TESongParser {
 
 		return tgNote;
 	}
-	
+
 	private void addNoteEffects(TGNote tgNote, TEComponentNote teNote) {
 		TGNoteEffect tgNoteEffect = tgNote.getEffect();
 
@@ -628,13 +628,13 @@ public class TESongParser {
 		}
 
 		// Additionally, TablEdit treats the dynamic PPP to mean a note is tied.
-		// So any note with the dynamic PPP is to be considered tied, even if 
+		// So any note with the dynamic PPP is to be considered tied, even if
 		// musically that may not always be the case.
 		if (teNote.getDynamics() == TEComponentNoteDynamics.PPP) {
 			tgNote.setTiedNote(true);
 		}
 	}
-	
+
 	private void addChord(List<TEChordDefinition> teChordDefinitions, TEComponentChord teChord, TGTrack tgTrack, TGBeat tgBeat) {
 		int chordIndex = teChord.getChordIndex();
 		if (chordIndex < 0 || chordIndex >= teChordDefinitions.size())
@@ -644,7 +644,7 @@ public class TESongParser {
 
 		TEChordDefinition teChordDefinition = teChordDefinitions.get(chordIndex);
 		int[] strings = teChordDefinition.getFrets();
-		
+
 		TGChord tgChord = this.manager.getFactory().newChord(tgTrack.stringCount());
 		tgChord.setName(teChordDefinition.getName());
 
@@ -748,15 +748,15 @@ public class TESongParser {
 }
 
 class TGSongAdjuster {
-	
+
 	protected TGSong song;
 	protected TGSongManager manager;
-	
+
 	public TGSongAdjuster(TGSongManager manager, TGSong song) {
 		this.manager = manager;
 		this.song = song;
 	}
-	
+
 	public TGSong process() {
 		Iterator<TGTrack> tracks = this.song.getTracks();
 		while(tracks.hasNext()) {
@@ -769,16 +769,16 @@ class TGSongAdjuster {
 		}
 		return this.song;
 	}
-	
+
 	public void process(TGMeasure measure){
 		this.manager.getMeasureManager().orderBeats(measure);
 		this.adjustBeats(measure);
 	}
-	
+
 	public void adjustBeats(TGMeasure measure) {
 		TGBeat previous = null;
 		boolean finish = true;
-		
+
 		long measureStart = measure.getStart();
 		long measureEnd = (measureStart + measure.getLength());
 		for(int i = 0;i < measure.countBeats();i++){
@@ -788,7 +788,7 @@ class TGSongAdjuster {
 			if(previous != null){
 				long previousStart = previous.getStart();
 				long previousLength = previous.getVoice(0).getDuration().getTime();
-				
+
 				// check for a chord in a rest beat
 				if( beat.getVoice(0).isRestVoice() && beat.isChordBeat() ){
 					TGBeat candidate = null;
@@ -809,7 +809,7 @@ class TGSongAdjuster {
 					finish = false;
 					break;
 				}
-				
+
 				// check the duration
 				if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
 					if(beat.getVoice(0).isRestVoice()){

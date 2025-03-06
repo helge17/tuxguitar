@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.track;
 
 public class TGTrackTuningModel {
-	
+
 	private Integer value;
-	
+
 	public TGTrackTuningModel() {
 		super();
 	}

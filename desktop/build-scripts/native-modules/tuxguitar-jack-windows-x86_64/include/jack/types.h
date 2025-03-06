@@ -438,7 +438,7 @@ typedef void (*JackShutdownCallback)(void *arg);
  * the callback context.
 
  * @param code a status word, formed by OR-ing together the relevant @ref JackStatus bits.
- * @param reason a string describing the shutdown reason (backend failure, server crash... etc...). 
+ * @param reason a string describing the shutdown reason (backend failure, server crash... etc...).
  * Note that this string will not be available anymore after the callback returns, so possibly copy it.
  * @param arg pointer to a client supplied structure
  */

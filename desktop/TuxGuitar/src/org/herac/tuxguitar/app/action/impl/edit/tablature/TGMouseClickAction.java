@@ -13,13 +13,13 @@ import org.herac.tuxguitar.player.base.MidiPlayer;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMouseClickAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.edit.tablature.mouse-click";
-	
+
 	public TGMouseClickAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		EditorKit editorKit = TablatureEditor.getInstance(getContext()).getTablature().getEditorKit();
 		if( editorKit.fillSelection(context)) {
@@ -31,13 +31,13 @@ public class TGMouseClickAction extends TGActionBase{
 			}
 			if( editorKit.isMouseEditionAvailable() && editorKit.fillAddOrRemoveBeat(context) &&
 					Boolean.FALSE==context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE)) {
-				
+
 				if( editorKit.fillRemoveNoteContext(context) ) {
-					
+
 					actionManager.execute(TGDeleteNoteAction.NAME, context);
-					
+
 				} else if (editorKit.fillCreateNoteContext(context)) {
-					
+
 					actionManager.execute(TGChangeNoteAction.NAME, context);
 					actionManager.execute(TGMoveToAction.NAME, context);
 				}

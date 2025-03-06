@@ -9,16 +9,16 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserSaveNewElementAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.save-new-element";
-	
+
 	public static final String ATTRIBUTE_NAME = "elementName";
 	public static final String ATTRIBUTE_SESSION = TGBrowserSession.class.getName();
-	
+
 	public TGBrowserSaveNewElementAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(final TGActionContext context) {
 		String elementName = context.getAttribute(ATTRIBUTE_NAME);
 		TGBrowserSession session = context.getAttribute(ATTRIBUTE_SESSION);

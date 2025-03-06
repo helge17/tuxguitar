@@ -3,38 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-    
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="1" >
-		
-		<RadioGroup 
+
+		<RadioGroup
 			android:id="@+id/tremolo_picking_dlg_duration_group"
 			android:layout_gravity="fill_horizontal|center_vertical" >
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/tremolo_picking_dlg_duration_8"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/tremolo_picking_dlg_duration_8" 
+				android:text="@string/tremolo_picking_dlg_duration_8"
 				android:drawableRight="@drawable/duration_8" />
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/tremolo_picking_dlg_duration_16"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/tremolo_picking_dlg_duration_16"
 				android:drawableRight="@drawable/duration_16" />
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/tremolo_picking_dlg_duration_32"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/tremolo_picking_dlg_duration_32"
 				android:drawableRight="@drawable/duration_32" />
 		</RadioGroup>
-	
+
 	</GridLayout>
 
 </ScrollView>

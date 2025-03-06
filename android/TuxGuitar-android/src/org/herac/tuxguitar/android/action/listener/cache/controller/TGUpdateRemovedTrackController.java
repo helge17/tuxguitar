@@ -13,12 +13,12 @@ public class TGUpdateRemovedTrackController extends TGUpdateSongController {
 	public TGUpdateRemovedTrackController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(final TGContext context, TGActionContext actionContext) {
-		if( Boolean.TRUE.equals( actionContext.getAttribute(TGRemoveTrackAction.ATTRIBUTE_SUCCESS)) ) {			
+		if( Boolean.TRUE.equals( actionContext.getAttribute(TGRemoveTrackAction.ATTRIBUTE_SUCCESS)) ) {
 			final TGTrack tgTrack = (TGTrack) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-			
+
 			// Update caret position to previous track
 			this.findUpdateBuffer(context).doPostUpdate(new Runnable() {
 				public void run() {

@@ -41,7 +41,7 @@ public class MeasureMenuItem extends TGMenuItem {
 		//--LINEBREAK--
 		this.lineBreak = this.measureMenuItem.getMenu().createCheckItem();
 		this.lineBreak.addSelectionListener(this.createActionProcessor(TGToggleLineBreakAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.measureMenuItem.getMenu().createSeparator();
 

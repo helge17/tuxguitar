@@ -9,11 +9,11 @@ import javax.sound.sampled.SourceDataLine;
 import org.herac.tuxguitar.util.TGException;
 
 public class TGAudioLine {
-	
+
 	public static final AudioFormat AUDIO_FORMAT = new AudioFormat(TGAudioBuffer.SAMPLE_RATE, 16, TGAudioBuffer.CHANNELS, true, TGAudioBuffer.BIGENDIAN);
-	
+
 	private SourceDataLine line;
-	
+
 	public TGAudioLine(TGSynthesizer synthesizer) {
 		try {
 			this.line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, AUDIO_FORMAT));
@@ -23,7 +23,7 @@ public class TGAudioLine {
 			throw new TGException(e);
 		}
 	}
-	
+
 	public void write(TGAudioBuffer buffer) {
 		this.line.write(buffer.getBuffer(), 0, buffer.getLength());
 	}

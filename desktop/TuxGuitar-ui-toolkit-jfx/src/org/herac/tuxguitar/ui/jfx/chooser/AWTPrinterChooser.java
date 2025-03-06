@@ -11,7 +11,7 @@ public class AWTPrinterChooser implements UIPrinterChooser {
 	public AWTPrinterChooser() {
 		super();
 	}
-	
+
 	public void choose(UIPrinterChooserHandler selectionHandler) {
 		AWTPrinter awtPrinter = null;
 		PrinterJob printerJob = PrinterJob.getPrinterJob();

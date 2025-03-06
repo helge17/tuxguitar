@@ -15,16 +15,16 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserImpl implements TGBrowser {
-	
+
 	private TGBrowserSettingsModel data;
-	private String root; 
-	private String path; 
+	private String root;
+	private String path;
 	private TGBrowserFTPClient client;
-	
+
 	public TGBrowserImpl(TGBrowserSettingsModel data){
 		this.data = data;
 	}
-	
+
 	private String getRoot(){
 		if( this.root == null ){
 			this.root = "/";
@@ -37,7 +37,7 @@ public class TGBrowserImpl implements TGBrowser {
 		}
 		return this.root;
 	}
-	
+
 	public void open(TGBrowserCallBack<Object> cb) {
 		try {
 			checkForProxy();
@@ -46,25 +46,25 @@ public class TGBrowserImpl implements TGBrowser {
 			this.client.login(this.data.getUsername(),this.data.getPassword());
 			this.client.cd(getRoot());
 			this.path = this.client.pwd();
-			
+
 			cb.onSuccess(null);
 		} catch(Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
 
-	
+
 	public void close(TGBrowserCallBack<Object> cb) {
 		try {
 			this.closeProxy();
 			this.client.close();
-			
+
 			cb.onSuccess(null);
 		} catch(Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try {
 			boolean isCDSuccess = this.client.cd(element.getName());
@@ -72,47 +72,47 @@ public class TGBrowserImpl implements TGBrowser {
 				throw new TGBrowserException("could not cd to "+element.getName());
 			}
 			this.path = this.client.pwd();
-			
+
 			cb.onSuccess(null);
 		} catch (Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void cdRoot(TGBrowserCallBack<Object> cb) {
 		try {
 			this.client.cd(getRoot());
 			this.path = this.client.pwd();
-			
+
 			cb.onSuccess(null);
 		} catch(Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			this.client.cdUp();
 			this.path = this.client.pwd();
-			
+
 			cb.onSuccess(null);
 		} catch (Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try {
 			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
-			
+
 			this.client.binary();
 			String[] names = this.client.listNames();
 			String[] infos = this.client.listDetails();
-			
+
 			if(names.length > 0 && infos.length > 0){
 				for(int i = 0;i < names.length;i++){
 					String name = names[i].trim();
-					
+
 					if(name.indexOf(this.path) == 0 && name.length() > this.path.length()){
 						name = name.substring(this.path.length());
 					}
@@ -133,26 +133,26 @@ public class TGBrowserImpl implements TGBrowser {
 			if( !elements.isEmpty() ){
 				Collections.sort(elements, new TGBrowserElementComparator());
 			}
-			
+
 			cb.onSuccess(elements);
 		} catch (Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
 		try {
 			this.client.cd(((TGBrowserElementImpl) element).getPath());
 			this.client.binary();
-			
+
 			byte[] bytes = this.client.get(element.getName());
-			
+
 			cb.onSuccess(new ByteArrayInputStream(bytes));
 		} catch (Throwable e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	private void checkForProxy() {
 		if (this.data.getProxyHost() != null && this.data.getProxyPort() > 0) {
 			System.setProperty("socksProxyHost", this.data.getProxyHost());

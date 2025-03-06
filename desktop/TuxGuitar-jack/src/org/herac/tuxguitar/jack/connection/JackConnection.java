@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.jack.connection;
 
 public class JackConnection {
-	
+
 	private long srcPortId;
 	private long dstPortId;
-	
+
 	public JackConnection(long srcPortId, long dstPortId){
 		this.srcPortId = srcPortId;
 		this.dstPortId = dstPortId;
@@ -29,8 +29,8 @@ public class JackConnection {
 	public boolean equals(Object obj){
 		return (this.hashCode() == obj.hashCode());
 	}
-	
+
 	public int hashCode(){
 		return (JackConnection.class.getName() + "-" + this.srcPortId + "-" + this.dstPortId).hashCode();
-	} 
+	}
 }

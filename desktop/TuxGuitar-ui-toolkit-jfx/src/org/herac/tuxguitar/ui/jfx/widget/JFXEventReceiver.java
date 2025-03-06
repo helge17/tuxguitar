@@ -3,9 +3,9 @@ package org.herac.tuxguitar.ui.jfx.widget;
 import org.herac.tuxguitar.ui.jfx.JFXComponent;
 
 public abstract class JFXEventReceiver<T> extends JFXComponent<T> {
-	
+
 	private boolean ignoreEvents;
-	
+
 	public JFXEventReceiver(T component) {
 		super(component);
 	}

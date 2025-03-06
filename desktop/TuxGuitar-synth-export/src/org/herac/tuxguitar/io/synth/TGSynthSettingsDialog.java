@@ -26,45 +26,45 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthSettingsDialog {
-	
+
 	private TGContext context;
-	
+
 	public TGSynthSettingsDialog(TGContext context){
 		this.context = context;
 	}
-	
-	public void open(final TGSynthAudioSettings settings, final Runnable onSuccess) {		
+
+	public void open(final TGSynthAudioSettings settings, final Runnable onSuccess) {
 		final List<MidiToAudioFormat> formats = getAvailableFormats();
-		
+
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-synth-export.options"));
-		
+
 		//------------------AUDIO FORMAT------------------
 		UITableLayout audioFormatLayout = new UITableLayout();
 		UILegendPanel audioFormatGroup = uiFactory.createLegendPanel(dialog);
 		audioFormatGroup.setLayout(audioFormatLayout);
 		audioFormatGroup.setText(TuxGuitar.getProperty("tuxguitar-synth-export.options.audio-format"));
 		dialogLayout.set(audioFormatGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, null, null);
-		
+
 		UILabel eLabel = uiFactory.createLabel(audioFormatGroup);
 		eLabel.setText(TuxGuitar.getProperty("tuxguitar-synth-export.options.file-encoding") + ":");
 		audioFormatLayout.set(eLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		final UIDropDownSelect<MidiToAudioFormat> eCombo = uiFactory.createDropDownSelect(audioFormatGroup);
 		audioFormatLayout.set(eCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		UILabel tLabel = uiFactory.createLabel(audioFormatGroup);
 		tLabel.setText(TuxGuitar.getProperty("tuxguitar-synth-export.options.file-type") + ":");
 		audioFormatLayout.set(tLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		final UIDropDownSelect<AudioFileFormat.Type> tCombo = uiFactory.createDropDownSelect(audioFormatGroup);
 		audioFormatLayout.set(tCombo, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		MidiToAudioFormat selectedFormat = null;
 		for(MidiToAudioFormat format : formats) {
 			eCombo.addItem(new UISelectItem<MidiToAudioFormat>(format.getFormat().getEncoding().toString(), format));
@@ -72,24 +72,24 @@ public class TGSynthSettingsDialog {
 				selectedFormat = format;
 			}
 		}
-		
+
 		if( selectedFormat != null ) {
 			eCombo.setSelectedValue(selectedFormat);
 			updateTypesCombo(settings, formats, eCombo, tCombo);
 		}
-		
+
 		eCombo.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				updateTypesCombo(settings, formats, eCombo, tCombo);
 			}
 		});
-		
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -97,9 +97,9 @@ public class TGSynthSettingsDialog {
 			public void onSelect(UISelectionEvent event) {
 				AudioFileFormat.Type type = tCombo.getSelectedValue();
 				MidiToAudioFormat format = eCombo.getSelectedValue();
-				
+
 				dialog.dispose();
-				
+
 				if( format != null && type != null ) {
 					settings.setType(type);
 					settings.setFormat(format.getFormat());
@@ -108,7 +108,7 @@ public class TGSynthSettingsDialog {
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -118,13 +118,13 @@ public class TGSynthSettingsDialog {
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
-		
+
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	private void updateTypesCombo(TGSynthAudioSettings settings, List<MidiToAudioFormat> encodings, UIDropDownSelect<MidiToAudioFormat> eCombo, UIDropDownSelect<AudioFileFormat.Type> tCombo){
 		tCombo.removeItems();
-		
+
 		MidiToAudioFormat encoding = eCombo.getSelectedValue();
 		if( encoding != null ){
 			for(AudioFileFormat.Type type : encoding.getTypes()) {
@@ -133,7 +133,7 @@ public class TGSynthSettingsDialog {
 			tCombo.setSelectedValue(settings.getType());
 		}
 	}
-	
+
 	public List<MidiToAudioFormat> getAvailableFormats(){
 		List<MidiToAudioFormat> list = new ArrayList<MidiToAudioFormat>();
 		AudioFormat srcFormat = TGSynthAudioSettings.DEFAULT_FORMAT;
@@ -148,28 +148,28 @@ public class TGSynthSettingsDialog {
 		}
 		return list;
 	}
-	
+
 	public boolean isSameEncoding( AudioFormat f1, AudioFormat f2 ){
 		if( f1 == null || f2 == null || f1.getEncoding() == null || f2.getEncoding() == null ){
 			return false;
 		}
 		return ( f1.getEncoding().toString().equals( f2.getEncoding().toString() ) );
 	}
-	
+
 	private class MidiToAudioFormat {
-		
+
 		private AudioFormat format;
 		private AudioFileFormat.Type[] types;
-		
+
 		public MidiToAudioFormat(AudioFormat format, AudioFileFormat.Type[] types){
 			this.format = format;
 			this.types = types;
 		}
-		
+
 		public AudioFormat getFormat() {
 			return this.format;
 		}
-		
+
 		public AudioFileFormat.Type[] getTypes() {
 			return this.types;
 		}

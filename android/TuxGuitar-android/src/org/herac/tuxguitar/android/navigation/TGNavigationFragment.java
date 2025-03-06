@@ -3,10 +3,10 @@ package org.herac.tuxguitar.android.navigation;
 import org.herac.tuxguitar.android.fragment.TGFragmentController;
 
 public class TGNavigationFragment {
-	
+
 	private String tagId;
 	private TGFragmentController<?> controller;
-	
+
 	public TGNavigationFragment() {
 		super();
 	}
@@ -36,7 +36,7 @@ public class TGNavigationFragment {
 		}
 		return super.hashCode();
 	}
-	
+
 	public boolean equals(Object o) {
 		if( o instanceof TGNavigationFragment ) {
 			return (this.hashCode() == o.hashCode());

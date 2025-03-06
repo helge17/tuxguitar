@@ -34,7 +34,7 @@ import javax.sound.sampled.AudioSystem;
 
 /**
  * Main mixer for SoftMixingMixer.
- * 
+ *
  * @author Karl Helgason
  */
 public class SoftMixingMainMixer {

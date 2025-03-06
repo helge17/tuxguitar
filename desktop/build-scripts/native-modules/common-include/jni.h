@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -124,11 +124,11 @@ typedef const struct JNIInvokeInterface_ *JavaVM;
 
 #endif /* _CLASSPATH_VM_JNI_TYPES_DEFINED */
 
-/* 
- * Before jni.h is #included within a typical JVM, the source code should 
+/*
+ * Before jni.h is #included within a typical JVM, the source code should
  * #define _JNI_VM_INTERNAL_TYPES_DEFINED and provide the real declarations
  * for 'jobject', 'jfieldID', 'jmethodID' and other implementation types.
- * If _JNI_VM_INTERNAL_TYPES_DEFINED is not defined, the following 
+ * If _JNI_VM_INTERNAL_TYPES_DEFINED is not defined, the following
  * declares the old versions of the types.
  */
 #ifndef _CLASSPATH_VM_INTERNAL_TYPES_DEFINED
@@ -136,7 +136,7 @@ struct _jfieldID;
 struct _jmethodID;
 typedef struct _jfieldID *jfieldID;
 typedef struct _jmethodID *jmethodID;
-#endif 
+#endif
 
 /* Version numbers.  */
 #define JNI_VERSION_1_1 0x00010001
@@ -159,7 +159,7 @@ enum _jobjectRefType
   JNIInvalidRefType    = 0,
   JNILocalRefType      = 1,
   JNIGlobalRefType     = 2,
-  JNIWeakGlobalRefType = 3 
+  JNIWeakGlobalRefType = 3
 };
 
 typedef enum _jobjectRefType jobjectRefType;
@@ -241,7 +241,7 @@ struct JNINativeInterface_
                                                     jboolean);
 
   jint     (JNICALL *Throw)                        (JNIEnv *, jthrowable);
-  jint     (JNICALL *ThrowNew)                     (JNIEnv *, jclass, 
+  jint     (JNICALL *ThrowNew)                     (JNIEnv *, jclass,
                                                     const char *);
   jthrowable (JNICALL *ExceptionOccurred)          (JNIEnv *);
   void     (JNICALL *ExceptionDescribe)            (JNIEnv *);
@@ -254,23 +254,23 @@ struct JNINativeInterface_
   jobject  (JNICALL *NewGlobalRef)                 (JNIEnv *, jobject);
   void     (JNICALL *DeleteGlobalRef)              (JNIEnv *, jobject);
   void     (JNICALL *DeleteLocalRef)               (JNIEnv *, jobject);
-  jboolean (JNICALL *IsSameObject)                 (JNIEnv *, jobject, 
+  jboolean (JNICALL *IsSameObject)                 (JNIEnv *, jobject,
                                                     jobject);
 
   jobject  (JNICALL *NewLocalRef)		   (JNIEnv *, jobject);
   jint     (JNICALL *EnsureLocalCapacity)	   (JNIEnv *, jint);
 
   jobject  (JNICALL *AllocObject)                  (JNIEnv *, jclass);
-  jobject (JNICALL *NewObject)			   (JNIEnv *, jclass, 
+  jobject (JNICALL *NewObject)			   (JNIEnv *, jclass,
                                                     jmethodID, ...);
-  jobject (JNICALL *NewObjectV)			   (JNIEnv *, jclass, 
+  jobject (JNICALL *NewObjectV)			   (JNIEnv *, jclass,
                                                     jmethodID, va_list);
-  jobject (JNICALL *NewObjectA)			   (JNIEnv *, jclass, 
+  jobject (JNICALL *NewObjectA)			   (JNIEnv *, jclass,
                                                     jmethodID, const jvalue *);
 
   jclass   (JNICALL *GetObjectClass)               (JNIEnv *, jobject);
   jboolean (JNICALL *IsInstanceOf)                 (JNIEnv *, jobject, jclass);
-  jmethodID (JNICALL *GetMethodID)                 (JNIEnv *, jclass, 
+  jmethodID (JNICALL *GetMethodID)                 (JNIEnv *, jclass,
                                                     const char *, const char *);
 
   jobject (JNICALL *CallObjectMethod)	   (JNIEnv *, jobject, jmethodID, ...);
@@ -614,7 +614,7 @@ struct JNINativeInterface_
                                                     const jdouble *);
 
   jint     (JNICALL *RegisterNatives)              (JNIEnv *, jclass,
-					            const JNINativeMethod *, 
+					            const JNINativeMethod *,
 						    jint);
   jint     (JNICALL *UnregisterNatives)            (JNIEnv *, jclass);
   jint     (JNICALL *MonitorEnter)                 (JNIEnv *, jobject);
@@ -628,14 +628,14 @@ struct JNINativeInterface_
   void     (JNICALL *GetStringUTFRegion)	   (JNIEnv *, jstring, jsize,
 					            jsize, char *);
 
-  void * (JNICALL *GetPrimitiveArrayCritical)      (JNIEnv *, jarray, 
+  void * (JNICALL *GetPrimitiveArrayCritical)      (JNIEnv *, jarray,
                                                     jboolean *);
-  void   (JNICALL *ReleasePrimitiveArrayCritical)  (JNIEnv *, jarray, void *, 
+  void   (JNICALL *ReleasePrimitiveArrayCritical)  (JNIEnv *, jarray, void *,
                                                     jint);
 
-  const jchar * (JNICALL *GetStringCritical)       (JNIEnv *, jstring, 
+  const jchar * (JNICALL *GetStringCritical)       (JNIEnv *, jstring,
                                                     jboolean *);
-  void          (JNICALL *ReleaseStringCritical)   (JNIEnv *, jstring, 
+  void          (JNICALL *ReleaseStringCritical)   (JNIEnv *, jstring,
                                                     const jchar *);
 
   jweak  (JNICALL *NewWeakGlobalRef)               (JNIEnv *, jobject);

@@ -6,19 +6,19 @@ import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
 import io.qt.widgets.QMenu;
 
 public class QTMenuSubMenuItem extends QTMenuItem<QMenu> implements UIMenuSubMenuItem {
-	
+
 	private QTMenu subMenu;
-	
+
 	public QTMenuSubMenuItem(QTAbstractMenu<?> parent) {
 		super(parent.createNativeMenu(), parent);
-		
+
 		this.subMenu = new QTMenu(this.getControl());
 	}
 
 	public UIMenu getMenu() {
 		return this.subMenu;
 	}
-	
+
 	public String getText() {
 		return this.getControl().title();
 	}

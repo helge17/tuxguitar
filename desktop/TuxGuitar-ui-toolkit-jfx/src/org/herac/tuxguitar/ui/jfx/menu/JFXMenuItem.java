@@ -13,28 +13,28 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 
 public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> implements UIMenuItem {
-	
+
 	private UIKeyCombination keyCombination;
 	private UIImage image;
 	private JFXMenuItemContainer parent;
-	
+
 	public JFXMenuItem(T item, JFXMenuItemContainer parent) {
 		super(item);
-		
+
 		this.parent = parent;
 		this.parent.addItem(this);
 	}
-	
+
 	public JFXMenuItemContainer getParent() {
 		return this.parent;
 	}
-	
+
 	public void dispose() {
 		this.getParent().removeItem(this);
-		
+
 		super.dispose();
 	}
-	
+
 	public boolean isEnabled() {
 		return !this.getControl().isDisable();
 	}
@@ -58,7 +58,7 @@ public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> impleme
 	public void setKeyCombination(UIKeyCombination keyCombination) {
 		if( this.keyCombination == null || !this.keyCombination.equals(keyCombination)) {
 			this.keyCombination = keyCombination;
-			
+
 			KeyCombination jfxKeyConvination = null;
 			if( this.keyCombination != null ) {
 				try {
@@ -91,7 +91,7 @@ public class JFXMenuItem<T extends MenuItem> extends JFXEventReceiver<T> impleme
 	public UIImage getImage() {
 		return this.image;
 	}
-	
+
 	public void setImage(UIImage image) {
 		this.image = image;
 		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXImage) this.image).getHandle()) : null);

@@ -23,7 +23,7 @@ import org.herac.tuxguitar.util.TGUserFileUtils;
 public class TGFileUtils {
 
 	private static final String FILE_SCHEME = "file";
-	
+
 	private static final String TG_SHARE_PATH = "tuxguitar.share.path";
 	private static final String TG_CLASS_PATH = "tuxguitar.class.path";
 	private static final String TG_LIBRARY_PATH = "tuxguitar.library.path";

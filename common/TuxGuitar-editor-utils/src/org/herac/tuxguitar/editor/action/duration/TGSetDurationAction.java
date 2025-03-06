@@ -16,22 +16,22 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGSetDurationAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.note.duration.set-duration";
-	
+
 	public TGSetDurationAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGNoteRange noteRange = (TGNoteRange)context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
 		TGBeatRange beats = (TGBeatRange)context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 		TGDuration duration = (TGDuration)context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION);
-		
+
 		TGSongManager songManager = getSongManager(context);
 		TGMeasureManager measureManager = songManager.getMeasureManager();
 		TGFactory factory = songManager.getFactory();
-		
+
 		if (noteRange!=null && !noteRange.isEmpty()) {
 			for (TGNote note : noteRange.getNotes()) {
 				TGVoice voice = note.getVoice();

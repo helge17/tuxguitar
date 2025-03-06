@@ -8,14 +8,14 @@ import org.qtjambi.qt.core.QEvent.Type;
 import org.qtjambi.qt.core.QObject;
 
 public class QTEventFilter extends QObject {
-	
+
 	private boolean ignoreEvents;
 	private List<QTEventMap> eventsMap;
-	
+
 	public QTEventFilter() {
 		this.eventsMap = new ArrayList<QTEventMap>();
 	}
-	
+
 	public void setIgnoreEvents(boolean ignoreEvents) {
 		this.ignoreEvents = ignoreEvents;
 	}
@@ -23,14 +23,14 @@ public class QTEventFilter extends QObject {
 	public void connect(Type eventType, QTEventHandler eventHandler) {
 		this.eventsMap.add(new QTEventMap(eventType, eventHandler));
 	}
-	
+
 	public void disconnect(Type eventType, QTEventHandler eventHandler) {
 		QTEventMap eventMap = this.findEventMap(eventType, eventHandler);
 		if( eventMap != null ) {
 			this.eventsMap.remove(eventMap);
 		}
 	}
-	
+
 	public QTEventMap findEventMap(Type eventType, QTEventHandler eventHandler) {
 		for(QTEventMap map : this.eventsMap) {
 			if( map.getEventType().equals(eventType) && map.getEventHandler().equals(eventHandler) ) {
@@ -39,7 +39,7 @@ public class QTEventFilter extends QObject {
 		}
 		return null;
 	}
-	
+
 	public boolean eventFilter(QObject obj, QEvent event) {
 		boolean success = false;
 		if(!this.ignoreEvents) {

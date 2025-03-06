@@ -45,7 +45,7 @@ public class TGTestCopyPaste extends TGTest {
 		log(String.format("creating marker %s...", name));
 		assertNull(song.getMeasureHeader(measureNb-1).getMarker(),
 				String.format("unexpected marker in measure %d", measureNb));
-		
+
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGUpdateMarkerAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
@@ -54,7 +54,7 @@ public class TGTestCopyPaste extends TGTest {
 		marker.setTitle(name);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, marker);
 		tgActionProcessor.process();
-		
+
 		assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
 			TGMarker newMarker = song.getMeasureHeader(measureNb-1).getMarker();
 			while (newMarker==null || !newMarker.getTitle().equals(name)) {
@@ -64,7 +64,7 @@ public class TGTestCopyPaste extends TGTest {
 		});
 		OK();
 	}
-	
+
 	protected void doCopyMeasures(int from, int to, boolean copyAllTracks, boolean copyMarkers) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGCopyMeasureAction.NAME);
@@ -75,7 +75,7 @@ public class TGTestCopyPaste extends TGTest {
 		log(String.format("Copying measures %d to %d...\n", from, to));
 		tgActionProcessor.process();
 	}
-	
+
 	protected void doPasteMeasures(boolean replace, int count) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGPasteMeasureAction.NAME);
@@ -85,7 +85,7 @@ public class TGTestCopyPaste extends TGTest {
 		log("pasting...\n");
 		tgActionProcessor.process();
 	}
-	
+
 	@Test
 	void CopyPasteSingleTrackNoMarker() {
 		log("\n--CopyPasteSingleTrackNoMarker\n");
@@ -104,7 +104,7 @@ public class TGTestCopyPaste extends TGTest {
 		assertNull(song.getMeasureHeader(4).getMarker(), "unexpected pasted marker");
 		OK();
 	}
-	
+
 	@Test
 	void CopyPasteSingleTrackWithMarker() {
 		log("\n--CopyPasteSingleTrackWithMarker\n");
@@ -120,7 +120,7 @@ public class TGTestCopyPaste extends TGTest {
 		});
 		log("pasted measure content OK\n");
 		log("checking presence of marker...");
-		TGMarker pastedMarker =song.getMeasureHeader(6).getMarker(); 
+		TGMarker pastedMarker =song.getMeasureHeader(6).getMarker();
 		assertTrue(pastedMarker!=null && pastedMarker.getTitle().equals("measure2"), "failed to paste marker");
 		OK();
 	}
@@ -140,9 +140,9 @@ public class TGTestCopyPaste extends TGTest {
 		});
 		log("pasted measure content OK\n");
 		log("checking presence of markers...");
-		TGMarker pastedMarker = song.getMeasureHeader(5).getMarker(); 
+		TGMarker pastedMarker = song.getMeasureHeader(5).getMarker();
 		assertTrue(pastedMarker!=null && pastedMarker.getTitle().equals("measure2"), "failed to paste marker #1");
-		pastedMarker = song.getMeasureHeader(8).getMarker(); 
+		pastedMarker = song.getMeasureHeader(8).getMarker();
 		assertTrue(pastedMarker!=null && pastedMarker.getTitle().equals("measure2"), "failed to paste marker #2");
 		OK();
 		log("checking markers are cloned...");	// and not several headers sharing references to the same marker

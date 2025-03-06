@@ -8,13 +8,13 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChangePickStrokeUpAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.change-pick-stroke-up";
-	
+
 	public TGChangePickStrokeUpAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 		TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));

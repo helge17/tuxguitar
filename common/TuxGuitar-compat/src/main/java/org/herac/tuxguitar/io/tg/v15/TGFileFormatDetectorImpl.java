@@ -9,13 +9,13 @@ import org.herac.tuxguitar.io.base.TGFileFormatDetector;
 import org.herac.tuxguitar.io.tg.TGFileFormatVersion;
 
 public class TGFileFormatDetectorImpl implements TGFileFormatDetector {
-	
+
 	private TGFileFormatVersion[] supportedVersions;
-	
+
 	public TGFileFormatDetectorImpl(TGFileFormatVersion... supportedVersions) {
 		this.supportedVersions = supportedVersions;
 	}
-	
+
 	public TGFileFormat getFileFormat(InputStream is) {
 		try {
 			String version = this.readVersion(new DataInputStream(is));
@@ -31,7 +31,7 @@ public class TGFileFormatDetectorImpl implements TGFileFormatDetector {
 			return null;
 		}
 	}
-	
+
 	private String readVersion(DataInputStream is) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int length = (is.read() & 0xFF);

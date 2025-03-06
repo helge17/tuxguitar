@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.herac.tuxguitar.ui.widget.UIProgressBar;
 
 public class SWTProgressBar extends SWTControl<ProgressBar> implements UIProgressBar {
-	
+
 	public SWTProgressBar(SWTContainer<? extends Composite> parent) {
 		super(new ProgressBar(parent.getControl(), SWT.BORDER | SWT.HORIZONTAL | SWT.SMOOTH), parent);
 	}

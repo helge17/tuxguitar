@@ -7,23 +7,23 @@ import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.util.TGVersion;
 
 public class ArgumentParser {
-	
+
 	private static final String TG_DEFAULT_URL = "tuxguitar.default.url";
-	
+
 	private static final String[] OPTION_HELP = new String[]{"-h","--help"};
 	private static final String[] OPTION_VERSION = new String[]{"-v","--version"};
 	private static final String[] OPTION_JRE_INFO = new String[]{"-i","--system-info"};
-	
+
 	private String[] arguments;
 	private boolean processAndExit;
 	private URL url;
-	
+
 	public ArgumentParser(String[] arguments){
 		this.arguments = arguments;
 		this.processAndExit = false;
 		this.parse();
 	}
-	
+
 	private void parse(){
 		try{
 			checkHelp();
@@ -37,7 +37,7 @@ public class ArgumentParser {
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	private void checkHelp(){
 		for(int i = 0;i < this.arguments.length;i++){
 			for(int j = 0;j < OPTION_HELP.length;j++){
@@ -48,25 +48,25 @@ public class ArgumentParser {
 					print("	-v, --version              Show version information and exit");
 					print("	-i, --system-info          Show the JVM system information");
 					print("	-D<name>=<value>           Set a JVM system property");
-					
+
 					this.processAndExit = true;
 				}
 			}
 		}
 	}
-	
+
 	private void checkVersion(){
 		for(int i = 0;i < this.arguments.length;i++){
 			for(int j = 0;j < OPTION_VERSION.length;j++){
 				if(this.arguments[i].equals(OPTION_VERSION[j])){
 					print(TGApplication.NAME + " - " + TGVersion.CURRENT.getVersion());
-					
+
 					this.processAndExit = true;
 				}
 			}
 		}
 	}
-	
+
 	private void checkSystemInfo(){
 		for(int i = 0;i < this.arguments.length;i++){
 			for(int j = 0;j < OPTION_JRE_INFO.length;j++){
@@ -83,13 +83,13 @@ public class ArgumentParser {
 					print("-> Java-Home:         " + System.getProperty("java.home"));
 					print("-> Java-Class-Path:   " + System.getProperty("java.class.path"));
 					print("-> Java-Library-Path: " + System.getProperty("java.library.path"));
-					
+
 					this.processAndExit = true;
 				}
 			}
 		}
 	}
-	
+
 	private void checkProperties(){
 		for(int i = 0;i < this.arguments.length;i++){
 			int indexKey = this.arguments[i].indexOf("-D");
@@ -103,7 +103,7 @@ public class ArgumentParser {
 			}
 		}
 	}
-	
+
 	private void checkURL(){
 		String propertyUrl = System.getProperty(TG_DEFAULT_URL);
 		if( propertyUrl != null && makeURL( propertyUrl ) ){
@@ -115,7 +115,7 @@ public class ArgumentParser {
 			}
 		}
 	}
-	
+
 	private boolean makeURL(String spec){
 		try{
 			File file = new File(spec);
@@ -129,23 +129,23 @@ public class ArgumentParser {
 		}
 		return (this.url != null);
 	}
-	
+
 	public boolean processAndExit(){
 		return this.processAndExit;
 	}
-	
+
 	public URL getURL() {
 		return this.url;
 	}
-	
+
 	protected void print(String s){
 		print(s, true);
 	}
-	
+
 	protected void print(String s, boolean ignoreNull){
 		if(!ignoreNull || s != null){
 			System.out.println( s );
 		}
 	}
-	
+
 }

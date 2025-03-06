@@ -8,13 +8,13 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.player.impl.jsa.message.MidiShortMessage;
 
 public class MidiReceiverImpl implements Receiver{
-	
+
 	private MidiSequencerImpl sequencer;
-	
+
 	public MidiReceiverImpl(MidiSequencerImpl sequencer){
 		this.sequencer = sequencer;
 	}
-	
+
 	public void send(MidiMessage message, long timeStamp) {
 		try {
 			if( this.sequencer.isRunning() ){
@@ -24,11 +24,11 @@ public class MidiReceiverImpl implements Receiver{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void close(){
 		//not implemented
 	}
-	
+
 	private void parseMessage(MidiMessage message) throws MidiPlayerException{
 		byte[] data = message.getMessage();
 		if( data.length > 0 ){
@@ -54,12 +54,12 @@ public class MidiReceiverImpl implements Receiver{
 			}
 		}
 	}
-	
+
 	private void parseNoteOn(byte[] data, int channel, int voice, boolean bendMode) throws MidiPlayerException{
 		int length = data.length;
 		int value = (length > 1)?(data[1] & 0xFF):0;
 		int velocity = (length > 2)?(data[2] & 0xFF):0;
-		
+
 		if( channel >= 0 ){
 			if( velocity == 0 ){
 				this.parseNoteOff(data, channel, voice, bendMode);
@@ -68,7 +68,7 @@ public class MidiReceiverImpl implements Receiver{
 			}
 		}
 	}
-	
+
 	private void parseNoteOff(byte[] data, int channel, int voice, boolean bendMode) throws MidiPlayerException{
 		int length = data.length;
 		int value = (length > 1)?(data[1] & 0xFF):0;
@@ -77,7 +77,7 @@ public class MidiReceiverImpl implements Receiver{
 			this.sequencer.getTransmitter().sendNoteOff(channel,value,velocity,voice,bendMode);
 		}
 	}
-	
+
 	private void parsePitchBend(byte[] data, int channel, int voice, boolean bendMode) throws MidiPlayerException{
 		int length = data.length;
 		int value = (length > 2)?(data[2] & 0xFF):-1;
@@ -85,7 +85,7 @@ public class MidiReceiverImpl implements Receiver{
 			this.sequencer.getTransmitter().sendPitchBend(channel,value,voice,bendMode);
 		}
 	}
-	
+
 	private void parseProgramChange(byte[] data, int channel) throws MidiPlayerException{
 		int length = data.length;
 		int instrument = (length > 1)?(data[1] & 0xFF):-1;
@@ -93,7 +93,7 @@ public class MidiReceiverImpl implements Receiver{
 			this.sequencer.getTransmitter().sendProgramChange(channel,instrument);
 		}
 	}
-	
+
 	private void parseControlChange(byte[] data, int channel) throws MidiPlayerException{
 		int length = data.length;
 		int control = (length > 1)?(data[1] & 0xFF):-1;
@@ -102,7 +102,7 @@ public class MidiReceiverImpl implements Receiver{
 			this.sequencer.getTransmitter().sendControlChange(channel,control,value);
 		}
 	}
-	
+
 	private int findChannel(MidiMessage midiMessage){
 		if( midiMessage instanceof MidiShortMessage ){
 			return ((MidiShortMessage)midiMessage).getChannel();
@@ -113,14 +113,14 @@ public class MidiReceiverImpl implements Receiver{
 		}
 		return -1;
 	}
-	
+
 	private int findVoice(MidiMessage midiMessage){
 		if( midiMessage instanceof MidiShortMessage ){
 			return ((MidiShortMessage)midiMessage).getVoice();
 		}
 		return MidiShortMessage.DEFAULT_VOICE;
 	}
-	
+
 	private boolean findBendMode(MidiMessage midiMessage){
 		if( midiMessage instanceof MidiShortMessage ){
 			return ((MidiShortMessage)midiMessage).isBendMode();

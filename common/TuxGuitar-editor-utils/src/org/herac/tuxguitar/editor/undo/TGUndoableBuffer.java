@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TGUndoableBuffer {
-	
+
 	private int indexOfNextAdd;
 	private List<TGUndoableEdit> edits;
-	
+
 	public TGUndoableBuffer() {
 		this.edits = new ArrayList<TGUndoableEdit>();
 		this.indexOfNextAdd = 0;

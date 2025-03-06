@@ -9,13 +9,13 @@ import org.herac.tuxguitar.graphics.control.TGTrackImpl;
 import org.herac.tuxguitar.util.TGContext;
 
 public class GoPreviousMeasureAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.go-previous";
-	
+
 	public GoPreviousMeasureAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		if(TuxGuitar.instance().getPlayer().isRunning()){
 			TuxGuitar.instance().getTransport().gotoPrevious();

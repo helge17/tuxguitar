@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
 
 public class SWTMenuCheckableItem extends SWTMenuActionItem implements UIMenuCheckableItem {
-	
+
 	public SWTMenuCheckableItem(MenuItem item, SWTMenu parent) {
 		super(item, parent);
 	}

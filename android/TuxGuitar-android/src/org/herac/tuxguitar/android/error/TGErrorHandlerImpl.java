@@ -17,26 +17,26 @@ import java.io.StringWriter;
 import java.util.Date;
 
 public class TGErrorHandlerImpl implements TGErrorHandler{
-	
+
 	private static final String LOG_FILE = (Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TuxGuitar/log/tuxguitar.log");
-	
+
 	private static final String MSG_TITLE = "Error";
 	private static final String EOL = "\r\n";
-	
+
 	private TGActivity activity;
-	
+
 	public TGErrorHandlerImpl(TGActivity activity) {
 		this.activity = activity;
 	}
-	
+
 	@Override
 	public void handleError(Throwable throwable) {
 		throwable.printStackTrace();
-		
+
 		this.logError(throwable);
 		this.showUserMessage(throwable);
 	}
-	
+
 	public void showUserMessage(Throwable throwable) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.activity.findContext(), TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.activity);
@@ -45,7 +45,7 @@ public class TGErrorHandlerImpl implements TGErrorHandler{
 		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE, this.createHumanErrorMessage(throwable));
 		tgActionProcessor.processOnNewThread();
 	}
-	
+
 	public String createHumanErrorMessage(Throwable throwable) {
 		String message = throwable.getMessage();
 		if( message == null || message.trim().length() == 0 ) {
@@ -53,32 +53,32 @@ public class TGErrorHandlerImpl implements TGErrorHandler{
 		}
 		return message;
 	}
-	
+
 	public String createFullErrorMessage(Throwable throwable) {
 		StringBuffer message = new StringBuffer();
-		
+
 		message.append(throwable.getClass().getName());
 		message.append(EOL);
 		message.append(EOL);
-		
+
 		if( throwable.getMessage() != null ) {
 			message.append(throwable.getMessage());
 			message.append(EOL);
 		}
 		message.append(getStackTrace(throwable));
-		
+
 		return message.toString();
 	}
-	
+
 	public String getStackTrace(Throwable throwable) {
 		StringWriter stringWriter = new StringWriter();
 		PrintWriter printWriter = new PrintWriter(stringWriter);
-		
+
 		throwable.printStackTrace(printWriter);
-		
+
 		return stringWriter.toString();
 	}
-	
+
 	public void logError(Throwable throwable) {
 		try {
 			File logFile = new File(LOG_FILE);

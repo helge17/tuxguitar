@@ -20,7 +20,7 @@ public class TGStorageEventListener implements TGEventListener {
 	public TGStorageEventListener(TGContext context){
 		this.context = context;
 	}
-	
+
 	public boolean isUpdatableAction(String actionId) {
 		for(String updatableId : UPDATABLE_ACTION_IDS) {
 			if( updatableId.equals(actionId) ) {
@@ -29,15 +29,15 @@ public class TGStorageEventListener implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	public void checkForUpdateSession(TGEvent event) {
 		String actionId = event.getAttribute(TGActionPostExecutionEvent.ATTRIBUTE_ACTION_ID);
-		
+
 		if( this.isUpdatableAction(actionId) ) {
 			TGStorageManager.getInstance(this.context).updateSession((TGAbstractContext) event.getAttribute(TGActionPostExecutionEvent.ATTRIBUTE_SOURCE_CONTEXT));
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.checkForUpdateSession(event);

@@ -10,15 +10,15 @@ import org.herac.tuxguitar.io.midi.base.MidiSequence;
 import org.herac.tuxguitar.io.midi.base.MidiTrack;
 
 public class MidiFileReader implements MidiFileHeader{
-	
+
 	public static boolean CANCEL_RUNNING_STATUS_ON_META_AND_SYSEX = true;
-	
+
 	private static final int STATUS_NONE = 0;
 	private static final int STATUS_ONE_BYTE = 1;
 	private static final int STATUS_TWO_BYTES = 2;
 	private static final int STATUS_SYSEX = 3;
 	private static final int STATUS_META = 4;
-	
+
 	public MidiSequence getSequence(InputStream stream)throws MidiFileException, IOException{
 		DataInputStream	in = new DataInputStream(stream);
 		if (in.readInt() != HEADER_MAGIC){
@@ -63,21 +63,21 @@ public class MidiFileReader implements MidiFileHeader{
 			divisionType = MidiSequence.PPQ;
 			resolution = division & 0x7fff;
 		}
-		
+
 		in.skip(headerLength - HEADER_LENGTH);
-		
+
 		MidiSequence sequence = new MidiSequence(divisionType,resolution);
 		for (int i = 0; i < trackCount; i++){
 			MidiTrack track = new MidiTrack();
 			sequence.addTrack(track);
 			readTrack(in, track);
 		}
-		
+
 		in.close();
-		
+
 		return sequence;
 	}
-	
+
 	private void readTrack(DataInputStream in, MidiTrack track)throws MidiFileException, IOException{
 		while (true){
 			if (in.readInt() == TRACK_MAGIC){
@@ -89,7 +89,7 @@ public class MidiFileReader implements MidiFileHeader{
 			}
 			in.skip(chunkLength);
 		}
-		
+
 		MidiTrackReaderHelper helper = new MidiTrackReaderHelper(0,in.readInt(),-1);
 		while (helper.remainingBytes > 0){
 			helper.ticks += readVariableLengthQuantity(in, helper);
@@ -99,12 +99,12 @@ public class MidiFileReader implements MidiFileHeader{
 			}
 		}
 	}
-	
+
 	private static MidiEvent readEvent(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
 		int statusByte = readUnsignedByte(in, helper);
 		int savedByte = 0;
 		boolean runningStatusApplies = false;
-		
+
 		if (statusByte < 0x80){
 			if (helper.runningStatusByte != -1){
 				runningStatusApplies = true;
@@ -114,7 +114,7 @@ public class MidiFileReader implements MidiFileHeader{
 				throw new MidiFileException("corrupt MIDI file: status byte missing");
 			}
 		}
-		
+
 		int type = getType(statusByte);
 		if(type == STATUS_ONE_BYTE){
 			int data = 0;
@@ -124,7 +124,7 @@ public class MidiFileReader implements MidiFileHeader{
 				data = readUnsignedByte(in, helper);
 				helper.runningStatusByte = statusByte;
 			}
-			
+
 			return new MidiEvent(MidiMessage.shortMessage((statusByte & 0xF0),(statusByte & 0x0F) , data), helper.ticks);
 		}else if(type == STATUS_TWO_BYTES){
 			int	data1 = 0;
@@ -134,7 +134,7 @@ public class MidiFileReader implements MidiFileHeader{
 				data1 = readUnsignedByte(in, helper);
 				helper.runningStatusByte = statusByte;
 			}
-			
+
 			return new MidiEvent(MidiMessage.shortMessage((statusByte & 0xF0),(statusByte & 0x0F) , data1, readUnsignedByte(in, helper)), helper.ticks);
 		}else if(type == STATUS_SYSEX){
 			if (CANCEL_RUNNING_STATUS_ON_META_AND_SYSEX){
@@ -155,13 +155,13 @@ public class MidiFileReader implements MidiFileHeader{
 			for (int i = 0; i < dataLength; i++){
 				data[i] = (byte) readUnsignedByte(in, helper);
 			}
-			
+
 			return new MidiEvent(MidiMessage.metaMessage(typeByte, data), helper.ticks);
 		}
-		
+
 		return null;
 	}
-	
+
 	private static int getType(int statusByte){
 		if (statusByte < 0xf0) {
 			int command = statusByte & 0xf0;
@@ -183,7 +183,7 @@ public class MidiFileReader implements MidiFileHeader{
 			return STATUS_NONE;
 		}
 	}
-	
+
 	public static long readVariableLengthQuantity(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
 		int	count = 0;
 		long value = 0;
@@ -198,17 +198,17 @@ public class MidiFileReader implements MidiFileHeader{
 		}
 		throw new MidiFileException("not a MIDI file: unterminated variable-length quantity");
 	}
-	
+
 	public static int readUnsignedByte(DataInputStream dataInputStream, MidiTrackReaderHelper helper)throws IOException{
 		helper.remainingBytes--;
 		return dataInputStream.readUnsignedByte();
 	}
-	
+
 	private class MidiTrackReaderHelper{
 		protected long ticks = 0;
 		protected long remainingBytes;
 		protected int runningStatusByte;
-		
+
 		protected MidiTrackReaderHelper(long ticks,long remainingBytes,int runningStatusByte){
 			this.ticks = ticks;
 			this.remainingBytes = remainingBytes;

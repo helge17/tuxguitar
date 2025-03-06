@@ -10,11 +10,11 @@ import org.herac.tuxguitar.util.TGContext;
 public class TGRedoAction extends TGActionBase {
 
 	public static final String NAME = "action.edit.redo";
-	
+
 	public TGRedoAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		try {
 			TGUndoableManager tgUndoableManager = TGUndoableManager.getInstance(this.getContext());

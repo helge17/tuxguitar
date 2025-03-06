@@ -189,12 +189,12 @@ public class MidiSequencerImpl implements MidiSequencer {
 
 		private MidiSequencerImpl sequencer;
 		private TGThreadHandler threadHandler;
-		
+
 		public MidiTimer(MidiSequencerImpl sequencer) {
 			this.sequencer = sequencer;
 			this.threadHandler = TGThreadManager.getInstance(this.sequencer.getContext());
 		}
-		
+
 		public void run() {
 			this.threadHandler.loop(new TGThreadLoop() {
 				public Long process() {

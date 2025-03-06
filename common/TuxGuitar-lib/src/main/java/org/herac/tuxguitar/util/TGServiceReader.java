@@ -16,13 +16,13 @@ import org.herac.tuxguitar.resource.TGResourceLoader;
 import org.herac.tuxguitar.resource.TGResourceManager;
 
 public class TGServiceReader {
-	
+
 	private static final String SERVICE_PATH = new String("META-INF/services/");
-	
+
 	public static <T> Iterator<T> lookupProviders(Class<T> spi, TGContext context){
 		return TGServiceReader.lookupProviders(spi, TGResourceManager.getInstance(context));
 	}
-	
+
 	public static <T> Iterator<T> lookupProviders(Class<T> spi, TGResourceLoader loader){
 		try{
 			if (spi == null || loader == null){
@@ -33,21 +33,21 @@ public class TGServiceReader {
 			return new ArrayList<T>().iterator();
 		}
 	}
-	
+
 	private static final class IteratorImpl<T> implements Iterator<T> {
-		
+
 		private Class<T> spi;
 		private TGResourceLoader loader;
 		private Enumeration<URL> urls;
 		private Iterator<String> iterator;
-		
+
 		public IteratorImpl(Class<T> spi, TGResourceLoader loader, Enumeration<URL> urls){
 			this.spi = spi;
 			this.loader = loader;
 			this.urls = urls;
 			this.initialize();
 		}
-		
+
 		private void initialize(){
 			List<String> providers = new ArrayList<String>();
 			while (this.urls.hasMoreElements()) {
@@ -69,7 +69,7 @@ public class TGServiceReader {
 			}
 			this.iterator = providers.iterator();
 		}
-		
+
 		private String uncommentLine(String line){
 			int index = line.indexOf('#');
 			if(index >= 0){
@@ -77,11 +77,11 @@ public class TGServiceReader {
 			}
 			return line;
 		}
-		
+
 		public boolean hasNext() {
 			return (this.iterator != null && this.iterator.hasNext());
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public T next() {
 			if (!hasNext()){
@@ -97,7 +97,7 @@ public class TGServiceReader {
 			}
 			throw new NoSuchElementException();
 		}
-		
+
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}

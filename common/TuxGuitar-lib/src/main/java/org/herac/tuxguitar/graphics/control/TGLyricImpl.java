@@ -4,36 +4,36 @@ import org.herac.tuxguitar.song.models.TGLyric;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGLyricImpl extends TGLyric{
-	
+
 	private int height;
 	private int nextIndex = 0;
-	
+
 	public TGLyricImpl(){
 		this.height = 0;
 	}
-	
+
 	public void setFrom(int from) {
 		super.setFrom(from);
 		this.update();
 	}
-	
+
 	public void setLyrics(String lyrics) {
 		super.setLyrics(lyrics);
 		this.update();
 	}
-	
+
 	private void update(){
 		this.height = (this.isEmpty()?0:10);
 	}
-	
+
 	public void start(){
 		this.start(0);
 	}
-	
+
 	public void start(int index){
 		this.nextIndex = index;
 	}
-	
+
 	public void setCurrentMeasure(TGMeasureImpl measure){
 		if(measure.getNumber() >= getFrom()){
 			measure.setLyricBeatIndex(this.nextIndex);
@@ -43,7 +43,7 @@ public class TGLyricImpl extends TGLyric{
 			this.start();
 		}
 	}
-	
+
 	public void paintCurrentNoteBeats(UIPainter painter,TGLayout layout,TGMeasureImpl currentMeasure ,float fromX,float fromY){
 		int from = currentMeasure.getLyricBeatIndex();
 		String[] beats = getLyricBeats();
@@ -65,7 +65,7 @@ public class TGLyricImpl extends TGLyric{
 			}
 		}
 	}
-	
+
 	public int getHeight(){
 		return this.height;
 	}

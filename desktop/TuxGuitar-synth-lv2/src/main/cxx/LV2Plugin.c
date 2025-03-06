@@ -25,7 +25,7 @@ void LV2Plugin_malloc(LV2Plugin **handle, LV2World* world, const LilvPlugin* lil
 		LilvNode* lv2_AudioPort   = lilv_new_uri((*handle)->world->lilvWorld, LV2_CORE__AudioPort);
 		LilvNode* lv2_AtomPort    = lilv_new_uri((*handle)->world->lilvWorld, LV2_ATOM__AtomPort);
 		LilvNode* lv2_MidiEvent   = lilv_new_uri((*handle)->world->lilvWorld, LV2_MIDI__MidiEvent);
-		
+
 		for (uint32_t i = 0; i < (*handle)->portCount; i ++) {
 			(*handle)->ports[i] = (LV2Port *) malloc(sizeof(LV2Port));
 			(*handle)->ports[i]->lilvPort = lilv_plugin_get_port_by_index((*handle)->lilvPlugin, i);
@@ -53,7 +53,7 @@ void LV2Plugin_malloc(LV2Plugin **handle, LV2World* world, const LilvPlugin* lil
 		}
 
 		lilv_node_free(lv2_InputPort);
-		lilv_node_free(lv2_OutputPort);		
+		lilv_node_free(lv2_OutputPort);
 		lilv_node_free(lv2_ControlPort);
 		lilv_node_free(lv2_AudioPort);
 		lilv_node_free(lv2_AtomPort);
@@ -66,9 +66,9 @@ void LV2Plugin_free(LV2Plugin **handle)
 	if( (*handle) != NULL ){
 		(*handle)->world = NULL;
 		(*handle)->lilvPlugin = NULL;
-		
+
 		free ( (*handle) );
-		
+
 		(*handle) = NULL;
 	}
 }
@@ -76,7 +76,7 @@ void LV2Plugin_free(LV2Plugin **handle)
 void LV2Plugin_getUri(LV2Plugin *handle, const char** value)
 {
 	(*value) = NULL;
-	
+
 	if( handle != NULL && handle->lilvPlugin != NULL ){
 		const LilvNode* lilvNode = lilv_plugin_get_uri(handle->lilvPlugin);
 		if( lilvNode != NULL ) {
@@ -113,7 +113,7 @@ void LV2Plugin_getCategory(LV2Plugin *handle, const char** value)
 
 void LV2Plugin_getPortIndex(LV2Plugin *handle, LV2Int32* index, const char* symbol) {
 	(*index) = -1;
-	
+
 	for (LV2Int32 i = 0; i < handle->portCount; ++i) {
 		const LilvNode* port_sym = lilv_port_get_symbol(handle->lilvPlugin, handle->ports[i]->lilvPort);
 
@@ -126,7 +126,7 @@ void LV2Plugin_getPortIndex(LV2Plugin *handle, LV2Int32* index, const char* symb
 void LV2Plugin_getPortCount(LV2Plugin *handle, LV2PortType portType, LV2PortFlow portFlow, LV2Int32* count)
 {
 	(*count) = 0;
-	
+
 	if( handle != NULL && handle->ports != NULL ) {
 		for (uint32_t i = 0; i < handle->portCount; i ++) {
 			if( handle->ports[i]->type == portType && handle->ports[i]->flow == portFlow ) {
@@ -136,17 +136,17 @@ void LV2Plugin_getPortCount(LV2Plugin *handle, LV2PortType portType, LV2PortFlow
 	}
 }
 
-void LV2Plugin_getAudioInputPortCount(LV2Plugin *handle, LV2Int32* count) 
+void LV2Plugin_getAudioInputPortCount(LV2Plugin *handle, LV2Int32* count)
 {
 	LV2Plugin_getPortCount(handle, TYPE_AUDIO, FLOW_IN, count);
 }
 
-void LV2Plugin_getAudioOutputPortCount(LV2Plugin *handle, LV2Int32* count) 
+void LV2Plugin_getAudioOutputPortCount(LV2Plugin *handle, LV2Int32* count)
 {
 	LV2Plugin_getPortCount(handle, TYPE_AUDIO, FLOW_OUT, count);
 }
 
-void LV2Plugin_getMidiInputPortCount(LV2Plugin *handle, LV2Int32* count) 
+void LV2Plugin_getMidiInputPortCount(LV2Plugin *handle, LV2Int32* count)
 {
 	LV2Plugin_getPortCount(handle, TYPE_EVENT, FLOW_IN, count);
 }

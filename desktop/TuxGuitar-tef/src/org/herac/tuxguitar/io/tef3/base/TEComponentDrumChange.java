@@ -4,7 +4,7 @@ public class TEComponentDrumChange extends TEComponentBase {
     private int drumPatch;
     private int volume;
     private int character;
-    
+
     public TEComponentDrumChange(TEPosition position, int drumPatch, int volume, int character) {
         super(position);
 

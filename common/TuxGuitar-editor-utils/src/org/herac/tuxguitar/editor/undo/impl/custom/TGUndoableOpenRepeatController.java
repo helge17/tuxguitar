@@ -11,7 +11,7 @@ public class TGUndoableOpenRepeatController implements TGUndoableActionControlle
 
 	public TGUndoableEdit startUndoable(TGContext context, TGActionContext actionContext) {
 		TGMeasureHeader header = (TGMeasureHeader) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-		
+
 		return TGUndoableOpenRepeat.startUndo(context, header);
 	}
 

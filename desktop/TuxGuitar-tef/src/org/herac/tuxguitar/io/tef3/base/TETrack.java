@@ -29,7 +29,7 @@ public class TETrack {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TETrackTransposition foundEnumValue = null;
             for (TETrackTransposition enumValue : values())
             {
@@ -37,11 +37,11 @@ public class TETrack {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -69,7 +69,7 @@ public class TETrack {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TETrackMiddleCoffset foundEnumValue = null;
             for (TETrackMiddleCoffset enumValue : values())
             {
@@ -77,11 +77,11 @@ public class TETrack {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -113,7 +113,7 @@ public class TETrack {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TETrackClef foundEnumValue = null;
             for (TETrackClef enumValue : values())
             {
@@ -121,11 +121,11 @@ public class TETrack {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }

@@ -30,30 +30,30 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectBend;
 
 public class PTSongParser {
-	
+
 	private TGSongManager manager;
 	private TrackHelper helper;
-	
+
 	public PTSongParser(TGFactory factory){
 		this.manager = new TGSongManager(factory);
 		this.helper = new TrackHelper();
 	}
-	
+
 	public TGSong parseSong(PTSong src){
 		PTSong song = new PTSong();
 		PTSongSynchronizerUtil.synchronizeTracks(src, song);
-		
+
 		TGSong tgSong = this.manager.getFactory().newSong();
-		
+
 		this.parseTrack(tgSong, song.getTrack1());
 		this.parseTrack(tgSong, song.getTrack2());
 		this.parseProperties(tgSong, song.getInfo());
-		
+
 		this.manager.orderBeats(tgSong);
-		
+
 		return tgSong;
 	}
-	
+
 	private void parseProperties(TGSong tgSong, PTSongInfo info){
 		if( info.getName() != null ){
 			tgSong.setName( info.getName() );
@@ -71,7 +71,7 @@ public class PTSongParser {
 			tgSong.setWriter( info.getArrenger() );
 		}
 		if( info.getGuitarTranscriber() != null || info.getBassTranscriber() != null ){
-			String transcriber = new String(); 
+			String transcriber = new String();
 			if(info.getGuitarTranscriber() != null ){
 				transcriber += info.getGuitarTranscriber();
 			}
@@ -84,7 +84,7 @@ public class PTSongParser {
 			tgSong.setTranscriber( transcriber );
 		}
 		if( info.getGuitarInstructions() != null || info.getBassInstructions() != null ){
-			String comments = new String(); 
+			String comments = new String();
 			if(info.getGuitarInstructions() != null ){
 				comments += info.getGuitarInstructions();
 			}
@@ -94,30 +94,30 @@ public class PTSongParser {
 			tgSong.setComments( comments );
 		}
 	}
-	
+
 	private void parseTrack(TGSong tgSong, PTTrack track){
 		this.helper.reset( track.getDefaultInfo() );
-		
+
 		long start = TGDuration.QUARTER_TIME;
 		for( int sIndex = 0; sIndex < track.getSections().size(); sIndex ++){
 			PTSection section = (PTSection) track.getSections().get(sIndex);
 			section.sort();
-			
+
 			//calculo el siguiente start del compas
 			this.helper.getStartHelper().init(section.getNumber(),section.getStaffs());
 			this.helper.getStartHelper().initVoices(start);
-			
+
 			//parseo las posiciones
 			for( int pIndex = 0; pIndex < section.getPositions().size(); pIndex ++){
 				PTPosition position = (PTPosition)section.getPositions().get(pIndex);
 				parsePosition(tgSong, track, position);
 			}
-			
+
 			//Calculo el start para la proxima seccion
 			start = this.helper.getStartHelper().getMaxStart();
 		}
 	}
-	
+
 	private void parsePosition(TGSong tgSong, PTTrack track,PTPosition position){
 		for(int i = 0; i < position.getComponents().size(); i ++){
 			PTComponent component = (PTComponent)position.getComponents().get(i);
@@ -135,25 +135,25 @@ public class PTSongParser {
 			}
 		}
 	}
-	
+
 	private void parseBar(PTBar bar){
 		this.helper.getStartHelper().initVoices( this.helper.getStartHelper().getMaxStart() );
-		
+
 		if(bar.getNumerator() > 0 && bar.getDenominator() > 0 ){
 			this.helper.getStartHelper().setBarStart( this.helper.getStartHelper().getMaxStart() );
 			this.helper.getStartHelper().setBarLength((long)(bar.getNumerator() *( TGDuration.QUARTER_TIME * ( 4.0f / bar.getDenominator()))));
 		}
 	}
-	
+
 	private void parseGuitarIn(TGSong tgSong, PTTrack track,PTGuitarIn guitarIn){
 		PTTrackInfo info = track.getInfo(guitarIn.getTrackInfo());
 		if(info != null){
-			
+
 			// Remove used tracks after guitarIn staff.
 			while( this.helper.getInfoHelper().countStaffTracks() > guitarIn.getStaff() ){
 				this.helper.getInfoHelper().removeStaffTrack( this.helper.getInfoHelper().countStaffTracks() - 1 );
 			}
-			
+
 			// If track was already created, but it's not in use
 			Iterator<TGTrack> it = tgSong.getTracks();
 			while( it.hasNext() ){
@@ -172,36 +172,36 @@ public class PTSongParser {
 					}
 				}
 			}
-			
+
 			// Create track if not exists.
 			this.createTrack(tgSong, info);
 		}
 	}
-	
+
 	private void parseTempo(TGSong tgSong, PTTempo tempo){
 		TGMeasure measure = getMeasure(tgSong, 1,this.helper.getStartHelper().getMaxStart());
 		measure.getTempo().setQuarterValue( tempo.getTempo() );
 		measure.getHeader().setTripletFeel(tempo.getTripletFeel());
 	}
-	
+
 	private void parseBeat(TGSong tgSong, PTBeat beat){
 		if(beat.isGrace()){
 			//TODO: agrear el efecto a las notas del siguiente beat
 			return;
 		}
-		
+
 		if( beat.getMultiBarRest() > 1){
 			// Multibar Rests, must always have measure duration.
 			long start = this.helper.getStartHelper().getBarStart();
 			long duration = (beat.getMultiBarRest() * this.helper.getStartHelper().getBarLength());
-			
+
 			this.helper.getStartHelper().setVoiceStart(beat.getStaff(),beat.getVoice(),(start + duration));
-			
+
 			return ;
 		}
-		
+
 		long start = this.helper.getStartHelper().getVoiceStart(beat.getStaff(),beat.getVoice());
-		
+
 		TGMeasure measure = getMeasure(tgSong, getStaffTrack(tgSong, beat.getStaff()) , start );
 		TGBeat tgBeat = getBeat(measure, start);
 		TGVoice tgVoice = tgBeat.getVoice(beat.getVoice());
@@ -211,7 +211,7 @@ public class PTSongParser {
 		tgVoice.getDuration().setDoubleDotted(beat.isDoubleDotted());
 		tgVoice.getDuration().getDivision().setTimes(beat.getTimes());
 		tgVoice.getDuration().getDivision().setEnters(beat.getEnters());
-		
+
 		Iterator<PTNote> it = beat.getNotes().iterator();
 		while(it.hasNext()){
 			PTNote ptNote = (PTNote)it.next();
@@ -228,7 +228,7 @@ public class PTSongParser {
 				tgVoice.addNote(note);
 			}
 		}
-		
+
 		if( beat.isArpeggioUp() ){
 			tgBeat.getStroke().setDirection( TGStroke.STROKE_DOWN );
 			tgBeat.getStroke().setValue( TGDuration.SIXTEENTH );
@@ -236,18 +236,18 @@ public class PTSongParser {
 			tgBeat.getStroke().setDirection( TGStroke.STROKE_UP );
 			tgBeat.getStroke().setValue( TGDuration.SIXTEENTH );
 		}
-		
+
 		this.helper.getStartHelper().checkBeat( tgVoice.isRestVoice() );
-		
+
 		// If it's a rest measure, duration must fill the measure.
 		long duration = tgVoice.getDuration().getTime();
-		
+
 		if(tgVoice.isRestVoice() && tgBeat.getStart() == this.helper.getStartHelper().getBarStart() && duration > this.helper.getStartHelper().getBarLength()){
 			duration = this.helper.getStartHelper().getBarLength();
 		}
 		this.helper.getStartHelper().setVoiceStart(beat.getStaff(),beat.getVoice(),(tgBeat.getStart() + duration));
 	}
-	
+
 	private TGEffectBend makeBend(int value){
 		if(value >= 1 && value <= 8){
 			TGEffectBend bend = this.manager.getFactory().newEffectBend();
@@ -298,11 +298,11 @@ public class PTSongParser {
 		}
 		return null;
 	}
-	
+
 	private TGMeasure getMeasure(TGSong tgSong, int trackNumber,long start){
 		return getMeasure(tgSong, getTrack(tgSong, trackNumber) , start);
 	}
-	
+
 	private TGMeasure getMeasure(TGSong tgSong, TGTrack track,long start){
 		TGMeasure measure = null;
 		while( (measure = this.manager.getTrackManager().getMeasureAt(track, start)) == null){
@@ -310,7 +310,7 @@ public class PTSongParser {
 		}
 		return measure;
 	}
-	
+
 	private TGTrack getTrack(TGSong tgSong, int number){
 		TGTrack track = null;
 		while( (track = this.manager.getTrack(tgSong, number)) == null){
@@ -318,30 +318,30 @@ public class PTSongParser {
 		}
 		return track;
 	}
-	
+
 	public TGTrack getStaffTrack(TGSong tgSong, int staff){
 		TGTrack track = this.helper.getInfoHelper().getStaffTrack( staff );
 		return ( track != null ? track : createTrack(tgSong) );
 	}
-	
+
 	private TGTrack createTrack(TGSong tgSong){
 		return createTrack(tgSong, this.helper.getInfoHelper().getDefaultInfo());
 	}
-	
+
 	private TGTrack createTrack(TGSong tgSong, PTTrackInfo info){
 		TGTrack track = this.manager.addTrack(tgSong);
 		this.helper.getInfoHelper().addStaffTrack( track );
 		this.setTrackInfo(tgSong, track, info );
 		return track;
 	}
-	
+
 	private void setTrackInfo(TGSong tgSong, TGTrack tgTrack , PTTrackInfo info){
 		TGChannel tgChannel = this.manager.addChannel(tgSong);
 		tgChannel.setProgram((short) info.getInstrument() );
 		tgChannel.setVolume((short) info.getVolume() );
 		tgChannel.setBalance((short) info.getBalance() );
 		tgChannel.setName(this.manager.createChannelNameFromProgram(tgSong, tgChannel));
-		
+
 		tgTrack.setName( info.getName() );
 		tgTrack.setChannelId(tgChannel.getChannelId());
 		tgTrack.getStrings().clear();
@@ -352,7 +352,7 @@ public class PTSongParser {
 			tgTrack.getStrings().add(string);
 		}
 	}
-	
+
 	private boolean hasSameInfo(TGSong tgSong, TGTrack track , PTTrackInfo info){
 		TGChannel tgChannel = this.manager.getChannel(tgSong, track.getChannelId());
 		if( tgChannel == null ){
@@ -380,7 +380,7 @@ public class PTSongParser {
 		}
 		return true;
 	}
-	
+
 	private TGBeat getBeat(TGMeasure measure, long start){
 		int count = measure.countBeats();
 		for(int i = 0 ; i < count ; i ++ ){

@@ -10,7 +10,7 @@ public class TGBrowserFragmentController extends TGCachedFragmentController<TGBr
 	public TGBrowserFragment createNewInstance() {
 		return new TGBrowserFragment();
 	}
-	
+
 	public static TGBrowserFragmentController getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGBrowserFragmentController.class.getName(), new TGSingletonFactory<TGBrowserFragmentController>() {
 			public TGBrowserFragmentController createInstance(TGContext context) {

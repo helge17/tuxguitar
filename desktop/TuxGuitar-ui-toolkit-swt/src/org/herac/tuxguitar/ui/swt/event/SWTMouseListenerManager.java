@@ -14,43 +14,43 @@ import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMouseListenerManager implements MouseListener {
-	
+
 	private SWTEventReceiver<?> control;
 	private UIMouseUpListenerManager mouseUpListener;
 	private UIMouseDownListenerManager mouseDownListener;
 	private UIMouseDoubleClickListenerManager mouseDoubleClickListener;
-	
+
 	public SWTMouseListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 		this.mouseUpListener = new UIMouseUpListenerManager();
 		this.mouseDownListener = new UIMouseDownListenerManager();
 		this.mouseDoubleClickListener = new UIMouseDoubleClickListenerManager();
 	}
-	
+
 	public boolean isEmpty() {
 		return (this.mouseUpListener.isEmpty() && this.mouseDownListener.isEmpty() && this.mouseDoubleClickListener.isEmpty());
 	}
-	
+
 	public void addListener(UIMouseUpListener listener) {
 		this.mouseUpListener.addListener(listener);
 	}
-	
+
 	public void addListener(UIMouseDownListener listener) {
 		this.mouseDownListener.addListener(listener);
 	}
-	
+
 	public void addListener(UIMouseDoubleClickListener listener) {
 		this.mouseDoubleClickListener.addListener(listener);
 	}
-	
+
 	public void removeListener(UIMouseUpListener listener) {
 		this.mouseUpListener.removeListener(listener);
 	}
-	
+
 	public void removeListener(UIMouseDownListener listener) {
 		this.mouseDownListener.removeListener(listener);
 	}
-	
+
 	public void removeListener(UIMouseDoubleClickListener listener) {
 		this.mouseDoubleClickListener.removeListener(listener);
 	}

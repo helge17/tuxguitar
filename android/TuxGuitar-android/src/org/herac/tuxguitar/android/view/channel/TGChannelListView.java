@@ -20,17 +20,17 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class TGChannelListView extends RelativeLayout {
-	
+
 	private TGChannelActionHandler actionHandler;
 	private TGProcess updateItemsProcess;
-	
+
 	public TGChannelListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		this.actionHandler = new TGChannelActionHandler(this);
 		this.createSyncProcesses();
 	}
-	
+
 	public void onFinishInflate() {
 		this.fillListView();
 		this.addListeners();
@@ -41,11 +41,11 @@ public class TGChannelListView extends RelativeLayout {
 		ListView listView = (ListView) findViewById(R.id.channel_list_items);
 		listView.setAdapter(new TGChannelListAdapter(this));
 	}
-	
+
 	public void addListeners() {
 		TGEditorManager.getInstance(this.findContext()).addUpdateListener(new TGChannelEventListener(this));
 	}
-	
+
 	public void updateItems() {
 		List<TGChannel> channels = new ArrayList<TGChannel>();
 		TGDocumentManager documentManager = TGDocumentManager.getInstance(this.findContext());
@@ -57,19 +57,19 @@ public class TGChannelListView extends RelativeLayout {
 		}
 		this.refreshListView(channels);
 	}
-	
+
 	public void refreshListView(List<TGChannel> channels) {
 		ListView listView = (ListView) findViewById(R.id.channel_list_items);
-		
+
 		TGChannelListAdapter tgChannelListAdapter = ((TGChannelListAdapter) listView.getAdapter());
 		tgChannelListAdapter.setChannels(channels);
 		tgChannelListAdapter.notifyDataSetChanged();
 	}
-	
+
 	public void fireUpdateProcess() {
 		this.updateItemsProcess.process();
 	}
-	
+
 	public TGContext findContext() {
 		return TGApplicationUtil.findContext(this);
 	}
@@ -81,7 +81,7 @@ public class TGChannelListView extends RelativeLayout {
 	public TGChannelActionHandler getActionHandler() {
 		return actionHandler;
 	}
-	
+
 	public void createSyncProcesses() {
 		this.updateItemsProcess = new TGSyncProcessLocked(this.findContext(), new Runnable() {
 			public void run() {

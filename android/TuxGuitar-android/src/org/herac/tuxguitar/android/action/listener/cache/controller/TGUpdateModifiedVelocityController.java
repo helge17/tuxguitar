@@ -13,17 +13,17 @@ public class TGUpdateModifiedVelocityController extends TGUpdateItemsController 
 	public TGUpdateModifiedVelocityController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(final TGContext context, TGActionContext actionContext) {
 		if( Boolean.TRUE.equals( actionContext.getAttribute(TGChangeVelocityAction.ATTRIBUTE_SUCCESS)) ) {
 			final Integer velocity = (Integer) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY);
 			final TGMeasureHeader header = (TGMeasureHeader) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-			
+
 			if( header != null ) {
 				this.findUpdateBuffer(context).requestUpdateMeasure(header.getNumber());
 			}
-			
+
 			this.findUpdateBuffer(context).doPostUpdate(new Runnable() {
 				public void run() {
 					TGCaret tgCaret = TGSongViewController.getInstance(context).getCaret();
@@ -31,7 +31,7 @@ public class TGUpdateModifiedVelocityController extends TGUpdateItemsController 
 				}
 			});
 		}
-		
+
 		// Call super update.
 		super.update(context, actionContext);
 	}

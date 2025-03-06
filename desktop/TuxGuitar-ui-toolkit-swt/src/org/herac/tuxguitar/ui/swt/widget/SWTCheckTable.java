@@ -9,17 +9,17 @@ import org.herac.tuxguitar.ui.widget.UICheckTable;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
 public class SWTCheckTable<T> extends SWTTable<T> implements UICheckTable<T> {
-	
+
 	public static final int CHECK_TABLE_STYLE = (TABLE_STYLE | SWT.CHECK);
-	
+
 	private SWTCheckTableSelectionListenerManager<T> selectionListener;
-	
+
 	public SWTCheckTable(SWTContainer<? extends Composite> parent, boolean headerVisible) {
 		super(parent, headerVisible, CHECK_TABLE_STYLE);
-		
+
 		this.selectionListener = new SWTCheckTableSelectionListenerManager<T>(this);
 	}
-	
+
 	public boolean isCheckedValue(T value) {
 		return this.isCheckedItem(new UITableItem<T>(value));
 	}
@@ -42,7 +42,7 @@ public class SWTCheckTable<T> extends SWTTable<T> implements UICheckTable<T> {
 			tableItem.setChecked(checked);
 		}
 	}
-	
+
 	public void addCheckSelectionListener(UICheckTableSelectionListener<T> listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().addSelectionListener(this.selectionListener);

@@ -12,12 +12,12 @@ import org.herac.tuxguitar.ui.swt.menu.SWTPopupMenu;
 import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class SWTToolMenuItem extends SWTToolItem implements UIToolMenuItem {
-	
+
 	private UIPopupMenu menu;
-	
+
 	public SWTToolMenuItem(ToolItem item, SWTToolBar parent) {
 		super(item, parent);
-		
+
 		this.menu = new SWTPopupMenu(this.getParent().getControl().getShell());
 		this.getControl().addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -29,11 +29,11 @@ public class SWTToolMenuItem extends SWTToolItem implements UIToolMenuItem {
 	public UIMenu getMenu() {
 		return this.menu;
 	}
-	
+
 	public void openMenu() {
 		Rectangle rect = this.getControl().getBounds();
 		Point pt = this.getControl().getParent().toDisplay(new Point(rect.x, rect.y));
-		
+
 		this.menu.open(new UIPosition(pt.x, pt.y + rect.height));
 	}
 }

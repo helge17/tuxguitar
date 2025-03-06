@@ -11,23 +11,23 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
 public abstract class ActionDialog extends TGActionBase {
-	
+
 	public static final int DEFAULT_MARGIN = 2;
-	
+
 	public static final int BUTTON_WIDTH = 80;
 	public static final int BUTTON_HEIGHT = 35;
-	
+
 	public static final int H_GAP = 5;
 	public static final int V_GAP = 5;
-	
+
 	private JFrame dialog;
-	
+
 	public ActionDialog(TGContext context, String name) {
 		super(context, name);
 	}
-	
+
 	protected abstract void openDialog(TGActionContext context);
-	
+
 	protected void processAction(TGActionContext context) {
 		if( this.dialog != null && this.dialog.isDisplayable() ){
 			this.dialog.toFront();
@@ -35,7 +35,7 @@ public abstract class ActionDialog extends TGActionBase {
 			this.openDialog(context);
 		}
 	}
-	
+
 	protected JFrame createDialog(){
 		this.dialog = new JFrame();
 		this.dialog.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
@@ -46,19 +46,19 @@ public abstract class ActionDialog extends TGActionBase {
 		} );
 		return this.dialog;
 	}
-	
+
 	protected GridBagConstraints getConstraints(int column, int row, float weightx, float weighty, int fill ){
 		return getConstraints(column, row, weightx, weighty, fill, 1);
 	}
-	
+
 	protected GridBagConstraints getConstraints(int column, int row, float weightx, float weighty, int fill , int colspan){
 		return getConstraints(column, row, weightx, weighty, fill, colspan, 1);
 	}
-	
+
 	protected GridBagConstraints getConstraints(int column, int row, float weightx, float weighty, int fill , int colspan, int rowspan){
 		return getConstraints(column, row, weightx, weighty, fill, colspan, rowspan, DEFAULT_MARGIN);
 	}
-	
+
 	protected GridBagConstraints getConstraints(int column, int row, float weightx, float weighty, int fill , int colspan, int rowspan, int margin){
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = fill;

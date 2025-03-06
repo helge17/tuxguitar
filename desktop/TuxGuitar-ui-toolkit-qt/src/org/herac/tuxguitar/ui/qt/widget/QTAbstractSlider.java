@@ -5,15 +5,15 @@ import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
 import io.qt.widgets.QAbstractSlider;
 
 public class QTAbstractSlider<T extends QAbstractSlider> extends QTWidget<T> {
-	
+
 	private QTSelectionListenerManager selectionListener;
-	
+
 	public QTAbstractSlider(T control, QTContainer parent) {
 		super(control, parent);
-		
+
 		this.selectionListener = new QTSelectionListenerManager(this);
 	}
-	
+
 	public void setValue(int value) {
 		this.getControl().setValue(value);
 	}
@@ -45,15 +45,15 @@ public class QTAbstractSlider<T extends QAbstractSlider> extends QTWidget<T> {
 	public int getIncrement() {
 		return this.getControl().singleStep();
 	}
-	
+
 	public void setThumb(int thumb) {
 		this.getControl().setPageStep(thumb);
 	}
-	
+
 	public int getThumb() {
 		return this.getControl().pageStep();
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().valueChanged.connect(this.selectionListener, QTSelectionListenerManager.SIGNAL_METHOD);

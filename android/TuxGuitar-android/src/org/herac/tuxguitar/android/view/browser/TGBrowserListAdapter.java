@@ -32,12 +32,12 @@ public class TGBrowserListAdapter extends BaseAdapter {
 	public void clearElements() {
 		this.elements.clear();
 	}
-	
+
 	public void fillElements(List<TGBrowserElement> elements) {
 		this.clearElements();
 		this.elements.addAll(elements);
 	}
-	
+
 	@Override
 	public int getCount() {
 		return this.elements.size();
@@ -56,18 +56,18 @@ public class TGBrowserListAdapter extends BaseAdapter {
 	public LayoutInflater getLayoutInflater() {
 		return (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TGBrowserElement element = this.elements.get(position);
-		
+
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_browser_element, parent, false));
 		view.setTag(element);
-		
+
 		try {
 			TextView textView = (TextView) view.findViewById(R.id.tg_browser_element_name);
 			textView.setText(element.getName());
-			
+
 			Drawable elementIcon = this.findElementIcon(element);
 			if( elementIcon != null ) {
 				ImageView imageView = (ImageView) view.findViewById(R.id.tg_browser_element_icon);
@@ -78,7 +78,7 @@ public class TGBrowserListAdapter extends BaseAdapter {
 		}
 		return view;
 	}
-	
+
 	public Drawable findElementIcon(TGBrowserElement element) throws TGBrowserException {
 		Integer style = (element.isFolder() ? R.style.browserElementIconFolderStyle : R.style.browserElementIconFileStyle);
 		TypedArray typedArray = this.context.obtainStyledAttributes(style, new int[] {android.R.attr.src});

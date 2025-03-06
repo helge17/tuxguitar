@@ -55,10 +55,10 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConnectionHandler,TGEventListener{
-	
+
 	private static final int SHELL_WIDTH = 500;
 	private static final int SHELL_HEIGHT = 350;
-	
+
 	private TGContext context;
 	private TGBrowserCollection collection;
 	private TGBrowserConnection connection;
@@ -68,14 +68,14 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 	private TGBrowserMenuBar menu;
 	private TGBrowserToolBar toolBar;
 	private TGCursorController cursorController;
-	
+
 	public TGBrowserDialog(TGContext context){
 		this.context = context;
 		this.connection = new TGBrowserConnection(context, this);
 		this.menu = new TGBrowserMenuBar(this);
 		this.toolBar = new TGBrowserToolBar(this);
 	}
-	
+
 	public TGContext getContext() {
 		return context;
 	}
@@ -83,68 +83,68 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 	public TGBrowserConnection getConnection(){
 		return this.connection;
 	}
-	
+
 	public TGBrowserCollection getCollection() {
 		return this.collection;
 	}
-	
+
 	public void setCollection(TGBrowserCollection collection) {
 		this.collection = collection;
 	}
-	
+
 	public UIWindow getWindow(){
 		return this.dialog;
 	}
-	
+
 	public void exit(){
 		this.closeCollection(true);
-		
+
 		TGBrowserManager.getInstance(this.context).writeCollections();
 		TGSkinManager.getInstance(this.context).removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 	}
-	
+
 	public void show() {
 		this.collection = null;
 		this.elements = null;
-		
+
 		this.dialog = getUIFactory().createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-		
+
 		this.menu.createMenuBar(getWindow());
 		this.toolBar.createToolBar(getWindow());
 		this.initTable(this.dialog);
 		this.createLayout();
-		
+
 		this.updateCollections(null);
 		this.updateTable();
-		
+
 		this.dialog.setBounds(new UIRectangle(0, 0, SHELL_WIDTH,SHELL_HEIGHT));
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				exit();
 			}
 		});
-		
+
 		this.loadProperties();
 		this.updateBars();
-		
+
 		TGBrowserManager.getInstance(this.context).setFactoryHandler(this);
 		TGSkinManager.getInstance(this.context).addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
-	
+
 	public void createLayout() {
 		UITableLayout uiLayout = new UITableLayout();
 		uiLayout.set(this.toolBar.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, null, null, 0f);
 		uiLayout.set(this.table, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		uiLayout.set(this.table, UITableLayout.PACKED_WIDTH, 10f);
 		uiLayout.set(this.table, UITableLayout.PACKED_HEIGHT, 10f);
-		
+
 		this.dialog.setLayout(uiLayout);
 	}
-	
+
 	public void initTable(UIContainer parent){
 		this.table = getUIFactory().createTable(parent, false);
 		this.table.setColumns(1);
@@ -154,17 +154,17 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}
 		});
 	}
-	
+
 	public boolean isDisposed(){
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
-	
+
 	public void dispose(){
 		if(!isDisposed()){
 			this.dialog.dispose();
 		}
 	}
-	
+
 	public void updateTable(){
 		if(!isDisposed()){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -176,7 +176,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 							while(it.hasNext()){
 								TGBrowserElement element = it.next();
 								TGIconManager iconManager = TGIconManager.getInstance(TGBrowserDialog.this.context);
-								
+
 								UITableItem<TGBrowserElement> item = new UITableItem<TGBrowserElement>(element);
 								item.setImage(element.isFolder() ? iconManager.getBrowserFolder(): iconManager.getBrowserFile());
 								item.setText(0, element.getName());
@@ -188,14 +188,14 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			});
 		}
 	}
-	
+
 	public void updateBars(){
 		if(!isDisposed()){
 			this.menu.updateItems();
 			this.toolBar.updateItems();
 		}
 	}
-	
+
 	public void updateBarsLater(){
 		if(!this.isDisposed()){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -205,7 +205,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			});
 		}
 	}
-	
+
 	public void updateCollections(final TGBrowserCollection selection){
 		if(!isDisposed()){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -218,15 +218,15 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			});
 		}
 	}
-	
+
 	public void removeElements(){
 		this.elements = null;
 	}
-	
+
 	public void addElements(List<TGBrowserElement> elements){
 		this.elements = elements;
 	}
-	
+
 	public void removeCollection(TGBrowserCollection collection){
 		if(collection != null){
 			TGBrowserManager.getInstance(this.context).removeCollection(collection);
@@ -237,7 +237,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}
 		}
 	}
-	
+
 	public void openCollection(){
 		if(!isDisposed() && getCollection() != null){
 			TGBrowserFactory tgBrowserFactory = TGBrowserManager.getInstance(this.context).getFactory(getCollection().getType());
@@ -250,7 +250,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 							}
 						}, browser);
 					}
-					
+
 					public void handleError(Throwable throwable) {
 						TGBrowserDialog.this.notifyError(throwable);
 					}
@@ -260,11 +260,11 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}
 		}
 	}
-	
+
 	public void closeCollection() {
 		this.closeCollection(false);
 	}
-	
+
 	public void closeCollection(boolean force) {
 		if((!this.isDisposed() || force) && getCollection() != null) {
 			this.getConnection().close(new TGAbstractBrowserCallBack<Object>() {
@@ -274,7 +274,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}, force);
 		}
 	}
-	
+
 	public void cdRoot() {
 		if(!this.isDisposed()) {
 			this.getConnection().cdRoot(new TGAbstractBrowserCallBack<Object>() {
@@ -284,7 +284,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			});
 		}
 	}
-	
+
 	public void cdUp() {
 		if(!this.isDisposed()) {
 			this.getConnection().cdUp(new TGAbstractBrowserCallBack<Object>() {
@@ -294,7 +294,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			});
 		}
 	}
-	
+
 	public void cdElement(final TGBrowserElement element) {
 		if(!this.isDisposed()) {
 			this.getConnection().cdElement(new TGAbstractBrowserCallBack<Object>() {
@@ -304,7 +304,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}, element);
 		}
 	}
-	
+
 	public void listElements() {
 		if(!this.isDisposed()) {
 			this.getConnection().listElements(new TGAbstractBrowserCallBack<List<TGBrowserElement>>() {
@@ -314,7 +314,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			});
 		}
 	}
-	
+
 	public void openStream(final TGBrowserElement element) {
 		if(!this.isDisposed()) {
 			this.getConnection().openStream(new TGAbstractBrowserCallBack<InputStream>() {
@@ -324,7 +324,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}, element);
 		}
 	}
-	
+
 	public void openElement() {
 		if(!this.isDisposed() && this.getConnection().isOpen()) {
 			TGBrowserElement element = this.table.getSelectedValue();
@@ -337,7 +337,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}
 		}
 	}
-	
+
 	public void onOpenCollection() {
 		if(!this.isDisposed()) {
 			this.removeElements();
@@ -346,7 +346,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.listElements();
 		}
 	}
-	
+
 	public void onCloseCollection() {
 		if(!this.isDisposed()) {
 			this.setCollection(null);
@@ -355,23 +355,23 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.updateTable();
 		}
 	}
-	
+
 	public void onCd() {
 		if(!this.isDisposed()) {
 			this.listElements();
 		}
 	}
-	
+
 	public void notifyElements(List<TGBrowserElement> elements) {
 		if(!this.isDisposed()) {
 			this.addElements(elements);
 			this.updateTable();
 		}
 	}
-	
+
 	public void onOpenStream(final InputStream stream, final TGBrowserElement element) {
 		loadCursor(UICursor.WAIT);
-		
+
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadSongAction.NAME);
 		tgActionProcessor.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
 		tgActionProcessor.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(element.getName()));
@@ -384,13 +384,13 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
 			public void handleError(Throwable throwable) {
 				loadCursor(UICursor.NORMAL);
-				
+
 				TGMessageDialogUtil.errorMessage(getContext(), getWindow(), TuxGuitar.getProperty("file.open.error", new String[]{element.getName()}));
 			}
 		});
 		tgActionProcessor.process();
 	}
-	
+
 	public URI createElementURI(TGBrowserElement element) {
 		try {
 			return new URI("browser:///" + URLEncoder.encode(element.getName(), "UTF-8"));
@@ -400,14 +400,14 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			throw new TGException(e);
 		}
 	}
-	
+
 	public void loadIcons() {
 		if(!isDisposed()){
 			this.getWindow().setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 			this.reload();
 		}
 	}
-	
+
 	public void loadProperties() {
 		if(!isDisposed()){
 			this.dialog.setText(TuxGuitar.getProperty("browser.dialog"));
@@ -415,7 +415,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.toolBar.loadProperties();
 		}
 	}
-	
+
 	public void loadCursor(UICursor cursor) {
 		if(!this.isDisposed()) {
 			if( this.cursorController == null || !this.cursorController.isControlling(this.dialog) ) {
@@ -424,13 +424,13 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.cursorController.loadCursor(cursor);
 		}
 	}
-	
+
 	public void notifyAdded() {
 		if(!this.isDisposed()){
 			this.reload();
 		}
 	}
-	
+
 	public void notifyRemoved() {
 		if(!this.isDisposed()){
 			if( this.getCollection() != null){
@@ -439,22 +439,22 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.reload();
 		}
 	}
-	
+
 	public void notifyLockStatusChanged() {
 		if(!this.isDisposed()){
 			this.updateBarsLater();
 			this.loadCursor(getConnection().isLocked() ? UICursor.WAIT : UICursor.NORMAL);
 		}
 	}
-	
+
 	public void notifyError(Throwable throwable){
 		if(!this.isDisposed()){
 			this.updateTable();
-			
+
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public void reload(){
 		if(!isDisposed()){
 			this.menu.reload(getWindow());
@@ -469,7 +469,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context).getFactory();
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIcons();
@@ -478,7 +478,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.loadProperties();
 		}
 	}
-	
+
 	public static TGBrowserDialog getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGBrowserDialog.class.getName(), new TGSingletonFactory<TGBrowserDialog>() {
 			public TGBrowserDialog createInstance(TGContext context) {
@@ -486,9 +486,9 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			}
 		});
 	}
-	
+
 	private abstract class TGAbstractBrowserCallBack<T> implements TGBrowserCallBack<T> {
-		
+
 		public void handleError(Throwable throwable) {
 			TGBrowserDialog.this.notifyError(throwable);
 		}

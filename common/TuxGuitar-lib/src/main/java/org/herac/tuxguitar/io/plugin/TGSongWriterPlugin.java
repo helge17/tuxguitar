@@ -7,15 +7,15 @@ import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGSongWriterPlugin implements TGPlugin{
-	
+
 	private TGSongWriter stream;
-	
+
 	protected abstract TGSongWriter createOutputStream(TGContext context) throws TGPluginException ;
-	
+
 	public void connect(TGContext context) throws TGPluginException {
 		try {
 			TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(context);
-			
+
 			if( this.stream == null ) {
 				this.stream = createOutputStream(context);
 				fileFormatManager.addWriter(this.stream);
@@ -24,11 +24,11 @@ public abstract class TGSongWriterPlugin implements TGPlugin{
 			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
-	
+
 	public void disconnect(TGContext context) throws TGPluginException {
 		try {
 			TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(context);
-			
+
 			if( this.stream != null ) {
 				fileFormatManager.removeWriter(this.stream);
 				this.stream = null;

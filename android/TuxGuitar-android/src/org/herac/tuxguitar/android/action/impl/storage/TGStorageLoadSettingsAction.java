@@ -12,7 +12,7 @@ public class TGStorageLoadSettingsAction extends TGActionBase{
 	public TGStorageLoadSettingsAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGStorageManager.getInstance(getContext()).loadSettings();
 	}

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGDriveBrowserFactory implements TGBrowserFactory{
-	
+
 	public static final String BROWSER_TYPE = "google-drive";
 	public static final String BROWSER_NAME = "Google Drive";
 
@@ -21,19 +21,19 @@ public class TGDriveBrowserFactory implements TGBrowserFactory{
 	};
 
 	private TGContext context;
-	
+
 	public TGDriveBrowserFactory(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public String getType(){
 		return BROWSER_TYPE;
 	}
-	
+
 	public String getName(){
 		return BROWSER_NAME;
 	}
-	
+
 	public void createBrowser(final TGBrowserFactoryHandler handler, final TGBrowserSettings data) {
 		this.runWithPermissions(new Runnable() {
 			public void run() {

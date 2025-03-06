@@ -20,15 +20,15 @@ public class TGPropertiesAdapter {
 		addWriter(context, TGTransportProperties.RESOURCE, createSharedPreferencesWriter(activity, TGTransportProperties.MODULE, TGTransportProperties.RESOURCE));
 		addReader(context, TGConfigManager.RESOURCE, new TGResourcePropertiesReader(context, null, null));
 	}
-	
+
 	public static void addFactory(TGContext context) {
 		TGPropertiesManager.getInstance(context).setPropertiesFactory(new TGPropertiesFactoryImpl());
 	}
-	
+
 	public static void addReader(TGContext context, String resource, TGPropertiesReader reader) {
 		TGPropertiesManager.getInstance(context).addPropertiesReader(resource, reader);
 	}
-	
+
 	public static void addWriter(TGContext context, String resource, TGPropertiesWriter writer) {
 		TGPropertiesManager.getInstance(context).addPropertiesWriter(resource, writer);
 	}

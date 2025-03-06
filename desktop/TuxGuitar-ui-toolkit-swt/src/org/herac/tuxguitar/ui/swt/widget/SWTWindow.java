@@ -16,20 +16,20 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
-	
+
 	private UIImage image;
 	private UIMenuBar menuBar;
 	private SWTCloseListenerManager closeListener;
 	private SWTWindowResizeListener resizeListener;
-	
+
 	public SWTWindow(Shell shell, SWTContainer<? extends Composite> parent) {
 		super(shell, parent);
-		
+
 		this.closeListener = new SWTCloseListenerManager(this);
 		this.resizeListener = new SWTWindowResizeListener(this);
 		this.getControl().addListener (SWT.Resize,  this.resizeListener);
 	}
-	
+
 	public SWTWindow(Display display) {
 		this(new Shell(display), null);
 	}
@@ -37,7 +37,7 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 	public SWTWindow(SWTWindow parent, boolean modal, boolean resizable) {
 		this(new Shell(parent.getControl(), SWT.DIALOG_TRIM | (modal ? SWT.APPLICATION_MODAL : 0) | (resizable ? SWT.RESIZE | SWT.MAX : 0)), parent);
 	}
-	
+
 	public String getText() {
 		return this.getControl().getText();
 	}
@@ -52,10 +52,10 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);
 	}
-	
+
 	public UIMenuBar getMenuBar() {
 		return this.menuBar;
 	}
@@ -64,7 +64,7 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 		this.menuBar = menuBar;
 		this.getControl().setMenuBar(this.menuBar != null ? ((SWTMenu) this.menuBar).getControl() : null);
 	}
-	
+
 	public void open() {
 		this.getControl().open();
 	}
@@ -72,33 +72,33 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 	public void close() {
 		this.getControl().close();
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		this.resizeListener.setBounds(bounds);
 		super.setBounds(bounds);
 	}
-	
+
 	public void minimize() {
 		if((this.getControl().getStyle() & SWT.MIN) != 0) {
 			this.getControl().setMinimized(true);
 		}
 	}
-	
+
 	public void maximize() {
 		if((this.getControl().getStyle() & SWT.MAX) != 0) {
 			this.getControl().setMaximized(true);
 		}
 	}
-	
+
 	public boolean isMaximized() {
 		return this.getControl().getMaximized();
 	}
-	
+
 	public void moveToTop() {
 		this.getControl().setMinimized(false);
 		this.getControl().forceActive();
 	}
-	
+
 	public void addCloseListener(UICloseListener listener) {
 		if( this.closeListener.isEmpty() ) {
 			this.getControl().addShellListener(this.closeListener);
@@ -112,16 +112,16 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 			this.getControl().removeShellListener(this.closeListener);
 		}
 	}
-	
+
 	private class SWTWindowResizeListener implements Listener {
-		
+
 		private UIRectangle bounds;
 		private SWTWindow window;
-		
+
 		public SWTWindowResizeListener(SWTWindow window) {
 			this.window = window;
 		}
-		
+
 		public void handleEvent (Event e) {
 			UIRectangle bounds = this.window.getBounds();
 			if( this.bounds == null || !this.bounds.equals(bounds)) {

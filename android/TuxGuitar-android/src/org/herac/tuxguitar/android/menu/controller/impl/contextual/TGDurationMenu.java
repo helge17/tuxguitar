@@ -27,7 +27,7 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGDurationMenu extends TGMenuBase {
-	
+
 	public TGDurationMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -36,13 +36,13 @@ public class TGDurationMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_duration, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGDuration duration = caret.getDuration();
 		boolean running = MidiPlayer.getInstance(context).isRunning();
-		
+
 		this.initializeItem(menu, R.id.action_set_duration_whole, this.createActionProcessor(TGSetWholeDurationAction.NAME), !running, duration.getValue() == TGDuration.WHOLE);
 		this.initializeItem(menu, R.id.action_set_duration_half, this.createActionProcessor(TGSetHalfDurationAction.NAME), !running, duration.getValue() == TGDuration.HALF);
 		this.initializeItem(menu, R.id.action_set_duration_quarter, this.createActionProcessor(TGSetQuarterDurationAction.NAME), !running, duration.getValue() == TGDuration.QUARTER);
@@ -52,7 +52,7 @@ public class TGDurationMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_set_duration_sixtyfourth, this.createActionProcessor(TGSetSixtyFourthDurationAction.NAME), !running, duration.getValue() == TGDuration.SIXTY_FOURTH);
 		this.initializeItem(menu, R.id.action_set_duration_dotted, this.createActionProcessor(TGChangeDottedDurationAction.NAME), !running, duration.isDotted());
 		this.initializeItem(menu, R.id.action_set_duration_doubledotted, this.createActionProcessor(TGChangeDoubleDottedDurationAction.NAME), !running, duration.isDoubleDotted());
-		
+
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_1, TGDivisionType.NORMAL, duration, running);
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_3, TGDivisionType.DIVISION_TYPES[1], duration, running);
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_5, TGDivisionType.DIVISION_TYPES[2], duration, running);
@@ -64,11 +64,11 @@ public class TGDurationMenu extends TGMenuBase {
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_12, TGDivisionType.DIVISION_TYPES[8], duration, running);
 		this.initializeDivisionItem(menu, R.id.action_set_duration_division_type_13, TGDivisionType.DIVISION_TYPES[9], duration, running);
 	}
-	
+
 	public void initializeDivisionItem(Menu menu, int id, TGDivisionType divisionType, TGDuration duration, boolean running) {
 		this.initializeItem(menu, id, this.createDivisionTypeActionProcessor(divisionType), !running, divisionType.isEqual(duration.getDivision()));
 	}
-	
+
 	public TGActionProcessorListener createDivisionTypeActionProcessor(TGDivisionType divisionType) {
 		TGSongManager tgSongManager = TGDocumentManager.getInstance(this.findContext()).getSongManager();
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGSetDivisionTypeDurationAction.NAME);

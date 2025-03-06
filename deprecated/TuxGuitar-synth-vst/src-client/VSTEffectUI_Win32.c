@@ -21,12 +21,12 @@ LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT message, WP
 void VSTEffectUI_malloc(VSTEffectHandle *effect)
 {
 	if( effect != NULL ) {
-		
+
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) malloc( sizeof(VSTEffectHandleUI) );
-		
+
 		handle->editorOpen = false;
 		handle->editorProcessRunning = false;
-		
+
 		effect->ui = handle;
 	}
 }
@@ -35,7 +35,7 @@ void VSTEffectUI_delete(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ){
 		free ( effect->ui );
-		
+
 		effect->ui = NULL;
 	}
 }
@@ -44,7 +44,7 @@ void VSTEffectUI_openEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
-		
+
 		if( handle->editorOpen != true ){
 			handle->editorOpen = true;
 		}
@@ -55,9 +55,9 @@ void VSTEffectUI_closeEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
-		
+
 		handle->editorOpen = false;
-		
+
 		while(handle->editorProcessRunning == true) {
 			// wait for end...
 		}
@@ -68,7 +68,7 @@ void VSTEffectUI_focusEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
-		
+
 		handle->requestFocus = true;
 	}
 }
@@ -93,7 +93,7 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 		VSTEffectHandleUI *effect_ui = (VSTEffectHandleUI *) effect->ui;
 		if( effect_ui->editorOpen && !effect_ui->editorProcessRunning ) {
 			effect_ui->editorProcessRunning = true;
-			
+
 			HINSTANCE hInstance = (HINSTANCE) GetModuleHandle(NULL);
 			WNDCLASS wc = {};
 			BOOL wcRegistered = GetClassInfo(hInstance, WND_CLASS_NAME, &wc);
@@ -104,7 +104,7 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 				wc.hbrBackground = (HBRUSH)(COLOR_ACTIVECAPTION + 1);
 				wcRegistered = RegisterClass(&wc);
 			}
-			
+
 			if( wcRegistered) {
 				DWORD style = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX);
 				HWND hwnd = CreateWindow(WND_CLASS_NAME, NULL, style, 0, 0, WND_DEFAULT_WIDTH, WND_DEFAULT_HEIGHT, NULL, 0, hInstance, 0);
@@ -115,12 +115,12 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 					SendMessage(hwnd, WM_CREATE_VST_UI, 0, 0);
 					SendMessage(hwnd, WM_SETICON, ICON_BIG, LoadImage(nullptr, WND_ICON_FILE, IMAGE_ICON, 32, 32, LR_LOADFROMFILE));
 					SendMessage(hwnd, WM_SETICON, ICON_SMALL, LoadImage(nullptr, WND_ICON_FILE, IMAGE_ICON, 16, 16, LR_LOADFROMFILE));
-					
+
 					MSG msg;
 					int destroyed = 0;
 					while (GetMessage(&msg, 0, 0, 0)) {
 						DispatchMessage(&msg);
-						
+
 						if(!destroyed && !effect_ui->editorOpen) {
 							destroyed = 1;
 							DestroyWindow(hwnd);
@@ -137,7 +137,7 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 			} else {
 				VSTLogger_log("VSTClient -> could not register class.\n");
 			}
-			
+
 			effect_ui->editorOpen = false;
 			effect_ui->editorProcessRunning = false;
 		} else {
@@ -162,7 +162,7 @@ LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM
 					effect->effect->dispatcher(effect->effect, effGetEffectName, 0, 0, effect_name, 0);
 					strcat(effect_name, " [TuxGuitar]");
 					SetWindowText (hwnd, effect_name);
-					
+
 					effect->effect->dispatcher (effect->effect, effEditOpen, 0, 0, hwnd, 0);
 
 					ERect* eRect = 0;
@@ -179,11 +179,11 @@ LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM
 						if (height < WND_DEFAULT_HEIGHT) {
 							height = WND_DEFAULT_HEIGHT;
 						}
-						
+
 						RECT wRect;
 						SetRect (&wRect, 0, 0, width, height);
 						AdjustWindowRect (&wRect, GetWindowLong (hwnd, GWL_STYLE), FALSE);
-						
+
 						width = wRect.right - wRect.left;
 						height = wRect.bottom - wRect.top;
 						x = ((GetSystemMetrics(SM_CXSCREEN) - width) / 2);
@@ -216,7 +216,7 @@ LRESULT CALLBACK VSTEffectHandleUI_editorHwndProcess(HWND hwnd, UINT msg, WPARAM
 					effect->effect->dispatcher (effect->effect, effEditClose, 0, 0, 0, 0);
 				}
 			}
-			
+
 			PostQuitMessage(0);
 		} break;
 	}

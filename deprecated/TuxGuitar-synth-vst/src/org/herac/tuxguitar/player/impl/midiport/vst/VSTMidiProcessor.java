@@ -6,11 +6,11 @@ import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
 public class VSTMidiProcessor extends VSTAudioProcessor implements TGMidiProcessor {
-	
+
 	public VSTMidiProcessor(TGContext context) {
 		super(context);
 	}
-	
+
 	@Override
 	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) {
 		this.queueMidiMessage(new byte[] {(byte) ShortMessage.NOTE_ON, (byte) 0, (byte) key, (byte) velocity});

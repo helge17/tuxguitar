@@ -5,15 +5,15 @@ import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGTrayPlugin implements TGPlugin {
-	
+
 	public static final String MODULE_ID = "tuxguitar-tray";
-	
+
 	private TGTray tray;
-	
+
 	public TGTrayPlugin(){
 		super();
 	}
-	
+
 	public String getModuleId(){
 		return MODULE_ID;
 	}

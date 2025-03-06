@@ -6,14 +6,14 @@ import java.util.List;
 import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TGBeatGroup {
-	
+
 	public static final int DIRECTION_NOT_SET = 0;
 	public static final int DIRECTION_UP = 1;
 	public static final int DIRECTION_DOWN = 2;
-	
+
 	private static final int UP_OFFSET = 28;
 	private static final int DOWN_OFFSET = 35;
-	
+
 	private int voice;
 	private int direction;
 	private List<TGVoice> voices;
@@ -23,7 +23,7 @@ public class TGBeatGroup {
 	private TGNoteImpl lastMaxNote;
 	private TGNoteImpl maxNote;
 	private TGNoteImpl minNote;
-	
+
 	public TGBeatGroup(int voice){
 		this.voice = voice;
 		this.voices = new ArrayList<TGVoice>();
@@ -35,7 +35,7 @@ public class TGBeatGroup {
 		this.maxNote = null;
 		this.minNote = null;
 	}
-	
+
 	public void check(TGLayout layout, TGVoiceImpl voice){
 		this.check(layout, voice.getMaxNote());
 		this.check(layout, voice.getMinNote());
@@ -49,10 +49,10 @@ public class TGBeatGroup {
 			}
 		}
 	}
-	
+
 	private void check(TGLayout layout, TGNoteImpl note){
 		int value = TGNotation.computePosition(layout, note);
-		
+
 		//FIRST MIN NOTE
 		if( this.firstMinNote == null || note.getVoice().getBeat().getStart() < this.firstMinNote.getVoice().getBeat().getStart()){
 			this.firstMinNote = note;
@@ -69,7 +69,7 @@ public class TGBeatGroup {
 				this.firstMaxNote = note;
 			}
 		}
-		
+
 		//LAST MIN NOTE
 		if( this.lastMinNote == null || note.getVoice().getBeat().getStart() > this.lastMinNote.getVoice().getBeat().getStart()){
 			this.lastMinNote = note;
@@ -86,7 +86,7 @@ public class TGBeatGroup {
 				this.lastMaxNote = note;
 			}
 		}
-		
+
 		if( this.maxNote == null || value > TGNotation.computePosition(layout, this.maxNote)){
 			this.maxNote = note;
 		}
@@ -94,7 +94,7 @@ public class TGBeatGroup {
 			this.minNote = note;
 		}
 	}
-	
+
 	public void finish(TGLayout layout, TGMeasureImpl measure){
 		if( this.direction == DIRECTION_NOT_SET ){
 			if (measure.getNotEmptyVoices() > 1 ){
@@ -113,18 +113,18 @@ public class TGBeatGroup {
 			}
 		}
 	}
-	
+
 	public List<TGVoice> getVoices(){
 		return this.voices;
 	}
-	
+
 	public float getY1(TGLayout layout, TGNoteImpl note){
 		float scale = (layout.getScoreLineSpacing() / 2f);
 		float scoreLineY = (TGNotation.computePosition(layout, note) * scale);
-		
+
 		return scoreLineY;
 	}
-	
+
 	public float getY2(TGLayout layout, float x){
 		float maxDistance = (10f * layout.getScale());
 		float upOffset = TGBeatGroup.getUpOffset(layout);
@@ -133,20 +133,20 @@ public class TGBeatGroup {
 			if( this.maxNote != this.firstMaxNote && this.maxNote != this.lastMaxNote ){
 				return (getY1(layout, this.maxNote) + downOffset);
 			}
-			
+
 			float y = 0;
 			float x1 = this.firstMaxNote.getPosX() + this.firstMaxNote.getBeatImpl().getSpacing(layout);
 			float x2 = this.lastMaxNote.getPosX() + this.lastMaxNote.getBeatImpl().getSpacing(layout);
 			float y1 =  (getY1(layout, this.firstMaxNote) +  downOffset);
 			float y2 =  (getY1(layout, this.lastMaxNote) +  downOffset);
-			
+
 			if( y1 > y2 && (y1 - y2) > maxDistance ) {
 				y2 = (y1 - maxDistance);
 			}
 			if( y2 > y1 && (y2 - y1) > maxDistance ) {
 				y1 = (y2 - maxDistance);
 			}
-			
+
 			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
 				y = (((y1 -y2) / (x1 - x2)) * (x1 - x));
 			}
@@ -159,38 +159,38 @@ public class TGBeatGroup {
 			float x2 = this.lastMinNote.getPosX() + this.lastMinNote.getBeatImpl().getSpacing(layout);
 			float y1 = (getY1(layout,this.firstMinNote) - upOffset);
 			float y2 = (getY1(layout,this.lastMinNote) - upOffset);
-			
+
 			if( y1 < y2 && (y2 - y1) > maxDistance ) {
 				y2 = (y1 + maxDistance);
 			}
 			if( y2 < y1 && (y1 - y2) > maxDistance ) {
 				y1 = (y2 + maxDistance);
 			}
-			
+
 			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
 				y = (((y1 - y2) / (x1 - x2)) * (x1 - x));
 			}
 			return y1 - y;
 		}
 	}
-	
+
 	public int getDirection() {
 		return this.direction;
 	}
-	
+
 	public TGNoteImpl getMinNote(){
 		return this.minNote;
 	}
-	
+
 	public TGNoteImpl getMaxNote(){
 		return this.maxNote;
 	}
-	
+
 	public static float getUpOffset(TGLayout layout){
 		float scale = (layout.getScoreLineSpacing() / 8.0f);
 		return (UP_OFFSET * scale);
 	}
-	
+
 	public static float getDownOffset(TGLayout layout){
 		float scale = (layout.getScoreLineSpacing() / 8.0f);
 		return (DOWN_OFFSET * scale);

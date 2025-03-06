@@ -14,7 +14,7 @@ import org.herac.tuxguitar.util.TGContext;
 import java.io.OutputStream;
 
 public class TGBrowserSaveElementAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.save-element";
 
 	public static final String ATTRIBUTE_ELEMENT = TGBrowserElement.class.getName();
@@ -25,7 +25,7 @@ public class TGBrowserSaveElementAction extends TGActionBase{
 	public TGBrowserSaveElementAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		final TGBrowserSession session = context.getAttribute(ATTRIBUTE_SESSION);
 		final TGBrowserElement element = context.getAttribute(ATTRIBUTE_ELEMENT);

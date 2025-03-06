@@ -4,7 +4,7 @@ import org.herac.tuxguitar.android.action.listener.cache.TGUpdateController;
 import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
 
 public class TGActionConfig {
-	
+
 	private TGUpdateController updateController;
 	private TGUndoableActionController undoableController;
 	private boolean lockableAction;

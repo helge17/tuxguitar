@@ -6,7 +6,7 @@ import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGFilePropertiesHandler extends TGPropertiesBaseHandler implements TGPropertiesReader, TGPropertiesWriter{
-	
+
 	public TGFilePropertiesHandler(String prefix, String suffix) {
 		super(prefix, suffix);
 	}

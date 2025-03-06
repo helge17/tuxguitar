@@ -41,7 +41,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSelectedNoteMenu extends TGMenuBase {
-	
+
 	public TGSelectedNoteMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -50,7 +50,7 @@ public class TGSelectedNoteMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_selected_note, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGNote note = TGSongViewController.getInstance(context).getCaret().getSelectedNote();

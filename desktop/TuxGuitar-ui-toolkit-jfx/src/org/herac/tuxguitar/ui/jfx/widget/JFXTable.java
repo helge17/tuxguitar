@@ -25,28 +25,28 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implements UICheckTable<T> {
-	
+
 	private static final float DEFAULT_CELL_LEFT = 8f;
 	private static final float DEFAULT_CELL_RIGHT = 8f;
-	
+
 	private JFXTableCellFactory<T> cellFactory;
 	private JFXTableCellValueFactory<T> cellValueFactory;
 	private JFXSelectionListenerChangeManager<UITableItem<T>> selectionListener;
 	private JFXCheckTableSelectionListenerManager<T> checkSelectionListener;
 	private JFXFontMetrics cellFontMetrics;
 	private Float scrollWidth;
-	
+
 	public JFXTable(JFXContainer<? extends Region> parent, boolean headerVisible, boolean checkable) {
 		super(new TableView<UITableItem<T>>(), parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerChangeManagerAsync<UITableItem<T>>(this);
 		this.checkSelectionListener = new JFXCheckTableSelectionListenerManager<T>(this);
 		this.cellFactory = new JFXTableCellFactory<T>(this, checkable);
 		this.cellValueFactory = new JFXTableCellValueFactory<T>();
-		
+
 		this.getControl().setEditable(true);
 		this.getControl().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
+
 		this.getControl().widthProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				JFXTable.this.fillAvailableWidth();
@@ -58,16 +58,16 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 			}
 		});
 	}
-	
+
 	public void setColumns(int count) {
 		if( count >= 0 ) {
 			List<TableColumn<UITableItem<T>, ?>> columns = this.getControl().getColumns();
-			
+
 			while(columns.size() < count) {
 				TableColumn<UITableItem<T>, JFXTableCellValue<T>> tableColumn = new TableColumn<UITableItem<T>, JFXTableCellValue<T>>();
 				tableColumn.setCellFactory(this.cellFactory);
 				tableColumn.setCellValueFactory(this.cellValueFactory);
-				
+
 				columns.add(tableColumn);
 			}
 			while(columns.size() > count) {
@@ -92,16 +92,16 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		}
 		return null;
 	}
-	
+
 	public T getSelectedValue() {
 		UITableItem<T> selectedItem = this.getSelectedItem();
 		return (selectedItem != null ? selectedItem.getValue() : null);
 	}
-	
+
 	public void setSelectedValue(T value) {
 		this.setSelectedItem(new UITableItem<T>(value));
 	}
-	
+
 	public UITableItem<T> getSelectedItem() {
 		return this.getControl().getSelectionModel().getSelectedItem();
 	}
@@ -117,7 +117,7 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 	public void addItem(UITableItem<T> item) {
 		this.getControl().getItems().add(item);
 	}
-	
+
 	public void removeItem(UITableItem<T> item) {
 		if( this.getControl().getItems().contains(item) ) {
 			this.getControl().getItems().remove(item);
@@ -125,20 +125,20 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 			this.cellValueFactory.removeCells(item);
 		}
 	}
-	
+
 	public void removeItems() {
 		this.getControl().getItems().clear();
 		this.getControl().getSelectionModel().clearSelection();
 		this.cellValueFactory.removeCells();
 	}
-	
+
 	public UITableItem<T> getItem(int index) {
 		if( index >= 0 && index < this.getItemCount()) {
 			return this.getControl().getItems().get(index);
 		}
 		return null;
 	}
-	
+
 	public T getItemValue(int index) {
 		UITableItem<T> item = this.getItem(index);
 		if( item != null ) {
@@ -146,11 +146,11 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		}
 		return null;
 	}
-	
+
 	public int getItemCount() {
 		return this.getControl().getItems().size();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public JFXTableCellValue<T> findFirstCell(UITableItem<T> item) {
 		if( this.getControl().getColumns().size() > 0 ) {
@@ -158,7 +158,7 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 		}
 		return null;
 	}
-	
+
 	public boolean isCheckedValue(T value) {
 		return this.isCheckedItem(new UITableItem<T>(value));
 	}
@@ -181,30 +181,30 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 			cellValue.setChecked(checked);
 		}
 	}
-	
+
 	public void fillAvailableWidth() {
 		List<TableColumn<UITableItem<T>, ?>> columns = this.getControl().getColumns();
 		if(!columns.isEmpty()) {
 			Insets padding = getControl().getPadding();
-			
+
 			double availableWidth = (this.getControl().getWidth() - (padding.getLeft() + padding.getRight() + this.computeScrollWidth()));
 			for(TableColumn<UITableItem<T>, ?> column : columns) {
 				availableWidth -= column.getWidth();
 			}
-			
+
 			if( availableWidth > 0 ) {
 				TableColumn<UITableItem<T>, ?> lastColumn = columns.get(columns.size() - 1);
 				lastColumn.prefWidthProperty().set(lastColumn.getWidth() + availableWidth);
 			}
 		}
 	}
-	
+
 	@Override
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.computeColumnsPackedWidth();
-		
+
 		super.computePackedSize(null, null);
-		
+
 		UISize packedSize = this.getPackedSize();
 		if( fixedWidth != null ) {
 			if( fixedHeight == null && packedSize.getWidth() > fixedWidth ) {
@@ -219,17 +219,17 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 			packedSize.setHeight(fixedHeight);
 		}
 		this.setPackedSize(packedSize);
-		
+
 		if( this.isVisible() ) {
 			this.fillAvailableWidth();
 		}
 	}
-	
+
 	public void computeColumnsPackedWidth() {
 		List<TableColumn<UITableItem<T>, ?>> columns = this.getControl().getColumns();
 		for(int c = 0; c < columns.size() ; c ++) {
 			TableColumn<UITableItem<T>, ?> column = columns.get(c);
-			
+
 			float prefWidth = (column.getText() != null ? this.computeHeaderCellTextWidth(column.getText()) : 0);
 			for(UITableItem<T> item : this.getControl().getItems()) {
 				String text = item.getText(c);
@@ -240,53 +240,53 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 			columns.get(c).setPrefWidth(prefWidth);
 		}
 	}
-	
+
 	public float computeCellTextWidth(String text) {
 		JFXFontMetrics fontMetrics = this.computeCellFontMetrics();
-		
+
 		return Float.valueOf(Math.round(fontMetrics.getWidth(text) + DEFAULT_CELL_LEFT + DEFAULT_CELL_RIGHT + 0.5f));
 	}
-	
+
 	public float computeHeaderCellTextWidth(String text) {
 		JFXFontMetrics fontMetrics = this.computeHeaderCellFontMetrics();
-		
+
 		return Float.valueOf(Math.round(fontMetrics.getWidth(text) + DEFAULT_CELL_LEFT + DEFAULT_CELL_RIGHT + 0.5f));
 	}
-	
+
 	public JFXFontMetrics computeCellFontMetrics() {
 		if( this.cellFontMetrics == null ) {
 			TableCell<UITableItem<T>, JFXTableCellValue<T>> tableCell = new TableCell<UITableItem<T>, JFXTableCellValue<T>>();
 			tableCell.setManaged(false);
 			tableCell.applyCss();
-			
+
 			this.cellFontMetrics = new JFXFontMetrics(tableCell.getFont());
 		}
 		return this.cellFontMetrics;
 	}
-	
+
 	public JFXFontMetrics computeHeaderCellFontMetrics() {
 		if( this.cellFontMetrics == null ) {
 			TableCell<UITableItem<T>, JFXTableCellValue<T>> tableCell = new TableCell<UITableItem<T>, JFXTableCellValue<T>>();
 			tableCell.setManaged(false);
 			tableCell.applyCss();
-			
+
 			// lets assume header cell is bold.
 			this.cellFontMetrics = new JFXFontMetrics(Font.font(tableCell.getFont().getFamily(), FontWeight.BOLD, null, tableCell.getFont().getSize()));
 		}
 		return this.cellFontMetrics;
 	}
-	
+
 	public float computeScrollWidth() {
 		if( this.scrollWidth == null ) {
 			ScrollBar scrollBar = new ScrollBar();
 			scrollBar.setManaged(false);
 			scrollBar.applyCss();
-			
+
 			this.scrollWidth = Double.valueOf(scrollBar.getWidth()).floatValue();
 		}
 		return this.scrollWidth;
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().getSelectionModel().selectedItemProperty().addListener(this.selectionListener);
@@ -300,7 +300,7 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 			this.getControl().getSelectionModel().selectedItemProperty().removeListener(this.selectionListener);
 		}
 	}
-	
+
 	public void addCheckSelectionListener(UICheckTableSelectionListener<T> listener) {
 		this.checkSelectionListener.addListener(listener);
 	}
@@ -308,7 +308,7 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 	public void removeCheckSelectionListener(UICheckTableSelectionListener<T> listener) {
 		this.checkSelectionListener.removeListener(listener);
 	}
-	
+
 	public void onCellChecked(JFXTableCellValue<T> cell) {
 		this.setSelectedItem(cell.getControl());
 		this.checkSelectionListener.fireEvent(cell.getControl());

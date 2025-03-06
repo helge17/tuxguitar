@@ -17,7 +17,7 @@ public class TGUndoableTripletFeelController implements TGUndoableActionControll
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
 		int tripletFeel = ((Integer) actionContext.getAttribute(TGChangeTripletFeelAction.ATTRIBUTE_TRIPLET_FEEL)).intValue();
 		boolean applyToEnd = ((Boolean) actionContext.getAttribute(TGChangeTripletFeelAction.ATTRIBUTE_APPLY_TO_END)).booleanValue();
-		
+
 		return ((TGUndoableTripletFeel) undoableEdit).endUndo(tripletFeel, applyToEnd);
 	}
 }

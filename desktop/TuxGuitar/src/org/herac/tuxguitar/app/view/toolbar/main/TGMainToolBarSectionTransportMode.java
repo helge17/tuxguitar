@@ -11,15 +11,15 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTransportMode extends TGMainToolBarSection {
-	
+
 	private UIToolCheckableItem metronome;
 	private UIToolCheckableItem countDown;
 	private UIToolActionItem mode;
-	
+
 	public TGMainToolBarSectionTransportMode(TGContext context, UIToolBar toolBar) {
 		super(context, toolBar);
 	}
-	
+
 	public void createSection() {
 		this.metronome = this.getToolBar().createCheckItem();
 		this.metronome.addSelectionListener(new TGActionProcessorListener(this.getContext(), TGTransportMetronomeAction.NAME));
@@ -31,23 +31,23 @@ public class TGMainToolBarSectionTransportMode extends TGMainToolBarSection {
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void updateItems(){
 		MidiPlayer player = MidiPlayer.getInstance(this.getContext());
 		this.metronome.setChecked(player.isMetronomeEnabled());
 		this.countDown.setChecked(player.getCountDown().isEnabled());
 	}
-	
+
 	public void loadProperties(){
 		this.metronome.setToolTipText(this.getText("transport.metronome"));
 		this.countDown.setToolTipText(this.getText("transport.count-down"));
 		this.mode.setToolTipText(this.getText("transport.mode"));
 	}
-	
+
 	public void loadIcons(){
 		this.loadIcons(true);
 	}
-	
+
 	public void loadIcons(boolean force){
 		this.metronome.setImage(this.getIconManager().getTransportMetronome());
 		this.countDown.setImage(this.getIconManager().getTransportCountIn());

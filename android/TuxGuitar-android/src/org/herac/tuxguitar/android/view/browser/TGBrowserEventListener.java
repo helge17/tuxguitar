@@ -24,7 +24,7 @@ public class TGBrowserEventListener implements TGEventListener {
 
 	private static final String[] REFRESHABLE_ACTIONS = {
 		TGBrowserCloseSessionAction.NAME,
-		TGBrowserAddCollectionAction.NAME, 
+		TGBrowserAddCollectionAction.NAME,
 		TGBrowserRemoveCollectionAction.NAME
 	};
 
@@ -37,7 +37,7 @@ public class TGBrowserEventListener implements TGEventListener {
 	};
 
 	private TGBrowserView browser;
-	
+
 	public TGBrowserEventListener(TGBrowserView browser) {
 		this.browser = browser;
 	}
@@ -54,18 +54,18 @@ public class TGBrowserEventListener implements TGEventListener {
 	public void processPostExecution(String id, String[] refreshableActionIds) throws TGBrowserException {
 		if( TGBrowserRefreshAction.NAME.equals(id) ) {
 			this.browser.refresh();
-		} 
+		}
 		else if(this.isRefreshableAction(id, refreshableActionIds)){
 			this.browser.requestRefresh();
 		}
 	}
-	
+
 	public void processError(String id, String[] refreshableActionIds) throws TGBrowserException {
 		if( TGBrowserRefreshAction.NAME.equals(id) || this.isRefreshableAction(id, refreshableActionIds)){
 			this.browser.refresh();
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.browser.findContext()).executeLater(new Runnable() {
 			public void run() throws TGException {

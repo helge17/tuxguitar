@@ -7,13 +7,13 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSetScoreEnabledAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.view.layout-set-score-enabled";
-	
+
 	public TGSetScoreEnabledAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGLayout layout = TablatureEditor.getInstance(getContext()).getTablature().getViewLayout();
 		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_SCORE ) );

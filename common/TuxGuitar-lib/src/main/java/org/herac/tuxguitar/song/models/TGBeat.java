@@ -11,9 +11,9 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 
 // Comparable: to be able to sort beats per start value
 public abstract class TGBeat implements Comparable<TGBeat> {
-	
+
 	public static final int MAX_VOICES = 2;
-	
+
 	/*
 	 * beat start can be defined under 2 different formats:
 	 * - start: legacy, can lead to rounding errors
@@ -28,7 +28,7 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	private TGVoice[] voices;
 	private TGStroke stroke;
 	private TGPickStroke pickStroke;
-	
+
 	public TGBeat(TGFactory factory) {
 		this.preciseStart = TGDuration.getPreciseStartingPoint();
 		this.start = TGDuration.getStartingPoint();
@@ -39,15 +39,15 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 			this.setVoice(i, factory.newVoice(i));
 		}
 	}
-	
+
 	public TGMeasure getMeasure() {
 		return this.measure;
 	}
-	
+
 	public void setMeasure(TGMeasure measure) {
 		this.measure = measure;
 	}
-	
+
 	public long getStart() {
 		// prefer precise start if available
 		if (this.preciseStart >= 0) {
@@ -55,11 +55,11 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 		}
 		return this.start;
 	}
-	
+
 	public long getPreciseStart() {
 		return this.preciseStart;
 	}
-	
+
 	// try as much as possible NOT to use this method
 	// use .setPreciseStart instead when possible
 	public void setStart(long start) {
@@ -67,85 +67,85 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 		// cannot deduce preciseStart from start (possible rounding errors)
 		this.preciseStart = -1;
 	}
-	
+
 	public void setPreciseStart(long pStart) {
 		this.preciseStart = pStart;
 		this.start = TGDuration.toTime(pStart);
 	}
-	
+
 	public void setVoice(int index, TGVoice voice){
 		if( index >= 0 && index < this.voices.length ){
 			this.voices[index] = voice;
 			this.voices[index].setBeat( this );
 		}
 	}
-	
+
 	public TGVoice getVoice(int index){
 		if( index >= 0 && index < this.voices.length ){
 			return this.voices[index];
 		}
 		return null;
 	}
-	
+
 	public int getHighestFret() {
 		int highestFret = -1;
 		for (int i=0; i<this.countVoices(); i++) {
-			int voiceHighestFret = this.getVoice(i).getHighestFret(); 
+			int voiceHighestFret = this.getVoice(i).getHighestFret();
 			highestFret = (voiceHighestFret > highestFret ? voiceHighestFret : highestFret);
 		}
 		return highestFret;
 	}
-	
+
 	public int countVoices(){
 		return this.voices.length;
 	}
-	
+
 	public void setChord(TGChord chord) {
 		this.chord = chord;
 		this.chord.setBeat(this);
 	}
-	
+
 	public TGChord getChord() {
 		return this.chord;
 	}
-	
+
 	public void removeChord() {
 		this.chord = null;
 	}
-	
+
 	public TGText getText() {
 		return this.text;
 	}
-	
+
 	public void setText(TGText text) {
 		this.text = text;
 		this.text.setBeat(this);
 	}
-	
+
 	public void removeText(){
 		this.text = null;
 	}
-	
+
 	public boolean isChordBeat(){
 		return ( this.chord != null );
 	}
-	
+
 	public boolean isTextBeat(){
 		return ( this.text != null );
 	}
-	
+
 	public TGStroke getStroke() {
 		return this.stroke;
 	}
-	
+
 	public TGPickStroke getPickStroke() {
 		return this.pickStroke;
 	}
-	
+
 	public boolean isPickStroke() {
 		return (this.pickStroke.getDirection() != TGPickStroke.PICK_STROKE_NONE);
 	}
-	
+
 	public boolean isRestBeat(){
 		for(int v = 0; v < this.countVoices() ; v ++ ){
 			TGVoice voice = this.getVoice( v );
@@ -155,14 +155,14 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 		}
 		return true;
 	}
-	
+
 	public void resetAltEnharmonic() {
 		for(int v = 0; v < this.countVoices() ; v ++ ){
 			TGVoice voice = this.getVoice( v );
 				voice.resetAltEnharmonic();
 		}
 	}
-	
+
 	public void copyFrom(TGBeat beat, TGFactory factory) {
 		if (beat.getPreciseStart() >= 0) {
 			this.setPreciseStart(beat.getPreciseStart());
@@ -181,13 +181,13 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 			this.setText( beat.text.clone(factory));
 		}
 	}
-	
+
 	public TGBeat clone(TGFactory factory){
 		TGBeat beat = factory.newBeat();
 		beat.copyFrom(this, factory);
 		return beat;
 	}
-	
+
 	@Override
 	public int compareTo(TGBeat beat) {
 		if (beat == null) return 1;

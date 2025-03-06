@@ -64,7 +64,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 		this.fillHarmonics();
 		this.fillData();
 	}
-	
+
 	public boolean isNaturalHarmonicAvailable() {
 		TGNote note = this.getNote();
 		if( note != null ) {
@@ -76,7 +76,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 		}
 		return false;
 	}
-	
+
 	public int getCurrentType() {
 		TGNote note = this.getNote();
 		if( note != null && note.getEffect().isHarmonic() ) {
@@ -84,7 +84,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 		}
 		return (isNaturalHarmonicAvailable() ? TGEffectHarmonic.TYPE_NATURAL : TGEffectHarmonic.TYPE_ARTIFICIAL);
 	}
-	
+
 	public String getTypeLabel(int type){
 		if(type == TGEffectHarmonic.TYPE_NATURAL){
 			return TGEffectHarmonic.KEY_NATURAL;
@@ -103,7 +103,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 		}
 		return new String();
 	}
-	
+
 	public TGSelectableItem[] createDataValues(int type) {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		if(type != TGEffectHarmonic.TYPE_NATURAL){
@@ -116,7 +116,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public void fillData() {
 		int type = getCurrentType();
 		int selection = -1;
@@ -125,15 +125,15 @@ public class TGHarmonicDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isHarmonic() ) {
 			selection = note.getEffect().getHarmonic().getData();
 		}
-		
+
 		this.fillData(type, selection);
 	}
-	
+
 	public void fillData(int type, int selection) {
 		TGSelectableItem[] selectableItems = createDataValues(type);
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, selectableItems);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.harmonic_dlg_data_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setEnabled(selectableItems.length > 0);
@@ -142,17 +142,17 @@ public class TGHarmonicDialog extends TGModalFragment {
 			spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 		}
 	}
-	
+
 	public int findSelectedData() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.harmonic_dlg_data_value);
 		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? ((Integer)selectableItem.getItem()).intValue() : 0);
 	}
-	
+
 	public void fillHarmonics() {
 		int selection = getCurrentType();
 		boolean nhAvailable = isNaturalHarmonicAvailable();
-		
+
 		this.fillHarmonic(R.id.harmonic_dlg_type_nh, TGEffectHarmonic.TYPE_NATURAL, selection, nhAvailable);
 		this.fillHarmonic(R.id.harmonic_dlg_type_ah, TGEffectHarmonic.TYPE_ARTIFICIAL, selection, true);
 		this.fillHarmonic(R.id.harmonic_dlg_type_th, TGEffectHarmonic.TYPE_TAPPED, selection, true);
@@ -171,7 +171,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 			}
 		});
 	}
-	
+
 	public int findSelectedHarmonic() {
 		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.harmonic_dlg_type_group);
 		int radioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -183,7 +183,7 @@ public class TGHarmonicDialog extends TGModalFragment {
 		}
 		return TGEffectHarmonic.TYPE_NATURAL;
 	}
-	
+
 	public TGEffectHarmonic createHarmonic(){
 		TGEffectHarmonic tgEffectHarmonic = getSongManager().getFactory().newEffectHarmonic();
 		tgEffectHarmonic.setType(findSelectedHarmonic());

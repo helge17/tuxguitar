@@ -4,7 +4,7 @@ import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
 import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
 
 public class TGActionConfig {
-	
+
 	private TGUpdateController updateController;
 	private TGUndoableActionController undoableController;
 	private boolean lockableAction;
@@ -14,7 +14,7 @@ public class TGActionConfig {
 	private boolean documentModifier;
 	private boolean syncThread;
 	private boolean unsavedInterceptor;
-	
+
 	public TGActionConfig() {
 		super();
 	}

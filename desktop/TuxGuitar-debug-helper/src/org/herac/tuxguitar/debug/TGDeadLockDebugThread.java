@@ -15,47 +15,47 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDeadLockDebugThread implements Runnable {
-	
+
 	private static final long THREAD_DELAY = 10000;
 	private static final long TIMEOUT = 60000;
-	
+
 	private TGContext context;
 	private boolean running;
-	
+
 	public TGDeadLockDebugThread(TGContext context){
 		this.context = context;
 	}
-	
+
 	public void stop() {
 		this.running = false;
 	}
-	
+
 	public void start() {
 		this.running = true;
-		
+
 		new Thread(this).start();
 	}
-	
+
 	public void run() {
 		while( this.running ) {
 			try {
 				new TGLockTest().doTest();
 				new TGSyncThreadTest().doTest();
-				
+
 				Thread.sleep(THREAD_DELAY);
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}
 		}
 	}
-	
+
 	public void deadLockDetected(String ownerTest) {
 		Exception exception = new RuntimeException(ownerTest + ": dead lock detected");
 		exception.printStackTrace();
-		
+
 		new TGThreadLogger().logThreads();
 	}
-	
+
 	public static TGDeadLockDebugThread getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDeadLockDebugThread.class.getName(), new TGSingletonFactory<TGDeadLockDebugThread>() {
 			public TGDeadLockDebugThread createInstance(TGContext context) {
@@ -63,30 +63,30 @@ public class TGDeadLockDebugThread implements Runnable {
 			}
 		});
 	}
-	
+
 	private final class TGLockTest {
-		
+
 		private long startTime;
 		private boolean success;
-		
+
 		public void doTest() {
 			this.success = false;
 			this.startTime = System.currentTimeMillis();
-			
+
 			new Thread(new Runnable() {
 				public void run() {
 					doLock();
 				}
 			}).start();
-			
+
 			new Thread(new Runnable() {
 				public void run() {
 					Thread.yield();
-					
+
 					while(!TGLockTest.this.success) {
 						if( System.currentTimeMillis() > (TGLockTest.this.startTime + TIMEOUT)) {
 							TGDeadLockDebugThread.this.deadLockDetected(TGLockTest.class.getSimpleName());
-							
+
 							return;
 						}
 						Thread.yield();
@@ -94,7 +94,7 @@ public class TGDeadLockDebugThread implements Runnable {
 				}
 			}).start();
 		}
-		
+
 		public void doLock() {
 			TGEditorManager tgEditorManager = TGEditorManager.getInstance(TGDeadLockDebugThread.this.context);
 			tgEditorManager.lock();
@@ -105,30 +105,30 @@ public class TGDeadLockDebugThread implements Runnable {
 			}
 		}
 	}
-	
+
 	private final class TGSyncThreadTest {
-		
+
 		private long startTime;
 		private boolean success;
-		
+
 		public void doTest() {
 			this.success = false;
 			this.startTime = System.currentTimeMillis();
-			
+
 			new Thread(new Runnable() {
 				public void run() {
 					doSyncProcess();
 				}
 			}).start();
-			
+
 			new Thread(new Runnable() {
 				public void run() {
 					Thread.yield();
-					
+
 					while(!TGSyncThreadTest.this.success) {
 						if( System.currentTimeMillis() > (TGSyncThreadTest.this.startTime + TIMEOUT)) {
 							TGDeadLockDebugThread.this.deadLockDetected(TGSyncThreadTest.class.getSimpleName());
-							
+
 							return;
 						}
 						Thread.yield();
@@ -136,7 +136,7 @@ public class TGDeadLockDebugThread implements Runnable {
 				}
 			}).start();
 		}
-		
+
 		public void doSyncProcess() {
 			TGSynchronizer.getInstance(TGDeadLockDebugThread.this.context).executeLater(new Runnable() {
 				public void run() {
@@ -145,9 +145,9 @@ public class TGDeadLockDebugThread implements Runnable {
 			});
 		}
 	}
-	
+
 	private final class TGThreadLogger {
-		
+
 		public void logThreads() {
 			String logId = Long.toString(new Date().getTime());
 			Set<Thread> threads = Thread.getAllStackTraces().keySet();
@@ -155,7 +155,7 @@ public class TGDeadLockDebugThread implements Runnable {
 				this.logThread(thread, logId);
 			}
 		}
-		
+
 		public void logThread(Thread thread, String logId) {
 			try {
 				File logFile = new File(getLogDir(logId), getThreadLabel(thread) + ".log");
@@ -166,16 +166,16 @@ public class TGDeadLockDebugThread implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
+
 		private File getLogDir(String logId){
 			File path = new File(TGFileUtils.PATH_USER_DIR + File.separator + "log" + File.separator + logId);
-			
+
 			if(!path.exists()){
 				path.mkdirs();
 			}
 			return path;
 		}
-		
+
 		public String getThreadLabel(Thread thread) {
 			String label = (thread.getId() + "-" + thread.getName());
 			if(!TGEditorManager.getInstance(TGDeadLockDebugThread.this.context).getLockControl().isLocked(thread) ) {
@@ -183,7 +183,7 @@ public class TGDeadLockDebugThread implements Runnable {
 			}
 			return label;
 		}
-		
+
 		public String getThreadBodyMessage(Thread thread) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("Thread: ");
@@ -195,11 +195,11 @@ public class TGDeadLockDebugThread implements Runnable {
 			sb.append("\n");
 			return sb.toString();
 		}
-		
+
 		public String getStackTrace(Thread thread) {
 			return getStackTrace(thread.getStackTrace());
 		}
-		
+
 		public String getStackTrace(StackTraceElement[] stackTraceElements) {
 			StringBuffer sb = new StringBuffer();
 			if( stackTraceElements != null ) {

@@ -40,7 +40,7 @@ jobs:
       with:
         name: Package-Ubuntu
         path: desktop/build-scripts/tuxguitar-linux-swt-deb/target/tuxguitar-9.99-SNAPSHOT-linux-swt.deb
-    
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     ##- name: Update dependency graph

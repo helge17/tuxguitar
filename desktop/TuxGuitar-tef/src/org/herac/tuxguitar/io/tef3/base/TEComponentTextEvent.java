@@ -25,7 +25,7 @@ public class TEComponentTextEvent extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentTextEventBorderType foundEnumValue = null;
             for (TEComponentTextEventBorderType enumValue : values())
             {
@@ -33,11 +33,11 @@ public class TEComponentTextEvent extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }

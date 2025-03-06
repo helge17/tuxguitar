@@ -27,15 +27,15 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class LV2AudioProcessorChooser {
-	
+
 	private TGContext context;
 	private LV2World world;
-	
+
 	public LV2AudioProcessorChooser(TGContext context, LV2World world) {
 		this.context = context;
 		this.world = world;
 	}
-	
+
 	public void choose(final UIWindow parent, final LV2PluginValidator validator, final LV2AudioProcessorChooserHandler handler) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -43,25 +43,25 @@ public class LV2AudioProcessorChooser {
 			}
 		});
 	}
-	
+
 	public void chooseInCurrentThread(final UIWindow parent, final LV2PluginValidator validator, final LV2AudioProcessorChooserHandler handler) {
 		final List<LV2Plugin> plugins = this.getSortedPlugins();
-		
+
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.dialog.title"));
 		dialog.setImage(TGIconManager.getInstance(this.context).getAppIcon());
-		
+
 		// ----------------------------------------------------------------------
 		UITableLayout pluginGroupLayout = new UITableLayout();
 		UILegendPanel pluginGroup = uiFactory.createLegendPanel(dialog);
 		pluginGroup.setLayout(pluginGroupLayout);
 		pluginGroup.setText(TuxGuitar.getProperty("tuxguitar-synth-lv2.chooser.tip"));
 		dialogLayout.set(pluginGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIListBoxSelect<LV2Plugin> pluginList = uiFactory.createListBoxSelect(pluginGroup);
 		pluginGroupLayout.set(pluginList, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		pluginGroupLayout.set(pluginList, UITableLayout.MINIMUM_PACKED_WIDTH, 200f);
@@ -80,13 +80,13 @@ public class LV2AudioProcessorChooser {
 				dialog.dispose();
 			}
 		});
-		
+
 		//------------------BUTTONS----------------------------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -97,7 +97,7 @@ public class LV2AudioProcessorChooser {
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -108,10 +108,10 @@ public class LV2AudioProcessorChooser {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		// ----------------------------------------------------------------------
-		
+
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public List<LV2Plugin> getSortedPlugins() {
 		List<LV2Plugin> plugins = this.world.getPlugins();
 		plugins.sort(new Comparator<LV2Plugin>() {
@@ -129,7 +129,7 @@ public class LV2AudioProcessorChooser {
 		});
 		return plugins;
 	}
-	
+
 	public void onSelectPlugin(final LV2AudioProcessorChooserHandler handler, final LV2Plugin plugin) {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
@@ -137,7 +137,7 @@ public class LV2AudioProcessorChooser {
 			}
 		});
 	}
-	
+
 	public static interface LV2AudioProcessorChooserHandler {
 		void onSelectPlugin(LV2Plugin plugin);
 	}

@@ -8,13 +8,13 @@ import org.qtjambi.qt.core.Qt.CursorShape;
 import org.qtjambi.qt.gui.QCursor;
 
 public class QTCursor {
-	
+
 	private static final Map<UICursor, QCursor> CURSOR_MAP = QTCursor.createCursorMap();
-	
+
 	private QTCursor() {
 		super();
 	}
-	
+
 	private static Map<UICursor, QCursor> createCursorMap() {
 		Map<UICursor, QCursor> cursorMap = new HashMap<UICursor, QCursor>();
 		cursorMap.put(UICursor.NORMAL, new QCursor(CursorShape.ArrowCursor));
@@ -24,7 +24,7 @@ public class QTCursor {
 		cursorMap.put(UICursor.SIZENS, new QCursor(CursorShape.SizeVerCursor));
 		return cursorMap;
 	}
-	
+
 	public static QCursor getCursor(UICursor cursor) {
 		return CURSOR_MAP.get(cursor);
 	}

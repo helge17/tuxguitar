@@ -13,11 +13,11 @@ public class TGActionProcessingView {
 
 	private boolean updating;
 	private boolean destroyed;
-	
+
 	public TGActionProcessingView(TGActivity activity){
 		this.activity = activity;
 	}
-	
+
 	private void createProgressDialog() {
 		if(!this.isDestroyed() && !this.isVisible()) {
 			this.dialog = new ProgressDialog(this.activity);
@@ -27,14 +27,14 @@ public class TGActionProcessingView {
 			this.dialog.show();
 		}
 	}
-	
+
 	private void dismissProgressDialog() {
 		if(!this.isDestroyed() && this.isVisible()) {
 			this.dialog.dismiss();
 			this.dialog = null;
 		}
 	}
-	
+
 	private void updateProgressDialog(boolean visible) {
 		if( visible ) {
 			this.createProgressDialog();
@@ -42,11 +42,11 @@ public class TGActionProcessingView {
 			this.dismissProgressDialog();
 		}
 	}
-	
+
 	public void postUpdateProgressDialog(final boolean visible) {
 		if(!this.isDestroyed()) {
 			this.updating = true;
-			
+
 			TGSynchronizer.getInstance(this.activity.findContext()).executeLater(new Runnable() {
 				public void run() throws TGException {
 					TGActionProcessingView.this.updateProgressDialog(visible);
@@ -60,7 +60,7 @@ public class TGActionProcessingView {
 		this.dismissProgressDialog();
 		this.destroyed = true;
 	}
-	
+
 	public boolean isVisible() {
 		return (this.dialog != null);
 	}
@@ -68,7 +68,7 @@ public class TGActionProcessingView {
 	public boolean isUpdating() {
 		return updating;
 	}
-	
+
 	public boolean isDestroyed() {
 		return (this.destroyed || this.activity.isDestroyed());
 	}

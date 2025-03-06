@@ -22,7 +22,7 @@ public class TGTrackTuningListItemMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_track_tuning_list_item, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		this.initializeItem(menu, R.id.action_track_tuning_list_item_edit, this.dialog.getActionHandler().createEditTuningModelAction(this.model), true);
 		this.initializeItem(menu, R.id.action_track_tuning_list_item_remove, this.dialog.getActionHandler().createRemoveTuningModelAction(this.model), true);

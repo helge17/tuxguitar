@@ -11,13 +11,13 @@ import org.herac.tuxguitar.ui.resource.UIColorModel;
 public class JFXAppearance implements UIAppearance {
 
 	public static final String CSS_RESOURCE = "styles/styles.css";
-	
+
 	private Map<UIColorAppearance, String> colorMap;
-	
+
 	public JFXAppearance() {
 		this.createColorResolvers();
 	}
-	
+
 	public void createColorResolvers() {
 		this.colorMap = new HashMap<UIColorAppearance, String>();
 		this.colorMap.put(UIColorAppearance.WidgetBackground, "-fx-background");
@@ -33,7 +33,7 @@ public class JFXAppearance implements UIAppearance {
 		this.colorMap.put(UIColorAppearance.InputSelectedBackground, "-fx-selection-bar");
 		this.colorMap.put(UIColorAppearance.InputSelectedForeground, "-fx-selection-bar-text");
 	}
-	
+
 	public UIColorModel getColorModel(UIColorAppearance colorAppearance) {
 		if( this.colorMap.containsKey(colorAppearance)) {
 			return new JFXColor(new JFXStyleableColor(this.colorMap.get(colorAppearance)).getColor()).getControl();

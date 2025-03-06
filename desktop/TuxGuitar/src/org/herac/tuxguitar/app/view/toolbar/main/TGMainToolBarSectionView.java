@@ -17,12 +17,12 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionView extends TGMainToolBarSection {
-	
+
 	private UIToolCheckableItem showEditToolBar;
 	private UIToolCheckableItem showTrackTable;
 	private UIToolCheckableItem showFretBoard;
 	private UIToolCheckableItem showInstruments;
-	
+
 	private UIToolActionItem zoomOut;
 	private UIToolActionItem zoomReset;
 	private UIToolActionItem zoomIn;
@@ -30,18 +30,18 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 	public TGMainToolBarSectionView(TGContext context, UIToolBar toolBar) {
 		super(context, toolBar);
 	}
-	
+
 	public void createSection() {
 		this.showEditToolBar = this.getToolBar().createCheckItem();
 		this.showEditToolBar.addSelectionListener(this.createActionProcessor(TGToggleEditToolbarAction.NAME));
-		
+
 		this.showTrackTable = this.getToolBar().createCheckItem();
 		this.showTrackTable.addSelectionListener(this.createActionProcessor(TGToggleTableViewerAction.NAME));
 
 		//--INSTRUMENTS--
 		this.showInstruments = this.getToolBar().createCheckItem();
 		this.showInstruments.addSelectionListener(this.createActionProcessor(TGToggleChannelsDialogAction.NAME));
-		
+
 		//--FRETBOARD--
 		this.showFretBoard = this.getToolBar().createCheckItem();
 		this.showFretBoard.addSelectionListener(this.createActionProcessor(TGToggleFretBoardEditorAction.NAME));
@@ -57,7 +57,7 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void loadProperties(){
 		this.showEditToolBar.setToolTipText(this.getText("view.show-edit-toolbar"));
 		this.showTrackTable.setToolTipText(this.getText("view.show-table-viewer"));
@@ -67,7 +67,7 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 		this.zoomReset.setToolTipText(this.getText("view.zoom.reset"));
 		this.zoomIn.setToolTipText(this.getText("view.zoom.in"));
 	}
-	
+
 	public void loadIcons(){
 		this.showEditToolBar.setImage(this.getIconManager().getToolbarEdit());
 		this.showTrackTable.setImage(this.getIconManager().getTableViewer());
@@ -77,7 +77,7 @@ public class TGMainToolBarSectionView extends TGMainToolBarSection {
 		this.zoomReset.setImage(this.getIconManager().getZoomReset());
 		this.zoomIn.setImage(this.getIconManager().getZoomIn());
 	}
-	
+
 	public void updateItems(){
 		this.showEditToolBar.setChecked(TGEditToolBar.getInstance(this.getContext()).isVisible());
 		this.showTrackTable.setChecked(TGTableViewer.getInstance(this.getContext()).isVisible());

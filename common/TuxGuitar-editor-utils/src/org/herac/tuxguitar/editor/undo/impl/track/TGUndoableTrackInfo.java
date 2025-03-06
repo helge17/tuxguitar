@@ -9,7 +9,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableTrackInfo extends TGUndoableTrackBase {
-	
+
 	private int doAction;
 	private int trackNumber;
 	private String undoName;
@@ -18,11 +18,11 @@ public class TGUndoableTrackInfo extends TGUndoableTrackBase {
 	private TGColor redoColor;
 	private int undoOffset;
 	private int redoOffset;
-	
+
 	private TGUndoableTrackInfo(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -30,7 +30,7 @@ public class TGUndoableTrackInfo extends TGUndoableTrackBase {
 		this.setTrackInfo(actionContext, this.getTrack(this.trackNumber), this.redoName, this.redoOffset, this.redoColor);
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -38,15 +38,15 @@ public class TGUndoableTrackInfo extends TGUndoableTrackBase {
 		this.setTrackInfo(actionContext, this.getTrack(this.trackNumber), this.undoName, this.undoOffset, this.undoColor);
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableTrackInfo startUndo(TGContext context, TGTrack track){
 		TGUndoableTrackInfo undoable = new TGUndoableTrackInfo(context);
 		undoable.doAction = UNDO_ACTION;
@@ -54,18 +54,18 @@ public class TGUndoableTrackInfo extends TGUndoableTrackBase {
 		undoable.undoName = track.getName();
 		undoable.undoOffset = track.getOffset();
 		undoable.undoColor = track.getColor().clone(new TGFactory());
-		
+
 		return undoable;
 	}
-	
+
 	public TGUndoableTrackInfo endUndo(TGTrack track){
 		this.redoName = track.getName();
 		this.redoOffset = track.getOffset();
 		this.redoColor = track.getColor().clone(new TGFactory());
-		
+
 		return this;
 	}
-	
+
 	public TGTrack getTrack(int number) {
 		return this.getSongManager().getTrack(getSong(), number);
 	}

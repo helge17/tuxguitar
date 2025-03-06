@@ -64,7 +64,7 @@ class MiPanel
 		try {
 			final UIFactory uiFactory = TGApplication.getInstance(context).getFactory();
 			final UITableLayout dialogLayout = new UITableLayout();
-			
+
 			f_Dialog = uiFactory.createWindow(parent, true, false);
 			f_Dialog.setLayout(dialogLayout);
 			f_Dialog.setText(TuxGuitar.getProperty("midiinput.panel.title"));
@@ -75,12 +75,12 @@ class MiPanel
 			groupMode.setLayout(groupModeLayout);
 			groupMode.setText(TuxGuitar.getProperty("midiinput.panel.label.group.mode"));
 			dialogLayout.set(groupMode, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			// MODE combo
 			UILabel lblMode = uiFactory.createLabel(groupMode);
 			lblMode.setText(TuxGuitar.getProperty("midiinput.panel.label.mode") + ":");
 			groupModeLayout.set(lblMode, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
-			
+
 			f_CmbMode = uiFactory.createDropDownSelect(groupMode);
 			f_CmbMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.mode.echo"), MiConfig.MODE_FRETBOARD_ECHO));
 			f_CmbMode.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("midiinput.mode.chords"), MiConfig.MODE_CHORDS_RECORDING));
@@ -103,7 +103,7 @@ class MiPanel
 				}
 			});
 			groupModeLayout.set(f_CmbMode, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-			
+
 			// CONFIGURE button
 			f_BtnConfig = uiFactory.createButton(groupMode);
 			f_BtnConfig.setText(TuxGuitar.getProperty("midiinput.panel.button.config"));
@@ -113,7 +113,7 @@ class MiPanel
 				}
 			});
 			groupModeLayout.set(f_BtnConfig, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, 1, 1, 80f, 25f, null);
-			
+
 		///* RECORDING
 			// Recording
 			UITableLayout groupRecLayout = new UITableLayout();
@@ -121,7 +121,7 @@ class MiPanel
 			groupRec.setLayout(groupRecLayout);
 			groupRec.setText(TuxGuitar.getProperty("midiinput.panel.label.group.rec"));
 			dialogLayout.set(groupRec, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			// START button
 			f_BtnRecord = uiFactory.createButton(groupRec);
 			f_BtnRecord.setText(TuxGuitar.getProperty("midiinput.panel.button.start"));
@@ -132,7 +132,7 @@ class MiPanel
 				}
 			});
 			groupRecLayout.set(f_BtnRecord, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 80f, 25f, null);
-			
+
 			// STOP button
 			f_BtnStop = uiFactory.createButton(groupRec);
 			f_BtnStop.setText(TuxGuitar.getProperty("midiinput.panel.button.stop"));

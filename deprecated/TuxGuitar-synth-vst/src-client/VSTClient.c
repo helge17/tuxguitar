@@ -35,15 +35,15 @@
 #define CMD_EFFECT_UI_CLOSE 24
 #define CMD_EFFECT_UI_FOCUS 25
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
 	VSTLogger_log("VSTClient -> starting\n");
 	VSTClientHandle *handle = (VSTClientHandle *) malloc( sizeof(VSTClientHandle) );
-	
+
 	ParseArguments(handle, argc, argv);
-	
+
 	VSTSocketCreate(&(handle->socket), handle->serverPort);
-	
+
 	if( handle->socket->connected) {
 		VSTPlugin_malloc(&(handle->plugin), handle->filename);
 		VSTEffect_malloc(&(handle->effect), handle->plugin);
@@ -59,23 +59,23 @@ int main(int argc, char *argv[])
 			if( pthread_create(&thread, NULL, VSTClient_processCommandsThread, handle)) {
 				return 1;
 			}
-			
+
 			while(handle->socket->connected) {
 				VSTEffectUI_process(handle->effect);
 			}
-			
+
 			pthread_join(thread, NULL);
 		}
-		
+
 		VSTEffect_closeEffect(handle->effect);
 		VSTEffectUI_delete(handle->effect);
 		VSTEffect_delete(&(handle->effect));
 		VSTPlugin_delete(&(handle->plugin));
 	}
-	
+
     VSTSocketDestroy(&(handle->socket));
 	VSTLogger_log("VSTClient -> ended\n");
-	
+
     return 0;
 }
 
@@ -85,14 +85,14 @@ void* VSTClient_processCommandsThread(void* ptr)
 
 	VSTLogger_log("VSTClient -> sending session ID %d\n", handle->sessionId);
 	VSTSocketWrite(handle->socket, &handle->sessionId, 4);
-	
+
 	int command = 0;
 	while(handle->socket->connected) {
 		command = 0;
-		
+
 		//Receive a reply from the server
 		VSTSocketRead(handle->socket , &command , 4);
-		
+
 		ProcessCommand(handle, command);
 	}
 	return NULL;
@@ -101,15 +101,15 @@ void* VSTClient_processCommandsThread(void* ptr)
 void ParseArguments(VSTClientHandle *handle, int argc , char *argv[])
 {
 	VSTLogger_log("VSTClient -> parsing arguments\n");
-	
+
 	handle->sessionId = atoi(argv[1]);
 	handle->serverPort = atoi(argv[2]);
 	handle->filename = (const char*) argv[3];
-	
+
 	VSTLogger_log("VSTClient -> plugin path: %s\n", handle->filename);
 }
 
-void ProcessCommand(VSTClientHandle *handle, int command) 
+void ProcessCommand(VSTClientHandle *handle, int command)
 {
 	switch(command) {
 		case CMD_EFFECT_GET_VERSION:
@@ -256,7 +256,7 @@ void ProcessSetSampleRateCommand(VSTClientHandle *handle)
 {
 	float value = 0;
 	VSTSocketRead(handle->socket, &value, 4);
-	
+
 	VSTEffect_setSampleRate(handle->effect, value);
 }
 
@@ -267,7 +267,7 @@ void ProcessSetParameterCommand(VSTClientHandle *handle)
 	float currentValue = 0;
 	VSTSocketRead(handle->socket, &index, 4);
 	VSTSocketRead(handle->socket, &value, 4);
-	
+
 	VSTEffect_getParameter(handle->effect, index, &currentValue);
 	if( value != currentValue ) {
 		VSTEffect_setParameter(handle->effect, index, value);
@@ -279,9 +279,9 @@ void ProcessGetParameterCommand(VSTClientHandle *handle)
 	int index = 0;
 	float value = 0;
 	VSTSocketRead(handle->socket, &index, 4);
-	
+
 	VSTEffect_getParameter(handle->effect, index, &value);
-	
+
 	VSTSocketWrite(handle->socket, &value, 4);
 }
 
@@ -291,11 +291,11 @@ void ProcessGetParameterNameCommand(VSTClientHandle *handle)
 	int length = 255;
 	void *value = malloc(sizeof(char) * length);
 	VSTSocketRead(handle->socket, &index, 4);
-	
+
 	VSTEffect_getParameterName(handle->effect, index, (const char *) value);
-	
+
 	VSTSocketWrite(handle->socket, &length, 4);
-	
+
 	VSTSocketWrite(handle->socket, value, 255);
 }
 
@@ -305,11 +305,11 @@ void ProcessGetParameterLabelCommand(VSTClientHandle *handle)
 	int length = 255;
 	void *value = malloc( sizeof(char) * length );
 	VSTSocketRead(handle->socket, &index, 4);
-	
+
 	VSTEffect_getParameterLabel(handle->effect, index, (const char *) value);
-	
+
 	VSTSocketWrite(handle->socket, &length, 4);
-	
+
 	VSTSocketWrite(handle->socket, value, 255);
 }
 
@@ -317,9 +317,9 @@ void ProcessGetChunkCommand(VSTClientHandle *handle)
 {
 	int length = 0;
 	char *value = 0;
-	
+
 	VSTEffect_getChunk(handle->effect, &length, &value);
-	
+
 	VSTSocketWrite(handle->socket, &length, 4);
 	if( length > 0 ) {
 		VSTSocketWrite(handle->socket, value, length);
@@ -330,10 +330,10 @@ void ProcessSetChunkCommand(VSTClientHandle *handle)
 {
 	int length = 0;
 	VSTSocketRead(handle->socket, &length, 4);
-	
+
 	char *value = (char *) malloc(sizeof(char) * length);
 	VSTSocketRead(handle->socket, value, length);
-	
+
 	VSTEffect_setChunk(handle->effect, length, &value);
 }
 
@@ -351,45 +351,45 @@ void ProcessSendMessagesCommand(VSTClientHandle *handle)
 {
 	int length = 0;
 	VSTSocketRead(handle->socket, &length, 4);
-	
+
 	unsigned char** messages = (unsigned char **) malloc((sizeof(unsigned char *) * length));
 	for(int i = 0; i < length; i++) {
 		messages[i] = (unsigned char *) malloc((sizeof(unsigned char) * 4));
 		VSTSocketRead(handle->socket, messages[i], 4);
 	}
-	
+
 	VSTEffect_sendMessages(handle->effect, messages, length);
-	
+
 	delete [] messages;
 }
 
 void ProcessReplacingCommand(VSTClientHandle *handle)
 {
-	int blockSize = 0;	
+	int blockSize = 0;
 	VSTSocketRead(handle->socket, &blockSize, 4);
-	
+
 	int inputLength = 0;
 	int outputLength = 0;
 	VSTEffect_getNumInputs(handle->effect, &inputLength);
 	VSTEffect_getNumOutputs(handle->effect, &outputLength);
-	
+
 	float** inputs = (float **)malloc((sizeof(float *) * inputLength));
 	for(int i = 0; i < inputLength; i++) {
 		inputs[i] = (float *) malloc((sizeof(float) * blockSize));
 		VSTSocketRead(handle->socket, inputs[i], (4 * blockSize));
 	}
-	
+
 	float** outputs = (float **)malloc((sizeof(float *) * outputLength));
 	for(int i = 0; i < outputLength; i++) {
 		outputs[i] = (float *) malloc((sizeof(float) * blockSize));
 	}
-	
+
 	VSTEffect_sendProcessReplacing(handle->effect, inputs, outputs, blockSize);
-	
+
 	for(int i = 0; i < outputLength; i++) {
 		VSTSocketWrite(handle->socket, outputs[i], (4 * blockSize));
 	}
-	
+
 	delete [] inputs;
 	delete [] outputs;
 }

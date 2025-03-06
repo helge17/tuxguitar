@@ -25,15 +25,15 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGTremoloPickingDialog {
-	
+
 	private UIRadioButton thirtySecondButton;
 	private UIRadioButton sixTeenthButton;
 	private UIRadioButton eighthButton;
-	
+
 	public TGTremoloPickingDialog(){
 		super();
 	}
-	
+
 	public void show(final TGViewContext context){
 		final TGNoteRange noteRange = (TGNoteRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
 
@@ -42,10 +42,10 @@ public class TGTremoloPickingDialog {
 			final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 			final UITableLayout dialogLayout = new UITableLayout();
 			final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
-			
+
 			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("effects.tremolo-picking-editor"));
-			
+
 			// look for first note with tremoloPicking effect within selection to initialize dialog
 			int duration = 0;
 			Iterator<TGNote> it = noteRange.getNotes().iterator();
@@ -59,7 +59,7 @@ public class TGTremoloPickingDialog {
 				// nothing found, use default
 				duration = TGDuration.EIGHTH;
 			}
-			
+
 			//---------------------------------------------------
 			//------------------DURATION-------------------------
 			//---------------------------------------------------
@@ -68,22 +68,22 @@ public class TGTremoloPickingDialog {
 			durationGroup.setText(TuxGuitar.getProperty("duration"));
 			durationGroup.setLayout(durationLayout);
 			dialogLayout.set(durationGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			this.thirtySecondButton = uiFactory.createRadioButton(durationGroup);
 			this.thirtySecondButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
 			this.thirtySecondButton.setSelected(duration == TGDuration.THIRTY_SECOND);
 			durationLayout.set(this.thirtySecondButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			this.sixTeenthButton = uiFactory.createRadioButton(durationGroup);
 			this.sixTeenthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
 			this.sixTeenthButton.setSelected(duration == TGDuration.SIXTEENTH);
 			durationLayout.set(this.sixTeenthButton, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			this.eighthButton = uiFactory.createRadioButton(durationGroup);
 			this.eighthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
 			this.eighthButton.setSelected(duration == TGDuration.EIGHTH);
 			durationLayout.set(this.eighthButton, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			//---------------------------------------------------
 			//------------------BUTTONS--------------------------
 			//---------------------------------------------------
@@ -91,7 +91,7 @@ public class TGTremoloPickingDialog {
 			UIPanel buttons = uiFactory.createPanel(dialog, false);
 			buttons.setLayout(buttonsLayout);
 			dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			final UIButton buttonOK = uiFactory.createButton(buttons);
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
 			buttonOK.setDefaultButton();
@@ -102,7 +102,7 @@ public class TGTremoloPickingDialog {
 				}
 			});
 			buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-			
+
 			UIButton buttonClean = uiFactory.createButton(buttons);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
 			buttonClean.addSelectionListener(new UISelectionListener() {
@@ -112,7 +112,7 @@ public class TGTremoloPickingDialog {
 				}
 			});
 			buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-			
+
 			UIButton buttonCancel = uiFactory.createButton(buttons);
 			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 			buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -122,11 +122,11 @@ public class TGTremoloPickingDialog {
 			});
 			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 			buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
-			
+
 			TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 		}
 	}
-	
+
 	public TGEffectTremoloPicking getTremoloPicking(){
 		TGEffectTremoloPicking effect = TuxGuitar.getInstance().getSongManager().getFactory().newEffectTremoloPicking();
 		if(this.thirtySecondButton.isSelected()) {
@@ -140,7 +140,7 @@ public class TGTremoloPickingDialog {
 		}
 		return effect;
 	}
-	
+
 	public void changeTremoloPicking(TGContext context, TGNoteRange noteRange, TGEffectTremoloPicking effect) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeTremoloPickingAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, noteRange);

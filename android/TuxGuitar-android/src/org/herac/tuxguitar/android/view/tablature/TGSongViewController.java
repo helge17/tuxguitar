@@ -29,7 +29,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGSongViewController implements TGController {
 
 	public static final float EMPTY_SCALE = 0f;
-	
+
 	private boolean disposed;
 	private TGContext context;
 	private UIResourceFactory resourceFactory;
@@ -61,14 +61,14 @@ public class TGSongViewController implements TGController {
 		this.updateTablature();
 		this.appendListeners();
 	}
-	
+
 	public void appendListeners() {
 		TGSongViewEventListener listener = new TGSongViewEventListener(this);
 		TGEditorManager.getInstance(this.context).addRedrawListener(listener);
 		TGEditorManager.getInstance(this.context).addUpdateListener(listener);
 		TGEditorManager.getInstance(this.context).addDestroyListener(listener);
 	}
-	
+
 	public void resetCaret() {
 		this.getCaret().update(1, TGDuration.QUARTER_TIME, 1);
 	}
@@ -85,7 +85,7 @@ public class TGSongViewController implements TGController {
 			}
 		});
 	}
-	
+
 	public void updateTablature() {
 		this.getLayout().updateSong();
 		this.getCaret().update();
@@ -124,7 +124,7 @@ public class TGSongViewController implements TGController {
 			this.redraw();
 		}
 	}
-	
+
 	public TGSongManager getSongManager() {
 		return TGDocumentManager.getInstance(getContext()).getSongManager();
 	}
@@ -140,7 +140,7 @@ public class TGSongViewController implements TGController {
 	public TGResourceBuffer getResourceBuffer() {
 		return this.bufferController.getResourceBuffer();
 	}
-	
+
 	public TGSongViewLayoutPainter getLayoutPainter() {
 		return layoutPainter;
 	}
@@ -164,7 +164,7 @@ public class TGSongViewController implements TGController {
 	public TGScroll getScroll() {
 		return scroll;
 	}
-	
+
 	public TGSongViewAxisSelector getAxisSelector() {
 		return axisSelector;
 	}
@@ -176,11 +176,11 @@ public class TGSongViewController implements TGController {
 	public TGSongView getSongView() {
 		return songView;
 	}
-	
+
 	public void setSongView(TGSongView tgSongView) {
 		this.songView = tgSongView;
 	}
-	
+
 	public float getScalePreview() {
 		return scalePreview;
 	}
@@ -188,7 +188,7 @@ public class TGSongViewController implements TGController {
 	public void setScalePreview(float scalePreview) {
 		this.scalePreview = scalePreview;
 	}
-	
+
 	public int getTrackSelection() {
 		if ((getLayout().getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0) {
 			return getCaret().getTrack().getNumber();
@@ -213,26 +213,26 @@ public class TGSongViewController implements TGController {
 		MidiPlayerMode pm = MidiPlayer.getInstance(this.context).getMode();
 		return (pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber());
 	}
-	
+
 	public boolean isScaleActionAvailable() {
 		return (!TGEditorManager.getInstance(getContext()).isLocked() && !MidiPlayer.getInstance(getContext()).isRunning());
 	}
-	
+
 	public boolean isScrollActionAvailable() {
 		return (!TGEditorManager.getInstance(getContext()).isLocked());
 	}
-	
+
 	public boolean isDisposed() {
 		return this.disposed;
 	}
-	
+
 	public void dispose() {
 		this.getCaret().dispose();
 		this.getLayout().disposeLayout();
 		this.getResourceBuffer().disposeAllResources();
 		this.disposed = true;
 	}
-	
+
 	public static TGSongViewController getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGSongViewController.class.getName(), new TGSingletonFactory<TGSongViewController>() {
 			public TGSongViewController createInstance(TGContext context) {

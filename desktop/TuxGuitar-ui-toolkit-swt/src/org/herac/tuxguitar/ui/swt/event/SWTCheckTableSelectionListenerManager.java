@@ -9,13 +9,13 @@ import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
 public class SWTCheckTableSelectionListenerManager<T> extends UICheckTableSelectionListenerManager<T> implements SelectionListener {
-	
+
 	private SWTEventReceiver<?> control;
-	
+
 	public SWTCheckTableSelectionListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void widgetSelected(SelectionEvent event) {
 		if(!this.control.isIgnoreEvents()) {
@@ -24,7 +24,7 @@ public class SWTCheckTableSelectionListenerManager<T> extends UICheckTableSelect
 			}
 		}
 	}
-	
+
 	public void widgetDefaultSelected(SelectionEvent event) {
 		// Nothing to do
 	}

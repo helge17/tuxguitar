@@ -10,13 +10,13 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenChordDialogAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.gui.open-chord-dialog";
-	
+
 	public TGOpenChordDialogAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext tgActionContext){
 		TGTrack track = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		if (!track.isPercussion()) {

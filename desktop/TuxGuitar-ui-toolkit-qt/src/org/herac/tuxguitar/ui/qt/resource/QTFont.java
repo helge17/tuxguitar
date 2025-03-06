@@ -7,39 +7,39 @@ import org.herac.tuxguitar.ui.resource.UIFontModel;
 import io.qt.gui.QFont;
 
 public class QTFont extends QTComponent<QFont> implements UIFont {
-	
+
 	private UIFontAlignment alignment;
-	
+
 	public QTFont(QFont font) {
 		super(font);
 	}
-	
+
 	public QTFont(UIFontModel fm){
 		this(new QFont(QTFont.checkName(fm.getName()), Math.round(fm.getHeight()), (fm.isBold() ? QFont.Weight.Bold : QFont.Weight.Normal).value(), fm.isItalic()));
-		
+
 		this.alignment = fm.getAlignment();
 	}
-	
+
 	public String getName() {
 		return this.getControl().family();
 	}
-	
+
 	public float getHeight() {
 		return this.getControl().pointSize();
 	}
-	
+
 	public boolean isBold() {
 		return this.getControl().bold();
 	}
-	
+
 	public boolean isItalic() {
 		return this.getControl().italic();
 	}
-	
+
 	public UIFontModel toModel() {
 		return new UIFontModel(this.getName(), this.getHeight(), this.isBold(), this.isItalic());
 	}
-	
+
 	public UIFontAlignment getAlignment() {
 		if( this.alignment == null ) {
 			this.alignment = new UIFontAlignment();
@@ -49,7 +49,7 @@ public class QTFont extends QTComponent<QFont> implements UIFont {
 		}
 		return this.alignment;
 	}
-	
+
 	public static String checkName(String name) {
 		if( name != null && name.length() > 0 && !UIFontModel.DEFAULT_NAME.equals(name)) {
 			return name;
@@ -57,7 +57,7 @@ public class QTFont extends QTComponent<QFont> implements UIFont {
 		QFont defaultFont = new QFont();
 		String defaultFamily = defaultFont.defaultFamily();
 		defaultFont.dispose();
-		
+
 		return defaultFamily;
 	}
 }

@@ -52,7 +52,7 @@ public class SoftMainMixer {
         ModelChannelMixer mixer;
         SoftAudioBuffer[] buffers;
     }
-    
+
     public final static int CHANNEL_LEFT = 0;
     public final static int CHANNEL_RIGHT = 1;
     public final static int CHANNEL_MONO = 2;
@@ -426,7 +426,7 @@ public class SoftMainMixer {
             Entry<Long, Object> entry = iter.next();
             if (entry.getKey() >= (timeStamp + msec_buffer_len))
                 return;
-            long msec_delay = entry.getKey() - timeStamp;            
+            long msec_delay = entry.getKey() - timeStamp;
             delay_midievent = (int)(msec_delay * (samplerate / 1000000.0) + 0.5);
             if(delay_midievent > max_delay_midievent)
                 delay_midievent = max_delay_midievent;
@@ -445,16 +445,16 @@ public class SoftMainMixer {
             sample_pos += synth.weakstream.silent_samples;
             synth.weakstream.silent_samples = 0;
         }
-        
-        for (int i = 0; i < buffers.length; i++) {                        
-            if(i != CHANNEL_DELAY_LEFT && 
-                    i != CHANNEL_DELAY_RIGHT && 
+
+        for (int i = 0; i < buffers.length; i++) {
+            if(i != CHANNEL_DELAY_LEFT &&
+                    i != CHANNEL_DELAY_RIGHT &&
                     i != CHANNEL_DELAY_MONO &&
                     i != CHANNEL_DELAY_EFFECT1 &&
-                    i != CHANNEL_DELAY_EFFECT2) 
+                    i != CHANNEL_DELAY_EFFECT2)
                 buffers[i].clear();
         }
-        
+
         if(!buffers[CHANNEL_DELAY_LEFT].isSilent())
         {
             buffers[CHANNEL_LEFT].swap(buffers[CHANNEL_DELAY_LEFT]);
@@ -485,7 +485,7 @@ public class SoftMainMixer {
         synchronized (control_mutex) {
 
             long msec_pos = (long)(sample_pos * (1000000.0 / samplerate));
-            
+
             processMessages(msec_pos);
 
             if (active_sensing_on) {
@@ -553,7 +553,7 @@ public class SoftMainMixer {
                 obuffer[1] = rightbak.array();
 
             for (SoftChannelMixerContainer cmixer : act_registeredMixers) {
-                
+
                 // Reroute default left,right output
                 // to channelmixer left,right input/output
                 buffers[CHANNEL_LEFT] =  cmixer.buffers[CHANNEL_LEFT];
@@ -579,11 +579,11 @@ public class SoftMainMixer {
                 {
                     buffers[CHANNEL_MONO].swap(buffers[CHANNEL_DELAY_MONO]);
                 }
-                
+
                 cbuffer[0] = buffers[CHANNEL_LEFT].array();
                 if (nrofchannels != 1)
                     cbuffer[1] = buffers[CHANNEL_RIGHT].array();
-                
+
                 boolean hasactivevoices = false;
                 for (int i = 0; i < voicestatus.length; i++)
                     if (voicestatus[i].active)
@@ -591,7 +591,7 @@ public class SoftMainMixer {
                             voicestatus[i].processAudioLogic(buffers);
                             hasactivevoices = true;
                         }
-                
+
 
                 if(!buffers[CHANNEL_MONO].isSilent())
                 {
@@ -603,7 +603,7 @@ public class SoftMainMixer {
                             float v = mono[i];
                             left[i] += v;
                             right[i] += v;
-                        }                
+                        }
                     }
                     else
                     {
@@ -657,7 +657,7 @@ public class SoftMainMixer {
         if(!buffers[CHANNEL_MONO].isSilent())
         {
             float[] mono = buffers[CHANNEL_MONO].array();
-            float[] left = buffers[CHANNEL_LEFT].array();            
+            float[] left = buffers[CHANNEL_LEFT].array();
             int bufferlen = buffers[CHANNEL_LEFT].getSize();
             if (nrofchannels != 1) {
                 float[] right = buffers[CHANNEL_RIGHT].array();
@@ -665,14 +665,14 @@ public class SoftMainMixer {
                     float v = mono[i];
                     left[i] += v;
                     right[i] += v;
-                }                
+                }
             }
             else
             {
                 for (int i = 0; i < bufferlen; i++) {
                     left[i] += mono[i];
-                }                                
-            }            
+                }
+            }
         }
 
         // Run effects
@@ -727,16 +727,16 @@ public class SoftMainMixer {
 
             }
         }
-        
+
         if(buffers[CHANNEL_LEFT].isSilent()
             && buffers[CHANNEL_RIGHT].isSilent())
-        {       
-            
+        {
+
             int midimessages_size;
             synchronized (control_mutex) {
                 midimessages_size = midimessages.size();
-            }    
-            
+            }
+
             if(midimessages_size == 0)
             {
                 pusher_silent_count++;
@@ -747,7 +747,7 @@ public class SoftMainMixer {
                         pusher_silent = true;
                         if(synth.weakstream != null)
                             synth.weakstream.setInputStream(null);
-                    }                    
+                    }
                 }
             }
         }
@@ -758,10 +758,10 @@ public class SoftMainMixer {
             agc.processAudio();
 
     }
-        
+
     // Must only we called within control_mutex synchronization
     public void activity()
-    {        
+    {
         long silent_samples = 0;
         if(pusher_silent)
         {
@@ -788,7 +788,7 @@ public class SoftMainMixer {
         SoftChannelMixerContainer mixercontainer = new SoftChannelMixerContainer();
         mixercontainer.buffers = new SoftAudioBuffer[6];
         for (int i = 0; i < mixercontainer.buffers.length; i++) {
-            mixercontainer.buffers[i] = 
+            mixercontainer.buffers[i] =
                 new SoftAudioBuffer(buffer_len, synth.getFormat());
         }
         mixercontainer.mixer = mixer;
@@ -812,9 +812,9 @@ public class SoftMainMixer {
 
         int buffersize = (int) (synth.getFormat().getSampleRate()
                                 / synth.getControlRate());
-        
+
         buffer_len = buffersize;
-        
+
         max_delay_midievent = buffersize;
 
         control_mutex = synth.control_mutex;
@@ -835,7 +835,7 @@ public class SoftMainMixer {
         agc.init(samplerate, controlrate);
 
         reverb.setLightMode(synth.reverb_light);
-        
+
         reverb.setMixMode(true);
         chorus.setMixMode(true);
         agc.setMixMode(false);
@@ -878,7 +878,7 @@ public class SoftMainMixer {
                     pusher_silent2 = pusher_silent;
                 }
                 if(!pusher_silent2)*/
-                processAudioBuffers(); 
+                processAudioBuffers();
                 for (int i = 0; i < nrofchannels; i++)
                     buffers[i].get(bbuffer, i);
                 bbuffer_pos = 0;
@@ -1135,8 +1135,8 @@ public class SoftMainMixer {
             if(synth.weakstream != null)
             {
                 return (long)((sample_pos  + synth.weakstream.silent_samples)
-                        * (1000000.0 / samplerate));  
-            }            
+                        * (1000000.0 / samplerate));
+            }
         }
         return (long)(sample_pos * (1000000.0 / samplerate));
     }

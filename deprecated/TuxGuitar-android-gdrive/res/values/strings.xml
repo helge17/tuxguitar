@@ -9,7 +9,7 @@
     <string name="gdrive_create_file_error">Error occurred while creating the file</string>
     <string name="gdrive_read_file_error">Error occurred while reading the file</string>
     <string name="gdrive_write_file_error">Error occurred while writing the file</string>
-    
+
     <string name="gdrive_settings_title">Google Drive (%1$s)</string>
     <string name="gdrive_settings_error_title">Error</string>
     <string name="gdrive_settings_error_msg_exists">%1$s already exists.</string>

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.herac.tuxguitar.io.abc.base;
 
@@ -10,38 +10,38 @@ package org.herac.tuxguitar.io.abc.base;
  * <p>
  * As a short cut to writing symbols which avoids the +symbol+ syntax (see decorations),
  * the letters H-W and h-w and the symbol ~ can be assigned with the U: field.<br>
- * For example, to assign the letter T to represent the trill, you can write: 
+ * For example, to assign the letter T to represent the trill, you can write:
  * <pre>
  *     U: T = +trill+
  * </pre>
- * You can also use "^text" etc (see Annotations below) in definitions, e.g. 
+ * You can also use "^text" etc (see Annotations below) in definitions, e.g.
  * <pre>
  *     U: X = ''^+''
  * </pre>
- * to print a plus sign over notes with X before them. 
+ * to print a plus sign over notes with X before them.
  * <p>
  * Symbol definitions can be written in the file header, in which case they apply to all
- * the tunes in that file, or in a tune header, when they apply only to that tune, and 
+ * the tunes in that file, or in a tune header, when they apply only to that tune, and
  * override any previous definitions.
- * <p> 
- * Programs may also make use of a set of global default definitions, which apply 
+ * <p>
+ * Programs may also make use of a set of global default definitions, which apply
  * everywhere unless overridden by local definitions. <br>
- * You can assign the same symbol to two or more letters e.g. 
+ * You can assign the same symbol to two or more letters e.g.
  * <pre>
  *     U: T = +trill+
  *     U: U = +trill+
  * </pre>
- * in which case the same visible symbol will be produced by both letters 
- * (but they may be played differently), 
- * and you can de-assign a symbol by writing: 
+ * in which case the same visible symbol will be produced by both letters
+ * (but they may be played differently),
+ * and you can de-assign a symbol by writing:
  * <pre>
  *     U: T = +nil+
  * </pre>
- * or 
+ * or
  * <pre>
  *     U: T = +none+
  * </pre>
- * The standard set of definitions (if you do not redefine them) is: 
+ * The standard set of definitions (if you do not redefine them) is:
  * <pre>
  *     U: ~ = +roll+
  *     U: T = +trill+
@@ -63,7 +63,7 @@ public class ABCSymbol {
 	private char name;
 	private String symbol;
 	private boolean valid;
-	
+
 
 	public ABCSymbol(String string) {
 		this.valid=false;
@@ -84,7 +84,7 @@ public class ABCSymbol {
 		char q=0;
 		while(i<line.length()) {
 			switch(line.charAt(i)) {
-			case '"': 
+			case '"':
 				if(q=='"') q=0;
 				else if(q==0) q='"';
 				break;

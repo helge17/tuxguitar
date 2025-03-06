@@ -8,17 +8,17 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGDeleteNoteAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.delete-note";
-	
+
 	public TGDeleteNoteAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGSongManager songManager = getSongManager(context);
 		TGNote note = (TGNote) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE);
-		
+
 		songManager.getMeasureManager().removeNote(note);
 	}
 }

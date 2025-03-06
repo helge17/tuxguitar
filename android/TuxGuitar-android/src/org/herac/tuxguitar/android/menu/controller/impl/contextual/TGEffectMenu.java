@@ -32,7 +32,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGEffectMenu extends TGMenuBase {
-	
+
 	public TGEffectMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -41,12 +41,12 @@ public class TGEffectMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_effect, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGNote note = TGSongViewController.getInstance(context).getCaret().getSelectedNote();
 		boolean running = MidiPlayer.getInstance(context).isRunning();
-		
+
 		this.initializeItem(menu, R.id.action_change_vibrato, this.createActionProcessor(TGChangeVibratoNoteAction.NAME), !running && note != null);
 		this.initializeItem(menu, R.id.action_change_dead_note, this.createActionProcessor(TGChangeDeadNoteAction.NAME), !running && note != null);
 		this.initializeItem(menu, R.id.action_change_slide, this.createActionProcessor(TGChangeSlideNoteAction.NAME), !running && note != null);

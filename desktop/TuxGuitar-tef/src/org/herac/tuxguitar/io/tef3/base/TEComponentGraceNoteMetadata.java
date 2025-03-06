@@ -28,7 +28,7 @@ public class TEComponentGraceNoteMetadata extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentGraceNoteMetadataDuration foundEnumValue = null;
             for (TEComponentGraceNoteMetadataDuration enumValue : values())
             {
@@ -36,11 +36,11 @@ public class TEComponentGraceNoteMetadata extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }

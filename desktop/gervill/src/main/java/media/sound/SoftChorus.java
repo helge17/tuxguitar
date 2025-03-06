@@ -157,14 +157,14 @@ public class SoftChorus implements SoftAudioProcessor {
         }
 
         public void processMix(float[] in, float[] out, float[] rout) {
-            phase += phase_step; 
+            phase += phase_step;
             while(phase > (Math.PI * 2)) phase -= (Math.PI * 2);
             vdelay.setDelay((float) (depth * 0.5 * (Math.cos(phase) + 2)));
             vdelay.processMix(in, out, rout);
         }
 
         public void processReplace(float[] in, float[] out, float[] rout) {
-            phase += phase_step; 
+            phase += phase_step;
             while(phase > (Math.PI * 2)) phase -= (Math.PI * 2);
             vdelay.setDelay((float) (depth * 0.5 * (Math.cos(phase) + 2)));
             vdelay.processReplace(in, out, rout);

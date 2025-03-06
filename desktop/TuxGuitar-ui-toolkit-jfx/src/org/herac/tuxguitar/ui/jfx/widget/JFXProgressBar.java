@@ -6,27 +6,27 @@ import javafx.scene.layout.Region;
 import org.herac.tuxguitar.ui.widget.UIProgressBar;
 
 public class JFXProgressBar extends JFXControl<ProgressBar> implements UIProgressBar {
-	
+
 	private int value;
 	private int maximum;
 	private int minimum;
-	
+
 	public JFXProgressBar(JFXContainer<? extends Region> parent) {
 		super(new ProgressBar(), parent);
 	}
 
 	public int getValue() {
 		this.value = Math.round(this.minimum + ((this.maximum - this.minimum) * (float) this.getControl().getProgress()));
-		
+
 		return this.value;
 	}
 
 	public void setValue(int value) {
 		this.value = value;
-		
+
 		double range = (this.maximum - this.minimum);
 		double progress = (this.value - this.minimum);
-		
+
 		this.getControl().setProgress((range > 0 && progress > 0 ? (progress / range) : 0));
 	}
 

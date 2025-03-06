@@ -8,19 +8,19 @@ import org.herac.tuxguitar.util.TGKeyBindFormatter;
 public class UIKeyCombination {
 
 	private List<UIKey> keys;
-	
+
 	public UIKeyCombination(List<UIKey> keys) {
 		this.keys = new ArrayList<UIKey>();
-		
+
 		if( keys != null ) {
 			this.keys.addAll(keys);
 		}
 	}
-	
+
 	public UIKeyCombination() {
 		this(new ArrayList<UIKey>());
 	}
-	
+
 	public List<UIKey> getKeys() {
 		return this.keys;
 	}
@@ -36,7 +36,7 @@ public class UIKeyCombination {
 	public boolean contains(UIKey key) {
 		return this.keys.contains(key);
 	}
-	
+
 	public boolean equals(Object o) {
 		if( o instanceof UIKeyCombination ) {
 			UIKeyCombination keyCombination = (UIKeyCombination) o;

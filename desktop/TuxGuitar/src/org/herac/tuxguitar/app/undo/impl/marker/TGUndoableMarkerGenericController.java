@@ -19,7 +19,7 @@ public class TGUndoableMarkerGenericController implements TGUndoableActionContro
 			TGSongManager songManager = actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 			currentMarker = songManager.getMarker(song, marker.getMeasure());
 		}
-		
+
 		return TGUndoableMarkerGeneric.startUndo(context, currentMarker);
 	}
 
@@ -31,7 +31,7 @@ public class TGUndoableMarkerGenericController implements TGUndoableActionContro
 			TGSongManager songManager = actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 			currentMarker = songManager.getMarker(song, marker.getMeasure());
 		}
-		
+
 		return ((TGUndoableMarkerGeneric) undoableEdit).endUndo(currentMarker);
 	}
 }

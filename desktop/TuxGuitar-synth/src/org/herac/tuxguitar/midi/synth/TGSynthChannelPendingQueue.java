@@ -6,19 +6,19 @@ import java.util.List;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class TGSynthChannelPendingQueue {
-	
+
 	private TGSynthChannel channel;
 	private List<MidiEvent> queue;
-	
+
 	public TGSynthChannelPendingQueue(TGSynthChannel channel) {
 		this.channel = channel;
 		this.queue = new ArrayList<MidiEvent>();
 	}
-	
+
 	public void clear() {
 		this.queue.clear();
 	}
-	
+
 	public void dispatch() throws MidiPlayerException {
 		List<MidiEvent> events = new ArrayList<MidiEvent>(this.queue);
 		this.clear();
@@ -27,7 +27,7 @@ public class TGSynthChannelPendingQueue {
 			midiEvent.process(this.channel);
 		}
 	}
-	
+
 	public void addControlChange(final int controller, final int value) {
 		this.queue.add(new MidiEvent() {
 			public void process(TGSynthChannel channel) throws MidiPlayerException {
@@ -35,7 +35,7 @@ public class TGSynthChannelPendingQueue {
 			}
 		});
 	}
-	
+
 	public void addPitchBend(final int value, final int voice, final boolean bendMode) throws MidiPlayerException {
 		this.queue.add(new MidiEvent() {
 			public void process(TGSynthChannel channel) throws MidiPlayerException {
@@ -43,7 +43,7 @@ public class TGSynthChannelPendingQueue {
 			}
 		});
 	}
-	
+
 	private interface MidiEvent {
 		void process(TGSynthChannel channel) throws MidiPlayerException;
 	}

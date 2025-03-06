@@ -10,14 +10,14 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UIRadioButton;
 
 public class SWTRadioButton extends SWTControl<Button> implements UIRadioButton {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public SWTRadioButton(SWTContainer<? extends Composite> parent) {
 		super(new Button(parent.getControl(), SWT.RADIO), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
 
@@ -28,17 +28,17 @@ public class SWTRadioButton extends SWTControl<Button> implements UIRadioButton 
 	public void setText(String text) {
 		this.getControl().setText(text);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);
 	}
-	
+
 	public boolean isSelected() {
 		return this.getControl().getSelection();
 	}

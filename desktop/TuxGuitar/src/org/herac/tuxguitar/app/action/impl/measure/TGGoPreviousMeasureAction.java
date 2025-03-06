@@ -12,13 +12,13 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGGoPreviousMeasureAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.measure.go-previous";
-	
+
 	public TGGoPreviousMeasureAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		if( MidiPlayer.getInstance(getContext()).isRunning() ){
 			TGTransport.getInstance(getContext()).gotoPrevious();

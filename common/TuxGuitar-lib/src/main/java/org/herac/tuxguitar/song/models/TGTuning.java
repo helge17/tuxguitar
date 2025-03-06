@@ -21,11 +21,11 @@ public class TGTuning implements Comparable<TGTuning> {
 	public int[] getValues() {
 		return this.values;
 	}
-	
+
 	public void setPriority(int prio) {
 		this.priority = prio;
 	}
-	
+
 	public Integer getPriority() {
 		return this.priority;
 	}
@@ -33,15 +33,15 @@ public class TGTuning implements Comparable<TGTuning> {
 	public boolean isWithinRange(int minVal, int maxVal) {
 		if (values.length == 0)
 			return false;
-		
+
 		int[] tmp = values.clone();
 		// sort note value from low to high
 		Arrays.sort(tmp);
-		
+
 		return (minVal >= tmp[0]) && (maxVal <= tmp[values.length - 1]);
 
 	}
-	
+
 	@Override
 	public int compareTo(TGTuning other) {
 		if (this.priority == null && other.getPriority() == null)
@@ -50,7 +50,7 @@ public class TGTuning implements Comparable<TGTuning> {
 			return -1;
 		else if (this.priority == null && other.getPriority() != null)
 			return 1 ;
-		
+
 		return this.priority.intValue() - other.getPriority().intValue();
 	}
 }

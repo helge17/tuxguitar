@@ -7,11 +7,11 @@ import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 public class TGTabKeyboardController {
 
 	private TGTabKeyboard view;
-	
+
 	public TGTabKeyboardController() {
 		super();
 	}
-	
+
 	public TGTabKeyboard getView() {
 		return view;
 	}
@@ -25,7 +25,7 @@ public class TGTabKeyboardController {
 			this.getView().toggleVisibility();
 		}
 	}
-	
+
 	public static TGTabKeyboardController getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGTabKeyboardController.class.getName(), new TGSingletonFactory<TGTabKeyboardController>() {
 			public TGTabKeyboardController createInstance(TGContext context) {

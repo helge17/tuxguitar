@@ -12,17 +12,17 @@ import org.herac.tuxguitar.ui.swt.SWTComponent;
 import org.herac.tuxguitar.ui.swt.resource.SWTResourceFactory;
 
 public class SWTPrinter extends SWTComponent<Printer> implements UIPrinter {
-	
+
 	private PrinterData data;
 	private UIResourceFactory resourceFactory;
-	
+
 	public SWTPrinter(PrinterData data) {
 		super(new Printer(data));
-		
+
 		this.data = data;
 		this.resourceFactory = new SWTResourceFactory(this.getControl());
 	}
-	
+
 	public void dispose() {
 		this.getControl().dispose();
 	}
@@ -34,7 +34,7 @@ public class SWTPrinter extends SWTComponent<Printer> implements UIPrinter {
 	public UIResourceFactory getResourceFactory() {
 		return resourceFactory;
 	}
-	
+
 	public Float getDpiScale() {
 		Point dpi = this.getControl().getDPI();
 		if( dpi != null ){
@@ -42,24 +42,24 @@ public class SWTPrinter extends SWTComponent<Printer> implements UIPrinter {
 		}
 		return 1.0f;
 	}
-	
+
 	public Float getDpiFontScale() {
 		return 1.0f;
 	}
-	
+
 	public UIRectangle getBounds() {
 		Rectangle area = this.getControl().getClientArea();
 		return new UIRectangle(area.x, area.y, area.width, area.height);
 	}
-	
+
 	public Integer getStartPage() {
 		return (this.data.scope == PrinterData.PAGE_RANGE ? this.data.startPage : null);
 	}
-	
+
 	public Integer getEndPage() {
 		return (this.data.scope == PrinterData.PAGE_RANGE ? this.data.endPage : null);
 	}
-	
+
 	public UIPrinterJob createJob(String name) {
 		return new SWTPrinterJob(this.getControl(), name);
 	}

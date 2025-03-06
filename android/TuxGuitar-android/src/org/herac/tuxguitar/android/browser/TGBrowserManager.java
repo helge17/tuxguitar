@@ -15,13 +15,13 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserManager {
-	
+
 	private TGContext context;
 	private TGBrowserProperties properties;
 	private TGBrowserSession session;
 	private List<TGBrowserFactory> factories;
 	private List<TGBrowserCollection> collections;
-	
+
 	private TGBrowserManager(TGContext context){
 		this.context = context;
 		this.properties = new TGBrowserProperties(context);
@@ -29,7 +29,7 @@ public class TGBrowserManager {
 		this.factories = new ArrayList<TGBrowserFactory>();
 		this.collections = new ArrayList<TGBrowserCollection>();
 	}
-	
+
 	public TGBrowserSession getSession() {
 		return session;
 	}
@@ -41,7 +41,7 @@ public class TGBrowserManager {
 	public Iterator<TGBrowserFactory> getFactories(){
 		return this.factories.iterator();
 	}
-	
+
 	public TGBrowserFactory getFactory(String type){
 		Iterator<TGBrowserFactory> factories = getFactories();
 		while(factories.hasNext()){
@@ -52,34 +52,34 @@ public class TGBrowserManager {
 		}
 		return null;
 	}
-	
+
 	public void addFactory(TGBrowserFactory factory){
 		this.factories.add(factory);
 	}
-	
+
 	public void removeFactory(TGBrowserFactory factory){
 		this.factories.remove(factory);
 	}
-	
+
 	public Iterator<TGBrowserCollection> getCollections(){
 		return this.collections.iterator();
 	}
-	
+
 	public int countCollections(){
 		return this.collections.size();
 	}
-	
+
 	public void removeCollection(TGBrowserCollection collection){
 		this.collections.remove(collection);
 	}
-	
+
 	public TGBrowserCollection getCollection(int index){
 		if(index >= 0 && index < countCollections()){
 			return (TGBrowserCollection)this.collections.get(index);
 		}
 		return null;
 	}
-	
+
 	public TGBrowserCollection getCollection(String type, TGBrowserSettings settings){
 		Iterator<TGBrowserCollection> it = this.getCollections();
 		while( it.hasNext() ){
@@ -90,7 +90,7 @@ public class TGBrowserManager {
 		}
 		return null;
 	}
-	
+
 	public TGBrowserCollection addCollection(TGBrowserCollection collection){
 		if( collection.getSettings() != null ){
 			TGBrowserCollection existent = getCollection(collection.getType(), collection.getSettings());
@@ -106,17 +106,17 @@ public class TGBrowserManager {
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(type);
 		collection.setSettings(settings);
-		
+
 		return collection;
 	}
-	
+
 	public void createBrowser(TGBrowserFactoryHandler handler, TGBrowserCollection collection) throws TGBrowserException {
 		TGBrowserFactory factory = this.getFactory(collection.getType());
 		if( factory != null ) {
 			factory.createBrowser(handler, collection.getSettings());
 		}
 	}
-	
+
 	public void closeSession() throws TGBrowserException {
 		this.storeDefaultCollection();
 		this.getSession().setBrowser(null);
@@ -124,25 +124,25 @@ public class TGBrowserManager {
 		this.getSession().setCurrentElement(null);
 		this.getSession().setCurrentElements(null);
 	}
-	
+
 	public void openSession(TGBrowserCollection collection) throws TGBrowserException {
 		this.createBrowser(new TGBrowserSessionHandler(this.context, this.getSession(), collection), collection);
 	}
-	
+
 	public void storeCollections() throws TGBrowserException {
 		this.properties.setCollections(this.collections);
 		this.properties.save();
 	}
-	
+
 	public void restoreCollections() throws TGBrowserException {
 		this.collections.clear();
-		
+
 		List<TGBrowserCollection> collections = this.properties.getCollections();
 		for(TGBrowserCollection collection : collections) {
 			addCollection(collection);
 		}
 	}
-	
+
 	public void storeDefaultCollection() throws TGBrowserException {
 		int index = -1;
 		if( this.getSession().getCollection() != null ) {
@@ -151,7 +151,7 @@ public class TGBrowserManager {
 		this.properties.setDefaultCollectionIndex(index);
 		this.properties.save();
 	}
-	
+
 	public TGBrowserCollection getDefaultCollection() {
 		int count = this.countCollections();
 		if( count > 0 ) {
@@ -163,7 +163,7 @@ public class TGBrowserManager {
 		}
 		return null;
 	}
-	
+
 	public static TGBrowserManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGBrowserManager.class.getName(), new TGSingletonFactory<TGBrowserManager>() {
 			public TGBrowserManager createInstance(TGContext context) {

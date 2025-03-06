@@ -10,11 +10,11 @@ import org.herac.tuxguitar.util.properties.TGPropertiesException;
 import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGFilePropertiesWriter extends TGPropertiesBaseHandler implements TGPropertiesWriter{
-	
+
 	public TGFilePropertiesWriter(String prefix, String suffix) {
 		super(prefix, suffix);
 	}
-	
+
 	public void writeProperties(TGProperties properties, String module) throws TGPropertiesException {
 		try {
 			File file = new File(getPrefix() + module + getSuffix());

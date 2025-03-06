@@ -23,20 +23,20 @@ public class TGMainDrawer extends RelativeLayout {
 
 	public TGMainDrawer(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		this.actionHandler = new TGMainDrawerActionHandler(this);
 		this.fileListAdapter = new TGMainDrawerFileListAdapter(this);
 		this.trackListAdapter = new TGMainDrawerTrackListAdapter(this);
 	}
-	
+
 	public TGContext findContext() {
 		return TGApplicationUtil.findContext(this);
 	}
-	
+
 	public TGActivity findActivity() {
 		return (TGActivity) getContext();
 	}
-	
+
 	public void onFinishInflate() {
 		super.onFinishInflate();
 

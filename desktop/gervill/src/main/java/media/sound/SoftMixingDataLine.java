@@ -41,7 +41,7 @@ import javax.sound.sampled.Control.Type;
 
 /**
  * General software mixing line.
- * 
+ *
  * @author Karl Helgason
  */
 public abstract class SoftMixingDataLine implements DataLine {

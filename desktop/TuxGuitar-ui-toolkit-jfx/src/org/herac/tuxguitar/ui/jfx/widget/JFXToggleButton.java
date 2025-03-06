@@ -12,14 +12,14 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 
 public class JFXToggleButton extends JFXLabeled<ToggleButton> implements UIToggleButton {
-	
+
 	private JFXSelectionListenerManager<ActionEvent> selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public JFXToggleButton(JFXContainer<? extends Region> parent) {
 		super(new ToggleButton(), parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerManager<ActionEvent>(this);
 	}
 
@@ -30,7 +30,7 @@ public class JFXToggleButton extends JFXLabeled<ToggleButton> implements UIToggl
 	public void setSelected(boolean selected) {
 		this.getControl().setSelected(selected);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
@@ -53,7 +53,7 @@ public class JFXToggleButton extends JFXLabeled<ToggleButton> implements UIToggl
 			this.getControl().setOnAction(null);
 		}
 	}
-	
+
 	public void setDefaultButton() {
 		// not supported
 	}

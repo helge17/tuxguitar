@@ -33,11 +33,11 @@ import org.w3c.dom.Node;
 /* this class hosts everything common to read/write tg file operations */
 
 public class TGStream {
-	
+
 	public static final String MODULE_NAME = "dev-fileformat";
 
 	protected static final TGVersion FILE_FORMAT_TGVERSION = new TGVersion(2,0,0);
-	
+
 	public static final String TG_FORMAT_NAME = ("TuxGuitar File Format");
 	public static final String TG_FORMAT_CODE = ("tg");
 	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 2.0", "application/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
@@ -186,23 +186,23 @@ public class TGStream {
 		this.mapReadClefs.put("tenor", TGMeasure.CLEF_TENOR);
 		this.mapReadClefs.put("alto", TGMeasure.CLEF_ALTO);
 		this.mapWriteClefs = this.revertMap(this.mapReadClefs);
-		
+
 		this.mapReadStroke = new HashMap<String, Integer>();
 		this.mapReadStroke.put("none", TGStroke.STROKE_NONE);
 		this.mapReadStroke.put("up", TGStroke.STROKE_UP);
 		this.mapReadStroke.put("down", TGStroke.STROKE_DOWN);
 		this.mapWriteStroke = this.revertMap(this.mapReadStroke);
-		
+
 		this.mapReadPickStroke = new HashMap<String, Integer>();
 		this.mapReadPickStroke.put("up", TGPickStroke.PICK_STROKE_UP);
 		this.mapReadPickStroke.put("down", TGPickStroke.PICK_STROKE_DOWN);
 		this.mapWritePickStroke = this.revertMap(this.mapReadPickStroke);
-		
+
 		this.mapReadDirection = new HashMap<String, Integer>();
 		this.mapReadDirection.put("up", TGVoice.DIRECTION_UP);
 		this.mapReadDirection.put("down", TGVoice.DIRECTION_DOWN);
 		this.mapWriteDirection = this.revertMap(this.mapReadDirection);
-		
+
 		this.harmonicReadMap = new HashMap<String, Integer>();
 		this.harmonicReadMap.put(TGEffectHarmonic.KEY_NATURAL, TGEffectHarmonic.TYPE_NATURAL);
 		this.harmonicReadMap.put(TGEffectHarmonic.KEY_ARTIFICIAL, TGEffectHarmonic.TYPE_ARTIFICIAL);
@@ -210,21 +210,21 @@ public class TGStream {
 		this.harmonicReadMap.put(TGEffectHarmonic.KEY_SEMI, TGEffectHarmonic.TYPE_SEMI);
 		this.harmonicReadMap.put(TGEffectHarmonic.KEY_TAPPED, TGEffectHarmonic.TYPE_TAPPED);
 		this.harmonicWritedMap = this.revertMap(this.harmonicReadMap);
-		
+
 		this.mapReadTransition = new HashMap<String, Integer>();
 		this.mapReadTransition.put("none", TGEffectGrace.TRANSITION_NONE);
 		this.mapReadTransition.put("slide", TGEffectGrace.TRANSITION_SLIDE);
 		this.mapReadTransition.put("bend", TGEffectGrace.TRANSITION_BEND);
 		this.mapReadTransition.put("hammer", TGEffectGrace.TRANSITION_HAMMER);
 		this.mapWriteTransition = this.revertMap(this.mapReadTransition);
-		
+
 		this.mapReadGraceDuration = new HashMap<Integer, Integer>();
 		this.mapReadGraceDuration.put(TGDuration.SIXTY_FOURTH, TGEffectGrace.DURATION_SIXTY_FOURTH);
 		this.mapReadGraceDuration.put(TGDuration.THIRTY_SECOND, TGEffectGrace.DURATION_THIRTY_SECOND);
 		this.mapReadGraceDuration.put(TGDuration.SIXTEENTH, TGEffectGrace.DURATION_SIXTEENTH);
 		this.mapWriteGraceDuration = this.revertMap(this.mapReadGraceDuration);
 	}
-	
+
 	protected TGVersion getFileFormatVersion(InputStream versionStream) {
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(versionStream));
@@ -239,7 +239,7 @@ public class TGStream {
 		}
 	}
 
-	
+
 	protected class PositionValue {
 		private int position;
 		private int value;
@@ -254,7 +254,7 @@ public class TGStream {
 			return this.value;
 		}
 	}
-	
+
 	private <V,K> Map<V,K> revertMap(Map<K,V> map) {
 		Map<V,K> revMap = new HashMap<V, K>();
 		for (K key : map.keySet()) {
@@ -262,7 +262,7 @@ public class TGStream {
 		}
 		return revMap;
 	}
-	
+
 	protected Document getDocument(InputStream inputStream) throws IOException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		// see CVE-2020-14940
@@ -271,14 +271,14 @@ public class TGStream {
 			factory.setXIncludeAware(false);
 		} catch (Throwable throwable) {
 		}
-		
+
 		try {
 			return factory.newDocumentBuilder().parse(inputStream);
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException("Invalid xml file format", throwable);
 		}
 	}
-	
+
 	protected Node getChildNode(Node node, String nodeName) {
 		Node n = node.getFirstChild();
 		while (n!=null && !nodeName.equals(n.getNodeName())) {
@@ -286,7 +286,7 @@ public class TGStream {
 		}
 		return n;
 	}
-	
+
 	protected Node getSiblingNode(Node node, String nodeName) {
 		Node n = node;
 		while (n!=null && !nodeName.equals(n.getNodeName())) {
@@ -294,11 +294,11 @@ public class TGStream {
 		}
 		return n;
 	}
-	
+
 	protected boolean hasChild(Node node, String name) {
 		return (getChildNode(node, name) != null);
 	}
-	
+
 	protected String readSibling(Node node, String nodeName) {
 		return getSiblingNode(node, nodeName).getTextContent();
 	}
@@ -308,39 +308,39 @@ public class TGStream {
 	protected short readSiblingShort(Node node, String nodeName) {
 		return Short.valueOf(readSibling(node, nodeName));
 	}
-	
+
 	protected String readAttribute(Node node, String attributeName) {
 		return node.getAttributes().getNamedItem(attributeName).getTextContent();
 	}
-	
+
 	protected int readAttributeInt(Node node, String attributeName) {
 		return Integer.valueOf(readAttribute(node, attributeName));
 	}
-	
+
 	protected int readInt(Node node) {
 		return Integer.valueOf(node.getTextContent());
 	}
-	
+
 	protected long readLong(Node node) {
 		return Long.valueOf(node.getTextContent());
 	}
-	
+
 	public InputStream getDecompressedContent(InputStream inputStream) throws IOException {
 		return this.getDecompressedFile(inputStream, CONTENT_FILE_NAME);
 	}
-	
+
 	public InputStream getDecompressedVersion(InputStream inputStream) throws IOException {
 		return this.getDecompressedFile(inputStream, VERSION_FILE_NAME);
 	}
-	
+
 	public InputStream[] getDecompressedVersionAndContent(InputStream inputStream) throws IOException {
 		return this.getDecompressedFiles(inputStream, new String[] {VERSION_FILE_NAME, CONTENT_FILE_NAME});
 	}
-	
+
 	private InputStream getDecompressedFile(InputStream inputStream, String fileName) throws IOException {
 		return this.getDecompressedFiles(inputStream, new String[] {fileName})[0];
 	}
-	
+
 	private InputStream[] getDecompressedFiles(InputStream inputStream, String[] fileNames) throws IOException {
 		InputStream[] streams = new InputStream[fileNames.length];
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

@@ -15,24 +15,24 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGBrowserConnection {
-	
+
 	private static final String HTTP_STATUS_OK = "200";
 	private static final String HTTP_STATUS_UNAUTHORIZED = "401";
-	
+
 	private TGContext context;
 	private TGCommunityAuth auth;
-	
+
 	public TGBrowserConnection(TGContext context){
 		this.context = context;
 		this.auth = TGCommunitySingleton.getInstance(this.context).getAuth();
 		this.auth.update();
 	}
-	
+
 	public void fillElements(final TGBrowserCallBack<List<TGBrowserElement>> cb, final TGBrowserElementImpl element) {
 		try {
 			TGBrowserRequest request = new TGBrowserRequest(this.context, this.auth, element);
 			TGBrowserResponse response = request.getResponse();
-			
+
 			String status = response.getStatus();
 			if( status != null && status.equals(HTTP_STATUS_OK) ){
 				List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();

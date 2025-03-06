@@ -6,9 +6,9 @@ import org.herac.tuxguitar.android.view.tablature.TGSongViewSmartMenu;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMoveToAxisPositionAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.caret.move-to-axis-position";
-	
+
 	public static final String ATTRIBUTE_X = "positionX";
 	public static final String ATTRIBUTE_Y = "positionY";
 	public static final String ATTRIBUTE_REQUEST_SMART_MENU = TGSongViewSmartMenu.REQUEST_SMART_MENU;
@@ -16,7 +16,7 @@ public class TGMoveToAxisPositionAction extends TGActionBase{
 	public TGMoveToAxisPositionAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		Float x = context.getAttribute(ATTRIBUTE_X);
 		Float y = context.getAttribute(ATTRIBUTE_Y);

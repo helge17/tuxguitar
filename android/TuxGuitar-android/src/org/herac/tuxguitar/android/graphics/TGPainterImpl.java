@@ -15,22 +15,22 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGPainterImpl implements UIPainter {
-	
+
 	private boolean pathEmpty;
-	
+
 	private int style;
-	
+
 	private int alpha;
-	
+
 	private Canvas canvas;
-	
+
 	private Paint paint;
-	
+
 	private Path path;
-	
+
 	private TGColorImpl foreground;
 	private TGColorImpl background;
-	
+
 	public TGPainterImpl(Canvas canvas){
 		this.canvas = canvas;
 		this.paint = new Paint();
@@ -38,22 +38,22 @@ public class TGPainterImpl implements UIPainter {
 		this.foreground = new TGColorImpl(new UIColorModel(0, 0, 0));
 		this.background = new TGColorImpl(new UIColorModel(255, 255, 255));
 	}
-	
+
 	public Canvas getCanvas() {
 		return this.canvas;
 	}
-	
+
 	public void initPath(int style){
 		this.style = style;
 		this.path = new Path();
 		this.pathEmpty = true;
 		this.setAntialias(true);
 	}
-	
+
 	public void initPath(){
 		this.initPath( PATH_DRAW );
 	}
-	
+
 	public void closePath(){
 		if(! this.pathEmpty ){
 			if( (this.style & PATH_DRAW) != 0){
@@ -67,18 +67,18 @@ public class TGPainterImpl implements UIPainter {
 				this.canvas.drawPath(this.path,this.paint);
 			}
 		}
-		
+
 		this.style = 0;
 		this.path = null;
 		this.pathEmpty = true;
 		this.setAntialias(false);
 	}
-	
+
 	public void dispose() {
 		this.canvas = null;
 		this.paint = null;
 	}
-	
+
 	public boolean isDisposed() {
 		return (this.canvas == null || this.paint == null);
 	}
@@ -92,7 +92,7 @@ public class TGPainterImpl implements UIPainter {
 		this.path.addRect(x, y, x + width, y + height, Direction.CW);
 		this.pathEmpty = false;
 	}
-	
+
 	public void lineTo(float x, float y) {
 		this.path.lineTo(x, y);
 		this.pathEmpty = false;
@@ -100,7 +100,7 @@ public class TGPainterImpl implements UIPainter {
 
 	public void moveTo(float x, float y) {
 		this.path.moveTo(x, y);
-		this.pathEmpty = false;		
+		this.pathEmpty = false;
 	}
 
 	public void cubicTo(float x1, float y1, float x2, float y2, float x3, float y3) {
@@ -115,8 +115,8 @@ public class TGPainterImpl implements UIPainter {
 	public void drawImage(UIImage image, float srcX, float srcY, float srcWidth, float srcHeight, float dstX, float dstY, float dstWidth, float dstHeight) {
 		this.canvas.drawBitmap(((TGImageImpl)image).getHandle(), toRect(srcX, srcY, srcX + srcWidth, srcY + srcHeight), toRect(dstX, dstY, dstX + dstWidth, dstY + dstHeight), this.paint);
 	}
-	
-	public void drawString(String text, float x, float y) {    	
+
+	public void drawString(String text, float x, float y) {    
 		this.paint.setStyle(Paint.Style.FILL);
 		this.paint.setColor(this.foreground.getHandle(this.alpha));
 		this.canvas.drawText(text, x, y, this.paint);
@@ -125,15 +125,15 @@ public class TGPainterImpl implements UIPainter {
 	public void setAdvanced(boolean advanced) {
 		this.setAntialias(advanced);
 	}
-	
+
 	public void setAlpha(int alpha) {
 		this.alpha = alpha;
 	}
-	
+
 	public void setAntialias(boolean antialias) {
 		this.paint.setAntiAlias(antialias);
 	}
-	
+
 	public void setFont(UIFont font) {
 		if( font instanceof TGFontImpl ){
 			this.paint.setTypeface(Typeface.create(font.getName(), (font.isBold() ? Typeface.BOLD : 0 ) | (font.isItalic() ? Typeface.ITALIC : 0 ) ));
@@ -150,13 +150,13 @@ public class TGPainterImpl implements UIPainter {
 	public void setBackground(UIColor color) {
 		if( color instanceof TGColorImpl ){
 			this.background = (TGColorImpl)color;
-		}		
+		}
 	}
-	
+
 	public void setLineStyleSolid() {
 		this.paint.setPathEffect(null);
 	}
-	
+
 	public void setLineStyleDash() {
 		this.paint.setPathEffect(new DashPathEffect(new float[]{4,1}, 0));
 	}
@@ -168,7 +168,7 @@ public class TGPainterImpl implements UIPainter {
 	public void setLineStyleDot() {
 		this.paint.setPathEffect(new DashPathEffect(new float[]{1,1}, 0));
 	}
-	
+
 	public void setLineWidth(float width) {
 		this.paint.setStrokeWidth(width);
 	}
@@ -191,7 +191,7 @@ public class TGPainterImpl implements UIPainter {
 	public float getFMMiddleLine() {
 		return -((this.getFMAscent() / 10f) * 4f);
 	}
-	
+
 	public float getFMAscent() {
 		this.paint.setStyle(Paint.Style.FILL);
 
@@ -208,7 +208,7 @@ public class TGPainterImpl implements UIPainter {
 		this.paint.getTextBounds(text, 0, text.length(), bounds);
 		return bounds.width();
 	}
-	
+
 	public Rect toRect(float left, float top, float right, float bottom) {
 		return new Rect(Math.round(left), Math.round(top), Math.round(right), Math.round(bottom));
 	}

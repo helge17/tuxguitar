@@ -14,13 +14,13 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGDeleteNoteOrRestAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.delete-note-or-rest";
-	
+
 	public TGDeleteNoteOrRestAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
 		TGBeatRange beats = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);

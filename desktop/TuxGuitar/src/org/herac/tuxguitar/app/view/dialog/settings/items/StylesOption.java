@@ -306,7 +306,7 @@ public class StylesOption extends TGSettingsOption {
 		public UIColorButton(UIWindow window, UIContainer parent, String text){
 			this.window = window;
 			this.value = new UIColorModel();
-			this.button = getUIFactory().createButton(parent);			
+			this.button = getUIFactory().createButton(parent);
 			this.button.setText(text);
 			this.addListeners();
 		}

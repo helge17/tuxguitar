@@ -3,5 +3,5 @@
     style="?attr/mainDrawerListItemStyle"
     android:id="@+id/main_drawer_text_item"
     android:gravity="center_vertical"
-    android:singleLine="true" 
+    android:singleLine="true"
 />

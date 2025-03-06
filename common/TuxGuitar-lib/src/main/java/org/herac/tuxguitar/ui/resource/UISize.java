@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.ui.resource;
 
 public class UISize {
-	
+
 	private float width;
 	private float height;
-	
+
 	public UISize() {
 		this(0, 0);
 	}
-	
+
 	public UISize(float width, float height) {
 		this.width = width;
 		this.height = height;
@@ -29,24 +29,24 @@ public class UISize {
 	public void setHeight(float height) {
 		this.height = height;
 	}
-	
+
 	public void copyFrom(UISize size) {
 		this.setWidth(size.getWidth());
 		this.setHeight(size.getHeight());
 	}
-	
+
 	public UISize clone() {
 		UISize uiSize = new UISize();
 		uiSize.copyFrom(this);
-		
+
 		return uiSize;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if( obj instanceof UISize ) {
 			UISize uiSize = (UISize) obj;
-			
+
 			return (this.getWidth() == uiSize.getWidth() && this.getHeight() == uiSize.getHeight());
 		}
 		return super.equals(obj);

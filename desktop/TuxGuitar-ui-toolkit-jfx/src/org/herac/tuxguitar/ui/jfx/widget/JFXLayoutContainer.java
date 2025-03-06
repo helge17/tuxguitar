@@ -14,18 +14,18 @@ import javafx.scene.Node;
 import javafx.scene.layout.Region;
 
 public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> implements JFXContainer<T>, UILayoutContainer {
-	
+
 	private List<JFXNode<? extends Node>> children;
 	private UILayout layout;
 	private UISize packedContentSize;
-	
+
 	public JFXLayoutContainer(T control, JFXContainer<? extends Region> parent) {
 		super(control, parent);
-		
+
 		this.children = new ArrayList<JFXNode<? extends Node>>();
 		this.packedContentSize = new UISize();
 	}
-	
+
 	public void dispose() {
 		List<JFXNode<? extends Node>> children = new ArrayList<JFXNode<? extends Node>>(this.children);
 		for(JFXNode<? extends Node> child : children) {
@@ -35,7 +35,7 @@ public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> 
 		}
 		super.dispose();
 	}
-	
+
 	public List<UIControl> getChildren() {
 		List<JFXNode<? extends Node>> children = new ArrayList<JFXNode<? extends Node>>(this.children);
 		for(JFXNode<? extends Node> child : children) {
@@ -43,18 +43,18 @@ public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> 
 				this.removeChild(child);
 			}
 		}
-		
+
 		return new ArrayList<UIControl>(this.children);
 	}
-	
+
 	public void addChild(JFXNode<? extends Node> uiControl) {
 		this.children.add(uiControl);
 	}
-	
+
 	public void removeChild(JFXNode<? extends Node> uiControl) {
 		this.children.remove(uiControl);
 	}
-	
+
 	public UILayout getLayout() {
 		return layout;
 	}
@@ -71,20 +71,20 @@ public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> 
 	public UISize getPackedContentSize() {
 		return new UISize(this.packedContentSize.getWidth(), this.packedContentSize.getHeight());
 	}
-	
+
 	public Insets getPadding() {
 		return this.getControl().getPadding();
 	}
-	
+
 	public UIRectangle getChildArea(UISize size) {
 		Insets padding = this.getPadding();
 		UIRectangle area = new UIRectangle();
 		area.getSize().setWidth(Math.max(0f, (float) (size.getWidth() - (padding.getLeft() + padding.getRight()))));
 		area.getSize().setHeight(Math.max(0f, (float) (size.getHeight() - (padding.getTop() + padding.getBottom()))));
-		
+
 		return area;
 	}
-	
+
 	public UIRectangle getChildArea() {
 		return this.getChildArea(this.getBounds().getSize());
 	}
@@ -92,13 +92,13 @@ public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> 
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		if( this.layout != null ) {
 			Insets padding = this.getPadding();
-			
+
 			UISize packedSize = new UISize();
 			UISize packedContentSize = this.layout.computePackedSize(this);
-			
+
 			packedSize.setWidth((float) (padding.getLeft() + padding.getRight() + packedContentSize.getWidth()));
 			packedSize.setHeight((float) (padding.getTop() + padding.getBottom() + packedContentSize.getHeight()));
-			
+
 			this.setPackedSize(packedSize);
 			this.setPackedContentSize(packedContentSize);
 		} else {
@@ -106,7 +106,7 @@ public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> 
 				uiControl.computePackedSize(null, null);
 			}
 		}
-		
+
 		UISize packedSize = this.getPackedSize();
 		if( fixedWidth != null && fixedWidth != packedSize.getWidth() ) {
 			packedSize.setWidth(fixedWidth);
@@ -119,7 +119,7 @@ public abstract class JFXLayoutContainer<T extends Region> extends JFXRegion<T> 
 
 	public void setBounds(UIRectangle bounds) {
 		super.setBounds(bounds);
-		
+
 		if( this.layout != null ) {
 			this.layout.setBounds(this, this.getChildArea());
 		}

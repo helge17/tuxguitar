@@ -15,13 +15,13 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChangeTiedNoteAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.note.duration.tied";
-	
+
 	public TGChangeTiedNoteAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGSongManager songManager = getSongManager(context);
 		TGNote note = ((TGNote) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE));
@@ -31,7 +31,7 @@ public class TGChangeTiedNoteAction extends TGActionBase {
 		TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 		TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
 		Integer velocity = ((Integer) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY));
-		
+
 		if( note != null ){
 			songManager.getMeasureManager().changeTieNote(note);
 		} else {
@@ -40,16 +40,16 @@ public class TGChangeTiedNoteAction extends TGActionBase {
 			note.setVelocity(velocity);
 			note.setString(string.getNumber());
 			note.setTiedNote(true);
-			
+
 			TGDuration noteDuration = songManager.getFactory().newDuration();
 			noteDuration.copyFrom(duration);
-			
+
 			setTiedNoteValue(songManager, measure, beat, voice, note);
-			
+
 			songManager.getMeasureManager().addNote(beat, note, noteDuration, voice.getIndex());
 		}
 	}
-	
+
 	private void setTiedNoteValue(TGSongManager songManager, TGMeasure measure, TGBeat beat, TGVoice voice, TGNote note){
 		TGVoice previousVoice = songManager.getMeasureManager().getPreviousVoice( measure.getBeats(), beat, voice.getIndex());
 		while( measure != null){

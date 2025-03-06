@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MidiReceiverImpl implements GMReceiver{
 
 	private MidiOutputPortConection connection;
-	
+
 	public MidiReceiverImpl(MidiOutputPortConection connection){
 		this.connection = connection;
 	}
@@ -22,7 +22,7 @@ public class MidiReceiverImpl implements GMReceiver{
 			this.sendControlChange(i,MidiControllers.ALL_NOTES_OFF, 0);
 		}
 	}
-	
+
 	public void sendControlChange(int channel, int controller, int value) throws MidiPlayerException {
 		if( this.connection.isConnected()){
 			byte[] event = new byte[3];
@@ -32,7 +32,7 @@ public class MidiReceiverImpl implements GMReceiver{
 			this.sendEvent(event);
 		}
 	}
-	
+
 	public void sendNoteOff(int channel, int key, int velocity) throws MidiPlayerException {
 		if( this.connection.isConnected()){
 			byte[] event = new byte[3];
@@ -42,7 +42,7 @@ public class MidiReceiverImpl implements GMReceiver{
 			this.sendEvent(event);
 		}
 	}
-	
+
 	public void sendNoteOn(int channel, int key, int velocity) throws MidiPlayerException {
 		if( this.connection.isConnected()){
 			byte[] event = new byte[3];
@@ -52,7 +52,7 @@ public class MidiReceiverImpl implements GMReceiver{
 			this.sendEvent(event);
 		}
 	}
-	
+
 	public void sendPitchBend(int channel, int value) throws MidiPlayerException {
 		if( this.connection.isConnected()){
 			byte[] event = new byte[3];
@@ -62,7 +62,7 @@ public class MidiReceiverImpl implements GMReceiver{
 			this.sendEvent(event);
 		}
 	}
-	
+
 	public void sendProgramChange(int channel, int value) throws MidiPlayerException {
 		if( this.connection.isConnected()){
 			byte[] event = new byte[2];
@@ -71,7 +71,7 @@ public class MidiReceiverImpl implements GMReceiver{
 			this.sendEvent(event);
 		}
 	}
-	
+
 	public void sendSystemReset() {
 		//not implemented
 	}

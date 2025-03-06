@@ -37,11 +37,11 @@ public class TGTabKeyboard extends FrameLayout {
 		this.addListeners();
 		super.onFinishInflate();
 	}
-	
+
 	public void attachView() {
 		TGTabKeyboardController.getInstance(TGApplicationUtil.findContext(this)).setView(this);
 	}
-	
+
 	public void addListeners() {
 		TGContext context = this.findContext();
 		findViewById(R.id.tab_kb_button_number_0).setOnClickListener(new TGActionProcessorListener(context, TGSetNoteFretNumberAction.getActionName(0)));
@@ -54,29 +54,29 @@ public class TGTabKeyboard extends FrameLayout {
 		findViewById(R.id.tab_kb_button_number_7).setOnClickListener(new TGActionProcessorListener(context, TGSetNoteFretNumberAction.getActionName(7)));
 		findViewById(R.id.tab_kb_button_number_8).setOnClickListener(new TGActionProcessorListener(context, TGSetNoteFretNumberAction.getActionName(8)));
 		findViewById(R.id.tab_kb_button_number_9).setOnClickListener(new TGActionProcessorListener(context, TGSetNoteFretNumberAction.getActionName(9)));
-		
+
 		findViewById(R.id.tab_kb_button_insert).setOnClickListener(new TGActionProcessorListener(context, TGInsertRestBeatAction.NAME));
 		findViewById(R.id.tab_kb_button_delete).setOnClickListener(new TGActionProcessorListener(context, TGDeleteNoteOrRestAction.NAME));
-		
+
 		findViewById(R.id.tab_kb_button_up).setOnClickListener(new TGActionProcessorListener(context, TGGoUpAction.NAME));
 		findViewById(R.id.tab_kb_button_down).setOnClickListener(new TGActionProcessorListener(context, TGGoDownAction.NAME));
 		findViewById(R.id.tab_kb_button_left).setOnClickListener(new TGActionProcessorListener(context, TGGoLeftAction.NAME));
 		findViewById(R.id.tab_kb_button_right).setOnClickListener(new TGActionProcessorListener(context, TGGoRightAction.NAME));
-		
+
 		findViewById(R.id.tab_kb_button_increment_duration).setOnClickListener(new TGActionProcessorListener(context, TGIncrementDurationAction.NAME));
 		findViewById(R.id.tab_kb_button_decrement_duration).setOnClickListener(new TGActionProcessorListener(context, TGDecrementDurationAction.NAME));
 		findViewById(R.id.tab_kb_button_set_duration).setOnClickListener(createContextMenuActionListener(new TGDurationMenu(this.findActivity())));
 
 		findViewById(R.id.tab_kb_button_select).setOnClickListener(new TGActionProcessorListener(context, TGShowSmartMenuAction.NAME));
 	}
-	
+
 	public TGActionProcessorListener createContextMenuActionListener(TGMenuController controller) {
 		TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(this.findContext(), TGOpenMenuAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_CONTROLLER, controller);
 		tgActionProcessor.setAttribute(TGOpenMenuAction.ATTRIBUTE_MENU_ACTIVITY, this.findActivity());
 		return tgActionProcessor;
 	}
-	
+
 	public void toggleVisibility() {
 		this.clearAnimation();
 		if( this.getVisibility() == VISIBLE ) {
@@ -97,11 +97,11 @@ public class TGTabKeyboard extends FrameLayout {
 			});
 		}
 	}
-	
+
 	private TGActivity findActivity() {
 		return (TGActivity) getContext();
 	}
-	
+
 	private TGContext findContext() {
 		return TGApplicationUtil.findContext(this);
 	}

@@ -6,28 +6,28 @@ import java.util.List;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class MidiTrackController {
-	
+
 	private List<MidiTrack> tracks;
 	private MidiSequencerImpl sequencer;
 	private boolean anySolo;
-	
+
 	public MidiTrackController(MidiSequencerImpl sequencer){
 		this.sequencer = sequencer;
 		this.tracks = new ArrayList<MidiTrack>();
 		this.anySolo = false;
 	}
-	
+
 	public void init(int count){
 		this.tracks.clear();
 		for(int i = 0; i < count; i ++){
 			this.tracks.add(new MidiTrack());
 		}
 	}
-	
+
 	public void clearTracks(){
 		this.tracks.clear();
 	}
-	
+
 	public void checkAnySolo(){
 		this.anySolo = false;
 		for(int i = 0; i < this.tracks.size(); i ++){
@@ -38,7 +38,7 @@ public class MidiTrackController {
 			}
 		}
 	}
-	
+
 	public void setSolo(int index,boolean solo) throws MidiPlayerException{
 		if(index >= 0 && index < this.tracks.size()){
 			MidiTrack track = (MidiTrack)this.tracks.get(index);
@@ -50,7 +50,7 @@ public class MidiTrackController {
 			}
 		}
 	}
-	
+
 	public void setMute(int index,boolean mute) throws MidiPlayerException{
 		if(index >= 0 && index < this.tracks.size()){
 			MidiTrack track = (MidiTrack)this.tracks.get(index);
@@ -61,7 +61,7 @@ public class MidiTrackController {
 			}
 		}
 	}
-	
+
 	public boolean isSolo(int index){
 		if(index >= 0 && index < this.tracks.size()){
 			MidiTrack track = (MidiTrack)this.tracks.get(index);
@@ -69,7 +69,7 @@ public class MidiTrackController {
 		}
 		return false;
 	}
-	
+
 	public boolean isMute(int index){
 		if(index >= 0 && index < this.tracks.size()){
 			MidiTrack track = (MidiTrack)this.tracks.get(index);
@@ -77,7 +77,7 @@ public class MidiTrackController {
 		}
 		return false;
 	}
-	
+
 	public boolean isAnySolo(){
 		return this.anySolo;
 	}

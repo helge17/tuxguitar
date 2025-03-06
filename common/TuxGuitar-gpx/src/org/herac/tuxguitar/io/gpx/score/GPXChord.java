@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXChord {
-	
+
 	private int id;
 	private String name;
 	private Integer stringCount;
 	private Integer fretCount;
 	private Integer baseFret;
 	private Integer[] frets;
-	
+
 	public GPXChord(){
 		super();
 	}

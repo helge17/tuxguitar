@@ -5,7 +5,7 @@ import org.herac.tuxguitar.ui.UIComponent;
 import io.qt.gui.QAction;
 
 public class QTMenuSeparatorItem extends QTMenuItem<QAction> implements UIComponent {
-	
+
 	public QTMenuSeparatorItem(QTAbstractMenu<?> parent) {
 		super(parent.createNativeSeparator(), parent);
 	}

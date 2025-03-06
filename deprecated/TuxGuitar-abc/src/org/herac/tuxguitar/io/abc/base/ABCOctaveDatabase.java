@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.herac.tuxguitar.io.abc.base;
 
@@ -16,7 +16,7 @@ public class ABCOctaveDatabase {
 	public ABCOctaveDatabase() {
 		this.database=new Properties();
 	}
-	
+
 	public void store(int i, int pitch) {
 		this.database.setProperty(String.valueOf(pitch), String.valueOf(i));
 	}

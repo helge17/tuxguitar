@@ -28,7 +28,7 @@ public class TEComponentEnding extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentEndingFlag foundEnumValue = null;
             for (TEComponentEndingFlag enumValue : values())
             {
@@ -36,11 +36,11 @@ public class TEComponentEnding extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }

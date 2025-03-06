@@ -14,7 +14,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginProperties;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 
 public class TGPropertiesAdapter {
-	
+
 	public static void initialize(TGContext context) {
 		TGPropertiesManager tgPropertiesManager = TGPropertiesManager.getInstance(context);
 		tgPropertiesManager.setPropertiesFactory(new TGPropertiesFactoryImpl());

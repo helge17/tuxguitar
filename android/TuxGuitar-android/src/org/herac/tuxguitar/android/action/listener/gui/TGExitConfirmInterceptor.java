@@ -13,34 +13,34 @@ import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGExitConfirmInterceptor implements TGActionInterceptor {
-	
+
 	private static final String EXIT_ACTION_CONFIRMED = "exitConfirmInterceptor_confirmed";
-	
+
 	private TGActivity activity;
 	private TGContext context;
-	
+
 	public TGExitConfirmInterceptor(TGContext context, TGActivity activity) {
 		this.context = context;
 		this.activity = activity;
 	}
-	
+
 	public boolean isExitAction(String id) {
 		return (TGExitAction.NAME.equals(id));
 	}
-	
+
 	private boolean isActionConfirmed(TGActionContext context) {
 		return Boolean.TRUE.equals(context.getAttribute(EXIT_ACTION_CONFIRMED));
 	}
-	
+
 	public boolean intercept(final String id, final TGActionContext context) throws TGActionException {
 		if( this.isExitAction(id) && !this.isActionConfirmed(context)) {
 			this.processConfirmation(id, context);
-			
+
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void processConfirmation(final String id, final TGActionContext context) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGConfirmDialogController());
@@ -49,7 +49,7 @@ public class TGExitConfirmInterceptor implements TGActionInterceptor {
 		tgActionProcessor.setAttribute(TGConfirmDialogController.ATTRIBUTE_RUNNABLE, this.createThreadRunnable(createConfirmedActionRunnable(id, context)));
 		tgActionProcessor.process();
 	}
-	
+
 	public Runnable createThreadRunnable(final Runnable target) {
 		return new Runnable() {
 			public void run() {
@@ -57,7 +57,7 @@ public class TGExitConfirmInterceptor implements TGActionInterceptor {
 			}
 		};
 	}
-	
+
 	public Runnable createConfirmedActionRunnable(final String actionId, final TGActionContext context) {
 		return new Runnable() {
 			public void run() {
@@ -65,10 +65,10 @@ public class TGExitConfirmInterceptor implements TGActionInterceptor {
 			}
 		};
 	}
-	
+
 	public void executeConfirmedAction(String actionId, TGActionContext context) {
 		context.setAttribute(EXIT_ACTION_CONFIRMED, true);
-		
+
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.execute(actionId, context);
 	}

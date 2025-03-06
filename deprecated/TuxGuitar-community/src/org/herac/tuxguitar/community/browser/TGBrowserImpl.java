@@ -9,15 +9,15 @@ import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserImpl implements TGBrowser {
-	
+
 	private TGBrowserConnection connection;
 	private TGBrowserElementImpl element;
-	
+
 	public TGBrowserImpl(TGContext context){
 		this.element = null;
 		this.connection = new TGBrowserConnection(context);
 	}
-	
+
 	public void open(TGBrowserCallBack<Object> cb) {
 		try {
 			cb.onSuccess(null);
@@ -25,7 +25,7 @@ public class TGBrowserImpl implements TGBrowser {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void close(TGBrowserCallBack<Object> cb) {
 		try {
 			cb.onSuccess(null);
@@ -33,29 +33,29 @@ public class TGBrowserImpl implements TGBrowser {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void cdRoot(TGBrowserCallBack<Object> cb) {
 		try {
 			this.element = null;
-			
+
 			cb.onSuccess(this.element);
 		} catch(Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			if( this.element != null ){
 				this.element = this.element.getParent();
 			}
-			
+
 			cb.onSuccess(this.element);
 		} catch(Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try {
 			if( element instanceof TGBrowserElementImpl ){
@@ -63,17 +63,17 @@ public class TGBrowserImpl implements TGBrowser {
 				nextElement.setParent( this.element );
 				this.element = nextElement;
 			}
-			
+
 			cb.onSuccess(this.element);
 		} catch(Throwable throwable) {
 			cb.handleError(throwable);
 		}
 	}
-	
+
 	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		this.connection.fillElements(cb, this.element);
 	}
-	
+
 	public void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
 		try {
 			cb.onSuccess(((TGBrowserElementImpl) element).getInputStream());

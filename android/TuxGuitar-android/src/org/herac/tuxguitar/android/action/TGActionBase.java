@@ -8,7 +8,7 @@ public abstract class TGActionBase extends org.herac.tuxguitar.editor.action.TGA
 	public TGActionBase(TGContext context, String name) {
 		super(context, name);
 	}
-	
+
 	public TGSongViewController getEditor() {
 		return TGSongViewController.getInstance(this.getContext());
 	}

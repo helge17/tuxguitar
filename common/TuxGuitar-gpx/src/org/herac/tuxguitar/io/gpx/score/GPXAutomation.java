@@ -1,14 +1,14 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXAutomation {
-	
+
 	private String type;
 	private int barId;
 	private int position;
 	private boolean linear;
 	private boolean visible;
 	private int[] value;
-	
+
 	public GPXAutomation(){
 		super();
 	}

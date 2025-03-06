@@ -14,14 +14,14 @@ public class TGUndoableClefController implements TGUndoableActionController {
 	public TGUndoableEdit startUndoable(TGContext context, TGActionContext actionContext) {
 		TGTrack track = ((TGTrack) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK));
 		TGMeasure measure = ((TGMeasure) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-		
+
 		return TGUndoableClef.startUndo(context, track, measure);
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
 		int clef = ((Integer) actionContext.getAttribute(TGChangeClefAction.ATTRIBUTE_CLEF)).intValue();
 		boolean applyToEnd = ((Boolean) actionContext.getAttribute(TGChangeClefAction.ATTRIBUTE_APPLY_TO_END)).booleanValue();
-		
+
 		return ((TGUndoableClef) undoableEdit).endUndo(clef, applyToEnd);
 	}
 }

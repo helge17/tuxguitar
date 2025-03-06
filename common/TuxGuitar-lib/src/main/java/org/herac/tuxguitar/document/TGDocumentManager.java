@@ -8,15 +8,15 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentManager {
-	
+
 	private TGSongManager songManager;
 	private TGSong song;
-	
+
 	private TGDocumentManager() {
 		this.songManager = new TGSongManager(new TGFactoryImpl());
 		this.song = this.songManager.newSong();
 	}
-	
+
 	public TGSongManager getSongManager() {
 		return songManager;
 	}
@@ -24,7 +24,7 @@ public class TGDocumentManager {
 	public TGSong getSong() {
 		return song;
 	}
-	
+
 	public void setSong(TGSong song) {
 		if( song != null ){
 			this.song = song;

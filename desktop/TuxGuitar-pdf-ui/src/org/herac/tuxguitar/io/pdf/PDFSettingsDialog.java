@@ -57,13 +57,13 @@ public class PDFSettingsDialog {
 				}
 			}
 			this.populateValues();
-			
+
 			// --- BUTTONS ----
 			UITableLayout buttonsLayout = new UITableLayout(0f);
 			UIPanel buttons = uiFactory.createPanel(dialog, false);
 			buttons.setLayout(buttonsLayout);
 			dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-			
+
 			UIButton buttonDefault = uiFactory.createButton(buttons);
 			buttonDefault.setText(TuxGuitar.getProperty("defaults"));
 			buttonDefault.addSelectionListener(new UISelectionListener() {
@@ -74,7 +74,7 @@ public class PDFSettingsDialog {
 				}
 			});
 			buttonsLayout.set(buttonDefault, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-			
+
 			UIButton buttonOK = uiFactory.createButton(buttons);
 			buttonOK.setText(TuxGuitar.getProperty("ok"));
 			buttonOK.setDefaultButton();
@@ -110,17 +110,17 @@ public class PDFSettingsDialog {
 		UISpinner spinner = uiFactory.createSpinner(panel);
 		spinner.setMinimum(0);
 		layout.set(spinner, nbSettings, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.spinnerMap.put(key, spinner);
 	}
-	
+
 	private void populateValues() {
 		Map<String, Float> configMap = this.settings.getSettingsMap();
 		for (String key : spinnerMap.keySet()) {
 			spinnerMap.get(key).setValue(Math.round(configMap.get(key)));
 		}
 	}
-	
+
 	private void saveSettings() {
 		PDFSettingsManager mgr = PDFSettingsManager.getInstance(context);
 		for (String key : spinnerMap.keySet()) {

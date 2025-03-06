@@ -10,14 +10,14 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UICheckBox;
 
 public class SWTCheckBox extends SWTControl<Button> implements UICheckBox {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public SWTCheckBox(SWTContainer<? extends Composite> parent) {
 		super(new Button(parent.getControl(), SWT.CHECK), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
 
@@ -35,10 +35,10 @@ public class SWTCheckBox extends SWTControl<Button> implements UICheckBox {
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);
 	}
-	
+
 	public boolean isSelected() {
 		return this.getControl().getSelection();
 	}

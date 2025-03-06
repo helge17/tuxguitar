@@ -5,7 +5,7 @@ import javax.sound.sampled.Mixer.Info;
 import javax.sound.sampled.spi.MixerProvider;
 
 public class TGMixerProvider extends MixerProvider {
-	
+
 	@Override
 	public Info[] getMixerInfo() {
 		return new Info[] { TGMixer.MIXER_INFO };

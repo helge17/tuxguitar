@@ -5,18 +5,18 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public interface UIPrinter extends UIComponent {
-	
+
 	Float getDpiScale();
-	
+
 	Float getDpiFontScale();
-	
+
 	Integer getStartPage();
-	
+
 	Integer getEndPage();
-	
+
 	UIRectangle getBounds();
-	
+
 	UIResourceFactory getResourceFactory();
-	
+
 	UIPrinterJob createJob(String name);
 }

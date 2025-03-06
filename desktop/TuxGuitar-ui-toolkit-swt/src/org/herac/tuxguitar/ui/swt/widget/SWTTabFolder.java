@@ -22,17 +22,17 @@ import org.herac.tuxguitar.ui.widget.UITabFolder;
 import org.herac.tuxguitar.ui.widget.UITabItem;
 
 public class SWTTabFolder extends SWTControl<CTabFolder> implements UITabFolder {
-	
+
 	private static final int TAB_HEIGHT = 28;
-	
+
 	private boolean showClose;
 	private List<SWTTabItem> tabs;
 	private UICloseListenerManager closeListener;
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	public SWTTabFolder(SWTContainer<? extends Composite> container, boolean showClose) {
 		super(new CTabFolder(container.getControl(), SWT.TOP), container);
-		
+
 		this.tabs = new ArrayList<SWTTabItem>();
 		this.closeListener = new UICloseListenerManager();
 		this.selectionListener = new SWTSelectionListenerManager(this);
@@ -49,9 +49,9 @@ public class SWTTabFolder extends SWTControl<CTabFolder> implements UITabFolder 
 			}
 		});
 	}
-	
+
 	public void dispose(SWTTabItem item) {
-		if( this.tabs.contains(item)) { 
+		if( this.tabs.contains(item)) {
 			this.tabs.remove(item);
 		}
 		item.disposeControl();
@@ -66,7 +66,7 @@ public class SWTTabFolder extends SWTControl<CTabFolder> implements UITabFolder 
 	public List<UITabItem> getTabs() {
 		return new ArrayList<UITabItem>(this.tabs);
 	}
-	
+
 	public UITabItem findTab(CTabItem cTabItem) {
 		if( cTabItem != null ) {
 			for(SWTTabItem tab : this.tabs) {
@@ -117,28 +117,28 @@ public class SWTTabFolder extends SWTControl<CTabFolder> implements UITabFolder 
 	public void removeTabCloseListener(UICloseListener listener) {
 		this.closeListener.removeListener(listener);
 	}
-	
+
 	public void onTabClose(CTabFolderEvent event) {
 		event.doit = false;
-		
+
 		UITabItem uiTabItem = this.findTab((CTabItem)event.item);
 		UICloseEvent uiCloseEvent = new UICloseEvent(uiTabItem);
-		
+
 		this.closeListener.onClose(uiCloseEvent);
 	}
-	
+
 	public void onTabSelected() {
 		UITabItem selectedTab = this.getSelectedTab();
 		if( selectedTab != null ) {
 			((SWTTabItem) selectedTab).onSelect();
 		}
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		for(UIControl uiControl : this.getTabs()) {
 			uiControl.computePackedSize(null, null);
 		}
-		
+
 		UISize packedSize = this.getPackedSize();
 		if( packedSize.getWidth() == 0f && packedSize.getHeight() == 0f ) {
 			super.computePackedSize(fixedWidth, fixedHeight);

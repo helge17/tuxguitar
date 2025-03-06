@@ -20,7 +20,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGClefDialog extends TGModalFragment {
-	
+
 	public TGClefDialog() {
 		super(R.layout.view_clef_dialog);
 	}
@@ -48,15 +48,15 @@ public class TGClefDialog extends TGModalFragment {
 		TGMeasure measure = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createClefValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.clef_dlg_clef_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(measure.getClef(), null)));
-		
+
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.clef_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
 	}
-	
+
 	public TGSelectableItem[] createClefValues() {
 		return new TGSelectableItem[]  {
 			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_TREBLE), getString(R.string.clef_dlg_clef_value_treble)),
@@ -65,19 +65,19 @@ public class TGClefDialog extends TGModalFragment {
 			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_ALTO), getString(R.string.clef_dlg_clef_value_alto))
 		};
 	}
-	
+
 	public Integer parseClefValue() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.clef_dlg_clef_value);
 
 		return (Integer) ((TGSelectableItem) spinner.getSelectedItem()).getItem();
 	}
-	
+
 	public Boolean parseApplyToEnd() {
 		CheckBox checkbox = (CheckBox) this.getView().findViewById(R.id.clef_dlg_options_apply_to_end);
 
 		return Boolean.valueOf(checkbox.isChecked());
 	}
-	
+
 	public void changeClef() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeClefAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());

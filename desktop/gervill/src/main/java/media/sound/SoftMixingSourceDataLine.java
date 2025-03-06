@@ -38,7 +38,7 @@ import javax.sound.sampled.SourceDataLine;
 
 /**
  * SourceDataLine implementation for the SoftMixingMixer.
- * 
+ *
  * @author Karl Helgason
  */
 public class SoftMixingSourceDataLine extends SoftMixingDataLine implements

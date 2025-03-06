@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.tools.browser.base;
 
 public class TGBrowserSettings {
-	
+
 	private String title;
 	private String data;
-	
+
 	public TGBrowserSettings() {
 		super();
 	}

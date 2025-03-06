@@ -10,14 +10,14 @@ import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
 
 public class TGLyricModifyListener implements UIModifyListener, UISelectionListener{
-	
+
 	private boolean enabled;
 	private TGLyricEditor editor;
-	
+
 	public TGLyricModifyListener(TGLyricEditor editor){
 		this.editor = editor;
 	}
-	
+
 	public void processEvent() {
 		if( isEnabled() && !TuxGuitar.getInstance().getPlayer().isRunning() ){
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.editor.getContext(), TGSetTrackLyricsAction.NAME);
@@ -27,15 +27,15 @@ public class TGLyricModifyListener implements UIModifyListener, UISelectionListe
 			tgActionProcessor.process();
 		}
 	}
-	
+
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	public void onSelect(UISelectionEvent event) {
 		this.processEvent();
 	}

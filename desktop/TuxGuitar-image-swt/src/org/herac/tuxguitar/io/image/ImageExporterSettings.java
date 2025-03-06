@@ -3,11 +3,11 @@ package org.herac.tuxguitar.io.image;
 import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
 
 public class ImageExporterSettings {
-	
+
 	private TGPrintSettings styles;
 	private ImageFormat format;
 	private String path;
-	
+
 	public ImageExporterSettings() {
 		super();
 	}

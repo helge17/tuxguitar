@@ -17,17 +17,17 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGFileChooser {
-	
+
 	public static final String DEFAULT_OPEN_FILENAME = null;
-	
+
 	public static TGFileFormat ALL_FORMATS = new TGFileFormat(TuxGuitar.getProperty("file.all-files"), "*/*", new String[]{"*"});
-	
+
 	private TGContext context;
-	
+
 	private TGFileChooser(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, List<TGFileFormat> formats, Integer style, String fileName, String chooserPath, String defaultExtension) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGFileChooserDialogController());
@@ -39,45 +39,45 @@ public class TGFileChooser {
 		tgActionProcessor.setAttribute(TGFileChooserDialog.ATTRIBUTE_DEFAULT_EXTENSION, defaultExtension);
 		tgActionProcessor.process();
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, TGFileFormat format, Integer style, String fileName, String chooserPath, String defaultExtension) {
 		this.openChooser(handler, toFileFormatList(format), style, fileName, chooserPath, defaultExtension);
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, List<TGFileFormat> formats, Integer style, String fileName, String chooserPath) {
 		this.openChooser(handler, formats, style, fileName, chooserPath, null);
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, TGFileFormat format, Integer style, String fileName, String chooserPath) {
 		this.openChooser(handler, toFileFormatList(format), style, fileName, chooserPath);
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, List<TGFileFormat> formats, Integer style, String fileName) {
 		this.openChooser(handler, formats, style, fileName, getDefaultChooserPath());
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, TGFileFormat format, Integer style, String fileName) {
 		this.openChooser(handler, format, style, fileName, getDefaultChooserPath());
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, List<TGFileFormat> formats, Integer style) {
 		this.openChooser(handler, formats, style, null);
 	}
-	
+
 	public void openChooser(TGFileChooserHandler handler, TGFileFormat format, Integer style) {
 		this.openChooser(handler, format, style, null);
 	}
-	
+
 	public List<TGFileFormat> toFileFormatList(TGFileFormat format) {
 		List<TGFileFormat> formats = new ArrayList<TGFileFormat>();
 		formats.add(format);
 		return formats;
 	}
-	
+
 	public String getDefaultChooserPath() {
 		return TGFileHistory.getInstance(this.context).getChooserPath();
 	}
-	
+
 	public static TGFileChooser getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGFileChooser.class.getName(), new TGSingletonFactory<TGFileChooser>() {
 			public TGFileChooser createInstance(TGContext context) {
@@ -85,7 +85,7 @@ public class TGFileChooser {
 			}
 		});
 	}
-	
+
 	public static String getDefaultSaveFileName() {
 		return TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION;
 	}

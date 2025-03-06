@@ -15,20 +15,20 @@ import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGWriteFileAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.file.write";
-	
+
 	public static final String ATTRIBUTE_FILE_NAME = "fileName";
 	public static final String ATTRIBUTE_NATIVE_FILE_FORMAT = "nativeFileFormat";
-	
+
 	public TGWriteFileAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		try {
 			String fileName = context.getAttribute(ATTRIBUTE_FILE_NAME);
-			
+
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, new FileOutputStream(new File(fileName)));
 			String formatCode = TGFileFormatUtils.getFileFormatCode(fileName);
 			context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT_CODE, formatCode);
@@ -40,7 +40,7 @@ public class TGWriteFileAction extends TGActionBase {
 				isNativeFormat = TGFileFormatManager.getInstance(getContext()).isNativeFileFormat(formatCode);
 			}
 			context.setAttribute(ATTRIBUTE_NATIVE_FILE_FORMAT, isNativeFormat);
-			
+
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGWriteSongAction.NAME, context);
 		} catch (FileNotFoundException e) {

@@ -8,12 +8,12 @@ import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UISpinner;
 
 public class SWTSpinner extends SWTControl<Spinner> implements UISpinner {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	public SWTSpinner(SWTContainer<? extends Composite> parent) {
 		super(new Spinner(parent.getControl(), SWT.BORDER), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
 

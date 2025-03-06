@@ -7,11 +7,11 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGBrowserPluginImpl extends TGBrowserPlugin {
-	
+
 	protected TGBrowserFactory getFactory(TGContext context) throws TGPluginException {
 		return new TGBrowserFactoryImpl(context);
 	}
-	
+
 	public String getModuleId(){
 		return TGCommunityPlugin.MODULE_ID;
 	}

@@ -10,9 +10,9 @@ import org.herac.tuxguitar.ui.resource.UIPainter;
 import java.io.InputStream;
 
 public class TGImageImpl implements UIImage {
-	
+
 	private Bitmap handle;
-	
+
 	public TGImageImpl(float width, float height){
 		this.handle = Bitmap.createBitmap(Math.round(width), Math.round(height), Bitmap.Config.ARGB_8888);
 	}
@@ -27,23 +27,23 @@ public class TGImageImpl implements UIImage {
 			this.handle = null;
 		}
 	}
-	
+
 	public boolean isDisposed() {
 		return (this.handle == null || this.handle.isRecycled());
 	}
-	
+
 	public Bitmap getHandle(){
 		return this.handle;
 	}
-	
+
 	public float getWidth() {
 		return this.handle.getWidth();
 	}
-	
+
 	public float getHeight() {
 		return this.handle.getHeight();
 	}
-	
+
 	public UIPainter createPainter() {
 		return new TGPainterImpl(new Canvas(this.handle));
 	}

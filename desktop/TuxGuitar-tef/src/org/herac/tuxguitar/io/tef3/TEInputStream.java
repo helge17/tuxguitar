@@ -62,12 +62,12 @@ import org.herac.tuxguitar.io.tef3.base.TETimeSignature;
 import org.herac.tuxguitar.util.TGException;
 
 public class TEInputStream {
-	
+
 	private TESong song;
 	private InputStream stream;
 
 	private static final int SIZE_OF_FOOTER = 4;
-	
+
 	public TEInputStream(InputStream stream) {
 		this.stream = stream;
 	}
@@ -84,7 +84,7 @@ public class TEInputStream {
 		if (this.song.getFileMetadata().getHasChords()) {
 			this.readChordDefinitions();
 		}
-		
+
 		int sizeOfMeasure = this.readShort() - 4;
 		int measureCount = this.readShort();
 		this.skip(4); // 0x00 0x00 0x00 0x00
@@ -108,7 +108,7 @@ public class TEInputStream {
 		}
 
 		this.close();
-		
+
 		return this.song;
 	}
 
@@ -117,7 +117,7 @@ public class TEInputStream {
 	// set song metadata according to header content if song is not null
 	public boolean readFileHeader() {
 		byte[] headerBytes = new byte[256];
-		
+
 		// checking file header
 		// information from TablEdit editor: all these fields must be checked to make sure the file format is applicable
 		// do NOT try to decode file if all criteria are not met
@@ -154,19 +154,19 @@ public class TEInputStream {
 		byte wFormatLo = headerBytes[204];
 		if (4 != wFormatLo) {
 			return false;
-		}		
+		}
 		byte wFormatHi = headerBytes[205];
 		if (10 != wFormatHi) {
 			return false;
 		}
-		
+
 		// file header: OK
 
 		int initialBpm = this.bytesToShort(headerBytes, 6);
 		int toneChorus = this.bytesToShort(headerBytes, 8);
 		int toneReverb = this.bytesToShort(headerBytes, 10);
 		TEFileMetadataSyncopation syncopation = TEFileMetadataSyncopation.getEnumFromInt((short) this.bytesToShort(headerBytes,12));
-		
+
 		// Positions (commented out: unused)
 		//int posContents = this.bytesToInt(headerBytes,60);
 		//int posTitle = this.bytesToInt(headerBytes,64);
@@ -178,7 +178,7 @@ public class TEInputStream {
 		int posOfChords = this.bytesToInt(headerBytes,88);
 		//int posOfMeasures = this.bytesToInt(headerBytes,92);
 		//int posOfInstruments = this.bytesToInt(headerBytes,96);
-		
+
 		int posOfReadingList = this.bytesToInt(headerBytes, 128);
 		int posOfUrl = this.bytesToInt(headerBytes, 132);
 
@@ -190,7 +190,7 @@ public class TEInputStream {
 		if (this.song != null) {
 			this.song.setFileMetadata(fileMetadata);
 		}
-		
+
 		return true;
 	}
 
@@ -211,12 +211,12 @@ public class TEInputStream {
 		{
 			copyright = this.readShortString();
 		}
-		
+
 		String lyricFullString = this.readShortString();
 		List<TELyrics> lyrics = parseLyricString(lyricFullString);
 
 		List<String> textEvents = new ArrayList<>();
-		
+
 		if (this.song.getFileMetadata().getHasTextEvents())
 		{
 			int totalTextEvents = this.readShort();
@@ -260,7 +260,7 @@ public class TEInputStream {
 						{
 							continue;
 						}
-		
+
 						switch(linePartType) {
 							case 0:
 								trackNumber = trackPart.charAt(0) - 'A'; // A = track 0. B = track 1. etc.
@@ -284,14 +284,14 @@ public class TEInputStream {
 								unkOne = Integer.parseInt(trackPart.substring(1));
 								linePartType++;
 								break;
-							case 4: 
+							case 4:
 								unkTwo = Integer.parseInt(trackPart.substring(1));
 								linePartType++;
 								break;
 							default:
 								break;
 						}
-		
+
 						if (linePartType > 4) {
 							break;
 						}
@@ -302,8 +302,8 @@ public class TEInputStream {
 					}
 			}
 
-			stringBuilder.setLength(Math.max(stringBuilder.length() - 2, 0)); // Remove trailing \r\n 
-			
+			stringBuilder.setLength(Math.max(stringBuilder.length() - 2, 0)); // Remove trailing \r\n
+
 			TEFontPreset fontPreset = TEFontPreset.getEnumFromInt(fontPresetInt);
 
 			TELyrics lyric = new TELyrics(trackNumber, fontPreset, yPosition, stringBuilder.toString());
@@ -480,7 +480,7 @@ public class TEInputStream {
 
 	private void readPrintMetadata() {
 		int printDataLength = this.readByte();
-		
+
 		// Could also be a MSB for printDataLength. Both make sense (byte, or short).
 		// Byte = Size of unkWithFooter.
 		// Short = Size of full print metadata section.
@@ -618,7 +618,7 @@ public class TEInputStream {
 						}
 					}
 				}
-			
+
 			this.close(componentStream);
 		}
 
@@ -639,7 +639,7 @@ public class TEInputStream {
 		BitSet bitsetDurationDynamic = BitSet.valueOf(new byte[] { (byte) this.readByte(componentStream)});
 		TENoteDuration duration = TENoteDuration.getEnumFromInt(this.bitsetToInt(bitsetDurationDynamic.get(0, 5)));
 		TEComponentNoteDynamics dynamics = TEComponentNoteDynamics.getEnumFromInt(this.bitsetToInt(bitsetDurationDynamic.get(5, 8)));
-		
+
 		BitSet bitSetEffectAttributes = BitSet.valueOf(new byte[] { (byte) this.readByte(componentStream)});
 		TEComponentNoteEffect1 noteEffect1 = TEComponentNoteEffect1.getEnumFromInt(this.bitsetToInt(bitSetEffectAttributes.get(0, 4)));
 		TEComponentNoteAttributes attributes = TEComponentNoteAttributes.getEnumFromInt(this.bitsetToInt(bitSetEffectAttributes.get(4, 6)));
@@ -857,7 +857,7 @@ public class TEInputStream {
 		int yPosition = this.readByte(componentStream);
 
 		this.skip(componentStream, 4); // 0x00 0x00 0x00 0x00
-		
+
 		TEComponentStemLength stemLength = new TEComponentStemLength(position, yPosition);
 		this.song.getComponents().add(stemLength);
 	}
@@ -961,7 +961,7 @@ public class TEInputStream {
 		TEComponentTextEvent textEvent = new TEComponentTextEvent(position, textIndex, yPosition, xPosition, fontPreset, centeredText, borderType, anchorPosition);
 		this.song.getComponents().add(textEvent);
 	}
-	
+
 	//-----------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------//
@@ -993,7 +993,7 @@ public class TEInputStream {
 
 		return -1;
 	}
-	
+
 	protected int readByte(){
 		return this.readByte(this.stream);
 	}
@@ -1006,7 +1006,7 @@ public class TEInputStream {
 		}
 		return 0;
 	}
-	
+
 	protected int readShort(){
 		return this.readShort(this.stream);
 	}
@@ -1076,7 +1076,7 @@ public class TEInputStream {
 
 	protected String readNullTerminatedString(InputStream stream, int maxLength) {
 		StringBuilder stringBuilder = new StringBuilder();
-		
+
 		try {
 			int lastByte;
 
@@ -1098,7 +1098,7 @@ public class TEInputStream {
 
 		return stringBuilder.toString();
 	}
-	
+
 	protected void skip(int count){
 		this.skip(this.stream, count);
 	}
@@ -1112,7 +1112,7 @@ public class TEInputStream {
 	protected void close(){
 		this.close(this.stream);
 	}
-	
+
 	protected void close(InputStream stream){
 		try {
 			stream.close();
@@ -1120,11 +1120,11 @@ public class TEInputStream {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private int bytesToShort(byte[] bytes, int offset) {
 		return ( (bytes[offset]) | (bytes[offset+1] << 8) );
 	}
-	
+
 	private int bytesToInt(byte[] bytes, int offset) {
 		return ( (bytes[offset]) | (bytes[offset+1] << 8)| (bytes[offset+2] << 16)| (bytes[offset+3] << 24) );
 	}

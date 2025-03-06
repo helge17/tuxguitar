@@ -15,7 +15,7 @@ public class AWTBufferedPainter extends AWTAbstractPainter {
 	public AWTBufferedPainter() {
 		this.commands = new ArrayList<GTKPainterCommand>();
 	}
-	
+
 	public void initPath(final int style) {
 		this.commands.add(new GTKPainterCommand() {
 			public void process(UIPainter painter) {
@@ -184,13 +184,13 @@ public class AWTBufferedPainter extends AWTAbstractPainter {
 			}
 		});
 	}
-	
+
 	public void process(UIPainter painter) {
 		for (GTKPainterCommand command : this.commands) {
 			command.process(painter);
 		}
 	}
-	
+
 	private interface GTKPainterCommand {
 
 		void process(UIPainter painter);

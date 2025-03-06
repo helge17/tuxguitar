@@ -17,7 +17,7 @@ void LV2Lock_free(LV2Lock **handle)
 		pthread_mutex_destroy(&((*handle)->lock));
 
 		free ( (*handle) );
-		
+
 		(*handle) = NULL;
 	}
 }

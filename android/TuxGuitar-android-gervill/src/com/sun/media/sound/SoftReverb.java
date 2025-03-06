@@ -285,7 +285,7 @@ public class SoftReverb implements SoftAudioProcessor {
     public void setMixMode(boolean mix) {
         this.mix = mix;
     }
-    
+
     private boolean silent = true;
 
     public void processAudio() {
@@ -298,7 +298,7 @@ public class SoftReverb implements SoftAudioProcessor {
                 left.clear();
                 right.clear();
             }
-            return;            
+            return;
         }
 
         float[] inputA = this.inputA.array();
@@ -343,7 +343,7 @@ public class SoftReverb implements SoftAudioProcessor {
             combL[i].processMix(input, outL);
         for (int i = 0; i < allpassL.length; i++)
             allpassL[i].processReplace(outL, outL);
-        
+
         if (mix) {
             for (int i = 0; i < numsamples; i++)
                 left[i] += outL[i];
@@ -353,14 +353,14 @@ public class SoftReverb implements SoftAudioProcessor {
         }
 
         if (silent_input) {
-            float avgpower = 0; 
+            float avgpower = 0;
             for (int i = 0; i < numsamples; i++)
                 avgpower += outL[i]*outL[i];
             avgpower /= numsamples;
             avgpower = (float)Math.sqrt(avgpower);
             if(avgpower < 0.00001)
                 silent = true;
-        } 
+        }
 
     }
 

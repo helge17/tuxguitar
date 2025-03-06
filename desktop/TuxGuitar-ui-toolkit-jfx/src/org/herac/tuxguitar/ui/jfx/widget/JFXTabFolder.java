@@ -22,21 +22,21 @@ import org.herac.tuxguitar.ui.widget.UITabFolder;
 import org.herac.tuxguitar.ui.widget.UITabItem;
 
 public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
-	
+
 	private List<JFXTabItem> tabs;
 	private UICloseListenerManager closeListener;
 	private UISelectionListenerManager selectionListener;
-	
+
 	public JFXTabFolder(JFXContainer<? extends Region> parent, boolean showClose) {
 		super(new TabPane(), parent);
-		
+
 		this.tabs = new ArrayList<JFXTabItem>();
 		this.closeListener = new UICloseListenerManager();
 		this.selectionListener = new UISelectionListenerManager();
-		
+
 		this.getControl().setTabClosingPolicy(showClose ? TabClosingPolicy.ALL_TABS : TabClosingPolicy.UNAVAILABLE);
 	}
-	
+
 	public void dispose() {
 		List<JFXTabItem> items = new ArrayList<JFXTabItem>(this.tabs);
 		for(JFXTabItem item : items) {
@@ -46,16 +46,16 @@ public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
 		}
 		super.dispose();
 	}
-	
+
 	public void addTab(JFXTabItem tabItem) {
 		this.setOnTabCloseRequest(tabItem);
 		this.setOnSelectionChanged(tabItem);
 		this.getControl().getTabs().add(tabItem.getItem());
 		this.tabs.add(tabItem);
 	}
-	
+
 	public void removeTab(JFXTabItem tabItem) {
-		if( this.tabs.contains(tabItem)) { 
+		if( this.tabs.contains(tabItem)) {
 			this.tabs.remove(tabItem);
 			this.getControl().getTabs().remove(tabItem.getItem());
 		}
@@ -68,7 +68,7 @@ public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
 	public List<UITabItem> getTabs() {
 		return new ArrayList<UITabItem>(this.tabs);
 	}
-	
+
 	public UITabItem findTab(Tab item) {
 		if( item != null ) {
 			for(JFXTabItem tab : this.tabs) {
@@ -113,17 +113,17 @@ public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
 	public void removeTabCloseListener(UICloseListener listener) {
 		this.closeListener.removeListener(listener);
 	}
-	
+
 	public void setOnTabCloseRequest(final JFXTabItem tabItem) {
 		tabItem.getItem().setOnCloseRequest(new EventHandler<Event>() {
 			public void handle(Event event) {
 				event.consume();
-				
+
 				JFXTabFolder.this.closeListener.onClose(new UICloseEvent(tabItem));
 			}
 		});
 	}
-	
+
 	public void setOnSelectionChanged(final JFXTabItem tabItem) {
 		tabItem.getItem().setOnSelectionChanged(new EventHandler<Event>() {
 			public void handle(Event event) {
@@ -132,19 +132,19 @@ public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
 			}
 		});
 	}
-	
+
 	public void onTabSelected() {
 		UITabItem selectedTab = this.getSelectedTab();
 		if( selectedTab != null ) {
 			((JFXTabItem) selectedTab).onSelect();
 		}
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		for(UIControl uiControl : this.getTabs()) {
 			uiControl.computePackedSize(null, null);
 		}
-		
+
 		UISize packedSize = this.getPackedSize();
 		if( packedSize.getWidth() == 0f && packedSize.getHeight() == 0f ) {
 			super.computePackedSize(fixedWidth, fixedHeight);

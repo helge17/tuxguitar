@@ -175,7 +175,7 @@ public class BeatMenuItem extends TGMenuItem {
 		TGNoteRange noteRange = tablature.getCurrentNoteRange();
 		boolean atLeastOneNoteSelected = (note != null) || (noteRange!=null && !noteRange.isEmpty());
 		int style = tablature.getViewLayout().getStyle();
-		
+
 		this.insertRestBeat.setEnabled(!running);
 		this.deleteNoteOrRest.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);

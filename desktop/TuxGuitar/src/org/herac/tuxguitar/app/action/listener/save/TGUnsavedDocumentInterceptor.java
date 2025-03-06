@@ -26,40 +26,40 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEventListener {
-	
+
 	private static final String UNSAVED_INTERCEPTOR_DOCUMENTS = "unsavedInterceptor_documents";
 	private static final String UNSAVED_INTERCEPTOR_ACTION_ID = "unsavedInterceptor_actionId";
 	public static final String UNSAVED_INTERCEPTOR_BY_PASS = "unsavedInterceptor_byPass";
-	
+
 	private TGContext context;
 	private List<String> actionIds;
-	
+
 	public TGUnsavedDocumentInterceptor(TGContext context) {
 		this.context = context;
 		this.actionIds = new ArrayList<String>();
 	}
-	
+
 	public boolean containsActionId(String id) {
 		return this.actionIds.contains(id);
 	}
-	
+
 	public void addActionId(String id) {
 		this.actionIds.add(id);
 	}
-	
+
 	public void removeActionId(String id) {
 		this.actionIds.remove(id);
 	}
-	
+
 	public boolean intercept(final String id, final TGActionContext context) throws TGActionException {
 		if(!this.isByPassInContext(context) && this.containsActionId(id)) {
 			List<TGDocument> unsavedDocuments = this.findUnsavedDocuments(context);
 			if(!unsavedDocuments.isEmpty()) {
 				TGDocument document = unsavedDocuments.remove(0);
-				
+
 				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, document.getSong());
 				context.setAttribute(UNSAVED_INTERCEPTOR_ACTION_ID, id);
-				
+
 				TGActionProcessor tgLoadSongAction = new TGActionProcessor(this.context, TGLoadSongAction.NAME);
 				tgLoadSongAction.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, document.getSong());
 				tgLoadSongAction.setOnFinish(new Runnable() {
@@ -68,13 +68,13 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 					}
 				});
 				tgLoadSongAction.process();
-				
+
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public void openSaveDialog(TGActionContext context) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
@@ -85,7 +85,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_NO, this.createThreadRunnable(createInterceptedActionRunnable(context)));
 		tgActionProcessor.process();
 	}
-	
+
 	public Runnable createThreadRunnable(final Runnable target) {
 		return new Runnable() {
 			public void run() {
@@ -93,7 +93,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 			}
 		};
 	}
-	
+
 	public Runnable createSaveActionRunnable(final TGActionContext tgActionContext) {
 		return new Runnable() {
 			public void run() {
@@ -101,7 +101,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 			}
 		};
 	}
-	
+
 	public Runnable createInterceptedActionRunnable(final TGActionContext tgActionContext) {
 		return new Runnable() {
 			public void run() {
@@ -109,20 +109,20 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 			}
 		};
 	}
-	
+
 	private boolean isByPassInContext(TGActionContext context) {
 		return Boolean.TRUE.equals(context.getAttribute(UNSAVED_INTERCEPTOR_BY_PASS));
 	}
-	
+
 	private boolean containsUnsavedDocument(TGActionContext context) {
 		return (!this.findUnsavedDocuments(context).isEmpty());
 	}
-	
+
 	private List<TGDocument> findUnsavedDocuments(TGActionContext context) {
 		List<TGDocument> unsavedDocuments = context.getAttribute(UNSAVED_INTERCEPTOR_DOCUMENTS);
 		if( unsavedDocuments == null ) {
 			unsavedDocuments = new ArrayList<TGDocument>();
-			
+
 			List<TGDocument> documents = this.findDocuments(context);
 			for(TGDocument document : documents) {
 				if( document.isUnsaved() ) {
@@ -133,7 +133,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 		}
 		return unsavedDocuments;
 	}
-	
+
 	private List<TGDocument> findDocuments(TGActionContext context) {
 		List<TGDocument> documents = context.getAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENTS);
 		if( documents == null ) {
@@ -141,22 +141,22 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 		}
 		return documents;
 	}
-	
+
 	public void executeInterceptedAction(TGActionContext context) {
 		if(!this.containsUnsavedDocument(context)) {
 			context.setAttribute(UNSAVED_INTERCEPTOR_BY_PASS, true);
 		}
 		String actionId = context.getAttribute(UNSAVED_INTERCEPTOR_ACTION_ID);
-		
+
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.execute(actionId, context);
 	}
-	
+
 	public void executeSaveAction(TGActionContext tgActionContext) {
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.context);
 		tgActionManager.execute(TGSaveFileAction.NAME, tgActionContext);
 	}
-	
+
 	public void checkForInterceptedAction(TGEvent event) {
 		if( TGWriteSongAction.NAME.equals(event.getAttribute(TGActionEvent.ATTRIBUTE_ACTION_ID)) ) {
 			TGActionContext actionContext = event.getAttribute(TGActionEvent.ATTRIBUTE_SOURCE_CONTEXT);
@@ -165,7 +165,7 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 			}
 		}
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.checkForInterceptedAction(event);

@@ -18,25 +18,25 @@ import org.herac.tuxguitar.ui.swt.resource.SWTPainter;
 import org.herac.tuxguitar.ui.widget.UIKnob;
 
 public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMouseDragListener, UIMouseUpListener, UIMouseWheelListener, PaintListener {
-	 
+
 	private static final int DEFAULT_MAXIMUM = 100;
 	private static final int DEFAULT_MINIMUM = 0;
 	private static final int DEFAULT_INCREMENT = 1;
 	private static final float DEFAULT_PACKED_WIDTH = 32f;
 	private static final float DEFAULT_PACKED_HEIGHT = 32f;
-	
+
 	private static final float MARGIN = 2;
-	
+
 	private int maximum;
 	private int minimum;
 	private int increment;
 	private int value;
 	private float lastDragY;
 	private UISelectionListenerManager selectionHandler;
-	
+
 	public SWTCustomKnob(SWTContainer<? extends Composite> parent) {
 		super(new Composite(parent.getControl(), SWT.DOUBLE_BUFFERED), parent);
-		
+
 		this.maximum = DEFAULT_MAXIMUM;
 		this.minimum = DEFAULT_MINIMUM;
 		this.increment = DEFAULT_INCREMENT;
@@ -50,7 +50,7 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 	public int getValue(){
 		return this.value;
 	}
-	
+
 	public void setValue(int value){
 		if( this.value != value ){
 			this.value = value;
@@ -58,7 +58,7 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 			this.fireSelectionEvent();
 		}
 	}
-	
+
 	public int getMaximum() {
 		return maximum;
 	}
@@ -109,29 +109,29 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 	public void removeSelectionListener(UISelectionListener listener) {
 		this.selectionHandler.removeListener(listener);
 	}
-	
+
 	public void fireSelectionEvent() {
 		if(!this.isIgnoreEvents()) {
 			this.selectionHandler.onSelect(new UISelectionEvent(this));
 		}
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		super.computePackedSize(fixedWidth != null ? fixedWidth : DEFAULT_PACKED_WIDTH, fixedHeight != null ? fixedHeight : DEFAULT_PACKED_HEIGHT);
 	}
-	
+
 	public void invalidate() {
 		this.getControl().redraw();
 	}
 
 	public void paintControl(PaintEvent e) {
 		Rectangle area = this.getControl().getClientArea();
-		
+
 		// knob
 		float ovalSize = (Math.min(area.width, area.height) - MARGIN);
 		float x = area.x + (area.width  / 2f);
 		float y = area.y + (area.height / 2f);
-		
+
 		// value
 		float value = (this.value - this.minimum);
 		float maximum = (this.maximum - this.minimum);
@@ -139,30 +139,30 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 		float valueSize = (ovalSize / 10f);
 		float valueX = (x +  Math.round((ovalSize / 3f) * Math.cos(Math.PI * percent)));
 		float valueY = (y + Math.round((ovalSize / 3f) * Math.sin(Math.PI * percent)));
-		
+
 		UIPainter uiPainter = new SWTPainter(e.gc);
 		uiPainter.initPath(UIPainter.PATH_DRAW);
 		uiPainter.moveTo(x, y);
 		uiPainter.addCircle(y, y, ovalSize);
 		uiPainter.closePath();
-		
+
 		uiPainter.initPath(UIPainter.PATH_DRAW);
 		uiPainter.moveTo(valueX, valueY);
 		uiPainter.addCircle(valueX, valueY, valueSize);
 		uiPainter.closePath();
 	}
-	
+
 	public void onMouseWheel(UIMouseWheelEvent event) {
 		this.setValue(Math.round(Math.max(Math.min(this.value + (Math.signum(event.getValue()) * this.increment), this.maximum), this.minimum)));
 	}
-	
+
 	public void onMouseDrag(UIMouseEvent event) {
 		float dragY = event.getPosition().getY();
 		float move = (this.lastDragY - dragY);
 		this.lastDragY = dragY;
 		this.setValue(Math.round(Math.max(Math.min(this.value + (move * this.increment), this.maximum), this.minimum)));
 	}
-	
+
 	public void onMouseUp(UIMouseEvent event) {
 		this.lastDragY = 0f;
 	}

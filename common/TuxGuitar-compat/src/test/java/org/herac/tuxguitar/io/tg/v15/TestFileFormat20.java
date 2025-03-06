@@ -23,11 +23,11 @@ import org.junit.jupiter.api.Test;
  */
 
 public class TestFileFormat20 {
-	
+
 	@Test
 	/* test full backward compatibility of file format 2.0 with TuxGuitar file format 1.5
 	 * important note: to succeed, file provided to this test MUST have been written by TuxGuitar version >= 1.6.3
-	 * version 1.6.3 introduced a modification (79512b9): keySignature is NOT stored for percussion tracks (meaningless) 
+	 * version 1.6.3 introduced a modification (79512b9): keySignature is NOT stored for percussion tracks (meaningless)
 	 * binary comparison between .tg files written by versions before and after 1.6.3 already fails
 	 */
 	public void testFileFormatEquivalence() throws FileNotFoundException, Throwable {
@@ -38,7 +38,7 @@ public class TestFileFormat20 {
 		assertTrue(xmlFileIsEquivalent("reference_15.tg",false));
 		assertTrue(xmlFileIsEquivalent("reference_15.tg",true));
 	}
-	
+
 	/* check file format equivalence:
 	 * - import .tg v1.5 file into song
 	 * - save song under .tg format 2.0
@@ -55,7 +55,7 @@ public class TestFileFormat20 {
 		handleRead.setFactory(factory);
 		handleRead.setInputStream(new ByteArrayInputStream(bufferOriginal));
 		new org.herac.tuxguitar.io.tg.v15.TGSongReaderImpl().read(handleRead);
-		
+
 		// save song under xml format in byte buffer
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		TGSongWriterHandle handleWrite = new TGSongWriterHandle();
@@ -68,7 +68,7 @@ public class TestFileFormat20 {
 		} else {
 			writer.writeContent(handleWrite);
 		}
-		
+
 		// load xml format
 		handleRead.setSong(null);
 		byte[] bufferXml = outputStream.toByteArray();
@@ -86,7 +86,7 @@ public class TestFileFormat20 {
 		handleWrite.setFormat(org.herac.tuxguitar.io.tg.TGStream.TG_FORMAT);
 		new org.herac.tuxguitar.io.tg.v15.TGSongWriterImpl().write(handleWrite);
 		byte[] bufferFinal = outputStream.toByteArray();
-		
+
 		// compare
 		if (bufferFinal.length != bufferOriginal.length) {
 			return false;

@@ -12,10 +12,10 @@ import javafx.scene.paint.Color;
 import org.herac.tuxguitar.ui.widget.UIPanel;
 
 public class JFXPanel extends JFXPaneContainer<Pane> implements UIPanel {
-	
+
 	public JFXPanel(JFXContainer<? extends Region> parent, boolean bordered) {
 		super(new Pane(), parent);
-		
+
 		if( bordered ) {
 			this.getControl().setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
 		}

@@ -14,19 +14,19 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTransportAdapter {
-	
+
 	private TGContext context;
 
 	private TGTransportAdapter(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void initialize() {
 		try {
 			MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
 			midiPlayer.addListener(new TGTransportListener(this.context));
 			midiPlayer.addSequencerProvider(new MidiSequencerProviderImpl(this.context), true);
-			
+
 			this.appendListeners();
 			this.callLoadSettings();
 		} catch (MidiPlayerException e) {
@@ -42,7 +42,7 @@ public class TGTransportAdapter {
 	public void appendListeners() {
 		TGEditorManager.getInstance(this.context).addDestroyListener(new TGTransportDestroyListener(this));
 	}
-	
+
 	public void destroy() {
 		MidiPlayer.getInstance(this.context).close();
 	}

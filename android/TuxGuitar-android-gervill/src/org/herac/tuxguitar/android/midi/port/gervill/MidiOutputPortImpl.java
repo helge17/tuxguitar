@@ -25,20 +25,20 @@ public class MidiOutputPortImpl extends GMOutputPort{
 		this.synthManager = new MidiSynthesizerManager(this.context, this.soundBankResource);
 		this.synthManager.open();
 	}
-	
+
 	public void close(){
 		if( this.synthManager != null ) {
 			this.synthManager.close();
 		}
 	}
-	
+
 	public GMReceiver getReceiver() {
 		if( this.synthManager != null ) {
 			return this.synthManager.getReceiver();
 		}
 		return null;
 	}
-	
+
 	public void check() throws MidiPlayerException{
 		if( this.synthManager == null || !this.synthManager.isSynthesizerLoaded()) {
 			throw new MidiPlayerException("jsa.error.midi.unavailable");

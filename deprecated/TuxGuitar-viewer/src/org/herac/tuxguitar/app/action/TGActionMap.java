@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TGActionMap<T> {
-	
+
 	private Map<String, T> map;
-	
+
 	public TGActionMap() {
 		this.map = new HashMap<String, T>();
 	}
-	
+
 	public void set(String actionId, T value) {
 		if( value != null ) {
 			this.map.put(actionId, value);
@@ -18,7 +18,7 @@ public class TGActionMap<T> {
 			this.map.remove(actionId);
 		}
 	}
-	
+
 	public T get(String actionId) {
 		if( this.map.containsKey(actionId) ) {
 			return this.map.get(actionId);

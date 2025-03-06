@@ -8,7 +8,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGDocument {
-	
+
 	private URI uri;
 	private TGSong song;
 	private TGUndoableBuffer undoableBuffer;
@@ -19,7 +19,7 @@ public class TGDocument {
 	private TGBeat selectionStart;
 	private TGBeat selectionEnd;
 	private MidiPlayerMode midiPlayerMode;
-	
+
 	public TGDocument() {
 		super();
 	}
@@ -63,7 +63,7 @@ public class TGDocument {
 	public void setUnwanted(boolean unwanted) {
 		this.unwanted = unwanted;
 	}
-	
+
 	public TGBeat getCaretBeat() {
 		return caretBeat;
 	}
@@ -79,7 +79,7 @@ public class TGDocument {
 	public void setCaretString(int caretString) {
 		this.caretString = caretString;
 	}
-	
+
 	public TGBeat getSelectionStart() {
 		return selectionStart;
 	}
@@ -95,11 +95,11 @@ public class TGDocument {
 	public void setSelectionEnd(TGBeat selectionEnd) {
 		this.selectionEnd = selectionEnd;
 	}
-	
+
 	public MidiPlayerMode getMidiPlayerMode() {
 		return this.midiPlayerMode;
 	}
-	
+
 	public void setMidiPlayerMode(MidiPlayerMode mode) {
 		this.midiPlayerMode = mode;
 	}

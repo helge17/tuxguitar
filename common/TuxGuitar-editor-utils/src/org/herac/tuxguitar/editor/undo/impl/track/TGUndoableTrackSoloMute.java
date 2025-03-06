@@ -7,18 +7,18 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableTrackSoloMute extends TGUndoableTrackBase {
-	
+
 	private int doAction;
 	private int track;
 	private boolean undoSolo;
 	private boolean undoMute;
 	private boolean redoSolo;
 	private boolean redoMute;
-	
+
 	private TGUndoableTrackSoloMute(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -31,7 +31,7 @@ public class TGUndoableTrackSoloMute extends TGUndoableTrackBase {
 		}
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -44,32 +44,32 @@ public class TGUndoableTrackSoloMute extends TGUndoableTrackBase {
 		}
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableTrackSoloMute startUndo(TGContext context, TGTrack track){
 		TGUndoableTrackSoloMute undoable = new TGUndoableTrackSoloMute(context);
 		undoable.doAction = UNDO_ACTION;
 		undoable.track = track.getNumber();
 		undoable.undoSolo = track.isSolo();
 		undoable.undoMute = track.isMute();
-		
+
 		return undoable;
 	}
-	
+
 	public TGUndoableTrackSoloMute endUndo(TGTrack track){
 		this.redoSolo = track.isSolo();
 		this.redoMute = track.isMute();
-		
+
 		return this;
 	}
-	
+
 	public TGTrack getTrack(int number) {
 		return getSongManager().getTrack(getSong(), number);
 	}

@@ -25,34 +25,34 @@ import org.herac.tuxguitar.app.util.TGResourceUtils;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGToolBar {
-	
+
 	private TGContext context;
 	private JPanel buttons;
 	private AbstractButton buttonPlay;
 	private AbstractButton buttonTrack;
 	private AbstractButton buttonSetup;
-	
+
 	public TGToolBar(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void init() {
 		this.buttonPlay = getImageButton(new JToggleButton(), "transport_play", ".png");
 		this.buttonPlay.addActionListener(new TGActionProcessorListener(this.context, TransportPlayAction.NAME));
-		
+
 		this.buttonTrack = getLinkButton (getImageButton(new JButton(), null,null) );
 		this.buttonTrack.addActionListener(new TGActionProcessorListener(this.context, SelectTrackAction.NAME));
-		
+
 		this.buttonSetup = getImageButton(new JButton(), "setup", ".png");
 		this.buttonSetup.addActionListener(new TGActionProcessorListener(this.context, SettingsAction.NAME));
 	}
-	
+
 	public Component getPanel(){
 		if( this.buttons == null ){
 			this.init();
-			
+
 			this.buttons = new JPanel(){
-				
+
 				private static final long serialVersionUID = 9136810316642761074L;
 
 				public void update( Graphics g ){
@@ -69,7 +69,7 @@ public class TGToolBar {
 		}
 		return this.buttons;
 	}
-	
+
 	public void updateItems(){
 		Tablature tablature = TuxGuitar.instance().getTablatureEditor().getTablature();
 		this.buttonTrack.setForeground( Color.BLACK );
@@ -81,7 +81,7 @@ public class TGToolBar {
 		}
 		this.buttonPlay.setSelected( TuxGuitar.instance().getPlayer().isRunning() );
 	}
-	
+
 	private AbstractButton getImageButton( AbstractButton button, String iconPrefix, String iconSuffix ){
 		button.setHorizontalTextPosition(JButton.CENTER);
 		button.setVerticalTextPosition(JButton.CENTER);
@@ -96,7 +96,7 @@ public class TGToolBar {
 		button.setRolloverSelectedIcon( TGResourceUtils.loadIcon( iconPrefix + "_selected_over" + iconSuffix ) );
 		return button;
 	}
-	
+
 	private AbstractButton getLinkButton( final AbstractButton button  ){
 		button.setFont( TGConfig.FONT_WIDGETS );
 		button.setForeground( Color.BLACK );

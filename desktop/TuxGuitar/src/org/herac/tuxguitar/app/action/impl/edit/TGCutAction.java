@@ -14,7 +14,7 @@ public class TGCutAction extends TGActionBase{
 	public TGCutAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		if (Boolean.TRUE.equals(context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE))) {
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());

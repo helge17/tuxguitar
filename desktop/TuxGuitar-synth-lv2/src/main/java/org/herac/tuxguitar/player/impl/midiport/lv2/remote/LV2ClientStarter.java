@@ -10,17 +10,17 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class LV2ClientStarter implements TGClientStarter {
-	
+
 	private static final String VARIABLE_LV2_SESSION_ID = "lv2.sessionId";
 	private static final String VARIABLE_LV2_SERVER_PORT = "lv2.serverPort";
 	private static final String VARIABLE_LV2_BUFFER_SIZE = "lv2.bufferSize";
 	private static final String VARIABLE_LV2_PLUGIN_URI = "lv2.pluginUri";
-	
+
 	private TGContext context;
 	private LV2Settings settings;
 	private LV2Plugin plugin;
 	private Integer bufferSize;
-	
+
 	public LV2ClientStarter(TGContext context, LV2Plugin plugin, Integer bufferSize) {
 		this.context = context;
 		this.plugin = plugin;
@@ -35,7 +35,7 @@ public class LV2ClientStarter implements TGClientStarter {
 			if( command != null ) {
 				Map<String, Object> variables = this.createCommandVariables(sessionId, serverPort);
 				TGExpressionResolver expressionResolver = TGExpressionResolver.getInstance(this.context);
-				
+
 				String[] cmdarray = command.split(",");
 				for(int i = 0 ; i < cmdarray.length; i ++) {
 					cmdarray[i] = expressionResolver.resolve(cmdarray[i], new TGExpressionResolver.MapPropertyResolver(variables));
@@ -47,11 +47,11 @@ public class LV2ClientStarter implements TGClientStarter {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public String findClientCommand() {
 		return this.settings.getClientCommand();
 	}
-	
+
 	public String getWorkingDir() {
 		String workingDir = this.settings.getWorkingDir();
 		if( workingDir != null ) {
@@ -59,7 +59,7 @@ public class LV2ClientStarter implements TGClientStarter {
 		}
 		return null;
 	}
-	
+
 	public Map<String, Object> createCommandVariables(Integer sessionId, Integer serverPort) {
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(VARIABLE_LV2_SESSION_ID, sessionId);

@@ -7,13 +7,13 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGIncrementNoteSemitoneAction extends TGTransposeNoteSemitoneAction {
-	
+
 	public static final String NAME = "action.note.general.increment-semitone";
-	
+
 	public TGIncrementNoteSemitoneAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	@Override
 	protected boolean canTransposeSemiTone(TGMeasureManager measureManager, TGMeasure measure, TGBeat beat, TGNote note) {
 		return measureManager.canMoveSemitoneUp(measure, beat.getStart(), note.getString());

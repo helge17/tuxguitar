@@ -30,7 +30,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteDynamics foundEnumValue = null;
             for (TEComponentNoteDynamics enumValue : values())
             {
@@ -38,11 +38,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -82,7 +82,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteEffect1 foundEnumValue = null;
             for (TEComponentNoteEffect1 enumValue : values())
             {
@@ -90,11 +90,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -121,7 +121,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteAttributes foundEnumValue = null;
             for (TEComponentNoteAttributes enumValue : values())
             {
@@ -129,11 +129,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -161,7 +161,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteAlterations foundEnumValue = null;
             for (TEComponentNoteAlterations enumValue : values())
             {
@@ -169,11 +169,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -204,7 +204,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNotePitchShift foundEnumValue = null;
             for (TEComponentNotePitchShift enumValue : values())
             {
@@ -212,11 +212,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -248,7 +248,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteGraceNoteEffect foundEnumValue = null;
             for (TEComponentNoteGraceNoteEffect enumValue : values())
             {
@@ -256,11 +256,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -295,7 +295,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteEffect2 foundEnumValue = null;
             for (TEComponentNoteEffect2 enumValue : values())
             {
@@ -303,11 +303,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -343,7 +343,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteEffect3 foundEnumValue = null;
             for (TEComponentNoteEffect3 enumValue : values())
             {
@@ -351,11 +351,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -385,7 +385,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteFingering foundEnumValue = null;
             for (TEComponentNoteFingering enumValue : values())
             {
@@ -393,11 +393,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -428,7 +428,7 @@ public class TEComponentNote extends TEComponentBase {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEComponentNoteStroke foundEnumValue = null;
             for (TEComponentNoteStroke enumValue : values())
             {
@@ -436,11 +436,11 @@ public class TEComponentNote extends TEComponentBase {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -589,7 +589,7 @@ public class TEComponentNote extends TEComponentBase {
     public boolean getIsStabilo() {
         return this.isStabilo;
     }
-    
+
     public TEComponentNoteFingering getFirstFinger() {
         return this.firstFinger;
     }
@@ -597,7 +597,7 @@ public class TEComponentNote extends TEComponentBase {
     public TEComponentNoteFingering getSecondFinger() {
         return this.secondFinger;
     }
-    
+
     public TEComponentNoteStroke getStroke() {
         return this.stroke;
     }

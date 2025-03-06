@@ -1,20 +1,20 @@
 package org.herac.tuxguitar.io.abc.base;
 
 public class ABCTempo {
-	
+
 	private int value;
-	
+
 	public ABCTempo(int value){
 		this.value = value;
 	}
-	
+
 	/**
 	 * @param string
 	 * <p>
 	 * "the actual number of beats per minute in a piece marked allergro (for example),
 	 *  will depend on the music itself.
 	 *  A piece consisting mainly of 'half notes' can be played very much quicker in
-	 *  terms of bpm than a piece consisting mainly of 'sixteenth notes', 
+	 *  terms of bpm than a piece consisting mainly of 'sixteenth notes',
 	 *  but still be described with the same word."
 	 *  <p>
 	 * Here are the best descriptions for the following tempo markings:<br>
@@ -24,9 +24,9 @@ public class ABCTempo {
 	 * <tr><td>40</td><td>Grave/td><td>slow and solemn (20-40 bpm)</td></tr>
 	 * <tr><td>50</td><td>Lento/td><td>very slow (40-60 bpm)</td></tr>
 	 * <tr><td>60</td><td>Largo/td><td>very slow (40-60 bpm), like lento</td></tr>
-	 * <tr><td>65</td><td>Larghetto</td><td>rather broadly (60-66 bpm)</td></tr> 
+	 * <tr><td>65</td><td>Larghetto</td><td>rather broadly (60-66 bpm)</td></tr>
 	 * <tr><td>76</td><td>Adagio</td><td>slowly </td></tr>
-	 * <tr><td>80</td><td>Andante</td><td>at a walking pace</td></tr> 
+	 * <tr><td>80</td><td>Andante</td><td>at a walking pace</td></tr>
 	 * <tr><td>90</td><td>Andante Moderato</td><td>a bit faster than andante</td></tr>
 	 * <tr><td>100</td><td>Andantino</td><td>slightly faster than andante</td></tr>
 	 * <tr><td>105</td><td>Moderato</td><td>moderately (101-110 bpm)</td></tr>
@@ -39,7 +39,7 @@ public class ABCTempo {
 	 * <tr><td>180</td><td>Presto</td><td>very fast (168-200 bpm)</td></tr>
 	 * <tr><td>220</td><td>Prestissimo</td><td>extremely fast (more than 200bpm)</td></tr>
 	 * </table>
-	 * 
+	 *
 	 */
 	public ABCTempo(String string) {
 		this.value=120;
@@ -69,7 +69,7 @@ public class ABCTempo {
 	public int getValue() {
 		return this.value;
 	}
-	
+
 	public String toString(){
 		String string = new String("[TEMPO]");
 		string += "\n     Value:       " + getValue();

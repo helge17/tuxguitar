@@ -6,13 +6,13 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class ASCIISongWriterPlugin extends TGSongWriterPlugin {
-	
+
 	public static final String MODULE_ID = "tuxguitar-ascii";
-	
+
 	public ASCIISongWriterPlugin() {
 		super();
 	}
-	
+
 	public String getModuleId() {
 		return MODULE_ID;
 	}

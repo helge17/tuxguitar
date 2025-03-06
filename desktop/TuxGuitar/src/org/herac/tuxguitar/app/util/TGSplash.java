@@ -11,19 +11,19 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGSplash {
-	
+
 	private TGContext context;
 	private UISplashWindow shell;
-	
+
 	private TGSplash(TGContext context){
 		this.context = context;
 	}
-	
+
 	public void init() {
 		if( TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.SHOW_SPLASH)){
 			TGIconManager iconManager = TGIconManager.getInstance(this.context);
 			UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
-			
+
 			this.shell = uiFactory.createSplashWindow();
 			this.shell.setText(TGApplication.NAME);
 			this.shell.setImage(iconManager.getAppIcon());
@@ -31,14 +31,14 @@ public class TGSplash {
 			this.shell.open();
 		}
 	}
-	
+
 	public void finish(){
 		if( this.shell != null && !this.shell.isDisposed()){
 			this.shell.dispose();
 		}
 		this.context.removeAttribute(TGSplash.class.getName());
 	}
-	
+
 	public static TGSplash getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGSplash.class.getName(), new TGSingletonFactory<TGSplash>() {
 			public TGSplash createInstance(TGContext context) {

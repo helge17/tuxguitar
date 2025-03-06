@@ -20,18 +20,18 @@ public class SBInstaller {
 
 	private static final String SB_PREFIX = "soundbank";
 	private static final String SB_EXTENSION = ".gm";
-	
+
 	private boolean cancelled;
-	
+
 	private TGContext context;
-	
+
 	private URL url;
 	private File tmpPath;
 	private File dstPath;
-	
+
 	private MidiPortSynthesizer synthesizer;
 	private SBInstallerlistener listener;
-	
+
 	public SBInstaller(TGContext context, URL url,File tmpPath,File dstPath,MidiPortSynthesizer synthesizer, SBInstallerlistener listener){
 		this.context = context;
 		this.url = url;
@@ -41,7 +41,7 @@ public class SBInstaller {
 		this.listener = listener;
 		this.cancelled = false;
 	}
-	
+
 	public void process(){
 		File tmpFile = new File(this.tmpPath.getAbsolutePath() + File.separator + "soundbank.zip");
 		boolean success = download(this.url, tmpFile);
@@ -56,15 +56,15 @@ public class SBInstaller {
 		}
 		this.listener.notifyFinish();
 	}
-	
+
 	private boolean download(URL url, File dst){
 		try{
 			this.listener.notifyProcess(TuxGuitar.getProperty("jsa.soundbank-assistant.process.downloading"));
-			
+
 			InputStream is = url.openStream();
-			
+
 			OutputStream os = new FileOutputStream(dst);
-			
+
 			byte[] buffer = new byte[1024];
 			int length = 0;
 			while(!isCancelled() && (length = is.read(buffer)) != -1 ){
@@ -73,26 +73,26 @@ public class SBInstaller {
 			is.close();
 			os.flush();
 			os.close();
-			
+
 			return true;
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	private File uncompress(File file){
 		try{
 			this.listener.notifyProcess(TuxGuitar.getProperty("jsa.soundbank-assistant.process.uncompressing",new String[]{file.getAbsolutePath()}));
-			
+
 			if(file.exists()){
 				File soundbank = null;
-				
+
 				ZipInputStream is = new ZipInputStream(new FileInputStream(file));
 				ZipEntry entry = null;
 				while( ( entry = is.getNextEntry() ) != null ){
-					
-					String name = entry.getName();					
+
+					String name = entry.getName();
 					if(name.indexOf(SB_PREFIX) == 0 && name.indexOf(SB_EXTENSION) == (name.length() - SB_EXTENSION.length())){
 						soundbank = new File(this.dstPath.getAbsolutePath() + File.separator + name);
 						OutputStream os = new FileOutputStream(soundbank);
@@ -106,8 +106,8 @@ public class SBInstaller {
 					}
 				}
 				is.close();
-				
-				
+
+
 				return soundbank;
 			}
 		}catch(Throwable throwable){
@@ -115,16 +115,16 @@ public class SBInstaller {
 		}
 		return null;
 	}
-	
+
 	private void install(File file){
 		try {
 			this.listener.notifyProcess(TuxGuitar.getProperty("jsa.soundbank-assistant.process.installing",new String[]{file.getAbsolutePath()}));
-			
+
 			if( ! this.synthesizer.loadSoundbank(file) ){
 				this.listener.notifyFailed(new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.custom")));
 				return;
 			}
-			
+
 			TGConfigManager config = MidiConfigUtils.getConfig(this.context);
 			config.setValue(MidiConfigUtils.SOUNDBANK_KEY,file.getAbsolutePath());
 			config.save();
@@ -132,7 +132,7 @@ public class SBInstaller {
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	public boolean isCancelled() {
 		return this.cancelled;
 	}

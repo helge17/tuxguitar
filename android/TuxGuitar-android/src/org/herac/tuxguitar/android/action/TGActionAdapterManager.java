@@ -21,7 +21,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGActionAdapterManager {
-	
+
 	private TGContext context;
 	private TGActionContextFactory actionContextFactory;
 	private TGDisableOnPlayInterceptor disableOnPlayInterceptor;
@@ -31,7 +31,7 @@ public class TGActionAdapterManager {
 	private TGUndoableActionListener undoableActionListener;
 	private TGUpdateListener updatableActionListener;
 	private TGActionErrorHandler errorHandler;
-	
+
 	private TGActionAdapterManager(TGContext context){
 		this.context = context;
 		this.actionContextFactory = new TGActionContextFactoryImpl(context);
@@ -43,31 +43,31 @@ public class TGActionAdapterManager {
 		this.updatableActionListener = new TGUpdateListener(this);
 		this.errorHandler = new TGActionErrorHandler(context);
 	}
-	
+
 	public void initialize(TGActivity activity){
 		this.initializeHandlers(activity);
 		this.initializeDefaultActions();
 	}
-	
+
 	private void initializeHandlers(TGActivity activity){
 		TGActionProcessingListener processingListener = new TGActionProcessingListener(this.getContext(), activity);
 		TGHideSoftInputListener hideSoftInputListener = new TGHideSoftInputListener(this.getContext(), activity);
-		
+
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.getContext());
 		tgActionManager.setActionContextFactory(this.actionContextFactory);
-		
+
 		tgActionManager.addInterceptor(new TGExitConfirmInterceptor(this.getContext(), activity));
 		tgActionManager.addInterceptor(this.stopTransportInterceptor);
 		tgActionManager.addInterceptor(this.disableOnPlayInterceptor);
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		tgActionManager.addInterceptor(this.lockableActionListener);
-		
+
 		tgActionManager.addPreExecutionListener(processingListener);
 		tgActionManager.addPreExecutionListener(this.errorHandler);
 		tgActionManager.addPreExecutionListener(this.lockableActionListener);
 		tgActionManager.addPreExecutionListener(this.undoableActionListener);
 		tgActionManager.addPreExecutionListener(this.updatableActionListener);
-		
+
 		tgActionManager.addPostExecutionListener(this.updatableActionListener);
 		tgActionManager.addPostExecutionListener(this.undoableActionListener);
 		tgActionManager.addPostExecutionListener(this.lockableActionListener);
@@ -90,12 +90,12 @@ public class TGActionAdapterManager {
 		this.addAsyncProcessFinishListener(this.errorHandler);
 		this.addAsyncProcessErrorListener(this.errorHandler);
 	}
-	
+
 	private void initializeDefaultActions(){
 		TGActionInstaller tgActionInstaller = new TGActionInstaller(this);
 		tgActionInstaller.installDefaultActions();
 	}
-	
+
 	public TGContext getContext() {
 		return this.context;
 	}
@@ -103,7 +103,7 @@ public class TGActionAdapterManager {
 	public TGDisableOnPlayInterceptor getDisableOnPlayInterceptor() {
 		return this.disableOnPlayInterceptor;
 	}
-	
+
 	public TGStopTransportInterceptor getStopTransportInterceptor() {
 		return stopTransportInterceptor;
 	}

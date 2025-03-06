@@ -57,7 +57,7 @@ public class TGBrowserSettingsDialog extends TGModalFragment {
 				fillPathPreview(path != null ? path.getAbsolutePath() : "");
 			}
 		});
-		
+
 		ListView listView = (ListView) this.getView().findViewById(R.id.browser_settings_fs_path_value_selector);
 		listView.setAdapter(tgAdapter);
 	}
@@ -75,7 +75,7 @@ public class TGBrowserSettingsDialog extends TGModalFragment {
 	public void setTextViewValue(int textFieldId, String value) {
 		((TextView) this.getView().findViewById(textFieldId)).setText(value);
 	}
-	
+
 	public String getTextFieldValue(int textFieldId) {
 		return ((EditText) this.getView().findViewById(textFieldId)).getText().toString();
 	}
@@ -91,7 +91,7 @@ public class TGBrowserSettingsDialog extends TGModalFragment {
 	public String getPathValue() {
 		ListView listView = (ListView) this.getView().findViewById(R.id.browser_settings_fs_path_value_selector);
 		File path = ((TGBrowserSettingsFolderAdapter) listView.getAdapter()).getPath();
-		
+
 		return (path != null ? path.getAbsolutePath() : null);
 	}
 

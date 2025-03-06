@@ -10,17 +10,17 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGBrowserCollectionsEventListener implements TGEventListener {
 
-	private static final String[] REFRESHABLE_ACTIONS = { 
-		TGBrowserAddCollectionAction.NAME, 
+	private static final String[] REFRESHABLE_ACTIONS = {
+		TGBrowserAddCollectionAction.NAME,
 		TGBrowserRemoveCollectionAction.NAME
 	};
-	
+
 	private TGBrowserCollectionsDialog dialog;
-	
+
 	public TGBrowserCollectionsEventListener(TGBrowserCollectionsDialog dialog) {
 		this.dialog = dialog;
 	}
-	
+
 	public boolean isRefreshableAction(String actionId) {
 		for(String refreshableActionId : REFRESHABLE_ACTIONS) {
 			if( refreshableActionId.equals(actionId) ) {
@@ -29,13 +29,13 @@ public class TGBrowserCollectionsEventListener implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	public void processPostExecution(String id) {
 		if( this.isRefreshableAction(id) ){
 			this.dialog.refreshListView();
 		}
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if (TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType())) {
 			final String id = (String) event.getAttribute(TGActionPostExecutionEvent.ATTRIBUTE_ACTION_ID);

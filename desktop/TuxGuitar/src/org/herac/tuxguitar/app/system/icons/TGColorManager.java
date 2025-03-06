@@ -16,7 +16,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGColorManager {
-	
+
 	public static final String COLOR_WHITE = "white";
 	public static final String COLOR_BLACK = "black";
 	public static final String COLOR_GRAY = "gray";
@@ -24,11 +24,11 @@ public class TGColorManager {
 	public static final String COLOR_RED = "red";
 	public static final String COLOR_DARK_RED = "darkRed";
 	public static final String COLOR_DARK_BLUE = "darkBlue";
-	
+
 	private TGContext context;
 	private Map<String, UIColor> colors;
 	private List<TGSkinnableColor> skinnableColors;
-	
+
 	private TGColorManager(TGContext context){
 		this.context = context;
 		this.colors = new HashMap<String, UIColor>();
@@ -38,7 +38,7 @@ public class TGColorManager {
 
 	private void appendStaticColors() {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
-		
+
 		this.colors.put(COLOR_WHITE, uiFactory.createColor(0xff, 0xff, 0xff));
 		this.colors.put(COLOR_BLACK, uiFactory.createColor(0x00, 0x00, 0x00));
 		this.colors.put(COLOR_GRAY, uiFactory.createColor(0x80, 0x80, 0x80));
@@ -47,48 +47,48 @@ public class TGColorManager {
 		this.colors.put(COLOR_DARK_RED, uiFactory.createColor(0x80, 0x00, 0x00));
 		this.colors.put(COLOR_DARK_BLUE, uiFactory.createColor(0x00, 0x00, 0x80));
 	}
-	
+
 	public void appendSkinnableColors(TGSkinnableColor[] skinnableColors) {
 		TGProperties skinProperties = TGSkinManager.getInstance(this.context).getCurrentSkinProperties();
-		
+
 		for(TGSkinnableColor skinnableColor : skinnableColors) {
 			this.appendSkinnableColor(skinnableColor, skinProperties);
 		}
 	}
-	
+
 	public void appendSkinnableColor(TGSkinnableColor skinnableColor, TGProperties skinProperties) {
 		if(!this.skinnableColors.contains(skinnableColor)) {
 			this.skinnableColors.add(skinnableColor);
 			this.updateSkinnableColor(skinnableColor, skinProperties);
 		}
 	}
-	
+
 	public void updateSkinnableColor(TGSkinnableColor skinnableColor, TGProperties skinProperties) {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		UIColor uiColor = uiFactory.createColor(TGPropertiesUIUtil.getColorModelValue(this.context, skinProperties, skinnableColor.getColorId(), skinnableColor.getDefaultModel()));
-		
+
 		if( this.colors.containsKey(skinnableColor.getColorId())) {
 			this.colors.remove(skinnableColor.getColorId()).dispose();
 		}
 		this.colors.put(skinnableColor.getColorId(), uiColor);
 	}
-	
+
 	public void updateSkinnableColors() {
 		TGProperties skinProperties = TGSkinManager.getInstance(this.context).getCurrentSkinProperties();
-		
+
 		for(TGSkinnableColor skinnableColor : this.skinnableColors) {
 			this.updateSkinnableColor(skinnableColor, skinProperties);
 		}
 	}
-	
+
 	public void onSkinChange() {
 		this.updateSkinnableColors();
 	}
-	
+
 	public void onSkinDisposed() {
 		this.disposeColors();
 	}
-	
+
 	public void disposeColors() {
 		if( this.colors != null ) {
 			for(UIColor uiColor : this.colors.values()) {
@@ -97,11 +97,11 @@ public class TGColorManager {
 			this.colors.clear();
 		}
 	}
-	
+
 	public UIColor getColor(String colorId) {
 		return this.colors.get(colorId);
 	}
-	
+
 	public static TGColorManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGColorManager.class.getName(), new TGSingletonFactory<TGColorManager>() {
 			public TGColorManager createInstance(TGContext context) {
@@ -109,27 +109,27 @@ public class TGColorManager {
 			}
 		});
 	}
-	
+
 	public static class TGSkinnableColor {
-		
+
 		private String colorId;
 		private UIColorModel defaultModel;
-		
+
 		public TGSkinnableColor(String colorId, UIColorModel defaultModel) {
 			this.colorId = colorId;
 			this.defaultModel = defaultModel;
 		}
 
-		
+
 		public String getColorId() {
 			return colorId;
 		}
 
-		
+
 		public UIColorModel getDefaultModel() {
 			return defaultModel;
 		}
-		
+
 		public boolean equals(Object obj) {
 			if( obj instanceof TGSkinnableColor ) {
 				return (this.getColorId() != null && this.getColorId().equals(((TGSkinnableColor) obj).getColorId()));

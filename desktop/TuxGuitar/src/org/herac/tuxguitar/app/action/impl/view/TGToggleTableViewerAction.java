@@ -13,7 +13,7 @@ public class TGToggleTableViewerAction extends TGActionBase{
 	public TGToggleTableViewerAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext tgActionContext){
 		tgActionContext.setAttribute(TGToggleViewAction.ATTRIBUTE_CONTROLLER, new TGTableViewerController());
 		TGActionManager.getInstance(getContext()).execute(TGToggleViewAction.NAME, tgActionContext);

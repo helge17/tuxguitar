@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.herac.tuxguitar.io.abc.base;
 
@@ -38,7 +38,7 @@ public class ABCLocation implements Comparable<ABCLocation> {
 		s+=event.getName();
 		return s;
 	}
-	
+
 	/**
 	 * @return the measure
 	 */
@@ -78,7 +78,7 @@ public class ABCLocation implements Comparable<ABCLocation> {
 		if( e == null ) {
 			return 1;
 		}
-		
+
 		if(part==null || e.part==null) {
 			if(part!=null) return 1;
 			if(e.part!=null) return -1;
@@ -95,7 +95,7 @@ public class ABCLocation implements Comparable<ABCLocation> {
 		if(i!=0) return i;
 		i = event.compareTo(e.event);
 		if(i!=0) return i;
-		
+
 		return 0;
 	}
 

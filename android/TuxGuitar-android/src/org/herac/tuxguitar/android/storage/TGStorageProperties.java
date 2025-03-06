@@ -20,7 +20,7 @@ public class TGStorageProperties {
 		this.properties = TGPropertiesManager.getInstance(this.context).createProperties();
 		this.load();
 	}
-	
+
 	public void load(){
 		TGPropertiesManager.getInstance(this.context).readProperties(this.properties, RESOURCE, MODULE);
 	}

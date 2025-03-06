@@ -21,7 +21,7 @@ public class TGBrowserReader {
 	private static final String ATTRIBUTE_TYPE = "type";
 	private static final String ATTRIBUTE_TITLE = "title";
 	private static final String ATTRIBUTE_DATA = "data";
-	
+
 	public void loadCollections(TGBrowserManager manager,File file){
 		if (file.exists()){
 			try {
@@ -32,7 +32,7 @@ public class TGBrowserReader {
 			}
 		}
 	}
-	
+
 	private static void loadCollections(TGBrowserManager manager,Node node){
 		NodeList listNode = node.getChildNodes();
 		for (int i = 0; i < listNode.getLength(); i++) {
@@ -40,7 +40,7 @@ public class TGBrowserReader {
 			String nameNode = child.getNodeName();
 			if (nameNode.equals(ITEM_TAG)) {
 				NamedNodeMap params = child.getAttributes();
-				
+
 				String type = params.getNamedItem(ATTRIBUTE_TYPE).getNodeValue();
 				String title = params.getNamedItem(ATTRIBUTE_TITLE).getNodeValue();
 				String data = params.getNamedItem(ATTRIBUTE_DATA).getNodeValue();
@@ -55,7 +55,7 @@ public class TGBrowserReader {
 			}
 		}
 	}
-	
+
 	private static Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -67,8 +67,8 @@ public class TGBrowserReader {
 		}
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		document = builder.parse(file);
-		
+
 		return document;
 	}
-	
+
 }

@@ -193,14 +193,14 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             return v;
         }
     };
-    
+
     private static int restrict7Bit(int value)
     {
         if(value < 0) return 0;
         if(value > 127) return 127;
         return value;
     }
-    
+
     private static int restrict14Bit(int value)
     {
         if(value < 0) return 0;
@@ -221,8 +221,8 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
         if(x == -1)
         {
             // x = -1 means that there where no available voice
-            // last time we called findFreeVoice  
-            // and it hasn't changed because no audio has been 
+            // last time we called findFreeVoice
+            // and it hasn't changed because no audio has been
             // rendered in the meantime.
             // Therefore we have to return -1.
             return -1;
@@ -410,13 +410,13 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     public void noteOn(int noteNumber, int velocity) {
         noteOn(noteNumber, velocity, 0);
     }
-    
+
     /* A special noteOn with delay parameter, which is used to
-     * start note within control buffers.   
+     * start note within control buffers.
      */
     protected void noteOn(int noteNumber, int velocity, int delay) {
         noteNumber = restrict7Bit(noteNumber);
-        velocity = restrict7Bit(velocity);        
+        velocity = restrict7Bit(velocity);
         noteOn_internal(noteNumber, velocity, delay);
         if (current_mixer != null)
             current_mixer.noteOn(noteNumber, velocity);
@@ -546,7 +546,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
 
     public void noteOff(int noteNumber, int velocity) {
         noteNumber = restrict7Bit(noteNumber);
-        velocity = restrict7Bit(velocity);        
+        velocity = restrict7Bit(velocity);
         noteOff_internal(noteNumber, velocity);
 
         if (current_mixer != null)
@@ -583,7 +583,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
                     v.stealer_velocity = 0;
                     v.stealer_extendedConnectionBlocks = null;
                     v.stealer_channelmixer = null;
-                }                            
+                }
             }
 
             // Try play back note-off triggered voices,
@@ -664,7 +664,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
 
     public void setPolyPressure(int noteNumber, int pressure) {
         noteNumber = restrict7Bit(noteNumber);
-        pressure = restrict7Bit(pressure);        
+        pressure = restrict7Bit(pressure);
 
         if (current_mixer != null)
             current_mixer.setPolyPressure(noteNumber, pressure);
@@ -686,8 +686,8 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
         }
     }
 
-    public void setChannelPressure(int pressure) {        
-        pressure = restrict7Bit(pressure);                
+    public void setChannelPressure(int pressure) {
+        pressure = restrict7Bit(pressure);
         if (current_mixer != null)
             current_mixer.setChannelPressure(pressure);
         synchronized (control_mutex) {
@@ -1232,7 +1232,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
 
             this.controller[controller] = value;
             if(controller < 0x20)
-                this.controller[controller + 0x20] = 0; 
+                this.controller[controller + 0x20] = 0;
 
             for (int i = 0; i < voices.length; i++)
                 if (voices[i].active)
@@ -1285,7 +1285,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
 
     public void setPitchBend(int bend) {
         bend = restrict14Bit(bend);
-        if (current_mixer != null)            
+        if (current_mixer != null)
             current_mixer.setPitchBend(bend);
         synchronized (control_mutex) {
             mainmixer.activity();

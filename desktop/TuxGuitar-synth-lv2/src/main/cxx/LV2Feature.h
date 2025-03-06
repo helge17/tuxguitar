@@ -17,7 +17,7 @@ struct LV2FeatureImpl {
 struct LV2URILinkImpl {
     LV2_URID id;
     char* uri;
-	
+
     LV2URILink* next;
 };
 

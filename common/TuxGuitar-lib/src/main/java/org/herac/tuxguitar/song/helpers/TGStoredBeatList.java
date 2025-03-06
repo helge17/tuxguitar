@@ -11,7 +11,7 @@ public class TGStoredBeatList {
 	private List<TGBeat> beats;
 	private List<Integer> stringValues;
 	private boolean isPercussionTrack;
-	
+
 	public TGStoredBeatList(List<TGBeat> range, List<TGString> strings, boolean isPercussionTrack, TGFactory factory) {
 		this.beats = new ArrayList<>();
 		long first = -1;
@@ -32,19 +32,19 @@ public class TGStoredBeatList {
 		}
 		this.isPercussionTrack = isPercussionTrack;
 	}
-	
+
 	public List<TGBeat> getBeats() {
 		return beats;
 	}
-	
+
 	public List<Integer> getStringValues() {
 		return stringValues;
 	}
-	
+
 	public boolean isPercussionTrack() {
 		return isPercussionTrack;
 	}
-	
+
 	public TGStoredBeatList clone(TGFactory factory) {
 		TGStoredBeatList clone = new TGStoredBeatList(this.beats, null, this.isPercussionTrack, factory);
 		clone.stringValues = new ArrayList<Integer>(this.stringValues);

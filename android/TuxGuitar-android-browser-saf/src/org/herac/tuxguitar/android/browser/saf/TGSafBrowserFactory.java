@@ -22,15 +22,15 @@ public class TGSafBrowserFactory implements TGBrowserFactory{
 	public TGSafBrowserFactory(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public String getType(){
 		return BROWSER_TYPE;
 	}
-	
+
 	public String getName(){
 		return BROWSER_NAME;
 	}
-	
+
 	public void createBrowser(final TGBrowserFactoryHandler handler, final TGBrowserSettings settings) {
 		handler.onCreateBrowser(new TGSafBrowser(this.context, TGSafBrowserSettings.createInstance(settings)));
 	}

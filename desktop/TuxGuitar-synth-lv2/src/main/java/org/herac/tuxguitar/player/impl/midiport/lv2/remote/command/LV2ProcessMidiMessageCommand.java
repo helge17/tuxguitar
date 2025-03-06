@@ -7,14 +7,14 @@ import org.herac.tuxguitar.midi.synth.remote.TGAbstractCommand;
 import org.herac.tuxguitar.midi.synth.remote.TGConnection;
 
 public class LV2ProcessMidiMessageCommand extends TGAbstractCommand<Void> {
-	
+
 	public static final Integer COMMAND_ID = 5;
-	
+
 	private List<byte[]> messages;
-	
+
 	public LV2ProcessMidiMessageCommand(TGConnection connection, List<byte[]> messages) {
 		super(connection);
-		
+
 		this.messages = messages;
 	}
 

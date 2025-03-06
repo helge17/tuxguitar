@@ -17,23 +17,23 @@ import org.herac.tuxguitar.ui.resource.UIPosition;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouseDragListener, UIMouseMoveListener, UIMouseExitListener, UIMenuShowListener, UIMenuHideListener, UIZoomListener {
-	
+
 	private EditorKit kit;
 	private UIPosition position;
 	private UIPosition startPosition;
 	private boolean menuOpen;
-	
+
 	public MouseKit(EditorKit kit){
 		this.kit = kit;
 		this.position = new UIPosition(0,0);
 		this.menuOpen = false;
 	}
-	
+
 	public boolean isBusy() {
 		TGContext context = this.kit.getTablature().getContext();
 		return (TGEditorManager.getInstance(context).isLocked() || MidiPlayer.getInstance(context).isRunning());
 	}
-	
+
 	public void executeAction(String actionId, UIPosition position, UIEvent event, boolean byPassProcessing) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.kit.getTablature().getContext(), actionId);
 		tgActionProcessor.setAttribute(EditorKit.ATTRIBUTE_X, position.getX());
@@ -41,7 +41,7 @@ public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouse
 		tgActionProcessor.setAttribute(TGActionProcessingListener.ATTRIBUTE_BY_PASS, byPassProcessing);
 		tgActionProcessor.process();
 	}
-	
+
 	public void onMouseDown(UIMouseEvent event) {
 		if (event.getButton() == 1) {
 			this.position.set(event.getPosition());
@@ -68,28 +68,28 @@ public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouse
 			this.executeAction(TGUpdateDragSelectionAction.NAME, this.position.clone(), event, false);
 		}
 	}
-	
+
 	public void onMouseMove(UIMouseEvent event) {
 		if(!this.menuOpen && this.kit.isMouseEditionAvailable() && !this.isBusy()){
 			this.executeAction(TGMouseMoveAction.NAME, event.getPosition().clone(), event, true);
 		}
 	}
-	
+
 	public void onMouseExit(UIMouseEvent event) {
 		if(!this.menuOpen && this.kit.isMouseEditionAvailable()) {
 			this.executeAction(TGMouseExitAction.NAME, event.getPosition().clone(), event, true);
 		}
 	}
-	
+
 	public void onMenuShow(UIMenuEvent event) {
 		this.menuOpen = true;
 	}
-	
+
 	public void onMenuHide(UIMenuEvent event) {
 		this.menuOpen = false;
 		TuxGuitar.getInstance().updateCache(true);
 	}
-	
+
 	public void onZoom(UIZoomEvent event) {
 		if( event.getValue() > 0 ) {
 			new TGActionProcessor(this.kit.getTablature().getContext(), TGSetLayoutScaleIncrementAction.NAME).process();

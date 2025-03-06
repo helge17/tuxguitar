@@ -7,7 +7,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGDecrementNoteSemitoneAction extends TGTransposeNoteSemitoneAction {
-	
+
 	public static final String NAME = "action.note.general.decrement-semitone";
 
 	public TGDecrementNoteSemitoneAction(TGContext context) {
@@ -22,5 +22,5 @@ public class TGDecrementNoteSemitoneAction extends TGTransposeNoteSemitoneAction
 	protected boolean transposeSemiTone(TGMeasureManager measureManager, TGMeasure measure, TGBeat beat, TGNote note) {
 		return measureManager.moveSemitoneDown(measure, beat.getStart(), note.getString());
 	}
-	
+
 }

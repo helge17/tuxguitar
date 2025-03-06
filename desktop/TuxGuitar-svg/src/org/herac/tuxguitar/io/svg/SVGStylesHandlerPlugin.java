@@ -10,8 +10,8 @@ public class SVGStylesHandlerPlugin extends TGPersistenceSettingsHandlerPlugin {
 	public String getModuleId() {
 		return SVGSongWriterPlugin.MODULE_ID;
 	}
-	
+
 	public TGPersistenceSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException {
 		return new SVGStylesHandler(context);
-	}	
+	}
 }

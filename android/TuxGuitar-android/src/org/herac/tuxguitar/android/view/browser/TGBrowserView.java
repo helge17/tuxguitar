@@ -41,14 +41,14 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TGBrowserView extends RelativeLayout {
-	
+
 	private TGBrowserActionHandler actionHandler;
 	private TGBrowserEventListener eventListener;
 	private TGBrowserDestroyListener destroyListener;
-	
+
 	public TGBrowserView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		this.actionHandler = new TGBrowserActionHandler(this);
 		this.eventListener = new TGBrowserEventListener(this);
 		this.destroyListener = new TGBrowserDestroyListener(this);
@@ -76,7 +76,7 @@ public class TGBrowserView extends RelativeLayout {
 			}
 		});
 	}
-	
+
 	public void onDestroy() throws TGBrowserException {
 		TGBrowserManager browserManager = TGBrowserManager.getInstance(this.findContext());
 		TGBrowserSession session = browserManager.getSession();
@@ -85,20 +85,20 @@ public class TGBrowserView extends RelativeLayout {
 		}
 		browserManager.closeSession();
 	}
-	
+
 	public TGSelectableItem[] createCollectionValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
-		
+
 		Iterator<TGBrowserCollection> collections = TGBrowserManager.getInstance(this.findContext()).getCollections();
 		while( collections.hasNext() ) {
 			TGBrowserCollection collection = collections.next();
 			selectableItems.add(new TGSelectableItem(collection, collection.getSettings().getTitle()));
 		}
-		
+
 		if( selectableItems.isEmpty() ) {
 			selectableItems.add(new TGSelectableItem(null, findActivity().getString(R.string.global_spinner_select_option)));
 		}
-		
+
 		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 		return builtItems;
@@ -113,7 +113,7 @@ public class TGBrowserView extends RelativeLayout {
 
 		TGSelectableItem selectedItem = new TGSelectableItem(selectedCollection, null);
 		Integer selectedItemPosition = arrayAdapter.getPosition(selectedItem);
-		
+
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_collections);
 		OnItemSelectedListener listener = spinner.getOnItemSelectedListener();
 		spinner.setOnItemSelectedListener(null);
@@ -131,16 +131,16 @@ public class TGBrowserView extends RelativeLayout {
 		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? (TGBrowserCollection) selectableItem.getItem() : null);
 	}
-	
+
 	public TGBrowserCollection findCurrentCollection() {
 		TGBrowserSession session = TGBrowserManager.getInstance(this.findContext()).getSession();
 		return (session.getCollection());
 	}
-	
+
 	public String createFormatLabel(TGFileFormat format) {
 		return createExtension(format, format.getName());
 	}
-	
+
 	public String createFormatDropDownLabel(TGFileFormat format) {
 		return format.getName();
 	}
@@ -165,27 +165,27 @@ public class TGBrowserView extends RelativeLayout {
 
 		return selectableItems;
 	}
-	
+
 	public void fillListView() {
 		ListView listView = (ListView) findViewById(R.id.browser_elements);
 		listView.setAdapter(new TGBrowserListAdapter(getContext()));
 		listView.setOnItemClickListener(new TGBrowserItemListener(this));
 	}
-	
+
 	public void fillFormats() {
 		TGSelectableAdapter selectableAdapter = new TGSelectableAdapter(findActivity(), android.R.layout.simple_spinner_item, createFormatValues());
 		selectableAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_save_format);
 		spinner.setAdapter(selectableAdapter);
 	}
-	
+
 	public TGFileFormat findSelectedFormat() {
 		Spinner spinner = (Spinner) this.findViewById(R.id.browser_save_format);
 		TGSelectableItem selectableItem = (TGSelectableItem) spinner.getSelectedItem();
 		return (selectableItem != null ? (TGFileFormat) selectableItem.getItem() : null);
 	}
-	
+
 	public void addBrowserDefaults() throws TGBrowserException {
 		TGContext context = this.findContext();
 		TGBrowserManager browserManager = TGBrowserManager.getInstance(context);
@@ -193,42 +193,42 @@ public class TGBrowserView extends RelativeLayout {
 		browserManager.addFactory(new TGFsBrowserFactory(context, new TGBrowserSettingsFactoryImpl(context, findActivity())));
 		browserManager.restoreCollections();
 	}
-	
+
 	public void requestRefresh() {
 		this.getActionHandler().createBrowserAction(TGBrowserRefreshAction.NAME).process();
 	}
 
 	public void updateSavePanel() {
 		TGBrowserSession session = TGBrowserManager.getInstance(this.findContext()).getSession();
-		
+
 		View view = findViewById(R.id.browser_save_panel);
 		view.setVisibility(session.getSessionType() == TGBrowserSession.WRITE_MODE ? View.VISIBLE : View.GONE);
-		
+
 		EditText editText = (EditText) findViewById(R.id.browser_save_element_name);
 		editText.setText(findActivity().getString(R.string.storage_default_filename));
 	}
-	
+
 	public void addListeners() {
 		findViewById(R.id.browser_save_button).setOnClickListener(createSaveButtonListener());
-		
+
 		((Spinner) this.findViewById(R.id.browser_collections)).setOnItemSelectedListener(createCollectionsSpinnerListener());
-		
+
 		TGActionManager.getInstance(this.findContext()).addPostExecutionListener(this.eventListener);
 		TGActionManager.getInstance(this.findContext()).addErrorListener(this.eventListener);
 		TGActionAdapterManager.getInstance(this.findContext()).addAsyncProcessFinishListener(this.eventListener);
 		TGActionAdapterManager.getInstance(this.findContext()).addAsyncProcessErrorListener(this.eventListener);
 		TGEditorManager.getInstance(this.findContext()).addDestroyListener(this.destroyListener);
 	}
-	
+
 	public void updateItems() throws TGBrowserException{
 		TGBrowserSession session = TGBrowserManager.getInstance(this.findContext()).getSession();
 		boolean writable = session.getBrowser() != null && session.getBrowser().isWritable();
-		
+
 		this.findViewById(R.id.browser_save_element_name).setEnabled(writable);
 		this.findViewById(R.id.browser_save_format).setEnabled(writable);
 		this.findViewById(R.id.browser_save_button).setEnabled(writable);
 	}
-	
+
 	public OnItemSelectedListener createCollectionsSpinnerListener() {
 		return new OnItemSelectedListener() {
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -239,7 +239,7 @@ public class TGBrowserView extends RelativeLayout {
 		    }
 		};
 	}
-	
+
 	public OnClickListener createSaveButtonListener() {
 		return new OnClickListener() {
 			public void onClick(View v) {
@@ -247,7 +247,7 @@ public class TGBrowserView extends RelativeLayout {
 			}
 		};
 	}
-	
+
 	public void processOpenCloseSession(TGBrowserCollection collection) {
 		if( collection != null ) {
 			this.getActionHandler().createOpenSessionAction(collection).process();
@@ -255,26 +255,26 @@ public class TGBrowserView extends RelativeLayout {
 			this.getActionHandler().createCloseSessionAction().process();
 		}
 	}
-	
+
 	public void processSelectedCollection() {
 		TGBrowserSession session = TGBrowserManager.getInstance(this.findContext()).getSession();
 		TGBrowserCollection currentCollection = session.getCollection();
 		TGBrowserCollection selectedCollection = findSelectedCollection();
-		
+
 		if(!this.isSameObject(selectedCollection, currentCollection) ) {
 			this.processOpenCloseSession(selectedCollection);
 		}
 	}
-	
+
 	public void processSaveButton() {
 		try {
 			TGBrowserSession session = TGBrowserManager.getInstance(this.findContext()).getSession();
 			if( session.getBrowser() != null ) {
 				TGFileFormat format = findSelectedFormat();
-				
+
 				EditText editText = (EditText) findViewById(R.id.browser_save_element_name);
 				String elementName = editText.getText().toString() + createExtension(format, TGFileFormatUtils.DEFAULT_EXTENSION);
-				
+
 				TGBrowserElement element = findElement(elementName);
 				if( element != null ) {
 					if( element.isWritable() ) {
@@ -294,7 +294,7 @@ public class TGBrowserView extends RelativeLayout {
 			TGErrorManager.getInstance(findContext()).handleError(e);
 		}
 	}
-	
+
 	public String createExtension(TGFileFormat format, String defaultValue) {
 		String[] supportedFormats = format.getSupportedFormats();
 		if( supportedFormats != null && supportedFormats.length > 0 ) {
@@ -302,7 +302,7 @@ public class TGBrowserView extends RelativeLayout {
 		}
 		return defaultValue;
 	}
-	
+
 	public String createExtension(String supportedFormat) {
 		return ("." + supportedFormat);
 	}
@@ -318,7 +318,7 @@ public class TGBrowserView extends RelativeLayout {
 		}
 		return null;
 	}
-	
+
 	public void refreshListView() {
 		ListView listView = (ListView) findViewById(R.id.browser_elements);
 
@@ -329,7 +329,7 @@ public class TGBrowserView extends RelativeLayout {
 		} else {
 			tgBrowserElementAdapter.fillElements(tgBrowserSession.getCurrentElements());
 		}
-		
+
 		tgBrowserElementAdapter.notifyDataSetChanged();
 	}
 
@@ -342,7 +342,7 @@ public class TGBrowserView extends RelativeLayout {
 		this.refreshCollections(forceDefaults);
 		this.updateItems();
 	}
-	
+
 	public boolean isSameCollection(ArrayAdapter<TGSelectableItem> c1, ArrayAdapter<TGSelectableItem> c2) {
 		if( c1 == c2 ) {
 			return true;
@@ -358,11 +358,11 @@ public class TGBrowserView extends RelativeLayout {
 		}
 		return false;
 	}
-	
+
 	public boolean isSameObject(Object c1, Object c2) {
 		return ((c1 == c2) || (c1 != null && c2 != null && c1.equals(c2)));
 	}
-	
+
 	public TGContext findContext() {
 		return TGApplicationUtil.findContext(this);
 	}
@@ -370,7 +370,7 @@ public class TGBrowserView extends RelativeLayout {
 	public TGActivity findActivity() {
 		return (TGActivity) getContext();
 	}
-	
+
 	public TGBrowserActionHandler getActionHandler() {
 		return this.actionHandler;
 	}

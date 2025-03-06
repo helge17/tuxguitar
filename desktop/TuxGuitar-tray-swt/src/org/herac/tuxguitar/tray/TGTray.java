@@ -17,13 +17,13 @@ import org.herac.tuxguitar.ui.swt.SWTApplication;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTray implements TGEventListener {
-	
+
 	private boolean visible;
 	private Display display;
 	private Tray tray;
 	private TGTrayIcon icon;
 	private TGTrayMenu menu;
-	
+
 	public TGTray(TGContext context){
 		this.display = ((SWTApplication)TGApplication.getInstance(context).getApplication()).getDisplay();
 		this.tray = this.display.getSystemTray();
@@ -32,7 +32,7 @@ public class TGTray implements TGEventListener {
 		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 	}
-	
+
 	public void removeTray(){
 		if (this.tray != null) {
 			setVisible(true);
@@ -43,7 +43,7 @@ public class TGTray implements TGEventListener {
 			this.menu.dispose();
 		}
 	}
-	
+
 	public void addTray() {
 		if (this.tray != null) {
 			this.menu.make();
@@ -64,20 +64,20 @@ public class TGTray implements TGEventListener {
 			this.loadIcons();
 		}
 	}
-	
+
 	public void loadIcons() {
 		this.icon.loadImage();
 		this.menu.loadIcons();
 	}
-	
+
 	public void loadProperties(){
 		this.menu.loadProperties();
 	}
-	
+
 	protected void setVisible(){
 		this.setVisible(!this.visible);
 	}
-	
+
 	protected void setVisible(boolean visible){
 		if (this.tray != null) {
 			Shell shells[] = this.display.getShells();
@@ -87,7 +87,7 @@ public class TGTray implements TGEventListener {
 			this.visible = visible;
 		}
 	}
-	
+
 	protected void showMenu(){
 		this.menu.show();
 	}

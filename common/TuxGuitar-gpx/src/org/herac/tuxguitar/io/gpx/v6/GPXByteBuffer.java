@@ -1,29 +1,29 @@
 package org.herac.tuxguitar.io.gpx.v6;
 
 public class GPXByteBuffer {
-	
+
 	private static final int BUFFER_TYPE_BITS = 8;
-	
+
 	private int position;
 	private byte[] buffer;
-	
+
 	public GPXByteBuffer( byte[] buffer ){
 		this.buffer = buffer;
 		this.position = 0;
 	}
-	
+
 	public int length(){
 		return ( this.buffer.length );
 	}
-	
+
 	public int offset(){
 		return ( this.position / BUFFER_TYPE_BITS );
 	}
-	
+
 	public boolean end(){
 		return ( this.offset() >= this.length() );
 	}
-	
+
 	public int readBit(){
 		int bit = -1;
 		int byteIndex = ( this.position / BUFFER_TYPE_BITS );
@@ -34,7 +34,7 @@ public class GPXByteBuffer {
 		}
 		return bit;
 	}
-	
+
 	public int readBits(int count){
 		int bits = 0;
 		for( int i = (count - 1) ; i >= 0 ; i -- ){
@@ -42,7 +42,7 @@ public class GPXByteBuffer {
 		}
 		return bits;
 	}
-	
+
 	public int readBitsReversed(int count){
 		int bits = 0;
 		for( int i = 0 ; i < count ; i ++ ){
@@ -50,7 +50,7 @@ public class GPXByteBuffer {
 		}
 		return bits;
 	}
-	
+
 	public byte[] readBytes(int count){
 		byte[] bytes = new byte[count];
 		for( int i = 0 ; i < count ; i++ ){

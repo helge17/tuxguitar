@@ -32,6 +32,6 @@ void LV2Plugin_getNextPortIndex(LV2Plugin *handle, LV2PortType portType, LV2Port
             LV2Plugin_getNextPortIndex(handle, portType, portFlow, &(portIndex));\
         }\
     }\
-    
+
 #endif
 

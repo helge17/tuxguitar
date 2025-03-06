@@ -611,10 +611,10 @@ public class SoftMainMixer {
 
             }
         }
-        
+
         if(buffers[CHANNEL_LEFT].isSilent()
             && buffers[CHANNEL_RIGHT].isSilent())
-        {            
+        {
             pusher_silent_count++;
             if(pusher_silent_count > 5)
             {
@@ -623,7 +623,7 @@ public class SoftMainMixer {
                     pusher_silent = true;
                     if(synth.weakstream != null)
                         synth.weakstream.setInputStream(null);
-                }                    
+                }
             }
         }
         else
@@ -633,10 +633,10 @@ public class SoftMainMixer {
             agc.processAudio();
 
     }
-        
+
     // Must only we called within control_mutex synchronization
     public void activity()
-    {        
+    {
         msec_last_activity = msec_pos;
         if(pusher_silent)
         {
@@ -735,7 +735,7 @@ public class SoftMainMixer {
                     pusher_silent2 = pusher_silent;
                 }
                 if(!pusher_silent2)*/
-                processAudioBuffers(); 
+                processAudioBuffers();
                 for (int i = 0; i < nrofchannels; i++)
                     buffers[i].get(bbuffer, i);
                 bbuffer_pos = 0;

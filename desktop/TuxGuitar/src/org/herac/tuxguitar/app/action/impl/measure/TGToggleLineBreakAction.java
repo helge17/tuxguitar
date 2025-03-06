@@ -7,9 +7,9 @@ import org.herac.tuxguitar.graphics.control.TGMeasureHeaderImpl;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGToggleLineBreakAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.toggle-linebreak";
-	
+
 	public TGToggleLineBreakAction(TGContext context) {
 		super(context, NAME);
 	}

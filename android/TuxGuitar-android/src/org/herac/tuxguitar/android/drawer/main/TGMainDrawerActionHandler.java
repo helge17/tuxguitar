@@ -18,17 +18,17 @@ import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGMainDrawerActionHandler {
-	
+
 	private TGMainDrawer mainDrawer;
-	
+
 	public TGMainDrawerActionHandler(TGMainDrawer mainDrawer) {
 		this.mainDrawer = mainDrawer;
 	}
-	
+
 	public TGActionProcessorListener createAction(String actionId) {
 		return new TGActionProcessorListener(this.mainDrawer.findContext(), actionId);
 	}
-	
+
 	public TGActionProcessorListener createGoToTrackAction(TGTrack track) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGGoToTrackAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
@@ -45,15 +45,15 @@ public class TGMainDrawerActionHandler {
 	public TGActionProcessorListener createNewFileAction() {
 		return this.createAction(TGLoadTemplateAction.NAME);
 	}
-	
+
 	public TGActionProcessorListener createOpenFileAction() {
 		return this.createAction(TGOpenDocumentAction.NAME);
 	}
-	
+
 	public TGActionProcessorListener createSaveFileAsAction() {
 		return this.createAction(TGSaveDocumentAsAction.NAME);
 	}
-	
+
 	public TGActionProcessorListener createSaveFileAction() {
 		return this.createAction(TGSaveDocumentAction.NAME);
 	}
@@ -76,7 +76,7 @@ public class TGMainDrawerActionHandler {
 		tgActionProcessor.setAttribute(TGOpenFragmentAction.ATTRIBUTE_ACTIVITY, this.mainDrawer.findActivity());
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createDialogAction(TGDialogController controller) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, controller);

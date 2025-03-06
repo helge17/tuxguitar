@@ -1,16 +1,16 @@
 package org.herac.tuxguitar.midi.synth.impl;
 
 public class GervillProgram {
-	
+
 	public static final int CHANNEL_MODE_SINGLE = 1;
 	public static final int CHANNEL_MODE_BEND = 2;
 	public static final int CHANNEL_MODE_VOICE = 3;
-	
+
 	private int bank;
 	private int program;
 	private int channelMode;
 	private String soundbankPath;
-	
+
 	public GervillProgram() {
 		this.bank = 0;
 		this.program = 0;
@@ -48,14 +48,14 @@ public class GervillProgram {
 	public void setSoundbankPath(String soundbankPath) {
 		this.soundbankPath = soundbankPath;
 	}
-	
+
 	public void copyFrom(GervillProgram program) {
 		this.bank = program.bank;
 		this.program = program.program;
 		this.channelMode = program.channelMode;
 		this.soundbankPath = program.soundbankPath;
 	}
-	
+
 	public boolean equals(Object obj) {
 		if( obj instanceof GervillProgram ) {
 			GervillProgram p = (GervillProgram) obj;

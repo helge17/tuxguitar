@@ -12,20 +12,20 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGException;
 
 public class GMChannelSettingsHandler implements TGChannelSettingsHandler{
-	
+
 	private TGContext context;
-	
+
 	public GMChannelSettingsHandler(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public boolean isMidiDeviceSupported(MidiDevice midiDevice) {
 		return (midiDevice instanceof GMOutputPort);
 	}
-	
+
 	public TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel, TGSong song) {
 		try {
-			if( isMidiDeviceSupported(midiDevice) ) {			
+			if( isMidiDeviceSupported(midiDevice) ) {
 				GMSynthesizer synthesizer = (GMSynthesizer) ((GMOutputPort) midiDevice).getSynthesizer();
 				return new GMChannelSettingsDialog(this.context, channel, song, synthesizer);
 			}

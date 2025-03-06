@@ -15,11 +15,11 @@ import org.herac.tuxguitar.player.base.MidiSequencer;
 import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 
 public class MidiSequencerProviderImpl implements MidiSequencerProvider{
-	
+
 	public MidiSequencerProviderImpl(){
 		super();
 	}
-	
+
 	public List<MidiSequencer> listSequencers() throws MidiPlayerException {
 		try {
 			List<MidiSequencer> sequencers = new ArrayList<MidiSequencer>();
@@ -49,7 +49,7 @@ public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.unknown"),t);
 		}
 	}
-	
+
 	public void closeAll() throws MidiPlayerException {
 		// Not implemented
 	}

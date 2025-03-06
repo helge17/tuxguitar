@@ -10,20 +10,20 @@ import org.herac.tuxguitar.song.managers.TGSongManager;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class MidiSongWriter extends MidiFileFormat implements TGSongWriter {
-	
+
 	public MidiSongWriter() {
 		super();
 	}
-	
+
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try {
 			TGSong tgSong = handle.getSong();
 			TGSongManager tgSongManager = new TGSongManager();
-			
+
 			GMChannelRouter gmChannelRouter = new GMChannelRouter();
 			GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);
 			gmChannelRouterConfigurator.configureRouter(tgSong.getChannels());
-			
+
 			MidiSettings settings = handle.getContext().getAttribute(MidiSettings.class.getName());
 			if( settings == null ) {
 				settings = MidiSettings.getDefaults();

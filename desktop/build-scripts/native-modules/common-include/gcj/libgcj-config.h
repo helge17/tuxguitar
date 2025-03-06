@@ -4,7 +4,7 @@
    are intended to be different for different multilibs, as we do not
    currently have a mechanism to support this.
 
-   Also be sure to use safely named macros, as this file will be 
+   Also be sure to use safely named macros, as this file will be
    included in user code.  */
 
 /* Define if hash synchronization is in use.  */

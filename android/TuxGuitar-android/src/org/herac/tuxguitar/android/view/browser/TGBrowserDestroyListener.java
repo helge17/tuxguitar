@@ -7,13 +7,13 @@ import org.herac.tuxguitar.event.TGEventException;
 import org.herac.tuxguitar.event.TGEventListener;
 
 public class TGBrowserDestroyListener implements TGEventListener {
-	
+
 	private TGBrowserView browser;
-	
+
 	public TGBrowserDestroyListener(TGBrowserView browser) {
 		this.browser = browser;
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( TGDestroyEvent.EVENT_TYPE.equals(event.getEventType())) {
 			try {

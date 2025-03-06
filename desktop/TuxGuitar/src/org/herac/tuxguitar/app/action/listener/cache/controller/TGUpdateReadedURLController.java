@@ -19,12 +19,12 @@
 ////		URL url = actionContext.getAttribute(TGReadURLAction.ATTRIBUTE_URL);
 ////		if( url != null ) {
 ////			TGDocumentListManager.getInstance(context).findCurrentDocument().setUrl(url);
-////			
+////
 ////			TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
 ////			tgFileHistory.reset(url);
 ////			tgFileHistory.setChooserPath( url );
 ////		}
-//		
+//
 //		super.update(context, actionContext);
 //	}
 //}

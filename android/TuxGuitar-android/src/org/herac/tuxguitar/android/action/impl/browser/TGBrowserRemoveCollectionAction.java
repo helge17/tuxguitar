@@ -9,20 +9,20 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserException;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserRemoveCollectionAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.remove-collection";
-	
+
 	public static final String ATTRIBUTE_COLLECTION = TGBrowserCollection.class.getName();
-	
+
 	public TGBrowserRemoveCollectionAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(final TGActionContext context) {
 		try {
 			TGBrowserCollection collection = context.getAttribute(ATTRIBUTE_COLLECTION);
 			TGBrowserManager browserManager = TGBrowserManager.getInstance(getContext());
-			
+
 			browserManager.removeCollection(collection);
 			browserManager.storeCollections();
 		} catch (TGBrowserException e) {

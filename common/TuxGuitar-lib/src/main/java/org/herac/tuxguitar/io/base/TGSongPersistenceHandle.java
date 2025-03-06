@@ -4,12 +4,12 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class TGSongPersistenceHandle {
-	
+
 	private TGFactory factory;
 	private TGSong song;
 	private TGFileFormat format;
 	private TGSongStreamContext context;
-	
+
 	public TGSongPersistenceHandle() {
 		super();
 	}

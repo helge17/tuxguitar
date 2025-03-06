@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MacMenuPlugin implements TGPlugin {
-	
+
 	private MacMenu macMenu;
 	private final static Map<String, String> macKeySymbols;
 
@@ -60,7 +60,7 @@ public class MacMenuPlugin implements TGPlugin {
 	}
 
 	private final static MacKeyTranslator translator = new MacKeyTranslator();
-	
+
 	public void setEnabled(TGContext context, boolean enabled) throws TGPluginException {
 		try {
 			if( this.macMenu != null ){
@@ -75,11 +75,11 @@ public class MacMenuPlugin implements TGPlugin {
 			throw new TGPluginException( throwable );
 		}
 	}
-	
+
 	public String getModuleId() {
 		return TGCocoaIntegrationPlugin.MODULE_ID;
 	}
-	
+
 	public void connect(TGContext context) throws TGPluginException {
 		this.setEnabled(context, true);
 	}

@@ -9,23 +9,23 @@ public class TGBendEditorGestureDetector extends GestureDetector.SimpleOnGesture
 
 	private GestureDetectorCompat gestureDetector;
 	private TGBendEditor bendEditor;
-	
+
 	public TGBendEditorGestureDetector(Context context, TGBendEditor bendEditor) {
 		this.gestureDetector = new GestureDetectorCompat(context, this);
 		this.bendEditor = bendEditor;
 	}
-	
+
 	public boolean processTouchEvent(MotionEvent event) {
 		return this.gestureDetector.onTouchEvent(event);
 	}
-	
+
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
 		this.bendEditor.editPoint(Math.round(e.getX()), Math.round(e.getY()));
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onDown(MotionEvent e) {
 		return true;

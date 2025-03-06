@@ -88,14 +88,14 @@ public class EditMenuItem extends TGMenuItem{
 
 		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
-		
+
 		//--Selection--
 		this.selectAll = this.editMenuItem.getMenu().createActionItem();
 		this.selectAll.addSelectionListener(this.createActionProcessor(TGSelectAllAction.NAME));
-		
+
 		this.selectNone = this.editMenuItem.getMenu().createActionItem();
 		this.selectNone.addSelectionListener(this.createActionProcessor(TGClearSelectionAction.NAME));
-		
+
 		this.extendSelection = this.editMenuItem.getMenu().createSubMenuItem();
 		this.extendSelectionLeft = this.extendSelection.getMenu().createActionItem();
 		this.extendSelectionLeft.addSelectionListener(this.createActionProcessor(TGExtendSelectionLeftAction.NAME));
@@ -109,7 +109,7 @@ public class EditMenuItem extends TGMenuItem{
 		this.extendSelectionFirst.addSelectionListener(this.createActionProcessor(TGExtendSelectionFirstAction.NAME));
 		this.extendSelectionLast = this.extendSelection.getMenu().createActionItem();
 		this.extendSelectionLast.addSelectionListener(this.createActionProcessor(TGExtendSelectionLastAction.NAME));
-		
+
 		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
 

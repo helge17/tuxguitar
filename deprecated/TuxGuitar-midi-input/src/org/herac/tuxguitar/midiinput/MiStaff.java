@@ -212,7 +212,7 @@ class MiStaff
 		TGSongManager	tgSongMgr	= TuxGuitar.getInstance().getSongManager();
 		TGTrackManager	tgTrackMgr	= tgSongMgr.getTrackManager();
 		TGMeasure		tgMeasure	= tgTrackMgr.getMeasureAt(f_TgTrack, inTime);
-		
+
 		if(tgMeasure != null)
 			{
 			tgBeat = tgSongMgr.getFactory().newBeat();
@@ -260,7 +260,7 @@ class MiStaff
 	inTgBeat.getVoice(0).setDuration(tgDuration);
 	inTgBeat.getVoice(0).addNote(tgNote);
 	}
-	
+
 
 	private void	generateTrack(String inTrackName)
 	{
@@ -300,11 +300,11 @@ class MiStaff
 			TGBeat		tgBeat	= getEventBeat(se.getBeginTime());
 			if( tgBeat != null ) {
 				Iterator<MiStaffNote>	it		= se.getNotes().iterator();
-	
+
 				while(it.hasNext())
 					{
 					MiStaffNote	sn = (MiStaffNote)it.next();
-	
+
 					insertNoteIntoTrack(tgBeat, sn);
 					}
 				}
@@ -340,7 +340,7 @@ class MiStaff
 		long	nextBarBeginTime = 0;
 
 		keepGoing = false;
-	
+
 		for(Iterator<Map.Entry<Long, MiStaffEvent>> eventsIt = f_Events.entrySet().iterator(); eventsIt.hasNext();)
 			{
 			Map.Entry<Long, MiStaffEvent> me	= eventsIt.next();

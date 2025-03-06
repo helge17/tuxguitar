@@ -36,7 +36,7 @@ void LV2Feature_free(LV2Feature **handle)
 			}
 			free ((*handle)->uriMap);
 		}
-		
+
 		if( (*handle)->features != NULL ) {
 
 			LV2Feature_getFeature((*handle), LV2_INSTANCE_ACCESS_URI)->data = NULL;
@@ -47,7 +47,7 @@ void LV2Feature_free(LV2Feature **handle)
 					free ((*iterator)->data );
 				}
 				free ((*iterator));
-				
+
 				iterator ++;
 			}
 			free ((*handle)->features);
@@ -70,7 +70,7 @@ void LV2Feature_init(LV2Feature *handle, LV2Instance *instance)
 		}
 		lilv_nodes_free(requiredFeatures);
 		///////////////////////////////////////////////////////////////////////////////////////////////
-		
+
 		/// Load data access handle ///
 		LV2_Extension_Data_Feature* dataAccess = (LV2_Extension_Data_Feature *) LV2Feature_getFeature(handle, LV2_DATA_ACCESS_URI)->data;
 		dataAccess->data_access = lilv_instance_get_descriptor(instance->lilvInstance)->extension_data;
@@ -99,7 +99,7 @@ LV2_Options_Option* LV2Feature_createOption(LV2_URID key, LV2Int32 size, LV2_URI
 	option->size = size;
 	option->type = type;
 	option->value = value;
-	
+
 	return option;
 }
 
@@ -127,7 +127,7 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 			LV2_URID_Map* map = (LV2_URID_Map *) malloc(sizeof(LV2_URID_Map));
 			map->handle = handle;
 			map->map = LV2Feature_map;
-			
+
 			LV2_Feature* mapFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
 			mapFeature->URI = LV2_URID__map;
 			mapFeature->data = map;
@@ -136,7 +136,7 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 			LV2_URID_Unmap* unmap = (LV2_URID_Unmap *) malloc(sizeof(LV2_URID_Unmap));
 			unmap->handle = handle;
 			unmap->unmap = LV2Feature_unmap;
-			
+
 			LV2_Feature* unmapFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
 			unmapFeature->URI = LV2_URID__unmap;
 			unmapFeature->data = unmap;
@@ -149,7 +149,7 @@ const LV2_Feature* const* LV2Feature_getFeatures(LV2Feature *handle)
 			LV2_Feature* scheduleFeature = (LV2_Feature *) malloc(sizeof(LV2_Feature));
 			scheduleFeature->URI = LV2_WORKER__schedule;
 			scheduleFeature->data = schedule;
-			
+
 			// options feature
 			LV2_URID atomIntURID = LV2Feature_map(handle, LV2_ATOM__Int);
 			LV2_URID atomFloatURID = LV2Feature_map(handle, LV2_ATOM__Float);

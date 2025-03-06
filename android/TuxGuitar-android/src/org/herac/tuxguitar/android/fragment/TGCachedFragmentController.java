@@ -1,15 +1,15 @@
 package org.herac.tuxguitar.android.fragment;
 
 public abstract class TGCachedFragmentController<T extends TGCachedFragment> implements TGFragmentController<T> {
-	
+
 	private T instance;
-	
+
 	public TGCachedFragmentController() {
 		super();
 	}
-	
+
 	public abstract T createNewInstance();
-	
+
 	public T findOrCreateInstance() {
 		synchronized (TGCachedFragmentController.class) {
 			if( this.instance == null ) {
@@ -18,7 +18,7 @@ public abstract class TGCachedFragmentController<T extends TGCachedFragment> imp
 			return this.instance;
 		}
 	}
-	
+
 	public void attachInstance(T instance) {
 		synchronized (TGCachedFragmentController.class) {
 			if( this.instance != instance ) {
@@ -34,7 +34,7 @@ public abstract class TGCachedFragmentController<T extends TGCachedFragment> imp
 			}
 		}
 	}
-	
+
 	public T getFragment() {
 		return this.findOrCreateInstance();
 	}

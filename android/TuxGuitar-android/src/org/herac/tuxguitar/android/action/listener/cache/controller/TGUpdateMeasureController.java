@@ -10,14 +10,14 @@ public class TGUpdateMeasureController extends TGUpdateItemsController {
 	public TGUpdateMeasureController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
 		TGMeasureHeader header = (TGMeasureHeader) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		if( header != null ) {
 			this.findUpdateBuffer(context).requestUpdateMeasure(header.getNumber());
 		}
-		
+
 		super.update(context, actionContext);
 	}
 }

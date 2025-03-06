@@ -6,11 +6,11 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiSongWriterPlugin extends TGSongWriterPlugin {
-	
+
 	public MidiSongWriterPlugin() {
 		super();
 	}
-	
+
 	public String getModuleId(){
 		return MidiPlugin.MODULE_ID;
 	}

@@ -9,17 +9,17 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGBrowserSessionHandler implements TGBrowserFactoryHandler {
-	
+
 	private TGContext context;
 	private TGBrowserSession session;
 	private TGBrowserCollection collection;
-	
+
 	public TGBrowserSessionHandler(TGContext context, TGBrowserSession session, TGBrowserCollection collection) {
 		this.context = context;
 		this.session = session;
 		this.collection = collection;
 	}
-	
+
 	@Override
 	public void onCreateBrowser(TGBrowser browser) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGBrowserLoadSessionAction.NAME);

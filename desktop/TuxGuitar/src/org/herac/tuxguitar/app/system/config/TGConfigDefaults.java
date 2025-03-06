@@ -18,7 +18,7 @@ public class TGConfigDefaults{
 	public static final String MODULE = "tuxguitar";
 
 	private static List<String> keys = new ArrayList<String>();
-	
+
 	public static final String DEFAULT_SKIN = "Oxygen";
 	private static final String DEFAULT_FONT_NAME = UIFontModel.DEFAULT_NAME;
 
@@ -150,7 +150,7 @@ public class TGConfigDefaults{
 		}
 		return keys;
 	}
-	
+
 	private static void loadProperty(TGProperties properties, String key,String value){
 		if (properties != null) {
 			properties.setValue(key,value);
@@ -178,5 +178,5 @@ public class TGConfigDefaults{
 		}
 		keys.add(key);
 	}
-	
+
 }

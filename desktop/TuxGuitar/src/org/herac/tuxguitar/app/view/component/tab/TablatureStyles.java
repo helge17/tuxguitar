@@ -5,7 +5,7 @@ import org.herac.tuxguitar.app.system.config.TGConfigManager;
 import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 
 public class TablatureStyles extends TGLayoutStyles {
-	
+
 	public TablatureStyles(TGConfigManager config) {
 		this.setBufferEnabled(true);
 		this.setStringSpacing(config.getIntegerValue(TGConfigKeys.STYLE_STRING_SPACING));
@@ -15,7 +15,7 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setMinTopSpacing(config.getIntegerValue(TGConfigKeys.STYLE_MIN_TOP_SPACING));
 		this.setMinScoreTabSpacing(config.getIntegerValue(TGConfigKeys.STYLE_MIN_SCORE_TAB_SPACING));
 		this.setFirstTrackSpacing(config.getIntegerValue(TGConfigKeys.STYLE_FIRST_TRACK_SPACING));
-		this.setTrackSpacing(config.getIntegerValue(TGConfigKeys.STYLE_TRACK_SPACING));		
+		this.setTrackSpacing(config.getIntegerValue(TGConfigKeys.STYLE_TRACK_SPACING));
 		this.setFirstNoteSpacing(config.getIntegerValue(TGConfigKeys.STYLE_FIRST_NOTE_SPACING));
 		this.setMeasureLeftSpacing(config.getIntegerValue(TGConfigKeys.STYLE_MEASURE_LEFT_SPACING));
 		this.setMeasureRightSpacing(config.getIntegerValue(TGConfigKeys.STYLE_MEASURE_RIGHT_SPACING));
@@ -37,7 +37,7 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setEffectSpacing(config.getIntegerValue(TGConfigKeys.STYLE_EFFECT_SPACING));
 		this.setLineWidths(config.getFloatArrayValue(TGConfigKeys.STYLE_LINE_WIDTHS));
 		this.setDurationWidths(config.getFloatArrayValue(TGConfigKeys.STYLE_DURATION_WIDTHS));
-		
+
 		this.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_DEFAULT));
 		this.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_NOTE));
 		this.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_LYRIC));

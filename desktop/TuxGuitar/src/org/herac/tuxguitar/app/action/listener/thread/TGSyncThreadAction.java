@@ -8,21 +8,21 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public abstract class TGSyncThreadAction {
-	
+
 	private TGContext context;
-	
+
 	public TGSyncThreadAction(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public TGContext getContext() {
 		return this.context;
 	}
-	
+
 	public boolean isUiThread() {
 		return TGApplication.getInstance(this.context).getApplication().isInUiThread();
 	}
-	
+
 	public void runInUiThread(final String id, final TGActionContext context) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -30,7 +30,7 @@ public abstract class TGSyncThreadAction {
 			}
 		});
 	}
-	
+
 	public void executeInterceptedAction(String actionId, TGActionContext context) {
 		try {
 			TGActionManager tgActionManager = TGActionManager.getInstance(TGSyncThreadAction.this.context);

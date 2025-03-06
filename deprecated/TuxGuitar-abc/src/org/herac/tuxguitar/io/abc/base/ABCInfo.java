@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ABCInfo {
-	
+
 	private String title;
 	private String subtitle;
 	private String comments;
@@ -21,32 +21,32 @@ public class ABCInfo {
 	private String origin;
 	private String source;
 	private String transcriptor;
-	
+
 	public ABCInfo(String title, String subtitle, String comments) {
 		this.title = title;
 		this.subtitle = subtitle;
 		this.comments = comments;
 	}
-	
+
 	public String getComments() {
 		return this.comments;
 	}
-	
+
 	public String getSubtitle() {
 		return this.subtitle;
 	}
-	
+
 	public String getTitle() {
 		return this.title;
 	}
-	
+
 	public String getNotes() {
 		if(this.note==null) return null;
 		String s="";
 		for(int i=0;i<note.size();i++) s+=(String)note.get(i)+"\n";
 		return s;
 	}
-	
+
 	public String toString(){
 		String string = new String("[INFO]");
 		string += "\n     Title:       " + getTitle();
@@ -115,7 +115,7 @@ public class ABCInfo {
 		this.book=string;
 	}
 	/**
-	 * @return the book 
+	 * @return the book
 	 */
 	public String getBook() {
 		return book;
@@ -125,7 +125,7 @@ public class ABCInfo {
 		this.discography=string;
 	}
 	/**
-	 * @return the discography 
+	 * @return the discography
 	 */
 	public String getDiscography() {
 		return discography;

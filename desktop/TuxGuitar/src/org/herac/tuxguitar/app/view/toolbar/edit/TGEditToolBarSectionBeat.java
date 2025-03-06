@@ -28,23 +28,23 @@ import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
-	
+
 	private static final String SECTION_TITLE = "beat";
-	
+
 	private UIToolActionMenuItem chordMenu;
 	private UIToolCheckableItem text;
 	private UIToolCheckableItem strokeUp;
 	private UIToolCheckableItem strokeDown;
 	private UIToolCheckableItem pickStrokeUp;
 	private UIToolCheckableItem pickStrokeDown;
-	
+
 	public TGEditToolBarSectionBeat(TGEditToolBar toolBar) {
 		super(toolBar, SECTION_TITLE);
 	}
-	
+
 	public void createSectionToolBars() {
 		UIToolBar toolBar = this.createToolBar();
-		
+
 		this.chordMenu = toolBar.createActionMenuItem();
 		this.chordMenu.addSelectionListener(this.createActionProcessor(TGOpenChordDialogAction.NAME));
 
@@ -68,7 +68,7 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		this.pickStrokeDown = toolBar.createCheckItem();
 		this.pickStrokeDown.addSelectionListener(this.createActionProcessor(TGChangePickStrokeDownAction.NAME));
 	}
-	
+
 	public void loadSectionProperties() {
 		this.chordMenu.setToolTipText(this.getText("insert.chord"));
 		this.text.setToolTipText(this.getText("text.insert"));
@@ -77,7 +77,7 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		this.pickStrokeUp.setToolTipText(this.getText("beat.pick-stroke-up"));
 		this.pickStrokeDown.setToolTipText(this.getText("beat.pick-stroke-down"));
 	}
-	
+
 	public void loadSectionIcons() {
 		this.chordMenu.setImage(this.getIconManager().getChord());
 		this.text.setImage(this.getIconManager().getText());
@@ -86,13 +86,13 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		this.pickStrokeUp.setImage(this.getIconManager().getPickStrokeUp());
 		this.pickStrokeDown.setImage(this.getIconManager().getPickStrokeDown());
 	}
-	
+
 	public void updateSectionItems() {
 		TGBeat beat = this.getTablature().getCaret().getSelectedBeat();
 		boolean isPercussion = this.getTablature().getCaret().getTrack().isPercussion();
 
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
-		
+
 		this.chordMenu.setEnabled(!running && !isPercussion);
 		this.text.setEnabled(!running);
 		this.text.setChecked(beat.isTextBeat());
@@ -106,18 +106,18 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		this.pickStrokeDown.setChecked( beat != null && beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_DOWN );
 		this.updateMenuItems();
 	}
-	
+
 	public void updateMenuItems() {
 		TGCustomChordManager customChordManager = TuxGuitar.getInstance().getCustomChordManager();
-		UIMenu uiMenu = this.chordMenu.getMenu(); 
+		UIMenu uiMenu = this.chordMenu.getMenu();
 		List<UIMenuItem> uiMenuItems = this.chordMenu.getMenu().getItems();
 		for(int i = customChordManager.countChords(); i < uiMenuItems.size(); i++) {
 			uiMenuItems.get(i).dispose();
 		}
-		
+
 		for(int i = 0; i < customChordManager.countChords(); i++) {
 			TGChord chord = TuxGuitar.getInstance().getCustomChordManager().getChord(i);
-			
+
 			UIMenuItem uiMenuItem = (uiMenu.getItemCount() > i ? uiMenu.getItem(i) : null);
 			if( uiMenuItem == null ) {
 				UIMenuActionItem uiMenuActionItem = uiMenu.createActionItem();
@@ -132,7 +132,7 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 			uiMenuItem.setData(TGChord.class.getName(), chord);
 		}
 	}
-	
+
 	public void processInsertChordAction(TGChord chord) {
 		TGActionProcessor tgActionProcessor = this.createActionProcessor(TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);

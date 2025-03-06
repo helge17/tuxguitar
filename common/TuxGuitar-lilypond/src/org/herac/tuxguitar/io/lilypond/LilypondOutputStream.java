@@ -40,7 +40,7 @@ public class LilypondOutputStream {
 	// anything over high C should be printed 8vb
 	private static final int MAX_PITCH = 72;
 
-	
+
 	private TGSongManager manager;
 
 	private PrintWriter writer;

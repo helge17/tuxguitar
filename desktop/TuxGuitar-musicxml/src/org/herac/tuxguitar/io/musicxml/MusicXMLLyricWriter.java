@@ -22,7 +22,7 @@ public class MusicXMLLyricWriter {
 		BEGIN,
 		MIDDLE,
 		END;
-		
+
 		@Override
 		public String toString() {
 			switch(this.ordinal()) {
@@ -49,7 +49,7 @@ public class MusicXMLLyricWriter {
 	public class MusicXMLMeasureLyric {
 		public Syllabic syllabic;
 		public String text;
-		
+
 		/**
 		 * Class constructor.
 		 * @param syllabic
@@ -69,7 +69,7 @@ public class MusicXMLLyricWriter {
 	    return (string == null || string.length() == 0)
 	    		? null : (string.substring(0, string.length() - 1));
 	}
-	
+
 	/**
 	 * Helper function.
 	 * The lyrics in TGLyric are for one track. The lyricStrings are lyric per note.
@@ -86,12 +86,12 @@ public class MusicXMLLyricWriter {
 			// ignore
 			// more lyrics than notes!?
 		}
-		
+
 		// we need to return a default
 		String[] empty = {""};
 		return empty;
 	}
-	
+
 	/**
 	 * Holds the lyrics for the complete track.
 	 */
@@ -108,8 +108,8 @@ public class MusicXMLLyricWriter {
 	 * Used in the generateLyricList method, which is a state machine.
 	 */
 	private Syllabic syllabicState;
-	
-	
+
+
 	/**
 	 * MusicXMLLyricWriter Constructor.
 	 * @param track 	Holds track currently being processed.
@@ -130,7 +130,7 @@ public class MusicXMLLyricWriter {
 		if (measure.getNumber() < lyricFrom) {
 			return null;
 		}
-		
+
 		// number of not empty beats
 		int number = 0;
 		for (TGBeat beat : measure.getBeats()) {
@@ -138,13 +138,13 @@ public class MusicXMLLyricWriter {
 				number++;
 			}
 		}
-		
+
 		ArrayList<MusicXMLMeasureLyric> measureLyrics = new ArrayList<MusicXMLMeasureLyric>();
-		
-		
+
+
 		String[] measureLyricStrings = getLyricSlice(lyrics, lyricIndex, number);
 		this.lyricIndex += number;
-		
+
 		Syllabic syllabic = Syllabic.NONE;
 
 		// Turn strings in MusicXMLMeasureLyric.
@@ -192,7 +192,7 @@ public class MusicXMLLyricWriter {
 
 			measureLyrics.add(new MusicXMLMeasureLyric(syllabic, measureLyricStrings[i]));
 		}
-		
+
 		MusicXMLMeasureLyric[] measureLyricArray = new MusicXMLMeasureLyric[measureLyrics.size()];
 		measureLyrics.toArray(measureLyricArray);
 		return 	measureLyricArray;

@@ -36,14 +36,14 @@ public class TGTrackTuningAdapter extends BaseAdapter {
 	public LayoutInflater getLayoutInflater() {
 		return (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final TGTrackTuningModel tuning = this.dialog.getTuning().get(position);
-		
+
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(android.R.layout.simple_list_item_activated_1, parent, false));
 		view.setTag(tuning);
-		
+
 		TextView textView = (TextView) view.findViewById(android.R.id.text1);
 		textView.setText(tuning.getName());
 		textView.setOnLongClickListener(this.dialog.getActionHandler().createTuningModelMenuAction(tuning, view));

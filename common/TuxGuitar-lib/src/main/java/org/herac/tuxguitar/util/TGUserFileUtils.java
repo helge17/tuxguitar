@@ -18,7 +18,7 @@ public class TGUserFileUtils {
 	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
 	public static final String PATH_USER_TEMPLATE = getUserTemplatePath();
 	public static final String PATH_USER_TUNINGS = getUserTuningsPath();
-	
+
 	private static String getHomePath(){
 		// Look for the system property
 		String homePath = System.getProperty(TG_HOME_PATH);
@@ -49,7 +49,7 @@ public class TGUserFileUtils {
 		}
 		return path + File.separator + "user-template.tg";
 	}
-	
+
 	private static String getUserConfigDir(){
 		// Look for the system property
 		String configPath = System.getProperty(TG_CONFIG_PATH);
@@ -79,7 +79,7 @@ public class TGUserFileUtils {
 		}
 		return joinPath(home, ".config", folderName);
 	}
-	
+
 	private static String getUserPluginsConfigDir(){
 		String configPluginsPath = (getUserConfigDir() + File.separator + "plugins");
 
@@ -117,7 +117,7 @@ public class TGUserFileUtils {
 			return false;
 		}
 	}
-	
+
 	public static boolean tryCreateDirectory( File file ){
 		try{
 			return file.mkdirs();
@@ -145,7 +145,7 @@ public class TGUserFileUtils {
 	public static boolean isUserTemplateReadable()  {
 		return isExistentAndReadable(new File(PATH_USER_TEMPLATE));
 	}
-	
+
 	public static boolean setUserTemplate(File srcFile) {
 		try {
 			Path src = srcFile.toPath();
@@ -158,11 +158,11 @@ public class TGUserFileUtils {
 		}
 		return false;
 	}
-	
+
 	public static boolean deleteUserTemplate() {
 		return new File(PATH_USER_TEMPLATE).delete();
 	}
-	
+
 	private static String getUserTuningsPath() {
 		return getUserConfigDir() + File.separator + "tunings.xml";
 	}

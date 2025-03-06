@@ -5,7 +5,7 @@ import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGDeadLockDebugPlugin implements TGPlugin {
-	
+
 	public String getModuleId() {
 		return TGDebugHelperPlugin.MODULE_ID;
 	}

@@ -10,14 +10,14 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UIToggleButton;
 
 public class SWTToggleButton extends SWTControl<Button> implements UIToggleButton {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public SWTToggleButton(SWTContainer<? extends Composite> parent) {
 		super(new Button(parent.getControl(), SWT.TOGGLE), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
 
@@ -28,7 +28,7 @@ public class SWTToggleButton extends SWTControl<Button> implements UIToggleButto
 	public void setText(String text) {
 		this.getControl().setText(text);
 	}
-	
+
 	public boolean isSelected() {
 		return this.getControl().getSelection();
 	}
@@ -36,14 +36,14 @@ public class SWTToggleButton extends SWTControl<Button> implements UIToggleButto
 	public void setSelected(boolean selected) {
 		this.getControl().setSelection(selected);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);
 	}
 

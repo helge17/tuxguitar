@@ -256,20 +256,20 @@ import org.herac.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGActionInstaller {
-	
+
 	private TGActionAdapterManager manager;
 	private TGActionConfigMap configMap;
-	
+
 	public TGActionInstaller(TGActionAdapterManager manager) {
 		this.manager = manager;
 		this.configMap = new TGActionConfigMap();
 	}
-	
+
 	public void installDefaultActions(){
 		TGContext context = this.manager.getContext();
-		
+
 		installAction(new TGDisposeAction(context));
-		
+
 		//file actions
 		installAction(new TGLoadSongAction(context));
 		installAction(new TGNewSongAction(context));
@@ -291,7 +291,7 @@ public class TGActionInstaller {
 		installAction(new TGExitAction(context));
 		installAction(new TGPrintAction(context));
 		installAction(new TGPrintPreviewAction(context));
-		
+
 		//edit actions
 		installAction(new TGCutAction(context));
 		installAction(new TGCopyAction(context));
@@ -304,20 +304,20 @@ public class TGActionInstaller {
 		installAction(new TGSetNaturalKeyAction(context));
 		installAction(new TGSetVoice1Action(context));
 		installAction(new TGSetVoice2Action(context));
-		
+
 		//tablature actions
 		installAction(new TGMouseClickAction(context));
 		installAction(new TGMouseMoveAction(context));
 		installAction(new TGMouseExitAction(context));
 		installAction(new TGMenuShownAction(context));
-		
+
 		//caret actions
 		installAction(new TGMoveToAction(context));
 		installAction(new TGGoRightAction(context));
 		installAction(new TGGoLeftAction(context));
 		installAction(new TGGoUpAction(context));
 		installAction(new TGGoDownAction(context));
-		
+
 		//selector actions
 		installAction(new TGClearSelectionAction(context));
 		installAction(new TGExtendSelectionLeftAction(context));
@@ -329,11 +329,11 @@ public class TGActionInstaller {
 		installAction(new TGSelectAllAction(context));
 		installAction(new TGStartDragSelectionAction(context));
 		installAction(new TGUpdateDragSelectionAction(context));
-		
+
 		//song actions
 		installAction(new TGCopySongFromAction(context));
 		installAction(new TGClearSongAction(context));
-		
+
 		//track actions
 		installAction(new TGAddNewTrackAction(context));
 		installAction(new TGAddTrackAction(context));
@@ -358,7 +358,7 @@ public class TGActionInstaller {
 		installAction(new TGCopyTrackFromAction(context));
 		installAction(new TGSetTrackLyricsAction(context));
 		installAction(new TGChangeTrackPropertiesAction(context));
-		
+
 		//measure actions
 		installAction(new TGToggleLineBreakAction(context));
 		installAction(new TGAddMeasureAction(context));
@@ -375,7 +375,7 @@ public class TGActionInstaller {
 		installAction(new TGInsertMeasuresAction(context));
 		installAction(new TGCopyMeasureAction(context));
 		installAction(new TGPasteMeasureAction(context));
-		
+
 		//beat actions
 		installAction(new TGChangeNoteAction(context));
 		installAction(new TGChangePickStrokeDownAction(context));
@@ -406,7 +406,7 @@ public class TGActionInstaller {
 			installAction(new TGSetNoteFretNumberAction(context, i));
 		}
 		installAction(new TGToggleNoteEnharmonicAction(context));
-		
+
 		//effect actions
 		installAction(new TGChangeAccentuatedNoteAction(context));
 		installAction(new TGChangeBendNoteAction(context));
@@ -428,7 +428,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeTremoloPickingAction(context));
 		installAction(new TGChangeTrillNoteAction(context));
 		installAction(new TGChangeVibratoNoteAction(context));
-		
+
 		//duration actions
 		installAction(new TGSetDurationAction(context));
 		installAction(new TGSetWholeDurationAction(context));
@@ -444,7 +444,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeDoubleDottedDurationAction(context));
 		installAction(new TGIncrementDurationAction(context));
 		installAction(new TGDecrementDurationAction(context));
-		
+
 		//composition actions
 		installAction(new TGChangeTempoAction(context));
 		installAction(new TGChangeTempoRangeAction(context));
@@ -456,14 +456,14 @@ public class TGActionInstaller {
 		installAction(new TGRepeatOpenAction(context));
 		installAction(new TGRepeatCloseAction(context));
 		installAction(new TGRepeatAlternativeAction(context));
-		
+
 		//channel actions
 		installAction(new TGSetChannelsAction(context));
 		installAction(new TGAddChannelAction(context));
 		installAction(new TGAddNewChannelAction(context));
 		installAction(new TGRemoveChannelAction(context));
 		installAction(new TGUpdateChannelAction(context));
-		
+
 		//transport actions
 		installAction(new TGTransportPlayPauseAction(context));
 		installAction(new TGTransportPlayStopAction(context));
@@ -473,7 +473,7 @@ public class TGActionInstaller {
 		installAction(new TGTransportModeAction(context));
 		installAction(new TGTransportSetLoopSHeaderAction(context));
 		installAction(new TGTransportSetLoopEHeaderAction(context));
-		
+
 		//marker actions
 		installAction(new TGUpdateMarkerAction(context));
 		installAction(new TGRemoveMarkerAction(context));
@@ -483,7 +483,7 @@ public class TGActionInstaller {
 		installAction(new TGGoNextMarkerAction(context));
 		installAction(new TGGoFirstMarkerAction(context));
 		installAction(new TGGoLastMarkerAction(context));
-		
+
 		//layout actions
 		installAction(new TGSetPageLayoutAction(context));
 		installAction(new TGSetLinearLayoutAction(context));
@@ -498,13 +498,13 @@ public class TGActionInstaller {
 		installAction(new TGSetLayoutScaleDecrementAction(context));
 		installAction(new TGSetLayoutScaleResetAction(context));
 		installAction(new TGToggleHighlightPlayedBeatAction(context));
-		
+
 		//tools
 		installAction(new TGSelectScaleAction(context));
 		installAction(new TGTransposeAction(context));
 		installAction(new TGShowExternalBeatAction(context));
 		installAction(new TGHideExternalBeatAction(context));
-		
+
 		//system
 		installAction(new TGReloadSettingsAction(context));
 		installAction(new TGReloadTitleAction(context));
@@ -513,11 +513,11 @@ public class TGActionInstaller {
 		installAction(new TGReloadMidiDevicesAction(context));
 		installAction(new TGReloadStylesAction(context));
 		installAction(new TGReloadTableSettingsAction(context));
-		
+
 		installAction(new TGOpenSettingsEditorAction(context));
 		installAction(new TGOpenKeyBindingEditorAction(context));
 		installAction(new TGOpenPluginListDialogAction(context));
-		
+
 		//gui actions
 		installAction(new TGOpenViewAction(context));
 		installAction(new TGToggleViewAction(context));
@@ -554,7 +554,7 @@ public class TGActionInstaller {
 		installAction(new TGOpenTransportModeDialogAction(context));
 		installAction(new TGOpenMarkerEditorAction(context));
 		installAction(new TGOpenTransposeDialogAction(context) );
-		
+
 		installAction(new TGToggleFretBoardEditorAction(context));
 		installAction(new TGTogglePianoEditorAction(context));
 		installAction(new TGToggleMatrixEditorAction(context));
@@ -566,15 +566,15 @@ public class TGActionInstaller {
 		installAction(new TGToggleMainToolbarAction(context));
 		installAction(new TGToggleEditToolbarAction(context));
 		installAction(new TGToggleTableViewerAction(context));
-		
+
 		installAction(new TGOpenDocumentationDialogAction(context));
 		installAction(new TGOpenAboutDialogAction(context));
 		installAction(new TGHelpGoHomeAction(context));
 	}
-	
+
 	public void installAction(TGActionBase action) {
 		String actionId = action.getName();
-		
+
 		TGActionManager.getInstance(this.manager.getContext()).mapAction(actionId, action);
 		TGActionConfig config = this.configMap.get(actionId);
 		if( config != null ) {
@@ -599,7 +599,7 @@ public class TGActionInstaller {
 			if( config.isLockableAction() ) {
 				this.manager.getLockableActionListener().addActionId(actionId);
 			}
-			
+
 			this.manager.getUpdatableActionListener().getControllers().set(actionId, config.getUpdateController());
 			this.manager.getUndoableActionListener().getControllers().set(actionId, config.getUndoableController());
 		}

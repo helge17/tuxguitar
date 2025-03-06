@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class SWTToolCheckableItem extends SWTToolActionItem implements UIToolCheckableItem {
-	
+
 	public SWTToolCheckableItem(ToolItem item, SWTToolBar parent) {
 		super(item, parent);
 	}

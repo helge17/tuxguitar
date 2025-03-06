@@ -8,7 +8,7 @@ import org.herac.tuxguitar.io.abc.base.ABCTimeSignature;
 import org.herac.tuxguitar.io.base.TGFileFormatException;
 
 public class ABCInputStream {
-	
+
 	private static final int OUTSIDE = 0;
 	private static final int SKIPX = 1;
 	private static final int INHEAD = 2;
@@ -24,7 +24,7 @@ public class ABCInputStream {
 	private String line;
 	private int putback;
 	private ABCSettings settings;
-	
+
 	public ABCInputStream(InputStream stream,ABCSettings settings){
 		this.stream            = stream;
 		this.putback           = EMPTY;
@@ -47,9 +47,9 @@ public class ABCInputStream {
 						this.song.setX(Integer.parseInt(line.substring(2).trim(), 10));
 					}
 				}
-				else { 
+				else {
 					if(this.state==OUTSIDE) {
-						if(this.line.startsWith("U:")) this.song.addRedefinable(line.substring(2).trim());			
+						if(this.line.startsWith("U:")) this.song.addRedefinable(line.substring(2).trim());
 						else if(this.line.startsWith("m:")) this.song.addMacro(line.substring(2).trim());
 					}
 				}
@@ -89,7 +89,7 @@ public class ABCInputStream {
 					  d:  body Decorations. d:!pp! * * !mf! * !ff!
 					  s:  body inline symbols. s:+pp+ * * +mf+ * +ff+
 					  w:  body inline lyrics. w:Help! I need...
-					 */	
+					 */
 					if(this.line.startsWith("A:")) this.song.setArea(line.substring(2).trim());
 					else if(this.line.startsWith("B:")) this.song.setBook(line.substring(2).trim());
 					else if(this.line.startsWith("C:")) this.song.setComponist(line.substring(2).trim());
@@ -132,7 +132,7 @@ public class ABCInputStream {
 					else if(this.line.startsWith("Z:")) this.song.setTranscriptor(line.substring(2).trim());
 					else if(this.line.startsWith("m:")) this.song.addMacro(line.substring(2).trim());
 					else if(this.line.startsWith("r:")) this.song.addRemarks(line.substring(2).trim());
-					else if(this.state == INBODY) { 
+					else if(this.state == INBODY) {
 						if(firstMusicLine) this.song.initBody();
 						firstMusicLine=false;
 						if(this.line.startsWith("d:")) this.song.addSymbols(line.substring(2).trim());
@@ -149,7 +149,7 @@ public class ABCInputStream {
 			else
 				this.state = EOF;
 		}
-		
+
 		this.close();
 		if(this.song.getEvents()==null) {
 			throw new TGFileFormatException("no music body");
@@ -248,7 +248,7 @@ public class ABCInputStream {
 			}
 			if(b==LF && line.endsWith("\\")) {
 				this.line=this.line.substring(0, this.line.length()-1)+' ';
-				if(this.putback!=EMPTY) { 
+				if(this.putback!=EMPTY) {
 					this.line+=(char)this.putback;
 					this.putback=EMPTY;
 				}
@@ -267,7 +267,7 @@ public class ABCInputStream {
 		}
 		return 0;
 	}
-	
+
 	protected void close(){
 		try {
 			this.stream.close();

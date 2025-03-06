@@ -14,16 +14,16 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableMeasureGeneric extends TGUndoableEditBase {
-	
+
 	private int doAction;
 	private int trackNumber;
 	private TGMeasure undoMeasure;
 	private TGMeasure redoMeasure;
-	
+
 	private TGUndoableMeasureGeneric(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -31,7 +31,7 @@ public class TGUndoableMeasureGeneric extends TGUndoableEditBase {
 		this.copyMeasureFrom(actionContext, this.getMeasure(this.redoMeasure.getNumber()), this.redoMeasure);
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -39,15 +39,15 @@ public class TGUndoableMeasureGeneric extends TGUndoableEditBase {
 		this.copyMeasureFrom(actionContext, this.getMeasure(this.undoMeasure.getNumber()), this.undoMeasure);
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableMeasureGeneric startUndo(TGContext context, TGMeasure measure ){
 		TGFactory factory = new TGFactory();
 		TGUndoableMeasureGeneric undoable = new TGUndoableMeasureGeneric(context);
@@ -56,19 +56,19 @@ public class TGUndoableMeasureGeneric extends TGUndoableEditBase {
 		undoable.undoMeasure = measure.clone(factory, measure.getHeader().clone(factory));
 		return undoable;
 	}
-	
+
 	public TGUndoableMeasureGeneric endUndo( TGMeasure measure ){
 		TGFactory factory = new TGFactory();
 		this.redoMeasure = measure.clone(factory, measure.getHeader().clone(factory));
 		return this;
 	}
-	
+
 	public TGMeasure getMeasure(int number) {
 		TGSongManager tgSongManager = this.getSongManager();
 		TGTrack track = tgSongManager.getTrack(getSong(), this.trackNumber);
 		return tgSongManager.getTrackManager().getMeasure(track, number);
 	}
-	
+
 	public void copyMeasureFrom(TGActionContext context, TGMeasure measure, TGMeasure from) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGCopyMeasureFromAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);

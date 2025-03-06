@@ -17,11 +17,11 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 		midiPlayer.reset();
 		midiPlayer.getMode().clear();
 		midiPlayer.resetChannels();
-		
+
 		TGUndoableManager.getInstance(context).discardAllEdits();
 
 		this.findUpdateBuffer(context).requestUpdateLoadedSong();
-		
+
 		super.update(context, actionContext);
 	}
 }

@@ -6,22 +6,22 @@ import java.util.List;
 import org.herac.tuxguitar.util.TGException;
 
 public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
-	
+
 	private static final int WORKER_COUNT = 10;
-	
+
 	private boolean running;
 	private Object mutex;
 	private List<Runnable> queue;
-	
+
 	public TGPooledThreadHandler() {
 		this.mutex = new Object();
 		this.queue = new ArrayList<Runnable>();
 		this.running = true;
-		
+
 		this.initialize();
 	}
-	
-	public void initialize() {		
+
+	public void initialize() {
 		for(int i = 0 ; i < WORKER_COUNT ; i ++) {
 			new Thread(this).start();
 		}
@@ -33,7 +33,7 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 			this.mutex.notifyAll();
 		}
 	}
-	
+
 	public void loop(final TGThreadLoop loop) {
 		final Object mutex = new Object();
 		this.start(TGThreadPriority.NORMAL, new Runnable() {
@@ -54,7 +54,7 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 			}
 		});
 	}
-	
+
 	public void processNext() {
 		Runnable runnable = null;
 		synchronized (this.mutex) {
@@ -66,7 +66,7 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 			runnable.run();
 		}
 	}
-	
+
 	public void waitForNextThread() {
 		try {
 			synchronized (this.mutex) {
@@ -80,22 +80,22 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 			throw new TGException(e.getMessage(), e);
 		}
 	}
-	
+
 	public void run() {
 		while(this.running || !this.queue.isEmpty()) {
 			this.processNext();
 			this.waitForNextThread();
 		}
 	}
-	
+
 	public void yield() {
 		Thread.yield();
 	}
-	
+
 	public void dispose() {
 		this.running = false;
 	}
-	
+
 	public Object getThreadId() {
 		return Thread.currentThread().getId();
 	}

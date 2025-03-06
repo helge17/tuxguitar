@@ -31,15 +31,15 @@ public class SBAssistant {
 		new SBUrl(toURL("http://www.oracle.com/technetwork/java/soundbank-mid-149984.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.medium")),
 		new SBUrl(toURL("http://www.oracle.com/technetwork/java/soundbank-deluxe-150042.zip"),TuxGuitar.getProperty("jsa.soundbank-assistant.deluxe")),
 	};
-	
+
 	private TGContext context;
 	private MidiPortSynthesizer synthesizer;
-	
+
 	public SBAssistant(TGContext context, MidiPortSynthesizer synthesizer){
 		this.context = context;
 		this.synthesizer = synthesizer;
 	}
-	
+
 	public void process(){
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
@@ -57,22 +57,22 @@ public class SBAssistant {
 		});
 		tgActionProcessor.process();
 	}
-	
-	protected void open(){		
+
+	protected void open(){
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		dialog.setLayout(dialogLayout);
-		
+
 		//------------------------------------------------------------------------------
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(dialog);
 		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("jsa.soundbank-assistant.select"));
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 250f, null, null);
-        
+
         final UIRadioButton urls[] = new UIRadioButton[URLS.length];
         for(int i = 0; i < URLS.length ; i ++){
 	        urls[i] = uiFactory.createRadioButton(group);
@@ -81,29 +81,29 @@ public class SBAssistant {
 	        urls[i].setSelected(i == 0);
 	        groupLayout.set(urls[i], (i + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
         }
-		
-        //------------------BUTTONS--------------------------            
+
+        //------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
             	URL url = getSelection(urls);
-            	
+            
             	dialog.dispose();
-            	
+            
             	if( url != null ){
             		install(url);
             	}
             }
-        });		
+        });
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -113,10 +113,10 @@ public class SBAssistant {
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
-        
+
         TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	protected URL getSelection(UIRadioButton[] buttons){
     	for(int i = 0; i < buttons.length ; i ++){
     		if( buttons[i].isSelected() ){
@@ -125,7 +125,7 @@ public class SBAssistant {
     	}
     	return null;
 	}
-	
+
 	protected void install(URL url ){
 		new SBInstallerGui(this.context , url, this.synthesizer).open();
 	}
@@ -138,5 +138,5 @@ public class SBAssistant {
 		}
 		return null;
 	}
-	
+
 }

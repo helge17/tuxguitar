@@ -2,7 +2,7 @@ package org.herac.tuxguitar.graphics.control;
 
 
 public class TGBeatSpacing extends TGSpacing {
-	
+
 	/***     POSITIONS ARRAY INDICES     ***/
 	public static final int POSITION_ACCENTUATED_EFFECT = 0;
 	public static final int POSITION_HEAVY_ACCENTUATED_EFFECT = 1;
@@ -15,7 +15,7 @@ public class TGBeatSpacing extends TGSpacing {
 	public static final int POSITION_VIBRATO_EFFECT = 8;
 	public static final int POSITION_TRILL_EFFECT = 9;
 	public static final int POSITION_FADE_IN_EFFECT = 10;
-	
+
 	private static final int[] EFFECT_POSITIONS = new int[]{
 		POSITION_ACCENTUATED_EFFECT,
 		POSITION_HEAVY_ACCENTUATED_EFFECT,
@@ -29,7 +29,7 @@ public class TGBeatSpacing extends TGSpacing {
 		POSITION_TRILL_EFFECT,
 		POSITION_FADE_IN_EFFECT,
 	};
-	
+
 	private static final int[][] POSITIONS = new int[][]{
 		/** SCORE **/
 		EFFECT_POSITIONS ,
@@ -38,7 +38,7 @@ public class TGBeatSpacing extends TGSpacing {
 		/** SCORE | TABLATURE **/
 		EFFECT_POSITIONS ,
 	};
-	
+
 	public TGBeatSpacing(TGLayout layout) {
 		super(layout, POSITIONS, EFFECT_POSITIONS.length );
 	}

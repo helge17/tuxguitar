@@ -11,15 +11,15 @@ import org.qtjambi.qt.widgets.QAction;
 import org.qtjambi.qt.widgets.QApplication;
 
 public class QTMenuActionItem extends QTMenuItem<QAction> implements UIMenuActionItem {
-	
+
 	private QTSelectionListenerManager selectionListener;
-	
+
 	public QTMenuActionItem(QTAbstractMenu<?> parent) {
 		super(parent.createNativeAction(), parent);
-		
+
 		this.selectionListener = new QTAsyncSelectionListenerManager(this);
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().triggered.connect(this.selectionListener, QTSelectionListenerManager.SIGNAL_METHOD);
@@ -49,20 +49,20 @@ public class QTMenuActionItem extends QTMenuItem<QAction> implements UIMenuActio
 	public void setEnabled(boolean enabled) {
 		this.getControl().setEnabled(enabled);
 	}
-	
+
 	@Override
 	public void setImage(UIImage image) {
 		super.setImage(image);
-		
+
 		this.getControl().setIcon(image != null ? ((QTImage) image).createIcon() : null);
 	}
-	
+
 	private class QTAsyncSelectionListenerManager extends QTSelectionListenerManager {
-		
+
 		public QTAsyncSelectionListenerManager(QTComponent<?> control) {
 			super(control);
 		}
-		
+
 		public void handle() {
 			QApplication.invokeLater(new Runnable() {
 				public void run() {

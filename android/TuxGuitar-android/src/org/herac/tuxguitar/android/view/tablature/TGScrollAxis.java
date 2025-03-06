@@ -1,16 +1,16 @@
 package org.herac.tuxguitar.android.view.tablature;
 
 public class TGScrollAxis {
-	
+
 	private boolean enabled;
 	private float maximum;
 	private float minimum;
 	private float value;
-	
+
 	public TGScrollAxis() {
 		super();
 	}
-	
+
 	public void reset(boolean enabled, float maximum, float minimum, float value) {
 		this.enabled = enabled;
 		this.maximum = maximum;

@@ -4,8 +4,8 @@
 #include <fluidsynth.h>
 #include "org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth.h"
 
-#define FLUID_VERSION_GEN(major, minor, micro) ((major << 16) | (minor << 8) | (micro)) 
-#define FLUID_VERSION FLUID_VERSION_GEN(FLUIDSYNTH_VERSION_MAJOR, FLUIDSYNTH_VERSION_MINOR, FLUIDSYNTH_VERSION_MICRO) 
+#define FLUID_VERSION_GEN(major, minor, micro) ((major << 16) | (minor << 8) | (micro))
+#define FLUID_VERSION FLUID_VERSION_GEN(FLUIDSYNTH_VERSION_MAJOR, FLUIDSYNTH_VERSION_MINOR, FLUIDSYNTH_VERSION_MICRO)
 
 typedef struct{
 	fluid_settings_t* settings;
@@ -22,7 +22,7 @@ typedef struct{
 void fluid_settings_foreach_option_callback(void *data, const char *name, const char *option)
 {
 	fluid_settings_foreach_option_data* handle = (fluid_settings_foreach_option_data *)data;
-	
+
 	jstring joption = (*handle->env)->NewStringUTF(handle->env, option);
 	jclass cl = (*handle->env)->GetObjectClass(handle->env, handle->options);
 	jmethodID mid = (*handle->env)->GetMethodID(handle->env, cl, "add", "(Ljava/lang/Object;)Z");
@@ -34,16 +34,16 @@ void fluid_settings_foreach_option_callback(void *data, const char *name, const 
 JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
-	
+
 	fluid_handle_t *handle = (fluid_handle_t *) malloc( sizeof(fluid_handle_t) );
-	
+
 	handle->settings = new_fluid_settings();
 	handle->synth = NULL;
 	handle->driver = NULL;
 	handle->soundfont_id = 0;
-	
+
 	memcpy(&ptr, &handle, sizeof( handle ));
-	
+
 	return ptr;
 }
 
@@ -78,7 +78,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		}
 		handle->synth = new_fluid_synth(handle->settings);
 		handle->driver = new_fluid_audio_driver(handle->settings,handle->synth);
-		
+
 		fluid_synth_set_interp_method( handle->synth, -1, FLUID_INTERP_NONE );
 	}
 }
@@ -219,9 +219,9 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		if (mid != 0){
 			double value = 0;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 			fluid_settings_getnum(handle->settings, (char *)jkey, &value);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (jdouble)value );
 		}
@@ -238,9 +238,9 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		if (mid != 0){
 			int value = 0;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 			fluid_settings_getint(handle->settings, (char *)jkey, &value);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (jint)value );
 		}
@@ -258,11 +258,11 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 			jstring jvalue = NULL;
 			char *value = NULL;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 			fluid_settings_dupstr(handle->settings, (char *)jkey, &value);
-			
+
 			jvalue = (*env)->NewStringUTF(env, value);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , jvalue );
 		}
@@ -301,7 +301,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		if (mid != 0){
 			int value = 0;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 #if FLUID_VERSION >= FLUID_VERSION_GEN(2,0,0)
 			fluid_settings_getint_default(handle->settings, (char *)jkey, &value);
 #else
@@ -323,14 +323,14 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		if (mid != 0){
 			char *value = NULL;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 #if FLUID_VERSION >= FLUID_VERSION_GEN(2,0,0)
 			fluid_settings_getstr_default(handle->settings,(char *)jkey, &value);
 #else
 			value = fluid_settings_getstr_default(handle->settings,(char *)jkey);
 #endif
 			jstring jvalue = (*env)->NewStringUTF(env, value);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , jvalue );
 		}
@@ -350,9 +350,9 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 			double minimum = 0;
 			double maximum = 0;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 			fluid_settings_getnum_range(handle->settings,(char *)jkey, &minimum , &maximum);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, minimumRef , midMin , (jdouble)minimum );
 			(*env)->CallVoidMethod( env, maximumRef , midMax , (jdouble)maximum );
@@ -373,9 +373,9 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 			int minimum = 0;
 			int maximum = 0;
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-			
+
 			fluid_settings_getint_range(handle->settings,(char *)jkey, &minimum , &maximum);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, minimumRef , midMin , (jint)minimum );
 			(*env)->CallVoidMethod( env, maximumRef , midMax , (jint)maximum );
@@ -392,10 +392,10 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		fluid_settings_foreach_option_data* data = (fluid_settings_foreach_option_data *)malloc( sizeof(fluid_settings_foreach_option_data));
 		data->env = env;
 		data->options = options;
-		
+
 		fluid_settings_foreach_option(handle->settings, (char *)jkey, data, fluid_settings_foreach_option_callback );
 		(*env)->ReleaseStringUTFChars(env, key, jkey);
-		
+
 		free ( data );
 	}
 }
@@ -410,7 +410,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_fluidsynth_
 		if (mid != 0){
 			const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
 			int value = fluid_settings_is_realtime(handle->settings,(char *)jkey);
-			
+
 			(*env)->ReleaseStringUTFChars(env, key, jkey);
 			(*env)->CallVoidMethod( env, ref , mid , (value != 0 ? JNI_TRUE : JNI_FALSE) );
 		}

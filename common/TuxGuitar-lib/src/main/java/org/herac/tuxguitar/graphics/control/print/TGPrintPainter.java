@@ -6,17 +6,17 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGPrintPainter implements UIPainter {
-	
+
 	private UIPainter handle;
-	
+
 	public TGPrintPainter() {
 		super();
 	}
-	
+
 	public void setHandle(UIPainter handle){
 		this.handle = handle;
 	}
-	
+
 	public void dispose() {
 		this.handle.dispose();
 	}
@@ -128,7 +128,7 @@ public class TGPrintPainter implements UIPainter {
 	public float getFMHeight() {
 		return this.handle.getFMHeight();
 	}
-	
+
 	public float getFMWidth(String text) {
 		return this.handle.getFMWidth(text);
 	}

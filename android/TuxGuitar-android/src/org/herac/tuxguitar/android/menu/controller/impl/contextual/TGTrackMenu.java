@@ -24,7 +24,7 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTrackMenu extends TGMenuBase {
-	
+
 	public TGTrackMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -33,14 +33,14 @@ public class TGTrackMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_track, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGTrack track = caret.getTrack();
 		boolean running = MidiPlayer.getInstance(context).isRunning();
 		boolean percussion = caret.getSongManager().isPercussionChannel(caret.getSong(), track.getChannelId());
-		
+
 		this.initializeItem(menu, R.id.action_track_add, this.createActionProcessor(TGAddNewTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_track_remove, this.createActionProcessor(TGRemoveTrackAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_track_clone, this.createActionProcessor(TGCloneTrackAction.NAME), !running);

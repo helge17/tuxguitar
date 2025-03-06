@@ -85,7 +85,7 @@ public class TGRepeatAlternativeDialog extends TGModalFragment {
 		}
 		return existentEndings;
 	}
-	
+
 	protected int getDefaultEndings(int existentEndings){
 		for(int i = 0; i < 8; i ++){
 			if((existentEndings & (1 << i)) == 0){
@@ -94,7 +94,7 @@ public class TGRepeatAlternativeDialog extends TGModalFragment {
 		}
 		return -1;
 	}
-	
+
 	public void updateSelections(CheckBox[] selections, int existentEndings, int selectedEndings) {
 		for(int i = 0; i < selections.length; i ++){
 			boolean enabled = ((existentEndings & (1 << i)) == 0);
@@ -102,7 +102,7 @@ public class TGRepeatAlternativeDialog extends TGModalFragment {
 			selections[i].setChecked(enabled && ((selectedEndings & (1 << i)) != 0));
 		}
 	}
-	
+
 	public Integer parseRepeatAlternative() {
 		int repeatAlternative = 0;
 		CheckBox[] selections = this.getCheckBoxes();

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.io.midi.base.MidiSequence;
 import org.herac.tuxguitar.io.midi.base.MidiTrack;
 
 public class MidiFileWriter implements MidiFileHeader{
-	
+
 	public void write(MidiSequence sequence,int type,OutputStream stream)throws IOException{
 		DataOutputStream out = new DataOutputStream(stream);
 		out.writeInt(HEADER_MAGIC);
@@ -24,7 +24,7 @@ public class MidiFileWriter implements MidiFileHeader{
 		out.flush();
 		out.close();
 	}
-	
+
 	private static int writeTrack(MidiTrack track,DataOutputStream out)throws IOException{
 		int length = 0;
 		if (out != null){
@@ -41,7 +41,7 @@ public class MidiFileWriter implements MidiFileHeader{
 		}
 		return length;
 	}
-	
+
 	private static int writeEvent(MidiEvent event,MidiEvent previous,OutputStream out)throws IOException{
 		int length = writeVariableLengthQuantity(((previous != null)?(event.getTick() - previous.getTick()):0), out);
 		MidiMessage	message = event.getMessage();
@@ -51,10 +51,10 @@ public class MidiFileWriter implements MidiFileHeader{
 		else if(message.getType() == MidiMessage.TYPE_META){
 			length += writeMetaMessage(message,out);
 		}
-		
+
 		return length;
 	}
-	
+
 	private static int writeShortMessage(MidiMessage message,OutputStream out)throws IOException{
 		byte[] data = message.getData();
 		int	length = data.length;
@@ -63,7 +63,7 @@ public class MidiFileWriter implements MidiFileHeader{
 		}
 		return length;
 	}
-	
+
 	private static int writeMetaMessage(MidiMessage message,OutputStream out)throws IOException{
 		int	length = 0;
 		byte[] data = message.getData();
@@ -79,7 +79,7 @@ public class MidiFileWriter implements MidiFileHeader{
 		length += data.length;
 		return length;
 	}
-	
+
 	private static int writeVariableLengthQuantity(long value, OutputStream out)throws IOException{
 		boolean started = false;
 		int length = 0;

@@ -11,7 +11,7 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableSongInfo extends TGUndoableEditBase {
-	
+
 	private int doAction;
 	private String undoName;
 	private String undoArtist;
@@ -31,11 +31,11 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 	private String redoWriter;
 	private String redoTranscriber;
 	private String redoComments;
-	
+
 	private TGUndoableSongInfo(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -43,7 +43,7 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		this.changeInfo(actionContext, getSong(), this.redoName,this.redoArtist,this.redoAlbum,this.redoAuthor,this.redoDate,this.redoCopyright,this.redoWriter,this.redoTranscriber,this.redoComments);
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -51,15 +51,15 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		this.changeInfo(actionContext, getSong(), this.undoName,this.undoArtist,this.undoAlbum,this.undoAuthor,this.undoDate,this.undoCopyright,this.undoWriter,this.undoTranscriber,this.undoComments);
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableSongInfo startUndo(TGContext context){
 		TGSong song = getSong(context);
 		TGUndoableSongInfo undoable = new TGUndoableSongInfo(context);
@@ -72,10 +72,10 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		undoable.undoCopyright = song.getCopyright();
 		undoable.undoWriter = song.getWriter();
 		undoable.undoTranscriber = song.getTranscriber();
-		undoable.undoComments = song.getComments();		
+		undoable.undoComments = song.getComments();
 		return undoable;
 	}
-	
+
 	public TGUndoableSongInfo endUndo(){
 		TGSong song = getSong();
 		this.redoName = song.getName();
@@ -89,7 +89,7 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		this.redoComments = song.getComments();
 		return this;
 	}
-	
+
 	public void changeInfo(TGActionContext context, TGSong song, String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeInfoAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
@@ -102,7 +102,7 @@ public class TGUndoableSongInfo extends TGUndoableEditBase {
 		tgActionProcessor.setAttribute(TGChangeInfoAction.ATTRIBUTE_WRITER, writer);
 		tgActionProcessor.setAttribute(TGChangeInfoAction.ATTRIBUTE_TRANSCRIBER, transcriber);
 		tgActionProcessor.setAttribute(TGChangeInfoAction.ATTRIBUTE_COMMENTS, comments);
-		
+
 		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
 }

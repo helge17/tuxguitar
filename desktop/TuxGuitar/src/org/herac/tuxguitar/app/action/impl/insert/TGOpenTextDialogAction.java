@@ -8,13 +8,13 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenTextDialogAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.gui.open-text-dialog";
-	
+
 	public TGOpenTextDialogAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext tgActionContext){
 		tgActionContext.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGTextDialogController());
 		TGActionManager.getInstance(getContext()).execute(TGOpenViewAction.NAME, tgActionContext);

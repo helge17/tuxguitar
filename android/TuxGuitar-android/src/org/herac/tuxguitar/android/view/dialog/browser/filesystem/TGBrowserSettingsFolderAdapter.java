@@ -25,14 +25,14 @@ public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 	private TGBrowserSettingsMountPoint mountPoint;
 	private List<TGBrowserSettingsFolderAdapterItem> items;
 	private TGBrowserSettingsFolderAdapterListener listener;
-	
+
 	public TGBrowserSettingsFolderAdapter(Context context, TGBrowserSettingsMountPoint mountPoint) {
 		this.context = context;
 		this.mountPoint = mountPoint;
 		this.items = new ArrayList<TGBrowserSettingsFolderAdapterItem>();
 		this.updatePath(this.mountPoint.getPath());
 	}
-	
+
 	public File getPath() {
 		return this.path;
 	}
@@ -59,32 +59,32 @@ public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 	public LayoutInflater getLayoutInflater() {
 		return (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TGBrowserSettingsFolderAdapterItem item = this.items.get(position);
-		
+
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_browser_element, parent, false));
 		view.setTag(item);
-		
+
 		TextView textView = (TextView) view.findViewById(R.id.tg_browser_element_name);
 		textView.setText(item.getLabel());
-		
+
 		Drawable styledIcon = this.findStyledFolderIcon();
 		if( styledIcon != null ) {
 			ImageView imageView = (ImageView) view.findViewById(R.id.tg_browser_element_icon);
 			imageView.setImageDrawable(styledIcon);
 		}
-		
+
 		view.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				updatePath(((TGBrowserSettingsFolderAdapterItem) v.getTag()).getFile());
 			}
 		});
-		
+
 		return view;
 	}
-	
+
 	public Drawable findStyledFolderIcon() {
 		TypedArray typedArray = this.context.obtainStyledAttributes(R.style.browserElementIconFolderStyle, new int[] {android.R.attr.src});
 		if( typedArray != null ) {
@@ -92,31 +92,31 @@ public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 		}
 		return null;
 	}
-	
+
 	public void updatePath(File path) {
 		this.path = path;
 		this.items.clear();
 		if( this.path != null && this.path.exists() && this.path.isDirectory() ) {
-			
+
 			if( this.path.getParentFile() != null && !this.path.equals(this.mountPoint.getPath())) {
 				this.items.add(new TGBrowserSettingsFolderAdapterItem("../", this.path.getParentFile()));
 			}
-			
+
 			List<File> directoryFiles = this.getDirectoryFiles(this.path);
-			
+
 			this.sortFiles(directoryFiles);
-			
+
 			for(File file : directoryFiles) {
 				this.items.add(new TGBrowserSettingsFolderAdapterItem(file.getName(), file));
 			}
 		}
 		this.notifyDataSetChanged();
-		
+
 		if( this.listener != null ) {
 			this.listener.onPathChanged(this.path);
 		}
 	}
-	
+
 	public List<File> getDirectoryFiles(File parent) {
 		List<File> directoryFiles = new ArrayList<File>();
 		File[] files = parent.listFiles();
@@ -129,7 +129,7 @@ public class TGBrowserSettingsFolderAdapter extends BaseAdapter {
 		}
 		return directoryFiles;
 	}
-	
+
 	public void sortFiles(List<File> files) {
 		Collections.sort(files, new Comparator<File>() {
 			public int compare(File f1, File f2) {

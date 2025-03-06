@@ -16,10 +16,10 @@ public class TGUndoableTimeSignatureController implements TGUndoableActionContro
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
-		TGMeasure measure = ((TGMeasure) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));		
+		TGMeasure measure = ((TGMeasure) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 		TGTimeSignature timeSignature = ((TGTimeSignature) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TIME_SIGNATURE));
 		boolean applyToEnd = ((Boolean) actionContext.getAttribute(TGChangeTimeSignatureAction.ATTRIBUTE_APPLY_TO_END)).booleanValue();
-		
+
 		return ((TGUndoableTimeSignature) undoableEdit).endUndo(timeSignature, measure.getStart(), applyToEnd);
 	}
 }

@@ -56,7 +56,7 @@ public class ModelStandardIndexedDirector implements ModelDirector {
         }
         buildindex();
     }
-    
+
     private int[] lookupIndex(int x, int y) {
         if ((x >= 0) && (x < 128) && (y >= 0) && (y < 128)) {
             int xt = trantables[0][x];
@@ -67,7 +67,7 @@ public class ModelStandardIndexedDirector implements ModelDirector {
         }
         return null;
     }
-    
+
     private int restrict(int value) {
         if(value < 0) return 0;
         if(value > 127) return 127;

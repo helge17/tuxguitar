@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.app.system.properties;
 
 public class TGPropertiesBaseHandler {
-	
+
 	private String prefix;
 	private String suffix;
-	
+
 	public TGPropertiesBaseHandler(String prefix, String suffix) {
 		this.prefix = prefix;
 		this.suffix = suffix;
@@ -16,5 +16,5 @@ public class TGPropertiesBaseHandler {
 
 	public String getSuffix() {
 		return suffix;
-	}	
+	}
 }

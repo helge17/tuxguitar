@@ -9,17 +9,17 @@ import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTSelectionListenerManager extends UISelectionListenerManager implements SelectionListener {
-	
+
 	private SWTEventReceiver<?> control;
-	
+
 	public SWTSelectionListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
-	
+
 	public SWTEventReceiver<?> getControl() {
 		return this.control;
 	}
-	
+
 	public void widgetSelected(SelectionEvent e) {
 		if(!this.control.isIgnoreEvents()) {
 			// warning, when a SWT radio button is selected, if another radio button was selected it gets unselected and also generates an event
@@ -33,7 +33,7 @@ public class SWTSelectionListenerManager extends UISelectionListenerManager impl
 			}
 		}
 	}
-	
+
 	public void widgetDefaultSelected(SelectionEvent event) {
 		// Nothing to do
 	}

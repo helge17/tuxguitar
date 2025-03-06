@@ -1,12 +1,12 @@
 package org.herac.tuxguitar.gm.port;
 
 public class GMProgram {
-	
+
 	private Integer channel1;
 	private Integer channel2;
 	private Integer program;
 	private Integer[] controllers;
-	
+
 	public GMProgram() {
 		this.controllers = new Integer[128];
 	}
@@ -44,14 +44,14 @@ public class GMProgram {
 			this.controllers[controller] = value;
 		}
 	}
-	
+
 	public Integer getController(Integer controller) {
 		if( controller != null && controller >= 0 && controller < this.controllers.length ) {
 			return this.controllers[controller];
 		}
 		return null;
 	}
-	
+
 	public boolean isSameChannel(Integer channel1, Integer channel2) {
 		if( this.channel1 == null || this.channel2 == null || channel1 == null || channel2 == null ) {
 			return false;

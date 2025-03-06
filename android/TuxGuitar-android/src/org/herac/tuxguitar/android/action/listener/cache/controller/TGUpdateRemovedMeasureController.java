@@ -16,17 +16,17 @@ public class TGUpdateRemovedMeasureController extends TGUpdateItemsController {
 	public TGUpdateRemovedMeasureController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(final TGContext context, TGActionContext actionContext) {
 		if( Boolean.TRUE.equals( actionContext.getAttribute(TGRemoveMeasureAction.ATTRIBUTE_SUCCESS)) ) {
 			// Update caret position
 			final TGSong tgSong = (TGSong) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 			final TGSongManager tgSongManager = (TGSongManager) actionContext.getAttribute(TGSongManager.class.getName());
-			
+
 			// Update the song
 			this.findUpdateBuffer(context).requestUpdateSong();
-			
+
 			this.findUpdateBuffer(context).doPostUpdate(new Runnable() {
 				public void run() {
 					int measureCount = tgSong.countMeasureHeaders();
@@ -39,7 +39,7 @@ public class TGUpdateRemovedMeasureController extends TGUpdateItemsController {
 				}
 			});
 		}
-		
+
 		// Call super update.
 		super.update(context, actionContext);
 	}

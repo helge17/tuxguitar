@@ -37,6 +37,6 @@ all:    $(BINARY)
 
 $(BINARY):	$(OBJECTS)
 	$(CXX) $(LDFLAGS) -o $(BINARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
-	
-clean: 
+
+clean:
 	$(RM) $(OBJECTS) $(BINARY)

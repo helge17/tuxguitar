@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Group;
 import org.herac.tuxguitar.ui.widget.UILegendPanel;
 
 public class SWTLegendPanel extends SWTLayoutContainer<Group> implements UILegendPanel {
-	
+
 	public SWTLegendPanel(SWTContainer<? extends Composite> parent) {
 		super(new Group(parent.getControl(), SWT.SHADOW_ETCHED_IN), parent);
 	}

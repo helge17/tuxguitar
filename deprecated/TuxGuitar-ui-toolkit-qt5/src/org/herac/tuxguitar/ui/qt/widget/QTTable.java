@@ -22,24 +22,24 @@ import org.qtjambi.qt.widgets.QTableWidget;
 import org.qtjambi.qt.widgets.QTableWidgetItem;
 
 public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T> {
-	
+
 	private boolean checkable;
 	private List<UITableItem<T>> items;
 	private List<QTColumnName> columnNames;
 	private QTSelectionListenerManager selectionListener;
 	private QTCheckTableSelectionListenerManager<T> checkSelectionListener;
 	private QTTableDoubleClickListenerManager doubleClickListenerManager;
-	
+
 	public QTTable(QTContainer parent, boolean headerVisible, boolean checkable) {
 		super(new QTableWidget(parent.getContainerControl()), parent);
-		
+
 		this.checkable = checkable;
 		this.items = new ArrayList<UITableItem<T>>();
 		this.columnNames = new ArrayList<QTColumnName>();
 		this.selectionListener = new QTSelectionListenerManager(this);
 		this.checkSelectionListener = new QTCheckTableSelectionListenerManager<T>(this);
 		this.doubleClickListenerManager = new QTTableDoubleClickListenerManager(this);
-		
+
 		this.getControl().setShowGrid(false);
 		this.getControl().setFocusPolicy(FocusPolicy.NoFocus);
 		this.getControl().setSelectionMode(SelectionMode.SingleSelection);
@@ -47,7 +47,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		this.getControl().horizontalHeader().setVisible(headerVisible);
 		this.getControl().verticalHeader().setVisible(false);
 	}
-	
+
 	public void updateColumnNames() {
 		int columnCount = this.getColumns();
 		while(this.columnNames.size() < columnCount) {
@@ -57,27 +57,27 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			this.columnNames.remove(this.columnNames.size() - 1);
 		}
 	}
-	
+
 	public void setColumns(int count) {
 		if( count >= 0 ) {
 			this.getControl().setColumnCount(count);
 			this.updateColumnNames();
-			
+
 			for(int i = 0; i < count; i ++) {
 				//TODO: check
 				this.getControl().horizontalHeader().setSectionResizeMode(i, (i == (count - 1) ? ResizeMode.Stretch : ResizeMode.Interactive));
 			}
 		}
 	}
-	
+
 	public int getColumns() {
 		return this.getControl().columnCount();
 	}
-	
+
 	public void setColumnName(int column, String name) {
 		if( column >= 0 && column < this.columnNames.size() ) {
 			this.columnNames.get(column).setValue(name);
-			
+
 			List<String> labels = new ArrayList<String>();
 			for(QTColumnName columnName : this.columnNames) {
 				labels.add(columnName.getValue());
@@ -85,7 +85,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			this.getControl().setHorizontalHeaderLabels(labels);
 		}
 	}
-	
+
 	public String getColumnName(int column) {
 		this.updateColumnNames();
 		if( column >= 0 && column < this.columnNames.size() ) {
@@ -93,16 +93,16 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		}
 		return null;
 	}
-	
+
 	public T getSelectedValue() {
 		UITableItem<T> selectedItem = this.getSelectedItem();
 		return (selectedItem != null ? selectedItem.getValue() : null);
 	}
-	
+
 	public void setSelectedValue(T value) {
 		this.setSelectedItem(new UITableItem<T>(value));
 	}
-	
+
 	public UITableItem<T> getSelectedItem() {
 		List<QTableWidgetItem> selectedItems = this.getControl().selectedItems();
 		if( selectedItems != null ) {
@@ -128,31 +128,31 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		if(!this.items.contains(item)) {
 			this.items.add(item);
 			this.getControl().setRowCount(this.items.size());
-			
+
 			int row = this.items.indexOf(item);
 			int columns = this.getColumns();
 			for(int column = 0 ; column < columns; column ++) {
 				QTableWidgetItem qTableWidgetItem = new QTableWidgetItem();
 				qTableWidgetItem.setFlags(ItemFlag.ItemIsEnabled, ItemFlag.ItemIsSelectable, ItemFlag.ItemIsUserCheckable);
-				
+
 				String text = item.getText(column);
 				if( text != null ) {
 					qTableWidgetItem.setText(text);
 				}
-				
+
 				if( item.getImage() != null && !item.getImage().isDisposed()) {
 					qTableWidgetItem.setIcon(((QTImage) item.getImage()).createIcon());
 				}
-				
+
 				if( this.checkable && column == 0 ) {
 					qTableWidgetItem.setCheckState(CheckState.Unchecked);
 				}
-				
+
 				this.getControl().setItem(row, column, qTableWidgetItem);
 			}
 		}
 	}
-	
+
 	public void removeItem(UITableItem<T> item) {
 		int row = this.items.indexOf(item);
 		if( row >= 0 ) {
@@ -161,20 +161,20 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			this.getControl().setRowCount(this.items.size());
 		}
 	}
-	
+
 	public void removeItems() {
 		this.items.clear();
 		this.getControl().clearContents();
 		this.getControl().setRowCount(this.items.size());
 	}
-	
+
 	public UITableItem<T> getItem(int index) {
 		if( index >= 0 && index < this.getItemCount()) {
 			return this.items.get(index);
 		}
 		return null;
 	}
-	
+
 	public T getItemValue(int index) {
 		UITableItem<T> item = this.getItem(index);
 		if( item != null ) {
@@ -182,11 +182,11 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		}
 		return null;
 	}
-	
+
 	public int getItemCount() {
 		return this.items.size();
 	}
-	
+
 	public boolean isCheckedValue(T value) {
 		return this.isCheckedItem(new UITableItem<T>(value));
 	}
@@ -195,7 +195,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 		int row = this.items.indexOf(item);
 		if( row >= 0 ) {
 			QTableWidgetItem qTableWidgetItem = this.getControl().item(row, 0);
-			
+
 			return (CheckState.Checked.equals(qTableWidgetItem.checkState()));
 		}
 		return false;
@@ -212,7 +212,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			qTableWidgetItem.setCheckState(checked ? CheckState.Checked : CheckState.Unchecked);
 		}
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().itemSelectionChanged.connect(this.selectionListener, QTSelectionListenerManager.SIGNAL_METHOD);
@@ -226,7 +226,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			this.getControl().itemSelectionChanged.disconnect();
 		}
 	}
-	
+
 	public void addCheckSelectionListener(UICheckTableSelectionListener<T> listener) {
 		if( this.checkSelectionListener.isEmpty() ) {
 			this.getControl().cellChanged.connect(this.checkSelectionListener, QTCheckTableSelectionListenerManager.SIGNAL_METHOD);
@@ -240,7 +240,7 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			this.getControl().cellChanged.disconnect();
 		}
 	}
-	
+
 	public void addMouseDoubleClickListener(UIMouseDoubleClickListener listener) {
 		if( this.doubleClickListenerManager.isEmpty() ) {
 			this.getControl().itemDoubleClicked.connect(this.doubleClickListenerManager, QTTableDoubleClickListenerManager.SIGNAL_METHOD);
@@ -254,15 +254,15 @@ public class QTTable<T> extends QTWidget<QTableWidget> implements UICheckTable<T
 			this.getControl().itemDoubleClicked.disconnect();
 		}
 	}
-	
+
 	private class QTColumnName {
-		
+
 		private String value;
-		
+
 		public QTColumnName() {
 			this.value = new String();
 		}
-		
+
 		public String getValue() {
 			return value;
 		}

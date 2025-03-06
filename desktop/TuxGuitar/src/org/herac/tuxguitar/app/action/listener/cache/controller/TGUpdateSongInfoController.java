@@ -13,7 +13,7 @@ public class TGUpdateSongInfoController extends TGUpdateItemsController {
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
 		TGWindow.getInstance(context).loadTitle();
-		
+
 		super.update(context, actionContext);
 	}
 }

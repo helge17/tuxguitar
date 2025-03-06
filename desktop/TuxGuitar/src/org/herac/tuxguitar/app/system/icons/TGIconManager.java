@@ -460,11 +460,11 @@ public class TGIconManager {
 	public void onSkinChange() {
 		this.loadIcons();
 	}
-	
+
 	public UIImage getDuration(int value, boolean dotted){
 		return dotted ? getDurationDotted(value) : getDuration(value);
 	}
-	
+
 	public UIImage getDuration(int value){
 		switch(value){
 		case TGDuration.WHOLE:
@@ -652,7 +652,7 @@ public class TGIconManager {
 	public UIImage getHelpAbout() {
 		return this.helpAbout;
 	}
-	
+
 	public UIImage getGoHome() {
 		return this.goHome;
 	}
@@ -1092,11 +1092,11 @@ public class TGIconManager {
 	public UIImage getPickStrokeUp() {
 		return this.pickStrokeUp;
 	}
-	
+
 	public UIImage getPickStrokeDown() {
 		return this.pickStrokeDown;
 	}
-	
+
 	public UIImage getAltEnharmonic() {
 		return this.altEnharmonic;
 	}

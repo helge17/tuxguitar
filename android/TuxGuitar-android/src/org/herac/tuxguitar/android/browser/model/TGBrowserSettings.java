@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.android.browser.model;
 
 public class TGBrowserSettings {
-	
+
 	private String title;
 	private String data;
-	
+
 	public TGBrowserSettings() {
 		super();
 	}

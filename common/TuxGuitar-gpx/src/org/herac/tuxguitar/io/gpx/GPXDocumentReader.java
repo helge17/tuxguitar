@@ -20,20 +20,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class GPXDocumentReader {
-	
+
 	public static final Integer GP6 = 6;
 	public static final Integer GP7 = 7;
-	
+
 	private Integer version;
 	private Document xmlDocument;
 	private GPXDocument gpxDocument;
-	
+
 	public GPXDocumentReader(InputStream stream, Integer version) throws GPXFormatException {
 		this.version = version;
 		this.xmlDocument = getDocument(stream);
 		this.gpxDocument = new GPXDocument();
 	}
-	
+
 	private Document getDocument(InputStream stream) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		// CVE-2020-14940
@@ -42,14 +42,14 @@ public class GPXDocumentReader {
 			factory.setXIncludeAware(false);
 		} catch (Throwable throwable) {
 		}
-		
+
 		try {
 			return factory.newDocumentBuilder().parse(stream);
 		} catch (Throwable throwable) {
 			throw new GPXFormatException("Invalid file format", throwable);
 		}
 	}
-	
+
 	public GPXDocument read() {
 		if( this.xmlDocument != null ) {
 			this.readScore();
@@ -64,7 +64,7 @@ public class GPXDocumentReader {
 		}
 		return this.gpxDocument;
 	}
-	
+
 	public void readScore(){
 		if( this.xmlDocument != null ){
 			Node scoreNode = getChildNode(this.xmlDocument.getFirstChild(), "Score");
@@ -83,7 +83,7 @@ public class GPXDocumentReader {
 			}
 		}
 	}
-	
+
 	public void readAutomations(){
 		if( this.xmlDocument != null ){
 			Node masterTrackNode = getChildNode(this.xmlDocument.getFirstChild(), "MasterTrack");
@@ -99,14 +99,14 @@ public class GPXDocumentReader {
 						automation.setLinear( getChildNodeBooleanContent(automationNode, "Linear"));
 						automation.setPosition( getChildNodeIntegerContent(automationNode, "Position"));
 						automation.setVisible( getChildNodeBooleanContent(automationNode, "Visible"));
-						
+
 						this.gpxDocument.getAutomations().add( automation );
 					}
 				}
 			}
 		}
 	}
-	
+
 	public void readTracks(){
 		if( this.xmlDocument != null ){
 			NodeList trackNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "Tracks");
@@ -117,7 +117,7 @@ public class GPXDocumentReader {
 					track.setId( getAttributeIntegerValue(trackNode, "id") );
 					track.setName(getChildNodeContent(trackNode, "Name" ));
 					track.setColor(getChildNodeIntegerContentArray(trackNode, "Color"));
-					
+
 					if( this.version == GP6 ) {
 						Node gmNode = getChildNode(trackNode, "GeneralMidi");
 						if( gmNode != null ){
@@ -166,10 +166,10 @@ public class GPXDocumentReader {
 								track.setGmChannel1(this.getFreeGmChannel(null));
 								track.setGmChannel2(this.getFreeGmChannel(track));
 							}
-							
+
 						}
 					}
-					
+
 					NodeList propertiesNode = null;
 					if( this.version == GP6 ) {
 						propertiesNode = getChildNodeList(trackNode, "Properties");
@@ -182,30 +182,30 @@ public class GPXDocumentReader {
 							}
 						}
 					}
-					
+
 					if( propertiesNode != null ){
 						for( int p = 0 ; p < propertiesNode.getLength() ; p ++ ){
 							Node propertyNode = propertiesNode.item( p );
-							if (propertyNode.getNodeName().equals("Property") ){ 
+							if (propertyNode.getNodeName().equals("Property") ){
 								if( getAttributeValue(propertyNode, "name").equals("Tuning") ){
 									track.setTuningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
 								}
 							}
 						}
 					}
-					
+
 					this.gpxDocument.getTracks().add( track );
 					this.readChords(propertiesNode);
 				}
 			}
 		}
 	}
-	
+
 	public void readChords(NodeList propertiesNode) {
 		if( propertiesNode != null ){
 			for( int p = 0 ; p < propertiesNode.getLength() ; p ++ ){
 				Node propertyNode = propertiesNode.item( p );
-				if (propertyNode.getNodeName().equals("Property") ){ 
+				if (propertyNode.getNodeName().equals("Property") ){
 					if( getAttributeValue(propertyNode, "name").equals("DiagramCollection") ) {
 						NodeList itemsNode = getChildNodeList(propertyNode, "Items");
 						if( itemsNode != null ) {
@@ -216,7 +216,7 @@ public class GPXDocumentReader {
 									NodeList fretsNode = getChildNodeList(itemNode, "Diagram");
 									if( diagramNode != null && fretsNode != null ) {
 										GPXChord chord = new GPXChord();
-										
+
 										chord.setId(getAttributeIntegerValue(itemNode, "id"));
 										chord.setName(getAttributeValue(itemNode, "name"));
 										chord.setStringCount(getAttributeIntegerValue(diagramNode, "stringCount"));
@@ -244,7 +244,7 @@ public class GPXDocumentReader {
 			}
 		}
 	}
-	
+
 	public void readMasterBars(){
 		if( this.xmlDocument != null ){
 			NodeList masterBarNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "MasterBars");
@@ -255,7 +255,7 @@ public class GPXDocumentReader {
 					masterBar.setBarIds( getChildNodeIntegerContentArray(masterBarNode, "Bars"));
 					masterBar.setTime( getChildNodeIntegerContentArray(masterBarNode, "Time", "/"));
 					masterBar.setTripletFeel(getChildNodeContent(masterBarNode, "TripletFeel"));
-					
+
 					Node repeatNode = getChildNode(masterBarNode, "Repeat");
 					if( repeatNode != null ){
 						masterBar.setRepeatStart(getAttributeBooleanValue(repeatNode, "start"));
@@ -263,11 +263,11 @@ public class GPXDocumentReader {
 							masterBar.setRepeatCount( getAttributeIntegerValue(repeatNode, "count") - 1);
 						}
 					}
-					
+
 					Node keyNode = getChildNode(masterBarNode, "Key");
 					if (keyNode != null) {
-						masterBar.setAccidentalCount(this.getChildNodeIntegerContent(keyNode, "AccidentalCount") ); 
-						masterBar.setMode(this.getChildNodeContent(keyNode, "Mode") ); 
+						masterBar.setAccidentalCount(this.getChildNodeIntegerContent(keyNode, "AccidentalCount") );
+						masterBar.setMode(this.getChildNodeContent(keyNode, "Mode") );
 					}
 
 					masterBar.setAlternateEndings(getChildNodeIntegerContentArray(masterBarNode, "AlternateEndings"));
@@ -281,7 +281,7 @@ public class GPXDocumentReader {
 			}
 		}
 	}
-	
+
 	public void readBars(){
 		if( this.xmlDocument != null ){
 			NodeList barNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "Bars");
@@ -293,13 +293,13 @@ public class GPXDocumentReader {
 					bar.setVoiceIds( getChildNodeIntegerContentArray(barNode, "Voices"));
 					bar.setClef(getChildNodeContent(barNode, "Clef"));
 					bar.setSimileMark(getChildNodeContent(barNode,"SimileMark"));
-					
+
 					this.gpxDocument.getBars().add( bar );
 				}
 			}
 		}
 	}
-	
+
 	public void readVoices(){
 		if( this.xmlDocument != null ){
 			NodeList voiceNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "Voices");
@@ -309,13 +309,13 @@ public class GPXDocumentReader {
 					GPXVoice voice = new GPXVoice();
 					voice.setId(getAttributeIntegerValue(voiceNode, "id"));
 					voice.setBeatIds( getChildNodeIntegerContentArray(voiceNode, "Beats"));
-					
+
 					this.gpxDocument.getVoices().add( voice );
 				}
 			}
 		}
 	}
-	
+
 	public void readBeats(){
 		if( this.xmlDocument != null ){
 			NodeList beatNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "Beats");
@@ -334,17 +334,17 @@ public class GPXDocumentReader {
 					beat.setNoteIds( getChildNodeIntegerContentArray(beatNode, "Notes"));
 					beat.setChordId( getChildNodeIntegerContent(beatNode, "Chord", null));
 					beat.setFadding( getChildNodeContent(beatNode, "Fadding"));
-					
+
 					NodeList propertyNodes = getChildNodeList(beatNode, "Properties");
 					if( propertyNodes != null ){
 						for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
 							Node propertyNode = propertyNodes.item( p );
-							if (propertyNode.getNodeName().equals("Property") ){ 
+							if (propertyNode.getNodeName().equals("Property") ){
 								String propertyName = getAttributeValue(propertyNode, "name");
 								if( propertyName.equals("PickStroke") ){
 									beat.setPickStroke( getChildNodeContent(propertyNode, "Direction") );
 								}
-								
+
 								if( propertyName.equals("WhammyBar") ){
 									beat.setWhammyBarEnabled( getChildNode(propertyNode, "Enable") != null );
 								}
@@ -375,13 +375,13 @@ public class GPXDocumentReader {
 							}
 						}
 					}
-					
+
 					this.gpxDocument.getBeats().add( beat );
 				}
 			}
 		}
 	}
-	
+
 	public void readNotes(){
 		if( this.xmlDocument != null ){
 			NodeList noteNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "Notes");
@@ -390,25 +390,25 @@ public class GPXDocumentReader {
 				if( noteNode.getNodeName().equals("Note") ){
 					GPXNote note = new GPXNote();
 					note.setId( getAttributeIntegerValue(noteNode, "id") );
-					
+
 					Node tieNode = getChildNode(noteNode, "Tie");
 					note.setTieDestination( tieNode != null ? getAttributeValue(tieNode, "destination").equals("true") : false);
-					
+
 					String ghostNodeContent = getChildNodeContent(noteNode, "AntiAccent");
 					if( ghostNodeContent != null ){
 						note.setGhost(ghostNodeContent.equals("Normal"));
 					}
-					
+
 					note.setAccent(getChildNodeIntegerContent(noteNode, "Accent"));
 					note.setTrill(getChildNodeIntegerContent(noteNode, "Trill"));
 
 					note.setVibrato( getChildNode(noteNode, "Vibrato") != null );
-					
+
 					NodeList propertyNodes = getChildNodeList(noteNode, "Properties");
 					if( propertyNodes != null ){
 						for( int p = 0 ; p < propertyNodes.getLength() ; p ++ ){
 							Node propertyNode = propertyNodes.item( p );
-							if (propertyNode.getNodeName().equals("Property") ){ 
+							if (propertyNode.getNodeName().equals("Property") ){
 								String propertyName = getAttributeValue(propertyNode, "name");
 								if( propertyName.equals("String") ){
 									note.setString( getChildNodeIntegerContent(propertyNode, "String") );
@@ -483,13 +483,13 @@ public class GPXDocumentReader {
 							}
 						}
 					}
-					
+
 					this.gpxDocument.getNotes().add( note );
 				}
 			}
 		}
 	}
-	
+
 	public void readRhythms(){
 		if( this.xmlDocument != null ){
 			NodeList rhythmNodes = getChildNodeList(this.xmlDocument.getFirstChild(), "Rhythms");
@@ -498,35 +498,35 @@ public class GPXDocumentReader {
 				if( rhythmNode.getNodeName().equals("Rhythm") ){
 					Node primaryTupletNode = getChildNode(rhythmNode, "PrimaryTuplet");
 					Node augmentationDotNode = getChildNode(rhythmNode, "AugmentationDot");
-					
+
 					GPXRhythm rhythm = new GPXRhythm();
 					rhythm.setId( getAttributeIntegerValue(rhythmNode, "id") );
 					rhythm.setNoteValue(getChildNodeContent(rhythmNode, "NoteValue") );
 					rhythm.setPrimaryTupletDen(primaryTupletNode != null ? getAttributeIntegerValue(primaryTupletNode, "den") : 1);
 					rhythm.setPrimaryTupletNum(primaryTupletNode != null ? getAttributeIntegerValue(primaryTupletNode, "num") : 1);
 					rhythm.setAugmentationDotCount(augmentationDotNode != null ? getAttributeIntegerValue(augmentationDotNode, "count") : 0);
-					
+
 					this.gpxDocument.getRhythms().add( rhythm );
 				}
 			}
 		}
 	}
-	
+
 	private String getAttributeValue(Node node, String attribute ){
 		if( node != null ){
 			return node.getAttributes().getNamedItem( attribute ).getNodeValue();
 		}
 		return null;
 	}
-	
+
 	private int getAttributeIntegerValue(Node node, String attribute ){
 		try {
 			return new BigDecimal(this.getAttributeValue(node, attribute)).intValue();
-		} catch( Throwable throwable ){ 
+		} catch( Throwable throwable ){
 			return 0;
 		}
 	}
-	
+
 	private boolean getAttributeBooleanValue(Node node, String attribute ){
 		String value = this.getAttributeValue(node, attribute);
 		if( value != null ){
@@ -534,7 +534,7 @@ public class GPXDocumentReader {
 		}
 		return false;
 	}
-	
+
 	private Node getChildNode(Node node, String name ){
 		NodeList childNodes = node.getChildNodes();
 		for( int i = 0 ; i < childNodes.getLength() ; i ++ ){
@@ -545,7 +545,7 @@ public class GPXDocumentReader {
 		}
 		return null;
 	}
-	
+
 	private NodeList getChildNodeList(Node node, String name ){
 		Node childNode = getChildNode(node, name);
 		if( childNode != null ){
@@ -553,7 +553,7 @@ public class GPXDocumentReader {
 		}
 		return null;
 	}
-	
+
 	private String getChildNodeContent(Node node, String name ){
 		Node childNode = getChildNode(node, name);
 		if( childNode != null ){
@@ -561,7 +561,7 @@ public class GPXDocumentReader {
 		}
 		return null;
 	}
-	
+
 	private boolean getChildNodeBooleanContent(Node node, String name ){
 		String value = this.getChildNodeContent(node, name);
 		if( value != null ){
@@ -569,11 +569,11 @@ public class GPXDocumentReader {
 		}
 		return false;
 	}
-	
+
 	private int getChildNodeIntegerContent(Node node, String name){
 		return this.getChildNodeIntegerContent(node, name, 0);
 	}
-	
+
 	private Integer getChildNodeIntegerContent(Node node, String name, Integer defaultValue){
 		try {
 			return new BigDecimal(this.getChildNodeContent(node, name)).intValue();
@@ -581,7 +581,7 @@ public class GPXDocumentReader {
 			return defaultValue;
 		}
 	}
-	
+
 	private int[] getChildNodeIntegerContentArray(Node node, String name , String regex){
 		String rawContents = this.getChildNodeContent(node, name);
 		if( rawContents != null ){
@@ -598,7 +598,7 @@ public class GPXDocumentReader {
 		}
 		return null;
 	}
-	
+
 	private int[] getChildNodeIntegerContentArray(Node node, String name ){
 		return getChildNodeIntegerContentArray(node, name, (" ") );
 	}

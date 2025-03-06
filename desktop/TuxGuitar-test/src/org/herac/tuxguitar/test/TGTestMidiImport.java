@@ -16,14 +16,14 @@ import org.herac.tuxguitar.song.models.TGNote;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TGTestMidiImport extends TGTest {
-	
+
 	@BeforeEach
 	void setupTest() {
 		verbose=false;
 		doCloseAllSongsWithoutConfirmationChecked();
 		verbose=true;
 	}
-	
+
 	// see https://github.com/helge17/tuxguitar/issues/150
 	// take care, access to configuration file for tunings definition is required for this test to succeed
 	// add in run configuration the VM parameter: "-Dtuxguitar.share.path="(path to built version of tuxguitar)/share/"
@@ -65,8 +65,8 @@ public class TGTestMidiImport extends TGTest {
 				i++;
 			}
 		}
-		
-		
+
+
 	}
-	
+
 }

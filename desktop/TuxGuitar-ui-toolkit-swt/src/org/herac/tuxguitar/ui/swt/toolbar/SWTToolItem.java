@@ -6,17 +6,17 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.toolbar.UIToolItem;
 
 public class SWTToolItem extends SWTToolControl<ToolItem> implements UIToolItem {
-	
+
 	private UIImage image;
-	
+
 	public SWTToolItem(ToolItem item, SWTToolBar parent) {
 		super(item, parent);
 	}
-	
+
 	public void dispose() {
 		this.getParent().dispose(this);
 	}
-	
+
 	public void disposeControl() {
 		this.getControl().dispose();
 	}
@@ -48,11 +48,11 @@ public class SWTToolItem extends SWTToolControl<ToolItem> implements UIToolItem 
 	public void setToolTipText(String text) {
 		this.getControl().setToolTipText(text);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
-	
+
 	public void setImage(UIImage image) {
 		this.image = image;
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);

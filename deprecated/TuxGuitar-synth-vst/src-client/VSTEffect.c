@@ -9,7 +9,7 @@ void VSTEffect_malloc(VSTEffectHandle **handle, VSTPluginHandle *plugin)
 		(*handle) = (VSTEffectHandle *) malloc( sizeof(VSTEffectHandle) );
 		(*handle)->effect = NULL;
 		(*handle)->ui = NULL;
-		
+
 		VSTPluginMain( &(plugin->library) , &((*handle)->effect) , VSTPluginCallback );
 		if( (*handle)->effect != NULL && (*handle)->effect->magic != kEffectMagic) {
 			(*handle)->effect = NULL;
@@ -26,7 +26,7 @@ void VSTEffect_delete(VSTEffectHandle **handle)
 			(*handle)->effect = NULL;
 		}
 		free ( (*handle) );
-		
+
 		(*handle) = NULL;
 	}
 }
@@ -137,7 +137,7 @@ void VSTEffect_setParameter(VSTEffectHandle *handle, int index, float value)
 	if( handle != NULL && handle->effect != NULL) {
 		int vstVersion = handle->effect->dispatcher (handle->effect, effGetVstVersion, 0, 0, NULL, 0);
 		if( vstVersion == 0 || handle->effect->dispatcher(handle->effect, effCanBeAutomated, 0, index, NULL, 0.0) > 0 ) {
-			
+
 			handle->effect->setParameter(handle->effect, index, value);
 		}
 	}
@@ -224,9 +224,9 @@ void VSTEffect_sendMessages(VSTEffectHandle *handle, unsigned char** messages, i
 			((VstMidiEvent *)midi_events->events[i])->midiData[2] = messages[i][3];
 			((VstMidiEvent *)midi_events->events[i])->midiData[3] = 0;
 		}
-		
+
 		handle->effect->dispatcher (handle->effect, effProcessEvents, 0, 0, midi_events, 0);
-		
+
 		delete midi_events;
 	}
 }

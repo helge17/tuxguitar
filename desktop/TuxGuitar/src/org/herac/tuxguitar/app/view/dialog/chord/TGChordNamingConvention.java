@@ -5,7 +5,7 @@ package org.herac.tuxguitar.app.view.dialog.chord;
  * @author Nikola Kolarovic
  */
 public class TGChordNamingConvention {
-	
+
 	/** generates the chord name out of selected items */
 	public String createChordName(int chordTonic,
 	                              int chordIndex,
@@ -17,26 +17,26 @@ public class TGChordNamingConvention {
 	                              int add11,
 	                              int bassTonic,
 	                              boolean sharp) {
-		
+
 		StringBuffer sb = new StringBuffer();
-		
+
 		sb.append(getTonic(chordTonic,sharp));
-		
+
 		//String chordName = ((ChordInfo)ChordCreatorUtil.getChordData().getChords().get(chordIndex)).getName();
 		String chordName = TGChordDatabase.get(chordIndex).getName();
 		if (!chordName.equals("M"))
 			sb.append(chordName);
-		
+
 		if (add)
 			sb.append("add");
-		
+
 		// TODO: ALTERATION
 		if (alteration!=0) {
 			char lastChar = sb.toString().charAt(sb.toString().length()-1);
 			// if chord name ends with a number then add a backslash
 			if (lastChar>='0' && lastChar <='9')
 				sb.append("/");
-			
+
 			switch (alteration) {
 				case 1 : sb.append( getAdd("9",plusMinus));
 					break;
@@ -45,23 +45,23 @@ public class TGChordNamingConvention {
 				case 3 : sb.append( getAdd("13",plusMinus));
 					break;
 			}
-			
+
 		}
-		
+
 		if (add5!=0)
 			sb.append("/").append(getAdd("5",add5));
 		if (add9!=0)
 			sb.append("/").append(getAdd("9",add9));
 		if (add11!=0)
 			sb.append("/").append(getAdd("11",add11));
-		
+
 		if (chordTonic!=bassTonic) {
 			sb.append(" \\");
 			sb.append(getTonic(bassTonic,sharp));
 		}
 		return sb.toString();
 	}
-	
+
 	/** tonic marks */
 	public String getTonic(int chordTonic, boolean sharp) {
 		String retVal;
@@ -81,7 +81,7 @@ public class TGChordNamingConvention {
 		}
 		return retVal;
 	}
-	
+
 	/** adds + or - to an add chord String */
 	private String getAdd(String number, int selectionIndex) {
 		StringBuffer retVal=new StringBuffer(number);

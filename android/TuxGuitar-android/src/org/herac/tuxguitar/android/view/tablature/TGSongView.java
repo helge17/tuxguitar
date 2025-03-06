@@ -23,14 +23,14 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class TGSongView extends View {
-	
+
 	private TGContext context;
 	private TGSongViewController controller;
 	private TGSongViewGestureDetector gestureDetector;
-	
+
 	private Bitmap bufferedBitmap;
 	private boolean painting;
-	
+
 	public TGSongView(Context context) {
 		super(context);
 	}
@@ -42,7 +42,7 @@ public class TGSongView extends View {
 	public TGSongView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
+
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
@@ -58,20 +58,20 @@ public class TGSongView extends View {
 	public float getDefaultScale() {
 		return this.getResources().getDisplayMetrics().density;
 	}
-	
+
 	public float getMinimumScale() {
 		return (this.getDefaultScale() / 2f);
 	}
-	
+
 	public float getMaximumScale() {
 		return (this.getDefaultScale() * 2f);
 	}
-	
+
 	public void redraw() {
 		this.setPainting(true);
 		this.postInvalidate();
 	}
-	
+
 	public void paintBuffer(Canvas canvas) {
 		try {
 			UIRectangle area = createClientArea(canvas);
@@ -179,9 +179,9 @@ public class TGSongView extends View {
 				if (editor.tryLock()) {
 					try {
 						this.setPainting(true);
-		
+
 						this.paintBuffer(canvas);
-		
+
 						this.setPainting(false);
 					} finally {
 						editor.unlock();
@@ -191,7 +191,7 @@ public class TGSongView extends View {
 					this.postInvalidate();
 				}
 			}
-			
+
 			if (this.bufferedBitmap != null) {
 				canvas.drawBitmap(this.bufferedBitmap, 0, 0, null);
 			}
@@ -199,17 +199,17 @@ public class TGSongView extends View {
 			this.handleError(throwable);
 		}
 	}
-	
+
 	public boolean onTouchEvent(MotionEvent event) {
 		this.gestureDetector.processTouchEvent(event);
 		this.redraw();
-		
+
 		return true;
 	}
-	
+
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		
+
 		this.controller.getCaret().setChanges(true);
 		this.controller.resetScroll();
 		this.redraw();
@@ -217,11 +217,11 @@ public class TGSongView extends View {
 
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
-		
+
 		this.recycleBuffer();
 		this.controller.getLayoutPainter().dispose();
 	}
-	
+
 	public UIPainter createPainter(Canvas canvas) {
 		return new TGPainterImpl(canvas);
 	}
@@ -240,7 +240,7 @@ public class TGSongView extends View {
 			this.bufferedBitmap = null;
 		}
 	}
-	
+
 	public UIRectangle createClientArea(Canvas canvas) {
 		Rect rect = canvas.getClipBounds();
 		return new UIRectangle(rect.left, rect.top, rect.right, rect.bottom);
@@ -249,7 +249,7 @@ public class TGSongView extends View {
 	public void handleError(Throwable throwable) {
 		TGErrorManager.getInstance(this.context).handleError(new TGException(throwable));
 	}
-	
+
 	public int getPaintableScrollX() {
 		if (this.controller.getScroll().getX().isEnabled()) {
 			return Math.round(this.controller.getScroll().getX().getValue());
@@ -263,11 +263,11 @@ public class TGSongView extends View {
 		}
 		return 0;
 	}
-	
+
 	public TGSongViewController getController() {
 		return controller;
 	}
-	
+
 	public boolean isPainting() {
 		return this.painting;
 	}

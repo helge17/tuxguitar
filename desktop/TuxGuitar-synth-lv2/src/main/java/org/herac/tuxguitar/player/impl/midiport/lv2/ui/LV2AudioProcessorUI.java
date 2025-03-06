@@ -12,20 +12,20 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGAudioProcessorUI {
-	
+
 	private TGContext context;
 	private LV2PluginValidator validator;
 	private LV2AudioProcessorWrapper processor;
 	private LV2AudioProcessorDialog dialog;
 	private TGAudioProcessorUICallback callback;
-	
+
 	public LV2AudioProcessorUI(TGContext context, LV2AudioProcessorWrapper processor, LV2PluginValidator validator, TGAudioProcessorUICallback callback) {
 		this.context = context;
 		this.processor = processor;
 		this.validator = validator;
 		this.callback = callback;
 	}
-	
+
 	public String getLabel() {
 		String lv2Plugin = null;
 		if( this.processor.getTarget() != null && this.processor.getTarget().isOpen() ) {
@@ -51,7 +51,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 			if( this.processor.getTarget().getInstance().isUIAvailable() ) {
 				this.processor.getTarget().getInstance().openUI();
 				this.processor.getTarget().setUpdateCallback(this);
-			} 
+			}
 			else {
 	 			if( this.dialog == null ) {
 					this.dialog = new LV2AudioProcessorDialog(this.context, this.processor.getTarget(), this.callback);
@@ -62,7 +62,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 			this.choosePlugin(parent);
 		}
 	}
-	
+
 	public void close() {
 		if( this.processor.getTarget() != null && this.processor.getTarget().isOpen() ) {
 			if( this.processor.getTarget().getInstance().isUIAvailable() ) {
@@ -76,7 +76,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 			}
 		}
 	}
-	
+
 	public void focus() {
 		if( this.processor.getTarget() != null && this.processor.getTarget().isOpen() ) {
 			if( this.processor.getTarget().getInstance().isUIAvailable() ) {
@@ -89,7 +89,7 @@ public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGA
 			}
 		}
 	}
-	
+
 	public void choosePlugin(final UIWindow parent) {
 		LV2AudioProcessorChooser lv2AudioProcessorChooser = new LV2AudioProcessorChooser(this.context, this.processor.getWorld());
 		lv2AudioProcessorChooser.choose(parent, this.validator, new LV2AudioProcessorChooser.LV2AudioProcessorChooserHandler() {

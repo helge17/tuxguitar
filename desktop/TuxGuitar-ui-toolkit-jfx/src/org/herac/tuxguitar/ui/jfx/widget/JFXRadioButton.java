@@ -12,14 +12,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
 public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioButton {
-	
+
 	private JFXSelectionListenerChangeManager<Boolean> selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public JFXRadioButton(JFXContainer<? extends Region> parent) {
 		super(new RadioButton(), parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerChangeManager<Boolean>(this);
 		this.getControl().setToggleGroup(this.findToggleGroup());
 	}
@@ -31,7 +31,7 @@ public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioBu
 	public void setText(String text) {
 		this.getControl().setText(text);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
@@ -40,7 +40,7 @@ public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioBu
 		this.image = image;
 		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXImage) this.image).getHandle()) : null);
 	}
-	
+
 	public boolean isSelected() {
 		return this.getControl().isSelected();
 	}
@@ -56,12 +56,12 @@ public class JFXRadioButton extends JFXControl<RadioButton> implements UIRadioBu
 				return toggleGroup;
 			}
 			this.getParent().setData(ToggleGroup.class.getName(), new ToggleGroup());
-			
+
 			return this.findToggleGroup();
 		}
 		return null;
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().selectedProperty().addListener(this.selectionListener);

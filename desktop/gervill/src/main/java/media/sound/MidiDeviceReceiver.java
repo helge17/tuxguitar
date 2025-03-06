@@ -28,7 +28,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Receiver;
 
 /**
- * A Receiver with reference to it's MidiDevice object. 
+ * A Receiver with reference to it's MidiDevice object.
  *
  * @author Karl Helgason
  */

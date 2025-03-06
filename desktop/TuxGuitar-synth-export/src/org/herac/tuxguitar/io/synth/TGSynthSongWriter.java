@@ -28,30 +28,30 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthSongWriter implements TGSongWriter {
-	
+
 	public static final TGFileFormat FILE_FORMAT = new TGSynthAudioFormat();
-	
+
 	private TGContext context;
-	
+
 	public TGSynthSongWriter(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public TGFileFormat getFileFormat() {
 		return FILE_FORMAT;
 	}
-	
+
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try{
 			TGSynthAudioSettings settings = handle.getContext().getAttribute(TGSynthAudioSettings.class.getName());
 			if( settings == null ) {
 				settings = new TGSynthAudioSettings();
 			}
-			
+
 			OutputStream out = handle.getOutputStream();
 			TGSong tgSong = handle.getSong();
 			TGSongManager tgSongManager = new TGSongManager();
-			
+
 			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSong, tgSongManager, MidiSequenceParser.DEFAULT_EXPORT_FLAGS | MidiSequenceParser.ADD_BANK_SELECT);
 			TGSynthSequenceHandler midiSequenceHandler = new TGSynthSequenceHandler(tgSong.countTracks());
 			midiSequenceParser.parse(midiSequenceHandler);
@@ -60,14 +60,14 @@ public class TGSynthSongWriter implements TGSongWriter {
 				TGAudioBufferProcessor audioProcessor = new TGAudioBufferProcessor(synthModel);
 				ByteArrayOutputStream audioBuffer = new ByteArrayOutputStream();
 				TGSynthSequencer sequence = new TGSynthSequencer(synthModel, midiSequenceHandler.getEvents());
-				
+
 				this.loadSynthPrograms(synthModel, tgSong);
-				
+
 				sequence.start();
 				long duration = 0;
 				while(!sequence.isEnded()) {
 					sequence.dispatchEvents();
-					
+
 					audioProcessor.process();
 					audioBuffer.write(audioProcessor.getBuffer().getBuffer(), 0, audioProcessor.getBuffer().getLength());
 					duration += audioProcessor.getBuffer().getLength();
@@ -83,11 +83,11 @@ public class TGSynthSongWriter implements TGSongWriter {
 			throw new TGFileFormatException(throwable);
 		}
 	}
-	
+
 	private void loadSynthPrograms(TGSynthModel tgSynthModel, TGSong tgSong) throws MidiPlayerException {
 		TGSynthSettings tgSynthSettings = new TGSynthSettings(this.context);
 		tgSynthSettings.loadPrograms(tgSynthModel);
-		
+
 		// Add channels
 		Iterator<TGChannel> tgChannels = tgSong.getChannels();
 		while( tgChannels.hasNext() ){
@@ -96,13 +96,13 @@ public class TGSynthSongWriter implements TGSongWriter {
 				MidiChannel midiChannel = tgSynthModel.openChannel(tgChannel.getChannelId());
 				// send parameters
 				midiChannel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
-				
+
 				Iterator<TGChannelParameter> parameters = tgChannel.getParameters();
 				while( parameters.hasNext() ){
 					TGChannelParameter parameter = (TGChannelParameter) parameters.next();
 					midiChannel.sendParameter(parameter.getKey(), parameter.getValue());
 				}
-				
+
 				midiChannel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
 			}
 		}

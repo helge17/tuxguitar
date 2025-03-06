@@ -36,35 +36,35 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<Pane>, UIToolCustomItem {
-	
+
 	private Map<String, String> attributeNames;
 	private JFXNode<? extends Node> control;
-	
+
 	public JFXToolCustomItem(JFXToolBar parent) {
 		super(new Pane(), parent);
-		
+
 		this.attributeNames = new HashMap<String, String>();
 		this.attributeNames.put(UIToolCustomItem.FILL, parent.getFillAttributeName());
 		this.attributeNames.put(UIToolCustomItem.PACKED_WIDTH, parent.getPackedWidthAttributeName());
 		this.attributeNames.put(UIToolCustomItem.MINIMUM_PACKED_WIDTH, parent.getMinimumPackedWidthAttributeName());
 		this.attributeNames.put(UIToolCustomItem.MAXIMUM_PACKED_WIDTH, parent.getMaximumPackedWidthAttributeName());
-		
+
 		this.setLayoutAttribute(UITableLayout.ALIGN_X, UITableLayout.ALIGN_FILL);
 		this.setLayoutAttribute(UITableLayout.ALIGN_Y, UITableLayout.ALIGN_FILL);
 		this.getControl().setFocusTraversable(false);
 	}
-	
+
 	public <T extends Object> void setLayoutAttribute(String key, T value) {
 		JFXToolBar jfxToolBar = (JFXToolBar) this.getParent();
 		jfxToolBar.getLayout().set(this, (this.attributeNames.containsKey(key) ? this.attributeNames.get(key) : key), value);
 	}
-	
+
 	public <T extends Object> T getLayoutAttribute(String key){
 		JFXToolBar jfxToolBar = (JFXToolBar) this.getParent();
-		
+
 		return jfxToolBar.getLayout().get(this, (this.attributeNames.containsKey(key) ? this.attributeNames.get(key) : key));
 	}
-	
+
 	public void addChild(JFXNode<? extends Node> uiControl) {
 		if( this.control != null ) {
 			this.removeChild(this.control);
@@ -72,12 +72,12 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 		this.control = uiControl;
 		this.getControl().getChildren().add(uiControl.getControl());
 	}
-	
+
 	public void removeChild(JFXNode<? extends Node> uiControl) {
 		this.getControl().getChildren().remove(uiControl.getControl());
 		this.control = null;
 	}
-	
+
 	public List<UIControl> getChildren() {
 		List<UIControl> children = new ArrayList<UIControl>();
 		if( this.control != null ) {
@@ -85,12 +85,12 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 		}
 		return children;
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
 			this.control.computePackedSize(fixedWidth, fixedHeight);
-			
+
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
@@ -102,10 +102,10 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 		}
 		this.setPackedSize(packedSize);
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		super.setBounds(bounds);
-		
+
 		if( this.control != null ) {
 			this.control.setBounds(new UIRectangle(bounds.getSize()));
 		}
@@ -136,39 +136,39 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.setFgColor(color);
 		}
 	}
-	
+
 	public UIFont getFont() {
 		if( this.control != null ) {
 			return this.control.getFont();
 		}
 		return null;
 	}
-	
+
 	public void setFont(UIFont font) {
 		if( this.control != null ) {
 			this.control.setFont(font);
 		}
 	}
-	
+
 	public UICursor getCursor() {
 		if( this.control != null ) {
 			return this.control.getCursor();
 		}
 		return null;
 	}
-	
+
 	public void setCursor(UICursor cursor) {
 		if( this.control != null ) {
 			this.control.setCursor(cursor);
 		}
 	}
-	
+
 	public void setFocus() {
 		if( this.control != null ) {
 			this.control.setFocus();
 		}
 	}
-	
+
 	public void redraw() {
 		if( this.control != null ) {
 			this.control.redraw();
@@ -187,28 +187,28 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.setPopupMenu(menu);
 		}
 	}
-	
+
 	public <Data> Data getData(String key) {
 		if( this.control != null ) {
 			this.control.getData(key);
 		}
 		return null;
 	}
-	
+
 	public <Data> void setData(String key, Data data) {
 		if( this.control != null ) {
 			this.control.setData(key, data);
 		}
 	}
-	
+
 	public void dispose() {
 		if( this.control != null ) {
 			this.control.dispose();
 		}
-		
+
 		super.dispose();
 	}
-	
+
 	public void addDisposeListener(UIDisposeListener listener) {
 		if( this.control != null ) {
 			this.control.addDisposeListener(listener);
@@ -220,7 +220,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeDisposeListener(listener);
 		}
 	}
-	
+
 	public void addResizeListener(UIResizeListener listener) {
 		if( this.control != null ) {
 			this.control.addResizeListener(listener);
@@ -232,7 +232,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeResizeListener(listener);
 		}
 	}
-	
+
 	public void addMouseUpListener(UIMouseUpListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseUpListener(listener);
@@ -292,7 +292,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeMouseDragListener(listener);
 		}
 	}
-	
+
 	public void addMouseWheelListener(UIMouseWheelListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseWheelListener(listener);
@@ -304,7 +304,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeMouseWheelListener(listener);
 		}
 	}
-	
+
 	public void addMouseEnterListener(UIMouseEnterListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseEnterListener(listener);
@@ -316,7 +316,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeMouseEnterListener(listener);
 		}
 	}
-	
+
 	public void addMouseExitListener(UIMouseExitListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseExitListener(listener);
@@ -328,7 +328,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeMouseExitListener(listener);
 		}
 	}
-	
+
 	public void addKeyPressedListener(UIKeyPressedListener listener) {
 		if( this.control != null ) {
 			this.control.addKeyPressedListener(listener);
@@ -340,7 +340,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeKeyPressedListener(listener);
 		}
 	}
-	
+
 	public void addKeyReleasedListener(UIKeyReleasedListener listener) {
 		if( this.control != null ) {
 			this.control.addKeyReleasedListener(listener);
@@ -352,7 +352,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeKeyReleasedListener(listener);
 		}
 	}
-	
+
 	public void addFocusGainedListener(UIFocusGainedListener listener) {
 		if( this.control != null ) {
 			this.control.addFocusGainedListener(listener);
@@ -364,7 +364,7 @@ public class JFXToolCustomItem extends JFXRegion<Pane> implements JFXContainer<P
 			this.control.removeFocusGainedListener(listener);
 		}
 	}
-	
+
 	public void addFocusLostListener(UIFocusLostListener listener) {
 		if( this.control != null ) {
 			this.control.addFocusLostListener(listener);

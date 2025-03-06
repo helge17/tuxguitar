@@ -13,47 +13,47 @@ import org.junit.jupiter.api.Test;
 public class TestRepeatController {
 
 	private TGSong song;
-	
+
 	// load test song
 	public TestRepeatController() throws IOException {
 		this.song = new TestFileFormat20().readSong("altRepeatLoop_20.tg", true).getSong();
 	}
-	
+
 	@Test
 	public void testNominalSequence() {
 		checkSequence(new MidiRepeatController(this.song, -1, -1),
 				new int[] {1,2,3, 1, 4,5, 1, 4,5, 1, 6,7,  8,9, 8,9, 8,9, 10},
 				new int[] {0,0,0, 3, 1,1, 6, 4,4, 9, 5,5,  5,5, 7,7, 9,9,  9});
 	}
-	
+
 	@Test
 	public void testLoop1() {
 		checkSequence(new MidiRepeatController(this.song, 1, 1),
 				new int[] {1},
 				new int[] {0});
 	}
-	
+
 	@Test
 	public void testLoop123() {
 		checkSequence(new MidiRepeatController(this.song, 1, 3),
 				new int[] {1,2,3},
 				new int[] {0,0,0});
 	}
-	
+
 	@Test
 	public void testLooPAltRepeat2_3() {
 		checkSequence(new MidiRepeatController(this.song, 4, 5),
 				new int[] {4,5},
 				new int[] {0,0});
 	}
-	
+
 	@Test
 	public void testLooPAltRepeat4() {
 	checkSequence(new MidiRepeatController(this.song, 6, 7),
 				new int[] {6,7},
 				new int[] {0,0});
 	}
-	
+
 	private void checkSequence(MidiRepeatController controller, int[] expectedMeasures, int[] expectedMoveNbMeasures) {
 		int i=0;
 		while (!controller.finished()) {

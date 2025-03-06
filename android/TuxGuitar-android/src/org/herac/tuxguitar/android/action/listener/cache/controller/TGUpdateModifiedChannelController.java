@@ -7,11 +7,11 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUpdateModifiedChannelController extends TGUpdateItemsController {
-	
+
 	public TGUpdateModifiedChannelController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);

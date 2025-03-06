@@ -16,7 +16,7 @@ public class TGContinousControlSelectionListener implements UISelectionListener,
 	private long startTime;
 	private boolean running;
 	private Object mutex = new Object();
-	
+
 	public TGContinousControlSelectionListener(TGContinuousControl control, int stabilisationDelayMs){
 		this.control = control;
 		this.stabilizationDelayMs = stabilisationDelayMs;
@@ -24,18 +24,18 @@ public class TGContinousControlSelectionListener implements UISelectionListener,
 	public TGContinousControlSelectionListener(TGContinuousControl control){
 		this(control, DEFAULT_STABILIZATION_DELAY_MS);
 	}
-	
+
 	@Override
 	public void onSelect(UISelectionEvent event) {
 		synchronized (this.mutex) {
-			
+
 			if(!this.running){
 				this.running = true;
 				// Start the thread.
 				Thread thread = new Thread(this);
 				thread.start();
 			}
-			
+
 			this.startTime = System.currentTimeMillis();
 			// notify the thread
 			this.mutex.notifyAll();
@@ -46,7 +46,7 @@ public class TGContinousControlSelectionListener implements UISelectionListener,
 	public void run() {
 		try {
 			long timeToWait = this.stabilizationDelayMs;
-			
+
 			while( this.running ){
 				synchronized (this.mutex) {
 					timeToWait = ((this.startTime + this.stabilizationDelayMs) - System.currentTimeMillis());
@@ -58,12 +58,12 @@ public class TGContinousControlSelectionListener implements UISelectionListener,
 			}
 			// now, control is stabilized
 			this.doActionSynchronized();
-			
+
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void doActionSynchronized() throws Throwable {
 		TGSynchronizer.getInstance(this.control.getContext()).executeLater(new Runnable() {
 			public void run() throws TGException {
@@ -71,7 +71,7 @@ public class TGContinousControlSelectionListener implements UISelectionListener,
 			}
 		});
 	}
-	
+
 	private void doAction(){
 		this.control.doActionWhenStable();
 	}

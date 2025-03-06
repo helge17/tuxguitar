@@ -1,26 +1,26 @@
 package org.herac.tuxguitar.gm;
 
 public class GMChannelRoute {
-	
+
 	public static final String PARAMETER_GM_CHANNEL_1 = "gm-channel-1";
 	public static final String PARAMETER_GM_CHANNEL_2 = "gm-channel-2";
-	
+
 	public static final int NULL_VALUE = -1;
-	
+
 	private int channelId;
 	private int channel1;
 	private int channel2;
-	
+
 	public GMChannelRoute(int channelId){
 		this.channelId = channelId;
 		this.channel1 = NULL_VALUE;
 		this.channel2 = NULL_VALUE;
 	}
-	
+
 	public int getChannelId() {
 		return this.channelId;
 	}
-	
+
 	public int getChannel1() {
 		return this.channel1;
 	}

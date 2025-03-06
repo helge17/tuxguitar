@@ -29,7 +29,7 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
  *
  */
 public class TGTunerDialog implements TGTunerListener {
-	
+
 	private TGContext context;
 	private TGTuner tuner = null;
 	private int[] tuning = null;
@@ -38,64 +38,64 @@ public class TGTunerDialog implements TGTunerListener {
 	private TGTunerRoughWidget roughTuner = null;
 	private List<TGTuningString> allStringButtons = null;
 	private TGTunerFineWidget fineTuner = null;
-	
+
 	public TGTunerDialog(TGContext context, int[] tuning) {
 		this.context = context;
 		this.tuning = tuning;
 	}
-	
+
 	public void show() {
 		final UIFactory uiFactory = this.getUIFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.dialog = uiFactory.createWindow(uiParent, false, false);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		this.dialog.setText(TuxGuitar.getProperty("tuner.instrument-tuner"));
-		
+
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(this.dialog);
 		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("tuner.tuner"));
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, null, null);
-		
+
 		UITableLayout specialLayout = new UITableLayout(0f);
 		UIPanel specialComposite = uiFactory.createPanel(group, false);
 		specialComposite.setLayout(specialLayout);
 		groupLayout.set(specialComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		this.allStringButtons = new ArrayList<TGTuningString>(this.tuning.length);
-		
+
 		this.fineTuner = new TGTunerFineWidget(this.context, uiFactory, specialComposite);
 		specialLayout.set(this.fineTuner.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
-		
+
 		UITableLayout stringButtonsLayout = new UITableLayout();
 		UIPanel stringButtonsComposite = uiFactory.createPanel(specialComposite, false);
 		stringButtonsComposite.setLayout(stringButtonsLayout);
 		specialLayout.set(stringButtonsComposite, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true, 1, 1, null, null, 0f);
-		
+
 		for (int i=0; i<this.tuning.length; i++) {
 			createTuningString(uiFactory, stringButtonsComposite, i);
 		}
-		
+
 		UITableLayout tunLayout = new UITableLayout();
 		UIPanel tunComposite = uiFactory.createPanel(group, false);
 		tunComposite.setLayout(tunLayout);
 		groupLayout.set(tunComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.currentFrequency = uiFactory.createLabel(tunComposite);
 		tunLayout.set(this.currentFrequency, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		this.roughTuner = new TGTunerRoughWidget(this.context, uiFactory, group);
 		groupLayout.set(this.roughTuner.getControl(), 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 600f, null, null);
-		
-		
+
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
         UIButton buttonSettings = uiFactory.createButton(buttons);
         buttonSettings.setText(TuxGuitar.getProperty("settings"));
         buttonSettings.addSelectionListener(new UISelectionListener() {
@@ -105,7 +105,7 @@ public class TGTunerDialog implements TGTunerListener {
             }
         });
         buttonsLayout.set(buttonSettings, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-        
+
         UIButton buttonExit = uiFactory.createButton(buttons);
         buttonExit.setText(TuxGuitar.getProperty("close"));
         buttonExit.addSelectionListener(new UISelectionListener() {
@@ -116,7 +116,7 @@ public class TGTunerDialog implements TGTunerListener {
         });
 		buttonsLayout.set(buttonExit, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonExit, UITableLayout.MARGIN_RIGHT, 0f);
-        
+
         // if closed on [X], set this.tuner.setCanceled(true);
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
@@ -130,12 +130,12 @@ public class TGTunerDialog implements TGTunerListener {
         // start the tuner thread
         this.tuner = new TGTuner(this);
         this.getTuner().start();
-        
+
 	}
-	
+
 	public void fireFrequency(final double freq) {
 		if (!this.dialog.isDisposed()) {
-			 TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {				
+			 TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				 public void run() {
 					if (!TGTunerDialog.this.dialog.isDisposed() && !TGTunerDialog.this.roughTuner.isDisposed()) {
 						TGTunerDialog.this.currentFrequency.setText(Math.floor(freq)+" Hz");
@@ -149,11 +149,11 @@ public class TGTunerDialog implements TGTunerListener {
 		}
 	}
 
-	
+
 	public TGTuner getTuner() {
 		return this.tuner;
 	}
-	
+
 	public int[] getTuning() {
 		return this.tuning;
 	}
@@ -162,7 +162,7 @@ public class TGTunerDialog implements TGTunerListener {
 	public void fireException(final Exception ex) {
 		TGErrorManager.getInstance(this.context).handleError(ex);
 	}
-	
+
 	public void fireCurrentString(final int string) {
 		this.tuner.pause();
 		if (string == 0) { // TODO: it never happens
@@ -175,7 +175,7 @@ public class TGTunerDialog implements TGTunerListener {
 		}
 		this.tuner.resumeFromPause();
 	}
-	
+
 	private void createTuningString(UIFactory factory, UILayoutContainer parent, int index) {
 		TGTuningString tempString = new TGTuningString(factory, parent, this, this.tuning[index]);
 		this.allStringButtons.add(tempString);
@@ -191,7 +191,7 @@ public class TGTunerDialog implements TGTunerListener {
 			}
 		});
 		tempString.addListener();
-		
+
 		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
 		uiLayout.set(tempString.getStringButton(), (index + 1), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 	}
@@ -199,11 +199,11 @@ public class TGTunerDialog implements TGTunerListener {
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context).getFactory();
 	}
-	
+
 	public UIWindow getWindow() {
 		return this.dialog;
 	}
-	
+
 	public TGContext getContext() {
 		return context;
 	}

@@ -28,7 +28,7 @@ details.  */
 
 /* An opaque pointer representing an object ID.  */
 struct _jobjectID;
-typedef struct _jobjectID * jobjectID;       
+typedef struct _jobjectID * jobjectID;
 
 typedef struct
 {
@@ -38,7 +38,7 @@ typedef struct
   jmethodID method_id;
 } JVMPI_CallFrame;
 
-typedef struct 
+typedef struct
 {
   JNIEnv *env_id;
   /* Number of frames in the call trace.  */
@@ -145,7 +145,7 @@ typedef struct
   /* Evn where this event occurred.  */
   JNIEnv *env_id;
 
-  union 
+  union
   {
     struct
     {
@@ -192,10 +192,10 @@ typedef struct
 {
   /* JVMPI version number.  */
   jint version;
-  
+
   /* Implemented by the user...  */
   void (*NotifyEvent) (JVMPI_Event *event);
-  
+
   /* Implemented by the runtime...  */
   jint (*EnableEvent) (jint event_type, void *arg);
   jint (*DisableEvent) (jint event_type, void *arg);
@@ -221,7 +221,7 @@ typedef struct
   void (*RunGC) (void);
   jobjectID (*GetThreadObject) (JNIEnv *env);
   jobjectID (*GetMethodClass) (jmethodID mid);
-  
+
 } JVMPI_Interface;
 
 #endif /* __GCJ_JVMPI_H__ */

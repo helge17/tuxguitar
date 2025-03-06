@@ -13,7 +13,7 @@ import org.herac.tuxguitar.util.TGContext;
 import java.io.InputStream;
 
 public class TGBrowserOpenElementAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.open-element";
 
 	public static final String ATTRIBUTE_ELEMENT = TGBrowserElement.class.getName();
@@ -23,7 +23,7 @@ public class TGBrowserOpenElementAction extends TGActionBase{
 	public TGBrowserOpenElementAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		final TGBrowserSession session = context.getAttribute(ATTRIBUTE_SESSION);
 		final TGBrowserElement element = context.getAttribute(ATTRIBUTE_ELEMENT);

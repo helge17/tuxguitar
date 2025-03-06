@@ -19,10 +19,10 @@ import org.herac.tuxguitar.song.models.TGSong;
 public class TGChannelListItemMenu extends TGMenuBase {
 
 	private TGChannel channel;
-	
+
 	public TGChannelListItemMenu(TGActivity activity, TGChannel channel) {
 		super(activity);
-		
+
 		this.channel = channel;
 	}
 
@@ -37,21 +37,21 @@ public class TGChannelListItemMenu extends TGMenuBase {
 			this.initializeItem(menu, R.id.action_channel_list_item_remove, this.createRemoveChannelAction(), true);
 		}
 	}
-	
+
 	public boolean isRemovableChannel() {
 		TGDocumentManager documentManager = TGDocumentManager.getInstance(this.findContext());
 		TGSong song = documentManager.getSong();
 		TGSongManager songManager = documentManager.getSongManager();
-		
+
 		return (!songManager.isAnyTrackConnectedToChannel(song, this.channel.getChannelId()));
 	}
-	
+
 	public TGActionProcessorListener createEditChannelAction() {
 		TGActionProcessorListener tgActionProcessor = this.createDialogActionProcessor(new TGChannelEditDialogController());
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel);
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createRemoveChannelAction() {
 		TGActionProcessor tgActionProcessor = this.createActionProcessor(TGRemoveChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel);

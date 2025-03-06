@@ -45,56 +45,56 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGLyricEditor implements TGEventListener {
-	
+
 	public static final String ATTRIBUTE_BYPASS_EVENTS_FROM = "bypass-events-from";
-	
+
 	private static final float EDITOR_WIDTH = 450f;
 	private static final float EDITOR_HEIGHT = 200f;
-	
+
 	private TGContext context;
 	private TGTrack track;
 	private UIWindow dialog;
 	private TGLyricModifyListener listener;
-	
+
 	private UIButton previous;
 	private UIButton next;
 	private UILabel label;
 	private UILabel fromLabel;
 	private UISpinner from;
 	private UITextArea text;
-	
+
 	private boolean updated;
 	private int lastTrack;
 	private int lastMeasuseCount;
 	private String lastTrackName;
-	
+
 	private TGProcess loadPropertiesProcess;
 	private TGProcess loadIconsProcess;
 	private TGProcess updateItemsProcess;
-	
+
 	private List<KeyBindingAction> keyBindings;
-	
+
 	public TGLyricEditor(TGContext context){
 		this.context = context;
 		this.listener = new TGLyricModifyListener(this);
 		this.keyBindings = new ArrayList<KeyBindingAction>();
 		this.createSyncProcesses();
 	}
-	
+
 	public TGLyric createLyrics() {
 		if(!this.isDisposed()) {
 			TGLyric tgLyric = TGDocumentManager.getInstance(this.context).getSongManager().getFactory().newLyric();
 			tgLyric.setFrom(this.from.getValue());
 			tgLyric.setLyrics(this.text.getText());
-			
+
 			return tgLyric;
 		}
 		return null;
 	}
-	
+
 	public void show() {
 		UIFactory uiFactory = this.getUIFactory();
-		
+
 		this.dialog = uiFactory.createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setLayout(new UITableLayout(0f));
 		this.dialog.setBounds(new UIRectangle(0, 0, EDITOR_WIDTH, EDITOR_HEIGHT));
@@ -103,7 +103,7 @@ public class TGLyricEditor implements TGEventListener {
 				TGLyricEditor.this.onDispose();
 			}
 		});
-		
+
 		this.track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 		this.loadComposites();
 		this.loadProperties();
@@ -112,19 +112,19 @@ public class TGLyricEditor implements TGEventListener {
 		this.addListeners();
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
-	
+
 	public void addListeners(){
 		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
-	
+
 	public void removeListeners(){
 		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
-	
+
 	public void onDispose(){
 		this.track = null;
 		this.label = null;
@@ -132,34 +132,34 @@ public class TGLyricEditor implements TGEventListener {
 		this.dialog = null;
 		this.removeListeners();
 	}
-	
+
 	private void loadComposites(){
 		loadToolBar();
 		loadLyricText();
 	}
-	
+
 	private void loadToolBar(){
 		UIFactory uiFactory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) this.dialog.getLayout();
-		
+
 		UITableLayout panelLayout = new UITableLayout();
 		UIPanel panel = uiFactory.createPanel(this.dialog, false);
 		panel.setLayout(panelLayout);
 		parentLayout.set(panel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, null, null, 0f);
-		
+
 		this.previous = uiFactory.createButton(panel);
 		panelLayout.set(this.previous, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		this.next = uiFactory.createButton(panel);
 		panelLayout.set(this.next, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		this.label = uiFactory.createLabel(panel);
 		this.label.setText(this.track.getName());
 		panelLayout.set(this.label, 1, 3, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		this.fromLabel = uiFactory.createLabel(panel);
 		panelLayout.set(this.fromLabel, 1, 4, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		this.from = uiFactory.createSpinner(panel);
 		this.from.setMinimum(1);
 		this.from.setMaximum(this.track.countMeasures());
@@ -167,20 +167,20 @@ public class TGLyricEditor implements TGEventListener {
 		this.from.setEnabled(this.track.countMeasures() > 1);
 		this.from.addSelectionListener(this.listener);
 		panelLayout.set(this.from, 1, 5, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false, 1, 1, 60f, null, null);
-		
+
 		this.previous.addSelectionListener(new TGActionProcessorListener(TGLyricEditor.this.context, TGGoPreviousTrackAction.NAME));
 		this.next.addSelectionListener(new TGActionProcessorListener(TGLyricEditor.this.context, TGGoNextTrackAction.NAME));
 	}
-	
+
 	private void loadLyricText(){
 		UIFactory uiFactory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) this.dialog.getLayout();
-		
+
 		UITableLayout panelLayout = new UITableLayout();
 		UIPanel panel = uiFactory.createPanel(this.dialog, false);
 		panel.setLayout(panelLayout);
 		parentLayout.set(panel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
-		
+
 		this.text = uiFactory.createTextArea(panel, true, false);
 		this.text.setFocus();
 		this.text.setText(this.track.getLyrics().getLyrics());
@@ -199,12 +199,12 @@ public class TGLyricEditor implements TGEventListener {
 		panelLayout.set(this.text, UITableLayout.PACKED_WIDTH, 0f);
 		panelLayout.set(this.text, UITableLayout.PACKED_HEIGHT, 0f);
 	}
-	
+
 	public void updateItems(){
 		if(!isDisposed()){
 			boolean enabled = !TuxGuitar.getInstance().getPlayer().isRunning();
 			boolean doLayout = false;
-			
+
 			this.listener.setEnabled(false);
 			if( this.updated ){
 				this.lastTrack = 0;
@@ -225,19 +225,19 @@ public class TGLyricEditor implements TGEventListener {
 				this.from.setValue(this.track.getLyrics().getFrom());
 				this.text.setText(this.track.getLyrics().getLyrics());
 			}
-			
+
 			this.from.setEnabled( enabled && (this.track.countMeasures() > 1) );
 			this.text.setEnabled( enabled );
-			
+
 			this.listener.setEnabled( enabled );
 			this.updated = false;
-			
+
 			if( doLayout ) {
 				this.dialog.layout();
 			}
 		}
 	}
-	
+
 	private boolean isTrackChanged(){
 		int current = this.track.getNumber();
 		if( current != this.lastTrack ){
@@ -246,7 +246,7 @@ public class TGLyricEditor implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	private boolean isTrackLyricChanged(){
 		if( this.track.getLyrics().getFrom() != this.from.getValue() ) {
 			return true;
@@ -256,7 +256,7 @@ public class TGLyricEditor implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	private boolean isTrackNameChanged(){
 		String current = this.track.getName();
 		if( this.lastTrackName == null || !current.equals( this.lastTrackName ) ){
@@ -265,7 +265,7 @@ public class TGLyricEditor implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	private boolean isMeasureCountChanged(){
 		int current = this.track.countMeasures();
 		if( current != this.lastMeasuseCount){
@@ -274,30 +274,30 @@ public class TGLyricEditor implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	public void update() {
 		this.updated = true;
 	}
-	
+
 	public TGTrack getTrack(){
 		return this.track;
 	}
-	
+
 	public TGContext getContext() {
 		return this.context;
 	}
-	
+
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context).getFactory();
 	}
-	
+
 	public void loadKeyBinding(String actionId) {
 		UIKeyCombination keyCombination = KeyBindingActionManager.getInstance(this.context).getKeyBindingForAction(actionId);
 		if( keyCombination != null ) {
 			this.keyBindings.add(new KeyBindingAction(actionId, keyCombination));
 		}
 	}
-	
+
 	public void loadKeyBindings() {
 		if(!isDisposed()){
 			this.keyBindings.clear();
@@ -305,7 +305,7 @@ public class TGLyricEditor implements TGEventListener {
 			this.loadKeyBinding(TGRedoAction.NAME);
 		}
 	}
-	
+
 	public void loadProperties(){
 		if(!isDisposed()){
 			this.loadKeyBindings();
@@ -314,7 +314,7 @@ public class TGLyricEditor implements TGEventListener {
 			this.dialog.layout();
 		}
 	}
-	
+
 	public void loadIcons(){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
@@ -322,11 +322,11 @@ public class TGLyricEditor implements TGEventListener {
 			this.next.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
 		}
 	}
-	
+
 	public boolean isDisposed() {
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
-	
+
 	public void dispose(){
 		if(!isDisposed()){
 			this.dialog.dispose();
@@ -343,27 +343,27 @@ public class TGLyricEditor implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	public void createSyncProcesses() {
 		this.loadPropertiesProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				loadProperties();
 			}
 		});
-		
+
 		this.loadIconsProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
 				loadIcons();
 			}
 		});
-		
+
 		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateItems();
 			}
 		});
 	}
-	
+
 	public void processUpdateEvent(TGEvent event) {
 		if(!this.isByPassEvent(event)) {
 			int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
@@ -374,7 +374,7 @@ public class TGLyricEditor implements TGEventListener {
 			}
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadIconsProcess.process();
@@ -386,7 +386,7 @@ public class TGLyricEditor implements TGEventListener {
 			this.processUpdateEvent(event);
 		}
 	}
-	
+
 	public static TGLyricEditor getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGLyricEditor.class.getName(), new TGSingletonFactory<TGLyricEditor>() {
 			public TGLyricEditor createInstance(TGContext context) {

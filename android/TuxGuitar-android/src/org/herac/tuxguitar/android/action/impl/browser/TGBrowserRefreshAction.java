@@ -9,15 +9,15 @@ import org.herac.tuxguitar.util.TGContext;
 import java.util.List;
 
 public class TGBrowserRefreshAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.refresh";
-	
+
 	public static final String ATTRIBUTE_SESSION = TGBrowserSession.class.getName();
-	
+
 	public TGBrowserRefreshAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		final TGBrowserSession tgBrowserSession = context.getAttribute(ATTRIBUTE_SESSION);
 		if( tgBrowserSession.getBrowser() != null ) {

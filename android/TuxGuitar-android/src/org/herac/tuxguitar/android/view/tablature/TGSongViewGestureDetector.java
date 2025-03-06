@@ -14,13 +14,13 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 	private GestureDetectorCompat gestureDetector;
 	private TGSongViewScaleGestureDetector songViewScaleGestureDetector;
 	private TGSongView songView;
-	
+
 	public TGSongViewGestureDetector(Context context, TGSongView songView) {
 		this.gestureDetector = new GestureDetectorCompat(context, this);
 		this.songViewScaleGestureDetector = new TGSongViewScaleGestureDetector(context, songView);
 		this.songView = songView;
 	}
-	
+
 	public boolean processTouchEvent(MotionEvent event) {
 		this.songViewScaleGestureDetector.processTouchEvent(event);
 		if(!this.songViewScaleGestureDetector.isInProgress() ) {
@@ -37,10 +37,10 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
 		this.moveToAxisPosition(e.getX(), e.getY(), false);
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		if( this.songView.getController().isScrollActionAvailable() ) {
@@ -49,13 +49,13 @@ public class TGSongViewGestureDetector extends GestureDetector.SimpleOnGestureLi
 		}
 		return true;
 	}
-	
+
 	public void updateAxis(TGScrollAxis axis, float distance) {
 		if( axis.isEnabled() ) {
 			axis.setValue(Math.max(Math.min(axis.getValue() + distance, axis.getMaximum()), axis.getMinimum()));
 		}
 	}
-	
+
 	private void moveToAxisPosition(Float x, Float y, Boolean requestSmartMenu) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TGApplicationUtil.findContext(this.songView), TGMoveToAxisPositionAction.NAME);
 		tgActionProcessor.setAttribute(TGMoveToAxisPositionAction.ATTRIBUTE_X, x);

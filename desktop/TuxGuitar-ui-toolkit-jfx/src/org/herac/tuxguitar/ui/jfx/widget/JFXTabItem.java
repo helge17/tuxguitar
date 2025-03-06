@@ -18,31 +18,31 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UITabItem;
 
 public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, UITabItem {
-	
+
 	private JFXTabFolder parent;
 	private Tab item;
 	private UIControl control;
-	
+
 	public JFXTabItem(JFXTabFolder parent) {
 		super(new Pane(), null);
-		
+
 		this.parent = parent;
 		this.item = new Tab();
 		this.item.setContent(this.getControl());
 		this.getControl().setManaged(true);
 		this.parent.addTab(this);
 	}
-	
+
 	public Tab getItem() {
 		return item;
 	}
 
 	public void addChild(JFXNode<? extends Node> control) {
 		final Node handle = control.getControl();
-		
+
 		this.control = control;
 		this.getControl().getChildren().add(handle);
-		
+
 		ChangeListener<Number> resizeListener = new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSize, Number newSize) {
 				JFXTabItem.this.onResize();
@@ -70,7 +70,7 @@ public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, U
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
 			this.control.computePackedSize(fixedWidth, fixedHeight);
-			
+
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
@@ -122,26 +122,26 @@ public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, U
 		}
 		return new UIRectangle();
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		if( this.control != null ) {
 			this.control.setBounds(bounds);
 		}
 	}
-	
+
 	public void layout(UIRectangle bounds) {
 		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
-	
+
 	public void onSelect() {
 		this.onResize();
 	}
-	
+
 	public void onResize() {
 		this.layout(new UIRectangle(new UIPosition(), super.getBounds().getSize()));
 	}
-	
+
 	public UIColor getBgColor() {
 		if( this.control != null ) {
 			return this.control.getBgColor();
@@ -173,13 +173,13 @@ public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, U
 			this.control.redraw();
 		}
 	}
-	
+
 	public void setFocus() {
 		if( this.control != null ) {
 			this.control.setFocus();
 		}
 	}
-	
+
 	public UIPopupMenu getPopupMenu() {
 		if( this.control != null ) {
 			return this.control.getPopupMenu();
@@ -192,15 +192,15 @@ public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, U
 			this.control.setPopupMenu(menu);
 		}
 	}
-	
+
 	public void dispose() {
 		this.parent.removeTab(this);
-		
+
 		if( this.control != null && !this.control.isDisposed() ) {
 			this.control.dispose();
 		}
 		this.item = null;
-		
+
 		super.dispose();
 	}
 

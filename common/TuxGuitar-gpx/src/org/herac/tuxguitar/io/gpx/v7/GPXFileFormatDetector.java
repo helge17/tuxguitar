@@ -6,12 +6,12 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatDetector;
 
 public class GPXFileFormatDetector implements TGFileFormatDetector {
-	
+
 	public GPXFileFormatDetector() {
 		super();
 	}
-	
-	public TGFileFormat getFileFormat(InputStream is) {		
+
+	public TGFileFormat getFileFormat(InputStream is) {
 		try {
 			GPXFileSystem gpxFileSystem = new GPXFileSystem();
 			gpxFileSystem.load(is);

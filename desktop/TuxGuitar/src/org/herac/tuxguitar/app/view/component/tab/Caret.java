@@ -36,11 +36,11 @@ import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author julian
- * 
+ *
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class Caret {
-	
+
 	private Tablature tablature;
 	private TGTrackImpl selectedTrack;
 	private TGMeasureImpl selectedMeasure;
@@ -55,11 +55,11 @@ public class Caret {
 	private int velocity;
 	private boolean restBeat;
 	private boolean changes;
-	
+
 	private UIColor colorCurrentVoice;
 	private UIColor colorOtherVoice;
 	private int alpha;
-	
+
 	public Caret(Tablature tablature) {
 		this.tablature = tablature;
 		this.selectedDuration = getSongManager().getFactory().newDuration();
@@ -67,26 +67,26 @@ public class Caret {
 		this.velocity = TGVelocities.DEFAULT;
 		this.changes = false;
 	}
-	
+
 	public synchronized void update(){
 		int trackNumber = (this.selectedTrack != null)?this.selectedTrack.getNumber():1;
 		update(trackNumber,this.position,this.string);
 	}
-	
+
 	public synchronized void update(int trackNumber){
 		update(trackNumber,this.position,this.string);
 	}
-	
+
 	public synchronized void update(int trackNumber,long position,int string){
 		update(trackNumber, position, string,getVelocity());
 	}
-	
+
 	public synchronized void update(int trackNumber, long position, int string, int velocity) {
 		TGContext context = this.tablature.getContext();
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
-		
+
 		long realPosition = ((midiPlayer.isRunning()) ? MidiTickUtil.getStart(context, midiPlayer.getTickPosition()):position);
-		TGTrackImpl track = findTrack(trackNumber); 
+		TGTrackImpl track = findTrack(trackNumber);
 		TGMeasureImpl measure = findMeasure(realPosition,track);
 		TGBeat beat = findBeat(realPosition,measure);
 		if(track != null && measure != null && beat != null){
@@ -94,7 +94,7 @@ public class Caret {
 		}
 		setVelocity(velocity);
 	}
-	
+
 	public void moveTo(TGTrackImpl selectedTrack, TGMeasureImpl selectedMeasure, TGBeat selectedBeat,int string) {
 		this.selectedTrack = selectedTrack;
 		this.selectedMeasure = selectedMeasure;
@@ -109,7 +109,7 @@ public class Caret {
 		this.setChanges(true);
 		this.saveState();
 	}
-	
+
 	private TGTrackImpl findTrack(int number){
 		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(getSong(), number);
 		if(track == null){
@@ -117,7 +117,7 @@ public class Caret {
 		}
 		return track;
 	}
-	
+
 	private TGMeasureImpl findMeasure(long position,TGTrackImpl track){
 		TGMeasureImpl measure = null;
 		if(track != null){
@@ -128,7 +128,7 @@ public class Caret {
 		}
 		return measure;
 	}
-	
+
 	private TGBeat findBeat(long position,TGMeasureImpl measure){
 		TGBeat beat = null;
 		if(measure != null){
@@ -143,16 +143,16 @@ public class Caret {
 		}
 		return beat;
 	}
-	
+
 	public synchronized void goToTickPosition() {
 		TGContext context = this.tablature.getContext();
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
-		
+
 		long start = MidiTickUtil.getStart(context, midiPlayer.getTickPosition());
 		this.update(this.selectedTrack.getNumber(), start, this.string);
 		this.setChanges(true);
 	}
-	
+
 	public void paintCaret(TGLayout layout, UIPainter painter) {
 		if(!TuxGuitar.getInstance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && !this.selectedMeasure.isOutOfBounds() && this.selectedBeat instanceof TGBeatImpl) {
@@ -168,7 +168,7 @@ public class Caret {
 					float x = (this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - xMargin);
 					float y = (this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - yMargin);
 					this.setPaintStyle(painter, expectedVoice);
-					
+
 					painter.setAntialias(false);
 					for (int style : new int[] {UIPainter.PATH_FILL, UIPainter.PATH_DRAW}) {
 						painter.initPath(style);
@@ -186,7 +186,7 @@ public class Caret {
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
 					this.setPaintStyle(painter, true);
-					
+
 					painter.initPath();
 					painter.moveTo(x1, y1);
 					painter.lineTo(x1 + ((x2 - x1) / 2f), y1 + (line / 2f));
@@ -199,7 +199,7 @@ public class Caret {
 			}
 		}
 	}
-	
+
 	public void setPaintStyle(UIPainter painter, boolean expectedVoice){
 		UIColor color = ( expectedVoice ? this.colorCurrentVoice : this.colorOtherVoice );
 		if( color != null ){
@@ -207,7 +207,7 @@ public class Caret {
 			painter.setBackground(color);
 		}
 	}
-	
+
 	public boolean moveRight() {
 		if (getSelectedBeat() != null) {
 			TGMeasureImpl measure = getMeasure();
@@ -231,7 +231,7 @@ public class Caret {
 		}
 		return true;
 	}
-	
+
 	public void moveLeft() {
 		if (getSelectedBeat() != null) {
 			TGMeasureImpl measure = getMeasure();
@@ -254,7 +254,7 @@ public class Caret {
 			}
 		}
 	}
-	
+
 	/**
 	 * Luego de mover el Caret. cambia la duracion seleccionada por la del componente. solo si lo que resta del compas no esta vacio
 	 */
@@ -263,62 +263,62 @@ public class Caret {
 			this.selectedDuration.copyFrom(this.selectedBeat.getVoice(getVoice()).getDuration());
 		}
 	}
-	
+
 	public void moveUp() {
 		int stringCount = this.selectedTrack.stringCount() ;
 		int nextString = (( (this.string - 2 + stringCount) % stringCount) + 1);
 		setStringNumber(nextString);
 	}
-	
+
 	public void moveDown() {
 		int stringCount = this.selectedTrack.stringCount() ;
 		int nextString = ( (this.string  % stringCount) + 1);
 		setStringNumber(nextString);
 	}
-	
+
 	public void setStringNumber(int number){
 		this.string = number;
 		this.updateNote();
 		this.saveState();
 	}
-	
+
 	public int getStringNumber(){
 		return this.string;
 	}
-	
+
 	public long getPosition() {
 		return this.position;
 	}
-	
+
 	public TGMeasureImpl getMeasure() {
 		return this.selectedMeasure;
 	}
-	
+
 	public TGTrackImpl getTrack() {
 		return this.selectedTrack;
 	}
-	
+
 	public TGDuration getDuration() {
 		return this.selectedDuration;
 	}
-	
+
 	public void setSelectedDuration(TGDuration selectedDuration) {
 		this.selectedDuration = selectedDuration;
 	}
-	
+
 	public TGString getSelectedString() {
 		return this.selectedString;
 	}
-	
+
 	private void updatePosition(){
 		this.position = getSelectedBeat().getStart();
 	}
-	
+
 	private void updateString(){
 		if( this.string < 1 || this.string > getTrack().stringCount() ){
 			this.string = 1;
 		}
-		
+
 		// find selected string
 		List<?> strings = getTrack().getStrings();
 		Iterator<?> it = strings.iterator();
@@ -329,83 +329,83 @@ public class Caret {
 			}
 		}
 	}
-	
+
 	public boolean hasChanges() {
 		return this.changes;
 	}
-	
+
 	public void setChanges(boolean changes) {
 		this.changes = changes;
 	}
-	
+
 	public int getVelocity() {
 		return this.velocity;
 	}
-	
+
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
 	}
-	
+
 	private void updateNote(){
 		this.selectedNote = null;
-		
+
 		TGString string = getSelectedString();
 		if( string != null ){
 			this.selectedNote = getSongManager().getMeasureManager().getNote(getMeasure(),getPosition(),string.getNumber());
 		}
 	}
-	
+
 	public TGNote getSelectedNote(){
 		return this.selectedNote;
 	}
-	
+
 	private void updateBeat(){
 		this.restBeat = this.selectedBeat.isRestBeat();
 	}
-	
+
 	public TGBeatImpl getSelectedBeat(){
 		return (TGBeatImpl)this.selectedBeat;
 	}
-	
+
 	public TGSongManager getSongManager(){
 		return this.tablature.getSongManager();
 	}
-	
+
 	public TGSong getSong(){
 		return this.tablature.getSong();
 	}
-	
+
 	private void updateVoice(){
 		this.selectedVoice = this.getSelectedBeat().getVoice(this.getVoice());
 	}
-	
+
 	public TGVoice getSelectedVoice() {
 		return this.selectedVoice;
 	}
-	
+
 	public int getVoice() {
 		return this.voice;
 	}
-	
+
 	public void setVoice(int voice) {
 		this.voice = voice;
 		this.update();
 	}
-	
+
 	public boolean isRestBeatSelected(){
 		return this.restBeat;
 	}
-	
+
 	public void setColorCurrentVoice(UIColorModel cm){
 		this.disposeResource( this.colorCurrentVoice );
 		this.colorCurrentVoice = this.tablature.getResourceFactory().createColor(cm);
 	}
-	
+
 	public void setColorOtherVoice(UIColorModel cm){
 		this.disposeResource( this.colorOtherVoice );
 		this.colorOtherVoice = this.tablature.getResourceFactory().createColor(cm);
 	}
-	
+
 	public void setAlpha(int alpha) {
 		this.alpha = alpha;
 	}
@@ -432,7 +432,7 @@ public class Caret {
 			resource.dispose();
 		}
 	}
-	
+
 	public void dispose(){
 		this.disposeResource( this.colorCurrentVoice );
 		this.disposeResource( this.colorOtherVoice );

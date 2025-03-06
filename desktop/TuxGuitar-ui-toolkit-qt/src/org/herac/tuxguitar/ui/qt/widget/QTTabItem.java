@@ -15,27 +15,27 @@ import org.herac.tuxguitar.ui.widget.UITabItem;
 import io.qt.widgets.QWidget;
 
 public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabItem {
-	
+
 	private QTTabFolder parent;
 	private UIControl control;
-	
+
 	public QTTabItem(QTTabFolder parent) {
 		super(new QWidget(), null);
-		
+
 		this.parent = parent;
 		this.parent.addTab(this);
-		
+
 		this.addResizeListener(new UIResizeListener() {
 			public void onResize(UIResizeEvent event) {
 				QTTabItem.this.onResize();
 			}
 		});
 	}
-	
+
 	public QWidget getContainerControl() {
 		return this.getControl();
 	}
-	
+
 	public void addChild(QTWidget<? extends QWidget> control) {
 		this.control = control;
 	}
@@ -56,7 +56,7 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
 			this.control.computePackedSize(fixedWidth, fixedHeight);
-			
+
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
@@ -108,26 +108,26 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 		}
 		return new UIRectangle();
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		if( this.control != null ) {
 			this.control.setBounds(bounds);
 		}
 	}
-	
+
 	public void layout(UIRectangle bounds) {
 		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
-	
+
 	public void onSelect() {
 		this.onResize();
 	}
-	
+
 	public void onResize() {
 		this.layout(new UIRectangle(new UIPosition(), super.getBounds().getSize()));
 	}
-	
+
 	public UIColor getBgColor() {
 		if( this.control != null ) {
 			return this.control.getBgColor();
@@ -159,13 +159,13 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 			this.control.redraw();
 		}
 	}
-	
+
 	public void setFocus() {
 		if( this.control != null ) {
 			this.control.setFocus();
 		}
 	}
-	
+
 	public UIPopupMenu getPopupMenu() {
 		if( this.control != null ) {
 			return this.control.getPopupMenu();
@@ -178,17 +178,17 @@ public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabIt
 			this.control.setPopupMenu(menu);
 		}
 	}
-	
+
 	public void dispose() {
 		this.parent.removeTab(this);
-		
+
 		if( this.control != null && !this.control.isDisposed() ) {
 			this.control.dispose();
 		}
-		
+
 		super.dispose();
 	}
-	
+
 	public String getText() {
 		return this.parent.getControl().tabText(this.parent.getTabIndex(this));
 	}

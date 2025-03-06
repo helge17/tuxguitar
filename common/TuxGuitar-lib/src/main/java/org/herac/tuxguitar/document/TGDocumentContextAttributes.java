@@ -35,7 +35,7 @@ public final class TGDocumentContextAttributes {
 	public static final String ATTRIBUTE_LYRIC = TGLyric.class.getName();
 	public static final String ATTRIBUTE_CHORD = TGChord.class.getName();
 	public static final String ATTRIBUTE_MARKER = TGMarker.class.getName();
-	
+
 	public static final String ATTRIBUTE_VELOCITY = "velocity";
 	public static final String ATTRIBUTE_POSITION = "position";
 	public static final String ATTRIBUTE_FRET = "fret";

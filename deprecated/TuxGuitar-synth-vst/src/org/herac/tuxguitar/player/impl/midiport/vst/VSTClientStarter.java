@@ -8,21 +8,21 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class VSTClientStarter implements TGClientStarter {
-	
+
 	private static final String VARIABLE_VST_SESSION_ID = "vst.sessionId";
 	private static final String VARIABLE_VST_SERVER_PORT = "vst.serverPort";
 	private static final String VARIABLE_VST_FILE_NAME = "vst.fileName";
-	
+
 	private TGContext context;
 	private VSTSettings settings;
 	private String fileName;
-	
+
 	public VSTClientStarter(TGContext context, String fileName) {
 		this.context = context;
 		this.fileName = fileName;
 		this.settings = new VSTSettings(this.context);
 	}
-	
+
 	@Override
 	public String[] createClientCommand(Integer sessionId, Integer serverPort) {
 		try {
@@ -30,7 +30,7 @@ public class VSTClientStarter implements TGClientStarter {
 			if( command != null ) {
 				Map<String, Object> variables = this.createCommandVariables(sessionId, serverPort, fileName);
 				TGExpressionResolver expressionResolver = TGExpressionResolver.getInstance(this.context);
-				
+
 				String[] cmdarray = command.split(",");
 				for(int i = 0 ; i < cmdarray.length; i ++) {
 					cmdarray[i] = expressionResolver.resolve(cmdarray[i], new TGExpressionResolver.MapPropertyResolver(variables));
@@ -42,7 +42,7 @@ public class VSTClientStarter implements TGClientStarter {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public String findClientCommand() throws VSTException {
 		String pluginType = this.findPluginType(this.fileName);
 		if( pluginType != null ) {
@@ -50,7 +50,7 @@ public class VSTClientStarter implements TGClientStarter {
 		}
 		return null;
 	}
-	
+
 	public String findPluginType(String fileName) throws VSTException {
 		if( fileName != null ) {
 			int index = fileName.lastIndexOf(".");
@@ -60,7 +60,7 @@ public class VSTClientStarter implements TGClientStarter {
 		}
 		return null;
 	}
-	
+
 	public String getWorkingDir() {
 		String workingDir = this.settings.getWorkingDir();
 		if( workingDir != null ) {
@@ -68,7 +68,7 @@ public class VSTClientStarter implements TGClientStarter {
 		}
 		return null;
 	}
-	
+
 	public Map<String, Object> createCommandVariables(Integer sessionId, Integer serverPort, String fileName) {
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(VARIABLE_VST_SESSION_ID, sessionId);

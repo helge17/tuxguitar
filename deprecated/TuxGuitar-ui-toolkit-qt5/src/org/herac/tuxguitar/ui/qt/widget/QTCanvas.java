@@ -10,21 +10,21 @@ import org.qtjambi.qt.widgets.QFrame;
 import org.qtjambi.qt.widgets.QFrame.Shape;
 
 public class QTCanvas extends QTWidget<QFrame> implements UICanvas {
-	
+
 	private QTPaintListenerManager paintListener;
-	
+
 	public QTCanvas(QTContainer parent, boolean bordered) {
 		super(new QFrame(parent.getContainerControl()), parent);
-		
+
 		this.paintListener = new QTPaintListenerManager(this);
 		this.getControl().setAutoFillBackground(true);
 		this.getControl().setFrameShape(bordered ? Shape.StyledPanel : Shape.NoFrame);
 	}
-	
+
 	public QPaintDeviceInterface getPaintDeviceInterface() {
 		return this.getControl();
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = this.getPackedSize();
 		if( fixedWidth != null ) {
@@ -35,14 +35,14 @@ public class QTCanvas extends QTWidget<QFrame> implements UICanvas {
 		}
 		this.setPackedSize(packedSize);
 	}
-	
+
 	public void addPaintListener(UIPaintListener listener) {
 		if( this.paintListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.Paint, this.paintListener);
 		}
 		this.paintListener.addListener(listener);
 	}
-	
+
 	public void removePaintListener(UIPaintListener listener) {
 		this.paintListener.removeListener(listener);
 		if( this.paintListener.isEmpty() ) {

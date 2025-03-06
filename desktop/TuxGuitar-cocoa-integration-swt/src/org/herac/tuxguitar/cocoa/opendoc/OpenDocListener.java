@@ -6,7 +6,7 @@ package org.herac.tuxguitar.cocoa.opendoc;
  * - wait for all other plugins to be initialized (many file importers are plugins)
  * - at application start, wait for default song to be created, or else 2 tabs are open when double-clicking 1 single file
  * This is done by setting a TGActionInterceptor
- * 
+ *
  * Assumptions
  * - if TuxGuitar is called from command line with an argument, TuxGuitar.java launches TGReadURLAction action.
  *   in this case, OpenDocument events from SWT are never received when double-clicking a file.

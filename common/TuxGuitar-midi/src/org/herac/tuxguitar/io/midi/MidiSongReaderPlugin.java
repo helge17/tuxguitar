@@ -7,7 +7,7 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiSongReaderPlugin extends TGSongReaderPlugin {
-	
+
 	public MidiSongReaderPlugin() {
 		super(false);
 	}

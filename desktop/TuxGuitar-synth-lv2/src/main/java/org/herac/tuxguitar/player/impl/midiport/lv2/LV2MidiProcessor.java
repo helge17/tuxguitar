@@ -7,11 +7,11 @@ import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
 import org.herac.tuxguitar.util.TGContext;
 
 public class LV2MidiProcessor extends LV2AudioProcessorWrapper implements TGMidiProcessor {
-	
+
 	public LV2MidiProcessor(TGContext context, LV2World world) {
 		super(context, world);
 	}
-	
+
 	@Override
 	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) {
 		this.queueMidiMessage(new byte[] {(byte) ShortMessage.NOTE_ON, (byte) key, (byte) velocity});

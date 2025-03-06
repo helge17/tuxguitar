@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class TGBrowserResponse {
-	
+
 	private static final String TAG_STATUS = "status";
 	private static final String TAG_ELEMENTS = "elements";
 	private static final String TAG_ELEMENT = "element";
@@ -26,13 +26,13 @@ public class TGBrowserResponse {
 	private static final String ATTRIBUTE_URL = "url";
 	private static final String ATTRIBUTE_KEY = "key";
 	private static final String ATTRIBUTE_VALUE = "value";
-	
+
 	private Document document;
-	
+
 	public TGBrowserResponse( InputStream stream ) throws Throwable {
 		this.initialize( stream );
 	}
-	
+
 	private void initialize(InputStream stream) throws Throwable {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		// CVE-2020-14940
@@ -44,14 +44,14 @@ public class TGBrowserResponse {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.document = builder.parse(stream);
 	}
-	
+
 	public String getStatus() {
 		if ( this.document != null ){
 			return getStatus(this.document.getFirstChild());
 		}
 		return null;
 	}
-	
+
 	private String getStatus(Node rootNode){
 		NodeList rootNodes = rootNode.getChildNodes();
 		for (int i = 0; i < rootNodes.getLength(); i++) {
@@ -62,49 +62,49 @@ public class TGBrowserResponse {
 		}
 		return null;
 	}
-	
+
 	public void loadElements(List<TGBrowserElement> list){
 		if ( this.document != null ){
 			loadElements(list, this.document.getFirstChild());
 		}
 	}
-	
+
 	private void loadElements(List<TGBrowserElement> list,Node rootNode){
 		NodeList rootNodes = rootNode.getChildNodes();
 		for (int i = 0; i < rootNodes.getLength(); i++) {
 			Node elementsNode = rootNodes.item(i);
-			
+
 			if (elementsNode.getNodeName().equals( TAG_ELEMENTS )) {
-				
+
 				NodeList elementList = elementsNode.getChildNodes();
 				for (int e = 0; e < elementList.getLength(); e++) {
 					Node elementNode = elementList.item(e);
 					String nodeName = elementNode.getNodeName();
-					
+
 					if (nodeName.equals( TAG_ELEMENT )) {
 						NamedNodeMap params = elementNode.getAttributes();
-						
+
 						String name = getAttributeValue( params, ATTRIBUTE_NAME);
 						if (name != null && name.trim().length() > 0 ){
 							TGBrowserElementImpl element = new TGBrowserElementImpl( name );
-							
+
 							NodeList nodeChildren = elementNode.getChildNodes();
 							for (int c = 0; c < nodeChildren.getLength(); c++) {
 								Node child = nodeChildren.item( c );
 								if( child.getNodeName().equals( TAG_SONG ) ){
 									element.setUrl( getAttributeValue( child.getAttributes() , ATTRIBUTE_URL) );
 								}else if( child.getNodeName().equals( TAG_PARAMETERS ) ){
-									
+
 									NodeList parameters = child.getChildNodes();
 									for (int p = 0; p < parameters.getLength(); p++) {
-										
+
 										Node parameter = parameters.item( p );
 										if( parameter.getNodeName().equals( TAG_PARAMETER ) ){
 											NamedNodeMap parameterAttributes = parameter.getAttributes();
-											
+
 											String key = getAttributeValue( parameterAttributes, ATTRIBUTE_KEY);
 											String value = getAttributeValue( parameterAttributes, ATTRIBUTE_VALUE);
-											
+
 											if (key != null && value != null && key.trim().length() > 0 && value.trim().length() > 0 ){
 												element.addProperty(key, value);
 											}
@@ -112,7 +112,7 @@ public class TGBrowserResponse {
 									}
 								}
 							}
-							
+
 							list.add( element );
 						}
 					}
@@ -120,7 +120,7 @@ public class TGBrowserResponse {
 			}
 		}
 	}
-	
+
 	private String getAttributeValue( NamedNodeMap node , String attribute ){
 		try{
 			if( node != null && attribute != null ){

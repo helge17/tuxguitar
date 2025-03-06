@@ -19,16 +19,16 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class SelectTrackAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.track.select";
-	
+
 	public SelectTrackAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		final AWTEvent awtEvent = context.getAttribute(AWTEvent.class.getName());
-		
+
 		final Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
 		final JButton button = (JButton) awtEvent.getSource();
 		final JPopupMenu menu = new JPopupMenu();

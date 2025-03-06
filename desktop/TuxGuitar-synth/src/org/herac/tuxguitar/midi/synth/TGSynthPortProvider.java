@@ -9,13 +9,13 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthPortProvider implements MidiOutputPortProvider{
-	
+
 	private TGSynthPort port;
-	
+
 	public TGSynthPortProvider(TGContext context){
 		this.port = new TGSynthPort(context, "tuxguitar-synth.port","TuxGuitar Synthesizer");
 	}
-	
+
 	public void closeAll() throws MidiPlayerException {
 		this.port.close();
 	}

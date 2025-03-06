@@ -9,7 +9,7 @@ public class GMReceiverProxy implements GMReceiver {
 	public GMReceiverProxy(GMReceiver receiver) {
 		this.receiver = receiver;
 	}
-	
+
 	public void sendAllNotesOff() throws MidiPlayerException {
 		this.receiver.sendAllNotesOff();
 	}
@@ -43,7 +43,7 @@ public class GMReceiverProxy implements GMReceiver {
 			this.receiver.sendPitchBend(channel, value);
 		}
 	}
-	
+
 	public boolean isValidChannel(int channel) {
 		return (channel >=0 && channel < 16);
 	}

@@ -39,17 +39,17 @@ public abstract class TGTest {
 	//    results of "do" methods with suffix "Checked" ARE checked (i.e. action was effective or test fails)
 	//    with no suffix, action is launched but nothing is checked
 	// methods prefixed with "check" do not trigger any action, but check something
-	
+
 	static boolean TGisRunning;
 	protected boolean verbose;
-	
+
 	@BeforeAll
 	static void startTG() {
 		if (TGisRunning) return;
-		
+
 		TuxGuitar tg = TuxGuitar.getInstance();
 		assertNotNull(tg);
-		
+
 		new Thread() {
 			public void run() {
 				tg.createApplication(null);
@@ -70,22 +70,22 @@ public abstract class TGTest {
 	protected void OK() {
 		log("OK\n");
 	}
-	
+
 	protected void doWait() throws InterruptedException {
 		Thread.sleep(10);
 	}
-	
+
 	protected void doInsertMeasuresChecked(int from, int nb) {
 		TGTrack track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 		int nbMeasuresInit = track.countMeasures();
-		
+
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGAddMeasureListAction.NAME);
 		tgActionProcessor.setAttribute(TGAddMeasureListAction.ATTRIBUTE_MEASURE_COUNT, nb);
 		tgActionProcessor.setAttribute(TGAddMeasureListAction.ATTRIBUTE_MEASURE_NUMBER, from);
 		log(String.format("inserting %d measures... ",nb));
 		tgActionProcessor.process();
-		
+
 		assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
 			while (track.countMeasures() != (nbMeasuresInit+nb)) {
 				doWait();
@@ -124,7 +124,7 @@ public abstract class TGTest {
 			TGActionManager.getInstance(TuxGuitar.getInstance().getContext()).execute(TGMoveToAction.NAME, context);
 		}
 	}
-	
+
 	protected void doMouseShiftClick(int measureNb, int beatNb, int stringNb) {
 		TGActionManager tgActionManager = TGActionManager.getInstance(TuxGuitar.getInstance().getContext());
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
@@ -155,7 +155,7 @@ public abstract class TGTest {
 			TGActionManager.getInstance(TuxGuitar.getInstance().getContext()).execute(TGMoveToAction.NAME, context);
 		}
 	}
-	
+
 	protected void checkCaretPosition(int measureNb, int beatNb, int stringNb) {
 		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		log("checking caret position...");
@@ -173,7 +173,7 @@ public abstract class TGTest {
 		doMouseClick(measureNb, beatNb, stringNb);
 		checkCaretPosition(measureNb, beatNb, stringNb);
 	}
-	
+
 	protected void checkCaretReachesMeasure(int measureNb) {
 		Caret caret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret();
 		log(String.format("checking caret is in measure %d...",measureNb));
@@ -184,7 +184,7 @@ public abstract class TGTest {
 		});
 		OK();
 	}
-	
+
 	protected void doSelectMeasuresChecked(int from, int to) {
 		TGActionProcessor tgActionProcessor;
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
@@ -239,14 +239,14 @@ public abstract class TGTest {
 		});
 		OK();
 	}
-	
+
 	protected void doCloseAllSongsWithoutConfirmationChecked() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGCloseAllDocumentsAction.NAME);
 		tgActionProcessor.setAttribute(TGUnsavedDocumentInterceptor.UNSAVED_INTERCEPTOR_BY_PASS, Boolean.TRUE);
 		log("closing all songs...");
 		tgActionProcessor.process();
-		
+
 		// wait until closed
 		assertTimeoutPreemptively(Duration.ofSeconds(2), () -> {
 			boolean allClosed = false;
@@ -260,19 +260,19 @@ public abstract class TGTest {
 		});
 		OK();
 	}
-	
+
 	protected void checkCaretDuration(int value) {
 		// TODO: difficult to find a clean criterion to detect end of setDuration...
 		assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
 			boolean ok = false;
 			while (!ok) {
 				Thread.sleep(100);
-				ok = (value == TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration().getValue());				
+				ok = (value == TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getDuration().getValue());
 			}
 		});
 		OK();
 	}
-	
+
 	protected void doSetDuration(int value) {
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
 		TGDuration duration = tablature.getCaret().getDuration();

@@ -36,32 +36,32 @@ import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
 
 public class TGDriveBrowser implements TGBrowser{
-	
+
 	private TGContext context;
 	private TGDriveBrowserSettings settings;
 	private TGDriveBrowserFolder folder;
 	private GoogleApiClient client;
 	private int loginRequest;
-	
+
 	public TGDriveBrowser(TGContext context, TGDriveBrowserSettings settings){
 		this.context = context;
 		this.settings = settings;
 		this.loginRequest = this.findActivity().getResultManager().createRequestCode();
 	}
-	
+
 	public void open(final TGBrowserCallBack<Object> cb){
 		try {
 			GoogleApiClient.Builder builder = new GoogleApiClient.Builder(findActivity());
 			builder.addApi(Drive.API);
 		    builder.addScope(Drive.SCOPE_FILE);
-		    
+
 		    builder.addConnectionCallbacks(
 		    	new GoogleApiClient.ConnectionCallbacks() {
 					@Override
 					public void onConnected(Bundle bundle) {
 						cb.onSuccess(null);
 					}
-					
+
 					@Override
 					public void onConnectionSuspended(int cause) {
 						cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_connection_suspended)));
@@ -78,7 +78,7 @@ public class TGDriveBrowser implements TGBrowser{
 					    	tgActivity.getResultManager().addHandler(TGDriveBrowser.this.loginRequest, new TGActivityResultHandler() {
 								public void onActivityResult(int resultCode, Intent data) {
 									tgActivity.getResultManager().removeHandler(TGDriveBrowser.this.loginRequest, this);
-									
+
 									if( Activity.RESULT_OK == resultCode ) {
 										TGDriveBrowser.this.client.connect();
 									} else {
@@ -86,7 +86,7 @@ public class TGDriveBrowser implements TGBrowser{
 									}
 								}
 							});
-					        
+
 					    	result.startResolutionForResult(tgActivity, TGDriveBrowser.this.loginRequest);
 					    } catch (SendIntentException e) {
 					    	cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_unexpected_error), e));
@@ -97,7 +97,7 @@ public class TGDriveBrowser implements TGBrowser{
 			if(!this.settings.isDefaultAccount()) {
 				builder.setAccountName(this.settings.getAccount());
 			}
-			
+
 			this.folder = null;
 			this.client = builder.build();
 			this.client.connect();
@@ -105,18 +105,18 @@ public class TGDriveBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void close(TGBrowserCallBack<Object> cb){
 		try{
 			this.folder = null;
 			this.client.disconnect();
-			
+
 			cb.onSuccess(null);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try{
 			if( element.isFolder() ) {
@@ -127,29 +127,29 @@ public class TGDriveBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdRoot(TGBrowserCallBack<Object> cb) {
 		try{
 			this.folder = new TGDriveBrowserFolder(null, Drive.DriveApi.getRootFolder(this.client), "/");
-			
+
 			cb.onSuccess(this.folder);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			if( this.folder != null && this.folder.getParent() != null ){
 				this.folder = this.folder.getParent();
 			}
-			
+
 			cb.onSuccess(this.folder);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void listElements(final TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try {
 			if( this.folder != null ) {
@@ -157,13 +157,13 @@ public class TGDriveBrowser implements TGBrowser{
 					public void onResult(MetadataBufferResult result) {
 			            if( result.getStatus().isSuccess() ) {
 			            	List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
-			            	
+			            
 			            	Iterator<Metadata> it = result.getMetadataBuffer().iterator();
 			            	while(it.hasNext()) {
 			            		Metadata metadata = it.next();
 			            		DriveId driveId = metadata.getDriveId();
 			            		String name = metadata.getTitle();
-			            		
+			            
 			            		if(!metadata.isTrashed() && !metadata.isExplicitlyTrashed()) {
 				            		if( metadata.isFolder() ) {
 				            			elements.add(new TGDriveBrowserFolder(TGDriveBrowser.this.folder, Drive.DriveApi.getFolder(TGDriveBrowser.this.client, driveId), name));
@@ -172,11 +172,11 @@ public class TGDriveBrowser implements TGBrowser{
 				            		}
 			            		}
 			            	}
-			            	
+			            
 							if( !elements.isEmpty() ){
 								Collections.sort(elements, new TGBrowserElementComparator());
 							}
-							
+
 			            	cb.onSuccess(elements);
 			            } else {
 			            	cb.handleError(new TGBrowserException(findActivity().getString(R.string.gdrive_list_children_error)));
@@ -194,7 +194,7 @@ public class TGDriveBrowser implements TGBrowser{
 	public void createElement(final TGBrowserCallBack<TGBrowserElement> cb, final String name) {
 		try {
 			MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(name).build();
-			
+
 			this.folder.getFolder().createFile(this.client, changeSet, null).setResultCallback(new ResultCallback<DriveFileResult>() {
 				public void onResult(DriveFileResult result) {
 					if( result.getStatus().isSuccess() ) {
@@ -229,7 +229,7 @@ public class TGDriveBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void getOutputStream(final TGBrowserCallBack<OutputStream> cb, final TGBrowserElement element) {
 		try {
 			DriveFile driveFile = ((TGDriveBrowserFile) element).getFile();
@@ -250,11 +250,11 @@ public class TGDriveBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public boolean isWritable() {
 		return true;
 	}
-	
+
 	public TGActivity findActivity() {
 		return TGActivityController.getInstance(this.context).getActivity();
 	}

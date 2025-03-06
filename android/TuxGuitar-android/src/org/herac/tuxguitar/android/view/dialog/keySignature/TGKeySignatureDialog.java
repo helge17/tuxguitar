@@ -47,15 +47,15 @@ public class TGKeySignatureDialog extends TGModalFragment {
 	public void onPostInflateView() {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createKeyValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.key_signature_dlg_ks_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(this.getMeasure().getKeySignature(), null)));
-		
+
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.key_signature_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
 	}
-	
+
 	public TGSelectableItem[] createKeyValues() {
 		return new TGSelectableItem[]  {
 			new TGSelectableItem(Integer.valueOf(0), getString(R.string.key_signature_dlg_ks_value_natural)),
@@ -75,17 +75,17 @@ public class TGKeySignatureDialog extends TGModalFragment {
 			new TGSelectableItem(Integer.valueOf(14), getString(R.string.key_signature_dlg_ks_value_flat_7)),
 		};
 	}
-	
+
 	public Integer parseKeySignatureValue() {
 		Spinner keySignature = (Spinner) this.getView().findViewById(R.id.key_signature_dlg_ks_value);
 		return (Integer) ((TGSelectableItem) keySignature.getSelectedItem()).getItem();
 	}
-	
+
 	public Boolean parseApplyToEnd() {
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.key_signature_dlg_options_apply_to_end);
 		return Boolean.valueOf(applyToEnd.isChecked());
 	}
-	
+
 	public void changeKeySignature() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeKeySignatureAction.NAME);
 		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_KEY_SIGNATURE, this.parseKeySignatureValue());

@@ -3,13 +3,13 @@ package org.herac.tuxguitar.app.action.installer;
 import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
 
 public class TGActionConfig {
-	
+
 	private TGUpdateController updateController;
 	private boolean lockableAction;
 	private boolean shortcutAvailable;
 	private boolean disableOnPlaying;
 	private boolean syncThread;
-	
+
 	public TGActionConfig() {
 		super();
 	}

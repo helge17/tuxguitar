@@ -10,7 +10,7 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class TGSynthSettingsHandler implements TGPersistenceSettingsHandler {
 
 	private TGContext context;
-	
+
 	public TGSynthSettingsHandler(TGContext context) {
 		this.context = context;
 	}
@@ -22,12 +22,12 @@ public class TGSynthSettingsHandler implements TGPersistenceSettingsHandler {
 	public TGPersistenceSettingsMode getMode() {
 		return TGPersistenceSettingsMode.WRITE;
 	}
-	
+
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				final TGSynthAudioSettings midiToAudioSettings = new TGSynthAudioSettings();
-				
+
 				new TGSynthSettingsDialog(TGSynthSettingsHandler.this.context).open(midiToAudioSettings, new Runnable() {
 					public void run() {
 						context.setAttribute(TGSynthAudioSettings.class.getName(), midiToAudioSettings);

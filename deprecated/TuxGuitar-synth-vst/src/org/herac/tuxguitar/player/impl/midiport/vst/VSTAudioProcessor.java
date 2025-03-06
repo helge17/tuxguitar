@@ -15,13 +15,13 @@ import org.herac.tuxguitar.util.base64.Base64Decoder;
 import org.herac.tuxguitar.util.base64.Base64Encoder;
 
 public class VSTAudioProcessor implements TGAudioProcessor {
-	
+
 	public static final int BUFFER_SIZE = ( TGAudioBuffer.BUFFER_SIZE / 2) ;
 	public static final float SAMPLE_RATE = ( TGAudioBuffer.SAMPLE_RATE );
 	public static final String PARAM_FILE_NAME = "vst.filename";
 	public static final String PARAM_CHUNK = "vst.chunk";
 	public static final String PARAM_PREFIX = "vst.param.";
-	
+
 	private Object lock = new Object();
 	private TGContext context;
 	private VSTEffect effect;
@@ -30,11 +30,11 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 	private float[][] inputs;
 	private float[][] outputs;
 	private Map<String, String> appliedParameters;
-	
+
 	public VSTAudioProcessor(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void finalize(){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
@@ -42,7 +42,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			}
 		}
 	}
-	
+
 	public void open(File file){
 		synchronized (this.lock) {
 			if(!this.isOpen()) {
@@ -62,7 +62,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			}
 		}
 	}
-	
+
 	public void close(){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
@@ -75,7 +75,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			}
 		}
 	}
-	
+
 	public void queueMidiMessage(byte[] midiMessage){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
@@ -83,7 +83,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			}
 		}
 	}
-	
+
 	public void fillBuffer(TGAudioBuffer buffer) {
 		synchronized (this.lock) {
 			if( this.isOpen()) {
@@ -92,7 +92,7 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			}
 		}
 	}
-	
+
 	public void processMessages(){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
@@ -103,23 +103,23 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 			}
 		}
 	}
-	
+
 	public void processReplacing(TGAudioBuffer buffer){
 		synchronized (this.lock) {
 			if( this.isOpen()) {
 				if( this.inputs.length > 0 ) {
 					buffer.read(this.inputs);
 				}
-				
+
 				this.effect.sendProcessReplacing(this.inputs, this.outputs, BUFFER_SIZE);
-				
+
 				if( this.outputs.length > 0 ) {
 					buffer.write(this.outputs);
 				}
 			}
 		}
 	}
-	
+
 	public void restoreParameters(Map<String, String> parameters) {
 		if(!this.isOpen() && parameters.containsKey(PARAM_FILE_NAME)) {
 			this.open(new File(parameters.get(PARAM_FILE_NAME)));
@@ -127,21 +127,21 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 		if( this.isOpen() ) {
 			if( this.appliedParameters == null || !this.appliedParameters.equals(parameters)) {
 				this.appliedParameters = new HashMap<String, String>(parameters);
-				
+
 				int version = this.getEffect().getVersion();
 				if( version <= 2300 ) {
 					this.getEffect().setActive(false);
 				}
-				
+
 				this.getEffect().beginSetProgram();
-				
+
 				if( parameters.containsKey(PARAM_CHUNK)) {
 					String chunkData = parameters.get(PARAM_CHUNK);
 					if( chunkData != null && chunkData.length() > 0 ) {
 						this.getEffect().setChunk(Base64Decoder.decode(chunkData.getBytes()));
 					}
 				}
-				
+
 				int paramCount = this.getEffect().getNumParams();
 				if( paramCount > 0 ) {
 					for(int i = 0 ; i < paramCount ; i ++) {
@@ -151,55 +151,55 @@ public class VSTAudioProcessor implements TGAudioProcessor {
 						}
 					}
 				}
-				
+
 				this.getEffect().endSetProgram();
-				
+
 				if( version <= 2300 ) {
 					this.getEffect().setActive(true);
 				}
-				
+
 				this.fireParamsEvent(VSTParamsEvent.ACTION_RESTORE, parameters);
 			}
 		}
 	}
-	
+
 	public void storeParameters(Map<String, String> parameters) {
 		if( this.isOpen() ) {
 			parameters.put(PARAM_FILE_NAME, this.file.getAbsolutePath());
-			
+
 			int paramCount = this.getEffect().getNumParams();
 			for(int i = 0 ; i < paramCount ; i ++) {
 				parameters.put(PARAM_PREFIX + i, Float.toString(this.getEffect().getParameter(i)));
 			}
-			
+
 			byte[] chunk = this.getEffect().getChunk();
-			
+
 			parameters.put(PARAM_CHUNK, (chunk != null ? new String(Base64Encoder.encode(chunk)) : null));
-			
+
 			this.appliedParameters = new HashMap<String, String>(parameters);
-			
+
 			this.fireParamsEvent(VSTParamsEvent.ACTION_STORE, parameters);
 		}
 	}
-	
+
 	public void fireParamsEvent(Integer action, Map<String, String> parameters) {
 		if( this.isOpen() ) {
 			TGEventManager.getInstance(this.context).fireEvent(new VSTParamsEvent(this.getEffect().getSession(), action, parameters));
 		}
 	}
-	
+
 	public VSTEffect getEffect() {
 		return this.effect;
 	}
-	
+
 	public File getFile() {
 		return this.file;
 	}
-	
+
 	public boolean isOpen() {
 		return (this.effect != null && !this.effect.isClosed());
 	}
-	
+
 	public boolean isBusy() {
 		return false;
 	}

@@ -8,19 +8,19 @@ import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
 import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
 
 public class JFXMenuActionItem extends JFXMenuItem<MenuItem> implements UIMenuActionItem {
-	
+
 	protected JFXSelectionListenerManager<ActionEvent> selectionListener;
-	
+
 	public JFXMenuActionItem(MenuItem item, JFXMenuItemContainer parent) {
 		super(item, parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerManager<ActionEvent>(this);
 	}
-	
+
 	public JFXMenuActionItem(JFXMenuItemContainer parent) {
 		this(new MenuItem(), parent);
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().setOnAction(this.selectionListener);

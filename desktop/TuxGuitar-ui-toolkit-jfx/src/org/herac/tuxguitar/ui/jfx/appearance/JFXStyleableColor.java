@@ -18,12 +18,12 @@ import javafx.scene.paint.Color;
 public class JFXStyleableColor extends Parent {
 
 	public static final Color DEFAULT_COLOR = null;
-	
+
 	private ObjectProperty<Color> color;
-	
+
 	public JFXStyleableColor(String styleName) {
 		new Scene(this);
-		
+
 		this.getStylesheets().add(JFXAppearance.CSS_RESOURCE);
 		this.setStyle("-color: " + styleName + ";");
 		this.applyCss();
@@ -33,11 +33,11 @@ public class JFXStyleableColor extends Parent {
 	public List<CssMetaData<? extends Styleable, ?>> getCssMetaData() {
 		return StyleableProperties.STYLEABLES;
 	}
-	
+
 	public Color getColor() {
 		return colorProperty().get();
 	}
-	
+
 	public ObjectProperty<Color> colorProperty() {
 		if( this.color == null) {
 			this.color = new StyleableObjectProperty<Color>(DEFAULT_COLOR) {

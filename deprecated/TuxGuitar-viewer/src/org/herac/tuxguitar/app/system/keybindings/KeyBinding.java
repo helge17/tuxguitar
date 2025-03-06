@@ -3,47 +3,47 @@ package org.herac.tuxguitar.app.system.keybindings;
 import java.util.StringTokenizer;
 
 public class KeyBinding {
-	
+
 	public static final String MASK_SEPARATOR = "+";
-	
+
 	private int mask;
 	private int key;
-	
+
 	public KeyBinding(int key,int mask){
 		this.key = key;
 		this.mask = mask;
 	}
-	
+
 	public KeyBinding(){
 		this(0,0);
 	}
-	
+
 	public int getKey() {
 		return this.key;
 	}
-	
+
 	public void setKey(int key) {
 		this.key = key;
 	}
-	
+
 	public int getMask() {
 		return this.mask;
 	}
-	
+
 	public void setMask(int mask) {
 		this.mask = mask;
 	}
-	
+
 	private String getSpecialKey(){
 		for(int i = 0; i < KeyConversion.relations.length; i++){
 			if (this.key == KeyConversion.relations[i].getCode()){
 				return KeyConversion.relations[i].getKey();
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	private String getSpecialMask(){
 		String mask = new String();
 		for(int i = 0; i < KeyConversion.relations.length; i++){
@@ -53,27 +53,27 @@ public class KeyBinding {
 		}
 		return mask;
 	}
-	
+
 	public boolean isSameAs(KeyBinding kb){
 		if( kb != null ){
 			return (this.key == kb.key && this.mask == kb.mask);
 		}
 		return false;
 	}
-	
+
 	public String toString(){
 		String mask = getSpecialMask();
 		String key = getSpecialKey();
 		return (key != null ? (mask + key) : (mask + (char)this.key) );
 	}
-	
+
 	public Object clone(){
 		return new KeyBinding(getKey(),getMask());
 	}
-	
+
 	public static KeyBinding parse(String keyString){
 		KeyBinding keybinding = new KeyBinding();
-		
+
 		// process mask
 		int maskCode=0;
 		String key = keyString;
@@ -81,7 +81,7 @@ public class KeyBinding {
 			StringTokenizer st = new StringTokenizer(keyString,MASK_SEPARATOR);
 			while(st.hasMoreTokens()){
 				String token = st.nextToken();
-				
+
 				// only process if this is not the last token
 				if (st.hasMoreTokens()){
 					// add the mask
@@ -92,23 +92,23 @@ public class KeyBinding {
 				}
 			}
 		}
-		
+
 		keybinding.setMask(maskCode);
-		
+
 		// process key
 		int keycode = getSpecialCode(key);
 		if (keycode == 0)
 			keycode = getKeyCode(key);
-		
+
 		keybinding.setKey(keycode);
-		
+
 		return keybinding;
 	}
-	
+
 	private static int getKeyCode(String key){
 		return key.charAt(0);
 	}
-	
+
 	private static int getSpecialCode(String key){
 		for(int i = 0; i < KeyConversion.relations.length; i++){
 			if (KeyConversion.relations[i].getKey().equals(key)){
@@ -117,11 +117,11 @@ public class KeyBinding {
 		}
 		return 0;
 	}
-	
+
 }
 
 class KeyConversion {
-	
+
 	protected static final KeyConversion[] relations = new KeyConversion[]{
 		new KeyConversion("F1",KeyBindingConstants.F1),
 		new KeyConversion("F2",KeyBindingConstants.F2),
@@ -158,19 +158,19 @@ class KeyConversion {
 		new KeyConversion("/",KeyBindingConstants.KEYPAD_DIVIDE),
 		new KeyConversion(".",KeyBindingConstants.KEYPAD_DECIMAL),
 	};
-	
+
 	private String key;
 	private int code;
-	
+
 	private KeyConversion(String key,int code){
 		this.key = key;
 		this.code = code;
 	}
-	
+
 	public String getKey(){
 		return this.key;
 	}
-	
+
 	public int getCode(){
 		return this.code;
 	}

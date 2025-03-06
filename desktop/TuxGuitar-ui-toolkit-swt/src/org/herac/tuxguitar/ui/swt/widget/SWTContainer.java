@@ -5,10 +5,10 @@ import org.herac.tuxguitar.ui.widget.UIContainer;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 public interface SWTContainer<T extends Composite> extends UIContainer {
-	
+
 	T getControl();
-	
+
 	void addChild(UIControl uiControl);
-	
+
 	void removeChild(UIControl uiControl);
 }

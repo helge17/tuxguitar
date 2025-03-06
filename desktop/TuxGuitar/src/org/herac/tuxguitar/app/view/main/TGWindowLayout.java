@@ -7,13 +7,13 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UILayoutContainer;
 
 public class TGWindowLayout extends UITableLayout {
-	
+
 	private UIControl top;
 	private UIControl topContainer;
 	private UIControl divider;
 	private UIControl bottomContainer;
 	private UIControl bottom;
-	
+
 	public TGWindowLayout(UIControl top, UIControl topContainer, UIControl divider, UIControl bottomContainer, UIControl bottom) {
 		this.top = top;
 		this.topContainer = topContainer;
@@ -22,18 +22,18 @@ public class TGWindowLayout extends UITableLayout {
 		this.bottom = bottom;
 		this.configure();
 	}
-	
+
 	public UISize computePackedSize(UILayoutContainer container) {
 		return this.computePackedSize(container, true);
 	}
-	
+
 	public UISize computePackedSize(UILayoutContainer container, boolean resetTableHeight) {
 		if( resetTableHeight ) {
 			this.set(this.bottomContainer, MAXIMUM_PACKED_HEIGHT, null);
 		}
 		return super.computePackedSize(container);
 	}
-	
+
 	public void setBounds(UILayoutContainer container, UIRectangle bounds) {
 		UISize packedContentSize = container.getPackedContentSize();
 		if( packedContentSize.getHeight() > bounds.getHeight() ) {
@@ -41,10 +41,10 @@ public class TGWindowLayout extends UITableLayout {
 			this.set(this.bottomContainer, MAXIMUM_PACKED_HEIGHT, (preferredSize.getHeight() - (packedContentSize.getHeight() - bounds.getHeight())));
 			this.computePackedSize(container, false);
 		}
-		
+
 		super.setBounds(container, bounds);
 	}
-	
+
 	public void configure() {
 		this.set(UITableLayout.MARGIN_TOP, 0f);
 		this.set(UITableLayout.IGNORE_INVISIBLE, true);

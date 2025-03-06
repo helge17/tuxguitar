@@ -8,19 +8,19 @@ import org.herac.tuxguitar.player.impl.midiport.lv2.ui.LV2AudioProcessorUI;
 import org.herac.tuxguitar.util.TGContext;
 
 public class LV2MidiProcessorUIFactory implements TGAudioProcessorUIFactory {
-	
+
 	private TGContext context;
 	private LV2PluginValidator validator;
-	
+
 	public LV2MidiProcessorUIFactory(TGContext context) {
 		this.context = context;
 		this.validator = new LV2MidiPluginValidator();
 	}
-	
+
 	public String getType() {
 		return LV2Module.MIDI_TYPE;
 	}
-	
+
 	public TGAudioProcessorUI create(TGAudioProcessor processor, TGAudioProcessorUICallback callback) {
 		return new LV2AudioProcessorUI(this.context, (LV2AudioProcessorWrapper) processor, this.validator, callback);
 	}

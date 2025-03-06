@@ -9,11 +9,11 @@ public class TGIconCheckButton extends TGIconButton {
 	private UIImage selectedIcon;
 	private UIImage selectedHoveredIcon;
 	private boolean selected;
-	
+
 	public TGIconCheckButton(UIFactory factory, UILayoutContainer parent) {
 		super(factory, parent);
 	}
-	
+
 	@Override
 	protected UIImage getDisplayedImage() {
 		UIImage image = null;
@@ -29,14 +29,14 @@ public class TGIconCheckButton extends TGIconButton {
 		}
 		return image;
 	}
-	
+
 	public void setSelected(boolean selected) {
 		if (this.selected != selected) {
 			this.selected = selected;
 			this.getControl().redraw();
 		}
 	}
-	
+
 	public void setSelectedIcon(UIImage icon) {
 		if (icon != this.selectedIcon) {
 			this.selectedIcon = icon;
@@ -46,7 +46,7 @@ public class TGIconCheckButton extends TGIconButton {
 			}
 		}
 	}
-	
+
 	public void setSelectedHoveredIcon(UIImage icon) {
 		if (icon != this.selectedHoveredIcon) {
 			this.selectedHoveredIcon = icon;

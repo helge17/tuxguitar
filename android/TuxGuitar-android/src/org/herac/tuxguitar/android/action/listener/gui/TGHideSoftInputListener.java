@@ -13,26 +13,26 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 public class TGHideSoftInputListener implements TGEventListener {
-	
+
 	public static final String ATTRIBUTE_BY_PASS = (TGHideSoftInputListener.class.getName() + "-byPass");
 	public static final String ATTRIBUTE_DONE = (TGHideSoftInputListener.class.getName() + "-done");
-	
+
 	private TGContext context;
 	private TGActivity activity;
-	
+
 	public TGHideSoftInputListener(TGContext context, TGActivity activity){
 		this.context = context;
 		this.activity = activity;
 	}
-	
+
 	public void hideSoftInputFromWindow() {
 		View view = this.activity.getCurrentFocus();
-		if( view != null ) {  
+		if( view != null ) {
 			InputMethodManager imm = (InputMethodManager) this.activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
 	}
-	
+
 	public void hideSoftInputFromWindowInUiThread() {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
@@ -40,7 +40,7 @@ public class TGHideSoftInputListener implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public void checkForHideSoftInputFromWindow(TGEvent event) {
 		TGActionContext actionContext = this.getActionContext(event);
 		if(!Boolean.TRUE.equals(actionContext.getAttribute(ATTRIBUTE_DONE))) {
@@ -48,19 +48,19 @@ public class TGHideSoftInputListener implements TGEventListener {
 			actionContext.setAttribute(ATTRIBUTE_DONE, Boolean.TRUE);
 		}
 	}
-	
+
 	public TGActionContext getActionContext(TGEvent event) {
 		return event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
 	}
-	
+
 	public boolean isByPassInContext(TGActionContext context) {
 		return Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_BY_PASS));
 	}
-	
+
 	public boolean isByPassInContext(TGEvent event) {
 		return this.isByPassInContext(this.getActionContext(event));
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if(!this.isByPassInContext(event) ) {
 			this.checkForHideSoftInputFromWindow(event);

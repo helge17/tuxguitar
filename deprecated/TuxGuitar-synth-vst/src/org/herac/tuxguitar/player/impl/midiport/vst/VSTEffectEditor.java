@@ -27,36 +27,36 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class VSTEffectEditor implements TGEventListener {
-	
+
 	private VSTEffect effect;
 	private TGContext context;
 	private UIWindow dialog;
 	private TGAudioProcessorUICallback callback;
 	private UIScale[] scaleParameterValue;
-	private UILabel[] labelParameterValue; 
+	private UILabel[] labelParameterValue;
 	private Integer paramCount;
-	
+
 	public VSTEffectEditor(TGContext context, VSTEffect effect, TGAudioProcessorUICallback callback) {
 		this.context = context;
 		this.effect = effect;
 		this.callback = callback;
 	}
-	
+
 	public void open(UIWindow parent) {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.dialog = uiFactory.createWindow(parent, false, false);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText("VST Effect");
-		
+
 		//-------------------------------------------------------------------------
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(this.dialog);
 		group.setLayout(groupLayout);
 		group.setText("VST Effect Parameters");
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//-------------------------------------------------------------------------
 		final UIScrollBarPanel scrollBarPanel = uiFactory.createScrollBarPanel(group, true, false, false);
 		scrollBarPanel.setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, true));
@@ -66,49 +66,49 @@ public class VSTEffectEditor implements TGEventListener {
 				scrollBarPanel.layout();
 			}
 		});
-		
+
 		groupLayout.set(scrollBarPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 400f, 400f, null);
-		
+
 		UITableLayout panelLayout = new UITableLayout();
 		UIPanel panel = uiFactory.createPanel(scrollBarPanel, false);
 		panel.setLayout(panelLayout);
-		
-		this.paramCount = Math.min(this.effect.getNumParams(), 50);		
+
+		this.paramCount = Math.min(this.effect.getNumParams(), 50);
 		this.scaleParameterValue = new UIScale[this.paramCount];
 		this.labelParameterValue = new UILabel[this.paramCount];
 		for( int i = 0 ; i < this.paramCount ; i ++ ){
 			final int index = i;
 			final String name = this.effect.getParameterName( i );
 			final String label = this.effect.getParameterLabel( i );
-			
+
 			final UILabel labelParameterName = uiFactory.createLabel(panel);
 			labelParameterName.setText( (name != null ? name : ("") ) );
 			panelLayout.set(labelParameterName, (1 + i), 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-			
+
 			final UILabel labelParameterLabel = uiFactory.createLabel(panel);
 			labelParameterLabel.setText( (label != null ? label : ("") ) );
 			panelLayout.set(labelParameterLabel, (1 + i), 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-			
+
 			this.scaleParameterValue[i] = uiFactory.createHorizontalScale(panel);
 			this.scaleParameterValue[i].setMaximum(100);
 			this.scaleParameterValue[i].setMinimum(0);
 			this.scaleParameterValue[i].setIncrement(1);
 			panelLayout.set(this.scaleParameterValue[i], (1 + i),3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
-			
+
 			this.labelParameterValue[i] = uiFactory.createLabel(panel);
 			panelLayout.set(this.labelParameterValue[i], (1 + i), 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-			
+
 			this.scaleParameterValue[i].addSelectionListener(new UISelectionListener() {
 				public void onSelect(UISelectionEvent event) {
 					float selection = (VSTEffectEditor.this.scaleParameterValue[index].getValue() / 100f);
-					
+
 					VSTEffectEditor.this.labelParameterValue[index].setText(Float.toString(selection));
 					VSTEffectEditor.this.effect.setParameter(index, selection);
 					VSTEffectEditor.this.callback.onChange(false);
 				}
 			});
 		}
-		
+
 		//-------------------------------------------------------------------------
 		if( this.effect.isEditorAvailable() ) {
 			UIButton nativeEditor = uiFactory.createButton(this.dialog);
@@ -124,27 +124,27 @@ public class VSTEffectEditor implements TGEventListener {
 			});
 			dialogLayout.set(nativeEditor, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		}
-		
+
 		this.updateItems();
 		this.addEventListeners();
-		
+
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				VSTEffectEditor.this.removeEventListeners();
 			}
 		});
-		
+
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public void addEventListeners() {
 		TGEventManager.getInstance(this.context).addListener(VSTParamsEvent.EVENT_TYPE, this);
 	}
-	
+
 	public void removeEventListeners() {
 		TGEventManager.getInstance(this.context).removeListener(VSTParamsEvent.EVENT_TYPE, this);
 	}
-	
+
 	public void updateItems() {
 		int paramCount = Math.min(this.effect.getNumParams(), 50);
 		for( int i = 0 ; i < paramCount && i < this.paramCount ; i ++ ){
@@ -155,24 +155,24 @@ public class VSTEffectEditor implements TGEventListener {
 			this.labelParameterValue[i].setText( Float.toString(value) );
 		}
 	}
-	
+
 	public void focus() {
 		if( this.isOpen() ){
 			this.dialog.moveToTop();
 		}
 	}
-	
+
 	public void close() {
 		if( this.isOpen() ){
 			this.dialog.dispose();
 			this.dialog = null;
 		}
 	}
-	
+
 	public boolean isOpen() {
 		return (this.dialog != null && !this.dialog.isDisposed());
 	}
-	
+
 	public void toggleNativeEditor() {
 		if( this.effect.isNativeEditorOpen() ){
 			this.effect.closeNativeEditor();
@@ -180,7 +180,7 @@ public class VSTEffectEditor implements TGEventListener {
 			this.effect.openNativeEditor();
 		}
 	}
-	
+
 	public void openInUiThread(final UIWindow parent) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -188,7 +188,7 @@ public class VSTEffectEditor implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public void updateItemsUiThread() {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -196,7 +196,7 @@ public class VSTEffectEditor implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( VSTParamsEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			TGSession session = event.getAttribute(VSTParamsEvent.PROPERTY_SESSION);

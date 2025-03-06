@@ -12,16 +12,16 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableTempo extends TGUndoableEditBase{
-	
+
 	private int doAction;
 	private long position;
 	private TGTempo undoableTempo;
 	private TGTempo redoableTempo;
-	
+
 	private TGUndoableTempo(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -29,7 +29,7 @@ public class TGUndoableTempo extends TGUndoableEditBase{
 		this.changeTempo(actionContext, this.getMeasureHeaderAt(this.position), this.redoableTempo);
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -37,15 +37,15 @@ public class TGUndoableTempo extends TGUndoableEditBase{
 		this.changeTempo(actionContext, this.getMeasureHeaderAt(this.position), this.undoableTempo);
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableTempo startUndo(TGContext context, TGMeasureHeader header){
 		TGUndoableTempo undoable = new TGUndoableTempo(context);
 		undoable.doAction = UNDO_ACTION;
@@ -53,20 +53,20 @@ public class TGUndoableTempo extends TGUndoableEditBase{
 		undoable.undoableTempo = undoable.createTempoClone(header);
 		return undoable;
 	}
-	
+
 	public TGUndoableTempo endUndo(TGMeasureHeader header) {
 		this.redoableTempo = createTempoClone(header);
 		return this;
 	}
-	
+
 	public TGMeasureHeader getMeasureHeaderAt(Long start) {
 		return getSongManager().getMeasureHeaderAt(getSong(), start);
 	}
-	
+
 	public TGTempo createTempoClone(TGMeasureHeader header) {
 		return header.getTempo().clone(getSongManager().getFactory());
 	}
-	
+
 	public void changeTempo(TGActionContext context, TGMeasureHeader header, TGTempo tempo) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeTempoAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);

@@ -28,9 +28,9 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGUserFileUtils;
 
 public class TGCustomTemplateSelectAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.custom-template.select";
-	
+
 	public TGCustomTemplateSelectAction(TGContext context) {
 		super(context, NAME);
 	}
@@ -60,7 +60,7 @@ public class TGCustomTemplateSelectAction extends TGActionBase {
 				}
 			}
 		});
-		
+
 	}
 
 	public List<TGFileFormat> createFileFormats(final TGActionContext context) {

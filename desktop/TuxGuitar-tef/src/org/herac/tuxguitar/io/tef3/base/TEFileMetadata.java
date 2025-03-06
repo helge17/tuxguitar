@@ -27,7 +27,7 @@ public class TEFileMetadata {
             if (enumValues.containsKey(i)) {
                 return enumValues.get(i);
             }
-    
+
             TEFileMetadataSyncopation foundEnumValue = null;
             for (TEFileMetadataSyncopation enumValue : values())
             {
@@ -35,11 +35,11 @@ public class TEFileMetadata {
                 {
                     continue;
                 }
-    
+
                 foundEnumValue = enumValue;
                 enumValues.put(i, foundEnumValue);
             }
-    
+
             return foundEnumValue;
         }
     }
@@ -50,7 +50,7 @@ public class TEFileMetadata {
 
     private int toneChorus;
     private int toneReverb;
-    
+
     private TEFileMetadataSyncopation syncopation;
 
     private boolean hasTextEvents;

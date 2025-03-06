@@ -5,32 +5,32 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PTSection {
-	
+
 	private int number;
 	private int staffs;
 	private List<PTPosition> positions;
-	
+
 	public PTSection(int number){
 		this.number = number;
 		this.positions = new ArrayList<PTPosition>();
 	}
-	
+
 	public int getNumber(){
 		return this.number;
 	}
-	
+
 	public int getStaffs() {
 		return this.staffs;
 	}
-	
+
 	public void setStaffs(int staffs) {
 		this.staffs = staffs;
 	}
-	
+
 	public List<PTPosition> getPositions(){
 		return this.positions;
 	}
-	
+
 	public PTPosition getPosition(int position){
 		Iterator<PTPosition> it = getPositions().iterator();
 		while(it.hasNext()){
@@ -43,7 +43,7 @@ public class PTSection {
 		getPositions().add(p);
 		return p;
 	}
-	
+
 	public int getNextPositionNumber(){
 		int next = 0;
 		Iterator<PTPosition> it = getPositions().iterator();
@@ -53,7 +53,7 @@ public class PTSection {
 		}
 		return next;
 	}
-	
+
 	public void sort(){
 		int count = getPositions().size();
 		for(int i = 0;i < count;i++){

@@ -34,21 +34,21 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGNoteRange;
 
 public class Tablature implements TGController {
-	
+
 	public static final Float DEFAULT_SCALE = 1f;
-	
-	private TGContext context; 
+
+	private TGContext context;
 	private UIResourceFactory resourceFactory;
 	private TGDocumentManager documentManager;
 	private TGResourceBuffer resourceBuffer;
 	private TGSyncProcess disposeUnregisteredResources;
-	
+
 	private Caret caret;
 	private Selector selector;
 	private TGLayout viewLayout;
 	private EditorKit editorKit;
 	private Float scale;
-	
+
 	public Tablature(TGContext context, TGDocumentManager documentManager) {
 		this.context = context;
 		this.documentManager = documentManager;
@@ -58,7 +58,7 @@ public class Tablature implements TGController {
 		this.editorKit = new EditorKit(this);
 		this.createSyncProcesses();
 	}
-	
+
 	public void createSyncProcesses() {
 		this.disposeUnregisteredResources = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
@@ -66,13 +66,13 @@ public class Tablature implements TGController {
 			}
 		});
 	}
-	
+
 	public void updateTablature(){
 		this.getViewLayout().updateSong();
 		this.getCaret().update();
 		this.disposeUnregisteredResources.process();
 	}
-	
+
 	public void updateMeasures(List<Integer> numbers, boolean updateCaret){
 		this.getViewLayout().updateMeasureNumbers(numbers);
 		if (!numbers.isEmpty() || updateCaret) {
@@ -80,11 +80,11 @@ public class Tablature implements TGController {
 		}
 		this.disposeUnregisteredResources.process();
 	}
-	
+
 	public void resetCaret(){
 		this.caret.update(1, TGDuration.QUARTER_TIME, 1);
 	}
-	
+
 	public void paintTablature(UIPainter painter, UIRectangle area, float fromX, float fromY){
 		this.getViewLayout().fillBackground(painter, area);
 		this.getViewLayout().paint(painter, area, fromX, fromY);
@@ -92,7 +92,7 @@ public class Tablature implements TGController {
 		this.getEditorKit().paintSelection(this.getViewLayout(), painter);
 		this.getSelector().paintSelectedArea(this.getViewLayout(), painter);
 	}
-	
+
 	public Float getScale() {
 		return scale;
 	}
@@ -100,7 +100,7 @@ public class Tablature implements TGController {
 	public Caret getCaret(){
 		return this.caret;
 	}
-	
+
 	public Selector getSelector() {
 		return selector;
 	}
@@ -115,7 +115,7 @@ public class Tablature implements TGController {
 		}
 		return TGBeatRange.empty();
 	}
-	
+
 	public TGNoteRange getCurrentNoteRange() {
 		int voice = getCaret().getVoice();
 		if (getSelector().isActive()) {
@@ -128,32 +128,32 @@ public class Tablature implements TGController {
 		}
 		return TGNoteRange.empty();
 	}
-	
+
 	public void restoreStateFrom(TGDocument document) {
 		this.getCaret().restoreStateFrom(document);
 		this.getSelector().restoreStateFrom(document);
 	}
-	
+
 	public EditorKit getEditorKit() {
 		return this.editorKit;
 	}
-	
+
 	public TGContext getContext() {
 		return this.context;
 	}
-	
+
 	public TGSongManager getSongManager() {
 		return this.documentManager.getSongManager();
 	}
-	
+
 	public TGSong getSong() {
 		return this.documentManager.getSong();
 	}
-	
+
 	public TGLayout getViewLayout(){
 		return this.viewLayout;
 	}
-	
+
 	public void setViewLayout(TGLayout viewLayout){
 		if( getViewLayout() != null ){
 			getViewLayout().disposeLayout();
@@ -161,20 +161,20 @@ public class Tablature implements TGController {
 		this.viewLayout = viewLayout;
 		this.reloadStyles();
 	}
-	
+
 	public void reloadStyles() {
 		if( this.getViewLayout() != null ){
 			this.getViewLayout().loadStyles(this.scale);
 		}
 		this.loadCaretStyles();
 	}
-	
+
 	public void reloadViewLayout(){
 		TGConfigManager config = TGConfigManager.getInstance(this.context);
-		
+
 		this.loadViewLayout(config.getIntegerValue(TGConfigKeys.LAYOUT_STYLE), config.getIntegerValue(TGConfigKeys.LAYOUT_MODE));
 	}
-	
+
 	private void loadViewLayout( int style, int mode ){
 		switch(mode){
 			case TGLayout.MODE_VERTICAL:
@@ -190,71 +190,71 @@ public class Tablature implements TGController {
 			break;
 		}
 	}
-	
+
 	public void loadCaretStyles() {
 		TGConfigManager config = TGConfigManager.getInstance(this.context);
-		
+
 		getCaret().setColorCurrentVoice(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_CURRENT_VOICE));
 		getCaret().setColorOtherVoice(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_OTHER_VOICE));
 		getCaret().setAlpha(config.getIntegerValue(TGConfigKeys.COLOR_CARET_ALPHA));
 	}
-	
+
 	public void scale(Float scale) {
 		if(!this.scale.equals(scale)) {
 			this.scale = (scale != null ? scale : DEFAULT_SCALE);
 			this.reloadStyles();
 		}
 	}
-	
+
 	public void dispose(){
 		this.getCaret().dispose();
 		this.getViewLayout().disposeLayout();
 		this.getResourceBuffer().disposeAllResources();
 	}
-	
+
 	public UIResourceFactory getResourceFactory(){
 		if( this.resourceFactory == null ){
 			this.resourceFactory = TGApplication.getInstance(this.context).getFactory();
 		}
 		return this.resourceFactory;
 	}
-	
+
 	public TGResourceBuffer getResourceBuffer(){
 		if( this.resourceBuffer == null ){
 			this.resourceBuffer = new TGResourceBuffer();
 		}
 		return this.resourceBuffer;
 	}
-	
+
 	public int getTrackSelection(){
 		if( (getViewLayout().getStyle() & TGLayout.DISPLAY_MULTITRACK) == 0 ){
 			return getCaret().getTrack().getNumber();
 		}
 		return -1;
 	}
-	
+
 	public boolean isRunning(TGBeat beat) {
 		return ( isRunning( beat.getMeasure() ) && TGTransport.getInstance(this.context).getCache().isPlaying(beat.getMeasure(),beat) );
 	}
-	
+
 	public boolean isRunning(TGMeasure measure) {
 		return ( measure.getTrack().equals(getCaret().getTrack()) && TGTransport.getInstance(this.context).getCache().isPlaying( measure ) );
 	}
-	
+
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader){
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
 		return ( pm.isLoop() &&
 				(pm.getLoopSHeader() == measureHeader.getNumber()
 					|| (pm.getLoopSHeader() == -1 && measureHeader.getNumber()==1)) );
 	}
-	
+
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader){
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
 		return ( pm.isLoop() &&
 				(pm.getLoopEHeader() == measureHeader.getNumber()
 					|| (pm.getLoopEHeader() == -1 && measureHeader.getNumber()==measureHeader.getSong().countMeasureHeaders())) );
 	}
-	
+
 	public TGLayoutStyles getStyles() {
 		return new TablatureStyles(TGConfigManager.getInstance(this.context));
 	}

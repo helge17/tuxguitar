@@ -15,12 +15,12 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
 		Caret caret = tablature.getCaret();
 		TGDocumentManager tgDocumentManager = TuxGuitar.getInstance().getDocumentManager();
-		
+
 		TGActionContext tgActionContext = new TGActionContextImpl();
 		tgActionContext.setAttribute(TGDocumentManager.class.getName(), tgDocumentManager);
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, tgDocumentManager.getSongManager());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, tgDocumentManager.getSong());
-		
+
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, caret.getTrack());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, caret.getMeasure());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, caret.getMeasure().getHeader());
@@ -35,7 +35,7 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE, tablature.getCurrentBeatRange());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, tablature.getCurrentNoteRange());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE, (Boolean)tablature.getSelector().isActive());
-		
+
 		return tgActionContext;
 	}
 }

@@ -10,16 +10,16 @@ import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 import androidx.appcompat.app.AlertDialog;
 
 public class TGMessageDialog extends TGDialogFragment {
-	
+
 	public TGMessageDialog() {
 		super();
 	}
-	
+
 	@SuppressLint("InflateParams")
 	public Dialog onCreateDialog() {
 		String title = this.getAttribute(TGMessageDialogController.ATTRIBUTE_TITLE);
 		String message = this.getAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE);
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(title);
 		builder.setMessage(message);

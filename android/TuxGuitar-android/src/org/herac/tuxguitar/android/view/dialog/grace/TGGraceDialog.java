@@ -69,7 +69,7 @@ public class TGGraceDialog extends TGModalFragment {
 		this.fillDynamics();
 		this.fillTransitions();
 	}
-	
+
 	public TGSelectableItem[] createFretValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 0; i <= 100; i++) {
@@ -79,7 +79,7 @@ public class TGGraceDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public void fillFret() {
 		TGNote note = this.getNote();
 
@@ -87,21 +87,21 @@ public class TGGraceDialog extends TGModalFragment {
 		if( note != null ) {
 			selection = (note.getEffect().isGrace() ? note.getEffect().getGrace().getFret() : note.getValue());
 		}
-		
+
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.grace_dlg_fret_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 	}
-	
+
 	public int findSelectedFret() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.grace_dlg_fret_value);
-		
+
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
-	
+
 	public void fillDeadNoteOption() {
 		boolean selection = false;
 
@@ -109,17 +109,17 @@ public class TGGraceDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().isDead();
 		}
-		
+
 		CheckBox checkBox = (CheckBox) this.getView().findViewById(R.id.grace_dlg_dead_note_option);
 		checkBox.setChecked(selection);
 	}
-	
+
 	public boolean findDeadNoteValue() {
 		CheckBox checkBox = (CheckBox) this.getView().findViewById(R.id.grace_dlg_dead_note_option);
-		
+
 		return checkBox.isChecked();
 	}
-	
+
 	public void fillOnBeatOptions() {
 		boolean selection = false;
 
@@ -127,7 +127,7 @@ public class TGGraceDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().isOnBeat();
 		}
-		
+
 		this.fillOnBeatOption(R.id.grace_dlg_position_before_beat, false, selection);
 		this.fillOnBeatOption(R.id.grace_dlg_position_on_beat, true, selection);
 	}
@@ -137,7 +137,7 @@ public class TGGraceDialog extends TGModalFragment {
 		radioButton.setTag(Boolean.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public boolean findSelectedOnBeat() {
 		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.grace_dlg_position_group);
 		int radioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -149,7 +149,7 @@ public class TGGraceDialog extends TGModalFragment {
 		}
 		return false;
 	}
-	
+
 	public void fillDurations() {
 		int selection = 1;
 
@@ -157,7 +157,7 @@ public class TGGraceDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().getDuration();
 		}
-		
+
 		this.fillDuration(R.id.grace_dlg_duration_16, TGEffectGrace.DURATION_SIXTEENTH, selection);
 		this.fillDuration(R.id.grace_dlg_duration_32, TGEffectGrace.DURATION_THIRTY_SECOND, selection);
 		this.fillDuration(R.id.grace_dlg_duration_64, TGEffectGrace.DURATION_SIXTY_FOURTH, selection);
@@ -168,11 +168,11 @@ public class TGGraceDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public int findSelectedDuration() {
 		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_duration_group), TGEffectGrace.DURATION_SIXTEENTH);
 	}
-	
+
 	public void fillDynamics() {
 		int selection = TGVelocities.DEFAULT;
 
@@ -180,7 +180,7 @@ public class TGGraceDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().getDynamic();
 		}
-		
+
 		this.fillDynamic(R.id.grace_dlg_dynamic_ppp, TGVelocities.PIANO_PIANISSIMO, selection);
 		this.fillDynamic(R.id.grace_dlg_dynamic_pp, TGVelocities.PIANISSIMO, selection);
 		this.fillDynamic(R.id.grace_dlg_dynamic_p, TGVelocities.PIANO, selection);
@@ -196,11 +196,11 @@ public class TGGraceDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public int findSelectedDynamic() {
 		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_dynamic_group), TGVelocities.DEFAULT);
 	}
-	
+
 	public void fillTransitions() {
 		int selection = TGEffectGrace.TRANSITION_NONE;
 
@@ -208,7 +208,7 @@ public class TGGraceDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isGrace() ) {
 			selection = note.getEffect().getGrace().getTransition();
 		}
-		
+
 		this.fillTransition(R.id.grace_dlg_transition_none, TGEffectGrace.TRANSITION_NONE, selection);
 		this.fillTransition(R.id.grace_dlg_transition_bend, TGEffectGrace.TRANSITION_BEND, selection);
 		this.fillTransition(R.id.grace_dlg_transition_slide, TGEffectGrace.TRANSITION_SLIDE, selection);
@@ -220,11 +220,11 @@ public class TGGraceDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public int findSelectedTransition() {
 		return findSelectedOption((RadioGroup) this.getView().findViewById(R.id.grace_dlg_transition_group), TGEffectGrace.TRANSITION_NONE);
 	}
-	
+
 	public int findSelectedOption(RadioGroup radioGroup, int defaultValue) {
 		int radioButtonId = radioGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
@@ -235,7 +235,7 @@ public class TGGraceDialog extends TGModalFragment {
 		}
 		return defaultValue;
 	}
-	
+
 	public TGEffectGrace createGrace(){
 		TGEffectGrace tgEffectGrace = getSongManager().getFactory().newEffectGrace();
 		tgEffectGrace.setDead(this.findDeadNoteValue());

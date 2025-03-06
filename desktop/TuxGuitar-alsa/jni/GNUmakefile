@@ -17,7 +17,7 @@ all:    $(LIBRARY)
 $(LIBRARY):	$(OBJECTS)
 	$(CC) $(LDFLAGS) -shared -o $(LIBRARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
 
-clean: 
+clean:
 	rm -f $(OBJECTS) $(LIBRARY)
 
 #eof "$Id: GNUmakefile,v 1.10 2008/04/17 20:06:34 rzr Exp $"

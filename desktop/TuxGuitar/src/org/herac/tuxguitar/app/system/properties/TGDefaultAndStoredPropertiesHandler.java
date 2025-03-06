@@ -7,13 +7,13 @@ import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGDefaultAndStoredPropertiesHandler implements TGPropertiesReader, TGPropertiesWriter{
-	
+
 	private TGContext context;
 	private String defaultsPrefix;
 	private String defaultsSuffix;
 	private String storedPrefix;
 	private String storedSuffix;
-	
+
 	public TGDefaultAndStoredPropertiesHandler(TGContext context, String defaultsPrefix, String defaultsSuffix, String storedPrefix, String storedSuffix) {
 		this.context = context;
 		this.defaultsPrefix = defaultsPrefix;
@@ -31,12 +31,12 @@ public class TGDefaultAndStoredPropertiesHandler implements TGPropertiesReader, 
 		TGPropertiesReader tgPropertiesReader = new TGResourcePropertiesReader(this.context, this.defaultsPrefix, this.defaultsSuffix);
 		tgPropertiesReader.readProperties(properties, module);
 	}
-	
+
 	private void readStoredProperties(TGProperties properties, String module) {
 		TGPropertiesReader tgPropertiesReader = new TGFilePropertiesHandler(this.storedPrefix, this.storedSuffix);
 		tgPropertiesReader.readProperties(properties, module);
 	}
-	
+
 	public void writeProperties(TGProperties properties, String module) throws TGPropertiesException {
 		TGPropertiesWriter tgPropertiesWriter = new TGFilePropertiesWriter(this.storedPrefix, this.storedSuffix);
 		tgPropertiesWriter.writeProperties(properties, module);

@@ -9,13 +9,13 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class GoNextMeasureAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.go-next";
-	
+
 	public GoNextMeasureAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		if( TuxGuitar.instance().getPlayer().isRunning()){
 			TuxGuitar.instance().getTransport().gotoNext();

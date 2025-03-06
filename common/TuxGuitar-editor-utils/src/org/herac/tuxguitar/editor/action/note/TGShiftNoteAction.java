@@ -17,7 +17,7 @@ public abstract class TGShiftNoteAction extends TGActionBase {
 	public TGShiftNoteAction(TGContext context, String name) {
 		super(context, name);
 	}
-	
+
 	protected boolean sortStringsAscending;
 	protected abstract int shiftNote(TGMeasureManager measureManager, TGNote note);
 
@@ -25,7 +25,7 @@ public abstract class TGShiftNoteAction extends TGActionBase {
 		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
 		TGNote caretNote = ((TGNote) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE));
 		TGMeasureManager measureManager = getSongManager(context).getMeasureManager();
-		
+
 		if (noteRange!=null && !noteRange.isEmpty()) {
 			List<TGNote> listNotes = noteRange.getNotes();
 			if (this.sortStringsAscending) {

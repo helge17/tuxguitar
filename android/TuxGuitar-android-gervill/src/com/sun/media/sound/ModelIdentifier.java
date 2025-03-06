@@ -141,7 +141,7 @@ public class ModelIdentifier {
 		if(variable != null) hashcode |= variable.hashCode();
 		return  hashcode;
 	}
-	
+
     public boolean equals(Object obj) {
         if (!(obj instanceof ModelIdentifier))
             return false;

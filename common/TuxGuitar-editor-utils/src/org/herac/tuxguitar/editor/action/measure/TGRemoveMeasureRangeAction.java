@@ -8,12 +8,12 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGRemoveMeasureRangeAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.remove.range";
-	
+
 	public static final String ATTRIBUTE_MEASURE_NUMBER_1 = "measureNumber1";
 	public static final String ATTRIBUTE_MEASURE_NUMBER_2 = "measureNumber2";
-	
+
 	public TGRemoveMeasureRangeAction(TGContext context) {
 		super(context, NAME);
 	}
@@ -26,7 +26,7 @@ public class TGRemoveMeasureRangeAction extends TGActionBase {
 			if(m1 == 1 && m2 == song.countMeasureHeaders()){
 				return;
 			}
-			
+
 			for(int i = m1; i <= m2; i ++) {
 				tgActionContext.setAttribute(TGRemoveMeasureAction.ATTRIBUTE_MEASURE_NUMBER, m1);
 				TGActionManager.getInstance(getContext()).execute(TGRemoveMeasureAction.NAME, tgActionContext);

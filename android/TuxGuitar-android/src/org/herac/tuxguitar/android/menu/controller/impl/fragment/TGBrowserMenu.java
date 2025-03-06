@@ -21,7 +21,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserMenu implements TGMenuController {
-	
+
 	private TGContext context;
 
 	private TGBrowserMenu(TGContext context) {
@@ -39,18 +39,18 @@ public class TGBrowserMenu implements TGMenuController {
 		menu.findItem(R.id.action_browser_back).setOnMenuItemClickListener(createBrowserAction(TGBrowserCdUpAction.NAME));
 		menu.findItem(R.id.action_browser_refresh).setOnMenuItemClickListener(createBrowserAction(TGBrowserRefreshAction.NAME));
 	}
-	
+
 	public TGActionProcessorListener createActionProcessor(String actionId) {
 		return new TGActionProcessorListener(getContext(), actionId);
 	}
-	
+
 	public TGActionProcessorListener createBrowserAction(String actionId) {
 		TGBrowserSession tgBrowserSession = TGBrowserManager.getInstance(getContext()).getSession();
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(actionId);
 		tgActionProcessor.setAttribute(TGBrowserSession.class.getName(), tgBrowserSession);
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createOpenDialogAction(TGDialogController controller) {
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.getActivity());

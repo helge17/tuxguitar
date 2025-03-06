@@ -14,7 +14,7 @@ public class GP5InputStreamPlugin extends GTPInputStreamPlugin{
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
 		return new GP5InputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}
-	
+
 	public TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {
 		return new GTPFileFormatDetector(GP5InputStream.SUPPORTED_VERSIONS);
 	}

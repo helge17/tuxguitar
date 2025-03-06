@@ -30,7 +30,7 @@ public class TGTableMixer {
 	private UITableLayout layout;
 	private UIFactory uiFactory;
 	private List<VolumeControl> volumeControls;
-	
+
 	public TGTableMixer(UIScrollBarPanel parent, UIFactory uiFactory, TGContext context) {
 		this.uiFactory = uiFactory;
 		this.context = context;
@@ -39,10 +39,10 @@ public class TGTableMixer {
 		this.panel.setLayout(layout);
 		this.volumeControls = new ArrayList<VolumeControl>();
 	}
-	
+
 	public void update(TGSong song) {
 		TGSongManager songManager = TuxGuitar.getInstance().getSongManager();
-		
+
 		// list of channels present in song
 		List<TGChannel> newChannels = new ArrayList<TGChannel>();
 		for(int nTrack = 0; nTrack < song.countTracks(); nTrack ++){
@@ -52,7 +52,7 @@ public class TGTableMixer {
 				newChannels.add(channel);
 			}
 		}
-		
+
 		// need to update list of volume controls?
 		boolean listControlChanged = (newChannels.size() != this.volumeControls.size());
 		if (!listControlChanged) {
@@ -62,7 +62,7 @@ public class TGTableMixer {
 				}
 			}
 		}
-		
+
 		if (listControlChanged) {
 			// recreate everything
 			for (UIControl control : this.panel.getChildren()) {
@@ -87,7 +87,7 @@ public class TGTableMixer {
 			}
 		}
 	}
-	
+
 	public void updateInstrumentsNames() {
 		for (VolumeControl control : this.volumeControls) {
 			control.instrumentLabel.setText(control.getChannel().getName());
@@ -100,20 +100,20 @@ public class TGTableMixer {
 		private TGChannel channel;
 		private TGContext context;
 		private TGContinousControlSelectionListener volumeListener;
-		
+
 		VolumeControl(TGChannel channel, TGContext context, UIFactory uiFactory, UIContainer parent) {
 			this.channel=channel;
 			this.context = context;
-			
+
 			this.instrumentLabel = uiFactory.createLabel(parent);
 			this.instrumentLabel.setText(channel.getName());
-			
+
 			this.volumeScale = uiFactory.createHorizontalScale(parent);
 			this.volumeScale.setMinimum(TGChannel.MIN_VOLUME);
 			this.volumeScale.setMaximum(TGChannel.MAX_VOLUME);
 			this.volumeScale.setValue(channel.getVolume());
 			updateToolTipText();
-			
+
 			this.volumeScale.addSelectionListener(new UISelectionListener() {
 				@Override
 				public void onSelect(UISelectionEvent event) {
@@ -123,28 +123,28 @@ public class TGTableMixer {
 			});
 			volumeListener = new TGContinousControlSelectionListener(this, 250);
 		}
-		
+
 		private void updateToolTipText() {
 			int percent = 100*(VolumeControl.this.volumeScale.getValue() - TGChannel.MIN_VOLUME) / (TGChannel.MAX_VOLUME - TGChannel.MIN_VOLUME);
 			this.volumeScale.setToolTipText(String.valueOf(percent) + "%");
 		}
-		
+
 		TGChannel getChannel() {
 			return this.channel;
 		}
-		
+
 		UIControl getScale() {
 			return this.volumeScale;
 		}
-		
+
 		UIControl getLabel() {
 			return this.instrumentLabel;
 		}
-		
+
 		void updateVolume() {
 			this.volumeScale.setValue(this.channel.getVolume());
 		}
-		
+
 		@Override
 		public void doActionWhenStable() {
 			if (channel!=null) {
@@ -170,5 +170,5 @@ public class TGTableMixer {
 			return this.context;
 		}
 	}
-	
+
 }

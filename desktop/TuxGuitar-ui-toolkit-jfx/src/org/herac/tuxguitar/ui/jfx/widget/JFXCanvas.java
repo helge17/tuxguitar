@@ -16,42 +16,42 @@ import javafx.scene.layout.Region;
 import javafx.scene.control.Tooltip;
 
 public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
-	
+
 	private JFXPaintListenerManager paintListener;
 	private JFXResizeListenerManager resizeListener;
-	
+
 	public JFXCanvas(JFXContainer<? extends Region> parent, boolean bordered) {
 		super(new Canvas(), parent);
 		this.paintListener = new JFXPaintListenerManagerAsync(this);
 		this.resizeListener = new JFXResizeListenerManager(this);
 	}
-	
+
 	public UIPainter createPainter() {
 		JFXPainter jfxPainter = new JFXPainter(this.getControl().getGraphicsContext2D());
 		jfxPainter.clearArea(0f, 0f, (float) this.getControl().getWidth(), (float) this.getControl().getHeight());
-		
+
 		return jfxPainter;
 	}
-	
+
 	public UIRectangle getBounds() {
 		UIRectangle bounds = new UIRectangle();
 		bounds.getPosition().setX((float) this.getControl().getLayoutX());
 		bounds.getPosition().setY((float) this.getControl().getLayoutY());
 		bounds.getSize().setWidth((float) this.getControl().getWidth());
 		bounds.getSize().setHeight((float) this.getControl().getHeight());
-		
+
 		return bounds;
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		this.getControl().setLayoutX(bounds.getX());
 		this.getControl().setLayoutY(bounds.getY());
 		this.getControl().setWidth(bounds.getWidth());
 		this.getControl().setHeight( bounds.getHeight());
-		
+
 		this.redraw();
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = this.getPackedSize();
 		if( fixedWidth != null ) {
@@ -62,11 +62,11 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 		}
 		this.setPackedSize(packedSize);
 	}
-	
+
 	public void redraw() {
 		this.paintListener.fireEvent();
 	}
-	
+
 	public void addPaintListener(UIPaintListener listener) {
 		this.paintListener.addListener(listener);
 	}
@@ -74,7 +74,7 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 	public void removePaintListener(UIPaintListener listener) {
 		this.paintListener.removeListener(listener);
 	}
-	
+
 	public void addResizeListener(UIResizeListener listener) {
 		if( this.resizeListener.isEmpty() ) {
 			this.getControl().widthProperty().addListener(this.resizeListener);
@@ -90,7 +90,7 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 			this.getControl().heightProperty().removeListener(this.resizeListener);
 		}
 	}
-	
+
 	public void setToolTipText(String text) {
 		Tooltip.install(this.getControl(), new Tooltip(text));
 	}

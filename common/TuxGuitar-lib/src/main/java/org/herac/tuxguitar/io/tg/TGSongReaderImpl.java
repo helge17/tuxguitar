@@ -65,7 +65,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			throw new TGFileFormatException(e);
 		}
 	}
-	
+
 	public void readContent(TGSongReaderHandle handle, InputStream inputStream) throws TGFileFormatException {
 		try {
 			this.factory = handle.getFactory();
@@ -97,7 +97,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		this.readMeasureHeaders(song, nodeSong);
 		this.readTracks(song, nodeSong);
 	}
-	
+
 	private void readChannels(TGSong song, Node nodeSong) {
 		Node nodeChannel = getChildNode(nodeSong, TAG_CHANNEL);
 		while (nodeChannel != null) {
@@ -118,7 +118,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			nodeChannel = getSiblingNode(nodeChannel.getNextSibling(), TAG_CHANNEL);
 		}
 	}
-	
+
 	private void readChannelParameters(Node nodeChannel, TGChannel channel) {
 		Node nodeParameter = getChildNode(nodeChannel, TAG_CHANNEL_PARAMETER);
 		while (nodeParameter != null) {
@@ -129,7 +129,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			nodeParameter = getSiblingNode(nodeParameter.getNextSibling(), TAG_CHANNEL_PARAMETER);
 		}
 	}
-	
+
 	private void readMeasureHeaders(TGSong song, Node nodeSong) {
 		Node nodeMeasureHeader = getChildNode(nodeSong, TAG_MEASURE_HEADER);
 		int timeSignatureNumerator = 4;
@@ -143,16 +143,16 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			TGMeasureHeader header = this.factory.newHeader();
 			header.setNumber(number);
 			header.setStart(headerStart);
-			
+
 			// timeSignature
 			Node node = getChildNode(nodeMeasureHeader, TAG_TIME_SIGNATURE);
 			if (node != null) {
-				timeSignatureNumerator =readAttributeInt(node, TAG_NUMERATOR); 
+				timeSignatureNumerator =readAttributeInt(node, TAG_NUMERATOR);
 				timeSignatureDenominator = readAttributeInt(node, TAG_DENOMINATOR);
 			}
 			header.getTimeSignature().setNumerator(timeSignatureNumerator);
 			header.getTimeSignature().getDenominator().setValue(timeSignatureDenominator);
-			
+
 			// tempo
 			node = getChildNode(nodeMeasureHeader, TAG_TEMPO);
 			if (node != null) {
@@ -167,7 +167,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 				}
 			}
 			header.getTempo().setValueBase(tempoValue, tempoBase, tempoDotted);
-			
+
 			// repeats
 			header.setRepeatOpen(getChildNode(nodeMeasureHeader, TAG_REPEAT_OPEN) != null);
 			node = getChildNode(nodeMeasureHeader, TAG_REPEAT_CLOSE);
@@ -184,7 +184,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 				}
 				header.setRepeatAlternative(repeatAlternative);
 			}
-			
+
 			// marker
 			node = getChildNode(nodeMeasureHeader, TAG_MARKER);
 			if (node != null) {
@@ -196,7 +196,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 				marker.getColor().setB(readAttributeInt(node, TAG_COLOR_B));
 				header.setMarker(marker);
 			}
-			
+
 			// tripletFeel
 			node = getChildNode(nodeMeasureHeader, TAG_TRIPLET_FEEL);
 			if (node != null) {
@@ -212,9 +212,9 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			number++;
 			nodeMeasureHeader = getSiblingNode(nodeMeasureHeader.getNextSibling(), TAG_MEASURE_HEADER);
 		}
-		
+
 	}
-	
+
 	private void readTracks(TGSong song, Node nodeSong) {
 		Node nodeTrack = getChildNode(nodeSong, TAG_TGTRACK);
 		int number=1;
@@ -250,7 +250,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			nodeTrack = getSiblingNode(nodeTrack.getNextSibling(), TAG_TGTRACK);
 		}
 	}
-	
+
 	private void readLyrics(TGTrack track, Node nodeLyrics) {
 		TGLyric lyrics = this.factory.newLyric();
 		if (nodeLyrics != null) {
@@ -259,7 +259,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			track.setLyrics(lyrics);
 		}
 	}
-	
+
 	private void readStrings(TGTrack track, Node nodeString) {
 		List<TGString> list = new ArrayList<TGString>();
 		int number=1;
@@ -304,7 +304,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			throw new TGFileFormatException("unexpected number of measures");
 		}
 	}
-	
+
 	private void readBeats(TGMeasure measure, Node nodeMeasure, boolean isFirst) {
 		boolean isFirstBeat = isFirst;
 		Node nodeBeat = getChildNode(nodeMeasure, TAG_TGBEAT);
@@ -344,9 +344,9 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			this.readVoices(beat, nodeVoice);
 			nodeBeat = getSiblingNode(nodeBeat.getNextSibling(), TAG_TGBEAT);
 		}
-		
+
 	}
-	
+
 	private TGChord readChord(Node nodeChord) {
 		List<Integer> fretValues = new ArrayList<Integer>();
 		Node nodeString = getChildNode(nodeChord, TAG_STRING);
@@ -362,7 +362,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 		return chord;
 	}
-	
+
 	private void readVoices(TGBeat beat, Node nodeVoice) {
 		int index = 0;
 		while (nodeVoice != null) {
@@ -394,7 +394,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			nodeVoice = getSiblingNode(nodeVoice.getNextSibling(), TAG_VOICE);
 		}
 	}
-	
+
 	private void readNotes(TGVoice voice, Node nodeVoice) {
 		int velocity = TGVelocities.DEFAULT;
 		Node nodeNote = getChildNode(nodeVoice, TAG_NOTE);
@@ -458,7 +458,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			nodeNote = getSiblingNode(nodeNote.getNextSibling(), TAG_NOTE);
 		}
 	}
-	
+
 	private void readBend(TGNote note, Node nodeBend) {
 		TGEffectBend bend = this.factory.newEffectBend();
 		for (PositionValue point : readPositionValueList(nodeBend)) {
@@ -466,7 +466,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 		note.getEffect().setBend(bend);
 	}
-	
+
 	private void readTremoloBar(TGNote note, Node nodeTremoloBar) {
 		TGEffectTremoloBar tremoloBar = this.factory.newEffectTremoloBar();
 		for (PositionValue point : readPositionValueList(nodeTremoloBar)) {
@@ -474,14 +474,14 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 		note.getEffect().setTremoloBar(tremoloBar);
 	}
-	
+
 	private void readHarmonic(TGNote note, Node nodeHarmonic) {
 		TGEffectHarmonic harmonic = this.factory.newEffectHarmonic();
 		harmonic.setType(harmonicReadMap.get(readAttribute(nodeHarmonic, TAG_TYPE)));
 		harmonic.setData(readAttributeInt(nodeHarmonic, TAG_DATA));
 		note.getEffect().setHarmonic(harmonic);
 	}
-	
+
 	private void readGrace(TGNote note, Node nodeGrace) {
 		TGEffectGrace grace = this.factory.newEffectGrace();
 		grace.setFret(readAttributeInt(nodeGrace, TAG_FRET));
@@ -492,7 +492,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		grace.setDead("true".equals(readAttribute(nodeGrace, TAG_DEAD)));
 		note.getEffect().setGrace(grace);
 	}
-	
+
 	private void readTrill(TGNote note, Node nodeTrill) {
 		TGEffectTrill trill = this.factory.newEffectTrill();
 		trill.setFret(readAttributeInt(nodeTrill, TAG_FRET));
@@ -501,7 +501,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		trill.setDuration(duration);
 		note.getEffect().setTrill(trill);
 	}
-	
+
 	private void readTremoloPicking(TGNote note, Node nodeTremoloPicking) {
 		TGEffectTremoloPicking picking = this.factory.newEffectTremoloPicking();
 		TGDuration duration = this.factory.newDuration();
@@ -509,7 +509,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		picking.setDuration(duration);
 		note.getEffect().setTremoloPicking(picking);
 	}
-	
+
 	private List<PositionValue> readPositionValueList(Node nodeList) {
 		List<PositionValue> list = new ArrayList<PositionValue>();
 		Node nodePoint = getChildNode(nodeList, TAG_POINT);
@@ -521,5 +521,5 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		}
 		return list;
 	}
-	
+
 }

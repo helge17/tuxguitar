@@ -15,17 +15,17 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UISplashWindow;
 
 public class SWTSplashWindow extends SWTComponent<Shell> implements UISplashWindow {
-	
+
 	private UIImage image;
 	private UIImage splashImage;
-	
+
 	public SWTSplashWindow(Display display) {
 		super(new Shell(display, SWT.NO_TRIM | SWT.NO_BACKGROUND));
-		
+
 		this.getControl().setLayout(new FillLayout());
 		this.getControl().addPaintListener(new SWTPaintListener(this));
 	}
-	
+
 	public String getText() {
 		return this.getControl().getText();
 	}
@@ -40,10 +40,10 @@ public class SWTSplashWindow extends SWTComponent<Shell> implements UISplashWind
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);
 	}
-	
+
 	public UIImage getSplashImage() {
 		return splashImage;
 	}
@@ -59,14 +59,14 @@ public class SWTSplashWindow extends SWTComponent<Shell> implements UISplashWind
 	public boolean isDisposed() {
 		return this.getControl().isDisposed();
 	}
-	
+
 	public void open() {
 		this.getControl().setBounds(getPreferredBounds());
 		this.getControl().open();
 		this.getControl().redraw();
 		this.getControl().update();
 	}
-	
+
 	public Rectangle getPreferredBounds(){
 		Point iBounds = this.getSplashImageSize();
 		Rectangle mBounds = this.getControl().getMonitor().getClientArea();
@@ -76,7 +76,7 @@ public class SWTSplashWindow extends SWTComponent<Shell> implements UISplashWind
 		int height = iBounds.y;
 		return new Rectangle( x , y , width , height);
 	}
-	
+
 	public Point getSplashImageSize(){
 		if( this.getSplashImage() != null && !this.getSplashImage().isDisposed() ) {
 			this.getSplashImage().getWidth();
@@ -84,15 +84,15 @@ public class SWTSplashWindow extends SWTComponent<Shell> implements UISplashWind
 		}
 		return new Point(0, 0);
 	}
-	
+
 	public class SWTPaintListener implements PaintListener {
-		
+
 		private SWTSplashWindow window;
-		
+
 		public SWTPaintListener(SWTSplashWindow window) {
 			this.window = window;
 		}
-		
+
 		public void paintControl(PaintEvent e) {
 			if( this.window.getSplashImage() != null && !this.window.getSplashImage().isDisposed() ) {
 				e.gc.drawImage(((SWTImage) this.window.getSplashImage()).getHandle(), 0, 0);

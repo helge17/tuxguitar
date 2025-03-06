@@ -12,19 +12,19 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMoveToAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.caret.move-to";
-	
+
 	public TGMoveToAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGTrackImpl track = ((TGTrackImpl) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK));
 		TGMeasureImpl measure = ((TGMeasureImpl) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 		TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
 		TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
-		
+
 		Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
 		tablature.getCaret().moveTo(track, measure, beat, string.getNumber());
 		if (!Boolean.TRUE.equals(context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION))) {

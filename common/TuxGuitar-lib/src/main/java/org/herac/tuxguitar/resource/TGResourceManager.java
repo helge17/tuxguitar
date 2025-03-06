@@ -9,13 +9,13 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGResourceManager implements TGResourceLoader {
-	
+
 	private TGResourceLoader resourceLoader;
-	
+
 	private TGResourceManager(){
 		super();
 	}
-	
+
 	public <T> Class<T> loadClass(String name) throws TGResourceException {
 		if( this.resourceLoader != null ) {
 			return this.resourceLoader.loadClass(name);
@@ -43,7 +43,7 @@ public class TGResourceManager implements TGResourceLoader {
 		}
 		return null;
 	}
-	
+
 	public TGResourceLoader getResourceLoader() {
 		return resourceLoader;
 	}

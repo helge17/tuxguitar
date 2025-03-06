@@ -54,13 +54,13 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackPropertiesDialog implements TGEventListener {
-	
+
 	private static final float MINIMUM_LEFT_CONTROLS_WIDTH = 180;
 	private static final float MINIMUM_BUTTON_WIDTH = 80;
 	private static final float MINIMUM_BUTTON_HEIGHT = 25;
 	private static final int MIN_MAXFRET_NUMER = 12;
 	private static final int MAX_MAXFRET_NUMBER = 39;
-	
+
 	private TGViewContext context;
 	private UIWindow dialog;
 	private UITextField nameText;
@@ -70,35 +70,35 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	private UIReadOnlyTextField tuningText;
 	private UISpinner maxFretNumber;
 	private TGProcess updateItemsProcess;
-	
+
 	public TGTrackPropertiesDialog(TGViewContext context) {
 		this.context = context;
 		this.createSyncProcesses();
 	}
-	
+
 	public void show() {
 		TGTrack track = this.findTrack();
-		
+
 		UIFactory factory = this.getUIFactory();
 		UIWindow parent = this.context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.dialog = factory.createWindow(parent, true, false);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("track.properties"));
-		
+
 		//GENERAL
 		this.initTrackInfo(track);
-		
+
 		//BUTTONS
 		this.initButtons();
-		
+
 		//LISTENERS
 		this.initListeners();
-		
+
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	private void initListeners() {
 		this.addListeners();
 		this.dialog.addDisposeListener(new UIDisposeListener() {
@@ -113,22 +113,22 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			}
 		});
 	}
-	
+
 	private void initTrackInfo(TGTrack track) {
 		final UIFactory factory = this.getUIFactory();
 		UITableLayout dialogLayout = (UITableLayout) this.dialog.getLayout();
-		
+
 		UITableLayout legendLayout = new UITableLayout();
 		UILegendPanel legendPanel = factory.createLegendPanel(this.dialog);
 		legendPanel.setLayout(legendLayout);
 		legendPanel.setText(TuxGuitar.getProperty("track.properties.general"));
 		dialogLayout.set(legendPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//-----------------------NAME---------------------------------
 		UILabel nameLabel = factory.createLabel(legendPanel);
 		nameLabel.setText(TuxGuitar.getProperty("track.name") + ":");
 		legendLayout.set(nameLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.nameText = factory.createTextField(legendPanel);
 		this.nameText.setText(track.getName());
 		this.nameText.addFocusLostListener(new UIFocusLostListener() {
@@ -136,14 +136,14 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 				TGTrackPropertiesDialog.this.updateTrackNameMaxfret();
 			}
 		});
-		
+
 		legendLayout.set(this.nameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_LEFT_CONTROLS_WIDTH, null, null);
-		
+
 		//-----------------------COLOR---------------------------------
 		UILabel colorLabel = factory.createLabel(legendPanel);
 		colorLabel.setText(TuxGuitar.getProperty("track.color") + ":");
 		legendLayout.set(colorLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.colorButton = factory.createButton(legendPanel);
 		this.colorButton.setText(TuxGuitar.getProperty("choose"));
 		this.colorButton.addSelectionListener(new UISelectionListener() {
@@ -153,7 +153,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 				colorModel.setRed(tgColor.getR());
 				colorModel.setGreen(tgColor.getG());
 				colorModel.setBlue(tgColor.getB());
-				
+
 				UIColorChooser colorChooser = factory.createColorChooser(TGTrackPropertiesDialog.this.dialog);
 				colorChooser.setDefaultModel(colorModel);
 				colorChooser.setText(TuxGuitar.getProperty("choose-color"));
@@ -172,12 +172,12 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			}
 		});
 		legendLayout.set(this.colorButton, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_LEFT_CONTROLS_WIDTH, null, null);
-		
+
 		//------------Instrument Combo-------------------------------------
 		UILabel instrumentLabel = factory.createLabel(legendPanel);
 		instrumentLabel.setText(TuxGuitar.getProperty("instrument") + ":");
 		legendLayout.set(instrumentLabel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.channelSelect = factory.createDropDownSelect(legendPanel);
 		this.channelSelect.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -186,27 +186,27 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		});
 		this.updateChannelSelect();
 		legendLayout.set(this.channelSelect, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		UIButton settings = factory.createButton(legendPanel);
 		settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		settings.addSelectionListener(this.createOpenViewAction(TGToggleChannelsDialogAction.NAME));
 		legendLayout.set(settings, 3, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		//------------Tuning -------------------------------------
 		UILabel tuningLabel = factory.createLabel(legendPanel);
 		tuningLabel.setText(TuxGuitar.getProperty("tuning") + ":");
 		legendLayout.set(tuningLabel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		this.tuningText = factory.createReadOnlyTextField(legendPanel);
 		legendLayout.set(this.tuningText, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		UIButton tuningSettings = factory.createButton(legendPanel);
 		tuningSettings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
 		tuningSettings.setToolTipText(TuxGuitar.getProperty("settings"));
 		tuningSettings.addSelectionListener(this.createOpenViewAction(TGOpenTrackTuningDialogAction.NAME));
 		legendLayout.set(tuningSettings, 4, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		//-------------- max fret number ---------------
 		UILabel maxFretLabel = factory.createLabel(legendPanel);
 		maxFretLabel.setText(TuxGuitar.getProperty("track.maxFret") + ":");
@@ -217,24 +217,24 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		this.maxFretNumber.setMaximum(MAX_MAXFRET_NUMBER);
 		this.maxFretNumber.setValue(track.getMaxFret());
 		legendLayout.set(this.maxFretNumber,5,2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 	}
-	
+
 	public TGActionProcessorListener createOpenViewAction(String actionId) {
 		TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(this.context.getContext(), actionId);
 		tgActionProcessor.setAttribute(TGViewContext.ATTRIBUTE_PARENT, this.dialog);
 		return tgActionProcessor;
 	}
-	
+
 	private void initButtons() {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout dialogLayout = (UITableLayout) this.dialog.getLayout();
-		
+
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = factory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonClose = factory.createButton(buttons);
 		buttonClose.setText(TuxGuitar.getProperty("close"));
 		buttonClose.addSelectionListener(new UISelectionListener() {
@@ -246,7 +246,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		buttonsLayout.set(buttonClose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 		buttonsLayout.set(buttonClose, UITableLayout.MARGIN_RIGHT, 0f);
 	}
-	
+
 	public void updateItems(){
 		if( this.dialog != null && !this.dialog.isDisposed() ){
 			this.updateChannelSelect();
@@ -255,23 +255,23 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			this.updateMaxFretControl();
 		}
 	}
-	
+
 	private void updateColorButton() {
 		TGColor tgColor = this.findTrack().getColor();
-		
+
 		this.colorButton.setFgColor(null);
 		this.disposeColorButtonBackground();
 		this.colorButtonBg = getUIFactory().createColor(tgColor.getR(), tgColor.getG(), tgColor.getB());
 		this.colorButton.setFgColor(this.colorButtonBg);
 	}
-	
+
 	private void disposeColorButtonBackground(){
 		if( this.colorButtonBg != null && !this.colorButtonBg.isDisposed()){
 			this.colorButtonBg.dispose();
 			this.colorButtonBg = null;
 		}
 	}
-	
+
 	private void updateTuningText() {
 		StringBuilder label = new StringBuilder();
 		boolean isValid = true;
@@ -284,53 +284,53 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			isValid &= (noteName!=null);
 			label.append(noteName);
 		}
-		
+
 		boolean enabled = !this.isPercussionChannel();
-		
+
 		this.tuningText.setText((enabled && isValid) ? label.toString() : "");
 		this.tuningText.setEnabled(enabled);
 	}
-	
+
 	private void updateChannelSelect() {
 		this.channelSelect.setIgnoreEvents(true);
 		this.channelSelect.removeItems();
 		this.channelSelect.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("track.instrument.default-select-option"), null));
-		
+
 		List<TGChannel> channels = findSongManager().getChannels(findSong());
 		for(TGChannel channel : channels) {
 			this.channelSelect.addItem(new UISelectItem<Integer>(channel.getName(), channel.getChannelId()));
 		}
-		
+
 		this.channelSelect.setSelectedValue(this.findTrack().getChannelId());
 		this.channelSelect.setIgnoreEvents(false);
 	}
-	
+
 	private void updateMaxFretControl() {
 		this.maxFretNumber.setVisible(!findTrack().isPercussion());
 	}
-	
+
 	private int getSelectedChannelId(){
-		Integer selectedValue = this.channelSelect.getSelectedValue();	
+		Integer selectedValue = this.channelSelect.getSelectedValue();
 		return (selectedValue != null ? selectedValue : -1);
 	}
-	
+
 	private void updateTrackNameMaxfret() {
 		this.updateTrackInfo(this.nameText.getText(), this.findTrack().getColor(), this.maxFretNumber.getValue());
 	}
-	
+
 	private void updateTrackColor(UIColorModel selection) {
 		TGColor tgColor = this.findSongManager().getFactory().newColor();
 		tgColor.setR(selection.getRed());
 		tgColor.setG(selection.getGreen());
 		tgColor.setB(selection.getBlue());
-		
+
 		this.updateTrackInfo(this.findTrack().getName(), tgColor, this.findTrack().getMaxFret());
 	}
-	
+
 	private void updateTrackInfo(String name, TGColor color, int maxFret) {
 		TGSong song = this.findSong();
 		TGTrack track = this.findTrack();
-		
+
 		if( this.hasInfoChanges(name, color, maxFret) ){
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGSetTrackInfoAction.NAME);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
@@ -347,7 +347,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("track.confirm.reduce-fret-number", new String[] {String.valueOf(maxFret)}));
 				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_CANCEL);
 				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_CANCEL);
-				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, 
+				tgActionProcessorConfirm.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES,
 						new Runnable() {
 							public void run() {
 								tgActionProcessor.process();
@@ -361,15 +361,15 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			}
 		}
 	}
-	
+
 	private void updateTrackChannel() {
 		TGSong song = this.findSong();
 		TGTrack track = this.findTrack();
 		Integer channelId = this.getSelectedChannelId();
-		
+
 		if( this.hasChannelChanges(channelId) ){
 			TGChannel channel = this.findSongManager().getChannel(song, channelId);
-			
+
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGSetTrackChannelAction.NAME);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
@@ -377,7 +377,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			tgActionProcessor.process();
 		}
 	}
-	
+
 	private boolean hasInfoChanges(String name, TGColor color, int maxFret){
 		TGTrack track = this.findTrack();
 		if(!name.equals(track.getName())){
@@ -391,54 +391,54 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		}
 		return false;
 	}
-	
+
 	private boolean hasChannelChanges(int channelId){
 		return ( this.findTrack().getChannelId() != channelId );
 	}
-	
+
 	private boolean isPercussionChannel() {
 		return this.findSongManager().isPercussionChannel(this.findSong(), this.findTrack().getChannelId());
 	}
-	
+
 	public void addListeners(){
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
-	
+
 	public void removeListeners(){
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
-	
+
 	public TGSongManager findSongManager() {
 		return this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 	}
-	
+
 	public TGSong findSong() {
 		return this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 	}
-	
+
 	public TGTrack findTrack() {
 		return this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 	}
-	
+
 	public UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context.getContext()).getFactory();
 	}
-	
-	public void createSyncProcesses() {		
+
+	public void createSyncProcesses() {
 		this.updateItemsProcess = new TGSyncProcessLocked(this.context.getContext(), new Runnable() {
 			public void run() {
 				updateItems();
 			}
 		});
 	}
-	
+
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
 			this.updateItemsProcess.process();
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);

@@ -8,13 +8,13 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGGoDownAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.caret.go-down";
-	
+
 	public TGGoDownAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
 		tablature.getCaret().moveDown();

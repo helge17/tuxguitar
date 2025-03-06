@@ -32,15 +32,15 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGPrintAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.file.print";
-	
+
 	public static final String ATTRIBUTE_PRINTER = UIPrinter.class.getName();
-	
+
 	public TGPrintAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGPrintSettings styles = context.getAttribute(TGPrintSettings.ATTRIBUTE_PRINT_STYLES);
 		if( styles == null ) {
@@ -51,20 +51,20 @@ public class TGPrintAction extends TGActionBase{
 		if (zoomValue == null) {
 			zoomValue = 100;
 		}
-		
+
 		UIPrinter printer = context.getAttribute(ATTRIBUTE_PRINTER);
 		if( printer == null ) {
 			this.configurePrinterData(context);
 			return;
 		}
-		
+
 		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		UIRectangle printerArea = this.getPrinterArea(printer, 10f);
 		UISize pageSize = new UISize(printerArea.getWidth(), printerArea.getHeight());
 		UIInset pageMargins = new UIInset(printerArea.getY(), printerArea.getX(), 0, 0);
-		
+
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, printer.getResourceFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
 		float scale = (float)zoomValue/100f;
@@ -73,7 +73,7 @@ public class TGPrintAction extends TGActionBase{
 		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, pageSize, pageMargins));
 		printLayout.getResourceBuffer().disposeAllResources();
 	}
-	
+
 	public void configureStyles(final TGActionContext context) {
 		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintSettingsDialogController());
 		context.setAttribute(TGPrintSettingsDialog.ATTRIBUTE_HANDLER, new TGPrintSettingsHandler() {
@@ -85,7 +85,7 @@ public class TGPrintAction extends TGActionBase{
 		});
 		executeActionInNewThread(TGOpenViewAction.NAME, context);
 	}
-	
+
 	public void configurePrinterData(final TGActionContext context) {
 		context.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrinterChooserDialogController());
 		context.setAttribute(TGPrinterChooserDialog.ATTRIBUTE_HANDLER, new TGPrinterChooserHandler() {
@@ -96,7 +96,7 @@ public class TGPrintAction extends TGActionBase{
 		});
 		executeActionInNewThread(TGOpenViewAction.NAME, context);
 	}
-	
+
 	public void executeActionInNewThread(final String id, final TGActionContext context) {
 		new Thread(new Runnable() {
 			public void run() {
@@ -104,26 +104,26 @@ public class TGPrintAction extends TGActionBase{
 			}
 		}).start();
 	}
-	
+
 	protected UIRectangle getPrinterArea(UIPrinter printer, float margin) {
 		Float scale = printer.getDpiScale();
 		Float scaledMargin = (margin * (scale != null ? scale : 1f));
 		UIRectangle bounds = printer.getBounds();
-		
+
 		return new UIRectangle(bounds.getX() + scaledMargin, bounds.getY() + scaledMargin, bounds.getWidth() - (scaledMargin * 2f), bounds.getHeight() - (scaledMargin * 2f));
 	}
-	
+
 	private class PrintDocumentImpl implements TGPrintDocument{
-		
+
 		private TGPrintPainter painter;
 		private TGPrintLayout layout;
 		private UIPrinter printer;
 		private UIPrinterJob printerJob;
 		private UIPrinterPage printerPage;
-		
+
 		private UISize size;
 		private UIInset margins;
-		
+
 		public PrintDocumentImpl(TGPrintLayout layout, UIPrinter printer, UISize size, UIInset margins){
 			this.layout = layout;
 			this.printer = printer;
@@ -131,11 +131,11 @@ public class TGPrintAction extends TGActionBase{
 			this.margins = margins;
 			this.painter = new TGPrintPainter();
 		}
-		
+
 		public UIPainter getPainter() {
 			return this.painter;
 		}
-		
+
 		public UISize getSize() {
 			return this.size;
 		}
@@ -143,24 +143,24 @@ public class TGPrintAction extends TGActionBase{
 		public UIInset getMargins() {
 			return this.margins;
 		}
-		
+
 		public void pageStart() {
 			if( this.printerJob != null && !this.printerJob.isDisposed() ){
 				this.printerPage = this.printerJob.createPage();
 				this.painter.setHandle(this.printerPage.getPainter());
 			}
 		}
-		
+
 		public void pageFinish() {
 			if( this.printerPage != null && !this.printerPage.isDisposed() ){
 				this.printerPage.dispose();
 			}
 		}
-		
+
 		public void start() {
 			this.printerJob = this.printer.createJob(getJobName());
 		}
-		
+
 		public void finish() {
 			if( this.printerJob != null && !this.printerJob.isDisposed() ){
 				this.printerJob.dispose();
@@ -172,30 +172,30 @@ public class TGPrintAction extends TGActionBase{
 				});
 			}
 		}
-		
+
 		public boolean isTransparentBackground() {
 			return true;
 		}
-		
+
 		public boolean isPaintable(int page){
 			Integer startPage = this.printer.getStartPage();
 			if( startPage != null && startPage > 0 && startPage > page){
 				return false;
 			}
-			
+
 			Integer endPage = this.printer.getEndPage();
 			if( endPage != null && endPage > 0 && endPage < page){
 				return false;
 			}
 			return true;
 		}
-		
+
 		public String getJobName(){
 			String prefix = TGApplication.NAME;
 			String song = this.layout.getSong().getName();
 			return ( song != null && song.length() > 0 ? (prefix + "-" + song) : prefix );
 		}
-		
+
 		public void dispose(){
 			if(!this.printer.isDisposed()){
 				this.printer.dispose();

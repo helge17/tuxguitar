@@ -29,11 +29,11 @@ public class TGBrowserCollectionsAdapter extends BaseAdapter {
 	public void clearCollections() {
 		this.collections.clear();
 	}
-	
+
 	public void addCollection(TGBrowserCollection collection) {
 		this.collections.add(collection);
 	}
-	
+
 	@Override
 	public int getCount() {
 		return this.collections.size();
@@ -52,24 +52,24 @@ public class TGBrowserCollectionsAdapter extends BaseAdapter {
 	public LayoutInflater getLayoutInflater() {
 		return (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final TGBrowserCollection collection = this.collections.get(position);
-		
+
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_browser_collections_item, parent, false));
 		view.setTag(collection);
-		
+
 		TextView textView = (TextView) view.findViewById(R.id.browser_collections_item_name);
 		textView.setText(collection.getSettings().getTitle());
-		
+
 		ImageView imageView = (ImageView) view.findViewById(R.id.browser_collections_item_icon);
 		imageView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				TGBrowserCollectionsAdapter.this.dialog.removeCollection(collection);
 			}
 		});
-		
+
 		return view;
 	}
 }

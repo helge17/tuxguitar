@@ -6,17 +6,17 @@ import org.herac.tuxguitar.io.base.TGSongWriter;
 import org.herac.tuxguitar.io.base.TGSongWriterHandle;
 
 public class MusicXMLSongWriter implements TGSongWriter {
-	
+
 	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("MusicXML", "application/vnd.recordare.musicxml+xml", new String[]{"musicxml"});
-	
+
 	public MusicXMLSongWriter() {
 		super();
 	}
-	
+
 	public TGFileFormat getFileFormat() {
 		return FILE_FORMAT;
 	}
-	
+
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try{
 			new MusicXMLWriter(handle.getOutputStream()).writeSong(handle.getSong());

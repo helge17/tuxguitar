@@ -15,7 +15,7 @@ public class UIScrollBarPanelLayout extends UIAbstractLayout {
 	public static final String FILL_HEIGHT = "fillHeight";
 	public static final String DYNAMIC_PACKED_WIDTH = "dynamicPackedWidth";
 	public static final String DYNAMIC_PACKED_HEIGHT = "dynamicPackedHeight";
-	
+
 	public UIScrollBarPanelLayout(boolean hScroll, boolean vScroll, boolean fillWidth, boolean fillHeight, boolean dynamicPackedWidth, boolean dynamicPackedHeight) {
 		this.set(H_SCROLL, hScroll);
 		this.set(V_SCROLL, vScroll);
@@ -24,7 +24,7 @@ public class UIScrollBarPanelLayout extends UIAbstractLayout {
 		this.set(DYNAMIC_PACKED_WIDTH, dynamicPackedWidth);
 		this.set(DYNAMIC_PACKED_HEIGHT, dynamicPackedHeight);
 	}
-	
+
 	public UISize getComputedPackedSize(UILayoutContainer container) {
 		UISize packedSize = new UISize();
 		UISize packedContentSize = this.getPackedContentSize(container);
@@ -36,11 +36,11 @@ public class UIScrollBarPanelLayout extends UIAbstractLayout {
 		}
 		return packedSize;
 	}
-	
+
 	public void setBounds(UILayoutContainer container, UIRectangle bounds) {
 		int hValue = 0;
 		int vValue = 0;
-		
+
 		UISize packedContentSize = this.getPackedContentSize(container);
 		if( Boolean.TRUE.equals(this.get(H_SCROLL))) {
 			UIScrollBar uiScrollBar = ((UIScrollBarPanel) container).getHScroll();
@@ -54,18 +54,18 @@ public class UIScrollBarPanelLayout extends UIAbstractLayout {
 			uiScrollBar.setThumb(Math.round(Math.min(packedContentSize.getHeight(), bounds.getHeight())));
 			vValue = uiScrollBar.getValue();
 		}
-		
+
 		for(UIControl child : container.getChildren()) {
 			UIRectangle childBounds = new UIRectangle();
 			childBounds.getPosition().setX(bounds.getX() - hValue);
 			childBounds.getPosition().setY(bounds.getY() - vValue);
 			childBounds.getSize().setWidth(Boolean.TRUE.equals(this.get(FILL_WIDTH)) ? (bounds.getWidth() + hValue) : child.getPackedSize().getWidth());
 			childBounds.getSize().setHeight(Boolean.TRUE.equals(this.get(FILL_HEIGHT)) ? (bounds.getHeight() + vValue) : child.getPackedSize().getHeight());
-			
+
 			child.setBounds(childBounds);
 		}
 	}
-	
+
 	public UISize getPackedContentSize(UILayoutContainer container) {
 		UISize packedSize = new UISize();
 		for(UIControl child : container.getChildren()) {

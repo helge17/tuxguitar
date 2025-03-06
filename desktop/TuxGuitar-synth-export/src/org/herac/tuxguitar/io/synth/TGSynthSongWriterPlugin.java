@@ -6,17 +6,17 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGSynthSongWriterPlugin extends TGSongWriterPlugin {
-	
+
 	public static final String MODULE_ID = "tuxguitar-synth-export";
-	
+
 	public TGSynthSongWriterPlugin() {
 		super();
 	}
-	
+
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
 		return new TGSynthSongWriter(context);
 	}
-	
+
 	public String getModuleId(){
 		return MODULE_ID;
 	}

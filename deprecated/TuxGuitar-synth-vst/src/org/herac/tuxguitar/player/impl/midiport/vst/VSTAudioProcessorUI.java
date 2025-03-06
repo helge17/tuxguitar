@@ -19,20 +19,20 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class VSTAudioProcessorUI implements TGAudioProcessorUI {
-	
+
 	private TGContext context;
 	private VSTType type;
 	private VSTAudioProcessor processor;
 	private VSTEffectEditor editor;
 	private TGAudioProcessorUICallback callback;
-	
+
 	public VSTAudioProcessorUI(TGContext context, VSTAudioProcessor processor, VSTType type, TGAudioProcessorUICallback callback) {
 		this.context = context;
 		this.processor = processor;
 		this.type = type;
 		this.callback = callback;
 	}
-	
+
 	public String getLabel() {
 		String vstPlugin = null;
 		String vstPluginType = this.type.name().toLowerCase();
@@ -70,7 +70,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			this.choosePluginInUiThread(parent);
 		}
 	}
-	
+
 	public void close() {
 		if( this.processor.isOpen() ) {
 			if( this.processor.getEffect().isEditorAvailable()) {
@@ -85,7 +85,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			}
 		}
 	}
-	
+
 	public void focus() {
 		if( this.processor.isOpen() ) {
 			if( this.processor.getEffect().isEditorAvailable()) {
@@ -100,15 +100,15 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			}
 		}
 	}
-	
+
 	public void choosePlugin(final UIWindow parent) {
 		final VSTSettings vstSettings = new VSTSettings(this.context);
 		String chooserPath = vstSettings.getPluginPath();
 		String[] extensions = vstSettings.getPluginExtensions();
-		
+
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		UIFileChooser uiFileChooser = uiFactory.createOpenFileChooser(parent);
-		
+
 		if( chooserPath != null) {
 			uiFileChooser.setDefaultPath(new File(chooserPath));
 		}
@@ -126,13 +126,13 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 				if (file != null) {
 					vstSettings.setPluginPath(file.getParentFile().getAbsolutePath());
 					vstSettings.save();
-					
+
 					VSTAudioProcessorUI.this.openPluginInThread(parent, file);
 				}
 			}
 		});
 	}
-	
+
 	public void choosePluginInUiThread(final UIWindow parent) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -140,13 +140,13 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			}
 		});
 	}
-	
+
 	public void openPlugin(UIWindow parent, File file) {
 		this.processor.open(file);
 		this.open(parent);
 		this.callback.onChange(true);
 	}
-	
+
 	public void openPluginInThread(final UIWindow parent, final File file) {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
@@ -154,7 +154,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			}
 		});
 	}
-	
+
 	public void checkForUpdates() {
 		if( this.isOpen() ) {
 			if( this.processor.getEffect().isUpdated() ) {
@@ -162,7 +162,7 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			}
 		}
 	}
-	
+
 	public void startCheckForUpdatesThread() {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
@@ -170,13 +170,13 @@ public class VSTAudioProcessorUI implements TGAudioProcessorUI {
 			}
 		});
 	}
-	
+
 	public void processCheckForUpdatesLoop() {
 		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
 			public Long process() {
 				if( VSTAudioProcessorUI.this.isOpen() ) {
 					VSTAudioProcessorUI.this.checkForUpdates();
-					
+
 					return 250l;
 				}
 				return BREAK;

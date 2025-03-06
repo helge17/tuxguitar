@@ -14,7 +14,7 @@ public class TGUpdateNoteRangeController extends TGUpdateItemsController {
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
 		TGNoteRange noteRange = actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
-		
+
 		if( Boolean.TRUE.equals( actionContext.getAttribute(TGActionBase.ATTRIBUTE_SUCCESS)) ) {
 			TGBeat beat = (TGBeat) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 			TuxGuitar tuxguitar = TuxGuitar.getInstance();
@@ -27,5 +27,5 @@ public class TGUpdateNoteRangeController extends TGUpdateItemsController {
 		}
 		super.update(context, actionContext);
 	}
-	
+
 }

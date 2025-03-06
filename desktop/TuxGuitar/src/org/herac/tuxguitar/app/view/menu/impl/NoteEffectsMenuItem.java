@@ -160,7 +160,7 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 	public void setEnabled(boolean enabled) {
 		this.noteEffectsMenuItem.setEnabled(enabled);
 	}
-	
+
 	public void update(){
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		TGNoteRange noteRange = TablatureEditor.getInstance(this.findContext()).getTablature().getCurrentNoteRange();

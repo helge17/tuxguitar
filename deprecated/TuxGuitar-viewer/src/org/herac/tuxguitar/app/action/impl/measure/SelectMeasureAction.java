@@ -15,13 +15,13 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.util.TGContext;
 
 public class SelectMeasureAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.select";
-	
+
 	public SelectMeasureAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		AWTEvent awtEvent = context.getAttribute(AWTEvent.class.getName());
 		if( awtEvent instanceof MouseEvent){
@@ -42,12 +42,12 @@ public class SelectMeasureAction extends TGActionBase {
 			}
 		}
 	}
-	
+
 	public TGMeasureImpl findSelectedMeasure(TGTrackImpl track, float x, float y){
 		Tablature tablature = TuxGuitar.instance().getTablatureEditor().getTablature();
 		TGMeasureImpl measure = null;
 		float minorDistance = 0;
-		
+
 		Iterator<?> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl m = (TGMeasureImpl)it.next();

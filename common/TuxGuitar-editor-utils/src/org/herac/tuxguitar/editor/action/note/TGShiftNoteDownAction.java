@@ -5,9 +5,9 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGShiftNoteDownAction extends TGShiftNoteAction {
-	
+
 	public static final String NAME = "action.note.general.shift-down";
-	
+
 	public TGShiftNoteDownAction(TGContext context) {
 		super(context, NAME);
 		this.sortStringsAscending = false;

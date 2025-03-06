@@ -10,7 +10,7 @@ public class TGChannelListFragmentController extends TGCachedFragmentController<
 	public TGChannelListFragment createNewInstance() {
 		return new TGChannelListFragment();
 	}
-	
+
 	public static TGChannelListFragmentController getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGChannelListFragmentController.class.getName(), new TGSingletonFactory<TGChannelListFragmentController>() {
 			public TGChannelListFragmentController createInstance(TGContext context) {

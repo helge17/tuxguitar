@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.herac.tuxguitar.ui.widget.UIPasswordField;
 
 public class SWTPasswordField extends SWTTextField implements UIPasswordField {
-	
+
 	public SWTPasswordField(SWTContainer<? extends Composite> parent) {
 		super(parent, SWT.PASSWORD);
 	}

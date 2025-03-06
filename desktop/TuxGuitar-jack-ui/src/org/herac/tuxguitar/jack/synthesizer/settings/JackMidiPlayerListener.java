@@ -8,10 +8,10 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class JackMidiPlayerListener implements TGEventListener {
-	
+
 	private TGContext context;
 	private JackChannelSettingsDialog jackChannelSettingsDialog;
-	
+
 	public JackMidiPlayerListener(TGContext context, JackChannelSettingsDialog jackChannelSettingsDialog){
 		this.context = context;
 		this.jackChannelSettingsDialog = jackChannelSettingsDialog;
@@ -20,7 +20,7 @@ public class JackMidiPlayerListener implements TGEventListener {
 	public void updateControls(){
 		this.jackChannelSettingsDialog.updateControls();
 	}
-	
+
 	public void updateControlsSynchronized(){
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
@@ -28,7 +28,7 @@ public class JackMidiPlayerListener implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public void processStarted() {
 		this.updateControlsSynchronized();
 	}
@@ -36,7 +36,7 @@ public class JackMidiPlayerListener implements TGEventListener {
 	public void processStopped() {
 		this.updateControlsSynchronized();
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			int type = ((Integer)event.getAttribute(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();

@@ -42,16 +42,16 @@ public class TGActionProcessingListener implements TGEventListener {
 	public void resetLevel() {
 		this.level = 0;
 	}
-	
+
 	public void increaseLevel() {
 		this.level ++;
 	}
-	
+
 	public void decreaseLevel() {
 		this.level --;
 	}
 
-	public void finish() {		
+	public void finish() {
 		this.controller.finish();
 	}
 
@@ -73,7 +73,7 @@ public class TGActionProcessingListener implements TGEventListener {
 			this.controller.update(processing);
 		}
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( this.isFinishAction(event) ) {
 			this.finish();

@@ -10,8 +10,8 @@ public class ABCSongWriterSettingsHandlerPlugin extends TGPersistenceSettingsHan
 	public String getModuleId() {
 		return ABCPlugin.MODULE_ID;
 	}
-	
+
 	public TGPersistenceSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException {
 		return new ABCSongWriterSettingsHandler(context);
-	}	
+	}
 }

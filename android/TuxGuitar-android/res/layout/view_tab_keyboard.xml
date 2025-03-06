@@ -1,14 +1,14 @@
 <org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/tgTabKeyboard"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content" 
+	android:layout_height="wrap_content"
 	style="?attr/tabKeyBoardStyle">
 
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:padding="4dp"
-		android:stretchColumns="1" 
+		android:stretchColumns="1"
 		>
 
 		<TableRow android:gravity="center_vertical" >

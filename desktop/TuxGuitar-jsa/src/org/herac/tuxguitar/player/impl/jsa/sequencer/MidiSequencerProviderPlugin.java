@@ -10,7 +10,7 @@ public class MidiSequencerProviderPlugin extends TGMidiSequencerProviderPlugin{
 	protected MidiSequencerProvider createProvider(TGContext context) {
 		return new MidiSequencerProviderImpl();
 	}
-	
+
 	public String getModuleId() {
 		return MidiPlugin.MODULE_ID;
 	}

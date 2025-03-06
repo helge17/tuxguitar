@@ -18,11 +18,11 @@ import java.util.Map;
 public class TGSongViewAxisSelector {
 
 	private TGSongViewController controller;
-	
+
 	public TGSongViewAxisSelector(TGSongViewController controller) {
 		this.controller = controller;
 	}
-	
+
 	public boolean select(float x, float y, boolean requestSmartMenu) {
 		if( x >= 0 && y >= 0 ){
 			TGTrackImpl track = findSelectedTrack(y);
@@ -42,7 +42,7 @@ public class TGSongViewAxisSelector {
 						}
 
 						this.callMoveTo(track, measure, beat, string, smartMenuProperties);
-						
+
 						return true;
 					}
 				}
@@ -50,7 +50,7 @@ public class TGSongViewAxisSelector {
 		}
 		return false;
 	}
-	
+
 	private TGTrackImpl findSelectedTrack(float y){
 		TGLayout layout = this.controller.getLayout();
 		int number = layout.getTrackNumberAt(y);
@@ -59,11 +59,11 @@ public class TGSongViewAxisSelector {
 		}
 		return null;
 	}
-	
+
 	private TGMeasureImpl findSelectedMeasure(TGTrackImpl track, float x, float y){
 		TGMeasureImpl measure = null;
 		float minorDistance = 0;
-		
+
 		Iterator<?> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasureImpl m = (TGMeasureImpl)it.next();
@@ -81,7 +81,7 @@ public class TGSongViewAxisSelector {
 		}
 		return measure;
 	}
-	
+
 	private TGBeatImpl findSelectedBeat(TGMeasureImpl measure, float x){
 		TGLayout layout = this.controller.getLayout();
 		int voice = this.controller.getCaret().getVoice();
@@ -104,13 +104,13 @@ public class TGSongViewAxisSelector {
 		}
 		return bestBeat;
 	}
-	
+
 	private TGString findSelectedString(TGMeasureImpl measure, float y) {
 		TGString string = null;
 		float stringSpacing = this.controller.getLayout().getStringSpacing();
 		float minorDistance = 0;
 		float firstStringY = measure.getPosY() + measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
-		
+
 		Iterator<?> it = measure.getTrack().getStrings().iterator();
 		while(it.hasNext()){
 			TGString currString = (TGString)it.next();
@@ -120,7 +120,7 @@ public class TGSongViewAxisSelector {
 				minorDistance = distanceX;
 			}
 		}
-		
+
 		return string;
 	}
 

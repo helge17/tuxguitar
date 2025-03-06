@@ -45,7 +45,7 @@ import org.herac.tuxguitar.ui.swt.resource.SWTFont;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> implements UIControl {
-	
+
 	private SWTContainer<? extends Composite> parent;
 	private SWTDisposeListenerManager disposeListener;
 	private SWTResizeListenerManager resizeListener;
@@ -57,17 +57,17 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	private SWTMouseTrackListenerManager mouseTrackListener;
 	private SWTFocusListenerManager focusListener;
 	private SWTZoomListenerManager zoomListener;
-	
+
 	protected UISize packedSize;
 	private UIColor bgColor;
 	private UIColor fgColor;
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
-	
+
 	public SWTControl(T control, SWTContainer<? extends Composite> parent) {
 		super(control);
-		
+
 		this.parent = parent;
 		if( this.parent != null ) {
 			this.parent.addChild(this);
@@ -84,22 +84,22 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		this.focusListener = new SWTFocusListenerManager(this);
 		this.zoomListener = new SWTZoomListenerManager(this);
 	}
-	
+
 	public UIControl getParent() {
 		return this.parent;
 	}
-	
+
 	public void setControlBounds(UIRectangle bounds) {
 		if(!this.getControlBounds().equals(bounds)) {
 			this.getControl().setBounds(Math.round(bounds.getX()), Math.round(bounds.getY()), Math.round(bounds.getWidth()), Math.round(bounds.getHeight()));
 		}
 	}
-	
+
 	public UIRectangle getControlBounds() {
 		Rectangle bounds = this.getControl().getBounds();
 		return new UIRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		this.setControlBounds(bounds);
 	}
@@ -107,7 +107,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	public UIRectangle getBounds() {
 		return this.getControlBounds();
 	}
-	
+
 	public void setPackedSize(UISize packedSize) {
 		this.packedSize.setWidth(packedSize.getWidth());
 		this.packedSize.setHeight(packedSize.getHeight());
@@ -120,7 +120,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		int wHint = (fixedWidth != null ? fixedWidth.intValue() : SWT.DEFAULT);
 		int hHint = (fixedHeight != null ? fixedHeight.intValue() : SWT.DEFAULT);
-		
+
 		Point point = this.getControl().computeSize(wHint, hHint);
 		this.packedSize.setWidth(fixedWidth != null ? fixedWidth.intValue() : point.x);
 		this.packedSize.setHeight(fixedHeight != null ? fixedHeight.intValue() : point.y);
@@ -149,7 +149,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	public void setVisible(boolean visible) {
 		this.getControl().setVisible(visible);
 	}
-	
+
 	public String getToolTipText() {
 		return this.getControl().getToolTipText();
 	}
@@ -157,18 +157,18 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	public void setToolTipText(String text) {
 		this.getControl().setToolTipText(text);
 	}
-	
+
 	public UIColor getColor(Color handle) {
 		return (handle != null ? new SWTColor(handle) : null);
 	}
-	
+
 	public UIColor getBgColor() {
 		if( this.bgColor == null ) {
 			this.bgColor = this.getColor(this.getControl().getBackground());
 		}
 		return this.bgColor;
 	}
-	
+
 	public void setBgColor(UIColor color) {
 		this.bgColor = color;
 		this.getControl().setBackground(this.bgColor != null ? ((SWTColor) this.bgColor).getHandle() : null);
@@ -180,41 +180,41 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		}
 		return this.fgColor;
 	}
-	
+
 	public void setFgColor(UIColor color) {
 		this.fgColor = color;
 		this.getControl().setForeground(this.fgColor != null ? ((SWTColor) this.fgColor).getHandle() : null);
 	}
-	
+
 	public UIFont getFont(Font handle) {
 		return (handle != null ? new SWTFont(handle) : null);
 	}
-	
+
 	public UIFont getFont() {
 		if( this.font == null ) {
 			this.font = this.getFont(this.getControl().getFont());
 		}
 		return this.font;
 	}
-	
+
 	public void setFont(UIFont font) {
 		this.font = font;
 		this.getControl().setFont(this.font != null ? ((SWTFont) this.font).getHandle() : null);
 	}
-	
+
 	public UICursor getCursor() {
 		return (this.cursor != null ? this.cursor : UICursor.NORMAL);
 	}
-	
+
 	public void setCursor(UICursor cursor) {
 		this.cursor = cursor;
 		this.getControl().setCursor(SWTCursor.getCursor(this.getControl(), this.getCursor()));
 	}
-	
+
 	public UIPopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}
-	
+
 	public void setPopupMenu(UIPopupMenu popupMenu) {
 		this.popupMenu = popupMenu;
 		this.getControl().setMenu(this.popupMenu != null ? ((SWTMenu) this.popupMenu).getControl() : null);
@@ -223,25 +223,25 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	public void setFocus() {
 		this.getControl().setFocus();
 	}
-	
+
 	public void redraw() {
 		this.getControl().redraw();
 	}
-	
+
 	public void addDisposeListener(UIDisposeListener listener) {
 		if( this.disposeListener.isEmpty() ) {
 			this.getControl().addDisposeListener(this.disposeListener);
 		}
 		this.disposeListener.addListener(listener);
 	}
-	
+
 	public void removeDisposeListener(UIDisposeListener listener) {
 		this.disposeListener.removeListener(listener);
 		if( this.disposeListener.isEmpty() ) {
 			this.getControl().removeDisposeListener(this.disposeListener);
 		}
 	}
-	
+
 	public void addMouseUpListener(UIMouseUpListener listener) {
 		if( this.mouseListener.isEmpty() ) {
 			this.getControl().addMouseListener(this.mouseListener);
@@ -297,7 +297,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeMouseMoveListener(this.mouseMoveListener);
 		}
 	}
-	
+
 	public void addMouseDragListener(UIMouseDragListener listener) {
 		if( this.mouseDragListener.isEmpty() ) {
 			this.getControl().addMouseListener(this.mouseDragListener);
@@ -313,7 +313,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeMouseMoveListener(this.mouseDragListener);
 		}
 	}
-	
+
 	public void addMouseWheelListener(UIMouseWheelListener listener) {
 		if( this.mouseWheelListener.isEmpty() ) {
 			this.getControl().addMouseWheelListener(this.mouseWheelListener);
@@ -327,7 +327,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeMouseWheelListener(this.mouseWheelListener);
 		}
 	}
-	
+
 	public void addMouseEnterListener(UIMouseEnterListener listener) {
 		if( this.mouseTrackListener.isEmpty() ) {
 			this.getControl().addMouseTrackListener(this.mouseTrackListener);
@@ -341,7 +341,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeMouseTrackListener(this.mouseTrackListener);
 		}
 	}
-	
+
 	public void addMouseExitListener(UIMouseExitListener listener) {
 		if( this.mouseTrackListener.isEmpty() ) {
 			this.getControl().addMouseTrackListener(this.mouseTrackListener);
@@ -355,7 +355,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeMouseTrackListener(this.mouseTrackListener);
 		}
 	}
-	
+
 	public void addKeyPressedListener(UIKeyPressedListener listener) {
 		if( this.keyListener.isEmpty() ) {
 			this.getControl().addKeyListener(this.keyListener);
@@ -369,7 +369,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeKeyListener(this.keyListener);
 		}
 	}
-	
+
 	public void addKeyReleasedListener(UIKeyReleasedListener listener) {
 		if( this.keyListener.isEmpty() ) {
 			this.getControl().addKeyListener(this.keyListener);
@@ -383,7 +383,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeKeyListener(this.keyListener);
 		}
 	}
-	
+
 	public void addResizeListener(UIResizeListener listener) {
 		if( this.resizeListener.isEmpty() ) {
 			this.getControl().addListener(SWT.Resize, this.resizeListener);
@@ -397,7 +397,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeListener(SWT.Resize, this.resizeListener);
 		}
 	}
-	
+
 	public void addFocusGainedListener(UIFocusGainedListener listener) {
 		if( this.focusListener.isEmpty() ) {
 			this.getControl().addFocusListener(this.focusListener);
@@ -411,7 +411,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeFocusListener(this.focusListener);
 		}
 	}
-	
+
 	public void addFocusLostListener(UIFocusLostListener listener) {
 		if( this.focusListener.isEmpty() ) {
 			this.getControl().addFocusListener(this.focusListener);
@@ -425,7 +425,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 			this.getControl().removeFocusListener(this.focusListener);
 		}
 	}
-	
+
 	public void addZoomListener(UIZoomListener listener) {
 		if( this.zoomListener.isEmpty() ) {
 			this.getControl().addListener(SWTZoomListenerManager.EVENT_TYPE, this.zoomListener);

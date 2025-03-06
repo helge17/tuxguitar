@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class PDFSettings {
-	
+
 	private Map<String, Float> settingsMap;
 	// ordered list, to define display order in dialog (keep similar settings close to each other)
 	private List<String> orderedKeys;
-	
+
 	// keys
 	public static final String FIRST_MEASURE_SPACING = "pdf.first-measure-spacing";
 	public static final String MIN_BUFFER_SEPARATOR = "pdf.min-buffer-separator";
@@ -20,7 +20,7 @@ public class PDFSettings {
 	public static final String FIRST_TRACK_SPACING = "pdf.first-track-spacing";
 	public static final String TRACK_SPACING = "pdf.track-spacing";
 	public static final String STRING_SPACING = "pdf.string-spacing";
-	public static final String CHORD_FRET_INDEX_SPACING = "pdf.chord-fret-index-spacing"; 
+	public static final String CHORD_FRET_INDEX_SPACING = "pdf.chord-fret-index-spacing";
 	public static final String CHORD_STRING_SPACING = "pdf.chord-string-spacing";
 	public static final String CHORD_FRET_SPACING = "pdf.chord-fret-spacing";
 	public static final String CHORD_NOTE_SIZE = "pdf.chord-note-size";
@@ -36,7 +36,7 @@ public class PDFSettings {
 	public static final String CLEF_SPACING = "pdf.clef-spacing";
 	public static final String KEY_SIGNATURE_SPACING = "pdf.key-signature-spacing";
 	public static final String TIME_SIGNATURE_SPACING = "pdf.time-signature-spacing";
-	
+
 	public PDFSettings() {
 		this.settingsMap = new HashMap<String, Float>();
 		this.orderedKeys = new ArrayList<String>();
@@ -66,16 +66,16 @@ public class PDFSettings {
 		this.addSetting(KEY_SIGNATURE_SPACING, 15f);
 		this.addSetting(TIME_SIGNATURE_SPACING, 15f);
 	}
-	
+
 	public Map <String,Float> getSettingsMap() {
 		return this.settingsMap;
 	}
-	
+
 	private void addSetting(String key, float defaultValue) {
 		this.orderedKeys.add(key);
 		this.settingsMap.put(key, defaultValue);
 	}
-	
+
 	public List<String> getOrderedKeys() {
 		return this.orderedKeys;
 	}

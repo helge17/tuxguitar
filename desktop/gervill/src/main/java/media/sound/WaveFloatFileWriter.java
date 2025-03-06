@@ -37,7 +37,7 @@ import javax.sound.sampled.spi.AudioFileWriter;
 
 /**
  * Floating-point encoded (format 3) WAVE file writer.
- * 
+ *
  * @author Karl Helgason
  */
 public class WaveFloatFileWriter extends AudioFileWriter {

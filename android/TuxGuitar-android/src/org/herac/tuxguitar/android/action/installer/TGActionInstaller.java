@@ -172,31 +172,31 @@ import org.herac.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGActionInstaller {
-	
+
 	private TGActionAdapterManager manager;
 	private TGActionConfigMap configMap;
-	
+
 	public TGActionInstaller(TGActionAdapterManager manager) {
 		this.manager = manager;
 		this.configMap = new TGActionConfigMap();
 	}
-	
+
 	public void installDefaultActions(){
 		TGContext context = this.manager.getContext();
-		
+
 		//file actions
 		installAction(new TGLoadSongAction(context));
 		installAction(new TGNewSongAction(context));
 		installAction(new TGLoadTemplateAction(context));
 		installAction(new TGReadSongAction(context));
 		installAction(new TGWriteSongAction(context));
-		
+
 		//edit actions
 		installAction(new TGUndoAction(context));
 		installAction(new TGRedoAction(context));
 		installAction(new TGSetVoice1Action(context));
 		installAction(new TGSetVoice2Action(context));
-		
+
 		//caret actions
 		installAction(new TGMoveToAction(context));
 		installAction(new TGGoRightAction(context));
@@ -204,11 +204,11 @@ public class TGActionInstaller {
 		installAction(new TGGoUpAction(context));
 		installAction(new TGGoDownAction(context));
 		installAction(new TGMoveToAxisPositionAction(context));
-		
+
 		//song actions
 		installAction(new TGCopySongFromAction(context));
 		installAction(new TGClearSongAction(context));
-		
+
 		//track actions
 		installAction(new TGAddTrackAction(context));
 		installAction(new TGAddNewTrackAction(context));
@@ -274,7 +274,7 @@ public class TGActionInstaller {
 		for( int i = 0 ; i < 10 ; i ++ ){
 			installAction(new TGSetNoteFretNumberAction(context, i));
 		}
-		
+
 		//effect actions
 		installAction(new TGChangeAccentuatedNoteAction(context));
 		installAction(new TGChangeBendNoteAction(context));
@@ -296,7 +296,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeTremoloPickingAction(context));
 		installAction(new TGChangeTrillNoteAction(context));
 		installAction(new TGChangeVibratoNoteAction(context));
-		
+
 		//duration actions
 		installAction(new TGSetDurationAction(context));
 		installAction(new TGSetWholeDurationAction(context));
@@ -311,7 +311,7 @@ public class TGActionInstaller {
 		installAction(new TGChangeDoubleDottedDurationAction(context));
 		installAction(new TGIncrementDurationAction(context));
 		installAction(new TGDecrementDurationAction(context));
-		
+
 		//composition actions
 		installAction(new TGChangeTempoAction(context));
 		installAction(new TGChangeTempoRangeAction(context));
@@ -323,25 +323,25 @@ public class TGActionInstaller {
 		installAction(new TGRepeatOpenAction(context));
 		installAction(new TGRepeatCloseAction(context));
 		installAction(new TGRepeatAlternativeAction(context));
-		
+
 		//channel actions
 		installAction(new TGSetChannelsAction(context));
 		installAction(new TGAddChannelAction(context));
 		installAction(new TGAddNewChannelAction(context));
 		installAction(new TGRemoveChannelAction(context));
 		installAction(new TGUpdateChannelAction(context));
-		
+
 		//transport actions
 		installAction(new TGTransportPlayAction(context));
 		installAction(new TGTransportStopAction(context));
 		installAction(new TGTransportLoadSettingsAction(context));
-		
+
 		//layout actions
 		installAction(new TGSetLayoutScaleAction(context));
 		installAction(new TGSetScoreEnabledAction(context));
 		installAction(new TGSetChordNameEnabledAction(context));
 		installAction(new TGSetChordDiagramEnabledAction(context));
-		
+
 		//view actions
 		installAction(new TGToggleTabKeyboardAction(context));
 		installAction(new TGShowSmartMenuAction(context));
@@ -375,7 +375,7 @@ public class TGActionInstaller {
 
 		//intent actions
 		installAction(new TGProcessIntentAction(context));
-		
+
 		//gui actions
 		installAction(new TGBackAction(context));
 		installAction(new TGExitAction(context));
@@ -387,10 +387,10 @@ public class TGActionInstaller {
 		installAction(new TGStartActivityForResultAction(context));
 		installAction(new TGRequestPermissionsAction(context));
 	}
-	
+
 	public void installAction(TGActionBase action) {
 		String actionId = action.getName();
-		
+
 		TGActionManager.getInstance(this.manager.getContext()).mapAction(actionId, action);
 		TGActionConfig config = this.configMap.get(actionId);
 		if( config != null ) {

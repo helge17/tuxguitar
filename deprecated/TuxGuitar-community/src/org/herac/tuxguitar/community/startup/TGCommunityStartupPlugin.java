@@ -6,13 +6,13 @@ import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGCommunityStartupPlugin implements TGPlugin {
-	
+
 	private boolean done;
-	
+
 	public TGCommunityStartupPlugin(){
 		this.done = false;
 	}
-	
+
 	public String getModuleId(){
 		return TGCommunityPlugin.MODULE_ID;
 	}

@@ -27,12 +27,12 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGConverterProcess implements TGConverterListener, TGEventListener{
-	
+
 	private static final float SHELL_WIDTH = 650f;
 	private static final float SHELL_HEIGHT = 350f;
-	
+
 	private static final String EOL = ("\n");
-	
+
 	private TGContext context;
 	private UIWindow dialog;
 	private UIReadOnlyTextBox output;
@@ -40,32 +40,32 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 	private UIButton buttonClose;
 	private TGConverter converter;
 	private boolean finished;
-	
+
 	public TGConverterProcess(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void start(String initFolder, String destFolder, TGConverterFormat format ){
 		this.converter = new TGConverter(this.context, initFolder, destFolder);
 		this.converter.setFormat(format);
 		this.converter.setListener(this);
-		
+
 		this.showProcess();
-		
+
 		new Thread(new Runnable() {
 			public void run() throws TGException {
 				TGConverterProcess.this.converter.process();
 			}
 		}).start();
 	}
-	
+
 	protected void showProcess() {
 		this.finished = false;
-		
+
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.dialog = uiFactory.createWindow(uiParent, false, true);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setBounds(new UIRectangle(0, 0, SHELL_WIDTH, SHELL_HEIGHT));
@@ -82,16 +82,16 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 				}
 			}
 		});
-		
+
 		this.output = uiFactory.createReadOnlyTextBox(this.dialog, true, true);
 		dialogLayout.set(this.output, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, true, false);
-		
+
 		this.buttonCancel = uiFactory.createButton(buttons);
 		this.buttonCancel.setEnabled( false );
 		this.buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -100,7 +100,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			}
 		});
 		buttonsLayout.set(this.buttonCancel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		this.buttonClose = uiFactory.createButton(buttons);
 		this.buttonClose.setEnabled( false );
 		this.buttonClose.addSelectionListener(new UISelectionListener() {
@@ -110,24 +110,24 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 		});
 		buttonsLayout.set(this.buttonClose, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(this.buttonClose, UITableLayout.MARGIN_RIGHT, 0f);
-		
+
 		this.loadIcons(false);
 		this.loadProperties(false);
-		
+
 		TuxGuitar.getInstance().getSkinManager().addLoader( this );
 		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
-		
+
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_LAYOUT);
 	}
-	
+
 	public boolean isDisposed(){
 		return (this.dialog == null || this.dialog.isDisposed() );
 	}
-	
+
 	public void loadProperties(){
 		this.loadProperties(true);
 	}
-	
+
 	public void loadProperties(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setText(TuxGuitar.getProperty("batch.converter"));
@@ -138,11 +138,11 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			}
 		}
 	}
-	
+
 	public void loadIcons() {
 		this.loadIcons(true);
 	}
-	
+
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
@@ -151,11 +151,11 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			}
 		}
 	}
-	
+
 	//------------------------------------------------------------------------------------------------//
 	//---TGConverterListener Implementation ----------------------------------------------------------//
 	//------------------------------------------------------------------------------------------------//
-	
+
 	public void notifyFileProcess(final String filename) {
 		if(!isDisposed() ){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -167,7 +167,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			});
 		}
 	}
-	
+
 	public void notifyFileResult(final String filename, final int result) {
 		if(!isDisposed() ){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -179,7 +179,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			});
 		}
 	}
-	
+
 	public void notifyStart() {
 		if(!isDisposed() ){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -194,7 +194,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			});
 		}
 	}
-	
+
 	public void notifyFinish() {
 		if(!isDisposed() ){
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -209,10 +209,10 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 			});
 		}
 	}
-	
+
 	public void appendLogMessage(int result, String fileName) {
 		String message = (TuxGuitar.getProperty( "batch.converter.messages." + ((result == TGConverter.FILE_OK || result == TGConverter.FILE_OK_NEW_VERSION)? "ok" : "failed") ) + EOL);
-		
+
 		switch (result) {
 			case TGConverter.FILE_OK_NEW_VERSION :
 				message += ( TuxGuitar.getProperty("warning.new-minor-version") + EOL );
@@ -236,7 +236,7 @@ public class TGConverterProcess implements TGConverterListener, TGEventListener{
 				message += ( TuxGuitar.getProperty("batch.converter.messages.unknown-error", new String[] {fileName}) + EOL );
 				break;
 		}
-		
+
 		TGConverterProcess.this.output.append( message );
 	}
 

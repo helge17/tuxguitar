@@ -3,53 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-    
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="2" >
-		
-		<TextView 
+
+		<TextView
 			android:id="@+id/trill_dlg_fret_label"
-			android:text="@string/trill_dlg_fret_label" 
+			android:text="@string/trill_dlg_fret_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<Spinner 
+
+		<Spinner
 			android:id="@+id/trill_dlg_fret_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
 			style="?attr/dialogVerticalSpacerStyle" />
-			
-		<RadioGroup 
+
+		<RadioGroup
 			android:id="@+id/trill_dlg_duration_group"
-			android:layout_gravity="fill_horizontal|center_vertical" 
+			android:layout_gravity="fill_horizontal|center_vertical"
 			android:layout_columnSpan="2" >
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/trill_dlg_duration_16"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/trill_dlg_duration_16" 
+				android:text="@string/trill_dlg_duration_16"
 				android:drawableRight="@drawable/duration_16" />
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/trill_dlg_duration_32"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/trill_dlg_duration_32"
 				android:drawableRight="@drawable/duration_32" />
-				
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/trill_dlg_duration_64"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/trill_dlg_duration_64"
 				android:drawableRight="@drawable/duration_64" />
 		</RadioGroup>
-	
+
 	</GridLayout>
 
 </ScrollView>

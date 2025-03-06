@@ -26,7 +26,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
         /* POST_PACKED_STRUCTURE needs to be a macro which
            expands into a compiler directive. The directive must
            tell the compiler to arrange the preceding structure
-           declaration so that it is packed on byte-boundaries rather 
+           declaration so that it is packed on byte-boundaries rather
            than use the natural alignment of the processor and/or
            compiler.
         */
@@ -35,7 +35,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
         #define POST_PACKED_STRUCTURE __attribute__((__packed__))
 
     #else
-    
+
         #ifdef _MSC_VER
             #define PRE_PACKED_STRUCTURE1 __pragma(pack(push,1))
             #define PRE_PACKED_STRUCTURE    PRE_PACKED_STRUCTURE1

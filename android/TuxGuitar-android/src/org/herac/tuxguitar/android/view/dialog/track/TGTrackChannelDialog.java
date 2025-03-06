@@ -70,29 +70,29 @@ public class TGTrackChannelDialog extends TGModalFragment {
 	public TGSelectableItem[] createSelectableChannels() {
 		List<TGSelectableItem> selectableChannels = new ArrayList<TGSelectableItem>();
 		selectableChannels.add(new TGSelectableItem(null, getString(R.string.global_spinner_select_option)));
-		
+
 		Iterator<TGChannel> it = this.songManager.getChannels(this.song).iterator();
 		while( it.hasNext() ) {
 			TGChannel channel = it.next();
 			selectableChannels.add(new TGSelectableItem(channel, channel.getName()));
 		}
-		
+
 		TGSelectableItem[] builtItems = new TGSelectableItem[selectableChannels.size()];
 		selectableChannels.toArray(builtItems);
-		
+
 		return builtItems;
 	}
-	
+
 	public TGChannel findSelectedChannel() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_channel_dlg_channel_value);
-		
+
 		return (TGChannel) ((TGSelectableItem)spinner.getSelectedItem()).getItem();
 	}
-	
+
 	public void fillTrackInstrument() {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableChannels());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_channel_dlg_channel_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(this.songManager.getChannel(this.song, this.track.getChannelId()), null)));

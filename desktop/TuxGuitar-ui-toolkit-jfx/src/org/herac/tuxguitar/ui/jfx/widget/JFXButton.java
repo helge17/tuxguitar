@@ -12,17 +12,17 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UIButton;
 
 public class JFXButton extends JFXLabeled<Button> implements UIButton {
-	
+
 	private JFXSelectionListenerManager<ActionEvent> selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public JFXButton(JFXContainer<? extends Region> parent) {
 		super(new Button(), parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerManager<ActionEvent>(this);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
@@ -31,7 +31,7 @@ public class JFXButton extends JFXLabeled<Button> implements UIButton {
 		this.image = image;
 		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXImage) this.image).getHandle()) : null);
 	}
-	
+
 	public void setDefaultButton() {
 		this.getControl().setDefaultButton(true);
 	}

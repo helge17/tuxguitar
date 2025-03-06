@@ -6,15 +6,15 @@ import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
 import org.qtjambi.qt.widgets.QToolButton;
 
 public class QTToolActionItem extends QTToolAbstractButtonItem<QToolButton> implements UIToolActionItem {
-	
+
 	private QTSelectionListenerManager selectionListener;
-	
+
 	public QTToolActionItem(QTToolBar parent) {
 		super(new QToolButton(parent.getControl()), parent);
-		
+
 		this.selectionListener = new QTSelectionListenerManager(this);
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().clicked.connect(this.selectionListener, QTSelectionListenerManager.SIGNAL_METHOD);

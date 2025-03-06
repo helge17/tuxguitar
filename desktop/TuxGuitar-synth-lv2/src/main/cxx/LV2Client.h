@@ -8,7 +8,7 @@ typedef struct {
 	LV2Int32 sessionId;
 	LV2Int32 serverPort;
 	const char *pluginURI;
-	
+
 	LV2Lock* lock;
 	LV2Config *config;
 	LV2World *world;

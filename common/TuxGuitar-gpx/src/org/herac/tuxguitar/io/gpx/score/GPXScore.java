@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXScore {
-	
+
 	private String title;
 	private String subTitle;
 	private String artist;
@@ -13,7 +13,7 @@ public class GPXScore {
 	private String tabber;
 	private String instructions;
 	private String notices;
-	
+
 	public GPXScore(){
 		super();
 	}

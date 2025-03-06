@@ -9,16 +9,16 @@ import org.herac.tuxguitar.ui.resource.UIColorModel;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChordStyleAdapter {
-	
+
 	public static final String COLOR_FOREGROUND = "widget.chordEditor.foregroundColor";
 	public static final String COLOR_BACKGROUND = "widget.chordEditor.backgroundColor";
 	public static final String COLOR_SELECTION = "widget.chordEditor.selectionColor";
 	public static final String COLOR_TONIC = "widget.chordEditor.tonicColor";
-	
+
 	private TGChordStyleAdapter() {
 		super();
 	}
-	
+
 	public static final void appendColors(TGContext context) {
 		UIAppearance appearance = TGApplication.getInstance(context).getAppearance();
 		TGColorManager.getInstance(context).appendSkinnableColors(new TGSkinnableColor[] {

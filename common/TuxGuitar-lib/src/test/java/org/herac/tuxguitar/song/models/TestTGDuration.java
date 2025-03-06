@@ -12,17 +12,17 @@ import org.herac.tuxguitar.song.factory.TGFactory;
 import org.junit.jupiter.api.Test;
 
 public class TestTGDuration {
-	
+
 	private TGFactory factory = new TGFactory();
 
 	@Test
 	public void testPreciseDuration() {
-		
+
 		// manually computed, to update if new time divisions are added
 		assertEquals(4*64*3*5*7*3*11*13, TGDuration.WHOLE_PRECISE_DURATION);
-		
+
 		TGDuration d = factory.newDuration();
-		
+
 		d.setValue(TGDuration.WHOLE);
 		d.setDotted(false);
 		d.setDoubleDotted(false);
@@ -38,8 +38,8 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(1, d.getDivision().getEnters());
 		assertEquals(1, d.getDivision().getTimes());
-		
-		
+
+
 		d.setValue(TGDuration.HALF);
 		pt = d.getPreciseTime();
 		assertEquals(TGDuration.WHOLE_PRECISE_DURATION / 2, pt);
@@ -49,8 +49,8 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(1, d.getDivision().getEnters());
 		assertEquals(1, d.getDivision().getTimes());
-		
-		
+
+
 		d.setDotted(true);
 		pt = d.getPreciseTime();
 		assertEquals(TGDuration.WHOLE_PRECISE_DURATION * 3/ 4, pt);
@@ -60,8 +60,8 @@ public class TestTGDuration {
 		assertTrue(d.isDotted());
 		assertEquals(1, d.getDivision().getEnters());
 		assertEquals(1, d.getDivision().getTimes());
-		
-		
+
+
 		d.setDotted(false);
 		d.setDoubleDotted(true);
 		pt = d.getPreciseTime();
@@ -72,8 +72,8 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(1, d.getDivision().getEnters());
 		assertEquals(1, d.getDivision().getTimes());
-		
-		
+
+
 		d.setDoubleDotted(false);
 		d.setValue(TGDuration.EIGHTH);
 		d.getDivision().setEnters(3);
@@ -86,8 +86,8 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(3, d.getDivision().getEnters());
 		assertEquals(2, d.getDivision().getTimes());
-		
-		
+
+
 		d.setValue(TGDuration.SIXTEENTH);
 		d.getDivision().setEnters(9);
 		d.getDivision().setTimes(8);
@@ -99,7 +99,7 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(9, d.getDivision().getEnters());
 		assertEquals(8, d.getDivision().getTimes());
-		
+
 		// smallest possible subdivision with 1:1 time division
 		d.setValue(TGDuration.SIXTY_FOURTH);
 		d.setDotted(false);
@@ -114,7 +114,7 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(1, d.getDivision().getEnters());
 		assertEquals(1, d.getDivision().getTimes());
-		
+
 		// 64th with time division different from 1:1
 		d.setValue(TGDuration.SIXTY_FOURTH);
 		d.setDotted(false);
@@ -129,8 +129,8 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(3, d.getDivision().getEnters());
 		assertEquals(2, d.getDivision().getTimes());
-		
-		
+
+
 		// a double-dotted tuplet
 		d.setValue(TGDuration.WHOLE);
 		d.setDotted(false);
@@ -145,7 +145,7 @@ public class TestTGDuration {
 		assertFalse(d.isDotted());
 		assertEquals(5, d.getDivision().getEnters());
 		assertEquals(4, d.getDivision().getTimes());
-		
+
 		// with finer time division that the shortest
 		d.setValue(TGDuration.SIXTY_FOURTH);
 		d.setDotted(true);
@@ -159,7 +159,7 @@ public class TestTGDuration {
 		assertFalse(d.isDoubleDotted());
 		assertEquals(1, d.getDivision().getEnters());
 		assertEquals(1, d.getDivision().getTimes());
-		
+
 		// exhaustive test, all valid values, convert in both directions
 		for(TGDivisionType dt : TGDivisionType.DIVISION_TYPES)
 		{
@@ -168,7 +168,7 @@ public class TestTGDuration {
 				for (int v = TGDuration.WHOLE; v <= TGDuration.SHORTEST; v *= 2)
 				{
 					TGDuration duration = factory.newDuration();
-					
+
 					if(i == 1) {
 						duration.setDotted(true);
 						duration.setDoubleDotted(false);
@@ -181,11 +181,11 @@ public class TestTGDuration {
 						duration.setDotted(false);
 						duration.setDoubleDotted(false);
 					}
-					
+
 					duration.setValue(v);
 					duration.getDivision().setEnters(dt.getEnters());
 					duration.getDivision().setTimes(dt.getTimes());
-					
+
 					TGDuration check = factory.newDuration();
 					check.setPreciseValue(duration.getPreciseTime());
 					// don't directly compare to original duration
@@ -196,7 +196,7 @@ public class TestTGDuration {
 			}
 		}
 	}
-	
+
 	// conversions approximate time <-> precise time
 	@Test
 	public void testTimePreciseTime() {
@@ -214,7 +214,7 @@ public class TestTGDuration {
 		assertEquals(list.get(0).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
 		assertEquals(list.get(1).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
 		assertEquals(list.get(2).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
-		
+
 		// use case: 1 measures at 8/4, total duration = 2 * whole
 		// instantiate 1 note: quarter with time division 9:8, duration = 1/4 * 8/9 = 2/9
 		// split the remaining space (=16/9) into rests
@@ -228,7 +228,7 @@ public class TestTGDuration {
 		for (int i=1; i<8; i++) {
 			assertEquals(list.get(i).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION/4);
 		}
-		
+
 		// less trivial
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*13/15, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
@@ -237,8 +237,8 @@ public class TestTGDuration {
 			sum += list.get(i).getPreciseTime();
 		}
 		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION*13/15);
-		
-		
+
+
 		// test max
 		list = TGDuration.splitPreciseDuration(3*TGDuration.WHOLE_PRECISE_DURATION, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
@@ -246,13 +246,13 @@ public class TestTGDuration {
 		assertEquals(list.get(0).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION);
 		assertEquals(list.get(1).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION);
 		assertEquals(list.get(2).getPreciseTime(), TGDuration.WHOLE_PRECISE_DURATION);
-		
+
 		// something impossible to split
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/(64*3), TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNull(list);
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION/17, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNull(list);
-		
+
 		// finer division time that the shortest division: dotted 64th = whole/64 *(3/2)
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*3/128, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
@@ -260,7 +260,7 @@ public class TestTGDuration {
 		assertEquals(TGDuration.SIXTY_FOURTH, list.get(0).getValue());
 		assertTrue(list.get(0).isDotted());
 		assertFalse(list.get(0).isDoubleDotted());
-		
+
 		// finer division time that the shortest division: double-dotted 32nd = whole/32*(7/4)
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*7/128, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
@@ -268,7 +268,7 @@ public class TestTGDuration {
 		assertEquals(TGDuration.THIRTY_SECOND, list.get(0).getValue());
 		assertFalse(list.get(0).isDotted());
 		assertTrue(list.get(0).isDoubleDotted());
-		
+
 		// finer division time that the shortest division: double-dotted 64th = whole/64*(7/4)
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*7/256, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);

@@ -1,7 +1,7 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXDrumkit {
-	
+
 	public static final GPXDrumkit[] DRUMKITS = new GPXDrumkit[]{
 		new GPXDrumkit(36, 0 , 0),
 		new GPXDrumkit(36, 0 , 0),
@@ -25,11 +25,11 @@ public class GPXDrumkit {
 		new GPXDrumkit(57, 13 ,0),
 		new GPXDrumkit(59, 15 ,1),
 	};
-	
+
 	private int element;
 	private int variation;
 	private int midiValue;
-	
+
 	public GPXDrumkit(int midiValue, int element, int variation){
 		this.midiValue = midiValue;
 		this.element = element;

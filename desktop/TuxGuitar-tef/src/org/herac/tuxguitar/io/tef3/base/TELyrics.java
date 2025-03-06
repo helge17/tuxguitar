@@ -12,7 +12,7 @@ public class TELyrics {
         this.yPosition = yPosition;
         this.lyrics = lyrics;
     }
-    
+
     public int getTrackNumber() {
         return this.trackNumber;
     }

@@ -57,7 +57,7 @@ public class TGTremoloPickingDialog extends TGModalFragment {
 	public void onPostInflateView() {
 		this.fillDurations();
 	}
-	
+
 	public void fillDurations() {
 		int duration = TGDuration.EIGHTH;
 
@@ -65,7 +65,7 @@ public class TGTremoloPickingDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isTremoloPicking() ){
 			duration = note.getEffect().getTremoloPicking().getDuration().getValue();
 		}
-		
+
 		this.fillDuration(R.id.tremolo_picking_dlg_duration_8, TGDuration.EIGHTH, duration);
 		this.fillDuration(R.id.tremolo_picking_dlg_duration_16, TGDuration.SIXTEENTH, duration);
 		this.fillDuration(R.id.tremolo_picking_dlg_duration_32, TGDuration.THIRTY_SECOND, duration);
@@ -76,10 +76,10 @@ public class TGTremoloPickingDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public int findSelectedDuration() {
 		RadioGroup optionsGroup = (RadioGroup) this.getView().findViewById(R.id.tremolo_picking_dlg_duration_group);
-		
+
 		int radioButtonId = optionsGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
 			RadioButton radioButton = (RadioButton) optionsGroup.findViewById(radioButtonId);
@@ -89,7 +89,7 @@ public class TGTremoloPickingDialog extends TGModalFragment {
 		}
 		return TGDuration.EIGHTH;
 	}
-	
+
 	public TGEffectTremoloPicking createTremoloPicking(){
 		TGEffectTremoloPicking tgEffectTremoloPicking = this.getSongManager().getFactory().newEffectTremoloPicking();
 		tgEffectTremoloPicking.getDuration().setValue(findSelectedDuration());

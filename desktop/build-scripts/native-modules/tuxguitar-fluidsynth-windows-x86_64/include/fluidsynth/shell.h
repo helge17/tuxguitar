@@ -115,8 +115,8 @@ FLUIDSYNTH_API void delete_fluid_shell(fluid_shell_t *shell);
  *
  * TCP socket server for a command handler.
  *
- * The socket server will open the TCP port set by \ref settings_shell_port 
- * (default 9800) and starts a new thread and \ref command_handler for each 
+ * The socket server will open the TCP port set by \ref settings_shell_port
+ * (default 9800) and starts a new thread and \ref command_handler for each
  * incoming connection.
  *
  * @note The server is only available if libfluidsynth has been compiled

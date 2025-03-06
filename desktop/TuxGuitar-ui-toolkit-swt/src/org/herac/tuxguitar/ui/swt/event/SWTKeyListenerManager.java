@@ -11,35 +11,35 @@ import org.herac.tuxguitar.ui.swt.resource.SWTKey;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTKeyListenerManager implements KeyListener {
-	
+
 	private SWTEventReceiver<?> control;
 	private SWTKey key;
 	private UIKeyPressedListenerManager keyPressedListener;
 	private UIKeyReleasedListenerManager keyReleasedListener;
-	
+
 	public SWTKeyListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 		this.key = new SWTKey();
 		this.keyPressedListener = new UIKeyPressedListenerManager();
 		this.keyReleasedListener = new UIKeyReleasedListenerManager();
 	}
-	
+
 	public boolean isEmpty() {
 		return (this.keyPressedListener.isEmpty() && this.keyReleasedListener.isEmpty());
 	}
-	
+
 	public void addListener(UIKeyPressedListener listener) {
 		this.keyPressedListener.addListener(listener);
 	}
-	
+
 	public void addListener(UIKeyReleasedListener listener) {
 		this.keyReleasedListener.addListener(listener);
 	}
-	
+
 	public void removeListener(UIKeyPressedListener listener) {
 		this.keyPressedListener.removeListener(listener);
 	}
-	
+
 	public void removeListener(UIKeyReleasedListener listener) {
 		this.keyReleasedListener.removeListener(listener);
 	}

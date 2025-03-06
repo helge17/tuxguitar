@@ -11,19 +11,19 @@ import org.herac.tuxguitar.android.activity.TGActivity;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGProcessIntentAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.intent.process";
-	
+
 	public static final String ATTRIBUTE_ACTIVITY = TGActivity.class.getName();
-	
+
 	public TGProcessIntentAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(final TGActionContext context) {
 		try{
 			TGActivity activity = context.getAttribute(ATTRIBUTE_ACTIVITY);
-			
+
 			Intent intent = activity.getIntent();
 			if( intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
 				context.setAttribute(TGUriReadAction.ATTRIBUTE_URI, intent.getData());

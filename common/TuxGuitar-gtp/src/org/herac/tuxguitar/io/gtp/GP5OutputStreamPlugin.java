@@ -9,7 +9,7 @@ public class GP5OutputStreamPlugin extends GTPOutputStreamPlugin{
 	public GP5OutputStreamPlugin() {
 		super();
 	}
-	
+
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
 		return new GP5OutputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}

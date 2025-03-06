@@ -15,11 +15,11 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGWriteSongAction extends TGSongPersistenceActionBase {
-	
+
 	public static final String NAME = "action.song.write";
-	
+
 	public static final String ATTRIBUTE_OUTPUT_STREAM = InputStream.class.getName();
-	
+
 	public TGWriteSongAction(TGContext context) {
 		super(context, NAME);
 	}
@@ -30,7 +30,7 @@ public class TGWriteSongAction extends TGSongPersistenceActionBase {
 			TGFileFormat fileFormat = (TGFileFormat) context.getAttribute(ATTRIBUTE_FORMAT);
 			TGSong song = (TGSong) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 			TGSongManager songManager = getSongManager(context);
-			
+
 			TGSongWriterHandle tgSongWriterHandle = new TGSongWriterHandle();
 			tgSongWriterHandle.setFactory(songManager.getFactory());
 			tgSongWriterHandle.setSong(song);
@@ -39,7 +39,7 @@ public class TGWriteSongAction extends TGSongPersistenceActionBase {
 			tgSongWriterHandle.setContext(this.findSongStreamContext(context));
 			tgSongWriterHandle.getContext().setAttribute(ATTRIBUTE_MIME_TYPE, context.getAttribute(ATTRIBUTE_MIME_TYPE));
 			tgSongWriterHandle.getContext().setAttribute(ATTRIBUTE_FORMAT_CODE, context.getAttribute(ATTRIBUTE_FORMAT_CODE));
-			
+
 			TGFileFormatManager.getInstance(getContext()).write(tgSongWriterHandle);
 		} catch(TGFileFormatException e){
 			throw new TGActionException(e);

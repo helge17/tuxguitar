@@ -8,13 +8,13 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGCleanMeasureAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.clean";
-	
+
 	public TGCleanMeasureAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGMeasure tgMeasure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 		TGSongManager tgSongManager = getSongManager(context);

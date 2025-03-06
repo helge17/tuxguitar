@@ -25,7 +25,7 @@ public class TestSequenceParser {
 		MidiSequencerImpl sequencer = new MidiSequencerImpl(context);
 		MidiSequenceHandlerImpl seqHandler = new MidiSequenceHandlerImpl(sequencer,1);
 		parser.parse(seqHandler);
-		
+
 		TreeMap<Long,TGTempo> tempoMap = parser.getTempoMap();
 		assertEquals(4, tempoMap.size());
 		Long quarterTime = TGDuration.QUARTER_TIME;
@@ -33,7 +33,7 @@ public class TestSequenceParser {
 		assertEquals(130, tempoMap.get(quarterTime*8).getRawValue());	// measure 3
 		assertEquals(160, tempoMap.get(quarterTime*29).getRawValue());	// measure 6 (repeatx2 => measures 3 and 4 are played 3 times)
 		assertEquals(180, tempoMap.get(quarterTime*34).getRawValue());	// measure 8
-		
+
 		TreeMap<Long,Long> timestampMap = parser.getTimestampMap();
 		assertEquals(4, tempoMap.size());
 		long t = 0l;
@@ -45,5 +45,5 @@ public class TestSequenceParser {
 		t += 5 * 60 * 1000 / 160;	// measures 6-7 = 5 quarters at 160 bpm
 		assertEquals(t, timestampMap.get(quarterTime*34));
 	}
-	
+
 }

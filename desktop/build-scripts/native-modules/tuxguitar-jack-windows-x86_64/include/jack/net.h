@@ -75,7 +75,7 @@ typedef struct {
     jack_nframes_t sample_rate;         // master sample rate
     char master_name[MASTER_NAME_SIZE]; // master machine name
     int time_out;                       // in second, -1 means infinite
-    int partial_cycle;                  // if 'true', partial buffers will be used 
+    int partial_cycle;                  // if 'true', partial buffers will be used
 
 } jack_master_t;
 
@@ -168,7 +168,7 @@ int jack_net_slave_deactivate(jack_net_slave_t* net);
  *
  * @param net the network connection
  *
- * @return a boolean 
+ * @return a boolean
  */
 int jack_net_slave_is_active(jack_net_slave_t* net);
 
@@ -233,9 +233,9 @@ typedef void (*JackNetSlaveShutdownCallback)(void* arg);
 int jack_set_net_slave_shutdown_callback(jack_net_slave_t *net, JackNetSlaveShutdownCallback shutdown_callback, void *arg) JACK_OPTIONAL_WEAK_DEPRECATED_EXPORT;
 
 /**
- * Prototype for server Restart callback : this is the new preferable way to be notified when the master has disappeared. 
- * The client may want to retry connecting a certain number of time (which will be done using the time_out value given in jack_net_slave_open) 
- * by returning 0. Otherwise returning a non-zero error code will definively close the connection 
+ * Prototype for server Restart callback : this is the new preferable way to be notified when the master has disappeared.
+ * The client may want to retry connecting a certain number of time (which will be done using the time_out value given in jack_net_slave_open)
+ * by returning 0. Otherwise returning a non-zero error code will definively close the connection
  * (and jack_net_slave_is_active will later on return false).
  * If both Shutdown and Restart are supplied, Restart callback will be used.
  *

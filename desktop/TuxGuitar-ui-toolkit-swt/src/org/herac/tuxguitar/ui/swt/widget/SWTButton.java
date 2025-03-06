@@ -10,14 +10,14 @@ import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 import org.herac.tuxguitar.ui.widget.UIButton;
 
 public class SWTButton extends SWTControl<Button> implements UIButton {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public SWTButton(SWTContainer<? extends Composite> parent) {
 		super(new Button(parent.getControl(), SWT.PUSH), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
 
@@ -28,14 +28,14 @@ public class SWTButton extends SWTControl<Button> implements UIButton {
 	public void setText(String text) {
 		this.getControl().setText(text);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((SWTImage) this.image).getHandle() : null);
 	}
 

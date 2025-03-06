@@ -12,33 +12,33 @@ import javafx.print.PageRange;
 import javafx.print.PrinterJob;
 
 public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
-	
+
 	private UIResourceFactory resourceFactory;
-	
+
 	public JFXPrinter(PrinterJob control) {
 		super(control);
-		
+
 		this.resourceFactory = new JFXResourceFactory();
 	}
-	
+
 	public void dispose() {
 		this.getControl().endJob();
-		
+
 		super.dispose();
 	}
 
 	public UIResourceFactory getResourceFactory() {
 		return resourceFactory;
 	}
-	
+
 	public Float getDpiScale() {
 		return 1f;
 	}
-	
+
 	public Float getDpiFontScale() {
 		return this.getDpiScale();
 	}
-	
+
 	public UIRectangle getBounds() {
 		UIRectangle bounds = new UIRectangle();
 		PageLayout pageLayout = this.getControl().getJobSettings().getPageLayout();
@@ -46,12 +46,12 @@ public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 		bounds.getPosition().setY((float) 0);
 		bounds.getSize().setWidth((float) pageLayout.getPrintableWidth());
 		bounds.getSize().setHeight((float) pageLayout.getPrintableHeight());
-		
+
 		return bounds;
 	}
-	
+
 	public Integer getStartPage() {
-		Integer minimum = null;		
+		Integer minimum = null;
 		PageRange[] ranges = this.getControl().getJobSettings().getPageRanges();
 		if( ranges != null ) {
 			for(PageRange range : ranges) {
@@ -62,9 +62,9 @@ public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 		}
 		return minimum;
 	}
-	
+
 	public Integer getEndPage() {
-		Integer maximum = null;		
+		Integer maximum = null;
 		PageRange[] ranges = this.getControl().getJobSettings().getPageRanges();
 		if( ranges != null ) {
 			for(PageRange range : ranges) {
@@ -75,7 +75,7 @@ public class JFXPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 		}
 		return maximum;
 	}
-	
+
 	public UIPrinterJob createJob(String name) {
 		return new JFXPrinterJob(this);
 	}

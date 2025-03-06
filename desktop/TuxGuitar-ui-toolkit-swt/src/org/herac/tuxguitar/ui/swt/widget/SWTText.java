@@ -6,10 +6,10 @@ import org.eclipse.swt.widgets.Text;
 import org.herac.tuxguitar.ui.resource.UISize;
 
 public class SWTText extends SWTControl<Text> {
-	
+
 	public SWTText(SWTContainer<? extends Composite> parent, int style) {
 		super(new Text(parent.getControl(), SWT.BORDER  | style), parent);
-		
+
 		this.computePackedSize(null, null);
 	}
 
@@ -20,19 +20,19 @@ public class SWTText extends SWTControl<Text> {
 	public void setText(String text) {
 		this.getControl().setText(text);
 	}
-	
+
 	public void append(String text) {
 		this.getControl().append(text);
 	}
-	
+
 	public Integer getTextLimit() {
 		return this.getControl().getTextLimit();
 	}
-	
+
 	public void setTextLimit(Integer limit) {
 		this.getControl().setTextLimit(limit);
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = this.getPackedSize();
 		if( packedSize.getWidth() == 0f && packedSize.getHeight() == 0f ) {

@@ -14,7 +14,7 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGChannelListMenu implements TGMenuController {
-	
+
 	private TGContext context;
 
 	private TGChannelListMenu(TGContext context) {
@@ -29,7 +29,7 @@ public class TGChannelListMenu implements TGMenuController {
 	public void initializeItems(Menu menu) {
 		menu.findItem(R.id.action_channel_list_add).setOnMenuItemClickListener(createActionProcessor(TGAddNewChannelAction.NAME));
 	}
-	
+
 	public TGActionProcessorListener createActionProcessor(String actionId) {
 		return new TGActionProcessorListener(getContext(), actionId);
 	}

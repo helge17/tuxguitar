@@ -23,7 +23,7 @@ import org.herac.tuxguitar.util.TGException;
 public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 
 	public static final String ATTRIBUTE_URL = URL.class.getName();
-	
+
 	public TGUpdateLoadedSongController() {
 		super();
 	}
@@ -36,30 +36,30 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 			midiPlayer.reset();
 			midiPlayer.getMode().clear();
 			midiPlayer.resetChannels();
-			
+
 			URL url = actionContext.getAttribute(ATTRIBUTE_URL);
 			URI uri = actionContext.getAttribute(TGDocumentListAttributes.ATTRIBUTE_DOCUMENT_URI);
-			
+
 			Boolean unwanted = Boolean.TRUE.equals(actionContext.getAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED));
 			TGDocumentListManager tgDocumentListManager = TGDocumentListManager.getInstance(context);
 			TGDocument document = tgDocumentListManager.findCurrentDocument();
 			document.setUnwanted(unwanted);
 			tgDocumentListManager.updateLoadedDocument();
-			
+
 			if( url != null ) {
 				TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
 				tgFileHistory.reset(url);
 				tgFileHistory.setChooserPath( url );
-				
+
 				if( uri == null ) {
 					uri = url.toURI();
 				}
 			}
-			
+
 			if( uri != null ) {
 				tgDocumentListManager.findCurrentDocument().setUri(uri);
 			}
-			
+
 			TGTransport.getInstance(context).getCache().reset();
 			TGWindow.getInstance(context).loadTitle();
 			TablatureEditor.getInstance(context).getTablature().restoreStateFrom(document);
@@ -69,17 +69,17 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 				tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_PLAYER_MODE, restoredMode);
 				tgActionProcessor.process();
 			}
-			
+
 			// ------------------------------------------------------ //
-			
-			// Ensure percussion channel, required for features like metronome and count down 
+
+			// Ensure percussion channel, required for features like metronome and count down
 			TGDocumentManager tgDocumentManager = TGDocumentManager.getInstance(context);
 			tgDocumentManager.getSongManager().ensurePercussionChannel(tgDocumentManager.getSong());
-			
+
 			// ------------------------------------------------------ //
-			
+
 			this.findUpdateBuffer(context, actionContext).requestUpdateLoadedSong();
-			
+
 			super.update(context, actionContext);
 		} catch (URISyntaxException e) {
 			throw new TGException(e);

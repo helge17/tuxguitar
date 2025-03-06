@@ -46,15 +46,15 @@ public class TGRepeatCloseDialog extends TGModalFragment {
 		if( repeatCloseDefault < 1 ) {
 			repeatCloseDefault = 1;
 		}
-		
+
 		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createRepeatValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.repeat_close_dlg_count_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(repeatCloseDefault)));
 	}
-	
+
 	public Integer[] createRepeatValues() {
 		Integer[] items = new Integer[101];
 		for (int i = 0; i < items.length; i++) {

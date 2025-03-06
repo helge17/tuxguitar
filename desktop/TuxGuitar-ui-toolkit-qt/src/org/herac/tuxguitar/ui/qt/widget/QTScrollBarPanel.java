@@ -9,15 +9,15 @@ import io.qt.widgets.QAbstractScrollArea;
 import io.qt.widgets.QWidget;
 
 public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> implements UIScrollBarPanel {
-	
+
 	private QTScrollBar vScrollBar;
 	private QTScrollBar hScrollBar;
-	
+
 	public QTScrollBarPanel(QTContainer parent, boolean vScroll, boolean hScroll, boolean bordered) {
 		super(new QAbstractScrollArea(parent.getContainerControl()), parent, bordered);
-		
+
 		this.getControl().setViewport(new QWidget());
-		
+
 		if( vScroll ) {
 			this.getControl().setVerticalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOn);
 			this.vScrollBar = new QTScrollBar(this.getControl().verticalScrollBar(), null);
@@ -32,7 +32,7 @@ public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> imple
 	public QWidget getContainerControl() {
 		return this.getControl().viewport();
 	}
-	
+
 	@Override
 	public UIScrollBar getHScroll() {
 		return this.hScrollBar;
@@ -42,13 +42,13 @@ public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> imple
 	public UIScrollBar getVScroll() {
 		return this.vScrollBar;
 	}
-	
+
 	public void computeMargins() {
 		super.computeMargins();
-		
+
 		QMargins margins = this.getControl().contentsMargins();
 		QMargins containerMargins = new QMargins(margins.left(), margins.top(), margins.right(), margins.bottom());
-		
+
 		if( this.vScrollBar != null ) {
 			containerMargins.setRight(containerMargins.right() + this.vScrollBar.getControl().sizeHint().width());
 		}
@@ -57,15 +57,15 @@ public class QTScrollBarPanel extends QTAbstractPanel<QAbstractScrollArea> imple
 		}
 		this.setContainerMargins(containerMargins);
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		QMargins margins = this.getContainerMargins();
-		
+
 		int viewPortWidth = (Math.round(bounds.getWidth()) - (margins.left() + margins.right()));
 		int viewPortHeight = (Math.round(bounds.getHeight()) - (margins.top() + margins.bottom()));
-		
+
 		this.getControl().viewport().resize(viewPortWidth, viewPortHeight);
-		
+
 		super.setBounds(bounds);
 	}
 }

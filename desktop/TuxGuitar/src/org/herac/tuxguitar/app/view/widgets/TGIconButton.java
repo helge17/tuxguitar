@@ -87,7 +87,7 @@ public abstract class TGIconButton {
 			}
 		}
 	}
-	
+
 	protected void resizeTo(UIImage image) {
 		final UIRectangle area = this.canvas.getBounds();
 		float w = image.getWidth();
@@ -106,7 +106,7 @@ public abstract class TGIconButton {
 	public UICanvas getControl() {
 		return this.canvas;
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		this.listeners.add(listener);
 	}

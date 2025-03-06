@@ -12,51 +12,51 @@ import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.util.TGContext;
 
 public abstract class TGMainToolBarSection implements TGToolBarSection {
-	
+
 	private static final String SELECTED_CHAR = "\u2713";
-	
+
 	private TGContext context;
 	private UIToolBar toolBar;
-	
+
 	public TGMainToolBarSection(TGContext context, UIToolBar toolBar) {
 		this.context = context;
 		this.toolBar = toolBar;
 	}
-	
+
 	public abstract void createSection();
-	
+
 	public TGActionProcessorListener createActionProcessor(String actionId) {
 		return new TGActionProcessorListener(this.context, actionId);
 	}
-	
+
 	public String getText(String key) {
 		return TuxGuitar.getProperty(key);
 	}
-	
+
 	public String getText(String key, boolean selected) {
 		return this.toCheckString(getText(key), selected);
 	}
-	
+
 	public String toCheckString(String text, boolean selected) {
 		return ((selected ? SELECTED_CHAR : "") + text);
 	}
-	
+
 	public TGIconManager getIconManager() {
 		return TuxGuitar.getInstance().getIconManager();
 	}
-	
+
 	public Tablature getTablature() {
 		return TablatureEditor.getInstance(this.context).getTablature();
 	}
-	
+
 	public TGSong getSong() {
 		return TGDocumentManager.getInstance(this.context).getSong();
 	}
-	
+
 	public TGContext getContext() {
 		return this.context;
 	}
-	
+
 	public UIToolBar getToolBar() {
 		return this.toolBar;
 	}

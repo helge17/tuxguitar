@@ -28,7 +28,7 @@ jobs:
         prepare: |
           pkg install -y curl openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git
       # wqy-fonts-20100803_10,1
-      
+
         run: |
           pwd
           ls -lah
@@ -42,7 +42,7 @@ jobs:
       with:
         name: Package-FreeBSD
         path: desktop/build-scripts/tuxguitar-freebsd-swt/target/tuxguitar-9.99-SNAPSHOT-*
-    
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     ##- name: Update dependency graph

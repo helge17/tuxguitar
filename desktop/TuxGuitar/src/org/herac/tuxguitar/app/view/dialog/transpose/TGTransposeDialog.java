@@ -22,74 +22,74 @@ import org.herac.tuxguitar.ui.widget.UISelectItem;
 import org.herac.tuxguitar.ui.widget.UIWindow;
 
 public class TGTransposeDialog {
-	
+
 	private static final int TRANSPOSITION_SEMITONES = 12;
-	
-	public void show(final TGViewContext context) {		
+
+	public void show(final TGViewContext context) {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
-		
+
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("tools.transpose"));
-		
+
 		//-----------------TEMPO------------------------
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(dialog);
 		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("tools.transpose"));
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UILabel transpositionLabel = uiFactory.createLabel(group);
 		transpositionLabel.setText(TuxGuitar.getProperty("tools.transpose.semitones") + ":");
 		groupLayout.set(transpositionLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
-		
+
 		final UIDropDownSelect<Integer> transpositionCombo = uiFactory.createDropDownSelect(group);
 		for( int i = -TRANSPOSITION_SEMITONES ; i <= TRANSPOSITION_SEMITONES; i ++ ){
 			transpositionCombo.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
 		}
-		
+
 		transpositionCombo.setSelectedValue(0);
 		groupLayout.set(transpositionCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//------------------OPTIONS--------------------------
 		UITableLayout optionsLayout = new UITableLayout();
 		UILegendPanel options = uiFactory.createLegendPanel(dialog);
 		options.setLayout(optionsLayout);
 		options.setText(TuxGuitar.getProperty("options"));
 		dialogLayout.set(options, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIRadioButton applyToAllMeasuresButton = uiFactory.createRadioButton(options);
 		applyToAllMeasuresButton.setText(TuxGuitar.getProperty("tools.transpose.apply-to-track"));
 		applyToAllMeasuresButton.setSelected(true);
 		optionsLayout.set(applyToAllMeasuresButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIRadioButton applyToCurrentMeasureButton = uiFactory.createRadioButton(options);
 		applyToCurrentMeasureButton.setText(TuxGuitar.getProperty("tools.transpose.apply-to-measure"));
 		optionsLayout.set(applyToCurrentMeasureButton, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UICheckBox applyToAllTracksButton = uiFactory.createCheckBox(options);
 		applyToAllTracksButton.setText(TuxGuitar.getProperty("tools.transpose.apply-to-all-tracks"));
 		applyToAllTracksButton.setSelected(true);
 		optionsLayout.set(applyToAllTracksButton, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UICheckBox applyToChordsButton = uiFactory.createCheckBox(options);
 		applyToChordsButton.setText(TuxGuitar.getProperty("tools.transpose.apply-to-chords"));
 		applyToChordsButton.setSelected(true);
 		optionsLayout.set(applyToChordsButton, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UICheckBox tryKeepStringButton = uiFactory.createCheckBox(options);
 		tryKeepStringButton.setText(TuxGuitar.getProperty("tools.transpose.try-keep-strings"));
 		tryKeepStringButton.setSelected(true);
 		optionsLayout.set(tryKeepStringButton, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -101,14 +101,14 @@ public class TGTransposeDialog {
 					final boolean applyToChords = applyToChordsButton.isSelected();
 					final boolean applyToAllTracks = applyToAllTracksButton.isSelected();
 					final boolean applyToAllMeasures = applyToAllMeasuresButton.isSelected();
-					
+
 					transposeNotes(context, transposition, tryKeepString, applyToChords , applyToAllMeasures, applyToAllTracks);
 				}
 				dialog.dispose();
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -118,10 +118,10 @@ public class TGTransposeDialog {
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
-		
+
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public void transposeNotes(TGViewContext context, int transposition , boolean tryKeepString , boolean applyToChords , boolean applyToAllMeasures , boolean applyToAllTracks) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context.getContext(), TGTransposeAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG));

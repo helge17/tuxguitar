@@ -119,14 +119,14 @@ public class TGMainSingleton {
 									List<File> processedFiles = new ArrayList<File>();
 									for (File urlFile : urlFiles) {
 										BufferedReader in = new BufferedReader(new FileReader(urlFile));
-	
+
 										String inputLine = in.readLine();
 										if (inputLine != null) {
 											joinTuxGuitar(parseUrl(inputLine));
 										}
-	
+
 										in.close();
-	
+
 										processedFiles.add(urlFile);
 									}
 									while (!processedFiles.isEmpty()) {

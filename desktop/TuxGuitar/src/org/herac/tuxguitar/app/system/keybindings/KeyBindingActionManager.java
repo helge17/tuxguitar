@@ -17,22 +17,22 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class KeyBindingActionManager {
-	
+
 	private TGContext context;
 	private List<KeyBindingAction> keyBindingsActions;
 	private KeyBindingListener listener;
-	
+
 	private KeyBindingActionManager(TGContext context){
 		this.context = context;
 		this.keyBindingsActions = new ArrayList<KeyBindingAction>();
 		this.init();
 	}
-	
+
 	public void init(){
 		this.keyBindingsActions.addAll(this.merge(KeyBindingActionDefaults.getDefaultKeyBindings(this.context), KeyBindingReader.getKeyBindings(getUserFileName())));
 		this.listener = new KeyBindingListener(this);
 	}
-	
+
 	public List<KeyBindingAction>merge(List<KeyBindingAction> defaultsBindings, List<KeyBindingAction> userBindings) {
 		if (userBindings == null) {
 			return defaultsBindings;
@@ -50,8 +50,8 @@ public class KeyBindingActionManager {
 				list.add(defaultAction);
 			}
 		}
-		
-		
+
+
 		// remove actions with empty key combinations
 		List<KeyBindingAction> toRemove = new ArrayList<KeyBindingAction>();
 		for (KeyBindingAction action : list) {
@@ -64,11 +64,11 @@ public class KeyBindingActionManager {
 		}
 		return list;
 	}
-	
+
 	private String getUserFileName(){
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "shortcuts.xml";
 	}
-	
+
 	public String getActionForKeyBinding(UIKeyCombination kb){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
@@ -81,7 +81,7 @@ public class KeyBindingActionManager {
 		}
 		return null;
 	}
-	
+
 	public UIKeyCombination getKeyBindingForAction(String action){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
@@ -94,7 +94,7 @@ public class KeyBindingActionManager {
 		}
 		return null;
 	}
-	
+
 	public boolean isKeyBindingAvailable(KeyBindingAction keyBindingAction){
 		String actionId = keyBindingAction.getAction();
 		if( actionId != null ){
@@ -102,31 +102,31 @@ public class KeyBindingActionManager {
 		}
 		return false;
 	}
-	
+
 	public void reset(List<KeyBindingAction> keyBindings){
 		this.keyBindingsActions.clear();
 		this.keyBindingsActions.addAll(keyBindings);
 	}
-	
+
 	public List<KeyBindingAction> getKeyBindingActions(){
 		return this.keyBindingsActions;
 	}
-	
+
 	public void saveKeyBindings(){
 		KeyBindingWriter.setBindings(getKeyBindingActions(),getUserFileName());
 	}
-	
+
 	public void appendListenersTo(UIControl control){
 		control.addKeyPressedListener(this.listener);
 	}
-	
+
 	public void processKeyBinding(UIKeyCombination kb){
 		final String actionId = getActionForKeyBinding(kb);
 		if( actionId != null ){
 			new TGActionProcessor(this.context, actionId).process();
 		}
 	}
-	
+
 	public static KeyBindingActionManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, KeyBindingActionManager.class.getName(), new TGSingletonFactory<KeyBindingActionManager>() {
 			public KeyBindingActionManager createInstance(TGContext context) {

@@ -42,12 +42,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * Soundbank reader that uses audio files as soundbanks.
- * 
+ *
  * @author Karl Helgason
  */
 public class AudioFileSoundbankReader extends SoundbankReader {
 
-    public Soundbank getSoundbank(URL url) 
+    public Soundbank getSoundbank(URL url)
             throws InvalidMidiDataException, IOException {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(url);
@@ -82,7 +82,7 @@ public class AudioFileSoundbankReader extends SoundbankReader {
             byte[] buffer;
             if (ais.getFrameLength() == -1) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                byte[] buff = new byte[1024 
+                byte[] buff = new byte[1024
                         - (1024 % ais.getFormat().getFrameSize())];
                 int ret;
                 while ((ret = ais.read(buff)) != -1) {
@@ -91,7 +91,7 @@ public class AudioFileSoundbankReader extends SoundbankReader {
                 ais.close();
                 buffer = baos.toByteArray();
             } else {
-                buffer = new byte[(int) (ais.getFrameLength() 
+                buffer = new byte[(int) (ais.getFrameLength()
                                     * ais.getFormat().getFrameSize())];
                 new DataInputStream(ais).readFully(buffer);
             }
@@ -110,7 +110,7 @@ public class AudioFileSoundbankReader extends SoundbankReader {
         }
     }
 
-    public Soundbank getSoundbank(File file) 
+    public Soundbank getSoundbank(File file)
             throws InvalidMidiDataException, IOException {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(file);

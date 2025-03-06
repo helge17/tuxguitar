@@ -6,16 +6,16 @@ public class SBUrl {
 
 	private URL url;
 	private String name;
-	
+
 	public SBUrl(URL url, String name){
 		this.url = url;
 		this.name = name;
 	}
-	
+
 	public URL getUrl() {
 		return this.url;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}

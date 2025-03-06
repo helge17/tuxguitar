@@ -3,7 +3,7 @@ package org.herac.tuxguitar.android.view.dialog.track;
 public class TGTrackTuningModel {
 
 	private Integer value;
-	
+
 	public TGTrackTuningModel() {
 		super();
 	}

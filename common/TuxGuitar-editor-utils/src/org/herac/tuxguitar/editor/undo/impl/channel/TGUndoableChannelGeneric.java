@@ -17,15 +17,15 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableChannelGeneric extends TGUndoableEditBase {
-	
+
 	private int doAction;
 	private List<TGChannel> undoChannels;
 	private List<TGChannel> redoChannels;
-	
+
 	private TGUndoableChannelGeneric(TGContext context){
 		super(context);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -33,7 +33,7 @@ public class TGUndoableChannelGeneric extends TGUndoableEditBase {
 		this.setChannels(actionContext, this.getSong(), this.cloneChannels(getSongManager().getFactory(), this.redoChannels));
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -41,27 +41,27 @@ public class TGUndoableChannelGeneric extends TGUndoableEditBase {
 		this.setChannels(actionContext, this.getSong(), this.cloneChannels(getSongManager().getFactory(), this.undoChannels));
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public static TGUndoableChannelGeneric startUndo(TGContext context){
 		TGUndoableChannelGeneric undoable = new TGUndoableChannelGeneric(context);
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoChannels = undoable.getClonedChannels();
 		return undoable;
 	}
-	
+
 	public TGUndoableChannelGeneric endUndo(){
 		this.redoChannels = this.getClonedChannels();
 		return this;
 	}
-	
+
 	private List<TGChannel> getClonedChannels() {
 		List<TGChannel> channels = new ArrayList<TGChannel>();
 		Iterator<?> it = getSongManager().getChannels(getSong()).iterator();
@@ -70,7 +70,7 @@ public class TGUndoableChannelGeneric extends TGUndoableEditBase {
 		}
 		return this.cloneChannels(new TGFactory(), channels);
 	}
-	
+
 	public List<TGChannel> cloneChannels(TGFactory factory, List<TGChannel> channels) {
 		List<TGChannel> clonedChannels = new ArrayList<TGChannel>();
 		for(TGChannel channel : channels) {
@@ -78,7 +78,7 @@ public class TGUndoableChannelGeneric extends TGUndoableEditBase {
 		}
 		return clonedChannels;
 	}
-	
+
 	public void setChannels(TGActionContext context, TGSong song, List<TGChannel> channels) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGSetChannelsAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);

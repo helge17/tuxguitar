@@ -12,11 +12,11 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 public class LilypondSettingsHandler implements TGPersistenceSettingsHandler {
 
 	private TGContext context;
-	
+
 	public LilypondSettingsHandler(TGContext context)  {
 		this.context = context;
 	}
-	
+
 	public TGFileFormat getFileFormat() {
 		return LilypondSongWriter.FILE_FORMAT;
 	}
@@ -24,13 +24,13 @@ public class LilypondSettingsHandler implements TGPersistenceSettingsHandler {
 	public TGPersistenceSettingsMode getMode() {
 		return TGPersistenceSettingsMode.WRITE;
 	}
-	
+
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 				final LilypondSettings settings = LilypondSettings.getDefaults();
-				
+
 				new LilypondSettingsDialog(LilypondSettingsHandler.this.context, song).open(settings, new Runnable() {
 					public void run() {
 						if( settings != null ) {

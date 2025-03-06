@@ -22,7 +22,7 @@ public class TuningReader {
 	static final String NOTES_ATTRIBUTE = "notes";
 	static final String PRIORITY_ATTRIBUTE = "priority";
 	static final String KEY_SEPARATOR = ",";
-	
+
 	public void loadTunings(TuningGroup group, InputStream stream){
 		try{
 			if ( stream != null ){
@@ -33,7 +33,7 @@ public class TuningReader {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static Document getDocument(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -45,21 +45,21 @@ public class TuningReader {
 		}
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		document = builder.parse(stream);
-		
+
 		return document;
 	}
-	
+
 	private static void loadTunings(TuningGroup group, Node node){
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node child = nodeList.item(i);
 			String nodeName = child.getNodeName();
-			
+
 			if (nodeName.equals(TUNING_TAG)) {
 				NamedNodeMap params = child.getAttributes();
 				String name = params.getNamedItem(NAME_ATTRIBUTE).getNodeValue();
 				String notes = params.getNamedItem(NOTES_ATTRIBUTE).getNodeValue();
-				
+
 				if (name == null || notes == null || name.trim().equals("") || notes.trim().equals("")){
 					throw new RuntimeException("Invalid Tuning file format.");
 				}
@@ -73,9 +73,9 @@ public class TuningReader {
 						throw new RuntimeException("Invalid Tuning note: " + noteStrings[j]);
 					}
 				}
-				
+
 				TuningPreset tuning = new TuningPreset(group, name, noteValues);
-				
+
 				// Add priority attribute if available
 				if (params.getNamedItem(PRIORITY_ATTRIBUTE) != null) {
 					String prioStr = params.getNamedItem(PRIORITY_ATTRIBUTE).getNodeValue();
@@ -83,7 +83,7 @@ public class TuningReader {
 					if (prioStr != null && !prioStr.equals("") && prioStr.matches("\\d+"))
 						tuning.setPriority(Integer.parseInt(prioStr));
 				}
-				
+
 				group.getTunings().add(tuning);
 			} else if (nodeName.equals(GROUP_TAG)) {
 				NamedNodeMap params = child.getAttributes();

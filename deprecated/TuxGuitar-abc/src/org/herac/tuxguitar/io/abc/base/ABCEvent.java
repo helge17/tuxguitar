@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.herac.tuxguitar.io.abc.base;
 
@@ -103,7 +103,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 	public static final int DRONEON = -11;
 	public static final int DRONEOFF = -12;
 	public static final int DRONE = -13;
-	
+
 	private String name;
 	private int type;
 	private int pitch;
@@ -121,7 +121,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 	private int tripletQ;
 	private int tripletR;
 	private ArrayList<String> lyrics;
-	
+
 	public ABCEvent(int type, String parm, int value) {
 		this.type=type;
 		this.name=parm;
@@ -152,7 +152,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 		triplet=false;
 		switch(a[0]) {
 		default: type=NOT_RELEVANT; i=1;break;
-		case '|': 
+		case '|':
 			if(a[1]==':') {
 				type=REPEAT_BEGIN;
 				i=2;
@@ -171,7 +171,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 			type=BAR;
 			i=1;
 			break;
-		case '[': 
+		case '[':
 			if(a[1]=='|') {
 				type=FATBAR_BAR;
 				i=2;
@@ -213,15 +213,15 @@ public class ABCEvent implements Comparable<ABCEvent> {
 			type=CHORD_BEGIN;
 			i=1;
 			break;
-		case ':': 
-			if(a[1]==':') 
-				type=REPEAT_END_AND_START; 
-			else 
+		case ':':
+			if(a[1]==':')
+				type=REPEAT_END_AND_START;
+			else
 				type=REPEAT_END;
 			i=2;
 			break;
 		case '"':// preceded by one of five symbols ^, _, <, > or @ which controls where the annotation is to be placed
-			if("^_<>@".indexOf(a[1])<0) 
+			if("^_<>@".indexOf(a[1])<0)
 				type=CHORD_SYMBOL;
 			else
 				type=ANNOTATION;
@@ -247,7 +247,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 			while(i<a.length && "![:]| \t".indexOf(a[i])<0) ++i;
 			if(i<a.length && a[i]=='!') ++i;
 			else {
-				type=LINE_BREAK;	// old school ABC 
+				type=LINE_BREAK;	// old school ABC
 				i=1;
 			}
 			break;
@@ -271,7 +271,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 				++i;
 			}
 			if(n>0) multiplyer=n;
-			if(a[i]=='/') { 
+			if(a[i]=='/') {
 				if("0123456789".indexOf(a[i+1])>=0) {
 					n=0;
 					++i;
@@ -302,7 +302,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 			setPitchStringAndFret(pitch,strings);
 		}
 		else if(type==DECORATION) {
-			if(this.name.equals(".")) 
+			if(this.name.equals("."))
 				pitch=STACATODOT;
 			else {
 				if(!this.name.endsWith(this.name.substring(0, 1))) this.name+=this.name.substring(0, 1);
@@ -331,14 +331,14 @@ public class ABCEvent implements Comparable<ABCEvent> {
 		e.grace=this.grace;
 		return e;
 	}
-	
+
 	public void setPitchStringAndFret(int pitch, int[] strings) {
 		int f=0;
 		this.pitch=pitch;
 		if(strings==null) return;
 		this.string=-1;
 		this.fret=127;
-		for(int y=0;y<strings.length;y++) { 
+		for(int y=0;y<strings.length;y++) {
 			if(strings[y]<=pitch) {
 				f=pitch-strings[y];
 				if(f<this.fret) {
@@ -357,11 +357,11 @@ public class ABCEvent implements Comparable<ABCEvent> {
 		if(d.equals("trill")) return TRILL; // "tr" (trill mark)
 		if(d.equals("lowermordent")) return LOWERMORDENT; // short /|/|/ squiggle with a vertical line through it
 		if(d.equals("uppermordent")) return UPPERMORDENT; // short /|/|/ squiggle
-		if(d.equals("mordent")) return LOWERMORDENT; // same as +lowermordent+ 
-		if(d.equals("pralltriller")) return UPPERMORDENT; // same as +uppermordent+ 
+		if(d.equals("mordent")) return LOWERMORDENT; // same as +lowermordent+
+		if(d.equals("pralltriller")) return UPPERMORDENT; // same as +uppermordent+
 		if(d.equals("accent")) return ACCENT; // > mark
-		if(d.equals(">")) return ACCENT; // same as +accent+ 
-		if(d.equals("emphasis")) return ACCENT; // same as +accent+ 
+		if(d.equals(">")) return ACCENT; // same as +accent+
+		if(d.equals("emphasis")) return ACCENT; // same as +accent+
 		if(d.equals("fermata")) return FERMATA; // fermata or hold (arc above dot)
 		if(d.equals("invertedfermata")) return INVERTEDFERMATA; // upside down fermata
 		if(d.equals("tenuto")) return TENUTO; // horizontal line to indicate holding note for full duration
@@ -375,7 +375,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 		if(d.equals("wedge")) return WEDGE; // small filled-in wedge mark
 		if(d.equals("open")) return OPEN; // small circle above note indicating open string or harmonic
 		if(d.equals("thumb")) return THUMB; // cello thumb symbol
-		if(d.equals("snap")) return THUMB; // snap-pizzicato mark, visually similar to +thumb+ 
+		if(d.equals("snap")) return THUMB; // snap-pizzicato mark, visually similar to +thumb+
 		if(d.equals("turn")) return TURN; // a turn mark
 		if(d.equals("roll")) return ROLL; // a roll mark (arc) as used in Irish music
 		if(d.equals("breath")) return BREATH; // a breath mark (apostrophe-like) after note
@@ -411,25 +411,25 @@ public class ABCEvent implements Comparable<ABCEvent> {
 		if(d.equals("upbow")) return UPBOW; // V mark
 		if(d.equals("downbow")) return DOWNBOW; // squared n mark
 //		By extension, the following decorations have been added:
-		if(d.equals("slide")) return SLIDE; 
-		if(d.equals("turnx")) return TURNX; 
-		if(d.equals("invertedturn")) return INVERTEDTURN; 
-		if(d.equals("invertedturnx")) return INVERTEDTURNX; 
-		if(d.equals("arpeggio")) return ARPEGGIO; 
-		if(d.equals("trill(")) return STARTTRILL; 
-		if(d.equals("trill)")) return ENDTRILL; 
+		if(d.equals("slide")) return SLIDE;
+		if(d.equals("turnx")) return TURNX;
+		if(d.equals("invertedturn")) return INVERTEDTURN;
+		if(d.equals("invertedturnx")) return INVERTEDTURNX;
+		if(d.equals("arpeggio")) return ARPEGGIO;
+		if(d.equals("trill(")) return STARTTRILL;
+		if(d.equals("trill)")) return ENDTRILL;
 		return 0;
 	}
 
 	public String toString() {
 		return name;
 	}
-	
+
 	public int compareTo(ABCEvent e) {
 		if( e == null ) {
 			return 1;
 		}
-		
+
 		int i=type - e.type;
 		if(i!=0) return i;
 		if(grace && !e.grace) return 1;
@@ -446,7 +446,7 @@ public class ABCEvent implements Comparable<ABCEvent> {
 		if(i!=0) return i;
 		i = fret - e.fret;
 		if(i!=0) return i;
-		
+
 		return 0;
 	}
 

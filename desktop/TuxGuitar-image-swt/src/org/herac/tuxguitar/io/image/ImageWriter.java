@@ -13,17 +13,17 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.swt.resource.SWTImage;
 
 public class ImageWriter {
-	
+
 	public static void write(ImageFormat format, String path, List<UIImage> pages) throws TGFileFormatException {
 		try {
 			for(int i = 0; i < pages.size() ; i ++ ) {
 				OutputStream stream = new FileOutputStream(new File(path + File.separator + "page-" + i + format.getExtension() ));
-				
+
 				Image image = ((SWTImage) pages.get(i)).getHandle();
 				ImageLoader imageLoader = new ImageLoader();
 				imageLoader.data = new ImageData[] { image.getImageData() };
 				imageLoader.save(stream, format.getFormat() );
-				
+
 				stream.flush();
 				stream.close();
 			}

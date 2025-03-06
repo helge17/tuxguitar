@@ -7,7 +7,7 @@ public class ABCChord {
 	private static final String GCHORDNOTESET = "fghijklGHIJ";
 
 	private static final ChordInfo[] data = new ChordInfo[]{
-		
+
 
 		new ChordInfo("",      new int[]{ 1, 5, 8 }),		// Major
 		new ChordInfo("7",     new int[]{ 1, 5, 8, 11 }),
@@ -25,7 +25,7 @@ public class ABCChord {
 		new ChordInfo("dim7",  new int[]{ 1, 4, 7, 10 }),
 		new ChordInfo("aug",   new int[]{ 1, 5, 9 }),
 		new ChordInfo("5",     new int[]{ 1, 8 }),
-//		from here extending ChordDataBase 
+//		from here extending ChordDataBase
 		new ChordInfo("M7",    new int[]{ 1, 5, 8, 12 }),
 		new ChordInfo("+",     new int[]{ 1, 5, 9 }),
 		new ChordInfo("aug7",  new int[]{ 1, 5, 9, 11 }),
@@ -44,21 +44,21 @@ public class ABCChord {
 		new ChordInfo("9sus4", new int[]{ 1, 6, 11, 15, 20 }),
 		new ChordInfo("5",     new int[]{ 1, 8 }),
 		new ChordInfo("13",    new int[]{ 1, 5, 8, 11, 17, 21 }),
-		
+
 	};
-	
+
 	private byte[] strings;
 	private String name;
 	private String[] chordnote;
 	private int size;
 
 	private int[] gchordnote;
-	
+
 	public ABCChord(String name){
 		this.name = name.substring(0, 1).toUpperCase()+name.substring(1);
 		plotChord(this.name);
 	}
-	
+
 	private void plotChord(String name) {
 		String base,variant,root;
 		if(name.length()>1 && (name.charAt(1)=='#' || name.charAt(1)=='b')) {
@@ -165,15 +165,15 @@ public class ABCChord {
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public byte[] getStrings() {
 		return this.strings;
 	}
-	
+
 	public int size() {
 		return this.size;
 	}
-	
+
 	public String toString(){
 		String string = new String("[CHORD]");
 		string += "\n     Name:       " + getName();

@@ -11,13 +11,13 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTransportSetLoopEHeaderAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.transport.set-loop-end";
-	
+
 	public TGTransportSetLoopEHeaderAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		if( measure != null ){
@@ -26,12 +26,12 @@ public class TGTransportSetLoopEHeaderAction extends TGActionBase {
 			if( pm.isLoop() ){
 				int measureNb = pm.getLoopEHeader() != measure.getNumber() ? measure.getNumber() : -1;
 				pm.setLoopEHeader( measureNb );
-				
+
 				TGDocument document = TGDocumentListManager.getInstance(getContext()).findCurrentDocument();
 				if ((document != null) && (document.getMidiPlayerMode() != null)){
 					document.getMidiPlayerMode().setLoopEHeader(measureNb);
 				}
-				
+
 			}
 		}
 	}

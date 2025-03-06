@@ -24,10 +24,10 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 			(*handle)->connections[i] = (LV2PortConnection *) malloc(sizeof(LV2PortConnection));
 			(*handle)->connections[i]->dataLocation = NULL;
 			(*handle)->connections[i]->workBuffer = NULL;
-			
+
 			if( (*handle)->plugin->ports[i]->type == TYPE_CONTROL ) {
 				(*handle)->connections[i]->dataLocation = malloc(sizeof(float));
-				
+
 				LilvNode* defaultValue = NULL;
 				lilv_port_get_range((*handle)->plugin->lilvPlugin, (*handle)->plugin->ports[i]->lilvPort, &defaultValue, NULL, NULL);
 				*((float *) (*handle)->connections[i]->dataLocation) = lilv_node_as_float(defaultValue);
@@ -43,11 +43,11 @@ void LV2Instance_malloc(LV2Instance **handle, LV2Plugin* plugin, LV2Feature* fea
 			else if( (*handle)->plugin->ports[i]->type == TYPE_EVENT ) {
 				(*handle)->connections[i]->dataLocation = malloc((*handle)->config->eventBufferSize);
 				(*handle)->connections[i]->workBuffer = malloc((*handle)->config->eventBufferSize);
-				
+
 				((LV2_Atom_Sequence *) (*handle)->connections[i]->dataLocation)->atom.size = 0;
 				((LV2_Atom_Sequence *) (*handle)->connections[i]->workBuffer)->atom.size = 0;
 			}
-			
+
 			if( (*handle)->connections[i]->dataLocation != NULL ) {
 				lilv_instance_connect_port((*handle)->lilvInstance, i, (*handle)->connections[i]->dataLocation);
 			}
@@ -62,14 +62,14 @@ void LV2Instance_free(LV2Instance **handle)
 	if( (*handle) != NULL ){
 		lilv_instance_deactivate((*handle)->lilvInstance);
 		lilv_instance_free((*handle)->lilvInstance);
-		
+
 		for (uint32_t i = 0; i < (*handle)->plugin->portCount; i ++) {
 			if( (*handle)->connections[i]->dataLocation != NULL ) {
 				free ( (*handle)->connections[i]->dataLocation );
 			}
 			free ( (*handle)->connections[i] );
 		}
-		
+
 		free ( (*handle)->connections );
 		free ( (*handle) );
 
@@ -82,8 +82,8 @@ void LV2Instance_reloadState(LV2Instance *handle)
 	if( handle != NULL && handle->lilvInstance != NULL ) {
 		LV2_URID_Map* map = (LV2_URID_Map *) LV2Feature_getFeature(handle->feature, LV2_URID__map)->data;
 		LilvState* const state = lilv_state_new_from_instance(
-			handle->plugin->lilvPlugin, 
-			handle->lilvInstance, 
+			handle->plugin->lilvPlugin,
+			handle->lilvInstance,
 			map,
 			NULL,
 			NULL,
@@ -108,8 +108,8 @@ void LV2Instance_getState(LV2Instance *handle, const char** value)
 		LV2_URID_Unmap* unmap = (LV2_URID_Unmap *) LV2Feature_getFeature(handle->feature, LV2_URID__unmap)->data;
 
 		LilvState* const state = lilv_state_new_from_instance(
-			handle->plugin->lilvPlugin, 
-			handle->lilvInstance, 
+			handle->plugin->lilvPlugin,
+			handle->lilvInstance,
 			map,
 			NULL,
 			NULL,
@@ -145,8 +145,8 @@ void LV2Instance_setDefaultState(LV2Instance *handle)
 		if( hasStateInterface ) {
 			LV2_Feature* mapFeature = LV2Feature_getFeature(handle->feature, LV2_URID__map);
 			LilvState* state = lilv_state_new_from_world(
-					handle->plugin->world->lilvWorld, 
-					(LV2_URID_Map *) mapFeature->data, 
+					handle->plugin->world->lilvWorld,
+					(LV2_URID_Map *) mapFeature->data,
 					lilv_plugin_get_uri(handle->plugin->lilvPlugin));
 
 			if (state ) {
@@ -166,7 +166,7 @@ void LV2Instance_getControlPortValue(LV2Instance *handle, LV2Int32 index, float*
 	}
 }
 
-void LV2Instance_setControlPortValue(LV2Instance *handle, LV2Int32 index, float value) 
+void LV2Instance_setControlPortValue(LV2Instance *handle, LV2Int32 index, float value)
 {
 	if( handle != NULL && handle->plugin != NULL && handle->connections != NULL ) {
 		if( index >= 0 && index < handle->plugin->portCount && handle->plugin->ports[index]->type == TYPE_CONTROL && handle->connections[index]->dataLocation != NULL ) {
@@ -201,7 +201,7 @@ void LV2Instance_setMidiMessages(LV2Instance *handle, unsigned char** messages, 
 			if( seq->atom.size == 0 ) {
 				lv2_atom_sequence_clear(seq);
 			}
-			
+
 			struct {
 				LV2_Atom atom;
 				uint8_t  msg[3];
@@ -213,7 +213,7 @@ void LV2Instance_setMidiMessages(LV2Instance *handle, unsigned char** messages, 
 				midiEvent.msg[0]    = messages[m][0];
 				midiEvent.msg[1]    = messages[m][1];
 				midiEvent.msg[2]    = messages[m][2];
-				
+
 				LV2_Atom_Event* event = lv2_atom_sequence_end(&seq->body, seq->atom.size);
 				memcpy((&event->body), &midiEvent, sizeof(midiEvent));
 				event->time.frames = 0;
@@ -253,12 +253,12 @@ void LV2Instance_processAudio(LV2Instance *handle, float** inputs, float** outpu
 			}
 			lv2_atom_sequence_clear((LV2_Atom_Sequence *)workBuffer);
 		})
-		
+
 		LV2_PLUGIN_PORT_BUFFER_FOREACH(handle, TYPE_EVENT, FLOW_OUT, workBuffer, connectionBuffer, {
 			((LV2_Atom_Sequence *)connectionBuffer)->atom.size = handle->config->eventBufferSize;
 		})
-		
-		// process lv2 buffers 
+
+		// process lv2 buffers
 		lilv_instance_run(handle->lilvInstance, handle->config->bufferSize);
 
 		// copy events from lv2 buffer
@@ -276,7 +276,7 @@ void LV2Instance_processAudio(LV2Instance *handle, float** inputs, float** outpu
 		LV2Int32 outputsIndex = 0;
 		LV2Int32 outputsLength = 0;
 		LV2Plugin_getAudioOutputPortCount(handle->plugin, &outputsLength);
-		
+
 		for (uint32_t i = 0; i < handle->plugin->portCount; i ++) {
 			if( handle->plugin->ports[i]->type == TYPE_AUDIO && handle->plugin->ports[i]->flow == FLOW_OUT ) {
 				if( outputsIndex < outputsLength ) {

@@ -9,18 +9,18 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChangeTempoAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.composition.change-tempo";
-	
+
 	public TGChangeTempoAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGSongManager tgSongManager = getSongManager(context);
 		TGMeasureHeader tgHeader = (TGMeasureHeader) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		TGTempo tgTempo = (TGTempo) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TEMPO);
-		
+
 		tgSongManager.changeTempo(tgHeader, tgTempo);
 	}
 }

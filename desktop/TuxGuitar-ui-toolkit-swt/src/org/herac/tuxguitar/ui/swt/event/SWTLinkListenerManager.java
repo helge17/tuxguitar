@@ -7,13 +7,13 @@ import org.herac.tuxguitar.ui.event.UILinkListenerManager;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTLinkListenerManager extends UILinkListenerManager implements SelectionListener {
-	
+
 	private SWTEventReceiver<?> control;
-	
+
 	public SWTLinkListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
-	
+
 	public void widgetSelected(SelectionEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			if( event.text != null ){
@@ -21,7 +21,7 @@ public class SWTLinkListenerManager extends UILinkListenerManager implements Sel
 			}
 		}
 	}
-	
+
 	public void widgetDefaultSelected(SelectionEvent event) {
 		// Nothing to do
 	}

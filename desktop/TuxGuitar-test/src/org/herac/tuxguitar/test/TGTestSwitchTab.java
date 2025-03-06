@@ -26,7 +26,7 @@ public class TGTestSwitchTab extends TGTest {
 	private TGDocumentListManager documentManager;
 	private TGDocument doc1;
 	private TGDocument doc2;
-	
+
 	private void doSwitchDocumentChecked(TGDocument doc) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGLoadSongAction.NAME);
@@ -44,17 +44,17 @@ public class TGTestSwitchTab extends TGTest {
 		});
 		OK();
 	}
-	
+
 	@BeforeEach
 	void setupTest() {
 		documentManager = TGDocumentListManager.getInstance(TuxGuitar.getInstance().getContext());
-		
+
 		verbose=false;
 		doCloseAllSongsWithoutConfirmationChecked();
 		doc1 = documentManager.findCurrentDocument();
 		doInsertMeasuresChecked(2, 5);
 		doMouseClickChecked(1, 0, 1);
-		
+
 		doNewSongChecked();
 		doc2 = documentManager.findCurrentDocument();
 		doInsertMeasuresChecked(2, 9);

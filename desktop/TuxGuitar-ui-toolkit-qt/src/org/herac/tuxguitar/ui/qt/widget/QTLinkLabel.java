@@ -5,12 +5,12 @@ import org.herac.tuxguitar.ui.qt.event.QTLinkListenerManager;
 import org.herac.tuxguitar.ui.widget.UILinkLabel;
 
 public class QTLinkLabel extends QTWrapLabel implements UILinkLabel {
-	
+
 	private QTLinkListenerManager linkListener;
-	
+
 	public QTLinkLabel(QTContainer parent) {
 		super(parent);
-		
+
 		this.linkListener = new QTLinkListenerManager(this);
 	}
 

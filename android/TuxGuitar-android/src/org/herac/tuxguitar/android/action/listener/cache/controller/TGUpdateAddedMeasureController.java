@@ -14,16 +14,16 @@ public class TGUpdateAddedMeasureController extends TGUpdateItemsController {
 	public TGUpdateAddedMeasureController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(final TGContext context, TGActionContext actionContext) {
 		final TGSongManager tgSongManager = (TGSongManager) actionContext.getAttribute(TGSongManager.class.getName());
 		final TGSong tgSong = (TGSong) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final Integer number = (Integer) actionContext.getAttribute(TGAddMeasureAction.ATTRIBUTE_MEASURE_NUMBER);
-		
+
 		// Update the created measure
 		this.findUpdateBuffer(context).requestUpdateMeasure(number);
-		
+
 		// Update caret position to new measure
 		this.findUpdateBuffer(context).doPostUpdate(new Runnable() {
 			public void run() {

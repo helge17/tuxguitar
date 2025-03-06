@@ -7,22 +7,22 @@ import org.herac.tuxguitar.ui.menu.UIMenuItem;
 import org.herac.tuxguitar.util.TGContext;
 
 public abstract class TGMenuItem {
-	
+
 	public abstract void update();
-	
+
 	public abstract void loadProperties();
-	
+
 	public abstract void showItems();
-	
+
 	public void setMenuItemTextAndAccelerator(UIMenuItem menuItem, String key,String action) {
 		menuItem.setKeyCombination(action != null ? KeyBindingActionManager.getInstance(this.findContext()).getKeyBindingForAction(action) : null);
 		menuItem.setText(TuxGuitar.getProperty(key));
 	}
-	
+
 	public TGActionProcessorListener createActionProcessor(String actionId) {
 		return new TGActionProcessorListener(findContext(), actionId);
 	}
-	
+
 	public TGContext findContext() {
 		return TuxGuitar.getInstance().getContext();
 	}

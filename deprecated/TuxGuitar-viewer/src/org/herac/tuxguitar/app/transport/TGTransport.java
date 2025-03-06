@@ -18,34 +18,34 @@ import org.herac.tuxguitar.util.TGContext;
 
 /**
  * @author julian
- * 
+ *
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class TGTransport{
-	
+
 	private TGContext context;
-	
+
 	public TGTransport(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public TGSongManager getSongManager(){
 		return TGDocumentManager.getInstance(this.context).getSongManager();
 	}
-	
+
 	public TGSong getSong(){
 		return TGDocumentManager.getInstance(this.context).getSong();
 	}
-	
+
 	public void gotoFirst(){
 		gotoMeasure(getSongManager().getFirstMeasureHeader(getSong()), true);
 	}
-	
+
 	public void gotoLast(){
 		gotoMeasure(getSongManager().getLastMeasureHeader(getSong()), true) ;
 	}
-	
+
 	public void gotoNext(){
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
@@ -53,7 +53,7 @@ public class TGTransport{
 			gotoMeasure(getSongManager().getNextMeasureHeader(getSong(), header), true);
 		}
 	}
-	
+
 	public void gotoPrevious(){
 		MidiPlayer player = TuxGuitar.instance().getPlayer();
 		TGMeasureHeader header = getSongManager().getMeasureHeaderAt(getSong(), MidiTickUtil.getStart(player.getTickPosition()));
@@ -61,11 +61,11 @@ public class TGTransport{
 			gotoMeasure(getSongManager().getPrevMeasureHeader(getSong(), header), true);
 		}
 	}
-	
+
 	public void gotoMeasure(TGMeasureHeader header){
 		gotoMeasure(header,false);
 	}
-	
+
 	public void gotoMeasure(TGMeasureHeader header,boolean moveCaret){
 		if(header != null){
 			TGMeasure playingMeasure = null;

@@ -15,7 +15,7 @@ public class TGUpdateSavedSongController extends TGUpdateItemsController {
 		TGUndoableManager.getInstance(context).discardAllEdits();
 
 		this.findUpdateBuffer(context).requestUpdateSavedSong();
-		
+
 		super.update(context, actionContext);
 	}
 }

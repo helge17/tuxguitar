@@ -47,7 +47,7 @@ public class SoftAudioBuffer {
         this.format = format;
         converter = AudioFloatConverter.getConverter(format);
     }
-    
+
     public void swap(SoftAudioBuffer swap)
     {
         int bak_size = size;
@@ -56,14 +56,14 @@ public class SoftAudioBuffer {
         AudioFormat bak_format = format;
         AudioFloatConverter bak_converter = converter;
         byte[] bak_converter_buffer = converter_buffer;
-        
+
         size = swap.size;
         buffer = swap.buffer;
         empty = swap.empty;
         format = swap.format;
         converter = swap.converter;
         converter_buffer = swap.converter_buffer;
-        
+
         swap.size = bak_size;
         swap.buffer = bak_buffer;
         swap.empty = bak_empty;

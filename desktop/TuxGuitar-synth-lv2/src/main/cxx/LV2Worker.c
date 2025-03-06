@@ -55,7 +55,7 @@ void LV2Worker_start(LV2Worker *handle, LV2Instance *instance)
 			handle->iface = (LV2_Worker_Interface *) lilv_instance_get_extension_data(instance->lilvInstance, LV2_WORKER__interface);
 			if( handle->iface != NULL ) {
 				handle->running = true;
-				
+
 				if( pthread_create(&(handle->thread), NULL, LV2Worker_processThread, handle)) {
 					handle->running = false;
 				}
@@ -107,7 +107,7 @@ LV2_Worker_Status LV2Worker_schedule(LV2_Worker_Schedule_Handle workerHandle, ui
 	if( handle != NULL ) {
 		if( LV2Lock_lock(handle->lock) ) {
 			LV2Worker_enqueue(handle, &(handle->requestQueue), size, data);
-			
+
 			LV2Lock_unlock(handle->lock);
 		}
 	}
@@ -120,7 +120,7 @@ LV2_Worker_Status LV2Worker_respond(LV2_Worker_Respond_Handle workerHandle, uint
 	if( handle != NULL ) {
 		if( LV2Lock_lock(handle->lock) ) {
 			LV2Worker_enqueue(handle, &(handle->responseQueue), size, data);
-			
+
 			LV2Lock_unlock(handle->lock);
 		}
 	}
@@ -143,13 +143,13 @@ void LV2Worker_processResponses(LV2Worker *handle)
 			}
 			LV2Lock_unlock(handle->lock);
 		}
-		
+
 		if( iface != NULL && lv2Handle != NULL ) {
 			if( queue != NULL ) {
 				LV2WorkerQueue* next = queue;
 				while( next != NULL ) {
 					iface->work_response(lv2Handle, next->size, next->data);
-					
+
 					next = next->next;
 				}
 				LV2Worker_freeQueue(&queue);
@@ -170,7 +170,7 @@ void* LV2Worker_processThread(void* ptr)
 			if( LV2Lock_trylock(handle->lock) ) {
 				if( handle->running ) {
 					queue = handle->requestQueue;
-					
+
 					handle->requestQueue = NULL;
 				}
 				LV2Lock_unlock(handle->lock);
@@ -179,10 +179,10 @@ void* LV2Worker_processThread(void* ptr)
 			LV2WorkerQueue* next = queue;
 			while( next != NULL ) {
 				handle->iface->work(
-					handle->instance->lilvInstance->lv2_handle, 
-					LV2Worker_respond, 
-					handle, 
-					next->size, 
+					handle->instance->lilvInstance->lv2_handle,
+					LV2Worker_respond,
+					handle,
+					next->size,
 					next->data);
 
 				next = next->next;

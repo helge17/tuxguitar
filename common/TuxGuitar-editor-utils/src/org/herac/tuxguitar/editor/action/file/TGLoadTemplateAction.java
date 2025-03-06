@@ -10,15 +10,15 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGLoadTemplateAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.song.new";
-	
+
 	public static final String ATTRIBUTE_TEMPLATE = TGTemplate.class.getName();
-	
+
 	public TGLoadTemplateAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGTemplateManager tgTemplateManager = TGTemplateManager.getInstance(getContext());
 		TGTemplate tgTemplate = context.getAttribute(ATTRIBUTE_TEMPLATE);
@@ -28,10 +28,10 @@ public class TGLoadTemplateAction extends TGActionBase{
 		} else {
 			tgSong = tgTemplateManager.getTemplateAsSong(tgTemplate);
 		}
-		
+
 		if( tgSong != null ){
 			context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, tgSong);
-			
+
 			TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 			tgActionManager.execute(TGLoadSongAction.NAME, context);
 		} else {

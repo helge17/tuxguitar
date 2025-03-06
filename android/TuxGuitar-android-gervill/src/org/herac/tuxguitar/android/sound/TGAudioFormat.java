@@ -3,9 +3,9 @@ package org.herac.tuxguitar.android.sound;
 import javax.sound.sampled.AudioFormat;
 
 public class TGAudioFormat {
-	
+
 	private AudioFormat source;
-	
+
 	public TGAudioFormat(AudioFormat source) {
 		this.source = source;
 	}

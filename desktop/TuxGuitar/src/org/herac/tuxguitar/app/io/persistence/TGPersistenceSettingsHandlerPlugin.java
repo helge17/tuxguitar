@@ -5,11 +5,11 @@ import org.herac.tuxguitar.util.plugin.TGPlugin;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGPersistenceSettingsHandlerPlugin implements TGPlugin {
-	
+
 	private TGPersistenceSettingsHandler handler;
-	
+
 	protected abstract TGPersistenceSettingsHandler createSettingsHandler(TGContext context) throws TGPluginException;
-	
+
 	public void connect(TGContext context) throws TGPluginException {
 		try {
 			if( this.handler == null ){
@@ -22,7 +22,7 @@ public abstract class TGPersistenceSettingsHandlerPlugin implements TGPlugin {
 			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
-	
+
 	public void disconnect(TGContext context) throws TGPluginException {
 		try {
 			if( this.handler != null ){

@@ -8,9 +8,9 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGLoadSongAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.song.load";
-	
+
 	public TGLoadSongAction(TGContext context) {
 		super(context, NAME);
 	}

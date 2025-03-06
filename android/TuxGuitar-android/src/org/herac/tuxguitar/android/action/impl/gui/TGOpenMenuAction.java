@@ -8,16 +8,16 @@ import org.herac.tuxguitar.android.menu.controller.TGMenuController;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenMenuAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.gui.open-menu";
-	
+
 	public static final String ATTRIBUTE_MENU_ACTIVITY = TGActivity.class.getName();
 	public static final String ATTRIBUTE_MENU_CONTROLLER = TGMenuController.class.getName();
-	
+
 	public TGOpenMenuAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(final TGActionContext context) {
 		TGMenuController tgMenuController = context.getAttribute(ATTRIBUTE_MENU_CONTROLLER);
 		TGMenuContextualInflater.getInstance(this.getContext()).setController(tgMenuController);

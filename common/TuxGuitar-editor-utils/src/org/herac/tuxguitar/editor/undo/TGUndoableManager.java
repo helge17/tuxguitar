@@ -6,24 +6,24 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGUndoableManager {
-	
+
 	private static final int LIMIT = 100;
-	
+
 	private TGUndoableBuffer buffer;
-	
+
 	public TGUndoableManager() {
 		super();
 	}
-	
+
 	public void discardAllEdits() {
 		this.reset();
 	}
-	
+
 	private void reset() {
 		this.getBuffer().setIndexOfNextAdd(0);
 		this.getBuffer().getEdits().clear();
 	}
-	
+
 	public synchronized void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		TGUndoableEdit edit = editToBeUndone();
 		if( edit == null ) {
@@ -36,7 +36,7 @@ public class TGUndoableManager {
 		}
 		this.decrementIndexOfNextAdd();
 	}
-	
+
 	public synchronized void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		TGUndoableEdit edit = editToBeRedone();
 		if( edit == null ) {
@@ -49,7 +49,7 @@ public class TGUndoableManager {
 		}
 		this.incrementIndexOfNextAdd();
 	}
-	
+
 	public synchronized boolean canUndo() {
 		boolean canUndo = false;
 		TGUndoableEdit edit = editToBeUndone();
@@ -58,7 +58,7 @@ public class TGUndoableManager {
 		}
 		return canUndo;
 	}
-	
+
 	public synchronized boolean canRedo() {
 		boolean canRedo = false;
 		TGUndoableEdit edit = editToBeRedone();
@@ -67,21 +67,21 @@ public class TGUndoableManager {
 		}
 		return canRedo;
 	}
-	
+
 	public synchronized void addEdit(TGUndoableEdit anEdit) {
 		this.checkForUnused();
 		this.checkForLimit();
 		this.getBuffer().getEdits().add(this.getBuffer().getIndexOfNextAdd(), anEdit);
 		this.incrementIndexOfNextAdd();
 	}
-	
+
 	private void checkForUnused() {
 		TGUndoableBuffer buffer = this.getBuffer();
 		while (buffer.getEdits().size() > buffer.getIndexOfNextAdd()) {
 			this.remove(buffer.getEdits().get(buffer.getIndexOfNextAdd()));
 		}
 	}
-	
+
 	private void checkForLimit() {
 		TGUndoableBuffer buffer = this.getBuffer();
 		while (buffer.getEdits().size() >= LIMIT) {
@@ -89,11 +89,11 @@ public class TGUndoableManager {
 			this.decrementIndexOfNextAdd();
 		}
 	}
-	
+
 	private void remove(TGUndoableEdit edit) {
 		this.getBuffer().getEdits().remove(edit);
 	}
-	
+
 	private TGUndoableEdit editToBeUndone() {
 		TGUndoableBuffer buffer = this.getBuffer();
 		int index = (buffer.getIndexOfNextAdd() - 1);
@@ -102,7 +102,7 @@ public class TGUndoableManager {
 		}
 		return null;
 	}
-	
+
 	private TGUndoableEdit editToBeRedone() {
 		TGUndoableBuffer buffer = this.getBuffer();
 		int index = (buffer.getIndexOfNextAdd());
@@ -111,26 +111,26 @@ public class TGUndoableManager {
 		}
 		return null;
 	}
-	
+
 	private void incrementIndexOfNextAdd() {
 		this.getBuffer().setIndexOfNextAdd(this.getBuffer().getIndexOfNextAdd() + 1);
 	}
-	
+
 	private void decrementIndexOfNextAdd() {
 		this.getBuffer().setIndexOfNextAdd(this.getBuffer().getIndexOfNextAdd() - 1);
 	}
-	
+
 	private TGUndoableBuffer getBuffer() {
 		if( this.buffer == null ) {
 			this.setBuffer(new TGUndoableBuffer());
 		}
 		return this.buffer;
 	}
-	
+
 	public void setBuffer(TGUndoableBuffer buffer) {
 		this.buffer = buffer;
 	}
-	
+
 	public static TGUndoableManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGUndoableManager.class.getName(), new TGSingletonFactory<TGUndoableManager>() {
 			public TGUndoableManager createInstance(TGContext context) {

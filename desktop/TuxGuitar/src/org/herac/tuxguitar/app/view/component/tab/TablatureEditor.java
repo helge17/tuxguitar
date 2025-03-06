@@ -16,43 +16,43 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TablatureEditor implements TGEventListener{
-	
+
 	private TGContext context;
 	private Tablature tablature;
-	
+
 	public TablatureEditor(TGContext context) {
 		this.context = context;
 		this.initialize();
 	}
-	
+
 	public void initialize() {
 		this.tablature = new Tablature(this.context, TGDocumentManager.getInstance(this.context));
 		this.tablature.reloadViewLayout();
 		this.tablature.updateTablature();
 		this.tablature.resetCaret();
-		
+
 		this.initListener();
 		this.initMenu();
 	}
-	
+
 	private void initListener(){
 		TGEditorManager.getInstance(this.context).addUpdateListener( this );
 	}
-	
+
 	private void initMenu(){
 		UIPopupMenu uiPopupMenu = TuxGuitar.getInstance().getItemManager().getPopupMenu();
 		uiPopupMenu.addMenuShowListener(getTablature().getEditorKit().getMouseKit());
 		uiPopupMenu.addMenuHideListener(getTablature().getEditorKit().getMouseKit());
 	}
-	
+
 	public void reloadConfig(){
 		getTablature().reloadStyles();
 	}
-	
+
 	public Tablature getTablature() {
 		return this.tablature;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
@@ -70,13 +70,13 @@ public class TablatureEditor implements TGEventListener{
 			getTablature().updateTablature();
 		}
 	}
-	
-	public void processEvent(final TGEvent event) { 
+
+	public void processEvent(final TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
 		}
 	}
-	
+
 	public static TablatureEditor getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TablatureEditor.class.getName(), new TGSingletonFactory<TablatureEditor>() {
 			public TablatureEditor createInstance(TGContext context) {

@@ -30,15 +30,15 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGCommunityStartupScreen {
-	
+
 	private static final float WRAP_WIDTH = 450;
-	
+
 	private TGContext context;
-	
+
 	public TGCommunityStartupScreen(TGContext context){
 		this.context = context;
 	}
-	
+
 	public void open(){
 		try {
 			final UIWindow parent = TGWindow.getInstance(this.context).getWindow();
@@ -51,51 +51,51 @@ public class TGCommunityStartupScreen {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void open(UIWindow parent){
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(parent, true, false);
-		
+
 		dialog.setLayout(dialogLayout);
 		dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
 		dialog.setText(TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.title"));
-		
+
 		//==============================================================//
 		UITableLayout topLayout = new UITableLayout();
 		UIPanel top = uiFactory.createPanel(dialog, false);
 		top.setLayout(topLayout);
 		dialogLayout.set(top, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIImageView image = uiFactory.createImageView(top);
 		image.setImage( TuxGuitar.getInstance().getIconManager().getAppIcon() );
 		topLayout.set(image, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_TOP, false, false, 3, 1);
-		
+
 		addTitle(uiFactory, top, 1, 2, TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.title"));
 		addTipComment(uiFactory, top, 2, 2, TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.tip-1"), WRAP_WIDTH);
 		addTipComment(uiFactory, top, 3, 2, TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.tip-2"), WRAP_WIDTH);
-		
+
 		top.computePackedSize(null, null);
 		//==============================================================//
-		
+
 		UITableLayout bottomLayout = new UITableLayout();
 		UIPanel bottom = uiFactory.createPanel(dialog, false);
 		bottom.setLayout(bottomLayout);
 		dialogLayout.set(bottom, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		addComment(uiFactory, bottom, 1, 1, TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.tip-bottom"), top.getPackedContentSize().getWidth());
-		
+
 		//==============================================================//
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
-		
+
 		final UICheckBox buttonDisabled = uiFactory.createCheckBox(buttons);
 		buttonDisabled.setText( TuxGuitar.getProperty("tuxguitar-community.welcome-dialog.disable") );
 		buttonDisabled.setSelected( this.isDisabled() );
 		buttonsLayout.set(buttonDisabled, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -108,15 +108,15 @@ public class TGCommunityStartupScreen {
 		});
 		buttonsLayout.set(buttonOK, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonOK, UITableLayout.MARGIN_RIGHT, 0f);
-		
+
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK );
 	}
-	
+
 	private void addTitle(UIFactory factory, UILayoutContainer parent, Integer row, Integer col, String text){
 		UILabel uiLabel = factory.createLabel(parent);
 		uiLabel.setText(text);
 		this.addLayout(uiLabel, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false, null, null);
-		
+
 		UIFont defaultFont = uiLabel.getFont();
 		if( defaultFont != null ) {
 			final UIFont font = factory.createFont(defaultFont.getName(), defaultFont.getHeight() + 2, true, false);
@@ -128,13 +128,13 @@ public class TGCommunityStartupScreen {
 			});
 		}
 	}
-	
+
 	private void addTipItem(UIFactory factory, UIContainer parent, Integer row, Integer col){
 		UILabel uiLabel = factory.createLabel(parent);
 		uiLabel.setText("\u066D");
 		this.addLayout(uiLabel, row, col, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false, null, null);
 	}
-	
+
 	private void addComment(UIFactory factory, UIContainer parent, Integer row, Integer col, String text, Float wrapWidth){
 		final UILinkLabel uiLink = factory.createLinkLabel(parent);
 		uiLink.setText(text);
@@ -147,19 +147,19 @@ public class TGCommunityStartupScreen {
 				} ).start();
 			}
 		});
-		
+
 		this.addLayout(uiLink, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, wrapWidth, null);
 	}
-	
+
 	private void addTipComment(UIFactory factory, UIContainer parent, Integer row, Integer col, String text, Float wrapWidth){
 		UIPanel uiPanel = factory.createPanel(parent, false);
 		uiPanel.setLayout(new UITableLayout(0f));
-		
+
 		this.addLayout(uiPanel, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false, null, null);
 		this.addTipItem(factory, uiPanel, 1, 1);
 		this.addComment(factory, uiPanel, 1, 2, text, wrapWidth);
 	}
-	
+
 	private void addLayout(UIControl control, Integer row, Integer col, Integer alignX, Integer alignY, Boolean fillX, Boolean fillY, Float fixedWidth, Float fixedHeight) {
 		UILayoutContainer uiParent = (UILayoutContainer) control.getParent();
 		UITableLayout uiLayout = (UITableLayout) uiParent.getLayout();
@@ -167,15 +167,15 @@ public class TGCommunityStartupScreen {
 		uiLayout.set(control, UITableLayout.PACKED_WIDTH, fixedWidth);
 		uiLayout.set(control, UITableLayout.PACKED_HEIGHT, fixedHeight);
 	}
-	
+
 	public void setDisabled( boolean enabled ){
 		TGCommunitySingleton.getInstance(this.context).getConfig().setValue("community.welcome.disabled",enabled);
 	}
-	
+
 	public boolean isDisabled(){
 		return TGCommunitySingleton.getInstance(this.context).getConfig().getBooleanValue("community.welcome.disabled");
 	}
-	
+
 	public TGContext getContext() {
 		return context;
 	}

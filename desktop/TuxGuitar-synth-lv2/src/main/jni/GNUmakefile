@@ -25,6 +25,6 @@ all:    $(LIBRARY)
 
 $(LIBRARY):	$(OBJECTS)
 	$(CXX) $(LDFLAGS) -shared -o $(LIBRARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
-	
-clean: 
+
+clean:
 	$(RM) $(OBJECTS) $(LIBRARY)

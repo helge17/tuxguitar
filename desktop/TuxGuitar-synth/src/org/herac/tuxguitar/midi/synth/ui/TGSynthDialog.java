@@ -59,12 +59,12 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
-	
+
 	private TGContext context;
 	private TGSynthesizer synthesizer;
 	private TGChannel channel;
 	private TGSong song;
-	
+
 	private UIWindow dialog;
 	private UIButton buttonReceiverAdd;
 	private UIButton buttonReceiverEdit;
@@ -75,13 +75,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 	private UIButton buttonOutputMoveDown;
 	private UIReadOnlyTextField receiver;
 	private UICheckTable<TGProgramElement> outputs;
-	
+
 	private TGProcess loadPropertiesProcess;
 	private TGProcess loadIconsProcess;
 	private TGProcess updateProcess;
-	
+
 	private Map<TGAudioProcessor, TGAudioProcessorUI> processorsUI;
-	
+
 	public TGSynthDialog(TGContext context, TGSynthesizer synthesizer, TGChannel channel, TGSong song){
 		this.context = context;
 		this.synthesizer = synthesizer;
@@ -90,23 +90,23 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		this.processorsUI = new HashMap<TGAudioProcessor, TGAudioProcessorUI>();
 		this.createSyncProcesses();
 	}
-	
+
 	public void open(final UIWindow parent) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.dialog = uiFactory.createWindow(parent, false, false);
 		this.dialog.setLayout(dialogLayout);
-		
+
 		// ----------------------------------------------------------------------
 		UITableLayout receiverLayout = new UITableLayout();
 		UIPanel receiverPanel = uiFactory.createPanel(this.dialog, false);
 		receiverPanel.setLayout(receiverLayout);
 		dialogLayout.set(receiverPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.receiver = uiFactory.createReadOnlyTextField(receiverPanel);
 		receiverLayout.set(this.receiver, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
-		
+
 		// ----------------------------------------------------------------------
 		this.buttonReceiverAdd = uiFactory.createButton(receiverPanel);
 		this.buttonReceiverAdd.addSelectionListener(new UISelectionListener() {
@@ -115,7 +115,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 		receiverLayout.set(this.buttonReceiverAdd, 1, 2, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		this.buttonReceiverEdit = uiFactory.createButton(receiverPanel);
 		this.buttonReceiverEdit.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -123,14 +123,14 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 		receiverLayout.set(this.buttonReceiverEdit, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
-		
+
 		// ----------------------------------------------------------------------
-		
+
 		UITableLayout outputsLayout = new UITableLayout();
 		UIPanel compositeTable = uiFactory.createPanel(this.dialog, false);
 		compositeTable.setLayout(outputsLayout);
 		dialogLayout.set(compositeTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.outputs = uiFactory.createCheckTable(compositeTable, true);
 		this.outputs.setColumns(1);
 		this.outputs.addCheckSelectionListener(new UICheckTableSelectionListener<TGProgramElement>() {
@@ -148,20 +148,20 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		outputsLayout.set(this.outputs, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		outputsLayout.set(this.outputs, UITableLayout.PACKED_WIDTH, 250f);
 		outputsLayout.set(this.outputs, UITableLayout.PACKED_HEIGHT, 200f);
-		
+
 		// ------------------BUTTONS--------------------------
 		UITableLayout outputsButtonsLayout = new UITableLayout(0f);
 		UIPanel compositeButtons = uiFactory.createPanel(compositeTable, false);
 		compositeButtons.setLayout(outputsButtonsLayout);
 		outputsLayout.set(compositeButtons, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
-		
+
 		this.buttonOutputAdd = uiFactory.createButton(compositeButtons);
 		this.buttonOutputAdd.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				onAddOutput();
 			}
 		});
-		
+
 		this.buttonOutputEdit = uiFactory.createButton(compositeButtons);
 		this.buttonOutputEdit.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -175,31 +175,31 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				onRemoveOutput(TGSynthDialog.this.outputs.getSelectedValue());
 			}
 		});
-		
+
 		this.buttonOutputMoveUp = uiFactory.createButton(compositeButtons);
 		this.buttonOutputMoveUp.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				onMoveOutputUp(TGSynthDialog.this.outputs.getSelectedValue());
 			}
 		});
-		
+
 		this.buttonOutputMoveDown = uiFactory.createButton(compositeButtons);
 		this.buttonOutputMoveDown.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				onMoveOutputDown(TGSynthDialog.this.outputs.getSelectedValue());
 			}
 		});
-		
+
 		outputsButtonsLayout.set(this.buttonOutputAdd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
 		outputsButtonsLayout.set(this.buttonOutputDelete, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
 		outputsButtonsLayout.set(this.buttonOutputMoveUp, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
 		outputsButtonsLayout.set(this.buttonOutputMoveDown, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, false, false);
 		outputsButtonsLayout.set(this.buttonOutputEdit, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, false, true);
-		
+
 		this.loadIcons();
 		this.loadProperties();
 		this.updateItems();
-		
+
 		this.addListeners();
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
@@ -208,38 +208,38 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		});
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public void close() {
 		if( this.isOpen()) {
 			this.dialog.dispose();
 		}
 	}
-	
+
 	public boolean isOpen(){
 		return (this.dialog != null && !this.dialog.isDisposed());
 	}
-	
+
 	public void openReceiverSelectionDialog() {
 		final List<String> supportedTypes = TGSynthManager.getInstance(this.context).getAllSupportedMidiTypes();
-		
+
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		final UIWindow dialog = uiFactory.createWindow(this.dialog, false, false);
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("synth-host.ui.midi.processor.dialog.title"));
-		
+
 		// ----------------------------------------------------------------------
 		UITableLayout typeGroupLayout = new UITableLayout();
 		UILegendPanel typeGroup = uiFactory.createLegendPanel(dialog);
 		typeGroup.setLayout(typeGroupLayout);
 		typeGroup.setText(TuxGuitar.getProperty("synth-host.ui.midi.processor.tip"));
 		dialogLayout.set(typeGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UILabel typeLabel = uiFactory.createLabel(typeGroup);
 		typeLabel.setText(TuxGuitar.getProperty("synth-host.ui.midi.processor.type") + ":");
 		typeGroupLayout.set(typeLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
-		
+
 		final UIDropDownSelect<String> typeCombo = uiFactory.createDropDownSelect(typeGroup);
 		typeGroupLayout.set(typeCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 		for(String supportedType : supportedTypes){
@@ -248,13 +248,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		if( supportedTypes.size() > 0 ){
 			typeCombo.setSelectedValue(supportedTypes.get(0));
 		}
-		
+
 		//------------------BUTTONS----------------------------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -265,7 +265,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -276,32 +276,32 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		// ----------------------------------------------------------------------
-		
+
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public void openOutputSelectionDialog() {
 		final List<String> supportedTypes = TGSynthManager.getInstance(this.context).getAllSupportedAudioTypes();
-		
+
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		final UIWindow dialog = uiFactory.createWindow(this.dialog, true, false);
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("synth-host.ui.audio.processor.dialog.title"));
 		dialog.setImage(TGIconManager.getInstance(this.context).getAppIcon());
-		
+
 		// ----------------------------------------------------------------------
 		UITableLayout typeGroupLayout = new UITableLayout();
 		UILegendPanel typeGroup = uiFactory.createLegendPanel(dialog);
 		typeGroup.setLayout(typeGroupLayout);
 		typeGroup.setText(TuxGuitar.getProperty("synth-host.ui.audio.processor.tip"));
 		dialogLayout.set(typeGroup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UILabel typeLabel = uiFactory.createLabel(typeGroup);
 		typeLabel.setText(TuxGuitar.getProperty("synth-host.ui.audio.processor.type") + ":");
 		typeGroupLayout.set(typeLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
-		
+
 		final UIDropDownSelect<String> typeCombo = uiFactory.createDropDownSelect(typeGroup);
 		typeGroupLayout.set(typeCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 		for(String supportedType : supportedTypes){
@@ -310,13 +310,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		if( supportedTypes.size() > 0 ){
 			typeCombo.setSelectedValue(supportedTypes.get(0));
 		}
-		
+
 		//------------------BUTTONS----------------------------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -327,7 +327,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -338,10 +338,10 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 		// ----------------------------------------------------------------------
-		
+
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public void openProcessorUI(TGProgramElement element) {
 		TGAudioProcessorUI ui = this.getProcessorUI(element);
 		if( ui != null ) {
@@ -352,19 +352,19 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		}
 	}
-	
+
 	public void addListeners(){
 		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
-	
+
 	public void removeListeners(){
 		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
-	
+
 	public void onAddReceiver() {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -372,7 +372,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 	}
-	
+
 	public void onAddOutput() {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -380,7 +380,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 	}
-	
+
 	public void onEditElement(final TGProgramElement element) {
 		if( element != null ) {
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
@@ -390,7 +390,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			});
 		}
 	}
-	
+
 	public void onRemoveOutput(TGProgramElement output) {
 		if( output != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -398,12 +398,12 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				TGProgram program = new TGProgram();
 				program.copyFrom(channel.getProgram());
 				program.removeOutput(output);
-				
+
 				this.onProgramUpdated(program);
 			}
 		}
 	}
-	
+
 	public void onMoveOutputUp(TGProgramElement output) {
 		if( output != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -411,12 +411,12 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				TGProgram program = new TGProgram();
 				program.copyFrom(channel.getProgram());
 				program.moveOutputUp(output);
-				
+
 				this.onProgramUpdated(program);
 			}
 		}
 	}
-	
+
 	public void onMoveOutputDown(TGProgramElement output) {
 		if( output != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -424,30 +424,30 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				TGProgram program = new TGProgram();
 				program.copyFrom(channel.getProgram());
 				program.moveOutputDown(output);
-				
+
 				this.onProgramUpdated(program);
 			}
 		}
 	}
-	
+
 	public void onOutputSelected(String type) {
 		if( type != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
-			if( channel != null ) {				
+			if( channel != null ) {
 				TGProgramElement element = new TGProgramElement();
 				element.setId("custom-" + System.currentTimeMillis());
 				element.setType(type);
 				element.setEnabled(true);
-				
+
 				TGProgram program = new TGProgram();
 				program.copyFrom(channel.getProgram());
 				program.addOutput(element);
-				
+
 				this.onProgramUpdated(program);
 			}
 		}
 	}
-	
+
 	public void onEnableOuput(final TGProgramElement output, boolean enabled) {
 		if( output != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -464,7 +464,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		}
 	}
-	
+
 	public void onReceiverSelected(String type) {
 		if( type != null ) {
 			TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -476,28 +476,28 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 					element.setType(type);
 					element.setEnabled(true);
 				}
-				
+
 				TGProgram program = new TGProgram();
 				program.copyFrom(channel.getProgram());
 				program.setReceiver(element);
-				
+
 				this.onProgramUpdated(program);
 			}
 		}
 	}
-	
+
 	public void onEditReceiver() {
 		TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
 		if( channel != null && channel.getProgram().getReceiver() != null ) {
 			this.onEditElement(channel.getProgram().getReceiver());
 		}
 	}
-	
+
 	public void onProgramUpdated(TGProgram program) {
 		TGSynthChannelProperties properties = new TGSynthChannelProperties();
 		TGProgramPropertiesUtil.setProgram(properties, TGSynthChannel.CUSTOM_PROGRAM_PREFIX, program);
 		TGFactory factory = TGDocumentManager.getInstance(TGSynthDialog.this.context).getSongManager().getFactory();
-		
+
 		List<TGChannelParameter> parameters = new ArrayList<TGChannelParameter>();
 		for(Entry<String, String> entry : properties.getProperties().entrySet()) {
 			TGChannelParameter parameter = factory.newChannelParameter();
@@ -507,13 +507,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 		this.callUpdateChannelParametersAction(parameters);
 	}
-	
+
 	public void onProcessorUpdated(TGProgramElement source, TGAudioProcessor processor) {
 		TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
 		if( channel != null ) {
 			TGProgram program = new TGProgram();
 			program.copyFrom(channel.getProgram());
-			
+
 			TGProgramElement element = null;
 			if( program.getReceiver() != null && program.getReceiver().equals(source) ) {
 				element = program.getReceiver();
@@ -526,15 +526,15 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 					}
 				}
 			}
-			
+
 			if( element != null ) {
 				processor.storeParameters(element.getParameters());
-				
+
 				this.onProgramUpdated(program);
 			}
 		}
 	}
-	
+
 	public String getProcessorLabel(TGProgramElement element) {
 		TGAudioProcessorUI ui = this.getProcessorUI(element);
 		if( ui != null ) {
@@ -545,7 +545,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 		return element.getType();
 	}
-	
+
 	public TGAudioProcessorUI getProcessorUI(TGProgramElement element) {
 		TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
 		if( channel != null && channel.getProcessor() != null ) {
@@ -556,12 +556,12 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 		return null;
 	}
-	
+
 	public TGAudioProcessorUI getProcessorUI(TGProgramElement element, TGAudioProcessor processor) {
 		if( this.processorsUI.containsKey(processor) ) {
 			return this.processorsUI.get(processor);
 		}
-		
+
 		TGAudioProcessorUICallback callback = this.createProcessorCallback(element, processor);
 		TGAudioProcessorUI ui = TGAudioProcessorUIManager.getInstance(this.context).createUI(element.getType(), processor, callback);
 		if( ui != null ) {
@@ -569,7 +569,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		}
 		return ui;
 	}
-	
+
 	public TGAudioProcessorUICallback createProcessorCallback(final TGProgramElement element, final TGAudioProcessor processor) {
 		return new TGSynthDialogDelayedCallback(this.context, new Runnable() {
 			public void run() {
@@ -577,16 +577,16 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 	}
-	
+
 	public void loadMidiReceiver(TGProgram program) {
 		this.receiver.setText(program != null && program.getReceiver() != null ? this.getProcessorLabel(program.getReceiver()) : "");
 	}
-	
+
 	public void loadOutputsItems(TGProgram program) {
 		TGProgramElement selection = this.outputs.getSelectedValue();
 		this.outputs.setIgnoreEvents(true);
 		this.outputs.removeItems();
-		
+
 		if( program != null ) {
 			int outputCount = program.countOutputs();
 			for(int i = 0 ; i < outputCount; i ++) {
@@ -597,13 +597,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 				this.outputs.setCheckedItem(item, Boolean.TRUE.equals(output.isEnabled()));
 			}
 		}
-		
+
 		if( selection != null ) {
 			this.outputs.setSelectedValue(selection);
 		}
 		this.outputs.setIgnoreEvents(false);
 	}
-	
+
 	public void loadChannel() {
 		TGProgram program = null;
 		TGSynthChannel channel = this.synthesizer.getChannelById(this.channel.getChannelId());
@@ -613,11 +613,11 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 		this.loadMidiReceiver(program);
 		this.loadOutputsItems(program);
 	}
-	
+
 	public void loadProperties(){
 		if( this.isOpen()){
 			this.dialog.setText(TuxGuitar.getProperty("synth-host.ui.dialog.title"));
-			
+
 			this.buttonReceiverAdd.setToolTipText(TuxGuitar.getProperty("synth-host.ui.midi.receiver.add"));
 			this.buttonReceiverEdit.setToolTipText(TuxGuitar.getProperty("synth-host.ui.midi.receiver.edit"));
 			this.buttonOutputAdd.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.add"));
@@ -627,7 +627,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			this.buttonOutputMoveDown.setToolTipText(TuxGuitar.getProperty("synth-host.ui.audio.processor.move-down"));
 		}
 	}
-	
+
 	public void loadIcons(){
 		if( this.isOpen()){
 			this.dialog.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getAppIcon());
@@ -640,13 +640,13 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			this.buttonOutputMoveDown.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListMoveDown());
 		}
 	}
-	
+
 	public void updateItems() {
 		if( this.isOpen()){
 			this.loadChannel();
 		}
 	}
-	
+
 	public void createSyncProcesses() {
 		this.updateProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
@@ -664,14 +664,14 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			}
 		});
 	}
-	
+
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
 		if( type == TGUpdateEvent.SELECTION ){
 			this.updateProcess.process();
 		}
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
@@ -683,7 +683,7 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			this.loadPropertiesProcess.process();
 		}
 	}
-	
+
 	public void callUpdateChannelParametersAction(List<TGChannelParameter> parameters) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGUpdateChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.song);

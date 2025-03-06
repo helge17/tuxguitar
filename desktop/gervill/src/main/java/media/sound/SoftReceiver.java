@@ -53,7 +53,7 @@ public class SoftReceiver implements MidiDeviceReceiver {
 
     public MidiDevice getMidiDevice() {
         return synth;
-    }    
+    }
 
     public void send(MidiMessage message, long timeStamp) {
 

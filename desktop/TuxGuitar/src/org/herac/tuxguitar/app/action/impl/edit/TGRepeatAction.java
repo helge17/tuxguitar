@@ -16,9 +16,9 @@ import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGRepeatAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.edit.repeat";
-	
+
 	public TGRepeatAction(TGContext context) {
 		super(context, NAME);
 	}

@@ -6,11 +6,11 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class ABCSongWriterPlugin extends TGSongWriterPlugin {
-	
+
 	public ABCSongWriterPlugin() {
 		super(false);
 	}
-	
+
 	public String getModuleId() {
 		return ABCPlugin.MODULE_ID;
 	}

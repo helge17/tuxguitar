@@ -17,7 +17,7 @@ public class ABCSong {
 	private static final int PITCH = 0;
 	private static final int OCTAVE = 1;
 	private static final int NOT = 2;
-	
+
 	// buddy track types
 	private static final String DRONE = "drone";
 	private static final String DRUMS = "drums";
@@ -87,7 +87,7 @@ public class ABCSong {
 	private boolean sorted;
 
 	private int legato;
-	
+
 	public ABCSong(){
 		this.tsChanges = new ArrayList<ABCTimeSignatureChange>();
 		this.tmpsChanges = new ArrayList<ABCTempoChange>();
@@ -113,58 +113,58 @@ public class ABCSong {
 		dronevoice=-1;
 		this.sorted=false;
 	}
-	
+
 	public ABCChord[] getChords() {
 		if(this.chords==null && this.chordsList==null) return null;
 		if(this.chords==null) {
 			this.chords=new ABCChord[this.chordsList.size()];
-			for(int i=0;i<chords.length;i++) 
+			for(int i=0;i<chords.length;i++)
 				this.chords[i]=(ABCChord) this.chordsList.get(i);
 		}
 		return this.chords;
 	}
-	
+
 	public void setChords(int length) {
 		this.chords = new ABCChord[length];
 	}
-	
+
 	public void setChord(int index,ABCChord chord) {
 		this.chords[index] = chord;
 	}
-	
+
 	public ABCInfo getInfo() {
 		return this.info;
 	}
-	
+
 	public ABCInfo setInfo(ABCInfo info) {
 		this.info = info;
 		return this.info;
 	}
-	
+
 	public ABCRepeat[] getRepeats() {
 		return this.repeats;
 	}
-	
+
 	public void setRepeats(int length) {
 		this.repeats = new ABCRepeat[length];
 	}
-	
+
 	public void setRepeat(int index,ABCRepeat repeat) {
 		this.repeats[index] = repeat;
 	}
-	
+
 	public ABCText[] getTexts() {
 		return this.texts;
 	}
-	
+
 	public void setTexts(int length) {
 		this.texts = new ABCText[length];
 	}
-	
+
 	public void setText(int index,ABCText text) {
 		this.texts[index] = text;
 	}
-	
+
 	public ABCTrack[] getTracks() {
 		if(voice==null) addVoice("1 clef=treble");
 		this.tracks = new ABCTrack[voice.size()];
@@ -173,19 +173,19 @@ public class ABCSong {
 		}
 		return this.tracks;
 	}
-	
+
 	public void setTracks(int length) {
 		this.tracks = new ABCTrack[length];
 	}
-	
+
 	public void setTrack(int index,ABCTrack track) {
 		this.tracks[index] = track;
 	}
-	
+
 	public ABCTimeSignature getTimeSignature() {
 		return this.timeSignature;
 	}
-	
+
 	public void setTimeSignature(ABCTimeSignature timeSignature) {
 		this.timeSignature = timeSignature;
 		if(timeSignature==null) return;
@@ -202,7 +202,7 @@ public class ABCSong {
 		this.tickspergchord=getTickspergchord();
 		addTimeSignatureChange(new ABCTimeSignatureChange(this.measure,timeSignature));
 	}
-	
+
 	private int getTickspergchord() {
 		if(gchord==null) return 0;
 		char[] g=gchord.toCharArray();
@@ -218,19 +218,19 @@ public class ABCSong {
 	public int getTempo() {
 		return this.tempo;
 	}
-	
+
 	public int getStrings() {
 		return this.strings;
 	}
-	
+
 	public void setStrings(int strings) {
 		this.strings = strings;
 	}
-	
+
 	public int getMeasures() {
 		return this.measures;
 	}
-	
+
 	public void addTempoChange(ABCTempoChange tChange) {
 		for(int i=0;i<this.tmpsChanges.size();i++) {
 			ABCTempoChange tc = (ABCTempoChange)this.tmpsChanges.get(i);
@@ -244,7 +244,7 @@ public class ABCSong {
 		}
 		this.tmpsChanges.add(tChange);
 	}
-	
+
 	public void addTimeSignatureChange(ABCTimeSignatureChange tsChange) {
 		int n=tsChange.getTimeSignature().getNumerator();
 		int d=tsChange.getTimeSignature().getDenominator();
@@ -262,7 +262,7 @@ public class ABCSong {
 		}
 		this.tsChanges.add(tsChange);
 	}
-	
+
 	public ABCTimeSignature getTimeSignature(int measure) {
 		Iterator<ABCTimeSignatureChange> it = this.tsChanges.iterator();
 		ABCTimeSignatureChange last = null;
@@ -280,7 +280,7 @@ public class ABCSong {
 			return getTimeSignature();
 		return last.getTimeSignature();
 	}
-	
+
 	public int getTempo(int measure) {
 		Iterator<ABCTempoChange> it = this.tmpsChanges.iterator();
 		ABCTempoChange last = null;
@@ -361,7 +361,7 @@ public class ABCSong {
 	}
 
 	public void setDefaultNoteLength(ABCTimeSignature signature) {
-		this.defaultNoteLength=signature;		
+		this.defaultNoteLength=signature;
 	}
 
 	/**
@@ -422,7 +422,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 		this.key=string;
 		resetScale();
 	}
-	
+
 	public void resetScale() {
 		final String[] scales={
 				"7 sharps:   C#      A#m      G#Mix   D#Dor   E#Phr   F#Lyd   B#Loc ",
@@ -527,7 +527,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 	}
 
 	private ABCTimeSignature parseTimeSignature(String string) {
-		// There may be up to 4 beats in the definition, e.g: 
+		// There may be up to 4 beats in the definition, e.g:
 		//	Q:1/4 3/8 1/4 3/8=40
 		// This means: play the tune as if Q:5/4=40 was written, but print the tempo indication using separate notes as specified by the user.
 		String[] q=string.split("\\s+");
@@ -550,7 +550,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 		return new ABCTimeSignature(numerator,denominator,true);
 	}
 /**
- * Abc also includes a rhythm field, 
+ * Abc also includes a rhythm field,
  * R:, which is used for cataloguing and sorting collections of abc tunes:
  * this is entirely free text (although there are obvious 'standard' entries eg R:reel, R:jig, R:schottische).
 */
@@ -590,7 +590,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 			}
 		}
 
-		if(!symbol.isNil()) 
+		if(!symbol.isNil())
 			this.redefinable.add(symbol);
 	}
 
@@ -615,12 +615,12 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
  * @param string
  * <p>
  *	Adding many symbols to a line of music can make a tune difficult to read.<br>
- *	In such cases, a symbol line (a line that contains only +...+ decorations and "..." chord symbols or annotations) can be used, 
+ *	In such cases, a symbol line (a line that contains only +...+ decorations and "..." chord symbols or annotations) can be used,
  *	analogous to a lyrics line.<br>
- *	A symbol line starts with s:, followed by a line of symbols.<br> 
+ *	A symbol line starts with s:, followed by a line of symbols.<br>
  *	Matching of notes and symbols follows the rules defined in section Lyrics.<br>
- *<pre> 
- *	 Example: 
+ *<pre>
+ *	 Example:
  *	   CDEF    | G'''AB'c
  *	s: "^slow" | +f+ ** +fff+
  *</pre>
@@ -649,9 +649,9 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 				else {
 					dx=true;
 					String s=w[x].replace('~', ' ');
-					if(s.startsWith("\"") && s.endsWith("\"")) insertAnnotation(i,s); 
-					else if(s.startsWith("+") && s.endsWith("+")) insertDecoration(i,s); 
-					else if(s.startsWith("!") && s.endsWith("!")) insertDecoration(i,s); 
+					if(s.startsWith("\"") && s.endsWith("\"")) insertAnnotation(i,s);
+					else if(s.startsWith("+") && s.endsWith("+")) insertDecoration(i,s);
+					else if(s.startsWith("!") && s.endsWith("!")) insertDecoration(i,s);
 					else e.setLyrics(s);
 				}
 				if(dx) {
@@ -667,7 +667,7 @@ Key Sig     Major   Minor    Mix     Dor     Phr     Lyd     Loc
 						++x;
 					}
 				}
-					
+
 			}
 		}
 	}
@@ -703,35 +703,35 @@ private void insertDecoration(int i, String s) {
 /**
  * @param string
  * <p>
- *	 The w field (lowercase w) in the body, supplies a line of lyrics to be aligned syllable 
+ *	 The w field (lowercase w) in the body, supplies a line of lyrics to be aligned syllable
  *   by syllable below the previous line of notes.<br>
  *   Syllables are not aligned on grace notes and tied notes are treated as two separate notes;
  *   slurred or beamed notes are also treated as separate notes in this context. <br>
- *   Note that lyrics are always aligned to the beginning of the preceding music line.<br> 
+ *   Note that lyrics are always aligned to the beginning of the preceding music line.<br>
  *	 It is possible for a music line to be followed by several w fields.<br>
  *   This can be used together with the part notation to create verses.<br>
- *   The first w field is used the first time that part is played, then the second and so on.<br> 
+ *   The first w field is used the first time that part is played, then the second and so on.<br>
  *	 The lyrics lines are treated as an ABC string.<br>
  *   Within the lyrics, the words should be separated by one or more spaces
  *   and to correctly align them the following symbols may be used:
  *   <p>
  *   <table>
- *    <tr><th>Symbol</th><th>Meaning</th></tr> 
- *	  <tr><td>-    (hyphen)</td><td>break between syllables within a word</td></tr> 
- *	  <tr><td>_    (underscore)</td><td> last syllable is to be held for an extra note</td></tr> 
+ *    <tr><th>Symbol</th><th>Meaning</th></tr>
+ *	  <tr><td>-    (hyphen)</td><td>break between syllables within a word</td></tr>
+ *	  <tr><td>_    (underscore)</td><td> last syllable is to be held for an extra note</td></tr>
  *	  <tr><td>*    </td><td>one note is skipped (i.e. * is equivalent to a blank syllable) </td></tr>
  *	  <tr><td>~    </td><td>appears as a space; aligns multiple words under one note </td></tr>
  *	  <tr><td>\-   </td><td>appears as hyphen; aligns multiple syllables under one note </td></tr>
  *	  <tr><td>|    </td><td>advances to the next bar </td></tr>
  *   </table>
  *   <p>
- *	 Note that if - is preceded by a space or another hyphen, it is regarded as a separate syllable.<br> 
+ *	 Note that if - is preceded by a space or another hyphen, it is regarded as a separate syllable.<br>
  *	 When an underscore is used next to a hyphen, the hyphen must always come first. <br>
  *	 If there are not as many syllables as notes in a measure, typing a | automatically advances to the next bar;
- *	 if there are enough syllables the '|' is just ignored. 
+ *	 if there are enough syllables the '|' is just ignored.
  *<p>
  *	 <b>Some examples:</b>
- *<pre> 
+ *<pre>
  *	w: syll-a-ble    is aligned with three notes
  *	w: syll-a--ble   is aligned with four notes
  *	w: syll-a -ble   (equivalent to the previous line)
@@ -743,9 +743,9 @@ private void insertDecoration(int i, String s) {
  *	   Will~ye come to the Wa-x-ies dar-gle?
  *</pre>
  *<p>
- *	 Please see section Continuation of input lines for the meaning of the backslash (\) character. 
+ *	 Please see section Continuation of input lines for the meaning of the backslash (\) character.
  *<p>
- *	 If a word starts with a digit, this is interpreted as numbering of a stanza and is pushed forward a bit.<br> 
+ *	 If a word starts with a digit, this is interpreted as numbering of a stanza and is pushed forward a bit.<br>
  *   In other words, use something like <br>
  *	   w: 1.~Three blind mice<br>
  *	 to put a number before Three.
@@ -813,7 +813,7 @@ private void insertDecoration(int i, String s) {
 						++x;
 					}
 				}
-					
+
 			}
 		}
 	}
@@ -969,7 +969,7 @@ private void insertDecoration(int i, String s) {
 						}
 					}
 					else if(e.getType()==ABCEvent.NOTE) {
-						if(this.tied) { 
+						if(this.tied) {
 							e.setTied(true);
 							if(!inchord) this.tied=false;
 						}
@@ -1062,15 +1062,15 @@ private void insertDecoration(int i, String s) {
 						i++;
 					}
 					r=p;
-//					Symbol					Meaning 
-//					(2    2 notes in the time of 3 
-//					  (3    3 notes in the time of 2 
-//					  (4    4 notes in the time of 3 
-//					  (5    5 notes in the time of n 
-//					  (6    6 notes in the time of 2 
-//					  (7    7 notes in the time of n 
-//					  (8    8 notes in the time of 3 
-//					  (9    9 notes in the time of n 
+//					Symbol					Meaning
+//					(2    2 notes in the time of 3
+//					  (3    3 notes in the time of 2
+//					  (4    4 notes in the time of 3
+//					  (5    5 notes in the time of n
+//					  (6    6 notes in the time of 2
+//					  (7    7 notes in the time of n
+//					  (8    8 notes in the time of 3
+//					  (9    9 notes in the time of n
 //					If the time signature is compound (6/8, 9/8, 12/8) then n is three, otherwise n is two.
 					switch(p) {
 					case 2: q=3;break;
@@ -1078,7 +1078,7 @@ private void insertDecoration(int i, String s) {
 					case 4: q=3;break;
 					case 6: q=2;break;
 					case 8: q=3;break;
-					default: 
+					default:
 						if(this.timeSignature.getDenominator()==8 && this.timeSignature.getNumerator() % 3==0) q=3;
 						else q=2;
 					break;
@@ -1118,7 +1118,7 @@ private void insertDecoration(int i, String s) {
 					switch(a[i+1]) {
 					case 'V':
 						this.setVoice(line.substring(i+3, j).trim());
-						if(bol) 
+						if(bol)
 							lineMeasure=this.measure;
 						break;
 					case 'P':
@@ -1198,7 +1198,7 @@ private void insertDecoration(int i, String s) {
 						this.ticks += (t*q)/p; // put p notes into the time of q for the next r notes
 						--r;
 					}
-					else 
+					else
 						this.ticks+=t;
 					if(fermato>0) setTempo(String.valueOf(fermato));
 					fermato=0;
@@ -1574,7 +1574,7 @@ private void insertDecoration(int i, String s) {
 					else e[j].setType(ABCEvent.NOT_RELEVANT);
 				}
 			}
-		
+
 	}
 
 	private int baseTrack(int t) {
@@ -1586,12 +1586,12 @@ private void insertDecoration(int i, String s) {
 		if(chordvoice<0) chordvoice=buddyTrack(t,CHORDS,6, TGMeasure.CLEF_TREBLE, getChordprog());
 		return chordvoice;
 	}
-	
+
 	private int drumTrack(int t) {
 		if(drumvoice<0) drumvoice=buddyTrack(t,DRUMS,6, TGMeasure.CLEF_BASS, 0);
 		return drumvoice;
 	}
-	
+
 	private int droneTrack(int t) {
 		if(dronevoice<0) dronevoice=buddyTrack(t,DRONE,2, TGMeasure.CLEF_BASS, getDroneprog());
 		ABCTrack ttrk=(ABCTrack) voice.get(dronevoice);
@@ -1599,7 +1599,7 @@ private void insertDecoration(int i, String s) {
 		ttrk.setStrings(s);
 		return dronevoice;
 	}
-	
+
 	private int buddyTrack(int t, String type, int strings, int cleftype, int instrument) {
 		ABCTrack ttrk=(ABCTrack) voice.get(t);
 		String v=ttrk.getName()+"\t"+type;
@@ -1905,7 +1905,7 @@ private void insertDecoration(int i, String s) {
 						instrument=127;
 						instrumentOffset=1;
 					}
-					getTracks()[v].setInstrument(instrument); 
+					getTracks()[v].setInstrument(instrument);
 				}
 				++i;
 			}
@@ -1919,7 +1919,7 @@ private void insertDecoration(int i, String s) {
 					instrument=127;
 					instrumentOffset=1;
 				}
-				getTracks()[v].setInstrument(instrument); 
+				getTracks()[v].setInstrument(instrument);
 			}
 			else if(a[i].equalsIgnoreCase("gchord")) {
 				if(i<a.length-1) setGchord(a[i+1]);
@@ -1992,24 +1992,24 @@ private void insertDecoration(int i, String s) {
 		}
 	}
 
-	/*	
-	 * MIDI files usually sound artificial and expressionless, but there are several ways to improve them. 
+	/*
+	 * MIDI files usually sound artificial and expressionless, but there are several ways to improve them.
 	 * The command %%MIDI beatstring fmp provides a way of specifying where the strong, medium and weak
 	 * stresses fall within a bar.
 	 *   f indicates a strong beat, m a medium beat, and p a soft beat.
 	 * For example, let's consider an Irish jig, which has a 6/8 time.
 	 * The corresponding fmp sequence would be fppmpp.
-	 */ 
+	 */
 	private void setBeatstring(String string) {
 		if(string.matches("[fmp]+")) beatstring=string;
 	}
 
-	/*	
+	/*
 	 * To fine-grain the volume of the single notes in a measure, the
 	 *  %%MIDI beat <vol1> <vol2> <vol3> <pos>
 	 * command can be used. vol1, vol2, and vol3 specify the volume of notes that fall on a strong,
 	 * medium, and weak beat, while pos indicates the position of strong beats in the measure.
-	 * We interpret it as percentages of the track volume, the first beat (pos=0) is always a 
+	 * We interpret it as percentages of the track volume, the first beat (pos=0) is always a
 	 * strong beat and pos indicates the medium beat
 	*/
 	private void setBeat(String string) {
@@ -2214,7 +2214,7 @@ private void insertDecoration(int i, String s) {
 		int ticksperdrum=ticksperbar/n;
 		ABCEvent[] e=new ABCEvent[events];
 		int[] drumstrings;
-		if(drumvoice<0) drumstrings=new ABCTrack("dummy\tdrums").getStrings(); 
+		if(drumvoice<0) drumstrings=new ABCTrack("dummy\tdrums").getStrings();
 		else drumstrings=((ABCTrack)voice.get(drumvoice)).getStrings();
 		n=0;
 		int note=0;
@@ -2375,7 +2375,7 @@ private void insertDecoration(int i, String s) {
 	public boolean isHornpipe() {
 		return "hornpipe".equalsIgnoreCase(this.rhythm);
 	}
-	
+
 	public void initHead() {
 		this.setTimeSignature(new ABCTimeSignature(4,4,true));
 		this.setDefaultNoteLength(new ABCTimeSignature(1,8,false));
@@ -2463,8 +2463,8 @@ private void insertDecoration(int i, String s) {
 		if(line.startsWith("%%propagate-accidentals")) {
 //			%%propagate-accidentals not | octave | pitch
 //			When set to not, accidentals apply only to the note they're attached to.
-//			When set to octave, accidentals also apply to all the notes of the same pitch in the same octave up to the end of the bar. 
-//			When set to pitch, accidentals also apply to all the notes of the same pitch in all octaves up to the end of the bar. 
+//			When set to octave, accidentals also apply to all the notes of the same pitch in the same octave up to the end of the bar.
+//			When set to pitch, accidentals also apply to all the notes of the same pitch in all octaves up to the end of the bar.
 //			The default value is pitch.
 			String[] option=line.split("\\s+");
 			if(option.length>1) {

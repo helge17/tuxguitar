@@ -6,29 +6,29 @@ import java.util.List;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class JackTrackController {
-	
-	
+
+
 	private List<JackTrack> tracks;
 	private JackSequencer sequencer;
 	private boolean anySolo;
-	
+
 	public JackTrackController(JackSequencer sequencer){
 		this.sequencer = sequencer;
 		this.tracks = new ArrayList<JackTrack>();
 		this.anySolo = false;
 	}
-	
+
 	public void init(int count){
 		this.tracks.clear();
 		for(int i = 0; i < count; i ++){
 			this.tracks.add(new JackTrack());
 		}
 	}
-	
+
 	public void clearTracks(){
 		this.tracks.clear();
 	}
-	
+
 	public void checkAnySolo(){
 		this.anySolo = false;
 		for(int i = 0; i < this.tracks.size(); i ++){
@@ -39,7 +39,7 @@ public class JackTrackController {
 			}
 		}
 	}
-	
+
 	public void setSolo(int index,boolean solo) throws MidiPlayerException{
 		if(index >= 0 && index < this.tracks.size()){
 			JackTrack track = (JackTrack)this.tracks.get(index);
@@ -51,7 +51,7 @@ public class JackTrackController {
 			}
 		}
 	}
-	
+
 	public void setMute(int index,boolean mute) throws MidiPlayerException{
 		if(index >= 0 && index < this.tracks.size()){
 			JackTrack track = (JackTrack)this.tracks.get(index);
@@ -62,7 +62,7 @@ public class JackTrackController {
 			}
 		}
 	}
-	
+
 	public boolean isSolo(int index){
 		if(index >= 0 && index < this.tracks.size()){
 			JackTrack track = (JackTrack)this.tracks.get(index);
@@ -70,7 +70,7 @@ public class JackTrackController {
 		}
 		return false;
 	}
-	
+
 	public boolean isMute(int index){
 		if(index >= 0 && index < this.tracks.size()){
 			JackTrack track = (JackTrack)this.tracks.get(index);
@@ -78,7 +78,7 @@ public class JackTrackController {
 		}
 		return false;
 	}
-	
+
 	public boolean isAnySolo(){
 		return this.anySolo;
 	}

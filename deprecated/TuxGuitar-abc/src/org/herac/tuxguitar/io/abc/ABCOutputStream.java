@@ -30,7 +30,7 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
 
 public class ABCOutputStream {
-	
+
 	private static final String ABC_VERSION = "ABC standard 2.0 & ABCplus-1.1.0";
 	private static final String[] ABC_KEY_SIGNATURES = new String[]{ "C","G","D","A","E","B","F#","C#","F","Bb","Eb","Ab", "Db", "Gb","Cb" };
 	private TGSongManager manager;
@@ -57,34 +57,34 @@ public class ABCOutputStream {
 	private int enters;
 	private int times;
 	private String triol;
-	
+
 	public ABCOutputStream(OutputStream stream,ABCSettings settings){
 		this.writer = new PrintWriter(stream);
 		this.settings = settings;
 		this.instrumentoffset=(settings==null) ? 1 : settings.isInstrumentsStartAt1() ? 1 : 0;
 	}
-	
+
 	public void writeSong(TGSong song){
 		this.manager = new TGSongManager();
 		this.channelAux = null;
-		
+
 		this.addVersion();
 		this.addPaper(song);
 		this.addSongDefinitions(song);
 		this.addSong(song);
-		
+
 		this.writer.flush();
 		this.writer.close();
 	}
-	
+
 	private void addVersion(){
 		this.writer.println("% ABC version " + ABC_VERSION + " with ABCPlus");
 	}
-	
+
 	private void addPaper(TGSong song){
 		this.writer.println("%%scale 0.66");
 	}
-	
+
 	private void addSongDefinitions(TGSong song){
 		String[] line={ "X:1" };
 		if(song.getComments()!=null) line=song.getComments().split("\\n+");
@@ -102,7 +102,7 @@ public class ABCOutputStream {
 		this.chordt=this.settings.getChordTrack();
 		this.baset=this.settings.getBaseTrack();
 		this.dronet=this.settings.getDroneTrack();
-		if(this.diagramt==ABCSettings.AUTO_TRACK 
+		if(this.diagramt==ABCSettings.AUTO_TRACK
 		|| this.chordt==ABCSettings.AUTO_TRACK
 		|| this.baset==ABCSettings.AUTO_TRACK
 		|| this.dronet==ABCSettings.AUTO_TRACK) {
@@ -111,7 +111,7 @@ public class ABCOutputStream {
 				int tnum=track.getNumber();
 				if(this.settings.getTrack() == ABCSettings.ALL_TRACKS || this.settings.getTrack() == tnum) {
 					String id = track.getName();
-					
+
 					if((tnum==this.diagramt+1 || id.indexOf('\t')<0) && !isPercussionTrack(song, track)) {
 						for(int j=0;j<song.countTracks();j++) {
 							TGTrack buddy=song.getTrack(j);
@@ -300,7 +300,7 @@ public class ABCOutputStream {
 		if(this.gchord!=null) this.writer.println("%%MIDI gchord "+this.gchord);
 		if(s!=null) this.writer.println(s);
 	}
-	
+
 	private String handleId(String name) {
 		if(name.indexOf('\t')<0) return name;
 		if(this.chordt==ABCSettings.NO_TRACK) name=name.replaceAll("\tchords", " chords");
@@ -341,7 +341,7 @@ public class ABCOutputStream {
 				if(n==0) b='z';
 				else {
 					if(chordt==baset && n>3) b='f';
-					else if(chordt!=baset) { 
+					else if(chordt!=baset) {
 						if(n==1) b=getABCGchordNote(song,beatb);
 						else	 b='f';
 						if(b=='G') b='f';
@@ -461,7 +461,7 @@ public class ABCOutputStream {
 			while(name.length()>0 && "CDEFGAB".indexOf(name.charAt(0))<0) name=name.substring(1);
 			if(name.length()>0) {
 				name=name.split("\\s+")[0];
-				ABCChord abcChord=new ABCChord(name); 
+				ABCChord abcChord=new ABCChord(name);
 				TGNote note=null;
 				for(int v=0;v<beat.countVoices();v++) {
 					for(int i=0;i<beat.getVoice(v).countNotes();i++)
@@ -603,7 +603,7 @@ public class ABCOutputStream {
 			this.writer.println("%");
 		}
 	}
-	
+
 	private void handleBeginMeasure(TGMeasure measure, TGMeasure previous) {
 		// Open repeat
 		if(measure.isRepeatOpen()){
@@ -616,18 +616,18 @@ public class ABCOutputStream {
 		if(previous == null || measure.getTempo().getValue() != previous.getTempo().getValue()) {
 			this.addTempo(measure.getTempo());
 		}
-		
+
 		if(previous == null || measure.getClef() != previous.getClef()){
 			this.addClef(measure.getClef());
 		}
 		if(previous == null || measure.getKeySignature() != previous.getKeySignature()){
 			this.addKeySignature(measure.getKeySignature());
 		}
-		
+
 		if(previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature())){
 			this.addTimeSignature(measure.getTimeSignature());
 		}
-		
+
 	}
 
 	private void handleEndMeasure(TGMeasure measure) {
@@ -743,7 +743,7 @@ public class ABCOutputStream {
 		if(!this.line.endsWith("|")) this.line += "[";
 		this.line += ": ";
 	}
-	
+
 	private void addRepeatAlternativeOpen(int alternatives) {
 		int bit=1;
 		String comma="[";
@@ -756,21 +756,21 @@ public class ABCOutputStream {
 			bit<<=1;
 		}
 	}
-	
+
 	private void addTempo(TGTempo tempo) {
 		this.line += "[Q:1/4=" + tempo.getValue()+"]";
 	}
-	
+
 	private void addTimeSignature(TGTimeSignature ts) {
 		this.line += "[M:" + ts.getNumerator() + "/" + ts.getDenominator().getValue()+"]";
 	}
-	
+
 	private void addKeySignature(int keySignature) {
 		if(keySignature >= 0 && keySignature < ABC_KEY_SIGNATURES.length){
 			this.line += "[K:" + ABC_KEY_SIGNATURES[keySignature] + "]";
 		}
 	}
-	
+
 	private void addClef(int clef){
 		String clefName = "";
 		if(clef == TGMeasure.CLEF_TREBLE){
@@ -789,16 +789,16 @@ public class ABCOutputStream {
 			this.line += "[V:"+vId+" clef="+clefName+"]";
 		}
 	}
-	
+
 	private void addMeasureComponents(TGMeasure measure,int voice){
 		this.line += " ";
 		this.addComponents(measure,voice);
 	}
-	
+
 	private void addComponents(TGMeasure measure,int vIndex){
 		int key = measure.getKeySignature();
 		TGBeat previous = null;
-		
+
 		for(int i = 0 ; i < measure.countBeats() ; i ++){
 			TGBeat beat = measure.getBeat( i );
 			TGVoice voice = beat.getVoice( vIndex );
@@ -807,16 +807,16 @@ public class ABCOutputStream {
 				previous = beat;
 			}
 		}
-		// It Means that all voice beats are empty 
+		// It Means that all voice beats are empty
 		if( previous == null ){
 			int ticks=(int) (measure.getTimeSignature().getDenominator().getTime() * measure.getTimeSignature().getNumerator());
 			int eight=(int) (TGDuration.QUARTER_TIME/2);
 			this.line += "x"+String.valueOf(ticks/eight);
 		}
-		
+
 	}
-	
-	private void addBeat(int key,TGBeat beat, TGVoice voice){		
+
+	private void addBeat(int key,TGBeat beat, TGVoice voice){
 		// Add Chord, if was not previously added in another voice
 		if( beat.isChordBeat() && voice.getIndex()==0) {
 			String name=beat.getChord().getName().replaceAll("[^ -~]", " ").trim();
@@ -826,7 +826,7 @@ public class ABCOutputStream {
 				this.line += "\""+name+"\"";
 			}
 		}
-		
+
 		if(voice.isRestVoice()){
 			boolean skip = false;
 			for( int v = 0 ; v < beat.countVoices() ; v ++ ){
@@ -843,8 +843,8 @@ public class ABCOutputStream {
 		}
 		else{
 			this.addEffectsBeforeBeat(voice);
-			
-			
+
+
 			int size = voice.countNotes();
 			this.addTrioles(voice.getDuration());
 			this.addEffectsOnBeat( voice );
@@ -853,24 +853,24 @@ public class ABCOutputStream {
 			String tie="";
 			for(int i = 0 ; i < size ; i ++){
 				TGNote note = voice.getNote(i);
-				
+
 				this.addEffectsBeforeNote(note);
-				
+
 				this.addKey(key, (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue()) );
 				if(this.isAnyTiedTo(note)){
 					tie = "-";
 				}
-				
+
 				this.addEffectsOnNote(note.getEffect());
-				
+
 			}
-			
+
 			if(size > 1) this.line += "]";
-			
+
 			this.addDuration( voice.getDuration() );
 			this.line += tie;
 		}
-		
+
 		// Add Text, if was not previously added in another voice
 		boolean skip = false;
 		for( int v = 0 ; v < voice.getIndex() ; v ++ ){
@@ -886,10 +886,10 @@ public class ABCOutputStream {
 				this.wline+=" *";
 			}
 		}
-		
+
 		this.line += " ";
 	}
-	
+
 	private void addTrioles(TGDuration duration) {
 		TGDivisionType dt=duration.getDivision();
 		int times=dt.getTimes();
@@ -900,7 +900,7 @@ public class ABCOutputStream {
 		else {
 			if(this.enterstogo==0) {
 				this.enterstogo=enters;
-				this.triol = "("+enters+":"+times+":"+enters; 
+				this.triol = "("+enters+":"+times+":"+enters;
 				this.line += this.triol+" ";
 			}
 			this.enters=enters;
@@ -940,7 +940,7 @@ public class ABCOutputStream {
 		int i=this.line.lastIndexOf('|')+1;
 		this.line += scanMeasure(this.line.substring(i),pitch);
 	}
-	
+
 	private String scanMeasure(String m, String pitch) {
 		char c=pitch.charAt(0);
 		switch(c) {
@@ -977,7 +977,7 @@ public class ABCOutputStream {
 	private void addDuration(TGDuration duration){
 		this.line += getABCDuration(duration);
 	}
-	
+
 	private void addEffectsBeforeNote(TGNote note){
 		TGNoteEffect effect = note.getEffect();
 		if( effect.isDeadNote() ){
@@ -994,13 +994,13 @@ public class ABCOutputStream {
 			this.line += "+upbow+";
 		}
 	}
-	
+
 	private void addEffectsOnNote(TGNoteEffect effect){
 		if( effect.isHarmonic() ){
 			this.line += "\"_harmonic\"";
 		}
 	}
-	
+
 	private void addEffectsOnDuration(TGVoice voice){
 		int tremoloPicking = -1;
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
@@ -1013,7 +1013,7 @@ public class ABCOutputStream {
 			this.line += "+trill+";
 		}
 	}
-	
+
 	private void addEffectsOnBeat(TGVoice voice){
 		boolean trill = false;
 		boolean vibrato = false;
@@ -1023,7 +1023,7 @@ public class ABCOutputStream {
 		boolean arpeggio = ( voice.getBeat().getStroke().getDirection() != TGStroke.STROKE_NONE );
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
 			TGNoteEffect effect = voice.getNote(i).getEffect();
-			
+
 			trill = (trill || effect.isTrill() );
 			vibrato = (vibrato || effect.isVibrato() );
 			staccato = (staccato || effect.isStaccato() );
@@ -1049,7 +1049,7 @@ public class ABCOutputStream {
 			this.line += "+arpeggio+";
 		}
 	}
-	
+
 	private void addEffectsBeforeBeat(TGVoice voice){
 		List<TGNote> graceNotes = new ArrayList<TGNote>();
 		for( int i = 0 ; i < voice.countNotes() ; i ++ ){
@@ -1060,14 +1060,14 @@ public class ABCOutputStream {
 		}
 		if( !graceNotes.isEmpty() ){
 			this.line += "{";
-			
+
 			int duration = 0;
 			for( int i = 0 ; i < graceNotes.size() ; i ++ ){
 				TGNote note = (TGNote)graceNotes.get( i );
 				TGMeasure measure = voice.getBeat().getMeasure();
 				TGString string = measure.getTrack().getString(note.getString());
 				TGEffectGrace grace = note.getEffect().getGrace();
-				
+
 				if( duration < TGDuration.SIXTY_FOURTH && grace.getDuration() == 1 ){
 					duration = TGDuration.SIXTY_FOURTH;
 				}else if( duration < TGDuration.THIRTY_SECOND && grace.getDuration() == 2 ){
@@ -1080,14 +1080,14 @@ public class ABCOutputStream {
 			this.line += "}";
 		}
 	}
-	
+
 	private boolean isAnyTiedTo(TGNote note){
 		TGMeasure measure = note.getVoice().getBeat().getMeasure();
 		TGBeat beat = this.manager.getMeasureManager().getNextBeat( measure.getBeats(), note.getVoice().getBeat());
 		while( measure != null){
 			while( beat != null ){
 				TGVoice voice = beat.getVoice(0);
-				
+
 				// If is a rest beat, all voice sounds must be stopped.
 				if(voice.isRestVoice()){
 					return false;
@@ -1109,7 +1109,7 @@ public class ABCOutputStream {
 		}
 		return false;
 	}
-	
+
 	private String getABCKey(int keySignature , int value){
 		final String[][] ABC_SCALE = {
 				{ "B", "c", "=d", "d", "=e", "e", "f", "=g", "g", "=a", "a", "=b" } ,	// 7 sharps
@@ -1146,7 +1146,7 @@ public class ABCOutputStream {
 		}
 		return key;
 	}
-	
+
 	private String getABCDuration(TGDuration value) {
 		int ticks=getTime(value);
 		int eight=(int) (TGDuration.QUARTER_TIME/2);
@@ -1159,7 +1159,7 @@ public class ABCOutputStream {
 		duration+="/"+Integer.toString(d);
 		return duration;
 	}
-	
+
 	private int getTime(TGDuration value) {
 		long time = (long)( TGDuration.QUARTER_TIME * ( 4.0f / value.getValue()) ) ;
 		if(value.isDotted()){
@@ -1169,7 +1169,7 @@ public class ABCOutputStream {
 		}
 		return (int)time;
 	}
-	
+
 	protected TGChannel getChannel(TGSong song, TGTrack track ){
 		TGChannel tgChannel = this.manager.getChannel(song, track.getChannelId() );
 		if( tgChannel != null ){
@@ -1180,9 +1180,9 @@ public class ABCOutputStream {
 		}
 		return this.channelAux;
 	}
-	
+
 	private boolean isPercussionTrack(TGSong song, TGTrack track){
 		return this.manager.isPercussionChannel(song, track.getChannelId());
-	
+
 	}
 }

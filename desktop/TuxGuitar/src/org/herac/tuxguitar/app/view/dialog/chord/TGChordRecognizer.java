@@ -20,10 +20,10 @@ import org.herac.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author Nikola Kolarovic
- * 
+ *
  */
 public class TGChordRecognizer {
-	
+
 	// index for parameter array
 	public static final int TONIC_INDEX = 0;
 	public static final int CHORD_INDEX = 1;
@@ -34,35 +34,35 @@ public class TGChordRecognizer {
 	public static final int I5_INDEX = 6;
 	public static final int I9_INDEX = 7;
 	public static final int I11_INDEX = 8;
-	
+
 	private TGChordDialog dialog;
 	private UIPanel control;
 	private UIListBoxSelect<Integer> proposalList;
 	private List<int[]> proposalParameters;
-	
+
 	// this var keep a control to running threads.
 	private long runningProcess;
-	
+
 	public TGChordRecognizer(TGChordDialog dialog, UIContainer parent) {
 		this.runningProcess = 0;
 		this.dialog = dialog;
 		this.createControl(parent);
 	}
-	
+
 	public void createControl(UIContainer parent) {
 		final UIFactory uiFactory = this.dialog.getUIFactory();
 		UITableLayout layout = new UITableLayout(0f);
-		
+
 		this.control = uiFactory.createPanel(parent, true);
 		this.control.setLayout(layout);
-		
+
 		UITableLayout compositeLayout = new UITableLayout();
 		UIPanel composite = uiFactory.createPanel(this.control, false);
 		composite.setLayout(compositeLayout);
 		layout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.proposalParameters = new ArrayList<int[]>();
-		
+
 		this.proposalList = uiFactory.createListBoxSelect(composite);
 		this.proposalList.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -73,7 +73,7 @@ public class TGChordRecognizer {
 		});
 		compositeLayout.set(this.proposalList, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 	}
-	
+
 	/** sets the current chord to be selected proposal */
 	protected void showChord() {
 		UISelectItem<Integer> selectedItem = this.proposalList.getSelectedItem();
@@ -94,7 +94,7 @@ public class TGChordRecognizer {
 			this.dialog.getEditor().redraw();
 		}
 	}
-	
+
 	/**
 	 * - Recognizes the chord string
 	 * - Fills the component's list with alternative names
@@ -104,14 +104,14 @@ public class TGChordRecognizer {
 	 *  @param chord chord structure (frets, strings)
 	 *  @param redecorate is the Chord Editor in editing mode, or it is just changed by ChordSelector
 	 */
-	
+
 	public void recognize(final TGChord chord,final boolean redecorate,final boolean setChordName) {
-		
+
 		final long processId = (++ this.runningProcess);
 		final boolean sharp = this.dialog.getSelector().getSharpButton().isSelected();
-		
+
 		this.clearProposals();
-		
+
 		new Thread( new Runnable() {
 			public void run() throws TGException {
 				if(!getDialog().isDisposed() && isValidProcess(processId)){
@@ -120,17 +120,17 @@ public class TGChordRecognizer {
 			}
 		} ).start();
 	}
-	
+
 	/** Fills the component's list with alternative names
 	 * @param chord TGChord to be recognized
-	 * @return parameters for adjustWidgets and getChordName methods 
+	 * @return parameters for adjustWidgets and getChordName methods
 	 */
 	protected void makeProposals(long processId, TGChord chord, boolean sharp, boolean redecorate, boolean setChordName) {
 		List<int[]> proposalParameters = new ArrayList<int[]>();
-		List<String> proposalNames = new ArrayList<String>();		
+		List<String> proposalNames = new ArrayList<String>();
 		List<Integer> notesInside = new ArrayList<Integer>();
 		int[] tuning = this.dialog.getSelector().getTuning();
-		
+
 		// find and put in all the distinct notes
 		for (int i=0; i<tuning.length; i++) {
 			int fret = chord.getStrings()[i];
@@ -145,25 +145,25 @@ public class TGChordRecognizer {
 					notesInside.add(note);
 			}
 		}
-		
+
 		// Now search:
 		// go through all the possible tonics
 		// it is required because tonic isn't mandatory in a chord
 		List<Proposal> allProposals = new ArrayList<Proposal>(10);
-		
+
 		for (int tonic=0; tonic<12; tonic++) {
-			
+
 			Proposal currentProp = null;
-			
+
 			// first check for the basic chord tones
 			for (int chordIndex = 0; chordIndex < TGChordDatabase.length(); chordIndex ++) {
 				TGChordDatabase.ChordInfo info = TGChordDatabase.get(chordIndex);
-				
+
 				currentProp = new Proposal(notesInside);
 				// it is more unusual the more we go down the index
 				// except chords "5" and "m", they are quite usual :)
 				currentProp.unusualGrade-=(chordIndex!=TGChordDatabase.length() && chordIndex!=4 ? 2*chordIndex : 0);
-				
+
 				//ChordDatabase.ChordInfo info = (ChordDatabase.ChordInfo)chordItr.next();
 				boolean foundNote = false;
 				for (int i=0; i<info.getRequiredNotes().length; i++) { // go through all the required notes
@@ -175,18 +175,18 @@ public class TGChordRecognizer {
 								currentProp.dontHaveGrade+=15; // this means penalty for not having tonic is -65
 							currentProp.foundNote(tonic+info.getRequiredNotes()[i]-1); // found a note in a chord
 						}
-					
+
 				}
 				// if something found, add it into a proposal if it's worth
 				if (foundNote) {
 					currentProp.params[TONIC_INDEX] = tonic;
 					currentProp.params[CHORD_INDEX] = chordIndex;//possibleChords.indexOf(info);
 					int foundNotesCount = currentProp.missingNotes.length-currentProp.missingCount;
-					
+
 					// it is worth if it is missing 1 essential note and/or fifth
 					if (!info.getName().startsWith("dim") && !info.getName().startsWith("aug"))
 						if (!currentProp.isFound(tonic+8-1)) {
-							
+
 							// hmmm. maybe it's altered fifth? Create a branch for it.
 							if (currentProp.isNeeded(tonic+7-1) || currentProp.isNeeded(tonic+9-1)) {
 								Proposal branchProp = (Proposal)currentProp.clone();
@@ -203,14 +203,14 @@ public class TGChordRecognizer {
 									branchProp.dontHaveGrade-=(info.getRequiredNotes().length-(foundNotesCount+1))*50;
 									allProposals.add(branchProp);
 								}
-								
+
 							}
 							else {
 								currentProp.params[I5_INDEX] = 0;
 								currentProp.dontHaveGrade+=30;
 							}
 						}
-					
+
 					currentProp.params[I5_INDEX] = 0;
 					if (foundNotesCount>=info.getRequiredNotes().length-1 ) {
 							currentProp.dontHaveGrade-=(info.getRequiredNotes().length-foundNotesCount)*50;
@@ -220,15 +220,15 @@ public class TGChordRecognizer {
 				currentProp=null;
 			}
 		}
-		
+
 		Iterator<Proposal> props = allProposals.iterator();
 		List<Proposal> unsortedProposals = new ArrayList<Proposal>(5);
 		while (props.hasNext()) {
 			// place the still missing alterations notes accordingly... bass also
 			///////////////////////////////////////////////////////////////
-			
+
 			final Proposal current = (Proposal)props.next();
-			
+
 			boolean bassIsOnlyInBass = true;
 			// ---------------- bass tone ----------------
 			for (int i=chord.getStrings().length-1; i>=0; i--) {
@@ -242,7 +242,7 @@ public class TGChordRecognizer {
 						bassIsOnlyInBass=false; // if we stumbled upon bass tone again
 				}
 			}
-			
+
 			if (current.isNeeded(current.params[BASS_INDEX]) && bassIsOnlyInBass) {
 				   // do not mark as FOUND if bass is somewhere other than in bass only
 					current.foundNote(current.params[BASS_INDEX]);
@@ -266,14 +266,14 @@ public class TGChordRecognizer {
 							if (current.isNeeded(current.params[TONIC_INDEX]+getAddNote(i, plusminus)) && !current.filled[i]) {
 								current.filled[i]=true;
 								current.plusminusValue[i]=plusminus;
-								if (plusminus!=0) 
+								if (plusminus!=0)
 									current.unusualGrade-=15;
 								current.foundNote(current.params[TONIC_INDEX]+getAddNote(i, plusminus));
 							}
-					
+
 				}
 			}
-			
+
 			// fill in the list
 			///////////////////////////////////////////////////////////////
 			if (!(current.filled[3] && !(current.filled[0] || current.filled[1] || current.filled[2])) &&  // if just found seventh, cancel it
@@ -282,43 +282,43 @@ public class TGChordRecognizer {
 						findChordLogic(current);
 						unsortedProposals.add(current);
 				}
-			
+
 		}
 		// first, sort by DontHaveGrade
 		shellsort(unsortedProposals,1);
-		
+
 		int cut=-1;
 		int howManyIncomplete = TGChordSettings.instance().getIncompleteChords();
-		
+
 		for (int i=0; i<unsortedProposals.size() && cut==-1; i++) {
 			int prior = ((Proposal)unsortedProposals.get(i)).dontHaveGrade;
-			if (prior<0) 
+			if (prior<0)
 				cut=i+howManyIncomplete;
 		}
 		// cut the search
 		unsortedProposals=unsortedProposals.subList(0, (cut>0 && cut<unsortedProposals.size() ? cut : unsortedProposals.size()));
 		// sort by unusualGrade
 		shellsort(unsortedProposals,2);
-		
+
 		int firstNegative = 0;
 		for (int i=0; i<unsortedProposals.size(); i++) {
 			final Proposal current = (Proposal)unsortedProposals.get(i);
-			if (firstNegative==0 && current.unusualGrade<0) 
+			if (firstNegative==0 && current.unusualGrade<0)
 				firstNegative=current.unusualGrade;
-			
+
 			if (current.unusualGrade > (firstNegative>=0 ? 0 : firstNegative)-60){
 				proposalParameters.add(current.params);
 				proposalNames.add((getChordName(current.params,sharp)+" ("+Math.round(100+current.dontHaveGrade*7/10)+"%)" ));
 			}
 		}
-		
+
 		notifyProposals(processId, sharp, redecorate, setChordName, proposalParameters, proposalNames);
 	}
-	
+
 	public void notifyProposals(final long processId, final boolean sharp, final boolean redecorate, final boolean setChordName, final List<int[]> proposalParameters, final List<String> proposalNames) {
 		final int params[] = (!proposalParameters.isEmpty() ? (int[])proposalParameters.get(0) : null);
 		final String chordName = (params != null ? getChordName(params, sharp) : "");
-		
+
 		TGSynchronizer.getInstance(this.dialog.getContext().getContext()).executeLater(new Runnable() {
 			public void run() {
 				if(!getDialog().isDisposed() && isValidProcess(processId)){
@@ -338,7 +338,7 @@ public class TGChordRecognizer {
 			}
 		});
 	}
-	
+
 	/** adjusts widgets on the Recognizer combo */
 	public void redecorate(int params[]){
 		this.dialog.getSelector().adjustWidgets(params[TONIC_INDEX],
@@ -351,7 +351,7 @@ public class TGChordRecognizer {
 		                                        params[I9_INDEX],
 		                                        params[I11_INDEX]);
 	}
-	
+
 	/** Assembles chord name according to ChordNamingConvention */
 	public String getChordName(int[] param, boolean sharp) {
 		return new TGChordNamingConvention().createChordName(param[TONIC_INDEX],
@@ -365,15 +365,15 @@ public class TGChordRecognizer {
 		                                                   param[BASS_INDEX],
 		                                                   sharp);
 	}
-	
+
 	/** Return required interval in semitones for add type and +- modificator
 	 * @param type 0=add9, 1=add11, 2=add13
 	 * @param selectionIndex 0=usual, 1="+", 2="-"
 	 */
 	public int getAddNote(int type, int selectionIndex) {
-		
+
 		int wantedNote = 0;
-		
+
 		switch (type) {
 			case 0:
 				wantedNote = 3; // add9
@@ -385,7 +385,7 @@ public class TGChordRecognizer {
 				wantedNote = 10; // add13
 				break;
 		}
-		
+
 		switch (selectionIndex) {
 			case 1:
 				wantedNote++;
@@ -396,11 +396,11 @@ public class TGChordRecognizer {
 			default:
 				break;
 		}
-		
+
 		return --wantedNote;
-		
+
 	}
-	
+
 	public void findChordLogic(Proposal current) {
 		boolean[] found = current.filled;
 		int[] plusMinus = current.plusminusValue;
@@ -411,7 +411,7 @@ public class TGChordRecognizer {
 		current.params[I11_INDEX]=plusMinus[1];
 		current.params[ADDCHK_INDEX]=0;
 		current.params[PLUSMINUS_INDEX]=0;
-		
+
 		if (found[2]) { // -------------- 13
 			current.params[ALTERATION_INDEX]=3;
 			current.params[PLUSMINUS_INDEX]=plusMinus[2];
@@ -439,7 +439,7 @@ public class TGChordRecognizer {
 				current.params[PLUSMINUS_INDEX]=plusMinus[1];
 				current.params[I11_INDEX]=0;
 				current.unusualGrade-=10;
-				
+
 				if (!found[0] || !found[3]) { // b7 or 9 not inside
 					if (!found[0] && !found[3])
 						current.params[ADDCHK_INDEX]=1;
@@ -453,7 +453,7 @@ public class TGChordRecognizer {
 					}
 				}
 			}
-			else 
+			else
 				if (found[0]) { // 9
 					current.params[ALTERATION_INDEX]=1;
 					current.params[I9_INDEX]=0;
@@ -462,10 +462,10 @@ public class TGChordRecognizer {
 					current.unusualGrade-=10;
 					if (!found[3])
 						current.params[ADDCHK_INDEX]=1;
-					
+
 				}
 	}
-	
+
 	/**
 	 * Shellsort, using a sequence suggested by Gonnet.
 	 * -- a little adopted
@@ -480,12 +480,12 @@ public class TGChordRecognizer {
 			for( int i = gap; i < length; i++ ){
 				Proposal tmp = (Proposal)a.get(i);
 				int j = i;
-				
-				for( ; j >= gap && 
+
+				for( ; j >= gap &&
 				(  sortIndex == 1 ?
 				tmp.dontHaveGrade > ((Proposal)a.get(j - gap)).dontHaveGrade :
 				tmp.unusualGrade > ((Proposal)a.get(j - gap)).unusualGrade  )
-				; 
+				;
 				j -= gap )
 					a.set(j, a.get(j - gap));
 				a.set( j , tmp);
@@ -495,60 +495,60 @@ public class TGChordRecognizer {
 	public void addProposalParameters(int[] params){
 		this.proposalParameters.add(params);
 	}
-	
+
 	public void addProposalName(String name) {
 		this.proposalList.addItem(new UISelectItem<Integer>(name, this.proposalList.getItemCount()));
 	}
-	
+
 	public void clearProposals(){
 		this.proposalList.removeItems();
 		this.proposalParameters.clear();
 	}
-	
+
 	public TGChordDialog getDialog(){
 		return this.dialog;
 	}
-	
+
 //	public UIListBoxSelect<Integer> getProposalList(){
 //		return this.proposalList;
 //	}
-	
+
 	public boolean isValidProcess(long processId){
 		return (this.runningProcess == processId);
 	}
-	
+
 	public UIPanel getControl() {
 		return control;
 	}
-	
+
 	private class Proposal implements Cloneable{
 		int[] params;
-		
+
 		/** grade for chord "unusualness" - Cm is less unusual than E7/9+/C */
 		int unusualGrade = 0;
 		/** penalty for notes that chord doesn't have */
 		int dontHaveGrade = -15;
-		
+
 		/** counts the notes that are in chord but still not recognized */
 		int missingCount;
 		int[] missingNotes;
-		
+
 		boolean filled[]={false,false,false,false};
 		int plusminusValue[]={0,0,0};
-		
+
 		private Proposal() {
 			super();
 			this.params = new int[9];
 			for (int i=0; i<9; i++)
 				this.params[i]=-1;
 		}
-		
+
 		/** initialize with needed notes */
 		public Proposal(List<Integer> notes) {
 			this.params = new int[9];
 			for (int i=0; i<9; i++)
 				this.params[i]=-1;
-			
+
 			int length = notes.size();
 			this.missingNotes = new int[length];
 			for (int i = 0; i< length; i++){ // deep copy, because of clone() method
@@ -556,7 +556,7 @@ public class TGChordRecognizer {
 			}
 			this.missingCount = length;
 		}
-		
+
 		/** if note is found, mark it as found in the Missing array*/
 		void foundNote(int value) {
 			int note = (value % 12);
@@ -565,13 +565,13 @@ public class TGChordRecognizer {
 					if (this.missingNotes[i] == note) {
 						// put the found one on the end, switch positions
 						this.missingCount--;
-						int temp = this.missingNotes[i]; 
+						int temp = this.missingNotes[i];
 						this.missingNotes[i]=this.missingNotes[this.missingCount];
 						this.missingNotes[this.missingCount]=temp;
 						return;
 					}
 		}
-		
+
 		/** is note already found? */
 		boolean isFound(int value) {
 			int note = (value % 12);
@@ -580,7 +580,7 @@ public class TGChordRecognizer {
 					return true;
 			return false;
 		}
-		
+
 		/** is note required to be found? */
 		boolean isNeeded(int value) {
 			int note = (value % 12);
@@ -590,7 +590,7 @@ public class TGChordRecognizer {
 						return true;
 			return false;
 		}
-		
+
 		/** does note exist in a chord? (found or not found) */
 		boolean isExisting(int value) {
 			int note = (value % 12);
@@ -599,7 +599,7 @@ public class TGChordRecognizer {
 					return true;
 			return false;
 		}
-		
+
 		/** calls the Object.clone() method, since it is private (?!!??) */
 		public Object clone() {
 			Proposal proposal = new Proposal();
@@ -615,14 +615,14 @@ public class TGChordRecognizer {
 			proposal.filled = new boolean[this.filled.length];
 			for (int i=0; i<proposal.filled.length; i++)
 				proposal.filled[i] = this.filled[i];
-			
+
 			proposal.plusminusValue = new int[this.plusminusValue.length];
 			for (int i=0; i<proposal.plusminusValue.length; i++)
 				proposal.plusminusValue[i] = this.plusminusValue[i];
-			
+
 			return proposal;
 		}
-		
+
 		public boolean equals(Object o) {
 			Proposal another = (Proposal)o;
 			for (int i=0; i<9; i++)

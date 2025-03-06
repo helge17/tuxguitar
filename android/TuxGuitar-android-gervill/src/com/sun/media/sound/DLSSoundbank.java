@@ -105,7 +105,7 @@ public class DLSSoundbank implements Soundbank {
         public int hashCode() {
             return (int)i1;
         }
-                
+
         public boolean equals(Object obj) {
             if (!(obj instanceof DLSID)) {
                 return false;

@@ -11,27 +11,27 @@ import org.herac.tuxguitar.ui.resource.UIRectangle;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 
 public class AWTPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
-	
+
 	private UIResourceFactory resourceFactory;
-	
+
 	public AWTPrinter(PrinterJob control) {
 		super(control);
-		
+
 		this.resourceFactory = new AWTResourceFactory();
 	}
-	
+
 	public UIResourceFactory getResourceFactory() {
 		return resourceFactory;
 	}
-	
+
 	public Float getDpiScale() {
 		return 0.5f;
 	}
-	
+
 	public Float getDpiFontScale() {
 		return this.getDpiScale();
 	}
-	
+
 	public UIRectangle getBounds() {
 		PageFormat format = this.getControl().defaultPage();
 		UIRectangle bounds = new UIRectangle();
@@ -39,18 +39,18 @@ public class AWTPrinter extends JFXComponent<PrinterJob> implements UIPrinter {
 		bounds.getPosition().setY((float) format.getImageableY());
 		bounds.getSize().setWidth((float) (format.getImageableX() + format.getImageableWidth()));
 		bounds.getSize().setHeight((float) (format.getImageableY() + format.getImageableHeight()));
-		
+
 		return bounds;
 	}
-	
+
 	public Integer getStartPage() {
 		return null;
 	}
-	
+
 	public Integer getEndPage() {
 		return null;
 	}
-	
+
 	public UIPrinterJob createJob(String name) {
 		return new AWTPrinterJob(this);
 	}

@@ -9,13 +9,13 @@ import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
 import org.herac.tuxguitar.ui.widget.UISpinner;
 
 public class JFXSpinner extends JFXControl<Spinner<Integer>> implements UISpinner {
-	
+
 	private JFXSelectionListenerChangeManager<Number> selectionListener;
 	private SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory;
-	
+
 	public JFXSpinner(JFXContainer<? extends Region> parent) {
 		super(new Spinner<Integer>(), parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerChangeManager<Number>(this);
 		this.valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
 		this.getControl().setValueFactory(this.valueFactory);
@@ -64,7 +64,7 @@ public class JFXSpinner extends JFXControl<Spinner<Integer>> implements UISpinne
 	public int getIncrement() {
 		return this.valueFactory.getAmountToStepBy();
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().valueProperty().addListener(this.selectionListener);

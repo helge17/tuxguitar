@@ -40,12 +40,12 @@ import org.herac.tuxguitar.ui.widget.UITextField;
  * @author Nikola Kolarovic
  */
 public class TGChordEditor {
-	
+
 	public static final int STRING_SPACING = 30;
 	public static final int FRET_SPACING = 30;
 	public static final short MIN_FRET = 1;
 	public static final short MAX_FRET = 24;
-	
+
 	private TGChordDialog dialog;
 	private UIPanel control;
 	private UIScrollBarPanel scrollBarPanel;
@@ -60,19 +60,19 @@ public class TGChordEditor {
 	private int width;
 	private int height;
 	private TGTrack currentTrack;
-	
-	public TGChordEditor(TGChordDialog dialog, UIContainer parent, short maxStrings) {		
+
+	public TGChordEditor(TGChordDialog dialog, UIContainer parent, short maxStrings) {
 		this.dialog = dialog;
 		this.createControl(parent, maxStrings);
 	}
-	
+
 	public void createControl(UIContainer parent, short maxStrings) {
 		final UIFactory uiFactory = this.dialog.getUIFactory();
 		UITableLayout layout = new UITableLayout(0f);
-		
+
 		this.control = uiFactory.createPanel(parent, true);
 		this.control.setLayout(layout);
-		
+
 		this.fret = MIN_FRET;
 		this.maxStrings = maxStrings;
 		this.firstFrets = new boolean[this.maxStrings];
@@ -81,57 +81,57 @@ public class TGChordEditor {
 		this.width = ((STRING_SPACING * this.maxStrings) - STRING_SPACING);
 		this.height = ((FRET_SPACING * TGChordImpl.MAX_FRETS) - FRET_SPACING);
 		this.points = new ArrayList<UIPosition>();
-		
+
 		for (int i = 0; i < this.firstFrets.length; i++) {
 			this.firstFrets[i] = false;
 		}
-		
+
 		for (int i = 0; i < this.strings.length; i++) {
 			this.strings[i] = ((i + 1) * STRING_SPACING);
 		}
-		
+
 		for (int i = 0; i < this.frets.length; i++) {
 			this.frets[i] = ((i + 1) * FRET_SPACING);
 		}
-		
+
 		UITableLayout compositeLayout = new UITableLayout();
 		UIPanel composite = uiFactory.createPanel(this.control, false);
 		composite.setLayout(compositeLayout);
 		layout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UITableLayout scrollBarLayout = new UITableLayout(0f);
 		this.scrollBarPanel = uiFactory.createScrollBarPanel(composite, true, false, true);
 		this.scrollBarPanel.setLayout(scrollBarLayout);
 		compositeLayout.set(this.scrollBarPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.canvas = uiFactory.createCanvas(this.scrollBarPanel, false);
-		
+
 		float minimumWidth = (getWidth() + (STRING_SPACING * 2f));
 		float minimumHeight = (getHeight() + (FRET_SPACING * 2f));
 		scrollBarLayout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, minimumWidth, minimumHeight, 0f);
-		
+
 		UITableLayout nameLayout = new UITableLayout(0f);
 		UIPanel nameComposite = uiFactory.createPanel(composite, false);
 		nameComposite.setLayout(nameLayout);
 		compositeLayout.set(nameComposite, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true);
-		
+
 		UISeparator separator = uiFactory.createHorizontalSeparator(nameComposite);
 		nameLayout.set(separator, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true);
-		
+
 		UILabel chordNameLabel = uiFactory.createLabel(nameComposite);
 		chordNameLabel.setText(TuxGuitar.getProperty("chord.name"));
 		nameLayout.set(chordNameLabel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false);
-		
+
 		this.chordName = uiFactory.createTextField(nameComposite);
 		nameLayout.set(this.chordName, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false);
-		
+
 		this.canvas.setBgColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		this.canvas.addPaintListener(new UIPaintListener() {
 			public void onPaint(UIPaintEvent event) {
 				paintEditor(event.getPainter());
 			}
 		});
-		
+
 		this.canvas.addMouseUpListener(new UIMouseUpListener() {
 			public void onMouseUp(UIMouseEvent event) {
 				getComposite().setFocus();
@@ -139,7 +139,7 @@ public class TGChordEditor {
 				redraw();
 			}
 		});
-		
+
 		final UIScrollBar uiScrollBar = this.scrollBarPanel.getVScroll();
 		uiScrollBar.setIncrement(1);
 		uiScrollBar.setMaximum(((MAX_FRET + MIN_FRET) - (TGChordImpl.MAX_FRETS - 1) + 1));
@@ -152,30 +152,30 @@ public class TGChordEditor {
 			}
 		});
 	}
-	
+
 	private void paintEditor(UIPainter painter) {
 		int noteSize = (FRET_SPACING / 2);
-		
+
 		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
-		
+
 		// fill background
 		UIRectangle bounds = this.canvas.getBounds();
 		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_BACKGROUND));
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
 		painter.closePath();
-		
+
 		painter.setForeground(this.dialog.getColor(TGChordStyleAdapter.COLOR_FOREGROUND));
-		
+
 		// dibujo el puente
 		painter.initPath();
 		painter.setAntialias(false);
 		painter.moveTo((STRING_SPACING - 10), (FRET_SPACING - 10));
 		painter.lineTo(STRING_SPACING + (this.width + 10), (FRET_SPACING - 10));
 		painter.closePath();
-		
+
 		painter.drawString(Integer.toString(getFret()), FRET_SPACING - 25,STRING_SPACING);
-		
+
 		// dibujo las cuerdas
 		painter.initPath();
 		painter.setAntialias(false);
@@ -184,7 +184,7 @@ public class TGChordEditor {
 			painter.lineTo(this.strings[i], FRET_SPACING + this.height);
 		}
 		painter.closePath();
-		
+
 		// dibujo las cegillas
 		painter.initPath();
 		painter.setAntialias(false);
@@ -193,16 +193,16 @@ public class TGChordEditor {
 			painter.lineTo(STRING_SPACING + this.width, this.frets[i]);
 		}
 		painter.closePath();
-		
+
 		// dibujo las notas
 		painter.setBackground(this.dialog.getColor(TGChordStyleAdapter.COLOR_FOREGROUND));
-		
+
 		for(UIPosition point : this.points) {
 			painter.initPath(UIPainter.PATH_FILL);
 			painter.addCircle(point.getX(), point.getY() + (FRET_SPACING / 2), noteSize);
 			painter.closePath();
 		}
-		
+
 		// dibujo las notas al aire
 		for (int i = 0; i < this.firstFrets.length; i++) {
 			if (!hasPoints(i)) {
@@ -223,11 +223,11 @@ public class TGChordEditor {
 			}
 		}
 	}
-	
+
 	private void checkPoint(float x, float y) {
 		int stringIndex = getStringIndex(x);
 		int fretIndex = getFretIndex(y);
-		
+
 		if (y < FRET_SPACING) {
 			this.firstFrets[stringIndex] = !this.firstFrets[stringIndex];
 			this.removePointsAtStringLine(this.strings[stringIndex]);
@@ -243,11 +243,11 @@ public class TGChordEditor {
 		else{
 			return; // don't recognize it otherwise
 		}
-		
+
 		// after changing a chord, recognize it
 		this.dialog.getRecognizer().recognize(getChord(),true,false);
 	}
-	
+
 	private boolean removePoint(UIPosition point) {
 		for(UIPosition currPoint : this.points) {
 			if( currPoint.getX() == point.getX() && currPoint.getY() == point.getY() ) {
@@ -257,7 +257,7 @@ public class TGChordEditor {
 		}
 		return false;
 	}
-	
+
 	private void orderPoints() {
 		for (int i = 0; i < this.points.size(); i++) {
 			UIPosition minPoint = null;
@@ -271,7 +271,7 @@ public class TGChordEditor {
 			this.points.add(i, minPoint);
 		}
 	}
-	
+
 	private void removePointsAtStringLine(float x) {
 		for(UIPosition point : this.points) {
 			if (point.getX() == x) {
@@ -280,11 +280,11 @@ public class TGChordEditor {
 			}
 		}
 	}
-	
+
 	private void addPoint(UIPosition point) {
 		this.points.add(point);
 	}
-	
+
 	private int getStringIndex(float x) {
 		int index = -1;
 		for (int i = 0; i < this.strings.length; i++) {
@@ -300,7 +300,7 @@ public class TGChordEditor {
 		}
 		return index;
 	}
-	
+
 	private int getFretIndex(float y) {
 		int index = -1;
 		for (int i = 0; i < this.frets.length; i++) {
@@ -315,9 +315,9 @@ public class TGChordEditor {
 			}
 		}
 		return index;
-		
+
 	}
-	
+
 	private boolean hasPoints(int stringIndex) {
 		for(UIPosition point : this.points) {
 			if (point.getX() == this.strings[stringIndex]) {
@@ -326,17 +326,17 @@ public class TGChordEditor {
 		}
 		return false;
 	}
-	
+
 	public boolean isEmpty() {
 		return this.points.isEmpty();
 	}
-	
+
 	public int getValue(int string) {
 		int value = -1;
 		if (this.firstFrets[this.maxStrings - string]) {
 			value = 0;
 		}
-		
+
 		if (value < 0) {
 			for(UIPosition point : this.points) {
 				if (string == (this.maxStrings - getStringIndex(point.getX()))) {
@@ -347,7 +347,7 @@ public class TGChordEditor {
 		}
 		return value;
 	}
-	
+
 	public void addValue(int value, int string) {
 		int realValue = value;
 		if (string >= 1 && string <= this.maxStrings) {
@@ -363,29 +363,29 @@ public class TGChordEditor {
 			}
 		}
 	}
-	
+
 	public short getFret() {
 		return this.fret;
 	}
-	
+
 	public void setFret(short fret) {
 		setFret(fret, true, false);
 	}
-	
+
 	private void setFret(short fret, boolean updateScroll, boolean recognize) {
 		if (fret >= MIN_FRET && fret <= MAX_FRET) {
 			this.fret = fret;
 		}
-		
+
 		if (updateScroll) {
 			this.scrollBarPanel.getVScroll().setValue(this.fret);
 		}
-		
+
 		if(recognize){
 			this.dialog.getRecognizer().recognize(getChord(), true,false);
 		}
 	}
-	
+
 	public TGChord getChord() {
 		TGChord chord = TuxGuitar.getInstance().getSongManager().getFactory().newChord(this.strings.length);
 		chord.setName(this.chordName.getText());
@@ -395,7 +395,7 @@ public class TGChordEditor {
 		}
 		return chord;
 	}
-	
+
 	public void setChord(TGChord chord) {
 		if (chord != null) {
 			this.setFret((short)chord.getFirstFret());
@@ -405,67 +405,67 @@ public class TGChordEditor {
 					this.addValue(fretValue, i + 1);
 				}
 			}
-			
+
 			String name = chord.getName();
-			
+
 			this.dialog.getRecognizer().recognize(getChord(), (name == null), (name == null) );
-			
+
 			this.previewChord(chord);
-			
+
 			if(name != null){
 				this.setChordName( name );
 			}
-			
+
 			this.redraw();
 		}
 	}
-	
+
 	public short getMaxStrings() {
 		return this.maxStrings;
 	}
-	
+
 	public void setMaxStrings(short maxStrings) {
 		this.maxStrings = maxStrings;
 	}
-	
+
 	public int getWidth() {
 		return this.width;
 	}
-	
+
 	public int getHeight() {
 		return this.height;
 	}
-	
+
 	public UICanvas getComposite(){
 		return this.canvas;
 	}
-	
+
 	public UITextField getChordName() {
 		return this.chordName;
 	}
-	
+
 	public void setChordName(String chordName) {
 		this.chordName.setText(chordName);
 	}
-	
+
 	public void redraw() {
 		this.canvas.redraw();
 	}
-	
+
 	public void setCurrentTrack(TGTrack track) {
 		this.currentTrack = track;
 	}
-	
+
 	public TGTrack getCurrentTrack() {
 		return this.currentTrack;
 	}
-	
+
 	public UIPanel getControl() {
 		return control;
 	}
-	
+
 	public void previewChord(final TGChord chord) {
-		
+
 		new Thread(new Runnable() {
 			public void run() {
 				int playedStrings = 0;
@@ -486,7 +486,7 @@ public class TGChordEditor {
 						next ++;
 					}
 				}
-				
+
 				TGSong song = TuxGuitar.getInstance().getDocumentManager().getSong();
 				TGChannel channel = TuxGuitar.getInstance().getSongManager().getChannel(song, getCurrentTrack().getChannelId());
 				if( channel != null ){

@@ -41,7 +41,7 @@ import org.herac.tuxguitar.util.TGContext;
 
 
 public class TGMainToolBarTransport extends TGToolBarModel {
-	
+
 	private static final String COLOR_BACKGROUND = "widget.transport.backgroundColor";
 	private static final String COLOR_FOREGROUND = "widget.transport.foregroundColor";
 	private static final TGSkinnableColor[] SKINNABLE_COLORS = new TGSkinnableColor[] {
@@ -77,7 +77,7 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 		super(context);
 		this.parentPanel = parentPanel;
 		this.parentWindow = parentWindow;
-		
+
 		UIFactory uiFactory = TGApplication.getInstance(this.getContext()).getFactory();
 		this.timestampCanvas = uiFactory.createCanvas(parentPanel,false);
 		this.timestampCanvas.addPaintListener(new UIPaintListener() {
@@ -113,7 +113,7 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 				}
 			}
 		});
-		
+
 		this.tempoImage = uiFactory.createImageView(parentPanel);
 		this.tempoLabel = uiFactory.createLabel(parentPanel);
 		this.tempoLabel.addMouseDownListener(new UIMouseDownListener() {
@@ -122,7 +122,7 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 				new TGActionProcessor(TGMainToolBarTransport.this.getContext(), TGOpenTempoDialogAction.NAME).process();
 			}
 		});
-		
+
 		TGColorManager tgColorManager = TGColorManager.getInstance(this.getContext());
 		tgColorManager.appendSkinnableColors(SKINNABLE_COLORS);
 		this.loadFont();
@@ -137,15 +137,15 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 				TGMainToolBarTransport.this.timestampCanvas.redraw();
 			}
 		});
-		
+
 	}
-	
+
 	@Override
 	public void appendListeners() {
 		super.appendListeners();
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
 	}
-	
+
 	@Override
 	public void processEvent(final TGEvent event) {
 		super.processEvent(event);
@@ -166,7 +166,7 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 			}
 		}
 	}
-	
+
 	@Override
 	public UIControl getControl() {
 		// unused, not a toolbar following standard model
@@ -175,44 +175,44 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 	public UIControl getTimestamp() {
 		return this.timestampCanvas;
 	}
-	
+
 	public UIControl getTempoImage() {
 		return this.tempoImage;
 	}
-	
+
 	public UIControl getTempoLabel() {
 		return this.tempoLabel;
 	}
-	
+
 	@Override
 	// called when skin changes
 	public void loadIcons() {
 		this.loadColors();
 		this.updateTempoIcon();
 	}
-	
+
 	private void loadColors() {
 		TGColorManager tgColorManager = TGColorManager.getInstance(this.getContext());
 		this.backgroundColor = tgColorManager.getColor(COLOR_BACKGROUND);
 		this.foregroundColor = tgColorManager.getColor(COLOR_FOREGROUND);
 	}
-	
+
 	private void updateTempoIcon() {
 		if (this.currentTempoBase != 0) {
 			this.tempoImage.setImage(TuxGuitar.getInstance().getIconManager().getDuration(this.currentTempoBase, this.currentTempoDotted));
 		}
 	}
-	
+
 	@Override
 	public void loadProperties(){
 		// TODO tooltiptexts
 	}
-	
+
 	@Override
 	public void updateItems() {
 		this.timestampCanvas.redraw();
 	}
-	
+
 	private void loadFont() {
 		if (this.font != null) {
 			this.font.dispose();
@@ -222,12 +222,12 @@ public class TGMainToolBarTransport extends TGToolBarModel {
 		this.font = uiFactory.createFont(this.fontModel);
 		this.fontChanged = true;
 	}
-	
+
 	private void paintTimestampTempo(UIPainter painter) {
 		String time;
 		TGTempo tempo;
 		int tempoPercent = 100;
-		
+
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
 		if (midiPlayer.isRunning()) {
 			long tMs = this.timestamp;

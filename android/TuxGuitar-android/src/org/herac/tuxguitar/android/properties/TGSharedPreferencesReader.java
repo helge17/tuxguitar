@@ -11,15 +11,15 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 public class TGSharedPreferencesReader extends TGSharedPreferencesHandler implements TGPropertiesReader {
-	
+
 	private TGPropertiesReader defaultReader;
-	
+
 	public TGSharedPreferencesReader(Activity activity, String module, String resource, TGPropertiesReader defaultReader) {
 		super(activity, module, resource);
-		
+
 		this.defaultReader = defaultReader;
 	}
-	
+
 	public void readProperties(TGProperties properties, String module) throws TGPropertiesException {
 		this.readDefaultProperties(properties, module);
 		this.readStoredProperties(properties, module);

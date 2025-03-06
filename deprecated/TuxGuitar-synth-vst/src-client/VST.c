@@ -11,7 +11,7 @@ VstIntPtr VSTCALLBACK VSTPluginCallback(AEffect *effect, VstInt32 opcode, VstInt
 			VSTEffectHandle *handle = NULL;
 			memcpy(&handle, &effect->resvd1, sizeof(handle));
 			VSTEffect_setUpdated(handle, true);
-			
+
 			return 1;
 		}
 		case audioMasterIdle: {

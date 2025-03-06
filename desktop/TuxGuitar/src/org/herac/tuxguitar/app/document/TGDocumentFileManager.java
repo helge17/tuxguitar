@@ -21,31 +21,31 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentFileManager {
-	
+
 	private TGContext context;
-	
+
 	public TGDocumentFileManager(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void chooseFileNameForOpen(TGFileFormat format, TGFileChooserHandler handler) {
 		this.chooseFileNameForOpen(this.toFileFormatList(format), handler);
 	}
-	
+
 	public void chooseFileNameForOpen(List<TGFileFormat> formats, TGFileChooserHandler handler) {
 		String chooserPath = TGFileHistory.getInstance(this.context).getChooserPath();
 		String currentPath = this.getCurrentFilePath();
 		boolean localFile = this.isLocalFile();
 		boolean existentFile = (localFile && currentPath != null && chooserPath != null && currentPath.equals(chooserPath));
 		String fileName = (existentFile ? this.createFileName(formats, null, false) : null );
-		
+
 		TGFileChooser.getInstance(this.context).openChooser(handler, formats, TGFileChooserDialog.STYLE_OPEN, fileName, chooserPath);
 	}
-	
+
 	public void chooseFileNameForSave(TGFileFormat format, TGFileChooserHandler handler) {
 		this.chooseFileNameForSave(this.toFileFormatList(format), handler);
 	}
-	
+
 	public void chooseFileNameForSave(List<TGFileFormat> formats, TGFileChooserHandler handler) {
 		String chooserPath = getCurrentFilePath();
 		if( chooserPath == null ) {
@@ -53,14 +53,14 @@ public class TGDocumentFileManager {
 		}
 		String fileName = this.createFileName(formats, this.getDefaultFileName(), true);
 		String defaultExtension = TGFileFormatUtils.DEFAULT_EXTENSION;
-		
+
 		TGFileChooser.getInstance(this.context).openChooser(handler, formats, TGFileChooserDialog.STYLE_SAVE, fileName, chooserPath, defaultExtension);
 	}
-	
+
 	public void findFileNameForSave(List<TGFileFormat> formats, TGFileChooserHandler handler) {
 		if( this.isNewFile() || !this.isLocalFile()) {
 			this.chooseFileNameForSave(formats, handler);
-		} 
+		}
 		else {
 			String fullPath = null;
 			String path = this.getCurrentFilePath();
@@ -68,7 +68,7 @@ public class TGDocumentFileManager {
 			if( path != null && file != null ) {
 				fullPath = (path + File.separator + file);
 			}
-			
+
 			if( fullPath != null && TGFileFormatUtils.isSupportedFormat(formats, fullPath) ) {
 				handler.updateFileName(fullPath);
 			} else  {
@@ -76,13 +76,13 @@ public class TGDocumentFileManager {
 			}
 		}
 	}
-	
+
 	public List<TGFileFormat> toFileFormatList(TGFileFormat format) {
 		List<TGFileFormat> formats = new ArrayList<TGFileFormat>();
 		formats.add(format);
 		return formats;
 	}
-	
+
 	public String createFileName(List<TGFileFormat> formats, String defaultName, boolean replaceExtension){
 		if(formats == null || formats.isEmpty()){
 			return defaultName;
@@ -120,7 +120,7 @@ public class TGDocumentFileManager {
 		}
 		return defaultName;
 	}
-	
+
 	public String getCurrentFileName(String defaultName) {
 		if(!this.isNewFile()){
 			URI uri = getCurrentURI();
@@ -130,7 +130,7 @@ public class TGDocumentFileManager {
 		}
 		return defaultName;
 	}
-	
+
 	public String getCurrentFilePath() {
 		if(!this.isNewFile()){
 			URI uri = getCurrentURI();
@@ -143,7 +143,7 @@ public class TGDocumentFileManager {
 		}
 		return null;
 	}
-	
+
 	public URI getCurrentURI(){
 		TGDocument document = TGDocumentListManager.getInstance(this.context).findCurrentDocument();
 		if( document != null ) {
@@ -151,24 +151,24 @@ public class TGDocumentFileManager {
 		}
 		return null;
 	}
-	
+
 	public String getFilePath(URI uri){
 		if( TGFileUtils.isLocalFile(uri) ){
 			return new File(uri).getParent();
 		}
 		return null;
 	}
-	
+
 	public boolean isNewFile(){
 		return (this.getCurrentURI() == null);
 	}
-	
+
 	public boolean isLocalFile(){
 		URI uri = getCurrentURI();
-		
+
 		return (uri != null && TGFileUtils.isLocalFile(uri));
 	}
-	
+
 	private String decode(String url){
 		try {
 			return URLDecoder.decode(url, "UTF-8");
@@ -177,7 +177,7 @@ public class TGDocumentFileManager {
 		}
 		return url;
 	}
-	
+
 	public static TGDocumentFileManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDocumentFileManager.class.getName(), new TGSingletonFactory<TGDocumentFileManager>() {
 			public TGDocumentFileManager createInstance(TGContext context) {
@@ -185,9 +185,9 @@ public class TGDocumentFileManager {
 			}
 		});
 	}
-	
+
 	private String getDefaultFileName() {
 		return TuxGuitar.getProperty("file.save.default-name") + TGFileFormatUtils.DEFAULT_EXTENSION;
 	}
-	
+
 }

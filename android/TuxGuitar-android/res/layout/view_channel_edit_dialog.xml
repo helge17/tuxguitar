@@ -3,117 +3,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-    
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="2" >
-	
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_name_label"
-			android:text="@string/channel_edit_dlg_name_label" 
+			android:text="@string/channel_edit_dlg_name_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<EditText
 			android:id="@+id/channel_edit_dlg_name_value"
-			android:inputType="text" 
+			android:inputType="text"
 			android:imeOptions="actionDone"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_program_label"
-			android:text="@string/channel_edit_dlg_program_label" 
+			android:text="@string/channel_edit_dlg_program_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<Spinner 
+
+		<Spinner
 			android:id="@+id/channel_edit_dlg_program_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_bank_label"
-			android:text="@string/channel_edit_dlg_bank_label" 
+			android:text="@string/channel_edit_dlg_bank_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<Spinner 
+
+		<Spinner
 			android:id="@+id/channel_edit_dlg_bank_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-		
+
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
 			style="?attr/dialogVerticalSpacerStyle" />
-		
-		<CheckBox 
+
+		<CheckBox
 			android:id="@+id/channel_edit_dlg_percussion_value"
-			android:text="@string/channel_edit_dlg_percussion_label" 
+			android:text="@string/channel_edit_dlg_percussion_label"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:layout_columnSpan="2" />
-			
+
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
 			style="?attr/dialogVerticalSpacerStyle" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_volume_label"
-			android:text="@string/channel_edit_dlg_volume_label" 
+			android:text="@string/channel_edit_dlg_volume_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
+
 		<SeekBar
 			android:id="@+id/channel_edit_dlg_volume_value"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:max="127" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_balance_label"
-			android:text="@string/channel_edit_dlg_balance_label" 
+			android:text="@string/channel_edit_dlg_balance_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
+
 		<SeekBar
 			android:id="@+id/channel_edit_dlg_balance_value"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:max="127" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_reverb_label"
-			android:text="@string/channel_edit_dlg_reverb_label" 
+			android:text="@string/channel_edit_dlg_reverb_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
+
 		<SeekBar
 			android:id="@+id/channel_edit_dlg_reverb_value"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:max="127" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_chorus_label"
-			android:text="@string/channel_edit_dlg_chorus_label" 
+			android:text="@string/channel_edit_dlg_chorus_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
+
 		<SeekBar
 			android:id="@+id/channel_edit_dlg_chorus_value"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:max="127" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_phaser_label"
-			android:text="@string/channel_edit_dlg_phaser_label" 
+			android:text="@string/channel_edit_dlg_phaser_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
+
 		<SeekBar
 			android:id="@+id/channel_edit_dlg_phaser_value"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:max="127" />
-			
-		<TextView 
+
+		<TextView
 			android:id="@+id/channel_edit_dlg_tremolo_label"
-			android:text="@string/channel_edit_dlg_tremolo_label" 
+			android:text="@string/channel_edit_dlg_tremolo_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-			
+
 		<SeekBar
 			android:id="@+id/channel_edit_dlg_tremolo_value"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:max="127" />
-			
+
 	</GridLayout>
 
 </ScrollView>

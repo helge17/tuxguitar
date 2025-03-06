@@ -8,13 +8,13 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGRemoveTextAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.remove-text";
-	
+
 	public TGRemoveTextAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
 		TGSongManager tgSongManager = getSongManager(context);

@@ -7,14 +7,14 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGStringLimitUtil {
-	
+
 	public static final int MINIMUM = 4;
 	public static final int MAXIMUM = 7;
-	
+
 	public static List<TGString> createWritableStrings(TGTrack track) {
 		return createWritableStrings(track, MINIMUM, MAXIMUM);
 	}
-	
+
 	public static List<TGString> createWritableStrings(TGTrack track, int minimum, int maximum) {
 		int count = track.stringCount();
 		if( count >= minimum && count <= maximum ) {
@@ -40,7 +40,7 @@ public class TGStringLimitUtil {
 		}
 		return writableStrings;
 	}
-	
+
 	private static List<TGString> createDefaultStrings(TGTrack track, int count) {
 		TGSongManager songManager = new TGSongManager();
 		if( track.isPercussion() ) {

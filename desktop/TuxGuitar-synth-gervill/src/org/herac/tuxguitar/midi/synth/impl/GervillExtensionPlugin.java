@@ -11,13 +11,13 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class GervillExtensionPlugin extends TGSynthExtensionPlugin {
-	
+
 	public static final String MODULE_ID = "tuxguitar-synth-gervill";
-	
+
 	public String getModuleId() {
 		return MODULE_ID;
 	}
-	
+
 	@Override
 	public List<TGSynthExtension<?>> createExtensions(TGContext context) throws TGPluginException {
 		List<TGSynthExtension<?>> extensions = new ArrayList<TGSynthExtension<?>>();

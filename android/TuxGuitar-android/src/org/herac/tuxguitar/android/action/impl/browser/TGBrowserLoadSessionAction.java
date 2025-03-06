@@ -12,17 +12,17 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserLoadSessionAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.load-session";
-	
+
 	public static final String ATTRIBUTE_SESSION = TGBrowserSession.class.getName();
 	public static final String ATTRIBUTE_COLLECTION = TGBrowserCollection.class.getName();
 	public static final String ATTRIBUTE_BROWSER = TGBrowser.class.getName();
-	
+
 	public TGBrowserLoadSessionAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		final TGBrowser tgBrowser = context.getAttribute(ATTRIBUTE_BROWSER);
 		final TGBrowserCollection tgBrowserCollection = context.getAttribute(ATTRIBUTE_COLLECTION);

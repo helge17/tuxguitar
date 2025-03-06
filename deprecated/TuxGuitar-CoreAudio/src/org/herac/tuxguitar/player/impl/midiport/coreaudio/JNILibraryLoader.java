@@ -3,11 +3,11 @@ package org.herac.tuxguitar.player.impl.midiport.coreaudio;
 import java.io.File;
 
 public class JNILibraryLoader {
-	
-	private static final String JNI_EXTENSION = ".jnilib";	
-	
+
+	private static final String JNI_EXTENSION = ".jnilib";
+
 	//private static final String JNI_TMP_PATH = (System.getProperty( "java.io.tmpdir" ) + File.separator);
-	
+
 	public static void loadLibrary(String libname){
 		System.out.println("trying to load" + libname + " (void loadLibrary)");
 		JNILibraryLoader.loadFromClassPath(libname + JNI_EXTENSION);
@@ -17,10 +17,10 @@ public class JNILibraryLoader {
 		}
 		 */
 	}
-	
+
 	private static boolean loadFromClassPath(String filename){
 		System.out.println("trying to load" + filename + " (bool loadFromClassPath)");
-		
+
 		File file = new File(/*JNI_TMP_PATH +*/ filename);
 		/*
 		try{
@@ -60,6 +60,6 @@ public class JNILibraryLoader {
 		return false;
 			 */
 	}
-}	
-	
+}
+
 

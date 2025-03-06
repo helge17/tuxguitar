@@ -9,15 +9,15 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMoveBeatsAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.move";
-	
+
 	public static final String ATTRIBUTE_MOVE = "move";
-	
+
 	public TGMoveBeatsAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);

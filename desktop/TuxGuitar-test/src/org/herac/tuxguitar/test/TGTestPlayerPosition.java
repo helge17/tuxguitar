@@ -24,22 +24,22 @@ import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTrack;
 
 public class TGTestPlayerPosition extends TGTest {
-		
+
 	private final int tempoValue = 240;	// to speed up tests
 	private final long tickOverflowTolerance = 50;	// empirical
 	private MidiPlayer player;
-	
+
 	/******** helper functions ************/
-	
+
 	protected long measureNumber(long tickPosition) {
 		return (tickPosition/TGDuration.QUARTER_TIME + 3)/4;	// empirical
 	}
 	protected long tickPosition(long measureNb) {
 		return (4*measureNb - 3) * TGDuration.QUARTER_TIME;	// empirical
 	}
-	
+
 	/******** user interactions, and acceptance criteria ************/
-	
+
 	protected void doSetSongTempoChecked(int value) {
 		TGTrack track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
@@ -57,28 +57,28 @@ public class TGTestPlayerPosition extends TGTest {
 		});
 		OK();
 	}
-	
+
 	protected void doPlayPause() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGTransportPlayPauseAction.NAME);
 		log("play/pause\n");
 		tgActionProcessor.process();
 	}
-	
+
 	protected void doPlayStop() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGTransportPlayStopAction.NAME);
 		log("play/stop\n");
 		tgActionProcessor.process();
 	}
-	
+
 	protected void doStop() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGTransportStopAction.NAME);
 		log("stop\n");
 		tgActionProcessor.process();
 	}
-	
+
 	// checks all measures in the interval are played
 	// if OK, returns as soon as player has started last specified measure
 	protected void checkPlaysInterval(int from, int to) {
@@ -86,7 +86,7 @@ public class TGTestPlayerPosition extends TGTest {
 
 		assertTrue(from>0, String.format("illegal arguments %d,%d\n",from,to));
 		assertTrue(to>from,  String.format("illegal arguments %d,%d\n",from,to));
-		
+
 		assertTimeoutPreemptively(Duration.ofSeconds(durationSec+1), () -> {
 			log("waiting for player to play...");
 			while (!player.isRunning()) {
@@ -106,9 +106,9 @@ public class TGTestPlayerPosition extends TGTest {
 				}
 				OK();
 			}
-		});		
+		});
 	}
-	
+
 	// checks measure1 then measure2 are played
 	// empirical: a small transient 'overflow' in measure1+1 can sometimes be observed
 	// and is tolerated
@@ -121,7 +121,7 @@ public class TGTestPlayerPosition extends TGTest {
 			}
 			OK();
 			log(String.format("check: playing %d...", measure1));
-			long measure = measureNumber(player.getTickPosition()); 
+			long measure = measureNumber(player.getTickPosition());
 			assertTrue(measure == measure1, String.format("KO, played %d\n", measure));
 			OK();
 			log(String.format("check: play %d...", measure2));
@@ -141,14 +141,14 @@ public class TGTestPlayerPosition extends TGTest {
 				position = player.getTickPosition();
 			}
 			OK();
-		});		
+		});
 	}
-	
+
 	// checks it starts playing from specified measure
 	// returns as soon as this measure is started
 	protected void checkPlaysFrom(int from) {
 		assertTrue(from>0, String.format("illegal parameters %d\n",from));
-		
+
 		assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
 			log("waiting for player to play...");
 			while (!player.isRunning()) {
@@ -159,9 +159,9 @@ public class TGTestPlayerPosition extends TGTest {
 			long measure = measureNumber(player.getTickPosition());
 			assertTrue(measure == from, String.format("KO, played %d\n", measure));
 			OK();
-		});		
+		});
 	}
-	
+
 	// check it starts playing from specified tickPosition (with some margin)
 	// returns as soon as it is detected
 	protected void checkPlaysFromTick(long tick) {
@@ -179,7 +179,7 @@ public class TGTestPlayerPosition extends TGTest {
 			OK();
 		});
 	}
-	
+
 	// check it plays until specified tickPosition
 	// WARNING: there is a timeout, call this function only when close to the theoretical stopping point
 	protected void checkPlaysUntilTick(long tick) {
@@ -200,7 +200,7 @@ public class TGTestPlayerPosition extends TGTest {
 			OK();
 		});
 	}
-	
+
 	// checks the last played measure, and the final position of caret after stop
 	// empirical: a small transient 'overflow' in [last played measure+1] can sometimes be observed
 	// (even if last played measure is the last measure of song)
@@ -218,7 +218,7 @@ public class TGTestPlayerPosition extends TGTest {
 				long currentMeasureMin = measureNumber(position-20);
 				assertTrue(currentMeasureMin == singleMeasurePlayed || currentMeasureMax == singleMeasurePlayed,
 						String.format("KO, played %d (%d)\n", currentMeasureMax, position));
-				doWait();				
+				doWait();
 			}
 			while (caret.getMeasure().getNumber()!=finalCaretMeasure) {
 				doWait();
@@ -230,13 +230,13 @@ public class TGTestPlayerPosition extends TGTest {
 		});
 		OK();
 	}
-	
+
 	// yet only "simple mode" (i.e. no training mode)
 	protected void setPlayerModeChecked(boolean isLooped, int from, int to) {
 		Integer type = MidiPlayerMode.TYPE_CUSTOM;
 		Boolean loop = isLooped;
 		Integer simplePercent = 100;
-		
+
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(TuxGuitar.getInstance().getContext(),
 				TGTransportModeAction.NAME);
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_TYPE, type);
@@ -249,7 +249,7 @@ public class TGTestPlayerPosition extends TGTest {
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_LOOP_E_HEADER, loop ? to : -1);
 		log(String.format("setting player mode(loop=%b, from=%d, to=%d)...", isLooped, from, to));
 		tgActionProcessor.process();
-		
+
 		assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
 			MidiPlayerMode mode = player.getMode();
 			while ( mode.getType() != type
@@ -262,21 +262,21 @@ public class TGTestPlayerPosition extends TGTest {
 		});
 		OK();
 	}
-	
+
 	/******** the test scenarios ************/
-	
+
 	@BeforeEach
 	// same song structure for all tests: empty measures, fast tempo to speed up tests
 	void cleanSong() {
 		player =  MidiPlayer.getInstance(TuxGuitar.getInstance().getContext());
 		verbose=false;
 		doCloseAllSongsWithoutConfirmationChecked();
-		
+
 		doSetSongTempoChecked(tempoValue);
 		doInsertMeasuresChecked(2, 9);
 		verbose=true;
 	}
-	
+
 	@Test
 	void playUntilTheEnd() {
 		log("\n----playUntilTheEnd\n");
@@ -290,7 +290,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayPause();
 		checkPlaysFrom(9);
 	}
-	
+
 	@Test
 	void playStop() {
 		log("\n----playStop\n");
@@ -305,7 +305,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayStop();
 		checkPlaysFrom(4);
 	}
-	
+
 	@Test
 	void PlayPausePlayStop() {
 		log("\n----PlayPausePlayStop\n");
@@ -319,7 +319,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayStop();
 		checkStopsSetCaretAt(8,6);
 	}
-	
+
 	@Test
 	void playSelection() {
 		// selecting left to right
@@ -329,7 +329,7 @@ public class TGTestPlayerPosition extends TGTest {
 		checkPlaysInterval(4, 6);
 		checkStopsSetCaretAt(6, 4);
 	}
-	
+
 	@Test
 	void playSelectionReverse() {
 		// selecting right to left
@@ -339,7 +339,7 @@ public class TGTestPlayerPosition extends TGTest {
 		checkPlaysInterval(4, 6);
 		checkStopsSetCaretAt(6, 4);
 	}
-	
+
 	@Test
 	void playSelectionPausePlayStop() {
 		log("\n----playSelectionPausePlayStop\n");
@@ -357,7 +357,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayStop();
 		checkStopsSetCaretAt(7,4);
 	}
-	
+
 	@Test
 	void playClickPlaying() {
 		log("\n----playClickPlaying\n");
@@ -378,8 +378,8 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayStop();
 		checkStopsSetCaretAt(3, 2);
 	}
-	
-	
+
+
 	@Test
 	void playStopTwice() {
 		log("\n----playStopTwice\n");
@@ -400,7 +400,7 @@ public class TGTestPlayerPosition extends TGTest {
 		});
 		OK();
 	}
-	
+
 	@Test
 	void loopStop() {
 		log("\n----loopStop\n");
@@ -417,7 +417,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayStop();
 		checkStopsSetCaretAt(5, 4);
 	}
-	
+
 	@Test
 	void loopPause() {
 		log("\n----loopPause\n");
@@ -434,7 +434,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayPause();
 		checkPlaysFrom(5);
 	}
-	
+
 	@Test
 	void loopPlaySelection() {
 		log("\n----loopPlaySelection\n");
@@ -451,7 +451,7 @@ public class TGTestPlayerPosition extends TGTest {
 		doPlayPause();
 		checkPlaysFrom(4);
 	}
-	
+
 	@Test
 	void loopPlaySelectionReverse() {
 		log("\n----loopPlaySelectionReverse\n");

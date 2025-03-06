@@ -94,7 +94,7 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 		float markerMargin = 1.0f;
 		float markerSize = cellSize - 2 * markerMargin;
 		UIColor colorBackground = this.table.getViewer().getColorModel().getColor(TGTableColorModel.HEADER);
-		
+
 		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
 		painter.setBackground(colorBackground);
 		painter.initPath(UIPainter.PATH_FILL);
@@ -119,7 +119,7 @@ public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHa
 	public UICanvas getPaintableControl() {
 		return getControl();
 	}
-	
+
 	public void loadIcons()  {
 		TGIconManager iconManager = TGIconManager.getInstance(this.table.getViewer().getContext());
 		this.imgMarker = iconManager.getMarker();

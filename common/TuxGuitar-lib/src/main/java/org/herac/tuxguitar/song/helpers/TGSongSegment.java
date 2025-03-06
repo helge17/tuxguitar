@@ -9,23 +9,23 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGString;
 
 public class TGSongSegment {
-	
+
 	private List<TGMeasureHeader> headers;
 	private List<TGTrackSegment> tracks;
-	
+
 	public TGSongSegment(){
 		this.headers = new ArrayList<TGMeasureHeader>();
 		this.tracks = new ArrayList<TGTrackSegment>();
 	}
-	
+
 	public List<TGMeasureHeader> getHeaders() {
 		return this.headers;
 	}
-	
+
 	public List<TGTrackSegment> getTracks() {
 		return this.tracks;
 	}
-	
+
 	public void addTrack(int track, List<TGMeasure> measures, List<TGString> strings, boolean isPercussionTrack){
 		List<Integer> trackStringsValues = new ArrayList<Integer>();
 		for (TGString string : strings) {
@@ -33,11 +33,11 @@ public class TGSongSegment {
 		}
 		this.tracks.add(new TGTrackSegment(track, measures, trackStringsValues, isPercussionTrack));
 	}
-	
+
 	public boolean isEmpty(){
 		return (this.headers.isEmpty() || this.tracks.isEmpty());
 	}
-	
+
 	public TGSongSegment clone(TGFactory factory){
 		TGSongSegment segment = new TGSongSegment();
 		for(int i = 0;i < getHeaders().size();i++){

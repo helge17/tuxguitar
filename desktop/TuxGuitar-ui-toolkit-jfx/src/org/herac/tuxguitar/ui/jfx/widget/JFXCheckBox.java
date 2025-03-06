@@ -11,14 +11,14 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UICheckBox;
 
 public class JFXCheckBox extends JFXControl<CheckBox> implements UICheckBox {
-	
+
 	private JFXSelectionListenerChangeManager<Boolean> selectionListener;
-	
+
 	private UIImage image;
-	
+
 	public JFXCheckBox(JFXContainer<? extends Region> parent) {
 		super(new CheckBox(), parent);
-		
+
 		this.selectionListener = new JFXSelectionListenerChangeManager<Boolean>(this);
 	}
 
@@ -38,7 +38,7 @@ public class JFXCheckBox extends JFXControl<CheckBox> implements UICheckBox {
 		this.image = image;
 		this.getControl().setGraphic(this.image != null ? new ImageView(((JFXImage) this.image).getHandle()) : null);
 	}
-	
+
 	public boolean isSelected() {
 		return this.getControl().isSelected();
 	}

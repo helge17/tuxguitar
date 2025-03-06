@@ -8,7 +8,7 @@ import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGContext;
 
 public class PrintController extends TGPrintController {
-	
+
 	public PrintController(TGContext context, TGSong song, TGSongManager songManager, UIResourceFactory resourceFactory){
 		super(song, songManager, resourceFactory, new PrintLayoutStyles(TGConfigManager.getInstance(context)));
 	}

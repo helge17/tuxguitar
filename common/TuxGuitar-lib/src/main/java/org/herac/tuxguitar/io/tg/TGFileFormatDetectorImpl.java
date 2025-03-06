@@ -25,5 +25,5 @@ public class TGFileFormatDetectorImpl extends TGStream implements TGFileFormatDe
 		}
 		return null;
 	}
-	
+
 }

@@ -36,18 +36,18 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTContainer<ToolBar>, UIToolCustomItem {
-	
+
 	private Map<String, Object> attributes;
 	private ToolItem item;
 	private UIControl control;
-	
+
 	public SWTToolCustomItem(ToolItem item, SWTToolBar parent) {
 		super(parent.getControl(), parent);
-		
+
 		this.item = item;
 		this.attributes = new HashMap<String, Object>();
 	}
-	
+
 	public <T extends Object> void setLayoutAttribute(String key, T value){
 		if( value != null ) {
 			this.attributes.put(key, value);
@@ -55,7 +55,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.attributes.remove(key);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <T extends Object> T getLayoutAttribute(String key){
 		if( this.attributes.containsKey(key) ) {
@@ -63,18 +63,18 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void addChild(UIControl control) {
 		this.control = control;
 		this.item.setControl(((SWTControl<? extends Control>)this.control).getControl());
 	}
-	
+
 	public void removeChild(UIControl uiControl) {
 		this.control = null;
 		this.item.setControl(null);
 	}
-	
+
 	public List<UIControl> getChildren() {
 		List<UIControl> children = new ArrayList<UIControl>();
 		if( this.control != null ) {
@@ -82,18 +82,18 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 		}
 		return children;
 	}
-	
+
 	public void computePackedSize() {
 		Float packedWidth = this.getLayoutAttribute(PACKED_WIDTH);
-		
+
 		this.computePackedSize(packedWidth, null);
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
 			this.control.computePackedSize(fixedWidth, fixedHeight);
-			
+
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
@@ -103,17 +103,17 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 		if( fixedHeight != null ) {
 			packedSize.setHeight(fixedHeight);
 		}
-		
+
 		Float minimumPackedWidth = this.getLayoutAttribute(MINIMUM_PACKED_WIDTH);
 		Float maximumPackedWidth = this.getLayoutAttribute(MAXIMUM_PACKED_WIDTH);
-		
+
 		if( minimumPackedWidth != null && minimumPackedWidth > packedSize.getWidth()) {
 			packedSize.setWidth(minimumPackedWidth);
 		}
 		if( maximumPackedWidth != null && maximumPackedWidth < packedSize.getWidth()) {
 			packedSize.setWidth(maximumPackedWidth);
 		}
-		
+
 		if( this.control != null ) {
 			UISize controlPackedSize = this.control.getPackedSize();
 			if( packedSize.getWidth() != controlPackedSize.getWidth() || packedSize.getHeight() != controlPackedSize.getHeight() ) {
@@ -121,7 +121,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			}
 		}
 	}
-	
+
 	public void setSize(int width, int height) {
 		if( this.control != null ) {
 			if( SWTEnvironment.getInstance().isToolItemResizeAvailable() ) {
@@ -130,7 +130,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.getItemControl().setSize(width, height);
 		}
 	}
-	
+
 	public boolean isEnabled() {
 		if( this.control != null ) {
 			return this.control.isEnabled();
@@ -202,39 +202,39 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.setFgColor(color);
 		}
 	}
-	
+
 	public UIFont getFont() {
 		if( this.control != null ) {
 			return this.control.getFont();
 		}
 		return null;
 	}
-	
+
 	public void setFont(UIFont font) {
 		if( this.control != null ) {
 			this.control.setFont(font);
 		}
 	}
-	
+
 	public UICursor getCursor() {
 		if( this.control != null ) {
 			return this.control.getCursor();
 		}
 		return null;
 	}
-	
+
 	public void setCursor(UICursor cursor) {
 		if( this.control != null ) {
 			this.control.setCursor(cursor);
 		}
 	}
-	
+
 	public void setFocus() {
 		if( this.control != null ) {
 			this.control.setFocus();
 		}
 	}
-	
+
 	public void redraw() {
 		if( this.control != null ) {
 			this.control.redraw();
@@ -253,33 +253,33 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.setPopupMenu(menu);
 		}
 	}
-	
+
 	public <Data> Data getData(String key) {
 		if( this.control != null ) {
 			return this.control.getData(key);
 		}
 		return null;
 	}
-	
+
 	public <Data> void setData(String key, Data data) {
 		if( this.control != null ) {
 			this.control.setData(key, data);
 		}
 	}
-	
+
 	public void setIgnoreEvents(boolean ignoreEvents) {
 		if( this.control != null ) {
 			this.control.setIgnoreEvents(ignoreEvents);
 		}
 	}
-	
+
 	public boolean isIgnoreEvents() {
 		if( this.control != null ) {
 			return this.control.isIgnoreEvents();
 		}
 		return false;
 	}
-	
+
 	public void addDisposeListener(UIDisposeListener listener) {
 		if( this.control != null ) {
 			this.control.addDisposeListener(listener);
@@ -291,7 +291,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeDisposeListener(listener);
 		}
 	}
-	
+
 	public void addResizeListener(UIResizeListener listener) {
 		if( this.control != null ) {
 			this.control.addResizeListener(listener);
@@ -303,7 +303,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeResizeListener(listener);
 		}
 	}
-	
+
 	public void addMouseUpListener(UIMouseUpListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseUpListener(listener);
@@ -363,7 +363,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeMouseDragListener(listener);
 		}
 	}
-	
+
 	public void addMouseWheelListener(UIMouseWheelListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseWheelListener(listener);
@@ -375,7 +375,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeMouseWheelListener(listener);
 		}
 	}
-	
+
 	public void addMouseEnterListener(UIMouseEnterListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseEnterListener(listener);
@@ -387,7 +387,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeMouseEnterListener(listener);
 		}
 	}
-	
+
 	public void addMouseExitListener(UIMouseExitListener listener) {
 		if( this.control != null ) {
 			this.control.addMouseExitListener(listener);
@@ -399,7 +399,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeMouseExitListener(listener);
 		}
 	}
-	
+
 	public void addKeyPressedListener(UIKeyPressedListener listener) {
 		if( this.control != null ) {
 			this.control.addKeyPressedListener(listener);
@@ -411,7 +411,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeKeyPressedListener(listener);
 		}
 	}
-	
+
 	public void addKeyReleasedListener(UIKeyReleasedListener listener) {
 		if( this.control != null ) {
 			this.control.addKeyReleasedListener(listener);
@@ -423,7 +423,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeKeyReleasedListener(listener);
 		}
 	}
-	
+
 	public void addFocusGainedListener(UIFocusGainedListener listener) {
 		if( this.control != null ) {
 			this.control.addFocusGainedListener(listener);
@@ -435,7 +435,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeFocusGainedListener(listener);
 		}
 	}
-	
+
 	public void addFocusLostListener(UIFocusLostListener listener) {
 		if( this.control != null ) {
 			this.control.addFocusLostListener(listener);
@@ -447,7 +447,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeFocusLostListener(listener);
 		}
 	}
-	
+
 	public void addZoomListener(UIZoomListener listener) {
 		if( this.control != null ) {
 			this.control.addZoomListener(listener);
@@ -459,11 +459,11 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 			this.control.removeZoomListener(listener);
 		}
 	}
-	
+
 	public void dispose() {
 		this.getParent().dispose(this);
 	}
-	
+
 	public void disposeControl() {
 		if( this.control != null ) {
 			this.control.dispose();
@@ -480,7 +480,7 @@ public class SWTToolCustomItem extends SWTToolControl<ToolBar> implements SWTCon
 	public ToolItem getItem() {
 		return item;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Control getItemControl() {
 		if( this.control != null ) {

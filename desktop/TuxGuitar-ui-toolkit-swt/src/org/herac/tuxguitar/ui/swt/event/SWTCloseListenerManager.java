@@ -7,9 +7,9 @@ import org.herac.tuxguitar.ui.event.UICloseListenerManager;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTCloseListenerManager extends UICloseListenerManager implements ShellListener {
-	
+
 	private SWTEventReceiver<?> control;
-	
+
 	public SWTCloseListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 	}
@@ -18,11 +18,11 @@ public class SWTCloseListenerManager extends UICloseListenerManager implements S
 		if(!this.control.isIgnoreEvents()) {
 			// cancel default operation
 			e.doit = false;
-			
+
 			this.onClose(new UICloseEvent(this.control));
 		}
 	}
-	
+
 	public void shellActivated(ShellEvent e) {
 		// Not implemented
 	}

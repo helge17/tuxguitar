@@ -14,10 +14,10 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentListManager {
-	
+
 	private TGContext context;
 	private List<TGDocument> documents;
-	
+
 	public TGDocumentListManager(TGContext context) {
 		this.context = context;
 		this.documents = new ArrayList<TGDocument>();
@@ -26,7 +26,7 @@ public class TGDocumentListManager {
 	public List<TGDocument> getDocuments() {
 		return documents;
 	}
-	
+
 	public List<TGDocument> findUnwantedDocumentsToRemove() {
 		List<TGDocument> documents = new ArrayList<TGDocument>();
 		for(TGDocument document : this.documents) {
@@ -36,7 +36,7 @@ public class TGDocumentListManager {
 		}
 		return documents;
 	}
-	
+
 	public void removeUnwantedDocument() {
 		List<TGDocument> documentsToRemove = this.findUnwantedDocumentsToRemove();
 		for(TGDocument documentToRemove : documentsToRemove) {
@@ -45,23 +45,23 @@ public class TGDocumentListManager {
 			}
 		}
 	}
-	
+
 	public void updateLoadedDocument() {
 		TGSong song = this.getLoadedSong();
 		TGDocument document = this.findDocument(song);
-		
+
 		this.removeUnwantedDocument();
-		
+
 		TGUndoableManager.getInstance(this.context).setBuffer(document.getUndoableBuffer());
 	}
-	
+
 	public TGDocument findDocument(TGSong song) {
 		for(TGDocument document : this.documents) {
 			if( document.getSong().equals(song) ) {
 				return document;
 			}
 		}
-		
+
 		TGDocument document = new TGDocument();
 		document.setSong(song);
 		document.setUndoableBuffer(new TGUndoableBuffer());
@@ -70,27 +70,27 @@ public class TGDocumentListManager {
 		document.setCaretBeat(null);
 		document.setCaretString(0);
 		this.documents.add(document);
-		
+
 		return this.findDocument(song);
 	}
-	
+
 	public TGDocument findCurrentDocument() {
 		return this.findDocument(this.getLoadedSong());
 	}
-	
+
 	public int findDocumentIndex(TGDocument document) {
 		return this.documents.indexOf(document);
 	}
-	
+
 	public int findCurrentDocumentIndex() {
 		TGDocument current = this.findCurrentDocument();
 		return (current != null ? this.findDocumentIndex(current) : -1);
 	}
-	
+
 	public TGSong getLoadedSong() {
 		return TGDocumentManager.getInstance(this.context).getSong();
 	}
-	
+
 	public String getDocumentName(TGDocument document) {
 		if( document.getUri() != null ){
 			String decodedFileName = TGFileUtils.getDecodedFileName(document.getUri());
@@ -100,23 +100,23 @@ public class TGDocumentListManager {
 		}
 		return TGFileChooser.getDefaultSaveFileName();
 	}
-	
+
 	public void removeDocument(TGDocument document) {
 		this.documents.remove(document);
 	}
-	
+
 	public void removeDocuments(List<TGDocument> documents) {
 		this.documents.removeAll(documents);
 	}
-	
+
 	public int countDocuments() {
 		return this.documents.size();
 	}
-	
+
 	public boolean containsDocument(TGDocument document) {
 		return this.documents.contains(document);
 	}
-	
+
 	public static TGDocumentListManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDocumentListManager.class.getName(), new TGSingletonFactory<TGDocumentListManager>() {
 			public TGDocumentListManager createInstance(TGContext context) {

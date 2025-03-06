@@ -1,10 +1,10 @@
 package org.herac.tuxguitar.io.gpx.score;
 
 public class GPXMasterBar {
-	
+
 	private int[] barIds;
 	private int[] time;
-	
+
 	private int repeatCount;
 	private boolean repeatStart;
 	private int accidentalCount;
@@ -12,25 +12,25 @@ public class GPXMasterBar {
 	private String tripletFeel;
 	private int[] alternateEndings;
 	private String markerText;
-	
+
 	public GPXMasterBar(){
 		this.accidentalCount = 0;
 		this.mode = null;
 		this.alternateEndings = null;
 	}
-	
+
 	public int[] getBarIds() {
 		return this.barIds;
 	}
-	
+
 	public void setBarIds(int[] barIds) {
 		this.barIds = barIds;
 	}
-	
+
 	public int[] getTime() {
 		return time;
 	}
-	
+
 	public void setTime(int[] time) {
 		this.time = time;
 	}
@@ -70,7 +70,7 @@ public class GPXMasterBar {
 	public String getTripletFeel() {
 		return this.tripletFeel;
 	}
-	
+
 	public void setTripletFeel(String tripletFeel) {
 		this.tripletFeel = tripletFeel;
 	}
@@ -82,11 +82,11 @@ public class GPXMasterBar {
 	public void setAlternateEndings(int alternateEndings[]) {
 		this.alternateEndings = alternateEndings;
 	}
-	
+
 	public String getMarkerText() {
 		return this.markerText;
 	}
-	
+
 	public void setMarkerText(String text) {
 		this.markerText = text;
 	}

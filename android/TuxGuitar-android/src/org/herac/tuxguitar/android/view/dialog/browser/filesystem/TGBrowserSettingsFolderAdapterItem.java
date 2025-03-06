@@ -6,7 +6,7 @@ public class TGBrowserSettingsFolderAdapterItem {
 
 	private String label;
 	private File file;
-	
+
 	public TGBrowserSettingsFolderAdapterItem(String label, File file) {
 		this.label = label;
 		this.file = file;

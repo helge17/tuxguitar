@@ -8,7 +8,7 @@ import org.herac.tuxguitar.graphics.command.TGPaintModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGKeySignaturePainter {
-	
+
 	private static final TGPaintCommand SHARP_MODEL = new TGPaintModel(
 		new TGMoveTo(0.4330491f, -0.79610115f),
 		new TGCubicTo(0.44892004f, -0.80517024f, 0.47386006f, -0.7983684f, 0.48292914f, -0.7779629f),
@@ -80,7 +80,7 @@ public class TGKeySignaturePainter {
 		new TGLineTo(0.40810916f, 0.19469716f),
 		new TGLineTo(0.40810916f, 0.00878073f)
 	);
-	
+
 	private static final TGPaintCommand FLAT_MODEL = new TGPaintModel(
 		new TGMoveTo(0.036081146f, -1.227901f),
 		new TGCubicTo(0.066563375f, -1.2334433f, 0.11644338f, -1.227901f, 0.13584116f, -1.2140454f),
@@ -113,7 +113,7 @@ public class TGKeySignaturePainter {
 		new TGCubicTo(0.41849452f, -0.025238734f, 0.41018116f, -0.09728751f, 0.38524118f, -0.15270983f),
 		new TGCubicTo(0.37138563f, -0.18042086f, 0.35475895f, -0.1998186f, 0.32981896f, -0.21090315f)
 	);
-	
+
 	private static final TGPaintCommand NATURAL_MODEL = new TGPaintModel(
 		new TGMoveTo(0.038880464f, -0.9978458f),
 		new TGCubicTo(0.061049357f, -1.003388f, 0.11092936f, -0.9978458f, 0.13032715f, -0.98399025f),
@@ -146,15 +146,15 @@ public class TGKeySignaturePainter {
 		new TGCubicTo(0.1192427f, 0.36831212f, 0.37418494f, 0.3267454f, 0.37695605f, 0.32397425f),
 		new TGCubicTo(0.37695605f, 0.32397425f, 0.38526937f, -0.09446347f, 0.38526937f, -0.22193468f)
 	);
-	
+
 	public static void paintSharp(UIPainter painter, float x, float y,float scale){
 		SHARP_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintFlat(UIPainter painter, float x, float y,float scale){
 		FLAT_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintNatural(UIPainter painter, float x, float y,float scale){
 		NATURAL_MODEL.paint(painter, x, y, scale);
 	}

@@ -16,7 +16,7 @@ import org.herac.tuxguitar.editor.clipboard.TGClipboard;
 import org.herac.tuxguitar.player.base.MidiPlayer;
 
 public class TGEditMenu extends TGMenuBase {
-	
+
 	public TGEditMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -25,10 +25,10 @@ public class TGEditMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_edit, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		boolean running = MidiPlayer.getInstance(this.findContext()).isRunning();
-		
+
 		this.initializeItem(menu, R.id.action_undo, this.createActionProcessor(TGUndoAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_redo, this.createActionProcessor(TGRedoAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_voice_1, this.createActionProcessor(TGSetVoice1Action.NAME), true);

@@ -10,7 +10,7 @@ import org.herac.tuxguitar.util.TGUserFileUtils;
 public class TGCustomTemplateDeleteAction extends TGActionBase {
 
 	public static final String NAME = "action.custom-template.delete";
-	
+
 	public TGCustomTemplateDeleteAction(TGContext context) {
 		super(context, NAME);
 	}

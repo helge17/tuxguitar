@@ -11,7 +11,7 @@ public class GTPSettingsPlugin extends TGPluginSettingsAdapter {
 	protected TGPluginSettingsHandler createHandler(TGContext context) throws TGPluginException {
 		return new GTPSettingsHandler(context);
 	}
-	
+
 	public String getModuleId() {
 		return GTPPlugin.MODULE_ID;
 	}

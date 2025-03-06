@@ -9,7 +9,7 @@ import org.herac.tuxguitar.graphics.command.TGRectangle;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGNotePainter {
-	
+
 	private static final TGPaintCommand NOTE_MODEL = new TGPaintModel(
 		new TGMoveTo(0.0f, 0.66f),
 		new TGCubicTo(0.0f, 0.83f, 0.166f, 1.0f, 0.33f, 1.0f),
@@ -17,7 +17,7 @@ public class TGNotePainter {
 		new TGCubicTo(1.33f, 0.166f, 1.16f, 0.0f, 1.0f, 0.0f),
 		new TGCubicTo(0.5f, 0.0f, 0.0f, 0.33f, 0.0f, 0.66f)
 	);
-	
+
 	private static final TGPaintCommand HARMONIC_MODEL = new TGPaintModel(
 		new TGMoveTo(0.1f, 0.5f),
 		new TGLineTo(0.65000004f, 1.0f),
@@ -26,27 +26,27 @@ public class TGNotePainter {
 		new TGLineTo(0.1f, 0.5f),
 		new TGLineTo(0.65000004f, 1.0f)
 	);
-	
+
 	private static final TGPaintCommand PERCUSSION_X_MODEL = new TGPaintModel(
 		new TGMoveTo(0.166666666666666f, 0.0f),
 		new TGLineTo(1.166666666666666f, 1.0f),
 		new TGMoveTo(0.166666666666666f, 1.0f),
 		new TGLineTo(1.166666666666666f, 0.0f)
 	);
-	
+
 	private static final TGPaintCommand PERCUSSION_TRIANGLE_MODEL = new TGPaintModel(
 		new TGMoveTo(1.166666666666666f, 0.85f),
 		new TGLineTo(0.166666666666666f, 0.85f),
 		new TGLineTo(0.666666666666666f, (0.85f - 0.866025403784439f)),
 		new TGLineTo(1.166666666666666f, 0.85f)
 	);
-	
+
 	private static final TGPaintCommand PERCUSSION_CYMBAL_MODEL = new TGPaintModel(
 		new TGMoveTo(0.166666666666666f, 0.0f),
 		new TGLineTo(1.166666666666666f, 1.0f),
 		new TGMoveTo(0.166666666666666f, 1.0f),
 		new TGLineTo(1.166666666666666f, 0.0f),
-		
+
 		new TGMoveTo(0.166666666666666f, 0.0f),
 		new TGRectangle(0.166666666666666f, 0.0f, 0.25f, 0.25f),
 		new TGMoveTo((1.166666666666666f - (0.25f)), (1.0f - (0.25f))),
@@ -56,7 +56,7 @@ public class TGNotePainter {
 		new TGMoveTo((1.166666666666666f - (0.25f)), 0.0f),
 		new TGRectangle((1.166666666666666f - 0.25f), 0.0f, 0.25f, 0.25f)
 	);
-	
+
 	private static final TGPaintCommand FOOTER_UP_MODEL = new TGPaintModel(
 		new TGMoveTo(0.64375f, -0.00625f),
 		new TGCubicTo(0.659375f, 0.0f, 0.69375f, -0.00625f, 0.70625f, -0.0125f),
@@ -81,7 +81,7 @@ public class TGNotePainter {
 		new TGCubicTo(0.584375f, -0.10625f, 0.58125f, -0.096875f, 0.58125f, -0.0875f),
 		new TGCubicTo(0.58125f, -0.05f, 0.60625f, -0.01875f, 0.64375f, -0.00625f)
 	);
-	
+
 	private static final TGPaintCommand FOOTER_DOWN_MODEL = new TGPaintModel(
 		new TGMoveTo(0.64375f, 0.00625f),
 		new TGCubicTo(0.659375f, 0.0f, 0.69375f, 0.00625f, 0.70625f, 0.0125f),
@@ -106,19 +106,19 @@ public class TGNotePainter {
 		new TGCubicTo(0.584375f, 0.10625f, 0.58125f, 0.096875f, 0.58125f, 0.0875f),
 		new TGCubicTo(0.58125f, 0.05f, 0.60625f, 0.01875f, 0.64375f, 0.00625f)
 	);
-	
+
 	public static void paintNote(UIPainter painter, float x, float y, float scale) {
 		NOTE_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintHarmonic(UIPainter painter, float x, float y, float scale){
 		HARMONIC_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintXNote(UIPainter painter, float x, float y, float scale) {
 		PERCUSSION_X_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintTriangle(UIPainter painter, float x, float y, float scale) {
 		PERCUSSION_TRIANGLE_MODEL.paint(painter, x, y, scale);
 	}
@@ -126,7 +126,7 @@ public class TGNotePainter {
 	public static void paintEffectCymbalXNote(UIPainter painter, float x, float y, float scale) {
 		PERCUSSION_CYMBAL_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintFooter(UIPainter painter, float x, float y,int dir,float scale) {
 		TGPaintCommand tgPaintCommand = (dir > 0 ? FOOTER_DOWN_MODEL : FOOTER_UP_MODEL);
 		tgPaintCommand.paint(painter, x, y, scale);

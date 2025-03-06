@@ -5,12 +5,12 @@ import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 
 public class MidiRepeatController {
-	
+
 	private TGSong song;
 	private int count;
 	private int index;
-	private int lastIndex;	
-	private boolean shouldPlay;	
+	private int lastIndex;
+	private boolean shouldPlay;
 	private boolean repeatOpen;
 	private long repeatStart;
 	private long repeatEnd;
@@ -20,7 +20,7 @@ public class MidiRepeatController {
 	private int repeatAlternative;
 	private int sHeader;
 	private int eHeader;
-	
+
 	public MidiRepeatController(TGSong song, int sHeader , int eHeader){
 		this.song = song;
 		this.sHeader = sHeader;
@@ -37,17 +37,17 @@ public class MidiRepeatController {
 		this.repeatStartIndex = 0;
 		this.repeatNumber = 0;
 	}
-	
+
 	public void process(){
 		TGMeasureHeader header = this.song.getMeasureHeader(this.index);
-		
+
 		// parsing is already finished if measure is after range
 		if( this.eHeader >= 0 && header.getNumber() > this.eHeader ) {
 			this.shouldPlay = false;
 			this.index ++;
 			return;
 		}
-		
+
 		//Abro repeticion siempre para el primer compas.
 		// first measure is default open repeat
 		if( (this.sHeader >= 0 && header.getNumber() == this.sHeader ) || header.getNumber() == 1 ){
@@ -55,11 +55,11 @@ public class MidiRepeatController {
 			this.repeatStart = header.getStart();
 			this.repeatOpen = true;
 		}
-		
+
 		//Por defecto el compas deberia sonar
 		// by default measure shall be played
 		this.shouldPlay = true;
-		
+
 		//En caso de existir una repeticion nueva,
 		//guardo el indice de el compas donde empieza una repeticion
 		// if repeat opens, store where it starts
@@ -67,7 +67,7 @@ public class MidiRepeatController {
 			this.repeatStartIndex = this.index;
 			this.repeatStart = header.getStart();
 			this.repeatOpen = true;
-			
+
 			//Si es la primer vez que paso por este compas
 			//Pongo numero de repeticion y final alternativo en cero
 			// reset repeat counter if this is the first time this measure is parsed
@@ -93,12 +93,12 @@ public class MidiRepeatController {
 				this.shouldPlay = false;
 			}
 		}
-		
+
 		//antes de ejecutar una posible repeticion
-		//guardo el indice del ultimo compas tocado 
+		//guardo el indice del ultimo compas tocado
 		if (this.shouldPlay) {
 			this.lastIndex = Math.max(this.lastIndex,this.index);
-		
+
 			//si hay una repeticion la hago
 			// repeat close (ignored if it's the last measure in loop)
 			if (this.repeatOpen && (header.getRepeatClose() > 0) && (this.eHeader < 0 || header.getNumber() < this.eHeader)) {
@@ -117,7 +117,7 @@ public class MidiRepeatController {
 			}
 		}
 		this.index ++;
-		
+
 		//Verifica si el compas esta dentro del rango.
 		// check measure is in loop range (if any loop defined)
 		if( (this.sHeader >= 0 && header.getNumber() < this.sHeader) || ( this.eHeader >= 0 && header.getNumber() > this.eHeader ) ){
@@ -128,19 +128,19 @@ public class MidiRepeatController {
 			this.repeatMove = 0;
 		}
 	}
-	
+
 	public boolean finished(){
 		return (this.index >= this.count);
 	}
-	
+
 	public boolean shouldPlay(){
 		return this.shouldPlay;
 	}
-	
+
 	public int getIndex(){
 		return this.index;
 	}
-	
+
 	public long getRepeatMove(){
 		return this.repeatMove;
 	}

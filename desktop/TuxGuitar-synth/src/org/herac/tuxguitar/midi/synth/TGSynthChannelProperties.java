@@ -8,9 +8,9 @@ import java.util.Set;
 import org.herac.tuxguitar.util.properties.TGProperties;
 
 public class TGSynthChannelProperties implements TGProperties{
-	
+
 	private Map<String, String> properties;
-	
+
 	public TGSynthChannelProperties() {
 		this.properties = new HashMap<String, String>();
 	}
@@ -26,11 +26,11 @@ public class TGSynthChannelProperties implements TGProperties{
 	public void setValue(String key, String value) {
 		this.properties.put(key, value);
 	}
-	
+
 	public void remove(String key) {
 		this.properties.remove(key);
 	}
-	
+
 	public void clear() {
 		this.properties.clear();
 	}

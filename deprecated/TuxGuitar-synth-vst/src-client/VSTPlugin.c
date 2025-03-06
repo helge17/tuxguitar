@@ -6,7 +6,7 @@
 void VSTPlugin_malloc(VSTPluginHandle **handle, const char *libraryPath)
 {
 	void *library = NULL;
-	
+
 	VSTPluginLoad( &library, libraryPath );
 	if (library != NULL) {
 		(*handle) = (VSTPluginHandle *) malloc( sizeof(VSTPluginHandle) );
@@ -23,7 +23,7 @@ void VSTPlugin_delete(VSTPluginHandle **handle)
 			VSTPluginFree( &((*handle)->library) );
 		}
 		free ( (*handle) );
-		
+
 		(*handle) = NULL;
 	}
 }

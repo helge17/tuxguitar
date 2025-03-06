@@ -16,14 +16,14 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGClassLoader implements TGResourceLoader {
-	
+
 	private String[] filePaths;
 	private URLClassLoaderImpl classLoader;
-	
+
 	private TGClassLoader(){
 		this.classLoader = new URLClassLoaderImpl();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <T> Class<T> loadClass(String name) throws TGResourceException {
 		try {
@@ -88,7 +88,7 @@ public class TGClassLoader implements TGResourceLoader {
 			throw new TGResourceException(e);
 		}
 	}
-	
+
 	public void addPath(String path){
 		try {
 			this.classLoader.addURL(new File(path).getAbsoluteFile().toURI().toURL());
@@ -96,7 +96,7 @@ public class TGClassLoader implements TGResourceLoader {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addPaths(File folder){
 		if(folder != null && folder.exists() && folder.isDirectory()){
 			String[] files = folder.list();
@@ -109,11 +109,11 @@ public class TGClassLoader implements TGResourceLoader {
 			}
 		}
 	}
-	
+
 	public ClassLoader getClassLoader(){
 		return this.classLoader;
 	}
-	
+
 	public String[] getFilePaths() {
 		return filePaths;
 	}
@@ -129,13 +129,13 @@ public class TGClassLoader implements TGResourceLoader {
 			}
 		});
 	}
-	
+
 	private class URLClassLoaderImpl extends URLClassLoader{
-		
+
 		public URLClassLoaderImpl(){
 			super(new URL[]{},TGClassLoader.class.getClassLoader());
 		}
-		
+
 		public void addURL(URL url){
 			super.addURL(url);
 		}

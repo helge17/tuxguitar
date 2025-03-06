@@ -10,20 +10,20 @@ import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
 import org.herac.tuxguitar.util.TGContext;
 
 public class JackOutputPortProvider implements MidiOutputPortProvider{
-	
+
 	private TGContext context;
 	private List<MidiOutputPort> jackOutputPorts;
 	private JackClientProvider jackClientProvider;
-	
+
 	public JackOutputPortProvider(TGContext context, JackClientProvider jackClientProvider){
 		this.context = context;
 		this.jackClientProvider = jackClientProvider;
 	}
-	
+
 	public List<MidiOutputPort> listPorts() {
 		if( this.jackOutputPorts == null ){
 			this.jackOutputPorts = new ArrayList<MidiOutputPort>();
-			
+
 			JackClient jackClient = this.jackClientProvider.getJackClient();
 			if( jackClient != null ){
 				this.jackOutputPorts.add(new JackSynthesizerPort(this.context, jackClient));
@@ -31,7 +31,7 @@ public class JackOutputPortProvider implements MidiOutputPortProvider{
 		}
 		return this.jackOutputPorts;
 	}
-	
+
 	public void closeAll(){
 		// TODO
 	}

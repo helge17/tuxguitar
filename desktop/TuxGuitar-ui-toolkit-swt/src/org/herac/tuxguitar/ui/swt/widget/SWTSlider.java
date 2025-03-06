@@ -8,12 +8,12 @@ import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UISlider;
 
 public class SWTSlider extends SWTControl<Slider> implements UISlider {
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	public SWTSlider(SWTContainer<? extends Composite> parent, int orientation) {
 		super(new Slider(parent.getControl(), SWT.BORDER | orientation), parent);
-		
+
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
 
@@ -48,15 +48,15 @@ public class SWTSlider extends SWTControl<Slider> implements UISlider {
 	public int getIncrement() {
 		return this.getControl().getIncrement();
 	}
-	
+
 	public void setThumb(int thumb) {
 		this.getControl().setThumb(thumb);
 	}
-	
+
 	public int getThumb() {
 		return this.getControl().getThumb();
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().addSelectionListener(this.selectionListener);

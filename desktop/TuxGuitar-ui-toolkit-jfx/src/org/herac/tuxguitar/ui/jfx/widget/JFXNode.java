@@ -44,9 +44,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 
 public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implements UIControl {
-	
+
 	private JFXContainer<? extends Region> parent;
-	
+
 	private JFXDisposeListenerManager disposeListener;
 	private JFXFocusListenerManager focusListener;
 	private JFXKeyPressedListenerManager keyPressedListener;
@@ -60,7 +60,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	private JFXMouseExitListenerManager mouseExitListener;
 	private JFXMouseWheelListenerManager mouseWheelListener;
 	private JFXZoomListenerManager zoomListener;
-	
+
 	private String toolTipText;
 	private UISize packedSize;
 	private UIColor bgColor;
@@ -68,12 +68,12 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
-	
+
 	boolean snapshotDone;
-	
+
 	public JFXNode(T control, JFXContainer<? extends Region> parent) {
 		super(control);
-		
+
 		this.parent = parent;
 		if( this.parent != null ) {
 			this.parent.addChild(this);
@@ -92,17 +92,17 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 		this.mouseEnterListener = new JFXMouseEnterListenerManager(this);
 		this.mouseExitListener = new JFXMouseExitListenerManager(this);
 		this.zoomListener = new JFXZoomListenerManager(this);
-		
+
 		this.getControl().setManaged(false);
 		this.getControl().setFocusTraversable(false);
 		this.getControl().getStyleClass().add(this.getClass().getSimpleName());
 		this.getControl().applyCss();
 	}
-	
+
 	public UIControl getParent() {
 		return this.parent;
 	}
-	
+
 	public void setPackedSize(UISize packedSize) {
 		this.packedSize.setWidth(packedSize.getWidth());
 		this.packedSize.setHeight(packedSize.getHeight());
@@ -115,7 +115,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		double wHint = (fixedWidth != null ? fixedWidth : Region.USE_COMPUTED_SIZE);
 		double hHint = (fixedHeight != null ? fixedHeight : Region.USE_COMPUTED_SIZE);
-		
+
 		this.packedSize.setWidth(fixedWidth != null ? fixedWidth : (float) this.getControl().prefWidth(hHint));
 		this.packedSize.setHeight(fixedHeight != null ? fixedHeight : (float) this.getControl().prefHeight(wHint));
 	}
@@ -125,10 +125,10 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.parent.removeChild(this);
 		}
 		this.disposeListener.fireEvent();
-		
+
 		super.dispose();
 	}
-	
+
 	public boolean isEnabled() {
 		return !this.getControl().isDisable();
 	}
@@ -144,7 +144,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	public void setVisible(boolean visible) {
 		this.getControl().setVisible(visible);
 	}
-	
+
 	public String getToolTipText() {
 		return this.toolTipText;
 	}
@@ -152,11 +152,11 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	public void setToolTipText(String toolTipText) {
 		this.toolTipText = toolTipText;
 	}
-	
+
 	public UIColor getBgColor() {
 		return this.bgColor;
 	}
-	
+
 	public void setBgColor(final UIColor color) {
 		this.bgColor = color;
 	}
@@ -164,32 +164,32 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	public UIColor getFgColor() {
 		return this.fgColor;
 	}
-	
+
 	public void setFgColor(UIColor color) {
 		this.fgColor = color;
 	}
-	
+
 	public UIFont getFont() {
 		return this.font;
 	}
-	
+
 	public void setFont(UIFont font) {
 		this.font = font;
 	}
-	
+
 	public UICursor getCursor() {
 		return (this.cursor != null ? this.cursor : UICursor.NORMAL);
 	}
-	
+
 	public void setCursor(UICursor cursor) {
 		this.cursor = cursor;
 		this.getControl().setCursor(JFXCursor.getCursor(this.getCursor()));
 	}
-	
+
 	public UIPopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}
-	
+
 	public void setPopupMenu(UIPopupMenu popupMenu) {
 		this.popupMenu = popupMenu;
 		this.getControl().setOnContextMenuRequested(this.popupMenu != null ? new EventHandler<ContextMenuEvent>() {
@@ -198,13 +198,13 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			}
 		} : null);
 	}
-	
+
 	public void showPopupMenu(double x, double y) {
 		if( this.popupMenu != null ) {
 			((JFXPopupMenu) this.popupMenu).getControl().show(this.getControl(), x, y);
 		}
 	}
-	
+
 	public void setFocus() {
 		this.getControl().setFocusTraversable(true);
 		this.getControl().requestFocus();
@@ -213,23 +213,23 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 	public void updateClippingArea(UIRectangle childArea) {
 		UIRectangle bounds = this.getBounds();
 		UIRectangle area = new UIRectangle();
-		
+
 		area.getPosition().setX(childArea.getX() - bounds.getX());
 		area.getPosition().setY(childArea.getY() - bounds.getY());
 		area.getSize().setWidth(childArea.getWidth());
 		area.getSize().setHeight(childArea.getHeight());
-		
+
 		this.getControl().setClip(new Rectangle(area.getX(), area.getY(), area.getWidth(), area.getHeight()));
 	}
-	
+
 	public void addDisposeListener(UIDisposeListener listener) {
 		this.disposeListener.addListener(listener);
 	}
-	
+
 	public void removeDisposeListener(UIDisposeListener listener) {
 		this.disposeListener.removeListener(listener);
 	}
-	
+
 	public void addMouseUpListener(UIMouseUpListener listener) {
 		if( this.mouseUpListener.isEmpty() ) {
 			this.getControl().setOnMouseReleased(this.mouseUpListener);
@@ -285,7 +285,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().setOnMouseMoved(null);
 		}
 	}
-	
+
 	public void addMouseDragListener(UIMouseDragListener listener) {
 		if( this.mouseDragListener.isEmpty() ) {
 			this.addMouseUpListener(this.mouseDragListener);
@@ -303,7 +303,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.removeMouseDownListener(this.mouseDragListener);
 		}
 	}
-	
+
 	public void addMouseWheelListener(UIMouseWheelListener listener) {
 		if( this.mouseWheelListener.isEmpty() ) {
 			this.getControl().setOnScroll(this.mouseWheelListener);
@@ -317,7 +317,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().setOnScroll(null);
 		}
 	}
-	
+
 	public void addMouseEnterListener(UIMouseEnterListener listener) {
 		if( this.mouseEnterListener.isEmpty() ) {
 			this.getControl().setOnMouseEntered(this.mouseEnterListener);
@@ -331,7 +331,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().setOnMouseEntered(null);
 		}
 	}
-	
+
 	public void addMouseExitListener(UIMouseExitListener listener) {
 		if( this.mouseExitListener.isEmpty() ) {
 			this.getControl().setOnMouseExited(this.mouseExitListener);
@@ -345,7 +345,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().setOnMouseExited(null);
 		}
 	}
-	
+
 	public void addKeyPressedListener(UIKeyPressedListener listener) {
 		if( this.keyPressedListener.isEmpty() ) {
 			this.getControl().setOnKeyPressed(this.keyPressedListener);
@@ -359,7 +359,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().setOnKeyPressed(null);
 		}
 	}
-	
+
 	public void addKeyReleasedListener(UIKeyReleasedListener listener) {
 		if( this.keyReleasedListener.isEmpty() ) {
 			this.getControl().setOnKeyReleased(this.keyReleasedListener);
@@ -373,7 +373,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().setOnKeyReleased(null);
 		}
 	}
-	
+
 	public void addFocusGainedListener(UIFocusGainedListener listener) {
 		if( this.focusListener.isEmpty() ) {
 			this.getControl().focusedProperty().addListener(this.focusListener);
@@ -387,7 +387,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().focusedProperty().removeListener(this.focusListener);
 		}
 	}
-	
+
 	public void addFocusLostListener(UIFocusLostListener listener) {
 		if( this.focusListener.isEmpty() ) {
 			this.getControl().focusedProperty().addListener(this.focusListener);
@@ -401,7 +401,7 @@ public abstract class JFXNode<T extends Node> extends JFXEventReceiver<T> implem
 			this.getControl().focusedProperty().removeListener(this.focusListener);
 		}
 	}
-	
+
 	public void addZoomListener(UIZoomListener listener) {
 		if( this.zoomListener.isEmpty() ) {
 			this.getControl().setOnScroll(this.zoomListener);

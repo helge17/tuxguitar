@@ -14,11 +14,11 @@ import org.herac.tuxguitar.util.properties.TGPropertiesException;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGResourcePropertiesReader implements TGPropertiesReader {
-	
+
 	private TGContext context;
 	private String modulePrefix;
 	private String moduleSuffix;
-	
+
 	public TGResourcePropertiesReader(TGContext context, String modulePrefix, String moduleSuffix) {
 		this.context = context;
 		this.modulePrefix = modulePrefix;

@@ -9,13 +9,13 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMenuShownAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.edit.tablature.menu-shown";
-	
+
 	public TGMenuShownAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		EditorKit editorKit = TablatureEditor.getInstance(getContext()).getTablature().getEditorKit();
 		if( editorKit.fillSelection(context)) {

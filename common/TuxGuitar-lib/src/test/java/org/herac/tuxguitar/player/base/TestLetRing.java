@@ -23,10 +23,10 @@ import org.herac.tuxguitar.player.impl.sequencer.MidiSequenceHandlerImpl;
 import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
 
 public class TestLetRing {
-	
+
 	private List<MidiEvent> events;
 	private List<NoteTiming> notes;
-	
+
 	// load test song, and fill MIDI events list
 	public TestLetRing() throws IOException {
 		TGContext context = new TGContext();
@@ -37,7 +37,7 @@ public class TestLetRing {
 		parser.parse(seqHandler);
 		events = sequencer.getEvents();
 	}
-	
+
 	// 4 quarters, all with letRing, following measure is empty
 	@Test
 	public void testMeasure1() throws MidiPlayerException {
@@ -48,7 +48,7 @@ public class TestLetRing {
 		assertNoteTiming(2, 3, 2);	// ...
 		assertNoteTiming(3, 4, 1);
 	}
-	
+
 	// 4 quarters, 1st and 3rd with letRing, following measure is empty
 	@Test
 	public void testMeasure3() throws MidiPlayerException {
@@ -59,7 +59,7 @@ public class TestLetRing {
 		assertNoteTiming(2, 3, 2);	// 3rd and 4th notes stop together
 		assertNoteTiming(3, 4, 1);
 	}
-	
+
 	// 2 measures with 4 quarters. Seven first notes with letRing
 	// 3 first notes of second measure are tied
 	// Following measure starts without tied
@@ -75,7 +75,7 @@ public class TestLetRing {
 		this.notes = this.getNotesTiming(6);
 		assertEquals(0, notes.size());	// no note starts in measure
 	}
-	
+
 	// 3 quarters (2 first notes with letRing), then rest
 	// all notes stop together
 	@Test
@@ -86,7 +86,7 @@ public class TestLetRing {
 		assertNoteTiming(1, 2, 2);
 		assertNoteTiming(2, 3, 1);
 	}
-	
+
 	// 3 quarters, all with letRing, then rest
 	// all notes stop together
 	@Test
@@ -97,13 +97,13 @@ public class TestLetRing {
 		assertNoteTiming(1, 2, 2);
 		assertNoteTiming(2, 3, 1);
 	}
-	
-	// measure 11 test: 
+
+	// measure 11 test:
 	// 2 simultaneous quarters: one with letRing and the other one without
 	// then 1 quarter with letRing, then 1 without, then rest
 	// expected behavior in this case is not so clear => NOT TESTED
 
-	
+
 	// 4 quarters, 3 first with letRing
 	// 3rd quarter on same string than first
 	@Test
@@ -115,7 +115,7 @@ public class TestLetRing {
 		assertNoteTiming(2, 3, 2);
 		assertNoteTiming(3, 4, 1);
 	}
-	
+
 	// 4 quarters with letRing, first note of following measure not tied
 	// all notes stop together with 4th
 	@Test
@@ -127,7 +127,7 @@ public class TestLetRing {
 		assertNoteTiming(2, 3, 2);
 		assertNoteTiming(3, 4, 1);
 	}
-	
+
 	// measure with 4 quarters, all with letRing, and then a repeat
 	// take care here, nMeasure is increased by one after repeat
 	// nMeasure=17 is 2nd pass on measure #16
@@ -146,13 +146,13 @@ public class TestLetRing {
 		assertNoteTiming(2, 3, 2);
 		assertNoteTiming(3, 4, 1);
 	}
-	
+
 	private void assertNoteTiming(int index, long start, long duration) {
 		assertEquals(start, this.notes.get(index).getStart());
 		assertEquals(duration, this.notes.get(index).getDuration());
 	}
-	
-	
+
+
 	// override MidiSequencerImpl to retrieve list of MIDI events
 	private class MidiSequencerImplForTest extends MidiSequencerImpl {
 		private List<MidiEvent> events = new ArrayList<MidiEvent>();
@@ -167,7 +167,7 @@ public class TestLetRing {
 			return this.events;
 		}
 	}
-	
+
 	// used by test: list of notes per measure, with [start, duration] attributes, measured in quarters
 	// start: 1 corresponds to 1st beat of measure
 	private class NoteTiming {
@@ -189,7 +189,7 @@ public class TestLetRing {
 		int nEventNoteOn=0;
 		// look for 1st note of measure
 		MidiEvent eventNoteOn = this.events.get(0);
-		while ((nEventNoteOn < this.events.size()) && 
+		while ((nEventNoteOn < this.events.size()) &&
 				((eventNoteOn.getTick()<(getMeasureTick(nMeasure)) || (eventNoteOn.getType()!=MidiEvent.MIDI_EVENT_NOTEON))) ) {
 			nEventNoteOn ++;
 			eventNoteOn = this.events.get(nEventNoteOn);
@@ -212,7 +212,7 @@ public class TestLetRing {
 			// next noteOn (if any)
 			nEventNoteOn ++;
 			eventNoteOn = this.events.get(nEventNoteOn);
-			while ((nEventNoteOn < this.events.size()-1) && 
+			while ((nEventNoteOn < this.events.size()-1) &&
 					(eventNoteOn.getType()!=MidiEvent.MIDI_EVENT_NOTEON) ) {
 				nEventNoteOn ++;
 				eventNoteOn = this.events.get(nEventNoteOn);
@@ -220,7 +220,7 @@ public class TestLetRing {
 		}
 		return notes;
 	}
-	
+
 	private long getMeasureTick(int nMeasure) {
 		return TGDuration.QUARTER_TIME * (4 * (nMeasure-1) + 1);
 	}

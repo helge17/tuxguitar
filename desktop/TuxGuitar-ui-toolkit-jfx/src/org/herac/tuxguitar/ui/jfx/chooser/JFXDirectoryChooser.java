@@ -13,27 +13,27 @@ public class JFXDirectoryChooser implements UIDirectoryChooser {
 	private JFXWindow window;
 	private String text;
 	private File defaultPath;
-	
+
 	public JFXDirectoryChooser(JFXWindow window) {
 		this.window = window;
 	}
-	
+
 	public void choose(UIDirectoryChooserHandler selectionHandler) {
 		DirectoryChooser dialog = new DirectoryChooser();
 		if( this.text != null ) {
 			dialog.setTitle(this.text);
 		}
-		
+
 		File initialDirectory = this.createInitialDirectory();
 		if( initialDirectory != null ) {
 			dialog.setInitialDirectory(initialDirectory);
 		}
-		
+
 		File path = dialog.showDialog(this.window.getStage());
-		
-		selectionHandler.onSelectDirectory(path); 
+
+		selectionHandler.onSelectDirectory(path);
 	}
-	
+
 	public File createInitialDirectory() {
 		if( this.defaultPath != null ) {
 			File directory = (this.defaultPath.isDirectory() ? this.defaultPath : this.defaultPath.getParentFile());
@@ -43,7 +43,7 @@ public class JFXDirectoryChooser implements UIDirectoryChooser {
 		}
 		return null;
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}

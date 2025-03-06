@@ -11,13 +11,13 @@ import org.herac.tuxguitar.event.TGEventListener;
 import org.herac.tuxguitar.util.TGAbstractContext;
 
 public class TGSongViewEventListener implements TGEventListener {
-	
+
 	private TGSongViewController songView;
-	
+
 	public TGSongViewEventListener(TGSongViewController songView) {
 		this.songView = songView;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void processUpdateEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
@@ -41,7 +41,7 @@ public class TGSongViewEventListener implements TGEventListener {
 			this.songView.resetCaret();
 		}
 	}
-	
+
 	public void processRedrawEvent(TGEvent event) {
 		int type = ((Integer)event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
 		if( type == TGRedrawEvent.NORMAL ){
@@ -50,15 +50,15 @@ public class TGSongViewEventListener implements TGEventListener {
 			this.songView.redrawPlayingMode();
 		}
 	}
-	
+
 	public void processDestroyEvent(TGEvent event) {
 		this.songView.dispose();
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( TGRedrawEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processRedrawEvent(event);
-		} 
+		}
 		else if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.processUpdateEvent(event);
 		}

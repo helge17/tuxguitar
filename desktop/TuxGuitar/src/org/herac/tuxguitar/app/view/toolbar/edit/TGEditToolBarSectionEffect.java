@@ -26,9 +26,9 @@ import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 import org.herac.tuxguitar.util.TGNoteRange;
 
 public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
-	
+
 	private static final String SECTION_TITLE = "effects";
-	
+
 	private UIToolCheckableItem vibrato;
 	private UIToolCheckableItem bend;
 	private UIToolCheckableItem tremoloBar;
@@ -49,14 +49,14 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	private UIToolCheckableItem slapping;
 	private UIToolCheckableItem popping;
 	private UIToolCheckableItem fadeIn;
-	
+
 	public TGEditToolBarSectionEffect(TGEditToolBar toolBar) {
 		super(toolBar, SECTION_TITLE);
 	}
-	
+
 	public void createSectionToolBars() {
 		UIToolBar toolBar = this.createToolBar();
-		
+
 		//--VIBRATO--
 		this.vibrato = toolBar.createCheckItem();
 		this.vibrato.addSelectionListener(this.createActionProcessor(TGChangeVibratoNoteAction.NAME));
@@ -76,7 +76,7 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		//--DEAD NOTE--
 		this.deadNote = toolBar.createCheckItem();
 		this.deadNote.addSelectionListener(this.createActionProcessor(TGChangeDeadNoteAction.NAME));
-		
+
 		toolBar = this.createToolBar();
 
 		//--HAMMER--
@@ -86,11 +86,11 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		//--GHOST NOTE--
 		this.ghostNote = toolBar.createCheckItem();
 		this.ghostNote.addSelectionListener(this.createActionProcessor(TGChangeGhostNoteAction.NAME));
-		
+
 		//--ACCENTUATED NOTE--
 		this.accentuatedNote = toolBar.createCheckItem();
 		this.accentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeAccentuatedNoteAction.NAME));
-		
+
 		//--HEAVY ACCENTUATED NOTE--
 		this.heavyAccentuatedNote = toolBar.createCheckItem();
 		this.heavyAccentuatedNote.addSelectionListener(this.createActionProcessor(TGChangeHeavyAccentuatedNoteAction.NAME));
@@ -98,52 +98,52 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		//LET RING--
 		this.letRing = toolBar.createCheckItem();
 		this.letRing.addSelectionListener(this.createActionProcessor(TGChangeLetRingAction.NAME));
-		
+
 		toolBar = this.createToolBar();
 
 		//--HARMONIC NOTE--
 		this.harmonicNote = toolBar.createCheckItem();
 		this.harmonicNote.addSelectionListener(this.createActionProcessor(TGOpenHarmonicDialogAction.NAME));
-		
+
 		//--GRACE NOTE--
 		this.graceNote = toolBar.createCheckItem();
 		this.graceNote.addSelectionListener(this.createActionProcessor(TGOpenGraceDialogAction.NAME));
-		
+
 		//--TRILL--
 		this.trill = toolBar.createCheckItem();
 		this.trill.addSelectionListener(this.createActionProcessor(TGOpenTrillDialogAction.NAME));
-		
+
 		//--TREMOLO PICKING--
 		this.tremoloPicking = toolBar.createCheckItem();
 		this.tremoloPicking.addSelectionListener(this.createActionProcessor(TGOpenTremoloPickingDialogAction.NAME));
-		
+
 		//--PALM MUTE--
 		this.palmMute = toolBar.createCheckItem();
 		this.palmMute.addSelectionListener(this.createActionProcessor(TGChangePalmMuteAction.NAME));
-		
+
 		toolBar = this.createToolBar();
 
 		//--STACCATO--
 		this.staccato = toolBar.createCheckItem();
 		this.staccato.addSelectionListener(this.createActionProcessor(TGChangeStaccatoAction.NAME));
-		
+
 		//--TAPPING--
 		this.tapping = toolBar.createCheckItem();
 		this.tapping.addSelectionListener(this.createActionProcessor(TGChangeTappingAction.NAME));
-		
+
 		//--SLAPPING--
 		this.slapping = toolBar.createCheckItem();
 		this.slapping.addSelectionListener(this.createActionProcessor(TGChangeSlappingAction.NAME));
-		
+
 		//--POPPING--
 		this.popping = toolBar.createCheckItem();
 		this.popping.addSelectionListener(this.createActionProcessor(TGChangePoppingAction.NAME));
-		
+
 		//--FADE IN--
 		this.fadeIn = toolBar.createCheckItem();
 		this.fadeIn.addSelectionListener(this.createActionProcessor(TGChangeFadeInAction.NAME));
 	}
-	
+
 	public void loadSectionProperties() {
 		this.vibrato.setToolTipText(this.getText("effects.vibrato"));
 		this.bend.setToolTipText(this.getText("effects.bend"));
@@ -166,7 +166,7 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.popping.setToolTipText(this.getText("effects.popping"));
 		this.fadeIn.setToolTipText(this.getText("effects.fade-in"));
 	}
-	
+
 	public void loadSectionIcons() {
 		this.vibrato.setImage(this.getIconManager().getEffectVibrato());
 		this.bend.setImage(this.getIconManager().getEffectBend());
@@ -189,12 +189,12 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.popping.setImage(this.getIconManager().getEffectPopping());
 		this.fadeIn.setImage(this.getIconManager().getEffectFadeIn());
 	}
-	
+
 	public void updateSectionItems() {
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
 		TGNoteRange noteRange = this.getTablature().getCurrentNoteRange();
 		boolean isPercussion = this.getTablature().getCaret().getTrack().isPercussion();
-		
+
 		this.vibrato.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.vibrato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isVibrato()));
 
@@ -215,43 +215,43 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 
 		this.ghostNote.setEnabled(!running && !noteRange.isEmpty());
 		this.ghostNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGhostNote()));
-		
+
 		this.accentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.accentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isAccentuatedNote()));
-		
+
 		this.heavyAccentuatedNote.setEnabled(!running && !noteRange.isEmpty());
 		this.heavyAccentuatedNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHeavyAccentuatedNote()));
 
 		this.letRing.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.letRing.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isLetRing()));
-		
+
 		this.harmonicNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.harmonicNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isHarmonic()));
-		
+
 		this.graceNote.setEnabled(!running && !noteRange.isEmpty());
 		this.graceNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isGrace()));
-		
+
 		this.trill.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.trill.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTrill()));
-		
+
 		this.tremoloPicking.setEnabled(!running && !noteRange.isEmpty());
 		this.tremoloPicking.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTremoloPicking()));
-		
+
 		this.palmMute.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.palmMute.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPalmMute()));
-		
+
 		this.staccato.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.staccato.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isStaccato()));
-		
+
 		this.tapping.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.tapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isTapping()));
-		
+
 		this.slapping.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.slapping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlapping()));
-		
+
 		this.popping.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.popping.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isPopping()));
-		
+
 		this.fadeIn.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.fadeIn.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isFadeIn()));
 	}

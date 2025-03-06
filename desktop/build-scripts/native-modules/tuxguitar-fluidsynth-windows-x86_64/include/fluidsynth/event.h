@@ -62,8 +62,8 @@ enum fluid_seq_event_type
     FLUID_SEQ_SYSTEMRESET,        /**< System reset event @since 1.1.0 */
     FLUID_SEQ_UNREGISTERING,      /**< Called when a sequencer client is being unregistered. @since 1.1.0 */
     FLUID_SEQ_SCALE,              /**< Sets a new time scale for the sequencer @since 2.2.0 */
-    FLUID_SEQ_LASTEVENT		/**< @internal Defines the count of events enums @warning This symbol 
-                              is not part of the public API and ABI stability guarantee and 
+    FLUID_SEQ_LASTEVENT		/**< @internal Defines the count of events enums @warning This symbol
+                              is not part of the public API and ABI stability guarantee and
                               may change at any time! */
 };
 

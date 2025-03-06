@@ -16,17 +16,17 @@ import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class PDFDocument implements TGPrintDocument{
-	
+
 	private TGContext context;
 	private PDFPainter painter;
 	private UISize size;
 	private UIInset margins;
 	private OutputStream stream;
-	
+
 	private Document document;
 	private PdfContentByte cb;
 	private PdfTemplate template;
-	
+
 	public PDFDocument(TGContext context, UISize size, UIInset margins, OutputStream stream){
 		this.context = context;
 		this.stream = stream;
@@ -34,11 +34,11 @@ public class PDFDocument implements TGPrintDocument{
 		this.margins = margins;
 		this.painter = new PDFPainter();
 	}
-	
+
 	public UIPainter getPainter() {
 		return this.painter;
 	}
-	
+
 	public UISize getSize() {
 		return this.size;
 	}
@@ -46,18 +46,18 @@ public class PDFDocument implements TGPrintDocument{
 	public UIInset getMargins() {
 		return this.margins;
 	}
-	
+
 	public void pageStart() {
 		this.document.newPage();
 		this.template = this.cb.createTemplate(this.size.getWidth(), this.size.getHeight());
 		this.painter.init(this.template);
 	}
-	
+
 	public void pageFinish() {
 		this.painter.dispose();
 		this.cb.addTemplate(this.template, 0, 0);
 	}
-	
+
 	public void start() {
 		try {
 			this.document = new Document(new Rectangle(this.size.getWidth(), this.size.getHeight()) );
@@ -68,7 +68,7 @@ public class PDFDocument implements TGPrintDocument{
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}
 	}
-	
+
 	public void finish() {
 		try{
 			this.document.close();
@@ -76,7 +76,7 @@ public class PDFDocument implements TGPrintDocument{
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public boolean isPaintable(int page) {
 		return true;
 	}

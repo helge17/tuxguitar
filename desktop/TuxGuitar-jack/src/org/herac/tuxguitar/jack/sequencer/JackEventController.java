@@ -9,17 +9,17 @@ import org.herac.tuxguitar.song.models.TGDuration;
 public class JackEventController{
 	private JackSequencer sequencer;
 	private List<JackEvent> events;
-	
+
 	private double tick;
 	private double lastTick;
 	private boolean reset;
-	
+
 	public JackEventController(JackSequencer sequencer){
 		this.sequencer = sequencer;
 		this.events = new ArrayList<JackEvent>();
 		this.reset();
 	}
-	
+
 	public void process() throws MidiPlayerException {
 		this.lastTick = this.tick;
 		this.tick = this.sequencer.getJackTickController().getTick();
@@ -31,7 +31,7 @@ public class JackEventController{
 		}
 		this.reset = false;
 	}
-	
+
 	private boolean shouldSend(JackEvent event,double tick,double lastTick){
 		if(event.getTick() > tick){
 			return false;
@@ -57,28 +57,28 @@ public class JackEventController{
 		}
 		return (event.getTick() > lastTick);
 	}
-	
+
 	public List<JackEvent> getEvents(){
 		return this.events;
 	}
-	
+
 	public void addEvent(JackEvent event){
 		this.events.add(event);
 	}
-	
+
 	public void clearEvents(){
 		this.events.clear();
 	}
-	
+
 	public void reset(){
 		this.tick = (this.sequencer.getTickPosition() - (TGDuration.QUARTER_TIME / 8) );
 		this.reset = true;
 	}
-	
+
 	public List<long[]> getTempoChanges(){
 		List<long[]> tempoChanges = new ArrayList<long[]>();
 		for(int i = 0; i < this.events.size(); i ++){
-			JackEvent event = (JackEvent) this.events.get(i);				
+			JackEvent event = (JackEvent) this.events.get(i);
 			if(event.getType() == JackEvent.MIDI_SYSTEM_EVENT){
 				if(event.getData()[0] == 0x51){
 					int usq = ((event.getData()[1] & 0xff) | ((event.getData()[2] & 0xff) << 8) | ((event.getData()[3] & 0xff) << 16));

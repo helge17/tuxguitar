@@ -24,32 +24,32 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGFileHistory {
-	
+
 	private static final int URL_LIMIT = TuxGuitar.getInstance().getConfig().getIntegerValue(TGConfigKeys.MAX_HISTORY_FILES);
-	
+
 	private TGContext context;
 	private List<URL> urls;
 	private String chooserPath;
 	private boolean changed;
-	
+
 	private TGFileHistory(TGContext context) {
 		this.context = context;
 		this.urls = new ArrayList<URL>();
 		this.loadHistory();
 		this.reset(null);
 	}
-	
+
 	public void reset(URL url) {
 		this.addURL(url);
 	}
-	
+
 	public String getFilePath(URL url) {
 		if( TGFileUtils.isLocalFile(url) ){
 			return new File(TGFileUtils.getDecodedPath(url.getFile())).getParent();
 		}
 		return null;
 	}
-	
+
 	public boolean isReadable(URL url) {
 		if( url != null ) {
 			String formatCode = TGFileFormatUtils.getFileFormatCode(url.getFile());
@@ -59,7 +59,7 @@ public class TGFileHistory {
 		}
 		return false;
 	}
-	
+
 	public void addURL(URL url) {
 		if( this.isReadable(url) ) {
 			this.removeURL(url);
@@ -69,17 +69,17 @@ public class TGFileHistory {
 			this.saveHistory();
 		}
 	}
-	
+
 	public List<URL> getURLs() {
 		return this.urls;
 	}
-	
+
 	private void checkLimit() {
 		while(this.urls.size() > URL_LIMIT){
 			this.urls.remove(this.urls.size() - 1);
 		}
 	}
-	
+
 	private void removeURL(URL url) {
 		for(int i = 0; i < this.urls.size(); i++){
 			URL old = (URL)this.urls.get(i);
@@ -89,7 +89,7 @@ public class TGFileHistory {
 			}
 		}
 	}
-	
+
 	public void loadHistory() {
 		try {
 			this.urls.clear();
@@ -97,9 +97,9 @@ public class TGFileHistory {
 				InputStream inputStream = new FileInputStream(getHistoryFileName());
 				Properties properties = new Properties();
 				properties.load(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
-				
+
 				this.chooserPath = (String)properties.getProperty("history.path");
-				
+
 				int count = Integer.valueOf((String)properties.getProperty("history.count", "0"));
 				for(int i = 0; i < count;i ++){
 					String url = (String)properties.getProperty("history." + i);
@@ -113,11 +113,11 @@ public class TGFileHistory {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveHistory() {
 		try {
 			Properties properties = new Properties();
-			
+
 			int count = this.urls.size();
 			for(int i = 0;i < count;i ++){
 				properties.put("history." + i,this.urls.get(i).toString());
@@ -133,34 +133,34 @@ public class TGFileHistory {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	private String getHistoryFileName() {
 		return TGFileUtils.PATH_USER_CONFIG + File.separator + "history.properties";
 	}
-	
+
 	public void setChooserPath(URL url) {
 		String path = getFilePath(url);
 		if( path != null ){
 			this.setChooserPath( path );
 		}
 	}
-	
+
 	public String getChooserPath() {
 		return this.chooserPath;
 	}
-	
+
 	public void setChooserPath(String chooserPath) {
 		this.chooserPath = chooserPath;
 	}
-	
+
 	public boolean isChanged() {
 		return this.changed;
 	}
-	
+
 	public void setChanged(boolean changed) {
 		this.changed = changed;
 	}
-	
+
 	public static TGFileHistory getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGFileHistory.class.getName(), new TGSingletonFactory<TGFileHistory>() {
 			public TGFileHistory createInstance(TGContext context) {

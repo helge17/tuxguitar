@@ -52,13 +52,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class TGSongWriterImpl extends TGStream implements TGSongWriter {
-	
+
 	private Document document;
-	
+
 	public TGFileFormat getFileFormat(){
 		return TG_FORMAT;
 	}
-	
+
 	@Override
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		new TGSongManager().updatePreciseStart(handle.getSong());
@@ -82,13 +82,13 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			throw new TGFileFormatException(e);
 		}
 	}
-	
+
 	public void writeContent(TGSongWriterHandle handle) throws TGFileFormatException {
 		new TGSongManager().updatePreciseStart(handle.getSong());
 		this.writeXMLDocument(handle);
 		this.saveDocument(handle.getOutputStream());
 	}
-	
+
 	private void writeXMLDocument(TGSongWriterHandle handle) throws TGFileFormatException {
 		try {
 			this.document = newDocument();
@@ -102,7 +102,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			throw new TGFileFormatException(throwable);
 		}
 	}
-	
+
 	private void writeSong(TGSong song, Node nodeSong) throws IOException{
 		// song attributes
 		this.addNode(nodeSong, TAG_NAME, song.getName());
@@ -129,7 +129,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.writeTrack(tracks.next(), this.addNode(nodeSong, TAG_TGTRACK));
 		}
 	}
-	
+
 	private void writeChannel(TGChannel channel, Node nodeChannel) {
 		this.addNodeInt(nodeChannel, TAG_ID, channel.getChannelId());
 		this.addNodeInt(nodeChannel, TAG_BANK, channel.getBank());
@@ -149,7 +149,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.addAttribute(nodeParameter, TAG_VALUE, parameter.getValue());
 		}
 	}
-	
+
 	private void writeMeasureHeader(TGMeasureHeader header, Node nodeMeasureHeader) {
 		Node node = this.addNode(nodeMeasureHeader, TAG_TIME_SIGNATURE);
 		this.addAttributeInt(node, TAG_NUMERATOR ,header.getTimeSignature().getNumerator());
@@ -193,7 +193,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.addNode(nodeMeasureHeader, TAG_LINE_BREAK);
 		}
 	}
-	
+
 	private void writeTrack(TGTrack track, Node nodeTrack) {
 		this.addNode(nodeTrack, TAG_NAME, track.getName());
 		if (!track.isPercussion()) {
@@ -218,9 +218,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		Node nodeLyric = this.addNode(nodeTrack, TAG_TGLYRIC, track.getLyrics().getLyrics());
 		this.addAttributeInt(nodeLyric, TAG_FROM, track.getLyrics().getFrom());
 		this.writeMeasures(track.getMeasures(), nodeTrack);
-		
+
 	}
-	
+
 	private void writeMeasures(Iterator<TGMeasure> measures, Node nodeTrack) {
 		TGMeasure precedingMeasure = null;
 		while (measures.hasNext()) {
@@ -239,7 +239,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			precedingMeasure = measure;
 		}
 	}
-	
+
 	private void writeBeat(TGBeat beat, Node nodeBeat) {
 		this.addNodeLong(nodeBeat, TAG_PRECISE_START, beat.getPreciseStart());
 		TGStroke stroke = beat.getStroke();
@@ -272,7 +272,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.writeVoice(beat.getVoice(i), this.addNode(nodeBeat, TAG_VOICE));
 		}
 	}
-	
+
 	private void writeVoice (TGVoice voice, Node nodeVoice) {
 		Node nodeDuration = this.addNode(nodeVoice, TAG_DURATION);
 		TGDivisionType divisionType = voice.getDuration().getDivision();
@@ -299,7 +299,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.addAttribute(nodeVoice, TAG_DIRECTION, mapWriteDirection.get(voice.getDirection()));
 		}
 	}
-	
+
 	private void writeNote(TGNote note, TGNote previousNote, Node nodeNote) {
 		TGNoteEffect effect = note.getEffect();
 		if (effect.isVibrato()) { this.addNode(nodeNote, TAG_VIBRATO); }
@@ -368,13 +368,13 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.addAttributeInt(nodeNote, TAG_VELOCITY, note.getVelocity());
 		}
 	}
-	
+
 	private void addVersion(OutputStream stream) throws IOException {
 		OutputStreamWriter writer = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
 		writer.write(VERSION_PREFIX + VERSION_SEPARATOR + FILE_FORMAT_TGVERSION.toString());
 		writer.flush();
 	}
-	
+
 	private void saveDocument(OutputStream stream) {
 		try {
 			TransformerFactory xformFactory = TransformerFactory.newInstance();
@@ -387,7 +387,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	// TODO: share with MusicXMLWriter (copy-pasted)
 	private Node addAttribute(Node node, String name, String content){
 		Attr attribute = this.document.createAttribute(name);
@@ -395,35 +395,35 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		node.getAttributes().setNamedItem(attribute);
 		return node;
 	}
-	
+
 	private Node addAttributeInt(Node node, String name, int value){
 		return this.addAttribute(node, name, String.valueOf(value));
 	}
-	
+
 	private Node addAttributeBool(Node node, String name, boolean value){
 		return this.addAttribute(node, name, value ? "true" : "false");
 	}
-	
+
 	private Node addNode(Node parent, String name){
 		Node node = this.document.createElement(name);
 		parent.appendChild(node);
 		return node;
 	}
-	
+
 	private Node addNode(Node parent, String name, String content){
 		Node node = this.addNode(parent, name);
 		node.setTextContent(content);
 		return node;
 	}
-	
+
 	private Node addNodeInt(Node parent, String name, int value){
 		return addNode(parent, name, String.valueOf(value));
 	}
-	
+
 	private Node addNodeLong(Node parent, String name, long value){
 		return addNode(parent, name, String.valueOf(value));
 	}
-	
+
 	private Document newDocument() {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -435,5 +435,5 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		}
 		return null;
 	}
-	
+
 }

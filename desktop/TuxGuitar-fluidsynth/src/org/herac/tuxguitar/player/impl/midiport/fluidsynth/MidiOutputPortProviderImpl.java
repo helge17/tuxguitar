@@ -12,15 +12,15 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
-	
+
 	private TGContext context;
 	private MidiSynth synth;
 	private MidiOutputPortSettings settings;
-	
+
 	public MidiOutputPortProviderImpl(TGContext context){
 		this.context = context;
 	}
-	
+
 	public List<MidiOutputPort> listPorts() throws MidiPlayerException {
 		try{
 			List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
@@ -37,7 +37,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
 		}
 	}
-	
+
 	public void closeAll() throws MidiPlayerException {
 		try{
 			if( this.synth != null && this.synth.isInitialized()){
@@ -48,7 +48,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
 		}
 	}
-	
+
 	public MidiSynth getSynth(){
 		if( this.synth == null || !this.synth.isInitialized()){
 			this.synth = new MidiSynth();
@@ -56,7 +56,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 		}
 		return this.synth;
 	}
-	
+
 	public MidiOutputPortSettings getSettings(){
 		if( this.settings == null){
 			this.settings = new MidiOutputPortSettings(this);

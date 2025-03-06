@@ -6,7 +6,7 @@ import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
 import org.herac.tuxguitar.ui.resource.UIColorModel;
 
 public class PrintLayoutStyles extends TGLayoutStyles {
-	
+
 	private static final UIColorModel DEFAULT_FOREGROUND_COLOR = new UIColorModel(0x00, 0x00, 0x00);
 	private static final UIColorModel DEFAULT_BACKGROUND_COLOR = new UIColorModel(0xff, 0xff, 0xff);
 	private static final int DEFAULT_SCORE_LINE_SPACING = 7;
@@ -31,7 +31,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 	private static final int DEFAULT_REPEAT_ENDING_SPACING = 20;
 	private static final float[] DEFAULT_LINE_WIDTHS = new float[] {0, 1, 2, 3, 4, 5};
 	private static final float[] DEFAULT_DURATION_WIDTHS = new float[] {25f, 22f, 20f, 18f, 16f};
-	
+
 	public PrintLayoutStyles(TGConfigManager config) {
 		this.setBufferEnabled(false);
 		this.setFirstMeasureSpacing(DEFAULT_HORIZONTAL_SPACING);
@@ -60,7 +60,7 @@ public class PrintLayoutStyles extends TGLayoutStyles {
 		this.setEffectSpacing(DEFAULT_EFFECT_SPACING);
 		this.setLineWidths(DEFAULT_LINE_WIDTHS);
 		this.setDurationWidths(DEFAULT_DURATION_WIDTHS);
-		
+
 		this.setDefaultFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_DEFAULT));
 		this.setNoteFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_NOTE));
 		this.setLyricFont(config.getFontModelConfigValue(TGConfigKeys.FONT_PRINTER_LYRIC));

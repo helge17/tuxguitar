@@ -25,37 +25,37 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTempoDialog {
-	
+
 	private static final int MIN_TEMPO = 30;
 	private static final int MAX_TEMPO = 320;
-	
+
 	// possible tempo bases:
 	private final TGTempoBase tempoBase[] = TGTempoBase.getTempoBases();
-	
+
 	private int selectedBase;
 	private boolean selectedDotted;
-	
+
 	public void show(final TGViewContext context) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-		
+
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
-		
+
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("composition.tempo"));
-		
+
 		//-----------------TEMPO------------------------
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(dialog);
 		group.setLayout(groupLayout);
 		group.setText(TuxGuitar.getProperty("composition.tempo"));
 		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		TGTempo currentTempo = header.getTempo();
-		
+
 		UITableLayout radioButtonsLayout = new UITableLayout();
 		UIPanel radioButtonsPanel = uiFactory.createPanel(group, false);
 		radioButtonsPanel.setLayout(radioButtonsLayout);
@@ -70,52 +70,52 @@ public class TGTempoDialog {
 				button.setSelected(false);
 			}
 			button.addSelectionListener(this.createSelectionListener(tempoBase[i].getBase(), tempoBase[i].isDotted()));
-			
+
 			radioButtonsLayout.set(button, 1, i+1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, true, 1, 1, 60f, null, null);
 		}
 		groupLayout.set(radioButtonsPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		UITableLayout tempoValueLayout = new UITableLayout();
 		UIPanel tempoValuePanel = uiFactory.createPanel(group, false);
 		tempoValuePanel.setLayout(tempoValueLayout);
 		UILabel tempoLabel = uiFactory.createLabel(tempoValuePanel);
 		tempoLabel.setText(TuxGuitar.getProperty("composition.tempo") + ":");
 		tempoValueLayout.set(tempoLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
-		
+
 		final UISpinner tempo = uiFactory.createSpinner(tempoValuePanel);
 		tempo.setMinimum(MIN_TEMPO);
 		tempo.setMaximum(MAX_TEMPO);
 		tempo.setValue(currentTempo.getRawValue());
 		tempoValueLayout.set(tempo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true, 1, 1, 150f, null, null);
-		
+
 		groupLayout.set(tempoValuePanel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//------------------OPTIONS--------------------------
 		UITableLayout optionsLayout = new UITableLayout();
 		UILegendPanel options = uiFactory.createLegendPanel(dialog);
 		options.setLayout(optionsLayout);
 		options.setText(TuxGuitar.getProperty("options"));
 		dialogLayout.set(options, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIRadioButton applyToAllMeasures = uiFactory.createRadioButton(options);
 		applyToAllMeasures.setText(TuxGuitar.getProperty("composition.tempo.start-to-end"));
 		applyToAllMeasures.setSelected(true);
 		optionsLayout.set(applyToAllMeasures, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIRadioButton applyToEnd = uiFactory.createRadioButton(options);
 		applyToEnd.setText(TuxGuitar.getProperty("composition.tempo.position-to-end"));
 		optionsLayout.set(applyToEnd, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIRadioButton applyToNext = uiFactory.createRadioButton(options);
 		applyToNext.setText(TuxGuitar.getProperty("composition.tempo.position-to-next"));
 		optionsLayout.set(applyToNext, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -123,13 +123,13 @@ public class TGTempoDialog {
 			public void onSelect(UISelectionEvent event) {
 				Integer value = tempo.getValue();
 				Integer applyTo = parseApplyTo(applyToAllMeasures, applyToEnd, applyToNext);
-				
+
 				changeTempo(context.getContext(), song, header, TGTempoDialog.this.selectedBase , TGTempoDialog.this.selectedDotted, value, applyTo);
 				dialog.dispose();
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
-		
+
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
 		buttonCancel.addSelectionListener(new UISelectionListener() {
@@ -139,10 +139,10 @@ public class TGTempoDialog {
 		});
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
-		
+
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	private Integer parseApplyTo(UIRadioButton applyToAll, UIRadioButton applyToEnd, UIRadioButton applyToNext) {
 		if( applyToAll.isSelected() ) {
 			return TGChangeTempoRangeAction.APPLY_TO_ALL;
@@ -166,7 +166,7 @@ public class TGTempoDialog {
 		};
 	}
 
-	
+
 	public void changeTempo(TGContext context, TGSong song, TGMeasureHeader header, Integer base, Boolean dotted, Integer value, Integer applyTo) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeTempoRangeAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
@@ -177,5 +177,5 @@ public class TGTempoDialog {
 		tgActionProcessor.setAttribute(TGChangeTempoRangeAction.ATTRIBUTE_APPLY_TO, applyTo);
 		tgActionProcessor.processOnNewThread();
 	}
-	
+
 }

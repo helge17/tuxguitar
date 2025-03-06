@@ -8,9 +8,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 
 public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
-	
+
 	private String text;
-	
+
 	public JFXWrapLabel(JFXContainer<? extends Region> parent) {
 		super(parent);
 	}
@@ -26,14 +26,14 @@ public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
 		this.text = text;
 		this.computeWrappedText(this.getPackedSize().getWidth());
 	}
-	
+
 	public void computeWrappedText(Float fixedWidth) {
 		if( fixedWidth == null || fixedWidth <= 0 ) {
 			this.getControl().setText(this.text);
 		} else {
 			JFXFont font = (this.getFont() != null ? (JFXFont) this.getFont() : new JFXFont(Font.getDefault()));
 			JFXFontMetrics fontMetrics = font.getFontMetrics();
-			
+
 			StringBuffer text = new StringBuffer();
 			StringBuffer line = new StringBuffer();
 			String space = (" ");
@@ -53,14 +53,14 @@ public class JFXWrapLabel extends JFXLabel implements UIWrapLabel {
 			if( line.length() > 0 ) {
 				text.append(line);
 			}
-			
+
 			this.getControl().setText(text.toString());
 		}
 	}
-	
+
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		this.computeWrappedText(fixedWidth);
-		
+
 		super.computePackedSize(fixedWidth, fixedHeight);
 	}
 }

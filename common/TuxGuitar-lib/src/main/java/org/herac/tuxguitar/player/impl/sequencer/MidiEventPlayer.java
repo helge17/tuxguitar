@@ -6,20 +6,20 @@ import java.util.List;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class MidiEventPlayer{
-	
+
 	private MidiSequencerImpl sequencer;
 	private List<MidiEvent> events;
-	
+
 	private long tick;
 	private long lastTick;
 	private boolean reset;
-	
+
 	public MidiEventPlayer(MidiSequencerImpl sequencer){
 		this.sequencer = sequencer;
 		this.events = new ArrayList<MidiEvent>();
 		this.reset();
 	}
-	
+
 	public void process() throws MidiPlayerException {
 		this.lastTick = this.tick;
 		this.tick = this.sequencer.getTickPosition();
@@ -31,7 +31,7 @@ public class MidiEventPlayer{
 		}
 		this.reset = false;
 	}
-	
+
 	private boolean shouldSend(MidiEvent event,long tick,long lastTick){
 		if(event.getTick() > tick){
 			return false;
@@ -60,15 +60,15 @@ public class MidiEventPlayer{
 		}
 		return false;
 	}
-	
+
 	public void addEvent(MidiEvent event){
 		this.events.add(event);
 	}
-	
+
 	public void clearEvents(){
 		this.events.clear();
 	}
-	
+
 	public void reset(){
 		this.tick = (this.sequencer.getTickPosition() - 1);
 		this.reset = true;

@@ -46,11 +46,11 @@ public class TGTrackNameDialog extends TGModalFragment {
 	public void setTextFieldValue(int textFieldId, String value) {
 		((EditText) this.getView().findViewById(textFieldId)).getText().append(value);
 	}
-	
+
 	public String getTextFieldValue(int textFieldId) {
 		return ((EditText) this.getView().findViewById(textFieldId)).getText().toString();
 	}
-	
+
 	public void fillTrackName() {
 		setTextFieldValue(R.id.track_name_dlg_name_value, this.getTrack().getName());
 	}

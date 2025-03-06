@@ -64,7 +64,7 @@ public class TGTrillDialog extends TGModalFragment {
 		this.fillFret();
 		this.fillDurations();
 	}
-	
+
 	public TGSelectableItem[] createFretValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 0; i <= 100; i++) {
@@ -74,7 +74,7 @@ public class TGTrillDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public void fillFret() {
 		int selection = 0;
 
@@ -82,21 +82,21 @@ public class TGTrillDialog extends TGModalFragment {
 		if( note != null ) {
 			selection = (note.getEffect().isTrill() ? note.getEffect().getTrill().getFret() : note.getValue());
 		}
-		
+
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createFretValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.trill_dlg_fret_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)));
 	}
-	
+
 	public int findSelectedFret() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.trill_dlg_fret_value);
-		
+
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
-	
+
 	public void fillDurations() {
 		int duration = TGDuration.EIGHTH;
 
@@ -104,7 +104,7 @@ public class TGTrillDialog extends TGModalFragment {
 		if( note != null && note.getEffect().isTrill() ){
 			duration = note.getEffect().getTrill().getDuration().getValue();
 		}
-		
+
 		this.fillDuration(R.id.trill_dlg_duration_16, TGDuration.SIXTEENTH, duration);
 		this.fillDuration(R.id.trill_dlg_duration_32, TGDuration.THIRTY_SECOND, duration);
 		this.fillDuration(R.id.trill_dlg_duration_64, TGDuration.SIXTY_FOURTH, duration);
@@ -115,10 +115,10 @@ public class TGTrillDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public int findSelectedDuration() {
 		RadioGroup optionsGroup = (RadioGroup) this.getView().findViewById(R.id.trill_dlg_duration_group);
-		
+
 		int radioButtonId = optionsGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
 			RadioButton radioButton = (RadioButton) optionsGroup.findViewById(radioButtonId);
@@ -128,7 +128,7 @@ public class TGTrillDialog extends TGModalFragment {
 		}
 		return TGDuration.EIGHTH;
 	}
-	
+
 	public TGEffectTrill createTrill(){
 		TGEffectTrill tgEffectTrill = getSongManager().getFactory().newEffectTrill();
 		tgEffectTrill.setFret(findSelectedFret());

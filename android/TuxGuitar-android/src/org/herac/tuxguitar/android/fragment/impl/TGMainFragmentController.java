@@ -10,7 +10,7 @@ public class TGMainFragmentController extends TGCachedFragmentController<TGMainF
 	public TGMainFragment createNewInstance() {
 		return new TGMainFragment();
 	}
-	
+
 	public static TGMainFragmentController getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGMainFragmentController.class.getName(), new TGSingletonFactory<TGMainFragmentController>() {
 			public TGMainFragmentController createInstance(TGContext context) {

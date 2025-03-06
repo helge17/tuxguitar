@@ -8,10 +8,10 @@ import org.herac.tuxguitar.util.TGContext;
 import com.itextpdf.text.pdf.BaseFont;
 
 public class PDFLayoutStyles extends TGLayoutStyles {
-	
+
 	public PDFLayoutStyles(TGContext context) {
 		PDFSettingsManager settingsMgr = PDFSettingsManager.getInstance(context);
-		
+
 		this.setBufferEnabled(false);
 		this.setFirstMeasureSpacing(settingsMgr.getSetting(PDFSettings.FIRST_MEASURE_SPACING));
 		this.setMinBufferSeparator(settingsMgr.getSetting(PDFSettings.MIN_BUFFER_SEPARATOR));
@@ -37,7 +37,7 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setClefSpacing(settingsMgr.getSetting(PDFSettings.CLEF_SPACING));
 		this.setKeySignatureSpacing(settingsMgr.getSetting(PDFSettings.KEY_SIGNATURE_SPACING));
 		this.setTimeSignatureSpacing(settingsMgr.getSetting(PDFSettings.TIME_SIGNATURE_SPACING));
-		
+
 		this.setLineWidths(new float[] {0, 1, 2, 3, 4, 5});
 		this.setDurationWidths(new float[] {18f, 18f, 16f, 15f, 14f});
 		this.setDefaultFont(new UIFontModel(BaseFont.TIMES_ROMAN, 8, false, false));

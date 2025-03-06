@@ -6,17 +6,17 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class PDFSongWriterPlugin extends TGSongWriterPlugin{
-	
+
 	public static final String MODULE_ID = "tuxguitar-pdf";
-	
+
 	public PDFSongWriterPlugin() {
 		super();
 	}
-	
+
 	public String getModuleId(){
 		return MODULE_ID;
 	}
-	
+
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
 		return new PDFSongWriter(context);
 	}

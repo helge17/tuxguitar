@@ -79,7 +79,7 @@ class LV2MainWindow : public QMainWindow {
 		}
 };
 
-void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buffer_size, uint32_t protocol, const void* buffer) 
+void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buffer_size, uint32_t protocol, const void* buffer)
 {
 	LV2UI *handle = (LV2UI *) controller;
 	if( handle != NULL && handle->instance != NULL && !handle->ignoreEvents) {
@@ -100,12 +100,12 @@ void LV2UI_setPortData(void* const controller, uint32_t port_index, uint32_t buf
 				if( seq->atom.size == 0 ) {
 					lv2_atom_sequence_clear(seq);
 				}
-				
+
 				LV2_Atom_Event* event = lv2_atom_sequence_end(&seq->body, seq->atom.size);
 				memcpy((&event->body), buffer, buffer_size);
 				event->time.frames = 0;
 				seq->atom.size += lv2_atom_pad_size(sizeof(LV2_Atom_Event) + event->body.size);
-				
+
 				LV2UI_setUpdated(handle, true);
 				LV2Lock_unlock(handle->lock);
 			}
@@ -144,9 +144,9 @@ void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, LV
 		(*handle)->supported_ui_type = NULL;
 		(*handle)->frameDelta = 0;
 		(*handle)->refreshRate = 0;
-		
+
 		suil_init(NULL, NULL, SUIL_ARG_NONE);
-		
+
 		LilvUIs* uis = lilv_plugin_get_uis((*handle)->instance->plugin->lilvPlugin);
 		LilvNode* native_type = lilv_new_uri((*handle)->instance->plugin->world->lilvWorld, NATIVE_UI_TYPE_URI);
 
@@ -156,7 +156,7 @@ void LV2UI_malloc(LV2UI **handle, LV2Feature *feature, LV2Instance *instance, LV
 				(*handle)->supported_ui = ui;
 			}
 		}
-		
+
 		lilv_node_free(native_type);
 	}
 }
@@ -177,7 +177,7 @@ void LV2UI_free(LV2UI **handle)
 			suil_host_free((*handle)->suilHost);
 			(*handle)->suilHost = NULL;
 		}
-		
+
 		free ( (*handle) );
 
 		(*handle) = NULL;
@@ -200,7 +200,7 @@ void LV2UI_isOpen(LV2UI *handle, bool *open)
 	}
 }
 
-void LV2UI_open(LV2UI *handle) 
+void LV2UI_open(LV2UI *handle)
 {
 	if( handle != NULL && handle->supported_ui != NULL ) {
 		handle->open = true;
@@ -254,7 +254,7 @@ void LV2UI_processPortEvents(LV2UI *handle, LV2PortFlow flow)
 		if( handle->instance->plugin != NULL && handle->instance->plugin->ports != NULL && handle->suilInstance != NULL ) {
 			for (uint32_t i = 0; i < handle->instance->plugin->portCount; i ++) {
 				LV2Port* port = handle->instance->plugin->ports[i];
-				
+
 				if( port->type == TYPE_CONTROL ) {
 					if((port->flow == flow || flow == FLOW_UNKNOWN)) {
 						float currentValue = 0;
@@ -320,9 +320,9 @@ void LV2UI_process(LV2UI *handle)
 
 				handle->application = new QApplication(args, NULL, true);
 				handle->application->setQuitOnLastWindowClosed(true);
-				
+
 				handle->suilHost = suil_host_new(LV2UI_setPortData, LV2UI_getPortIndex, NULL, NULL);
-				
+
 				if( handle->suilHost != NULL ) {
 					handle->window = new LV2MainWindow(handle);
 					LV2Feature_getFeature(handle->feature, LV2_UI__parent)->data = handle->window;
@@ -353,7 +353,7 @@ void LV2UI_process(LV2UI *handle)
 					handle->open = false;
 					return;
 				}
-				
+
 				lilv_node_free(pluginName);
 				lilv_free(binaryPath);
 				lilv_free(bundlePath);
@@ -365,13 +365,13 @@ void LV2UI_process(LV2UI *handle)
 				handle->window->adjustSize();
 				handle->window->setFixedSize(handle->window->width(), handle->window->height());
 				handle->window->show();
-				
+
 				QPoint screenCenter = QGuiApplication::primaryScreen()->geometry().center();
 				QSize windowSize = handle->window->size();
 				if( windowSize.width() > 0 && windowSize.height() > 0 ) {
 					handle->window->move(screenCenter.x() - (windowSize.width() / 2), screenCenter.y() - (windowSize.height() / 2));
 				}
-				
+
 				LV2UI_processPortEvents(handle, FLOW_UNKNOWN);
 				LV2Instance_reloadState(handle->instance);
 			}
@@ -391,7 +391,7 @@ void LV2UI_process(LV2UI *handle)
 				handle->window->setVisible(false);
 			}
 		}
-	} 
+	}
 	if (handle != NULL && handle->application != NULL ) {
 		handle->application->processEvents();
 	} else {

@@ -15,28 +15,28 @@ import org.herac.tuxguitar.ui.resource.UIImage;
 import org.herac.tuxguitar.ui.widget.UITableItem;
 
 public class JFXTableCellFactory<T> implements Callback<TableColumn<UITableItem<T>, JFXTableCellValue<T>>, TableCell<UITableItem<T>, JFXTableCellValue<T>>> {
-	
+
 	private JFXTable<T> control;
 	private boolean checkable;
-	
+
 	public JFXTableCellFactory(JFXTable<T> control, boolean checkable) {
 		this.control = control;
 		this.checkable = checkable;
 	}
-	
+
 	public TableCell<UITableItem<T>, JFXTableCellValue<T>> call(TableColumn<UITableItem<T>, JFXTableCellValue<T>> param) {
 		return new TableCell<UITableItem<T>, JFXTableCellValue<T>>() {
 			@Override
 			public void updateItem(final JFXTableCellValue<T> item, boolean empty) {
 				super.updateItem(item, empty);
-				
+
 				String text = null;
 				Node graphic = null;
-				
+
 				if (item != null && !empty) {
 					text = item.getText();
 					graphic = item.getData(Node.class.getName());
-					
+
 					if( graphic == null ) {
 						if( JFXTableCellFactory.this.checkable && item.isFirstColumn()) {
 							CheckBox checkBox = new CheckBox();
@@ -47,7 +47,7 @@ public class JFXTableCellFactory<T> implements Callback<TableColumn<UITableItem<
 									JFXTableCellFactory.this.control.onCellChecked(item);
 								}
 							});
-							
+
 							graphic = checkBox;
 						} else {
 							UIImage image = item.getImage();

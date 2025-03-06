@@ -7,7 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class JFXKey {
-	
+
 	private static final JFXKeyMap[] KEY_MAP = new JFXKeyMap[] {
 		new JFXKeyMap(KeyCode.F1, UIKey.F1),
 		new JFXKeyMap(KeyCode.F2, UIKey.F2),
@@ -75,7 +75,7 @@ public class JFXKey {
 		new JFXKeyMap(KeyCode.NUMPAD8, new UIKey("8")),
 		new JFXKeyMap(KeyCode.NUMPAD9, new UIKey("9"))
 	};
-	
+
 	public static UIKey getKey(KeyEvent keyEvent) {
 		KeyCode keyCode = keyEvent.getCode();
 		for(JFXKeyMap keyMap : KEY_MAP) {
@@ -85,7 +85,7 @@ public class JFXKey {
 		}
 		return new UIKey(keyCode.toString().toLowerCase());
 	}
-	
+
 	public static UIKeyCombination getCombination(KeyEvent keyEvent) {
 		/* workaround for non-EN keyboards without numpad (typ. azerty laptop)
 		   with these keyboards, digits can be entered only with key combination, e.g. "shift+&" = "1"
@@ -114,7 +114,7 @@ public class JFXKey {
 		if( keyEvent.isMetaDown() ) {
 			keyCombination.getKeys().add(UIKey.COMMAND);
 		}
-		
+
 		UIKey principalKey = JFXKey.getKey(keyEvent);
 		if(!keyCombination.contains(principalKey) && !isDigit) {
 			keyCombination.getKeys().add(principalKey);
@@ -122,24 +122,24 @@ public class JFXKey {
 		else if (isDigit)  {
 			keyCombination.getKeys().add(new UIKey(keyEvent.getText()));
 		}
-		
+
 		return keyCombination;
 	}
-	
+
 	private static class JFXKeyMap {
-		
+
 		private KeyCode code;
 		private UIKey key;
-		
+
 		public JFXKeyMap(KeyCode code, UIKey key) {
 			this.code = code;
 			this.key = key;
 		}
-		
+
 		public KeyCode getCode() {
 			return this.code;
 		}
-		
+
 		public UIKey getKey() {
 			return this.key;
 		}

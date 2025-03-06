@@ -7,20 +7,20 @@ public class TGUpdateContext {
 
 	private TGUpdateBuffer buffer;
 	private Integer level;
-	
+
 	public TGUpdateContext(TGContext context){
 		this.buffer = new TGUpdateBuffer();
 		this.level = 0;
 	}
-	
+
 	public void incrementLevel() {
 		this.level ++;
 	}
-	
+
 	public void decrementLevel() {
 		this.level --;
 	}
-	
+
 	public Integer getLevel() {
 		return level;
 	}
@@ -36,7 +36,7 @@ public class TGUpdateContext {
 				return actionContext.getAttribute(key);
 			}
 			actionContext.setAttribute(key, new TGUpdateContext(context));
-			
+
 			return getInstance(context, actionContext);
 		}
 	}

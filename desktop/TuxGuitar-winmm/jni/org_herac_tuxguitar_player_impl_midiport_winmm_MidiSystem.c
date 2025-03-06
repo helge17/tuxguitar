@@ -12,12 +12,12 @@ typedef struct handle{
 JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
-	
+
 	midi_handle_t *handle = (midi_handle_t *) malloc( sizeof(midi_handle_t) );
 	handle->out = NULL;
-	
+
 	memcpy(&ptr, &handle, sizeof( handle ));
-	
+
 	return ptr;
 }
 

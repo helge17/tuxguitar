@@ -10,23 +10,23 @@ import javax.sound.midi.ShortMessage;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiMessageUtils {
-	
+
 	public static final byte TICK_MOVE = 0x01;
-	
+
 	private static int fixValue(int value){
 		int fixedValue = value;
 		fixedValue = Math.min(fixedValue,127);
 		fixedValue = Math.max(fixedValue,0);
 		return fixedValue;
 	}
-	
+
 	private static int fixChannel(int channel){
 		int fixedChannel = channel;
 		fixedChannel = Math.min(fixedChannel,15);
 		fixedChannel = Math.max(fixedChannel,0);
 		return fixedChannel;
 	}
-	
+
 	public static MidiMessage noteOn(int channel,int note,int velocity){
 		try {
 			ShortMessage message = new ShortMessage();
@@ -37,7 +37,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage noteOff(int channel,int note,int velocity){
 		try {
 			ShortMessage message = new ShortMessage();
@@ -48,7 +48,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage controlChange(int channel,int controller,int value){
 		try {
 			ShortMessage message = new ShortMessage();
@@ -59,7 +59,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage programChange(int channel,int instrument){
 		try {
 			ShortMessage message = new ShortMessage();
@@ -70,7 +70,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage pitchBend(int channel,int value){
 		try {
 			ShortMessage message = new ShortMessage();
@@ -81,7 +81,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage systemReset(){
 		try {
 			ShortMessage message = new ShortMessage();
@@ -92,7 +92,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage trackName(String name){
 		try {
 			byte[] bytes = name.getBytes(Charset.forName("UTF-8"));
@@ -104,7 +104,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage tempoInUSQ(int usq){
 		try {
 			MetaMessage message = new MetaMessage();
@@ -115,7 +115,7 @@ public class MidiMessageUtils {
 		}
 		return null;
 	}
-	
+
 	public static MidiMessage timeSignature(TGTimeSignature ts){
 		try {
 			MetaMessage message = new MetaMessage();

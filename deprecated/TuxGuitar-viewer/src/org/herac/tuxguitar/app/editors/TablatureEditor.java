@@ -19,9 +19,9 @@ import org.herac.tuxguitar.awt.graphics.AWTPainter;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TablatureEditor extends Canvas {
-	
+
 	private static final long serialVersionUID = 3033840631768147247L;
-	
+
 	private TGContext context;
 	private Tablature tablature;
 	private TGScrollBar scrollBar;
@@ -30,7 +30,7 @@ public class TablatureEditor extends Canvas {
 	private Graphics2D bufferGraphics;
 	private boolean loaded;
 	private boolean started;
-	
+
 	public TablatureEditor(TGContext context){
 		this.context = context;
 		this.loaded = false;
@@ -38,29 +38,29 @@ public class TablatureEditor extends Canvas {
 		this.size = new Dimension();
 		this.setFocusable(false);
 	}
-	
+
 	public Component getPanel(){
 		this.scrollBar = new TGScrollBar();
 		this.tablature = new Tablature(this, this.scrollBar);
 		this.addMouseListener(new TGActionProcessorListener(this.context, SelectMeasureAction.NAME));
 		return this;
 	}
-	
+
 	public Component getScrollBar(){
 		return this.scrollBar.getComponent();
 	}
-	
-	public Tablature getTablature(){		
+
+	public Tablature getTablature(){
 		return this.tablature;
 	}
-	
+
 	public void repaint(){
 		if( this.loaded && this.tablature != null){
 			this.tablature.beforeRedraw();
 		}
 		super.repaint();
 	}
-	
+
 	public void paint(Graphics g){
 		// Check the offcreen buffer.
 		Dimension size = getSize();
@@ -83,15 +83,15 @@ public class TablatureEditor extends Canvas {
 			this.bufferGraphics.clearRect(0, 0, this.size.width, this.size.height);
 			this.paintLoading(new AWTPainter( this.bufferGraphics ));
 		}
-		
+
 		// Draw the buffer image
 		g.drawImage(this.bufferImage,0,0,this);
 	}
-	
+
 	public void update(Graphics g){
 		this.paint(g);
 	}
-	
+
 	public void loadTablature(){
 		this.tablature.setDocumentManager(TuxGuitar.instance().getDocumentManager());
 		this.tablature.initDefaults();
@@ -100,23 +100,23 @@ public class TablatureEditor extends Canvas {
 		this.tablature.initCaret();
 		this.loaded = true;
 	}
-	
+
 	public void dispose(){
 		if(this.loaded && this.tablature != null){
 			this.loaded = false;
 			this.tablature.dispose();
 		}
 	}
-	
+
 	public void start(){
 		this.started = true;
 		this.repaint();
 	}
-	
+
 	public boolean isStarted(){
 		return this.started;
 	}
-	
+
 	private void paintLoading(AWTPainter painter){
 		painter.setFont( new AWTFont(TGConfig.FONT_LOADING_MESSAGE) );
 		painter.setForeground(painter.createColor(TGConfig.COLOR_LOADING_MESSAGE));

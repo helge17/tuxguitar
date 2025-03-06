@@ -89,7 +89,7 @@ public class SoftReverb implements SoftAudioProcessor {
         public void processReplace(float inout[]) {
             int len = inout.length;
             int delaybuffersize = this.delaybuffersize;
-            int rovepos = this.rovepos;            
+            int rovepos = this.rovepos;
             for (int i = 0; i < len; i++) {
                 float delayout = delaybuffer[rovepos];
                 float input = inout[i];
@@ -98,13 +98,13 @@ public class SoftReverb implements SoftAudioProcessor {
                 if (++rovepos == delaybuffersize)
                     rovepos = 0;
             }
-            this.rovepos = rovepos;                        
+            this.rovepos = rovepos;
         }
-        
+
         public void processReplace(float in[], float out[]) {
             int len = in.length;
             int delaybuffersize = this.delaybuffersize;
-            int rovepos = this.rovepos;            
+            int rovepos = this.rovepos;
             for (int i = 0; i < len; i++) {
                 float delayout = delaybuffer[rovepos];
                 float input = in[i];
@@ -113,8 +113,8 @@ public class SoftReverb implements SoftAudioProcessor {
                 if (++rovepos == delaybuffersize)
                     rovepos = 0;
             }
-            this.rovepos = rovepos;                        
-        }        
+            this.rovepos = rovepos;
+        }
     }
 
     private final static class Comb {
@@ -138,7 +138,7 @@ public class SoftReverb implements SoftAudioProcessor {
         }
 
         public void processMix(float in[], float out[]) {
-            int len = in.length;            
+            int len = in.length;
             int delaybuffersize = this.delaybuffersize;
             int rovepos = this.rovepos;
             float filtertemp = this.filtertemp;
@@ -153,13 +153,13 @@ public class SoftReverb implements SoftAudioProcessor {
                 delaybuffer[rovepos] = in[i] + filtertemp;
                 if (++rovepos == delaybuffersize)
                     rovepos = 0;
-            }            
+            }
             this.filtertemp  = filtertemp;
             this.rovepos = rovepos;
         }
 
         public void processReplace(float in[], float out[]) {
-            int len = in.length;            
+            int len = in.length;
             int delaybuffersize = this.delaybuffersize;
             int rovepos = this.rovepos;
             float filtertemp = this.filtertemp;
@@ -174,7 +174,7 @@ public class SoftReverb implements SoftAudioProcessor {
                 delaybuffer[rovepos] = in[i] + filtertemp;
                 if (++rovepos == delaybuffersize)
                     rovepos = 0;
-            }            
+            }
             this.filtertemp  = filtertemp;
             this.rovepos = rovepos;
         }
@@ -207,7 +207,7 @@ public class SoftReverb implements SoftAudioProcessor {
     private float dirty_damp;
     private float dirty_predelay;
     private float dirty_gain;
-    private float samplerate;    
+    private float samplerate;
     private boolean light = true;
 
     public void init(float samplerate, float controlrate) {
@@ -231,7 +231,7 @@ public class SoftReverb implements SoftAudioProcessor {
         combL[3] = new Comb((int) (freqscale * (1356)));
         combR[3] = new Comb((int) (freqscale * (1356 + stereospread)));
         combL[4] = new Comb((int) (freqscale * (1422)));
-        combR[4] = new Comb((int) (freqscale * (1422 + stereospread)));        
+        combR[4] = new Comb((int) (freqscale * (1422 + stereospread)));
         combL[5] = new Comb((int) (freqscale * (1491)));
         combR[5] = new Comb((int) (freqscale * (1491 + stereospread)));
         combL[6] = new Comb((int) (freqscale * (1557)));
@@ -275,7 +275,7 @@ public class SoftReverb implements SoftAudioProcessor {
     public void setMixMode(boolean mix) {
         this.mix = mix;
     }
-    
+
     private boolean silent = true;
 
     public void processAudio() {
@@ -288,7 +288,7 @@ public class SoftReverb implements SoftAudioProcessor {
                 left.clear();
                 right.clear();
             }
-            return;            
+            return;
         }
 
         float[] inputA = this.inputA.array();
@@ -300,17 +300,17 @@ public class SoftReverb implements SoftAudioProcessor {
             input = new float[numsamples];
 
         float again = gain * 0.018f / 2;
-        
+
         denormal_flip = !denormal_flip;
         if(denormal_flip)
-            for (int i = 0; i < numsamples; i++) 
+            for (int i = 0; i < numsamples; i++)
                 input[i] = inputA[i] * again + 1E-20f;
         else
-            for (int i = 0; i < numsamples; i++) 
+            for (int i = 0; i < numsamples; i++)
                 input[i] = inputA[i] * again - 1E-20f;
 
         delay.processReplace(input);
-                      
+
         if(light && (right != null))
         {
             if (pre1 == null || pre1.length < numsamples)
@@ -319,7 +319,7 @@ public class SoftReverb implements SoftAudioProcessor {
                 pre2 = new float[numsamples];
                 pre3 = new float[numsamples];
             }
-            
+
             for (int i = 0; i < allpassL.length; i++)
                 allpassL[i].processReplace(input);
 
@@ -328,23 +328,23 @@ public class SoftReverb implements SoftAudioProcessor {
 
             combL[2].processReplace(input, pre1);
             for (int i = 4; i < combL.length-2; i+=2)
-                combL[i].processMix(input, pre1); 
-            
+                combL[i].processMix(input, pre1);
+
             combL[3].processReplace(input, pre2);;
-            for (int i = 5; i < combL.length-2; i+=2)            
+            for (int i = 5; i < combL.length-2; i+=2)
                 combL[i].processMix(input, pre2);
-                                        
+
             if (!mix)
             {
-                Arrays.fill(right, 0);            
+                Arrays.fill(right, 0);
                 Arrays.fill(left, 0);
             }
             for (int i = combR.length-2; i < combR.length; i++)
-                combR[i].processMix(input, right);            
+                combR[i].processMix(input, right);
             for (int i = combL.length-2; i < combL.length; i++)
                 combL[i].processMix(input, left);
-            
-            for (int i = 0; i < numsamples; i++) 
+
+            for (int i = 0; i < numsamples; i++)
             {
                 float p = pre1[i] - pre2[i];
                 float m = pre3[i];
@@ -356,10 +356,10 @@ public class SoftReverb implements SoftAudioProcessor {
         {
             if (out == null || out.length < numsamples)
                 out = new float[numsamples];
-            
+
             if (right != null) {
-                if (!mix)            
-                    Arrays.fill(right, 0);                        
+                if (!mix)
+                    Arrays.fill(right, 0);
                 allpassR[0].processReplace(input, out);
                 for (int i = 1; i < allpassR.length; i++)
                     allpassR[i].processReplace(out);
@@ -367,19 +367,19 @@ public class SoftReverb implements SoftAudioProcessor {
                     combR[i].processMix(out, right);
             }
 
-            if (!mix)            
-                Arrays.fill(left, 0);                    
+            if (!mix)
+                Arrays.fill(left, 0);
             allpassL[0].processReplace(input, out);
             for (int i = 1; i < allpassL.length; i++)
                 allpassL[i].processReplace(out);
             for (int i = 0; i < combL.length; i++)
-                combL[i].processMix(out, left);            
+                combL[i].processMix(out, left);
         }
-        
-        
-        
-        
-        
+
+
+
+
+
 
         if (silent_input) {
             silent = true;
@@ -393,7 +393,7 @@ public class SoftReverb implements SoftAudioProcessor {
                 }
             }
         }
-        
+
     }
 
     public void globalParameterControlChange(int[] slothpath, long param,
@@ -506,7 +506,7 @@ public class SoftReverb implements SoftAudioProcessor {
         }
 
     }
-    
+
     public void setLightMode(boolean light)
     {
         this.light = light;

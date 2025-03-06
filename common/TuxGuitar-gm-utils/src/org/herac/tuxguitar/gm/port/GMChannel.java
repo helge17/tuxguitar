@@ -7,15 +7,15 @@ import org.herac.tuxguitar.player.base.MidiControllers;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class GMChannel implements MidiChannel{
-	
+
 	public static final short PERCUSSION_BANK = 128;
-	
+
 	private boolean percussionChannel;
 	private GMReceiver receiver;
 	private GMChannelRoute route;
 	private GMChannelRouter router;
 	private GMProgram program;
-	
+
 	public GMChannel(int channelId, GMChannelRouter router, GMReceiver receiver){
 		this.router = router;
 		this.receiver = new GMReceiverProxy(receiver);
@@ -23,11 +23,11 @@ public class GMChannel implements MidiChannel{
 		this.program = new GMProgram();
 		this.percussionChannel = false;
 	}
-	
+
 	public GMChannelRoute getRoute(){
 		return this.route;
 	}
-	
+
 	public void sendAllNotesOff() throws MidiPlayerException {
 		this.receiver.sendAllNotesOff();
 	}
@@ -43,7 +43,7 @@ public class GMChannel implements MidiChannel{
 	public void sendPitchBend(int value, int voice, boolean bendMode) throws MidiPlayerException {
 		this.receiver.sendPitchBend(resolveChannel(bendMode), value);
 	}
-	
+
 	public void sendProgramChange(int value) throws MidiPlayerException {
 		this.program.setProgram(value);
 		this.router.configureRoutes(this.route, this.percussionChannel);
@@ -64,7 +64,7 @@ public class GMChannel implements MidiChannel{
 			this.receiver.sendControlChange(this.route.getChannel2(), controller, value);
 		}
 	}
-	
+
 	public void sendParameter(String key, String value) throws MidiPlayerException{
 		if( key.equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1)) {
 			this.program.setChannel1(Integer.parseInt(value));
@@ -77,12 +77,12 @@ public class GMChannel implements MidiChannel{
 			this.router.configureRoutes(this.route, this.percussionChannel);
 		}
 	}
-	
+
 	public void sendProgramUpdated() throws MidiPlayerException {
 		if(!this.program.isSameChannel(this.route.getChannel1(), this.route.getChannel2())) {
 			this.program.setChannel1(this.route.getChannel1());
 			this.program.setChannel2(this.route.getChannel2());
-			
+
 			if( this.program.getProgram() != null ) {
 				this.sendProgramChange(this.program.getProgram());
 			}
@@ -94,7 +94,7 @@ public class GMChannel implements MidiChannel{
 			}
 		}
 	}
-	
+
 	private int resolveChannel(boolean bendMode){
 		return (bendMode ? this.route.getChannel2() : this.route.getChannel1());
 	}

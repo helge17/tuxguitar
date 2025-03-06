@@ -11,15 +11,15 @@ import org.herac.tuxguitar.player.base.MidiPercussionKey;
 import org.herac.tuxguitar.resource.TGResourceBundle;
 
 public class TGMessagesManager {
-	
+
 	private static TGMessagesManager instance;
 	private final static String INSTRUMENT_NAME_PREFIX = "midi.instrument-";
 	private final static String PERCUSSION_NAME_PREFIX = "midi.percussion-key-";
-	
+
 	private TGResourceBundle resources;
 	private List<MidiInstrument> instruments = null;
 	private List<MidiPercussionKey> percussionKeys = null;
-	
+
 	public static TGMessagesManager getInstance() {
 		synchronized (TGMessagesManager.class) {
 			if (instance==null) {
@@ -28,14 +28,14 @@ public class TGMessagesManager {
 		}
 		return instance;
 	}
-	
+
 	private TGMessagesManager() {
 		super();
 	}
 
 	public void setResources(TGResourceBundle bundle) {
 		this.resources = bundle;
-		
+
 		instruments = new ArrayList<MidiInstrument>();
 		int i=0;
 		String name = getProperty(INSTRUMENT_NAME_PREFIX + String.valueOf(i));
@@ -44,7 +44,7 @@ public class TGMessagesManager {
 			i++;
 			name = getProperty(INSTRUMENT_NAME_PREFIX + String.valueOf(i));
 		}
-		
+
 		percussionKeys = new ArrayList<MidiPercussionKey>();
 		i=0;
 		// search first percussion (not zero)
@@ -60,7 +60,7 @@ public class TGMessagesManager {
 			name = getProperty(PERCUSSION_NAME_PREFIX + String.valueOf(i));
 		}
 	}
-	
+
 	public static String getProperty(String key) {
 		try {
 			String property = getInstance().resources.getString(key);
@@ -78,7 +78,7 @@ public class TGMessagesManager {
 			return key;
 		}
 	}
-	
+
 	public static String getProperty(String key, Object[] arguments) {
 		String property = getProperty(key);
 		// guiv42 07/2024, don't use MessageFormat.format(), as property may include characters which have a specific meaning in this context
@@ -96,37 +96,37 @@ public class TGMessagesManager {
 		}
 		return newProperty;
 	}
-	
+
 	public static MidiInstrument getMidiInstrument(int index) {
 		if (getInstance().instruments == null) return null;
-		
+
 		int len = getInstance().instruments.size();
 		if (index<0 || index >= len) return null;
 
 		return getInstance().instruments.get(index);
 	}
-	
+
 	public static int getMidiInstrumentsNumber() {
 		if (getInstance().instruments == null) return 0;
 		return getInstance().instruments.size();
 	}
-	
+
 	public static MidiInstrument[] getInstruments() {
 		if (getInstance().instruments == null) return null;
 		return (getInstance().instruments.toArray(new MidiInstrument[0]));
 	}
-	
+
 	public static MidiPercussionKey[] getMidiPercussionKeys() {
 		return (getInstance().percussionKeys.toArray(new MidiPercussionKey[0]));
 	}
-	
+
 	public String getLanguage() {
 		if(this.resources != null){
 			Locale locale = this.resources.getLocale();
 			boolean language = (locale.getLanguage() != null && locale.getLanguage().length() > 0);
 			boolean country = (locale.getCountry() != null && locale.getCountry().length() > 0);
 			boolean variant = (locale.getVariant() != null && locale.getVariant().length() > 0);
-			
+
 			String localeId = new String();
 			if( language ){
 				localeId += locale.getLanguage();
@@ -141,7 +141,7 @@ public class TGMessagesManager {
 		}
 		return null;
 	}
-	
+
 	public Locale getLocale() {
 		if (this.resources == null) return null;
 		return this.resources.getLocale();

@@ -11,26 +11,26 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableCaretState extends TGUndoableEditBase {
-	
+
 	private int doAction;
 	private SelectionState undoableState;
 	private SelectionState redoableState;
-	
+
 	public TGUndoableCaretState(TGContext context){
 		super(context);
-		
+
 		this.startUndo();
 	}
-	
+
 	public void startUndo(){
 		this.doAction = UNDO_ACTION;
 		this.undoableState = this.findCurrentState();
 	}
-	
+
 	public void endUndo(){
 		this.redoableState = this.findCurrentState();
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -38,7 +38,7 @@ public class TGUndoableCaretState extends TGUndoableEditBase {
 		this.updateCaret(this.redoableState);
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -46,18 +46,18 @@ public class TGUndoableCaretState extends TGUndoableEditBase {
 		this.updateCaret(this.undoableState);
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	private SelectionState findCurrentState() {
 		TGCaret caret = getCaret();
-		
+
 		SelectionState state = new SelectionState();
 		state.setTrack(caret.getTrack().getNumber());
 		state.setPosition(caret.getPosition());
@@ -68,27 +68,27 @@ public class TGUndoableCaretState extends TGUndoableEditBase {
 		if(instrumentString != null){
 			state.setString(instrumentString.getNumber());
 		}
-		
+
 		return state;
 	}
-	
+
 	private void updateCaret(SelectionState state){
 		getCaret().update(state.getTrack(), state.getPosition(), state.getString(), state.getVelocity());
 		getCaret().setSelectedDuration(state.getDuration().clone(getSongManager().getFactory()));
 	}
-	
+
 	private TGCaret getCaret(){
 		return TGSongViewController.getInstance(this.getContext()).getCaret();
 	}
-	
+
 	private static class SelectionState {
-		
+
 		private long position;
 		private int track;
 		private int string;
 		private int velocity;
 		private TGDuration duration;
-		
+
 		public SelectionState() {
 			super();
 		}

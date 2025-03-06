@@ -25,27 +25,27 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class JackConsoleDialog implements TGEventListener {
-	
+
 	private TGContext context;
 	private JackConnectionManager jackConnectionManager;
-	
+
 	private UIWindow dialog;
 	private UILegendPanel groupOptions;
 
 	private UICheckBox buttonAutoConnectPorts;
 	private UIButton buttonStoreConnections;
 	private UIButton buttonRestoreConnections;
-	
+
 	public JackConsoleDialog(TGContext context, JackConnectionManager jackConnectionManager) {
 		this.context = context;
 		this.jackConnectionManager = jackConnectionManager;
 	}
-	
+
 	public void show() {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		final UIWindow uiParent = TGWindow.getInstance(this.context).getWindow();
 		final UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.dialog = uiFactory.createWindow(uiParent, false, false);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.addDisposeListener(new UIDisposeListener() {
@@ -54,13 +54,13 @@ public class JackConsoleDialog implements TGEventListener {
 				TuxGuitar.getInstance().getLanguageManager().removeLoader( JackConsoleDialog.this );
 			}
 		});
-		
+
 		// Options
 		UITableLayout groupLayout = new UITableLayout();
 		this.groupOptions = uiFactory.createLegendPanel(this.dialog);
 		this.groupOptions.setLayout(groupLayout);
 		dialogLayout.set(this.groupOptions, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 350f, null, null);
-		
+
 		this.buttonAutoConnectPorts = uiFactory.createCheckBox(this.groupOptions);
 		this.buttonAutoConnectPorts.setSelected(this.jackConnectionManager.isAutoConnectPorts());
 		this.buttonAutoConnectPorts.addSelectionListener(new UISelectionListener() {
@@ -74,13 +74,13 @@ public class JackConsoleDialog implements TGEventListener {
 			}
 		});
 		groupLayout.set(this.buttonAutoConnectPorts, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
-		
+
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.buttonStoreConnections = uiFactory.createButton(buttons);
 		this.buttonStoreConnections.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -92,7 +92,7 @@ public class JackConsoleDialog implements TGEventListener {
 			}
 		});
 		buttonsLayout.set(this.buttonStoreConnections, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, null, null, 0f);
-		
+
 		this.buttonRestoreConnections = uiFactory.createButton(buttons);
 		this.buttonRestoreConnections.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -104,24 +104,24 @@ public class JackConsoleDialog implements TGEventListener {
 			}
 		});
 		buttonsLayout.set(this.buttonRestoreConnections, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, null, null, 0f);
-		
+
 		this.loadIcons(false);
 		this.loadProperties(false);
-		
+
 		TuxGuitar.getInstance().getSkinManager().addLoader( this );
 		TuxGuitar.getInstance().getLanguageManager().addLoader( this );
-		
+
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-	
+
 	public boolean isDisposed(){
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
-	
+
 	public void loadProperties(){
 		this.loadProperties(true);
 	}
-	
+
 	public void loadProperties(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setText(TuxGuitar.getProperty("jack.console.title"));
@@ -134,11 +134,11 @@ public class JackConsoleDialog implements TGEventListener {
 			}
 		}
 	}
-	
+
 	public void loadIcons() {
 		this.loadIcons(true);
 	}
-	
+
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
@@ -147,7 +147,7 @@ public class JackConsoleDialog implements TGEventListener {
 			}
 		}
 	}
-	
+
 	public void updateAutoConnectPorts( boolean autoConnectPorts ){
 		try {
 			this.jackConnectionManager.setAutoConnectPorts(autoConnectPorts);
@@ -156,7 +156,7 @@ public class JackConsoleDialog implements TGEventListener {
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public void storeConnections(){
 		try {
 			this.jackConnectionManager.loadExistingConnections();
@@ -166,7 +166,7 @@ public class JackConsoleDialog implements TGEventListener {
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public void restoreConnections(){
 		try {
 			this.jackConnectionManager.connectAllPorts();
@@ -175,7 +175,7 @@ public class JackConsoleDialog implements TGEventListener {
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public void showInfoMessage(String title, String message){
 		TGMessageDialogUtil.infoMessage(this.context, this.dialog, TuxGuitar.getProperty(title), TuxGuitar.getProperty(message));
 	}

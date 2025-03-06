@@ -12,7 +12,7 @@ public class TGShowSmartMenuAction extends TGActionBase{
 	public TGShowSmartMenuAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		TGSongViewController.getInstance(getContext()).getSmartMenu().openSmartMenu(context);
 	}

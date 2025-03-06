@@ -9,23 +9,23 @@ public class TGTremoloBarEditorGestureDetector extends GestureDetector.SimpleOnG
 
 	private GestureDetectorCompat gestureDetector;
 	private TGTremoloBarEditor tremoloBarEditor;
-	
+
 	public TGTremoloBarEditorGestureDetector(Context context, TGTremoloBarEditor tremoloBarEditor) {
 		this.gestureDetector = new GestureDetectorCompat(context, this);
 		this.tremoloBarEditor = tremoloBarEditor;
 	}
-	
+
 	public boolean processTouchEvent(MotionEvent event) {
 		return this.gestureDetector.onTouchEvent(event);
 	}
-	
+
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
 		this.tremoloBarEditor.editPoint(Math.round(e.getX()), Math.round(e.getY()));
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onDown(MotionEvent e) {
 		return true;

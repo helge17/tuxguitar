@@ -4,10 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class Base64Encoder {
-	
+
 	private static final int BUFFER_SIZE = 1024;
-	
-	private static byte ENCODING[] = { 
+
+	private static byte ENCODING[] = {
 		(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F', (byte) 'G', (byte) 'H',
 		(byte) 'I', (byte) 'J', (byte) 'K', (byte) 'L', (byte) 'M', (byte) 'N', (byte) 'O', (byte) 'P',
 		(byte) 'Q', (byte) 'R', (byte) 'S', (byte) 'T', (byte) 'U', (byte) 'V', (byte) 'W', (byte) 'X',
@@ -18,29 +18,29 @@ public class Base64Encoder {
 		(byte) '4', (byte) '5', (byte) '6', (byte) '7', (byte) '8', (byte) '9', (byte) '+', (byte) '/',
 		(byte) '='
 	};
-	
+
 	private static int get1(byte buf[], int off) {
 		return (buf[off] & 0xfc) >> 2;
 	}
-	
+
 	private static int get2(byte buf[], int off) {
 		return ((buf[off] & 0x3) << 4) | ((buf[off + 1] & 0xf0) >>> 4);
 	}
-	
+
 	private static int get3(byte buf[], int off) {
 		return ((buf[off + 1] & 0x0f) << 2) | ((buf[off + 2] & 0xc0) >>> 6);
 	}
-	
+
 	private static int get4(byte buf[], int off) {
 		return buf[off + 2] & 0x3f;
 	}
-	
+
 	public static byte[] encode(byte[] bytes) {
 		try{
-			
+
 			ByteArrayInputStream  in  = new ByteArrayInputStream( bytes );
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			
+
 			byte buffer[] = new byte[BUFFER_SIZE];
 			int got = -1;
 			int off = 0;
@@ -97,7 +97,7 @@ public class Base64Encoder {
 						}
 						off += 3;
 					}
-					
+
 					for (int i = 0; i < 3; i++){
 						buffer[i] = (i < got - off) ? buffer[off + i] : ((byte) 0);
 					}
@@ -106,7 +106,7 @@ public class Base64Encoder {
 					off += got;
 				}
 			}
-			
+
 			switch (off) {
 				case 1:
 					out.write(ENCODING[get1(buffer, 0)]);
@@ -120,13 +120,13 @@ public class Base64Encoder {
 					out.write(ENCODING[get3(buffer, 0)]);
 					out.write('=');
 			}
-			
+
 			return out.toByteArray();
-			
+
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
-		
+
 		return bytes;
 	}
 }

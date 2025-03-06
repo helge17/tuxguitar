@@ -14,45 +14,45 @@ import org.herac.tuxguitar.util.TGContext;
 import android.content.res.AssetManager;
 
 public class TGAssetBrowserElement implements TGBrowserElement{
-	
+
 	private TGContext context;
 	private TGAssetBrowserElement parent;
 	private String name;
 	private List<TGBrowserElement> childreen;
-	
+
 	public TGAssetBrowserElement(TGContext context, TGAssetBrowserElement parent, String name) {
 		this.context = context;
 		this.parent = parent;
 		this.name = name;
 	}
-	
+
 	public TGAssetBrowserElement getParent() {
 		return this.parent;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public boolean isFolder() {
 		return (this.name.indexOf(".") == -1);
 	}
-	
+
 	public boolean isWritable() {
 		return false;
 	}
-	
+
 	public List<TGBrowserElement> getChildreen() throws TGBrowserException {
 		if( this.childreen == null ) {
 			this.childreen = this.findChildreen();
 		}
 		return this.childreen;
 	}
-	
+
 	public List<TGBrowserElement> findChildreen() throws TGBrowserException {
 		try {
 			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
-			
+
 			AssetManager assetManager = findAssetManager();
 			if( assetManager != null ) {
 				String[] assets = assetManager.list(this.getFullPath());
@@ -62,13 +62,13 @@ public class TGAssetBrowserElement implements TGBrowserElement{
 					}
 				}
 			}
-			
+
 			return elements;
 		} catch (IOException e) {
 			throw new TGBrowserException();
 		}
 	}
-	
+
 	public InputStream getInputStream() throws TGBrowserException {
 		if(!isFolder()){
 			try {
@@ -82,10 +82,10 @@ public class TGAssetBrowserElement implements TGBrowserElement{
 		}
 		return null;
 	}
-	
+
 	private String getFullPath() throws TGBrowserException {
 		String path = this.getName();
-		
+
 		TGAssetBrowserElement parent = this.getParent();
 		while( parent != null ) {
 			path = (parent.getName() + File.separator + path);
@@ -93,7 +93,7 @@ public class TGAssetBrowserElement implements TGBrowserElement{
 		}
 		return path;
 	}
-	
+
 	private AssetManager findAssetManager() {
 		TGActivityController controller = TGActivityController.getInstance(this.context);
 		if( controller.getActivity() != null ) {

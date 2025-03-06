@@ -7,22 +7,22 @@ import org.herac.tuxguitar.ui.qt.resource.QTPainter;
 import io.qt.gui.QPainter;
 
 public class QTPrinterJob extends QTComponent<QTPrinter> implements UIPrinterJob {
-	
+
 	private QTPainter painter;
-	
+
 	public QTPrinterJob(QTPrinter control) {
 		super(control);
-		
+
 		this.painter = new QTPainter(new QPainter(this.getControl().getControl()));
 	}
-	
-	public UIPrinterPage createPage() {		
+
+	public UIPrinterPage createPage() {
 		return new QTPrinterPage(this.painter);
 	}
-	
+
 	public void dispose() {
 		this.painter.dispose();
-		
+
 		super.dispose();
 	}
 }

@@ -8,13 +8,13 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMoveBeatsRightAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.move-right";
-	
+
 	public TGMoveBeatsRightAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext tgActionContext) {
 		TGVoice voice = ((TGVoice) tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
 		if( voice != null ){

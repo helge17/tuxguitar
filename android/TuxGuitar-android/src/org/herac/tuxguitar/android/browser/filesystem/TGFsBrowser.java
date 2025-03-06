@@ -15,59 +15,59 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.TGExpressionResolver;
 
 public class TGFsBrowser implements TGBrowser{
-	
+
 	private TGContext context;
 	private TGFsBrowserSettings data;
 	private TGFsBrowserElement element;
 	private File root;
-	
+
 	public TGFsBrowser(TGContext context, TGFsBrowserSettings data){
 		this.context = context;
 		this.data = data;
 	}
-	
+
 	public void open(TGBrowserCallBack<Object> cb){
 		try {
 			this.root = new File(TGExpressionResolver.getInstance(this.context).resolve(this.data.getPath()));
 			this.element = null;
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void close(TGBrowserCallBack<Object> cb){
 		try {
 			this.root = null;
 			this.element = null;
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdElement(TGBrowserCallBack<Object> cb, TGBrowserElement element) {
 		try {
 			this.element = (TGFsBrowserElement) element;
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdRoot(TGBrowserCallBack<Object> cb) {
 		try {
 			this.element = new TGFsBrowserElement(this.root, null);
-			
+
 			cb.onSuccess(this.element);
 		} catch (RuntimeException e) {
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void cdUp(TGBrowserCallBack<Object> cb) {
 		try {
 			if( this.element != null && this.element.getParent() != null ){
@@ -78,7 +78,7 @@ public class TGFsBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void listElements(TGBrowserCallBack<List<TGBrowserElement>> cb) {
 		try {
 			List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
@@ -96,7 +96,7 @@ public class TGFsBrowser implements TGBrowser{
 					Collections.sort(elements, new TGBrowserElementComparator());
 				}
 			}
-			
+
 			cb.onSuccess(elements);
 		} catch (Throwable e) {
 			cb.handleError(e);
@@ -108,7 +108,7 @@ public class TGFsBrowser implements TGBrowser{
 			TGBrowserElement element = null;
 			if( this.isWritable() ) {
 				File file = new File(this.element.getFile(), name);
-				
+
 				element = new TGFsBrowserElement(file, this.element);
 			}
 			cb.onSuccess(element);
@@ -116,7 +116,7 @@ public class TGFsBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void getInputStream(TGBrowserCallBack<InputStream> cb, TGBrowserElement element) {
 		try {
 			cb.onSuccess(((TGFsBrowserElement) element).getInputStream());
@@ -124,7 +124,7 @@ public class TGFsBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public void getOutputStream(TGBrowserCallBack<OutputStream> cb, TGBrowserElement element) {
 		try {
 			cb.onSuccess(((TGFsBrowserElement) element).getOutputStream());
@@ -132,8 +132,8 @@ public class TGFsBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public boolean isWritable() {
 		return (this.element != null && this.element.isFolder() && this.element.isWritable());
-	}	
+	}
 }

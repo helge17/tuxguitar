@@ -7,17 +7,17 @@ import java.util.List;
 
 
 public class TGBrowserSession {
-	
+
 	public static final int READ_MODE = 1;
 	public static final int WRITE_MODE = 2;
-	
+
 	private int sessionType;
 	private TGBrowser browser;
 	private TGBrowserCollection collection;
 	private List<TGBrowserElement> currentElements;
 	private TGBrowserElement currentElement;
 	private TGFileFormat currentFormat;
-	
+
 	public TGBrowserSession(){
 		this.sessionType = READ_MODE;
 	}
@@ -33,7 +33,7 @@ public class TGBrowserSession {
 	public TGBrowser getBrowser() {
 		return browser;
 	}
-	
+
 	public void setBrowser(TGBrowser browser) {
 		this.browser = browser;
 	}

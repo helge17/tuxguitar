@@ -5,18 +5,18 @@ import org.herac.tuxguitar.player.base.MidiChannel;
 import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class JackChannelProxy implements MidiChannel {
-	
+
 	private int jackChannelId;
 	private JackSynthesizer jackSynthesizer;
 	private JackPort jackPort;
 	private MidiChannel midiChannel;
 	private boolean exclusive;
-	
+
 	public JackChannelProxy(int jackChannelId, JackSynthesizer jackSynthesizer) {
 		this.jackChannelId = jackChannelId;
 		this.jackSynthesizer = jackSynthesizer;
 	}
-	
+
 	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
 		if( this.midiChannel != null ){
 			this.midiChannel.sendNoteOn(key, velocity, voice, bendMode);
@@ -46,7 +46,7 @@ public class JackChannelProxy implements MidiChannel {
 			this.midiChannel.sendControlChange(controller, value);
 		}
 	}
-	
+
 	public void sendAllNotesOff() throws MidiPlayerException {
 		if( this.midiChannel != null ){
 			this.midiChannel.sendAllNotesOff();
@@ -67,27 +67,27 @@ public class JackChannelProxy implements MidiChannel {
 	public int getJackChannelId() {
 		return jackChannelId;
 	}
-	
+
 	public MidiChannel getMidiChannel() {
 		return midiChannel;
 	}
-	
+
 	public void setMidiChannel(MidiChannel midiChannel) {
 		this.midiChannel = midiChannel;
 	}
-	
+
 	public JackPort getJackPort() {
 		return jackPort;
 	}
-	
+
 	public void setJackPort(JackPort jackPort) {
 		this.jackPort = jackPort;
 	}
-	
+
 	public boolean isExclusive() {
 		return exclusive;
 	}
-	
+
 	public void setExclusive(boolean exclusive) {
 		this.exclusive = exclusive;
 	}

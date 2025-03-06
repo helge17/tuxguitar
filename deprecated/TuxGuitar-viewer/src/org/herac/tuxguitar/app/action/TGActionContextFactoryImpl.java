@@ -13,12 +13,12 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 	public TGActionContext createActionContext() throws TGActionException {
 		Caret caret = TuxGuitar.instance().getTablatureEditor().getTablature().getCaret();
 		TGDocumentManager tgDocumentManager = TuxGuitar.instance().getDocumentManager();
-		
+
 		TGActionContext tgActionContext = new TGActionContextImpl();
 		tgActionContext.setAttribute(TGDocumentManager.class.getName(), tgDocumentManager);
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, tgDocumentManager.getSongManager());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, tgDocumentManager.getSong());
-		
+
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, caret.getTrack());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, caret.getMeasure());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, caret.getMeasure().getHeader());
@@ -30,7 +30,7 @@ public class TGActionContextFactoryImpl implements TGActionContextFactory{
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, caret.getVelocity());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION, caret.getPosition());
 		tgActionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER, caret.getMeasure().getHeader().getMarker());
-		
+
 		return tgActionContext;
 	}
 }

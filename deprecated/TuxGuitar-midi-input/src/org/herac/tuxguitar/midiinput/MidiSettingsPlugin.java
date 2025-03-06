@@ -9,14 +9,14 @@ public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 
 	public void connect(TGContext context) {
 		MiConfig.init(context);
-		
+
 		super.connect(context);
 	}
-	
+
 	protected TGPluginSettingsHandler createHandler(TGContext context) throws TGPluginException {
 		return new MiSettingsHandler();
 	}
-	
+
 	public String getModuleId() {
 		return MiPlugin.MODULE_ID;
 	}

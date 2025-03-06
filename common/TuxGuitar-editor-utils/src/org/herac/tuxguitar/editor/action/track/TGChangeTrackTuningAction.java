@@ -12,16 +12,16 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChangeTrackTuningAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.track.change-tuning";
-	
+
 	public static final String ATTRIBUTE_OFFSET = "offset";
 	public static final String ATTRIBUTE_STRINGS = "strings";
-	
+
 	public TGChangeTrackTuningAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected void processAction(TGActionContext context){
 		TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
@@ -63,10 +63,10 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 			}
 		}
 	}
-	
+
 	public int[] createTranspositions(TGTrack track, List<?> newStrings ){
 		int[] transpositions = new int[ newStrings.size() ];
-		
+
 		TGString newString = null;
 		TGString oldString = null;
 		for( int index = 0; index < transpositions.length ; index ++ ){
@@ -89,11 +89,11 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 			}else{
 				transpositions[ index ] = 0;
 			}
-			
+
 			newString = null;
 			oldString = null;
 		}
-		
+
 		return transpositions;
 	}
 }

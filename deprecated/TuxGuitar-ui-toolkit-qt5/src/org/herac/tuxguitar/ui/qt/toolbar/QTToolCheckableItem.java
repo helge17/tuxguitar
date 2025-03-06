@@ -3,10 +3,10 @@ package org.herac.tuxguitar.ui.qt.toolbar;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class QTToolCheckableItem extends QTToolActionItem implements UIToolCheckableItem {
-	
+
 	public QTToolCheckableItem(QTToolBar parent) {
 		super(parent);
-		
+
 		this.getControl().setCheckable(true);
 	}
 

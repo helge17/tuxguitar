@@ -7,7 +7,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class TGResourceUtils {
-	
+
 	public static Icon loadIcon(String resource){
 		try {
 			if( resource != null ){

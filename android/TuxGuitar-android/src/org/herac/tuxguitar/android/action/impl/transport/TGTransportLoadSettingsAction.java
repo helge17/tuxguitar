@@ -12,7 +12,7 @@ public class TGTransportLoadSettingsAction extends TGActionBase{
 	public TGTransportLoadSettingsAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGTransportAdapter.getInstance(getContext()).loadSettings();
 	}

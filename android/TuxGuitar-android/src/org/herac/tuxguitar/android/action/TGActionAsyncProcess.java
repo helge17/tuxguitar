@@ -8,7 +8,7 @@ import org.herac.tuxguitar.util.error.TGErrorHandler;
 public class TGActionAsyncProcess implements TGErrorHandler {
 
 	public static final String ATTRIBUTE_ERROR_HANDLED = "errorHandled";
-	
+
 	private TGActionBase action;
 	private TGActionContext actionContext;
 
@@ -39,7 +39,7 @@ public class TGActionAsyncProcess implements TGErrorHandler {
 
 	public void handleError(Throwable throwable) {
 		getEventManager().fireEvent(new TGActionAsyncProcessErrorEvent(this.getAction().getName(), this.actionContext, throwable));
-		
+
 		if( this.actionContext != null ) {
 			Boolean errorHandled = this.actionContext.getAttribute(ATTRIBUTE_ERROR_HANDLED);
 			if( errorHandled == null || !errorHandled) {

@@ -9,16 +9,16 @@ import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
 import org.herac.tuxguitar.ui.widget.UIScale;
 
 public class JFXScale extends JFXControl<Slider> implements UIScale {
-	
+
 	private JFXSelectionListenerChangeManager<Number> selectionListener;
-	
+
 	public JFXScale(JFXContainer<? extends Region> parent, Orientation orientation) {
 		super(new Slider(), parent);
-		
+
 		this.getControl().setOrientation(orientation);
 		this.selectionListener = new JFXSelectionListenerChangeManager<Number>(this);
 	}
-	
+
 	public void setValue(int value) {
 		this.getControl().setValue(value);
 	}
@@ -62,7 +62,7 @@ public class JFXScale extends JFXControl<Slider> implements UIScale {
 	public int getIncrement() {
 		return (int) Math.round(this.getControl().getBlockIncrement());
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().valueProperty().addListener(this.selectionListener);

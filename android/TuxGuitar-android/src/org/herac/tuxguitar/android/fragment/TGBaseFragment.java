@@ -21,19 +21,19 @@ public abstract class TGBaseFragment extends Fragment {
 	public TGBaseFragment() {
 		super();
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		this.onPostCreate(savedInstanceState);
 		this.fireEvent(TGFragmentEvent.ACTION_CREATED);
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		super.onCreateOptionsMenu(menu, menuInflater);
-		
+
 		this.onPostCreateOptionsMenu(menu, menuInflater);
 		this.fireEvent(TGFragmentEvent.ACTION_OPTIONS_MENU_CREATED);
 	}
@@ -51,7 +51,7 @@ public abstract class TGBaseFragment extends Fragment {
 	public void onPostCreate(Bundle savedInstanceState) {
 		// override me
 	}
-	
+
 	public void onPostCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		// override me
 	}
@@ -59,7 +59,7 @@ public abstract class TGBaseFragment extends Fragment {
 	public View onPostCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View createdView) {
 		return createdView;
 	}
-	
+
 	public TGContext findContext() {
 		return this.findActivity().findContext();
 	}

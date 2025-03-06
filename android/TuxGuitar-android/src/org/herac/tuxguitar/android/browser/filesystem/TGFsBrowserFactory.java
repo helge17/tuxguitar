@@ -21,20 +21,20 @@ public class TGFsBrowserFactory implements TGBrowserFactory{
 
 	private TGContext context;
 	private TGFsBrowserSettingsFactory settingsFactory;
-	
+
 	public TGFsBrowserFactory(TGContext context, TGFsBrowserSettingsFactory settingsFactory) {
 		this.context = context;
 		this.settingsFactory = settingsFactory;
 	}
-	
+
 	public String getType(){
 		return BROWSER_TYPE;
 	}
-	
+
 	public String getName(){
 		return BROWSER_NAME;
 	}
-	
+
 	public void createBrowser(final TGBrowserFactoryHandler handler, final TGBrowserSettings settings) {
 		this.runWithPermissions(new Runnable() {
 			public void run() {

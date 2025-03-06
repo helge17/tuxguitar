@@ -7,11 +7,11 @@ import org.herac.tuxguitar.util.TGContext;
 public class GTPSettingsHandler implements TGPluginSettingsHandler {
 
 	private TGContext context;
-	
+
 	public GTPSettingsHandler(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void openSettingsDialog(UIWindow parent) {
 		new GTPSettingsDialog(this.context).configure(parent);
 	}

@@ -6,12 +6,12 @@ import org.herac.tuxguitar.ui.widget.UITextField;
 import io.qt.widgets.QLineEdit;
 
 public class QTTextField extends QTWidget<QLineEdit> implements UITextField {
-	
+
 	private QTModifyListenerManager modifyListener;
-	
+
 	public QTTextField(QTContainer parent) {
 		super(new QLineEdit(parent.getContainerControl()), parent);
-		
+
 		this.modifyListener = new QTModifyListenerManager(this);
 	}
 

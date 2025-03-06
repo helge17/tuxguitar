@@ -7,14 +7,14 @@ import io.qt.widgets.QApplication;
 import io.qt.widgets.QSplashScreen;
 
 public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashWindow {
-	
+
 	private UIImage image;
 	private UIImage splashImage;
-	
+
 	public QTSplashWindow() {
 		super(new QSplashScreen(), null);
 	}
-	
+
 	public String getText() {
 		return this.getControl().windowTitle();
 	}
@@ -31,7 +31,7 @@ public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashW
 		this.image = image;
 		this.getControl().setWindowIcon(this.image != null ? ((QTImage) this.image).createIcon() : null);
 	}
-	
+
 	public UIImage getSplashImage() {
 		return splashImage;
 	}
@@ -45,7 +45,7 @@ public class QTSplashWindow extends QTWidget<QSplashScreen> implements UISplashW
 		this.getControl().show();
 		this.processPendingEvents();
 	}
-	
+
 	public void processPendingEvents() {
 // TODO QT 5->6 //		if (QApplication.hasPendingEvents()) {
 			QApplication.processEvents();

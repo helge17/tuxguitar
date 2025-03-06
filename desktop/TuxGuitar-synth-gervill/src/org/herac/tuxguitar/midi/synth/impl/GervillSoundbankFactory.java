@@ -15,15 +15,15 @@ import media.sound.ModelPatch;
 import media.sound.SF2Instrument;
 
 public class GervillSoundbankFactory {
-	
+
 	private static Instrument[][] defaultInstruments;
-	
+
 	private int locks;
-	
+
 	public boolean isBusy() {
 		return (this.locks != 0);
 	}
-	
+
 	public void create(final TGContext context, final GervillProgram program, final GervillSoundbankCallback callback) {
 		this.locks ++;
 		new Thread(new Runnable() {
@@ -38,19 +38,19 @@ public class GervillSoundbankFactory {
 			}
 		}).start();
 	}
-	
+
 	private void createInstrument(TGContext context, GervillProgram program, GervillSoundbankCallback callback) throws Exception {
 		Instrument instrument = this.createInstrument(context, program);
 		if( instrument != null ){
 			callback.onCreate(instrument);
 		}
 	}
-	
+
 	private Instrument createInstrument(TGContext context, GervillProgram program) throws Exception {
 		Instrument instrument = null;
 		if( program.getSoundbankPath() != null && program.getSoundbankPath().length() > 0 ) {
 			Soundbank soundbank = this.createSoundbank(context, program.getSoundbankPath());
-			
+
 			boolean percussion = (program.getBank() == 128);
 			Patch patch = new ModelPatch((percussion ? 0 : program.getBank()), program.getProgram(), percussion);
 			instrument = soundbank.getInstrument(patch);
@@ -63,12 +63,12 @@ public class GervillSoundbankFactory {
 		}
 		return instrument;
 	}
-	
+
 	private Instrument getDefaultInstrument(TGContext context, GervillProgram program) throws Exception {
 		synchronized (GervillProcessorFactory.class) {
 			if( defaultInstruments == null ) {
 				defaultInstruments = new Instrument[129][128];
-				
+
 				Soundbank soundbank = null;
 				String soundbankPath = new GervillSettings(context).getSoundbankPath();
 				if( soundbankPath != null && soundbankPath.length() > 0 ) {
@@ -90,7 +90,7 @@ public class GervillSoundbankFactory {
 		}
 		return defaultInstruments[program.getBank()][program.getProgram()];
 	}
-	
+
 	private Soundbank createSoundbank(TGContext context, String soundbankPath) {
 		try {
 			return MidiSystem.getSoundbank(new File(TGExpressionResolver.getInstance(context).resolve(soundbankPath)));

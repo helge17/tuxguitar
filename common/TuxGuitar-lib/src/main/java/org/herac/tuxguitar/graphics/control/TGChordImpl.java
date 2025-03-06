@@ -16,13 +16,13 @@ import org.herac.tuxguitar.ui.resource.UIPainter;
 import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 /**
  * @author julian
- * 
+ *
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class TGChordImpl extends TGChord {
-	
+
 	public static final int MAX_FRETS = 6;
-	
+
 	private int style;
 	private float posX;
 	private float posY;
@@ -46,10 +46,10 @@ public class TGChordImpl extends TGChord {
 	private float fretSpacing;
 	private float noteSize;
 	private float lineWidth;
-	
+
 	private boolean editing;
 	private Object registryKey;
-	
+
 	public TGChordImpl(int length) {
 		super(length);
 	}
@@ -57,174 +57,174 @@ public class TGChordImpl extends TGChord {
 	public boolean isEditing() {
 		return this.editing;
 	}
-	
+
 	public void setEditing(boolean editing) {
 		this.editing = editing;
 	}
-	
+
 	public void setPosX(float posX){
 		this.posX = posX;
 	}
-	
+
 	public void setPosY(float posY){
 		this.posY = posY;
 	}
-	
+
 	public float getPosY() {
 		return this.posY;
 	}
-	
+
 	public float getWidth(){
 		return this.width;
 	}
-	
+
 	public float getHeight(){
 		return this.height;
 	}
-	
+
 	public void setStyle(int style) {
 		this.style = style;
 	}
-	
+
 	public void setTonic(int tonic){
 		if(!this.isDisposed() && this.tonic != tonic){
 			this.dispose();
 		}
 		this.tonic = tonic;
 	}
-	
+
 	public UIColor getForegroundColor() {
 		return this.foregroundColor;
 	}
-	
+
 	public void setForegroundColor(UIColor foregroundColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.foregroundColor, foregroundColor)){
 			this.dispose();
 		}
 		this.foregroundColor = foregroundColor;
 	}
-	
+
 	public UIColor getBackgroundColor() {
 		return this.backgroundColor;
 	}
-	
+
 	public void setBackgroundColor(UIColor backgroundColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.backgroundColor, backgroundColor)){
 			this.dispose();
 		}
 		this.backgroundColor = backgroundColor;
 	}
-	
+
 	public UIColor getColor() {
 		return this.color;
 	}
-	
+
 	public void setColor(UIColor color) {
 		if(!this.isDisposed() && !this.isSameColor(this.color, color)){
 			this.dispose();
 		}
 		this.color = color;
 	}
-	
+
 	public UIColor getNoteColor() {
 		return this.noteColor;
 	}
-	
+
 	public void setNoteColor(UIColor noteColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.noteColor, noteColor)){
 			this.dispose();
 		}
 		this.noteColor = noteColor;
 	}
-	
+
 	public UIColor getTonicColor() {
 		return this.tonicColor;
 	}
-	
+
 	public void setTonicColor(UIColor tonicColor) {
 		if(!this.isDisposed() && !this.isSameColor(this.tonicColor, tonicColor)){
 			this.dispose();
 		}
 		this.tonicColor = tonicColor;
 	}
-	
+
 	public float getFirstFretSpacing() {
 		return this.firstFretSpacing;
 	}
-	
+
 	public void setFirstFretSpacing(float firstFretSpacing) {
 		if(!this.isDisposed() && this.firstFretSpacing != firstFretSpacing){
 			this.dispose();
 		}
 		this.firstFretSpacing = firstFretSpacing;
 	}
-	
+
 	public float getFretSpacing() {
 		return this.fretSpacing;
 	}
-	
+
 	public void setFretSpacing(float fretSpacing) {
 		if(!this.isDisposed() && this.fretSpacing != fretSpacing){
 			this.dispose();
 		}
 		this.fretSpacing = fretSpacing;
 	}
-	
+
 	public float getStringSpacing() {
 		return this.stringSpacing;
 	}
-	
+
 	public void setStringSpacing(float stringSpacing) {
 		if(!this.isDisposed() && this.stringSpacing != stringSpacing){
 			this.dispose();
 		}
 		this.stringSpacing = stringSpacing;
 	}
-	
+
 	public float getNoteSize() {
 		return this.noteSize;
 	}
-	
+
 	public void setNoteSize(float noteSize) {
 		if(!this.isDisposed() && this.noteSize != noteSize){
 			this.dispose();
 		}
 		this.noteSize = noteSize;
 	}
-	
+
 	public float getLineWidth() {
 		return this.lineWidth;
 	}
-	
+
 	public void setLineWidth(float lineWidth) {
 		if(!this.isDisposed() && this.lineWidth != lineWidth){
 			this.dispose();
 		}
 		this.lineWidth = lineWidth;
 	}
-	
+
 	public UIFont getFont() {
 		return this.font;
 	}
-	
+
 	public void setFont(UIFont font) {
 		if(!this.isDisposed() && !this.isSameFont(this.font, font)){
 			this.dispose();
 		}
 		this.font = font;
 	}
-	
+
 	public UIFont getFirstFretFont() {
 		return this.firstFretFont;
 	}
-	
+
 	public void setFirstFretFont(UIFont firstFretFont) {
 		if(!this.isDisposed() && !this.isSameFont(this.firstFretFont, firstFretFont)){
 			this.dispose();
 		}
 		this.firstFretFont = firstFretFont;
 	}
-	
+
 	public void paint(TGLayout layout, UIPainter painter, float fromX, float fromY) {
 		layout.setChordStyle(this, this.getBeatImpl().getMeasureImpl().isPlaying(layout));
 		this.setPosY(getPaintPosition(TGTrackSpacing.POSITION_CHORD));
@@ -232,7 +232,7 @@ public class TGChordImpl extends TGChord {
 		this.update(painter, layout.getComponent().getResourceFactory(), (layout.isBufferEnabled() ? layout.getResourceBuffer() : null));
 		this.paint(painter,getBeatImpl().getSpacing(layout) + fromX + Math.round(4f * layout.getScale()), fromY);
 	}
-	
+
 	public void paint(UIPainter painter, float fromX, float fromY){
 		float x = (fromX + getPosX());
 		float y = (fromY + getPosY());
@@ -251,7 +251,7 @@ public class TGChordImpl extends TGChord {
 			painter.drawString(getName(),x - (this.nameWidth / 2) , y + painter.getFMTopLine());
 		}
 	}
-	
+
 	public void update(UIPainter painter, UIResourceFactory factory, TGResourceBuffer buffer) {
 		this.width = 0;
 		this.height = 0;
@@ -269,7 +269,7 @@ public class TGChordImpl extends TGChord {
 			this.height += this.diagramHeight;
 		}
 	}
-	
+
 	protected void updateName(UIPainter painter){
 		String name = getName();
 		if(painter == null || name == null || name.length() == 0){
@@ -280,7 +280,7 @@ public class TGChordImpl extends TGChord {
 		this.nameWidth = painter.getFMWidth(name);
 		this.nameHeight = painter.getFMHeight();
 	}
-	
+
 	protected void updateDiagram(UIResourceFactory bufferFactory, TGResourceBuffer resourceBuffer){
 		UIFont font = getFirstFretFont();
 		this.diagramWidth = getStringSpacing() + (getStringSpacing() * countStrings()) + ((font != null)?getFirstFretSpacing():0);
@@ -290,14 +290,14 @@ public class TGChordImpl extends TGChord {
 			UIPainter painterBuffer = this.diagram.createPainter();
 			paintDiagram(painterBuffer, 0, 0);
 			painterBuffer.dispose();
-			
+
 			if( this.registryKey == null ) {
 				this.registerBuffer(resourceBuffer);
 			}
 			resourceBuffer.setResource(this.registryKey, this.diagram);
 		}
 	}
-	
+
 	protected void paintDiagram(UIPainter painter, float fromX, float fromY){
 		UIFont font = getFirstFretFont();
 		painter.setBackground(getBackgroundColor());
@@ -306,18 +306,18 @@ public class TGChordImpl extends TGChord {
 		painter.addRectangle(fromX, fromY, this.diagramWidth, this.diagramHeight);
 		painter.closePath();
 		painter.setForeground(getColor());
-		
+
 		//dibujo las cuerdas
 		float x = fromX + getStringSpacing();
 		float y = fromY + getFretSpacing();
-		
+
 		if( font != null ){
 			String firstFretString = Integer.toString(getFirstFret());
 			painter.setFont(font);
 			painter.drawString(firstFretString, fromX + (getFirstFretSpacing() - painter.getFMWidth(firstFretString)), (y + ((getFretSpacing() / 2f) + painter.getFMMiddleLine())));
 			x += getFirstFretSpacing();
 		}
-		
+
 		painter.initPath();
 		painter.setAntialias(false);
 		for(int i = 0;i < getStrings().length;i++){
@@ -329,7 +329,7 @@ public class TGChordImpl extends TGChord {
 			painter.lineTo(x2,y2);
 		}
 		painter.closePath();
-		
+
 		//dibujo las cegillas
 		painter.initPath();
 		painter.setAntialias(false);
@@ -342,7 +342,7 @@ public class TGChordImpl extends TGChord {
 			painter.lineTo(x2,y2);
 		}
 		painter.closePath();
-		
+
 		//dibujo las notas
 		for(int i = 0;i < getStrings().length;i++){
 			int fret = getFretValue(i);
@@ -370,7 +370,7 @@ public class TGChordImpl extends TGChord {
 			}
 		}
 	}
-	
+
 	public void calculateFirstFret(){
 		int minimum = -1;
 		int maximum = -1;
@@ -393,7 +393,7 @@ public class TGChordImpl extends TGChord {
 			}
 		}
 	}
-	
+
 	private boolean isTonicFret(int stringIndex, int fret){
 		if( this.tonic >= 0 ) {
 			TGTrack track = getBeat().getMeasure().getTrack();
@@ -410,35 +410,35 @@ public class TGChordImpl extends TGChord {
 	public void registerBuffer(TGResourceBuffer resourceBuffer) {
 		this.registerBuffer(resourceBuffer, this);
 	}
-	
+
 	public void registerBuffer(TGResourceBuffer resourceBuffer, Object registryKey) {
 		this.registryKey = registryKey;
-		
+
 		resourceBuffer.register(this.registryKey);
 	}
-	
+
 	public boolean isDisposed(){
 		return (this.diagram == null || this.diagram.isDisposed());
 	}
-	
+
 	public void dispose(){
 		if(!isDisposed()){
 			this.diagram.dispose();
 		}
 	}
-	
+
 	public float getPosX() {
 		return (isEditing()) ? this.posX : getBeatImpl().getPosX();
 	}
-	
+
 	public float getPaintPosition(int index){
 		return getBeatImpl().getMeasureImpl().getTs().getPosition(index);
 	}
-	
+
 	public TGBeatImpl getBeatImpl(){
 		return (TGBeatImpl)getBeat();
 	}
-	
+
 	private boolean isSameFont(UIFont f1, UIFont f2){
 		if( f1 == null && f2 == null ){
 			return true;
@@ -448,12 +448,12 @@ public class TGChordImpl extends TGChord {
 			boolean sameBold = (f1.isBold() == f2.isBold());
 			boolean sameItalic = (f1.isItalic() == f2.isItalic());
 			boolean sameHeight = (f1.getHeight() == f2.getHeight());
-			
+
 			return (sameName && sameBold && sameItalic && sameHeight);
 		}
 		return false;
 	}
-	
+
 	private boolean isSameColor(UIColor c1, UIColor c2){
 		if( c1 == null && c2 == null ){
 			return true;
@@ -463,14 +463,14 @@ public class TGChordImpl extends TGChord {
 		}
 		return false;
 	}
-	
+
 	public void addFretValue(int string,int fret){
 		if(!isDisposed() && this.getFretValue(string) != fret){
 			this.dispose();
 		}
 		super.addFretValue(string, fret);
 	}
-	
+
 	public void setFirstFret(int firstFret) {
 		if(!isDisposed() && this.getFirstFret() != firstFret){
 			this.dispose();

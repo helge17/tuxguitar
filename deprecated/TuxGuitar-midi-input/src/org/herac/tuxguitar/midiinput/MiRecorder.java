@@ -58,7 +58,7 @@ static	private	MiRecorder	s_Instance;
 
 	public void		start()
 	{
-	TGContext	tgContext = TuxGuitar.getInstance().getContext();	
+	TGContext	tgContext = TuxGuitar.getInstance().getContext();
 	TGSongManager	tgSongMgr = TuxGuitar.getInstance().getSongManager();
 	TGDocumentManager	tgDocMgr = TuxGuitar.getInstance().getDocumentManager();
 
@@ -120,7 +120,7 @@ static	private	MiRecorder	s_Instance;
 		}
 	});
 	TuxGuitar.getInstance().getPlayer().setMetronomeEnabled(f_SavedMetronomeStatus);
-	
+
 	// qui deve cancellare la traccia di servizio...
 	tgSongMgr.removeTrack(tgDocMgr.getSong(), f_TempTrack);
 

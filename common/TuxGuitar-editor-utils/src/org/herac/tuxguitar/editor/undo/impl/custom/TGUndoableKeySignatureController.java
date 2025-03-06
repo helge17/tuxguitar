@@ -14,14 +14,14 @@ public class TGUndoableKeySignatureController implements TGUndoableActionControl
 	public TGUndoableEdit startUndoable(TGContext context, TGActionContext actionContext) {
 		TGTrack track = ((TGTrack) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK));
 		TGMeasure measure = ((TGMeasure) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
-		
+
 		return TGUndoableKeySignature.startUndo(context, track, measure);
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
 		int keySignature = ((Integer) actionContext.getAttribute(TGChangeKeySignatureAction.ATTRIBUTE_KEY_SIGNATURE)).intValue();
 		boolean applyToEnd = ((Boolean) actionContext.getAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_END)).booleanValue();
-		
+
 		return ((TGUndoableKeySignature) undoableEdit).endUndo(keySignature, applyToEnd);
 	}
 }

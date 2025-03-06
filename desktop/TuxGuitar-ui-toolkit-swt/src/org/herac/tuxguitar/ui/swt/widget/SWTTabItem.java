@@ -17,18 +17,18 @@ import org.herac.tuxguitar.ui.widget.UIControl;
 import org.herac.tuxguitar.ui.widget.UITabItem;
 
 public class SWTTabItem extends SWTControl<CTabFolder> implements SWTContainer<CTabFolder>, UITabItem {
-	
+
 	private SWTTabFolder parent;
 	private CTabItem item;
 	private UIControl control;
-	
+
 	public SWTTabItem(CTabItem item, SWTTabFolder parent) {
 		super(parent.getControl(), null);
-		
+
 		this.parent = parent;
 		this.item = item;
 	}
-	
+
 	public CTabItem getItem() {
 		return item;
 	}
@@ -36,10 +36,10 @@ public class SWTTabItem extends SWTControl<CTabFolder> implements SWTContainer<C
 	@SuppressWarnings("unchecked")
 	public void addChild(UIControl control) {
 		Control handle = ((SWTControl<? extends Control>) control).getControl();
-		
+
 		this.control = control;
 		this.item.setControl(handle);
-		
+
 		handle.addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event event) {
 				onResize();
@@ -69,7 +69,7 @@ public class SWTTabItem extends SWTControl<CTabFolder> implements SWTContainer<C
 		UISize packedSize = new UISize();
 		if( this.control != null ) {
 			this.control.computePackedSize(fixedWidth, fixedHeight);
-			
+
 			packedSize.setWidth(this.control.getPackedSize().getWidth());
 			packedSize.setHeight(this.control.getPackedSize().getHeight());
 		}
@@ -121,28 +121,28 @@ public class SWTTabItem extends SWTControl<CTabFolder> implements SWTContainer<C
 		}
 		return new UIRectangle();
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		if( this.control != null ) {
 			this.control.setBounds(bounds);
 		}
 	}
-	
+
 	public void layout(UIRectangle bounds) {
 		this.computePackedSize(null, null);
 		this.setBounds(bounds);
 	}
-	
+
 	public void onSelect() {
 		this.onResize();
 	}
-	
+
 	public void onResize() {
 		if( this.control != null ) {
 			this.layout(this.getBounds());
 		}
 	}
-	
+
 	public UIColor getBgColor() {
 		if( this.control != null ) {
 			return this.control.getBgColor();
@@ -187,11 +187,11 @@ public class SWTTabItem extends SWTControl<CTabFolder> implements SWTContainer<C
 			this.control.setPopupMenu(menu);
 		}
 	}
-	
+
 	public void dispose() {
 		this.parent.dispose(this);
 	}
-	
+
 	public void disposeControl() {
 		if(!this.item.isDisposed()) {
 			this.item.dispose();

@@ -12,7 +12,7 @@ public class MidiInputPlugin
 {
 	public void connect(TGContext context) {
 		MiConfig.init(context);
-		
+
 		// try to setup the environment according to the user's preferences
 
 		String	notesDeviceName = MiConfig.instance().getMidiInputPortName();
@@ -34,10 +34,10 @@ public class MidiInputPlugin
 		MiProvider.instance().setMinDuration	(MiConfig.instance().getMinDuration());
 		MiProvider.instance().setEchoTimeOut	(MiConfig.instance().getEchoTimeOut());
 		MiProvider.instance().setInputTimeOut	(MiConfig.instance().getInputTimeOut());
-		
+
 		super.connect(context);
 	}
-	
+
 	public void disconnect(TGContext context) throws TGPluginException {
 		try {
 			MiPort.setNotesPort(null);
@@ -47,10 +47,10 @@ public class MidiInputPlugin
 			{
 			TGErrorManager.getInstance(TuxGuitar.getInstance().getContext()).handleError(mie);
 			}
-		
+
 		super.disconnect(context);
 	}
-	
+
 //	public void setEnabled(boolean enabled)
 //		throws TGPluginException
 //	{

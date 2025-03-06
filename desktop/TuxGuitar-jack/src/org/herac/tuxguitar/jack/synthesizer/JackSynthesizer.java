@@ -14,45 +14,45 @@ import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.util.TGContext;
 
 public class JackSynthesizer implements MidiSynthesizer{
-	
+
 	private TGContext context;
 	private JackClient jackClient;
 	private JackGmPort jackGmPort;
 	private List<JackChannelProxy> jackChannelProxies;
-	
+
 	public JackSynthesizer(TGContext context, JackClient jackClient){
 		this.context = context;
 		this.jackClient = jackClient;
 		this.jackChannelProxies = new ArrayList<JackChannelProxy>();
 	}
-	
+
 	public MidiChannel openChannel(int channelId) throws MidiPlayerException{
 		return this.openChannel(channelId, false);
 	}
-	
+
 	public MidiChannel openChannel(int channelId, boolean exclusive) throws MidiPlayerException{
 		JackChannelProxy jackChannelProxy = findChannel(channelId);
 		if( jackChannelProxy != null ){
 			if( jackChannelProxy.isExclusive() == exclusive ){
 				return jackChannelProxy;
 			}
-			
+
 			JackPort jackPort = jackChannelProxy.getJackPort();
 			if( jackPort != null ){
 				jackChannelProxy.setJackPort(null);
 				this.closeUnusedPort(jackPort);
 			}
 		}
-		
+
 		if( jackChannelProxy == null ){
 			jackChannelProxy = new JackChannelProxy(channelId, this);
 		}
 		jackChannelProxy.setMidiChannel(null);
 		jackChannelProxy.setJackPort(null);
 		jackChannelProxy.setExclusive(exclusive);
-		
+
 		boolean channelLoaded = ( exclusive ? this.loadExclusiveChannel(jackChannelProxy) : this.loadGmChannel(jackChannelProxy) );
-		
+
 		if( channelLoaded ){
 			if(!this.jackChannelProxies.contains(jackChannelProxy)){
 				this.jackChannelProxies.add( jackChannelProxy );
@@ -61,7 +61,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 		}
 		return null;
 	}
-	
+
 	public boolean loadGmChannel(JackChannelProxy jackChannelProxy) throws MidiPlayerException{
 		if( this.jackGmPort != null && !this.jackClient.isPortOpen(this.jackGmPort.getJackPort()) ) {
 			this.jackGmPort = null;
@@ -72,29 +72,29 @@ public class JackSynthesizer implements MidiSynthesizer{
 				this.jackGmPort = new JackGmPort(this.jackClient, jackPort);
 			}
 		}
-		
+
 		if( this.jackGmPort != null ){
 			jackChannelProxy.setExclusive(false);
 			jackChannelProxy.setMidiChannel(this.jackGmPort.getSynthesizer().openChannel(jackChannelProxy.getJackChannelId()));
 			jackChannelProxy.setJackPort(this.jackGmPort.getJackPort());
-			
+
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean loadExclusiveChannel(JackChannelProxy jackChannelProxy) throws MidiPlayerException{
 		JackPort jackPort = this.jackClient.openPort(createJackPortName(jackChannelProxy));
 		if( jackPort != null ){
 			jackChannelProxy.setExclusive(true);
 			jackChannelProxy.setMidiChannel(new JackChannel(this.jackClient, jackPort));
 			jackChannelProxy.setJackPort(jackPort);
-			
+
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void closeChannel(MidiChannel midiChannel){
 		JackChannelProxy jackChannelProxy = findChannel(((JackChannelProxy)midiChannel).getJackChannelId());
 		if( jackChannelProxy != null ){
@@ -104,7 +104,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 			}
 		}
 	}
-	
+
 	public void closeAllChannels(){
 		List<JackChannelProxy> jackChannelProxies = new ArrayList<JackChannelProxy>(this.jackChannelProxies);
 		Iterator<JackChannelProxy> it = jackChannelProxies.iterator();
@@ -112,7 +112,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 			this.closeChannel((JackChannelProxy) it.next());
 		}
 	}
-	
+
 	public boolean isChannelOpen(MidiChannel midiChannel) {
 		JackChannelProxy jackChannelProxy = findChannel(((JackChannelProxy)midiChannel).getJackChannelId());
 		if( jackChannelProxy != null && jackChannelProxy.getJackPort() != null && jackChannelProxy == midiChannel ){
@@ -122,7 +122,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 		}
 		return false;
 	}
-	
+
 	public JackChannelProxy findChannel(int channelId){
 		Iterator<JackChannelProxy> it = this.jackChannelProxies.iterator();
 		while( it.hasNext() ){
@@ -133,13 +133,13 @@ public class JackSynthesizer implements MidiSynthesizer{
 		}
 		return null;
 	}
-	
+
 	public void closeUnusedPort(JackPort jackPort) {
 		if(!isJackPortInUse( jackPort )){
 			this.jackClient.closePort( jackPort );
 		}
 	}
-	
+
 	public boolean isJackPortInUse(JackPort jackPort){
 		Iterator<JackChannelProxy> it = this.jackChannelProxies.iterator();
 		while( it.hasNext() ){
@@ -150,7 +150,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 		}
 		return false;
 	}
-	
+
 	public String createJackPortName(JackChannelProxy jackChannelProxy){
 		if(!jackChannelProxy.isExclusive() ){
 			return ("GM Port");
@@ -162,7 +162,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 		}
 		return ("Channel-" + jackChannelProxy.getJackChannelId());
 	}
-	
+
 	public boolean isBusy() {
 		return false;
 	}

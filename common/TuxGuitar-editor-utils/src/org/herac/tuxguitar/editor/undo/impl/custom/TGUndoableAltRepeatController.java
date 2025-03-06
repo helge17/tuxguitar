@@ -12,13 +12,13 @@ public class TGUndoableAltRepeatController implements TGUndoableActionController
 
 	public TGUndoableEdit startUndoable(TGContext context, TGActionContext actionContext) {
 		TGMeasureHeader header = ((TGMeasureHeader) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER));
-			
+
 		return TGUndoableAltRepeat.startUndo(context, header);
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
 		int repeatAlternative = ((Integer) actionContext.getAttribute(TGRepeatAlternativeAction.ATTRIBUTE_REPEAT_ALTERNATIVE)).intValue();
-		
+
 		return ((TGUndoableAltRepeat) undoableEdit).endUndo(repeatAlternative);
 	}
 }

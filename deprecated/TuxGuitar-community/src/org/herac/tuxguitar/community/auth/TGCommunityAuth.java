@@ -7,43 +7,43 @@ import org.herac.tuxguitar.util.base64.Base64Encoder;
 import org.herac.tuxguitar.util.configuration.TGConfigManager;
 
 public class TGCommunityAuth {
-	
+
 	private static final String STRING_SEPARATOR = ";";
-	
+
 	private String username;
 	private String password;
 	private String authCode;
-	
+
 	public TGCommunityAuth(){
 		this.username = new String();
 		this.password = new String();
 		this.authCode = new String();
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getAuthCode() {
 		return this.authCode;
 	}
-	
+
 	public boolean isEmpty(){
 		return ( this.username == null || this.password == null || this.username.length() == 0 || this.password.length() == 0 );
 	}
-	
+
 	public void update(){
 		try {
 			String passwordMD5 = new String();
@@ -61,13 +61,13 @@ public class TGCommunityAuth {
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	public void save( TGConfigManager config ){
 		String data = new String(this.getUsername() + STRING_SEPARATOR + this.getPassword() );
 		String encodedData = new String(Base64Encoder.encode( data.getBytes() ) ) ;
 		config.setValue("community.account", encodedData );
 	}
-	
+
 	public void load( TGConfigManager config ) {
 		String encodedData = config.getStringValue("community.account");
 		if( encodedData != null && encodedData.length() > 0 ){

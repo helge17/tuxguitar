@@ -64,14 +64,14 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	public int available() {
 		return this.getBufferSize();
 	}
-	
+
 	@Override
 	public void close() {
 		this.audioTrack.release();
-		
+
 		super.close();
 	}
-	
+
 	@Override
 	public void open(AudioFormat format) throws LineUnavailableException {
 		this.format = new TGAudioFormat(format);
@@ -89,7 +89,7 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	public int write(byte[] b, int off, int len) {
 		return this.audioTrack.write(b, off, len);
 	}
-	
+
 	@Override
 	public int getFramePosition() {
 		return 0;
@@ -109,7 +109,7 @@ public class TGSourceDataLine extends TGAbstractLine implements SourceDataLine {
 	public float getLevel() {
 		return 0;
 	}
-	
+
 	@Override
 	public void drain() {
 		// not implemented

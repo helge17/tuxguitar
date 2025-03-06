@@ -15,14 +15,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class TGDrawerManager {
-	
+
 	private TGActivity activity;
 	private TGDrawerViewBuilder drawerBuilder;
 	private ViewGroup drawerView;
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
 	private boolean open;
-	
+
 	public TGDrawerManager(TGActivity activity) {
 		this.activity = activity;
 	}
@@ -41,29 +41,29 @@ public class TGDrawerManager {
 			}
 		};
 		this.drawerLayout.addDrawerListener(this.drawerToggle);
-		
+
 		this.appendListeners();
 	}
-	
+
 	public void appendListeners() {
 		TGDrawerEventListener drawerListener = new TGDrawerEventListener(this);
 		TGDrawerActionInterceptor drawerInterceptor = new TGDrawerActionInterceptor(this);
-		
+
 		TGActionManager tgActionManager = TGActionManager.getInstance(this.findContext());
 		tgActionManager.addPostExecutionListener(drawerListener);
 		tgActionManager.addInterceptor(drawerInterceptor);
-		
+
 		this.activity.getNavigationManager().addNavigationListener(drawerListener);
 	}
-	
+
 	public void syncState() {
 		this.drawerToggle.syncState();
 	}
-	
+
 	public void closeDrawer() {
 		this.drawerLayout.closeDrawer(this.drawerView);
 	}
-	
+
 	public void onConfigurationChanged(Configuration configuration) {
 		this.drawerToggle.onConfigurationChanged(configuration);
 	}
@@ -77,7 +77,7 @@ public class TGDrawerManager {
 		}
 		return false;
 	}
-	
+
 	public void onOpenFragment(TGFragmentController<?> controller) {
 		if( this.drawerView.getChildCount() > 0 ) {
 			this.drawerView.removeAllViews();
@@ -90,10 +90,10 @@ public class TGDrawerManager {
 		this.drawerToggle.setDrawerIndicatorEnabled(available);
 		this.drawerLayout.setDrawerLockMode(available ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 	}
-	
+
 	public void onVisibilityChanged() {
 		this.open = this.drawerLayout.isDrawerOpen(this.drawerView);
-		
+
 		if( this.open ) {
 			this.activity.updateCache(true);
 		}

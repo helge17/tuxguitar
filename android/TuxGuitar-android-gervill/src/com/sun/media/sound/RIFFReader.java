@@ -137,7 +137,7 @@ public class RIFFReader extends InputStream {
                 filepointer += rlen;
             avail = 0;
             return rlen;
-        } else {            
+        } else {
             int ret = stream.read(b, offset, len);
             if (ret == -1)
                 return -1;

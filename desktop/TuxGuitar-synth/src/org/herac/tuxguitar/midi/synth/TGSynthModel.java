@@ -9,14 +9,14 @@ import org.herac.tuxguitar.player.base.MidiSynthesizer;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthModel implements MidiSynthesizer{
-	
+
 	public static final int BANKS_LENGTH = 129;
 	public static final int PROGRAMS_LENGTH = 128;
-	
+
 	private TGContext context;
 	private TGProgram[][] programs;
 	private List<TGSynthChannel> channels;
-	
+
 	public TGSynthModel(TGContext context){
 		this.context = context;
 		this.channels = new ArrayList<TGSynthChannel>();
@@ -27,26 +27,26 @@ public class TGSynthModel implements MidiSynthesizer{
 			}
 		}
 	}
-	
+
 	public MidiChannel openChannel(int channelId) throws MidiPlayerException{
 		TGSynthChannel tgChannel = new TGSynthChannel(this, channelId);
-		
+
 		this.channels.add(tgChannel);
-		
+
 		return tgChannel;
 	}
-	
+
 	public void closeChannel(MidiChannel midiChannel) throws MidiPlayerException{
 		TGSynthChannel tgChannel = ((TGSynthChannel) midiChannel);
 		tgChannel.closeProcessor();
-		
+
 		this.channels.remove(tgChannel);
 	}
-	
+
 	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException{
 		return true;
 	}
-	
+
 	public boolean isBusy() {
 		for(TGSynthChannel channel : this.channels) {
 			if( channel.isBusy() ) {
@@ -55,20 +55,20 @@ public class TGSynthModel implements MidiSynthesizer{
 		}
 		return false;
 	}
-	
+
 	public void closeChannels() throws MidiPlayerException{
 		while( countChannels() > 0 ){
 			closeChannel( getChannel(0) );
 		}
 	}
-	
+
 	public TGSynthChannel getChannel( int index ){
 		if( index >= 0 && index < countChannels() ){
 			return this.channels.get(index);
 		}
 		return null;
 	}
-	
+
 	public TGSynthChannel getChannelById( int channelId ){
 		for(TGSynthChannel channel : this.channels) {
 			if( channel.getId() == channelId ) {
@@ -77,11 +77,11 @@ public class TGSynthModel implements MidiSynthesizer{
 		}
 		return null;
 	}
-	
+
 	public int countChannels(){
 		return this.channels.size();
 	}
-	
+
 	public TGProgram getProgram(int bank, int program){
 		if( bank >= 0 && bank < this.programs.length ){
 			if( program >= 0 && program < this.programs[bank].length ){
@@ -90,7 +90,7 @@ public class TGSynthModel implements MidiSynthesizer{
 		}
 		return null;
 	}
-	
+
 	public TGContext getContext() {
 		return context;
 	}

@@ -7,15 +7,15 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGBrowserCollectionsSettingsHandler implements TGBrowserFactorySettingsHandler {
-	
+
 	private TGBrowserCollectionsDialog dialog;
 	private String type;
-	
+
 	public TGBrowserCollectionsSettingsHandler(TGBrowserCollectionsDialog dialog, String type) {
 		this.dialog = dialog;
 		this.type = type;
 	}
-	
+
 	public void onCreateSettings(final TGBrowserSettings settings) {
 		this.dialog.postWhenReady(new Runnable() {
 			public void run() {

@@ -12,27 +12,27 @@ import org.herac.tuxguitar.ui.resource.UIResourceFactory;
 import org.herac.tuxguitar.util.TGException;
 
 public class AWTResourceFactory implements UIResourceFactory {
-	
+
 	public AWTResourceFactory(){
 		super();
 	}
-	
+
 	public UIColor createColor( int red, int green, int blue ){
 		return new AWTColor( red, green , blue );
 	}
-	
+
 	public UIColor createColor( UIColorModel cm ){
 		return this.createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
 	}
-	
+
 	public UIFont createFont( String name, float height, boolean bold, boolean italic ){
 		return new AWTFont( name , height , bold , italic );
 	}
-	
+
 	public UIFont createFont( UIFontModel fm ){
 		return this.createFont(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
 	}
-	
+
 	public UIImage createImage( float width, float height ){
 		return new AWTImage( width, height );
 	}

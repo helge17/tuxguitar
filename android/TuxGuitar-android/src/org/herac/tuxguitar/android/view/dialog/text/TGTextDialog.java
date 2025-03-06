@@ -55,27 +55,27 @@ public class TGTextDialog extends TGModalFragment {
 	public void setTextFieldValue(int textFieldId, String value) {
 		((EditText) this.getView().findViewById(textFieldId)).getText().append(value);
 	}
-	
+
 	public String getTextFieldValue(int textFieldId) {
 		return ((EditText) this.getView().findViewById(textFieldId)).getText().toString();
 	}
-	
+
 	public void fillTextValue() {
 		TGBeat beat = this.getBeat();
 		this.setTextFieldValue(R.id.text_dlg_value, beat.getText() != null ? beat.getText().getValue() : new String());
 	}
-	
+
 	public String findTextValue() {
 		return this.getTextFieldValue(R.id.text_dlg_value);
 	}
-	
+
 	public void doInsertText() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGInsertTextAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());
 		tgActionProcessor.setAttribute(TGInsertTextAction.ATTRIBUTE_TEXT_VALUE, this.findTextValue());
 		tgActionProcessor.process();
 	}
-	
+
 	public void doRemoveText() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGRemoveTextAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, this.getBeat());

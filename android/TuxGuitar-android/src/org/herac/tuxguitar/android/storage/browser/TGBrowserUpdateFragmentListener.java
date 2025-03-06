@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TGBrowserUpdateFragmentListener implements TGEventListener {
-	
+
 	private TGContext context;
 	private Map<String, TGFragmentController<?>> actionMap;
-	
+
 	public TGBrowserUpdateFragmentListener(TGContext context){
 		this.context = context;
 		this.actionMap = new HashMap<String, TGFragmentController<?>>();
@@ -40,15 +40,15 @@ public class TGBrowserUpdateFragmentListener implements TGEventListener {
 		this.actionMap.put(TGBrowserPrepareForReadAction.NAME, TGBrowserFragmentController.getInstance(this.context));
 		this.actionMap.put(TGBrowserPrepareForWriteAction.NAME, TGBrowserFragmentController.getInstance(this.context));
 	}
-	
+
 	public void checkForFragmentToOpen(TGEvent event) {
 		String actionId = (String) event.getAttribute(TGActionPostExecutionEvent.ATTRIBUTE_ACTION_ID);
-		
+
 		if( this.actionMap.containsKey(actionId) ) {
 			this.findActivity().getNavigationManager().callOpenFragment(this.actionMap.get(actionId));
 		}
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		if( TGActionPostExecutionEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {

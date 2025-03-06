@@ -1,9 +1,9 @@
 package org.herac.tuxguitar.app.view.dialog.chord;
 
 public class TGChordSettings {
-	
+
 	private static TGChordSettings instance;
-	
+
 	private boolean emptyStringChords;
 	private float bassGrade;
 	private float fingeringGrade;
@@ -16,7 +16,7 @@ public class TGChordSettings {
 	private int chordTypeIndex;
 	private int findChordsMin;
 	private int findChordsMax;
-	
+
 	private TGChordSettings() {
 		this.emptyStringChords = false;
 		this.bassGrade = 200.0f;
@@ -31,106 +31,106 @@ public class TGChordSettings {
 		this.findChordsMin=0;
 		this.findChordsMax=15;
 	}
-	
+
 	public static TGChordSettings instance(){
 		if( instance == null ){
 			instance = new TGChordSettings();
 		}
 		return instance;
 	}
-	
+
 	public float getBassGrade() {
 		return this.bassGrade;
 	}
-	
+
 	public void setBassGrade(float bassGrade) {
 		this.bassGrade = bassGrade;
 	}
-	
+
 	public int getChordsToDisplay() {
 		return this.chordsToDisplay;
 	}
-	
+
 	public void setChordsToDisplay(int chordsToDisplay) {
 		this.chordsToDisplay = chordsToDisplay;
 	}
-	
+
 	public boolean isEmptyStringChords() {
 		return this.emptyStringChords;
 	}
-	
+
 	public void setEmptyStringChords(boolean emptyStringChords) {
 		this.emptyStringChords = emptyStringChords;
 	}
-	
+
 	public float getFingeringGrade() {
 		return this.fingeringGrade;
 	}
-	
+
 	public void setFingeringGrade(float fingeringGrade) {
 		this.fingeringGrade = fingeringGrade;
 	}
-	
+
 	public float getGoodChordSemanticsGrade() {
 		return this.goodChordSemanticsGrade;
 	}
-	
+
 	public void setGoodChordSemanticsGrade(float goodChordSemanticsGrade) {
 		this.goodChordSemanticsGrade = goodChordSemanticsGrade;
 	}
-	
+
 	public float getManyStringsGrade() {
 		return this.manyStringsGrade;
 	}
-	
+
 	public void setManyStringsGrade(float manyStringsGrade) {
 		this.manyStringsGrade = manyStringsGrade;
 	}
-	
+
 	public float getRequiredBasicsGrade() {
 		return this.requiredBasicsGrade;
 	}
-	
+
 	public void setRequiredBasicsGrade(float requiredBasicsGrade) {
 		this.requiredBasicsGrade = requiredBasicsGrade;
 	}
-	
+
 	public float getSubsequentGrade() {
 		return this.subsequentGrade;
 	}
-	
+
 	public void setSubsequentGrade(float subsequentGrade) {
 		this.subsequentGrade = subsequentGrade;
 	}
-	
+
 	public int getIncompleteChords() {
 		return this.howManyIncompleteChords;
 	}
-	
+
 	public void setIncompleteChords(int incomplete) {
 		this.howManyIncompleteChords = incomplete;
 	}
-	
+
 	public int getFindChordsMin() {
 		return this.findChordsMin;
 	}
-	
+
 	public void setFindChordsMin(int min) {
 		this.findChordsMin = min;
 	}
-	
+
 	public int getFindChordsMax() {
 		return this.findChordsMax;
 	}
-	
+
 	public void setFindChordsMax(int max) {
 		this.findChordsMax = max;
 	}
-	
+
 	public int getChordTypeIndex() {
 		return this.chordTypeIndex;
 	}
-	
+
 	public void setChordTypeIndex(int index) {
 		switch (index) {
 			case 0 : // normal

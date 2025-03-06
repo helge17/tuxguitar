@@ -30,7 +30,7 @@ import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBeatMenu extends TGMenuBase {
-	
+
 	public TGBeatMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -39,14 +39,14 @@ public class TGBeatMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_beat, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGCaret caret = TGSongViewController.getInstance(context).getCaret();
 		TGNote note = caret.getSelectedNote();
 		boolean restBeat = caret.isRestBeatSelected();
 		boolean running = MidiPlayer.getInstance(context).isRunning();
-		
+
 		this.initializeItem(menu, R.id.action_change_tied_note, this.createActionProcessor(TGChangeTiedNoteAction.NAME), !running, note != null && note.isTiedNote());
 		this.initializeItem(menu, R.id.action_clean_beat, this.createActionProcessor(TGCleanBeatAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_decrement_note_semitone, this.createActionProcessor(TGDecrementNoteSemitoneAction.NAME), (!running && note != null));

@@ -10,16 +10,16 @@ import org.herac.tuxguitar.song.models.TGDuration;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChangeDivisionTypeDurationAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.note.duration.change-division-type";
-	
+
 	public TGChangeDivisionTypeDurationAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		TGDuration duration = ((TGDuration) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION));
-		
+
 		TGSongManager songManager = this.getSongManager(context);
 		TGDivisionType divisionType = songManager.getFactory().newDivisionType();
 		if( duration.getDivision().isEqual(TGDivisionType.NORMAL)){
@@ -27,9 +27,9 @@ public class TGChangeDivisionTypeDurationAction extends TGActionBase {
 		}else{
 			divisionType.copyFrom(TGDivisionType.NORMAL);
 		}
-		
+
 		context.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, divisionType);
-		
+
 		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 		tgActionManager.execute(TGSetDivisionTypeDurationAction.NAME, context);
 	}

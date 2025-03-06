@@ -10,23 +10,23 @@ import org.herac.tuxguitar.song.models.TGVoice;
 public class GTPVoiceJoiner {
 	private TGFactory factory;
 	private TGMeasure measure;
-	
+
 	public GTPVoiceJoiner(TGFactory factory,TGMeasure measure){
 		this.factory = factory;
 		this.measure = measure.clone(factory, measure.getHeader());
 		this.measure.setTrack( measure.getTrack() );
 	}
-	
+
 	public TGMeasure process(){
 		this.orderBeats();
 		this.joinBeats();
 		return this.measure;
 	}
-	
+
 	public void joinBeats(){
 		TGBeat previous = null;
 		boolean finish = true;
-		
+
 		long measureStart = this.measure.getStart();
 		long measureEnd = (measureStart + this.measure.getLength());
 		for(int i = 0;i < this.measure.countBeats();i++){
@@ -46,11 +46,11 @@ public class GTPVoiceJoiner {
 				finish = false;
 				break;
 			}
-			
+
 			long beatStart = beat.getStart();
 			if(previous != null){
 				long previousStart = previous.getStart();
-				
+
 				TGDuration previousBestDuration = null;
 				for(int v = /*1*/0; v < previous.countVoices(); v++ ){
 					TGVoice previousVoice = previous.getVoice(v);
@@ -63,7 +63,7 @@ public class GTPVoiceJoiner {
 						}
 					}
 				}
-				
+
 				if(previousBestDuration != null){
 					previous.getVoice(0).getDuration().copyFrom( previousBestDuration );
 				}else{
@@ -76,7 +76,7 @@ public class GTPVoiceJoiner {
 					previous.getVoice(0).getDuration().copyFrom( duration );
 				}
 			}
-			
+
 			TGDuration beatBestDuration = null;
 			for(int v = /*1*/0; v < beat.countVoices(); v++ ){
 				TGVoice currentVoice = beat.getVoice(v);
@@ -89,7 +89,7 @@ public class GTPVoiceJoiner {
 					}
 				}
 			}
-			
+
 			if(beatBestDuration == null){
 				if(voice.isRestVoice()){
 					this.measure.removeBeat(beat);
@@ -105,7 +105,7 @@ public class GTPVoiceJoiner {
 			joinBeats();
 		}
 	}
-	
+
 	public void orderBeats(){
 		for(int i = 0;i < this.measure.countBeats();i++){
 			TGBeat minBeat = null;

@@ -36,7 +36,7 @@ import javax.sound.sampled.AudioFormat.Encoding;
 /**
  * This class is used to convert between 8,16,24,32,32+ bit signed/unsigned
  * big/little endian fixed/floating point byte buffers and float buffers.
- * 
+ *
  * @author Karl Helgason
  */
 public abstract class AudioFloatConverter {
@@ -44,12 +44,12 @@ public abstract class AudioFloatConverter {
     public static final Encoding PCM_FLOAT = new Encoding("PCM_FLOAT");
 
     /***************************************************************************
-     * 
+     *
      * LSB Filter, used filter least significant byte in samples arrays.
-     * 
+     *
      * Is used filter out data in lsb byte when SampleSizeInBits is not
      * dividable by 8.
-     * 
+     *
      **************************************************************************/
 
     private static class AudioFloatLSBFilter extends AudioFloatConverter {
@@ -122,9 +122,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 64 bit float, little/big-endian
-     * 
+     *
      **************************************************************************/
 
     // PCM 64 bit float, little-endian
@@ -232,9 +232,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 32 bit float, little/big-endian
-     * 
+     *
      **************************************************************************/
 
     // PCM 32 bit float, little-endian
@@ -312,9 +312,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 8 bit signed/unsigned
-     * 
+     *
      **************************************************************************/
 
     // PCM 8 bit, signed
@@ -361,9 +361,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 16 bit signed/unsigned, little/big-endian
-     * 
+     *
      **************************************************************************/
 
     // PCM 16 bit, signed, little-endian
@@ -373,7 +373,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int len = out_offset + out_len;
             for (int ox = out_offset; ox < len; ox++) {
-                out_buff[ox] = ((short) ((in_buff[ix++] & 0xFF) | 
+                out_buff[ox] = ((short) ((in_buff[ix++] & 0xFF) |
                            (in_buff[ix++] << 8))) * (1.0f / 32767.0f);
             }
 
@@ -400,7 +400,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < out_len; i++) {
-                out_buff[ox++] = ((short) ((in_buff[ix++] << 8) | 
+                out_buff[ox++] = ((short) ((in_buff[ix++] << 8) |
                         (in_buff[ix++] & 0xFF))) * (1.0f / 32767.0f);
             }
             return out_buff;
@@ -472,9 +472,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 24 bit signed/unsigned, little/big-endian
-     * 
+     *
      **************************************************************************/
 
     // PCM 24 bit, signed, little-endian
@@ -602,9 +602,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 32 bit signed/unsigned, little/big-endian
-     * 
+     *
      **************************************************************************/
 
     // PCM 32 bit, signed, little-endian
@@ -675,7 +675,7 @@ public abstract class AudioFloatConverter {
             int ox = out_offset;
             for (int i = 0; i < out_len; i++) {
                 int x = (in_buff[ix++] & 0xFF) | ((in_buff[ix++] & 0xFF) << 8) |
-                        ((in_buff[ix++] & 0xFF) << 16) | 
+                        ((in_buff[ix++] & 0xFF) << 16) |
                         ((in_buff[ix++] & 0xFF) << 24);
                 x -= 0x7FFFFFFF;
                 out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
@@ -733,9 +733,9 @@ public abstract class AudioFloatConverter {
     }
 
     /***************************************************************************
-     * 
+     *
      * 32+ bit signed/unsigned, little/big-endian
-     * 
+     *
      **************************************************************************/
 
     // PCM 32+ bit, signed, little-endian
@@ -911,7 +911,7 @@ public abstract class AudioFloatConverter {
         AudioFloatConverter conv = null;
         if (format.getFrameSize() == 0)
             return null;
-        if (format.getFrameSize() != 
+        if (format.getFrameSize() !=
                 ((format.getSampleSizeInBits() + 7) / 8) * format.getChannels()) {
             return null;
         }
@@ -931,7 +931,7 @@ public abstract class AudioFloatConverter {
                 } else if (format.getSampleSizeInBits() > 32) {
                     conv = new AudioFloatConversion32xSB(((format
                             .getSampleSizeInBits() + 7) / 8) - 4);
-                } 
+                }
             } else {
                 if (format.getSampleSizeInBits() <= 8) {
                     conv = new AudioFloatConversion8S();
@@ -990,16 +990,16 @@ public abstract class AudioFloatConverter {
                 else
                     conv = new AudioFloatConversion32L();
             } else if (format.getSampleSizeInBits() == 64) {
-                if (format.isBigEndian()) 
+                if (format.isBigEndian())
                     conv = new AudioFloatConversion64B();
-                else 
-                    conv = new AudioFloatConversion64L();                
+                else
+                    conv = new AudioFloatConversion64L();
             }
 
         }
 
-        if ((format.getEncoding().equals(Encoding.PCM_SIGNED) || 
-                format.getEncoding().equals(Encoding.PCM_UNSIGNED)) && 
+        if ((format.getEncoding().equals(Encoding.PCM_SIGNED) ||
+                format.getEncoding().equals(Encoding.PCM_UNSIGNED)) &&
                 (format.getSampleSizeInBits() % 8 != 0)) {
             conv = new AudioFloatLSBFilter(conv, format);
         }

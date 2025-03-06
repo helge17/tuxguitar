@@ -21,23 +21,23 @@ import org.herac.tuxguitar.util.configuration.TGConfigManager;
 import org.herac.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGDisposeAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.system.dispose";
-	
+
 	public TGDisposeAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		this.closeModules();
 		this.saveConfig();
 		this.dispose();
 	}
-	
+
 	protected void saveConfig(){
 		TGWindow tgWindow = TGWindow.getInstance(getContext());
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
-		
+
 		config.setValue(TGConfigKeys.LAYOUT_MODE,TablatureEditor.getInstance(getContext()).getTablature().getViewLayout().getMode());
 		config.setValue(TGConfigKeys.LAYOUT_STYLE,TablatureEditor.getInstance(getContext()).getTablature().getViewLayout().getStyle());
 		config.setValue(TGConfigKeys.SHOW_PIANO,!TuxGuitar.getInstance().getPianoEditor().isDisposed());
@@ -54,15 +54,15 @@ public class TGDisposeAction extends TGActionBase {
 		config.setValue(TGConfigKeys.HEIGHT, tgWindow.getWindow().getBounds().getHeight());
 		config.setValue(TGConfigKeys.EDITOR_MOUSE_MODE,TablatureEditor.getInstance(getContext()).getTablature().getEditorKit().getMouseMode());
 		config.setValue(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.getInstance().getMatrixEditor().getGrids());
-		
+
 		TuxGuitar.getInstance().getConfig().save();
 	}
-	
+
 	protected void closeModules(){
 		MidiPlayer.getInstance(getContext()).close();
 		TGPluginManager.getInstance(getContext()).disconnectAll();
 	}
-	
+
 	protected void dispose(){
 		TGTableViewer.getInstance(getContext()).dispose();
 		TGFretBoardEditor.getInstance(getContext()).dispose();

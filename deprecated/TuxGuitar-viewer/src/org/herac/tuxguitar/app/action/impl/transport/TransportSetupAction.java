@@ -25,17 +25,17 @@ import org.herac.tuxguitar.player.base.MidiOutputPort;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TransportSetupAction extends ActionDialog {
-	
+
 	public static final String NAME = "action.transport.setup";
-	
+
 	public TransportSetupAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void openDialog(TGActionContext context){
 		final List<?> ports = TuxGuitar.instance().getPlayer().listOutputPorts();
 		final String[] listData = new String[ ports.size() ];
-		
+
 		int selectedIndex = -1;
 		for( int i = 0 ; i < ports.size() ; i ++ ){
 			MidiOutputPort port = (MidiOutputPort)ports.get( i );
@@ -44,21 +44,21 @@ public class TransportSetupAction extends ActionDialog {
 				selectedIndex = i;
 			}
 		}
-		
+
 		final JFrame dialog = createDialog();
-		
+
 		final JList<String> list = new JList<String>();
 		list.setFont( TGConfig.FONT_WIDGETS );
 		list.setListData(listData);
 		if(selectedIndex >= 0){
 			list.setSelectedIndex(selectedIndex);
 		}
-		
+
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 		panel.setBorder(BorderFactory.createTitledBorder(null, "MIDI Port", TitledBorder.LEADING, TitledBorder.TOP , TGConfig.FONT_WIDGETS));
 		panel.add(new JScrollPane(list));
-		
+
 		//-----------------------------------------
 		JButton buttonOk = new JButton("Ok");
 		buttonOk.setFont( TGConfig.FONT_WIDGETS );
@@ -75,11 +75,11 @@ public class TransportSetupAction extends ActionDialog {
 						TuxGuitar.instance().updateCache( true );
 					}
 				}).start();
-				
+
 				dialog.dispose();
 			}
 		});
-		
+
 		JButton buttonCancel = new JButton("Cancel");
 		buttonCancel.setFont( TGConfig.FONT_WIDGETS );
 		buttonCancel.setPreferredSize(new Dimension(BUTTON_WIDTH,BUTTON_HEIGHT));
@@ -89,19 +89,19 @@ public class TransportSetupAction extends ActionDialog {
 				TuxGuitar.instance().updateCache( true );
 			}
 		});
-		
+
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
 		buttons.add(Box.createHorizontalGlue());
 		buttons.add(buttonOk);
 		buttons.add(buttonCancel);
-		
+
 		//-----------------------------------------
 		JPanel container = new JPanel();
 		container.setLayout(new GridBagLayout());
 		container.add( panel, getConstraints(0,0,1f,1f,GridBagConstraints.BOTH));
 		container.add( buttons, getConstraints(0,1,1f,0f,GridBagConstraints.BOTH));
-		
+
 		dialog.setTitle("MIDI Setup");
 		dialog.getContentPane().setLayout(new GridBagLayout());
 		dialog.getContentPane().add(container, getConstraints(0,0,1f,1f,GridBagConstraints.BOTH));

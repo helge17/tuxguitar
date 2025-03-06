@@ -7,11 +7,11 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class ABCSongReaderPlugin extends TGSongReaderPlugin {
-	
+
 	public ABCSongReaderPlugin() {
 		super(false);
 	}
-	
+
 	public String getModuleId() {
 		return ABCPlugin.MODULE_ID;
 	}
@@ -19,7 +19,7 @@ public class ABCSongReaderPlugin extends TGSongReaderPlugin {
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
 		return new ABCSongReader();
 	}
-	
+
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {
 		return null;
 	}

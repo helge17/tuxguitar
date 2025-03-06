@@ -18,7 +18,7 @@ struct LV2WorkerImpl {
 struct LV2WorkerQueueImpl {
     uint32_t size;
     void* data;
-	
+
     LV2WorkerQueue* next;
 };
 

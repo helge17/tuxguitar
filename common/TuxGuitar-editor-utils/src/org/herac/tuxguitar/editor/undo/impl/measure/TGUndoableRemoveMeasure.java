@@ -14,19 +14,19 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGUndoableRemoveMeasure extends TGUndoableEditBase{
-	
+
 	private int doAction;
 	private TGSongSegment tracksMeasures;
 	private int number;
-	
+
 	public TGUndoableRemoveMeasure(TGContext context, int number){
 		super(context);
-		
+
 		this.doAction = UNDO_ACTION;
 		this.number = number;
 		this.tracksMeasures = new TGSongSegmentHelper(getSongManager()).copyMeasures(getSong(), number, number);
 	}
-	
+
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
@@ -34,7 +34,7 @@ public class TGUndoableRemoveMeasure extends TGUndoableEditBase{
 		this.removeMeasure(actionContext, getSong(), this.number);
 		this.doAction = UNDO_ACTION;
 	}
-	
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
@@ -42,26 +42,26 @@ public class TGUndoableRemoveMeasure extends TGUndoableEditBase{
 		this.insertMeasures(actionContext, getSong(), this.tracksMeasures.clone(getSongManager().getFactory()), this.number, 0, 0);
 		this.doAction = REDO_ACTION;
 	}
-	
+
 	public boolean canRedo() {
 		return (this.doAction == REDO_ACTION);
 	}
-	
+
 	public boolean canUndo() {
 		return (this.doAction == UNDO_ACTION);
 	}
-	
+
 	public TGUndoableRemoveMeasure endUndo(){
 		return this;
 	}
-	
+
 	public void removeMeasure(TGActionContext context, TGSong song, Integer number) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGRemoveMeasureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGRemoveMeasureAction.ATTRIBUTE_MEASURE_NUMBER, number);
 		this.processByPassUndoableAction(tgActionProcessor, context);
 	}
-	
+
 	public void insertMeasures(TGActionContext context, TGSong song, TGSongSegment segment, int fromNumber, int toTrack, long theMove) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGInsertMeasuresAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);

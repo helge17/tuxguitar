@@ -20,24 +20,24 @@ import com.sun.media.sound.AudioFloatConverter;
 
 
 public class TGMixer extends TGAbstractLine implements Mixer {
-	
+
 	public static final Mixer.Info MIXER_INFO = new TGMixerInfo();
-	
+
 	private List<DataLine.Info> sourceLineInfo;
 	private List<DataLine.Info> targetLineInfo;
-	
+
 	private Map<Class<?>, Line> lines;
-	
+
 	public TGMixer() {
 		super(new Line.Info(Mixer.class));
-		
+
 		this.lines = new HashMap<Class<?>, Line>();
 		this.sourceLineInfo = new ArrayList<DataLine.Info>();
 		this.targetLineInfo = new ArrayList<DataLine.Info>();
-		
+
 		List<AudioFormat> formats = new ArrayList<AudioFormat>();
 		for (int channels = 1; channels <= 2; channels++) {
-			formats.add(new AudioFormat(Encoding.PCM_SIGNED, AudioSystem.NOT_SPECIFIED, 8, channels, channels, AudioSystem.NOT_SPECIFIED, false)); 
+			formats.add(new AudioFormat(Encoding.PCM_SIGNED, AudioSystem.NOT_SPECIFIED, 8, channels, channels, AudioSystem.NOT_SPECIFIED, false));
 			formats.add(new AudioFormat(Encoding.PCM_UNSIGNED, AudioSystem.NOT_SPECIFIED, 8, channels, channels, AudioSystem.NOT_SPECIFIED, false));
 				for (int bits = 16; bits < 32; bits += 8) {
 					formats.add(new AudioFormat(Encoding.PCM_SIGNED, AudioSystem.NOT_SPECIFIED, bits, channels, channels * bits / 8, AudioSystem.NOT_SPECIFIED, false));
@@ -50,7 +50,7 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 				formats.add(new AudioFormat(AudioFloatConverter.PCM_FLOAT, AudioSystem.NOT_SPECIFIED, 64, channels, channels * 8, AudioSystem.NOT_SPECIFIED, false));
 				formats.add(new AudioFormat(AudioFloatConverter.PCM_FLOAT, AudioSystem.NOT_SPECIFIED, 64, channels, channels * 8, AudioSystem.NOT_SPECIFIED, true));
 			}
-			
+
 			this.sourceLineInfo.add(new DataLine.Info(SourceDataLine.class, formats.toArray(new AudioFormat[formats.size()]), AudioSystem.NOT_SPECIFIED, AudioSystem.NOT_SPECIFIED));
 	}
 
@@ -74,7 +74,7 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 		}
         return infos.toArray(new Line.Info[infos.size()]);
 	}
-	
+
 	@Override
 	public Line.Info[] getTargetLineInfo() {
 		return this.targetLineInfo.toArray(new Line.Info[this.targetLineInfo.size()]);
@@ -101,7 +101,7 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 		}
 		return false;
 	}
-	
+
 	public boolean isTargetLineSupported(Line.Info info) {
 		if( info != null ) {
 			for(Line.Info targetLineInfo : this.targetLineInfo) {
@@ -112,7 +112,7 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isLineSupported(Line.Info info) {
 		return (this.isSourceLineSupported(info) || this.isTargetLineSupported(info));
@@ -130,7 +130,7 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 				}
 			});
 		}
-		
+
 		throw new IllegalArgumentException("Line unsupported: " + info);
 	}
 
@@ -139,15 +139,15 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 			if( this.lines.containsKey(lineClass) ) {
 				return this.lines.get(lineClass);
 			}
-			
+
 			this.lines.put(lineClass, lineFactory.call());
-			
+
 			return findOrCreateLine(lineClass, lineFactory);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public int getMaxLines(Line.Info info) {
 		if( this.isLineSupported(info) ) {
@@ -175,7 +175,7 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 		}
         return lines.toArray(new Line[lines.size()]);
 	}
-	
+
 	@Override
 	public void synchronize(Line[] lines, boolean maintainSync) {
 		throw new IllegalArgumentException("Synchronization not supported by this mixer.");
@@ -190,14 +190,14 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 	public boolean isSynchronizationSupported(Line[] lines, boolean maintainSync) {
 		return false;
 	}
-	
+
 	private static class TGMixerInfo extends Mixer.Info {
-		
+
 		private static final String MIXER_NAME = "TGMixer";
 		private static final String MIXER_VENDOR = "org.herac.tuxguitar";
 		private static final String MIXER_DESCRIPTION = "org.herac.tuxguitar";
 		private static final String MIXER_VERSION = "1.0";
-		
+
 		public TGMixerInfo() {
 			super(MIXER_NAME, MIXER_VENDOR, MIXER_DESCRIPTION, MIXER_VERSION);
 		}

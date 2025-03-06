@@ -23,53 +23,53 @@ public class MidiSynthesizerManager {
 
 	private static final int PERCUSSION_BANK = 128;
 	private static final int PERCUSSION_CHANNEL = 9;
-	
+
 	private static final int DEFAULT_INSTRUMENT_BANK = 0;
 	private static final int DEFAULT_PERCUSSION_PROGRAM  = 0;
-	
+
 	private TGContext context;
 	private AudioSynthesizer synth;
 	private GMReceiver receiver;
 	private MidiChannel[] channels;
 	private String resource;
 	private boolean synthesizerLoaded;
-	
+
 	public MidiSynthesizerManager(TGContext context, String resource) {
 		this.context = context;
 		this.resource = resource;
 		this.synth = new SoftSynthesizer();
 		this.receiver = new MidiReceiverImpl(this);
 	}
-	
+
 	public void open() {
 		this.getSynth();
 	}
-	
+
 	public void close(){
 		if(this.synth != null && this.synth.isOpen()){
 			this.unloadAllInstruments();
 			this.synth.close();
 		}
 	}
-	
+
 	public GMReceiver getReceiver(){
 		return this.receiver;
 	}
-	
+
 	public MidiChannel[] getChannels(){
 		if( this.channels == null && this.getSynth() != null ){
 			this.channels = this.getSynth().getChannels();
 		}
 		return this.channels;
 	}
-	
+
 	public MidiChannel getChannel(int index){
 		if( this.getChannels() != null && index >= 0 && index < this.getChannels().length ){
 			return this.getChannels()[index];
 		}
 		return null;
 	}
-	
+
 	public Synthesizer getSynth() {
 		try {
 			if(!this.synth.isOpen()){
@@ -81,17 +81,17 @@ public class MidiSynthesizerManager {
 		}
 		return this.synth;
 	}
-	
+
 	public boolean isSynthesizerLoaded(){
 		return this.synthesizerLoaded;
 	}
-	
+
 	public InputStream findResource(Patch patch) {
 		String resourceName = (this.resource + "/instrument-" + patch.getBank() + "-" + patch.getProgram() + ".sf2");
-		
+
 		return TGResourceManager.getInstance(this.context).getResourceAsStream(resourceName);
 	}
-	
+
 	public Instrument findInstrument(Patch patch) {
 		Instrument instrument = null;
 		try {
@@ -117,7 +117,7 @@ public class MidiSynthesizerManager {
 		}
 		return instrument;
 	}
-	
+
 	public void loadInstrument(Patch patch) {
 		if(!this.isLoadedInstrument(patch)) {
 			Instrument instrument = this.findInstrument(patch);
@@ -126,7 +126,7 @@ public class MidiSynthesizerManager {
 			}
 		}
 	}
-	
+
 	public void unloadOrphanInstruments() {
 		Instrument[] instruments = this.getSynth().getLoadedInstruments();
 		if( instruments != null ){
@@ -137,7 +137,7 @@ public class MidiSynthesizerManager {
 			}
 		}
 	}
-	
+
 	public void unloadAllInstruments() {
 		Instrument[] instruments = this.getSynth().getLoadedInstruments();
 		if( instruments != null ){
@@ -146,7 +146,7 @@ public class MidiSynthesizerManager {
 			}
 		}
 	}
-	
+
 	public boolean isLoadedInstrument(Patch patch) {
 		Instrument[] instruments = this.getSynth().getLoadedInstruments();
 		for(Instrument instrument : instruments) {
@@ -156,7 +156,7 @@ public class MidiSynthesizerManager {
 		}
 		return false;
 	}
-	
+
 	public boolean isOrphanInstrument(Patch patch) {
 		if( this.getChannels() != null ){
 			for(int channel = 0 ; channel < this.getChannels().length ; channel ++) {
@@ -168,11 +168,11 @@ public class MidiSynthesizerManager {
 		}
 		return true;
 	}
-	
+
 	public Patch findCurrentPatch(int channel) {
 		return new Patch(this.findCurrentBank(channel), this.findCurrentProgram(channel));
 	}
-	
+
 	public int findCurrentBank(int channel) {
 		if( channel == PERCUSSION_CHANNEL ) {
 			return PERCUSSION_BANK;
@@ -183,7 +183,7 @@ public class MidiSynthesizerManager {
 		}
 		return 0;
 	}
-	
+
 	public int findCurrentProgram(int channel) {
 		MidiChannel midiChannel = this.getChannel(channel);
 		if( midiChannel != null ) {
@@ -191,39 +191,39 @@ public class MidiSynthesizerManager {
 		}
 		return 0;
 	}
-	
+
 	public Patch toPatch(int bank, int program) {
 		return new Patch(bank, program);
 	}
-	
+
 	private Patch toDefaultPatch(Patch patch) {
 		if( patch.getBank() == PERCUSSION_BANK && patch.getProgram() != DEFAULT_PERCUSSION_PROGRAM ) {
 			return new Patch(patch.getBank(), DEFAULT_PERCUSSION_PROGRAM);
 		}
-		
+
 		if( patch.getBank() != PERCUSSION_BANK && patch.getBank() != DEFAULT_INSTRUMENT_BANK ) {
 			return new Patch(DEFAULT_INSTRUMENT_BANK, patch.getProgram());
 		}
 		return patch;
 	}
-	
+
 	private ModelPatch toModelPatch(Patch patch) {
 		if( patch instanceof ModelPatch ) {
 			return (ModelPatch) patch;
 		}
 		return new ModelPatch(patch.getBank() == PERCUSSION_BANK ? 0 : patch.getBank(), patch.getProgram(), patch.getBank() == PERCUSSION_BANK);
 	}
-	
+
 	private void setInstrumentPatch(Instrument instrument, Patch patch) {
 		if( instrument instanceof SF2Instrument ) {
 			((SF2Instrument) instrument).setPatch(this.toModelPatch(patch));
 		}
 	}
-	
+
 	private boolean isSamePatch(Patch p1, Patch p2) {
 		ModelPatch mp1 = this.toModelPatch(p1);
 		ModelPatch mp2 = this.toModelPatch(p2);
-		
+
 		return (mp1.getBank() == mp2.getBank() && mp1.getProgram() == mp2.getProgram() && mp1.isPercussion() == mp2.isPercussion());
 	}
 }

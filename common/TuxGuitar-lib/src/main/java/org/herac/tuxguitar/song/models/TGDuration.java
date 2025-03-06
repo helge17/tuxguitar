@@ -39,12 +39,12 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	public static final int SIXTEENTH = 16;
 	public static final int THIRTY_SECOND = 32;
 	public static final int SIXTY_FOURTH = 64;
-	
+
 	/**
 	 * The shortest possible note (highest value)
 	 */
 	public static final int SHORTEST = SIXTY_FOURTH;
-	
+
 	/**
 	 * Valor.
 	 * Value, shall be one of the constants defined above
@@ -64,14 +64,14 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	private TGDivisionType divisionType;
 
 	private static List<TGDivisionType> divisionTypes;
-	
+
 	/**
 	 * Map containing all note durations that are
 	 * expected to be supported.<br>
 	 * Key = duration precise time
 	 */
 	private static final Map<Long, TGDuration> durationMap;
-	
+
 	static {
 		WHOLE_PRECISE_DURATION = SHORTEST;
 		divisionTypes = new ArrayList<TGDivisionType>();
@@ -89,27 +89,27 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 				(TGDivisionType dt1, TGDivisionType dt2) -> (Integer.valueOf(dt2.getEnters()).compareTo(Integer.valueOf(dt1.getEnters()))));
 		durationMap = createDurationMap();
 	}
-	
+
 	// precise to approximate time (possible rounding error)
 	public static long toTime(long preciseTime) {
 		return QUARTER_TIME * QUARTER * preciseTime / WHOLE_PRECISE_DURATION;
 	}
-	
+
 	// approximate to precise time
 	public static long toPreciseTime(long ticks) {
 		return ticks * WHOLE_PRECISE_DURATION / (QUARTER_TIME * QUARTER) ;
 	}
-	
+
 	// convention: starting point of song is 1 quarter
 	public static Long getStartingPoint() {
 		return QUARTER_TIME;
 	}
-	
+
 	public static Long getPreciseStartingPoint() {
 		return toPreciseTime(getStartingPoint());
 	}
 
-	
+
 	// split duration into a list of valid durations
 	// all computations done on precise durations
 	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long maxTime, TGDuration preferredDuration, TGFactory factory) {
@@ -132,7 +132,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		// if could not split with preferred duration, try without this constraint
 		return splitPreciseDuration(timeToSplit, maxTime, factory);
 	}
-	
+
 	// objective: split input precise duration D into a list of durations di such as:
 	// - sum of precise durations of all di == D
 	// - each di is less than or equal to specified max
@@ -143,18 +143,18 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory) {
 		long D = timeToSplit;
 		List<TGDuration> list = new ArrayList<TGDuration>();
-		
+
 		// look for all division types, starting with longest divisions
 		for (TGDivisionType dt : divisionTypes) {
 			if ((dt.getEnters()==1) || (D % dt.getEnters() != 0)) {
 				// D contains notes with this time division
 				boolean foundDurationWithTimeDivision = false;
-				
+
 				// try successively to match with no dotted/no double-dotted, then with dotted, then with double-dotted
 				for (int subDivision = 1; subDivision <= 4 && !foundDurationWithTimeDivision; subDivision*=2) {
 					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
 					base /= subDivision;
-					
+
 					if (base > max)  {
 						break;
 					}
@@ -190,7 +190,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						case 2:
 							// base = shortest /2, only a multiple of 3 is valid
 							// n * 3 * base = n * shortest * 3/2 = n * dotted shortest
-							ok = (nBase % 3 == 0); 
+							ok = (nBase % 3 == 0);
 							dotted = true;
 							nBase /= 3;
 							base *= 2;
@@ -206,7 +206,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						default:
 							return null;
 						}
-						
+
 						if (ok) {
 							for (int i=0; i<nBase; i++) {
 								TGDuration duration = factory.newDuration();
@@ -227,7 +227,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		}
 		return list;
 	}
-	
+
 	private static long gcd(long a, long b) {
 		// Euclid algorithm
 		if (b == 0) return a;
@@ -236,22 +236,22 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	private static long lcm(long a, long b) {
 		return a * b / gcd(a,b);
 	}
-	
+
 	public TGDuration(TGFactory factory){
 		this.value = QUARTER;
 		this.dotted = false;
 		this.doubleDotted = false;
 		this.divisionType = factory.newDivisionType();
 	}
-	
+
 	public int getValue() {
 		return this.value;
 	}
-	
+
 	public void setValue(int value) {
 		this.value = value;
 	}
-	
+
 	public void setPreciseValue(Long preciseValue) {
 		TGDuration duration = durationMap.get(preciseValue);
 		if (duration == null) {
@@ -260,27 +260,27 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		}
 		this.copyFrom(duration);
 	}
-	
+
 	public boolean isDotted() {
 		return this.dotted;
 	}
-	
+
 	public void setDotted(boolean dotted) {
 		this.dotted = dotted;
 	}
-	
+
 	public boolean isDoubleDotted() {
 		return this.doubleDotted;
 	}
-	
+
 	public void setDoubleDotted(boolean doubleDotted) {
 		this.doubleDotted = doubleDotted;
 	}
-	
+
 	public TGDivisionType getDivision(){
 		return this.divisionType;
 	}
-	
+
 	public long getTime(){
 		long time = (long)( QUARTER_TIME * ( 4.0f / this.value ) ) ;
 		if(this.dotted){
@@ -290,7 +290,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		}
 		return this.divisionType.convertTime(time);
 	}
-	
+
 	public static TGDuration getShortestDuration(TGFactory factory){
 		TGDuration minimum = factory.newDuration();
 		minimum.setValue(TGDuration.SHORTEST);
@@ -300,17 +300,17 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		minimum.getDivision().setTimes(4);
 		return minimum;
 	}
-	
+
 	public static TGDuration fromTime(TGFactory factory, long time){
 		TGDuration duration = getShortestDuration(factory);
 		return fromTime(factory, time, duration);
 	}
-	
+
 	public static TGDuration fromTime(TGFactory factory, long time, TGDuration minDuration){
 		// The value of `threshold` is dependent on the value of
 		// `TGDuration.QUARTER_TIME` and the tuplets that are expected to be supported.
 		short threshold = 0;
-		
+
 		long quaterTimeConstant = QUARTER_TIME; // Local variable to suppress warnings
 		if(quaterTimeConstant == 960) {
 			// Patches for when QUARTER_TIME = 960
@@ -343,7 +343,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		}
 		return fromTime(factory, time, minDuration, threshold);
 	}
-	
+
 	public static TGDuration fromTime(TGFactory factory, long time, TGDuration minimum, short threshold) {
 		TGDuration durationFound = null;
 		for (int i = 0; i <= threshold; i++)
@@ -353,20 +353,20 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 				return durationFound.clone(factory);
 			}
 		}
-		
+
 		durationFound = factory.newDuration();
-		
+
 		for (int v = TGDuration.WHOLE; v <= SHORTEST; v *= 2)
 		{
 			durationFound.setValue(v);
 			if(time >= durationFound.getTime()) {
-				return durationFound.clone(factory);	
+				return durationFound.clone(factory);
 			}
 		}
-		
+
 		return minimum.clone(factory);
 	}
-	
+
 	public int getIndex(){
 		int index = 0;
 		int value = this.value;
@@ -375,7 +375,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		}
 		return index;
 	}
-	
+
 	public long getPreciseTime() {
 		long preciseDuration = WHOLE_PRECISE_DURATION / this.value;
 		if (this.dotted) {
@@ -387,17 +387,17 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		preciseDuration = preciseDuration * this.divisionType.getTimes() / this.divisionType.getEnters();
 		return preciseDuration;
 	}
-	
+
 	public boolean isEqual(TGDuration d){
 		return (getValue() == d.getValue() && isDotted() == d.isDotted() && isDoubleDotted() == d.isDoubleDotted() && getDivision().isEqual(d.getDivision()));
 	}
-	
+
 	public TGDuration clone(TGFactory factory){
 		TGDuration tgDuration = factory.newDuration();
 		tgDuration.copyFrom(this);
 		return tgDuration;
 	}
-	
+
 	public void copyFrom(TGDuration duration){
 		this.setValue(duration.getValue());
 		this.setDotted(duration.isDotted());
@@ -414,14 +414,14 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		return (Long.valueOf(this.getTime()).compareTo(Long.valueOf(duration.getTime())));
 	}
 
-	
+
 	private static Map<Long, TGDuration> createDurationMap() {
 		TGFactory factory = new TGFactory();
 		HashMap<Long, TGDuration> durationHashMap = new HashMap<Long, TGDuration>();
-		
+
 		// several valid TGDuration instances may have the exact same duration
 		// priority : not dotted, then dotted, then double-dotted
-		
+
 		for(TGDivisionType tmpDivisionType : TGDivisionType.DIVISION_TYPES)
 		{
 			for (int i = 0; i < 3; i++)
@@ -429,7 +429,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 				for (int v = TGDuration.WHOLE; v <= SHORTEST; v *= 2)
 				{
 					TGDuration tmpDuration = factory.newDuration();
-					
+
 					if(i == 1) {
 						tmpDuration.setDotted(true);
 						tmpDuration.setDoubleDotted(false);
@@ -443,11 +443,11 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						tmpDuration.setDotted(false);
 						tmpDuration.setDoubleDotted(false);
 					}
-					
+
 					tmpDuration.setValue(v);
 					tmpDuration.getDivision().setEnters(tmpDivisionType.getEnters());
 					tmpDuration.getDivision().setTimes(tmpDivisionType.getTimes());
-					
+
 					TGDuration entry = tmpDuration;
 					long key = entry.getPreciseTime();
 					if(!durationHashMap.containsKey(key)) {
@@ -456,7 +456,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 				}
 			}
 		}
-		
+
 		return durationHashMap;
 	}
 }

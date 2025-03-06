@@ -11,25 +11,25 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
 public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
-	
+
 	private UIImage image;
 	private JFXResizeListenerManager resizeListener;
-	
+
 	public JFXImageView(JFXContainer<? extends Region> parent) {
 		super(new ImageView(), parent);
-		
+
 		this.resizeListener = new JFXResizeListenerManager(this);
-		
+
 		this.getControl().setPreserveRatio(true);
 	}
-	
+
 	public UIImage getImage() {
 		return this.image;
 	}
 
 	public void setImage(UIImage image) {
 		this.image = image;
-		
+
 		this.getControl().setImage(this.image != null ? ((JFXImage) this.image).getHandle() : null);
 	}
 
@@ -39,10 +39,10 @@ public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
 		bounds.getPosition().setY((float) this.getControl().getLayoutY());
 		bounds.getSize().setWidth((float) this.getControl().getFitWidth());
 		bounds.getSize().setHeight((float) this.getControl().getFitHeight());
-		
+
 		return bounds;
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		this.getControl().setLayoutX(bounds.getX());
 		this.getControl().setLayoutY(bounds.getY());

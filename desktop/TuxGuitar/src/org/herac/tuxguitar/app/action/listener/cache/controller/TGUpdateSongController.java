@@ -12,7 +12,7 @@ public class TGUpdateSongController extends TGUpdateItemsController {
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
 		this.findUpdateBuffer(context, actionContext).requestUpdateSong();
-		
+
 		super.update(context, actionContext);
 	}
 }

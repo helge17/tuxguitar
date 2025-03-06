@@ -129,7 +129,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
                                     _jitter_stream.close();
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                } 
+                                }
                              if(_sourceDataLine != null)
                                  _sourceDataLine.close();
                          }
@@ -842,7 +842,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
     public MidiDevice.Info getDeviceInfo() {
         return info;
     }
-    
+
     private Properties getStoredProperties() {
         return AccessController
                 .doPrivileged(new PrivilegedAction<Properties>() {
@@ -934,16 +934,16 @@ public class SoftSynthesizer implements AudioSynthesizer {
         item = new AudioSynthesizerPropertyInfo("light reverb", o?reverb_light:true);
         item.description = "Turn light reverb mode on or off";
         list.add(item);
-        
+
         item = new AudioSynthesizerPropertyInfo("load default soundbank", o?load_default_soundbank:true);
         item.description = "Enabled/disable loading default soundbank";
         list.add(item);
-        
+
         AudioSynthesizerPropertyInfo[] items;
         items = list.toArray(new AudioSynthesizerPropertyInfo[list.size()]);
-        
+
         Properties storedProperties = getStoredProperties();
-        
+
         for (AudioSynthesizerPropertyInfo item2 : items) {
             Object v = (info == null) ? null : info.get(item2.name);
             v = (v != null) ? v : storedProperties.getProperty(item2.name);

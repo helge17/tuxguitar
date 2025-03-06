@@ -6,9 +6,9 @@ import org.herac.tuxguitar.ui.widget.UIImageView;
 import io.qt.widgets.QLabel;
 
 public class QTImageView extends QTWidget<QLabel> implements UIImageView {
-	
+
 	private UIImage image;
-	
+
 	public QTImageView(QTContainer parent) {
 		super(new QLabel(parent.getContainerControl()), parent);
 	}

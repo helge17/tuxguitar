@@ -15,32 +15,32 @@ public class SWTFontChooser implements UIFontChooser {
 	private SWTWindow window;
 	private String text;
 	private UIFontModel defaultModel;
-	
+
 	public SWTFontChooser(SWTWindow window) {
 		this.window = window;
 	}
-	
+
 	public void choose(UIFontChooserHandler selectionHandler) {
 		FontDialog dlg = new FontDialog(this.window.getControl());
 		if( this.text != null ) {
 			dlg.setText(this.text);
 		}
-		
+
 		Font defaultFont = null;
 		if( this.defaultModel != null ) {
 			defaultFont = new SWTFont(this.window.getControl().getDisplay(), this.defaultModel).getControl();
 			dlg.setFontList(defaultFont.getFontData());
 		}
-		
+
 		FontData fd = dlg.open();
-		
+
 		if( defaultFont != null ) {
 			defaultFont.dispose();
 		}
-		
-		selectionHandler.onSelectFont(fd != null ? new UIFontModel(fd.getName(), fd.getHeight(), ((fd.getStyle() & SWT.BOLD) != 0), ((fd.getStyle() & SWT.ITALIC) != 0)) : null); 
+
+		selectionHandler.onSelectFont(fd != null ? new UIFontModel(fd.getName(), fd.getHeight(), ((fd.getStyle() & SWT.BOLD) != 0), ((fd.getStyle() & SWT.ITALIC) != 0)) : null);
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}

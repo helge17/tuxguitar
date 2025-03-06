@@ -13,19 +13,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class TGShareSongResponse {
-	
+
 	private static final String TAG_STATUS = "status";
 	private static final String TAG_MESSAGES = "messages";
 	private static final String TAG_MESSAGE = "message";
 	private static final String ATTRIBUTE_CODE = "code";
 	private static final String ATTRIBUTE_VALUE = "value";
-	
+
 	private Document document;
-	
+
 	public TGShareSongResponse( InputStream stream ) throws Throwable {
 		this.initialize( stream );
 	}
-	
+
 	private void initialize(InputStream stream) throws Throwable {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		// CVE-2020-14940
@@ -37,14 +37,14 @@ public class TGShareSongResponse {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.document = builder.parse(stream);
 	}
-	
+
 	public String getStatus() throws Throwable {
 		if ( this.document != null ){
 			return getStatus(this.document.getFirstChild());
 		}
 		return null;
 	}
-	
+
 	private String getStatus(Node rootNode) throws Throwable {
 		NodeList rootNodes = rootNode.getChildNodes();
 		for (int i = 0; i < rootNodes.getLength(); i++) {
@@ -55,14 +55,14 @@ public class TGShareSongResponse {
 		}
 		return null;
 	}
-	
+
 	public String loadMessages(List<String> list) throws Throwable {
 		if ( this.document != null ){
 			return loadMessages(list , this.document.getFirstChild());
 		}
 		return null;
 	}
-	
+
 	private String loadMessages(List<String> list, Node rootNode) throws Throwable {
 		NodeList rootNodes = rootNode.getChildNodes();
 		for (int i = 0; i < rootNodes.getLength(); i++) {
@@ -79,7 +79,7 @@ public class TGShareSongResponse {
 		}
 		return null;
 	}
-	
+
 	private String getAttributeValue( NamedNodeMap node , String attribute ){
 		try{
 			if( node != null && attribute != null ){

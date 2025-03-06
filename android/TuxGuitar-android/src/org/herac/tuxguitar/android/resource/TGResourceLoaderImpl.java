@@ -21,14 +21,14 @@ import android.content.res.AssetManager;
 import dalvik.system.DexClassLoader;
 
 public class TGResourceLoaderImpl implements TGResourceLoader {
-	
+
 	private static final String ASSET_PLUGINS = "plugins";
 	private static final Integer ASSET_BUFFER_SIZE = (8 * 1024);
-	
+
 	private static ClassLoader classLoader;
-	
+
 	private TGActivity activity;
-	
+
 	public TGResourceLoaderImpl(TGActivity activity) {
 		this.activity = activity;
 
@@ -38,7 +38,7 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 			}
 		}
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> Class<T> loadClass(String name) throws TGResourceException {
@@ -82,26 +82,26 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 
 	public ClassLoader createClassLoader() throws TGResourceException {
 		Context context = this.activity.getApplicationContext();
-		
+
 		String optimizedDirectory = context.getDir("dex", Context.MODE_PRIVATE).getAbsolutePath();
-		
+
 		List<String> fileNames = this.unpackPlugins(optimizedDirectory);
 		if(!fileNames.isEmpty()) {
 			return new DexClassLoader(this.createPath(fileNames), optimizedDirectory, this.createLibraryPath(), context.getClassLoader());
 		}
 		return context.getClassLoader();
 	}
-	
+
 	public List<String> unpackPlugins(String path) {
 		try {
 			List<String> fileNames = new ArrayList<String>();
-			
+
 			AssetManager assetManager = this.activity.getAssets();
 			String[] assets = assetManager.list(ASSET_PLUGINS);
 			if( assets != null ) {
 				for(String asset : assets) {
 					File pluginFileName = new File(path, asset);
-					
+
 					InputStream inputStream = new BufferedInputStream(assetManager.open(ASSET_PLUGINS + File.separator + asset));
 					OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(pluginFileName));
 					byte[] buffer = new byte[ASSET_BUFFER_SIZE];
@@ -111,17 +111,17 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 					}
 					outputStream.close();
 					inputStream.close();
-					
+
 					fileNames.add(pluginFileName.getAbsolutePath());
 				}
 			}
-			
+
 			return fileNames;
 		} catch (IOException e) {
 			throw new TGResourceException(e);
 		}
 	}
-	
+
 	public String createPath(List<String> fileNames) {
 		StringBuffer path = new StringBuffer();
 		for(String fileName : fileNames) {
@@ -132,7 +132,7 @@ public class TGResourceLoaderImpl implements TGResourceLoader {
 		}
 		return path.toString();
 	}
-	
+
 	public String createLibraryPath() {
 		return this.activity.getApplicationInfo().nativeLibraryDir;
 	}

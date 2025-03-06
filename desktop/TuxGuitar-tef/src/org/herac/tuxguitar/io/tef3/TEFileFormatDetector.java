@@ -6,12 +6,12 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 import org.herac.tuxguitar.io.base.TGFileFormatDetector;
 
 public class TEFileFormatDetector implements TGFileFormatDetector {
-	
+
 	public TEFileFormatDetector() {
 		super();
 	}
-	
-	public TGFileFormat getFileFormat(InputStream is) {		
+
+	public TGFileFormat getFileFormat(InputStream is) {
 		try {
 			TEInputStream tef3InputStream = new TEInputStream(is);
 			boolean ok = tef3InputStream.readFileHeader();

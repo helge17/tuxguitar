@@ -614,7 +614,7 @@ public class AudioSystem {
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             return (SourceDataLine) AudioSystem.getLine(info);
         }
-    
+
     /**
      * Obtains an audio input stream of the indicated encoding, by converting the
      * provided audio input stream.
@@ -1183,7 +1183,7 @@ public class AudioSystem {
 //    }
 //
 //
-    
+
     /** Return a MixerProvider of a given class from the list of
         MixerProviders.
 

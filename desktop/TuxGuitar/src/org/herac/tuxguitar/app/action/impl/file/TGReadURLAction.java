@@ -21,15 +21,15 @@ import org.herac.tuxguitar.io.base.TGFileFormatUtils;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGReadURLAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.url.read";
-	
+
 	public static final String ATTRIBUTE_URL = URL.class.getName();
-	
+
 	public TGReadURLAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGDocumentListManager docListManager = TGDocumentListManager.getInstance(getContext());
 		try {
@@ -49,10 +49,10 @@ public class TGReadURLAction extends TGActionBase {
 				InputStream stream = (TGFileUtils.isLocalFile(url) ? url.openStream() : TGFileFormatUtils.getInputStream(url.openStream()));
 				context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, TGFileFormatUtils.getFileFormatCode(url.getFile()));
 				context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, stream);
-				
+
 				TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 				tgActionManager.execute(TGReadSongAction.NAME, context);
-				
+
 				// if a newer version of file format was detected, warn user (recommend app upgrade)
 				if (Boolean.TRUE.equals(context.getAttribute(TGReadSongAction.IS_NEWER_FILE_FORMAT))) {
 					context.setAttribute(TGMessageDialog.ATTRIBUTE_TITLE, TuxGuitar.getProperty("warning"));

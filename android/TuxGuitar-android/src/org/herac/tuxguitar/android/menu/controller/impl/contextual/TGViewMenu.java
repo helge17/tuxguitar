@@ -14,7 +14,7 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGViewMenu extends TGMenuBase {
-	
+
 	public TGViewMenu(TGActivity activity) {
 		super(activity);
 	}
@@ -23,12 +23,12 @@ public class TGViewMenu extends TGMenuBase {
 		inflater.inflate(R.menu.menu_view, menu);
 		initializeItems(menu);
 	}
-	
+
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
 		TGLayout layout = TGSongViewController.getInstance(context).getLayout();
 		int style = layout.getStyle();
-		
+
 		this.initializeItem(menu, R.id.action_view_layout_show_score, this.createActionProcessor(TGSetScoreEnabledAction.NAME), true, (style & TGLayout.DISPLAY_SCORE) != 0);
 		this.initializeItem(menu, R.id.action_view_layout_show_chord_name, this.createActionProcessor(TGSetChordNameEnabledAction.NAME), true, (style & TGLayout.DISPLAY_CHORD_NAME) != 0);
 		this.initializeItem(menu, R.id.action_view_layout_show_chord_diagram, this.createActionProcessor(TGSetChordDiagramEnabledAction.NAME), true, (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0);

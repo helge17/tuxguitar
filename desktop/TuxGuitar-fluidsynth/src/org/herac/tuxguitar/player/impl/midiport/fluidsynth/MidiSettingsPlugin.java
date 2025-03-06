@@ -13,11 +13,11 @@ public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 	protected TGPluginSettingsHandler createHandler(TGContext context) throws TGPluginException {
 		return new MidiSettingsHandler(context, this);
 	}
-	
+
 	public String getModuleId() {
 		return MidiSynthPlugin.MODULE_ID;
 	}
-	
+
 	public MidiOutputPortSettings findMidiSettings(TGContext context){
 		MidiOutputPortProviderPlugin plugin = findMidiOutputPortProviderPlugin(context);
 		if( plugin != null ){
@@ -25,7 +25,7 @@ public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 		}
 		return null;
 	}
-	
+
 	private MidiOutputPortProviderPlugin findMidiOutputPortProviderPlugin(TGContext context){
 		List<MidiOutputPortProviderPlugin> pluginInstances = TGPluginManager.getInstance(context).getPluginInstances(MidiOutputPortProviderPlugin.class);
 		if( pluginInstances != null && !pluginInstances.isEmpty() ){

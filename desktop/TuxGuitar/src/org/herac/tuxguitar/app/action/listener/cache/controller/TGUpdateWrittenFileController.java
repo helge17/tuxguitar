@@ -26,14 +26,14 @@ public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 			if( (fileName != null) && Boolean.TRUE.equals(actionContext.getAttribute(TGWriteFileAction.ATTRIBUTE_NATIVE_FILE_FORMAT)) ) {
 				URI uri = new File(fileName).toURI();
 				URL url = uri.toURL();
-				
+
 				TGDocumentListManager.getInstance(context).findCurrentDocument().setUri(uri);
-				
+
 				TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
 				tgFileHistory.reset(url);
 				tgFileHistory.setChooserPath( url );
 			}
-			
+
 			super.update(context, actionContext);
 		} catch (MalformedURLException e) {
 			throw new TGException(e);

@@ -9,21 +9,21 @@ import org.herac.tuxguitar.util.TGException;
 import org.herac.tuxguitar.util.TGSynchronizer;
 
 public class TGDrawerEventListener implements TGEventListener {
-	
+
 	private TGDrawerManager drawerManager;
-	
+
 	public TGDrawerEventListener(TGDrawerManager drawerManager) {
 		this.drawerManager = drawerManager;
 	}
-	
+
 	public void closeDrawer() {
 		this.drawerManager.closeDrawer();
 	}
-	
+
 	public void processNavigationEvent(TGEvent event) {
 		this.drawerManager.onOpenFragment(((TGNavigationFragment) event.getAttribute(TGNavigationEvent.PROPERTY_LOADED_FRAGMENT)).getController());
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.drawerManager.findContext()).executeLater(new Runnable() {
 			public void run() throws TGException {

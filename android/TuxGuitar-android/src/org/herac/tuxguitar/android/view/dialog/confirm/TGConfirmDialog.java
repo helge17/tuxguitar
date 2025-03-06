@@ -9,11 +9,11 @@ import org.herac.tuxguitar.android.R;
 import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 
 public class TGConfirmDialog extends TGDialogFragment {
-	
+
 	public TGConfirmDialog() {
 		super();
 	}
-	
+
 	@SuppressLint("InflateParams")
 	public Dialog onCreateDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -31,7 +31,7 @@ public class TGConfirmDialog extends TGDialogFragment {
 				dialog.dismiss();
 			}
 		});
-		
+
 		return builder.create();
 	}
 

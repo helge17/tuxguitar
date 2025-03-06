@@ -9,38 +9,38 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 
 public class PDFPainter extends PDFResourceFactory implements UIPainter {
-	
+
 	private int style;
-	
+
 	private PdfContentByte cb;
-	
+
 	private PDFColor background;
-	
+
 	private PDFColor foreground;
-	
+
 	private PDFFont font;
-	
+
 	public PDFPainter(){
 		super();
 	}
-	
+
 	public void init(PdfContentByte gc){
 		this.cb = gc;
 		this.background = new PDFColor(0xff, 0xff, 0xff);
 		this.foreground = new PDFColor(0x00, 0x00, 0x00);
 		this.font = new PDFFont(BaseFont.HELVETICA, 9, false, false);
 	}
-	
+
 	public void initPath(int style){
 		this.style = style;
 		this.cb.newPath();
 	}
-	
+
 	public void initPath(){
 		this.initPath( PATH_DRAW );
 	}
-	
-	public void closePath(){		
+
+	public void closePath(){
 		if((this.style & PATH_DRAW) != 0 && (this.style & PATH_FILL) != 0 ) {
 			this.cb.setColorStroke(this.foreground.createHandle());
 			this.cb.setColorFill(this.background.createHandle());
@@ -54,26 +54,26 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 			this.cb.setColorFill(this.background.createHandle());
 			this.cb.fill();
 		}
-		
+
 		this.style = 0;
 	}
-	
+
 	public PdfContentByte getGC(){
 		return this.cb;
 	}
-	
+
 	public void dispose(){
 		this.cb = null;
 	}
-	
+
 	public boolean isDisposed() {
 		return (this.cb == null);
 	}
-	
+
 	public void cubicTo(float xc1, float yc1, float xc2, float yc2, float x1, float y1) {
 		this.cb.curveTo(xc1, this.getY(yc1), xc2, this.getY(yc2), x1, this.getY(y1));
 	}
-	
+
 	public void lineTo(float x, float y) {
 		this.cb.lineTo(x, this.getY(y));
 	}
@@ -93,11 +93,11 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 		this.cb.lineTo(x, this.getY(y + height));
 		this.cb.lineTo(x, this.getY(y));
 	}
-	
+
 	public void addString(String text, float x, float y, UIFont font) {
 		this.addString(text, x, y, new PDFFont(font));
 	}
-	
+
 	public void addString(String text, float x, float y, PDFFont font) {
 		this.cb.beginText();
 		this.cb.setColorFill(this.foreground.createHandle());
@@ -107,7 +107,7 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 		this.cb.showText(text);
 		this.cb.endText();
 	}
-	
+
 	public void drawString(String string, float x, float y) {
 		this.addString(string, x, y, this.font);
 	}
@@ -119,7 +119,7 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 	public void setBackground(UIColor color) {
 		this.background = new PDFColor(color);
 	}
-	
+
 	public void setForeground(UIColor color) {
 		this.foreground = new PDFColor(color);
 	}
@@ -153,11 +153,11 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 	public float getFMTopLine() {
 		return this.getFMAscent();
 	}
-	
+
 	public float getFMMiddleLine(){
 		return ((this.getFMTopLine() - this.getFMBaseLine()) / 2f);
 	}
-	
+
 	public float getFMBaseLine() {
 		return 0;
 	}
@@ -165,19 +165,19 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 	public float getFMHeight() {
 		return (this.getFMAscent());
 	}
-	
+
 	public float getFMAscent() {
 		return ((this.font.createHandle().getAscent("1234567890") / 1000f) * this.font.getHeight());
 	}
-	
+
 	public float getFMWidth(String text) {
 		return ((this.font.createHandle().getWidth(text) / 1000f) * this.font.getHeight());
 	}
-	
+
     public float getY(float y) {
         return this.cb.getPdfDocument().getPageSize().getHeight() - y;
     }
-    
+
 	public void setAlpha(int alpha) {
 		// not implemented
 	}
@@ -195,6 +195,6 @@ public class PDFPainter extends PDFResourceFactory implements UIPainter {
 	}
 
 	public void drawImage(UIImage image, float x, float y) {
-		// not implemented		
+		// not implemented
 	}
 }

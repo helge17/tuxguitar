@@ -5,7 +5,7 @@ import org.herac.tuxguitar.ui.resource.UIKey;
 import org.herac.tuxguitar.ui.resource.UIKeyCombination;
 
 public class SWTKey {
-	
+
 	private static final SWTKeyMap[] KEY_MAP = new SWTKeyMap[] {
 		new SWTKeyMap(SWT.F1, UIKey.F1),
 		new SWTKeyMap(SWT.F2, UIKey.F2),
@@ -42,7 +42,7 @@ public class SWTKey {
 		new SWTKeyMap(SWT.ARROW_LEFT, UIKey.LEFT),
 		new SWTKeyMap(SWT.ARROW_RIGHT, UIKey.RIGHT)
 	};
-	
+
 	public UIKey getKey(int keyCode) {
 		for(SWTKeyMap keyMap : KEY_MAP) {
 			if( keyMap.getCode() == keyCode ) {
@@ -51,7 +51,7 @@ public class SWTKey {
 		}
 		return new UIKey(Character.toString((char) (keyCode & 0xffff)));
 	}
-	
+
 	public UIKeyCombination getCombination(int keyCode, int stateMask, Character character) {
 		/* workaround for non-EN keyboards without numpad (typ. azerty laptop)
 		   with these keyboards, digits can be entered only with key combination, e.g. "shift+&" = "1"
@@ -74,7 +74,7 @@ public class SWTKey {
 				keyCombination.getKeys().add(UIKey.COMMAND);
 			}
 		}
-		
+
 		UIKey principalKey = this.getKey(keyCode);
 		if(!keyCombination.contains(principalKey) && !isDigit) {
 			keyCombination.getKeys().add(principalKey);
@@ -82,24 +82,24 @@ public class SWTKey {
 		else if (isDigit)  {
 			keyCombination.getKeys().add(new UIKey(character.toString()));
 		}
-		
+
 		return keyCombination;
 	}
-	
+
 	private static class SWTKeyMap {
-		
+
 		private int code;
 		private UIKey key;
-		
+
 		public SWTKeyMap(int code, UIKey key) {
 			this.code = code;
 			this.key = key;
 		}
-		
+
 		public int getCode() {
 			return this.code;
 		}
-		
+
 		public UIKey getKey() {
 			return this.key;
 		}

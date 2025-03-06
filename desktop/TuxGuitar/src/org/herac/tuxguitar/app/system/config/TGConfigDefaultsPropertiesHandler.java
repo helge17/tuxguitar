@@ -7,21 +7,21 @@ import org.herac.tuxguitar.util.properties.TGPropertiesException;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGConfigDefaultsPropertiesHandler implements TGPropertiesReader{
-	
+
 	private static final String DEFAULT_MODULE = "tuxguitar";
 	private static final String DEFAULT_RESOURCE_PREFIX = "";
 	private static final String DEFAULT_RESOURCE_SUFFIX = ".cfg";
-	
+
 	private TGContext context;
-	
+
 	public TGConfigDefaultsPropertiesHandler(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void readProperties(TGProperties properties, String module) throws TGPropertiesException {
 		this.readDefaultProperties(properties, module);
 	}
-	
+
 	private void readDefaultProperties(TGProperties properties, String module) {
 		if( DEFAULT_MODULE.equals(module) ){
 			TGConfigDefaults.loadProperties(properties);

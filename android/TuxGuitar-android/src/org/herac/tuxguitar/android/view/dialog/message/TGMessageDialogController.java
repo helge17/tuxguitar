@@ -6,7 +6,7 @@ public class TGMessageDialogController extends TGDialogFragmentController<TGMess
 
 	public static final String ATTRIBUTE_TITLE = "title";
 	public static final String ATTRIBUTE_MESSAGE = "message";
-	
+
 	public TGMessageDialogController() {
 		super();
 	}

@@ -8,9 +8,9 @@ import java.util.List;
 import org.herac.tuxguitar.io.tg.TGStream;
 
 public class TGFileFormatUtils {
-	
+
 	public static final String DEFAULT_EXTENSION = ("." + TGStream.TG_FORMAT_CODE);
-	
+
 	public static String getDefaultExtension(TGFileFormat format, String defaultValue) {
 		String[] supportedFormats = format.getSupportedFormats();
 		if( supportedFormats != null && supportedFormats.length > 0 ) {
@@ -18,11 +18,11 @@ public class TGFileFormatUtils {
 		}
 		return defaultValue;
 	}
-	
+
 	public static String getDefaultExtension(TGFileFormat format) {
 		return getDefaultExtension(format, DEFAULT_EXTENSION);
 	}
-	
+
 	public static String getFileExtension(String path) {
 		return getFileExtension(path, null);
 	}
@@ -34,11 +34,11 @@ public class TGFileFormatUtils {
 		}
 		return defaultValue;
 	}
-	
+
 	public static String getFileFormatCode(String path) {
 		return getFileFormatCode(path, null);
 	}
-	
+
 	public static String getFileFormatCode(String path, String defaultValue) {
 		String extension = getFileExtension(path);
 		if( extension != null && extension.length() > 1 ) {
@@ -60,7 +60,7 @@ public class TGFileFormatUtils {
 		}
 		return false;
 	}
-	
+
 	public static byte[] getBytes(InputStream in)throws Throwable {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		int read = 0;
@@ -73,7 +73,7 @@ public class TGFileFormatUtils {
 		out.flush();
 		return bytes;
 	}
-	
+
 	public static InputStream getInputStream(InputStream in) throws Throwable {
 		return new ByteArrayInputStream(getBytes(in));
 	}

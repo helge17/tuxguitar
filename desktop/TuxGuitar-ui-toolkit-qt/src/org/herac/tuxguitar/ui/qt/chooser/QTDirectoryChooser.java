@@ -15,36 +15,36 @@ public class QTDirectoryChooser implements UIDirectoryChooser {
 	private QTAbstractWindow<?> window;
 	private String text;
 	private File defaultPath;
-	
+
 	public QTDirectoryChooser(QTAbstractWindow<?> window) {
 		this.window = window;
 	}
-	
+
 	public void choose(UIDirectoryChooserHandler selectionHandler) {
 		File selection = null;
-		
+
 		QFileDialog dialog = new QFileDialog(this.window.getControl());
-		
+
 		if( this.text != null ) {
 			dialog.setWindowTitle(this.text);
 		}
-		
+
 		if( this.defaultPath != null ) {
 			dialog.selectFile(this.defaultPath.getAbsolutePath());
 		}
-		
+
 // TODO QT 5->6 //		dialog.setFileMode(FileMode.DirectoryOnly);
-		
+
 		if( dialog.exec() == QDialog.DialogCode.Accepted.value() ) {
 			List<String> selectedFiles = dialog.selectedFiles();
 			if( selectedFiles != null && !selectedFiles.isEmpty() ) {
 				selection = new File(selectedFiles.get(0));
 			}
 		}
-		
-		selectionHandler.onSelectDirectory(selection); 
+
+		selectionHandler.onSelectDirectory(selection);
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}

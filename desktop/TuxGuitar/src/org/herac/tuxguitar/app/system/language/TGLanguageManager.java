@@ -19,34 +19,34 @@ import org.herac.tuxguitar.util.TGMessagesManager;
 
 /**
  * @author julian
- * 
+ *
  */
 public class TGLanguageManager {
-	
+
 	public static final String PACKAGE = "lang";
 	public static final String PREFIX = "messages";
 	public static final String EXTENSION = ".properties";
-	
+
 	private TGContext context;
 	private String[] languages;
-	
+
 	public TGLanguageManager(TGContext context) {
 		this.context = context;
 		this.loadLanguages();
 	}
-	
+
 	public void addLoader(TGEventListener listener){
 		TGEventManager.getInstance(this.context).addListener(TGLanguageEvent.EVENT_TYPE, listener);
 	}
-	
+
 	public void removeLoader(TGEventListener listener){
 		TGEventManager.getInstance(this.context).removeListener(TGLanguageEvent.EVENT_TYPE, listener);
 	}
-	
+
 	private void fireChanges(){
 		TGEventManager.getInstance(this.context).fireEvent(new TGLanguageEvent());
 	}
-	
+
 	public void setLanguage(String lang) {
 		try {
 			String baseName = (PACKAGE + "." + PREFIX);
@@ -57,7 +57,7 @@ public class TGLanguageManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private Locale getLocale(String lang){
 		if(this.isSupportedLanguage(lang)){
 			String[] locale = lang.split("_");
@@ -68,7 +68,7 @@ public class TGLanguageManager {
 		}
 		return Locale.getDefault();
 	}
-	
+
 	private boolean isSupportedLanguage(String lang){
 		if(lang != null && lang.length() > 0 && this.languages != null){
 			for(int i = 0 ; i < this.languages.length; i ++){
@@ -82,7 +82,7 @@ public class TGLanguageManager {
 	public String[] getLanguages() {
 		return this.languages;
 	}
-	
+
 	/**
 	 * Load language files from lang folder
 	 *

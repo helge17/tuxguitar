@@ -8,7 +8,7 @@ import org.herac.tuxguitar.graphics.command.TGPaintModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGClefPainter {
-	
+
 	private static final TGPaintCommand TREBLE_MODEL = new TGPaintModel(
 		new TGMoveTo(0.9706216f, -0.9855771f),
 		new TGCubicTo(0.99023926f, -0.99538594f, 0.99350905f, -0.99538594f, 1.0131269f, -0.99538594f),
@@ -106,7 +106,7 @@ public class TGClefPainter {
 		new TGCubicTo(1.8174533f, 2.9510455f, 1.7389826f, 2.8235304f, 1.6278152f, 2.735251f),
 		new TGCubicTo(1.5591533f, 2.6829367f, 1.4676039f, 2.6371622f, 1.3924028f, 2.617545f)
 	);
-	
+
 	private static final TGPaintCommand BASS_MODEL = new TGPaintModel(
 		new TGMoveTo(0.71937084f, 0.16147426f),
 		new TGCubicTo(0.75454587f, 0.15827677f, 0.8920496f, 0.16147426f, 0.94321334f, 0.16467176f),
@@ -149,7 +149,7 @@ public class TGClefPainter {
 		new TGCubicTo(1.9153309f, 1.5684855f, 1.8449808f, 1.4981354f, 1.8449808f, 1.4117955f),
 		new TGCubicTo(1.8449808f, 1.338248f, 1.8929471f, 1.2774905f, 1.9632971f, 1.2583042f)
 	);
-	
+
 	private static final TGPaintCommand ALTO_MODEL = new TGPaintModel(
 		new TGMoveTo(0.026545623f, 0.5470838f),
 		new TGCubicTo(0.03553187f, 0.5410925f, 0.053504374f, 0.5410925f, 0.21525937f, 0.5410925f),
@@ -248,7 +248,7 @@ public class TGClefPainter {
 		new TGLineTo(0.58369815f, 0.56206f),
 		new TGCubicTo(0.5896894f, 0.55607f, 0.59568065f, 0.55007875f, 0.6016719f, 0.5470838f)
 	);
-	
+
 	private static final TGPaintCommand TENOR_MODEL = new TGPaintModel(
 		new TGMoveTo(0.026545623f, -0.45291623f),
 		new TGCubicTo(0.03553187f, -0.45890749f, 0.053504374f, -0.45890749f, 0.21525937f, -0.45890749f),
@@ -347,7 +347,7 @@ public class TGClefPainter {
 		new TGLineTo(0.58369815f, -0.43793997f),
 		new TGCubicTo(0.5896894f, -0.44392997f, 0.59568065f, -0.44992122f, 0.6016719f, -0.45291623f)
 	);
-	
+
 	private static final TGPaintCommand NEUTRAL_MODEL = new TGPaintModel(
 		new TGMoveTo(0.0f, 1.0f),
 		new TGLineTo(0.0f, 3.0f),
@@ -358,23 +358,23 @@ public class TGClefPainter {
 		new TGLineTo(1.5f, 3.0f),
 		new TGLineTo(1.5f, 1.0f)
 	);
-	
+
 	public static void paintTreble(UIPainter painter, float x, float y,float scale){
 		TREBLE_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintBass(UIPainter painter, float x, float y,float scale){
 		BASS_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintAlto(UIPainter painter, float x, float y,float scale){
 		ALTO_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintTenor(UIPainter painter, float x, float y,float scale){
 		TENOR_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintNeutral(UIPainter painter, float x, float y, float scale) {
 		NEUTRAL_MODEL.paint(painter, x, y, scale);
 	}

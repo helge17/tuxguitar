@@ -20,12 +20,12 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class KeyBindingReader {
-	
+
 	private static final String SHORTCUT_TAG = "shortcut";
 	private static final String SHORTCUT_ATTRIBUTE_ACTION = "action";
 	private static final String SHORTCUT_ATTRIBUTE_KEYS = "keys";
 	private static final String KEY_SEPARATOR = " ";
-	
+
 	public static List<KeyBindingAction>getKeyBindings(String fileName) {
 		try{
 			File file = new File(fileName);
@@ -37,7 +37,7 @@ public class KeyBindingReader {
 		}
 		return null;
 	}
-	
+
 	public static List<KeyBindingAction> getKeyBindings(InputStream is) {
 		try{
 			if (is!=null){
@@ -48,7 +48,7 @@ public class KeyBindingReader {
 		}
 		return null;
 	}
-	
+
 	private static Document getDocument(InputStream is) {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -70,8 +70,8 @@ public class KeyBindingReader {
 		}
 		return document;
 	}
-	
-	
+
+
 	private static Document getDocument(File file) {
 		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -93,33 +93,33 @@ public class KeyBindingReader {
 		}
 		return document;
 	}
-	
+
 	/**
 	 * Read shortcuts from xml file
-	 * 
+	 *
 	 * @param shortcutsNode
 	 * @return
 	 */
 	private static List<KeyBindingAction> getBindings(Node shortcutsNode){
 		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
-		
+
 		NodeList nodeList = shortcutsNode.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node child = nodeList.item(i);
 			String nodeName = child.getNodeName();
-			
+
 			if (nodeName.equals(SHORTCUT_TAG)) {
 				NamedNodeMap params = child.getAttributes();
-				
+
 				Node nodeKeys = params.getNamedItem(SHORTCUT_ATTRIBUTE_KEYS);
 				Node nodeAction = params.getNamedItem(SHORTCUT_ATTRIBUTE_ACTION);
 				if( nodeKeys != null && nodeAction != null){
 					String action = nodeAction.getNodeValue();
 					String keys = nodeKeys.getNodeValue();
-					
+
 					if (keys != null && action != null) {
 						UIKeyCombination uiKeyMask = new UIKeyCombination();
-						
+
 						String[] keyCodes = keys.toString().split(KEY_SEPARATOR);
 						for(String keyCode : keyCodes) {
 							String keyCodeTrimmed = keyCode.trim();
@@ -127,7 +127,7 @@ public class KeyBindingReader {
 								uiKeyMask.getKeys().add(new UIKey(keyCodeTrimmed));
 							}
 						}
-						
+
 						list.add(new KeyBindingAction(action, uiKeyMask));
 					}
 				}

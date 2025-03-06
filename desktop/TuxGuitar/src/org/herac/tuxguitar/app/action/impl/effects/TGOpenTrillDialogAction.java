@@ -10,13 +10,13 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGOpenTrillDialogAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.gui.open-trill-dialog";
-	
+
 	public TGOpenTrillDialogAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext tgActionContext){
 		TGTrack track = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		if (!track.isPercussion()) {

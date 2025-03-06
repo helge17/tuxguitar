@@ -8,7 +8,7 @@ public class TGSafBrowserSettings {
 
 	private String title;
 	private Uri uri;
-	
+
 	public TGSafBrowserSettings(String title, Uri uri){
 		this.title = title;
 		this.uri = uri;
@@ -28,7 +28,7 @@ public class TGSafBrowserSettings {
 		settings.setData(this.getUri().toString());
 		return settings;
 	}
-	
+
 	public static TGSafBrowserSettings createInstance(TGBrowserSettings settings) {
 		return new TGSafBrowserSettings(settings.getTitle(), Uri.parse(settings.getData()));
 	}

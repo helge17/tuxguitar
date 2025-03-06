@@ -10,7 +10,7 @@ import java.util.List;
 public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 
 	private List<MidiOutputPort> ports;
-	
+
 	public MidiOutputPortProviderImpl(){
 		super();
 	}
@@ -22,7 +22,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 		}
 		return this.ports;
 	}
-	
+
 	public void closeAll() throws MidiPlayerException{
 		if( this.ports != null ) {
 			for(int i = 0 ; i < this.ports.size() ; i++) {

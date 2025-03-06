@@ -11,16 +11,16 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGCleanMeasureListAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.measure.clean-list";
-	
+
 	public static final String ATTRIBUTE_MEASURE_NUMBER_1 = "measureNumber1";
 	public static final String ATTRIBUTE_MEASURE_NUMBER_2 = "measureNumber2";
-	
+
 	public TGCleanMeasureListAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext actionContext){
 		TGTrack track = ((TGTrack) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK));
 		TGMeasure measure = ((TGMeasure) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));

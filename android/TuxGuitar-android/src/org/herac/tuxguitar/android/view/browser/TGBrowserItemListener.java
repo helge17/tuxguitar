@@ -17,11 +17,11 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
 public class TGBrowserItemListener implements OnItemClickListener {
 
 	private TGBrowserView browserView;
-	
+
 	public TGBrowserItemListener(TGBrowserView browserView) {
 		this.browserView = browserView;
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		this.processElementAction((TGBrowserElement) view.getTag());
@@ -45,7 +45,7 @@ public class TGBrowserItemListener implements OnItemClickListener {
 			TGErrorManager.getInstance(this.browserView.findContext()).handleError(e);
 		}
 	}
-	
+
 	public void processCdElementAction(TGBrowserElement element) {
 		this.browserView.getActionHandler().createBrowserElementAction(TGBrowserCdElementAction.NAME, element).process();
 	}
@@ -55,12 +55,12 @@ public class TGBrowserItemListener implements OnItemClickListener {
 
 		this.browserView.getActionHandler().createBrowserOpenElementAction(element, formatCode).process();
 	}
-	
+
 	public void processSaveElementAction(final TGBrowserElement element) throws TGBrowserException {
 		String confirmMessage = this.browserView.findActivity().getString(R.string.browser_file_overwrite_question);
 		String formatCode = TGFileFormatUtils.getFileFormatCode(element.getName());
 		TGActionProcessor actionProcessor = this.browserView.getActionHandler().createBrowserSaveElementAction(element, formatCode);
-		
+
 		this.browserView.getActionHandler().processConfirmableAction(actionProcessor, confirmMessage);
 	}
 }

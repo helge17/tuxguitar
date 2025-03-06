@@ -11,7 +11,7 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGHelpGoHomeAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.gui.go-to-homepage";
 	private TGContext context;
 

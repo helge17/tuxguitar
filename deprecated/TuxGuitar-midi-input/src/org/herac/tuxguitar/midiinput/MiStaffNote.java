@@ -73,7 +73,7 @@ class MiStaffNote
 	long	getOverallDuration()
 	{
 	long	time = f_Duration;
-	
+
 	if(f_DotCount == 1)
 		time += time / 2;
 	else if(f_DotCount == 2)
@@ -184,7 +184,7 @@ class MiStaffNote
 	static int	durationToNoteType(long inDuration)
 	{
 	// converts duration [ticks] into note type
-		
+
 	if(inDuration >= noteToTicks(TGDuration.WHOLE))					return(TGDuration.WHOLE);
 	else if(inDuration >= noteToTicks(TGDuration.HALF))				return(TGDuration.HALF);
 	else if(inDuration >= noteToTicks(TGDuration.QUARTER))			return(TGDuration.QUARTER);

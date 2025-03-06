@@ -8,17 +8,17 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGRemoveChannelAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.channel.remove";
-	
+
 	public TGRemoveChannelAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGSong song = ((TGSong) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG));
 		TGChannel channel = ((TGChannel) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL));
-		
+
 		getSongManager(context).removeChannel(song, channel);
 	}
 }

@@ -20,7 +20,7 @@ public class TGOpenCabMenuAction extends TGActionBase{
 	public TGOpenCabMenuAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(final TGActionContext context) {
 		context.setAttribute(TGMenuCabCallBack.ATTRIBUTE_BY_PASS_CLOSE_MENU, true);
 

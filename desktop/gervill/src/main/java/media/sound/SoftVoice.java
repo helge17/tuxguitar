@@ -580,7 +580,7 @@ public class SoftVoice extends VoiceStatus {
             performer = null;
             connections = null;
             extendedConnectionBlocks = null;
-            channelmixer = null;            
+            channelmixer = null;
             if (osc_stream != null)
                 try {
                     osc_stream.close();
@@ -770,7 +770,7 @@ public class SoftVoice extends VoiceStatus {
         {
             if (amp_from == amp_to) {
                 float[] fout = out.array();
-                float[] fin = in.array();                
+                float[] fin = in.array();
                 int j = 0;
                 for (int i = delay; i < bufferlen; i++)
                     fout[i] += fin[j++] * amp_to;
@@ -791,7 +791,7 @@ public class SoftVoice extends VoiceStatus {
                 for (int i = 0; i < delay; i++) {
                     amp += amp_delta;
                     fout[i] += fin[j++] * amp;
-                }                
+                }
             }
         }
         else
@@ -851,7 +851,7 @@ public class SoftVoice extends VoiceStatus {
         SoftAudioBuffer dmono = buffer[SoftMainMixer.CHANNEL_DELAY_MONO];
         SoftAudioBuffer deff1 = buffer[SoftMainMixer.CHANNEL_DELAY_EFFECT1];
         SoftAudioBuffer deff2 = buffer[SoftMainMixer.CHANNEL_DELAY_EFFECT2];
-        
+
         SoftAudioBuffer leftdry = buffer[SoftMainMixer.CHANNEL_LEFT_DRY];
         SoftAudioBuffer rightdry = buffer[SoftMainMixer.CHANNEL_RIGHT_DRY];
 
@@ -871,7 +871,7 @@ public class SoftVoice extends VoiceStatus {
                 mixAudioStream(rightdry, left, dleft, last_out_mixer_left,
                         out_mixer_left);
         } else {
-            if(rightdry == null && 
+            if(rightdry == null &&
                     last_out_mixer_left == last_out_mixer_right &&
                     out_mixer_left == out_mixer_right)
             {

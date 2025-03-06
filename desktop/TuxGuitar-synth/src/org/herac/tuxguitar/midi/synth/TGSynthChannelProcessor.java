@@ -9,20 +9,20 @@ import java.util.Set;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSynthChannelProcessor {
-	
+
 	private TGAudioBuffer buffer;
 	private TGMidiProcessor processor;
 	private List<TGAudioProcessor> outputs;
 	private Map<TGProgramElement, TGAudioProcessor> processorMap;
 	private Object lock;
-	
+
 	public TGSynthChannelProcessor() {
 		this.lock = new Object();
 		this.buffer = new TGAudioBuffer();
 		this.outputs = new ArrayList<TGAudioProcessor>();
 		this.processorMap = new HashMap<TGProgramElement, TGAudioProcessor>();
 	}
-	
+
 	public void open(TGContext context, TGProgram program) {
 		synchronized (this.lock) {
 			this.processor = null;
@@ -32,7 +32,7 @@ public class TGSynthChannelProcessor {
 			this.openOutputs(context, program);
 		}
 	}
-	
+
 	public void openReceiver(TGContext context, TGProgramElement receiver) {
 		synchronized (this.lock) {
 			TGMidiProcessor processor = (TGMidiProcessor) this.getAudioProcessor(receiver);
@@ -48,7 +48,7 @@ public class TGSynthChannelProcessor {
 			}
 		}
 	}
-	
+
 	public void openOutputs(TGContext context, TGProgram program) {
 		synchronized (this.lock) {
 			for( int i = 0 ; i < program.countOutputs() ;i ++){
@@ -56,7 +56,7 @@ public class TGSynthChannelProcessor {
 			}
 		}
 	}
-	
+
 	public void openOutput(TGContext context, TGProgramElement output) {
 		synchronized (this.lock) {
 			TGAudioProcessor processor = this.getAudioProcessor(output);
@@ -72,17 +72,17 @@ public class TGSynthChannelProcessor {
 			}
 		}
 	}
-	
+
 	public void setMidiProcessor(TGProgramElement element, TGMidiProcessor processor) {
 		this.processor = processor;
 		this.addProcessor(element, processor);
 	}
-	
+
 	public void addOutputProcessor(TGProgramElement element, TGAudioProcessor processor) {
 		this.addOutput(processor);
 		this.addProcessor(element, processor);
 	}
-	
+
 	public void addProcessor(TGProgramElement element, TGAudioProcessor processor) {
 		if( this.processorMap.containsKey(element) ) {
 			this.processorMap.remove(element);
@@ -90,19 +90,19 @@ public class TGSynthChannelProcessor {
 		this.processorMap.put(element, processor);
 		this.restoreParameters(element, processor);
 	}
-	
+
 	public void restoreParameters(TGProgramElement element, TGAudioProcessor processor) {
 		if( element.getParameters() != null ) {
 			processor.restoreParameters(element.getParameters());
 		}
 	}
-	
+
 	public void close(){
 		synchronized (this.lock) {
 			this.closeOrphanProcessors(null);
 		}
 	}
-	
+
 	public void closeOrphanProcessors(TGProgram program) {
 		synchronized (this.lock) {
 			Map<TGProgramElement, TGAudioProcessor> mappedProcessors = new HashMap<TGProgramElement, TGAudioProcessor>(this.processorMap);
@@ -113,19 +113,19 @@ public class TGSynthChannelProcessor {
 			}
 		}
 	}
-	
+
 	public void closeProcessor(TGProgramElement element) {
 		synchronized (this.lock) {
 			TGAudioProcessor mappedProcessor = this.getAudioProcessor(element);
 			if( mappedProcessor != null ) {
 				mappedProcessor.close();
 				mappedProcessor.finalize();
-				
+
 				this.processorMap.remove(element);
 			}
 		}
 	}
-	
+
 	public boolean shouldCloseProcessor(TGProgram program, TGProgramElement element) {
 		synchronized (this.lock) {
 			if( program != null ) {
@@ -141,7 +141,7 @@ public class TGSynthChannelProcessor {
 			return true;
 		}
 	}
-	
+
 	public TGProgramElement getElement(TGAudioProcessor processor) {
 		synchronized (this.lock) {
 			Set<Map.Entry<TGProgramElement, TGAudioProcessor>> entries = this.processorMap.entrySet();
@@ -153,7 +153,7 @@ public class TGSynthChannelProcessor {
 			return null;
 		}
 	}
-	
+
 	public TGAudioProcessor getAudioProcessor(TGProgramElement element) {
 		synchronized (this.lock) {
 			if( this.processorMap.containsKey(element)) {
@@ -162,13 +162,13 @@ public class TGSynthChannelProcessor {
 			return null;
 		}
 	}
-	
+
 	public TGMidiProcessor getProcessor(){
 		synchronized (this.lock) {
 			return this.processor;
 		}
 	}
-	
+
 	public void addOutput(TGAudioProcessor effect){
 		synchronized (this.lock) {
 			if( effect != null ){
@@ -176,7 +176,7 @@ public class TGSynthChannelProcessor {
 			}
 		}
 	}
-	
+
 	public TGAudioProcessor getOutput( int index ){
 		synchronized (this.lock) {
 			if( index >= 0 && index < this.outputs.size() ){
@@ -185,13 +185,13 @@ public class TGSynthChannelProcessor {
 			return null;
 		}
 	}
-	
+
 	public int countOutputs(){
 		synchronized (this.lock) {
 			return this.outputs.size();
 		}
 	}
-	
+
 	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance) {
 		synchronized (this.lock) {
 			if( this.processor != null && this.processor.isOpen() ){
@@ -201,12 +201,12 @@ public class TGSynthChannelProcessor {
 					this.fillBuffer(this.buffer, this.getOutput(i));
 				}
 				this.balance(this.buffer, volume, balance);
-				
+
 				buffer.mix(this.buffer);
 			}
 		}
 	}
-	
+
 	public void fillBuffer(TGAudioBuffer buffer, TGAudioProcessor processor) {
 		synchronized (this.lock) {
 			if( this.isEnabled(processor) ) {
@@ -214,7 +214,7 @@ public class TGSynthChannelProcessor {
 			}
 		}
 	}
-	
+
 	public void balance(TGAudioBuffer buffer, int volume, int balance) {
 		synchronized (this.lock) {
 			buffer.balance(new float[] {
@@ -225,7 +225,7 @@ public class TGSynthChannelProcessor {
 			});
 		}
 	}
-	
+
 	public boolean isBusy() {
 		synchronized (this.lock) {
 			if( this.processor != null && this.processor.isBusy()) {
@@ -235,15 +235,15 @@ public class TGSynthChannelProcessor {
 				if( processor.isBusy() ) {
 					return true;
 				}
-			}			
+			}
 			return false;
 		}
 	}
-	
+
 	public boolean isEnabled(TGAudioProcessor processor) {
 		synchronized (this.lock) {
 			TGProgramElement element = this.getElement(processor);
-			
+
 			return (element != null && element.isEnabled());
 		}
 	}

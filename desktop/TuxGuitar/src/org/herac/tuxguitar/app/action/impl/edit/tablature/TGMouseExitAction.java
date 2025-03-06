@@ -8,13 +8,13 @@ import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMouseExitAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.edit.tablature.mouse-exit";
-	
+
 	public TGMouseExitAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context) {
 		EditorKit editorKit = TablatureEditor.getInstance(getContext()).getTablature().getEditorKit();
 		editorKit .resetSelectedMeasure();

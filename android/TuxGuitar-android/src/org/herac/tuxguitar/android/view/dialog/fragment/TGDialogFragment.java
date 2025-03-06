@@ -26,10 +26,10 @@ public abstract class TGDialogFragment extends DialogFragment {
 		}
 		return null;
 	}
-	
+
 	public void onDestroy() {
 		this.destroyDialogContext();
-		
+
 		super.onDestroy();
 	}
 
@@ -44,15 +44,15 @@ public abstract class TGDialogFragment extends DialogFragment {
 	public String getDialogContextKey() {
 		return (TGDialogContext.class.getName() + "-" + this.getClass().getName());
 	}
-	
+
 	public TGDialogContext getDialogContext() {
 		return this.findContext().getAttribute(this.getDialogContextKey());
 	}
-	
+
 	public void destroyDialogContext() {
 		this.findContext().removeAttribute(this.getDialogContextKey());
 	}
-	
+
 	public <T> T getAttribute(String key){
 		TGDialogContext dialogContext = this.getDialogContext();
 		if( dialogContext != null ) {
@@ -60,12 +60,12 @@ public abstract class TGDialogFragment extends DialogFragment {
 		}
 		return null;
 	}
-	
-	public TGActivity findActivity() { 
+
+	public TGActivity findActivity() {
 		return (TGActivity) getActivity();
 	}
-	
-	public TGContext findContext() { 
+
+	public TGContext findContext() {
 		return TGApplicationUtil.findContext(getActivity());
 	}
 }

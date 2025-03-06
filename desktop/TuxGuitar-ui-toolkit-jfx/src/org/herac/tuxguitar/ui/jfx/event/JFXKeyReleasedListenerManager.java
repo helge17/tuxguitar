@@ -9,17 +9,17 @@ import org.herac.tuxguitar.ui.jfx.resource.JFXKey;
 import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXKeyReleasedListenerManager extends UIKeyReleasedListenerManager implements EventHandler<KeyEvent> {
-	
+
 	private JFXEventReceiver<?> control;
-	
+
 	public JFXKeyReleasedListenerManager(JFXEventReceiver<?> control) {
 		this.control = control;
 	}
-	
+
 	public void handle(KeyEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			this.onKeyReleased(new UIKeyEvent(this.control, JFXKey.getCombination(event)));
-			
+
 			event.consume();
 		}
 	}

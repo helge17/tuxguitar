@@ -21,7 +21,7 @@ import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 import org.herac.tuxguitar.ui.widget.UIKnob;
 
 public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
-	
+
 	private int maximum;
 	private int minimum;
 	private int increment;
@@ -32,12 +32,12 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 	private Shell shell;
 	private Composite composite;
 	private Scale scale;
-	
+
 	private SWTSelectionListenerManager selectionListener;
-	
+
 	public SWTScaleKnob(SWTContainer<? extends Composite> parent) {
 		super(new Button(parent.getControl(), SWT.TOGGLE), parent);
-		
+
 		this.value = -1;
 		this.inverted =  true;
 		this.getControl().addDisposeListener(createItemDisposeListener());
@@ -45,18 +45,18 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 		this.getControl().getShell().addListener(SWT.Move, createMoveShellListener());
 		this.selectionListener = new SWTSelectionListenerManager(this);
 	}
-	
+
 	public int getType(){
 		return this.type;
 	}
-	
+
 	public int getValue(){
 		if( this.value < 0 ){
 			this.getValueFromScale();
 		}
 		return this.value;
 	}
-	
+
 	public void setValue(int value){
 		if( value != this.value ){
 			this.value = value;
@@ -64,7 +64,7 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			this.updateToolTipValue();
 		}
 	}
-	
+
 	public int getMaximum() {
 		return maximum;
 	}
@@ -92,37 +92,37 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 		this.setIncrementToScale();
 	}
 
-	
+
 	public void getValueFromScale(){
 		if(!this.isShellDisposed()){
 			this.setValue( ( this.inverted ? 127 - this.scale.getSelection() : this.scale.getSelection() ) );
 		}
 	}
-	
+
 	public void setValueToScale(){
 		if(!this.isShellDisposed()){
 			this.scale.setSelection( ( this.inverted ? 127 - this.value : this.value ) );
 		}
 	}
-	
+
 	public void setIncrementToScale(){
 		if(!this.isShellDisposed()){
 			this.scale.setIncrement(this.increment);
 		}
 	}
-	
+
 	public void setMaximumToScale(){
 		if(!this.isShellDisposed()){
 			this.scale.setMaximum(this.maximum);
 		}
 	}
-	
+
 	public void setMinimumToScale(){
 		if(!this.isShellDisposed()){
 			this.scale.setMinimum(this.minimum);
 		}
 	}
-	
+
 	public void updateToolTipValue(){
 		if( this.getToolTipText() != null ){
 			this.getControl().setToolTipText( this.getToolTipText() + ": " + this.getValue() );
@@ -131,7 +131,7 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			}
 		}
 	}
-	
+
 	public void setToolTipText(String text){
 		this.toolTipText = text;
 		if( this.getToolTipText() != null && this.getToolTipText().length() > 0){
@@ -139,11 +139,11 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 		}
 		this.updateToolTipValue();
 	}
-	
+
 	public String getToolTipText(){
 		return this.toolTipText;
 	}
-	
+
 	private GridLayout getGridLayout(){
 		GridLayout layout = new GridLayout();
 		layout.horizontalSpacing = 0;
@@ -156,23 +156,23 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 		layout.marginHeight = 0;
 		return layout;
 	}
-	
+
 	private GridData getScaleLayoutData(){
 		GridData data = new GridData(SWT.CENTER,SWT.FILL,false,true);
 		data.heightHint = 65;
 		return data;
 	}
-	
+
 	public void showShell() {
 		if( isShellDisposed() ){
 			this.shell = new Shell(this.getControl().getShell(), SWT.NO_TRIM );
 			this.shell.setVisible(false);
 			this.shell.setLayout(getGridLayout());
-			
+
 			this.composite = new Composite(this.shell, SWT.BORDER);
 			this.composite.setLayout(getGridLayout());
 			this.composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
+
 			this.scale = new Scale(this.composite, SWT.VERTICAL );
 			this.scale.setMaximum(this.maximum);
 			this.scale.setMinimum(this.minimum);
@@ -180,27 +180,27 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			this.scale.setPageIncrement(this.increment * 3);
 			this.scale.setLayoutData(getScaleLayoutData());
 			this.setValueToScale();
-			
+
 			this.scale.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent event) {
 					SWTScaleKnob.this.getValueFromScale();
 					SWTScaleKnob.this.selectionListener.widgetSelected(event);
 				}
 			});
-			
+
 			this.shell.pack();
 			this.moveShell();
 			this.shell.setVisible(true);
 		}
 	}
-	
+
 	public void hideShell() {
 		if(!isShellDisposed()){
 			this.shell.dispose();
 			this.shell = null;
 		}
 	}
-	
+
 	public void showHideShell() {
 		if( this.getControl().getSelection() ){
 			showShell();
@@ -208,20 +208,20 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			hideShell();
 		}
 	}
-	
+
 	public void moveShell() {
 		if(!isShellDisposed()){
 			Rectangle bounds = this.getControl().getBounds();
 			Point location = this.getControl().getParent().toDisplay(new Point(bounds.x, bounds.y));
-			
+
 			this.shell.setLocation( (location.x + (bounds.width / 2)) - (this.shell.getSize().x / 2), location.y + bounds.height);
 		}
 	}
-	
+
 	public boolean isShellDisposed(){
 		return ( this.shell == null || this.shell.isDisposed() );
 	}
-	
+
 	private DisposeListener createItemDisposeListener(){
 		return new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -229,7 +229,7 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			}
 		};
 	}
-	
+
 	private SelectionListener createItemSelectionListener(){
 		return new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -237,7 +237,7 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			}
 		};
 	}
-	
+
 	private Listener createMoveShellListener(){
 		return new Listener() {
 			public void handleEvent(Event event) {
@@ -245,7 +245,7 @@ public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 			}
 		};
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		this.selectionListener.addListener(listener);
 	}

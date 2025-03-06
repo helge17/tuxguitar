@@ -11,7 +11,7 @@ public class TGSongReaderPluginImpl extends TGAbstractSongReaderPlugin{
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
 		return new TGSongReaderImpl();
 	}
-	
+
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {
 		return new TGFileFormatDetectorImpl(TGSongReaderImpl.SUPPORTED_FORMAT);
 	}

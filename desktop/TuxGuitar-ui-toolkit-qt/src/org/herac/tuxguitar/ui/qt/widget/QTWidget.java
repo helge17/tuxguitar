@@ -59,9 +59,9 @@ import io.qt.core.Qt;
 import io.qt.core.Qt.ConnectionType;
 
 public abstract class QTWidget<T extends QWidget> extends QTComponent<T> implements UIControl {
-	
+
 	private QTContainer parent;
-	
+
 	private QTEventFilter eventFilter;
 	private QTDisposeListenerManager disposeListener;
 	private QTFocusGainedListenerManager focusGainedListener;
@@ -79,7 +79,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	private QTResizeListenerManager resizeListener;
 	private QTMenuOpenListenerManager menuOpenListener;
 	private QTZoomListenerManager zoomListener;
-	
+
 	private UISize packedSize;
 	private UIColor bgColor;
 	private UIColor fgColor;
@@ -87,16 +87,16 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
 	private boolean ignoreEvents;
-	
+
 	public QTWidget(T control, QTContainer parent, boolean immediatelyShow) {
 		super(control);
-		
+
 		this.parent = parent;
 		if( this.parent != null ) {
 			this.parent.addChild(this);
 		}
 		this.packedSize = new UISize();
-		
+
 		this.eventFilter = new QTEventFilter();
 		this.disposeListener = new QTDisposeListenerManager(this);
 		this.focusGainedListener = new QTFocusGainedListenerManager(this);
@@ -114,33 +114,33 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		this.menuOpenListener = new QTMenuOpenListenerManager(this);
 		this.resizeListener = new QTResizeListenerManager(this);
 		this.zoomListener = new QTZoomListenerManager(this);
-		
+
 		this.getControl().installEventFilter(this.eventFilter);
-		
+
 		if( immediatelyShow && parent != null && parent.getContainerControl().isVisible() ) {
 			this.showLater();
 		}
 	}
-	
+
 	public QTWidget(T control, QTContainer parent) {
 		this(control, parent, true);
 	}
-	
+
 	public UIControl getParent() {
 		return this.parent;
 	}
-	
+
 	public void setBounds(UIRectangle bounds) {
 		if(!this.getBounds().equals(bounds)) {
 			this.getControl().setGeometry(Math.round(bounds.getX()), Math.round(bounds.getY()), Math.round(bounds.getWidth()), Math.round(bounds.getHeight()));
 		}
 	}
-	
+
 	public UIRectangle getBounds() {
 		QRect qRect = this.getControl().geometry();
 		return new UIRectangle(qRect.x(), qRect.y(), qRect.width(), qRect.height());
 	}
-	
+
 	public void setPackedSize(UISize packedSize) {
 		this.packedSize.setWidth(packedSize.getWidth());
 		this.packedSize.setHeight(packedSize.getHeight());
@@ -152,24 +152,24 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 
 	public void computePackedSize(Float fixedWidth, Float fixedHeight) {
 		QSize qSize = this.getControl().sizeHint();
-		
+
 		this.packedSize.setWidth(fixedWidth != null ? fixedWidth : qSize.width());
 		this.packedSize.setHeight(fixedHeight != null ? fixedHeight : qSize.height());
 	}
-	
+
 	public void dispose() {
 		if( this.parent != null ) {
 			this.parent.removeChild(this);
 		}
 		this.getControl().dispose();
-		
+
 		super.dispose();
 	}
-	
+
 	public boolean isDisposed() {
 		return (super.isDisposed());
 	}
-	
+
 	public boolean isEnabled() {
 		return this.getControl().isEnabled();
 	}
@@ -185,7 +185,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	public void setVisible(boolean visible) {
 		this.getControl().setVisible(visible);
 	}
-	
+
 	public String getToolTipText() {
 		return this.getControl().toolTip();
 	}
@@ -193,25 +193,25 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 	public void setToolTipText(String toolTipText) {
 		this.getControl().setToolTip(toolTipText);
 	}
-	
+
 	public UIColor getColor(QColor handle) {
 		return (handle != null ? new QTColor(handle) : null);
 	}
-	
+
 	public void setColor(ColorRole colorRole, UIColor color) {
 		QPalette qPalette = this.getControl().palette();
 		qPalette.setColor(colorRole, color != null ? ((QTColor) color).getControl() : null);
-		
+
 		this.getControl().setPalette(qPalette);
 	}
-	
+
 	public UIColor getBgColor() {
 		if( this.bgColor == null ) {
 			this.bgColor = this.getColor(this.getControl().palette().color(this.getControl().backgroundRole()));
 		}
 		return this.bgColor;
 	}
-	
+
 	public void setBgColor(UIColor color) {
 		this.bgColor = color;
 		this.setColor(this.getControl().backgroundRole(), this.bgColor);
@@ -223,42 +223,42 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		}
 		return this.fgColor;
 	}
-	
+
 	public void setFgColor(UIColor color) {
 		this.fgColor = color;
 		this.getControl().setAutoFillBackground(this.fgColor != null);
 		this.setColor(this.getControl().foregroundRole(), this.fgColor);
 	}
-	
+
 	public UIFont getFont(QFont handle) {
 		return (handle != null ? new QTFont(handle) : null);
 	}
-	
+
 	public UIFont getFont() {
 		if( this.font == null ) {
 			this.font = this.getFont(this.getControl().font());
 		}
 		return this.font;
 	}
-	
+
 	public void setFont(UIFont font) {
 		this.font = font;
 		this.getControl().setFont(this.font != null ? ((QTFont) this.font).getControl() : null);
 	}
-	
+
 	public UICursor getCursor() {
 		return (this.cursor != null ? this.cursor : UICursor.NORMAL);
 	}
-	
+
 	public void setCursor(UICursor cursor) {
 		this.cursor = cursor;
 		this.getControl().setCursor(QTCursor.getCursor(this.getCursor()));
 	}
-	
+
 	public UIPopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}
-	
+
 	public void setPopupMenu(UIPopupMenu popupMenu) {
 		if( this.popupMenu == null && popupMenu != null ) {
 			this.addMouseDownListener(this.menuOpenListener);
@@ -283,21 +283,21 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		};
 		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
-	
+
 	public void repaint() {
 		this.getControl().repaint();
 	}
-	
+
 	public QTEventFilter getEventFilter() {
 		return this.eventFilter;
 	}
-	
+
 	public void show() {
 		if(!this.getControl().isVisible()) {
 			this.getControl().show();
 		}
 	}
-	
+
 	public void showLater() {
 		Runnable runnable = new Runnable() {
 			public void run() {
@@ -308,7 +308,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		};
 		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
-	
+
 	public void openPopupMenu(final UIPosition pos) {
 // TODO QT 5->6 //		if( this.popupMenu != null ) {
 			Runnable runnable = new Runnable() {
@@ -322,7 +322,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		};
 		QMetaObject.invokeMethod(runnable::run, Qt.ConnectionType.QueuedConnection);
 	}
-	
+
 	public boolean isIgnoreEvents() {
 		return this.ignoreEvents;
 	}
@@ -339,14 +339,14 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 		}
 		this.disposeListener.addListener(listener);
 	}
-	
+
 	public void removeDisposeListener(UIDisposeListener listener) {
 		this.disposeListener.removeListener(listener);
 		if( this.disposeListener.isEmpty() ) {
 			this.getEventFilter().disconnect(Type.Destroy, this.disposeListener);
 		}
 	}
-	
+
 	public void addMouseUpListener(UIMouseUpListener listener) {
 		if( this.mouseUpListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.MouseButtonRelease, this.mouseUpListener);
@@ -404,7 +404,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getControl().setMouseTracking(false);
 		}
 	}
-	
+
 	public void addMouseDragListener(UIMouseDragListener listener) {
 		if( this.mouseDragListener.isEmpty() ) {
 			this.addMouseUpListener(this.mouseDragListener);
@@ -422,7 +422,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.removeMouseMoveListener(this.mouseDragListener);
 		}
 	}
-	
+
 	public void addMouseWheelListener(UIMouseWheelListener listener) {
 		if( this.mouseWheelListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.Wheel, this.mouseWheelListener);
@@ -436,7 +436,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.Wheel, this.mouseWheelListener);
 		}
 	}
-	
+
 	public void addMouseEnterListener(UIMouseEnterListener listener) {
 		if( this.mouseEnterListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.HoverEnter, this.mouseEnterListener);
@@ -450,7 +450,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.HoverEnter, this.mouseEnterListener);
 		}
 	}
-	
+
 	public void addMouseExitListener(UIMouseExitListener listener) {
 		if( this.mouseExitListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.HoverLeave, this.mouseExitListener);
@@ -464,7 +464,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.HoverLeave, this.mouseExitListener);
 		}
 	}
-	
+
 	public void addKeyPressedListener(UIKeyPressedListener listener) {
 		if( this.keyPressedListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.KeyPress, this.keyPressedListener);
@@ -478,7 +478,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.KeyPress, this.keyPressedListener);
 		}
 	}
-	
+
 	public void addKeyReleasedListener(UIKeyReleasedListener listener) {
 		if( this.keyReleasedListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.KeyRelease, this.keyReleasedListener);
@@ -492,7 +492,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.KeyRelease, this.keyReleasedListener);
 		}
 	}
-	
+
 	public void addFocusGainedListener(UIFocusGainedListener listener) {
 		if( this.focusGainedListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.FocusIn, this.focusGainedListener);
@@ -506,7 +506,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.FocusIn, this.focusGainedListener);
 		}
 	}
-	
+
 	public void addFocusLostListener(UIFocusLostListener listener) {
 		if( this.focusLostListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.FocusOut, this.focusLostListener);
@@ -534,7 +534,7 @@ public abstract class QTWidget<T extends QWidget> extends QTComponent<T> impleme
 			this.getEventFilter().disconnect(Type.Resize, this.resizeListener);
 		}
 	}
-	
+
 	public void addZoomListener(UIZoomListener listener) {
 		if( this.zoomListener.isEmpty() ) {
 			this.getEventFilter().connect(Type.Wheel, this.zoomListener);

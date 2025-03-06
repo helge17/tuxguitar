@@ -52,22 +52,22 @@ public class TGTimeSignatureDialog extends TGModalFragment {
 		TGMeasureHeader header = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
 		ArrayAdapter<TGSelectableItem> numeratorAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createNumeratorValues());
 		numeratorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner numerator = (Spinner) this.getView().findViewById(R.id.time_signature_dlg_ts_numerator_value);
 		numerator.setAdapter(numeratorAdapter);
 		numerator.setSelection(numeratorAdapter.getPosition(new TGSelectableItem(header.getTimeSignature().getNumerator(), null)));
-		
+
 		ArrayAdapter<TGSelectableItem> denominatorAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDenominatorValues());
 		denominatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner denominator = (Spinner) this.getView().findViewById(R.id.time_signature_dlg_ts_denominator_value);
 		denominator.setAdapter(denominatorAdapter);
 		denominator.setSelection(denominatorAdapter.getPosition(new TGSelectableItem(header.getTimeSignature().getDenominator().getValue(), null)));
-		
+
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.time_signature_dlg_options_apply_to_end);
 		applyToEnd.setChecked(true);
 	}
-	
+
 	public TGSelectableItem[] createNumeratorValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 32; i++) {
@@ -77,7 +77,7 @@ public class TGTimeSignatureDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public TGSelectableItem[] createDenominatorValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 32; i = i * 2) {
@@ -87,7 +87,7 @@ public class TGTimeSignatureDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public TGTimeSignature parseTimeSignature() {
 		Spinner numerator = (Spinner) this.getView().findViewById(R.id.time_signature_dlg_ts_numerator_value);
 		Spinner denominator = (Spinner) this.getView().findViewById(R.id.time_signature_dlg_ts_denominator_value);
@@ -97,20 +97,20 @@ public class TGTimeSignatureDialog extends TGModalFragment {
 		tgTimeSignature.getDenominator().setValue(parseDenominatorValue(denominator));
 		return tgTimeSignature;
 	}
-	
+
 	public Integer parseNumeratorValue(Spinner numerator) {
 		return (Integer) ((TGSelectableItem) numerator.getSelectedItem()).getItem();
 	}
-	
+
 	public Integer parseDenominatorValue(Spinner denominator) {
 		return (Integer) ((TGSelectableItem) denominator.getSelectedItem()).getItem();
 	}
-	
+
 	public Boolean parseApplyToEnd() {
 		CheckBox applyToEnd = (CheckBox) this.getView().findViewById(R.id.time_signature_dlg_options_apply_to_end);
 		return Boolean.valueOf(applyToEnd.isChecked());
 	}
-	
+
 	public void changeTimeSignature() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeTimeSignatureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());

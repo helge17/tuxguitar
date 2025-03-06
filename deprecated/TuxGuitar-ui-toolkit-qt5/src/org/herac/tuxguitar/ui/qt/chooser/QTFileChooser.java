@@ -12,59 +12,59 @@ import org.qtjambi.qt.widgets.QFileDialog;
 import org.qtjambi.qt.widgets.QFileDialog.FileMode;
 
 public class QTFileChooser implements UIFileChooser {
-	
+
 	public static final int STYLE_OPEN = 1;
 	public static final int STYLE_SAVE = 2;
-	
+
 	private int style;
 	private QTAbstractWindow<?> window;
 	private String text;
 	private File defaultPath;
 	private List<UIFileChooserFormat> supportedFormats;
-	
+
 	public QTFileChooser(QTAbstractWindow<?> window, int style) {
 		this.window = window;
 		this.style = style;
 	}
-	
+
 	public void choose(UIFileChooserHandler selectionHandler) {
 		File selection = null;
-		
+
 		QFileDialog dialog = new QFileDialog(this.window.getControl());
-		
+
 		if( this.text != null ) {
 			dialog.setWindowTitle(this.text);
 		}
-		
+
 		String initialFileName = this.createInitialFileName();
 		if( initialFileName != null ) {
 			dialog.selectFile(initialFileName);
 		}
-		
+
 		String extensionFilters = createExtensionFilters();
 		if( extensionFilters != null && extensionFilters.length() > 0 ) {
 			dialog.setNameFilter(extensionFilters);
 		}
-		
+
 		dialog.setFileMode(STYLE_SAVE == this.style ? FileMode.AnyFile : FileMode.ExistingFile);
-		
+
 		if( dialog.exec() == QDialog.DialogCode.Accepted.value() ) {
 			List<String> selectedFiles = dialog.selectedFiles();
 			if( selectedFiles != null && !selectedFiles.isEmpty() ) {
 				selection = new File(selectedFiles.get(0));
 			}
 		}
-		
-		selectionHandler.onSelectFile(selection); 
+
+		selectionHandler.onSelectFile(selection);
 	}
-	
+
 	public String createInitialFileName() {
 		if( this.defaultPath != null ) {
 			return this.defaultPath.getAbsolutePath();
 		}
 		return null;
 	}
-	
+
 	public String createExtensionFilters() {
 		StringBuffer sb = new StringBuffer();
 		if( this.supportedFormats != null ) {
@@ -75,20 +75,20 @@ public class QTFileChooser implements UIFileChooser {
 				}
 				sb.append(supportedFormat.getName());
 				sb.append(" (");
-				
+
 				for(int e = 0; e < supportedFormat.getExtensions().size(); e ++) {
 					if( e > 0 ) {
 						sb.append(" ");
 					}
 					sb.append("*." + supportedFormat.getExtensions().get(e));
 				}
-				
+
 				sb.append(")");
 			}
 		}
 		return sb.toString();
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}
@@ -96,7 +96,7 @@ public class QTFileChooser implements UIFileChooser {
 	public void setDefaultPath(File defaultPath) {
 		this.defaultPath = defaultPath;
 	}
-	
+
 	public void setSupportedFormats(List<UIFileChooserFormat> supportedFormats) {
 		this.supportedFormats = supportedFormats;
 	}

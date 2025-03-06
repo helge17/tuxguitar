@@ -15,7 +15,7 @@ import org.herac.tuxguitar.util.error.TGErrorHandler;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGActionErrorHandler implements TGEventListener {
-	
+
 	public static final String ATTRIBUTE_ACTION_LEVEL = (TGActionErrorHandler.class.getName() + "-level");
 	public static final String ATTRIBUTE_ERROR_HANDLER = TGErrorHandler.class.getName();
 	public static final String ATTRIBUTE_ERROR_HANDLED = "errorHandled";
@@ -36,11 +36,11 @@ public class TGActionErrorHandler implements TGEventListener {
 	};
 
 	private TGContext context;
-	
+
 	public TGActionErrorHandler(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void incrementLevel(TGActionContext context) {
 		Integer level = this.getLevel(context);
 		context.setAttribute(ATTRIBUTE_ACTION_LEVEL, (level != null ? level.intValue() + 1 : 1));
@@ -50,11 +50,11 @@ public class TGActionErrorHandler implements TGEventListener {
 		Integer level = this.getLevel(context);
 		context.setAttribute(ATTRIBUTE_ACTION_LEVEL, (level != null ? level.intValue() - 1 : 0));
 	}
-	
+
 	public Integer getLevel(TGActionContext context) {
 		return context.getAttribute(ATTRIBUTE_ACTION_LEVEL);
 	}
-	
+
 	public TGActionContext findActionContext(TGEvent event) {
 		return event.getAttribute(TGEvent.ATTRIBUTE_SOURCE_CONTEXT);
 	}
@@ -84,7 +84,7 @@ public class TGActionErrorHandler implements TGEventListener {
 			TGErrorHandler errorHandler = actionContext.getAttribute(ATTRIBUTE_ERROR_HANDLER);
 
 			this.processError(throwable, errorHandler);
-			
+
 			actionContext.setAttribute(ATTRIBUTE_ERROR_HANDLED, true);
 		}
 	}

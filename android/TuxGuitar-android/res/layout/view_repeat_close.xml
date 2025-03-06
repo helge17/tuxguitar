@@ -3,21 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-    
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="2" >
-	
-		<TextView 
+
+		<TextView
 			android:id="@+id/repeat_close_dlg_count_label"
-			android:text="@string/repeat_close_dlg_count_label" 
+			android:text="@string/repeat_close_dlg_count_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<Spinner 
+
+		<Spinner
 			android:id="@+id/repeat_close_dlg_count_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 	</GridLayout>
 
 </ScrollView>

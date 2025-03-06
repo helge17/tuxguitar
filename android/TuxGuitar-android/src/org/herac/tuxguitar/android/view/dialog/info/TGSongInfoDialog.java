@@ -46,11 +46,11 @@ public class TGSongInfoDialog extends TGModalFragment {
 	public void setTextFieldValue(int textFieldId, String value) {
 		((EditText) this.getView().findViewById(textFieldId)).getText().append(value);
 	}
-	
+
 	public String getTextFieldValue(int textFieldId) {
 		return ((EditText) this.getView().findViewById(textFieldId)).getText().toString();
 	}
-	
+
 	public void fillSongInfo() {
 		TGSong song = this.getSong();
 		setTextFieldValue(R.id.song_properties_dlg_name_value, song.getName());
@@ -63,7 +63,7 @@ public class TGSongInfoDialog extends TGModalFragment {
 		setTextFieldValue(R.id.song_properties_dlg_transcriber_value, song.getTranscriber());
 		setTextFieldValue(R.id.song_properties_dlg_comments_value, song.getComments());
 	}
-	
+
 	public void updateSongInfo() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeInfoAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());

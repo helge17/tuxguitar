@@ -10,14 +10,14 @@ import org.herac.tuxguitar.player.base.MidiSequencerProvider;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MidiSequencerProviderImpl implements MidiSequencerProvider{
-	
+
 	private TGContext context;
 	private List<MidiSequencer> sequencers;
-	
+
 	public MidiSequencerProviderImpl(TGContext context){
 		this.context = context;
 	}
-	
+
 	public List<MidiSequencer> listSequencers() throws MidiPlayerException {
 		if(this.sequencers == null){
 			this.sequencers = new ArrayList<MidiSequencer>();
@@ -25,7 +25,7 @@ public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 		}
 		return this.sequencers;
 	}
-	
+
 	public void closeAll() throws MidiPlayerException {
 		Iterator<MidiSequencer> it = listSequencers().iterator();
 		while(it.hasNext()){

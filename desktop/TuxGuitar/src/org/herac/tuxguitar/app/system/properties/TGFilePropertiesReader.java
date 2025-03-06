@@ -11,7 +11,7 @@ import org.herac.tuxguitar.util.properties.TGPropertiesException;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGFilePropertiesReader extends TGPropertiesBaseHandler implements TGPropertiesReader{
-	
+
 	public TGFilePropertiesReader(String prefix, String suffix) {
 		super(prefix, suffix);
 	}

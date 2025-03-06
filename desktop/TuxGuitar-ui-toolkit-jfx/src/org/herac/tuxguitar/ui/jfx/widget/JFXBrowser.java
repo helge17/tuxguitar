@@ -12,10 +12,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.web.WebView;
 
 public class JFXBrowser extends JFXNode<WebView> implements UIBrowser {
-	
+
 	private UIRectangle bounds;
 	private JFXResizeListenerManager resizeListener;
-	
+
 	public JFXBrowser(JFXContainer<? extends Region> parent) {
 		super(new WebView(), parent);
 		this.resizeListener = new JFXResizeListenerManager(this);

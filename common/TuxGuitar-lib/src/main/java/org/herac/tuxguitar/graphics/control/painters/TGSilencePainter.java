@@ -8,7 +8,7 @@ import org.herac.tuxguitar.graphics.command.TGPaintModel;
 import org.herac.tuxguitar.ui.resource.UIPainter;
 
 public class TGSilencePainter {
-	
+
 	private static final TGPaintCommand WHOLE_MODEL = new TGPaintModel(
 		new TGMoveTo(0.04681015f, 0.046812057f),
 		new TGLineTo(0.1170311f, 0.0f),
@@ -28,7 +28,7 @@ public class TGSilencePainter {
 		new TGLineTo(0.0f, 0.11703062f),
 		new TGLineTo(0.04681015f, 0.046812057f)
 	);
-	
+
 	private static final TGPaintCommand HALF_MODEL = new TGPaintModel(
 		new TGMoveTo(0.04681015f, 0.046812057f),
 		new TGLineTo(0.1170311f, 0.0f),
@@ -48,7 +48,7 @@ public class TGSilencePainter {
 		new TGLineTo(0.0f, 0.11703062f),
 		new TGLineTo(0.04681015f, 0.046812057f)
 	);
-	
+
 	private static final TGPaintCommand QUARTER_MODEL = new TGPaintModel(
 		new TGMoveTo(2.1034088f, 0.047267675f),
 		new TGCubicTo(2.1979485f, 0.0f, 2.2924728f, 0.0f, 2.387024f, 0.023633957f),
@@ -84,7 +84,7 @@ public class TGSilencePainter {
 		new TGCubicTo(2.2215881f, 0.8035486f, 1.9616127f, 0.49630952f, 1.9379692f, 0.44904137f),
 		new TGCubicTo(1.8670654f, 0.30723906f, 1.9379692f, 0.11816859f, 2.1034088f, 0.047267675f)
 	);
-	
+
 	private static final TGPaintCommand EIGHTH_MODEL = new TGPaintModel(
 		new TGMoveTo(1.6779978f, 0.070901394f),
 		new TGCubicTo(2.1979408f, 0.0f, 2.6469831f, 0.14180231f, 3.0014887f, 0.47267532f),
@@ -109,7 +109,7 @@ public class TGSilencePainter {
 		new TGCubicTo(0.3545066f, 2.88332f, 0.0f, 1.6779974f, 0.5908443f, 0.7799146f),
 		new TGCubicTo(0.85081583f, 0.4254074f, 1.2525895f, 0.14180231f, 1.6779978f, 0.070901394f)
 	);
-	
+
 	private static final TGPaintCommand SIXTEENTH_MODEL = new TGPaintModel(
 		new TGMoveTo(3.5214243f, 0.070901394f),
 		new TGCubicTo(4.041381f, 0.0f, 4.490409f, 0.14180231f, 4.8449125f, 0.4726758f),
@@ -146,7 +146,7 @@ public class TGSilencePainter {
 		new TGCubicTo(2.197935f, 2.8833203f, 1.8434324f, 1.6779971f, 2.43427f, 0.77991486f),
 		new TGCubicTo(2.69425f, 0.4254074f, 3.096015f, 0.14180231f, 3.5214243f, 0.070901394f)
 	);
-	
+
 	private static final TGPaintCommand THIRTY_SECOND_MODEL = new TGPaintModel(
 		new TGMoveTo(4.939474f, 0.070901155f),
 		new TGCubicTo(5.459408f, 0.0f, 5.9084606f, 0.14180207f, 6.2629623f, 0.4726758f),
@@ -195,7 +195,7 @@ public class TGSilencePainter {
 		new TGCubicTo(3.6159801f, 2.88332f, 3.2614594f, 1.6779974f, 3.8523216f, 0.7799146f),
 		new TGCubicTo(4.112276f, 0.4254074f, 4.5140667f, 0.14180207f, 4.939474f, 0.070901155f)
 	);
-	
+
 	private static final TGPaintCommand SIXTY_FOURTH_MODEL = new TGPaintModel(
 		new TGMoveTo(5.908436f, 0.07090092f),
 		new TGCubicTo(6.4283676f, 0.0f, 6.8774185f, 0.14180303f, 7.231926f, 0.4726758f),
@@ -256,31 +256,31 @@ public class TGSilencePainter {
 		new TGCubicTo(4.5849457f, 2.8833196f, 4.230446f, 1.6779983f, 4.8212814f, 0.7799144f),
 		new TGCubicTo(5.0812607f, 0.42540812f, 5.4830284f, 0.14180303f, 5.908436f, 0.07090092f)
 	);
-	
+
 	public static void paintWhole(UIPainter painter, float x, float y,float scale){
 		WHOLE_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintHalf(UIPainter painter, float x, float y,float scale){
 		HALF_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintQuarter(UIPainter painter, float x, float y,float scale){
 		QUARTER_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintEighth(UIPainter painter, float x, float y,float scale){
 		EIGHTH_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintSixteenth(UIPainter painter, float x, float y,float scale){
 		SIXTEENTH_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintThirtySecond(UIPainter painter, float x, float y,float scale){
 		THIRTY_SECOND_MODEL.paint(painter, x, y, scale);
 	}
-	
+
 	public static void paintSixtyFourth(UIPainter painter, float x, float y,float scale){
 		SIXTY_FOURTH_MODEL.paint(painter, x, y, scale);
 	}

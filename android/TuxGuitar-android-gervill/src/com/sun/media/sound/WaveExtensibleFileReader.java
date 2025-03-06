@@ -44,7 +44,7 @@ import javax.sound.sampled.spi.AudioFileReader;
 
 /**
  * WAVE file reader for files using format WAVE_FORMAT_EXTENSIBLE (0xFFFE).
- * 
+ *
  * @author Karl Helgason
  */
 public class WaveExtensibleFileReader extends AudioFileReader {

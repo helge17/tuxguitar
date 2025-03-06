@@ -7,16 +7,16 @@ import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGBrowserCdElementAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.browser.cd-element";
-	
+
 	public static final String ATTRIBUTE_SESSION = TGBrowserSession.class.getName();
 	public static final String ATTRIBUTE_ELEMENT = TGBrowserElement.class.getName();
-	
+
 	public TGBrowserCdElementAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(final TGActionContext context) {
 		TGBrowserSession tgBrowserSession = context.getAttribute(ATTRIBUTE_SESSION);
 		if( tgBrowserSession.getBrowser() != null ) {

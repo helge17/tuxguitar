@@ -8,12 +8,12 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 
 public class GPXFileSystem {
-	
+
 	public static final String RESOURCE_SCORE = "Content/score.gpif";
 	public static final String RESOURCE_VERSION = "VERSION";
-	
+
 	public static final String[] SUPPORTED_VERSIONS = {"7.0"};
-	
+
 	private byte[] fsBuffer;
 
 	public GPXFileSystem() {
@@ -57,11 +57,11 @@ public class GPXFileSystem {
 
 		return (resourceBytes != null ? new ByteArrayInputStream(resourceBytes) : null);
 	}
-	
+
 	public boolean isSupportedVersion() throws Throwable {
 		InputStream stream = this.getFileContentsAsStream(RESOURCE_VERSION);
 		if( stream != null ) {
-			byte[] bytes = new byte[3];			
+			byte[] bytes = new byte[3];
 			stream.read(bytes);
 			String version = new String(bytes);
 			if( version != null ) {

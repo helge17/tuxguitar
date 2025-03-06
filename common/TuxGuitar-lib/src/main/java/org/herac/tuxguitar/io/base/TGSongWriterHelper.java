@@ -5,19 +5,19 @@ import java.io.IOException;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSongWriterHelper extends TGSongPersistenceHelper {
-	
+
 	public TGSongWriterHelper(TGContext context){
 		super(context);
 	}
-	
+
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try {
 			boolean success = false;
-			
+
 			if( handle.getFormat() == null ) {
 				handle.setFormat(this.detectFileFormat(handle));
 			}
-			
+
 			if( handle.getFormat() != null ) {
 				TGSongWriter writer = TGFileFormatManager.getInstance(this.getContext()).findSongWriter(handle.getFormat());
 				if( writer != null ){
@@ -25,7 +25,7 @@ public class TGSongWriterHelper extends TGSongPersistenceHelper {
 					success = true;
 				}
 			}
-			
+
 			if(!success) {
 				throw new TGFileFormatException(TGFileFormatException.UNSUPPORTED_FORMAT);
 			}
@@ -41,10 +41,10 @@ public class TGSongWriterHelper extends TGSongPersistenceHelper {
 			}
 		}
 	}
-	
+
 	public TGFileFormat detectFileFormat(TGSongWriterHandle handle) throws IOException {
 		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.getContext());
-		
+
 		String mimeType = handle.getContext().getAttribute(ATTRIBUTE_MIME_TYPE);
 		if( mimeType != null ) {
 			TGFileFormat fileFormat = fileFormatManager.findWriterFileFormatByMimeType(mimeType);
@@ -52,7 +52,7 @@ public class TGSongWriterHelper extends TGSongPersistenceHelper {
 				return fileFormat;
 			}
 		}
-		
+
 		String formatCode = handle.getContext().getAttribute(ATTRIBUTE_FORMAT_CODE);
 		if( formatCode != null ) {
 			TGFileFormat fileFormat = fileFormatManager.findWriterFileFormatByCode(formatCode);

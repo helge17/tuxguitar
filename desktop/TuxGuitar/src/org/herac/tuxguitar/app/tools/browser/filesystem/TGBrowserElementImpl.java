@@ -9,31 +9,31 @@ import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
 import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserElementImpl implements TGBrowserElement{
-	
+
 	private TGBrowserElementImpl parent;
 	private File file;
-	
+
 	public TGBrowserElementImpl(TGBrowserElementImpl parent,File file) {
 		this.parent = parent;
 		this.file = file;
 	}
-	
+
 	public File getFile() {
 		return this.file;
 	}
-	
+
 	public TGBrowserElementImpl getParent() {
 		return this.parent;
 	}
-	
+
 	public String getName(){
 		return getFile().getName();
 	}
-	
+
 	public boolean isFolder(){
 		return getFile().isDirectory();
 	}
-	
+
 	public InputStream getInputStream() throws TGBrowserException {
 		if(!isFolder()){
 			try {
@@ -44,5 +44,5 @@ public class TGBrowserElementImpl implements TGBrowserElement{
 		}
 		return null;
 	}
-	
+
 }

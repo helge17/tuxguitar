@@ -13,7 +13,7 @@ import org.herac.tuxguitar.ui.toolbar.UIToolBar;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTransportControl extends TGMainToolBarSection {
-	
+
 	private UIToolActionItem first;
 	private UIToolActionItem last;
 	private UIToolActionItem previous;
@@ -21,39 +21,39 @@ public class TGMainToolBarSectionTransportControl extends TGMainToolBarSection {
 	private UIToolActionItem stop;
 	private UIToolActionItem play;
 	private boolean isRunning;
-	
+
 	public TGMainToolBarSectionTransportControl(TGContext context, UIToolBar toolBar) {
 		super(context, toolBar);
 	}
-	
+
 	public void createSection() {
 		this.first = this.getToolBar().createActionItem();
 		this.first.addSelectionListener(new TGActionProcessorListener(this.getContext(), TGGoFirstMeasureAction.NAME));
-		
+
 		this.previous = this.getToolBar().createActionItem();
 		this.previous.addSelectionListener(new TGActionProcessorListener(this.getContext(), TGGoPreviousMeasureAction.NAME));
-		
+
 		this.play = this.getToolBar().createActionItem();
 		this.play.addSelectionListener(this.createActionProcessor(TGTransportPlayPauseAction.NAME));
-		
+
 		this.stop = this.getToolBar().createActionItem();
 		this.stop.addSelectionListener(this.createActionProcessor(TGTransportStopAction.NAME));
 
 		this.next = this.getToolBar().createActionItem();
 		this.next.addSelectionListener(new TGActionProcessorListener(this.getContext(), TGGoNextMeasureAction.NAME));
-		
+
 		this.last = this.getToolBar().createActionItem();
 		this.last.addSelectionListener(new TGActionProcessorListener(this.getContext(), TGGoLastMeasureAction.NAME));
-		
+
 		this.isRunning = false;
 		this.loadIcons();
 		this.loadProperties();
 	}
-	
+
 	public void updateItems(){
 		this.loadIcons(false);
 	}
-	
+
 	public void loadProperties(){
 		this.play.setToolTipText(this.getText("transport.start"));
 		this.stop.setToolTipText(this.getText("transport.stop"));
@@ -62,17 +62,17 @@ public class TGMainToolBarSectionTransportControl extends TGMainToolBarSection {
 		this.previous.setToolTipText(this.getText("transport.previous"));
 		this.next.setToolTipText(this.getText("transport.next"));
 	}
-	
+
 	public void loadIcons(){
 		this.loadIcons(true);
 	}
-	
+
 	public void loadIcons(boolean force){
 		boolean lastStatusRunning = this.isRunning;
-		
+
 		MidiPlayer player = MidiPlayer.getInstance(this.getContext());
 		this.isRunning = player.isRunning();
-		
+
 		if(force || lastStatusRunning != this.isRunning){
 			this.first.setImage(this.getIconManager().getTransportIconFirst());
 			this.last.setImage(this.getIconManager().getTransportIconLast());

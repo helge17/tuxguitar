@@ -16,37 +16,37 @@ import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGTrayMenu {
-	
+
 	private TGContext context;
 	private Menu menu;
 	private MenuItem play;
 	private MenuItem stop;
 	private MenuItem exit;
-	
+
 	public TGTrayMenu(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void make(){
 		this.menu = new Menu(((SWTWindow) TGWindow.getInstance(this.context).getWindow()).getControl(), SWT.POP_UP);
-		
+
 		this.play = new MenuItem(this.menu,SWT.PUSH);
 		this.play.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				new TGActionProcessor(TGTrayMenu.this.context, TGTransportPlayPauseAction.NAME).process();
 			}
 		});
-		
+
 		this.stop = new MenuItem(this.menu, SWT.PUSH);
 		this.stop.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				new TGActionProcessor(TGTrayMenu.this.context, TGTransportStopAction.NAME).process();
 			}
 		});
-		
+
 		//--SEPARATOR--
 		new MenuItem(this.menu, SWT.SEPARATOR);
-		
+
 		this.exit = new MenuItem(this.menu, SWT.PUSH);
 		this.exit.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -54,7 +54,7 @@ public class TGTrayMenu {
 			}
 		});
 	}
-	
+
 	public void loadProperties(){
 		if(this.menu != null && !this.menu.isDisposed()){
 			if(TuxGuitar.getInstance().getPlayer().isRunning()){
@@ -66,7 +66,7 @@ public class TGTrayMenu {
 			this.exit.setText(TuxGuitar.getProperty("file.exit"));
 		}
 	}
-	
+
 	public void loadIcons(){
 		if(this.menu != null && !this.menu.isDisposed()){
 			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconStop()).getHandle());
@@ -77,7 +77,7 @@ public class TGTrayMenu {
 			}
 		}
 	}
-	
+
 	public void show(){
 		if(this.menu != null && !this.menu.isDisposed()){
 			this.loadProperties();
@@ -85,11 +85,11 @@ public class TGTrayMenu {
 			this.menu.setVisible(true);
 		}
 	}
-	
+
 	public void dispose(){
 		if(this.menu != null && !this.menu.isDisposed()){
 			this.menu.dispose();
 		}
 	}
-	
+
 }

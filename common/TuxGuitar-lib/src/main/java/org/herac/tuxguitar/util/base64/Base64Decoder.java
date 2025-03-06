@@ -4,21 +4,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class Base64Decoder {
-	
+
 	private static final int BUFFER_SIZE = 1024;
-	
+
 	private static int get1(byte buf[], int off) {
 		return ((buf[off] & 0x3f) << 2) | ((buf[off + 1] & 0x30) >>> 4);
 	}
-	
+
 	private static int get2(byte buf[], int off) {
 		return ((buf[off + 1] & 0x0f) << 4) | ((buf[off + 2] & 0x3c) >>> 2);
 	}
-	
+
 	private static int get3(byte buf[], int off) {
 		return ((buf[off + 2] & 0x03) << 6) | (buf[off + 3] & 0x3f);
 	}
-	
+
 	private static int check(int ch) {
 		if ((ch >= 'A') && (ch <= 'Z')) {
 			return ch - 'A';
@@ -39,24 +39,24 @@ public class Base64Decoder {
 			}
 		}
 	}
-	
+
 	public static byte[] decode(byte[] bytes){
 		try{
 			ByteArrayInputStream  in  = new ByteArrayInputStream( bytes );
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			
+
 			byte buffer[] = new byte[BUFFER_SIZE];
 			byte chunk[] = new byte[4];
 			int got = -1;
 			int ready = 0;
-			
+
 			fill: while ((got = in.read(buffer)) > 0) {
 				int skipped = 0;
-				
+
 				while (skipped < got) {
-					
+
 					while (ready < 4) {
-						if (skipped >= got){ 
+						if (skipped >= got){
 							continue fill;
 						}
 						int ch = check(buffer[skipped++]);
@@ -64,16 +64,16 @@ public class Base64Decoder {
 							chunk[ready++] = (byte) ch;
 						}
 					}
-					
+
 					if (chunk[2] == 65) {
 						out.write(get1(chunk, 0));
 						return out.toByteArray();
-					} 
+					}
 					else if (chunk[3] == 65) {
 						out.write(get1(chunk, 0));
 						out.write(get2(chunk, 0));
 						return out.toByteArray();
-					} 
+					}
 					else {
 						out.write(get1(chunk, 0));
 						out.write(get2(chunk, 0));
@@ -86,11 +86,11 @@ public class Base64Decoder {
 				out.flush();
 				return out.toByteArray();
 			}
-			
+
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
-		
+
 		return bytes;
 	}
 }

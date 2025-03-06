@@ -5,7 +5,7 @@ VST_SDK_HOME?=/home/julian/Documents/vst/VST_SDK/VST3_SDK/pluginterfaces/vst2.x/
 ###############################################
 #CXX?=g++
 #RM?=rm -f
-#CFLAGS?=-I$(VST_SDK_HOME) -fPIC -fpermissive 
+#CFLAGS?=-I$(VST_SDK_HOME) -fPIC -fpermissive
 #LDFLAGS?=
 #LDLIBS?=-ldl -lX11 -lrt -lpthread
 #LDPATH?=-L/usr/lib
@@ -19,7 +19,7 @@ VST_SDK_HOME?=/home/julian/Documents/vst/VST_SDK/VST3_SDK/pluginterfaces/vst2.x/
 ###############################################
 #CXX=/usr/bin/i686-w64-mingw32-g++-win32
 #RM?=rm -f
-#CFLAGS?=-I$(VST_SDK_HOME) -fPIC -fpermissive 
+#CFLAGS?=-I$(VST_SDK_HOME) -fPIC -fpermissive
 #LDFLAGS?=-static-libgcc -static-libstdc++
 #LDLIBS?=-static -lws2_32 -lpthread
 #LDPATH?=-L/usr/lib
@@ -46,6 +46,6 @@ all:    $(BINARY)
 
 $(BINARY):	$(OBJECTS)
 	$(CXX) $(LDFLAGS) -o $(BINARY) $(OBJECTS) $(LDPATH) $(LDLIBS)
-	
-clean: 
+
+clean:
 	$(RM) $(OBJECTS) $(BINARY)

@@ -10,29 +10,29 @@ import org.qtjambi.qt.widgets.QDialog;
 import org.qtjambi.qt.widgets.QFontDialog;
 
 public class QTFontChooser implements UIFontChooser {
-	
+
 	private QTAbstractWindow<?> window;
 	private String text;
 	private UIFontModel defaultModel;
-	
+
 	public QTFontChooser(QTAbstractWindow<?> window) {
 		this.window = window;
 	}
-	
+
 	public void choose(final UIFontChooserHandler selectionHandler) {
 		UIFontModel selection = null;
-		
+
 		QFontDialog dlg = new QFontDialog(this.window.getControl());
 		if( this.text != null ) {
 			dlg.setWindowTitle(this.text);
 		}
-		
+
 		QFont defaultFont = null;
 		if( this.defaultModel != null ) {
 			defaultFont = new QTFont(this.defaultModel).getControl();
 			dlg.setCurrentFont(defaultFont);
 		}
-		
+
 		if( dlg.exec() == QDialog.DialogCode.Accepted.value() ) {
 			QFont font = dlg.selectedFont();
 			if( font != null ) {
@@ -47,7 +47,7 @@ public class QTFontChooser implements UIFontChooser {
 		}
 		selectionHandler.onSelectFont(selection);
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}

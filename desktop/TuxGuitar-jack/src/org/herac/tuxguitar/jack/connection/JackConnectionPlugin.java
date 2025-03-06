@@ -9,7 +9,7 @@ import org.herac.tuxguitar.util.plugin.TGPluginException;
 public class JackConnectionPlugin implements TGPlugin{
 
 	private JackConnectionManager jackConnectionManager;
-	
+
 	public JackConnectionManager getJackConnectionManager() {
 		return this.jackConnectionManager;
 	}

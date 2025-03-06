@@ -11,17 +11,17 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.song.models.TGDuration;
 
 public class TGSynthSequencer {
-	
+
 	private static final double SECOND_IN_NANOS = 1000000000.00;
 	private static final double SAMPLE_IN_NANOS = ((TGAudioBuffer.BUFFER_SIZE / 2) * SECOND_IN_NANOS / TGAudioBuffer.SAMPLE_RATE);
-	
+
 	private long length;
 	private long tempoInUsq;
 	private TGSynthModel synth;
 	private List<TGSynthEvent> midiEvents;
 	private BigDecimal tick;
 	private int currentIndex;
-	
+
 	public TGSynthSequencer(TGSynthModel synth, List<TGSynthEvent> midiEvents) {
 		this.synth = synth;
 		this.midiEvents = midiEvents;
@@ -39,7 +39,7 @@ public class TGSynthSequencer {
 	public TGSynthModel getSynth() {
 		return synth;
 	}
-	
+
 	public long getLength() {
 		return length;
 	}
@@ -47,13 +47,13 @@ public class TGSynthSequencer {
 	public boolean isEnded() {
 		return (this.tick.longValue() >= this.length);
 	}
-	
+
 	public void forward() {
 		double tempo = ((60.00 * 1000.00) / (this.getTempoInUsq() / 1000.00));
-		
+
 		this.tick = this.tick.add(new BigDecimal(TGDuration.QUARTER_TIME * (tempo * SAMPLE_IN_NANOS / 60.00) / SECOND_IN_NANOS));
 	}
-	
+
 	public void start() {
 		this.sortEvents();
 		this.tempoInUsq = 60000000 / 120;
@@ -61,14 +61,14 @@ public class TGSynthSequencer {
 		this.tick = new BigDecimal(0);
 		this.length = (!this.midiEvents.isEmpty() ? this.midiEvents.get(this.midiEvents.size() - 1).getTick() : 0);
 	}
-	
+
 	public void dispatchEvents() throws MidiPlayerException {
 		while( this.currentIndex < this.midiEvents.size() && this.midiEvents.get(this.currentIndex).getTick() <= this.tick.longValue() ) {
 			this.midiEvents.get(this.currentIndex ++).process(this);
 			this.waitUntilReady();
 		}
 	}
-	
+
 	private void sortEvents(){
 		Collections.sort(this.midiEvents, new Comparator<TGSynthEvent>() {
 			public int compare(TGSynthEvent e1, TGSynthEvent e2) {
@@ -84,7 +84,7 @@ public class TGSynthSequencer {
 			}
 		});
 	}
-	
+
 	public void waitUntilReady() {
 		while( this.synth.isBusy() ) {
 			Thread.yield();

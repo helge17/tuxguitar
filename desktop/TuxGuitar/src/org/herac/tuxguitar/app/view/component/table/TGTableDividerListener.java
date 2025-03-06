@@ -7,15 +7,15 @@ import org.herac.tuxguitar.ui.resource.UISize;
 import org.herac.tuxguitar.ui.widget.UIControl;
 
 public class TGTableDividerListener implements UIMouseDragListener {
-	
+
 	public static final String LEFT_CONTROL = "leftControl";
 	public static final String RIGHT_CONTROL = "rightControl";
-	
+
 	private TGTable table;
 	private TGTableHeader leftColumn;
 	private TGTableHeader rightColumn;
 	private final boolean atEnd;
-	
+
 	public TGTableDividerListener(TGTable table, TGTableHeader leftColumn, TGTableHeader rightColumn, boolean atEnd) {
 		this.table = table;
 		this.leftColumn = leftColumn;
@@ -25,7 +25,7 @@ public class TGTableDividerListener implements UIMouseDragListener {
 
 	public void onMouseDrag(UIMouseEvent event) {
 		float move = event.getPosition().getX();
-		
+
 		Float leftWidth = this.computeWidth(this.leftColumn.getControl(), move, false);
 		Float rightWidth = this.computeWidth(this.rightColumn.getControl(), -move, atEnd);
 		if( leftWidth != null && rightWidth != null ) {
@@ -34,11 +34,11 @@ public class TGTableDividerListener implements UIMouseDragListener {
 			if (!atEnd) {
 				uiLayout.set(this.rightColumn.getControl(), UITableLayout.MINIMUM_PACKED_WIDTH, rightWidth);
 			}
-			
+
 			this.table.update();
 		}
 	}
-	
+
 	private Float computeWidth(UIControl control, float move, boolean atEnd) {
 		float minWidth;
 		if (atEnd) {
@@ -52,7 +52,7 @@ public class TGTableDividerListener implements UIMouseDragListener {
 			control.computePackedSize(currentPackedSize.getWidth(), currentPackedSize.getHeight());
 			minWidth = computedPackedSize.getWidth();
 		}
-		
+
 		float newWidth = (control.getBounds().getWidth() + move);
 		if( newWidth >= minWidth) {
 			return newWidth;

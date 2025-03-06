@@ -9,12 +9,12 @@ import org.herac.tuxguitar.util.properties.TGPropertiesException;
 import org.herac.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGResourcePropertiesReader extends TGPropertiesBaseHandler implements TGPropertiesReader{
-	
+
 	private TGContext context;
-	
+
 	public TGResourcePropertiesReader(TGContext context, String prefix, String suffix) {
 		super(prefix, suffix);
-		
+
 		this.context = context;
 	}
 

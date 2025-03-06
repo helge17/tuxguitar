@@ -20,64 +20,64 @@ import org.herac.tuxguitar.io.tef2.base.TETimeSignatureChange;
 import org.herac.tuxguitar.io.tef2.base.TETrack;
 
 public class TEInputStream {
-	
+
 	private TESong song;
 	private InputStream stream;
-	
+
 	public TEInputStream(InputStream stream){
 		this.stream = stream;
 	}
-	
+
 	public TESong readSong(){
 		this.song = new TESong();
-		
+
 		this.readInfo();
-		
+
 		this.song.setMeasures((this.readByte() & 0xff) + ((this.readByte() & 0xff) << 8));
-		
+
 		this.readTimeSignature();
-		
+
 		this.skip(15);
 		this.readTempo();
-		
+
 		this.song.setRepeats( (this.readByte() & 0xff) );
-		
+
 		this.skip(5);
 		this.song.setTexts((this.readByte() & 0xff));
-		
+
 		this.skip(5);
 		this.song.setPercussions((this.readByte() & 0xff));
 		this.song.setRhythms((this.readByte() & 0xff));
-		
+
 		this.song.setChords((this.readByte() & 0xff));
-		
+
 		this.skip(1);
 		boolean notes = ((this.readByte() & 0xff) > 0);
-		
+
 		this.skip(1);
 		this.song.setStrings((this.readByte() & 0xff));
-		
+
 		this.song.setTracks((this.readByte() & 0xff) + 1);
-		
+
 		this.skip(14);
 		this.readComponents();
 		this.readRepeats();
 		this.readTexts();
-		
+
 		this.readPercussions();
-		
+
 		this.readChords();
-		
-		
+
+
 		this.readRhythms();
 		this.readNotes(notes);
 		this.readTracks();
-		
+
 		this.close();
-		
+
 		return this.song;
 	}
-	
+
 	private void readInfo(){
 		byte[] info = this.readBytes(200);
 		int offset = 0;
@@ -92,26 +92,26 @@ public class TEInputStream {
 		}
 		this.song.setInfo(new TEInfo(strings[0],strings[1],strings[2]));
 	}
-	
+
 	private void readNotes(boolean notes){
 		if(notes){
 			int length = this.readShort();
 			this.song.getInfo().setNotes( new String(this.readBytes(length),1,(length -1)) );
 		}
 	}
-	
+
 	private void readTempo(){
 		int value = this.readShort();
 		this.song.setTempo(new TETempo(value));
 	}
-	
+
 	private void readTimeSignature(){
 		int numerator = this.readByte();
 		this.skip(1);
 		int denominator = this.readByte();
 		this.song.setTimeSignature(new TETimeSignature(numerator,denominator));
 	}
-	
+
 	private void readRepeats(){
 		for(int i = 0; i < this.song.getRepeats().length; i ++){
 			int data1 = this.readByte();
@@ -119,7 +119,7 @@ public class TEInputStream {
 			this.song.setRepeat(i,new TERepeat(data1,data2));
 		}
 	}
-	
+
 	private void readTexts(){
 		for(int i = 0; i < this.song.getTexts().length; i ++){
 			int length = this.readByte();
@@ -128,17 +128,17 @@ public class TEInputStream {
 			this.skip(1);
 		}
 	}
-	
+
 	private void readChords(){
 		for(int i = 0; i < this.song.getChords().length; i ++){
 			byte[] strings = this.readBytes(14);
 			byte[] name = this.readBytes(16);
-			
+
 			this.song.setChord(i,new TEChord(strings,new String(name)));
 			this.skip(2);
 		}
 	}
-	
+
 	private void readPercussions(){
 		if(this.song.getPercussions().length > 0){
 			for(int i = 0; i < this.song.getPercussions().length; i ++){
@@ -152,7 +152,7 @@ public class TEInputStream {
 			this.skip(this.song.getMeasures());
 		}
 	}
-	
+
 	private void readRhythms(){
 		if(this.song.getRhythms().length > 0){
 			for(int i = 0; i < this.song.getRhythms().length; i ++){
@@ -167,43 +167,43 @@ public class TEInputStream {
 			this.skip(this.song.getMeasures());
 		}
 	}
-	
+
 	private void readTracks(){
 		for(int i = 0; i < this.song.getTracks().length; i ++){
 			int[] strings = new int[this.readByte()];
-			
+
 			this.skip(5);
 			int type = this.readByte();
-			
+
 			this.skip(1);
 			int instrument = this.readByte();
-			
+
 			this.skip(3);
 			int capo = this.readByte();
-			
+
 			this.skip(1);
-			
+
 			int clefType = this.readByte();
 			int clefNumber = this.readByte();
-			
+
 			this.skip(1);
-			
+
 			int pan = this.readByte();
 			int volume = this.readByte();
 			int flags = this.readByte();
-			
+
 			for(int string = 0; string < strings.length; string ++){
 				strings[string] = (this.readByte() & 0xff);
 			}
 			this.skip(12 - strings.length);
-			
+
 			String name = new String(this.readBytes(16));
-			
+
 			this.song.setTrack(i,new TETrack( (type == 98),instrument,capo, clefType, clefNumber, pan, volume, flags, strings, name));
 			this.skip(2);
 		}
 	}
-	
+
 	private void readComponents(){
 		int tsSize = ( (256 * this.song.getTimeSignature().getNumerator()) / this.song.getTimeSignature().getDenominator() );
 		int tsMove = 0;
@@ -212,7 +212,7 @@ public class TEInputStream {
 		int count = this.readShort();
 		for(int i = 0; i < count; i ++){
 			byte[] data = this.readBytes(6);
-			
+
 			int location = ( (data[0] & 0xff) + (256 *  (mData + (data[1] & 0xff))));
 			if( ( location / ( tsSize * this.song.getStrings() ) ) < mIndex ){
 				mData += 256;
@@ -221,10 +221,10 @@ public class TEInputStream {
 			int position = (location  %  tsSize);
 			int string = ( (location / tsSize)  % this.song.getStrings()) ;
 			int measure = ( location / ( tsSize * this.song.getStrings() ) );
-			
+
 			tsMove = (mIndex == measure)?tsMove:0;
 			position -= tsMove;
-			
+
 			if( ((data[2] & 0xff) & 0x1f) > 0  && ((data[2] & 0xff) & 0x1f) <= 25 ){
 				int duration = (data[3] & 0x1f);
 				int dynamic =  ((data[3] & 0xff) >> 5);
@@ -272,10 +272,10 @@ public class TEInputStream {
 			mIndex = measure;
 		}
 	}
-	
+
 	//-----------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------//
-	//-----------------------------------------------------------------------------//	
+	//-----------------------------------------------------------------------------//
 	protected byte[] readBytes(int length){
 		byte[] bytes = new byte[length];
 		try {
@@ -285,7 +285,7 @@ public class TEInputStream {
 		}
 		return bytes;
 	}
-	
+
 	protected int readByte(){
 		try {
 			return this.stream.read();
@@ -294,7 +294,7 @@ public class TEInputStream {
 		}
 		return 0;
 	}
-	
+
 	protected int readShort(){
 		try {
 			byte[] b = new byte[2];
@@ -305,13 +305,13 @@ public class TEInputStream {
 		}
 		return 0;
 	}
-	
+
 	protected void skip(int count){
 		for(int i = 0; i < count; i++){
 			readByte();
 		}
 	}
-	
+
 	protected void close(){
 		try {
 			this.stream.close();

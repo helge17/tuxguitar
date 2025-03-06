@@ -57,7 +57,7 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 		this.fillCount();
 		this.fillOptions();
 	}
-	
+
 	public TGSelectableItem[] createCountValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 100; i++) {
@@ -67,22 +67,22 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public void fillCount() {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createCountValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.measure_paste_dlg_count_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(1), null)));
 	}
-	
+
 	public int findSelectedCount() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.measure_paste_dlg_count_value);
-		
+
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
-	
+
 	public void fillOptions() {
 		this.fillOption(R.id.measure_paste_dlg_options_mode_replace, TRANSFER_TYPE_REPLACE, true);
 		this.fillOption(R.id.measure_paste_dlg_options_mode_insert, TRANSFER_TYPE_INSERT, false);
@@ -93,10 +93,10 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(selected);
 	}
-	
+
 	public int findSelectedMode() {
 		RadioGroup optionsGroup = (RadioGroup) this.getView().findViewById(R.id.measure_paste_dlg_options_group);
-		
+
 		int radioButtonId = optionsGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
 			RadioButton radioButton = (RadioButton) optionsGroup.findViewById(radioButtonId);
@@ -106,7 +106,7 @@ public class TGMeasurePasteDialog extends TGModalFragment {
 		}
 		return 1;
 	}
-	
+
 	public void processAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGPasteMeasureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());

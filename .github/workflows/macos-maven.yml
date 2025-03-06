@@ -39,7 +39,7 @@ jobs:
       with:
         name: Package-MacOS-${{ matrix.os }}
         path: desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app
-    
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     ##- name: Update dependency graph

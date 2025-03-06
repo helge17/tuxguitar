@@ -29,10 +29,10 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class MidiPlayer{
-	
+
 	public static final int MAX_VOLUME = 10;
 	private static final long TIMER_DELAY = 10;
-	
+
 	private TGContext context;
 	private MidiSequencer sequencer;
 	private MidiSynthesizerProxy synthesizerProxy;
@@ -67,7 +67,7 @@ public class MidiPlayer{
 	private TreeMap<Long, TGTempo> tempoMap;	// ordered map of ticks where tempo changes
 	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (ms) where tempo changes, not considering tempo defined by player mode
 	protected TGLock lock;
-	
+
 	private MidiPlayer(TGContext context) {
 		this.context = context;
 		this.lock = new TGLock(context);
@@ -79,19 +79,19 @@ public class MidiPlayer{
 		this.timestampMap = new TreeMap<Long, Long>();
 		this.reset();
 	}
-	
+
 	public void lock() {
 		this.lock.lock();
 	}
-	
+
 	public void unlock() {
 		this.lock.unlock();
 	}
-	
+
 	public void reset(){
 		try {
 			this.lock();
-			
+
 			this.stop();
 			this.tickPosition = this.startTick;
 			this.setChangeTickPosition(false);
@@ -99,11 +99,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void close(){
 		try {
 			this.lock();
-			
+
 			this.closeSequencer();
 			this.closeOutputPort();
 		} catch (MidiPlayerException e) {
@@ -112,11 +112,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void stopSequencer() {
 		try {
 			this.lock();
-			
+
 			if( this.getSequencer().isRunning() ){
 				this.getSequencer().stop();
 			}
@@ -126,11 +126,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void stop(boolean paused) {
 		try {
 			this.lock();
-			
+
 			this.setPaused(paused);
 			this.stopSequencer();
 			this.setRunning(false);
@@ -138,31 +138,31 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void stop() {
 		try {
 			this.lock();
-			
+
 			this.stop(false);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void pause(){
 		try {
 			this.lock();
-			
+
 			this.stop(true);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public synchronized void play() throws MidiPlayerException{
 		try {
 			this.lock();
-			
+
 			final boolean notifyStarted = (!this.isRunning());
 			this.setRunning(true);
 			this.stopSequencer();
@@ -184,7 +184,7 @@ public class MidiPlayer{
 					this.startTick = this.tickPosition;
 				}
 			}
-			
+
 			TGThreadManager.getInstance(this.context).start(new Runnable() {
 				public void run() {
 					runPlayStartWhenReady(notifyStarted);
@@ -197,7 +197,7 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void runPlayStartWhenReady(final boolean notifyStarted) {
 		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
 			public Long process() {
@@ -205,35 +205,35 @@ public class MidiPlayer{
 			}
 		});
 	}
-	
+
 	public boolean runPlayStartWhenReadyProcess(boolean notifyStarted) {
 		try {
 			if(!this.getSynthesizerProxy().isBusy()) {
 				this.runPlayStartProcess(notifyStarted);
-				
+
 				return true;
 			}
 		} catch (Throwable throwable) {
 			this.reset();
-			
+
 			throwable.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public void runPlayStartProcess(boolean notifyStarted) {
 		try {
 			// Start
 			if( notifyStarted ){
 				this.notifyStarted();
 			}
-			
+
 			if( this.getCountDown().isEnabled() ){
 				this.notifyCountDownStarted();
 				this.getCountDown().start();
 				this.notifyCountDownStopped();
 			}
-			
+
 			try {
 				this.lock();
 				if( this.isRunning() ){
@@ -242,22 +242,22 @@ public class MidiPlayer{
 					}
 					this.getSequencer().start();
 				}
-				
+
 				this.tickLength = getSequencer().getTickLength();
 				this.tickPosition = getSequencer().getTickPosition();
 			} finally {
 				this.unlock();
 			}
-			
+
 			// Play loop
 			runPlayLoop();
 		}catch (Throwable throwable) {
 			this.reset();
-			
+
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	public void runPlayLoop() {
 		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
 			public Long process() {
@@ -265,14 +265,14 @@ public class MidiPlayer{
 			}
 		});
 	}
-	
+
 	public boolean runPlayLoopProcess() {
 		try {
 			// Play loop
 			if( this.getSequencer().isRunning() && this.isRunning()) {
 				try {
 					this.lock();
-					
+
 					if( this.isChangeTickPosition()) {
 						this.changeTickPosition();
 					}
@@ -282,18 +282,18 @@ public class MidiPlayer{
 				}
 				return true;
 			}
-			
+
 			else {
 				runPlayEndProcess();
 			}
 		}catch (Throwable throwable) {
 			this.reset();
-			
+
 			throwable.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public void runPlayEndProcess() {
 		try {
 			// Finish
@@ -306,7 +306,7 @@ public class MidiPlayer{
 						this.stop(isPaused());
 					}
 				}
-				
+
 				if(!this.isRunning() ){
 					this.notifyStopped();
 				}
@@ -315,22 +315,22 @@ public class MidiPlayer{
 			}
 		}catch (Throwable throwable) {
 			this.reset();
-			
+
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	private void finish() throws MidiPlayerException{
 		try {
 			this.lock();
-			
+
 			if( this.getMode().isLoop() && (this.selectionEndBeat==null)){
 				this.stopSequencer();
 				this.setTickPosition(TGDuration.QUARTER_TIME);
 				this.getMode().notifyLoop();
 				this.notifyLoop();
 				this.play();
-				
+
 				return;
 			}
 			this.reset();
@@ -338,11 +338,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void updateLoop( boolean force ){
 		try {
 			this.lock();
-			
+
 			if( force || !this.isRunning() ){
 				this.loopSHeader = -1;
 				this.loopEHeader = -1;
@@ -370,7 +370,7 @@ public class MidiPlayer{
 	public void checkDevices() throws Throwable {
 		try {
 			this.lock();
-			
+
 			this.getSequencer().check();
 			if( this.getOutputPort() != null ){
 				this.getOutputPort().check();
@@ -379,21 +379,21 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public int getVolume() {
 		try {
 			this.lock();
-			
+
 			return this.volume;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void setVolume(int volume) {
 		try {
 			this.lock();
-			
+
 			this.volume = volume;
 			if (this.isRunning()) {
 				this.updateChannels();
@@ -404,21 +404,21 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void setRunning(boolean running) {
 		try {
 			this.lock();
-			
+
 			this.running = running;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public boolean isRunning() {
 		try {
 			this.lock();
-			
+
 			return (this.running || this.getSequencer().isRunning());
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
@@ -427,79 +427,79 @@ public class MidiPlayer{
 		}
 		return false;
 	}
-	
+
 	private boolean isPaused() {
 		try {
 			this.lock();
-			
+
 			return this.paused;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	private void setPaused(boolean paused) {
 		try {
 			this.lock();
-			
+
 			this.paused = paused;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	protected boolean isChangeTickPosition() {
 		try {
 			this.lock();
-			
+
 			return this.changeTickPosition;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	private void setChangeTickPosition(boolean changeTickPosition) {
 		try {
 			this.lock();
-			
+
 			this.changeTickPosition = changeTickPosition;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void setTickPosition(long position) {
 		try {
 			this.lock();
-			
+
 			this.tickPosition = position;
 			this.setChangeTickPosition(true);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public long getTickPosition() {
 		try {
 			this.lock();
-			
+
 			return this.tickPosition;
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public TGTempo getCurrentTempo() {
 		try {
 			this.lock();
 			Map.Entry<Long, TGTempo> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
-			
+
 			return lastTempo.getValue();
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	// does not consider tempo alteration defined in player mode
 	public long getCurrentTimestamp() {
 		try {
@@ -512,8 +512,8 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
-	
+
+
 	protected void changeTickPosition(){
 		try {
 			this.lock();
@@ -534,11 +534,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void addSequence() {
 		try{
 			this.lock();
-			
+
 			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
 			midiSequenceParser.setTempoPercent(getMode().getCurrentPercent());
 			if (this.selectionEndBeat!=null) {
@@ -560,11 +560,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void resetChannels() {
 		try {
 			this.lock();
-			
+
 			this.closeChannels();
 			this.updateChannels();
 		} catch (MidiPlayerException e) {
@@ -573,16 +573,16 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void closeChannels() throws MidiPlayerException{
 		try {
 			this.lock();
-			
+
 			// Remove all channels.
 			Iterator<Integer> iterator = getChannelRouter().getMidiChannelIds().iterator();
 			while( iterator.hasNext() ){
 				int channelId = ((Integer) iterator.next()).intValue();
-				
+
 				this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
 				this.getChannelRouter().removeMidiChannel(channelId);
 			}
@@ -590,17 +590,17 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void updateChannels() throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			// Remove unused channels.
 			List<Integer> oldChannelIds = getChannelRouter().getMidiChannelIds();
 			Iterator<Integer> iterator = oldChannelIds.iterator();
 			while( iterator.hasNext() ){
 				int channelId = ((Integer) iterator.next()).intValue();
-				
+
 				boolean removableChannel = ( this.getSongManager().getChannel(getSong(), channelId) == null );
 				if(!removableChannel ){
 					MidiChannel midiChannel = getChannelRouter().getMidiChannel(channelId);
@@ -608,13 +608,13 @@ public class MidiPlayer{
 						removableChannel = (!this.getSynthesizerProxy().isChannelOpen(midiChannel));
 					}
 				}
-				
+
 				if( removableChannel ){
 					this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
 					this.getChannelRouter().removeMidiChannel(channelId);
 				}
 			}
-			
+
 			// Add channels
 			List<Integer> newChannelIds = getChannelRouter().getMidiChannelIds();
 			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
@@ -627,7 +627,7 @@ public class MidiPlayer{
 					}
 				}
 			}
-			
+
 			// Update channels
 			tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
@@ -637,11 +637,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void updateChannel(TGChannel channel) {
 		try {
 			this.lock();
-			
+
 			this.updateParameters(channel);
 			this.updateProgram(channel);
 			this.updateController(channel);
@@ -650,28 +650,28 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	private void updateParameters(TGChannel tgChannel) {
 		try {
 			this.lock();
 			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
-			
+
 			Iterator<TGChannelParameter> parameters = tgChannel.getParameters();
 			while( parameters.hasNext() ){
 				TGChannelParameter tgChannelParameter = (TGChannelParameter) parameters.next();
 				this.updateParameter(tgChannel, tgChannelParameter.getKey(), tgChannelParameter.getValue());
 			}
-			
+
 			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	private void updateParameter(TGChannel tgChannel, String key, String value){
 		try {
 			this.lock();
-			
+
 			getOutputTransmitter().sendParameter(tgChannel.getChannelId(), key, value);
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
@@ -679,21 +679,21 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	private void updateProgram(TGChannel channel) {
 		try {
 			this.lock();
-			
+
 			this.updateProgram(channel.getChannelId(), channel.getBank(), channel.getProgram());
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	private void updateProgram(int channelId, int bank, int program) {
 		try {
 			this.lock();
-			
+
 			if( bank >= 0 && bank <= 128 ){
 				getOutputTransmitter().sendControlChange(channelId, MidiControllers.BANK_SELECT, bank);
 			}
@@ -706,28 +706,28 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	private void updateController(TGChannel channel) {
 		try{
 			this.lock();
-			
+
 			int volume = (int)((this.getVolume() / 10.00) * channel.getVolume());
 			int balance = channel.getBalance();
 			int chorus = channel.getChorus();
 			int reverb = channel.getReverb();
 			int phaser = channel.getPhaser();
 			int tremolo = channel.getTremolo();
-			
+
 			updateController(channel.getChannelId(),volume,balance,chorus,reverb,phaser,tremolo,127);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	private void updateController(int channelId, int volume, int balance, int chorus, int reverb, int phaser, int tremolo, int expression) {
 		try{
 			this.lock();
-			
+
 			getOutputTransmitter().sendControlChange(channelId,MidiControllers.VOLUME,volume);
 			getOutputTransmitter().sendControlChange(channelId,MidiControllers.BALANCE,balance);
 			getOutputTransmitter().sendControlChange(channelId,MidiControllers.CHORUS,chorus);
@@ -741,11 +741,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	private void updateDefaultControllers(TGChannel tgChannel){
 		try {
 			this.lock();
-			
+
 			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_MSB,0);
 			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.RPN_LSB,0);
 			getOutputTransmitter().sendControlChange(tgChannel.getChannelId(),MidiControllers.DATA_ENTRY_MSB,12);
@@ -756,30 +756,30 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-		
+
 	public void updateTracks() {
 		try{
 			this.lock();
-			
+
 			this.anySolo = false;
-			
+
 			Iterator<TGTrack> tracksIt = this.getSong().getTracks();
 			while( tracksIt.hasNext() ){
 				TGTrack track = (TGTrack)tracksIt.next();
 				this.updateTrack(track);
 				this.anySolo = ((!this.anySolo)?track.isSolo():this.anySolo);
 			}
-			
+
 			this.afterUpdate();
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	private void updateTrack(TGTrack track) {
 		try{
 			this.lock();
-			
+
 			this.getSequencer().setMute(track.getNumber(),track.isMute());
 			this.getSequencer().setSolo(track.getNumber(),track.isSolo());
 		}catch (MidiPlayerException e) {
@@ -788,11 +788,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	private void afterUpdate(){
 		try {
 			this.lock();
-			
+
 			this.getSequencer().setSolo(this.infoTrack,this.anySolo);
 			this.getSequencer().setSolo(this.metronomeTrack,(isMetronomeEnabled() && this.anySolo));
 		} catch (MidiPlayerException e) {
@@ -801,15 +801,15 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public boolean isMetronomeEnabled() {
 		return this.metronomeEnabled;
 	}
-	
+
 	public void setMetronomeEnabled(boolean metronomeEnabled) {
 		try {
 			this.lock();
-			
+
 			this.metronomeEnabled = metronomeEnabled;
 			this.getSequencer().setMute(this.metronomeTrack,!isMetronomeEnabled());
 			this.getSequencer().setSolo(this.metronomeTrack,(isMetronomeEnabled() && this.anySolo));
@@ -819,11 +819,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void playBeat(TGBeat beat) {
 		try {
 			this.lock();
-			
+
 			List<TGNote> notes = new ArrayList<TGNote>();
 			for( int v = 0; v < beat.countVoices(); v ++){
 				notes.addAll( beat.getVoice(v).getNotes() );
@@ -833,11 +833,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void playBeat(TGTrack track, List<TGNote> notes) {
 		try {
 			this.lock();
-			
+
 			TGChannel tgChannel = this.getSongManager().getChannel(getSong(), track.getChannelId());
 			if( tgChannel != null ){
 				final int channelId = tgChannel.getChannelId();
@@ -856,7 +856,7 @@ public class MidiPlayer{
 					beat[i][0] = track.getOffset() + (note.getValue() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue());
 					beat[i][1] = note.getVelocity();
 				}
-				
+
 				TGThreadManager.getInstance(this.context).start(new Runnable() {
 					public void run() {
 						MidiPlayer.this.playBeat(channelId, bank, program, volume, balance, chorus, reverb, phaser, tremolo, beat);
@@ -867,31 +867,31 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void playBeat(int channelId, int bank, int program, int volume, int balance, int chorus, int reverb, int phaser, int tremolo, int[][] beat) {
 		this.playBeat(channelId, bank, program, volume, balance, chorus, reverb, phaser, tremolo, beat,500,0);
 	}
-	
+
 	public void playBeat(int channelId, int bank, int program, int volume, int balance, int chorus, int reverb, int phaser, int tremolo, int[][] beat, long duration, int interval) {
 		try {
 			this.updateChannels();
-			
+
 			Object sync = new Object();
-			
+
 			for(int i = 0; i < beat.length; i ++){
 				this.getOutputTransmitter().sendNoteOn(channelId,beat[i][0], beat[i][1], -1, false);
-				
+
 				if( interval > 0 ){
 					synchronized (sync) {
 						sync.wait(interval);
 					}
 				}
 			}
-			
+
 			synchronized (sync) {
 				sync.wait(duration);
 			}
-			
+
 			for(int i = 0; i < beat.length; i ++){
 				this.getOutputTransmitter().sendNoteOff(channelId,beat[i][0], beat[i][1], -1, false);
 			}
@@ -899,11 +899,11 @@ public class MidiPlayer{
 			throwable.printStackTrace();
 		}
 	}
-	
+
 	public int getPercussionChannelId(){
 		try {
 			this.lock();
-			
+
 			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
 				TGChannel tgChannel = (TGChannel) tgChannels.next();
@@ -916,68 +916,68 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public boolean loadSequencer(MidiSequencer sequencer){
 		try {
 			this.lock();
-			
+
 			this.closeSequencer();
 			this.sequencer = sequencer;
 			this.sequencer.open();
 			this.sequencer.setTransmitter( getOutputTransmitter() );
 		} catch(Throwable throwable){
 			this.sequencer = null;
-			
+
 			return false;
 		} finally {
 			this.unlock();
 		}
 		return true;
 	}
-	
+
 	public boolean loadOutputPort(MidiOutputPort port){
 		try {
 			this.lock();
-			
+
 			this.closeOutputPort();
 			this.outputPort = port;
 			this.outputPort.open();
 			this.getSynthesizerProxy().setMidiSynthesizer(this.outputPort.getSynthesizer());
 		} catch(Throwable throwable) {
 			this.outputPort = null;
-			
+
 			return false;
 		} finally {
 			this.unlock();
 		}
 		return true;
 	}
-	
+
 	public void openOutputPort(String key) {
 		try {
 			this.lock();
-			
+
 			this.openOutputPort(key, false);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void openOutputPort(String key, boolean tryFirst) {
 		try {
 			this.lock();
-		
+
 			this.outputPortKey = key;
 			this.openOutputPort(listOutputPorts(),tryFirst);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void openOutputPort(List<MidiOutputPort> ports, boolean tryFirst) {
 		try {
 			this.lock();
-			
+
 			if(this.outputPortKey != null && !this.isOutputPortOpen(this.outputPortKey)){
 				this.closeOutputPort();
 				for(int i = 0; i < ports.size(); i ++){
@@ -998,21 +998,21 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void openSequencer(String key) {
 		try {
 			this.lock();
-			
+
 			this.openSequencer(key, false);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void openSequencer(String key, boolean tryFirst) {
 		try {
 			this.lock();
-			
+
 			this.sequencerKey = key;
 			this.openSequencer(listSequencers(),tryFirst);
 		} catch(Throwable throwable){
@@ -1021,11 +1021,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void openSequencer(List<MidiSequencer> sequencers ,boolean tryFirst) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			if(this.sequencerKey != null && !this.isSequencerOpen(this.sequencerKey)){
 				this.closeSequencer();
 				for(int i = 0; i < sequencers.size(); i ++){
@@ -1037,22 +1037,22 @@ public class MidiPlayer{
 					}
 				}
 			}
-			
+
 			if(getSequencer() instanceof MidiSequencerEmpty && !sequencers.isEmpty() && tryFirst){
 				this.loadSequencer( (MidiSequencer) sequencers.get(0));
 			}
-			
+
 		} catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public List<MidiOutputPort> listOutputPorts() {
 		try {
 			this.lock();
-			
+
 			List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
 			Iterator<MidiOutputPortProvider> it = this.outputPortProviders.iterator();
 			while(it.hasNext()){
@@ -1068,11 +1068,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public List<MidiSequencer> listSequencers(){
 		try {
 			this.lock();
-			
+
 			List<MidiSequencer> sequencers = new ArrayList<MidiSequencer>();
 			Iterator<MidiSequencerProvider> it = this.sequencerProviders.iterator();
 			while(it.hasNext()){
@@ -1088,11 +1088,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void closeSequencer() throws MidiPlayerException{
 		try{
 			this.lock();
-			
+
 			if( this.isRunning()){
 				this.stop();
 			}
@@ -1106,11 +1106,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void closeOutputPort(){
 		try {
 			this.lock();
-			
+
 			if( this.isRunning()){
 				this.stop();
 			}
@@ -1126,11 +1126,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public boolean isSequencerOpen(String key){
 		try {
 			this.lock();
-			
+
 			if( key != null){
 				String currentKey = getSequencer().getKey();
 				if(currentKey == null){
@@ -1143,11 +1143,11 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public boolean isOutputPortOpen(String key){
 		try {
 			this.lock();
-			
+
 			if( key != null && getOutputPort() != null ){
 				String currentKey = getOutputPort().getKey();
 				if(currentKey == null){
@@ -1160,55 +1160,55 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void addOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			this.addOutputPortProvider(provider, this.isTryOpenFistDevice());
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void addOutputPortProvider(MidiOutputPortProvider provider, boolean tryFirst) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			this.outputPortProviders.add(provider);
 			this.openOutputPort(provider.listPorts(),tryFirst);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void addSequencerProvider(MidiSequencerProvider provider) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			this.addSequencerProvider(provider, this.isTryOpenFistDevice());
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void addSequencerProvider(MidiSequencerProvider provider, boolean tryFirst) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			this.sequencerProviders.add(provider);
 			this.openSequencer(provider.listSequencers(), tryFirst);
 		} finally {
 			this.unlock();
 		}
 	}
-	
+
 	public void removeOutputPortProvider(MidiOutputPortProvider provider) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			this.outputPortProviders.remove(provider);
-			
+
 			MidiOutputPort current = getOutputPort();
 			if( current != null ){
 				Iterator<MidiOutputPort> it = provider.listPorts().iterator();
@@ -1224,13 +1224,13 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void removeSequencerProvider(MidiSequencerProvider provider) throws MidiPlayerException {
 		try {
 			this.lock();
-			
+
 			this.sequencerProviders.remove(provider);
-			
+
 			MidiSequencer current = getSequencer();
 			if(!(current instanceof MidiSequencerEmpty) && current != null){
 				Iterator<MidiSequencer> it = provider.listSequencers().iterator();
@@ -1246,55 +1246,55 @@ public class MidiPlayer{
 			this.unlock();
 		}
 	}
-	
+
 	public void addListener(TGEventListener listener){
 		TGEventManager.getInstance(this.context).addListener(MidiPlayerEvent.EVENT_TYPE, listener);
 	}
-	
+
 	public void removeListener(TGEventListener listener){
 		TGEventManager.getInstance(this.context).removeListener(MidiPlayerEvent.EVENT_TYPE, listener);
 	}
-	
+
 	public void notifyStarted(){
 		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STARTED));
 	}
-	
+
 	public void notifyStopped(){
 		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STOPPED));
 	}
-	
+
 	public void notifyCountDownStarted(){
 		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STARTED));
 	}
-	
+
 	public void notifyCountDownStopped(){
 		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_COUNT_DOWN_STOPPED));
 	}
-	
+
 	public void notifyLoop(){
 		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_LOOP));
 	}
-	
+
 	public MidiInstrument[] getInstruments(){
 		return TGMessagesManager.getInstruments();
 	}
-	
+
 	public MidiPercussionKey[] getPercussionKeys(){
 		return TGMessagesManager.getMidiPercussionKeys();
 	}
-	
+
 	public int getLoopSHeader() {
 		return this.loopSHeader;
 	}
-	
+
 	public int getLoopEHeader() {
 		return this.loopEHeader;
 	}
-	
+
 	public long getLoopSPosition() {
 		return this.loopSPosition;
 	}
-	
+
 	public boolean isTryOpenFistDevice() {
 		return tryOpenFistDevice;
 	}
@@ -1302,29 +1302,29 @@ public class MidiPlayer{
 	public void setTryOpenFistDevice(boolean tryOpenFistDevice) {
 		this.tryOpenFistDevice = tryOpenFistDevice;
 	}
-	
+
 	public TGSongManager getSongManager(){
 		return TGDocumentManager.getInstance(this.context).getSongManager();
 	}
-	
+
 	public TGSong getSong(){
 		return TGDocumentManager.getInstance(this.context).getSong();
 	}
-	
+
 	public MidiPlayerMode getMode(){
 		if( this.mode == null){
 			this.mode = new MidiPlayerMode();
 		}
 		return this.mode;
 	}
-	
+
 	public MidiPlayerCountDown getCountDown(){
 		if( this.countDown == null ){
 			this.countDown = new MidiPlayerCountDown(this);
 		}
 		return this.countDown;
 	}
-	
+
 	public MidiTransmitter getOutputTransmitter(){
 		if (this.outputTransmitter == null) {
 			this.outputTransmitter = new MidiTransmitter();
@@ -1332,32 +1332,32 @@ public class MidiPlayer{
 		}
 		return this.outputTransmitter;
 	}
-	
+
 	public MidiOutputPort getOutputPort(){
 		return this.outputPort;
 	}
-	
+
 	public MidiChannelRouter getChannelRouter(){
 		if (this.channelRouter == null) {
 			this.channelRouter = new MidiChannelRouter();
 		}
 		return this.channelRouter;
 	}
-	
+
 	public MidiSynthesizerProxy getSynthesizerProxy(){
 		if (this.synthesizerProxy == null) {
 			this.synthesizerProxy = new MidiSynthesizerProxy();
 		}
 		return this.synthesizerProxy;
 	}
-	
+
 	public MidiSequencer getSequencer(){
 		if (this.sequencer == null) {
 			this.sequencer = new MidiSequencerEmpty();
 		}
 		return this.sequencer;
 	}
-	
+
 	public static MidiPlayer getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, MidiPlayer.class.getName(), new TGSingletonFactory<MidiPlayer>() {
 			public MidiPlayer createInstance(TGContext context) {
@@ -1365,7 +1365,7 @@ public class MidiPlayer{
 			}
 		});
 	}
-	
+
 	public void setSelection(TGBeat start, TGBeat end) {
 		this.isNewSelection = (this.selectionStartBeat!=start || this.selectionEndBeat!=end);
 		this.selectionStartBeat = start;

@@ -17,13 +17,13 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 import org.herac.tuxguitar.util.TGContext;
 
 public class MidiPortProviderImpl implements MidiOutputPortProvider{
-	
+
 	private TGContext context;
-	
+
 	public MidiPortProviderImpl(TGContext context){
 		this.context = context;
 	}
-	
+
 	public List<MidiOutputPort> listPorts() throws MidiPlayerException{
 		try {
 			List<MidiOutputPort> ports = new ArrayList<MidiOutputPort>();
@@ -59,7 +59,7 @@ public class MidiPortProviderImpl implements MidiOutputPortProvider{
 			throw new MidiPlayerException(TuxGuitar.getProperty("jsa.error.unknown"),t);
 		}
 	}
-	
+
 	public void closeAll() {
 		// Not implemented
 	}

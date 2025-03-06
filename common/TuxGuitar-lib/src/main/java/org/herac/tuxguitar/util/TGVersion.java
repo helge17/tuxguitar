@@ -1,19 +1,19 @@
 package org.herac.tuxguitar.util;
 
 public class TGVersion implements Comparable<TGVersion> {
-	
+
 	public static final TGVersion CURRENT = new TGVersion(1,6,6);
-	
+
 	private int major;
 	private int minor;
 	private int revision;
-	
+
 	public TGVersion(int major,int minor, int revision){
 		this.major = major;
 		this.minor = minor;
 		this.revision = revision;
 	}
-	
+
 	public TGVersion(String version) {
 		this.major = 0;
 		this.minor = 0;
@@ -39,26 +39,26 @@ public class TGVersion implements Comparable<TGVersion> {
 			}
 		}
 	}
-	
+
 	public int getMajor() {
 		return this.major;
 	}
-	
+
 	public int getMinor() {
 		return this.minor;
 	}
-	
+
 	public int getRevision() {
 		return this.revision;
 	}
-	
+
 	public boolean isSameVersion(TGVersion version){
 		if( version == null ){
 			return false;
 		}
 		return ( version.getMajor() == getMajor() && version.getMinor() == getMinor() && version.getRevision() == getRevision());
 	}
-	
+
 	public String getVersion(){
 		String version = (getMajor() + "." + getMinor());
 		if( getRevision() > 0 ){
@@ -66,11 +66,11 @@ public class TGVersion implements Comparable<TGVersion> {
 		}
 		return version;
 	}
-	
+
 	public String toString(){
 		return getVersion();
 	}
-	
+
 	public int compareTo(TGVersion version) {
 		if (this.major != version.getMajor()) return (this.major > version.getMajor() ? 1 : -1);
 		if (this.minor != version.getMinor()) return (this.minor > version.getMinor() ? 1 : -1);

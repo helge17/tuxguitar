@@ -12,13 +12,13 @@ public class TGUndoableCloseRepeatController implements TGUndoableActionControll
 
 	public TGUndoableEdit startUndoable(TGContext context, TGActionContext actionContext) {
 		TGMeasureHeader header = (TGMeasureHeader) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-		
+
 		return TGUndoableCloseRepeat.startUndo(context, header);
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
 		int repeatCount = ((Integer) actionContext.getAttribute(TGRepeatCloseAction.ATTRIBUTE_REPEAT_COUNT)).intValue();
-		
+
 		return ((TGUndoableCloseRepeat) undoableEdit).endUndo(repeatCount);
 	}
 }

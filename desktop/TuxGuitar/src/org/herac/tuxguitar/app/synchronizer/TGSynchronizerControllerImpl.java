@@ -9,15 +9,15 @@ import org.herac.tuxguitar.util.TGSynchronizer.TGSynchronizerController;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGSynchronizerControllerImpl implements TGSynchronizerController {
-	
+
 	private TGContext context;
 	private TGApplication application;
-	
+
 	public TGSynchronizerControllerImpl(TGContext context) {
 		this.context = context;
 		this.application = TGApplication.getInstance(context);
 	}
-	
+
 	public void executeLater(final Runnable runnable) {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {

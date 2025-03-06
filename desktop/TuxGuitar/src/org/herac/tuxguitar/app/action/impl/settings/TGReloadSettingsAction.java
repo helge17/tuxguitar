@@ -6,15 +6,15 @@ import org.herac.tuxguitar.editor.action.TGActionBase;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGReloadSettingsAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.system.reload-settings";
-	
+
 	public static final String ATTRIBUTE_FORCE = "force";
-	
+
 	public TGReloadSettingsAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
 		tgActionManager.execute(TGReloadTitleAction.NAME, context);

@@ -11,7 +11,7 @@ public class TGVarAdapter {
 
 	public static void initialize(TGContext context) {
 		Map<String, Object> variables = new HashMap<String, Object>();
-		
+
 		variables.put(TGVarAppName.NAME, new TGVarAppName());
 		variables.put(TGVarAppVersion.NAME, new TGVarAppVersion());
 		variables.put(TGVarFileName.NAME, new TGVarFileName(context));
@@ -24,12 +24,12 @@ public class TGVarAdapter {
 		variables.put(TGUserSharePath.NAME, new TGUserSharePath());
 		variables.put(TGConfigPath.NAME, new TGConfigPath());
 		variables.put(TGPluginConfigPath.NAME, new TGPluginConfigPath());
-		
+
 		List<TGVarColorAppearance> tgVarColorAppearances = TGVarColorAppearance.createVars(context);
 		for(TGVarColorAppearance tgVarColorAppearance : tgVarColorAppearances) {
 			variables.put(tgVarColorAppearance.getName(), tgVarColorAppearance);
 		}
-		
+
 		TGExpressionResolver.getInstance(context).addResolver(new TGExpressionResolver.MapPropertyResolver(variables));
 	}
 }

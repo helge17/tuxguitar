@@ -3,18 +3,18 @@ package org.herac.tuxguitar.player.impl.jsa.message;
 import javax.sound.midi.ShortMessage;
 
 public class MidiShortMessage extends ShortMessage{
-	
+
 	public static final int DEFAULT_VOICE = -1;
 	public static final boolean DEFAULT_BEND_MODE = false;
-	
+
 	private int channel;
 	private int voice;
 	private boolean bendMode;
-	
+
 	public MidiShortMessage(){
 		super();
 	}
-	
+
 	public int getChannel() {
 		return channel;
 	}

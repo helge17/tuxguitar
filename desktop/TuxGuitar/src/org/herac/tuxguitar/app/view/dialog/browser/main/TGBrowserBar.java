@@ -10,23 +10,23 @@ import org.herac.tuxguitar.event.TGEvent;
 import org.herac.tuxguitar.event.TGEventListener;
 
 public abstract class TGBrowserBar implements TGEventListener{
-	
+
 	private TGBrowserDialog browser;
-	
+
 	public TGBrowserBar(TGBrowserDialog browser){
 		this.browser = browser;
 	}
-	
+
 	public abstract void updateItems();
-	
+
 	public abstract void updateCollections(TGBrowserCollection selection);
-	
+
 	public abstract void loadProperties();
-	
+
 	protected TGBrowserDialog getBrowser(){
 		return this.browser;
 	}
-	
+
 	protected void newCollection(String type) {
 		final TGBrowserFactory factory = TGBrowserManager.getInstance(getBrowser().getContext()).getFactory(type);
 		if( factory != null ){
@@ -36,18 +36,18 @@ public abstract class TGBrowserBar implements TGEventListener{
 						openCollection(addCollection(factory, settings, true));
 					}
 				}
-				
+
 				public void handleError(Throwable throwable) {
 					TGBrowserBar.this.browser.notifyError(throwable);
 				}
 			});
 		}
 	}
-	
+
 	protected TGBrowserCollection addCollection(TGBrowserFactory factory, TGBrowserSettings data){
 		return this.addCollection(factory, data,false);
 	}
-	
+
 	protected TGBrowserCollection addCollection(TGBrowserFactory factory, TGBrowserSettings data, boolean reload){
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(factory.getType());
@@ -58,20 +58,20 @@ public abstract class TGBrowserBar implements TGEventListener{
 		}
 		return collection;
 	}
-	
+
 	protected void openCollection(TGBrowserCollection collection){
 		getBrowser().setCollection(collection);
 		getBrowser().openCollection();
 	}
-	
+
 	protected void removeCollection(TGBrowserCollection collection){
 		getBrowser().removeCollection(collection);
 	}
-	
+
 	protected void closeCollection(){
 		getBrowser().closeCollection();
 	}
-	
+
 	public void processEvent(TGEvent event) {
 		if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
 			this.loadProperties();

@@ -10,33 +10,33 @@ import org.herac.tuxguitar.ui.event.UIFocusLostListenerManager;
 import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTFocusListenerManager implements FocusListener {
-	
+
 	private SWTEventReceiver<?> control;
 	private UIFocusGainedListenerManager focusGainedListener;
 	private UIFocusLostListenerManager focusLostListener;
-	
+
 	public SWTFocusListenerManager(SWTEventReceiver<?> control) {
 		this.control = control;
 		this.focusGainedListener = new UIFocusGainedListenerManager();
 		this.focusLostListener = new UIFocusLostListenerManager();
 	}
-	
+
 	public boolean isEmpty() {
 		return (this.focusGainedListener.isEmpty() && this.focusLostListener.isEmpty());
 	}
-	
+
 	public void addListener(UIFocusGainedListener listener) {
 		this.focusGainedListener.addListener(listener);
 	}
-	
+
 	public void addListener(UIFocusLostListener listener) {
 		this.focusLostListener.addListener(listener);
 	}
-	
+
 	public void removeListener(UIFocusGainedListener listener) {
 		this.focusGainedListener.removeListener(listener);
 	}
-	
+
 	public void removeListener(UIFocusLostListener listener) {
 		this.focusLostListener.removeListener(listener);
 	}

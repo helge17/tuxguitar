@@ -25,16 +25,16 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 	private List<TGMainDrawerTrackListItem> items;
 	private TGProcess updateSelectionProcess;
 	private TGProcess updateTracksProcess;
-	
+
 	public TGMainDrawerTrackListAdapter(TGMainDrawer mainDrawer) {
 		super(mainDrawer);
-		
+
 		this.items = new ArrayList<TGMainDrawerTrackListItem>();
 		this.eventListener = new TGMainDrawerTrackListListener(this);
 		this.createSyncProcesses();
 		this.processUpdateSelection();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return this.items.size();
@@ -51,7 +51,7 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TGMainDrawerTrackListItem item = (TGMainDrawerTrackListItem) this.getItem(position);
-		
+
 		View view = (convertView != null ? convertView : getLayoutInflater().inflate(R.layout.view_main_drawer_check_item, parent, false));
 		view.setOnClickListener(getMainDrawer().getActionHandler().createGoToTrackAction(item.getTrack()));
 		view.setOnLongClickListener(getMainDrawer().getActionHandler().createGoToTrackWithSmartMenuAction(item.getTrack()));
@@ -59,10 +59,10 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		CheckedTextView checkedTextView = (CheckedTextView) view.findViewById(R.id.main_drawer_check_item);
 		checkedTextView.setText(item.getLabel());
 		checkedTextView.setChecked(Boolean.TRUE.equals(item.getSelected()));
-		
+
 		return view;
 	}
-	
+
 	private boolean isUpdateRequired() {
 		TGSong song = TGDocumentManager.getInstance(getMainDrawer().findContext()).getSong();
 		if( song != null ) {
@@ -76,17 +76,17 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 				if( track == null || item == null ) {
 					return true;
 				}
-				
+
 				// Order changed
 				if(!track.equals(item.getTrack())) {
 					return true;
 				}
-				
+
 				// Name changed
 				if(!track.getName().equals(item.getLabel())) {
 					return true;
 				}
-				
+
 				// Selection changed
 				if(!Boolean.valueOf(this.isSelected(track)).equals(item.getSelected())) {
 					return true;
@@ -95,20 +95,20 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 		}
 		return false;
 	}
-	
+
 	private boolean isSelected(TGTrack track) {
 		return (this.selection != null && track != null && this.selection.equals(track) );
 	}
-	
+
 	private void updateTrackItems() {
 		this.items.clear();
-		
+
 		TGSong song = TGDocumentManager.getInstance(getMainDrawer().findContext()).getSong();
 		if( song != null ) {
 			Iterator<TGTrack> tracks = song.getTracks();
 			while(tracks.hasNext()) {
 				TGTrack track = tracks.next();
-				
+
 				TGMainDrawerTrackListItem item = new TGMainDrawerTrackListItem();
 				item.setTrack(track);
 				item.setLabel(track.getName());
@@ -117,45 +117,45 @@ public class TGMainDrawerTrackListAdapter extends TGMainDrawerListAdapter {
 			}
 		}
 	}
-	
+
 	private void updateSelection() {
 		this.selection = TGSongViewController.getInstance(getMainDrawer().findContext()).getCaret().getTrack();
 		if( this.isUpdateRequired() ) {
 			this.updateTracks();
 		}
 	}
-	
+
 	private void updateTracks() {
 		this.updateTrackItems();
 		this.notifyDataSetChanged();
 	}
-	
+
 	private void createSyncProcesses() {
 		this.updateSelectionProcess = new TGSyncProcessLocked(this.getMainDrawer().findContext(), new Runnable() {
 			public void run() {
 				TGMainDrawerTrackListAdapter.this.updateSelection();
 			}
 		});
-		
+
 		this.updateTracksProcess = new TGSyncProcessLocked(this.getMainDrawer().findContext(), new Runnable() {
 			public void run() {
 				TGMainDrawerTrackListAdapter.this.updateTracks();
 			}
 		});
 	}
-	
+
 	public void processUpdateSelection() {
 		this.updateSelectionProcess.process();
 	}
-	
+
 	public void processUpdateTracks() {
 		this.updateTracksProcess.process();
 	}
-	
+
 	public void attachListeners() {
 		TGEditorManager.getInstance(getMainDrawer().findContext()).addUpdateListener(this.eventListener);
 	}
-	
+
 	public void detachListeners() {
 		TGEditorManager.getInstance(getMainDrawer().findContext()).removeUpdateListener(this.eventListener);
 	}

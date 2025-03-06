@@ -41,9 +41,9 @@ public class TGConfigKeys {
 	public static final String FONT_MAINTOOLBAR_TIMESTAMP = "font.main-toolbar.timestamp";
 	public static final String COLOR_FOREGROUND = "color.foreground";
 	public static final String COLOR_BACKGROUND = "color.background";
-	
+
 	public static final String COLOR_BACKGROUND_PLAYING = "color.background.playing";
-	
+
 	public static final String COLOR_LINE = "color.line";
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
 	public static final String COLOR_TAB_NOTE = "color.tab.note";

@@ -12,25 +12,25 @@ import javax.sound.sampled.Control.Type;
 
 
 public abstract class TGAbstractLine implements Line {
-	
+
 	private boolean open;
 	private Info info;
 	private Control[] controls;
 	private List<LineListener> listeners;
-	
+
 	public TGAbstractLine(Info info) {
 		this.info = info;
 		this.listeners = new ArrayList<LineListener>();
 	}
-	
+
 	public Info getLineInfo() {
 		return this.info;
 	}
-	
+
 	public void open() throws LineUnavailableException {
 		this.open = true;
 	}
-	
+
 	public void close() {
 		this.open = false;
 	}
@@ -42,11 +42,11 @@ public abstract class TGAbstractLine implements Line {
 	public void getControls(Control[] controls) {
 		this.controls = controls;
 	}
-	
+
 	public Control[] getControls() {
 		return this.controls;
 	}
-	
+
 	public Control getControl(Type type) {
 		if( this.controls != null ) {
 			for(Control control : this.controls) {
@@ -57,11 +57,11 @@ public abstract class TGAbstractLine implements Line {
 		}
 		return null;
 	}
-	
+
 	public boolean isControlSupported(Type type) {
 		return (this.getControl(type) != null);
 	}
-	
+
 	public void addLineListener(LineListener listener) {
 		if(!this.listeners.contains(listener)) {
 			this.listeners.add(listener);

@@ -21,16 +21,16 @@ import org.herac.tuxguitar.ui.widget.UIWindow;
 import org.herac.tuxguitar.util.TGException;
 
 public class TGDocumentationDialog {
-	
+
 	private static final String RESOURCE_PATH = "help";
 	private static final String TEMPORAL_PATH = System.getProperty("java.io.tmpdir") + File.separator + "tuxguitar" + "-" + System.getProperty("user.name");
-	
+
 	private TGViewContext context;
-	
+
 	public TGDocumentationDialog(TGViewContext context) {
 		this.context = context;
 	}
-	
+
 	public void show() {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -38,7 +38,7 @@ public class TGDocumentationDialog {
 		UIBrowser browser = null;
 		boolean isEmbeddedBrowserAvailable;
 		URL url = null;
-		
+
 		try {
 			url = getIndexUrl();
 		} catch (Throwable throwable ) {
@@ -57,11 +57,11 @@ public class TGDocumentationDialog {
 			throwable.printStackTrace();
 			isEmbeddedBrowserAvailable = false;
 		}
-		
+
 		if (isEmbeddedBrowserAvailable) {
 			// display in dialog
 			final UITableLayout dialogLayout = new UITableLayout();
-			
+
 			dialog.setLayout(dialogLayout);
 			dialog.setText(TuxGuitar.getProperty("help.doc"));
 			dialog.setBounds(new UIRectangle(new UISize(820f, 660f)));
@@ -72,7 +72,7 @@ public class TGDocumentationDialog {
 			TGApplication.getInstance(this.context.getContext()).getApplication().openUrl(url);
 		}
 	}
-	
+
 	private URL getIndexUrl() throws Throwable{
 		URL url = TGResourceManager.getInstance(this.context.getContext()).getResource(RESOURCE_PATH + "/index.html");
 		if( url != null && !TGFileUtils.isLocalFile( url ) ){
@@ -82,7 +82,7 @@ public class TGDocumentationDialog {
 		}
 		return url;
 	}
-	
+
 	private void copyTemporalResources( String dstPath , String resourcePath, String[] resources ) throws Throwable{
 		if( resources != null ){
 			for( int i = 0 ; i < resources.length ; i ++ ){

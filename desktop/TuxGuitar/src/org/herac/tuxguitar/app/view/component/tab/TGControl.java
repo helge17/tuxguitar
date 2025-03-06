@@ -25,19 +25,19 @@ import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGControl {
-	
+
 	private static final int SCROLL_INCREMENT = 50;
-	
+
 	private TGContext context;
 	private UIScrollBarPanel container;
 	private UICanvas canvas;
 	private UIScrollBar hScroll;
 	private UIScrollBar vScroll;
-	
+
 	private Tablature tablature;
 	private int width;
 	private int height;
-	
+
 	private int scrollX;
 	private int scrollY;
 	private int lastScrollX;
@@ -49,20 +49,20 @@ public class TGControl {
 	private float lastScale;
 	private int lastLayoutStyle;
 	private int lastLayoutMode;
-	
+
 	private boolean painting;
 	private boolean wasPlaying;
-	
+
 	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
 		this.initialize(parent);
 	}
-	
+
 	private void initialize(UIContainer parent) {
 		UIFactory factory = TGApplication.getInstance(this.context).getFactory();
 		UITableLayout layout = new UITableLayout(0f);
-		
+
 		this.container = factory.createScrollBarPanel(parent, true, true, false);
 		this.container.setLayout(layout);
 		this.container.addFocusGainedListener(new UIFocusGainedListener() {
@@ -70,11 +70,11 @@ public class TGControl {
 				TGControl.this.setFocus();
 			}
 		});
-		
+
 		this.canvas = factory.createCanvas(this.container, false);
 		this.hScroll = this.container.getHScroll();
 		this.vScroll = this.container.getVScroll();
-		
+
 		this.canvas.addPaintListener(new TGBufferedPainterListenerLocked(this.context, new TGControlPaintListener(this)));
 		this.canvas.addMouseDownListener(this.tablature.getEditorKit().getMouseKit());
 		this.canvas.addMouseUpListener(this.tablature.getEditorKit().getMouseKit());
@@ -82,33 +82,33 @@ public class TGControl {
 		this.canvas.addMouseExitListener(this.tablature.getEditorKit().getMouseKit());
 		this.canvas.addMouseDragListener(this.tablature.getEditorKit().getMouseKit());
 		this.canvas.addZoomListener(this.tablature.getEditorKit().getMouseKit());
-		
+
 		this.hScroll.setIncrement(SCROLL_INCREMENT);
 		this.hScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGControl.this.redraw();
 			}
 		});
-		
+
 		this.vScroll.setIncrement(SCROLL_INCREMENT);
 		this.vScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGControl.this.redraw();
 			}
 		});
-		
+
 		KeyBindingActionManager.getInstance(this.context).appendListenersTo(this.canvas);
-		
+
 		this.canvas.setPopupMenu(TuxGuitar.getInstance().getItemManager().getPopupMenu());
 		this.canvas.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				TGControl.this.canvas.setPopupMenu(null);
 			}
 		});
-		
+
 		layout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 	}
-	
+
 	public void paintTablature(UIPainter painter) {
 		boolean isPlaying;
 		boolean moved = false;
@@ -120,7 +120,7 @@ public class TGControl {
 			float canvasWidth = this.canvas.getBounds().getWidth();
 			float canvasHeight = this.canvas.getBounds().getHeight();
 			float scale = this.tablature.getScale();
-			
+
 			// determine position in tab (which part shall be displayed): scroll x, y
 			if (isPlaying) {
 				playedMeasure = TGTransport.getInstance(this.context).getCache().getPlayMeasure();
@@ -169,7 +169,7 @@ public class TGControl {
 					this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
 				}
 			}
-			
+
 			// highlight played beat
 			if ( (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())
 					&& !playedMeasure.isOutOfBounds() ){
@@ -179,7 +179,7 @@ public class TGControl {
 					this.lastPaintedPLayedBeat = playedBeat;
 				}
 			}
-			
+
 			// update scrollbars
 			this.updateScrollBars();
 			if (wasPlaying || moved) {
@@ -200,13 +200,13 @@ public class TGControl {
 			this.lastLayoutStyle = this.tablature.getViewLayout().getStyle();
 			this.lastLayoutMode = this.tablature.getViewLayout().getMode();
 			this.wasPlaying = isPlaying;
-			
+
 		}catch(Throwable throwable){
 			throwable.printStackTrace();
 		}
 		this.painting = false;
 	}
-	
+
 	/* Warning: only update scrollbars if at least one attribute has changed
 	 * else it creates a significant performance issue in Linux/SWT configuration:
 	 * - updating scrollbar generates a SWT event to repaint this.canvas, because scrollbars are transparent
@@ -218,7 +218,7 @@ public class TGControl {
 	 */
 	private void updateScrollBars(){
 		UIRectangle bounds = this.canvas.getBounds();
-		
+
 		int hMax = Math.max(Math.round(this.width - bounds.getWidth()), 0);
 		int hThumb = Math.round(bounds.getWidth());
 		if (hMax>0) {
@@ -258,7 +258,7 @@ public class TGControl {
 			int marginWidth = Math.round(this.tablature.getViewLayout().getFirstMeasureSpacing());
 			int marginHeight = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
 			boolean playMode = MidiPlayer.getInstance(this.context).isRunning();
-			
+
 			Integer hScrollValue = this.computeScrollValue(this.scrollX, mX, mWidth, marginWidth, Math.round(this.canvas.getBounds().getWidth()), this.width, playMode);
 			if( hScrollValue != null ) {
 				this.scrollX = hScrollValue;
@@ -269,45 +269,45 @@ public class TGControl {
 			}
 		}
 	}
-	
+
 	private Integer computeScrollValue(int scrollPos, int mPos, int mSize, int mMargin, int areaSize, int fullSize, boolean playMode) {
 		Integer value = null;
-		
+
 		// when position is less than scroll
 		if( mPos < 0 && (areaSize >= (mSize + mMargin) || ((mPos + mSize - mMargin) <= 0))) {
 			value = ((scrollPos + mPos) - mMargin);
 		}
-		
+
 		// when position is greater than scroll
-		else if((mPos + mSize) > areaSize && (areaSize >= (mSize + mMargin) || mPos > areaSize)){			
+		else if((mPos + mSize) > areaSize && (areaSize >= (mSize + mMargin) || mPos > areaSize)){
 			value = (scrollPos + mPos + mSize + mMargin - areaSize);
-			
+
 			if( playMode ) {
 				value += Math.min((fullSize - (scrollPos + mPos + mSize + mMargin)), (areaSize - mSize - (mMargin * 2)));
 			}
 		}
 		return (value != null ? Math.max(value, 0) : null);
 	}
-	
+
 	public void setFocus() {
 		if(!this.isDisposed() ){
 			this.canvas.setFocus();
 		}
 	}
-	
+
 	public void redraw(){
 		if(!this.isDisposed() ){
 			this.painting = true;
 			this.canvas.redraw();
 		}
 	}
-	
+
 	public void redrawPlayingMode() {
 		if(!this.isDisposed() && !this.painting && MidiPlayer.getInstance(this.context).isRunning()) {
 			this.redraw();
 		}
 	}
-	
+
 	public UICanvas getCanvas() {
 		return canvas;
 	}
@@ -315,5 +315,5 @@ public class TGControl {
 	public boolean isDisposed() {
 		return (this.container == null || this.container.isDisposed() || this.canvas == null || this.canvas.isDisposed());
 	}
-	
+
 }

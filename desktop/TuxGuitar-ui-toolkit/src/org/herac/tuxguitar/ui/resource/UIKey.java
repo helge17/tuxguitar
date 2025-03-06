@@ -39,22 +39,22 @@ public class UIKey {
 	public static final UIKey NUMPAD_ENTER = new UIKey("NumEnter");
 
 	private String code;
-	
+
 	public UIKey(String code) {
 		this.code = code;
 	}
-	
+
 	public String toString() {
 		return this.code;
 	}
-	
+
 	public boolean equals(Object o) {
 		if( o instanceof UIKey ) {
 			return (this.hashCode() == o.hashCode());
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		if( this.code != null ) {
 			return (UIKey.class.getName() + "-" + this.code).hashCode();

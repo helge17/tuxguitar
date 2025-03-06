@@ -12,19 +12,19 @@ import org.herac.tuxguitar.thread.TGThreadManager;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGClientProcess {
-	
+
 	private TGContext context;
 	private Process process;
-	
+
 	public TGClientProcess(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void startSession(TGClientStarter starter, Integer sessionId, Integer serverPort) throws TGRemoteException {
 		this.startProcess(starter, sessionId, serverPort);
 		this.startIOStreamThread();
 	}
-	
+
 	public void startProcess(TGClientStarter starter, Integer sessionId, Integer serverPort) throws TGRemoteException {
 		try {
 			String workingDir = starter.getWorkingDir();
@@ -36,7 +36,7 @@ public class TGClientProcess {
 			throw new TGRemoteException(e);
 		}
 	}
-	
+
 	public void startIOStreamThread() {
 		TGThreadManager.getInstance(this.context).start(new Runnable() {
 			public void run() {
@@ -44,7 +44,7 @@ public class TGClientProcess {
 			}
 		});
 	}
-	
+
 	public void startIOStreamLoop() {
 		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
 			public Long process() {
@@ -52,7 +52,7 @@ public class TGClientProcess {
 					if( TGClientProcess.this.isAlive() ) {
 						printIOStream(System.out, TGClientProcess.this.process.getInputStream());
 						printIOStream(System.err, TGClientProcess.this.process.getErrorStream());
-						
+
 						return 250l;
 					}
 				} catch (Exception e) {
@@ -62,11 +62,11 @@ public class TGClientProcess {
 			}
 		});
 	}
-	
+
 	public void printIOStream(PrintStream printStream, InputStream inputStream) {
 		try {
 			String line = null;
-			
+
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			while(reader.ready() && (line = reader.readLine()) != null) {
 				printStream.println(line);
@@ -75,7 +75,7 @@ public class TGClientProcess {
 			e.printStackTrace(printStream);
 		}
 	}
-	
+
 	public boolean isAlive() {
 		return (this.process != null && this.process.isAlive());
 	}

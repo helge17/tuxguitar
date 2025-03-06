@@ -10,13 +10,13 @@ import org.herac.tuxguitar.ui.widget.UISelectItem;
 import io.qt.widgets.QComboBox;
 
 public class QTDropDownSelect<T> extends QTWidget<QComboBox> implements UIDropDownSelect<T> {
-	
+
 	private List<UISelectItem<T>> items;
 	private QTSelectionListenerManager selectionListener;
-	
+
 	public QTDropDownSelect(QTContainer parent) {
 		super(new QComboBox(parent.getContainerControl()), parent);
-		
+
 		this.selectionListener = new QTSelectionListenerManager(this);
 		this.items = new ArrayList<UISelectItem<T>>();
 	}
@@ -25,11 +25,11 @@ public class QTDropDownSelect<T> extends QTWidget<QComboBox> implements UIDropDo
 		UISelectItem<T> selectedItem = this.getSelectedItem();
 		return (selectedItem != null ? selectedItem.getValue() : null);
 	}
-	
+
 	public void setSelectedValue(T value) {
 		this.setSelectedItem(new UISelectItem<T>(null, value));
 	}
-	
+
 	public UISelectItem<T> getSelectedItem() {
 		int index = this.getControl().currentIndex();
 		return (index >= 0 && index < this.items.size() ? this.items.get(index) : null);
@@ -44,7 +44,7 @@ public class QTDropDownSelect<T> extends QTWidget<QComboBox> implements UIDropDo
 		this.items.add(item);
 		this.getControl().addItem(item.getText());
 	}
-	
+
 	public void removeItem(UISelectItem<T> item) {
 		int index = (item != null ? this.items.indexOf(item) : -1);
 		if( index >= 0 && index < this.items.size() ) {
@@ -52,16 +52,16 @@ public class QTDropDownSelect<T> extends QTWidget<QComboBox> implements UIDropDo
 			this.items.remove(item);
 		}
 	}
-	
+
 	public void removeItems() {
 		this.items.clear();
 		this.getControl().clear();
 	}
-	
+
 	public int getItemCount() {
 		return this.items.size();
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().currentIndexChanged.connect(this.selectionListener, QTSelectionListenerManager.SIGNAL_METHOD);

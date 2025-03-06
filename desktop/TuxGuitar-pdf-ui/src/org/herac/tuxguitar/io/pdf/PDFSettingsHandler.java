@@ -20,23 +20,23 @@ import org.herac.tuxguitar.util.TGContext;
 public class PDFSettingsHandler implements TGPersistenceSettingsHandler, TGPluginSettingsHandler{
 
 	private TGContext context;
-	
+
 	public PDFSettingsHandler(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public TGFileFormat getFileFormat() {
 		return PDFSongWriter.FILE_FORMAT;
 	}
-	
+
 	public TGPersistenceSettingsMode getMode() {
 		return TGPersistenceSettingsMode.WRITE;
 	}
-	
+
 	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
 		TGLayoutStyles tgLayoutStyles = new PDFLayoutStylesUI(TGConfigManager.getInstance(this.context), this.context);
 		context.setAttribute(TGLayoutStyles.class.getName(), tgLayoutStyles);
-		
+
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG));
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGPrintSettingsDialogController());

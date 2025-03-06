@@ -65,7 +65,7 @@ public class TEPosition {
 
             stringOfComponentInMeasure -= track.getStringCount();
         }
-        
+
         return new TEPosition(measureOfComponent, positionOfComponentInMeasure, stringOfComponentInMeasure, trackIndex);
     }
 
@@ -87,7 +87,7 @@ public class TEPosition {
 
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        
+
         String measureStr = "Measure: " + Integer.toString(this.measure) + "\n";
         String positionStr = "Pos in Measure: " + Integer.toString(this.positionInMeasure) + "\n";
         String stringStr = "String: " + Integer.toString(this.string) + "\n";

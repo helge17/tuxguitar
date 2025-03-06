@@ -19,22 +19,22 @@ import org.herac.tuxguitar.io.base.TGFileFormat;
 public class TGBrowserActionHandler {
 
 	private TGBrowserView browser;
-	
+
 	public TGBrowserActionHandler(TGBrowserView browser) {
 		this.browser = browser;
 	}
-	
+
 	public TGActionProcessorListener createAction(String actionId) {
 		return new TGActionProcessorListener(this.browser.findContext(), actionId);
 	}
-	
+
 	public TGActionProcessorListener createBrowserAction(String actionId) {
 		TGBrowserSession tgBrowserSession = TGBrowserManager.getInstance(this.browser.findContext()).getSession();
 		TGActionProcessorListener tgActionProcessor = this.createAction(actionId);
 		tgActionProcessor.setAttribute(TGBrowserSession.class.getName(), tgBrowserSession);
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createBrowserElementAction(String actionId, TGBrowserElement element) {
 		TGActionProcessorListener tgActionProcessor = this.createBrowserAction(actionId);
 		tgActionProcessor.setAttribute(TGBrowserElement.class.getName(), element);
@@ -58,24 +58,24 @@ public class TGBrowserActionHandler {
 		tgActionProcessor.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, format);
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createBrowserSaveNewElementAction(String elementName, TGFileFormat format) {
 		TGActionProcessorListener tgActionProcessor = this.createBrowserAction(TGBrowserSaveNewElementAction.NAME);
 		tgActionProcessor.setAttribute(TGBrowserSaveElementAction.ATTRIBUTE_FORMAT, format);
 		tgActionProcessor.setAttribute(TGBrowserSaveNewElementAction.ATTRIBUTE_NAME, elementName);
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createOpenSessionAction(TGBrowserCollection collection) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGBrowserOpenSessionAction.NAME);
 		tgActionProcessor.setAttribute(TGBrowserOpenSessionAction.ATTRIBUTE_COLLECTION, collection);
 		return tgActionProcessor;
 	}
-	
+
 	public TGActionProcessorListener createCloseSessionAction() {
 		return this.createAction(TGBrowserCloseSessionAction.NAME);
 	}
-	
+
 	public TGActionProcessorListener createOpenDialogAction(TGDialogController controller) {
 		TGActionProcessorListener tgActionProcessor = this.createAction(TGOpenDialogAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.browser.findActivity());

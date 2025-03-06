@@ -11,13 +11,13 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSetVoiceAutoAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.voice-auto";
-	
+
 	public TGSetVoiceAutoAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGVoiceImpl voice = (TGVoiceImpl) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		if( voice != null ){

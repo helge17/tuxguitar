@@ -1,13 +1,13 @@
 package org.herac.tuxguitar.player.impl.midiport.lv2.jni;
 
 public class LV2ControlPortInfo {
-	
+
 	private String name;
 	private boolean toggled;
 	private float defaultValue;
 	private float minimumValue;
 	private float maximumValue;
-	
+
 	public LV2ControlPortInfo(String name, boolean toggled, float defaultValue, float minimumValue, float maximumValue) {
 		this.name = name;
 		this.toggled = toggled;

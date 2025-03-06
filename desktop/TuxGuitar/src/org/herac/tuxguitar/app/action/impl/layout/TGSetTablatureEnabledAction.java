@@ -7,13 +7,13 @@ import org.herac.tuxguitar.graphics.control.TGLayout;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGSetTablatureEnabledAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.view.layout-set-tablature-enabled";
-	
+
 	public TGSetTablatureEnabledAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGLayout layout = TablatureEditor.getInstance(getContext()).getTablature().getViewLayout();
 		layout.setStyle( ( layout.getStyle() ^ TGLayout.DISPLAY_TABLATURE ) );

@@ -4,10 +4,10 @@ import org.herac.tuxguitar.ui.jfx.widget.JFXToggleButton;
 import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class JFXToolCheckableItem extends JFXToggleButton implements UIToolCheckableItem {
-	
+
 	public JFXToolCheckableItem(JFXToolBar parent) {
 		super(parent);
-		
+
 		this.getControl().setFocusTraversable(false);
 	}
 

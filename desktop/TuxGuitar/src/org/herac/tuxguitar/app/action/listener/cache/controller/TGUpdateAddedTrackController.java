@@ -12,11 +12,11 @@ public class TGUpdateAddedTrackController extends TGUpdateSongController {
 	public TGUpdateAddedTrackController() {
 		super();
 	}
-	
+
 	@Override
 	public void update(final TGContext context, TGActionContext actionContext) {
 		final TGTrack tgTrack = (TGTrack) actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-		
+
 		// Update caret position to new track
 		this.findUpdateBuffer(context, actionContext).doPostUpdate(new Runnable() {
 			public void run() {
@@ -24,7 +24,7 @@ public class TGUpdateAddedTrackController extends TGUpdateSongController {
 				caret.update(tgTrack.getNumber(), caret.getPosition(), 1);
 			}
 		});
-		
+
 		// Call super update.
 		super.update(context, actionContext);
 	}

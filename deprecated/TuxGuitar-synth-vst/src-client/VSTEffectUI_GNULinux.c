@@ -17,11 +17,11 @@ void VSTEffectUI_malloc(VSTEffectHandle *effect)
 {
 	if( effect != NULL ){
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) malloc( sizeof(VSTEffectHandleUI) );
-		
+
 		handle->dpy = XOpenDisplay(NULL);
 		handle->editorOpen = false;
 		handle->editorProcessRunning = false;
-		
+
 		effect->ui = handle;
 	}
 }
@@ -35,7 +35,7 @@ void VSTEffectUI_delete(VSTEffectHandle *effect)
 			handle->dpy = NULL;
 		}
 		free ( handle );
-		
+
 		effect->ui = NULL;
 	}
 }
@@ -54,9 +54,9 @@ void VSTEffectUI_closeEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
-		
+
 		handle->editorOpen = false;
-		
+
 		while(handle->editorProcessRunning == true) {
 			// wait for end...
 		}
@@ -67,7 +67,7 @@ void VSTEffectUI_focusEditor(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->ui != NULL ) {
 		VSTEffectHandleUI *handle = (VSTEffectHandleUI *) effect->ui;
-		
+
 		handle->requestFocus = true;
 	}
 }
@@ -86,19 +86,19 @@ void VSTEffectUI_isEditorAvailable(VSTEffectHandle *effect, bool *value)
 	(*value) = editorAvailable;
 }
 
-void VSTEffectUI_process(VSTEffectHandle *effect) 
+void VSTEffectUI_process(VSTEffectHandle *effect)
 {
 	if( effect != NULL && effect->effect != NULL ) {
 		VSTEffectHandleUI *ui = (VSTEffectHandleUI *) effect->ui;
 		if( ui->editorOpen && !ui->editorProcessRunning ) {
 			ui->editorProcessRunning = true;
-			
+
 			Window win = XCreateSimpleWindow(ui->dpy, DefaultRootWindow(ui->dpy), 0, 0, 300, 300, 0, 0, 0);
-			
+
 			// ------------------------------------------------------------ //
 			Atom wmDeleteMessage = XInternAtom(ui->dpy, "WM_DELETE_WINDOW", false);
 			XSetWMProtocols(ui->dpy, win, &wmDeleteMessage, 1);
-			
+
 			Atom windowTypeProp = XInternAtom(ui->dpy, "_NET_WM_WINDOW_TYPE", False);
 			Atom windowTypeValue = XInternAtom(ui->dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 			XChangeProperty(ui->dpy, win, windowTypeProp, XA_ATOM, 32, PropModeReplace, (unsigned char *)&windowTypeValue, 1);
@@ -115,7 +115,7 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 			if (eRect) {
 				int width = eRect->right - eRect->left;
 				int height = eRect->bottom - eRect->top;
-				
+
 				XSizeHints hHints;
 				hHints.min_width  = width;
 				hHints.min_height  = height;
@@ -131,7 +131,7 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 			XMapWindow(ui->dpy, win);
 			XFlush(ui->dpy);
 			effect->effect->dispatcher (effect->effect, effEditOpen, 0, (VstIntPtr) ui->dpy, (void*) win, 0);
-			
+
 			// ------------------------------------------------------------ //
 			XEvent event;
 			while(ui->editorOpen) {
@@ -148,13 +148,13 @@ void VSTEffectUI_process(VSTEffectHandle *effect)
 					}
 				}
 			}
-			
+
 			// ------------------------------------------------------------ //
 			effect->effect->dispatcher (effect->effect, effEditClose, 0, 0, NULL, 0);
-			
+
 			XDestroyWindow(ui->dpy, win);
 			XFlush(ui->dpy);
-			
+
 			ui->editorProcessRunning = false;
 		} else {
 			usleep(100000);

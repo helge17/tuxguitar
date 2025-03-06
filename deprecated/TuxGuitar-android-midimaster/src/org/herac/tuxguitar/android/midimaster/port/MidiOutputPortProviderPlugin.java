@@ -6,7 +6,7 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
-	
+
 	private static final String MODULE_ID = "tuxguitar-android-midimaster";
 
 	public MidiOutputPortProviderPlugin() {
@@ -28,7 +28,7 @@ public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin
 	public MidiOutputPortProvider createProvider(TGContext context) {
 		return new MidiOutputPortProviderImpl();
 	}
-	
+
 	public String getModuleId() {
 		return MODULE_ID;
 	}

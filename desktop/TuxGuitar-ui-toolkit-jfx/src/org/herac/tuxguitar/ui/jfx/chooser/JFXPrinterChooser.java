@@ -10,11 +10,11 @@ import javafx.print.PrinterJob;
 public class JFXPrinterChooser implements UIPrinterChooser {
 
 	private JFXWindow window;
-	
+
 	public JFXPrinterChooser(JFXWindow window) {
 		this.window = window;
 	}
-	
+
 	public void choose(UIPrinterChooserHandler selectionHandler) {
 		JFXPrinter jfxPrinter = null;
 		PrinterJob printerJob = PrinterJob.createPrinterJob();

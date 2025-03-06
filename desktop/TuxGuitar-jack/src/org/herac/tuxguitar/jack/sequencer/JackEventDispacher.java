@@ -4,11 +4,11 @@ import org.herac.tuxguitar.player.base.MidiPlayerException;
 
 public class JackEventDispacher{
 	private JackSequencer sequencer;
-	
+
 	public JackEventDispacher(JackSequencer sequencer){
 		this.sequencer = sequencer;
 	}
-	
+
 	public void dispatch(JackEvent event) throws MidiPlayerException{
 		if(event.getType() == JackEvent.MIDI_EVENT_NOTEON){
 			this.sequencer.getTransmitter().sendNoteOn(event.getData()[0],event.getData()[1],event.getData()[2],event.getData()[3],(event.getData()[4] == 1));

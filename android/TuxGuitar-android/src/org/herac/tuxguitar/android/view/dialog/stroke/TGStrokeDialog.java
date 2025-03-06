@@ -54,7 +54,7 @@ public class TGStrokeDialog extends TGModalFragment {
 		this.fillDurations();
 		this.initializeDurationsState();
 	}
-	
+
 	public TGSelectableItem[] createDirectionValues() {
 		TGSelectableItem[] selectableItems = new TGSelectableItem[] {
 			new TGSelectableItem(Integer.valueOf( TGStroke.STROKE_NONE ), getString(R.string.stroke_dlg_direction_none)),
@@ -63,18 +63,18 @@ public class TGStrokeDialog extends TGModalFragment {
 		};
 		return selectableItems;
 	}
-	
+
 	public void fillDirection() {
 		TGBeat beat = this.getBeat();
 		int selection = (beat != null ? beat.getStroke().getDirection() : TGStroke.STROKE_NONE);
-		
+
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createDirectionValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.stroke_dlg_direction_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(selection), null)), false);
-		
+
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				updateDurationsState(findSelectedDirection() != TGStroke.STROKE_NONE);
@@ -84,17 +84,17 @@ public class TGStrokeDialog extends TGModalFragment {
 			}
 		});
 	}
-	
+
 	public int findSelectedDirection() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.stroke_dlg_direction_value);
-		
+
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
-	
+
 	public void fillDurations() {
 		TGBeat beat = this.getBeat();
 		int selection = (beat != null && beat.getStroke().getDirection() != TGStroke.STROKE_NONE ? beat.getStroke().getValue() : TGDuration.SIXTEENTH);
-		
+
 		this.fillDuration(R.id.stroke_dlg_duration_4, TGDuration.QUARTER, selection);
 		this.fillDuration(R.id.stroke_dlg_duration_8, TGDuration.EIGHTH, selection);
 		this.fillDuration(R.id.stroke_dlg_duration_16, TGDuration.SIXTEENTH, selection);
@@ -107,7 +107,7 @@ public class TGStrokeDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(value == selection);
 	}
-	
+
 	public int findSelectedDuration() {
 		RadioGroup radioGroup = (RadioGroup) this.getView().findViewById(R.id.stroke_dlg_duration_group);
 		int radioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -119,12 +119,12 @@ public class TGStrokeDialog extends TGModalFragment {
 		}
 		return 0;
 	}
-	
+
 	public void initializeDurationsState() {
 		TGBeat beat = this.getBeat();
 		this.updateDurationsState((beat != null && beat.getStroke().getDirection() != TGStroke.STROKE_NONE));
 	}
-	
+
 	public void updateDurationsState(boolean enabled) {
 		this.updateDurationsState(R.id.stroke_dlg_duration_4, enabled);
 		this.updateDurationsState(R.id.stroke_dlg_duration_8, enabled);
@@ -132,12 +132,12 @@ public class TGStrokeDialog extends TGModalFragment {
 		this.updateDurationsState(R.id.stroke_dlg_duration_32, enabled);
 		this.updateDurationsState(R.id.stroke_dlg_duration_64, enabled);
 	}
-	
+
 	public void updateDurationsState(int id, boolean enabled) {
 		RadioButton radioButton = (RadioButton) this.getView().findViewById(id);
 		radioButton.setEnabled(enabled);
 	}
-	
+
 	public void processAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGChangeStrokeAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, this.getMeasure());

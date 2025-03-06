@@ -11,17 +11,17 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.error.TGErrorManager;
 
 public class TGSynthDialogHandler implements TGChannelSettingsHandler{
-	
+
 	private TGContext context;
-	
+
 	public TGSynthDialogHandler(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public boolean isMidiDeviceSupported(MidiDevice midiDevice) {
 		return (midiDevice instanceof TGSynthPort);
 	}
-	
+
 	public TGChannelSettingsDialog createChannelSettingsDialog(MidiDevice midiDevice, TGChannel channel, TGSong song) {
 		try{
 			if( isMidiDeviceSupported(midiDevice) ){

@@ -3,11 +3,11 @@ package org.herac.tuxguitar.io.gtp;
 import org.herac.tuxguitar.io.base.TGFileFormat;
 
 public class GTPFileFormatVersion {
-	
+
 	private TGFileFormat fileFormat;
 	private String version;
 	private int versionCode;
-	
+
 	public GTPFileFormatVersion(TGFileFormat fileFormat, String version, int versionCode) {
 		this.fileFormat = fileFormat;
 		this.version = version;

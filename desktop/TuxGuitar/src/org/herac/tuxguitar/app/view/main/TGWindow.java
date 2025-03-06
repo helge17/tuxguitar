@@ -31,88 +31,88 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGWindow implements TGEventListener {
-	
+
 	private TGContext context;
 	private TGSyncProcess loadTitleProcess;
 	private TGCursorController cursorController;
 	private TGWindowDivider tableDivider;
-	
+
 	private UIWindow window;
-	
+
 	public TGWindow(TGContext context) {
 		this.context = context;
 		this.createSyncProcesses();
 	}
-	
+
 	public void open() {
 		if( this.window != null ) {
 			this.window.open();
 			this.window.layout();
 		}
 	}
-	
+
 	public void createWindow() {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
-		
+
 		this.window = uiFactory.createWindow();
 		this.window.addCloseListener(new TGActionProcessorListener(this.context, TGDisposeAction.NAME));
-		
+
 		this.createShellComposites(uiFactory);
 		this.createShellListeners();
 		this.loadIcons();
 		this.loadInitialBounds();
 	}
-	
+
 	public TGWindowDivider getTableDivider() {
 		return tableDivider;
 	}
 
-	
+
 	private void createShellComposites(UIFactory uiFactory) {
 		TGConfigManager tgConfig = TGConfigManager.getInstance(this.context);
-		
+
 		TGMainToolBar tgToolBar = TGMainToolBar.getInstance(this.context);
 		tgToolBar.createToolBar(this.window, tgConfig.getBooleanValue(TGConfigKeys.SHOW_MAIN_TOOLBAR));
-		
+
 		UITableLayout topContainerLayout = new UITableLayout(0f);
 		UIPanel topContainer = uiFactory.createPanel(this.window, false);
 		topContainer.setLayout(topContainerLayout);
 		topContainerLayout.set(UITableLayout.IGNORE_INVISIBLE, true);
-		
+
 		TGEditToolBar tgEditToolBar = TGEditToolBar.getInstance(this.context);
 		tgEditToolBar.createToolBar(topContainer, tgConfig.getBooleanValue(TGConfigKeys.SHOW_EDIT_TOOLBAR));
 		topContainerLayout.set(tgEditToolBar.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true, 1, 1, null, null, 0f);
 		topContainerLayout.set(tgEditToolBar.getControl(), UITableLayout.PACKED_HEIGHT, 0f);
-		
+
 		TGTabFolder tgTabFolder = TGTabFolder.getInstance(this.context);
 		tgTabFolder.init(topContainer);
 		topContainerLayout.set(tgTabFolder.getControl(), 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, null, 0f);
 		topContainerLayout.set(tgTabFolder.getControl(), UITableLayout.PACKED_WIDTH, 0f);
 		topContainerLayout.set(tgTabFolder.getControl(), UITableLayout.PACKED_HEIGHT, 0f);
-		
+
 		TGWindowDivider tgWindowDivider = new TGWindowDivider(this.context);
 		tgWindowDivider.createDivider(this.window);
-		
+
 		this.tableDivider = new TGWindowDivider(this.context);
 		this.tableDivider.createDivider(this.window);
-		
+
 		TGTableViewer tgTableViewer = TGTableViewer.getInstance(this.context);
 		tgTableViewer.init(this.window, tgConfig.getBooleanValue(TGConfigKeys.SHOW_TRACKS));
 
 		UIPanel bottom = uiFactory.createPanel(this.window, false);
 		bottom.setLayout(new UITableLayout(0f));
 		bottom.getLayout().set(UITableLayout.IGNORE_INVISIBLE, true);
-		
+
 		TGFretBoardEditor tgFretBoardEditor = TGFretBoardEditor.getInstance(this.context);
 		tgFretBoardEditor.createFretBoard(bottom, tgConfig.getBooleanValue(TGConfigKeys.SHOW_FRETBOARD));
-		
+
 		// Layout
 		this.window.setLayout(new TGWindowLayout(tgToolBar.getControl(), topContainer, tgWindowDivider.getControl(), tgTableViewer.getControl(), bottom));
 	}
-	
+
 	private void loadInitialBounds() {
 		TGConfigManager config = TGConfigManager.getInstance(this.context);
-		
+
 		boolean maximized = config.getBooleanValue(TGConfigKeys.MAXIMIZED);
 		if( maximized ) {
 			this.window.maximize();
@@ -123,25 +123,25 @@ public class TGWindow implements TGEventListener {
 			if( width > 0 && height > 0 ){
 				UIRectangle uiRectangle = new UIRectangle();
 				uiRectangle.setSize(new UISize(width, height));
-				
+
 				this.window.setBounds(uiRectangle);
 			}
 		}
 	}
-	
+
 	private void createShellListeners() {
 		TGSkinManager tgSkinManager = TGSkinManager.getInstance(this.context);
 		tgSkinManager.addLoader(this);
 	}
-	
+
 	public void loadDefaultCursor() {
 		this.loadCursor(UICursor.NORMAL);
 	}
-	
+
 	public void loadBusyCursor() {
 		this.loadCursor(UICursor.WAIT);
 	}
-	
+
 	public void loadCursor(UICursor cursor) {
 		if(!this.isDisposed()) {
 			if( this.cursorController == null || !this.cursorController.isControlling(this.getWindow()) ) {
@@ -150,41 +150,41 @@ public class TGWindow implements TGEventListener {
 			this.cursorController.loadCursor(cursor);
 		}
 	}
-	
+
 	public void moveToTop() {
 		if(!this.isDisposed()) {
 			this.getWindow().moveToTop();
 		}
 	}
-	
+
 	public boolean isDisposed() {
 		return (this.getWindow() == null || this.getWindow().isDisposed());
 	}
-	
+
 	public UIWindow getWindow() {
 		return this.window;
 	}
-	
+
 	public void loadTitle() {
 		this.loadTitleProcess.process();
 	}
-	
+
 	public void loadTitleInCurrentThread() {
 		if(!this.isDisposed()) {
 			String titleLayout = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.WINDOW_TITLE);
 			String title = TGExpressionResolver.getInstance(this.context).resolve(titleLayout);
-			
+
 			this.window.setText(title != null ? title : TGApplication.NAME);
 		}
 	}
-	
+
 	public void loadIcons() {
 		if(!this.isDisposed()) {
 			this.getWindow().setImage(TGIconManager.getInstance(this.context).getAppIcon());
 			this.getWindow().layout();
 		}
 	}
-	
+
 	public void createSyncProcesses() {
 		this.loadTitleProcess = new TGSyncProcess(this.context, new Runnable() {
 			public void run() {
@@ -192,7 +192,7 @@ public class TGWindow implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public void processEvent(final TGEvent event) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -202,7 +202,7 @@ public class TGWindow implements TGEventListener {
 			}
 		});
 	}
-	
+
 	public static TGWindow getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGWindow.class.getName(), new TGSingletonFactory<TGWindow>() {
 			public TGWindow createInstance(TGContext context) {

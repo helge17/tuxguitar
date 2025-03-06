@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.herac.tuxguitar.android.view.layout.TGSingleFragmentLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/root_layout" 
+	android:id="@+id/root_layout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<FrameLayout 
+	<FrameLayout
 		android:id="@+id/content_frame"
-		android:layout_width="match_parent" 
+		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
-		
-	<FrameLayout 
+
+	<FrameLayout
 		android:id="@+id/left_drawer"
-		android:layout_width="240dp" 
+		android:layout_width="240dp"
 		android:layout_height="match_parent"
 		android:layout_gravity="start"
 		android:drawSelectorOnTop="false" />

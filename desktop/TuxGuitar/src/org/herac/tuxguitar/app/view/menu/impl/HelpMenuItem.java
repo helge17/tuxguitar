@@ -32,7 +32,7 @@ public class HelpMenuItem extends TGMenuItem{
 		// -- GO TO HOME PAGE --
 		this.goHome = this.helpMenuItem.getMenu().createActionItem();
 		this.goHome.addSelectionListener(this.createActionProcessor(TGHelpGoHomeAction.NAME));
-		
+
 		this.loadIcons();
 		this.loadProperties();
 	}

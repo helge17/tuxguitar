@@ -22,11 +22,11 @@ import org.herac.tuxguitar.util.error.TGErrorManager;
 public class TGShareSong {
 
 	private TGContext context;
-	
+
 	public TGShareSong(TGContext context) {
 		this.context = context;
 	}
-	
+
 	public void process( TGSong song ) {
 		try {
 			TGShareFile file = new TGShareFile();
@@ -36,7 +36,7 @@ public class TGShareSong {
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public void processDialog( final TGShareFile file , final String errors ) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
@@ -48,7 +48,7 @@ public class TGShareSong {
 			}
 		});
 	}
-	
+
 	public void processAuthDialog( final TGShareFile file ) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() throws TGException {
@@ -60,10 +60,10 @@ public class TGShareSong {
 			}
 		});
 	}
-	
+
 	public void processUpload( final TGShareFile file ) {
 		this.setActiveMode();
-		
+
 		new Thread( new Runnable() {
 			public void run() throws TGException {
 				try {
@@ -75,10 +75,10 @@ public class TGShareSong {
 			}
 		} ).start();
 	}
-	
+
 	public void processResult( TGShareSongResponse response, TGShareFile file ){
 		this.setPassiveMode();
-		
+
 		try {
 			String status = response.getStatus();
 			if( status != null && status.equals(TGShareSongConnection.HTTP_STATUS_OK) ){
@@ -104,7 +104,7 @@ public class TGShareSong {
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	private byte[] getSongBytes( TGSong song ) throws Throwable {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		TGSongWriterHandle tgHandle = new TGSongWriterHandle();
@@ -117,11 +117,11 @@ public class TGShareSong {
 		out.close();
 		return out.toByteArray();
 	}
-	
+
 	public void setActiveMode(){
 		TGWindow.getInstance(this.context).loadBusyCursor();
 	}
-	
+
 	public void setPassiveMode(){
 		TGWindow.getInstance(this.context).loadDefaultCursor();
 	}

@@ -3,56 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-    
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="1">
-		
-		<RadioGroup 
+
+		<RadioGroup
 			android:id="@+id/harmonic_dlg_type_group"
 			android:layout_gravity="fill_horizontal|center_vertical" >
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/harmonic_dlg_type_nh"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/harmonic_dlg_type_nh" />
-			
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/harmonic_dlg_type_ah"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/harmonic_dlg_type_ah" />
-				
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/harmonic_dlg_type_th"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/harmonic_dlg_type_th" />
-				
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/harmonic_dlg_type_ph"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/harmonic_dlg_type_ph" />
-				
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/harmonic_dlg_type_sh"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/harmonic_dlg_type_sh" />
-			
+
 		</RadioGroup>
-		
+
 		<Space
 			android:layout_gravity="fill"
 			style="?attr/dialogVerticalSpacerStyle" />
-		
-		<Spinner 
+
+		<Spinner
 			android:id="@+id/harmonic_dlg_data_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-		
+
 	</GridLayout>
 
 </ScrollView>

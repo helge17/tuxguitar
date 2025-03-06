@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TGCaret {
-	
+
 	private TGSongViewController tablature;
 	private TGTrackImpl selectedTrack;
 	private TGMeasureImpl selectedMeasure;
@@ -41,10 +41,10 @@ public class TGCaret {
 	private int velocity;
 	private boolean restBeat;
 	private boolean changes;
-	
+
 	private UIColor color1;
 	private UIColor color2;
-	
+
 	public TGCaret(TGSongViewController tablature) {
 		this.tablature = tablature;
 		this.selectedDuration = getSongManager().getFactory().newDuration();
@@ -52,26 +52,26 @@ public class TGCaret {
 		this.velocity = TGVelocities.DEFAULT;
 		this.changes = false;
 	}
-	
+
 	public synchronized void update(){
 		int trackNumber = (this.selectedTrack != null)?this.selectedTrack.getNumber():1;
 		update(trackNumber,this.position,this.string);
 	}
-	
+
 	public synchronized void update(int trackNumber){
 		update(trackNumber,this.position,this.string);
 	}
-	
+
 	public synchronized void update(int trackNumber, long position, int string){
 		update(trackNumber, position, string,getVelocity());
 	}
-	
+
 	public synchronized void update(int trackNumber, long position, int string, int velocity) {
 		TGContext context = this.tablature.getContext();
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
-		
+
 		long realPosition = ((midiPlayer.isRunning()) ? MidiTickUtil.getStart(context, midiPlayer.getTickPosition()):position);
-		TGTrackImpl track = findTrack(trackNumber); 
+		TGTrackImpl track = findTrack(trackNumber);
 		TGMeasureImpl measure = findMeasure(realPosition,track);
 		TGBeat beat = findBeat(realPosition,measure);
 		if(track != null && measure != null && beat != null){
@@ -79,7 +79,7 @@ public class TGCaret {
 		}
 		setVelocity(velocity);
 	}
-	
+
 	public void moveTo(TGTrackImpl selectedTrack, TGMeasureImpl selectedMeasure, TGBeat selectedBeat, int string) {
 		this.selectedTrack = selectedTrack;
 		this.selectedMeasure = selectedMeasure;
@@ -93,7 +93,7 @@ public class TGCaret {
 		this.updateBeat();
 		this.setChanges(true);
 	}
-	
+
 	private TGTrackImpl findTrack(int number){
 		TGTrackImpl track = (TGTrackImpl)getSongManager().getTrack(getSong(), number);
 		if(track == null){
@@ -101,7 +101,7 @@ public class TGCaret {
 		}
 		return track;
 	}
-	
+
 	private TGMeasureImpl findMeasure(long position,TGTrackImpl track){
 		TGMeasureImpl measure = null;
 		if(track != null){
@@ -112,7 +112,7 @@ public class TGCaret {
 		}
 		return measure;
 	}
-	
+
 	private TGBeat findBeat(long position,TGMeasureImpl measure){
 		TGBeat beat = null;
 		if(measure != null){
@@ -127,16 +127,16 @@ public class TGCaret {
 		}
 		return beat;
 	}
-	
+
 	public synchronized void goToTickPosition(){
 		TGContext context = this.tablature.getContext();
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
-		
+
 		long start = MidiTickUtil.getStart(context, midiPlayer.getTickPosition());
 		this.update(this.selectedTrack.getNumber(),start,this.string);
 		this.setChanges(true);
 	}
-	
+
 	public void paintCaret(TGLayout layout, UIPainter painter) {
 		if(!MidiPlayer.getInstance(this.tablature.getContext()).isRunning()){
 			if (this.selectedMeasure != null && !this.selectedMeasure.isOutOfBounds() && this.selectedBeat instanceof TGBeatImpl) {
@@ -152,7 +152,7 @@ public class TGCaret {
 					float x = (this.selectedMeasure.getPosX() + beat.getPosX() + beat.getSpacing(layout) + leftSpacing - xMargin);
 					float y = (this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + ((this.string * stringSpacing) - stringSpacing) - yMargin);
 					this.setPaintStyle(painter, expectedVoice);
-					
+
 					painter.initPath();
 					painter.setAntialias(false);
 					painter.addRectangle(x, y, width, height);
@@ -167,7 +167,7 @@ public class TGCaret {
 					float y1 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_TOP) - line;
 					float y2 = this.selectedMeasure.getPosY() + this.selectedMeasure.getTs().getPosition(TGTrackSpacing.POSITION_BOTTOM);
 					this.setPaintStyle(painter, true);
-					
+
 					painter.initPath();
 					painter.moveTo(x1, y1);
 					painter.lineTo(x1 + ((x2 - x1) / 2f), y1 + (line / 2f));
@@ -180,14 +180,14 @@ public class TGCaret {
 			}
 		}
 	}
-	
+
 	public void setPaintStyle(UIPainter painter, boolean expectedVoice){
 		UIColor foreground = ( expectedVoice ? this.color1 : this.color2 );
 		if( foreground != null ){
 			painter.setForeground( foreground );
 		}
 	}
-	
+
 	public boolean moveRight() {
 		if (getSelectedBeat() != null) {
 			TGMeasureImpl measure = getMeasure();
@@ -211,7 +211,7 @@ public class TGCaret {
 		}
 		return true;
 	}
-	
+
 	public void moveLeft() {
 		if (getSelectedBeat() != null) {
 			TGMeasureImpl measure = getMeasure();
@@ -234,67 +234,67 @@ public class TGCaret {
 			}
 		}
 	}
-	
+
 	private void updateDuration() {
 		if (this.selectedBeat != null && !this.selectedBeat.getVoice(getVoice()).isRestVoice()) {
 			this.selectedDuration.copyFrom(this.selectedBeat.getVoice(getVoice()).getDuration());
 		}
 	}
-	
+
 	public void moveUp() {
 		int stringCount = this.selectedTrack.stringCount() ;
 		int nextString = (( (this.string - 2 + stringCount) % stringCount) + 1);
 		setStringNumber(nextString);
 	}
-	
+
 	public void moveDown() {
 		int stringCount = this.selectedTrack.stringCount() ;
 		int nextString = ( (this.string  % stringCount) + 1);
 		setStringNumber(nextString);
 	}
-	
+
 	public void setStringNumber(int number){
 		this.string = number;
 		this.updateNote();
 	}
-	
+
 	public int getStringNumber(){
 		return this.string;
 	}
-	
+
 	public long getPosition() {
 		return this.position;
 	}
-	
+
 	public TGMeasureImpl getMeasure() {
 		return this.selectedMeasure;
 	}
-	
+
 	public TGTrackImpl getTrack() {
 		return this.selectedTrack;
 	}
-	
+
 	public TGDuration getDuration() {
 		return this.selectedDuration;
 	}
-	
+
 	public void setSelectedDuration(TGDuration selectedDuration) {
 		this.selectedDuration = selectedDuration;
 	}
-	
+
 	public TGString getSelectedString() {
 		return this.selectedString;
 	}
-	
+
 	private void updatePosition(){
 		this.position = getSelectedBeat().getStart();
 	}
-	
+
 	private void updateString(){
 		if( this.string < 1 || this.string > getTrack().stringCount() ){
 			this.string = 1;
 		}
-		
+
 		// find selected string
 		List<?> strings = getTrack().getStrings();
 		Iterator<?> it = strings.iterator();
@@ -305,89 +305,89 @@ public class TGCaret {
 			}
 		}
 	}
-	
+
 	public boolean hasChanges() {
 		return this.changes;
 	}
-	
+
 	public void setChanges(boolean changes) {
 		this.changes = changes;
 	}
-	
+
 	public int getVelocity() {
 		return this.velocity;
 	}
-	
+
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
 	}
-	
+
 	private void updateNote(){
 		this.selectedNote = null;
-		
+
 		TGString string = getSelectedString();
 		if( string != null ){
 			this.selectedNote = getSongManager().getMeasureManager().getNote(getMeasure(),getPosition(),string.getNumber());
 		}
 	}
-	
+
 	public TGNote getSelectedNote(){
 		return this.selectedNote;
 	}
-	
+
 	private void updateBeat(){
 		this.restBeat = this.selectedBeat.isRestBeat();
 	}
-	
+
 	public TGBeatImpl getSelectedBeat(){
 		return (TGBeatImpl)this.selectedBeat;
 	}
-	
+
 	public TGSongManager getSongManager(){
 		return this.tablature.getSongManager();
 	}
-	
+
 	public TGSong getSong(){
 		return this.tablature.getSong();
 	}
-	
+
 	private void updateVoice(){
 		this.selectedVoice = this.getSelectedBeat().getVoice(this.getVoice());
 	}
-	
+
 	public TGVoice getSelectedVoice() {
 		return this.selectedVoice;
 	}
-	
+
 	public int getVoice() {
 		return this.voice;
 	}
-	
+
 	public void setVoice(int voice) {
 		this.voice = voice;
 		this.update();
 	}
-	
+
 	public boolean isRestBeatSelected(){
 		return this.restBeat;
 	}
-	
+
 	public void setColor1(UIColorModel cm){
 		this.disposeResource( this.color1 );
 		this.color1 = this.tablature.getResourceFactory().createColor(cm);
 	}
-	
+
 	public void setColor2(UIColorModel cm){
 		this.disposeResource( this.color2 );
 		this.color2 = this.tablature.getResourceFactory().createColor(cm);
 	}
-	
+
 	public void disposeResource(UIResource resource){
 		if( resource != null && !resource.isDisposed() ){
 			resource.dispose();
 		}
 	}
-	
+
 	public void dispose(){
 		this.disposeResource( this.color1 );
 		this.disposeResource( this.color2 );

@@ -13,9 +13,9 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGVoice;
 
 public class TestAllocateNotesToStrings {
-	
+
 	private static final int MAX_FRET = 29;
-	
+
 	private TGString stringE2;
 	private TGString stringA2;
 	private TGString stringD3;
@@ -23,7 +23,7 @@ public class TestAllocateNotesToStrings {
 	private TGString stringB3;
 	private TGString stringE4;
 	private TGFactory factory;
-	
+
 	public TestAllocateNotesToStrings() {
 		factory = new TGFactory();
 		stringE2 = factory.newString();
@@ -39,14 +39,14 @@ public class TestAllocateNotesToStrings {
 		stringE4 = factory.newString();
 		stringE4.setValue(64);
 	}
-	
+
 	@Test
 	public void testMove1note() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
-		
+
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringA2.getValue());
-		
+
 		TGBeat beat = factory.newBeat();
 		TGNote noteA2 = factory.newNote();
 		noteA2.setString(1);
@@ -54,13 +54,13 @@ public class TestAllocateNotesToStrings {
 		beat.getVoice(0).addNote(noteA2);
 		List<TGBeat> beats = new ArrayList<TGBeat>();
 		beats.add(beat);
-		
+
 		stringE2.setNumber(1);
 		List<TGString> toStrings = new ArrayList<TGString>();
 		toStrings.add(stringE2);
-		
+
 		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
-		
+
 		assertEquals(1, beats.get(0).getVoice(0).countNotes());
 		assertEquals(1, beats.get(0).getVoice(0).getNote(0).getString());
 		assertEquals(5, beats.get(0).getVoice(0).getNote(0).getValue());
@@ -73,7 +73,7 @@ public class TestAllocateNotesToStrings {
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringG3.getValue());
 		fromStrings.add(stringD3.getValue());
-		
+
 		TGBeat beat = factory.newBeat();
 		TGNote noteG3 = factory.newNote();
 		noteG3.setString(1);
@@ -86,20 +86,20 @@ public class TestAllocateNotesToStrings {
 
 		List<TGBeat> beats = new ArrayList<TGBeat>();
 		beats.add(beat);
-		
+
 		stringA2.setNumber(1);
 		stringE2.setNumber(2);
 		List<TGString> toStrings = new ArrayList<TGString>();
 		toStrings.add(stringA2);
 		toStrings.add(stringE2);
-		
+
 		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
-		
+
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(2, voice.countNotes());
 		assertTrue(beatContainsNote(beats.get(0), 1, 10));
 		assertTrue(beatContainsNote(beats.get(0), 2, 12));
-		
+
 		// same test, but different order of notes in original chord
 		beat = factory.newBeat();
 		noteE3 = factory.newNote();
@@ -110,19 +110,19 @@ public class TestAllocateNotesToStrings {
 		noteG3.setString(1);
 		noteG3.setValue(0);
 		beat.getVoice(0).addNote(noteG3);
-		
+
 		beats = new ArrayList<TGBeat>();
 		beats.add(beat);
 
 		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
-		
+
 		voice = beats.get(0).getVoice(0);
 		assertEquals(2, voice.countNotes());
 		assertTrue(beatContainsNote(beats.get(0), 1, 10));
 		assertTrue(beatContainsNote(beats.get(0), 2, 12));
-		
+
 	}
-	
+
 	@Test
 	public void testDistributeNotes() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
@@ -156,7 +156,7 @@ public class TestAllocateNotesToStrings {
 		noteA2.setString(1);
 		noteA2.setValue(45);
 		beat.getVoice(0).addNote(noteA2);
-		
+
 		List<TGBeat> beats = new ArrayList<TGBeat>();
 		beats.add(beat);
 
@@ -175,7 +175,7 @@ public class TestAllocateNotesToStrings {
 		toStrings.add(stringE2);
 
 		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
-		
+
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(6, voice.countNotes());
 		assertTrue(beatContainsNote(beats.get(0), 1, 5));
@@ -185,7 +185,7 @@ public class TestAllocateNotesToStrings {
 		assertTrue(beatContainsNote(beats.get(0), 5, 7));
 		assertTrue(beatContainsNote(beats.get(0), 6, 5));
 	}
-	
+
 	@Test
 	public void testNoTuningChange() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
@@ -193,7 +193,7 @@ public class TestAllocateNotesToStrings {
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringG3.getValue());
 		fromStrings.add(stringD3.getValue());
-		
+
 		TGBeat beat = factory.newBeat();
 		TGNote note = factory.newNote();
 		note.setString(2);
@@ -202,20 +202,20 @@ public class TestAllocateNotesToStrings {
 
 		List<TGBeat> beats = new ArrayList<TGBeat>();
 		beats.add(beat);
-		
+
 		stringG3.setNumber(1);
 		stringD3.setNumber(2);
 		List<TGString> toStrings = new ArrayList<TGString>();
 		toStrings.add(stringG3);
 		toStrings.add(stringD3);
-		
+
 		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
-		
+
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(1, voice.countNotes());
 		assertTrue(beatContainsNote(beats.get(0), 2, 16));
 	}
-	
+
 	@Test
 	public void testToTrackWithLessStrings() {
 		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
@@ -223,7 +223,7 @@ public class TestAllocateNotesToStrings {
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringG3.getValue());
 		fromStrings.add(stringD3.getValue());
-		
+
 		TGBeat beat = factory.newBeat();
 		TGNote noteG3 = factory.newNote();
 		noteG3.setString(1);
@@ -236,18 +236,18 @@ public class TestAllocateNotesToStrings {
 
 		List<TGBeat> beats = new ArrayList<TGBeat>();
 		beats.add(beat);
-		
+
 		stringA2.setNumber(1);
 		List<TGString> toStrings = new ArrayList<TGString>();
 		toStrings.add(stringA2);
-		
+
 		trackManager.allocateNotesToStrings(fromStrings, beats, toStrings, MAX_FRET);
-		
+
 		TGVoice voice = beats.get(0).getVoice(0);
 		assertEquals(1, voice.countNotes());
 		assertTrue(beatContainsNote(beats.get(0), 1, 10) || beatContainsNote(beats.get(0), 1, 7));
 	}
-	
+
 	private boolean beatContainsNote(TGBeat beat, int string, int value) {
 		for (int i=0; i<beat.countVoices(); i++) {
 			for (TGNote note : beat.getVoice(i).getNotes()) {

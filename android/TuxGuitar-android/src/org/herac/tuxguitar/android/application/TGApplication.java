@@ -6,7 +6,7 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 public class TGApplication extends MultiDexApplication {
-	
+
 	public TGApplication() {
 		super();
 	}

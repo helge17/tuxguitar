@@ -51,7 +51,7 @@ public class TGMeasureAddDialog extends TGModalFragment {
 		this.fillCount();
 		this.fillOptions();
 	}
-	
+
 	public TGSelectableItem[] createCountValues() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 		for (int i = 1; i <= 100; i++) {
@@ -61,22 +61,22 @@ public class TGMeasureAddDialog extends TGModalFragment {
 		selectableItems.toArray(builtItems);
 		return builtItems;
 	}
-	
+
 	public void fillCount() {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createCountValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.measure_add_dlg_count_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(1), null)));
 	}
-	
+
 	public int findSelectedCount() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.measure_add_dlg_count_value);
-		
+
 		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
 	}
-	
+
 	public void fillOptions() {
 		TGMeasureHeader header = this.getHeader();
 		this.fillOption(R.id.measure_add_dlg_options_before_position, header.getNumber(), false);
@@ -89,10 +89,10 @@ public class TGMeasureAddDialog extends TGModalFragment {
 		radioButton.setTag(Integer.valueOf(value));
 		radioButton.setChecked(selected);
 	}
-	
+
 	public int findSelectedMeasureNumber() {
 		RadioGroup optionsGroup = (RadioGroup) this.getView().findViewById(R.id.measure_add_dlg_options_group);
-		
+
 		int radioButtonId = optionsGroup.getCheckedRadioButtonId();
 		if( radioButtonId != -1 ) {
 			RadioButton radioButton = (RadioButton) optionsGroup.findViewById(radioButtonId);
@@ -102,7 +102,7 @@ public class TGMeasureAddDialog extends TGModalFragment {
 		}
 		return 1;
 	}
-	
+
 	public void processAction() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(findContext(), TGAddMeasureListAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.getSong());

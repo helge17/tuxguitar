@@ -7,15 +7,15 @@ import org.herac.tuxguitar.util.TGContext;
 import org.herac.tuxguitar.util.plugin.TGPluginException;
 
 public class TGSynthDialogPlugin extends TGChannelSettingsPlugin{
-	
+
 	public TGSynthDialogPlugin(){
 		super();
 	}
-	
+
 	protected TGChannelSettingsHandler createHandler(TGContext context) throws TGPluginException {
 		return new TGSynthDialogHandler(context);
 	}
-	
+
 	public String getModuleId(){
 		return TGSynthPlugin.MODULE_ID;
 	}

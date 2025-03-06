@@ -19,9 +19,9 @@ import java.util.List;
 public class TuningManager {
 
 	static String TG_TUNING_FILE = "tunings" + File.separator + "tunings.xml";
-	
+
 	private TGContext context;
-	
+
 	private TuningGroup tgTuningsGroup;
 	private TuningGroup customTuningsGroup;
 
@@ -31,15 +31,15 @@ public class TuningManager {
 		this.customTuningsGroup = new TuningGroup();
 		this.loadTunings();
 	}
-	
+
 	public TuningGroup getTgTuningsGroup() {
 		return this.tgTuningsGroup;
 	}
-	
+
 	public TuningGroup getCustomTuningsGroup() {
 		return this.customTuningsGroup;
 	}
-	
+
 	private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group, boolean isPrioritized) {
 		List<TGTuning> list = new ArrayList<TGTuning>();
 		for (TuningGroup subGroup : group.getGroups()) {
@@ -48,11 +48,11 @@ public class TuningManager {
 		}
 		for (TuningPreset preset : group.getTunings()) {
 			TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
-			
+
 			// Add every tunings if we don't want a priority list.
 			if (!isPrioritized)
 				list.add((TGTuning)tgTuning);
-			
+
 			// If we want a priority list, we only add the ones that have priority value,
 			// discard ones that don't
 			if (isPrioritized && preset.getPriority() != null) {
@@ -62,23 +62,23 @@ public class TuningManager {
 		}
 		return(list);
 	}
-	
+
 	// flat list of tunings, prefixed with group names (recursively)
 	public List<TGTuning> getTgTunings() {
 		return (getTuningsInGroup("", tgTuningsGroup, false));
 	}
-	
+
 	public List<TGTuning> getPriorityTgTunings() {
 		List<TGTuning> priorityTunings = getTuningsInGroup("", tgTuningsGroup, true);
 		Collections.sort(priorityTunings);
-		
+
 		return priorityTunings;
 	}
-	
+
 	public void saveCustomTunings(TuningGroup group) {
 		TuningWriter.write(group, TGUserFileUtils.PATH_USER_TUNINGS);
 	}
-	
+
 	private void loadTunings(){
 		try{
 			TuningReader tuningReader = new TuningReader();
@@ -91,7 +91,7 @@ public class TuningManager {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}
 	}
-	
+
 	public static TuningManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TuningManager.class.getName(), new TGSingletonFactory<TuningManager>() {
 			public TuningManager createInstance(TGContext context) {

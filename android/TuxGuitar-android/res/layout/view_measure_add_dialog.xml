@@ -3,50 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	style="?attr/dialogStyle">
-    
+
 	<GridLayout
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="2" >
-	
-		<TextView 
+
+		<TextView
 			android:id="@+id/measure_add_dlg_count_label"
-			android:text="@string/measure_add_dlg_count_label" 
+			android:text="@string/measure_add_dlg_count_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
-		<Spinner 
+
+		<Spinner
 			android:id="@+id/measure_add_dlg_count_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
-	
+
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
 			style="?attr/dialogVerticalSpacerStyle" />
-			
-		<RadioGroup 
+
+		<RadioGroup
 			android:id="@+id/measure_add_dlg_options_group"
 			android:layout_gravity="fill_horizontal|center_vertical"
 			android:layout_columnSpan="2" >
-	
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/measure_add_dlg_options_before_position"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/measure_add_dlg_options_before_position" />
-	
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/measure_add_dlg_options_after_position"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/measure_add_dlg_options_after_position" />
-	
-			<RadioButton 
+
+			<RadioButton
 				android:id="@+id/measure_add_dlg_options_at_end"
-				android:layout_width="fill_parent" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/measure_add_dlg_options_at_end" />
 		</RadioGroup>
-	
+
 	</GridLayout>
 
 </ScrollView>

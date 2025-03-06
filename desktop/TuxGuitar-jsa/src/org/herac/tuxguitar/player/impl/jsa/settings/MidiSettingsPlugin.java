@@ -11,7 +11,7 @@ public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 	protected TGPluginSettingsHandler createHandler(TGContext context) throws TGPluginException {
 		return new MidiSettingsHandler(context);
 	}
-	
+
 	public String getModuleId() {
 		return MidiPlugin.MODULE_ID;
 	}

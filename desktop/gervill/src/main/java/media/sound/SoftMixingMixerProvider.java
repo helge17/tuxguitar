@@ -30,7 +30,7 @@ import javax.sound.sampled.spi.MixerProvider;
 
 /**
  * Provider for software audio mixer
- * 
+ *
  * @author Karl Helgason
  */
 public class SoftMixingMixerProvider extends MixerProvider {

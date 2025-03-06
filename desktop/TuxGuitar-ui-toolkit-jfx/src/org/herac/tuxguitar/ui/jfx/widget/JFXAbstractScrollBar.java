@@ -9,17 +9,17 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.Region;
 
 public abstract class JFXAbstractScrollBar extends JFXControl<ScrollBar> {
-	
+
 	private Integer thumb;
 	private JFXSelectionListenerChangeManager<Number> selectionListener;
-	
+
 	public JFXAbstractScrollBar(JFXContainer<? extends Region> parent, Orientation orientation) {
 		super(new ScrollBar(), parent);
-		
+
 		this.getControl().setOrientation(orientation);
 		this.selectionListener = new JFXSelectionListenerChangeManager<Number>(this);
 	}
-	
+
 	public void setValue(int value) {
 		this.getControl().setValue(value);
 	}
@@ -65,20 +65,20 @@ public abstract class JFXAbstractScrollBar extends JFXControl<ScrollBar> {
 	public int getIncrement() {
 		return (int) Math.round(this.getControl().getUnitIncrement());
 	}
-	
+
 	public void setThumb(int thumb) {
 		this.thumb = thumb;
 		this.updateVisibleAmount();
 	}
-	
+
 	public int getThumb() {
 		return (this.thumb != null ? this.thumb : -1);
 	}
-	
+
 	public UISize getSize() {
 		return (new UISize((float)this.getControl().getWidth(), (float)this.getControl().getHeight()));
 	}
-	
+
 	public void updateVisibleAmount() {
 		double amount = 0;
 		if( this.thumb != null ) {
@@ -90,7 +90,7 @@ public abstract class JFXAbstractScrollBar extends JFXControl<ScrollBar> {
 		}
 		this.getControl().setVisibleAmount(amount);
 	}
-	
+
 	public void addSelectionListener(UISelectionListener listener) {
 		if( this.selectionListener.isEmpty() ) {
 			this.getControl().valueProperty().addListener(this.selectionListener);

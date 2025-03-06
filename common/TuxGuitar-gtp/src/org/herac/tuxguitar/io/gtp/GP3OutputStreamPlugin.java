@@ -9,7 +9,7 @@ public class GP3OutputStreamPlugin extends GTPOutputStreamPlugin{
 	public GP3OutputStreamPlugin() {
 		super();
 	}
-	
+
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
 		return new GP3OutputStream(GTPSettingsManager.getInstance(context).getSettings());
 	}

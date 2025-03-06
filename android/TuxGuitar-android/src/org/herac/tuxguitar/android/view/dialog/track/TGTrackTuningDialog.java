@@ -94,10 +94,10 @@ public class TGTrackTuningDialog extends TGModalFragment {
 			String label = this.findActivity().getString(R.string.track_tuning_dlg_offset_select_value, value);
 			selectableItems.add(new TGSelectableItem(Integer.valueOf(value), label));
 		}
-		
+
 		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
-		
+
 		return builtItems;
 	}
 
@@ -154,7 +154,7 @@ public class TGTrackTuningDialog extends TGModalFragment {
 	public void fillOffset(TGTrack track) {
 		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_offset_value);
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(track.getOffset()), null)), false);
@@ -178,7 +178,7 @@ public class TGTrackTuningDialog extends TGModalFragment {
 	public void updateItems(boolean percussionChannel) {
 		this.updateOffset(!percussionChannel);
 	}
-	
+
 	public void updateOffset(boolean enabled) {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_offset_value);
 		spinner.setEnabled(enabled);

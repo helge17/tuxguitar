@@ -13,25 +13,25 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGGoToMarkerAction extends TGActionBase{
-	
+
 	public static final String NAME = "action.marker.go-to";
-	
+
 	public TGGoToMarkerAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGSongManager manager = getSongManager(context);
 		TGMarker marker = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MARKER);
 		TGTrackImpl track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-		
+
 		TGMeasure measure = manager.getTrackManager().getMeasure(track,marker.getMeasure());
 		if(measure != null){
 			TGBeat beat = manager.getMeasureManager().getFirstBeat(measure.getBeats());
 			if( beat != null ){
 				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 				context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-				
+
 				TGActionManager.getInstance(getContext()).execute(TGMoveToAction.NAME, context);
 			}
 		}

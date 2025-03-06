@@ -10,12 +10,12 @@ import org.herac.tuxguitar.player.impl.midiport.lv2.remote.LV2RemoteInstance;
 import org.herac.tuxguitar.util.TGContext;
 
 public class LV2AudioProcessor {
-	
+
 	public static final int BUFFER_SIZE = ( TGAudioBuffer.BUFFER_SIZE / 2 ) ;
 	public static final float SAMPLE_RATE = ( TGAudioBuffer.SAMPLE_RATE );
-	
+
 	private Object lock = new Object();
-	
+
 	private TGContext context;
 	private LV2Plugin plugin;
 	private LV2RemoteInstance instance;
@@ -23,19 +23,19 @@ public class LV2AudioProcessor {
 	private List<byte[]> messages;
 	private float[][] inputs;
 	private float[][] outputs;
-	
+
 	public LV2AudioProcessor(TGContext context, LV2Plugin plugin) throws TGRemoteException {
 		this.context = context;
 		this.plugin = plugin;
 		this.open();
 	}
-	
+
 	public void finalize(){
 		synchronized (this.lock) {
 			this.close();
 		}
 	}
-	
+
 	public void open() throws TGRemoteException {
 		synchronized (this.lock) {
 			if(!this.isOpen()){
@@ -46,7 +46,7 @@ public class LV2AudioProcessor {
 			}
 		}
 	}
-	
+
 	public void close(){
 		synchronized (this.lock) {
 			if( this.isOpen()){
@@ -56,11 +56,11 @@ public class LV2AudioProcessor {
 			}
 		}
 	}
-	
+
 	public boolean isOpen(){
 		return (this.instance != null && !this.instance.isClosed());
 	}
-	
+
 	public void queueMidiMessage(byte[] midiMessage){
 		synchronized (this.lock) {
 			if( this.isOpen()){
@@ -68,7 +68,7 @@ public class LV2AudioProcessor {
 			}
 		}
 	}
-	
+
 	public void fillBuffer(TGAudioBuffer buffer) {
 		synchronized (this.lock) {
 			if( this.isOpen()){
@@ -77,7 +77,7 @@ public class LV2AudioProcessor {
 			}
 		}
 	}
-	
+
 	public void processMessages(){
 		synchronized (this.lock) {
 			if( this.isOpen()){
@@ -88,20 +88,20 @@ public class LV2AudioProcessor {
 			}
 		}
 	}
-	
+
 	public void processAudio(TGAudioBuffer buffer){
 		synchronized (this.lock) {
 			if( this.isOpen() ) {
 				if( this.inputs.length > 0 ) {
 					buffer.read(this.inputs);
 				}
-				
+
 				boolean updated = this.instance.processAudio(this.inputs, this.outputs);
-				
+
 				if( this.outputs.length > 0 ) {
 					buffer.write(this.outputs);
 				}
-				
+
 				if( this.updateCallback != null && updated ) {
 					this.updateCallback.onUpdate();
 				}
@@ -116,7 +116,7 @@ public class LV2AudioProcessor {
 			}
 		}
 	}
-	
+
 	public LV2Plugin getPlugin() {
 		return plugin;
 	}
@@ -124,9 +124,9 @@ public class LV2AudioProcessor {
 	public LV2RemoteInstance getInstance() {
 		return instance;
 	}
-	
+
 	public interface LV2AudioProcessorUpdateCallback {
-		
+
 		void onUpdate();
 	}
 }

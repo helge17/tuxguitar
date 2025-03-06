@@ -21,7 +21,7 @@ import java.util.List;
 import androidx.documentfile.provider.DocumentFile;
 
 public class TGSafBrowser implements TGBrowser{
-	
+
 	private TGContext context;
 	private TGSafBrowserSettings data;
 	private TGSafBrowserElement element;
@@ -156,7 +156,7 @@ public class TGSafBrowser implements TGBrowser{
 			cb.handleError(e);
 		}
 	}
-	
+
 	public boolean isWritable() {
 		return (this.element != null && this.element.isFolder() && this.element.isWritable());
 	}

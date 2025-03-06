@@ -15,24 +15,24 @@ import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGChannelHandle {
-	
+
 	private TGContext context;
-	
+
 	public TGChannelHandle(TGContext context){
 		this.context = context;
 	}
-	
+
 	public void addChannel(){
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGAddNewChannelAction.NAME);
 		tgActionProcessor.process();
 	}
-	
+
 	public void removeChannel(TGChannel channel){
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGRemoveChannelAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, channel);
 		tgActionProcessor.process();
 	}
-	
+
 	public void updateChannel(int id, short bnk, short prg, short vol, short bal, short cho, short rev, short pha, short tre, String name){
 		TGSong song = getDocumentManager().getSong();
 		TGChannel channel = getManager().getChannel(song, id);
@@ -51,27 +51,27 @@ public class TGChannelHandle {
 			tgActionProcessor.process();
 		}
 	}
-	
+
 	public List<TGChannel> getChannels(){
 		return getManager().getChannels(getDocumentManager().getSong());
 	}
-	
+
 	public boolean isAnyTrackConnectedToChannel(TGChannel channel){
 		return getManager().isAnyTrackConnectedToChannel(getDocumentManager().getSong(), channel.getChannelId() );
 	}
-	
+
 	public boolean isAnyPercussionChannel(){
 		return getManager().isAnyPercussionChannel(getDocumentManager().getSong());
 	}
-	
+
 	public boolean isPlayerRunning(){
 		return TuxGuitar.getInstance().getPlayer().isRunning();
 	}
-	
+
 	private TGSongManager getManager(){
 		return TuxGuitar.getInstance().getSongManager();
 	}
-	
+
 	private TGDocumentManager getDocumentManager(){
 		return TuxGuitar.getInstance().getDocumentManager();
 	}

@@ -8,9 +8,9 @@ import org.herac.tuxguitar.song.models.TGTrack;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGToggleNoteEnharmonicAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.note.general.toggle-enharmonic";
-	
+
 	public TGToggleNoteEnharmonicAction(TGContext context) {
 		super(context, NAME);
 	}

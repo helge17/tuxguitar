@@ -12,13 +12,13 @@ typedef struct {
 JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_alsa_MidiSystem_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
-	
+
 	handle_t *handle = (handle_t *) malloc( sizeof(handle_t) );
 	handle->seq = NULL;
 	handle->address = NULL;
-	
+
 	memcpy(&ptr, &handle, sizeof( handle ));
-	
+
 	return ptr;
 }
 
@@ -83,7 +83,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_alsa_MidiSy
 					jstring name = (*env)->NewStringUTF(env, snd_seq_port_info_get_name(port_info));
 					jint client  = (snd_seq_port_info_get_addr(port_info))->client;
 					jint port    = (snd_seq_port_info_get_addr(port_info))->port;
-					
+
 					//Add a new MidiPort to the java class
 					jclass cl = (*env)->GetObjectClass(env, obj);
 					jmethodID mid = (*env)->GetMethodID(env, cl, "addPort", "(Ljava/lang/String;II)V");

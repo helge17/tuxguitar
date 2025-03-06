@@ -16,13 +16,13 @@ import org.herac.tuxguitar.song.models.TGVoice;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGInsertChordAction extends TGActionBase {
-	
+
 	public static final String NAME = "action.beat.general.insert-chord";
-	
+
 	public TGInsertChordAction(TGContext context) {
 		super(context, NAME);
 	}
-	
+
 	protected void processAction(TGActionContext context){
 		TGSongManager songManager = getSongManager(context);
 		TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
@@ -30,7 +30,7 @@ public class TGInsertChordAction extends TGActionBase {
 		TGVoice voice = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		TGChord chord = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD);
 		Integer velocity = (Integer) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY);
-		
+
 		boolean restBeat = beat.isRestBeat();
 		if(!restBeat || chord.countNotes() > 0 ) {
 			// Replace voice notes with chord notes in the tablature
@@ -38,21 +38,21 @@ public class TGInsertChordAction extends TGActionBase {
 			Iterator<TGString> it = track.getStrings().iterator();
 			while (it.hasNext()) {
 				TGString string = (TGString) it.next();
-				
+
 				int value = chord.getFretValue(string.getNumber() - 1);
 				if (value >= 0) {
 					TGNote note = songManager.getFactory().newNote();
 					note.setValue(value);
 					note.setVelocity(velocity);
 					note.setString(string.getNumber());
-					
+
 					TGDuration duration = songManager.getFactory().newDuration();
 					duration.copyFrom(voice.getDuration());
-					
+
 					songManager.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
 				}
 			}
-			
+
 			songManager.getMeasureManager().addChord(beat, chord);
 		}
 	}

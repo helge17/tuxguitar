@@ -68,27 +68,27 @@ import org.herac.tuxguitar.util.plugin.TGPluginManager;
 import org.herac.tuxguitar.util.properties.TGPropertiesManager;
 
 public class TuxGuitar {
-	
+
 	private static TuxGuitar instance;
-	
+
 	private boolean initialized;
-	
+
 	private TGLock lock;
-	
+
 	private TGContext context;
-	
+
 	private TGLanguageManager languageManager;
-	
+
 	private TGMenuManager itemManager;
-	
+
 	private TGCustomChordManager customChordManager;
-	
+
 	public TuxGuitar() {
 		this.context = new TGContext();
 		this.lock = new TGLock(this.context);
 		this.initialized = false;
 	}
-	
+
 	public static TuxGuitar getInstance() {
 		synchronized (TuxGuitar.class) {
 			if (instance == null) {
@@ -97,12 +97,12 @@ public class TuxGuitar {
 		}
 		return instance;
 	}
-	
+
 	public void createApplication(final URL url) {
 		this.createMainContext();
 		this.createUIContext(url);
 	}
-	
+
 	private void createMainContext() {
 		TGThreadManager.getInstance(this.context).setThreadHandler(new TGMultiThreadHandler());
 		TGResourceManager.getInstance(this.context).setResourceLoader(TGClassLoader.getInstance(this.context));
@@ -112,22 +112,22 @@ public class TuxGuitar {
 		TGPropertiesAdapter.initialize(this.context);
 		TGVarAdapter.initialize(this.context);
 	}
-	
+
 	private void createUIContext(final URL url) {
 		TGSynchronizer.getInstance(this.context).setController(new TGSynchronizerControllerImpl(this.context));
-		
+
 		UIApplication app = TGApplication.getInstance(TuxGuitar.this.context).getApplication();
 		getPluginManager().earlyInitPlugins();
-		
+
 		app.start(new Runnable() {
 			public void run() {
 				// display splash screen
 				TGSplash.getInstance(TuxGuitar.this.context).init();
-				
+
 				TGSynchronizer.getInstance(TuxGuitar.this.context).executeLater(new Runnable() {
 					public void run() {
 						TuxGuitar.this.startUIContext(url);
-						
+
 						// close splash screen
 						TGSplash.getInstance(TuxGuitar.this.context).finish();
 					}
@@ -135,10 +135,10 @@ public class TuxGuitar {
 			}
 		});
 	}
-	
-	private void startUIContext(URL url) {		
+
+	private void startUIContext(URL url) {
 		TGWindow.getInstance(TuxGuitar.this.context).createWindow();
-		
+
 		// Priority 3 ----------------------------------------------//
 		this.initMidiPlayer();
 		this.getEditorManager().setLockControl(TuxGuitar.this.lock);
@@ -146,14 +146,14 @@ public class TuxGuitar {
 		this.getPluginManager().connectEnabled();
 		this.restoreControlsConfig();
 		this.restorePlayerConfig();
-		
+
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(TuxGuitar.this.context).open();
-		
+
 		this.startSong(url);
 		this.setInitialized(true);
 	}
-	
+
 	private void startSong(URL url){
 		TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnwanted(true);
 		if( url != null ){
@@ -162,7 +162,7 @@ public class TuxGuitar {
 			tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
 				public void handleError(Throwable throwable) {
 					startDefaultSong();
-					
+
 					TGErrorManager.getInstance(getContext()).handleError(throwable);
 				}
 			});
@@ -171,16 +171,16 @@ public class TuxGuitar {
 			this.startDefaultSong();
 		}
 	}
-	
+
 	private void startDefaultSong() {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGLoadTemplateAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, true);
 		tgActionProcessor.process();
 	}
-	
+
 	public void restoreControlsConfig(){
 		TGConfigManager config = getConfig();
-		
+
 		//---Instruments---
 		if( config.getBooleanValue(TGConfigKeys.SHOW_INSTRUMENTS) ){
 			new TGActionProcessor(this.context, TGToggleChannelsDialogAction.NAME).process();
@@ -202,117 +202,117 @@ public class TuxGuitar {
 			new TGActionProcessor(this.context, TGToggleMarkerListAction.NAME).process();
 		}
 	}
-	
+
 	public TGTableViewer getTable(){
 		return TGTableViewer.getInstance(this.context);
 	}
-	
+
 	public TablatureEditor getTablatureEditor(){
 		return TablatureEditor.getInstance(this.context);
 	}
-	
+
 	public TGFretBoardEditor getFretBoardEditor(){
 		return TGFretBoardEditor.getInstance(this.context);
 	}
-	
+
 	public TGPianoEditor getPianoEditor(){
 		return TGPianoEditor.getInstance(this.context);
 	}
-	
+
 	public TGMatrixEditor getMatrixEditor(){
 		return TGMatrixEditor.getInstance(this.context);
 	}
-	
+
 	public TGChannelManagerDialog getChannelManager(){
 		return TGChannelManagerDialog.getInstance(this.context);
 	}
-	
+
 	public TGEditorManager getEditorManager(){
 		return TGEditorManager.getInstance(this.context);
 	}
-	
+
 	public TGLyricEditor getLyricEditor(){
 		return TGLyricEditor.getInstance(this.context);
 	}
-	
+
 	public TGBrowserDialog getBrowser(){
 		return TGBrowserDialog.getInstance(this.context);
 	}
-	
+
 	public TGUndoableManager getUndoableManager(){
 		return TGUndoableManager.getInstance(this.context);
 	}
-	
+
 	public ScaleManager getScaleManager(){
 		return ScaleManager.getInstance(this.context);
 	}
-	
+
 	public TuningManager getTuningManager(){
 		return TuningManager.getInstance(this.context);
 	}
-	
+
 	public TGSongManager getSongManager(){
 		return getDocumentManager().getSongManager();
 	}
-	
+
 	public TGDocumentManager getDocumentManager(){
 		return TGDocumentManager.getInstance(this.context);
 	}
-	
+
 	public TGPluginManager getPluginManager(){
 		return TGPluginManager.getInstance(this.context);
 	}
-	
+
 	public TGErrorManager getErrorManager(){
 		return TGErrorManager.getInstance(this.context);
 	}
-	
+
 	public TGEventManager getEventManager(){
 		return TGEventManager.getInstance(this.context);
 	}
-	
+
 	public TGPropertiesManager getPropertiesManager(){
 		return TGPropertiesManager.getInstance(this.context);
 	}
-	
+
 	public TGConfigManager getConfig(){
 		return TGConfigManager.getInstance(this.context);
 	}
-	
+
 	public TGFileFormatManager getFileFormatManager(){
 		return TGFileFormatManager.getInstance(this.context);
 	}
-	
+
 	public TGIconManager getIconManager(){
 		return TGIconManager.getInstance(this.context);
 	}
-	
+
 	public TGSkinManager getSkinManager(){
 		return TGSkinManager.getInstance(this.context);
 	}
-	
+
 	public TGCustomChordManager getCustomChordManager(){
 		if( this.customChordManager == null ){
 			this.customChordManager = new TGCustomChordManager();
 		}
 		return this.customChordManager;
 	}
-	
+
 	public TGMenuManager getItemManager() {
 		if( this.itemManager == null ){
 			this.itemManager = new TGMenuManager(this.context);
 		}
 		return this.itemManager;
 	}
-	
+
 	public TGActionAdapterManager getActionAdapterManager() {
 		return TGActionAdapterManager.getInstance(this.context);
 	}
-	
+
 	public TGActionManager getActionManager(){
 		return TGActionManager.getInstance(this.context);
 	}
-	
+
 	public TGLanguageManager getLanguageManager() {
 		if( this.languageManager == null ){
 			this.languageManager = new TGLanguageManager(this.context);
@@ -324,11 +324,11 @@ public class TuxGuitar {
 	public KeyBindingActionManager getKeyBindingManager(){
 		return KeyBindingActionManager.getInstance(this.context);
 	}
-	
+
 	public MidiPlayer getPlayer(){
 		return MidiPlayer.getInstance(this.context);
 	}
-	
+
 	public void initMidiPlayer(){
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
 		midiPlayer.addListener( new TGTransportListener(this.context) );
@@ -338,22 +338,22 @@ public class TuxGuitar {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void restorePlayerConfig(){
 		//try to open first device when the configured port not found.
 		getPlayer().setTryOpenFistDevice( true );
-		
+
 		//check midi sequencer
 		getPlayer().openSequencer(getConfig().getStringValue(TGConfigKeys.MIDI_SEQUENCER), true);
-		
+
 		//check midi port
 		getPlayer().openOutputPort(getConfig().getStringValue(TGConfigKeys.MIDI_PORT), true);
 	}
-	
+
 	public void updateCache(final boolean updateItems){
 		this.updateCache(updateItems, null);
 	}
-	
+
 	public void updateCache(final boolean updateItems, final TGAbstractContext sourceContext){
 		TGEditorManager editorManager = TGEditorManager.getInstance(this.context);
 		if( updateItems ) {
@@ -361,19 +361,19 @@ public class TuxGuitar {
 		}
 		editorManager.redraw(sourceContext);
 	}
-	
+
 	public static String getProperty(String key) {
 		return TGMessagesManager.getProperty(key);
 	}
-	
+
 	public static String getProperty(String key,String[] arguments) {
 		return TGMessagesManager.getProperty(key,arguments);
 	}
-	
+
 	public boolean isDisposed(){
 		return (TGApplication.getInstance(this.context).isDisposed() || TGWindow.getInstance(this.context).isDisposed());
 	}
-	
+
 	public void playBeat( final TGBeat beat ){
 		TGEditorManager.getInstance(this.context).asyncRunLocked(new Runnable() {
 			public void run() throws TGException {
@@ -383,15 +383,15 @@ public class TuxGuitar {
 			}
 		});
 	}
-	
+
 	public boolean isInitialized() {
 		return this.initialized;
 	}
-	
+
 	public void setInitialized(boolean initialized) {
 		this.initialized = initialized;
 	}
-	
+
 	public TGContext getContext() {
 		return context;
 	}
@@ -399,11 +399,11 @@ public class TuxGuitar {
 	public void lock(){
 		this.lock.lock();
 	}
-	
+
 	public void unlock(){
 		this.lock.unlock();
 	}
-	
+
 	public boolean isLocked(){
 		return this.lock.isLocked();
 	}

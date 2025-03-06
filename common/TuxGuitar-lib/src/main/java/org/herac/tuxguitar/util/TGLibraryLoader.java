@@ -16,13 +16,13 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGLibraryLoader {
-	
+
 	private TGContext context;
-	
+
 	private TGLibraryLoader(TGContext context){
 		this.context = context;
 	}
-	
+
 	public void loadLibrary(File file){
 		try{
 			System.out.println("Loading: " + file.getAbsolutePath());
@@ -31,7 +31,7 @@ public class TGLibraryLoader {
 			TGErrorManager.getInstance(this.context).handleError(throwable);
 		}
 	}
-	
+
 	public void loadLibraries(File folder, String prefix, String extension){
 		if(folder != null && folder.exists()){
 			List<String> libraries = findLibrariesToLoad(folder, prefix, extension);
@@ -44,15 +44,15 @@ public class TGLibraryLoader {
 			}
 		}
 	}
-	
+
 	private String getLibraryFileName(File folder, String library){
 		return (folder.getAbsolutePath() + File.separator + library);
 	}
-	
+
 	private String getLibraryDependenciesFileName(File folder, String library){
 		return (getLibraryFileName(folder, library) + ".deps");
 	}
-	
+
 	private List<String> findLibrariesToLoad(File folder, String prefix, String extension){
 		List<String> libraries = new ArrayList<String>();
 		String[] files = folder.list(createFilenameFilter(prefix, extension));
@@ -62,7 +62,7 @@ public class TGLibraryLoader {
 		}
 		return libraries;
 	}
-	
+
 	private String findNextLibraryToLoad(List<String> libraries, File folder, String[] files){
 		for(int i = 0; i < files.length; i ++){
 			if(!libraries.contains(files[i])){
@@ -71,8 +71,8 @@ public class TGLibraryLoader {
 		}
 		return null;
 	}
-	
-	private String findNextLibraryToLoad(List<String> libraries, File folder, String[] files, String expectedLib){		
+
+	private String findNextLibraryToLoad(List<String> libraries, File folder, String[] files, String expectedLib){
 		List<String> dependencies = findDependencyLibraries(folder, expectedLib);
 		if( dependencies != null ){
 			Iterator<String> it = dependencies.iterator();
@@ -89,11 +89,11 @@ public class TGLibraryLoader {
 		}
 		return expectedLib;
 	}
-	
+
 	private List<String> findDependencyLibraries(File folder, String library){
 		return findDependencyLibraries(new File(getLibraryDependenciesFileName(folder, library)));
 	}
-	
+
 	private List<String> findDependencyLibraries(File file){
 		try {
 			List<String> libraries = new ArrayList<String>();
@@ -113,7 +113,7 @@ public class TGLibraryLoader {
 		}
 		return null;
 	}
-	
+
 	private FilenameFilter createFilenameFilter(final String prefix, final String extension){
 		return new FilenameFilter() {
 			public boolean accept(File dir, String name) {
@@ -136,7 +136,7 @@ public class TGLibraryLoader {
 			}
 		};
 	}
-	
+
 	public static TGLibraryLoader getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGLibraryLoader.class.getName(), new TGSingletonFactory<TGLibraryLoader>() {
 			public TGLibraryLoader createInstance(TGContext context) {

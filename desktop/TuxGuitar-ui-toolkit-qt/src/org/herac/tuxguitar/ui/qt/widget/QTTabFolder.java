@@ -12,21 +12,21 @@ import org.herac.tuxguitar.ui.widget.UITabItem;
 import io.qt.widgets.QTabWidget;
 
 public class QTTabFolder extends QTWidget<QTabWidget> implements UITabFolder {
-	
+
 	private List<QTTabItem> tabs;
 	private QTTabFolderCloseListenerManager closeListener;
 	private QTTabFolderSelectionListenerManager selectionListener;
-	
+
 	public QTTabFolder(QTContainer parent, boolean showClose) {
 		super(new QTabWidget(parent.getContainerControl()), parent);
-		
+
 		this.tabs = new ArrayList<QTTabItem>();
 		this.closeListener = new QTTabFolderCloseListenerManager(this);
 		this.selectionListener = new QTTabFolderSelectionListenerManager(this);
-		
+
 		this.getControl().setTabsClosable(showClose);
 	}
-	
+
 	public void dispose() {
 		List<QTTabItem> items = new ArrayList<QTTabItem>(this.tabs);
 		for(QTTabItem item : items) {
@@ -36,15 +36,15 @@ public class QTTabFolder extends QTWidget<QTabWidget> implements UITabFolder {
 		}
 		super.dispose();
 	}
-	
+
 	public void addTab(QTTabItem tabItem) {
 		this.getControl().addTab(tabItem.getControl(), new String());
 		this.tabs.add(tabItem);
 	}
-	
+
 	public void removeTab(QTTabItem tabItem) {
 		int index = this.getTabIndex(tabItem);
-		if( index >= 0 ) { 
+		if( index >= 0 ) {
 			this.tabs.remove(index);
 			this.getControl().removeTab(index);
 		}
@@ -53,7 +53,7 @@ public class QTTabFolder extends QTWidget<QTabWidget> implements UITabFolder {
 	public int getTabIndex(UITabItem tab) {
 		return this.tabs.indexOf(tab);
 	}
-	
+
 	public UITabItem createTab() {
 		return new QTTabItem(this);
 	}
@@ -61,11 +61,11 @@ public class QTTabFolder extends QTWidget<QTabWidget> implements UITabFolder {
 	public List<UITabItem> getTabs() {
 		return new ArrayList<UITabItem>(this.tabs);
 	}
-	
+
 	public UITabItem getTab(int index) {
 		return (index >= 0 && index < this.tabs.size() ? this.tabs.get(index) : null);
 	}
-	
+
 	public UITabItem getSelectedTab() {
 		return this.getTab(this.getSelectedIndex());
 	}
