@@ -157,13 +157,13 @@ public class TGDriveBrowser implements TGBrowser{
 					public void onResult(MetadataBufferResult result) {
 			            if( result.getStatus().isSuccess() ) {
 			            	List<TGBrowserElement> elements = new ArrayList<TGBrowserElement>();
-			            
+
 			            	Iterator<Metadata> it = result.getMetadataBuffer().iterator();
 			            	while(it.hasNext()) {
 			            		Metadata metadata = it.next();
 			            		DriveId driveId = metadata.getDriveId();
 			            		String name = metadata.getTitle();
-			            
+
 			            		if(!metadata.isTrashed() && !metadata.isExplicitlyTrashed()) {
 				            		if( metadata.isFolder() ) {
 				            			elements.add(new TGDriveBrowserFolder(TGDriveBrowser.this.folder, Drive.DriveApi.getFolder(TGDriveBrowser.this.client, driveId), name));
@@ -172,7 +172,7 @@ public class TGDriveBrowser implements TGBrowser{
 				            		}
 			            		}
 			            	}
-			            
+
 							if( !elements.isEmpty() ){
 								Collections.sort(elements, new TGBrowserElementComparator());
 							}

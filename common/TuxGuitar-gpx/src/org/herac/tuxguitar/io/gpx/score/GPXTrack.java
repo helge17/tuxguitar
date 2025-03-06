@@ -6,6 +6,7 @@ public class GPXTrack {
 	private int[] tuningPitches;
 	private int[] color;
 	private String name;
+	private int capo;
 
 	private int gmProgram;
 	private int gmChannel1;
@@ -29,6 +30,14 @@ public class GPXTrack {
 
 	public void setTuningPitches(int[] tuningPitches) {
 		this.tuningPitches = tuningPitches;
+	}
+
+	public int getCapo() {
+		return this.capo;
+	}
+
+	public void setCapo(int capo) {
+		this.capo = capo;
 	}
 
 	public String getName() {

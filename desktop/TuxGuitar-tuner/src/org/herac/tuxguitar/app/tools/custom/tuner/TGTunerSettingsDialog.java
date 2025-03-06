@@ -262,7 +262,7 @@ public class TGTunerSettingsDialog {
     	private double getMinimalFrequencyDiff() {
     		return ((double) TGTunerSettingsDialog.this.getSampleRate()) / TGTunerSettingsDialog.this.getFFTSize();
     	}
-    
+
     	private double getTimeToFillBuffer() {
     		return TGTunerSettingsDialog.this.getBufferSize() / TGTunerSettingsDialog.this.getSampleRate();
     	}

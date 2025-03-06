@@ -2,6 +2,7 @@ package org.herac.tuxguitar.io.musicxml;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGDivisionType;
 import org.herac.tuxguitar.song.models.TGDuration;
+import org.herac.tuxguitar.song.models.TGMarker;
 import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGSong;
@@ -34,7 +36,11 @@ import org.herac.tuxguitar.song.models.TGString;
 import org.herac.tuxguitar.song.models.TGTempo;
 import org.herac.tuxguitar.song.models.TGTimeSignature;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.song.models.TGVelocities;
 import org.herac.tuxguitar.song.models.TGVoice;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import org.herac.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
+import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
 import org.herac.tuxguitar.util.TGMusicKeyUtils;
 import org.herac.tuxguitar.util.TGVersion;
 import org.w3c.dom.Attr;
@@ -46,7 +52,7 @@ import org.w3c.dom.Node;
 // Note: The order of elements is important
 // see https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/
 
-public class MusicXMLWriter {
+public class MusicXMLWriter{
 
 	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
 	private Map<Integer, String> durations;	// duration name per TGDuration value
@@ -80,7 +86,7 @@ public class MusicXMLWriter {
 	}
 
 	public void writeSong(TGSong song) throws TGFileFormatException{
-		try {
+		try{
 			this.manager = new TGSongManager();
 			this.document = newDocument();
 
@@ -158,76 +164,124 @@ public class MusicXMLWriter {
 	private void writeTrack(TGTrack track, Node parent){
 		Node part = this.addAttribute(this.addNode(parent,"part"), "id", "P" + track.getNumber());
 
-		TGMeasure previous = null;
+		TGMeasure previousMeasure = null;
 
 		MusicXMLLyricWriter lyricWriter = new MusicXMLLyricWriter(track);
 
 		Iterator<TGMeasure> measures = track.getMeasures();
-		while(measures.hasNext()){
-			TGMeasure measure = (TGMeasure)measures.next();
-			Node measureNode = this.addAttribute(this.addNode(part,"measure"), "number",Integer.toString(measure.getNumber()));
+		TGMeasure nextMeasure = null;
+		while(measures.hasNext() || nextMeasure != null){
+			TGMeasure currentMeasure = nextMeasure != null ? nextMeasure : (TGMeasure)measures.next();
+			nextMeasure = measures.hasNext() ? (TGMeasure)measures.next() : null;
 
-			this.writeMeasureAttributes(measureNode, measure, previous, track.isPercussion());
+			Node measureNode = this.addAttribute(this.addNode(part,"measure"), "number",Integer.toString(currentMeasure.getNumber()));
 
-			this.writeDirection(measureNode, measure, previous);
+			this.writeMeasureAttributes(measureNode, currentMeasure, previousMeasure, track.isPercussion());
 
-			this.writeBarline(measureNode, measure);
+			this.writeDirection(measureNode, currentMeasure, previousMeasure);
 
-			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(measure);
+			this.writeBarline(measureNode, currentMeasure, previousMeasure, nextMeasure);
+
+			MusicXMLMeasureLyric[] measureLyrics = lyricWriter.generateLyricList(currentMeasure);
 
 			// score
-			boolean measureIsEmpty = true;
-			for (int nVoice=0; nVoice<TGBeat.MAX_VOICES; nVoice++) {
+			boolean currentMeasureIsEmpty = true;
+			for (int nVoice=0; nVoice<TGBeat.MAX_VOICES; nVoice++){
 				// assuming lyrics are attached to voice 0
-				this.writeBeats(measureNode, measure, nVoice, measureIsEmpty, false, nVoice==0 ? measureLyrics : null);
-				measureIsEmpty = false;
+				this.writeBeats(measureNode, currentMeasure, nVoice, currentMeasureIsEmpty, false, nVoice==0 ? measureLyrics : null);
+				currentMeasureIsEmpty = false;
 			}
 			// tab
-			if (!track.isPercussion()) {
-				measureIsEmpty = true;
-				backToMeasureStart(measureNode, measure);
-				for (int nVoice=0; nVoice<TGBeat.MAX_VOICES; nVoice++) {
-					this.writeBeats(measureNode, measure, nVoice, measureIsEmpty, true, null);
-					measureIsEmpty = false;
+			if (!track.isPercussion()){
+				currentMeasureIsEmpty = true;
+				backToMeasureStart(measureNode, currentMeasure);
+				for (int nVoice=0; nVoice<TGBeat.MAX_VOICES; nVoice++){
+					this.writeBeats(measureNode, currentMeasure, nVoice, currentMeasureIsEmpty, true, null);
+					currentMeasureIsEmpty = false;
 				}
 			}
 
-			previous = measure;
+			previousMeasure = currentMeasure;
 		}
 	}
 
-	private void backToMeasureStart(Node parent, TGMeasure measure) {
+	private void backToMeasureStart(Node parent, TGMeasure measure){
 		Node backupNode = this.addNode(parent, "backup");
 		TGTimeSignature ts = measure.getTimeSignature();
 		this.addNode(backupNode, "duration", String.valueOf((int)(TGDuration.QUARTER * DURATION_DIVISIONS * ts.getNumerator() / ts.getDenominator().getValue())));
 	}
 
-	private void writeBarline(Node parent, TGMeasure measure) {
-		boolean needBarline = measure.isRepeatOpen() || (measure.getRepeatClose() > 0);
-
+	private void writeBarline(Node parent, TGMeasure currentMeasure, TGMeasure previousMeasure, TGMeasure nextMeasure){
 		// TODO:
-		// add, when available in tuxguitar; alternate repeat, bar-style, coda, wavy-line etc..
+		// add, when available in tuxguitar; bar-style, coda, wavy-line etc..
 		// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/barline/
 
-		if (needBarline) {
-			Node barLine = this.addNode(parent,"barline");
+		Node startBarLine = null;
+		Node endBarLine = null;
 
-			if (measure.isRepeatOpen()) {
-				Node repeat = this.addNode(barLine,"repeat");
-				this.addAttribute(repeat, "direction", "forward");
+		String previousMeasureAlternateEndings = generateAlternateEndingString(previousMeasure);
+		String currentMeasureAlternateEndings = generateAlternateEndingString(currentMeasure);
+		String nextMeasureAlternateEndings = generateAlternateEndingString(nextMeasure);
+
+		if (!currentMeasureAlternateEndings.equals("")){
+			if (!currentMeasureAlternateEndings.equals(previousMeasureAlternateEndings)){
+				Node barLine = this.addNode(parent,"barline");
+				startBarLine = barLine;
+
+				Node ending = this.addNode(barLine, "ending", currentMeasureAlternateEndings);
+				this.addAttribute(ending, "number", currentMeasureAlternateEndings);
+				this.addAttribute(ending, "type", "start");
 			}
 
-			if (measure.getRepeatClose() > 0) {
-				Node repeat = this.addNode(barLine,"repeat");
-				this.addAttribute(repeat, "direction", "backward");
-				this.addAttribute(repeat, "times", Integer.toString(measure.getRepeatClose()));
+			if (!currentMeasureAlternateEndings.equals(nextMeasureAlternateEndings)){
+					Node barLine = this.addNode(parent,"barline");
+					endBarLine = barLine;
+
+					Node ending = this.addNode(barLine, "ending", currentMeasureAlternateEndings);
+					this.addAttribute(ending, "number", currentMeasureAlternateEndings);
+					this.addAttribute(ending, "type", "stop");
 			}
-
-			// TODO:
-			// add, when available in tuxguitar, winged, after-jump
-			// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/repeat/
-
 		}
+
+		if (currentMeasure.isRepeatOpen()){
+			Node barLine = startBarLine != null ? startBarLine : this.addNode(parent,"barline");
+			startBarLine = barLine;
+			Node repeat = this.addNode(barLine,"repeat");
+			this.addAttribute(repeat, "direction", "forward");
+		}
+
+		// In the case where we start a repeat and end a repeat on the same measure, we want to have two separate barline elements.
+		// MusicXML only allows 1 repeat per barline, but allows multiple barlines in a single measure.
+		if (currentMeasure.getRepeatClose() > 0){
+			Node barLine = endBarLine != null ? endBarLine : this.addNode(parent,"barline");
+			endBarLine = barLine;
+			Node repeat = this.addNode(barLine,"repeat");
+			this.addAttribute(repeat, "direction", "backward");
+			// TuxGuitar treats this as zero-indexed, but MusicXML is one-indexed, so we need to add 1.
+			this.addAttribute(repeat, "times", Integer.toString(currentMeasure.getRepeatClose() + 1));
+		}
+	}
+
+	// Takes in a measure, outputs a string for what alternate endings are used.
+	// If 1 and 3 are used, result is "1,3"
+	private String generateAlternateEndingString(TGMeasure measure){
+		StringBuilder alternateEndingNumbers = new StringBuilder();
+
+		if (measure != null && measure.getHeader().getRepeatAlternative() != 0){
+			byte repeatAlternativeByte = (byte)measure.getHeader().getRepeatAlternative();
+			BitSet repeatAlternateBitset = BitSet.valueOf(new byte[]{ repeatAlternativeByte });
+
+			for (int i = repeatAlternateBitset.nextSetBit(0); i >= 0; i = repeatAlternateBitset.nextSetBit(i+1)){
+				// +1 to account for zero-based indexing internally, while musicxml is one-based indexed.
+				alternateEndingNumbers.append(Integer.toString(i + 1) + ",");
+			}
+			if (alternateEndingNumbers.length() > 0){
+				// Delete extra comma at end.
+				alternateEndingNumbers.deleteCharAt(alternateEndingNumbers.length() - 1);
+			}
+		}
+
+		return alternateEndingNumbers.toString();
 	}
 
 	private void writeMeasureAttributes(Node parent, TGMeasure measure, TGMeasure previous, boolean isPercussion){
@@ -236,7 +290,7 @@ public class MusicXMLWriter {
 		boolean clefChanges = (previous == null || measure.getClef() != previous.getClef());
 		boolean timeSignatureChanges = (previous == null || !measure.getTimeSignature().isEqual(previous.getTimeSignature()));
 
-		if (divisionChanges || keyChanges || clefChanges || timeSignatureChanges) {
+		if (divisionChanges || keyChanges || clefChanges || timeSignatureChanges){
 			Node measureAttributes = this.addNode(parent,"attributes");
 			if(divisionChanges){
 				this.addNode(measureAttributes,"divisions",Integer.toString(DURATION_DIVISIONS));
@@ -251,7 +305,7 @@ public class MusicXMLWriter {
 				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
 			}
 
-			if (!isPercussion && (previous==null || measure.getNumber() == 1)) {
+			if (!isPercussion && (previous==null || measure.getNumber() == 1)){
 				this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
 			}
 		}
@@ -267,9 +321,14 @@ public class MusicXMLWriter {
 			this.addAttribute(stringNode, "line", Integer.toString( (track.stringCount() - string.getNumber()) + 1 ) );
 			this.writeNote(stringNode, "tuning-", string.getValue(), keySignature);
 		}
+		// MusicXML 4.0 defines capo's as offsets that are non-negative.
+		int trackOffset = track.getOffset();
+		if (trackOffset >= 0){
+			this.addNode(staffDetailsNode, "capo", Integer.toString( trackOffset ));
+		}
 	}
 
-	private void writeNote(Node parent, String prefix, int value, int keySignature) {
+	private void writeNote(Node parent, String prefix, int value, int keySignature){
 		this.addNode(parent,prefix+"step", TGMusicKeyUtils.noteShortName(value,keySignature));
 		int alteration = TGMusicKeyUtils.noteAlteration(value, keySignature);
 		if(alteration != TGMusicKeyUtils.NATURAL){
@@ -296,11 +355,11 @@ public class MusicXMLWriter {
 	private void writeClef(Node parent, int clef, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent,"clef");
-		if (!isPercussion) {
+		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
 		}
 
-		if (isPercussion) {
+		if (isPercussion){
 			this.addNode(node,"sign","percussion");
 		}
 		else if(clef == TGMeasure.CLEF_TREBLE){
@@ -323,18 +382,62 @@ public class MusicXMLWriter {
 		}
 
 		// second clef: tablature
-		if (!isPercussion) {
+		if (!isPercussion){
 			node = this.addNode(parent,"clef");
 			this.addAttribute(node, "number", "2");
 			this.addNode(node, "sign", "TAB");
 		}
 	}
 
+	private String getDynamicNameFromVelocity(TGNote note){
+		int noteVelocity = note.getVelocity();
+
+		switch(noteVelocity){
+			case TGVelocities.PIANO_PIANISSIMO:
+				return "ppp";
+			case TGVelocities.PIANISSIMO:
+				return "pp";
+			case TGVelocities.PIANO:
+				return "p";
+			case TGVelocities.MEZZO_PIANO:
+				return "mp";
+			case TGVelocities.MEZZO_FORTE:
+				return "mf";
+			case TGVelocities.FORTE:
+				return "f";
+			case TGVelocities.FORTISSIMO:
+				return "ff";
+			case TGVelocities.FORTE_FORTISSIMO:
+				return "fff";
+			default:
+				return "";
+		}
+	}
+
+	private void writeDirection(Node parent, TGNote note){
+		Node direction = this.addAttribute(this.addNode(parent,"direction"),"placement","above");
+		Node directionType = this.addNode(direction, "direction-type");
+		Node dynamics = this.addNode(directionType, "dynamics");
+
+		String dynamicType = getDynamicNameFromVelocity(note);
+
+		if (!dynamicType.equals("")){
+			this.addNode(dynamics, dynamicType);
+		}
+	}
+
 	private void writeDirection(Node parent, TGMeasure measure, TGMeasure previous){
-		boolean tempoChanges = (previous == null || !measure.getTempo().isEqual(previous.getTempo()));
+		boolean needsDirectionNode = false;
+		Node direction = this.addAttribute(this.addNode(parent,"direction"),"placement","above");
+
+		boolean tempoChanges = (previous == null ||
+				measure.getTempo().getRawValue() != previous.getTempo().getRawValue() ||
+				measure.getTempo().getBase() != previous.getTempo().getBase());
+
+		// TODO: Add coda, and segno support once added elsewhere.
+		// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/direction-type/
 
 		if(tempoChanges){
-			Node direction = this.addAttribute(this.addNode(parent,"direction"),"placement","above");
 			Node directionType = this.addNode(direction, "direction-type");
 			Node metronome = this.addNode(directionType, "metronome");
 			TGTempo tempo = measure.getTempo();
@@ -343,6 +446,18 @@ public class MusicXMLWriter {
 				this.addNode(metronome, "beat-unit-dot");
 			}
 			this.addNode(metronome, "per-minute", String.valueOf(measure.getTempo().getRawValue()));
+			needsDirectionNode = true;
+		}
+
+		TGMarker measureMarker = measure.getHeader().getMarker();
+		if (measureMarker != null){
+			Node directionType = this.addNode(direction, "direction-type");
+			this.addNode(directionType, "rehearsal", measureMarker.getTitle());
+			needsDirectionNode = true;
+		}
+
+		if (!needsDirectionNode){
+			this.removeNode(direction);
 		}
 	}
 
@@ -356,88 +471,311 @@ public class MusicXMLWriter {
 		boolean wroteSomething = false;
 		long lastWrittenNoteEnd = 0;	// tick of last (non-empty) beat corresponding to voice
 
+		int lastVelocity = TGVelocities.MIN_VELOCITY - 1; // Below minimum to have overwrite with first note.
+		Map<Integer, TGNote> previousNotesOnAllStrings = new HashMap<Integer, TGNote>();
+
 		for(int b = 0; b < beatCount; b ++){
 			TGBeat beat = measure.getBeat( b );
 			TGVoice voice = beat.getVoice(nVoice);
 
-			if (voice.isRestVoice() && !wroteSomething) {
+			if (voice.isRestVoice() && !wroteSomething){
 				firstBeats.add(beat);
 				continue;
 			}
 			// here, something has been found to be written
 			// need to rewind to measure start?
-			if (!measureIsEmpty && !wroteSomething) {
+			if (!measureIsEmpty && !wroteSomething){
 				backToMeasureStart(parent, measure);
 			}
 			// need to insert rests before?
-			if (!firstBeats.isEmpty()) {
-				for (TGBeat restBeat : firstBeats) {
+			if (!firstBeats.isEmpty()){
+				for (TGBeat restBeat : firstBeats){
 					insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
 				}
 				firstBeats.clear();
 			}
 			if(voice.isRestVoice()){
-				if (beat.getStart() >= lastWrittenNoteEnd) {
+				if (beat.getStart() >= lastWrittenNoteEnd){
 					insertRest(parent, voice.getDuration(), nVoice, isTablature);
 				}
-			} else {
+			} else{
 				int noteCount = voice.countNotes();
 
 				for(int n = 0; n < noteCount; n ++){
 					TGNote note = voice.getNote( n );
+					TGNote previousNoteOnString = previousNotesOnAllStrings.get(note.getString());
+
+					int noteVelocity = note.getVelocity();
+					if (noteVelocity != lastVelocity){
+						lastVelocity = noteVelocity;
+						this.writeDirection(parent, note);
+					}
+
 
 					Node noteNode = this.addNode(parent,"note");
 
-					int value = (beat.getMeasure().getTrack().getString(note.getString()).getValue() + note.getValue());
+					int stringValue = beat.getMeasure().getTrack().getString(note.getString()).getValue();
+					int noteValue = note.getValue();
+					int harmonicValue = 0;
+
+					// Tablature remains unchanged, staff needs to be modified to adjust pitch.
+					if (!isTablature){
+						TGEffectHarmonic harmonicEffect = note.getEffect().getHarmonic();
+						if (harmonicEffect != null && harmonicEffect.isNatural()){
+							harmonicValue = TGEffectHarmonic.NATURAL_FREQUENCIES[harmonicEffect.getData()][1];
+							harmonicValue -= noteValue;
+						}
+					}
+
+					int harmonicAdjustedValue = stringValue + noteValue + harmonicValue;
 
 					if(n > 0){
 						this.addNode(noteNode,"chord");
 					}
 
 					Node pitchNode = this.addNode(noteNode,"pitch");
-					this.writeNote(pitchNode, "", value, ks);
+					this.writeNote(pitchNode, "", harmonicAdjustedValue, ks);
+
 					this.writeDurationAndVoice(noteNode, voice.getDuration(), note.isTiedNote(), nVoice);
+
+					if (note.getEffect().isGhostNote()){
+						Node noteheadNode = this.addNode(noteNode, "notehead", "normal");
+						this.addAttribute(noteheadNode, "parentheses", "yes");
+					}
+
 					this.addNode(noteNode, "staff", isTablature ? "2" : "1");
 
-					if (isTablature) {
-						Node technicalNode = this.addNode(this.addNode(noteNode, "notations"), "technical");
-						this.addNode(technicalNode,"fret", Integer.toString( note.getValue() ));
-						this.addNode(technicalNode,"string", Integer.toString( note.getString() ));
+					Node notationsNode = this.addNode(noteNode, "notations");
+					writeArticulationNotations(notationsNode, note);
+					writeTechnicalNotations(notationsNode, note, previousNoteOnString, isTablature);
+					writeOrnamentsNotations(notationsNode, note);
 
-					} else if(n==0) {
+					// Slapping / Popping would be applied here... But the MusicXML 4.0 spec does not have defined elements for that.
+					// GP has it as a processing instruction, but until it is officially supported, we will leave it out.
+					// Uncomment and update when the MusicXML spec changes to support slapping / popping.
+					// if (note.getEffect().isSlapping()){
+					// 	Node slapNode = this.addNode(notationsNode, "bass-attack");
+					// 	this.addAttribute(slapNode, "type", "slap");
+					// }
+					// if (note.getEffect().isPopping()){
+					// 	Node slapNode = this.addNode(notationsNode, "bass-attack");
+					// 	this.addAttribute(slapNode, "type", "pop");
+					// }
+
+					// We are blindly trusting the input data is correct, ex: A slide from a fret to the same fret.
+					// This is handled on our end, but may not be handled in other softwares.
+					boolean isNoteSlide = note.getEffect().isSlide();
+					boolean isPreviousNoteSlide = previousNoteOnString != null ? previousNoteOnString.getEffect().isSlide() : false;
+					if (isPreviousNoteSlide){
+						Node slideNode = this.addNode(notationsNode, "slide");
+						this.addAttribute(slideNode, "type", "stop");
+					}
+					if (isNoteSlide){
+						Node slideNode = this.addNode(notationsNode, "slide");
+						this.addAttribute(slideNode, "type", "start");
+					}
+
+					this.removeNodeIfNoChildren(notationsNode);
+
+					// Let-ring would be applied here... But the MusicXML 4.0 spec does not have a defined element for that.
+					// GP has it as a processing instruction, but until it is officially supported, we will leave it out.
+					// Uncomment and update when the MusicXML spec changes to support the Let-Ring status.
+					// if (note.getEffect().isLetRing()){
+					// 	this.addNode(noteNode, "letring");
+					// }
+
+					if(!isTablature && n==0){
 						// Attach lyric to the first note
-						try {
+						try{
 							MusicXMLMeasureLyric measureLyric = lyrics[lyricIndex++];
 							writeLyric(noteNode, measureLyric);
-						} catch (Exception e) {
+						} catch (Exception e){
 							// ignore
 							// can be out of bound? when there are more lyrics than text
 							// can be null if there is an offset
 						}
 					}
+
+					writePlay(noteNode, note);
+
 					lastWrittenNoteEnd = beat.getStart() + voice.getDuration().getTime();
+					previousNotesOnAllStrings.put(note.getString(), note);
 				}
 				wroteSomething = true;
 			}
 		}
 		// empty measure? If so, fill with rests
-		if (!wroteSomething && measureIsEmpty && !firstBeats.isEmpty()) {
-			for (TGBeat restBeat : firstBeats) {
+		if (!wroteSomething && measureIsEmpty && !firstBeats.isEmpty()){
+			for (TGBeat restBeat : firstBeats){
 				insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
 			}
 		}
 	}
 
-	private void insertRest(Node parent, TGDuration duration, int nVoice, boolean isTablature) {
+	private void writeArticulationNotations(Node parent, TGNote note){
+		Node articulationsNode = this.addNode(parent, "articulations");
+
+		if (note.getEffect().isAccentuatedNote()){
+			this.addNode(articulationsNode, "accent");
+		}
+		if (note.getEffect().isHeavyAccentuatedNote()){
+			this.addNode(articulationsNode, "strong-accent");
+		}
+		if (note.getEffect().isStaccato()){
+			this.addNode(articulationsNode, "staccato");
+		}
+
+		this.removeNodeIfNoChildren(articulationsNode);
+	}
+
+	private void writeTechnicalNotations(Node parent, TGNote note, TGNote previousNoteOnString, boolean isTablature){
+		Node technicalNode = this.addNode(parent, "technical");
+
+		if (isTablature){
+			this.addNode(technicalNode,"fret", Integer.toString( note.getValue() ));
+			this.addNode(technicalNode,"string", Integer.toString( note.getString() ));
+		}
+
+		// TODO: Add logic for using <hammer-on> or <pull-off>.
+		// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pull-off/
+		// Need to know PREV note on same string to determine if last note was HO or PO, for stop tag.
+		// Need to know NEXT note on same string to determine if this note is a HO or a PO, for start tag.
+		if (previousNoteOnString != null && previousNoteOnString.getEffect().isHammer()){
+			Node hammerNode = this.addNode(technicalNode, "hammer-on");
+			this.addAttribute(hammerNode, "type", "stop");
+		}
+
+		if (note.getEffect().isHammer()){
+			Node hammerNode = this.addNode(technicalNode, "hammer-on", "H");
+			this.addAttribute(hammerNode, "type", "start");
+		}
+
+		if (note.getEffect().isTapping()){
+			this.addNode(technicalNode, "tap");
+		}
+
+		TGEffectBend bendEffect = note.getEffect().getBend();
+		if (bendEffect != null){
+			boolean isFirstBend = true;
+			Integer previousBendValue = 0;
+
+			for (BendPoint currentBendPoint : bendEffect.getPoints()){
+				if (previousBendValue == currentBendPoint.getValue()){
+					isFirstBend = false;
+					continue;
+				}
+
+				boolean isPreBend = false;
+				boolean isRelease = false;
+
+				if (isFirstBend && currentBendPoint.getValue() != 0){
+					isPreBend = true;
+				}
+
+				else if (currentBendPoint.getValue() == 0){
+					isRelease = true;
+				}
+
+				Node bendNode = this.addNode(technicalNode, "bend");
+				this.addAttribute(bendNode, "shape", "curved");
+
+				// Pitch is stored in 1/4s of semitones. MusicXML wants 1/2s of semitones, so divide by 2.
+				float pitchAlter = currentBendPoint.getValue() / 2.0f;
+				this.addNode(bendNode, "bend-alter", Float.toString(pitchAlter));
+
+				if (isPreBend){
+					this.addNode(bendNode, "pre-bend");
+				}
+				else if (isRelease){
+					this.addNode(bendNode, "release");
+				}
+
+				// TODO: Add trembar support, with with-bar element
+				// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/with-bar/
+
+				previousBendValue = currentBendPoint.getValue();
+				isFirstBend = false;
+			}
+		}
+
+		TGEffectHarmonic harmonicEffect = note.getEffect().getHarmonic();
+		if (harmonicEffect != null){
+			Node harmonicNode = this.addNode(technicalNode, "harmonic");
+
+			if (harmonicEffect.isNatural()){
+				this.addNode(harmonicNode, "natural");
+			}
+			else if (harmonicEffect.isArtificial() || harmonicEffect.isPinch()){
+				this.addNode(harmonicNode, "artificial");
+			}
+
+			// TODO: Can add base-pitch, touching-pitch, sounding-pitch.
+			// https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmonic/
+		}
+
+		this.removeNodeIfNoChildren(technicalNode);
+	}
+
+	private void writeOrnamentsNotations(Node parent, TGNote note){
+		Node ornamentsNode = this.addNode(parent, "ornaments");
+
+		if (note.getEffect().isTremoloPicking()){
+			int tremoloDuration = note.getEffect().getTremoloPicking().getDuration().getValue();
+			int tremoloMarkings = 0;
+
+			int loopDuration = TGDuration.QUARTER;
+			while (loopDuration < tremoloDuration){
+				loopDuration *= 2;
+				tremoloMarkings++;
+			}
+
+			this.addNode(ornamentsNode, "tremolo", Integer.toString(tremoloMarkings));
+		}
+
+		if (note.getEffect().isTrill()){
+			Node trillNode = this.addNode(ornamentsNode, "trill-mark");
+
+			// Default case of unison. As MusicXML only supports the following.
+			// half, unison, whole
+			// https://www.w3.org/2021/06/musicxml40/musicxml-reference/data-types/trill-step/
+			String trillStep = "unison";
+			int trillFret = note.getEffect().getTrill().getFret();
+			int trillFretDifference = trillFret - note.getValue();
+			if (trillFretDifference == 2){
+				trillStep = "whole";
+			}
+			else if (trillFretDifference == 1){
+				trillStep = "half";
+			}
+
+			this.addAttribute(trillNode, "trill-step", trillStep);
+		}
+
+		this.removeNodeIfNoChildren(ornamentsNode);
+	}
+
+	private void writePlay(Node parent, TGNote note){
+		Node playNode = this.addNode(parent, "play");
+
+		if (note.getEffect().isDeadNote()){
+			this.addNode(playNode, "mute", "straight");
+		}
+		else if (note.getEffect().isPalmMute()){
+			this.addNode(playNode, "mute", "palm");
+		}
+
+		this.removeNodeIfNoChildren(playNode);
+	}
+
+	private void insertRest(Node parent, TGDuration duration, int nVoice, boolean isTablature){
 		Node noteRestNode = this.addNode(parent,"note");
 		this.addNode(noteRestNode,"rest");
 		this.writeDurationAndVoice(noteRestNode, duration, false, nVoice);
 		this.addNode(noteRestNode, "staff", isTablature ? "2" : "1");
 	}
 
-
-	private void writeLyric(Node parent, MusicXMLMeasureLyric measureLyric) {
-		if (measureLyric.text.length() > 0) {
+	private void writeLyric(Node parent, MusicXMLMeasureLyric measureLyric){
+		if (measureLyric.text.length() > 0){
 			Node lyricNode = this.addNode(parent, "lyric");
 
 			this.addNode(lyricNode,"syllabic", measureLyric.syllabic.toString());
@@ -499,8 +837,20 @@ public class MusicXMLWriter {
 		return node;
 	}
 
-	private Document newDocument() {
-		try {
+	private void removeNode(Node nodeToRemove){
+		nodeToRemove.getParentNode().removeChild(nodeToRemove);
+	}
+
+	private void removeNodeIfNoChildren(Node nodeToRemove){
+		if (nodeToRemove.getChildNodes().getLength() != 0){
+			return;
+		}
+
+		this.removeNode(nodeToRemove);
+	}
+
+	private Document newDocument(){
+		try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.newDocument();
@@ -511,8 +861,8 @@ public class MusicXMLWriter {
 		return null;
 	}
 
-	private void saveDocument() {
-		try {
+	private void saveDocument(){
+		try{
 			TransformerFactory xformFactory = TransformerFactory.newInstance();
 			Transformer idTransform = xformFactory.newTransformer();
 			Source input = new DOMSource(this.document);

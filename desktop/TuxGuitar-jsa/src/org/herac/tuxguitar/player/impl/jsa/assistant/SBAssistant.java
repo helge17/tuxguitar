@@ -94,9 +94,9 @@ public class SBAssistant {
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
             	URL url = getSelection(urls);
-            
+
             	dialog.dispose();
-            
+
             	if( url != null ){
             		install(url);
             	}

@@ -47,7 +47,7 @@ public class TGDriveBrowserLogin {
 
 		this.activity.getResultManager().addHandler(this.authRequestCode, this.authRequestResultHandler);
     	this.activity.getResultManager().addHandler(this.accountRequestCode, this.accountRequestResultHandler);
-    
+
 		this.credential = GoogleAccountCredential.usingOAuth2(this.activity, Collections.singleton(DriveScopes.DRIVE));
 		if(!this.settings.isDefaultAccount()) {
 			this.credential.setSelectedAccountName(this.settings.getAccount());

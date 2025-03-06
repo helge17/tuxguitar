@@ -251,7 +251,7 @@ public class TGPiano {
 
 	/**
 	 * Pinta la nota a partir del indice
-	 * 
+	 *
 	 * @param gc
 	 * @param value
 	 */
@@ -301,7 +301,7 @@ public class TGPiano {
 
 	/**
 	 * Pinta la nota a partir del indice
-	 * 
+	 *
 	 * @param gc
 	 * @param value
 	 */

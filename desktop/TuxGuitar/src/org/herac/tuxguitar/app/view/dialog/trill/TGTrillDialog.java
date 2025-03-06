@@ -33,6 +33,8 @@ public class TGTrillDialog {
 	private UIRadioButton sixtyFourthButton;
 	private UIRadioButton thirtySecondButton;
 	private UIRadioButton sixTeenthButton;
+	private UIRadioButton eighthButton;
+	private UIRadioButton quarterButton;
 
 	public TGTrillDialog(){
 		super();
@@ -110,6 +112,16 @@ public class TGTrillDialog {
 			this.sixTeenthButton.setSelected(duration == TGDuration.SIXTEENTH);
 			durationLayout.set(this.sixTeenthButton, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+			this.eighthButton = uiFactory.createRadioButton(durationGroup);
+			this.eighthButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.EIGHTH));
+			this.eighthButton.setSelected(duration == TGDuration.EIGHTH);
+			durationLayout.set(this.eighthButton, 1, 4, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
+			this.quarterButton = uiFactory.createRadioButton(durationGroup);
+			this.quarterButton.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
+			this.quarterButton.setSelected(duration == TGDuration.QUARTER);
+			durationLayout.set(this.quarterButton, 1, 5, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
 			//---------------------------------------------------
 			//------------------BUTTONS--------------------------
 			//---------------------------------------------------
@@ -162,6 +174,10 @@ public class TGTrillDialog {
 			tgEffect.getDuration().setValue(TGDuration.THIRTY_SECOND);
 		} else if(this.sixTeenthButton.isSelected()) {
 			tgEffect.getDuration().setValue(TGDuration.SIXTEENTH);
+		} else if(this.eighthButton.isSelected()) {
+			tgEffect.getDuration().setValue(TGDuration.EIGHTH);
+		} else if(this.eighthButton.isSelected()) {
+			tgEffect.getDuration().setValue(TGDuration.QUARTER);
 		} else {
 			return null;
 		}

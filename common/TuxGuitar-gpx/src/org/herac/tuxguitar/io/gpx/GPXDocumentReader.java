@@ -190,6 +190,9 @@ public class GPXDocumentReader {
 								if( getAttributeValue(propertyNode, "name").equals("Tuning") ){
 									track.setTuningPitches( getChildNodeIntegerContentArray(propertyNode, "Pitches") );
 								}
+								else if ( getAttributeValue(propertyNode, "name").equals("CapoFret") ){
+									track.setCapo( getChildNodeIntegerContent(propertyNode, "Fret", 0) );
+								}
 							}
 						}
 					}
@@ -372,6 +375,12 @@ public class GPXDocumentReader {
 								if( propertyName.equals("Brush") ){
 									beat.setBrush( getChildNodeContent(propertyNode, "Direction") );
 								}
+								if( propertyName.equals("Slapped") ){
+									beat.setSlapped( getChildNode(propertyNode, "Enable") != null );
+								}
+								if( propertyName.equals("Popped") ){
+									beat.setPopped( getChildNode(propertyNode, "Enable") != null );
+								}
 							}
 						}
 					}
@@ -401,7 +410,7 @@ public class GPXDocumentReader {
 
 					note.setAccent(getChildNodeIntegerContent(noteNode, "Accent"));
 					note.setTrill(getChildNodeIntegerContent(noteNode, "Trill"));
-
+					note.setLetRing( getChildNode(noteNode, "LetRing") != null );
 					note.setVibrato( getChildNode(noteNode, "Vibrato") != null );
 
 					NodeList propertyNodes = getChildNodeList(noteNode, "Properties");
@@ -479,6 +488,19 @@ public class GPXDocumentReader {
 								}
 								if( propertyName.equals("HarmonicType") ){
 									note.setHarmonicType( getChildNodeContent (propertyNode, "HType"));
+								}
+							}
+						}
+					}
+
+					NodeList xPropertyNodes = getChildNodeList(noteNode, "XProperties");
+					if( xPropertyNodes != null ){
+						for( int p = 0 ; p < xPropertyNodes.getLength() ; p ++ ){
+							Node xPropertyNode = xPropertyNodes.item( p );
+							if (xPropertyNode.getNodeName().equals("XProperty") ){
+								String xPropertyId = getAttributeValue(xPropertyNode, "id");
+								if (xPropertyId.equals("688062467")) { // Trill duration
+									note.setTrillDuration(getChildNodeIntegerContent(xPropertyNode, "Int"));
 								}
 							}
 						}

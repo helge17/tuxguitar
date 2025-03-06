@@ -116,7 +116,7 @@ public class TGPainterImpl implements UIPainter {
 		this.canvas.drawBitmap(((TGImageImpl)image).getHandle(), toRect(srcX, srcY, srcX + srcWidth, srcY + srcHeight), toRect(dstX, dstY, dstX + dstWidth, dstY + dstHeight), this.paint);
 	}
 
-	public void drawString(String text, float x, float y) {    
+	public void drawString(String text, float x, float y) {
 		this.paint.setStyle(Paint.Style.FILL);
 		this.paint.setColor(this.foreground.getHandle(this.alpha));
 		this.canvas.drawText(text, x, y, this.paint);

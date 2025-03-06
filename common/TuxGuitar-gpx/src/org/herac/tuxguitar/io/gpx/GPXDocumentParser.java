@@ -125,6 +125,7 @@ public class GPXDocumentParser {
 					tgString.setValue(gpTrack.getTuningPitches()[ gpTrack.getTuningPitches().length - s ]);
 					tgTrack.getStrings().add(tgString);
 				}
+				tgTrack.setOffset(gpTrack.getCapo());
 			}else if( tgChannel.isPercussionChannel() ){
 				for( int s = 1; s <= 6 ; s ++ ){
 					tgTrack.getStrings().add(TGSongManager.newString(this.factory, s, 0));
@@ -358,6 +359,7 @@ public class GPXDocumentParser {
 			tgNote.setVelocity(tgVelocity);
 			tgNote.getEffect().setFadeIn(parseFadeIn(gpBeat));
 			tgNote.getEffect().setVibrato(gpNote.isVibrato());
+			tgNote.getEffect().setLetRing(gpNote.isLetRing());
 			tgNote.getEffect().setSlide(gpNote.isSlide());
 			tgNote.getEffect().setDeadNote(gpNote.isMutedEnabled());
 			tgNote.getEffect().setPalmMute(gpNote.isPalmMutedEnabled());
@@ -369,7 +371,7 @@ public class GPXDocumentParser {
 			tgNote.getEffect().setStaccato(gpNote.getAccent() == 1);
 			tgNote.getEffect().setHeavyAccentuatedNote(gpNote.getAccent() == 4);
 			tgNote.getEffect().setAccentuatedNote(gpNote.getAccent() == 8);
-			tgNote.getEffect().setTrill(parseTrill(gpNote));
+			tgNote.getEffect().setTrill(parseTrill(gpNote, tgValue));
 			tgNote.getEffect().setTremoloPicking(parseTremoloPicking(gpBeat, gpNote));
 			tgNote.getEffect().setHarmonic(parseHarmonic( gpNote ) );
 			tgNote.getEffect().setBend(parseBend( gpNote ) );
@@ -379,14 +381,21 @@ public class GPXDocumentParser {
 		}
 	}
 
-	private TGEffectTrill parseTrill(GPXNote gpNote){
+	private TGEffectTrill parseTrill(GPXNote gpNote, int initialFret){
 		TGEffectTrill tr = null;
 		if( gpNote.getTrill() > 0 ){
 			// A trill from string E frets 3 to 4 returns : <Trill>68</Trill> and <XProperties><XProperty id="688062467"><Int>30</Int></XProperty></XProperties>
-			// gpNote.getTrill() returns the MIDI note to trill this note with, TG wants a duration as well.
+			// <XProperty id="688062467"> is the duration in divisions.
+			// gpNote.getTrill() returns the MIDI note to trill this note with.
 			tr = this.factory.newEffectTrill();
-			tr.setFret(gpNote.getTrill());
-			// TODO: add a duration
+
+			int diffInTrillMidi = gpNote.getTrill() - gpNote.getMidiNumber();
+			tr.setFret(initialFret + diffInTrillMidi);
+
+			// Multiply trill duration by 2, as GP uses a value of 480 for quarter notes.
+			// While we use a value of 960. TGDuration.QUARTER_TIME.
+			TGDuration duration = TGDuration.fromTime(this.factory, gpNote.getTrillDuration() * 2);
+			tr.setDuration(duration);
 		}
 		return tr;
 	}
