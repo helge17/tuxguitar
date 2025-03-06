@@ -223,3 +223,16 @@ Then, click on "Add External JARs...", browse to folder `tuxguitar/desktop/build
 Then, at the bottom-right click Apply, then Debug.
 
 Congratulations. You can now build, run and debug TuxGuitar SWT.
+
+#### Import formatting configuration
+
+When writing this documentation, formatting of java files in TuxGuitar is *very* heterogeneous. For better code readability, it is recommended to apply the same formatting rules everywhere:
+
+- in Eclipse, click menu "Window -> Preferences", then on the left panel select "Java/Code style/Formatter"
+- import [formatting style file](../misc/tuxguitar_formatting.xml)
+- click "Apply and close"
+
+Whenever you create a new java file, auto-format it (use `Ctrl + Shift + F` shortcut).
+
+Whenever you want to *modify* an existing file, take care that this re-formatting operation can modify the file quite heavily. In this case, please create a dedicated commit when you apply this format, independently from other modifications. Objective is to separate commits with functional modifications from commits with style modifications only, or else code review will become a nightmare.
+
