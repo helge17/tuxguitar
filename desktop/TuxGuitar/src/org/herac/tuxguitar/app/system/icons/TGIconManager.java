@@ -34,6 +34,8 @@ public class TGIconManager {
 	private UIImage editModeSelection;
 	private UIImage editModeEdition;
 	private UIImage editModeEditionNotNatural;
+	private UIImage editFreeEditionMode;
+	private UIImage editMeasureErrors;
 	private UIImage helpDoc;
 	private UIImage helpAbout;
 	private UIImage goHome;
@@ -204,7 +206,9 @@ public class TGIconManager {
 	private UIImage zoomOut;
 	private UIImage zoomReset;
 	private UIImage zoomIn;
-
+	private UIImage OK;
+	private UIImage KO;
+	
 	private TGIconManager(TGContext context){
 		this.context = context;
 		this.themeCache = new HashMap<String, TGIconTheme>();
@@ -270,6 +274,8 @@ public class TGIconManager {
 		this.editModeSelection = loadIcon("edit_mode_selection.png");
 		this.editModeEdition = loadIcon("edit_mode_edition.png");
 		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
+		this.editFreeEditionMode = loadIcon("edit_mode_free.png");
+		this.editMeasureErrors = loadIcon("measure_status_check.png");
 		this.helpDoc = loadIcon("help_doc.png");
 		this.helpAbout = loadIcon("help_about.png");
 		this.goHome = loadIcon("browser_root.png");
@@ -427,6 +433,8 @@ public class TGIconManager {
 		this.zoomOut = loadIcon("zoom_out.png");
 		this.zoomReset = loadIcon("zoom_original.png");
 		this.zoomIn = loadIcon("zoom_in.png");
+		this.OK = loadIcon("measure_status_ok.png");
+		this.KO = loadIcon("measure_status_error.png");
 	}
 
 	private UIImage loadIcon(String name) {
@@ -609,6 +617,13 @@ public class TGIconManager {
 		return this.editModeEditionNotNatural;
 	}
 
+	public UIImage getFreeEditionMode() {
+		return this.editFreeEditionMode;
+	}
+
+	public UIImage getMeasureErrors() {
+		return this.editMeasureErrors;
+	}
 	public UIImage getEditModeSelection() {
 		return this.editModeSelection;
 	}
@@ -1223,6 +1238,14 @@ public class TGIconManager {
 
 	public UIImage getZoomIn() {
 		return this.zoomIn;
+	}
+
+	public UIImage getOK() {
+		return this.OK;
+	}
+
+	public UIImage getKO() {
+		return this.KO;
 	}
 
 	public static TGIconManager getInstance(TGContext context) {

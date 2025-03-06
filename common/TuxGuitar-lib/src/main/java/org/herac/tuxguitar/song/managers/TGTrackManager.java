@@ -140,6 +140,7 @@ public class TGTrackManager {
 	public void addNewMeasure(TGTrack track,TGMeasureHeader header){
 		TGMeasure previous = getMeasure(track, (header.getNumber() == 1)?(header.getNumber()+1):header.getNumber()-1);
 		TGMeasure newMeasure = getSongManager().getFactory().newMeasure(header);
+		getSongManager().getMeasureManager().autoCompleteSilences(newMeasure);
 		newMeasure.setTrack(track);
 		newMeasure.setClef(previous.getClef());
 		newMeasure.setKeySignature(previous.getKeySignature());

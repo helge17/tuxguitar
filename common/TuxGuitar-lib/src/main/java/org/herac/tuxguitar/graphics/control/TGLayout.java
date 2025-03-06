@@ -243,8 +243,11 @@ public abstract class TGLayout {
 	 * Pinta las lineas
 	 */
 	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,UIPainter painter,float x,float y,float width) {
+		this.paintLines(track, ts, painter, x, y, width, true);
+	}
+	public void paintLines(TGTrackImpl track,TGTrackSpacing ts,UIPainter painter,float x,float y,float width, boolean measureIsValid) {
 		if(width > 0){
-			setLineStyle(painter);
+			setLineStyle(painter, measureIsValid);
 			float tempX = ((x < 0)?0:x);
 			float tempY = y;
 
@@ -443,8 +446,15 @@ public abstract class TGLayout {
 	}
 
 	public void setLineStyle(UIPainter painter){
+		setLineStyle(painter, true);
+	}
+	public void setLineStyle(UIPainter painter, boolean isValid){
 		painter.setLineWidth(getLineWidth(0));
-		painter.setForeground(getDarkColor( getResources().getLineColor()));
+		if (isValid) {
+			painter.setForeground(getDarkColor( getResources().getLineColor()));
+		} else {
+			painter.setForeground(getDarkColor( getResources().getLineColorInvalid()));
+		}
 	}
 
 	public void setScoreSilenceStyle(UIPainter painter,boolean playMode){

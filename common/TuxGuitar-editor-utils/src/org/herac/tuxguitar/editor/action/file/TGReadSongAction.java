@@ -39,6 +39,9 @@ public class TGReadSongAction extends TGSongPersistenceActionBase {
 			tgSongLoaderHandle.getContext().setAttribute(ATTRIBUTE_FORMAT_CODE, context.getAttribute(ATTRIBUTE_FORMAT_CODE));
 
 			TGFileFormatManager.getInstance(getContext()).read(tgSongLoaderHandle);
+			if (tgSongLoaderHandle.getSong() != null) {
+				tgSongManager.updatePreciseStart(tgSongLoaderHandle.getSong());
+			}
 			context.setAttribute(IS_NEWER_FILE_FORMAT, tgSongLoaderHandle.isNewerFileFormatDetected());
 			context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, tgSongLoaderHandle.getSong());
 			context.setAttribute(ATTRIBUTE_FORMAT, tgSongLoaderHandle.getFormat());

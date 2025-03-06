@@ -51,6 +51,7 @@ public class PDFLayoutStyles extends TGLayoutStyles {
 		this.setForegroundColor(new UIColorModel(0x00,0x00,0x00));
 		this.setBackgroundColor(new UIColorModel(0xff,0xff,0xff));
 		this.setLineColor(new UIColorModel(0x00,0x00,0x00));
+		this.setLineColorInvalid(new UIColorModel(0x00,0x00,0x00));
 		this.setScoreNoteColor(new UIColorModel(0x00,0x00,0x00));
 		this.setTabNoteColor(new UIColorModel(0x00,0x00,0x00));
 		this.setPlayNoteColor(new UIColorModel(0x00,0x00,0x00));

@@ -14,6 +14,7 @@ import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGOpenMeasureErrorsDialogAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGRepeatAction;
@@ -22,6 +23,7 @@ import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import org.herac.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMenuShownAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
 import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
@@ -202,6 +204,7 @@ import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import org.herac.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import org.herac.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import org.herac.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -304,6 +307,9 @@ public class TGActionInstaller {
 		installAction(new TGSetNaturalKeyAction(context));
 		installAction(new TGSetVoice1Action(context));
 		installAction(new TGSetVoice2Action(context));
+		installAction(new TGToggleFreeEditionModeAction(context));
+		installAction(new TGOpenMeasureErrorsDialogAction(context));
+		installAction(new TGFixMeasureVoiceAction(context));
 
 		//tablature actions
 		installAction(new TGMouseClickAction(context));

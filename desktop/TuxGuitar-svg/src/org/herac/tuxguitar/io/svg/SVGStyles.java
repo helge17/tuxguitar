@@ -93,6 +93,7 @@ public class SVGStyles {
 		this.getStyles().setForegroundColor( new UIColorModel(0,0,0));
 		this.getStyles().setBackgroundColor( new UIColorModel(255,255,255) );
 		this.getStyles().setLineColor(  new UIColorModel(214,214,214)  );
+		this.getStyles().setLineColorInvalid(  new UIColorModel(214,214,214)  );
 		this.getStyles().setScoreNoteColor( new UIColorModel(64,64,64));
 		this.getStyles().setTabNoteColor(new UIColorModel(64,64,64));
 		this.getStyles().setPlayNoteColor(new UIColorModel(64,64,64));

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.herac.tuxguitar.song.factory.TGFactory;
+import org.herac.tuxguitar.song.helpers.TGMeasureError;
 import org.herac.tuxguitar.song.models.TGChannel;
 import org.herac.tuxguitar.song.models.TGColor;
 import org.herac.tuxguitar.song.models.TGDuration;
@@ -32,6 +33,7 @@ public class TGSongManager {
 	private TGFactory factory;
 	private TGTrackManager trackManager;
 	private TGMeasureManager measureManager;
+	private boolean freeEditionMode;
 
 	public TGSongManager(){
 		this(new TGFactory());
@@ -61,6 +63,32 @@ public class TGSongManager {
 			this.measureManager = new TGMeasureManager(this);
 		}
 		return this.measureManager;
+	}
+
+	public void toggleFreeEditionMode() {
+		this.freeEditionMode = !this.freeEditionMode;
+	}
+	
+	public void setFreeEditionMode(boolean newMode) {
+		this.freeEditionMode = newMode;
+	}
+	
+	public boolean isFreeEditionMode(TGMeasure measure) {
+		return (this.freeEditionMode || !getMeasureManager().isMeasureValid(measure));
+	}
+	
+	public List<TGMeasureError> getMeasureErrors(TGSong song) {
+		TGMeasureManager measureManager = getMeasureManager();
+		List<TGMeasureError> list = new ArrayList<TGMeasureError>();
+		Iterator<TGTrack> itTrack = song.getTracks();
+		while (itTrack.hasNext()) {
+			Iterator<TGMeasure> itMeasure = itTrack.next().getMeasures();
+			while (itMeasure.hasNext()) {
+				List<TGMeasureError> measureErrors = measureManager.getMeasureErrors(itMeasure.next());
+				list.addAll(measureErrors);
+			}
+		}
+		return list;
 	}
 
 	public void setSongName(TGSong song, String name){
@@ -455,18 +483,18 @@ public class TGSongManager {
 		Iterator<TGMeasureHeader> it = measures.iterator();
 		while(it.hasNext()){
 			TGMeasureHeader nextHeader = it.next();
-
 			long theMove = nextStart - nextHeader.getStart();
-
-			//moveMeasureComponents(nextHeader,theMove);
-			moveMeasureHeader(nextHeader,theMove,0);
-
+			if (!this.freeEditionMode) {
+				moveMeasureHeader(nextHeader,theMove,0);
+			}
 			if(toEnd){
 				nextHeader.getTimeSignature().copyFrom(timeSignature);
 			}
 			nextStart = nextHeader.getStart() + nextHeader.getLength();
 		}
-		moveOutOfBoundsBeatsToNewMeasure(song, header.getStart());
+		if (!this.freeEditionMode) {
+			moveOutOfBoundsBeatsToNewMeasure(song, header.getStart());
+		}
 	}
 
 	public void moveOutOfBoundsBeatsToNewMeasure(TGSong song, long start){
