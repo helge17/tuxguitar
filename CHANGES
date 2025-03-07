@@ -7,7 +7,10 @@ TuxGuitar 2.0.0 (2025-xx-xx) changes:
 * Base duration for tempo is now configurable, not necessarily a quarter
 * Added pick stroke up/down effect on beat
 * Main toolbar reworked
+* Enable ASCII export on Android
+* Remove the outdated skins Ersplus, blue_serious, Lavender
 * Fix an old issue with tuplets that could lead to invalid measures
+* Fix pitch of audio unit plugin on macOS
 * Import TEF v3 files
 * improved MusicXML export
 * improved Guitar Pro import
