@@ -20,6 +20,7 @@ import org.herac.tuxguitar.song.models.TGMeasure;
 import org.herac.tuxguitar.song.models.TGMeasureHeader;
 import org.herac.tuxguitar.song.models.TGSong;
 import org.herac.tuxguitar.song.models.TGTrack;
+import org.herac.tuxguitar.util.TGBeatRange;
 import org.herac.tuxguitar.util.TGContext;
 
 public class TGPasteAction extends TGActionBase {
@@ -39,8 +40,15 @@ public class TGPasteAction extends TGActionBase {
 			TGFactory factory = getSongManager(tgActionContext).getFactory();
 			TGSongManager songManager = this.getSongManager(tgActionContext);
 			TGTrackManager trackManager = songManager.getTrackManager();
-			TGBeat start = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+			TGBeat beat = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+			TGBeatRange beatRange = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 			TGTrack destTrack = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+
+			// where to paste to?
+			TGBeat destinationBeat = beat;
+			if ((beatRange != null) && !beatRange.isEmpty()) {
+				destinationBeat = beatRange.getBeats().get(0);
+			}
 
 			// don't copy paste between percussion/non-percussion tracks
 			if (beatList.isPercussionTrack() == destTrack.isPercussion()) {
@@ -51,7 +59,7 @@ public class TGPasteAction extends TGActionBase {
 						destTrack.getStrings(), destTrack.getMaxFret());
 
 				// replace beats at required position
-				List<TGBeat> newBeats = trackManager.replaceBeats(destTrack, beatsListToPaste.getBeats(), start.getPreciseStart());
+				List<TGBeat> newBeats = trackManager.replaceBeats(destTrack, beatsListToPaste.getBeats(), destinationBeat.getPreciseStart());
 
 				// need to add extra beats at the end? (e.g. when pasting at end of song)
 				if (beatsListToPaste.getBeats().size() > newBeats.size()) {
