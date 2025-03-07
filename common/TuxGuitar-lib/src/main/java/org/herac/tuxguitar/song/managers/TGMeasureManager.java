@@ -816,10 +816,14 @@ public class TGMeasureManager {
 
 	public void moveAllBeats(TGMeasure measure,long theMove){
 		moveBeats(measure.getBeats(),theMove);
+		// refresh precise start
+		this.updateBeatsPreciseStart(measure);
 	}
 
 	public void moveBeats(TGMeasure measure, long start, long theMove){
 		moveBeats(getBeatsBeforeEnd(measure.getBeats(), start),theMove);
+		// refresh precise start
+		this.updateBeatsPreciseStart(measure);
 	}
 
 	/**
@@ -848,8 +852,6 @@ public class TGMeasureManager {
 		long start = beat.getStart();
 		//define new (approximative) start
 		beat.setStart(start + theMove);
-		// refresh precise start
-		this.updateBeatPreciseStart(beat);
 	}
 	private void moveBeatPrecise(TGBeat beat,long thePreciseMove){
 		long preciseStart = beat.getPreciseStart();
@@ -1730,6 +1732,11 @@ public class TGMeasureManager {
 		this.removeBeat(beat);
 	}
 
+	public void removeVoiceWithoutControl(TGVoice voice){
+		removeVoice(voice);
+		this.updateBeatsPreciseStart(voice.getBeat().getMeasure());
+	}
+	
 	public void removeVoice(TGVoice voice,boolean moveNextVoices){
 		removeVoice(voice);
 		if(moveNextVoices){
@@ -1822,6 +1829,9 @@ public class TGMeasureManager {
 			}else{
 				beat.getVoice(voiceIndex).getDuration().copyFrom( oldDuration );
 			}
+		}
+		if (getSongManager().isFreeEditionMode(measure)) {
+			this.updateBeatsPreciseStart(measure);
 		}
 	}
 

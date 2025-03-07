@@ -202,7 +202,7 @@ public abstract class TGBeat implements Comparable<TGBeat> {
 	@Override
 	public int compareTo(TGBeat beat) {
 		if (beat == null) return 1;
-		if ((this.preciseStart != null) && (beat.getPreciseStart() >= 0)) {
+		if ((this.preciseStart != null) && (beat.getPreciseStart()!= null)) {
 			return Long.valueOf(this.preciseStart).compareTo(Long.valueOf(beat.getPreciseStart()));
 		}
 		return (Long.valueOf(this.getStart()).compareTo(Long.valueOf(beat.getStart())));
