@@ -293,7 +293,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		String songStatusDetailed = new String();
 		if (listErrors.size()==0) {
 			globalStatusIcon.setImage(this.imageOK);
-			songStatusDetailed = TuxGuitar.getProperty(sSongValid);
+			songStatusDetailed = sSongValid;
 		} else {
 			globalStatusIcon.setImage(this.imageKO);
 			songStatusDetailed = sSongInvalid.replace("{0}", String.valueOf(listErrors.size()));
@@ -307,7 +307,6 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	}
 	
 	private String userMessage(TGMeasure measure, int voiceIndex, TGMeasureError err) {
-		// TODO translations
 		String sVoiceStatus = new String();
 		if (err == null) {
 			sVoiceStatus = sVoiceValid;
@@ -387,8 +386,6 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		if(!isDisposed()){
 			this.dialog.dispose();
 		}
-		// TODO, fire event to refresh button checked in edit toolbar
-		//or alternative option: replace "toggle" action by "open", with no state in toolbar
 	}
 	
 	private UIFactory getUIFactory() {
