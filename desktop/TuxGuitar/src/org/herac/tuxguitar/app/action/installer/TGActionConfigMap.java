@@ -156,7 +156,6 @@ import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateModified
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateModifiedVelocityController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateNoteRangeController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdatePlayerTracksController;
-import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateReadSongController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedMeasureController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedTrackController;
 import org.herac.tuxguitar.app.action.listener.cache.controller.TGUpdateSavedSongController;
@@ -317,12 +316,12 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	public static final int DISABLE_ON_PLAY = 0x08;
 	public static final int STOP_TRANSPORT = 0x10;
 	public static final int SAVE_BEFORE = 0x20;
+	public static final int REQUIRES_VALID_SONG = 0x40;
 
 	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
 	private static final TGUpdateController UPDATE_SONG_CTL = new TGUpdateSongController();
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
-	private static final TGUpdateController UPDATE_SONG_READ_CTL = new TGUpdateReadSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
 	private static final TGUpdateController UPDATE_NOTE_RANGE_CTL = new TGUpdateNoteRangeController();
@@ -347,23 +346,23 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
 		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
-		this.map(TGReadSongAction.NAME, LOCKABLE, UPDATE_SONG_READ_CTL);
+		this.map(TGReadSongAction.NAME, LOCKABLE);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
-		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | REQUIRES_VALID_SONG);
+		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | REQUIRES_VALID_SONG);
 		this.map(TGReadURLAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGImportSongAction.NAME, LOCKABLE);
-		this.map(TGExportSongAction.NAME, LOCKABLE);
+		this.map(TGExportSongAction.NAME, LOCKABLE | REQUIRES_VALID_SONG);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
 		this.map(TGCloseDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGExitAction.NAME, LOCKABLE | SYNC_THREAD);
-		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT);
-		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT | REQUIRES_VALID_SONG);
+		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT | REQUIRES_VALID_SONG);
 
 		//edit actions
 		this.map(TGCutAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
@@ -665,6 +664,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		tgActionConfig.setSyncThread((flags & SYNC_THREAD) != 0);
 		tgActionConfig.setUnsavedInterceptor((flags & SAVE_BEFORE) != 0);
 		tgActionConfig.setDocumentModifier(undoableController != null);
+		tgActionConfig.setInvalidSongInterceptor((flags & REQUIRES_VALID_SONG) != 0);
 
 		this.set(actionId, tgActionConfig);
 	}

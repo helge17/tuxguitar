@@ -48,11 +48,11 @@ import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
 import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGMeasureErrorDialog implements TGEventListener {
-	
+
 	private UIWindow dialog;
 	private TGContext context;
 	private TGMeasureError currentError;
-	private UILegendPanel curMeasureLegendPanel ;
+	private UILegendPanel curMeasureLegendPanel;
 	private UIImageView measureStatusIcon;
 	private UILabel voiceStatusLabel;
 	private UIButton fixButton;
@@ -68,7 +68,8 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	private TGProcess loadPropertiesProcess;
 	// cache locally icons (skin-dependent) and messages (language-dependent)
 	// to avoid re-loading them each time the dialog is updated
-	// (dialog content depends from skin, language, and current measure/song, and may be updated often)
+	// (dialog content depends from skin, language, and current measure/song, and
+	// may be updated often)
 	private UIImage imageOK;
 	private UIImage imageKO;
 	private String sMeasureErrors;
@@ -95,58 +96,63 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		UIFactory uiFactory = this.getUIFactory();
 		UIWindow uiParent = viewContext.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		UITableLayout dialogLayout = new UITableLayout();
-		
+
 		this.loadIcons();
 		this.loadProperties();
-		
+
 		this.dialog = uiFactory.createWindow(uiParent, false, true);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(sMeasureErrors);
-		
-		//----------------- CURRENT MEASURE ------------------------
+
+		// ----------------- CURRENT MEASURE ------------------------
 		UITableLayout curMeasureLayout = new UITableLayout();
 		this.curMeasureLegendPanel = uiFactory.createLegendPanel(dialog);
 		curMeasureLegendPanel.setLayout(curMeasureLayout);
 		dialogLayout.set(curMeasureLegendPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		measureStatusIcon = uiFactory.createImageView(curMeasureLegendPanel);
-		curMeasureLayout.set(measureStatusIcon,1,1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
-		
+		curMeasureLayout.set(measureStatusIcon, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false,
+				true);
+
 		voiceStatusLabel = uiFactory.createLabel(curMeasureLegendPanel);
-		curMeasureLayout.set(voiceStatusLabel,1,2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
-		
+		curMeasureLayout.set(voiceStatusLabel, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
+
 		fixButton = uiFactory.createButton(curMeasureLegendPanel);
 		fixButton.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				if (TGMeasureErrorDialog.this.currentError != null) {
 					TGActionProcessor actionProcessor = new TGActionProcessor(context, TGFixMeasureVoiceAction.NAME);
-					actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, TGMeasureErrorDialog.this.currentError.getMeasure());
-					actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_VOICE_INDEX, TGMeasureErrorDialog.this.currentError.getVoiceIndex());
+					actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE,
+							TGMeasureErrorDialog.this.currentError.getMeasure());
+					actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_VOICE_INDEX,
+							TGMeasureErrorDialog.this.currentError.getVoiceIndex());
 					actionProcessor.process();
 				}
 			}
 		});
-		curMeasureLayout.set(fixButton, 2,2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
-		
-		//----------------- GLOBAL STATUS ------------------------
+		curMeasureLayout.set(fixButton, 2, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
+
+		// ----------------- GLOBAL STATUS ------------------------
 		UITableLayout globalStatusLayout = new UITableLayout();
 		this.globalStatusLegendPanel = uiFactory.createLegendPanel(dialog);
 		this.globalStatusLegendPanel.setLayout(globalStatusLayout);
 		dialogLayout.set(globalStatusLegendPanel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		globalStatusIcon = uiFactory.createImageView(globalStatusLegendPanel);
-		globalStatusLayout.set(globalStatusIcon,1,1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
-		
+		globalStatusLayout.set(globalStatusIcon, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false,
+				true);
+
 		globalStatusLabel = uiFactory.createLabel(globalStatusLegendPanel);
-		globalStatusLayout.set(globalStatusLabel,1,2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
-		
-		//----------------- ERRORS LIST ------------------------
+		globalStatusLayout.set(globalStatusLabel, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true,
+				true);
+
+		// ----------------- ERRORS LIST ------------------------
 		UITableLayout errListLayout = new UITableLayout();
 		this.errListLegendPanel = uiFactory.createLegendPanel(dialog);
 		this.errListLegendPanel.setLayout(errListLayout);
 		dialogLayout.set(errListLegendPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.showAllTracks = uiFactory.createCheckBox(errListLegendPanel);
 		this.showAllTracks.setSelected(true);
 		this.showAllTracks.addSelectionListener(new UISelectionListener() {
@@ -155,8 +161,8 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				TGMeasureErrorDialog.this.updateItemsProcess.process();
 			}
 		});
-		errListLayout.set(showAllTracks, 1,1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
-		
+		errListLayout.set(showAllTracks, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+
 		this.errTable = uiFactory.createTable(errListLegendPanel, false);
 		this.errTable.setColumns(1);
 		this.errTable.addSelectionListener(new UISelectionListener() {
@@ -167,14 +173,14 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			}
 		});
 		errListLayout.set(errTable, UITableLayout.PACKED_HEIGHT, 120f);
-		errListLayout.set(errTable, 2,1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
-		//----------------- BUTTON ------------------------
+		errListLayout.set(errTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
+		// ----------------- BUTTON ------------------------
 		UITableLayout buttonLayout = new UITableLayout();
 		UIPanel buttonPanel = uiFactory.createPanel(dialog, false);
 		buttonPanel.setLayout(buttonLayout);
 		dialogLayout.set(buttonPanel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		
+
 		this.closeButton = uiFactory.createButton(buttonPanel);
 		this.closeButton.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -182,41 +188,43 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				TGMeasureErrorDialog.this.dispose();
 			}
 		});
-		buttonLayout.set(closeButton, 1,1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
-		
+		buttonLayout.set(closeButton, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, true);
+
 		this.addListeners();
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				removeListeners();
 			}
 		});
-		
+
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_PACK);
-		
+
 	}
-	
-	private void addListeners(){
+
+	private void addListeners() {
 		TuxGuitar.getInstance().getSkinManager().addLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().addLoader(this);
 		TuxGuitar.getInstance().getEditorManager().addUpdateListener(this);
 	}
-	
-	private void removeListeners(){
+
+	private void removeListeners() {
 		TuxGuitar.getInstance().getSkinManager().removeLoader(this);
 		TuxGuitar.getInstance().getLanguageManager().removeLoader(this);
 		TuxGuitar.getInstance().getEditorManager().removeUpdateListener(this);
 	}
-	
+
 	private void moveToError(TGMeasureError err) {
 		TGActionProcessor actionProcessor = new TGActionProcessor(this.context, TGMoveToAction.NAME);
-		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, (TGTrackImpl)err.getMeasure().getTrack());
+		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK,
+				(TGTrackImpl) err.getMeasure().getTrack());
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, err.getMeasure());
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, err.getMeasure().getBeat(0));
-		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, err.getMeasure().getTrack().getString(1));
+		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING,
+				err.getMeasure().getTrack().getString(1));
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, Boolean.FALSE);
 		actionProcessor.process();
 	}
-	
+
 	private void loadProperties() {
 		this.sMeasureErrors = TuxGuitar.getProperty("measure-errors");
 		this.sShowAllTracks = TuxGuitar.getProperty("measure-errors.show-all-tracks");
@@ -232,24 +240,25 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		this.sVoiceInvalid = TuxGuitar.getProperty("measure-errors.voice-invalid");
 		this.sClose = TuxGuitar.getProperty("close");
 	}
-	
+
 	private void loadIcons() {
 		this.imageOK = TuxGuitar.getInstance().getIconManager().getOK();
 		this.imageKO = TuxGuitar.getInstance().getIconManager().getKO();
 	}
-	
+
 	private void updateItems() {
 		if (this.isDisposed()) {
 			return;
 		}
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
 		TGSong song = tablature.getSong();
-		TGMeasureImpl measure =  tablature.getCaret().getMeasure();
+		TGMeasureImpl measure = tablature.getCaret().getMeasure();
 		TGSongManager songManager = tablature.getSongManager();
-		
-		//----------------- ERRORS LIST ------------------------
+
+		// ----------------- ERRORS LIST ------------------------
 		this.showAllTracks.setText(sShowAllTracks);
-		// build errors list, and create associated user messages to be displayed in table
+		// build errors list, and create associated user messages to be displayed in
+		// table
 		List<TGMeasureError> listErrors = songManager.getMeasureErrors(song);
 		List<UITableItem<TGMeasureError>> listTableItems = new ArrayList<UITableItem<TGMeasureError>>();
 		this.errTable.removeItems();
@@ -260,7 +269,8 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			if (measure.equals(err.getMeasure())) {
 				this.currentError = err;
 			}
-			if (this.showAllTracks.isSelected() || (measure.getTrack().getNumber() == err.getMeasure().getTrack().getNumber())) {
+			if (this.showAllTracks.isSelected()
+					|| (measure.getTrack().getNumber() == err.getMeasure().getTrack().getNumber())) {
 				listTableItems.add(tableItem);
 			}
 		}
@@ -279,40 +289,40 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				this.errTable.setSelectedItem(tableItem);
 			}
 		}
-		
-		//----------------- CURRENT MEASURE ------------------------
+
+		// ----------------- CURRENT MEASURE ------------------------
 		this.curMeasureLegendPanel.setText(sCurrentMeasuresStatus);
-		this.measureStatusIcon.setImage(this.currentError == null ? this.imageOK: this.imageKO);
+		this.measureStatusIcon.setImage(this.currentError == null ? this.imageOK : this.imageKO);
 		this.voiceStatusLabel.setText(userMessage(measure, tablature.getCaret().getVoice(), this.currentError));
 		this.fixButton.setText(sFix);
-		this.fixButton.setEnabled(this.currentError!=null
-				&& (this.currentError.getErrCode()==TGMeasureManager.VOICE_TOO_LONG || this.currentError.getErrCode()==TGMeasureManager.VOICE_TOO_SHORT));
-		
-		//----------------- GLOBAL STATUS ------------------------
+		this.fixButton.setEnabled(
+				this.currentError != null && (this.currentError.getErrCode() == TGMeasureManager.VOICE_TOO_LONG
+						|| this.currentError.getErrCode() == TGMeasureManager.VOICE_TOO_SHORT));
+
+		// ----------------- GLOBAL STATUS ------------------------
 		this.globalStatusLegendPanel.setText(sSongStatus);
 		String songStatusDetailed = new String();
-		if (listErrors.size()==0) {
+		if (listErrors.size() == 0) {
 			globalStatusIcon.setImage(this.imageOK);
-			songStatusDetailed = TuxGuitar.getProperty(sSongValid);
+			songStatusDetailed = sSongValid;
 		} else {
 			globalStatusIcon.setImage(this.imageKO);
 			songStatusDetailed = sSongInvalid.replace("{0}", String.valueOf(listErrors.size()));
 		}
 		globalStatusLabel.setText(songStatusDetailed);
-		
-		//----------------- BUTTON ------------------------
+
+		// ----------------- BUTTON ------------------------
 		this.closeButton.setText(sClose);
-		
+
 		this.dialog.pack();
 	}
-	
+
 	private String userMessage(TGMeasure measure, int voiceIndex, TGMeasureError err) {
-		// TODO translations
 		String sVoiceStatus = new String();
 		if (err == null) {
 			sVoiceStatus = sVoiceValid;
 		} else {
-			switch(err.getErrCode()) {
+			switch (err.getErrCode()) {
 			case TGMeasureManager.VOICE_TOO_LONG:
 				sVoiceStatus = sVoiceTooLong;
 				break;
@@ -326,73 +336,68 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		}
 		sVoiceStatus = sVoiceStatus.replace("{0}", String.valueOf(measure.getTrack().getNumber()));
 		sVoiceStatus = sVoiceStatus.replace("{1}", String.valueOf(measure.getNumber()));
-		sVoiceStatus = sVoiceStatus.replace("{2}", String.valueOf(voiceIndex+1));
+		sVoiceStatus = sVoiceStatus.replace("{2}", String.valueOf(voiceIndex + 1));
 		return sVoiceStatus;
 	}
-	
+
 	private void createSyncProcesses() {
 		this.updateItemsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				updateItems();
 			}
 		});
-		
+
 		this.loadIconsProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				loadIcons();
 			}
 		});
-		
+
 		this.loadPropertiesProcess = new TGSyncProcessLocked(this.context, new Runnable() {
 			public void run() {
 				loadProperties();
 			}
 		});
-		
-	}
 
+	}
 
 	@Override
 	public void processEvent(TGEvent event) throws TGEventException {
 		if (!this.isDisposed()) {
-			if( TGUpdateEvent.EVENT_TYPE.equals(event.getEventType()) ) {
-				int type = ((Integer)event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
-				if( type == TGUpdateEvent.SELECTION ){
+			if (TGUpdateEvent.EVENT_TYPE.equals(event.getEventType())) {
+				int type = ((Integer) event.getAttribute(TGUpdateEvent.PROPERTY_UPDATE_MODE)).intValue();
+				if (type == TGUpdateEvent.SELECTION) {
 					this.updateItemsProcess.process();
 				}
-			}
-			else if( TGSkinEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			} else if (TGSkinEvent.EVENT_TYPE.equals(event.getEventType())) {
 				this.loadIconsProcess.process();
-			}
-			else if( TGLanguageEvent.EVENT_TYPE.equals(event.getEventType()) ) {
+			} else if (TGLanguageEvent.EVENT_TYPE.equals(event.getEventType())) {
 				this.loadPropertiesProcess.process();
 			}
 		}
 	}
 
 	public static TGMeasureErrorDialog getInstance(TGContext context) {
-		return TGSingletonUtil.getInstance(context, TGMeasureErrorDialog.class.getName(), new TGSingletonFactory<TGMeasureErrorDialog>() {
-			public TGMeasureErrorDialog createInstance(TGContext context) {
-				return new TGMeasureErrorDialog(context);
-			}
-		});
+		return TGSingletonUtil.getInstance(context, TGMeasureErrorDialog.class.getName(),
+				new TGSingletonFactory<TGMeasureErrorDialog>() {
+					public TGMeasureErrorDialog createInstance(TGContext context) {
+						return new TGMeasureErrorDialog(context);
+					}
+				});
 	}
 
 	public boolean isDisposed() {
 		return (this.dialog == null || this.dialog.isDisposed());
 	}
 
-
 	public void dispose() {
-		if(!isDisposed()){
+		if (!isDisposed()) {
 			this.dialog.dispose();
 		}
-		// TODO, fire event to refresh button checked in edit toolbar
-		//or alternative option: replace "toggle" action by "open", with no state in toolbar
 	}
-	
+
 	private UIFactory getUIFactory() {
 		return TGApplication.getInstance(this.context).getFactory();
 	}
-	
+
 }

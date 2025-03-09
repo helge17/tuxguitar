@@ -605,6 +605,9 @@ public class TGActionInstaller {
 			if( config.isLockableAction() ) {
 				this.manager.getLockableActionListener().addActionId(actionId);
 			}
+			if ( config.isInvalidSongInterceptor() ) {
+				this.manager.getInvalidSongInterceptor().addActionId(actionId);
+			}
 
 			this.manager.getUpdatableActionListener().getControllers().set(actionId, config.getUpdateController());
 			this.manager.getUndoableActionListener().getControllers().set(actionId, config.getUndoableController());
