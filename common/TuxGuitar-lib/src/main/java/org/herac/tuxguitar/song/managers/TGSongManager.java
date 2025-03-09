@@ -91,6 +91,10 @@ public class TGSongManager {
 		return list;
 	}
 
+	public boolean isValid(TGSong song) {
+		return this.getMeasureErrors(song).isEmpty();
+	}
+
 	public void setSongName(TGSong song, String name){
 		song.setName(name);
 	}

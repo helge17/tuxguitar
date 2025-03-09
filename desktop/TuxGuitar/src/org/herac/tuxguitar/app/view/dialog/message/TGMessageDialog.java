@@ -5,6 +5,7 @@ import org.herac.tuxguitar.app.system.icons.TGIconManager;
 import org.herac.tuxguitar.app.ui.TGApplication;
 import org.herac.tuxguitar.app.view.controller.TGViewContext;
 import org.herac.tuxguitar.app.view.util.TGDialogUtil;
+import org.herac.tuxguitar.editor.action.TGActionProcessor;
 import org.herac.tuxguitar.ui.UIFactory;
 import org.herac.tuxguitar.ui.event.UISelectionEvent;
 import org.herac.tuxguitar.ui.event.UISelectionListener;
@@ -22,6 +23,8 @@ public class TGMessageDialog {
 	public static final String ATTRIBUTE_STYLE = "style";
 	public static final String ATTRIBUTE_TITLE = "title";
 	public static final String ATTRIBUTE_MESSAGE = "message";
+	// optional: name of an action to process after closing dialog with "OK" button
+	public static final String ATTRIBUTE_OK_ACTION_NAME = "ok-action-name";
 
 	public static final Integer STYLE_INFO = 1;
 	public static final Integer STYLE_WARNING = 2;
@@ -69,6 +72,10 @@ public class TGMessageDialog {
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				dialog.dispose();
+				String actionName = context.getAttribute(ATTRIBUTE_OK_ACTION_NAME);
+				if (actionName != null) {
+					new TGActionProcessor(context.getContext(), actionName).process();
+				}
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);

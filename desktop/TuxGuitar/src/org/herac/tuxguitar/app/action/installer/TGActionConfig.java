@@ -14,6 +14,7 @@ public class TGActionConfig {
 	private boolean documentModifier;
 	private boolean syncThread;
 	private boolean unsavedInterceptor;
+	private boolean invalidSongInterceptor;
 
 	public TGActionConfig() {
 		super();
@@ -89,5 +90,13 @@ public class TGActionConfig {
 
 	public void setUnsavedInterceptor(boolean unsavedInterceptor) {
 		this.unsavedInterceptor = unsavedInterceptor;
+	}
+	
+	public boolean isInvalidSongInterceptor() {
+		return this.invalidSongInterceptor;
+	}
+	
+	public void setInvalidSongInterceptor(boolean invalidSongInterceptor) {
+		this.invalidSongInterceptor = invalidSongInterceptor;
 	}
 }
