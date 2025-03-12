@@ -843,17 +843,17 @@ public class TGSongManager {
 	}
 
 	public void moveMeasureHeaders(TGSong song, List<TGMeasureHeader> headers,long theMove,int numberMove,boolean moveComponents) {
-		if(moveComponents){
-			Iterator<TGMeasureHeader> it = headers.iterator();
-			while(it.hasNext()){
-				TGMeasureHeader header = it.next();
-				moveMeasureComponents(song, header,theMove);
-			}
-		}
 		Iterator<TGMeasureHeader> it = headers.iterator();
 		while (it.hasNext()) {
 			TGMeasureHeader header = it.next();
 			moveMeasureHeader(header,theMove,numberMove);
+		}
+		if(moveComponents){
+			it = headers.iterator();
+			while(it.hasNext()){
+				TGMeasureHeader header = it.next();
+				moveMeasureComponents(song, header,theMove);
+			}
 		}
 	}
 
