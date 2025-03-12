@@ -2,6 +2,7 @@ package org.herac.tuxguitar.app.view.menu.impl;
 
 import org.herac.tuxguitar.app.TuxGuitar;
 import org.herac.tuxguitar.app.action.impl.edit.TGCutAction;
+import org.herac.tuxguitar.app.action.impl.edit.TGOpenMeasureErrorsDialogAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGCopyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGPasteAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGRepeatAction;
@@ -10,6 +11,7 @@ import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import org.herac.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
 import org.herac.tuxguitar.app.action.impl.selector.TGClearSelectionAction;
 import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionFirstAction;
 import org.herac.tuxguitar.app.action.impl.selector.TGExtendSelectionLastAction;
@@ -53,6 +55,8 @@ public class EditMenuItem extends TGMenuItem{
 	private UIMenuCheckableItem notNaturalKey;
 	private UIMenuCheckableItem voice1;
 	private UIMenuCheckableItem voice2;
+	private UIMenuCheckableItem freeEditionMode;
+	private UIMenuActionItem openMeasureErrorsDialog;
 
 	public EditMenuItem(UIMenu parent) {
 		this.editMenuItem = parent.createSubMenuItem();
@@ -125,6 +129,12 @@ public class EditMenuItem extends TGMenuItem{
 		this.notNaturalKey = this.editMenuItem.getMenu().createCheckItem();
 		this.notNaturalKey.addSelectionListener(this.createActionProcessor(TGSetNaturalKeyAction.NAME));
 
+		// -- FREE EDITION MODE --
+		this.freeEditionMode = this.editMenuItem.getMenu().createCheckItem();
+		this.freeEditionMode.addSelectionListener(this.createActionProcessor(TGToggleFreeEditionModeAction.NAME));
+		this.openMeasureErrorsDialog = this.editMenuItem.getMenu().createActionItem();
+		this.openMeasureErrorsDialog.addSelectionListener(this.createActionProcessor(TGOpenMeasureErrorsDialogAction.NAME));
+
 		//--SEPARATOR--
 		this.editMenuItem.getMenu().createSeparator();
 
@@ -167,6 +177,9 @@ public class EditMenuItem extends TGMenuItem{
 		this.notNaturalKey.setEnabled(!running && kit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
 		this.voice1.setChecked(kit.getTablature().getCaret().getVoice() == 0);
 		this.voice2.setChecked(kit.getTablature().getCaret().getVoice() == 1);
+		this.freeEditionMode.setChecked(tablature.getSongManager().isFreeEditionMode(tablature.getCaret().getMeasure()));
+		this.freeEditionMode.setEnabled(!running);
+		this.openMeasureErrorsDialog.setEnabled(!running);
 	}
 
 	public void loadProperties(){
@@ -191,6 +204,8 @@ public class EditMenuItem extends TGMenuItem{
 		setMenuItemTextAndAccelerator(this.notNaturalKey, "edit.not-natural-key", TGSetNaturalKeyAction.NAME);
 		setMenuItemTextAndAccelerator(this.voice1, "edit.voice-1", TGSetVoice1Action.NAME);
 		setMenuItemTextAndAccelerator(this.voice2, "edit.voice-2", TGSetVoice2Action.NAME);
+		setMenuItemTextAndAccelerator(this.freeEditionMode, "edit.free-edition-mode", TGToggleFreeEditionModeAction.NAME);
+		setMenuItemTextAndAccelerator(this.openMeasureErrorsDialog, "edit.measure-errors-dialog", TGOpenMeasureErrorsDialogAction.NAME);
 	}
 
 	public void loadIcons(){
@@ -205,5 +220,7 @@ public class EditMenuItem extends TGMenuItem{
 		this.notNaturalKey.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEditionNotNatural());
 		this.voice1.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice1());
 		this.voice2.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice2());
+		this.freeEditionMode.setImage(TuxGuitar.getInstance().getIconManager().getFreeEditionMode());
+		this.openMeasureErrorsDialog.setImage(TuxGuitar.getInstance().getIconManager().getMeasureErrors());
 	}
 }
