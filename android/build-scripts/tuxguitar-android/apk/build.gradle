@@ -35,7 +35,7 @@ android {
 	defaultConfig {
 		applicationId "org.herac.tuxguitar.android.application"
 		minSdkVersion 24
-		targetSdkVersion 31
+		targetSdkVersion 33
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
 		versionName "9.99-SNAPSHOT"

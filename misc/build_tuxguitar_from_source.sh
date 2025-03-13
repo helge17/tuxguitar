@@ -519,14 +519,12 @@ done
 
 function build_tg_for_android {
 
-BUILD_ARCH=`dpkg --print-architecture`
-
 # Install Android Studio from https://developer.android.com/studio/
-# Android Studio    downloaded to $SW_DIR/android-studio/android-studio-2020.3.1.25-linux.tar.gz   & installed in $SW_DIR/android-studio/android-studio-2020.3.1.25-linux
-# Android SDK Tools downloaded to $SW_DIR/android-studio/commandlinetools-linux-7583922_latest.zip & installed in $SW_DIR/android-studio/android-studio-2020.3.1.25-linux/cmdline-tools/latest/
+# Android Studio    downloaded to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux.tar.gz    & unpacked to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux/
+# Android SDK Tools downloaded to $SW_DIR/android-studio/commandlinetools-linux-11076708_latest.zip & unpacked to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux/cmdline-tools/latest/
 # Initial setup:
-#   export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
-#   cd $ANDROID_HOME/bin && ./studio.sh
+#   export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2024.2.1.12-linux
+#   cd $ANDROID_HOME/bin && ./studio
 # Agree to all licenses:
 #   yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 # Create signature key:
@@ -536,7 +534,7 @@ BUILD_ARCH=`dpkg --print-architecture`
 
 echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
 cd android/build-scripts/tuxguitar-android
-export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2020.3.1.25-linux
+export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2024.2.1.12-linux
 echo -e "\n# Executing gradlew:"
 ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
 echo -e "\n# Executing gradlew assembleRelease:"
