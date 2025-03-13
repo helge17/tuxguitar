@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class MidiFileFormat {
 

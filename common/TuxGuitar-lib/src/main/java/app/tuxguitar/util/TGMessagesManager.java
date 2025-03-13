@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
 // stores translated messages for modules common to desktop and Android apps
 
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.herac.tuxguitar.player.base.MidiInstrument;
-import org.herac.tuxguitar.player.base.MidiPercussionKey;
-import org.herac.tuxguitar.resource.TGResourceBundle;
+import app.tuxguitar.player.base.MidiInstrument;
+import app.tuxguitar.player.base.MidiPercussionKey;
+import app.tuxguitar.resource.TGResourceBundle;
 
 public class TGMessagesManager {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
 public class PDFUnsupportedOperationException extends PDFRuntimeException {
 

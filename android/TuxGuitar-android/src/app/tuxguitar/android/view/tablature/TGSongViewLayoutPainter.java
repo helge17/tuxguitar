@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.resource.UIRectangle;
 
 public class TGSongViewLayoutPainter {
 

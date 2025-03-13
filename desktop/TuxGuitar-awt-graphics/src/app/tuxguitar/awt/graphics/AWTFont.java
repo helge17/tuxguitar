@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.awt.graphics;
+package app.tuxguitar.awt.graphics;
 
 import java.awt.Font;
 
-import org.herac.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFont;
 
 public class AWTFont implements UIFont {
 

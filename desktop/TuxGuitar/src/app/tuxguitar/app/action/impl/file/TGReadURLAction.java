@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.app.action.impl.file;
+package app.tuxguitar.app.action.impl.file;
 
 import java.io.InputStream;
 import java.net.URL;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialog;
-import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
-import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.app.view.dialog.message.TGMessageDialog;
+import app.tuxguitar.app.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.action.file.TGLoadSongAction;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.util.TGContext;
 
 public class TGReadURLAction extends TGActionBase {
 

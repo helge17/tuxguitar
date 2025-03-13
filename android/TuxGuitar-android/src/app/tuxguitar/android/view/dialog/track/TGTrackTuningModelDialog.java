@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.track;
+package app.tuxguitar.android.view.dialog.track;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,12 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.editor.action.TGActionProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

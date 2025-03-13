@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.midi.synth.ui;
+package app.tuxguitar.midi.synth.ui;
 
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
-import org.herac.tuxguitar.midi.synth.TGSynthPort;
-import org.herac.tuxguitar.midi.synth.TGSynthesizer;
-import org.herac.tuxguitar.player.base.MidiDevice;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
+import app.tuxguitar.midi.synth.TGSynthPort;
+import app.tuxguitar.midi.synth.TGSynthesizer;
+import app.tuxguitar.player.base.MidiDevice;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGSynthDialogHandler implements TGChannelSettingsHandler{
 

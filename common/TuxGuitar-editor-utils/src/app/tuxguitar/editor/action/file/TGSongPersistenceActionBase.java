@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.editor.action.file;
+package app.tuxguitar.editor.action.file;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongPersistenceHelper;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGSongPersistenceHelper;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGSongPersistenceActionBase extends TGActionBase {
 

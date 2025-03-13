@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.qt;
+package app.tuxguitar.ui.qt;
 
 import java.net.URL;
 
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.qt.appearance.QTAppearance;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.qt.appearance.QTAppearance;
 import io.qt.core.QUrl;
 import io.qt.gui.QDesktopServices;
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
 import javafx.scene.control.CheckMenuItem;
 
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
 
 public class JFXMenuCheckableItem extends JFXMenuActionItem implements UIMenuCheckableItem {
 

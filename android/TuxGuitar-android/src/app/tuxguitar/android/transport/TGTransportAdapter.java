@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.android.transport;
+package app.tuxguitar.android.transport;
 
-import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTransportAdapter {
 

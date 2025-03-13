@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.qt.resource.QTMouseButton;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.qt.resource.QTMouseButton;
+import app.tuxguitar.ui.resource.UIPosition;
 import io.qt.core.QEvent;
 import io.qt.gui.QMouseEvent;
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.swt.resource;
+package app.tuxguitar.ui.swt.resource;
 
 import org.eclipse.swt.SWT;
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 public class SWTKey {
 

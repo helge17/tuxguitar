@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.editor.action.note;
+package app.tuxguitar.editor.action.note;
 
-import org.herac.tuxguitar.song.managers.TGMeasureManager;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.song.managers.TGMeasureManager;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.util.TGContext;
 
 public class TGShiftNoteUpAction extends TGShiftNoteAction {
 

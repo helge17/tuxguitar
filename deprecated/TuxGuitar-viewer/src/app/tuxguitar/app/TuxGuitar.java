@@ -4,24 +4,24 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.app;
+package app.tuxguitar.app;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.TGActionAdapterManager;
-import org.herac.tuxguitar.app.editors.EditorCache;
-import org.herac.tuxguitar.app.editors.TablatureEditor;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
-import org.herac.tuxguitar.app.toolbar.TGToolBar;
-import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLock;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.TGActionAdapterManager;
+import app.tuxguitar.app.editors.EditorCache;
+import app.tuxguitar.app.editors.TablatureEditor;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.app.system.keybindings.KeyBindingActionManager;
+import app.tuxguitar.app.toolbar.TGToolBar;
+import app.tuxguitar.app.transport.TGTransport;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGLock;
 
 /**
  * @author julian
@@ -120,7 +120,7 @@ public class TuxGuitar {
 			this.player = MidiPlayer.getInstance(this.context);
 			try {
 				getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(this.context));
-				getPlayer().addOutputPortProvider(new org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl());
+				getPlayer().addOutputPortProvider(new app.tuxguitar.player.impl.jsa.midiport.MidiPortProviderImpl());
 
 				//check midi sequencer
 				getPlayer().openSequencer(TGConfig.MIDI_SEQUENCER, true);

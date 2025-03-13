@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIButton;
 import io.qt.widgets.QPushButton;
 
 public class QTButton extends QTAbstractButton<QPushButton> implements UIButton {

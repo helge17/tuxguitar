@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.event;
+package app.tuxguitar.event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGEventHandler {
 

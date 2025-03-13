@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGVoice;
 
 public class GTPVoiceJoiner {
 	private TGFactory factory;

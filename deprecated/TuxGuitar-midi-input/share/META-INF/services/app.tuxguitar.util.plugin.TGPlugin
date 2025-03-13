@@ -1,2 +1,2 @@
-org.herac.tuxguitar.midiinput.MidiInputPlugin
-org.herac.tuxguitar.midiinput.MidiSettingsPlugin
+app.tuxguitar.midiinput.MidiInputPlugin
+app.tuxguitar.midiinput.MidiSettingsPlugin

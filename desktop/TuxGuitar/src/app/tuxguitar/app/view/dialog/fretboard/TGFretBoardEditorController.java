@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.fretboard;
+package app.tuxguitar.app.view.dialog.fretboard;
 
-import org.herac.tuxguitar.app.view.controller.TGToggleViewController;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGToggleViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
 
 public class TGFretBoardEditorController implements TGToggleViewController {
 

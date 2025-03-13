@@ -3,7 +3,7 @@
 		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
-		<groupId>org.herac.tuxguitar</groupId>
+		<groupId>app.tuxguitar</groupId>
 		<version>9.99-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
@@ -400,7 +400,7 @@
 							<errTitle>encc</errTitle>
 							<chdir>.</chdir>
 							<classPath>
-								<mainClass>org.herac.tuxguitar.app.TGMainSingleton</mainClass>
+								<mainClass>app.tuxguitar.app.TGMainSingleton</mainClass>
 								<addDependencies>false</addDependencies>
 								<preCp>./lib/*;./share;./dist</preCp>
 							</classPath>

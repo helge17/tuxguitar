@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
 /**
  * Creates a chord name String out of given parameters

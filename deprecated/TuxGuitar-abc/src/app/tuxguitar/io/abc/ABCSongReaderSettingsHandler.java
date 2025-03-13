@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
-import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
-import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class ABCSongReaderSettingsHandler implements TGPersistenceSettingsHandler {
 

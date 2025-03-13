@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.android.fragment.impl;
+package app.tuxguitar.android.fragment.impl;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.storage.TGStorageLoadSettingsAction;
-import org.herac.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.properties.TGSharedPreferencesUtil;
-import org.herac.tuxguitar.android.storage.TGStorageProperties;
-import org.herac.tuxguitar.android.transport.TGTransportProperties;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.storage.TGStorageLoadSettingsAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.properties.TGSharedPreferencesUtil;
+import app.tuxguitar.android.storage.TGStorageProperties;
+import app.tuxguitar.android.transport.TGTransportProperties;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.util.TGContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.transport;
+package app.tuxguitar.android.transport;
 
-import org.herac.tuxguitar.android.util.MidiTickUtil;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.util.MidiTickUtil;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGTransportCache {
 

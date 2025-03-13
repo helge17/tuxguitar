@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 //import java.util.Arrays;	// just for debugging
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.tools.TGSelectScaleAction;
-import org.herac.tuxguitar.app.tools.scale.ScaleManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.tools.TGSelectScaleAction;
+import app.tuxguitar.app.tools.scale.ScaleManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
 
 class MiScaleFinder
 {

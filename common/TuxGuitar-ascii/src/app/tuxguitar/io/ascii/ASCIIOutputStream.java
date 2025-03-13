@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.ascii;
+package app.tuxguitar.io.ascii;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.effects.TGEffectBend;
 
 public class ASCIIOutputStream {
 	private PrintWriter writer;

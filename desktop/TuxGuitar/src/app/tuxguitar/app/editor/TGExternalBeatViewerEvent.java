@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.editor;
+package app.tuxguitar.app.editor;
 
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGExternalBeatViewerEvent extends TGEvent {
 

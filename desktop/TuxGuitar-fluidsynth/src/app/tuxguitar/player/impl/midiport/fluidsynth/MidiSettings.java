@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
+package app.tuxguitar.player.impl.midiport.fluidsynth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiSettings {
 

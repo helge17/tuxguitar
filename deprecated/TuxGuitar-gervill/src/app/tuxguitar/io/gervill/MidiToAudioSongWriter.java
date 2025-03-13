@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.io.gervill;
+package app.tuxguitar.io.gervill;
 
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.player.base.MidiSequenceParser;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.gm.GMChannelRouterConfigurator;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.player.base.MidiSequenceParser;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
 
 public class MidiToAudioSongWriter implements TGSongWriter {
 

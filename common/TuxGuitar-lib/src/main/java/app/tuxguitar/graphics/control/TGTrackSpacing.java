@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 
 public class TGTrackSpacing extends TGSpacing {

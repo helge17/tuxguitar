@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
-import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
-import org.herac.tuxguitar.midi.synth.TGMidiProcessorFactory;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGMidiProcessor;
+import app.tuxguitar.midi.synth.TGMidiProcessorFactory;
+import app.tuxguitar.util.TGContext;
 
 public class GervillProcessorFactory implements TGMidiProcessorFactory {
 

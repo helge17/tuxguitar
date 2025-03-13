@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.view.dialog.fragment;
+package app.tuxguitar.android.view.dialog.fragment;
 
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.fragment.TGCachedFragmentController;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.fragment.TGCachedFragmentController;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.view.dialog.TGDialogContext;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGModalFragmentController<T extends TGModalFragment> extends TGCachedFragmentController<T> implements TGDialogController {
 

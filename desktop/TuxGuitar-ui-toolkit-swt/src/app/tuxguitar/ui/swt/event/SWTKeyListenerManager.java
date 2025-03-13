@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.herac.tuxguitar.ui.event.UIKeyEvent;
-import org.herac.tuxguitar.ui.event.UIKeyPressedListener;
-import org.herac.tuxguitar.ui.event.UIKeyPressedListenerManager;
-import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
-import org.herac.tuxguitar.ui.event.UIKeyReleasedListenerManager;
-import org.herac.tuxguitar.ui.swt.resource.SWTKey;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UIKeyEvent;
+import app.tuxguitar.ui.event.UIKeyPressedListener;
+import app.tuxguitar.ui.event.UIKeyPressedListenerManager;
+import app.tuxguitar.ui.event.UIKeyReleasedListener;
+import app.tuxguitar.ui.event.UIKeyReleasedListenerManager;
+import app.tuxguitar.ui.swt.resource.SWTKey;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTKeyListenerManager implements KeyListener {
 

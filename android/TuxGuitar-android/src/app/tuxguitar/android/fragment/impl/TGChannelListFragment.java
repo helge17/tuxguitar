@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.fragment.impl;
+package app.tuxguitar.android.fragment.impl;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.fragment.TGCachedFragment;
-import org.herac.tuxguitar.android.menu.controller.impl.fragment.TGChannelListMenu;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.fragment.TGCachedFragment;
+import app.tuxguitar.android.menu.controller.impl.fragment.TGChannelListMenu;
 
 public class TGChannelListFragment extends TGCachedFragment {
 

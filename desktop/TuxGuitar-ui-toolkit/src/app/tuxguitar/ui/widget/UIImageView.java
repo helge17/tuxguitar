@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIImage;
 
 public interface UIImageView extends UIControl {
 

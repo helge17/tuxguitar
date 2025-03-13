@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.tremoloBar;
+package app.tuxguitar.android.view.dialog.tremoloBar;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,13 +6,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.herac.tuxguitar.android.graphics.TGColorImpl;
-import org.herac.tuxguitar.android.graphics.TGPainterImpl;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.android.graphics.TGColorImpl;
+import app.tuxguitar.android.graphics.TGPainterImpl;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIPosition;
 
 import java.util.ArrayList;
 import java.util.Iterator;

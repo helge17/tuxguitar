@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UIPanel;
 
 public class TGTableHeaderLabel implements TGTableHeader {
 

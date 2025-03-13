@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.menu.util;
+package app.tuxguitar.android.menu.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.view.util.TGProcess;
+import app.tuxguitar.android.view.util.TGSyncProcessLocked;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 import android.annotation.SuppressLint;
 import android.content.res.TypedArray;

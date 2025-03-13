@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.midiport.audiounit;
+package app.tuxguitar.player.impl.midiport.audiounit;
 
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
 
 public class MidiPortReaderAudioUnit implements MidiOutputPortProvider{
 

@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.action.impl.transport;
+package app.tuxguitar.app.action.impl.transport;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.MidiTickUtil;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.MidiTickUtil;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TransportPlayAction extends TGActionBase {
 

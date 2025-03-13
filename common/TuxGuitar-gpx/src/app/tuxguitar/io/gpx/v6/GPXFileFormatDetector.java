@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.gpx.v6;
+package app.tuxguitar.io.gpx.v6;
 
 import java.io.InputStream;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatDetector;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatDetector;
 
 public class GPXFileFormatDetector implements TGFileFormatDetector {
 

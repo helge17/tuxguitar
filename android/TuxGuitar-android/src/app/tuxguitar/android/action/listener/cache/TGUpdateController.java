@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.action.listener.cache;
+package app.tuxguitar.android.action.listener.cache;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.util.TGContext;
 
 public interface TGUpdateController {
 

@@ -1,35 +1,35 @@
-package org.herac.tuxguitar.app.view.dialog.grace;
+package app.tuxguitar.app.view.dialog.grace;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
-import org.herac.tuxguitar.player.base.MidiPercussionKey;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIRadioButton;
-import org.herac.tuxguitar.ui.widget.UISpinner;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGNoteRange;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.effect.TGChangeGraceNoteAction;
+import app.tuxguitar.player.base.MidiPercussionKey;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.effects.TGEffectGrace;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIRadioButton;
+import app.tuxguitar.ui.widget.UISpinner;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGNoteRange;
 
 public class TGGraceDialog {
 

@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.android.midi.port;
+package app.tuxguitar.android.midi.port;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiManager;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.util.TGContext;
 
 import java.util.ArrayList;
 import java.util.List;

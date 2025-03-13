@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.action.installer;
+package app.tuxguitar.app.action.installer;
 
-import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
+import app.tuxguitar.app.action.listener.cache.TGUpdateController;
 
 public class TGActionConfig {
 

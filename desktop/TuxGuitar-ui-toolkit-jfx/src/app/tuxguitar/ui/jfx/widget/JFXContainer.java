@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIContainer;
 
 public interface JFXContainer<T extends Region> extends UIContainer {
 

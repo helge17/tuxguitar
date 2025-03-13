@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 // to handle actions on continuous controls: knob, scale,...
 // waits for control to be stable, then trigger action

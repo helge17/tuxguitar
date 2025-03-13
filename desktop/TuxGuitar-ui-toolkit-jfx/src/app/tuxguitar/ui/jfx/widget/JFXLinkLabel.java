@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.herac.tuxguitar.ui.event.UILinkListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXLinkListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXFont;
-import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
-import org.herac.tuxguitar.ui.widget.UILinkLabel;
+import app.tuxguitar.ui.event.UILinkListener;
+import app.tuxguitar.ui.jfx.event.JFXLinkListenerManager;
+import app.tuxguitar.ui.jfx.resource.JFXFont;
+import app.tuxguitar.ui.jfx.resource.JFXFontMetrics;
+import app.tuxguitar.ui.widget.UILinkLabel;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

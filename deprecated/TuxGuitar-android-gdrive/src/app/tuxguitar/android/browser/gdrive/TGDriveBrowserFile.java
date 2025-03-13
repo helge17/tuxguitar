@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package app.tuxguitar.android.browser.gdrive;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
 
 import com.google.api.services.drive.model.File;
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.widgets;
+package app.tuxguitar.app.view.widgets;
 
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UILayoutContainer;
 
 public class TGIconCheckButton extends TGIconButton {
 

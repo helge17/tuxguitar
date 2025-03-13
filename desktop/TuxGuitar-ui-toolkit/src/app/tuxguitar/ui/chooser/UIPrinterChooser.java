@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.chooser;
+package app.tuxguitar.ui.chooser;
 
 public interface UIPrinterChooser {
 

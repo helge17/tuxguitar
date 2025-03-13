@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.impl.file.TGOpenFileAction;
-import org.herac.tuxguitar.app.action.impl.file.TGPrintAction;
-import org.herac.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
-import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
-import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
-import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.impl.file.TGOpenFileAction;
+import app.tuxguitar.app.action.impl.file.TGPrintAction;
+import app.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
+import app.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
+import app.tuxguitar.app.action.impl.file.TGSaveFileAction;
+import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionFile extends TGMainToolBarSection {
 

@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.app.view.dialog.channel;
+package app.tuxguitar.app.view.dialog.channel;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.channel.TGAddNewChannelAction;
-import org.herac.tuxguitar.editor.action.channel.TGRemoveChannelAction;
-import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.channel.TGAddNewChannelAction;
+import app.tuxguitar.editor.action.channel.TGRemoveChannelAction;
+import app.tuxguitar.editor.action.channel.TGUpdateChannelAction;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGChannelHandle {
 

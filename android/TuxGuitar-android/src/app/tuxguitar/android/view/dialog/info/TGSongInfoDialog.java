@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.info;
+package app.tuxguitar.android.view.dialog.info;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -7,12 +7,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.composition.TGChangeInfoAction;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.composition.TGChangeInfoAction;
+import app.tuxguitar.song.models.TGSong;
 
 public class TGSongInfoDialog extends TGModalFragment {
 

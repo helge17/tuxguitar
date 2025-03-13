@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.community.utils;
+package app.tuxguitar.community.utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.community.TGCommunitySingleton;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.community.TGCommunitySingleton;
+import app.tuxguitar.util.TGContext;
 
 public class TGCommunityWeb {
 

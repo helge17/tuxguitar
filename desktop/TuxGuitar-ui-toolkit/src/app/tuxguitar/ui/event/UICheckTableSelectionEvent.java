@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.event;
+package app.tuxguitar.ui.event;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class UICheckTableSelectionEvent<T> extends UISelectionEvent {
 

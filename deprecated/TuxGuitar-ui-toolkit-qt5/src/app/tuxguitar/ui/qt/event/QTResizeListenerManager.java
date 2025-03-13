@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIResizeEvent;
-import org.herac.tuxguitar.ui.event.UIResizeListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.event.UIResizeEvent;
+import app.tuxguitar.ui.event.UIResizeListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
 import org.qtjambi.qt.core.QEvent;
 
 public class QTResizeListenerManager extends UIResizeListenerManager implements QTEventHandler {

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
+package app.tuxguitar.android.view.dialog.browser.filesystem;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
 
 public class TGBrowserSettingsMountPointDialogController extends TGDialogFragmentController<TGBrowserSettingsMountPointDialog> {
 

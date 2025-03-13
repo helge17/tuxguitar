@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2.ui;
+package app.tuxguitar.player.impl.midiport.lv2.ui;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessor.LV2AudioProcessorUpdateCallback;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessorWrapper;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2PluginValidator;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import app.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessor.LV2AudioProcessorUpdateCallback;
+import app.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessorWrapper;
+import app.tuxguitar.player.impl.midiport.lv2.LV2PluginValidator;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class LV2AudioProcessorUI implements LV2AudioProcessorUpdateCallback, TGAudioProcessorUI {
 

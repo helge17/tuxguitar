@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.graphics.Point;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
-import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
+import app.tuxguitar.ui.widget.UIScrollBar;
 
 public class SWTScrollBar extends SWTEventReceiver<ScrollBar> implements UIScrollBar {
 

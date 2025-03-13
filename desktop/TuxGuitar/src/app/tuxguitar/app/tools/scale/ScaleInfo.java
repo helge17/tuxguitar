@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.scale;
+package app.tuxguitar.app.tools.scale;
 
 public class ScaleInfo {
 

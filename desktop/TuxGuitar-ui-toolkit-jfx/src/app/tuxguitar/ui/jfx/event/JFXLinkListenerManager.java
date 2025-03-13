@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
-import org.herac.tuxguitar.ui.event.UILinkEvent;
-import org.herac.tuxguitar.ui.event.UILinkListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UILinkEvent;
+import app.tuxguitar.ui.event.UILinkListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXLinkListenerManager extends UILinkListenerManager {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.qt.chooser;
+package app.tuxguitar.ui.qt.chooser;
 
 import java.io.File;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.chooser.UIFileChooser;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
-import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
+import app.tuxguitar.ui.chooser.UIFileChooser;
+import app.tuxguitar.ui.chooser.UIFileChooserFormat;
+import app.tuxguitar.ui.chooser.UIFileChooserHandler;
+import app.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.qtjambi.qt.widgets.QDialog;
 import org.qtjambi.qt.widgets.QFileDialog;
 import org.qtjambi.qt.widgets.QFileDialog.FileMode;

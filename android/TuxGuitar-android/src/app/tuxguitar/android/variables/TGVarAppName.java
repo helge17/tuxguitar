@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.variables;
+package app.tuxguitar.android.variables;
 
 public class TGVarAppName {
 

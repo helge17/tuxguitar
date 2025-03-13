@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.io.stream;
+package app.tuxguitar.app.io.stream;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.file.TGExportSongAction;
-import org.herac.tuxguitar.app.action.impl.file.TGImportSongAction;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.io.base.TGSongStreamProvider;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.file.TGExportSongAction;
+import app.tuxguitar.app.action.impl.file.TGImportSongAction;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGSongStreamProvider;
+import app.tuxguitar.util.TGContext;
 
 public class TGSongStreamActionInterceptor implements TGActionInterceptor {
 

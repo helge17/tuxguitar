@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.synchronizer;
+package app.tuxguitar.android.synchronizer;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer.TGSynchronizerController;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer.TGSynchronizerController;
 
 import android.os.Handler;
 

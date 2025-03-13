@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGAudioSync {
 

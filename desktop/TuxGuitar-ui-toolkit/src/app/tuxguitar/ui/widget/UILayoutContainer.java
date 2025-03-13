@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.layout.UILayout;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.layout.UILayout;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
 
 public interface UILayoutContainer extends UIContainer {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.util.TGContext;
 
 public class TGSynthPortProvider implements MidiOutputPortProvider{
 

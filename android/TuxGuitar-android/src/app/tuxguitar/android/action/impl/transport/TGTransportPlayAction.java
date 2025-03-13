@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.action.impl.transport;
+package app.tuxguitar.android.action.impl.transport;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.transport.TGTransport;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.transport.TGTransport;
+import app.tuxguitar.util.TGContext;
 
 public class TGTransportPlayAction extends TGActionBase {
 

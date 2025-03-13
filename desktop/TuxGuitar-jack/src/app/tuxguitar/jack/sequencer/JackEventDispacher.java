@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public class JackEventDispacher{
 	private JackSequencer sequencer;

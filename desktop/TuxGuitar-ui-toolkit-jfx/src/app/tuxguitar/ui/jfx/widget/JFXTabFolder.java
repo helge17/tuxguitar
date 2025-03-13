@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,16 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.event.UICloseEvent;
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.event.UICloseListenerManager;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UITabFolder;
-import org.herac.tuxguitar.ui.widget.UITabItem;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UICloseListenerManager;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UISelectionListenerManager;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UITabFolder;
+import app.tuxguitar.ui.widget.UITabItem;
 
 public class JFXTabFolder extends JFXControl<TabPane> implements UITabFolder {
 

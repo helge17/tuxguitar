@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.editor.clipboard;
+package app.tuxguitar.editor.clipboard;
 
-import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
-import org.herac.tuxguitar.song.helpers.TGSongSegment;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.song.helpers.TGStoredBeatList;
+import app.tuxguitar.song.helpers.TGSongSegment;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGClipboard {
 

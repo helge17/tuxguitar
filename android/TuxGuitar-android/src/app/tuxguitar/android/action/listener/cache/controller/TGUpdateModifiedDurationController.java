@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.action.listener.cache.controller;
+package app.tuxguitar.android.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateModifiedDurationController extends TGUpdateItemsController {
 

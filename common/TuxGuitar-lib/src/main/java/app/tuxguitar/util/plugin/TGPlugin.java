@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.util.plugin;
+package app.tuxguitar.util.plugin;
 
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGContext;
 
 public interface TGPlugin {
 

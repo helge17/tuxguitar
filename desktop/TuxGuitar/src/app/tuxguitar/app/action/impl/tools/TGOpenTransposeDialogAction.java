@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.action.impl.tools;
+package app.tuxguitar.app.action.impl.tools;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.view.dialog.transpose.TGTransposeDialogController;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.view.dialog.transpose.TGTransposeDialogController;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGOpenTransposeDialogAction extends TGActionBase{
 

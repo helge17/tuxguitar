@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.jack.connection;
+package app.tuxguitar.jack.connection;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class JackConnectionProcess implements Runnable {
 

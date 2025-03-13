@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog;
+package app.tuxguitar.android.view.dialog;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivity;
 
 public interface TGDialogController {
 

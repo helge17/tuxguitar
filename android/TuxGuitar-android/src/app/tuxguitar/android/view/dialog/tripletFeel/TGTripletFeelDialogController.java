@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.tripletFeel;
+package app.tuxguitar.android.view.dialog.tripletFeel;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGTripletFeelDialogController extends TGModalFragmentController<TGTripletFeelDialog> {
 

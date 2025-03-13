@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.language;
+package app.tuxguitar.app.system.language;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public class TGLanguageEvent extends TGEvent {
 

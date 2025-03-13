@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.resource;
+package app.tuxguitar.resource;
 
 import java.io.InputStream;
 import java.net.URL;

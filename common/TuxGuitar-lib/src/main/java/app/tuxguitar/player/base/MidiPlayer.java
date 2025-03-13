@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,27 +6,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelParameter;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.thread.TGThreadLoop;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLock;
-import org.herac.tuxguitar.util.TGMessagesManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChannelParameter;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.thread.TGThreadLoop;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGLock;
+import app.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class MidiPlayer{
 

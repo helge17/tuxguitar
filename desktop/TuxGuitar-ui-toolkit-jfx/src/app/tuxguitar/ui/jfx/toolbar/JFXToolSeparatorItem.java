@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.toolbar;
+package app.tuxguitar.ui.jfx.toolbar;
 
 import javafx.geometry.Orientation;
 
-import org.herac.tuxguitar.ui.jfx.widget.JFXSeparator;
+import app.tuxguitar.ui.jfx.widget.JFXSeparator;
 
 public class JFXToolSeparatorItem extends JFXSeparator {
 

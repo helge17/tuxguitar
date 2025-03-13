@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.action.impl.insert;
+package app.tuxguitar.app.action.impl.insert;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.view.dialog.repeat.TGRepeatAlternativeDialogController;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.view.dialog.repeat.TGRepeatAlternativeDialogController;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGOpenRepeatAlternativeDialogAction extends TGActionBase{
 

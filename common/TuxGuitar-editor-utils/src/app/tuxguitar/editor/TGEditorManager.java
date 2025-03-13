@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.editor;
+package app.tuxguitar.editor;
 
 import java.util.List;
 
-import org.herac.tuxguitar.editor.event.TGDestroyEvent;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLock;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.editor.event.TGDestroyEvent;
+import app.tuxguitar.editor.event.TGRedrawEvent;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.editor.event.TGUpdateMeasuresEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGLock;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGEditorManager {
 

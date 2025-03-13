@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.custom;
+package app.tuxguitar.app.tools.custom;
 
 public class TGCustomTool {
 

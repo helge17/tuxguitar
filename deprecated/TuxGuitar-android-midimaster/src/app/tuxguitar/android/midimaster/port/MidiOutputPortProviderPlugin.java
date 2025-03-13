@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.midimaster.port;
+package app.tuxguitar.android.midimaster.port;
 
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 

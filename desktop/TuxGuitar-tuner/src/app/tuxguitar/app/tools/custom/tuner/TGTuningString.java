@@ -1,14 +1,14 @@
 /**
  *
  */
-package org.herac.tuxguitar.app.tools.custom.tuner;
+package app.tuxguitar.app.tools.custom.tuner;
 
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIToggleButton;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIToggleButton;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 
 /**

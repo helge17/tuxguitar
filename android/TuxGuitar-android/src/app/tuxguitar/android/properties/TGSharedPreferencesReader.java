@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.properties;
+package app.tuxguitar.android.properties;
 
 import java.util.Iterator;
 import java.util.Map;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesReader;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesReader;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

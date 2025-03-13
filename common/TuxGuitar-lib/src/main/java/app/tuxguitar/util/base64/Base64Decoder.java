@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util.base64;
+package app.tuxguitar.util.base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

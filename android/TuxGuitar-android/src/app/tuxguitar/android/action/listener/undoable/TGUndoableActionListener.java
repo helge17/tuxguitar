@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.android.action.listener.undoable;
+package app.tuxguitar.android.action.listener.undoable;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.android.action.TGActionMap;
-import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
-import org.herac.tuxguitar.editor.undo.TGUndoableManager;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.action.TGActionPreExecutionEvent;
+import app.tuxguitar.android.action.TGActionMap;
+import app.tuxguitar.editor.undo.TGUndoableActionController;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.editor.undo.TGUndoableManager;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableActionListener implements TGEventListener {
 

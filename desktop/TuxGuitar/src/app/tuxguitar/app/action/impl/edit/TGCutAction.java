@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.action.impl.edit;
+package app.tuxguitar.app.action.impl.edit;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.util.TGContext;
 
 public class TGCutAction extends TGActionBase{
 

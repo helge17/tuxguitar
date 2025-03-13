@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.channel;
+package app.tuxguitar.android.view.dialog.channel;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGChannelEditDialogController extends TGModalFragmentController<TGChannelEditDialog> {
 

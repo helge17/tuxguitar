@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.application;
+package app.tuxguitar.android.application;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.util.TGContext;
 
 import android.app.Activity;
 import android.app.Fragment;

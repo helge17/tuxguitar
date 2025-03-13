@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,9 +6,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesReader;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGFilePropertiesReader extends TGPropertiesBaseHandler implements TGPropertiesReader{
 

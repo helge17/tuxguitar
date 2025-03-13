@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.storage;
+package app.tuxguitar.android.storage;
 
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGAbstractContext;
 
 public interface TGStorageProvider {
 

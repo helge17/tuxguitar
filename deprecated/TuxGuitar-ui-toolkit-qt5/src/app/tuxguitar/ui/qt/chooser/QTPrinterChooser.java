@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.chooser;
+package app.tuxguitar.ui.qt.chooser;
 
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
-import org.herac.tuxguitar.ui.qt.printer.QTPrinter;
-import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
+import app.tuxguitar.ui.chooser.UIPrinterChooser;
+import app.tuxguitar.ui.chooser.UIPrinterChooserHandler;
+import app.tuxguitar.ui.qt.printer.QTPrinter;
+import app.tuxguitar.ui.qt.widget.QTAbstractWindow;
 import org.qtjambi.qt.printsupport.QPrintDialog;
 import org.qtjambi.qt.printsupport.QPrinter;
 import org.qtjambi.qt.widgets.QDialog;

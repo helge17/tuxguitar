@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
-import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
-import org.herac.tuxguitar.app.system.config.TGConfigDefaultsPropertiesHandler;
-import org.herac.tuxguitar.app.system.config.TGConfigPropertiesHandler;
-import org.herac.tuxguitar.app.system.icons.TGSkinInfoHandler;
-import org.herac.tuxguitar.app.system.icons.TGSkinPropertiesHandler;
-import org.herac.tuxguitar.app.system.plugins.TGPluginInfoHandler;
-import org.herac.tuxguitar.app.system.plugins.TGPluginPropertiesHandler;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
-import org.herac.tuxguitar.util.plugin.TGPluginInfo;
-import org.herac.tuxguitar.util.plugin.TGPluginProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.app.system.config.TGConfigDefaults;
+import app.tuxguitar.app.system.config.TGConfigDefaultsPropertiesHandler;
+import app.tuxguitar.app.system.config.TGConfigPropertiesHandler;
+import app.tuxguitar.app.system.icons.TGSkinInfoHandler;
+import app.tuxguitar.app.system.icons.TGSkinPropertiesHandler;
+import app.tuxguitar.app.system.plugins.TGPluginInfoHandler;
+import app.tuxguitar.app.system.plugins.TGPluginPropertiesHandler;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.plugin.TGPluginInfo;
+import app.tuxguitar.util.plugin.TGPluginProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
 
 public class TGPropertiesAdapter {
 

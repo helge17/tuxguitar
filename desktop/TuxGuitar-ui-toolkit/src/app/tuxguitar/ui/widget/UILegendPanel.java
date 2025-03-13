@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
 public interface UILegendPanel extends UILayoutContainer {
 

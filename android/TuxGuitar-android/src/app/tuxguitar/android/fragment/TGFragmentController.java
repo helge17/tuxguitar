@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.fragment;
+package app.tuxguitar.android.fragment;
 
 import androidx.fragment.app.Fragment;
 

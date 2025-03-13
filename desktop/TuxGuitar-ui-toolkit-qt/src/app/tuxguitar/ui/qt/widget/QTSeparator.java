@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UISeparator;
+import app.tuxguitar.ui.widget.UISeparator;
 import io.qt.core.Qt.Orientation;
 import io.qt.widgets.QFrame;
 import io.qt.widgets.QFrame.Shape;

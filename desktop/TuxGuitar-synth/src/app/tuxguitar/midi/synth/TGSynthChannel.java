@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiParameters;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.player.base.MidiParameters;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.song.models.TGChannel;
 
 public class TGSynthChannel implements MidiChannel {
 

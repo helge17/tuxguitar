@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.track;
+package app.tuxguitar.app.view.dialog.track;
 
 public class TGTrackTuningModel {
 

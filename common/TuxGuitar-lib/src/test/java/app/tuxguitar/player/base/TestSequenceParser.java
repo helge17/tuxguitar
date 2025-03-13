@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.TreeMap;
 
-import org.herac.tuxguitar.io.tg.TestFileFormat20;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequenceHandlerImpl;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.io.tg.TestFileFormat20;
+import app.tuxguitar.player.impl.sequencer.MidiSequenceHandlerImpl;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.util.TGContext;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceParser {

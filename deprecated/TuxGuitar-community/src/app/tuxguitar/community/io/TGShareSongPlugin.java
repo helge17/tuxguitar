@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
-import org.herac.tuxguitar.community.TGCommunityPlugin;
-import org.herac.tuxguitar.io.base.TGSongExporter;
-import org.herac.tuxguitar.io.plugin.TGSongExporterPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.community.TGCommunityPlugin;
+import app.tuxguitar.io.base.TGSongExporter;
+import app.tuxguitar.io.plugin.TGSongExporterPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGShareSongPlugin extends TGSongExporterPlugin {
 

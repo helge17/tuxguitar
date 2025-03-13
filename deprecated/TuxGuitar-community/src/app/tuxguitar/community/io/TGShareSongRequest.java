@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
 import java.io.DataOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.herac.tuxguitar.community.auth.TGCommunityAuth;
-import org.herac.tuxguitar.community.utils.TGCommunityWeb;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.community.auth.TGCommunityAuth;
+import app.tuxguitar.community.utils.TGCommunityWeb;
+import app.tuxguitar.util.TGContext;
 
 public class TGShareSongRequest {
 

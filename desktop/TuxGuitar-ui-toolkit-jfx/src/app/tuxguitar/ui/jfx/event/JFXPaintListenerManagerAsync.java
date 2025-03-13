@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.application.Platform;
 
-import org.herac.tuxguitar.ui.jfx.widget.JFXCanvas;
+import app.tuxguitar.ui.jfx.widget.JFXCanvas;
 
 public class JFXPaintListenerManagerAsync extends JFXPaintListenerManager {
 

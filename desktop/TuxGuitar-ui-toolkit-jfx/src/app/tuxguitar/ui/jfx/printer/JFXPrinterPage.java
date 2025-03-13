@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.printer;
+package app.tuxguitar.ui.jfx.printer;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.jfx.resource.JFXPainter;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.jfx.resource.JFXPainter;
+import app.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UISize;
 
 import javafx.scene.canvas.Canvas;
 

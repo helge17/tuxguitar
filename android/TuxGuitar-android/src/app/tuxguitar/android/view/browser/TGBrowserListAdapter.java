@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.android.view.browser;
+package app.tuxguitar.android.view.browser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.util.error.TGErrorManager;
 
 import android.content.Context;
 import android.content.res.TypedArray;

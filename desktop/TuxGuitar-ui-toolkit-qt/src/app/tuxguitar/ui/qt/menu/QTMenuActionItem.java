@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.qt.menu;
+package app.tuxguitar.ui.qt.menu;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
-import org.herac.tuxguitar.ui.qt.resource.QTImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import app.tuxguitar.ui.qt.resource.QTImage;
+import app.tuxguitar.ui.resource.UIImage;
 
 import io.qt.core.QMetaObject;
 import io.qt.core.Qt;

@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.app.tools.browser;
+package app.tuxguitar.app.tools.browser;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.tools.browser.filesystem.TGBrowserFactoryImpl;
-import org.herac.tuxguitar.app.tools.browser.xml.TGBrowserReader;
-import org.herac.tuxguitar.app.tools.browser.xml.TGBrowserWriter;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.app.tools.browser.filesystem.TGBrowserFactoryImpl;
+import app.tuxguitar.app.tools.browser.xml.TGBrowserReader;
+import app.tuxguitar.app.tools.browser.xml.TGBrowserWriter;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserManager {
 

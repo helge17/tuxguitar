@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.io.gtp.ui;
+package app.tuxguitar.io.gtp.ui;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class GTPSettingsHandler implements TGPluginSettingsHandler {
 

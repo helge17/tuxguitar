@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gervill;
+package app.tuxguitar.io.gervill;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.song.models.TGDuration;
 
 public class MidiToAudioWriter {
 

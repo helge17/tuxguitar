@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGSynchronizer {
 

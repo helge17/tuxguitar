@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.plugin;
+package app.tuxguitar.io.plugin;
 
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongImporter;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.base.TGSongImporter;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGSongImporterPlugin implements TGPlugin{
 

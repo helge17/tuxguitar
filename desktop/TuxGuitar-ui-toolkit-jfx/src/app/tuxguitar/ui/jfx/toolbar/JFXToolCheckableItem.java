@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.jfx.toolbar;
+package app.tuxguitar.ui.jfx.toolbar;
 
-import org.herac.tuxguitar.ui.jfx.widget.JFXToggleButton;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.ui.jfx.widget.JFXToggleButton;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class JFXToolCheckableItem extends JFXToggleButton implements UIToolCheckableItem {
 

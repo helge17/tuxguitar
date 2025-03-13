@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedBeatMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedMeasureMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedNoteMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.smart.TGSelectedTrackMenu;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.menu.controller.impl.smart.TGSelectedBeatMenu;
+import app.tuxguitar.android.menu.controller.impl.smart.TGSelectedMeasureMenu;
+import app.tuxguitar.android.menu.controller.impl.smart.TGSelectedNoteMenu;
+import app.tuxguitar.android.menu.controller.impl.smart.TGSelectedTrackMenu;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGSongViewSmartMenu {
 

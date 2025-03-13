@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class GervillSettings {
 

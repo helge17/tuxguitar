@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
-import org.herac.tuxguitar.ui.event.UICloseEvent;
-import org.herac.tuxguitar.ui.event.UICloseListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTCloseListenerManager extends UICloseListenerManager implements ShellListener {
 

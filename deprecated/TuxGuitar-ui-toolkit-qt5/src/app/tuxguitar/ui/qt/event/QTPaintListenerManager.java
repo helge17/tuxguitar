@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UIPaintListenerManager;
-import org.herac.tuxguitar.ui.qt.resource.QTPainter;
-import org.herac.tuxguitar.ui.qt.widget.QTCanvas;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UIPaintListenerManager;
+import app.tuxguitar.ui.qt.resource.QTPainter;
+import app.tuxguitar.ui.qt.widget.QTCanvas;
 import org.qtjambi.qt.core.QEvent;
 import org.qtjambi.qt.gui.QPainter;
 

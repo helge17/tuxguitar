@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.editor.undo.impl;
+package app.tuxguitar.editor.undo.impl;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.undo.TGCannotRedoException;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
 
 import java.util.ArrayList;
 

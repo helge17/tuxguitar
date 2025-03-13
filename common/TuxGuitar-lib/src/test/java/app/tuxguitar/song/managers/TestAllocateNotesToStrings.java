@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.song.managers;
+package app.tuxguitar.song.managers;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGVoice;
 
 public class TestAllocateNotesToStrings {
 

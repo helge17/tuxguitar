@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser.filesystem;
+package app.tuxguitar.android.browser.filesystem;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 
 public interface TGFsBrowserSettingsFactory {
 

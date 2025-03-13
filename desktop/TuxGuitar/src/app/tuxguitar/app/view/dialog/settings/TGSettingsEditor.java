@@ -1,35 +1,35 @@
-package org.herac.tuxguitar.app.view.dialog.settings;
+package app.tuxguitar.app.view.dialog.settings;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
-import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.dialog.settings.items.LanguageOption;
-import org.herac.tuxguitar.app.view.dialog.settings.items.MainOption;
-import org.herac.tuxguitar.app.view.dialog.settings.items.SkinOption;
-import org.herac.tuxguitar.app.view.dialog.settings.items.SoundOption;
-import org.herac.tuxguitar.app.view.dialog.settings.items.StylesOption;
-import org.herac.tuxguitar.app.view.dialog.settings.items.TGSettingsOption;
-import org.herac.tuxguitar.app.view.util.TGCursorController;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.settings.TGReloadSettingsAction;
+import app.tuxguitar.app.system.config.TGConfigDefaults;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.dialog.settings.items.LanguageOption;
+import app.tuxguitar.app.view.dialog.settings.items.MainOption;
+import app.tuxguitar.app.view.dialog.settings.items.SkinOption;
+import app.tuxguitar.app.view.dialog.settings.items.SoundOption;
+import app.tuxguitar.app.view.dialog.settings.items.StylesOption;
+import app.tuxguitar.app.view.dialog.settings.items.TGSettingsOption;
+import app.tuxguitar.app.view.util.TGCursorController;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.properties.TGProperties;
 
 public class TGSettingsEditor{
 

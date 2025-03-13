@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.player.base.MidiRepeatController;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.player.base.MidiRepeatController;
+import app.tuxguitar.song.models.TGMeasureHeader;
 
 public class MidiTickUtil {
 

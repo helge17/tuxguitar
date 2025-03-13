@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.jack.singleton;
+package app.tuxguitar.jack.singleton;
 
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.provider.JackClientProvider;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginManager;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.provider.JackClientProvider;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginManager;
 
 public class JackClientInstanceProvider implements JackClientProvider {
 

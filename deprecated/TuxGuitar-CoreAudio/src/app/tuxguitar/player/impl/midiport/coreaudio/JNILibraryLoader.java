@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.coreaudio;
+package app.tuxguitar.player.impl.midiport.coreaudio;
 
 import java.io.File;
 

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.io.abc.base;
+package app.tuxguitar.io.abc.base;
 
-import org.herac.tuxguitar.io.abc.ABCSongReader;
-import org.herac.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.io.abc.ABCSongReader;
+import app.tuxguitar.song.models.TGMeasure;
 
 public class ABCTrack {
 

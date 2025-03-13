@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.remote;
+package app.tuxguitar.midi.synth.remote;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,10 +8,10 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.midi.synth.TGSynthSettings;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.midi.synth.TGSynthSettings;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGRemoteHost {
 

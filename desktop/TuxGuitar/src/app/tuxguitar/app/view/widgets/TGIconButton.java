@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.view.widgets;
+package app.tuxguitar.app.view.widgets;
 
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UICanvas;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.widget.UILayoutContainer;
 
 import java.util.ArrayList;
 import java.util.List;

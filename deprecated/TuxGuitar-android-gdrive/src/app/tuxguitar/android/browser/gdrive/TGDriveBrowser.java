@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package app.tuxguitar.android.browser.gdrive;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.browser.model.TGBrowser;
-import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElementComparator;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.gdrive.R;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.browser.model.TGBrowser;
+import app.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserElementComparator;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.gdrive.R;
+import app.tuxguitar.util.TGContext;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;

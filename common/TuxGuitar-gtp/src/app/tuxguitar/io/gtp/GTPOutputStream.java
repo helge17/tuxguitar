@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.gm.GMChannelRouterConfigurator;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
 
 public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWriter{
 

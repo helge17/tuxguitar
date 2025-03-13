@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-import org.herac.tuxguitar.ui.event.UIFocusEvent;
-import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
-import org.herac.tuxguitar.ui.event.UIFocusGainedListenerManager;
-import org.herac.tuxguitar.ui.event.UIFocusLostListener;
-import org.herac.tuxguitar.ui.event.UIFocusLostListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UIFocusEvent;
+import app.tuxguitar.ui.event.UIFocusGainedListener;
+import app.tuxguitar.ui.event.UIFocusGainedListenerManager;
+import app.tuxguitar.ui.event.UIFocusLostListener;
+import app.tuxguitar.ui.event.UIFocusLostListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXFocusListenerManager implements ChangeListener<Boolean> {
 

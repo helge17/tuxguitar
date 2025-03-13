@@ -4,14 +4,14 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
 
 /**
  * @author julian

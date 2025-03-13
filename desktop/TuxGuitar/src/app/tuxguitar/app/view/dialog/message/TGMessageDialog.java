@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.app.view.dialog.message;
+package app.tuxguitar.app.view.dialog.message;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIImageView;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.ui.widget.UIWrapLabel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIImageView;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.widget.UIWrapLabel;
+import app.tuxguitar.util.TGContext;
 
 public class TGMessageDialog {
 

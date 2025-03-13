@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import java.awt.Point;
 
@@ -9,10 +9,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
-import org.herac.tuxguitar.ui.widget.UISplashWindow;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.ui.widget.UISplashWindow;
 
 public class SWTSplashWindow extends SWTComponent<Shell> implements UISplashWindow {
 

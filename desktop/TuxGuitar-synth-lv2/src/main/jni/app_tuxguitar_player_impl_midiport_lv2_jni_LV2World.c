@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
-#include "org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2.h"
-#include "org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2World.h"
+#include "app_tuxguitar_player_impl_midiport_lv2_jni_LV2.h"
+#include "app_tuxguitar_player_impl_midiport_lv2_jni_LV2World.h"
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2World_malloc(JNIEnv *env, jobject obj)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2World_malloc(JNIEnv *env, jobject obj)
 {
 	jlong ptr = 0;
 
@@ -15,7 +15,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV
 	return ptr;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2World_free(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2World_free(JNIEnv *env, jobject obj, jlong ptr)
 {
 	LV2World *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -24,7 +24,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2
 	}
 }
 
-JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2World_getAllPlugins(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jobject JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2World_getAllPlugins(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jobject jlist = NULL;
 
@@ -46,7 +46,7 @@ JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 			}
 		}
 
-		jpluginCls = env->FindClass("org/herac/tuxguitar/player/impl/midiport/lv2/jni/LV2Plugin");
+		jpluginCls = env->FindClass("app/tuxguitar/player/impl/midiport/lv2/jni/LV2Plugin");
 		if( jpluginCls != NULL ) {
 			jpluginInit = env->GetMethodID(jpluginCls, "<init>", "(J)V");
 		}

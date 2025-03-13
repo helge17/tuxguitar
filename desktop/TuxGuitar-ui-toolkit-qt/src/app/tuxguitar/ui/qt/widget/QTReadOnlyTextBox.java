@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
+import app.tuxguitar.ui.widget.UIReadOnlyTextBox;
 
 public class QTReadOnlyTextBox extends QTTextArea implements UIReadOnlyTextBox {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.tools.custom;
+package app.tuxguitar.app.tools.custom;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionAdapterManager;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionAdapterManager;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public abstract class TGToolItemPlugin implements TGPlugin{
 

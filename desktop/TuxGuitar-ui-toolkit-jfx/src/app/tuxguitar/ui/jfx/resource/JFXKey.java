@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.jfx.resource;
+package app.tuxguitar.ui.jfx.resource;
 
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;

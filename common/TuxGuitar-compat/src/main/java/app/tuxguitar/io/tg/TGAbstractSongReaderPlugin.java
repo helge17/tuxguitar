@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.tg;
+package app.tuxguitar.io.tg;
 
-import org.herac.tuxguitar.io.plugin.TGSongReaderPlugin;
+import app.tuxguitar.io.plugin.TGSongReaderPlugin;
 
 public abstract class TGAbstractSongReaderPlugin extends TGSongReaderPlugin {
 

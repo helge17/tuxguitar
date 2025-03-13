@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.app.tools.scale;
+package app.tuxguitar.app.tools.scale;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.scale.xml.ScaleReader;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.song.models.TGScale;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.tools.scale.xml.ScaleReader;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.song.models.TGScale;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class ScaleManager {
 

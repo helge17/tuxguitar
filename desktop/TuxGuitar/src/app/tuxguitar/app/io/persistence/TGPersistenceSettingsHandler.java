@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.io.persistence;
+package app.tuxguitar.app.io.persistence;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGSongStreamContext;
 
 public interface TGPersistenceSettingsHandler {
 

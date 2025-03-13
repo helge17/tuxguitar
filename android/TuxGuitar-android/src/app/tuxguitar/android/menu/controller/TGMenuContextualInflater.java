@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.menu.controller;
+package app.tuxguitar.android.menu.controller;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGMenuContextualInflater {
 

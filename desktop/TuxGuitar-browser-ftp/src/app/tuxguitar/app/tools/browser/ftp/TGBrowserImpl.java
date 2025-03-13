@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.browser.ftp;
+package app.tuxguitar.app.tools.browser.ftp;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -9,10 +9,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.app.tools.browser.TGBrowserException;
+import app.tuxguitar.app.tools.browser.base.TGBrowser;
+import app.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
+import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserImpl implements TGBrowser {
 

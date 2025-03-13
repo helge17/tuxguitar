@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.view.dialog.lyric;
+package app.tuxguitar.app.view.dialog.lyric;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.track.TGSetTrackLyricsAction;
-import org.herac.tuxguitar.ui.event.UIModifyEvent;
-import org.herac.tuxguitar.ui.event.UIModifyListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.track.TGSetTrackLyricsAction;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
 
 public class TGLyricModifyListener implements UIModifyListener, UISelectionListener{
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,11 +9,11 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.herac.tuxguitar.resource.TGResourceException;
-import org.herac.tuxguitar.resource.TGResourceLoader;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.resource.TGResourceException;
+import app.tuxguitar.resource.TGResourceLoader;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGClassLoader implements TGResourceLoader {
 

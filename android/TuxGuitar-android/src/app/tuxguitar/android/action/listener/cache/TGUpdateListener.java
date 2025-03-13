@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.action.listener.cache;
+package app.tuxguitar.android.action.listener.cache;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionErrorEvent;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.android.action.TGActionAdapterManager;
-import org.herac.tuxguitar.android.action.TGActionMap;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionErrorEvent;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.action.TGActionPreExecutionEvent;
+import app.tuxguitar.android.action.TGActionAdapterManager;
+import app.tuxguitar.android.action.TGActionMap;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGUpdateListener implements TGEventListener {
 

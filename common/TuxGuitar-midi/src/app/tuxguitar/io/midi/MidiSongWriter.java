@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.player.base.MidiSequenceParser;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.gm.GMChannelRouterConfigurator;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.player.base.MidiSequenceParser;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
 
 public class MidiSongWriter extends MidiFileFormat implements TGSongWriter {
 

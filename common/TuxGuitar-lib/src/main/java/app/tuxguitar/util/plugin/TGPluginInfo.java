@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.util.plugin;
+package app.tuxguitar.util.plugin;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
-import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.util.properties.TGPropertiesUtil;
 
 public class TGPluginInfo {
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.action.impl.gui;
+package app.tuxguitar.android.action.impl.gui;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.util.TGContext;
 
 public class TGOpenFragmentAction extends TGActionBase{
 

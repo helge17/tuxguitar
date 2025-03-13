@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
+package app.tuxguitar.player.impl.midiport.fluidsynth;
 
 public class MidiSynthPlugin {
 

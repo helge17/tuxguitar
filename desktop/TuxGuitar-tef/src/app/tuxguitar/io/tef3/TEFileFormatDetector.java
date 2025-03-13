@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.tef3;
+package app.tuxguitar.io.tef3;
 
 import java.io.InputStream;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatDetector;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatDetector;
 
 public class TEFileFormatDetector implements TGFileFormatDetector {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.jfx.JFXComponent;
 
 public abstract class JFXEventReceiver<T> extends JFXComponent<T> {
 

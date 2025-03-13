@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.ascii;
+package app.tuxguitar.io.ascii;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,14 +6,14 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
 
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
 
 public class ASCIITabOutputStream {
 

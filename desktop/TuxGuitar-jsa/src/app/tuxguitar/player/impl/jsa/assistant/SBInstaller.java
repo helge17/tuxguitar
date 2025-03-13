@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa.assistant;
+package app.tuxguitar.player.impl.jsa.assistant;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,12 +9,12 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
-import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import app.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class SBInstaller {
 

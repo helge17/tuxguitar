@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.resource;
+package app.tuxguitar.ui.swt.resource;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -10,12 +10,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontAlignment;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontAlignment;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.swt.SWTComponent;
 
 public class SWTPainter extends SWTComponent<GC> implements UIPainter {
 

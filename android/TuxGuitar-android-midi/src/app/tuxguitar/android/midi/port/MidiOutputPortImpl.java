@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.midi.port;
+package app.tuxguitar.android.midi.port;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.util.TGContext;
 
 @SuppressLint("NewApi")
 public class MidiOutputPortImpl extends GMOutputPort {

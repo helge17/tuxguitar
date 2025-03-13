@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 
 import javax.sound.sampled.AudioFormat;
@@ -6,7 +6,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGAudioLine {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
 /* test of "letRing" duration
  * this test heavily depends from a test .tg file
@@ -12,15 +12,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.io.tg.TestFileFormat20;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.io.tg.TestFileFormat20;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 import org.junit.jupiter.api.Test;
-import org.herac.tuxguitar.player.impl.sequencer.MidiEvent;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequenceHandlerImpl;
-import org.herac.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
+import app.tuxguitar.player.impl.sequencer.MidiEvent;
+import app.tuxguitar.player.impl.sequencer.MidiSequenceHandlerImpl;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
 
 public class TestLetRing {
 

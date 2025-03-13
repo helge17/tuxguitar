@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.thread;
+package app.tuxguitar.thread;
 
 import java.util.ArrayList;
 import java.util.List;

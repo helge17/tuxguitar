@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.remote;
+package app.tuxguitar.midi.synth.remote;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
-import org.herac.tuxguitar.thread.TGThreadLoop;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.thread.TGThreadLoop;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
 
 public class TGClientProcess {
 

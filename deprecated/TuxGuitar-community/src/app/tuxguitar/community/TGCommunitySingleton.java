@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.community;
+package app.tuxguitar.community;
 
-import org.herac.tuxguitar.community.auth.TGCommunityAuth;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.community.auth.TGCommunityAuth;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGCommunitySingleton {
 

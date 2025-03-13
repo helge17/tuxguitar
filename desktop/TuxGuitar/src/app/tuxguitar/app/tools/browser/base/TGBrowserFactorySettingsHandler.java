@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.tools.browser.base;
+package app.tuxguitar.app.tools.browser.base;
 
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 public interface TGBrowserFactorySettingsHandler extends TGErrorHandler {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.action.listener.thread;
+package app.tuxguitar.app.action.listener.thread;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.util.TGContext;
 
 public class TGSyncThreadInterceptor extends TGSyncThreadAction implements TGActionInterceptor {
 

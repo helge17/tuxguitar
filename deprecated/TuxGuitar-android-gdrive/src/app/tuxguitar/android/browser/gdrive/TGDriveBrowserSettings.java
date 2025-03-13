@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package app.tuxguitar.android.browser.gdrive;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
 
 public class TGDriveBrowserSettings  {
 

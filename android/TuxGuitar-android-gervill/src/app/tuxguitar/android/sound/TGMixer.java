@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.sound;
+package app.tuxguitar.android.sound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -194,8 +194,8 @@ public class TGMixer extends TGAbstractLine implements Mixer {
 	private static class TGMixerInfo extends Mixer.Info {
 
 		private static final String MIXER_NAME = "TGMixer";
-		private static final String MIXER_VENDOR = "org.herac.tuxguitar";
-		private static final String MIXER_DESCRIPTION = "org.herac.tuxguitar";
+		private static final String MIXER_VENDOR = "app.tuxguitar";
+		private static final String MIXER_DESCRIPTION = "app.tuxguitar";
 		private static final String MIXER_VERSION = "1.0";
 
 		public TGMixerInfo() {

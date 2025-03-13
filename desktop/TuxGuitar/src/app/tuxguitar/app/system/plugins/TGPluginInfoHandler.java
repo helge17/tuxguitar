@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.system.plugins;
+package app.tuxguitar.app.system.plugins;
 
-import org.herac.tuxguitar.app.system.properties.TGResourcePropertiesReader;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.properties.TGResourcePropertiesReader;
+import app.tuxguitar.util.TGContext;
 
 public class TGPluginInfoHandler extends TGResourcePropertiesReader {
 

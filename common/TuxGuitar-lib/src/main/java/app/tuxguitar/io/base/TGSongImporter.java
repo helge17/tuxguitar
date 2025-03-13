@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
 public interface TGSongImporter extends TGSongStreamProvider {
 

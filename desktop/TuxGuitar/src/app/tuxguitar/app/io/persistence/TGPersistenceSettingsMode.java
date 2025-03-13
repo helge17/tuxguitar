@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.io.persistence;
+package app.tuxguitar.app.io.persistence;
 
 public enum TGPersistenceSettingsMode {
 

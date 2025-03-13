@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.event.UICheckTableSelectionEvent;
+import app.tuxguitar.ui.event.UICheckTableSelectionListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class SWTCheckTableSelectionListenerManager<T> extends UICheckTableSelectionListenerManager<T> implements SelectionListener {
 

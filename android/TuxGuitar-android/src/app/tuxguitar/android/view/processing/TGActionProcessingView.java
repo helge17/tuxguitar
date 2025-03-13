@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.view.processing;
+package app.tuxguitar.android.view.processing;
 
 import android.app.ProgressDialog;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGActionProcessingView {
 

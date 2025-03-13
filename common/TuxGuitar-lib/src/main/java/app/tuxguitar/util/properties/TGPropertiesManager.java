@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.util.properties;
+package app.tuxguitar.util.properties;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGPropertiesManager {
 

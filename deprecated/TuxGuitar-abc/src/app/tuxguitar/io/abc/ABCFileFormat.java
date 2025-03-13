@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class ABCFileFormat {
 

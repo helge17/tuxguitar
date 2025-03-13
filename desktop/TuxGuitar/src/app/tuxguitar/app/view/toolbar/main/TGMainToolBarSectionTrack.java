@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
+import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTrack extends TGMainToolBarSection {
 

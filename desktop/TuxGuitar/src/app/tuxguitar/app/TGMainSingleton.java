@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app;
+package app.tuxguitar.app;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
-import org.herac.tuxguitar.app.util.ArgumentParser;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.action.impl.file.TGReadURLAction;
+import app.tuxguitar.app.util.ArgumentParser;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGMainSingleton {
 

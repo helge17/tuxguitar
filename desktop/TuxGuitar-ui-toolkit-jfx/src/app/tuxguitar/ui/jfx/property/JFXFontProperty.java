@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.property;
+package app.tuxguitar.ui.jfx.property;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.text.Font;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXFont;
-import org.herac.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.jfx.resource.JFXFont;
+import app.tuxguitar.ui.resource.UIFont;
 
 public class JFXFontProperty {
 

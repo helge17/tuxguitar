@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.view.util;
+package app.tuxguitar.android.view.util;
 
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGLock;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGLock;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGSyncProcessLocked implements TGProcess {
 

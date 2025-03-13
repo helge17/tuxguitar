@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.tg;
+package app.tuxguitar.io.tg;
 
-import org.herac.tuxguitar.io.plugin.TGSongWriterPlugin;
+import app.tuxguitar.io.plugin.TGSongWriterPlugin;
 
 public abstract class TGAbstractSongWriterPlugin extends TGSongWriterPlugin {
 

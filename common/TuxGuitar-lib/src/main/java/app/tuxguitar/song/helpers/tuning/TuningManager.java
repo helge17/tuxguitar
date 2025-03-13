@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.song.helpers.tuning;
+package app.tuxguitar.song.helpers.tuning;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.song.helpers.tuning.xml.TuningReader;
-import org.herac.tuxguitar.song.helpers.tuning.xml.TuningWriter;
-import org.herac.tuxguitar.song.models.TGTuning;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGUserFileUtils;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.song.helpers.tuning.xml.TuningReader;
+import app.tuxguitar.song.helpers.tuning.xml.TuningWriter;
+import app.tuxguitar.song.models.TGTuning;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGUserFileUtils;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

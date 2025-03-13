@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.dialog.channel;
+package app.tuxguitar.app.view.dialog.channel;
 
-import org.herac.tuxguitar.player.base.MidiDevice;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.player.base.MidiDevice;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
 
 public interface TGChannelSettingsHandler {
 

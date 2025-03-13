@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILabel;
 
 public class JFXLabel extends JFXLabeled<Label> implements UILabel {
 

@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.activity;
+package app.tuxguitar.android.activity;
 
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGRequestPermissionsAction;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.action.impl.gui.TGRequestPermissionsAction;
+import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

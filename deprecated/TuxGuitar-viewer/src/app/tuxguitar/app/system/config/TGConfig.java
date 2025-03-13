@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.system.config;
+package app.tuxguitar.app.system.config;
 
 import java.awt.Color;
 import java.awt.Font;
 
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFontModel;
 
 public class TGConfig{
 

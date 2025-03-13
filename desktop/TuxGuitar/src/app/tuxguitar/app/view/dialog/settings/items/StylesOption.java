@@ -1,29 +1,29 @@
-package org.herac.tuxguitar.app.view.dialog.settings.items;
+package app.tuxguitar.app.view.dialog.settings.items;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.chooser.UIColorChooser;
-import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
-import org.herac.tuxguitar.ui.chooser.UIFontChooser;
-import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.chooser.UIColorChooser;
+import app.tuxguitar.ui.chooser.UIColorChooserHandler;
+import app.tuxguitar.ui.chooser.UIFontChooser;
+import app.tuxguitar.ui.chooser.UIFontChooserHandler;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class StylesOption extends TGSettingsOption {
 

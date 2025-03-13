@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.action.impl.help;
+package app.tuxguitar.app.action.impl.help;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGHelpGoHomeAction extends TGActionBase {
 

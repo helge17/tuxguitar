@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.herac.tuxguitar.resource.TGResourceException;
-import org.herac.tuxguitar.resource.TGResourceLoader;
-import org.herac.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.resource.TGResourceException;
+import app.tuxguitar.resource.TGResourceLoader;
+import app.tuxguitar.resource.TGResourceManager;
 
 public class TGServiceReader {
 

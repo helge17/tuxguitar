@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.debug;
+package app.tuxguitar.debug;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,10 +8,10 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGSystemOutManager {
 

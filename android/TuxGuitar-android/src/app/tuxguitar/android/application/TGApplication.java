@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.application;
+package app.tuxguitar.android.application;
 
 import android.content.Context;
 

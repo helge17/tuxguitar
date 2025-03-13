@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog;
+package app.tuxguitar.android.view.dialog;
 
 import java.util.HashMap;
 import java.util.Map;

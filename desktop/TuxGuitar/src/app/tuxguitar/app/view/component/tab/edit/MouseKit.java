@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.app.view.component.tab.edit;
+package app.tuxguitar.app.view.component.tab.edit;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
-import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
-import org.herac.tuxguitar.app.action.impl.edit.tablature.TGMouseMoveAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
-import org.herac.tuxguitar.app.action.impl.selector.TGStartDragSelectionAction;
-import org.herac.tuxguitar.app.action.impl.selector.TGUpdateDragSelectionAction;
-import org.herac.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.event.*;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
+import app.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
+import app.tuxguitar.app.action.impl.edit.tablature.TGMouseMoveAction;
+import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
+import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
+import app.tuxguitar.app.action.impl.selector.TGStartDragSelectionAction;
+import app.tuxguitar.app.action.impl.selector.TGUpdateDragSelectionAction;
+import app.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.event.*;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.util.TGContext;
 
 public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouseDragListener, UIMouseMoveListener, UIMouseExitListener, UIMenuShowListener, UIMenuHideListener, UIZoomListener {
 

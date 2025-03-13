@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.gm.port;
+package app.tuxguitar.gm.port;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public class GMChannel implements MidiChannel{
 

@@ -1,32 +1,32 @@
-package org.herac.tuxguitar.app.view.dialog.settings.items;
+package app.tuxguitar.app.view.dialog.settings.items;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.TGSkinManager;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.widget.UICanvas;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.icons.TGSkinManager;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesUtil;
 
 public class SkinOption extends TGSettingsOption{
 

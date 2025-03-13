@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gervill;
+package app.tuxguitar.io.gervill;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;

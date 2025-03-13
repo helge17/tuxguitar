@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
-import org.herac.tuxguitar.ui.event.UIMenuEvent;
-import org.herac.tuxguitar.ui.event.UIMenuHideListener;
-import org.herac.tuxguitar.ui.event.UIMenuHideListenerManager;
-import org.herac.tuxguitar.ui.event.UIMenuShowListener;
-import org.herac.tuxguitar.ui.event.UIMenuShowListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UIMenuEvent;
+import app.tuxguitar.ui.event.UIMenuHideListener;
+import app.tuxguitar.ui.event.UIMenuHideListenerManager;
+import app.tuxguitar.ui.event.UIMenuShowListener;
+import app.tuxguitar.ui.event.UIMenuShowListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMenuListenerManager implements MenuListener {
 

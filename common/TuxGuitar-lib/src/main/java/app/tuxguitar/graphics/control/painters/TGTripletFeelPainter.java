@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.graphics.control.painters;
+package app.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGTripletFeelPainter {
 

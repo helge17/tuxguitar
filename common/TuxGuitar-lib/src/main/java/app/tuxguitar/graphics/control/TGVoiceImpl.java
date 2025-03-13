@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.graphics.control.painters.TGNotePainter;
-import org.herac.tuxguitar.graphics.control.painters.TGSilencePainter;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.graphics.control.painters.TGNotePainter;
+import app.tuxguitar.graphics.control.painters.TGSilencePainter;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGVoiceImpl extends TGVoice{
 	/**

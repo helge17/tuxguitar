@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.editor.action;
+package app.tuxguitar.editor.action;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 public class TGActionProcessor {
 

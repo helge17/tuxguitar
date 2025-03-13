@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa.sequencer;
+package app.tuxguitar.player.impl.jsa.sequencer;
 
 import javax.sound.midi.Sequence;
 

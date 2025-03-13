@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
+package app.tuxguitar.player.impl.midiport.fluidsynth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.BooleanRef;
-import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.DoubleRef;
-import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.IntegerRef;
-import org.herac.tuxguitar.player.impl.midiport.fluidsynth.type.StringRef;
+import app.tuxguitar.player.impl.midiport.fluidsynth.type.BooleanRef;
+import app.tuxguitar.player.impl.midiport.fluidsynth.type.DoubleRef;
+import app.tuxguitar.player.impl.midiport.fluidsynth.type.IntegerRef;
+import app.tuxguitar.player.impl.midiport.fluidsynth.type.StringRef;
 
 public class MidiSynth {
 

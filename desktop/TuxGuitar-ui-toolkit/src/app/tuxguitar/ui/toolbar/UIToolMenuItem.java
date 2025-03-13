@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.toolbar;
+package app.tuxguitar.ui.toolbar;
 
-import org.herac.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenu;
 
 public interface UIToolMenuItem extends UIToolItem {
 

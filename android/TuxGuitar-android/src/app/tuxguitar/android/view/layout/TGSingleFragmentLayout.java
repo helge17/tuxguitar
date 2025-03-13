@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.view.layout;
+package app.tuxguitar.android.view.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.drawer.TGDrawerViewBuilder;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.drawer.TGDrawerViewBuilder;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.fragment.impl.TGMainFragmentController;
+import app.tuxguitar.util.TGContext;
 
 import java.util.HashMap;
 import java.util.Map;

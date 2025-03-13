@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.menu;
+package app.tuxguitar.ui.swt.menu;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class SWTMenuSubMenuItem extends SWTMenuItem implements UIMenuSubMenuItem {
 

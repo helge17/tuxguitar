@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
-import org.herac.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.thread.TGThreadManager;
 
 public class TGLock {
 

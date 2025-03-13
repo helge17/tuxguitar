@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.action.listener.cache;
+package app.tuxguitar.app.action.listener.cache;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGUpdateBuffer {
 

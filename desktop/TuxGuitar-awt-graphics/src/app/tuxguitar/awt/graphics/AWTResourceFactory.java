@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.awt.graphics;
+package app.tuxguitar.awt.graphics;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGException;
 
 public class AWTResourceFactory implements UIResourceFactory {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,10 +10,10 @@ import javax.sound.midi.Patch;
 import javax.sound.midi.Receiver;
 import javax.sound.sampled.AudioInputStream;
 
-import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.TGAudioLine;
-import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGAudioLine;
+import app.tuxguitar.midi.synth.TGMidiProcessor;
+import app.tuxguitar.util.TGContext;
 
 import media.sound.AudioSynthesizer;
 import media.sound.SoftSynthesizer;

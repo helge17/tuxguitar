@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.action;
+package app.tuxguitar.app.action;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionContextFactory;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.tab.Caret;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionContextFactory;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.editors.tab.Caret;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.document.TGDocumentManager;
 
 public class TGActionContextFactoryImpl implements TGActionContextFactory{
 

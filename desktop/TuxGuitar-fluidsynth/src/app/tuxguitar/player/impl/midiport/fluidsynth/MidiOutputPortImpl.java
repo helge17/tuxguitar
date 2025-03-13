@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
+package app.tuxguitar.player.impl.midiport.fluidsynth;
 
 import java.io.File;
 
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
 
 public class MidiOutputPortImpl extends GMOutputPort{
 

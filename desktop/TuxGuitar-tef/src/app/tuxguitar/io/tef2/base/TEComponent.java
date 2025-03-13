@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tef2.base;
+package app.tuxguitar.io.tef2.base;
 
 public abstract class TEComponent {
 

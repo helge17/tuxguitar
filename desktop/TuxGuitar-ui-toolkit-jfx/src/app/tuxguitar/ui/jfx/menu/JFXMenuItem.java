@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.jfx.resource.JFXImage;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;

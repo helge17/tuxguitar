@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.swt.chooser;
+package app.tuxguitar.ui.swt.chooser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
-import org.herac.tuxguitar.ui.chooser.UIFontChooser;
-import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.swt.resource.SWTFont;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.ui.chooser.UIFontChooser;
+import app.tuxguitar.ui.chooser.UIFontChooserHandler;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.swt.resource.SWTFont;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
 
 public class SWTFontChooser implements UIFontChooser {
 

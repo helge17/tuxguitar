@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.song.helpers.tuning;
+package app.tuxguitar.song.helpers.tuning;
 
-import org.herac.tuxguitar.song.models.TGTuning;
+import app.tuxguitar.song.models.TGTuning;
 
 public class TuningPreset extends TGTuning {
 	private TuningGroup parent;

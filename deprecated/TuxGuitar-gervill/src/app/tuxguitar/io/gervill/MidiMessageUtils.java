@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gervill;
+package app.tuxguitar.io.gervill;
 
 import java.nio.charset.Charset;
 
@@ -7,7 +7,7 @@ import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiMessageUtils {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.synchronizer;
+package app.tuxguitar.app.synchronizer;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer.TGSynchronizerController;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer.TGSynchronizerController;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGSynchronizerControllerImpl implements TGSynchronizerController {
 

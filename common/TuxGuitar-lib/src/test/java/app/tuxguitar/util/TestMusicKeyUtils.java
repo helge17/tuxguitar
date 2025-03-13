@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGScale;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGScale;
 
 public class TestMusicKeyUtils {
 

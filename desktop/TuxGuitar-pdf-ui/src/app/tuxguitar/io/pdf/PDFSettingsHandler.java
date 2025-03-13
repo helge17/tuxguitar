@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
-import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialog;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialogController;
-import org.herac.tuxguitar.app.view.dialog.printer.TGPrintSettingsHandler;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialog;
+import app.tuxguitar.app.view.dialog.printer.TGPrintSettingsDialogController;
+import app.tuxguitar.app.view.dialog.printer.TGPrintSettingsHandler;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.graphics.control.print.TGPrintSettings;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class PDFSettingsHandler implements TGPersistenceSettingsHandler, TGPluginSettingsHandler{
 

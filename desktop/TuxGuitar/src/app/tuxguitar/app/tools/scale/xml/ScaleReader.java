@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.scale.xml;
+package app.tuxguitar.app.tools.scale.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.herac.tuxguitar.app.tools.scale.ScaleInfo;
+import app.tuxguitar.app.tools.scale.ScaleInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

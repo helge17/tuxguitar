@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.resource;
+package app.tuxguitar.ui.qt.resource;
 
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontAlignment;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontAlignment;
+import app.tuxguitar.ui.resource.UIFontModel;
 import org.qtjambi.qt.gui.QFont;
 
 public class QTFont extends QTComponent<QFont> implements UIFont {

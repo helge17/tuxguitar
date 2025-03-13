@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UISelectionListener;
 
 public interface UIKnob extends UIControl {
 

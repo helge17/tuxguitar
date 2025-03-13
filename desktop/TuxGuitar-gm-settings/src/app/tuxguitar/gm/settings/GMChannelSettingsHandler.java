@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.gm.settings;
+package app.tuxguitar.gm.settings;
 
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMSynthesizer;
-import org.herac.tuxguitar.player.base.MidiDevice;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMSynthesizer;
+import app.tuxguitar.player.base.MidiDevice;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
 
 public class GMChannelSettingsHandler implements TGChannelSettingsHandler{
 

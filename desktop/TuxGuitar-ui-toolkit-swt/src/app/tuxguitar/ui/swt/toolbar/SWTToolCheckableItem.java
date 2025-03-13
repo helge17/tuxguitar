@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.swt.toolbar;
+package app.tuxguitar.ui.swt.toolbar;
 
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class SWTToolCheckableItem extends SWTToolActionItem implements UIToolCheckableItem {
 

@@ -1,30 +1,30 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetEighthDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetHalfDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetQuarterDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGDivisionType;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
+import app.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetEighthDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetHalfDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetQuarterDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGDivisionType;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.util.TGContext;
 
 public class TGDurationMenu extends TGMenuBase {
 

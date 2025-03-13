@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.action.listener.cache.controller;
+package app.tuxguitar.android.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionAdapterManager;
-import org.herac.tuxguitar.android.action.listener.cache.TGUpdateBuffer;
-import org.herac.tuxguitar.android.action.listener.cache.TGUpdateController;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionAdapterManager;
+import app.tuxguitar.android.action.listener.cache.TGUpdateBuffer;
+import app.tuxguitar.android.action.listener.cache.TGUpdateController;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateCacheController implements TGUpdateController {
 

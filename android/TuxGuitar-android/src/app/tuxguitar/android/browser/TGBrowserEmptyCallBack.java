@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser;
+package app.tuxguitar.android.browser;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.android.browser.model.TGBrowserCallBack;
 
 public class TGBrowserEmptyCallBack<T> implements TGBrowserCallBack<T> {
 

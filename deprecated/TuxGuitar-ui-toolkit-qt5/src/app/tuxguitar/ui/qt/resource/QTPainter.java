@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.qt.resource;
+package app.tuxguitar.ui.qt.resource;
 
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontAlignment;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontAlignment;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
 import org.qtjambi.qt.core.QRect;
 import org.qtjambi.qt.core.Qt.PenStyle;
 import org.qtjambi.qt.gui.QBrush;

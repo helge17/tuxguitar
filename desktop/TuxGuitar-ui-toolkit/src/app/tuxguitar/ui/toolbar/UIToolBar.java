@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.toolbar;
+package app.tuxguitar.ui.toolbar;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.widget.UIControl;
 
 public interface UIToolBar extends UIControl {
 

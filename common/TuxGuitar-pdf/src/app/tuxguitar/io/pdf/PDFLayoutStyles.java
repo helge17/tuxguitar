@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.util.TGContext;
 
 import com.itextpdf.text.pdf.BaseFont;
 

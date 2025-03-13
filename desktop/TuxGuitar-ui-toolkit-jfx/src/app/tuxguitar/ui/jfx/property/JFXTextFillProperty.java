@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.property;
+package app.tuxguitar.ui.jfx.property;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXColor;
-import org.herac.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.jfx.resource.JFXColor;
+import app.tuxguitar.ui.resource.UIColor;
 
 public class JFXTextFillProperty {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.io.stream;
+package app.tuxguitar.app.io.stream;
 
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGSongStreamContext;
 
 public interface TGSongStreamSettingsHandler {
 

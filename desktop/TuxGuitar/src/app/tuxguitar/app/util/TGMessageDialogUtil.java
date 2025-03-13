@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialog;
-import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.dialog.message.TGMessageDialog;
+import app.tuxguitar.app.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class TGMessageDialogUtil {
 

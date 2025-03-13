@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.action.listener.gui;
+package app.tuxguitar.android.action.listener.gui;
 
-import org.herac.tuxguitar.action.TGActionErrorEvent;
-import org.herac.tuxguitar.action.TGActionEvent;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcessErrorEvent;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcessFinishEvent;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcessStartEvent;
-import org.herac.tuxguitar.android.action.impl.gui.TGFinishAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.view.processing.TGActionProcessingController;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionErrorEvent;
+import app.tuxguitar.action.TGActionEvent;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.action.TGActionPreExecutionEvent;
+import app.tuxguitar.android.action.TGActionAsyncProcessErrorEvent;
+import app.tuxguitar.android.action.TGActionAsyncProcessFinishEvent;
+import app.tuxguitar.android.action.TGActionAsyncProcessStartEvent;
+import app.tuxguitar.android.action.impl.gui.TGFinishAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.view.processing.TGActionProcessingController;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGActionProcessingListener implements TGEventListener {
 

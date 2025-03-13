@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.error.TGErrorManager;
 
 
 class MiStaffEvent

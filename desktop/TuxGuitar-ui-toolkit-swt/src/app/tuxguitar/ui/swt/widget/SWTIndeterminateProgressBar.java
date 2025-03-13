@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
-import org.herac.tuxguitar.ui.widget.UIIndeterminateProgressBar;
+import app.tuxguitar.ui.widget.UIIndeterminateProgressBar;
 
 public class SWTIndeterminateProgressBar extends SWTControl<ProgressBar> implements UIIndeterminateProgressBar {
 

@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.action.listener.undoable;
+package app.tuxguitar.android.action.listener.undoable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.undo.TGCannotRedoException;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableJoined extends TGUndoableEditBase{
 

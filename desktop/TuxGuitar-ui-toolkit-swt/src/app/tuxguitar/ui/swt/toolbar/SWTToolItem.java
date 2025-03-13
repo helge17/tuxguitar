@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.toolbar;
+package app.tuxguitar.ui.swt.toolbar;
 
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
-import org.herac.tuxguitar.ui.toolbar.UIToolItem;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.ui.toolbar.UIToolItem;
 
 public class SWTToolItem extends SWTToolControl<ToolItem> implements UIToolItem {
 

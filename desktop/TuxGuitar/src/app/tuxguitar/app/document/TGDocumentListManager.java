@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.document;
+package app.tuxguitar.app.document;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.TGFileChooser;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.undo.TGUndoableBuffer;
-import org.herac.tuxguitar.editor.undo.TGUndoableManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.util.TGFileChooser;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.undo.TGUndoableBuffer;
+import app.tuxguitar.editor.undo.TGUndoableManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentListManager {
 

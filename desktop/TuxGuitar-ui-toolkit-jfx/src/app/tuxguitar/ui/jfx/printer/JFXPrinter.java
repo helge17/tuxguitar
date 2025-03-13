@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.printer;
+package app.tuxguitar.ui.jfx.printer;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.jfx.resource.JFXResourceFactory;
-import org.herac.tuxguitar.ui.printer.UIPrinter;
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.jfx.resource.JFXResourceFactory;
+import app.tuxguitar.ui.printer.UIPrinter;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
 
 import javafx.print.PageLayout;
 import javafx.print.PageRange;

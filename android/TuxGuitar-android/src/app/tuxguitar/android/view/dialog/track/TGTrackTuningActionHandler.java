@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.view.dialog.track;
+package app.tuxguitar.android.view.dialog.track;
 
 import android.view.MenuItem;
 import android.view.View;
 
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.editor.TGEditorManager;
 
 public class TGTrackTuningActionHandler {
 

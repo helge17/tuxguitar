@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.fragment.impl;
+package app.tuxguitar.android.fragment.impl;
 
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.fragment.TGFragmentController;
 
 public class TGPreferencesFragmentController implements TGFragmentController<TGPreferencesFragment> {
 

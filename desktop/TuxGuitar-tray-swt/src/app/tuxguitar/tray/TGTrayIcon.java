@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.tray;
+package app.tuxguitar.tray;
 
 import org.eclipse.swt.widgets.TrayItem;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.ui.swt.resource.SWTImage;
 
 public class TGTrayIcon {
 

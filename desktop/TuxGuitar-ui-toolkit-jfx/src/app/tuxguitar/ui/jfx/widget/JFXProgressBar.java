@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.widget.UIProgressBar;
+import app.tuxguitar.ui.widget.UIProgressBar;
 
 public class JFXProgressBar extends JFXControl<ProgressBar> implements UIProgressBar {
 

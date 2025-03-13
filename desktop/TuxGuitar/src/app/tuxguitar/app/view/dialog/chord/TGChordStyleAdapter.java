@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
-import org.herac.tuxguitar.app.system.icons.TGColorManager;
-import org.herac.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.icons.TGColorManager;
+import app.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.util.TGContext;
 
 public class TGChordStyleAdapter {
 

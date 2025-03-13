@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.android.storage.browser;
+package app.tuxguitar.android.storage.browser;
 
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.android.fragment.impl.TGBrowserFragmentController;
-import org.herac.tuxguitar.android.fragment.impl.TGMainFragmentController;
-import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
-import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.fragment.impl.TGBrowserFragmentController;
+import app.tuxguitar.android.fragment.impl.TGMainFragmentController;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.editor.action.file.TGWriteSongAction;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 import java.util.HashMap;
 import java.util.Map;

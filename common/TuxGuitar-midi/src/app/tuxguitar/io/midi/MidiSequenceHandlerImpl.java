@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.io.midi.base.MidiEvent;
-import org.herac.tuxguitar.io.midi.base.MidiSequence;
-import org.herac.tuxguitar.io.midi.base.MidiTrack;
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.io.midi.base.MidiEvent;
+import app.tuxguitar.io.midi.base.MidiSequence;
+import app.tuxguitar.io.midi.base.MidiTrack;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 

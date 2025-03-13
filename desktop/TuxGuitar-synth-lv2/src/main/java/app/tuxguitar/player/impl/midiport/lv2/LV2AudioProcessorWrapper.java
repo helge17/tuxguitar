@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2;
+package app.tuxguitar.player.impl.midiport.lv2;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.base64.Base64Decoder;
-import org.herac.tuxguitar.util.base64.Base64Encoder;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.base64.Base64Decoder;
+import app.tuxguitar.util.base64.Base64Encoder;
 
 public class LV2AudioProcessorWrapper implements TGAudioProcessor {
 

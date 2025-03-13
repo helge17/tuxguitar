@@ -1,25 +1,25 @@
-package org.herac.tuxguitar.app.view.dialog.transpose;
+package app.tuxguitar.app.view.dialog.transpose;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.tools.TGTransposeAction;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIRadioButton;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.tools.TGTransposeAction;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIRadioButton;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGTransposeDialog {
 

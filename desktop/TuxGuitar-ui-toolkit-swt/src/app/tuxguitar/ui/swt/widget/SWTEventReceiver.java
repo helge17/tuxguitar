@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.swt.SWTComponent;
 
 public abstract class SWTEventReceiver<T> extends SWTComponent<T> {
 

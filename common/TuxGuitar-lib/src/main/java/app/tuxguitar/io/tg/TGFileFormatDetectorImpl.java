@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.tg;
+package app.tuxguitar.io.tg;
 
 import java.io.IOException;
 import java.io.InputStream;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatDetector;
-import org.herac.tuxguitar.util.TGVersion;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatDetector;
+import app.tuxguitar.util.TGVersion;
 
 public class TGFileFormatDetectorImpl extends TGStream implements TGFileFormatDetector{
 

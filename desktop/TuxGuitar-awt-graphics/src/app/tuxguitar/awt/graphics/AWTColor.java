@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.awt.graphics;
+package app.tuxguitar.awt.graphics;
 
 import java.awt.Color;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public class AWTColor implements UIColor{
 

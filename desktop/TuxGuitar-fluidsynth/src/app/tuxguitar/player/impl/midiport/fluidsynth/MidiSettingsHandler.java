@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
+package app.tuxguitar.player.impl.midiport.fluidsynth;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class MidiSettingsHandler implements TGPluginSettingsHandler {
 

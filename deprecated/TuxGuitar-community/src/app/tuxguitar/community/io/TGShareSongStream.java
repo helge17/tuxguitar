@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongStream;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongStream;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGShareSongStream implements TGSongStream {
 

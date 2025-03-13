@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.appearance;
+package app.tuxguitar.ui.appearance;
 
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public interface UIAppearance {
 

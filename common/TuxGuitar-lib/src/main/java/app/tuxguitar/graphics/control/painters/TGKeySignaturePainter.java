@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.graphics.control.painters;
+package app.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.graphics.command.TGCubicTo;
-import org.herac.tuxguitar.graphics.command.TGLineTo;
-import org.herac.tuxguitar.graphics.command.TGMoveTo;
-import org.herac.tuxguitar.graphics.command.TGPaintCommand;
-import org.herac.tuxguitar.graphics.command.TGPaintModel;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.graphics.command.TGCubicTo;
+import app.tuxguitar.graphics.command.TGLineTo;
+import app.tuxguitar.graphics.command.TGMoveTo;
+import app.tuxguitar.graphics.command.TGPaintCommand;
+import app.tuxguitar.graphics.command.TGPaintModel;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGKeySignaturePainter {
 

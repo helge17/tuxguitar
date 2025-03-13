@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.variables;
+package app.tuxguitar.app.system.variables;
 
-import org.herac.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.app.util.TGFileUtils;
 
 public class TGUserSharePath {
 

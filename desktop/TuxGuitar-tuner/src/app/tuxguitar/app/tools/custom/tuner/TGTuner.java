@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.custom.tuner;
+package app.tuxguitar.app.tools.custom.tuner;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;

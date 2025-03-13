@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
 import javax.sound.midi.Instrument;
 

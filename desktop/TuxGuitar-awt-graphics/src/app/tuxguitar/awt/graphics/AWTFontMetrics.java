@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.awt.graphics;
+package app.tuxguitar.awt.graphics;
 
 import java.awt.Canvas;
 import java.awt.Font;

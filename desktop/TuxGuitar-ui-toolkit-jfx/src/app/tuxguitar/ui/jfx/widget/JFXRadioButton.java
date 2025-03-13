@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import app.tuxguitar.ui.jfx.resource.JFXImage;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UIRadioButton;
 
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;

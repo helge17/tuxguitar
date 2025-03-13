@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.browser.saf;
+package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.browser.model.TGBrowserFactory;
+import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
+import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.util.TGContext;
 
 import androidx.documentfile.provider.DocumentFile;
 

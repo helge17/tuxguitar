@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.android.view.channel;
+package app.tuxguitar.android.view.channel;
 
 import android.view.View;
 
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.channel.TGAddNewChannelAction;
-import org.herac.tuxguitar.editor.action.channel.TGRemoveChannelAction;
-import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
-import org.herac.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.gui.TGOpenCabMenuAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
+import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.channel.TGAddNewChannelAction;
+import app.tuxguitar.editor.action.channel.TGRemoveChannelAction;
+import app.tuxguitar.editor.action.channel.TGUpdateChannelAction;
+import app.tuxguitar.song.models.TGChannel;
 
 public class TGChannelActionHandler {
 

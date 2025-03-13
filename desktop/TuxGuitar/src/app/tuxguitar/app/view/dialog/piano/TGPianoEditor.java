@@ -1,26 +1,26 @@
-package org.herac.tuxguitar.app.view.dialog.piano;
+package app.tuxguitar.app.view.dialog.piano;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editor.TGExternalBeatViewerEvent;
-import org.herac.tuxguitar.app.editor.TGExternalBeatViewerManager;
-import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
-import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.tools.scale.ScaleEvent;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.editor.TGExternalBeatViewerEvent;
+import app.tuxguitar.app.editor.TGExternalBeatViewerManager;
+import app.tuxguitar.app.system.icons.TGSkinEvent;
+import app.tuxguitar.app.system.language.TGLanguageEvent;
+import app.tuxguitar.app.tools.scale.ScaleEvent;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.editor.event.TGRedrawEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGPianoEditor implements TGEventListener{
 

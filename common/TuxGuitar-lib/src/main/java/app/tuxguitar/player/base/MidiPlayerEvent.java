@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public class MidiPlayerEvent extends TGEvent {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.resource;
+package app.tuxguitar.ui.swt.resource;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.swt.SWTComponent;
 
 public class SWTColor extends SWTComponent<Color> implements UIColor{
 

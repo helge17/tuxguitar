@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGTrack;
 
 public class TGMainDrawerTrackListItem {
 

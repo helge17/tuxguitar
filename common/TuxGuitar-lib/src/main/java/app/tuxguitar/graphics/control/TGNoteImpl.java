@@ -1,23 +1,23 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
-import org.herac.tuxguitar.graphics.control.painters.TGNotePainter;
-import org.herac.tuxguitar.graphics.control.painters.TGNumberPainter;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGNoteEffect;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.ui.resource.UIInset;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
+import app.tuxguitar.graphics.control.painters.TGNotePainter;
+import app.tuxguitar.graphics.control.painters.TGNumberPainter;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGNoteEffect;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.ui.resource.UIInset;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.song.models.effects.TGEffectBend;
 
 public class TGNoteImpl extends TGNote {
 	private float tabPosY;

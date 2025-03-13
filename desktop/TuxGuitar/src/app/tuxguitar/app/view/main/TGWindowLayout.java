@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.view.main;
+package app.tuxguitar.app.view.main;
 
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UILayoutContainer;
 
 public class TGWindowLayout extends UITableLayout {
 

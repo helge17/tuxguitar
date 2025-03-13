@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.io.gervill;
+package app.tuxguitar.io.gervill;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.midi.MidiEvent;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 

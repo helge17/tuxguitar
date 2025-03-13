@@ -1,28 +1,28 @@
-package org.herac.tuxguitar.app.view.dialog.settings.items;
+package app.tuxguitar.app.view.dialog.settings.items;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UIImageView;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UIImageView;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.properties.TGProperties;
 
 public abstract class TGSettingsOption implements UISelectionListener {
 

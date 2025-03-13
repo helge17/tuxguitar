@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.printer;
+package app.tuxguitar.ui.printer;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public interface UIPrinterPage extends UIComponent {
 

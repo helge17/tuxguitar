@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UICloseEvent;
-import org.herac.tuxguitar.ui.event.UICloseListenerManager;
-import org.herac.tuxguitar.ui.qt.widget.QTTabFolder;
-import org.herac.tuxguitar.ui.widget.UITabItem;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListenerManager;
+import app.tuxguitar.ui.qt.widget.QTTabFolder;
+import app.tuxguitar.ui.widget.UITabItem;
 
 public class QTTabFolderCloseListenerManager extends UICloseListenerManager {
 

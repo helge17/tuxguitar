@@ -1,33 +1,33 @@
-package org.herac.tuxguitar.io.ptb;
+package app.tuxguitar.io.ptb;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.io.ptb.base.PTBar;
-import org.herac.tuxguitar.io.ptb.base.PTBeat;
-import org.herac.tuxguitar.io.ptb.base.PTComponent;
-import org.herac.tuxguitar.io.ptb.base.PTGuitarIn;
-import org.herac.tuxguitar.io.ptb.base.PTNote;
-import org.herac.tuxguitar.io.ptb.base.PTPosition;
-import org.herac.tuxguitar.io.ptb.base.PTSection;
-import org.herac.tuxguitar.io.ptb.base.PTSong;
-import org.herac.tuxguitar.io.ptb.base.PTSongInfo;
-import org.herac.tuxguitar.io.ptb.base.PTTempo;
-import org.herac.tuxguitar.io.ptb.base.PTTrack;
-import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
-import org.herac.tuxguitar.io.ptb.helper.TrackHelper;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGStroke;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.io.ptb.base.PTBar;
+import app.tuxguitar.io.ptb.base.PTBeat;
+import app.tuxguitar.io.ptb.base.PTComponent;
+import app.tuxguitar.io.ptb.base.PTGuitarIn;
+import app.tuxguitar.io.ptb.base.PTNote;
+import app.tuxguitar.io.ptb.base.PTPosition;
+import app.tuxguitar.io.ptb.base.PTSection;
+import app.tuxguitar.io.ptb.base.PTSong;
+import app.tuxguitar.io.ptb.base.PTSongInfo;
+import app.tuxguitar.io.ptb.base.PTTempo;
+import app.tuxguitar.io.ptb.base.PTTrack;
+import app.tuxguitar.io.ptb.base.PTTrackInfo;
+import app.tuxguitar.io.ptb.helper.TrackHelper;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.effects.TGEffectBend;
 
 public class PTSongParser {
 

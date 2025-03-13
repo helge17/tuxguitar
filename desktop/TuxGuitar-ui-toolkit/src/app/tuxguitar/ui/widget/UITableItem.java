@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIImage;
 
 public class UITableItem<T> {
 

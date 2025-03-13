@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.drawer;
+package app.tuxguitar.android.drawer;
 
 import android.content.res.Configuration;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.util.TGContext;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;

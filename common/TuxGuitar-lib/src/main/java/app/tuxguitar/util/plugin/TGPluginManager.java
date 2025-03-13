@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.util.plugin;
+package app.tuxguitar.util.plugin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGServiceReader;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGServiceReader;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGPluginManager {
 

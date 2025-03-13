@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIMenuEvent;
-import org.herac.tuxguitar.ui.event.UIMenuShowListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.event.UIMenuEvent;
+import app.tuxguitar.ui.event.UIMenuShowListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
 import org.qtjambi.qt.core.QEvent;
 
 public class QTMenuShowListenerManager extends UIMenuShowListenerManager implements QTEventHandler, QTSignalHandler {

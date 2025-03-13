@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.jack.synthesizer;
+package app.tuxguitar.jack.synthesizer;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.JackPort;
-import org.herac.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.JackPort;
+import app.tuxguitar.player.base.MidiControllers;
 
 public class JackGmReceiver implements GMReceiver{
 

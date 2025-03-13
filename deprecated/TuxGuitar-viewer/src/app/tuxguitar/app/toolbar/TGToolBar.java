@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.toolbar;
+package app.tuxguitar.app.toolbar;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -14,15 +14,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.action.impl.settings.SettingsAction;
-import org.herac.tuxguitar.app.action.impl.track.SelectTrackAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
-import org.herac.tuxguitar.app.editors.tab.Tablature;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.app.util.TGResourceUtils;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.action.impl.settings.SettingsAction;
+import app.tuxguitar.app.action.impl.track.SelectTrackAction;
+import app.tuxguitar.app.action.impl.transport.TransportPlayAction;
+import app.tuxguitar.app.editors.tab.Tablature;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.app.util.TGResourceUtils;
+import app.tuxguitar.util.TGContext;
 
 public class TGToolBar {
 

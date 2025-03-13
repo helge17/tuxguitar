@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;

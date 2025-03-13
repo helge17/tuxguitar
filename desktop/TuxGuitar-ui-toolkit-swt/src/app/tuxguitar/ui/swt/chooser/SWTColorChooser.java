@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.chooser;
+package app.tuxguitar.ui.swt.chooser;
 
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
-import org.herac.tuxguitar.ui.chooser.UIColorChooser;
-import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.ui.chooser.UIColorChooser;
+import app.tuxguitar.ui.chooser.UIColorChooserHandler;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
 
 public class SWTColorChooser implements UIColorChooser {
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.tools.browser.ftp;
+package app.tuxguitar.app.tools.browser.ftp;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.util.base64.Base64Decoder;
-import org.herac.tuxguitar.util.base64.Base64Encoder;
+import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.util.base64.Base64Decoder;
+import app.tuxguitar.util.base64.Base64Encoder;
 
 public class TGBrowserSettingsModel {
 

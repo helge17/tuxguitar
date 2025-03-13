@@ -1,33 +1,33 @@
-package org.herac.tuxguitar.player.impl.jsa.assistant;
+package app.tuxguitar.player.impl.jsa.assistant;
 
 import java.io.File;
 import java.net.URL;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIImageView;
-import org.herac.tuxguitar.ui.widget.UIIndeterminateProgressBar;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.ui.widget.UIWrapLabel;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.player.impl.jsa.midiport.MidiPortSynthesizer;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIImageView;
+import app.tuxguitar.ui.widget.UIIndeterminateProgressBar;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.widget.UIWrapLabel;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class SBInstallerGui implements SBInstallerlistener{
 

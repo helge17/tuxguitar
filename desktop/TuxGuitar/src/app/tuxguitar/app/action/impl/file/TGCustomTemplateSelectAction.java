@@ -1,31 +1,31 @@
-package org.herac.tuxguitar.app.action.impl.file;
+package app.tuxguitar.app.action.impl.file;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionContextImpl;
-import org.herac.tuxguitar.app.document.TGDocumentFileManager;
-import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
-import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.template.TGTemplate;
-import org.herac.tuxguitar.editor.template.TGTemplateManager;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.tg.TGStream;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGUserFileUtils;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionContextImpl;
+import app.tuxguitar.app.document.TGDocumentFileManager;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.editor.template.TGTemplate;
+import app.tuxguitar.editor.template.TGTemplateManager;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.tg.TGStream;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGUserFileUtils;
 
 public class TGCustomTemplateSelectAction extends TGActionBase {
 

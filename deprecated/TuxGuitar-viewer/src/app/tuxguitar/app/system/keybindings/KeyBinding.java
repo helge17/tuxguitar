@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
 import java.util.StringTokenizer;
 

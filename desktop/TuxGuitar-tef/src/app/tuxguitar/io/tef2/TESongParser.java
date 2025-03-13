@@ -1,37 +1,37 @@
-package org.herac.tuxguitar.io.tef2;
+package app.tuxguitar.io.tef2;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import org.herac.tuxguitar.io.tef2.base.TEChord;
-import org.herac.tuxguitar.io.tef2.base.TEComponent;
-import org.herac.tuxguitar.io.tef2.base.TEComponentChord;
-import org.herac.tuxguitar.io.tef2.base.TEComponentEnding;
-import org.herac.tuxguitar.io.tef2.base.TEComponentNote;
-import org.herac.tuxguitar.io.tef2.base.TEComponentTempoChange;
-import org.herac.tuxguitar.io.tef2.base.TESong;
-import org.herac.tuxguitar.io.tef2.base.TETimeSignature;
-import org.herac.tuxguitar.io.tef2.base.TETrack;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGDivisionType;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import app.tuxguitar.io.tef2.base.TEChord;
+import app.tuxguitar.io.tef2.base.TEComponent;
+import app.tuxguitar.io.tef2.base.TEComponentChord;
+import app.tuxguitar.io.tef2.base.TEComponentEnding;
+import app.tuxguitar.io.tef2.base.TEComponentNote;
+import app.tuxguitar.io.tef2.base.TEComponentTempoChange;
+import app.tuxguitar.io.tef2.base.TESong;
+import app.tuxguitar.io.tef2.base.TETimeSignature;
+import app.tuxguitar.io.tef2.base.TETrack;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGDivisionType;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 
 public class TESongParser {
 

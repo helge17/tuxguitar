@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.debug;
+package app.tuxguitar.debug;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

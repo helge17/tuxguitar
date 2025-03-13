@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import app.tuxguitar.ui.jfx.resource.JFXImage;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UICheckBox;
 
 public class JFXCheckBox extends JFXControl<CheckBox> implements UICheckBox {
 

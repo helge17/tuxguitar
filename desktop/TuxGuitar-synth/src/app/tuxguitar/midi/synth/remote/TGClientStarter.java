@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.remote;
+package app.tuxguitar.midi.synth.remote;
 
 public interface TGClientStarter {
 

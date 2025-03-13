@@ -1,37 +1,37 @@
-package org.herac.tuxguitar.app.view.component.tab;
+package app.tuxguitar.app.view.component.tab;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.util.TGSyncProcess;
-import org.herac.tuxguitar.graphics.control.TGController;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
-import org.herac.tuxguitar.player.base.MidiPlayerMode;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.util.TGBeatRange;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGNoteRange;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.transport.TGTransport;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.tab.edit.EditorKit;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.util.TGSyncProcess;
+import app.tuxguitar.graphics.control.TGController;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGLayoutHorizontal;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.graphics.control.TGLayoutVertical;
+import app.tuxguitar.graphics.control.TGResourceBuffer;
+import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGBeatRange;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGNoteRange;
 
 public class Tablature implements TGController {
 

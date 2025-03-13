@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tef2.base;
+package app.tuxguitar.io.tef2.base;
 
 public class TEComponentTempoChange extends TEComponent {
     private int bpm;

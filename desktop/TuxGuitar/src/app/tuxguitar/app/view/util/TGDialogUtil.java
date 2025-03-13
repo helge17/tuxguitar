@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.util;
+package app.tuxguitar.app.view.util;
 
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGDialogUtil {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.storage;
+package app.tuxguitar.android.storage;
 
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
-import org.herac.tuxguitar.editor.action.file.TGWriteSongAction;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.editor.action.file.TGLoadSongAction;
+import app.tuxguitar.editor.action.file.TGWriteSongAction;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGStorageEventListener implements TGEventListener {
 

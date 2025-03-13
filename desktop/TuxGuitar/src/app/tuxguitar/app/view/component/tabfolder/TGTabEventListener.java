@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.view.component.tabfolder;
+package app.tuxguitar.app.view.component.tabfolder;
 
-import org.herac.tuxguitar.app.view.component.tab.TGControl;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
-import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.view.component.tab.TGControl;
+import app.tuxguitar.editor.event.TGRedrawEvent;
+import app.tuxguitar.editor.util.TGSyncProcessLocked;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGTabEventListener implements TGEventListener {
 

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIKnob;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIKnob;
 import io.qt.widgets.QDial;
 
 public class QTKnob extends QTAbstractSlider<QDial> implements UIKnob {

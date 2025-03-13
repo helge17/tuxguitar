@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesFactory;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesFactory;
 
 public class TGPropertiesFactoryImpl implements TGPropertiesFactory{
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.song.helpers.tuning.xml;
+package app.tuxguitar.song.helpers.tuning.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.herac.tuxguitar.song.helpers.tuning.TuningGroup;
-import org.herac.tuxguitar.song.helpers.tuning.TuningPreset;
+import app.tuxguitar.song.helpers.tuning.TuningGroup;
+import app.tuxguitar.song.helpers.tuning.TuningPreset;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

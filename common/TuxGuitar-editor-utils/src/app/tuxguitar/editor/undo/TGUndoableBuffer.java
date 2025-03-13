@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.editor.undo;
+package app.tuxguitar.editor.undo;
 
 import java.util.ArrayList;
 import java.util.List;

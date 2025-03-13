@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
 
 public class ABCSongWriter extends ABCFileFormat implements TGSongWriter {
 

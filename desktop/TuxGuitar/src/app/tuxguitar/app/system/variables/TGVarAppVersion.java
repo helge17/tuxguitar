@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.variables;
+package app.tuxguitar.app.system.variables;
 
-import org.herac.tuxguitar.util.TGVersion;
+import app.tuxguitar.util.TGVersion;
 
 public class TGVarAppVersion {
 

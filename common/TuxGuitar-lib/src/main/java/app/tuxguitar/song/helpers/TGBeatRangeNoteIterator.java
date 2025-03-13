@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.song.helpers;
+package app.tuxguitar.song.helpers;
 
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGVoice;
 
 import java.util.ArrayList;
 import java.util.Collection;

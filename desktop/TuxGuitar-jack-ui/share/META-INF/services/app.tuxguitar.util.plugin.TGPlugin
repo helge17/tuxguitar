@@ -1,2 +1,2 @@
-org.herac.tuxguitar.jack.synthesizer.settings.JackChannelSettingsPlugin
-org.herac.tuxguitar.jack.console.JackConsolePlugin
+app.tuxguitar.jack.synthesizer.settings.JackChannelSettingsPlugin
+app.tuxguitar.jack.console.JackConsolePlugin

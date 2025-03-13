@@ -4,18 +4,18 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.app.system.language;
+package app.tuxguitar.app.system.language;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.resource.TGResourceBundle;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.resource.TGResourceBundle;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGMessagesManager;
 
 /**
  * @author julian

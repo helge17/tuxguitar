@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.timeSignature;
+package app.tuxguitar.android.view.dialog.timeSignature;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGTimeSignatureDialogController extends TGModalFragmentController<TGTimeSignatureDialog> {
 

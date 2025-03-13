@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIScale;
+import app.tuxguitar.ui.widget.UIScale;
 import org.qtjambi.qt.core.Qt.Orientation;
 import org.qtjambi.qt.widgets.QSlider;
 

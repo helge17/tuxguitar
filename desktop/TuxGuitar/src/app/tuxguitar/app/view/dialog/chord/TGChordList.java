@@ -15,36 +15,36 @@
 
  */
 
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.control.TGChordImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UICanvas;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIScrollBar;
-import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+import app.tuxguitar.graphics.control.TGChordImpl;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGResourceBuffer;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIScrollBar;
+import app.tuxguitar.ui.widget.UIScrollBarPanel;
 /**
  * @author julian
  *

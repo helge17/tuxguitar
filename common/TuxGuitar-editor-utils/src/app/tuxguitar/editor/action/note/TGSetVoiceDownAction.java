@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.editor.action.note;
+package app.tuxguitar.editor.action.note;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.graphics.control.TGBeatGroup;
-import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.graphics.control.TGBeatGroup;
+import app.tuxguitar.graphics.control.TGVoiceImpl;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.util.TGContext;
 
 public class TGSetVoiceDownAction extends TGActionBase {
 

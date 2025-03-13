@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
+package app.tuxguitar.android.view.dialog.browser.filesystem;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -9,13 +9,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserSettings;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.browser.filesystem.TGFsBrowserSettings;
+import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
 
 import java.io.File;
 

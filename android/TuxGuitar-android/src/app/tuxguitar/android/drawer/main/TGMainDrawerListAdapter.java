@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;

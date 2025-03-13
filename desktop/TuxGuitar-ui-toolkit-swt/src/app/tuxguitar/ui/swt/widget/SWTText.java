@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.herac.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.resource.UISize;
 
 public class SWTText extends SWTControl<Text> {
 

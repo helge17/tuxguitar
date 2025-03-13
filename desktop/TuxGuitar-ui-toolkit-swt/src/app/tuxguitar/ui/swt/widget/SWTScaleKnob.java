@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
-import org.herac.tuxguitar.ui.widget.UIKnob;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
+import app.tuxguitar.ui.widget.UIKnob;
 
 public class SWTScaleKnob extends SWTControl<Button> implements UIKnob {
 

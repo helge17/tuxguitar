@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.musicxml;
+package app.tuxguitar.io.musicxml;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
 
 /**
  * MusicXMLLyricWriter is used to convert TGLyric to multiple MusicXMLMeasureLyric chunks.

@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.app.action.listener.cache.controller;
+package app.tuxguitar.app.action.listener.cache.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportModeAction;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.helper.TGFileHistory;
-import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerMode;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.action.impl.transport.TGTransportModeAction;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListAttributes;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.helper.TGFileHistory;
+import app.tuxguitar.app.transport.TGTransport;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
 
 public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 

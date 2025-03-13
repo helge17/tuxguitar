@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.action.listener.transport;
+package app.tuxguitar.app.action.listener.transport;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.util.TGContext;
 
 public class TGStopTransportInterceptor implements TGActionInterceptor {
 

@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.widget.UISplashWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.widget.UISplashWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGSplash {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action;
+package app.tuxguitar.app.action;
 
 import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
@@ -8,8 +8,8 @@ import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 public class TGActionProcessorListener extends TGActionProcessor implements ActionListener, MouseListener {
 

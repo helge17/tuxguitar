@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
-import org.herac.tuxguitar.ui.event.UIKeyEvent;
-import org.herac.tuxguitar.ui.event.UIKeyReleasedListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXKey;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UIKeyEvent;
+import app.tuxguitar.ui.event.UIKeyReleasedListenerManager;
+import app.tuxguitar.ui.jfx.resource.JFXKey;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXKeyReleasedListenerManager extends UIKeyReleasedListenerManager implements EventHandler<KeyEvent> {
 

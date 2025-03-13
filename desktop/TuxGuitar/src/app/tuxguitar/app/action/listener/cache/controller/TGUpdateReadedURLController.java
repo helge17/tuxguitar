@@ -1,12 +1,12 @@
-//package org.herac.tuxguitar.app.action.listener.cache.controller;
+//package app.tuxguitar.app.action.listener.cache.controller;
 //
 //import java.net.URL;
 //
-//import org.herac.tuxguitar.action.TGActionContext;
-//import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
-//import org.herac.tuxguitar.app.document.TGDocumentListManager;
-//import org.herac.tuxguitar.app.helper.TGFileHistory;
-//import org.herac.tuxguitar.util.TGContext;
+//import app.tuxguitar.action.TGActionContext;
+//import app.tuxguitar.app.action.impl.file.TGReadURLAction;
+//import app.tuxguitar.app.document.TGDocumentListManager;
+//import app.tuxguitar.app.helper.TGFileHistory;
+//import app.tuxguitar.util.TGContext;
 //
 //public class TGUpdateReadedURLController extends TGUpdateItemsController {
 //

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.gpx;
+package app.tuxguitar.io.gpx;
 
-import org.herac.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGFileFormatException;
 
 public class GPXFormatException extends TGFileFormatException {
 

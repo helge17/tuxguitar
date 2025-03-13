@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 public class TGSynthThread implements Runnable {
 

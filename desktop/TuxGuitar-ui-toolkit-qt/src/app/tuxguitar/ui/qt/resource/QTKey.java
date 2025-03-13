@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.qt.resource;
+package app.tuxguitar.ui.qt.resource;
 
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 import io.qt.core.Qt.Key;
 import io.qt.core.Qt.KeyboardModifier;
 import io.qt.core.Qt.KeyboardModifiers;

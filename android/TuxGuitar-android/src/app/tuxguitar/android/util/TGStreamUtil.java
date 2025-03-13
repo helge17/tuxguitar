@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.util;
+package app.tuxguitar.android.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.activity;
+package app.tuxguitar.android.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

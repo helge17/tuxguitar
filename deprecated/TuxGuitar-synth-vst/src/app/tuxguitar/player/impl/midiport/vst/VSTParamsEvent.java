@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
 import java.util.Map;
 
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.midi.synth.remote.TGSession;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.midi.synth.remote.TGSession;
 
 public class VSTParamsEvent extends TGEvent {
 

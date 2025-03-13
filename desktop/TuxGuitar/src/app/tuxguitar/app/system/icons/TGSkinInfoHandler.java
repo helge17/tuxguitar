@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.system.icons;
+package app.tuxguitar.app.system.icons;
 
-import org.herac.tuxguitar.app.system.properties.TGResourcePropertiesReader;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.properties.TGResourcePropertiesReader;
+import app.tuxguitar.util.TGContext;
 
 public class TGSkinInfoHandler extends TGResourcePropertiesReader {
 

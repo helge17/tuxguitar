@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.resource;
+package app.tuxguitar.ui.qt.resource;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.resource.UICursor;
 import org.qtjambi.qt.core.Qt.CursorShape;
 import org.qtjambi.qt.gui.QCursor;
 

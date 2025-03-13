@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.browser.saf;
+package app.tuxguitar.android.browser.saf;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
-import org.herac.tuxguitar.android.browser.plugin.TGBrowserPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.android.browser.model.TGBrowserFactory;
+import app.tuxguitar.android.browser.plugin.TGBrowserPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGSafBrowserPlugin extends TGBrowserPlugin {
 

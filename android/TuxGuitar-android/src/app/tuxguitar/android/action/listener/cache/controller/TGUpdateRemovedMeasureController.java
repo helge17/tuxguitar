@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.action.listener.cache.controller;
+package app.tuxguitar.android.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateRemovedMeasureController extends TGUpdateItemsController {
 

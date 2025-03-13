@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.qt;
+package app.tuxguitar.ui.qt;
 
 import io.qt.core.QMetaObject;
 import io.qt.core.Qt;

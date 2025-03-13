@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.editor.action.duration;
+package app.tuxguitar.editor.action.duration;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.util.TGContext;
 
 public class TGChangeDottedDurationAction extends TGActionBase {
 

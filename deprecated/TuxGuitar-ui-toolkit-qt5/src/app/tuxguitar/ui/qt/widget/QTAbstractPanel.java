@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIPanel;
 import org.qtjambi.qt.widgets.QFrame;
 import org.qtjambi.qt.widgets.QFrame.Shape;
 

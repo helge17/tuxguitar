@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.graphics.control.TGResourceBuffer;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGSongViewBufferController {
 

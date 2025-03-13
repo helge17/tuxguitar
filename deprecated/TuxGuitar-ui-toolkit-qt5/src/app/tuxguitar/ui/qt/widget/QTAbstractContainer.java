@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UIControl;
 import org.qtjambi.qt.widgets.QWidget;
 
 public abstract class QTAbstractContainer<T extends QWidget> extends QTWidget<T> implements QTContainer {

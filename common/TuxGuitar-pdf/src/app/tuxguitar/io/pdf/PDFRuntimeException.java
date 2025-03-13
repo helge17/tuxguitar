@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class PDFRuntimeException extends TGException {
 

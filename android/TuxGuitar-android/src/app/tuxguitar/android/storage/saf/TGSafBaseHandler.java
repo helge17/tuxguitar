@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.storage.saf;
+package app.tuxguitar.android.storage.saf;
 
 import android.content.Intent;
 
-import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
-import org.herac.tuxguitar.android.activity.TGActivityResultManager;
+import app.tuxguitar.android.activity.TGActivityResultHandler;
+import app.tuxguitar.android.activity.TGActivityResultManager;
 
 public abstract class TGSafBaseHandler implements TGActivityResultHandler {
 

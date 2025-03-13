@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui;
+package app.tuxguitar.ui;
 
 public interface UIComponent {
 

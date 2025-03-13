@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.plugins;
+package app.tuxguitar.app.system.plugins;
 
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public interface TGPluginSettingsHandler {
 

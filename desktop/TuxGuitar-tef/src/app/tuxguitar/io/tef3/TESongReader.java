@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.tef3;
+package app.tuxguitar.io.tef3;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongReader;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.tef3.base.TESong;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongReader;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.tef3.base.TESong;
+import app.tuxguitar.song.models.TGSong;
 
 public class TESongReader implements TGSongReader {
 

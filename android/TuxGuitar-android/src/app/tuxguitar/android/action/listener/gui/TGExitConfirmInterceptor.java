@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.android.action.listener.gui;
+package app.tuxguitar.android.action.listener.gui;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGExitAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGExitAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 public class TGExitConfirmInterceptor implements TGActionInterceptor {
 

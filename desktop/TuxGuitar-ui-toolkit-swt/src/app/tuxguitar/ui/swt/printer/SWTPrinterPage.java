@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.printer;
+package app.tuxguitar.ui.swt.printer;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.printing.Printer;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
-import org.herac.tuxguitar.ui.swt.resource.SWTPainter;
+import app.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.swt.resource.SWTPainter;
 
 public class SWTPrinterPage extends SWTComponent<Printer> implements UIPrinterPage {
 

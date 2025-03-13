@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXDisposeListenerManager extends UIDisposeListenerManager {
 

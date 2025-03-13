@@ -4,12 +4,12 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 
 /**
  * @author julian

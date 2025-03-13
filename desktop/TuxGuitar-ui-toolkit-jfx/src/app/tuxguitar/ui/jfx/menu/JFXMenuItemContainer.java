@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
 import javafx.scene.control.MenuItem;
 
-import org.herac.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenu;
 
 public interface JFXMenuItemContainer extends UIMenu {
 

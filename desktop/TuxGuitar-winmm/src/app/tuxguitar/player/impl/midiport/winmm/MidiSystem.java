@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.midiport.winmm;
+package app.tuxguitar.player.impl.midiport.winmm;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiOutputPort;
 
 public class MidiSystem{
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.synth;
+package app.tuxguitar.io.synth;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;

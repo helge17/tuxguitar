@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGSongReaderHelper extends TGSongPersistenceHelper {
 

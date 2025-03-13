@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTransportMode extends TGMainToolBarSection {
 

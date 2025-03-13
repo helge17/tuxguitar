@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.view.dialog.fragment;
+package app.tuxguitar.android.view.dialog.fragment;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.view.dialog.TGDialogContext;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGDialogFragmentController<T extends TGDialogFragment> implements TGDialogController {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.repeat;
+package app.tuxguitar.android.view.dialog.repeat;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGRepeatCloseDialogController extends TGModalFragmentController<TGRepeatCloseDialog> {
 

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGMessagesManager;
 
 public class TGFileFormatException extends TGException{
 

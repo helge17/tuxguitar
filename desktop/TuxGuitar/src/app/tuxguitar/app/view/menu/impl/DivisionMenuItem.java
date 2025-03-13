@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGDivisionType;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGDivisionType;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class DivisionMenuItem extends TGMenuItem {
 

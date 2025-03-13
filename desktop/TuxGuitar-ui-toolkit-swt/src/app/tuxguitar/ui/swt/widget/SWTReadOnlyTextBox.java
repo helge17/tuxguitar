@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
+import app.tuxguitar.ui.widget.UIReadOnlyTextBox;
 
 public class SWTReadOnlyTextBox extends SWTText implements UIReadOnlyTextBox {
 

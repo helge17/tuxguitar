@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.android.browser.saf;
+package app.tuxguitar.android.browser.saf;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.UriPermission;
 import android.net.Uri;
 
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 import java.util.List;
 

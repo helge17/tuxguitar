@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 import java.util.HashMap;
 import java.util.Map;

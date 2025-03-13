@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.browser.saf;
+package app.tuxguitar.android.browser.saf;
 
 import android.app.Activity;
 import android.content.Intent;
 
-import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
-import org.herac.tuxguitar.android.activity.TGActivityResultManager;
+import app.tuxguitar.android.activity.TGActivityResultHandler;
+import app.tuxguitar.android.activity.TGActivityResultManager;
 
 public class TGSafBrowserUriResult implements TGActivityResultHandler {
 

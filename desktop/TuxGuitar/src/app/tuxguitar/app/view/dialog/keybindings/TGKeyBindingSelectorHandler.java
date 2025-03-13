@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.view.dialog.keybindings;
+package app.tuxguitar.app.view.dialog.keybindings;
 
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 public interface TGKeyBindingSelectorHandler {
 

@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.android.menu.controller.impl.smart;
+package app.tuxguitar.android.menu.controller.impl.smart;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.dialog.clef.TGClefDialogController;
-import org.herac.tuxguitar.android.view.dialog.keySignature.TGKeySignatureDialogController;
-import org.herac.tuxguitar.android.view.dialog.repeat.TGRepeatAlternativeDialogController;
-import org.herac.tuxguitar.android.view.dialog.repeat.TGRepeatCloseDialogController;
-import org.herac.tuxguitar.android.view.dialog.tempo.TGTempoDialogController;
-import org.herac.tuxguitar.android.view.dialog.timeSignature.TGTimeSignatureDialogController;
-import org.herac.tuxguitar.android.view.dialog.tripletFeel.TGTripletFeelDialogController;
-import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.clef.TGClefDialogController;
+import app.tuxguitar.android.view.dialog.keySignature.TGKeySignatureDialogController;
+import app.tuxguitar.android.view.dialog.repeat.TGRepeatAlternativeDialogController;
+import app.tuxguitar.android.view.dialog.repeat.TGRepeatCloseDialogController;
+import app.tuxguitar.android.view.dialog.tempo.TGTempoDialogController;
+import app.tuxguitar.android.view.dialog.timeSignature.TGTimeSignatureDialogController;
+import app.tuxguitar.android.view.dialog.tripletFeel.TGTripletFeelDialogController;
+import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 
 public class TGSelectedMeasureMenu extends TGMenuBase {
 

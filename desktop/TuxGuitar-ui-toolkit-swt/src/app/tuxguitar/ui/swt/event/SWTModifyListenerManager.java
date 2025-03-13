@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.herac.tuxguitar.ui.event.UIModifyEvent;
-import org.herac.tuxguitar.ui.event.UIModifyListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTModifyListenerManager extends UIModifyListenerManager implements ModifyListener {
 

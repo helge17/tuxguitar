@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontAlignment;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.resource.UIResource;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontAlignment;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIResource;
+import app.tuxguitar.ui.resource.UIResourceFactory;
 
 public class TGResources {
 

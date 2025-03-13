@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.bend;
+package app.tuxguitar.android.view.dialog.bend;
 
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.effects.TGEffectBend;
 
 public class TGBendPreset{
 

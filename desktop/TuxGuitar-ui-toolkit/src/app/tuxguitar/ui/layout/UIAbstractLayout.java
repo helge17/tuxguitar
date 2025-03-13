@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.layout;
+package app.tuxguitar.ui.layout;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UILayoutContainer;
 
 public abstract class UIAbstractLayout implements UILayout {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser;
+package app.tuxguitar.android.browser;
 
 public class TGBrowserCollectionInfo {
 

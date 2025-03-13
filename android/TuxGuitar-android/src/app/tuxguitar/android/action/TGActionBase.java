@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.util.TGContext;
 
-public abstract class TGActionBase extends org.herac.tuxguitar.editor.action.TGActionBase {
+public abstract class TGActionBase extends app.tuxguitar.editor.action.TGActionBase {
 
 	public TGActionBase(TGContext context, String name) {
 		super(context, name);

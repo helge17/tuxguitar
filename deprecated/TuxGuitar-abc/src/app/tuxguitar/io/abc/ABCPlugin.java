@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
 public class ABCPlugin {
 

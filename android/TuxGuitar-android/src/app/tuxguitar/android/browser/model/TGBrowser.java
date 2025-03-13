@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.model;
+package app.tuxguitar.android.browser.model;
 
 import java.io.InputStream;
 import java.io.OutputStream;

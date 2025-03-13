@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.widget.UIReadOnlyTextBox;
+import app.tuxguitar.ui.widget.UIReadOnlyTextBox;
 
 public class JFXReadOnlyTextBox extends JFXTextControl<TextArea> implements UIReadOnlyTextBox {
 

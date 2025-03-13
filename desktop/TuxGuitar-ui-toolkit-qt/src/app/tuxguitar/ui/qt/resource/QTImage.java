@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.resource;
+package app.tuxguitar.ui.qt.resource;
 
 import java.io.InputStream;
 
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
 import io.qt.gui.QIcon;
 import io.qt.gui.QImage;
 import io.qt.gui.QImageReader;

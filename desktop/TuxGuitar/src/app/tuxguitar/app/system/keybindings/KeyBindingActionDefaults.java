@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.util.TGContext;
 
 public class KeyBindingActionDefaults {
 

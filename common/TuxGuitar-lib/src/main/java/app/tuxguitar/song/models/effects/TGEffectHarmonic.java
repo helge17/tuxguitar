@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.song.models.effects;
+package app.tuxguitar.song.models.effects;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 
 public abstract class TGEffectHarmonic {
 	public static final String KEY_NATURAL = "N.H";

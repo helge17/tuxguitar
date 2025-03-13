@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.io.synth;
+package app.tuxguitar.io.synth;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.TGSynthModel;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGSynthModel;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.song.models.TGDuration;
 
 public class TGSynthSequencer {
 

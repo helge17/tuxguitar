@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.graphics.control.TGController;
-import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.graphics.control.print.TGPrintController;
-import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
-import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.resource.UIInset;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.graphics.control.TGController;
+import app.tuxguitar.graphics.control.TGFactoryImpl;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.graphics.control.print.TGPrintController;
+import app.tuxguitar.graphics.control.print.TGPrintLayout;
+import app.tuxguitar.graphics.control.print.TGPrintSettings;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.resource.UIInset;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.util.TGContext;
 
 public class PDFSongWriter implements TGSongWriter {
 

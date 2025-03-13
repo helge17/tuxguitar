@@ -1,30 +1,30 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2.ui;
+package app.tuxguitar.player.impl.midiport.lv2.ui;
 
 import java.util.Comparator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2PluginValidator;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.player.impl.midiport.lv2.LV2PluginValidator;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIListBoxSelect;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class LV2AudioProcessorChooser {
 

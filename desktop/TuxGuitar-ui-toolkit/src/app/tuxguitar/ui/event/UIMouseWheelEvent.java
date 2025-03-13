@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.event;
+package app.tuxguitar.ui.event;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIPosition;
 
 public class UIMouseWheelEvent extends UIMouseEvent {
 

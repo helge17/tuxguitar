@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.BaseFont;

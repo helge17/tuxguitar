@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.help.TGHelpGoHomeAction;
-import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
-import org.herac.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.help.TGHelpGoHomeAction;
+import app.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
+import app.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class HelpMenuItem extends TGMenuItem{
 

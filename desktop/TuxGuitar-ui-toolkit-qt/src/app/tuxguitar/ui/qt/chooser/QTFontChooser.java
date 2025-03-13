@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.chooser;
+package app.tuxguitar.ui.qt.chooser;
 
-import org.herac.tuxguitar.ui.chooser.UIFontChooser;
-import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
-import org.herac.tuxguitar.ui.qt.resource.QTFont;
-import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.chooser.UIFontChooser;
+import app.tuxguitar.ui.chooser.UIFontChooserHandler;
+import app.tuxguitar.ui.qt.resource.QTFont;
+import app.tuxguitar.ui.qt.widget.QTAbstractWindow;
+import app.tuxguitar.ui.resource.UIFontModel;
 import io.qt.gui.QFont;
 import io.qt.widgets.QDialog;
 import io.qt.widgets.QFontDialog;

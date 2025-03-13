@@ -1,32 +1,32 @@
-package org.herac.tuxguitar.app.view.dialog.channel;
+package app.tuxguitar.app.view.dialog.channel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.util.TGContinuousControl;
-import org.herac.tuxguitar.app.util.TGContinousControlSelectionListener;
-import org.herac.tuxguitar.player.base.MidiInstrument;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UIFocusEvent;
-import org.herac.tuxguitar.ui.event.UIFocusLostListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UIKnob;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UITextField;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.util.TGContinuousControl;
+import app.tuxguitar.app.util.TGContinousControlSelectionListener;
+import app.tuxguitar.player.base.MidiInstrument;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UIFocusEvent;
+import app.tuxguitar.ui.event.UIFocusLostListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UIKnob;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UITextField;
+import app.tuxguitar.util.TGContext;
 
 public class TGChannelItem implements TGContinuousControl{
 

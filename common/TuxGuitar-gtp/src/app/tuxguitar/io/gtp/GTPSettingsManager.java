@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class GTPSettingsManager {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsAdapter;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsAdapter;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class PDFAdvancedSettingsPlugin extends TGPluginSettingsAdapter {
 

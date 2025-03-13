@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.graphics.control.painters;
+package app.tuxguitar.graphics.control.painters;
 
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGTempoPainter {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.debug;
+package app.tuxguitar.debug;
 
 public class TGDebugHelperPlugin {
 

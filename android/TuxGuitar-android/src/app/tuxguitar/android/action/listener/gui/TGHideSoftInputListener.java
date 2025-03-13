@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.action.listener.gui;
+package app.tuxguitar.android.action.listener.gui;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 import android.content.Context;
 import android.view.View;

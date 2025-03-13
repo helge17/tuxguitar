@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -12,12 +12,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.util.TGContext;
 
 public class ABCSongWriterSettingsDialog {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.bend;
+package app.tuxguitar.android.view.dialog.bend;
 
 import android.content.Context;
 import androidx.core.view.GestureDetectorCompat;

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.event;
+package app.tuxguitar.ui.event;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 public class UIKeyEvent extends UIEvent {
 

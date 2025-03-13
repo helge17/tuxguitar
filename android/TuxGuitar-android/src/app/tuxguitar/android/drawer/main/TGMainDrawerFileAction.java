@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.TGActionProcessorListener;
 
 public class TGMainDrawerFileAction {
 

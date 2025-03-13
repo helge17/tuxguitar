@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UIResizeEvent;
-import org.herac.tuxguitar.ui.event.UIResizeListener;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UITabItem;
+import app.tuxguitar.ui.event.UIResizeEvent;
+import app.tuxguitar.ui.event.UIResizeListener;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UITabItem;
 import io.qt.widgets.QWidget;
 
 public class QTTabItem extends QTWidget<QWidget> implements QTContainer, UITabItem {

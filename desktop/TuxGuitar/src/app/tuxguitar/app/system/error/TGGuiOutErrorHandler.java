@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.system.error;
+package app.tuxguitar.app.system.error;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.action.listener.error.TGActionErrorHandler;
-import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialog;
-import org.herac.tuxguitar.app.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.action.listener.error.TGActionErrorHandler;
+import app.tuxguitar.app.view.dialog.message.TGMessageDialog;
+import app.tuxguitar.app.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 public class TGGuiOutErrorHandler implements TGErrorHandler {
 

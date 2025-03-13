@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tg;
+package app.tuxguitar.io.tg;
 
 public class TGCompatPlugin {
 

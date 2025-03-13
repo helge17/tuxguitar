@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
-import org.herac.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.dialog.measure.TGMeasureCopyDialogController;
-import org.herac.tuxguitar.android.view.dialog.measure.TGMeasurePasteDialogController;
-import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
-import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
-import org.herac.tuxguitar.editor.clipboard.TGClipboard;
-import org.herac.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.edit.TGSetVoice1Action;
+import app.tuxguitar.android.action.impl.edit.TGSetVoice2Action;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.measure.TGMeasureCopyDialogController;
+import app.tuxguitar.android.view.dialog.measure.TGMeasurePasteDialogController;
+import app.tuxguitar.editor.action.edit.TGRedoAction;
+import app.tuxguitar.editor.action.edit.TGUndoAction;
+import app.tuxguitar.editor.clipboard.TGClipboard;
+import app.tuxguitar.player.base.MidiPlayer;
 
 public class TGEditMenu extends TGMenuBase {
 

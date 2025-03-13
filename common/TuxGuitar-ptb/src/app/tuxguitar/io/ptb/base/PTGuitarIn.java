@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.ptb.base;
+package app.tuxguitar.io.ptb.base;
 
 public class PTGuitarIn implements PTComponent{
 	private int staff;

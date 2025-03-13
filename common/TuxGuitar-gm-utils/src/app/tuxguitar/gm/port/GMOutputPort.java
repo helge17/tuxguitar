@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.gm.port;
+package app.tuxguitar.gm.port;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSynthesizer;
 
 public abstract class GMOutputPort implements MidiOutputPort{
 

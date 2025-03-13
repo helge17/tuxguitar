@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.chooser;
+package app.tuxguitar.ui.jfx.chooser;
 
 import java.awt.print.PrinterJob;
 
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
-import org.herac.tuxguitar.ui.jfx.printer.AWTPrinter;
+import app.tuxguitar.ui.chooser.UIPrinterChooser;
+import app.tuxguitar.ui.chooser.UIPrinterChooserHandler;
+import app.tuxguitar.ui.jfx.printer.AWTPrinter;
 
 public class AWTPrinterChooser implements UIPrinterChooser {
 

@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.android.storage.browser;
+package app.tuxguitar.android.storage.browser;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.android.storage.TGStorageProvider;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.action.impl.browser.TGBrowserPrepareForReadAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserPrepareForWriteAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserSaveCurrentElementAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.android.storage.TGStorageProvider;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserProvider implements TGStorageProvider {
 

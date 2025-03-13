@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.ui;
+package app.tuxguitar.midi.synth.ui;
 
 public interface TGAudioProcessorUICallback {
 

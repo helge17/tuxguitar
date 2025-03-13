@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.browser.model;
+package app.tuxguitar.android.browser.model;
 
 import java.util.Comparator;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
 
 public class TGBrowserElementComparator implements Comparator<TGBrowserElement> {
 

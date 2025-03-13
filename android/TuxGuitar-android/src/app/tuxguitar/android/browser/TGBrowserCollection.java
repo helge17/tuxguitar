@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser;
+package app.tuxguitar.android.browser;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
 
 public class TGBrowserCollection {
 

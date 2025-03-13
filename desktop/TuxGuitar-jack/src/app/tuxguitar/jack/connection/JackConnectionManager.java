@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.jack.connection;
+package app.tuxguitar.jack.connection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.JackPortFlags;
-import org.herac.tuxguitar.jack.JackPortTypes;
-import org.herac.tuxguitar.jack.provider.JackClientProvider;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.JackPortFlags;
+import app.tuxguitar.jack.JackPortTypes;
+import app.tuxguitar.jack.provider.JackClientProvider;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
 
 public class JackConnectionManager {
 

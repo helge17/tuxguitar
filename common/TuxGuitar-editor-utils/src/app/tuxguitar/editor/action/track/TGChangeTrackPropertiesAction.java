@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.editor.action.track;
+package app.tuxguitar.editor.action.track;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGChangeTrackPropertiesAction extends TGActionBase {
 

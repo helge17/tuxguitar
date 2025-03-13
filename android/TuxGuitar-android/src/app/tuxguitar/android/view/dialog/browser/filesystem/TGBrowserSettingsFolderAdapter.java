@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
+package app.tuxguitar.android.view.dialog.browser.filesystem;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.herac.tuxguitar.android.R;
+import app.tuxguitar.android.R;
 
 import java.io.File;
 import java.util.ArrayList;

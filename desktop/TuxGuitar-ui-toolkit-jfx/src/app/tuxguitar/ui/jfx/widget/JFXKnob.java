@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.event.UIMouseDragListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.event.UIMouseWheelEvent;
-import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIKnob;
+import app.tuxguitar.ui.event.UIMouseDragListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.event.UIMouseWheelEvent;
+import app.tuxguitar.ui.event.UIMouseWheelListener;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UISelectionListenerManager;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIKnob;
 
 import javafx.scene.layout.Region;
 

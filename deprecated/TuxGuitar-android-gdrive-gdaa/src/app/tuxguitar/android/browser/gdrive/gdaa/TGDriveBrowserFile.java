@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser.gdrive.gdaa;
+package app.tuxguitar.android.browser.gdrive.gdaa;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
 
 import com.google.android.gms.drive.DriveFile;
 

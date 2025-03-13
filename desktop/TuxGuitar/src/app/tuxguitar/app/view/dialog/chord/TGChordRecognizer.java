@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 /* Created on 05-March-2007
 */
 
@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIListBoxSelect;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author Nikola Kolarovic

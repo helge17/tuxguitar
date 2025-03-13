@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.util.configuration;
+package app.tuxguitar.util.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
-import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.util.properties.TGPropertiesUtil;
 
 public class TGConfigManager {
 

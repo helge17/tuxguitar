@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.player.impl.jsa.sequencer;
+package app.tuxguitar.player.impl.jsa.sequencer;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.jsa.message.MidiShortMessage;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.jsa.message.MidiShortMessage;
 
 public class MidiReceiverImpl implements Receiver{
 

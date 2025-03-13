@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.tempo;
+package app.tuxguitar.android.view.dialog.tempo;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -10,15 +10,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTempoBase;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTempoBase;
 
 public class TGTempoDialog extends TGModalFragment {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.util;
+package app.tuxguitar.android.view.util;
 
 public class TGSelectableItem {
 

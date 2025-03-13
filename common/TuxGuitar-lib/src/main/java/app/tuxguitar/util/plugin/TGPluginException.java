@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.util.plugin;
+package app.tuxguitar.util.plugin;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGPluginException extends TGException{
 

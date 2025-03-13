@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIKeyEvent;
-import org.herac.tuxguitar.ui.event.UIKeyReleasedListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.qt.resource.QTKey;
+import app.tuxguitar.ui.event.UIKeyEvent;
+import app.tuxguitar.ui.event.UIKeyReleasedListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.qt.resource.QTKey;
 import io.qt.core.QEvent;
 import io.qt.gui.QKeyEvent;
 

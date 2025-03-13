@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.sequencer;
+package app.tuxguitar.player.impl.sequencer;
 
 import java.nio.charset.Charset;
 

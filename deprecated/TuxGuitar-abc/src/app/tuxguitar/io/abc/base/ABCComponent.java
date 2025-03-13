@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.abc.base;
+package app.tuxguitar.io.abc.base;
 
 public abstract class ABCComponent {
 

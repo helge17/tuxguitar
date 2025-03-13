@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXCheckTableSelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManagerAsync;
-import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UICheckTable;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.event.UICheckTableSelectionListener;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXCheckTableSelectionListenerManager;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManagerAsync;
+import app.tuxguitar.ui.jfx.resource.JFXFontMetrics;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UICheckTable;
+import app.tuxguitar.ui.widget.UITableItem;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

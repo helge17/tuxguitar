@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.tremoloPicking;
+package app.tuxguitar.android.view.dialog.tremoloPicking;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGTremoloPickingDialogController extends TGModalFragmentController<TGTremoloPickingDialog> {
 

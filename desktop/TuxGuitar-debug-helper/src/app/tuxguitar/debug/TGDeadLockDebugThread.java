@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.debug;
+package app.tuxguitar.debug;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDeadLockDebugThread implements Runnable {
 

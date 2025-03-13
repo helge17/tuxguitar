@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx.printer;
+package app.tuxguitar.ui.jfx.printer;
 
-import org.herac.tuxguitar.awt.graphics.AWTBufferedPainter;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.awt.graphics.AWTBufferedPainter;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class AWTPrinterPage extends JFXComponent<AWTBufferedPainter> implements UIPrinterPage {
 

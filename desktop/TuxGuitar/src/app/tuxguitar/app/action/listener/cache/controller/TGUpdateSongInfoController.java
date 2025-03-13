@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.action.listener.cache.controller;
+package app.tuxguitar.app.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateSongInfoController extends TGUpdateItemsController {
 

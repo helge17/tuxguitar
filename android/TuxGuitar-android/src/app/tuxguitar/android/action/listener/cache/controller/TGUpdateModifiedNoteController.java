@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.action.listener.cache.controller;
+package app.tuxguitar.android.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.transport.TGTransportAdapter;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.note.TGChangeNoteAction;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.transport.TGTransportAdapter;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.note.TGChangeNoteAction;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateModifiedNoteController extends TGUpdateMeasureController {
 

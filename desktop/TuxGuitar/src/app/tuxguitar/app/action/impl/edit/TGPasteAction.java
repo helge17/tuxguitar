@@ -1,27 +1,27 @@
-package org.herac.tuxguitar.app.action.impl.edit;
+package app.tuxguitar.app.action.impl.edit;
 
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
-import org.herac.tuxguitar.app.view.component.tab.Selector;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.clipboard.TGClipboard;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
-import org.herac.tuxguitar.song.managers.TGMeasureManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.managers.TGTrackManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGBeatRange;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
+import app.tuxguitar.app.view.component.tab.Selector;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.clipboard.TGClipboard;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.helpers.TGStoredBeatList;
+import app.tuxguitar.song.managers.TGMeasureManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.managers.TGTrackManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGBeatRange;
+import app.tuxguitar.util.TGContext;
 
 public class TGPasteAction extends TGActionBase {
 

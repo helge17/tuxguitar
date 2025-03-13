@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.io.abc.base.ABCSong;
-import org.herac.tuxguitar.io.abc.base.ABCTimeSignature;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.abc.base.ABCSong;
+import app.tuxguitar.io.abc.base.ABCTimeSignature;
+import app.tuxguitar.io.base.TGFileFormatException;
 
 public class ABCInputStream {
 

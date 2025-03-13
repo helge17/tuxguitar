@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.menu.util;
+package app.tuxguitar.android.menu.util;
 
 public interface TGToggleStyledIconHandler {
 

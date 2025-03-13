@@ -4,15 +4,15 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
-import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
-import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.effects.TGEffectGrace;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 /**
  * @author julian

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
 public class VSTException extends Exception {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.jsa.midiport;
+package app.tuxguitar.player.impl.jsa.midiport;
 
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.player.impl.jsa.MidiPlugin;
-import org.herac.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.player.impl.jsa.MidiPlugin;
+import app.tuxguitar.player.plugin.TGMidiOutputPortProviderPlugin;
+import app.tuxguitar.util.TGContext;
 
 public class MidiOutputPortProviderPlugin extends TGMidiOutputPortProviderPlugin{
 

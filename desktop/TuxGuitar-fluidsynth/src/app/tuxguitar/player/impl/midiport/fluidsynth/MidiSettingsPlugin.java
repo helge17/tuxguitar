@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth;
+package app.tuxguitar.player.impl.midiport.fluidsynth;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsAdapter;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
-import org.herac.tuxguitar.util.plugin.TGPluginManager;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsAdapter;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.util.plugin.TGPluginManager;
 
 public class MidiSettingsPlugin extends TGPluginSettingsAdapter {
 

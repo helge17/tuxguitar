@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx;
+package app.tuxguitar.ui.jfx;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

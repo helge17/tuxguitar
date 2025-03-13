@@ -1,4 +1,4 @@
-org.herac.tuxguitar.io.abc.ABCSongWriterPlugin
-org.herac.tuxguitar.io.abc.ABCSongReaderPlugin
-org.herac.tuxguitar.io.abc.ABCSongReaderSettingsHandlerPlugin
-org.herac.tuxguitar.io.abc.ABCSongWriterSettingsHandlerPlugin
+app.tuxguitar.io.abc.ABCSongWriterPlugin
+app.tuxguitar.io.abc.ABCSongReaderPlugin
+app.tuxguitar.io.abc.ABCSongReaderSettingsHandlerPlugin
+app.tuxguitar.io.abc.ABCSongWriterSettingsHandlerPlugin

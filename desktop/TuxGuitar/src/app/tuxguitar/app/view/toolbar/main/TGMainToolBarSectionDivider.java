@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionDivider extends TGMainToolBarSection {
 

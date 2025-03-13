@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.action.impl.settings;
+package app.tuxguitar.app.action.impl.settings;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGReloadSettingsAction extends TGActionBase {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UIScrollBar;
-import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UIScrollBar;
+import app.tuxguitar.ui.widget.UIScrollBarPanel;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

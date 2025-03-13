@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.confirm;
+package app.tuxguitar.app.view.dialog.confirm;
 
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.controller.TGOpenViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGOpenViewController;
 
 public class TGConfirmDialogController implements TGOpenViewController {
 

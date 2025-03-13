@@ -1,27 +1,27 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.dialog.track.TGTrackChannelDialogController;
-import org.herac.tuxguitar.android.view.dialog.track.TGTrackNameDialogController;
-import org.herac.tuxguitar.android.view.dialog.track.TGTrackStringCountDialogController;
-import org.herac.tuxguitar.android.view.dialog.track.TGTrackTuningDialogController;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
-import org.herac.tuxguitar.editor.action.track.TGCloneTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGMoveTrackDownAction;
-import org.herac.tuxguitar.editor.action.track.TGMoveTrackUpAction;
-import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.track.TGTrackChannelDialogController;
+import app.tuxguitar.android.view.dialog.track.TGTrackNameDialogController;
+import app.tuxguitar.android.view.dialog.track.TGTrackStringCountDialogController;
+import app.tuxguitar.android.view.dialog.track.TGTrackTuningDialogController;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
+import app.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
+import app.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
+import app.tuxguitar.editor.action.track.TGCloneTrackAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackDownAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
+import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGTrackMenu extends TGMenuBase {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app;
+package app.tuxguitar.app;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
@@ -12,15 +12,15 @@ import java.net.URL;
 
 import javax.swing.SwingUtilities;
 
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
-import org.herac.tuxguitar.thread.TGMultiThreadHandler;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.tg.TGFileFormatDetectorImpl;
+import app.tuxguitar.thread.TGMultiThreadHandler;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGApplet extends Applet{
 
@@ -134,13 +134,13 @@ public class TGApplet extends Applet{
 		try{
 			if(TGConfig.SONG_URL != null){
 				TGContext context = TuxGuitar.instance().getContext();
-				TGFileFormatManager.getInstance(context).addReader(new org.herac.tuxguitar.io.tg.v10.TGSongReaderImpl());
-				TGFileFormatManager.getInstance(context).addReader(new org.herac.tuxguitar.io.tg.v11.TGSongReaderImpl());
-				TGFileFormatManager.getInstance(context).addReader(new org.herac.tuxguitar.io.tg.v12.TGSongReaderImpl());
+				TGFileFormatManager.getInstance(context).addReader(new app.tuxguitar.io.tg.v10.TGSongReaderImpl());
+				TGFileFormatManager.getInstance(context).addReader(new app.tuxguitar.io.tg.v11.TGSongReaderImpl());
+				TGFileFormatManager.getInstance(context).addReader(new app.tuxguitar.io.tg.v12.TGSongReaderImpl());
 
-				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(org.herac.tuxguitar.io.tg.v10.TGSongReaderImpl.SUPPORTED_FORMAT));
-				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(org.herac.tuxguitar.io.tg.v11.TGSongReaderImpl.SUPPORTED_FORMAT));
-				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(org.herac.tuxguitar.io.tg.v12.TGSongReaderImpl.SUPPORTED_FORMAT));
+				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(app.tuxguitar.io.tg.v10.TGSongReaderImpl.SUPPORTED_FORMAT));
+				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(app.tuxguitar.io.tg.v11.TGSongReaderImpl.SUPPORTED_FORMAT));
+				TGFileFormatManager.getInstance(context).addFileFormatDetector(new TGFileFormatDetectorImpl(app.tuxguitar.io.tg.v12.TGSongReaderImpl.SUPPORTED_FORMAT));
 
 				URL url = new URL(TGConfig.SONG_URL);
 

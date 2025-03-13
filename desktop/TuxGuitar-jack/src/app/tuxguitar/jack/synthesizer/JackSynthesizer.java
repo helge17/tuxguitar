@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.jack.synthesizer;
+package app.tuxguitar.jack.synthesizer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.JackPort;
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSynthesizer;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.JackPort;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.util.TGContext;
 
 public class JackSynthesizer implements MidiSynthesizer{
 

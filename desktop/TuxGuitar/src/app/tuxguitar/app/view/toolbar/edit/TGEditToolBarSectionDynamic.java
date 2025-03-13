@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.note.TGChangeVelocityAction;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.view.component.tab.Caret;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.note.TGChangeVelocityAction;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGEditToolBarSectionDynamic extends TGEditToolBarSection {
 

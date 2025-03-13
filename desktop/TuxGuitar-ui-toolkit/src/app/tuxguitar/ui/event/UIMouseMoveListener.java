@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.event;
+package app.tuxguitar.ui.event;
 
 public interface UIMouseMoveListener {
 

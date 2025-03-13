@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.menu.controller;
+package app.tuxguitar.android.menu.controller;
 
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventException;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventException;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGMenuCabCallBack implements TGEventListener, ActionMode.Callback {
 

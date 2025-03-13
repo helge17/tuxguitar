@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.system.icons;
+package app.tuxguitar.app.system.icons;
 
-import org.herac.tuxguitar.app.system.config.TGConfigDefaults;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.system.config.TGConfigDefaults;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGSkinManager {
 

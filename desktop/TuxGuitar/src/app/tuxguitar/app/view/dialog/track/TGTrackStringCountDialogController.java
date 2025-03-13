@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.track;
+package app.tuxguitar.app.view.dialog.track;
 
-import org.herac.tuxguitar.app.view.controller.TGOpenViewController;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGOpenViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
 
 public class TGTrackStringCountDialogController implements TGOpenViewController {
 

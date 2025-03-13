@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.song.models.*;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.view.component.tab.Caret;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
+import app.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.song.models.*;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.widget.UICanvas;
 
 public class TGTableHeaderMeasures implements TGTableHeader, TGBufferedPainterHandle {
 

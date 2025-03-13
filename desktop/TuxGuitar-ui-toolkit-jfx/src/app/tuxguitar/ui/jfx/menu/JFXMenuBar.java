@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
-import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
+import app.tuxguitar.ui.jfx.widget.JFXWindow;
+import app.tuxguitar.ui.menu.UIMenuBar;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

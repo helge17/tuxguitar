@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.jack.connection;
+package app.tuxguitar.jack.connection;
 
-import org.herac.tuxguitar.jack.JackPortRegisterListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.jack.JackPortRegisterListener;
+import app.tuxguitar.util.TGContext;
 
 public class JackConnectionListener implements JackPortRegisterListener {
 

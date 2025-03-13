@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.editor.undo.impl.custom;
+package app.tuxguitar.editor.undo.impl.custom;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
-import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
+import app.tuxguitar.editor.undo.TGCannotRedoException;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableTripletFeel extends TGUndoableEditBase {
 

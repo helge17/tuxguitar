@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.toolbar;
+package app.tuxguitar.ui.qt.toolbar;
 
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class QTToolCheckableItem extends QTToolActionItem implements UIToolCheckableItem {
 

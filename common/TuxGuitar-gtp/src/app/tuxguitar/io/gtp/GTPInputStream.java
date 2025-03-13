@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongReader;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongReader;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.song.models.TGSong;
 
 public abstract class GTPInputStream extends GTPFileFormat implements TGSongReader{
 

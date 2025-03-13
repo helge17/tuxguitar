@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.navigation;
+package app.tuxguitar.android.navigation;
 
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.fragment.TGFragmentController;
 
 public class TGNavigationFragment {
 

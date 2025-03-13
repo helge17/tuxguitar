@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.model;
+package app.tuxguitar.android.browser.model;
 
 public interface TGBrowserFactory {
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.toolbar;
+package app.tuxguitar.ui.qt.toolbar;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.toolbar.UIToolActionMenuItem;
 import io.qt.core.Qt.ArrowType;
 
 public class QTToolActionMenuItem extends QTComponent<Void> implements UIToolActionMenuItem {

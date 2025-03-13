@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.song.models.effects;
+package app.tuxguitar.song.models.effects;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGDuration;
 
 public abstract class TGEffectTrill {
 

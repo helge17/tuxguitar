@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.icons;
+package app.tuxguitar.app.system.icons;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public class TGSkinEvent extends TGEvent {
 

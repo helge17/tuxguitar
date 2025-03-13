@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.layout.UILayout;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.layout.UILayout;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UILayoutContainer;
 import io.qt.core.QMargins;
 import io.qt.core.QSize;
 import io.qt.widgets.QWidget;

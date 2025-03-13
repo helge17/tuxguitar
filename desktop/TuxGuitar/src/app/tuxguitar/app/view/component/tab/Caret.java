@@ -4,35 +4,35 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.app.view.component.tab;
+package app.tuxguitar.app.view.component.tab;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.util.MidiTickUtil;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.managers.TGMeasureManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIResource;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.util.MidiTickUtil;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.graphics.control.TGTrackSpacing;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.managers.TGMeasureManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIResource;
+import app.tuxguitar.util.TGContext;
 
 /**
  * @author julian

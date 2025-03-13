@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.swt.menu;
+package app.tuxguitar.ui.swt.menu;
 
 import org.eclipse.swt.widgets.MenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
-import org.herac.tuxguitar.util.TGKeyBindFormatter;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.util.TGKeyBindFormatter;
 
 public class SWTMenuItem extends SWTEventReceiver<MenuItem> implements UIMenuItem {
 

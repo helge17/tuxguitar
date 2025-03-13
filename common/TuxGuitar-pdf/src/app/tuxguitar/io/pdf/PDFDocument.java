@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
-import org.herac.tuxguitar.ui.resource.UIInset;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.graphics.control.print.TGPrintDocument;
+import app.tuxguitar.ui.resource.UIInset;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Rectangle;

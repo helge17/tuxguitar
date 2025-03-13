@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UILinkEvent;
-import org.herac.tuxguitar.ui.event.UILinkListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.event.UILinkEvent;
+import app.tuxguitar.ui.event.UILinkListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
 
 public class QTLinkListenerManager extends UILinkListenerManager {
 

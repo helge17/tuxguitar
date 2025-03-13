@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.fragment.impl;
+package app.tuxguitar.android.fragment.impl;
 
-import org.herac.tuxguitar.android.fragment.TGCachedFragmentController;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.android.fragment.TGCachedFragmentController;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserFragmentController extends TGCachedFragmentController<TGBrowserFragment> {
 

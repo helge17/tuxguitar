@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UISelectionListener;
 
 public interface UITabFolder extends UIControl {
 

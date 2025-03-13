@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.piano;
+package app.tuxguitar.app.view.dialog.piano;
 
-import org.herac.tuxguitar.app.view.controller.TGToggleViewController;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGToggleViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
 
 public class TGPianoEditorController implements TGToggleViewController {
 

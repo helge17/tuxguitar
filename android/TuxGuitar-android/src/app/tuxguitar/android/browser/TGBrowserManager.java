@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.browser;
+package app.tuxguitar.android.browser;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.android.browser.config.TGBrowserProperties;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.android.browser.config.TGBrowserProperties;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserFactory;
+import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserManager {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.synth;
+package app.tuxguitar.io.synth;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGSynthAudioFormat extends TGFileFormat {
 

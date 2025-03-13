@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.image;
+package app.tuxguitar.io.image;
 
 import org.eclipse.swt.SWT;
 

@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.ui.swt;
+package app.tuxguitar.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.ui.swt.widget.SWTCustomKnob;
-import org.herac.tuxguitar.ui.swt.widget.SWTCustomScale;
-import org.herac.tuxguitar.ui.swt.widget.SWTDropDownSelect;
-import org.herac.tuxguitar.ui.swt.widget.SWTScale;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UIKnob;
-import org.herac.tuxguitar.ui.widget.UIScale;
+import app.tuxguitar.ui.swt.widget.SWTCustomKnob;
+import app.tuxguitar.ui.swt.widget.SWTCustomScale;
+import app.tuxguitar.ui.swt.widget.SWTDropDownSelect;
+import app.tuxguitar.ui.swt.widget.SWTScale;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UIKnob;
+import app.tuxguitar.ui.widget.UIScale;
 
 public class SWTEnvironment {
 

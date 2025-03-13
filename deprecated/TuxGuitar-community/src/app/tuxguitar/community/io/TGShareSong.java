@@ -1,23 +1,23 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.io.tg.TGSongWriterImpl;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.community.auth.TGCommunityAuthDialog;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.io.tg.TGSongWriterImpl;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGShareSong {
 

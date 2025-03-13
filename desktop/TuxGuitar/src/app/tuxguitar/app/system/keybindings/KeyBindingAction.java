@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 public class KeyBindingAction {
 

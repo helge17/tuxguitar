@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.Pane;
 
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UITabItem;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UITabItem;
 
 public class JFXTabItem extends JFXRegion<Pane> implements JFXContainer<Pane>, UITabItem {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.chooser;
+package app.tuxguitar.ui.chooser;
 
-import org.herac.tuxguitar.ui.printer.UIPrinter;
+import app.tuxguitar.ui.printer.UIPrinter;
 
 public interface UIPrinterChooserHandler {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
 import java.util.HashMap;
 import java.util.Map;

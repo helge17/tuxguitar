@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.tray;
+package app.tuxguitar.tray;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGTrayPlugin implements TGPlugin {
 

@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.song.managers;
+package app.tuxguitar.song.managers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGColor;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMarker;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGColor;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMarker;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGMessagesManager;
 
 public class TGSongManager {
 

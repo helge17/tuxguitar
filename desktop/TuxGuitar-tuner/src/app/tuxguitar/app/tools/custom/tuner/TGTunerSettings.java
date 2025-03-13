@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.tools.custom.tuner;
+package app.tuxguitar.app.tools.custom.tuner;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.util.error.TGErrorManager;
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>

@@ -4,37 +4,37 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.graphics.control.TGChordImpl;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UICanvas;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIScrollBar;
-import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
-import org.herac.tuxguitar.ui.widget.UISeparator;
-import org.herac.tuxguitar.ui.widget.UITextField;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.graphics.control.TGChordImpl;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIScrollBar;
+import app.tuxguitar.ui.widget.UIScrollBarPanel;
+import app.tuxguitar.ui.widget.UISeparator;
+import app.tuxguitar.ui.widget.UITextField;
 /**
  * @author julian
  * @author Nikola Kolarovic

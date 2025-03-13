@@ -1,2 +1,2 @@
-org.herac.tuxguitar.io.synth.TGSynthSongWriterPlugin
-org.herac.tuxguitar.io.synth.TGSynthSettingsHandlerPlugin
+app.tuxguitar.io.synth.TGSynthSongWriterPlugin
+app.tuxguitar.io.synth.TGSynthSettingsHandlerPlugin

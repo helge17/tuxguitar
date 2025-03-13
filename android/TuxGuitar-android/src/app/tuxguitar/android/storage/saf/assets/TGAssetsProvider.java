@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.storage.saf.assets;
+package app.tuxguitar.android.storage.saf.assets;
 
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
@@ -9,8 +9,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsProvider;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.util.TGStreamUtil;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.util.TGStreamUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.printer;
+package app.tuxguitar.ui.jfx.printer;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.printer.UIPrinterPage;
 
 public class JFXPrinterJob extends JFXComponent<JFXPrinter> implements UIPrinterJob {
 

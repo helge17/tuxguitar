@@ -2,7 +2,7 @@
  * Created on 29-nov-2005
  *
  */
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 /**
  * @author julian
  *

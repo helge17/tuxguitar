@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI.h"
+#include "app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI.h"
 
 //#include <CoreServices/CoreServices.h> //for file stuff
 #include <AssertMacros.h>
@@ -184,18 +184,18 @@ home:
 /* -------------------------------------------------------------------------------------------------------------------------------- */
 
 /* open port */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_open(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_open(JNIEnv* env, jobject obj)
 {
 
 }
 
 /* close port */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_close(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_close(JNIEnv* env, jobject obj)
 {
 
 }
 /*
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_findDevices(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_findDevices(JNIEnv* env, jobject obj)
 {
 
 	jstring name = env->NewStringUTF( "CoreAudio midi playback");
@@ -209,37 +209,37 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_M
 
 }
 */
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_openDevice(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_openDevice(JNIEnv* env, jobject obj)
 {
 	init();
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_closeDevice(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_closeDevice(JNIEnv* env, jobject obj)
 {
 	free();
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_noteOn(JNIEnv* env, jobject ojb, jint channel, jint note, jint velocity)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_noteOn(JNIEnv* env, jobject ojb, jint channel, jint note, jint velocity)
 {
 	noteOn(note, velocity, channel);
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_noteOff(JNIEnv* env, jobject ojb, jint channel, jint note, jint velocity)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_noteOff(JNIEnv* env, jobject ojb, jint channel, jint note, jint velocity)
 {
 	noteOff(note, velocity, channel);
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_programChange(JNIEnv* env, jobject ojb, jint channel, jint program)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_programChange(JNIEnv* env, jobject ojb, jint channel, jint program)
 {
 	programChange(channel, program);
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_controlChange(JNIEnv* env, jobject ojb, jint channel, jint control, jint value)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_controlChange(JNIEnv* env, jobject ojb, jint channel, jint control, jint value)
 {
 	controlChange(channel, control, value);
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_pitchBend(JNIEnv* env, jobject ojb, jint channel, jint value)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_coreaudio_MidiReceiverJNI_pitchBend(JNIEnv* env, jobject ojb, jint channel, jint value)
 {
 	pitchBend(channel, value);
 }

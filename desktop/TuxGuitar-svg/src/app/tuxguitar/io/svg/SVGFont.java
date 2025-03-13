@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.io.svg;
+package app.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
 
 public class SVGFont implements UIFont {
 

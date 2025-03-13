@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.thread;
+package app.tuxguitar.thread;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 

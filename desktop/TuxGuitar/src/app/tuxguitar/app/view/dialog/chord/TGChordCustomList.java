@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIListBoxSelect;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
 
 public class TGChordCustomList {
 

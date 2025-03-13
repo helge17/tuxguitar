@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGSongWriterHelper extends TGSongPersistenceHelper {
 

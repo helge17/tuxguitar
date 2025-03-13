@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.chooser;
+package app.tuxguitar.ui.chooser;
 
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIFontModel;
 
 public interface UIFontChooserHandler {
 

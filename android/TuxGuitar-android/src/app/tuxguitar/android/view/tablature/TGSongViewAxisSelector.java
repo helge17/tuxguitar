@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.action.impl.caret.TGMoveToAction;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGString;
+import app.tuxguitar.android.action.impl.caret.TGMoveToAction;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.graphics.control.TGTrackSpacing;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGString;
 
 import java.util.HashMap;
 import java.util.Iterator;

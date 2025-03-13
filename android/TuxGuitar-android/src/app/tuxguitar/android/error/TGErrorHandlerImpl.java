@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.android.error;
+package app.tuxguitar.android.error;
 
 import android.os.Environment;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.view.dialog.message.TGMessageDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 import java.io.BufferedWriter;
 import java.io.File;

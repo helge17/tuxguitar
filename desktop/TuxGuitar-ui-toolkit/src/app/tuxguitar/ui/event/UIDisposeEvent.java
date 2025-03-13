@@ -1,5 +1,5 @@
-package org.herac.tuxguitar.ui.event;
-import org.herac.tuxguitar.ui.UIComponent;
+package app.tuxguitar.ui.event;
+import app.tuxguitar.ui.UIComponent;
 
 public class UIDisposeEvent extends UIEvent {
 

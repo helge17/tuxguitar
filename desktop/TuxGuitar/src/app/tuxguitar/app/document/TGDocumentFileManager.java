@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.document;
+package app.tuxguitar.app.document;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.helper.TGFileHistory;
-import org.herac.tuxguitar.app.util.TGFileChooser;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
-import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.helper.TGFileHistory;
+import app.tuxguitar.app.util.TGFileChooser;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentFileManager {
 

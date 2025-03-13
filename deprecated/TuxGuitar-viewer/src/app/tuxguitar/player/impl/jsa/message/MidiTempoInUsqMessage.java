@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa.message;
+package app.tuxguitar.player.impl.jsa.message;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.appearance;
+package app.tuxguitar.ui.appearance;
 
 public enum UIColorAppearance {
 

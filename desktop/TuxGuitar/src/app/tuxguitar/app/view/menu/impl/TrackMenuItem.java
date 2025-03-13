@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class TrackMenuItem extends TGMenuItem {
 

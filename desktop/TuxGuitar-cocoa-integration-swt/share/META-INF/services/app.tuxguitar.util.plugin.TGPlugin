@@ -1,3 +1,3 @@
-org.herac.tuxguitar.cocoa.opendoc.OpenDocPlugin
-org.herac.tuxguitar.cocoa.menu.MacMenuPlugin
-org.herac.tuxguitar.cocoa.modifiedmarker.ModifiedMarkerPlugin
+app.tuxguitar.cocoa.opendoc.OpenDocPlugin
+app.tuxguitar.cocoa.menu.MacMenuPlugin
+app.tuxguitar.cocoa.modifiedmarker.ModifiedMarkerPlugin

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.storage.saf;
+package app.tuxguitar.android.storage.saf;
 
 import android.net.Uri;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGSafSession {
 

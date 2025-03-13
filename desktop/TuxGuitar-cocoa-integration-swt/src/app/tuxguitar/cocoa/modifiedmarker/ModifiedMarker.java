@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.cocoa.modifiedmarker;
+package app.tuxguitar.cocoa.modifiedmarker;
 
 import org.eclipse.swt.internal.cocoa.NSWindow;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.util.TGContext;
 
 public class ModifiedMarker implements TGEventListener {
 

@@ -3,13 +3,13 @@
 #include <string.h>
 #include <windows.h>
 #include <mmsystem.h>
-#include "org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem.h"
+#include "app_tuxguitar_player_impl_midiport_winmm_MidiSystem.h"
 
 typedef struct handle{
 	HMIDIOUT* out;
 }midi_handle_t;
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_malloc(JNIEnv* env, jobject obj)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
 
@@ -21,7 +21,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_Midi
 	return ptr;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_free(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_free(JNIEnv* env, jobject obj, jlong ptr)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_findPorts(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_findPorts(JNIEnv* env, jobject obj, jlong ptr)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -53,7 +53,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_openPort(JNIEnv* env, jobject obj, jlong ptr, jint device)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_openPort(JNIEnv* env, jobject obj, jlong ptr, jint device)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -66,7 +66,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_closePort(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_closePort(JNIEnv* env, jobject obj, jlong ptr)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -77,7 +77,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_noteOn(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint note, jint velocity)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_noteOn(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint note, jint velocity)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -86,7 +86,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_noteOff(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint note, jint velocity)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_noteOff(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint note, jint velocity)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -95,7 +95,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_programChange(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint program)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_programChange(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint program)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -104,7 +104,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_controlChange(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint control, jint value)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_controlChange(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint control, jint value)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -113,7 +113,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiS
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_winmm_MidiSystem_pitchBend(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint value)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_winmm_MidiSystem_pitchBend(JNIEnv* env, jobject obj, jlong ptr, jint channel, jint value)
 {
 	midi_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));

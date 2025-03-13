@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UIControl;
 
 public interface TGTableHeader {
     UIControl getControl();

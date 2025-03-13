@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.managers.TGTrackManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.managers.TGTrackManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGTrack;
 
 
 class MiStaff

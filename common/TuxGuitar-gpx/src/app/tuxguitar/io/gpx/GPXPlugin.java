@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gpx;
+package app.tuxguitar.io.gpx;
 
 public class GPXPlugin {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;

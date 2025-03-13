@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.community.browser;
+package app.tuxguitar.community.browser;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 
 public class TGBrowserSettingsModel {
 

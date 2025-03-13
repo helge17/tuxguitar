@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGMeasureHeader;
 
 public class TGMeasureHeaderImpl extends TGMeasureHeader{
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.graphics.control.print;
+package app.tuxguitar.graphics.control.print;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGPrintPainter implements UIPainter {
 

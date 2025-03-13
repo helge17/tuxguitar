@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.graphics.control.print;
+package app.tuxguitar.graphics.control.print;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.control.TGController;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGLyricImpl;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.graphics.control.TGController;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGLyricImpl;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.graphics.control.TGTrackSpacing;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGMessagesManager;
 
 public class TGPrintLayout extends TGLayout {
 

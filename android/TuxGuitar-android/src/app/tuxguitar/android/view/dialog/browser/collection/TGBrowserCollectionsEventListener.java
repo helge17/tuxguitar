@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.view.dialog.browser.collection;
+package app.tuxguitar.android.view.dialog.browser.collection;
 
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGBrowserCollectionsEventListener implements TGEventListener {
 

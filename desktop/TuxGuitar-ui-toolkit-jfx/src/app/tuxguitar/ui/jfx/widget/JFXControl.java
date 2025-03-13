@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.Control;
 import javafx.scene.control.Tooltip;

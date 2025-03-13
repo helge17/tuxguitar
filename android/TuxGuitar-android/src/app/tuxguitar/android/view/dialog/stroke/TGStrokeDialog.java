@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.stroke;
+package app.tuxguitar.android.view.dialog.stroke;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,16 +13,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.note.TGChangeStrokeAction;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.note.TGChangeStrokeAction;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGStroke;
 
 public class TGStrokeDialog extends TGModalFragment {
 

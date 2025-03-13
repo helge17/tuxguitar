@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.io.tg.TestFileFormat20;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.io.tg.TestFileFormat20;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGSong;
 import org.junit.jupiter.api.Test;
 
 public class TestRepeatController {

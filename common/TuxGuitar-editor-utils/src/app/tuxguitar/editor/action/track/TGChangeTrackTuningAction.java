@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.editor.action.track;
+package app.tuxguitar.editor.action.track;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGChangeTrackTuningAction extends TGActionBase {
 

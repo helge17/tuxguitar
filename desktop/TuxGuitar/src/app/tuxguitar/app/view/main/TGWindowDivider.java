@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.view.main;
+package app.tuxguitar.app.view.main;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIMouseDragListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UIDivider;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.table.TGTableViewer;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIMouseDragListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UIDivider;
+import app.tuxguitar.util.TGContext;
 
 public class TGWindowDivider implements UIMouseDragListener {
 

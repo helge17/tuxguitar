@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2;
+package app.tuxguitar.player.impl.midiport.lv2;
 
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
 
 public class LV2AudioPluginValidator implements LV2PluginValidator {
 

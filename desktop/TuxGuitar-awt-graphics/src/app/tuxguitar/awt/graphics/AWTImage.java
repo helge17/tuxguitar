@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.awt.graphics;
+package app.tuxguitar.awt.graphics;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -11,9 +11,9 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class AWTImage implements UIImage {
 

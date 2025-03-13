@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.graphics;
+package app.tuxguitar.android.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
 
 import java.io.InputStream;
 

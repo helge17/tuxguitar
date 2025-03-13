@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSynthesizer;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.util.TGContext;
 
 public class TGSynthPort implements MidiOutputPort{
 

@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import org.herac.tuxguitar.io.tg.TGStream;
+import app.tuxguitar.io.tg.TGStream;
 
 public class TGFileFormatUtils {
 

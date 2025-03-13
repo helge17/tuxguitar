@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
 import java.util.List;
 
-import org.herac.tuxguitar.editor.event.TGDestroyEvent;
-import org.herac.tuxguitar.editor.event.TGRedrawEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.event.TGUpdateMeasuresEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.editor.event.TGDestroyEvent;
+import app.tuxguitar.editor.event.TGRedrawEvent;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.editor.event.TGUpdateMeasuresEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGSongViewEventListener implements TGEventListener {
 

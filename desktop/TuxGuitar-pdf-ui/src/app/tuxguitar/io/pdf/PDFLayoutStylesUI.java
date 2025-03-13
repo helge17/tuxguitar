@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.io.pdf;
+package app.tuxguitar.io.pdf;
 
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.util.TGContext;
 
 public class PDFLayoutStylesUI extends PDFLayoutStyles {
 

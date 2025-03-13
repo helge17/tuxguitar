@@ -1,29 +1,29 @@
-package org.herac.tuxguitar.gm.settings;
+package app.tuxguitar.gm.settings;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.gm.GMChannelRouterConfigurator;
-import org.herac.tuxguitar.gm.port.GMSynthesizer;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelParameter;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.gm.GMChannelRouterConfigurator;
+import app.tuxguitar.gm.port.GMSynthesizer;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChannelParameter;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class GMChannelSettingsDialog implements TGChannelSettingsDialog{
 

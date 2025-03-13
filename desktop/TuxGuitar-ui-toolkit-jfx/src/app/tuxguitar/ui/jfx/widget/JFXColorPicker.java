@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXColor;
-import org.herac.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
+import app.tuxguitar.ui.jfx.resource.JFXColor;
+import app.tuxguitar.ui.resource.UIColor;
 
 public class JFXColorPicker extends JFXControl<ColorPicker> {
 

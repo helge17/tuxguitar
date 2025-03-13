@@ -1,30 +1,30 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
 import java.util.List;
 
-import org.herac.tuxguitar.android.graphics.TGResourceFactoryImpl;
-import org.herac.tuxguitar.android.transport.TGTransport;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.graphics.control.TGController;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerMode;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.android.graphics.TGResourceFactoryImpl;
+import app.tuxguitar.android.transport.TGTransport;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.graphics.control.TGController;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.graphics.control.TGLayoutVertical;
+import app.tuxguitar.graphics.control.TGResourceBuffer;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGSongViewController implements TGController {
 

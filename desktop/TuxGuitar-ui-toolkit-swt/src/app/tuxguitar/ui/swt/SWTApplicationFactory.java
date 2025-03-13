@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.swt;
+package app.tuxguitar.ui.swt;
 
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.ui.UIApplicationFactory;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.ui.UIApplicationFactory;
 
 public class SWTApplicationFactory implements UIApplicationFactory {
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.view.channel;
+package app.tuxguitar.android.view.channel;
 
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
 
 public class TGChannelEventListener implements TGEventListener {
 

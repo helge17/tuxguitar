@@ -36,11 +36,11 @@ CLASSPATH=${CLASSPATH}:./lib/commons-compress.jar
 CLASSPATH=${CLASSPATH}:./share/
 CLASSPATH=${CLASSPATH}:./dist/
 ##MAINCLASS
-MAINCLASS=org.herac.tuxguitar.app.TGMainSingleton
+MAINCLASS=app.tuxguitar.app.TGMainSingleton
 ##JVM ARGUMENTS
 VM_ARGS="-Xmx512m"
 ##EXPORT VARS
 export CLASSPATH
 export LD_LIBRARY_PATH
 ##LAUNCH
-${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dorg.herac.tuxguitar.ui.qt.style=Fusion ${MAINCLASS} "$1" "$2"
+${JAVA} ${VM_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${DIR_NAME}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dapp.tuxguitar.ui.qt.style=Fusion ${MAINCLASS} "$1" "$2"

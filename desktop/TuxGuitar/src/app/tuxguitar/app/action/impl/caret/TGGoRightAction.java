@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.action.impl.caret;
+package app.tuxguitar.app.action.impl.caret;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.transport.TGTransport;
+import app.tuxguitar.app.view.component.tab.Caret;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGGoRightAction extends TGActionBase{
 

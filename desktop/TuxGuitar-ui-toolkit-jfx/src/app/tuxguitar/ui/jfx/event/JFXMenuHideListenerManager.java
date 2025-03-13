@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 
-import org.herac.tuxguitar.ui.event.UIMenuEvent;
-import org.herac.tuxguitar.ui.event.UIMenuHideListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UIMenuEvent;
+import app.tuxguitar.ui.event.UIMenuHideListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXMenuHideListenerManager extends UIMenuHideListenerManager implements EventHandler<WindowEvent> {
 

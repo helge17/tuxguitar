@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.action.listener.cache.controller;
+package app.tuxguitar.android.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateModifiedChannelController extends TGUpdateItemsController {
 

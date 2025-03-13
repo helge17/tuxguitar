@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.action.impl.caret;
+package app.tuxguitar.android.action.impl.caret;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewSmartMenu;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.view.tablature.TGSongViewSmartMenu;
+import app.tuxguitar.util.TGContext;
 
 public class TGMoveToAxisPositionAction extends TGActionBase{
 

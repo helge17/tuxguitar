@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util.properties;
+package app.tuxguitar.util.properties;
 
 public interface TGPropertiesWriter {
 

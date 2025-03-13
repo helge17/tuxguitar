@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.app.action.impl.file;
+package app.tuxguitar.app.action.impl.file;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.document.TGDocumentFileManager;
-import org.herac.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.document.TGDocumentFileManager;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.util.TGContext;
 
 public class TGOpenFileAction extends TGActionBase {
 

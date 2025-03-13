@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
 import java.io.InputStream;
 

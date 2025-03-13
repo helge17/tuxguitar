@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
 public class MidiPlugin {
 

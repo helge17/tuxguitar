@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public abstract class TGScale {
 	private final boolean[] notes = new boolean[12];

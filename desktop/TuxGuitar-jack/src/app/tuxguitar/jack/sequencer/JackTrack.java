@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
 public class JackTrack {
 

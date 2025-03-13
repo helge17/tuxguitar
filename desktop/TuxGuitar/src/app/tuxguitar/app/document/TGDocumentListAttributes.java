@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.document;
+package app.tuxguitar.app.document;
 
 import java.net.URI;
 

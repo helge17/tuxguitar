@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.ptb.base;
+package app.tuxguitar.io.ptb.base;
 
 import java.util.ArrayList;
 import java.util.List;

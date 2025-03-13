@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import java.net.URL;
 
-import org.herac.tuxguitar.ui.event.UIResizeListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIBrowser;
+import app.tuxguitar.ui.event.UIResizeListener;
+import app.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIBrowser;
 
 import javafx.scene.layout.Region;
 

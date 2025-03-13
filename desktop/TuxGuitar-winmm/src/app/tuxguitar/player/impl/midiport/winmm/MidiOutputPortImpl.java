@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.player.impl.midiport.winmm;
+package app.tuxguitar.player.impl.midiport.winmm;
 
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
 
 public class MidiOutputPortImpl extends GMOutputPort{
 

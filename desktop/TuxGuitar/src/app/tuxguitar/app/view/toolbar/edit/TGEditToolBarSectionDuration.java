@@ -1,37 +1,37 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetEighthDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetHalfDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetQuarterDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
-import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDivisionType;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
+import app.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetEighthDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetHalfDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetQuarterDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetSixteenthDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
+import app.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
+import app.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGDivisionType;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolActionMenuItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 

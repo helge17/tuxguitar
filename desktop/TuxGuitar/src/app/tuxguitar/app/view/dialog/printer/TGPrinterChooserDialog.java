@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.view.dialog.printer;
+package app.tuxguitar.app.view.dialog.printer;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
-import org.herac.tuxguitar.ui.printer.UIPrinter;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.chooser.UIPrinterChooser;
+import app.tuxguitar.ui.chooser.UIPrinterChooserHandler;
+import app.tuxguitar.ui.printer.UIPrinter;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGPrinterChooserDialog {
 

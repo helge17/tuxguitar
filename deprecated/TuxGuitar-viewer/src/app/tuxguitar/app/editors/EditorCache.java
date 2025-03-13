@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.editors;
+package app.tuxguitar.app.editors;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.tab.Caret;
-import org.herac.tuxguitar.app.util.MidiTickUtil;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.editors.tab.Caret;
+import app.tuxguitar.app.util.MidiTickUtil;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
 
 public class EditorCache {
 

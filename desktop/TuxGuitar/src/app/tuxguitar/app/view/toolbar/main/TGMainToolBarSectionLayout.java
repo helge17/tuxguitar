@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGLayoutHorizontal;
-import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
+import app.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
+import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
+import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
+import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGLayoutHorizontal;
+import app.tuxguitar.graphics.control.TGLayoutVertical;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionLayout extends TGMainToolBarSection {
 

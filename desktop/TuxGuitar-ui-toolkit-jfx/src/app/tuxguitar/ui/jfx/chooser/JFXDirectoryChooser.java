@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.chooser;
+package app.tuxguitar.ui.jfx.chooser;
 
 import java.io.File;
 
 import javafx.stage.DirectoryChooser;
 
-import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
-import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
-import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
+import app.tuxguitar.ui.chooser.UIDirectoryChooser;
+import app.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
+import app.tuxguitar.ui.jfx.widget.JFXWindow;
 
 public class JFXDirectoryChooser implements UIDirectoryChooser {
 

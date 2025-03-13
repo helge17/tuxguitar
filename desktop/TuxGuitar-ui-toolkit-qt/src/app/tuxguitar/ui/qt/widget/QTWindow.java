@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.qt.menu.QTMenuBar;
+import app.tuxguitar.ui.menu.UIMenuBar;
+import app.tuxguitar.ui.qt.menu.QTMenuBar;
 import io.qt.widgets.QMainWindow;
 
 public class QTWindow extends QTAbstractWindow<QMainWindow> {

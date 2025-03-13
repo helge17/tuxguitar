@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.menu;
+package app.tuxguitar.ui.swt.menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMenu extends SWTEventReceiver<Menu> implements UIMenu {
 

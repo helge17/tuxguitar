@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.synth;
+package app.tuxguitar.io.synth;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,24 +8,24 @@ import java.util.Iterator;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.TGAudioBufferProcessor;
-import org.herac.tuxguitar.midi.synth.TGAudioLine;
-import org.herac.tuxguitar.midi.synth.TGSynthModel;
-import org.herac.tuxguitar.midi.synth.TGSynthSettings;
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiParameters;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequenceParser;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelParameter;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGAudioBufferProcessor;
+import app.tuxguitar.midi.synth.TGAudioLine;
+import app.tuxguitar.midi.synth.TGSynthModel;
+import app.tuxguitar.midi.synth.TGSynthSettings;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiParameters;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSequenceParser;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChannelParameter;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGSynthSongWriter implements TGSongWriter {
 

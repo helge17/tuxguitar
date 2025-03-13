@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.chooser;
+package app.tuxguitar.ui.jfx.chooser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,10 +7,10 @@ import java.util.List;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-import org.herac.tuxguitar.ui.chooser.UIFileChooser;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
-import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
+import app.tuxguitar.ui.chooser.UIFileChooser;
+import app.tuxguitar.ui.chooser.UIFileChooserFormat;
+import app.tuxguitar.ui.chooser.UIFileChooserHandler;
+import app.tuxguitar.ui.jfx.widget.JFXWindow;
 
 public class JFXFileChooser implements UIFileChooser {
 

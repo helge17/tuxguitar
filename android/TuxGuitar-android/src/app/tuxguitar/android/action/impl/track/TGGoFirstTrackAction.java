@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.action.impl.track;
+package app.tuxguitar.android.action.impl.track;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGGoFirstTrackAction extends TGActionBase {
 

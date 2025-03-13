@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.view.processing;
+package app.tuxguitar.android.view.processing;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLock;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGLock;
 
 public class TGActionProcessingController {
 

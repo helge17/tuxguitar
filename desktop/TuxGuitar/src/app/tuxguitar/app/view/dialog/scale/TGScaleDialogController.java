@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.scale;
+package app.tuxguitar.app.view.dialog.scale;
 
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.controller.TGOpenViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGOpenViewController;
 
 public class TGScaleDialogController implements TGOpenViewController {
 

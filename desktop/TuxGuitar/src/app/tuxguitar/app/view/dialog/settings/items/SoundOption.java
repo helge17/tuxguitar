@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.app.view.dialog.settings.items;
+package app.tuxguitar.app.view.dialog.settings.items;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiSequencer;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiSequencer;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class SoundOption extends TGSettingsOption {
 

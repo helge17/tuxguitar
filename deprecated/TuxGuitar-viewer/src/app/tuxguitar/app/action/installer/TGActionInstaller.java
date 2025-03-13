@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.app.action.installer;
+package app.tuxguitar.app.action.installer;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.TGActionAdapterManager;
-import org.herac.tuxguitar.app.action.impl.layout.SetChordDiagramEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.SetChordNameEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.SetScoreEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.SetTablatureEnabledAction;
-import org.herac.tuxguitar.app.action.impl.measure.GoNextMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.GoPreviousMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.SelectMeasureAction;
-import org.herac.tuxguitar.app.action.impl.settings.SettingsAction;
-import org.herac.tuxguitar.app.action.impl.track.SelectTrackAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportMixerAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportSetupAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportStopAction;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.TGActionAdapterManager;
+import app.tuxguitar.app.action.impl.layout.SetChordDiagramEnabledAction;
+import app.tuxguitar.app.action.impl.layout.SetChordNameEnabledAction;
+import app.tuxguitar.app.action.impl.layout.SetScoreEnabledAction;
+import app.tuxguitar.app.action.impl.layout.SetTablatureEnabledAction;
+import app.tuxguitar.app.action.impl.measure.GoNextMeasureAction;
+import app.tuxguitar.app.action.impl.measure.GoPreviousMeasureAction;
+import app.tuxguitar.app.action.impl.measure.SelectMeasureAction;
+import app.tuxguitar.app.action.impl.settings.SettingsAction;
+import app.tuxguitar.app.action.impl.track.SelectTrackAction;
+import app.tuxguitar.app.action.impl.transport.TransportMixerAction;
+import app.tuxguitar.app.action.impl.transport.TransportPlayAction;
+import app.tuxguitar.app.action.impl.transport.TransportSetupAction;
+import app.tuxguitar.app.action.impl.transport.TransportStopAction;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGActionInstaller {
 

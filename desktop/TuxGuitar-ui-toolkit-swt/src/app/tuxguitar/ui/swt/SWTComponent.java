@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt;
+package app.tuxguitar.ui.swt;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.UIComponent;
 
 public abstract class SWTComponent<T> implements UIComponent {
 

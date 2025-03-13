@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.channel;
+package app.tuxguitar.android.view.dialog.channel;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -14,19 +14,19 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.channel.TGUpdateChannelAction;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.player.base.MidiInstrument;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.channel.TGUpdateChannelAction;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.player.base.MidiInstrument;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
 
 import java.util.ArrayList;
 import java.util.List;

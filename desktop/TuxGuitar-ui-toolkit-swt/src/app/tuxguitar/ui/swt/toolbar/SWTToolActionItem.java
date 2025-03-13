@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.toolbar;
+package app.tuxguitar.ui.swt.toolbar;
 
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
 
 public class SWTToolActionItem extends SWTToolItem implements UIToolActionItem {
 

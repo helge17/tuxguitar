@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2;
+package app.tuxguitar.player.impl.midiport.lv2;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class LV2Settings {
 

@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessorFactory;
-import org.herac.tuxguitar.midi.synth.TGMidiProcessorFactory;
-import org.herac.tuxguitar.midi.synth.TGSynthExtension;
-import org.herac.tuxguitar.midi.synth.TGSynthExtensionPlugin;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUIFactory;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.midi.synth.TGAudioProcessorFactory;
+import app.tuxguitar.midi.synth.TGMidiProcessorFactory;
+import app.tuxguitar.midi.synth.TGSynthExtension;
+import app.tuxguitar.midi.synth.TGSynthExtensionPlugin;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUIFactory;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class VSTSynthExtension extends TGSynthExtensionPlugin {
 

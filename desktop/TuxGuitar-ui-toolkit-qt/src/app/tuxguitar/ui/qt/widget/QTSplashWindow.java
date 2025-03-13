@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.qt.resource.QTImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UISplashWindow;
+import app.tuxguitar.ui.qt.resource.QTImage;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UISplashWindow;
 import io.qt.widgets.QApplication;
 import io.qt.widgets.QSplashScreen;
 

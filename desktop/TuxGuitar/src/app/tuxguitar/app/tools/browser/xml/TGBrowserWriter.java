@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.browser.xml;
+package app.tuxguitar.app.tools.browser.xml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,8 +19,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
+import app.tuxguitar.app.tools.browser.TGBrowserCollection;
+import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

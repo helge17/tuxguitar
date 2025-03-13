@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
-import org.herac.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIPanel;
 
 public class JFXPanel extends JFXPaneContainer<Pane> implements UIPanel {
 

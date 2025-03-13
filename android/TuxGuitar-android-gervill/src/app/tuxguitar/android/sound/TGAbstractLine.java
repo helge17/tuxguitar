@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.sound;
+package app.tuxguitar.android.sound;
 
 import java.util.ArrayList;
 import java.util.List;

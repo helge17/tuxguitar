@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
-import org.herac.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
-import org.herac.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
+import app.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
+import app.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.util.TGContext;
 
 public class TGViewMenu extends TGMenuBase {
 

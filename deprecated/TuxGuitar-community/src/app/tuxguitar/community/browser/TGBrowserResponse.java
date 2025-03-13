@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.community.browser;
+package app.tuxguitar.community.browser;
 
 import java.io.InputStream;
 import java.net.URLDecoder;
@@ -7,7 +7,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

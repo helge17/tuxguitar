@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.event.UIModifyListener;
-import org.herac.tuxguitar.ui.qt.event.QTModifyListenerManager;
-import org.herac.tuxguitar.ui.widget.UITextArea;
+import app.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.qt.event.QTModifyListenerManager;
+import app.tuxguitar.ui.widget.UITextArea;
 import org.qtjambi.qt.widgets.QPlainTextEdit;
 
 public class QTTextArea extends QTWidget<QPlainTextEdit> implements UITextArea {

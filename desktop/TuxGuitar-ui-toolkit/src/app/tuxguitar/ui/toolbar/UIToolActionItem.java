@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.toolbar;
+package app.tuxguitar.ui.toolbar;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UISelectionListener;
 
 public interface UIToolActionItem extends UIToolItem {
 

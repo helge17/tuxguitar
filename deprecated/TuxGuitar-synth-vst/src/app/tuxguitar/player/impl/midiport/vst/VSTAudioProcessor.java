@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.midi.synth.remote.TGRemoteHost;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.base64.Base64Decoder;
-import org.herac.tuxguitar.util.base64.Base64Encoder;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.remote.TGRemoteHost;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.base64.Base64Decoder;
+import app.tuxguitar.util.base64.Base64Encoder;
 
 public class VSTAudioProcessor implements TGAudioProcessor {
 

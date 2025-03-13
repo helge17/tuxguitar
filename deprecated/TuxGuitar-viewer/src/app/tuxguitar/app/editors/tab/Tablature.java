@@ -1,30 +1,30 @@
-package org.herac.tuxguitar.app.editors.tab;
+package app.tuxguitar.app.editors.tab;
 
 import java.awt.Component;
 import java.awt.Rectangle;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.TGScrollBar;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.awt.graphics.AWTColor;
-import org.herac.tuxguitar.awt.graphics.AWTPainter;
-import org.herac.tuxguitar.awt.graphics.AWTResourceFactory;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGController;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.graphics.control.TGLayoutVertical;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGResourceBuffer;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.editors.TGScrollBar;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.awt.graphics.AWTColor;
+import app.tuxguitar.awt.graphics.AWTPainter;
+import app.tuxguitar.awt.graphics.AWTResourceFactory;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGController;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.graphics.control.TGLayoutVertical;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGResourceBuffer;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
 
 public class Tablature implements TGController {
 

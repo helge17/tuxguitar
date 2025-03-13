@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.chooser;
+package app.tuxguitar.ui.qt.chooser;
 
-import org.herac.tuxguitar.ui.chooser.UIColorChooser;
-import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
-import org.herac.tuxguitar.ui.qt.resource.QTColor;
-import org.herac.tuxguitar.ui.qt.widget.QTAbstractWindow;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.chooser.UIColorChooser;
+import app.tuxguitar.ui.chooser.UIColorChooserHandler;
+import app.tuxguitar.ui.qt.resource.QTColor;
+import app.tuxguitar.ui.qt.widget.QTAbstractWindow;
+import app.tuxguitar.ui.resource.UIColorModel;
 import org.qtjambi.qt.gui.QColor;
 import org.qtjambi.qt.widgets.QColorDialog;
 import org.qtjambi.qt.widgets.QDialog;

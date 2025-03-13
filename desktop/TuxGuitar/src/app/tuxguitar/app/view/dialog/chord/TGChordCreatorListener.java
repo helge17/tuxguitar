@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGChord;
 
 public interface TGChordCreatorListener {
 

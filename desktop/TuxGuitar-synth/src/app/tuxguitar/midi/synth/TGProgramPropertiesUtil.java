@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesUtil;
 
 public final class TGProgramPropertiesUtil {
 

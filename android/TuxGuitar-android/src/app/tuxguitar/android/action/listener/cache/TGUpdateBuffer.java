@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.android.action.listener.cache;
+package app.tuxguitar.android.action.listener.cache;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateBuffer {
 

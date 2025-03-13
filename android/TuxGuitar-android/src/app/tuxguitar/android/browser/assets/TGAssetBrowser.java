@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.browser.assets;
+package app.tuxguitar.android.browser.assets;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowser;
-import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.browser.model.TGBrowser;
+import app.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.util.TGContext;
 
 import java.io.InputStream;
 import java.io.OutputStream;

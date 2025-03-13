@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.player.impl.sequencer;
+package app.tuxguitar.player.impl.sequencer;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public class MidiEventDispacher{
 	private MidiSequencerImpl sequencer;

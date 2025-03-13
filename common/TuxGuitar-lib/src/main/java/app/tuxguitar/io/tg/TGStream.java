@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tg;
+package app.tuxguitar.io.tg;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -16,17 +16,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.io.IOUtils;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGPickStroke;
-import org.herac.tuxguitar.song.models.TGStroke;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.util.TGVersion;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGPickStroke;
+import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.effects.TGEffectGrace;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.util.TGVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

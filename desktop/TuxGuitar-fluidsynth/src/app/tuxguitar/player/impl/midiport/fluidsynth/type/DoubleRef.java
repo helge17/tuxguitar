@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.fluidsynth.type;
+package app.tuxguitar.player.impl.midiport.fluidsynth.type;
 
 public class DoubleRef {
 

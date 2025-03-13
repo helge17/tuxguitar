@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.resource;
+package app.tuxguitar.ui.swt.resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
-import org.herac.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.resource.UICursor;
 
 public class SWTCursor {
 

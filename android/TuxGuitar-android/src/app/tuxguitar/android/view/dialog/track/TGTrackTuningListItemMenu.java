@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.view.dialog.track;
+package app.tuxguitar.android.view.dialog.track;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
 
 public class TGTrackTuningListItemMenu extends TGMenuBase {
 

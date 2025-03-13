@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSynthesizer;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.util.TGContext;
 
 public class TGSynthModel implements MidiSynthesizer{
 

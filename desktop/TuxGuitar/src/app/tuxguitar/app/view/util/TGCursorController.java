@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.view.util;
+package app.tuxguitar.app.view.util;
 
-import org.herac.tuxguitar.editor.util.TGSyncProcess;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.util.TGSyncProcess;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.util.TGContext;
 
 public class TGCursorController {
 

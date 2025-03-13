@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGLyric;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGText;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGLyric;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGText;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVoice;
 
 public class TGFactoryImpl extends TGFactory{
 

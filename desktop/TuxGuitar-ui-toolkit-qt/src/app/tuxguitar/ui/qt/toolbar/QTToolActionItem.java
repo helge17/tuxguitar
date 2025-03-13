@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.toolbar;
+package app.tuxguitar.ui.qt.toolbar;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
 import io.qt.widgets.QToolButton;
 
 public class QTToolActionItem extends QTToolAbstractButtonItem<QToolButton> implements UIToolActionItem {

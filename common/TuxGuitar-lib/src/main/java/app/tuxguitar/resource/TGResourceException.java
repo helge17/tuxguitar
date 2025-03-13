@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.resource;
+package app.tuxguitar.resource;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGResourceException extends TGException {
 

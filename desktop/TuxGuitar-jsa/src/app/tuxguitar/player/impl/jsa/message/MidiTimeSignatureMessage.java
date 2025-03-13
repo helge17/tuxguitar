@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.jsa.message;
+package app.tuxguitar.player.impl.jsa.message;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiTimeSignatureMessage extends MetaMessage{
 

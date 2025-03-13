@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
 import org.qtjambi.qt.core.QEvent;
 

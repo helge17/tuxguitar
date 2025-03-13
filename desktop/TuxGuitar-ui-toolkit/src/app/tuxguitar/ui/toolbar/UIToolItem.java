@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.toolbar;
+package app.tuxguitar.ui.toolbar;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIImage;
 
 public interface UIToolItem extends UIComponent {
 

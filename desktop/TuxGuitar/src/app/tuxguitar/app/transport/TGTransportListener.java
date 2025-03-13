@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.transport;
+package app.tuxguitar.app.transport;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.player.base.MidiPlayerEvent;
-import org.herac.tuxguitar.thread.TGThreadLoop;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerEvent;
+import app.tuxguitar.thread.TGThreadLoop;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGTransportListener implements TGEventListener{
 

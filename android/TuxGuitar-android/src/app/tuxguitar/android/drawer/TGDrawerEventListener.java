@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.drawer;
+package app.tuxguitar.android.drawer;
 
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.android.navigation.TGNavigationEvent;
-import org.herac.tuxguitar.android.navigation.TGNavigationFragment;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.android.navigation.TGNavigationEvent;
+import app.tuxguitar.android.navigation.TGNavigationFragment;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGDrawerEventListener implements TGEventListener {
 

@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
-import org.herac.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
-import org.herac.tuxguitar.app.action.impl.view.TGToggleTableViewerAction;
-import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelManagerDialog;
-import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
-import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
+import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
+import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
+import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
+import app.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
+import app.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
+import app.tuxguitar.app.action.impl.view.TGToggleTableViewerAction;
+import app.tuxguitar.app.view.component.table.TGTableViewer;
+import app.tuxguitar.app.view.dialog.channel.TGChannelManagerDialog;
+import app.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
+import app.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionView extends TGMainToolBarSection {
 

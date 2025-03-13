@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.action;
+package app.tuxguitar.action;
 
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGAbstractContext;
 
 public abstract class TGActionContext extends TGAbstractContext {
 

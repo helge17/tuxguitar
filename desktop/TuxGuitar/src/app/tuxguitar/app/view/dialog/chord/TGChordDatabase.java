@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
 /**
  * Stores the information about the chord name, structure and

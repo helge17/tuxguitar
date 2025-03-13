@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.browser.collection;
+package app.tuxguitar.android.view.dialog.browser.collection;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,15 +8,15 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowserFactory;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.song.models.TGChannel;
 
 import java.util.ArrayList;
 import java.util.Iterator;

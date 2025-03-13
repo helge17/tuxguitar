@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIDivider;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIDivider;
 
 public class SWTDivider extends SWTControl<Composite> implements UIDivider {
 

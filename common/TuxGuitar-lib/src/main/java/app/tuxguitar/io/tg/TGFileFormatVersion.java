@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.tg;
+package app.tuxguitar.io.tg;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGFileFormatVersion {
 

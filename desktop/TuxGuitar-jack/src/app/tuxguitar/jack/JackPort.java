@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack;
+package app.tuxguitar.jack;
 
 public class JackPort {
 

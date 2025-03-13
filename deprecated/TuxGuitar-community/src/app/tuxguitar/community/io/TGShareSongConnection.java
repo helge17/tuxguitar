@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
-import org.herac.tuxguitar.community.TGCommunitySingleton;
-import org.herac.tuxguitar.community.auth.TGCommunityAuth;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.community.TGCommunitySingleton;
+import app.tuxguitar.community.auth.TGCommunityAuth;
+import app.tuxguitar.util.TGContext;
 
 public class TGShareSongConnection {
 

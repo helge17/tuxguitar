@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa.midiport;
+package app.tuxguitar.player.impl.jsa.midiport;
 
 import java.io.File;
 
@@ -8,15 +8,15 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.jsa.assistant.SBAssistant;
-import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGExpressionResolver;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.jsa.assistant.SBAssistant;
+import app.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 
 public class MidiPortSynthesizer extends GMOutputPort{
 

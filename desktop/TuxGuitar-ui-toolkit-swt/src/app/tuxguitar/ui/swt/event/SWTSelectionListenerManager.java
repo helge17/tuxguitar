@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTSelectionListenerManager extends UISelectionListenerManager implements SelectionListener {
 

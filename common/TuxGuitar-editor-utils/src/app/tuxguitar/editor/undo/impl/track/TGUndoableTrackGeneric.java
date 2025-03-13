@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.editor.undo.impl.track;
+package app.tuxguitar.editor.undo.impl.track;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.undo.TGCannotRedoException;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableTrackGeneric extends TGUndoableTrackBase {
 

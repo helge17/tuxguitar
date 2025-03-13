@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.graphics.TGPainterImpl;
-import org.herac.tuxguitar.android.transport.TGTransport;
-import org.herac.tuxguitar.android.transport.TGTransportCache;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.graphics.TGPainterImpl;
+import app.tuxguitar.android.transport.TGTransport;
+import app.tuxguitar.android.transport.TGTransportCache;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.error.TGErrorManager;
 
 import android.content.Context;
 import android.graphics.Bitmap;

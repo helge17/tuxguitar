@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.layout;
+package app.tuxguitar.ui.layout;
 
 import java.util.HashMap;
 import java.util.Map;

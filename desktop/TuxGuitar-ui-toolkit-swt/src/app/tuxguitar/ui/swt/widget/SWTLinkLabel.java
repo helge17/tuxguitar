@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
-import org.herac.tuxguitar.ui.event.UILinkListener;
-import org.herac.tuxguitar.ui.swt.event.SWTLinkListenerManager;
-import org.herac.tuxguitar.ui.widget.UILinkLabel;
+import app.tuxguitar.ui.event.UILinkListener;
+import app.tuxguitar.ui.swt.event.SWTLinkListenerManager;
+import app.tuxguitar.ui.widget.UILinkLabel;
 
 public class SWTLinkLabel extends SWTControl<Link> implements UILinkLabel {
 

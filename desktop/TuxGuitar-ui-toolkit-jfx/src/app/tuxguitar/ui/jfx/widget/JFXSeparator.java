@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.widget.UISeparator;
+import app.tuxguitar.ui.widget.UISeparator;
 
 public class JFXSeparator extends JFXControl<Separator> implements UISeparator {
 

@@ -1,25 +1,25 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UISeparator;
-import org.herac.tuxguitar.ui.widget.UIToggleButton;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UIListBoxSelect;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UISeparator;
+import app.tuxguitar.ui.widget.UIToggleButton;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.util.TGSynchronizer;
 
 /**
  * @author julian

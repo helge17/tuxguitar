@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.jack.JackPlugin;
-import org.herac.tuxguitar.jack.singleton.JackClientInstanceProvider;
-import org.herac.tuxguitar.player.base.MidiSequencerProvider;
-import org.herac.tuxguitar.player.plugin.TGMidiSequencerProviderPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.jack.JackPlugin;
+import app.tuxguitar.jack.singleton.JackClientInstanceProvider;
+import app.tuxguitar.player.base.MidiSequencerProvider;
+import app.tuxguitar.player.plugin.TGMidiSequencerProviderPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class JackSequencerProviderPlugin extends TGMidiSequencerProviderPlugin {
 

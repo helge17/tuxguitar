@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.action.impl.caret;
+package app.tuxguitar.android.action.impl.caret;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGGoDownAction extends TGActionBase{
 

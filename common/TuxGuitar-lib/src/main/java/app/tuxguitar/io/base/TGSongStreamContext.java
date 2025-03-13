@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGSongStreamContext extends TGAbstractContext {
 

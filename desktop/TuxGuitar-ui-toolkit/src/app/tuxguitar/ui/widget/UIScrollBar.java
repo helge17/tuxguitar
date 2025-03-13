@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.resource.UISize;
 
 public interface UIScrollBar extends UIComponent {
 

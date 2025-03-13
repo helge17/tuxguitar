@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.system.config;
+package app.tuxguitar.app.system.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
-import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardConfig;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
-import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.view.component.tab.edit.EditorKit;
+import app.tuxguitar.app.view.dialog.fretboard.TGFretBoardConfig;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.util.properties.TGPropertiesUtil;
 
 public class TGConfigDefaults{
 

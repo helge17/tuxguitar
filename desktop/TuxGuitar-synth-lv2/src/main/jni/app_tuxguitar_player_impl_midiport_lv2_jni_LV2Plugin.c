@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
-#include "org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2.h"
-#include "org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin.h"
+#include "app_tuxguitar_player_impl_midiport_lv2_jni_LV2.h"
+#include "app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin.h"
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_malloc(JNIEnv *env, jobject obj, jlong worldPtr, jlong lilvPluginPtr)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_malloc(JNIEnv *env, jobject obj, jlong worldPtr, jlong lilvPluginPtr)
 {
 	jlong ptr = 0;
 
@@ -22,7 +22,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV
 	return ptr;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_free(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_free(JNIEnv *env, jobject obj, jlong ptr)
 {
 	LV2Plugin *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -31,7 +31,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2
 	}
 }
 
-JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getUri(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jstring JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getUri(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jstring jvalue = NULL;
 
@@ -48,7 +48,7 @@ JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 	return jvalue;
 }
 
-JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getName(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jstring JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getName(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jstring jvalue = NULL;
 
@@ -65,7 +65,7 @@ JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 	return jvalue;
 }
 
-JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getCategory(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jstring JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getCategory(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jstring jvalue = NULL;
 
@@ -82,7 +82,7 @@ JNIEXPORT jstring JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 	return jvalue;
 }
 
-JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getAudioInputPortCount(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jint JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getAudioInputPortCount(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jint value = 0;
 
@@ -94,7 +94,7 @@ JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2
 	return value;
 }
 
-JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getAudioOutputPortCount(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jint JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getAudioOutputPortCount(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jint value = 0;
 
@@ -106,7 +106,7 @@ JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2
 	return value;
 }
 
-JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getMidiInputPortCount(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jint JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getMidiInputPortCount(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jint value = 0;
 
@@ -118,7 +118,7 @@ JNIEXPORT jint JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2
 	return value;
 }
 
-JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getControlPortInfo(JNIEnv *env, jobject obj, jlong ptr, jint index)
+JNIEXPORT jobject JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getControlPortInfo(JNIEnv *env, jobject obj, jlong ptr, jint index)
 {
 	jobject value = 0;
 
@@ -129,7 +129,7 @@ JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 			jclass jPortRangeCls = NULL;
 			jmethodID jPortRangeInit = NULL;
 
-			jPortRangeCls = env->FindClass("org/herac/tuxguitar/player/impl/midiport/lv2/jni/LV2ControlPortInfo");
+			jPortRangeCls = env->FindClass("app/tuxguitar/player/impl/midiport/lv2/jni/LV2ControlPortInfo");
 			if( jPortRangeCls != NULL ) {
 				jPortRangeInit = env->GetMethodID(jPortRangeCls, "<init>", "(Ljava/lang/String;ZFFF)V");
 				if( jPortRangeInit != NULL ) {
@@ -163,7 +163,7 @@ JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_
 	return value;
 }
 
-JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getControlPortIndices(JNIEnv *env, jobject obj, jlong ptr)
+JNIEXPORT jobject JNICALL Java_app_tuxguitar_player_impl_midiport_lv2_jni_LV2Plugin_getControlPortIndices(JNIEnv *env, jobject obj, jlong ptr)
 {
 	jobject jlist = NULL;
 

@@ -1,35 +1,35 @@
-package org.herac.tuxguitar.app.view.menu;
+package app.tuxguitar.app.view.menu;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
-import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.app.view.menu.impl.BeatMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.CompositionMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.EditMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.FileMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.HelpMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.MarkerMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.MeasureMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.ToolMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.TrackMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.TransportMenuItem;
-import org.herac.tuxguitar.app.view.menu.impl.ViewMenuItem;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGSkinEvent;
+import app.tuxguitar.app.system.language.TGLanguageEvent;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.app.view.menu.impl.BeatMenuItem;
+import app.tuxguitar.app.view.menu.impl.CompositionMenuItem;
+import app.tuxguitar.app.view.menu.impl.EditMenuItem;
+import app.tuxguitar.app.view.menu.impl.FileMenuItem;
+import app.tuxguitar.app.view.menu.impl.HelpMenuItem;
+import app.tuxguitar.app.view.menu.impl.MarkerMenuItem;
+import app.tuxguitar.app.view.menu.impl.MeasureMenuItem;
+import app.tuxguitar.app.view.menu.impl.ToolMenuItem;
+import app.tuxguitar.app.view.menu.impl.TrackMenuItem;
+import app.tuxguitar.app.view.menu.impl.TransportMenuItem;
+import app.tuxguitar.app.view.menu.impl.ViewMenuItem;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.editor.util.TGSyncProcessLocked;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.io.base.TGFileFormatAvailabilityEvent;
+import app.tuxguitar.ui.menu.UIMenuBar;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class TGMenuManager implements TGEventListener {
 

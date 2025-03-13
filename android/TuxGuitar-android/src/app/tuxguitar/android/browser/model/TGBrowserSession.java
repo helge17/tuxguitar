@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.browser.model;
+package app.tuxguitar.android.browser.model;
 
-import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.io.base.TGFileFormat;
 
 import java.util.List;
 

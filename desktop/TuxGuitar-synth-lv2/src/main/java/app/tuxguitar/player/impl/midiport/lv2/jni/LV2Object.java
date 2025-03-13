@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2.jni;
+package app.tuxguitar.player.impl.midiport.lv2.jni;
 
 public class LV2Object {
 

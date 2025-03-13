@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.thread;
+package app.tuxguitar.thread;
 
 public enum TGThreadPriority {
 

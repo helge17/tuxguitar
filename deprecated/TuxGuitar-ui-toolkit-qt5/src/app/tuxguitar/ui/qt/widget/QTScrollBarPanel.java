@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIScrollBar;
-import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIScrollBar;
+import app.tuxguitar.ui.widget.UIScrollBarPanel;
 import org.qtjambi.qt.core.QMargins;
 import org.qtjambi.qt.core.Qt.ScrollBarPolicy;
 import org.qtjambi.qt.widgets.QAbstractScrollArea;

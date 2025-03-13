@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.resource;
+package app.tuxguitar.ui.jfx.resource;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.Cursor;
 
-import org.herac.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.resource.UICursor;
 
 public class JFXCursor {
 

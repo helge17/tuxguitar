@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.jack.console;
+package app.tuxguitar.jack.console;
 
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackPlugin;
-import org.herac.tuxguitar.jack.connection.JackConnectionManager;
-import org.herac.tuxguitar.jack.connection.JackConnectionPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginManager;
+import app.tuxguitar.jack.JackPlugin;
+import app.tuxguitar.jack.connection.JackConnectionManager;
+import app.tuxguitar.jack.connection.JackConnectionPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginManager;
 
-public class JackConsolePlugin extends org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin {
+public class JackConsolePlugin extends app.tuxguitar.app.tools.custom.TGToolItemPlugin {
 
 	private JackConsoleDialog jackConsoleDialog;
 

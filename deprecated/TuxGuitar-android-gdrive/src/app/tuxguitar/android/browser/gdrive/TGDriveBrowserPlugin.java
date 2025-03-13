@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package app.tuxguitar.android.browser.gdrive;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
-import org.herac.tuxguitar.android.browser.plugin.TGBrowserPlugin;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.browser.model.TGBrowserFactory;
+import app.tuxguitar.android.browser.plugin.TGBrowserPlugin;
+import app.tuxguitar.util.TGContext;
 
 public class TGDriveBrowserPlugin extends TGBrowserPlugin {
 

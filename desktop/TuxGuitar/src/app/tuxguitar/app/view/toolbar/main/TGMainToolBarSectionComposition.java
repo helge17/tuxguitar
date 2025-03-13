@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionComposition extends TGMainToolBarSection {
 

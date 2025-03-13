@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
 public interface MidiSynthesizer {
 

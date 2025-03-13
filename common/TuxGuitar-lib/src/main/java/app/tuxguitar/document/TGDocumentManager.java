@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.document;
+package app.tuxguitar.document;
 
-import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.graphics.control.TGFactoryImpl;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGDocumentManager {
 

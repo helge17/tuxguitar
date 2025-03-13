@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.custom.converter;
+package app.tuxguitar.app.tools.custom.converter;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -6,16 +6,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.base.TGSongReaderHelper;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.base.TGSongReaderHelper;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGConverter {
 	// This value will delay the process something like 1 minute for 3000 files.

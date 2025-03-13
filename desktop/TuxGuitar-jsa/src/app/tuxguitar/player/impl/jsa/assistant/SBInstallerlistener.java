@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa.assistant;
+package app.tuxguitar.player.impl.jsa.assistant;
 
 public interface SBInstallerlistener {
 

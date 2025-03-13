@@ -4,31 +4,31 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.graphics.control.painters.TGClefPainter;
-import org.herac.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
-import org.herac.tuxguitar.graphics.control.painters.TGNumberPainter;
-import org.herac.tuxguitar.graphics.control.painters.TGTempoPainter;
-import org.herac.tuxguitar.graphics.control.painters.TGTripletFeelPainter;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGDivisionType;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMarker;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.graphics.control.painters.TGClefPainter;
+import app.tuxguitar.graphics.control.painters.TGKeySignaturePainter;
+import app.tuxguitar.graphics.control.painters.TGNumberPainter;
+import app.tuxguitar.graphics.control.painters.TGTempoPainter;
+import app.tuxguitar.graphics.control.painters.TGTripletFeelPainter;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGDivisionType;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMarker;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 /**
  * @author julian

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.jack.connection;
+package app.tuxguitar.jack.connection;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class JackConnectionConfig {
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.midi.port;
+package app.tuxguitar.android.midi.port;
 
 import android.annotation.SuppressLint;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 import java.io.IOException;
 

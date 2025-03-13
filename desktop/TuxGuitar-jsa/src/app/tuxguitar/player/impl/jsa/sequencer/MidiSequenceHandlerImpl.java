@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.player.impl.jsa.sequencer;
+package app.tuxguitar.player.impl.jsa.sequencer;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 

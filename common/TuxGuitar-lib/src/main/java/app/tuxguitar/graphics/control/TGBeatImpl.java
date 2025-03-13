@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGNoteEffect;
-import org.herac.tuxguitar.song.models.TGPickStroke;
-import org.herac.tuxguitar.song.models.TGStroke;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGNoteEffect;
+import app.tuxguitar.song.models.TGPickStroke;
+import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
 
 public class TGBeatImpl extends TGBeat{
 	/**

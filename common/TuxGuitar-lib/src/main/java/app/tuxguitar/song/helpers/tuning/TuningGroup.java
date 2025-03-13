@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.song.helpers.tuning;
+package app.tuxguitar.song.helpers.tuning;
 
 import java.util.ArrayList;
 import java.util.List;

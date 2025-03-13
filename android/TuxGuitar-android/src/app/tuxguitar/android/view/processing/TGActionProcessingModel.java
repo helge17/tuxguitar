@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.processing;
+package app.tuxguitar.android.view.processing;
 
 public class TGActionProcessingModel {
 

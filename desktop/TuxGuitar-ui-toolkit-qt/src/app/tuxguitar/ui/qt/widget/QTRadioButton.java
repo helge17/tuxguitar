@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIRadioButton;
+import app.tuxguitar.ui.widget.UIRadioButton;
 import io.qt.widgets.QRadioButton;
 
 public class QTRadioButton extends QTAbstractButton<QRadioButton> implements UIRadioButton {

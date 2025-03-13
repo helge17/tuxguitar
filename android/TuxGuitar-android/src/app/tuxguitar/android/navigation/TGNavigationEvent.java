@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.navigation;
+package app.tuxguitar.android.navigation;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public class TGNavigationEvent extends TGEvent {
 

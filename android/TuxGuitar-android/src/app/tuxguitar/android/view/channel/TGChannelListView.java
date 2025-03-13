@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.view.channel;
+package app.tuxguitar.android.view.channel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.view.util.TGProcess;
+import app.tuxguitar.android.view.util.TGSyncProcessLocked;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.util.TGContext;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUIFactory;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUIFactory;
+import app.tuxguitar.util.TGContext;
 
 public class GervillProcessorUIFactory implements TGAudioProcessorUIFactory {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.qt.event.QTPaintListenerManager;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.qt.event.QTPaintListenerManager;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UICanvas;
 import org.qtjambi.qt.core.QEvent.Type;
 import org.qtjambi.qt.gui.QPaintDeviceInterface;
 import org.qtjambi.qt.widgets.QFrame;

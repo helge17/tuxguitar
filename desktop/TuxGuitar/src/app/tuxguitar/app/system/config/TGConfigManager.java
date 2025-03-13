@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.system.config;
+package app.tuxguitar.app.system.config;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGVersion;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.system.properties.TGPropertiesUIUtil;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGVersion;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
-public class TGConfigManager extends org.herac.tuxguitar.util.configuration.TGConfigManager {
+public class TGConfigManager extends app.tuxguitar.util.configuration.TGConfigManager {
 
 	public static final String CONFIGURATION_MODULE = "tuxguitar";
 

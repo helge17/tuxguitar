@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.properties;
+package app.tuxguitar.android.properties;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,11 +7,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesReader;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGResourcePropertiesReader implements TGPropertiesReader {
 

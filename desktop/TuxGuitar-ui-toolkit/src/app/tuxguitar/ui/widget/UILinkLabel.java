@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.event.UILinkListener;
+import app.tuxguitar.ui.event.UILinkListener;
 
 public interface UILinkLabel extends UIWrapLabel {
 

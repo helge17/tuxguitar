@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.tg.util;
+package app.tuxguitar.io.tg.util;
 
 import java.util.List;
 
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
 
 public class TGStringLimitUtil {
 

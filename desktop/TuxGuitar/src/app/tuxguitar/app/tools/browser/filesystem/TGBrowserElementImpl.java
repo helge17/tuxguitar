@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.tools.browser.filesystem;
+package app.tuxguitar.app.tools.browser.filesystem;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.app.tools.browser.TGBrowserException;
+import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserElementImpl implements TGBrowserElement{
 

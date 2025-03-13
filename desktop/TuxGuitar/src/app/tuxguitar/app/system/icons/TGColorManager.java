@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.app.system.icons;
+package app.tuxguitar.app.system.icons;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.system.properties.TGPropertiesUIUtil;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGColorManager {
 

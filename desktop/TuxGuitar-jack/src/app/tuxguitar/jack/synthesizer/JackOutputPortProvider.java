@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.jack.synthesizer;
+package app.tuxguitar.jack.synthesizer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.provider.JackClientProvider;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.provider.JackClientProvider;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.util.TGContext;
 
 public class JackOutputPortProvider implements MidiOutputPortProvider{
 

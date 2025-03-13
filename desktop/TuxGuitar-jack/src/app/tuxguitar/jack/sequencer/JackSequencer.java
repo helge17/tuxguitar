@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.player.base.MidiSequencer;
-import org.herac.tuxguitar.player.base.MidiTransmitter;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.player.base.MidiSequencer;
+import app.tuxguitar.player.base.MidiTransmitter;
+import app.tuxguitar.util.TGContext;
 
 public class JackSequencer implements MidiSequencer{
 

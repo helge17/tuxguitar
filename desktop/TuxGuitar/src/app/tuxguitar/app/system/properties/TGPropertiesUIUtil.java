@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGExpressionResolver;
-import org.herac.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
+import app.tuxguitar.util.properties.TGProperties;
 
 public class TGPropertiesUIUtil {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 
 public class GTPFileFormat {
 

@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.android.menu.controller.impl.fragment;
+package app.tuxguitar.android.menu.controller.impl.fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.browser.collection.TGBrowserCollectionsDialogController;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.android.view.dialog.browser.collection.TGBrowserCollectionsDialogController;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGBrowserMenu implements TGMenuController {
 

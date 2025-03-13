@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.impl;
+package app.tuxguitar.app.action.impl;
 
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowAdapter;
@@ -6,9 +6,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public abstract class ActionDialog extends TGActionBase {
 

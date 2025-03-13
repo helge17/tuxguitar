@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tef2.base;
+package app.tuxguitar.io.tef2.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;

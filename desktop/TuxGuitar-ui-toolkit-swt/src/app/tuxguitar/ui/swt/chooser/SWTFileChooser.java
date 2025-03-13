@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.ui.swt.chooser;
+package app.tuxguitar.ui.swt.chooser;
 
 import java.io.File;
 import java.util.List;
 
 import org.eclipse.swt.widgets.FileDialog;
-import org.herac.tuxguitar.ui.chooser.UIFileChooser;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.ui.chooser.UIFileChooser;
+import app.tuxguitar.ui.chooser.UIFileChooserFormat;
+import app.tuxguitar.ui.chooser.UIFileChooserHandler;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
 
 public class SWTFileChooser implements UIFileChooser {
 

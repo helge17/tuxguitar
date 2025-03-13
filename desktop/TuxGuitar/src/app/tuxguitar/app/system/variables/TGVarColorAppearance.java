@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.system.variables;
+package app.tuxguitar.app.system.variables;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.util.TGContext;
 
 public class TGVarColorAppearance {
 

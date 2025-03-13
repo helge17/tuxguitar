@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.system.plugins;
+package app.tuxguitar.app.system.plugins;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGPluginSettingsManager {
 

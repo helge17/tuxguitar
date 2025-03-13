@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public class TGFileFormatAvailabilityEvent extends TGEvent {
 

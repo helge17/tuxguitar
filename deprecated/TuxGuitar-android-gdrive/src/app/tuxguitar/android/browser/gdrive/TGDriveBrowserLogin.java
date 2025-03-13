@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package app.tuxguitar.android.browser.gdrive;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -12,11 +12,11 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.services.drive.DriveScopes;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.gdrive.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityResultHandler;
+import app.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.gdrive.R;
 
 import java.util.Collections;
 

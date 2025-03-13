@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.app.action.impl.system;
+package app.tuxguitar.app.action.impl.system;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.icons.TGSkinManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.component.table.TGTableViewer;
-import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
-import org.herac.tuxguitar.app.view.dialog.marker.TGMarkerList;
-import org.herac.tuxguitar.app.view.dialog.transport.TGTransportDialog;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
-import org.herac.tuxguitar.app.view.toolbar.main.TGMainToolBar;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
-import org.herac.tuxguitar.util.plugin.TGPluginManager;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.icons.TGSkinManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.component.table.TGTableViewer;
+import app.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
+import app.tuxguitar.app.view.dialog.marker.TGMarkerList;
+import app.tuxguitar.app.view.dialog.transport.TGTransportDialog;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
+import app.tuxguitar.app.view.toolbar.main.TGMainToolBar;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGDisposeAction extends TGActionBase {
 

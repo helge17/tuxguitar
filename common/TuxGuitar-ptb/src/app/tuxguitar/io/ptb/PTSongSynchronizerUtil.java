@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.io.ptb;
+package app.tuxguitar.io.ptb;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.io.ptb.base.PTBar;
-import org.herac.tuxguitar.io.ptb.base.PTComponent;
-import org.herac.tuxguitar.io.ptb.base.PTDirection;
-import org.herac.tuxguitar.io.ptb.base.PTPosition;
-import org.herac.tuxguitar.io.ptb.base.PTSection;
-import org.herac.tuxguitar.io.ptb.base.PTSong;
-import org.herac.tuxguitar.io.ptb.base.PTSongInfo;
-import org.herac.tuxguitar.io.ptb.base.PTSymbol;
-import org.herac.tuxguitar.io.ptb.base.PTTrack;
-import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
+import app.tuxguitar.io.ptb.base.PTBar;
+import app.tuxguitar.io.ptb.base.PTComponent;
+import app.tuxguitar.io.ptb.base.PTDirection;
+import app.tuxguitar.io.ptb.base.PTPosition;
+import app.tuxguitar.io.ptb.base.PTSection;
+import app.tuxguitar.io.ptb.base.PTSong;
+import app.tuxguitar.io.ptb.base.PTSongInfo;
+import app.tuxguitar.io.ptb.base.PTSymbol;
+import app.tuxguitar.io.ptb.base.PTTrack;
+import app.tuxguitar.io.ptb.base.PTTrackInfo;
 
 public class PTSongSynchronizerUtil {
 

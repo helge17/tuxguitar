@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.ui.swt;
+package app.tuxguitar.ui.swt;
 
 import java.net.URL;
 
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Display;
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.swt.appearance.SWTAppearance;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.swt.appearance.SWTAppearance;
 
 public class SWTApplication extends SWTComponent<Display> implements UIApplication {
 

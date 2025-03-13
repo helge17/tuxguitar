@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
 
 public class JFXMenuActionItem extends JFXMenuItem<MenuItem> implements UIMenuActionItem {
 

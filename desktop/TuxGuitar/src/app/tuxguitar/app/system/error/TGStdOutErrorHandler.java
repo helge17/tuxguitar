@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.system.error;
+package app.tuxguitar.app.system.error;
 
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 public class TGStdOutErrorHandler implements TGErrorHandler {
 

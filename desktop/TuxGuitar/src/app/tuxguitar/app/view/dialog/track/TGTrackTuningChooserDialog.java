@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.view.dialog.track;
+package app.tuxguitar.app.view.dialog.track;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.*;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.*;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackTuningChooserDialog {
 

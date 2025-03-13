@@ -1,35 +1,35 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.dialog.bend.TGBendDialogController;
-import org.herac.tuxguitar.android.view.dialog.grace.TGGraceDialogController;
-import org.herac.tuxguitar.android.view.dialog.harmonic.TGHarmonicDialogController;
-import org.herac.tuxguitar.android.view.dialog.tremoloBar.TGTremoloBarDialogController;
-import org.herac.tuxguitar.android.view.dialog.tremoloPicking.TGTremoloPickingDialogController;
-import org.herac.tuxguitar.android.view.dialog.trill.TGTrillDialogController;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeLetRingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangePoppingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeSlappingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.bend.TGBendDialogController;
+import app.tuxguitar.android.view.dialog.grace.TGGraceDialogController;
+import app.tuxguitar.android.view.dialog.harmonic.TGHarmonicDialogController;
+import app.tuxguitar.android.view.dialog.tremoloBar.TGTremoloBarDialogController;
+import app.tuxguitar.android.view.dialog.tremoloPicking.TGTremoloPickingDialogController;
+import app.tuxguitar.android.view.dialog.trill.TGTrillDialogController;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeFadeInAction;
+import app.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeLetRingAction;
+import app.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
+import app.tuxguitar.editor.action.effect.TGChangePoppingAction;
+import app.tuxguitar.editor.action.effect.TGChangeSlappingAction;
+import app.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
+import app.tuxguitar.editor.action.effect.TGChangeTappingAction;
+import app.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.util.TGContext;
 
 public class TGEffectMenu extends TGMenuBase {
 

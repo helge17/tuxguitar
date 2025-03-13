@@ -1,33 +1,33 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.dialog.pickstroke.TGPickStrokeDialogController;
-import org.herac.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
-import org.herac.tuxguitar.android.view.dialog.text.TGTextDialogController;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
-import org.herac.tuxguitar.editor.action.note.TGCleanBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
-import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
-import org.herac.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
-import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
-import org.herac.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
-import org.herac.tuxguitar.editor.action.note.TGRemoveUnusedVoiceAction;
-import org.herac.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
-import org.herac.tuxguitar.editor.action.note.TGSetVoiceDownAction;
-import org.herac.tuxguitar.editor.action.note.TGSetVoiceUpAction;
-import org.herac.tuxguitar.editor.action.note.TGShiftNoteDownAction;
-import org.herac.tuxguitar.editor.action.note.TGShiftNoteUpAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.pickstroke.TGPickStrokeDialogController;
+import app.tuxguitar.android.view.dialog.stroke.TGStrokeDialogController;
+import app.tuxguitar.android.view.dialog.text.TGTextDialogController;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
+import app.tuxguitar.editor.action.note.TGCleanBeatAction;
+import app.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
+import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
+import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
+import app.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
+import app.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
+import app.tuxguitar.editor.action.note.TGRemoveUnusedVoiceAction;
+import app.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
+import app.tuxguitar.editor.action.note.TGSetVoiceDownAction;
+import app.tuxguitar.editor.action.note.TGSetVoiceUpAction;
+import app.tuxguitar.editor.action.note.TGShiftNoteDownAction;
+import app.tuxguitar.editor.action.note.TGShiftNoteUpAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.util.TGContext;
 
 public class TGBeatMenu extends TGMenuBase {
 

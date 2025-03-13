@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.system.config;
+package app.tuxguitar.app.system.config;
 
-import org.herac.tuxguitar.app.system.properties.TGResourcePropertiesReader;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesReader;
+import app.tuxguitar.app.system.properties.TGResourcePropertiesReader;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesReader;
 
 public class TGConfigDefaultsPropertiesHandler implements TGPropertiesReader{
 

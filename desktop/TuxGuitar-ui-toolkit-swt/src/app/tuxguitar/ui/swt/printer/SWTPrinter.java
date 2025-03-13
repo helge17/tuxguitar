@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.swt.printer;
+package app.tuxguitar.ui.swt.printer;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
-import org.herac.tuxguitar.ui.printer.UIPrinter;
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
-import org.herac.tuxguitar.ui.swt.resource.SWTResourceFactory;
+import app.tuxguitar.ui.printer.UIPrinter;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.swt.resource.SWTResourceFactory;
 
 public class SWTPrinter extends SWTComponent<Printer> implements UIPrinter {
 

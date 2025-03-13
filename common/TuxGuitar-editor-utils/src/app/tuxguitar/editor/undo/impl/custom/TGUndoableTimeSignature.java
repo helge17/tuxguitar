@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.editor.undo.impl.custom;
+package app.tuxguitar.editor.undo.impl.custom;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
-import org.herac.tuxguitar.editor.action.song.TGCopySongFromAction;
-import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
+import app.tuxguitar.editor.action.song.TGCopySongFromAction;
+import app.tuxguitar.editor.undo.TGCannotRedoException;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableTimeSignature extends TGUndoableEditBase {
 

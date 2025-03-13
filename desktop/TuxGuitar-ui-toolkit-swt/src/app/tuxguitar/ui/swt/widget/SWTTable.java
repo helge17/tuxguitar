@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -8,12 +8,12 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
-import org.herac.tuxguitar.ui.widget.UITable;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
+import app.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.ui.widget.UITable;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class SWTTable<T> extends SWTControl<Table> implements UITable<T> {
 

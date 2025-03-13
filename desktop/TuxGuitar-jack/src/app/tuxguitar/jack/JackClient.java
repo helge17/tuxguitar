@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack;
+package app.tuxguitar.jack;
 
 import java.util.ArrayList;
 import java.util.Iterator;

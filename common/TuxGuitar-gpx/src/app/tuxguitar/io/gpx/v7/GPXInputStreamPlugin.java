@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.gpx.v7;
+package app.tuxguitar.io.gpx.v7;
 
-import org.herac.tuxguitar.io.base.TGFileFormatDetector;
-import org.herac.tuxguitar.io.base.TGSongReader;
-import org.herac.tuxguitar.io.gpx.GPXPlugin;
-import org.herac.tuxguitar.io.plugin.TGSongReaderPlugin;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.io.base.TGFileFormatDetector;
+import app.tuxguitar.io.base.TGSongReader;
+import app.tuxguitar.io.gpx.GPXPlugin;
+import app.tuxguitar.io.plugin.TGSongReaderPlugin;
+import app.tuxguitar.util.TGContext;
 
 public class GPXInputStreamPlugin extends TGSongReaderPlugin{
 

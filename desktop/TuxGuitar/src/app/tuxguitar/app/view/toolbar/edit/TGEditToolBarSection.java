@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.toolbar.model.TGToolBarSection;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.toolbar.model.TGToolBarSection;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UILegendPanel;
 
 public abstract class TGEditToolBarSection implements TGToolBarSection {
 

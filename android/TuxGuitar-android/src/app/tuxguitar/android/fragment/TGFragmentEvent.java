@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.fragment;
+package app.tuxguitar.android.fragment;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 import androidx.fragment.app.Fragment;
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.chord.xml;
+package app.tuxguitar.app.view.dialog.chord.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +9,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.song.models.TGChord;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.song.models.TGChord;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.impl.transport;
+package app.tuxguitar.app.action.impl.transport;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,16 +22,16 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.ActionDialog;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.ActionDialog;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TransportMixerAction extends ActionDialog {
 

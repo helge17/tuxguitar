@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.editor.event;
+package app.tuxguitar.editor.event;
 
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGRedrawEvent extends TGEvent {
 

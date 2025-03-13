@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.undo.impl.marker;
+package app.tuxguitar.app.undo.impl.marker;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
-import org.herac.tuxguitar.app.action.impl.marker.TGUpdateMarkerAction;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.undo.TGCannotRedoException;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
-import org.herac.tuxguitar.song.models.TGMarker;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.action.impl.marker.TGRemoveMarkerAction;
+import app.tuxguitar.app.action.impl.marker.TGUpdateMarkerAction;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.undo.TGCannotRedoException;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.song.models.TGMarker;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableMarkerGeneric extends TGUndoableEditBase {
 

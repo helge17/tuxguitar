@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.resource.UIImage;
 
 public interface UICheckBox extends UIControl {
 

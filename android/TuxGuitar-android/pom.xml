@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.herac.tuxguitar</groupId>
+		<groupId>app.tuxguitar</groupId>
 		<artifactId>tuxguitar-pom</artifactId>
 		<version>9.99-SNAPSHOT</version>
 	</parent>
@@ -38,14 +38,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.herac.tuxguitar</groupId>
+			<groupId>app.tuxguitar</groupId>
 			<artifactId>tuxguitar-lib</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.herac.tuxguitar</groupId>
+			<groupId>app.tuxguitar</groupId>
 			<artifactId>tuxguitar-editor-utils</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>

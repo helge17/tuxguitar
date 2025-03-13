@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.tools.custom.TGToolItemPlugin;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class MidiInputPlugin
 	extends TGToolItemPlugin

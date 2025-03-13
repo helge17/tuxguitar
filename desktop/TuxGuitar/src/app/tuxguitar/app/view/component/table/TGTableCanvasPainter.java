@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.util.TGBeatRange;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.util.TGBeatRange;
 
 public class TGTableCanvasPainter {
 

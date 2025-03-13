@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.editor.util;
+package app.tuxguitar.editor.util;
 
-import org.herac.tuxguitar.thread.TGThreadLoop;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.thread.TGThreadLoop;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.util.TGContext;
 
 public class TGDelayedProcess implements TGProcess {
 

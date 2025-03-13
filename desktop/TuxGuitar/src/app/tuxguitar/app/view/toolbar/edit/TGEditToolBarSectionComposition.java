@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
-import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
-import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
-import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
+import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
+import app.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
+import app.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
+import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 

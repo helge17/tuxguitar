@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.awt.graphics;
+package app.tuxguitar.awt.graphics;
 
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public abstract class AWTAbstractPainter extends AWTResourceFactory implements UIPainter {
 

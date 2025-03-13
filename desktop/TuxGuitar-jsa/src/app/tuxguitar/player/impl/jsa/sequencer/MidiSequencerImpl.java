@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.player.impl.jsa.sequencer;
+package app.tuxguitar.player.impl.jsa.sequencer;
 
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 import javax.sound.midi.Transmitter;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.player.base.MidiSequencer;
-import org.herac.tuxguitar.player.base.MidiTransmitter;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.player.base.MidiSequencer;
+import app.tuxguitar.player.base.MidiTransmitter;
 
 public class MidiSequencerImpl implements MidiSequencer,MidiSequenceLoader{
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseDragListenerManager;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseDragListenerManager;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseMoveListener;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.resource.UIPosition;
 
 public class QTMouseDragListenerManager extends UIMouseDragListenerManager implements UIMouseDownListener, UIMouseUpListener, UIMouseMoveListener {
 

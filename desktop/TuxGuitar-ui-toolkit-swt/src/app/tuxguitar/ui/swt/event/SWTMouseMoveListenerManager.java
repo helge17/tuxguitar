@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.SWT;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseMoveListenerManager;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseMoveListenerManager;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTMouseMoveListenerManager extends UIMouseMoveListenerManager implements MouseMoveListener {
 

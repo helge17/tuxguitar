@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
-import org.herac.tuxguitar.ui.event.UIKeyEvent;
-import org.herac.tuxguitar.ui.event.UIKeyPressedListener;
+import app.tuxguitar.ui.event.UIKeyEvent;
+import app.tuxguitar.ui.event.UIKeyPressedListener;
 
 public class KeyBindingListener implements UIKeyPressedListener {
 

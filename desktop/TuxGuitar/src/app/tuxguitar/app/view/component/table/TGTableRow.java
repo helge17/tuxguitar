@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
-import org.herac.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.widget.UICanvas;
-import org.herac.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
+import app.tuxguitar.app.view.util.TGBufferedPainterLocked.TGBufferedPainterHandle;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.widget.UIPanel;
 
 public class TGTableRow {
 

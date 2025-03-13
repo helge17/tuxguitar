@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.editor.undo;
+package app.tuxguitar.editor.undo;
 
 /**
  * @author julian

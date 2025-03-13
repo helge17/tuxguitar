@@ -1,33 +1,33 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.chooser.UIFileChooser;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
-import org.herac.tuxguitar.ui.event.UIModifyEvent;
-import org.herac.tuxguitar.ui.event.UIModifyListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIRadioButton;
-import org.herac.tuxguitar.ui.widget.UIReadOnlyTextField;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.chooser.UIFileChooser;
+import app.tuxguitar.ui.chooser.UIFileChooserFormat;
+import app.tuxguitar.ui.chooser.UIFileChooserHandler;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIRadioButton;
+import app.tuxguitar.ui.widget.UIReadOnlyTextField;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener, UISelectionListener {
 

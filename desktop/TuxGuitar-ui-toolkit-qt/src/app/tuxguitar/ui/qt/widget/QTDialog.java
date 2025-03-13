@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIRectangle;
 import io.qt.core.Qt.WindowType;
 import io.qt.widgets.QDialog;
 

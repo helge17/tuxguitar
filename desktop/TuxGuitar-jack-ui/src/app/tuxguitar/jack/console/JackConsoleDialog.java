@@ -1,28 +1,28 @@
-package org.herac.tuxguitar.jack.console;
+package app.tuxguitar.jack.console;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
-import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.jack.connection.JackConnectionManager;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGSkinEvent;
+import app.tuxguitar.app.system.language.TGLanguageEvent;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.jack.connection.JackConnectionManager;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class JackConsoleDialog implements TGEventListener {
 

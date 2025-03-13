@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.resource;
+package app.tuxguitar.ui.jfx.resource;
 
 import javafx.geometry.Bounds;
 import javafx.scene.text.Font;

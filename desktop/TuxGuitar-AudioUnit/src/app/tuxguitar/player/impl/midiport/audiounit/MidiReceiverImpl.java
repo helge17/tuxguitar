@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.player.impl.midiport.audiounit;
+package app.tuxguitar.player.impl.midiport.audiounit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.player.base.MidiOutputPort;
 
 public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
 	private boolean open; // unnecessary

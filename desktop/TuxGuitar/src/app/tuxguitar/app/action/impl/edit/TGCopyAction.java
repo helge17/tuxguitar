@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.action.impl.edit;
+package app.tuxguitar.app.action.impl.edit;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.clipboard.TGClipboard;
-import org.herac.tuxguitar.song.helpers.TGStoredBeatList;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGBeatRange;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.clipboard.TGClipboard;
+import app.tuxguitar.song.helpers.TGStoredBeatList;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGBeatRange;
+import app.tuxguitar.util.TGContext;
 
 public class TGCopyAction extends TGActionBase {
 

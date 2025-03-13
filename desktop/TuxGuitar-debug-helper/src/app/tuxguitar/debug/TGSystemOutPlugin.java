@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.debug;
+package app.tuxguitar.debug;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGSystemOutPlugin implements TGPlugin {
 

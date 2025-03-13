@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.browser.xml;
+package app.tuxguitar.app.tools.browser.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,9 +7,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.app.tools.browser.TGBrowserCollection;
+import app.tuxguitar.app.tools.browser.TGBrowserManager;
+import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

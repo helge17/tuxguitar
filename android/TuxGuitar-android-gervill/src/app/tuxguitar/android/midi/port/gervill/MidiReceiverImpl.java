@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.midi.port.gervill;
+package app.tuxguitar.android.midi.port.gervill;
 
 import javax.sound.midi.MidiChannel;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
 
 public class MidiReceiverImpl implements GMReceiver{
 

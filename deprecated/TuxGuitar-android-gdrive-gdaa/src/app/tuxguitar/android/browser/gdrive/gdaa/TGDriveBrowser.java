@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.gdrive.gdaa;
+package app.tuxguitar.android.browser.gdrive.gdaa;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,16 +7,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.activity.TGActivityResultHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowser;
-import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElementComparator;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.gdrive.gdaa.R;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.activity.TGActivityResultHandler;
+import app.tuxguitar.android.browser.model.TGBrowser;
+import app.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserElementComparator;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.gdrive.gdaa.R;
+import app.tuxguitar.util.TGContext;
 
 import android.app.Activity;
 import android.content.Intent;

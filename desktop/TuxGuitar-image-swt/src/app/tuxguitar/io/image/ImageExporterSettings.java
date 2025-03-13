@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.image;
+package app.tuxguitar.io.image;
 
-import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
+import app.tuxguitar.graphics.control.print.TGPrintSettings;
 
 public class ImageExporterSettings {
 

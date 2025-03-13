@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
-import org.herac.tuxguitar.android.action.impl.storage.TGOpenDocumentAction;
-import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAction;
-import org.herac.tuxguitar.android.action.impl.storage.TGSaveDocumentAsAction;
-import org.herac.tuxguitar.android.action.impl.track.TGGoToTrackAction;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.android.fragment.impl.TGChannelListFragmentController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.info.TGSongInfoDialogController;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewSmartMenu;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
-import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import app.tuxguitar.android.action.impl.storage.TGOpenDocumentAction;
+import app.tuxguitar.android.action.impl.storage.TGSaveDocumentAction;
+import app.tuxguitar.android.action.impl.storage.TGSaveDocumentAsAction;
+import app.tuxguitar.android.action.impl.track.TGGoToTrackAction;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.fragment.impl.TGChannelListFragmentController;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.android.view.dialog.info.TGSongInfoDialogController;
+import app.tuxguitar.android.view.tablature.TGSongViewSmartMenu;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
+import app.tuxguitar.song.models.TGTrack;
 
 public class TGMainDrawerActionHandler {
 

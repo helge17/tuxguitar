@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UISelectItem;
 
 public class JFXDropDownSelect<T> extends JFXControl<ComboBox<JFXDropDownSelectItem<T>>> implements UIDropDownSelect<T> {
 

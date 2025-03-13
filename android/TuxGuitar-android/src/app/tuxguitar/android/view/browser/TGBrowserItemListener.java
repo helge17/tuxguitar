@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.view.browser;
+package app.tuxguitar.android.view.browser;
 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGBrowserItemListener implements OnItemClickListener {
 

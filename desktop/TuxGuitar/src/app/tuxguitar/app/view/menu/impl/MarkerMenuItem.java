@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
-import org.herac.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
-import org.herac.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
-import org.herac.tuxguitar.app.action.impl.marker.TGGoPreviousMarkerAction;
-import org.herac.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
-import org.herac.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
+import app.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
+import app.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
+import app.tuxguitar.app.action.impl.marker.TGGoPreviousMarkerAction;
+import app.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
+import app.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class MarkerMenuItem extends TGMenuItem {
 

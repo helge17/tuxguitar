@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.qt.toolbar;
+package app.tuxguitar.ui.qt.toolbar;
 
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.qt.menu.QTPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.qt.menu.QTPopupMenu;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.toolbar.UIToolMenuItem;
 import io.qt.core.QPoint;
 import io.qt.core.QSize;
 import io.qt.widgets.QToolButton;

@@ -5,7 +5,7 @@
 
 #include <jack/jack.h>
 #include <jack/midiport.h>
-#include "org_herac_tuxguitar_jack_JackClient.h"
+#include "app_tuxguitar_jack_JackClient.h"
 
 #define EVENT_BUFFER_SIZE 512
 
@@ -41,7 +41,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 	return JNI_VERSION_1_4;
 }
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* env, jobject obj)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_jack_JackClient_malloc(JNIEnv* env, jobject obj)
 {
 	jlong ptr = 0;
 
@@ -57,7 +57,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_malloc(JNIEnv* 
 	return ptr;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_free(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_free(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_free(JNIEnv* env
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_open(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -106,7 +106,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_open(JNIEnv* env
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_close(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -151,7 +151,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_close(JNIEnv* en
 	}
 }
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPort(JNIEnv* env, jobject obj, jlong ptr, jstring jack_port_name)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_jack_JackClient_openPort(JNIEnv* env, jobject obj, jlong ptr, jstring jack_port_name)
 {
 	jlong jack_port_id = 0;
 
@@ -193,7 +193,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_openPort(JNIEnv
 	return jack_port_id;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePort(JNIEnv* env, jobject obj, jlong ptr, jlong jack_port_id)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_closePort(JNIEnv* env, jobject obj, jlong ptr, jlong jack_port_id)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -256,7 +256,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_closePort(JNIEnv
 	}
 }
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportUID(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_jack_JackClient_getTransportUID(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jlong result = 0;
 
@@ -278,7 +278,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportUID
 	return result;
 }
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFrame(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_jack_JackClient_getTransportFrame(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jlong result = 0;
 
@@ -300,7 +300,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFra
 	return result;
 }
 
-JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFrameRate(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT jlong JNICALL Java_app_tuxguitar_jack_JackClient_getTransportFrameRate(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jlong result = 0;
 
@@ -322,7 +322,7 @@ JNIEXPORT jlong JNICALL Java_org_herac_tuxguitar_jack_JackClient_getTransportFra
 	return result;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportFrame(JNIEnv* env, jobject obj, jlong ptr, jlong frame)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_setTransportFrame(JNIEnv* env, jobject obj, jlong ptr, jlong frame)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -339,7 +339,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportFram
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStart(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_setTransportStart(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -359,7 +359,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStar
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStop(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_setTransportStop(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -379,7 +379,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_setTransportStop
 	}
 }
 
-JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportRunning(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT jboolean JNICALL Java_app_tuxguitar_jack_JackClient_isTransportRunning(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jboolean result = JNI_FALSE;
 
@@ -402,7 +402,7 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isTransportR
 	return result;
 }
 
-JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isOpen(JNIEnv* env, jobject obj, jlong ptr)
+JNIEXPORT jboolean JNICALL Java_app_tuxguitar_jack_JackClient_isOpen(JNIEnv* env, jobject obj, jlong ptr)
 {
 	jboolean result = JNI_FALSE;
 
@@ -421,7 +421,7 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isOpen(JNIEn
 	return result;
 }
 
-JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isPortOpen(JNIEnv * env, jobject obj, jlong ptr, jlong jack_port_id)
+JNIEXPORT jboolean JNICALL Java_app_tuxguitar_jack_JackClient_isPortOpen(JNIEnv * env, jobject obj, jlong ptr, jlong jack_port_id)
 {
 	jboolean result = JNI_FALSE;
 
@@ -452,7 +452,7 @@ JNIEXPORT jboolean JNICALL Java_org_herac_tuxguitar_jack_JackClient_isPortOpen(J
 	return result;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_connectPorts(JNIEnv* env, jobject obj, jlong ptr, jstring src_port_name, jstring dst_port_name)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_connectPorts(JNIEnv* env, jobject obj, jlong ptr, jstring src_port_name, jstring dst_port_name)
 {
 	jack_jni_handle_t *handle = NULL;
 	memcpy(&handle, &ptr, sizeof(handle));
@@ -475,7 +475,7 @@ JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_connectPorts(JNI
 	}
 }
 
-JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortNames(JNIEnv* env, jobject obj, jlong ptr, jstring type, jlong flags)
+JNIEXPORT jobject JNICALL Java_app_tuxguitar_jack_JackClient_getPortNames(JNIEnv* env, jobject obj, jlong ptr, jstring type, jlong flags)
 {
 	jobject jlist = NULL;
 
@@ -527,7 +527,7 @@ JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortNames(
 	return jlist;
 }
 
-JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortConnections(JNIEnv* env, jobject obj, jlong ptr, jstring port_name)
+JNIEXPORT jobject JNICALL Java_app_tuxguitar_jack_JackClient_getPortConnections(JNIEnv* env, jobject obj, jlong ptr, jstring port_name)
 {
 	jobject jlist = NULL;
 
@@ -578,7 +578,7 @@ JNIEXPORT jobject JNICALL Java_org_herac_tuxguitar_jack_JackClient_getPortConnec
 	return jlist;
 }
 
-JNIEXPORT void JNICALL Java_org_herac_tuxguitar_jack_JackClient_addEventToQueue(JNIEnv* env, jobject obj, jlong ptr, jlong jack_port_id, jbyteArray jdata)
+JNIEXPORT void JNICALL Java_app_tuxguitar_jack_JackClient_addEventToQueue(JNIEnv* env, jobject obj, jlong ptr, jlong jack_port_id, jbyteArray jdata)
 {
 
 	jack_jni_handle_t *handle = NULL;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.custom.tuner;
+package app.tuxguitar.app.tools.custom.tuner;
 
 /**
  * Class that represents a frequency buffer that eliminates large frequency fluctuations.

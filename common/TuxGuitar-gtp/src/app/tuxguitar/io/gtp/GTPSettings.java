@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
 public class GTPSettings {
 

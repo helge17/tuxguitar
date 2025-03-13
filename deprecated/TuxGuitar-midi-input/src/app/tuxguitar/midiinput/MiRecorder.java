@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.transport.TGTransportPlayAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.app.view.component.tab.Caret;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 class MiRecorder
 {

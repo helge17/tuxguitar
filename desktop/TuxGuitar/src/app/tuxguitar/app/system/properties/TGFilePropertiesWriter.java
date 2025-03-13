@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGFilePropertiesWriter extends TGPropertiesBaseHandler implements TGPropertiesWriter{
 

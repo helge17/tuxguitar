@@ -1,26 +1,26 @@
-package org.herac.tuxguitar.ui.jfx.chooser;
+package app.tuxguitar.ui.jfx.chooser;
 
 import java.util.List;
 
 import javafx.scene.text.Font;
 
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.chooser.UIFontChooser;
-import org.herac.tuxguitar.ui.chooser.UIFontChooserHandler;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.resource.JFXFont;
-import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
-import org.herac.tuxguitar.ui.widget.UITextField;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.chooser.UIFontChooser;
+import app.tuxguitar.ui.chooser.UIFontChooserHandler;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.resource.JFXFont;
+import app.tuxguitar.ui.jfx.widget.JFXWindow;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIListBoxSelect;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UITextField;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class JFXFontChooser implements UIFontChooser {
 

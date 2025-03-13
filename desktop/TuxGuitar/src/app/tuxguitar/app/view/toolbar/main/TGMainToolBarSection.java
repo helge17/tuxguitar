@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.toolbar.model.TGToolBarSection;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.toolbar.model.TGToolBarSection;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGMainToolBarSection implements TGToolBarSection {
 

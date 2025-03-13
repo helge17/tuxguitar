@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.ptb.helper;
+package app.tuxguitar.io.ptb.helper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.io.ptb.base.PTTrackInfo;
+import app.tuxguitar.song.models.TGTrack;
 
 public class TrackInfoHelper {
 

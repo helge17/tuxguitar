@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.view.component.tab;
+package app.tuxguitar.app.view.component.tab;
 
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.song.helpers.TGBeatRangeIterator;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.util.TGBeatRange;
-import org.herac.tuxguitar.util.TGNoteRange;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.song.helpers.TGBeatRangeIterator;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.util.TGBeatRange;
+import app.tuxguitar.util.TGNoteRange;
 
 import java.util.ArrayList;
 import java.util.Collection;

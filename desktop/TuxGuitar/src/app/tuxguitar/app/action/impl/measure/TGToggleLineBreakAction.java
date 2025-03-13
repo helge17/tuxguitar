@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.action.impl.measure;
+package app.tuxguitar.app.action.impl.measure;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.graphics.control.TGMeasureHeaderImpl;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.graphics.control.TGMeasureHeaderImpl;
+import app.tuxguitar.util.TGContext;
 
 public class TGToggleLineBreakAction extends TGActionBase {
 

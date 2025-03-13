@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.swt.menu;
+package app.tuxguitar.ui.swt.menu;
 
 import org.eclipse.swt.widgets.MenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
 
 public class SWTMenuCheckableItem extends SWTMenuActionItem implements UIMenuCheckableItem {
 

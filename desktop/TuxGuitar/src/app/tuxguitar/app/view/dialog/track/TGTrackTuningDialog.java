@@ -1,32 +1,32 @@
-package org.herac.tuxguitar.app.view.dialog.track;
+package app.tuxguitar.app.view.dialog.track;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.util.TGMessageDialogUtil;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
-import org.herac.tuxguitar.song.helpers.tuning.TuningGroup;
-import org.herac.tuxguitar.song.helpers.tuning.TuningPreset;
-import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.*;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
+import app.tuxguitar.song.helpers.tuning.TuningGroup;
+import app.tuxguitar.song.helpers.tuning.TuningPreset;
+import app.tuxguitar.editor.util.TGSyncProcessLocked;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.*;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackTuningDialog {
 

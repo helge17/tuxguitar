@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.io.ptb;
+package app.tuxguitar.io.ptb;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongReader;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.ptb.base.PTBar;
-import org.herac.tuxguitar.io.ptb.base.PTBeat;
-import org.herac.tuxguitar.io.ptb.base.PTDirection;
-import org.herac.tuxguitar.io.ptb.base.PTGuitarIn;
-import org.herac.tuxguitar.io.ptb.base.PTNote;
-import org.herac.tuxguitar.io.ptb.base.PTSection;
-import org.herac.tuxguitar.io.ptb.base.PTSong;
-import org.herac.tuxguitar.io.ptb.base.PTSymbol;
-import org.herac.tuxguitar.io.ptb.base.PTTempo;
-import org.herac.tuxguitar.io.ptb.base.PTTrack;
-import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongReader;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.ptb.base.PTBar;
+import app.tuxguitar.io.ptb.base.PTBeat;
+import app.tuxguitar.io.ptb.base.PTDirection;
+import app.tuxguitar.io.ptb.base.PTGuitarIn;
+import app.tuxguitar.io.ptb.base.PTNote;
+import app.tuxguitar.io.ptb.base.PTSection;
+import app.tuxguitar.io.ptb.base.PTSong;
+import app.tuxguitar.io.ptb.base.PTSymbol;
+import app.tuxguitar.io.ptb.base.PTTempo;
+import app.tuxguitar.io.ptb.base.PTTrack;
+import app.tuxguitar.io.ptb.base.PTTrackInfo;
+import app.tuxguitar.song.models.TGMeasureHeader;
 
 public class PTInputStream implements TGSongReader{
 

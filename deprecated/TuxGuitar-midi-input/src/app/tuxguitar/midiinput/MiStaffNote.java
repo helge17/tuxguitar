@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGDuration;
 
 class MiStaffNote
 {

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2;
+package app.tuxguitar.player.impl.midiport.lv2;
 
 import javax.sound.midi.ShortMessage;
 
-import org.herac.tuxguitar.midi.synth.TGMidiProcessor;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGMidiProcessor;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2World;
+import app.tuxguitar.util.TGContext;
 
 public class LV2MidiProcessor extends LV2AudioProcessorWrapper implements TGMidiProcessor {
 

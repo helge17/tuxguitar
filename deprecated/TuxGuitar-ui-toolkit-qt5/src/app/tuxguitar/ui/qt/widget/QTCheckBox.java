@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UICheckBox;
 import org.qtjambi.qt.widgets.QCheckBox;
 
 public class QTCheckBox extends QTAbstractButton<QCheckBox> implements UICheckBox {

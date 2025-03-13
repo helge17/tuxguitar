@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.system.error;
+package app.tuxguitar.app.system.error;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGErrorAdapter {
 

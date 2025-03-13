@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.provider.JackClientProvider;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequencer;
-import org.herac.tuxguitar.player.base.MidiSequencerProvider;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.provider.JackClientProvider;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSequencer;
+import app.tuxguitar.player.base.MidiSequencerProvider;
+import app.tuxguitar.util.TGContext;
 
 public class JackSequencerProvider implements MidiSequencerProvider{
 

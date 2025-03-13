@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionContextFactory;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.android.view.tablature.TGCaret;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGNoteRange;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionContextFactory;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.android.view.tablature.TGCaret;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGNoteRange;
 
 public class TGActionContextFactoryImpl implements TGActionContextFactory{
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.midi.synth.ui;
+package app.tuxguitar.midi.synth.ui;
 
 import java.util.List;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.midi.synth.TGSynthManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.TGSynthManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGAudioProcessorUIManager {
 

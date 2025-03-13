@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.message;
+package app.tuxguitar.android.view.dialog.message;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
 
 public class TGMessageDialogController extends TGDialogFragmentController<TGMessageDialog> {
 

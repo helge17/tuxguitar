@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIZoomEvent;
-import org.herac.tuxguitar.ui.event.UIZoomListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.event.UIZoomEvent;
+import app.tuxguitar.ui.event.UIZoomListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
 import io.qt.core.QEvent;
 import io.qt.core.Qt.KeyboardModifier;
 import io.qt.gui.QWheelEvent;

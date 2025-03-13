@@ -1,23 +1,23 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureAddDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.editor.clipboard.TGClipboard;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasureAddDialogAction;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasureCleanDialogAction;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
+import app.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
+import app.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.editor.clipboard.TGClipboard;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class MeasureMenuItem extends TGMenuItem {
 

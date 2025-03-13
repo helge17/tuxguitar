@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.transport;
+package app.tuxguitar.android.transport;
 
-import org.herac.tuxguitar.editor.event.TGDestroyEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
+import app.tuxguitar.editor.event.TGDestroyEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
 
 public class TGTransportDestroyListener implements TGEventListener{
 

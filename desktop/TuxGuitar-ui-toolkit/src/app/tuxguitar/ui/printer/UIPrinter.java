@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.printer;
+package app.tuxguitar.ui.printer;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
 
 public interface UIPrinter extends UIComponent {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt;
+package app.tuxguitar.ui.qt;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.UIComponent;
 
 public abstract class QTComponent<T> implements UIComponent {
 

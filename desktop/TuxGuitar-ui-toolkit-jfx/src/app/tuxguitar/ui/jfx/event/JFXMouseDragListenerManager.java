@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseDragListenerManager;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.jfx.resource.JFXMouseButton;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseDragListenerManager;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.jfx.resource.JFXMouseButton;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.resource.UIPosition;
 
 public class JFXMouseDragListenerManager extends UIMouseDragListenerManager implements UIMouseDownListener, UIMouseUpListener, EventHandler<MouseEvent> {
 

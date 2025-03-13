@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGScale;
+import app.tuxguitar.song.models.TGScale;
 
 /*
  * This class provides generic static methods for notes manipulation:

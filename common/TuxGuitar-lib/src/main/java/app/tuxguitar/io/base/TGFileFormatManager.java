@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.io.tg.TGFileFormatDetectorImpl;
-import org.herac.tuxguitar.io.tg.TGSongReaderImpl;
-import org.herac.tuxguitar.io.tg.TGSongWriterImpl;
-import org.herac.tuxguitar.io.tg.TGStream;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.io.tg.TGFileFormatDetectorImpl;
+import app.tuxguitar.io.tg.TGSongReaderImpl;
+import app.tuxguitar.io.tg.TGSongWriterImpl;
+import app.tuxguitar.io.tg.TGStream;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGFileFormatManager {
 

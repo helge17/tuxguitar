@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.player.impl.sequencer;
+package app.tuxguitar.player.impl.sequencer;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.player.base.MidiSequencer;
-import org.herac.tuxguitar.player.base.MidiTransmitter;
-import org.herac.tuxguitar.thread.TGThreadHandler;
-import org.herac.tuxguitar.thread.TGThreadLoop;
-import org.herac.tuxguitar.thread.TGThreadManager;
-import org.herac.tuxguitar.thread.TGThreadPriority;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.player.base.MidiSequencer;
+import app.tuxguitar.player.base.MidiTransmitter;
+import app.tuxguitar.thread.TGThreadHandler;
+import app.tuxguitar.thread.TGThreadLoop;
+import app.tuxguitar.thread.TGThreadManager;
+import app.tuxguitar.thread.TGThreadPriority;
+import app.tuxguitar.util.TGContext;
 
 public class MidiSequencerImpl implements MidiSequencer {
 

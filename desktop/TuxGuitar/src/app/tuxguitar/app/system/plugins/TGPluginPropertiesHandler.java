@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.system.plugins;
+package app.tuxguitar.app.system.plugins;
 
 import java.io.File;
 
-import org.herac.tuxguitar.app.system.properties.TGDefaultAndStoredPropertiesHandler;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginProperties;
+import app.tuxguitar.app.system.properties.TGDefaultAndStoredPropertiesHandler;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginProperties;
 
 public class TGPluginPropertiesHandler extends TGDefaultAndStoredPropertiesHandler {
 

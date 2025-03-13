@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.midi.port.gervill;
+package app.tuxguitar.android.midi.port.gervill;
 
 import com.sun.media.sound.AudioSynthesizer;
 import com.sun.media.sound.ModelPatch;
 import com.sun.media.sound.SF2Instrument;
 import com.sun.media.sound.SoftSynthesizer;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.util.TGContext;
 
 import java.io.InputStream;
 

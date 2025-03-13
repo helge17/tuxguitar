@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.gm.port;
+package app.tuxguitar.gm.port;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public interface GMReceiver {
 

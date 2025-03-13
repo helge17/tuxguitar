@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.fragment;
+package app.tuxguitar.android.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,12 +7,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityActionBarController;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityActionBarController;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.util.TGContext;
 
 import androidx.fragment.app.Fragment;
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util.error;
+package app.tuxguitar.util.error;
 
 public interface TGErrorHandler {
 

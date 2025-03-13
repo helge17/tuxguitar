@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.midimaster.port;
+package app.tuxguitar.android.midimaster.port;
 
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
 
 public class MidiOutputPortImpl extends GMOutputPort{
 

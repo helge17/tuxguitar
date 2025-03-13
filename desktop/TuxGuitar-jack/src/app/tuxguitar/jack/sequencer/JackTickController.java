@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
 import java.util.List;
 
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.song.models.TGDuration;
 
 public class JackTickController {
 

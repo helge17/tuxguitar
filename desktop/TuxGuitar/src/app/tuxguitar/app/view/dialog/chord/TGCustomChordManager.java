@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.view.dialog.chord;
+package app.tuxguitar.app.view.dialog.chord;
 
 import java.io.File;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.app.view.dialog.chord.xml.TGChordXMLReader;
-import org.herac.tuxguitar.app.view.dialog.chord.xml.TGChordXMLWriter;
-import org.herac.tuxguitar.song.models.TGChord;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.app.view.dialog.chord.xml.TGChordXMLReader;
+import app.tuxguitar.app.view.dialog.chord.xml.TGChordXMLWriter;
+import app.tuxguitar.song.models.TGChord;
 
 public class TGCustomChordManager {
 

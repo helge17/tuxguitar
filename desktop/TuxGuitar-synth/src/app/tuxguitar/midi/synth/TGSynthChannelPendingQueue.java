@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public class TGSynthChannelPendingQueue {
 

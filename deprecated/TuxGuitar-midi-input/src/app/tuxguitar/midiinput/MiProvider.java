@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,26 +9,26 @@ import java.util.TreeSet;
 import javax.sound.midi.ShortMessage;
 import javax.swing.Timer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
-import org.herac.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.tools.scale.ScaleManager;
-import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.dialog.fretboard.TGFretBoard;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGeneric;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
+import app.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.tools.scale.ScaleManager;
+import app.tuxguitar.app.view.component.tab.Caret;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.dialog.fretboard.TGFretBoard;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGeneric;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGVoice;
 
 public class MiProvider
 {

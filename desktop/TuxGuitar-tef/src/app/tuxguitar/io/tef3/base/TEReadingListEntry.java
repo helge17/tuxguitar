@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tef3.base;
+package app.tuxguitar.io.tef3.base;
 
 public class TEReadingListEntry {
     private int startMeasure;

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.io.image;
+package app.tuxguitar.io.image;
 
-import org.herac.tuxguitar.app.io.stream.TGSongStreamSettingsHandler;
-import org.herac.tuxguitar.app.io.stream.TGSongStreamSettingsHandlerPlugin;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.io.stream.TGSongStreamSettingsHandler;
+import app.tuxguitar.app.io.stream.TGSongStreamSettingsHandlerPlugin;
+import app.tuxguitar.util.TGContext;
 
 public class ImageExporterSettingsPlugin extends TGSongStreamSettingsHandlerPlugin {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa;
+package app.tuxguitar.player.impl.jsa;
 
 public class MidiPlugin {
 

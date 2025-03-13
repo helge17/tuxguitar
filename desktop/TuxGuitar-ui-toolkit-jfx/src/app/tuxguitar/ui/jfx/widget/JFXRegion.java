@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.event.UIResizeListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
-import org.herac.tuxguitar.ui.jfx.property.JFXBackgroundProperty;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.event.UIResizeListener;
+import app.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
+import app.tuxguitar.ui.jfx.property.JFXBackgroundProperty;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIRectangle;
 
 import javafx.scene.layout.Region;
 

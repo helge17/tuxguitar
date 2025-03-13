@@ -1,32 +1,32 @@
-package org.herac.tuxguitar.ui.qt.toolbar;
+package app.tuxguitar.ui.qt.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
-import org.herac.tuxguitar.ui.event.UIFocusLostListener;
-import org.herac.tuxguitar.ui.event.UIKeyPressedListener;
-import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseDragListener;
-import org.herac.tuxguitar.ui.event.UIMouseEnterListener;
-import org.herac.tuxguitar.ui.event.UIMouseExitListener;
-import org.herac.tuxguitar.ui.event.UIMouseMoveListener;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
-import org.herac.tuxguitar.ui.event.UIResizeListener;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.qt.widget.QTContainer;
-import org.herac.tuxguitar.ui.qt.widget.QTWidget;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
-import org.herac.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UIFocusGainedListener;
+import app.tuxguitar.ui.event.UIFocusLostListener;
+import app.tuxguitar.ui.event.UIKeyPressedListener;
+import app.tuxguitar.ui.event.UIKeyReleasedListener;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseDragListener;
+import app.tuxguitar.ui.event.UIMouseEnterListener;
+import app.tuxguitar.ui.event.UIMouseExitListener;
+import app.tuxguitar.ui.event.UIMouseMoveListener;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.event.UIMouseWheelListener;
+import app.tuxguitar.ui.event.UIResizeListener;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.qt.widget.QTContainer;
+import app.tuxguitar.ui.qt.widget.QTWidget;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.toolbar.UIToolCustomItem;
+import app.tuxguitar.ui.widget.UIControl;
 import org.qtjambi.qt.widgets.QWidget;
 
 public class QTToolCustomItem extends QTToolItem<QWidget> implements QTContainer, UIToolCustomItem {

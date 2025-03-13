@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.action.listener.undoable;
+package app.tuxguitar.app.action.listener.undoable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
 
 public class TGUndoableContext {
 

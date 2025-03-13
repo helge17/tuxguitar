@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 public class KeyBindingActionManager {
 

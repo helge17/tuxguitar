@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.editor.event;
+package app.tuxguitar.editor.event;
 
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGAbstractContext;
 
 public class TGUpdateMeasuresEvent extends TGUpdateEvent {
 

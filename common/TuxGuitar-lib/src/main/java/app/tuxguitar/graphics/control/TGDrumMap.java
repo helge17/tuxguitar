@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 /**
  * The goal of this class is to provide a configurable interface to drum

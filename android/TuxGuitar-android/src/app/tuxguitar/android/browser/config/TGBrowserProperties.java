@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.browser.config;
+package app.tuxguitar.android.browser.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
-import org.herac.tuxguitar.util.properties.TGPropertiesUtil;
+import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.util.properties.TGPropertiesUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

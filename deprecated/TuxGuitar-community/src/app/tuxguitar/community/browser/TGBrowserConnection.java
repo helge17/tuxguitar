@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.community.browser;
+package app.tuxguitar.community.browser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
-import org.herac.tuxguitar.community.TGCommunitySingleton;
-import org.herac.tuxguitar.community.auth.TGCommunityAuth;
-import org.herac.tuxguitar.community.auth.TGCommunityAuthDialog;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
+import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
+import app.tuxguitar.community.TGCommunitySingleton;
+import app.tuxguitar.community.auth.TGCommunityAuth;
+import app.tuxguitar.community.auth.TGCommunityAuthDialog;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGBrowserConnection {
 

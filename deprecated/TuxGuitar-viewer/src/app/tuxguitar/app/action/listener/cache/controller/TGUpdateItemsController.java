@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.listener.cache.controller;
+package app.tuxguitar.app.action.listener.cache.controller;
 
 public class TGUpdateItemsController extends TGUpdateCacheController {
 

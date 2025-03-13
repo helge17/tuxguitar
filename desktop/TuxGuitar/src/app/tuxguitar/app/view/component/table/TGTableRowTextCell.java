@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.widget.UILabel;
 
 public class TGTableRowTextCell extends TGTableRowCell {
 

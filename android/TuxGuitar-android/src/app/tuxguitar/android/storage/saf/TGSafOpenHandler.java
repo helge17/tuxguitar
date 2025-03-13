@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.storage.saf;
+package app.tuxguitar.android.storage.saf;
 
 import android.app.Activity;
 import android.content.Intent;

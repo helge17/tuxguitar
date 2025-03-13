@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.ui.swt.resource;
+package app.tuxguitar.ui.swt.resource;
 
 import java.io.InputStream;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.swt.SWTComponent;
 
 public class SWTImage extends SWTComponent<Image> implements UIImage {
 

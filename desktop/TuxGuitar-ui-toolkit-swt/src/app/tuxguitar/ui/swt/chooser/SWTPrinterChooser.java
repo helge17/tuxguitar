@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.swt.chooser;
+package app.tuxguitar.ui.swt.chooser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooser;
-import org.herac.tuxguitar.ui.chooser.UIPrinterChooserHandler;
-import org.herac.tuxguitar.ui.swt.printer.SWTPrinter;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.ui.chooser.UIPrinterChooser;
+import app.tuxguitar.ui.chooser.UIPrinterChooserHandler;
+import app.tuxguitar.ui.swt.printer.SWTPrinter;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
 
 public class SWTPrinterChooser implements UIPrinterChooser {
 

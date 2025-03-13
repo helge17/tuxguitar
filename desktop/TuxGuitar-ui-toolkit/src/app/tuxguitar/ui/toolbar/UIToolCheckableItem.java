@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.toolbar;
+package app.tuxguitar.ui.toolbar;
 
 public interface UIToolCheckableItem extends UIToolActionItem {
 

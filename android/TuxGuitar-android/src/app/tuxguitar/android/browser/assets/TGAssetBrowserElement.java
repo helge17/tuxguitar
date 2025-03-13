@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.assets;
+package app.tuxguitar.android.browser.assets;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.util.TGContext;
 
 import android.content.res.AssetManager;
 

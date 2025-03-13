@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.swt.toolbar;
+package app.tuxguitar.ui.swt.toolbar;
 
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.swt.menu.SWTPopupMenu;
-import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.swt.menu.SWTPopupMenu;
+import app.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class SWTToolMenuItem extends SWTToolItem implements UIToolMenuItem {
 

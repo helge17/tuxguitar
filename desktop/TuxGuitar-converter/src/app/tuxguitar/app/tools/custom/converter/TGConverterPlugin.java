@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.tools.custom.converter;
+package app.tuxguitar.app.tools.custom.converter;
 
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGContext;
 
 
-public class TGConverterPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin {
+public class TGConverterPlugin extends app.tuxguitar.app.tools.custom.TGToolItemPlugin {
 
 	public static final String MODULE_ID = "tuxguitar-converter";
 

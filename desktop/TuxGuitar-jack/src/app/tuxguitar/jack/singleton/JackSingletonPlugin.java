@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.jack.singleton;
+package app.tuxguitar.jack.singleton;
 
-import org.herac.tuxguitar.jack.JackClient;
-import org.herac.tuxguitar.jack.JackPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.JackPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class JackSingletonPlugin implements TGPlugin {
 

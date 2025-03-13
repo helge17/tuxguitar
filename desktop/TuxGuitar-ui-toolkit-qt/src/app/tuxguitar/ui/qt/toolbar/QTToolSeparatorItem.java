@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.qt.toolbar;
+package app.tuxguitar.ui.qt.toolbar;
 
 import io.qt.gui.QAction;
 import io.qt.widgets.QWidget;

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.timesignature;
+package app.tuxguitar.app.view.dialog.timesignature;
 
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.controller.TGOpenViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGOpenViewController;
 
 public class TGTimeSignatureDialogController implements TGOpenViewController {
 

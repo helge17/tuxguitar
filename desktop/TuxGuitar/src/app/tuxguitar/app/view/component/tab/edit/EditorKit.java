@@ -1,31 +1,31 @@
-package org.herac.tuxguitar.app.view.component.tab.edit;
+package app.tuxguitar.app.view.component.tab.edit;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.view.component.tab.Caret;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGNoteImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
-import org.herac.tuxguitar.graphics.control.TGVoiceImpl;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.view.component.tab.Caret;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGNoteImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.graphics.control.TGTrackSpacing;
+import app.tuxguitar.graphics.control.TGVoiceImpl;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class EditorKit {
 

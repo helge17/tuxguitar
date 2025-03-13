@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.song.helpers;
+package app.tuxguitar.song.helpers;
 
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGMeasure;
 
 import java.util.Comparator;
 import java.util.Iterator;

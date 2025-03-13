@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.menu;
+package app.tuxguitar.ui.qt.menu;
 
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
 
 import org.qtjambi.qt.widgets.QActionGroup;
 

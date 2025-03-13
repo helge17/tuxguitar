@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.song.helpers;
+package app.tuxguitar.song.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGString;
 
 public class TGSongSegment {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class JFXTableCellValueFactory<T> implements Callback<CellDataFeatures<UITableItem<T>, JFXTableCellValue<T>>, ObservableValue<JFXTableCellValue<T>>> {
 

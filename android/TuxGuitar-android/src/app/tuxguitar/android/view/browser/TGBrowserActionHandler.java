@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.android.view.browser;
+package app.tuxguitar.android.view.browser;
 
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserOpenElementAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGBrowserActionHandler {
 

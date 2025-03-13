@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
+import app.tuxguitar.ui.event.UICheckTableSelectionListener;
 
 public interface UICheckTable<T> extends UITable<T> {
 

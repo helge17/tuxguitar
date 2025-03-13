@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.browser.model;
+package app.tuxguitar.android.browser.model;
 
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 public interface TGBrowserFactorySettingsHandler extends TGErrorHandler {
 

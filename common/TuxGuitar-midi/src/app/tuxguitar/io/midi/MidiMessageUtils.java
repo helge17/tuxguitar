@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
 import java.nio.charset.Charset;
 
-import org.herac.tuxguitar.io.midi.base.MidiMessage;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.io.midi.base.MidiMessage;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class MidiMessageUtils {
 

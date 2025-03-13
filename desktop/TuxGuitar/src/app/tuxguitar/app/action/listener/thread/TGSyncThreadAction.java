@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.action.listener.thread;
+package app.tuxguitar.app.action.listener.thread;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public abstract class TGSyncThreadAction {
 

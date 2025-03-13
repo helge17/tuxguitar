@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.gm.port;
+package app.tuxguitar.gm.port;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.util.TGException;
 
 public class GMSynthesizerRouter extends GMChannelRouter {
 

@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2.remote;
+package app.tuxguitar.player.impl.midiport.lv2.remote;
 
 import java.util.List;
 
-import org.herac.tuxguitar.midi.synth.remote.TGConnection;
-import org.herac.tuxguitar.midi.synth.remote.TGRemoteException;
-import org.herac.tuxguitar.midi.synth.remote.TGRemoteHost;
-import org.herac.tuxguitar.midi.synth.remote.TGSession;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessAudioCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessCloseUICommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessFocusUICommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetControlPortValueCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetStateCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIAvailableCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIOpenCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessMidiMessageCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessOpenUICommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetControlPortValueCommand;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetStateCommand;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.remote.TGConnection;
+import app.tuxguitar.midi.synth.remote.TGRemoteException;
+import app.tuxguitar.midi.synth.remote.TGRemoteHost;
+import app.tuxguitar.midi.synth.remote.TGSession;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessAudioCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessCloseUICommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessFocusUICommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetControlPortValueCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessGetStateCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIAvailableCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessIsUIOpenCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessMidiMessageCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessOpenUICommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetControlPortValueCommand;
+import app.tuxguitar.player.impl.midiport.lv2.remote.command.LV2ProcessSetStateCommand;
+import app.tuxguitar.util.TGContext;
 
 public class LV2RemoteInstance {
 

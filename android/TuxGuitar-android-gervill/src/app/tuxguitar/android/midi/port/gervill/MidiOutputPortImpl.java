@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.midi.port.gervill;
+package app.tuxguitar.android.midi.port.gervill;
 
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.util.TGContext;
 
 public class MidiOutputPortImpl extends GMOutputPort{
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.editor.action.effect;
+package app.tuxguitar.editor.action.effect;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGNoteRange;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGNoteRange;
 
 public class TGChangeHarmonicNoteAction extends TGActionBase {
 

@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.document;
+package app.tuxguitar.app.document;
 
 import java.net.URI;
 
-import org.herac.tuxguitar.editor.undo.TGUndoableBuffer;
-import org.herac.tuxguitar.player.base.MidiPlayerMode;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.editor.undo.TGUndoableBuffer;
+import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGSong;
 
 public class TGDocument {
 

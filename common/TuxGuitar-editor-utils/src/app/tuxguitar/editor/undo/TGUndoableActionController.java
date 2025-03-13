@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.editor.undo;
+package app.tuxguitar.editor.undo;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.util.TGContext;
 
 public interface TGUndoableActionController {
 

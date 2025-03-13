@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.qt.printer;
+package app.tuxguitar.ui.qt.printer;
 
-import org.herac.tuxguitar.ui.printer.UIPrinter;
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.qt.resource.QTResourceFactory;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.printer.UIPrinter;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.qt.resource.QTResourceFactory;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UIResourceFactory;
 import io.qt.core.QRect;
 import io.qt.printsupport.QPrinter;
 

@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
 import java.util.HashMap;
 
-import org.herac.tuxguitar.app.system.icons.TGSkinManager;
-import org.herac.tuxguitar.app.system.properties.TGPropertiesUIUtil;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.app.system.icons.TGSkinManager;
+import app.tuxguitar.app.system.properties.TGPropertiesUIUtil;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
 
 public class TGTableColorModel {
 

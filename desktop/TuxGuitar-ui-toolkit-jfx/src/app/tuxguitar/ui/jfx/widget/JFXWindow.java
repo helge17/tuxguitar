@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.jfx.appearance.JFXAppearance;
-import org.herac.tuxguitar.ui.jfx.event.JFXCloseListenerManager;
-import org.herac.tuxguitar.ui.jfx.menu.JFXMenuBar;
-import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
-import org.herac.tuxguitar.ui.jfx.util.JFXSyncProcess;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIInset;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.jfx.appearance.JFXAppearance;
+import app.tuxguitar.ui.jfx.event.JFXCloseListenerManager;
+import app.tuxguitar.ui.jfx.menu.JFXMenuBar;
+import app.tuxguitar.ui.jfx.resource.JFXImage;
+import app.tuxguitar.ui.jfx.util.JFXSyncProcess;
+import app.tuxguitar.ui.menu.UIMenuBar;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIInset;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIWindow;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

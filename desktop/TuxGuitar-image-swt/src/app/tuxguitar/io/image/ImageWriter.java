@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.image;
+package app.tuxguitar.io.image;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,9 +8,9 @@ import java.util.List;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.swt.resource.SWTImage;
 
 public class ImageWriter {
 

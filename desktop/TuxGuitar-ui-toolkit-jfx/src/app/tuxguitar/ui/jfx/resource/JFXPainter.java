@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.resource;
+package app.tuxguitar.ui.jfx.resource;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIPainter;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

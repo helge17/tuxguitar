@@ -1,2 +1,2 @@
-org.herac.tuxguitar.io.midi.MidiSongReaderPlugin
-org.herac.tuxguitar.io.midi.MidiSongWriterPlugin
+app.tuxguitar.io.midi.MidiSongReaderPlugin
+app.tuxguitar.io.midi.MidiSongWriterPlugin

@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.app.view.toolbar.model;
+package app.tuxguitar.app.view.toolbar.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGSkinEvent;
-import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGSkinEvent;
+import app.tuxguitar.app.system.language.TGLanguageEvent;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.editor.util.TGSyncProcessLocked;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGToolBarModel implements TGEventListener {
 

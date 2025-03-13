@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -6,14 +6,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.swt.event.SWTCloseListenerManager;
-import org.herac.tuxguitar.ui.swt.menu.SWTMenu;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.menu.UIMenuBar;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.swt.event.SWTCloseListenerManager;
+import app.tuxguitar.ui.swt.menu.SWTMenu;
+import app.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 

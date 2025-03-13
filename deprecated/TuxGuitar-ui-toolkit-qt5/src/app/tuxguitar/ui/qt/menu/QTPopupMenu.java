@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.qt.menu;
+package app.tuxguitar.ui.qt.menu;
 
-import org.herac.tuxguitar.ui.event.UIMenuHideListener;
-import org.herac.tuxguitar.ui.event.UIMenuShowListener;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.qt.event.QTMenuHideListenerManager;
-import org.herac.tuxguitar.ui.qt.event.QTMenuShowListenerManager;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMenuHideListener;
+import app.tuxguitar.ui.event.UIMenuShowListener;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.qt.event.QTMenuHideListenerManager;
+import app.tuxguitar.ui.qt.event.QTMenuShowListenerManager;
+import app.tuxguitar.ui.resource.UIPosition;
 
 import org.qtjambi.qt.core.QPoint;
 import org.qtjambi.qt.widgets.QMenu;

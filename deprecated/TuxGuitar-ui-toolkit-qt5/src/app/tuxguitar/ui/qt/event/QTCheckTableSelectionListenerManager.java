@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionListenerManager;
-import org.herac.tuxguitar.ui.qt.widget.QTTable;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.event.UICheckTableSelectionEvent;
+import app.tuxguitar.ui.event.UICheckTableSelectionListenerManager;
+import app.tuxguitar.ui.qt.widget.QTTable;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class QTCheckTableSelectionListenerManager<T> extends UICheckTableSelectionListenerManager<T> {
 

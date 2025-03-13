@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.variables;
+package app.tuxguitar.android.variables;
 
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.util.TGContext;
 
 public class TGVarSongAlbum {
 

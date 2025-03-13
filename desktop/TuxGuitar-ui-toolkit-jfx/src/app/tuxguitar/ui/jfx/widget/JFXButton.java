@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
+import app.tuxguitar.ui.jfx.resource.JFXImage;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UIButton;
 
 public class JFXButton extends JFXLabeled<Button> implements UIButton {
 

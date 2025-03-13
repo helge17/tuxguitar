@@ -1,35 +1,35 @@
-package org.herac.tuxguitar.app.view.dialog.plugin;
+package app.tuxguitar.app.view.dialog.plugin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionEvent;
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.event.UIModifyEvent;
-import org.herac.tuxguitar.ui.event.UIModifyListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UICheckTable;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UITableItem;
-import org.herac.tuxguitar.ui.widget.UITextField;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginInfo;
-import org.herac.tuxguitar.util.plugin.TGPluginManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UICheckTableSelectionEvent;
+import app.tuxguitar.ui.event.UICheckTableSelectionListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckTable;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.widget.UITextField;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginInfo;
+import app.tuxguitar.util.plugin.TGPluginManager;
 
 public class TGPluginListDialog {
 

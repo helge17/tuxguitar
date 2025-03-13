@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.midiport.audiounit;
+package app.tuxguitar.player.impl.midiport.audiounit;
 
 public abstract class MidiReceiverJNI{
 

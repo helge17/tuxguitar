@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.view.dialog.chooser;
+package app.tuxguitar.android.view.dialog.chooser;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.action.listener.transport;
+package app.tuxguitar.android.action.listener.transport;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.util.TGContext;
 
 public class TGDisableOnPlayInterceptor implements TGActionInterceptor {
 

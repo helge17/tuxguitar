@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.measure;
+package app.tuxguitar.android.view.dialog.measure;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGMeasureAddDialogController extends TGModalFragmentController<TGMeasureAddDialog> {
 

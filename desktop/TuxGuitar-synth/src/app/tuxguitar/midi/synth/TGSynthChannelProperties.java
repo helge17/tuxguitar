@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.midi.synth;
+package app.tuxguitar.midi.synth;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGProperties;
 
 public class TGSynthChannelProperties implements TGProperties{
 

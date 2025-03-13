@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.editor.undo.impl;
+package app.tuxguitar.editor.undo.impl;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGUndoableEditBase implements TGUndoableEdit{
 

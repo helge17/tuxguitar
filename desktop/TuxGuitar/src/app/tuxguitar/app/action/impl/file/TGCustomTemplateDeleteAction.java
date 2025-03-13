@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.action.impl.file;
+package app.tuxguitar.app.action.impl.file;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGUserFileUtils;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGUserFileUtils;
 
 public class TGCustomTemplateDeleteAction extends TGActionBase {
 

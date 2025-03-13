@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.editor.undo.impl.custom;
+package app.tuxguitar.editor.undo.impl.custom;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditComposite;
-import org.herac.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGeneric;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.util.TGBeatRange;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.undo.TGUndoableActionController;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditComposite;
+import app.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGeneric;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.util.TGBeatRange;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableBeatRangeController implements TGUndoableActionController {
 

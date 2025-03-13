@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.view.dialog.message;
+package app.tuxguitar.android.view.dialog.message;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 
 import androidx.appcompat.app.AlertDialog;
 

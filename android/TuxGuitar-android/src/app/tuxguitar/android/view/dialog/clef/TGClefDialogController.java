@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.clef;
+package app.tuxguitar.android.view.dialog.clef;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGClefDialogController extends TGModalFragmentController<TGClefDialog> {
 

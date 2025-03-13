@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.info;
+package app.tuxguitar.android.view.dialog.info;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGSongInfoDialogController extends TGModalFragmentController<TGSongInfoDialog> {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.view.dialog.confirm;
+package app.tuxguitar.android.view.dialog.confirm;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
 
 public class TGConfirmDialog extends TGDialogFragment {
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.herac.tuxguitar.android.R;
+import app.tuxguitar.android.R;
 
 import java.util.ArrayList;
 import java.util.List;

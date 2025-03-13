@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.measure;
+package app.tuxguitar.android.view.dialog.measure;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -11,14 +11,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
 
 import java.util.ArrayList;
 import java.util.List;

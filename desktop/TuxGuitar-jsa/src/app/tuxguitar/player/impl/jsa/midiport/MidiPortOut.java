@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.player.impl.jsa.midiport;
+package app.tuxguitar.player.impl.jsa.midiport;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Receiver;
 
-import org.herac.tuxguitar.gm.port.GMOutputPort;
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.gm.port.GMOutputPort;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.jsa.message.MidiMessageFactory;
+import app.tuxguitar.util.TGException;
 
 public class MidiPortOut extends GMOutputPort {
 

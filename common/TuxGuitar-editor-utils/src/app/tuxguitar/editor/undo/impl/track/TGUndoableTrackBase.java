@@ -1,26 +1,26 @@
-package org.herac.tuxguitar.editor.undo.impl.track;
+package app.tuxguitar.editor.undo.impl.track;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.track.TGAddTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGCloneTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGCopyTrackFromAction;
-import org.herac.tuxguitar.editor.action.track.TGMoveTrackDownAction;
-import org.herac.tuxguitar.editor.action.track.TGMoveTrackUpAction;
-import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGSetTrackChannelAction;
-import org.herac.tuxguitar.editor.action.track.TGSetTrackInfoAction;
-import org.herac.tuxguitar.editor.action.track.TGSetTrackLyricsAction;
-import org.herac.tuxguitar.editor.action.track.TGSetTrackMuteAction;
-import org.herac.tuxguitar.editor.action.track.TGSetTrackSoloAction;
-import org.herac.tuxguitar.editor.undo.impl.TGUndoableEditBase;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGColor;
-import org.herac.tuxguitar.song.models.TGLyric;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.track.TGAddTrackAction;
+import app.tuxguitar.editor.action.track.TGCloneTrackAction;
+import app.tuxguitar.editor.action.track.TGCopyTrackFromAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackDownAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
+import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.editor.action.track.TGSetTrackChannelAction;
+import app.tuxguitar.editor.action.track.TGSetTrackInfoAction;
+import app.tuxguitar.editor.action.track.TGSetTrackLyricsAction;
+import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
+import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
+import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGColor;
+import app.tuxguitar.song.models.TGLyric;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGUndoableTrackBase extends TGUndoableEditBase{
 

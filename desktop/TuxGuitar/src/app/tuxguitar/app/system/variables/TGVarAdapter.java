@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.system.variables;
+package app.tuxguitar.app.system.variables;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGExpressionResolver;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 
 public class TGVarAdapter {
 

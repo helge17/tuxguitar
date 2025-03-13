@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.editor.action;
+package app.tuxguitar.editor.action;
 
-import org.herac.tuxguitar.action.TGAction;
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGAction;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGActionBase implements TGAction {
 

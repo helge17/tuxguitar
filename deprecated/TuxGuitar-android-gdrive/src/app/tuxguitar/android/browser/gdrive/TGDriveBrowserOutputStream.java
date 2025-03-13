@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.gdrive;
+package app.tuxguitar.android.browser.gdrive;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;

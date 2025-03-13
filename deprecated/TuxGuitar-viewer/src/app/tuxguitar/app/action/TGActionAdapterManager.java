@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.app.action;
+package app.tuxguitar.app.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContextFactory;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.installer.TGActionInstaller;
-import org.herac.tuxguitar.app.action.listener.cache.TGUpdateListener;
-import org.herac.tuxguitar.app.action.listener.error.TGActionErrorHandler;
-import org.herac.tuxguitar.app.action.listener.lock.TGLockableActionListener;
-import org.herac.tuxguitar.app.action.listener.thread.TGSyncThreadInterceptor;
-import org.herac.tuxguitar.app.action.listener.transport.TGDisableOnPlayInterceptor;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.action.TGActionContextFactory;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.installer.TGActionInstaller;
+import app.tuxguitar.app.action.listener.cache.TGUpdateListener;
+import app.tuxguitar.app.action.listener.error.TGActionErrorHandler;
+import app.tuxguitar.app.action.listener.lock.TGLockableActionListener;
+import app.tuxguitar.app.action.listener.thread.TGSyncThreadInterceptor;
+import app.tuxguitar.app.action.listener.transport.TGDisableOnPlayInterceptor;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGActionAdapterManager {
 

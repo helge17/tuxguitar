@@ -1,31 +1,31 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
-import org.herac.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
-import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
-import org.herac.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
-import org.herac.tuxguitar.app.view.dialog.chord.TGCustomChordManager;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
-import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.note.TGInsertChordAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGPickStroke;
-import org.herac.tuxguitar.song.models.TGStroke;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
+import app.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
+import app.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
+import app.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
+import app.tuxguitar.app.view.dialog.chord.TGCustomChordManager;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
+import app.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.note.TGInsertChordAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGPickStroke;
+import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.toolbar.UIToolActionMenuItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 

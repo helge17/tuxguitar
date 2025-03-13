@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.event;
+package app.tuxguitar.ui.event;
 
-import org.herac.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.UIComponent;
 
 public class UIResizeEvent extends UIEvent {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.printer;
+package app.tuxguitar.ui.swt.printer;
 
 import org.eclipse.swt.printing.Printer;
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.ui.swt.SWTComponent;
 
 public class SWTPrinterJob extends SWTComponent<Printer> implements UIPrinterJob {
 

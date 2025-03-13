@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.song.models.TGDuration;
 
 public class JackEventController{
 	private JackSequencer sequencer;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.qt.menu;
+package app.tuxguitar.ui.qt.menu;
 
 import org.qtjambi.qt.widgets.QAction;
 import org.qtjambi.qt.widgets.QMenu;

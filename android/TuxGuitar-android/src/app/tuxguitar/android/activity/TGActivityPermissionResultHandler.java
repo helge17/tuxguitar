@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.activity;
+package app.tuxguitar.android.activity;
 
 
 public interface TGActivityPermissionResultHandler {

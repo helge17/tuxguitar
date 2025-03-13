@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.midi.synth.remote.TGClientStarter;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGExpressionResolver;
+import app.tuxguitar.midi.synth.remote.TGClientStarter;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 
 public class VSTClientStarter implements TGClientStarter {
 

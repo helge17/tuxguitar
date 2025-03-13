@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.storage.saf;
+package app.tuxguitar.android.storage.saf;
 
 import android.app.Activity;
 import android.content.Intent;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGSafSaveHandler extends TGSafBaseHandler {
 

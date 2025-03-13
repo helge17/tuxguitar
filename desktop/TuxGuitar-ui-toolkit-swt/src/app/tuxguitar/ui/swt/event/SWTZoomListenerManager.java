@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.herac.tuxguitar.ui.event.UIZoomEvent;
-import org.herac.tuxguitar.ui.event.UIZoomListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UIZoomEvent;
+import app.tuxguitar.ui.event.UIZoomListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTZoomListenerManager extends UIZoomListenerManager implements Listener {
 

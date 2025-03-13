@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.tremoloPicking;
+package app.tuxguitar.android.view.dialog.tremoloPicking;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,18 +8,18 @@ import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.effect.TGChangeTremoloPickingAction;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 
 public class TGTremoloPickingDialog extends TGModalFragment {
 

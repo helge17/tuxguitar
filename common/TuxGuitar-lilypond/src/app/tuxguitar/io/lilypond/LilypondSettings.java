@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.lilypond;
+package app.tuxguitar.io.lilypond;
 
 public class LilypondSettings {
 

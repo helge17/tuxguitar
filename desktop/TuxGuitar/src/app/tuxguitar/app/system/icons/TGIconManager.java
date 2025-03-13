@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.system.icons;
+package app.tuxguitar.app.system.icons;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.song.models.TGDivisionType;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.song.models.TGDivisionType;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGIconManager {
 

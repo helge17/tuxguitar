@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.TGVoice;
 
 public class TGBeatGroup {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,25 +6,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGStroke;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import app.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 
 public class MidiSequenceParser {
 

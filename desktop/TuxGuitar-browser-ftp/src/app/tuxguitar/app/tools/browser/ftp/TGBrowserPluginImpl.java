@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.tools.browser.ftp;
+package app.tuxguitar.app.tools.browser.ftp;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.tools.browser.plugin.TGBrowserPlugin;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.app.tools.browser.plugin.TGBrowserPlugin;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserPluginImpl extends TGBrowserPlugin {
 

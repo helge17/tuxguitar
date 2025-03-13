@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.tremoloBar;
+package app.tuxguitar.android.view.dialog.tremoloBar;
 
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 
 public class TGTremoloBarPreset{
 

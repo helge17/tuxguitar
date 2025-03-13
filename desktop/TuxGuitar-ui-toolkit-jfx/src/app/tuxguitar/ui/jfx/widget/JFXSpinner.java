@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
-import org.herac.tuxguitar.ui.widget.UISpinner;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerChangeManager;
+import app.tuxguitar.ui.widget.UISpinner;
 
 public class JFXSpinner extends JFXControl<Spinner<Integer>> implements UISpinner {
 

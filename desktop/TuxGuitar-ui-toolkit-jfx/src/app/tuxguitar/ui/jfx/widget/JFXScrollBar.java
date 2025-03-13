@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.widget.UIScrollBar;
+import app.tuxguitar.ui.widget.UIScrollBar;
 
 import javafx.geometry.Orientation;
 import javafx.scene.layout.Region;

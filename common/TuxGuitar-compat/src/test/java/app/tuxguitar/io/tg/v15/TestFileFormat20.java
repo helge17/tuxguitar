@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tg.v15;
+package app.tuxguitar.io.tg.v15;
 
 
 import java.io.ByteArrayInputStream;
@@ -8,17 +8,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.song.factory.TGFactory;
 import org.junit.jupiter.api.Test;
 
 /* Objective of this class is to test file format 2.0: compressed xml
  * especially the absence of regression with binary file format (1.5)
  *
- * Formally, this class tests org.herac.tuxguitar.io.tg package in tuxguitar-lib
- * but to proceed it requires access to both packages org.herac.tuxguitar.io.tg and org.herac.tuxguitar.io.tg.v15
+ * Formally, this class tests app.tuxguitar.io.tg package in tuxguitar-lib
+ * but to proceed it requires access to both packages app.tuxguitar.io.tg and app.tuxguitar.io.tg.v15
  * so it cannot be implemented in tuxguitar-lib (this would create a circular dependency with tuxguitar-compat)
  */
 
@@ -54,7 +54,7 @@ public class TestFileFormat20 {
 		TGSongReaderHandle handleRead = new TGSongReaderHandle();
 		handleRead.setFactory(factory);
 		handleRead.setInputStream(new ByteArrayInputStream(bufferOriginal));
-		new org.herac.tuxguitar.io.tg.v15.TGSongReaderImpl().read(handleRead);
+		new app.tuxguitar.io.tg.v15.TGSongReaderImpl().read(handleRead);
 
 		// save song under xml format in byte buffer
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -62,7 +62,7 @@ public class TestFileFormat20 {
 		handleWrite.setFactory(factory);
 		handleWrite.setSong(handleRead.getSong());
 		handleWrite.setOutputStream(outputStream);
-		org.herac.tuxguitar.io.tg.TGSongWriterImpl writer = new org.herac.tuxguitar.io.tg.TGSongWriterImpl();
+		app.tuxguitar.io.tg.TGSongWriterImpl writer = new app.tuxguitar.io.tg.TGSongWriterImpl();
 		if (compress) {
 			writer.write(handleWrite);
 		} else {
@@ -73,7 +73,7 @@ public class TestFileFormat20 {
 		handleRead.setSong(null);
 		byte[] bufferXml = outputStream.toByteArray();
 		handleRead.setInputStream(new ByteArrayInputStream(bufferXml));
-		org.herac.tuxguitar.io.tg.TGSongReaderImpl reader = new org.herac.tuxguitar.io.tg.TGSongReaderImpl();
+		app.tuxguitar.io.tg.TGSongReaderImpl reader = new app.tuxguitar.io.tg.TGSongReaderImpl();
 		if (compress) {
 			reader.read(handleRead);
 		} else {
@@ -83,8 +83,8 @@ public class TestFileFormat20 {
 		outputStream = new ByteArrayOutputStream();
 		handleWrite.setSong(handleRead.getSong());
 		handleWrite.setOutputStream(outputStream);
-		handleWrite.setFormat(org.herac.tuxguitar.io.tg.TGStream.TG_FORMAT);
-		new org.herac.tuxguitar.io.tg.v15.TGSongWriterImpl().write(handleWrite);
+		handleWrite.setFormat(app.tuxguitar.io.tg.TGStream.TG_FORMAT);
+		new app.tuxguitar.io.tg.v15.TGSongWriterImpl().write(handleWrite);
 		byte[] bufferFinal = outputStream.toByteArray();
 
 		// compare

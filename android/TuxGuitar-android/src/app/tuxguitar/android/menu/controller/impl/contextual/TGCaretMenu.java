@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.android.menu.controller.impl.contextual;
+package app.tuxguitar.android.menu.controller.impl.contextual;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.caret.TGGoDownAction;
+import app.tuxguitar.android.action.impl.caret.TGGoLeftAction;
+import app.tuxguitar.android.action.impl.caret.TGGoRightAction;
+import app.tuxguitar.android.action.impl.caret.TGGoUpAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.player.base.MidiPlayer;
 
 public class TGCaretMenu extends TGMenuBase {
 

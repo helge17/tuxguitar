@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.saf;
+package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 

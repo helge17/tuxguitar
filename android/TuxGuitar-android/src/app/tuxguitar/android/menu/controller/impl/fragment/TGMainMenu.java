@@ -1,34 +1,34 @@
-package org.herac.tuxguitar.android.menu.controller.impl.fragment;
+package app.tuxguitar.android.menu.controller.impl.fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
-import org.herac.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
-import org.herac.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.activity.TGActivityController;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.android.fragment.impl.TGPreferencesFragmentController;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGBeatMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGCompositionMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGDurationMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGEditMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGEffectMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGMeasureMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGTrackMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGVelocityMenu;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGViewMenu;
-import org.herac.tuxguitar.android.menu.util.TGToggleStyledIconHandler;
-import org.herac.tuxguitar.android.menu.util.TGToggleStyledIconHelper;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
+import app.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.android.fragment.impl.TGPreferencesFragmentController;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGBeatMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGCompositionMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGDurationMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGEditMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGEffectMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGMeasureMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGTrackMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGVelocityMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGViewMenu;
+import app.tuxguitar.android.menu.util.TGToggleStyledIconHandler;
+import app.tuxguitar.android.menu.util.TGToggleStyledIconHelper;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGMainMenu implements TGMenuController {
 

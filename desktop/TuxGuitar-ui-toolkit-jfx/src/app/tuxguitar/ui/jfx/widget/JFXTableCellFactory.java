@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,9 +10,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.jfx.resource.JFXImage;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class JFXTableCellFactory<T> implements Callback<TableColumn<UITableItem<T>, JFXTableCellValue<T>>, TableCell<UITableItem<T>, JFXTableCellValue<T>>> {
 

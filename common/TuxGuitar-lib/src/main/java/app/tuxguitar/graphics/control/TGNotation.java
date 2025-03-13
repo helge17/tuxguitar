@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.util.TGMusicKeyUtils;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGNotation {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
-import org.herac.tuxguitar.io.base.TGSongExporter;
-import org.herac.tuxguitar.io.base.TGSongStream;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.io.base.TGSongExporter;
+import app.tuxguitar.io.base.TGSongStream;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGShareSongExporter implements TGSongExporter {
 

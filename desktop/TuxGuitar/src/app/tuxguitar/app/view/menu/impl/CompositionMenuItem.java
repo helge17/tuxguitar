@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenClefDialogAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenKeySignatureDialogAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
-import org.herac.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
-import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
-import org.herac.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.editor.action.composition.TGRepeatOpenAction;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.composition.TGOpenClefDialogAction;
+import app.tuxguitar.app.action.impl.composition.TGOpenKeySignatureDialogAction;
+import app.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
+import app.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
+import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
+import app.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
+import app.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
+import app.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class CompositionMenuItem extends TGMenuItem {
 

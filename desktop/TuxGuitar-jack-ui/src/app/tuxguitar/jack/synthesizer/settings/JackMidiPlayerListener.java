@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.jack.synthesizer.settings;
+package app.tuxguitar.jack.synthesizer.settings;
 
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.player.base.MidiPlayerEvent;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.player.base.MidiPlayerEvent;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class JackMidiPlayerListener implements TGEventListener {
 

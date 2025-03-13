@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.properties;
+package app.tuxguitar.android.properties;
 
 import android.app.Activity;
 
-import org.herac.tuxguitar.android.browser.config.TGBrowserProperties;
-import org.herac.tuxguitar.android.transport.TGTransportProperties;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
-import org.herac.tuxguitar.util.properties.TGPropertiesManager;
-import org.herac.tuxguitar.util.properties.TGPropertiesReader;
-import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
+import app.tuxguitar.android.browser.config.TGBrowserProperties;
+import app.tuxguitar.android.transport.TGTransportProperties;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+import app.tuxguitar.util.properties.TGPropertiesReader;
+import app.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGPropertiesAdapter {
 

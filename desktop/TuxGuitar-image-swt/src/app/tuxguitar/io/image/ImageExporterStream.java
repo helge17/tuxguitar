@@ -1,29 +1,29 @@
-package org.herac.tuxguitar.io.image;
+package app.tuxguitar.io.image;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.printer.PrintController;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.graphics.control.TGFactoryImpl;
-import org.herac.tuxguitar.graphics.control.print.TGPrintController;
-import org.herac.tuxguitar.graphics.control.print.TGPrintDocument;
-import org.herac.tuxguitar.graphics.control.print.TGPrintLayout;
-import org.herac.tuxguitar.graphics.control.print.TGPrintPainter;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongStream;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIInset;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.app.printer.PrintController;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.graphics.control.TGFactoryImpl;
+import app.tuxguitar.graphics.control.print.TGPrintController;
+import app.tuxguitar.graphics.control.print.TGPrintDocument;
+import app.tuxguitar.graphics.control.print.TGPrintLayout;
+import app.tuxguitar.graphics.control.print.TGPrintPainter;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongStream;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIInset;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class ImageExporterStream implements TGSongStream{
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util.properties;
+package app.tuxguitar.util.properties;
 
 import java.util.Properties;
 import java.util.Set;

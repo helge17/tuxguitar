@@ -1,23 +1,23 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseDragListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseWheelEvent;
-import org.herac.tuxguitar.ui.event.UIMouseWheelListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.swt.resource.SWTPainter;
-import org.herac.tuxguitar.ui.widget.UIScale;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseDragListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseWheelEvent;
+import app.tuxguitar.ui.event.UIMouseWheelListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.event.UISelectionListenerManager;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.swt.resource.SWTPainter;
+import app.tuxguitar.ui.widget.UIScale;
 
 public class SWTCustomScale extends SWTControl<Composite> implements UIScale, UIMouseDownListener, UIMouseDragListener, UIMouseWheelListener, PaintListener {
 

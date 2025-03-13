@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.menu;
+package app.tuxguitar.ui.menu;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 
 public interface UIMenuItem extends UIComponent {
 

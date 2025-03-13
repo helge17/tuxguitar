@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.util.singleton;
+package app.tuxguitar.util.singleton;
 
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGSingletonUtil {
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXFont;
-import org.herac.tuxguitar.ui.jfx.resource.JFXFontMetrics;
-import org.herac.tuxguitar.ui.widget.UIWrapLabel;
+import app.tuxguitar.ui.jfx.resource.JFXFont;
+import app.tuxguitar.ui.jfx.resource.JFXFontMetrics;
+import app.tuxguitar.ui.widget.UIWrapLabel;
 
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;

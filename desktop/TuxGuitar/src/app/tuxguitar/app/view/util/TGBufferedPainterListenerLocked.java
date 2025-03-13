@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.util;
+package app.tuxguitar.app.view.util;
 
-import org.herac.tuxguitar.ui.event.UIPaintEvent;
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.ui.event.UIPaintEvent;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGBufferedPainterListenerLocked extends TGBufferedPainterLocked implements UIPaintListener {
 

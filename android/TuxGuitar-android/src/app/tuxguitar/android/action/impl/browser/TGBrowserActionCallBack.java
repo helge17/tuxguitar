@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.android.action.impl.browser;
+package app.tuxguitar.android.action.impl.browser;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcess;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.action.TGActionAsyncProcess;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.browser.model.TGBrowserCallBack;
 
 public abstract class TGBrowserActionCallBack<T> extends TGActionAsyncProcess implements TGBrowserCallBack<T> {
 

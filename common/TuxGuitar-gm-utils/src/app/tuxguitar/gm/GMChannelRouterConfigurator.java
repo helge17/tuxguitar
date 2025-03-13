@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.gm;
+package app.tuxguitar.gm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelParameter;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChannelParameter;
 
 public class GMChannelRouterConfigurator {
 

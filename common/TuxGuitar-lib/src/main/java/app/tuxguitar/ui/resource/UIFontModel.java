@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.resource;
+package app.tuxguitar.ui.resource;
 
 public class UIFontModel {
 

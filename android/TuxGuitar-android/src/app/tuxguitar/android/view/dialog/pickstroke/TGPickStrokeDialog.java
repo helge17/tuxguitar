@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.pickstroke;
+package app.tuxguitar.android.view.dialog.pickstroke;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,16 +8,16 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import org.herac.tuxguitar.android.view.util.TGSelectableItem;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
-import org.herac.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGPickStroke;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
+import app.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGPickStroke;
 
 public class TGPickStrokeDialog extends TGModalFragment {
 

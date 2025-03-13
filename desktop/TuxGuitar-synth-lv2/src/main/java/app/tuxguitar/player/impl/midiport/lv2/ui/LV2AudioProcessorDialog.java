@@ -1,32 +1,32 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2.ui;
+package app.tuxguitar.player.impl.midiport.lv2.ui;
 
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessor;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2ParamsEvent;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2ControlPortInfo;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIScale;
-import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import app.tuxguitar.player.impl.midiport.lv2.LV2AudioProcessor;
+import app.tuxguitar.player.impl.midiport.lv2.LV2ParamsEvent;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2ControlPortInfo;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UIScrollBarPanelLayout;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIScale;
+import app.tuxguitar.ui.widget.UIScrollBarPanel;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class LV2AudioProcessorDialog implements TGEventListener {
 

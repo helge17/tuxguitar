@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.event.UIModifyListener;
 
 public interface UITextArea extends UIControl {
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelParameter;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChannelParameter;
+import app.tuxguitar.song.models.TGSong;
 
 public class GTPSongNormalizer {
 

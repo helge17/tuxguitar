@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.settings.TGOpenKeyBindingEditorAction;
-import org.herac.tuxguitar.app.action.impl.settings.TGOpenPluginListDialogAction;
-import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
-import org.herac.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
-import org.herac.tuxguitar.app.action.impl.tools.TGOpenTransposeDialogAction;
-import org.herac.tuxguitar.app.action.impl.tools.TGToggleBrowserAction;
-import org.herac.tuxguitar.app.tools.custom.TGCustomTool;
-import org.herac.tuxguitar.app.tools.custom.TGCustomToolManager;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.settings.TGOpenKeyBindingEditorAction;
+import app.tuxguitar.app.action.impl.settings.TGOpenPluginListDialogAction;
+import app.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
+import app.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
+import app.tuxguitar.app.action.impl.tools.TGOpenTransposeDialogAction;
+import app.tuxguitar.app.action.impl.tools.TGToggleBrowserAction;
+import app.tuxguitar.app.tools.custom.TGCustomTool;
+import app.tuxguitar.app.tools.custom.TGCustomToolManager;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class ToolMenuItem extends TGMenuItem {
 

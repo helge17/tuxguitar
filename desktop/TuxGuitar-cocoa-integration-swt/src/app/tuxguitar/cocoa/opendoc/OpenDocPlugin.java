@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.cocoa.opendoc;
+package app.tuxguitar.cocoa.opendoc;
 
 /*
  * Plugin to open documents on macOS when TuxGuitar is launched by macOS Finder
@@ -14,10 +14,10 @@ package org.herac.tuxguitar.cocoa.opendoc;
  *
  */
 
-import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGEarlyInitPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGEarlyInitPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class OpenDocPlugin implements TGEarlyInitPlugin {
 

@@ -1,30 +1,30 @@
-package org.herac.tuxguitar.app.view.dialog.keybindings;
+package app.tuxguitar.app.view.dialog.keybindings;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.app.view.util.TGDialogUtil;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIDisposeEvent;
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.ui.event.UIKeyEvent;
-import org.herac.tuxguitar.ui.event.UIKeyReleasedListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIImageView;
-import org.herac.tuxguitar.ui.widget.UILabel;
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.system.keybindings.KeyBindingAction;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
+import app.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.ui.event.UIKeyEvent;
+import app.tuxguitar.ui.event.UIKeyReleasedListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIImageView;
+import app.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGKeyBindingSelector {
 

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.action.listener.cache;
+package app.tuxguitar.app.action.listener.cache;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateContext {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.io.plugin.TGSongReaderPlugin;
+import app.tuxguitar.io.plugin.TGSongReaderPlugin;
 
 public abstract class GTPInputStreamPlugin extends TGSongReaderPlugin {
 

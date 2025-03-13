@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.community.browser;
+package app.tuxguitar.community.browser;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.tools.browser.plugin.TGBrowserPlugin;
-import org.herac.tuxguitar.community.TGCommunityPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.app.tools.browser.plugin.TGBrowserPlugin;
+import app.tuxguitar.community.TGCommunityPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGBrowserPluginImpl extends TGBrowserPlugin {
 

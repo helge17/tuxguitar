@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.storage;
+package app.tuxguitar.android.storage;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.storage.browser.TGBrowserProvider;
-import org.herac.tuxguitar.android.storage.saf.TGSafProvider;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.storage.browser.TGBrowserProvider;
+import app.tuxguitar.android.storage.saf.TGSafProvider;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGStorageManager {
 

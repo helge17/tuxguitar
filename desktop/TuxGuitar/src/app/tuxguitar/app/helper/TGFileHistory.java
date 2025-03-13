@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.helper;
+package app.tuxguitar.app.helper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGFileHistory {
 

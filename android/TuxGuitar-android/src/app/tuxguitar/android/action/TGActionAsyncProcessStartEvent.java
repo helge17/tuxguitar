@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionEvent;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionEvent;
 
 public class TGActionAsyncProcessStartEvent extends TGActionEvent {
 

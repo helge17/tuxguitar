@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
-import org.herac.tuxguitar.ui.qt.resource.QTImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import app.tuxguitar.ui.qt.resource.QTImage;
+import app.tuxguitar.ui.resource.UIImage;
 import org.qtjambi.qt.widgets.QAbstractButton;
 
 public abstract class QTAbstractButton<T extends QAbstractButton> extends QTWidget<T> {

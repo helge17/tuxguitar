@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gm;
+package app.tuxguitar.gm;
 
 public class GMChannelRoute {
 

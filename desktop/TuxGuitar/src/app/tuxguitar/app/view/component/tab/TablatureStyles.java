@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.component.tab;
+package app.tuxguitar.app.view.component.tab;
 
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
 
 public class TablatureStyles extends TGLayoutStyles {
 

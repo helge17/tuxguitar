@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.printer;
+package app.tuxguitar.ui.jfx.printer;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,10 +8,10 @@ import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.awt.graphics.AWTPainter;
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.awt.graphics.AWTPainter;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.printer.UIPrinterPage;
 
 public class AWTPrinterJob extends JFXComponent<AWTPrinter> implements UIPrinterJob, Printable {
 

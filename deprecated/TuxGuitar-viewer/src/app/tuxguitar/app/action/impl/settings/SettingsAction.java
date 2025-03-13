@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.impl.settings;
+package app.tuxguitar.app.action.impl.settings;
 
 import java.awt.AWTEvent;
 
@@ -8,19 +8,19 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.action.impl.layout.SetChordDiagramEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.SetChordNameEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.SetScoreEnabledAction;
-import org.herac.tuxguitar.app.action.impl.layout.SetTablatureEnabledAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportMixerAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportSetupAction;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.action.impl.layout.SetChordDiagramEnabledAction;
+import app.tuxguitar.app.action.impl.layout.SetChordNameEnabledAction;
+import app.tuxguitar.app.action.impl.layout.SetScoreEnabledAction;
+import app.tuxguitar.app.action.impl.layout.SetTablatureEnabledAction;
+import app.tuxguitar.app.action.impl.transport.TransportMixerAction;
+import app.tuxguitar.app.action.impl.transport.TransportSetupAction;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.util.TGContext;
 
 public class SettingsAction extends TGActionBase {
 

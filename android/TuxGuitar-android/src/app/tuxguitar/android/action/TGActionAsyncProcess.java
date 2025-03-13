@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.util.error.TGErrorHandler;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.util.error.TGErrorHandler;
 
 public class TGActionAsyncProcess implements TGErrorHandler {
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.resource.UICursor;
-import org.herac.tuxguitar.ui.widget.UIDivider;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.resource.UICursor;
+import app.tuxguitar.ui.widget.UIDivider;
 
 public class TGTableDividerHelper {
 

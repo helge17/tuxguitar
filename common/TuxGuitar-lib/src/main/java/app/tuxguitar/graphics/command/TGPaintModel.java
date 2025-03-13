@@ -1,5 +1,5 @@
-package org.herac.tuxguitar.graphics.command;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+package app.tuxguitar.graphics.command;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGPaintModel implements TGPaintCommand {
 

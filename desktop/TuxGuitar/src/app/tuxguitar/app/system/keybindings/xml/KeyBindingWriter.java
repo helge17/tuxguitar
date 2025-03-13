@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.keybindings.xml;
+package app.tuxguitar.app.system.keybindings.xml;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,11 +16,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
-import org.herac.tuxguitar.util.TGVersion;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.keybindings.KeyBindingAction;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.util.TGVersion;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

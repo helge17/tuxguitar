@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.resource;
+package app.tuxguitar.ui.resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGKeyBindFormatter;
+import app.tuxguitar.util.TGKeyBindFormatter;
 
 public class UIKeyCombination {
 

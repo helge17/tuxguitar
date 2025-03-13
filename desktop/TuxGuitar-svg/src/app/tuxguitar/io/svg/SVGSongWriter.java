@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.svg;
+package app.tuxguitar.io.svg;
 
 import java.io.PrintWriter;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.base.TGSongWriterHandle;
 
 public class SVGSongWriter implements TGSongWriter {
 

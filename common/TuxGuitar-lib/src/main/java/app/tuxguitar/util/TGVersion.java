@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.util;
+package app.tuxguitar.util;
 
 public class TGVersion implements Comparable<TGVersion> {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.jsa.sequencer;
+package app.tuxguitar.player.impl.jsa.sequencer;
 
-import org.herac.tuxguitar.player.base.MidiSequencerProvider;
-import org.herac.tuxguitar.player.impl.jsa.MidiPlugin;
-import org.herac.tuxguitar.player.plugin.TGMidiSequencerProviderPlugin;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.player.base.MidiSequencerProvider;
+import app.tuxguitar.player.impl.jsa.MidiPlugin;
+import app.tuxguitar.player.plugin.TGMidiSequencerProviderPlugin;
+import app.tuxguitar.util.TGContext;
 
 public class MidiSequencerProviderPlugin extends TGMidiSequencerProviderPlugin{
 

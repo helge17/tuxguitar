@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.action.impl.file;
+package app.tuxguitar.app.action.impl.file;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongStream;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.io.base.TGSongStreamProvider;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.file.TGLoadSongAction;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongStream;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGSongStreamProvider;
+import app.tuxguitar.util.TGContext;
 
 public class TGImportSongAction extends TGSongStreamActionBase {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.action.impl.browser;
+package app.tuxguitar.android.action.impl.browser;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserSaveCurrentElementAction extends TGActionBase{
 

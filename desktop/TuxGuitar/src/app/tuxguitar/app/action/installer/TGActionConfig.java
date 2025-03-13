@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.action.installer;
+package app.tuxguitar.app.action.installer;
 
-import org.herac.tuxguitar.app.action.listener.cache.TGUpdateController;
-import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
+import app.tuxguitar.app.action.listener.cache.TGUpdateController;
+import app.tuxguitar.editor.undo.TGUndoableActionController;
 
 public class TGActionConfig {
 

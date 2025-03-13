@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.view.dialog.channel;
+package app.tuxguitar.android.view.dialog.channel;
 
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
+import app.tuxguitar.android.view.util.TGProcess;
+import app.tuxguitar.android.view.util.TGSyncProcessLocked;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
 
 public class TGChannelEditEventListener implements TGEventListener {
 

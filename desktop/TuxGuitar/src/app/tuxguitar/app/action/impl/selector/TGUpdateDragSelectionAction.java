@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.action.impl.selector;
+package app.tuxguitar.app.action.impl.selector;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import org.herac.tuxguitar.app.view.component.tab.Selector;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
+import app.tuxguitar.app.view.component.tab.Selector;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.component.tab.edit.EditorKit;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.TGContext;
 
 /**
  * Created by tubus on 21.12.16.

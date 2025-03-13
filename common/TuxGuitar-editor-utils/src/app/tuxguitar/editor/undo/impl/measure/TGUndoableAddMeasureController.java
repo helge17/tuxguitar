@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.editor.undo.impl.measure;
+package app.tuxguitar.editor.undo.impl.measure;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.action.measure.TGAddMeasureAction;
-import org.herac.tuxguitar.editor.undo.TGUndoableActionController;
-import org.herac.tuxguitar.editor.undo.TGUndoableEdit;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
+import app.tuxguitar.editor.undo.TGUndoableActionController;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoableAddMeasureController implements TGUndoableActionController {
 

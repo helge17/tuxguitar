@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.toolbar.model;
+package app.tuxguitar.app.view.toolbar.model;
 
 public interface TGToolBarSection {
 

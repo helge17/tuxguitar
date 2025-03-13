@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
@@ -7,7 +7,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.TuxGuitar;
 
 public class MiPort
 	implements Receiver

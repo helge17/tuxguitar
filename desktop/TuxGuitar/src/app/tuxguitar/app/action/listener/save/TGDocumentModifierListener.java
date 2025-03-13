@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.action.listener.save;
+package app.tuxguitar.app.action.listener.save;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionEvent;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionEvent;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGDocumentModifierListener implements TGEventListener {
 

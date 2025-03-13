@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.menu;
+package app.tuxguitar.ui.menu;
 
 public interface UIMenuCheckableItem extends UIMenuActionItem {
 

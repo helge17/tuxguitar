@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.app.view.dialog.channel;
+package app.tuxguitar.app.view.dialog.channel;
 
-import org.herac.tuxguitar.app.view.controller.TGToggleViewController;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.controller.TGToggleViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
 
 public class TGChannelManagerDialogController implements TGToggleViewController {
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.synchronizer;
+package app.tuxguitar.android.synchronizer;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGRunnable implements Runnable {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.community.browser;
+package app.tuxguitar.community.browser;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.herac.tuxguitar.app.tools.browser.TGBrowserException;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.app.tools.browser.TGBrowserException;
+import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
 
 public class TGBrowserElementImpl implements TGBrowserElement {
 

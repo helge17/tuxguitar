@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.abc.base;
+package app.tuxguitar.io.abc.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,8 +6,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGVelocities;
 
 public class ABCSong {
 

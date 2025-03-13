@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.toolbar;
+package app.tuxguitar.ui.swt.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,18 +8,18 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.swt.SWTEnvironment;
-import org.herac.tuxguitar.ui.swt.widget.SWTContainer;
-import org.herac.tuxguitar.ui.swt.widget.SWTControl;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.swt.SWTEnvironment;
+import app.tuxguitar.ui.swt.widget.SWTContainer;
+import app.tuxguitar.ui.swt.widget.SWTControl;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolActionMenuItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.ui.toolbar.UIToolCustomItem;
+import app.tuxguitar.ui.toolbar.UIToolMenuItem;
 
 public class SWTToolBar extends SWTControl<ToolBar> implements UIToolBar {
 

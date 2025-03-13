@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx;
+package app.tuxguitar.ui.jfx;
 
 import java.net.URL;
 
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.jfx.appearance.JFXAppearance;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.jfx.appearance.JFXAppearance;
 
 import javafx.application.Platform;
 

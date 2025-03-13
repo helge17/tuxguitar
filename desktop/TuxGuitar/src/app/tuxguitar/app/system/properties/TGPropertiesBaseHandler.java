@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
 public class TGPropertiesBaseHandler {
 

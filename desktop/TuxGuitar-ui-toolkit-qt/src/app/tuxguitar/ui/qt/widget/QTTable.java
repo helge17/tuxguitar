@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UICheckTableSelectionListener;
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.qt.event.QTCheckTableSelectionListenerManager;
-import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
-import org.herac.tuxguitar.ui.qt.event.QTTableDoubleClickListenerManager;
-import org.herac.tuxguitar.ui.qt.resource.QTImage;
-import org.herac.tuxguitar.ui.widget.UICheckTable;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.event.UICheckTableSelectionListener;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.qt.event.QTCheckTableSelectionListenerManager;
+import app.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import app.tuxguitar.ui.qt.event.QTTableDoubleClickListenerManager;
+import app.tuxguitar.ui.qt.resource.QTImage;
+import app.tuxguitar.ui.widget.UICheckTable;
+import app.tuxguitar.ui.widget.UITableItem;
 import io.qt.core.Qt.CheckState;
 import io.qt.core.Qt.FocusPolicy;
 import io.qt.core.Qt.ItemFlag;

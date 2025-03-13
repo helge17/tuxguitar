@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.qt;
+package app.tuxguitar.ui.qt;
 
 import org.qtjambi.qt.widgets.QApplication;
 

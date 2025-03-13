@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
+package app.tuxguitar.android.view.dialog.browser.filesystem;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.variables.TGVarEnvExternalStorageDirectory;
-import org.herac.tuxguitar.android.variables.TGVarEnvSecondaryStorageDirectory;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.variables.TGVarEnvExternalStorageDirectory;
+import app.tuxguitar.android.variables.TGVarEnvSecondaryStorageDirectory;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragment;
+import app.tuxguitar.editor.action.TGActionProcessor;
 
 import java.io.File;
 import java.util.ArrayList;

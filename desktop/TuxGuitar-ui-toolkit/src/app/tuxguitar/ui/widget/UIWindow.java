@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.widget;
+package app.tuxguitar.ui.widget;
 
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.resource.UIImage;
 
 public interface UIWindow extends UILayoutContainer {
 

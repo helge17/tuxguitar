@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.android.action;
+package app.tuxguitar.android.action;
 
-import org.herac.tuxguitar.action.TGActionContextFactory;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.installer.TGActionInstaller;
-import org.herac.tuxguitar.android.action.listener.cache.TGUpdateListener;
-import org.herac.tuxguitar.android.action.listener.error.TGActionErrorHandler;
-import org.herac.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
-import org.herac.tuxguitar.android.action.listener.gui.TGExitConfirmInterceptor;
-import org.herac.tuxguitar.android.action.listener.gui.TGHideSoftInputListener;
-import org.herac.tuxguitar.android.action.listener.lock.TGLockableActionListener;
-import org.herac.tuxguitar.android.action.listener.thread.TGSyncThreadInterceptor;
-import org.herac.tuxguitar.android.action.listener.transport.TGDisableOnPlayInterceptor;
-import org.herac.tuxguitar.android.action.listener.transport.TGStopTransportInterceptor;
-import org.herac.tuxguitar.android.action.listener.undoable.TGUndoableActionListener;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.action.TGActionContextFactory;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.action.installer.TGActionInstaller;
+import app.tuxguitar.android.action.listener.cache.TGUpdateListener;
+import app.tuxguitar.android.action.listener.error.TGActionErrorHandler;
+import app.tuxguitar.android.action.listener.gui.TGActionProcessingListener;
+import app.tuxguitar.android.action.listener.gui.TGExitConfirmInterceptor;
+import app.tuxguitar.android.action.listener.gui.TGHideSoftInputListener;
+import app.tuxguitar.android.action.listener.lock.TGLockableActionListener;
+import app.tuxguitar.android.action.listener.thread.TGSyncThreadInterceptor;
+import app.tuxguitar.android.action.listener.transport.TGDisableOnPlayInterceptor;
+import app.tuxguitar.android.action.listener.transport.TGStopTransportInterceptor;
+import app.tuxguitar.android.action.listener.undoable.TGUndoableActionListener;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGActionAdapterManager {
 

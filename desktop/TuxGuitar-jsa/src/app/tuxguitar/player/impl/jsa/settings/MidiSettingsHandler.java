@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.jsa.settings;
+package app.tuxguitar.player.impl.jsa.settings;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
-import org.herac.tuxguitar.ui.widget.UIWindow;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
+import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGContext;
 
 public class MidiSettingsHandler implements TGPluginSettingsHandler {
 

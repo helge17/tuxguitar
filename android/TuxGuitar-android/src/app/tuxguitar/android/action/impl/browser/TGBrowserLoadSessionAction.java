@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.android.action.impl.browser;
+package app.tuxguitar.android.action.impl.browser;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowser;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSession;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowser;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserSession;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserLoadSessionAction extends TGActionBase{
 

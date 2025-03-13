@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.song.managers;
+package app.tuxguitar.song.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,23 +6,23 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChord;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGPickStroke;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGStroke;
-import org.herac.tuxguitar.song.models.TGText;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGVoice;
-import org.herac.tuxguitar.song.models.effects.TGEffectBend;
-import org.herac.tuxguitar.song.models.effects.TGEffectGrace;
-import org.herac.tuxguitar.song.models.effects.TGEffectHarmonic;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloBar;
-import org.herac.tuxguitar.song.models.effects.TGEffectTremoloPicking;
-import org.herac.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGPickStroke;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.song.models.TGText;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.effects.TGEffectGrace;
+import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
+import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class TGMeasureManager {
 	private TGSongManager songManager;

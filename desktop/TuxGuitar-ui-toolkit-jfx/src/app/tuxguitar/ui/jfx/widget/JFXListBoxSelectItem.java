@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UISelectItem;
 
 public class JFXListBoxSelectItem<T> {
 

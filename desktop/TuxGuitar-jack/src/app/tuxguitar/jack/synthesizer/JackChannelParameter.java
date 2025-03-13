@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.synthesizer;
+package app.tuxguitar.jack.synthesizer;
 
 public final class JackChannelParameter {
 

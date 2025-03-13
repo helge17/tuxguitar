@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIIndeterminateProgressBar;
+import app.tuxguitar.ui.widget.UIIndeterminateProgressBar;
 import org.qtjambi.qt.widgets.QProgressBar;
 
 public class QTIndeterminateProgressBar extends QTWidget<QProgressBar> implements UIIndeterminateProgressBar {

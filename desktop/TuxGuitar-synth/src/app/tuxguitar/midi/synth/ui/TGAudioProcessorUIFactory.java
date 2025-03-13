@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.midi.synth.ui;
+package app.tuxguitar.midi.synth.ui;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
 
 public interface TGAudioProcessorUIFactory {
 

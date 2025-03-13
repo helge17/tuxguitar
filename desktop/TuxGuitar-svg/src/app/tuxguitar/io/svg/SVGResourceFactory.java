@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.io.svg;
+package app.tuxguitar.io.svg;
 
 import java.io.InputStream;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIResourceFactory;
 
 public class SVGResourceFactory implements UIResourceFactory{
 

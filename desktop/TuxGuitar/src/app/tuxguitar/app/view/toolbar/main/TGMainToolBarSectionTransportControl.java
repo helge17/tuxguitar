@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
+import app.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTransportControl extends TGMainToolBarSection {
 

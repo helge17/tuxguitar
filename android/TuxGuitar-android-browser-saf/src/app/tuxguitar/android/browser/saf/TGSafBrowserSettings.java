@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.browser.saf;
+package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
 
 public class TGSafBrowserSettings {
 

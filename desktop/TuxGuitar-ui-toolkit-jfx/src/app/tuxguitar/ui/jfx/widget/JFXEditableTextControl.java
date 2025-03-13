@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.event.UIModifyListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXModifyListenerManager;
+import app.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.jfx.event.JFXModifyListenerManager;
 
 public class JFXEditableTextControl<T extends TextInputControl> extends JFXTextControl<T> {
 

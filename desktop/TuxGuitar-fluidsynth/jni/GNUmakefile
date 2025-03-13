@@ -8,7 +8,7 @@ LIBRARY_PREFIX?=lib
 LIBRARY_SUFFIX?=.so
 
 LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
-OBJECTS=org_herac_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth.o
+OBJECTS=app_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

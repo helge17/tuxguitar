@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.chord.xml;
+package app.tuxguitar.app.view.dialog.chord.xml;
 
 public class TGChordXML {
 

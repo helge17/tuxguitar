@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 public class JFXSelectionListenerChangeManager<T> extends UISelectionListenerManager implements ChangeListener<T> {
 

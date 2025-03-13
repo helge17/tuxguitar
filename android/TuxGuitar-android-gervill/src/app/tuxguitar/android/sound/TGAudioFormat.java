@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.sound;
+package app.tuxguitar.android.sound;
 
 import javax.sound.sampled.AudioFormat;
 

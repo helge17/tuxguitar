@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.controller;
+package app.tuxguitar.app.view.controller;
 
 public interface TGToggleViewController {
 

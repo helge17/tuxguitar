@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public abstract class MidiSequenceHandler {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.browser.ftp;
+package app.tuxguitar.app.tools.browser.ftp;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

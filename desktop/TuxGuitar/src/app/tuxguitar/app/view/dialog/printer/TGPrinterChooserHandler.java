@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.view.dialog.printer;
+package app.tuxguitar.app.view.dialog.printer;
 
-import org.herac.tuxguitar.ui.printer.UIPrinter;
+import app.tuxguitar.ui.printer.UIPrinter;
 
 public interface TGPrinterChooserHandler {
 

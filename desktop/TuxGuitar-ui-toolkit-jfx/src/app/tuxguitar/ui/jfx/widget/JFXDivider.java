@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIDivider;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIDivider;
 
 public class JFXDivider extends JFXRegion<Pane> implements UIDivider {
 

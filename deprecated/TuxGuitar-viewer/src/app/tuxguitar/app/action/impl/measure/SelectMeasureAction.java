@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.app.action.impl.measure;
+package app.tuxguitar.app.action.impl.measure;
 
 import java.awt.AWTEvent;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.tab.Tablature;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.editors.tab.Tablature;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.TGContext;
 
 public class SelectMeasureAction extends TGActionBase {
 

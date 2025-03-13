@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.event;
+package app.tuxguitar.event;
 
 public interface TGEventListener {
 

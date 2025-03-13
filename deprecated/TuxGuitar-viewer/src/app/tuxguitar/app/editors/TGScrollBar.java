@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.editors;
+package app.tuxguitar.app.editors;
 
 import java.awt.Component;
 import java.awt.Insets;
@@ -10,9 +10,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.app.util.TGResourceUtils;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.app.util.TGResourceUtils;
 
 public class TGScrollBar {
 

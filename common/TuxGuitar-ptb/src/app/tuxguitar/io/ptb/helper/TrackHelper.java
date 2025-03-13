@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.ptb.helper;
+package app.tuxguitar.io.ptb.helper;
 
-import org.herac.tuxguitar.io.ptb.base.PTTrackInfo;
+import app.tuxguitar.io.ptb.base.PTTrackInfo;
 
 
 public class TrackHelper {

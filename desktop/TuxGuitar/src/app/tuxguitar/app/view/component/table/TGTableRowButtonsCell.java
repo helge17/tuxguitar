@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.app.view.component.table;
+package app.tuxguitar.app.view.component.table;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.icons.TGIconManager;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.widgets.TGIconCheckButton;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.ui.event.*;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.widgets.TGIconCheckButton;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
+import app.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.ui.event.*;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.util.TGContext;
 
 public class TGTableRowButtonsCell extends TGTableRowCell {
 

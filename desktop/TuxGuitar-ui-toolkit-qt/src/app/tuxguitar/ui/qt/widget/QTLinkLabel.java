@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.event.UILinkListener;
-import org.herac.tuxguitar.ui.qt.event.QTLinkListenerManager;
-import org.herac.tuxguitar.ui.widget.UILinkLabel;
+import app.tuxguitar.ui.event.UILinkListener;
+import app.tuxguitar.ui.qt.event.QTLinkListenerManager;
+import app.tuxguitar.ui.widget.UILinkLabel;
 
 public class QTLinkLabel extends QTWrapLabel implements UILinkLabel {
 

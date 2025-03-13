@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.graphics;
+package app.tuxguitar.android.graphics;
 
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
 
 public class TGFontImpl implements UIFont {
 

@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.qt.appearance;
+package app.tuxguitar.ui.qt.appearance;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.resource.UIColorModel;
 import org.qtjambi.qt.gui.QColor;
 import org.qtjambi.qt.gui.QPalette;
 import org.qtjambi.qt.widgets.QApplication;

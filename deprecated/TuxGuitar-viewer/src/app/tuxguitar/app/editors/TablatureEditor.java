@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.editors;
+package app.tuxguitar.app.editors;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -8,15 +8,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.action.impl.measure.SelectMeasureAction;
-import org.herac.tuxguitar.app.editors.tab.Tablature;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.awt.graphics.AWTColor;
-import org.herac.tuxguitar.awt.graphics.AWTFont;
-import org.herac.tuxguitar.awt.graphics.AWTPainter;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.action.impl.measure.SelectMeasureAction;
+import app.tuxguitar.app.editors.tab.Tablature;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.awt.graphics.AWTColor;
+import app.tuxguitar.awt.graphics.AWTFont;
+import app.tuxguitar.awt.graphics.AWTPainter;
+import app.tuxguitar.util.TGContext;
 
 public class TablatureEditor extends Canvas {
 

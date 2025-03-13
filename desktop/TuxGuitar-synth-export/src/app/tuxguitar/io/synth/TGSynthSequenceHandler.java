@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.synth;
+package app.tuxguitar.io.synth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class TGSynthSequenceHandler extends MidiSequenceHandler{
 

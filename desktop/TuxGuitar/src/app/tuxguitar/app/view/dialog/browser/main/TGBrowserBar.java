@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.view.dialog.browser.main;
+package app.tuxguitar.app.view.dialog.browser.main;
 
-import org.herac.tuxguitar.app.system.language.TGLanguageEvent;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
+import app.tuxguitar.app.system.language.TGLanguageEvent;
+import app.tuxguitar.app.tools.browser.TGBrowserCollection;
+import app.tuxguitar.app.tools.browser.TGBrowserManager;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
 
 public abstract class TGBrowserBar implements TGEventListener{
 

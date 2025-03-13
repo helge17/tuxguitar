@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.tools.browser;
+package app.tuxguitar.app.tools.browser;
 
 import java.io.InputStream;
 import java.util.List;
 
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowser;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserElement;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLock;
+import app.tuxguitar.app.tools.browser.base.TGBrowser;
+import app.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
+import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGLock;
 
 public class TGBrowserConnection {
 

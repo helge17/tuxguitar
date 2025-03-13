@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.io.base;
+package app.tuxguitar.io.base;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGSong;
 
 public class TGSongPersistenceHandle {
 

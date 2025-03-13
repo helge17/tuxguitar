@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.tablature;
+package app.tuxguitar.android.view.tablature;
 
 public class TGScrollAxis {
 

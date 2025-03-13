@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.android.navigation;
+package app.tuxguitar.android.navigation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.fragment.TGFragmentController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.event.TGEventManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.fragment.TGFragmentController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.util.TGContext;
 
 import androidx.fragment.app.FragmentManager;
 

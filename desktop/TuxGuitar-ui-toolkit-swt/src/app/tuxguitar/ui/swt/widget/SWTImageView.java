@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.swt.resource.SWTImage;
-import org.herac.tuxguitar.ui.widget.UIImageView;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.swt.resource.SWTImage;
+import app.tuxguitar.ui.widget.UIImageView;
 
 public class SWTImageView extends SWTControl<Label> implements UIImageView {
 

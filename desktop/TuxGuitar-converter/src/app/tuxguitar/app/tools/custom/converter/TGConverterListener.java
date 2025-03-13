@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.custom.converter;
+package app.tuxguitar.app.tools.custom.converter;
 
 public interface TGConverterListener {
 

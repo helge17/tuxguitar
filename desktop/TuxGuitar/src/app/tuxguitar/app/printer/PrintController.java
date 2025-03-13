@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.printer;
+package app.tuxguitar.app.printer;
 
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.graphics.control.print.TGPrintController;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.ui.resource.UIResourceFactory;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.graphics.control.print.TGPrintController;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGContext;
 
 public class PrintController extends TGPrintController {
 

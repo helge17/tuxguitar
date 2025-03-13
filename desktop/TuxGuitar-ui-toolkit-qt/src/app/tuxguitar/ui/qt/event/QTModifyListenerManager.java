@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIModifyEvent;
-import org.herac.tuxguitar.ui.event.UIModifyListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
 import io.qt.core.QEvent;
 
 public class QTModifyListenerManager extends UIModifyListenerManager implements QTEventHandler, QTSignalHandler {

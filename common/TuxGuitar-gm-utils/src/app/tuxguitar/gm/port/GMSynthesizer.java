@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.gm.port;
+package app.tuxguitar.gm.port;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSynthesizer;
 
 public class GMSynthesizer implements MidiSynthesizer{
 

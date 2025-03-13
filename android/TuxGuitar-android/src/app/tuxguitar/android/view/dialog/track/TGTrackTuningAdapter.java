@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.track;
+package app.tuxguitar.android.view.dialog.track;
 
 import android.content.Context;
 import android.view.LayoutInflater;

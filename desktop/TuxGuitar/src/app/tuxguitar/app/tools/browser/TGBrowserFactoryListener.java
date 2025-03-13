@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.tools.browser;
+package app.tuxguitar.app.tools.browser;
 
 public interface TGBrowserFactoryListener {
 

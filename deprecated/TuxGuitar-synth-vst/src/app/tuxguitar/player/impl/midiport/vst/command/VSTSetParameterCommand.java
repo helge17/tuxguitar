@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.midiport.vst.command;
+package app.tuxguitar.player.impl.midiport.vst.command;
 
 import java.io.IOException;
 
-import org.herac.tuxguitar.midi.synth.remote.TGAbstractCommand;
-import org.herac.tuxguitar.midi.synth.remote.TGConnection;
+import app.tuxguitar.midi.synth.remote.TGAbstractCommand;
+import app.tuxguitar.midi.synth.remote.TGConnection;
 
 public class VSTSetParameterCommand extends TGAbstractCommand<Void> {
 

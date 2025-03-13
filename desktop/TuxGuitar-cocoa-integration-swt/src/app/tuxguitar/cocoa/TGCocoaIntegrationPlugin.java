@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.cocoa;
+package app.tuxguitar.cocoa;
 
 public class TGCocoaIntegrationPlugin {
 

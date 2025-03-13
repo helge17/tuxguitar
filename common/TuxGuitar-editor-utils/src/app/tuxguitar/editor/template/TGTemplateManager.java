@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.editor.template;
+package app.tuxguitar.editor.template;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -7,17 +7,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.io.base.TGFileFormatManager;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGMessagesManager;
-import org.herac.tuxguitar.util.TGUserFileUtils;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.util.TGUserFileUtils;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTemplateManager {
 

@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.tools.custom.converter;
+package app.tuxguitar.app.tools.custom.converter;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGConverterFormat {
 

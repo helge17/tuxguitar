@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.chooser;
+package app.tuxguitar.ui.swt.chooser;
 
 import java.io.File;
 
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.herac.tuxguitar.ui.chooser.UIDirectoryChooser;
-import org.herac.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
-import org.herac.tuxguitar.ui.swt.widget.SWTWindow;
+import app.tuxguitar.ui.chooser.UIDirectoryChooser;
+import app.tuxguitar.ui.chooser.UIDirectoryChooserHandler;
+import app.tuxguitar.ui.swt.widget.SWTWindow;
 
 public class SWTDirectoryChooser implements UIDirectoryChooser {
 

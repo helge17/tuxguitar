@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.chooser;
+package app.tuxguitar.ui.chooser;
 
 import java.io.File;
 import java.util.List;

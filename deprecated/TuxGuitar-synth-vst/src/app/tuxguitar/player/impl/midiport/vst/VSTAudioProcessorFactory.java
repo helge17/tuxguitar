@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.midi.synth.TGAudioProcessorFactory;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.TGAudioProcessorFactory;
+import app.tuxguitar.util.TGContext;
 
 public class VSTAudioProcessorFactory implements TGAudioProcessorFactory {
 

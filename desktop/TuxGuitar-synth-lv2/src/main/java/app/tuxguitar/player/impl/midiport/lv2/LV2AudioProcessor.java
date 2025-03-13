@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2;
+package app.tuxguitar.player.impl.midiport.lv2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.midi.synth.TGAudioBuffer;
-import org.herac.tuxguitar.midi.synth.remote.TGRemoteException;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.player.impl.midiport.lv2.remote.LV2RemoteInstance;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.remote.TGRemoteException;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.player.impl.midiport.lv2.remote.LV2RemoteInstance;
+import app.tuxguitar.util.TGContext;
 
 public class LV2AudioProcessor {
 

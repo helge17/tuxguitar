@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.cocoa.menu;
+package app.tuxguitar.cocoa.menu;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.Callback;
@@ -8,12 +8,12 @@ import org.eclipse.swt.internal.cocoa.NSMenuItem;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.herac.tuxguitar.app.action.impl.file.TGExitAction;
-import org.herac.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
-import org.herac.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
-import org.herac.tuxguitar.cocoa.TGCocoa;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.action.impl.file.TGExitAction;
+import app.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
+import app.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
+import app.tuxguitar.cocoa.TGCocoa;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 public class MacMenu {
 

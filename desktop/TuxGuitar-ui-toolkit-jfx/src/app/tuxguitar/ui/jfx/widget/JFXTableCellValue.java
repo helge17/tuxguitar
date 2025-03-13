@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-import org.herac.tuxguitar.ui.jfx.JFXComponent;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.widget.UITableItem;
+import app.tuxguitar.ui.jfx.JFXComponent;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.widget.UITableItem;
 
 public class JFXTableCellValue<T> extends JFXComponent<UITableItem<T>>{
 

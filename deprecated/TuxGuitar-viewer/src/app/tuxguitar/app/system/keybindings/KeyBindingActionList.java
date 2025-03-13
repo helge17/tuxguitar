@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
-import org.herac.tuxguitar.app.action.impl.measure.GoNextMeasureAction;
-import org.herac.tuxguitar.app.action.impl.measure.GoPreviousMeasureAction;
-import org.herac.tuxguitar.app.action.impl.transport.TransportPlayAction;
+import app.tuxguitar.app.action.impl.measure.GoNextMeasureAction;
+import app.tuxguitar.app.action.impl.measure.GoPreviousMeasureAction;
+import app.tuxguitar.app.action.impl.transport.TransportPlayAction;
 
 public class KeyBindingActionList {
 

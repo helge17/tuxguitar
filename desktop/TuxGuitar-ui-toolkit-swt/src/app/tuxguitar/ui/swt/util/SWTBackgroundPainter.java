@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.swt.util;
+package app.tuxguitar.ui.swt.util;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Control;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.swt.resource.SWTColor;
-import org.herac.tuxguitar.ui.swt.widget.SWTControl;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.swt.resource.SWTColor;
+import app.tuxguitar.ui.swt.widget.SWTControl;
 
 public class SWTBackgroundPainter implements PaintListener {
 

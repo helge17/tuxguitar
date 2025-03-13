@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.tools.scale;
+package app.tuxguitar.app.tools.scale;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public class ScaleEvent extends TGEvent {
 

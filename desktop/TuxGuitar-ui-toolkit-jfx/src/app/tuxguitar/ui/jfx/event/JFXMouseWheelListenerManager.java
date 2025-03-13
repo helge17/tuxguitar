@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 
-import org.herac.tuxguitar.ui.event.UIMouseWheelEvent;
-import org.herac.tuxguitar.ui.event.UIMouseWheelListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXMouseButton;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMouseWheelEvent;
+import app.tuxguitar.ui.event.UIMouseWheelListenerManager;
+import app.tuxguitar.ui.jfx.resource.JFXMouseButton;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.resource.UIPosition;
 
 public class JFXMouseWheelListenerManager extends UIMouseWheelListenerManager implements EventHandler<ScrollEvent> {
 

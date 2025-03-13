@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.widget.UIWrapLabel;
+import app.tuxguitar.ui.widget.UIWrapLabel;
 
 public class QTWrapLabel extends QTLabel implements UIWrapLabel {
 

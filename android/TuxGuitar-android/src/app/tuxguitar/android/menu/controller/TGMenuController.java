@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.menu.controller;
+package app.tuxguitar.android.menu.controller;
 
 import android.view.Menu;
 import android.view.MenuInflater;

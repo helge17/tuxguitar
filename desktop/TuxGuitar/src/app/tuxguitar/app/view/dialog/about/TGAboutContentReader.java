@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.app.view.dialog.about;
+package app.tuxguitar.app.view.dialog.about;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGMessagesManager;
 
 public class TGAboutContentReader {
 

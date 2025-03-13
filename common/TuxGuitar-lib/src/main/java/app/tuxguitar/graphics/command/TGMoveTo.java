@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.graphics.command;
+package app.tuxguitar.graphics.command;
 
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGMoveTo implements TGPaintCommand {
 

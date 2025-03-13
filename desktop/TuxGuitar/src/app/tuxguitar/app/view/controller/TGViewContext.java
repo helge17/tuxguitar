@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.app.view.controller;
+package app.tuxguitar.app.view.controller;
 
-import org.herac.tuxguitar.ui.event.UIDisposeListener;
-import org.herac.tuxguitar.util.TGAbstractContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.ui.event.UIDisposeListener;
+import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGViewContext extends TGAbstractContext {
 

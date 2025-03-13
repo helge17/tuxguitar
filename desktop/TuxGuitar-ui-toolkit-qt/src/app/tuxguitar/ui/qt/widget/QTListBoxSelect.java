@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.qt.event.QTSelectionListenerManager;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UIListBoxSelect;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.qt.event.QTSelectionListenerManager;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UIListBoxSelect;
+import app.tuxguitar.ui.widget.UISelectItem;
 import io.qt.core.QMargins;
 import io.qt.widgets.QListWidget;
 import io.qt.widgets.QListWidgetItem;

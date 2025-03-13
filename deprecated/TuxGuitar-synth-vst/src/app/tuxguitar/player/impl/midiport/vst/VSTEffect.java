@@ -1,34 +1,34 @@
-package org.herac.tuxguitar.player.impl.midiport.vst;
+package app.tuxguitar.player.impl.midiport.vst;
 
 import java.util.List;
 
-import org.herac.tuxguitar.midi.synth.remote.TGConnection;
-import org.herac.tuxguitar.midi.synth.remote.TGSession;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTBeginSetProgramCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTCloseEffectUICommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTEndSetProgramCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTFocusEffectUICommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetChunkCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetNumInputsCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetNumOutputsCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetNumParamsCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetParameterCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetParameterLabelCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetParameterNameCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTGetVersionCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTIsEffectUIAvailableCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTIsEffectUIOpenCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTIsUpdatedCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTOpenEffectUICommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTProcessReplacingCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTSendMessagesCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTSetActiveCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTSetBlockSizeCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTSetChunkCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTSetParameterCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTSetSampleRateCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTStartProcessCommand;
-import org.herac.tuxguitar.player.impl.midiport.vst.command.VSTStopProcessCommand;
+import app.tuxguitar.midi.synth.remote.TGConnection;
+import app.tuxguitar.midi.synth.remote.TGSession;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTBeginSetProgramCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTCloseEffectUICommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTEndSetProgramCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTFocusEffectUICommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetChunkCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetNumInputsCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetNumOutputsCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetNumParamsCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetParameterCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetParameterLabelCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetParameterNameCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTGetVersionCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTIsEffectUIAvailableCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTIsEffectUIOpenCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTIsUpdatedCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTOpenEffectUICommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTProcessReplacingCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTSendMessagesCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTSetActiveCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTSetBlockSizeCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTSetChunkCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTSetParameterCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTSetSampleRateCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTStartProcessCommand;
+import app.tuxguitar.player.impl.midiport.vst.command.VSTStopProcessCommand;
 
 public final class VSTEffect {
 

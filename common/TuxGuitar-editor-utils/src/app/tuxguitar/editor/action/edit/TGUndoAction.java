@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.editor.action.edit;
+package app.tuxguitar.editor.action.edit;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.editor.undo.TGCannotUndoException;
-import org.herac.tuxguitar.editor.undo.TGUndoableManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.editor.undo.TGCannotUndoException;
+import app.tuxguitar.editor.undo.TGUndoableManager;
+import app.tuxguitar.util.TGContext;
 
 public class TGUndoAction extends TGActionBase {
 

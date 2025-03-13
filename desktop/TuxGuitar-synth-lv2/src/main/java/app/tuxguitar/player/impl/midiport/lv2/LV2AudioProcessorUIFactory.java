@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2;
+package app.tuxguitar.player.impl.midiport.lv2;
 
-import org.herac.tuxguitar.midi.synth.TGAudioProcessor;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
-import org.herac.tuxguitar.midi.synth.ui.TGAudioProcessorUIFactory;
-import org.herac.tuxguitar.player.impl.midiport.lv2.ui.LV2AudioProcessorUI;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
+import app.tuxguitar.midi.synth.ui.TGAudioProcessorUIFactory;
+import app.tuxguitar.player.impl.midiport.lv2.ui.LV2AudioProcessorUI;
+import app.tuxguitar.util.TGContext;
 
 public class LV2AudioProcessorUIFactory implements TGAudioProcessorUIFactory {
 

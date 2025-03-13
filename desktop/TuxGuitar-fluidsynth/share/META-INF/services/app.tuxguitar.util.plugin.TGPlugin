@@ -1,2 +1,2 @@
-org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiOutputPortProviderPlugin
-org.herac.tuxguitar.player.impl.midiport.fluidsynth.MidiSettingsPlugin
+app.tuxguitar.player.impl.midiport.fluidsynth.MidiOutputPortProviderPlugin
+app.tuxguitar.player.impl.midiport.fluidsynth.MidiSettingsPlugin

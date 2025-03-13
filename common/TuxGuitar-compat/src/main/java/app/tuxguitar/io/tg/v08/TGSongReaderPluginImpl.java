@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.tg.v08;
+package app.tuxguitar.io.tg.v08;
 
-import org.herac.tuxguitar.io.base.TGFileFormatDetector;
-import org.herac.tuxguitar.io.base.TGSongReader;
-import org.herac.tuxguitar.io.tg.TGAbstractSongReaderPlugin;
-import org.herac.tuxguitar.io.tg.v15.TGFileFormatDetectorImpl;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.io.base.TGFileFormatDetector;
+import app.tuxguitar.io.base.TGSongReader;
+import app.tuxguitar.io.tg.TGAbstractSongReaderPlugin;
+import app.tuxguitar.io.tg.v15.TGFileFormatDetectorImpl;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGSongReaderPluginImpl extends TGAbstractSongReaderPlugin{
 

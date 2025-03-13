@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.app.view.dialog.settings.items;
+package app.tuxguitar.app.view.dialog.settings.items;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.variables.TGVarAppName;
-import org.herac.tuxguitar.app.system.variables.TGVarAppVersion;
-import org.herac.tuxguitar.app.system.variables.TGVarFileName;
-import org.herac.tuxguitar.app.system.variables.TGVarFilePath;
-import org.herac.tuxguitar.app.system.variables.TGVarSongAlbum;
-import org.herac.tuxguitar.app.system.variables.TGVarSongArtist;
-import org.herac.tuxguitar.app.system.variables.TGVarSongAuthor;
-import org.herac.tuxguitar.app.system.variables.TGVarSongName;
-import org.herac.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.widget.UICheckBox;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UITextField;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.variables.TGVarAppName;
+import app.tuxguitar.app.system.variables.TGVarAppVersion;
+import app.tuxguitar.app.system.variables.TGVarFileName;
+import app.tuxguitar.app.system.variables.TGVarFilePath;
+import app.tuxguitar.app.system.variables.TGVarSongAlbum;
+import app.tuxguitar.app.system.variables.TGVarSongArtist;
+import app.tuxguitar.app.system.variables.TGVarSongAuthor;
+import app.tuxguitar.app.system.variables.TGVarSongName;
+import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UITextField;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class MainOption extends TGSettingsOption {
 

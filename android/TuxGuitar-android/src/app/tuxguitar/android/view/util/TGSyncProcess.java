@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.view.util;
+package app.tuxguitar.android.view.util;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGSyncProcess implements TGProcess {
 

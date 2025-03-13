@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.action;
+package app.tuxguitar.app.action;
 
-import org.herac.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionContext;
 
 public class TGActionContextImpl extends TGActionContext{
 

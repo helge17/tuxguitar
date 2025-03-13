@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.action.listener.cache.controller;
+package app.tuxguitar.app.action.listener.cache.controller;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.helper.TGFileHistory;
-import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.undo.TGUndoableManager;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.helper.TGFileHistory;
+import app.tuxguitar.app.transport.TGTransport;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.undo.TGUndoableManager;
+import app.tuxguitar.util.TGContext;
 
 public class TGUpdateSavedSongController extends TGUpdateItemsController {
 

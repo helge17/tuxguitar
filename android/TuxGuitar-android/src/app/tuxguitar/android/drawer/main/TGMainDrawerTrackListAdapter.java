@@ -1,18 +1,18 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.android.view.util.TGProcess;
+import app.tuxguitar.android.view.util.TGSyncProcessLocked;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
 
 import java.util.ArrayList;
 import java.util.Iterator;

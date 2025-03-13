@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 import org.junit.jupiter.api.Test;
 
 public class TestTGDuration {

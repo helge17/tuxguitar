@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.io.image;
+package app.tuxguitar.io.image;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.io.base.TGSongExporter;
-import org.herac.tuxguitar.io.base.TGSongStream;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.io.base.TGSongExporter;
+import app.tuxguitar.io.base.TGSongStream;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.util.TGContext;
 
 public class ImageExporter implements TGSongExporter{
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.android.browser.gdrive.gdaa;
+package app.tuxguitar.android.browser.gdrive.gdaa;
 
 import java.io.InputStream;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserException;
 
 import com.google.android.gms.drive.DriveFolder;
 

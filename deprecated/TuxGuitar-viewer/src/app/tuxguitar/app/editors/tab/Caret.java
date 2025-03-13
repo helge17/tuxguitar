@@ -4,28 +4,28 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.herac.tuxguitar.app.editors.tab;
+package app.tuxguitar.app.editors.tab;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.util.MidiTickUtil;
-import org.herac.tuxguitar.awt.graphics.AWTPainter;
-import org.herac.tuxguitar.graphics.control.TGBeatImpl;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackSpacing;
-import org.herac.tuxguitar.song.managers.TGMeasureManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.MidiTickUtil;
+import app.tuxguitar.awt.graphics.AWTPainter;
+import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.graphics.control.TGTrackSpacing;
+import app.tuxguitar.song.managers.TGMeasureManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.TGVoice;
 
 /**
  * @author julian
@@ -138,7 +138,7 @@ public class Caret {
 	public void paintCaret(TGLayout layout,AWTPainter painter) {
 		if(!TuxGuitar.instance().getPlayer().isRunning()){
 			if (this.selectedMeasure != null && this.selectedBeat instanceof TGBeatImpl) {
-				org.herac.tuxguitar.graphics.control.TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
+				app.tuxguitar.graphics.control.TGBeatImpl beat = (TGBeatImpl)this.selectedBeat;
 				if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0){
 					float stringSpacing = this.tablature.getViewLayout().getStringSpacing();
 					float leftSpacing = beat.getMeasureImpl().getHeaderImpl().getLeftSpacing(layout);

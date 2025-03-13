@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.swt.event;
+package app.tuxguitar.ui.swt.event;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.herac.tuxguitar.ui.event.UILinkEvent;
-import org.herac.tuxguitar.ui.event.UILinkListenerManager;
-import org.herac.tuxguitar.ui.swt.widget.SWTEventReceiver;
+import app.tuxguitar.ui.event.UILinkEvent;
+import app.tuxguitar.ui.event.UILinkListenerManager;
+import app.tuxguitar.ui.swt.widget.SWTEventReceiver;
 
 public class SWTLinkListenerManager extends UILinkListenerManager implements SelectionListener {
 

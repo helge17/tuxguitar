@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.action;
+package app.tuxguitar.action;
 
-import org.herac.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEvent;
 
 public abstract class TGActionEvent extends TGEvent {
 

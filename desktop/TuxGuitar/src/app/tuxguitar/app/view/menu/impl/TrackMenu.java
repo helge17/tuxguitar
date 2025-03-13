@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.track.TGGoFirstTrackAction;
-import org.herac.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
-import org.herac.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
-import org.herac.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
-import org.herac.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
-import org.herac.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.editor.action.track.TGAddNewTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
-import org.herac.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
-import org.herac.tuxguitar.editor.action.track.TGCloneTrackAction;
-import org.herac.tuxguitar.editor.action.track.TGMoveTrackDownAction;
-import org.herac.tuxguitar.editor.action.track.TGMoveTrackUpAction;
-import org.herac.tuxguitar.editor.action.track.TGRemoveTrackAction;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.track.TGGoFirstTrackAction;
+import app.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
+import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
+import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
+import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
+import app.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
+import app.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
+import app.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
+import app.tuxguitar.editor.action.track.TGCloneTrackAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackDownAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
+import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
 
 public class TrackMenu extends TGMenuItem {
 

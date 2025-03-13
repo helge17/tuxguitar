@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 public class MiException
 	extends Exception

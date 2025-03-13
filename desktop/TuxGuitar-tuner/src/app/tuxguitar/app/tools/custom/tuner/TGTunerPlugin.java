@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.tools.custom.tuner;
+package app.tuxguitar.app.tools.custom.tuner;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.util.TGContext;
 
 /**
  * @author Nikola Kolarovic <nikola.kolarovic at gmail.com>
  *
  */
-public class TGTunerPlugin extends org.herac.tuxguitar.app.tools.custom.TGToolItemPlugin {
+public class TGTunerPlugin extends app.tuxguitar.app.tools.custom.TGToolItemPlugin {
 
 	public static final String MODULE_ID = "tuxguitar-tuner";
 

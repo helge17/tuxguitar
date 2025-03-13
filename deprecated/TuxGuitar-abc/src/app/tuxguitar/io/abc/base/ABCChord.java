@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.abc.base;
+package app.tuxguitar.io.abc.base;
 
-import org.herac.tuxguitar.app.view.dialog.chord.TGChordDatabase.ChordInfo;
+import app.tuxguitar.app.view.dialog.chord.TGChordDatabase.ChordInfo;
 
 public class ABCChord {
 

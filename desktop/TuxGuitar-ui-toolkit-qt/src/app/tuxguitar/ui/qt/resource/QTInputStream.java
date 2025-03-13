@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.qt.resource;
+package app.tuxguitar.ui.qt.resource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

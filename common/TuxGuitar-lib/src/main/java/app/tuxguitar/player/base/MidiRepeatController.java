@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.player.base;
+package app.tuxguitar.player.base;
 
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
 
 public class MidiRepeatController {
 

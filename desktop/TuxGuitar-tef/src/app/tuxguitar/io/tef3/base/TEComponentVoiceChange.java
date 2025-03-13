@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.tef3.base;
+package app.tuxguitar.io.tef3.base;
 
 public class TEComponentVoiceChange extends TEComponentBase {
     private int midiPatch;

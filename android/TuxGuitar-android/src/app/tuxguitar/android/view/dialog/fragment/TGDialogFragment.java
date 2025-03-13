@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.android.view.dialog.fragment;
+package app.tuxguitar.android.view.dialog.fragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.fragment.TGFragmentTransaction;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.fragment.TGFragmentTransaction;
+import app.tuxguitar.android.view.dialog.TGDialogContext;
+import app.tuxguitar.util.TGContext;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;

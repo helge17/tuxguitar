@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
-import org.herac.tuxguitar.util.properties.TGPropertiesException;
-import org.herac.tuxguitar.util.properties.TGPropertiesReader;
-import org.herac.tuxguitar.util.properties.TGPropertiesWriter;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesReader;
+import app.tuxguitar.util.properties.TGPropertiesWriter;
 
 public class TGFilePropertiesHandler extends TGPropertiesBaseHandler implements TGPropertiesReader, TGPropertiesWriter{
 

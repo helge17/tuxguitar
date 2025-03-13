@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.song.helpers.tuning.xml;
+package app.tuxguitar.song.helpers.tuning.xml;
 
-import org.herac.tuxguitar.song.helpers.tuning.TuningGroup;
-import org.herac.tuxguitar.song.helpers.tuning.TuningPreset;
+import app.tuxguitar.song.helpers.tuning.TuningGroup;
+import app.tuxguitar.song.helpers.tuning.TuningPreset;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static org.herac.tuxguitar.song.helpers.tuning.xml.TuningReader.*;
+import static app.tuxguitar.song.helpers.tuning.xml.TuningReader.*;
 
 public class TuningWriter {
 	private static final String TUNINGS_ROOT = "tunings";

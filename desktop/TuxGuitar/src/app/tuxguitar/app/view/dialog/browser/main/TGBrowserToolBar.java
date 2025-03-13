@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.app.view.dialog.browser.main;
+package app.tuxguitar.app.view.dialog.browser.main;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserCollection;
-import org.herac.tuxguitar.app.tools.browser.TGBrowserManager;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIDropDownSelect;
-import org.herac.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.tools.browser.TGBrowserCollection;
+import app.tuxguitar.app.tools.browser.TGBrowserManager;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCustomItem;
+import app.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UISelectItem;
 
 public class TGBrowserToolBar extends TGBrowserBar{
 

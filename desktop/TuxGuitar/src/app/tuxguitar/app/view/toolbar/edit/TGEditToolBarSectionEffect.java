@@ -1,29 +1,29 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
-import org.herac.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenBendDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeLetRingAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
-import org.herac.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeTappingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeSlappingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangePoppingAction;
-import org.herac.tuxguitar.editor.action.effect.TGChangeFadeInAction;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
-import org.herac.tuxguitar.util.TGNoteRange;
+import app.tuxguitar.editor.action.effect.TGChangeVibratoNoteAction;
+import app.tuxguitar.app.action.impl.effects.TGOpenBendDialogAction;
+import app.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
+import app.tuxguitar.editor.action.effect.TGChangeSlideNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeDeadNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeHammerNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeGhostNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeHeavyAccentuatedNoteAction;
+import app.tuxguitar.editor.action.effect.TGChangeLetRingAction;
+import app.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
+import app.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
+import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
+import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
+import app.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
+import app.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
+import app.tuxguitar.editor.action.effect.TGChangeTappingAction;
+import app.tuxguitar.editor.action.effect.TGChangeSlappingAction;
+import app.tuxguitar.editor.action.effect.TGChangePoppingAction;
+import app.tuxguitar.editor.action.effect.TGChangeFadeInAction;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.util.TGNoteRange;
 
 public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 

@@ -1,19 +1,19 @@
-package org.herac.tuxguitar.ui.jfx.toolbar;
+package app.tuxguitar.ui.jfx.toolbar;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.input.MouseEvent;
 
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
-import org.herac.tuxguitar.ui.jfx.menu.JFXPopupMenu;
-import org.herac.tuxguitar.ui.jfx.widget.JFXButton;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIPosition;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.event.JFXSelectionListenerManager;
+import app.tuxguitar.ui.jfx.menu.JFXPopupMenu;
+import app.tuxguitar.ui.jfx.widget.JFXButton;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.toolbar.UIToolActionMenuItem;
 
 public class JFXToolActionMenuItem extends JFXButton implements UIToolActionMenuItem {
 

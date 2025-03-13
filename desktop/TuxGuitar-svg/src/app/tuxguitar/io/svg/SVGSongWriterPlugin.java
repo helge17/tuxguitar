@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.svg;
+package app.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.plugin.TGSongWriterPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.plugin.TGSongWriterPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class SVGSongWriterPlugin extends TGSongWriterPlugin {
 

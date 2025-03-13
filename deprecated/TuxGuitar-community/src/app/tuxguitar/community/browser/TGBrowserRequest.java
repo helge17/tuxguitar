@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.community.browser;
+package app.tuxguitar.community.browser;
 
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -7,9 +7,9 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.herac.tuxguitar.community.auth.TGCommunityAuth;
-import org.herac.tuxguitar.community.utils.TGCommunityWeb;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.community.auth.TGCommunityAuth;
+import app.tuxguitar.community.utils.TGCommunityWeb;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserRequest {
 

@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.qt.event.QTTabFolderCloseListenerManager;
-import org.herac.tuxguitar.ui.qt.event.QTTabFolderSelectionListenerManager;
-import org.herac.tuxguitar.ui.widget.UITabFolder;
-import org.herac.tuxguitar.ui.widget.UITabItem;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.qt.event.QTTabFolderCloseListenerManager;
+import app.tuxguitar.ui.qt.event.QTTabFolderSelectionListenerManager;
+import app.tuxguitar.ui.widget.UITabFolder;
+import app.tuxguitar.ui.widget.UITabItem;
 import io.qt.widgets.QTabWidget;
 
 public class QTTabFolder extends QTWidget<QTabWidget> implements UITabFolder {

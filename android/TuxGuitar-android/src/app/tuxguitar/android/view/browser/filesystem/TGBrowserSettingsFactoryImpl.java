@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.android.view.browser.filesystem;
+package app.tuxguitar.android.view.browser.filesystem;
 
 import android.app.Activity;
 
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.browser.filesystem.TGFsBrowserSettingsFactory;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.view.dialog.browser.filesystem.TGBrowserSettingsDialogController;
-import org.herac.tuxguitar.android.view.dialog.browser.filesystem.TGBrowserSettingsMountPointDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.browser.filesystem.TGFsBrowserSettingsFactory;
+import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.android.view.dialog.browser.filesystem.TGBrowserSettingsDialogController;
+import app.tuxguitar.android.view.dialog.browser.filesystem.TGBrowserSettingsMountPointDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserSettingsFactoryImpl implements TGFsBrowserSettingsFactory {
 

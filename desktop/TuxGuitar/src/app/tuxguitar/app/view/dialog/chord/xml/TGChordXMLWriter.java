@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.view.dialog.chord.xml;
+package app.tuxguitar.app.view.dialog.chord.xml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,7 +20,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.herac.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGChord;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

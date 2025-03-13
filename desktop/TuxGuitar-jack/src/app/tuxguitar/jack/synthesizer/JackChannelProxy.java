@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.jack.synthesizer;
+package app.tuxguitar.jack.synthesizer;
 
-import org.herac.tuxguitar.jack.JackPort;
-import org.herac.tuxguitar.player.base.MidiChannel;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.jack.JackPort;
+import app.tuxguitar.player.base.MidiChannel;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public class JackChannelProxy implements MidiChannel {
 

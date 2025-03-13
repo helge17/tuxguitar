@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.properties;
+package app.tuxguitar.app.system.properties;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import org.herac.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGProperties;
 
 public class TGPropertiesImpl implements TGProperties{
 

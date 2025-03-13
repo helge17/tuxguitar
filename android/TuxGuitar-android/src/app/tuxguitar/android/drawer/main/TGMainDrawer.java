@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.drawer.main;
+package app.tuxguitar.android.drawer.main;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,10 +8,10 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainDrawer extends RelativeLayout {
 

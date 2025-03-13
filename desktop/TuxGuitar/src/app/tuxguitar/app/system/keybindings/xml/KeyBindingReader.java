@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.keybindings.xml;
+package app.tuxguitar.app.system.keybindings.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +10,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingAction;
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.app.system.keybindings.KeyBindingAction;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.ui.resource.UIKeyCombination;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

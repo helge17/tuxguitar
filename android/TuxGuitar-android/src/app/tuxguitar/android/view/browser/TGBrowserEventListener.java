@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.android.view.browser;
+package app.tuxguitar.android.view.browser;
 
-import org.herac.tuxguitar.action.TGActionErrorEvent;
-import org.herac.tuxguitar.action.TGActionEvent;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcessFinishEvent;
-import org.herac.tuxguitar.android.action.TGActionAsyncProcessErrorEvent;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.action.TGActionErrorEvent;
+import app.tuxguitar.action.TGActionEvent;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.android.action.TGActionAsyncProcessFinishEvent;
+import app.tuxguitar.android.action.TGActionAsyncProcessErrorEvent;
+import app.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCdElementAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCdRootAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCdUpAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserCloseSessionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserLoadSessionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGBrowserEventListener implements TGEventListener {
 

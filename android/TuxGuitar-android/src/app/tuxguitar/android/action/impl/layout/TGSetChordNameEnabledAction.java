@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.action.impl.layout;
+package app.tuxguitar.android.action.impl.layout;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.view.tablature.TGSongViewController;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.util.TGContext;
 
 public class TGSetChordNameEnabledAction extends TGActionBase{
 

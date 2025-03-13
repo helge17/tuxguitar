@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.community.io;
+package app.tuxguitar.community.io;
 
 public class TGShareFile {
 

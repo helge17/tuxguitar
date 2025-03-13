@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.util.error;
+package app.tuxguitar.util.error;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGErrorManager {
 

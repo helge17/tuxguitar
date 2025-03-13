@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.io.gpx;
+package app.tuxguitar.io.gpx;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.herac.tuxguitar.io.gpx.score.GPXAutomation;
-import org.herac.tuxguitar.io.gpx.score.GPXBar;
-import org.herac.tuxguitar.io.gpx.score.GPXBeat;
-import org.herac.tuxguitar.io.gpx.score.GPXChord;
-import org.herac.tuxguitar.io.gpx.score.GPXDocument;
-import org.herac.tuxguitar.io.gpx.score.GPXMasterBar;
-import org.herac.tuxguitar.io.gpx.score.GPXNote;
-import org.herac.tuxguitar.io.gpx.score.GPXRhythm;
-import org.herac.tuxguitar.io.gpx.score.GPXTrack;
-import org.herac.tuxguitar.io.gpx.score.GPXVoice;
+import app.tuxguitar.io.gpx.score.GPXAutomation;
+import app.tuxguitar.io.gpx.score.GPXBar;
+import app.tuxguitar.io.gpx.score.GPXBeat;
+import app.tuxguitar.io.gpx.score.GPXChord;
+import app.tuxguitar.io.gpx.score.GPXDocument;
+import app.tuxguitar.io.gpx.score.GPXMasterBar;
+import app.tuxguitar.io.gpx.score.GPXNote;
+import app.tuxguitar.io.gpx.score.GPXRhythm;
+import app.tuxguitar.io.gpx.score.GPXTrack;
+import app.tuxguitar.io.gpx.score.GPXVoice;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

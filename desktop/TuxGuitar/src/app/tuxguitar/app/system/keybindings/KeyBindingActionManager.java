@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.app.system.keybindings;
+package app.tuxguitar.app.system.keybindings;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
-import org.herac.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
-import org.herac.tuxguitar.app.util.TGFileUtils;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.resource.UIKeyCombination;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.keybindings.xml.KeyBindingReader;
+import app.tuxguitar.app.system.keybindings.xml.KeyBindingWriter;
+import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.resource.UIKeyCombination;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class KeyBindingActionManager {
 

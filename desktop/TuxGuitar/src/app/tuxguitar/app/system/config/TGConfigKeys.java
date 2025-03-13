@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.system.config;
+package app.tuxguitar.app.system.config;
 
 public class TGConfigKeys {
 

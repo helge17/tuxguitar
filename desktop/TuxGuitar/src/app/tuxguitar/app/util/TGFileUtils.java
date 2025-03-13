@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGLibraryLoader;
-import org.herac.tuxguitar.util.TGUserFileUtils;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGLibraryLoader;
+import app.tuxguitar.util.TGUserFileUtils;
 
 public class TGFileUtils {
 

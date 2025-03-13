@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.trill;
+package app.tuxguitar.android.view.dialog.trill;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGTrillDialogController extends TGModalFragmentController<TGTrillDialog> {
 

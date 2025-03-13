@@ -1,25 +1,25 @@
-package org.herac.tuxguitar.app.view.dialog.file;
+package app.tuxguitar.app.view.dialog.file;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.view.TGOpenViewAction;
-import org.herac.tuxguitar.app.helper.TGFileHistory;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
-import org.herac.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.chooser.UIFileChooser;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserFormat;
-import org.herac.tuxguitar.ui.chooser.UIFileChooserHandler;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.helper.TGFileHistory;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.dialog.confirm.TGConfirmDialog;
+import app.tuxguitar.app.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.chooser.UIFileChooser;
+import app.tuxguitar.ui.chooser.UIFileChooserFormat;
+import app.tuxguitar.ui.chooser.UIFileChooserHandler;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGFileChooserDialog {
 

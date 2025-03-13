@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.herac.tuxguitar.io.abc.base;
+package app.tuxguitar.io.abc.base;
 
 import java.util.ArrayList;
 

@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.app.action.listener.cache.controller;
+package app.tuxguitar.app.action.listener.cache.controller;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.helper.TGFileHistory;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.helper.TGFileHistory;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
 
 public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 

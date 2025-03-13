@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.view.dialog.browser.filesystem;
+package app.tuxguitar.android.view.dialog.browser.filesystem;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
 
 public class TGBrowserSettingsDialogController extends TGModalFragmentController<TGBrowserSettingsDialog> {
 

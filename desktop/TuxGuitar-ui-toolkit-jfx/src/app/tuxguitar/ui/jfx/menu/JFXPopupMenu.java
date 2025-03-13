@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Window;
 
-import org.herac.tuxguitar.ui.event.UIMenuHideListener;
-import org.herac.tuxguitar.ui.event.UIMenuShowListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXMenuHideListenerManager;
-import org.herac.tuxguitar.ui.jfx.event.JFXMenuShowListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
-import org.herac.tuxguitar.ui.menu.UIPopupMenu;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMenuHideListener;
+import app.tuxguitar.ui.event.UIMenuShowListener;
+import app.tuxguitar.ui.jfx.event.JFXMenuHideListenerManager;
+import app.tuxguitar.ui.jfx.event.JFXMenuShowListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXWindow;
+import app.tuxguitar.ui.menu.UIPopupMenu;
+import app.tuxguitar.ui.resource.UIPosition;
 
 public class JFXPopupMenu extends JFXAbstractMenu<ContextMenu> implements UIPopupMenu {
 

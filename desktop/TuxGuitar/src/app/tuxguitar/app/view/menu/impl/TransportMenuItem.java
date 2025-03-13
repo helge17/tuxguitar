@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.app.view.menu.impl;
+package app.tuxguitar.app.view.menu.impl;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
-import org.herac.tuxguitar.app.action.impl.transport.TGTransportStopAction;
-import org.herac.tuxguitar.app.view.component.tab.Tablature;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.graphics.control.TGLayout;
-import org.herac.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
-import org.herac.tuxguitar.app.view.menu.TGMenuItem;
-import org.herac.tuxguitar.player.base.MidiPlayerMode;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.ui.menu.UIMenu;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.app.view.component.tab.Tablature;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
+import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.ui.menu.UIMenu;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class TransportMenuItem extends TGMenuItem {
 

@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.action.impl.transport;
+package app.tuxguitar.app.action.impl.transport;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.util.TGContext;
 
 public class TGTransportCountDownAction extends TGActionBase {
 

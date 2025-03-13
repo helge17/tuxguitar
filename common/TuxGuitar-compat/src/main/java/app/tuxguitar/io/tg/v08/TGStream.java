@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.tg.v08;
+package app.tuxguitar.io.tg.v08;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGFileFormat;
 
 public class TGStream {
 

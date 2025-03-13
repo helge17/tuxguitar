@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.widget.UILegendPanel;
+import app.tuxguitar.ui.widget.UILegendPanel;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.editor.util;
+package app.tuxguitar.editor.util;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
 
 public class TGSyncProcess implements TGProcess {
 

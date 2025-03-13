@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.appearance;
+package app.tuxguitar.ui.jfx.appearance;
 
 import java.util.ArrayList;
 import java.util.Collections;

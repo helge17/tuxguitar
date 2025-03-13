@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.ptb.helper;
+package app.tuxguitar.io.ptb.helper;
 
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGDuration;
 
 public class TrackStartHelper {
 

@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.io.persistence;
+package app.tuxguitar.app.io.persistence;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
-import org.herac.tuxguitar.app.action.impl.file.TGSaveFileAction;
-import org.herac.tuxguitar.app.action.impl.file.TGWriteFileAction;
-import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
-import org.herac.tuxguitar.editor.action.file.TGSongPersistenceActionBase;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.io.base.TGSongStreamContext;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
+import app.tuxguitar.app.action.impl.file.TGSaveFileAction;
+import app.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.editor.action.file.TGSongPersistenceActionBase;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.util.TGContext;
 
 public class TGPersistenceSettingsInterceptor implements TGActionInterceptor {
 

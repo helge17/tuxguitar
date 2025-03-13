@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.ui.event.UIModifyListener;
-import org.herac.tuxguitar.ui.swt.event.SWTModifyListenerManager;
-import org.herac.tuxguitar.ui.widget.UITextArea;
+import app.tuxguitar.ui.event.UIModifyListener;
+import app.tuxguitar.ui.swt.event.SWTModifyListenerManager;
+import app.tuxguitar.ui.widget.UITextArea;
 
 public class SWTTextArea extends SWTText implements UITextArea {
 

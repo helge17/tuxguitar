@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.view.menu;
+package app.tuxguitar.app.view.menu;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.TGActionProcessorListener;
-import org.herac.tuxguitar.app.system.keybindings.KeyBindingActionManager;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.system.keybindings.KeyBindingActionManager;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.util.TGContext;
 
 public abstract class TGMenuItem {
 

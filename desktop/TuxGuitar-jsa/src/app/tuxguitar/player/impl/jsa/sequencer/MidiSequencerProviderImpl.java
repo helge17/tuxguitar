@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.player.impl.jsa.sequencer;
+package app.tuxguitar.player.impl.jsa.sequencer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,10 +9,10 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
-import org.herac.tuxguitar.player.base.MidiSequencer;
-import org.herac.tuxguitar.player.base.MidiSequencerProvider;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiSequencer;
+import app.tuxguitar.player.base.MidiSequencerProvider;
 
 public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.app.util;
+package app.tuxguitar.app.util;
 
 import java.io.File;
 import java.net.URL;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.util.TGVersion;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.util.TGVersion;
 
 public class ArgumentParser {
 

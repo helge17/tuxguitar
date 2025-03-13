@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.appearance;
+package app.tuxguitar.ui.jfx.appearance;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
-import org.herac.tuxguitar.ui.jfx.resource.JFXColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.jfx.resource.JFXColor;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public class JFXAppearance implements UIAppearance {
 

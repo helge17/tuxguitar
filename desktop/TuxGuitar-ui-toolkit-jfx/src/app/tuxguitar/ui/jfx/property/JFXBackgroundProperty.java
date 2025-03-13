@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.jfx.property;
+package app.tuxguitar.ui.jfx.property;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-import org.herac.tuxguitar.ui.jfx.resource.JFXColor;
-import org.herac.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.jfx.resource.JFXColor;
+import app.tuxguitar.ui.resource.UIColor;
 
 public class JFXBackgroundProperty {
 

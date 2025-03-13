@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.resource;
+package app.tuxguitar.android.resource;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.resource.TGResourceException;
-import org.herac.tuxguitar.resource.TGResourceLoader;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.resource.TGResourceException;
+import app.tuxguitar.resource.TGResourceLoader;
 
 import android.content.Context;
 import android.content.res.AssetManager;

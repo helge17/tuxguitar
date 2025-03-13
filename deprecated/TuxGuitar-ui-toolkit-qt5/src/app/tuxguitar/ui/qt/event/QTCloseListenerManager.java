@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UICloseEvent;
-import org.herac.tuxguitar.ui.event.UICloseListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
 import org.qtjambi.qt.core.QEvent;
 
 public class QTCloseListenerManager extends UICloseListenerManager implements QTEventHandler {

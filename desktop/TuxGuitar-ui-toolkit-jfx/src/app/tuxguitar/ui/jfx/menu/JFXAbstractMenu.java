@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.ui.jfx.menu;
+package app.tuxguitar.ui.jfx.menu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.control.MenuItem;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.menu.UIMenuCheckableItem;
-import org.herac.tuxguitar.ui.menu.UIMenuItem;
-import org.herac.tuxguitar.ui.menu.UIMenuSubMenuItem;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuCheckableItem;
+import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
 
 public class JFXAbstractMenu<T> extends JFXEventReceiver<T> implements JFXMenuItemContainer {
 

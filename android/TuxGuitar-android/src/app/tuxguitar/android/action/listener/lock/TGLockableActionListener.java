@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.android.action.listener.lock;
+package app.tuxguitar.android.action.listener.lock;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionErrorEvent;
-import org.herac.tuxguitar.action.TGActionEvent;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.android.action.listener.thread.TGSyncThreadAction;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionErrorEvent;
+import app.tuxguitar.action.TGActionEvent;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.action.TGActionPreExecutionEvent;
+import app.tuxguitar.android.action.listener.thread.TGSyncThreadAction;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGLockableActionListener extends TGSyncThreadAction implements TGActionInterceptor, TGEventListener {
 

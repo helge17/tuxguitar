@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.view.dialog.printer;
+package app.tuxguitar.app.view.dialog.printer;
 
-import org.herac.tuxguitar.graphics.control.print.TGPrintSettings;
+import app.tuxguitar.graphics.control.print.TGPrintSettings;
 
 public interface TGPrintSettingsHandler {
 

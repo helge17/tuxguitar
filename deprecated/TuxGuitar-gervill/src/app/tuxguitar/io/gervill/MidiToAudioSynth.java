@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gervill;
+package app.tuxguitar.io.gervill;
 
 import java.io.File;
 import java.lang.reflect.Method;

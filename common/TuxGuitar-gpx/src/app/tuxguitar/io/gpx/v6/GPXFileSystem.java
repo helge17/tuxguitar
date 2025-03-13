@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gpx.v6;
+package app.tuxguitar.io.gpx.v6;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

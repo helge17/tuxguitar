@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.midimaster.port;
+package app.tuxguitar.android.midimaster.port;
 
 import org.billthefarmer.mididriver.MidiDriver;
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
 
 public class MidiReceiverImpl implements GMReceiver{
 

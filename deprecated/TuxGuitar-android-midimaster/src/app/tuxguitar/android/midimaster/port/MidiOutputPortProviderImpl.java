@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.android.midimaster.port;
+package app.tuxguitar.android.midimaster.port;
 
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.player.base.MidiOutputPortProvider;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.base.MidiOutputPortProvider;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 import java.util.ArrayList;
 import java.util.List;

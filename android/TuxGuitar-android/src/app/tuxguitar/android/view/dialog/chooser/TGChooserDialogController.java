@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.android.view.dialog.chooser;
+package app.tuxguitar.android.view.dialog.chooser;
 
-import org.herac.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
+import app.tuxguitar.android.view.dialog.fragment.TGDialogFragmentController;
 
 public class TGChooserDialogController<T> extends TGDialogFragmentController<TGChooserDialog<T>> {
 

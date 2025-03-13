@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.qt.widget;
+package app.tuxguitar.ui.qt.widget;
 
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.event.UIResizeEvent;
-import org.herac.tuxguitar.ui.event.UIResizeListener;
-import org.herac.tuxguitar.ui.menu.UIMenuBar;
-import org.herac.tuxguitar.ui.qt.event.QTCloseListenerManager;
-import org.herac.tuxguitar.ui.qt.menu.QTMenuBar;
-import org.herac.tuxguitar.ui.qt.resource.QTImage;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UIResizeEvent;
+import app.tuxguitar.ui.event.UIResizeListener;
+import app.tuxguitar.ui.menu.UIMenuBar;
+import app.tuxguitar.ui.qt.event.QTCloseListenerManager;
+import app.tuxguitar.ui.qt.menu.QTMenuBar;
+import app.tuxguitar.ui.qt.resource.QTImage;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIWindow;
 import org.qtjambi.qt.core.QEvent;
 import org.qtjambi.qt.core.QEvent.Type;
 import org.qtjambi.qt.core.QMargins;

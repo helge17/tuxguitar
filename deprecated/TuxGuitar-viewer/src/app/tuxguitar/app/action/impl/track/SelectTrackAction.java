@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.impl.track;
+package app.tuxguitar.app.action.impl.track;
 
 import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
@@ -10,13 +10,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.editors.tab.Caret;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.editors.tab.Caret;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class SelectTrackAction extends TGActionBase {
 

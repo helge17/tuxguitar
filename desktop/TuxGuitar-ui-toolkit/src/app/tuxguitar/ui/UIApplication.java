@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui;
+package app.tuxguitar.ui;
 
 import java.net.URL;
 
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.appearance.UIAppearance;
 
 public interface UIApplication extends UIComponent {
 

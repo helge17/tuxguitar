@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.tg.v11;
+package app.tuxguitar.io.tg.v11;
 
-import org.herac.tuxguitar.io.base.TGSongWriter;
-import org.herac.tuxguitar.io.tg.TGAbstractSongWriterPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.tg.TGAbstractSongWriterPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class TGSongWriterPluginImpl extends TGAbstractSongWriterPlugin{
 

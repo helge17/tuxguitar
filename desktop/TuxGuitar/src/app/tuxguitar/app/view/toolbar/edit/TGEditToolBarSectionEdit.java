@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
-import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
-import org.herac.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
-import org.herac.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
-import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
-import org.herac.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
-import org.herac.tuxguitar.app.view.component.tab.TablatureEditor;
-import org.herac.tuxguitar.app.view.component.tab.edit.EditorKit;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
+import app.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
+import app.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
+import app.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
+import app.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.component.tab.edit.EditorKit;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
 
 public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 

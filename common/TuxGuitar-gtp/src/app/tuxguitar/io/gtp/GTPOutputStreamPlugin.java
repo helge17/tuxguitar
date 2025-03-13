@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.io.gtp;
+package app.tuxguitar.io.gtp;
 
-import org.herac.tuxguitar.io.plugin.TGSongWriterPlugin;
+import app.tuxguitar.io.plugin.TGSongWriterPlugin;
 
 public abstract class GTPOutputStreamPlugin extends TGSongWriterPlugin{
 

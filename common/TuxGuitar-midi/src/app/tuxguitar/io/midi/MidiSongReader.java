@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -7,34 +7,34 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.herac.tuxguitar.gm.GMChannelRoute;
-import org.herac.tuxguitar.gm.GMChannelRouter;
-import org.herac.tuxguitar.io.base.TGFileFormatException;
-import org.herac.tuxguitar.io.base.TGSongReader;
-import org.herac.tuxguitar.io.base.TGSongReaderHandle;
-import org.herac.tuxguitar.io.midi.base.MidiEvent;
-import org.herac.tuxguitar.io.midi.base.MidiMessage;
-import org.herac.tuxguitar.io.midi.base.MidiSequence;
-import org.herac.tuxguitar.io.midi.base.MidiTrack;
-import org.herac.tuxguitar.player.base.MidiControllers;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.helpers.tuning.TuningManager;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGChannelParameter;
-import org.herac.tuxguitar.song.models.TGColor;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGMeasureHeader;
-import org.herac.tuxguitar.song.models.TGNote;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.song.models.TGTempo;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
-import org.herac.tuxguitar.song.models.TGTrack;
-import org.herac.tuxguitar.song.models.TGTuning;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.gm.GMChannelRoute;
+import app.tuxguitar.gm.GMChannelRouter;
+import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGSongReader;
+import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.midi.base.MidiEvent;
+import app.tuxguitar.io.midi.base.MidiMessage;
+import app.tuxguitar.io.midi.base.MidiSequence;
+import app.tuxguitar.io.midi.base.MidiTrack;
+import app.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.helpers.tuning.TuningManager;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGChannelParameter;
+import app.tuxguitar.song.models.TGColor;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGTuning;
+import app.tuxguitar.util.TGContext;
 
 public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 

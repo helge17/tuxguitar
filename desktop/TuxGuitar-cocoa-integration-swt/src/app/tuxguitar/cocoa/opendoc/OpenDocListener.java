@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.cocoa.opendoc;
+package app.tuxguitar.cocoa.opendoc;
 
 
 /* Register a listener to receive OpenDocument events from SWT
@@ -21,19 +21,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionInterceptor;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.file.TGReadURLAction;
-import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.file.TGLoadTemplateAction;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGSynchronizer;
-import org.herac.tuxguitar.util.error.TGErrorManager;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionInterceptor;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.file.TGReadURLAction;
+import app.tuxguitar.app.document.TGDocumentListAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGSynchronizer;
+import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 import java.util.ArrayList;
 import java.util.List;

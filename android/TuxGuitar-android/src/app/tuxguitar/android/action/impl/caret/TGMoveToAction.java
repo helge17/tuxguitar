@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.android.action.impl.caret;
+package app.tuxguitar.android.action.impl.caret;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.graphics.control.TGMeasureImpl;
-import org.herac.tuxguitar.graphics.control.TGTrackImpl;
-import org.herac.tuxguitar.song.models.TGBeat;
-import org.herac.tuxguitar.song.models.TGString;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.graphics.control.TGMeasureImpl;
+import app.tuxguitar.graphics.control.TGTrackImpl;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.util.TGContext;
 
 public class TGMoveToAction extends TGActionBase{
 

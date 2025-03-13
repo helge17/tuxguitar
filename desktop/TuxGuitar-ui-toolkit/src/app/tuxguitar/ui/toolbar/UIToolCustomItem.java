@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.ui.toolbar;
+package app.tuxguitar.ui.toolbar;
 
-import org.herac.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIContainer;
 
 public interface UIToolCustomItem extends UIContainer {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.view.toolbar.main;
+package app.tuxguitar.app.view.toolbar.main;
 
-import org.herac.tuxguitar.editor.action.edit.TGRedoAction;
-import org.herac.tuxguitar.editor.action.edit.TGUndoAction;
-import org.herac.tuxguitar.editor.undo.TGUndoableManager;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.action.edit.TGRedoAction;
+import app.tuxguitar.editor.action.edit.TGUndoAction;
+import app.tuxguitar.editor.undo.TGUndoableManager;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionEdit extends TGMainToolBarSection {
 

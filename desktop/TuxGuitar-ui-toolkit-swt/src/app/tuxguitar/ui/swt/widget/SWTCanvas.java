@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.swt.event.SWTPaintListenerManager;
-import org.herac.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.swt.event.SWTPaintListenerManager;
+import app.tuxguitar.ui.widget.UICanvas;
 
 public class SWTCanvas extends SWTControl<Composite> implements UICanvas {
 

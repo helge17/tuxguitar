@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.io.abc;
+package app.tuxguitar.io.abc;
 
-import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
-import org.herac.tuxguitar.app.io.persistence.TGPersistenceSettingsHandlerPlugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsHandlerPlugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 public class ABCSongReaderSettingsHandlerPlugin extends TGPersistenceSettingsHandlerPlugin {
 

@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.midi.synth.ui;
+package app.tuxguitar.midi.synth.ui;
 
-import org.herac.tuxguitar.editor.util.TGDelayedProcess;
-import org.herac.tuxguitar.editor.util.TGProcess;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.util.TGDelayedProcess;
+import app.tuxguitar.editor.util.TGProcess;
+import app.tuxguitar.util.TGContext;
 
 public class TGSynthDialogDelayedCallback implements TGAudioProcessorUICallback {
 

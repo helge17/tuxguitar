@@ -1,24 +1,24 @@
-package org.herac.tuxguitar.ui.jfx.toolbar;
+package app.tuxguitar.ui.jfx.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.jfx.widget.JFXContainer;
-import org.herac.tuxguitar.ui.jfx.widget.JFXControl;
-import org.herac.tuxguitar.ui.jfx.widget.JFXNode;
-import org.herac.tuxguitar.ui.layout.UILayout;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolActionMenuItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolBar;
-import org.herac.tuxguitar.ui.toolbar.UIToolCheckableItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolCustomItem;
-import org.herac.tuxguitar.ui.toolbar.UIToolMenuItem;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UILayoutContainer;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.jfx.widget.JFXContainer;
+import app.tuxguitar.ui.jfx.widget.JFXControl;
+import app.tuxguitar.ui.jfx.widget.JFXNode;
+import app.tuxguitar.ui.layout.UILayout;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
+import app.tuxguitar.ui.toolbar.UIToolActionMenuItem;
+import app.tuxguitar.ui.toolbar.UIToolBar;
+import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.ui.toolbar.UIToolCustomItem;
+import app.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UILayoutContainer;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;

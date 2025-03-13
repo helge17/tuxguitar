@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.browser.filesystem;
+package app.tuxguitar.android.browser.filesystem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +7,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserElement;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserElement;
+import app.tuxguitar.android.browser.model.TGBrowserException;
 
 public class TGFsBrowserElement implements TGBrowserElement{
 

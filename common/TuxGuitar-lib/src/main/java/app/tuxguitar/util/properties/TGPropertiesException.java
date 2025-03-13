@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.util.properties;
+package app.tuxguitar.util.properties;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGPropertiesException extends TGException {
 

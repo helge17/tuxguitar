@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.player.impl.sequencer;
+package app.tuxguitar.player.impl.sequencer;
 
-import org.herac.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGDuration;
 
 public class MidiTickPlayer {
 

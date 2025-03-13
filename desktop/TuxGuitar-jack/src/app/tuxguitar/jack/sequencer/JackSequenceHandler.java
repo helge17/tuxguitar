@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.jack.sequencer;
+package app.tuxguitar.jack.sequencer;
 
-import org.herac.tuxguitar.player.base.MidiSequenceHandler;
-import org.herac.tuxguitar.song.models.TGTimeSignature;
+import app.tuxguitar.player.base.MidiSequenceHandler;
+import app.tuxguitar.song.models.TGTimeSignature;
 
 public class JackSequenceHandler extends MidiSequenceHandler{
 

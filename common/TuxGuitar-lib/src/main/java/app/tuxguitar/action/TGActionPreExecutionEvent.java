@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.action;
+package app.tuxguitar.action;
 
 public class TGActionPreExecutionEvent extends TGActionEvent {
 

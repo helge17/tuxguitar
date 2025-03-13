@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 
 public abstract class TGMarker {
 	private static final TGColor DEFAULT_COLOR = TGColor.RED;

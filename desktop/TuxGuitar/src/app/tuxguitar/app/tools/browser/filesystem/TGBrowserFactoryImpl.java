@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.app.tools.browser.filesystem;
+package app.tuxguitar.app.tools.browser.filesystem;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.app.tools.browser.base.TGBrowserSettings;
-import org.herac.tuxguitar.ui.resource.UIImage;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
+import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.util.TGContext;
 
 public class TGBrowserFactoryImpl implements TGBrowserFactory{
 

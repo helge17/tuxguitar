@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.ui.swt.resource;
+package app.tuxguitar.ui.swt.resource;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.herac.tuxguitar.ui.resource.UIFont;
-import org.herac.tuxguitar.ui.resource.UIFontAlignment;
-import org.herac.tuxguitar.ui.resource.UIFontModel;
-import org.herac.tuxguitar.ui.swt.SWTComponent;
-import org.herac.tuxguitar.ui.swt.SWTEnvironment;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontAlignment;
+import app.tuxguitar.ui.resource.UIFontModel;
+import app.tuxguitar.ui.swt.SWTComponent;
+import app.tuxguitar.ui.swt.SWTEnvironment;
 
 public class SWTFont extends SWTComponent<Font> implements UIFont {
 

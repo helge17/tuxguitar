@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import java.net.URL;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
-import org.herac.tuxguitar.ui.widget.UIBrowser;
+import app.tuxguitar.ui.widget.UIBrowser;
 
 public class SWTBrowser extends SWTControl<Browser> implements UIBrowser {
 

@@ -1,20 +1,20 @@
-package org.herac.tuxguitar.android.view.channel;
+package app.tuxguitar.android.view.channel;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.menu.controller.TGMenuBase;
-import org.herac.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.document.TGDocumentManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.channel.TGRemoveChannelAction;
-import org.herac.tuxguitar.song.managers.TGSongManager;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.channel.TGChannelEditDialogController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.channel.TGRemoveChannelAction;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
 
 public class TGChannelListItemMenu extends TGMenuBase {
 

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.io.synth;
+package app.tuxguitar.io.synth;
 
-import org.herac.tuxguitar.midi.synth.TGSynthChannel;
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.midi.synth.TGSynthChannel;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public abstract class TGSynthEvent {
 

@@ -1,22 +1,22 @@
-package org.herac.tuxguitar.app.view.toolbar.edit;
+package app.tuxguitar.app.view.toolbar.edit;
 
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.tabfolder.TGTabFolder;
-import org.herac.tuxguitar.app.view.toolbar.model.TGToolBarModel;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UIFocusEvent;
-import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.layout.UIScrollBarPanelLayout;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UIControl;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIScrollBarPanel;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.tabfolder.TGTabFolder;
+import app.tuxguitar.app.view.toolbar.model.TGToolBarModel;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIFocusEvent;
+import app.tuxguitar.ui.event.UIFocusGainedListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.layout.UIScrollBarPanelLayout;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UIControl;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIScrollBarPanel;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGEditToolBar extends TGToolBarModel implements UIFocusGainedListener {
 

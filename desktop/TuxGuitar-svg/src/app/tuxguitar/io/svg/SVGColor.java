@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.io.svg;
+package app.tuxguitar.io.svg;
 
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public class SVGColor implements UIColor{
 

@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.view.dialog.fragment;
+package app.tuxguitar.android.view.dialog.fragment;
 
-import org.herac.tuxguitar.android.fragment.TGCachedFragment;
-import org.herac.tuxguitar.android.view.dialog.TGDialogContext;
+import app.tuxguitar.android.fragment.TGCachedFragment;
+import app.tuxguitar.android.view.dialog.TGDialogContext;
 
 public abstract class TGModalFragment extends TGCachedFragment {
 

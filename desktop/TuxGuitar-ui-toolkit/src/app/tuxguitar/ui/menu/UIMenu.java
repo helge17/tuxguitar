@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.menu;
+package app.tuxguitar.ui.menu;
 
 import java.util.List;
 
-import org.herac.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.UIComponent;
 
 public interface UIMenu extends UIComponent {
 

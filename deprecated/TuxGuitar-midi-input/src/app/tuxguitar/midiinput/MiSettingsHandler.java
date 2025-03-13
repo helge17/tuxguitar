@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.app.system.plugins.TGPluginSettingsHandler;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class MiSettingsHandler implements TGPluginSettingsHandler {
 

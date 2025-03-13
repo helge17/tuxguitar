@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.menu;
+package app.tuxguitar.ui.swt.menu;
 
 import org.eclipse.swt.widgets.MenuItem;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.menu.UIMenuActionItem;
-import org.herac.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.swt.event.SWTSelectionListenerManager;
 
 public class SWTMenuActionItem extends SWTMenuItem implements UIMenuActionItem {
 

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.ui.swt.appearance;
+package app.tuxguitar.ui.swt.appearance;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.ui.appearance.UIColorAppearance;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public class SWTAppearance implements UIAppearance {
 

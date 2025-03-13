@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.jack.connection;
+package app.tuxguitar.jack.connection;
 
 public class JackConnection {
 

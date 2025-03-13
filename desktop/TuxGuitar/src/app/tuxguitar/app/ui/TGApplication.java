@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.app.ui;
+package app.tuxguitar.app.ui;
 
 import java.util.Iterator;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.ui.UIApplicationFactory;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.appearance.UIAppearance;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGException;
-import org.herac.tuxguitar.util.TGServiceReader;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.ui.UIApplicationFactory;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.appearance.UIAppearance;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGServiceReader;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGApplication {
 

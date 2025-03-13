@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.gm.port;
+package app.tuxguitar.gm.port;
 
 public class GMProgram {
 

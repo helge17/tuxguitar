@@ -1,14 +1,14 @@
-package org.herac.tuxguitar.app.action.impl.view;
+package app.tuxguitar.app.action.impl.view;
 
 import java.util.Iterator;
 import java.util.Map;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.view.controller.TGToggleViewController;
-import org.herac.tuxguitar.app.view.controller.TGViewContext;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.editor.action.TGActionBase;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.view.controller.TGToggleViewController;
+import app.tuxguitar.app.view.controller.TGViewContext;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.util.TGContext;
 
 public class TGToggleViewAction extends TGActionBase {
 

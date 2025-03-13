@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.jack.provider;
+package app.tuxguitar.jack.provider;
 
-import org.herac.tuxguitar.jack.JackClient;
+import app.tuxguitar.jack.JackClient;
 
 public interface JackClientProvider {
 

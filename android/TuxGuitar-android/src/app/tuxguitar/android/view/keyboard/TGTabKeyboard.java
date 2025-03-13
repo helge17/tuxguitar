@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.keyboard;
+package app.tuxguitar.android.view.keyboard;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,24 +6,24 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoDownAction;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoLeftAction;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoRightAction;
-import org.herac.tuxguitar.android.action.impl.caret.TGGoUpAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
-import org.herac.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.application.TGApplicationUtil;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.menu.controller.impl.contextual.TGDurationMenu;
-import org.herac.tuxguitar.editor.action.duration.TGDecrementDurationAction;
-import org.herac.tuxguitar.editor.action.duration.TGIncrementDurationAction;
-import org.herac.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
-import org.herac.tuxguitar.editor.action.note.TGInsertRestBeatAction;
-import org.herac.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.caret.TGGoDownAction;
+import app.tuxguitar.android.action.impl.caret.TGGoLeftAction;
+import app.tuxguitar.android.action.impl.caret.TGGoRightAction;
+import app.tuxguitar.android.action.impl.caret.TGGoUpAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import app.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.application.TGApplicationUtil;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGDurationMenu;
+import app.tuxguitar.editor.action.duration.TGDecrementDurationAction;
+import app.tuxguitar.editor.action.duration.TGIncrementDurationAction;
+import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
+import app.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
+import app.tuxguitar.util.TGContext;
 
 public class TGTabKeyboard extends FrameLayout {
 

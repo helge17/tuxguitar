@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midiinput;
+package app.tuxguitar.midiinput;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
-import org.herac.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.TuxGuitar;
 
 public class MiPortProvider
 {

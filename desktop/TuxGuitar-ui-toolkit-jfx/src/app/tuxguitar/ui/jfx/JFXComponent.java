@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.jfx;
+package app.tuxguitar.ui.jfx;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.UIComponent;
 
 public abstract class JFXComponent<T> implements UIComponent {
 

@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.io.persistence;
+package app.tuxguitar.app.io.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGPersistenceSettingsManager {
 

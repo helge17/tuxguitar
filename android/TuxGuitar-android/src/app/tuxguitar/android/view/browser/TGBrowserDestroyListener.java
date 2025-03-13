@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.android.view.browser;
+package app.tuxguitar.android.view.browser;
 
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.editor.event.TGDestroyEvent;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventException;
-import org.herac.tuxguitar.event.TGEventListener;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.editor.event.TGDestroyEvent;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventException;
+import app.tuxguitar.event.TGEventListener;
 
 public class TGBrowserDestroyListener implements TGEventListener {
 

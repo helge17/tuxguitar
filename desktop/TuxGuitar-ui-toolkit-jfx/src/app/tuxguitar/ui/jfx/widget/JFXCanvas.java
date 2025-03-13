@@ -1,15 +1,15 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
-import org.herac.tuxguitar.ui.event.UIPaintListener;
-import org.herac.tuxguitar.ui.event.UIResizeListener;
-import org.herac.tuxguitar.ui.jfx.event.JFXPaintListenerManager;
-import org.herac.tuxguitar.ui.jfx.event.JFXPaintListenerManagerAsync;
-import org.herac.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
-import org.herac.tuxguitar.ui.jfx.resource.JFXPainter;
-import org.herac.tuxguitar.ui.resource.UIPainter;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.resource.UISize;
-import org.herac.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.event.UIPaintListener;
+import app.tuxguitar.ui.event.UIResizeListener;
+import app.tuxguitar.ui.jfx.event.JFXPaintListenerManager;
+import app.tuxguitar.ui.jfx.event.JFXPaintListenerManagerAsync;
+import app.tuxguitar.ui.jfx.event.JFXResizeListenerManager;
+import app.tuxguitar.ui.jfx.resource.JFXPainter;
+import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.resource.UISize;
+import app.tuxguitar.ui.widget.UICanvas;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Region;

@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.app.action.listener.gui;
+package app.tuxguitar.app.action.listener.gui;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionErrorEvent;
-import org.herac.tuxguitar.action.TGActionPostExecutionEvent;
-import org.herac.tuxguitar.action.TGActionPreExecutionEvent;
-import org.herac.tuxguitar.app.view.main.TGWindow;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionErrorEvent;
+import app.tuxguitar.action.TGActionPostExecutionEvent;
+import app.tuxguitar.action.TGActionPreExecutionEvent;
+import app.tuxguitar.app.view.main.TGWindow;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.util.TGContext;
 
 public class TGActionProcessingListener implements TGEventListener {
 

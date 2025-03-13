@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
-import org.herac.tuxguitar.song.models.TGText;
-import org.herac.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.song.models.TGText;
+import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGTextImpl extends TGText{
 

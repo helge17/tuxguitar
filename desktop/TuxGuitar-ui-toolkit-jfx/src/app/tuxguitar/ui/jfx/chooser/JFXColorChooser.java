@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.ui.jfx.chooser;
+package app.tuxguitar.ui.jfx.chooser;
 
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.chooser.UIColorChooser;
-import org.herac.tuxguitar.ui.chooser.UIColorChooserHandler;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.jfx.resource.JFXColor;
-import org.herac.tuxguitar.ui.jfx.widget.JFXColorPicker;
-import org.herac.tuxguitar.ui.jfx.widget.JFXContainer;
-import org.herac.tuxguitar.ui.jfx.widget.JFXWindow;
-import org.herac.tuxguitar.ui.layout.UITableLayout;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
-import org.herac.tuxguitar.ui.resource.UIRectangle;
-import org.herac.tuxguitar.ui.widget.UIButton;
-import org.herac.tuxguitar.ui.widget.UIPanel;
-import org.herac.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.chooser.UIColorChooser;
+import app.tuxguitar.ui.chooser.UIColorChooserHandler;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.jfx.resource.JFXColor;
+import app.tuxguitar.ui.jfx.widget.JFXColorPicker;
+import app.tuxguitar.ui.jfx.widget.JFXContainer;
+import app.tuxguitar.ui.jfx.widget.JFXWindow;
+import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIRectangle;
+import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIWindow;
 
 public class JFXColorChooser implements UIColorChooser {
 

@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.io.midi;
+package app.tuxguitar.io.midi;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.herac.tuxguitar.io.midi.base.MidiEvent;
-import org.herac.tuxguitar.io.midi.base.MidiMessage;
-import org.herac.tuxguitar.io.midi.base.MidiSequence;
-import org.herac.tuxguitar.io.midi.base.MidiTrack;
+import app.tuxguitar.io.midi.base.MidiEvent;
+import app.tuxguitar.io.midi.base.MidiMessage;
+import app.tuxguitar.io.midi.base.MidiSequence;
+import app.tuxguitar.io.midi.base.MidiTrack;
 
 public class MidiFileWriter implements MidiFileHeader{
 

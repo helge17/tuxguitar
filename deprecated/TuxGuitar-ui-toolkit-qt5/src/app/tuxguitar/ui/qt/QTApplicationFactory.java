@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.ui.qt;
+package app.tuxguitar.ui.qt;
 
-import org.herac.tuxguitar.ui.UIApplication;
-import org.herac.tuxguitar.ui.UIApplicationFactory;
+import app.tuxguitar.ui.UIApplication;
+import app.tuxguitar.ui.UIApplicationFactory;
 
 public class QTApplicationFactory implements UIApplicationFactory {
 

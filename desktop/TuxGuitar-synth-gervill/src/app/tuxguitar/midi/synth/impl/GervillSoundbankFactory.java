@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.midi.synth.impl;
+package app.tuxguitar.midi.synth.impl;
 
 import java.io.File;
 
@@ -7,8 +7,8 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Patch;
 import javax.sound.midi.Soundbank;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGExpressionResolver;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 
 import media.sound.EmergencySoundbank;
 import media.sound.ModelPatch;

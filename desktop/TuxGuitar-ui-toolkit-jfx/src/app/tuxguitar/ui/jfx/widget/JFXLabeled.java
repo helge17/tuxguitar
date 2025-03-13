@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.ui.jfx.widget;
+package app.tuxguitar.ui.jfx.widget;
 
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.Region;
 
-import org.herac.tuxguitar.ui.jfx.property.JFXFontProperty;
-import org.herac.tuxguitar.ui.jfx.property.JFXTextFillProperty;
-import org.herac.tuxguitar.ui.resource.UIColor;
-import org.herac.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.jfx.property.JFXFontProperty;
+import app.tuxguitar.ui.jfx.property.JFXTextFillProperty;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
 
 public class JFXLabeled<T extends Labeled> extends JFXControl<T> {
 

@@ -1,10 +1,10 @@
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.factory.TGFactory;
 
 public abstract class TGChannel {
 

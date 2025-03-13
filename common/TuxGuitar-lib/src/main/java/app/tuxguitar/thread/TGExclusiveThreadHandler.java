@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.thread;
+package app.tuxguitar.thread;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGExclusiveThreadHandler implements TGThreadHandler {
 

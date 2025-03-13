@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.io.tg.v10;
+package app.tuxguitar.io.tg.v10;
 
-import org.herac.tuxguitar.io.base.TGFileFormat;
-import org.herac.tuxguitar.song.factory.TGFactory;
-import org.herac.tuxguitar.song.models.TGDuration;
-import org.herac.tuxguitar.song.models.TGMeasure;
-import org.herac.tuxguitar.song.models.TGVelocities;
-import org.herac.tuxguitar.util.TGVersion;
+import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.util.TGVersion;
 
 public class TGStream {
 

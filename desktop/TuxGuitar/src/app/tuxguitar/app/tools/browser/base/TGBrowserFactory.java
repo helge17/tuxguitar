@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.app.tools.browser.base;
+package app.tuxguitar.app.tools.browser.base;
 
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIImage;
 
 public interface TGBrowserFactory {
 

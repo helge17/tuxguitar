@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.song.models;
+package app.tuxguitar.song.models;
 
 import java.util.Arrays;
 

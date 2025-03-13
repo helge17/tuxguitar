@@ -1,13 +1,13 @@
-package org.herac.tuxguitar.player.impl.midiport.lv2.remote;
+package app.tuxguitar.player.impl.midiport.lv2.remote;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.midi.synth.remote.TGClientStarter;
-import org.herac.tuxguitar.player.impl.midiport.lv2.LV2Settings;
-import org.herac.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGExpressionResolver;
+import app.tuxguitar.midi.synth.remote.TGClientStarter;
+import app.tuxguitar.player.impl.midiport.lv2.LV2Settings;
+import app.tuxguitar.player.impl.midiport.lv2.jni.LV2Plugin;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 
 public class LV2ClientStarter implements TGClientStarter {
 

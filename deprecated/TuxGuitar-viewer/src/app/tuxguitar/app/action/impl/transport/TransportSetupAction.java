@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.app.action.impl.transport;
+package app.tuxguitar.app.action.impl.transport;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -17,12 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.action.impl.ActionDialog;
-import org.herac.tuxguitar.app.system.config.TGConfig;
-import org.herac.tuxguitar.player.base.MidiOutputPort;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.action.impl.ActionDialog;
+import app.tuxguitar.app.system.config.TGConfig;
+import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.util.TGContext;
 
 public class TransportSetupAction extends ActionDialog {
 

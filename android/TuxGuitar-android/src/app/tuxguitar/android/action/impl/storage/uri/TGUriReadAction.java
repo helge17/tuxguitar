@@ -1,17 +1,17 @@
-package org.herac.tuxguitar.android.action.impl.storage.uri;
+package app.tuxguitar.android.action.impl.storage.uri;
 
 import android.app.Activity;
 import android.net.Uri;
 
-import org.herac.tuxguitar.action.TGActionContext;
-import org.herac.tuxguitar.action.TGActionException;
-import org.herac.tuxguitar.action.TGActionManager;
-import org.herac.tuxguitar.android.action.TGActionBase;
-import org.herac.tuxguitar.android.activity.TGActivity;
-import org.herac.tuxguitar.android.util.TGStreamUtil;
-import org.herac.tuxguitar.editor.action.file.TGReadSongAction;
-import org.herac.tuxguitar.io.base.TGFileFormatUtils;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.android.action.TGActionBase;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.util.TGStreamUtil;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.util.TGContext;
 
 import java.io.InputStream;
 

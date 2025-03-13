@@ -1,11 +1,11 @@
-package org.herac.tuxguitar.graphics.control;
+package app.tuxguitar.graphics.control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.resource.UIResource;
+import app.tuxguitar.ui.resource.UIResource;
 
 public class TGResourceBuffer {
 

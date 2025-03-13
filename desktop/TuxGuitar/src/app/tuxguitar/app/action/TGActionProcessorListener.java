@@ -1,21 +1,21 @@
-package org.herac.tuxguitar.app.action;
+package app.tuxguitar.app.action;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.ui.UIComponent;
-import org.herac.tuxguitar.ui.event.UICloseEvent;
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.event.UIEvent;
-import org.herac.tuxguitar.ui.event.UIMouseDoubleClickListener;
-import org.herac.tuxguitar.ui.event.UIMouseDownListener;
-import org.herac.tuxguitar.ui.event.UIMouseEvent;
-import org.herac.tuxguitar.ui.event.UIMouseUpListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.widget.UIRadioButton;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.ui.UIComponent;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UIEvent;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseDownListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.widget.UIRadioButton;
+import app.tuxguitar.util.TGContext;
 
 public class TGActionProcessorListener extends TGActionProcessor implements UISelectionListener, UIMouseUpListener, UIMouseDownListener, UIMouseDoubleClickListener, UICloseListener {
 

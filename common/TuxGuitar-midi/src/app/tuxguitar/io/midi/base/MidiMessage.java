@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.midi.base;
+package app.tuxguitar.io.midi.base;
 
 import java.util.Arrays;
 

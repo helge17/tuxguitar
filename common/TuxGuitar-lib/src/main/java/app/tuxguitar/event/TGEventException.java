@@ -1,6 +1,6 @@
-package org.herac.tuxguitar.event;
+package app.tuxguitar.event;
 
-import org.herac.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGException;
 
 public class TGEventException extends TGException {
 

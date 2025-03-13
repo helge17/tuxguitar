@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.system.icons;
+package app.tuxguitar.app.system.icons;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.herac.tuxguitar.ui.resource.UIImage;
+import app.tuxguitar.ui.resource.UIImage;
 
 public class TGIconTheme {
 

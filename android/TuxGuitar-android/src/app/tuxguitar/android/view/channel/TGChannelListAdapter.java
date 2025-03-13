@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.channel;
+package app.tuxguitar.android.view.channel;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,10 +9,10 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.view.util.TGProcess;
-import org.herac.tuxguitar.android.view.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.view.util.TGProcess;
+import app.tuxguitar.android.view.util.TGSyncProcessLocked;
+import app.tuxguitar.song.models.TGChannel;
 
 import java.util.List;
 

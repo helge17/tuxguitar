@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.jack.synthesizer.settings;
+package app.tuxguitar.jack.synthesizer.settings;
 
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
-import org.herac.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
-import org.herac.tuxguitar.jack.synthesizer.JackSynthesizerPort;
-import org.herac.tuxguitar.player.base.MidiDevice;
-import org.herac.tuxguitar.song.models.TGChannel;
-import org.herac.tuxguitar.song.models.TGSong;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
+import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsHandler;
+import app.tuxguitar.jack.synthesizer.JackSynthesizerPort;
+import app.tuxguitar.player.base.MidiDevice;
+import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class JackChannelSettingsHandler implements TGChannelSettingsHandler{
 

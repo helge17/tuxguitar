@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.player.impl.sequencer;
+package app.tuxguitar.player.impl.sequencer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiPlayerException;
 
 public class MidiTrackController {
 

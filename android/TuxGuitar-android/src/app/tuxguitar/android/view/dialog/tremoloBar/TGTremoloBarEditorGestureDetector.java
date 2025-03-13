@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.view.dialog.tremoloBar;
+package app.tuxguitar.android.view.dialog.tremoloBar;
 
 import android.content.Context;
 import androidx.core.view.GestureDetectorCompat;

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.android.properties;
+package app.tuxguitar.android.properties;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

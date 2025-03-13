@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.printer;
+package app.tuxguitar.ui.qt.printer;
 
-import org.herac.tuxguitar.ui.printer.UIPrinterJob;
-import org.herac.tuxguitar.ui.printer.UIPrinterPage;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.qt.resource.QTPainter;
+import app.tuxguitar.ui.printer.UIPrinterJob;
+import app.tuxguitar.ui.printer.UIPrinterPage;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.qt.resource.QTPainter;
 import io.qt.gui.QPainter;
 
 public class QTPrinterJob extends QTComponent<QTPrinter> implements UIPrinterJob {

@@ -1,4 +1,4 @@
-package org.herac.tuxguitar.io.gpx.score;
+package app.tuxguitar.io.gpx.score;
 
 import java.util.ArrayList;
 import java.util.Iterator;

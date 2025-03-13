@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.qt.event;
+package app.tuxguitar.ui.qt.event;
 
-import org.herac.tuxguitar.ui.event.UIMouseWheelEvent;
-import org.herac.tuxguitar.ui.event.UIMouseWheelListenerManager;
-import org.herac.tuxguitar.ui.qt.QTComponent;
-import org.herac.tuxguitar.ui.resource.UIPosition;
+import app.tuxguitar.ui.event.UIMouseWheelEvent;
+import app.tuxguitar.ui.event.UIMouseWheelListenerManager;
+import app.tuxguitar.ui.qt.QTComponent;
+import app.tuxguitar.ui.resource.UIPosition;
 import org.qtjambi.qt.core.QEvent;
 import org.qtjambi.qt.gui.QWheelEvent;
 

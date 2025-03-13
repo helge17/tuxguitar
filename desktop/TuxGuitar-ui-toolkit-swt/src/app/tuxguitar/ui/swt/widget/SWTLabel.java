@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.ui.swt.widget;
+package app.tuxguitar.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.herac.tuxguitar.ui.widget.UILabel;
+import app.tuxguitar.ui.widget.UILabel;
 
 public class SWTLabel extends SWTControl<Label> implements UILabel {
 

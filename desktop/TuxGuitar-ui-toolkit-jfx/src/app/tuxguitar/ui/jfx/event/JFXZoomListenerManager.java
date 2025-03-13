@@ -1,8 +1,8 @@
-package org.herac.tuxguitar.ui.jfx.event;
+package app.tuxguitar.ui.jfx.event;
 
-import org.herac.tuxguitar.ui.event.UIZoomEvent;
-import org.herac.tuxguitar.ui.event.UIZoomListenerManager;
-import org.herac.tuxguitar.ui.jfx.widget.JFXEventReceiver;
+import app.tuxguitar.ui.event.UIZoomEvent;
+import app.tuxguitar.ui.event.UIZoomListenerManager;
+import app.tuxguitar.ui.jfx.widget.JFXEventReceiver;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.ScrollEvent;

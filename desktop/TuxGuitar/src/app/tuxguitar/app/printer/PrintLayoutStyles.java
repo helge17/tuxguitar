@@ -1,9 +1,9 @@
-package org.herac.tuxguitar.app.printer;
+package app.tuxguitar.app.printer;
 
-import org.herac.tuxguitar.app.system.config.TGConfigKeys;
-import org.herac.tuxguitar.app.system.config.TGConfigManager;
-import org.herac.tuxguitar.graphics.control.TGLayoutStyles;
-import org.herac.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public class PrintLayoutStyles extends TGLayoutStyles {
 

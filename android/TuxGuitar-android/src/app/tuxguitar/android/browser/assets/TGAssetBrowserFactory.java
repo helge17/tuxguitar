@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.android.browser.assets;
+package app.tuxguitar.android.browser.assets;
 
-import org.herac.tuxguitar.android.browser.TGBrowserManager;
-import org.herac.tuxguitar.android.browser.model.TGBrowserException;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactory;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import org.herac.tuxguitar.android.browser.model.TGBrowserSettings;
-import org.herac.tuxguitar.util.TGContext;
+import app.tuxguitar.android.browser.TGBrowserManager;
+import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.android.browser.model.TGBrowserFactory;
+import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
+import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.util.TGContext;
 
 public class TGAssetBrowserFactory implements TGBrowserFactory{
 

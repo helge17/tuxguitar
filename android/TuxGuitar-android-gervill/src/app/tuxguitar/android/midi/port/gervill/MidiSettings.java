@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.android.midi.port.gervill;
+package app.tuxguitar.android.midi.port.gervill;
 
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiSettings {
 

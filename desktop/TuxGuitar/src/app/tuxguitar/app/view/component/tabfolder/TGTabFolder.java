@@ -1,36 +1,36 @@
-package org.herac.tuxguitar.app.view.component.tabfolder;
+package app.tuxguitar.app.view.component.tabfolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.herac.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
-import org.herac.tuxguitar.app.document.TGDocument;
-import org.herac.tuxguitar.app.document.TGDocumentListAttributes;
-import org.herac.tuxguitar.app.document.TGDocumentListManager;
-import org.herac.tuxguitar.app.ui.TGApplication;
-import org.herac.tuxguitar.app.view.component.tab.TGControl;
-import org.herac.tuxguitar.document.TGDocumentContextAttributes;
-import org.herac.tuxguitar.editor.TGEditorManager;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
-import org.herac.tuxguitar.editor.action.file.TGLoadSongAction;
-import org.herac.tuxguitar.editor.event.TGUpdateEvent;
-import org.herac.tuxguitar.editor.util.TGSyncProcessLocked;
-import org.herac.tuxguitar.event.TGEvent;
-import org.herac.tuxguitar.event.TGEventListener;
-import org.herac.tuxguitar.player.base.MidiPlayer;
-import org.herac.tuxguitar.ui.UIFactory;
-import org.herac.tuxguitar.ui.event.UICloseEvent;
-import org.herac.tuxguitar.ui.event.UICloseListener;
-import org.herac.tuxguitar.ui.event.UIFocusEvent;
-import org.herac.tuxguitar.ui.event.UIFocusGainedListener;
-import org.herac.tuxguitar.ui.event.UISelectionEvent;
-import org.herac.tuxguitar.ui.event.UISelectionListener;
-import org.herac.tuxguitar.ui.widget.UIContainer;
-import org.herac.tuxguitar.ui.widget.UITabFolder;
-import org.herac.tuxguitar.ui.widget.UITabItem;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.singleton.TGSingletonFactory;
-import org.herac.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.app.action.impl.file.TGCloseDocumentAction;
+import app.tuxguitar.app.document.TGDocument;
+import app.tuxguitar.app.document.TGDocumentListAttributes;
+import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.view.component.tab.TGControl;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.TGEditorManager;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.file.TGLoadSongAction;
+import app.tuxguitar.editor.event.TGUpdateEvent;
+import app.tuxguitar.editor.util.TGSyncProcessLocked;
+import app.tuxguitar.event.TGEvent;
+import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UIFocusEvent;
+import app.tuxguitar.ui.event.UIFocusGainedListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
+import app.tuxguitar.ui.widget.UIContainer;
+import app.tuxguitar.ui.widget.UITabFolder;
+import app.tuxguitar.ui.widget.UITabItem;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.singleton.TGSingletonFactory;
+import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGTabFolder implements TGEventListener {
 

@@ -1,12 +1,12 @@
-package org.herac.tuxguitar.cocoa.menu;
+package app.tuxguitar.cocoa.menu;
 
-import org.herac.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
-import org.herac.tuxguitar.ui.resource.UIKey;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGKeyBindFormatter;
-import org.herac.tuxguitar.util.TGKeyBindFormatter.TGKeyTranslator;
-import org.herac.tuxguitar.util.plugin.TGPlugin;
-import org.herac.tuxguitar.util.plugin.TGPluginException;
+import app.tuxguitar.cocoa.TGCocoaIntegrationPlugin;
+import app.tuxguitar.ui.resource.UIKey;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGKeyBindFormatter;
+import app.tuxguitar.util.TGKeyBindFormatter.TGKeyTranslator;
+import app.tuxguitar.util.plugin.TGPlugin;
+import app.tuxguitar.util.plugin.TGPluginException;
 
 import java.util.HashMap;
 import java.util.List;

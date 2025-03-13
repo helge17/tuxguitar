@@ -1,16 +1,16 @@
-package org.herac.tuxguitar.android.view.dialog.browser.collection;
+package app.tuxguitar.android.view.dialog.browser.collection;
 
-import org.herac.tuxguitar.android.R;
-import org.herac.tuxguitar.android.action.TGActionProcessorListener;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
-import org.herac.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import org.herac.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
-import org.herac.tuxguitar.android.browser.TGBrowserCollection;
-import org.herac.tuxguitar.android.menu.controller.TGMenuController;
-import org.herac.tuxguitar.android.view.dialog.TGDialogController;
-import org.herac.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import org.herac.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
+import app.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
+import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.view.dialog.TGDialogController;
+import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
+import app.tuxguitar.editor.action.TGActionProcessor;
 
 public class TGBrowserCollectionsActionHandler {
 

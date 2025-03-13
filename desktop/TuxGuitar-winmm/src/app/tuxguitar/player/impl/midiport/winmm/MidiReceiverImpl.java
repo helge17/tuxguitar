@@ -1,7 +1,7 @@
-package org.herac.tuxguitar.player.impl.midiport.winmm;
+package app.tuxguitar.player.impl.midiport.winmm;
 
-import org.herac.tuxguitar.gm.port.GMReceiver;
-import org.herac.tuxguitar.player.base.MidiControllers;
+import app.tuxguitar.gm.port.GMReceiver;
+import app.tuxguitar.player.base.MidiControllers;
 
 public class MidiReceiverImpl implements GMReceiver{
 
