@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
 
-	namespace = 'org.herac.tuxguitar.android.gervill'
+	namespace = 'app.tuxguitar.android.gervill'
 
 	compileSdkVersion 31
 

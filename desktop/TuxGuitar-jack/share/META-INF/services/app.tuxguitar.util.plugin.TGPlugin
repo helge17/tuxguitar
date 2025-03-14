@@ -1,0 +1,4 @@
+app.tuxguitar.jack.singleton.JackSingletonPlugin
+app.tuxguitar.jack.synthesizer.JackOutputPortProviderPlugin
+app.tuxguitar.jack.sequencer.JackSequencerProviderPlugin
+app.tuxguitar.jack.connection.JackConnectionPlugin

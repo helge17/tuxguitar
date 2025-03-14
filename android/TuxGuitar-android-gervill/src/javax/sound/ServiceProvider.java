@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.herac.tuxguitar.resource.TGResourceManager;
-import org.herac.tuxguitar.util.TGContext;
-import org.herac.tuxguitar.util.TGServiceReader;
+import app.tuxguitar.resource.TGResourceManager;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGServiceReader;
 
 public class ServiceProvider {
 

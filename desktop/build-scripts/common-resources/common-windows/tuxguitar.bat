@@ -5,7 +5,7 @@ SET "TG_START=%cd%"
 cd %~dp0
 
 SET "TG_HOME=."
-SET "TG_MAIN_CLASS=org.herac.tuxguitar.app.TGMainSingleton"
+SET "TG_MAIN_CLASS=app.tuxguitar.app.TGMainSingleton"
 
 SET "JAVA=jre\bin\java"
 

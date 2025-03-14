@@ -199,7 +199,7 @@ Path to the `lib` folder is provided to the Java environment by a `classpath` ar
 The procedure described in this section aims at recreating a similar environment for the debug configuration.
 
 Go to Menu Run -> Debug Configurations..., right-click on "Java Application", select "New Configuration" and give your configuration a name.
-In the Main tab, Project section, click on "Browse..." and select "tuxguitar". In the Main class section, click on "Search..." and select "TGMainSingleton - org.herac.tuxguitar.app":
+In the Main tab, Project section, click on "Browse..." and select "tuxguitar". In the Main class section, click on "Search..." and select "TGMainSingleton - app.tuxguitar.app":
 
 <img src="images/contribute/eclipse-debug-main.png" width="50%" alt="Debug configuration - main">
 

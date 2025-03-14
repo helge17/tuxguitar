@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
 
-	namespace = 'org.herac.tuxguitar.android.midi'
+	namespace = 'app.tuxguitar.android.midi'
 
 	compileSdkVersion 31
 

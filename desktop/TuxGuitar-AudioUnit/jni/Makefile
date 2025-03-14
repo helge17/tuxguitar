@@ -6,7 +6,7 @@ LIBRARIES = -framework CoreAudio -framework JavaRuntimeSupport -framework AudioU
 
 LIBRARY = libtuxguitar-audiounit-jni.jnilib
 
-FILENAME = org_herac_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI.cpp
+FILENAME = app_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI.cpp
 
 all:	$(LIBRARY)
 

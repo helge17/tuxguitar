@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--org.herac.tuxguitar.android.view.browser.TGBrowserView-->
-<org.herac.tuxguitar.android.view.browser.TGBrowserView xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--app.tuxguitar.android.view.browser.TGBrowserView-->
+<app.tuxguitar.android.view.browser.TGBrowserView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
@@ -58,4 +58,4 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-</org.herac.tuxguitar.android.view.browser.TGBrowserView>
+</app.tuxguitar.android.view.browser.TGBrowserView>

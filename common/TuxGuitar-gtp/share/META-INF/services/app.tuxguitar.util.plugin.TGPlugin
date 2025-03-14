@@ -1,0 +1,9 @@
+app.tuxguitar.io.gtp.GP1InputStreamPlugin
+app.tuxguitar.io.gtp.GP2InputStreamPlugin
+app.tuxguitar.io.gtp.GP3InputStreamPlugin
+app.tuxguitar.io.gtp.GP4InputStreamPlugin
+app.tuxguitar.io.gtp.GP5InputStreamPlugin
+
+app.tuxguitar.io.gtp.GP3OutputStreamPlugin
+app.tuxguitar.io.gtp.GP4OutputStreamPlugin
+app.tuxguitar.io.gtp.GP5OutputStreamPlugin

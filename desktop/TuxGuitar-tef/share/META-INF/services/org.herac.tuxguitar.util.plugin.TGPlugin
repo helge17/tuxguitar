@@ -1,4 +1,0 @@
-# make sure tef2 is defined BEFORE tef3
-# as tef3 files are recognized by file content, but tef2 files can only be recognized by file extension
-org.herac.tuxguitar.io.tef2.TESongReaderPlugin
-org.herac.tuxguitar.io.tef3.TESongReaderPlugin

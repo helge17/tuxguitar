@@ -10,7 +10,7 @@ CLASSPATH=${CLASSPATH}:${TG_DIR}/lib/*
 CLASSPATH=${CLASSPATH}:${TG_DIR}/share/
 CLASSPATH=${CLASSPATH}:${TG_DIR}/dist/
 ##MAINCLASS
-MAINCLASS=org.herac.tuxguitar.app.TGMainSingleton
+MAINCLASS=app.tuxguitar.app.TGMainSingleton
 ##JVM ARGUMENTS
 VM_ARGS="-Xmx512m"
 ##EXPORT VARS

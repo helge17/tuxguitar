@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
 
-	namespace = 'org.herac.tuxguitar.android.browser.saf'
+	namespace = 'app.tuxguitar.android.browser.saf'
 
 	compileSdkVersion 31
 

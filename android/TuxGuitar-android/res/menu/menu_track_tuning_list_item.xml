@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="org.herac.tuxguitar.android.TGActivity">
+      tools:context="app.tuxguitar.android.TGActivity">
 
     <item
         android:id="@+id/action_track_tuning_list_item_edit"

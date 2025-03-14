@@ -3,7 +3,7 @@
 		http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
-		<groupId>org.herac.tuxguitar</groupId>
+		<groupId>app.tuxguitar</groupId>
 		<version>9.99-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>

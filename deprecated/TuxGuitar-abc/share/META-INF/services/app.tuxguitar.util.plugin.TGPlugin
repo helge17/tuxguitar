@@ -1,0 +1,4 @@
+app.tuxguitar.io.abc.ABCSongWriterPlugin
+app.tuxguitar.io.abc.ABCSongReaderPlugin
+app.tuxguitar.io.abc.ABCSongReaderSettingsHandlerPlugin
+app.tuxguitar.io.abc.ABCSongWriterSettingsHandlerPlugin
