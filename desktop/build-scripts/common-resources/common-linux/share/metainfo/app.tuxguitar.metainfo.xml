@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>ar.com.tuxguitar</id>
+  <id>app.tuxguitar</id>
   <project_license>LGPL-2.1+</project_license>
   <metadata_license>LGPL-2.1+</metadata_license>
   <name>TuxGuitar</name>
