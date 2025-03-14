@@ -2,6 +2,7 @@ package app.tuxguitar.io.ascii;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import app.tuxguitar.song.models.TGChord;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 
@@ -12,6 +13,13 @@ public class ASCIIOutputStream {
 
 	public ASCIIOutputStream(PrintStream stream){
 		this.writer = new PrintWriter(stream);
+	}
+
+	public int drawChord(TGChord chord) {
+		String chordName=(chord!=null ? chord.getName() : "");
+		this.writer.print(chordName);
+		movePoint(getPosX() + chordName.length(),getPosY());
+		return chordName.length();
 	}
 
 	public int drawNote(TGNote note, TGNote nextNote, boolean printNote){
@@ -98,9 +106,15 @@ public class ASCIIOutputStream {
 		this.writer.println(s);
 	}
 
+	public void drawSpace(int numSpaces){
+		movePoint(getPosX() + numSpaces,getPosY());
+		for (int i = 0; i < numSpaces; i++) {
+			this.writer.print(' ');
+		}
+	}
+
 	public void drawSpace(){
-		movePoint(getPosX() + 1,getPosY());
-		this.writer.print(" ");
+		drawSpace(1);
 	}
 
 	private void movePoint(int x,int y){
