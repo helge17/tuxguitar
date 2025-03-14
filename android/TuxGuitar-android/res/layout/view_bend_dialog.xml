@@ -23,7 +23,7 @@
 			android:layout_columnSpan="2"
 			style="?attr/dialogVerticalSpacerStyle" />
 
-		<org.herac.tuxguitar.android.view.dialog.bend.TGBendEditor
+		<app.tuxguitar.android.view.dialog.bend.TGBendEditor
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/bend_dlg_bend_editor"
 			android:layout_width="fill_parent"

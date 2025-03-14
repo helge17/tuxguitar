@@ -8,7 +8,7 @@ LIBRARY_PREFIX?=lib
 LIBRARY_SUFFIX?=.so
 
 LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
-OBJECTS=org_herac_tuxguitar_jack_JackClient.o
+OBJECTS=app_tuxguitar_jack_JackClient.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

@@ -1,4 +1,4 @@
-<org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
+<app.tuxguitar.android.view.keyboard.TGTabKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/tgTabKeyboard"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
@@ -127,4 +127,4 @@
 		</TableRow>
 
 	</TableLayout>
-</org.herac.tuxguitar.android.view.keyboard.TGTabKeyboard>
+</app.tuxguitar.android.view.keyboard.TGTabKeyboard>

@@ -1,0 +1,402 @@
+package app.tuxguitar.android.view.dialog.track;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ListView;
+import android.widget.Spinner;
+
+import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
+import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
+import app.tuxguitar.android.view.dialog.message.TGMessageDialogController;
+import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.track.TGChangeTrackTuningAction;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGTuning;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TGTrackTuningDialog extends TGModalFragment {
+
+	private List<TGTrackTuningModel> tuning;
+	private List<TGTrackTuningPresetModel> tuningPresets;
+	private TGTrackTuningActionHandler actionHandler;
+
+	public TGTrackTuningDialog() {
+		super(R.layout.view_track_tuning_dialog);
+
+		this.tuning = new ArrayList<TGTrackTuningModel>();
+		this.tuningPresets = new ArrayList<TGTrackTuningPresetModel>();
+		this.actionHandler = new TGTrackTuningActionHandler(this);
+	}
+
+	public List<TGTrackTuningModel> getTuning() {
+		return this.tuning;
+	}
+
+	public TGTrackTuningActionHandler getActionHandler() {
+		return this.actionHandler;
+	}
+
+	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		this.createActionBar(true, false, R.string.track_tuning_dlg_title);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+		menuInflater.inflate(R.menu.menu_track_tuning, menu);
+		menu.findItem(R.id.action_add).setOnMenuItemClickListener(TGTrackTuningDialog.this.getActionHandler().createAddTuningModelAction());
+		menu.findItem(R.id.action_ok).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				if( TGTrackTuningDialog.this.updateTrackProperties() ) {
+					TGTrackTuningDialog.this.close();
+				}
+				return true;
+			}
+		});
+	}
+
+	@SuppressLint("InflateParams")
+	public void onPostInflateView() {
+		final TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+		final TGSong song = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		final TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		final boolean percussionChannel = songManager.isPercussionChannel(song, track.getChannelId());
+
+		this.createTuningPresets();
+		this.fillTuningListView();
+		this.fillOffset(track);
+		this.fillPreset();
+
+		this.updateTuningFromTrack(track);
+		this.updateItems(percussionChannel);
+	}
+
+	public TGSelectableItem[] createSelectableIntegers(int minimum, int maximum) {
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
+		for(int value = minimum ; value <= maximum ; value ++) {
+			String label = this.findActivity().getString(R.string.track_tuning_dlg_offset_select_value, value);
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(value), label));
+		}
+
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
+		selectableItems.toArray(builtItems);
+
+		return builtItems;
+	}
+
+	public TGSelectableItem[] createSelectableOffsets() {
+		return this.createSelectableIntegers(TGTrack.MIN_OFFSET, TGTrack.MAX_OFFSET);
+	}
+
+	public TGSelectableItem[] createSelectablePresets() {
+
+		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
+		selectableItems.add(new TGSelectableItem(null, this.findActivity().getString(R.string.track_tuning_dlg_preset_select_value)));
+		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
+			selectableItems.add(new TGSelectableItem(preset, this.createTuningPresetLabel(preset)));
+		}
+
+		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
+		selectableItems.toArray(builtItems);
+
+		return builtItems;
+	}
+
+	public int findSelectedOffset() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_offset_value);
+
+		return ((Integer) ((TGSelectableItem)spinner.getSelectedItem()).getItem()).intValue();
+	}
+
+	public TGTrackTuningPresetModel findSelectedPreset() {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_preset_value);
+
+		return (TGTrackTuningPresetModel) ((TGSelectableItem)spinner.getSelectedItem()).getItem();
+	}
+
+	public Boolean findOptionValue(int optionId) {
+		return Boolean.valueOf(((CheckBox) this.getView().findViewById(optionId)).isChecked());
+	}
+
+	public List<TGString> findSelectedTuning() {
+		TGSongManager songManager = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
+		List<TGString> strings = new ArrayList<TGString>();
+		for(int i = 0; i < this.tuning.size(); i ++) {
+			strings.add(TGSongManager.newString(songManager.getFactory(),(i + 1), this.tuning.get(i).getValue()));
+		}
+		return strings;
+	}
+
+	public void fillTuningListView() {
+		ListView listView = (ListView) this.getView().findViewById(R.id.track_tuning_dlg_list_view);
+		listView.setAdapter(new TGTrackTuningAdapter(this, this.getView().getContext()));
+
+		this.updateTuningListView();
+	}
+
+	public void fillOffset(TGTrack track) {
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableOffsets());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_offset_value);
+		spinner.setAdapter(arrayAdapter);
+		spinner.setSelection(arrayAdapter.getPosition(new TGSelectableItem(Integer.valueOf(track.getOffset()), null)), false);
+	}
+
+	public void fillPreset() {
+		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectablePresets());
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_preset_value);
+		spinner.setAdapter(arrayAdapter);
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+				TGTrackTuningDialog.this.onSelectPreset();
+			}
+
+			public void onNothingSelected(AdapterView<?> adapterView) {}
+		});
+	}
+
+	public void updateItems(boolean percussionChannel) {
+		this.updateOffset(!percussionChannel);
+	}
+
+	public void updateOffset(boolean enabled) {
+		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_offset_value);
+		spinner.setEnabled(enabled);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void updateTuningPresetSelection() {
+		TGTrackTuningPresetModel selection = null;
+		for(TGTrackTuningPresetModel preset : this.tuningPresets) {
+			if( this.isUsingPreset(preset)) {
+				selection = preset;
+			}
+		}
+
+		TGTrackTuningPresetModel currentSelection = this.findSelectedPreset();
+		if( selection != currentSelection ) {
+			Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_preset_value);
+			spinner.setSelection(((ArrayAdapter<TGSelectableItem>) spinner.getAdapter()).getPosition(new TGSelectableItem(selection, null)), false);
+		}
+	}
+
+	private boolean isUsingPreset(TGTrackTuningPresetModel preset) {
+		TGTrackTuningModel[] values = preset.getValues();
+		if( this.tuning.size() == values.length ) {
+			for(int i = 0 ; i < this.tuning.size(); i ++) {
+				if(!this.tuning.get(i).getValue().equals(values[i].getValue())) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public void updateTuningControls() {
+		this.updateTuningListView();
+		this.updateTuningPresetSelection();
+	}
+
+	public void updateTuningListView() {
+		ListView listView = (ListView) this.getView().findViewById(R.id.track_tuning_dlg_list_view);
+		TGTrackTuningAdapter adapter = (TGTrackTuningAdapter) listView.getAdapter();
+
+		adapter.notifyDataSetChanged();
+	}
+
+	public void updateTuningFromTrack(TGTrack track) {
+		this.tuning.clear();
+		for(int i = 0; i < track.stringCount(); i ++) {
+			TGString string = track.getString(i + 1);
+			TGTrackTuningModel model = new TGTrackTuningModel();
+			model.setValue(string.getValue());
+			this.tuning.add(model);
+		}
+		this.updateTuningControls();
+	}
+
+	private void updateTuningFromPreset(TGTrackTuningPresetModel preset) {
+		List<TGTrackTuningModel> models = new ArrayList<TGTrackTuningModel>();
+		for(TGTrackTuningModel presetModel : preset.getValues()) {
+			TGTrackTuningModel model = new TGTrackTuningModel();
+			model.setValue(presetModel.getValue());
+			models.add(model);
+		}
+		this.updateTuningModels(models);
+	}
+
+	public void modifyTuningModel(TGTrackTuningModel model, Integer value) {
+		if( this.tuning.contains(model)) {
+			model.setValue(value);
+			this.updateTuningControls();
+		}
+	}
+
+	public void addTuningModel(TGTrackTuningModel model) {
+		if( this.tuning.add(model)) {
+			this.updateTuningControls();
+		}
+	}
+
+	public void removeTuningModel(TGTrackTuningModel model) {
+		if( this.tuning.remove(model)) {
+			this.updateTuningControls();
+		}
+	}
+
+	public void updateTuningModels(List<TGTrackTuningModel> models) {
+		this.tuning.clear();
+		if( this.tuning.addAll(models)) {
+			this.updateTuningControls();
+		}
+	}
+
+	private void onSelectPreset() {
+		TGTrackTuningPresetModel models = this.findSelectedPreset();
+		if( models != null ) {
+			this.updateTuningFromPreset(models);
+		}
+	}
+
+	public TGTrackTuningPresetModel createTuningPreset(TGTuning tuning) {
+		int[] values = tuning.getValues();
+		TGTrackTuningModel[] models = new TGTrackTuningModel[values.length];
+		for(int i = 0 ; i < models.length; i ++) {
+			models[i] = new TGTrackTuningModel();
+			models[i].setValue(values[i]);
+		}
+		TGTrackTuningPresetModel preset = new TGTrackTuningPresetModel();
+		preset.setName(tuning.getName());
+		preset.setValues(models);
+		return preset;
+	}
+
+	public void createTuningPresets() {
+		this.tuningPresets.clear();
+		for(TGTuning tuningValues : findActivity().getTuningManager().getTgTunings()) {
+			this.tuningPresets.add(this.createTuningPreset(tuningValues));
+		}
+	}
+
+	public String createTuningPresetLabel(TGTrackTuningPresetModel tuningPreset) {
+		return tuningPreset.getName();
+	}
+
+	private boolean hasTuningChanges(List<TGString> newStrings) {
+		TGTrack track = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		if( track != null ) {
+			List<TGString> oldStrings = track.getStrings();
+			//check the number of strings
+			if (oldStrings.size() != newStrings.size()) {
+				return true;
+			}
+			//check the tuning of strings
+			for (int i = 0; i < oldStrings.size(); i++) {
+				TGString oldString = (TGString) oldStrings.get(i);
+				boolean stringExists = false;
+				for (int j = 0; j < newStrings.size(); j++) {
+					TGString newString = (TGString) newStrings.get(j);
+					if (newString.isEqual(oldString)) {
+						stringExists = true;
+					}
+				}
+				if (!stringExists) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean hasOffsetChanges(Integer offset) {
+		TGTrack track = this.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		if( track != null ) {
+			return (offset != null && !offset.equals(track.getOffset()));
+		}
+		return false;
+	}
+
+	public boolean updateTrackProperties() {
+		TGTrack track = getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.findContext(), TGChangeTrackTuningAction.NAME);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
+
+		List<TGString> tuning = this.findSelectedTuning();
+		if( this.validateTrackTuning(tuning)) {
+			if (this.hasTuningChanges(tuning)) {
+				tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, tuning);
+			}
+
+			Integer offset = this.findSelectedOffset();
+			if (this.hasOffsetChanges(offset)) {
+				tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
+			}
+			tgActionProcessor.process();
+
+			return true;
+		}
+		return false;
+	}
+
+	private boolean validateTrackTuning(List<TGString> strings) {
+		if( strings.size() < TGTrack.MIN_STRINGS || strings.size() > TGTrack.MAX_STRINGS ) {
+			showErrorMessage(this.findActivity().getString(R.string.track_tuning_dlg_range_error, TGTrack.MIN_STRINGS, TGTrack.MAX_STRINGS));
+			return false;
+		}
+		return true;
+	}
+
+	public void showErrorMessage(String message) {
+		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.findContext(), TGOpenDialogAction.NAME);
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.findActivity());
+		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGMessageDialogController());
+		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_TITLE, this.findActivity().getString(R.string.track_tuning_dlg_error_title));
+		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE, message);
+		tgActionProcessor.process();
+	}
+
+	public void postModifyTuningModel(final TGTrackTuningModel model, final Integer value) {
+		this.postWhenReady(new Runnable() {
+			public void run() {
+				TGTrackTuningDialog.this.modifyTuningModel(model, value);
+			}
+		});
+	}
+
+	public void postAddTuningModel(final TGTrackTuningModel model) {
+		this.postWhenReady(new Runnable() {
+			public void run() {
+				TGTrackTuningDialog.this.addTuningModel(model);
+			}
+		});
+	}
+
+	public void postRemoveTuningModel(final TGTrackTuningModel model) {
+		this.postWhenReady(new Runnable() {
+			public void run() {
+				TGTrackTuningDialog.this.removeTuningModel(model);
+			}
+		});
+	}
+}
