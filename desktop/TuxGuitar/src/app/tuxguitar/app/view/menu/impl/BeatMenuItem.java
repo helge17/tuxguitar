@@ -13,7 +13,6 @@ import app.tuxguitar.editor.action.note.TGChangePickStrokeDownAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
 import app.tuxguitar.editor.action.note.TGCleanBeatAction;
-import app.tuxguitar.editor.action.note.TGRemoveUnusedVoiceAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceUpAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceDownAction;
@@ -42,7 +41,6 @@ public class BeatMenuItem extends TGMenuItem {
 	private UIMenuActionItem insertRestBeat;
 	private UIMenuActionItem deleteNoteOrRest;
 	private UIMenuActionItem cleanBeat;
-	private UIMenuActionItem removeVoice;
 	private UIMenuActionItem insertText;
 	private UIMenuActionItem voiceAuto;
 	private UIMenuActionItem voiceUp;
@@ -78,11 +76,6 @@ public class BeatMenuItem extends TGMenuItem {
 
 		this.cleanBeat = this.noteMenuItem.getMenu().createActionItem();
 		this.cleanBeat.addSelectionListener(this.createActionProcessor(TGCleanBeatAction.NAME));
-
-		this.noteMenuItem.getMenu().createSeparator();
-
-		this.removeVoice = this.noteMenuItem.getMenu().createActionItem();
-		this.removeVoice.addSelectionListener(this.createActionProcessor(TGRemoveUnusedVoiceAction.NAME));
 
 		this.noteMenuItem.getMenu().createSeparator();
 
@@ -179,7 +172,6 @@ public class BeatMenuItem extends TGMenuItem {
 		this.insertRestBeat.setEnabled(!running);
 		this.deleteNoteOrRest.setEnabled(!running);
 		this.cleanBeat.setEnabled(!running);
-		this.removeVoice.setEnabled(!running);
 		this.voiceAuto.setEnabled(!running && !restBeat);
 		this.voiceUp.setEnabled(!running && !restBeat);
 		this.voiceDown.setEnabled(!running && !restBeat);
@@ -215,7 +207,6 @@ public class BeatMenuItem extends TGMenuItem {
 	public void loadProperties(){
 		setMenuItemTextAndAccelerator(this.noteMenuItem, "beat", null);
 		setMenuItemTextAndAccelerator(this.cleanBeat, "beat.clean", TGCleanBeatAction.NAME);
-		setMenuItemTextAndAccelerator(this.removeVoice, "beat.voice.remove-unused", TGRemoveUnusedVoiceAction.NAME);
 		setMenuItemTextAndAccelerator(this.insertRestBeat, "beat.insert-rest", TGInsertRestBeatAction.NAME);
 		setMenuItemTextAndAccelerator(this.deleteNoteOrRest, "beat.delete-note-or-rest", TGDeleteNoteOrRestAction.NAME);
 		setMenuItemTextAndAccelerator(this.voiceAuto, "beat.voice-auto", TGSetVoiceAutoAction.NAME);

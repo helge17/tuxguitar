@@ -1,4 +1,4 @@
-package app.tuxguitar.editor.action.note;
+package app.tuxguitar.editor.action.measure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import app.tuxguitar.util.TGContext;
 
 public class TGRemoveUnusedVoiceAction extends TGActionBase {
 
-	public static final String NAME = "action.beat.general.remove-unused-voice";
+	public static final String NAME = "action.measure.general.remove-unused-voice";
 
 	public TGRemoveUnusedVoiceAction(TGContext context) {
 		super(context, NAME);
