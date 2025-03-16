@@ -156,6 +156,7 @@ import app.tuxguitar.app.action.listener.cache.controller.TGUpdateModifiedNoteCo
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateModifiedVelocityController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateNoteRangeController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdatePlayerTracksController;
+import app.tuxguitar.app.action.listener.cache.controller.TGUpdateReadSongController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedMeasureController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedTrackController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateSavedSongController;
@@ -322,6 +323,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
 	private static final TGUpdateController UPDATE_SONG_CTL = new TGUpdateSongController();
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
+	private static final TGUpdateController UPDATE_SONG_READ_CTL = new TGUpdateReadSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
 	private static final TGUpdateController UPDATE_NOTE_RANGE_CTL = new TGUpdateNoteRangeController();
@@ -346,7 +348,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
 		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
-		this.map(TGReadSongAction.NAME, LOCKABLE);
+		this.map(TGReadSongAction.NAME, LOCKABLE, UPDATE_SONG_READ_CTL);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
 		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | REQUIRES_VALID_SONG);
