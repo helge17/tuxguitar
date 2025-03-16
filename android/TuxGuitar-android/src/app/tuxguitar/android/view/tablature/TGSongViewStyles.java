@@ -55,6 +55,7 @@ public class TGSongViewStyles extends TGLayoutStyles {
 		this.setForegroundColor( new UIColorModel(0, 0, 0 ));
 		this.setBackgroundColor( new UIColorModel(255, 255, 255 ));
 		this.setLineColor( new UIColorModel(200,200,200 ));
+		this.setLineColorInvalid( new UIColorModel(205,0,0 ));
 		this.setScoreNoteColor( new UIColorModel(105, 105, 105 ) );
 		this.setTabNoteColor( new UIColorModel(105, 105, 105 ) );
 		this.setPlayNoteColor( new UIColorModel(255, 0, 0 ) );
