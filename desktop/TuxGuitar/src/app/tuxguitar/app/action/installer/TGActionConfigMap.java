@@ -317,7 +317,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	public static final int DISABLE_ON_PLAY = 0x08;
 	public static final int STOP_TRANSPORT = 0x10;
 	public static final int SAVE_BEFORE = 0x20;
-	public static final int REQUIRES_VALID_SONG = 0x40;
+	public static final int CONFIRM_IF_INVALID = 0x40;
 
 	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
@@ -351,20 +351,20 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGReadSongAction.NAME, LOCKABLE, UPDATE_SONG_READ_CTL);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
-		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | REQUIRES_VALID_SONG);
-		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | REQUIRES_VALID_SONG);
+		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | CONFIRM_IF_INVALID);
+		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | CONFIRM_IF_INVALID);
 		this.map(TGReadURLAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGImportSongAction.NAME, LOCKABLE);
-		this.map(TGExportSongAction.NAME, LOCKABLE | REQUIRES_VALID_SONG);
+		this.map(TGExportSongAction.NAME, LOCKABLE | CONFIRM_IF_INVALID);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
 		this.map(TGCloseDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGExitAction.NAME, LOCKABLE | SYNC_THREAD);
-		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT | REQUIRES_VALID_SONG);
-		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT | REQUIRES_VALID_SONG);
+		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT | CONFIRM_IF_INVALID);
+		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT | CONFIRM_IF_INVALID);
 
 		//edit actions
 		this.map(TGCutAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
@@ -666,7 +666,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		tgActionConfig.setSyncThread((flags & SYNC_THREAD) != 0);
 		tgActionConfig.setUnsavedInterceptor((flags & SAVE_BEFORE) != 0);
 		tgActionConfig.setDocumentModifier(undoableController != null);
-		tgActionConfig.setInvalidSongInterceptor((flags & REQUIRES_VALID_SONG) != 0);
+		tgActionConfig.setInvalidSongInterceptor((flags & CONFIRM_IF_INVALID) != 0);
 
 		this.set(actionId, tgActionConfig);
 	}
