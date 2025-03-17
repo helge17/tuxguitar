@@ -35,9 +35,10 @@ public class TGUpdateDragSelectionAction extends TGActionBase {
 			if (!selector.isActive() && tablature.getCaret().getSelectedBeat() != null) {
 				selector.initializeSelection(tablature.getCaret().getSelectedBeat());
 			}
-            context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, true);
+			context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, true);
 			actionManager.execute(TGMoveToAction.NAME, context);
-			if (selector.getStartBeat() != null && beat.getMeasure().getTrack() == selector.getStartBeat().getMeasure().getTrack() 
+			if (selector.getStartBeat() != null
+					&& beat.getMeasure().getTrack() == selector.getStartBeat().getMeasure().getTrack()
 					&& (selector.isActive() || editorKit.isMinDragWidthReached(context))) {
 				selector.updateSelection(beat);
 			}
