@@ -19,7 +19,6 @@ import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
 import app.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
 import app.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
-import app.tuxguitar.editor.action.note.TGRemoveUnusedVoiceAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceUpAction;
@@ -55,7 +54,6 @@ public class TGBeatMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_insert_rest_beat, this.createActionProcessor(TGInsertRestBeatAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_move_beats_left, this.createActionProcessor(TGMoveBeatsLeftAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_move_beats_right, this.createActionProcessor(TGMoveBeatsRightAction.NAME), !running);
-		this.initializeItem(menu, R.id.action_remove_unused_voice, this.createActionProcessor(TGRemoveUnusedVoiceAction.NAME), !running);
 		this.initializeItem(menu, R.id.action_set_voice_auto, this.createActionProcessor(TGSetVoiceAutoAction.NAME), (!running && !restBeat));
 		this.initializeItem(menu, R.id.action_set_voice_down, this.createActionProcessor(TGSetVoiceDownAction.NAME), (!running && !restBeat));
 		this.initializeItem(menu, R.id.action_set_voice_up, this.createActionProcessor(TGSetVoiceUpAction.NAME), (!running && !restBeat));

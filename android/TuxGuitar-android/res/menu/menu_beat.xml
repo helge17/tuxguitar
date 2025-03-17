@@ -17,9 +17,6 @@
         android:id="@+id/action_clean_beat"
         android:title="@string/action_clean_beat"/>
     <item
-        android:id="@+id/action_remove_unused_voice"
-        android:title="@string/action_remove_unused_voice"/>
-    <item
         android:id="@+id/action_change_text"
         android:title="@string/action_change_text"/>
     <item
