@@ -14,6 +14,7 @@ public class GPXBeat {
 	private String fadding;
 	private String text;
 	private Integer chordId;
+	private String graceNotes;
 
 	private boolean whammyBarEnabled;
 	private Integer whammyBarOriginValue;
@@ -31,6 +32,7 @@ public class GPXBeat {
 		this.brush = new String();
 		this.pickStroke = new String();
 		this.text = new String();
+		this.graceNotes = new String();
 	}
 
 	public int getId() {
@@ -127,6 +129,14 @@ public class GPXBeat {
 
 	public void setChordId(Integer chordId) {
 		this.chordId = chordId;
+	}
+
+	public String getGraceNotes() {
+		return graceNotes;
+	}
+
+	public void setGraceNotes(String graceNotes) {
+		this.graceNotes = graceNotes;
 	}
 
 	public boolean isWhammyBarEnabled() {

@@ -337,6 +337,7 @@ public class GPXDocumentReader {
 					beat.setNoteIds( getChildNodeIntegerContentArray(beatNode, "Notes"));
 					beat.setChordId( getChildNodeIntegerContent(beatNode, "Chord", null));
 					beat.setFadding( getChildNodeContent(beatNode, "Fadding"));
+					beat.setGraceNotes( getChildNodeContent(beatNode, "GraceNotes"));
 
 					NodeList propertyNodes = getChildNodeList(beatNode, "Properties");
 					if( propertyNodes != null ){
