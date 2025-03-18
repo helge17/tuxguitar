@@ -560,8 +560,12 @@ public class GPXDocumentParser {
 
 	private TGEffectGrace parseGraceNotes(GPXBeat previousBeat, List<GPXNote> previousBeatGraceNotes, GPXNote currentBeatNote, TGVoice tgVoice){
 		TGEffectGrace graceEffect = null;
-		String graceNoteType = previousBeat.getGraceNotes();
 
+		if (previousBeat == null){
+			return graceEffect;
+		}
+
+		String graceNoteType = previousBeat.getGraceNotes();
 		if (graceNoteType != null){
 			GPXNote previousBeatGraceNote = null;
 			for (int i = 0; i < previousBeatGraceNotes.size(); i++){
