@@ -281,21 +281,23 @@ public class GPXDocumentParser {
 								// In this case, we treat the second grace note beat as a real note.
 								if (previousBeatGraceNotes == null){
 									previousBeatGraceNotes = new ArrayList<>();
-
-									for (int n = 0; n < beat.getNoteIds().length; n++){
-										GPXNote gpNote = this.document.getNote( beat.getNoteIds()[n] );
-	
-										if (gpNote == null){
-											continue;
-										}
-
-										previousBeatGraceNotes.add(gpNote);
-									}
-	
-									previousBeat = beat;
-									this.parseRhythm(gpRhythm, previousBeatDuration);
-									continue;
+								}else{
+									previousBeatGraceNotes.clear();
 								}
+
+								for (int n = 0; n < beat.getNoteIds().length; n++){
+									GPXNote gpNote = this.document.getNote( beat.getNoteIds()[n] );
+
+									if (gpNote == null){
+										continue;
+									}
+
+									previousBeatGraceNotes.add(gpNote);
+								}
+
+								previousBeat = beat;
+								this.parseRhythm(gpRhythm, previousBeatDuration);
+								continue;
 							}
 
 							TGBeat tgBeat = getBeat(tgMeasure, tgStart);
