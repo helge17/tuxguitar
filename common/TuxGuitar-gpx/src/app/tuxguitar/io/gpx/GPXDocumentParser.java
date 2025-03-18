@@ -266,6 +266,7 @@ public class GPXDocumentParser {
 
 						GPXBeat previousBeat = null;
 						List<GPXNote> previousBeatGraceNotes = null;
+						TGDuration previousBeatDuration = this.factory.newDuration();
 						for( int b = 0 ; b < voice.getBeatIds().length ; b ++){
 							GPXBeat beat = this.document.getBeat( voice.getBeatIds()[b] );
 							GPXRhythm gpRhythm = this.document.getRhythm( beat.getRhythmId() );
@@ -287,11 +288,12 @@ public class GPXDocumentParser {
 										if (gpNote == null){
 											continue;
 										}
-	
+
 										previousBeatGraceNotes.add(gpNote);
 									}
 	
 									previousBeat = beat;
+									parseRhythm(gpRhythm, previousBeatDuration);
 									continue;
 								}
 							}
@@ -335,7 +337,7 @@ public class GPXDocumentParser {
 								for( int n = 0 ; n < beat.getNoteIds().length; n ++ ){
 									GPXNote gpNote = this.document.getNote( beat.getNoteIds()[n] );
 									if( gpNote != null ){
-										this.parseNote(gpNote, tgVoice, tgVelocity, beat, previousBeat, previousBeatGraceNotes);
+										this.parseNote(gpNote, tgVoice, tgVelocity, beat, previousBeat, previousBeatGraceNotes, previousBeatDuration);
 									}
 								}
 							}
@@ -343,6 +345,7 @@ public class GPXDocumentParser {
 							tgStart += tgVoice.getDuration().getTime();
 							previousBeat = beat;
 							previousBeatGraceNotes = null;
+							parseRhythm(gpRhythm, previousBeatDuration);
 						}
 					}
 				}
@@ -354,7 +357,7 @@ public class GPXDocumentParser {
 		}
 	}
 
-	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity, GPXBeat gpBeat, GPXBeat gpPreviousBeat, List<GPXNote> gpPreviousBeatGraceNotes){
+	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity, GPXBeat gpBeat, GPXBeat gpPreviousBeat, List<GPXNote> gpPreviousBeatGraceNotes, TGDuration previousBeatDuration){
 		int tgValue = -1;
 		int tgString = -1;
 
@@ -409,7 +412,7 @@ public class GPXDocumentParser {
 			tgNote.getEffect().setHarmonic(parseHarmonic( gpNote ) );
 			tgNote.getEffect().setBend(parseBend( gpNote ) );
 			tgNote.getEffect().setTremoloBar(parseTremoloBar( gpBeat ));
-			tgNote.getEffect().setGrace(parseGraceNotes(gpPreviousBeat, gpPreviousBeatGraceNotes, gpNote, tgVoice));
+			tgNote.getEffect().setGrace(parseGraceNotes(gpPreviousBeat, gpPreviousBeatGraceNotes, previousBeatDuration, gpNote));
 
 			tgVoice.addNote( tgNote );
 		}
@@ -558,10 +561,10 @@ public class GPXDocumentParser {
 		return tremoloBar;
 	}
 
-	private TGEffectGrace parseGraceNotes(GPXBeat previousBeat, List<GPXNote> previousBeatGraceNotes, GPXNote currentBeatNote, TGVoice tgVoice){
+	private TGEffectGrace parseGraceNotes(GPXBeat previousBeat, List<GPXNote> previousBeatGraceNotes, TGDuration previousBeatDuration, GPXNote currentBeatNote){
 		TGEffectGrace graceEffect = null;
 
-		if (previousBeat == null){
+		if (previousBeat == null || previousBeatDuration == null){
 			return graceEffect;
 		}
 
@@ -577,7 +580,7 @@ public class GPXDocumentParser {
 			}
 
 
-			if (previousBeatGraceNote == null) {
+			if (previousBeatGraceNote == null){
 				return graceEffect;
 			}
 
@@ -589,8 +592,7 @@ public class GPXDocumentParser {
 				graceEffect.setOnBeat(false);
 			}
 
-			switch (tgVoice.getDuration().getValue())
-			{
+			switch (previousBeatDuration.getValue()){
 				case TGDuration.SIXTEENTH:
 					graceEffect.setDuration(TGEffectGrace.DURATION_SIXTEENTH);
 					break;
