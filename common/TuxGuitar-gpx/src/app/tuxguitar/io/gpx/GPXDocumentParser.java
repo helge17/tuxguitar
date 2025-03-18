@@ -293,7 +293,7 @@ public class GPXDocumentParser {
 									}
 	
 									previousBeat = beat;
-									parseRhythm(gpRhythm, previousBeatDuration);
+									this.parseRhythm(gpRhythm, previousBeatDuration);
 									continue;
 								}
 							}
@@ -345,7 +345,7 @@ public class GPXDocumentParser {
 							tgStart += tgVoice.getDuration().getTime();
 							previousBeat = beat;
 							previousBeatGraceNotes = null;
-							parseRhythm(gpRhythm, previousBeatDuration);
+							previousBeatDuration = tgVoice.getDuration();
 						}
 					}
 				}
@@ -572,8 +572,7 @@ public class GPXDocumentParser {
 		if (graceNoteType != null){
 			GPXNote previousBeatGraceNote = null;
 			for (int i = 0; i < previousBeatGraceNotes.size(); i++){
-				if (previousBeatGraceNotes.get(i).getString() == currentBeatNote.getString())
-				{
+				if (previousBeatGraceNotes.get(i).getString() == currentBeatNote.getString()){
 					previousBeatGraceNote = previousBeatGraceNotes.get(i);
 					break;
 				}
