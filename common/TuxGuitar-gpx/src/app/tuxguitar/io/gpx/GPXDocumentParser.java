@@ -1,5 +1,6 @@
 package app.tuxguitar.io.gpx;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVelocities;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
@@ -261,9 +263,42 @@ public class GPXDocumentParser {
 					GPXVoice voice = this.document.getVoice( voiceIds[v] );
 					if( voice != null ){
 						long tgStart = tgMeasure.getStart();
+
+						GPXBeat previousBeat = null;
+						List<GPXNote> previousBeatGraceNotes = null;
+						TGDuration previousBeatDuration = this.factory.newDuration();
 						for( int b = 0 ; b < voice.getBeatIds().length ; b ++){
 							GPXBeat beat = this.document.getBeat( voice.getBeatIds()[b] );
 							GPXRhythm gpRhythm = this.document.getRhythm( beat.getRhythmId() );
+
+							// Grace notes in GPX are on a separate beat.
+							// For us, grace notes are on the same beat as the next note.
+							// So we need to read the grace GPXNotes here, but need to use them on the next beat
+							if (beat.getGraceNotes() != null)
+							{
+								// We need to ensure we only skip grace notes if the previous beat was not grace notes
+								// GPX supports multiple back-to-back beats being grace notes, while we do not.
+								// In this case, we treat the second grace note beat as a real note.
+								if (previousBeatGraceNotes == null){
+									previousBeatGraceNotes = new ArrayList<>();
+								}else{
+									previousBeatGraceNotes.clear();
+								}
+
+								for (int n = 0; n < beat.getNoteIds().length; n++){
+									GPXNote gpNote = this.document.getNote( beat.getNoteIds()[n] );
+
+									if (gpNote == null){
+										continue;
+									}
+
+									previousBeatGraceNotes.add(gpNote);
+								}
+
+								previousBeat = beat;
+								this.parseRhythm(gpRhythm, previousBeatDuration);
+								continue;
+							}
 
 							TGBeat tgBeat = getBeat(tgMeasure, tgStart);
 							TGVoice tgVoice = tgBeat.getVoice( v % tgBeat.countVoices() );
@@ -304,12 +339,15 @@ public class GPXDocumentParser {
 								for( int n = 0 ; n < beat.getNoteIds().length; n ++ ){
 									GPXNote gpNote = this.document.getNote( beat.getNoteIds()[n] );
 									if( gpNote != null ){
-										this.parseNote(gpNote, tgVoice, tgVelocity, beat);
+										this.parseNote(gpNote, tgVoice, tgVelocity, beat, previousBeat, previousBeatGraceNotes, previousBeatDuration);
 									}
 								}
 							}
 
 							tgStart += tgVoice.getDuration().getTime();
+							previousBeat = beat;
+							previousBeatGraceNotes = null;
+							previousBeatDuration = tgVoice.getDuration();
 						}
 					}
 				}
@@ -321,7 +359,7 @@ public class GPXDocumentParser {
 		}
 	}
 
-	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity, GPXBeat gpBeat){
+	private void parseNote(GPXNote gpNote, TGVoice tgVoice, int tgVelocity, GPXBeat gpBeat, GPXBeat gpPreviousBeat, List<GPXNote> gpPreviousBeatGraceNotes, TGDuration previousBeatDuration){
 		int tgValue = -1;
 		int tgString = -1;
 
@@ -376,6 +414,7 @@ public class GPXDocumentParser {
 			tgNote.getEffect().setHarmonic(parseHarmonic( gpNote ) );
 			tgNote.getEffect().setBend(parseBend( gpNote ) );
 			tgNote.getEffect().setTremoloBar(parseTremoloBar( gpBeat ));
+			tgNote.getEffect().setGrace(parseGraceNotes(gpPreviousBeat, gpPreviousBeatGraceNotes, previousBeatDuration, gpNote));
 
 			tgVoice.addNote( tgNote );
 		}
@@ -522,6 +561,67 @@ public class GPXDocumentParser {
 			tremoloBar.addPoint(TGEffectTremoloBar.MAX_POSITION_LENGTH, parseTremoloBarValue(beat.getWhammyBarDestinationValue()));
 		}
 		return tremoloBar;
+	}
+
+	private TGEffectGrace parseGraceNotes(GPXBeat previousBeat, List<GPXNote> previousBeatGraceNotes, TGDuration previousBeatDuration, GPXNote currentBeatNote){
+		TGEffectGrace graceEffect = null;
+
+		if (previousBeat == null || previousBeatDuration == null){
+			return graceEffect;
+		}
+
+		String graceNoteType = previousBeat.getGraceNotes();
+		if (graceNoteType != null){
+			GPXNote previousBeatGraceNote = null;
+			for (int i = 0; i < previousBeatGraceNotes.size(); i++){
+				if (previousBeatGraceNotes.get(i).getString() == currentBeatNote.getString()){
+					previousBeatGraceNote = previousBeatGraceNotes.get(i);
+					break;
+				}
+			}
+
+
+			if (previousBeatGraceNote == null){
+				return graceEffect;
+			}
+
+			graceEffect = this.factory.newEffectGrace();
+
+			if (graceNoteType.equals("OnBeat")){
+				graceEffect.setOnBeat(true);
+			} else if (graceNoteType.equals("BeforeBeat")){
+				graceEffect.setOnBeat(false);
+			}
+
+			switch (previousBeatDuration.getValue()){
+				case TGDuration.SIXTEENTH:
+					graceEffect.setDuration(TGEffectGrace.DURATION_SIXTEENTH);
+					break;
+				case TGDuration.THIRTY_SECOND:
+					graceEffect.setDuration(TGEffectGrace.DURATION_THIRTY_SECOND);
+					break;
+				case TGDuration.SIXTY_FOURTH:
+				default:
+					graceEffect.setDuration(TGEffectGrace.DURATION_SIXTY_FOURTH);
+					break;
+			}
+
+			int graceTransition = TGEffectGrace.TRANSITION_NONE;
+			if (previousBeatGraceNote.isBendEnabled()){
+				graceTransition = TGEffectGrace.TRANSITION_BEND;
+			} else if (previousBeatGraceNote.isSlide()){
+				graceTransition = TGEffectGrace.TRANSITION_SLIDE;
+			} else if (previousBeatGraceNote.isHammer()){
+				graceTransition = TGEffectGrace.TRANSITION_HAMMER;
+			}
+			graceEffect.setTransition(graceTransition);
+
+			graceEffect.setDead(previousBeatGraceNote.isMutedEnabled());
+			graceEffect.setDynamic(parseDynamic(previousBeat));
+			graceEffect.setFret(previousBeatGraceNote.getFret());
+		}
+
+		return graceEffect;
 	}
 
 	private int parseTremoloBarValue( Integer gpValue ){
