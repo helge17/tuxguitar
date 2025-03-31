@@ -22,7 +22,7 @@ public class TGChangeTempoRangeAction extends TGActionBase {
 	public static final String ATTRIBUTE_TEMPO_BASE = "tempoBase";
 	public static final String ATTRIBUTE_TEMPO_BASE_DOTTED = "tempoBaseDotted";
 
-	public static final int MIN_TEMPO = 30;
+	public static final int MIN_TEMPO = 1;
 	public static final int MAX_TEMPO = 320;
 
 	public static final int APPLY_TO_ALL = 1;
@@ -38,7 +38,7 @@ public class TGChangeTempoRangeAction extends TGActionBase {
 		int tempoValue = ((Integer) context.getAttribute(ATTRIBUTE_TEMPO)).intValue();
 		int tempoBase = ((Integer) context.getAttribute(ATTRIBUTE_TEMPO_BASE)).intValue();
 		boolean tempoBaseDotted = ((Boolean) context.getAttribute(ATTRIBUTE_TEMPO_BASE_DOTTED)).booleanValue();
-		if( tempoValue >= MIN_TEMPO && MAX_TEMPO <= 320 ){
+		if( tempoValue >= MIN_TEMPO && tempoValue <= MAX_TEMPO ){
 			TGSongManager tgSongManager = getSongManager(context);
 			TGSong tgSong = ((TGSong) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG));
 			TGMeasureHeader tgHeader = (TGMeasureHeader) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
