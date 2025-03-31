@@ -43,7 +43,7 @@ public class ABCTempo {
 	 */
 	public ABCTempo(String string) {
 		this.value=120;
-		if(string.indexOf("larghissimo")>=0) this.value=20;
+		if(string.indexOf("larghissimo")>=0) this.value=1;
 		else if(string.indexOf("grave")>=0) this.value=40;
 		else if(string.indexOf("lento")>=0) this.value=50;
 		else if(string.indexOf("largo")>=0) this.value=60;
