@@ -26,7 +26,7 @@ public class Selector {
 	private boolean active;
 
 	public Selector(Tablature tablature) {
-	    this.tablature = tablature;
+		this.tablature = tablature;
 	}
 
 	public void initializeSelection(TGBeat beat) {
@@ -39,11 +39,12 @@ public class Selector {
 	}
 
 	public void updateSelection(TGBeat beat) {
-	    if (initial == null || beat == null) {
-	    	initializeSelection(beat);
+		if (initial == null || beat == null) {
+			initializeSelection(beat);
 		} else {
-    		active = true;
-			if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber() || initialIsEarlierInTheSameMeasure(beat)) {
+			active = true;
+			if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber()
+					|| initialIsEarlierInTheSameMeasure(beat)) {
 				start = initial;
 				end = beat;
 			} else {
@@ -59,7 +60,8 @@ public class Selector {
 	}
 
 	private boolean initialIsEarlierInTheSameMeasure(TGBeat beat) {
-		return initial.getMeasure().getNumber() == beat.getMeasure().getNumber() && initial.getStart() < beat.getStart();
+		return initial.getMeasure().getNumber() == beat.getMeasure().getNumber()
+				&& initial.getStart() < beat.getStart();
 	}
 
 	public TGBeat getInitialBeat() {
@@ -83,7 +85,7 @@ public class Selector {
 			int activeTrackNumber = tablature.getTrackSelection();
 			TGTrackImpl track = (TGTrackImpl) initial.getMeasure().getTrack();
 			// paint only if track is displayed
-			if (activeTrackNumber < 0 || (activeTrackNumber==track.getNumber())) {
+			if (activeTrackNumber < 0 || (activeTrackNumber == track.getNumber())) {
 				track.paintBeatSelection(viewLayout, painter, start, end);
 			}
 		}
@@ -98,7 +100,7 @@ public class Selector {
 			return TGBeatRange.empty();
 		}
 		List<TGBeat> beats = new ArrayList<>();
-		for (TGBeatRangeIterator it = new TGBeatRangeIterator(start, end); it.hasNext(); ) {
+		for (TGBeatRangeIterator it = new TGBeatRangeIterator(start, end); it.hasNext();) {
 			beats.add(it.next());
 		}
 		return new TGBeatRange(beats);
@@ -106,7 +108,8 @@ public class Selector {
 
 	private void saveState() {
 		TGDocumentListManager documents = TGDocumentListManager.getInstance(this.tablature.getContext());
-		TGDocument document = this.initial == null ? documents.findCurrentDocument() : documents.findDocument(this.initial.getMeasure().getTrack().getSong());
+		TGDocument document = this.initial == null ? documents.findCurrentDocument()
+				: documents.findDocument(this.initial.getMeasure().getTrack().getSong());
 		if (isActive()) {
 			document.setSelectionStart(this.getStartBeat());
 			document.setSelectionEnd(this.getEndBeat());
@@ -119,7 +122,7 @@ public class Selector {
 	public void restoreStateFrom(TGDocument document) {
 		TGBeat start = document.getSelectionStart();
 		TGBeat end = document.getSelectionEnd();
-		if ((start!=null) && (end!=null)) {
+		if ((start != null) && (end != null)) {
 			this.initializeSelection(start);
 			this.updateSelection(end);
 		} else {

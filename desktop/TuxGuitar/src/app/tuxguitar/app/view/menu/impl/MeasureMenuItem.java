@@ -12,6 +12,7 @@ import app.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import app.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
 import app.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
 import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.editor.action.measure.TGRemoveUnusedVoiceAction;
 import app.tuxguitar.editor.clipboard.TGClipboard;
 import app.tuxguitar.graphics.control.TGMeasureImpl;
 import app.tuxguitar.ui.menu.UIMenu;
@@ -32,6 +33,7 @@ public class MeasureMenuItem extends TGMenuItem {
 	private UIMenuActionItem removeMeasure;
 	private UIMenuActionItem copyMeasure;
 	private UIMenuActionItem pasteMeasure;
+	private UIMenuActionItem removeVoice;
 
 	public MeasureMenuItem(UIMenu parent) {
 		this.measureMenuItem = parent.createSubMenuItem();
@@ -87,6 +89,13 @@ public class MeasureMenuItem extends TGMenuItem {
 		this.pasteMeasure = this.measureMenuItem.getMenu().createActionItem();
 		this.pasteMeasure.addSelectionListener(this.createActionProcessor(TGOpenMeasurePasteDialogAction.NAME));
 
+		//--SEPARATOR--
+		this.measureMenuItem.getMenu().createSeparator();
+
+		// -- REMOVE UNUSED VOICE --
+		this.removeVoice = this.measureMenuItem.getMenu().createActionItem();
+		this.removeVoice.addSelectionListener(this.createActionProcessor(TGRemoveUnusedVoiceAction.NAME));
+
 		this.loadIcons();
 		this.loadProperties();
 	}
@@ -107,6 +116,7 @@ public class MeasureMenuItem extends TGMenuItem {
 		this.removeMeasure.setEnabled(!running);
 		this.copyMeasure.setEnabled(!running);
 		this.pasteMeasure.setEnabled(!running && TGClipboard.getInstance(findContext()).getSegment() != null);
+		this.removeVoice.setEnabled(!running);
 	}
 
 	public void loadProperties(){
@@ -121,6 +131,7 @@ public class MeasureMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.removeMeasure, "measure.remove", TGOpenMeasureRemoveDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.copyMeasure, "measure.copy", TGOpenMeasureCopyDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.pasteMeasure, "measure.paste", TGOpenMeasurePasteDialogAction.NAME);
+		setMenuItemTextAndAccelerator(this.removeVoice, "measure.voice.remove-unused", TGRemoveUnusedVoiceAction.NAME);
 	}
 
 	public void loadIcons(){

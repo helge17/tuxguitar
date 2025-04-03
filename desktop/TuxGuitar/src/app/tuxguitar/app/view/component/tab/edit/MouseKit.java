@@ -29,6 +29,10 @@ public class MouseKit implements UIMouseDownListener, UIMouseUpListener, UIMouse
 		this.menuOpen = false;
 	}
 
+	public Float getStartPositionX() {
+		return this.startPosition == null ? null : this.startPosition.getX();
+	}
+	
 	public boolean isBusy() {
 		TGContext context = this.kit.getTablature().getContext();
 		return (TGEditorManager.getInstance(context).isLocked() || MidiPlayer.getInstance(context).isRunning());
