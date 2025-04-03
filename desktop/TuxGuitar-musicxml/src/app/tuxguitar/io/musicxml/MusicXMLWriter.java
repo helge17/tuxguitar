@@ -321,9 +321,9 @@ public class MusicXMLWriter{
 			this.addAttribute(stringNode, "line", Integer.toString( (track.stringCount() - string.getNumber()) + 1 ) );
 			this.writeNote(stringNode, "tuning-", string.getValue(), keySignature);
 		}
-		// MusicXML 4.0 defines capo's as offsets that are non-negative.
+		// MusicXML 4.0 defines capos as offsets that are non-negative.
 		int trackOffset = track.getOffset();
-		if (trackOffset >= 0){
+		if (trackOffset > 0){
 			this.addNode(staffDetailsNode, "capo", Integer.toString( trackOffset ));
 		}
 	}
