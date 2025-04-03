@@ -81,10 +81,43 @@ public class ASCIITabOutputStream {
 		while(!eof){
 			this.out.nextLine();
 			int index = nextMeasure;
+			int measureCount = track.countMeasures();
+
+			// draw chord names
+			this.out.drawTuneSegment("",maxTuningLength);
+			for(int j = index; j < measureCount; j++){
+				TGMeasure measure = track.getMeasure(j);
+
+				// drawMeasure
+				this.out.drawSpace(); // one space for bar segment
+				this.out.drawSpace(); // one space for one string segment
+				TGBeat beat = this.manager.getMeasureManager().getFirstBeat( measure.getBeats() );
+				while(beat != null){
+					TGBeat nextBeat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
+					int maxOutLength=getMaxOutLength(beat, nextBeat, track.getStrings().size());
+					int outLength = this.out.drawChord(beat.getChord());
+
+					long length = (nextBeat != null ? nextBeat.getStart() - beat.getStart() : (measure.getStart() + measure.getLength()) - beat.getStart());
+					int beatWidth=getDurationScaping(length);
+					if (beatWidth<=maxOutLength) {
+						beatWidth=maxOutLength+1;
+					}
+					this.out.drawSpace(beatWidth - outLength);
+					beat = nextBeat;
+				}
+
+				//Si se supero el ancho maximo, bajo de linea
+				if(this.out.getPosX() > MAX_LINE_LENGTH){
+					break;
+				}
+			}
+			this.out.nextLine();
+
+			// draw strings
 			for(int currentString = 0; currentString < track.getStrings().size();currentString++){
 				//Dibujo la afinacion de la cuerda
 				this.out.drawTuneSegment(tuning[currentString],maxTuningLength);
-				int measureCount = track.countMeasures();
+
 				for(int j = index; j < measureCount; j++){
 					TGMeasure measure = track.getMeasure(j);
 					drawMeasure(measure,currentString, track.getStrings().size());
@@ -107,6 +140,20 @@ public class ASCIITabOutputStream {
 		this.out.nextLine();
 	}
 
+	private int getMaxOutLength(TGBeat beat, TGBeat nextBeat, int stringCount) {
+		int maxOutLength=(beat.getChord() !=null ? beat.getChord().getName().length() : 0);
+		for(int checkedString = 0; checkedString < stringCount;checkedString++){
+			int checkedOutLength=this.out.drawNote(
+					this.manager.getMeasureManager().getNote(beat, checkedString+1),
+					(nextBeat != null ? this.manager.getMeasureManager().getNote(nextBeat, checkedString+1) : null),
+					false);
+			if (checkedOutLength>maxOutLength) {
+				maxOutLength=checkedOutLength;
+			}
+		}
+		return maxOutLength;
+	}
+
 	private void drawMeasure(TGMeasure measure, int currentString, int stringCount){
 		//Abro el compas
 		this.out.drawBarSegment();
@@ -114,22 +161,13 @@ public class ASCIITabOutputStream {
 		TGBeat beat = this.manager.getMeasureManager().getFirstBeat( measure.getBeats() );
 		while(beat != null){
 			int outLength = 0;
-			int maxOutLength=0;
+
 			TGBeat nextBeat = this.manager.getMeasureManager().getNextBeat( measure.getBeats() , beat);
 			TGNote nextNote=(nextBeat != null ? this.manager.getMeasureManager().getNote(nextBeat, currentString+1) : null);
 
 			TGNote note = this.manager.getMeasureManager().getNote(beat, currentString+1);
 			outLength=this.out.drawNote(note, nextNote, true);
-			for(int checkedString = 0; checkedString < stringCount;checkedString++){
-				int checkedOutLength=this.out.drawNote(
-						this.manager.getMeasureManager().getNote(beat, checkedString+1),
-						(nextBeat != null ? this.manager.getMeasureManager().getNote(nextBeat, checkedString+1) : null),
-						false);
-				if (checkedOutLength>maxOutLength) {
-					maxOutLength=checkedOutLength;
-				}
-			}
-
+			int maxOutLength=getMaxOutLength(beat, nextBeat, stringCount);
 
 			//Agrego espacios correspondientes hasta el proximo pulso.
 			long length = (nextBeat != null ? nextBeat.getStart() - beat.getStart() : (measure.getStart() + measure.getLength()) - beat.getStart());

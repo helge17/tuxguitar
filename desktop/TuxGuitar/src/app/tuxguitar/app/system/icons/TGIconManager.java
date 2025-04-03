@@ -201,8 +201,6 @@ public class TGIconManager {
 	private UIImage muteDisabled;
 	private UIImage muteDim;
 	private UIImage muteDisabledDim;
-	private UIImage listMoveUp;
-	private UIImage listMoveDown;
 	private UIImage zoomOut;
 	private UIImage zoomReset;
 	private UIImage zoomIn;
@@ -428,8 +426,6 @@ public class TGIconManager {
 		this.muteDisabled = loadIcon("mute-disabled.png");
 		this.muteDim = loadIcon("mute-dim.png");
 		this.muteDisabledDim = loadIcon("mute-disabled-dim.png");
-		this.listMoveUp = loadIcon("list_move_up.png");
-		this.listMoveDown = loadIcon("list_move_down.png");
 		this.zoomOut = loadIcon("zoom_out.png");
 		this.zoomReset = loadIcon("zoom_original.png");
 		this.zoomIn = loadIcon("zoom_in.png");
@@ -1218,14 +1214,6 @@ public class TGIconManager {
 
 	public UIImage getMuteDisabledDim() {
 		return muteDisabledDim;
-	}
-
-	public UIImage getListMoveUp() {
-		return this.listMoveUp;
-	}
-
-	public UIImage getListMoveDown() {
-		return this.listMoveDown;
 	}
 
 	public UIImage getZoomOut() {

@@ -118,6 +118,18 @@ public class EditorKit {
 		return false;
 	}
 
+	// min distance to initialize a click&drag selection
+	public boolean isMinDragWidthReached(TGAbstractContext context) {
+		Float startPositionX = this.mouseKit.getStartPositionX();
+		if (startPositionX != null) {
+			float x = context.getAttribute(ATTRIBUTE_X);
+			TGLayout layout = getTablature().getViewLayout();
+			float minDistanceX = layout.getMinimumDurationWidth() / 3.0f;
+			return (Math.abs(x-startPositionX) >= minDistanceX);
+		}
+		return false;
+	}
+
 	private TGTrackImpl findSelectedTrack(float y){
 		TGLayout layout = getTablature().getViewLayout();
 		int number = layout.getTrackNumberAt(y);

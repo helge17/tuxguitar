@@ -26,9 +26,6 @@ import app.tuxguitar.util.TGContext;
 
 public class TGTempoDialog {
 
-	private static final int MIN_TEMPO = 30;
-	private static final int MAX_TEMPO = 320;
-
 	// possible tempo bases:
 	private final TGTempoBase tempoBase[] = TGTempoBase.getTempoBases();
 
@@ -83,8 +80,8 @@ public class TGTempoDialog {
 		tempoValueLayout.set(tempoLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 
 		final UISpinner tempo = uiFactory.createSpinner(tempoValuePanel);
-		tempo.setMinimum(MIN_TEMPO);
-		tempo.setMaximum(MAX_TEMPO);
+		tempo.setMinimum(TGChangeTempoRangeAction.MIN_TEMPO);
+		tempo.setMaximum(TGChangeTempoRangeAction.MAX_TEMPO);
 		tempo.setValue(currentTempo.getRawValue());
 		tempoValueLayout.set(tempo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true, 1, 1, 150f, null, null);
 

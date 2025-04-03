@@ -9,6 +9,7 @@ import app.tuxguitar.android.menu.controller.TGMenuBase;
 import app.tuxguitar.android.view.dialog.measure.TGMeasureAddDialogController;
 import app.tuxguitar.android.view.dialog.measure.TGMeasureCleanDialogController;
 import app.tuxguitar.android.view.dialog.measure.TGMeasureRemoveDialogController;
+import app.tuxguitar.editor.action.measure.TGRemoveUnusedVoiceAction;
 import app.tuxguitar.player.base.MidiPlayer;
 
 public class TGMeasureMenu extends TGMenuBase {
@@ -28,5 +29,6 @@ public class TGMeasureMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_measure_add, new TGMeasureAddDialogController(), !running);
 		this.initializeItem(menu, R.id.action_measure_clean, new TGMeasureCleanDialogController(), !running);
 		this.initializeItem(menu, R.id.action_measure_remove, new TGMeasureRemoveDialogController(), !running);
+		this.initializeItem(menu, R.id.action_remove_unused_voice, this.createActionProcessor(TGRemoveUnusedVoiceAction.NAME), !running);
 	}
 }
