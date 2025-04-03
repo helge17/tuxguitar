@@ -530,7 +530,7 @@ public class MusicXMLWriter{
 
 					int harmonicAdjustedValue = stringValue + noteValue + harmonicValue;
 
-					if(n > 0){
+					if (n > 0){
 						this.addNode(noteNode, "chord");
 					}
 
@@ -538,6 +538,10 @@ public class MusicXMLWriter{
 					this.writeNote(pitchNode, "", harmonicAdjustedValue, ks);
 
 					this.writeDurationAndVoice(noteNode, voice.getDuration(), note.isTiedNote(), nVoice);
+
+					if (isTablature){
+						this.addNode(noteNode, "stem", "none");
+					}
 
 					if (note.getEffect().isGhostNote()){
 						Node noteheadNode = this.addNode(noteNode, "notehead", "normal");
