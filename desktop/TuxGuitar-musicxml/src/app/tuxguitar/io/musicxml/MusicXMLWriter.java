@@ -578,12 +578,10 @@ public class MusicXMLWriter{
 
 					this.removeNodeIfNoChildren(notationsNode);
 
-					// Let-ring would be applied here... But the MusicXML 4.0 spec does not have a defined element for that.
-					// GP has it as a processing instruction, but until it is officially supported, we will leave it out.
-					// Uncomment and update when the MusicXML spec changes to support the Let-Ring status.
-					// if (note.getEffect().isLetRing()){
-					// 	this.addNode(noteNode, "letring");
-					// }
+					if (note.getEffect().isLetRing()){
+						Node tiedNode = this.addNode(noteNode, "tied");
+						this.addAttribute(tiedNode, "type", "let-ring");
+					}
 
 					if(!isTablature && n==0){
 						// Attach lyric to the first note
