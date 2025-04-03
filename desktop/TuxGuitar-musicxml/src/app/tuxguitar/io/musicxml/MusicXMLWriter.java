@@ -313,6 +313,7 @@ public class MusicXMLWriter{
 
 	private void writeTuning(Node parent, TGTrack track, int keySignature){
 		Node staffDetailsNode = this.addNode(parent,"staff-details");
+		this.addNode(staffDetailsNode, "staff-type", "alternate");
 		this.addAttribute(staffDetailsNode, "number", "2");
 		this.addNode(staffDetailsNode, "staff-lines", Integer.toString( track.stringCount() ));
 		for( int i = track.stringCount() ; i > 0 ; i --){
