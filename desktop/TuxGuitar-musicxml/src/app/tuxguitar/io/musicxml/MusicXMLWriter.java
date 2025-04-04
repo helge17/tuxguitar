@@ -301,6 +301,10 @@ public class MusicXMLWriter{
 			if(timeSignatureChanges){
 				this.writeTimeSignature(measureAttributes,measure.getTimeSignature());
 			}
+
+			this.addNode(measureAttributes, "staves", "2");
+			this.addNode(measureAttributes, "part-symbol", "none");
+
 			if(clefChanges){
 				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
 			}
