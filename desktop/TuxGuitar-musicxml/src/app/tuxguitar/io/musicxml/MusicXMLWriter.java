@@ -512,7 +512,6 @@ public class MusicXMLWriter{
 						this.writeDirection(parent, note);
 					}
 
-
 					Node noteNode = this.addNode(parent, "note");
 
 					int stringValue = beat.getMeasure().getTrack().getString(note.getString()).getValue();
@@ -546,6 +545,8 @@ public class MusicXMLWriter{
 					if (note.getEffect().isGhostNote()){
 						Node noteheadNode = this.addNode(noteNode, "notehead", "normal");
 						this.addAttribute(noteheadNode, "parentheses", "yes");
+					} else if (!isTablature && note.getEffect().isDeadNote()){
+						Node noteheadNode = this.addNode(noteNode, "notehead", "x");
 					}
 
 					this.addNode(noteNode, "staff", isTablature ? "2" : "1");
