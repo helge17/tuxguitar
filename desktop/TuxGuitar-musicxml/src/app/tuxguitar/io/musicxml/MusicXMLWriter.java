@@ -419,7 +419,7 @@ public class MusicXMLWriter{
 		}
 	}
 
-	private void writeDirection(Node parent, TGNote note){
+	private void writeDynamics(Node parent, TGNote note){
 		Node direction = this.addAttribute(this.addNode(parent, "direction"), "placement", "above");
 		Node directionType = this.addNode(direction, "direction-type");
 		Node dynamics = this.addNode(directionType, "dynamics");
@@ -513,7 +513,14 @@ public class MusicXMLWriter{
 					int noteVelocity = note.getVelocity();
 					if (noteVelocity != lastVelocity){
 						lastVelocity = noteVelocity;
-						this.writeDirection(parent, note);
+						this.writeDynamics(parent, note);
+					}
+
+					// write palm mute symbol as text
+					if (!isTablature && note.getEffect().isPalmMute()) {
+						Node direction = this.addAttribute(this.addNode(parent, "direction"), "placement", "above");
+						Node directionType = this.addNode(direction, "direction-type");
+						Node words = this.addNode(directionType, "words", "P.M.");	
 					}
 
 					Node noteNode = this.addNode(parent, "note");
