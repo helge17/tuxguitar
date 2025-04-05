@@ -1,5 +1,6 @@
 package app.tuxguitar.song.helpers;
 
+import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.models.TGMeasure;
 
 public class TGMeasureError {
@@ -22,6 +23,10 @@ public class TGMeasureError {
 	}
 	public int getErrCode() {
 		return this.errCode;
+	}
+	
+	public boolean canBeFixed() {
+		return ((this.errCode == TGMeasureManager.VOICE_TOO_LONG) || (this.errCode == TGMeasureManager.VOICE_TOO_SHORT));
 	}
 	
 }

@@ -139,6 +139,7 @@ import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import app.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import app.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -299,6 +300,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGInsertMeasuresAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGCopyMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL);
 		this.map(TGPasteMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
+		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 
 		//beat actions
 		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);

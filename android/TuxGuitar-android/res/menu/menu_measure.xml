@@ -15,5 +15,8 @@
     <item
         android:id="@+id/action_remove_unused_voice"
         android:title="@string/action_remove_unused_voice"/>
+    <item
+        android:id="@+id/action_fix_voice"
+        android:title="@string/action_fix_voice"/>
 
 </menu>
