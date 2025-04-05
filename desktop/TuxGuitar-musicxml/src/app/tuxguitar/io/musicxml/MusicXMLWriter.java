@@ -557,7 +557,8 @@ public class MusicXMLWriter{
 					if (note.getEffect().isGhostNote()){
 						Node noteheadNode = this.addNode(noteNode, "notehead", "normal");
 						this.addAttribute(noteheadNode, "parentheses", "yes");
-					} else if (!isTablature && note.getEffect().isDeadNote()){
+					}
+					else if (!isTablature && note.getEffect().isDeadNote()){
 						Node noteheadNode = this.addNode(noteNode, "notehead", "x");
 					}
 
