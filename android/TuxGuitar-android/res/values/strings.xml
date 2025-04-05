@@ -83,6 +83,7 @@
 	<string name="action_measure_add">Add Measure</string>
 	<string name="action_measure_clean">Clean Measure</string>
 	<string name="action_measure_remove">Remove Measure</string>
+	<string name="action_fix_voice">Fix Voice</string>
 
 	<string name="action_change_tied_note">Tied Note</string>
 	<string name="action_clean_beat">Clean Beat</string>
