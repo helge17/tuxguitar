@@ -14,12 +14,10 @@ import app.tuxguitar.android.view.dialog.measure.TGMeasureCleanDialogController;
 import app.tuxguitar.android.view.dialog.measure.TGMeasureRemoveDialogController;
 import app.tuxguitar.android.view.tablature.TGCaret;
 import app.tuxguitar.android.view.tablature.TGSongViewController;
-import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import app.tuxguitar.editor.action.measure.TGRemoveUnusedVoiceAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.song.helpers.TGMeasureError;
-import app.tuxguitar.song.managers.TGMeasureManager;
 
 public class TGMeasureMenu extends TGMenuBase {
 
@@ -45,7 +43,7 @@ public class TGMeasureMenu extends TGMenuBase {
 			// only some error types can be fixed
 			for (TGMeasureError err : listErrors) {
 				if (voiceIndex == err.getVoiceIndex()) {
-					voiceCanBeFixed &= ((err.getErrCode() == TGMeasureManager.VOICE_TOO_LONG) || (err.getErrCode() == TGMeasureManager.VOICE_TOO_SHORT));
+					voiceCanBeFixed &= (err.canBeFixed());
 				}
 			}
 		}

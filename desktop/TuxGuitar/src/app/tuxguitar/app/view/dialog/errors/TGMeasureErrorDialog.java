@@ -295,9 +295,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		this.measureStatusIcon.setImage(this.currentError == null ? this.imageOK : this.imageKO);
 		this.voiceStatusLabel.setText(userMessage(measure, tablature.getCaret().getVoice(), this.currentError));
 		this.fixButton.setText(sFix);
-		this.fixButton.setEnabled(
-				this.currentError != null && (this.currentError.getErrCode() == TGMeasureManager.VOICE_TOO_LONG
-						|| this.currentError.getErrCode() == TGMeasureManager.VOICE_TOO_SHORT));
+		this.fixButton.setEnabled(this.currentError != null && this.currentError.canBeFixed());
 
 		// ----------------- GLOBAL STATUS ------------------------
 		this.globalStatusLegendPanel.setText(sSongStatus);
