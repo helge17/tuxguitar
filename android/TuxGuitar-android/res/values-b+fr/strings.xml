@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Ajouter une mesure</string>
 	<string name="action_measure_clean">Effacer la mesure</string>
 	<string name="action_measure_remove">Supprimer la mesure</string>
+	<string name="action_fix_voice">Réparer la voix</string>
 
 	<string name="action_change_tied_note">Note liée</string>
 	<string name="action_clean_beat">Effacer la note</string>
