@@ -519,6 +519,7 @@ public class MusicXMLWriter{
 					// write palm mute symbol as text
 					if (!isTablature && note.getEffect().isPalmMute()) {
 						Node direction = this.addAttribute(this.addNode(parent, "direction"), "placement", "above");
+						this.addAttribute(direction, "placement", "below");
 						Node directionType = this.addNode(direction, "direction-type");
 						Node words = this.addNode(directionType, "words", "P.M.");	
 					}
