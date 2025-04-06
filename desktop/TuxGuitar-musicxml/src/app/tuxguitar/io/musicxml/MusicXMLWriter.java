@@ -431,6 +431,7 @@ public class MusicXMLWriter{
 		if (isStart && !isPercussion){
 			node = this.addNode(parent, "clef");
 			this.addAttribute(node, "number", "2");
+			this.addAttribute(node, "print-object", "no");
 			this.addNode(node, "sign", "TAB");
 		}
 	}
