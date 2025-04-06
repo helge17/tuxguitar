@@ -309,8 +309,11 @@ public class MusicXMLWriter{
 				this.writeClef(measureAttributes, measure.getClef(), isPercussion);
 			}
 
-			if (!isPercussion && (previous==null || measure.getNumber() == 1)){
-				this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
+			if (previous==null || measure.getNumber() == 1) {
+				if (!isPercussion){
+					this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
+				}
+				this.writeTransposition(measureAttributes);
 			}
 		}
 	}
@@ -331,6 +334,13 @@ public class MusicXMLWriter{
 		if (trackOffset > 0){
 			this.addNode(staffDetailsNode, "capo", Integer.toString( trackOffset ));
 		}
+	}
+
+	private void writeTransposition(Node parent){
+		Node transposeNode = this.addNode(parent, "transpose");
+		this.addAttribute(transposeNode, "number", "1");
+		this.addNode(transposeNode, "chromatic", "0");
+		this.addNode(transposeNode, "octave-change", "-1");
 	}
 
 	private void writeNote(Node parent, String prefix, int value, int keySignature){
@@ -360,6 +370,7 @@ public class MusicXMLWriter{
 	private void writeClef(Node parent, int clef, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
+		this.addAttribute(node, "after-barline", "yes");
 		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
 		}
@@ -370,20 +381,18 @@ public class MusicXMLWriter{
 		else if(clef == TGMeasure.CLEF_TREBLE){
 			this.addNode(node, "sign", "G");
 			this.addNode(node, "line", "2");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
 		}
 		else if(clef == TGMeasure.CLEF_BASS){
 			this.addNode(node, "sign", "F");
 			this.addNode(node, "line", "4");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
 		}
 		else if(clef == TGMeasure.CLEF_TENOR){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+			this.addNode(node, "sign", "C");
+			this.addNode(node, "line", "4");
 		}
 		else if(clef == TGMeasure.CLEF_ALTO){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+			this.addNode(node, "sign", "C");
+			this.addNode(node, "line", "3");
 		}
 
 		// second clef: tablature
