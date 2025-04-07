@@ -338,7 +338,7 @@ public class MusicXMLWriter{
 			TGString string = track.getString( i );
 			Node stringNode = this.addNode(staffDetailsNode, "staff-tuning");
 			this.addAttribute(stringNode, "line", Integer.toString( (track.stringCount() - string.getNumber()) + 1 ) );
-			this.writeNote(stringNode, "tuning-", string.getValue(), keySignature);
+			this.writeNote(stringNode, "tuning-", string.getValue(), keySignature, false);
 		}
 		// MusicXML 4.0 defines capos as offsets that are non-negative.
 		int trackOffset = track.getOffset();
@@ -354,13 +354,15 @@ public class MusicXMLWriter{
 		this.addNode(transposeNode, "octave-change", "-1");
 	}
 
-	private void writeNote(Node parent, String prefix, int value, int keySignature){
+	private void writeNote(Node parent, String prefix, int value, int keySignature, boolean isTablature){
 		this.addNode(parent, prefix+"step", TGMusicKeyUtils.noteShortName(value, keySignature));
 		int alteration = TGMusicKeyUtils.noteAlteration(value, keySignature);
 		if(alteration != TGMusicKeyUtils.NATURAL){
 			this.addNode(parent, prefix+"alter", ( alteration == TGMusicKeyUtils.SHARP ? "1" : "-1" ) );
 		}
-		this.addNode(parent, prefix+"octave", String.valueOf(TGMusicKeyUtils.noteOctave(value, keySignature)));
+		int octave = TGMusicKeyUtils.noteOctave(value, keySignature);
+		octave = isTablature ? octave : octave + 1;
+		this.addNode(parent, prefix+"octave", String.valueOf(octave));
 	}
 
 	private void writeTimeSignature(Node parent, TGTimeSignature ts){
@@ -585,7 +587,7 @@ public class MusicXMLWriter{
 					}
 
 					Node pitchNode = this.addNode(noteNode, "pitch");
-					this.writeNote(pitchNode, "", harmonicAdjustedValue, ks);
+					this.writeNote(pitchNode, "", harmonicAdjustedValue, ks, isTablature);
 
 					this.writeDurationAndVoice(noteNode, voice.getDuration(), nVoice, trackMgr.isAnyTiedTo(note), note.isTiedNote());
 
