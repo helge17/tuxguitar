@@ -1,0 +1,1 @@
+../../Oxygen/22x22/stroke_down.sh

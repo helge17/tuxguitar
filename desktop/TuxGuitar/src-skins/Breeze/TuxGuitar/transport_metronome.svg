@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg id="svg135" version="1.1" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
- <defs id="defs3051">
-  <style id="current-color-scheme" type="text/css">.ColorScheme-Text {
-        color:#232629;
-      }</style>
- </defs>
- <path id="path133" class="ColorScheme-Text" d="m5.416 4.7226-0.83199 0.55478 6.0252 8.9922 0.832-0.55478z" fill="currentColor"/>
- <path id="path133-7" class="ColorScheme-Text" d="m4.9032 18-0.90323 0.99997 14 2.9e-5 -0.90323-0.99997z" color="#232629" fill="currentColor"/>
- <path id="path133-7-3" class="ColorScheme-Text" d="m8 3v1h6v-1z" color="#232629" fill="currentColor"/>
- <path id="path133-9" class="ColorScheme-Text" d="m4 19 1.0458-0.12591 3.9369-15.688-0.98275-0.18582z" color="#232629" fill="currentColor"/>
- <path id="path133-9-1" class="ColorScheme-Text" d="m18 19-1.0458-0.12591-3.9369-15.688 0.98275-0.18582z" color="#232629" fill="currentColor"/>
- <circle id="path2004" cx="11" cy="14" r="1.5" fill="#232629" stroke-width=".75"/>
- <circle id="path2004-0" cx="5" cy="5" r="1.5" fill="#232629" stroke-width=".75"/>
+ <path id="path133" d="m8 3-1.0156 4.0625-0.78516-1.1699a1.5 1.5 0 0 0 0.30078-0.89258 1.5 1.5 0 0 0-1.5-1.5 1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 0.37109-0.048828l1.2852 1.9199-2.6562 10.629h14l-4-16h-6zm0.77734 1h4.4453l3.5137 14h-11.473l2.1387-8.5176 2.4141 3.6035a1.5 1.5 0 0 0-0.31641 0.91406 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5 1.5 1.5 0 0 0-0.34375 0.042969l-2.9277-4.3672 1.0488-4.1758z" fill="#232629"/>
 </svg>
