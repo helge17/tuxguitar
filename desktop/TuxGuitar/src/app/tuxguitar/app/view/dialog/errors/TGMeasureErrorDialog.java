@@ -317,9 +317,12 @@ public class TGMeasureErrorDialog implements TGEventListener {
 
 	private String userMessage(TGMeasure measure, int voiceIndex, TGMeasureError err) {
 		String sVoiceStatus = new String();
+		String sVoiceIndex = new String();
 		if (err == null) {
 			sVoiceStatus = sVoiceValid;
+			sVoiceIndex = String.valueOf(voiceIndex + 1);
 		} else {
+			sVoiceIndex = String.valueOf(err.getVoiceIndex() + 1);
 			switch (err.getErrCode()) {
 			case TGMeasureManager.VOICE_TOO_LONG:
 				sVoiceStatus = sVoiceTooLong;
@@ -334,7 +337,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		}
 		sVoiceStatus = sVoiceStatus.replace("{0}", String.valueOf(measure.getTrack().getNumber()));
 		sVoiceStatus = sVoiceStatus.replace("{1}", String.valueOf(measure.getNumber()));
-		sVoiceStatus = sVoiceStatus.replace("{2}", String.valueOf(voiceIndex + 1));
+		sVoiceStatus = sVoiceStatus.replace("{2}", sVoiceIndex);
 		return sVoiceStatus;
 	}
 
