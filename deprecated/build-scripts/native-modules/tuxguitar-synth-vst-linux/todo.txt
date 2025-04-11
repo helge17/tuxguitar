@@ -1,1 +1,0 @@
-- Copy VST3_SDK/pluginterfaces/vst2.x/* to include folder

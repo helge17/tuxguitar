@@ -1,2 +1,0 @@
-# Add here the TGPlugin implementation class names.
-app.tuxguitar.player.impl.midiport.vst.VSTSynthExtension
