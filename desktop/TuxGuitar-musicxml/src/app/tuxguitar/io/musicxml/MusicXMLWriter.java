@@ -99,7 +99,7 @@ public class MusicXMLWriter{
 			this.stream.flush();
 			this.stream.close();
 		}catch(Throwable throwable){
-			throw new TGFileFormatException("Could not write song!.",throwable);
+			throw new TGFileFormatException("Could not write song!.", throwable);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class MusicXMLWriter{
 
 	private void writeIdentification(TGSong song, Node parent){
 		Node identification = this.addNode(parent, "identification");
-		this.addAttribute(this.addNode(identification, "creator",song.getAuthor()), "type", "composer");
+		this.addAttribute(this.addNode(identification, "creator", song.getAuthor()), "type", "composer");
 		this.addNode(this.addNode(identification, "encoding"), "software", "TuxGuitar " + TGVersion.CURRENT.getVersion());
 	}
 
@@ -144,11 +144,11 @@ public class MusicXMLWriter{
 				GMChannelRoute gmChannelRoute = gmChannelRouter.getRoute(channel.getChannelId());
 
 				Node scoreInstrument = this.addAttribute(this.addNode(scoreParts, "score-instrument"), "id", "P" + track.getNumber() + "-I1");
-				this.addNode(scoreInstrument, "instrument-name",channel.getName());
+				this.addNode(scoreInstrument, "instrument-name", channel.getName());
 
 				Node midiInstrument = this.addAttribute(this.addNode(scoreParts, "midi-instrument"), "id", "P" + track.getNumber() + "-I1");
-				this.addNode(midiInstrument, "midi-channel",Integer.toString(gmChannelRoute != null ? gmChannelRoute.getChannel1() + 1 : 16));
-				this.addNode(midiInstrument, "midi-program",Integer.toString(channel.getProgram() + 1));
+				this.addNode(midiInstrument, "midi-channel", Integer.toString(gmChannelRoute != null ? gmChannelRoute.getChannel1() + 1 : 16));
+				this.addNode(midiInstrument, "midi-program", Integer.toString(channel.getProgram() + 1));
 			}
 		}
 	}
@@ -174,7 +174,7 @@ public class MusicXMLWriter{
 			TGMeasure currentMeasure = nextMeasure != null ? nextMeasure : (TGMeasure)measures.next();
 			nextMeasure = measures.hasNext() ? (TGMeasure)measures.next() : null;
 
-			Node measureNode = this.addAttribute(this.addNode(part, "measure"), "number",Integer.toString(currentMeasure.getNumber()));
+			Node measureNode = this.addAttribute(this.addNode(part, "measure"), "number", Integer.toString(currentMeasure.getNumber()));
 
 			this.writeMeasureAttributes(measureNode, currentMeasure, previousMeasure, track.isPercussion());
 
@@ -263,7 +263,7 @@ public class MusicXMLWriter{
 	}
 
 	// Takes in a measure, outputs a string for what alternate endings are used.
-	// If 1 and 3 are used, result is "1,3"
+	// If 1 and 3 are used, result is "1, 3"
 	private String generateAlternateEndingString(TGMeasure measure){
 		StringBuilder alternateEndingNumbers = new StringBuilder();
 
@@ -293,24 +293,27 @@ public class MusicXMLWriter{
 		if (divisionChanges || keyChanges || clefChanges || timeSignatureChanges){
 			Node measureAttributes = this.addNode(parent, "attributes");
 			if(divisionChanges){
-				this.addNode(measureAttributes, "divisions",Integer.toString(DURATION_DIVISIONS));
+				this.addNode(measureAttributes, "divisions", Integer.toString(DURATION_DIVISIONS));
 			}
 			if(keyChanges){
 				this.writeKeySignature(measureAttributes, measure.getKeySignature());
 			}
 			if(timeSignatureChanges){
-				this.writeTimeSignature(measureAttributes,measure.getTimeSignature());
+				this.writeTimeSignature(measureAttributes, measure.getTimeSignature());
 			}
 
 			this.addNode(measureAttributes, "staves", "2");
 			this.addNode(measureAttributes, "part-symbol", "none");
 
 			if(clefChanges){
-				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
+				this.writeClef(measureAttributes, measure.getClef(), isPercussion);
 			}
 
-			if (!isPercussion && (previous==null || measure.getNumber() == 1)){
-				this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
+			if (previous==null || measure.getNumber() == 1) {
+				if (!isPercussion){
+					this.writeTuning(measureAttributes, measure.getTrack(), measure.getKeySignature());
+				}
+				this.writeTransposition(measureAttributes);
 			}
 		}
 	}
@@ -333,19 +336,27 @@ public class MusicXMLWriter{
 		}
 	}
 
+	private void writeTransposition(Node parent){
+		Node transposeNode = this.addNode(parent, "transpose");
+		this.addNode(transposeNode, "chromatic", "0");
+		this.addNode(transposeNode, "octave-change", "-1");
+	}
+
 	private void writeNote(Node parent, String prefix, int value, int keySignature){
-		this.addNode(parent,prefix+"step", TGMusicKeyUtils.noteShortName(value,keySignature));
+		this.addNode(parent, prefix+"step", TGMusicKeyUtils.noteShortName(value, keySignature));
 		int alteration = TGMusicKeyUtils.noteAlteration(value, keySignature);
 		if(alteration != TGMusicKeyUtils.NATURAL){
-			this.addNode(parent,prefix+"alter", ( alteration == TGMusicKeyUtils.SHARP ? "1" : "-1" ) );
+			this.addNode(parent, prefix+"alter", ( alteration == TGMusicKeyUtils.SHARP ? "1" : "-1" ) );
 		}
-		this.addNode(parent,prefix+"octave", String.valueOf(TGMusicKeyUtils.noteOctave(value, keySignature)));
+		int octave = TGMusicKeyUtils.noteOctave(value, keySignature);
+		octave = prefix.equals("") ? octave + 1 : octave;
+		this.addNode(parent, prefix+"octave", String.valueOf(octave));
 	}
 
 	private void writeTimeSignature(Node parent, TGTimeSignature ts){
 		Node node = this.addNode(parent, "time");
-		this.addNode(node, "beats",Integer.toString(ts.getNumerator()));
-		this.addNode(node, "beat-type",Integer.toString(ts.getDenominator().getValue()));
+		this.addNode(node, "beats", Integer.toString(ts.getNumerator()));
+		this.addNode(node, "beat-type", Integer.toString(ts.getDenominator().getValue()));
 	}
 
 	private void writeKeySignature(Node parent, int ks){
@@ -354,12 +365,13 @@ public class MusicXMLWriter{
 			value = ( (((ks - 1) % 7) + 1) * ( ks > 7?-1:1));
 		}
 		Node key = this.addNode(parent, "key");
-		this.addNode(key, "fifths",Integer.toString( value ));
+		this.addNode(key, "fifths", Integer.toString( value ));
 	}
 
 	private void writeClef(Node parent, int clef, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
+		this.addAttribute(node, "after-barline", "yes");
 		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
 		}
@@ -370,26 +382,26 @@ public class MusicXMLWriter{
 		else if(clef == TGMeasure.CLEF_TREBLE){
 			this.addNode(node, "sign", "G");
 			this.addNode(node, "line", "2");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
 		}
 		else if(clef == TGMeasure.CLEF_BASS){
 			this.addNode(node, "sign", "F");
 			this.addNode(node, "line", "4");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
 		}
 		else if(clef == TGMeasure.CLEF_TENOR){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+			this.addNode(node, "sign", "C");
+			this.addNode(node, "line", "4");
 		}
 		else if(clef == TGMeasure.CLEF_ALTO){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+			this.addNode(node, "sign", "C");
+			this.addNode(node, "line", "3");
 		}
 
 		// second clef: tablature
 		if (!isPercussion){
 			node = this.addNode(parent, "clef");
 			this.addAttribute(node, "number", "2");
+			// TODO: currently three is no tab clef shown in TuxGuitar
+			// this.addAttribute(node, "print-object", "no");
 			this.addNode(node, "sign", "TAB");
 		}
 	}
@@ -811,13 +823,13 @@ public class MusicXMLWriter{
 				value += ((value / 4) * 3);
 			}
 
-			this.addNode(parent, "duration",Integer.toString(value));
+			this.addNode(parent, "duration", Integer.toString(value));
 			if(isTiedNote){
 				this.addAttribute(this.addNode(parent, "tie"), "type", "stop");
 			}
 			this.addNode(parent, "voice", String.valueOf(nVoice+1));
 
-			this.addNode(parent, "type",DURATION_NAMES[ index ]);
+			this.addNode(parent, "type", DURATION_NAMES[ index ]);
 
 			if(duration.isDotted()){
 				this.addNode(parent, "dot");
@@ -829,8 +841,8 @@ public class MusicXMLWriter{
 
 			if(!duration.getDivision().isEqual(TGDivisionType.NORMAL)){
 				Node divisionType = this.addNode(parent, "time-modification");
-				this.addNode(divisionType, "actual-notes",Integer.toString(duration.getDivision().getEnters()));
-				this.addNode(divisionType, "normal-notes",Integer.toString(duration.getDivision().getTimes()));
+				this.addNode(divisionType, "actual-notes", Integer.toString(duration.getDivision().getEnters()));
+				this.addNode(divisionType, "normal-notes", Integer.toString(duration.getDivision().getTimes()));
 			}
 		}
 	}
