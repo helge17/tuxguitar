@@ -430,7 +430,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//measure actions
 		this.map(TGToggleLineBreakAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_ITEMS_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGAddMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedMeasureController(), new TGUndoableAddMeasureController());
-		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
+		this.map(TGAddMeasureListAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL);
 		this.map(TGCleanMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGCleanMeasureListAction.NAME, LOCKABLE |DISABLE_ON_PLAY);
 		this.map(TGGoFirstMeasureAction.NAME, LOCKABLE |SHORTCUT);
