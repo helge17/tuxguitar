@@ -65,8 +65,8 @@ public class TGConverter {
 
 			if (song != null){
 				try {
+					manager.updatePreciseStart(song);
 					manager.autoCompleteSilences(song);
-					manager.orderBeats(song);
 
 					new File(new File(convertFileName).getParent()).mkdirs();
 

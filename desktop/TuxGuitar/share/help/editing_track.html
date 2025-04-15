@@ -93,6 +93,11 @@
     <p>You can also put some notes into the song by inserting a chord. Chord’s duration and dynamics will be those currently selected.</p>
     <img src="images/insert_named_chord.png" />
     <p>You can insert a chord defined earlier (as on the picture above) or you can use the <strong><a href="edit_chord.html">Chord Editor</a></strong> to generate a new chord (and even define a name for it for later use).</p>
+    <h2 id="free_edition_mode">Free edition mode</h2>
+    <p>By default TuxGuitar makes sure all measures are correct: the sum of notes' duration's in one measure is exactly the duration of the measure. This is pretty convenient when creating a new tablature, however it can make the edition of an existing tablature tedious in some cases. You can bypass this constraint with menu <strong>Edit → Free edition mode</strong> or the associated button in edit toolbar.</p>
+    <p><strong>Warning</strong>: only activate this mode if you have a correct knowledge of music theory. Free edition mode lets you do pretty much everything with notes duration. And if it's very easy to create invalid measures it may be tricky to restore a valid state. Invalid measures will appear with red lines. It's good practice to fix all invalid measures before saving a tablature file.</p>
+    <p>Menu <strong>Edit → Show measure errors</strong> can help you locate invalid measures in a song and identify invalid voice(s). In the dialog, "<strong>Fix</strong>" button can restore a measure in a valid state, by adapting the end of the measure. Be prepared to lose some notes when using this feature.</p>
+    <img src="images/free_edition_mode.png" />
     <h2 id="after_putting_the_notes">After putting the notes</h2>
     <p>After writing the things you wanted, you will probably want to hear what’s done. After checking you will probably want to change something - listening and correction makes it perfect.</p>
     <h3 id="effects">Effects</h3>

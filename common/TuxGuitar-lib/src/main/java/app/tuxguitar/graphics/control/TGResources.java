@@ -29,6 +29,7 @@ public class TGResources {
 	private UIColor backgroundColor;
 	private UIColor backgroundColorPlaying;
 	private UIColor lineColor;
+	private UIColor lineColorInvalid;
 	private UIColor scoreNoteColor;
 	private UIColor tabNoteColor;
 	private UIColor playNoteColor;
@@ -102,6 +103,11 @@ public class TGResources {
 		return this.lineColor;
 	}
 
+	public UIColor getLineColorInvalid() {
+		return this.lineColorInvalid;
+	}
+	
+
 	public UIColor getPlayNoteColor() {
 		return this.playNoteColor;
 	}
@@ -155,6 +161,7 @@ public class TGResources {
 		this.backgroundColor = getColor(style.getBackgroundColor());
 		this.backgroundColorPlaying = getColor(style.getBackgroundColorPlaying());
 		this.lineColor = getColor(style.getLineColor());
+		this.lineColorInvalid = getColor(style.getLineColorInvalid());
 		this.scoreNoteColor = getColor(style.getScoreNoteColor());
 		this.tabNoteColor = getColor(style.getTabNoteColor());
 		this.playNoteColor = getColor(style.getPlayNoteColor());

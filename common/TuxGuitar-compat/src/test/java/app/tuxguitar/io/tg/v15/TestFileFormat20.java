@@ -12,6 +12,8 @@ import app.tuxguitar.io.base.TGFileFormatUtils;
 import app.tuxguitar.io.base.TGSongReaderHandle;
 import app.tuxguitar.io.base.TGSongWriterHandle;
 import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.managers.TGSongManager;
+
 import org.junit.jupiter.api.Test;
 
 /* Objective of this class is to test file format 2.0: compressed xml
@@ -23,7 +25,12 @@ import org.junit.jupiter.api.Test;
  */
 
 public class TestFileFormat20 {
-
+	private TGSongManager songManager;
+	
+	public TestFileFormat20() {
+		this.songManager = new TGSongManager();
+	}
+	
 	@Test
 	/* test full backward compatibility of file format 2.0 with TuxGuitar file format 1.5
 	 * important note: to succeed, file provided to this test MUST have been written by TuxGuitar version >= 1.6.3
@@ -55,6 +62,8 @@ public class TestFileFormat20 {
 		handleRead.setFactory(factory);
 		handleRead.setInputStream(new ByteArrayInputStream(bufferOriginal));
 		new app.tuxguitar.io.tg.v15.TGSongReaderImpl().read(handleRead);
+		// this step is normally performed by TGReadSongAction or TGTemplateManager
+		this.songManager.updatePreciseStart(handleRead.getSong());
 
 		// save song under xml format in byte buffer
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

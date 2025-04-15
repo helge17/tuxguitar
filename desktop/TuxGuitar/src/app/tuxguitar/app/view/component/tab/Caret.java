@@ -1,8 +1,6 @@
 /*
  * Created on 30-nov-2005
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package app.tuxguitar.app.view.component.tab;
 
@@ -36,8 +34,6 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * @author julian
- *
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class Caret {
 
@@ -87,7 +83,14 @@ public class Caret {
 
 		long realPosition = ((midiPlayer.isRunning()) ? MidiTickUtil.getStart(context, midiPlayer.getTickPosition()):position);
 		TGTrackImpl track = findTrack(trackNumber);
-		TGMeasureImpl measure = findMeasure(realPosition,track);
+		TGMeasureImpl measure = null;
+		if ((this.selectedMeasure != null) && getSongManager().isFreeEditionMode(this.selectedMeasure) && 
+				this.selectedMeasure.getTrack().getNumber()==this.selectedTrack.getNumber()) {
+			measure = this.selectedMeasure;
+		}
+		else {
+			measure = findMeasure(realPosition,track);
+		}
 		TGBeat beat = findBeat(realPosition,measure);
 		if(track != null && measure != null && beat != null){
 			moveTo(track, measure, beat,string);
@@ -423,6 +426,8 @@ public class Caret {
 			TGMeasureImpl measure = (TGMeasureImpl) beat.getMeasure();
 			this.moveTo((TGTrackImpl) measure.getTrack(), measure, beat, stringNb);
 		} else {
+			TGTrackImpl track = findTrack(1);
+			this.selectedMeasure = (TGMeasureImpl)track.getMeasure(0);
 			update(1, TGDuration.QUARTER_TIME, 1);
 		}
 	}

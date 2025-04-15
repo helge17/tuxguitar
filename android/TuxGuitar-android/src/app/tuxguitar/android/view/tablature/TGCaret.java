@@ -72,7 +72,15 @@ public class TGCaret {
 
 		long realPosition = ((midiPlayer.isRunning()) ? MidiTickUtil.getStart(context, midiPlayer.getTickPosition()):position);
 		TGTrackImpl track = findTrack(trackNumber);
-		TGMeasureImpl measure = findMeasure(realPosition,track);
+		TGMeasureImpl measure = null;
+		if ((this.selectedMeasure != null) && getSongManager().isFreeEditionMode(this.selectedMeasure) &&
+				this.selectedMeasure.getTrack().getNumber()==this.selectedTrack.getNumber()) {
+			measure = this.selectedMeasure;
+		}
+		else {
+			measure = findMeasure(realPosition,track);
+		}
+
 		TGBeat beat = findBeat(realPosition,measure);
 		if(track != null && measure != null && beat != null){
 			moveTo(track, measure, beat, string);

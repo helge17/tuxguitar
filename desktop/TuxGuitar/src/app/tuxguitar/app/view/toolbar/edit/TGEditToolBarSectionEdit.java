@@ -1,15 +1,20 @@
 package app.tuxguitar.app.view.toolbar.edit;
 
 import app.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
+import app.tuxguitar.app.action.impl.edit.TGOpenMeasureErrorsDialogAction;
 import app.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
 import app.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import app.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.component.tab.edit.EditorKit;
+import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.ui.toolbar.UIToolActionItem;
 import app.tuxguitar.ui.toolbar.UIToolBar;
 import app.tuxguitar.ui.toolbar.UIToolCheckableItem;
+import app.tuxguitar.util.TGContext;
 
 public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 
@@ -20,6 +25,8 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 	private UIToolCheckableItem notNaturalKey;
 	private UIToolCheckableItem voice1;
 	private UIToolCheckableItem voice2;
+	private UIToolCheckableItem freeEditionMode;
+	private UIToolActionItem openMeasureErrorsDialog;
 
 	public TGEditToolBarSectionEdit(TGEditToolBar toolBar) {
 		super(toolBar, SECTION_TITLE);
@@ -44,10 +51,20 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 
 		this.voice2 = toolBar.createCheckItem();
 		this.voice2.addSelectionListener(this.createActionProcessor(TGSetVoice2Action.NAME));
+
+		toolBar = this.createToolBar();
+		
+		this.freeEditionMode = toolBar.createCheckItem();
+		this.freeEditionMode.addSelectionListener(this.createActionProcessor(TGToggleFreeEditionModeAction.NAME));
+		
+		this.openMeasureErrorsDialog = toolBar.createActionItem();
+		this.openMeasureErrorsDialog.addSelectionListener(this.createActionProcessor(TGOpenMeasureErrorsDialogAction.NAME));
+		
 	}
 
 	public void updateSectionItems() {
-		TablatureEditor editor = TablatureEditor.getInstance(this.getToolBar().getContext());
+		TGContext context = this.getToolBar().getContext();
+		TablatureEditor editor = TablatureEditor.getInstance(context);
 		EditorKit editorKit = editor.getTablature().getEditorKit();
 
 		boolean running = MidiPlayer.getInstance(this.getToolBar().getContext()).isRunning();
@@ -57,6 +74,11 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 
 		this.modeEdition.setChecked(editorKit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
 		this.modeEdition.setEnabled(!running);
+
+		this.freeEditionMode.setChecked(TGDocumentManager.getInstance(context).getSongManager().isFreeEditionMode(editor.getTablature().getCaret().getMeasure()));
+		this.freeEditionMode.setEnabled(!running);
+		
+		this.openMeasureErrorsDialog.setEnabled(!running);
 
 		this.notNaturalKey.setChecked(!editorKit.isNatural());
 		this.notNaturalKey.setEnabled(!running && editorKit.getMouseMode() == EditorKit.MOUSE_MODE_EDITION);
@@ -74,6 +96,8 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 		this.notNaturalKey.setToolTipText(this.getText("edit.not-natural-key"));
 		this.voice1.setToolTipText(this.getText("edit.voice-1"));
 		this.voice2.setToolTipText(this.getText("edit.voice-2"));
+		this.freeEditionMode.setToolTipText(this.getText("edit.free-edition-mode"));
+		this.openMeasureErrorsDialog.setToolTipText(this.getText("edit.measure-errors-dialog"));
 	}
 
 	public void loadSectionIcons() {
@@ -82,5 +106,7 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 		this.notNaturalKey.setImage(this.getIconManager().getEditModeEditionNotNatural());
 		this.voice1.setImage(this.getIconManager().getEditVoice1());
 		this.voice2.setImage(this.getIconManager().getEditVoice2());
+		this.freeEditionMode.setImage(this.getIconManager().getFreeEditionMode());
+		this.openMeasureErrorsDialog.setImage(this.getIconManager().getMeasureErrors());
 	}
 }
