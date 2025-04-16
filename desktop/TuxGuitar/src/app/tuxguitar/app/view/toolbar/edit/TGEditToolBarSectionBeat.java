@@ -62,11 +62,11 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 		this.strokeDown.addSelectionListener(this.createActionProcessor(TGOpenStrokeDownDialogAction.NAME));
 
 		toolBar = this.createToolBar();
-		this.pickStrokeUp = toolBar.createCheckItem();
-		this.pickStrokeUp.addSelectionListener(this.createActionProcessor(TGChangePickStrokeUpAction.NAME));
-
 		this.pickStrokeDown = toolBar.createCheckItem();
 		this.pickStrokeDown.addSelectionListener(this.createActionProcessor(TGChangePickStrokeDownAction.NAME));
+
+		this.pickStrokeUp = toolBar.createCheckItem();
+		this.pickStrokeUp.addSelectionListener(this.createActionProcessor(TGChangePickStrokeUpAction.NAME));
 	}
 
 	public void loadSectionProperties() {

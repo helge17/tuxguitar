@@ -115,11 +115,11 @@ public class BeatMenuItem extends TGMenuItem {
 		this.strokeDown = this.noteMenuItem.getMenu().createCheckItem();
 		this.strokeDown.addSelectionListener(this.createActionProcessor(TGOpenStrokeDownDialogAction.NAME));
 
-		this.pickStrokeUp = this.noteMenuItem.getMenu().createCheckItem();
-		this.pickStrokeUp.addSelectionListener(this.createActionProcessor(TGChangePickStrokeUpAction.NAME));
-
 		this.pickStrokeDown = this.noteMenuItem.getMenu().createCheckItem();
 		this.pickStrokeDown.addSelectionListener(this.createActionProcessor(TGChangePickStrokeDownAction.NAME));
+
+		this.pickStrokeUp = this.noteMenuItem.getMenu().createCheckItem();
+		this.pickStrokeUp.addSelectionListener(this.createActionProcessor(TGChangePickStrokeUpAction.NAME));
 
 		this.noteMenuItem.getMenu().createSeparator();
 
