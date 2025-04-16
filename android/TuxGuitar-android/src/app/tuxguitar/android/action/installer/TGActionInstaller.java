@@ -123,6 +123,7 @@ import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import app.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import app.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -248,6 +249,7 @@ public class TGActionInstaller {
 		installAction(new TGCopyMeasureFromAction(context));
 		installAction(new TGCopyMeasureAction(context));
 		installAction(new TGPasteMeasureAction(context));
+		installAction(new TGFixMeasureVoiceAction(context));
 		//beat actions
 		installAction(new TGChangeNoteAction(context));
 		installAction(new TGChangeTiedNoteAction(context));

@@ -14,6 +14,7 @@ import app.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import app.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import app.tuxguitar.app.action.impl.edit.TGCutAction;
+import app.tuxguitar.app.action.impl.edit.TGOpenMeasureErrorsDialogAction;
 import app.tuxguitar.app.action.impl.edit.TGCopyAction;
 import app.tuxguitar.app.action.impl.edit.TGPasteAction;
 import app.tuxguitar.app.action.impl.edit.TGRepeatAction;
@@ -22,6 +23,7 @@ import app.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import app.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import app.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
 import app.tuxguitar.app.action.impl.edit.tablature.TGMenuShownAction;
 import app.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
 import app.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
@@ -202,6 +204,7 @@ import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import app.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import app.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -304,6 +307,9 @@ public class TGActionInstaller {
 		installAction(new TGSetNaturalKeyAction(context));
 		installAction(new TGSetVoice1Action(context));
 		installAction(new TGSetVoice2Action(context));
+		installAction(new TGToggleFreeEditionModeAction(context));
+		installAction(new TGOpenMeasureErrorsDialogAction(context));
+		installAction(new TGFixMeasureVoiceAction(context));
 
 		//tablature actions
 		installAction(new TGMouseClickAction(context));
@@ -598,6 +604,9 @@ public class TGActionInstaller {
 			}
 			if( config.isLockableAction() ) {
 				this.manager.getLockableActionListener().addActionId(actionId);
+			}
+			if ( config.isInvalidSongInterceptor() ) {
+				this.manager.getInvalidSongInterceptor().addActionId(actionId);
 			}
 
 			this.manager.getUpdatableActionListener().getControllers().set(actionId, config.getUpdateController());

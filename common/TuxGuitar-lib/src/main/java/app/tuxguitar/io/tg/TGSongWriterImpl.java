@@ -26,7 +26,6 @@ import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
-import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
@@ -47,6 +46,7 @@ import app.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 import app.tuxguitar.util.TGVersion;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -61,7 +61,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 	@Override
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
-		new TGSongManager().updatePreciseStart(handle.getSong());
 		this.writeXMLDocument(handle);
 		ArchiveOutputStream<ZipArchiveEntry> outputStream;
 		try {
@@ -84,7 +83,6 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	public void writeContent(TGSongWriterHandle handle) throws TGFileFormatException {
-		new TGSongManager().updatePreciseStart(handle.getSong());
 		this.writeXMLDocument(handle);
 		this.saveDocument(handle.getOutputStream());
 	}

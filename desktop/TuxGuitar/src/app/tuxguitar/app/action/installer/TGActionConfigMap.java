@@ -14,6 +14,7 @@ import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction
 import app.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import app.tuxguitar.app.action.impl.edit.TGCopyAction;
 import app.tuxguitar.app.action.impl.edit.TGCutAction;
+import app.tuxguitar.app.action.impl.edit.TGOpenMeasureErrorsDialogAction;
 import app.tuxguitar.app.action.impl.edit.TGPasteAction;
 import app.tuxguitar.app.action.impl.edit.TGRepeatAction;
 import app.tuxguitar.app.action.impl.edit.TGSetMouseModeEditionAction;
@@ -21,6 +22,7 @@ import app.tuxguitar.app.action.impl.edit.TGSetMouseModeSelectionAction;
 import app.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
+import app.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
 import app.tuxguitar.app.action.impl.edit.tablature.TGMenuShownAction;
 import app.tuxguitar.app.action.impl.edit.tablature.TGMouseClickAction;
 import app.tuxguitar.app.action.impl.edit.tablature.TGMouseExitAction;
@@ -154,6 +156,7 @@ import app.tuxguitar.app.action.listener.cache.controller.TGUpdateModifiedNoteCo
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateModifiedVelocityController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateNoteRangeController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdatePlayerTracksController;
+import app.tuxguitar.app.action.listener.cache.controller.TGUpdateReadSongController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedMeasureController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateRemovedTrackController;
 import app.tuxguitar.app.action.listener.cache.controller.TGUpdateSavedSongController;
@@ -225,6 +228,7 @@ import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
+import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
 import app.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import app.tuxguitar.editor.action.measure.TGPasteMeasureAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -313,11 +317,13 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	public static final int DISABLE_ON_PLAY = 0x08;
 	public static final int STOP_TRANSPORT = 0x10;
 	public static final int SAVE_BEFORE = 0x20;
+	public static final int CONFIRM_IF_INVALID = 0x40;
 
 	private static final TGUpdateController UPDATE_ITEMS_CTL = new TGUpdateItemsController();
 	private static final TGUpdateController UPDATE_MEASURE_CTL = new TGUpdateMeasureController();
 	private static final TGUpdateController UPDATE_SONG_CTL = new TGUpdateSongController();
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
+	private static final TGUpdateController UPDATE_SONG_READ_CTL = new TGUpdateReadSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
 	private static final TGUpdateController UPDATE_NOTE_RANGE_CTL = new TGUpdateNoteRangeController();
@@ -342,23 +348,23 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGLoadSongAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_SONG_LOADED_CTL);
 		this.map(TGNewSongAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGLoadTemplateAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
-		this.map(TGReadSongAction.NAME, LOCKABLE);
+		this.map(TGReadSongAction.NAME, LOCKABLE, UPDATE_SONG_READ_CTL);
 		this.map(TGWriteSongAction.NAME, LOCKABLE, UPDATE_SONG_SAVED_CTL);
 		this.map(TGWriteFileAction.NAME, LOCKABLE, new TGUpdateWrittenFileController());
-		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGSaveAsFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | CONFIRM_IF_INVALID);
+		this.map(TGSaveFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT | CONFIRM_IF_INVALID);
 		this.map(TGReadURLAction.NAME, LOCKABLE | STOP_TRANSPORT, UPDATE_ITEMS_CTL);
 		this.map(TGOpenFileAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 		this.map(TGImportSongAction.NAME, LOCKABLE);
-		this.map(TGExportSongAction.NAME, LOCKABLE);
+		this.map(TGExportSongAction.NAME, LOCKABLE | CONFIRM_IF_INVALID);
 		this.map(TGCloseDocumentsAction.NAME, LOCKABLE | SAVE_BEFORE, UPDATE_ITEMS_CTL);
 		this.map(TGCloseDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT);
 		this.map(TGCloseCurrentDocumentAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGCloseOtherDocumentsAction.NAME, LOCKABLE | SHORTCUT);
 		this.map(TGCloseAllDocumentsAction.NAME, LOCKABLE | STOP_TRANSPORT | SHORTCUT);
 		this.map(TGExitAction.NAME, LOCKABLE | SYNC_THREAD);
-		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT);
-		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT);
+		this.map(TGPrintAction.NAME, LOCKABLE | SHORTCUT | CONFIRM_IF_INVALID);
+		this.map(TGPrintPreviewAction.NAME, LOCKABLE | SHORTCUT | CONFIRM_IF_INVALID);
 
 		//edit actions
 		this.map(TGCutAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
@@ -372,6 +378,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetNaturalKeyAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGSetVoice1Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGSetVoice2Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGToggleFreeEditionModeAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenMeasureErrorsDialogAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 
 		//tablature actions
 		this.map(TGMouseClickAction.NAME, LOCKABLE);
@@ -657,6 +666,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		tgActionConfig.setSyncThread((flags & SYNC_THREAD) != 0);
 		tgActionConfig.setUnsavedInterceptor((flags & SAVE_BEFORE) != 0);
 		tgActionConfig.setDocumentModifier(undoableController != null);
+		tgActionConfig.setInvalidSongInterceptor((flags & CONFIRM_IF_INVALID) != 0);
 
 		this.set(actionId, tgActionConfig);
 	}

@@ -323,7 +323,6 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 
 		long divisionLength = getDivisionLength();
-		manager.getMeasureManager().updateBeatsPreciseStart(this);
 		long preciseStart = getPreciseStart();
 		long start1 = TGDuration.toTime(b1.getBeat().getPreciseStart() - preciseStart);
 		long start2 = TGDuration.toTime(b2.getBeat().getPreciseStart() - preciseStart);
@@ -653,7 +652,9 @@ public class TGMeasureImpl extends TGMeasure{
 					UIResourceFactory factory = layout.getComponent().getResourceFactory();
 					bufferPainter = getBuffer().createBuffer(resourceBuffer, factory, getWidth(layout) + getSpacing(), getTs().getSize(), background);
 				}
-				layout.paintLines(getTrackImpl(), getTs(), bufferPainter, x, y, getWidth(layout) + getSpacing());
+				// change color of lines if measure validity is KO
+				boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureValid(this));
+				layout.paintLines(getTrackImpl(), getTs(), bufferPainter, x, y, getWidth(layout) + getSpacing(), measureIsValid);
 				paintTimeSignature(layout, bufferPainter, x, y);
 				paintClef(layout, bufferPainter, x, y);
 				paintKeySignature(layout, bufferPainter, x, y);

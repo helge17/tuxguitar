@@ -45,6 +45,7 @@ public class TGConfigKeys {
 	public static final String COLOR_BACKGROUND_PLAYING = "color.background.playing";
 
 	public static final String COLOR_LINE = "color.line";
+	public static final String COLOR_LINE_INVALID = "color.line.invalid";
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
 	public static final String COLOR_TAB_NOTE = "color.tab.note";
 	public static final String COLOR_PLAY_NOTE = "color.play.note";

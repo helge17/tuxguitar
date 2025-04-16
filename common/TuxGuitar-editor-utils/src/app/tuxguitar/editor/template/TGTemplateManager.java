@@ -113,9 +113,10 @@ public class TGTemplateManager {
 					TGSongReaderHandle tgSongLoaderHandle = new TGSongReaderHandle();
 					tgSongLoaderHandle.setFactory(tgSongManager.getFactory());
 					tgSongLoaderHandle.setInputStream(stream);
-
 					TGFileFormatManager.getInstance(this.context).read(tgSongLoaderHandle);
-
+					if (tgSongLoaderHandle.getSong() != null) {
+						tgSongManager.updatePreciseStart(tgSongLoaderHandle.getSong());
+					}
 					return tgSongLoaderHandle.getSong();
 				}
 			}

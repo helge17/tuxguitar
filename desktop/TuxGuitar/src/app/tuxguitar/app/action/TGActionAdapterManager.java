@@ -8,6 +8,7 @@ import app.tuxguitar.app.action.listener.error.TGActionErrorHandler;
 import app.tuxguitar.app.action.listener.gui.TGActionProcessingListener;
 import app.tuxguitar.app.action.listener.lock.TGLockableActionListener;
 import app.tuxguitar.app.action.listener.save.TGDocumentModifierListener;
+import app.tuxguitar.app.action.listener.save.TGInvalidSongInterceptor;
 import app.tuxguitar.app.action.listener.save.TGUnsavedDocumentInterceptor;
 import app.tuxguitar.app.action.listener.thread.TGSyncThreadInterceptor;
 import app.tuxguitar.app.action.listener.transport.TGDisableOnPlayInterceptor;
@@ -32,6 +33,7 @@ public class TGActionAdapterManager {
 	private TGUpdateListener updatableActionListener;
 	private TGDocumentModifierListener documentModifierListener;
 	private TGActionErrorHandler errorHandler;
+	private TGInvalidSongInterceptor invalidSongInterceptor;
 
 	private TGActionAdapterManager(TGContext context){
 		this.context = context;
@@ -46,6 +48,7 @@ public class TGActionAdapterManager {
 		this.updatableActionListener = new TGUpdateListener(this);
 		this.documentModifierListener = new TGDocumentModifierListener(context);
 		this.errorHandler = new TGActionErrorHandler(context);
+		this.invalidSongInterceptor = new TGInvalidSongInterceptor(context);
 	}
 
 	public void initialize(){
@@ -61,6 +64,7 @@ public class TGActionAdapterManager {
 		tgActionManager.addInterceptor(this.syncThreadInterceptor);
 		tgActionManager.addInterceptor(this.unsavedDocumentInterceptor);
 		tgActionManager.addInterceptor(this.lockableActionListener);
+		tgActionManager.addInterceptor(this.invalidSongInterceptor);
 
 		TGActionProcessingListener processingListener = new TGActionProcessingListener(this.context);
 		tgActionManager.addPreExecutionListener(processingListener);
@@ -121,6 +125,10 @@ public class TGActionAdapterManager {
 
 	public TGUpdateListener getUpdatableActionListener() {
 		return updatableActionListener;
+	}
+	
+	public TGInvalidSongInterceptor getInvalidSongInterceptor() {
+		return this.invalidSongInterceptor;
 	}
 
 	public TGContext getContext() {

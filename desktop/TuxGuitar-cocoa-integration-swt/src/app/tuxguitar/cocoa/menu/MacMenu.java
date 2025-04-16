@@ -5,9 +5,11 @@ import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSMenu;
 import org.eclipse.swt.internal.cocoa.NSMenuItem;
+import org.eclipse.swt.internal.cocoa.NSString;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.file.TGExitAction;
 import app.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import app.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
@@ -19,6 +21,11 @@ public class MacMenu {
 
 	private static final long kAboutMenuItem = 0;
 	private static final long kPreferencesMenuItem = 2;
+	private static final int kServicesApplicationMenuItem = 4;
+	private static final int kHideApplicationMenuItem = 6;
+	private static final int kHideOtherApplicationsMenuItem = 7;
+	private static final int kShowAllMenuItem = 8;
+	private static final int kQuitMenuItem = 10;
 
 	private static long sel_preferencesMenuItemSelected_ = TGCocoa.sel_registerName("preferencesMenuItemSelected:");
 	private static long sel_aboutMenuItemSelected_ = TGCocoa.sel_registerName("aboutMenuItemSelected:");
@@ -48,15 +55,42 @@ public class MacMenu {
 			NSMenu appMenu = appMenuItem.submenu();
 
 			long itemCount = TGCocoa.getMenuNumberOfItems( appMenu );
-			if( itemCount > kPreferencesMenuItem ) {
-				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kPreferencesMenuItem );
-				menuItem.setEnabled( true );
-				TGCocoa.setControlAction(menuItem, sel_preferencesMenuItemSelected_);
-			}
 			if( itemCount > kAboutMenuItem ) {
 				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kAboutMenuItem );
 				menuItem.setEnabled( true );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.about")));
 				TGCocoa.setControlAction(menuItem, sel_aboutMenuItemSelected_);
+			}
+			if( itemCount > kPreferencesMenuItem ) {
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kPreferencesMenuItem );
+				menuItem.setEnabled( true );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.settings")));
+				TGCocoa.setControlAction(menuItem, sel_preferencesMenuItemSelected_);
+			}
+			if( itemCount > kServicesApplicationMenuItem ) {
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kServicesApplicationMenuItem );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.services")));
+				menuItem.setEnabled( false );
+			}
+			if( itemCount > kHideApplicationMenuItem ) {
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kHideApplicationMenuItem );
+				menuItem.setEnabled( true );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.hide")));
+			}
+			if( itemCount > kHideOtherApplicationsMenuItem ) {
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kHideOtherApplicationsMenuItem );
+				menuItem.setEnabled( true );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.hide-others")));
+			}
+			if( itemCount >  kShowAllMenuItem ) {
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kShowAllMenuItem );
+				menuItem.setEnabled( true );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.show-all")));
+			}
+			if( itemCount >  kQuitMenuItem ) {
+				NSMenuItem menuItem = TGCocoa.getMenuItemAtIndex( appMenu , kQuitMenuItem );
+				menuItem.setEnabled( true );
+				menuItem.setTitle(NSString.stringWith(TuxGuitar.getProperty("macos.quit")));
 			}
 		}
 
