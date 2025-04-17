@@ -52,6 +52,38 @@ public class TGTrackManager {
 		return measure.getTrack().getMeasure(measure.getNumber());
 	}
 
+	// if a note in following voice is tied to current note and tie is valid, returns this note
+	// else null
+	public TGNote getNextTiedNote(TGNote note) {
+		TGVoice nextVoice = getSongManager().getMeasureManager().getNextVoicePrecise(
+				note.getVoice().getBeat().getMeasure().getBeats(), note.getVoice().getBeat(), note.getVoice().getIndex());
+		if (nextVoice == null) {
+			TGMeasure nextMeasure = getNextMeasure(note.getVoice().getBeat().getMeasure());
+			if (nextMeasure == null) {
+				return null;
+			}
+			nextVoice = getSongManager().getMeasureManager().getFirstVoice(
+					nextMeasure.getBeats(), note.getVoice().getIndex());
+		}
+		if (nextVoice == null) {
+			return null;
+		}
+		// look for a valid tied note
+		TGNote nextTiedNote = null;
+		for (TGNote nextNote : nextVoice.getNotes()) {
+			if (nextNote.isTiedNote() && (nextNote.getString() == note.getString()) && (nextNote.getValue() == note.getValue())) {
+				nextTiedNote = nextNote;
+				break;
+			}
+		}
+		return nextTiedNote;
+	}
+
+	// returns true if a note in following voice is tied to current note, and tie is valid
+	public boolean isAnyTiedTo(TGNote note) {
+		return (getNextTiedNote(note) != null);
+	}
+
 	public TGMeasure getMeasureAt(TGTrack track,long start){
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
