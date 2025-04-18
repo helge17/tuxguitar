@@ -1,10 +1,10 @@
 package app.tuxguitar.song.models;
 
 import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.util.TGMessagesManager;
 
 public abstract class TGMarker {
 	private static final TGColor DEFAULT_COLOR = TGColor.RED;
-	private static final String DEFAULT_TITLE = "Untitled";
 
 	private int measure;
 	private String title;
@@ -12,7 +12,7 @@ public abstract class TGMarker {
 
 	public TGMarker(TGFactory factory) {
 		this.measure = 0;
-		this.title = DEFAULT_TITLE;
+		this.title = TGMessagesManager.getProperty("file.save.default-name");
 		this.color = DEFAULT_COLOR.clone(factory);
 	}
 
