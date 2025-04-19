@@ -585,7 +585,10 @@ public class TGNoteImpl extends TGNote {
 		for (int i = getMeasureImpl().countBeats() - 1; i >= 0; i--) {
 			TGBeat beat = getMeasureImpl().getBeat(i);
 			TGVoice voice = beat.getVoice( getVoice().getIndex() );
-			if (beat.getStart() < getBeatImpl().getStart() && !voice.isRestVoice()) {
+			if (beat.getStart() < getBeatImpl().getStart()) {
+				if (voice.isRestVoice()) {
+					return null;
+				}
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while(it.hasNext()){
 					TGNoteImpl note = (TGNoteImpl)it.next();
