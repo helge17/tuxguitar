@@ -39,6 +39,8 @@ jobs:
       run: mkdir swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && cd swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && unzip ../swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=${{ env.SWT_VERSION }}
     - name: Build with Maven
       run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify
+    - name: Rename app depending of arch
+      run: mv desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
     - uses: actions/upload-artifact@v4
       with:
         name: Package-MacOS-${{ matrix.os }}
