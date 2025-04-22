@@ -138,10 +138,11 @@ $ brew install openjdk maven wget
 ### Download and install SWT for macOS
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.33-202409030240/swt-4.33-cocoa-macosx-`uname -m`.zip
-$ mkdir swt-4.33-cocoa-macosx-`uname -m`
-$ cd swt-4.33-cocoa-macosx-`uname -m`
-$ unzip ../swt-4.33-cocoa-macosx-`uname -m`.zip
+$ TUX_ARCH=`uname -m | sed 's/arm64/aarch64/'`
+$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.33-202409030240/swt-4.33-cocoa-macosx-${TUX_ARCH}.zip
+$ mkdir swt-4.33-cocoa-macosx-${TUX_ARCH}
+$ cd swt-4.33-cocoa-macosx-${TUX_ARCH}
+$ unzip ../swt-4.33-cocoa-macosx-${TUX_ARCH}.zip
 $ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.33
 $ cd ..
 ```
