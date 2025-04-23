@@ -169,7 +169,9 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				TGMeasureError err = TGMeasureErrorDialog.this.errTable.getSelectedValue();
-				TGMeasureErrorDialog.this.moveToError(err);
+				if (err != null) {
+					TGMeasureErrorDialog.this.moveToError(err);
+				}
 			}
 		});
 		errListLayout.set(errTable, UITableLayout.PACKED_HEIGHT, 120f);
