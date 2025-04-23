@@ -380,7 +380,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetVoice2Action.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGToggleFreeEditionModeAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenMeasureErrorsDialogAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 
 		//tablature actions
 		this.map(TGMouseClickAction.NAME, LOCKABLE);
