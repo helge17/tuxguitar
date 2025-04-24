@@ -5,6 +5,8 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
+import app.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
+import app.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.language.TGLanguageEvent;
 import app.tuxguitar.app.ui.TGApplication;
@@ -66,6 +68,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	private TGProcess updateItemsProcess;
 	private TGProcess loadIconsProcess;
 	private TGProcess loadPropertiesProcess;
+	private TGMeasureError selectedError;
 	// cache locally icons (skin-dependent) and messages (language-dependent)
 	// to avoid re-loading them each time the dialog is updated
 	// (dialog content depends from skin, language, and current measure/song, and
@@ -89,6 +92,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	public TGMeasureErrorDialog(TGContext context) {
 		this.context = context;
 		this.currentError = null;
+		this.selectedError = null;
 		this.createSyncProcesses();
 	}
 
@@ -169,6 +173,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				TGMeasureError err = TGMeasureErrorDialog.this.errTable.getSelectedValue();
+				TGMeasureErrorDialog.this.selectedError = err;
 				if (err != null) {
 					TGMeasureErrorDialog.this.moveToError(err);
 				}
@@ -216,6 +221,11 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	}
 
 	private void moveToError(TGMeasureError err) {
+		int caretVoiceIndex = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getVoice();
+		if (caretVoiceIndex != err.getVoiceIndex()) {
+			new TGActionProcessor(this.context, 
+					caretVoiceIndex==0 ? TGSetVoice2Action.NAME : TGSetVoice1Action.NAME).process();
+		}
 		TGActionProcessor actionProcessor = new TGActionProcessor(this.context, TGMoveToAction.NAME);
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK,
 				(TGTrackImpl) err.getMeasure().getTrack());
@@ -255,6 +265,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
 		TGSong song = tablature.getSong();
 		TGMeasureImpl measure = tablature.getCaret().getMeasure();
+		int voiceIndex = tablature.getCaret().getVoice();
 		TGSongManager songManager = tablature.getSongManager();
 
 		// ----------------- ERRORS LIST ------------------------
@@ -268,7 +279,10 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		for (TGMeasureError err : listErrors) {
 			UITableItem<TGMeasureError> tableItem = new UITableItem<TGMeasureError>(err);
 			tableItem.setText(0, this.userMessage(err.getMeasure(), err.getVoiceIndex(), err));
-			if (measure.equals(err.getMeasure())) {
+			if (err.isEqualTo(this.selectedError)) {
+				this.currentError = err;
+			} else if ((this.selectedError == null) && (measure.equals(err.getMeasure()))
+				&& ((voiceIndex == err.getVoiceIndex()) || (this.currentError == null)) ){
 				this.currentError = err;
 			}
 			if (this.showAllTracks.isSelected()
@@ -276,6 +290,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				listTableItems.add(tableItem);
 			}
 		}
+		this.selectedError = null;
 		// if current measure is valid, insert a first empty line in table
 		// (gets selected by default when opening dialog, or after fixing a measure)
 		if (this.currentError == null) {
