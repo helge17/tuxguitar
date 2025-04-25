@@ -192,12 +192,20 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	public void calculateWidth(TGLayout layout) {
-		if( this.compactMode ){
-			this.width = this.widthBeats;
+		boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureValid(this));
+		float widthCompact = this.widthBeats;
+		float widthNotCompact = this.getMaxQuarterSpacing(layout) * this.getTimeSignature().getQuartersInSignature();
+		widthNotCompact += this.getMaxEffectWidth(layout);
+		float maxWidth = (widthCompact > widthNotCompact ? widthCompact : widthNotCompact);
+		
+		if (!measureIsValid) {
+			this.width = maxWidth;
+		}
+		else if( this.compactMode){
+			this.width = widthCompact;
 		}
 		else{
-			this.width = this.getMaxQuarterSpacing(layout) * this.getTimeSignature().getQuartersInSignature();
-			this.width += this.getMaxEffectWidth(layout);
+			this.width = widthNotCompact;
 		}
 
 		this.width += getFirstNoteSpacing(layout);
