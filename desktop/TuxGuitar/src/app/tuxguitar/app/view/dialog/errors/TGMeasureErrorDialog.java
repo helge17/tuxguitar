@@ -126,6 +126,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				if (TGMeasureErrorDialog.this.currentError != null) {
+					TuxGuitar.getInstance().getTablatureEditor().getTablature().getSelector().clearSelection();
 					TGActionProcessor actionProcessor = new TGActionProcessor(context, TGFixMeasureVoiceAction.NAME);
 					actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE,
 							TGMeasureErrorDialog.this.currentError.getMeasure());
