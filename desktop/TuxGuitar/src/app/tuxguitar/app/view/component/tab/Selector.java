@@ -42,16 +42,21 @@ public class Selector {
 		if (initial == null || beat == null) {
 			initializeSelection(beat);
 		} else {
-			active = true;
-			if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber()
-					|| initialIsEarlierInTheSameMeasure(beat)) {
-				start = initial;
-				end = beat;
-			} else {
-				start = beat;
-				end = initial;
+			if (this.beatsOrderIsConsistent(beat)) {
+				active = true;
+				if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber()
+						|| initialIsEarlierInTheSameMeasure(beat)) {
+					start = initial;
+					end = beat;
+				} else {
+					start = beat;
+					end = initial;
+				}
+				this.saveState();
 			}
-			this.saveState();
+			else {
+				active = false;
+			}
 		}
 	}
 
@@ -62,6 +67,18 @@ public class Selector {
 	private boolean initialIsEarlierInTheSameMeasure(TGBeat beat) {
 		return initial.getMeasure().getNumber() == beat.getMeasure().getNumber()
 				&& initial.getStart() < beat.getStart();
+	}
+
+	private boolean beatsOrderIsConsistent(TGBeat beatToSelect) {
+		// in free edition mode, some measures may be invalid, e.g. too long
+		// in this case, some beats in a measure may have a start attribute bigger than notes in the next measure!
+		// in other words: whenever one measure is too long, the order of beats shown on score/tab is not
+		// consistent with their .start attribute
+		if ( (beatToSelect.getMeasure().getNumber() < initial.getMeasure().getNumber())
+				&& (beatToSelect.getStart() >= initial.getStart()) ) return false;
+		if ( (beatToSelect.getMeasure().getNumber() > end.getMeasure().getNumber())
+				&& (beatToSelect.getStart() <= end.getStart()) ) return false;
+		return true;
 	}
 
 	public TGBeat getInitialBeat() {
