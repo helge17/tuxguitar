@@ -351,6 +351,12 @@ public class TGTrackManager {
 			}
 		}
 	}
+	public void changeKeySignature(TGTrack track,List<TGMeasure> measures,int keySignature){
+		for (TGMeasure measure : measures) {
+			measure.setKeySignature(keySignature);
+			measure.resetAltEnharmonic();
+		}
+	}
 
 	public void changeClef(TGTrack track,long start,int clef,boolean toEnd){
 		changeClef(track,getMeasureAt(track,start),clef,toEnd);
