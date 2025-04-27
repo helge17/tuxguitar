@@ -52,11 +52,7 @@ public class TGDeleteNoteOrRestAction extends TGActionBase {
 		if (beat.isTextBeat() && beat.isRestBeat()) {
 			songManager.getMeasureManager().removeText(beat);
 		} else if (voice.isRestVoice()) {
-			if (songManager.isFreeEditionMode(measure)) {
-				songManager.getMeasureManager().removeVoiceWithoutControl(voice);
-			} else {
-				songManager.getMeasureManager().removeVoice(voice, true);
-			}
+			songManager.getMeasureManager().removeVoice(voice, true);
 		} else {
 			songManager.getMeasureManager().removeNote(measure, beat.getStart(), voice.getIndex(), string);
 		}
