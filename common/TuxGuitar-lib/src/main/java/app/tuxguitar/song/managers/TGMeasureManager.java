@@ -1656,6 +1656,20 @@ public class TGMeasureManager {
 		}
 		return list;
 	}
+	public List<TGVoice> getVoicesBeforeEndPrecise(List<TGBeat> beats,long fromPreciseStart, int index) {
+		List<TGVoice> list = new ArrayList<TGVoice>();
+		Iterator<TGBeat> it = beats.iterator();
+		while(it.hasNext()){
+			TGBeat beat = it.next();
+			if (beat.getPreciseStart() >= fromPreciseStart) {
+				TGVoice voice = beat.getVoice(index);
+				if(!voice.isEmpty()){
+					list.add(voice);
+				}
+			}
+		}
+		return list;
+	}
 
 	public void addSilence(TGMeasure measure,long start, TGDuration duration, int voice){
 		TGBeat beat = getBeat(measure, start);
@@ -1740,13 +1754,13 @@ public class TGMeasureManager {
 	public void removeVoice(TGVoice voice,boolean moveNextVoices){
 		removeVoice(voice);
 		if(moveNextVoices){
-			long start = voice.getBeat().getStart();
-			long length = voice.getDuration().getTime();
-			TGVoice next = getNextVoice(voice.getBeat().getMeasure().getBeats(),voice.getBeat(),voice.getIndex());
+			long preciseStart = voice.getBeat().getPreciseStart();
+			long preciseLength = voice.getDuration().getPreciseTime();
+			TGVoice next = getNextVoicePrecise(voice.getBeat().getMeasure().getBeats(),voice.getBeat(),voice.getIndex());
 			if(next != null){
-				length = next.getBeat().getStart() - start;
+				preciseLength = next.getBeat().getPreciseStart() - preciseStart;
 			}
-			moveVoices(voice.getBeat().getMeasure(),start + length,-length, voice.getIndex(), voice.getDuration());
+			moveVoicesPrecise(voice.getBeat().getMeasure(), preciseStart + preciseLength, -preciseLength, voice.getIndex(), voice.getDuration());
 		}
 	}
 
@@ -1880,6 +1894,13 @@ public class TGMeasureManager {
 		for( int i = 0 ; i < count ; i ++ ){
 			TGVoice voice = voices.get( (theMove < 0 ? i : ( (count - 1) - i ) ) );
 			moveVoice(voice,theMove);
+		}
+	}
+	private void moveVoicesPrecise(List<TGVoice> voices,long thePreciseMove){
+		int count = voices.size();
+		for( int i = 0 ; i < count ; i ++ ){
+			TGVoice voice = voices.get( (thePreciseMove < 0 ? i : ( (count - 1) - i ) ) );
+			moveVoicePrecise(voice,thePreciseMove);
 		}
 	}
 
@@ -2053,21 +2074,21 @@ public class TGMeasureManager {
 		return false;
 	}
 
-	public boolean moveVoices(TGMeasure measure,long start,long theMove, int voiceIndex, TGDuration fillDuration){
-		if( theMove == 0 ){
+	public boolean moveVoicesPrecise(TGMeasure measure,long preciseStart,long thePreciseMove, int voiceIndex, TGDuration fillDuration){
+		if( thePreciseMove == 0 ){
 			return false;
 		}
 		boolean success = true;
-		long measureStart = measure.getStart();
-		long measureEnd =  (measureStart + measure.getLength());
+		long measurePreciseStart = measure.getPreciseStart();
+		long measurePreciseEnd =  (measurePreciseStart + measure.getPreciseLength());
 
-		List<TGVoice> voicesToMove = getVoicesBeforeEnd(measure.getBeats(),start, voiceIndex);
+		List<TGVoice> voicesToMove = getVoicesBeforeEndPrecise(measure.getBeats(), preciseStart, voiceIndex);
 		List<TGVoice> voicesToRemove = new ArrayList<TGVoice>();
-		List<TGBeat> currentBeats = getBeatsBeforeEnd(measure.getBeats(), start);
+		List<TGBeat> currentBeats = getBeatsBeforeEndPrecise(measure.getBeats(), preciseStart);
 
 		// Verifica los silencios a eliminar al principio del compas
 		TGVoice first = getFirstVoice( currentBeats, voiceIndex );
-		while(first != null && first.isRestVoice() && (!first.getBeat().isTextBeat() || !isUniqueVoice(first,false)) && (first.getBeat().getStart() + theMove) < measureStart){
+		while(first != null && first.isRestVoice() && (!first.getBeat().isTextBeat() || !isUniqueVoice(first,false)) && (first.getBeat().getPreciseStart() + thePreciseMove) < measurePreciseStart){
 			currentBeats.remove(first.getBeat());
 			voicesToRemove.add(first);
 			first = getNextVoice( currentBeats,first.getBeat(), voiceIndex);
@@ -2076,7 +2097,7 @@ public class TGMeasureManager {
 		// Verifica los silencios a eliminar al final del compas
 		TGVoice last = getLastVoice(currentBeats, voiceIndex);
 		TGDuration lastDuration = (last != null ? last.getDuration() : null);
-		while(last != null && lastDuration != null && last.isRestVoice() && (!last.getBeat().isTextBeat() || !isUniqueVoice(last,false)) && (last.getBeat().getStart() + lastDuration.getTime() + theMove) > measureEnd  ){
+		while(last != null && lastDuration != null && last.isRestVoice() && (!last.getBeat().isTextBeat() || !isUniqueVoice(last,false)) && (last.getBeat().getPreciseStart() + lastDuration.getPreciseTime() + thePreciseMove) > measurePreciseEnd  ){
 			currentBeats.remove(last.getBeat());
 			voicesToRemove.add(last);
 			last = getPreviousVoice(currentBeats,last.getBeat(), voiceIndex);
@@ -2085,13 +2106,13 @@ public class TGMeasureManager {
 
 		// Si el primer o ultimo componente, quedan fuera del compas, entonces el movimiento no es satisfactorio
 		if(first != null && last != null && lastDuration != null){
-			if((first.getBeat().getStart() + theMove) < measureStart || (last.getBeat().getStart() + lastDuration.getTime() + theMove) > measureEnd){
+			if((first.getBeat().getPreciseStart() + thePreciseMove) < measurePreciseStart || (last.getBeat().getPreciseStart() + lastDuration.getPreciseTime() + thePreciseMove) > measurePreciseEnd){
 				success = false;
 			}
 		}
 
 		if(success){
-			this.moveVoices(voicesToMove,theMove);
+			this.moveVoicesPrecise(voicesToMove, thePreciseMove);
 
 			// Elimino los silencios que quedaron fuera del compas.
 			Iterator<TGVoice> it = voicesToRemove.iterator();
@@ -2102,17 +2123,16 @@ public class TGMeasureManager {
 
 			// Se crean silencios en los espacios vacios, si la duracion fue especificada.
 			if( fillDuration != null ){
-				if( theMove < 0 ){
+				if( thePreciseMove < 0 ){
 					last = getLastVoice(measure.getBeats(), voiceIndex);
 					lastDuration = (last != null ? last.getDuration() : null);
-					long beatStart = ( (last != null && lastDuration != null ? last.getBeat().getStart()  + lastDuration.getTime() : start  )  );
-					if( (beatStart + fillDuration.getTime()) <= measureEnd ){
+					long beatPreciseStart = ( (last != null && lastDuration != null ? last.getBeat().getPreciseStart()  + lastDuration.getPreciseTime() : preciseStart  )  );
+					if( (beatPreciseStart + fillDuration.getPreciseTime()) <= measurePreciseEnd ){
 						boolean beatNew = false;
-						TGBeat beat = getBeat(measure, beatStart);
+						TGBeat beat = getBeatPrecise(measure, beatPreciseStart);
 						if(beat == null){
 							beat = getSongManager().getFactory().newBeat();
-							// set beat approximative start
-							beat.setStart( beatStart );
+							beat.setPreciseStart( beatPreciseStart );
 							beatNew = true;
 						}
 						TGVoice voice = beat.getVoice(voiceIndex);
@@ -2120,20 +2140,17 @@ public class TGMeasureManager {
 						voice.getDuration().copyFrom( fillDuration );
 						if( beatNew ){
 							addBeat(measure, beat );
-							// refresh beat precise start
-							this.updateBeatPreciseStart(beat);
 						}
 					}
 				}
 				else{
-					first = getFirstVoice(getBeatsBeforeEnd(measure.getBeats(),start), voiceIndex);
-					if( (start + fillDuration.getTime()) <= (first != null ?first.getBeat().getStart() : measureEnd ) ){
+					first = getFirstVoice(getBeatsBeforeEndPrecise(measure.getBeats(), preciseStart), voiceIndex);
+					if( (preciseStart + fillDuration.getPreciseTime()) <= (first != null ?first.getBeat().getPreciseStart() : measurePreciseEnd ) ){
 						boolean beatNew = false;
-						TGBeat beat = getBeat(measure, start);
+						TGBeat beat = getBeatPrecise(measure, preciseStart);
 						if(beat == null){
 							beat = getSongManager().getFactory().newBeat();
-							// set beat approximative start
-							beat.setStart( start );
+							beat.setPreciseStart( preciseStart );
 							beatNew = true;
 						}
 						TGVoice voice = beat.getVoice(voiceIndex);
@@ -2141,8 +2158,6 @@ public class TGMeasureManager {
 						voice.getDuration().copyFrom( fillDuration );
 						if( beatNew ){
 							addBeat(measure, beat );
-							// refresh beat precise start
-							this.updateBeatPreciseStart(beat);
 						}
 					}
 				}

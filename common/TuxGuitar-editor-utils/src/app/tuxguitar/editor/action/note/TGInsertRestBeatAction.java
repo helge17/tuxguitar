@@ -32,9 +32,9 @@ public class TGInsertRestBeatAction extends TGActionBase {
 			songManager.getMeasureManager().addSilence(beat, duration.clone(getSongManager(context).getFactory()), voice.getIndex());
 		}
 		else {
-			long start = beat.getStart();
-			long length = voice.getDuration().getTime();
-			songManager.getMeasureManager().moveVoices(measure, start, length, voice.getIndex(), beat.getVoice(voice.getIndex()).getDuration());
+			long preciseStart = beat.getPreciseStart();
+			long preciseLength = voice.getDuration().getPreciseTime();
+			songManager.getMeasureManager().moveVoicesPrecise(measure, preciseStart, preciseLength, voice.getIndex(), beat.getVoice(voice.getIndex()).getDuration());
 		}
 	}
 }
