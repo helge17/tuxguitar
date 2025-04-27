@@ -26,7 +26,9 @@ public class TGMeasureError {
 	}
 	
 	public boolean canBeFixed() {
-		return ((this.errCode == TGMeasureManager.VOICE_TOO_LONG) || (this.errCode == TGMeasureManager.VOICE_TOO_SHORT));
+		int code = this.errCode;
+		code ^= (code & (TGMeasureManager.VOICE_TOO_LONG |TGMeasureManager.VOICE_TOO_SHORT | TGMeasureManager.VOICE_OVERLAP));
+		return (code == TGMeasureManager.VOICE_OK);
 	}
 
 	public boolean isEqualTo(TGMeasureError err) {
