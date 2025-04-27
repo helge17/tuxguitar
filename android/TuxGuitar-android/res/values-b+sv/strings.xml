@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Lägg till takt</string>
 	<string name="action_measure_clean">Rensa takt</string>
 	<string name="action_measure_remove">Ta bort takt</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Sammanbunden not</string>
 	<string name="action_clean_beat">Rensa slag</string>

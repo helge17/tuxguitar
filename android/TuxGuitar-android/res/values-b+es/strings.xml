@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Agregar compás</string>
 	<string name="action_measure_clean">Limpiar compás</string>
 	<string name="action_measure_remove">Borrar compás</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Ligar Nota</string>
 	<string name="action_clean_beat">Limpiar Notas</string>

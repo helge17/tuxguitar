@@ -89,6 +89,7 @@
 	<string name="action_measure_add">追加 (空小節)</string>
 	<string name="action_measure_clean">クリア (選択小節)</string>
 	<string name="action_measure_remove">削除 (範囲指定)</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">タイ</string>
 	<string name="action_clean_beat">1拍除去</string>

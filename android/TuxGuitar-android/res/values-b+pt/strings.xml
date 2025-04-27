@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Adicionar Compasso</string>
 	<string name="action_measure_clean">Limpar Compasso</string>
 	<string name="action_measure_remove">Remover Compasso</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Nota Ligada</string>
 	<string name="action_clean_beat">Limpar batida</string>

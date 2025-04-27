@@ -89,6 +89,7 @@
 	<string name="action_measure_add">新增小节</string>
 	<string name="action_measure_clean">清除小节</string>
 	<string name="action_measure_remove">删除小节</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">连音</string>
 	<string name="action_clean_beat">清除</string>

@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Thêm ô nhịp</string>
 	<string name="action_measure_clean">Xoá ô nhịp</string>
 	<string name="action_measure_remove">Bỏ ô nhịp</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Nốt luyến</string>
 	<string name="action_clean_beat">Xoá nhịp</string>

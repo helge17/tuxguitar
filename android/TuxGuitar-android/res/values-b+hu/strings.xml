@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Új ütem</string>
 	<string name="action_measure_clean">Csendes ütem</string>
 	<string name="action_measure_remove">Ütem eltávolítása</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Átkötött hang</string>
 	<string name="action_clean_beat">Hang/akkord törlése</string>

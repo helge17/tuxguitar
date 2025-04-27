@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Voeg maat Toe</string>
 	<string name="action_measure_clean">Wis maat</string>
 	<string name="action_measure_remove">Verwijder maat</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Gekoppelde Noot</string>
 	<string name="action_clean_beat">Wis Beat</string>

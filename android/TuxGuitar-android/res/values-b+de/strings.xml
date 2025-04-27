@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Takt hinzufügen</string>
 	<string name="action_measure_clean">Takt leeren</string>
 	<string name="action_measure_remove">Takt löschen</string>
+	<string name="action_fix_voice">Stimme korrigieren</string>
 
 	<string name="action_change_tied_note">Gebundene Note</string>
 	<string name="action_clean_beat">Schlag leeren</string>

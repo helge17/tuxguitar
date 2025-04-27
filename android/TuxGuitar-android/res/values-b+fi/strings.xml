@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Lisää tahti</string>
 	<string name="action_measure_clean">Tyhjennä tahti</string>
 	<string name="action_measure_remove">Poista tahti</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Sidottu nuotti</string>
 	<string name="action_clean_beat">Tyhjennä isku</string>

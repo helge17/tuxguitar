@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Добавить</string>
 	<string name="action_measure_clean">Очистить</string>
 	<string name="action_measure_remove">Удалить</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Залигованная нота</string>
 	<string name="action_clean_beat">Очистить</string>
@@ -143,7 +144,7 @@
 	<string name="action_change_bend">Бэнд</string>
 	<string name="action_change_dead_note">Приглушённая нота</string>
 	<string name="action_change_slide">Слайд</string>
-	<string name="action_change_hammer">Восходящее легато/Нисходящее легато </string>
+	<string name="action_change_hammer">Восходящее легато/Нисходящее легато</string>
 	<string name="action_change_tremolo_bar">Рычаг тремоло</string>
 	<string name="action_change_ghost_note">Нота-призрак</string>
 	<string name="action_change_accentuated_note">Акцентированная нота</string>

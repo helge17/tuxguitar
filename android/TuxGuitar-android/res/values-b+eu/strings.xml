@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Jarri Kompas bat</string>
 	<string name="action_measure_clean">Ezabatu Kompasa</string>
 	<string name="action_measure_remove">Kendu kompasa</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Ligar Nota</string>
 	<string name="action_clean_beat">Ezabatu neurria</string>

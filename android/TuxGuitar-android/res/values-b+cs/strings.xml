@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Přidat takt</string>
 	<string name="action_measure_clean">Vymazat obsah taktu</string>
 	<string name="action_measure_remove">Odebrat takt</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Ligatura</string>
 	<string name="action_clean_beat">Čistá doba</string>

@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Добавяне на такт</string>
 	<string name="action_measure_clean">Изчистване на такт</string>
 	<string name="action_measure_remove">Премахване на такт</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<!-- <string name="action_change_tied_note"></string> -->
 	<string name="action_clean_beat">Изчистване на удар</string>

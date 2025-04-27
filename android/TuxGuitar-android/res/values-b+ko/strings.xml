@@ -82,13 +82,14 @@
 	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
 	<string name="action_track_set_name">이름</string>
-	<string name="action_track_set_channel">악기 </string>
+	<string name="action_track_set_channel">악기</string>
 	<string name="action_track_change_tuning">튜닝</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
 	<string name="action_measure_add">마디 추가</string>
 	<string name="action_measure_clean">마디 비우기</string>
 	<string name="action_measure_remove">마디 삭제하기</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">타이 노트(붙임줄)</string>
 	<string name="action_clean_beat">박자 비우기</string>
@@ -133,10 +134,10 @@
 	<string name="action_set_velocity_ppp">피아니시시모</string>
 	<string name="action_set_velocity_pp">피아니시모</string>
 	<string name="action_set_velocity_p">피아노</string>
-	<string name="action_set_velocity_mp">메조피아노    </string>
-	<string name="action_set_velocity_mf">메조포르테  </string>
+	<string name="action_set_velocity_mp">메조피아노</string>
+	<string name="action_set_velocity_mf">메조포르테</string>
 	<string name="action_set_velocity_f">포르테</string>
-	<string name="action_set_velocity_ff">포르티시모 </string>
+	<string name="action_set_velocity_ff">포르티시모</string>
 	<string name="action_set_velocity_fff">포르티시시모</string>
 
 	<string name="action_change_vibrato">비브라토</string>
@@ -158,7 +159,7 @@
 	<string name="action_change_tapping">탭핑</string>
 	<string name="action_change_slapping">슬랩핑</string>
 	<string name="action_change_popping">팝핑</string>
-	<string name="action_change_fade_in">Fade In  </string>
+	<string name="action_change_fade_in">Fade In</string>
 
 	<!-- <string name="action_channel_list_add"></string> -->
 	<string name="action_channel_list_item_edit">편집</string>
@@ -319,7 +320,7 @@
 	<string name="track_name_dlg_name_label">이름:</string>
 
 	<!-- Track channel dialog -->
-	<string name="track_channel_dlg_channel_label">악기 :</string>
+	<string name="track_channel_dlg_channel_label">악기:</string>
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
@@ -414,10 +415,10 @@
 	<string name="grace_dlg_dynamic_ppp">피아니시시모</string>
 	<string name="grace_dlg_dynamic_pp">피아니시모</string>
 	<string name="grace_dlg_dynamic_p">피아노</string>
-	<string name="grace_dlg_dynamic_mp">메조피아노    </string>
-	<string name="grace_dlg_dynamic_mf">메조포르테  </string>
+	<string name="grace_dlg_dynamic_mp">메조피아노</string>
+	<string name="grace_dlg_dynamic_mf">메조포르테</string>
 	<string name="grace_dlg_dynamic_f">포르테</string>
-	<string name="grace_dlg_dynamic_ff">포르티시모 </string>
+	<string name="grace_dlg_dynamic_ff">포르티시모</string>
 	<string name="grace_dlg_dynamic_fff">포르티시시모</string>
 	<!-- <string name="grace_dlg_transition_label"></string> -->
 	<!-- <string name="grace_dlg_transition_none"></string> -->
@@ -456,7 +457,7 @@
 	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<string name="channel_edit_dlg_title">악기 </string>
+	<string name="channel_edit_dlg_title">악기</string>
 	<string name="channel_edit_dlg_name_label">이름:</string>
 	<!-- <string name="channel_edit_dlg_program_label"></string> -->
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->

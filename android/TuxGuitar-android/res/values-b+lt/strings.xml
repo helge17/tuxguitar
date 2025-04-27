@@ -89,6 +89,7 @@
 	<string name="action_measure_add">Pridėti taktą</string>
 	<string name="action_measure_clean">Nuimti takto ženklą</string>
 	<string name="action_measure_remove">Pašalinti taktą</string>
+	<!-- <string name="action_fix_voice"></string> -->
 
 	<string name="action_change_tied_note">Ligatūra</string>
 	<string name="action_clean_beat">Akcentavimo nuėmimas</string>
