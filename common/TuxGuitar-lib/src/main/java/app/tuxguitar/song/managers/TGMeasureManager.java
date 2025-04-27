@@ -1718,11 +1718,6 @@ public class TGMeasureManager {
 		this.removeBeat(beat);
 	}
 
-	public void removeVoiceWithoutControl(TGVoice voice){
-		removeVoice(voice);
-		this.updateBeatsPreciseStart(voice.getBeat().getMeasure());
-	}
-	
 	public void removeVoice(TGVoice voice,boolean moveNextVoices){
 		removeVoice(voice);
 		if(moveNextVoices){
