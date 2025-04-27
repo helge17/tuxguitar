@@ -21,6 +21,7 @@ import app.tuxguitar.ui.widget.UILegendPanel;
 import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UISelectItem;
 import app.tuxguitar.ui.widget.UIWindow;
+import app.tuxguitar.util.TGBeatRange;
 import app.tuxguitar.util.TGContext;
 
 public class TGKeySignatureDialog {
@@ -28,6 +29,8 @@ public class TGKeySignatureDialog {
 	public void show(final TGViewContext context) {
 		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+		final TGBeatRange beatRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
+		final Boolean isSelectionActive = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE);
 
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -68,17 +71,44 @@ public class TGKeySignatureDialog {
 		keySignatures.setSelectedValue(measure.getKeySignature());
 		keySignatureLayout.set(keySignatures, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
 
-		//--------------------To End Checkbox-------------------------------
+		//--------------------Option Checkboxes-------------------------------
 		UITableLayout checkLayout = new UITableLayout();
 		UILegendPanel check = uiFactory.createLegendPanel(dialog);
 		check.setLayout(checkLayout);
 		check.setText(TuxGuitar.getProperty("options"));
 		dialogLayout.set(check, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+		final UICheckBox applyToSelection = uiFactory.createCheckBox(check);
+		applyToSelection.setText(TuxGuitar.getProperty("composition.keysignature.apply-to-selection"));
+		checkLayout.set(applyToSelection, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
 		final UICheckBox toEnd = uiFactory.createCheckBox(check);
 		toEnd.setText(TuxGuitar.getProperty("composition.keysignature.to-the-end"));
-		toEnd.setSelected(true);
-		checkLayout.set(toEnd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		checkLayout.set(toEnd, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
+		if (isSelectionActive && (beatRange != null) && !beatRange.isEmpty()) {
+			applyToSelection.setEnabled(true);
+			applyToSelection.setSelected(true);
+			toEnd.setSelected(false);
+		} else {
+			applyToSelection.setEnabled(false);
+			applyToSelection.setSelected(false);
+			toEnd.setSelected(true);
+		}
+
+		// check boxes are exclusive (no radio button: none of them may be selected)
+		toEnd.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				applyToSelection.setSelected(false);
+			}
+		});
+		applyToSelection.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				toEnd.setSelected(false);
+			}
+		});
 
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
@@ -91,7 +121,7 @@ public class TGKeySignatureDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				changeKeySignature(context.getContext(), track, measure, keySignatures.getSelectedValue(), toEnd.isSelected());
+				changeKeySignature(context.getContext(), track, measure, keySignatures.getSelectedValue(), beatRange, applyToSelection.isSelected(), toEnd.isSelected());
 				dialog.dispose();
 			}
 		});
@@ -110,12 +140,21 @@ public class TGKeySignatureDialog {
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 
-	public void changeKeySignature(TGContext context, TGTrack track, TGMeasure measure, Integer value, Boolean applyToEnd) {
+	public void changeKeySignature(TGContext context, TGTrack track, TGMeasure measure, Integer value, TGBeatRange beatRange, Boolean applyToSelection, Boolean applyToEnd) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeKeySignatureAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
-		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_KEY_SIGNATURE, value);
-		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
+		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE, beatRange);
+		tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_SELECTION, applyToSelection);
+		if (applyToSelection && (beatRange != null) && !beatRange.isEmpty()) {
+			// first measure of selection (start point for undo controller, whatever the caret position in selection)
+			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, beatRange.getMeasures().get(0));
+			// so that undo controller restores all modified measures
+			tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_END, Boolean.TRUE);
+		} else {
+			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
+			tgActionProcessor.setAttribute(TGChangeKeySignatureAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
+		}
 		tgActionProcessor.processOnNewThread();
 	}
 }
