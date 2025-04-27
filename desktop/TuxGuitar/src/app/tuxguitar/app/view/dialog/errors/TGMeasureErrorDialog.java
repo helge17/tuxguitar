@@ -132,6 +132,8 @@ public class TGMeasureErrorDialog implements TGEventListener {
 							TGMeasureErrorDialog.this.currentError.getMeasure());
 					actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_VOICE_INDEX,
 							TGMeasureErrorDialog.this.currentError.getVoiceIndex());
+					actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_ERR_CODE,
+							TGMeasureErrorDialog.this.currentError.getErrCode());
 					actionProcessor.process();
 				}
 			}

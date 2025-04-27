@@ -1244,8 +1244,56 @@ public class TGMeasureManager {
 		return this.getMeasureErrors(measure).isEmpty();
 	}
 	
-	// fix an invalid voice in measure (too short, too long)
-	public void fixVoice(TGMeasure measure, int voiceIndex) {
+	public void fixVoice(TGMeasure measure, int voiceIndex, int errCode) {
+		if ((errCode & VOICE_OVERLAP) != 0) {
+			this.fixVoiceOverlap(measure, voiceIndex);
+		}
+		if ( ((errCode & VOICE_TOO_LONG) != 0) || ((errCode & VOICE_TOO_SHORT) != 0) ) {
+			this.fixVoiceLongShort(measure, voiceIndex);
+		}
+	}
+
+	// fix an invalid voice in measure: overlap
+	public void fixVoiceOverlap(TGMeasure measure, int voiceIndex) {
+		boolean overlap = true;
+		while (overlap) {
+			overlap = false;
+			TGVoice previousVoice = null;
+			for (TGBeat beat : measure.getBeats()) {
+				TGVoice voice = beat.getVoice(voiceIndex);
+				if (!voice.isEmpty()) {
+					if (previousVoice != null) {
+						long previousVoiceEnd = previousVoice.getBeat().getPreciseStart() + previousVoice.getDuration().getPreciseTime();
+						long voiceStart = voice.getBeat().getPreciseStart();
+						long overlapTime = previousVoiceEnd - voiceStart;
+						if (overlapTime > 0) {
+							overlap = true;
+							// fix overlap, then break loop to restart from measure beginning
+							long fixedPreviousPreciseTime = previousVoice.getDuration().getPreciseTime() - overlapTime;
+							TGDuration fixedDuration = getSongManager().getFactory().newDuration();
+							try {
+								fixedDuration.setPreciseValue(fixedPreviousPreciseTime);
+							}
+							catch (IllegalArgumentException e) {
+								// failed to fix, ignore
+								overlap = false;
+							}
+							if (overlap) {
+								previousVoice.setDuration(fixedDuration);
+								this.updateBeatsPreciseStart(measure);
+								break;
+							}
+						}
+					}
+					
+					previousVoice = voice;
+				}
+			}
+		}
+	}
+
+	// fix an invalid voice in measure: too long or too short
+	public void fixVoiceLongShort(TGMeasure measure, int voiceIndex) {
 		List<TGBeat> beats = measure.getBeats();
 		// remove all voices starting after measure end
 		long measurePreciseEnd = measure.getPreciseStart() + measure.getPreciseLength();
@@ -1795,6 +1843,7 @@ public class TGMeasureManager {
 	public void changeDuration(TGMeasure measure,TGBeat beat,TGDuration duration,int voiceIndex, boolean tryMove){
 		if (getSongManager().isFreeEditionMode(measure)) {
 			beat.getVoice(voiceIndex).getDuration().copyFrom(duration);
+			this.updateBeatsPreciseStart(measure);
 		}
 		else {
 			//obtengo la duracion vieja

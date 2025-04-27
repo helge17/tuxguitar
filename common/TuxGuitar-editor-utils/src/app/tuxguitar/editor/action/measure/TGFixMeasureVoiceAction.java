@@ -11,6 +11,7 @@ public class TGFixMeasureVoiceAction extends TGActionBase {
 	
 	public static final String NAME = "action.measure.fix-voice";
 	public static final String ATTRIBUTE_VOICE_INDEX  = "action.measure.fix-voice.voice-index";
+	public static final String ATTRIBUTE_ERR_CODE = "action.measure.fix-voice.err-code";
 
 	public TGFixMeasureVoiceAction(TGContext context) {
 		super(context, NAME);
@@ -21,8 +22,9 @@ public class TGFixMeasureVoiceAction extends TGActionBase {
 		TGSongManager songMgr = getSongManager(actionContext);
 		TGMeasure measure = actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		int voiceIndex = actionContext.getAttribute(ATTRIBUTE_VOICE_INDEX);
+		int errCode = actionContext.getAttribute(ATTRIBUTE_ERR_CODE);
 
-		songMgr.getMeasureManager().fixVoice(measure, voiceIndex);
+		songMgr.getMeasureManager().fixVoice(measure, voiceIndex, errCode);
 		
 	}
 
