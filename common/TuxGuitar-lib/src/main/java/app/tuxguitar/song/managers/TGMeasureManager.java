@@ -1244,10 +1244,15 @@ public class TGMeasureManager {
 		return this.getMeasureErrors(measure).isEmpty();
 	}
 	
-	public void fixVoice(TGMeasure measure, int voiceIndex) {
-		this.fixVoiceOverlap(measure, voiceIndex);
-		this.fixVoiceLongShort(measure, voiceIndex);
+	public void fixVoice(TGMeasure measure, int voiceIndex, int errCode) {
+		if ((errCode & VOICE_OVERLAP) != 0) {
+			this.fixVoiceOverlap(measure, voiceIndex);
+		}
+		if ( ((errCode & VOICE_TOO_LONG) != 0) || ((errCode & VOICE_TOO_SHORT) != 0) ) {
+			this.fixVoiceLongShort(measure, voiceIndex);
+		}
 	}
+
 	// fix an invalid voice in measure: overlap
 	public void fixVoiceOverlap(TGMeasure measure, int voiceIndex) {
 		boolean overlap = true;
@@ -1286,7 +1291,7 @@ public class TGMeasureManager {
 			}
 		}
 	}
-	
+
 	// fix an invalid voice in measure: too long or too short
 	public void fixVoiceLongShort(TGMeasure measure, int voiceIndex) {
 		List<TGBeat> beats = measure.getBeats();

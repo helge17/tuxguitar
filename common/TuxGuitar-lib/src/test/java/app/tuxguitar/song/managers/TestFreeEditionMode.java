@@ -226,7 +226,7 @@ public class TestFreeEditionMode {
 			List<TGMeasureError> listErrors = songMgr.getMeasureManager().getMeasureErrors(measure);
 			assertNotEquals(0, listErrors.size());
 			for (TGMeasureError err : listErrors) {
-				songMgr.getMeasureManager().fixVoice(measure, err.getVoiceIndex());
+				songMgr.getMeasureManager().fixVoiceLongShort(measure, err.getVoiceIndex());
 			}
 			String errMsg = "KO, measure " + String.valueOf(measure.getNumber());
 			assertTrue(this.measuresContentsAreEqual(measure, song.getTrack(1).getMeasure(m)), errMsg);
