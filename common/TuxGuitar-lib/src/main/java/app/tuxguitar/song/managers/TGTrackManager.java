@@ -55,7 +55,7 @@ public class TGTrackManager {
 	// if a note in following voice is tied to current note and tie is valid, returns this note
 	// else null
 	public TGNote getNextTiedNote(TGNote note) {
-		TGVoice nextVoice = getSongManager().getMeasureManager().getNextVoicePrecise(
+		TGVoice nextVoice = getSongManager().getMeasureManager().getNextVoice(
 				note.getVoice().getBeat().getMeasure().getBeats(), note.getVoice().getBeat(), note.getVoice().getIndex());
 		if (nextVoice == null) {
 			TGMeasure nextMeasure = getNextMeasure(note.getVoice().getBeat().getMeasure());
