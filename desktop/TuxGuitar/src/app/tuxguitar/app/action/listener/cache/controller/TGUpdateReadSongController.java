@@ -15,7 +15,7 @@ public class TGUpdateReadSongController extends TGUpdateItemsController {
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
 		TGDocumentManager tgDocumentManager = TGDocumentManager.getInstance(context);
-		if (!tgDocumentManager.getSongManager().isValid(tgDocumentManager.getSong())) {
+		if (tgDocumentManager.getSongManager().hasMajorError(tgDocumentManager.getSong())) {
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGOpenMeasureErrorsDialogAction.NAME);
 			tgActionProcessor.process();
 		}

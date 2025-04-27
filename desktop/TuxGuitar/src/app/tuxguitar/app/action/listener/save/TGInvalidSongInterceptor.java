@@ -54,7 +54,7 @@ public class TGInvalidSongInterceptor implements TGActionInterceptor {
 		TGSong song = actionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		boolean bypass = Boolean.TRUE.equals(actionContext.getAttribute(INVALID_SONG_INTERCEPTOR_BY_PASS));
 		
-		if (!bypass && this.actionIds.contains(id) && !songManager.isValid(song)) {
+		if (!bypass && this.actionIds.contains(id) && songManager.hasMajorError(song)) {
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
 			tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
 			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("warning.invalid-song.confirm"));

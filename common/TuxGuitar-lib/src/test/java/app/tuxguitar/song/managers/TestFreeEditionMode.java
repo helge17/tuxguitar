@@ -53,7 +53,7 @@ public class TestFreeEditionMode {
 		assertEquals(1, listErrors.size());
 		assertEquals(measure, listErrors.get(0).getMeasure());
 		assertEquals(0, listErrors.get(0).getVoiceIndex());
-		assertEquals(TGMeasureManager.VOICE_TOO_LONG, listErrors.get(0).getErrCode());
+		assertEquals(TGMeasureError.VOICE_TOO_LONG, listErrors.get(0).getErrCode());
 		// first beat: inserted rest
 		beat = measure.getBeat(0);
 		assertTrue(beat.isRestBeat());
@@ -89,7 +89,7 @@ public class TestFreeEditionMode {
 		assertEquals(1, listErrors.size());
 		assertEquals(measure, listErrors.get(0).getMeasure());
 		assertEquals(1, listErrors.get(0).getVoiceIndex());
-		assertEquals(TGMeasureManager.VOICE_TOO_LONG, listErrors.get(0).getErrCode());
+		assertEquals(TGMeasureError.VOICE_TOO_LONG, listErrors.get(0).getErrCode());
 		// first beat: unchanged
 		beat = measure.getBeat(0);
 		assertEquals(1, beat.getVoice(0).countNotes());
@@ -138,7 +138,7 @@ public class TestFreeEditionMode {
 		assertEquals(1, listErrors.size());
 		assertEquals(measure, listErrors.get(0).getMeasure());
 		assertEquals(0, listErrors.get(0).getVoiceIndex());
-		assertEquals(TGMeasureManager.VOICE_TOO_SHORT, listErrors.get(0).getErrCode());
+		assertEquals(TGMeasureError.VOICE_TOO_SHORT, listErrors.get(0).getErrCode());
 		// first beat: quarter
 		beat = measure.getBeat(0);
 		assertFalse(beat.isRestBeat());
@@ -173,12 +173,12 @@ public class TestFreeEditionMode {
 		assertEquals(1, listErrors.size());
 		assertEquals(measure, listErrors.get(0).getMeasure());
 		assertEquals(0, listErrors.get(0).getVoiceIndex());
-		assertEquals(TGMeasureManager.VOICE_TOO_LONG, listErrors.get(0).getErrCode());
+		assertEquals(TGMeasureError.VOICE_TOO_LONG, listErrors.get(0).getErrCode());
 		assertEquals(3, song.getMeasureHeader(0).getTimeSignature().getNumerator());
 		assertEquals(1, measure.getBeat(0).getVoice(0).countNotes());
 
 		measure = song.getTrack(0).getMeasure(1);
-		assertTrue(songMgr.getMeasureManager().isMeasureValid(measure));
+		assertTrue(songMgr.getMeasureManager().isMeasureDurationValid(measure));
 		assertEquals(4, song.getMeasureHeader(1).getTimeSignature().getNumerator());
 		
 		// 2nd test: until the end
@@ -204,7 +204,7 @@ public class TestFreeEditionMode {
 						assertEquals(nTrack+1, err.getMeasure().getTrack().getNumber());
 						assertEquals(nMeasure+1, err.getMeasure().getNumber());
 						assertEquals(nVoice, err.getVoiceIndex());
-						assertEquals(TGMeasureManager.VOICE_TOO_LONG, err.getErrCode());
+						assertEquals(TGMeasureError.VOICE_TOO_LONG, err.getErrCode());
 						nErr++;
 					}
 				}

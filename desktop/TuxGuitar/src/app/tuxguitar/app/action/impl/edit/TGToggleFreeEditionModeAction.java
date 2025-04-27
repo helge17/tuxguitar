@@ -19,7 +19,7 @@ public class TGToggleFreeEditionModeAction extends TGActionBase {
 	protected void processAction(TGActionContext context) {
 		TGSongManager songManager = (TGSongManager)context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER);
 		TGMeasure measure = (TGMeasure)context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-		if (songManager.getMeasureManager().isMeasureValid(measure) ) {
+		if (songManager.getMeasureManager().isMeasureDurationValid(measure) ) {
 			songManager.toggleFreeEditionMode();
 		}
 	}
