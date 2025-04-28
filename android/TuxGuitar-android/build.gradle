@@ -29,7 +29,7 @@ android {
 			manifest.srcFile 'AndroidManifest.xml'
 			java.srcDirs = [
 					'../../common/TuxGuitar-lib/src/main/java',
-					'../../common/TuxGuitar-editor-utils/src',
+					'../../common/TuxGuitar-editor-utils/src/main/java',
 					'../../common/TuxGuitar-gm-utils/src',
 					'./src'
 			]
