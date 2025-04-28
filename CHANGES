@@ -12,8 +12,8 @@ TuxGuitar 2.0.0 (2025-xx-xx) changes:
 * Fix an old issue with tuplets that could lead to invalid measures
 * Fix pitch of audio unit plugin on macOS
 * Import TEF v3 files
-* improved MusicXML export
-* improved Guitar Pro import
+* Improved MusicXML export
+* Improved Guitar Pro import
 * Many small improvements and cleanups
 
 TuxGuitar 1.6.6 (2024-12-27) changes:
