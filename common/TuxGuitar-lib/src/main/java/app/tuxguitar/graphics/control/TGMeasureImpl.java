@@ -192,7 +192,7 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	public void calculateWidth(TGLayout layout) {
-		boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureValid(this));
+		boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureDurationValid(this));
 		float widthCompact = this.widthBeats;
 		float widthNotCompact = this.getMaxQuarterSpacing(layout) * this.getTimeSignature().getQuartersInSignature();
 		widthNotCompact += this.getMaxEffectWidth(layout);
@@ -661,7 +661,7 @@ public class TGMeasureImpl extends TGMeasure{
 					bufferPainter = getBuffer().createBuffer(resourceBuffer, factory, getWidth(layout) + getSpacing(), getTs().getSize(), background);
 				}
 				// change color of lines if measure validity is KO
-				boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureValid(this));
+				boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureDurationValid(this));
 				layout.paintLines(getTrackImpl(), getTs(), bufferPainter, x, y, getWidth(layout) + getSpacing(), measureIsValid);
 				paintTimeSignature(layout, bufferPainter, x, y);
 				paintClef(layout, bufferPainter, x, y);

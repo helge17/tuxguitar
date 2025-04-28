@@ -74,7 +74,7 @@ public class TGSongManager {
 	}
 	
 	public boolean isFreeEditionMode(TGMeasure measure) {
-		return (this.freeEditionMode || !getMeasureManager().isMeasureValid(measure));
+		return (this.freeEditionMode || !getMeasureManager().isMeasureDurationValid(measure));
 	}
 	
 	public List<TGMeasureError> getMeasureErrors(TGSong song) {
@@ -90,9 +90,15 @@ public class TGSongManager {
 		}
 		return list;
 	}
-
-	public boolean isValid(TGSong song) {
-		return this.getMeasureErrors(song).isEmpty();
+	
+	// major error present in song?
+	public boolean hasMajorError(TGSong song) {
+		for (TGMeasureError err : this.getMeasureErrors(song)) {
+			if (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setSongName(TGSong song, String name){

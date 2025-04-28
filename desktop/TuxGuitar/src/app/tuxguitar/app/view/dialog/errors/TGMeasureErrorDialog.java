@@ -16,6 +16,7 @@ import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
+import app.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import app.tuxguitar.editor.event.TGUpdateEvent;
 import app.tuxguitar.editor.util.TGProcess;
 import app.tuxguitar.editor.util.TGSyncProcessLocked;
@@ -25,9 +26,9 @@ import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.graphics.control.TGMeasureImpl;
 import app.tuxguitar.graphics.control.TGTrackImpl;
 import app.tuxguitar.song.helpers.TGMeasureError;
-import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UIDisposeEvent;
@@ -56,13 +57,15 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	private TGMeasureError currentError;
 	private UILegendPanel curMeasureLegendPanel;
 	private UIImageView measureStatusIcon;
-	private UILabel voiceStatusLabel;
+	private UILabel measureStatusLabel;
 	private UIButton fixButton;
 	private UILegendPanel globalStatusLegendPanel;
 	private UIImageView globalStatusIcon;
 	private UILabel globalStatusLabel;
 	private UILegendPanel errListLegendPanel;
 	private UICheckBox showAllTracks;
+	private UICheckBox showInvalidMeasures;
+	private UICheckBox showInvalidTiedNotes;
 	private UITable<TGMeasureError> errTable;
 	private UIButton closeButton;
 	private TGProcess updateItemsProcess;
@@ -77,6 +80,8 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	private UIImage imageKO;
 	private String sMeasureErrors;
 	private String sShowAllTracks;
+	private String sShowInvalidMeasures;
+	private String sShowInvalidTiedNotes;
 	private String sErrorsList;
 	private String sCurrentMeasuresStatus;
 	private String sFix;
@@ -87,6 +92,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	private String sVoiceTooLong;
 	private String sVoiceTooShort;
 	private String sVoiceInvalid;
+	private String sInvalidTiedNote;
 	private String sClose;
 
 	public TGMeasureErrorDialog(TGContext context) {
@@ -118,22 +124,31 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		curMeasureLayout.set(measureStatusIcon, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false,
 				true);
 
-		voiceStatusLabel = uiFactory.createLabel(curMeasureLegendPanel);
-		curMeasureLayout.set(voiceStatusLabel, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
+		measureStatusLabel = uiFactory.createLabel(curMeasureLegendPanel);
+		curMeasureLayout.set(measureStatusLabel, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
 
 		fixButton = uiFactory.createButton(curMeasureLegendPanel);
 		fixButton.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
-				if (TGMeasureErrorDialog.this.currentError != null) {
-					TuxGuitar.getInstance().getTablatureEditor().getTablature().getSelector().clearSelection();
-					TGActionProcessor actionProcessor = new TGActionProcessor(context, TGFixMeasureVoiceAction.NAME);
+				TGMeasureError err = TGMeasureErrorDialog.this.currentError;
+				if (err != null) {
+					String actionName = (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR ? 
+							TGFixMeasureVoiceAction.NAME : TGChangeTiedNoteAction.NAME);
+					TGActionProcessor actionProcessor = new TGActionProcessor(context, actionName);
 					actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE,
-							TGMeasureErrorDialog.this.currentError.getMeasure());
-					actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_VOICE_INDEX,
-							TGMeasureErrorDialog.this.currentError.getVoiceIndex());
-					actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_ERR_CODE,
-							TGMeasureErrorDialog.this.currentError.getErrCode());
+							err.getMeasure());
+					if (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR) {
+						TuxGuitar.getInstance().getTablatureEditor().getTablature().getSelector().clearSelection();
+						actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_ERR_CODE,
+								TGMeasureErrorDialog.this.currentError.getErrCode());
+						actionProcessor.setAttribute(TGFixMeasureVoiceAction.ATTRIBUTE_VOICE_INDEX,
+								err.getVoiceIndex());
+					} else {
+						// invalid tied
+						actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE,
+								err.getInvalidTiedNote());
+					}
 					actionProcessor.process();
 				}
 			}
@@ -160,6 +175,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		this.errListLegendPanel.setLayout(errListLayout);
 		dialogLayout.set(errListLegendPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+		// filter options
 		this.showAllTracks = uiFactory.createCheckBox(errListLegendPanel);
 		this.showAllTracks.setSelected(true);
 		this.showAllTracks.addSelectionListener(new UISelectionListener() {
@@ -169,7 +185,28 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			}
 		});
 		errListLayout.set(showAllTracks, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		
+		this.showInvalidMeasures = uiFactory.createCheckBox(errListLegendPanel);
+		this.showInvalidMeasures.setSelected(true);
+		this.showInvalidMeasures.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGMeasureErrorDialog.this.updateItemsProcess.process();
+			}
+		});
+		errListLayout.set(showInvalidMeasures, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		
+		this.showInvalidTiedNotes = uiFactory.createCheckBox(errListLegendPanel);
+		this.showInvalidTiedNotes.setSelected(true);
+		this.showInvalidTiedNotes.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGMeasureErrorDialog.this.updateItemsProcess.process();
+			}
+		});
+		errListLayout.set(showInvalidTiedNotes, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 
+		// errors table
 		this.errTable = uiFactory.createTable(errListLegendPanel, false);
 		this.errTable.setColumns(1);
 		this.errTable.addSelectionListener(new UISelectionListener() {
@@ -183,7 +220,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			}
 		});
 		errListLayout.set(errTable, UITableLayout.PACKED_HEIGHT, 120f);
-		errListLayout.set(errTable, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		errListLayout.set(errTable, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		// ----------------- BUTTON ------------------------
 		UITableLayout buttonLayout = new UITableLayout();
@@ -233,9 +270,16 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK,
 				(TGTrackImpl) err.getMeasure().getTrack());
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, err.getMeasure());
-		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, err.getMeasure().getBeat(0));
-		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING,
-				err.getMeasure().getTrack().getString(1));
+		if (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR) {
+			actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, err.getMeasure().getBeat(0));
+			actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING,
+					err.getMeasure().getTrack().getString(1));
+		} else {
+			// invalid tied
+			actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, err.getInvalidTiedNote().getVoice().getBeat());
+			actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING,
+					err.getMeasure().getTrack().getString(err.getInvalidTiedNote().getString()));
+		}
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION, Boolean.FALSE);
 		actionProcessor.process();
 	}
@@ -243,9 +287,11 @@ public class TGMeasureErrorDialog implements TGEventListener {
 	private void loadProperties() {
 		this.sMeasureErrors = TuxGuitar.getProperty("measure-errors");
 		this.sShowAllTracks = TuxGuitar.getProperty("measure-errors.show-all-tracks");
+		this.sShowInvalidMeasures = TuxGuitar.getProperty("measure-errors.show-invalid-measures");
+		this.sShowInvalidTiedNotes = TuxGuitar.getProperty("measure-errors.show-invalid-tied-notes");
 		this.sErrorsList = TuxGuitar.getProperty("measure-errors.errors-list");
 		this.sCurrentMeasuresStatus = TuxGuitar.getProperty("measure-errors.current-measure-status");
-		this.sFix = TuxGuitar.getProperty("measure-errors.fix");
+		this.sFix = TuxGuitar.getProperty("measure-errors.fix-error");
 		this.sSongStatus = TuxGuitar.getProperty("measure-errors.song-status");
 		this.sSongValid = TuxGuitar.getProperty("measure-errors.song-valid");
 		this.sSongInvalid = TuxGuitar.getProperty("measure-errors.song-invalid");
@@ -253,6 +299,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		this.sVoiceTooLong = TuxGuitar.getProperty("measure-errors.voice-too-long");
 		this.sVoiceTooShort = TuxGuitar.getProperty("measure-errors.voice-too-short");
 		this.sVoiceInvalid = TuxGuitar.getProperty("measure-errors.voice-invalid");
+		this.sInvalidTiedNote = TuxGuitar.getProperty("measure-errors.tied-note-invalid");
 		this.sClose = TuxGuitar.getProperty("close");
 	}
 
@@ -268,11 +315,14 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		Tablature tablature = TuxGuitar.getInstance().getTablatureEditor().getTablature();
 		TGSong song = tablature.getSong();
 		TGMeasureImpl measure = tablature.getCaret().getMeasure();
+		TGNote note = tablature.getCaret().getSelectedNote();
 		int voiceIndex = tablature.getCaret().getVoice();
 		TGSongManager songManager = tablature.getSongManager();
 
 		// ----------------- ERRORS LIST ------------------------
 		this.showAllTracks.setText(sShowAllTracks);
+		this.showInvalidMeasures.setText(sShowInvalidMeasures);
+		this.showInvalidTiedNotes.setText(sShowInvalidTiedNotes);
 		// build errors list, and create associated user messages to be displayed in
 		// table
 		List<TGMeasureError> listErrors = songManager.getMeasureErrors(song);
@@ -281,15 +331,30 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		this.currentError = null;
 		for (TGMeasureError err : listErrors) {
 			UITableItem<TGMeasureError> tableItem = new UITableItem<TGMeasureError>(err);
-			tableItem.setText(0, this.userMessage(err.getMeasure(), err.getVoiceIndex(), err));
+			tableItem.setText(0, this.userMessage(err));
+			// select current error, priorities
+			// first: error selected by user
 			if (err.isEqualTo(this.selectedError)) {
 				this.currentError = err;
-			} else if ((this.selectedError == null) && (measure.equals(err.getMeasure()))
-				&& ((voiceIndex == err.getVoiceIndex()) || (this.currentError == null)) ){
-				this.currentError = err;
 			}
-			if (this.showAllTracks.isSelected()
-					|| (measure.getTrack().getNumber() == err.getMeasure().getTrack().getNumber())) {
+			else if (this.selectedError == null) {
+				// then, invalid tied note
+				if ((note != null) && (note.equals(err.getInvalidTiedNote()))) {
+					this.currentError = err;
+				}
+				// then, selected measure (selected voice first if several invalid voices)
+				else if (measure.equals(err.getMeasure())
+						&& ((voiceIndex == err.getVoiceIndex()) || (this.currentError == null)) ) {
+					this.currentError = err;
+				}
+			}
+			boolean trackFilter = this.showAllTracks.isSelected()
+					|| (measure.getTrack().getNumber() == err.getMeasure().getTrack().getNumber());
+			boolean invalidMeasureFilter = this.showInvalidMeasures.isSelected()
+					|| (err.getErrorType() != TGMeasureError.TYPE_VOICE_DURATION_ERROR);
+			boolean invalidTiedNoteFilter = this.showInvalidTiedNotes.isSelected()
+					|| (err.getErrorType() != TGMeasureError.TYPE_TIED_NOTE_ERROR);
+			if (trackFilter && invalidMeasureFilter && invalidTiedNoteFilter) {
 				listTableItems.add(tableItem);
 			}
 		}
@@ -313,7 +378,11 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		// ----------------- CURRENT MEASURE ------------------------
 		this.curMeasureLegendPanel.setText(sCurrentMeasuresStatus);
 		this.measureStatusIcon.setImage(this.currentError == null ? this.imageOK : this.imageKO);
-		this.voiceStatusLabel.setText(userMessage(measure, tablature.getCaret().getVoice(), this.currentError));
+		if (this.currentError == null) {
+			this.measureStatusLabel.setText(userMessageMeasureValid(measure, tablature.getCaret().getVoice()+1));
+		} else {
+			this.measureStatusLabel.setText(userMessage(this.currentError));
+		}
 		this.fixButton.setText(sFix);
 		this.fixButton.setEnabled(this.currentError != null && this.currentError.canBeFixed());
 
@@ -335,30 +404,44 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		this.dialog.pack();
 	}
 
-	private String userMessage(TGMeasure measure, int voiceIndex, TGMeasureError err) {
-		String sVoiceStatus = new String();
-		String sVoiceIndex = new String();
+	private String userMessage(TGMeasureError err) {
 		if (err == null) {
-			sVoiceStatus = sVoiceValid;
-			sVoiceIndex = String.valueOf(voiceIndex + 1);
-		} else {
-			sVoiceIndex = String.valueOf(err.getVoiceIndex() + 1);
+			return null;
+		}
+		String msg = new String();
+		switch (err.getErrorType()) {
+		case TGMeasureError.TYPE_TIED_NOTE_ERROR:
+			msg = sInvalidTiedNote.replace("{0}", String.valueOf(err.getMeasure().getTrack().getNumber()));
+			msg = msg.replace("{1}", String.valueOf(err.getMeasure().getNumber()));
+			msg = msg.replace("{2}", String.valueOf(err.getVoiceIndex()+1));
+			break;
+		case TGMeasureError.TYPE_VOICE_DURATION_ERROR:
 			switch (err.getErrCode()) {
-			case TGMeasureManager.VOICE_TOO_LONG:
-				sVoiceStatus = sVoiceTooLong;
+			case TGMeasureError.VOICE_TOO_LONG:
+				msg = sVoiceTooLong;
 				break;
-			case TGMeasureManager.VOICE_TOO_SHORT:
-				sVoiceStatus = sVoiceTooShort;
+			case TGMeasureError.VOICE_TOO_SHORT:
+				msg = sVoiceTooShort;
 				break;
 			default:
-				sVoiceStatus = sVoiceInvalid;
-				break;
+				msg = sVoiceInvalid;
 			}
+			msg = msg.replace("{0}", String.valueOf(err.getMeasure().getTrack().getNumber()));
+			msg = msg.replace("{1}", String.valueOf(err.getMeasure().getNumber()));
+			msg = msg.replace("{2}", String.valueOf(err.getVoiceIndex()+1));
+			break;
+		default:
+			return null;
 		}
-		sVoiceStatus = sVoiceStatus.replace("{0}", String.valueOf(measure.getTrack().getNumber()));
-		sVoiceStatus = sVoiceStatus.replace("{1}", String.valueOf(measure.getNumber()));
-		sVoiceStatus = sVoiceStatus.replace("{2}", sVoiceIndex);
-		return sVoiceStatus;
+		return msg;
+	}
+
+	private String userMessageMeasureValid(TGMeasure measure, int voiceIndex) {
+		String msg = sVoiceValid;
+		msg = msg.replace("{0}", String.valueOf(measure.getTrack().getNumber()));
+		msg = msg.replace("{1}", String.valueOf(measure.getNumber()));
+		msg = msg.replace("{2}", String.valueOf(voiceIndex));
+		return msg;
 	}
 
 	private void createSyncProcesses() {

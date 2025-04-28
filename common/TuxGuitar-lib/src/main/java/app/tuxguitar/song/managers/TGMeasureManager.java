@@ -27,14 +27,6 @@ import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class TGMeasureManager {
 	
-	// possible error codes (measure invalid)
-	public final static int VOICE_OK = 0;
-	public final static int VOICE_DISCONTINUOUS = 0x01;		// some gaps present between notes/rests of voice
-	public final static int VOICE_OVERLAP = 0x02;			// some notes/rests overlap in voice
-	public final static int VOICE_EARLY_START = 0x04;		// first note/rest in voice starts before measure (should never happen)
-	public final static int VOICE_TOO_SHORT = 0x08;			// last note/rest in voice finishes before measure end
-	public final static int VOICE_TOO_LONG = 0x10;			// last note/rest in voice finishes after measure end
-	
 	private TGSongManager songManager;
 
 	public TGMeasureManager(TGSongManager songManager){
@@ -190,7 +182,6 @@ public class TGMeasureManager {
 	}
 
 	public void removeNote(TGNote note, boolean checkRestBeat){
-		//note.getVoice().removeNote(note);
 		TGVoice voice = note.getVoice();
 		if( voice != null ){
 			// Remove the note
@@ -1195,31 +1186,37 @@ public class TGMeasureManager {
 	}
 
 	// checks if a measure is valid: all notes/rests in each voice are contiguous, all voices durations are OK
-	// return flags for each voice
 	public List<TGMeasureError> getMeasureErrors(TGMeasure measure) {
 		List<TGMeasureError> list = new ArrayList<TGMeasureError>();
 
 		for (int voiceIndex=0; voiceIndex<TGBeat.MAX_VOICES; voiceIndex++) {
-			int errCode = VOICE_OK;
+			int errCode = TGMeasureError.OK;
 			boolean isEmpty = true;
 			long firstPreciseStart = -1;
 			long lastPreciseEnd = -1;
 			for (TGBeat beat : measure.getBeats()) {
 				long beatPreciseStart = beat.getPreciseStart();
 				TGVoice voice = beat.getVoice(voiceIndex);
+				// check tied notes
+				for (TGNote note : voice.getNotes()) {
+					if (note.isTiedNote() && (getSongManager().getTrackManager().getPreviousNoteForTie(note) == null)) {
+						list.add(new TGMeasureError(measure, note));
+					}
+				}
+				// check duration
 				if (!voice.isEmpty()) {
 					isEmpty = false;
 					if (firstPreciseStart < 0) {
 						if (beatPreciseStart < measure.getPreciseStart()) {
-							errCode |= VOICE_EARLY_START;
+							errCode |= TGMeasureError.VOICE_EARLY_START;
 						}
 						firstPreciseStart = beat.getPreciseStart();
 					} else {
 						if (beatPreciseStart < lastPreciseEnd) {
-							errCode |= VOICE_OVERLAP;
+							errCode |= TGMeasureError.VOICE_OVERLAP;
 						}
 						else if (beatPreciseStart > lastPreciseEnd) {
-							errCode |= VOICE_DISCONTINUOUS;
+							errCode |= TGMeasureError.VOICE_DISCONTINUOUS;
 						}
 					}
 					lastPreciseEnd = beatPreciseStart + voice.getDuration().getPreciseTime();
@@ -1228,27 +1225,33 @@ public class TGMeasureManager {
 			if (!isEmpty) {
 				long measurePreciseEnd = measure.getPreciseStart() + measure.getPreciseLength();
 				if (lastPreciseEnd < measurePreciseEnd) {
-					errCode |= VOICE_TOO_SHORT;
+					errCode |= TGMeasureError.VOICE_TOO_SHORT;
 				}
 				else if (lastPreciseEnd > measurePreciseEnd) {
-					errCode |= VOICE_TOO_LONG;
+					errCode |= TGMeasureError.VOICE_TOO_LONG;
 				}
 			}
-			if (errCode != VOICE_OK) {
+			if (errCode != TGMeasureError.OK) {
 				list.add(new TGMeasureError(measure, voiceIndex, errCode));
 			}
 		}
 		return list;
 	}
-	public boolean isMeasureValid(TGMeasure measure) {
-		return this.getMeasureErrors(measure).isEmpty();
+
+	public boolean isMeasureDurationValid(TGMeasure measure) {
+		for (TGMeasureError err : this.getMeasureErrors(measure)) {
+			if (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public void fixVoice(TGMeasure measure, int voiceIndex, int errCode) {
-		if ((errCode & VOICE_OVERLAP) != 0) {
+		if ((errCode & TGMeasureError.VOICE_OVERLAP) != 0) {
 			this.fixVoiceOverlap(measure, voiceIndex);
 		}
-		if ( ((errCode & VOICE_TOO_LONG) != 0) || ((errCode & VOICE_TOO_SHORT) != 0) ) {
+		if ( ((errCode & TGMeasureError.VOICE_TOO_LONG) != 0) || ((errCode & TGMeasureError.VOICE_TOO_SHORT) != 0) ) {
 			this.fixVoiceLongShort(measure, voiceIndex);
 		}
 	}
@@ -1401,8 +1404,15 @@ public class TGMeasureManager {
 	 * Liga la nota
 	 */
 	public void changeTieNote(TGNote note){
-		note.setTiedNote(!note.isTiedNote());
-		note.getEffect().setDeadNote(false);
+		boolean isValid = (note.isTiedNote() || getSongManager().isFreeEditionMode(note.getVoice().getBeat().getMeasure()));
+		if (!isValid) {
+			// check if creating a tie is valid
+			isValid = (getSongManager().getTrackManager().getPreviousNoteForTie(note) != null);
+		}
+		if (isValid) {
+			note.setTiedNote(!note.isTiedNote());
+			note.getEffect().setDeadNote(false);
+		}
 	}
 
 	/**

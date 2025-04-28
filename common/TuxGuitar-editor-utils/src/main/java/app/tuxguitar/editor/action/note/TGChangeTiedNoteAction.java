@@ -35,18 +35,25 @@ public class TGChangeTiedNoteAction extends TGActionBase {
 		if( note != null ){
 			songManager.getMeasureManager().changeTieNote(note);
 		} else {
-			note = songManager.getFactory().newNote();
-			note.setValue(0);
-			note.setVelocity(velocity);
-			note.setString(string.getNumber());
-			note.setTiedNote(true);
-
-			TGDuration noteDuration = songManager.getFactory().newDuration();
-			noteDuration.copyFrom(duration);
-
-			setTiedNoteValue(songManager, measure, beat, voice, note);
-
-			songManager.getMeasureManager().addNote(beat, note, noteDuration, voice.getIndex());
+			boolean isValid = songManager.isFreeEditionMode(measure);
+			if (!isValid) {
+				// is there a note to be tied to?
+				isValid = (songManager.getTrackManager().getPreviousNoteForTie(voice, string.getNumber(), null) != null);
+			}
+			if (isValid) {
+				note = songManager.getFactory().newNote();
+				note.setValue(0);
+				note.setVelocity(velocity);
+				note.setString(string.getNumber());
+				note.setTiedNote(true);
+	
+				TGDuration noteDuration = songManager.getFactory().newDuration();
+				noteDuration.copyFrom(duration);
+	
+				setTiedNoteValue(songManager, measure, beat, voice, note);
+	
+				songManager.getMeasureManager().addNote(beat, note, noteDuration, voice.getIndex());
+			}
 		}
 	}
 
