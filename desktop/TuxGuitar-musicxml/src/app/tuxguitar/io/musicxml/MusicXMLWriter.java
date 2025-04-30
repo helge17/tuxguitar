@@ -24,6 +24,7 @@ import app.tuxguitar.gm.GMChannelRouterConfigurator;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.musicxml.MusicXMLLyricWriter.MusicXMLMeasureLyric;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.managers.TGTrackManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGDivisionType;
@@ -468,6 +469,7 @@ public class MusicXMLWriter{
 
 
 	private void writeBeats(Node parent, TGMeasure measure, int nVoice, boolean measureIsEmpty, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
+		TGTrackManager trackMgr = new TGSongManager().getTrackManager();
 		int ks = measure.getKeySignature();
 		int beatCount = measure.countBeats();
 		int lyricIndex = 0;
@@ -548,7 +550,7 @@ public class MusicXMLWriter{
 					Node pitchNode = this.addNode(noteNode, "pitch");
 					this.writeNote(pitchNode, "", harmonicAdjustedValue, ks);
 
-					this.writeDurationAndVoice(noteNode, voice.getDuration(), note.isTiedNote(), nVoice);
+					this.writeDurationAndVoice(noteNode, voice.getDuration(), nVoice, trackMgr.isAnyTiedTo(note), note.isTiedNote());
 
 					if (isTablature){
 						this.addNode(noteNode, "stem", "none");
@@ -565,6 +567,9 @@ public class MusicXMLWriter{
 					this.addNode(noteNode, "staff", isTablature ? "2" : "1");
 
 					Node notationsNode = this.addNode(noteNode, "notations");
+					if (!isTablature && (trackMgr.isAnyTiedTo(note) || note.isTiedNote())){
+						writeTiedNotations(notationsNode, trackMgr.isAnyTiedTo(note), note.isTiedNote());
+					}
 					writeArticulationNotations(notationsNode, note);
 					writeTechnicalNotations(notationsNode, note, previousNoteOnString, isTablature);
 					writeOrnamentsNotations(notationsNode, note);
@@ -626,6 +631,18 @@ public class MusicXMLWriter{
 			for (TGBeat restBeat : firstBeats){
 				insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
 			}
+		}
+	}
+
+	private void writeTiedNotations(Node parent, boolean tieStart, boolean tieStop){
+		Node tiedNode = this.addNode(parent, "tied");
+		this.addAttribute(tiedNode, "orientation", "over");
+
+		if (tieStop) {
+			this.addAttribute(tiedNode, "type", "stop");
+		}
+		if (tieStart) {
+			this.addAttribute(tiedNode, "type", "start");
 		}
 	}
 
@@ -787,7 +804,7 @@ public class MusicXMLWriter{
 	private void insertRest(Node parent, TGDuration duration, int nVoice, boolean isTablature){
 		Node noteRestNode = this.addNode(parent, "note");
 		this.addNode(noteRestNode, "rest");
-		this.writeDurationAndVoice(noteRestNode, duration, false, nVoice);
+		this.writeDurationAndVoice(noteRestNode, duration, nVoice, false, false);
 		this.addNode(noteRestNode, "staff", isTablature ? "2" : "1");
 	}
 
@@ -800,7 +817,7 @@ public class MusicXMLWriter{
 		}
 	}
 
-	private void writeDurationAndVoice(Node parent, TGDuration duration, boolean isTiedNote, int nVoice){
+	private void writeDurationAndVoice(Node parent, TGDuration duration, int nVoice, boolean tieStart, boolean tieStop){
 		int index = duration.getIndex();
 		if( index >=0 && index <= 6 ){
 			int value = (DURATION_VALUES[ index ] * duration.getDivision().getTimes() / duration.getDivision().getEnters());
@@ -812,8 +829,11 @@ public class MusicXMLWriter{
 			}
 
 			this.addNode(parent, "duration",Integer.toString(value));
-			if(isTiedNote){
+			if(tieStop){
 				this.addAttribute(this.addNode(parent, "tie"), "type", "stop");
+			}
+			if(tieStart){
+				this.addAttribute(this.addNode(parent, "tie"), "type", "start");
 			}
 			this.addNode(parent, "voice", String.valueOf(nVoice+1));
 
