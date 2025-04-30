@@ -510,12 +510,6 @@ public class MusicXMLWriter{
 					TGNote note = voice.getNote( n );
 					TGNote previousNoteOnString = previousNotesOnAllStrings.get(note.getString());
 
-					int noteVelocity = note.getVelocity();
-					if (noteVelocity != lastVelocity){
-						lastVelocity = noteVelocity;
-						this.writeDynamics(parent, note);
-					}
-
 					// write palm mute symbol as text
 					if (!isTablature && note.getEffect().isPalmMute()) {
 						Node direction = this.addAttribute(this.addNode(parent, "direction"), "placement", "above");
@@ -525,6 +519,8 @@ public class MusicXMLWriter{
 					}
 
 					Node noteNode = this.addNode(parent, "note");
+					float noteVelocity = note.getVelocity() / TGVelocities.DEFAULT * 100;
+					this.addAttribute(noteNode, "dynamics", Float.toString(noteVelocity));
 
 					int stringValue = beat.getMeasure().getTrack().getString(note.getString()).getValue();
 					int noteValue = note.getValue();
