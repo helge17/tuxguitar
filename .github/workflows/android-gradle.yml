@@ -31,7 +31,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: Package-Android
-        path: android/build-scripts/tuxguitar-android
+        path: android/build-scripts/tuxguitar-android/apk/build/outputs/apk/release/
     
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
