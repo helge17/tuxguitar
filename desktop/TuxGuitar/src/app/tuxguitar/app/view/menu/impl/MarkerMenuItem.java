@@ -7,6 +7,7 @@ import app.tuxguitar.app.action.impl.marker.TGGoNextMarkerAction;
 import app.tuxguitar.app.action.impl.marker.TGGoPreviousMarkerAction;
 import app.tuxguitar.app.action.impl.marker.TGOpenMarkerEditorAction;
 import app.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.ui.menu.UIMenu;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
@@ -73,11 +74,11 @@ public class MarkerMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.add.setImage(TuxGuitar.getInstance().getIconManager().getMarkerAdd());
-		this.list.setImage(TuxGuitar.getInstance().getIconManager().getMarkerList());
-		this.first.setImage(TuxGuitar.getInstance().getIconManager().getMarkerFirst());
-		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getMarkerPrevious());
-		this.next.setImage(TuxGuitar.getInstance().getIconManager().getMarkerNext());
-		this.last.setImage(TuxGuitar.getInstance().getIconManager().getMarkerLast());
+		this.add.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MARKER_ADD));
+		this.list.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MARKER_LIST));
+		this.first.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MARKER_FIRST));
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MARKER_PREVIOUS));
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MARKER_NEXT));
+		this.last.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MARKER_LAST));
 	}
 }

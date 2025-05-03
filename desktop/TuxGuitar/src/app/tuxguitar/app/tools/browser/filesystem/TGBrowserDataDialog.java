@@ -3,6 +3,7 @@ package app.tuxguitar.app.tools.browser.filesystem;
 import java.io.File;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
@@ -67,7 +68,7 @@ public class TGBrowserDataDialog {
 		groupLayout.set(pathValue, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 		final UIButton pathChooser = uiFactory.createButton(group);
-		pathChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+		pathChooser.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
 		pathChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				String defaultPath = pathValue.getText();

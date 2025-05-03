@@ -18,6 +18,7 @@ import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.app.system.icons.TGColorManager;
 import app.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.language.TGLanguageEvent;
 import app.tuxguitar.app.transport.TGTransport;
@@ -349,8 +350,8 @@ public class TGTransportDialog implements TGEventListener {
 	}
 
 	private void loadOptionIcons(){
-		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getTransportMetronome());
-		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
+		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_METRONOME));
+		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_MODE));
 	}
 
 	public void dispose() {

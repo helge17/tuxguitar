@@ -395,7 +395,7 @@ public class TGTrackTuningDialog {
 				});
 				presetsPanelLayout.set(buttonPresetDelete, 1+nDropDown, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				buttonPresetSave = factory.createButton(presetsPanel);
-				buttonPresetSave.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSave());
+				buttonPresetSave.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.FILE_SAVE));
 				buttonPresetSave.setToolTipText(TuxGuitar.getProperty("tuning.preset.save"));
 				buttonPresetSave.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
@@ -409,7 +409,7 @@ public class TGTrackTuningDialog {
 				newPresetName.setTextLimit(20);
 				presetsPanelLayout.set(newPresetName, 2+nDropDown, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 				buttonPresetSaveAs = factory.createButton(presetsPanel);
-				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSaveAs());
+				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.FILE_SAVE_AS));
 				buttonPresetSaveAs.setToolTipText(TuxGuitar.getProperty("tuning.preset.saveas"));
 				buttonPresetSaveAs.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
@@ -85,7 +86,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		soundbankLayout.set(sbDefault, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
 
 		final UIButton sbCustomChooser = uiFactory.createButton(soundbankGroup);
-		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
 		sbCustomChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				chooseSoundbank(parent);
