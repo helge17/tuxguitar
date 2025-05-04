@@ -519,7 +519,7 @@ public class MusicXMLWriter{
 					}
 
 					Node noteNode = this.addNode(parent, "note");
-					float noteVelocity = note.getVelocity() / TGVelocities.DEFAULT * 100;
+					float noteVelocity = (float) note.getVelocity() / TGVelocities.DEFAULT * 100;
 					this.addAttribute(noteNode, "dynamics", Float.toString(noteVelocity));
 
 					int stringValue = beat.getMeasure().getTrack().getString(note.getString()).getValue();
