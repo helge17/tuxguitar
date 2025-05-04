@@ -449,11 +449,11 @@ public class AudioFormat {
         if (format.getEncoding().equals(getEncoding())
                 && (format.getChannels() == AudioSystem.NOT_SPECIFIED
                     || format.getChannels() == getChannels())
-                && (format.getSampleRate() == (float)AudioSystem.NOT_SPECIFIED
+                && (format.getSampleRate() == (float) AudioSystem.NOT_SPECIFIED
                     || format.getSampleRate() == getSampleRate())
                 && (format.getSampleSizeInBits() == AudioSystem.NOT_SPECIFIED
                     || format.getSampleSizeInBits() == getSampleSizeInBits())
-                && (format.getFrameRate() == (float)AudioSystem.NOT_SPECIFIED
+                && (format.getFrameRate() == (float) AudioSystem.NOT_SPECIFIED
                     || format.getFrameRate() == getFrameRate())
                 && (format.getFrameSize() == AudioSystem.NOT_SPECIFIED
                     || format.getFrameSize() == getFrameSize())

@@ -367,7 +367,7 @@ public class MidiSequenceParser {
 			nextStart = ((nextStart + 160 > end)?end:nextStart + 160);
 			addBend(sh, track, nextStart, DEFAULT_BEND, channel, midiVoice, bendMode);
 			nextStart = ((nextStart + 160 > end)?end:nextStart + 160);
-			addBend(sh, track, nextStart, DEFAULT_BEND + (int)(DEFAULT_BEND_SEMI_TONE / 2.0f), channel, midiVoice, bendMode);
+			addBend(sh, track, nextStart, DEFAULT_BEND + (int) (DEFAULT_BEND_SEMI_TONE / 2.0f), channel, midiVoice, bendMode);
 		}
 		addBend(sh, track, nextStart, DEFAULT_BEND, channel, midiVoice, bendMode);
 	}
@@ -377,14 +377,14 @@ public class MidiSequenceParser {
 		for(int i=0;i<points.size();i++){
 			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint)points.get(i);
 			long bendStart = start + point.getTime(duration);
-			int value = DEFAULT_BEND + (int)(point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
+			int value = DEFAULT_BEND + (int) (point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
 			value = ((value <= 127)?value:127);
 			value = ((value >= 0)?value:0);
 			addBend(sh, track, bendStart, value, channel, midiVoice, bendMode);
 
 			if(points.size() > i + 1){
 				TGEffectBend.BendPoint nextPoint = (TGEffectBend.BendPoint)points.get(i + 1);
-				int nextValue = DEFAULT_BEND + (int)(nextPoint.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
+				int nextValue = DEFAULT_BEND + (int) (nextPoint.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
 				long nextBendStart = start + nextPoint.getTime(duration);
 				if(nextValue != value){
 					double width = ( (nextBendStart - bendStart) / Math.abs(  (nextValue - value) ) );
@@ -414,13 +414,13 @@ public class MidiSequenceParser {
 		for(int i=0;i<points.size();i++){
 			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint)points.get(i);
 			long pointStart = start + point.getTime(duration);
-			int value = DEFAULT_BEND + (int)(point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2) );
+			int value = DEFAULT_BEND + (int) (point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2) );
 			value = ((value <= 127)?value:127);
 			value = ((value >= 0)?value:0);
 			addBend(sh, track, pointStart, value, channel, midiVoice, bendMode);
 			if(points.size() > i + 1){
 				TGEffectTremoloBar.TremoloBarPoint nextPoint = (TGEffectTremoloBar.TremoloBarPoint)points.get(i + 1);
-				int nextValue = DEFAULT_BEND + (int)(nextPoint.getValue() * (DEFAULT_BEND_SEMI_TONE * 2));
+				int nextValue = DEFAULT_BEND + (int) (nextPoint.getValue() * (DEFAULT_BEND_SEMI_TONE * 2));
 				long nextPointStart = start + nextPoint.getTime(duration);
 				if(nextValue != value){
 					double width = ( (nextPointStart - pointStart) / Math.abs(  (nextValue - value) ) );
@@ -464,10 +464,10 @@ public class MidiSequenceParser {
 	public void addSlide(MidiSequenceHelper sh,int track,long tick1,int value1,long tick2,int value2,int channel, int midiVoice, boolean bendMode){
 		long distance = (value2 - value1);
 		long length = (tick2 - tick1);
-		int points = (int)(length / (TGDuration.QUARTER_TIME / 8));
+		int points = (int) (length / (TGDuration.QUARTER_TIME / 8));
 		for(int i = 1;i <= points; i ++){
-			float tone = ((((length / points) * (float)i) * distance) / length);
-			int bend = (DEFAULT_BEND + (int)(tone * (DEFAULT_BEND_SEMI_TONE * 2)));
+			float tone = ((((length / points) * (float) i) * distance) / length);
+			int bend = (DEFAULT_BEND + (int) (tone * (DEFAULT_BEND_SEMI_TONE * 2)));
 			addBend(sh, track, tick1 + ( (length / points) * i), bend, channel, midiVoice, bendMode);
 		}
 	}
@@ -514,7 +514,7 @@ public class MidiSequenceParser {
 		}
 		if (addTempo) {
 			long tick = getTick(currMeasure.getStart() + startMove);
-			int usq = (int)(currMeasure.getTempo().getInUSQ() * 100.00 / this.tempoPercent );
+			int usq = (int) (currMeasure.getTempo().getInUSQ() * 100.00 / this.tempoPercent );
 			sh.getSequence().addTempoInUSQ(tick, getInfoTrack(), usq);
 			if (this.timestampMap.isEmpty()) {
 				this.timestampMap.put(tick, 0l);

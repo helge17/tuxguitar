@@ -107,7 +107,7 @@ public class TGTuner extends Thread {
 					// start has to be at least 1, because we want to skip the DC component!
 
 					//for (int i=0; i<this.settings.getFFTSize(); i++) {
-					for (int i=(int)Math.round(this.minimumFrequency / this.rate); i < Math.round(this.maximumFrequency / this.rate); i++) {
+					for (int i=(int) Math.round(this.minimumFrequency / this.rate); i < Math.round(this.maximumFrequency / this.rate); i++) {
 						double curFreq = i * this.rate;
 						// z = x*i + y*j  // power = |z| = sqrt(x^2 + y^2)
 						double power = Math.sqrt(Math.pow(this.ar[i], 2) + Math.pow(this.ai[i], 2));
@@ -143,7 +143,7 @@ public class TGTuner extends Thread {
 
 
 		this.closeDataLine();
-		System.out.println(" Average FFT time: "+(double)timePassed/(double)cycles);
+		System.out.println(" Average FFT time: "+(double) timePassed/(double) cycles);
 
 	}
 
@@ -165,7 +165,7 @@ public class TGTuner extends Thread {
 				this.ai = new double[this.settings.getFFTSize()]; // create imaginary array for FFT
 
 				// TODO: rate is maybe not the best /2 ?
-				this.rate = ((double) this.settings.getSampleRate()) / this.settings.getFFTSize();
+				this.rate = (double) this.settings.getSampleRate() / this.settings.getFFTSize();
 		}
 	}
 

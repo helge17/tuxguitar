@@ -214,18 +214,18 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	@Override
 	public UIRectangle getBounds() {
 		UIRectangle bounds = new UIRectangle();
-		bounds.getPosition().setX((float)(this.getStage().getX()));
-		bounds.getPosition().setY((float)(this.getStage().getY()));
-		bounds.getSize().setWidth((float)(this.getStage().getWidth()));
-		bounds.getSize().setHeight((float)(this.getStage().getHeight()));
+		bounds.getPosition().setX((float) (this.getStage().getX()));
+		bounds.getPosition().setY((float) (this.getStage().getY()));
+		bounds.getSize().setWidth((float) (this.getStage().getWidth()));
+		bounds.getSize().setHeight((float) (this.getStage().getHeight()));
 
 		return bounds;
 	}
 
 	public UIRectangle getSceneBounds() {
 		UIRectangle bounds = new UIRectangle();
-		bounds.getSize().setWidth((float)(this.getStage().getScene().getWidth()));
-		bounds.getSize().setHeight((float)(this.getStage().getScene().getHeight()));
+		bounds.getSize().setWidth((float) (this.getStage().getScene().getWidth()));
+		bounds.getSize().setHeight((float) (this.getStage().getScene().getHeight()));
 
 		return bounds;
 	}
@@ -233,7 +233,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	public UIRectangle getChildArea() {
 		UIRectangle childArea = this.getChildArea(this.getSceneBounds().getSize());
 		if( this.getMenuBar() != null && !this.getMenuBar().isDisposed()) {
-			childArea.getPosition().setY((float)((JFXMenuBar) this.menuBar).getControl().getHeight());
+			childArea.getPosition().setY((float) ((JFXMenuBar) this.menuBar).getControl().getHeight());
 		}
 		return childArea;
 	}

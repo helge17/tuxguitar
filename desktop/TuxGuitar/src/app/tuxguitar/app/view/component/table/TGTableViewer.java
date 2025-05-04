@@ -316,7 +316,7 @@ public class TGTableViewer implements TGEventListener {
 						public void onMouseDown(final UIMouseEvent event) {
 							new TGSyncProcessLocked(getContext(), new Runnable() {
 								public void run() {
-									int index = (int)((event.getPosition().getX() + getHScrollSelection()) / getTable().getRowHeight());
+									int index = (int) ((event.getPosition().getX() + getHScrollSelection()) / getTable().getRowHeight());
 									if( index >= 0 && index < track.countMeasures() ){
 										TGMeasure measure = track.getMeasure(index);
 										TGBeat beat = TuxGuitar.getInstance().getSongManager().getMeasureManager().getFirstBeat(measure.getBeats());

@@ -67,7 +67,7 @@ public class TGPrintAction extends TGActionBase{
 
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, printer.getResourceFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
-		float scale = (float)zoomValue/100f;
+		float scale = (float) zoomValue/100f;
 		printLayout.loadStyles(printer.getDpiScale()*scale, printer.getDpiFontScale()*scale);
 		printLayout.updateSong();
 		printLayout.makeDocument(new PrintDocumentImpl(printLayout, printer, pageSize, pageMargins));

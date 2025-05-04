@@ -29,7 +29,7 @@ public class JackTickController {
 			long frameRate = this.sequencer.getJackClient().getTransportFrameRate();
 			this.lastFrame = this.frame;
 			this.frame = this.sequencer.getJackClient().getTransportFrame();
-			this.tick += ((double)TGDuration.QUARTER_TIME * ((double)getTempo() * (double)(this.frame - this.lastFrame) / 60.00) / (double)frameRate);
+			this.tick += (double) (TGDuration.QUARTER_TIME * getTempo() * (this.frame - this.lastFrame) / 60.00) / frameRate;
 		}
 	}
 
@@ -97,7 +97,7 @@ public class JackTickController {
 			double tcTick = tc[0];
 			double tcValue = tc[1];
 
-			double tickFrames = ( (((double)frameRate * (tcTick - tick)) / (double)TGDuration.QUARTER_TIME ) * (60.00 / tempo) );
+			double tickFrames = ( (((double) frameRate * (tcTick - tick)) / (double) TGDuration.QUARTER_TIME ) * (60.00 / tempo) );
 			if( framePos + tickFrames <= frame ){
 				framePos += tickFrames;
 				tempo = tcValue;
@@ -107,8 +107,8 @@ public class JackTickController {
 			}
 		}
 		if( frame > framePos ){
-			double timeFrame = ( ( (double)(frame - framePos) / (double)frameRate ) * 1000.00 );
-			double timeTick =  ( ( timeFrame * (double)TGDuration.QUARTER_TIME ) / 1000.00 );
+			double timeFrame = ( ( (double) (frame - framePos) / (double) frameRate ) * 1000.00 );
+			double timeTick =  ( ( timeFrame * (double) TGDuration.QUARTER_TIME ) / 1000.00 );
 
 			tick += ( timeTick * ( tempo / 60.00 ) );
 		}
@@ -127,7 +127,7 @@ public class JackTickController {
 			double tcTick = tc[0];
 			double tcValue = tc[1];
 
-			double tickFrames = ((((double) frameRate * (tcTick - tickPos)) / (double)TGDuration.QUARTER_TIME ) * (60.00 / tempo));
+			double tickFrames = ((((double) frameRate * (tcTick - tickPos)) / (double) TGDuration.QUARTER_TIME ) * (60.00 / tempo));
 			if( tcTick <= tick ){
 				frame += tickFrames;
 				tempo = tcValue;
@@ -137,8 +137,8 @@ public class JackTickController {
 			}
 		}
 		if( tick > tickPos ){
-			double timeTick = ( ( (double)( tick - tickPos ) / (double)TGDuration.QUARTER_TIME ) * 1000.00 );
-			double timeFrame = ( ( timeTick * (double)frameRate ) / 1000.00 );
+			double timeTick = ( ( (double) ( tick - tickPos ) / (double) TGDuration.QUARTER_TIME ) * 1000.00 );
+			double timeFrame = ( ( timeTick * (double) frameRate ) / 1000.00 );
 
 			frame += (timeFrame * ( 60.00 / tempo));
 		}

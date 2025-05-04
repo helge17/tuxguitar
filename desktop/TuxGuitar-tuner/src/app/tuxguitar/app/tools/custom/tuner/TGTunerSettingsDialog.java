@@ -194,7 +194,7 @@ public class TGTunerSettingsDialog {
 
 			this.bufferSizeCombo.setSelectedValue(settings.getBufferSize());
 
-			this.noiseGate.setValue((int)Math.round(settings.getThreshold()*100));
+			this.noiseGate.setValue((int) Math.round(settings.getThreshold()*100));
 			this.noiseGateValue.setText(Integer.valueOf(this.noiseGate.getValue()).toString()+"%");
 		} catch (Exception ex) {
 			if (!loadedDefaults) {
@@ -213,7 +213,7 @@ public class TGTunerSettingsDialog {
 
 				settings.setBufferSize(this.getBufferSize());
 				settings.setFFTSize(this.getFFTSize());
-				settings.setThreshold((float)this.noiseGate.getValue()/100);
+				settings.setThreshold((float) this.noiseGate.getValue()/100);
 				settings.setWaitPeriod(100); // TODO: hard coded?
 
 				this.checkBufferValues(settings); // check if they are divisible with buffer size

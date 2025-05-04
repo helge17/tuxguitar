@@ -59,7 +59,7 @@ import javax.sound.midi.ShortMessage;
  * processing MIDI data that originated outside Java Sound and now
  * is encoded as signed bytes, the bytes can
  * can be converted to integers using this conversion:
- * <center><code>int i = (int)(byte & 0xFF)</code></center>
+ * <center><code>int i = (int) (byte & 0xFF)</code></center>
  * <p>
  * If you simply need to pass a known MIDI byte value as a method parameter,
  * it can be expressed directly as an integer, using (for example) decimal or

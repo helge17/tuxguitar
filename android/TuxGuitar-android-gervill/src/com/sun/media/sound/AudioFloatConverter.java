@@ -488,7 +488,7 @@ public abstract class AudioFloatConverter {
                         | ((in_buff[ix++] & 0xFF) << 16);
                 if (x > 0x7FFFFF)
                     x -= 0x1000000;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFF);
             }
             return out_buff;
         }
@@ -498,7 +498,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFF);
                 if (x < 0)
                     x += 0x1000000;
                 out_buff[ox++] = (byte) x;
@@ -520,7 +520,7 @@ public abstract class AudioFloatConverter {
                         | ((in_buff[ix++] & 0xFF) << 8) | (in_buff[ix++] & 0xFF);
                 if (x > 0x7FFFFF)
                     x -= 0x1000000;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFF);
             }
             return out_buff;
         }
@@ -530,7 +530,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFF);
                 if (x < 0)
                     x += 0x1000000;
                 out_buff[ox++] = (byte) (x >>> 16);
@@ -551,7 +551,7 @@ public abstract class AudioFloatConverter {
                 int x = (in_buff[ix++] & 0xFF) | ((in_buff[ix++] & 0xFF) << 8)
                         | ((in_buff[ix++] & 0xFF) << 16);
                 x -= 0x7FFFFF;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFF);
             }
             return out_buff;
         }
@@ -561,7 +561,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFF);
                 x += 0x7FFFFF;
                 out_buff[ox++] = (byte) x;
                 out_buff[ox++] = (byte) (x >>> 8);
@@ -581,7 +581,7 @@ public abstract class AudioFloatConverter {
                 int x = ((in_buff[ix++] & 0xFF) << 16)
                         | ((in_buff[ix++] & 0xFF) << 8) | (in_buff[ix++] & 0xFF);
                 x -= 0x7FFFFF;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFF);
             }
             return out_buff;
         }
@@ -591,7 +591,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFF);
                 x += 0x7FFFFF;
                 out_buff[ox++] = (byte) (x >>> 16);
                 out_buff[ox++] = (byte) (x >>> 8);
@@ -617,7 +617,7 @@ public abstract class AudioFloatConverter {
                 int x = (in_buff[ix++] & 0xFF) | ((in_buff[ix++] & 0xFF) << 8) |
                         ((in_buff[ix++] & 0xFF) << 16) |
                         ((in_buff[ix++] & 0xFF) << 24);
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -627,7 +627,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 out_buff[ox++] = (byte) x;
                 out_buff[ox++] = (byte) (x >>> 8);
                 out_buff[ox++] = (byte) (x >>> 16);
@@ -647,7 +647,7 @@ public abstract class AudioFloatConverter {
                 int x = ((in_buff[ix++] & 0xFF) << 24) |
                         ((in_buff[ix++] & 0xFF) << 16) |
                         ((in_buff[ix++] & 0xFF) << 8) | (in_buff[ix++] & 0xFF);
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -657,7 +657,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 out_buff[ox++] = (byte) (x >>> 24);
                 out_buff[ox++] = (byte) (x >>> 16);
                 out_buff[ox++] = (byte) (x >>> 8);
@@ -678,7 +678,7 @@ public abstract class AudioFloatConverter {
                         ((in_buff[ix++] & 0xFF) << 16) |
                         ((in_buff[ix++] & 0xFF) << 24);
                 x -= 0x7FFFFFFF;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -688,7 +688,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 x += 0x7FFFFFFF;
                 out_buff[ox++] = (byte) x;
                 out_buff[ox++] = (byte) (x >>> 8);
@@ -711,7 +711,7 @@ public abstract class AudioFloatConverter {
                         ((in_buff[ix++] & 0xFF) << 16) |
                         ((in_buff[ix++] & 0xFF) << 8) | (in_buff[ix++] & 0xFF);
                 x -= 0x7FFFFFFF;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -721,7 +721,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 x += 0x7FFFFFFF;
                 out_buff[ox++] = (byte) (x >>> 24);
                 out_buff[ox++] = (byte) (x >>> 16);
@@ -756,7 +756,7 @@ public abstract class AudioFloatConverter {
                 int x = (in_buff[ix++] & 0xFF) | ((in_buff[ix++] & 0xFF) << 8)
                         | ((in_buff[ix++] & 0xFF) << 16)
                         | ((in_buff[ix++] & 0xFF) << 24);
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -766,7 +766,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 for (int j = 0; j < xbytes; j++) {
                     out_buff[ox++] = 0;
                 }
@@ -798,7 +798,7 @@ public abstract class AudioFloatConverter {
                         | ((in_buff[ix++] & 0xFF) << 8)
                         | (in_buff[ix++] & 0xFF);
                 ix += xbytes;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -808,7 +808,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 out_buff[ox++] = (byte) (x >>> 24);
                 out_buff[ox++] = (byte) (x >>> 16);
                 out_buff[ox++] = (byte) (x >>> 8);
@@ -840,7 +840,7 @@ public abstract class AudioFloatConverter {
                         | ((in_buff[ix++] & 0xFF) << 16)
                         | ((in_buff[ix++] & 0xFF) << 24);
                 x -= 0x7FFFFFFF;
-                out_buff[ox++] = x * (1.0f / (float)0x7FFFFFFF);
+                out_buff[ox++] = x * (1.0f / (float) 0x7FFFFFFF);
             }
             return out_buff;
         }
@@ -850,7 +850,7 @@ public abstract class AudioFloatConverter {
             int ix = in_offset;
             int ox = out_offset;
             for (int i = 0; i < in_len; i++) {
-                int x = (int) (in_buff[ix++] * (float)0x7FFFFFFF);
+                int x = (int) (in_buff[ix++] * (float) 0x7FFFFFFF);
                 x += 0x7FFFFFFF;
                 for (int j = 0; j < xbytes; j++) {
                     out_buff[ox++] = 0;

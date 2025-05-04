@@ -19,7 +19,7 @@ public class JFXMouseUpListenerManager extends UIMouseUpListenerManager implemen
 
 	public void handle(MouseEvent event) {
 		if(!this.control.isIgnoreEvents()) {
-			this.onMouseUp(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton()), event.isShiftDown()));
+			this.onMouseUp(new UIMouseEvent(this.control, new UIPosition((float) event.getX(), (float) event.getY()), JFXMouseButton.getMouseButton(event.getButton()), event.isShiftDown()));
 
 			event.consume();
 		}

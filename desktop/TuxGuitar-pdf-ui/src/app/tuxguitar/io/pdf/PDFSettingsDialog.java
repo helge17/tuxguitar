@@ -124,7 +124,7 @@ public class PDFSettingsDialog {
 	private void saveSettings() {
 		PDFSettingsManager mgr = PDFSettingsManager.getInstance(context);
 		for (String key : spinnerMap.keySet()) {
-			mgr.setSetting(key, (float)spinnerMap.get(key).getValue());
+			mgr.setSetting(key, (float) spinnerMap.get(key).getValue());
 		}
 		mgr.saveSettings();
 	}

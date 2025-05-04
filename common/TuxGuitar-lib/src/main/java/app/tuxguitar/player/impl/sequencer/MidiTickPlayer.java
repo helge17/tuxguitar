@@ -21,7 +21,7 @@ public class MidiTickPlayer {
 		this.lastTime = this.time;
 		this.time = System.nanoTime();
 		if(!this.tickChanged){
-			this.tick += Math.round((double) TGDuration.QUARTER_TIME * ((double)getTempo() * (double)(this.time - this.lastTime) / 60.00) / (double) SECOND_IN_NANOS);
+			this.tick += Math.round((double) TGDuration.QUARTER_TIME * ((double) getTempo() * (double) (this.time - this.lastTime) / 60.00) / (double) SECOND_IN_NANOS);
 		}
 		this.tickChanged = false;
 	}

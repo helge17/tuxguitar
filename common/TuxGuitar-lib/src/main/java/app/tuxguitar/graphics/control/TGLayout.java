@@ -346,7 +346,7 @@ public abstract class TGLayout {
 	 * Calcula el espacio minimo entre negras, dependiendo de la duracion de la nota
 	 */
 	public float getSpacingForQuarter(TGDuration duration){
-		return (((float)TGDuration.QUARTER_TIME / (float)duration.getTime()) * getDurationWidth(duration));
+		return (((float) TGDuration.QUARTER_TIME / duration.getTime()) * getDurationWidth(duration));
 	}
 
 	public float getDurationWidth(TGDuration duration){

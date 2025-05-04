@@ -28,7 +28,7 @@ public class MidiEventDispacher{
 		else if(event.getType() == MidiEvent.MIDI_SYSTEM_EVENT){
 			if(event.getData()[0] == 0x51){
 				int usq = ((event.getData()[1] & 0xff) | ((event.getData()[2] & 0xff) << 8) | ((event.getData()[3] & 0xff) << 16));
-				this.sequencer.setTempo( (int)((60.00 * 1000.00) / (usq / 1000.00)) );
+				this.sequencer.setTempo( (int) ((60.00 * 1000.00) / (usq / 1000.00)) );
 			}
 		}
 	}

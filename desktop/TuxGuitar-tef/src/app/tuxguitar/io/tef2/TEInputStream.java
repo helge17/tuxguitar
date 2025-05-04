@@ -239,7 +239,7 @@ public class TEInputStream {
 			else if( ((data[2] & 0xff) & 0x1f) == 27 ){
 				//TIME SIGNATURE CHANGE
 				tsMove = (4 * (data[3] & 0xff ) );
-				int denominator = (int)( ( Math.pow( 2  , (  ( data[2] & 0xff ) >> 5 ) ) / 2 ) );
+				int denominator = (int) ( ( Math.pow( 2  , (  ( data[2] & 0xff ) >> 5 ) ) / 2 ) );
 				int numerator = ((( (tsSize / 4) - (data[3] & 0xff) ) * denominator) / 64);
 				this.song.addTimeSignatureChange(new TETimeSignatureChange(measure, new TETimeSignature(numerator,denominator)));
 			}

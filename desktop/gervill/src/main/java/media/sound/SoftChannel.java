@@ -503,7 +503,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             firstVoice = true;
             voiceNo = 0;
 
-            int tunedKey = (int)(Math.round(tuning.getTuning()[noteNumber]/100.0));
+            int tunedKey = (int) (Math.round(tuning.getTuning()[noteNumber]/100.0));
             play_noteNumber = noteNumber;
             play_velocity = velocity;
             play_delay = delay;
@@ -607,7 +607,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             firstVoice = true;
             voiceNo = 0;
 
-            int tunedKey = (int)(Math.round(tuning.getTuning()[noteNumber]/100.0));
+            int tunedKey = (int) (Math.round(tuning.getTuning()[noteNumber]/100.0));
             play_noteNumber = noteNumber;
             play_velocity = lastVelocity[noteNumber];
             play_releasetriggered = true;
@@ -1052,7 +1052,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             return -1;
         if (!keybasedcontroller_active[noteNumber][controller])
             return -1;
-        return (int)(keybasedcontroller_value[noteNumber][controller] * 128);
+        return (int) (keybasedcontroller_value[noteNumber][controller] * 128);
     }
 
     public void controlChange(int controller, int value) {

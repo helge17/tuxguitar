@@ -345,11 +345,11 @@ public class SoftFilter {
             double a2 = 1 - alpha;
 
             double cf = 1.0 / a0;
-            this.b1 = (float)(a1 * cf);
-            this.b2 = (float)(a2 * cf);
-            this.a0 = (float)(b0 * cf);
-            this.a1 = (float)(b1 * cf);
-            this.a2 = (float)(b2 * cf);
+            this.b1 = (float) (a1 * cf);
+            this.b2 = (float) (a2 * cf);
+            this.a0 = (float) (b0 * cf);
+            this.a1 = (float) (b1 * cf);
+            this.a2 = (float) (b2 * cf);
         }
 
         if (filtertype == FILTERTYPE_LP12 || filtertype == FILTERTYPE_LP24) {
@@ -375,11 +375,11 @@ public class SoftFilter {
             double b1 = (2.0 * a0) * (1.0 - csq);
             double b2 = a0 * (1.0 - (q * c) + csq);
 
-            this.a0 = (float)a0;
-            this.a1 = (float)a1;
-            this.a2 = (float)a2;
-            this.b1 = (float)b1;
-            this.b2 = (float)b2;
+            this.a0 = (float) a0;
+            this.a1 = (float) a1;
+            this.a2 = (float) a2;
+            this.b1 = (float) b1;
+            this.b2 = (float) b2;
 
         }
 
@@ -400,11 +400,11 @@ public class SoftFilter {
             double b1 = (2.0 * a0) * (csq - 1.0);
             double b2 = a0 * (1.0 - (q * c) + csq);
 
-            this.a0 = (float)a0;
-            this.a1 = (float)a1;
-            this.a2 = (float)a2;
-            this.b1 = (float)b1;
-            this.b2 = (float)b2;
+            this.a0 = (float) a0;
+            this.a1 = (float) a1;
+            this.a2 = (float) a2;
+            this.b1 = (float) b1;
+            this.b2 = (float) b2;
 
         }
 
@@ -529,13 +529,13 @@ public class SoftFilter {
         double c = (7.0 / 6.0) * Math.PI * 2 * cutoff / samplerate;
         if (c > 1)
             c = 1;
-        a0 = (float)(Math.sqrt(1 - Math.cos(c)) * Math.sqrt(0.5 * Math.PI));
+        a0 = (float) (Math.sqrt(1 - Math.cos(c)) * Math.sqrt(0.5 * Math.PI));
         if (resonancedB < 0)
             resonancedB = 0;
         if (resonancedB > 20)
             resonancedB = 20;
-        q = (float)(Math.sqrt(0.5) * Math.pow(10.0, -(resonancedB / 20)));
-        gain = (float)Math.pow(10, -((resonancedB)) / 40.0);
+        q = (float) (Math.sqrt(0.5) * Math.pow(10.0, -(resonancedB / 20)));
+        gain = (float) Math.pow(10, -((resonancedB)) / 40.0);
         if (wet == 0.0f)
             if (resonancedB > 0.00001 || c < 0.9999999)
                 wet = 1.0f;

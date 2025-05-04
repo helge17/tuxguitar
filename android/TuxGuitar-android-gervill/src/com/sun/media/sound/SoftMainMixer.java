@@ -577,15 +577,15 @@ public class SoftMainMixer {
 
             float amp;
             float amp_delta;
-            amp = (float)(last_volume_left * last_volume_left);
-            amp_delta = (float)((volume_left * volume_left - amp) / bufferlen);
+            amp = (float) (last_volume_left * last_volume_left);
+            amp_delta = (float) ((volume_left * volume_left - amp) / bufferlen);
             for (int i = 0; i < bufferlen; i++) {
                 amp += amp_delta;
                 left[i] *= amp;
             }
             if (nrofchannels != 1) {
-                amp = (float)(last_volume_right * last_volume_right);
-                amp_delta = (float)((volume_right*volume_right - amp) / bufferlen);
+                amp = (float) (last_volume_right * last_volume_right);
+                amp_delta = (float) ((volume_right*volume_right - amp) / bufferlen);
                 for (int i = 0; i < bufferlen; i++) {
                     amp += amp_delta;
                     right[i] *= volume_right;
@@ -604,7 +604,7 @@ public class SoftMainMixer {
                 for (int i = 0; i < bufferlen; i++)
                     left[i] *= amp;
                 if (nrofchannels != 1) {
-                    amp = (float)(volume_right * volume_right);
+                    amp = (float) (volume_right * volume_right);
                     for (int i = 0; i < bufferlen; i++)
                         right[i] *= amp;
                 }

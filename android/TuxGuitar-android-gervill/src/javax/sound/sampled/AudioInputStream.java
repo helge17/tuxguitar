@@ -493,7 +493,7 @@ public class AudioInputStream extends InputStream {
                 return -1;
             }
 
-            value = (int)b[0];
+            value = (int) b[0];
 
             if (line.getFormat().getEncoding().equals(AudioFormat.Encoding.PCM_SIGNED)) {
                 value += 128;

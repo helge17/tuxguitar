@@ -317,8 +317,8 @@ public class TGMeasureImpl extends TGMeasure{
 		if(!this.compactMode) {
 			this.quarterSpacing = (minDuration != null ? layout.getSpacingForQuarter(minDuration): layout.getMinimumDurationWidth());
 			if(chordEnabled && minimumChordLength > 0){
-				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (((float)getTrack().stringCount()) * layout.getChordStringSpacing()));
-				float minimumSpacing = ((((float)TGDuration.QUARTER_TIME) * chordWidth) / ((float)minimumChordLength));
+				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (((float) getTrack().stringCount()) * layout.getChordStringSpacing()));
+				float minimumSpacing = (float) (TGDuration.QUARTER_TIME * chordWidth) / minimumChordLength;
 				this.quarterSpacing = Math.max(minimumSpacing,this.quarterSpacing);
 			}
 			this.getHeaderImpl().notifyQuarterSpacing(this.quarterSpacing);
@@ -550,7 +550,7 @@ public class TGMeasureImpl extends TGMeasure{
 		long newStart = (start - this.getStart());
 		float displayPosition = 0f;
 		if( newStart > 0 ){
-			float position = ((float)newStart / (float)TGDuration.QUARTER_TIME);
+			float position = (float) newStart / TGDuration.QUARTER_TIME;
 			displayPosition = (position * quarterWidth);
 		}
 		return displayPosition;

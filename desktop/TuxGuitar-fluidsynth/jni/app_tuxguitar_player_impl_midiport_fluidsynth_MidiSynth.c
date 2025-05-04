@@ -180,7 +180,7 @@ JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_fluidsynth_MidiSy
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
 		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		fluid_settings_setnum(handle->settings, (char *)jkey, (float)value );
+		fluid_settings_setnum(handle->settings, (char *)jkey, (float) value );
 		(*env)->ReleaseStringUTFChars(env, key, jkey);
 	}
 }
@@ -191,7 +191,7 @@ JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_fluidsynth_MidiSy
 	memcpy(&handle, &ptr, sizeof(handle));
 	if(handle != NULL && handle->settings != NULL && key != NULL ){
 		const jbyte *jkey = (*env)->GetStringUTFChars(env, key, NULL);
-		fluid_settings_setint(handle->settings, (char *)jkey, (int)value );
+		fluid_settings_setint(handle->settings, (char *)jkey, (int) value );
 		(*env)->ReleaseStringUTFChars(env, key, jkey);
 	}
 }

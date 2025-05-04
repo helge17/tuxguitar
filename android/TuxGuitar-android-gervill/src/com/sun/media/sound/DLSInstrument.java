@@ -415,8 +415,8 @@ public class DLSInstrument extends ModelInstrument {
             osc.setAttenuation(osc.getAttenuation() / 65536f);
             if (sampleopt.getLoops().size() != 0) {
                 DLSSampleLoop loop = sampleopt.getLoops().get(0);
-                osc.setLoopStart((int)loop.getStart());
-                osc.setLoopLength((int)loop.getLength());
+                osc.setLoopStart((int) loop.getStart());
+                osc.setLoopLength((int) loop.getLength());
                 if (loop.getType() == DLSSampleLoop.LOOP_TYPE_FORWARD)
                     osc.setLoopType(ModelWavetable.LOOP_TYPE_FORWARD);
                 if (loop.getType() == DLSSampleLoop.LOOP_TYPE_RELEASE)

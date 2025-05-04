@@ -75,7 +75,7 @@ public class PDFSongWriter implements TGSongWriter {
 
 			TGPrintLayout layout = new TGPrintLayout(controller, settings);
 
-			layout.loadStyles(((float)zoomValue)/100f);
+			layout.loadStyles(((float) zoomValue)/100f);
 			layout.updateSong();
 			layout.makeDocument(new PDFDocument(this.context, pageSize, pageMargins, handle.getOutputStream()));
 

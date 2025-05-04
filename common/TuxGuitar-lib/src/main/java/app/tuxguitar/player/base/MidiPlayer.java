@@ -711,7 +711,7 @@ public class MidiPlayer{
 		try{
 			this.lock();
 
-			int volume = (int)((this.getVolume() / 10.00) * channel.getVolume());
+			int volume = (int) ((this.getVolume() / 10.00) * channel.getVolume());
 			int balance = channel.getBalance();
 			int chorus = channel.getChorus();
 			int reverb = channel.getReverb();
@@ -843,7 +843,7 @@ public class MidiPlayer{
 				final int channelId = tgChannel.getChannelId();
 				final int bank = tgChannel.getBank();
 				final int program = tgChannel.getProgram();
-				final int volume = (int)((this.getVolume() / 10.00) * tgChannel.getVolume());
+				final int volume = (int) ((this.getVolume() / 10.00) * tgChannel.getVolume());
 				final int balance = tgChannel.getBalance();
 				final int chorus = tgChannel.getChorus();
 				final int reverb = tgChannel.getReverb();

@@ -658,9 +658,9 @@ public class SoftVoice extends VoiceStatus {
             for (int i = 0; i < performer.ctrl_connections.length; i++)
                 processConnection(performer.ctrl_connections[i]);
 
-            osc_stream.setPitch((float)co_osc_pitch[0]);
+            osc_stream.setPitch((float) co_osc_pitch[0]);
 
-            int filter_type = (int)co_filter_type[0];
+            int filter_type = (int) co_filter_type[0];
             double filter_freq;
 
             if (co_filter_freq[0] == 13500.0)
@@ -688,7 +688,7 @@ public class SoftVoice extends VoiceStatus {
             float gain = (float) Math.pow(10,
             (-osc_attenuation + co_mixer_gain[0]) / 200.0);
              */
-            float gain = (float)Math.exp(
+            float gain = (float) Math.exp(
                     (-osc_attenuation + co_mixer_gain[0])*(Math.log(10) / 200.0));
 
             if (co_mixer_gain[0] <= -960)
@@ -703,7 +703,7 @@ public class SoftVoice extends VoiceStatus {
                  */
             }
 
-            volume = (int)(Math.sqrt(gain) * 128);
+            volume = (int) (Math.sqrt(gain) * 128);
 
             // gain *= 0.2;
 
@@ -718,8 +718,8 @@ public class SoftVoice extends VoiceStatus {
                 out_mixer_left = gain * 0.7071067811865476f;
                 out_mixer_right = out_mixer_left;
             } else {
-                out_mixer_left = gain * (float)Math.cos(pan * Math.PI * 0.5);
-                out_mixer_right = gain * (float)Math.sin(pan * Math.PI * 0.5);
+                out_mixer_left = gain * (float) Math.cos(pan * Math.PI * 0.5);
+                out_mixer_right = gain * (float) Math.sin(pan * Math.PI * 0.5);
             }
 
             double balance = co_mixer_balance[0] * (1.0 / 1000.0);
@@ -731,12 +731,12 @@ public class SoftVoice extends VoiceStatus {
             }
 
             if (synthesizer.reverb_on) {
-                out_mixer_effect1 = (float)(co_mixer_reverb[0] * (1.0 / 1000.0));
+                out_mixer_effect1 = (float) (co_mixer_reverb[0] * (1.0 / 1000.0));
                 out_mixer_effect1 *= gain;
             } else
                 out_mixer_effect1 = 0;
             if (synthesizer.chorus_on) {
-                out_mixer_effect2 = (float)(co_mixer_chorus[0] * (1.0 / 1000.0));
+                out_mixer_effect2 = (float) (co_mixer_chorus[0] * (1.0 / 1000.0));
                 out_mixer_effect2 *= gain;
             } else
                 out_mixer_effect2 = 0;

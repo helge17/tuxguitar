@@ -61,7 +61,7 @@ public class SoftLanczosResampler extends SoftAbstractResampler {
             else if (x == 0)
                 w[k] = 1;
             else {
-                w[k] = (float)(2.0 * Math.sin(Math.PI * x)
+                w[k] = (float) (2.0 * Math.sin(Math.PI * x)
                                 * Math.sin(Math.PI * x / 2.0)
                                 / ((Math.PI * x) * (Math.PI * x)));
             }

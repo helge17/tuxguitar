@@ -32,8 +32,8 @@ public class TEPosition {
 		for (int i = 0; i < totalMeasures; i++) {
 			TEMeasure currentMeasure = song.getMeasures().get(i);
 			TETimeSignature measureTimeSignature = currentMeasure.getTimeSignature();
-			float timeSignatureRatio = (float)measureTimeSignature.getNumerator() / measureTimeSignature.getDenominator();
-			int maxPositionsInMeasure = (int)(maxPositionsInFourFour * timeSignatureRatio);
+			float timeSignatureRatio = (float) measureTimeSignature.getNumerator() / measureTimeSignature.getDenominator();
+			int maxPositionsInMeasure = (int) (maxPositionsInFourFour * timeSignatureRatio);
 			int valueForWholeMeasure = valuePerPosition * maxPositionsInMeasure;
 
 			if ((location - valueForWholeMeasure) <= 0)

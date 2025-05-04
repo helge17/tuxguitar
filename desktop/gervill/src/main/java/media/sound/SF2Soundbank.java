@@ -428,11 +428,11 @@ public class SF2Soundbank implements Soundbank {
                     if (sampleData24 != null)
                         sample.data24 = sampleData24.subbuffer(start, end, true);
                     /*
-                    sample.data = new ModelByteBuffer(sampleData, (int)(start*2),
-                            (int)((end - start)*2));
+                    sample.data = new ModelByteBuffer(sampleData, (int) (start*2),
+                            (int) ((end - start)*2));
                     if (sampleData24 != null)
                         sample.data24 = new ModelByteBuffer(sampleData24,
-                                (int)start, (int)(end - start));
+                                (int) start, (int) (end - start));
                      */
                     sample.startLoop = chunk.readUnsignedInt() - start;
                     sample.endLoop = chunk.readUnsignedInt() - start;

@@ -153,7 +153,7 @@ public class JFXPainter extends JFXComponent<GraphicsContext> implements UIPaint
 	}
 
 	public float getFontSize(){
-		return (this.font != null ? (float)this.font.getHeight() : 0);
+		return (this.font != null ? (float) this.font.getHeight() : 0);
 	}
 
 	public float getFMTopLine() {

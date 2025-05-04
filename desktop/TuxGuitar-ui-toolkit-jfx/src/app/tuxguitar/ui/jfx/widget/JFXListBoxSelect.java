@@ -89,8 +89,8 @@ public class JFXListBoxSelect<T> extends JFXControl<ListView<JFXListBoxSelectIte
 		Insets padding = this.getControl().getPadding();
 
 		UISize packedSize = new UISize();
-		packedSize.setWidth(packedContentSize.getWidth() + (float)(padding.getLeft() + padding.getRight()));
-		packedSize.setHeight(packedContentSize.getHeight() + (float)(padding.getTop() + padding.getBottom()));
+		packedSize.setWidth(packedContentSize.getWidth() + (float) (padding.getLeft() + padding.getRight()));
+		packedSize.setHeight(packedContentSize.getHeight() + (float) (padding.getTop() + padding.getBottom()));
 
 		if( fixedWidth != null ) {
 			if( fixedHeight == null && packedSize.getWidth() > fixedWidth ) {

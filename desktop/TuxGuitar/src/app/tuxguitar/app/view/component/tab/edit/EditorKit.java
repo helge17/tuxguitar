@@ -423,7 +423,7 @@ public class EditorKit {
 				int minValue = measure.getTrack().getString(measure.getTrack().stringCount()).getValue();
 				int maxValue = measure.getTrack().getString(1).getValue() + measure.getTrack().getMaxFret();
 				float lineSpacing = layout.getScoreLineSpacing();
-				float width = (int)(10.0f * scale);
+				float width = (int) (10.0f * scale);
 				float topHeight = measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 				float bottomHeight = (measure.getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - measure.getTs().getPosition(TGTrackSpacing.POSITION_SCORE_DOWN_LINES));
 

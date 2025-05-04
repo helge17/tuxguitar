@@ -16,7 +16,7 @@ public class TGSetLayoutScaleAction extends TGActionBase{
 	}
 
 	protected void processAction(TGActionContext context) {
-		Float scale = ((Float) context.getAttribute(ATTRIBUTE_SCALE));
+		Float scale = (Float) context.getAttribute(ATTRIBUTE_SCALE);
 
 		TGSongViewController.getInstance(getContext()).scale(scale.floatValue());
 	}

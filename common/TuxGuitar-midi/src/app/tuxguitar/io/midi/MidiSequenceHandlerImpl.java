@@ -26,7 +26,7 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	}
 
 	private void init(){
-		this.sequence = new MidiSequence(MidiSequence.PPQ,(int)TGDuration.QUARTER_TIME);
+		this.sequence = new MidiSequence(MidiSequence.PPQ,(int) TGDuration.QUARTER_TIME);
 		for (int i = 0; i < getTracks(); i++) {
 			this.sequence.addTrack(new MidiTrack());
 		}

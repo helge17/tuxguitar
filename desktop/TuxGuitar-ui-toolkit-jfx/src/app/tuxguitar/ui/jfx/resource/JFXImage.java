@@ -19,7 +19,7 @@ public class JFXImage extends JFXComponent<JFXImageHandle> implements UIImage {
 	}
 
 	public JFXImage(Image handle){
-		this((float)handle.getWidth(), (float)handle.getHeight());
+		this((float) handle.getWidth(), (float) handle.getHeight());
 
 		this.getControl().setHandle(handle);
 	}

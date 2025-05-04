@@ -22,7 +22,7 @@ public class JFXMouseWheelListenerManager extends UIMouseWheelListenerManager im
 		if(!this.control.isIgnoreEvents()) {
 			Integer button = JFXMouseButton.getMouseButton(MouseButton.MIDDLE);
 			Integer value = (int) Math.round(event.getDeltaX() != 0 ? event.getDeltaX() : event.getDeltaY());
-			this.onMouseWheel(new UIMouseWheelEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), button, value, event.isShiftDown()));
+			this.onMouseWheel(new UIMouseWheelEvent(this.control, new UIPosition((float) event.getX(), (float) event.getY()), button, value, event.isShiftDown()));
 
 			event.consume();
 		}

@@ -17,7 +17,7 @@ public class TGSetLayoutScaleAction extends TGActionBase{
 	}
 
 	protected void processAction(TGActionContext context) {
-		Float scale = ((Float) context.getAttribute(ATTRIBUTE_SCALE));
+		Float scale = (Float) context.getAttribute(ATTRIBUTE_SCALE);
 
 		Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
 		tablature.scale(scale);

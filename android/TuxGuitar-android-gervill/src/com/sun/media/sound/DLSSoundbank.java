@@ -103,7 +103,7 @@ public class DLSSoundbank implements Soundbank {
         }
 
         public int hashCode() {
-            return (int)i1;
+            return (int) i1;
         }
 
         public boolean equals(Object obj) {
@@ -254,7 +254,7 @@ public class DLSSoundbank implements Soundbank {
         }
 
         for (Map.Entry<DLSRegion, Long> entry : temp_rgnassign.entrySet()) {
-            entry.getKey().sample = samples.get((int)entry.getValue().longValue());
+            entry.getKey().sample = samples.get((int) entry.getValue().longValue());
         }
 
         temp_rgnassign = null;

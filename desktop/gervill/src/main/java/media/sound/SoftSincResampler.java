@@ -46,7 +46,7 @@ public class SoftSincResampler extends SoftAbstractResampler {
             float scale = (float) (1.0 / (1.0 + Math.pow(s, 1.1) / 10.0));
             for (int i = 0; i < sinc_table_fsize; i++) {
                 sinc_table[s][i] = sincTable(sinc_table_size,
-                        -i / ((float)sinc_table_fsize), scale);
+                        -i / ((float) sinc_table_fsize), scale);
             }
         }
     }
@@ -60,8 +60,8 @@ public class SoftSincResampler extends SoftAbstractResampler {
     public static float[] wHanning(int size, float offset) {
         float[] window_table = new float[size];
         for (int k = 0; k < size; k++) {
-            window_table[k] = (float)(-0.5
-                    * Math.cos(2.0 * Math.PI * (double)(k + offset)
+            window_table[k] = (float) (-0.5
+                    * Math.cos(2.0 * Math.PI * (double) (k + offset)
                         / (double) size) + 0.5);
         }
         return window_table;
@@ -101,7 +101,7 @@ public class SoftSincResampler extends SoftAbstractResampler {
             while (ix < ix_end && ox < ox_end) {
                 int iix = (int) ix;
                 float[] sinc_table =
-                        sinc_table_f[(int)((ix - iix) * sinc_table_fsize)];
+                        sinc_table_f[(int) ((ix - iix) * sinc_table_fsize)];
                 int xx = iix - sinc_table_center;
                 float y = 0;
                 for (int i = 0; i < sinc_table_size; i++, xx++)
@@ -120,7 +120,7 @@ public class SoftSincResampler extends SoftAbstractResampler {
                 float[][] sinc_table_f = this.sinc_table[p];
 
                 float[] sinc_table =
-                        sinc_table_f[(int)((ix - iix) * sinc_table_fsize)];
+                        sinc_table_f[(int) ((ix - iix) * sinc_table_fsize)];
                 int xx = iix - sinc_table_center;
                 float y = 0;
                 for (int i = 0; i < sinc_table_size; i++, xx++)

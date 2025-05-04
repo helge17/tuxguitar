@@ -92,7 +92,7 @@ public class SWTScrollBar extends SWTEventReceiver<ScrollBar> implements UIScrol
 
 	public UISize getSize() {
 		Point point = this.getControl().getSize();
-		return (new UISize((float)point.x, (float)point.y));
+		return (new UISize((float) point.x, (float) point.y));
 	}
 
 	public void updateRangeValues() {

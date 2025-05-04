@@ -359,9 +359,9 @@ public class MidiOutputPortSettings extends MidiSettings {
 	protected void fillSynthGainScale(UIScale scale){
 		double[] range = getSynth().getDoublePropertyRange( MidiSettings.SYNTH_GAIN );
 		if( range.length == 2 ){
-			int value = (int)Math.round( getDoubleValue( MidiSettings.SYNTH_GAIN ) * 10f );
-			int minimum = (int)Math.round( range[0] * 10 );
-			int maximum = (int)Math.round( range[1] * 10 );
+			int value = (int) Math.round( getDoubleValue( MidiSettings.SYNTH_GAIN ) * 10f );
+			int minimum = (int) Math.round( range[0] * 10 );
+			int maximum = (int) Math.round( range[1] * 10 );
 			if( minimum < maximum ){
 				scale.setMinimum( minimum );
 				scale.setMaximum( maximum );
@@ -430,8 +430,8 @@ public class MidiOutputPortSettings extends MidiSettings {
 		double doubleValue = ( value / 10.00 );
 		double[] range = getSynth().getDoublePropertyRange( MidiSettings.SYNTH_GAIN );
 		if( range.length == 2 ){
-			int minimum = (int)Math.round( range[0] );
-			int maximum = (int)Math.round( range[1] );
+			int minimum = (int) Math.round( range[0] );
+			int maximum = (int) Math.round( range[1] );
 			if( minimum < maximum && doubleValue >= minimum && doubleValue <= maximum ){
 				setDoubleValue( MidiSettings.SYNTH_GAIN , doubleValue );
 			}

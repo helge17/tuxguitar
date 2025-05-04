@@ -62,7 +62,7 @@ public class TGAudioBuffer {
 				for( int n = 0; n < 2; n ++){
 					bufferValue |= ((this.buffer[index++] & 0xff ) << ( 8 * ( BIGENDIAN ? 1 - n : n )));
 				}
-				bufferToFill[(j % bufferToFill.length)][i] = ((float) bufferValue / (float) Short.MAX_VALUE);
+				bufferToFill[(j % bufferToFill.length)][i] = (float) bufferValue / Short.MAX_VALUE;
 			}
 		}
 	}
@@ -90,8 +90,8 @@ public class TGAudioBuffer {
 						s2Value |= ((sample[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
 					}
 
-					float f1 = (((float) s1Value / Short.MAX_VALUE) * (1f - mixAmp));
-					float f2 = (((float) s2Value / Short.MAX_VALUE) * mixAmp);
+					float f1 = ((float) s1Value / Short.MAX_VALUE) * (1f - mixAmp);
+					float f2 = ((float) s2Value / Short.MAX_VALUE) * mixAmp;
 
 					mixedValue = (short) ((f1 + f2) * Short.MAX_VALUE);
 

@@ -21,7 +21,7 @@ public class JFXMouseDoubleClickListenerManager extends UIMouseDoubleClickListen
 	public void handle(MouseEvent event) {
 		if(!this.control.isIgnoreEvents()) {
 			if( event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2 ){
-				this.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition((float)event.getX(), (float)event.getY()), JFXMouseButton.getMouseButton(event.getButton()), event.isShiftDown()));
+				this.onMouseDoubleClick(new UIMouseEvent(this.control, new UIPosition((float) event.getX(), (float) event.getY()), JFXMouseButton.getMouseButton(event.getButton()), event.isShiftDown()));
 
 				event.consume();
 			}

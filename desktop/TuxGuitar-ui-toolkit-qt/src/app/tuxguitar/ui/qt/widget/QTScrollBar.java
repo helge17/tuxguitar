@@ -12,6 +12,6 @@ public class QTScrollBar extends QTAbstractSlider<QScrollBar> implements UIScrol
 
 	public UISize getSize() {
 		// TODO QT 5->6 - see commit f5c9ee16f4cb5b9b0c7802edd652f1be2fe3ad82
-		return (new UISize((float)this.getControl().getWidth(), (float)this.getControl().getHeight()));
+		return (new UISize((float) this.getControl().getWidth(), (float) this.getControl().getHeight()));
 	}
 }

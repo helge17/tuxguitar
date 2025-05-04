@@ -521,7 +521,7 @@ public class TGFretBoard {
 
 			float fmWidth = painter.getFMWidth(text);
 			float fmHeight = painter.getFMHeight();
-			int ovalSize = (int)Math.max(fmWidth, fmHeight) + this.stringSpacing/10;
+			int ovalSize = (int) Math.max(fmWidth, fmHeight) + this.stringSpacing/10;
 			ovalSize = Math.min(ovalSize, this.getMaxOvalSize());
 			this.paintKeyOval(painter, background, x, y, ovalSize);
 			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());

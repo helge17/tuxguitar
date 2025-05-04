@@ -269,17 +269,17 @@ public class SF2Instrument extends ModelInstrument {
                     if (startAddrsOffset < 0)
                         startAddrsOffset = 0;
                     if (endAddrsOffset > (buff.capacity()/2-startAddrsOffset))
-                        startAddrsOffset = (int)buff.capacity()/2-startAddrsOffset;
+                        startAddrsOffset = (int) buff.capacity()/2-startAddrsOffset;
                     byte[] data = buff.array();
-                    int off = (int)buff.arrayOffset() + startAddrsOffset*2;
-                    int len = (int)buff.capacity() + endAddrsOffset*2;
+                    int off = (int) buff.arrayOffset() + startAddrsOffset*2;
+                    int len = (int) buff.capacity() + endAddrsOffset*2;
                     if (off+len > data.length)
                         len = data.length - off;
                     buff = new ModelByteBuffer(data, off, len);
                     if(buff24 != null) {
                         data = buff.array();
-                        off = (int)buff.arrayOffset() + startAddrsOffset;
-                        len = (int)buff.capacity() + endAddrsOffset;
+                        off = (int) buff.arrayOffset() + startAddrsOffset;
+                        len = (int) buff.capacity() + endAddrsOffset;
                         buff24 = new ModelByteBuffer(data, off, len);
                     }
                     */
@@ -314,9 +314,9 @@ public class SF2Instrument extends ModelInstrument {
                         SF2Region.GENERATOR_SAMPLEMODES);
                 if ((sampleMode == 1) || (sampleMode == 3)) {
                     if (sample.startLoop >= 0 && sample.endLoop > 0) {
-                        osc.setLoopStart((int)(sample.startLoop
+                        osc.setLoopStart((int) (sample.startLoop
                                 + startloopAddrsOffset));
-                        osc.setLoopLength((int)(sample.endLoop - sample.startLoop
+                        osc.setLoopLength((int) (sample.endLoop - sample.startLoop
                                 + endloopAddrsOffset - startloopAddrsOffset));
                         if (sampleMode == 1)
                             osc.setLoopType(ModelWavetable.LOOP_TYPE_FORWARD);

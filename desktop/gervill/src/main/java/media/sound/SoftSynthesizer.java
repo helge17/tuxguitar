@@ -339,7 +339,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
 
         setFormat((AudioFormat)items[2].value);
-        controlrate = (Float)items[1].value;
+        controlrate = (float) items[1].value;
         latency = (Long)items[3].value;
         deviceid = (Integer)items[4].value;
         maxpoly = (Integer)items[5].value;
@@ -1070,7 +1070,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
 
                 if (!line.isOpen()) {
                     int bufferSize = getFormat().getFrameSize()
-                        * (int)(getFormat().getFrameRate() * (latency/1000000f));
+                        * (int) (getFormat().getFrameRate() * (latency/1000000f));
                     // can throw LineUnavailableException,
                     // IllegalArgumentException, SecurityException
                     line.open(getFormat(), bufferSize);

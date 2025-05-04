@@ -86,13 +86,13 @@ public abstract class TGEffectGrace {
 
 	public int getDurationTime(){
 		if (getDuration() == DURATION_SIXTEENTH) {
-			return (int)(TGDuration.QUARTER_TIME / 4);
+			return (int) (TGDuration.QUARTER_TIME / 4);
 		}
 		if (getDuration() == DURATION_THIRTY_SECOND) {
-			return (int)(TGDuration.QUARTER_TIME / 8);
+			return (int) (TGDuration.QUARTER_TIME / 8);
 		}
 		// default: 64th
-		return (int)(TGDuration.QUARTER_TIME / 16);
+		return (int) (TGDuration.QUARTER_TIME / 16);
 	}
 
 	public TGEffectGrace clone(TGFactory factory){

@@ -63,7 +63,7 @@ public class ModelByteBuffer {
         public int available() throws IOException {
             if (left > Integer.MAX_VALUE)
                 return Integer.MAX_VALUE;
-            return (int)left;
+            return (int) left;
         }
 
         public synchronized void mark(int readlimit) {
@@ -97,7 +97,7 @@ public class ModelByteBuffer {
 
         public int read(byte b[], int off, int len) throws IOException {
             if (len > left)
-                len = (int)left;
+                len = (int) left;
             if (left == 0)
                 return -1;
             len = raf.read(b, off, len);
@@ -110,7 +110,7 @@ public class ModelByteBuffer {
         public int read(byte[] b) throws IOException {
             int len = b.length;
             if (len > left)
-                len = (int)left;
+                len = (int) left;
             if (left == 0)
                 return -1;
             len = raf.read(b, 0, len);
@@ -209,7 +209,7 @@ public class ModelByteBuffer {
             }
         }
         return new ByteArrayInputStream(array(),
-                (int)arrayOffset(), (int)capacity());
+                (int) arrayOffset(), (int) capacity());
     }
 
     public ModelByteBuffer subbuffer(long beginIndex) {

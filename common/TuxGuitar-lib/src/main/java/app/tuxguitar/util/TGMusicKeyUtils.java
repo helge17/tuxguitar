@@ -253,7 +253,7 @@ public class TGMusicKeyUtils {
 	}
 	// octave after addition of offset to note index, ex: C4-1->3, C4+1->4
 	public static int noteOctaveAddInterval(int noteIndex, int octave, int offset) {
-		return octave + (int)Math.floor((float)(noteIndex + offset)/7);
+		return octave + (int) Math.floor((float) (noteIndex + offset)/7);
 	}
 
 	// ----- midi note from note index -------

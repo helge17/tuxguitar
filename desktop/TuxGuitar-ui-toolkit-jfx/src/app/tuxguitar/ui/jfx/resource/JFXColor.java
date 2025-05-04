@@ -17,7 +17,7 @@ public class JFXColor extends JFXComponent<UIColorModel> implements UIColor{
 	}
 
 	public JFXColor(Color color){
-		this((int)Math.round(color.getRed() * 255.0), (int)Math.round(color.getGreen() * 255.0), (int)Math.round(color.getBlue() * 255.0));
+		this((int) Math.round(color.getRed() * 255.0), (int) Math.round(color.getGreen() * 255.0), (int) Math.round(color.getBlue() * 255.0));
 	}
 
 	public int getRed() {

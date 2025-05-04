@@ -350,7 +350,7 @@ public class PTInputStream implements TGSongReader{
 		readByte(); //measurePulses
 
 		bar.setNumerator(((((data >> 24) - ((data >> 24) % 8)) / 8) + 1));
-		bar.setDenominator((int)Math.pow(2,(data >> 24) % 8));
+		bar.setDenominator((int) Math.pow(2,(data >> 24) % 8));
 	}
 
 	private void readKeySignature(){

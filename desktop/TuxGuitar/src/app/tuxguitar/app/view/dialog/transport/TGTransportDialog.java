@@ -216,7 +216,7 @@ public class TGTransportDialog implements TGEventListener {
 
 		this.tickProgress = factory.createProgressBar(parent);
 		this.tickProgress.setCursor(UICursor.HAND);
-		this.tickProgress.setValue((int)TGDuration.QUARTER_TIME);
+		this.tickProgress.setValue((int) TGDuration.QUARTER_TIME);
 		this.tickProgress.addMouseDownListener(new UIMouseDownListener() {
 			public void onMouseDown(UIMouseEvent event) {
 				TGTransportDialog.this.setEditingTickScale(true);
@@ -312,8 +312,8 @@ public class TGTransportDialog implements TGEventListener {
 			}
 			TGMeasureHeader first = getSongManager().getFirstMeasureHeader(getDocumentManager().getSong());
 			TGMeasureHeader last = getSongManager().getLastMeasureHeader(getDocumentManager().getSong());
-			this.tickProgress.setMinimum((int)first.getStart());
-			this.tickProgress.setMaximum((int)(last.getStart() + last.getLength()) -1);
+			this.tickProgress.setMinimum((int) first.getStart());
+			this.tickProgress.setMaximum((int) (last.getStart() + last.getLength()) -1);
 			this.metronome.setSelected(player.isMetronomeEnabled());
 
 			this.redrawProgress();
@@ -407,7 +407,7 @@ public class TGTransportDialog implements TGEventListener {
 				long tickPosition = TablatureEditor.getInstance(this.context).getTablature().getCaret().getPosition();
 
 				TGTransportDialog.this.updateTickLabel(Long.toString(tickPosition));
-				TGTransportDialog.this.tickProgress.setValue((int)tickPosition);
+				TGTransportDialog.this.tickProgress.setValue((int) tickPosition);
 			}
 		}
 	}
@@ -422,14 +422,14 @@ public class TGTransportDialog implements TGEventListener {
 				if( time > this.redrawTime + PLAY_MODE_DELAY ){
 					long position = (transportCache.getPlayStart() + (player.getTickPosition() - transportCache.getPlayTick()));
 					this.updateTickLabel(Long.toString(position));
-					this.tickProgress.setValue((int)position);
+					this.tickProgress.setValue((int) position);
 					this.redrawTime = time;
 
 					TGSong song = TGDocumentManager.getInstance(context).getSong();
 					TGMeasureHeader first = song != null ? TablatureEditor.getInstance(context).getTablature().getSongManager().getFirstMeasureHeader(song) : null;
 					Map.Entry<Long, TGMeasureHeader> entry = headerMap.floorEntry(position);
 					TGMeasureHeader current = entry != null ? entry.getValue() : first;
-					Integer currentTempo = Math.round((float)current.getTempo().getRawValue()*(float)player.getMode().getCurrentPercent()/100.0f);
+					Integer currentTempo = Math.round((float) current.getTempo().getRawValue() * player.getMode().getCurrentPercent() / 100.0f);
 					this.metronome.setText(currentTempo.toString());
 				}
 			}

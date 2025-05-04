@@ -118,7 +118,7 @@ public class MacMenu {
 	}
 
 	public int callbackProc32( int id, int sel, int arg0 ) {
-		return (int)this.callbackProc( (long)id, (long)sel, (long)arg0);
+		return (int) this.callbackProc( (long)id, (long)sel, (long)arg0);
 	}
 
 	public boolean isEnabled() {

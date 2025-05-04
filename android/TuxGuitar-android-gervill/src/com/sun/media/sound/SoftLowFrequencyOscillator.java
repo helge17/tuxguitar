@@ -66,9 +66,9 @@ public class SoftLowFrequencyOscillator implements SoftProcess {
         control_time = 1.0 / synth.getControlRate();
         sin_factor = control_time * 2 * Math.PI;
         for (int i = 0; i < used_count; i++) {
-            delay_counter[i] = (int)(Math.pow(2,
+            delay_counter[i] = (int) (Math.pow(2,
                     this.delay[i][0] / 1200.0) / control_time);
-            delay_counter[i] += (int)(delay2[i][0] / (control_time * 1000));
+            delay_counter[i] += (int) (delay2[i][0] / (control_time * 1000));
         }
         processControlLogic();
     }

@@ -57,7 +57,7 @@ public class MusicXMLWriter{
 	private static final String[] DURATION_NAMES = new String[]{ "whole", "half", "quarter", "eighth", "16th", "32nd", "64th", };
 	private Map<Integer, String> durations;	// duration name per TGDuration value
 
-	private static final int DURATION_DIVISIONS = (int)TGDuration.QUARTER_TIME;
+	private static final int DURATION_DIVISIONS = (int) TGDuration.QUARTER_TIME;
 
 	private static final int[] DURATION_VALUES = new int[]{
 		DURATION_DIVISIONS * 4, // WHOLE
@@ -208,7 +208,7 @@ public class MusicXMLWriter{
 	private void backToMeasureStart(Node parent, TGMeasure measure){
 		Node backupNode = this.addNode(parent, "backup");
 		TGTimeSignature ts = measure.getTimeSignature();
-		this.addNode(backupNode, "duration", String.valueOf((int)(TGDuration.QUARTER * DURATION_DIVISIONS * ts.getNumerator() / ts.getDenominator().getValue())));
+		this.addNode(backupNode, "duration", String.valueOf((int) (TGDuration.QUARTER * DURATION_DIVISIONS * ts.getNumerator() / ts.getDenominator().getValue())));
 	}
 
 	private void writeBarline(Node parent, TGMeasure currentMeasure, TGMeasure previousMeasure, TGMeasure nextMeasure){

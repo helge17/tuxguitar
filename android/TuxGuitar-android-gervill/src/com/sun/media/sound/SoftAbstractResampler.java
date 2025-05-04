@@ -148,7 +148,7 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             (pitchcorrection + pitch) / 1200.0f)
              * samplerateconv;
              */
-            this.target_pitch = (float)Math.exp(
+            this.target_pitch = (float) Math.exp(
                     (pitchcorrection + pitch) * (Math.log(2.0) / 1200.0))
                 * samplerateconv;
 
@@ -181,7 +181,7 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             }
 
             if (ix[0] >= sector_size * 4 + pad) {
-                int skips = (int)((ix[0] - sector_size * 4 + pad) / sector_size);
+                int skips = (int) ((ix[0] - sector_size * 4 + pad) / sector_size);
                 ix[0] -= sector_size * skips;
                 sector_pos += skips;
                 streampos += sector_size * skips;

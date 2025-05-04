@@ -326,7 +326,7 @@ public class TGMatrixEditor implements TGEventListener {
 			return -1;
 		}
 		int scroll = this.canvasPanel.getVScroll().getValue();
-		int value = (this.maxNote -  ((int)(  (y + scroll - BORDER_HEIGHT)  / this.lineHeight)) );
+		int value = (this.maxNote -  ((int) (  (y + scroll - BORDER_HEIGHT)  / this.lineHeight)) );
 		return value;
 	}
 

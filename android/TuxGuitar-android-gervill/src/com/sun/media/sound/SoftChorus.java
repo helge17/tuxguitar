@@ -131,7 +131,7 @@ public class SoftChorus implements SoftAudioProcessor {
         public LFODelay(double samplerate, double controlrate) {
             this.samplerate = samplerate;
             this.controlrate = controlrate;
-            // vdelay = new VariableDelay((int)(samplerate*4));
+            // vdelay = new VariableDelay((int) (samplerate*4));
             vdelay = new VariableDelay((int) ((this.depth + 10) * 2));
 
         }
@@ -215,7 +215,7 @@ public class SoftChorus implements SoftAudioProcessor {
         if (slothpath.length == 1) {
             if (slothpath[0] == 0x01 * 128 + 0x02) {
                 if (param == 0) { // Chorus Type
-                    switch ((int)value) {
+                    switch ((int) value) {
                     case 0: // Chorus 1 0 (0%) 3 (0.4Hz) 5 (1.9ms) 0 (0%)
                         globalParameterControlChange(slothpath, 3, 0);
                         globalParameterControlChange(slothpath, 1, 3);

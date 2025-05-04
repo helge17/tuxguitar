@@ -76,7 +76,7 @@ public abstract class JFXAbstractScrollBar extends JFXControl<ScrollBar> {
 	}
 
 	public UISize getSize() {
-		return (new UISize((float)this.getControl().getWidth(), (float)this.getControl().getHeight()));
+		return (new UISize((float) this.getControl().getWidth(), (float) this.getControl().getHeight()));
 	}
 
 	public void updateVisibleAmount() {

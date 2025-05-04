@@ -109,7 +109,7 @@ public class TGCocoa {
 	}
 
 	private static Object osType( long value ) {
-		return ( C.PTR_SIZEOF == 8 ? ((Object)Long.valueOf(value)) : ((Object)Integer.valueOf((int)value)) );
+		return ( C.PTR_SIZEOF == 8 ? ((Object)Long.valueOf(value)) : ((Object)Integer.valueOf((int) value)) );
 	}
 
 	private static long longValue(Object object) {

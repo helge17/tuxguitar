@@ -40,7 +40,7 @@ public abstract class TGTimeSignature {
 	}
 
 	public float getQuartersInSignature() {
-		return (float)this.numerator * TGDuration.QUARTER / (float)this.denominator.getValue();
+		return (float) this.numerator * TGDuration.QUARTER / this.denominator.getValue();
 	}
 
 	public TGTimeSignature clone(TGFactory factory){

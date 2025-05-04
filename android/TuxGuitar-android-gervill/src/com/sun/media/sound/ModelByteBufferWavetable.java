@@ -114,7 +114,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
         }
 
         public int available() throws IOException {
-            return (int)buffer.capacity() + (int)buffer8.capacity() - pos - pos2;
+            return (int) buffer.capacity() + (int) buffer8.capacity() - pos - pos2;
         }
 
         public synchronized void mark(int readlimit) {
@@ -230,7 +230,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
             }
         }
         return AudioFloatInputStream.getInputStream(format, buffer.array(),
-                (int)buffer.arrayOffset(), (int)buffer.capacity());
+                (int) buffer.arrayOffset(), (int) buffer.capacity());
     }
 
     public int getChannels() {

@@ -71,7 +71,7 @@ public class TGTunerRoughWidget {
 		painter.moveTo(this.startA, compositeSize.getHeight()/2);
 		painter.lineTo(compositeSize.getWidth()-this.endAb, compositeSize.getHeight()/2);
 		painter.closePath();
-		int increment = (int)Math.round((compositeSize.getWidth()-this.startA-this.endAb) / 12.0);
+		int increment = (int) Math.round((compositeSize.getWidth()-this.startA-this.endAb) / 12.0);
 		int currentTone = 0;
 		for (int i=this.startA; i<compositeSize.getWidth()+1-this.endAb; i+=increment) {
 			painter.initPath();
@@ -86,7 +86,7 @@ public class TGTunerRoughWidget {
 		if (this.currentFrequency>0) {
 			painter.setForeground(colorManager.getColor(TGColorManager.COLOR_BLUE));
 			painter.initPath();
-			int markerPos = this.markerWidth/2 + this.startA+(int)Math.round(((compositeSize.getWidth()-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
+			int markerPos = this.markerWidth/2 + this.startA+(int) Math.round(((compositeSize.getWidth()-this.startA-this.endAb) / 240.0) * (this.getTone(this.currentFrequency)));
 			painter.moveTo(markerPos, compositeSize.getHeight()/2-this.markerHeight/2);
 			painter.setLineWidth(this.markerWidth);
 			painter.lineTo(markerPos, compositeSize.getHeight()/2+this.markerHeight/2);
@@ -96,7 +96,7 @@ public class TGTunerRoughWidget {
 	}
 
 	public void setCurrentFrequency(double currentFrequency) {
-		this.currentFrequency = (float)currentFrequency;
+		this.currentFrequency = (float) currentFrequency;
 		this.redraw();
 	}
 
@@ -109,7 +109,7 @@ public class TGTunerRoughWidget {
 	 * in fact, it's inverse formula of inverse of TGTuner::getNoteFrequency()
 	 */
 	protected int getTone(float frequency) {
-		float midiTone = (float)(45+12*(Math.log(frequency/110)/Math.log(2)));
+		float midiTone = (float) (45+12*(Math.log(frequency/110)/Math.log(2)));
 		return Math.round(  20 *   (midiTone % 12));
 	}
 

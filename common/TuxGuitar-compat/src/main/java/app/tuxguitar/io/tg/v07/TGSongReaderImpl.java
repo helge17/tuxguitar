@@ -95,7 +95,7 @@ public class TGSongReaderImpl implements TGSongReader {
 		TGTrack track = this.factory.newTrack();
 
 		//leo el numero
-		track.setNumber((int)readLong());
+		track.setNumber((int) readLong());
 
 		//leo el nombre
 		track.setName(readString());

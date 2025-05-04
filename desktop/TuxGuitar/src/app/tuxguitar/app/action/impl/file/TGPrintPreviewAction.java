@@ -69,7 +69,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 
 		TGPrintController controller = new PrintController(this.getContext(), targetSong, manager, this.getUIFactory());
 		TGPrintLayout printLayout = new TGPrintLayout(controller, styles);
-		printLayout.loadStyles(((float)zoomValue)/100f);
+		printLayout.loadStyles((float) zoomValue/100f);
 		printLayout.updateSong();
 		printLayout.makeDocument(new PrintDocumentImpl(pageSize, pageMargins));
 		printLayout.getResourceBuffer().disposeAllResources();

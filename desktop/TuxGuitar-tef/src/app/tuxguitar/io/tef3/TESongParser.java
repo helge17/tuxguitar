@@ -300,7 +300,7 @@ public class TESongParser {
 		long measureStart = measure.getStart();
 		int positionInMeasure = position.getPositionInMeasure();
 
-		float durationOfSixteenthNote = (float)TGDuration.QUARTER / TGDuration.SIXTEENTH;
+		float durationOfSixteenthNote = (float) TGDuration.QUARTER / TGDuration.SIXTEENTH;
 		float sizePerGridPosition = TGDuration.QUARTER_TIME * durationOfSixteenthNote;
 
 		long gridPosition = (long) (measureStart + (sizePerGridPosition * positionInMeasure));
@@ -650,7 +650,7 @@ public class TESongParser {
 
 		for(int i = 0; i < tgChord.countStrings(); i ++){
 			byte fret = (byte)(strings[i]);
-			int value = i < strings.length ? (int)fret : -1;
+			int value = i < strings.length ? (int) fret : -1;
 			tgChord.addFretValue(i, value);
 		}
 

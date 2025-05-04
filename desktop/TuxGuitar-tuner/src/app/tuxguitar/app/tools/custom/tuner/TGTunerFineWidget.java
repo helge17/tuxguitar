@@ -95,7 +95,7 @@ public class TGTunerFineWidget {
 				painter.setForeground(colorManager.getColor(TGColorManager.COLOR_RED));
 				painter.initPath();
 				painter.moveTo(compositeSize.getWidth()/2, compositeSize.getHeight()-BOTTOM_Y);
-				painter.lineTo((float)(compositeSize.getWidth()/2 + height*Math.cos(this.getAngleRad())),(float)( compositeSize.getHeight()-BOTTOM_Y-height*Math.sin(this.getAngleRad())));
+				painter.lineTo((float) (compositeSize.getWidth()/2 + height*Math.cos(this.getAngleRad())),(float) ( compositeSize.getHeight()-BOTTOM_Y-height*Math.sin(this.getAngleRad())));
 			painter.closePath();
 			}
 		}
@@ -129,7 +129,7 @@ public class TGTunerFineWidget {
 
 
 	private float getTone(double frequency) {
-		return (float)(45+12*(Math.log(frequency/110)/Math.log(2)));
+		return (float) (45+12*(Math.log(frequency/110)/Math.log(2)));
 	}
 
 	private double stickDistance(double diff) {

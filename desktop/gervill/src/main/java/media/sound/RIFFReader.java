@@ -132,7 +132,7 @@ public class RIFFReader extends InputStream {
         if (avail == 0)
             return -1;
         if (len > avail) {
-            int rlen = stream.read(b, offset, (int)avail);
+            int rlen = stream.read(b, offset, (int) avail);
             if (rlen != -1)
                 filepointer += rlen;
             avail = 0;
@@ -200,7 +200,7 @@ public class RIFFReader extends InputStream {
     }
 
     public int available() {
-        return (int)avail;
+        return (int) avail;
     }
 
     public void finish() throws IOException {
