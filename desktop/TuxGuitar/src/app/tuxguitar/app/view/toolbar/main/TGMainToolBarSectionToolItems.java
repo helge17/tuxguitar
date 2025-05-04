@@ -23,31 +23,37 @@ public class TGMainToolBarSectionToolItems extends TGMainToolBarSection {
 			if (!(toolBarItem instanceof TGMainToolBarItemButton)) {
 				throw new IllegalArgumentException("invalid toolbar item type, action_item expected");
 			}
+			TGMainToolBarItemButton clone = ((TGMainToolBarItemButton)toolBarItem).clone();
 			UIToolActionItem toolActionItem = this.toolBar.createActionItem();
 			toolActionItem.addSelectionListener(this.createActionProcessor(toolBarItem.getActionName()));
-			((TGMainToolBarItemButton) toolBarItem).setToolItem(toolActionItem);
+			clone.setToolItem(toolActionItem);
+			this.toolBarItems.add(clone);
 			break;
 		case TGMainToolBarItem.CHECKABLE_ITEM:
 			if (!(toolBarItem instanceof TGMainToolBarItemButton)) {
 				throw new IllegalArgumentException("invalid toolbar item type, checkable_item expected");
 			}
+			TGMainToolBarItemButton cloneCheckable = ((TGMainToolBarItemButton)toolBarItem).clone();
 			UIToolCheckableItem toolCheckableItem = this.toolBar.createCheckItem();
 			toolCheckableItem.addSelectionListener(this.createActionProcessor(toolBarItem.getActionName()));
-			((TGMainToolBarItemButton) toolBarItem).setToolItem(toolCheckableItem);
+			cloneCheckable.setToolItem(toolCheckableItem);
+			this.toolBarItems.add(cloneCheckable);
 			break;
 		case TGMainToolBarItem.SEPARATOR:
 			this.toolBar.createSeparator();
+			this.toolBarItems.add(toolBarItem);
 			break;
 		case TGMainToolBarItem.MENU:
 			if (!(toolBarItem instanceof TGMainToolBarItemMenu)) {
 				throw new IllegalArgumentException("invalid toolbar item type, menu expected");
 			}
-			((TGMainToolBarItemMenu) toolBarItem).createMenu(toolBar, this.getContext());
+			TGMainToolBarItemMenu cloneMenu = ((TGMainToolBarItemMenu) toolBarItem).clone();
+			cloneMenu.createMenu(toolBar, this.getContext());
+			this.toolBarItems.add(cloneMenu);
 			break;
 		default:
 			throw new IllegalArgumentException("unmanaged type of mainToolBarItem");
 		}
-		this.toolBarItems.add(toolBarItem);
 	}
 
 }

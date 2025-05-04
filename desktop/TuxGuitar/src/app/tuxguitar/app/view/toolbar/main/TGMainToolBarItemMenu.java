@@ -62,4 +62,11 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 		}
 	}
 
+	public TGMainToolBarItemMenu clone() {
+		TGMainToolBarItemMenu clone = new TGMainToolBarItemMenu(this.text, this.iconFileName);
+		for (TGMainToolBarItemMenuItem menuItem : this.toolBarMenuItems) {
+			clone.addMenuItem(menuItem);
+		}
+		return clone;
+	}
 }

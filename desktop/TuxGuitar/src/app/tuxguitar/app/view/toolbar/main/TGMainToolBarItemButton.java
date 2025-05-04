@@ -60,4 +60,8 @@ public class TGMainToolBarItemButton extends TGMainToolBarItem {
 		}
 	}
 
+	public TGMainToolBarItemButton clone() {
+		return new TGMainToolBarItemButton(this.text, (this.type == CHECKABLE_ITEM), this.actionName, this.iconFileName, this.updater);
+	}
+
 }
