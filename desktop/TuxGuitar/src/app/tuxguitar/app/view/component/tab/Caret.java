@@ -85,7 +85,8 @@ public class Caret {
 		TGTrackImpl track = findTrack(trackNumber);
 		TGMeasureImpl measure = null;
 		if ((this.selectedMeasure != null) && getSongManager().isFreeEditionMode(this.selectedMeasure) && 
-				this.selectedMeasure.getTrack().getNumber()==this.selectedTrack.getNumber()) {
+				(this.selectedMeasure.getTrack().getNumber()==this.selectedTrack.getNumber())
+				&& (this.selectedMeasure.getNumber()<= track.countMeasures())) {
 			measure = this.selectedMeasure;
 		}
 		else {
