@@ -368,23 +368,25 @@ public class MusicXMLWriter{
 		if (isPercussion){
 			this.addNode(node, "sign", "percussion");
 		}
-		else if(clef == TGMeasure.CLEF_TREBLE){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+		else {
+			if(clef == TGMeasure.CLEF_TREBLE){
+				this.addNode(node, "sign", "G");
+				this.addNode(node, "line", "2");
+			}
+			else if(clef == TGMeasure.CLEF_BASS){
+				this.addNode(node, "sign", "F");
+				this.addNode(node, "line", "4");
+			}
+			else if(clef == TGMeasure.CLEF_TENOR){
+				this.addNode(node, "sign", "C");
+				this.addNode(node, "line", "4");
+			}
+			else if(clef == TGMeasure.CLEF_ALTO){
+				this.addNode(node, "sign", "C");
+				this.addNode(node, "line", "3");
+			}
+			// this is incorrect, but leave it for now for correct import
 			this.addNode(node, "clef-octave-change", String.valueOf(-1));
-		}
-		else if(clef == TGMeasure.CLEF_BASS){
-			this.addNode(node, "sign", "F");
-			this.addNode(node, "line", "4");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
-		}
-		else if(clef == TGMeasure.CLEF_TENOR){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
-		}
-		else if(clef == TGMeasure.CLEF_ALTO){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
 		}
 
 		// second clef: tablature
