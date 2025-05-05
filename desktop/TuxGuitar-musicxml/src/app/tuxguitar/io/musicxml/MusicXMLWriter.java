@@ -307,7 +307,7 @@ public class MusicXMLWriter{
 			this.addNode(measureAttributes, "part-symbol", "none");
 
 			if(clefChanges){
-				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
+				this.writeClef(measureAttributes,measure.getClef(), previous == null, isPercussion);
 			}
 
 			if (!isPercussion && (previous==null || measure.getNumber() == 1)){
@@ -358,11 +358,13 @@ public class MusicXMLWriter{
 		this.addNode(key, "fifths",Integer.toString( value ));
 	}
 
-	private void writeClef(Node parent, int clef, boolean isPercussion){
+	private void writeClef(Node parent, int clef, boolean isStart, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
 
-		this.addAttribute(node, "after-barline", "yes");
+		if (!isStart){
+			this.addAttribute(node, "after-barline", "yes");
+		}
 
 		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
@@ -393,7 +395,7 @@ public class MusicXMLWriter{
 		}
 
 		// second clef: tablature
-		if (!isPercussion){
+		if (isStart && !isPercussion){
 			node = this.addNode(parent, "clef");
 			this.addAttribute(node, "number", "2");
 			this.addNode(node, "sign", "TAB");
