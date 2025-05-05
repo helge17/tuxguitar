@@ -32,6 +32,7 @@ import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMarker;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTempo;
@@ -567,7 +568,7 @@ public class MusicXMLWriter{
 						writeTiedNotations(notationsNode, trackMgr.isAnyTiedTo(note), note.isTiedNote());
 					}
 					writeArticulationNotations(notationsNode, note);
-					writeTechnicalNotations(notationsNode, note, previousNoteOnString, isTablature);
+					writeTechnicalNotations(notationsNode, note, previousNoteOnString, isTablature, n > 0);
 					writeOrnamentsNotations(notationsNode, note);
 
 					// Slapping / Popping would be applied here... But the MusicXML 4.0 spec does not have defined elements for that.
@@ -658,7 +659,7 @@ public class MusicXMLWriter{
 		this.removeNodeIfNoChildren(articulationsNode);
 	}
 
-	private void writeTechnicalNotations(Node parent, TGNote note, TGNote previousNoteOnString, boolean isTablature){
+	private void writeTechnicalNotations(Node parent, TGNote note, TGNote previousNoteOnString, boolean isTablature, boolean isChordNote){
 		Node technicalNode = this.addNode(parent, "technical");
 
 		if (isTablature){
@@ -682,6 +683,16 @@ public class MusicXMLWriter{
 
 		if (note.getEffect().isTapping()){
 			this.addNode(technicalNode, "tap");
+		}
+
+		if (!isChordNote){
+			TGBeat beat = note.getVoice().getBeat();
+			if (beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP){
+				this.addNode(technicalNode, "up-bow");
+			}
+			else if (beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_DOWN){
+				this.addNode(technicalNode, "down-bow");
+			}
 		}
 
 		TGEffectBend bendEffect = note.getEffect().getBend();
