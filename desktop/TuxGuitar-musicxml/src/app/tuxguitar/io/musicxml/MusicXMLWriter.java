@@ -1,6 +1,7 @@
 package app.tuxguitar.io.musicxml;
 
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -115,8 +116,16 @@ public class MusicXMLWriter{
 
 	private void writeIdentification(TGSong song, Node parent){
 		Node identification = this.addNode(parent, "identification");
-		this.addAttribute(this.addNode(identification, "creator",song.getAuthor()), "type", "composer");
-		this.addNode(this.addNode(identification, "encoding"), "software", "TuxGuitar " + TGVersion.CURRENT.getVersion());
+		if (!song.getAuthor().equals("")){
+			this.addAttribute(this.addNode(identification, "creator", song.getAuthor()), "type", "composer");
+		}
+		if (!song.getCopyright().equals("")){
+			this.addNode(identification, "rights", song.getCopyright());
+		}
+
+		Node encoding = this.addNode(identification, "encoding");
+		this.addNode(encoding, "encoding-date", LocalDate.now().toString());
+		this.addNode(encoding, "software", "TuxGuitar " + TGVersion.CURRENT.getVersion());
 	}
 
 	private void writeSong(TGSong song, Node parent){
