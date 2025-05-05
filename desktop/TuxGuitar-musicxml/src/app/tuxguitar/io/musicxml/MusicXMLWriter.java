@@ -765,8 +765,17 @@ public class MusicXMLWriter{
 		if (note.getEffect().isTrill()){
 			Node trillNode = this.addNode(ornamentsNode, "trill-mark");
 
-			int trillBeats = note.getEffect().getTrill().getDuration().getValue() / note.getVoice().getDuration().getValue();
-			this.addAttribute(trillNode, "beats", Integer.toString(trillBeats));
+			TGDuration noteDuration = note.getVoice().getDuration();
+			int trillBeats = note.getEffect().getTrill().getDuration().getValue() / noteDuration.getValue();
+			if (noteDuration.isDotted()){
+				trillBeats = trillBeats * 3 / 2;
+			}
+			if (noteDuration.isDoubleDotted()){
+				trillBeats = trillBeats * 7 / 4;
+			}
+			if (trillBeats > 1){
+				this.addAttribute(trillNode, "beats", Integer.toString(trillBeats));
+			}
 
 			// Default case of unison. As MusicXML only supports the following.
 			// half, unison, whole
