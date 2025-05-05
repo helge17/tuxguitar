@@ -361,6 +361,9 @@ public class MusicXMLWriter{
 	private void writeClef(Node parent, int clef, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
+
+		this.addAttribute(node, "after-barline", "yes");
+
 		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
 		}
