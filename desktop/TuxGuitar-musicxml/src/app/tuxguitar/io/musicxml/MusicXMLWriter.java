@@ -765,6 +765,9 @@ public class MusicXMLWriter{
 		if (note.getEffect().isTrill()){
 			Node trillNode = this.addNode(ornamentsNode, "trill-mark");
 
+			int trillBeats = note.getEffect().getTrill().getDuration().getValue() / note.getVoice().getDuration().getValue();
+			this.addAttribute(trillNode, "beats", Integer.toString(trillBeats));
+
 			// Default case of unison. As MusicXML only supports the following.
 			// half, unison, whole
 			// https://www.w3.org/2021/06/musicxml40/musicxml-reference/data-types/trill-step/
