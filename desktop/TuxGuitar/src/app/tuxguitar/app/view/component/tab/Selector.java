@@ -74,10 +74,14 @@ public class Selector {
 		// in this case, some beats in a measure may have a start attribute bigger than notes in the next measure!
 		// in other words: whenever one measure is too long, the order of beats shown on score/tab is not
 		// consistent with their .start attribute
-		if ( (beatToSelect.getMeasure().getNumber() < initial.getMeasure().getNumber())
-				&& (beatToSelect.getStart() >= initial.getStart()) ) return false;
+		if ( (beatToSelect.getMeasure().getNumber() < start.getMeasure().getNumber())
+				&& (beatToSelect.getStart() >= start.getStart()) ) {
+			return false;
+		}
 		if ( (beatToSelect.getMeasure().getNumber() > end.getMeasure().getNumber())
-				&& (beatToSelect.getStart() <= end.getStart()) ) return false;
+				&& (beatToSelect.getStart() <= end.getStart()) ) {
+			return false;
+		}
 		return true;
 	}
 
