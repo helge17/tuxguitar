@@ -3,6 +3,7 @@ package app.tuxguitar.editor.action.note;
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGMeasure;
@@ -49,12 +50,21 @@ public class TGDeleteNoteOrRestAction extends TGActionBase {
 	}
 	private void removeNote(TGActionContext context, TGMeasure measure, TGBeat beat, TGVoice voice, int string) {
 		TGSongManager songManager = getSongManager(context);
+		TGMeasureManager measureManager = songManager.getMeasureManager();
 		if (beat.isTextBeat() && beat.isRestBeat()) {
-			songManager.getMeasureManager().removeText(beat);
+			measureManager.removeText(beat);
 		} else if (voice.isRestVoice()) {
-			songManager.getMeasureManager().removeVoice(voice, true);
+			// in free edition mode, if this is the last beat and all voices are rest, delete the full beat
+			// to ease fixing invalid measures
+			if (songManager.isFreeEditionMode(measure) && beat.isRestBeat() &&
+					(measureManager.getLastBeat(measure.getBeats()) == beat)) {
+				measureManager.removeBeat(beat);
+				}
+				else {
+					measureManager.removeVoice(voice, true);
+				}
 		} else {
-			songManager.getMeasureManager().removeNote(measure, beat.getStart(), voice.getIndex(), string);
+			measureManager.removeNote(measure, beat.getStart(), voice.getIndex(), string);
 		}
 	}
 
