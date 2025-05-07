@@ -317,7 +317,7 @@ public class MusicXMLWriter{
 			this.addNode(measureAttributes, "part-symbol", "none");
 
 			if(clefChanges){
-				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
+				this.writeClef(measureAttributes,measure.getClef(), previous == null, isPercussion);
 			}
 
 			if (!isPercussion && (previous==null || measure.getNumber() == 1)){
@@ -368,9 +368,14 @@ public class MusicXMLWriter{
 		this.addNode(key, "fifths",Integer.toString( value ));
 	}
 
-	private void writeClef(Node parent, int clef, boolean isPercussion){
+	private void writeClef(Node parent, int clef, boolean isStart, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
+
+		if (!isStart){
+			this.addAttribute(node, "after-barline", "yes");
+		}
+
 		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
 		}
@@ -378,27 +383,29 @@ public class MusicXMLWriter{
 		if (isPercussion){
 			this.addNode(node, "sign", "percussion");
 		}
-		else if(clef == TGMeasure.CLEF_TREBLE){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+		else {
+			if(clef == TGMeasure.CLEF_TREBLE){
+				this.addNode(node, "sign", "G");
+				this.addNode(node, "line", "2");
+			}
+			else if(clef == TGMeasure.CLEF_BASS){
+				this.addNode(node, "sign", "F");
+				this.addNode(node, "line", "4");
+			}
+			else if(clef == TGMeasure.CLEF_TENOR){
+				this.addNode(node, "sign", "C");
+				this.addNode(node, "line", "4");
+			}
+			else if(clef == TGMeasure.CLEF_ALTO){
+				this.addNode(node, "sign", "C");
+				this.addNode(node, "line", "3");
+			}
+			// this is incorrect, but leave it for now for correct import
 			this.addNode(node, "clef-octave-change", String.valueOf(-1));
-		}
-		else if(clef == TGMeasure.CLEF_BASS){
-			this.addNode(node, "sign", "F");
-			this.addNode(node, "line", "4");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
-		}
-		else if(clef == TGMeasure.CLEF_TENOR){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
-		}
-		else if(clef == TGMeasure.CLEF_ALTO){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
 		}
 
 		// second clef: tablature
-		if (!isPercussion){
+		if (isStart && !isPercussion){
 			node = this.addNode(parent, "clef");
 			this.addAttribute(node, "number", "2");
 			this.addNode(node, "sign", "TAB");
