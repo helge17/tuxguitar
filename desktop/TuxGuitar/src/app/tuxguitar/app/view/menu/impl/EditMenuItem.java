@@ -20,6 +20,7 @@ import app.tuxguitar.app.action.impl.selector.TGExtendSelectionNextAction;
 import app.tuxguitar.app.action.impl.selector.TGExtendSelectionPreviousAction;
 import app.tuxguitar.app.action.impl.selector.TGExtendSelectionRightAction;
 import app.tuxguitar.app.action.impl.selector.TGSelectAllAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.component.tab.edit.EditorKit;
@@ -213,8 +214,8 @@ public class EditMenuItem extends TGMenuItem{
 		this.copy.setImage(TuxGuitar.getInstance().getIconManager().getEditCopy());
 		this.paste.setImage(TuxGuitar.getInstance().getIconManager().getEditPaste());
 		this.repeat.setImage(TuxGuitar.getInstance().getIconManager().getEditRepeat());
-		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getEditUndo());
-		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getEditRedo());
+		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.UNDO));
+		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REDO));
 		this.modeSelection.setImage(TuxGuitar.getInstance().getIconManager().getEditModeSelection());
 		this.modeEdition.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEdition());
 		this.notNaturalKey.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEditionNotNatural());

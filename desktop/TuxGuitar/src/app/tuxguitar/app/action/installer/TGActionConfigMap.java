@@ -129,6 +129,7 @@ import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
+import app.tuxguitar.app.action.impl.view.TGOpenMainToolBarSettingsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import app.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
 import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
@@ -645,6 +646,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenDocumentationDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenAboutDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGHelpGoHomeAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
+		this.map(TGOpenMainToolBarSettingsDialogAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY);
 	}
 
 	private void map(String actionId, int flags) {

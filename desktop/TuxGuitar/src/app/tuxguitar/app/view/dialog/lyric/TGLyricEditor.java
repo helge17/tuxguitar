@@ -7,6 +7,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.keybindings.KeyBindingAction;
 import app.tuxguitar.app.system.keybindings.KeyBindingActionManager;
@@ -318,8 +319,8 @@ public class TGLyricEditor implements TGEventListener {
 	public void loadIcons(){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-			this.previous.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
-			this.next.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
+			this.previous.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_LEFT));
+			this.next.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_RIGHT));
 		}
 	}
 

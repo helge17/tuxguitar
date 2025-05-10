@@ -271,7 +271,7 @@ public class TGTrackTuningDialog {
 		});
 
 		buttonMoveUp = factory.createButton(buttonsPanel);
-		buttonMoveUp.setImage(TGIconManager.getInstance(this.context.getContext()).getArrowUp());
+		buttonMoveUp.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.ARROW_UP));
 		buttonMoveUp.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.moveString(-1);
@@ -279,7 +279,7 @@ public class TGTrackTuningDialog {
 		});
 
 		buttonMoveDown = factory.createButton(buttonsPanel);
-		buttonMoveDown.setImage(TGIconManager.getInstance(this.context.getContext()).getArrowDown());
+		buttonMoveDown.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.ARROW_DOWN));
 		buttonMoveDown.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.moveString(1);
@@ -287,7 +287,7 @@ public class TGTrackTuningDialog {
 		});
 
 		buttonDelete = factory.createButton(buttonsPanel);
-		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
+		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
 		buttonDelete.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.onRemoveTuningModel();
@@ -386,7 +386,7 @@ public class TGTrackTuningDialog {
 			// create buttons if needed (custom tuning or no tuning selected)
 			if (currentSelectedPreset==null || isCustomTuningPreset(currentSelectedPreset)) {
 				buttonPresetDelete = factory.createButton(presetsPanel);
-				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
+				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
 				buttonPresetDelete.setToolTipText(TuxGuitar.getProperty("tuning.preset.delete"));
 				buttonPresetDelete.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
@@ -395,7 +395,7 @@ public class TGTrackTuningDialog {
 				});
 				presetsPanelLayout.set(buttonPresetDelete, 1+nDropDown, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				buttonPresetSave = factory.createButton(presetsPanel);
-				buttonPresetSave.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSave());
+				buttonPresetSave.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.FILE_SAVE));
 				buttonPresetSave.setToolTipText(TuxGuitar.getProperty("tuning.preset.save"));
 				buttonPresetSave.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
@@ -409,7 +409,7 @@ public class TGTrackTuningDialog {
 				newPresetName.setTextLimit(20);
 				presetsPanelLayout.set(newPresetName, 2+nDropDown, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 				buttonPresetSaveAs = factory.createButton(presetsPanel);
-				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getFileSaveAs());
+				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.FILE_SAVE_AS));
 				buttonPresetSaveAs.setToolTipText(TuxGuitar.getProperty("tuning.preset.saveas"));
 				buttonPresetSaveAs.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {

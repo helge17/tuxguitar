@@ -9,6 +9,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.file.TGExitAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.ui.swt.resource.SWTImage;
@@ -69,11 +70,11 @@ public class TGTrayMenu {
 
 	public void loadIcons(){
 		if(this.menu != null && !this.menu.isDisposed()){
-			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconStop()).getHandle());
+			this.stop.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_ICON_STOP)).getHandle());
 			if(TuxGuitar.getInstance().getPlayer().isRunning()){
-				this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPause()).getHandle());
+				this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_ICON_PAUSE)).getHandle());
 			} else {
-				this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getTransportIconPlay()).getHandle());
+				this.play.setImage(((SWTImage) TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_ICON_PLAY)).getHandle());
 			}
 		}
 	}
