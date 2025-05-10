@@ -3,6 +3,7 @@ package app.tuxguitar.app.view.toolbar.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
@@ -56,7 +57,7 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 
 	@Override
 	public void loadProperties() {
-		this.menuItem.setToolTipText(this.getText());
+		this.menuItem.setToolTipText(TuxGuitar.getProperty(this.getText()));
 		for (TGMainToolBarItemMenuItem toolBarMenuItem : toolBarMenuItems) {
 			toolBarMenuItem.loadProperties();
 		}
