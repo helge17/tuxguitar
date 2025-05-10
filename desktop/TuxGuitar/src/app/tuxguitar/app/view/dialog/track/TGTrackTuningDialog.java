@@ -271,7 +271,7 @@ public class TGTrackTuningDialog {
 		});
 
 		buttonMoveUp = factory.createButton(buttonsPanel);
-		buttonMoveUp.setImage(TGIconManager.getInstance(this.context.getContext()).getArrowUp());
+		buttonMoveUp.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.ARROW_UP));
 		buttonMoveUp.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.moveString(-1);
@@ -279,7 +279,7 @@ public class TGTrackTuningDialog {
 		});
 
 		buttonMoveDown = factory.createButton(buttonsPanel);
-		buttonMoveDown.setImage(TGIconManager.getInstance(this.context.getContext()).getArrowDown());
+		buttonMoveDown.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.ARROW_DOWN));
 		buttonMoveDown.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.moveString(1);
@@ -287,7 +287,7 @@ public class TGTrackTuningDialog {
 		});
 
 		buttonDelete = factory.createButton(buttonsPanel);
-		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
+		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
 		buttonDelete.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.onRemoveTuningModel();
@@ -386,7 +386,7 @@ public class TGTrackTuningDialog {
 			// create buttons if needed (custom tuning or no tuning selected)
 			if (currentSelectedPreset==null || isCustomTuningPreset(currentSelectedPreset)) {
 				buttonPresetDelete = factory.createButton(presetsPanel);
-				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getListRemove());
+				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
 				buttonPresetDelete.setToolTipText(TuxGuitar.getProperty("tuning.preset.delete"));
 				buttonPresetDelete.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {

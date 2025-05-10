@@ -74,7 +74,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.openItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
 
 		this.removeItem = this.menuCollectionItem.getMenu().createSubMenuItem();
-		this.removeItem.setImage(TuxGuitar.getInstance().getIconManager().getListRemove());
+		this.removeItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LIST_REMOVE));
 
 		this.menuCollectionItem.getMenu().createSeparator();
 

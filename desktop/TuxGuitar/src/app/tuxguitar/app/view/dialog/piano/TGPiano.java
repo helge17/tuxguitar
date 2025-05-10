@@ -8,6 +8,7 @@ import app.tuxguitar.app.action.TGActionProcessorListener;
 import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.transport.TGTransport;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.component.tab.Caret;
@@ -148,7 +149,7 @@ public class TGPiano {
 
 		// settings
 		this.settings = uiFactory.createButton(this.toolComposite);
-		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SETTINGS));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.settings.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -558,11 +559,11 @@ public class TGPiano {
 	}
 
 	public void loadIcons(){
-		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
-		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
-		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
-		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
-		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_LEFT));
+		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_RIGHT));
+		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_DOWN));
+		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_UP));
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SETTINGS));
 		this.loadDurationImage(true);
 		this.control.layout();
 	}

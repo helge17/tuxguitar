@@ -224,7 +224,7 @@ public class TGChannelItem implements TGContinuousControl{
 
 	public void loadIcons(){
 		if(!isDisposed()){
-			this.setupChannelButton.setImage(TGIconManager.getInstance(getContext()).getSettings());
+			this.setupChannelButton.setImage(TGIconManager.getInstance(getContext()).getImageByName(TGIconManager.SETTINGS));
 		}
 	}
 

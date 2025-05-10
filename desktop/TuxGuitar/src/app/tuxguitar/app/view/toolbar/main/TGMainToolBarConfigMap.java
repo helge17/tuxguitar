@@ -1,10 +1,13 @@
 package app.tuxguitar.app.view.toolbar.main;
 
+
 /**
  * A map of all items that can be included in the main tool bar
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import app.tuxguitar.app.action.impl.composition.TGOpenSongInfoDialogAction;
@@ -35,6 +38,7 @@ import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.app.action.impl.view.TGOpenMainToolBarSettingsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGToggleEditToolbarAction;
 import app.tuxguitar.app.action.impl.view.TGToggleFretBoardEditorAction;
@@ -61,9 +65,12 @@ import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarConfigMap {
 	private Map<String, TGMainToolBarItem> mapItems;
+	// ordered list of control names, for display in dialof
+	private List<String> itemNames;
 
 	public TGMainToolBarConfigMap() {
 		this.mapItems = new HashMap<String, TGMainToolBarItem>();
+		this.itemNames = new ArrayList<String>();
 
 		// a generic updater
 		TGMainToolBarItemUpdater DISABLE_ON_PLAY = new TGMainToolBarItemUpdater() {
@@ -74,13 +81,13 @@ public class TGMainToolBarConfigMap {
 		};
 
 		// SEPARATOR
-		mapItems.put("separator", new TGMainToolBarItem(TGMainToolBarItem.SEPARATOR));
+		registerItem(new TGMainToolBarItem("toolbar.separator", TGMainToolBarItem.SEPARATOR, null, null, null));
 
 		// TIME COUNTER
-		mapItems.put("timeCounter", new TGMainToolBarItem(TGMainToolBarItem.TIME_COUNTER));
+		registerItem(new TGMainToolBarItem("toolbar.timeCounter", TGMainToolBarItem.TIME_COUNTER, null, null, null));
 
 		// TEMPO INDICATOR
-		mapItems.put("tempoIndicator", new TGMainToolBarItem(TGMainToolBarItem.TEMPO_INDICATOR));
+		registerItem(new TGMainToolBarItem("toolbar.tempoIndicator", TGMainToolBarItem.TEMPO_INDICATOR, null, TGIconManager.TRANSPORT_METRONOME, null));
 
 		// ACTION ITEMS (checkable or not)
 		registerItem(new TGMainToolBarItemButton("file.new", TGLoadTemplateAction.NAME, TGIconManager.FILE_NEW, null));
@@ -252,6 +259,8 @@ public class TGMainToolBarConfigMap {
 		registerItem(new TGMainToolBarItemButton("transport.mode", TGOpenTransportModeDialogAction.NAME,
 				TGIconManager.TRANSPORT_MODE, null));
 
+		registerItem(new TGMainToolBarItemButton("toolbar.settings", TGOpenMainToolBarSettingsDialogAction.NAME, TGIconManager.SETTINGS, DISABLE_ON_PLAY));
+
 		// MENUS
 		TGMainToolBarItemMenu menuLayout = new TGMainToolBarItemMenu("view.layout", TGIconManager.LAYOUT_SCORE);
 		menuLayout.addMenuItem(mapItems.get("view.layout.page"));
@@ -264,7 +273,7 @@ public class TGMainToolBarConfigMap {
 		TGMainToolBarItemMenu menuMarker = new TGMainToolBarItemMenu("marker", TGIconManager.MARKER_LIST);
 		menuMarker.addMenuItem(mapItems.get("marker.add"));
 		menuMarker.addMenuItem(mapItems.get("marker.list"));
-		menuMarker.addMenuItem(mapItems.get("separator"));
+		menuMarker.addMenuItem(mapItems.get("toolbar.separator"));
 		menuMarker.addMenuItem(mapItems.get("marker.first"));
 		menuMarker.addMenuItem(mapItems.get("marker.previous"));
 		menuMarker.addMenuItem(mapItems.get("marker.next"));
@@ -273,8 +282,12 @@ public class TGMainToolBarConfigMap {
 	}
 
 	private void registerItem(TGMainToolBarItem toolBarItem) {
-		mapItems.put(toolBarItem.getText(), toolBarItem);
+		this.mapItems.put(toolBarItem.getText(), toolBarItem);
+		this.itemNames.add(toolBarItem.getText());
+	}
 
+	public List<String> getToolBarItemNames() {
+		return this.itemNames;
 	}
 
 	public TGMainToolBarItem getToolBarItem(String name) {

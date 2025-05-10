@@ -9,6 +9,7 @@ import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.language.TGLanguageEvent;
 import app.tuxguitar.app.transport.TGTransport;
@@ -229,7 +230,7 @@ public class TGMatrixEditor implements TGEventListener {
 
 		// settings
 		this.settings = uiFactory.createButton(this.toolbar);
-		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SETTINGS));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.settings.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -757,11 +758,11 @@ public class TGMatrixEditor implements TGEventListener {
 	public void loadIcons(){
 		if(!this.isDisposed() ){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-			this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
-			this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
-			this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
-			this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
-			this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+			this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_LEFT));
+			this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_RIGHT));
+			this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_DOWN));
+			this.increment.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_UP));
+			this.settings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SETTINGS));
 			this.loadDurationImage(true);
 			this.layout();
 			this.redraw();

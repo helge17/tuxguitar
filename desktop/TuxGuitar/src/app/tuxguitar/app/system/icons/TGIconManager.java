@@ -65,6 +65,13 @@ public class TGIconManager {
 	public static final String TRANSPORT_METRONOME = "transport_metronome.png";
 	public static final String TRANSPORT_COUNT_IN = "transport_count_in.png";
 	public static final String TRANSPORT_MODE = "transport_mode.png";
+	public static final String SETTINGS = "settings.png";
+	public static final String LIST_REMOVE = "list_remove.png";
+	public static final String ARROW_UP = "arrow_up.png";
+	public static final String ARROW_DOWN = "arrow_down.png";
+	public static final String ARROW_LEFT = "arrow_left.png";
+	public static final String ARROW_RIGHT = "arrow_right.png";
+
 	
 	public static final String QUARTER = "4.png";
 
@@ -185,10 +192,6 @@ public class TGIconManager {
 	private UIImage browserRoot;
 	private UIImage browserBack;
 	private UIImage browserRefresh;
-	private UIImage arrowUp;
-	private UIImage arrowDown;
-	private UIImage arrowLeft;
-	private UIImage arrowRight;
 	private UIImage statusQuestion;
 	private UIImage statusError;
 	private UIImage statusWarning;
@@ -197,11 +200,9 @@ public class TGIconManager {
 	private UIImage strokeDown;
 	private UIImage pickStrokeUp;
 	private UIImage pickStrokeDown;
-	private UIImage settings;
 	private UIImage toolbarMain;
 	private UIImage listAdd;
 	private UIImage listEdit;
-	private UIImage listRemove;
 	private UIImage solo;
 	private UIImage soloDisabled;
 	private UIImage soloDim;
@@ -404,10 +405,10 @@ public class TGIconManager {
 		this.browserRoot = loadIcon("browser_root.png");
 		this.browserBack = loadIcon("browser_back.png");
 		this.browserRefresh = loadIcon("browser_refresh.png");
-		this.arrowUp = loadIcon("arrow_up.png");
-		this.arrowDown = loadIcon("arrow_down.png");
-		this.arrowLeft = loadIcon("arrow_left.png");
-		this.arrowRight = loadIcon("arrow_right.png");
+		loadIcon(ARROW_UP);
+		loadIcon(ARROW_DOWN);
+		loadIcon(ARROW_LEFT);
+		loadIcon(ARROW_RIGHT);
 		this.statusQuestion = loadIcon("status_question.png");
 		this.statusError = loadIcon("status_error.png");
 		this.statusWarning = loadIcon("status_warning.png");
@@ -417,13 +418,13 @@ public class TGIconManager {
 		this.pickStrokeUp = loadIcon("pick_stroke_up.png");
 		this.pickStrokeDown = loadIcon("pick_stroke_down.png");
 		this.altEnharmonic = loadIcon("alt_enharmonic.png");
-		this.settings = loadIcon("settings.png");
+		loadIcon(SETTINGS);
 		this.toolbarMain = loadIcon("toolbar_main.png");
 		loadIcon(TOOLBAR_EDIT);
 		loadIcon(TABLE_VIEWER);
 		this.listAdd = loadIcon("list_add.png");
 		this.listEdit = loadIcon("list_edit.png");
-		this.listRemove = loadIcon("list_remove.png");
+		loadIcon(LIST_REMOVE);
 		this.solo = loadIcon("solo.png");
 		this.soloDisabled = loadIcon("solo-disabled.png");
 		this.soloDim = loadIcon("solo-dim.png");
@@ -985,28 +986,8 @@ public class TGIconManager {
 		return this.altEnharmonic;
 	}
 
-	public UIImage getSettings() {
-		return this.settings;
-	}
-
 	public UIImage getToolbarMain() {
 		return this.toolbarMain;
-	}
-
-	public UIImage getArrowUp() {
-		return this.arrowUp;
-	}
-
-	public UIImage getArrowDown() {
-		return this.arrowDown;
-	}
-
-	public UIImage getArrowLeft() {
-		return this.arrowLeft;
-	}
-
-	public UIImage getArrowRight() {
-		return this.arrowRight;
 	}
 
 	public UIImage getStatusQuestion() {
@@ -1031,10 +1012,6 @@ public class TGIconManager {
 
 	public UIImage getListEdit() {
 		return this.listEdit;
-	}
-
-	public UIImage getListRemove() {
-		return this.listRemove;
 	}
 
 	public UIImage getSolo() {

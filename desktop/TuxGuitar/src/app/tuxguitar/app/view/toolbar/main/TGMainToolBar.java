@@ -17,6 +17,9 @@ package app.tuxguitar.app.view.toolbar.main;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.toolbar.model.TGToolBarModel;
 import app.tuxguitar.ui.UIFactory;
@@ -35,55 +38,74 @@ public class TGMainToolBar extends TGToolBarModel {
 	public static final Integer LEFT_AREA = 0;
 	public static final Integer CENTER_AREA = 1;
 	public static final Integer RIGHT_AREA = 2;
+	public static final Integer[] AREAS = new Integer[] {LEFT_AREA, CENTER_AREA, RIGHT_AREA};
+	public static final String[] AREA_NAMES = new String[] {"toolbar.main.left", "toolbar.main.center", "toolbar.main.right"};
+	private TGMainToolBarConfig config;
 
 	private TGMainToolBar(TGContext context) {
 		super(context);
+		String toolBarName = TGConfigManager.getInstance(context).getStringValue(TGConfigKeys.MAIN_TOOLBAR_NAME);
+		TGMainToolBarConfigManager configMgr = new TGMainToolBarConfigManager();
+		this.config = configMgr.getConfig(toolBarName);
+		if (this.config == null) {
+			this.config = configMgr.getDefaultConfig();
+		}
 	}
 
 	public void createToolBar(UIWindow parentWindow, boolean visible) {
-		this.clearSections();
-		List<UIControl> controls = new ArrayList<UIControl>();
 		UIFactory uiFactory = TGApplication.getInstance(this.getContext()).getFactory();
 		this.panel = uiFactory.createPanel(parentWindow, false);
 		this.panel.setVisible(visible);
+		this.layout();
+	}
+
+	public void layout() {
+		this.clearSections();
+		for (UIControl control: this.panel.getChildren()) {
+			control.dispose();
+		}
+		
+		UIWindow parentWindow = (UIWindow)this.panel.getParent();
+		UIFactory uiFactory = TGApplication.getInstance(this.getContext()).getFactory();
 		UITableLayout mainToolBarLayout = new UITableLayout();
 		this.panel.setLayout(mainToolBarLayout);
+		List<UIControl> controls = new ArrayList<UIControl>();
 		mainToolBarLayout.set(UITableLayout.MARGIN, 0f);
 		int col = 1;
-
-		// content of each area
-		TGMainToolBarConfigMap config = new TGMainToolBarConfigMap();
-
+		TGMainToolBarConfigMap configMap = new TGMainToolBarConfigMap();
+		
 		for (int area : new int[] { LEFT_AREA, CENTER_AREA, RIGHT_AREA }) {
 			TGMainToolBarSection section = null;
 			TGMainToolBarItem lastAddedItem = null;
 			controls.clear();
 
-			for (String toolBarItemName : TGMainToolBarConfig.getAreaContent(area)) {
-				TGMainToolBarItem toolBarItem = config.getToolBarItem(toolBarItemName);
+			for (String toolBarItemName : this.config.getAreaContent(area)) {
+				TGMainToolBarItem toolBarItem = configMap.getToolBarItem(toolBarItemName);
 				if (toolBarItem == null) {
-					throw new IllegalArgumentException("toolBarItem name not found: " + toolBarItemName);
+					System.out.printf("toolBarItem name not found (ignored): " + toolBarItemName + "\n");
 				}
-				int sectionType = toolBarItem.getSectionType();
-				// need to create a new section?
-				if ((lastAddedItem == null) || (sectionType != lastAddedItem.getSectionType())) {
-					// if a section was already in creation, add its controls to list, and
-					// initialize the section
-					if (section != null) {
-						controls.addAll(section.getControls());
-						this.createSection(mainToolBarLayout, section);
+				else {
+					int sectionType = toolBarItem.getSectionType();
+					// need to create a new section?
+					if ((lastAddedItem == null) || (sectionType != lastAddedItem.getSectionType())) {
+						// if a section was already in creation, add its controls to list, and
+						// initialize the section
+						if (section != null) {
+							controls.addAll(section.getControls());
+							this.createSection(mainToolBarLayout, section);
+						}
+						if (sectionType == TGMainToolBarSection.TYPE_TOOLITEMS) {
+							UIToolBar toolBar = uiFactory.createHorizontalToolBar(this.panel);
+							section = new TGMainToolBarSectionToolItems(getContext(), toolBar);
+						} else if (toolBarItem.getType() == TGMainToolBarItem.TIME_COUNTER) {
+							section = new TGMainToolBarSectionTimeCounter(getContext(), this.panel, parentWindow);
+						} else if (toolBarItem.getType() == TGMainToolBarItem.TEMPO_INDICATOR) {
+							section = new TGMainToolBarSectionTempo(getContext(), this.panel, parentWindow);
+						}
 					}
-					if (sectionType == TGMainToolBarSection.TYPE_TOOLITEMS) {
-						UIToolBar toolBar = uiFactory.createHorizontalToolBar(this.panel);
-						section = new TGMainToolBarSectionToolItems(getContext(), toolBar);
-					} else if (toolBarItem.getType() == TGMainToolBarItem.TIME_COUNTER) {
-						section = new TGMainToolBarSectionTimeCounter(getContext(), panel, parentWindow);
-					} else if (toolBarItem.getType() == TGMainToolBarItem.TEMPO_INDICATOR) {
-						section = new TGMainToolBarSectionTempo(getContext(), panel, parentWindow);
-					}
+					section.addToolBarItem(toolBarItem);
+					lastAddedItem = toolBarItem;
 				}
-				section.addToolBarItem(toolBarItem);
-				lastAddedItem = toolBarItem;
 			}
 			if (section != null) {
 				// if nothing in area
@@ -93,7 +115,15 @@ public class TGMainToolBar extends TGToolBarModel {
 				col += controls.size();
 			}
 		}
+		this.panel.layout();
+	}
 
+	public TGMainToolBarConfig getConfig() {
+		return this.config;
+	}
+
+	public void setConfig(TGMainToolBarConfig config) {
+		this.config = config;
 	}
 
 	private void createSection(UITableLayout layout, TGMainToolBarSection section) {

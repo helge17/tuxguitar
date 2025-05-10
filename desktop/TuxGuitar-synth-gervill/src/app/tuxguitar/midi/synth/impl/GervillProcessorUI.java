@@ -77,7 +77,7 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 		soundbankLayout.set(this.customSoundbankName, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, 300f, null, null);
 
 		final UIButton sbDefault = uiFactory.createButton(soundbankGroup);
-		sbDefault.setImage(TuxGuitar.getInstance().getIconManager().getListRemove());
+		sbDefault.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LIST_REMOVE));
 		sbDefault.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				GervillProcessorUI.this.updateSoundbank(null);

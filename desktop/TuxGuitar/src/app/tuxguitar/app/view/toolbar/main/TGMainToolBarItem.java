@@ -30,10 +30,6 @@ public class TGMainToolBarItem {
 		this.updater = updater;
 	}
 
-	public TGMainToolBarItem(int type) {
-		this(null, type, null, null, null);
-	}
-
 	public String getText() {
 		return this.text;
 	}
@@ -68,7 +64,7 @@ public class TGMainToolBarItem {
 		return this.actionName;
 	}
 
-	protected String getIconFileName() {
+	public String getIconFileName() {
 		return this.iconFileName;
 	}
 
