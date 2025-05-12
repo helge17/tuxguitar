@@ -385,7 +385,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32</org.eclipse.swt.artifactId>
-				<javafx.version>17.0.2</javafx.version>
+				<javafx.version>22.0.2</javafx.version>
 				<javafx.platform>win</javafx.platform>
 			</properties>
 		</profile>
@@ -400,7 +400,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux</org.eclipse.swt.artifactId>
-				<javafx.version>17.0.2</javafx.version>
+				<javafx.version>22.0.2</javafx.version>
 				<javafx.platform>linux</javafx.platform>
 			</properties>
 		</profile>
@@ -415,7 +415,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx</org.eclipse.swt.artifactId>
-				<javafx.version>21.0.2</javafx.version>
+				<javafx.version>22.0.2</javafx.version>
 				<javafx.platform>mac</javafx.platform>
 			</properties>
 		</profile>
