@@ -989,14 +989,56 @@ public class TGMeasureManager {
 	// (re)compute preciseStart of all beats in measure
 	// assumption: beats start is precise enough to ensure beats can be sorted correctly
 	public void updateBeatsPreciseStart(TGMeasure measure) {
+		List<TGBeat> beatsToDelete = new ArrayList<TGBeat>();
 		Collections.sort(measure.getBeats());
-		long preciseStart = measure.getPreciseStart();
+		long voiceEnd[] = new long[TGBeat.MAX_VOICES];
+		boolean isFirstBeat = true;
 		for (TGBeat beat : measure.getBeats()) {
-			beat.setPreciseStart(preciseStart);
-			TGDuration minDuration = getMinimumDuration(beat);
-			if (minDuration != null) {
-				preciseStart += minDuration.getPreciseTime();
+			if (isFirstBeat) {
+				// align beat at measure start
+				beat.setPreciseStart(beat.getMeasure().getPreciseStart());
+				long minVoiceEnd=0;
+				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+					if (!beat.getVoice(v).isEmpty()) {
+						voiceEnd[v] = beat.getPreciseStart() + beat.getVoice(v).getDuration().getPreciseTime();
+						if ((minVoiceEnd == 0) || (voiceEnd[v] < minVoiceEnd)) {
+							minVoiceEnd = voiceEnd[v];
+						}
+					}
+				}
+				// theoretically useless: if one voice of first beat is empty, logically the voice
+				// shall be empty in the full measure. But we never know
+				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+					voiceEnd[v] = Math.max(voiceEnd[v], minVoiceEnd);
+					}
 			}
+			else {
+				// align beat left, avoiding conflicts ("holes" are easier to fix than overlaps)
+				long beatPreciseStart = 0;
+				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+					if (!beat.getVoice(v).isEmpty()) {
+						if ((beatPreciseStart == 0) || (voiceEnd[v] > beatPreciseStart)) {
+							beatPreciseStart = voiceEnd[v];
+						}
+					}
+				}
+				if (beatPreciseStart == 0) {
+					// empty beat?!
+					beatsToDelete.add(beat);
+				}
+				else {
+					beat.setPreciseStart(beatPreciseStart);
+					for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+						if (!beat.getVoice(v).isEmpty()) {
+							voiceEnd[v] = beat.getPreciseStart() + beat.getVoice(v).getDuration().getPreciseTime();
+						}
+					}
+				}
+			}
+			isFirstBeat = false;
+		}
+		for (TGBeat beat : beatsToDelete) {
+			this.removeBeat(beat);
 		}
 	}
 
