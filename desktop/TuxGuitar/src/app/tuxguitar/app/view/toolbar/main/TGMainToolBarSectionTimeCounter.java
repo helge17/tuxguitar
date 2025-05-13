@@ -98,6 +98,7 @@ public class TGMainToolBarSectionTimeCounter extends TGMainToolBarSection implem
 				if (TGMainToolBarSectionTimeCounter.this.font != null) {
 					TGMainToolBarSectionTimeCounter.this.font.dispose();
 				}
+				TuxGuitar.getInstance().getEditorManager().removeRedrawListener(TGMainToolBarSectionTimeCounter.this);
 			}
 		});
 		this.controls.add(timestampCanvas);

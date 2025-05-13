@@ -13,6 +13,8 @@ import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
 import app.tuxguitar.ui.event.UIMouseDownListener;
 import app.tuxguitar.ui.event.UIMouseEvent;
 import app.tuxguitar.ui.widget.UIImageView;
@@ -42,6 +44,12 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 			public void onMouseDown(UIMouseEvent event) {
 				new TGActionProcessor(TGMainToolBarSectionTempo.this.getContext(), TGOpenTempoDialogAction.NAME)
 						.process();
+			}
+		});
+		this.tempoImage.addDisposeListener(new UIDisposeListener() {
+			@Override
+			public void onDispose(UIDisposeEvent event) {
+				TuxGuitar.getInstance().getEditorManager().removeRedrawListener(TGMainToolBarSectionTempo.this);
 			}
 		});
 		this.controls.add(this.tempoLabel);

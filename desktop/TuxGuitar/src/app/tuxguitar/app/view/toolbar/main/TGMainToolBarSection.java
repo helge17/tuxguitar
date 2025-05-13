@@ -32,8 +32,12 @@ public abstract class TGMainToolBarSection implements TGToolBarSection {
 
 	public abstract void addToolBarItem(TGMainToolBarItem toolBarItem);
 
-	protected TGActionProcessorListener createActionProcessor(String actionId) {
-		return new TGActionProcessorListener(this.getContext(), actionId);
+	protected TGActionProcessorListener createActionProcessor(TGMainToolBarItem item) {
+		TGActionProcessorListener actionProcessorListener = new TGActionProcessorListener(this.getContext(), item.getActionName());
+		for (String key : item.attributes.keySet()) {
+			actionProcessorListener.setAttribute(key, item.attributes.get(key));
+		}
+		return actionProcessorListener;
 	}
 
 	public List<UIControl> getControls() {

@@ -11,8 +11,8 @@ public class TGMainToolBarItemPlay extends TGMainToolBarItemButton {
 
 	private boolean isRunning;
 
-	public TGMainToolBarItemPlay(String text) {
-		super(text, TGTransportPlayPauseAction.NAME, TGIconManager.TRANSPORT_ICON_PLAY, null);
+	public TGMainToolBarItemPlay(String groupName, String text) {
+		super(groupName, text, TGTransportPlayPauseAction.NAME, TGIconManager.TRANSPORT_ICON_PLAY, null);
 		this.isRunning = false;
 	}
 

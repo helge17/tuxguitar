@@ -34,8 +34,8 @@ import app.tuxguitar.util.TGUserFileUtils;
 public class TGMainToolBarConfigManager {
 
 	// xml tags
-	private static final String TAG_ROOT = "maintoolbar";
-	private static final String TAG_TOOLBAR = "toolbar";
+	private static final String TAG_ROOT = "toolbar";
+	private static final String TAG_MAINTOOLBAR = "maintoolbar";
 	private static final String TAG_LEFT = "left";
 	private static final String TAG_CENTER = "center";
 	private static final String TAG_RIGHT = "right";
@@ -71,7 +71,7 @@ public class TGMainToolBarConfigManager {
 			for (int i = 0; i < nodeList.getLength(); i++) {
 				Node child = nodeList.item(i);
 				String nodeName = child.getNodeName();
-				if (nodeName.equals(TAG_TOOLBAR)) {
+				if (nodeName.equals(TAG_MAINTOOLBAR)) {
 					TGMainToolBarConfig config = this.getConfig(child);
 					if ((config != null) && !config.getName().equals("")
 							&& !getConfigNames().contains(config.getName())) {
@@ -214,7 +214,7 @@ public class TGMainToolBarConfigManager {
 		Document document = root.getOwnerDocument();
 		for (TGMainToolBarConfig config : this.configs) {
 			if (!config.getName().equals("")) {
-				Node nodeConfig = document.createElement(TAG_TOOLBAR);
+				Node nodeConfig = document.createElement(TAG_MAINTOOLBAR);
 				Attr attrName = document.createAttribute(ATTRIBUTE_NAME);
 				attrName.setNodeValue(config.getName());
 				nodeConfig.getAttributes().setNamedItem(attrName);

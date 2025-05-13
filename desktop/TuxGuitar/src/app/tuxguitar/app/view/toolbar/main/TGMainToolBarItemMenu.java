@@ -17,9 +17,15 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 	private UIToolMenuItem menuItem;
 	private List<TGMainToolBarItemMenuItem> toolBarMenuItems;
 
-	public TGMainToolBarItemMenu(String text, String iconFileName) {
-		super(text, TGMainToolBarItem.MENU, null, iconFileName, null);
+	public TGMainToolBarItemMenu(String groupName, String text, String iconFileName) {
+		super(groupName, text, TGMainToolBarItem.MENU, null, iconFileName, null);
 		this.toolBarMenuItems = new ArrayList<TGMainToolBarItemMenuItem>();
+	}
+
+	// when no icon is given for the menu button, it is assumed that one and only one menuItem is checked
+	// in this case, icon of the selected item is used for the menu button
+	public TGMainToolBarItemMenu(String groupName, String text) {
+		this(groupName, text, null);
 	}
 
 	public void addMenuItem(TGMainToolBarItem item) {
@@ -33,8 +39,11 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 				this.menuItem.getMenu().createSeparator();
 			} else {
 				UIMenuActionItem menuActionItem = this.menuItem.getMenu().createActionItem();
-				menuActionItem
-						.addSelectionListener(new TGActionProcessorListener(context, toolBarMenuItem.getActionName()));
+				TGActionProcessorListener actionProcessorListener = new TGActionProcessorListener(context, toolBarMenuItem.getActionName());
+				for (String key : toolBarMenuItem.attributes.keySet()) {
+					actionProcessorListener.setAttribute(key, toolBarMenuItem.attributes.get(key));
+				}
+				menuActionItem.addSelectionListener(actionProcessorListener);
 				toolBarMenuItem.setMenuItem(menuActionItem);
 			}
 		}
@@ -44,6 +53,9 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 	public void update(TGContext context, boolean running) {
 		for (TGMainToolBarItemMenuItem toolBarMenuItem : toolBarMenuItems) {
 			toolBarMenuItem.update(context, running);
+			if ((this.iconFileName == null) && toolBarMenuItem.isChecked()) {
+				this.menuItem.setImage(TGIconManager.getInstance(context).getImageByName(toolBarMenuItem.getIconFileName()));
+			}
 		}
 	}
 
@@ -64,7 +76,7 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 	}
 
 	public TGMainToolBarItemMenu clone() {
-		TGMainToolBarItemMenu clone = new TGMainToolBarItemMenu(this.text, this.iconFileName);
+		TGMainToolBarItemMenu clone = new TGMainToolBarItemMenu(this.groupName, this.text, this.iconFileName);
 		for (TGMainToolBarItemMenuItem menuItem : this.toolBarMenuItems) {
 			clone.addMenuItem(menuItem);
 		}

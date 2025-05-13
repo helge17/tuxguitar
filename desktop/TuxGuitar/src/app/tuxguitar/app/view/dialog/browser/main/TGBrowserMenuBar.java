@@ -79,7 +79,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.menuCollectionItem.getMenu().createSeparator();
 
 		this.close = this.menuCollectionItem.getMenu().createActionItem();
-		this.close.setImage(TuxGuitar.getInstance().getIconManager().getFileClose());
+		this.close.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_CLOSE));
 		this.close.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				closeCollection();

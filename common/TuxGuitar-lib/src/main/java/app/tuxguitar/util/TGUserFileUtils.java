@@ -169,6 +169,6 @@ public class TGUserFileUtils {
 	}
 
 	private static String getUserMainToolBarPath() {
-		return getUserConfigDir() + File.separator + "maintoolbar.xml";
+		return getUserConfigDir() + File.separator + "toolbar.xml";
 	}
 }

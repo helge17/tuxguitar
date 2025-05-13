@@ -5,6 +5,7 @@ import app.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
 import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.ui.toolbar.UIToolActionItem;
@@ -69,10 +70,10 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 	}
 
 	public void loadSectionIcons() {
-		this.timeSignature.setImage(this.getIconManager().getCompositionTimeSignature());
-		this.tempo.setImage(this.getIconManager().getCompositionTempo());
-		this.repeatOpen.setImage(this.getIconManager().getCompositionRepeatOpen());
-		this.repeatClose.setImage(this.getIconManager().getCompositionRepeatClose());
-		this.repeatAlternative.setImage(this.getIconManager().getCompositionRepeatAlternative());
+		this.timeSignature.setImage(this.getIconManager().getImageByName(TGIconManager.TIME_SIGNATURE));
+		this.tempo.setImage(this.getIconManager().getImageByName(TGIconManager.TEMPO));
+		this.repeatOpen.setImage(this.getIconManager().getImageByName(TGIconManager.REPEAT_OPEN));
+		this.repeatClose.setImage(this.getIconManager().getImageByName(TGIconManager.REPEAT_CLOSE));
+		this.repeatAlternative.setImage(this.getIconManager().getImageByName(TGIconManager.REPEAT_ALTERNATIVE));
 	}
 }

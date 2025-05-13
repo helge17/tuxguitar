@@ -11,6 +11,7 @@ import app.tuxguitar.app.action.impl.settings.TGOpenSettingsEditorAction;
 import app.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
 import app.tuxguitar.app.action.impl.tools.TGOpenTransposeDialogAction;
 import app.tuxguitar.app.action.impl.tools.TGToggleBrowserAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.tools.custom.TGCustomTool;
 import app.tuxguitar.app.tools.custom.TGCustomToolManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
@@ -90,9 +91,9 @@ public class ToolMenuItem extends TGMenuItem {
 
 	public void loadIcons(){
 		this.browser.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
-		this.plugins.setImage(TuxGuitar.getInstance().getIconManager().getToolsPlugins());
-		this.keyBindings.setImage(TuxGuitar.getInstance().getIconManager().getToolsShortcuts());
-		this.config.setImage(TuxGuitar.getInstance().getIconManager().getToolsSettings());
+		this.plugins.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TOOLS_PLUGINS));
+		this.keyBindings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TOOLS_SHORTCUTS));
+		this.config.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TOOLS_SETTINGS));
 	}
 
 	public void update(){

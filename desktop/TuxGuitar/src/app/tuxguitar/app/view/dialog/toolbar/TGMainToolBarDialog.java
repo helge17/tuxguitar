@@ -43,6 +43,7 @@ public class TGMainToolBarDialog {
 	private TGMainToolBar mainToolBar;
 	private UIDropDownSelect<Integer> selectToolbarName;
 	private UITextField newToolBarName;
+	private UIDropDownSelect<String> selectGroup;
 	private UITable<Integer> tableControls;
 	private UITable<Integer> tableAreaControls;
 	private UIDropDownSelect<Integer> selectArea;
@@ -155,6 +156,25 @@ public class TGMainToolBarDialog {
 		this.tableAreaControls = uiFactory.createTable(panel, false);
 		this.tableAreaControls.setColumns(1);
 
+		boolean first = true;
+		this.selectGroup = uiFactory.createDropDownSelect(panel);
+		this.selectGroup.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGMainToolBarDialog.this.fillControlsList();
+			}
+		});
+		for (String groupName : this.configMap.getToolBarGroupsNames()) {
+			String displayed = groupName == "" ? "" : TuxGuitar.getProperty(groupName);	// to avoid a warning
+			UISelectItem<String> item = new UISelectItem<String>(displayed, groupName);
+			this.selectGroup.addItem(item);
+			if (first) {
+				this.selectGroup.setSelectedItem(item);
+				first = false;
+			}
+		}
+		layout.set(this.selectGroup, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, true, true);
+
 		this.selectArea = uiFactory.createDropDownSelect(panel);
 		this.selectArea.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -163,7 +183,7 @@ public class TGMainToolBarDialog {
 			}
 		});
 		// fill list of areas
-		boolean first = true;
+		first = true;
 		for (int i = 0; i < TGMainToolBar.AREAS.length; i++) {
 			int areaIndex = TGMainToolBar.AREAS[i];
 			String areaName = TGMainToolBar.AREA_NAMES[i];
@@ -318,16 +338,20 @@ public class TGMainToolBarDialog {
 	}
 
 	private void fillControlsList() {
+		this.tableControls.removeItems();
+		String group = this.selectGroup.getSelectedValue();
 		List<String> controlNames = this.configMap.getToolBarItemNames();
 		for (int i = 0; i < controlNames.size(); i++) {
 			String controlName = controlNames.get(i);
 			TGMainToolBarItem toolBarItem = this.configMap.getToolBarItem(controlName);
-			UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
-			uiTableItem.setText(0, TuxGuitar.getProperty(controlName));
-			uiTableItem.setImage(iconManager.getImageByName(toolBarItem.getIconFileName()));
-			this.tableControls.addItem(uiTableItem);
-			if (i == 0) {
-				this.tableControls.setSelectedItem(uiTableItem);
+			if (group.equals("") || toolBarItem.getGroupName().equals("") || group.equals(toolBarItem.getGroupName())) {
+				UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
+				uiTableItem.setText(0, TuxGuitar.getProperty(controlName));
+				uiTableItem.setImage(iconManager.getImageByName(toolBarItem.getIconFileName()));
+				this.tableControls.addItem(uiTableItem);
+				if (i == 0) {
+					this.tableControls.setSelectedItem(uiTableItem);
+				}
 			}
 		}
 	}
@@ -347,14 +371,16 @@ public class TGMainToolBarDialog {
 		for (Integer i = 0; i < areaContent.size(); i++) {
 			String areaControlName = areaContent.get(i);
 			TGMainToolBarItem areaItem = this.configMap.getToolBarItem(areaControlName);
-			UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
-			uiTableItem.setText(0, TuxGuitar.getProperty(areaControlName));
-			if (areaItem.getIconFileName() != null) {
-				uiTableItem.setImage(iconManager.getImageByName(areaItem.getIconFileName()));
-			}
-			this.tableAreaControls.addItem(uiTableItem);
-			if (i == selectedIndex) {
-				this.tableAreaControls.setSelectedItem(uiTableItem);
+			if (areaItem != null) {
+				UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
+				uiTableItem.setText(0, TuxGuitar.getProperty(areaControlName));
+				if (areaItem.getIconFileName() != null) {
+					uiTableItem.setImage(iconManager.getImageByName(areaItem.getIconFileName()));
+				}
+				this.tableAreaControls.addItem(uiTableItem);
+				if (i == selectedIndex) {
+					this.tableAreaControls.setSelectedItem(uiTableItem);
+				}
 			}
 		}
 		this.updateButtons();
@@ -380,10 +406,11 @@ public class TGMainToolBarDialog {
 				&& (this.tableAreaControls.getSelectedItem() != null)
 				&& (this.tableAreaControls.getSelectedValue() == this.tableAreaControls.getItemCount() - 1);
 		this.leftButton.setEnabled((this.tableAreaControls.getSelectedItem() != null) && !lastRightItem);
-		this.rightButton.setEnabled((this.tableControls.getSelectedItem() != null) && !lastRightItem);
+		this.rightButton.setEnabled(this.tableControls.getSelectedItem() != null);
 		this.upButton.setEnabled((areaControlIndex != null) && (areaControlIndex != 0) && !lastRightItem);
 		this.downButton.setEnabled(
-				(areaControlIndex != null) && (areaControlIndex < (nbAreaControls - 1)) && (nbAreaControls > 1));
+				(areaControlIndex != null) && (areaControlIndex < (nbAreaControls - 1)) && (nbAreaControls > 1)
+				&& ((this.selectArea.getSelectedValue() != TGMainToolBar.RIGHT_AREA) || (areaControlIndex < (nbAreaControls - 2))));
 	}
 
 	private void setUntitledToolBarName() {
@@ -422,12 +449,13 @@ public class TGMainToolBarDialog {
 			return;
 		}
 		List<String> listControls = this.config.getAreaContent(areaIndex);
-		String toRemove = listControls.get(areaControlIndex);
-		listControls.remove(toRemove);
+		listControls.remove((int)areaControlIndex);
 		this.modified = true;
-		this.fillAreaControlsList(areaIndex, Math.max(0, Math.max(0, areaIndex - 1)));
+		this.fillAreaControlsList(areaIndex, Math.max(0, Math.max(0, areaControlIndex - 1)));
 	}
 
+	// add a control *before* selected item
+	// cant' add after, as it's forbidden to add something after last control of right area
 	private void addControl() {
 		Integer areaIndex = this.selectArea.getSelectedValue();
 		Integer areaControlIndex = this.tableAreaControls.getSelectedValue();
@@ -439,8 +467,6 @@ public class TGMainToolBarDialog {
 		String controlName = this.configMap.getToolBarItemNames().get(controlIndex);
 		if ((areaControlIndex == null) || this.tableAreaControls.getItemCount() == 0) {
 			areaControlIndex = 0;
-		} else {
-			areaControlIndex++;
 		}
 		this.config.getAreaContent(areaIndex).add(areaControlIndex, controlName);
 		this.modified = true;
@@ -484,6 +510,7 @@ public class TGMainToolBarDialog {
 	private void apply() {
 		this.mainToolBar.setConfig(config);
 		this.mainToolBar.layout();
+		this.mainToolBar.updateItems();
 		TGConfigManager.getInstance(context).setValue(TGConfigKeys.MAIN_TOOLBAR_NAME, config.getName());
 	}
 
@@ -492,6 +519,7 @@ public class TGMainToolBarDialog {
 		if (this.modified) {
 			if (this.mainToolBar.getConfig().getName().equals("")) {
 				this.saveAs();
+				TGConfigManager.getInstance(context).setValue(TGConfigKeys.MAIN_TOOLBAR_NAME, config.getName());
 			} else {
 				this.save();
 			}

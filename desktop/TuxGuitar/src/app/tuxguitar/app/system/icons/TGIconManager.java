@@ -30,7 +30,19 @@ public class TGIconManager {
 	public static final String FILE_OPEN = "open.png";
 	public static final String FILE_SAVE = "save.png";
 	public static final String FILE_SAVE_AS = "save-as.png";
+	public static final String FILE_CLOSE = "close.png";
 	public static final String PRINT_PREVIEW = "print-preview.png";
+	public static final String EDIT_CUT = "edit_cut.png";
+	public static final String EDIT_COPY = "edit_copy.png";
+	public static final String EDIT_PASTE = "edit_paste.png";
+	public static final String EDIT_REPEAT = "edit_repeat.png";
+	public static final String EDIT_MODE_SELECTION = "edit_mode_selection.png";
+	public static final String EDIT_MODE_EDITION = "edit_mode_edition.png";
+	public static final String EDIT_MODE_EDITION_NO_NATURAL = "edit_mode_edition_no_natural.png";
+	public static final String EDIT_MODE_FREE = "edit_mode_free.png";
+	public static final String EDIT_MEASURE_STATUS_CHECK = "measure_status_check.png";
+	public static final String EDIT_VOICE_1 = "edit_voice_1.png";
+	public static final String EDIT_VOICE_2 = "edit_voice_2.png";
 	public static final String PRINT = "print.png";
 	public static final String UNDO = "edit_undo.png";
 	public static final String REDO = "edit_redo.png";
@@ -38,6 +50,8 @@ public class TGIconManager {
 	public static final String TABLE_VIEWER = "table_viewer.png";
 	public static final String FRETBOARD = "fretboard.png";
 	public static final String INSTRUMENTS = "mixer.png";
+	public static final String MATRIX = "matrix.png";
+	public static final String PIANO = "piano.png";
 	public static final String ZOOM_OUT = "zoom_out.png";
 	public static final String ZOOM_RESET = "zoom_original.png";
 	public static final String ZOOM_IN = "zoom_in.png";
@@ -45,16 +59,42 @@ public class TGIconManager {
 	public static final String LAYOUT_LINEAR = "layout_linear.png";
 	public static final String LAYOUT_MULTITRACK = "layout_multitrack.png";
 	public static final String LAYOUT_SCORE = "layout_score.png";
+	public static final String LAYOUT_TABLATURE = "layout_tablature.png";
 	public static final String LAYOUT_COMPACT = "layout_compact.png";
+	public static final String TIME_SIGNATURE = "timesignature.png";
+	public static final String TEMPO = "tempoicon.png";
+	public static final String CLEF ="clef.png";
+	public static final String KEY_SIGNATURE = "keysignature.png";
+	public static final String TRIPLET_FEEL = "tripletfeel.png";
+	public static final String REPEAT_OPEN ="openrepeat.png";
+	public static final String REPEAT_CLOSE ="closerepeat.png";
+	public static final String REPEAT_ALTERNATIVE ="repeat_alternative.png";
 	public static final String SONG_PROPERTIES = "song_properties.png";
+	public static final String TRACK_FIRST = "track_first.png";
+	public static final String TRACK_LAST = "track_last.png";
+	public static final String TRACK_PREVIOUS = "track_previous.png";
+	public static final String TRACK_NEXT = "track_next.png";
 	public static final String TRACK_ADD = "track_add.png";
+	public static final String TRACK_CLONE = "track_clone.png";
 	public static final String TRACK_REMOVE = "track_remove.png";
+	public static final String TRACK_SOLO = "track_solo.png";
+	public static final String TRACK_MUTE = "track_mute.png";
+	public static final String MEASURE_FIRST = "measure_first.png";
+	public static final String MEASURE_LAST ="measure_last.png";
+	public static final String MEASURE_PREVIOUS = "measure_previous.png";
+	public static final String MEASURE_NEXT = "measure_next.png";
+	public static final String MEASURE_ADD ="measure_add.png";
+	public static final String MEASURE_CLEAN = "measure_clean.png";
+	public static final String MEASURE_REMOVE = "measure_remove.png";
+	public static final String MEASURE_COPY = "measure_copy.png";
+	public static final String MEASURE_PASTE ="measure_paste.png";
 	public static final String MARKER_ADD = "marker_add.png";
 	public static final String MARKER_LIST = "marker_list.png";
 	public static final String MARKER_FIRST = "marker_first.png";
 	public static final String MARKER_PREVIOUS = "marker_previous.png";
 	public static final String MARKER_NEXT = "marker_next.png";
 	public static final String MARKER_LAST = "marker_last.png";
+	public static final String TRANSPORT = "transport.png";
 	public static final String TRANSPORT_ICON_FIRST = "transport_icon_first.png";
 	public static final String TRANSPORT_ICON_LAST = "transport_icon_last.png";
 	public static final String TRANSPORT_ICON_PREVIOUS = "transport_icon_previous.png";
@@ -65,36 +105,70 @@ public class TGIconManager {
 	public static final String TRANSPORT_METRONOME = "transport_metronome.png";
 	public static final String TRANSPORT_COUNT_IN = "transport_count_in.png";
 	public static final String TRANSPORT_MODE = "transport_mode.png";
+	public static final String TRANSPORT_LOOP_START = "transport_loop_start.png";
+	public static final String TRANSPORT_LOOP_END = "transport_loop_end.png";
+	public static final String TRANSPORT_HIGHLIGHT_PLAYED_BEAT = "highlight_played_beat.png";
 	public static final String SETTINGS = "settings.png";
 	public static final String LIST_REMOVE = "list_remove.png";
 	public static final String ARROW_UP = "arrow_up.png";
 	public static final String ARROW_DOWN = "arrow_down.png";
 	public static final String ARROW_LEFT = "arrow_left.png";
 	public static final String ARROW_RIGHT = "arrow_right.png";
-
-	
+	public static final String WHOLE = "1.png";
+	public static final String HALF = "2.png";
 	public static final String QUARTER = "4.png";
+	public static final String EIGHTH = "8.png";
+	public static final String SIXTEENTH = "16.png";
+	public static final String THIRTYSECOND = "32.png";
+	public static final String SIXTYFOURTH = "64.png";
+	public static final String DOTTED = "dotted.png";
+	public static final String DOUBLE_DOTTED = "doubledotted.png";
+	public static final String TIED_NOTE = "tiednote.png";
+	public static final String DYNAMIC_PPP = "dynamic_ppp.png";
+	public static final String DYNAMIC_PP = "dynamic_pp.png";
+	public static final String DYNAMIC_P = "dynamic_p.png";
+	public static final String DYNAMIC_MP = "dynamic_mp.png";
+	public static final String DYNAMIC_MF = "dynamic_mf.png";
+	public static final String DYNAMIC_F = "dynamic_f.png";
+	public static final String DYNAMIC_FF = "dynamic_ff.png";
+	public static final String DYNAMIC_FFF = "dynamic_fff.png";
+	public static final String EFFECT_VIBRATO = "effect_vibrato.png";
+	public static final String EFFECT_BEND = "effect_bend.png";
+	public static final String EFFECT_TREMOLO_BAR = "effect_tremolo_bar.png";
+	public static final String EFFECT_DEAD = "effect_dead.png";
+	public static final String EFFECT_SLIDE = "effect_slide.png";
+	public static final String EFFECT_HAMMER = "effect_hammer.png";
+	public static final String EFFECT_GHOST = "effect_ghost.png";
+	public static final String EFFECT_ACCENTUATED = "effect_accentuated.png";
+	public static final String EFFECT_HEAVY_ACCENTUATED = "effect_heavy_accentuated.png";
+	public static final String EFFECT_LET_RING = "effect_let_ring.png";
+	public static final String EFFECT_HARMONIC = "effect_harmonic.png";
+	public static final String EFFECT_GRACE = "effect_grace.png";
+	public static final String EFFECT_TRILL = "effect_trill.png";
+	public static final String EFFECT_TREMOLO_PICKING = "effect_tremolo_picking.png";
+	public static final String EFFECT_PALM_MUTE = "effect_palm_mute.png";
+	public static final String EFFECT_STACCATO = "effect_staccato.png";
+	public static final String EFFECT_TAPPING = "effect_tapping.png";
+	public static final String EFFECT_SLAPPING = "effect_slapping.png";
+	public static final String EFFECT_POPPING = "effect_popping.png";
+	public static final String EFFECT_FADE_IN = "effect_fade_in.png";
+	public static final String CHORD = "chord.png";
+	public static final String TEXT = "text.png";
+	public static final String STROKE_UP = "stroke_up.png";
+	public static final String STROKE_DOWN = "stroke_down.png";
+	public static final String PICK_STROKE_UP = "pick_stroke_up.png";
+	public static final String PICK_STROKE_DOWN = "pick_stroke_down.png";
+	public static final String ALTERNATIVE_ENHARMONIC = "alt_enharmonic.png";
+	public static final String TOOLS_PLUGINS = "tools_plugins.png";
+	public static final String TOOLS_SHORTCUTS = "tools_shortcuts.png";
+	public static final String TOOLS_SETTINGS = "tools_settings.png";
+	public static final String HELP_DOC = "help_doc.png";
+	public static final String HELP_ABOUT = "help_about.png";
+	public static final String GO_HOME = "browser_root.png";
+
 
 	private UIImage[] durations;
 	private UIImage[] durationsDotted;
-	private UIImage altEnharmonic;
-	private UIImage editCut;
-	private UIImage editCopy;
-	private UIImage editPaste;
-	private UIImage editRepeat;
-	private UIImage editVoice1;
-	private UIImage editVoice2;
-	private UIImage editModeSelection;
-	private UIImage editModeEdition;
-	private UIImage editModeEditionNotNatural;
-	private UIImage editFreeEditionMode;
-	private UIImage editMeasureErrors;
-	private UIImage helpDoc;
-	private UIImage helpAbout;
-	private UIImage goHome;
-	private UIImage layoutTablature;
-	private UIImage layoutHighlightPlayedBeat;
-	private UIImage transport;
 	private UIImage transportFirst;
 	private UIImage transportLast;
 	private UIImage transportPrevious;
@@ -102,18 +176,7 @@ public class TGIconManager {
 	private UIImage transportStop;
 	private UIImage transportPlay;
 	private UIImage transportPause;
-	private UIImage transportLoopStart;
-	private UIImage transportLoopEnd;
 	private UIImage marker;
-	private UIImage measureFirst;
-	private UIImage measureLast;
-	private UIImage measurePrevious;
-	private UIImage measureNext;
-	private UIImage measureAdd;
-	private UIImage measureClean;
-	private UIImage measureRemove;
-	private UIImage measureCopy;
-	private UIImage measurePaste;
 	private UIImage aboutDescription;
 	private UIImage aboutLicense;
 	private UIImage aboutAuthors;
@@ -124,66 +187,15 @@ public class TGIconManager {
 	private UIImage optionSound;
 	private UIImage optionLanguage;
 	private UIImage optionSkin;
-	private UIImage trackFirst;
-	private UIImage trackLast;
-	private UIImage trackPrevious;
-	private UIImage trackNext;
-	private UIImage trackClone;
-	private UIImage trackSolo;
-	private UIImage trackMute;
 	private UIImage fretboardFirstFret;
 	private UIImage fretboardFret;
 	private UIImage fretboardSmaller;
 	private UIImage fretboardBigger;
-	private UIImage compositionTimeSignature;
-	private UIImage compositionTempo;
-	private UIImage compositionClef;
-	private UIImage compositionKeySignature;
-	private UIImage compositionTripletFeel;
-	private UIImage compositionRepeatOpen;
-	private UIImage compositionRepeatClose;
-	private UIImage compositionRepeatAlternative;
-	private UIImage durationDotted;
-	private UIImage durationDoubleDotted;
 	private Map<Integer,UIImage> divisionTypes;
-	private UIImage fileClose;
 	private UIImage fileImport;
 	private UIImage fileExport;
 	private UIImage fileHistory;
 	private UIImage fileExit;
-	private UIImage chord;
-	private UIImage text;
-	private UIImage noteTied;
-	private UIImage matrix;
-	private UIImage piano;
-	private UIImage dynamicPPP;
-	private UIImage dynamicPP;
-	private UIImage dynamicP;
-	private UIImage dynamicMP;
-	private UIImage dynamicMF;
-	private UIImage dynamicF;
-	private UIImage dynamicFF;
-	private UIImage dynamicFFF;
-	private UIImage effectDead;
-	private UIImage effectGhost;
-	private UIImage effectAccentuated;
-	private UIImage effectHeavyAccentuated;
-	private UIImage effectLetRing;
-	private UIImage effectHarmonic;
-	private UIImage effectGrace;
-	private UIImage effectBend;
-	private UIImage effectTremoloBar;
-	private UIImage effectSlide;
-	private UIImage effectHammer;
-	private UIImage effectVibrato;
-	private UIImage effectTrill;
-	private UIImage effectTremoloPicking;
-	private UIImage effectPalmMute;
-	private UIImage effectStaccato;
-	private UIImage effectTapping;
-	private UIImage effectSlapping;
-	private UIImage effectPopping;
-	private UIImage effectFadeIn;
 	private UIImage browserNew;
 	private UIImage browserFile;
 	private UIImage browserFolder;
@@ -196,10 +208,6 @@ public class TGIconManager {
 	private UIImage statusError;
 	private UIImage statusWarning;
 	private UIImage statusInfo;
-	private UIImage strokeUp;
-	private UIImage strokeDown;
-	private UIImage pickStrokeUp;
-	private UIImage pickStrokeDown;
 	private UIImage toolbarMain;
 	private UIImage listAdd;
 	private UIImage listEdit;
@@ -207,9 +215,6 @@ public class TGIconManager {
 	private UIImage soloDisabled;
 	private UIImage soloDim;
 	private UIImage soloDisabledDim;
-	private UIImage toolsPlugins;
-	private UIImage toolsShortcuts;
-	private UIImage toolsSettings;
 	private UIImage mute;
 	private UIImage muteDisabled;
 	private UIImage muteDim;
@@ -240,13 +245,13 @@ public class TGIconManager {
 	public void loadIcons(){
 		this.theme = this.findIconTheme(this.findConfiguredThemeName());
 		this.durations = new UIImage[]{
-			loadIcon("1.png"),
-			loadIcon("2.png"),
+			loadIcon(WHOLE),
+			loadIcon(HALF),
 			loadIcon(QUARTER),
-			loadIcon("8.png"),
-			loadIcon("16.png"),
-			loadIcon("32.png"),
-			loadIcon("64.png")
+			loadIcon(EIGHTH),
+			loadIcon(SIXTEENTH),
+			loadIcon(THIRTYSECOND),
+			loadIcon(SIXTYFOURTH)
 		};
 		this.durationsDotted = new UIImage[]{
 				loadIcon("2dotted.png"),
@@ -257,12 +262,12 @@ public class TGIconManager {
 		loadIcon(LAYOUT_LINEAR);
 		loadIcon(LAYOUT_MULTITRACK);
 		loadIcon(LAYOUT_SCORE);
-		this.layoutTablature = loadIcon("layout_tablature.png");
+		loadIcon(LAYOUT_TABLATURE);
 		loadIcon(LAYOUT_COMPACT);
-		this.layoutHighlightPlayedBeat = loadIcon("highlight_played_beat.png");
+		loadIcon(TRANSPORT_HIGHLIGHT_PLAYED_BEAT);
 		loadIcon(FILE_NEW);
 		loadIcon(FILE_OPEN);
-		this.fileClose = loadIcon("close.png");
+		loadIcon(FILE_CLOSE);
 		loadIcon(FILE_SAVE);
 		loadIcon(FILE_SAVE_AS);
 		this.fileImport = loadIcon("import.png");
@@ -271,22 +276,22 @@ public class TGIconManager {
 		loadIcon(PRINT_PREVIEW);
 		this.fileHistory = loadIcon("history.png");
 		this.fileExit = loadIcon("exit.png");
-		this.editCut = loadIcon("edit_cut.png");
-		this.editCopy = loadIcon("edit_copy.png");
-		this.editPaste = loadIcon("edit_paste.png");
-		this.editRepeat = loadIcon("edit_repeat.png");
+		loadIcon(EDIT_CUT);
+		loadIcon(EDIT_COPY);
+		loadIcon(EDIT_PASTE);
+		loadIcon(EDIT_REPEAT);
 		loadIcon(UNDO);
 		loadIcon(REDO);
-		this.editVoice1 = loadIcon("edit_voice_1.png");
-		this.editVoice2 = loadIcon("edit_voice_2.png");
-		this.editModeSelection = loadIcon("edit_mode_selection.png");
-		this.editModeEdition = loadIcon("edit_mode_edition.png");
-		this.editModeEditionNotNatural = loadIcon("edit_mode_edition_no_natural.png");
-		this.editFreeEditionMode = loadIcon("edit_mode_free.png");
-		this.editMeasureErrors = loadIcon("measure_status_check.png");
-		this.helpDoc = loadIcon("help_doc.png");
-		this.helpAbout = loadIcon("help_about.png");
-		this.goHome = loadIcon("browser_root.png");
+		loadIcon(EDIT_VOICE_1);
+		loadIcon(EDIT_VOICE_2);
+		loadIcon(EDIT_MODE_SELECTION);
+		loadIcon(EDIT_MODE_EDITION);
+		loadIcon(EDIT_MODE_EDITION_NO_NATURAL);
+		loadIcon(EDIT_MODE_FREE);
+		loadIcon(EDIT_MEASURE_STATUS_CHECK);
+		loadIcon(HELP_DOC);
+		loadIcon(HELP_ABOUT);
+		loadIcon(GO_HOME);
 		this.appIcon = loadIcon("icon.png");
 		this.appSplash = loadIcon("splash.png");
 		this.aboutDescription = loadIcon("about_description.png");
@@ -297,40 +302,40 @@ public class TGIconManager {
 		this.optionSound = loadIcon("option_sound.png");
 		this.optionSkin = loadIcon("option_skin.png");
 		this.optionLanguage= loadIcon("option_language.png");
-		this.compositionTimeSignature = loadIcon("timesignature.png");
-		this.compositionTempo = loadIcon("tempoicon.png");
-		this.compositionClef = loadIcon("clef.png");
-		this.compositionKeySignature = loadIcon("keysignature.png");
-		this.compositionTripletFeel = loadIcon("tripletfeel.png");
-		this.compositionRepeatOpen = loadIcon("openrepeat.png");
-		this.compositionRepeatClose = loadIcon("closerepeat.png");
-		this.compositionRepeatAlternative = loadIcon("repeat_alternative.png");
+		loadIcon(TIME_SIGNATURE);
+		loadIcon(TEMPO);
+		loadIcon(CLEF);
+		loadIcon(KEY_SIGNATURE);
+		loadIcon(TRIPLET_FEEL);
+		loadIcon(REPEAT_OPEN);
+		loadIcon(REPEAT_CLOSE);
+		loadIcon(REPEAT_ALTERNATIVE);
 		loadIcon(SONG_PROPERTIES);
-		this.trackFirst = loadIcon("track_first.png");
-		this.trackLast = loadIcon("track_last.png");
-		this.trackPrevious = loadIcon("track_previous.png");
-		this.trackNext = loadIcon("track_next.png");
+		loadIcon(TRACK_FIRST);
+		loadIcon(TRACK_LAST);
+		loadIcon(TRACK_PREVIOUS);
+		loadIcon(TRACK_NEXT);
 		loadIcon(TRACK_ADD);
-		this.trackClone = loadIcon("track_clone.png");
+		loadIcon(TRACK_CLONE);
 		loadIcon(TRACK_REMOVE);
-		this.trackSolo = loadIcon("track_solo.png");
-		this.trackMute = loadIcon("track_mute.png");
-		this.durationDotted = loadIcon("dotted.png");
-		this.durationDoubleDotted = loadIcon("doubledotted.png");
+		loadIcon(TRACK_SOLO);
+		loadIcon(TRACK_MUTE);
+		loadIcon(DOTTED);
+		loadIcon(DOUBLE_DOTTED);
 		this.divisionTypes = new HashMap<Integer, UIImage>();
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			Integer enters = TGDivisionType.DIVISION_TYPES[i].getEnters();
-			this.divisionTypes.put(enters, loadIcon("division-type-" + String.valueOf(enters) + ".png"));
+			this.divisionTypes.put(enters, loadIcon(getDivisionTypeIconFileName(enters)));
 		}
 		loadIcon(FRETBOARD);
 		this.fretboardFirstFret = loadIcon("firstfret.png");
 		this.fretboardFret = loadIcon("fret.png");
 		this.fretboardSmaller = loadIcon("fretboard_smaller.png");
 		this.fretboardBigger = loadIcon("fretboard_bigger.png");
-		this.chord = loadIcon("chord.png");
-		this.text = loadIcon("text.png");
-		this.noteTied = loadIcon("tiednote.png");
-		this.transport = loadIcon("transport.png");
+		loadIcon(CHORD);
+		loadIcon(TEXT);
+		loadIcon(TIED_NOTE);
+		loadIcon(TRANSPORT);
 		this.transportFirst = loadIcon("transport_first.png");
 		this.transportLast = loadIcon("transport_last.png");
 		this.transportPrevious = loadIcon("transport_previous.png");
@@ -348,8 +353,8 @@ public class TGIconManager {
 		loadIcon(TRANSPORT_METRONOME);
 		loadIcon(TRANSPORT_COUNT_IN);
 		loadIcon(TRANSPORT_MODE);
-		this.transportLoopStart = loadIcon("transport_loop_start.png");
-		this.transportLoopEnd = loadIcon("transport_loop_end.png");
+		loadIcon(TRANSPORT_LOOP_START);
+		loadIcon(TRANSPORT_LOOP_END);
 		loadIcon(MARKER_LIST);
 		this.marker = loadIcon("marker.png");
 		loadIcon(MARKER_ADD);
@@ -357,46 +362,46 @@ public class TGIconManager {
 		loadIcon(MARKER_LAST);
 		loadIcon(MARKER_PREVIOUS);
 		loadIcon(MARKER_NEXT);
-		this.measureFirst = loadIcon("measure_first.png");
-		this.measureLast = loadIcon("measure_last.png");
-		this.measurePrevious = loadIcon("measure_previous.png");
-		this.measureNext = loadIcon("measure_next.png");
-		this.measureAdd = loadIcon("measure_add.png");
-		this.measureClean = loadIcon("measure_clean.png");
-		this.measureRemove = loadIcon("measure_remove.png");
-		this.measureCopy = loadIcon("measure_copy.png");
-		this.measurePaste = loadIcon("measure_paste.png");
+		loadIcon(MEASURE_FIRST);
+		loadIcon(MEASURE_LAST);
+		loadIcon(MEASURE_PREVIOUS);
+		loadIcon(MEASURE_NEXT);
+		loadIcon(MEASURE_ADD);
+		loadIcon(MEASURE_CLEAN);
+		loadIcon(MEASURE_REMOVE);
+		loadIcon(MEASURE_COPY);
+		loadIcon(MEASURE_PASTE);
 		loadIcon(INSTRUMENTS);
-		this.matrix = loadIcon("matrix.png");
-		this.piano = loadIcon("piano.png");
-		this.dynamicPPP = loadIcon("dynamic_ppp.png");
-		this.dynamicPP = loadIcon("dynamic_pp.png");
-		this.dynamicP = loadIcon("dynamic_p.png");
-		this.dynamicMP =loadIcon("dynamic_mp.png");
-		this.dynamicMF = loadIcon("dynamic_mf.png");
-		this.dynamicF = loadIcon("dynamic_f.png");
-		this.dynamicFF = loadIcon("dynamic_ff.png");
-		this.dynamicFFF = loadIcon("dynamic_fff.png");
-		this.effectDead = loadIcon("effect_dead.png");
-		this.effectGhost = loadIcon("effect_ghost.png");
-		this.effectAccentuated = loadIcon("effect_accentuated.png");
-		this.effectHeavyAccentuated = loadIcon("effect_heavy_accentuated.png");
-		this.effectLetRing = loadIcon("effect_let_ring.png");
-		this.effectHarmonic = loadIcon("effect_harmonic.png");
-		this.effectGrace = loadIcon("effect_grace.png");
-		this.effectBend = loadIcon("effect_bend.png");
-		this.effectTremoloBar = loadIcon("effect_tremolo_bar.png");
-		this.effectSlide = loadIcon("effect_slide.png");
-		this.effectHammer = loadIcon("effect_hammer.png");
-		this.effectVibrato = loadIcon("effect_vibrato.png");
-		this.effectTrill= loadIcon("effect_trill.png");
-		this.effectTremoloPicking = loadIcon("effect_tremolo_picking.png");
-		this.effectPalmMute= loadIcon("effect_palm_mute.png");
-		this.effectStaccato = loadIcon("effect_staccato.png");
-		this.effectTapping = loadIcon("effect_tapping.png");
-		this.effectSlapping = loadIcon("effect_slapping.png");
-		this.effectPopping = loadIcon("effect_popping.png");
-		this.effectFadeIn = loadIcon("effect_fade_in.png");
+		loadIcon(MATRIX);
+		loadIcon(PIANO);
+		loadIcon(DYNAMIC_PPP);
+		loadIcon(DYNAMIC_PP);
+		loadIcon(DYNAMIC_P);
+		loadIcon(DYNAMIC_MP);
+		loadIcon(DYNAMIC_MF);
+		loadIcon(DYNAMIC_F);
+		loadIcon(DYNAMIC_FF);
+		loadIcon(DYNAMIC_FFF);
+		loadIcon(EFFECT_VIBRATO);
+		loadIcon(EFFECT_BEND );
+		loadIcon(EFFECT_TREMOLO_BAR );
+		loadIcon(EFFECT_DEAD );
+		loadIcon(EFFECT_SLIDE );
+		loadIcon(EFFECT_HAMMER );
+		loadIcon(EFFECT_GHOST );
+		loadIcon(EFFECT_ACCENTUATED );
+		loadIcon(EFFECT_HEAVY_ACCENTUATED );
+		loadIcon(EFFECT_LET_RING );
+		loadIcon(EFFECT_HARMONIC );
+		loadIcon(EFFECT_GRACE );
+		loadIcon(EFFECT_TRILL );
+		loadIcon(EFFECT_TREMOLO_PICKING );
+		loadIcon(EFFECT_PALM_MUTE );
+		loadIcon(EFFECT_STACCATO );
+		loadIcon(EFFECT_TAPPING );
+		loadIcon(EFFECT_SLAPPING );
+		loadIcon(EFFECT_POPPING );
+		loadIcon(EFFECT_FADE_IN);
 		this.browserNew = loadIcon("browser_new.png");
 		this.browserFile = loadIcon("browser_file.png");
 		this.browserFolder = loadIcon("browser_folder.png");
@@ -413,11 +418,11 @@ public class TGIconManager {
 		this.statusError = loadIcon("status_error.png");
 		this.statusWarning = loadIcon("status_warning.png");
 		this.statusInfo = loadIcon("status_info.png");
-		this.strokeUp = loadIcon("stroke_up.png");
-		this.strokeDown = loadIcon("stroke_down.png");
-		this.pickStrokeUp = loadIcon("pick_stroke_up.png");
-		this.pickStrokeDown = loadIcon("pick_stroke_down.png");
-		this.altEnharmonic = loadIcon("alt_enharmonic.png");
+		loadIcon(STROKE_UP);
+		loadIcon(STROKE_DOWN);
+		loadIcon(PICK_STROKE_UP);
+		loadIcon(PICK_STROKE_DOWN);
+		loadIcon(ALTERNATIVE_ENHARMONIC);
 		loadIcon(SETTINGS);
 		this.toolbarMain = loadIcon("toolbar_main.png");
 		loadIcon(TOOLBAR_EDIT);
@@ -429,9 +434,9 @@ public class TGIconManager {
 		this.soloDisabled = loadIcon("solo-disabled.png");
 		this.soloDim = loadIcon("solo-dim.png");
 		this.soloDisabledDim = loadIcon("solo-disabled-dim.png");
-		this.toolsPlugins = loadIcon("tools_plugins.png");
-		this.toolsShortcuts = loadIcon("tools_shortcuts.png");
-		this.toolsSettings = loadIcon("tools_settings.png");
+		loadIcon(TOOLS_PLUGINS);
+		loadIcon(TOOLS_SHORTCUTS);
+		loadIcon(TOOLS_SETTINGS);
 		this.mute = loadIcon("mute.png");
 		this.muteDisabled = loadIcon("mute-disabled.png");
 		this.muteDim = loadIcon("mute-dim.png");
@@ -531,227 +536,12 @@ public class TGIconManager {
 		return this.appSplash;
 	}
 
-	public UIImage getChord() {
-		return this.chord;
-	}
-
-	public UIImage getText() {
-		return this.text;
-	}
-
-	public UIImage getCompositionRepeatClose() {
-		return this.compositionRepeatClose;
-	}
-
-	public UIImage getCompositionRepeatAlternative() {
-		return this.compositionRepeatAlternative;
-	}
-
-	public UIImage getCompositionRepeatOpen() {
-		return this.compositionRepeatOpen;
-	}
-
-	public UIImage getCompositionTempo() {
-		return this.compositionTempo;
-	}
-
-	public UIImage getCompositionClef() {
-		return this.compositionClef;
-	}
-
-	public UIImage getCompositionKeySignature() {
-		return this.compositionKeySignature;
-	}
-
-	public UIImage getCompositionTripletFeel() {
-		return this.compositionTripletFeel;
-	}
-
-	public UIImage getCompositionTimeSignature() {
-		return this.compositionTimeSignature;
-	}
-
-	public UIImage getDurationDotted() {
-		return this.durationDotted;
-	}
-
-	public UIImage getDurationDoubleDotted() {
-		return this.durationDoubleDotted;
-	}
-
 	public UIImage getDivisionType(int divisionTypeEnters) {
 		return this.divisionTypes.get(divisionTypeEnters);
 	}
 
-	public UIImage getDynamicF() {
-		return this.dynamicF;
-	}
-
-	public UIImage getDynamicFF() {
-		return this.dynamicFF;
-	}
-
-	public UIImage getDynamicFFF() {
-		return this.dynamicFFF;
-	}
-
-	public UIImage getDynamicMF() {
-		return this.dynamicMF;
-	}
-
-	public UIImage getDynamicMP() {
-		return this.dynamicMP;
-	}
-
-	public UIImage getDynamicP() {
-		return this.dynamicP;
-	}
-
-	public UIImage getDynamicPP() {
-		return this.dynamicPP;
-	}
-
-	public UIImage getDynamicPPP() {
-		return this.dynamicPPP;
-	}
-
-	public UIImage getEditModeEdition() {
-		return this.editModeEdition;
-	}
-
-	public UIImage getEditModeEditionNotNatural() {
-		return this.editModeEditionNotNatural;
-	}
-
-	public UIImage getFreeEditionMode() {
-		return this.editFreeEditionMode;
-	}
-
-	public UIImage getMeasureErrors() {
-		return this.editMeasureErrors;
-	}
-	public UIImage getEditModeSelection() {
-		return this.editModeSelection;
-	}
-
-	public UIImage getEditCut() {
-		return this.editCut;
-	}
-
-	public UIImage getEditCopy() {
-		return this.editCopy;
-	}
-
-	public UIImage getEditPaste() {
-		return this.editPaste;
-	}
-
-	public UIImage getEditRepeat() {
-		return this.editRepeat;
-	}
-
-	public UIImage getEditVoice1() {
-		return this.editVoice1;
-	}
-
-	public UIImage getEditVoice2() {
-		return this.editVoice2;
-	}
-
-	public UIImage getHelpDoc() {
-		return this.helpDoc;
-	}
-
-	public UIImage getHelpAbout() {
-		return this.helpAbout;
-	}
-
-	public UIImage getGoHome() {
-		return this.goHome;
-	}
-
-	public UIImage getEffectAccentuated() {
-		return this.effectAccentuated;
-	}
-
-	public UIImage getEffectBend() {
-		return this.effectBend;
-	}
-
-	public UIImage getEffectDead() {
-		return this.effectDead;
-	}
-
-	public UIImage getEffectFadeIn() {
-		return this.effectFadeIn;
-	}
-
-	public UIImage getEffectGhost() {
-		return this.effectGhost;
-	}
-
-	public UIImage getEffectGrace() {
-		return this.effectGrace;
-	}
-
-	public UIImage getEffectHammer() {
-		return this.effectHammer;
-	}
-
-	public UIImage getEffectHarmonic() {
-		return this.effectHarmonic;
-	}
-
-	public UIImage getEffectHeavyAccentuated() {
-		return this.effectHeavyAccentuated;
-	}
-
-	public UIImage getEffectLetRing() {
-		return this.effectLetRing;
-	}
-
-	public UIImage getEffectPalmMute() {
-		return this.effectPalmMute;
-	}
-
-	public UIImage getEffectPopping() {
-		return this.effectPopping;
-	}
-
-	public UIImage getEffectSlapping() {
-		return this.effectSlapping;
-	}
-
-	public UIImage getEffectSlide() {
-		return this.effectSlide;
-	}
-
-	public UIImage getEffectStaccato() {
-		return this.effectStaccato;
-	}
-
-	public UIImage getEffectTapping() {
-		return this.effectTapping;
-	}
-
-	public UIImage getEffectTremoloBar() {
-		return this.effectTremoloBar;
-	}
-
-	public UIImage getEffectTremoloPicking() {
-		return this.effectTremoloPicking;
-	}
-
-	public UIImage getEffectTrill() {
-		return this.effectTrill;
-	}
-
-	public UIImage getEffectVibrato() {
-		return this.effectVibrato;
-	}
-
-	public UIImage getFileClose() {
-		return this.fileClose;
+	public static String getDivisionTypeIconFileName(int divisionTypeEnters) {
+		return "division-type-" + String.valueOf(divisionTypeEnters) + ".png";	
 	}
 
 	public UIImage getFileHistory() {
@@ -786,64 +576,8 @@ public class TGIconManager {
 		return this.fretboardBigger;
 	}
 
-	public UIImage getLayoutTablature() {
-		return this.layoutTablature;
-	}
-
-	public UIImage getLayoutHighlightPlayedBeat() {
-		return this.layoutHighlightPlayedBeat;
-	}
-
 	public UIImage getMarker() {
 		return this.marker;
-	}
-
-	public UIImage getMeasureFirst() {
-		return this.measureFirst;
-	}
-
-	public UIImage getMeasureLast() {
-		return this.measureLast;
-	}
-
-	public UIImage getMeasurePrevious() {
-		return this.measurePrevious;
-	}
-
-	public UIImage getMeasureNext() {
-		return this.measureNext;
-	}
-
-	public UIImage getMeasureAdd() {
-		return this.measureAdd;
-	}
-
-	public UIImage getMeasureClean() {
-		return this.measureClean;
-	}
-
-	public UIImage getMeasureRemove() {
-		return this.measureRemove;
-	}
-
-	public UIImage getMeasureCopy() {
-		return this.measureCopy;
-	}
-
-	public UIImage getMeasurePaste() {
-		return this.measurePaste;
-	}
-
-	public UIImage getMatrix() {
-		return this.matrix;
-	}
-
-	public UIImage getPiano() {
-		return this.piano;
-	}
-
-	public UIImage getNoteTied() {
-		return this.noteTied;
 	}
 
 	public UIImage getOptionLanguage() {
@@ -864,38 +598,6 @@ public class TGIconManager {
 
 	public UIImage getOptionSkin() {
 		return this.optionSkin;
-	}
-
-	public UIImage getTrackFirst() {
-		return this.trackFirst;
-	}
-
-	public UIImage getTrackLast() {
-		return this.trackLast;
-	}
-
-	public UIImage getTrackPrevious() {
-		return this.trackPrevious;
-	}
-
-	public UIImage getTrackNext() {
-		return this.trackNext;
-	}
-
-	public UIImage getTrackClone() {
-		return this.trackClone;
-	}
-
-	public UIImage getTrackSolo() {
-		return this.trackSolo;
-	}
-
-	public UIImage getTrackMute() {
-		return this.trackMute;
-	}
-
-	public UIImage getTransport() {
-		return this.transport;
 	}
 
 	public UIImage getTransportFirst() {
@@ -924,14 +626,6 @@ public class TGIconManager {
 
 	public UIImage getTransportStop() {
 		return this.transportStop;
-	}
-
-	public UIImage getTransportLoopStart() {
-		return this.transportLoopStart;
-	}
-
-	public UIImage getTransportLoopEnd() {
-		return this.transportLoopEnd;
 	}
 
 	public UIImage getBrowserBack() {
@@ -964,26 +658,6 @@ public class TGIconManager {
 
 	public UIImage getBrowserNew() {
 		return this.browserNew;
-	}
-
-	public UIImage getStrokeUp() {
-		return this.strokeUp;
-	}
-
-	public UIImage getStrokeDown() {
-		return this.strokeDown;
-	}
-
-	public UIImage getPickStrokeUp() {
-		return this.pickStrokeUp;
-	}
-
-	public UIImage getPickStrokeDown() {
-		return this.pickStrokeDown;
-	}
-
-	public UIImage getAltEnharmonic() {
-		return this.altEnharmonic;
 	}
 
 	public UIImage getToolbarMain() {
@@ -1028,18 +702,6 @@ public class TGIconManager {
 
 	public UIImage getSoloDisabledDim() {
 		return soloDisabledDim;
-	}
-
-	public UIImage getToolsPlugins() {
-		return toolsPlugins;
-	}
-
-	public UIImage getToolsShortcuts() {
-		return toolsShortcuts;
-	}
-
-	public UIImage getToolsSettings() {
-		return toolsSettings;
 	}
 
 	public UIImage getMute() {

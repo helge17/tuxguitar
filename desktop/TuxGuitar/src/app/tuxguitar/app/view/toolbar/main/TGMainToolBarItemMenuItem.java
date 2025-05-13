@@ -14,9 +14,16 @@ public class TGMainToolBarItemMenuItem extends TGMainToolBarItem {
 
 	// build a menu item from a (checkable) button description, or a separator
 	public TGMainToolBarItemMenuItem(TGMainToolBarItem button) {
-		super(button.getText(), ((button.type == TGMainToolBarItem.SEPARATOR) ? SEPARATOR : MENU),
+		super(button.getGroupName(), button.getText(), ((button.type == TGMainToolBarItem.SEPARATOR) ? SEPARATOR : MENU),
 				button.getActionName(), button.getIconFileName(), button.getUpdater());
+		for (String key : button.attributes.keySet()) {
+			this.setAttribute(key, button.attributes.get(key));
+		}
 		this.menuItem = null;
+	}
+
+	public boolean isChecked() {
+		return this.checked;
 	}
 
 	public void setMenuItem(UIMenuItem menuItem) {

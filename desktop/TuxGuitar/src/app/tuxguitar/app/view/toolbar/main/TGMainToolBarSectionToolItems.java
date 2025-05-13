@@ -25,7 +25,7 @@ public class TGMainToolBarSectionToolItems extends TGMainToolBarSection {
 			}
 			TGMainToolBarItemButton clone = ((TGMainToolBarItemButton)toolBarItem).clone();
 			UIToolActionItem toolActionItem = this.toolBar.createActionItem();
-			toolActionItem.addSelectionListener(this.createActionProcessor(toolBarItem.getActionName()));
+			toolActionItem.addSelectionListener(this.createActionProcessor(toolBarItem));
 			clone.setToolItem(toolActionItem);
 			this.toolBarItems.add(clone);
 			break;
@@ -35,7 +35,7 @@ public class TGMainToolBarSectionToolItems extends TGMainToolBarSection {
 			}
 			TGMainToolBarItemButton cloneCheckable = ((TGMainToolBarItemButton)toolBarItem).clone();
 			UIToolCheckableItem toolCheckableItem = this.toolBar.createCheckItem();
-			toolCheckableItem.addSelectionListener(this.createActionProcessor(toolBarItem.getActionName()));
+			toolCheckableItem.addSelectionListener(this.createActionProcessor(toolBarItem));
 			cloneCheckable.setToolItem(toolCheckableItem);
 			this.toolBarItems.add(cloneCheckable);
 			break;

@@ -13,16 +13,16 @@ public class TGMainToolBarItemButton extends TGMainToolBarItem {
 	protected UIToolItem toolItem;
 	private boolean checked;
 
-	public TGMainToolBarItemButton(String text, boolean checkable, String actionName, String iconFileName,
+	public TGMainToolBarItemButton(String groupName, String text, boolean checkable, String actionName, String iconFileName,
 			TGMainToolBarItemUpdater updater) {
-		super(text, checkable ? CHECKABLE_ITEM : ACTION_ITEM, actionName, iconFileName, updater);
+		super(groupName, text, checkable ? CHECKABLE_ITEM : ACTION_ITEM, actionName, iconFileName, updater);
 		this.toolItem = null;
 	}
 
 	// the most common type: action_item (not checkable)
-	public TGMainToolBarItemButton(String text, String actionName, String iconFileName,
+	public TGMainToolBarItemButton(String groupName, String text, String actionName, String iconFileName,
 			TGMainToolBarItemUpdater updater) {
-		this(text, false, actionName, iconFileName, updater);
+		this(groupName, text, false, actionName, iconFileName, updater);
 	}
 
 	public void setToolItem(UIToolItem toolItem) {
@@ -61,7 +61,7 @@ public class TGMainToolBarItemButton extends TGMainToolBarItem {
 	}
 
 	public TGMainToolBarItemButton clone() {
-		return new TGMainToolBarItemButton(this.text, (this.type == CHECKABLE_ITEM), this.actionName, this.iconFileName, this.updater);
+		return new TGMainToolBarItemButton(this.groupName, this.text, (this.type == CHECKABLE_ITEM), this.actionName, this.iconFileName, this.updater);
 	}
 
 }
