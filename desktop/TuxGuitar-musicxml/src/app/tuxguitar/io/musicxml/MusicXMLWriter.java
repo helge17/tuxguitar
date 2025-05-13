@@ -1,6 +1,7 @@
 package app.tuxguitar.io.musicxml;
 
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import app.tuxguitar.gm.GMChannelRouterConfigurator;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.musicxml.MusicXMLLyricWriter.MusicXMLMeasureLyric;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.managers.TGTrackManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGDivisionType;
@@ -31,6 +33,7 @@ import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMarker;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTempo;
@@ -114,8 +117,16 @@ public class MusicXMLWriter{
 
 	private void writeIdentification(TGSong song, Node parent){
 		Node identification = this.addNode(parent, "identification");
-		this.addAttribute(this.addNode(identification, "creator",song.getAuthor()), "type", "composer");
-		this.addNode(this.addNode(identification, "encoding"), "software", "TuxGuitar " + TGVersion.CURRENT.getVersion());
+		if (!song.getAuthor().equals("")){
+			this.addAttribute(this.addNode(identification, "creator", song.getAuthor()), "type", "composer");
+		}
+		if (!song.getCopyright().equals("")){
+			this.addNode(identification, "rights", song.getCopyright());
+		}
+
+		Node encoding = this.addNode(identification, "encoding");
+		this.addNode(encoding, "encoding-date", LocalDate.now().toString());
+		this.addNode(encoding, "software", "TuxGuitar " + TGVersion.CURRENT.getVersion());
 	}
 
 	private void writeSong(TGSong song, Node parent){
@@ -306,7 +317,7 @@ public class MusicXMLWriter{
 			this.addNode(measureAttributes, "part-symbol", "none");
 
 			if(clefChanges){
-				this.writeClef(measureAttributes,measure.getClef(), isPercussion);
+				this.writeClef(measureAttributes,measure.getClef(), previous == null, isPercussion);
 			}
 
 			if (!isPercussion && (previous==null || measure.getNumber() == 1)){
@@ -357,9 +368,14 @@ public class MusicXMLWriter{
 		this.addNode(key, "fifths",Integer.toString( value ));
 	}
 
-	private void writeClef(Node parent, int clef, boolean isPercussion){
+	private void writeClef(Node parent, int clef, boolean isStart, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
+
+		if (!isStart){
+			this.addAttribute(node, "after-barline", "yes");
+		}
+
 		if (!isPercussion){
 			this.addAttribute(node, "number", "1");
 		}
@@ -367,27 +383,29 @@ public class MusicXMLWriter{
 		if (isPercussion){
 			this.addNode(node, "sign", "percussion");
 		}
-		else if(clef == TGMeasure.CLEF_TREBLE){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
+		else {
+			if(clef == TGMeasure.CLEF_TREBLE){
+				this.addNode(node, "sign", "G");
+				this.addNode(node, "line", "2");
+			}
+			else if(clef == TGMeasure.CLEF_BASS){
+				this.addNode(node, "sign", "F");
+				this.addNode(node, "line", "4");
+			}
+			else if(clef == TGMeasure.CLEF_TENOR){
+				this.addNode(node, "sign", "C");
+				this.addNode(node, "line", "4");
+			}
+			else if(clef == TGMeasure.CLEF_ALTO){
+				this.addNode(node, "sign", "C");
+				this.addNode(node, "line", "3");
+			}
+			// this is incorrect, but leave it for now for correct import
 			this.addNode(node, "clef-octave-change", String.valueOf(-1));
-		}
-		else if(clef == TGMeasure.CLEF_BASS){
-			this.addNode(node, "sign", "F");
-			this.addNode(node, "line", "4");
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
-		}
-		else if(clef == TGMeasure.CLEF_TENOR){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
-		}
-		else if(clef == TGMeasure.CLEF_ALTO){
-			this.addNode(node, "sign", "G");
-			this.addNode(node, "line", "2");
 		}
 
 		// second clef: tablature
-		if (!isPercussion){
+		if (isStart && !isPercussion){
 			node = this.addNode(parent, "clef");
 			this.addAttribute(node, "number", "2");
 			this.addNode(node, "sign", "TAB");
@@ -468,6 +486,7 @@ public class MusicXMLWriter{
 
 
 	private void writeBeats(Node parent, TGMeasure measure, int nVoice, boolean measureIsEmpty, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
+		TGTrackManager trackMgr = new TGSongManager().getTrackManager();
 		int ks = measure.getKeySignature();
 		int beatCount = measure.countBeats();
 		int lyricIndex = 0;
@@ -510,12 +529,6 @@ public class MusicXMLWriter{
 					TGNote note = voice.getNote( n );
 					TGNote previousNoteOnString = previousNotesOnAllStrings.get(note.getString());
 
-					int noteVelocity = note.getVelocity();
-					if (noteVelocity != lastVelocity){
-						lastVelocity = noteVelocity;
-						this.writeDynamics(parent, note);
-					}
-
 					// write palm mute symbol as text
 					if (!isTablature && note.getEffect().isPalmMute()) {
 						Node direction = this.addAttribute(this.addNode(parent, "direction"), "placement", "above");
@@ -525,6 +538,8 @@ public class MusicXMLWriter{
 					}
 
 					Node noteNode = this.addNode(parent, "note");
+					float noteVelocity = (float) note.getVelocity() / TGVelocities.DEFAULT * 100;
+					this.addAttribute(noteNode, "dynamics", Float.toString(noteVelocity));
 
 					int stringValue = beat.getMeasure().getTrack().getString(note.getString()).getValue();
 					int noteValue = note.getValue();
@@ -548,7 +563,7 @@ public class MusicXMLWriter{
 					Node pitchNode = this.addNode(noteNode, "pitch");
 					this.writeNote(pitchNode, "", harmonicAdjustedValue, ks);
 
-					this.writeDurationAndVoice(noteNode, voice.getDuration(), note.isTiedNote(), nVoice);
+					this.writeDurationAndVoice(noteNode, voice.getDuration(), nVoice, trackMgr.isAnyTiedTo(note), note.isTiedNote());
 
 					if (isTablature){
 						this.addNode(noteNode, "stem", "none");
@@ -565,8 +580,11 @@ public class MusicXMLWriter{
 					this.addNode(noteNode, "staff", isTablature ? "2" : "1");
 
 					Node notationsNode = this.addNode(noteNode, "notations");
+					if (!isTablature && (trackMgr.isAnyTiedTo(note) || note.isTiedNote())){
+						writeTiedNotations(notationsNode, trackMgr.isAnyTiedTo(note), note.isTiedNote());
+					}
 					writeArticulationNotations(notationsNode, note);
-					writeTechnicalNotations(notationsNode, note, previousNoteOnString, isTablature);
+					writeTechnicalNotations(notationsNode, note, previousNoteOnString, isTablature, n > 0);
 					writeOrnamentsNotations(notationsNode, note);
 
 					// Slapping / Popping would be applied here... But the MusicXML 4.0 spec does not have defined elements for that.
@@ -629,6 +647,18 @@ public class MusicXMLWriter{
 		}
 	}
 
+	private void writeTiedNotations(Node parent, boolean tieStart, boolean tieStop){
+		Node tiedNode = this.addNode(parent, "tied");
+		this.addAttribute(tiedNode, "orientation", "over");
+
+		if (tieStop) {
+			this.addAttribute(tiedNode, "type", "stop");
+		}
+		if (tieStart) {
+			this.addAttribute(tiedNode, "type", "start");
+		}
+	}
+
 	private void writeArticulationNotations(Node parent, TGNote note){
 		Node articulationsNode = this.addNode(parent, "articulations");
 
@@ -645,7 +675,7 @@ public class MusicXMLWriter{
 		this.removeNodeIfNoChildren(articulationsNode);
 	}
 
-	private void writeTechnicalNotations(Node parent, TGNote note, TGNote previousNoteOnString, boolean isTablature){
+	private void writeTechnicalNotations(Node parent, TGNote note, TGNote previousNoteOnString, boolean isTablature, boolean isChordNote){
 		Node technicalNode = this.addNode(parent, "technical");
 
 		if (isTablature){
@@ -669,6 +699,16 @@ public class MusicXMLWriter{
 
 		if (note.getEffect().isTapping()){
 			this.addNode(technicalNode, "tap");
+		}
+
+		if (!isChordNote){
+			TGBeat beat = note.getVoice().getBeat();
+			if (beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP){
+				this.addNode(technicalNode, "up-bow");
+			}
+			else if (beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_DOWN){
+				this.addNode(technicalNode, "down-bow");
+			}
 		}
 
 		TGEffectBend bendEffect = note.getEffect().getBend();
@@ -752,6 +792,18 @@ public class MusicXMLWriter{
 		if (note.getEffect().isTrill()){
 			Node trillNode = this.addNode(ornamentsNode, "trill-mark");
 
+			TGDuration noteDuration = note.getVoice().getDuration();
+			int trillBeats = note.getEffect().getTrill().getDuration().getValue() / noteDuration.getValue();
+			if (noteDuration.isDotted()){
+				trillBeats = trillBeats * 3 / 2;
+			}
+			if (noteDuration.isDoubleDotted()){
+				trillBeats = trillBeats * 7 / 4;
+			}
+			if (trillBeats > 1){
+				this.addAttribute(trillNode, "beats", Integer.toString(trillBeats));
+			}
+
 			// Default case of unison. As MusicXML only supports the following.
 			// half, unison, whole
 			// https://www.w3.org/2021/06/musicxml40/musicxml-reference/data-types/trill-step/
@@ -787,7 +839,7 @@ public class MusicXMLWriter{
 	private void insertRest(Node parent, TGDuration duration, int nVoice, boolean isTablature){
 		Node noteRestNode = this.addNode(parent, "note");
 		this.addNode(noteRestNode, "rest");
-		this.writeDurationAndVoice(noteRestNode, duration, false, nVoice);
+		this.writeDurationAndVoice(noteRestNode, duration, nVoice, false, false);
 		this.addNode(noteRestNode, "staff", isTablature ? "2" : "1");
 	}
 
@@ -800,7 +852,7 @@ public class MusicXMLWriter{
 		}
 	}
 
-	private void writeDurationAndVoice(Node parent, TGDuration duration, boolean isTiedNote, int nVoice){
+	private void writeDurationAndVoice(Node parent, TGDuration duration, int nVoice, boolean tieStart, boolean tieStop){
 		int index = duration.getIndex();
 		if( index >=0 && index <= 6 ){
 			int value = (DURATION_VALUES[ index ] * duration.getDivision().getTimes() / duration.getDivision().getEnters());
@@ -812,8 +864,11 @@ public class MusicXMLWriter{
 			}
 
 			this.addNode(parent, "duration",Integer.toString(value));
-			if(isTiedNote){
+			if(tieStop){
 				this.addAttribute(this.addNode(parent, "tie"), "type", "stop");
+			}
+			if(tieStart){
+				this.addAttribute(this.addNode(parent, "tie"), "type", "start");
 			}
 			this.addNode(parent, "voice", String.valueOf(nVoice+1));
 
