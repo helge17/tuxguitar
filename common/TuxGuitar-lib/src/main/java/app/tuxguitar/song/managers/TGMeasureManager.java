@@ -1013,7 +1013,7 @@ public class TGMeasureManager {
 					}
 			}
 			else {
-				// align beat left (avoid "holes")
+				// align beat left, avoiding conflicts ("holes" are easier to fix than overlaps)
 				long beatPreciseStart = 0;
 				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
 					if (!beat.getVoice(v).isEmpty()) {
