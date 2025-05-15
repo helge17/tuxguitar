@@ -27,7 +27,7 @@ public class TGUpdateDragSelectionAction extends TGActionBase {
 		Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
 		EditorKit editorKit = tablature.getEditorKit();
 
-		if (editorKit.fillSelection(context)) {
+		if (editorKit.fillSelection(context, true)) {
 			TGActionManager actionManager = TGActionManager.getInstance(getContext());
 			TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 			Selector selector = tablature.getSelector();
