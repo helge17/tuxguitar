@@ -90,6 +90,10 @@ public class EditorKit {
 	}
 
 	public boolean fillSelection(TGAbstractContext context) {
+		return this.fillSelection(context, false);
+	}
+
+	public boolean fillSelection(TGAbstractContext context, boolean ignoreVoice) {
 		float x = context.getAttribute(ATTRIBUTE_X);
 		float y = context.getAttribute(ATTRIBUTE_Y);
 		if( x >= 0 && y >= 0 ){
@@ -97,7 +101,7 @@ public class EditorKit {
 			if (track != null) {
 				TGMeasureImpl measure = findSelectedMeasure(track, x, y);
 				if (measure != null) {
-					TGBeat beat = findSelectedBeat(measure, x);
+					TGBeat beat = findSelectedBeat(measure, x, ignoreVoice);
 					if( beat != null ) {
 						TGString string = findSelectedString(measure, y);
 						if( string == null ) {
@@ -161,7 +165,7 @@ public class EditorKit {
 		return measure;
 	}
 
-	private TGBeatImpl findSelectedBeat(TGMeasureImpl measure, float x){
+	private TGBeatImpl findSelectedBeat(TGMeasureImpl measure, float x, boolean ignoreVoice){
 		TGLayout layout = getTablature().getViewLayout();
 		int voice = getTablature().getCaret().getVoice();
 		float posX = measure.getHeaderImpl().getLeftSpacing(layout) + measure.getPosX();
@@ -170,7 +174,7 @@ public class EditorKit {
 		Iterator<TGBeat> it = measure.getBeats().iterator();
 		while(it.hasNext()){
 			TGBeatImpl beat = (TGBeatImpl)it.next();
-			if(!beat.getVoice(voice).isEmpty()){
+			if(ignoreVoice || !beat.getVoice(voice).isEmpty()){
 				float diff = Math.abs(x - (posX + (beat.getPosX() + beat.getSpacing(layout))));
 				if(bestDiff == -1 || diff < bestDiff){
 					bestBeat = beat;
