@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.language.TGLanguageEvent;
 import app.tuxguitar.app.ui.TGApplication;
@@ -242,8 +243,8 @@ public class TGConverterDialog implements TGEventListener{
 	public void loadIcons(boolean layout){
 		if(!isDisposed()){
 			this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-			this.inputFolderChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-			this.outputFolderChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+			this.inputFolderChooser.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
+			this.outputFolderChooser.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
 			if( layout ){
 				this.dialog.layout();
 			}

@@ -25,6 +25,7 @@ import app.tuxguitar.app.action.impl.file.TGReadURLAction;
 import app.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import app.tuxguitar.app.action.impl.file.TGSaveFileAction;
 import app.tuxguitar.app.helper.TGFileHistory;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import app.tuxguitar.editor.action.file.TGReadSongAction;
@@ -371,19 +372,19 @@ public class FileMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.newSong.setImage(TuxGuitar.getInstance().getIconManager().getFileNew());
-		this.open.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
-		this.close.setImage(TuxGuitar.getInstance().getIconManager().getFileClose());
-		this.save.setImage(TuxGuitar.getInstance().getIconManager().getFileSave());
-		this.saveAs.setImage(TuxGuitar.getInstance().getIconManager().getFileSaveAs());
+		this.newSong.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_NEW));
+		this.open.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
+		this.close.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_CLOSE));
+		this.save.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_SAVE));
+		this.saveAs.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_SAVE_AS));
 		if( this.importItem != null ){
 			this.importItem.setImage(TuxGuitar.getInstance().getIconManager().getFileImport());
 		}
 		if( this.exportItem != null ){
 			this.exportItem.setImage(TuxGuitar.getInstance().getIconManager().getFileExport());
 		}
-		this.printPreview.setImage(TuxGuitar.getInstance().getIconManager().getFilePrintPreview());
-		this.print.setImage(TuxGuitar.getInstance().getIconManager().getFilePrint());
+		this.printPreview.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.PRINT_PREVIEW));
+		this.print.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.PRINT));
 		this.historyItem.setImage(TuxGuitar.getInstance().getIconManager().getFileHistory());
 		this.exit.setImage(TuxGuitar.getInstance().getIconManager().getFileExit());
 	}

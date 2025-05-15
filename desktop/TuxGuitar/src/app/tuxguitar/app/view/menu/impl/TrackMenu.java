@@ -14,6 +14,7 @@ import app.tuxguitar.editor.action.track.TGMoveTrackDownAction;
 import app.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
 import app.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
 import app.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import app.tuxguitar.graphics.control.TGTrackImpl;
 import app.tuxguitar.ui.menu.UIMenu;
@@ -157,17 +158,17 @@ public class TrackMenu extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.first.setImage(TuxGuitar.getInstance().getIconManager().getTrackFirst());
-		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getTrackPrevious());
-		this.next.setImage(TuxGuitar.getInstance().getIconManager().getTrackNext());
-		this.last.setImage(TuxGuitar.getInstance().getIconManager().getTrackLast());
-		this.addTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackAdd());
-		this.cloneTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackClone());
-		this.removeTrack.setImage(TuxGuitar.getInstance().getIconManager().getTrackRemove());
-		this.moveUp.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
-		this.moveDown.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
-		this.changeSolo.setImage(TuxGuitar.getInstance().getIconManager().getTrackSolo());
-		this.changeMute.setImage(TuxGuitar.getInstance().getIconManager().getTrackMute());
+		this.first.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_FIRST));
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_PREVIOUS));
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_NEXT));
+		this.last.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_LAST));
+		this.addTrack.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_ADD));
+		this.cloneTrack.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_CLONE));
+		this.removeTrack.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_REMOVE));
+		this.moveUp.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_UP));
+		this.moveDown.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_DOWN));
+		this.changeSolo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_SOLO));
+		this.changeMute.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRACK_MUTE));
 	}
 
 	public boolean isDisposed(){

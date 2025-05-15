@@ -203,7 +203,7 @@ public class TGFretBoard {
 
 		// settings
 		this.settings = uiFactory.createButton(this.toolComposite);
-		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SETTINGS));
 		this.settings.setToolTipText(TuxGuitar.getProperty("settings"));
 		this.settings.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
@@ -716,11 +716,11 @@ public class TGFretBoard {
 	}
 
 	public void loadIcons(){
-		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
-		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
-		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getArrowDown());
-		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getArrowUp());
-		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getSettings());
+		this.goLeft.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_LEFT));
+		this.goRight.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_RIGHT));
+		this.decrement.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_DOWN));
+		this.increment.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_UP));
+		this.settings.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SETTINGS));
 		this.smaller.setImage(TuxGuitar.getInstance().getIconManager().getFretboardSmaller());
 		this.bigger.setImage(TuxGuitar.getInstance().getIconManager().getFretboardBigger());
 		this.loadDurationImage(true);

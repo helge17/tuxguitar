@@ -1,15 +1,12 @@
 package app.tuxguitar.app.view.menu.impl;
 
 import app.tuxguitar.app.TuxGuitar;
-import app.tuxguitar.app.action.TGActionProcessorListener;
-import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Caret;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.menu.TGMenuItem;
-import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import app.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
-import app.tuxguitar.editor.action.duration.TGSetDivisionTypeDurationAction;
 import app.tuxguitar.editor.action.duration.TGSetEighthDurationAction;
 import app.tuxguitar.editor.action.duration.TGSetHalfDurationAction;
 import app.tuxguitar.editor.action.duration.TGSetQuarterDurationAction;
@@ -18,12 +15,8 @@ import app.tuxguitar.editor.action.duration.TGSetSixtyFourthDurationAction;
 import app.tuxguitar.editor.action.duration.TGSetThirtySecondDurationAction;
 import app.tuxguitar.editor.action.duration.TGSetWholeDurationAction;
 import app.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
-import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.models.TGNote;
-import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
-import app.tuxguitar.ui.event.UISelectionEvent;
-import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.menu.UIMenu;
 import app.tuxguitar.ui.menu.UIMenuCheckableItem;
 import app.tuxguitar.ui.menu.UIMenuSubMenuItem;
@@ -164,9 +157,9 @@ public class DurationMenuItem  extends TGMenuItem {
 		this.sixteenth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTEENTH));
 		this.thirtySecond.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.THIRTY_SECOND));
 		this.sixtyFourth.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.SIXTY_FOURTH));
-		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDotted());
-		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getDurationDoubleDotted());
-		this.tiedNote.setImage(TuxGuitar.getInstance().getIconManager().getNoteTied());
+		this.dotted.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DOTTED));
+		this.doubleDotted.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DOUBLE_DOTTED));
+		this.tiedNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TIED_NOTE));
 
 		this.divisionMenuItem.loadIcons();
 	}

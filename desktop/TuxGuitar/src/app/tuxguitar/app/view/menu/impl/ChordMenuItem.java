@@ -3,6 +3,7 @@ package app.tuxguitar.app.view.menu.impl;
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
 import app.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.note.TGInsertChordAction;
@@ -85,7 +86,7 @@ public class ChordMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons() {
-		this.insertChord.setImage(TuxGuitar.getInstance().getIconManager().getChord());
+		this.insertChord.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.CHORD));
 	}
 
 	public TGActionProcessorListener createInsertChordAction(TGChord chord) {

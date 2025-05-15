@@ -3,6 +3,7 @@ package app.tuxguitar.app.view.dialog.grace;
 import java.util.Iterator;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
@@ -185,42 +186,42 @@ public class TGGraceDialog {
 			dialogLayout.set(dynamicGroup, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.pppButton = uiFactory.createRadioButton(dynamicGroup);
-			this.pppButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicPPP());
+			this.pppButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_PPP));
 			this.pppButton.setSelected(dynamic == TGVelocities.PIANO_PIANISSIMO);
 			dynamicLayout.set(this.pppButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.mfButton = uiFactory.createRadioButton(dynamicGroup);
-			this.mfButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicMF());
+			this.mfButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_MF));
 			this.mfButton.setSelected(dynamic == TGVelocities.MEZZO_FORTE);
 			dynamicLayout.set(this.mfButton, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.ppButton = uiFactory.createRadioButton(dynamicGroup);
-			this.ppButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicPP());
+			this.ppButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_PP));
 			this.ppButton.setSelected(dynamic == TGVelocities.PIANISSIMO);
 			dynamicLayout.set(this.ppButton, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.fButton = uiFactory.createRadioButton(dynamicGroup);
-			this.fButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicF());
+			this.fButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_F));
 			this.fButton.setSelected(dynamic == TGVelocities.FORTE);
 			dynamicLayout.set(this.fButton, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.pButton = uiFactory.createRadioButton(dynamicGroup);
-			this.pButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicP());
+			this.pButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_P));
 			this.pButton.setSelected(dynamic == TGVelocities.PIANO);
 			dynamicLayout.set(this.pButton, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.ffButton = uiFactory.createRadioButton(dynamicGroup);
-			this.ffButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicFF());
+			this.ffButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_FF));
 			this.ffButton.setSelected(dynamic == TGVelocities.FORTISSIMO);
 			dynamicLayout.set(this.ffButton, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.mpButton = uiFactory.createRadioButton(dynamicGroup);
-			this.mpButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicMP());
+			this.mpButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_MP));
 			this.mpButton.setSelected(dynamic == TGVelocities.MEZZO_PIANO);
 			dynamicLayout.set(this.mpButton, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 			this.fffButton = uiFactory.createRadioButton(dynamicGroup);
-			this.fffButton.setImage(TuxGuitar.getInstance().getIconManager().getDynamicFFF());
+			this.fffButton.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_FFF));
 			this.fffButton.setSelected(dynamic == TGVelocities.FORTE_FORTISSIMO);
 			dynamicLayout.set(this.fffButton, 4, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 

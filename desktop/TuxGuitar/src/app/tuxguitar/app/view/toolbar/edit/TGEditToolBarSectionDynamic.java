@@ -111,28 +111,28 @@ public class TGEditToolBarSectionDynamic extends TGEditToolBarSection {
 	private UIImage getDynamicIcon(int velocity) {
 		TGIconManager iconManager = this.getIconManager();
 		if( velocity == TGVelocities.PIANO_PIANISSIMO ) {
-			return iconManager.getDynamicPPP();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_PPP);
 		}
 		if( velocity == TGVelocities.PIANISSIMO ) {
-			return iconManager.getDynamicPP();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_PP);
 		}
 		if( velocity == TGVelocities.PIANO) {
-			return iconManager.getDynamicP();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_P);
 		}
 		if( velocity == TGVelocities.MEZZO_PIANO ) {
-			return iconManager.getDynamicMP();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_MP);
 		}
 		if( velocity == TGVelocities.MEZZO_FORTE ) {
-			return iconManager.getDynamicMF();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_MF);
 		}
 		if( velocity == TGVelocities.FORTE) {
-			return iconManager.getDynamicF();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_F);
 		}
 		if( velocity == TGVelocities.FORTISSIMO) {
-			return iconManager.getDynamicFF();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_FF);
 		}
 		if( velocity == TGVelocities.FORTE_FORTISSIMO) {
-			return iconManager.getDynamicFFF();
+			return iconManager.getImageByName(TGIconManager.DYNAMIC_FFF);
 		}
 		return null;
 	}

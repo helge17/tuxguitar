@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.menu.impl;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.note.TGChangeVelocityAction;
@@ -103,14 +104,14 @@ public class DynamicMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.pianoPianissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicPPP());
-		this.pianissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicPP());
-		this.piano.setImage(TuxGuitar.getInstance().getIconManager().getDynamicP());
-		this.mezzoPiano.setImage(TuxGuitar.getInstance().getIconManager().getDynamicMP());
-		this.mezzoForte.setImage(TuxGuitar.getInstance().getIconManager().getDynamicMF());
-		this.forte.setImage(TuxGuitar.getInstance().getIconManager().getDynamicF());
-		this.fortissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicFF());
-		this.forteFortissimo.setImage(TuxGuitar.getInstance().getIconManager().getDynamicFFF());
+		this.pianoPianissimo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_PPP));
+		this.pianissimo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_PP));
+		this.piano.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_P));
+		this.mezzoPiano.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_MP));
+		this.mezzoForte.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_MF));
+		this.forte.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_F));
+		this.fortissimo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_FF));
+		this.forteFortissimo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_FFF));
 	}
 
 	public TGActionProcessorListener createChangeVelocityAction(Integer velocity) {

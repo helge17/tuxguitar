@@ -13,6 +13,7 @@ import app.tuxguitar.editor.action.effect.TGChangeLetRingAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import app.tuxguitar.editor.action.effect.TGChangePalmMuteAction;
 import app.tuxguitar.editor.action.effect.TGChangeStaccatoAction;
@@ -168,26 +169,26 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 	}
 
 	public void loadSectionIcons() {
-		this.vibrato.setImage(this.getIconManager().getEffectVibrato());
-		this.bend.setImage(this.getIconManager().getEffectBend());
-		this.tremoloBar.setImage(this.getIconManager().getEffectTremoloBar());
-		this.slide.setImage(this.getIconManager().getEffectSlide());
-		this.deadNote.setImage(this.getIconManager().getEffectDead());
-		this.hammer.setImage(this.getIconManager().getEffectHammer());
-		this.ghostNote.setImage(this.getIconManager().getEffectGhost());
-		this.accentuatedNote.setImage(this.getIconManager().getEffectAccentuated());
-		this.heavyAccentuatedNote.setImage(this.getIconManager().getEffectHeavyAccentuated());
-		this.letRing.setImage(this.getIconManager().getEffectLetRing());
-		this.harmonicNote.setImage(this.getIconManager().getEffectHarmonic());
-		this.graceNote.setImage(this.getIconManager().getEffectGrace());
-		this.trill.setImage(this.getIconManager().getEffectTrill());
-		this.tremoloPicking.setImage(this.getIconManager().getEffectTremoloPicking());
-		this.palmMute.setImage(this.getIconManager().getEffectPalmMute());
-		this.staccato.setImage(this.getIconManager().getEffectStaccato());
-		this.tapping.setImage(this.getIconManager().getEffectTapping());
-		this.slapping.setImage(this.getIconManager().getEffectSlapping());
-		this.popping.setImage(this.getIconManager().getEffectPopping());
-		this.fadeIn.setImage(this.getIconManager().getEffectFadeIn());
+		this.vibrato.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_VIBRATO));
+		this.bend.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_BEND));
+		this.tremoloBar.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_TREMOLO_BAR));
+		this.slide.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_SLIDE));
+		this.deadNote.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_DEAD));
+		this.hammer.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_HAMMER));
+		this.ghostNote.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_GHOST));
+		this.accentuatedNote.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_ACCENTUATED));
+		this.heavyAccentuatedNote.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_HEAVY_ACCENTUATED));
+		this.letRing.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_LET_RING));
+		this.harmonicNote.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_HARMONIC));
+		this.graceNote.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_GRACE));
+		this.trill.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_TRILL));
+		this.tremoloPicking.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_TREMOLO_PICKING));
+		this.palmMute.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_PALM_MUTE));
+		this.staccato.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_STACCATO));
+		this.tapping.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_TAPPING));
+		this.slapping.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_SLAPPING));
+		this.popping.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_POPPING));
+		this.fadeIn.setImage(this.getIconManager().getImageByName(TGIconManager.EFFECT_FADE_IN));
 	}
 
 	public void updateSectionItems() {

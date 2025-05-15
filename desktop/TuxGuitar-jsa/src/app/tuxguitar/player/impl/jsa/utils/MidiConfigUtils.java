@@ -1,6 +1,7 @@
 package app.tuxguitar.player.impl.jsa.utils;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.util.TGFileChooser;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
@@ -75,7 +76,7 @@ public class MidiConfigUtils {
 		soundbankLayout.set(sbCustomPath, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 
 		final UIButton sbCustomChooser = uiFactory.createButton(soundbankGroup);
-		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getFileOpen());
+		sbCustomChooser.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
 		sbCustomChooser.setEnabled((soundbank != null));
 		sbCustomChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {

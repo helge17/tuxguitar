@@ -7,6 +7,7 @@ import app.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.editor.action.effect.TGChangeAccentuatedNoteAction;
@@ -233,25 +234,25 @@ public class NoteEffectsMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.vibrato.setImage(TuxGuitar.getInstance().getIconManager().getEffectVibrato());
-		this.bend.setImage(TuxGuitar.getInstance().getIconManager().getEffectBend());
-		this.tremoloBar.setImage(TuxGuitar.getInstance().getIconManager().getEffectTremoloBar());
-		this.deadNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectDead());
-		this.slide.setImage(TuxGuitar.getInstance().getIconManager().getEffectSlide());
-		this.hammer.setImage(TuxGuitar.getInstance().getIconManager().getEffectHammer());
-		this.ghostNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectGhost());
-		this.accentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectAccentuated());
-		this.heavyAccentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectHeavyAccentuated());
-		this.letRing.setImage(TuxGuitar.getInstance().getIconManager().getEffectLetRing());
-		this.harmonicNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectHarmonic());
-		this.graceNote.setImage(TuxGuitar.getInstance().getIconManager().getEffectGrace());
-		this.trill.setImage(TuxGuitar.getInstance().getIconManager().getEffectTrill());
-		this.tremoloPicking.setImage(TuxGuitar.getInstance().getIconManager().getEffectTremoloPicking());
-		this.palmMute.setImage(TuxGuitar.getInstance().getIconManager().getEffectPalmMute());
-		this.staccato.setImage(TuxGuitar.getInstance().getIconManager().getEffectStaccato());
-		this.tapping.setImage(TuxGuitar.getInstance().getIconManager().getEffectTapping());
-		this.slapping.setImage(TuxGuitar.getInstance().getIconManager().getEffectSlapping());
-		this.popping.setImage(TuxGuitar.getInstance().getIconManager().getEffectPopping());
-		this.fadeIn.setImage(TuxGuitar.getInstance().getIconManager().getEffectFadeIn());
+		this.vibrato.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_VIBRATO));
+		this.bend.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_BEND));
+		this.tremoloBar.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_TREMOLO_BAR));
+		this.deadNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_DEAD));
+		this.slide.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_SLIDE));
+		this.hammer.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_HAMMER));
+		this.ghostNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_GHOST));
+		this.accentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_ACCENTUATED));
+		this.heavyAccentuatedNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_HEAVY_ACCENTUATED));
+		this.letRing.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_LET_RING));
+		this.harmonicNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_HARMONIC));
+		this.graceNote.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_GRACE));
+		this.trill.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_TRILL));
+		this.tremoloPicking.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_TREMOLO_PICKING));
+		this.palmMute.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_PALM_MUTE));
+		this.staccato.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_STACCATO));
+		this.tapping.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_TAPPING));
+		this.slapping.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_SLAPPING));
+		this.popping.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_POPPING));
+		this.fadeIn.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EFFECT_FADE_IN));
 	}
 }

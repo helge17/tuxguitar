@@ -130,6 +130,7 @@ import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.app.action.impl.view.TGHideExternalBeatAction;
+import app.tuxguitar.app.action.impl.view.TGOpenMainToolBarSettingsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import app.tuxguitar.app.action.impl.view.TGShowExternalBeatAction;
 import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
@@ -576,6 +577,8 @@ public class TGActionInstaller {
 		installAction(new TGOpenDocumentationDialogAction(context));
 		installAction(new TGOpenAboutDialogAction(context));
 		installAction(new TGHelpGoHomeAction(context));
+		
+		installAction(new TGOpenMainToolBarSettingsDialogAction(context));
 	}
 
 	public void installAction(TGActionBase action) {

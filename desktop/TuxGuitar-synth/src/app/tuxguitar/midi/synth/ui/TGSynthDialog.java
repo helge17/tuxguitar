@@ -635,9 +635,9 @@ public class TGSynthDialog implements TGChannelSettingsDialog, TGEventListener {
 			this.buttonReceiverEdit.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListEdit());
 			this.buttonOutputAdd.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListAdd());
 			this.buttonOutputEdit.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListEdit());
-			this.buttonOutputDelete.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getListRemove());
-			this.buttonOutputMoveUp.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getArrowUp());
-			this.buttonOutputMoveDown.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getArrowDown());
+			this.buttonOutputDelete.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
+			this.buttonOutputMoveUp.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getImageByName(TGIconManager.ARROW_UP));
+			this.buttonOutputMoveDown.setImage(TGIconManager.getInstance(this.synthesizer.getContext()).getImageByName(TGIconManager.ARROW_DOWN));
 		}
 	}
 

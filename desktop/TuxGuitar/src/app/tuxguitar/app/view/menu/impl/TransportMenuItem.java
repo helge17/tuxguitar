@@ -8,6 +8,7 @@ import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.graphics.control.TGLayout;
@@ -116,12 +117,12 @@ public class TransportMenuItem extends TGMenuItem {
 
 	public void loadIcons(){
 		this.loadIcons(true);
-		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getTransportMetronome());
-		this.countDown.setImage(TuxGuitar.getInstance().getIconManager().getTransportCountIn());
-		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getTransportMode());
-		this.loopSHeader.setImage(TuxGuitar.getInstance().getIconManager().getTransportLoopStart());
-		this.loopEHeader.setImage(TuxGuitar.getInstance().getIconManager().getTransportLoopEnd());
-		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getLayoutHighlightPlayedBeat());
+		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_METRONOME));
+		this.countDown.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_COUNT_IN));
+		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_MODE));
+		this.loopSHeader.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_LOOP_START));
+		this.loopEHeader.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_LOOP_END));
+		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_HIGHLIGHT_PLAYED_BEAT));
 	}
 
 	public void loadIcons(boolean force){
@@ -130,11 +131,11 @@ public class TransportMenuItem extends TGMenuItem {
 		this.isRunning = TuxGuitar.getInstance().getPlayer().isRunning();
 
 		if(force || lastStatusRunning != isRunning){
-			this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconStop());
+			this.stop.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_ICON_STOP));
 			if(this.isRunning){
-				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPause());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_ICON_PAUSE));
 			} else {
-				this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportIconPlay());
+				this.play.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_ICON_PLAY));
 			}
 		}
 	}

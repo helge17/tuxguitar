@@ -21,6 +21,7 @@ import app.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import app.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import app.tuxguitar.app.action.impl.view.TGToggleTableViewerAction;
 import app.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.component.table.TGTableViewer;
@@ -203,21 +204,21 @@ public class ViewMenuItem extends TGMenuItem {
 
 	public void loadIcons(){
 		this.showMainToolbar.setImage(TuxGuitar.getInstance().getIconManager().getToolbarMain());
-		this.showEditToolbar.setImage(TuxGuitar.getInstance().getIconManager().getToolbarEdit());
-		this.showTableViewer.setImage(TuxGuitar.getInstance().getIconManager().getTableViewer());
-		this.showInstruments.setImage(TuxGuitar.getInstance().getIconManager().getInstruments());
-		this.showTransport.setImage(TuxGuitar.getInstance().getIconManager().getTransport());
-		this.showFretBoard.setImage(TuxGuitar.getInstance().getIconManager().getFretboard());
-		this.showPiano.setImage(TuxGuitar.getInstance().getIconManager().getPiano());
-		this.showMatrix.setImage(TuxGuitar.getInstance().getIconManager().getMatrix());
-		this.pageLayout.setImage(TuxGuitar.getInstance().getIconManager().getLayoutPage());
-		this.linearLayout.setImage(TuxGuitar.getInstance().getIconManager().getLayoutLinear());
-		this.multitrack.setImage(TuxGuitar.getInstance().getIconManager().getLayoutMultitrack());
-		this.scoreEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutScore());
-		this.tablatureEnabled.setImage(TuxGuitar.getInstance().getIconManager().getLayoutTablature());
-		this.compact.setImage(TuxGuitar.getInstance().getIconManager().getLayoutCompact());
-		this.zoomIn.setImage(TuxGuitar.getInstance().getIconManager().getZoomIn());
-		this.zoomOut.setImage(TuxGuitar.getInstance().getIconManager().getZoomOut());
-		this.zoomReset.setImage(TuxGuitar.getInstance().getIconManager().getZoomReset());
+		this.showEditToolbar.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TOOLBAR_EDIT));
+		this.showTableViewer.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TABLE_VIEWER));
+		this.showInstruments.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.INSTRUMENTS));
+		this.showTransport.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT));
+		this.showFretBoard.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FRETBOARD));
+		this.showPiano.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.PIANO));
+		this.showMatrix.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MATRIX));
+		this.pageLayout.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LAYOUT_PAGE));
+		this.linearLayout.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LAYOUT_LINEAR));
+		this.multitrack.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LAYOUT_MULTITRACK));
+		this.scoreEnabled.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LAYOUT_SCORE));
+		this.tablatureEnabled.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LAYOUT_TABLATURE));
+		this.compact.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LAYOUT_COMPACT));
+		this.zoomIn.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ZOOM_IN));
+		this.zoomOut.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ZOOM_OUT));
+		this.zoomReset.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ZOOM_RESET));
 	}
 }
