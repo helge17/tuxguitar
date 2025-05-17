@@ -7,4 +7,4 @@ Section: Multimedia
 Maintainer: https://github.com/helge17/
 Description: TuxGuitar is a multitrack guitar tablature editor and player
  TuxGuitar is a multitrack guitar tablature editor and player written in
- Java. It can open Guitar Pro, PowerTab and TablEdit files.
+ Java. It can open Guitar Pro, PowerTab, TablEdit and MIDI files.

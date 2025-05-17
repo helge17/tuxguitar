@@ -7,7 +7,7 @@ import app.tuxguitar.io.base.TGSongWriterHandle;
 
 public class LilypondSongWriter implements TGSongWriter {
 
-	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Lilypond", "text/x-lilypond", new String[]{"ly"});
+	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("LilyPond", "text/x-lilypond", new String[]{"ly"});
 
 	public LilypondSongWriter() {
 		super();
