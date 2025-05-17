@@ -1,0 +1,3 @@
+TuxGuitar è un editor e un lettore di tablature multitraccia per chitarra. Può aprire file Guitar Pro, PowerTab, TablEdit e MIDI.
+
+TuxGuitar è scritto in Java ed è disponibile sotto una licenza open source.
