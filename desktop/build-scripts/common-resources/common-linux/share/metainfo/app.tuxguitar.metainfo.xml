@@ -9,7 +9,7 @@
   <summary xml:lang="es">=Editor de tablaturas de guitarra</summary>
   <summary xml:lang="de">=Editor für Gitarren-Tabulaturen</summary>
   <summary xml:lang="it">=Editor per tablature di chitarra</summary>
-  <summary xml:lang="pl">=Edytor tabulatury gitarowych</summary>
+  <summary xml:lang="pl">=Edytor tabulatur gitarowych</summary>
   <description>
     <p>TuxGuitar is an editor and player for multi-track guitar tablatures. It can open Guitar Pro, PowerTab, TablEdit and MIDI files.</p>
     <p>TuxGuitar is written in Java and is available under an open source license.</p>
