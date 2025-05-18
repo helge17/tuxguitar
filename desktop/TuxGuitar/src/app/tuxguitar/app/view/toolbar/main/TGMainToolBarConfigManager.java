@@ -51,10 +51,10 @@ public class TGMainToolBarConfigManager {
 
 		Node configFileNode = null;
 		// try to read configuration if available
-		File file = new File(TGUserFileUtils.PATH_USER_MAINTOOLBAR);
+		File file = new File(TGUserFileUtils.PATH_USER_TOOLBAR);
 		if (TGUserFileUtils.isExistentAndReadable(file)) {
 			try {
-				InputStream stream = new FileInputStream(TGUserFileUtils.PATH_USER_MAINTOOLBAR);
+				InputStream stream = new FileInputStream(TGUserFileUtils.PATH_USER_TOOLBAR);
 				if (stream != null) {
 					Document doc = getDocument(stream);
 					configFileNode = doc.getFirstChild();
@@ -181,7 +181,7 @@ public class TGMainToolBarConfigManager {
 
 	private void save() {
 		try {
-			File file = new File(TGUserFileUtils.PATH_USER_MAINTOOLBAR);
+			File file = new File(TGUserFileUtils.PATH_USER_TOOLBAR);
 			OutputStream stream = new FileOutputStream(file);
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
