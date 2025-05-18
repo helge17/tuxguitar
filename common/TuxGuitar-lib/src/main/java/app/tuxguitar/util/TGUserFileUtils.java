@@ -18,6 +18,7 @@ public class TGUserFileUtils {
 	public static final String PATH_USER_SHARE_PATH = getUserSharedPath();
 	public static final String PATH_USER_TEMPLATE = getUserTemplatePath();
 	public static final String PATH_USER_TUNINGS = getUserTuningsPath();
+	public static final String PATH_USER_TOOLBAR = getUserToolBarPath();
 
 	private static String getHomePath(){
 		// Look for the system property
@@ -165,5 +166,9 @@ public class TGUserFileUtils {
 
 	private static String getUserTuningsPath() {
 		return getUserConfigDir() + File.separator + "tunings.xml";
+	}
+
+	private static String getUserToolBarPath() {
+		return getUserConfigDir() + File.separator + "toolbar.xml";
 	}
 }

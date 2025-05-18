@@ -7,6 +7,7 @@ import java.util.Map;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
@@ -122,9 +123,9 @@ public class TGEditToolBarSectionDuration extends TGEditToolBarSection {
 	}
 
 	public void loadSectionIcons() {
-		this.dotted.setImage(this.getIconManager().getDurationDotted());
-		this.doubleDotted.setImage(this.getIconManager().getDurationDoubleDotted());
-		this.tiedNote.setImage(this.getIconManager().getNoteTied());
+		this.dotted.setImage(this.getIconManager().getImageByName(TGIconManager.DOTTED));
+		this.doubleDotted.setImage(this.getIconManager().getImageByName(TGIconManager.DOUBLE_DOTTED));
+		this.tiedNote.setImage(this.getIconManager().getImageByName(TGIconManager.TIED_NOTE));
 		this.loadDurationToolIcons();
 	}
 

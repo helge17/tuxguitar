@@ -5,6 +5,7 @@ import app.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
 import app.tuxguitar.app.action.impl.note.TGOpenBeatMoveDialogAction;
 import app.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import app.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Caret;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.menu.TGMenuItem;
@@ -183,7 +184,7 @@ public class BeatMenuItem extends TGMenuItem {
 		this.pickStrokeUp.setChecked( beat != null && beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_UP );
 		this.pickStrokeDown.setEnabled(!running && !restBeat);
 		this.pickStrokeDown.setChecked( beat != null && beat.getPickStroke().getDirection() == TGPickStroke.PICK_STROKE_DOWN );
-		this.altEnharmonic.setEnabled(!running && ((style & TGLayout.DISPLAY_SCORE) != 0));
+		this.altEnharmonic.setEnabled(!running && ((style & TGLayout.DISPLAY_SCORE) != 0) && !restBeat);
 		this.altEnharmonic.setChecked((note!=null) && (note.isAltEnharmonic()));
 		this.semitoneUp.setEnabled(!running && atLeastOneNoteSelected);
 		this.semitoneDown.setEnabled(!running && atLeastOneNoteSelected);
@@ -233,11 +234,11 @@ public class BeatMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.insertText.setImage(TuxGuitar.getInstance().getIconManager().getText());
-		this.strokeUp.setImage(TuxGuitar.getInstance().getIconManager().getStrokeUp());
-		this.strokeDown.setImage(TuxGuitar.getInstance().getIconManager().getStrokeDown());
-		this.pickStrokeUp.setImage(TuxGuitar.getInstance().getIconManager().getPickStrokeUp());
-		this.pickStrokeDown.setImage(TuxGuitar.getInstance().getIconManager().getPickStrokeDown());
-		this.altEnharmonic.setImage(TuxGuitar.getInstance().getIconManager().getAltEnharmonic());
+		this.insertText.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TEXT));
+		this.strokeUp.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.STROKE_UP));
+		this.strokeDown.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.STROKE_DOWN));
+		this.pickStrokeUp.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.PICK_STROKE_UP));
+		this.pickStrokeDown.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.PICK_STROKE_DOWN));
+		this.altEnharmonic.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ALTERNATIVE_ENHARMONIC));
 	}
 }

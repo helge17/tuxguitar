@@ -4,6 +4,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.help.TGHelpGoHomeAction;
 import app.tuxguitar.app.action.impl.help.TGOpenAboutDialogAction;
 import app.tuxguitar.app.action.impl.help.TGOpenDocumentationDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.ui.menu.UIMenu;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
@@ -45,9 +46,9 @@ public class HelpMenuItem extends TGMenuItem{
 	}
 
 	public void loadIcons(){
-		this.doc.setImage(TuxGuitar.getInstance().getIconManager().getHelpDoc());
-		this.about.setImage(TuxGuitar.getInstance().getIconManager().getHelpAbout());
-		this.goHome.setImage(TuxGuitar.getInstance().getIconManager().getGoHome());
+		this.doc.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.HELP_DOC));
+		this.about.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.HELP_ABOUT));
+		this.goHome.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.GO_HOME));
 	}
 
 	public void update(){

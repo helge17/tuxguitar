@@ -7,6 +7,7 @@ import app.tuxguitar.app.action.impl.edit.TGSetNaturalKeyAction;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice1Action;
 import app.tuxguitar.app.action.impl.edit.TGSetVoice2Action;
 import app.tuxguitar.app.action.impl.edit.TGToggleFreeEditionModeAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.component.tab.edit.EditorKit;
 import app.tuxguitar.document.TGDocumentManager;
@@ -101,12 +102,12 @@ public class TGEditToolBarSectionEdit extends TGEditToolBarSection {
 	}
 
 	public void loadSectionIcons() {
-		this.modeSelection.setImage(this.getIconManager().getEditModeSelection());
-		this.modeEdition.setImage(this.getIconManager().getEditModeEdition());
-		this.notNaturalKey.setImage(this.getIconManager().getEditModeEditionNotNatural());
-		this.voice1.setImage(this.getIconManager().getEditVoice1());
-		this.voice2.setImage(this.getIconManager().getEditVoice2());
-		this.freeEditionMode.setImage(this.getIconManager().getFreeEditionMode());
-		this.openMeasureErrorsDialog.setImage(this.getIconManager().getMeasureErrors());
+		this.modeSelection.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_MODE_SELECTION));
+		this.modeEdition.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_MODE_EDITION));
+		this.notNaturalKey.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_MODE_EDITION_NO_NATURAL));
+		this.voice1.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_VOICE_1));
+		this.voice2.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_VOICE_2));
+		this.freeEditionMode.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_MODE_FREE));
+		this.openMeasureErrorsDialog.setImage(this.getIconManager().getImageByName(TGIconManager.EDIT_MEASURE_STATUS_CHECK));
 	}
 }

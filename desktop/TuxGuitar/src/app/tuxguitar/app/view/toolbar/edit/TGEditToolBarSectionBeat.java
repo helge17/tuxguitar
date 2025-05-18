@@ -6,6 +6,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
 import app.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import app.tuxguitar.app.view.dialog.chord.TGCustomChordManager;
 import app.tuxguitar.document.TGDocumentContextAttributes;
@@ -79,12 +80,12 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 	}
 
 	public void loadSectionIcons() {
-		this.chordMenu.setImage(this.getIconManager().getChord());
-		this.text.setImage(this.getIconManager().getText());
-		this.strokeUp.setImage(this.getIconManager().getStrokeUp());
-		this.strokeDown.setImage(this.getIconManager().getStrokeDown());
-		this.pickStrokeUp.setImage(this.getIconManager().getPickStrokeUp());
-		this.pickStrokeDown.setImage(this.getIconManager().getPickStrokeDown());
+		this.chordMenu.setImage(this.getIconManager().getImageByName(TGIconManager.CHORD));
+		this.text.setImage(this.getIconManager().getImageByName(TGIconManager.TEXT));
+		this.strokeUp.setImage(this.getIconManager().getImageByName(TGIconManager.STROKE_UP));
+		this.strokeDown.setImage(this.getIconManager().getImageByName(TGIconManager.STROKE_DOWN));
+		this.pickStrokeUp.setImage(this.getIconManager().getImageByName(TGIconManager.PICK_STROKE_UP));
+		this.pickStrokeDown.setImage(this.getIconManager().getImageByName(TGIconManager.PICK_STROKE_DOWN));
 	}
 
 	public void updateSectionItems() {

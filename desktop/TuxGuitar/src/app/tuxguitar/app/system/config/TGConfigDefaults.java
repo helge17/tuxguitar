@@ -46,6 +46,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.SHOW_MARKERS, false);
 		loadProperty(properties, TGConfigKeys.SHOW_MAIN_TOOLBAR, true);
 		loadProperty(properties, TGConfigKeys.SHOW_EDIT_TOOLBAR, true);
+		loadProperty(properties, TGConfigKeys.MAIN_TOOLBAR_NAME, "");
 		loadProperty(properties, TGConfigKeys.SHOW_TRACKS, true);
 		loadProperty(properties, TGConfigKeys.LAYOUT_MODE, TGLayout.MODE_VERTICAL);
 		loadProperty(properties, TGConfigKeys.LAYOUT_STYLE, (TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT | TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.HIGHLIGHT_PLAYED_BEAT));

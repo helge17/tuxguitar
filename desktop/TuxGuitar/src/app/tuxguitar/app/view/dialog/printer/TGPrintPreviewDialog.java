@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGColorManager;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
@@ -95,7 +96,7 @@ public class TGPrintPreviewDialog{
 		dialogLayout.set(composite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false, 1, 1, null, null, 0f);
 
 		this.previous = factory.createButton(composite);
-		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getArrowLeft());
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_LEFT));
 		compositeLayout.set(this.previous, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.currentText = factory.createTextField(composite);
@@ -103,7 +104,7 @@ public class TGPrintPreviewDialog{
 		compositeLayout.set(this.currentText, UITableLayout.PACKED_WIDTH, 25f);
 
 		this.next = factory.createButton(composite);
-		this.next.setImage(TuxGuitar.getInstance().getIconManager().getArrowRight());
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_RIGHT));
 		compositeLayout.set(this.next, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 
 		UILabel maxPages = factory.createLabel(composite);

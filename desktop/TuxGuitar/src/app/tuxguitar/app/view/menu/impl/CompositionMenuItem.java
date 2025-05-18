@@ -9,6 +9,7 @@ import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction
 import app.tuxguitar.app.action.impl.composition.TGOpenTripletFeelDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import app.tuxguitar.ui.menu.UIMenu;
@@ -106,14 +107,14 @@ public class CompositionMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons() {
-		this.timeSignature.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTimeSignature());
-		this.tempo.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTempo());
-		this.clef.setImage(TuxGuitar.getInstance().getIconManager().getCompositionClef());
-		this.keySignature.setImage(TuxGuitar.getInstance().getIconManager().getCompositionKeySignature());
-		this.tripletFeel.setImage(TuxGuitar.getInstance().getIconManager().getCompositionTripletFeel());
-		this.repeatOpen.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatOpen());
-		this.repeatClose.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatClose());
-		this.repeatAlternative.setImage(TuxGuitar.getInstance().getIconManager().getCompositionRepeatAlternative());
-		this.properties.setImage(TuxGuitar.getInstance().getIconManager().getSongProperties());
+		this.timeSignature.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TIME_SIGNATURE));
+		this.tempo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TEMPO));
+		this.clef.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.CLEF));
+		this.keySignature.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.KEY_SIGNATURE));
+		this.tripletFeel.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRIPLET_FEEL));
+		this.repeatOpen.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REPEAT_OPEN));
+		this.repeatClose.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REPEAT_CLOSE));
+		this.repeatAlternative.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REPEAT_ALTERNATIVE));
+		this.properties.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SONG_PROPERTIES));
 	}
 }
