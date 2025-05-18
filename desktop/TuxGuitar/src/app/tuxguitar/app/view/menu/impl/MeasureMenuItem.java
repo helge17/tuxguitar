@@ -11,6 +11,7 @@ import app.tuxguitar.app.action.impl.measure.TGOpenMeasureCopyDialogAction;
 import app.tuxguitar.app.action.impl.measure.TGOpenMeasurePasteDialogAction;
 import app.tuxguitar.app.action.impl.measure.TGOpenMeasureRemoveDialogAction;
 import app.tuxguitar.app.action.impl.measure.TGToggleLineBreakAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.editor.action.measure.TGRemoveUnusedVoiceAction;
 import app.tuxguitar.editor.clipboard.TGClipboard;
@@ -135,14 +136,14 @@ public class MeasureMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
-		this.first.setImage(TuxGuitar.getInstance().getIconManager().getMeasureFirst());
-		this.last.setImage(TuxGuitar.getInstance().getIconManager().getMeasureLast());
-		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getMeasurePrevious());
-		this.next.setImage(TuxGuitar.getInstance().getIconManager().getMeasureNext());
-		this.addMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureAdd());
-		this.cleanMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureClean());
-		this.removeMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureRemove());
-		this.copyMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasureCopy());
-		this.pasteMeasure.setImage(TuxGuitar.getInstance().getIconManager().getMeasurePaste());
+		this.first.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_FIRST));
+		this.last.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_LAST));
+		this.previous.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_PREVIOUS));
+		this.next.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_NEXT));
+		this.addMeasure.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_ADD));
+		this.cleanMeasure.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_CLEAN));
+		this.removeMeasure.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_REMOVE));
+		this.copyMeasure.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_COPY));
+		this.pasteMeasure.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.MEASURE_PASTE));
 	}
 }

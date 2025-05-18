@@ -20,6 +20,7 @@ import app.tuxguitar.app.action.impl.selector.TGExtendSelectionNextAction;
 import app.tuxguitar.app.action.impl.selector.TGExtendSelectionPreviousAction;
 import app.tuxguitar.app.action.impl.selector.TGExtendSelectionRightAction;
 import app.tuxguitar.app.action.impl.selector.TGSelectAllAction;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.component.tab.edit.EditorKit;
@@ -209,18 +210,18 @@ public class EditMenuItem extends TGMenuItem{
 	}
 
 	public void loadIcons(){
-		this.cut.setImage(TuxGuitar.getInstance().getIconManager().getEditCut());
-		this.copy.setImage(TuxGuitar.getInstance().getIconManager().getEditCopy());
-		this.paste.setImage(TuxGuitar.getInstance().getIconManager().getEditPaste());
-		this.repeat.setImage(TuxGuitar.getInstance().getIconManager().getEditRepeat());
-		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getEditUndo());
-		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getEditRedo());
-		this.modeSelection.setImage(TuxGuitar.getInstance().getIconManager().getEditModeSelection());
-		this.modeEdition.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEdition());
-		this.notNaturalKey.setImage(TuxGuitar.getInstance().getIconManager().getEditModeEditionNotNatural());
-		this.voice1.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice1());
-		this.voice2.setImage(TuxGuitar.getInstance().getIconManager().getEditVoice2());
-		this.freeEditionMode.setImage(TuxGuitar.getInstance().getIconManager().getFreeEditionMode());
-		this.openMeasureErrorsDialog.setImage(TuxGuitar.getInstance().getIconManager().getMeasureErrors());
+		this.cut.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_CUT));
+		this.copy.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_COPY));
+		this.paste.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_PASTE));
+		this.repeat.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_REPEAT));
+		this.undo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.UNDO));
+		this.redo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REDO));
+		this.modeSelection.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_MODE_SELECTION));
+		this.modeEdition.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_MODE_EDITION));
+		this.notNaturalKey.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_MODE_EDITION_NO_NATURAL));
+		this.voice1.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_VOICE_1));
+		this.voice2.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_VOICE_2));
+		this.freeEditionMode.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_MODE_FREE));
+		this.openMeasureErrorsDialog.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.EDIT_MEASURE_STATUS_CHECK));
 	}
 }
