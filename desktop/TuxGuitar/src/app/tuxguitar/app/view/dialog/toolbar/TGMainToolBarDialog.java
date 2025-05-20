@@ -98,6 +98,7 @@ public class TGMainToolBarDialog {
 
 		this.fillToolBarNames();
 		this.updateButtons();
+		this.addDropDownSelectionListeners();
 
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
@@ -107,12 +108,6 @@ public class TGMainToolBarDialog {
 		toolbarNameLabel.setText(TuxGuitar.getProperty("toolbar.settings.toolbar-name"));
 		layout.set(toolbarNameLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		this.selectToolbarName = uiFactory.createDropDownSelect(panel);
-		this.selectToolbarName.addSelectionListener(new UISelectionListener() {
-			@Override
-			public void onSelect(UISelectionEvent event) {
-				TGMainToolBarDialog.this.chooseToolBar();
-			}
-		});
 		layout.set(this.selectToolbarName, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		this.saveButton = uiFactory.createButton(panel);
@@ -158,12 +153,6 @@ public class TGMainToolBarDialog {
 
 		boolean first = true;
 		this.selectGroup = uiFactory.createDropDownSelect(panel);
-		this.selectGroup.addSelectionListener(new UISelectionListener() {
-			@Override
-			public void onSelect(UISelectionEvent event) {
-				TGMainToolBarDialog.this.fillControlsList();
-			}
-		});
 		for (String groupName : this.configMap.getToolBarGroupsNames()) {
 			String displayed = groupName == "" ? "" : TuxGuitar.getProperty(groupName);	// to avoid a warning
 			UISelectItem<String> item = new UISelectItem<String>(displayed, groupName);
@@ -176,12 +165,6 @@ public class TGMainToolBarDialog {
 		layout.set(this.selectGroup, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, true, true);
 
 		this.selectArea = uiFactory.createDropDownSelect(panel);
-		this.selectArea.addSelectionListener(new UISelectionListener() {
-			@Override
-			public void onSelect(UISelectionEvent event) {
-				TGMainToolBarDialog.this.fillAreaControlsList();
-			}
-		});
 		// fill list of areas
 		first = true;
 		for (int i = 0; i < TGMainToolBar.AREAS.length; i++) {
@@ -306,6 +289,27 @@ public class TGMainToolBarDialog {
 		});
 		layout.set(buttonCancel, 1, 4, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 		layout.set(buttonCancel, UITableLayout.MINIMUM_PACKED_WIDTH, MINIMUM_BUTTON_WIDTH);
+	}
+
+	private void addDropDownSelectionListeners() {
+		this.selectGroup.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGMainToolBarDialog.this.fillControlsList();
+			}
+		});
+		this.selectArea.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGMainToolBarDialog.this.fillAreaControlsList();
+			}
+		});
+		this.selectToolbarName.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGMainToolBarDialog.this.chooseToolBar();
+			}
+		});
 	}
 
 	private void chooseToolBar() {
