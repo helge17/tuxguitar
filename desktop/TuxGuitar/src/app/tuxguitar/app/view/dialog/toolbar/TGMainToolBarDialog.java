@@ -105,7 +105,7 @@ public class TGMainToolBarDialog {
 
 	private void initHeader(UIPanel panel, UITableLayout layout, UIFactory uiFactory) {
 		UILabel toolbarNameLabel = uiFactory.createLabel(panel);
-		toolbarNameLabel.setText(TuxGuitar.getProperty("toolbar.settings.toolbar-name"));
+		toolbarNameLabel.setText(TuxGuitar.getProperty("toolbar.settings.toolbar-name") + ":");
 		layout.set(toolbarNameLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		this.selectToolbarName = uiFactory.createDropDownSelect(panel);
 		layout.set(this.selectToolbarName, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
