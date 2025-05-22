@@ -161,7 +161,7 @@ public class EditMenuItem extends TGMenuItem{
 		this.repeat.setEnabled(!running && tablature.getSelector().isActive());
 		this.undo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canUndo());
 		this.redo.setEnabled(!running && TuxGuitar.getInstance().getUndoableManager().canRedo());
-		this.selectAll.setEnabled(!running);
+		this.selectAll.setEnabled(!running && !TuxGuitar.getInstance().getSongManager().getTrackManager().hasMeasureDurationError(tablature.getCaret().getTrack()));
 		this.selectNone.setEnabled(!running && tablature.getSelector().isActive());
 		this.extendSelection.setEnabled(!running && tablature.getSelector().isActive());
 		this.extendSelectionLeft.setEnabled(!running && tablature.getSelector().isActive());

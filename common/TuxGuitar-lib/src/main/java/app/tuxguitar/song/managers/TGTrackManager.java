@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import app.tuxguitar.graphics.control.TGDrumMap;
+import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGColor;
@@ -762,5 +763,18 @@ public class TGTrackManager {
 	 */
 	public boolean isLastMeasure(TGMeasure measure){
 		return (measure.getTrack().getSong().countMeasureHeaders() == measure.getNumber());
+	}
+
+	public boolean hasMeasureDurationError(TGTrack track) {
+		TGMeasureManager measureManager = getSongManager().getMeasureManager();
+		Iterator<TGMeasure> itMeasure = track.getMeasures();
+		while (itMeasure.hasNext()) {
+			for (TGMeasureError err : measureManager.getMeasureErrors(itMeasure.next())) {
+				if (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
