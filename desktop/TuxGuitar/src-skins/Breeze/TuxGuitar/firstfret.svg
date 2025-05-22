@@ -48,12 +48,12 @@
   </filter>
  </defs>
  <g id="g1014" transform="translate(0,60)" filter="url(#filter1018)">
-  <path id="path7019" d="m3-60a1 1 0 0 1 1 1h-1z" fill="url(#radialGradient7083)" filter="url(#filter932)" style="paint-order:markers fill stroke"/>
-  <rect id="rect7021" y="-60" width="3" height="1" fill="url(#linearGradient7075)" style="paint-order:markers fill stroke"/>
-  <rect id="rect7023" x="3" y="-59" width="1" height="148" fill="url(#linearGradient7067)" style="paint-order:markers fill stroke"/>
-  <path id="path7019-7" transform="rotate(90)" d="m89-4a1 1 0 0 1 1 1h-1z" fill="url(#radialGradient7059)" style="paint-order:markers fill stroke"/>
-  <rect id="rect7021-5" y="89" width="3" height="1" fill="url(#linearGradient7051)" style="paint-order:markers fill stroke"/>
-  <path id="path7019-6" d="m1.9615e-8 0a1 1 0 0 1 1 1h-1z" fill="url(#linearGradient999)" style="paint-order:markers fill stroke"/>
-  <rect id="rect7043" y="-59" width="3" height="148" fill="#c0c0c0" style="paint-order:markers fill stroke"/>
+  <path id="path7019" d="m3-60a1 1 0 0 1 1 1h-1z" filter="url(#filter932)" style="fill:url(#radialGradient7083);paint-order:markers fill stroke"/>
+  <rect id="rect7021" y="-60" width="3" height="1" style="fill:url(#linearGradient7075);paint-order:markers fill stroke"/>
+  <rect id="rect7023" x="3" y="-59" width="1" height="148" style="fill:url(#linearGradient7067);paint-order:markers fill stroke"/>
+  <path id="path7019-7" transform="rotate(90)" d="m89-4a1 1 0 0 1 1 1h-1z" style="fill:url(#radialGradient7059);paint-order:markers fill stroke"/>
+  <rect id="rect7021-5" y="89" width="3" height="1" style="fill:url(#linearGradient7051);paint-order:markers fill stroke"/>
+  <path id="path7019-6" d="m1.9615e-8 0a1 1 0 0 1 1 1h-1z" style="fill:url(#linearGradient999);paint-order:markers fill stroke"/>
+  <rect id="rect7043" y="-59" width="3" height="148" style="fill:#c0c0c0;paint-order:markers fill stroke"/>
  </g>
 </svg>
