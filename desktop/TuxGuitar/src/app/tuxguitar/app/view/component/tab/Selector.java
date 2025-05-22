@@ -6,6 +6,8 @@ import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.graphics.control.TGTrackImpl;
 import app.tuxguitar.song.helpers.TGBeatRangeIterator;
 import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.util.TGBeatRange;
 import app.tuxguitar.util.TGNoteRange;
@@ -42,20 +44,55 @@ public class Selector {
 		if (initial == null || beat == null) {
 			initializeSelection(beat);
 		} else {
-			if (this.beatsOrderIsConsistent(beat)) {
-				active = true;
-				if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber()
-						|| initialIsEarlierInTheSameMeasure(beat)) {
+			active = true;
+			// checking if beats order is consistent
+			// it may be false if some measures are invalid: then, break selection
+			TGTrack track = beat.getMeasure().getTrack();
+			boolean overlap = false;
+			if (initial.getMeasure().getNumber() < beat.getMeasure().getNumber()
+					|| initialIsEarlierInTheSameMeasure(beat)) {
+				// left to right selection
+				int firstSelectabledMeasureNb = initial.getMeasure().getNumber();
+				for (int m = firstSelectabledMeasureNb; m<beat.getMeasure().getNumber(); m++) {
+					if (!measureCanBeSelected(track.getMeasure(m-1))) {
+						// invalid overlap
+						overlap = true;
+						firstSelectabledMeasureNb = m;
+					}
+				}
+				if (overlap) {
+					// found at least an invalid measure, restart selection from first measure that can be selected
+					start = track.getMeasure(firstSelectabledMeasureNb).getBeat(0);
+					initial = start;
+					end = beat;
+				}
+				else {
+					// no invalid measure found, normal selection
 					start = initial;
 					end = beat;
-				} else {
+				}
+			}
+			else {
+				// right to left selection
+				int lastSelectableMeasureNb = initial.getMeasure().getNumber();
+				for (int m = lastSelectableMeasureNb; m>beat.getMeasure().getNumber(); m--) {
+					if (!measureCanBeSelected(track.getMeasure(m-2))) {
+						// invalid overlap
+						overlap = true;
+						lastSelectableMeasureNb = m-1;
+					}
+				}
+				if (overlap) {
+					// found at least an invalid measure, restart selection from last beat of last measure that can be selected
+					start = beat;
+					end = track.getMeasure(lastSelectableMeasureNb-1).getBeat(track.getMeasure(lastSelectableMeasureNb-1).countBeats()-1);
+					initial = end;
+				}
+				else {
+					// no invalid measure found, normal selection
 					start = beat;
 					end = initial;
 				}
-				this.saveState();
-			}
-			else {
-				active = false;
 			}
 		}
 	}
@@ -64,25 +101,17 @@ public class Selector {
 		initializeSelection(null);
 	}
 
+	private boolean measureCanBeSelected(TGMeasure measure) {
+		int measureNb = measure.getNumber();
+		if (measureNb == measure.getTrack().countMeasures()) return true;
+		// measure.getNumber: first is 1
+		// track.getMeasure: first is 0
+		return (measure.getBeat(measure.countBeats()-1).getPreciseStart() < measure.getTrack().getMeasure(measureNb).getBeat(0).getPreciseStart());
+	}
+
 	private boolean initialIsEarlierInTheSameMeasure(TGBeat beat) {
 		return initial.getMeasure().getNumber() == beat.getMeasure().getNumber()
 				&& initial.getStart() < beat.getStart();
-	}
-
-	private boolean beatsOrderIsConsistent(TGBeat beatToSelect) {
-		// in free edition mode, some measures may be invalid, e.g. too long
-		// in this case, some beats in a measure may have a start attribute bigger than notes in the next measure!
-		// in other words: whenever one measure is too long, the order of beats shown on score/tab is not
-		// consistent with their .start attribute
-		if ( (beatToSelect.getMeasure().getNumber() < start.getMeasure().getNumber())
-				&& (beatToSelect.getStart() >= start.getStart()) ) {
-			return false;
-		}
-		if ( (beatToSelect.getMeasure().getNumber() > end.getMeasure().getNumber())
-				&& (beatToSelect.getStart() <= end.getStart()) ) {
-			return false;
-		}
-		return true;
 	}
 
 	public TGBeat getInitialBeat() {
