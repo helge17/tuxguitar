@@ -66,8 +66,16 @@ public class TestTiedNotes {
 				this.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE, note);
 				this.actionManager.execute(TGChangeTiedNoteAction.NAME, this.actionContext);
 				assertTrue(note.isTiedNote());
+				// check harmonic propagation
+				if (note.getVoice().getBeat().getMeasure().getNumber()==2) {
+					assertEquals(isFreeEditionMode, !note.getEffect().isHarmonic());
+				}
+				
 				// undo (for next iteration)
 				this.actionManager.execute(TGChangeTiedNoteAction.NAME, this.actionContext);
+				if (note.getVoice().getBeat().getMeasure().getNumber()==2) {
+					note.getEffect().setHarmonic(null);
+				}
 			}
 			for (TGNote note : invalidTies) {
 				// just checking the test scenario
