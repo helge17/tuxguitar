@@ -194,3 +194,43 @@ $ mvn -e clean verify -P native-modules
 $ cd target/tuxguitar-*
 $ ./tuxguitar.sh
 ```
+
+## Build the Windows version on Windows
+
+### How to install WSL2 and Ubuntu
+
+You must be running Windows 10 version 2004 and higher (Build 19041 and higher) or Windows 11 to use the command below. Open PowerShell as Administrator and run:
+
+```ps
+
+wsl --install
+
+```
+
+This installs WSL2, the Ubuntu distro by default, and sets everything up. If it says you need a restart, do it. After reboot, open "Ubuntu" from the Start Menu. Let it finish installing and set up a UNIX username/password. Since WSL2 is seperate from your main machine, in order to connect to GitHub, you will need to generate an SSH key if you don’t have one.
+
+### Installing Prerequisites
+
+At this point, you can proceed in the WSL2 window with the "Install Prerequisites" instructions from the Build for Windows on Linux including "Download and install SWT for Windows"
+
+### Get the TuxGuitar sources
+
+Same as for Debian (see above).
+
+### Build and Start TuxGuitar
+
+From the tuxguitar folder, run the following commands as above:
+
+```sh
+$ cd desktop/build-scripts/tuxguitar-windows-swt-x86_64
+$ mvn -e clean verify -P native-modules -P -platform-linux -P platform-windows
+$ cd -
+```
+
+After a successful build, copy the resulting folder to your Windows filesystem:
+
+```sh
+$ cp -r desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-9.99-SNAPSHOT-windows-swt-x86_64 /mnt/c/tuxguitar
+```
+
+This will copy the files to c:\tuxguitar on your Windows machine, adjust the /mnt/ folder as you wish. From there, you can simply launch TuxGuitar from your Windows machine by launching the exe in this folder.
