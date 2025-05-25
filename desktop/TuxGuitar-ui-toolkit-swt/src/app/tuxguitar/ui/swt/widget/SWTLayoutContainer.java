@@ -92,7 +92,22 @@ public abstract class SWTLayoutContainer<T extends Composite> extends SWTControl
 		super.setBounds(bounds);
 
 		if( this.layout != null ) {
-			this.layout.setBounds(this, this.getChildArea());
+			// workaround for a macOS specific issue, leading to incorrect dialog display
+			// https://github.com/helge17/tuxguitar/issues/361
+			UIRectangle childArea = this.getChildArea();
+			if ((childArea.getPosition().getY()<0f) && (this.getControl().getParent() != null)) {
+				// TODO, delete log
+				try {
+					throw new Exception("Fixing negative value Y=" + String.valueOf(childArea.getPosition().getY()));
+				}
+				catch (Throwable e) {
+					e.printStackTrace();
+				}
+				
+				// a layout container should not be drawn outside of its parent
+				childArea.getPosition().setY(0f);
+			}
+			this.layout.setBounds(this, childArea);
 		}
 		else {
 			for(UIControl uiControl : this.getChildren()) {
