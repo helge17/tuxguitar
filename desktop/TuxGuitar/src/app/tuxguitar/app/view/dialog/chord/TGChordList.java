@@ -218,17 +218,20 @@ public class TGChordList {
 	}
 
 	public void setChords(List<TGChord> chords) {
-		this.disposeChords();
-		this.selectedChord = null;
-
-		Iterator<TGChord> it = chords.iterator();
-		while (it.hasNext()) {
-			TGChordImpl chord = (TGChordImpl) it.next();
-			chord.setTonic( TGChordList.this.dialog.getSelector().getTonicList().getSelectedValue() );
-			chord.setBeat(TGChordList.this.beat);
-			this.graphicChords.add(chord);
+		Integer tonic = TGChordList.this.dialog.getSelector().getTonicList().getSelectedValue();
+		if (tonic != null) {
+			this.disposeChords();
+			this.selectedChord = null;
+	
+			Iterator<TGChord> it = chords.iterator();
+			while (it.hasNext()) {
+					TGChordImpl chord = (TGChordImpl) it.next();
+					chord.setTonic(tonic);
+					chord.setBeat(TGChordList.this.beat);
+					this.graphicChords.add(chord);
+			}
+			this.redraw();
 		}
-		this.redraw();
 	}
 
 	public void disposeFont(){
