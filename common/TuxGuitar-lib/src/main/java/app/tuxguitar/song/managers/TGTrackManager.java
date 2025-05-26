@@ -224,10 +224,6 @@ public class TGTrackManager {
 		track.addMeasure(index,measure);
 	}
 
-	public void removeLastMeasure(TGTrack track){
-		removeMeasure(getLastMeasure(track));
-	}
-
 	public void removeMeasure(TGTrack track,long start){
 		removeMeasure(getMeasureAt(track,start));
 	}
@@ -360,10 +356,6 @@ public class TGTrackManager {
 		return updatedBeats;
 	}
 
-	public void changeKeySignature(TGTrack track,long start,int keySignature,boolean toEnd){
-		changeKeySignature(track,getMeasureAt(track,start),keySignature,toEnd);
-	}
-
 	/**
 	 * Cambia el Key Signature
 	 */
@@ -387,10 +379,6 @@ public class TGTrackManager {
 			measure.setKeySignature(keySignature);
 			measure.resetAltEnharmonic();
 		}
-	}
-
-	public void changeClef(TGTrack track,long start,int clef,boolean toEnd){
-		changeClef(track,getMeasureAt(track,start),clef,toEnd);
 	}
 
 	/**
@@ -463,10 +451,6 @@ public class TGTrackManager {
 			TGMeasure measure = (TGMeasure)it.next();
 			getSongManager().getMeasureManager().removeNotesAfterFret(measure,fret);
 		}
-	}
-
-	public void changeChannel(TGTrack track, int channelId){
-		this.changeChannel(track, getSongManager().getChannel(track.getSong(), channelId));
 	}
 
 	public void changeChannel(TGTrack track, TGChannel channel) {
