@@ -51,6 +51,9 @@ public abstract class TGVoice {
 
 	public void setEmpty(boolean empty) {
 		this.empty = empty;
+		if (empty) {
+			this.clearNotes();
+		}
 	}
 
 	public int getDirection() {
