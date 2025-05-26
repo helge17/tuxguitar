@@ -354,26 +354,6 @@ public class TGMeasureManager {
 		return null;
 	}
 
-	public TGNote getPreviousNote(TGMeasure measure,long start, int voiceIndex, int string) {
-		TGBeat beat = getBeat(measure, start);
-		if( beat != null ){
-			TGBeat previous = getPreviousBeat(measure.getBeats(),beat);
-			while(previous != null){
-				TGVoice voice = previous.getVoice(voiceIndex);
-				if(!voice.isEmpty()){
-					for (int i = 0; i < voice.countNotes(); i++) {
-						TGNote current = voice.getNote(i);
-						if (current.getString() == string) {
-							return current;
-						}
-					}
-				}
-				previous = getPreviousBeat(measure.getBeats(),previous);
-			}
-		}
-		return null;
-	}
-
 	public TGNote getNextNote(TGMeasure measure,long start, int voiceIndex, int string) {
 		TGBeat beat = getBeat(measure, start);
 		if( beat != null ){
@@ -420,20 +400,6 @@ public class TGMeasureManager {
 		return maximumDuration;
 	}
 
-	public TGBeat getBeat(TGTrack track,long start) {
-		Iterator<TGMeasure> measures = track.getMeasures();
-		while( measures.hasNext() ){
-			TGMeasure measure = measures.next();
-			Iterator<TGBeat> beats = measure.getBeats().iterator();
-			while(beats.hasNext()){
-				TGBeat beat = beats.next();
-				if (beat.getStart() == start) {
-					return beat;
-				}
-			}
-		}
-		return null;
-	}
 	public TGBeat getBeatPrecise(TGTrack track,long preciseStart) {
 		Iterator<TGMeasure> measures = track.getMeasures();
 		while( measures.hasNext() ){
@@ -869,28 +835,12 @@ public class TGMeasureManager {
 		}
 	}
 
-	public void cleanBeatNotes(TGMeasure measure, long start){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			cleanBeatNotes(beat);
-		}
-	}
-
 	public void cleanVoiceNotes(TGVoice voice){
 		if(!voice.isEmpty()){
 			while(voice.countNotes() > 0 ){
 				TGNote note = voice.getNote(0);
 				removeNote(note);
 			}
-		}
-	}
-	/**
-	 * Agrega el acorde al compas
-	 */
-	public void addChord(TGMeasure measure,long start, TGChord chord){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			addChord(beat, chord);
 		}
 	}
 
@@ -926,32 +876,11 @@ public class TGMeasureManager {
 	/**
 	 * Agrega el texto al compas
 	 */
-	public void addText(TGMeasure measure,long start, TGText text){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			addText(beat, text);
-		}
-	}
-
-	/**
-	 * Agrega el texto al compas
-	 */
 	public void addText(TGBeat beat,TGText text){
 		beat.removeText();
 		if(!text.isEmpty()){
 			beat.setText(text);
 		}
-	}
-
-	/**
-	 * Retorna el texto en la position
-	 */
-	public TGText getText(TGMeasure measure,long start) {
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			return beat.getText();
-		}
-		return null;
 	}
 
 	/**
@@ -961,31 +890,12 @@ public class TGMeasureManager {
 		beat.removeText();
 	}
 
-	/**
-	 * Borra el texto en la position
-	 */
-	public boolean removeText(TGMeasure measure,long start) {
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			removeText(beat);
-			return true;
-		}
-		return false;
-	}
-
 	public void cleanMeasure(TGMeasure measure){
 		while( measure.countBeats() > 0){
 			removeBeat( measure.getBeat(0));
 		}
 	}
 
-	// refresh beat precise start
-	private void updateBeatPreciseStart(TGBeat beat) {
-		if (beat.getMeasure() != null) {
-			this.updateBeatsPreciseStart(beat.getMeasure());
-		}
-	}
-	
 	// (re)compute preciseStart of all beats in measure
 	// assumption: beats start is precise enough to ensure beats can be sorted correctly
 	public void updateBeatsPreciseStart(TGMeasure measure) {
@@ -1435,16 +1345,6 @@ public class TGMeasureManager {
 	/**
 	 * Liga la nota
 	 */
-	public void changeTieNote(TGMeasure measure,long start,int string){
-		TGNote note = getNote(measure,start,string);
-		if(note != null){
-			changeTieNote(note);
-		}
-	}
-
-	/**
-	 * Liga la nota
-	 */
 	public void changeTieNote(TGNote note){
 		boolean isValid = (note.isTiedNote() || getSongManager().isFreeEditionMode(note.getVoice().getBeat().getMeasure()));
 		if (!isValid) {
@@ -1743,13 +1643,6 @@ public class TGMeasureManager {
 		return list;
 	}
 
-	public void addSilence(TGMeasure measure,long start, TGDuration duration, int voice){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			addSilence(beat, duration, voice);
-		}
-	}
-
 	public void addSilence(TGBeat beat, TGDuration duration, int voice){
 		addSilence(beat, duration, beat.getStart(),voice);
 	}
@@ -1828,13 +1721,6 @@ public class TGMeasureManager {
 				preciseLength = next.getBeat().getPreciseStart() - preciseStart;
 			}
 			moveVoicesPrecise(voice.getBeat().getMeasure(), preciseStart + preciseLength, -preciseLength, voice.getIndex(), voice.getDuration());
-		}
-	}
-
-	public void removeVoice(TGMeasure measure,long start,int index, boolean moveNextComponents){
-		TGBeat beat = getBeat(measure, start);
-		if(beat != null){
-			removeVoice(beat.getVoice(index), moveNextComponents);
 		}
 	}
 
@@ -1963,22 +1849,6 @@ public class TGMeasureManager {
 			TGVoice voice = voices.get( (thePreciseMove < 0 ? i : ( (count - 1) - i ) ) );
 			moveVoicePrecise(voice,thePreciseMove);
 		}
-	}
-
-	public void moveVoice(TGVoice voice, long theMove){
-		long newStart = (voice.getBeat().getStart() + theMove);
-
-		TGBeat newBeat = getBeat(voice.getBeat().getMeasure(),newStart);
-		if( newBeat == null ){
-			newBeat = getSongManager().getFactory().newBeat();
-			// update approximative start
-			newBeat.setStart( newStart );
-			addBeat(voice.getBeat().getMeasure(), newBeat);
-			// refresh precise start
-			this.updateBeatPreciseStart(newBeat);
-		}
-
-		this.moveVoice(voice, newBeat);
 	}
 
 	public void moveVoicePrecise(TGVoice voice, long thePreciseMove){

@@ -101,10 +101,6 @@ public class TGSongManager {
 		return false;
 	}
 
-	public void setSongName(TGSong song, String name){
-		song.setName(name);
-	}
-
 	public void setProperties(TGSong song, String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments){
 		song.setName(name);
 		song.setArtist(artist);
@@ -188,13 +184,6 @@ public class TGSongManager {
 	public void removeChannel(TGSong song, TGChannel channel){
 		if( channel != null ){
 			song.removeChannel(channel);
-		}
-	}
-
-	public void removeChannel(TGSong song, int channelId){
-		TGChannel channel = getChannel(song, channelId);
-		if( channel != null ){
-			removeChannel(song, channel);
 		}
 	}
 
@@ -480,10 +469,6 @@ public class TGSongManager {
 		return false;
 	}
 
-	public void changeTimeSignature(TGSong song, long start,TGTimeSignature timeSignature,boolean toEnd){
-		changeTimeSignature(song, getMeasureHeaderAt(song, start),timeSignature,toEnd);
-	}
-
 	public void changeTimeSignature(TGSong song, TGMeasureHeader header,TGTimeSignature timeSignature,boolean toEnd){
 		//asigno el nuevo ritmo
 		header.getTimeSignature().copyFrom(timeSignature);
@@ -515,10 +500,6 @@ public class TGSongManager {
 		}
 	}
 
-	public void changeTripletFeel(TGSong song, long start,int tripletFeel,boolean toEnd){
-		changeTripletFeel(song, getMeasureHeaderAt(song, start),tripletFeel,toEnd);
-	}
-
 	public void changeTripletFeel(TGSong song, TGMeasureHeader header,int tripletFeel,boolean toEnd){
 		//asigno el nuevo tripletFeel
 		header.setTripletFeel(tripletFeel);
@@ -533,10 +514,6 @@ public class TGSongManager {
 		}
 	}
 
-	public void changeTempos(TGSong song, long start,TGTempo tempo,boolean toEnd){
-		changeTempos(song, getMeasureHeaderAt(song, start),tempo,toEnd);
-	}
-
 	public void changeTempos(TGSong song, TGMeasureHeader header,TGTempo tempo,boolean toEnd){
 		TGTempo oldTempo = header.getTempo();
 		Iterator<TGMeasureHeader> it = getMeasureHeadersAfter(song, header.getNumber() - 1).iterator();
@@ -547,18 +524,6 @@ public class TGSongManager {
 			}else{
 				break;
 			}
-		}
-	}
-
-	public void changeTempos(TGSong song, List<TGTempo> tempos){
-		int length = tempos.size();
-		if(length != song.countMeasureHeaders()){
-			return;
-		}
-		for(int i = 0; i < length; i ++){
-			TGTempo tempo = (TGTempo)tempos.get(i);
-			TGMeasureHeader header = getMeasureHeader(song, i + 1);
-			this.changeTempo(header, tempo);
 		}
 	}
 
@@ -633,19 +598,6 @@ public class TGSongManager {
 		}
 	}
 
-	public List<TGMeasure> getMeasures(TGSong song, long start){
-		List<TGMeasure> measures = new ArrayList<TGMeasure>();
-		Iterator<TGTrack> it = song.getTracks();
-		while(it.hasNext()){
-			TGTrack track = it.next();
-			TGMeasure measure = getTrackManager().getMeasureAt(track,start);
-			if(measure != null){
-				measures.add(measure);
-			}
-		}
-		return measures;
-	}
-
 	public void copyTrackFrom(TGSong song, TGTrack track, TGTrack from){
 		while( song.countMeasureHeaders() < from.countMeasures() ){
 			this.addNewMeasureBeforeEnd(song);
@@ -655,14 +607,6 @@ public class TGSongManager {
 		}
 
 		track.copyFrom(getFactory(), song, from);
-	}
-
-	public TGTrack replaceTrack(TGSong song, TGTrack track){
-		TGTrack current = getTrack(song, track.getNumber());
-		if( current != null ){
-			this.copyTrackFrom(song, current, track);
-		}
-		return current;
 	}
 
 	public TGMeasureHeader getFirstMeasureHeader(TGSong song){
@@ -760,38 +704,8 @@ public class TGSongManager {
 		return headers;
 	}
 
-	/**
-	 * Retorna Todos los desde Start hasta el final del compas
-	 */
-	public List<TGMeasureHeader> getMeasureHeadersBetween(TGSong song, long p1, long p2) {
-		List<TGMeasureHeader> headers = new ArrayList<TGMeasureHeader>();
-		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if ((header.getStart() + header.getLength()) > p1 && header.getStart() < p2) {
-				headers.add(header);
-			}
-		}
-		return headers;
-	}
-
-	public void removeLastMeasure(TGSong song){
-		removeLastMeasureHeader(song);
-	}
-
-	public void removeMeasure(TGSong song, long start){
-		removeMeasureHeader(song, start);
-	}
-
 	public void removeMeasure(TGSong song, int number){
 		removeMeasureHeader(song, number);
-	}
-
-	/**
-	 * Agrega un Compas
-	 */
-	public void addMeasureHeader(TGSong song, TGMeasureHeader measure){
-		song.addMeasureHeader(measure);
 	}
 
 	/**
@@ -801,19 +715,8 @@ public class TGSongManager {
 		song.addMeasureHeader(index, measure);
 	}
 
-	public void removeMeasureHeaders(TGSong song, int n1, int n2){
-		for(int i = n1; i <= n2; i ++){
-			TGMeasureHeader measure = getMeasureHeader(song, n1);
-			removeMeasureHeader(song,measure);
-		}
-	}
-
 	public void removeLastMeasureHeader(TGSong song){
 		removeMeasureHeader(song, getLastMeasureHeader(song));
-	}
-
-	public void removeMeasureHeader(TGSong song, long start){
-		removeMeasureHeader(song, getMeasureHeaderAt(song,start));
 	}
 
 	public void removeMeasureHeader(TGSong song, int number){
@@ -882,13 +785,6 @@ public class TGSongManager {
 		}
 	}
 
-	/**
-	 * Retorna true si el start esta en el rango del compas
-	 */
-	public boolean isAtPosition(TGMeasureHeader header,long start){
-		return (start >= header.getStart() && start < header.getStart() + header.getLength());
-	}
-
 	public TGMarker updateMarker(TGSong song, int measure,String title,TGColor color){
 		TGMeasureHeader header = getMeasureHeader(song, measure);
 		if(header != null){
@@ -919,16 +815,6 @@ public class TGSongManager {
 		TGMeasureHeader header = getMeasureHeader(song, number);
 		if(header != null && header.hasMarker()){
 			header.setMarker(null);
-		}
-	}
-
-	public void removeAllMarkers(TGSong song){
-		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if(header.hasMarker()){
-				header.setMarker(null);
-			}
 		}
 	}
 
@@ -1026,10 +912,6 @@ public class TGSongManager {
 
 	public List<TGString> createDefaultInstrumentStrings() {
 		return createDefaultInstrumentStrings(6);
-	}
-
-	public List<TGString> createDefaultPercussionStrings() {
-		return createPercussionStrings(6);
 	}
 
 	public List<TGString> createDefaultInstrumentStrings(int stringCount) {
