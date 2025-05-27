@@ -1036,27 +1036,14 @@ public class TGMeasureImpl extends TGMeasure{
 		if(this.getHeaderImpl().shouldPaintTimeSignature()){
 			int style = layout.getStyle();
 			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getClefSpacing(layout) + getKeySignatureSpacing(layout));
-			float y = 0f;
-			float y1 = 0f;
-			float y2 = 0f;
+			float yMiddle = 0f;
 			float height = 0;
 			if((style & TGLayout.DISPLAY_SCORE) != 0 ) {
-				y = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-				y1 = y;
-				y2 = (y + getTrackImpl().getScoreHeight());
+				yMiddle = getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (getTrackImpl().getScoreHeight() / 2.0f);
 				height = ((layout.getScoreLineSpacing() * 2f) - layout.getScale());
 			} else if((style & TGLayout.DISPLAY_TABLATURE) != 0 ) {
-				y = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
-				y1 = y;
-				y2 = (y + getTrackImpl().getTabHeight());
+				yMiddle = getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + (getTrackImpl().getTabHeight() / 2.0f);
 				height = ((layout.getStringSpacing() * 3f) / 2f);
-			}
-
-			if((y2 - y1) < (height * 2f)) {
-				float yMove = ((((height * 2f) - (y2 - y1)) / 2f));
-
-				y1 -= yMove;
-				y2 += yMove;
 			}
 
 			float w1 = TGNumberPainter.getDigitsWidth(getTimeSignature().getNumerator(), height);
@@ -1065,8 +1052,8 @@ public class TGMeasureImpl extends TGMeasure{
 			float wMove2 = (w1 > w2 ? (w1 - w2) / 2f : 0f);
 
 			layout.setTimeSignatureStyle(painter);
-			TGNumberPainter.paintDigits(getTimeSignature().getNumerator(), painter, x + wMove1, fromY + y1, height);
-			TGNumberPainter.paintDigits(getTimeSignature().getDenominator().getValue(), painter, x + wMove2, fromY + y2 - height, height);
+			TGNumberPainter.paintDigits(getTimeSignature().getNumerator(), painter, x + wMove1, fromY + yMiddle - height, height);
+			TGNumberPainter.paintDigits(getTimeSignature().getDenominator().getValue(), painter, x + wMove2, fromY + yMiddle, height);
 		}
 	}
 
