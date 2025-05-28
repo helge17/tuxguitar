@@ -13,6 +13,7 @@ import app.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
 import app.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
 import app.tuxguitar.app.action.impl.measure.TGGoPreviousMeasureAction;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
@@ -47,6 +48,8 @@ import app.tuxguitar.ui.event.UIMouseDownListener;
 import app.tuxguitar.ui.event.UIMouseEvent;
 import app.tuxguitar.ui.event.UIMouseMoveListener;
 import app.tuxguitar.ui.event.UIMouseUpListener;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.resource.UIColor;
 import app.tuxguitar.ui.resource.UIColorModel;
@@ -59,6 +62,7 @@ import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UILayoutContainer;
 import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UIProgressBar;
+import app.tuxguitar.ui.widget.UISpinner;
 import app.tuxguitar.ui.widget.UIToggleButton;
 import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
@@ -82,6 +86,8 @@ public class TGTransportDialog implements TGEventListener {
 	private UILabel label;
 	private UIProgressBar tickProgress;
 	private UIToggleButton metronome;
+	private UIToggleButton countInToggle;
+	private UISpinner countInTicks;
 	private UIButton mode;
 	private UIToolBar toolBar;
 	private UIToolActionItem first;
@@ -167,6 +173,36 @@ public class TGTransportDialog implements TGEventListener {
 		this.mode = factory.createButton(composite);
 		this.mode.addSelectionListener(new TGActionProcessorListener(this.context , TGOpenTransportModeDialogAction.NAME));
 		compositeLayout.set(this.mode, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
+		
+		MidiPlayer player = MidiPlayer.getInstance(this.context);
+		
+		this.countInToggle = factory.createToggleButton(composite);
+		this.countInToggle.setToolTipText(TuxGuitar.getProperty("transport.count-down"));
+		this.countInToggle.setSelected(player.getCountDown().isEnabled());
+		this.countInToggle.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportCountDownAction.NAME));
+		
+		this.countInTicks = factory.createSpinner(composite);
+		this.countInTicks.setEnabled(player.getCountDown().isEnabled());
+		if (player.getCountDown().getTickCount() == 0)
+			this.countInTicks.setValue(player.getSong().getMeasureHeader(0).getTimeSignature().getNumerator());
+		else
+			this.countInTicks.setValue(player.getCountDown().getTickCount());
+		
+		this.countInTicks.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				player.getCountDown().setTickCount(countInTicks.getValue());
+			}
+		});
+		this.countInToggle.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				countInTicks.setEnabled(!player.getCountDown().isEnabled());
+			}
+		});
+		
+		compositeLayout.set(this.countInToggle, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
+		compositeLayout.set(countInTicks, 2, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.loadOptionIcons();
 	}
@@ -203,7 +239,7 @@ public class TGTransportDialog implements TGEventListener {
 		this.label.setBgColor(background);
 		this.label.setFgColor(foreground);
 		this.label.setFont(font);
-
+		
 		labelContainer.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				font.dispose();
@@ -352,6 +388,7 @@ public class TGTransportDialog implements TGEventListener {
 	private void loadOptionIcons(){
 		this.metronome.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_METRONOME));
 		this.mode.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_MODE));
+		this.countInToggle.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_COUNT_IN));
 	}
 
 	public void dispose() {
