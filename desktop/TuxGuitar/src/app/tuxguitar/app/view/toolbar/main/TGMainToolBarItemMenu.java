@@ -16,16 +16,12 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 
 	private UIToolMenuItem menuItem;
 	private List<TGMainToolBarItemMenuItem> toolBarMenuItems;
+	private boolean displaySelectedItemIcon;
 
-	public TGMainToolBarItemMenu(String groupName, String text, String iconFileName) {
+	public TGMainToolBarItemMenu(String groupName, String text, String iconFileName, boolean displaySelectedItemIcon) {
 		super(groupName, text, TGMainToolBarItem.MENU, null, iconFileName, null);
+		this.displaySelectedItemIcon = displaySelectedItemIcon;
 		this.toolBarMenuItems = new ArrayList<TGMainToolBarItemMenuItem>();
-	}
-
-	// when no icon is given for the menu button, it is assumed that one and only one menuItem is checked
-	// in this case, icon of the selected item is used for the menu button
-	public TGMainToolBarItemMenu(String groupName, String text) {
-		this(groupName, text, null);
 	}
 
 	public void addMenuItem(TGMainToolBarItem item) {
@@ -53,7 +49,7 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 	public void update(TGContext context, boolean running) {
 		for (TGMainToolBarItemMenuItem toolBarMenuItem : toolBarMenuItems) {
 			toolBarMenuItem.update(context, running);
-			if ((this.iconFileName == null) && toolBarMenuItem.isChecked()) {
+			if (this.displaySelectedItemIcon && toolBarMenuItem.isChecked()) {
 				this.menuItem.setImage(TGIconManager.getInstance(context).getImageByName(toolBarMenuItem.getIconFileName()));
 			}
 		}
@@ -76,7 +72,7 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 	}
 
 	public TGMainToolBarItemMenu clone() {
-		TGMainToolBarItemMenu clone = new TGMainToolBarItemMenu(this.groupName, this.text, this.iconFileName);
+		TGMainToolBarItemMenu clone = new TGMainToolBarItemMenu(this.groupName, this.text, this.iconFileName, this.displaySelectedItemIcon);
 		for (TGMainToolBarItemMenuItem menuItem : this.toolBarMenuItems) {
 			clone.addMenuItem(menuItem);
 		}
