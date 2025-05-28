@@ -26,6 +26,7 @@ public class TGIconManager {
 	//   a lot easier to pass as a parameter
 	//   BUT with a risk of duplicated definition of file names
 	//   so, please make sure to only use file names defined as static final String here
+	public static final String SEPARATOR = "separator.png";
 	public static final String FILE_NEW = "new.png";
 	public static final String FILE_OPEN = "open.png";
 	public static final String FILE_SAVE = "save.png";
@@ -63,6 +64,7 @@ public class TGIconManager {
 	public static final String LAYOUT_COMPACT = "layout_compact.png";
 	public static final String TIME_SIGNATURE = "timesignature.png";
 	public static final String TEMPO = "tempoicon.png";
+	public static final String TEMPO_INDICATOR_ICON = "tempoindicator.png";
 	public static final String CLEF ="clef.png";
 	public static final String KEY_SIGNATURE = "keysignature.png";
 	public static final String TRIPLET_FEEL = "tripletfeel.png";
@@ -102,6 +104,7 @@ public class TGIconManager {
 	public static final String TRANSPORT_ICON_STOP = "transport_icon_stop.png";
 	public static final String TRANSPORT_ICON_PLAY = "transport_icon_play.png";
 	public static final String TRANSPORT_ICON_PAUSE = "transport_icon_pause.png";
+	public static final String TRANSPORT_TIME_COUNTER = "transport_time_counter.png";
 	public static final String TRANSPORT_METRONOME = "transport_metronome.png";
 	public static final String TRANSPORT_COUNT_IN = "transport_count_in.png";
 	public static final String TRANSPORT_MODE = "transport_mode.png";
@@ -265,6 +268,7 @@ public class TGIconManager {
 		loadIcon(LAYOUT_TABLATURE);
 		loadIcon(LAYOUT_COMPACT);
 		loadIcon(TRANSPORT_HIGHLIGHT_PLAYED_BEAT);
+		loadIcon(SEPARATOR);
 		loadIcon(FILE_NEW);
 		loadIcon(FILE_OPEN);
 		loadIcon(FILE_CLOSE);
@@ -304,6 +308,7 @@ public class TGIconManager {
 		this.optionLanguage= loadIcon("option_language.png");
 		loadIcon(TIME_SIGNATURE);
 		loadIcon(TEMPO);
+		loadIcon(TEMPO_INDICATOR_ICON);
 		loadIcon(CLEF);
 		loadIcon(KEY_SIGNATURE);
 		loadIcon(TRIPLET_FEEL);
@@ -350,6 +355,7 @@ public class TGIconManager {
 		loadIcon(TRANSPORT_ICON_STOP);
 		loadIcon(TRANSPORT_ICON_PLAY);
 		loadIcon(TRANSPORT_ICON_PAUSE);
+		loadIcon(TRANSPORT_TIME_COUNTER);
 		loadIcon(TRANSPORT_METRONOME);
 		loadIcon(TRANSPORT_COUNT_IN);
 		loadIcon(TRANSPORT_MODE);

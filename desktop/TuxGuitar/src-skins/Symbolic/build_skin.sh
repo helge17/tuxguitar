@@ -35,6 +35,7 @@ declare -A ICONS=(
   # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png width3xheight3+margin3-H:TuxGuitar_icon3.png
   # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
   # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
+  ["$TG/separator.svg"]="$S_ICOS:separator.png"
   ["$TG/1.svg"]="$S_ICOB:1.png"
   ["$TG/2.svg"]="$S_ICOB:2.png"
   ["$TG/2dotted.svg"]="$S_ICOB:2dotted.png"
@@ -59,6 +60,7 @@ declare -A ICONS=(
   ["$TG/edit_mode_free.svg"]="$S_ICOS:edit_mode_free.png"
   ["$TG/timesignature.svg"]="$S_ICOB:timesignature.png"
   ["$DT/legacy/preferences-system-time-symbolic.svg"]="$S_ICOS:tempoicon.png"
+  ["$TG/tempoindicator.svg"]="$S_ICOB:tempoindicator.png"
   ["$TG/clef.svg"]="$S_ICOB:clef.png"
   ["$TG/keysignature.svg"]="$S_ICOB:keysignature.png"
   ["$TG/tripletfeel.svg"]="$S_ICOB:tripletfeel.png"
@@ -202,6 +204,7 @@ declare -A ICONS=(
   ["$DT/status/dialog-warning-symbolic.svg"]="$S_INFO:status_warning.png"
   ["$TG/transport_metronome.svg"]="$S_ICOS:transport_metronome.png"
   ["$TG/transport_count_in.svg"]="$S_ICOS:transport_count_in.png"
+  ["$TG/transport_time_counter.svg"]="$S_ICOB:transport_time_counter.png"
   ["$TG/logo.png"]="$S_LOGO:icon.png"
   ["$TG/splash.png"]="$SKIN_DIR/splash.png $DARK_DIR/splash.png"
   ["$TG/skin-preview.png"]="$SKIN_DIR/skin-preview.png"

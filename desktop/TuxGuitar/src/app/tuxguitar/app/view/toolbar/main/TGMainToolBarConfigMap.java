@@ -197,7 +197,7 @@ public class TGMainToolBarConfigMap {
 
 		// SEPARATOR
 		this.groupName = "";
-		registerItem("toolbar.separator", TGMainToolBarItem.SEPARATOR, null);
+		registerItem("toolbar.separator", TGMainToolBarItem.SEPARATOR, TGIconManager.SEPARATOR);
 
 		//------- FILE --------
 		this.groupName = "file";
@@ -721,9 +721,9 @@ public class TGMainToolBarConfigMap {
 		registerButton("transport.next", TGGoNextMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_NEXT);
 		registerButton("transport.last", TGGoLastMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_LAST);
 		// TIME COUNTER
-		registerItem("toolbar.timeCounter", TGMainToolBarItem.TIME_COUNTER, null);
+		registerItem("toolbar.timeCounter", TGMainToolBarItem.TIME_COUNTER, TGIconManager.TRANSPORT_TIME_COUNTER);
 		// TEMPO INDICATOR
-		registerItem("toolbar.tempoIndicator", TGMainToolBarItem.TEMPO_INDICATOR, TGIconManager.QUARTER);
+		registerItem("toolbar.tempoIndicator", TGMainToolBarItem.TEMPO_INDICATOR, TGIconManager.TEMPO_INDICATOR_ICON);
 		registerCheckable("transport.metronome", TGTransportMetronomeAction.NAME, TGIconManager.TRANSPORT_METRONOME,
 				new TGMainToolBarItemUpdater() {
 					@Override
