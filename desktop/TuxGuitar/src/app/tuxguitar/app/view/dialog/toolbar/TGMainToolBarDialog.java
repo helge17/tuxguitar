@@ -350,7 +350,7 @@ public class TGMainToolBarDialog {
 			TGMainToolBarItem toolBarItem = this.configMap.getToolBarItem(controlName);
 			if (group.equals("") || toolBarItem.getGroupName().equals("") || group.equals(toolBarItem.getGroupName())) {
 				UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
-				uiTableItem.setText(0, TuxGuitar.getProperty(controlName));
+				uiTableItem.setText(0, " " + TuxGuitar.getProperty(controlName));
 				uiTableItem.setImage(iconManager.getImageByName(toolBarItem.getIconFileName()));
 				this.tableControls.addItem(uiTableItem);
 				if (i == 0) {
@@ -377,7 +377,7 @@ public class TGMainToolBarDialog {
 			TGMainToolBarItem areaItem = this.configMap.getToolBarItem(areaControlName);
 			if (areaItem != null) {
 				UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
-				uiTableItem.setText(0, TuxGuitar.getProperty(areaControlName));
+				uiTableItem.setText(0, " " + TuxGuitar.getProperty(areaControlName));
 				if (areaItem.getIconFileName() != null) {
 					uiTableItem.setImage(iconManager.getImageByName(areaItem.getIconFileName()));
 				}
