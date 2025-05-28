@@ -207,7 +207,7 @@ In the Main tab, Project section, click on "Browse..." and select "tuxguitar". I
 In the "Arguments" tab, "VM arguments" section, type:
 ```
 -Dtuxguitar.share.path="(path to your tuxguitar source folder)/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/share/"
--Dtuxguitar.home.path=="(path to your tuxguitar source folder)/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/"
+-Dtuxguitar.home.path="(path to your tuxguitar source folder)/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/"
 ```
 
 Take care to customize these fields considering your path to the TuxGuitar source folder. Example:
