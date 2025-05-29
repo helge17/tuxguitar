@@ -406,7 +406,7 @@ public class TGMainToolBarConfigMap {
 			}
 		});
 		// View menu
-		TGMainToolBarItemMenu menuLayout = new TGMainToolBarItemMenu(this.groupName, "view.layout", TGIconManager.LAYOUT_SCORE);
+		TGMainToolBarItemMenu menuLayout = new TGMainToolBarItemMenu(this.groupName, "view.layout", TGIconManager.LAYOUT_SCORE, false);
 		menuLayout.addMenuItem(mapItems.get("view.layout.page"));
 		menuLayout.addMenuItem(mapItems.get("view.layout.linear"));
 		menuLayout.addMenuItem(mapItems.get("view.layout.multitrack"));
@@ -597,7 +597,8 @@ public class TGMainToolBarConfigMap {
 		registerCheckable("duration.thirtysecond", TGSetThirtySecondDurationAction.NAME, TGIconManager.THIRTYSECOND, getDurationUpdater(TGDuration.THIRTY_SECOND));
 		registerCheckable("duration.sixtyfourth", TGSetSixtyFourthDurationAction.NAME, TGIconManager.SIXTYFOURTH, getDurationUpdater(TGDuration.SIXTY_FOURTH));
 		// Duration menu
-		TGMainToolBarItemMenu menuDuration = new TGMainToolBarItemMenu(this.groupName, "duration");
+		// TODO UPDATE ICON NAME
+		TGMainToolBarItemMenu menuDuration = new TGMainToolBarItemMenu(this.groupName, "duration", TGIconManager.QUARTER, true);
 		menuDuration.addMenuItem(mapItems.get("duration.whole"));
 		menuDuration.addMenuItem(mapItems.get("duration.half"));
 		menuDuration.addMenuItem(mapItems.get("duration.quarter"));
@@ -639,7 +640,8 @@ public class TGMainToolBarConfigMap {
 			}
 		});
 		// duration: division types
-		TGMainToolBarItemMenu menuDivisionType = new TGMainToolBarItemMenu(this.groupName, "duration.division-type");
+		// TODO UPDATE ICON NAME
+		TGMainToolBarItemMenu menuDivisionType = new TGMainToolBarItemMenu(this.groupName, "duration.division-type", "division-type-1.png", true);
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			registerItem(getCheckableDivision(i, menuDivisionType));
 		}
@@ -656,7 +658,8 @@ public class TGMainToolBarConfigMap {
 		registerItem(getCheckableVelocity("dynamic.fortissimo", TGVelocities.FORTISSIMO, TGIconManager.DYNAMIC_FF));
 		registerItem(getCheckableVelocity("dynamic.forte-fortissimo", TGVelocities.FORTE_FORTISSIMO, TGIconManager.DYNAMIC_FFF));
 		// Dynamic menu
-		TGMainToolBarItemMenu menuDynamic = new TGMainToolBarItemMenu(this.groupName, "dynamic");
+		// TODO UPDATE ICON NAME
+		TGMainToolBarItemMenu menuDynamic = new TGMainToolBarItemMenu(this.groupName, "dynamic", TGIconManager.DYNAMIC_F, true);
 		menuDynamic.addMenuItem(mapItems.get("dynamic.piano-pianissimo"));
 		menuDynamic.addMenuItem(mapItems.get("dynamic.pianissimo"));
 		menuDynamic.addMenuItem(mapItems.get("dynamic.piano"));
@@ -699,7 +702,7 @@ public class TGMainToolBarConfigMap {
 		registerButton("marker.next", TGGoNextMarkerAction.NAME, TGIconManager.MARKER_NEXT);
 		registerButton("marker.last", TGGoLastMarkerAction.NAME, TGIconManager.MARKER_LAST);
 		// Marker menu
-		TGMainToolBarItemMenu menuMarker = new TGMainToolBarItemMenu(this.groupName, "marker", TGIconManager.MARKER_LIST);
+		TGMainToolBarItemMenu menuMarker = new TGMainToolBarItemMenu(this.groupName, "marker", TGIconManager.MARKER_LIST, false);
 		menuMarker.addMenuItem(mapItems.get("marker.add"));
 		menuMarker.addMenuItem(mapItems.get("marker.list"));
 		menuMarker.addMenuItem(mapItems.get("toolbar.separator"));
