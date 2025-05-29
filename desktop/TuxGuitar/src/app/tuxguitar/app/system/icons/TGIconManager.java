@@ -117,6 +117,7 @@ public class TGIconManager {
 	public static final String ARROW_DOWN = "arrow_down.png";
 	public static final String ARROW_LEFT = "arrow_left.png";
 	public static final String ARROW_RIGHT = "arrow_right.png";
+	public static final String DURATION = "duration.png";
 	public static final String WHOLE = "1.png";
 	public static final String HALF = "2.png";
 	public static final String QUARTER = "4.png";
@@ -126,7 +127,9 @@ public class TGIconManager {
 	public static final String SIXTYFOURTH = "64.png";
 	public static final String DOTTED = "dotted.png";
 	public static final String DOUBLE_DOTTED = "doubledotted.png";
+	public static final String DIVISION_TYPE = "division-type.png";
 	public static final String TIED_NOTE = "tiednote.png";
+	public static final String DYNAMIC = "dynamic.png";
 	public static final String DYNAMIC_PPP = "dynamic_ppp.png";
 	public static final String DYNAMIC_PP = "dynamic_pp.png";
 	public static final String DYNAMIC_P = "dynamic_p.png";
@@ -248,6 +251,7 @@ public class TGIconManager {
 	public void loadIcons(){
 		this.theme = this.findIconTheme(this.findConfiguredThemeName());
 		this.durations = new UIImage[]{
+			loadIcon(DURATION),
 			loadIcon(WHOLE),
 			loadIcon(HALF),
 			loadIcon(QUARTER),
@@ -327,6 +331,7 @@ public class TGIconManager {
 		loadIcon(TRACK_MUTE);
 		loadIcon(DOTTED);
 		loadIcon(DOUBLE_DOTTED);
+		loadIcon(DIVISION_TYPE);
 		this.divisionTypes = new HashMap<Integer, UIImage>();
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			Integer enters = TGDivisionType.DIVISION_TYPES[i].getEnters();
@@ -380,6 +385,7 @@ public class TGIconManager {
 		loadIcon(INSTRUMENTS);
 		loadIcon(MATRIX);
 		loadIcon(PIANO);
+		loadIcon(DYNAMIC);
 		loadIcon(DYNAMIC_PPP);
 		loadIcon(DYNAMIC_PP);
 		loadIcon(DYNAMIC_P);

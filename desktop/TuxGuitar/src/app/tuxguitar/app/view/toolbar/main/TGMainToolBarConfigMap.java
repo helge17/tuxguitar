@@ -597,8 +597,7 @@ public class TGMainToolBarConfigMap {
 		registerCheckable("duration.thirtysecond", TGSetThirtySecondDurationAction.NAME, TGIconManager.THIRTYSECOND, getDurationUpdater(TGDuration.THIRTY_SECOND));
 		registerCheckable("duration.sixtyfourth", TGSetSixtyFourthDurationAction.NAME, TGIconManager.SIXTYFOURTH, getDurationUpdater(TGDuration.SIXTY_FOURTH));
 		// Duration menu
-		// TODO UPDATE ICON NAME
-		TGMainToolBarItemMenu menuDuration = new TGMainToolBarItemMenu(this.groupName, "duration", TGIconManager.QUARTER, true);
+		TGMainToolBarItemMenu menuDuration = new TGMainToolBarItemMenu(this.groupName, "duration", TGIconManager.DURATION, true);
 		menuDuration.addMenuItem(mapItems.get("duration.whole"));
 		menuDuration.addMenuItem(mapItems.get("duration.half"));
 		menuDuration.addMenuItem(mapItems.get("duration.quarter"));
@@ -640,8 +639,7 @@ public class TGMainToolBarConfigMap {
 			}
 		});
 		// duration: division types
-		// TODO UPDATE ICON NAME
-		TGMainToolBarItemMenu menuDivisionType = new TGMainToolBarItemMenu(this.groupName, "duration.division-type", "division-type-1.png", true);
+		TGMainToolBarItemMenu menuDivisionType = new TGMainToolBarItemMenu(this.groupName, "duration.division-type", TGIconManager.DIVISION_TYPE, true);
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			registerItem(getCheckableDivision(i, menuDivisionType));
 		}
@@ -658,8 +656,7 @@ public class TGMainToolBarConfigMap {
 		registerItem(getCheckableVelocity("dynamic.fortissimo", TGVelocities.FORTISSIMO, TGIconManager.DYNAMIC_FF));
 		registerItem(getCheckableVelocity("dynamic.forte-fortissimo", TGVelocities.FORTE_FORTISSIMO, TGIconManager.DYNAMIC_FFF));
 		// Dynamic menu
-		// TODO UPDATE ICON NAME
-		TGMainToolBarItemMenu menuDynamic = new TGMainToolBarItemMenu(this.groupName, "dynamic", TGIconManager.DYNAMIC_F, true);
+		TGMainToolBarItemMenu menuDynamic = new TGMainToolBarItemMenu(this.groupName, "dynamic", TGIconManager.DYNAMIC, true);
 		menuDynamic.addMenuItem(mapItems.get("dynamic.piano-pianissimo"));
 		menuDynamic.addMenuItem(mapItems.get("dynamic.pianissimo"));
 		menuDynamic.addMenuItem(mapItems.get("dynamic.piano"));

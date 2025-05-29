@@ -35,6 +35,7 @@ declare -A ICONS=(
   # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
   # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
   ["$DT/actions/22/filename-divider.svg"]="$S_ICON:separator.png"
+  ["$TG/duration.svg"]="$S_ICON:duration.png"
   ["$TG/1.svg"]="$S_ICON:1.png"
   ["$TG/2.svg"]="$S_ICON:2.png"
   ["$TG/2dotted.svg"]="$S_ICON:2dotted.png"
@@ -68,6 +69,7 @@ declare -A ICONS=(
   ["$TG/repeat_alternative.svg"]="$S_ICON:repeat_alternative.png"
   ["$TG/dotted.svg"]="$S_ICON:dotted.png"
   ["$TG/doubledotted.svg"]="$S_ICON:doubledotted.png"
+  ["$TG/division-type.svg"]="$S_ICON:division-type.png"
   ["$TG/division-type-1.svg"]="$S_ICON:division-type-1.png"
   ["$TG/division-type-3.svg"]="$S_ICON:division-type-3.png"
   ["$TG/division-type-5.svg"]="$S_ICON:division-type-5.png"
@@ -87,6 +89,7 @@ declare -A ICONS=(
   ["$TG/text.svg"]="$S_ICON:text.png"
   ["$TG/tiednote.svg"]="$S_ICON:tiednote.png"
   ["$TG/mixer.svg"]="$S_ICON:mixer.png"
+  ["$TG/dynamic.svg"]="$S_ICON:dynamic.png"
   ["$TG/dynamic_ppp.svg"]="$S_ICON:dynamic_ppp.png"
   ["$TG/dynamic_pp.svg"]="$S_ICON:dynamic_pp.png"
   ["$TG/dynamic_p.svg"]="$S_ICON:dynamic_p.png"
