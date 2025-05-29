@@ -251,14 +251,14 @@ public class TGIconManager {
 	public void loadIcons(){
 		this.theme = this.findIconTheme(this.findConfiguredThemeName());
 		this.durations = new UIImage[]{
-			loadIcon(DURATION),
 			loadIcon(WHOLE),
 			loadIcon(HALF),
 			loadIcon(QUARTER),
 			loadIcon(EIGHTH),
 			loadIcon(SIXTEENTH),
 			loadIcon(THIRTYSECOND),
-			loadIcon(SIXTYFOURTH)
+			loadIcon(SIXTYFOURTH),
+			loadIcon(DURATION)
 		};
 		this.durationsDotted = new UIImage[]{
 				loadIcon("2dotted.png"),
