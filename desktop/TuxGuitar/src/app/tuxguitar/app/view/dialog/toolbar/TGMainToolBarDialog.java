@@ -150,6 +150,7 @@ public class TGMainToolBarDialog {
 	private void initControls(UIPanel panel, UITableLayout layout, UIFactory uiFactory) {
 		this.tableAreaControls = uiFactory.createTable(panel, false);
 		this.tableAreaControls.setColumns(1);
+		this.tableAreaControls.setColumnName(0, TuxGuitar.getProperty("toolbar.settings.controls-assigned"));
 
 		boolean first = true;
 		this.selectGroup = uiFactory.createDropDownSelect(panel);
