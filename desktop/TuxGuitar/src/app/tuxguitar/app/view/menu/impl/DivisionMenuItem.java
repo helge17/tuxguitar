@@ -1,6 +1,7 @@
 package app.tuxguitar.app.view.menu.impl;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.action.TGActionProcessorListener;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.document.TGDocumentManager;
@@ -58,6 +59,7 @@ public class DivisionMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons() {
+		this.divisionMenuItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DIVISION_TYPE));
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			this.divisionTypeMenuItems[i].setImage(TuxGuitar.getInstance().getIconManager().getDivisionType(TGDivisionType.DIVISION_TYPES[i].getEnters()));
 		}

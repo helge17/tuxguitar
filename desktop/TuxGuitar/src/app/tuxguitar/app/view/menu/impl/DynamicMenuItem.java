@@ -104,6 +104,7 @@ public class DynamicMenuItem extends TGMenuItem {
 	}
 
 	public void loadIcons(){
+		this.dynamicMenuItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC));
 		this.pianoPianissimo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_PPP));
 		this.pianissimo.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_PP));
 		this.piano.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DYNAMIC_P));

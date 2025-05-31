@@ -150,6 +150,7 @@ public class DurationMenuItem  extends TGMenuItem {
 	}
 
 	public void loadIcons() {
+		this.durationMenuItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DURATION));
 		this.whole.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.WHOLE));
 		this.half.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.HALF));
 		this.quarter.setImage(TuxGuitar.getInstance().getIconManager().getDuration(TGDuration.QUARTER));
