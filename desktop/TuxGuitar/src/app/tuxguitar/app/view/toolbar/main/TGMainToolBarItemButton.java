@@ -43,6 +43,16 @@ public class TGMainToolBarItemButton extends TGMainToolBarItem {
 					((UIToolCheckableItem) toolItem).setChecked(this.checked);
 				}
 			}
+			String newIconName = updater.getIconName(context, running);
+			if ((newIconName != null) && !newIconName.equals(this.iconFileName)) {
+				this.iconFileName = newIconName;
+				this.loadIcons(TuxGuitar.getInstance().getIconManager());
+			}
+			String newText = updater.getText(context, running);
+			if ((newText != null) && !newText.equals(this.text)) {
+				this.text = newText;
+				this.loadProperties();
+			}
 		}
 	}
 

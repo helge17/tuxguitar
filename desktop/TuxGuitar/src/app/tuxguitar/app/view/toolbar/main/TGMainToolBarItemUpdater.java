@@ -12,4 +12,11 @@ public interface TGMainToolBarItemUpdater {
 		return false;
 	}
 
+	default String getIconName(TGContext context, boolean isRunning) {
+		return null;
+	}
+	
+	default String getText(TGContext context, boolean isRunning) {
+		return null;
+	}
 }

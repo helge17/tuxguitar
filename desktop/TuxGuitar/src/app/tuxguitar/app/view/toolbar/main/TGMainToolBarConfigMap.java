@@ -91,6 +91,7 @@ import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
+import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
@@ -714,9 +715,16 @@ public class TGMainToolBarConfigMap {
 		this.groupName = "transport";
 		registerButton("transport.first", TGGoFirstMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_FIRST);
 		registerButton("transport.previous", TGGoPreviousMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_PREVIOUS);
-		TGMainToolBarItemPlay itemPlay = new TGMainToolBarItemPlay(this.groupName, "transport.start");
-		mapItems.put(itemPlay.getText(), itemPlay);
-		registerItem(itemPlay);
+		registerButton("transport.start", TGTransportPlayPauseAction.NAME, TGIconManager.TRANSPORT_ICON_PLAY, new TGMainToolBarItemUpdater() {
+			@Override
+			public String getIconName(TGContext context, boolean isRunning) {
+				return isRunning ? TGIconManager.TRANSPORT_ICON_PAUSE : TGIconManager.TRANSPORT_ICON_PLAY;
+			}
+			@Override
+			public String getText(TGContext context, boolean isRunning) {
+				return isRunning ? "transport.pause": "transport.start";
+			}
+		});
 		registerButton("transport.stop", TGTransportStopAction.NAME, TGIconManager.TRANSPORT_ICON_STOP);
 		registerButton("transport.next", TGGoNextMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_NEXT);
 		registerButton("transport.last", TGGoLastMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_LAST);
