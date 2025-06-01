@@ -22,6 +22,8 @@ public abstract class MidiReceiverJNI{
 
 	protected native void closeDevice();
 
+	protected native int changeSoundBank(String soundbankPath);
+
 	protected native void noteOn(int channel,int note,int velocity);
 
 	protected native void noteOff(int channel,int note,int velocity);

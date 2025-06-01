@@ -9,7 +9,7 @@ public class MidiPortReaderPlugin extends TGMidiOutputPortProviderPlugin{
 	public static final String MODULE_ID = "tuxguitar-audiounit";
 
 	protected MidiOutputPortProvider createProvider(TGContext context) {
-		return new MidiPortReaderAudioUnit();
+		return new MidiPortReaderAudioUnit(context);
 	}
 
 	public String getModuleId() {

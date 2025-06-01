@@ -79,26 +79,10 @@ class MidiPlayer
 	public:
 
 	// ----------------------------------------------------------------------------------------
-	MidiPlayer(char* bankPath = 0)
+	MidiPlayer(const char* bankPath = 0)
 	{
 		graph = 0;
 		__Require_noErr (result = this->createAUGraph (graph, synthUnit), ctor_home);
-
-		// if the user supplies a sound bank, we'll set that before we initialize and start playing
-		if (bankPath)
-		{
-		CFURLRef url = CFURLCreateFromFileSystemRepresentation(
-													kCFAllocatorDefault,
-													(const UInt8*)bankPath,
-													strlen(bankPath), false);
-
-		printf ("Setting Sound Bank:%s\n", bankPath);
-
-		__Require_noErr (result = AudioUnitSetProperty(synthUnit,
-									kMusicDeviceProperty_SoundBankURL,
-									kAudioUnitScope_Global, 0,
-									&url, sizeof(url)), ctor_home);
-		}
 
 		// initialize and start the graph
 		__Require_noErr (result = AUGraphInitialize (graph), ctor_home);
@@ -130,6 +114,20 @@ class MidiPlayer
 		}
 	}
 
+	OSStatus changeSoundBank(const char *bankPath) {
+		CFURLRef url = CFURLCreateFromFileSystemRepresentation(
+										kCFAllocatorDefault,
+										(const UInt8*)bankPath,
+										strlen(bankPath), false);
+
+		// printf ("Setting Sound Bank:%s\n", bankPath);
+
+		OSStatus result = AudioUnitSetProperty(synthUnit, kMusicDeviceProperty_SoundBankURL,
+															kAudioUnitScope_Global, 0, &url, sizeof(url));
+		CFRelease(url);
+      return result;
+	}
+
 	// ----------------------------------------------------------------------------------------
 	/** Note on event */
 	void noteOn(UInt32 noteNum, UInt32 onVelocity, UInt8 midiChannelInUse)
@@ -147,7 +145,7 @@ class MidiPlayer
 	/** Note off event */
 	void noteOff(UInt32 noteNum, UInt8 midiChannelInUse)
 	{
-		UInt32 noteOffCommand = kMidiMessage_NoteOn << 4 | midiChannelInUse;
+		UInt32 noteOffCommand = kMidiMessage_NoteOff << 4 | midiChannelInUse;
 		__Require_noErr (result = MusicDeviceMIDIEvent(synthUnit, noteOffCommand, noteNum, 0, 0), home_note_off);
 
 		return;
@@ -306,6 +304,14 @@ JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_audiounit_MidiRec
 JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI_closeDevice(JNIEnv* env, jobject obj)
 {
 	free();
+}
+
+JNIEXPORT jint JNICALL
+Java_app_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI_changeSoundBank(JNIEnv* env, jobject obj, jstring soundbankPath) {
+	const char* bankPath = env->GetStringUTFChars(soundbankPath, 0);
+	jint status = player->changeSoundBank(bankPath);
+	env->ReleaseStringUTFChars(soundbankPath, bankPath);
+	return status;
 }
 
 JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI_noteOn(JNIEnv* env, jobject ojb, jint channel, jint note, jint velocity)

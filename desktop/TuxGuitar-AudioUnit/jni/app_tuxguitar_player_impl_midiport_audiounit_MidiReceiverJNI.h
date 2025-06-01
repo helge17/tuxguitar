@@ -41,6 +41,14 @@ JNIEXPORT void JNICALL Java_app_tuxguitar_player_impl_midiport_audiounit_MidiRec
 
 /*
  * Class:     app_tuxguitar_player_impl_midiport_alsa_MidiReceiverJNI
+ * Method:    changeSoundBank
+ * Signature: (II)V
+ */
+JNIEXPORT jint JNICALL
+Java_app_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI_changeSoundBank(JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     app_tuxguitar_player_impl_midiport_alsa_MidiReceiverJNI
  * Method:    noteOn
  * Signature: (III)V
  */
