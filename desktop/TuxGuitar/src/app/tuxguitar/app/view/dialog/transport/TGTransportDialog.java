@@ -177,27 +177,13 @@ public class TGTransportDialog implements TGEventListener {
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
 		
 		this.countInToggle = factory.createToggleButton(composite);
-		this.countInToggle.setToolTipText(TuxGuitar.getProperty("transport.count-down"));
-		this.countInToggle.setSelected(player.getCountDown().isEnabled());
 		this.countInToggle.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportCountDownAction.NAME));
 		
 		this.countInTicks = factory.createSpinner(composite);
-		this.countInTicks.setEnabled(player.getCountDown().isEnabled());
-		if (player.getCountDown().getTickCount() == 0)
-			this.countInTicks.setValue(player.getSong().getMeasureHeader(0).getTimeSignature().getNumerator());
-		else
-			this.countInTicks.setValue(player.getCountDown().getTickCount());
-		
 		this.countInTicks.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				player.getCountDown().setTickCount(countInTicks.getValue());
-			}
-		});
-		this.countInToggle.addSelectionListener(new UISelectionListener() {
-			@Override
-			public void onSelect(UISelectionEvent event) {
-				countInTicks.setEnabled(!player.getCountDown().isEnabled());
 			}
 		});
 		
@@ -352,6 +338,19 @@ public class TGTransportDialog implements TGEventListener {
 			this.tickProgress.setMinimum((int)first.getStart());
 			this.tickProgress.setMaximum((int)(last.getStart() + last.getLength()) -1);
 			this.metronome.setSelected(player.isMetronomeEnabled());
+			this.countInToggle.setSelected(player.getCountDown().isEnabled());
+			this.countInTicks.setMinimum(1);
+			// Set default spinner's value to first measure time signature or current count-in ticks.
+			// Default value will automatically update to correct count when user changes song,
+			// or play a section with different time signature.
+			
+			TGMeasureHeader currentHeader = getSongManager().getMeasureHeaderAt(player.getSong(), TablatureEditor.getInstance(this.context).getTablature().getCaret().getPosition());
+			
+			if (player.getCountDown().getTickCount() == 0)
+				this.countInTicks.setValue(currentHeader.getTimeSignature().getNumerator());
+			else
+				this.countInTicks.setValue(player.getCountDown().getTickCount());
+			this.countInTicks.setEnabled(player.getCountDown().isEnabled());
 
 			this.redrawProgress();
 		}
@@ -367,6 +366,7 @@ public class TGTransportDialog implements TGEventListener {
 			this.next.setToolTipText(TuxGuitar.getProperty("transport.next"));
 			this.metronome.setToolTipText(TuxGuitar.getProperty("transport.metronome"));
 			this.mode.setToolTipText(TuxGuitar.getProperty("transport.mode"));
+			this.countInToggle.setToolTipText(TuxGuitar.getProperty("transport.count-down"));
 			this.loadPlayText();
 		}
 	}
