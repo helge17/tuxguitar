@@ -292,7 +292,8 @@ public class GPXDocumentParser {
 									previousBeatGraceNotes.clear();
 								}
 
-								for (int n = 0; n < beat.getNoteIds().length; n++) {
+								int nbNoteIds = (beat.getNoteIds() == null ? 0 : beat.getNoteIds().length);
+								for (int n = 0; n < nbNoteIds; n++) {
 									GPXNote gpNote = this.document.getNote(beat.getNoteIds()[n]);
 
 									if (gpNote == null) {
