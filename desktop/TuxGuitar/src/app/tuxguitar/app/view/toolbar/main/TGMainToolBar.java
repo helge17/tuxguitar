@@ -139,16 +139,12 @@ public class TGMainToolBar extends TGToolBarModel {
 			boolean isFirst = (i == 0);
 			boolean isLast = (i == (controls.size() - 1));
 			int alignX = UITableLayout.ALIGN_LEFT;
-			boolean fillX = false;
+			boolean fillX = (isFirst || isLast);
 			if (area == CENTER_AREA) {
 				if (isFirst && !isLast) {
 					alignX = UITableLayout.ALIGN_RIGHT;
-					fillX = true;
 				} else if (isFirst && isLast) {
 					alignX = UITableLayout.ALIGN_CENTER;
-					fillX = true;
-				} else if (isLast) {
-					fillX = true;
 				}
 			} else if (area == RIGHT_AREA) {
 				alignX = UITableLayout.ALIGN_RIGHT;
