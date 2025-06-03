@@ -213,6 +213,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 					if(!isDisposed()){
 						TGBrowserDialog.this.menu.updateCollections(selection);
 						TGBrowserDialog.this.toolBar.updateCollections(selection);
+						TGBrowserDialog.this.dialog.layout();
 					}
 				}
 			});
