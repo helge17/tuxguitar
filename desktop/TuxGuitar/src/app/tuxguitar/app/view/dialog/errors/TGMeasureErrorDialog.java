@@ -118,7 +118,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		UITableLayout curMeasureLayout = new UITableLayout();
 		this.curMeasureLegendPanel = uiFactory.createLegendPanel(dialog);
 		curMeasureLegendPanel.setLayout(curMeasureLayout);
-		dialogLayout.set(curMeasureLegendPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(curMeasureLegendPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
 
 		measureStatusIcon = uiFactory.createImageView(curMeasureLegendPanel);
 		curMeasureLayout.set(measureStatusIcon, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false,
@@ -159,7 +159,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		UITableLayout globalStatusLayout = new UITableLayout();
 		this.globalStatusLegendPanel = uiFactory.createLegendPanel(dialog);
 		this.globalStatusLegendPanel.setLayout(globalStatusLayout);
-		dialogLayout.set(globalStatusLegendPanel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(globalStatusLegendPanel, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
 
 		globalStatusIcon = uiFactory.createImageView(globalStatusLegendPanel);
 		globalStatusLayout.set(globalStatusIcon, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false,
@@ -169,14 +169,14 @@ public class TGMeasureErrorDialog implements TGEventListener {
 		globalStatusLayout.set(globalStatusLabel, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true,
 				true);
 
-		// ----------------- ERRORS LIST ------------------------
-		UITableLayout errListLayout = new UITableLayout();
-		this.errListLegendPanel = uiFactory.createLegendPanel(dialog);
-		this.errListLegendPanel.setLayout(errListLayout);
-		dialogLayout.set(errListLegendPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-
+		// ----------------- FILTERS ------------------------
+		UITableLayout filterLayout = new UITableLayout();
+		UIPanel filterPanel = uiFactory.createPanel(dialog, true);
+		filterPanel.setLayout(filterLayout);
+		dialogLayout.set(filterPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false);
+		
 		// filter options
-		this.showAllTracks = uiFactory.createCheckBox(errListLegendPanel);
+		this.showAllTracks = uiFactory.createCheckBox(filterPanel);
 		this.showAllTracks.setSelected(true);
 		this.showAllTracks.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -184,9 +184,9 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				TGMeasureErrorDialog.this.updateItemsProcess.process();
 			}
 		});
-		errListLayout.set(showAllTracks, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		filterLayout.set(showAllTracks, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		this.showInvalidMeasures = uiFactory.createCheckBox(errListLegendPanel);
+		this.showInvalidMeasures = uiFactory.createCheckBox(filterPanel);
 		this.showInvalidMeasures.setSelected(true);
 		this.showInvalidMeasures.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -194,9 +194,9 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				TGMeasureErrorDialog.this.updateItemsProcess.process();
 			}
 		});
-		errListLayout.set(showInvalidMeasures, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		filterLayout.set(showInvalidMeasures, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
 		
-		this.showInvalidTiedNotes = uiFactory.createCheckBox(errListLegendPanel);
+		this.showInvalidTiedNotes = uiFactory.createCheckBox(filterPanel);
 		this.showInvalidTiedNotes.setSelected(true);
 		this.showInvalidTiedNotes.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -204,7 +204,14 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				TGMeasureErrorDialog.this.updateItemsProcess.process();
 			}
 		});
-		errListLayout.set(showInvalidTiedNotes, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		filterLayout.set(showInvalidTiedNotes, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, true);
+		
+
+		// ----------------- ERRORS LIST ------------------------
+		UITableLayout errListLayout = new UITableLayout();
+		this.errListLegendPanel = uiFactory.createLegendPanel(dialog);
+		this.errListLegendPanel.setLayout(errListLayout);
+		dialogLayout.set(errListLegendPanel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		// errors table
 		this.errTable = uiFactory.createTable(errListLegendPanel, false);
@@ -220,13 +227,13 @@ public class TGMeasureErrorDialog implements TGEventListener {
 			}
 		});
 		errListLayout.set(errTable, UITableLayout.PACKED_HEIGHT, 120f);
-		errListLayout.set(errTable, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		errListLayout.set(errTable, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		// ----------------- BUTTON ------------------------
 		UITableLayout buttonLayout = new UITableLayout();
 		UIPanel buttonPanel = uiFactory.createPanel(dialog, false);
 		buttonPanel.setLayout(buttonLayout);
-		dialogLayout.set(buttonPanel, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttonPanel, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, false);
 
 		this.closeButton = uiFactory.createButton(buttonPanel);
 		this.closeButton.addSelectionListener(new UISelectionListener() {
