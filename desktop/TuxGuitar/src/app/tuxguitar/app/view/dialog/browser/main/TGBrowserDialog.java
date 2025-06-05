@@ -183,6 +183,10 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 								TGBrowserDialog.this.table.addItem(item);
 							}
 						}
+						// theoretically useless
+						// workaround for a non explained issue in Linux/SWT configuration
+						// see https://github.com/helge17/tuxguitar/issues/791
+						TGBrowserDialog.this.dialog.layout();
 					}
 				}
 			});
@@ -213,7 +217,6 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 					if(!isDisposed()){
 						TGBrowserDialog.this.menu.updateCollections(selection);
 						TGBrowserDialog.this.toolBar.updateCollections(selection);
-						TGBrowserDialog.this.dialog.layout();
 					}
 				}
 			});
@@ -321,6 +324,10 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 			this.getConnection().openStream(new TGAbstractBrowserCallBack<InputStream>() {
 				public void onSuccess(InputStream stream) {
 					onOpenStream(stream, element);
+					// theoretically useless
+					// workaround for a non explained issue in Linux/SWT configuration
+					// see https://github.com/helge17/tuxguitar/issues/791
+					updateTable();
 				}
 			}, element);
 		}
