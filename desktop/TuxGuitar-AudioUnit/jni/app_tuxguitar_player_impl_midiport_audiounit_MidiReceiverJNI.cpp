@@ -79,7 +79,7 @@ class MidiPlayer
 	public:
 
 	// ----------------------------------------------------------------------------------------
-	MidiPlayer(const char* bankPath = 0)
+	MidiPlayer()
 	{
 		graph = 0;
 		__Require_noErr (result = this->createAUGraph (graph, synthUnit), ctor_home);
@@ -116,16 +116,16 @@ class MidiPlayer
 
 	OSStatus changeSoundBank(const char *bankPath) {
 		CFURLRef url = CFURLCreateFromFileSystemRepresentation(
-										kCFAllocatorDefault,
-										(const UInt8*)bankPath,
-										strlen(bankPath), false);
+									kCFAllocatorDefault,
+									(const UInt8*)bankPath,
+									strlen(bankPath), false);
 
 		// printf ("Setting Sound Bank:%s\n", bankPath);
 
 		OSStatus result = AudioUnitSetProperty(synthUnit, kMusicDeviceProperty_SoundBankURL,
-															kAudioUnitScope_Global, 0, &url, sizeof(url));
+							kAudioUnitScope_Global, 0, &url, sizeof(url));
 		CFRelease(url);
-      return result;
+		return result;
 	}
 
 	// ----------------------------------------------------------------------------------------

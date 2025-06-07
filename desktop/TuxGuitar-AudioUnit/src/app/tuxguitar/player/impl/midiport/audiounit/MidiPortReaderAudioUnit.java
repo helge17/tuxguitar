@@ -16,7 +16,6 @@ public class MidiPortReaderAudioUnit implements MidiOutputPortProvider{
 	}
 
 	public boolean setSoundbankPath(String soundbankPath) {
-		System.out.println("call change soundbank");
 		return midiOut.changeSoundBank(soundbankPath) == 0;
 	}
 
