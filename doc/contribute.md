@@ -170,11 +170,11 @@ To have all foreign packages in your Eclipse workspace, create a folder named "e
 eclipse-workspace$ sudo apt install maven
 eclipse-workspace$ mkdir externals
 eclipse-workspace$ cd externals
-eclipse-workspace$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.26-202211231800/swt-4.26-gtk-linux-x86_64.zip
-eclipse-workspace/externals$ mkdir swt-4.26-gtk-linux-x86_64
-eclipse-workspace/externals$ cd swt-4.26-gtk-linux-x86_64
-eclipse-workspace/externals$ unzip ../swt-4.26-gtk-linux-x86_64.zip
-eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.26
+eclipse-workspace$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.36-202505281830/swt-4.36-gtk-linux-x86_64.zip
+eclipse-workspace/externals$ mkdir swt-4.36-gtk-linux-x86_64
+eclipse-workspace/externals$ cd swt-4.36-gtk-linux-x86_64
+eclipse-workspace/externals$ unzip ../swt-4.36-gtk-linux-x86_64.zip
+eclipse-workspace/externals$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.36
 ```
 
 #### Define run configuration

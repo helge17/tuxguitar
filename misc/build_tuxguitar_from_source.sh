@@ -663,8 +663,8 @@ fi
 
 # macOS (on macOS, remote or local)
 if [ $build_macos ]; then
-  SWT_VERSION=4.33
-  SWT_DATE=202409030240
+  SWT_VERSION=4.36
+  SWT_DATE=202505281830
   SWT_PLATFORM=cocoa-macosx
   [ `uname` == Linux ] && start_remote_macos_build
   [ `uname` == Darwin ] && build_tg_for_macos
@@ -674,17 +674,16 @@ fi
 
 # Linux (local on Linux)
 if [ $build_linux ]; then
-  # SWT version in Debian 12
-  SWT_VERSION=4.26
-  SWT_DATE=202211231800
+  SWT_VERSION=4.36
+  SWT_DATE=202505281830
   SWT_PLATFORM=gtk-linux
   [ `uname` == Linux ] && build_tg_for_linux
 fi
 
 # Windows 64 bit x86_64 build (local on Linux)
 if [ $build_windows ]; then
-  SWT_VERSION=4.26
-  SWT_DATE=202211231800
+  SWT_VERSION=4.36
+  SWT_DATE=202505281830
   SWT_PLATFORM=win32-win32
   # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
   PA_JAVA=OpenJDK64_17.0.1-12.paf
