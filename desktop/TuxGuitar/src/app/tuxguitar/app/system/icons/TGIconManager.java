@@ -258,8 +258,8 @@ public class TGIconManager {
 			loadIcon(SIXTEENTH),
 			loadIcon(THIRTYSECOND),
 			loadIcon(SIXTYFOURTH),
-			loadIcon(DURATION)
 		};
+		loadIcon(DURATION);
 		this.durationsDotted = new UIImage[]{
 				loadIcon("2dotted.png"),
 				loadIcon("4dotted.png"),
