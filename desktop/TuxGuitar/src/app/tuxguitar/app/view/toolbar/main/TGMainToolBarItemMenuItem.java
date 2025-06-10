@@ -3,6 +3,7 @@ package app.tuxguitar.app.view.toolbar.main;
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.ui.menu.UIMenuItem;
+import app.tuxguitar.ui.widget.UIControl;
 import app.tuxguitar.util.TGContext;
 
 // a menu action (inside a menu, opened by a toolBar button)
@@ -13,11 +14,10 @@ public class TGMainToolBarItemMenuItem extends TGMainToolBarItem {
 	private boolean checked;
 
 	// build a menu item from a (checkable) button description, or a separator
-	public TGMainToolBarItemMenuItem(TGMainToolBarItem button) {
-		super(button.getGroupName(), button.getText(), ((button.type == TGMainToolBarItem.SEPARATOR) ? SEPARATOR : MENU),
-				button.getActionName(), button.getIconFileName(), button.getUpdater());
-		for (String key : button.attributes.keySet()) {
-			this.setAttribute(key, button.attributes.get(key));
+	public TGMainToolBarItemMenuItem(TGMainToolBarItemConfig button) {
+		super(button);
+		for (String key : button.getAttributes().keySet()) {
+			this.setAttribute(key, button.getAttributes().get(key));
 		}
 		this.menuItem = null;
 	}
@@ -50,6 +50,11 @@ public class TGMainToolBarItemMenuItem extends TGMainToolBarItem {
 		if (menuItem != null) {
 			menuItem.setImage(iconManager.getImageByName(this.iconFileName));
 		}
+	}
+
+	@Override
+	public UIControl getControl() {
+		return null;
 	}
 
 }

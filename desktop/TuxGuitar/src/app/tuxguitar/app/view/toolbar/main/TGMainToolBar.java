@@ -76,35 +76,35 @@ public class TGMainToolBar extends TGToolBarModel {
 		
 		for (int area : new int[] { LEFT_AREA, CENTER_AREA, RIGHT_AREA }) {
 			TGMainToolBarSection section = null;
-			TGMainToolBarItem lastAddedItem = null;
+			TGMainToolBarItemConfig lastAddedItemConfig = null;
 			controls.clear();
 
 			for (String toolBarItemName : this.config.getAreaContent(area)) {
-				TGMainToolBarItem toolBarItem = configMap.getToolBarItem(toolBarItemName);
-				if (toolBarItem == null) {
+				TGMainToolBarItemConfig toolBarItemConfig = configMap.getToolBarItemConfig(toolBarItemName);
+				if (toolBarItemConfig == null) {
 					System.out.printf("toolBarItem name not found (ignored): " + toolBarItemName + "\n");
 				}
 				else {
-					int sectionType = toolBarItem.getSectionType();
+					int sectionType = toolBarItemConfig.getSectionType();
 					// need to create a new section?
-					if ((lastAddedItem == null) || (sectionType != lastAddedItem.getSectionType())) {
+					if ((lastAddedItemConfig == null) || (sectionType != lastAddedItemConfig.getSectionType())) {
 						// if a section was already in creation, add its controls to list, and
 						// initialize the section
 						if (section != null) {
 							controls.addAll(section.getControls());
 							this.createSection(mainToolBarLayout, section);
 						}
-						if (sectionType == TGMainToolBarSection.TYPE_TOOLITEMS) {
+						if (sectionType == TGMainToolBarSection.TYPE_GENERIC) {
+							section = new TGMainToolBarSectionGeneric(getContext(), this.panel, parentWindow);
+						} else if (sectionType == TGMainToolBarSection.TYPE_TOOLITEMS) {
 							UIToolBar toolBar = uiFactory.createHorizontalToolBar(this.panel);
 							section = new TGMainToolBarSectionToolItems(getContext(), toolBar);
-						} else if (toolBarItem.getType() == TGMainToolBarItem.TIME_COUNTER) {
-							section = new TGMainToolBarSectionTimeCounter(getContext(), this.panel, parentWindow);
-						} else if (toolBarItem.getType() == TGMainToolBarItem.TEMPO_INDICATOR) {
-							section = new TGMainToolBarSectionTempo(getContext(), this.panel, parentWindow);
+						} else if (toolBarItemConfig.getType() == TGMainToolBarItem.TEMPO_INDICATOR) {
+							section = new TGMainToolBarSectionTempo(getContext(), this.panel);
 						}
 					}
-					section.addToolBarItem(toolBarItem);
-					lastAddedItem = toolBarItem;
+					section.addToolBarItem(toolBarItemConfig);
+					lastAddedItemConfig = toolBarItemConfig;
 				}
 			}
 			if (section != null) {

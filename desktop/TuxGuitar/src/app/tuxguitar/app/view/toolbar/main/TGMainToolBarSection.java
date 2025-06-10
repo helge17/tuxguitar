@@ -2,6 +2,8 @@ package app.tuxguitar.app.view.toolbar.main;
 
 /**
  * A template for a main toolBar section
+ * a section can host 1 or several TGMainToolBarItem
+ * there are different sub-classes, to host different types of TGMainToolBarItem
  */
 
 import java.util.ArrayList;
@@ -16,8 +18,8 @@ import app.tuxguitar.util.TGContext;
 
 public abstract class TGMainToolBarSection implements TGToolBarSection {
 
-	public static final int TYPE_TOOLITEMS = 1;
-	public static final int TYPE_TIME_COUNTER = 2;
+	public static final int TYPE_GENERIC = 1;
+	public static final int TYPE_TOOLITEMS = 2;
 	public static final int TYPE_TEMPO = 3;
 
 	private TGContext context;
@@ -30,12 +32,12 @@ public abstract class TGMainToolBarSection implements TGToolBarSection {
 		this.toolBarItems = new ArrayList<TGMainToolBarItem>();
 	}
 
-	public abstract void addToolBarItem(TGMainToolBarItem toolBarItem);
+	public abstract void addToolBarItem(TGMainToolBarItemConfig toolBarItemConfig);
 
-	protected TGActionProcessorListener createActionProcessor(TGMainToolBarItem item) {
-		TGActionProcessorListener actionProcessorListener = new TGActionProcessorListener(this.getContext(), item.getActionName());
-		for (String key : item.attributes.keySet()) {
-			actionProcessorListener.setAttribute(key, item.attributes.get(key));
+	protected TGActionProcessorListener createActionProcessor(TGMainToolBarItemConfig itemConfig) {
+		TGActionProcessorListener actionProcessorListener = new TGActionProcessorListener(this.getContext(), itemConfig.getActionName());
+		for (String key : itemConfig.getAttributes().keySet()) {
+			actionProcessorListener.setAttribute(key, itemConfig.getAttributes().get(key));
 		}
 		return actionProcessorListener;
 	}
@@ -45,7 +47,9 @@ public abstract class TGMainToolBarSection implements TGToolBarSection {
 	}
 
 	public void setLayoutProperties(UITableLayout layout) {
-		// default: nothing to do, override if needed
+		for (TGMainToolBarItem toolBarItem : this.toolBarItems) {
+			toolBarItem.setLayoutProperties(layout);
+		}
 	}
 
 	protected TGContext getContext() {

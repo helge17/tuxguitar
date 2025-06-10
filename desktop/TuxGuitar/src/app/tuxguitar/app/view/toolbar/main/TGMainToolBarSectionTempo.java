@@ -1,4 +1,8 @@
 package app.tuxguitar.app.view.toolbar.main;
+/** 
+ * Tempo indicator
+ * defined as a section, not a toolBar item, because it hosts a consistent set of several controls (icon + label)
+ */
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
@@ -20,7 +24,6 @@ import app.tuxguitar.ui.event.UIMouseEvent;
 import app.tuxguitar.ui.widget.UIImageView;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UIPanel;
-import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements TGEventListener {
@@ -32,7 +35,7 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 	private boolean currentTempoDotted;
 	private int currentTempoValue;
 
-	public TGMainToolBarSectionTempo(TGContext context, UIPanel parentPanel, UIWindow parentWindow) {
+	public TGMainToolBarSectionTempo(TGContext context, UIPanel parentPanel) {
 		super(context);
 		UIFactory uiFactory = TGApplication.getInstance(this.getContext()).getFactory();
 
@@ -134,7 +137,7 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 	}
 
 	@Override
-	public void addToolBarItem(TGMainToolBarItem toolBarItem) {
-		// nothing to do
+	public void addToolBarItem(TGMainToolBarItemConfig toolBarItemConfig) {
+		// nothing to do, content of this section is not configurable
 	}
 }
