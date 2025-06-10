@@ -9,38 +9,45 @@ import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
 import app.tuxguitar.ui.toolbar.UIToolBar;
 import app.tuxguitar.ui.toolbar.UIToolMenuItem;
+import app.tuxguitar.ui.widget.UIControl;
 import app.tuxguitar.util.TGContext;
 
 // a menu button in toolBar opening a list of actions
 public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 
 	private UIToolMenuItem menuItem;
+	private List<TGMainToolBarItemConfig> toolBarMenuItemConfigs;
 	private List<TGMainToolBarItemMenuItem> toolBarMenuItems;
 	private boolean displaySelectedItemIcon;
 
-	public TGMainToolBarItemMenu(String groupName, String text, String iconFileName, boolean displaySelectedItemIcon) {
-		super(groupName, text, TGMainToolBarItem.MENU, null, iconFileName, null);
-		this.displaySelectedItemIcon = displaySelectedItemIcon;
+	public TGMainToolBarItemMenu(TGMainToolBarItemConfig config) {
+		super(config);
+		this.displaySelectedItemIcon = config.displaySelectedItemIcon();
+		this.toolBarMenuItemConfigs = config.getSubItemConfigs();
 		this.toolBarMenuItems = new ArrayList<TGMainToolBarItemMenuItem>();
 	}
 
-	public void addMenuItem(TGMainToolBarItem item) {
-		this.toolBarMenuItems.add(new TGMainToolBarItemMenuItem(item));
+	@Override
+	public UIControl getControl() {
+		// unused, control is stored in toolBar section
+		return null;
 	}
 
 	public void createMenu(UIToolBar toolBar, TGContext context) {
 		this.menuItem = toolBar.createMenuItem();
-		for (TGMainToolBarItemMenuItem toolBarMenuItem : toolBarMenuItems) {
-			if (toolBarMenuItem.getType() == TGMainToolBarItem.SEPARATOR) {
+		for (TGMainToolBarItemConfig toolBarMenuItemConfig : toolBarMenuItemConfigs) {
+			if (toolBarMenuItemConfig.getType() == TGMainToolBarItem.SEPARATOR) {
 				this.menuItem.getMenu().createSeparator();
 			} else {
+				TGMainToolBarItemMenuItem toolBarMenuItem = new TGMainToolBarItemMenuItem(toolBarMenuItemConfig);
 				UIMenuActionItem menuActionItem = this.menuItem.getMenu().createActionItem();
-				TGActionProcessorListener actionProcessorListener = new TGActionProcessorListener(context, toolBarMenuItem.getActionName());
-				for (String key : toolBarMenuItem.attributes.keySet()) {
-					actionProcessorListener.setAttribute(key, toolBarMenuItem.attributes.get(key));
+				TGActionProcessorListener actionProcessorListener = new TGActionProcessorListener(context, toolBarMenuItemConfig.getActionName());
+				for (String key : toolBarMenuItemConfig.getAttributes().keySet()) {
+					actionProcessorListener.setAttribute(key, toolBarMenuItemConfig.getAttributes().get(key));
 				}
 				menuActionItem.addSelectionListener(actionProcessorListener);
 				toolBarMenuItem.setMenuItem(menuActionItem);
+				this.toolBarMenuItems.add(toolBarMenuItem);
 			}
 		}
 	}
@@ -71,11 +78,4 @@ public class TGMainToolBarItemMenu extends TGMainToolBarItem {
 		}
 	}
 
-	public TGMainToolBarItemMenu clone() {
-		TGMainToolBarItemMenu clone = new TGMainToolBarItemMenu(this.groupName, this.text, this.iconFileName, this.displaySelectedItemIcon);
-		for (TGMainToolBarItemMenuItem menuItem : this.toolBarMenuItems) {
-			clone.addMenuItem(menuItem);
-		}
-		return clone;
-	}
 }

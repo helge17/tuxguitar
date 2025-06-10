@@ -1,5 +1,10 @@
 package app.tuxguitar.app.view.toolbar.main;
 
+/**
+ * A toolBar section to host checkable/non-checkable button(s), menu(s), or separator(s)
+ * it hosts one single UIToolBar objects, which itself hosts all items
+ */
+
 import java.util.ArrayList;
 import app.tuxguitar.ui.toolbar.UIToolActionItem;
 import app.tuxguitar.ui.toolbar.UIToolBar;
@@ -17,39 +22,28 @@ public class TGMainToolBarSectionToolItems extends TGMainToolBarSection {
 		this.toolBarItems = new ArrayList<TGMainToolBarItem>();
 	}
 
-	public void addToolBarItem(TGMainToolBarItem toolBarItem) {
-		switch (toolBarItem.getType()) {
+	@Override
+	public void addToolBarItem(TGMainToolBarItemConfig toolBarItemConfig) {
+		switch (toolBarItemConfig.getType()) {
 		case TGMainToolBarItem.ACTION_ITEM:
-			if (!(toolBarItem instanceof TGMainToolBarItemButton)) {
-				throw new IllegalArgumentException("invalid toolbar item type, action_item expected");
-			}
-			TGMainToolBarItemButton clone = ((TGMainToolBarItemButton)toolBarItem).clone();
 			UIToolActionItem toolActionItem = this.toolBar.createActionItem();
-			toolActionItem.addSelectionListener(this.createActionProcessor(toolBarItem));
-			clone.setToolItem(toolActionItem);
-			this.toolBarItems.add(clone);
+			toolActionItem.addSelectionListener(this.createActionProcessor(toolBarItemConfig));
+			TGMainToolBarItemButton button = new TGMainToolBarItemButton(toolBarItemConfig, toolActionItem);
+			this.toolBarItems.add(button);
 			break;
 		case TGMainToolBarItem.CHECKABLE_ITEM:
-			if (!(toolBarItem instanceof TGMainToolBarItemButton)) {
-				throw new IllegalArgumentException("invalid toolbar item type, checkable_item expected");
-			}
-			TGMainToolBarItemButton cloneCheckable = ((TGMainToolBarItemButton)toolBarItem).clone();
 			UIToolCheckableItem toolCheckableItem = this.toolBar.createCheckItem();
-			toolCheckableItem.addSelectionListener(this.createActionProcessor(toolBarItem));
-			cloneCheckable.setToolItem(toolCheckableItem);
-			this.toolBarItems.add(cloneCheckable);
+			toolCheckableItem.addSelectionListener(this.createActionProcessor(toolBarItemConfig));
+			TGMainToolBarItemButton checkable = new TGMainToolBarItemButton(toolBarItemConfig, toolCheckableItem);
+			this.toolBarItems.add(checkable);
 			break;
 		case TGMainToolBarItem.SEPARATOR:
 			this.toolBar.createSeparator();
-			this.toolBarItems.add(toolBarItem);
 			break;
 		case TGMainToolBarItem.MENU:
-			if (!(toolBarItem instanceof TGMainToolBarItemMenu)) {
-				throw new IllegalArgumentException("invalid toolbar item type, menu expected");
-			}
-			TGMainToolBarItemMenu cloneMenu = ((TGMainToolBarItemMenu) toolBarItem).clone();
-			cloneMenu.createMenu(toolBar, this.getContext());
-			this.toolBarItems.add(cloneMenu);
+			TGMainToolBarItemMenu menu = new TGMainToolBarItemMenu(toolBarItemConfig);
+			menu.createMenu(toolBar, this.getContext());
+			this.toolBarItems.add(menu);
 			break;
 		default:
 			throw new IllegalArgumentException("unmanaged type of mainToolBarItem");

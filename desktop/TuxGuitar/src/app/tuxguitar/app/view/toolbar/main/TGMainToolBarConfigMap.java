@@ -176,7 +176,7 @@ import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGNoteRange;
 
 public class TGMainToolBarConfigMap {
-	private Map<String, TGMainToolBarItem> mapItems;
+	private Map<String, TGMainToolBarItemConfig> mapItems;
 	// ordered list of control names, for display in dialog
 	private List<String> itemNames;
 	
@@ -184,7 +184,7 @@ public class TGMainToolBarConfigMap {
 	private List<String> groupNames;
 
 	public TGMainToolBarConfigMap() {
-		this.mapItems = new HashMap<String, TGMainToolBarItem>();
+		this.mapItems = new HashMap<String, TGMainToolBarItemConfig>();
 		this.itemNames = new ArrayList<String>();
 		this.groupNames = new ArrayList<String>();
 
@@ -198,7 +198,7 @@ public class TGMainToolBarConfigMap {
 
 		// SEPARATOR
 		this.groupName = "";
-		registerItem("toolbar.separator", TGMainToolBarItem.SEPARATOR, TGIconManager.SEPARATOR);
+		registerItem("toolbar.separator", TGMainToolBarItem.SEPARATOR, TGMainToolBarSection.TYPE_TOOLITEMS, TGIconManager.SEPARATOR);
 
 		//------- FILE --------
 		this.groupName = "file";
@@ -332,7 +332,7 @@ public class TGMainToolBarConfigMap {
 					}
 				});
 
-		registerButton("view.layout.page", TGSetPageLayoutAction.NAME,
+		registerCheckable("view.layout.page", TGSetPageLayoutAction.NAME,
 				TGIconManager.LAYOUT_PAGE, new TGMainToolBarItemUpdater() {
 					@Override
 					public boolean checked(TGContext context, boolean isRunning) {
@@ -341,7 +341,7 @@ public class TGMainToolBarConfigMap {
 					}
 				});
 
-		registerButton("view.layout.linear", TGSetLinearLayoutAction.NAME,
+		registerCheckable("view.layout.linear", TGSetLinearLayoutAction.NAME,
 				TGIconManager.LAYOUT_LINEAR, new TGMainToolBarItemUpdater() {
 					@Override
 					public boolean checked(TGContext context, boolean isRunning) {
@@ -350,7 +350,7 @@ public class TGMainToolBarConfigMap {
 					}
 				});
 
-		registerButton("view.layout.multitrack", TGSetMultitrackViewAction.NAME,
+		registerCheckable("view.layout.multitrack", TGSetMultitrackViewAction.NAME,
 				TGIconManager.LAYOUT_MULTITRACK, new TGMainToolBarItemUpdater() {
 					@Override
 					public boolean checked(TGContext context, boolean isRunning) {
@@ -359,7 +359,7 @@ public class TGMainToolBarConfigMap {
 					}
 				});
 
-		registerButton("view.layout.score-enabled", TGSetScoreEnabledAction.NAME,
+		registerCheckable("view.layout.score-enabled", TGSetScoreEnabledAction.NAME,
 				TGIconManager.LAYOUT_SCORE, new TGMainToolBarItemUpdater() {
 					@Override
 					public boolean checked(TGContext context, boolean isRunning) {
@@ -374,7 +374,7 @@ public class TGMainToolBarConfigMap {
 				return ((style & TGLayout.DISPLAY_TABLATURE) != 0);
 			}
 		});
-		registerButton("view.layout.compact", TGSetCompactViewAction.NAME,
+		registerCheckable("view.layout.compact", TGSetCompactViewAction.NAME,
 				TGIconManager.LAYOUT_COMPACT, new TGMainToolBarItemUpdater() {
 					@Override
 					public boolean enabled(TGContext context, boolean isRunning) {
@@ -407,12 +407,12 @@ public class TGMainToolBarConfigMap {
 			}
 		});
 		// View menu
-		TGMainToolBarItemMenu menuLayout = new TGMainToolBarItemMenu(this.groupName, "view.layout", TGIconManager.LAYOUT_SCORE, false);
-		menuLayout.addMenuItem(mapItems.get("view.layout.page"));
-		menuLayout.addMenuItem(mapItems.get("view.layout.linear"));
-		menuLayout.addMenuItem(mapItems.get("view.layout.multitrack"));
-		menuLayout.addMenuItem(mapItems.get("view.layout.score-enabled"));
-		menuLayout.addMenuItem(mapItems.get("view.layout.compact"));
+		TGMainToolBarItemConfig menuLayout = newMenu("view.layout", TGIconManager.LAYOUT_SCORE, false);
+		menuLayout.addSubItem(mapItems.get("view.layout.page"));
+		menuLayout.addSubItem(mapItems.get("view.layout.linear"));
+		menuLayout.addSubItem(mapItems.get("view.layout.multitrack"));
+		menuLayout.addSubItem(mapItems.get("view.layout.score-enabled"));
+		menuLayout.addSubItem(mapItems.get("view.layout.compact"));
 		registerItem(menuLayout);
 
 		registerButton("view.zoom.out", TGSetLayoutScaleDecrementAction.NAME, TGIconManager.ZOOM_OUT);
@@ -598,14 +598,14 @@ public class TGMainToolBarConfigMap {
 		registerCheckable("duration.thirtysecond", TGSetThirtySecondDurationAction.NAME, TGIconManager.THIRTYSECOND, getDurationUpdater(TGDuration.THIRTY_SECOND));
 		registerCheckable("duration.sixtyfourth", TGSetSixtyFourthDurationAction.NAME, TGIconManager.SIXTYFOURTH, getDurationUpdater(TGDuration.SIXTY_FOURTH));
 		// Duration menu
-		TGMainToolBarItemMenu menuDuration = new TGMainToolBarItemMenu(this.groupName, "duration", TGIconManager.DURATION, true);
-		menuDuration.addMenuItem(mapItems.get("duration.whole"));
-		menuDuration.addMenuItem(mapItems.get("duration.half"));
-		menuDuration.addMenuItem(mapItems.get("duration.quarter"));
-		menuDuration.addMenuItem(mapItems.get("duration.eighth"));
-		menuDuration.addMenuItem(mapItems.get("duration.sixteenth"));
-		menuDuration.addMenuItem(mapItems.get("duration.thirtysecond"));
-		menuDuration.addMenuItem(mapItems.get("duration.sixtyfourth"));
+		TGMainToolBarItemConfig menuDuration = newMenu("duration", TGIconManager.DURATION, true);
+		menuDuration.addSubItem(mapItems.get("duration.whole"));
+		menuDuration.addSubItem(mapItems.get("duration.half"));
+		menuDuration.addSubItem(mapItems.get("duration.quarter"));
+		menuDuration.addSubItem(mapItems.get("duration.eighth"));
+		menuDuration.addSubItem(mapItems.get("duration.sixteenth"));
+		menuDuration.addSubItem(mapItems.get("duration.thirtysecond"));
+		menuDuration.addSubItem(mapItems.get("duration.sixtyfourth"));
 		registerItem(menuDuration);
 
 		registerCheckable("duration.dotted", TGChangeDottedDurationAction .NAME, TGIconManager.DOTTED, new TGMainToolBarItemUpdater() {
@@ -640,7 +640,7 @@ public class TGMainToolBarConfigMap {
 			}
 		});
 		// duration: division types
-		TGMainToolBarItemMenu menuDivisionType = new TGMainToolBarItemMenu(this.groupName, "duration.division-type", TGIconManager.DIVISION_TYPE, true);
+		TGMainToolBarItemConfig menuDivisionType = newMenu("duration.division-type", TGIconManager.DIVISION_TYPE, true);
 		for (int i = 0; i < TGDivisionType.DIVISION_TYPES.length; i++) {
 			registerItem(getCheckableDivision(i, menuDivisionType));
 		}
@@ -657,15 +657,15 @@ public class TGMainToolBarConfigMap {
 		registerItem(getCheckableVelocity("dynamic.fortissimo", TGVelocities.FORTISSIMO, TGIconManager.DYNAMIC_FF));
 		registerItem(getCheckableVelocity("dynamic.forte-fortissimo", TGVelocities.FORTE_FORTISSIMO, TGIconManager.DYNAMIC_FFF));
 		// Dynamic menu
-		TGMainToolBarItemMenu menuDynamic = new TGMainToolBarItemMenu(this.groupName, "dynamic", TGIconManager.DYNAMIC, true);
-		menuDynamic.addMenuItem(mapItems.get("dynamic.piano-pianissimo"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.pianissimo"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.piano"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.mezzo-piano"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.mezzo-forte"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.forte"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.fortissimo"));
-		menuDynamic.addMenuItem(mapItems.get("dynamic.forte-fortissimo"));
+		TGMainToolBarItemConfig menuDynamic = newMenu("dynamic", TGIconManager.DYNAMIC, true);
+		menuDynamic.addSubItem(mapItems.get("dynamic.piano-pianissimo"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.pianissimo"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.piano"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.mezzo-piano"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.mezzo-forte"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.forte"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.fortissimo"));
+		menuDynamic.addSubItem(mapItems.get("dynamic.forte-fortissimo"));
 		registerItem(menuDynamic);
 
 		//------- EFFECTS --------
@@ -700,14 +700,14 @@ public class TGMainToolBarConfigMap {
 		registerButton("marker.next", TGGoNextMarkerAction.NAME, TGIconManager.MARKER_NEXT);
 		registerButton("marker.last", TGGoLastMarkerAction.NAME, TGIconManager.MARKER_LAST);
 		// Marker menu
-		TGMainToolBarItemMenu menuMarker = new TGMainToolBarItemMenu(this.groupName, "marker", TGIconManager.MARKER_LIST, false);
-		menuMarker.addMenuItem(mapItems.get("marker.add"));
-		menuMarker.addMenuItem(mapItems.get("marker.list"));
-		menuMarker.addMenuItem(mapItems.get("toolbar.separator"));
-		menuMarker.addMenuItem(mapItems.get("marker.first"));
-		menuMarker.addMenuItem(mapItems.get("marker.previous"));
-		menuMarker.addMenuItem(mapItems.get("marker.next"));
-		menuMarker.addMenuItem(mapItems.get("marker.last"));
+		TGMainToolBarItemConfig menuMarker = newMenu("marker",TGIconManager.MARKER_LIST, false);
+		menuMarker.addSubItem(mapItems.get("marker.add"));
+		menuMarker.addSubItem(mapItems.get("marker.list"));
+		menuMarker.addSubItem(mapItems.get("toolbar.separator"));
+		menuMarker.addSubItem(mapItems.get("marker.first"));
+		menuMarker.addSubItem(mapItems.get("marker.previous"));
+		menuMarker.addSubItem(mapItems.get("marker.next"));
+		menuMarker.addSubItem(mapItems.get("marker.last"));
 		mapItems.put(menuMarker.getText(), menuMarker);
 		registerItem(menuMarker);
 
@@ -729,9 +729,9 @@ public class TGMainToolBarConfigMap {
 		registerButton("transport.next", TGGoNextMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_NEXT);
 		registerButton("transport.last", TGGoLastMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_LAST);
 		// TIME COUNTER
-		registerItem("toolbar.timeCounter", TGMainToolBarItem.TIME_COUNTER, TGIconManager.TRANSPORT_TIME_COUNTER);
+		registerItem("toolbar.timeCounter", TGMainToolBarItem.TIME_COUNTER, TGMainToolBarSection.TYPE_GENERIC, TGIconManager.TRANSPORT_TIME_COUNTER);
 		// TEMPO INDICATOR
-		registerItem("toolbar.tempoIndicator", TGMainToolBarItem.TEMPO_INDICATOR, TGIconManager.TEMPO_INDICATOR_ICON);
+		registerItem("toolbar.tempoIndicator", TGMainToolBarItem.TEMPO_INDICATOR, TGMainToolBarSection.TYPE_TEMPO, TGIconManager.TEMPO_INDICATOR_ICON);
 		registerCheckable("transport.metronome", TGTransportMetronomeAction.NAME, TGIconManager.TRANSPORT_METRONOME,
 				new TGMainToolBarItemUpdater() {
 					@Override
@@ -810,7 +810,7 @@ public class TGMainToolBarConfigMap {
 		};
 	}
 
-	private TGMainToolBarItemButton getCheckableEffect(final String text, final String actionName, final String iconFileName, boolean forPercussion, EffectApplied applied) {
+	private TGMainToolBarItemConfig getCheckableEffect(final String text, final String actionName, final String iconFileName, boolean forPercussion, EffectApplied applied) {
 		TGMainToolBarItemUpdater updater = new TGMainToolBarItemUpdater() {
 			@Override
 			public boolean enabled(TGContext context, boolean isRunning) {
@@ -824,15 +824,16 @@ public class TGMainToolBarConfigMap {
 				return ((note != null) && (note.getEffect() != null) && applied.isEffectApplied(note.getEffect()));
 			}
 		};
-		TGMainToolBarItemButton button = new TGMainToolBarItemButton(this.groupName, text, true, actionName, iconFileName, updater);
-		return button;
+		TGMainToolBarItemConfig config = new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItem.CHECKABLE_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				actionName, iconFileName, updater, false);
+		return config;
 	}
 
 	private interface EffectApplied {
 		boolean isEffectApplied(TGNoteEffect effect);
 	}
 
-	private TGMainToolBarItemButton getCheckableVelocity(final String text, final int value, final String iconFileName) {
+	private TGMainToolBarItemConfig getCheckableVelocity(final String text, final int value, final String iconFileName) {
 		String actionName = TGChangeVelocityAction.NAME;
 		TGMainToolBarItemUpdater updater = new TGMainToolBarItemUpdater() {
 			@Override
@@ -846,12 +847,13 @@ public class TGMainToolBarConfigMap {
 				return (velocity == value);
 			}
 		};
-		TGMainToolBarItemButton button = new TGMainToolBarItemButton(this.groupName, text, true, actionName, iconFileName, updater);
-		button.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, value);
-		return button;
+		TGMainToolBarItemConfig config = new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItemConfig.CHECKABLE_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				actionName, iconFileName, updater, false);
+		config.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, value);
+		return config;
 	}
 
-	private TGMainToolBarItemButton getCheckableDivision(final int index, TGMainToolBarItemMenu menuDivisionType) {
+	private TGMainToolBarItemConfig getCheckableDivision(final int index, TGMainToolBarItemConfig menuDivisionType) {
 		int enters = TGDivisionType.DIVISION_TYPES[index].getEnters();
 		String text = "duration.division-type." + Integer.toString(enters);
 		String actionName = TGSetDivisionTypeDurationAction.NAME;
@@ -867,34 +869,48 @@ public class TGMainToolBarConfigMap {
 				return (duration.getDivision().isEqual(TGDivisionType.DIVISION_TYPES[index]));
 			}
 		};
-		TGMainToolBarItemButton button = new TGMainToolBarItemButton(this.groupName, text, true, actionName, iconFileName, updater);
-		button.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, TGDivisionType.DIVISION_TYPES[index]);
-		menuDivisionType.addMenuItem(button);
-		return button;
+		TGMainToolBarItemConfig config = new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItemConfig.CHECKABLE_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				actionName, iconFileName, updater, false);
+		config.setAttribute(TGSetDivisionTypeDurationAction.PROPERTY_DIVISION_TYPE, TGDivisionType.DIVISION_TYPES[index]);
+		menuDivisionType.addSubItem(config);
+		return config;
 	}
 
-	private void registerItem(TGMainToolBarItem toolBarItem) {
-		this.mapItems.put(toolBarItem.getText(), toolBarItem);
-		this.itemNames.add(toolBarItem.getText());
+	private void registerItem(TGMainToolBarItemConfig toolBarItemConfig) {
+		this.mapItems.put(toolBarItemConfig.getText(), toolBarItemConfig);
+		this.itemNames.add(toolBarItemConfig.getText());
 		if (!this.groupNames.contains(this.groupName)) {
 			this.groupNames.add(this.groupName);
 		}
 	}
 
-	private void registerItem(String text, int type, String iconFileName) {
-		registerItem(new TGMainToolBarItem(this.groupName, text, type, null, iconFileName, null));
-	}
-
+	// not checkable button
 	private void registerButton(String text, String actionName, String iconFileName, TGMainToolBarItemUpdater updater) {
-		registerItem(new TGMainToolBarItemButton(this.groupName, text, actionName, iconFileName, updater));
+		registerItem(new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItemConfig.ACTION_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				actionName, iconFileName, updater, false));
 	}
 
+	// not checkable, not updatable button
 	private void registerButton(String text, String actionName, String iconFileName) {
-		registerItem(new TGMainToolBarItemButton(this.groupName, text, actionName, iconFileName, null));
+		registerItem(new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItemConfig.ACTION_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				actionName, iconFileName, null, false));
 	}
 
+	// checkable button
 	private void registerCheckable(String text, String actionName, String iconFileName, TGMainToolBarItemUpdater updater) {
-		registerItem(new TGMainToolBarItemButton(this.groupName, text, true, actionName, iconFileName, updater));
+		registerItem(new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItemConfig.CHECKABLE_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				actionName, iconFileName, updater, false));
+	}
+
+	// menu
+	private TGMainToolBarItemConfig newMenu(String text, String iconFileName, boolean displaySelectedItemIcon) {
+		return new TGMainToolBarItemConfig(this.groupName, text, TGMainToolBarItem.MENU, TGMainToolBarSection.TYPE_TOOLITEMS, null,
+				iconFileName, null, displaySelectedItemIcon);
+	}
+
+	// a few specific items
+	private void registerItem(String text, int type, int sectionType, String iconFileName) {
+		registerItem(new TGMainToolBarItemConfig(this.groupName, text, type, sectionType, iconFileName));
 	}
 
 	public List<String> getToolBarGroupsNames() {
@@ -905,7 +921,7 @@ public class TGMainToolBarConfigMap {
 		return this.itemNames;
 	}
 
-	public TGMainToolBarItem getToolBarItem(String name) {
+	public TGMainToolBarItemConfig getToolBarItemConfig(String name) {
 		return this.mapItems.get(name);
 	}
 }

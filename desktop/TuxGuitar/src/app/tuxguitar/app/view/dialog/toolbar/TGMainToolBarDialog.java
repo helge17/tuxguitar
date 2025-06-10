@@ -13,7 +13,7 @@ import app.tuxguitar.app.view.toolbar.main.TGMainToolBar;
 import app.tuxguitar.app.view.toolbar.main.TGMainToolBarConfig;
 import app.tuxguitar.app.view.toolbar.main.TGMainToolBarConfigManager;
 import app.tuxguitar.app.view.toolbar.main.TGMainToolBarConfigMap;
-import app.tuxguitar.app.view.toolbar.main.TGMainToolBarItem;
+import app.tuxguitar.app.view.toolbar.main.TGMainToolBarItemConfig;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
@@ -348,11 +348,11 @@ public class TGMainToolBarDialog {
 		List<String> controlNames = this.configMap.getToolBarItemNames();
 		for (int i = 0; i < controlNames.size(); i++) {
 			String controlName = controlNames.get(i);
-			TGMainToolBarItem toolBarItem = this.configMap.getToolBarItem(controlName);
-			if (group.equals("") || toolBarItem.getGroupName().equals("") || group.equals(toolBarItem.getGroupName())) {
+			TGMainToolBarItemConfig toolBarItemConfig = this.configMap.getToolBarItemConfig(controlName);
+			if (group.equals("") || toolBarItemConfig.getGroupName().equals("") || group.equals(toolBarItemConfig.getGroupName())) {
 				UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
 				uiTableItem.setText(0, " " + TuxGuitar.getProperty(controlName));
-				uiTableItem.setImage(iconManager.getImageByName(toolBarItem.getIconFileName()));
+				uiTableItem.setImage(iconManager.getImageByName(toolBarItemConfig.getIconFileName()));
 				this.tableControls.addItem(uiTableItem);
 				if (i == 0) {
 					this.tableControls.setSelectedItem(uiTableItem);
@@ -375,12 +375,12 @@ public class TGMainToolBarDialog {
 		List<String> areaContent = this.config.getAreaContent(areaIndex);
 		for (Integer i = 0; i < areaContent.size(); i++) {
 			String areaControlName = areaContent.get(i);
-			TGMainToolBarItem areaItem = this.configMap.getToolBarItem(areaControlName);
-			if (areaItem != null) {
+			TGMainToolBarItemConfig areaItemConfig = this.configMap.getToolBarItemConfig(areaControlName);
+			if (areaItemConfig != null) {
 				UITableItem<Integer> uiTableItem = new UITableItem<Integer>(i);
 				uiTableItem.setText(0, " " + TuxGuitar.getProperty(areaControlName));
-				if (areaItem.getIconFileName() != null) {
-					uiTableItem.setImage(iconManager.getImageByName(areaItem.getIconFileName()));
+				if (areaItemConfig.getIconFileName() != null) {
+					uiTableItem.setImage(iconManager.getImageByName(areaItemConfig.getIconFileName()));
 				}
 				this.tableAreaControls.addItem(uiTableItem);
 				if (i == selectedIndex) {
