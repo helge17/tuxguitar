@@ -1,5 +1,0 @@
-### Plugin Information ###
-plugin.name=TablEdit file import plugin
-plugin.description=Plugin to open TablEdit v2/v3 (TEF) files
-plugin.author=Julian Casadesus <julian@casadesus.com.ar> (v2), Ffio <ffioathome@gmail.com> (v3)
-plugin.version=2.0
