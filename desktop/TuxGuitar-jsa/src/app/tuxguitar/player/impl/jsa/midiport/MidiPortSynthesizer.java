@@ -9,6 +9,7 @@ import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.gm.port.GMOutputPort;
 import app.tuxguitar.gm.port.GMReceiver;
 import app.tuxguitar.player.base.MidiControllers;
@@ -99,6 +100,7 @@ public class MidiPortSynthesizer extends GMOutputPort{
 			return loadSoundbank( MidiSystem.getSoundbank(file) );
 		}catch (Throwable throwable) {
 			new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.custom"),throwable).printStackTrace();
+			TGMessageDialogUtil.warningMessage(context, TuxGuitar.getProperty("warning"), TuxGuitar.getProperty("jsa.error.soundbank.custom"));
 		}
 		return false;
 	}

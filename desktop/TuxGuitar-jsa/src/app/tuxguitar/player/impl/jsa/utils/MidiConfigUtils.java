@@ -1,5 +1,7 @@
 package app.tuxguitar.player.impl.jsa.utils;
 
+import java.io.File;
+
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
@@ -19,6 +21,7 @@ import app.tuxguitar.ui.widget.UIRadioButton;
 import app.tuxguitar.ui.widget.UITextField;
 import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class MidiConfigUtils {
@@ -117,6 +120,11 @@ public class MidiConfigUtils {
 				changed = changed || (selection != null && !selection.equals(soundbank) ) ;
 				if(changed){
 					if(selection != null){
+						File soundfont = new File(TGExpressionResolver.getInstance(context).resolve(selection));
+						if(!soundfont.isFile()){
+							TGMessageDialogUtil.errorMessage(context, dialog, TuxGuitar.getProperty("jsa.error.soundbank.custom"));
+							return;
+						}
 						config.setValue(SOUNDBANK_KEY,selection);
 					}else{
 						config.remove(SOUNDBANK_KEY);

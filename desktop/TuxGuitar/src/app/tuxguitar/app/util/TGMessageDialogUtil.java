@@ -20,6 +20,10 @@ public class TGMessageDialogUtil {
 		showMessage(context, window, title, message, TGMessageDialog.STYLE_INFO);
 	}
 
+	public static void warningMessage(TGContext context, String title, String message){
+		showMessage(context, TGWindow.getInstance(context).getWindow(), title, message, TGMessageDialog.STYLE_WARNING);
+	}
+
 	public static void errorMessage(TGContext context, UIWindow window, String message){
 		showMessage(context, window, TuxGuitar.getProperty("error"), message, TGMessageDialog.STYLE_ERROR);
 	}
