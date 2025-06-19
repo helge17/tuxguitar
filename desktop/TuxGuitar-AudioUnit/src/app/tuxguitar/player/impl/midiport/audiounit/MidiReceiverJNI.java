@@ -16,11 +16,11 @@ public abstract class MidiReceiverJNI{
 
 	protected native void close();
 
-	//protected native void findDevices();
-
 	protected native void openDevice();
 
 	protected native void closeDevice();
+
+	protected native int changeSoundBank(String soundbankPath);
 
 	protected native void noteOn(int channel,int note,int velocity);
 
@@ -32,6 +32,4 @@ public abstract class MidiReceiverJNI{
 
 	protected native void pitchBend(int channel,int value);
 
-
-	//protected abstract void addDevice(String name);
 }

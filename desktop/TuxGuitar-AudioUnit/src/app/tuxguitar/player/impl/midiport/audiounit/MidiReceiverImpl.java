@@ -3,18 +3,26 @@ package app.tuxguitar.player.impl.midiport.audiounit;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.gm.port.GMReceiver;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.impl.midiport.audiounit.utils.MidiConfigUtils;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGExpressionResolver;
 
-public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
+public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver {
 	private boolean open; // unnecessary
-    private boolean connected;
+	private boolean connected;
 	private List<MidiOutputPort> ports;
+	private TGContext context;
 
-	public MidiReceiverImpl(){
+	public MidiReceiverImpl(TGContext context) {
 		this.ports = new ArrayList<MidiOutputPort>();
-        this.connected = false;
+		this.connected = false;
+		this.context = context;
 	}
 
 	public void open(){
@@ -38,19 +46,31 @@ public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver{
 		return (this.isOpen() && this.connected);
 	}
 
-    public void connect(){
-        if(isOpen()){
-            if(!isConnected()){
-                this.connected = true;
-                this.openDevice();
-            }
-        }
-    }
+	public void connect() {
+		if (isOpen()) {
+			if (!isConnected()) {
+				this.connected = true;
+				this.openDevice();
+				this.changeSoundbank();
+			}
+		}
+	}
 
 	public void disconnect() {
-		if(isConnected()){
+		if (isConnected()) {
 			this.closeDevice();
 			this.connected = false;
+		}
+	}
+
+	private void changeSoundbank() {
+		String soundBankPath = MidiConfigUtils.getSoundbankPath(context);
+		String soundBank = TGExpressionResolver.getInstance(context).resolve(soundBankPath);
+		if (soundBank != null && !soundBank.isEmpty()) {
+			if (this.changeSoundBank(soundBank) != 0) {
+				TGMessageDialogUtil.errorMessage(context, TGWindow.getInstance(context).getWindow(),
+						TuxGuitar.getProperty("audiounit.error.soundbank.custom"));
+			}
 		}
 	}
 
