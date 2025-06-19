@@ -115,6 +115,12 @@ class MidiPlayer
 	}
 
 	OSStatus changeSoundBank(const char *bankPath) {
+		OSStatus graphError = 0;
+		if ((graphError = AUGraphStop(graph)) != 0)
+			return graphError;
+		if ((graphError = AUGraphUninitialize(graph)) != 0)
+			return graphError;
+
 		CFURLRef url = CFURLCreateFromFileSystemRepresentation(
 									kCFAllocatorDefault,
 									(const UInt8*)bankPath,
@@ -124,8 +130,16 @@ class MidiPlayer
 
 		OSStatus result = AudioUnitSetProperty(synthUnit, kMusicDeviceProperty_SoundBankURL,
 							kAudioUnitScope_Global, 0, &url, sizeof(url));
+
 		CFRelease(url);
-		return result;
+		if (result != 0)
+			return result;
+
+		if ((graphError = AUGraphInitialize(graph)) != 0)
+			return graphError;
+		if ((graphError = AUGraphStart(graph)) != 0)
+			return graphError;
+		return 0;
 	}
 
 	// ----------------------------------------------------------------------------------------
@@ -311,6 +325,14 @@ Java_app_tuxguitar_player_impl_midiport_audiounit_MidiReceiverJNI_changeSoundBan
 	const char* bankPath = env->GetStringUTFChars(soundbankPath, 0);
 	jint status = player->changeSoundBank(bankPath);
 	env->ReleaseStringUTFChars(soundbankPath, bankPath);
+	if (status != 0) {
+		// The soundbank selection returned error.
+		// some seems recoverable (missing file?)
+		// some seems hard to recover (wrong content)
+		// It becomes easier to reinitialize the full stack.
+		free();
+		init();
+	}
 	return status;
 }
 
