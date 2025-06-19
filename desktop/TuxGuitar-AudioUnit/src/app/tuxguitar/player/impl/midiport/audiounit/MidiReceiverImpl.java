@@ -69,7 +69,7 @@ public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver {
 		if (soundBank != null && !soundBank.isEmpty()) {
 			if (this.changeSoundBank(soundBank) != 0) {
 				TGMessageDialogUtil.errorMessage(context, TGWindow.getInstance(context).getWindow(),
-						TuxGuitar.getProperty("audiounit.settings.soundbank-error", new String[] { soundBankPath }));
+						TuxGuitar.getProperty("audiounit.error.soundbank.custom"));
 			}
 		}
 	}
