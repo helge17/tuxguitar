@@ -7,10 +7,12 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGFileChooser;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.ui.UIFactory;
-import app.tuxguitar.ui.chooser.UIFileChooser;
-import app.tuxguitar.ui.chooser.UIFileChooserHandler;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
@@ -70,14 +72,16 @@ public class MidiOutputPortSettings extends MidiSettings {
 		buttonAdd.setText(TuxGuitar.getProperty("add"));
 		buttonAdd.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				UIFileChooser uiFileChooser = uiFactory.createOpenFileChooser(dialog);
-				uiFileChooser.choose(new UIFileChooserHandler() {
-					public void onSelectFile(File file) {
-						if( file != null ) {
-							addMidiPort(soundfontsTable, file.getAbsolutePath());
-						}
+
+				List<TGFileFormat> soundfontFormats = new ArrayList<TGFileFormat>();
+				soundfontFormats.add(TGFileChooser.SOUNDBANK_SF2_FORMAT);
+				soundfontFormats.add(TGFileChooser.SOUNDBANK_SF3_FORMAT);
+
+				TGFileChooser.getInstance(getProvider().getContext()).openChooser(new TGFileChooserHandler() {
+					public void updateFileName(String file) {
+						addMidiPort(soundfontsTable, file);
 					}
-				});
+				}, soundfontFormats, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
 		cSoundfontsButtonsLayout.set(buttonAdd, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, false, 1, 1, 80f, 25f, null);

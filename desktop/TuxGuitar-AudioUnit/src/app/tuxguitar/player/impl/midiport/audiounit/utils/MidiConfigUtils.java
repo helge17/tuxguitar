@@ -1,6 +1,8 @@
 package app.tuxguitar.player.impl.midiport.audiounit.utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
@@ -10,6 +12,7 @@ import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
 import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
@@ -83,11 +86,16 @@ public class MidiConfigUtils {
 		sbCustomChooser.setEnabled((soundbank != null));
 		sbCustomChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
+
+				List<TGFileFormat> soundfontFormats = new ArrayList<TGFileFormat>();
+				soundfontFormats.add(TGFileChooser.SOUNDBANK_SF2_FORMAT);
+				soundfontFormats.add(TGFileChooser.SOUNDBANK_DLS_FORMAT);
+
 				TGFileChooser.getInstance(context).openChooser(new TGFileChooserHandler() {
 					public void updateFileName(String fileName) {
 						sbCustomPath.setText(fileName);
 					}
-				}, TGFileChooser.ALL_FORMATS, TGFileChooserDialog.STYLE_OPEN);
+				}, soundfontFormats, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
 		soundbankLayout.set(sbCustomChooser, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);

@@ -87,7 +87,7 @@ public class MidiConfigUtils {
 					public void updateFileName(String fileName) {
 						sbCustomPath.setText(fileName);
 					}
-				}, TGFileChooser.ALL_FORMATS, TGFileChooserDialog.STYLE_OPEN);
+				}, TGFileChooser.SOUNDBANK_SF2_FORMAT, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
 		soundbankLayout.set(sbCustomChooser, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);

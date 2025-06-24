@@ -20,6 +20,10 @@ public class TGFileChooser {
 
 	public static final String DEFAULT_OPEN_FILENAME = null;
 
+	public static final TGFileFormat SOUNDBANK_SF2_FORMAT = new TGFileFormat("SoundFont SF2", "audio/x-sf2", new String[]{"sf2"});
+	public static final TGFileFormat SOUNDBANK_SF3_FORMAT = new TGFileFormat("SoundFont SF3", "audio/x-sf3", new String[]{"sf3"});
+	public static final TGFileFormat SOUNDBANK_DLS_FORMAT = new TGFileFormat("Downloadable Sounds DLS", "audio/x-dls", new String[]{"dls"});
+
 	public static TGFileFormat ALL_FORMATS = new TGFileFormat(TuxGuitar.getProperty("file.all-files"), "*/*", new String[]{"*"});
 
 	private TGContext context;
