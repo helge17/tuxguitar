@@ -9,7 +9,9 @@ import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.gm.port.GMReceiver;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.player.base.MidiOutputPort;
+import app.tuxguitar.player.impl.midiport.audiounit.MidiPortReaderPlugin;
 import app.tuxguitar.player.impl.midiport.audiounit.utils.MidiConfigUtils;
+import app.tuxguitar.util.plugin.TGPluginInfo;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGExpressionResolver;
 
@@ -68,8 +70,10 @@ public class MidiReceiverImpl extends MidiReceiverJNI implements GMReceiver {
 		String soundBank = TGExpressionResolver.getInstance(context).resolve(soundBankPath);
 		if (soundBank != null && !soundBank.isEmpty()) {
 			if (this.changeSoundBank(soundBank) != 0) {
-				TGMessageDialogUtil.errorMessage(context, TGWindow.getInstance(context).getWindow(),
-						TuxGuitar.getProperty("audiounit.error.soundbank.custom"));
+				TGPluginInfo pluginInfo = new TGPluginInfo(context, MidiPortReaderPlugin.MODULE_ID);
+				pluginInfo.initialize(MidiPortReaderPlugin.MODULE_ID);
+				TGMessageDialogUtil.errorMessage(context, TGWindow.getInstance(context).getWindow(), pluginInfo.getName(),
+						TuxGuitar.getProperty("audiounit.error.soundbank.custom", new String[] {soundBankPath}));
 			}
 		}
 	}

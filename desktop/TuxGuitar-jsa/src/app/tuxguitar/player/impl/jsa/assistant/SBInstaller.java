@@ -121,7 +121,7 @@ public class SBInstaller {
 			this.listener.notifyProcess(TuxGuitar.getProperty("jsa.soundbank-assistant.process.installing",new String[]{file.getAbsolutePath()}));
 
 			if( ! this.synthesizer.loadSoundbank(file) ){
-				this.listener.notifyFailed(new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.custom")));
+				this.listener.notifyFailed(new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.custom", new String[] {file.getAbsolutePath()})));
 				return;
 			}
 

@@ -10,12 +10,15 @@ import javax.sound.midi.Synthesizer;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
+import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.gm.port.GMOutputPort;
 import app.tuxguitar.gm.port.GMReceiver;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.impl.jsa.assistant.SBAssistant;
+import app.tuxguitar.player.impl.jsa.MidiPlugin;
 import app.tuxguitar.player.impl.jsa.utils.MidiConfigUtils;
+import app.tuxguitar.util.plugin.TGPluginInfo;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGExpressionResolver;
 
@@ -99,8 +102,10 @@ public class MidiPortSynthesizer extends GMOutputPort{
 		try {
 			return loadSoundbank( MidiSystem.getSoundbank(file) );
 		}catch (Throwable throwable) {
-			new MidiPlayerException(TuxGuitar.getProperty("jsa.error.soundbank.custom"),throwable).printStackTrace();
-			TGMessageDialogUtil.warningMessage(context, TuxGuitar.getProperty("warning"), TuxGuitar.getProperty("jsa.error.soundbank.custom"));
+			TGPluginInfo pluginInfo = new TGPluginInfo(context, MidiPlugin.MODULE_ID);
+			pluginInfo.initialize(MidiPlugin.MODULE_ID);
+			TGMessageDialogUtil.errorMessage(context, TGWindow.getInstance(context).getWindow(), pluginInfo.getName(),
+					TuxGuitar.getProperty("jsa.error.soundbank.custom", new String[] {file.getAbsolutePath()}));
 		}
 		return false;
 	}

@@ -122,7 +122,7 @@ public class MidiConfigUtils {
 					if(selection != null){
 						File soundfont = new File(TGExpressionResolver.getInstance(context).resolve(selection));
 						if(!soundfont.isFile()){
-							TGMessageDialogUtil.errorMessage(context, dialog, TuxGuitar.getProperty("jsa.error.soundbank.custom"));
+							TGMessageDialogUtil.errorMessage(context, dialog, TuxGuitar.getProperty("jsa.error.soundbank.custom", new String[] {soundfont.getAbsolutePath()}));
 							return;
 						}
 						config.setValue(SOUNDBANK_KEY,selection);
