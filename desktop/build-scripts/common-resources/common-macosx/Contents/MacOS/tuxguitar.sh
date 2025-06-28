@@ -13,12 +13,10 @@ CLASSPATH=${CLASSPATH}:${TG_DIR}/share/
 CLASSPATH=${CLASSPATH}:${TG_DIR}/dist/
 ##MAINCLASS
 MAINCLASS=app.tuxguitar.app.TGMainSingleton
-##JVM ARGUMENTS
-VM_ARGS="-Xmx512m"
 ##SWT ARGUMENTS
 ls lib/*swt*.jar > /dev/null 2>&1 && SWT_ARGS="-XstartOnFirstThread"
 ##EXPORT VARS
 export CLASSPATH
 export LD_LIBRARY_PATH
 ##LAUNCH
-"${JAVA}" ${VM_ARGS} ${SWT_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${TG_DIR}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$@"
+"${JAVA}" ${SWT_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${TG_DIR}" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$@"
