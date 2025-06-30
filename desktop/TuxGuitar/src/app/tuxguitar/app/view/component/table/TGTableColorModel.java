@@ -16,7 +16,7 @@ import app.tuxguitar.util.properties.TGProperties;
 public class TGTableColorModel {
 
 	public static final int DEFAULT = 0;
-	public static final int CARET = 1;
+	public static final int CARET_DARK = 1;
 	public static final int HEADER = 2;
 	public static final int EVEN_LINE_BACKGROUND = 3;
 	public static final int EVEN_LINE_FOREGROUND = 4;
@@ -26,6 +26,7 @@ public class TGTableColorModel {
 	public static final int SELECTED_LINE_FOREGROUND = 8;
 	public static final int CELL_BACKGROUND = 9;
 	public static final int CELL_REST_MEASURE = 10;
+	public static final int CARET_LIGHT = 11;
 
 	private UIColor[] colors;
 
@@ -37,11 +38,10 @@ public class TGTableColorModel {
 		UIAppearance appearance = TGApplication.getInstance(context).getAppearance();;
 		TGProperties properties = TGSkinManager.getInstance(context).getCurrentSkinProperties();
 		UIFactory factory = TGApplication.getInstance(context).getFactory();
-		UIColorModel[] colorModels = new UIColorModel[11];
+		UIColorModel[] colorModels = new UIColorModel[12];
 
 		// names of properties which are configurable by skin
 		HashMap<Integer, String> colorProperties = new HashMap<Integer, String>();
-		colorProperties.put(CARET, "table.caret");
 		colorProperties.put(EVEN_LINE_BACKGROUND, "table.even-line.background");
 		colorProperties.put(EVEN_LINE_FOREGROUND, "table.even-line.foreground");
 		colorProperties.put(ODD_LINE_BACKGROUND, "table.odd-line.background");
@@ -51,7 +51,8 @@ public class TGTableColorModel {
 
 		// defaults
 		colorModels[DEFAULT] = new UIColorModel(0x00, 0x00, 0x00);	// BLACK
-		colorModels[CARET] = new UIColorModel(0x00, 0x00, 0x00);	// BLACK
+		colorModels[CARET_DARK] = new UIColorModel(0x00, 0x00, 0x00);	// BLACK
+		colorModels[CARET_LIGHT] = new UIColorModel(0xFF, 0xFF, 0xFF);	// WHITE
 		colorModels[HEADER] = appearance.getColorModel(UIColorAppearance.WidgetBackground);
 		colorModels[EVEN_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetHighlightBackground);
 		colorModels[EVEN_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetHighlightForeground);

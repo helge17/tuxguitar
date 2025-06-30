@@ -43,14 +43,13 @@ public class TGTableCanvasPainter {
 
 		int count = this.track.countMeasures();
 		for(int j = 0;j < count;j++){
+			UIColor cellBackgroundColor = trackColor;
 			TGMeasureImpl measure = (TGMeasureImpl) this.track.getMeasure(j);
 			if(isRestMeasure(measure)){
-				painter.setBackground(viewer.getColorModel().getColor(TGTableColorModel.CELL_REST_MEASURE));
-				painter.setForeground(viewer.getColorModel().getColor(TGTableColorModel.CELL_REST_MEASURE));
-			}else{
-				painter.setBackground(trackColor);
-				painter.setForeground(trackColor);
+				cellBackgroundColor = viewer.getColorModel().getColor(TGTableColorModel.CELL_REST_MEASURE);
 			}
+			painter.setBackground(cellBackgroundColor);
+			painter.setForeground(cellBackgroundColor);
 			painter.initPath(UIPainter.PATH_FILL);
 			painter.setAntialias(false);
 			painter.addRectangle(x,y,size - 1,size );
@@ -58,10 +57,10 @@ public class TGTableCanvasPainter {
 
 			boolean hasCaret = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().equals(measure);
 			if((playing && measure.isPlaying(this.viewer.getEditor().getTablature().getViewLayout())) || (!playing && hasCaret)){
-				painter.setBackground(viewer.getColorModel().getColor(TGTableColorModel.CARET));
+				painter.setBackground(getCaretColor(cellBackgroundColor));
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
-				painter.addRectangle(x + 4, y + 4, size - 9, size - 8);
+				painter.addRoundedRectangle(x + 4, y + 4, size - 9, size - 8, 3f);
 				painter.closePath();
 				painter.setBackground(trackColor);
 			}
@@ -80,6 +79,13 @@ public class TGTableCanvasPainter {
 		}
 
 		trackColor.dispose();
+	}
+
+	private UIColor getCaretColor(UIColor backgroundColor) {
+		int brightness = backgroundColor.getRed() + backgroundColor.getGreen() + backgroundColor.getBlue();
+		// arbitrary threshold
+		int index = (brightness > 3*0x80 ? TGTableColorModel.CARET_DARK : TGTableColorModel.CARET_LIGHT);
+		return viewer.getColorModel().getColor(index);
 	}
 
 	private boolean isRestMeasure(TGMeasureImpl measure){
