@@ -13,7 +13,7 @@ public class TGMainToolBarConfig {
 	private static final String[] DEFAULT_LEFT_CONTENT = new String[] { "file.new", "file.open", "file.save",
 			"file.save-as", "file.print-preview", "file.print", "toolbar.separator", "edit.undo", "edit.redo", "toolbar.separator",
 			"view.show-edit-toolbar", "view.show-table-viewer", "view.show-instruments", "view.show-fretboard",
-			"view.zoom.out", "view.zoom.reset", "view.zoom.in", "view.layout", "toolbar.separator", "composition.properties",
+			"view.zoom.out", "view.zoom.reset", "view.zoom.in", "view.layout.multitrack","view.layout.compact", "toolbar.separator", "composition.properties",
 			"toolbar.separator", "track.add", "track.remove", "toolbar.separator", "marker" };
 	private static final String[] DEFAULT_CENTER_CONTENT = new String[] { "transport.first", "transport.previous",
 			"transport.start", "transport.stop", "transport.next", "transport.last", "toolbar.separator", "toolbar.timeCounter",
