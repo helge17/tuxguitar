@@ -14,10 +14,13 @@ public class MidiPlayerCountDown {
 	private boolean running;
 	private int tempoPercent;
 
+	private int tickCount;
+
 	public MidiPlayerCountDown(MidiPlayer player){
 		this.player = player;
 		this.enabled = false;
 		this.tempoPercent = DEFAULT_TEMPO_PERCENT;
+		this.tickCount = 0;
 	}
 
 	public void start(){
@@ -36,14 +39,16 @@ public class MidiPlayerCountDown {
 					long tickStart = System.currentTimeMillis();
 
 					int tickIndex = 0;
-					int tickCount = header.getTimeSignature().getNumerator();
+					
+					if (this.tickCount == 0)
+						this.tickCount = header.getTimeSignature().getNumerator();
 
-					while( this.isRunning() && tickIndex <= tickCount ){
+					while( this.isRunning() && tickIndex <= this.tickCount ){
 							long currentTime = System.currentTimeMillis();
 							if( tickStart <= currentTime ){
 								tickStart += tickLength;
 								tickIndex ++;
-								if( tickIndex <= tickCount ){
+								if( tickIndex <= this.tickCount ){
 									this.player.getOutputTransmitter().sendNoteOn(channelId, 37, TGVelocities.DEFAULT, -1, false);
 									synchronized (timerLock) {
 										timerLock.wait( 1 );
@@ -105,6 +110,14 @@ public class MidiPlayerCountDown {
 		return tempoPercent;
 	}
 
+	public void setTickCount(int ticks) {
+		this.tickCount = ticks;
+	}
+	
+	public int getTickCount() {
+		return this.tickCount;
+	}
+	
 	public void setTempoPercent(int tempoPercent) {
 		this.tempoPercent = tempoPercent;
 	}
