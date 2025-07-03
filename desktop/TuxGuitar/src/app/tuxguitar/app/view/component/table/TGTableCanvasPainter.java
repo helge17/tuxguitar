@@ -84,7 +84,7 @@ public class TGTableCanvasPainter {
 	private UIColor getCaretColor(UIColor backgroundColor) {
 		int brightness = backgroundColor.getRed() + backgroundColor.getGreen() + backgroundColor.getBlue();
 		// arbitrary threshold
-		int index = (brightness > 3*0x80 ? TGTableColorModel.CARET_DARK : TGTableColorModel.CARET_LIGHT);
+		int index = (brightness > 3*0x50 ? TGTableColorModel.CARET_DARK : TGTableColorModel.CARET_LIGHT);
 		return viewer.getColorModel().getColor(index);
 	}
 
