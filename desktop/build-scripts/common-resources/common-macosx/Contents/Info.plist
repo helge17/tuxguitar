@@ -71,7 +71,7 @@
 				<key>CFBundleTypeIconFile</key>
 				<string>tgdoc.icns</string>
 				<key>CFBundleTypeName</key>
-				<string>PowerTab Document</string>
+				<string>Power Tab Editor Document</string>
 				<key>CFBundleTypeRole</key>
 				<string>Editor</string>
 				<key>LSIsAppleDefaultForType</key>
