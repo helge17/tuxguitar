@@ -30,9 +30,9 @@
 		<icon name="tuxguitar"/>
 	</mime-type>
 	<mime-type type="application/x-ptb">
-		<comment>PowerTab file</comment>
-		<comment xml:lang="de">PowerTab-Datei</comment>
-		<comment xml:lang="it">File di PowerTab</comment>
+		<comment>Power Tab Editor file</comment>
+		<comment xml:lang="de">Power-Tab-Editor-Datei</comment>
+		<comment xml:lang="it">File di Power Tab Editor</comment>
 		<glob pattern="*.ptb"/>
 		<icon name="tuxguitar"/>
 	</mime-type>
