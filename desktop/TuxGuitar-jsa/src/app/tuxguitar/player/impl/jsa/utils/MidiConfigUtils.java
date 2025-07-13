@@ -1,7 +1,6 @@
 package app.tuxguitar.player.impl.jsa.utils;
 
 import java.io.File;
-
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
@@ -10,6 +9,7 @@ import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
 import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
@@ -27,6 +27,8 @@ import app.tuxguitar.util.configuration.TGConfigManager;
 public class MidiConfigUtils {
 
 	public static final String SOUNDBANK_KEY = "soundbank.custom.path";
+
+	private static final TGFileFormat soundfontFormat = new TGFileFormat("SoundFont SF2", "audio/x-sf2", new String[]{"sf2"});
 
 	public static TGConfigManager getConfig(TGContext context){
 		return new TGConfigManager(context, "tuxguitar-jsa");
@@ -87,7 +89,7 @@ public class MidiConfigUtils {
 					public void updateFileName(String fileName) {
 						sbCustomPath.setText(fileName);
 					}
-				}, TGFileChooser.SOUNDBANK_SF2_FORMAT, TGFileChooserDialog.STYLE_OPEN);
+				}, soundfontFormat, TGFileChooserDialog.STYLE_OPEN);
 			}
 		});
 		soundbankLayout.set(sbCustomChooser, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);

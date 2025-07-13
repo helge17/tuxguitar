@@ -2,6 +2,7 @@ package app.tuxguitar.player.impl.midiport.fluidsynth;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +32,10 @@ import app.tuxguitar.ui.widget.UITableItem;
 import app.tuxguitar.ui.widget.UIWindow;
 
 public class MidiOutputPortSettings extends MidiSettings {
+	
+	private static final List<TGFileFormat> soundfontFormats = Arrays.asList(
+			new TGFileFormat("SoundFont SF2", "audio/x-sf2", new String[]{"sf2"}),
+			new TGFileFormat("SoundFont SF3", "audio/x-sf3", new String[]{"sf3"}));
 
 	public MidiOutputPortSettings(MidiOutputPortProviderImpl provider){
 		super( provider );
@@ -72,10 +77,6 @@ public class MidiOutputPortSettings extends MidiSettings {
 		buttonAdd.setText(TuxGuitar.getProperty("add"));
 		buttonAdd.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-
-				List<TGFileFormat> soundfontFormats = new ArrayList<TGFileFormat>();
-				soundfontFormats.add(TGFileChooser.SOUNDBANK_SF2_FORMAT);
-				soundfontFormats.add(TGFileChooser.SOUNDBANK_SF3_FORMAT);
 
 				TGFileChooser.getInstance(getProvider().getContext()).openChooser(new TGFileChooserHandler() {
 					public void updateFileName(String file) {
