@@ -180,6 +180,7 @@ public class TGTransportDialog implements TGEventListener {
 		this.countInToggle.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportCountDownAction.NAME));
 		
 		this.countInTicks = factory.createSpinner(composite);
+		this.countInTicks.setMinimum(1);
 		this.countInTicks.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
@@ -339,17 +340,17 @@ public class TGTransportDialog implements TGEventListener {
 			this.tickProgress.setMaximum((int)(last.getStart() + last.getLength()) -1);
 			this.metronome.setSelected(player.isMetronomeEnabled());
 			this.countInToggle.setSelected(player.getCountDown().isEnabled());
-			this.countInTicks.setMinimum(1);
+			
 			// Set default spinner's value to first measure time signature or current count-in ticks.
 			// Default value will automatically update to correct count when user changes song,
 			// or play a section with different time signature.
-			
-			TGMeasureHeader currentHeader = getSongManager().getMeasureHeaderAt(player.getSong(), TablatureEditor.getInstance(this.context).getTablature().getCaret().getPosition());
-			
-			if (player.getCountDown().getTickCount() == 0)
+				
+			if (player.getCountDown().getTickCount() == 0) {
+			    TGMeasureHeader currentHeader = getSongManager().getMeasureHeaderAt(player.getSong(), TablatureEditor.getInstance(this.context).getTablature().getCaret().getPosition());
 				this.countInTicks.setValue(currentHeader.getTimeSignature().getNumerator());
-			else
+			} else {
 				this.countInTicks.setValue(player.getCountDown().getTickCount());
+			}
 			this.countInTicks.setEnabled(player.getCountDown().isEnabled());
 
 			this.redrawProgress();
