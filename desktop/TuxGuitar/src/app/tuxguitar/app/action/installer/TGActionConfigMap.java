@@ -565,7 +565,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//layout actions
 		this.map(TGSetPageLayoutAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetLinearLayoutAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
-		this.map(TGSetMultitrackViewAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGSetMultitrackViewAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetScoreEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetTablatureEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetCompactViewAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
