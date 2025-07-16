@@ -1,7 +1,7 @@
 package app.tuxguitar.player.impl.midiport.audiounit.utils;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
@@ -30,6 +30,10 @@ import app.tuxguitar.util.configuration.TGConfigManager;
 public class MidiConfigUtils {
 
 	public static final String SOUNDBANK_KEY = "soundbank.custom.path";
+	
+	private static final List<TGFileFormat> soundfontFormats = Arrays.asList(
+			new TGFileFormat("SoundFont SF2", "audio/x-sf2", new String[]{"sf2"}),
+			new TGFileFormat("Downloadable Sounds DLS", "audio/x-dls", new String[]{"dls"}));
 
 	public static TGConfigManager getConfig(TGContext context){
 		return new TGConfigManager(context, "tuxguitar-audio-unit");
@@ -86,11 +90,6 @@ public class MidiConfigUtils {
 		sbCustomChooser.setEnabled((soundbank != null));
 		sbCustomChooser.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-
-				List<TGFileFormat> soundfontFormats = new ArrayList<TGFileFormat>();
-				soundfontFormats.add(TGFileChooser.SOUNDBANK_SF2_FORMAT);
-				soundfontFormats.add(TGFileChooser.SOUNDBANK_DLS_FORMAT);
-
 				TGFileChooser.getInstance(context).openChooser(new TGFileChooserHandler() {
 					public void updateFileName(String fileName) {
 						sbCustomPath.setText(fileName);
