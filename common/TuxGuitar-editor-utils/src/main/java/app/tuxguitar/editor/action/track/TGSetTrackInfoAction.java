@@ -28,7 +28,7 @@ public class TGSetTrackInfoAction extends TGActionBase {
 			TGColor color = ((TGColor) context.getAttribute(ATTRIBUTE_TRACK_COLOR));
 			Integer maxFret = (Integer) context.getAttribute(ATTRIBUTE_TRACK_MAXFRET);
 
-			if (maxFret == null) {
+			if ((maxFret == null) || track.isPercussion()) {
 				getSongManager(context).getTrackManager().changeInfo(track, name, color, offset);
 			} else {
 				getSongManager(context).getTrackManager().changeInfo(track, name, color, offset, maxFret);
