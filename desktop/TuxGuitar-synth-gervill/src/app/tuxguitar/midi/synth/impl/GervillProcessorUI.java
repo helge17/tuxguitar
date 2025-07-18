@@ -8,13 +8,14 @@ import java.util.List;
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGFileChooser;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserDialog;
+import app.tuxguitar.app.view.dialog.file.TGFileChooserHandler;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.midi.synth.ui.TGAudioProcessorUI;
 import app.tuxguitar.midi.synth.ui.TGAudioProcessorUICallback;
 import app.tuxguitar.ui.UIFactory;
-import app.tuxguitar.ui.chooser.UIFileChooser;
-import app.tuxguitar.ui.chooser.UIFileChooserFormat;
-import app.tuxguitar.ui.chooser.UIFileChooserHandler;
 import app.tuxguitar.ui.event.UIModifyEvent;
 import app.tuxguitar.ui.event.UIModifyListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
@@ -31,6 +32,10 @@ import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
 
 public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener, UISelectionListener {
+
+	private static final List<TGFileFormat> soundbankFormats = Arrays.asList(
+		new TGFileFormat("SoundFont SF2", "audio/x-sf2", new String[]{"sf2"}),
+		new TGFileFormat("Downloadable Sounds DLS", "audio/x-dls", new String[]{"dls"}));
 
 	private static final String DATA_SOUNDBANK_PATH = "soundbankPath";
 
@@ -157,29 +162,19 @@ public class GervillProcessorUI implements TGAudioProcessorUI, UIModifyListener,
 	}
 
 	public void chooseSoundbank(final UIWindow parent) {
-		final List<UIFileChooserFormat> soundbankFormats = new ArrayList<UIFileChooserFormat>();
-		soundbankFormats.add(new UIFileChooserFormat("SF2 files", Arrays.asList("sf2")));
-		soundbankFormats.add(new UIFileChooserFormat("DLS files", Arrays.asList("dls")));
 
 		final GervillSettings gervillSettings = new GervillSettings(this.context);
 		String chooserPath = gervillSettings.getSoundbankFolder();
 
-		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
-		UIFileChooser uiFileChooser = uiFactory.createOpenFileChooser(parent);
-		uiFileChooser.setSupportedFormats(soundbankFormats);
-		if (chooserPath != null) {
-			uiFileChooser.setDefaultPath(new File(chooserPath));
-		}
-		uiFileChooser.choose(new UIFileChooserHandler() {
-			public void onSelectFile(File file) {
-				if (file != null) {
-					GervillProcessorUI.this.updateSoundbank(file.getAbsolutePath());
+		TGFileChooser.getInstance(context).openChooser(new TGFileChooserHandler() {
+			public void updateFileName(String file) {
+				GervillProcessorUI.this.updateSoundbank(file);
 
-					gervillSettings.setSoundbankFolder(file.getParentFile().getAbsolutePath());
-					gervillSettings.save();
-				}
+				gervillSettings.setSoundbankFolder(new File(file).getParentFile().getAbsolutePath());
+				gervillSettings.save();
 			}
-		});
+		}, soundbankFormats, TGFileChooserDialog.STYLE_OPEN);
+
 	}
 
 	public void updateItem(UIDropDownSelect<Integer> select, Integer value) {
