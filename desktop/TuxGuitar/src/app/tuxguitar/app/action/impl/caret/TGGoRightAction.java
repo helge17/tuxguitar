@@ -6,12 +6,16 @@ import app.tuxguitar.app.transport.TGTransport;
 import app.tuxguitar.app.view.component.tab.Caret;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
+import app.tuxguitar.song.models.TGBeat;
 
 public class TGGoRightAction extends TGActionBase{
 
@@ -39,6 +43,15 @@ public class TGGoRightAction extends TGActionBase{
 				tgActionManager.execute(TGAddMeasureAction.NAME, context);
 
 				caret.moveRight();
+			}
+
+			boolean playWhenMoving = TGConfigManager.getInstance(getContext()).getBooleanValue(TGConfigKeys.PLAY_WHEN_MOVING);
+			if (playWhenMoving) { // current beat is played when caret is moved
+				TGBeat beat = (TGBeat) caret.getSelectedBeat();
+				if (beat != null) {
+					TuxGuitar tuxguitar = TuxGuitar.getInstance();
+					tuxguitar.playBeat(beat);
+				}
 			}
 		}
 	}
