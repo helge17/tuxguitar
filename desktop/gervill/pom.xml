@@ -22,6 +22,9 @@
 					<configuration>
 						<source>9</source>
 						<target>9</target>
+						<compilerArgs>
+							<arg>-Xlint:all</arg>
+						</compilerArgs>
 					</configuration>
 				</plugin>
 				<plugin>
