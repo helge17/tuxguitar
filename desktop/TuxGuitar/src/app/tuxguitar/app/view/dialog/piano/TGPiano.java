@@ -244,7 +244,6 @@ public class TGPiano {
 				painter.closePath();
 			}
 		}
-		paintScale(painter);
 
 		painter.dispose();
 		return image;
@@ -307,6 +306,8 @@ public class TGPiano {
 	 * @param value
 	 */
 	protected void paintNote(UIPainter painter,int value){
+		if (value < 0)
+			return;
 		painter.setBackground(this.config.getColorNote());
 		int posX = 0;
 		int y = 0;
@@ -344,7 +345,7 @@ public class TGPiano {
 					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
 					painter.closePath();
 				}
-
+				return;
 			}
 
 			posX += width;
@@ -366,21 +367,40 @@ public class TGPiano {
 				}
 			}
 		}
+		
+		paintScale(painter);
 	}
 
-	/**
-	 * Retorna el indice de la nota seleccionada
-	 *
-	 * @param point
-	 * @return
-	 */
-	private int getSelection(float x){
+	// Retuns index of selected key or -1
+	private int getSelection(float x, float y) {
+		int sharpKey = isOnSharpKey(x, y); // if it is on a sharp key, that is returned
+		if (sharpKey >= 0)
+			return sharpKey;
+
 		float posX = 0;
+		
+		for (int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++) {
+			if (TYPE_NOTES[i % TYPE_NOTES.length]) { // it is a natural key?
+				if (x>=posX && x<posX+NATURAL_WIDTH) {
+					return i;
+				}
+				posX += NATURAL_WIDTH;
+			}
+		}
 
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
+		return -1;
+	}
+
+	// This tells whether the point 'x, y' is on a sharp key and which one.
+	// Returns -1 if it is not on a sharp key.
+	private int isOnSharpKey(float x, float y) {
+		float posX = 0;
+		
+		for (int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++) { // travels through all the keys. 8*12 keys (8 octaves, and 12 notes each)
 			float width = 0f;
-
-			if(TYPE_NOTES[i % TYPE_NOTES.length]){
+			boolean isSharp = false;
+			
+			if (TYPE_NOTES[i % TYPE_NOTES.length]) { // is a natural key?
 				width = NATURAL_WIDTH;
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
 					width -= ((SHARP_WIDTH / 2));
@@ -388,21 +408,25 @@ public class TGPiano {
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
 					width -= ((SHARP_WIDTH / 2));
 				}
-			}else{
+			} else { // is sharp
 				width = SHARP_WIDTH;
+				isSharp = true;
 			}
 
-			if( x >= posX && x < (posX + width)  ){
+			if (x>=posX && x<posX+width && isSharp && y<SHARP_HEIGHT) {
 				return i;
 			}
 
 			posX += width;
 		}
+
 		return -1;
 	}
 
 	protected void hit(float x, float y) {
-		int value = this.getSelection(x);
+		int value = this.getSelection(x, y);
+		if (value <= -1)
+			return;
 
 		if(!this.removeNote(value)) {
 			this.addNote(value);
