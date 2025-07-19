@@ -235,6 +235,15 @@ public class TGPiano {
 				painter.setAntialias(false);
 				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
 				painter.closePath();
+
+				// If it is a C key, the number of the octave is written. This number is the same as the one in matrix editor.
+				if ((i % 12) == 0) {
+					final int offset = -1; // offset to match the same number as matrix editor
+					int n = (i / 12) + offset;
+					if (n >= 0)
+						painter.drawString(""+n, x+3, y+2);
+				}
+
 				x += NATURAL_WIDTH;
 			}else{
 				painter.setBackground(this.config.getColorNotNatural());
