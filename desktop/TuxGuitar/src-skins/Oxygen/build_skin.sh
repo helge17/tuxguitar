@@ -108,7 +108,7 @@ function usage {
   echo
   echo "Usage: $COMMAND [OPTIONS]"
   echo
-  echo "Generate the skins $SKIN and $DARK from the SVG/PNG images in the directory"
+  echo "Generate the skins $SKIN and $DARK from the SVG images in the directory"
   echo "  $THIS_DIR"
   echo "  The subfolder \"$DT\" contains the icons that are taken over from the $DT Desktop without modifications."
   echo "  The subfolders \"$SKIN\" and \"$DARK\" contain links to the $DT icons, $TG specific icons and other files."
@@ -178,15 +178,6 @@ function make_icon {
       # SVG -> PNG default conversion
       inkscape --export-filename=$out_icon --export-background-opacity=0 --export-width=$width --export-height=$height $icon > /dev/null 2>&1
     fi
-    echo "done."
-  elif [[ $icon =~ ^$THIS_DIR/$skin/([0-9]+)"x"([0-9]+)/(.+)\.png$ ]]; then
-    # Icon path/WWxHH/name.png -gm-convert-scale-WWxHHpx-> name.png
-    width=${BASH_REMATCH[1]}
-    height=${BASH_REMATCH[2]}
-    name=${BASH_REMATCH[3]}
-    out_icon=$skin_dir/$name.png
-    echo -n "Generating icon $name.png ("$width"x"$height"px) from $name.png ... "
-    gm convert -scale $width"x"$height! $icon $out_icon
     echo "done."
   elif [[ $icon =~ ^$THIS_DIR/$skin/copy/.+$ ]]; then
     # File path/copy/name.xyz -copy-> name.xyz

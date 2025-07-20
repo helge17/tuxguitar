@@ -22,7 +22,6 @@ S_ICOS=16x16+3   # Size of icons in menus and toolbars
 S_ICOB=22x22     # Size of icons in menus and toolbars
 S_PLAY=36x36     # Size of icons in player
 S_INFO=64x64     # Size of icons in warnings and settings dialog
-S_LOGO=96x96     # Size of TuxGuitar logo
 S_TRAC=16x16     # Size of icons in track table
 
 # Icon colors are defined in the CSS files
@@ -33,7 +32,6 @@ C_D_HI=-30%                              # Modify brightness for highlighted ico
 
 declare -A ICONS=(
   # Icon path/name.svg -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2+margin2:TuxGuitar_icon2.png width3xheight3+margin3-H:TuxGuitar_icon3.png
-  # Icon path/name.png -convert-> width1xheight1:TuxGuitar_icon1.png width2xheight2:TuxGuitar_icon2.png
   # Icon path/file.xyz --copy---> $SKIN_DIR/file1.xyz                $DARK_DIR/file2.xyz
   ["$TG/separator.svg"]="$S_ICOS:separator.png"
   ["$TG/duration.svg"]="$S_ICOB:duration.png"
@@ -208,7 +206,7 @@ declare -A ICONS=(
   ["$TG/transport_metronome.svg"]="$S_ICOS:transport_metronome.png"
   ["$TG/transport_count_in.svg"]="$S_ICOS:transport_count_in.png"
   ["$TG/transport_time_counter.svg"]="$S_ICOB:transport_time_counter.png"
-  ["$TG/logo.png"]="$S_LOGO:icon.png"
+  ["$TG/icon.png"]="$SKIN_DIR/icon.png $DARK_DIR/icon.png"
   ["$TG/splash.png"]="$SKIN_DIR/splash.png $DARK_DIR/splash.png"
   ["$TG/skin-preview.png"]="$SKIN_DIR/skin-preview.png"
   ["$TG/skin-preview-dark.png"]="$DARK_DIR/skin-preview.png"
@@ -223,7 +221,7 @@ function usage {
   echo
   echo "Usage: $COMMAND [OPTIONS]"
   echo
-  echo "Generate the skins $SKIN and $DARK from the SVG/PNG images in the directory"
+  echo "Generate the skins $SKIN and $DARK from the SVG images in the directory"
   echo "  $THIS_DIR"
   echo "  The subfolder \"$DT\" contains the icons that are taken over from the $DT Desktop without modifications."
   echo "  The subfolder \"$TG\" contains icons and other files that are specific to $TG."
@@ -326,18 +324,10 @@ for icon in "${!ICONS[@]}"; do
         OUT_HILI=$C_D_HI
         OUT_FILE=$DARK_DIR/$png_icon
         convert_svg_to_png
-      elif [[ $icon =~ ^.+\.png$ ]]; then
-        echo -n "Converting to $SKIN_DIR/$png_icon ... "
-        if [ $margin ]; then
-          echo -e "\n\nError: Margin $margin given, but margin is not supported for PNGs."
-          echo -e "\nAborting.\n"
-          exit 1
-        fi
-        gm convert -scale $width"x"$height! $THIS_DIR/$icon $SKIN_DIR/$png_icon
-        echo "done."
-        echo -n "Converting to $DARK_DIR/$png_icon ... "
-        cp -p $SKIN_DIR/$png_icon $DARK_DIR
-        echo "done."
+      else
+        echo -e "\nError: Only SVG files can be converted to PNG icons."
+        echo -e "\nAborting.\n"
+        exit 1
       fi
     elif [[ $out_icon =~ .+/.+ ]]; then
       echo -n "Copying to $out_icon ... "
