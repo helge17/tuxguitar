@@ -47,6 +47,7 @@ import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UISeparator;
 import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGPiano {
 
@@ -236,12 +237,11 @@ public class TGPiano {
 				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
 				painter.closePath();
 
-				// If it is a C key, the number of the octave is written. This number is the same as the one in matrix editor.
-				if ((i % 12) == 0) {
-					final int offset = -1; // offset to match the same number as matrix editor
-					int n = (i / 12) + offset;
-					if (n >= 0)
-						painter.drawString(""+n, x+3, y+2);
+				// If it is a C key, the number of the octave is written.
+				if ("C".equals(TGMusicKeyUtils.noteName(i, 0))) {
+					int octave = TGMusicKeyUtils.noteOctave(i);
+					if (octave >= 0)
+						painter.drawString(String.valueOf(octave), x+3, y+2);
 				}
 
 				x += NATURAL_WIDTH;
