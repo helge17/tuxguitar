@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=ALSA output plugin
 plugin.description=This plugin enables the sound output via ALSA on Linux.
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0

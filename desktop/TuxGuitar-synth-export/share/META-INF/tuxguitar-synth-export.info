@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=TuxGuitar Synthesizer - Audio file export
 plugin.description=This plugin lets you export your tabs as WAV, AU or AIFF audio\nfile through the TuxGuitar Synthesizer.
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0

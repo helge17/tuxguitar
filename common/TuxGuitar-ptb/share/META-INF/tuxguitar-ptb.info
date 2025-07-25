@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=PowerTab file import plugin
 plugin.description=Plugin to open PowerTab (PTB) files
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0
