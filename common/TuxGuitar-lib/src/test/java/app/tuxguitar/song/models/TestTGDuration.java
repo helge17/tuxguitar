@@ -276,5 +276,18 @@ public class TestTGDuration {
 		assertEquals(TGDuration.SIXTY_FOURTH, list.get(0).getValue());
 		assertFalse(list.get(0).isDotted());
 		assertTrue(list.get(0).isDoubleDotted());
+		
+		// max not a power of 2
+		long max = TGDuration.WHOLE_PRECISE_DURATION*5/16;
+		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION, max, factory);
+		assertNotNull(list);
+		sum = 0;
+		for(int i=0; i<list.size(); i++) {
+			long preciseTime =list.get(i).getPreciseTime(); 
+			assertTrue(preciseTime <= max, "KO, max " + String.valueOf(max) + " / " + String.valueOf(preciseTime));
+			sum += preciseTime;
+		}
+		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION);
+
 	}
 }
