@@ -2,7 +2,7 @@
 
 ## Description
 
-TuxGuitar is an Open Source multitrack tablature editor and player written in Java.
+TuxGuitar is an open source multitrack tablature editor and player written in Java.
 
 ## License
 
