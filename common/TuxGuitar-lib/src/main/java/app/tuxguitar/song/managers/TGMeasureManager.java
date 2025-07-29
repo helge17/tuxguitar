@@ -576,7 +576,7 @@ public class TGMeasureManager {
 		return list;
 	}
 
-	public void locateBeat( TGBeat beat, TGTrack track , boolean newMeasureAlsoForRestBeats) {
+	private void locateBeat( TGBeat beat, TGTrack track , boolean newMeasureAlsoForRestBeats) {
 		if( beat.getMeasure() != null ){
 			beat.getMeasure().removeBeat(beat);
 			beat.setMeasure(null);
@@ -588,7 +588,6 @@ public class TGMeasureManager {
 				createNewMeasure = ( !beat.isRestBeat() || beat.isTextBeat() );
 			}
 			if( createNewMeasure ){
-
 				while( newMeasure == null && beat.getStart() >= TGDuration.QUARTER_TIME){
 					getSongManager().addNewMeasureBeforeEnd(track.getSong());
 					newMeasure = getSongManager().getTrackManager().getMeasureAtPreciseStart(track, beat.getPreciseStart() );
@@ -596,6 +595,7 @@ public class TGMeasureManager {
 			}
 		}
 		if( newMeasure != null ){
+			// found a measure to put beat in
 			long mPreciseStart = newMeasure.getPreciseStart();
 			long mPreciseLength = newMeasure.getPreciseLength();
 			long bPreciseStart = beat.getPreciseStart();
@@ -603,39 +603,50 @@ public class TGMeasureManager {
 				TGVoice voice = beat.getVoice( v );
 				long vPreciseDuration = voice.getDuration().getPreciseTime();
 				if(!voice.isEmpty() && (bPreciseStart + vPreciseDuration) > (mPreciseStart + mPreciseLength) ){
-					long vTiedPreciseDuration = ( (bPreciseStart + vPreciseDuration) - (mPreciseStart + mPreciseLength) );
-					vPreciseDuration -= vTiedPreciseDuration;
-					if( vPreciseDuration > 0 ){
-						TGDuration duration = getSongManager().getFactory().newDuration();
-						duration.setPreciseValue(vPreciseDuration);
-						if( duration != null ){
-							voice.getDuration().copyFrom( duration );
+					// voice does not fit in measure, need to split
+					long toSplitInsideMeasure = mPreciseStart + mPreciseLength - bPreciseStart;
+					List<TGDuration> durations = TGDuration.splitPreciseDuration(toSplitInsideMeasure, TGDuration.WHOLE_PRECISE_DURATION, getSongManager().getFactory());
+					boolean ok = (durations != null);
+					long remainder = vPreciseDuration - toSplitInsideMeasure;
+					while (ok && (remainder > 0)) {
+						// one fragment per measure
+						long toSplit = Math.min(remainder, mPreciseLength);
+						List<TGDuration> split = TGDuration.splitPreciseDuration(toSplit, TGDuration.WHOLE_PRECISE_DURATION, getSongManager().getFactory());
+						ok &= (split != null);
+						if (ok) {
+							durations.addAll(split);
+							remainder -= toSplit;
 						}
 					}
-					if( vTiedPreciseDuration > 0 ) {
-						TGDuration newVoiceDuration = getSongManager().getFactory().newDuration();
-						newVoiceDuration.setPreciseValue(vTiedPreciseDuration);
-						if( newVoiceDuration != null ){
-							long newBeatPreciseStart = (bPreciseStart + vPreciseDuration);
+					if (ok) {
+						long newBeatPreciseStart = bPreciseStart;
+						voice.getDuration().copyFrom(durations.get(0));
+						newBeatPreciseStart = bPreciseStart + voice.getDuration().getPreciseTime();
+						// following notes are tied
+						for (int d=1; d<durations.size(); d++) {
+							// create new beat, or attach to existing one if found
 							TGBeat newBeat = getBeatPrecise(track, newBeatPreciseStart);
 							if( newBeat == null ){
 								newBeat = getSongManager().getFactory().newBeat();
-								newBeat.setPreciseStart( (bPreciseStart + vPreciseDuration) );
+								newBeat.setPreciseStart(newBeatPreciseStart);
 							}
 							TGVoice newVoice = newBeat.getVoice( v );
 							for( int n = 0 ; n < voice.countNotes() ; n ++ ){
 								TGNote note = voice.getNote( n );
 								TGNote newNote = getSongManager().getFactory().newNote();
-								newNote.setTiedNote( true );
+								newNote.setTiedNote(true);
 								newNote.setValue( note.getValue() );
 								newNote.setString( note.getString() );
 								newNote.setVelocity( note.getVelocity() );
 								newVoice.addNote( newNote );
 							}
 							newVoice.setEmpty( false );
-							newVoice.getDuration().copyFrom( newVoiceDuration );
-
+							newVoice.getDuration().copyFrom(durations.get(d));
+							// need to find the right measure for that beat
+							// recursive call should be safe, new voice duration necessarily fits in measure
 							locateBeat(newBeat, track, newMeasureAlsoForRestBeats);
+
+							newBeatPreciseStart += durations.get(d).getPreciseTime();
 						}
 					}
 				}

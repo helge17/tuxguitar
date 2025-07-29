@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=Debug helper plugin
 plugin.description=This plugin helps to find bugs in TuxGuitar.
-plugin.author=Julian Casadesus
+plugin.author=Julián Casadesús
 plugin.version=1.0

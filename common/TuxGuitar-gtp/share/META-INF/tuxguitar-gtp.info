@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=Guitar Pro 1 to 5 file import/export plugin
 plugin.description=This plugin lets you open and export Guitar Pro version 1 to 5\nfiles (GTP, GP3/GP4/GP5).
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0

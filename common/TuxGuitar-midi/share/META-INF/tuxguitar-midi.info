@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=MIDI file import/export plugin
 plugin.description=This plugin provides support for importing and exporting MIDI files.
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0

@@ -19,7 +19,7 @@ public class TGConfigDefaults{
 
 	private static List<String> keys = new ArrayList<String>();
 
-	public static final String DEFAULT_SKIN = "Oxygen";
+	public static final String DEFAULT_SKIN = "Breeze";
 	private static final String DEFAULT_FONT_NAME = UIFontModel.DEFAULT_NAME;
 
 	public static TGProperties createDefaults(){

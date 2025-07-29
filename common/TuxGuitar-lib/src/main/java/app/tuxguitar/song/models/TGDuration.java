@@ -144,6 +144,12 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		long D = timeToSplit;
 		List<TGDuration> list = new ArrayList<TGDuration>();
 
+		// max: power of 2
+		long maxBase = TGDuration.WHOLE_PRECISE_DURATION;
+		while (max < maxBase) {
+			maxBase /= 2;
+		}
+
 		// look for all division types, starting with longest divisions
 		for (TGDivisionType dt : divisionTypes) {
 			if ((dt.getEnters()==1) || (D % dt.getEnters() != 0)) {
@@ -155,7 +161,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
 					base /= subDivision;
 
-					if (base > max)  {
+					if (base > maxBase)  {
 						break;
 					}
 					long toSubtract;
@@ -174,7 +180,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						long nBase = toSubtract / base;
 						// look for longest note duration with this time division that can fit (successive powers of 2)
 						long n=1;
-						while ((nBase % 2 == 0) && (n*base <= max)) {
+						while ((nBase % 2 == 0) && (n*2*base <= max)) {
 							n *= 2;
 							nBase /= 2;
 						}
@@ -256,7 +262,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		TGDuration duration = durationMap.get(preciseValue);
 		if (duration == null) {
 			// invalid!
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("invalid duration " +String.valueOf(preciseValue) + " /whole=" + String.valueOf(TGDuration.WHOLE_PRECISE_DURATION));
 		}
 		this.copyFrom(duration);
 	}

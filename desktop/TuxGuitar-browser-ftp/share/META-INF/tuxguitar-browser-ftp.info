@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=FTP plugin for Collection Browser
 plugin.description=This plugin enables access to FTP servers from the Collection Browser.
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0

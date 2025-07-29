@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=TuxGuitar legacy file format compatibility
 plugin.description=This plugin provides support for opening and exporting older\nTuxGuitar file format versions.
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0
