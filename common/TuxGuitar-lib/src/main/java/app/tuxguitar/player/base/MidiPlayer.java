@@ -494,18 +494,21 @@ public class MidiPlayer{
 			this.lock();
 			Map.Entry<Long, TGTempo> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
 
-			return lastTempo.getValue();
+			return lastTempo == null ? null : lastTempo.getValue();
 		} finally {
 			this.unlock();
 		}
 	}
 
 	// does not consider tempo alteration defined in player mode
-	public long getCurrentTimestamp() {
+	public Long getCurrentTimestamp() {
 		try {
 			this.lock();
 			Map.Entry<Long, TGTempo> lastTempo = this.tempoMap.floorEntry(this.tickPosition);
 			Map.Entry<Long, Long> lastTimestamp = this.timestampMap.floorEntry(this.tickPosition);
+			if (lastTimestamp == null) {
+				return null;
+			}
 			long t = lastTimestamp.getValue();
 			return t + lastTempo.getValue().getTicksInMillis(this.tickPosition - lastTempo.getKey());
 		} finally {
