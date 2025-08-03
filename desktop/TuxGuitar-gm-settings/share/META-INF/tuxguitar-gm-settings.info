@@ -1,5 +1,5 @@
 ### Plugin Information ###
 plugin.name=General MIDI settings
 plugin.description=This plugin adds a dialog to select the MIDI channels used for\nyour instuments.
-plugin.author=Julian Casadesus <julian@casadesus.com.ar>
+plugin.author=Julián Casadesús
 plugin.version=1.0

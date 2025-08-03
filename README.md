@@ -8,7 +8,8 @@ TuxGuitar is an open source multitrack tablature editor and player written in Ja
 
 TuxGuitar is released under the GNU Lesser General Public License.
 
-Copyright (C) 2005-2022 Julian Gabriel Casadesus
+Copyright (C) 2005-2022 Julián Casadesús
+              2023-2025 guiv42, helge17
 
 ## Third party products
 
