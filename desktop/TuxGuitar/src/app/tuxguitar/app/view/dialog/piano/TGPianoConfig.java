@@ -16,6 +16,8 @@ import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.resource.UIColor;
 import app.tuxguitar.ui.resource.UIColorModel;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
 import app.tuxguitar.ui.widget.UIButton;
 import app.tuxguitar.ui.widget.UIContainer;
 import app.tuxguitar.ui.widget.UIControl;
@@ -38,6 +40,7 @@ public class TGPianoConfig {
 	private UIColor colorNotNatural;
 	private UIColor colorNote;
 	private UIColor colorScale;
+	private UIFont  font;
 
 	public TGPianoConfig(TGContext context){
 		this.context = context;
@@ -59,8 +62,16 @@ public class TGPianoConfig {
 		return this.colorScale;
 	}
 
+	public UIFont getFont() {
+		return this.font;
+	}
+
 	public UIColor createColor(UIFactory factory, UIColorModel cm) {
 		return TGApplication.getInstance(this.context).getFactory().createColor(cm.getRed(), cm.getGreen(), cm.getBlue());
+	}
+
+	public UIFont createFont(UIFactory factory, UIFontModel fm) {
+		return TGApplication.getInstance(this.context).getFactory().createFont(fm.getName(), fm.getHeight(), fm.isBold(), fm.isItalic());
 	}
 
 	public void load(){
@@ -71,6 +82,7 @@ public class TGPianoConfig {
 		this.colorNotNatural = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_NOTE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_SCALE));
+		this.font = createFont(factory, config.getFontModelConfigValue(TGConfigKeys.PIANO_FONT));
 	}
 
 	public void defaults(){

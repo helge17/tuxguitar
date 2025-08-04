@@ -36,6 +36,8 @@ import app.tuxguitar.ui.event.UIMouseUpListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.widget.UIButton;
@@ -221,9 +223,10 @@ public class TGPiano {
 		UIFactory factory = getUIFactory();
 		UIImage image = factory.createImage((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)), NATURAL_HEIGHT);
 		UIPainter painter = image.createPainter();
+		painter.setFont(this.config.getFont());
 
 		int x = 0;
-		int y = 0;
+		final int y = 0;
 		painter.setBackground(this.config.getColorNatural());
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
@@ -240,8 +243,12 @@ public class TGPiano {
 				// If it is a C key, the number of the octave is written.
 				if ("C".equals(TGMusicKeyUtils.noteName(i, 0))) {
 					int octave = TGMusicKeyUtils.noteOctave(i);
-					if (octave >= 0)
-						painter.drawString(String.valueOf(octave), x+3, y+2);
+					if (octave >= 0) {
+						float fmTopLine = painter.getFMTopLine();
+						final float verticalOffset = 2;
+						final float horizontalOffset = 3;
+						painter.drawString(String.valueOf(octave), x+horizontalOffset, y+verticalOffset+fmTopLine);
+					}
 				}
 
 				x += NATURAL_WIDTH;
