@@ -151,7 +151,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 			int type = ((Integer) event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
 			if (type == TGRedrawEvent.PLAYING_THREAD || type == TGRedrawEvent.PLAYING_NEW_BEAT) {
 				MidiPlayer midiPlayer = MidiPlayer.getInstance(TGMainToolBarItemTimeCounter.this.context);
-				if (midiPlayer.isRunning()) {
+				if ((midiPlayer.isRunning()) && (midiPlayer.getCurrentTimestamp() != null)) {
 					long tMs = midiPlayer.getCurrentTimestamp();
 					if (tMs / 100 != this.timestamp / 100) {
 						this.redrawProcess.process();

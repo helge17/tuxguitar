@@ -116,7 +116,7 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		int tempoPercent = 100;
 
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
-		if (midiPlayer.isRunning()) {
+		if ((midiPlayer.isRunning() && (midiPlayer.getCurrentTempo() != null))) {
 			tempo = midiPlayer.getCurrentTempo();
 			tempoPercent = midiPlayer.getMode().getCurrentPercent();
 			this.tempoLabel.setIgnoreEvents(true);

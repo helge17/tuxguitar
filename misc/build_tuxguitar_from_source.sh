@@ -685,9 +685,9 @@ if [ $build_windows ]; then
   SWT_VERSION=4.36
   SWT_DATE=202505281830
   SWT_PLATFORM=win32-win32
-  # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDK64
-  PA_JAVA=OpenJDK64_17.0.1-12.paf
-  PA_LINK=https://download3.portableapps.com/portableapps/OpenJDK64/$PA_JAVA.exe
+  # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDKJRE64
+  PA_JAVA=OpenJDKJRE64_21.0.7-6.paf
+  PA_LINK="https://portableapps.com/redir2/?a=OpenJDKJRE64&s=s&d=pa&f=$PA_JAVA.exe"
   [ `uname` == Linux ] && build_tg_for_windows
 fi
 
