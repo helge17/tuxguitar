@@ -65,7 +65,7 @@ function usage {
   echo "# -A: Same as -lwamb"
   echo "#"
   echo "# -g, -G create a new Github release and upload the builds (from Linux only)."
-  echo "#        -g keeps the release in draft status after the upload. The draft won’t be seen by the"
+  echo "#        -g keeps the release in draft status after the upload. The draft won't be seen by the"
   echo "#           public unless it is published manually, either in the Github web interface or with"
   echo "#           the command"
   echo "#           $ gh release edit <release> --draft=false"
