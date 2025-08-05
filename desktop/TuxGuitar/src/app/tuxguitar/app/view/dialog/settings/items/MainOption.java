@@ -32,6 +32,7 @@ public class MainOption extends TGSettingsOption {
 	private boolean initialized;
 	private UICheckBox showSplash;
 	private UICheckBox autoSizeTable;
+	private UICheckBox playWhenMoving;
 	private UITextField windowTitle;
 
 	public MainOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
@@ -94,6 +95,10 @@ public class MainOption extends TGSettingsOption {
 		this.showSplash.setText(TuxGuitar.getProperty("settings.config.main.splash-enabled"));
 		optionsLayout.set(this.showSplash, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+		this.playWhenMoving = uiFactory.createCheckBox(options);
+		this.playWhenMoving.setText(TuxGuitar.getProperty("settings.config.main.play-when-moving"));
+		optionsLayout.set(this.playWhenMoving, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
 		this.loadConfig();
 	}
 
@@ -103,12 +108,14 @@ public class MainOption extends TGSettingsOption {
 				final String windowTitle = getConfig().getStringValue(TGConfigKeys.WINDOW_TITLE);
 				final boolean showSplash = getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH);
 				final boolean autoSizeTable = getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
+				final boolean playWhenMoving = getConfig().getBooleanValue(TGConfigKeys.PLAY_WHEN_MOVING);
 				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
 							MainOption.this.windowTitle.setText(windowTitle);
 							MainOption.this.showSplash.setSelected(showSplash);
 							MainOption.this.autoSizeTable.setSelected(autoSizeTable);
+							MainOption.this.playWhenMoving.setSelected(playWhenMoving);
 							MainOption.this.initialized = true;
 							MainOption.this.pack();
 						}
@@ -123,6 +130,7 @@ public class MainOption extends TGSettingsOption {
 			getConfig().setValue(TGConfigKeys.WINDOW_TITLE,this.windowTitle.getText());
 			getConfig().setValue(TGConfigKeys.SHOW_SPLASH,this.showSplash.isSelected());
 			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE,this.autoSizeTable.isSelected());
+			getConfig().setValue(TGConfigKeys.PLAY_WHEN_MOVING, this.playWhenMoving.isSelected());
 		}
 	}
 
@@ -131,6 +139,7 @@ public class MainOption extends TGSettingsOption {
 			getConfig().setValue(TGConfigKeys.WINDOW_TITLE, getDefaults().getValue(TGConfigKeys.WINDOW_TITLE));
 			getConfig().setValue(TGConfigKeys.SHOW_SPLASH, getDefaults().getValue(TGConfigKeys.SHOW_SPLASH));
 			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE, getDefaults().getValue(TGConfigKeys.TABLE_AUTO_SIZE));
+			getConfig().setValue(TGConfigKeys.PLAY_WHEN_MOVING, getDefaults().getValue(TGConfigKeys.PLAY_WHEN_MOVING));
 		}
 	}
 
