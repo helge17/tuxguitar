@@ -36,6 +36,8 @@ import app.tuxguitar.ui.event.UIMouseUpListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.widget.UIButton;
@@ -47,6 +49,7 @@ import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UISeparator;
 import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGPiano {
 
@@ -220,9 +223,10 @@ public class TGPiano {
 		UIFactory factory = getUIFactory();
 		UIImage image = factory.createImage((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)), NATURAL_HEIGHT);
 		UIPainter painter = image.createPainter();
+		painter.setFont(this.config.getFont());
 
 		int x = 0;
-		int y = 0;
+		final int y = 0;
 		painter.setBackground(this.config.getColorNatural());
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
@@ -235,6 +239,27 @@ public class TGPiano {
 				painter.setAntialias(false);
 				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
 				painter.closePath();
+
+				// If it is a C key, the number of the octave is written.
+				if ("C".equals(TGMusicKeyUtils.noteName(i, 0))) {
+					int octave = TGMusicKeyUtils.noteOctave(i);
+					if (octave >= 0) {
+						String octaveText = String.valueOf(octave);
+
+						float fmTopLine = painter.getFMTopLine();
+						final float verticalOffset = 2;
+
+						int   availableSpace = NATURAL_WIDTH - SHARP_WIDTH/2;
+						float textWidth = painter.getFMWidth(octaveText);
+						float horizontalOffset = ((float)availableSpace - textWidth) / 2.0f;
+						final float minimalHOffset = 1.0f;
+						horizontalOffset = Math.max(horizontalOffset, minimalHOffset);
+
+						painter.setForeground(this.config.getColorOctaveNumber());
+						painter.drawString(octaveText, x+horizontalOffset, y+verticalOffset+fmTopLine);
+					}
+				}
+
 				x += NATURAL_WIDTH;
 			}else{
 				painter.setBackground(this.config.getColorNotNatural());
