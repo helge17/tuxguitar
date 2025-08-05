@@ -36,8 +36,6 @@ import app.tuxguitar.ui.event.UIMouseUpListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
-import app.tuxguitar.ui.resource.UIColor;
-import app.tuxguitar.ui.resource.UIColorModel;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.widget.UIButton;
