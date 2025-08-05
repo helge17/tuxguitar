@@ -100,6 +100,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL, "0,0,0");
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_NOTE, "42,85,128");
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_SCALE, "128,32,32");
+		loadProperty(properties, TGConfigKeys.PIANO_COLOR_OCTAVE_NUMBER, "50,50,50");
 		loadProperty(properties, TGConfigKeys.PIANO_FONT, (DEFAULT_FONT_NAME + ",8,true,false"));
 		loadProperty(properties, TGConfigKeys.MATRIX_GRIDS, 2);
 		loadProperty(properties, TGConfigKeys.MATRIX_FONT, (DEFAULT_FONT_NAME + ",8,true,false"));

@@ -40,6 +40,7 @@ public class TGPianoConfig {
 	private UIColor colorNotNatural;
 	private UIColor colorNote;
 	private UIColor colorScale;
+	private UIColor colorOctaveNumber;
 	private UIFont  font;
 
 	public TGPianoConfig(TGContext context){
@@ -62,6 +63,10 @@ public class TGPianoConfig {
 		return this.colorScale;
 	}
 
+	public UIColor getColorOctaveNumber() {
+		return this.colorOctaveNumber;
+	}
+
 	public UIFont getFont() {
 		return this.font;
 	}
@@ -82,6 +87,7 @@ public class TGPianoConfig {
 		this.colorNotNatural = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_NOTE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_SCALE));
+		this.colorOctaveNumber = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_OCTAVE_NUMBER));
 		this.font = createFont(factory, config.getFontModelConfigValue(TGConfigKeys.PIANO_FONT));
 	}
 
@@ -92,14 +98,16 @@ public class TGPianoConfig {
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL, defaults.getValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL));
 		config.setValue(TGConfigKeys.PIANO_COLOR_NOTE, defaults.getValue(TGConfigKeys.PIANO_COLOR_NOTE));
 		config.setValue(TGConfigKeys.PIANO_COLOR_SCALE, defaults.getValue(TGConfigKeys.PIANO_COLOR_SCALE));
+		config.setValue(TGConfigKeys.PIANO_COLOR_OCTAVE_NUMBER, defaults.getValue(TGConfigKeys.PIANO_COLOR_OCTAVE_NUMBER));
 	}
 
-	public void save(UIColorModel rgbNatural,UIColorModel rgbNotNatural,UIColorModel rgbNote,UIColorModel rgbScale){
+	public void save(UIColorModel rgbNatural, UIColorModel rgbNotNatural, UIColorModel rgbNote, UIColorModel rgbScale, UIColorModel rgbOctaveNumber){
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NATURAL,rgbNatural);
 		config.setValue(TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL,rgbNotNatural);
 		config.setValue(TGConfigKeys.PIANO_COLOR_NOTE,rgbNote);
 		config.setValue(TGConfigKeys.PIANO_COLOR_SCALE,rgbScale);
+		config.setValue(TGConfigKeys.PIANO_COLOR_OCTAVE_NUMBER, rgbOctaveNumber);
 	}
 
 	public void dispose(){
@@ -107,6 +115,7 @@ public class TGPianoConfig {
 		this.colorNotNatural.dispose();
 		this.colorNote.dispose();
 		this.colorScale.dispose();
+		this.colorOctaveNumber.dispose();
 	}
 
 	public UIFactory getUIFactory() {
@@ -134,6 +143,7 @@ public class TGPianoConfig {
 		final UIColorModel rgbNotNatural = getColorChooser(window, group, TuxGuitar.getProperty("piano.not-natural-key-color") + ":", this.colorNotNatural, ++groupRow);
 		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("piano.note-color") + ":", this.colorNote, ++groupRow);
 		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("piano.scale-note-color") + ":", this.colorScale, ++groupRow);
+		final UIColorModel rgbOctaveNumber = getColorChooser(window, group, TuxGuitar.getProperty("piano.octave-number-color") + ":", this.colorOctaveNumber, ++groupRow);
 
 		// ------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
@@ -159,7 +169,7 @@ public class TGPianoConfig {
 			public void onSelect(UISelectionEvent event) {
 				window.dispose();
 
-				save(rgbNatural, rgbNotNatural,rgbNote, rgbScale);
+				save(rgbNatural, rgbNotNatural,rgbNote, rgbScale, rgbOctaveNumber);
 				applyChanges();
 			}
 		});

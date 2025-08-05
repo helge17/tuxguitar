@@ -244,10 +244,19 @@ public class TGPiano {
 				if ("C".equals(TGMusicKeyUtils.noteName(i, 0))) {
 					int octave = TGMusicKeyUtils.noteOctave(i);
 					if (octave >= 0) {
+						String octaveText = String.valueOf(octave);
+
 						float fmTopLine = painter.getFMTopLine();
 						final float verticalOffset = 2;
-						final float horizontalOffset = 3;
-						painter.drawString(String.valueOf(octave), x+horizontalOffset, y+verticalOffset+fmTopLine);
+
+						int   availableSpace = NATURAL_WIDTH - SHARP_WIDTH/2;
+						float textWidth = painter.getFMWidth(octaveText);
+						float horizontalOffset = ((float)availableSpace - textWidth) / 2.0f;
+						final float minimalHOffset = 1.0f;
+						horizontalOffset = Math.max(horizontalOffset, minimalHOffset);
+
+						painter.setForeground(this.config.getColorOctaveNumber());
+						painter.drawString(octaveText, x+horizontalOffset, y+verticalOffset+fmTopLine);
 					}
 				}
 
