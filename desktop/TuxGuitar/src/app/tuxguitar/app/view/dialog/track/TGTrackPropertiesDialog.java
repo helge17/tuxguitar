@@ -368,7 +368,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 		TGTrack track = this.findTrack();
 		Integer channelId = this.getSelectedChannelId();
 
-		if( this.hasChannelChanges(channelId) ){
+		if( (channelId>0) && this.hasChannelChanges(channelId) ){
 			TGChannel channel = this.findSongManager().getChannel(song, channelId);
 
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGSetTrackChannelAction.NAME);
