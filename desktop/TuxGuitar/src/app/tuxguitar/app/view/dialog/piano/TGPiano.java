@@ -330,10 +330,10 @@ public class TGPiano {
 	 * @param gc
 	 * @param value
 	 */
-	protected void paintNote(UIPainter painter,int value){
+	protected void paintNote(UIPainter painter,int value, boolean playable){
 		if (value < 0)
 			return;
-		painter.setBackground(this.config.getColorNote());
+		painter.setBackground(playable? this.config.getColorNote() : this.config.getColorNotePlayable());
 		int posX = 0;
 		int y = 0;
 
@@ -381,6 +381,15 @@ public class TGPiano {
 		this.updateEditor();
 
 		painter.drawImage(this.image, 0, 0);
+		
+		// paint not playable notes
+		TGTrack track = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
+		boolean isPercussion = track.isPercussion();
+		for (int i = MIN_NOTE; i < MAX_NOTE; i ++) {
+			if (!isPercussion && (i < track.getMinPlayablePitch() || i > track.getMaxPlayablePitch())) {
+				this.paintNote(painter, i, false);
+			}
+		}
 
 		// pinto notas
 		if( this.beat != null ){
@@ -388,7 +397,7 @@ public class TGPiano {
 				TGVoice voice = this.beat.getVoice( v );
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while(it.hasNext()){
-					this.paintNote(painter, getRealNoteValue( it.next() ));
+					this.paintNote(painter, getRealNoteValue( it.next() ), true);
 				}
 			}
 		}
