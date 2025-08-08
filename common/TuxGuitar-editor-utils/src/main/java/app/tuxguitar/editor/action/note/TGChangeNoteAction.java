@@ -9,6 +9,7 @@ import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.util.TGContext;
 
@@ -29,21 +30,24 @@ public class TGChangeNoteAction extends TGActionBase {
 		TGMeasure measure = (TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		TGBeat beat = (TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		TGString string = (TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
+		TGTrack track = (TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		TGSongManager songManager = getSongManager(context);
 		boolean freeEditionMode = songManager.isFreeEditionMode(measure);
 		
-		TGNote note = songManager.getFactory().newNote();
-		note.setValue(fret);
-		note.setVelocity(velocity);
-		note.setString(string.getNumber());
-		
-		if (beat != null && freeEditionMode) {
-			songManager.getMeasureManager().addNoteWithoutControl(beat, note, duration.clone(songManager.getFactory()), voice.getIndex());
-			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
-		}
-		else if( measure != null && fret >= 0 ) {
-			songManager.getMeasureManager().addNote(measure, start, note, duration.clone(songManager.getFactory()), voice.getIndex());
-			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+		if ((track != null) && (track.isPercussion() || (fret <= track.getMaxFret()))) {
+			TGNote note = songManager.getFactory().newNote();
+			note.setValue(fret);
+			note.setVelocity(velocity);
+			note.setString(string.getNumber());
+			
+			if (beat != null && freeEditionMode) {
+				songManager.getMeasureManager().addNoteWithoutControl(beat, note, duration.clone(songManager.getFactory()), voice.getIndex());
+				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+			}
+			else if( measure != null && fret >= 0 ) {
+				songManager.getMeasureManager().addNote(measure, start, note, duration.clone(songManager.getFactory()), voice.getIndex());
+				context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+			}
 		}
 	}
 	
