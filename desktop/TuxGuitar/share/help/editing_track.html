@@ -40,18 +40,19 @@
       <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
       <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
       <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
       <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
       <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
-      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
       <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
-      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
       <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
       <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
     </ul>
   </div>
   <section>
     <p>Each song consists of one or more tracks.</p>
-    <p>Each track is assigned to one instrument. Each instrument sounds the different way.</p>
+    <p>Each track is assigned to one instrument. Every instrument sounds different.</p>
     <h2 id="before_you_start_with_notes">Before you start with notes</h2>
     <p>Before you start inserting notes into a new song, you have to adjust some settings in the <strong><a href="detail_composition_track.html#composition">Composition</a></strong> menu:</p>
     <ul>
@@ -66,7 +67,7 @@
     <h2 id="putting_the_notes_in">Putting the notes in</h2>
     <p>Now you are ready to insert notes.</p>
     <h3 id="navigating">Navigating</h3>
-    <p>You can change the current position of a note you want to enter by clicking on the desired location, or by navigating with arrows of a keyboard. Simply pressing the arrows left and right puts you on the next note in the current track, but Ctrl+(left or right) takes you to the previous or next measure.</p>
+    <p>You can change the current position of a note you want to enter by clicking on the desired location, or by navigating with arrows of a keyboard. Simply pressing the arrows left and right puts you on the next note in the current track, but Ctrl+(left or right) takes you to the previous or next measure. In the <strong><a href="tools_general.html">Tools → Settings</a></strong> dialog, you can select to play the beat when navigating with the arrow keys.</p>
     <p>Arrows up and down navigate you through the strings in tablature editor.</p>
     <h3 id="writing_numbers">Writing numbers</h3>
     <img src="images/typing.png" />
@@ -93,9 +94,9 @@
     <p>You can also put some notes into the song by inserting a chord. Chord's duration and dynamics will be those currently selected.</p>
     <img src="images/insert_named_chord.png" />
     <p>You can insert a chord defined earlier (as on the picture above) or you can use the <strong><a href="edit_chord.html">Chord Editor</a></strong> to generate a new chord (and even define a name for it for later use).</p>
-    <h2 id="free_edition_mode">Free edition mode</h2>
-    <p>By default TuxGuitar makes sure all measures are correct: the sum of notes' duration's in one measure is exactly the duration of the measure. This is pretty convenient when creating a new tablature, however it can make the edition of an existing tablature tedious in some cases. You can bypass this constraint with menu <strong>Edit → Free edition mode</strong> or the associated button in edit toolbar.</p>
-    <p><strong>Warning</strong>: only activate this mode if you have a correct knowledge of music theory. Free edition mode lets you do pretty much everything with notes duration. And if it's very easy to create invalid measures it may be tricky to restore a valid state. Invalid measures will appear with red lines. It's good practice to fix all invalid measures before saving a tablature file.</p>
+    <h2 id="free_edition_mode">Free Edition Mode</h2>
+    <p>By default, TuxGuitar makes sure that all measures are correct: The sum of the note durations in one measure is exactly the same as the total duration of the measure. This is pretty convenient when creating a new tablature, however it can make the edition of an existing tablature tedious in some cases. You can bypass this constraint with the menu <strong>Edit → Free Edition Mode</strong> or the associated button in the edit toolbar.</p>
+    <p><strong>Warning</strong>: only activate this mode if you have a correct knowledge of music theory. Free Edition Mode lets you do pretty much everything with notes duration. And while it's very easy to create invalid measures, it may be tricky to restore a valid state. Invalid measures will appear with red lines. It's good practice to fix all invalid measures before saving a tablature file.</p>
     <p>Menu <strong>Edit → Show measure errors</strong> can help you locate invalid measures in a song and identify invalid voice(s). In the dialog, "<strong>Fix</strong>" button can restore a measure in a valid state, by adapting the end of the measure. Be prepared to lose some notes when using this feature.</p>
     <img src="images/free_edition_mode.png" />
     <h2 id="after_putting_the_notes">After putting the notes</h2>

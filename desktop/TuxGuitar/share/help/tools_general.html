@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link type="text/css" rel="stylesheet" href="style.css" />
-  <title>Matrix Editor - TuxGuitar Help</title>
+  <title>Settings dialog - TuxGuitar Help</title>
 </head>
 <body>
   <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
@@ -15,7 +15,7 @@
     <p id="version">Version 9.99-SNAPSHOT</p>
   </div>
   <div class="title">
-    <h1>Matrix Editor</h1>
+    <h1>Settings dialog</h1>
   </div>
   <div class="sidebar">
     <ul class="menu">
@@ -32,7 +32,7 @@
       <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
       <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
       <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
-      <li class="menu2"><strong>Matrix Editor</strong></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
       <li class="menu1">Features in detail</li>
       <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
       <li class="menu2"><a href="detail_view.html">View and layout</a></li>
@@ -40,7 +40,7 @@
       <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
       <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
       <li class="menu1">Tools and settings</li>
-      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><strong>Settings dialog</strong></li>
       <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
       <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
       <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
@@ -51,14 +51,17 @@
     </ul>
   </div>
   <section>
-    <p>The <strong>Matrix Editor</strong> is a useful tool for editing the percussion tracks. It can also edit the ordinary tracks, but it is much less useful. It is accessed by the <strong>View → Show Matrix</strong> menu.</p>
-    <p>Basically, it divides the current measure into segments and displays the possible percussion sounds. Not only you can view the measure and the sounds in the matrix, but by clicking on one block of the matrix you add/remove the sound from the tab.</p>
-    <img src="images/matrix_editor.png" />
-    <p>It is very important to remember that Matrix Editor does not "lock" the main TuxGuitar window, which means you can use note <strong>Duration</strong> and <strong>Dynamics</strong> icons from the toolbar and change the current measure/instrument as well.</p>
-    <p>You can also change the current measure with left/right arrows in the top-left corner of the dialog, and the note duration by the note duration up/down arrows (between the arrows is current note duration).</p>
-    <p>The <strong>Number of Grids</strong> value in the dialog helps you to determine the position where you should click - it divides one basic duration (denominator of Time Signature) into <em>number</em> segments.</p>
-    <p>The borders on the top and the bottom of the Matrix Editor (the gray stripes on the picture above) marks your current cursor position - which does not affect your clicking, only writing the numbers in the tab.</p>
-    <p>The settings icon on the top-right corner of the dialog opens the settings for the Matrix Editor. There you can adjust colors and font of the Matrix Editor dialog.</p>
+    <p>In the <strong>Tools → Settings</strong> dialog box, you can change some global settings of TuxGuitar.</p>
+    <p>In the <strong>General</strong> tab you can set the title of the main window and select the following three options:</p>
+    <ul>
+      <li>Enable Automatic Table resizing</li>
+      <li>Launch splash screen on startup</li>
+      <li>Play the beat when moving the cursor</li>
+    </ul>
+    <p>In the <strong>Styles</strong> tab, you can select the fonts and colors used to display and print the notes, numbers and lyrics  in the score and the tablature.</p>
+    <p>On the <strong>Language</strong> tab, you can choose whether TuxGuitar should use the system's default language or manually select a different language.</p>
+    <p>The last two tabs, <strong><a href="tools_skin.html">Skins</a></strong> and <strong><a href="tools_sound.html">Sound</a></strong>, are used to configure the appearance of the graphical user interface and to select your preferred audio output method.</p>
+    <img src="images/settings_skin.png" />
   </section>
 </body>
 </html>
