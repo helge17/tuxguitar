@@ -20,6 +20,9 @@ public abstract class TGTrack {
 	public static final int MIN_OFFSET = -24;
 
 	public static final int DEFAULT_MAX_FRET = 29;	// included
+	// arbitrary values (meaningless) for percussion tracks
+	private static final int PERCUSSION_MIN_PITCH = 1;
+	private static final int PERCUSSION_MAX_PITCH = 100;
 
 	private int number;
 	private int offset;
@@ -203,6 +206,28 @@ public abstract class TGTrack {
 
 		this.strings.clear();
 		this.measures.clear();
+	}
+
+	public int getMinPlayablePitch() {
+		if (this.isPercussion()) return PERCUSSION_MIN_PITCH;
+		int val = -1;
+		for (TGString string : this.strings) {
+			if (val<=0 || string.getValue()<val) {
+				val = string.getValue();
+			}
+		}
+		return val;
+	}
+
+	public int getMaxPlayablePitch() {
+		if (this.isPercussion()) return PERCUSSION_MAX_PITCH;
+		int val = 0;
+		for (TGString string : this.strings) {
+			if (string.getValue() > val) {
+				val = string.getValue();
+			}
+		}
+		return val + this.maxFret;
 	}
 
 	public TGTrack clone(TGFactory factory,TGSong song){

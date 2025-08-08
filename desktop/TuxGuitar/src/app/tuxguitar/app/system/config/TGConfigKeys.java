@@ -74,6 +74,7 @@ public class TGConfigKeys {
 	public static final String PIANO_COLOR_NOTE = "piano.color.note";
 	public static final String PIANO_COLOR_SCALE = "piano.color.scale";
 	public static final String PIANO_COLOR_OCTAVE_NUMBER = "piano.color.octave-number";
+	public static final String PIANO_COLOR_NOT_PLAYABLE = "piano.color.not-playable";
 	public static final String PIANO_FONT = "piano.font";
 	public static final String MATRIX_GRIDS = "matrix.grids";
 	public static final String MATRIX_FONT = "matrix.font";
