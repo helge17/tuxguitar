@@ -54,6 +54,8 @@ public class TGPiano {
 	private static final boolean TYPE_NOTES[] = new boolean[]{true,false,true,false,true,true,false,true,false,true,false,true};
 	private static final int NATURAL_NOTES = 7;
 	private static final int MAX_OCTAVES = 8;
+	private static final int MIN_NOTE = TGMusicKeyUtils.midiNote(0, 0);	// C0
+	private static final int MAX_NOTE = MIN_NOTE + MAX_OCTAVES * TYPE_NOTES.length;
 	private static final int NATURAL_WIDTH = 15;
 	private static final int SHARP_WIDTH = 8;
 	private static final int NATURAL_HEIGHT = 60;
@@ -229,7 +231,7 @@ public class TGPiano {
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
 		painter.closePath();
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
+		for(int i = MIN_NOTE; i < MAX_NOTE; i ++){
 
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
 				painter.setForeground(this.config.getColorNotNatural());
@@ -283,7 +285,7 @@ public class TGPiano {
 		painter.setForeground(this.config.getColorScale());
 		int posX = 0;
 
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
+		for(int i = MIN_NOTE; i < MAX_NOTE; i ++){
 			int width = 0;
 
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
@@ -335,7 +337,7 @@ public class TGPiano {
 		int posX = 0;
 		int y = 0;
 
-		for(int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++){
+		for(int i = MIN_NOTE; i < MAX_NOTE; i ++){
 			int width = 0;
 
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
@@ -402,7 +404,7 @@ public class TGPiano {
 
 		float posX = 0;
 		
-		for (int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++) {
+		for (int i = MIN_NOTE; i < MAX_NOTE; i ++) {
 			if (TYPE_NOTES[i % TYPE_NOTES.length]) { // it is a natural key?
 				if (x>=posX && x<posX+NATURAL_WIDTH) {
 					return i;
@@ -419,7 +421,7 @@ public class TGPiano {
 	private int isOnSharpKey(float x, float y) {
 		float posX = 0;
 		
-		for (int i = 0; i < (MAX_OCTAVES * TYPE_NOTES.length); i ++) { // travels through all the keys. 8*12 keys (8 octaves, and 12 notes each)
+		for (int i = MIN_NOTE; i < MAX_NOTE; i ++) {
 			float width = 0f;
 			boolean isSharp = false;
 			
