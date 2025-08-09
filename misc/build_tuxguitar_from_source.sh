@@ -629,8 +629,8 @@ function copy_to_github {
 [ "$#" -lt 1 ] && usage && exit 1
 [ $build_linux ]    && [ `uname` != Linux ]   && echo -e "\nError: Linux version can only be built on Linux."            && abort_build
 [ $build_windows ]  && [ `uname` != Linux ]   && echo -e "\nError: Windows version can only be built on Linux."          && abort_build
-[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannnot be built on/from FreeBSD."      && abort_build
-[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannnot be built on/from macOS."      && abort_build
+[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannot be built on/from FreeBSD."      && abort_build
+[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from macOS."      && abort_build
 [ $build_android ]  && [ `uname` != Linux ]   && echo -e "\nError: Android version can only be built on Linux."          && abort_build
 [ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new GitHub release can only be created from Linux." && abort_build
 
