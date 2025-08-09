@@ -18,6 +18,13 @@ TuxGuitar 2.0.0 (2025-xx-xx) changes:
 * Import TEF v3 files
 * Improved MusicXML, ASCII, pdf and svg export
 * Improved Guitar Pro import
+* Allow customization of the soundbank for macOS
+* Adapt caret color in track table according to background
+* New option to set how long the count-in is in Player
+* Improvement of piano interface
+* New option to play beats when moving cursor
+* Breeze is now the default skin
+* Logo and splash screen updated
 * Many small improvements and cleanups
 
 TuxGuitar 1.6.6 (2024-12-27) changes:
