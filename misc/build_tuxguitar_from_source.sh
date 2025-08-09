@@ -52,7 +52,7 @@ function usage {
   echo "# -m      Build for macOS"
   echo "# -b      Build for FreeBSD"
   echo "# -A      Build for all OS"
-  echo "# -g, -G  Upload the builds to Github"
+  echo "# -g, -G  Upload the builds to GitHub"
   echo "# -r <r>  Set the build version to <r>"
   echo "# -h      Show this help"
   echo "#"
@@ -64,12 +64,12 @@ function usage {
   echo "#"
   echo "# -A: Same as -lwamb"
   echo "#"
-  echo "# -g, -G create a new Github release and upload the builds (from Linux only)."
-  echo "#        -g keeps the release in draft status after the upload. The draft won’t be seen by the"
-  echo "#           public unless it is published manually, either in the Github web interface or with"
+  echo "# -g, -G create a new GitHub release and upload the builds (from Linux only)."
+  echo "#        -g keeps the release in draft status after the upload. The draft won't be seen by the"
+  echo "#           public unless it is published manually, either in the GitHub web interface or with"
   echo "#           the command"
   echo "#           $ gh release edit <release> --draft=false"
-  echo "#           Then, also the release tag will be created on Github."
+  echo "#           Then, also the release tag will be created on GitHub."
   echo "#           After that, you also have to sync the website manually."
   echo "#        -G publishes the release immediately and syncs the website folder to the webserver if"
   echo "#           all files were successfully uploaded. If one or more uploads failed, the release"
@@ -551,18 +551,18 @@ echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
 
 function copy_to_github {
 
-  # To edit the repository on Github with the gh command, you have to authenticate first. See 'man gh-auth' for details.
+  # To edit the repository on GitHub with the gh command, you have to authenticate first. See 'man gh-auth' for details.
 
-  echo -e "### Host: "`hostname -s`" ########### Creating a new Github pre-release and upload the builds $TGVERSION to Github ...\n"
+  echo -e "### Host: "`hostname -s`" ########### Creating a new GitHub pre-release and upload the builds $TGVERSION to GitHub ...\n"
 
   cd $SRC_DIR
 
   if [ -z "$(gh release list | grep "^$TGVERSION\s")" ]; then
     if [ $TGVERSION == $TGSRCVER ]; then
-      echo "# Creating Github latest release draft $TGVERSION ..."
+      echo "# Creating GitHub latest release draft $TGVERSION ..."
       RELEASE_TYPE=--latest
     else
-      echo "# Creating Github pre-release draft $TGVERSION ..."
+      echo "# Creating GitHub pre-release draft $TGVERSION ..."
       REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground. It uses a **new file format** which is still under development and cannot be read by older versions. We cannot guarantee that the files saved with this version are error-free and compatible with future TuxGuitar versions!\n\n'
       RELEASE_TYPE=--prerelease
     fi
@@ -572,7 +572,7 @@ function copy_to_github {
     sleep 5
     echo "# OK."
   else
-    echo "# Skipping creation of release $TGVERSION on Github, release already exists."
+    echo "# Skipping creation of release $TGVERSION on GitHub, release already exists."
   fi
   echo
 
@@ -621,7 +621,7 @@ function copy_to_github {
     echo "# Keeping the release in draft status."
   fi
 
-  echo -e "\n### Host: "`hostname -s`" ########### New Github pre-release created and uploads to Github done.\n"
+  echo -e "\n### Host: "`hostname -s`" ########### New GitHub pre-release created and uploads to GitHub done.\n"
 
 }
 
@@ -629,10 +629,10 @@ function copy_to_github {
 [ "$#" -lt 1 ] && usage && exit 1
 [ $build_linux ]    && [ `uname` != Linux ]   && echo -e "\nError: Linux version can only be built on Linux."            && abort_build
 [ $build_windows ]  && [ `uname` != Linux ]   && echo -e "\nError: Windows version can only be built on Linux."          && abort_build
-[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannnot be built on/from FreeBSD."      && abort_build
-[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannnot be built on/from macOS."      && abort_build
+[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannot be built on/from FreeBSD."      && abort_build
+[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from macOS."      && abort_build
 [ $build_android ]  && [ `uname` != Linux ]   && echo -e "\nError: Android version can only be built on Linux."          && abort_build
-[ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new Github release can only be created from Linux." && abort_build
+[ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new GitHub release can only be created from Linux." && abort_build
 
 mkdir -p $SW_DIR
 
@@ -694,5 +694,5 @@ fi
 # Android build (local on Linux)
 [ `uname` == Linux ] && [ $build_android ] && build_tg_for_android
 
-# Create a new Github release and upload the builds (Linux only)
+# Create a new GitHub release and upload the builds (Linux only)
 [ `uname` == Linux ] && [ $copy_to_github ] && copy_to_github
