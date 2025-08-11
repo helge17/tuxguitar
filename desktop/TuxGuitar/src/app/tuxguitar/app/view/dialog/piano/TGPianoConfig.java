@@ -41,6 +41,7 @@ public class TGPianoConfig {
 	private UIColor colorNote;
 	private UIColor colorScale;
 	private UIColor colorOctaveNumber;
+	private UIColor colorNotPlayable;
 	private UIFont  font;
 
 	public TGPianoConfig(TGContext context){
@@ -67,6 +68,10 @@ public class TGPianoConfig {
 		return this.colorOctaveNumber;
 	}
 
+	public UIColor getColorNotePlayable() {
+		return this.colorNotPlayable;
+	}
+	
 	public UIFont getFont() {
 		return this.font;
 	}
@@ -88,6 +93,7 @@ public class TGPianoConfig {
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_NOTE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_SCALE));
 		this.colorOctaveNumber = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_OCTAVE_NUMBER));
+		this.colorNotPlayable = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.PIANO_COLOR_NOT_PLAYABLE));
 		this.font = createFont(factory, config.getFontModelConfigValue(TGConfigKeys.PIANO_FONT));
 	}
 
