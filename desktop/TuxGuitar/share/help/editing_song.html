@@ -64,16 +64,16 @@
     <p>You can also set <strong>pan</strong> for each track - balance between left and right speaker.</p>
     <p>The other control dials are for the effects Reverb, Chorus, Tremolo and Phaser.</p>
     <p>If you want to add a percussion track, you have to check the <strong>Percussion Channel</strong> box.</p>
-    <h4 id="choosing_the_channels">Choosing the channels</h4>
+    <h3 id="choosing_the_channels">Choosing the channels</h3>
     <p>The channels for the track are chosen in the <strong>Channels Settings</strong> dialog.</p>
     <p>To understand the way of distributing channels properly, you have to know something about MIDI specification.</p>
     <p>MIDI uses channels to play music - each <strong>channel has currently assigned instrument (voice)</strong>. There are 16 different channels (marked 0 ... 15) - channel 9 is reserved for drums and percussion.</p>
     <p>For example, to be able to play a <a href="edit_effects.html#dead_note">dead note</a> and a tone at the same time, TuxGuitar has to occupy two channels for a track, because dead note is one instrument (voice) and guitar tone is another instrument. So, every track has its <strong>Normal Channel</strong>, but also needs the <strong>Effect Channel</strong>. Because there are only 16 channels it may lead you to conclusion that you cannot have more than 7 instruments (tracks) and a percussion in TuxGuitar. That is not true.</p>
     <p>It means that as long as you don't have more than 7 instruments and a percussion, you don't have to worry about distributing MIDI channels - TuxGuitar distributes the channels in order. But if you have more tracks you have to be careful. By overlapping MIDI channels, you can achieve MIDI reproduction without any problems, but you have to understand the problem.</p>
-    <h5 id="effect_channel">Effect channel</h5>
+    <h4 id="effect_channel">Effect channel</h4>
     <p><strong>Effect channel</strong> is used in certain occasions. One occasion is when <strong>two different voices</strong> are played at the same time in the same track. In TuxGuitar that can happen if you play dead note or harmonic at the same time with an ordinary instrument tone.</p>
     <p>The other occasion effect channel is used is when you apply some <strong>pitch effect</strong> (like bend, slide, vibrato or tremolo bar) on <em><strong>some of the notes</strong></em> played at the same time in the same track/channel. The reason for this is because by MIDI specification effect can be applied only on channel, not on note. So TuxGuitar automatically moves note to Effect channel and apply pitch effect on him. That is also the reason why you cannot apply slide and bend effect in the exact same time in TuxGuitar (but also on a real guitar). :)</p>
-    <h5 id="how_to_overlap_channels">How to overlap channels?</h5>
+    <h4 id="how_to_overlap_channels">How to overlap channels?</h4>
     <p>The safest way is to overlap channels of two tracks that are never played at the same time. The only problem is that <strong>mixer settings</strong> (volume, pan and solo/mute) would have the same value for both the instruments (tracks).</p>
     <p>You can also try to assign the same channel for channel (CH) and effects channel (EC) if you don't use effects like dead note, harmonics at the same time with an ordinary instrument note, or you don't need to apply "pitch" effect on only some notes played at the same time with notes without pitch effect. If you do use effects but set the same CH and EC, dead note and harmonics probably wouldn't be heard, and pitch effects would apply on all the notes at the same time.</p>
     <h2 id="composition_properties">Composition properties</h2>
