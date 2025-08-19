@@ -385,7 +385,7 @@ public class TGMainToolBarConfigMap {
 					@Override
 					public boolean checked(TGContext context, boolean isRunning) {
 						int style = TablatureEditor.getInstance(context).getTablature().getViewLayout().getStyle();
-						return ((style & TGLayout.DISPLAY_COMPACT) != 0);
+						return (this.enabled(context,isRunning) && (style & TGLayout.DISPLAY_COMPACT) != 0);
 					}
 				});
 		registerCheckable("view.show-transport", TGToggleTransportDialogAction.NAME, TGIconManager.TRANSPORT, new TGMainToolBarItemUpdater() {

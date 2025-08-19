@@ -176,8 +176,8 @@ public class ViewMenuItem extends TGMenuItem {
 		this.multitrack.setChecked( (style & TGLayout.DISPLAY_MULTITRACK) != 0 );
 		this.scoreEnabled.setChecked( (style & TGLayout.DISPLAY_SCORE) != 0 );
 		this.tablatureEnabled.setChecked( (style & TGLayout.DISPLAY_TABLATURE) != 0 );
-		this.compact.setChecked( (style & TGLayout.DISPLAY_COMPACT) != 0 );
 		this.compact.setEnabled((style & TGLayout.DISPLAY_MULTITRACK) == 0 || tablature.getViewLayout().getSong().countTracks() == 1);
+		this.compact.setChecked( this.compact.isEnabled() && ((style & TGLayout.DISPLAY_COMPACT) != 0) );
 		this.chordName.setChecked( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
 		this.chordDiagram.setChecked( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
 		this.zoomReset.setEnabled(!Tablature.DEFAULT_SCALE.equals(tablature.getScale()));
