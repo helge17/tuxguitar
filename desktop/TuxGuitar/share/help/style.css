@@ -86,11 +86,6 @@ ul {
   padding-left: 20px;
 }
 
-ul li:hover a {
-  padding-left: 5px;
-  color: #376596;
-}
-
 .sidebar ul a i {
   margin-right: 16px;
 }
