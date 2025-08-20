@@ -575,6 +575,7 @@ public class TGSongManager {
 			header = getMeasureHeader(song, (number - 1)).clone(getFactory());
 			header.setStart(header.getStart() + header.getLength());
 			header.setNumber(header.getNumber() + 1);
+			header.setLineBreak(false);
 		}
 		header.setMarker(null);
 		header.setRepeatOpen(false);
