@@ -40,6 +40,11 @@
   transition: .4s;
 }
 
+.sidebar ul li:hover a {
+  padding-left: 5px;
+  color: #376596;
+}
+
 .menu {
   padding: 0;
   list-style: none;
@@ -84,10 +89,6 @@ button {
 
 ul {
   padding-left: 20px;
-}
-
-.sidebar ul a i {
-  margin-right: 16px;
 }
 
 #check {
@@ -227,4 +228,28 @@ td.left {
 
 td.right {
   font-weight: bold;
+}
+
+td.head {
+  min-width: 230px;
+  padding: 1px 5px 1px 5px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  background-color: #154374;
+  border: 1px solid #154374;
+}
+
+td.norm {
+  padding: 1px 5px 1px 5px;
+  white-space: nowrap;
+  border: 1px solid #154374;
+}
+
+td.bold {
+  padding: 1px 5px 1px 5px;
+  white-space: nowrap;
+  font-weight: bold;
+  border: 1px solid #154374;
 }
