@@ -120,7 +120,7 @@
 	<string name="action_set_duration_doubledotted">Doppelt punktiert</string>
 	<string name="action_set_duration_division_type">Unterteilung</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
+	<string name="action_set_duration_division_type_1">Keine Unterteilung</string>
 	<string name="action_set_duration_division_type_3">3 - Triole</string>
 	<string name="action_set_duration_division_type_5">5 - Quintole</string>
 	<string name="action_set_duration_division_type_6">6 - Sextole</string>

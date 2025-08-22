@@ -120,7 +120,7 @@
 	<string name="action_set_duration_doubledotted">Doppio punto</string>
 	<string name="action_set_duration_division_type">Gruppo irregolare</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
+	<string name="action_set_duration_division_type_1">Nessuna suddivisione</string>
 	<string name="action_set_duration_division_type_3">3 - Terzina</string>
 	<string name="action_set_duration_division_type_5">5 - Quintina</string>
 	<string name="action_set_duration_division_type_6">6 - Sestina</string>

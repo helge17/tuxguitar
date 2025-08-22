@@ -79,8 +79,8 @@
 	<string name="action_track_clone">Powiel ścieżkę</string>
 	<string name="action_track_move_up">Przesuń ścieżkę w górę</string>
 	<string name="action_track_move_down">Przesuń ścieżkę w dół</string>
-	<string name="action_track_change_mute">Ustaw &quot;Cisza&quot; na ścieżce</string>
-	<string name="action_track_change_solo">Ustaw &quot;Solo&quot; na ścieżce</string>
+	<string name="action_track_change_mute">Ustaw „Cisza” na ścieżce</string>
+	<string name="action_track_change_solo">Ustaw „Solo” na ścieżce</string>
 	<string name="action_track_set_name">Nazwa</string>
 	<string name="action_track_set_channel">Instrument</string>
 	<string name="action_track_change_tuning">Strojenie</string>
@@ -120,7 +120,7 @@
 	<string name="action_set_duration_doubledotted">Podwójna kropka</string>
 	<string name="action_set_duration_division_type">Typ podziału (grupa niemiarowa)</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
+	<string name="action_set_duration_division_type_1">Bez podziału</string>
 	<string name="action_set_duration_division_type_3">3 - Triola</string>
 	<string name="action_set_duration_division_type_5">5 - Kwintola</string>
 	<string name="action_set_duration_division_type_6">6 - Sekstola</string>
@@ -143,10 +143,10 @@
 	<string name="action_change_vibrato">Vibrato</string>
 	<string name="action_change_bend">Podciągnięcie</string>
 	<string name="action_change_dead_note">Nuta wytłumiona</string>
-	<string name="action_change_slide">Glissando (slide)</string>
-	<string name="action_change_hammer">Legato (hammer-on/pull-off)</string>
+	<string name="action_change_slide">Slide</string>
+	<string name="action_change_hammer">Hammer-on/pull-off</string>
 	<string name="action_change_tremolo_bar">Wajcha tremolo</string>
-	<string name="action_change_ghost_note">Nuta nieakcentowana (&quot;duch&quot;)</string>
+	<string name="action_change_ghost_note">Nuta nieakcentowana („duch”)</string>
 	<string name="action_change_accentuated_note">Akcent</string>
 	<string name="action_change_heavy_accentuated_note">Mocny akcent</string>
 	<string name="action_change_harmonic">Flażolet</string>
@@ -423,8 +423,8 @@
 	<string name="grace_dlg_transition_label">Artykulacja</string>
 	<string name="grace_dlg_transition_none">Brak</string>
 	<string name="grace_dlg_transition_bend">Podciągnięcie</string>
-	<string name="grace_dlg_transition_slide">Glissando (slide)</string>
-	<string name="grace_dlg_transition_hammer">Legato (hammer-on/pull-off)</string>
+	<string name="grace_dlg_transition_slide">Slide</string>
+	<string name="grace_dlg_transition_hammer">Hammer-on/pull-off</string>
 
 	<!-- Harmonic dialog -->
 	<string name="harmonic_dlg_title">Flażolet</string>

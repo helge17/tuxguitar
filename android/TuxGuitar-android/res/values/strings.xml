@@ -114,7 +114,7 @@
 	<string name="action_set_duration_doubledotted">Double-Dotted</string>
 	<string name="action_set_duration_division_type">Division Type (Tuplet)</string>
 
-	<string name="action_set_duration_division_type_1">-</string>
+	<string name="action_set_duration_division_type_1">No Division</string>
 	<string name="action_set_duration_division_type_3">3 - Triplet</string>
 	<string name="action_set_duration_division_type_5">5 - Quintuplet</string>
 	<string name="action_set_duration_division_type_6">6 - Sextuplet</string>

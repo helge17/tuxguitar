@@ -29,7 +29,7 @@
 
 	<string name="action_menu_edit">Édition</string>
 	<string name="action_menu_view">Affichage</string>
-	<!-- <string name="action_menu_composition"></string> -->
+	<string name="action_menu_composition">Composition</string>
 	<string name="action_menu_track">Piste</string>
 	<string name="action_menu_measure">Mesure</string>
 	<string name="action_menu_beat">Note</string>
@@ -120,16 +120,16 @@
 	<string name="action_set_duration_doubledotted">Double pointée</string>
 	<string name="action_set_duration_division_type">Type de division</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
-	<!-- <string name="action_set_duration_division_type_7"></string> -->
-	<!-- <string name="action_set_duration_division_type_9"></string> -->
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_1">Pas de division</string>
+	<string name="action_set_duration_division_type_3">3 - Triolet</string>
+	<string name="action_set_duration_division_type_5">5 - Quintolet</string>
+	<string name="action_set_duration_division_type_6">6 - Sextolet</string>
+	<string name="action_set_duration_division_type_7">7 - Septolet</string>
+	<string name="action_set_duration_division_type_9">9-olet</string>
+	<string name="action_set_duration_division_type_10">10-olet</string>
+	<string name="action_set_duration_division_type_11">11-olet</string>
+	<string name="action_set_duration_division_type_12">12-olet</string>
+	<string name="action_set_duration_division_type_13">13-olet</string>
 
 	<string name="action_set_velocity_ppp">Pianississimo</string>
 	<string name="action_set_velocity_pp">Pianissimo</string>
