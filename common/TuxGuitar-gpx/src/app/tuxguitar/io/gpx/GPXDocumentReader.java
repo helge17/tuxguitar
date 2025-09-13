@@ -115,7 +115,7 @@ public class GPXDocumentReader {
 				if( trackNode.getNodeName().equals("Track") ){
 					GPXTrack track = new GPXTrack();
 					track.setId( getAttributeIntegerValue(trackNode, "id") );
-					track.setName(getChildNodeContent(trackNode, "Name" ));
+					track.setName(getChildNodeContent(trackNode, "Name" ).replace("\n","").trim());
 					track.setColor(getChildNodeIntegerContentArray(trackNode, "Color"));
 
 					if( this.version == GP6 ) {
