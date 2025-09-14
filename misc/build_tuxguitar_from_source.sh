@@ -563,10 +563,10 @@ function copy_to_github {
       RELEASE_TYPE=--latest
     else
       echo "# Creating GitHub pre-release draft $TGVERSION ..."
-      REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground. It uses a **new file format** which is still under development and cannot be read by older versions. We cannot guarantee that the files saved with this version are error-free and compatible with future TuxGuitar versions!\n\n'
+      REL_NOTES=$'This is a **pre-release** of the upcoming version 2.0.0 of TuxGuitar. Please test it and report any bugs you find.\n\n'
       RELEASE_TYPE=--prerelease
     fi
-    REL_NOTES=$REL_NOTES$'The Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
+    REL_NOTES=$REL_NOTES$'**Please note:** TuxGuitar version 2.0.0 uses a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
     gh release create --target $GIT_BRANCH $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
