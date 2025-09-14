@@ -352,7 +352,7 @@
 									<fileset dir="${project.rootPath}/../common/resources/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS/doc">
-									<fileset dir="${project.rootPath}/../doc/" />
+									<fileset dir="${project.rootPath}/../docs/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/Contents/MacOS/dist">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />

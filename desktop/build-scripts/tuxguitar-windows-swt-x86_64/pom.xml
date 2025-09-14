@@ -338,7 +338,7 @@
 									<fileset dir="${project.rootPath}/../common/resources/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc" overwrite="true">
-									<fileset dir="${project.rootPath}/../doc/" />
+									<fileset dir="${project.rootPath}/../docs/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
