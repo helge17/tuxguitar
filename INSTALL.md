@@ -39,11 +39,11 @@ In order for Asian characters to be displayed correctly, you may also need to in
 ### Download and install SWT for Linux
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.36-202505281830/swt-4.36-gtk-linux-`uname -m`.zip
-$ mkdir swt-4.36-gtk-linux-`uname -m`
-$ cd swt-4.36-gtk-linux-`uname -m`
-$ unzip ../swt-4.36-gtk-linux-`uname -m`.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.36
+$ wget https://download.eclipse.org/eclipse/downloads/drops4/R-4.37-202509050730/swt-4.37-gtk-linux-`uname -m`.zip
+$ mkdir swt-4.37-gtk-linux-`uname -m`
+$ cd swt-4.37-gtk-linux-`uname -m`
+$ unzip ../swt-4.37-gtk-linux-`uname -m`.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.37
 $ cd ..
 ```
 
@@ -99,11 +99,11 @@ $ sudo apt install wget unzip git default-jdk maven gcc-mingw-w64-x86-64 g++-min
 ### Download and install SWT for Windows
 
 ```sh
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.36-202505281830/swt-4.36-win32-win32-x86_64.zip
-$ mkdir swt-4.36-win32-win32-x86_64
-$ cd swt-4.36-win32-win32-x86_64
-$ unzip ../swt-4.36-win32-win32-x86_64.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.36
+$ wget https://download.eclipse.org/eclipse/downloads/drops4/R-4.37-202509050730/swt-4.37-win32-win32-x86_64.zip
+$ mkdir swt-4.37-win32-win32-x86_64
+$ cd swt-4.37-win32-win32-x86_64
+$ unzip ../swt-4.37-win32-win32-x86_64.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.win32.win32 -Dpackaging=jar -Dversion=4.37
 $ cd ..
 ```
 
@@ -139,11 +139,11 @@ $ brew install openjdk maven wget
 
 ```sh
 $ TUX_ARCH=`uname -m | sed 's/arm64/aarch64/'`
-$ wget https://archive.eclipse.org/eclipse/downloads/drops4/R-4.36-202505281830/swt-4.36-cocoa-macosx-${TUX_ARCH}.zip
-$ mkdir swt-4.36-cocoa-macosx-${TUX_ARCH}
-$ cd swt-4.36-cocoa-macosx-${TUX_ARCH}
-$ unzip ../swt-4.36-cocoa-macosx-${TUX_ARCH}.zip
-$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.36
+$ wget https://download.eclipse.org/eclipse/downloads/drops4/R-4.37-202509050730/swt-4.37-cocoa-macosx-${TUX_ARCH}.zip
+$ mkdir swt-4.37-cocoa-macosx-${TUX_ARCH}
+$ cd swt-4.37-cocoa-macosx-${TUX_ARCH}
+$ unzip ../swt-4.37-cocoa-macosx-${TUX_ARCH}.zip
+$ mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=4.37
 $ cd ..
 ```
 

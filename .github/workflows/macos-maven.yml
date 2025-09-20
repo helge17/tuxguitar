@@ -32,9 +32,9 @@ jobs:
     - name : Set value of TUX_ARCH
       run:  echo "TUX_ARCH=`uname -m | sed 's/arm64/aarch64/'`" >> "$GITHUB_ENV"
     - name : Set value of SWT_VERSION
-      run:  echo "SWT_VERSION=4.36" >> "$GITHUB_ENV"
+      run:  echo "SWT_VERSION=4.37" >> "$GITHUB_ENV"
     - name : Download SWT
-      run: curl -o swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.36-202505281830/swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip
+      run: curl -o swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.37-202509050730/swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip
     - name : install SWT
       run: mkdir swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && cd swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && unzip ../swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=${{ env.SWT_VERSION }}
     - name: Build with Maven
