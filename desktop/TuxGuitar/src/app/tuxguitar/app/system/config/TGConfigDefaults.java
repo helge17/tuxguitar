@@ -84,6 +84,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_S_MARKER, "42,165,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_E_MARKER, "165,42,42");
 		loadProperty(properties, TGConfigKeys.COLOR_MEASURE_NUMBER, "128,0,0");
+		loadProperty(properties, TGConfigKeys.COLOR_INVALID_ENTRY, "230,110,110");
 		loadProperty(properties, TGConfigKeys.MIDI_PORT, "tuxguitar-synth.port");
 		loadProperty(properties, TGConfigKeys.MIDI_SEQUENCER, "tuxguitar.sequencer");
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES, 10);
