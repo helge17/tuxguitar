@@ -1,0 +1,6 @@
+Options +MultiViews
+AddLanguage en .en
+AddLanguage de .de
+AddLanguage it .it
+LanguagePriority en de it
+ForceLanguagePriority Fallback
