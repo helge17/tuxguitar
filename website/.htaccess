@@ -1,6 +1,8 @@
 Options +MultiViews
 AddLanguage en .en
+AddLanguage fr .fr
+AddLanguage es .es
 AddLanguage de .de
 AddLanguage it .it
-LanguagePriority en de it
+LanguagePriority en fr es de it
 ForceLanguagePriority Fallback

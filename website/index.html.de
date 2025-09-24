@@ -1,7 +1,7 @@
 <!DOCTYPE html><meta lang="de" charset="utf-8"><link rel="stylesheet" href="style.css"><script src="vars.js"></script>
 
                           **TuxGuitar**
-[en](index.html.en) de [it](index.html.it)
+[en](index.html.en) [fr](index.html.fr) [es](index.html.es) de [it](index.html.it)
 
 **Willkommen auf der neuen Website von TuxGuitar, dem freien Editor für Gitarren-Tabulaturen.**
 
@@ -44,7 +44,7 @@ Der Quelltext ist auf [GitHub](https://github.com/helge17/tuxguitar/) verfügbar
 Lizenz
 ==============================================================
 
-TuxGuitar und der Inhalt dieser Website werden unter der [GNU Lesser General Public License](files/devel/desktop/help/license.html) veröffentlicht. 
+TuxGuitar und der Inhalt dieser Website werden unter der [GNU Lesser General Public License](files/devel/desktop/help/license.html) veröffentlicht.
 
 Über diese Webseite
 ==============================================================
