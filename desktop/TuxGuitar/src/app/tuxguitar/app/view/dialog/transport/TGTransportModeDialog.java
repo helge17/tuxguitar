@@ -349,34 +349,40 @@ public class TGTransportModeDialog {
 		}
 
 		public void onSelect(UISelectionEvent event) {
-			if( event.getComponent().equals(this.from)){
+			boolean ok = true;
+			if (event.getComponent().equals(this.from)) {
 				if( this.from.getValue() < MIN_SELECTION){
 					this.from.setValue(MIN_SELECTION);
-				}else if(this.from.getValue() >= this.to.getValue()){
+				}
+				if (this.from.getValue() >= this.to.getValue()) {
 					// invalid
-					TGTransportModeDialog.this.buttonOK.setEnabled(false);
+					ok = false;
 					this.from.setBgColor(TGTransportModeDialog.this.colorErr);
 					this.to.setBgColor(TGTransportModeDialog.this.colorOK);
 				}
-			}else if(event.getComponent().equals(this.to)){
-				if( this.to.getValue() <= this.from.getValue()){
-					// invalid
-					TGTransportModeDialog.this.buttonOK.setEnabled(false);
-					this.to.setBgColor(TGTransportModeDialog.this.colorErr);
-					this.from.setBgColor(TGTransportModeDialog.this.colorOK);
-				}else if(this.to.getValue() > MAX_SELECTION){
+			} else if (event.getComponent().equals(this.to)) {
+				if (this.to.getValue() > MAX_SELECTION){
 					this.to.setValue(MAX_SELECTION);
 				}
-			}
-			if( this.to.getValue() > this.from.getValue()){
-				// valid
-				this.from.setBgColor(TGTransportModeDialog.this.colorOK);
-				this.to.setBgColor(TGTransportModeDialog.this.colorOK);
-				TGTransportModeDialog.this.buttonOK.setEnabled(true);
-				if( this.increment.getValue() > (this.to.getValue() - this.from.getValue())){
-					this.increment.setValue(this.to.getValue() - this.from.getValue());
+				if(this.to.getValue() <= this.from.getValue()) {
+					// invalid
+					ok = false;
+					this.to.setBgColor(TGTransportModeDialog.this.colorErr);
+					this.from.setBgColor(TGTransportModeDialog.this.colorOK);
 				}
 			}
+			if (ok) {
+				this.from.setBgColor(TGTransportModeDialog.this.colorOK);
+				this.to.setBgColor(TGTransportModeDialog.this.colorOK);
+				if (this.increment.getValue() > (this.to.getValue() - this.from.getValue())) {
+					ok = false;
+					this.increment.setBgColor(colorErr);
+				}
+				else {
+					this.increment.setBgColor(colorOK);
+				}
+			}
+			TGTransportModeDialog.this.buttonOK.setEnabled(ok);
 		}
 	}
 
