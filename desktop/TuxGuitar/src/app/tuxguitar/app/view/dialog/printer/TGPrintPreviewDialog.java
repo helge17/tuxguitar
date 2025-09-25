@@ -101,7 +101,7 @@ public class TGPrintPreviewDialog{
 
 		this.currentText = factory.createTextField(composite);
 		compositeLayout.set(this.currentText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
-		compositeLayout.set(this.currentText, UITableLayout.PACKED_WIDTH, 25f);
+		compositeLayout.set(this.currentText, UITableLayout.PACKED_WIDTH, 45f);
 
 		this.next = factory.createButton(composite);
 		this.next.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.ARROW_RIGHT));
