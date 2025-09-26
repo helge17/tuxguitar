@@ -8,6 +8,10 @@ public interface UISpinner extends UIControl {
 
 	int getValue();
 
+	void setToolTipText(String text);
+
+	String getToolTipText();
+
 	void setMaximum(int maximum);
 
 	int getMaximum();

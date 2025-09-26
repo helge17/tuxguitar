@@ -377,6 +377,7 @@ public class TGTransportDialog implements TGEventListener {
 			this.metronome.setToolTipText(TuxGuitar.getProperty("transport.metronome"));
 			this.mode.setToolTipText(TuxGuitar.getProperty("transport.mode"));
 			this.countInToggle.setToolTipText(TuxGuitar.getProperty("transport.count-down"));
+			this.countInTicks.setToolTipText(TuxGuitar.getProperty("transport.count-down-ticks"));
 			this.loadPlayText();
 		}
 	}
