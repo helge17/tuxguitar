@@ -8,6 +8,8 @@ import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
@@ -20,9 +22,13 @@ import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
+import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIColorModel;
 import app.tuxguitar.ui.widget.UIButton;
 import app.tuxguitar.ui.widget.UICheckBox;
 import app.tuxguitar.ui.widget.UIControl;
@@ -50,12 +56,18 @@ public class TGTransportModeDialog {
 	protected UISpinner customFrom;
 	protected UISpinner customTo;
 	protected UISpinner customIncrement;
+	
+	protected UIButton buttonOK;
+	protected UIColorModel colorModelErr;
+	protected UIColor colorErr;
+	protected UIColor colorOK;
 
 	protected UIDropDownSelect<Integer> loopSHeader;
 	protected UIDropDownSelect<Integer> loopEHeader;
 
 	public TGTransportModeDialog(TGViewContext context){
 		this.context = context;
+		this.colorModelErr = TGConfigManager.getInstance(context.getContext()).getColorModelConfigValue(TGConfigKeys.COLOR_INVALID_ENTRY);
 	}
 
 	public void show(){
@@ -66,9 +78,18 @@ public class TGTransportModeDialog {
 		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
 		final TGBeatRange beats = this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 		boolean isSelectionActive = Boolean.TRUE.equals(this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE));
+		this.colorErr = uiFactory.createColor(this.colorModelErr);
 
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("transport.mode"));
+		dialog.addCloseListener(new UICloseListener() {
+			@Override
+			public void onClose(UICloseEvent event) {
+				if ((TGTransportModeDialog.this.colorErr != null) && !TGTransportModeDialog.this.colorErr.isDisposed()) {
+					TGTransportModeDialog.this.colorErr.dispose();
+				}
+			}
+		});
 
 		// ----------------------------------------------------------------------
 
@@ -228,16 +249,16 @@ public class TGTransportModeDialog {
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 6, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 
-		UIButton buttonOK = uiFactory.createButton(buttons);
-		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setDefaultButton();
-		buttonOK.addSelectionListener(new UISelectionListener() {
+		this.buttonOK = uiFactory.createButton(buttons);
+		this.buttonOK.setText(TuxGuitar.getProperty("ok"));
+		this.buttonOK.setDefaultButton();
+		this.buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				changeTransportMode();
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(this.buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -249,9 +270,10 @@ public class TGTransportModeDialog {
 		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
+		this.colorOK = this.customFrom.getBgColor();
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
-
+	
 	public void changeTransportMode() {
 		Integer type = (this.custom.isSelected() ? MidiPlayerMode.TYPE_CUSTOM : MidiPlayerMode.TYPE_SIMPLE );
 		Boolean loop = (type == MidiPlayerMode.TYPE_CUSTOM || (type == MidiPlayerMode.TYPE_SIMPLE && this.simpleLoop.isSelected()));
@@ -327,22 +349,40 @@ public class TGTransportModeDialog {
 		}
 
 		public void onSelect(UISelectionEvent event) {
-			if( event.getComponent().equals(this.from)){
+			boolean ok = true;
+			if (event.getComponent().equals(this.from)) {
 				if( this.from.getValue() < MIN_SELECTION){
 					this.from.setValue(MIN_SELECTION);
-				}else if(this.from.getValue() >= this.to.getValue()){
-					this.from.setValue(this.to.getValue() - 1);
 				}
-			}else if(event.getComponent().equals(this.to)){
-				if( this.to.getValue() <= this.from.getValue()){
-					this.to.setValue(this.from.getValue() + 1);
-				}else if(this.to.getValue() > MAX_SELECTION){
+				if (this.from.getValue() >= this.to.getValue()) {
+					// invalid
+					ok = false;
+					this.from.setBgColor(TGTransportModeDialog.this.colorErr);
+					this.to.setBgColor(TGTransportModeDialog.this.colorOK);
+				}
+			} else if (event.getComponent().equals(this.to)) {
+				if (this.to.getValue() > MAX_SELECTION){
 					this.to.setValue(MAX_SELECTION);
 				}
+				if(this.to.getValue() <= this.from.getValue()) {
+					// invalid
+					ok = false;
+					this.to.setBgColor(TGTransportModeDialog.this.colorErr);
+					this.from.setBgColor(TGTransportModeDialog.this.colorOK);
+				}
 			}
-			if( this.increment.getValue() > (this.to.getValue() - this.from.getValue())){
-				this.increment.setValue(this.to.getValue() - this.from.getValue());
+			if (ok) {
+				this.from.setBgColor(TGTransportModeDialog.this.colorOK);
+				this.to.setBgColor(TGTransportModeDialog.this.colorOK);
+				if (this.increment.getValue() > (this.to.getValue() - this.from.getValue())) {
+					ok = false;
+					this.increment.setBgColor(colorErr);
+				}
+				else {
+					this.increment.setBgColor(colorOK);
+				}
 			}
+			TGTransportModeDialog.this.buttonOK.setEnabled(ok);
 		}
 	}
 
