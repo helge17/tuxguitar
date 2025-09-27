@@ -261,7 +261,7 @@ public class TGPrintLayout extends TGLayout {
 			float measureSpacing = defaultMeasureSpacing;
 
 			for(int i = 0;i < line.measures.size();i ++){
-				int index = ((Integer)line.measures.get(i)).intValue();
+				int index = line.measures.get(i).intValue();
 				TGMeasureImpl currMeasure = (TGMeasureImpl)track.getMeasure(index);
 
 				//asigno la posicion dentro del compas

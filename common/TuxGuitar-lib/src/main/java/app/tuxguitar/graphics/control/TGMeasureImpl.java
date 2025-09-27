@@ -306,7 +306,7 @@ public class TGMeasureImpl extends TGMeasure{
 		for(int v = 0; v < this.voiceGroups.length; v ++){
 			Iterator<TGBeatGroup> voiceGroups = this.voiceGroups[v].iterator();
 			while (voiceGroups.hasNext()) {
-				TGBeatGroup group = (TGBeatGroup)voiceGroups.next();
+				TGBeatGroup group = voiceGroups.next();
 				group.finish(layout,this);
 			}
 		}
@@ -535,7 +535,7 @@ public class TGMeasureImpl extends TGMeasure{
 			for(int i = 0; i < this.voiceGroups.length; i ++){
 				Iterator<TGBeatGroup> groups = this.voiceGroups[i].iterator();
 				while (groups.hasNext()) {
-					TGBeatGroup group = (TGBeatGroup)groups.next();
+					TGBeatGroup group = groups.next();
 					checkValue(layout,group.getMinNote(),group.getDirection());
 					checkValue(layout,group.getMaxNote(),group.getDirection());
 				}
@@ -1168,7 +1168,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private void paintTexts(TGLayout layout,UIPainter painter){
 		Iterator<TGBeat> it = getBeats().iterator();
 		while(it.hasNext()){
-			TGBeat beat = (TGBeat)it.next();
+			TGBeat beat = it.next();
 			if( beat.isTextBeat() ){
 				TGTextImpl text = (TGTextImpl)beat.getText();
 				text.paint(layout, painter,(getPosX() + getHeaderImpl().getLeftSpacing(layout) ),getPosY());

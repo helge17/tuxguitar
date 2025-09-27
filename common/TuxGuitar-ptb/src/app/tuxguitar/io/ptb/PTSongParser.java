@@ -100,7 +100,7 @@ public class PTSongParser {
 
 		long start = TGDuration.QUARTER_TIME;
 		for( int sIndex = 0; sIndex < track.getSections().size(); sIndex ++){
-			PTSection section = (PTSection) track.getSections().get(sIndex);
+			PTSection section = track.getSections().get(sIndex);
 			section.sort();
 
 			//calculo el siguiente start del compas
@@ -109,7 +109,7 @@ public class PTSongParser {
 
 			//parseo las posiciones
 			for( int pIndex = 0; pIndex < section.getPositions().size(); pIndex ++){
-				PTPosition position = (PTPosition)section.getPositions().get(pIndex);
+				PTPosition position = section.getPositions().get(pIndex);
 				parsePosition(tgSong, track, position);
 			}
 
@@ -120,7 +120,7 @@ public class PTSongParser {
 
 	private void parsePosition(TGSong tgSong, PTTrack track,PTPosition position){
 		for(int i = 0; i < position.getComponents().size(); i ++){
-			PTComponent component = (PTComponent)position.getComponents().get(i);
+			PTComponent component = position.getComponents().get(i);
 			if(component instanceof PTBar){
 				parseBar((PTBar)component);
 			}
@@ -157,7 +157,7 @@ public class PTSongParser {
 			// If track was already created, but it's not in use
 			Iterator<TGTrack> it = tgSong.getTracks();
 			while( it.hasNext() ){
-				TGTrack tgTrack = (TGTrack )it.next();
+				TGTrack tgTrack = it.next();
 				if( hasSameInfo(tgSong, tgTrack , info)){
 					boolean exists = false;
 					for( int i = 0 ; i < this.helper.getInfoHelper().countStaffTracks() ; i ++ ){
@@ -214,7 +214,7 @@ public class PTSongParser {
 
 		Iterator<PTNote> it = beat.getNotes().iterator();
 		while(it.hasNext()){
-			PTNote ptNote = (PTNote)it.next();
+			PTNote ptNote = it.next();
 			if( ptNote.getString() <= measure.getTrack().stringCount() && ptNote.getValue() >= 0 ){
 				TGNote note = this.manager.getFactory().newNote();
 				note.setString(ptNote.getString());

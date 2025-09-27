@@ -55,7 +55,7 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 	public void closeAll() throws MidiPlayerException{
 		if( this.ports != null ) {
 			for(int i = 0 ; i < this.ports.size() ; i++) {
-				((MidiOutputPort)this.ports.get(i)).close();
+				this.ports.get(i).close();
 			}
 			this.ports.clear();
 		}

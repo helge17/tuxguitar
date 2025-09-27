@@ -810,7 +810,7 @@ public abstract class TGLayout {
 
 		Iterator<TrackPosition> it = this.trackPositions.iterator();
 		while(it.hasNext()){
-			TrackPosition pos = (TrackPosition)it.next();
+			TrackPosition pos = it.next();
 			float distanceY = Math.min(Math.abs(y - (pos.getPosY())), Math.abs(y - (pos.getPosY() + pos.getHeight() - 10)));
 			if(trackPos == null || distanceY < minorDistance){
 				trackPos = pos;

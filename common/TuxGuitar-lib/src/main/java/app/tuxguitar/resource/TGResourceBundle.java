@@ -69,7 +69,7 @@ public class TGResourceBundle {
 		try {
 			Enumeration<URL> enumeration = TGResourceManager.getInstance(context).getResources(name);
 			while (enumeration.hasMoreElements()) {
-				URL url = (URL) enumeration.nextElement();
+				URL url = enumeration.nextElement();
 				Properties properties = new Properties();
 				properties.load( new InputStreamReader(url.openStream(),StandardCharsets.UTF_8) );
 				p.putAll(properties);

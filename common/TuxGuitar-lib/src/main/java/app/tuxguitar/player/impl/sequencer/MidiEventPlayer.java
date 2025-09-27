@@ -24,7 +24,7 @@ public class MidiEventPlayer{
 		this.lastTick = this.tick;
 		this.tick = this.sequencer.getTickPosition();
 		for(int i = 0;i < this.events.size();i ++){
-			MidiEvent event = (MidiEvent)this.events.get(i);
+			MidiEvent event = this.events.get(i);
 			if(shouldSend(event,this.tick,this.lastTick)){
 				this.sequencer.sendEvent(event);
 			}

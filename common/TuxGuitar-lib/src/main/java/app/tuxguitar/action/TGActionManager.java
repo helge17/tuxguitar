@@ -37,7 +37,7 @@ public class TGActionManager {
 
 	public TGAction getAction(String id){
 		if( this.actions.containsKey(id) ){
-			return (TGAction)this.actions.get(id);
+			return this.actions.get(id);
 		}
 		return null;
 	}

@@ -75,7 +75,7 @@ public class TGBrowserManager {
 
 	public TGBrowserCollection getCollection(int index){
 		if(index >= 0 && index < countCollections()){
-			return (TGBrowserCollection)this.collections.get(index);
+			return this.collections.get(index);
 		}
 		return null;
 	}

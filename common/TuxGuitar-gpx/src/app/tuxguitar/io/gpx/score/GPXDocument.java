@@ -75,7 +75,7 @@ public class GPXDocument {
 	public GPXBar getBar( int id ){
 		Iterator<GPXBar> it = this.bars.iterator();
 		while( it.hasNext() ){
-			GPXBar bar = (GPXBar)it.next();
+			GPXBar bar = it.next();
 			if( bar.getId() == id ){
 				return bar;
 			}
@@ -86,7 +86,7 @@ public class GPXDocument {
 	public GPXVoice getVoice( int id ){
 		Iterator<GPXVoice> it = this.voices.iterator();
 		while( it.hasNext() ){
-			GPXVoice voice = (GPXVoice)it.next();
+			GPXVoice voice = it.next();
 			if( voice.getId() == id ){
 				return voice;
 			}
@@ -97,7 +97,7 @@ public class GPXDocument {
 	public GPXBeat getBeat( int id ){
 		Iterator<GPXBeat> it = this.beats.iterator();
 		while( it.hasNext() ){
-			GPXBeat beat = (GPXBeat)it.next();
+			GPXBeat beat = it.next();
 			if( beat.getId() == id ){
 				return beat;
 			}
@@ -108,7 +108,7 @@ public class GPXDocument {
 	public GPXNote getNote( int id ){
 		Iterator<GPXNote> it = this.notes.iterator();
 		while( it.hasNext() ){
-			GPXNote note = (GPXNote)it.next();
+			GPXNote note = it.next();
 			if( note.getId() == id ){
 				return note;
 			}
@@ -119,7 +119,7 @@ public class GPXDocument {
 	public GPXChord getChord( int id ){
 		Iterator<GPXChord> it = this.chords.iterator();
 		while( it.hasNext() ){
-			GPXChord chord = (GPXChord)it.next();
+			GPXChord chord = it.next();
 			if( chord.getId() == id ){
 				return chord;
 			}
@@ -130,7 +130,7 @@ public class GPXDocument {
 	public GPXRhythm getRhythm( int id ){
 		Iterator<GPXRhythm> it = this.rhythms.iterator();
 		while( it.hasNext() ){
-			GPXRhythm rhythm = (GPXRhythm)it.next();
+			GPXRhythm rhythm = it.next();
 			if( rhythm.getId() == id ){
 				return rhythm;
 			}
@@ -143,7 +143,7 @@ public class GPXDocument {
 
 		Iterator<GPXAutomation> it = this.automations.iterator();
 		while( it.hasNext() ){
-			GPXAutomation automation = (GPXAutomation)it.next();
+			GPXAutomation automation = it.next();
 			if( automation.getType() != null && automation.getType().equals( type ) ){
 				if( automation.getBarId() <= untilBarId  && ( result == null || automation.getBarId() > result.getBarId() )){
 					result = automation;

@@ -70,21 +70,21 @@ public class MidiChannelRouter implements MidiReceiver{
 	public void sendAllNotesOff() throws MidiPlayerException {
 		List<Integer> midiChannelIds = getMidiChannelIds();
 		for(int i = 0; i < midiChannelIds.size(); i ++){
-			this.sendAllNotesOff(((Integer)midiChannelIds.get(i)).intValue());
+			this.sendAllNotesOff(midiChannelIds.get(i).intValue());
 		}
 	}
 
 	public void sendPitchBendReset() throws MidiPlayerException {
 		List<Integer> midiChannelIds = getMidiChannelIds();
 		for(int i = 0; i < midiChannelIds.size(); i ++){
-			this.sendPitchBend(((Integer)midiChannelIds.get(i)).intValue(), 64, -1, false);
+			this.sendPitchBend(midiChannelIds.get(i).intValue(), 64, -1, false);
 		}
 	}
 
 	public MidiChannel getMidiChannel(int channelId){
 		Integer key = Integer.valueOf(channelId);
 		if( this.midiChannels.containsKey(key) ){
-			return (MidiChannel)this.midiChannels.get(key);
+			return this.midiChannels.get(key);
 		}
 		return null;
 	}

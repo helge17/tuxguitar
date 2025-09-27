@@ -26,7 +26,7 @@ public class TrackInfoHelper {
 
 	public TGTrack getStaffTrack(int staff) {
 		if(staff >= 0 && staff < this.staffTracks.size() ){
-			return (TGTrack)this.staffTracks.get( staff );
+			return this.staffTracks.get( staff );
 		}
 		return null;
 	}

@@ -195,7 +195,7 @@ public class MidiSequenceParser {
 			for (int noteIdx = 0; noteIdx < voice.countNotes(); noteIdx++) {
 				TGNote note = voice.getNote(noteIdx);
 				if (!note.isTiedNote()) {
-					int key = (this.transpose + track.getOffset() + note.getValue() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue());
+					int key = (this.transpose + track.getOffset() + note.getValue() + track.getStrings().get(note.getString() - 1).getValue());
 
 					long start = applyStrokeStart(note, (th.getStart() + startMove) , stroke);
 					long duration = applyStrokeDuration(note, getRealNoteDuration(sh, track, note, tempo, th.getDuration(), mIndex,bIndex), stroke);
@@ -213,7 +213,7 @@ public class MidiSequenceParser {
 					//---Grace---
 					if(note.getEffect().isGrace()) {
 						bendMode = !percussionChannel;
-						int graceKey = track.getOffset() + note.getEffect().getGrace().getFret() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue();
+						int graceKey = track.getOffset() + note.getEffect().getGrace().getFret() + track.getStrings().get(note.getString() - 1).getValue();
 						int graceLength = note.getEffect().getGrace().getDurationTime();
 						int graceVelocity = note.getEffect().getGrace().getDynamic();
 						long graceDuration = ((note.getEffect().getGrace().isDead())?applyStaticDuration(tempo, DEFAULT_DURATION_DEAD, graceLength):graceLength);
@@ -227,7 +227,7 @@ public class MidiSequenceParser {
 					}
 					//---Trill---
 					if(note.getEffect().isTrill() && !percussionChannel ){
-						int trillKey = track.getOffset() + note.getEffect().getTrill().getFret() + ((TGString)track.getStrings().get(note.getString() - 1)).getValue();
+						int trillKey = track.getOffset() + note.getEffect().getTrill().getFret() + track.getStrings().get(note.getString() - 1).getValue();
 						long trillLength = note.getEffect().getTrill().getDuration().getTime();
 
 						boolean realKey = true;
@@ -375,7 +375,7 @@ public class MidiSequenceParser {
 	public void addBend(MidiSequenceHelper sh,int track,long start, long duration, TGEffectBend bend, int channel, int midiVoice, boolean bendMode){
 		List<BendPoint> points = bend.getPoints();
 		for(int i=0;i<points.size();i++){
-			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint)points.get(i);
+			TGEffectBend.BendPoint point = points.get(i);
 			long bendStart = start + point.getTime(duration);
 			int value = DEFAULT_BEND + (int)(point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
 			value = ((value <= 127)?value:127);
@@ -383,7 +383,7 @@ public class MidiSequenceParser {
 			addBend(sh, track, bendStart, value, channel, midiVoice, bendMode);
 
 			if(points.size() > i + 1){
-				TGEffectBend.BendPoint nextPoint = (TGEffectBend.BendPoint)points.get(i + 1);
+				TGEffectBend.BendPoint nextPoint = points.get(i + 1);
 				int nextValue = DEFAULT_BEND + (int)(nextPoint.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
 				long nextBendStart = start + nextPoint.getTime(duration);
 				if(nextValue != value){
@@ -412,14 +412,14 @@ public class MidiSequenceParser {
 	public void addTremoloBar(MidiSequenceHelper sh,int track,long start, long duration, TGEffectTremoloBar effect, int channel, int midiVoice, boolean bendMode){
 		List<TremoloBarPoint> points = effect.getPoints();
 		for(int i=0;i<points.size();i++){
-			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint)points.get(i);
+			TGEffectTremoloBar.TremoloBarPoint point = points.get(i);
 			long pointStart = start + point.getTime(duration);
 			int value = DEFAULT_BEND + (int)(point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2) );
 			value = ((value <= 127)?value:127);
 			value = ((value >= 0)?value:0);
 			addBend(sh, track, pointStart, value, channel, midiVoice, bendMode);
 			if(points.size() > i + 1){
-				TGEffectTremoloBar.TremoloBarPoint nextPoint = (TGEffectTremoloBar.TremoloBarPoint)points.get(i + 1);
+				TGEffectTremoloBar.TremoloBarPoint nextPoint = points.get(i + 1);
 				int nextValue = DEFAULT_BEND + (int)(nextPoint.getValue() * (DEFAULT_BEND_SEMI_TONE * 2));
 				long nextPointStart = start + nextPoint.getTime(duration);
 				if(nextValue != value){
@@ -909,7 +909,7 @@ public class MidiSequenceParser {
 		}
 
 		public MidiMeasureHelper getMeasureHelper( int index ){
-			return (MidiMeasureHelper)this.measureHeaderHelpers.get( index );
+			return this.measureHeaderHelpers.get( index );
 		}
 
 	}

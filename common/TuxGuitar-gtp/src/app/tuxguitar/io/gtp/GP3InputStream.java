@@ -400,7 +400,7 @@ public class GP3InputStream extends GTPInputStream {
 			gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
 			gmChannel2Param.setValue(Integer.toString(gmChannel1 != 9 ? gmChannel2 : gmChannel1));
 
-			channel.copyFrom(getFactory(), ((TGChannel) channels.get(gmChannel1)));
+			channel.copyFrom(getFactory(), channels.get(gmChannel1));
 
 			//------------------------------------------//
 			for( int i = 0 ; i < song.countChannels() ; i ++ ){
@@ -430,7 +430,7 @@ public class GP3InputStream extends GTPInputStream {
 		int existentAlternatives = 0;
 		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
 		while(it.hasNext()){
-			TGMeasureHeader header = (TGMeasureHeader)it.next();
+			TGMeasureHeader header = it.next();
 			if(header.getNumber() == measure){
 				break;
 			}
@@ -654,7 +654,7 @@ public class GP3InputStream extends GTPInputStream {
 		if(!isPercussionChannel(track.getSong(),track.getChannelId())){
 			Iterator<TGString> it = track.getStrings().iterator();
 			while( it.hasNext() ){
-				TGString string = (TGString) it.next();
+				TGString string = it.next();
 				if( string.getValue() <= 34 ){
 					return TGMeasure.CLEF_BASS;
 				}
@@ -666,7 +666,7 @@ public class GP3InputStream extends GTPInputStream {
 	private boolean isPercussionChannel( TGSong song, int channelId ){
 		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
-			TGChannel channel = (TGChannel)it.next();
+			TGChannel channel = it.next();
 			if( channel.getChannelId() == channelId ){
 				return channel.isPercussionChannel();
 			}

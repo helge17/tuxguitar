@@ -119,7 +119,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeStringByteSizeOfInteger("");
 		writeInt( comments.size() );
 		for (int i = 0; i < comments.size(); i++) {
-			writeStringByteSizeOfInteger( (String)comments.get(i) );
+			writeStringByteSizeOfInteger( comments.get(i) );
 		}
 	}
 
@@ -127,7 +127,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		TGTrack lyricTrack = null;
 		Iterator<TGTrack> it = song.getTracks();
 		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();
+			TGTrack track = it.next();
 			if(!track.getLyrics().isEmpty()){
 				lyricTrack = track;
 				break;
@@ -313,7 +313,7 @@ public class GP5OutputStream extends GTPOutputStream {
 			if( voices.size() > 0 ){
 				writeInt( voices.size() );
 				for( int i = 0; i < voices.size() ; i ++ ){
-					TGVoice voice = (TGVoice) voices.get( i );
+					TGVoice voice = voices.get( i );
 					writeBeat(voice, voice.getBeat(), measure, ( changeTempo && i == 0 ) );
 				}
 			}else{
@@ -653,7 +653,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeInt(0);
 		writeInt(points);
 		for (int i = 0; i < points; i++) {
-			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint) bend.getPoints().get(i);
+			TGEffectBend.BendPoint point = bend.getPoints().get(i);
 			writeInt( (point.getPosition() * GP_BEND_POSITION / TGEffectBend.MAX_POSITION_LENGTH) );
 			writeInt( (point.getValue() * GP_BEND_SEMITONE / TGEffectBend.SEMITONE_LENGTH) );
 			writeByte((byte) 0);
@@ -666,7 +666,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeInt(0);
 		writeInt(points);
 		for (int i = 0; i < points; i++) {
-			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint) tremoloBar.getPoints().get(i);
+			TGEffectTremoloBar.TremoloBarPoint point = tremoloBar.getPoints().get(i);
 			writeInt( (point.getPosition() * GP_BEND_POSITION / TGEffectBend.MAX_POSITION_LENGTH) );
 			writeInt( (point.getValue() * (GP_BEND_SEMITONE * 2)) );
 			writeByte((byte) 0);
@@ -764,7 +764,7 @@ public class GP5OutputStream extends GTPOutputStream {
 
 		Iterator<TGChannel> it = song.getChannels();
 		while (it.hasNext()) {
-			TGChannel tgChannel = (TGChannel) it.next();
+			TGChannel tgChannel = it.next();
 			GMChannelRoute gmChannelRoute = getChannelRoute(tgChannel.getChannelId());
 			channels[gmChannelRoute.getChannel1()].setProgram(tgChannel.getProgram());
 			channels[gmChannelRoute.getChannel1()].setVolume(tgChannel.getVolume());

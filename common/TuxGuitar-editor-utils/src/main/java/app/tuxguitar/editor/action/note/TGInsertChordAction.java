@@ -37,7 +37,7 @@ public class TGInsertChordAction extends TGActionBase {
 			voice.clearNotes();
 			Iterator<TGString> it = track.getStrings().iterator();
 			while (it.hasNext()) {
-				TGString string = (TGString) it.next();
+				TGString string = it.next();
 
 				int value = chord.getFretValue(string.getNumber() - 1);
 				if (value >= 0) {

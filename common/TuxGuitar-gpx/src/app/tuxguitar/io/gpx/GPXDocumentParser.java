@@ -82,7 +82,7 @@ public class GPXDocumentParser {
 
 		List<GPXTrack> tracks = this.document.getTracks();
 		for (int i = 0; i < tracks.size(); i++) {
-			GPXTrack gpTrack = (GPXTrack) this.document.getTracks().get(i);
+			GPXTrack gpTrack = this.document.getTracks().get(i);
 
 			TGChannel tgChannel = this.factory.newChannel();
 			tgChannel.setBank(gpTrack.getGmChannel1() == GPXDocument.DEFAULT_PERCUSSION_CHANNNEL
@@ -158,7 +158,7 @@ public class GPXDocumentParser {
 
 		List<GPXMasterBar> masterBars = this.document.getMasterBars();
 		for (int i = 0; i < masterBars.size(); i++) {
-			GPXMasterBar mbar = (GPXMasterBar) masterBars.get(i);
+			GPXMasterBar mbar = masterBars.get(i);
 			GPXAutomation gpTempoAutomation = this.document.getAutomation("Tempo", i);
 
 			TGMeasureHeader tgMeasureHeader = this.factory.newHeader();
@@ -232,7 +232,7 @@ public class GPXDocumentParser {
 						gpMasterBarIndex = (gpMasterBarIndex - 2);
 					}
 					if (gpMasterBarIndex >= 0) {
-						GPXMasterBar gpMasterBarCopy = (GPXMasterBar) masterBars.get(gpMasterBarIndex);
+						GPXMasterBar gpMasterBarCopy = masterBars.get(gpMasterBarIndex);
 						gpBar = (t < gpMasterBarCopy.getBarIds().length
 								? this.document.getBar(gpMasterBarCopy.getBarIds()[t])
 								: null);
@@ -776,7 +776,7 @@ public class GPXDocumentParser {
 	private TGString getStringFor(TGBeat tgBeat, int value) {
 		List<TGString> strings = tgBeat.getMeasure().getTrack().getStrings();
 		for (int i = 0; i < strings.size(); i++) {
-			TGString string = (TGString) strings.get(i);
+			TGString string = strings.get(i);
 			if (value >= string.getValue()) {
 				boolean emptyString = true;
 

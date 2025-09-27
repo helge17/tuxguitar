@@ -26,7 +26,7 @@ public class MidiSequence {
 	}
 
 	public MidiTrack getTrack(int index){
-		return (MidiTrack)this.tracks.get(index);
+		return this.tracks.get(index);
 	}
 
 	public int countTracks(){
@@ -43,14 +43,14 @@ public class MidiSequence {
 
 	public void sort(){
 		for(int i = 0; i < this.tracks.size(); i ++){
-			MidiTrack track = (MidiTrack)this.tracks.get(i);
+			MidiTrack track = this.tracks.get(i);
 			track.sort();
 		}
 	}
 
 	public void finish(){
 		for(int i = 0; i < this.tracks.size(); i ++){
-			MidiTrack track = (MidiTrack)this.tracks.get(i);
+			MidiTrack track = this.tracks.get(i);
 			track.add(new MidiEvent(MidiMessage.metaMessage(47,new byte[]{}),track.ticks()));
 			track.sort();
 		}

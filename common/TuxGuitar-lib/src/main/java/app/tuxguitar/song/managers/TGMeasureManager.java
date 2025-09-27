@@ -2224,7 +2224,7 @@ public class TGMeasureManager {
 		// Check the current string index for this note
 		int stringIndex = -1;
 		for( int i = 0 ; i < strings.size() ; i ++ ){
-			TGString string = ( TGString ) strings.get( i );
+			TGString string = strings.get( i );
 			if( string.getNumber() == note.getString() ){
 				stringIndex = i;
 				break;
@@ -2232,11 +2232,11 @@ public class TGMeasureManager {
 		}
 
 		// Try to change the string of the note
-		TGString string = ( TGString ) strings.get( stringIndex );
+		TGString string = strings.get( stringIndex );
 		int transposedValue = ( string.getValue() + note.getValue() + transposition );
 		int nextStringIndex = ( stringIndex + 1 );
 		while( nextStringIndex >= 0 && nextStringIndex < strings.size() ){
-			TGString nextString = ( TGString ) strings.get( nextStringIndex );
+			TGString nextString = strings.get( nextStringIndex );
 			TGNote nextOwner = null;
 			for( int i = 0 ; i < notes.size() ; i ++ ){
 				TGNote nextNote =  notes.get( i );
@@ -2297,7 +2297,7 @@ public class TGMeasureManager {
 		// Check the current string index for this note
 		int stringIndex = -1;
 		for( int i = 0 ; i < strings.size() ; i ++ ){
-			TGString string = ( TGString ) strings.get( i );
+			TGString string = strings.get( i );
 			if( string.getNumber() == noteString ){
 				stringIndex = i;
 				break;
@@ -2305,11 +2305,11 @@ public class TGMeasureManager {
 		}
 
 		// Try to change the string of the note
-		TGString string = ( TGString ) strings.get( stringIndex );
+		TGString string = strings.get( stringIndex );
 		int transposedValue = ( string.getValue() + noteValue + transposition );
 		int nextStringIndex = ( stringIndex + 1 );
 		while( nextStringIndex >= 0 && nextStringIndex < strings.size() ){
-			TGString nextString = ( TGString ) strings.get( nextStringIndex );
+			TGString nextString = strings.get( nextStringIndex );
 			int nextChordString = -1;
 			for( int i = 0 ; i < chord.countStrings() ; i ++ ){
 				if( (i + 1) == nextString.getNumber() ){

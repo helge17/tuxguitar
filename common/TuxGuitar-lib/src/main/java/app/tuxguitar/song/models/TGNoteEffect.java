@@ -404,12 +404,12 @@ public abstract class TGNoteEffect {
 		effect.setSlapping(isSlapping());
 		effect.setPopping(isPopping());
 		effect.setFadeIn(isFadeIn());
-		effect.setBend(isBend()?(TGEffectBend)this.bend.clone(factory):null);
-		effect.setTremoloBar(isTremoloBar()?(TGEffectTremoloBar)this.tremoloBar.clone(factory):null);
-		effect.setHarmonic(isHarmonic()?(TGEffectHarmonic)this.harmonic.clone(factory):null);
-		effect.setGrace(isGrace()?(TGEffectGrace)this.grace.clone(factory):null);
-		effect.setTrill(isTrill()?(TGEffectTrill)this.trill.clone(factory):null);
-		effect.setTremoloPicking(isTremoloPicking()?(TGEffectTremoloPicking)this.tremoloPicking.clone(factory):null);
+		effect.setBend(isBend()?this.bend.clone(factory):null);
+		effect.setTremoloBar(isTremoloBar()?this.tremoloBar.clone(factory):null);
+		effect.setHarmonic(isHarmonic()?this.harmonic.clone(factory):null);
+		effect.setGrace(isGrace()?this.grace.clone(factory):null);
+		effect.setTrill(isTrill()?this.trill.clone(factory):null);
+		effect.setTremoloPicking(isTremoloPicking()?this.tremoloPicking.clone(factory):null);
 		return effect;
 	}
 

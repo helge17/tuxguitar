@@ -108,7 +108,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		TGMeasureHeader lastHeader = null;
 		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
-			TGMeasureHeader header = (TGMeasureHeader)headers.next();
+			TGMeasureHeader header = headers.next();
 			writeMeasureHeader(header,lastHeader);
 			lastHeader = header;
 		}
@@ -147,7 +147,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		TGMeasure lastMeasure = null;
 		Iterator<TGMeasure> measures  = track.getMeasures();
 		while(measures.hasNext()){
-			TGMeasure measure = (TGMeasure)measures.next();
+			TGMeasure measure = measures.next();
 			writeMeasure(measure,lastMeasure);
 			lastMeasure = measure;
 		}
@@ -161,7 +161,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		//escribo las cuerdas
 		Iterator<TGString> stringIt  = strings.iterator();
 		while(stringIt.hasNext()){
-			TGString string = (TGString)stringIt.next();
+			TGString string = stringIt.next();
 			writeInstrumentString(string);
 		}
 
@@ -569,7 +569,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 		Iterator<TGEffectBend.BendPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
-			TGEffectBend.BendPoint point = (TGEffectBend.BendPoint)it.next();
+			TGEffectBend.BendPoint point = it.next();
 
 			//escribo la posicion
 			writeByte(point.getPosition());
@@ -585,7 +585,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 		Iterator<TGEffectTremoloBar.TremoloBarPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
-			TGEffectTremoloBar.TremoloBarPoint point = (TGEffectTremoloBar.TremoloBarPoint)it.next();
+			TGEffectTremoloBar.TremoloBarPoint point = it.next();
 
 			//escribo la posicion
 			writeByte(point.getPosition());

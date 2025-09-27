@@ -169,7 +169,7 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWri
 	protected boolean isPercussionChannel( TGSong song, int channelId ){
 		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
-			TGChannel channel = (TGChannel)it.next();
+			TGChannel channel = it.next();
 			if( channel.getChannelId() == channelId ){
 				return channel.isPercussionChannel();
 			}
