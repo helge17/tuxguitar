@@ -40,15 +40,13 @@ public class MidiPlayerCountDown {
 
 					int tickIndex = 0;
 					
-					if (this.tickCount == 0)
-						this.tickCount = header.getTimeSignature().getNumerator();
-
-					while( this.isRunning() && tickIndex <= this.tickCount ){
+					int localTickCount = (this.tickCount != 0) ? this.tickCount : header.getTimeSignature().getNumerator();
+					while( this.isRunning() && tickIndex <= localTickCount ){
 							long currentTime = System.currentTimeMillis();
 							if( tickStart <= currentTime ){
 								tickStart += tickLength;
 								tickIndex ++;
-								if( tickIndex <= this.tickCount ){
+								if( tickIndex <= localTickCount ){
 									this.player.getOutputTransmitter().sendNoteOn(channelId, 37, TGVelocities.DEFAULT, -1, false);
 									synchronized (timerLock) {
 										timerLock.wait( 1 );
