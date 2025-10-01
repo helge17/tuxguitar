@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to build on FreeBSD
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Exec in FreeBSD
       uses: vmactions/freebsd-vm@v1
       with:
