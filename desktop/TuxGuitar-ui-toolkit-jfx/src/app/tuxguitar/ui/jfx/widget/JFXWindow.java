@@ -40,6 +40,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 	private JFXSceneResizeListener sceneResizeListener;
 	private JFXStageResizeListener stageResizeListener;
 	private JFXSyncProcess layoutProcess;
+	private boolean resizable;
 
 	public JFXWindow(Stage stage, JFXContainer<? extends Pane> parent) {
 		super(new Pane(), parent);
@@ -67,7 +68,8 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 		this(new Stage(), parent);
 
 		this.stage.initOwner(parent.getStage());
-	//	this.stage.setResizable(resizable);
+		this.stage.setResizable(resizable);
+		this.resizable = resizable;
 		if( modal ) {
 			this.stage.initModality(Modality.APPLICATION_MODAL);
 		}
@@ -144,7 +146,7 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 
 				JFXWindow.this.computeMargin();
 				if( JFXWindow.this.getMargin().equals(currentMargins) && !emptyMargins.equals(currentMargins)) {
-					JFXWindow.this.getStage().setResizable(true);
+					JFXWindow.this.getStage().setResizable(JFXWindow.this.resizable);
 					JFXWindow.this.pack();
 					JFXWindow.this.packing = false;
 				} else {
