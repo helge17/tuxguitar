@@ -396,4 +396,10 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 			this.window.layout();
 		}
 	}
+
+	@Override
+	public void setMinimumSize(int width, int height) {
+		this.stage.setMinWidth(width);
+		this.stage.setMinHeight(height);
+	}
 }
