@@ -134,4 +134,9 @@ public class SWTWindow extends SWTLayoutContainer<Shell> implements UIWindow {
 			this.bounds = bounds;
 		}
 	}
+
+	@Override
+	public void setMinimumSize(int width, int height) {
+		this.getControl().setMinimumSize(width, height);
+	}
 }

@@ -13,6 +13,8 @@ public interface UIWindow extends UILayoutContainer {
 
 	void setImage(UIImage image);
 
+	void setMinimumSize(int width, int height);
+
 	void open();
 
 	void close();
