@@ -277,7 +277,7 @@ public class TGChordDialog {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE, voice);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
-		tgActionProcessor.setAttribute(TGInsertChordAction.CHORD_INSERT_DIAGRAM_ONLY, this.insertChordDiagramOnly);
+		tgActionProcessor.setAttribute(TGInsertChordAction.ATTRIBUTE_CHORD_INSERT_DIAGRAM_ONLY, this.insertChordDiagramOnly);
 		tgActionProcessor.processOnNewThread();
 	}
 

@@ -64,36 +64,4 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 		}
 	}
 
-	public int[] createTranspositions(TGTrack track, List<?> newStrings ){
-		int[] transpositions = new int[ newStrings.size() ];
-
-		TGString newString = null;
-		TGString oldString = null;
-		for( int index = 0; index < transpositions.length ; index ++ ){
-			for( int i = 0; i < track.stringCount() ; i ++ ){
-				TGString string = track.getString( i + 1 );
-				if( string.getNumber() == (index + 1) ){
-					oldString = string;
-					break;
-				}
-			}
-			for( int i = 0; i < newStrings.size() ; i ++ ){
-				TGString string = (TGString)newStrings.get( i );
-				if( string.getNumber() == (index + 1) ){
-					newString = string;
-					break;
-				}
-			}
-			if( oldString != null && newString != null ){
-				transpositions[ index ] = (oldString.getValue() - newString.getValue());
-			}else{
-				transpositions[ index ] = 0;
-			}
-
-			newString = null;
-			oldString = null;
-		}
-
-		return transpositions;
-	}
 }
