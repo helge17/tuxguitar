@@ -3,6 +3,7 @@ package app.tuxguitar.app.view.menu.impl;
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
 import app.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
+import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.document.TGDocumentContextAttributes;
@@ -17,11 +18,13 @@ public class ChordMenuItem extends TGMenuItem {
 	private UIMenuSubMenuItem chordMenuItem;
 	private UIMenuActionItem insertChord;
 	private UIMenuActionItem[] subMenuItems;
+	private boolean insertChordDiagramOnly;
 
 	private long lastEdit;
 
 	public ChordMenuItem(UIMenuSubMenuItem chordMenuItem) {
 		this.chordMenuItem = chordMenuItem;
+		this.insertChordDiagramOnly = TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY);
 	}
 
 	public ChordMenuItem(UIMenu parent) {
@@ -70,10 +73,18 @@ public class ChordMenuItem extends TGMenuItem {
 
 	public void update(){
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		boolean configInsertChordDiagramOnly = TuxGuitar.getInstance().getConfig().getBooleanValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY);
+
 		if(this.lastEdit != TuxGuitar.getInstance().getCustomChordManager().getLastEdit()){
 			this.addItems();
 			this.lastEdit = TuxGuitar.getInstance().getCustomChordManager().getLastEdit();
 		}
+		else if (this.insertChordDiagramOnly != configInsertChordDiagramOnly) {
+			// force refresh of menu items, since an option of action processors changed
+			this.insertChordDiagramOnly = configInsertChordDiagramOnly;
+			this.addItems();
+		}
+		
 		this.insertChord.setEnabled(!running);
 		for(int i = 0;i < this.subMenuItems.length; i++){
 			this.subMenuItems[i].setEnabled(!running);
@@ -92,6 +103,7 @@ public class ChordMenuItem extends TGMenuItem {
 	public TGActionProcessorListener createInsertChordAction(TGChord chord) {
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
+		tgActionProcessor.setAttribute(TGInsertChordAction.CHORD_INSERT_DIAGRAM_ONLY, this.insertChordDiagramOnly);
 		return tgActionProcessor;
 	}
 }

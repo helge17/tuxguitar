@@ -18,6 +18,7 @@ import app.tuxguitar.util.TGContext;
 public class TGInsertChordAction extends TGActionBase {
 
 	public static final String NAME = "action.beat.general.insert-chord";
+	public static final String CHORD_INSERT_DIAGRAM_ONLY = "action.beat.general.insert-chord-diagram-only";
 
 	public TGInsertChordAction(TGContext context) {
 		super(context, NAME);
@@ -30,9 +31,13 @@ public class TGInsertChordAction extends TGActionBase {
 		TGVoice voice = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE);
 		TGChord chord = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD);
 		Integer velocity = (Integer) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY);
+		Boolean insertChordDiagramOnly = Boolean.TRUE.equals(context.getAttribute(CHORD_INSERT_DIAGRAM_ONLY));
 
 		boolean restBeat = beat.isRestBeat();
-		if(!restBeat || chord.countNotes() > 0 ) {
+		if (insertChordDiagramOnly && (chord.countNotes() > 0)) {
+			songManager.getMeasureManager().addChord(beat, chord);
+		}
+		else if(!restBeat || chord.countNotes() > 0 ) {
 			// Replace voice notes with chord notes in the tablature
 			voice.clearNotes();
 			Iterator<TGString> it = track.getStrings().iterator();
@@ -52,7 +57,6 @@ public class TGInsertChordAction extends TGActionBase {
 					songManager.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
 				}
 			}
-
 			songManager.getMeasureManager().addChord(beat, chord);
 		}
 	}

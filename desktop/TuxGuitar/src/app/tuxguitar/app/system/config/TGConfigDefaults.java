@@ -150,6 +150,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.CONFIG_APP_VERSION, "");
 
 		loadProperty(properties, TGConfigKeys.PLAY_WHEN_MOVING, false);
+		loadProperty(properties, TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY, false);
 	}
 
 	public static List<String> getKeys() {
