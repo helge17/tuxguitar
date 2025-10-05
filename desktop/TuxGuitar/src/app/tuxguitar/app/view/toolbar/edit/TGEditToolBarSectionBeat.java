@@ -141,7 +141,7 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 	public void processInsertChordAction(TGChord chord) {
 		TGActionProcessor tgActionProcessor = this.createActionProcessor(TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
-		tgActionProcessor.setAttribute(TGInsertChordAction.CHORD_INSERT_DIAGRAM_ONLY, this.configManager.getBooleanValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY));
+		tgActionProcessor.setAttribute(TGInsertChordAction.ATTRIBUTE_CHORD_INSERT_DIAGRAM_ONLY, this.configManager.getBooleanValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY));
 		tgActionProcessor.process();
 	}
 }

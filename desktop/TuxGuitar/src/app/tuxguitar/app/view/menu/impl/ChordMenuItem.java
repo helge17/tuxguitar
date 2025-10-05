@@ -103,7 +103,7 @@ public class ChordMenuItem extends TGMenuItem {
 	public TGActionProcessorListener createInsertChordAction(TGChord chord) {
 		TGActionProcessorListener tgActionProcessor = this.createActionProcessor(TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
-		tgActionProcessor.setAttribute(TGInsertChordAction.CHORD_INSERT_DIAGRAM_ONLY, this.insertChordDiagramOnly);
+		tgActionProcessor.setAttribute(TGInsertChordAction.ATTRIBUTE_CHORD_INSERT_DIAGRAM_ONLY, this.insertChordDiagramOnly);
 		return tgActionProcessor;
 	}
 }
