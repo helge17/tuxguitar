@@ -252,7 +252,7 @@
 	<string name="tempo_dlg_tempo_label">Темпо:</string>
 	<string name="tempo_dlg_options_apply_to_song">Прилагане на това темпо към цялата песен</string>
 	<string name="tempo_dlg_options_apply_to_end">Прилагане на това темпо до края</string>
-	<string name="tempo_dlg_options_apply_to_next_marker">Прилагане на това темпо до следващия маркер</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Прилагане на това темпо до следващия маркер за темпо</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Промяна на ключ</string>
