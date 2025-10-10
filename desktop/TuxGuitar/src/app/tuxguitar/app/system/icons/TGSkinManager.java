@@ -16,6 +16,13 @@ public class TGSkinManager {
 	private TGContext context;
 	private String currentSkin;
 
+	// received from system properties
+	private static final String PROPERTY_THEME = "tuxguitar.theme";
+	private static final String THEME_DARK = "dark";
+	private static final String THEME_LIGHT = "light";
+	// naming convention for skins
+	private static final String SUFFIX_DARK = "-dark";
+
 	private TGSkinManager(TGContext context){
 		this.context = context;
 		this.loadSkin();
@@ -52,6 +59,25 @@ public class TGSkinManager {
 
 	public String getCurrentSkin() {
 		String configuredSkin = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
+		Boolean skinDarkAuto = Boolean.TRUE.equals(TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.SKIN_DARK_AUTO));
+		
+		// try to switch light/dark theme automatically when requested by system property (when app starts)
+		String systemPropertyTheme = System.getProperty(PROPERTY_THEME);
+		if (skinDarkAuto && (systemPropertyTheme != null) && (!"".equals(systemPropertyTheme)) ) {
+			System.setProperty(PROPERTY_THEME,"");
+			String selectedSkin = null;
+			if ((systemPropertyTheme.equals(THEME_LIGHT) && configuredSkin.endsWith(SUFFIX_DARK))) {
+				selectedSkin = configuredSkin.substring(0, configuredSkin.length() - SUFFIX_DARK.length());
+			}
+			else if ((systemPropertyTheme.equals(THEME_DARK) && !configuredSkin.endsWith(SUFFIX_DARK))) {
+				selectedSkin = configuredSkin + SUFFIX_DARK;
+			}
+			if ((selectedSkin != null) && (getSkinInfo(selectedSkin).getValue("name") != null)) {
+				TGConfigManager.getInstance(this.context).setValue(TGConfigKeys.SKIN, selectedSkin);
+				return selectedSkin;
+			}
+		}
+		
 		// does skin exist?
 		TGProperties skinInfo = getSkinInfo(configuredSkin);
 		if (skinInfo.getValue("name") != null) {
