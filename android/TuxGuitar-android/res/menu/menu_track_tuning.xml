@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_add"
         android:title="@string/global_button_add"
-        android:icon="@drawable/ic_add_circle_outline_white_24dp"
+        android:icon="@drawable/ic_add_white_24dp"
         app:showAsAction="always"/>
 
     <item

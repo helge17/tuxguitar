@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_channel_list_add"
-        android:icon="@drawable/ic_add_circle_outline_white_24dp"
+        android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/action_channel_list_add"
         app:showAsAction="always"/>
 
