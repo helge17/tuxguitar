@@ -1,1 +1,1 @@
-const tg_stable="1.6.6";
+const tg_stable="2.0.0";

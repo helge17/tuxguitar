@@ -21,6 +21,8 @@ Offriamo pacchetti di installazione pronti all'uso per Linux, Windows, macOS, Fr
 * **<script>document.write("[Ultima versione stabile "+tg_stable+"](https://github.com/helge17/tuxguitar/releases/tag/"+tg_stable+")");</script>**
 * [Versioni di sviluppo e versioni precedenti](https://github.com/helge17/tuxguitar/releases)
 
+**Nota bene:** Le versioni 2.0.0 e successive di TuxGuitar usano un **nuovo formato di file** che non può essere letto da versioni precedenti. È comunque possibile esportare le tablature nel vecchio formato per aprirle con versioni più vecchie di TuxGuitar.
+
 Aiuto
 ==============================================================
 

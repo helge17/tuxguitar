@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Chord Editor - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script>
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 2.0.0</p>
+  </div>
+  <div class="title">
+    <h1>Chord Editor</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><strong>Chord Editor</strong></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>This is a dialog that allows you to get a chord based on its theory, recognize a chord based on the tab, memorize or get a chord from a library, and a few more things. This is also the only way to add a chord name or/and diagram in the tab.</p>
+    <img src="images/chord_dialog.png" />
+    <p>As you can see, the chord dialog consists of many things, but is still easy to use. Nevertheless, every feature of the dialog will be explained here.</p>
+    <h2 id="opening_the_dialog">Opening the dialog</h2>
+    <p>When you open the dialog by clicking on its icon (or hitting the <strong>A</strong> key as shortcut), the first thing you will notice is that the notes from your tab are now in the chord dialog <strong>Editor</strong>, the chord is recognized according to the theory, and you can hear the sound preview of it.</p>
+    <h2 id="editor">Editor</h2>
+    <p>In <strong style="color: #db291f">Editor</strong> you can compose your own chord by simple drawing. You should first choose the starting fret with the slider on the right side of the editor and then put the black dots on the frets. Clicking above the line on the editor changes the note between the "empty-string" (white dot) or "don't play this string" sign (marked with <strong>X</strong>). The span of the editor is 5 frets, but you will have to admit that you rarely play chords by stretching the fingers to 6-fret span. :)</p>
+    <p>While you are "drawing" the chord, it will constantly be recognized, which can be seen in the <strong style="color: #db291f">Recognized</strong> section of the window.</p>
+    <p>After composing your chord, you can save it to the library, or simply press "OK" and add it to tab.</p>
+    <h2 id="chord">Chord</h2>
+    <p>The <strong style="color: #db291f">Chord</strong> controls is used to compose a chord based on its name (theory).</p>
+    <p>You should first choose the chord root, either in sharp or flat. Then you should choose the chord flavor (major, maj7, sus2, sus4...).</p>
+    <p>Next, you can alternate the chord. You can make <strong>/9</strong> chord (adds b7 and 9 tones), <strong>/11</strong> chord (adds b7, 9 and 11 tones) and <strong>/13</strong> chord (adds b7, 9, 11 and 13 tones). By enabling the "add" checkbox you get the <strong>add</strong> chord (which means add13 chord has only 13 note, without b7, 9 and 11).</p>
+    <p>You can modify the selected alteration with <strong>+/-</strong> control, and other alterations with appropriate <strong>+/-</strong> box (rightmost of the <strong>Chord</strong> controls).</p>
+    <p>Below the <strong style="color: #db291f">Chord</strong> controls there is a bass note. If you choose a different bass note than the chord root you will get so-called inverted chord.</p>
+    <h2 id="proposals">Proposals</h2>
+    <p>Based on the chosen chord theory, you will get proposals for the fingerings. On the <strong style="color: #db291f">Proposals</strong> thumbnails you can see the chord position and the fingering. The chord proposals are generated and sorted, so don't be too disappointed if you don't see your favorite chord on the second position.</p>
+    <p>On the other hand, proposals are generated for any tuning and any criteria the same way. You may be surprised when it digs some convenient fingering for a chord you had trouble with.</p>
+    <p>After you click on the proposal, it will appear in <strong style="color: #db291f">Editor</strong>, its <strong style="color: #db291f">Name</strong> will be written, and you should hear the way it sounds.</p>
+    <h2 id="name">Name</h2>
+    <p>The title of the chord is changed every time you choose one of the proposals. The chord <strong style="color: #db291f">Name</strong> isn't displayed while you edit the chord because you would lose the chord name you typed in the first place.</p>
+    <h2 id="recognized">Recognized</h2>
+    <p>The <strong style="color: #db291f">Recognized</strong> window contains the proposals of the chord title, according to the theory. Besides the chord name you will see the probability of a chord. The probability is less when a chord is missing some tone to be complete.</p>
+    <p>When you click on an item in recognition window, the <strong style="color: #db291f">Chord</strong> controls should change based on the chord you chose, its name will be displayed in the title window, and the <strong style="color: #db291f">Proposals</strong> of more fingering positions should be generated below.</p>
+    <h2 id="library">Library</h2>
+    <p>When you compose a convenient chord, you can add it to the <strong style="color: #db291f">Library</strong>. Once added, the chord library can be accessed outside the chord dialog, by clicking on the down arrow besides the <a href="detail_measure_beat.html#beat">Chord Editor icon</a> in the toolbar or the <strong>Beat → Chord</strong> menu. When you add a chord to a tab that way, it's name and/or diagram will be displayed in the tab.</p>
+    <img src="images/insert_named_chord.png" />
+    <p>In the Chord Editor you can manipulate the library list: Add, rename or remove chord from a library.</p>
+    <h2 id="settings">Settings</h2>
+    <p>The <strong style="color: #db291f">Settings Button</strong> opens a dialog with some options to customize and improve the chord assembly process.</p>
+    <img src="images/chord_settings_dialog.png" />
+    <p>The chord <strong>Type</strong> is a very important property. Besides the <strong>Most Common</strong> chords, here you can choose between <strong>Open Voiced</strong> chords, <strong>Closed Voiced</strong> chords and chord <strong>Inversions</strong>. While chord inversions mean that the bass note isn't the root note of the chord, open and closed voiced chords are a little bit more specific: Closed voice have tones very close (tonically) to each other, while open voiced tend to distribute the notes of the chord in different octaves.</p>
+    <p><strong>Chords to Display</strong> is the number of the best chord proposals to be considered into proposal list. Note that this number of proposals wouldn't be displayed, because the very similar fingerings (like x02210 and x0221x for <em>Am</em>) will not be included.</p>
+    <p><strong>Open Chords</strong> include empty strings into chord composition, so you get "open chords". For example, famous "Hendrix chord" is an open chord (076780). Open chords are another chord type but can be used in combination with any of them.</p>
+    <p><strong>Search Frets</strong> is an option for you if you are looking for a chord on a specific position. Normally all the chords from fret 0 to fret 15 will be proposed, but you can narrow (or expand!) the search by modifying the starting and ending fret. If <strong>Open Chords</strong> is selected, zero-fret will be included in the search, too.</p>
+    <p>By clicking on the "OK" button your changes will be applied, but they won't be remembered next time you run TuxGuitar.</p>
+    <h2 id="chord_style">Chord Style</h2>
+    <p>When you insert a chord, it will be displayed on the main tab view. There are two different views of a chord, plus mixed one. It is changed in the main menu, checking one or both items in <strong>View → Chord Style</strong>.</p>
+    <p>You can view the chord as a diagram (where to put the fingers), only its name (entered in the library), or both.</p>
+  </section>
+</body>
+</html>
