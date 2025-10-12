@@ -249,10 +249,10 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Modifica velocità tempo</string>
-	<string name="tempo_dlg_tempo_label">Velocità tempo:</string>
-	<string name="tempo_dlg_options_apply_to_song">Applica questo tempo all\&apos;intera canzone</string>
-	<string name="tempo_dlg_options_apply_to_end">Applica questo tempo alla fine</string>
-	<string name="tempo_dlg_options_apply_to_next_marker">Applica questo tempo fino al prossimo indicatore</string>
+	<string name="tempo_dlg_tempo_label">Velocità Tempo:</string>
+	<string name="tempo_dlg_options_apply_to_song">Applica questo Tempo all\&apos;intera canzone</string>
+	<string name="tempo_dlg_options_apply_to_end">Applica questo Tempo alla fine</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Applica questo Tempo fino al prossimo indicatore Tempo</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Cambia chiave</string>
