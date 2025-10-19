@@ -3,8 +3,10 @@ package app.tuxguitar.app.system.icons;
 import app.tuxguitar.app.system.config.TGConfigDefaults;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.ui.resource.UIColor;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.properties.TGProperties;
 import app.tuxguitar.util.properties.TGPropertiesManager;
@@ -15,6 +17,10 @@ public class TGSkinManager {
 
 	private TGContext context;
 	private String currentSkin;
+
+	private boolean darkModeInitialized = false;
+	// naming convention for skins
+	private static final String SUFFIX_DARK = "-dark";
 
 	private TGSkinManager(TGContext context){
 		this.context = context;
@@ -52,6 +58,30 @@ public class TGSkinManager {
 
 	public String getCurrentSkin() {
 		String configuredSkin = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
+		Boolean skinDarkAuto = Boolean.TRUE.equals(TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.SKIN_DARK_AUTO));
+		
+		// try to switch light/dark theme automatically (just once, when app starts)
+		if (skinDarkAuto && !this.darkModeInitialized && (TGWindow.getInstance(context).getWindow() != null)) {
+			this.darkModeInitialized = true;
+			UIColor background = TGWindow.getInstance(context).getWindow().getBgColor();
+			// not a good brightness indicator, but simple and efficient enough to distinguish light/dark theme
+			int bgSum = background.getRed() + background.getGreen() + background.getBlue();
+			Boolean forceTheme = bgSum < 150 ? Boolean.TRUE : null;
+			forceTheme = bgSum > 600 ? Boolean.FALSE : forceTheme;
+			String selectedSkin = null;
+			if ((Boolean.FALSE.equals(forceTheme)) && configuredSkin.endsWith(SUFFIX_DARK)) {
+				selectedSkin = configuredSkin.substring(0, configuredSkin.length() - SUFFIX_DARK.length());
+			}
+			else if ((Boolean.TRUE.equals(forceTheme)) && !configuredSkin.endsWith(SUFFIX_DARK)) {
+				selectedSkin = configuredSkin + SUFFIX_DARK;
+			}
+			if ((selectedSkin != null) && (getSkinInfo(selectedSkin).getValue("name") != null)) {
+				TGConfigManager.getInstance(this.context).setValue(TGConfigKeys.SKIN, selectedSkin);
+				this.reloadSkin();
+				return selectedSkin;
+			}
+		}
+		
 		// does skin exist?
 		TGProperties skinInfo = getSkinInfo(configuredSkin);
 		if (skinInfo.getValue("name") != null) {

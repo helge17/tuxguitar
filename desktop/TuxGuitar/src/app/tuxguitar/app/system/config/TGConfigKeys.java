@@ -4,6 +4,7 @@ public class TGConfigKeys {
 
 	// valid configuration key names
 	public static final String SKIN = "skin";
+	public static final String SKIN_DARK_AUTO = "skin.dark-mode.auto";
 	public static final String WINDOW_TITLE = "window.title";
 	public static final String SHOW_SPLASH = "show.splash";
 	public static final String MAXIMIZED = "window.maximized";
