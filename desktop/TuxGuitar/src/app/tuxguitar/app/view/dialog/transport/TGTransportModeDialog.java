@@ -22,8 +22,8 @@ import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.UIFactory;
-import app.tuxguitar.ui.event.UICloseEvent;
-import app.tuxguitar.ui.event.UICloseListener;
+import app.tuxguitar.ui.event.UIDisposeEvent;
+import app.tuxguitar.ui.event.UIDisposeListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
@@ -82,9 +82,9 @@ public class TGTransportModeDialog {
 
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("transport.mode"));
-		dialog.addCloseListener(new UICloseListener() {
+		dialog.addDisposeListener(new UIDisposeListener() {
 			@Override
-			public void onClose(UICloseEvent event) {
+			public void onDispose(UIDisposeEvent event) {
 				if ((TGTransportModeDialog.this.colorErr != null) && !TGTransportModeDialog.this.colorErr.isDisposed()) {
 					TGTransportModeDialog.this.colorErr.dispose();
 				}
