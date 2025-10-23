@@ -368,7 +368,7 @@
 	<string name="text_dlg_title">Insert Text</string>
 
 	<!-- Bend dialog -->
-	<string name="bend_dlg_title">Pich Bend</string>
+	<string name="bend_dlg_title">Bend Editor</string>
 	<string name="bend_dlg_preset_label">Preset:</string>
 	<string name="bend_dlg_preset_bend">Bend</string>
 	<string name="bend_dlg_preset_bend_release">Bend/Release</string>

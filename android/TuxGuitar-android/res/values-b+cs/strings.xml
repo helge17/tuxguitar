@@ -374,7 +374,7 @@
 	<!-- <string name="text_dlg_title"></string> -->
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Editor Vytažení</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Vytažení</string>
 	<string name="bend_dlg_preset_bend_release">Vytáhnout/Pustit</string>

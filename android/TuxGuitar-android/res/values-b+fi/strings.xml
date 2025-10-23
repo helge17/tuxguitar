@@ -374,7 +374,7 @@
 	<string name="text_dlg_title">Lisää tekstiä</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Taivutuksen (Bend) muokkaus</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Venytys (Bend)</string>
 	<string name="bend_dlg_preset_bend_release">Taivutus/Vapautus</string>

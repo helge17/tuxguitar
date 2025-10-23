@@ -374,7 +374,7 @@
 	<string name="text_dlg_title">Įterpti tekstą</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Stygos patempimų redagavimas</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Tempimas</string>
 	<string name="bend_dlg_preset_bend_release">Tempimas/Atleidimas</string>

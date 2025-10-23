@@ -374,7 +374,7 @@
 	<string name="text_dlg_title">텍스트 삽입</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">벤딩 편집기</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">벤딩</string>
 	<!-- <string name="bend_dlg_preset_bend_release"></string> -->
