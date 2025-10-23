@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Durata</string>
 	<string name="action_menu_dynamic">Dinamica</string>
 	<string name="action_menu_effects">Effetti</string>
+	<string name="action_menu_transport">Riproduttore</string>
 	<string name="action_menu_settings">Impostazioni</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Mostra schema accordo</string>
 
 	<string name="action_transport_play">Suona/pausa la canzone</string>
+	<string name="action_transport_stop">Ferma il suono</string>
+	<string name="action_transport_metronome">Metronomo</string>
+	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_highlight_played_beat">Contorna nota suonata</string>
 
 	<string name="action_go_up">Cursore in su</string>
 	<string name="action_go_down">Cursore in giù</string>

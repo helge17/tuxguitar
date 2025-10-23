@@ -21,6 +21,7 @@ import app.tuxguitar.android.menu.controller.impl.contextual.TGEditMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGEffectMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGMeasureMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGTrackMenu;
+import app.tuxguitar.android.menu.controller.impl.contextual.TGTransportMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGVelocityMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGViewMenu;
 import app.tuxguitar.android.menu.util.TGToggleStyledIconHandler;
@@ -57,8 +58,9 @@ public class TGMainMenu implements TGMenuController {
 		menu.findItem(R.id.action_menu_measure).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGMeasureMenu(getActivity())));
 		menu.findItem(R.id.action_menu_beat).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGBeatMenu(getActivity())));
 		menu.findItem(R.id.action_menu_duration).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGDurationMenu(getActivity())));
-		menu.findItem(R.id.action_menu_effects).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
 		menu.findItem(R.id.action_menu_dynamic).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGVelocityMenu(getActivity())));
+		menu.findItem(R.id.action_menu_effects).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
+		menu.findItem(R.id.action_menu_transport).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGTransportMenu(getActivity())));
 		menu.findItem(R.id.action_menu_settings).setOnMenuItemClickListener(createFragmentActionProcessor(new TGPreferencesFragmentController()));
 	}
 

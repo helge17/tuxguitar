@@ -36,6 +36,7 @@
 	<!-- <string name="action_menu_duration"></string> -->
 	<!-- <string name="action_menu_dynamic"></string> -->
 	<!-- <string name="action_menu_effects"></string> -->
+	<!-- <string name="action_menu_transport"></string> -->
 	<!-- <string name="action_menu_settings"></string> -->
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
 
 	<!-- <string name="action_transport_play"></string> -->
+	<!-- <string name="action_transport_stop"></string> -->
+	<!-- <string name="action_transport_metronome"></string> -->
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->

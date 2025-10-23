@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">길이</string>
 	<string name="action_menu_dynamic">셈여림</string>
 	<string name="action_menu_effects">효과</string>
+	<string name="action_menu_transport">플레이어</string>
 	<string name="action_menu_settings">설정</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">코드표 보기</string>
 
 	<!-- <string name="action_transport_play"></string> -->
+	<!-- <string name="action_transport_stop"></string> -->
+	<string name="action_transport_metronome">메트로놈</string>
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->

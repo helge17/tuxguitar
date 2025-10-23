@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Wartość</string>
 	<string name="action_menu_dynamic">Dynamika</string>
 	<string name="action_menu_effects">Efekty</string>
+	<string name="action_menu_transport">Odtwarzacz</string>
 	<string name="action_menu_settings">Ustawienia</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Pokaż diagramy akordów</string>
 
 	<string name="action_transport_play">Odtwarzaj/wstrzymaj utwór</string>
+	<string name="action_transport_stop">Zatrzymaj odtwarzanie</string>
+	<string name="action_transport_metronome">Metronom</string>
+	<string name="action_transport_count_down">Wybijanie taktu</string>
+	<string name="action_transport_highlight_played_beat">Podświetl odtwarzany rytm</string>
 
 	<string name="action_go_up">Przesuń kursor w górę</string>
 	<string name="action_go_down">Przesuń kursor w dół</string>

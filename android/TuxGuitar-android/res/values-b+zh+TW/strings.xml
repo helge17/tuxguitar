@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">音長</string>
 	<string name="action_menu_dynamic">力度</string>
 	<string name="action_menu_effects">效果</string>
+	<string name="action_menu_transport">播放器</string>
 	<string name="action_menu_settings">設定</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">顯示和絃指圖</string>
 
 	<string name="action_transport_play">播放</string>
+	<string name="action_transport_stop">停止</string>
+	<string name="action_transport_metronome">節拍器</string>
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->

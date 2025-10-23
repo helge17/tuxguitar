@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Длительность</string>
 	<string name="action_menu_dynamic">Динамика</string>
 	<string name="action_menu_effects">Эффекты</string>
+	<string name="action_menu_transport">Проигрыватель</string>
 	<string name="action_menu_settings">Настройки</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Показать диаграммы аккордов</string>
 
 	<string name="action_transport_play">Проиграть мелодию</string>
+	<string name="action_transport_stop">Остановить проигрывание</string>
+	<string name="action_transport_metronome">Метроном</string>
+	<string name="action_transport_count_down">Вводный счёт</string>
+	<string name="action_transport_highlight_played_beat">Выделить сыгранную долю</string>
 
 	<string name="action_go_up">Переместить курсор вверх</string>
 	<string name="action_go_down">Переместить курсор вниз</string>

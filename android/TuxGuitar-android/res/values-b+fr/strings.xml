@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Durée de la note ou du silence</string>
 	<string name="action_menu_dynamic">Expression</string>
 	<string name="action_menu_effects">Effets</string>
+	<string name="action_menu_transport">Lecteur</string>
 	<string name="action_menu_settings">Configuration</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Afficher les diagrammes d\&apos;accords</string>
 
 	<string name="action_transport_play">Lire le morceau / Pause</string>
+	<string name="action_transport_stop">Arrêter la lecture</string>
+	<string name="action_transport_metronome">Métronome</string>
+	<string name="action_transport_count_down">Décompte</string>
+	<string name="action_transport_highlight_played_beat">Encadrer le temps joué</string>
 
 	<string name="action_go_up">Déplacer le curseur vers le haut</string>
 	<string name="action_go_down">Déplacer le curseur vers le bas</string>
