@@ -725,7 +725,13 @@ public class TGMainToolBarConfigMap {
 				return isRunning ? "transport.pause": "transport.start";
 			}
 		});
-		registerButton("transport.stop", TGTransportStopAction.NAME, TGIconManager.TRANSPORT_ICON_STOP);
+		registerButton("transport.stop", TGTransportStopAction.NAME, TGIconManager.TRANSPORT_ICON_STOP,
+				new TGMainToolBarItemUpdater() {
+					@Override
+					public boolean enabled(TGContext context, boolean isRunning) {
+						return (isRunning);
+					}
+				});
 		registerButton("transport.next", TGGoNextMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_NEXT);
 		registerButton("transport.last", TGGoLastMeasureAction.NAME, TGIconManager.TRANSPORT_ICON_LAST);
 		// TIME COUNTER

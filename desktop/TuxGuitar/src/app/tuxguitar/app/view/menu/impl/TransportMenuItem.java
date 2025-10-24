@@ -90,6 +90,8 @@ public class TransportMenuItem extends TGMenuItem {
 	public void update(){
 		TGMeasure measure = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure();
 		MidiPlayerMode pm = TuxGuitar.getInstance().getPlayer().getMode();
+		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
+		this.stop.setEnabled(running);
 		this.metronome.setChecked(TuxGuitar.getInstance().getPlayer().isMetronomeEnabled());
 		this.countDown.setChecked(TuxGuitar.getInstance().getPlayer().getCountDown().isEnabled());
 		this.loopSHeader.setEnabled( pm.isLoop() );

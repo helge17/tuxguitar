@@ -334,9 +334,11 @@ public class TGTransportDialog implements TGEventListener {
 				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop());
 				if (isRunning) {
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPause());
+					this.stop.setEnabled(true);
 				} else {
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay());
 					this.metronome.setText("");
+					this.stop.setEnabled(false);
 				}
 				this.loadPlayText();
 			}
