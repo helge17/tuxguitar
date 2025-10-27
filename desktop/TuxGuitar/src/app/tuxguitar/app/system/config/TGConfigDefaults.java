@@ -33,6 +33,7 @@ public class TGConfigDefaults{
 
 	public static void loadProperties(TGProperties properties){
 		loadProperty(properties, TGConfigKeys.SKIN, DEFAULT_SKIN);
+		loadProperty(properties, TGConfigKeys.SKIN_DARK_AUTO, true);
 		loadProperty(properties, TGConfigKeys.WINDOW_TITLE, "${appname} - ${filename}");
 		loadProperty(properties, TGConfigKeys.SHOW_SPLASH, true);
 		loadProperty(properties, TGConfigKeys.MAXIMIZED, false);
