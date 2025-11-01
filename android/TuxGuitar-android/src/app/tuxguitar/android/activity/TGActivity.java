@@ -8,6 +8,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionManager;
@@ -79,6 +80,7 @@ public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRe
 	private TGActivityActionBarController actionBar;
 	private TGActivityResultManager resultManager;
 	private TGActivityPermissionResultManager permissionResultManager;
+	private boolean maintainDisplayON;
 
 	public TGActivity() {
 		this.resultManager = new TGActivityResultManager();
@@ -86,6 +88,7 @@ public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRe
 		this.navigationManager = new TGNavigationManager(this);
 		this.drawerManager = new TGDrawerManager(this);
 		this.actionBar = new TGActivityActionBarController(this);
+		this.maintainDisplayON = false;
 	}
 
 	@Override
@@ -421,5 +424,21 @@ public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRe
 
 	public boolean isDestroyed() {
 		return this.destroyed;
+	}
+
+	public void setDisplayOn(boolean displayOn) {
+		if (this.maintainDisplayON != displayOn) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (displayOn) {
+						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+					} else {
+						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+					}
+				}
+			});
+		}
+		this.maintainDisplayON = displayOn;
 	}
 }
