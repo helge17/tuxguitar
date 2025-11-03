@@ -1,6 +1,7 @@
-<!DOCTYPE html><meta lang="en" charset="utf-8"><link rel="stylesheet" href="style.css">
+<!DOCTYPE html><meta lang="en" charset="utf-8"><link rel="stylesheet" href="style.css"><script src="vars.js"></script>
 
                           **TuxGuitar**
+en [fr](index.html.fr) [es](index.html.es) [de](index.html.de) [it](index.html.it)
 
 **Welcome to the new home of TuxGuitar, the free guitar tablature editor.**
 
@@ -17,14 +18,16 @@ Download
 
 We provide ready to use installation packages for Linux, Windows, macOS, FreeBSD and Android:
 
-* **[Latest stable version 1.6.6](https://github.com/helge17/tuxguitar/releases/tag/1.6.6)**
+* **<script>document.write("[Latest stable version "+tg_stable+"](https://github.com/helge17/tuxguitar/releases/tag/"+tg_stable+")");</script>**
 * [Development snapshots and older releases](https://github.com/helge17/tuxguitar/releases)
+
+**Please note:** TuxGuitar versions 2.0.0 and later use a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.
 
 Help
 ==============================================================
 
 The online documentation of TuxGuitar is here:
-* **[Latest stable version 1.6.6](files/1.6.6/desktop/help/)**
+* **<script>document.write("[Latest stable version "+tg_stable+"](files/"+tg_stable+"/desktop/help/)");</script>**
 * [Development version](files/devel/desktop/help/)
 
 If you need help with TuxGuitar, you can ask a question on the [discussion](https://github.com/helge17/tuxguitar/discussions) page on GitHub.

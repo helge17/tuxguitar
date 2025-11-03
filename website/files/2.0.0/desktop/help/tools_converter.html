@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>File Converter - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script>
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 2.0.0</p>
+  </div>
+  <div class="title">
+    <h1>TuxGuitar Batch File Converter</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><strong>Batch File Converter</strong></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>The <strong>Batch File Converter</strong> allows you to convert a number of files from various file formats (*.gpx, *.ptb, *.tef, *.tg) into one destination file format, keeping the file names but changing the format (and the extension of a file).</p>
+    <p>The Converter simply tries to load every file and save/export it into destination file.</p>
+    <p>So supported input formats are files TuxGuitar can load and import, and destination format is every format TuxGuitar can save into or export. You can check for <a href="file_formats.html">supported file formats</a>. For some exporter plugins that have various exporting options, default options are used.</p>
+    <h2 id="using_batch_file_format_converter">Using the batch file format converter</h2>
+    <p>You can access the converter dialog through <strong>Tools → Batch File Converter</strong>.</p>
+    <img src="images/converter.png" />
+    <p>In the dialog you must specify <strong>Input Folder</strong>. Input folder <em>and its subfolders</em> contain files that will be converted.</p>
+    <p><strong>Output Folder</strong> is folder in which new files will be stored. If destination folder you specified doesn't exist, it will be created.</p>
+    <p><strong>Output File Format</strong> is used to specify file format of new created files. It will display all supported formats (which might depend on your installed plugins).</p>
+    <p>After you confirm the converting new window will appear showing you the progress. You can cancel the process anytime.</p>
+  </section>
+</body>
+</html>

@@ -150,10 +150,10 @@ function release_checks_before_prepare_source {
     abort_build
   fi
 
-  echo -n "# Checking download and help links on website ... "
-  if [ "$(grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html | wc -l)" -eq 2 ]; then
+  echo -n "# Checking version on website ... "
+  if [ "$(grep "^const tg_stable=\"${TGVERSION//\./\\\.}\";$" website/vars.js | wc -l)" -eq 1 ]; then
     echo -e "found:"
-    grep "Latest stable version ${TGVERSION//\./\\\.}.*${TGVERSION//\./\\\.}" website/index.html
+    grep "^const tg_stable=\"${TGVERSION//\./\\\.}\";$" website/vars.js
     echo -e "# OK.\n"
   else
     echo -e "not found."
@@ -563,10 +563,10 @@ function copy_to_github {
       RELEASE_TYPE=--latest
     else
       echo "# Creating GitHub pre-release draft $TGVERSION ..."
-      REL_NOTES=$'This is a **pre-release** of the upcoming version 2.0.0 of TuxGuitar. Please test it and report any bugs you find.\n\n'
+      REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground and may not be stable!\n\n'
       RELEASE_TYPE=--prerelease
     fi
-    REL_NOTES=$REL_NOTES$'**Please note:** TuxGuitar version 2.0.0 uses a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
+    REL_NOTES=$REL_NOTES$'**Please note:** TuxGuitar versions 2.0.0 and later use a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
     gh release create --target $GIT_BRANCH $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5

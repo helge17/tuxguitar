@@ -257,7 +257,7 @@
 	<string name="tempo_dlg_tempo_label">Темп:</string>
 	<string name="tempo_dlg_options_apply_to_song">Применить этот темп ко всей композиции</string>
 	<string name="tempo_dlg_options_apply_to_end">Применить этот темп до конца</string>
-	<string name="tempo_dlg_options_apply_to_next_marker">Применить этот темп до следующей метки</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Применить этот темп до следующей метки темпа</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Изменить ключ</string>

@@ -1,0 +1,59 @@
+<!DOCTYPE html><meta lang="it" charset="utf-8"><link rel="stylesheet" href="style.css"><script src="vars.js"></script>
+
+                          **TuxGuitar**
+[en](index.html.en) [fr](index.html.fr) [es](index.html.es) [de](index.html.de) it
+
+**Benvenuti sul nuovo sito di TuxGuitar, l'editor libero di tablature per chitarra.**
+
+TuxGuitar è un editor e un lettore di tablature multitraccia per chitarra. Può aprire file Guitar Pro, Power Tab Editor, TablEdit e MIDI.
+
+TuxGuitar è stato iniziato da Julián Casadesús e anche mantenuto da lui per molto tempo.
+Verso la fine del 2022, i precedenti siti web di TuxGuitar sono scomparsi e lo sviluppo su [SourceForge](https://sourceforge.net/projects/tuxguitar/) si è fermato.
+Dopo alcuni tentativi falliti di contattare Julián, un gruppo di appassionati di TuxGuitar ha iniziato un nuovo [repository TuxGuitar](https://github.com/helge17/tuxguitar/) su GitHub.
+
+![](snapshot.png)
+
+Scarica
+==============================================================
+
+Offriamo pacchetti di installazione pronti all'uso per Linux, Windows, macOS, FreeBSD e Android:
+
+* **<script>document.write("[Ultima versione stabile "+tg_stable+"](https://github.com/helge17/tuxguitar/releases/tag/"+tg_stable+")");</script>**
+* [Versioni di sviluppo e versioni precedenti](https://github.com/helge17/tuxguitar/releases)
+
+**Nota bene:** Le versioni 2.0.0 e successive di TuxGuitar usano un **nuovo formato di file** che non può essere letto da versioni precedenti. È comunque possibile esportare le tablature nel vecchio formato per aprirle con versioni più vecchie di TuxGuitar.
+
+Aiuto
+==============================================================
+
+La documentazione online di TuxGuitar è disponibile qui:
+* **<script>document.write("[Ultima versione stabile "+tg_stable+"](files/"+tg_stable+"/desktop/help/)");</script>**
+* [Versione di sviluppo](files/devel/desktop/help/)
+
+Se hai bisogno di aiuto con TuxGuitar, puoi porre una domanda sulla [pagina di discussione](https://github.com/helge17/tuxguitar/discussions) su GitHub.
+
+Se hai trovato un errore o desideri richiedere una nuova funzionalità, apri un nuovo [ticket](https://github.com/helge17/tuxguitar/issues). Per piccole questioni, ad esempio errori di scrittura o traduzioni, puoi anche inviarci una e-mail all'indirizzo [info@tuxguitar.app](mailto:info@tuxguitar.app).
+
+Contribuire
+==============================================================
+
+Se desideri contribuire all'ulteriore sviluppo di TuxGuitar, le istruzioni contenute nella cartella [doc](https://github.com/helge17/tuxguitar/blob/master/doc/) sono un buon punto di partenza.
+
+Codice sorgente
+==============================================================
+
+Il codice sorgente è disponibile su [GitHub](https://github.com/helge17/tuxguitar/).
+
+Licenza
+==============================================================
+
+TuxGuitar e il contenuto di questo sito web sono rilasciati sotto la [GNU Lesser General Public License](files/devel/desktop/help/license.html).
+
+Informazioni su questo sito
+==============================================================
+
+- [Note legali & informativa sulla privacy](legal_privacy.html)
+- [Impressum & Datenschutzerklärung](Impressum_Datenschutz.html)
+
+<style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'medium'};</script>
+<!-- Markdeep: --><script src="markdeep.min.js" charset="utf-8"></script>

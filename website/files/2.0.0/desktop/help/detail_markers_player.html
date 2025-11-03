@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Markers and Player - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script>
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 2.0.0</p>
+  </div>
+  <div class="title">
+    <h1>Markers and Player</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><strong>Markers and Player</strong></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <h2 id="markers">Markers</h2>
+    <p>It is very useful to add a marker in a song, to mark some part of the song (verse, chorus, solo, etc.).</p>
+    <img src="images/markers.png" />
+    <p>Marker controls in the <strong>Marker</strong> menu or on the toolbar allow you to create a marker, list the markers and navigate through them (first, previous, next, last).</p>
+    <p>You can set the marker position, name and color in the <strong>Marker → Add Marker</strong> dialog. The name will be shown in the given color above the selected measure in all tracks. Additionally, a marker symbol is shown in the track table.</p>
+    <p>In the <strong>Marker → List Markers</strong> dialog you can edit the list of markers and jump directly to a specific marker.</p>
+    <h2 id="player">Player</h2>
+    <p>Using playback controls you can play, stop and pause the playback, but you can also navigate through the song (next/previous measure, beginning/end of a song). During the playback the currently played note will be colored in red, so it is easier to see how the current note is played.</p>
+    <img src="images/player.png" />
+    <p>You can find the playback controls in the main toolbar and in the <strong>Player</strong> dropdown menu. There is also a dedicated player window you can access under <strong>View → Show Player</strong>.</p>
+    <img src="images/p_player_window.png" />
+    <p>You can also navigate through the song using the "transporter" in the track table at the bottom of the application window, which is the graphical representation of a song's tracks. It is automatically scrolled during the playback and using the scrollbar on the bottom of the screen you can view the whole song. You can access the wanted instrument and measure by clicking on the proper rectangle in the "transporter" widget.</p>
+    <p>The currently shown instrument can be changed by clicking on the instrument name in the track table. Display will be changed accordingly to view the selected instrument's notes.</p>
+    <h2>Metronome</h2>
+    <p>The <strong>Metronome</strong> adds an audible click to every beat to help you practice playing to a regular pulse.</p>
+    <h2>Count In</h2>
+    <p><strong>Count In</strong> adds an audible cue at the beginning of the song to ensure a uniform entrance and to establish the song's initial tempo. By default, TuxGuitar plays four count-in beats (for 4/4 time signature), but this value can be changed in the Player window.</p>
+    <h2 id="play_mode">Play Mode</h2>
+    <p>There are two different ways to play a song: In "Simple Mode" or in "Training Mode".</p>
+    <img src="images/p_mode.png" />
+    <h3 id="play_mode_simple">Simple Mode</h3>
+    <p>Simple mode allows you to set a constant playback speed. You can play and examine the song with half of the speed, 1% of the original speed or even with the up-tempo. This is achieved by changing the playback percentage to an arbitrary value (50% is half of the speed; 200% doubles the tempo).</p>
+    <p>You can also select to continuously repeat the song and to only play a piece of the song (Play looped, Loop Range).</p>
+    <h3 id="play_mode_trainer">Training Mode</h3>
+    <p>Training mode gives you the opportunity to practice with a gradual tempo incrementation. You can choose to start slowly, in only half of a tempo, but in every cycle of the tune to increase the tempo by 5%, getting to the full speed after 10 playbacks. You choose a <em>beginning tempo</em>, <em>ending tempo</em> and an <em>increment</em> (in percentage) that increases the tempo after each cycle.</p>
+    <h2 id="play_highlight">Highlight Played Beat</h2>
+    <p>As you can see in the snapshot of the TuxGuitar main window above, the currently playing measure gets a red background, the beat is highlighted in red and has a frame around it. You can switch the frame on or off via the menu <strong>Player → Highlight Played Beat</strong> or define a corresponding keyboard command under <strong><a href="tools_keybinding.html">Tools → Shortcuts</a></strong>. The color of the highlighting can be changed under <strong>Tools → Settings → Styles</strong>.</p>
+  </section>
+</body>
+</html>
