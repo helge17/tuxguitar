@@ -1,6 +1,6 @@
 # Contribute
 
-This GitHub repository was made by developers who had seen that the project on SourceForge was no longer being maintained. The founder of TuxGuitar had not answered any questions and his website containing developer information and download links was offline.
+This GitHub repository was made by developers who had seen that the project on SourceForge was no longer being maintained. The founder of TuxGuitar had not answered any questions and his website containing developer information and download links were offline.
 
 With some effort, we were able to build TuxGuitar for different operating systems and now (beginning of 2024) we can tell how to setup the SWT project in Eclipse in a Linux environment. The information shown here is subject to change as development progresses. This is a starting point.
 <br>
@@ -22,7 +22,7 @@ With some effort, we were able to build TuxGuitar for different operating system
 
 ## Get in contact
 
-In order to get in contact with other contributors just use the GitHub discussion functionality.
+In order to get in contact with other contributors, just use the GitHub discussion functionality.
 <br>
 <br>
 
@@ -44,7 +44,7 @@ Don't hesitate to include screenshots or short videos to help understand. If the
 
 Basically: all information enabling us to reproduce the issue is welcome.
 
-Your work is not over once you have created an issue: stay tuned and check the issue's status regularly, we may have questions for you that need answered before a fix can be implemented.
+Your work is not over once you have created an issue: stay tuned and check the issue's status regularly, we may have questions for you that need to be answered before a fix can be implemented.
 
 ### Translate app content
 
@@ -56,15 +56,15 @@ Translation files are available:
 - [here](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-cocoa-integration-swt/share/lang) for the macOS specific translations;
 - there for plugins: [tuner](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-tuner/share/lang), [batch file converter](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-converter/share/lang), [jack](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-jack/share/lang) and [pdf export](https://github.com/helge17/tuxguitar/tree/master/desktop/TuxGuitar-pdf-ui/share/lang).
 
-Other translation files specific to Android are present, these are derived from the files above.
+Other translation files specific to Android are present, and are derived from the files above.
 
-The easiest way to update one translation is probably to open the English "messages.properties" file and the corresponding file for your language side by side. Those files can be edited with any standard text editor. Every line starting with a "#" character will be ignored and the corresponding message will be displayed in English. To translate a string: add the translated text after the "=" sign, remove the leading "# " and you're done.
+The easiest way to update a translation would likely be to open the English "messages.properties" file and the corresponding file for your language side by side. Those files can be edited with any standard text editor. Every line starting with a "#" character will be ignored and the corresponding message will be displayed in English. To translate a string: add the translated text after the "=" sign, remove the leading "# " and you're done.
 
 You do not need to follow all steps described in this document to submit an updated translation. Just use the standard [GitHub process](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
 
 ### Suggest improvements
 
-A feature you would love is currently missing? You can create a dedicated issue. In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature. Stay tuned, we might have questions for you before trying to implement something.
+Is a feature you would love currently missing? You can create a dedicated issue. In this case, use **"Feature request"** in the issue's description, and try to provide a precise description of your desired feature. Stay tuned, we might have questions for you before trying to implement something.
 Please remember that this project is maintained by volunteers only, so some requests may not be implemented and most will take time. Be patient and polite when making or responding to requests.
 <br>
 <br>
@@ -75,7 +75,7 @@ TuxGuitar provides Android and desktop applications:
 
 - files specific to Android application are located in the [android](../android) folder;
 - files specific to desktop applications are located in the [desktop](../desktop) folder;
-- files common to Android and desktop applications are located in the [common](../common) folder.
+- files common to both Android and desktop applications are located in the [common](../common) folder.
 
 ### Android application
 
@@ -113,12 +113,12 @@ Note: it should be possible to build TuxGuitar also on some other architectures,
 
 ### Submit a contribution
 
-If you want to implement one feature request or to fix an issue, mention it explicitly in the issue's discussion, so that others do not try to address it in parallel.
+If you want to implement a feature request or to fix an issue, mention it explicitly in the issue's discussion, so that others do not try to address it in parallel.
 To submit a contribution, follow the GitHub [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request. Take care to `squash` your commits before submitting a pull request, except if there is a good reason not to do so (intermediate development commits have a low added value in the master's history). If your pull request implements or fixes an issue, make this explicit in the pull request's description (e.g. "should fix issue #xxx").
 
 ### Setup Eclipse IDE
 
-We will now focus on the **developer** role and show our suggested method to easily clone the repository, install necessary tooling, import the project and finally import, build and run the Linux/SWT configuration. Normally, you **will not need more than 30 minutes**.
+We will now focus on the **developer** role and show our suggested method to easily clone the repository, install necessary tooling, import the project and finally import, build and run the Linux/SWT configuration. Normally, **this does not take more than 30 minutes**.
 
 This walkthrough assumes that you will be using the Eclipse Development Environment and a Unix-based system. You're welcome to use another environment or OS, but instructions will not be provided.
 
@@ -127,8 +127,8 @@ Our examples and screenshots here are from Eclipse Version 2023-12.
 
 Important note: this section still needs to be completed. Known limitations:
 
-- this procedure does not enable to build the *native modules* in Eclipse. Therefore, before sending a pull request it is highly recommended to build the application as defined in [INSTALL.md](../INSTALL.md), that is with `-P native-modules` option active;
-- this procedure does not enable to include the *native modules* and associated plugins in debug configuration.
+- this procedure does not enable to build the *native modules* in Eclipse. Therefore, before sending a pull request it is highly recommended to build the application as defined in [INSTALL.md](../INSTALL.md), that is with the `-P native-modules` option active;
+- this procedure does not enable including the *native modules* and associated plugins in debug configuration.
 
 #### Fork the origin TuxGuitar repository
 
@@ -136,11 +136,11 @@ Because you do not have rights to push to this repository directly, you must fir
 
 #### Make a local copy of the forked repository
 
-We assume, that you have started Eclipse and setup an Eclipse workspace. Open the git perspective and click on "Clone a git repository". In the next dialog select "Clone URI" and click next. Fill in the form with the data of your repository. Here you can see an example setup.
+Assuming you have started Eclipse and set up an Eclipse workspace, open the git perspective and click on "Clone a git repository". In the next dialog select "Clone URI" and click next. Fill in the form with the data of your repository. Here you can see an example setup.
 
 <img src="images/contribute/eclipse-git-clone-step1.png" width="50%" alt="Git Clone Step 1, Repository location">
 
-In the next step, you will probably only **see the master branch. It has to been checked**. Click next.
+In the next step, you will probably only **see the master branch. It has to be checked**. Click next.
 
 <img src="images/contribute/eclipse-git-clone-step2.png" width="50%" alt="Git Clone Step 2, Select branches">
 
@@ -214,7 +214,7 @@ Take care to customize these fields considering your path to the TuxGuitar sourc
 
 <img src="images/contribute/eclipse-debug-arguments.png" width="50%" alt="Debug configuration - arguments">
 
-Note: take care, in the screenshot above the full content of the "VM arguments" field is not visible (need to scroll down to see `-Dtuxguitar.home.path` parameter).
+Note: beware that, in the screenshot above, the full content of the "VM arguments" field is not visible (You will need to scroll down to see `-Dtuxguitar.home.path` parameter).
 
 In the Dependencies tab, Classpath Entries, delete both "tuxguitar" and "Maven Dependencies" items.
 Then, click on "Add External JARs...", browse to folder `tuxguitar/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/lib/`, and select all files. The screenshot below does not show the complete list of jar files (truncated).
@@ -235,5 +235,5 @@ When writing this documentation, formatting of java files in TuxGuitar is *very*
 
 Whenever you create a new java file, auto-format it (use `Ctrl + Shift + F` shortcut).
 
-Whenever you want to *modify* an existing file, take care that this re-formatting operation can modify the file quite heavily. In this case, please create a dedicated commit when you apply this format, independently from other modifications. Objective is to separate commits with functional modifications from commits with style modifications only, or else code review will become a nightmare.
+Whenever you want to *modify* an existing file, be mindful that this re-formatting operation can modify the file quite heavily. In this case, please create a dedicated commit when you apply this format, independently from other modifications. The objective is to separate commits with functional modifications from commits with style modifications only, or else code review will become a nightmare.
 
