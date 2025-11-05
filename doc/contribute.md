@@ -190,7 +190,7 @@ Then, at the bottom-right click Apply, then Run. After a short delay (a few tens
 #### Define debug configuration
 
 Note: this section is still work-in-progress. Its objective is to re-create a debug environment as close as possible to the *real* application.
-In *real* application, all dependencies are stored in different folders during the build process, as defined by the `pom.xml` file:
+In the *real* application, all dependencies are stored in different folders during the build process, as defined by the `pom.xml` file:
 
 - `.jar` files for the different modules - except plugins - are stored in the `lib` folder;
 - `.jar` files for plugins are stored in the `share/plugins` folder;
@@ -214,7 +214,7 @@ Take care to customize these fields considering your path to the TuxGuitar sourc
 
 <img src="images/contribute/eclipse-debug-arguments.png" width="50%" alt="Debug configuration - arguments">
 
-Note: beware that, in the screenshot above, the full content of the "VM arguments" field is not visible (You will need to scroll down to see `-Dtuxguitar.home.path` parameter).
+Note: beware that, in the screenshot above, the full content of the "VM arguments" field is not visible (You need to scroll down to see the `-Dtuxguitar.home.path` parameter).
 
 In the Dependencies tab, Classpath Entries, delete both "tuxguitar" and "Maven Dependencies" items.
 Then, click on "Add External JARs...", browse to folder `tuxguitar/desktop/build-scripts/tuxguitar-linux-swt/target/tuxguitar-9.99-SNAPSHOT-linux-swt/lib/`, and select all files. The screenshot below does not show the complete list of jar files (truncated).
