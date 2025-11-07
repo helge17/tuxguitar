@@ -47,11 +47,12 @@
       <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
       <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
       <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu2"><a href="tools_install_conf.html">Installation and configuration</a></li>
       <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
     </ul>
   </div>
   <section>
-    <p>Song is consisted out of tracks, so when you are editing a song most of the time you edit the tracks, one by one, which is explained in the <a href="editing_track.html">Editing a track</a> section. But there are some options that affect the song as a whole.</p>
+    <p>Song is consisted out of tracks, so when you are editing a song most of the time you edit the tracks, one by one, which is explained in the <strong><a href="editing_track.html">Editing a track</a></strong> section. But there are some options that affect the song as a whole.</p>
     <h2 id="managing_the_tracks">Managing the tracks</h2>
     <p>Each song consists of one or more tracks. In any moment you can add or remove a track, create new one by copying contents of the selected one (clone track).</p>
     <img src="images/add_track.png" />
@@ -68,7 +69,7 @@
     <p>The channels for the track are chosen in the <strong>Channels Settings</strong> dialog.</p>
     <p>To understand the way of distributing channels properly, you have to know something about MIDI specification.</p>
     <p>MIDI uses channels to play music - each <strong>channel has currently assigned instrument (voice)</strong>. There are 16 different channels (marked 0 ... 15) - channel 9 is reserved for drums and percussion.</p>
-    <p>For example, to be able to play a <a href="edit_effects.html#dead_note">dead note</a> and a tone at the same time, TuxGuitar has to occupy two channels for a track, because dead note is one instrument (voice) and guitar tone is another instrument. So, every track has its <strong>Normal Channel</strong>, but also needs the <strong>Effect Channel</strong>. Because there are only 16 channels it may lead you to conclusion that you cannot have more than 7 instruments (tracks) and a percussion in TuxGuitar. That is not true.</p>
+    <p>For example, to be able to play a <strong><a href="edit_effects.html#dead_note">dead note</a></strong> and a tone at the same time, TuxGuitar has to occupy two channels for a track, because dead note is one instrument (voice) and guitar tone is another instrument. So, every track has its <strong>Normal Channel</strong>, but also needs the <strong>Effect Channel</strong>. Because there are only 16 channels it may lead you to conclusion that you cannot have more than 7 instruments (tracks) and a percussion in TuxGuitar. That is not true.</p>
     <p>It means that as long as you don't have more than 7 instruments and a percussion, you don't have to worry about distributing MIDI channels - TuxGuitar distributes the channels in order. But if you have more tracks you have to be careful. By overlapping MIDI channels, you can achieve MIDI reproduction without any problems, but you have to understand the problem.</p>
     <h4 id="effect_channel">Effect channel</h4>
     <p><strong>Effect channel</strong> is used in certain occasions. One occasion is when <strong>two different voices</strong> are played at the same time in the same track. In TuxGuitar that can happen if you play dead note or harmonic at the same time with an ordinary instrument tone.</p>

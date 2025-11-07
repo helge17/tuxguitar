@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Installation and configuration - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script>
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 9.99-SNAPSHOT</p>
+  </div>
+  <div class="title">
+    <h1 id="install_config"> Installation and configuration</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu2"><strong>Installation and configuration</strong></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>TuxGuitar currently runs on Linux, Windows, macOS, FreeBSD and Android. Depending on your operating system, TuxGuitar is installed in different ways.</p>
+    <h2 id="install">Installation methods and locations</h2>
+    <p>On <strong>Linux</strong>, we suggest to install TuxGuitar from the software center of your distribution. This way, you don't have to worry about your hardware architecture (e.g. amd64 for an avarage PC or arm64 for a Raspberry Pi) or the package format (DEB, RPM, Flatpak, Snap etc.). Also, TuxGuitar will be updated more or less automatically as soon as a new version appears in the distribution repository (the Linux "app store").</p>
+    <p>Please note that most Linux distributions do not ship TuxGitar with the original soundbank "Magic Sound Font 2.0" due to its unclear license. Debian, for example, uses the "Fluid General MIDI Sound Font" from the fluid-soundfont-gm package, which makes TuxGuitar sound slightly different. If you prefer to use the original soundfont, you can extract the file MagicSFver2.sf2 from the original TuxGuitar packages or download it from the Internet Archive at <b>https://archive.org/download/free-soundfonts-sf2-2019-04/</b>. There you also find other soundbanks that can be loaded with TuxGuitar.</p>
+    <p>In case your Linux distribution does not provide an up-to-date version of TuxGuitar, or if you want to try the latest development version, you can use the packages from the TuxGuitar website.</p>
+    <p>On <strong>Windows</strong>, <strong>macOS</strong>, <strong>FreeBSD</strong> and <strong>Android</strong>, TuxGuitar is currently not available in any app store, so you will need to download and install it manually from the website.</p>
+    <p>The following packages are available from <b>https://www.tuxguitar.app/</b>:</p>
+    <table><tbody>
+      <tr><td class="head">Operating System</td>      <td class="head">Installation file</td>                                            <td class="head">Default installation path (<em>$TG_DIR</em>)</td>           <td class="head">Description</td></tr>
+      <tr><td class="norm">Linux (DEB based)</td>     <td class="norm">tuxguitar-<i>version</i>-linux-swt-amd64.deb</td>                 <td class="norm">/opt/tuxguitar/</td>                                        <td class="norm">Installation package for Debian, Ubuntu, Linux Mint and others</td></tr>
+      <tr><td class="norm">Linux (RPM based)</td>     <td class="norm">tuxguitar-<i>version</i>_linux-swt.x86_64.rpm</td>                <td class="norm">/opt/tuxguitar/</td>                                        <td class="norm">Installation package for Fedora, SUSE and others</td></tr>
+      <tr><td class="norm">Linux (all versions)</td>  <td class="norm">tuxguitar-<i>version</i>-linux-swt-amd64.tar.gz</td>              <td class="norm">tuxguitar-<i>version</i>-linux-swt-amd64/</td>              <td class="norm">Portable version that should work on almost all Linux distributions</td></tr>
+      <tr><td class="norm">Windows</td>               <td class="norm">tuxguitar-<i>version</i>-windows-swt-x86_64-installer.exe</td>    <td class="norm">C:/Program Files/tuxguitar/</td>                            <td class="norm">Installation package</td></tr>
+      <tr><td class="norm">Windows</td>               <td class="norm">tuxguitar-<i>version</i>-windows-swt-x86_64.zip</td>              <td class="norm">tuxguitar-<i>version</i>-windows-swt-x86_64/</td>           <td class="norm">Portable version - extract the ZIP archive wherever you like</td></tr>
+      <tr><td class="norm">macOS</td>                 <td class="norm">tuxguitar-<i>version</i>-macosx-swt-cocoa-x86_64.app.tar.gz</td>  <td class="norm">tuxguitar-<i>version</i>-macosx-swt-cocoa-x86_64.app/Contents/MacOS/</td>  <td class="norm">Portable version - extract the TAR GZ archive wherever you like</td></tr>
+      <tr><td class="norm">FreeBSD</td>               <td class="norm">tuxguitar-<i>version</i>-freebsd-swt-amd64.tar.gz</td>            <td class="norm">tuxguitar-<i>version</i>-freebsd-swt-amd64/</td>            <td class="norm">Portable version - extract the TAR GZ archive wherever you like</td></tr>
+      <tr><td class="norm">Android</td>               <td class="norm">tuxguitar-android-<i>version</i>-release-signed.apk </td>         <td class="norm">-</td>                                                      <td class="norm">APK package for Sideloading</td></tr>
+    </tbody></table>
+    <p>We currently only provide installation packages for Intel/AMD systems. This is the most popular desktop platform for Windows and FreeBSD. On macOS, you can also use the x86_64 packages on the new Apple silicon hardware (M1/M2/...).</p>
+    <p>Depending on the package used, TuxGuitar will be installed in the installation path <em>$TG_DIR</em> listed in the table above. Among others, <em>$TG_DIR</em> contains the following files and directories:</p>
+    <ul>
+      <li><strong>dist/</strong>: Information files, default TuxGuitar configuration files</li>
+      <li><strong>doc/</strong>: Documentation for developers and contributors</li>
+      <li><strong>share/</strong>: This directory has the following subdirectories:</li>
+      <ul>
+        <li><strong>help/</strong>: Here you will find the help files that you normally access via the <strong>Help → Documentation</strong> menu item. The files are standard HTML files you can open in any web browser.</li>
+        <li><strong>lang/</strong>: This directory contains the translation files for all languages supported by TuxGuitar. If you want to improve a translation, simply edit the corresponding language file in a text editor and enter the translated message after the = sign. Then please send us your updated translation to <b>info@tuxguitar.app</b> and we will include your changes in the next TuxGuitar release!</li>
+        <li><strong>skins/</strong>: The TuxGuitar <strong><a href="tools_skin.html">skins</a></strong> are located in this folder.</li>
+        <li><strong>scales/</strong>, <strong>templates/</strong>, <strong>tunings/</strong>: The default scales/templates/tunings of TuxGuitar. If you know what you are doing, you can edit the XML files with a text editor. The templates are normal TuxGuitar files that you can open with TuxGuitar itself.</li>
+        <li><strong>plugins/</strong>: This directory contains the <strong><a href="tools_plugins.html">plugins</a></strong> for TuxGuitar you can enable or disable in the <strong>Tools → Plugins</strong> dialog.</li>
+        <li><strong>soundfont/</strong>: Contains the default TuxGuitar soundbank "Magic Sound Font 2.0".</li>
+        <li><strong>applications/</strong>, <strong>metainfo/</strong>, <strong>mime/</strong>, <strong>man/</strong>, <strong>pixmaps/</strong>: Information about TuxGuitar that is mainly used by the OS (icons, file associations, metadata)</li>
+      </ul>
+      <li><strong>jre/</strong>: This is the JRE (Java Runtime Environment) needed to run TuxGuitar. This folder is only present on Windows and macOS, as Linux and FreeBSD can use the JRE provided by the OS.</li>
+      <li><strong>lib/</strong>, <strong>lv2-client/</strong>: The TuxGuitar libraries, essentially the main program and a command for the LV2 plugin. Better not touch them.</li>
+      <li><strong>tuxguitar.sh, tuxguitar.exe/tuxguitar.bat</strong>: Start commands for Java and TuxGuitar</li>
+    </ul>
+    <h2 id="config">Configuration files</h2>
+    <p>The configuration files for TuxGuitar are stored in subdirectories below your user home directory (<em>$HOME</em>). The path within your home directory depends on the operating system:</p>
+    <ul>
+      <li><strong>Linux</strong>, <strong>FreeBSD</strong>: <em>$HOME</em>/.config/tuxguitar/</li>
+      <li><strong>Windows</strong>: <em>$HOME</em>/AppData/Roaming/tuxguitar/</li>
+      <li><strong>macOS</strong>: <em>$HOME</em>/Library/Application Support/tuxguitar/</li>
+    </ul>
+    <p>Most of these settings are changed in the TuxGuitar menus, but some unusual settings can only be modified manually by editing the corresponding configuration file.</p>
+    <ul>
+      <li><strong>config/history.properties</strong>: Contains the recently opened tab files</li>
+      <li><strong>config/plugins/tuxguitar-<i>plugin</i>.cfg</strong>: Configuration files of the plugins</li>
+      <li><strong>config/templates/user-template.tg</strong>: The tab template you selected in the <strong>File → Set custom template</strong> menu item.</li>
+      <li><strong>config/tunings.xml</strong>: The custom tunings you can create in the Tuning settings, reachable over the <strong>Track → Properties</strong> dialog box.</li>
+      <li><strong>config/tuxguitar.cfg</strong>: The main TuxGuitar configuration file</li>
+      <li><strong>config/tuxguitar-plugin-settings.cfg</strong>: Here the plugins are enabled or disabled.</li>
+      <li><strong>log/tuxguitar.log</strong>: In this file you may find some debugging information if you have enabled the Debug helper plugin.</li>
+    </ul>
+    <p>Be sure to exit TuxGuitar before changing these files. If you have problems with your manual changes, you can delete the correspondig configuration file. TuxGuitar will recreate it with the default settings when it starts. Of course, you then loose all your previously saved settings.</p>
+  </section>
+</body>
+</html>
