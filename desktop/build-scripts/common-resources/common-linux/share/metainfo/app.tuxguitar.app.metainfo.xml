@@ -30,12 +30,12 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/helge17/tuxguitar/f2830dd24cccb533cac92a47cc5f8371252197df/misc/Screenshot_Oxygen.png</image>
-      <caption>TuxGuitar main window (Oxygen skin)</caption>
-      <caption xml:lang="fr">Fenêtre principale de TuxGuitar (thème Oxygen)</caption>
-      <caption xml:lang="es">Ventana principal de TuxGuitar (tema Oxygen)</caption>
-      <caption xml:lang="de">Hauptfenster von TuxGuitar (Oxygen-Thema)</caption>
-      <caption xml:lang="it">Finestra principale di TuxGuitar (tema Oxygen)</caption>
+      <image>https://raw.githubusercontent.com/helge17/tuxguitar/refs/heads/master/misc/Screenshot_Breeze.png</image>
+      <caption>TuxGuitar main window (Breeze skin)</caption>
+      <caption xml:lang="fr">Fenêtre principale de TuxGuitar (thème Breeze)</caption>
+      <caption xml:lang="es">Ventana principal de TuxGuitar (tema Breeze)</caption>
+      <caption xml:lang="de">Hauptfenster von TuxGuitar (Breeze-Thema)</caption>
+      <caption xml:lang="it">Finestra principale di TuxGuitar (tema Breeze)</caption>
     </screenshot>
   </screenshots>
   <categories>
