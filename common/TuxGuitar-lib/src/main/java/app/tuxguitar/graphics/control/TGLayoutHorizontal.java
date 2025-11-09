@@ -93,6 +93,28 @@ public class TGLayoutHorizontal extends TGLayout{
 			this.setWidth( getWidth() + getFirstMeasureSpacing());
 		}
 		this.setHeight(height);
+		this.updateTimeToScroll();
+	}
+
+	private void updateTimeToScroll() {
+		this.timeToNextScrollMs.clear();
+		
+		TGTrackImpl track = null;
+		int number = getComponent().getTrackSelection();
+		Iterator<TGTrack> tracks = getSong().getTracks();
+		while(tracks.hasNext()){
+			TGTrackImpl nextTrack = (TGTrackImpl) tracks.next();
+			if(number < 0 || nextTrack.getNumber() == number){
+				track = nextTrack;
+			}
+		}
+		if (track == null) return;
+		int measureCount = getSong().countMeasureHeaders();
+		for (int measIndex = measureCount-1; measIndex>=0; measIndex--) {
+			this.timeToNextScrollMs.add(0,0);
+			TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(measIndex);
+			this.timeToNextScrollMs.set(0, measure.getHeader().getDurationInMs());
+		}
 	}
 
 	public void paintMeasures(TGTrackImpl track,UIPainter painter, float fromX, float fromY,TGTrackSpacing ts,UIRectangle clientArea) {

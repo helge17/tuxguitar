@@ -1,13 +1,17 @@
 package app.tuxguitar.app.view.component.tab;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import app.tuxguitar.app.transport.TGTransport;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import app.tuxguitar.graphics.control.TGBeatImpl;
+import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.graphics.control.TGMeasureImpl;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
@@ -35,6 +39,7 @@ public class TGControl {
 	private UIScrollBar vScroll;
 
 	private Tablature tablature;
+	private TablatureScrollPlaying tabScroll;
 	private int width;
 	private int height;
 
@@ -49,6 +54,7 @@ public class TGControl {
 	private float lastScale;
 	private int lastLayoutStyle;
 	private int lastLayoutMode;
+	private int discreteScrollingNbMeasuresAnticipation;
 
 	private boolean painting;
 	private boolean wasPlaying;
@@ -56,6 +62,8 @@ public class TGControl {
 	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
+		this.tabScroll = new TablatureScrollPlaying(context);
+		this.discreteScrollingNbMeasuresAnticipation = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION);
 		this.initialize(parent);
 	}
 
@@ -117,6 +125,7 @@ public class TGControl {
 		this.painting = true;
 		try{
 			isPlaying = MidiPlayer.getInstance(this.context).isRunning();
+
 			float canvasWidth = this.canvas.getBounds().getWidth();
 			float canvasHeight = this.canvas.getBounds().getHeight();
 			float scale = this.tablature.getScale();
@@ -129,7 +138,28 @@ public class TGControl {
 				// if user did not move scrollbars, follow player
 				if ((this.scrollX==this.lastScrollX) && (this.scrollY==this.lastScrollY)
 						&& (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
-					moveTo(playedMeasure);
+					if ((this.tablature.getViewLayout().getStyle() & TGLayout.CONTINUOUS_SCROLL) != 0) {
+						if (this.scrollPlayingTo(playedMeasure, MidiPlayer.getInstance(this.context).getMode(), this.canvas.getBounds())) {
+							this.lastPaintedPLayedBeat = null; // force redraw of current played beat
+						};
+					}
+					else {
+						// discrete scrolling, anticipate by a few measures
+						boolean anticipateScrolling = false;
+						int lastPlayableIndex = playedMeasure.getTrack().countMeasures()-1;
+						MidiPlayerMode mode = MidiPlayer.getInstance(this.context).getMode();
+						if (mode.isLoop()) {
+							lastPlayableIndex = Math.min(lastPlayableIndex, mode.getLoopEHeader()-1);
+						}
+						for (int i=Math.min(lastPlayableIndex, playedMeasure.getNumber() + this.discreteScrollingNbMeasuresAnticipation - 1); i>playedMeasure.getNumber(); i--) {
+							TGMeasureImpl followingMeasure = (TGMeasureImpl) playedMeasure.getTrack().getMeasure(i);
+							if ((followingMeasure != null) && !this.tablature.getViewLayout().isFullyVisible(followingMeasure, this.canvas.getBounds()) ) {
+								anticipateScrolling = true;
+								break;
+							}
+						}
+						jumpTo(playedMeasure, anticipateScrolling);
+					}
 				}
 			} else {
 				// if (wasPlaying): keep position in tab unchanged
@@ -139,7 +169,7 @@ public class TGControl {
 					// follow caret movement or user actions on scrollbars
 					if(this.tablature.getCaret().hasChanges()){
 						this.tablature.getCaret().setChanges(false);
-						this.moveTo(this.tablature.getCaret().getMeasure());
+						this.jumpTo(this.tablature.getCaret().getMeasure(), false);
 						moved = true;
 					} else {
 						this.scrollX = this.hScroll.getValue();
@@ -165,7 +195,7 @@ public class TGControl {
 				// if measure position changed AND scale or size changed, need to reconsider measure position (can only be done *after* tablature is updated)
 				if (moved && (scale != this.lastScale) || (lastWidth != this.width) || (lastHeight != this.height)) {
 					// move to caret measure and redraw a second time
-					this.moveTo(this.tablature.getCaret().getMeasure());
+					this.jumpTo(this.tablature.getCaret().getMeasure(), false);
 					this.tablature.paintTablature(painter, this.canvas.getBounds(), -this.scrollX, -this.scrollY);
 				}
 			}
@@ -205,6 +235,37 @@ public class TGControl {
 			throwable.printStackTrace();
 		}
 		this.painting = false;
+	}
+
+	// returns true if a scroll value was updated
+	private boolean scrollPlayingTo(TGMeasureImpl playedMeasure, MidiPlayerMode mode, UIRectangle area) {
+		int direction = this.tablature.getViewLayout().getMode();
+		boolean updated = false;
+		int pos = 0;
+		int target = 0;
+		if (direction == TGLayout.MODE_HORIZONTAL) {
+			pos = Math.round(playedMeasure.getPosX());
+			target = Math.round(this.tablature.getViewLayout().getFirstMeasureSpacing());
+		}
+		else if (direction == TGLayout.MODE_VERTICAL) {
+			pos = Math.round(playedMeasure.getPosY());
+			target = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
+		}
+		else {	// ??
+			return false;
+		}
+		Integer scrollIncrement = this.tabScroll.scrollTo(playedMeasure, pos, target, mode, area, tablature.getViewLayout());
+		if (scrollIncrement != null) {
+			if (direction == TGLayout.MODE_HORIZONTAL) {
+				this.scrollX += scrollIncrement;
+			}
+			else if (direction == TGLayout.MODE_VERTICAL) {
+				this.scrollY += scrollIncrement;
+			}
+			updated = true;
+		}
+		return updated;
+		
 	}
 
 	/* Warning: only update scrollbars if at least one attribute has changed
@@ -249,7 +310,7 @@ public class TGControl {
 		}
 	}
 
-	private void moveTo(TGMeasureImpl measure) {
+	private void jumpTo(TGMeasureImpl measure, boolean anticipateScrolling) {
 		if( measure != null && measure.getTs() != null ){
 			int mX = Math.round(measure.getPosX());
 			int mY = Math.round(measure.getPosY());
@@ -259,33 +320,36 @@ public class TGControl {
 			int marginHeight = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
 			boolean playMode = MidiPlayer.getInstance(this.context).isRunning();
 
-			Integer hScrollValue = this.computeScrollValue(this.scrollX, mX, mWidth, marginWidth, Math.round(this.canvas.getBounds().getWidth()), this.width, playMode);
+			Integer hScrollValue = this.computeScrollValue(this.scrollX, mX, mWidth, marginWidth, Math.round(this.canvas.getBounds().getWidth()), this.width, playMode,
+					anticipateScrolling && (this.tablature.getViewLayout().getMode()==TGLayout.MODE_HORIZONTAL));
 			if( hScrollValue != null ) {
 				this.scrollX = hScrollValue;
 			}
-			Integer vScrollValue = this.computeScrollValue(this.scrollY, mY, mHeight, marginHeight, Math.round(this.canvas.getBounds().getHeight()), this.height, playMode);
+			Integer vScrollValue = this.computeScrollValue(this.scrollY, mY, mHeight, marginHeight, Math.round(this.canvas.getBounds().getHeight()), this.height, playMode,
+					anticipateScrolling && (this.tablature.getViewLayout().getMode()==TGLayout.MODE_VERTICAL));
 			if( vScrollValue != null ) {
 				this.scrollY = vScrollValue;
 			}
+			this.tabScroll.reset(this.tablature.getViewLayout().getMode());
 		}
 	}
 
-	private Integer computeScrollValue(int scrollPos, int mPos, int mSize, int mMargin, int areaSize, int fullSize, boolean playMode) {
+	private Integer computeScrollValue(int scrollPos, int mPos, int mSize, int mMargin, int areaSize, int fullSize, boolean playMode, boolean anticipateScrolling) {
 		Integer value = null;
 
-		// when position is less than scroll
-		if( mPos < 0 && (areaSize >= (mSize + mMargin) || ((mPos + mSize - mMargin) <= 0))) {
-			value = ((scrollPos + mPos) - mMargin);
-		}
-
-		// when position is greater than scroll
-		else if((mPos + mSize) > areaSize && (areaSize >= (mSize + mMargin) || mPos > areaSize)){
+		// when position is greater than scroll, or anticipation is needed
+		if(((mPos + mSize) > areaSize || anticipateScrolling) && (areaSize >= (mSize + mMargin) || mPos > areaSize)){
 			value = (scrollPos + mPos + mSize + mMargin - areaSize);
 
 			if( playMode ) {
 				value += Math.min((fullSize - (scrollPos + mPos + mSize + mMargin)), (areaSize - mSize - (mMargin * 2)));
 			}
 		}
+		// when position is less than scroll
+		else if( mPos < 0 && (areaSize >= (mSize + mMargin) || ((mPos + mSize - mMargin) <= 0))) {
+			value = ((scrollPos + mPos) - mMargin);
+		}
+
 		return (value != null ? Math.max(value, 0) : null);
 	}
 
