@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>app.tuxguitar.app</id>
+  <id>app.tuxguitar.tuxguitar</id>
   <launchable type="desktop-id">tuxguitar.desktop</launchable>
   <project_license>LGPL-2.1+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
@@ -8,7 +8,7 @@
     <name>The TuxGuitar Team</name>
   </developer>
   <name>TuxGuitar</name>
-  <summary>Guitar Tablature Editor</summary>
+  <summary>Guitar tablature editor</summary>
   <summary xml:lang="fr">=Éditeur de tablature de guitare</summary>
   <summary xml:lang="es">=Editor de tablaturas de guitarra</summary>
   <summary xml:lang="de">=Editor für Gitarren-Tabulaturen</summary>
