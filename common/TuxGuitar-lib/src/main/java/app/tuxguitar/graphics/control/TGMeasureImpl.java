@@ -753,7 +753,7 @@ public class TGMeasureImpl extends TGMeasure{
 				// end of tuplet?
 				if( divisionType != null &&
 						((!voice.getDuration().getDivision().isEqual(divisionType))
-						|| (tupletDuration!=0 && ((tupletDuration % divisionType.getEnters()*divisionType.getTimes()*TGDuration.SHORTEST/tupletShortest) == 0)))) {
+						|| (((tupletDuration/tupletShortest) % divisionType.getEnters() == 0) && ((tupletDuration/tupletShortest/divisionType.getEnters()) % divisionType.getTimes() == 0)))) {
 					this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
 					divisionType = null;
 					tupletDuration = 0;
