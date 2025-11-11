@@ -71,6 +71,7 @@ import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
+import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import app.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import app.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
@@ -505,6 +506,7 @@ public class TGActionInstaller {
 		installAction(new TGSetLayoutScaleDecrementAction(context));
 		installAction(new TGSetLayoutScaleResetAction(context));
 		installAction(new TGToggleHighlightPlayedBeatAction(context));
+		installAction(new TGToggleContinuousScrollingAction(context));
 
 		//tools
 		installAction(new TGSelectScaleAction(context));

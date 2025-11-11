@@ -61,7 +61,9 @@ public class TGTabFolder implements TGEventListener {
 	public void appendListeners(){
 		TGEditorManager tgEditorManager = TGEditorManager.getInstance(this.context);
 		tgEditorManager.addUpdateListener(this);
-		tgEditorManager.addRedrawListener(new TGTabEventListener(this.context));
+		TGTabEventListener tabEventListener = new TGTabEventListener(this.context);
+		tgEditorManager.addRedrawListener(tabEventListener);
+		tgEditorManager.addMidiPlayerListener(tabEventListener);
 	}
 
 	public void init(UIContainer parent) {
