@@ -741,8 +741,8 @@ public class TGMeasureImpl extends TGMeasure{
 		float x1 = 0;
 		float x2 = 0;
 
-		int tupletDuration = 0;	// sum of all notes durations within current tuplet, unit = fractions of the shortest possible note (to keep all data integers)
-		int tupletShortest=0;
+		long tupletPreciseDuration = 0;	// sum of all notes precise duration inside the tuplet
+		long tupletShortestPreciseDuration = 0;	// the shortest note duration inside the tuplet
 
 		TGDivisionType divisionType = null;
 		Iterator<TGBeat> it = getBeats().iterator();
@@ -752,12 +752,13 @@ public class TGMeasureImpl extends TGMeasure{
 			if( !voice.isEmpty() ) {
 				// end of tuplet?
 				if( divisionType != null &&
-						((!voice.getDuration().getDivision().isEqual(divisionType))
-						|| (((tupletDuration/tupletShortest) % divisionType.getEnters() == 0) && ((tupletDuration/tupletShortest/divisionType.getEnters()) % divisionType.getTimes() == 0)))) {
+						// change of time division OR tuplet effective duration is a multiple of shortest note * Enters
+						// e.g. for a triolet of eighth, shortest in triolet is (2/3)*(1/8), so duration shall reach a multiple of (2/3) * (1/8) * 3 = 2*1/8 = 2 eighth
+						((!voice.getDuration().getDivision().isEqual(divisionType)) || (tupletPreciseDuration % (divisionType.getEnters() * tupletShortestPreciseDuration) == 0) )) {
 					this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
 					divisionType = null;
-					tupletDuration = 0;
-					tupletShortest = 0;
+					tupletPreciseDuration = 0;
+					tupletShortestPreciseDuration = 0;
 				}
 				// beginning of tuplet?
 				if(!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
@@ -770,9 +771,10 @@ public class TGMeasureImpl extends TGMeasure{
 			}
 			// update current tuplet if any
 			if (divisionType!=null) {
-				int voiceDuration = voice.getDuration().getValue();
-				tupletDuration += (TGDuration.SHORTEST * divisionType.getTimes() / voiceDuration);
-				tupletShortest = voiceDuration > tupletShortest ? voiceDuration : tupletShortest;
+				tupletPreciseDuration += voice.getDuration().getPreciseTime();
+				if ((tupletShortestPreciseDuration == 0) || (voice.getDuration().getPreciseTime() < tupletShortestPreciseDuration)) {
+					tupletShortestPreciseDuration = voice.getDuration().getPreciseTime();
+				}
 			}
 		}
 		// end of measure, with a tuplet already started?
