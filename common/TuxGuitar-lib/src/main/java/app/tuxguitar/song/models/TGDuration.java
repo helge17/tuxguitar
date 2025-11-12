@@ -144,7 +144,8 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		long D = timeToSplit;
 		List<TGDuration> list = new ArrayList<TGDuration>();
 
-		// max: power of 2
+		// max: power of 2, no longer than a whole
+		max = Math.min(max, TGDuration.WHOLE_PRECISE_DURATION);
 		long maxBase = TGDuration.WHOLE_PRECISE_DURATION;
 		while (max < maxBase) {
 			maxBase /= 2;
