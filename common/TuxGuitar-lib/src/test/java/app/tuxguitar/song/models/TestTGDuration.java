@@ -289,5 +289,14 @@ public class TestTGDuration {
 		}
 		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION);
 
+		// when time to fill is very long
+		// https://github.com/helge17/tuxguitar/issues/947
+		boolean ok = false;
+		try {
+			list = TGDuration.splitPreciseDuration(2*TGDuration.WHOLE_PRECISE_DURATION, 9*TGDuration.WHOLE_PRECISE_DURATION/4, factory);
+			ok=true;
+		}
+		catch (Throwable e) {}
+		assert(ok);
 	}
 }
