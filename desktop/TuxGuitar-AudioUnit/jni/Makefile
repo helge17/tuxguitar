@@ -1,4 +1,4 @@
-CXX = g++
+CXX ?= g++
 
 INCLUDES = -I ../../build-scripts/native-modules/common-include/
 
