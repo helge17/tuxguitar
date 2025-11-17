@@ -518,6 +518,7 @@ public class TestFileFormat20 {
 		TGSong song = handle.getSong();
 		song.getMeasureHeader(10).getTempo().setValueBase(60, TGDuration.HALF, false);
 		song.getMeasureHeader(20).getTempo().setValueBase(40, TGDuration.EIGHTH, true);
+		song.getMeasureHeader(21).getTempo().setValueBase(40, TGDuration.QUARTER, false);
 		// save, and re-read
 		byte[] bufferXml = saveToXml(song, factory);
 		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
@@ -532,27 +533,9 @@ public class TestFileFormat20 {
 		assertEquals(40, tempo.getRawValue());
 		assertEquals(TGDuration.EIGHTH, tempo.getBase());
 		assertTrue(tempo.isDotted());
-	}
 
-	@Test
-	public void testTempoBase2() throws IOException {
-		TGFactory factory = new TGFactory();
-		TGSongReaderHandle handle = readSong("reference_20.tg", true);
-		TGSong song = handle.getSong();
-		song.getMeasureHeader(10).getTempo().setValueBase(60, TGDuration.HALF, false);
-		song.getMeasureHeader(11).getTempo().setValueBase(60, TGDuration.QUARTER, false);
-		// save, and re-read
-		byte[] bufferXml = saveToXml(song, factory);
-		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
-		song = readFromXml(bufferXml, factory);
-
-		TGTempo tempo = song.getMeasureHeader(10).getTempo();
-		assertEquals(60, tempo.getRawValue());
-		assertEquals(TGDuration.HALF, tempo.getBase());
-		assertFalse(tempo.isDotted());
-
-		tempo = song.getMeasureHeader(11).getTempo();
-		assertEquals(60, tempo.getRawValue());
+		tempo = song.getMeasureHeader(21).getTempo();
+		assertEquals(40, tempo.getRawValue());
 		assertEquals(TGDuration.QUARTER, tempo.getBase());
 		assertFalse(tempo.isDotted());
 	}
