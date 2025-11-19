@@ -161,9 +161,15 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 				if (nodeBase != null) {
 					tempoBase = this.readInt(nodeBase);
 				}
+				else {
+					tempoBase = TGDuration.QUARTER;	// no attribute: defaults to a quarter
+				}
 				Node nodeDotted = node.getAttributes().getNamedItem(TAG_TEMPO_DOTTED);
 				if (nodeDotted != null) {
 					tempoDotted = nodeDotted.getTextContent().equals("true");
+				}
+				else {
+					tempoDotted = false;
 				}
 			}
 			header.getTempo().setValueBase(tempoValue, tempoBase, tempoDotted);
