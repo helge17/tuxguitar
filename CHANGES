@@ -1,3 +1,8 @@
+TuxGuitar 2.0.1 (2025-12-22) changes:
+
+* Fix note duration change when empty space in measure is longer than a whole
+* Fix saving tempo base
+
 TuxGuitar 2.0.0 (2025-11-02) changes:
 
 * New file format, not readable by older versions

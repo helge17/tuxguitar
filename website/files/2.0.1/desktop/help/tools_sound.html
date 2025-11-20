@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Sound settings - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script>
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 2.0.1</p>
+  </div>
+  <div class="title">
+    <h1 id="sound_in_tuxguitar">Sound in TuxGuitar</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><a href="editing_song.html">Editing a whole song</a></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><strong>Sound in TuxGuitar</strong></li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>First of all, it is important to mention that TuxGuitar is written in the Java programming language. Therefore, the audio output methods are heavily depending on Java. There is a dedicated layer in Java for MIDI sound, which uses "soundbanks". A soundbank is a file that contains sound samples for all the required instruments.</p>
+    <p>In TuxGuitar prior to version 1.0, using the soundbanks was the only way to play the sound, and it was totally independent of your system MIDI settings.</p>
+    <p>Since version 1.0, TuxGuitar includes several operating system dependent plugins that allow audio output over the system's MIDI devices. The appropriate plugins are included in the distribution packages for the various operating systems, so you don't need to install them manually. By default, the plugin best suited for your operating system is activated, but you can switch to another one in the plugin dialog, if you want to use some special output functions.</p>
+    <h2>Sound settings</h2>
+    <p>In the <strong>Tools → Settings → Sound</strong> dialog, you can select the <strong>MIDI Sequencer</strong>, i.e. the pice of software that extracts the MIDI events from all tracks stored in TuxGuitar and combines them into the currently played MIDI sequence, a list of time-stamped MIDI data. This sequence is then sent to the <strong>MIDI Port</strong>, where it is converted into the actual audio stream by combining the MIDI events with the sound samples extracted from the soundbank file or from other sources. The audio stream can also be further processed, mixed, etc., and is finally output to the loudspeakers.</p>
+    <img src="images/settings_sound.png" />
+    <h2>Audio Output Plugins</h2>
+    <p>The MIDI sequencers and MIDI ports are provided by Audio Output Plugins. To find all output plugins supported on your operating system, type "output" in the search field on top of the <strong><a href="tools_plugins.html">Tools → Plugins</a></strong> dialog:</p>
+    <img src="images/sound_plugins.png" />
+    <p>The images above show all available audio output plugins on Linux, Windows, macOS and FreeBSD.</p>
+    <p>In the the tables below you can see the MIDI sequencers and ports provided by the plugins and the default output settings for each OS.</p>
+    <table><tbody>
+      <tr><td class="head" colspan="3">Output Plugins on Linux</td></tr>
+      <tr><td class="head">Plugin name</td>                <td class="head">MIDI Sequencer</td>        <td class="head">MIDI Port</td></tr>
+      <tr><td class="bold">TuxGuitar Synthesizer</td>      <td class="bold">TuxGuitar Sequencer*</td>  <td class="norm">TuxGuitar Synthesizer</td></tr>
+      <tr><td class="bold">Java Sound API</td>             <td class="norm">Real Time Sequencer</td>   <td class="bold">Gervill</td></tr>
+      <tr><td class="norm">FluidSynth</td>                 <td class="norm">-</td>                     <td class="norm">TG FluidSynth [SF-file]</td></tr>
+      <tr><td class="norm">Jack Audio Connection Kit</td>  <td class="norm">Jack Sequencer</td>        <td class="norm">Jack Midi Port</td></tr>
+      <tr><td class="norm">ALSA</td>                       <td class="norm">-</td>                     <td class="norm">Midi Through Port-0 [14:0]<br />Synth input port (1610:0) [128:0]</td></tr>
+    </tbody></table>
+    <p></p>
+    <table><tbody>
+      <tr><td class="head" colspan="3">Output Plugins on Windows</td></tr>
+      <tr><td class="head">Plugin name</td>                <td class="head">MIDI Sequencer</td>        <td class="head">MIDI Port</td></tr>
+      <tr><td class="bold">TuxGuitar Synthesizer</td>      <td class="bold">TuxGuitar Sequencer*</td>  <td class="bold">TuxGuitar Synthesizer</td></tr>
+      <tr><td class="bold">Java Sound API</td>             <td class="norm">Real Time Sequencer</td>   <td class="norm">Gervill<br />Microsoft MIDI Mapper<br />Microsoft GS Wavetable Synth</td></tr>
+      <tr><td class="bold">FluidSynth</td>                 <td class="norm">-</td>                     <td class="norm">TG FluidSynth [SF-file]</td></tr>
+      <tr><td class="norm">Jack Audio Connection Kit</td>  <td class="norm">Jack Sequencer</td>        <td class="norm">Jack Midi Port</td></tr>
+      <tr><td class="bold">WinMM</td>                      <td class="norm">-</td>                     <td class="norm">Microsoft GS Wavetable Synth</td></tr>
+    </tbody></table>
+    <p></p>
+    <table><tbody>
+      <tr><td class="head" colspan="3">Output Plugins on macOS</td></tr>
+      <tr><td class="head">Plugin name</td>                <td class="head">MIDI Sequencer</td>        <td class="head">MIDI Port</td></tr>
+      <tr><td class="bold">TuxGuitar Synthesizer</td>      <td class="bold">TuxGuitar Sequencer*</td>  <td class="bold">TuxGuitar Synthesizer</td></tr>
+      <tr><td class="bold">Java Sound API</td>             <td class="norm">Real Time Sequencer</td>   <td class="norm">Gervill</td></tr>
+      <tr><td class="bold">macOS Audio Unit</td>           <td class="norm">-</td>                     <td class="norm">AudioUnit graph midi playback</td></tr>
+    </tbody></table>
+    <p></p>
+    <table><tbody>
+      <tr><td class="head" colspan="3">Output Plugins on FreeBSD</td></tr>
+      <tr><td class="head">Plugin name</td>                <td class="head">MIDI Sequencer</td>        <td class="head">MIDI Port</td></tr>
+      <tr><td class="norm">TuxGuitar Synthesizer</td>      <td class="bold">TuxGuitar Sequencer*</td>  <td class="norm">TuxGuitar Synthesizer</td></tr>
+      <tr><td class="norm">Java Sound API</td>             <td class="norm">Real Time Sequencer</td>   <td class="norm">Gervill</td></tr>
+      <tr><td class="bold">FluidSynth</td>                 <td class="norm">-</td>                     <td class="bold">TG FluidSynth [SF-file]</td></tr>
+    </tbody></table>
+    <p><strong>Bold Plugin name</strong>: Plugin is activated by default<br />
+    <strong>Bold MIDI Sequencer/Port</strong>: Default sound output</p>
+    <p>Some MIDI ports are automatically detected by the OS and may differ on your system.</p>
+    <p>The <strong>TuxGuitar Sequencer*</strong> is built-in and always available, even if no plugin is enabled. There is no built-in MIDI port, all MIDI ports are provided via plugins.</p>
+    <p>Beside the TuxGuitar Synthesizer output plugin there are other TuxGuitar Synthesizer plugins available. These plugins depend on the TuxGuitar Synthesizer output plugin and do not add any MIDI sequencer or port, but provide other features.</p>
+    <h2 id="java_sound">Java Sound</h2>
+    <p>The Java Sound plugin, relying on a SF2 soundbank file, is still available in the form of the "Java Sound API output plugin" on all supported desktop operating systems. You can change the soundbank with the "Configure" button in the <a href="tools_plugins.html">plugins dialog</a>:</p>
+    <img src="images/sound_jsa_soundbank.png" />
+    <p>If the plugin is enabled, in the Sound tab of the <strong>Tools → Settings</strong> dialog you can choose the <strong>Real Time Sequencer</strong> as <strong>MIDI Sequencer</strong> and the <strong>MIDI Port</strong> called "Gervill".</p>
+    <h2 id="platform-dependent_plugins">Platform-dependent Output Plugins</h2>
+    <p>If you have the TuxGuitar ALSA plugin enabled on Linux or if you are running TuxGuitar on the Windows platform, TuxGuitar detects your system MIDI ports (devices) automatically.</p>
+    <p>So it depends on your system settings, but anyway, if the proper plugin is enabled and working you should see the system ports in the <strong>MIDI Port</strong> list in the Sound tab of the <strong>Tools → Settings</strong> dialog. Choosing the right one enables your native MIDI sound in TuxGuitar.</p>
+  </section>
+</body>
+</html>

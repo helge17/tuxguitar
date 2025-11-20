@@ -2,7 +2,7 @@ package app.tuxguitar.util;
 
 public class TGVersion implements Comparable<TGVersion> {
 
-	public static final TGVersion CURRENT = new TGVersion(2,0,0);
+	public static final TGVersion CURRENT = new TGVersion(2,0,1);
 
 	private int major;
 	private int minor;

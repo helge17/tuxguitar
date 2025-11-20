@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Editing a song - TuxGuitar Help</title>
+</head>
+<body>
+  <input type="checkbox" id="check" /> <label for="check"><b id="hamburger">☰</b> <b id="cancel">☓</b></label>
+  <script src="init.js"></script>
+  <div class="header">
+    TuxGuitar Help
+    <p id="version">Version 2.0.1</p>
+  </div>
+  <div class="title">
+    <h1>Editing a whole song</h1>
+  </div>
+  <div class="sidebar">
+    <ul class="menu">
+      <li class="menu2"><button title="Back" id="back" onclick="history.back()">&nbsp;</button> <button title="Top" id="top" onclick="window.location.href='index.html';">&nbsp;</button> <button title="Forward" id="forward" onclick="history.forward()">&nbsp;</button></li>
+      <li class="menu1">Introduction</li>
+      <li class="menu2"><a href="about.html">About</a></li>
+      <li class="menu2"><a href="license.html">License</a></li>
+      <li class="menu1">Getting started</li>
+      <li class="menu2"><a href="start_first_steps.html">The first steps</a></li>
+      <li class="menu2"><a href="start_menus_toolbars.html">Menus and Toolbars</a></li>
+      <li class="menu2"><a href="start_playing.html">Playing a song</a></li>
+      <li class="menu1">Editing a song</li>
+      <li class="menu2"><a href="editing_track.html">Editing a track</a></li>
+      <li class="menu2"><strong>Editing a whole song</strong></li>
+      <li class="menu2"><a href="edit_effects.html">Note effects</a></li>
+      <li class="menu2"><a href="edit_chord.html">Chord Editor</a></li>
+      <li class="menu2"><a href="edit_matrix.html">Matrix Editor</a></li>
+      <li class="menu1">Features in detail</li>
+      <li class="menu2"><a href="detail_file_edit.html">File and edit functions</a></li>
+      <li class="menu2"><a href="detail_view.html">View and layout</a></li>
+      <li class="menu2"><a href="detail_composition_track.html">Composition and track</a></li>
+      <li class="menu2"><a href="detail_measure_beat.html">Measure and beat</a></li>
+      <li class="menu2"><a href="detail_markers_player.html">Markers and Player</a></li>
+      <li class="menu1">Tools and settings</li>
+      <li class="menu2"><a href="tools_general.html">Settings dialog</a></li>
+      <li class="menu2"><a href="tools_skin.html">Changing the skin</a></li>
+      <li class="menu2"><a href="tools_sound.html">Sound in TuxGuitar</a></li>
+      <li class="menu2"><a href="tools_shortcuts.html">Default shortcuts</a></li>
+      <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
+      <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
+      <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
+    </ul>
+  </div>
+  <section>
+    <p>Song is consisted out of tracks, so when you are editing a song most of the time you edit the tracks, one by one, which is explained in the <a href="editing_track.html">Editing a track</a> section. But there are some options that affect the song as a whole.</p>
+    <h2 id="managing_the_tracks">Managing the tracks</h2>
+    <p>Each song consists of one or more tracks. In any moment you can add or remove a track, create new one by copying contents of the selected one (clone track).</p>
+    <img src="images/add_track.png" />
+    <p>All the tracks are displayed in the instrument list, located on the bottom of the application window. You can rearrange the order of the instruments on that list by choosing <strong>Track → Move up/down</strong> from the main menu. You can also mute a single track (Mute) or mute all but one track (Solo). If you double-click on the instrument name on the list, the <strong><a href="start_first_steps.html#track_properties">Track Properties</a></strong> dialog will appear, where you can modify instrument, track name, color and tuning.</p>
+    <h2 id="instruments_dialog">Instruments dialog</h2>
+    <p>The Instruments dialog can be accessed by choosing <strong>View → Show Instruments</strong> from the main menu, or by clicking on the icon in the toolbar.</p>
+    <img src="images/show_instruments.png" /><br />
+    <img src="images/sed_instruments_dialog.png" />
+    <p>The most interesting feature of the Instruments dialog is adjusting <strong>volume</strong> for each track (to be more precise: for each MIDI channel) with the first control dial.</p>
+    <p>You can also set <strong>pan</strong> for each track - balance between left and right speaker.</p>
+    <p>The other control dials are for the effects Reverb, Chorus, Tremolo and Phaser.</p>
+    <p>If you want to add a percussion track, you have to check the <strong>Percussion Channel</strong> box.</p>
+    <h3 id="choosing_the_channels">Choosing the channels</h3>
+    <p>The channels for the track are chosen in the <strong>Channels Settings</strong> dialog.</p>
+    <p>To understand the way of distributing channels properly, you have to know something about MIDI specification.</p>
+    <p>MIDI uses channels to play music - each <strong>channel has currently assigned instrument (voice)</strong>. There are 16 different channels (marked 0 ... 15) - channel 9 is reserved for drums and percussion.</p>
+    <p>For example, to be able to play a <a href="edit_effects.html#dead_note">dead note</a> and a tone at the same time, TuxGuitar has to occupy two channels for a track, because dead note is one instrument (voice) and guitar tone is another instrument. So, every track has its <strong>Normal Channel</strong>, but also needs the <strong>Effect Channel</strong>. Because there are only 16 channels it may lead you to conclusion that you cannot have more than 7 instruments (tracks) and a percussion in TuxGuitar. That is not true.</p>
+    <p>It means that as long as you don't have more than 7 instruments and a percussion, you don't have to worry about distributing MIDI channels - TuxGuitar distributes the channels in order. But if you have more tracks you have to be careful. By overlapping MIDI channels, you can achieve MIDI reproduction without any problems, but you have to understand the problem.</p>
+    <h4 id="effect_channel">Effect channel</h4>
+    <p><strong>Effect channel</strong> is used in certain occasions. One occasion is when <strong>two different voices</strong> are played at the same time in the same track. In TuxGuitar that can happen if you play dead note or harmonic at the same time with an ordinary instrument tone.</p>
+    <p>The other occasion effect channel is used is when you apply some <strong>pitch effect</strong> (like bend, slide, vibrato or tremolo bar) on <em><strong>some of the notes</strong></em> played at the same time in the same track/channel. The reason for this is because by MIDI specification effect can be applied only on channel, not on note. So TuxGuitar automatically moves note to Effect channel and apply pitch effect on him. That is also the reason why you cannot apply slide and bend effect in the exact same time in TuxGuitar (but also on a real guitar). :)</p>
+    <h4 id="how_to_overlap_channels">How to overlap channels?</h4>
+    <p>The safest way is to overlap channels of two tracks that are never played at the same time. The only problem is that <strong>mixer settings</strong> (volume, pan and solo/mute) would have the same value for both the instruments (tracks).</p>
+    <p>You can also try to assign the same channel for channel (CH) and effects channel (EC) if you don't use effects like dead note, harmonics at the same time with an ordinary instrument note, or you don't need to apply "pitch" effect on only some notes played at the same time with notes without pitch effect. If you do use effects but set the same CH and EC, dead note and harmonics probably wouldn't be heard, and pitch effects would apply on all the notes at the same time.</p>
+    <h2 id="composition_properties">Composition properties</h2>
+    <p>You don't want your transcription to be distributed in cyberspace without any credits. :)</p>
+    <p>By selecting <strong><a href="detail_composition_track.html#song_properties">Composition → Properties</a></strong> from the main menu or clicking on the appropriate icon you invoke a dialog that contains information about the current song.</p>
+    <img src="images/properties.png" />
+    <p>Every song should at least have a name, author and transcriber set, both for archiving and printing purpose.</p>
+  </section>
+</body>
+</html>
