@@ -359,6 +359,7 @@
 				<configuration>
 					<source>9</source>
 					<target>9</target>
+					<showWarnings>true</showWarnings>
 					<useIncrementalCompilation>false</useIncrementalCompilation>
 					<compilerArgs>
 						<arg>-Xlint:all</arg>
