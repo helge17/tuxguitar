@@ -163,6 +163,13 @@ public abstract class TGMeasureHeader {
 		return getTimeSignature().getNumerator() * TGDuration.WHOLE_PRECISE_DURATION / getTimeSignature().getDenominator().getValue();
 	}
 
+	public int getDurationInMs() {
+		return getTimeSignature().getNumerator()
+					* 60 * 1000 * 4 	// considering tempo in quarters per minute 
+					/ getTempo().getQuarterValue()
+					/ getTimeSignature().getDenominator().getValue();
+	}
+
 	public TGSong getSong() {
 		return this.song;
 	}

@@ -268,6 +268,7 @@ public class TGPrintLayout extends TGLayout {
 				currMeasure.setPosX(posX);
 				currMeasure.setPosY(posY);
 				currMeasure.setTs(ts);
+				currMeasure.setLastOfLine(i == line.measures.size()-1);
 
 				((TGLyricImpl)track.getLyrics()).setCurrentMeasure(currMeasure);
 

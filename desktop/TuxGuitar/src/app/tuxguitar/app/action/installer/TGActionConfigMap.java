@@ -70,6 +70,7 @@ import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
+import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import app.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import app.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
@@ -572,6 +573,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGToggleHighlightPlayedBeatAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGToggleContinuousScrollingAction.NAME, LOCKABLE | SHORTCUT);
 
 		this.map(TGSetLayoutScaleAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_SONG_CTL);
 		this.map(TGSetLayoutScaleIncrementAction.NAME, LOCKABLE | SHORTCUT | SYNC_THREAD, UPDATE_SONG_CTL);
