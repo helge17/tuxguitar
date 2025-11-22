@@ -205,7 +205,7 @@ public class TESongParser {
 		}
 
 		while(it.hasNext()){
-			TEComponentBase component = (TEComponentBase)it.next();
+			TEComponentBase component = it.next();
 
 			int measure = component.getPosition().getMeasure();
 
@@ -760,10 +760,10 @@ class TGSongAdjuster {
 	public TGSong process() {
 		Iterator<TGTrack> tracks = this.song.getTracks();
 		while(tracks.hasNext()) {
-			TGTrack track = (TGTrack)tracks.next();
+			TGTrack track = tracks.next();
 			Iterator<TGMeasure> measures = track.getMeasures();
 			while(measures.hasNext()) {
-				TGMeasure measure = (TGMeasure)measures.next();
+				TGMeasure measure = measures.next();
 				this.process(measure);
 			}
 		}

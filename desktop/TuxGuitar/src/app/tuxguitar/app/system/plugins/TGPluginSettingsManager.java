@@ -26,7 +26,7 @@ public class TGPluginSettingsManager {
 
 	public void openPluginSettingsDialog(String moduleId, UIWindow parent){
 		if( this.containsPluginSettingsHandler(moduleId) ){
-			TGPluginSettingsHandler tgPluginSettingsHandler = (TGPluginSettingsHandler) this.handlers.get(moduleId);
+			TGPluginSettingsHandler tgPluginSettingsHandler = this.handlers.get(moduleId);
 			tgPluginSettingsHandler.openSettingsDialog(parent);
 		}
 	}

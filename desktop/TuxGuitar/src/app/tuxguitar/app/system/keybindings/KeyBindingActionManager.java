@@ -72,7 +72,7 @@ public class KeyBindingActionManager {
 	public String getActionForKeyBinding(UIKeyCombination kb){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
-			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
+			KeyBindingAction keyBindingAction = it.next();
 			if( keyBindingAction.getCombination() != null && kb.equals( keyBindingAction.getCombination() )){
 				if( isKeyBindingAvailable(keyBindingAction) ){
 					return keyBindingAction.getAction();
@@ -85,7 +85,7 @@ public class KeyBindingActionManager {
 	public UIKeyCombination getKeyBindingForAction(String action){
 		Iterator<KeyBindingAction> it = this.keyBindingsActions.iterator();
 		while(it.hasNext()){
-			KeyBindingAction keyBindingAction = (KeyBindingAction)it.next();
+			KeyBindingAction keyBindingAction = it.next();
 			if(action.equals( keyBindingAction.getAction() )){
 				if( isKeyBindingAvailable(keyBindingAction) ){
 					return keyBindingAction.getCombination();

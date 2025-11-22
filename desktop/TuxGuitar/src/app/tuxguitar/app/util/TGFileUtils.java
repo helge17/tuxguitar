@@ -45,7 +45,7 @@ public class TGFileUtils {
 
 			Enumeration<URL> plugins = TGResourceManager.getInstance(context).getResources("plugins");
 			while( plugins.hasMoreElements() ){
-				URL url = (URL)plugins.nextElement();
+				URL url = plugins.nextElement();
 				TGClassLoader.getInstance(context).addPaths(new File(getUrlPath(url)));
 			}
 
@@ -105,7 +105,7 @@ public class TGFileUtils {
 				}
 				String[] fileNames = new String[ fileNameList.size() ];
 				for (int i = 0 ; i < fileNames.length ; i ++ ){
-					fileNames[ i ] = (String)fileNameList.get( i );
+					fileNames[ i ] = fileNameList.get( i );
 				}
 				return fileNames;
 			}

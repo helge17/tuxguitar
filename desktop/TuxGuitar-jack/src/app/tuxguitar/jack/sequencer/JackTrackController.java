@@ -32,7 +32,7 @@ public class JackTrackController {
 	public void checkAnySolo(){
 		this.anySolo = false;
 		for(int i = 0; i < this.tracks.size(); i ++){
-			JackTrack track = (JackTrack)this.tracks.get(i);
+			JackTrack track = this.tracks.get(i);
 			if(track.isSolo()){
 				this.anySolo = true;
 				break;
@@ -42,7 +42,7 @@ public class JackTrackController {
 
 	public void setSolo(int index,boolean solo) throws MidiPlayerException{
 		if(index >= 0 && index < this.tracks.size()){
-			JackTrack track = (JackTrack)this.tracks.get(index);
+			JackTrack track = this.tracks.get(index);
 			track.setSolo(solo);
 			checkAnySolo();
 			if(track.isSolo()){
@@ -54,7 +54,7 @@ public class JackTrackController {
 
 	public void setMute(int index,boolean mute) throws MidiPlayerException{
 		if(index >= 0 && index < this.tracks.size()){
-			JackTrack track = (JackTrack)this.tracks.get(index);
+			JackTrack track = this.tracks.get(index);
 			track.setMute(mute);
 			if(track.isMute()){
 				setSolo(index,false);
@@ -65,7 +65,7 @@ public class JackTrackController {
 
 	public boolean isSolo(int index){
 		if(index >= 0 && index < this.tracks.size()){
-			JackTrack track = (JackTrack)this.tracks.get(index);
+			JackTrack track = this.tracks.get(index);
 			return track.isSolo();
 		}
 		return false;
@@ -73,7 +73,7 @@ public class JackTrackController {
 
 	public boolean isMute(int index){
 		if(index >= 0 && index < this.tracks.size()){
-			JackTrack track = (JackTrack)this.tracks.get(index);
+			JackTrack track = this.tracks.get(index);
 			return track.isMute();
 		}
 		return false;

@@ -169,7 +169,7 @@ public class TGChordRecognizer {
 				for (int i=0; i<info.getRequiredNotes().length; i++) { // go through all the required notes
 					Iterator<Integer> nit = notesInside.iterator();
 					while (nit.hasNext()) // go through all the needed notes
-						if (((Integer)nit.next()).intValue() == (tonic+info.getRequiredNotes()[i]-1)%12) {
+						if (nit.next().intValue() == (tonic+info.getRequiredNotes()[i]-1)%12) {
 							foundNote=true;
 							if (tonic+info.getRequiredNotes()[i]-1 == tonic)
 								currentProp.dontHaveGrade+=15; // this means penalty for not having tonic is -65
@@ -227,7 +227,7 @@ public class TGChordRecognizer {
 			// place the still missing alterations notes accordingly... bass also
 			///////////////////////////////////////////////////////////////
 
-			final Proposal current = (Proposal)props.next();
+			final Proposal current = props.next();
 
 			boolean bassIsOnlyInBass = true;
 			// ---------------- bass tone ----------------
@@ -291,7 +291,7 @@ public class TGChordRecognizer {
 		int howManyIncomplete = TGChordSettings.instance().getIncompleteChords();
 
 		for (int i=0; i<unsortedProposals.size() && cut==-1; i++) {
-			int prior = ((Proposal)unsortedProposals.get(i)).dontHaveGrade;
+			int prior = unsortedProposals.get(i).dontHaveGrade;
 			if (prior<0)
 				cut=i+howManyIncomplete;
 		}
@@ -302,7 +302,7 @@ public class TGChordRecognizer {
 
 		int firstNegative = 0;
 		for (int i=0; i<unsortedProposals.size(); i++) {
-			final Proposal current = (Proposal)unsortedProposals.get(i);
+			final Proposal current = unsortedProposals.get(i);
 			if (firstNegative==0 && current.unusualGrade<0)
 				firstNegative=current.unusualGrade;
 
@@ -316,7 +316,7 @@ public class TGChordRecognizer {
 	}
 
 	public void notifyProposals(final long processId, final boolean sharp, final boolean redecorate, final boolean setChordName, final List<int[]> proposalParameters, final List<String> proposalNames) {
-		final int params[] = (!proposalParameters.isEmpty() ? (int[])proposalParameters.get(0) : null);
+		final int params[] = (!proposalParameters.isEmpty() ? proposalParameters.get(0) : null);
 		final String chordName = (params != null ? getChordName(params, sharp) : "");
 
 		TGSynchronizer.getInstance(this.dialog.getContext().getContext()).executeLater(new Runnable() {
@@ -478,13 +478,13 @@ public class TGChordRecognizer {
 		for( int gap = length / 2; gap > 0;
 					 gap = gap == 2 ? 1 : (int) ( gap / 2.2 ) )
 			for( int i = gap; i < length; i++ ){
-				Proposal tmp = (Proposal)a.get(i);
+				Proposal tmp = a.get(i);
 				int j = i;
 
 				for( ; j >= gap &&
 				(  sortIndex == 1 ?
-				tmp.dontHaveGrade > ((Proposal)a.get(j - gap)).dontHaveGrade :
-				tmp.unusualGrade > ((Proposal)a.get(j - gap)).unusualGrade  )
+				tmp.dontHaveGrade > a.get(j - gap).dontHaveGrade :
+				tmp.unusualGrade > a.get(j - gap).unusualGrade  )
 				;
 				j -= gap )
 					a.set(j, a.get(j - gap));
@@ -552,7 +552,7 @@ public class TGChordRecognizer {
 			int length = notes.size();
 			this.missingNotes = new int[length];
 			for (int i = 0; i< length; i++){ // deep copy, because of clone() method
-				this.missingNotes[i] = ((Integer)notes.get(i)).intValue();
+				this.missingNotes[i] = notes.get(i).intValue();
 			}
 			this.missingCount = length;
 		}

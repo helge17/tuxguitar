@@ -180,7 +180,7 @@ public class TGSynthChannelProcessor {
 	public TGAudioProcessor getOutput( int index ){
 		synchronized (this.lock) {
 			if( index >= 0 && index < this.outputs.size() ){
-				return (TGAudioProcessor)this.outputs.get( index );
+				return this.outputs.get( index );
 			}
 			return null;
 		}

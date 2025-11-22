@@ -74,7 +74,7 @@ public class JackConnectionManager {
 
 		Iterator<JackConnection> it = this.jackConnections.iterator();
 		while( it.hasNext() ){
-			JackConnection jackConnection = (JackConnection) it.next();
+			JackConnection jackConnection = it.next();
 
 			this.connectPorts(jackConnection);
 		}
@@ -110,7 +110,7 @@ public class JackConnectionManager {
 		if( srcPortNames != null ){
 			Iterator<String> it = srcPortNames.iterator();
 			while( it.hasNext() ){
-				this.loadExistingConnections(existingConnections, (String) it.next());
+				this.loadExistingConnections(existingConnections, it.next());
 			}
 		}
 	}
@@ -122,7 +122,7 @@ public class JackConnectionManager {
 		if( dstPortNames != null ){
 			Iterator<String> it = dstPortNames.iterator();
 			while( it.hasNext() ){
-				this.loadExistingConnection(existingConnections, srcPortName, (String) it.next());
+				this.loadExistingConnection(existingConnections, srcPortName, it.next());
 			}
 		}
 	}
@@ -141,7 +141,7 @@ public class JackConnectionManager {
 
 		Iterator<JackConnection> it = this.jackConnections.iterator();
 		while( it.hasNext() ){
-			JackConnection jackConnection = (JackConnection) it.next();
+			JackConnection jackConnection = it.next();
 
 			String srcPortName = findPortNameById(jackConnection.getSrcPortId(), existingPortNames);
 			String dstPortName = findPortNameById(jackConnection.getDstPortId(), existingPortNames);
@@ -164,7 +164,7 @@ public class JackConnectionManager {
 		if( portNames != null ){
 			Iterator<String> it = portNames.iterator();
 			while( it.hasNext() ){
-				String portName = (String) it.next();
+				String portName = it.next();
 				if( portId == createPortId(portName) ){
 					return portName;
 				}

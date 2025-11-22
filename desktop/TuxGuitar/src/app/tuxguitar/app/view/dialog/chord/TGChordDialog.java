@@ -227,7 +227,7 @@ public class TGChordDialog {
 		int[] tuning = new int[track.stringCount()];
 		Iterator<TGString> it = track.getStrings().iterator();
 		while(it.hasNext()){
-			TGString string = (TGString)it.next();
+			TGString string = it.next();
 			tuning[(tuning.length - string.getNumber())] = string.getValue();
 		}
 		return tuning;
@@ -247,7 +247,7 @@ public class TGChordDialog {
 				//verifico el first fret
 				Iterator<TGNote> it = notes.iterator();
 				while(it.hasNext()){
-					TGNote note = (TGNote)it.next();
+					TGNote note = it.next();
 					if( maxValue < 0 || maxValue < note.getValue()){
 						maxValue = note.getValue();
 					}
@@ -262,7 +262,7 @@ public class TGChordDialog {
 				//agrego los valores
 				it = notes.iterator();
 				while(it.hasNext()){
-					TGNote note = (TGNote)it.next();
+					TGNote note = it.next();
 					chord.addFretValue( ( note.getString() - 1) , note.getValue());
 				}
 			}

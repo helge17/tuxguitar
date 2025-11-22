@@ -531,7 +531,7 @@ public class DLSSoundbank implements Soundbank {
                     chunk.read(); // Read Reserved byte
 
                     instrument.bank = bank;
-                    instrument.preset = (int) id;
+                    instrument.preset = id;
                     instrument.druminstrument = (drumins & 128) > 0;
                     //System.out.println("bank="+bank+" drumkit="+drumkit
                     //        +" id="+id);

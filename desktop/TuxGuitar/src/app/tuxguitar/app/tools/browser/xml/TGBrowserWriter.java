@@ -49,7 +49,7 @@ public class TGBrowserWriter {
 
 		Iterator<TGBrowserCollection> collections = manager.getCollections();
 		while(collections.hasNext()){
-			TGBrowserCollection collection = (TGBrowserCollection)collections.next();
+			TGBrowserCollection collection = collections.next();
 
 			//collection tag
 			Node node = document.createElement(ITEM_TAG);

@@ -292,7 +292,7 @@ public class TGBendDialog {
 
 		Iterator<UIPosition> it = this.points.iterator();
 		while(it.hasNext()){
-			UIPosition currPoint = (UIPosition)it.next();
+			UIPosition currPoint = it.next();
 			if( currPoint.getX() == point.getX() && currPoint.getY() == point.getY() ){
 				pointToRemove = currPoint;
 				break;
@@ -404,7 +404,7 @@ public class TGBendDialog {
 		this.points.clear();
 		Iterator<BendPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
-			TGEffectBend.BendPoint bendPoint = (TGEffectBend.BendPoint)it.next();
+			TGEffectBend.BendPoint bendPoint = it.next();
 			this.makePoint(bendPoint);
 		}
 	}

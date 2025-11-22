@@ -88,7 +88,7 @@ public class KeyBindingWriter {
 
 		Iterator<KeyBindingAction> it = userKeyBindingsList.iterator();
 		while(it.hasNext()){
-			KeyBindingAction keyBindingAction = (KeyBindingAction) it.next();
+			KeyBindingAction keyBindingAction = it.next();
 
 			Node node = document.createElement(SHORTCUT_TAG);
 			shortcutsNode.appendChild(node);

@@ -52,7 +52,7 @@ public class TGRepeatAlternativeDialog {
 			selections[i].setText(Integer.toString( i + 1 ));
 			selections[i].setEnabled(enabled);
 			selections[i].setSelected(enabled && ((selectedEndings & (1 << i)) != 0));
-			groupLayout.set(selections[i], (1 + (int)(i / 4)), (1 + (i - (i & 4))), UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+			groupLayout.set(selections[i], (1 + (i / 4)), (1 + (i - (i & 4))), UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		}
 
 		//----------------------BUTTONS--------------------------------
@@ -103,7 +103,7 @@ public class TGRepeatAlternativeDialog {
 		int existentEndings = 0;
 		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
 		while(it.hasNext()){
-			TGMeasureHeader currentHeader = (TGMeasureHeader)it.next();
+			TGMeasureHeader currentHeader = it.next();
 			if( currentHeader.getNumber() == header.getNumber() ){
 				break;
 			}

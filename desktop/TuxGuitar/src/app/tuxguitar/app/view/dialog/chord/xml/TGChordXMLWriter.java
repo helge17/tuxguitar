@@ -78,7 +78,7 @@ public class TGChordXMLWriter {
 
 		Iterator<TGChord> it = chords.iterator();
 		while(it.hasNext()){
-			TGChord chord = (TGChord)it.next();
+			TGChord chord = it.next();
 
 			//chord tag
 			Node chordNode = document.createElement(TGChordXML.CHORD_TAG);

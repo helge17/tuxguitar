@@ -82,7 +82,7 @@ public class TGFileHistory {
 
 	private void removeURL(URL url) {
 		for(int i = 0; i < this.urls.size(); i++){
-			URL old = (URL)this.urls.get(i);
+			URL old = this.urls.get(i);
 			if(old.toString().equals(url.toString())){
 				this.urls.remove(i);
 				break;
@@ -98,11 +98,11 @@ public class TGFileHistory {
 				Properties properties = new Properties();
 				properties.load(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
 
-				this.chooserPath = (String)properties.getProperty("history.path");
+				this.chooserPath = properties.getProperty("history.path");
 
-				int count = Integer.valueOf((String)properties.getProperty("history.count", "0"));
+				int count = Integer.valueOf(properties.getProperty("history.count", "0"));
 				for(int i = 0; i < count;i ++){
-					String url = (String)properties.getProperty("history." + i);
+					String url = properties.getProperty("history." + i);
 					if( URL_LIMIT > i && url != null && url.length() > 0 ){
 						this.urls.add(new URL(url));
 					}

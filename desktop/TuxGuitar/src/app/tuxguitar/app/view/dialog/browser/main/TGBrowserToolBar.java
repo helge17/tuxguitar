@@ -41,7 +41,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 
 		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
 		while(bookTypes.hasNext()) {
-			final TGBrowserFactory bookType = (TGBrowserFactory)bookTypes.next();
+			final TGBrowserFactory bookType = bookTypes.next();
 
 			UIMenuActionItem item = this.newBrowser.getMenu().createActionItem();
 			item.setText(bookType.getName());

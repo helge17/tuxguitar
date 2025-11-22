@@ -92,7 +92,7 @@ public class LanguageOption extends TGSettingsOption {
 							loadTableItem(TuxGuitar.getProperty("locale.default"), new String(), true);
 
 							for(int i = 0;i < languages.size(); i ++){
-								LanguageItem item = (LanguageItem)languages.get( i );
+								LanguageItem item = languages.get( i );
 								loadTableItem(item.getValue(),item.getKey(),(language != null && item.getKey().equals( language )));
 							}
 

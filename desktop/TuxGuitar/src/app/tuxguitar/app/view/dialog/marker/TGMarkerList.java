@@ -189,7 +189,7 @@ public class TGMarkerList implements TGEventListener {
 
 		Iterator<TGMarker> it = this.markers.iterator();
 		while (it.hasNext()) {
-			TGMarker marker = (TGMarker) it.next();
+			TGMarker marker = it.next();
 			UITableItem<TGMarker> item = new UITableItem<TGMarker>(marker);
 			item.setText(0, Integer.toString(marker.getMeasure()));
 			item.setText(1, marker.getTitle());

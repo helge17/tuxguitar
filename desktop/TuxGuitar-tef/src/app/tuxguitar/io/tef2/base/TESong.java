@@ -148,7 +148,7 @@ public class TESong {
 	public TETimeSignature getTimeSignature(int measure){
 		Iterator<TETimeSignatureChange> it = this.tsChanges.iterator();
 		while(it.hasNext()){
-			TETimeSignatureChange change = (TETimeSignatureChange)it.next();
+			TETimeSignatureChange change = it.next();
 			if(change.getMeasure() == measure){
 				return change.getTimeSignature();
 			}

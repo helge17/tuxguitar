@@ -22,7 +22,7 @@ public class TGAudioSync {
 		if( delayTime > 0 ) {
 			synchronized (this.lock) {
 				try {
-					this.lock.wait((long) (delayTime / 1000000), (int) (delayTime % 1000000));
+					this.lock.wait((delayTime / 1000000), (int) (delayTime % 1000000));
 				} catch (InterruptedException e) {
 					throw new TGException(e);
 				}

@@ -185,7 +185,7 @@ public class TGTunerDialog implements TGTunerListener {
 				TGTunerDialog.this.fineTuner.setCurrentFrequency(-1);
 				Iterator<TGTuningString> it = TGTunerDialog.this.allStringButtons.iterator();
 				while (it.hasNext()) {
-					TGTuningString tmp = (TGTuningString)it.next();
+					TGTuningString tmp = it.next();
 					tmp.getStringButton().setSelected(false);
 				}
 			}

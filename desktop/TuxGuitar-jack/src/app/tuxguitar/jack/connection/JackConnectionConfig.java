@@ -26,7 +26,7 @@ public class JackConnectionConfig {
 
 		Iterator<JackConnection> it = this.jackConnectionManager.getJackConnections().iterator();
 		while( it.hasNext() ){
-			JackConnection jackConnection = (JackConnection) it.next();
+			JackConnection jackConnection = it.next();
 			if( connectionsBuffer.length() > 0 ){
 				connectionsBuffer.append(JACK_CONNECTIONS_SEPARATOR);
 			}

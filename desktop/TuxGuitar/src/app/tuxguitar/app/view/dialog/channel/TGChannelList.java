@@ -59,13 +59,13 @@ public class TGChannelList {
 
 			this.channelItems.add(tgChannelItem);
 		}
-		return (TGChannelItem)this.channelItems.get(index);
+		return this.channelItems.get(index);
 	}
 
 	public void loadProperties(){
 		Iterator<TGChannelItem> it = this.channelItems.iterator();
 		while( it.hasNext() ){
-			TGChannelItem tgChannelItem = (TGChannelItem)it.next();
+			TGChannelItem tgChannelItem = it.next();
 			tgChannelItem.loadProperties();
 		}
 	}
@@ -73,7 +73,7 @@ public class TGChannelList {
 	public void loadIcons(){
 		Iterator<TGChannelItem> it = this.channelItems.iterator();
 		while( it.hasNext() ){
-			TGChannelItem tgChannelItem = (TGChannelItem)it.next();
+			TGChannelItem tgChannelItem = it.next();
 			tgChannelItem.loadIcons();
 		}
 	}
@@ -87,7 +87,7 @@ public class TGChannelList {
 		}
 
 		for(int i = 0 ; i < channels.size() ; i ++) {
-			TGChannel channel = (TGChannel)channels.get(i);
+			TGChannel channel = channels.get(i);
 			TGChannelItem tgChannelItem = getOrCreateChannelItemAt(i);
 			tgChannelItem.loadChannel(channel);
 		}

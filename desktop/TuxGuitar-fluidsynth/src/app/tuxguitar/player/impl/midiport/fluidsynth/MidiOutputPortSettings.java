@@ -262,7 +262,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 	protected void addMidiPorts(UITable<String> table){
 		Iterator<String> it = getSoundfonts().iterator();
 		while(it.hasNext()){
-			String path = (String)it.next();
+			String path = it.next();
 			this.addMidiPort(table, path );
 		}
 	}

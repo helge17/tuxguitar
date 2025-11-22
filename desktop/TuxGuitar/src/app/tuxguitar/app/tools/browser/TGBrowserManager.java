@@ -43,7 +43,7 @@ public class TGBrowserManager {
 	public TGBrowserFactory getFactory(String type){
 		Iterator<TGBrowserFactory> factories = getFactories();
 		while(factories.hasNext()){
-			TGBrowserFactory factory = (TGBrowserFactory)factories.next();
+			TGBrowserFactory factory = factories.next();
 			if(factory.getType().equals(type)){
 				return factory;
 			}
@@ -64,7 +64,7 @@ public class TGBrowserManager {
 
 		int index = 0;
 		while(index < this.collections.size()){
-			TGBrowserCollection collection = (TGBrowserCollection)this.collections.get(index);
+			TGBrowserCollection collection = this.collections.get(index);
 			if(collection.getType().equals(factory.getType())){
 				removeCollection(collection);
 				continue;
@@ -104,7 +104,7 @@ public class TGBrowserManager {
 	public TGBrowserCollection getCollection(String type, TGBrowserSettings data){
 		Iterator<TGBrowserCollection> it = this.getCollections();
 		while( it.hasNext() ){
-			TGBrowserCollection collection = ( TGBrowserCollection ) it.next();
+			TGBrowserCollection collection = it.next();
 			if( collection.getType().equals(type) && collection.getData().getTitle().equals(data.getTitle()) && collection.getData().getData().equals(data.getData()) ){
 				return collection;
 			}
@@ -114,7 +114,7 @@ public class TGBrowserManager {
 
 	public TGBrowserCollection getCollection(int index){
 		if(index >= 0 && index < countCollections()){
-			return (TGBrowserCollection)this.collections.get(index);
+			return this.collections.get(index);
 		}
 		return null;
 	}

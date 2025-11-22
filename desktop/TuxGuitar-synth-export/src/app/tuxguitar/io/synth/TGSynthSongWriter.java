@@ -99,7 +99,7 @@ public class TGSynthSongWriter implements TGSongWriter {
 
 				Iterator<TGChannelParameter> parameters = tgChannel.getParameters();
 				while( parameters.hasNext() ){
-					TGChannelParameter parameter = (TGChannelParameter) parameters.next();
+					TGChannelParameter parameter = parameters.next();
 					midiChannel.sendParameter(parameter.getKey(), parameter.getValue());
 				}
 

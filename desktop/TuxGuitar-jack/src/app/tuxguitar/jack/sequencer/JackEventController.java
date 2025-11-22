@@ -24,7 +24,7 @@ public class JackEventController{
 		this.lastTick = this.tick;
 		this.tick = this.sequencer.getJackTickController().getTick();
 		for(int i = 0;i < this.events.size();i ++){
-			JackEvent event = (JackEvent)this.events.get(i);
+			JackEvent event = this.events.get(i);
 			if(shouldSend(event,this.tick,this.lastTick)){
 				this.sequencer.sendEvent(event);
 			}
@@ -78,7 +78,7 @@ public class JackEventController{
 	public List<long[]> getTempoChanges(){
 		List<long[]> tempoChanges = new ArrayList<long[]>();
 		for(int i = 0; i < this.events.size(); i ++){
-			JackEvent event = (JackEvent) this.events.get(i);
+			JackEvent event = this.events.get(i);
 			if(event.getType() == JackEvent.MIDI_SYSTEM_EVENT){
 				if(event.getData()[0] == 0x51){
 					int usq = ((event.getData()[1] & 0xff) | ((event.getData()[2] & 0xff) << 8) | ((event.getData()[3] & 0xff) << 16));

@@ -196,7 +196,7 @@ public class FileMenuItem extends TGMenuItem {
 
 			Iterator<TGTemplate> it = templateManager.getTemplates();
 			while( it.hasNext() ){
-				TGTemplate tgTemplate = (TGTemplate)it.next();
+				TGTemplate tgTemplate = it.next();
 
 				UIMenuActionItem uiMenuItem = this.newSong.getMenu().createActionItem();
 				uiMenuItem.setText(tgTemplate.getName());
@@ -261,7 +261,7 @@ public class FileMenuItem extends TGMenuItem {
 		List<URL> urls = TGFileHistory.getInstance(this.findContext()).getURLs();
 		this.historyFiles = new UIMenuActionItem[urls.size()];
 		for(int i = 0;i < this.historyFiles.length; i++){
-			URL url = (URL)urls.get(i);
+			URL url = urls.get(i);
 			this.historyFiles[i] = this.historyItem.getMenu().createActionItem();
 			this.historyFiles[i].setText(decode(url.toString()));
 			this.historyFiles[i].addSelectionListener(this.createOpenUrlActionProcessor(url));

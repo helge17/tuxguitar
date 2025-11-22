@@ -155,7 +155,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 
 		Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getBrowser().getContext()).getCollections();
 		while(it.hasNext()){
-			final TGBrowserCollection collection = (TGBrowserCollection)it.next();
+			final TGBrowserCollection collection = it.next();
 			if( collection.getData() != null) {
 				UIMenuActionItem openItem = this.openItem.getMenu().createActionItem();
 				openItem.setText(collection.getData().getTitle());
@@ -186,7 +186,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 
 		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
 		while(bookTypes.hasNext()){
-			final TGBrowserFactory bookType = (TGBrowserFactory)bookTypes.next();
+			final TGBrowserFactory bookType = bookTypes.next();
 			UIMenuActionItem item = this.newItem.getMenu().createActionItem();
 			item.setText(bookType.getName());
 			item.setImage(bookType.getIcon());

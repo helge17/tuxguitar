@@ -473,7 +473,7 @@ public class TGPiano {
 				TGVoice voice = this.beat.getVoice( v );
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
-					TGNote note = (TGNote) it.next();
+					TGNote note = it.next();
 					if( getRealNoteValue(note) == value ) {
 						TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGDeleteNoteAction.NAME);
 						tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE, note);
@@ -492,7 +492,7 @@ public class TGPiano {
 
 		List<TGString> strings = caret.getTrack().getStrings();
 		for(int i = 0;i < strings.size();i ++){
-			TGString string = (TGString)strings.get(i);
+			TGString string = strings.get(i);
 			if(value >= string.getValue()){
 				boolean emptyString = true;
 
