@@ -154,7 +154,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY, false);
 
 		loadProperty(properties, TGConfigKeys.SCROLLING_MAX_FPS, 40);
-		loadProperty(properties, TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION, 2);
+		loadProperty(properties, TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION, 1);
 
 	}
 

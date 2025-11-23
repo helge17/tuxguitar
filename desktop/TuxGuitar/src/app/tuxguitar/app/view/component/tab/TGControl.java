@@ -151,8 +151,8 @@ public class TGControl {
 						if (mode.isLoop()) {
 							lastPlayableIndex = Math.min(lastPlayableIndex, mode.getLoopEHeader()-1);
 						}
-						for (int i=Math.min(lastPlayableIndex, playedMeasure.getNumber() + this.discreteScrollingNbMeasuresAnticipation - 1); i>playedMeasure.getNumber(); i--) {
-							TGMeasureImpl followingMeasure = (TGMeasureImpl) playedMeasure.getTrack().getMeasure(i);
+						for (int i=Math.min(lastPlayableIndex, playedMeasure.getNumber() + this.discreteScrollingNbMeasuresAnticipation); i>playedMeasure.getNumber(); i--) {
+							TGMeasureImpl followingMeasure = (TGMeasureImpl) playedMeasure.getTrack().getMeasure(i-1);
 							if ((followingMeasure != null) && !this.tablature.getViewLayout().isFullyVisible(followingMeasure, this.canvas.getBounds()) ) {
 								anticipateScrolling = true;
 								break;
