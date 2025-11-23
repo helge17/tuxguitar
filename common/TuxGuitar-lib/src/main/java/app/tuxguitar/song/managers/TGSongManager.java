@@ -515,7 +515,7 @@ public class TGSongManager {
 	}
 
 	public void changeTempos(TGSong song, TGMeasureHeader header,TGTempo tempo,boolean toEnd){
-		TGTempo oldTempo = header.getTempo();
+		TGTempo oldTempo = header.getTempo().clone(getFactory());
 		Iterator<TGMeasureHeader> it = getMeasureHeadersAfter(song, header.getNumber() - 1).iterator();
 		while(it.hasNext()){
 			TGMeasureHeader nextHeader = it.next();
