@@ -246,10 +246,12 @@ public class TGControl {
 		if (direction == TGLayout.MODE_HORIZONTAL) {
 			pos = Math.round(playedMeasure.getPosX());
 			target = Math.round(this.tablature.getViewLayout().getFirstMeasureSpacing());
+			target += this.tablature.getViewLayout().getScrollingMarginPercent() * area.getWidth() / 100;
 		}
 		else if (direction == TGLayout.MODE_VERTICAL) {
 			pos = Math.round(playedMeasure.getPosY());
 			target = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
+			target += this.tablature.getViewLayout().getScrollingMarginPercent() * area.getHeight() / 100;
 		}
 		else {	// ??
 			return false;
