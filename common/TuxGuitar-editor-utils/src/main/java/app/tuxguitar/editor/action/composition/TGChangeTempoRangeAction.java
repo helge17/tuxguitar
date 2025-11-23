@@ -49,8 +49,8 @@ public class TGChangeTempoRangeAction extends TGActionBase {
 			boolean toEnd = (applyTo == APPLY_TO_ALL || applyTo == APPLY_TO_END);
 
 			TGMeasureHeader startHeader = tgSongManager.getMeasureHeaderAt(tgSong, start);
+			TGTempo oldTempo = startHeader != null ? startHeader.getTempo().clone(tgSongManager.getFactory()) : null;
 			if( startHeader != null ) {
-				TGTempo oldTempo = startHeader.getTempo();
 				Iterator<?> it = tgSongManager.getMeasureHeadersAfter(tgSong, startHeader.getNumber() - 1).iterator();
 				while(it.hasNext()){
 					TGMeasureHeader nextHeader = (TGMeasureHeader)it.next();
