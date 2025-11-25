@@ -785,8 +785,7 @@ public class TGMainToolBarConfigMap {
 				return ((style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0);
 			}
 		});
-		// TODO ICON
-		registerCheckable("transport.continuous-scrolling", TGToggleContinuousScrollingAction.NAME, null, new TGMainToolBarItemUpdater() {
+		registerCheckable("transport.continuous-scrolling", TGToggleContinuousScrollingAction.NAME, TGIconManager.TRANSPORT_CONTINUOUS_SCROLLING, new TGMainToolBarItemUpdater() {
 			@Override
 			public boolean checked(TGContext context, boolean isRunning) {
 				int style = TablatureEditor.getInstance(context).getTablature().getViewLayout().getStyle();

@@ -131,7 +131,7 @@ public class TransportMenuItem extends TGMenuItem {
 		this.loopSHeader.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_LOOP_START));
 		this.loopEHeader.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_LOOP_END));
 		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_HIGHLIGHT_PLAYED_BEAT));
-		// TODO ICON
+		this.continuousScrolling.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_CONTINUOUS_SCROLLING));
 	}
 
 	public void loadIcons(boolean force){

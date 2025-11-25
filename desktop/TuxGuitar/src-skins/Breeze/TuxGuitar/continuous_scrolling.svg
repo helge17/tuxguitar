@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg510"
+   width="22"
+   height="22"
+   version="1.2"
+   sodipodi:docname="continuous_scrolling.svg"
+   inkscape:version="1.4.2 (unknown)"
+   inkscape:export-filename="/home/guiv/tuxguitar/tuxguitar/desktop/TuxGuitar/share/skins/Breeze/continuous_scrolling.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="39.863636"
+     inkscape:cx="10.974915"
+     inkscape:cy="11"
+     inkscape:window-width="1920"
+     inkscape:window-height="1128"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg510" />
+  <path
+     id="path508"
+     d="m 14.337138,3.1647949 c -0.07609,-0.038719 -0.168516,-0.00863 -0.207232,0.067465 L 8.8871912,13.536177 C 8.716152,13.180718 8.3885902,12.884128 7.9974184,12.685096 7.4342272,12.39854 6.7795684,12.324909 6.1383088,12.36175 c -0.8412827,0.05614 -1.9529636,0.337799 -2.4561707,1.326791 -0.4333231,0.851643 0.092178,1.620222 0.8613706,2.011594 0.5631913,0.286556 1.21785,0.360186 1.8591105,0.323341 0.8412828,-0.05614 1.9529637,-0.337799 2.4561708,-1.326791 0.01899,-0.03731 0.033411,-0.07445 0.048737,-0.111451 0.00714,-0.0087 0.01607,-0.01592 0.021399,-0.02639 l 5.64736,-11.0991996 c 0.03872,-0.0761 0.0086,-0.1685126 -0.06747,-0.2072322 z"
+     fill="#232629"
+     style="stroke-width:0.780674" />
+  <rect
+     style="opacity:1;fill:#333333;stroke-width:2.85237"
+     id="rect1"
+     width="5.6693268"
+     height="0.75256556"
+     x="15.352336"
+     y="4.7411628"
+     ry="0.37628278"
+     inkscape:label="rect1" />
+  <rect
+     style="fill:#666666;stroke-width:2.56671"
+     id="rect1-6"
+     width="4.5906496"
+     height="0.75256556"
+     x="14.473204"
+     y="7.8882561"
+     ry="0.37628278"
+     inkscape:label="rect1" />
+  <rect
+     style="fill:#999999;stroke-width:2.22891"
+     id="rect1-6-2"
+     width="3.4618013"
+     height="0.75256556"
+     x="13.45496"
+     y="10.949829"
+     ry="0.37628278"
+     inkscape:label="rect1" />
+</svg>
