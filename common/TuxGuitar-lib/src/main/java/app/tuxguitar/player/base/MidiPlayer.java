@@ -17,7 +17,6 @@ import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
-import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.thread.TGThreadLoop;
