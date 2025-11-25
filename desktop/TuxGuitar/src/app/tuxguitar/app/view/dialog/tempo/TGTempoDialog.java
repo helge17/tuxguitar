@@ -35,7 +35,8 @@ public class TGTempoDialog {
 	public void show(final TGViewContext context) {
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGMeasureHeader header = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER);
-
+		final Boolean isSelectionActive = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SELECTION_IS_ACTIVE);
+		
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
@@ -96,16 +97,20 @@ public class TGTempoDialog {
 
 		final UIRadioButton applyToAllMeasures = uiFactory.createRadioButton(options);
 		applyToAllMeasures.setText(TuxGuitar.getProperty("composition.tempo.start-to-end"));
-		applyToAllMeasures.setSelected(true);
 		optionsLayout.set(applyToAllMeasures, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		final UIRadioButton applyToEnd = uiFactory.createRadioButton(options);
 		applyToEnd.setText(TuxGuitar.getProperty("composition.tempo.position-to-end"));
 		optionsLayout.set(applyToEnd, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
-		final UIRadioButton applyToNext = uiFactory.createRadioButton(options);
-		applyToNext.setText(TuxGuitar.getProperty("composition.tempo.position-to-next"));
-		optionsLayout.set(applyToNext, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		final UIRadioButton applyToNextOrSelection = uiFactory.createRadioButton(options);
+		if (isSelectionActive) {
+			applyToNextOrSelection.setText(TuxGuitar.getProperty("composition.tempo.position-to-selection"));
+		} else {
+			applyToNextOrSelection.setText(TuxGuitar.getProperty("composition.tempo.position-to-next"));
+		}
+		optionsLayout.set(applyToNextOrSelection, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		applyToNextOrSelection.setSelected(true);
 
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
@@ -119,7 +124,7 @@ public class TGTempoDialog {
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				Integer value = tempo.getValue();
-				Integer applyTo = parseApplyTo(applyToAllMeasures, applyToEnd, applyToNext);
+				Integer applyTo = parseApplyTo(applyToAllMeasures, applyToEnd, applyToNextOrSelection, isSelectionActive);
 
 				changeTempo(context.getContext(), song, header, TGTempoDialog.this.selectedBase , TGTempoDialog.this.selectedDotted, value, applyTo);
 				dialog.dispose();
@@ -140,15 +145,15 @@ public class TGTempoDialog {
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 
-	private Integer parseApplyTo(UIRadioButton applyToAll, UIRadioButton applyToEnd, UIRadioButton applyToNext) {
+	private Integer parseApplyTo(UIRadioButton applyToAll, UIRadioButton applyToEnd, UIRadioButton applyToNextOrSelection, boolean isSelectionActive) {
 		if( applyToAll.isSelected() ) {
 			return TGChangeTempoRangeAction.APPLY_TO_ALL;
 		}
 		if( applyToEnd.isSelected() ) {
 			return TGChangeTempoRangeAction.APPLY_TO_END;
 		}
-		if( applyToNext.isSelected() ) {
-			return TGChangeTempoRangeAction.APPLY_TO_NEXT;
+		if( applyToNextOrSelection.isSelected() ) {
+			return isSelectionActive ? TGChangeTempoRangeAction.APPLY_TO_SELECTION : TGChangeTempoRangeAction.APPLY_TO_NEXT;
 		}
 		return 0;
 	}
