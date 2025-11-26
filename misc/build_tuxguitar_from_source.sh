@@ -24,6 +24,9 @@ DIST_DIR=`pwd`/00-Binary_Packages
 # Current git branch
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
+# Version placeholder in source code
+TGDEVVER=9.99-SNAPSHOT
+
 # Current source version
 TGSRCVER=`grep 'CURRENT = new TGVersion' common/TuxGuitar-lib/src/main/java/app/tuxguitar/util/TGVersion.java | awk -F '[(,)]' '{ print $2"."$3"."$4 }'`
 
@@ -222,10 +225,10 @@ fi
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
 
-echo -e "\n# Change build version from 9.99-SNAPSHOT to $TGVERSION in config files ..."
-  find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/9.99-SNAPSHOT/$TGVERSION/" '{}' \;
-  # Also set the version in the "Help - About" dialog
-  sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
+echo -e "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ..."
+find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
+# Also set the version in the "Help - About" dialog
+sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."
 
 echo $TGVERSION > .build-version
@@ -425,7 +428,7 @@ function start_remote_bsd_build {
 BUILD_HOST=$USER@172.16.208.131
 
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ on $BUILD_HOST ..."
-SRC_PATH=/home/$USER/tg-1.x-build-bsd
+SRC_PATH=/home/$USER/tg-build-bsd
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
@@ -471,7 +474,7 @@ function start_remote_macos_build {
 BUILD_HOST=$USER@172.16.208.133
 
 echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP on $BUILD_HOST ..."
-SRC_PATH=/Users/$USER/tg-1.x-build-macos
+SRC_PATH=/Users/$USER/tg-build-macos
 echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
 ssh $BUILD_HOST mkdir -p $SRC_PATH
 rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
