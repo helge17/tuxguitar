@@ -33,10 +33,6 @@ public abstract class TGLayout {
 	public static final int HIGHLIGHT_PLAYED_BEAT = 0x80;
 	public static final int CONTINUOUS_SCROLL = 0x0100;
 
-	// margin for continuous scrolling, relative to the area size
-	// can be overloaded by sub-class
-	protected int scrollingMarginPercent;
-
 	private int style;
 	private float scale;
 	private float fontScale;
@@ -106,7 +102,6 @@ public abstract class TGLayout {
 		if((this.style & DISPLAY_TABLATURE) == 0 && (this.style & DISPLAY_SCORE) == 0 ){
 			this.style |= DISPLAY_TABLATURE;
 		}
-		this.scrollingMarginPercent = 0;
 	}
 
 	public void loadStyles(){
@@ -837,10 +832,6 @@ public abstract class TGLayout {
 	public Integer getTimeToNextScrollMs(int measureIndex) {
 		if (measureIndex >= this.timeToNextScrollMs.size()) return null;
 		return this.timeToNextScrollMs.get(measureIndex);
-	}
-
-	public int getScrollingMarginPercent() {
-		return this.scrollingMarginPercent;
 	}
 
 	public boolean isFullyVisible(TGMeasureImpl measure, UIRectangle area) {

@@ -126,5 +126,7 @@ public class TGConfigKeys {
 	public static final String CHORD_INSERT_DIAGRAM_ONLY = "chord.insert-diagram-only";
 
 	public static final String SCROLLING_MAX_FPS = "scrolling.continuous.maxFPS";
+	public static final String SCROLLING_HORIZONTAL_MARGIN_PERCENT = "scrolling.continuous.horizontal.margin-percent";
+	public static final String SCROLLING_VERTICAL_MARGIN_PERCENT = "scrolling.continuous.vertical.margin-percent";
 	public static final String SCROLLING_DISCRETE_ANTICIPATION = "scrolling.discrete.nb-measures-anticipation";
 }

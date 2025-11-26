@@ -55,6 +55,8 @@ public class TGControl {
 	private int lastLayoutStyle;
 	private int lastLayoutMode;
 	private int discreteScrollingNbMeasuresAnticipation;
+	private int horizontalMarginPercent;
+	private int verticalMarginPercent;
 
 	private boolean painting;
 	private boolean wasPlaying;
@@ -64,6 +66,8 @@ public class TGControl {
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
 		this.tabScroll = new TablatureScrollPlaying(context);
 		this.discreteScrollingNbMeasuresAnticipation = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION);
+		this.horizontalMarginPercent = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT);
+		this.verticalMarginPercent = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT);
 		this.initialize(parent);
 	}
 
@@ -246,12 +250,12 @@ public class TGControl {
 		if (direction == TGLayout.MODE_HORIZONTAL) {
 			pos = Math.round(playedMeasure.getPosX());
 			target = Math.round(this.tablature.getViewLayout().getFirstMeasureSpacing());
-			target += this.tablature.getViewLayout().getScrollingMarginPercent() * area.getWidth() / 100;
+			target += this.horizontalMarginPercent * area.getWidth() / 100;
 		}
 		else if (direction == TGLayout.MODE_VERTICAL) {
 			pos = Math.round(playedMeasure.getPosY());
 			target = Math.round(this.tablature.getViewLayout().getFirstTrackSpacing());
-			target += this.tablature.getViewLayout().getScrollingMarginPercent() * area.getHeight() / 100;
+			target += this.verticalMarginPercent * area.getHeight() / 100;
 		}
 		else {	// ??
 			return false;

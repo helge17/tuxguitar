@@ -155,7 +155,8 @@ public class TGConfigDefaults{
 
 		loadProperty(properties, TGConfigKeys.SCROLLING_MAX_FPS, 40);
 		loadProperty(properties, TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION, 1);
-
+		loadProperty(properties, TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT, 20);
+		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT, 0);
 	}
 
 	public static List<String> getKeys() {

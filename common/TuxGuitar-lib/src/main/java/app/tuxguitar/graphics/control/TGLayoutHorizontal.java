@@ -23,7 +23,6 @@ public class TGLayoutHorizontal extends TGLayout{
 
 	public TGLayoutHorizontal(TGController controller,int style){
 		super(controller,style);
-		this.scrollingMarginPercent = 20;
 	}
 
 	public int getMode(){
