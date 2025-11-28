@@ -28,7 +28,6 @@ import javax.sound.midi.MidiChannel;
 import javax.sound.midi.Patch;
 import javax.sound.sampled.AudioFormat;
 
-
 /**
  * This class is used to map instrument to another patch.
  *

@@ -24,8 +24,6 @@
  */
 package media.sound;
 
-import media.sound.InvalidFormatException;
-
 /**
  * This exception is used when a reader is used to read RIFF file of a format it
  * doesn't understand or support.

@@ -24,7 +24,6 @@
  */
 package media.sound;
 
-
 /**
  * This class is used to identify destinations in connection blocks,
  * see ModelConnectionBlock.

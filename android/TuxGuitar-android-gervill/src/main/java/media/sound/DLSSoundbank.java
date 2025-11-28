@@ -46,8 +46,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat.Encoding;
 
-
-
 /**
  * A DLS Level 1 and Level 2 soundbank reader (from files/url/streams).
  *

@@ -24,9 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftProcess;
-import media.sound.SoftSynthesizer;
-
 /**
  * AHDSR control signal envelope generator.
  *

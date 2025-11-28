@@ -38,8 +38,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-
-
 /**
  * Soundbank reader that uses audio files as soundbanks.
  *

@@ -26,14 +26,7 @@ package media.sound;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sound.midi.Patch;
-
-import media.sound.ModelInstrument;
-import media.sound.ModelPatch;
-import media.sound.ModelPerformer;
-
-
 
 /**
  * A simple instrument that is made of other ModelInstrument, ModelPerformer

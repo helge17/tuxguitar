@@ -24,7 +24,6 @@
  */
 package media.sound;
 
-
 /**
  * A standard director who chooses performers
  * by there keyfrom,keyto,velfrom,velto properties.

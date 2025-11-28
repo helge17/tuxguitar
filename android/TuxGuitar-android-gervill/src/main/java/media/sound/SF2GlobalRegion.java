@@ -24,8 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SF2Region;
-
 /**
  * Soundfont global region.
  *

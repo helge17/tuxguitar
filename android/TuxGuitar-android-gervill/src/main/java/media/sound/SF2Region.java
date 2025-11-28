@@ -29,9 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import media.sound.SF2Modulator;
-
-
 /**
  * Soundfont general region.
  *

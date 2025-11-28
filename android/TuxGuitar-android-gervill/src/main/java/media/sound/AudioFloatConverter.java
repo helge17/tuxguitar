@@ -32,7 +32,6 @@ import java.nio.FloatBuffer;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
 
-
 /**
  * This class is used to convert between 8,16,24,32,32+ bit signed/unsigned
  * big/little endian fixed/floating point byte buffers and float buffers.

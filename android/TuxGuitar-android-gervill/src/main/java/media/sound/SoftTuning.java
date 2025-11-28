@@ -28,7 +28,6 @@ import java.io.UnsupportedEncodingException;
 
 import javax.sound.midi.Patch;
 
-
 /**
  * A tuning program container, for use with MIDI Tuning.
  * See: http://www.midi.org

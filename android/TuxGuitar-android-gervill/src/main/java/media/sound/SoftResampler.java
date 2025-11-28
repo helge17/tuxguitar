@@ -24,8 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftResamplerStreamer;
-
 /**
  * Basic resampler interface.
  *

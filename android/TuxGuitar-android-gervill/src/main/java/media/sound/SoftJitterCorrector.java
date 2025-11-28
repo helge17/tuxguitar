@@ -31,8 +31,6 @@ import java.io.InputStream;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-
-
 /**
  * A jitter corrector to be used with SoftAudioPusher.
  *
@@ -218,6 +216,7 @@ public class SoftJitterCorrector extends AudioInputStream {
             };
 
             thread = new Thread(runnable);
+            thread.setDaemon(true);
             thread.setPriority(Thread.MAX_PRIORITY);
             thread.start();
         }

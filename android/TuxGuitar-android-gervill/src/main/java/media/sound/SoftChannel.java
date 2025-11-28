@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 Sun Microsystems, Inc.  All Rights Reserved.
+ * Copyright 2007-2010 Sun Microsystems, Inc.  All Rights Reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -33,8 +33,6 @@ import java.util.Map;
 
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.Patch;
-
-
 
 /**
  * Software Synthesizer MIDI channel class.
@@ -95,7 +93,6 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     protected double portamento_time = 1; // keyschanges per control buffer time
     protected int[] portamento_lastnote = new int[128];
     protected int portamento_lastnote_ix = 0;
-    private int portamento_control_note = -1;
     private boolean portamento = false;
     private boolean mono = false;
     private boolean mute = false;
@@ -119,7 +116,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     protected int tuning_program = 0;
     protected SoftInstrument current_instrument = null;
     protected ModelChannelMixer current_mixer = null;
-    private ModelDirector current_director = null;
+    protected ModelDirector current_director = null;
 
     // Controller Destination Settings
     protected int cds_control_number = -1;
@@ -221,6 +218,15 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     }
 
     private int findFreeVoice(int x) {
+        if(x == -1)
+        {
+            // x = -1 means that there where no available voice
+            // last time we called findFreeVoice
+            // and it hasn't changed because no audio has been
+            // rendered in the meantime.
+            // Therefore we have to return -1.
+            return -1;
+        }
         for (int i = x; i < voices.length; i++)
             if (!voices[i].active)
                 return i;
@@ -288,9 +294,9 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
         } else {
             // Default Voice Allocation
             //  * Find voice that is on
-            //  	and Find voice which has lowest voiceID ( oldest voice)
+            //      and Find voice which has lowest voiceID ( oldest voice)
             //  * Or find voice that is off
-            //  	and Find voice which has lowest voiceID ( oldest voice)
+            //      and Find voice which has lowest voiceID ( oldest voice)
 
             int voiceNo = -1;
 
@@ -331,7 +337,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     }
 
     protected void initVoice(SoftVoice voice, SoftPerformer p, int voiceID,
-            int noteNumber, int velocity, ModelConnectionBlock[] connectionBlocks,
+            int noteNumber, int velocity, int delay, ModelConnectionBlock[] connectionBlocks,
             ModelChannelMixer channelmixer, boolean releaseTriggered) {
         if (voice.active) {
             // Voice is active , we must steal the voice
@@ -366,17 +372,17 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
         voice.objects.put("midi_cc", co_midi_cc);
         voice.objects.put("midi_rpn", co_midi_rpn);
         voice.objects.put("midi_nrpn", co_midi_nrpn);
-        voice.noteOn(noteNumber, velocity);
+        voice.noteOn(noteNumber, velocity, delay);
         voice.setMute(mute);
         voice.setSoloMute(solomute);
         if (releaseTriggered)
             return;
-        if (portamento_control_note != -1) {
+        if (controller[84] != 0) {
             voice.co_noteon_keynumber[0]
-                    = (tuning.getTuning(portamento_control_note) / 100.0)
+                    = (tuning.getTuning(controller[84]) / 100.0)
                     * (1f / 128f);
             voice.portamento = true;
-            portamento_control_note = -1;
+            controlChange(84, 0);
         } else if (portamento) {
             if (mono) {
                 if (portamento_lastnote[0] != -1) {
@@ -384,7 +390,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
                             = (tuning.getTuning(portamento_lastnote[0]) / 100.0)
                             * (1f / 128f);
                     voice.portamento = true;
-                    portamento_control_note = -1;
+                    controlChange(84, 0);
                 }
                 portamento_lastnote[0] = noteNumber;
             } else {
@@ -402,14 +408,21 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     }
 
     public void noteOn(int noteNumber, int velocity) {
+        noteOn(noteNumber, velocity, 0);
+    }
+
+    /* A special noteOn with delay parameter, which is used to
+     * start note within control buffers.
+     */
+    protected void noteOn(int noteNumber, int velocity, int delay) {
         noteNumber = restrict7Bit(noteNumber);
         velocity = restrict7Bit(velocity);
-        noteOn_internal(noteNumber, velocity);
+        noteOn_internal(noteNumber, velocity, delay);
         if (current_mixer != null)
             current_mixer.noteOn(noteNumber, velocity);
     }
 
-    private void noteOn_internal(int noteNumber, int velocity) {
+    private void noteOn_internal(int noteNumber, int velocity, int delay) {
 
         if (velocity == 0) {
             noteOff_internal(noteNumber, 64);
@@ -451,19 +464,19 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
                     }
                 }
 
-                if (portamento_control_note != -1) {
+                if (controller[84] != 0) {
                     boolean n_found = false;
                     for (int i = 0; i < voices.length; i++) {
                         if (voices[i].on && voices[i].channel == channel
                                 && voices[i].active
-                                && voices[i].note == portamento_control_note
+                                && voices[i].note == controller[84]
                                 && voices[i].releaseTriggered == false) {
                             voices[i].portamento = true;
                             voices[i].setNote(noteNumber);
                             n_found = true;
                         }
                     }
-                    portamento_control_note = -1;
+                    controlChange(84, 0);
                     if (n_found)
                         return;
                 }
@@ -493,6 +506,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             int tunedKey = (int)(Math.round(tuning.getTuning()[noteNumber]/100.0));
             play_noteNumber = noteNumber;
             play_velocity = velocity;
+            play_delay = delay;
             play_releasetriggered = false;
             lastVelocity[noteNumber] = velocity;
             current_director.noteOn(tunedKey, velocity);
@@ -558,6 +572,18 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
                         && voices[i].releaseTriggered == false) {
                     voices[i].noteOff(velocity);
                 }
+                // We must also check stolen voices
+                if (voices[i].stealer_channel == this && voices[i].stealer_noteNumber == noteNumber) {
+                    SoftVoice v = voices[i];
+                    v.stealer_releaseTriggered = false;
+                    v.stealer_channel = null;
+                    v.stealer_performer = null;
+                    v.stealer_voiceID = -1;
+                    v.stealer_noteNumber = 0;
+                    v.stealer_velocity = 0;
+                    v.stealer_extendedConnectionBlocks = null;
+                    v.stealer_channelmixer = null;
+                }
             }
 
             // Try play back note-off triggered voices,
@@ -585,6 +611,7 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             play_noteNumber = noteNumber;
             play_velocity = lastVelocity[noteNumber];
             play_releasetriggered = true;
+            play_delay = 0;
             current_director.noteOff(tunedKey, velocity);
 
         }
@@ -595,12 +622,14 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     private int voiceNo = 0;
     private int play_noteNumber = 0;
     private int play_velocity = 0;
+    private int play_delay = 0;
     private boolean play_releasetriggered = false;
 
     public void play(int performerIndex, ModelConnectionBlock[] connectionBlocks) {
 
         int noteNumber = play_noteNumber;
         int velocity = play_velocity;
+        int delay = play_delay;
         boolean releasetriggered = play_releasetriggered;
 
         SoftPerformer p = current_instrument.getPerformers()[performerIndex];
@@ -619,12 +648,12 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
             }
         }
 
-        voiceNo = findFreeVoice(Math.max(voiceNo, 0));
+        voiceNo = findFreeVoice(voiceNo);
 
         if (voiceNo == -1)
             return;
 
-        initVoice(voices[voiceNo], p, prevVoiceID, noteNumber, velocity,
+        initVoice(voices[voiceNo], p, prevVoiceID, noteNumber, velocity, delay,
                 connectionBlocks, current_mixer, releasetriggered);
     }
 
@@ -1143,9 +1172,6 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
                     }
                 }
                 break;
-            case 84:
-                portamento_control_note = value;
-                break;
             case 98:
                 nrpn_control = (nrpn_control & (127 << 7)) + value;
                 rpn_control = RPN_NULL_VALUE;
@@ -1217,7 +1243,9 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
 
     public int getController(int controller) {
         synchronized (control_mutex) {
-            return this.controller[controller];
+            // Should only return lower 7 bits,
+            // even when controller is "boosted" higher.
+            return this.controller[controller] & 127;
         }
     }
 
@@ -1236,13 +1264,16 @@ public class SoftChannel implements MidiChannel, ModelDirectedPlayer {
     }
 
     public void programChange(int bank, int program) {
-        bank = restrict7Bit(bank);
+        bank = restrict14Bit(bank);
         program = restrict7Bit(program);
         synchronized (control_mutex) {
             mainmixer.activity();
-            this.bank = bank;
-            this.program = program;
-            current_instrument = null;
+            if(this.bank != bank || this.program != program)
+            {
+                this.bank = bank;
+                this.program = program;
+                current_instrument = null;
+            }
         }
     }
 

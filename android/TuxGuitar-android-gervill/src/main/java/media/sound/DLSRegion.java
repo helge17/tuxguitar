@@ -27,7 +27,6 @@ package media.sound;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * This class is used to store region parts for instrument.
  * A region has a velocity and key range which it response to.

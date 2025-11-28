@@ -35,8 +35,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-
-
 /**
  * This class is used to create AudioFloatInputStream from AudioInputStream and
  * byte buffers.

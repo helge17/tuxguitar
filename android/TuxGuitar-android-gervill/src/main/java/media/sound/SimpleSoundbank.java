@@ -33,11 +33,6 @@ import javax.sound.midi.Patch;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.SoundbankResource;
 
-import media.sound.ModelInstrumentComparator;
-import media.sound.ModelPatch;
-
-
-
 /**
  * A simple soundbank that contains instruments and soundbankresources.
  *

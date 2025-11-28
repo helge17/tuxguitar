@@ -28,15 +28,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.spi.SoundbankReader;
-
-import media.sound.RIFFInvalidFormatException;
-import media.sound.SF2Soundbank;
-
-
 
 /**
  * This class is used to connect the SF2SoundBank class
@@ -51,6 +45,8 @@ public class SF2SoundbankReader extends SoundbankReader {
         try {
             return new SF2Soundbank(url);
         } catch (RIFFInvalidFormatException e) {
+            return null;
+        } catch(IOException ioe) {
             return null;
         }
     }

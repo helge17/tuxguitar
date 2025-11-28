@@ -29,12 +29,6 @@ import java.util.List;
 
 import javax.sound.midi.SoundbankResource;
 
-import media.sound.SF2GlobalRegion;
-import media.sound.SF2LayerRegion;
-import media.sound.SF2Soundbank;
-
-
-
 /**
  * Soundfont layer.
  *

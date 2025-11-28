@@ -26,14 +26,10 @@ package media.sound;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat.Encoding;
-
-
-
 
 /**
  * Wavetable oscillator for pre-loaded data.
@@ -209,7 +205,8 @@ public class ModelByteBufferWavetable implements ModelWavetable {
         }
         if (buffer.array() == null) {
             return AudioFloatInputStream.getInputStream(new AudioInputStream(
-                    buffer.getInputStream(), format, buffer.capacity()));
+                    buffer.getInputStream(), format,
+                    buffer.capacity() / format.getFrameSize()));
         }
         if (buffer8 != null) {
             if (format.getEncoding().equals(Encoding.PCM_SIGNED)

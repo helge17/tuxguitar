@@ -24,9 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftControl;
-import media.sound.SoftSynthesizer;
-
 /**
  * Control signal processor interface
  *

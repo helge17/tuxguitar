@@ -31,7 +31,6 @@ import java.util.Map;
 
 import javax.sound.midi.Patch;
 
-
 /**
  * This class is used to store information to describe instrument.
  * It contains list of regions and modulators.

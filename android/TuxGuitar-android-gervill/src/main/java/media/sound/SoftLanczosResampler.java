@@ -24,8 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftAbstractResampler;
-
 /**
  * Lanczos interpolation resampler.
  *

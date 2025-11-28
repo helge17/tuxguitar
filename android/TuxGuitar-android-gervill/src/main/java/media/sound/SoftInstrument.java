@@ -27,13 +27,6 @@ package media.sound;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 
-import media.sound.ModelDirectedPlayer;
-import media.sound.ModelDirector;
-import media.sound.ModelInstrument;
-import media.sound.ModelPerformer;
-import media.sound.SoftPerformer;
-
-
 /**
  * Software synthesizer internal instrument.
  *

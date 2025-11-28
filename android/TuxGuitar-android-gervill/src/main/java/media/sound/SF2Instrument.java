@@ -31,29 +31,6 @@ import java.util.Map;
 
 import javax.sound.midi.Patch;
 
-import media.sound.ModelByteBuffer;
-import media.sound.ModelByteBufferWavetable;
-import media.sound.ModelConnectionBlock;
-import media.sound.ModelDestination;
-import media.sound.ModelIdentifier;
-import media.sound.ModelInstrument;
-import media.sound.ModelPatch;
-import media.sound.ModelPerformer;
-import media.sound.ModelSource;
-import media.sound.ModelStandardTransform;
-import media.sound.ModelTransform;
-import media.sound.ModelWavetable;
-import media.sound.SF2GlobalRegion;
-import media.sound.SF2InstrumentRegion;
-import media.sound.SF2Layer;
-import media.sound.SF2LayerRegion;
-import media.sound.SF2Modulator;
-import media.sound.SF2Region;
-import media.sound.SF2Sample;
-import media.sound.SF2Soundbank;
-
-
-
 /**
  * Soundfont instrument.
  *

@@ -35,7 +35,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFileFormat.Type;
 import javax.sound.sampled.spi.AudioFileWriter;
 
-
 /**
  * Floating-point encoded (format 3) WAVE file writer.
  *

@@ -31,16 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import media.sound.ModelConnectionBlock;
-import media.sound.ModelDestination;
-import media.sound.ModelIdentifier;
-import media.sound.ModelOscillator;
-import media.sound.ModelPerformer;
-import media.sound.ModelSource;
-import media.sound.ModelStandardTransform;
-import media.sound.ModelTransform;
-
-
 /**
  * This class decodes information from ModelPeformer for use in SoftVoice.
  * It also adds default connections if they where missing in ModelPerformer.

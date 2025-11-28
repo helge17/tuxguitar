@@ -24,8 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftAbstractResampler;
-
 /**
  * A resampler that uses third-order (cubic) interpolation.
  *

@@ -38,7 +38,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.spi.AudioFileReader;
 
-
 /**
  * Floating-point encoded (format 3) WAVE file loader.
  *

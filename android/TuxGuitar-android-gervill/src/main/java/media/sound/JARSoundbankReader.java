@@ -32,12 +32,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.spi.SoundbankReader;
-
-
 
 /**
  * JarSoundbankReader is used to read sounbank object from jar files.

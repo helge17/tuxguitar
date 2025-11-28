@@ -29,7 +29,6 @@ import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.SourceDataLine;
 
-
 /**
  * This is a processor object that writes into SourceDataLine
  *
@@ -55,6 +54,7 @@ public class SoftAudioPusher implements Runnable {
             return;
         active = true;
         audiothread = new Thread(this);
+        audiothread.setDaemon(true);
         audiothread.setPriority(Thread.MAX_PRIORITY);
         audiothread.start();
     }

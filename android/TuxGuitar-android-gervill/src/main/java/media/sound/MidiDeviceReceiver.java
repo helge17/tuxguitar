@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 Sun Microsystems, Inc.  All Rights Reserved.
+ * Copyright 2009 Sun Microsystems, Inc.  All Rights Reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,27 +25,17 @@
 package media.sound;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiDevice.Info;
-import javax.sound.midi.spi.MidiDeviceProvider;
+import javax.sound.midi.Receiver;
 
 /**
- * Software synthesizer provider class.
+ * A Receiver with reference to it's MidiDevice object.
  *
  * @author Karl Helgason
  */
-public class SoftProvider extends MidiDeviceProvider {
+public interface MidiDeviceReceiver extends Receiver {
 
-    protected final static Info softinfo = SoftSynthesizer.info;
-    private static Info[] softinfos = {softinfo};
+    /** Obtains the MidiDevice object associated with this Receiver.
+     */
+    public MidiDevice getMidiDevice();
 
-    public MidiDevice.Info[] getDeviceInfo() {
-        return softinfos;
-    }
-
-    public MidiDevice getDevice(MidiDevice.Info info) {
-        if (info == softinfo) {
-            return new SoftSynthesizer();
-        }
-        return null;
-    }
 }

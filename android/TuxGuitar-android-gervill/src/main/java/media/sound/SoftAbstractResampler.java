@@ -30,13 +30,6 @@ import java.util.Arrays;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.VoiceStatus;
 
-import media.sound.AudioFloatInputStream;
-import media.sound.ModelWavetable;
-import media.sound.SoftResampler;
-import media.sound.SoftResamplerStreamer;
-
-
-
 /**
  * Abstract resampler class.
  *

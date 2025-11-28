@@ -26,10 +26,6 @@ package media.sound;
 
 import java.io.IOException;
 
-import media.sound.ModelOscillatorStream;
-import media.sound.ModelWavetable;
-
-
 /**
  * Resampler stream interface.
  *

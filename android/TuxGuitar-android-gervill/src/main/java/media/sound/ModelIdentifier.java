@@ -24,7 +24,6 @@
  */
 package media.sound;
 
-
 /**
  * This class stores the identity of source and destinations in connection
  * blocks, see ModelConnectionBlock.

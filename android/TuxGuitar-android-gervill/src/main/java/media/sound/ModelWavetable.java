@@ -24,7 +24,6 @@
  */
 package media.sound;
 
-
 /**
  * This is a wavetable oscillator interface.
  *

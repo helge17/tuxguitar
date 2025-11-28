@@ -24,8 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftAbstractResampler;
-
 /**
  * Hann windowed sinc interpolation resampler with anti-alias filtering.
  *

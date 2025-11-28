@@ -24,9 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SF2Region;
-import media.sound.SF2Sample;
-
 /**
  * Soundfont layer region.
  *

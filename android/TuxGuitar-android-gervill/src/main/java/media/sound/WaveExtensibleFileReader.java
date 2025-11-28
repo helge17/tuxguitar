@@ -41,7 +41,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.spi.AudioFileReader;
 
-
 /**
  * WAVE file reader for files using format WAVE_FORMAT_EXTENSIBLE (0xFFFE).
  *

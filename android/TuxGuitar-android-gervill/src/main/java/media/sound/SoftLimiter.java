@@ -24,9 +24,6 @@
  */
 package media.sound;
 
-import media.sound.SoftAudioBuffer;
-import media.sound.SoftAudioProcessor;
-
 /**
  * A simple look-ahead volume limiter with very fast attack and fast release.
  * This filter is used for preventing clipping.
@@ -82,7 +79,7 @@ public class SoftLimiter implements SoftAudioProcessor {
             if (silentcounter > 60) {
                 if (!mix) {
                     bufferLout.clear();
-                    bufferRout.clear();
+                    if(bufferRout != null) bufferRout.clear();
                 }
                 return;
             }
