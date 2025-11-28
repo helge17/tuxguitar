@@ -1,4 +1,4 @@
-com.sun.media.sound.SF2SoundbankReader
-com.sun.media.sound.DLSSoundbankReader
-com.sun.media.sound.AudioFileSoundbankReader
-com.sun.media.sound.JARSoundbankReader
+media.sound.SF2SoundbankReader
+media.sound.DLSSoundbankReader
+media.sound.AudioFileSoundbankReader
+media.sound.JARSoundbankReader

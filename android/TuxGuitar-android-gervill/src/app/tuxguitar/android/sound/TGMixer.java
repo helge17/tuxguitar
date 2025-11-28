@@ -16,7 +16,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.AudioFormat.Encoding;
 
-import com.sun.media.sound.AudioFloatConverter;
+import media.sound.AudioFloatConverter;
 
 
 public class TGMixer extends TGAbstractLine implements Mixer {

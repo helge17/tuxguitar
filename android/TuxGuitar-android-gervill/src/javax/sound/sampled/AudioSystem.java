@@ -53,7 +53,7 @@ import javax.sound.sampled.spi.FormatConversionProvider;
 import javax.sound.sampled.spi.MixerProvider;
 
 
-//import mod.com.sun.media.sound.JDK13Services;
+//import mod.media.sound.JDK13Services;
 
 /* $fb TODO:
  * - consistent usage of (typed) collections
@@ -144,11 +144,11 @@ import javax.sound.sampled.spi.MixerProvider;
  *
  * For example, the property <code>javax.sound.sampled.Clip</code>
  * with a value
- * <code>&quot;com.sun.media.sound.MixerProvider#SunClip&quot;</code>
+ * <code>&quot;media.sound.MixerProvider#SunClip&quot;</code>
  * will have the following consequences when
  * <code>getLine</code> is called requesting a <code>Clip</code>
  * instance:
- * if the class <code>com.sun.media.sound.MixerProvider</code> exists
+ * if the class <code>media.sound.MixerProvider</code> exists
  * in the list of installed mixer providers,
  * the first <code>Clip</code> from the first mixer with name
  * <code>&quot;SunClip&quot;</code> will be returned. If it cannot
