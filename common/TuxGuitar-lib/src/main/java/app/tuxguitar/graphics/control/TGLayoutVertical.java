@@ -41,6 +41,7 @@ public class TGLayoutVertical extends TGLayout{
 		this.setHeight(0);
 		this.setWidth(0);
 		this.clearTrackPositions();
+		this.measureLines = new ArrayList<Integer>();
 
 		int style = getStyle();
 		int number = getComponent().getTrackSelection();
@@ -50,6 +51,7 @@ public class TGLayoutVertical extends TGLayout{
 
 		int measureCount = getSong().countMeasureHeaders();
 		int nextMeasureIndex = 0;
+		int lineNb = 0;
 		while(measureCount > nextMeasureIndex){
 			TempLine line = null;
 			Iterator<TGTrack> tracks = getSong().getTracks();
@@ -97,6 +99,12 @@ public class TGLayoutVertical extends TGLayout{
 
 					posY += lineHeightWithSpacing;
 					height += lineHeightWithSpacing;
+					for (int mIndex : line.measures) {
+						if ((mIndex>=this.measureLines.size()) || (this.measureLines.get(mIndex) == 0)) {
+							this.measureLines.add(mIndex, lineNb);
+						}
+					}
+					lineNb++;
 				}
 			}
 			if(line != null){
@@ -107,6 +115,7 @@ public class TGLayoutVertical extends TGLayout{
 		this.setHeight(height);
 		this.setWidth( getWidth() + this.marginRight );
 		this.updateTimeToScroll();
+		
 	}
 
 	private void updateTimeToScroll() {

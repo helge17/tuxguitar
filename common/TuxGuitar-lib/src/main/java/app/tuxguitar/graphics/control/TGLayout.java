@@ -74,6 +74,7 @@ public abstract class TGLayout {
 
 	private List<TrackPosition> trackPositions;
 	protected List<Integer> timeToNextScrollMs;
+	protected List<Integer> measureLines;	// line number of first occurrence of a measure index (to set in sub-class, only meaningful for vertical layout)
 
 	private TGController controller;
 	private TGResources resources;
@@ -94,6 +95,7 @@ public abstract class TGLayout {
 		this.controller = controller;
 		this.trackPositions = new ArrayList<TrackPosition>();
 		this.timeToNextScrollMs = new ArrayList<Integer>();
+		this.measureLines = new ArrayList<Integer>();
 		this.playModeEnabled = false;
 		this.resources = new TGResources(this);
 		this.drumMap = new TGDrumMap();
@@ -854,6 +856,12 @@ public abstract class TGLayout {
 		return visible;
 	}
 
+	public int getMeasureLineNumber(int measureIndex) {
+		if ((measureIndex < 0) || (measureIndex >= this.measureLines.size())) {
+			return -1;
+		}
+		return this.measureLines.get(measureIndex);
+	}
 
 	public void disposeLayout(){
 		this.getResources().dispose();

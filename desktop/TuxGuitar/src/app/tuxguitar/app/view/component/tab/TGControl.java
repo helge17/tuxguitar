@@ -54,7 +54,7 @@ public class TGControl {
 	private float lastScale;
 	private int lastLayoutStyle;
 	private int lastLayoutMode;
-	private int discreteScrollingNbMeasuresAnticipation;
+	private int discreteScrollingAnticipation;
 	private int horizontalMarginPercent;
 	private int verticalMarginPercent;
 
@@ -65,7 +65,8 @@ public class TGControl {
 		this.context = context;
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
 		this.tabScroll = new TablatureScrollPlaying(context);
-		this.discreteScrollingNbMeasuresAnticipation = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION);
+		this.discreteScrollingAnticipation = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION);
+		this.discreteScrollingAnticipation = Math.max(0, this.discreteScrollingAnticipation);
 		this.horizontalMarginPercent = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT);
 		this.verticalMarginPercent = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT);
 		this.initialize(parent);
@@ -148,21 +149,8 @@ public class TGControl {
 						};
 					}
 					else {
-						// discrete scrolling, anticipate by a few measures
-						boolean anticipateScrolling = false;
-						int lastPlayableIndex = playedMeasure.getTrack().countMeasures()-1;
-						MidiPlayerMode mode = MidiPlayer.getInstance(this.context).getMode();
-						if (mode.isLoop()) {
-							lastPlayableIndex = Math.min(lastPlayableIndex, mode.getLoopEHeader()-1);
-						}
-						for (int i=Math.min(lastPlayableIndex, playedMeasure.getNumber() + this.discreteScrollingNbMeasuresAnticipation); i>playedMeasure.getNumber(); i--) {
-							TGMeasureImpl followingMeasure = (TGMeasureImpl) playedMeasure.getTrack().getMeasure(i-1);
-							if ((followingMeasure != null) && !this.tablature.getViewLayout().isFullyVisible(followingMeasure, this.canvas.getBounds()) ) {
-								anticipateScrolling = true;
-								break;
-							}
-						}
-						jumpTo(playedMeasure, anticipateScrolling);
+						// discrete scrolling, may anticipate by a few measures
+						jumpTo(playedMeasure, anticipateScrolling(playedMeasure,this.tablature.getViewLayout()));
 					}
 				}
 			} else {
@@ -239,6 +227,34 @@ public class TGControl {
 			throwable.printStackTrace();
 		}
 		this.painting = false;
+	}
+
+	private boolean anticipateScrolling(TGMeasureImpl playedMeasure, TGLayout layout) {
+		if (this.discreteScrollingAnticipation == 0) {
+			return false;
+		}
+		
+		boolean anticipateScrolling = false;
+		int lastPlayableIndex = playedMeasure.getTrack().countMeasures()-1;
+		MidiPlayerMode mode = MidiPlayer.getInstance(this.context).getMode();
+		if (mode.isLoop()) {
+			lastPlayableIndex = Math.min(lastPlayableIndex, mode.getLoopEHeader()-1);
+		}
+		int measureIndex = playedMeasure.getNumber();
+		boolean end = (playedMeasure.getTrack().getMeasure(measureIndex) == null) || (measureIndex > lastPlayableIndex);
+		while (!end) {
+			TGMeasureImpl followingMeasure = (TGMeasureImpl) playedMeasure.getTrack().getMeasure(measureIndex);
+			anticipateScrolling = !layout.isFullyVisible(followingMeasure, this.canvas.getBounds());
+			measureIndex++;
+			end = anticipateScrolling || (measureIndex > lastPlayableIndex);
+			if (layout.getMode() == TGLayout.MODE_HORIZONTAL) {
+				end |= (measureIndex > playedMeasure.getNumber() - 1 + this.discreteScrollingAnticipation);
+			}
+			else {
+				end |= (layout.getMeasureLineNumber(measureIndex) > layout.getMeasureLineNumber(playedMeasure.getNumber()-1) + this.discreteScrollingAnticipation);
+			}
+		}
+		return anticipateScrolling;
 	}
 
 	// returns true if a scroll value was updated
