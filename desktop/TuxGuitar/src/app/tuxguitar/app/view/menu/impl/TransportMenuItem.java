@@ -105,6 +105,7 @@ public class TransportMenuItem extends TGMenuItem {
 		Tablature tablature = TablatureEditor.getInstance(this.findContext()).getTablature();
 		int style = tablature.getViewLayout().getStyle();
 		this.highlightPlayedBeat.setChecked( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 );
+		this.continuousScrolling.setEnabled(!running);
 		this.continuousScrolling.setChecked( (style & TGLayout.CONTINUOUS_SCROLL) != 0 );
 		this.loadIcons(false);
 		this.play.setText(TuxGuitar.getProperty(isRunning ? "transport.pause" : "transport.start"));

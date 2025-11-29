@@ -787,6 +787,10 @@ public class TGMainToolBarConfigMap {
 		});
 		registerCheckable("transport.continuous-scrolling", TGToggleContinuousScrollingAction.NAME, TGIconManager.TRANSPORT_CONTINUOUS_SCROLLING, new TGMainToolBarItemUpdater() {
 			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				return !isRunning;
+			}
+			@Override
 			public boolean checked(TGContext context, boolean isRunning) {
 				int style = TablatureEditor.getInstance(context).getTablature().getViewLayout().getStyle();
 				return ((style & TGLayout.CONTINUOUS_SCROLL) != 0);
