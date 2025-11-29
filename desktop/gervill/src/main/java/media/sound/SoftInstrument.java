@@ -72,6 +72,7 @@ public class SoftInstrument extends Instrument {
         return ins;
     }
 
+    @Override
     public Object getData() {
         return data;
     }

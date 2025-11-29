@@ -57,6 +57,7 @@ public class SF2Sample extends SoundbankResource {
         super(null, null, AudioInputStream.class);
     }
 
+    @Override
     public Object getData() {
 
         AudioFormat format = getFormat();
@@ -146,6 +147,7 @@ public class SF2Sample extends SoundbankResource {
     }
     */
 
+    @Override
     public String getName() {
         return name;
     }
@@ -210,6 +212,7 @@ public class SF2Sample extends SoundbankResource {
         this.startLoop = startLoop;
     }
 
+    @Override
     public String toString() {
         return "Sample: " + name;
     }

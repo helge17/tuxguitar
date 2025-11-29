@@ -76,11 +76,13 @@ public class SoftSincResampler extends SoftAbstractResampler {
         return w;
     }
 
+    @Override
     public int getPadding() // must be at least half of sinc_table_size
     {
         return sinc_table_size / 2 + 2;
     }
 
+    @Override
     public void interpolate(float[] in, float[] in_offset, float in_end,
             float[] startpitch, float pitchstep, float[] out, int[] out_offset,
             int out_end) {

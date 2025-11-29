@@ -76,30 +76,37 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
             this.ais = ais;
         }
 
+        @Override
         public int available() throws IOException {
             return ais.available();
         }
 
+        @Override
         public void close() throws IOException {
             ais.close();
         }
 
+        @Override
         public AudioFormat getFormat() {
             return ais.getFormat();
         }
 
+        @Override
         public long getFrameLength() {
             return ais.getFrameLength();
         }
 
+        @Override
         public void mark(int readlimit) {
             ais.mark(readlimit);
         }
 
+        @Override
         public boolean markSupported() {
             return ais.markSupported();
         }
 
+        @Override
         public int read(float[] b, int off, int len) throws IOException {
             int avail = available();
             if (len > avail) {
@@ -110,10 +117,12 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
             return ais.read(b, off, len);
         }
 
+        @Override
         public void reset() throws IOException {
             ais.reset();
         }
 
+        @Override
         public long skip(long len) throws IOException {
             return ais.skip(len);
         }
@@ -124,6 +133,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
         super(mixer, info);
     }
 
+    @Override
     public int write(byte[] b, int off, int len) {
         if (!isOpen())
             return 0;
@@ -196,6 +206,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
 
     private float _eff2gain;
 
+    @Override
     protected void processControlLogic() {
         _active = active;
         _rightgain = rightgain;
@@ -204,6 +215,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
         _eff2gain = eff2gain;
     }
 
+    @Override
     protected void processAudioLogic(SoftAudioBuffer[] buffers) {
         if (_active) {
             float[] left = buffers[SoftMixingMainMixer.CHANNEL_LEFT].array();
@@ -268,10 +280,12 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
         }
     }
 
+    @Override
     public void open() throws LineUnavailableException {
         open(format);
     }
 
+    @Override
     public void open(AudioFormat format) throws LineUnavailableException {
         if (bufferSize == -1)
             bufferSize = ((int) (format.getFrameRate() / 2))
@@ -279,6 +293,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
         open(format, bufferSize);
     }
 
+    @Override
     public void open(AudioFormat format, int bufferSize)
             throws LineUnavailableException {
 
@@ -317,6 +332,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
 
                 InputStream cycling_inputstream = new InputStream() {
 
+                    @Override
                     public int read() throws IOException {
                         byte[] b = new byte[1];
                         int ret = read(b);
@@ -325,12 +341,14 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
                         return b[0] & 0xFF;
                     }
 
+                    @Override
                     public int available() throws IOException {
                         synchronized (cycling_buffer) {
                             return cycling_avail;
                         }
                     }
 
+                    @Override
                     public int read(byte[] b, int off, int len)
                             throws IOException {
 
@@ -381,12 +399,14 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
 
     }
 
+    @Override
     public int available() {
         synchronized (cycling_buffer) {
             return cycling_buffer.length - cycling_avail;
         }
     }
 
+    @Override
     public void drain() {
         while (true) {
             int avail;
@@ -403,6 +423,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
         }
     }
 
+    @Override
     public void flush() {
         synchronized (cycling_buffer) {
             cycling_read_pos = 0;
@@ -411,49 +432,58 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
         }
     }
 
+    @Override
     public int getBufferSize() {
         synchronized (control_mutex) {
             return bufferSize;
         }
     }
 
+    @Override
     public AudioFormat getFormat() {
         synchronized (control_mutex) {
             return format;
         }
     }
 
+    @Override
     public int getFramePosition() {
         return (int) getLongFramePosition();
     }
 
+    @Override
     public float getLevel() {
         return AudioSystem.NOT_SPECIFIED;
     }
 
+    @Override
     public long getLongFramePosition() {
         synchronized (cycling_buffer) {
             return cycling_framepos;
         }
     }
 
+    @Override
     public long getMicrosecondPosition() {
         return (long) (getLongFramePosition() * (1000000.0 / (double) getFormat()
                 .getSampleRate()));
     }
 
+    @Override
     public boolean isActive() {
         synchronized (control_mutex) {
             return active;
         }
     }
 
+    @Override
     public boolean isRunning() {
         synchronized (control_mutex) {
             return active;
         }
     }
 
+    @Override
     public void start() {
 
         LineEvent event = null;
@@ -472,6 +502,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
             sendEvent(event);
     }
 
+    @Override
     public void stop() {
         LineEvent event = null;
 
@@ -489,6 +520,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
             sendEvent(event);
     }
 
+    @Override
     public void close() {
 
         LineEvent event = null;
@@ -510,6 +542,7 @@ public class SoftMixingSourceDataLine extends SoftMixingDataLine implements
 
     }
 
+    @Override
     public boolean isOpen() {
         synchronized (control_mutex) {
             return open;

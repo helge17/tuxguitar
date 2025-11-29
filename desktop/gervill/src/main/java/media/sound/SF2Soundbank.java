@@ -814,18 +814,22 @@ public class SF2Soundbank implements Soundbank {
 
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getVersion() {
         return major + "." + minor;
     }
 
+    @Override
     public String getVendor() {
         return engineers;
     }
 
+    @Override
     public String getDescription() {
         return comments;
     }
@@ -842,6 +846,7 @@ public class SF2Soundbank implements Soundbank {
         comments = s;
     }
 
+    @Override
     public SoundbankResource[] getResources() {
         SoundbankResource[] resources
                 = new SoundbankResource[layers.size() + samples.size()];
@@ -853,6 +858,7 @@ public class SF2Soundbank implements Soundbank {
         return resources;
     }
 
+    @Override
     public SF2Instrument[] getInstruments() {
         SF2Instrument[] inslist_array
                 = instruments.toArray(new SF2Instrument[instruments.size()]);
@@ -868,6 +874,7 @@ public class SF2Soundbank implements Soundbank {
         return samples.toArray(new SF2Sample[samples.size()]);
     }
 
+    @Override
     public Instrument getInstrument(Patch patch) {
         int program = patch.getProgram();
         int bank = patch.getBank();

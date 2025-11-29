@@ -210,6 +210,7 @@ public class SoftReverb implements SoftAudioProcessor {
     private float samplerate;
     private boolean light = true;
 
+    @Override
     public void init(float samplerate, float controlrate) {
         this.samplerate = samplerate;
 
@@ -260,11 +261,13 @@ public class SoftReverb implements SoftAudioProcessor {
 
     }
 
+    @Override
     public void setInput(int pin, SoftAudioBuffer input) {
         if (pin == 0)
             inputA = input;
     }
 
+    @Override
     public void setOutput(int pin, SoftAudioBuffer output) {
         if (pin == 0)
             left = output;
@@ -272,12 +275,14 @@ public class SoftReverb implements SoftAudioProcessor {
             right = output;
     }
 
+    @Override
     public void setMixMode(boolean mix) {
         this.mix = mix;
     }
 
     private boolean silent = true;
 
+    @Override
     public void processAudio() {
         boolean silent_input = this.inputA.isSilent();
         if(!silent_input)
@@ -330,7 +335,7 @@ public class SoftReverb implements SoftAudioProcessor {
             for (int i = 4; i < combL.length-2; i+=2)
                 combL[i].processMix(input, pre1);
 
-            combL[3].processReplace(input, pre2);;
+            combL[3].processReplace(input, pre2);
             for (int i = 5; i < combL.length-2; i+=2)
                 combL[i].processMix(input, pre2);
 
@@ -396,6 +401,7 @@ public class SoftReverb implements SoftAudioProcessor {
 
     }
 
+    @Override
     public void globalParameterControlChange(int[] slothpath, long param,
             long value) {
         if (slothpath.length == 1) {
@@ -463,6 +469,7 @@ public class SoftReverb implements SoftAudioProcessor {
         }
     }
 
+    @Override
     public void processControlLogic() {
         if (dirty) {
             dirty = false;

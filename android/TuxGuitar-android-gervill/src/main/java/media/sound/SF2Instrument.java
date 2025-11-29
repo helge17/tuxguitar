@@ -56,6 +56,7 @@ public class SF2Instrument extends ModelInstrument {
         super(soundbank, null, null, null);
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -64,6 +65,7 @@ public class SF2Instrument extends ModelInstrument {
         this.name = name;
     }
 
+    @Override
     public Patch getPatch() {
         if (bank == 128)
             return new ModelPatch(0, preset, true);
@@ -81,6 +83,7 @@ public class SF2Instrument extends ModelInstrument {
         }
     }
 
+    @Override
     public Object getData() {
         return null;
     }
@@ -121,6 +124,7 @@ public class SF2Instrument extends ModelInstrument {
         globalregion = zone;
     }
 
+    @Override
     public String toString() {
         if (bank == 128)
             return "Drumkit: " + name + " preset #" + preset;
@@ -129,6 +133,7 @@ public class SF2Instrument extends ModelInstrument {
                     + " preset #" + preset;
     }
 
+    @Override
     public ModelPerformer[] getPerformers() {
         int performercount = 0;
         for (SF2InstrumentRegion presetzone : regions)
@@ -608,6 +613,7 @@ public class SF2Instrument extends ModelInstrument {
                     new ModelConnectionBlock(
                         new ModelSource(ModelSource.SOURCE_NOTEON_VELOCITY,
                             new ModelTransform() {
+                                @Override
                                 public double transform(double value) {
                                     if (value < 0.5)
                                         return 1 - value * 2;

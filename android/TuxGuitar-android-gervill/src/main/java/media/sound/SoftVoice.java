@@ -107,6 +107,7 @@ public class SoftVoice extends VoiceStatus {
         double[] keynumber = co_noteon_keynumber;
         double[] velocity = co_noteon_velocity;
         double[] on = co_noteon_on;
+        @Override
         public double[] get(int instance, String name) {
             if (name == null)
                 return null;
@@ -132,6 +133,7 @@ public class SoftVoice extends VoiceStatus {
         double[] balance = co_mixer_balance;
         double[] reverb = co_mixer_reverb;
         double[] chorus = co_mixer_chorus;
+        @Override
         public double[] get(int instance, String name) {
             if (name == null)
                 return null;
@@ -153,6 +155,7 @@ public class SoftVoice extends VoiceStatus {
     private double[] co_osc_pitch = new double[1];
     private SoftControl co_osc = new SoftControl() {
         double[] pitch = co_osc_pitch;
+        @Override
         public double[] get(int instance, String name) {
             if (name == null)
                 return null;
@@ -168,6 +171,7 @@ public class SoftVoice extends VoiceStatus {
         double[] freq = co_filter_freq;
         double[] ftype = co_filter_type;
         double[] q = co_filter_q;
+        @Override
         public double[] get(int instance, String name) {
             if (name == null)
                 return null;

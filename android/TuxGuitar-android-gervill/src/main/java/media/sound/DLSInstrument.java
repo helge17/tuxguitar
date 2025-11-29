@@ -61,6 +61,7 @@ public class DLSInstrument extends ModelInstrument {
         return info;
     }
 
+    @Override
     public String getName() {
         return info.name;
     }
@@ -69,6 +70,7 @@ public class DLSInstrument extends ModelInstrument {
         info.name = name;
     }
 
+    @Override
     public ModelPatch getPatch() {
         return new ModelPatch(bank, preset, druminstrument);
     }
@@ -85,6 +87,7 @@ public class DLSInstrument extends ModelInstrument {
         }
     }
 
+    @Override
     public Object getData() {
         return null;
     }
@@ -97,6 +100,7 @@ public class DLSInstrument extends ModelInstrument {
         return modulators;
     }
 
+    @Override
     public String toString() {
         if (druminstrument)
             return "Drumkit: " + info.name
@@ -361,6 +365,7 @@ public class DLSInstrument extends ModelInstrument {
         return null;
     }
 
+    @Override
     public ModelPerformer[] getPerformers() {
         List<ModelPerformer> performers = new ArrayList<ModelPerformer>();
 

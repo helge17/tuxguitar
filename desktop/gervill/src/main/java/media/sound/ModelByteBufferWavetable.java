@@ -52,6 +52,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
             bigendian = format.isBigEndian();
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
             int avail = available();
             if (avail <= 0)
@@ -82,6 +83,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
             return len;
         }
 
+        @Override
         public long skip(long n) throws IOException {
             int avail = available();
             if (avail <= 0)
@@ -93,10 +95,12 @@ public class ModelByteBufferWavetable implements ModelWavetable {
             return super.skip(n);
         }
 
+        @Override
         public int read(byte[] b) throws IOException {
             return read(b, 0, b.length);
         }
 
+        @Override
         public int read() throws IOException {
             byte[] b = new byte[1];
             int ret = read(b, 0, 1);
@@ -105,19 +109,23 @@ public class ModelByteBufferWavetable implements ModelWavetable {
             return 0 & 0xFF;
         }
 
+        @Override
         public boolean markSupported() {
             return true;
         }
 
+        @Override
         public int available() throws IOException {
             return (int)buffer.capacity() + (int)buffer8.capacity() - pos - pos2;
         }
 
+        @Override
         public synchronized void mark(int readlimit) {
             markpos = pos;
             markpos2 = pos2;
         }
 
+        @Override
         public synchronized void reset() throws IOException {
             pos = markpos;
             pos2 = markpos2;
@@ -189,6 +197,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
         return format;
     }
 
+    @Override
     public AudioFloatInputStream openStream() {
         if (buffer == null)
             return null;
@@ -230,16 +239,19 @@ public class ModelByteBufferWavetable implements ModelWavetable {
                 (int)buffer.arrayOffset(), (int)buffer.capacity());
     }
 
+    @Override
     public int getChannels() {
         return getFormat().getChannels();
     }
 
+    @Override
     public ModelOscillatorStream open(float samplerate) {
         // ModelWavetableOscillator doesn't support ModelOscillatorStream
         return null;
     }
 
     // attenuation is in cB
+    @Override
     public float getAttenuation() {
         return attenuation;
     }
@@ -248,6 +260,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
         this.attenuation = attenuation;
     }
 
+    @Override
     public float getLoopLength() {
         return loopLength;
     }
@@ -256,6 +269,7 @@ public class ModelByteBufferWavetable implements ModelWavetable {
         this.loopLength = loopLength;
     }
 
+    @Override
     public float getLoopStart() {
         return loopStart;
     }
@@ -268,10 +282,12 @@ public class ModelByteBufferWavetable implements ModelWavetable {
         this.loopType = loopType;
     }
 
+    @Override
     public int getLoopType() {
         return loopType;
     }
 
+    @Override
     public float getPitchcorrection() {
         return pitchcorrection;
     }

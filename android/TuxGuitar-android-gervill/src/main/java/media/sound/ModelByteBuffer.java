@@ -60,12 +60,14 @@ public class ModelByteBuffer {
             left = capacity();
         }
 
+        @Override
         public int available() throws IOException {
             if (left > Integer.MAX_VALUE)
                 return Integer.MAX_VALUE;
             return (int)left;
         }
 
+        @Override
         public synchronized void mark(int readlimit) {
             try {
                 mark = raf.getFilePointer();
@@ -75,15 +77,18 @@ public class ModelByteBuffer {
             }
         }
 
+        @Override
         public boolean markSupported() {
             return true;
         }
 
+        @Override
         public synchronized void reset() throws IOException {
             raf.seek(mark);
             left = markleft;
         }
 
+        @Override
         public long skip(long n) throws IOException {
             if( n < 0)
                 return 0;
@@ -95,6 +100,7 @@ public class ModelByteBuffer {
             return n;
         }
 
+        @Override
         public int read(byte b[], int off, int len) throws IOException {
             if (len > left)
                 len = (int)left;
@@ -107,6 +113,7 @@ public class ModelByteBuffer {
             return len;
         }
 
+        @Override
         public int read(byte[] b) throws IOException {
             int len = b.length;
             if (len > left)
@@ -120,6 +127,7 @@ public class ModelByteBuffer {
             return len;
         }
 
+        @Override
         public int read() throws IOException {
             if (left == 0)
                 return -1;
@@ -130,6 +138,7 @@ public class ModelByteBuffer {
             return b;
         }
 
+        @Override
         public void close() throws IOException {
             raf.close();
         }

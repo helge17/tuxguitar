@@ -121,6 +121,7 @@ public class SimpleInstrument extends ModelInstrument {
         add(ins.getPerformers());
     }
 
+    @Override
     public ModelPerformer[] getPerformers() {
 
         int percount = 0;
@@ -166,10 +167,12 @@ public class SimpleInstrument extends ModelInstrument {
         return performers;
     }
 
+    @Override
     public Object getData() {
         return null;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
@@ -178,6 +181,7 @@ public class SimpleInstrument extends ModelInstrument {
         this.name = name;
     }
 
+    @Override
     public ModelPatch getPatch() {
         return new ModelPatch(bank, preset, percussion);
     }

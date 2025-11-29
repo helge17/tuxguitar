@@ -86,6 +86,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
             this.stream = stream;
         }
 
+        @Override
         public int available() throws IOException {
             AudioInputStream local_stream = stream;
             if(local_stream != null)
@@ -93,6 +94,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
             return 0;
         }
 
+        @Override
         public int read() throws IOException {
              byte[] b = new byte[1];
              if (read(b) == -1)
@@ -100,6 +102,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
              return b[0] & 0xFF;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
              AudioInputStream local_stream = stream;
              if(local_stream != null)
@@ -121,6 +124,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
                          SoftAudioPusher _pusher = pusher;
                          AudioInputStream _jitter_stream = jitter_stream;
                          SourceDataLine _sourceDataLine = sourceDataLine;
+                         @Override
                          public void run()
                          {
                              _pusher.stop();
@@ -156,6 +160,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
             return new AudioInputStream(this, stream.getFormat(), AudioSystem.NOT_SPECIFIED);
         }
 
+        @Override
         public void close() throws IOException
         {
             AudioInputStream astream  = weak_stream_link.get();
@@ -483,24 +488,28 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return tuning;
     }
 
+    @Override
     public long getLatency() {
         synchronized (control_mutex) {
             return latency;
         }
     }
 
+    @Override
     public AudioFormat getFormat() {
         synchronized (control_mutex) {
             return format;
         }
     }
 
+    @Override
     public int getMaxPolyphony() {
         synchronized (control_mutex) {
             return maxpoly;
         }
     }
 
+    @Override
     public MidiChannel[] getChannels() {
 
         synchronized (control_mutex) {
@@ -523,6 +532,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public VoiceStatus[] getVoiceStatus() {
         if (!isOpen()) {
             VoiceStatus[] tempVoiceStatusArray
@@ -557,6 +567,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public boolean isSoundbankSupported(Soundbank soundbank) {
         for (Instrument ins: soundbank.getInstruments())
             if (!(ins instanceof ModelInstrument))
@@ -564,6 +575,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return true;
     }
 
+    @Override
     public boolean loadInstrument(Instrument instrument) {
         if (instrument == null || (!(instrument instanceof ModelInstrument))) {
             throw new IllegalArgumentException("Unsupported instrument: " +
@@ -574,6 +586,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return loadInstruments(instruments);
     }
 
+    @Override
     public void unloadInstrument(Instrument instrument) {
         if (instrument == null || (!(instrument instanceof ModelInstrument))) {
             throw new IllegalArgumentException("Unsupported instrument: " +
@@ -594,6 +607,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public boolean remapInstrument(Instrument from, Instrument to) {
 
         if (from == null)
@@ -621,6 +635,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public Soundbank getDefaultSoundbank() {
         synchronized (SoftSynthesizer.class) {
             if (defaultSoundBank != null)
@@ -630,6 +645,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
                 new ArrayList<PrivilegedAction<InputStream>>();
 
             actions.add(new PrivilegedAction<InputStream>() {
+                @Override
                 public InputStream run() {
                     File javahome = new File(System.getProperties()
                             .getProperty("java.home"));
@@ -665,6 +681,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
             });
 
             actions.add(new PrivilegedAction<InputStream>() {
+                @Override
                 public InputStream run() {
                     if (System.getProperties().getProperty("os.name")
                             .startsWith("Windows")) {
@@ -682,6 +699,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
             });
 
             actions.add(new PrivilegedAction<InputStream>() {
+                @Override
                 public InputStream run() {
                     /*
                      * Try to load saved generated soundbank
@@ -733,6 +751,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
                  */
                 OutputStream out = AccessController
                         .doPrivileged(new PrivilegedAction<OutputStream>() {
+                            @Override
                             public OutputStream run() {
                                 try {
                                     File userhome = new File(System
@@ -764,6 +783,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return defaultSoundBank;
     }
 
+    @Override
     public Instrument[] getAvailableInstruments() {
         Soundbank defsbk = getDefaultSoundbank();
         if (defsbk == null)
@@ -773,6 +793,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return inslist_array;
     }
 
+    @Override
     public Instrument[] getLoadedInstruments() {
         if (!isOpen())
             return new Instrument[0];
@@ -786,6 +807,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public boolean loadAllInstruments(Soundbank soundbank) {
         List<ModelInstrument> instruments = new ArrayList<ModelInstrument>();
         for (Instrument ins: soundbank.getInstruments()) {
@@ -798,6 +820,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return loadInstruments(instruments);
     }
 
+    @Override
     public void unloadAllInstruments(Soundbank soundbank) {
         if (soundbank == null || !isSoundbankSupported(soundbank))
             throw new IllegalArgumentException("Unsupported soundbank: " + soundbank);
@@ -812,6 +835,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public boolean loadInstruments(Soundbank soundbank, Patch[] patchList) {
         List<ModelInstrument> instruments = new ArrayList<ModelInstrument>();
         for (Patch patch: patchList) {
@@ -825,6 +849,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return loadInstruments(instruments);
     }
 
+    @Override
     public void unloadInstruments(Soundbank soundbank, Patch[] patchList) {
         if (soundbank == null || !isSoundbankSupported(soundbank))
             throw new IllegalArgumentException("Unsupported soundbank: " + soundbank);
@@ -840,6 +865,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public MidiDevice.Info getDeviceInfo() {
         return info;
     }
@@ -847,6 +873,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
     private Properties getStoredProperties() {
         return AccessController
                 .doPrivileged(new PrivilegedAction<Properties>() {
+                    @Override
                     public Properties run() {
                         Properties p = new Properties();
                         String notePath = "/com/sun/media/sound/softsynthesizer";
@@ -869,6 +896,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
                 });
     }
 
+    @Override
     public AudioSynthesizerPropertyInfo[] getPropertyInfo(Map<String, Object> info) {
         List<AudioSynthesizerPropertyInfo> list =
                 new ArrayList<AudioSynthesizerPropertyInfo>();
@@ -1026,6 +1054,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         return items;
     }
 
+    @Override
     public void open() throws MidiUnavailableException {
         if (isOpen()) {
             synchronized (control_mutex) {
@@ -1036,6 +1065,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         open(null, null);
     }
 
+    @Override
     public void open(SourceDataLine line, Map<String, Object> info) throws MidiUnavailableException {
         if (isOpen()) {
             synchronized (control_mutex) {
@@ -1138,6 +1168,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public AudioInputStream openStream(AudioFormat targetFormat,
             Map<String, Object> info) throws MidiUnavailableException {
 
@@ -1219,6 +1250,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public void close() {
 
         if (!isOpen())
@@ -1277,12 +1309,14 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public boolean isOpen() {
         synchronized (control_mutex) {
             return open;
         }
     }
 
+    @Override
     public long getMicrosecondPosition() {
 
         if (!isOpen())
@@ -1293,14 +1327,17 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public int getMaxReceivers() {
         return -1;
     }
 
+    @Override
     public int getMaxTransmitters() {
         return 0;
     }
 
+    @Override
     public Receiver getReceiver() throws MidiUnavailableException {
 
         synchronized (control_mutex) {
@@ -1311,6 +1348,7 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public List<Receiver> getReceivers() {
 
         synchronized (control_mutex) {
@@ -1320,11 +1358,13 @@ public class SoftSynthesizer implements AudioSynthesizer {
         }
     }
 
+    @Override
     public Transmitter getTransmitter() throws MidiUnavailableException {
 
         throw new MidiUnavailableException("No transmitter available");
     }
 
+    @Override
     public List<Transmitter> getTransmitters() {
 
         return new ArrayList<Transmitter>();

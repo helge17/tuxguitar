@@ -31,10 +31,12 @@ package media.sound;
  */
 public class SoftPointResampler extends SoftAbstractResampler {
 
+    @Override
     public int getPadding() {
         return 100;
     }
 
+    @Override
     public void interpolate(float[] in, float[] in_offset, float in_end,
             float[] startpitch, float pitchstep, float[] out, int[] out_offset,
             int out_end) {

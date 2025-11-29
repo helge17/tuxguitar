@@ -74,14 +74,17 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             ibuffer_order = true;
         }
 
+        @Override
         public void noteOn(MidiChannel channel, VoiceStatus voice,
                 int noteNumber, int velocity) {
         }
 
+        @Override
         public void noteOff(int velocity) {
             noteOff_flag = true;
         }
 
+        @Override
         public void open(ModelWavetable osc, float outputsamplerate)
                 throws IOException {
 
@@ -135,6 +138,7 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             nextBuffer();
         }
 
+        @Override
         public void setPitch(float pitch) {
             /*
             this.pitch = (float) Math.pow(2f,
@@ -254,6 +258,7 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             }
         }
 
+        @Override
         public int read(float[][] buffer, int offset, int len)
                 throws IOException {
 
@@ -373,6 +378,7 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             return len;
         }
 
+        @Override
         public void close() throws IOException {
             stream.close();
         }
@@ -384,6 +390,7 @@ public abstract class SoftAbstractResampler implements SoftResampler {
             float in_end, float[] pitch, float pitchstep, float[] out,
             int[] out_offset, int out_end);
 
+    @Override
     public SoftResamplerStreamer openStreamer() {
         return new ModelAbstractResamplerStream();
     }

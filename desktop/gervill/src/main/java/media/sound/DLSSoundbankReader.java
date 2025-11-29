@@ -41,6 +41,7 @@ import javax.sound.midi.spi.SoundbankReader;
  */
 public class DLSSoundbankReader extends SoundbankReader {
 
+    @Override
     public Soundbank getSoundbank(URL url)
             throws InvalidMidiDataException, IOException {
         try {
@@ -52,6 +53,7 @@ public class DLSSoundbankReader extends SoundbankReader {
         }
     }
 
+    @Override
     public Soundbank getSoundbank(InputStream stream)
             throws InvalidMidiDataException, IOException {
         try {
@@ -63,6 +65,7 @@ public class DLSSoundbankReader extends SoundbankReader {
         }
     }
 
+    @Override
     public Soundbank getSoundbank(File file)
             throws InvalidMidiDataException, IOException {
         try {

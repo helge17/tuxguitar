@@ -104,6 +104,7 @@ public class SoftMainMixer {
         double[] coarse_tuning = co_master_coarse_tuning;
         double[] fine_tuning = co_master_fine_tuning;
 
+        @Override
         public double[] get(int instance, String name) {
             if (name == null)
                 return null;
@@ -769,7 +770,7 @@ public class SoftMainMixer {
             if(synth.weakstream != null)
             {
                 synth.weakstream.setInputStream(ais);
-                silent_samples = synth.weakstream.silent_samples;;
+                silent_samples = synth.weakstream.silent_samples;
             }
         }
         msec_last_activity = (long)((sample_pos + silent_samples)
@@ -884,6 +885,7 @@ public class SoftMainMixer {
                 bbuffer_pos = 0;
             }
 
+            @Override
             public int read(byte[] b, int off, int len) {
                 int bbuffer_len = bbuffer.length;
                 int offlen = off + len;
@@ -904,6 +906,7 @@ public class SoftMainMixer {
                 return len;
             }
 
+            @Override
             public int read() throws IOException {
                 int ret = read(single);
                 if (ret == -1)
@@ -911,10 +914,12 @@ public class SoftMainMixer {
                 return single[0] & 0xFF;
             }
 
+            @Override
             public int available() {
                 return bbuffer.length - bbuffer_pos;
             }
 
+            @Override
             public void close() {
                 SoftMainMixer.this.synth.close();
             }

@@ -61,6 +61,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             fsize = ((targetFormat.getSampleSizeInBits() + 7) / 8);
         }
 
+        @Override
         public int read() throws IOException {
             byte[] b = new byte[1];
             int ret = read(b);
@@ -69,6 +70,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             return b[0] & 0xFF;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
 
             int flen = len / fsize;
@@ -81,6 +83,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             return ret * fsize;
         }
 
+        @Override
         public int available() throws IOException {
             int ret = stream.available();
             if (ret < 0)
@@ -88,22 +91,27 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             return ret * fsize;
         }
 
+        @Override
         public void close() throws IOException {
             stream.close();
         }
 
+        @Override
         public synchronized void mark(int readlimit) {
             stream.mark(readlimit * fsize);
         }
 
+        @Override
         public boolean markSupported() {
             return stream.markSupported();
         }
 
+        @Override
         public synchronized void reset() throws IOException {
             stream.reset();
         }
 
+        @Override
         public long skip(long n) throws IOException {
             long ret = stream.skip(n / fsize);
             if (ret < 0)
@@ -139,30 +147,37 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
                             .isBigEndian());
         }
 
+        @Override
         public int available() throws IOException {
             return (ais.available() / sourceChannels) * targetChannels;
         }
 
+        @Override
         public void close() throws IOException {
             ais.close();
         }
 
+        @Override
         public AudioFormat getFormat() {
             return targetFormat;
         }
 
+        @Override
         public long getFrameLength() {
             return ais.getFrameLength();
         }
 
+        @Override
         public void mark(int readlimit) {
             ais.mark((readlimit / targetChannels) * sourceChannels);
         }
 
+        @Override
         public boolean markSupported() {
             return ais.markSupported();
         }
 
+        @Override
         public int read(float[] b, int off, int len) throws IOException {
             int len2 = (len / targetChannels) * sourceChannels;
             if (conversion_buffer == null || conversion_buffer.length < len2)
@@ -210,10 +225,12 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             return (ret / sourceChannels) * targetChannels;
         }
 
+        @Override
         public void reset() throws IOException {
             ais.reset();
         }
 
+        @Override
         public long skip(long len) throws IOException {
             long ret = ais.skip((len / targetChannels) * sourceChannels);
             if (ret < 0)
@@ -303,22 +320,27 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             ibuffer_len = buffer_len;
         }
 
+        @Override
         public int available() throws IOException {
             return 0;
         }
 
+        @Override
         public void close() throws IOException {
             ais.close();
         }
 
+        @Override
         public AudioFormat getFormat() {
             return targetFormat;
         }
 
+        @Override
         public long getFrameLength() {
             return AudioSystem.NOT_SPECIFIED; // ais.getFrameLength();
         }
 
+        @Override
         public void mark(int readlimit) {
             ais.mark((int) (readlimit * pitch[0]));
             mark_ibuffer_index = ibuffer_index;
@@ -335,6 +357,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             }
         }
 
+        @Override
         public boolean markSupported() {
             return ais.markSupported();
         }
@@ -379,6 +402,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
 
         }
 
+        @Override
         public int read(float[] b, int off, int len) throws IOException {
 
             if (cbuffer == null || cbuffer[0].length < len / nrofchannels) {
@@ -429,6 +453,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
             return len - remain * nrofchannels;
         }
 
+        @Override
         public void reset() throws IOException {
             ais.reset();
             if (mark_ibuffer == null)
@@ -445,6 +470,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
 
         }
 
+        @Override
         public long skip(long len) throws IOException {
             if (len < 0)
                 return 0;
@@ -471,6 +497,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
     private Encoding[] formats = { Encoding.PCM_SIGNED, Encoding.PCM_UNSIGNED,
             AudioFloatConverter.PCM_FLOAT };
 
+    @Override
     public AudioInputStream getAudioInputStream(Encoding targetEncoding,
             AudioInputStream sourceStream) {
         if (sourceStream.getFormat().getEncoding().equals(targetEncoding))
@@ -488,6 +515,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
         return getAudioInputStream(targetFormat, sourceStream);
     }
 
+    @Override
     public AudioInputStream getAudioInputStream(AudioFormat targetFormat,
             AudioInputStream sourceStream) {
         if (!isConversionSupported(targetFormat, sourceStream.getFormat()))
@@ -518,16 +546,19 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
                 .getFrameLength());
     }
 
+    @Override
     public Encoding[] getSourceEncodings() {
         return new Encoding[] { Encoding.PCM_SIGNED, Encoding.PCM_UNSIGNED,
                 AudioFloatConverter.PCM_FLOAT };
     }
 
+    @Override
     public Encoding[] getTargetEncodings() {
         return new Encoding[] { Encoding.PCM_SIGNED, Encoding.PCM_UNSIGNED,
                 AudioFloatConverter.PCM_FLOAT };
     }
 
+    @Override
     public Encoding[] getTargetEncodings(AudioFormat sourceFormat) {
         if (AudioFloatConverter.getConverter(sourceFormat) == null)
             return new Encoding[0];
@@ -535,6 +566,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
                 AudioFloatConverter.PCM_FLOAT };
     }
 
+    @Override
     public AudioFormat[] getTargetFormats(Encoding targetEncoding,
             AudioFormat sourceFormat) {
         if (AudioFloatConverter.getConverter(sourceFormat) == null)
@@ -589,6 +621,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
         return formats.toArray(new AudioFormat[formats.size()]);
     }
 
+    @Override
     public boolean isConversionSupported(AudioFormat targetFormat,
             AudioFormat sourceFormat) {
         if (AudioFloatConverter.getConverter(sourceFormat) == null)
@@ -602,6 +635,7 @@ public class AudioFloatFormatConverter extends FormatConversionProvider {
         return true;
     }
 
+    @Override
     public boolean isConversionSupported(Encoding targetEncoding,
             AudioFormat sourceFormat) {
         if (AudioFloatConverter.getConverter(sourceFormat) == null)

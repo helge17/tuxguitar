@@ -59,6 +59,7 @@ public class DLSSample extends SoundbankResource {
         return info;
     }
 
+    @Override
     public Object getData() {
         AudioFormat format = getFormat();
 
@@ -92,6 +93,7 @@ public class DLSSample extends SoundbankResource {
         this.data = new ModelByteBuffer(data, offset, length);
     }
 
+    @Override
     public String getName() {
         return info.name;
     }
@@ -108,6 +110,7 @@ public class DLSSample extends SoundbankResource {
         this.sampleoptions = sampleOptions;
     }
 
+    @Override
     public String toString() {
         return "Sample: " + info.name;
     }

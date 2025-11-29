@@ -125,6 +125,7 @@ public class SoftJitterCorrector extends AudioInputStream {
 
             Runnable runnable = new Runnable() {
 
+                @Override
                 public void run() {
                     AudioFormat format = stream.getFormat();
                     int bufflen = buffers[0].length;
@@ -221,6 +222,7 @@ public class SoftJitterCorrector extends AudioInputStream {
             thread.start();
         }
 
+        @Override
         public void close() throws IOException {
             synchronized (this) {
                 active = false;
@@ -233,6 +235,7 @@ public class SoftJitterCorrector extends AudioInputStream {
             stream.close();
         }
 
+        @Override
         public int read() throws IOException {
             byte[] b = new byte[1];
             if (read(b) == -1)
@@ -245,6 +248,7 @@ public class SoftJitterCorrector extends AudioInputStream {
             bbuffer_pos = 0;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) {
             if (bbuffer == null)
                 fillBuffer();
@@ -264,6 +268,7 @@ public class SoftJitterCorrector extends AudioInputStream {
             return len;
         }
 
+        @Override
         public int available() {
             return bbuffer.length - bbuffer_pos;
         }

@@ -51,9 +51,11 @@ public class ModelStandardDirector implements ModelDirector {
         }
     }
 
+    @Override
     public void close() {
     }
 
+    @Override
     public void noteOff(int noteNumber, int velocity) {
         if (!noteOffUsed)
             return;
@@ -69,6 +71,7 @@ public class ModelStandardDirector implements ModelDirector {
         }
     }
 
+    @Override
     public void noteOn(int noteNumber, int velocity) {
         if (!noteOnUsed)
             return;

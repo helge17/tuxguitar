@@ -92,6 +92,7 @@ public class SoftPerformer {
                 ModelStandardTransform.TRANSFORM_LINEAR),
             new ModelSource(new ModelIdentifier("midi_rpn", "0"),
                 new ModelTransform() {
+                    @Override
                     public double transform(double value) {
                         int v = (int) (value * 16384.0);
                         int msb = v >> 7;
@@ -318,6 +319,7 @@ public class SoftPerformer {
 
     private static class KeySortComparator implements Comparator<ModelSource> {
 
+        @Override
         public int compare(ModelSource o1, ModelSource o2) {
             return o1.getIdentifier().toString().compareTo(
                     o2.getIdentifier().toString());
@@ -649,6 +651,7 @@ public class SoftPerformer {
                 new ModelSource(new ModelIdentifier("midi_cc", "77"),
                     new ModelTransform() {
                         double s = scale;
+                        @Override
                         public double transform(double value) {
                             value = value * 2 - 1;
                             value *= 600;

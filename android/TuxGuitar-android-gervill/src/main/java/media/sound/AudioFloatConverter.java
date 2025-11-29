@@ -91,6 +91,7 @@ public abstract class AudioFloatConverter {
                 mask = (byte) 0xFF;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             byte[] ret = converter.toByteArray(in_buff, in_offset, in_len,
@@ -104,6 +105,7 @@ public abstract class AudioFloatConverter {
             return ret;
         }
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             if (mask_buffer == null || mask_buffer.length < in_buff.length)
@@ -134,6 +136,7 @@ public abstract class AudioFloatConverter {
 
         double[] double_buff = null;
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int in_len = out_len * 8;
@@ -156,6 +159,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int out_len = in_len * 8;
@@ -186,6 +190,7 @@ public abstract class AudioFloatConverter {
 
         double[] double_buff = null;
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int in_len = out_len * 8;
@@ -208,6 +213,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int out_len = in_len * 8;
@@ -242,6 +248,7 @@ public abstract class AudioFloatConverter {
 
         FloatBuffer floatbuffer = null;
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int in_len = out_len * 4;
@@ -257,6 +264,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int out_len = in_len * 4;
@@ -279,6 +287,7 @@ public abstract class AudioFloatConverter {
 
         FloatBuffer floatbuffer = null;
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int in_len = out_len * 4;
@@ -294,6 +303,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int out_len = in_len * 4;
@@ -318,6 +328,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 8 bit, signed
     private static class AudioFloatConversion8S extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -327,6 +338,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -339,6 +351,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 8 bit, unsigned
     private static class AudioFloatConversion8U extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -349,6 +362,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -367,6 +381,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 16 bit, signed, little-endian
     private static class AudioFloatConversion16SL extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -379,6 +394,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ox = out_offset;
@@ -394,6 +410,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 16 bit, signed, big-endian
     private static class AudioFloatConversion16SB extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -405,6 +422,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -420,6 +438,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 16 bit, unsigned, little-endian
     private static class AudioFloatConversion16UL extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -431,6 +450,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -446,6 +466,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 16 bit, unsigned, big-endian
     private static class AudioFloatConversion16UB extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -457,6 +478,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -478,6 +500,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 24 bit, signed, little-endian
     private static class AudioFloatConversion24SL extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -492,6 +515,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -510,6 +534,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 24 bit, signed, big-endian
     private static class AudioFloatConversion24SB extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -524,6 +549,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -542,6 +568,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 24 bit, unsigned, little-endian
     private static class AudioFloatConversion24UL extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -555,6 +582,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -572,6 +600,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 24 bit, unsigned, big-endian
     private static class AudioFloatConversion24UB extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -585,6 +614,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -608,6 +638,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 32 bit, signed, little-endian
     private static class AudioFloatConversion32SL extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -621,6 +652,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -638,6 +670,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 32 bit, signed, big-endian
     private static class AudioFloatConversion32SB extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -651,6 +684,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -668,6 +702,7 @@ public abstract class AudioFloatConverter {
 
     // PCM 32 bit, unsigned, little-endian
     private static class AudioFloatConversion32UL extends AudioFloatConverter {
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -682,6 +717,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -701,6 +737,7 @@ public abstract class AudioFloatConverter {
     // PCM 32 bit, unsigned, big-endian
     private static class AudioFloatConversion32UB extends AudioFloatConverter {
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -715,6 +752,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -746,6 +784,7 @@ public abstract class AudioFloatConverter {
             this.xbytes = xbytes;
         }
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -760,6 +799,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -787,6 +827,7 @@ public abstract class AudioFloatConverter {
             this.xbytes = xbytes;
         }
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -802,6 +843,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -829,6 +871,7 @@ public abstract class AudioFloatConverter {
             this.xbytes = xbytes;
         }
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -844,6 +887,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;
@@ -872,6 +916,7 @@ public abstract class AudioFloatConverter {
             this.xbytes = xbytes;
         }
 
+        @Override
         public float[] toFloatArray(byte[] in_buff, int in_offset,
                 float[] out_buff, int out_offset, int out_len) {
             int ix = in_offset;
@@ -887,6 +932,7 @@ public abstract class AudioFloatConverter {
             return out_buff;
         }
 
+        @Override
         public byte[] toByteArray(float[] in_buff, int in_offset, int in_len,
                 byte[] out_buff, int out_offset) {
             int ix = in_offset;

@@ -47,18 +47,22 @@ public class SimpleSoundbank implements Soundbank {
     List<SoundbankResource> resources = new ArrayList<SoundbankResource>();
     List<Instrument> instruments = new ArrayList<Instrument>();
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getVersion() {
         return version;
     }
 
+    @Override
     public String getVendor() {
         return vendor;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -79,10 +83,12 @@ public class SimpleSoundbank implements Soundbank {
         this.version = version;
     }
 
+    @Override
     public SoundbankResource[] getResources() {
         return resources.toArray(new SoundbankResource[resources.size()]);
     }
 
+    @Override
     public Instrument[] getInstruments() {
         Instrument[] inslist_array
                 = instruments.toArray(new Instrument[resources.size()]);
@@ -90,6 +96,7 @@ public class SimpleSoundbank implements Soundbank {
         return inslist_array;
     }
 
+    @Override
     public Instrument getInstrument(Patch patch) {
         int program = patch.getProgram();
         int bank = patch.getBank();

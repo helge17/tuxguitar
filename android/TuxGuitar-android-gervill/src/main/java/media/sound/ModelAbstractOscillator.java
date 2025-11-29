@@ -51,13 +51,16 @@ public abstract class ModelAbstractOscillator
     public void init() {
     }
 
+    @Override
     public void close() throws IOException {
     }
 
+    @Override
     public void noteOff(int velocity) {
         on = false;
     }
 
+    @Override
     public void noteOn(MidiChannel channel, VoiceStatus voice, int noteNumber,
             int velocity) {
         this.channel = channel;
@@ -67,6 +70,7 @@ public abstract class ModelAbstractOscillator
         on = true;
     }
 
+    @Override
     public int read(float[][] buffer, int offset, int len) throws IOException {
         return -1;
     }
@@ -91,6 +95,7 @@ public abstract class ModelAbstractOscillator
         return on;
     }
 
+    @Override
     public void setPitch(float pitch) {
         this.pitch = pitch;
     }
@@ -107,14 +112,17 @@ public abstract class ModelAbstractOscillator
         return samplerate;
     }
 
+    @Override
     public float getAttenuation() {
         return 0;
     }
 
+    @Override
     public int getChannels() {
         return 1;
     }
 
+    @Override
     public String getName() {
         return getClass().getName();
     }
@@ -123,6 +131,7 @@ public abstract class ModelAbstractOscillator
         return new Patch(0, 0);
     }
 
+    @Override
     public ModelOscillatorStream open(float samplerate) {
         ModelAbstractOscillator oscs;
         try {
@@ -162,10 +171,12 @@ public abstract class ModelAbstractOscillator
         return sbk;
     }
 
+    @Override
     public String getDescription() {
         return getName();
     }
 
+    @Override
     public Instrument getInstrument(Patch patch) {
         Instrument ins = getInstrument();
         Patch p = ins.getPatch();
@@ -182,18 +193,22 @@ public abstract class ModelAbstractOscillator
         return ins;
     }
 
+    @Override
     public Instrument[] getInstruments() {
         return new Instrument[]{getInstrument()};
     }
 
+    @Override
     public SoundbankResource[] getResources() {
         return new SoundbankResource[0];
     }
 
+    @Override
     public String getVendor() {
         return null;
     }
 
+    @Override
     public String getVersion() {
         return null;
     }

@@ -117,6 +117,7 @@ public class RIFFReader extends InputStream {
         return ckSize;
     }
 
+    @Override
     public int read() throws IOException {
         if (avail == 0)
             return -1;
@@ -128,6 +129,7 @@ public class RIFFReader extends InputStream {
         return b;
     }
 
+    @Override
     public int read(byte[] b, int offset, int len) throws IOException {
         if (avail == 0)
             return -1;
@@ -180,6 +182,7 @@ public class RIFFReader extends InputStream {
         return skipped;
     }
 
+    @Override
     public long skip(long n) throws IOException {
         if (avail == 0)
             return -1;
@@ -199,6 +202,7 @@ public class RIFFReader extends InputStream {
         }
     }
 
+    @Override
     public int available() {
         return (int)avail;
     }
@@ -323,6 +327,7 @@ public class RIFFReader extends InputStream {
         return ch1 + (ch2 << 8) | (ch3 << 16) | (ch4 << 24);
     }
 
+    @Override
     public void close() throws IOException {
         finish();
         if (this == root)

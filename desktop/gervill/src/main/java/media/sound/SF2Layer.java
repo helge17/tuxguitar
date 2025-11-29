@@ -48,10 +48,12 @@ public class SF2Layer extends SoundbankResource {
         super(null, null, null);
     }
 
+    @Override
     public Object getData() {
         return null;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -72,6 +74,7 @@ public class SF2Layer extends SoundbankResource {
         globalregion = zone;
     }
 
+    @Override
     public String toString() {
         return "Layer: " + name;
     }

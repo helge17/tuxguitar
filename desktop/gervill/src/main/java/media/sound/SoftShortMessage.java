@@ -36,16 +36,19 @@ public class SoftShortMessage extends ShortMessage {
 
     int channel = 0;
 
+    @Override
     public int getChannel() {
         return channel;
     }
 
+    @Override
     public void setMessage(int command, int channel, int data1, int data2)
             throws InvalidMidiDataException {
         this.channel = channel;
         super.setMessage(command, channel & 0xF, data1, data2);
     }
 
+    @Override
     public Object clone() {
         SoftShortMessage clone = new SoftShortMessage();
         try {

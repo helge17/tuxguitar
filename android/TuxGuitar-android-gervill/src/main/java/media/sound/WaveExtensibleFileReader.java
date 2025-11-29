@@ -105,10 +105,12 @@ public class WaveExtensibleFileReader extends AudioFileReader {
             return d;
         }
 
+        @Override
         public int hashCode() {
             return (int) i1;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof GUID))
                 return false;
@@ -180,6 +182,7 @@ public class WaveExtensibleFileReader extends AudioFileReader {
 
     }
 
+    @Override
     public AudioFileFormat getAudioFileFormat(InputStream stream)
             throws UnsupportedAudioFileException, IOException {
 
@@ -282,6 +285,7 @@ public class WaveExtensibleFileReader extends AudioFileReader {
         return fileformat;
     }
 
+    @Override
     public AudioInputStream getAudioInputStream(InputStream stream)
             throws UnsupportedAudioFileException, IOException {
 
@@ -301,6 +305,7 @@ public class WaveExtensibleFileReader extends AudioFileReader {
         throw new UnsupportedAudioFileException();
     }
 
+    @Override
     public AudioFileFormat getAudioFileFormat(URL url)
             throws UnsupportedAudioFileException, IOException {
         InputStream stream = url.openStream();
@@ -313,6 +318,7 @@ public class WaveExtensibleFileReader extends AudioFileReader {
         return format;
     }
 
+    @Override
     public AudioFileFormat getAudioFileFormat(File file)
             throws UnsupportedAudioFileException, IOException {
         InputStream stream = new FileInputStream(file);
@@ -325,11 +331,13 @@ public class WaveExtensibleFileReader extends AudioFileReader {
         return format;
     }
 
+    @Override
     public AudioInputStream getAudioInputStream(URL url)
             throws UnsupportedAudioFileException, IOException {
         return getAudioInputStream(new BufferedInputStream(url.openStream()));
     }
 
+    @Override
     public AudioInputStream getAudioInputStream(File file)
             throws UnsupportedAudioFileException, IOException {
         return getAudioInputStream(new BufferedInputStream(new FileInputStream(

@@ -134,6 +134,7 @@ public class ModelIdentifier {
         this.variable = variable;
     }
 
+	@Override
 	public int hashCode() {
 		int hashcode = instance;
 		if(object != null) hashcode |= object.hashCode();
@@ -141,6 +142,7 @@ public class ModelIdentifier {
 		return  hashcode;
 	}
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof ModelIdentifier))
             return false;
@@ -159,6 +161,7 @@ public class ModelIdentifier {
         return true;
     }
 
+    @Override
     public String toString() {
         if (variable == null) {
             return object + "[" + instance + "]";

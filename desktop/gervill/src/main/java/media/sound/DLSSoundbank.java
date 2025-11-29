@@ -100,10 +100,12 @@ public class DLSSoundbank implements Soundbank {
             return d;
         }
 
+        @Override
         public int hashCode() {
             return (int)i1;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof DLSID)) {
                 return false;
@@ -1179,18 +1181,22 @@ public class DLSSoundbank implements Soundbank {
         return info;
     }
 
+    @Override
     public String getName() {
         return info.name;
     }
 
+    @Override
     public String getVersion() {
         return major + "." + minor;
     }
 
+    @Override
     public String getVendor() {
         return info.engineers;
     }
 
+    @Override
     public String getDescription() {
         return info.comments;
     }
@@ -1207,6 +1213,7 @@ public class DLSSoundbank implements Soundbank {
         info.comments = s;
     }
 
+    @Override
     public SoundbankResource[] getResources() {
         SoundbankResource[] resources = new SoundbankResource[samples.size()];
         int j = 0;
@@ -1215,6 +1222,7 @@ public class DLSSoundbank implements Soundbank {
         return resources;
     }
 
+    @Override
     public DLSInstrument[] getInstruments() {
         DLSInstrument[] inslist_array =
                 instruments.toArray(new DLSInstrument[instruments.size()]);
@@ -1226,6 +1234,7 @@ public class DLSSoundbank implements Soundbank {
         return samples.toArray(new DLSSample[samples.size()]);
     }
 
+    @Override
     public Instrument getInstrument(Patch patch) {
         int program = patch.getProgram();
         int bank = patch.getBank();

@@ -61,6 +61,7 @@ public class SoftEnvelopeGenerator implements SoftProcess {
     private double[][] decay2 = new double[max_count][1];
     private double control_time = 0;
 
+    @Override
     public void reset() {
         for (int i = 0; i < used_count; i++) {
             stage[i] = 0;
@@ -80,11 +81,13 @@ public class SoftEnvelopeGenerator implements SoftProcess {
         used_count = 0;
     }
 
+    @Override
     public void init(SoftSynthesizer synth) {
         control_time = 1.0 / synth.getControlRate();
         processControlLogic();
     }
 
+    @Override
     public double[] get(int instance, String name) {
         if (instance >= used_count)
             used_count = instance + 1;
@@ -118,6 +121,7 @@ public class SoftEnvelopeGenerator implements SoftProcess {
         return null;
     }
 
+    @Override
     public void processControlLogic() {
         for (int i = 0; i < used_count; i++) {
 

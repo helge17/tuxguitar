@@ -52,6 +52,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
 
     private InputStream datastream = new InputStream() {
 
+        @Override
         public int read() throws IOException {
             byte[] b = new byte[1];
             int ret = read(b);
@@ -60,6 +61,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
             return b[0] & 0xFF;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
 
             if (_loopcount != 0) {
@@ -166,6 +168,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
         super(mixer, info);
     }
 
+    @Override
     protected void processControlLogic() {
 
         _rightgain = rightgain;
@@ -203,6 +206,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
 
     }
 
+    @Override
     protected void processAudioLogic(SoftAudioBuffer[] buffers) {
         if (_active) {
             float[] left = buffers[SoftMixingMainMixer.CHANNEL_LEFT].array();
@@ -273,15 +277,18 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
         }
     }
 
+    @Override
     public int getFrameLength() {
         return bufferSize / format.getFrameSize();
     }
 
+    @Override
     public long getMicrosecondLength() {
         return (long) (getFrameLength() * (1000000.0 / (double) getFormat()
                 .getSampleRate()));
     }
 
+    @Override
     public void loop(int count) {
         LineEvent event = null;
 
@@ -302,6 +309,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
 
     }
 
+    @Override
     public void open(AudioInputStream stream) throws LineUnavailableException,
             IOException {
         if (isOpen()) {
@@ -342,6 +350,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
 
     }
 
+    @Override
     public void open(AudioFormat format, byte[] data, int offset, int bufferSize)
             throws LineUnavailableException {
         synchronized (control_mutex) {
@@ -383,6 +392,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
 
     }
 
+    @Override
     public void setFramePosition(int frames) {
         synchronized (control_mutex) {
             frameposition_sg = true;
@@ -390,6 +400,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
         }
     }
 
+    @Override
     public void setLoopPoints(int start, int end) {
         synchronized (control_mutex) {
             if (end != -1) {
@@ -412,60 +423,73 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
         }
     }
 
+    @Override
     public void setMicrosecondPosition(long microseconds) {
         setFramePosition((int) (microseconds * (((double) getFormat()
                 .getSampleRate()) / 1000000.0)));
     }
 
+    @Override
     public int available() {
         return 0;
     }
 
+    @Override
     public void drain() {
     }
 
+    @Override
     public void flush() {
     }
 
+    @Override
     public int getBufferSize() {
         return bufferSize;
     }
 
+    @Override
     public AudioFormat getFormat() {
         return format;
     }
 
+    @Override
     public int getFramePosition() {
         synchronized (control_mutex) {
             return frameposition;
         }
     }
 
+    @Override
     public float getLevel() {
         return AudioSystem.NOT_SPECIFIED;
     }
 
+    @Override
     public long getLongFramePosition() {
         return getFramePosition();
     }
 
+    @Override
     public long getMicrosecondPosition() {
         return (long) (getFramePosition() * (1000000.0 / (double) getFormat()
                 .getSampleRate()));
     }
 
+    @Override
     public boolean isActive() {
         synchronized (control_mutex) {
             return active;
         }
     }
 
+    @Override
     public boolean isRunning() {
         synchronized (control_mutex) {
             return active;
         }
     }
 
+    @Override
     public void start() {
 
         LineEvent event = null;
@@ -486,6 +510,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
             sendEvent(event);
     }
 
+    @Override
     public void stop() {
         LineEvent event = null;
 
@@ -504,6 +529,7 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
             sendEvent(event);
     }
 
+    @Override
     public void close() {
         LineEvent event = null;
 
@@ -524,10 +550,12 @@ public class SoftMixingClip extends SoftMixingDataLine implements Clip {
 
     }
 
+    @Override
     public boolean isOpen() {
         return open;
     }
 
+    @Override
     public void open() throws LineUnavailableException {
         if (data == null) {
             throw new IllegalArgumentException(

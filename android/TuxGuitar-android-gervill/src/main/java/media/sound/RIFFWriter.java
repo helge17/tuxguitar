@@ -68,34 +68,42 @@ public class RIFFWriter extends OutputStream {
             this.raf = new RandomAccessFile(name, "rw");
         }
 
+        @Override
         public void seek(long chunksizepointer) throws IOException {
             raf.seek(chunksizepointer);
         }
 
+        @Override
         public long getPointer() throws IOException {
             return raf.getFilePointer();
         }
 
+        @Override
         public void close() throws IOException {
             raf.close();
         }
 
+        @Override
         public void write(int b) throws IOException {
             raf.write(b);
         }
 
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
             raf.write(b, off, len);
         }
 
+        @Override
         public void write(byte[] bytes) throws IOException {
             raf.write(bytes);
         }
 
+        @Override
         public long length() throws IOException {
             return raf.length();
         }
 
+        @Override
         public void setLength(long i) throws IOException {
             raf.setLength(i);
         }
@@ -113,19 +121,23 @@ public class RIFFWriter extends OutputStream {
             this.stream = stream;
         }
 
+        @Override
         public void seek(long chunksizepointer) throws IOException {
             pos = (int) chunksizepointer;
         }
 
+        @Override
         public long getPointer() throws IOException {
             return pos;
         }
 
+        @Override
         public void close() throws IOException {
             stream.write(buff, 0, length);
             stream.close();
         }
 
+        @Override
         public void write(int b) throws IOException {
             if (s == null)
                 s = new byte[1];
@@ -133,6 +145,7 @@ public class RIFFWriter extends OutputStream {
             write(s, 0, 1);
         }
 
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
             int newsize = pos + len;
             if (newsize > length)
@@ -143,14 +156,17 @@ public class RIFFWriter extends OutputStream {
             }
         }
 
+        @Override
         public void write(byte[] bytes) throws IOException {
             write(bytes, 0, bytes.length);
         }
 
+        @Override
         public long length() throws IOException {
             return length;
         }
 
+        @Override
         public void setLength(long i) throws IOException {
             length = (int) i;
             if (length > buff.length) {
@@ -223,6 +239,7 @@ public class RIFFWriter extends OutputStream {
         return writeoverride;
     }
 
+    @Override
     public void close() throws IOException {
         if (!open)
             return;
@@ -245,6 +262,7 @@ public class RIFFWriter extends OutputStream {
         raf = null;
     }
 
+    @Override
     public void write(int b) throws IOException {
         if (!writeoverride) {
             if (chunktype != 2) {
@@ -259,6 +277,7 @@ public class RIFFWriter extends OutputStream {
         raf.write(b);
     }
 
+    @Override
     public void write(byte b[], int off, int len) throws IOException {
         if (!writeoverride) {
             if (chunktype != 2) {
