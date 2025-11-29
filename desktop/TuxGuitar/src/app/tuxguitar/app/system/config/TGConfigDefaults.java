@@ -154,7 +154,8 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY, false);
 
 		loadProperty(properties, TGConfigKeys.SCROLLING_MAX_FPS, 40);
-		loadProperty(properties, TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION, 1);
+		loadProperty(properties, TGConfigKeys.SCROLLING_HORIZONTAL_DISCRETE_ANTICIPATION, 1);
+		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_DISCRETE_ANTICIPATION, 1);
 		loadProperty(properties, TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT, 20);
 		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT, 0);
 	}

@@ -54,7 +54,8 @@ public class TGControl {
 	private float lastScale;
 	private int lastLayoutStyle;
 	private int lastLayoutMode;
-	private int discreteScrollingAnticipation;
+	private int discreteScrollingAnticipationH;
+	private int discreteScrollingAnticipationV;
 	private int horizontalMarginPercent;
 	private int verticalMarginPercent;
 
@@ -65,8 +66,8 @@ public class TGControl {
 		this.context = context;
 		this.tablature = TablatureEditor.getInstance(this.context).getTablature();
 		this.tabScroll = new TablatureScrollPlaying(context);
-		this.discreteScrollingAnticipation = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_DISCRETE_ANTICIPATION);
-		this.discreteScrollingAnticipation = Math.max(0, this.discreteScrollingAnticipation);
+		this.discreteScrollingAnticipationH = Math.max(0, TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_HORIZONTAL_DISCRETE_ANTICIPATION));
+		this.discreteScrollingAnticipationV = Math.max(0, TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_VERTICAL_DISCRETE_ANTICIPATION));
 		this.horizontalMarginPercent = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT);
 		this.verticalMarginPercent = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT);
 		this.initialize(parent);
@@ -230,7 +231,8 @@ public class TGControl {
 	}
 
 	private boolean anticipateScrolling(TGMeasureImpl playedMeasure, TGLayout layout) {
-		if (this.discreteScrollingAnticipation == 0) {
+		if (   ((layout.getMode() == TGLayout.MODE_HORIZONTAL) && (this.discreteScrollingAnticipationH == 0))
+			|| ((layout.getMode() == TGLayout.MODE_VERTICAL)   && (this.discreteScrollingAnticipationV == 0))){
 			return false;
 		}
 		
@@ -248,10 +250,10 @@ public class TGControl {
 			measureIndex++;
 			end = anticipateScrolling || (measureIndex > lastPlayableIndex);
 			if (layout.getMode() == TGLayout.MODE_HORIZONTAL) {
-				end |= (measureIndex > playedMeasure.getNumber() - 1 + this.discreteScrollingAnticipation);
+				end |= (measureIndex > playedMeasure.getNumber() - 1 + this.discreteScrollingAnticipationH);
 			}
 			else {
-				end |= (layout.getMeasureLineNumber(measureIndex) > layout.getMeasureLineNumber(playedMeasure.getNumber()-1) + this.discreteScrollingAnticipation);
+				end |= (layout.getMeasureLineNumber(measureIndex) > layout.getMeasureLineNumber(playedMeasure.getNumber()-1) + this.discreteScrollingAnticipationV);
 			}
 		}
 		return anticipateScrolling;
