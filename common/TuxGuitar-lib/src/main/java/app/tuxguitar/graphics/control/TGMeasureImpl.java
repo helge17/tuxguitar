@@ -90,10 +90,9 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Boolean para saber si el compas esta en el area de pantalla
 	 */
 	private boolean outOfBounds;
-	/**
-	 * Boolean para saber si el compas es el primero de la linea
-	 */
+	
 	private boolean firstOfLine;
+	private boolean lastOfLine;
 
 	private boolean compactMode;
 
@@ -134,6 +133,7 @@ public class TGMeasureImpl extends TGMeasure{
 	private boolean readyToPaint;
 
 	private boolean wasPlayingWhenLastPainted;
+	private boolean wasLastWhenLastPainted;
 
 	@SuppressWarnings("unchecked")
 	public TGMeasureImpl(TGMeasureHeader header) {
@@ -160,6 +160,7 @@ public class TGMeasureImpl extends TGMeasure{
 		this.calculateBeats(layout);
 		this.calculateWidth(layout);
 		this.setFirstOfLine(false);
+		this.setLastOfLine(false);
 	}
 
 	/**
@@ -649,7 +650,7 @@ public class TGMeasureImpl extends TGMeasure{
 			UIColor background = this.isPlaying(layout) ? layout.getResources().getBackgroundColorPlaying() : layout.getResources().getBackgroundColor();
 			painter.setBackground(background);
 
-			if(!bufferEnabled || shouldRepaintBuffer(resourceBuffer, this.isPlaying(layout))){
+			if(!bufferEnabled || shouldRepaintBuffer(resourceBuffer, this.isPlaying(layout), layout.isLastMeasure(this))){
 				UIPainter bufferPainter = painter;
 				float x = (bufferEnabled ? 0 : getPosX());
 				float y = (bufferEnabled ? 0 : getPosY());
@@ -664,6 +665,14 @@ public class TGMeasureImpl extends TGMeasure{
 				paintClef(layout, bufferPainter, x, y);
 				paintKeySignature(layout, bufferPainter, x, y);
 				paintComponents(layout, bufferPainter, x, y);
+				paintDivisions(layout,bufferPainter, x, y);
+				paintMarker(layout, bufferPainter, x, y);
+				paintTexts(layout, bufferPainter, x, y);
+				paintTempo(layout, bufferPainter, x, y);
+				paintTripletFeel(layout, bufferPainter, x, y);
+				paintRepeatEnding(layout, bufferPainter, x, y);
+				paintLoopMarker(layout, bufferPainter, x, y);
+				
 				if( bufferEnabled ){
 					bufferPainter.dispose();
 				}
@@ -673,28 +682,22 @@ public class TGMeasureImpl extends TGMeasure{
 				painter.setBackground(background);
 				getBuffer().paintBuffer(resourceBuffer, painter, getPosX(), getPosY());
 			}
-
-			this.paintMarker(layout, painter);
-			this.paintTexts(layout,painter);
-			this.paintTempo(layout,painter);
-			this.paintTripletFeel(layout,painter);
-			this.paintDivisions(layout,painter);
-			this.paintRepeatEnding(layout,painter);
-			this.paintLoopMarker(layout, painter);
 		}
 		this.wasPlayingWhenLastPainted = this.isPlaying(layout);
+		this.wasLastWhenLastPainted = layout.isLastMeasure(this);
 	}
 
-	private boolean shouldRepaintBuffer(TGResourceBuffer resourceBuffer, boolean isPlaying){
-		return (!isBufferCreated() || getBuffer().isDisposed(resourceBuffer) || (isPlaying != this.wasPlayingWhenLastPainted));
+	private boolean shouldRepaintBuffer(TGResourceBuffer resourceBuffer, boolean isPlaying, boolean isLast){
+		return (!isBufferCreated() || getBuffer().isDisposed(resourceBuffer) || (isPlaying != this.wasPlayingWhenLastPainted)
+				|| (isLast != this.wasLastWhenLastPainted));
 	}
 
-	public void paintRepeatEnding(TGLayout layout,UIPainter painter){
+	private void paintRepeatEnding(TGLayout layout,UIPainter painter, float fromX, float fromY){
 		if(getHeader().getRepeatAlternative() > 0){
 			float scale = layout.getScale();
-			float x1 = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
-			float x2 = (getPosX() + getWidth(layout) + getSpacing());
-			float y1 = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_REPEAT_ENDING));
+			float x1 = (fromX + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
+			float x2 = (fromX + getWidth(layout) + getSpacing());
+			float y1 = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_REPEAT_ENDING));
 			float y2 = (y1 + (layout.getRepeatEndingSpacing() * 0.75f ));
 			String string = new String();
 			for(int i = 0; i < 8; i ++){
@@ -818,9 +821,9 @@ public class TGMeasureImpl extends TGMeasure{
 	/**
 	 * Pinta las divisiones del compas
 	 */
-	private void paintDivisions(TGLayout layout,UIPainter painter) {
-		float x1 = getPosX();
-		float x2 = getPosX() + getWidth(layout);
+	private void paintDivisions(TGLayout layout,UIPainter painter, float fromX, float fromY) {
+		float x1 = fromX;
+		float x2 = x1 + getWidth(layout);
 		float y1 = 0;
 		float y2 = 0;
 		float offsetY = 0;
@@ -828,17 +831,17 @@ public class TGMeasureImpl extends TGMeasure{
 		boolean addInfo = false;
 		//-----SCORE ------------------------------------//
 		if((style & TGLayout.DISPLAY_SCORE) != 0 ){
-			y1 = getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+			y1 = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
 			y2 = y1 + (layout.getScoreLineSpacing() * 4);
 			addInfo = true;
 			if( (style & TGLayout.DISPLAY_TABLATURE) != 0 && (layout.isFirstMeasure(this) || isFirstOfLine())){
-				offsetY = ( getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE)) - y2;
+				offsetY = ( fromY + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE)) - y2;
 			}
 			paintDivisions(layout, painter, x1, y1, x2, y2, offsetY, addInfo );
 		}
 		//-----TABLATURE ------------------------------------//
 		if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
-			y1 = getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
+			y1 = fromY + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
 			y2 = y1 + (getTrack().stringCount() > 1 ? ((getTrack().stringCount() - 1 ) * layout.getStringSpacing()) : 0f);
 			if( y1 == y2 ) {
 				y1 -= layout.getStringSpacing();
@@ -859,7 +862,7 @@ public class TGMeasureImpl extends TGMeasure{
 		if( addInfo ){
 			String number = Integer.toString(this.getNumber());
 			layout.setMeasureNumberStyle(painter);
-			painter.drawString(number, getPosX() + scale, y1 + painter.getFMBaseLine() - (2f * scale));
+			painter.drawString(number, x1 + scale, y1 + painter.getFMBaseLine() - (2f * scale));
 		}
 
 		layout.setDivisionsStyle(painter, true);
@@ -934,12 +937,14 @@ public class TGMeasureImpl extends TGMeasure{
 				}
 			}
 		} else {
-			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.moveTo((x2 + getSpacing()), y1);
-			painter.lineTo((x2 + getSpacing()), y2);
-			painter.closePath();
+			if (islastOfLine()) {
+				painter.setLineWidth(layout.getLineWidth(0));
+				painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
+				painter.setAntialias(false);
+				painter.moveTo((x2 + getSpacing())-1, y1);
+				painter.lineTo((x2 + getSpacing())-1, y2);
+				painter.closePath();
+			}
 		}
 
 		painter.setLineWidth(lineWidthSmall);
@@ -1059,11 +1064,11 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 
-	private void paintTempo(TGLayout layout,UIPainter painter){
+	private void paintTempo(TGLayout layout,UIPainter painter, float fromX, float fromY){
 		if(this.getHeaderImpl().shouldPaintTempo()){
 			float scale = 5f * layout.getScale();
-			float x = (getPosX() + getHeaderImpl().getLeftSpacing(layout));
-			float y = getPosY();
+			float x = (fromX + getHeaderImpl().getLeftSpacing(layout));
+			float y = fromY;
 			float lineSpacing = (Math.max(layout.getScoreLineSpacing() , layout.getStringSpacing()));
 			int style = layout.getStyle();
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
@@ -1086,11 +1091,11 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 
-	private void paintTripletFeel(TGLayout layout,UIPainter painter){
+	private void paintTripletFeel(TGLayout layout,UIPainter painter, float fromX, float fromY){
 		if(this.getHeaderImpl().shouldPaintTripletFeel()){
 			float scale = (5f * layout.getScale());
-			float x = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getHeaderImpl().getTempoSpacing(layout));
-			float y = (getPosY());
+			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getHeaderImpl().getTempoSpacing(layout));
+			float y = fromY;
 			float lineSpacing = (Math.max(layout.getScoreLineSpacing() , layout.getStringSpacing()));
 			int style = layout.getStyle();
 			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
@@ -1133,18 +1138,18 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 	}
 
-	private void paintLoopMarker(TGLayout layout,UIPainter painter){
+	private void paintLoopMarker(TGLayout layout,UIPainter painter, float fromX, float fromY){
 		if( layout.hasLoopMarker( this ) ){
 			int size = Math.round( layout.getLoopMarkerSpacing() - (1f * layout.getScale()));
 			if( layout.getComponent().isLoopSHeader(this.getHeader())){
-				float x = (getPosX() + Math.round(size / 2f) );
-				float y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_LOOP_MARKER));
+				float x = (fromX + Math.round(size / 2f) );
+				float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_LOOP_MARKER));
 				layout.setLoopSMarkerStyle(painter);
 				paintLoopMarker(painter, x, y, size);
 			}
 			if( layout.getComponent().isLoopEHeader(this.getHeader())){
-				float x = (getPosX() + getWidth(layout) + getSpacing() - size );
-				float y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_LOOP_MARKER));
+				float x = (fromX + getWidth(layout) + getSpacing() - size );
+				float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_LOOP_MARKER));
 				layout.setLoopEMarkerStyle(painter);
 				paintLoopMarker(painter, x, y, size);
 			}
@@ -1157,23 +1162,23 @@ public class TGMeasureImpl extends TGMeasure{
 		painter.closePath();
 	}
 
-	private void paintMarker(TGLayout layout, UIPainter painter){
+	private void paintMarker(TGLayout layout, UIPainter painter, float fromX, float fromY){
 		if( this.hasMarker() ){
-			float x = (getPosX() + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
-			float y = (getPosY() + getTs().getPosition(TGTrackSpacing.POSITION_MARKER));
+			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getFirstNoteSpacing(layout));
+			float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_MARKER));
 
 			layout.setMarkerStyle(painter, getMarkerColor(layout.getResourceBuffer(), layout.getComponent().getResourceFactory()));
 			painter.drawString(getMarker().getTitle(), x, y);
 		}
 	}
 
-	private void paintTexts(TGLayout layout,UIPainter painter){
+	private void paintTexts(TGLayout layout,UIPainter painter, float fromX, float fromY){
 		Iterator<TGBeat> it = getBeats().iterator();
 		while(it.hasNext()){
 			TGBeat beat = it.next();
 			if( beat.isTextBeat() ){
 				TGTextImpl text = (TGTextImpl)beat.getText();
-				text.paint(layout, painter,(getPosX() + getHeaderImpl().getLeftSpacing(layout) ),getPosY());
+				text.paint(layout, painter,(fromX + getHeaderImpl().getLeftSpacing(layout) ),fromY);
 			}
 		}
 	}
@@ -1348,6 +1353,14 @@ public class TGMeasureImpl extends TGMeasure{
 
 	public void setFirstOfLine(boolean firstOfLine) {
 		this.firstOfLine = firstOfLine;
+	}
+
+	public boolean islastOfLine() {
+		return this.lastOfLine;
+	}
+
+	public void setLastOfLine(boolean lastOfLine) {
+		this.lastOfLine = lastOfLine;
 	}
 
 	public TGTrackImpl getTrackImpl(){

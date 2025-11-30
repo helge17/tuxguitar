@@ -1,6 +1,8 @@
 package app.tuxguitar.app.transport;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.editor.TGEditorManager;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
@@ -20,9 +22,11 @@ public class TGTransportListener implements TGEventListener{
 	}
 
 	public void startLoop() {
+		Integer fps = TGConfigManager.getInstance(context).getIntegerValue(TGConfigKeys.SCROLLING_MAX_FPS);
+		int periodMs = ((fps == null) || (fps==0)) ? 25 : (1000 / fps);
 		TGThreadManager.getInstance(this.context).loop(new TGThreadLoop() {
 			public Long process() {
-				return (processLoop() ? 25 : BREAK);
+				return (processLoop() ? periodMs : BREAK);
 			}
 		});
 	}

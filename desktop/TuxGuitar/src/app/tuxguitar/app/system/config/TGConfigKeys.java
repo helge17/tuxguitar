@@ -45,7 +45,6 @@ public class TGConfigKeys {
 	public static final String COLOR_BACKGROUND = "color.background";
 
 	public static final String COLOR_BACKGROUND_PLAYING = "color.background.playing";
-
 	public static final String COLOR_LINE = "color.line";
 	public static final String COLOR_LINE_INVALID = "color.line.invalid";
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
@@ -125,4 +124,10 @@ public class TGConfigKeys {
 
 	public static final String PLAY_WHEN_MOVING = "play.when.moving";
 	public static final String CHORD_INSERT_DIAGRAM_ONLY = "chord.insert-diagram-only";
+
+	public static final String SCROLLING_MAX_FPS = "scrolling.continuous.maxFPS";
+	public static final String SCROLLING_HORIZONTAL_MARGIN_PERCENT = "scrolling.continuous.horizontal.margin-percent";
+	public static final String SCROLLING_VERTICAL_MARGIN_PERCENT = "scrolling.continuous.vertical.margin-percent";
+	public static final String SCROLLING_HORIZONTAL_DISCRETE_ANTICIPATION = "scrolling.discrete.horizontal.anticipation";
+	public static final String SCROLLING_VERTICAL_DISCRETE_ANTICIPATION = "scrolling.discrete.vertical.anticipation";
 }

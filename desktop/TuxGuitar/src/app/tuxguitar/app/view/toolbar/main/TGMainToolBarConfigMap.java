@@ -63,6 +63,7 @@ import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
+import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import app.tuxguitar.app.action.impl.marker.TGGoFirstMarkerAction;
 import app.tuxguitar.app.action.impl.marker.TGGoLastMarkerAction;
@@ -782,6 +783,17 @@ public class TGMainToolBarConfigMap {
 			public boolean checked(TGContext context, boolean isRunning) {
 				int style = TablatureEditor.getInstance(context).getTablature().getViewLayout().getStyle();
 				return ((style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0);
+			}
+		});
+		registerCheckable("transport.continuous-scrolling", TGToggleContinuousScrollingAction.NAME, TGIconManager.TRANSPORT_CONTINUOUS_SCROLLING, new TGMainToolBarItemUpdater() {
+			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				return !isRunning;
+			}
+			@Override
+			public boolean checked(TGContext context, boolean isRunning) {
+				int style = TablatureEditor.getInstance(context).getTablature().getViewLayout().getStyle();
+				return ((style & TGLayout.CONTINUOUS_SCROLL) != 0);
 			}
 		});
 

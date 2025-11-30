@@ -12,6 +12,7 @@ import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.player.base.MidiPlayerMode;
@@ -33,6 +34,7 @@ public class TransportMenuItem extends TGMenuItem {
 	private UIMenuCheckableItem loopSHeader;
 	private UIMenuCheckableItem loopEHeader;
 	private UIMenuCheckableItem highlightPlayedBeat;
+	private UIMenuCheckableItem continuousScrolling;
 
 	private boolean isRunning;
 
@@ -78,9 +80,11 @@ public class TransportMenuItem extends TGMenuItem {
 		//--SEPARATOR--
 		this.transportMenuItem.getMenu().createSeparator();
 
-		//--HIGHLIGHT PLAYED BEAT--
+		//--HIGHLIGHT PLAYED BEAT, CONTINOUS SCROLLING--
 		this.highlightPlayedBeat = this.transportMenuItem.getMenu().createCheckItem();
 		this.highlightPlayedBeat.addSelectionListener(this.createActionProcessor(TGToggleHighlightPlayedBeatAction.NAME));
+		this.continuousScrolling = this.transportMenuItem.getMenu().createCheckItem();
+		this.continuousScrolling.addSelectionListener(this.createActionProcessor(TGToggleContinuousScrollingAction.NAME));
 
 		this.isRunning = false;
 		this.loadIcons();
@@ -101,6 +105,8 @@ public class TransportMenuItem extends TGMenuItem {
 		Tablature tablature = TablatureEditor.getInstance(this.findContext()).getTablature();
 		int style = tablature.getViewLayout().getStyle();
 		this.highlightPlayedBeat.setChecked( (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 );
+		this.continuousScrolling.setEnabled(!running);
+		this.continuousScrolling.setChecked( (style & TGLayout.CONTINUOUS_SCROLL) != 0 );
 		this.loadIcons(false);
 		this.play.setText(TuxGuitar.getProperty(isRunning ? "transport.pause" : "transport.start"));
 	}
@@ -115,6 +121,7 @@ public class TransportMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.loopSHeader, "transport.set-loop-start", TGTransportSetLoopSHeaderAction.NAME);
 		setMenuItemTextAndAccelerator(this.loopEHeader, "transport.set-loop-end", TGTransportSetLoopEHeaderAction.NAME);
 		setMenuItemTextAndAccelerator(this.highlightPlayedBeat, "transport.highlight-played-beat", TGToggleHighlightPlayedBeatAction.NAME);
+		setMenuItemTextAndAccelerator(this.continuousScrolling, "transport.continuous-scrolling", TGToggleContinuousScrollingAction.NAME);
 	}
 
 	public void loadIcons(){
@@ -125,6 +132,7 @@ public class TransportMenuItem extends TGMenuItem {
 		this.loopSHeader.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_LOOP_START));
 		this.loopEHeader.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_LOOP_END));
 		this.highlightPlayedBeat.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_HIGHLIGHT_PLAYED_BEAT));
+		this.continuousScrolling.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.TRANSPORT_CONTINUOUS_SCROLLING));
 	}
 
 	public void loadIcons(boolean force){

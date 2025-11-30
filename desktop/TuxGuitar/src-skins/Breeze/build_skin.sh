@@ -51,6 +51,7 @@ declare -A ICONS=(
   ["$TG/layout_tablature.svg"]="$S_ICON:layout_tablature.png"
   ["$TG/layout_compact.svg"]="$S_ICON:layout_compact.png"
   ["$TG/highlight_played_beat.svg"]="$S_ICON:highlight_played_beat.png"
+  ["$TG/continuous_scrolling.svg"]="$S_ICON:continuous_scrolling.png"
   ["$TG/edit_voice_1.svg"]="$S_ICON:edit_voice_1.png"
   ["$TG/edit_voice_2.svg"]="$S_ICON:edit_voice_2.png"
   ["$DT/actions/22/edit-select.svg"]="$S_ICON:edit_mode_selection.png"
