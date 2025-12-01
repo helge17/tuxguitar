@@ -94,6 +94,7 @@ public class TGMarkerEditor {
 		this.titleText = uiFactory.createTextField(group);
 		this.titleText.setText(this.marker.getTitle());
 		groupLayout.set(this.titleText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
+        this.titleText.setFocus();
 
 		// Color
 		UILabel colorLabel = uiFactory.createLabel(group);
