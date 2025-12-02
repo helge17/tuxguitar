@@ -4,11 +4,13 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.player.base.MidiSequenceParser;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UICheckBox;
 import app.tuxguitar.ui.widget.UIDropDownSelect;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UILegendPanel;
@@ -37,29 +39,41 @@ public class MidiSettingsDialog {
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("options"));
 
-		//------------------TRACK SELECTION------------------
-		UITableLayout groupLayout = new UITableLayout();
-		UILegendPanel group = uiFactory.createLegendPanel(dialog);
-		group.setLayout(groupLayout);
-		group.setText(TuxGuitar.getProperty("export.transpose-notes"));
-		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
+		//------------------ transposition------------------
+		UITableLayout groupLayoutTranspose = new UITableLayout();
+		UILegendPanel groupTranspose = uiFactory.createLegendPanel(dialog);
+		groupTranspose.setLayout(groupLayoutTranspose);
+		groupTranspose.setText(TuxGuitar.getProperty("export.transpose-notes"));
+		dialogLayout.set(groupTranspose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
 
-		final UILabel transposeLabel = uiFactory.createLabel(group);
+		final UILabel transposeLabel = uiFactory.createLabel(groupTranspose);
 		transposeLabel.setText(TuxGuitar.getProperty("export.transpose") + ":");
-		groupLayout.set(transposeLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		groupLayoutTranspose.set(transposeLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 
-		final UIDropDownSelect<Integer> transposeCombo = uiFactory.createDropDownSelect(group);
+		final UIDropDownSelect<Integer> transposeCombo = uiFactory.createDropDownSelect(groupTranspose);
 		for(int i = MIN_TRANSPOSE;i <= MAX_TRANSPOSE;i ++){
 			transposeCombo.addItem(new UISelectItem<Integer>(Integer.toString(i), i));
 		}
 		transposeCombo.setSelectedValue(0);
-		groupLayout.set(transposeCombo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+		groupLayoutTranspose.set(transposeCombo, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
+
+		//------------------ options------------------
+		UITableLayout groupOptionsLayout = new UITableLayout();
+		UILegendPanel groupOptions = uiFactory.createLegendPanel(dialog);
+		groupOptions.setLayout(groupOptionsLayout);
+		groupOptions.setText(TuxGuitar.getProperty("options"));
+		dialogLayout.set(groupOptions, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
+
+		final UICheckBox strip_CC_PC = uiFactory.createCheckBox(groupOptions);
+		strip_CC_PC.setText(TuxGuitar.getProperty("export.midi.strip-cc-pc"));
+		strip_CC_PC.setSelected(false);
+		groupOptionsLayout.set(strip_CC_PC, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 2, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 
 		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
@@ -68,6 +82,9 @@ public class MidiSettingsDialog {
 			public void onSelect(UISelectionEvent event) {
 				Integer transposition = transposeCombo.getSelectedValue();
 				settings.setTranspose(transposition != null ? transposition : 0);
+				if (strip_CC_PC.isSelected()) {
+					settings.setFlags(MidiSequenceParser.NO_CONTROL_CHANGE_PROGRAM_CHANGE);
+				}
 				dialog.dispose();
 				onSuccess.run();
 			}
