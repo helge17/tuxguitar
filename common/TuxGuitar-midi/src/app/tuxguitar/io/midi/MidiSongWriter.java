@@ -28,7 +28,7 @@ public class MidiSongWriter extends MidiFileFormat implements TGSongWriter {
 			if( settings == null ) {
 				settings = MidiSettings.getDefaults();
 			}
-			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSong, tgSongManager,MidiSequenceParser.DEFAULT_EXPORT_FLAGS);
+			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSong, tgSongManager, settings.getFlags());
 			midiSequenceParser.setTranspose(settings.getTranspose());
 			midiSequenceParser.parse(new MidiSequenceHandlerImpl((tgSong.countTracks() + 1), gmChannelRouter, handle.getOutputStream()));
 		} catch (Throwable e) {

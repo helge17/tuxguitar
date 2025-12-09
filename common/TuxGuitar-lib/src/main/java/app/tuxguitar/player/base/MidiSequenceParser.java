@@ -27,6 +27,7 @@ import app.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 
 public class MidiSequenceParser {
 
+	public static final int NO_CONTROL_CHANGE_PROGRAM_CHANGE = 0;	// all flags inhibited
 	public static final int ADD_DEFAULT_CONTROLS = 0x01;
 	public static final int ADD_MIXER_MESSAGES = 0x02;
 	public static final int ADD_BANK_SELECT = 0x04;
@@ -206,7 +207,7 @@ public class MidiSequenceParser {
 
 					boolean percussionChannel = tgChannel.isPercussionChannel();
 					//---Fade In---
-					if(note.getEffect().isFadeIn()){
+					if((note.getEffect().isFadeIn()) && ((this.flags & ADD_MIXER_MESSAGES) != 0)) {
 						addFadeIn(sh,track.getNumber(), start, duration, tgChannel.getVolume(), channel);
 					}
 					//---Grace---
@@ -321,10 +322,10 @@ public class MidiSequenceParser {
 	}
 
 	private void makeTrackChannel(MidiSequenceHelper sh, TGChannel channel, TGTrack track) {
+		long tick = getTick(TGDuration.QUARTER_TIME);
+		int trackNum = track.getNumber();
 		if((this.flags & ADD_MIXER_MESSAGES) != 0){
 			int channelId = channel.getChannelId();
-			long tick = getTick(TGDuration.QUARTER_TIME);
-			int trackNum = track.getNumber();
 			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.VOLUME,fix(channel.getVolume()));
 			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.BALANCE,fix(channel.getBalance()));
 			sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.CHORUS,fix(channel.getChorus()));
@@ -336,8 +337,8 @@ public class MidiSequenceParser {
 				sh.getSequence().addControlChange(tick,trackNum,channelId,MidiControllers.BANK_SELECT, fix(channel.getBank(), 0, 128));
 			}
 			sh.getSequence().addProgramChange(tick,trackNum,channelId,fix(channel.getProgram()));
-			sh.getSequence().addTrackName(tick,trackNum,track.getName());
 		}
+		sh.getSequence().addTrackName(tick,trackNum,track.getName());
 	}
 
 	public void addMetronome(MidiSequenceHelper sh,TGMeasureHeader header, long startMove){
