@@ -1,13 +1,5 @@
-RM?=rm -f
-CFLAGS?=-I../../build-scripts/native-modules/common-include -fPIC
-LDFLAGS?=
-LDLIBS?=`pkg-config --libs jack`
-LDPATH?=
-LIBRARY_NAME?=tuxguitar-jack-jni
-LIBRARY_PREFIX?=lib
-LIBRARY_SUFFIX?=.so
+# See pom.xml for variable definitions
 
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=app_tuxguitar_jack_JackClient.o
 
 %.o: %.c
@@ -20,5 +12,3 @@ $(LIBRARY):	$(OBJECTS)
 
 clean:
 	$(RM) $(OBJECTS) $(LIBRARY)
-
-#eof "$Id: GNUmakefile,v 1.10 2008/04/17 20:06:34 rzr Exp $"

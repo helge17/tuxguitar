@@ -15,23 +15,8 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
-		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
-		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
-		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
-		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
-		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
-
 		<tuxguitar-fluidsynth.jni.path>${project.parent.relativePath}/TuxGuitar-fluidsynth/jni/</tuxguitar-fluidsynth.jni.path>
-		<tuxguitar-fluidsynth.jni.rm>${tuxguitar.jni.rm}</tuxguitar-fluidsynth.jni.rm>
-		<tuxguitar-fluidsynth.jni.cc>${tuxguitar.jni.cc}</tuxguitar-fluidsynth.jni.cc>
-		<tuxguitar-fluidsynth.jni.cflags>${tuxguitar.jni.header.path} -fPIC</tuxguitar-fluidsynth.jni.cflags>
-		<tuxguitar-fluidsynth.jni.ldflags>-fPIC</tuxguitar-fluidsynth.jni.ldflags>
-		<tuxguitar-fluidsynth.jni.ldlibs>-lfluidsynth</tuxguitar-fluidsynth.jni.ldlibs>
-		<tuxguitar-fluidsynth.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-fluidsynth.jni.ldpath>
-		<tuxguitar-fluidsynth.jni.library.name>tuxguitar-fluidsynth-jni</tuxguitar-fluidsynth.jni.library.name>
-		<tuxguitar-fluidsynth.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-fluidsynth.jni.library.prefix>
-		<tuxguitar-fluidsynth.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-fluidsynth.jni.library.suffix>
+		<tuxguitar-fluidsynth.jni.library.name>libtuxguitar-fluidsynth-jni.so</tuxguitar-fluidsynth.jni.library.name>
 	</properties>
 
 	<modules>
@@ -54,14 +39,12 @@
 						<configuration>
 							<target name="compile-native">
 								<exec dir="${tuxguitar-fluidsynth.jni.path}" executable="make" failonerror="true" >
-									<env key="CC" value="${tuxguitar-fluidsynth.jni.cc}" />
-									<env key="CFLAGS" value="${tuxguitar-fluidsynth.jni.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-fluidsynth.jni.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-fluidsynth.jni.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-fluidsynth.jni.ldpath}" />
-									<env key="LIBRARY_NAME" value="${tuxguitar-fluidsynth.jni.library.name}" />
-									<env key="LIBRARY_PREFIX" value="${tuxguitar-fluidsynth.jni.library.prefix}" />
-									<env key="LIBRARY_SUFFIX" value="${tuxguitar-fluidsynth.jni.library.suffix}" />
+									<env key="CC" value="gcc" />
+									<env key="CFLAGS" value="-I${basedir}/../common-include -fPIC" />
+									<env key="LDFLAGS" value="-fPIC" />
+									<env key="LDLIBS" value="-lfluidsynth" />
+									<env key="LDPATH" value="-L/usr/lib" />
+									<env key="LIBRARY" value="${tuxguitar-fluidsynth.jni.library.name}" />
 								</exec>
 							</target>
 						</configuration>
@@ -77,10 +60,8 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-fluidsynth.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean" />
-									<env key="RM" value="${tuxguitar-fluidsynth.jni.rm}" />
-									<env key="LIBRARY_NAME" value="${tuxguitar-fluidsynth.jni.library.name}" />
-									<env key="LIBRARY_PREFIX" value="${tuxguitar-fluidsynth.jni.library.prefix}" />
-									<env key="LIBRARY_SUFFIX" value="${tuxguitar-fluidsynth.jni.library.suffix}" />
+									<env key="RM" value="rm -f" />
+									<env key="LIBRARY" value="${tuxguitar-fluidsynth.jni.library.name}" />
 								</exec>
 							</target>
 						</configuration>
@@ -93,7 +74,7 @@
 							<target name="copy-files">
 								<mkdir dir="${project.build.directory}/build/lib" />
 								<copy todir="${project.build.directory}/build/lib">
-									<fileset file="${tuxguitar-fluidsynth.jni.path}/${tuxguitar-fluidsynth.jni.library.prefix}${tuxguitar-fluidsynth.jni.library.name}${tuxguitar-fluidsynth.jni.library.suffix}" />
+									<fileset file="${tuxguitar-fluidsynth.jni.path}/${tuxguitar-fluidsynth.jni.library.name}" />
 								</copy>
 							</target>
 						</configuration>
@@ -128,7 +109,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>
