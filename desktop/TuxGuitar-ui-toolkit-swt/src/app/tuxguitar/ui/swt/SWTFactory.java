@@ -47,7 +47,6 @@ import app.tuxguitar.ui.swt.widget.SWTLegendPanel;
 import app.tuxguitar.ui.swt.widget.SWTLinkLabel;
 import app.tuxguitar.ui.swt.widget.SWTListBoxSelect;
 import app.tuxguitar.ui.swt.widget.SWTPanel;
-import app.tuxguitar.ui.swt.widget.SWTPasswordField;
 import app.tuxguitar.ui.swt.widget.SWTProgressBar;
 import app.tuxguitar.ui.swt.widget.SWTRadioButton;
 import app.tuxguitar.ui.swt.widget.SWTReadOnlyTextBox;
@@ -83,7 +82,6 @@ import app.tuxguitar.ui.widget.UILegendPanel;
 import app.tuxguitar.ui.widget.UILinkLabel;
 import app.tuxguitar.ui.widget.UIListBoxSelect;
 import app.tuxguitar.ui.widget.UIPanel;
-import app.tuxguitar.ui.widget.UIPasswordField;
 import app.tuxguitar.ui.widget.UIProgressBar;
 import app.tuxguitar.ui.widget.UIRadioButton;
 import app.tuxguitar.ui.widget.UIReadOnlyTextBox;
@@ -197,11 +195,6 @@ public class SWTFactory implements UIFactory {
 	@SuppressWarnings("unchecked")
 	public UITextField createTextField(UIContainer parent) {
 		return new SWTTextField((SWTContainer<Composite>) parent);
-	}
-
-	@SuppressWarnings("unchecked")
-	public UIPasswordField createPasswordField(UIContainer parent) {
-		return new SWTPasswordField((SWTContainer<Composite>) parent);
 	}
 
 	@SuppressWarnings("unchecked")

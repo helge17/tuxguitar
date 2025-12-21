@@ -10,4 +10,9 @@ public class JFXTextField extends JFXEditableTextControl<TextField> implements U
 	public JFXTextField(JFXContainer<? extends Region> parent) {
 		super(new TextField(), parent);
 	}
+
+	public void selectAll() {
+		this.getControl().selectAll();
+	}
+
 }
