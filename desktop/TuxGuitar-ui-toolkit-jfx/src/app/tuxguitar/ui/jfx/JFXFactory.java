@@ -32,7 +32,6 @@ import app.tuxguitar.ui.jfx.widget.JFXLegendPanel;
 import app.tuxguitar.ui.jfx.widget.JFXLinkLabel;
 import app.tuxguitar.ui.jfx.widget.JFXListBoxSelect;
 import app.tuxguitar.ui.jfx.widget.JFXPanel;
-import app.tuxguitar.ui.jfx.widget.JFXPasswordField;
 import app.tuxguitar.ui.jfx.widget.JFXProgressBar;
 import app.tuxguitar.ui.jfx.widget.JFXRadioButton;
 import app.tuxguitar.ui.jfx.widget.JFXReadOnlyTextBox;
@@ -75,7 +74,6 @@ import app.tuxguitar.ui.widget.UILegendPanel;
 import app.tuxguitar.ui.widget.UILinkLabel;
 import app.tuxguitar.ui.widget.UIListBoxSelect;
 import app.tuxguitar.ui.widget.UIPanel;
-import app.tuxguitar.ui.widget.UIPasswordField;
 import app.tuxguitar.ui.widget.UIProgressBar;
 import app.tuxguitar.ui.widget.UIRadioButton;
 import app.tuxguitar.ui.widget.UIReadOnlyTextBox;
@@ -176,10 +174,6 @@ public class JFXFactory implements UIFactory {
 
 	public UITextField createTextField(UIContainer parent) {
 		return new JFXTextField((JFXContainer<?>) parent);
-	}
-
-	public UIPasswordField createPasswordField(UIContainer parent) {
-		return new JFXPasswordField((JFXContainer<?>) parent);
 	}
 
 	public UIReadOnlyTextField createReadOnlyTextField(UIContainer parent) {

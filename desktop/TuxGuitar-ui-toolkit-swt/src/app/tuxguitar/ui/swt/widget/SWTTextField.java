@@ -33,4 +33,8 @@ public class SWTTextField extends SWTText implements UITextField {
 			this.getControl().removeModifyListener(this.modifyListener);
 		}
 	}
+
+	public void selectAll() {
+		this.getControl().selectAll();
+	}
 }
