@@ -351,6 +351,9 @@
 									<fileset dir="../common-resources/common" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-linux" />
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-freebsd" />
 								</copy>
 
