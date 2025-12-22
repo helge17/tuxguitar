@@ -29,6 +29,7 @@ import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.ui.resource.UISize;
 import app.tuxguitar.util.TGBeatRange;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGNoteRange;
@@ -85,9 +86,13 @@ public class Tablature implements TGController {
 		this.caret.update(1, TGDuration.QUARTER_TIME, 1);
 	}
 
-	public void paintTablature(UIPainter painter, UIRectangle area, float fromX, float fromY){
+	public void paintTablature(UIPainter painter, UIRectangle area, float fromX, float fromY, float marginRight, float marginBottom){
 		this.getViewLayout().fillBackground(painter, area);
-		this.getViewLayout().paint(painter, area, fromX, fromY);
+		UIRectangle availableArea = area.clone();
+		UISize availableAreaSize = availableArea.getSize();
+		availableAreaSize.setWidth(availableAreaSize.getWidth() - marginRight);
+		availableAreaSize.setHeight(availableAreaSize.getHeight() - marginBottom);
+		this.getViewLayout().paint(painter, availableArea, fromX, fromY);
 		this.getCaret().paintCaret(this.getViewLayout(), painter);
 		this.getEditorKit().paintSelection(this.getViewLayout(), painter);
 		this.getSelector().paintSelectedArea(this.getViewLayout(), painter);
