@@ -10,7 +10,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tuxguitar-synth-lv2-linux</artifactId>
+	<artifactId>tuxguitar-synth-lv2-freebsd</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
@@ -41,9 +41,9 @@
 						</goals>
 						<configuration>
 							<target name="compile-native-jni">
-								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="make" failonerror="true" >
-									<env key="CXX" value="g++" />
-									<env key="CFLAGS" value="-I${basedir}/../common-include -I/usr/include/lilv-0/lilv -fPIC -fpermissive" />
+								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="gmake" failonerror="true" >
+									<env key="CXX" value="g++12" />
+									<env key="CFLAGS" value="-I${basedir}/../common-include -I/usr/local/include/lilv-0/lilv -fPIC -fpermissive" />
 									<env key="LDFLAGS" value="-fPIC" />
 									<env key="LDLIBS" value="-llilv-0 -lsuil-0" />
 									<env key="LDPATH" value="-L/usr/lib" />
@@ -61,9 +61,9 @@
 						</goals>
 						<configuration>
 							<target name="compile-native-ui">
-								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="make" failonerror="true" >
-									<env key="CXX" value="g++" />
-									<env key="CFLAGS" value="-I/usr/include/lilv-0/lilv -I/usr/include/suil-0/suil `pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags` -fPIC -fpermissive" />
+								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="gmake" failonerror="true" >
+									<env key="CXX" value="g++12" />
+									<env key="CFLAGS" value="-I/usr/local/include/lilv-0/lilv -I/usr/local/include/suil-0/suil `pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags` -fPIC -fpermissive" />
 									<env key="LDFLAGS" value="-fPIC" />
 									<env key="LDLIBS" value="-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`" />
 									<env key="LDPATH" value="-L/usr/lib" />
@@ -81,7 +81,7 @@
 						</goals>
 						<configuration>
 							<target name="clean-native-jni">
-								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="gmake" failonerror="true" >
 									<arg value="clean" />
 									<env key="RM" value="rm -f" />
 									<env key="LIBRARY" value="${tuxguitar-synth-lv2.jni.library.name}" />
@@ -98,7 +98,7 @@
 						</goals>
 						<configuration>
 							<target name="clean-native-ui">
-								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="make" failonerror="true" >
+								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="gmake" failonerror="true" >
 									<arg value="clean" />
 									<env key="RM" value="rm -f" />
 									<env key="BINARY" value="${tuxguitar-synth-lv2.cxx.binary.name}" />

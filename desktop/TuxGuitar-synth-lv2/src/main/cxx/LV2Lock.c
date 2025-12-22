@@ -7,7 +7,7 @@ void LV2Lock_malloc(LV2Lock **handle)
 
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init(&attr);
-	pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+	pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_RECURSIVE);
 	pthread_mutex_init(&((*handle)->lock), &attr);
 }
 

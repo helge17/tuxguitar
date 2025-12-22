@@ -397,6 +397,7 @@
 			</activation>
 			<modules>
 				<module>../native-modules/tuxguitar-fluidsynth-freebsd</module>
+				<module>../native-modules/tuxguitar-synth-lv2-freebsd</module>
 			</modules>
 
 			<build>
@@ -415,6 +416,10 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-freebsd/target/build" />
 										</copy>
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="../native-modules/tuxguitar-synth-lv2-freebsd/target/build" />
+										</copy>
+										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="755" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>

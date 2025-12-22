@@ -10,7 +10,7 @@ OBJECTS=\
 	LV2Feature.o\
 	LV2Instance.o\
 	LV2UIQt5.o\
-	LV2Socket_GNULinux.o\
+	LV2Socket.o\
 
 %.o: %.c
 	$(CXX) $(CFLAGS) -c -o $@ $<
