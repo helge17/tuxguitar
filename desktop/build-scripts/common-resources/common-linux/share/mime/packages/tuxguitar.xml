@@ -23,7 +23,7 @@
 		<comment xml:lang="it">File di Guitar Pro</comment>
 		<!-- The file extension gpx is also used for GPX geographic data. Guitar Pro gpx files always begin with "BCFZ" -->
 		<magic priority="50">
-			<match value="BCFZ" type="string" offset="0" />
+			<match value="BCFZ\004" type="string" offset="0" />
 		</magic>
 		<glob pattern="*.gpx"/>
 		<icon name="tuxguitar"/>
@@ -33,9 +33,7 @@
 		<comment xml:lang="de">Guitar-Pro-Datei</comment>
 		<comment xml:lang="it">File di Guitar Pro</comment>
 		<!-- The file extension gp is also used for Gnuplot ASCII data. Guitar Pro gp files are ZIP archives -->
-		<magic priority="80">
-			<match value="PK\003\004" type="string" offset="0" />
-		</magic>
+		<sub-class-of type="application/zip"/>
 		<glob pattern="*.gp"/>
 		<icon name="tuxguitar"/>
 	</mime-type>
