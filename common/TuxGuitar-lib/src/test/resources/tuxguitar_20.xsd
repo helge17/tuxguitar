@@ -176,13 +176,25 @@
 
   <xs:complexType name="measureHeaderType">
     <xs:sequence>
-      <xs:element name="timeSignature" type="timeSignatureType" minOccurs="0"/>
-      <xs:element name="tempo" type="tempoType" minOccurs="0"/>
+      <xs:element name="timeSignature" type="timeSignatureType" minOccurs="0">
+        <xs:annotation><xs:documentation>
+        Re-use values of preceding measure if undefined
+        </xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="tempo" type="tempoType">
+        <xs:annotation><xs:documentation>
+        If tempo base undefined, apply default value
+        </xs:documentation></xs:annotation>
+      </xs:element>
       <xs:element name="repeatOpen" minOccurs="0"/>
       <xs:element name="repeatClose" type="uint15" minOccurs="0"/>
       <xs:element name="repeatAlternative" type="repeatAlternativeType" minOccurs="0"/>
       <xs:element name="marker" type="markerType" minOccurs="0"/>
-      <xs:element name="tripletFeel" type="tripletFeelType" minOccurs="0"/>
+      <xs:element name="tripletFeel" type="tripletFeelType" minOccurs="0">
+        <xs:annotation><xs:documentation>
+        Apply default value if undefined
+        </xs:documentation></xs:annotation>
+      </xs:element>
       <xs:element name="lineBreak" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
@@ -318,7 +330,11 @@
       <xs:element name="alternativeEnharmonic" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="value" type="uint8" use="required"/>
-    <xs:attribute name="velocity" type="uint8"/>
+    <xs:attribute name="velocity" type="uint8">
+      <xs:annotation><xs:documentation>
+      Re-use value from preceding note if undefined
+      </xs:documentation></xs:annotation>
+    </xs:attribute>
     <xs:attribute name="string" use="required">
       <xs:simpleType>
         <xs:restriction base="xs:integer">
@@ -355,12 +371,19 @@
       <xs:element name="TGLyric" type="lyricType" minOccurs="0"/>
       <xs:element name="TGMeasure" type="measureType" maxOccurs="unbounded"/>
     </xs:sequence>
-    <xs:attribute name="maxFret" type="xs:positiveInteger"/>
+    <xs:attribute name="maxFret" type="xs:positiveInteger">
+      <xs:annotation><xs:documentation>
+      Only for non-percussion tracks
+      </xs:documentation></xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="measureType">
     <xs:sequence>
       <xs:element name="clef" minOccurs="0">
+        <xs:annotation><xs:documentation>
+        Re-use clef of preceding measure if undefined
+        </xs:documentation></xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="treble"/>
@@ -370,14 +393,22 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element name="keySignature" type="keySignatureType" minOccurs="0"/>
+      <xs:element name="keySignature" type="keySignatureType" minOccurs="0">
+        <xs:annotation><xs:documentation>
+        Re-use value of preceding measure if undefined
+        </xs:documentation></xs:annotation>
+      </xs:element>
       <xs:element name="TGBeat" type="beatType" minOccurs="1" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="beatType">
     <xs:sequence>
-      <xs:element name="preciseStart" type="nonNegativeInteger"/>
+      <xs:element name="preciseStart" type="nonNegativeInteger">
+        <xs:annotation><xs:documentation>
+        Position of beat in track. First beat position is 1/4 of a whole. Precise duration of a whole is 4*64*3*5*7*3*11*13.
+        </xs:documentation></xs:annotation>
+      </xs:element>
       <xs:element name="stroke" minOccurs="0">
         <xs:complexType>
           <xs:attribute name="direction">
