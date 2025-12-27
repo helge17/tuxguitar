@@ -13,6 +13,7 @@ import app.tuxguitar.util.TGExpressionResolver;
 import media.sound.EmergencySoundbank;
 import media.sound.ModelPatch;
 import media.sound.SF2Instrument;
+import media.sound.DLSInstrument;
 
 public class GervillSoundbankFactory {
 
@@ -59,7 +60,11 @@ public class GervillSoundbankFactory {
 			instrument = getDefaultInstrument(context, program);
 		}
 		if( instrument != null ) {
-			((SF2Instrument) instrument).setPatch(new Patch(0, 0));
+			if (instrument instanceof SF2Instrument) {
+				((SF2Instrument) instrument).setPatch(new Patch(0, 0));
+			} else if (instrument instanceof DLSInstrument) {
+				((DLSInstrument) instrument).setPatch(new Patch(0, 0));
+			}
 		}
 		return instrument;
 	}
