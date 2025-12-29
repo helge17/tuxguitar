@@ -3,7 +3,7 @@
 getTheme() {
     tuxguitarTheme="none"
     # does not work with all desktops, limited to KDE
-    if [ $XDG_CURRENT_DESKTOP = 'KDE' ]; then
+    if [ "$XDG_CURRENT_DESKTOP" = 'KDE' ]; then
         dbusTheme=$(dbus-send --session --print-reply=literal --dest=org.freedesktop.portal.Desktop /org/freedesktop/portal/desktop org.freedesktop.portal.Settings.Read string:org.freedesktop.appearance string:color-scheme 2>/dev/null)
         [ -n "$( echo $dbusTheme | sed -n '/uint32 2/p')" ] && tuxguitarTheme="light"
         [ -n "$( echo $dbusTheme | sed -n '/uint32 1/p')" ] && tuxguitarTheme="dark"
