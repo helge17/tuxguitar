@@ -96,7 +96,7 @@ public class JackClient{
 			List<JackPort> jackPorts = new ArrayList<JackPort>(this.jackPorts);
 			Iterator<JackPort> it = jackPorts.iterator();
 			while( it.hasNext() ){
-				this.closePort((JackPort) it.next());
+				this.closePort(it.next());
 			}
 		}
 	}
@@ -105,7 +105,7 @@ public class JackClient{
 		if( this.isOpen() ){
 			Iterator<JackPort> it = this.jackPorts.iterator();
 			while( it.hasNext() ){
-				JackPort jackPort = (JackPort) it.next();
+				JackPort jackPort = it.next();
 				if( jackPort.getJackPortName().equals(jackPortName) ){
 					return jackPort;
 				}
@@ -217,7 +217,7 @@ public class JackClient{
 	public void onPortRegistered(){
 		Iterator<JackPortRegisterListener> it = this.jackPortRegisterListeners.iterator();
 		while( it.hasNext() ){
-			JackPortRegisterListener jackPortRegisterListener = (JackPortRegisterListener) it.next();
+			JackPortRegisterListener jackPortRegisterListener = it.next();
 			jackPortRegisterListener.onPortRegistered();
 		}
 	}

@@ -95,7 +95,7 @@ public class TGDocumentFileManager {
 				String fileExtension = file.substring(index).toLowerCase();
 				Iterator<TGFileFormat> it = formats.iterator();
 				while(it.hasNext()){
-					TGFileFormat format = (TGFileFormat)it.next();
+					TGFileFormat format = it.next();
 					if(format.getSupportedFormats() != null){
 						String[] supportedFormats = format.getSupportedFormats();
 						if( supportedFormats != null && supportedFormats.length > 0 ){
@@ -108,7 +108,7 @@ public class TGDocumentFileManager {
 					}
 				}
 				if( replaceExtension ){
-					TGFileFormat format = (TGFileFormat)formats.get(0);
+					TGFileFormat format = formats.get(0);
 					if( format.getSupportedFormats() != null ){
 						String[] supportedFormats = format.getSupportedFormats();
 						if( supportedFormats != null && supportedFormats.length > 0 ){

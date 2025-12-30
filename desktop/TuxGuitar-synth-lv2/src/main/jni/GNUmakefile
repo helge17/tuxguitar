@@ -1,16 +1,5 @@
-LILV_INCLUDE_PATH?=/usr/include/lilv-0/lilv
-JNI_INCLUDE_PATH?=../../../../build-scripts/native-modules/common-include
+# See pom.xml for variable definitions
 
-RM?=rm -f
-CFLAGS?=-I$(JNI_INCLUDE_PATH) -I$(LILV_INCLUDE_PATH) -fPIC
-LDFLAGS?=
-LDLIBS?=-llilv-0 -lsuil-0
-LDPATH?=
-LIBRARY_NAME?=tuxguitar-synth-lv2-jni
-LIBRARY_PREFIX?=lib
-LIBRARY_SUFFIX?=.so
-
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=\
 	../cxx/LV2Logger.o\
 	../cxx/LV2World.o\

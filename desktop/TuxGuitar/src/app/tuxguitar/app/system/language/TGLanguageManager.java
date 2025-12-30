@@ -104,7 +104,7 @@ public class TGLanguageManager {
 		}
 		this.languages = new String[availableList.size()];
 		for(int i = 0; i < this.languages.length; i++){
-			this.languages[i] = (String) availableList.get( i );
+			this.languages[i] = availableList.get( i );
 		}
 	}
 }

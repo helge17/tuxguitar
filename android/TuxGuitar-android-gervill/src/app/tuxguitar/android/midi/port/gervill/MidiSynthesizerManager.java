@@ -1,9 +1,9 @@
 package app.tuxguitar.android.midi.port.gervill;
 
-import com.sun.media.sound.AudioSynthesizer;
-import com.sun.media.sound.ModelPatch;
-import com.sun.media.sound.SF2Instrument;
-import com.sun.media.sound.SoftSynthesizer;
+import media.sound.AudioSynthesizer;
+import media.sound.ModelPatch;
+import media.sound.SF2Instrument;
+import media.sound.SoftSynthesizer;
 
 import app.tuxguitar.gm.port.GMReceiver;
 import app.tuxguitar.player.base.MidiControllers;

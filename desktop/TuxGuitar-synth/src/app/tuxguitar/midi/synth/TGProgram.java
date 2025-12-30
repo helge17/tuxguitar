@@ -55,7 +55,7 @@ public class TGProgram {
 
 	public TGProgramElement getOutput(int index){
 		if( index >= 0 && index < this.outputs.size() ){
-			return (TGProgramElement)this.outputs.get(index);
+			return this.outputs.get(index);
 		}
 		return null;
 	}

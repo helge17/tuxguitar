@@ -35,7 +35,8 @@ public class MidiOutputPortSettings extends MidiSettings {
 	
 	private static final List<TGFileFormat> soundfontFormats = Arrays.asList(
 			new TGFileFormat("SoundFont SF2", "audio/x-sf2", new String[]{"sf2"}),
-			new TGFileFormat("SoundFont SF3", "audio/x-sf3", new String[]{"sf3"}));
+			new TGFileFormat("SoundFont SF3", "audio/x-sf3", new String[]{"sf3"}),
+			new TGFileFormat("Downloadable Sounds DLS", "audio/x-dls", new String[]{"dls"}));
 
 	public MidiOutputPortSettings(MidiOutputPortProviderImpl provider){
 		super( provider );
@@ -262,7 +263,7 @@ public class MidiOutputPortSettings extends MidiSettings {
 	protected void addMidiPorts(UITable<String> table){
 		Iterator<String> it = getSoundfonts().iterator();
 		while(it.hasNext()){
-			String path = (String)it.next();
+			String path = it.next();
 			this.addMidiPort(table, path );
 		}
 	}

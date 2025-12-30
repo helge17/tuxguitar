@@ -114,7 +114,7 @@ public class TESongParser {
 	private void addComponents(TGSong tgSong, TESong song){
 		Iterator<TEComponent> it = song.getComponents().iterator();
 		while(it.hasNext()){
-			TEComponent component = (TEComponent)it.next();
+			TEComponent component = it.next();
 
 			if(component.getMeasure() >= 0 && component.getMeasure() < tgSong.countMeasureHeaders()){
 				int offset = 0;
@@ -518,10 +518,10 @@ class TGSongAdjuster{
 	public TGSong process(){
 		Iterator<TGTrack> tracks = this.song.getTracks();
 		while(tracks.hasNext()){
-			TGTrack track = (TGTrack)tracks.next();
+			TGTrack track = tracks.next();
 			Iterator<TGMeasure> measures = track.getMeasures();
 			while(measures.hasNext()){
-				TGMeasure measure = (TGMeasure)measures.next();
+				TGMeasure measure = measures.next();
 				this.process(measure);
 			}
 		}

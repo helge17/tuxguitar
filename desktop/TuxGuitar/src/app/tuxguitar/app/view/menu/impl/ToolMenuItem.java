@@ -50,7 +50,7 @@ public class ToolMenuItem extends TGMenuItem {
 		//--CUSTOM TOOLS--
 		Iterator<TGCustomTool> it = TGCustomToolManager.instance().getCustomTools();
 		while(it.hasNext()){
-			TGCustomTool tool = (TGCustomTool)it.next();
+			TGCustomTool tool = it.next();
 			UIMenuActionItem uiMenuItem = this.settingsMenuItem.getMenu().createActionItem();
 			pluginsMap.put(uiMenuItem, tool.getName());
 			uiMenuItem.addSelectionListener(this.createActionProcessor(tool.getAction()));

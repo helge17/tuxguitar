@@ -478,7 +478,7 @@ public class TGFretBoard {
 				TGVoice voice = this.beat.getVoice( v );
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
-					TGNote note = (TGNote) it.next();
+					TGNote note = it.next();
 					int fretIndex = note.getValue();
 					int stringIndex = note.getString() - 1;
 					if (fretIndex >= 0 && fretIndex < this.frets.length && stringIndex >= 0 && stringIndex < this.strings.length) {
@@ -594,7 +594,7 @@ public class TGFretBoard {
 				TGVoice voice = this.beat.getVoice( v );
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
-					TGNote note = (TGNote) it.next();
+					TGNote note = it.next();
 					if( note.getValue() == fret && note.getString() == string ) {
 						TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGDeleteNoteAction.NAME);
 						tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE, note);

@@ -1,2 +1,3 @@
 activate-noawait /usr/share/mime/packages
 activate-noawait /usr/share/applications
+activate-noawait /usr/share/templates

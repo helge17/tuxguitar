@@ -247,7 +247,7 @@ public class AudioFileFormat {
         } else {
             ret = (Map<String,Object>) (properties.clone());
         }
-        return (Map<String,Object>) Collections.unmodifiableMap(ret);
+        return Collections.unmodifiableMap(ret);
     }
 
 

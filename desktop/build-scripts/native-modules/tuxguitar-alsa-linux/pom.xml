@@ -15,21 +15,8 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<tuxguitar.jni.cc>gcc</tuxguitar.jni.cc>
-		<tuxguitar.jni.ldpath>-L/usr/lib</tuxguitar.jni.ldpath>
-		<tuxguitar.jni.library.prefix>lib</tuxguitar.jni.library.prefix>
-		<tuxguitar.jni.library.suffix>.so</tuxguitar.jni.library.suffix>
-		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
-
 		<tuxguitar-alsa.jni.path>${project.parent.relativePath}/TuxGuitar-alsa/jni/</tuxguitar-alsa.jni.path>
-		<tuxguitar-alsa.jni.cc>${tuxguitar.jni.cc}</tuxguitar-alsa.jni.cc>
-		<tuxguitar-alsa.jni.cflags>${tuxguitar.jni.header.path} -fPIC</tuxguitar-alsa.jni.cflags>
-		<tuxguitar-alsa.jni.ldflags>-fPIC</tuxguitar-alsa.jni.ldflags>
-		<tuxguitar-alsa.jni.ldlibs>-lasound</tuxguitar-alsa.jni.ldlibs>
-		<tuxguitar-alsa.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-alsa.jni.ldpath>
-		<tuxguitar-alsa.jni.library.name>tuxguitar-alsa-jni</tuxguitar-alsa.jni.library.name>
-		<tuxguitar-alsa.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-alsa.jni.library.prefix>
-		<tuxguitar-alsa.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-alsa.jni.library.suffix>
+		<tuxguitar-alsa.jni.library.name>libtuxguitar-alsa-jni.so</tuxguitar-alsa.jni.library.name>
 	</properties>
 
 	<modules>
@@ -52,14 +39,12 @@
 						<configuration>
 							<target name="compile-native">
 								<exec dir="${tuxguitar-alsa.jni.path}" executable="make" failonerror="true" >
-									<env key="CC" value="${tuxguitar-alsa.jni.cc}" />
-									<env key="CFLAGS" value="${tuxguitar-alsa.jni.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-alsa.jni.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-alsa.jni.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-alsa.jni.ldpath}" />
-									<env key="LIBRARY_NAME" value="${tuxguitar-alsa.jni.library.name}" />
-									<env key="LIBRARY_PREFIX" value="${tuxguitar-alsa.jni.library.prefix}" />
-									<env key="LIBRARY_SUFFIX" value="${tuxguitar-alsa.jni.library.suffix}" />
+									<env key="CC" value="gcc" />
+									<env key="CFLAGS" value="-I${basedir}/../common-include -fPIC" />
+									<env key="LDFLAGS" value="-fPIC" />
+									<env key="LDLIBS" value="-lasound" />
+									<env key="LDPATH" value="-L/usr/lib" />
+									<env key="LIBRARY" value="${tuxguitar-alsa.jni.library.name}" />
 								</exec>
 							</target>
 						</configuration>
@@ -75,9 +60,8 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-alsa.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean" />
-									<env key="LIBRARY_NAME" value="${tuxguitar-alsa.jni.library.name}" />
-									<env key="LIBRARY_PREFIX" value="${tuxguitar-alsa.jni.library.prefix}" />
-									<env key="LIBRARY_SUFFIX" value="${tuxguitar-alsa.jni.library.suffix}" />
+									<env key="RM" value="rm -f" />
+									<env key="LIBRARY" value="${tuxguitar-alsa.jni.library.name}" />
 								</exec>
 							</target>
 						</configuration>
@@ -90,7 +74,7 @@
 							<target name="copy-files">
 								<mkdir dir="${project.build.directory}/build/lib" />
 								<copy todir="${project.build.directory}/build/lib">
-									<fileset file="${tuxguitar-alsa.jni.path}/${tuxguitar-alsa.jni.library.prefix}${tuxguitar-alsa.jni.library.name}${tuxguitar-alsa.jni.library.suffix}" />
+									<fileset file="${tuxguitar-alsa.jni.path}/${tuxguitar-alsa.jni.library.name}" />
 								</copy>
 							</target>
 						</configuration>
@@ -125,7 +109,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>

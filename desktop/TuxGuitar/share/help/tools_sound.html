@@ -47,14 +47,15 @@
       <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
       <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
       <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu2"><a href="tools_install_conf.html">Installation and configuration</a></li>
       <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
     </ul>
   </div>
   <section>
-    <p>First of all, it is important to mention that TuxGuitar is written in the Java programming language. Therefore, the audio output methods are heavily depending on Java. There is a dedicated layer in Java for MIDI sound, which uses "soundbanks". A soundbank is a file that contains sound samples for all the required instruments.</p>
+    <p>First of all, it is important to mention that TuxGuitar is written in the Java programming language. Therefore, the audio output methods are heavily depending on Java. There is a dedicated API in Java for MIDI sound, which uses "soundbanks", also called soundfonts. A soundbank is a file that contains sound samples for all the required instruments.</p>
     <p>In TuxGuitar prior to version 1.0, using the soundbanks was the only way to play the sound, and it was totally independent of your system MIDI settings.</p>
     <p>Since version 1.0, TuxGuitar includes several operating system dependent plugins that allow audio output over the system's MIDI devices. The appropriate plugins are included in the distribution packages for the various operating systems, so you don't need to install them manually. By default, the plugin best suited for your operating system is activated, but you can switch to another one in the plugin dialog, if you want to use some special output functions.</p>
-    <h2>Sound settings</h2>
+    <h2 id="sound_settings">Sound settings</h2>
     <p>In the <strong>Tools → Settings → Sound</strong> dialog, you can select the <strong>MIDI Sequencer</strong>, i.e. the pice of software that extracts the MIDI events from all tracks stored in TuxGuitar and combines them into the currently played MIDI sequence, a list of time-stamped MIDI data. This sequence is then sent to the <strong>MIDI Port</strong>, where it is converted into the actual audio stream by combining the MIDI events with the sound samples extracted from the soundbank file or from other sources. The audio stream can also be further processed, mixed, etc., and is finally output to the loudspeakers.</p>
     <img src="images/settings_sound.png" />
     <h2>Audio Output Plugins</h2>
@@ -62,6 +63,8 @@
     <img src="images/sound_plugins.png" />
     <p>The images above show all available audio output plugins on Linux, Windows, macOS and FreeBSD.</p>
     <p>In the the tables below you can see the MIDI sequencers and ports provided by the plugins and the default output settings for each OS.</p>
+    <p><strong>Bold Plugin name</strong>: Plugin is activated by default<br />
+    <strong>Bold MIDI Sequencer/Port</strong>: Default sound output</p>
     <table><tbody>
       <tr><td class="head" colspan="3">Output Plugins on Linux</td></tr>
       <tr><td class="head">Plugin name</td>                <td class="head">MIDI Sequencer</td>        <td class="head">MIDI Port</td></tr>
@@ -97,18 +100,30 @@
       <tr><td class="norm">Java Sound API</td>             <td class="norm">Real Time Sequencer</td>   <td class="norm">Gervill</td></tr>
       <tr><td class="bold">FluidSynth</td>                 <td class="norm">-</td>                     <td class="bold">TG FluidSynth [SF-file]</td></tr>
     </tbody></table>
-    <p><strong>Bold Plugin name</strong>: Plugin is activated by default<br />
-    <strong>Bold MIDI Sequencer/Port</strong>: Default sound output</p>
     <p>Some MIDI ports are automatically detected by the OS and may differ on your system.</p>
-    <p>The <strong>TuxGuitar Sequencer*</strong> is built-in and always available, even if no plugin is enabled. There is no built-in MIDI port, all MIDI ports are provided via plugins.</p>
-    <p>Beside the TuxGuitar Synthesizer output plugin there are other TuxGuitar Synthesizer plugins available. These plugins depend on the TuxGuitar Synthesizer output plugin and do not add any MIDI sequencer or port, but provide other features.</p>
-    <h2 id="java_sound">Java Sound</h2>
-    <p>The Java Sound plugin, relying on a SF2 soundbank file, is still available in the form of the "Java Sound API output plugin" on all supported desktop operating systems. You can change the soundbank with the "Configure" button in the <a href="tools_plugins.html">plugins dialog</a>:</p>
+    <p><strong>*</strong> The <strong>TuxGuitar Sequencer</strong> is built-in and always available, even if no plugin is enabled. There is no built-in MIDI port, all MIDI ports are provided via plugins.</p>
+    <h2 id="tuxguitar_synth">TuxGuitar Synthesizer</h2>
+    <p>The TuxGuitar Synthesizer consists of four plugins that depend on each other.</p>
+    <h3 id="tuxguitar_synth">TuxGuitar Synthesizer output plugin</h3>
+    <p>The <strong>TuxGuitar Synthesizer output plugin</strong> adds the TuxGuitar Synthesizer MIDI Port, but cannot produce any sound output on its own.</p>
+    <h3 id="tuxguitar_synth">Gervill and LV2 extensions</h3>
+    <p>The audio output is handled by the <strong>Gervill extension</strong> plugin. In the plugin settings, you can select an SF2 or a DLS soundfont for the sound generation. By default, the "Magic Sound Font 2.0" is used.</p>
+    <img src="images/sound_synth_soundbank.png" />
+    <p>With the Gervill extension, you can also select an individual soundfont and choose different MIDI settings for each instrument, as you can see in the screenshot below.</p>
+    <p>The <strong>LV2 extension</strong> is optional. It allows you to activate LV2 effect plugins for your instruments. TuxGuitar itself does not include any LV2 plugins, but you can load all LV2 plugins provided by the <strong>Guitarix</strong> virtual amplifier, for example. On Linux, just install the package named "guitarix-lv2" or similar, and TuxGuitar will automatically find all LV2 plugins on startup.</p>
+    <p>Both the Gervill and the LV2 extension are set up in the instrument settings of the <strong><a href="editing_song.html#instruments_dialog">Instuments dialog</a></strong> box. Please note that all the settings you make here are not stored in your computer's local TuxGuitar settings, but directly in the TuxGuitar tablature file.</p>
+    <img src="images/sound_synth_gervill_lv2.png" />
+    <h3 id="tuxguitar_synth">Audio file export</h3>
+    <p>With the <strong>Audio file export</strong> extension, you can write your song to an audio file using the TuxGuitar Synthesizer with the Gervill and LV2 extension settings from above. Please note that this extension does not allow you to export the audio stream from other output plugins such as FluidSynth or ALSA.</p>
+    <img src="images/sound_synth_export.png" />
+    <h2 id="java_sound">Java Sound API</h2>
+    <p>The <strong>Java Sound API output plugin</strong>, relying on an SF2 or a DLS soundbank file, is still available on all desktop operating systems. You can change the soundbank with the "Configure" button in the <strong><a href="tools_plugins.html">plugins dialog</a></strong>:</p>
     <img src="images/sound_jsa_soundbank.png" />
-    <p>If the plugin is enabled, in the Sound tab of the <strong>Tools → Settings</strong> dialog you can choose the <strong>Real Time Sequencer</strong> as <strong>MIDI Sequencer</strong> and the <strong>MIDI Port</strong> called "Gervill".</p>
+    <p>If the plugin is enabled, in the Sound tab of the <strong>Tools → Settings</strong> dialog you can choose the <strong>Real Time Sequencer</strong> as <strong>MIDI Sequencer</strong> and the <strong>MIDI Port</strong> called <strong>Gervill</strong>.</p>
     <h2 id="platform-dependent_plugins">Platform-dependent Output Plugins</h2>
-    <p>If you have the TuxGuitar ALSA plugin enabled on Linux or if you are running TuxGuitar on the Windows platform, TuxGuitar detects your system MIDI ports (devices) automatically.</p>
-    <p>So it depends on your system settings, but anyway, if the proper plugin is enabled and working you should see the system ports in the <strong>MIDI Port</strong> list in the Sound tab of the <strong>Tools → Settings</strong> dialog. Choosing the right one enables your native MIDI sound in TuxGuitar.</p>
+    <p>If you have enabled the <strong>ALSA output plugin</strong> on Linux or are using the <strong>WinMM output plugin</strong> on Windows, TuxGuitar will automatically detect your system MIDI ports (devices). These should show up in the <strong>MIDI Port</strong> list in the <strong><a href="#sound_settings">sound settings</a></strong>.</p>
+    <p>The <strong>FluidSynth output plugin</strong> allows you to load SF2, SF3 and DLS soundbanks on Linux, Windows and FreeBSD. You can load multiple soundbanks in the plugin settings and choose each individual one as a MIDI Port in the <strong><a href="#sound_settings">sound settings</a></strong>.</p>
+    <p>On macOS, you can load SF2 and DLS soundbanks with the <strong>Audio Unit output plugin</strong>.</p>
   </section>
 </body>
 </html>

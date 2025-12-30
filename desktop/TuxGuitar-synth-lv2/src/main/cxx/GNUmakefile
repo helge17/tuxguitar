@@ -1,23 +1,5 @@
-LILV_INCLUDE_PATH?=/usr/include/lilv-0/lilv
-SUIl_INCLUDE_PATH?=/usr/include/suil-0/suil
-QT5_INCLUDE_PATH?=`pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags`
+# See pom.xml for variable definitions
 
-###############################################
-### GNULinux flags ############################
-###############################################
-CXX?=g++
-RM?=rm -f
-CFLAGS?=-I$(LILV_INCLUDE_PATH) -I$(SUIl_INCLUDE_PATH) -I$(QT5_INCLUDE_PATH)  -fPIC -fpermissive -g
-LDFLAGS?=
-LDLIBS?=-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`
-LDPATH?=-L/usr/lib
-BINARY_NAME?=tuxguitar-synth-lv2
-BINARY_SUFFIX?=.bin
-BINARY_OS?=_GNULinux
-###############################################
-
-###############################################
-BINARY=$(BINARY_PREFIX)$(BINARY_NAME)$(BINARY_SUFFIX)
 OBJECTS=\
 	LV2Logger.o\
 	LV2Lock.o\
@@ -28,7 +10,7 @@ OBJECTS=\
 	LV2Feature.o\
 	LV2Instance.o\
 	LV2UIQt5.o\
-	LV2Socket_GNULinux.o\
+	LV2Socket.o\
 
 %.o: %.c
 	$(CXX) $(CFLAGS) -c -o $@ $<

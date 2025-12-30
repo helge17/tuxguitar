@@ -187,7 +187,7 @@ public class TGTremoloBarEditor extends View {
 		for(int i = 0;i < this.points.size();i++){
 			UIPosition minPoint = null;
 			for(int noteIdx = i;noteIdx < this.points.size();noteIdx++){
-				UIPosition point = (UIPosition)this.points.get(noteIdx);
+				UIPosition point = this.points.get(noteIdx);
 				if(minPoint == null || point.getX() < minPoint.getX()){
 					minPoint = point;
 				}

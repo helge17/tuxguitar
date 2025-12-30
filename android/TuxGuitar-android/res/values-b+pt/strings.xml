@@ -21,7 +21,7 @@
 	<string name="global_button_clean">Limpar</string>
 	<string name="global_button_add">Adicionar</string>
 
-	<!-- <string name="global_spinner_select_option"></string> -->
+	<string name="global_spinner_select_option">-- Selecionar --</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================== MENU =================================== -->
@@ -30,12 +30,13 @@
 	<string name="action_menu_edit">Editar</string>
 	<string name="action_menu_view">Visualizar</string>
 	<string name="action_menu_composition">Composição</string>
-	<string name="action_menu_track">Pista</string>
+	<string name="action_menu_track">Faixa</string>
 	<string name="action_menu_measure">Compasso</string>
-	<string name="action_menu_beat">Nota</string>
+	<string name="action_menu_beat">Batida</string>
 	<string name="action_menu_duration">Duração</string>
 	<string name="action_menu_dynamic">Dinâmico</string>
 	<string name="action_menu_effects">Efeitos</string>
+	<string name="action_menu_transport">Tocar</string>
 	<string name="action_menu_settings">Configurações</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -54,58 +55,62 @@
 
 	<!-- <string name="action_view_channel_list"></string> -->
 	<string name="action_view_layout_show_score">Exibir Partitura</string>
-	<!-- <string name="action_view_layout_show_chord_name"></string> -->
-	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
+	<string name="action_view_layout_show_chord_name">Exibir Nomes dos Acordes</string>
+	<string name="action_view_layout_show_chord_diagram">Exibir Diagramas de acorde</string>
 
 	<string name="action_transport_play">Tocar música</string>
+	<string name="action_transport_stop">Parar de tocar</string>
+	<string name="action_transport_metronome">Metrônomo</string>
+	<string name="action_transport_count_down">Contagem Regressiva</string>
+	<string name="action_transport_highlight_played_beat">Destacar Batidas Tocadas</string>
 
-	<!-- <string name="action_go_up"></string> -->
-	<!-- <string name="action_go_down"></string> -->
-	<!-- <string name="action_go_left"></string> -->
-	<!-- <string name="action_go_right"></string> -->
+	<string name="action_go_up">Mover Cursor para Cima</string>
+	<string name="action_go_down">Mover Cursor para Baixo</string>
+	<string name="action_go_left">Mover Cursor para a Esquerda</string>
+	<string name="action_go_right">Mover Cursor para a Direita</string>
 
 	<string name="action_change_tempo">Mudar o tempo</string>
 	<string name="action_change_clef">Alterar Clave</string>
 	<string name="action_change_key_signature">Alterar Armação da Clave</string>
 	<string name="action_change_time_signature">Mudar a assinatura de tempo</string>
 	<string name="action_change_triplet_feel">Alterar Triplet Feel</string>
-	<string name="action_change_repeat_open">Abrir repetição</string>
-	<string name="action_change_repeat_close">Fechar repetição</string>
+	<string name="action_change_repeat_open">Abrir Repetição</string>
+	<string name="action_change_repeat_close">Fechar Repetição</string>
 	<string name="action_change_repeat_alternative">Repetição Alternativa</string>
 	<string name="action_change_properties">Propriedades</string>
 
-	<string name="action_track_add">Adicionar Pista</string>
-	<string name="action_track_remove">Remover Pista</string>
-	<string name="action_track_clone">Duplicar Pista</string>
+	<string name="action_track_add">Adicionar Faixa</string>
+	<string name="action_track_remove">Remover Faixa</string>
+	<string name="action_track_clone">Duplicar Faixa</string>
 	<string name="action_track_move_up">Mover para cima</string>
 	<string name="action_track_move_down">Mover para baixo</string>
-	<!-- <string name="action_track_change_mute"></string> -->
-	<!-- <string name="action_track_change_solo"></string> -->
+	<string name="action_track_change_mute">Definir Faixa como Muda</string>
+	<string name="action_track_change_solo">Definir Faixa como Solo</string>
 	<string name="action_track_set_name">Nome</string>
 	<string name="action_track_set_channel">Instrumento</string>
-	<!-- <string name="action_track_change_tuning"></string> -->
-	<!-- <string name="action_track_change_string_count"></string> -->
+	<string name="action_track_change_tuning">Afinação</string>
+	<string name="action_track_change_string_count">Contagem de Linhas</string>
 
 	<string name="action_measure_add">Adicionar Compasso</string>
 	<string name="action_measure_clean">Limpar Compasso</string>
 	<string name="action_measure_remove">Remover Compasso</string>
-	<!-- <string name="action_fix_voice"></string> -->
+	<string name="action_fix_voice">Fixar voz</string>
 
 	<string name="action_change_tied_note">Nota Ligada</string>
-	<string name="action_clean_beat">Limpar batida</string>
+	<string name="action_clean_beat">Limpar Batida</string>
 	<string name="action_decrement_note_semitone">Decrementar Semitom</string>
 	<string name="action_increment_note_semitone">Incrementar Semitom</string>
-	<!-- <string name="action_delete_note_or_rest"></string> -->
-	<!-- <string name="action_insert_rest_beat"></string> -->
-	<string name="action_move_beats_left">Mover um tempo para Esquerda</string>
-	<string name="action_move_beats_right">Mover um tempo para Direita</string>
-	<string name="action_remove_unused_voice">Remover Voz não utilizada</string>
-	<string name="action_set_voice_auto">Bastões Automáticos</string>
-	<string name="action_set_voice_down">Bastões para baixo</string>
-	<string name="action_set_voice_up">Bastões para cima</string>
-	<string name="action_shift_note_down">Deslizar abaixo</string>
-	<string name="action_shift_note_up">Deslizar acima</string>
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_delete_note_or_rest">Remover Nota ou Descanso</string>
+	<string name="action_insert_rest_beat">Inserir Descanso</string>
+	<string name="action_move_beats_left">Mover um tempo para a Esquerda</string>
+	<string name="action_move_beats_right">Mover um tempo para a Direita</string>
+	<string name="action_remove_unused_voice">Remover Voz não Utilizada</string>
+	<string name="action_set_voice_auto">Hastes Automáticas</string>
+	<string name="action_set_voice_down">Hastes Para Baixo</string>
+	<string name="action_set_voice_up">Hastes Para Cima</string>
+	<string name="action_shift_note_down">Mover uma Corda Abaixo</string>
+	<string name="action_shift_note_up">Mover uma Corda Acima</string>
+	<string name="action_change_stroke">Tocar Para Cima/Baixo</string>
 	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Inserir Texto</string>
 
@@ -120,16 +125,16 @@
 	<string name="action_set_duration_doubledotted">Duplo Ponto</string>
 	<string name="action_set_duration_division_type">Tipo de divisão</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
-	<!-- <string name="action_set_duration_division_type_7"></string> -->
-	<!-- <string name="action_set_duration_division_type_9"></string> -->
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_1">Sem Divisão</string>
+	<string name="action_set_duration_division_type_3">3 - Tercina</string>
+	<string name="action_set_duration_division_type_5">5 - Quintina</string>
+	<string name="action_set_duration_division_type_6">6 - Sextina</string>
+	<string name="action_set_duration_division_type_7">7 - Septina</string>
+	<string name="action_set_duration_division_type_9">9 - Nonina</string>
+	<string name="action_set_duration_division_type_10">10 - Decina</string>
+	<string name="action_set_duration_division_type_11">11 - Undecina</string>
+	<string name="action_set_duration_division_type_12">12 - Duodecina</string>
+	<string name="action_set_duration_division_type_13">13 - Tridecina</string>
 
 	<!-- <string name="action_set_velocity_ppp"></string> -->
 	<!-- <string name="action_set_velocity_pp"></string> -->
@@ -144,17 +149,17 @@
 	<!-- <string name="action_change_bend"></string> -->
 	<!-- <string name="action_change_dead_note"></string> -->
 	<!-- <string name="action_change_slide"></string> -->
-	<string name="action_change_hammer">Hammer on/Pull off</string>
+	<string name="action_change_hammer">Hammer-on/Pull-off</string>
 	<string name="action_change_tremolo_bar">Trêmolo</string>
 	<!-- <string name="action_change_ghost_note"></string> -->
 	<string name="action_change_accentuated_note">Nota Acentuada</string>
 	<string name="action_change_heavy_accentuated_note">Nota Muito Acentuada</string>
 	<string name="action_change_harmonic">Harmonico</string>
-	<!-- <string name="action_change_grace"></string> -->
-	<!-- <string name="action_change_trill"></string> -->
-	<string name="action_change_tremolo_picking">Trêmolo Picking</string>
+	<string name="action_change_grace">Apogiatura</string>
+	<string name="action_change_trill">Trilo</string>
+	<string name="action_change_tremolo_picking">Tremolo Picking</string>
 	<string name="action_change_palm_mute">Nota Abafada</string>
-	<!-- <string name="action_change_let_ring"></string> -->
+	<string name="action_change_let_ring">Deixar Soar</string>
 	<!-- <string name="action_change_staccato"></string> -->
 	<!-- <string name="action_change_tapping"></string> -->
 	<!-- <string name="action_change_slapping"></string> -->
@@ -201,7 +206,7 @@
 	<string name="browser_save_label">Salvar</string>
 	<!-- <string name="browser_add_collection"></string> -->
 	<!-- <string name="browser_remove_collection"></string> -->
-	<string name="browser_file_overwrite_question">Este arquivo já existe, você deseja salvar sobre ele??</string>
+	<string name="browser_file_overwrite_question">Este arquivo já existe. Deseja sobreescrevê-lo?</string>
 	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
 	<!-- <string name="browser_element_icon_description"></string> -->
 
@@ -216,7 +221,7 @@
 	<string name="browser_settings_fs_name_label">Nome:</string>
 	<string name="browser_settings_fs_path_label">Pasta:</string>
 
-	<string name="browser_settings_fs_error_title">erro</string>
+	<string name="browser_settings_fs_error_title">Erro</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
 	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->
 	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
@@ -245,7 +250,7 @@
 	<!-- =================================================================== -->
 
 	<!-- Confirm dialog -->
-	<!-- <string name="confirm_dlg_title"></string> -->
+	<string name="confirm_dlg_title">Confirmar</string>
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Mudar o tempo</string>
@@ -297,8 +302,8 @@
 	<string name="triplet_feel_dlg_options_apply_to_end">Aplicar modo triplet até o final</string>
 
 	<!-- Repeat Close dialog -->
-	<string name="repeat_close_dlg_title">Fechar repetição</string>
-	<string name="repeat_close_dlg_count_label">Número de repetições:</string>
+	<string name="repeat_close_dlg_title">Fechar Repetição</string>
+	<string name="repeat_close_dlg_count_label">Número de Repetições:</string>
 
 	<!-- Repeat Alternative dialog -->
 	<string name="repeat_alternative_dlg_title">Repetição Alternativa</string>
@@ -311,7 +316,7 @@
 	<string name="song_properties_dlg_author_label">Autor:</string>
 	<string name="song_properties_dlg_date_label">Data:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<string name="song_properties_dlg_writer_label">Autor:</string>
+	<string name="song_properties_dlg_writer_label">Criador da Tablatura:</string>
 	<string name="song_properties_dlg_transcriber_label">Transcrito por:</string>
 	<string name="song_properties_dlg_comments_label">Comentários:</string>
 
@@ -324,24 +329,24 @@
 	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
-	<!-- <string name="track_tuning_dlg_title"></string> -->
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_title">Afinação</string>
+	<string name="track_tuning_dlg_value_label">Valor:</string>
+	<string name="track_tuning_dlg_preview_label">Rótulo:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
-	<string name="track_tuning_dlg_error_title">erro</string>
-	<!-- <string name="track_tuning_dlg_range_error"></string> -->
-	<!-- <string name="track_tuning_dlg_empty_value_error"></string> -->
+	<string name="track_tuning_dlg_error_title">Erro</string>
+	<string name="track_tuning_dlg_range_error">Quantia de cordas precisa estar entre %1$d e %2$d</string>
+	<string name="track_tuning_dlg_empty_value_error">Valor não pode ser vazio</string>
 
-	<!-- <string name="track_string_count_dlg_title"></string> -->
-	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+	<string name="track_string_count_dlg_title">Contagem de Linhas</string>
+	<string name="track_string_count_dlg_count_label">Contagem de Linhas:</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Adicionar Compasso</string>
-	<string name="measure_add_dlg_count_label">Quantidade:</string>
-	<string name="measure_add_dlg_options_before_position">Adicionar antes da Posição Atual</string>
-	<string name="measure_add_dlg_options_after_position">Adicionar depois da Posição Atual</string>
-	<string name="measure_add_dlg_options_at_end">Adicionar no Final</string>
+	<string name="measure_add_dlg_count_label">Adicionar Quantidade:</string>
+	<string name="measure_add_dlg_options_before_position">Adicionar Compasso antes da Posição Atual</string>
+	<string name="measure_add_dlg_options_after_position">Adicionar Compasso depois da Posição Atual</string>
+	<string name="measure_add_dlg_options_at_end">Adicionar Compasso no Final</string>
 
 	<!-- Measure remove dialog -->
 	<string name="measure_remove_dlg_title">Remover Compasso</string>
@@ -357,7 +362,7 @@
 	<string name="measure_copy_dlg_title">Copiar Compasso</string>
 	<string name="measure_copy_dlg_from_label">De:</string>
 	<string name="measure_copy_dlg_to_label">Até:</string>
-	<string name="measure_copy_dlg_options_all_tracks">Todas Pistas</string>
+	<string name="measure_copy_dlg_options_all_tracks">Todas as Faixas</string>
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Colar Compasso</string>
@@ -369,7 +374,7 @@
 	<string name="text_dlg_title">Inserir Texto</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Editor de Bend</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<!-- <string name="bend_dlg_preset_bend"></string> -->
 	<string name="bend_dlg_preset_bend_release">bend/release</string>
@@ -388,20 +393,20 @@
 	<string name="tremolo_bar_dlg_preset_return">Volta da Barra de Trêmolo</string>
 
 	<!-- Tremolo picking dialog -->
-	<string name="tremolo_picking_dlg_title">Trêmolo Picking</string>
+	<string name="tremolo_picking_dlg_title">Tremolo Picking</string>
 	<string name="tremolo_picking_dlg_duration_8">Colcheia</string>
 	<string name="tremolo_picking_dlg_duration_16">Semicolcheia</string>
 	<string name="tremolo_picking_dlg_duration_32">Fusa</string>
 
 	<!-- Trill dialog -->
-	<!-- <string name="trill_dlg_title"></string> -->
+	<string name="trill_dlg_title">Trilo</string>
 	<string name="trill_dlg_fret_label">Braço:</string>
 	<string name="trill_dlg_duration_16">Semicolcheia</string>
 	<string name="trill_dlg_duration_32">Fusa</string>
 	<string name="trill_dlg_duration_64">Semifusa</string>
 
 	<!-- Grace dialog -->
-	<!-- <string name="grace_dlg_title"></string> -->
+	<string name="grace_dlg_title">Apogiatura</string>
 	<string name="grace_dlg_fret_label">Braço:</string>
 	<!-- <string name="grace_dlg_dead_note_label"></string> -->
 	<string name="grace_dlg_position_label">Posição</string>
@@ -435,11 +440,11 @@
 	<string name="harmonic_dlg_type_sh">[S.H] Semi Harmônico</string>
 
 	<!-- Stroke dialog -->
-	<!-- <string name="stroke_dlg_title"></string> -->
+	<string name="stroke_dlg_title">Tocar Para Cima/Baixo</string>
 	<string name="stroke_dlg_direction_label">Direção:</string>
 	<string name="stroke_dlg_direction_none">Nenhum</string>
-	<string name="stroke_dlg_direction_up">Toca para cima</string>
-	<string name="stroke_dlg_direction_down">Toca para baixo</string>
+	<string name="stroke_dlg_direction_up">Tocar Para Cima</string>
+	<string name="stroke_dlg_direction_down">Tocar Para Baixo</string>
 	<string name="stroke_dlg_duration_4">Semínima</string>
 	<string name="stroke_dlg_duration_8">Colcheia</string>
 	<string name="stroke_dlg_duration_16">Semicolcheia</string>
@@ -450,8 +455,8 @@
 	<!-- <string name="pickstroke_dlg_title"></string> -->
 	<string name="pickstroke_dlg_direction_label">Direção:</string>
 	<string name="pickstroke_dlg_direction_none">Nenhum</string>
-	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
-	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
+	<string name="pickstroke_dlg_direction_up">Palhetar Para Cima</string>
+	<string name="pickstroke_dlg_direction_down">Palhetar Para Baixo</string>
 
 	<!-- Channels view -->
 	<!-- <string name="channel_list"></string> -->
@@ -463,7 +468,7 @@
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_percussion_label">Canal de Percussão</string>
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
 	<string name="channel_edit_dlg_balance_label">Balanço:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->

@@ -34,7 +34,7 @@ public class PTSection {
 	public PTPosition getPosition(int position){
 		Iterator<PTPosition> it = getPositions().iterator();
 		while(it.hasNext()){
-			PTPosition p = (PTPosition)it.next();
+			PTPosition p = it.next();
 			if(p.getPosition() == position){
 				return p;
 			}
@@ -48,7 +48,7 @@ public class PTSection {
 		int next = 0;
 		Iterator<PTPosition> it = getPositions().iterator();
 		while(it.hasNext()){
-			PTPosition p = (PTPosition)it.next();
+			PTPosition p = it.next();
 			next = Math.max(next, (p.getPosition() + 1) );
 		}
 		return next;
@@ -59,7 +59,7 @@ public class PTSection {
 		for(int i = 0;i < count;i++){
 			PTPosition minimum = null;
 			for(int j = i;j < count;j++){
-				PTPosition position = (PTPosition)getPositions().get(j);
+				PTPosition position = getPositions().get(j);
 				if(minimum == null || position.getPosition() < minimum.getPosition()){
 					minimum = position;
 				}

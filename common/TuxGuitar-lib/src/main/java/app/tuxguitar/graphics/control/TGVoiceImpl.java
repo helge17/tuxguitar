@@ -263,11 +263,11 @@ public class TGVoiceImpl extends TGVoice{
 			int duration = getDuration().getValue();
 			if( duration == TGDuration.WHOLE) {
 				this.silenceHeight = (scale * 3.6513581f);
-				this.silenceY = ((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing : (lineSpacing * (int)((lineCount - 1) / 2)));
+				this.silenceY = ((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing : (lineSpacing * ((lineCount - 1) / 2)));
 			}
 			else if(duration == TGDuration.HALF) {
 				this.silenceHeight = (scale * 3.6513581f);
-				this.silenceY = (((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing * 2 : (lineSpacing * (int)(lineCount / 2))) - this.silenceHeight);
+				this.silenceY = (((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing * 2 : (lineSpacing * (lineCount / 2))) - this.silenceHeight);
 			}
 			else if(duration == TGDuration.QUARTER) {
 				this.silenceHeight = (scale * 16);

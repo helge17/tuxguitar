@@ -47,15 +47,17 @@
       <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
       <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
       <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu2"><a href="tools_install_conf.html">Installation and configuration</a></li>
       <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
     </ul>
   </div>
   <section>
     <p>TuxGuitar supports custom skins. The skins modify toolbar icons and dialog buttons.</p>
-    <p>The default skin for TuxGuitar is Breeze, but TuxGuitar comes with other great skins. You can change the current skin in the <strong>Tools → Settings</strong> dialog, choosing the Skins tab. A preview of each skin is available.</p>
+    <p>The default skin for TuxGuitar is Breeze, but TuxGuitar comes with two other great skins: Symbolic and Oxygen. All three skins are available in a light version with dark labels for use with a light background, and in a dark version with light labels that you should use if you have your desktop set to dark mode.</p>
+    <p>On startup, TuxGuitar tries to find out if your desktop is set to light or dark mode and automatically selects the correct version of the skin. In case this detection does not work correctly in your environment, you can switch it off by setting skin.dark-mode.auto=false in the <strong><a href="tools_install_conf.html#config">tuxguitar.cfg</a></strong> file. You can change the current skin in the Skins tab of the <strong>Tools → Settings</strong> dialog. A preview of each skin is also available.</p>
     <img src="images/settings_skin.png" />
-    <p>To add a new skin, create a new folder in <em>$TUXGUITAR_DIR</em>\share\skins\ and copy the needed <em>files</em> into that folder. After that the skin should be available in the dialog.</p>
-    <p>Skins are contributed by TuxGuitar users, so if you are a talented designer, feel free to make your own skin or modify an existing one!</p>
+    <p>To add a new skin, create a new folder in <strong><a href="tools_install_conf.html#install"><em>$TG_DIR</em>/share/skins/</a></strong> and copy the needed files into that folder. After that the skin should be available in the dialog.</p>
+    <p>Skins can also be contributed by TuxGuitar users, so if you are a talented designer, feel free to make your own skin or modify an existing one!</p>
   </section>
 </body>
 </html>

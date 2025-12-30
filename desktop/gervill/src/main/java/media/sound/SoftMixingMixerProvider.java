@@ -41,6 +41,7 @@ public class SoftMixingMixerProvider extends MixerProvider {
 
     protected final static Object mutex = new Object();
 
+    @Override
     public Mixer getMixer(Info info) {
         if (!(info == null || info == SoftMixingMixer.info)) {
             throw new IllegalArgumentException("Mixer " + info.toString()
@@ -59,6 +60,7 @@ public class SoftMixingMixerProvider extends MixerProvider {
 
     }
 
+    @Override
     public Info[] getMixerInfo() {
         return new Info[] { SoftMixingMixer.info };
     }

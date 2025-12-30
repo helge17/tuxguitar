@@ -41,6 +41,9 @@
         android:id="@+id/action_menu_effects"
         android:title="@string/action_menu_effects"/>
     <item
+        android:id="@+id/action_menu_transport"
+        android:title="@string/action_menu_transport"/>
+    <item
         android:id="@+id/action_menu_settings"
         android:title="@string/action_menu_settings"/>
 

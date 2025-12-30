@@ -137,7 +137,7 @@ public class PTBeat implements PTComponent{
 		beat.setArpeggioDown( isArpeggioDown() );
 		Iterator<PTNote> it = getNotes().iterator();
 		while( it.hasNext() ){
-			beat.addNote( ((PTNote)it.next()).getClone() );
+			beat.addNote( it.next().getClone() );
 		}
 		return beat;
 	}

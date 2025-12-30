@@ -55,7 +55,7 @@ public class ASCIITabOutputStream {
 
 		Iterator<TGTrack> it = song.getTracks();
 		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();
+			TGTrack track = it.next();
 			this.out.nextLine();
 			drawTrack(track);
 			this.out.nextLine();
@@ -71,7 +71,7 @@ public class ASCIITabOutputStream {
 		String[] tuning = new String[track.getStrings().size()];
 		int maxTuningLength = 1;
 		for(int i = 0; i < track.getStrings().size();i++){
-			TGString string = (TGString)track.getStrings().get(i);
+			TGString string = track.getStrings().get(i);
 			tuning[i] = TONIC_NAMES[(string.getValue() % TONIC_NAMES.length)];
 			maxTuningLength = Math.max(maxTuningLength,tuning[i].length());
 		}

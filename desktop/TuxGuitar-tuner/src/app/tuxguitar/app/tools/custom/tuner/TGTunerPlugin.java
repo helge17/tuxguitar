@@ -21,7 +21,7 @@ public class TGTunerPlugin extends app.tuxguitar.app.tools.custom.TGToolItemPlug
 		int[] tuning = new int[strings.size()];
 		int i=0;
 		while (it.hasNext()) {
-			TGString current = (TGString)it.next();
+			TGString current = it.next();
 			tuning[i] = current.getValue();
 			i++;
 		}

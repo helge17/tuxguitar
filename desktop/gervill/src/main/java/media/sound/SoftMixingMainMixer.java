@@ -184,6 +184,7 @@ public class SoftMixingMainMixer {
                 bbuffer_pos = 0;
             }
 
+            @Override
             public int read(byte[] b, int off, int len) {
                 int bbuffer_len = bbuffer.length;
                 int offlen = off + len;
@@ -200,6 +201,7 @@ public class SoftMixingMainMixer {
                 return len;
             }
 
+            @Override
             public int read() throws IOException {
                 int ret = read(single);
                 if (ret == -1)
@@ -207,10 +209,12 @@ public class SoftMixingMainMixer {
                 return single[0] & 0xFF;
             }
 
+            @Override
             public int available() {
                 return bbuffer.length - bbuffer_pos;
             }
 
+            @Override
             public void close() {
                 SoftMixingMainMixer.this.mixer.close();
             }

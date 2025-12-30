@@ -25,7 +25,6 @@ import app.tuxguitar.ui.widget.UILegendPanel;
 import app.tuxguitar.ui.widget.UILinkLabel;
 import app.tuxguitar.ui.widget.UIListBoxSelect;
 import app.tuxguitar.ui.widget.UIPanel;
-import app.tuxguitar.ui.widget.UIPasswordField;
 import app.tuxguitar.ui.widget.UIProgressBar;
 import app.tuxguitar.ui.widget.UIRadioButton;
 import app.tuxguitar.ui.widget.UIReadOnlyTextBox;
@@ -89,8 +88,6 @@ public interface UIFactory extends UIResourceFactory {
 	UIRadioButton createRadioButton(UIContainer parent);
 
 	UITextField createTextField(UIContainer parent);
-
-	UIPasswordField createPasswordField(UIContainer parent);
 
 	UIReadOnlyTextField createReadOnlyTextField(UIContainer parent);
 

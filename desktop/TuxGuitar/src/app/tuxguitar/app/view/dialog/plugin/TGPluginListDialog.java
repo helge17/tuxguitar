@@ -140,7 +140,7 @@ public class TGPluginListDialog {
 
 		Iterator<String> it = getModuleIds().iterator();
 		while(it.hasNext()){
-			String moduleId = (String)it.next();
+			String moduleId = it.next();
 			TGPluginInfo pluginInfo = new TGPluginInfo(context, moduleId);
 
 			String pluginName = pluginInfo.getName();
@@ -161,7 +161,7 @@ public class TGPluginListDialog {
 		List<String> moduleIds = new ArrayList<String>();
 		Iterator<TGPlugin> it = TuxGuitar.getInstance().getPluginManager().getPlugins().iterator();
 		while(it.hasNext()){
-			TGPlugin plugin = (TGPlugin)it.next();
+			TGPlugin plugin = it.next();
 			if(!moduleIds.contains( plugin.getModuleId() )){
 				moduleIds.add( plugin.getModuleId() );
 			}

@@ -111,7 +111,7 @@ public class TGMenuManager implements TGEventListener {
 	private void showMenuItems(List<TGMenuItem> items){
 		Iterator<TGMenuItem> it = items.iterator();
 		while(it.hasNext()){
-			TGMenuItem item = (TGMenuItem)it.next();
+			TGMenuItem item = it.next();
 			item.showItems();
 		}
 	}

@@ -289,7 +289,7 @@ public class LilypondOutputStream {
 		if(skippedCount > 0){
 			this.writer.print(indent(1));
 			for(int i = 0 ; i <  skippedCount ; i ++){
-				this.writer.print("\\skip " + ((String)this.temp.getSkippedLyricBeats().get(i)) + " ");
+				this.writer.print("\\skip " + this.temp.getSkippedLyricBeats().get(i) + " ");
 			}
 			this.writer.println();
 		}
@@ -720,7 +720,7 @@ public class LilypondOutputStream {
 
 			int duration = 0;
 			for( int i = 0 ; i < graceNotes.size() ; i ++ ){
-				TGNote note = (TGNote)graceNotes.get( i );
+				TGNote note = graceNotes.get( i );
 				TGMeasure measure = voice.getBeat().getMeasure();
 				TGString string = measure.getTrack().getString(note.getString());
 				TGEffectGrace grace = note.getEffect().getGrace();
@@ -815,7 +815,7 @@ public class LilypondOutputStream {
 				// Check if is there any note at same string.
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while( it.hasNext() ){
-					TGNote current = (TGNote) it.next();
+					TGNote current = it.next();
 					if(current.getString() == note.getString()){
 						return current.isTiedNote();
 					}
@@ -907,7 +907,7 @@ public class LilypondOutputStream {
 		String tuning = ("\\with { stringTunings = #`( ");
 		Iterator<TGString> strings = track.getStrings().iterator();
 		while(strings.hasNext()){
-			TGString string = (TGString)strings.next();
+			TGString string = strings.next();
 			if ( this.settings.getLilypondVersion().compareTo("2.13.46") < 0) {
 				tuning += ( (string.getValue() - 60) + " ");
 			} else {

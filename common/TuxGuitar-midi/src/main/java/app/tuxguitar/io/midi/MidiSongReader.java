@@ -102,15 +102,15 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 			Iterator<TGChannel> channels = this.channels.iterator();
 			while(channels.hasNext()){
-				tgSong.addChannel((TGChannel)channels.next());
+				tgSong.addChannel(channels.next());
 			}
 			Iterator<TGMeasureHeader> headers = this.headers.iterator();
 			while(headers.hasNext()){
-				tgSong.addMeasureHeader((TGMeasureHeader)headers.next());
+				tgSong.addMeasureHeader(headers.next());
 			}
 			Iterator<TGTrack> tracks = this.tracks.iterator();
 			while(tracks.hasNext()){
-				tgSong.addTrack((TGTrack)tracks.next());
+				tgSong.addTrack(tracks.next());
 			}
 
 			handle.setSong(new SongAdjuster(this.factory, tgSong).adjustSong());
@@ -300,7 +300,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	private TGTrack getTrack(int number){
 		Iterator<TGTrack> it = this.tracks.iterator();
 		while(it.hasNext()){
-			TGTrack track = (TGTrack)it.next();
+			TGTrack track = it.next();
 			if(track.getNumber() == number){
 				return track;
 			}
@@ -320,7 +320,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 		Iterator<TGMeasureHeader> it = this.headers.iterator();
 		while(it.hasNext()){
-			TGMeasureHeader header = (TGMeasureHeader)it.next();
+			TGMeasureHeader header = it.next();
 			if(realTick >= header.getStart() && realTick < header.getStart() + header.getLength()){
 				return header;
 			}
@@ -346,7 +346,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 	private TGMeasureHeader getLastHeader(){
 		if(!this.headers.isEmpty()){
-			return (TGMeasureHeader)this.headers.get(this.headers.size() - 1);
+			return this.headers.get(this.headers.size() - 1);
 		}
 		return null;
 	}
@@ -355,7 +355,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		long realTick = (tick >= TGDuration.QUARTER_TIME)?tick:TGDuration.QUARTER_TIME;
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
-			TGMeasure measure = (TGMeasure)it.next();
+			TGMeasure measure = it.next();
 			if(realTick >= measure.getStart() && realTick < measure.getStart() + measure.getLength()){
 				return measure;
 			}
@@ -363,7 +363,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		getHeader(realTick);
 		for(int i = 0;i < this.headers.size();i++){
 			boolean exist = false;
-			TGMeasureHeader header = (TGMeasureHeader)this.headers.get(i);
+			TGMeasureHeader header = this.headers.get(i);
 			int measureCount = track.countMeasures();
 			for(int j = 0;j < measureCount;j++){
 				TGMeasure measure = track.getMeasure(j);
@@ -396,7 +396,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 	private TempNote getTempNote(int track, int channel, int value, boolean purge){
 		for(int i = 0;i < this.tempNotes.size();i ++){
-			TempNote note = (TempNote)this.tempNotes.get(i);
+			TempNote note = this.tempNotes.get(i);
 			if( note.getTrack() == track && note.getChannel() == channel && note.getValue() == value ){
 				if(purge){
 					this.tempNotes.remove(i);
@@ -410,7 +410,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	protected TrackTuningHelper getTrackTuningHelper(int track){
 		Iterator<TrackTuningHelper> it = this.trackTuningHelpers.iterator();
 		while(it.hasNext()){
-			TrackTuningHelper helper = (TrackTuningHelper)it.next();
+			TrackTuningHelper helper = it.next();
 			if(helper.getTrack() == track){
 				return helper;
 			}
@@ -464,7 +464,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	public TempChannel getTempChannel(int channel){
 		Iterator<TempChannel> it = this.tempChannels.iterator();
 		while(it.hasNext()){
-			TempChannel tempChannel = (TempChannel)it.next();
+			TempChannel tempChannel = it.next();
 			if(tempChannel.getChannel() == channel){
 				return tempChannel;
 			}
@@ -481,7 +481,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 		int headerCount = this.headers.size();
 		for(int i = 0;i < this.tracks.size();i ++){
-			TGTrack track = (TGTrack)this.tracks.get(i);
+			TGTrack track = this.tracks.get(i);
 
 			while(track.countMeasures() < headerCount){
 				long start = TGDuration.QUARTER_TIME;
@@ -501,11 +501,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 	private void checkChannels(){
 		for(int tc = 0 ; tc < this.tempChannels.size() ; tc ++ ){
-			TempChannel tempChannel = (TempChannel)this.tempChannels.get( tc );
+			TempChannel tempChannel = this.tempChannels.get( tc );
 			if( !tempChannel.getTracks().isEmpty() ){
 				boolean channelExists = false;
 				for(int c = 0 ; c < this.channels.size() ; c ++ ){
-					TGChannel tgChannel = (TGChannel) this.channels.get(c);
+					TGChannel tgChannel = this.channels.get(c);
 					GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
 					if( gmChannelRoute != null ){
 						if( gmChannelRoute.getChannel1() == tempChannel.getChannel() || gmChannelRoute.getChannel2() == tempChannel.getChannel() ){
@@ -528,7 +528,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 					gmChannelRoute.setChannel2(tempChannel.getChannel());
 
 					for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
-						TempChannel tempChannelAux = (TempChannel)this.tempChannels.get( tcAux );
+						TempChannel tempChannelAux = this.tempChannels.get( tcAux );
 						if( tempChannel.getTracks().equals(tempChannelAux.getTracks()) ){
 							if( gmChannelRoute.getChannel2() == gmChannelRoute.getChannel1() ){
 								gmChannelRoute.setChannel2( tempChannelAux.getChannel() );
@@ -768,7 +768,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			Iterator<TGTrack> it = this.song.getTracks();
 
 			while(it.hasNext()){
-				TGTrack track = (TGTrack)it.next();
+				TGTrack track = it.next();
 				adjustTrack(track);
 			}
 			fixInvalidTiedNotes();
@@ -778,7 +778,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		private void adjustTrack(TGTrack track) {
 			Iterator<TGMeasure> it = track.getMeasures();
 			while(it.hasNext()){
-				TGMeasure measure = (TGMeasure)it.next();
+				TGMeasure measure = it.next();
 				process(measure, track.isPercussion(), track.getMaxFret());
 			}
 		}

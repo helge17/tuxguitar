@@ -211,7 +211,7 @@ public class TGResources {
 	public void dispose(){
 		Iterator<UIResource> it = this.resources.iterator();
 		while( it.hasNext() ){
-			UIResource resource = (UIResource)it.next();
+			UIResource resource = it.next();
 			resource.dispose();
 		}
 		this.resources.clear();

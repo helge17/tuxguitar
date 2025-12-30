@@ -47,6 +47,7 @@
       <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
       <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
       <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu2"><a href="tools_install_conf.html">Installation and configuration</a></li>
       <li class="menu1"><a href="file_formats.html">Supported file formats</a></li>
     </ul>
   </div>
@@ -78,6 +79,9 @@
     <p>Training mode gives you the opportunity to practice with a gradual tempo incrementation. You can choose to start slowly, in only half of a tempo, but in every cycle of the tune to increase the tempo by 5%, getting to the full speed after 10 playbacks. You choose a <em>beginning tempo</em>, <em>ending tempo</em> and an <em>increment</em> (in percentage) that increases the tempo after each cycle.</p>
     <h2 id="play_highlight">Highlight Played Beat</h2>
     <p>As you can see in the snapshot of the TuxGuitar main window above, the currently playing measure gets a red background, the beat is highlighted in red and has a frame around it. You can switch the frame on or off via the menu <strong>Player → Highlight Played Beat</strong> or define a corresponding keyboard command under <strong><a href="tools_keybinding.html">Tools → Shortcuts</a></strong>. The color of the highlighting can be changed under <strong>Tools → Settings → Styles</strong>.</p>
+    <h2 id="play_continuous">Scrolling behavior during playback</h2>
+    <p>By default, the tablature scrolls forward one page each time playback reaches the end of the visible area (discrete scrolling). If you select <strong>Player → Continuous scrolling</strong>, the tablature scrolls continuously so that the playing measure always remains within the visible tablature area. This feature requires sufficient processing power for smooth scrolling.</p>
+    <p>You can customize the behavior of both scrolling modes with the scrolling.discrete.* and scrolling.continuous.* parameters in the <a href="tools_install_conf.html#config">tuxguitar.cfg</a></strong> file.</p>
   </section>
 </body>
 </html>

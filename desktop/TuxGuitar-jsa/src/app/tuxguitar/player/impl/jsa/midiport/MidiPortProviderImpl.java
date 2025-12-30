@@ -33,7 +33,7 @@ public class MidiPortProviderImpl implements MidiOutputPortProvider{
 					Iterator<MidiOutputPort> it = ports.iterator();
 					boolean exists = false;
 					while(it.hasNext()){
-						if( ((MidiOutputPort)it.next()).getKey().equals(infos[i].getName()) ){
+						if( it.next().getKey().equals(infos[i].getName()) ){
 							exists = true;
 							break;
 						}

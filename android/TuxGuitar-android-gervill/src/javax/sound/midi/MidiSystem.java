@@ -127,10 +127,10 @@ import javax.sound.midi.spi.SoundbankReader;
  *
  * For example, the property <code>javax.sound.midi.Receiver</code>
  * with a value
- * <code>&quot;com.sun.media.sound.MidiProvider#SunMIDI1&quot;</code>
+ * <code>&quot;media.sound.MidiProvider#SunMIDI1&quot;</code>
  * will have the following consequences when
  * <code>getReceiver</code> is called:
- * if the class <code>com.sun.media.sound.MidiProvider</code> exists
+ * if the class <code>media.sound.MidiProvider</code> exists
  * in the list of installed MIDI device providers,
  * the first <code>Receiver</code> device with name
  * <code>&quot;SunMIDI1&quot;</code> will be returned. If it cannot

@@ -220,7 +220,7 @@ class TGBrowserDataDialog{
 					PrintWriter writer = new PrintWriter( buffer );
 					Iterator<String> it = errors.iterator();
 					while( it.hasNext() ){
-						writer.println( "*" + (String)it.next() );
+						writer.println( "*" + it.next() );
 					}
 					TGMessageDialogUtil.errorMessage(getContext(), parent, buffer.getBuffer().toString() );
 				}else{
@@ -256,7 +256,7 @@ class TGBrowserDataDialog{
 		}else{
 			Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getContext()).getCollections();
 			while(it.hasNext()){
-				TGBrowserCollection collection = (TGBrowserCollection)it.next();
+				TGBrowserCollection collection = it.next();
 				if(name.equals(collection.getData().getTitle())){
 					errors.add("A collection named \"" + name + "\" already exists");
 					break;

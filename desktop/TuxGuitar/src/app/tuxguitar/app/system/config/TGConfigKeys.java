@@ -4,6 +4,7 @@ public class TGConfigKeys {
 
 	// valid configuration key names
 	public static final String SKIN = "skin";
+	public static final String SKIN_DARK_AUTO = "skin.dark-mode.auto";
 	public static final String WINDOW_TITLE = "window.title";
 	public static final String SHOW_SPLASH = "show.splash";
 	public static final String MAXIMIZED = "window.maximized";
@@ -44,7 +45,6 @@ public class TGConfigKeys {
 	public static final String COLOR_BACKGROUND = "color.background";
 
 	public static final String COLOR_BACKGROUND_PLAYING = "color.background.playing";
-
 	public static final String COLOR_LINE = "color.line";
 	public static final String COLOR_LINE_INVALID = "color.line.invalid";
 	public static final String COLOR_SCORE_NOTE = "color.score.note";
@@ -57,6 +57,7 @@ public class TGConfigKeys {
 	public static final String COLOR_LOOP_S_MARKER = "color.loop.s.marker";
 	public static final String COLOR_LOOP_E_MARKER = "color.loop.e.marker";
 	public static final String COLOR_MEASURE_NUMBER = "color.measure.number";
+	public static final String COLOR_INVALID_ENTRY = "color.invalid.entry";
 	public static final String MIDI_PORT = "midi.port";
 	public static final String MIDI_SEQUENCER = "midi.sequencer";
 	public static final String MAX_HISTORY_FILES = "history.max-files";
@@ -118,8 +119,17 @@ public class TGConfigKeys {
 	public static final String STYLE_LINE_WIDTHS = "style.lineWidths";
 	public static final String STYLE_DURATION_WIDTHS = "style.durationWidths";
 
+	public static final String DISPLAY_EXCLUDE_SCROLLBARS = "display.exclude-scrollbars";
+
 	public static final String HOMEPAGE_URL = "homepage.url";
 	public static final String CONFIG_APP_VERSION = "config.app.version";
 
 	public static final String PLAY_WHEN_MOVING = "play.when.moving";
+	public static final String CHORD_INSERT_DIAGRAM_ONLY = "chord.insert-diagram-only";
+
+	public static final String SCROLLING_MAX_FPS = "scrolling.continuous.maxFPS";
+	public static final String SCROLLING_HORIZONTAL_MARGIN_PERCENT = "scrolling.continuous.horizontal.margin-percent";
+	public static final String SCROLLING_VERTICAL_MARGIN_PERCENT = "scrolling.continuous.vertical.margin-percent";
+	public static final String SCROLLING_HORIZONTAL_DISCRETE_ANTICIPATION = "scrolling.discrete.horizontal.anticipation";
+	public static final String SCROLLING_VERTICAL_DISCRETE_ANTICIPATION = "scrolling.discrete.vertical.anticipation";
 }

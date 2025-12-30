@@ -23,7 +23,7 @@ public class GPXFileSystem {
 
 		Iterator<GPXFile> it = this.fileSystem.iterator();
 		while( it.hasNext() ){
-			GPXFile file = (GPXFile)it.next();
+			GPXFile file = it.next();
 			gpxFileNames.add( file.getFileName() );
 		}
 
@@ -33,7 +33,7 @@ public class GPXFileSystem {
 	public byte[] getFileContents( String fileName ){
 		Iterator<GPXFile> it = this.fileSystem.iterator();
 		while( it.hasNext() ){
-			GPXFile file = (GPXFile)it.next();
+			GPXFile file = it.next();
 			if( file.getFileName().equals( fileName ) ){
 				return file.getFileContents();
 			}

@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Duración</string>
 	<string name="action_menu_dynamic">Dinámica</string>
 	<string name="action_menu_effects">Efectos</string>
+	<string name="action_menu_transport">Reproductor</string>
 	<string name="action_menu_settings">Preferencias</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Mostrar diagrama de acordes</string>
 
 	<string name="action_transport_play">Reproducir tema</string>
+	<string name="action_transport_stop">Parar reproducción</string>
+	<string name="action_transport_metronome">Metrónomo</string>
+	<string name="action_transport_count_down">Cuenta Regresiva</string>
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<string name="action_go_up">Mover cursor hacia arriba</string>
 	<string name="action_go_down">Mover cursor hacia abajo</string>
@@ -369,7 +374,7 @@
 	<string name="text_dlg_title">Insertar Texto</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Editor de Bend</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Estirada</string>
 	<string name="bend_dlg_preset_bend_release">Estirar/Soltar</string>

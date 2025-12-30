@@ -40,7 +40,7 @@ public class JackSequencerProvider implements MidiSequencerProvider{
 	public void closeAll() throws MidiPlayerException {
 		Iterator<MidiSequencer> it = listSequencers().iterator();
 		while(it.hasNext()){
-			MidiSequencer sequencer = (MidiSequencer)it.next();
+			MidiSequencer sequencer = it.next();
 			sequencer.close();
 		}
 		clearSequencers();

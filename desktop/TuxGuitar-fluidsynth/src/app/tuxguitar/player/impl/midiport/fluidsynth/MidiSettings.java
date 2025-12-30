@@ -99,7 +99,7 @@ public class MidiSettings {
 		TGConfigManager config = getConfig();
 		config.setValue("soundfont.count", soundfonts.size() );
 		for( int i = 0 ; i < soundfonts.size() ; i ++ ){
-			String path = (String)soundfonts.get( i );
+			String path = soundfonts.get( i );
 			config.setValue("soundfont.path" + i, path );
 		}
 	}

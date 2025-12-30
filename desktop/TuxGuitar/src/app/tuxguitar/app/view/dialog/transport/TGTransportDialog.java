@@ -334,9 +334,11 @@ public class TGTransportDialog implements TGEventListener {
 				this.stop.setImage(TuxGuitar.getInstance().getIconManager().getTransportStop());
 				if (isRunning) {
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPause());
+					this.stop.setEnabled(true);
 				} else {
 					this.play.setImage(TuxGuitar.getInstance().getIconManager().getTransportPlay());
 					this.metronome.setText("");
+					this.stop.setEnabled(false);
 				}
 				this.loadPlayText();
 			}
@@ -377,6 +379,7 @@ public class TGTransportDialog implements TGEventListener {
 			this.metronome.setToolTipText(TuxGuitar.getProperty("transport.metronome"));
 			this.mode.setToolTipText(TuxGuitar.getProperty("transport.mode"));
 			this.countInToggle.setToolTipText(TuxGuitar.getProperty("transport.count-down"));
+			this.countInTicks.setToolTipText(TuxGuitar.getProperty("transport.count-down-ticks"));
 			this.loadPlayText();
 		}
 	}

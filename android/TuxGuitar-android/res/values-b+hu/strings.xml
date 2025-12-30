@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Hanghossz</string>
 	<string name="action_menu_dynamic">Dinamika</string>
 	<string name="action_menu_effects">Effektusok</string>
+	<string name="action_menu_transport">Lejátszó</string>
 	<!-- <string name="action_menu_settings"></string> -->
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
 
 	<string name="action_transport_play">Lejátszás/szünet</string>
+	<string name="action_transport_stop">Leállítás</string>
+	<!-- <string name="action_transport_metronome"></string> -->
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -369,7 +374,7 @@
 	<!-- <string name="text_dlg_title"></string> -->
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Hajlítás Szerkesztõ</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Hajlítás</string>
 	<string name="bend_dlg_preset_bend_release">Hajlítás/vissza</string>

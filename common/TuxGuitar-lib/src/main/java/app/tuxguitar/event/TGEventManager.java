@@ -39,7 +39,7 @@ public class TGEventManager {
 			return null;
 		}
 		if( this.eventHandlers.containsKey(eventType) ) {
-			return (TGEventHandler)this.eventHandlers.get(eventType);
+			return this.eventHandlers.get(eventType);
 		}
 		this.eventHandlers.put(eventType, new TGEventHandler());
 

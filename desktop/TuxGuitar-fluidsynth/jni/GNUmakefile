@@ -1,13 +1,5 @@
-RM?=rm -f
-CFLAGS?=-I../../build-scripts/native-modules/common-include -fPIC
-LDFLAGS?=
-LDLIBS?=-lfluidsynth
-LDPATH?=-L/usr/lib
-LIBRARY_NAME?=tuxguitar-fluidsynth-jni
-LIBRARY_PREFIX?=lib
-LIBRARY_SUFFIX?=.so
+# See pom.xml for variable definitions
 
-LIBRARY=$(LIBRARY_PREFIX)$(LIBRARY_NAME)$(LIBRARY_SUFFIX)
 OBJECTS=app_tuxguitar_player_impl_midiport_fluidsynth_MidiSynth.o
 
 %.o: %.c

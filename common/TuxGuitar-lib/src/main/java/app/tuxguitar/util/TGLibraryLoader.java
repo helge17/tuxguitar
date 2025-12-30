@@ -36,7 +36,7 @@ public class TGLibraryLoader {
 		if(folder != null && folder.exists()){
 			List<String> libraries = findLibrariesToLoad(folder, prefix, extension);
 			for(int i = 0; i < libraries.size(); i ++){
-				String library = (String)libraries.get(i);
+				String library = libraries.get(i);
 				File file = new File(getLibraryFileName(folder, library));
 				if(file.exists() && !file.isDirectory()){
 					loadLibrary(file);
@@ -77,7 +77,7 @@ public class TGLibraryLoader {
 		if( dependencies != null ){
 			Iterator<String> it = dependencies.iterator();
 			while(it.hasNext()){
-				String dependency = (String) it.next();
+				String dependency = it.next();
 				if(!libraries.contains(dependency)){
 					for(int i = 0; i < files.length; i ++){
 						if( dependency.equals(files[i]) ){

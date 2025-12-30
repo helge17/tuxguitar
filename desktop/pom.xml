@@ -295,17 +295,17 @@
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.gtk.linux</artifactId>
-				<version>4.36</version>
+				<version>4.37</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.win32.win32</artifactId>
-				<version>4.36</version>
+				<version>4.37</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
 				<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
-				<version>4.36</version>
+				<version>4.37</version>
 			</dependency>
 			<dependency>
 				<groupId>${org.eclipse.swt.groupId}</groupId>
@@ -359,6 +359,7 @@
 				<configuration>
 					<source>9</source>
 					<target>9</target>
+					<showWarnings>true</showWarnings>
 					<useIncrementalCompilation>false</useIncrementalCompilation>
 					<compilerArgs>
 						<arg>-Xlint:all</arg>
@@ -375,6 +376,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Timestamp for reproducible jar files -->
+		<project.build.outputTimestamp>2025-11-02T00:00:00Z</project.build.outputTimestamp>
 	</properties>
 
 	<profiles>
@@ -388,7 +391,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.win32.win32</org.eclipse.swt.artifactId>
-				<javafx.version>22.0.2</javafx.version>
+				<javafx.version>23.0.2</javafx.version>
 				<javafx.platform>win</javafx.platform>
 			</properties>
 		</profile>
@@ -403,7 +406,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.gtk.linux</org.eclipse.swt.artifactId>
-				<javafx.version>22.0.2</javafx.version>
+				<javafx.version>23.0.2</javafx.version>
 				<javafx.platform>linux</javafx.platform>
 			</properties>
 		</profile>
@@ -418,7 +421,7 @@
 			<properties>
 				<org.eclipse.swt.groupId>org.eclipse.swt</org.eclipse.swt.groupId>
 				<org.eclipse.swt.artifactId>org.eclipse.swt.cocoa.macosx</org.eclipse.swt.artifactId>
-				<javafx.version>22.0.2</javafx.version>
+				<javafx.version>23.0.2</javafx.version>
 				<javafx.platform>mac</javafx.platform>
 			</properties>
 		</profile>

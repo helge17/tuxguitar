@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Продължителност</string>
 	<string name="action_menu_dynamic">Динамика</string>
 	<string name="action_menu_effects">Ефекти</string>
+	<string name="action_menu_transport">Плеър</string>
 	<string name="action_menu_settings">Настройки</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Показване диаграми на акорди</string>
 
 	<string name="action_transport_play">Изпълнение на песента</string>
+	<string name="action_transport_stop">Спиране на изпълнението</string>
+	<string name="action_transport_metronome">Метроном</string>
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -369,7 +374,7 @@
 	<string name="text_dlg_title">Вмъкване на текст</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Редактор на портаменто</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Портаменто</string>
 	<string name="bend_dlg_preset_bend_release">Китарно вибрато</string>

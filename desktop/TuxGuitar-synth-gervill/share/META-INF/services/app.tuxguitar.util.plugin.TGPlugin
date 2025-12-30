@@ -1,3 +1,2 @@
-# Add here the TGPlugin implementation class names.
 app.tuxguitar.midi.synth.impl.GervillExtensionPlugin
-
+app.tuxguitar.midi.synth.impl.settings.GervillPluginSettings

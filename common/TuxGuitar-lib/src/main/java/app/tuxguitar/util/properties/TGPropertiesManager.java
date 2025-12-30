@@ -28,14 +28,14 @@ public class TGPropertiesManager {
 
 	public void readProperties(TGProperties properties, String resource, String module){
 		if( this.propertiesReaders.containsKey(resource) ){
-			TGPropertiesReader tgPropertiesReader = (TGPropertiesReader)this.propertiesReaders.get(resource);
+			TGPropertiesReader tgPropertiesReader = this.propertiesReaders.get(resource);
 			tgPropertiesReader.readProperties(properties, module);
 		}
 	}
 
 	public void writeProperties(TGProperties properties, String resource, String module){
 		if( this.propertiesWriters.containsKey(resource) ){
-			TGPropertiesWriter tgPropertiesWriter = (TGPropertiesWriter)this.propertiesWriters.get(resource);
+			TGPropertiesWriter tgPropertiesWriter = this.propertiesWriters.get(resource);
 			tgPropertiesWriter.writeProperties(properties, module);
 		}
 	}

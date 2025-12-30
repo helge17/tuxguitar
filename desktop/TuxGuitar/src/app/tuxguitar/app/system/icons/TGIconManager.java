@@ -111,6 +111,7 @@ public class TGIconManager {
 	public static final String TRANSPORT_LOOP_START = "transport_loop_start.png";
 	public static final String TRANSPORT_LOOP_END = "transport_loop_end.png";
 	public static final String TRANSPORT_HIGHLIGHT_PLAYED_BEAT = "highlight_played_beat.png";
+	public static final String TRANSPORT_CONTINUOUS_SCROLLING = "continuous_scrolling.png";
 	public static final String SETTINGS = "settings.png";
 	public static final String LIST_REMOVE = "list_remove.png";
 	public static final String ARROW_UP = "arrow_up.png";
@@ -272,6 +273,7 @@ public class TGIconManager {
 		loadIcon(LAYOUT_TABLATURE);
 		loadIcon(LAYOUT_COMPACT);
 		loadIcon(TRANSPORT_HIGHLIGHT_PLAYED_BEAT);
+		loadIcon(TRANSPORT_CONTINUOUS_SCROLLING);
 		loadIcon(SEPARATOR);
 		loadIcon(FILE_NEW);
 		loadIcon(FILE_OPEN);

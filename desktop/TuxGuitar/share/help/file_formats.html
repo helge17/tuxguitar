@@ -47,6 +47,7 @@
       <li class="menu2"><a href="tools_keybinding.html">Shortcut editor</a></li>
       <li class="menu2"><a href="tools_plugins.html">Plugins dialog</a></li>
       <li class="menu2"><a href="tools_converter.html">Batch File Converter</a></li>
+      <li class="menu2"><a href="tools_install_conf.html">Installation and configuration</a></li>
       <li class="menu1"><strong>Supported file formats</strong></li>
     </ul>
   </div>
@@ -133,7 +134,7 @@
       <li>A standard tuned 4-string bass with 24 frets can play midi notes 28 (E1) to 67 (G4).</li>
     </ul>
     <p>In practice, there is a little extra tolerance as TuxGuitar can select an alternative tuning preset to allow more notes to fit into the tablature.</p>
-    <p>A typical symptom of an inappropriate note range occurs when TuxGuitar selects an unexpected (or even unrealistic) tuning preset. Be careful, this may not be immediately visible in the tablature. Therefore, it is highly recommended to manually check the tuning of each track directly after importing. If a track is tuned with 6 identical strings, well, then something has definitely gone wrong: Fix the issue before you try to continue (see <a href="#transposition">transposition</a> below).</p>
+    <p>A typical symptom of an inappropriate note range occurs when TuxGuitar selects an unexpected (or even unrealistic) tuning preset. Be careful, this may not be immediately visible in the tablature. Therefore, it is highly recommended to manually check the tuning of each track directly after importing. If a track is tuned with 6 identical strings, well, then something has definitely gone wrong: Fix the issue before you try to continue (see <strong><a href="#transposition">transposition</a></strong> below).</p>
     <p>Another typical symptom of an incorrect note range is the loss of notes, either directly after import or when you try to change the tuning of a track. TuxGuitar will delete any notes it can't place on a 30 frets instrument.</p>
     <h3 id="transposition">Transposition</h3>
     <p>If the note range of the input file has not been adjusted, you can transpose it directly when importing the file using the corresponding dialog. Please note that the transposition is applied to all tracks in the song. If you only need to transpose one track in a multi-track song, you should split your file into several files using an external MIDI application before importing. Afterwards, you can copy/paste the tracks together again in TuxGuitar.</p>

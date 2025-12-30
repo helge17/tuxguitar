@@ -41,6 +41,7 @@ public class TGLayoutVertical extends TGLayout{
 		this.setHeight(0);
 		this.setWidth(0);
 		this.clearTrackPositions();
+		this.measureLines = new ArrayList<Integer>();
 
 		int style = getStyle();
 		int number = getComponent().getTrackSelection();
@@ -50,6 +51,7 @@ public class TGLayoutVertical extends TGLayout{
 
 		int measureCount = getSong().countMeasureHeaders();
 		int nextMeasureIndex = 0;
+		int lineNb = 0;
 		while(measureCount > nextMeasureIndex){
 			TempLine line = null;
 			Iterator<TGTrack> tracks = getSong().getTracks();
@@ -97,6 +99,12 @@ public class TGLayoutVertical extends TGLayout{
 
 					posY += lineHeightWithSpacing;
 					height += lineHeightWithSpacing;
+					for (int mIndex : line.measures) {
+						if ((mIndex>=this.measureLines.size()) || (this.measureLines.get(mIndex) == 0)) {
+							this.measureLines.add(mIndex, lineNb);
+						}
+					}
+					lineNb++;
 				}
 			}
 			if(line != null){
@@ -106,6 +114,39 @@ public class TGLayoutVertical extends TGLayout{
 
 		this.setHeight(height);
 		this.setWidth( getWidth() + this.marginRight );
+		this.updateTimeToScroll();
+		
+	}
+
+	private void updateTimeToScroll() {
+		this.timeToNextScrollMs.clear();
+		
+		TGTrackImpl track = null;
+		int number = getComponent().getTrackSelection();
+		Iterator<TGTrack> tracks = getSong().getTracks();
+		while(tracks.hasNext()){
+			TGTrackImpl nextTrack = (TGTrackImpl) tracks.next();
+			if(number < 0 || nextTrack.getNumber() == number){
+				track = nextTrack;
+			}
+		}
+		if (track == null) return;
+		int measureCount = getSong().countMeasureHeaders();
+		float lastLineY = ((TGMeasureImpl)track.getMeasure(measureCount-1)).getPosY();
+		for (int measIndex = measureCount-1; measIndex>=0; measIndex--) {
+			this.timeToNextScrollMs.add(0,0);
+			TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(measIndex);
+			if (measure.getPosY() != lastLineY) {	// no need to scroll at last line
+				// duration in milliseconds of measure (at nominal tempo)
+				if (measure.getPosY() != ((TGMeasureImpl)track.getMeasure(measIndex+1)).getPosY()) {
+					// last measure in line, time to scroll = measure duration
+					this.timeToNextScrollMs.set(0, measure.getHeader().getDurationInMs());
+				}
+				else {
+					this.timeToNextScrollMs.set(0, this.timeToNextScrollMs.get(1) + measure.getHeader().getDurationInMs());
+				}
+			}
+		}
 	}
 
 	public void paintLine(TGTrackImpl track,TempLine line,UIPainter painter, float fromX, float fromY,TGTrackSpacing ts,UIRectangle clientArea) {
@@ -127,7 +168,7 @@ public class TGLayoutVertical extends TGLayout{
 		float measureSpacing = defaultMeasureSpacing;
 
 		for(int i = 0;i < line.measures.size();i ++){
-			int index = ((Integer)line.measures.get(i)).intValue();
+			int index = line.measures.get(i).intValue();
 			TGMeasureImpl currMeasure = (TGMeasureImpl)track.getMeasure(index);
 
 			//asigno la posicion dentro del compas
@@ -138,6 +179,7 @@ public class TGLayoutVertical extends TGLayout{
 			((TGLyricImpl)track.getLyrics()).setCurrentMeasure(currMeasure);
 
 			currMeasure.setFirstOfLine(i == 0);
+			currMeasure.setLastOfLine(i == line.measures.size()-1);
 
 			float measureWidth = currMeasure.getWidth(this);
 			float measureWidthWithSpacing = (this.isBufferEnabled() ? Math.round(measureWidth + measureSpacing) : (measureWidth + measureSpacing));

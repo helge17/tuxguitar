@@ -38,7 +38,7 @@ public class TGChannelSettingsHandlerManager {
 
 		Iterator<TGChannelSettingsHandler> it = this.channelSettingsHandler.iterator();
 		while( it.hasNext() ){
-			TGChannelSettingsHandler channelSettingsHandler = (TGChannelSettingsHandler)it.next();
+			TGChannelSettingsHandler channelSettingsHandler = it.next();
 			if( channelSettingsHandler.isMidiDeviceSupported(midiDevice) ){
 				return channelSettingsHandler;
 			}

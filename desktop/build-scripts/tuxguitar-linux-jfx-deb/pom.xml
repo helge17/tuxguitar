@@ -47,6 +47,8 @@
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/bin" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/applications" />
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/templates" />
+								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/templates/.source" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/man" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/man/man1" />
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/mime" />
@@ -55,9 +57,11 @@
 								<mkdir dir="${project.build.directory}/${project.packageName}/usr/share/pixmaps" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/bin/tuxguitar" resource="/opt/tuxguitar/tuxguitar.sh" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/applications/tuxguitar.desktop" resource="/opt/tuxguitar/share/applications/tuxguitar.desktop" overwrite="true" />
+								<symlink link="${project.build.directory}/${project.packageName}/usr/share/templates/tuxguitar.desktop" resource=".source/tuxguitar/tuxguitar.desktop" overwrite="true" />
+								<symlink link="${project.build.directory}/${project.packageName}/usr/share/templates/.source/tuxguitar" resource="/opt/tuxguitar/share/templates" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/man/man1/tuxguitar.1" resource="/opt/tuxguitar/share/man/man1/tuxguitar.1" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/mime/packages/tuxguitar.xml" resource="/opt/tuxguitar/share/mime/packages/tuxguitar.xml" overwrite="true" />
-								<symlink link="${project.build.directory}/${project.packageName}/usr/share/metainfo/app.tuxguitar.metainfo.xml" resource="/opt/tuxguitar/share/metainfo/app.tuxguitar.metainfo.xml" overwrite="true" />
+								<symlink link="${project.build.directory}/${project.packageName}/usr/share/metainfo/app.tuxguitar.tuxguitar.metainfo.xml" resource="/opt/tuxguitar/share/metainfo/app.tuxguitar.tuxguitar.metainfo.xml" overwrite="true" />
 								<symlink link="${project.build.directory}/${project.packageName}/usr/share/pixmaps/tuxguitar.png" resource="/opt/tuxguitar/share/pixmaps/tuxguitar.png" overwrite="true" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/tuxguitar.sh" perm="755" />
 								<chmod file="${project.build.directory}/${project.packageName}/opt/tuxguitar/lv2-client/*.bin" perm="755" />

@@ -196,7 +196,7 @@ public class EditorKit {
 
 		Iterator<TGString> it = measure.getTrack().getStrings().iterator();
 		while(it.hasNext()){
-			TGString currString = (TGString)it.next();
+			TGString currString = it.next();
 			float distanceX = Math.abs(y - (firstStringY + ((currString.getNumber() * stringSpacing) - stringSpacing)));
 			if(string == null || distanceX < minorDistance){
 				string = currString;
@@ -214,7 +214,7 @@ public class EditorKit {
 			TGString string = track.getString(number);
 			Iterator<TGNote> it = voice.getNotes().iterator();
 			while (it.hasNext()) {
-				TGNote note = (TGNote) it.next();
+				TGNote note = it.next();
 				if(note.getString() == string.getNumber()){
 					used = true;
 				}
@@ -227,7 +227,7 @@ public class EditorKit {
 		int minFret = -1;
 		TGString stringForValue = null;
 		for(int i = 0;i < strings.size();i++){
-			TGString string = (TGString)strings.get(i);
+			TGString string = strings.get(i);
 			int fret = value - string.getValue();
 			if((fret >= 0) && (minFret < 0 || fret < minFret)){
 				stringForValue = string;

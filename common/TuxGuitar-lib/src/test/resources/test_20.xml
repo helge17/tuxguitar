@@ -51,6 +51,7 @@
             <repeatOpen/>
         </TGMeasureHeader>
         <TGMeasureHeader>
+            <tempo>110</tempo>
             <repeatAlternative>
                 <alternative>1</alternative>
                 <alternative>3</alternative>
@@ -63,6 +64,7 @@
             <tripletFeel>eighth</tripletFeel>
         </TGMeasureHeader>
         <TGMeasureHeader>
+            <tempo>110</tempo>
         </TGMeasureHeader>
         <TGTrack>
             <name>Track1.name</name>

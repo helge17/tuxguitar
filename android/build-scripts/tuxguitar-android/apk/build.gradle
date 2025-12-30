@@ -1,3 +1,11 @@
+plugins {
+	id 'base'
+}
+
+base {
+	archivesName = "tuxguitar-android-9.99-SNAPSHOT"
+}
+
 apply plugin: 'com.android.application'
 
 // different path structure for the different plugins:
@@ -38,7 +46,6 @@ android {
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
 		versionName "9.99-SNAPSHOT"
-		setProperty("archivesBaseName", "tuxguitar-android-9.99-SNAPSHOT")
 	}
 
 	buildTypes {

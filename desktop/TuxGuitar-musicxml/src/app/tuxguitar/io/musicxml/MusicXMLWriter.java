@@ -143,7 +143,7 @@ public class MusicXMLWriter{
 
 		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
-			TGTrack track = (TGTrack)tracks.next();
+			TGTrack track = tracks.next();
 			TGChannel channel = this.manager.getChannel(song, track.getChannelId());
 
 			Node scoreParts = this.addNode(partList, "score-part");
@@ -167,7 +167,7 @@ public class MusicXMLWriter{
 	private void writeParts(TGSong song, Node parent){
 		Iterator<TGTrack> tracks = song.getTracks();
 		while(tracks.hasNext()){
-			TGTrack track = (TGTrack)tracks.next();
+			TGTrack track = tracks.next();
 			this.writeTrack(track, parent);
 		}
 	}
@@ -182,8 +182,8 @@ public class MusicXMLWriter{
 		Iterator<TGMeasure> measures = track.getMeasures();
 		TGMeasure nextMeasure = null;
 		while(measures.hasNext() || nextMeasure != null){
-			TGMeasure currentMeasure = nextMeasure != null ? nextMeasure : (TGMeasure)measures.next();
-			nextMeasure = measures.hasNext() ? (TGMeasure)measures.next() : null;
+			TGMeasure currentMeasure = nextMeasure != null ? nextMeasure : measures.next();
+			nextMeasure = measures.hasNext() ? measures.next() : null;
 
 			Node measureNode = this.addAttribute(this.addNode(part, "measure"), "number",Integer.toString(currentMeasure.getNumber()));
 
@@ -219,7 +219,7 @@ public class MusicXMLWriter{
 	private void backToMeasureStart(Node parent, TGMeasure measure){
 		Node backupNode = this.addNode(parent, "backup");
 		TGTimeSignature ts = measure.getTimeSignature();
-		this.addNode(backupNode, "duration", String.valueOf((int)(TGDuration.QUARTER * DURATION_DIVISIONS * ts.getNumerator() / ts.getDenominator().getValue())));
+		this.addNode(backupNode, "duration", String.valueOf(TGDuration.QUARTER * DURATION_DIVISIONS * ts.getNumerator() / ts.getDenominator().getValue()));
 	}
 
 	private void writeBarline(Node parent, TGMeasure currentMeasure, TGMeasure previousMeasure, TGMeasure nextMeasure){

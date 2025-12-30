@@ -459,7 +459,7 @@ public class TGMatrixEditor implements TGEventListener {
 			if(measure != null){
 				Iterator<TGBeat> it = measure.getBeats().iterator();
 				while(it.hasNext()){
-					TGBeat beat = (TGBeat)it.next();
+					TGBeat beat = it.next();
 					paintBeat(painter, measure, beat, fromX, fromY);
 				}
 			}
@@ -622,7 +622,7 @@ public class TGMatrixEditor implements TGEventListener {
 
 			List<TGString> strings = measure.getTrack().getStrings();
 			for(int i = 0;i < strings.size();i ++){
-				TGString string = (TGString)strings.get(i);
+				TGString string = strings.get(i);
 				if(value >= string.getValue()){
 					boolean emptyString = true;
 

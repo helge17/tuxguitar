@@ -12,6 +12,8 @@ public interface UITextField extends UIControl {
 
 	void setTextLimit(Integer limit);
 
+	void selectAll();
+
 	void addModifyListener(UIModifyListener listener);
 
 	void removeModifyListener(UIModifyListener listener);

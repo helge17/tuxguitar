@@ -98,7 +98,7 @@ public class TGUndoableManager {
 		TGUndoableBuffer buffer = this.getBuffer();
 		int index = (buffer.getIndexOfNextAdd() - 1);
 		if (index >= 0 && index < buffer.getEdits().size()) {
-			return (TGUndoableEdit) buffer.getEdits().get(index);
+			return buffer.getEdits().get(index);
 		}
 		return null;
 	}
@@ -107,7 +107,7 @@ public class TGUndoableManager {
 		TGUndoableBuffer buffer = this.getBuffer();
 		int index = (buffer.getIndexOfNextAdd());
 		if (index >= 0 && index < buffer.getEdits().size()) {
-			return (TGUndoableEdit) buffer.getEdits().get(index);
+			return buffer.getEdits().get(index);
 		}
 		return null;
 	}

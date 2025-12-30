@@ -313,10 +313,10 @@ public class TGTrackTuningDialog extends TGModalFragment {
 			}
 			//check the tuning of strings
 			for (int i = 0; i < oldStrings.size(); i++) {
-				TGString oldString = (TGString) oldStrings.get(i);
+				TGString oldString = oldStrings.get(i);
 				boolean stringExists = false;
 				for (int j = 0; j < newStrings.size(); j++) {
-					TGString newString = (TGString) newStrings.get(j);
+					TGString newString = newStrings.get(j);
 					if (newString.isEqual(oldString)) {
 						stringExists = true;
 					}

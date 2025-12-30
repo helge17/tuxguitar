@@ -33,6 +33,7 @@ public class TGConfigDefaults{
 
 	public static void loadProperties(TGProperties properties){
 		loadProperty(properties, TGConfigKeys.SKIN, DEFAULT_SKIN);
+		loadProperty(properties, TGConfigKeys.SKIN_DARK_AUTO, true);
 		loadProperty(properties, TGConfigKeys.WINDOW_TITLE, "${appname} - ${filename}");
 		loadProperty(properties, TGConfigKeys.SHOW_SPLASH, true);
 		loadProperty(properties, TGConfigKeys.MAXIMIZED, false);
@@ -84,6 +85,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_S_MARKER, "42,165,42");
 		loadProperty(properties, TGConfigKeys.COLOR_LOOP_E_MARKER, "165,42,42");
 		loadProperty(properties, TGConfigKeys.COLOR_MEASURE_NUMBER, "128,0,0");
+		loadProperty(properties, TGConfigKeys.COLOR_INVALID_ENTRY, "230,110,110");
 		loadProperty(properties, TGConfigKeys.MIDI_PORT, "tuxguitar-synth.port");
 		loadProperty(properties, TGConfigKeys.MIDI_SEQUENCER, "tuxguitar.sequencer");
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES, 10);
@@ -145,10 +147,19 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.STYLE_LINE_WIDTHS, new float[] {0f, 1f, 2f, 3f, 4f, 5f});
 		loadProperty(properties, TGConfigKeys.STYLE_DURATION_WIDTHS, new float[] {30f, 25f, 21f, 20f, 19f,18f});
 
+		loadProperty(properties, TGConfigKeys.DISPLAY_EXCLUDE_SCROLLBARS, false);
+
 		loadProperty(properties, TGConfigKeys.HOMEPAGE_URL, "https://tuxguitar.app");
 		loadProperty(properties, TGConfigKeys.CONFIG_APP_VERSION, "");
 
 		loadProperty(properties, TGConfigKeys.PLAY_WHEN_MOVING, false);
+		loadProperty(properties, TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY, false);
+
+		loadProperty(properties, TGConfigKeys.SCROLLING_MAX_FPS, 40);
+		loadProperty(properties, TGConfigKeys.SCROLLING_HORIZONTAL_DISCRETE_ANTICIPATION, 1);
+		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_DISCRETE_ANTICIPATION, 1);
+		loadProperty(properties, TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT, 20);
+		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT, 0);
 	}
 
 	public static List<String> getKeys() {

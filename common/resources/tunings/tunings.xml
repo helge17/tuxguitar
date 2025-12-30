@@ -83,6 +83,15 @@
 			<tuning name="Standard" notes="76,69,62,55" />
 			<tuning name="Tenor" notes="64,57,50,43" />
 		</group>
+		<group name="5-String">
+			<tuning name="Standard" notes="76,69,62,55,48" />
+		</group>
+		<group name="6-String">
+			<tuning name="Standard" notes="76,69,62,55,48,41" />
+		</group>
+		<group name="7-String">
+			<tuning name="Standard" notes="76,69,62,55,48,41,34" />
+		</group>
 	</group>
 	<group name="Viola">
 		<group name="4-String">

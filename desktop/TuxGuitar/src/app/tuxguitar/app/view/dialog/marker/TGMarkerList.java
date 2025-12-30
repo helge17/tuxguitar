@@ -68,7 +68,7 @@ public class TGMarkerList implements TGEventListener {
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 
-		this.dialog = uiFactory.createWindow(uiParent, false, false);
+		this.dialog = uiFactory.createWindow(uiParent, false, true);
 		this.dialog.setLayout(dialogLayout);
 		// ----------------------------------------------------------------------
 
@@ -149,6 +149,7 @@ public class TGMarkerList implements TGEventListener {
 		});
 
 		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+		this.dialog.setMinimumSize((int)dialog.getPackedContentSize().getWidth(), (int)dialog.getPackedContentSize().getHeight());
 	}
 
 	public void addListeners(){
@@ -188,7 +189,7 @@ public class TGMarkerList implements TGEventListener {
 
 		Iterator<TGMarker> it = this.markers.iterator();
 		while (it.hasNext()) {
-			TGMarker marker = (TGMarker) it.next();
+			TGMarker marker = it.next();
 			UITableItem<TGMarker> item = new UITableItem<TGMarker>(marker);
 			item.setText(0, Integer.toString(marker.getMeasure()));
 			item.setText(1, marker.getTitle());

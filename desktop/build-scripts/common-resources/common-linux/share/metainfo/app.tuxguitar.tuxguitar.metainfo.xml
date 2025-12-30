@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>app.tuxguitar.tuxguitar</id>
+  <launchable type="desktop-id">tuxguitar.desktop</launchable>
+  <project_license>LGPL-2.1+</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer id="tuxguitar.app">
+    <name>The TuxGuitar Team</name>
+  </developer>
+  <name>TuxGuitar</name>
+  <summary>Guitar tablature editor</summary>
+  <summary xml:lang="fr">=Éditeur de tablature de guitare</summary>
+  <summary xml:lang="es">=Editor de tablaturas de guitarra</summary>
+  <summary xml:lang="de">=Editor für Gitarren-Tabulaturen</summary>
+  <summary xml:lang="it">=Editor per tablature di chitarra</summary>
+  <summary xml:lang="pl">=Edytor tabulatur gitarowych</summary>
+  <description>
+    <p>TuxGuitar is an editor and player for multi-track guitar tablatures. It can open Guitar Pro, Power Tab Editor, TablEdit and MIDI files.</p>
+    <p>TuxGuitar is written in Java and is available under an open source license.</p>
+    <p xml:lang="fr">TuxGuitar est un éditeur et un lecteur de tablatures multipistes de guitare. Il peut ouvrir les fichiers Guitar Pro, Power Tab Editor, TablEdit et MIDI.</p>
+    <p xml:lang="fr">TuxGuitar est écrit en Java et est sous licence open-source.</p>
+    <p xml:lang="es">TuxGuitar es un editor y reproductor de tablaturas multipista de guitarra. Puede abrir archivos Guitar Pro, Power Tab Editor, TablEdit y MIDI.</p>
+    <p xml:lang="es">TuxGuitar está escrito en Java y está disponible bajo una licencia de código abierto.</p>
+    <p xml:lang="de">TuxGuitar ist ein Editor und Player für mehrspurige Gitarrentabulaturen. Er kann Guitar Pro, Power Tab Editor, TablEdit und MIDI-Dateien öffnen.</p>
+    <p xml:lang="de">TuxGuitar ist in Java geschrieben und steht unter einer Open-Source-Lizenz.</p>
+    <p xml:lang="it">TuxGuitar è un editor e un lettore di tablature multitraccia per chitarra. Può aprire file Guitar Pro, Power Tab Editor, TablEdit e MIDI.</p>
+    <p xml:lang="it">TuxGuitar è scritto in Java ed è disponibile sotto una licenza open source.</p>
+    <p xml:lang="pl">TuxGuitar to edytor i odtwarzacz wielościeżkowych tabulatur gitarowych. Może otwierać pliki Guitar Pro, Power Tab Editor, TablEdit i MIDI.</p>
+    <p xml:lang="pl">TuxGuitar został napisany w języku Java i jest dostępny na licencji open source.</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/helge17/tuxguitar/refs/heads/master/misc/Screenshot_Breeze.png</image>
+      <caption>TuxGuitar main window (Breeze skin)</caption>
+      <caption xml:lang="fr">Fenêtre principale de TuxGuitar (thème Breeze)</caption>
+      <caption xml:lang="es">Ventana principal de TuxGuitar (tema Breeze)</caption>
+      <caption xml:lang="de">Hauptfenster von TuxGuitar (Breeze-Thema)</caption>
+      <caption xml:lang="it">Finestra principale di TuxGuitar (tema Breeze)</caption>
+    </screenshot>
+  </screenshots>
+  <categories>
+    <category>Audio</category>
+  </categories>
+  <content_rating type="oars-1.0" />
+  <provides>
+    <binary>tuxguitar</binary>
+    <mediatype>application/x-tuxguitar</mediatype>
+    <mediatype>application/x-gtp</mediatype>
+    <mediatype>application/x-ptb</mediatype>
+    <mediatype>application/x-tef</mediatype>
+  </provides>
+  <url type="homepage">https://www.tuxguitar.app</url>
+  <update_contact>info_AT_tuxguitar.app</update_contact>
+  <icon type="stock">tuxguitar</icon>
+</component>

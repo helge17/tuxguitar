@@ -29,7 +29,7 @@ public class GMChannelRouter {
 	public GMChannelRoute getRoute(int channelId) {
 		Iterator<GMChannelRoute> channelIt = this.midiChannels.iterator();
 		while( channelIt.hasNext() ){
-			GMChannelRoute midiChannel = (GMChannelRoute) channelIt.next();
+			GMChannelRoute midiChannel = channelIt.next();
 			if( midiChannel.getChannelId() == channelId ){
 				return midiChannel;
 			}
@@ -64,8 +64,8 @@ public class GMChannelRouter {
 			// Add default routes
 			else {
 				List<Integer> freeChannels = getFreeChannels();
-				route.setChannel1(( freeChannels.size() > 0 ? ((Integer)freeChannels.get(0)).intValue() : GMChannelRoute.NULL_VALUE ) );
-				route.setChannel2(( freeChannels.size() > 1 ? ((Integer)freeChannels.get(1)).intValue() : route.getChannel1() ) );
+				route.setChannel1(( freeChannels.size() > 0 ? freeChannels.get(0).intValue() : GMChannelRoute.NULL_VALUE ) );
+				route.setChannel2(( freeChannels.size() > 1 ? freeChannels.get(1).intValue() : route.getChannel1() ) );
 			}
 		}
 
@@ -128,7 +128,7 @@ public class GMChannelRouter {
 
 				Iterator<GMChannelRoute> channelIt = this.midiChannels.iterator();
 				while( channelIt.hasNext() ){
-					GMChannelRoute route = (GMChannelRoute) channelIt.next();
+					GMChannelRoute route = channelIt.next();
 					if( forRoute == null || !forRoute.equals( route ) ){
 						if( route.getChannel1() == ch || route.getChannel2() == ch){
 							isFreeChannel = false;

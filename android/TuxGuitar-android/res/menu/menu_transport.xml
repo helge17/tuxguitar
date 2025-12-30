@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/action_menu_transport" >
+
+    <item
+        android:id="@+id/action_transport_play"
+        android:title="@string/action_transport_play"/>
+    <item
+        android:id="@+id/action_transport_stop"
+        android:title="@string/action_transport_stop"/>
+    <item
+        android:id="@+id/action_transport_metronome"
+        android:checkable="true"
+        android:title="@string/action_transport_metronome"/>
+    <item
+        android:id="@+id/action_transport_count_down"
+        android:checkable="true"
+        android:title="@string/action_transport_count_down"/>
+    <item
+        android:id="@+id/action_transport_highlight_played_beat"
+        android:checkable="true"
+        android:title="@string/action_transport_highlight_played_beat"/>
+
+</menu>

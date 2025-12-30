@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Trukmė</string>
 	<string name="action_menu_dynamic">Dinamika</string>
 	<string name="action_menu_effects">Melizmai ir efektai</string>
+	<string name="action_menu_transport">Grotuvas</string>
 	<string name="action_menu_settings">Nuostatos</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Rodyti akordų diagramą</string>
 
 	<string name="action_transport_play">Groti kūrinį</string>
+	<string name="action_transport_stop">Stabdyti grojimą</string>
+	<string name="action_transport_metronome">Metronomas</string>
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -369,7 +374,7 @@
 	<string name="text_dlg_title">Įterpti tekstą</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Stygos patempimų redagavimas</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<string name="bend_dlg_preset_bend">Tempimas</string>
 	<string name="bend_dlg_preset_bend_release">Tempimas/Atleidimas</string>

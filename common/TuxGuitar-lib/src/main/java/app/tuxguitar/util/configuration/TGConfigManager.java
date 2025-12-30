@@ -36,7 +36,7 @@ public class TGConfigManager {
 		if ( (validKeys != null) && (this.properties.getStringKeys() != null) ) {
 			for (String key : this.properties.getStringKeys() ) {
 				if (!validKeys.contains(key) ) {
-					toRemove.add((String)key);
+					toRemove.add(key);
 				}
 			}
 		}

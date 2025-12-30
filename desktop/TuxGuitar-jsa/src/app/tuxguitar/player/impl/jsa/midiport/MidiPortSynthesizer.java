@@ -102,6 +102,7 @@ public class MidiPortSynthesizer extends GMOutputPort{
 		try {
 			return loadSoundbank( MidiSystem.getSoundbank(file) );
 		}catch (Throwable throwable) {
+			throwable.printStackTrace();
 			TGPluginInfo pluginInfo = new TGPluginInfo(context, MidiPlugin.MODULE_ID);
 			pluginInfo.initialize(MidiPlugin.MODULE_ID);
 			TGMessageDialogUtil.errorMessage(context, TGWindow.getInstance(context).getWindow(), pluginInfo.getName(),

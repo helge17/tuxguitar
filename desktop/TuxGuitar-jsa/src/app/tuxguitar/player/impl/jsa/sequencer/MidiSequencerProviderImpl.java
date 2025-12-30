@@ -29,7 +29,7 @@ public class MidiSequencerProviderImpl implements MidiSequencerProvider{
 					Iterator<MidiSequencer> it = sequencers.iterator();
 					boolean exists = false;
 					while(it.hasNext()){
-						if( ((MidiSequencer)it.next()).getKey().equals(infos[i].getName()) ){
+						if( it.next().getKey().equals(infos[i].getName()) ){
 							exists = true;
 							break;
 						}

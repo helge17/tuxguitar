@@ -8,6 +8,7 @@ import app.tuxguitar.editor.event.TGUpdateEvent;
 import app.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.player.base.MidiPlayerEvent;
 import app.tuxguitar.thread.TGThreadManager;
 import app.tuxguitar.util.TGAbstractContext;
 import app.tuxguitar.util.TGContext;
@@ -140,7 +141,11 @@ public class TGEditorManager {
 	public void addRedrawListener(TGEventListener listener){
 		TGEventManager.getInstance(this.context).addListener(TGRedrawEvent.EVENT_TYPE, listener);
 	}
-
+	
+	public void addMidiPlayerListener(TGEventListener listener){
+		TGEventManager.getInstance(this.context).addListener(MidiPlayerEvent.EVENT_TYPE, listener);
+	}
+	
 	public void removeRedrawListener(TGEventListener listener){
 		TGEventManager.getInstance(this.context).removeListener(TGRedrawEvent.EVENT_TYPE, listener);
 	}

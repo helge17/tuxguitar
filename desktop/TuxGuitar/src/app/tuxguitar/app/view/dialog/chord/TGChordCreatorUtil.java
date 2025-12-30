@@ -450,7 +450,7 @@ public class TGChordCreatorUtil {
 			for (int level = 0; level < currentStringCombination.size(); level++) {
 
 				// take the string index
-				int currentString = ((Integer) currentStringCombination.get(level)).intValue();
+				int currentString = currentStringCombination.get(level).intValue();
 
 				// take all the potential notes from currentString and combine
 				// them with potential notes from other strings
@@ -505,7 +505,7 @@ public class TGChordCreatorUtil {
 			while (it.hasNext()) {
 				List<Integer> combination = it.next();
 				Integer currentInteger = Integer.valueOf(current);
-				if (((Integer) combination.get(combination.size() - 1))
+				if (combination.get(combination.size() - 1)
 						.intValue() < current
 						&& !combination.contains(currentInteger)) {
 
@@ -606,11 +606,11 @@ public class TGChordCreatorUtil {
 		Iterator<StringValue> it = combination.iterator();
 		int maxLeft, maxRight;
 
-		maxLeft = maxRight = ((StringValue) combination.get(0)).getFret();
+		maxLeft = maxRight = combination.get(0).getFret();
 
 		while (it.hasNext()) {
 
-			int fret = ((StringValue) it.next()).getFret();
+			int fret = it.next().getFret();
 
 			//chords with empty-string are welcome
 			if (fret != 0 || !TGChordSettings.instance().isEmptyStringChords()) {
@@ -729,7 +729,7 @@ public class TGChordCreatorUtil {
 
 		Collections.sort(priorityItems, new PriorityComparator());
 		for(int i = 0; i < priorityItems.size() && isValidProcess(); i ++){
-			PriorityItem item = (PriorityItem)priorityItems.get(i);
+			PriorityItem item = priorityItems.get(i);
 			if (!checkIfSubset(item.stringValues, bestOnes) ){
 				bestOnes.add(item.stringValues);
 
@@ -753,7 +753,7 @@ public class TGChordCreatorUtil {
 		int currentIndex = 0;
 
 		while (it.hasNext()) {
-			StringValue sv = (StringValue) it.next();
+			StringValue sv = it.next();
 
 			if (sv.getRequiredNoteIndex() >= 0) { // only basis tones
 				boolean insert = true;
@@ -783,7 +783,7 @@ public class TGChordCreatorUtil {
 
 			Iterator<StringValue> it2 = stringValueCombination.iterator();
 			while (it2.hasNext()) {
-				StringValue current = (StringValue)it2.next();
+				StringValue current = it2.next();
 				if ((this.tuning[current.getString()] + current.getFret()) % 12 == (this.chordTonic + 7) %12)
 					existsSubdominant = true;
 			}
@@ -821,7 +821,7 @@ public class TGChordCreatorUtil {
 			boolean found = false;
 			Iterator<StringValue> it = stringValueCombination.iterator();
 			while (it.hasNext())
-				if (((StringValue) it.next()).getString() == i)
+				if (it.next().getString() == i)
 					found = true;
 			if (found) {
 				if (!stumbled)
@@ -852,7 +852,7 @@ public class TGChordCreatorUtil {
 			Iterator<StringValue> it = stringValueCombination.iterator();
 
 			while (it.hasNext()) {
-				StringValue sv = (StringValue) it.next();
+				StringValue sv = it.next();
 
 				if (sv.getString() == i) { // stumbled upon lowest tone
 					if ( (this.tuning[sv.getString()]+sv.getFret()) % 12 == this.bassTonic  )
@@ -891,7 +891,7 @@ public class TGChordCreatorUtil {
 			Iterator<StringValue> it = stringValueCombination.iterator();
 
 			while (it.hasNext()) {
-				StringValue sv = (StringValue) it.next();
+				StringValue sv = it.next();
 				positions[sv.getString()] = sv.getFret();
 			}
 		}
@@ -1058,7 +1058,7 @@ public class TGChordCreatorUtil {
 			boolean found=false;
 
 			while (it.hasNext() && !found) {
-				StringValue sv = (StringValue) it.next();
+				StringValue sv = it.next();
 				if (sv.getString() == string &&!found && sv.getFret()!=-1) { // stumbled upon next string
 					current = sv;
 					found=true;
@@ -1145,12 +1145,12 @@ public class TGChordCreatorUtil {
 			boolean foundDifferentFret = false;
 			// repeat until gone through all strings, or found something different
 			for (int i=0; i<currentStringValue.size(); i++) {
-				int currentString = ((TGChordCreatorUtil.StringValue)currentStringValue.get(i)).getString() ;
+				int currentString = currentStringValue.get(i).getString() ;
 				// search for the same string - if not found do nothing
 				for (int j=0; j<stringValues.size(); j++)
-				if ( ((TGChordCreatorUtil.StringValue)stringValues.get(j)).getString() == currentString) {
+				if ( stringValues.get(j).getString() == currentString) {
 					// if the frets on the same string differ, then chords are not subset/superset of each other
-					if (((TGChordCreatorUtil.StringValue)stringValues.get(j)).getFret() != ((TGChordCreatorUtil.StringValue)currentStringValue.get(i)).getFret())
+					if (stringValues.get(j).getFret() != currentStringValue.get(i).getFret())
 						foundDifferentFret=true;
 				}
 

@@ -406,7 +406,7 @@ public class TGTremoloBarDialog{
 		this.points.clear();
 		Iterator<TremoloBarPoint> it = effect.getPoints().iterator();
 		while(it.hasNext()){
-			TGEffectTremoloBar.TremoloBarPoint tremoloBarPoint = (TGEffectTremoloBar.TremoloBarPoint)it.next();
+			TGEffectTremoloBar.TremoloBarPoint tremoloBarPoint = it.next();
 			this.makePoint(tremoloBarPoint);
 		}
 	}

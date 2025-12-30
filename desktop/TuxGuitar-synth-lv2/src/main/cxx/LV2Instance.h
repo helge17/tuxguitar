@@ -1,6 +1,8 @@
 #ifndef _Included_LV2Instance
 #define _Included_LV2Instance
 
+#include <pthread.h>
+
 struct LV2InstanceImpl {
 	LilvInstance* lilvInstance;
 	LV2Plugin* plugin;

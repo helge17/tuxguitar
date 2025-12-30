@@ -109,7 +109,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 		List<JackChannelProxy> jackChannelProxies = new ArrayList<JackChannelProxy>(this.jackChannelProxies);
 		Iterator<JackChannelProxy> it = jackChannelProxies.iterator();
 		while( it.hasNext() ){
-			this.closeChannel((JackChannelProxy) it.next());
+			this.closeChannel(it.next());
 		}
 	}
 
@@ -126,7 +126,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 	public JackChannelProxy findChannel(int channelId){
 		Iterator<JackChannelProxy> it = this.jackChannelProxies.iterator();
 		while( it.hasNext() ){
-			JackChannelProxy jackChannelProxy = (JackChannelProxy) it.next();
+			JackChannelProxy jackChannelProxy = it.next();
 			if( jackChannelProxy.getJackChannelId() == channelId ){
 				return jackChannelProxy;
 			}
@@ -143,7 +143,7 @@ public class JackSynthesizer implements MidiSynthesizer{
 	public boolean isJackPortInUse(JackPort jackPort){
 		Iterator<JackChannelProxy> it = this.jackChannelProxies.iterator();
 		while( it.hasNext() ){
-			JackChannelProxy jackChannelProxy = (JackChannelProxy) it.next();
+			JackChannelProxy jackChannelProxy = it.next();
 			if( jackChannelProxy.getJackPort() != null && jackChannelProxy.getJackPort().equals(jackPort) ){
 				return true;
 			}

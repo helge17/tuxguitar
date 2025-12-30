@@ -86,7 +86,7 @@ public class GMChannelRouterConfigurator {
 	private TGChannelParameter findChannelParameter( TGChannel tgChannel, String key ){
 		Iterator<TGChannelParameter> it = tgChannel.getParameters();
 		while( it.hasNext() ){
-			TGChannelParameter parameter = (TGChannelParameter)it.next();
+			TGChannelParameter parameter = it.next();
 			if( parameter.getKey().equals( key ) ){
 				return parameter;
 			}

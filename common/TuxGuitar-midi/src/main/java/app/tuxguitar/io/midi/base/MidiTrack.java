@@ -16,7 +16,7 @@ public class MidiTrack {
 	}
 
 	public MidiEvent get(int index){
-		return (MidiEvent)this.events.get(index);
+		return this.events.get(index);
 	}
 
 	public int size(){

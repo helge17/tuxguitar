@@ -6,6 +6,8 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.insert.TGOpenChordDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenTextDialogAction;
 import app.tuxguitar.app.action.impl.note.TGOpenStrokeUpDialogAction;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.action.impl.note.TGOpenStrokeDownDialogAction;
 import app.tuxguitar.app.view.dialog.chord.TGCustomChordManager;
@@ -38,9 +40,11 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 	private UIToolCheckableItem strokeDown;
 	private UIToolCheckableItem pickStrokeUp;
 	private UIToolCheckableItem pickStrokeDown;
+	private TGConfigManager configManager;
 
 	public TGEditToolBarSectionBeat(TGEditToolBar toolBar) {
 		super(toolBar, SECTION_TITLE);
+		this.configManager = TGConfigManager.getInstance(toolBar.getContext());
 	}
 
 	public void createSectionToolBars() {
@@ -137,6 +141,7 @@ public class TGEditToolBarSectionBeat extends TGEditToolBarSection {
 	public void processInsertChordAction(TGChord chord) {
 		TGActionProcessor tgActionProcessor = this.createActionProcessor(TGInsertChordAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
+		tgActionProcessor.setAttribute(TGInsertChordAction.ATTRIBUTE_CHORD_INSERT_DIAGRAM_ONLY, this.configManager.getBooleanValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY));
 		tgActionProcessor.process();
 	}
 }

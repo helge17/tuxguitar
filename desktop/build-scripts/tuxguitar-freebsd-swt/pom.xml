@@ -338,7 +338,7 @@
 									<fileset dir="${project.rootPath}/../common/resources/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/doc">
-									<fileset dir="${project.rootPath}/../doc/" />
+									<fileset dir="${project.rootPath}/../docs/" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/dist">
 									<fileset dir="${project.rootPath}/TuxGuitar/dist/" />
@@ -349,6 +349,9 @@
 
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common" />
+								</copy>
+								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
+									<fileset dir="../common-resources/common-linux" />
 								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}" overwrite="true">
 									<fileset dir="../common-resources/common-freebsd" />
@@ -377,6 +380,7 @@
 			</activation>
 			<modules>
 				<module>../native-modules/tuxguitar-fluidsynth-freebsd</module>
+				<module>../native-modules/tuxguitar-synth-lv2-freebsd</module>
 			</modules>
 
 			<build>
@@ -395,6 +399,10 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-fluidsynth-freebsd/target/build" />
 										</copy>
+										<copy todir="${project.build.directory}/${project.finalName}/">
+											<fileset dir="../native-modules/tuxguitar-synth-lv2-freebsd/target/build" />
+										</copy>
+										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="755" />
 										<!-- /PLUGINS FILES -->
 									</target>
 								</configuration>

@@ -140,6 +140,7 @@ public class SoftMixingMixer implements Mixer {
                 AudioSystem.NOT_SPECIFIED, AudioSystem.NOT_SPECIFIED);
     }
 
+    @Override
     public Line getLine(Line.Info info) throws LineUnavailableException {
 
         if (!isLineSupported(info))
@@ -155,6 +156,7 @@ public class SoftMixingMixer implements Mixer {
         throw new IllegalArgumentException("Line unsupported: " + info);
     }
 
+    @Override
     public int getMaxLines(Line.Info info) {
         if (info.getLineClass() == SourceDataLine.class)
             return AudioSystem.NOT_SPECIFIED;
@@ -163,10 +165,12 @@ public class SoftMixingMixer implements Mixer {
         return 0;
     }
 
+    @Override
     public javax.sound.sampled.Mixer.Info getMixerInfo() {
         return info;
     }
 
+    @Override
     public javax.sound.sampled.Line.Info[] getSourceLineInfo() {
         Line.Info[] localArray = new Line.Info[sourceLineInfo.length];
         System.arraycopy(sourceLineInfo, 0, localArray, 0,
@@ -174,6 +178,7 @@ public class SoftMixingMixer implements Mixer {
         return localArray;
     }
 
+    @Override
     public javax.sound.sampled.Line.Info[] getSourceLineInfo(
             javax.sound.sampled.Line.Info info) {
         int i;
@@ -187,6 +192,7 @@ public class SoftMixingMixer implements Mixer {
         return infos.toArray(new Line.Info[infos.size()]);
     }
 
+    @Override
     public Line[] getSourceLines() {
 
         Line[] localLines;
@@ -207,19 +213,23 @@ public class SoftMixingMixer implements Mixer {
         return localLines;
     }
 
+    @Override
     public javax.sound.sampled.Line.Info[] getTargetLineInfo() {
         return new javax.sound.sampled.Line.Info[0];
     }
 
+    @Override
     public javax.sound.sampled.Line.Info[] getTargetLineInfo(
             javax.sound.sampled.Line.Info info) {
         return new javax.sound.sampled.Line.Info[0];
     }
 
+    @Override
     public Line[] getTargetLines() {
         return new Line[0];
     }
 
+    @Override
     public boolean isLineSupported(javax.sound.sampled.Line.Info info) {
         if (info != null) {
             for (int i = 0; i < sourceLineInfo.length; i++) {
@@ -231,20 +241,24 @@ public class SoftMixingMixer implements Mixer {
         return false;
     }
 
+    @Override
     public boolean isSynchronizationSupported(Line[] lines, boolean maintainSync) {
         return false;
     }
 
+    @Override
     public void synchronize(Line[] lines, boolean maintainSync) {
         throw new IllegalArgumentException(
                 "Synchronization not supported by this mixer.");
     }
 
+    @Override
     public void unsynchronize(Line[] lines) {
         throw new IllegalArgumentException(
                 "Synchronization not supported by this mixer.");
     }
 
+    @Override
     public void addLineListener(LineListener listener) {
         synchronized (control_mutex) {
             listeners.add(listener);
@@ -261,6 +275,7 @@ public class SoftMixingMixer implements Mixer {
         }
     }
 
+    @Override
     public void close() {
         if (!isOpen())
             return;
@@ -308,29 +323,35 @@ public class SoftMixingMixer implements Mixer {
 
     }
 
+    @Override
     public Control getControl(Type control) {
         throw new IllegalArgumentException("Unsupported control type : "
                 + control);
     }
 
+    @Override
     public Control[] getControls() {
         return new Control[0];
     }
 
+    @Override
     public javax.sound.sampled.Line.Info getLineInfo() {
         return new Line.Info(Mixer.class);
     }
 
+    @Override
     public boolean isControlSupported(Type control) {
         return false;
     }
 
+    @Override
     public boolean isOpen() {
         synchronized (control_mutex) {
             return open;
         }
     }
 
+    @Override
     public void open() throws LineUnavailableException {
         if (isOpen()) {
             implicitOpen = false;
@@ -498,6 +519,7 @@ public class SoftMixingMixer implements Mixer {
 
     }
 
+    @Override
     public void removeLineListener(LineListener listener) {
         synchronized (control_mutex) {
             listeners.remove(listener);

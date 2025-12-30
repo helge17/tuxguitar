@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.system.icons.TGColorManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
@@ -31,7 +33,9 @@ import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.resource.UIColor;
 import app.tuxguitar.ui.resource.UICursor;
 import app.tuxguitar.ui.widget.UIButton;
+import app.tuxguitar.ui.widget.UILegendPanel;
 import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UIRadioButton;
 import app.tuxguitar.ui.widget.UIWindow;
 
 public class TGChordDialog {
@@ -43,6 +47,8 @@ public class TGChordDialog {
 	private TGChordList list;
 	private TGChordRecognizer recognizer;
 	private TGCursorController cursorController;
+	private TGConfigManager configManager;
+	private boolean insertChordDiagramOnly;
 
 	public TGChordDialog(TGViewContext context) {
 		this.context = context;
@@ -59,6 +65,9 @@ public class TGChordDialog {
 		final UITableLayout dialogLayout = new UITableLayout();
 
 		TGChordStyleAdapter.appendColors(this.context.getContext());
+
+		this.configManager = TGConfigManager.getInstance(this.context.getContext());
+		this.insertChordDiagramOnly = this.configManager.getBooleanValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY);
 
 		this.dialog = uiFactory.createWindow(uiParent, true, false);
 		this.dialog.setLayout(dialogLayout);
@@ -102,17 +111,49 @@ public class TGChordDialog {
 		this.list = new TGChordList(this, bottomComposite, beat);
 		bottomLayout.set(this.list.getControl(), 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
-		//------------------BUTTONS--------------------------
+		//------------------OPTIONS - BUTTONS--------------------------
+		UITableLayout optionsButtonsLayout = new UITableLayout();
+		UIPanel optionsButtonsPanel = uiFactory.createPanel(this.dialog, false);
+		optionsButtonsPanel.setLayout(optionsButtonsLayout);
+		dialogLayout.set(optionsButtonsPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		
+		UITableLayout optionsLayout = new UITableLayout();
+		UILegendPanel optionsPanel = uiFactory.createLegendPanel(optionsButtonsPanel);
+		optionsPanel.setText(TuxGuitar.getProperty("options"));
+		optionsPanel.setLayout(optionsLayout);
+		optionsButtonsLayout.set(optionsPanel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true);
+		UIRadioButton radioInsertChord = uiFactory.createRadioButton(optionsPanel);
+		radioInsertChord.setText(TuxGuitar.getProperty("insert.chord.settings.insert-notes"));
+		radioInsertChord.setSelected(!this.insertChordDiagramOnly);
+		radioInsertChord.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGChordDialog.this.insertChordDiagramOnly = false;
+			}
+		});
+		optionsLayout.set(radioInsertChord, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_TOP, true, true);
+		UIRadioButton radioInsertChordDiagram = uiFactory.createRadioButton(optionsPanel);
+		radioInsertChordDiagram.setText(TuxGuitar.getProperty("insert.chord.settings.insert-diagram"));
+		radioInsertChordDiagram.setSelected(this.insertChordDiagramOnly);
+		optionsLayout.set(radioInsertChordDiagram, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_TOP, true, true);
+		radioInsertChordDiagram.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGChordDialog.this.insertChordDiagramOnly = true;
+			}
+		});
+		
 		UITableLayout buttonsLayout = new UITableLayout();
-		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
+		UIPanel buttons = uiFactory.createPanel(optionsButtonsPanel, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		optionsButtonsLayout.set(buttons, 1, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_BOTTOM, true, true);
 
 		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
+				TGChordDialog.this.configManager.setValue(TGConfigKeys.CHORD_INSERT_DIAGRAM_ONLY, TGChordDialog.this.insertChordDiagramOnly);
 				insertChord(track, measure, beat, voice, getEditor().getChord());
 				getWindow().dispose();
 			}
@@ -186,7 +227,7 @@ public class TGChordDialog {
 		int[] tuning = new int[track.stringCount()];
 		Iterator<TGString> it = track.getStrings().iterator();
 		while(it.hasNext()){
-			TGString string = (TGString)it.next();
+			TGString string = it.next();
 			tuning[(tuning.length - string.getNumber())] = string.getValue();
 		}
 		return tuning;
@@ -206,7 +247,7 @@ public class TGChordDialog {
 				//verifico el first fret
 				Iterator<TGNote> it = notes.iterator();
 				while(it.hasNext()){
-					TGNote note = (TGNote)it.next();
+					TGNote note = it.next();
 					if( maxValue < 0 || maxValue < note.getValue()){
 						maxValue = note.getValue();
 					}
@@ -221,7 +262,7 @@ public class TGChordDialog {
 				//agrego los valores
 				it = notes.iterator();
 				while(it.hasNext()){
-					TGNote note = (TGNote)it.next();
+					TGNote note = it.next();
 					chord.addFretValue( ( note.getString() - 1) , note.getValue());
 				}
 			}
@@ -236,6 +277,7 @@ public class TGChordDialog {
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE, voice);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHORD, chord);
+		tgActionProcessor.setAttribute(TGInsertChordAction.ATTRIBUTE_CHORD_INSERT_DIAGRAM_ONLY, this.insertChordDiagramOnly);
 		tgActionProcessor.processOnNewThread();
 	}
 

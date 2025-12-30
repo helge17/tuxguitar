@@ -36,6 +36,7 @@
 	<string name="action_menu_duration">Notvärde</string>
 	<string name="action_menu_dynamic">Dynamik</string>
 	<string name="action_menu_effects">Effekter</string>
+	<string name="action_menu_transport">Spelare</string>
 	<string name="action_menu_settings">Inställningar</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
@@ -58,6 +59,10 @@
 	<string name="action_view_layout_show_chord_diagram">Visa ackorddiagram</string>
 
 	<string name="action_transport_play">Spela upp sång</string>
+	<string name="action_transport_stop">Stanna uppspelning</string>
+	<string name="action_transport_metronome">Metronom</string>
+	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
 	<!-- <string name="action_go_down"></string> -->
@@ -369,7 +374,7 @@
 	<string name="text_dlg_title">Infoga text</string>
 
 	<!-- Bend dialog -->
-	<!-- <string name="bend_dlg_title"></string> -->
+	<string name="bend_dlg_title">Redigering av bend</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
 	<!-- <string name="bend_dlg_preset_bend"></string> -->
 	<!-- <string name="bend_dlg_preset_bend_release"></string> -->

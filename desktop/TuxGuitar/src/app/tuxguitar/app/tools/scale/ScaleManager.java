@@ -59,7 +59,7 @@ public class ScaleManager {
 		}
 		else if(scaleIndex >= 0 && scaleIndex < this.scales.size()){
 			getScale().clear();
-			ScaleInfo info = (ScaleInfo)this.scales.get(scaleIndex);
+			ScaleInfo info = this.scales.get(scaleIndex);
 			String[] keys = info.getKeys().split(KEY_SEPARATOR);
 			for (int i = 0; i < keys.length; i ++){
 				int note = (Integer.parseInt(keys[i]) - 1);
@@ -84,14 +84,14 @@ public class ScaleManager {
 
 	public String getScaleName(int index) {
 		if(index >= 0 && index < this.scales.size()) {
-			return (((ScaleInfo)this.scales.get(index)).getName());
+			return this.scales.get(index).getName();
 		}
 		return null;
 	}
 
 	public String getScaleKeys(int index) {
 		if(index >= 0 && index < this.scales.size()) {
-			return(((ScaleInfo)this.scales.get(index)).getKeys());
+			return this.scales.get(index).getKeys();
 		}
 		return null;
 	}
@@ -99,7 +99,7 @@ public class ScaleManager {
 	public String[] getScaleNames(){
 		String[] names = new String[this.scales.size()];
 		for(int i = 0;i < this.scales.size();i ++){
-			ScaleInfo info = (ScaleInfo)this.scales.get(i);
+			ScaleInfo info = this.scales.get(i);
 			names[i] = info.getName();
 		}
 		return names;

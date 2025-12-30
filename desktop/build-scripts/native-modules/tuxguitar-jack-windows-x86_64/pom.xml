@@ -15,23 +15,8 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<tuxguitar.jni.cc>x86_64-w64-mingw32-gcc</tuxguitar.jni.cc>
-		<tuxguitar.jni.rm>rm -f</tuxguitar.jni.rm>
-		<tuxguitar.jni.ldpath>-L${basedir}/lib/</tuxguitar.jni.ldpath>
-		<tuxguitar.jni.library.prefix></tuxguitar.jni.library.prefix>
-		<tuxguitar.jni.library.suffix>.dll</tuxguitar.jni.library.suffix>
-		<tuxguitar.jni.header.path>-I${basedir}/../common-include</tuxguitar.jni.header.path>
-
 		<tuxguitar-jack.jni.path>${project.parent.relativePath}/TuxGuitar-jack/jni/</tuxguitar-jack.jni.path>
-		<tuxguitar-jack.jni.rm>${tuxguitar.jni.rm}</tuxguitar-jack.jni.rm>
-		<tuxguitar-jack.jni.cc>${tuxguitar.jni.cc}</tuxguitar-jack.jni.cc>
-		<tuxguitar-jack.jni.cflags>-I${basedir}/include ${tuxguitar.jni.header.path}</tuxguitar-jack.jni.cflags>
-		<tuxguitar-jack.jni.ldflags>-Wl,--kill-at</tuxguitar-jack.jni.ldflags>
-		<tuxguitar-jack.jni.ldlibs>-ljack64 -lpthreadVC2</tuxguitar-jack.jni.ldlibs>
-		<tuxguitar-jack.jni.ldpath>${tuxguitar.jni.ldpath}</tuxguitar-jack.jni.ldpath>
-		<tuxguitar-jack.jni.library.name>tuxguitar-jack-jni</tuxguitar-jack.jni.library.name>
-		<tuxguitar-jack.jni.library.prefix>${tuxguitar.jni.library.prefix}</tuxguitar-jack.jni.library.prefix>
-		<tuxguitar-jack.jni.library.suffix>${tuxguitar.jni.library.suffix}</tuxguitar-jack.jni.library.suffix>
+		<tuxguitar-jack.jni.library.name>tuxguitar-jack-jni.dll</tuxguitar-jack.jni.library.name>
 	</properties>
 
 	<modules>
@@ -55,14 +40,12 @@
 						<configuration>
 							<target name="compile-native">
 								<exec dir="${tuxguitar-jack.jni.path}" executable="make" failonerror="true" >
-									<env key="CC" value="${tuxguitar-jack.jni.cc}" />
-									<env key="CFLAGS" value="${tuxguitar-jack.jni.cflags}" />
-									<env key="LDFLAGS" value="${tuxguitar-jack.jni.ldflags}" />
-									<env key="LDLIBS" value="${tuxguitar-jack.jni.ldlibs}" />
-									<env key="LDPATH" value="${tuxguitar-jack.jni.ldpath}" />
-									<env key="LIBRARY_NAME" value="${tuxguitar-jack.jni.library.name}" />
-									<env key="LIBRARY_PREFIX" value="${tuxguitar-jack.jni.library.prefix}" />
-									<env key="LIBRARY_SUFFIX" value="${tuxguitar-jack.jni.library.suffix}" />
+									<env key="CC" value="x86_64-w64-mingw32-gcc" />
+									<env key="CFLAGS" value="-I${basedir}/include -I${basedir}/../common-include" />
+									<env key="LDFLAGS" value="-Wl,--kill-at" />
+									<env key="LDLIBS" value="-ljack64 -lpthreadVC2" />
+									<env key="LDPATH" value="-L${basedir}/lib" />
+									<env key="LIBRARY" value="${tuxguitar-jack.jni.library.name}" />
 								</exec>
 							</target>
 						</configuration>
@@ -78,10 +61,8 @@
 							<target name="clean-native">
 								<exec dir="${tuxguitar-jack.jni.path}" executable="make" failonerror="true" >
 									<arg value="clean" />
-									<env key="RM" value="${tuxguitar-jack.jni.rm}" />
-									<env key="LIBRARY_NAME" value="${tuxguitar-jack.jni.library.name}" />
-									<env key="LIBRARY_PREFIX" value="${tuxguitar-jack.jni.library.prefix}" />
-									<env key="LIBRARY_SUFFIX" value="${tuxguitar-jack.jni.library.suffix}" />
+									<env key="RM" value="rm -f" />
+									<env key="LIBRARY" value="${tuxguitar-jack.jni.library.name}" />
 								</exec>
 							</target>
 						</configuration>
@@ -99,7 +80,7 @@
 
 								<mkdir dir="${project.build.directory}/build/lib" />
 								<copy todir="${project.build.directory}/build/lib">
-									<fileset file="${tuxguitar-jack.jni.path}/${tuxguitar-jack.jni.library.prefix}${tuxguitar-jack.jni.library.name}${tuxguitar-jack.jni.library.suffix}" />
+									<fileset file="${tuxguitar-jack.jni.path}/${tuxguitar-jack.jni.library.name}" />
 								</copy>
 							</target>
 						</configuration>

@@ -40,6 +40,7 @@ import app.tuxguitar.android.action.impl.layout.TGSetChordDiagramEnabledAction;
 import app.tuxguitar.android.action.impl.layout.TGSetChordNameEnabledAction;
 import app.tuxguitar.android.action.impl.layout.TGSetLayoutScaleAction;
 import app.tuxguitar.android.action.impl.layout.TGSetScoreEnabledAction;
+import app.tuxguitar.android.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import app.tuxguitar.android.action.impl.measure.TGGoFirstMeasureAction;
 import app.tuxguitar.android.action.impl.measure.TGGoLastMeasureAction;
 import app.tuxguitar.android.action.impl.measure.TGGoNextMeasureAction;
@@ -55,7 +56,9 @@ import app.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoToTrackAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportCountDownAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
@@ -385,6 +388,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		//transport actions
 		this.map(TGTransportPlayAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGTransportStopAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGTransportMetronomeAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGTransportCountDownAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGTransportLoadSettingsAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 
 		//layout actions
@@ -392,6 +397,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetScoreEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGSetChordDiagramEnabledAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
+		this.map(TGToggleHighlightPlayedBeatAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 
 		//view actions
 		this.map(TGToggleTabKeyboardAction.NAME, LOCKABLE | SYNC_THREAD, UPDATE_ITEMS_CTL);

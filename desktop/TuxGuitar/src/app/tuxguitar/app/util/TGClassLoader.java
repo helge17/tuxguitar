@@ -78,7 +78,7 @@ public class TGClassLoader implements TGResourceLoader {
 			}
 			Enumeration<URL> resources = this.classLoader.getResources(name);
 			while( resources.hasMoreElements() ){
-				URL url = (URL)resources.nextElement();
+				URL url = resources.nextElement();
 				if( !vector.contains(url) ){
 					vector.addElement( url );
 				}

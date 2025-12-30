@@ -5,8 +5,8 @@ import app.tuxguitar.util.configuration.TGConfigManager;
 
 public class GervillSettings {
 
-	private static final String GERVILL_SOUNDBANK_PATH = "tuxguitar-synth-gervill.soundbank.path";
-	private static final String GERVILL_SOUNDBANK_FOLDER = "tuxguitar-synth-gervill.soundbank.folder";
+	public static final String GERVILL_SOUNDBANK_PATH = "tuxguitar-synth-gervill.soundbank.path";
+	public static final String GERVILL_SOUNDBANK_FOLDER = "tuxguitar-synth-gervill.soundbank.folder";
 
 	private TGContext context;
 	private TGConfigManager config;

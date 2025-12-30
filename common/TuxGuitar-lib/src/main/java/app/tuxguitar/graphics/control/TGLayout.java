@@ -31,6 +31,7 @@ public abstract class TGLayout {
 	public static final int DISPLAY_CHORD_DIAGRAM = 0x20;
 	public static final int DISPLAY_MODE_BLACK_WHITE = 0x40;
 	public static final int HIGHLIGHT_PLAYED_BEAT = 0x80;
+	public static final int CONTINUOUS_SCROLL = 0x0100;
 
 	private int style;
 	private float scale;
@@ -72,6 +73,8 @@ public abstract class TGLayout {
 	private boolean tabNotePathRendererEnabled;
 
 	private List<TrackPosition> trackPositions;
+	protected List<Integer> timeToNextScrollMs;
+	protected List<Integer> measureLines;	// line number of first occurrence of a measure index (to set in sub-class, only meaningful for vertical layout)
 
 	private TGController controller;
 	private TGResources resources;
@@ -91,6 +94,8 @@ public abstract class TGLayout {
 	public TGLayout(TGController controller,int style) {
 		this.controller = controller;
 		this.trackPositions = new ArrayList<TrackPosition>();
+		this.timeToNextScrollMs = new ArrayList<Integer>();
+		this.measureLines = new ArrayList<Integer>();
 		this.playModeEnabled = false;
 		this.resources = new TGResources(this);
 		this.drumMap = new TGDrumMap();
@@ -664,6 +669,12 @@ public abstract class TGLayout {
 		return measureRightSpacing;
 	}
 
+	public Float getMeasureScrollableSize(TGMeasureImpl measure) {
+		if (getMode() == MODE_HORIZONTAL) return measure.getWidth(this);
+		if (getMode() == MODE_VERTICAL) return (measure.getTs() == null ? null : measure.getTs().getSize());
+		return null;
+	}
+
 	public float getClefSpacing() {
 		return clefSpacing;
 	}
@@ -810,7 +821,7 @@ public abstract class TGLayout {
 
 		Iterator<TrackPosition> it = this.trackPositions.iterator();
 		while(it.hasNext()){
-			TrackPosition pos = (TrackPosition)it.next();
+			TrackPosition pos = it.next();
 			float distanceY = Math.min(Math.abs(y - (pos.getPosY())), Math.abs(y - (pos.getPosY() + pos.getHeight() - 10)));
 			if(trackPos == null || distanceY < minorDistance){
 				trackPos = pos;
@@ -818,6 +829,38 @@ public abstract class TGLayout {
 			}
 		}
 		return trackPos;
+	}
+
+	public Integer getTimeToNextScrollMs(int measureIndex) {
+		if (measureIndex >= this.timeToNextScrollMs.size()) return null;
+		return this.timeToNextScrollMs.get(measureIndex);
+	}
+
+	public boolean isFullyVisible(TGMeasureImpl measure, UIRectangle area) {
+		if (measure.getTs() == null) {
+			// not yet initialized
+			return false;
+		}
+		int mX = Math.round(measure.getPosX());
+		int mY = Math.round(measure.getPosY());
+		int mWidth = Math.round(measure.getWidth(this));
+		int mHeight = Math.round(measure.getTs().getSize());
+
+		// top-left
+		boolean visible = (mX >= 0) && (mY >= 0);
+
+		// bottom-right
+		visible &= (mX + mWidth <= area.getWidth());
+		visible &= (mY + mHeight <= area.getHeight());
+
+		return visible;
+	}
+
+	public int getMeasureLineNumber(int measureIndex) {
+		if ((measureIndex < 0) || (measureIndex >= this.measureLines.size())) {
+			return -1;
+		}
+		return this.measureLines.get(measureIndex);
 	}
 
 	public void disposeLayout(){
