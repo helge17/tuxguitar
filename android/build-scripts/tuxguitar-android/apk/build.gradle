@@ -13,7 +13,6 @@ def plugins_common = [
 		'TuxGuitar-gtp',
 		'TuxGuitar-gpx',
 		'TuxGuitar-ptb',
-		'TuxGuitar-midi',
 		'TuxGuitar-lilypond',
 		'TuxGuitar-pdf',
 		'TuxGuitar-ascii',
@@ -82,6 +81,14 @@ task generateSources {
 	}
 	copy {
 		from '../../../../common/TuxGuitar-compat/src/main/java'
+		into './build/generated/tuxguitar-android-apk-src/src'
+	}
+	copy {
+		from '../../../../common/TuxGuitar-midi/share/META-INF/tuxguitar-midi.info'
+		into './build/generated/tuxguitar-android-apk-src/share/META-INF/'
+	}
+	copy {
+		from '../../../../common/TuxGuitar-midi/src/main/java'
 		into './build/generated/tuxguitar-android-apk-src/src'
 	}
 
