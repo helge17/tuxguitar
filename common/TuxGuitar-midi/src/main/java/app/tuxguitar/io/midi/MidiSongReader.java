@@ -18,6 +18,7 @@ import app.tuxguitar.io.midi.base.MidiSequence;
 import app.tuxguitar.io.midi.base.MidiTrack;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.helpers.tuning.TuningManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
@@ -770,6 +771,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				TGTrack track = (TGTrack)it.next();
 				adjustTrack(track);
 			}
+			fixInvalidTiedNotes();
 			return this.song;
 		}
 
@@ -781,9 +783,18 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			}
 		}
 
+		private void fixInvalidTiedNotes() {
+			for (TGMeasureError err : tgSongManager.getMeasureErrors(this.song)) {
+				if (err.getErrorType() == TGMeasureError.TYPE_TIED_NOTE_ERROR) {
+					err.getInvalidTiedNote().setTiedNote(false);
+				}
+			}
+		}
+
 		private void process(TGMeasure measure, boolean isPercussionTrack, int maxFret){
 			orderBeats(measure);
 			joinBeats(measure);
+			addRestBeats(measure);
 			adjustStrings(measure, isPercussionTrack, maxFret);
 		}
 
@@ -854,6 +865,41 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			if(!finish){
 				joinBeats(measure);
 			}
+		}
+
+		private void addRestBeats(TGMeasure measure) {
+			List<TGBeat> newBeats = new ArrayList<TGBeat>();
+			long lastBeatEnd = measure.getStart();
+			for (TGBeat beat : measure.getBeats()) {
+				long coarseDuration = beat.getStart() - lastBeatEnd;
+				if (coarseDuration > 0) {
+					// need to insert rest beat(s)
+					// look for a valid precise duration
+					long preciseDuration = coarseDuration * TGDuration.WHOLE_PRECISE_DURATION / (4*TGDuration.QUARTER_TIME);
+					List<TGDuration> restDurationList = null;
+					while ((restDurationList == null) && (preciseDuration > 0)){
+						restDurationList = TGDuration.splitPreciseDuration(preciseDuration, TGDuration.WHOLE_PRECISE_DURATION, factory);
+						coarseDuration --;
+						preciseDuration = coarseDuration * TGDuration.WHOLE_PRECISE_DURATION / (4*TGDuration.QUARTER_TIME);
+					}
+					if (restDurationList != null) {
+						for (TGDuration duration : restDurationList) {
+							TGBeat restBeat = factory.newBeat();
+							restBeat.getVoice(0).setDuration(duration);
+							restBeat.getVoice(0).setEmpty(false);
+							restBeat.setStart(lastBeatEnd);
+							newBeats.add(restBeat);
+							lastBeatEnd++;	// not a realistic value, but enough to sort beats
+						}
+					}
+				}
+				lastBeatEnd = beat.getStart() + beat.getVoice(0).getDuration().getTime();
+			}
+			for (TGBeat restBeat : newBeats) {
+				measure.addBeat(restBeat);
+			}
+			tgSongManager.getMeasureManager().updateBeatsPreciseStart(measure);
+			tgSongManager.getMeasureManager().autoCompleteSilences(measure);
 		}
 
 		private void orderBeats(TGMeasure measure){
