@@ -1,6 +1,7 @@
 package app.tuxguitar.io.midi;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.app.view.util.TGDialogUtil;
@@ -25,10 +26,12 @@ public class MidiSettingsDialog {
 	public static final int MIN_TRANSPOSE = -24;
 
 	private TGContext context;
+	private TGPersistenceSettingsMode mode;
 
-	public MidiSettingsDialog(TGContext context){
+	public MidiSettingsDialog(TGContext context, TGPersistenceSettingsMode mode){
 		this.context = context;
-	}
+		this.mode = mode;
+		}
 
 	public void open(final MidiSettings settings, final Runnable onSuccess) {
 		final UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
@@ -43,11 +46,19 @@ public class MidiSettingsDialog {
 		UITableLayout groupLayoutTranspose = new UITableLayout();
 		UILegendPanel groupTranspose = uiFactory.createLegendPanel(dialog);
 		groupTranspose.setLayout(groupLayoutTranspose);
-		groupTranspose.setText(TuxGuitar.getProperty("export.transpose-notes"));
+		if (mode == TGPersistenceSettingsMode.WRITE) {
+			groupTranspose.setText(TuxGuitar.getProperty("export.transpose-notes"));
+		} else {
+			groupTranspose.setText(TuxGuitar.getProperty("import.transpose-notes"));
+		}
 		dialogLayout.set(groupTranspose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
 
 		final UILabel transposeLabel = uiFactory.createLabel(groupTranspose);
-		transposeLabel.setText(TuxGuitar.getProperty("export.transpose") + ":");
+		if (mode == TGPersistenceSettingsMode.WRITE) {
+			transposeLabel.setText(TuxGuitar.getProperty("export.transpose") + ":");
+		} else {
+			transposeLabel.setText(TuxGuitar.getProperty("import.transpose") + ":");
+		}
 		groupLayoutTranspose.set(transposeLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 
 		final UIDropDownSelect<Integer> transposeCombo = uiFactory.createDropDownSelect(groupTranspose);
@@ -57,17 +68,19 @@ public class MidiSettingsDialog {
 		transposeCombo.setSelectedValue(0);
 		groupLayoutTranspose.set(transposeCombo, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 
-		//------------------ options------------------
-		UITableLayout groupOptionsLayout = new UITableLayout();
+		//------------------ write options------------------
 		UILegendPanel groupOptions = uiFactory.createLegendPanel(dialog);
-		groupOptions.setLayout(groupOptionsLayout);
-		groupOptions.setText(TuxGuitar.getProperty("options"));
-		dialogLayout.set(groupOptions, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
-
 		final UICheckBox strip_CC_PC = uiFactory.createCheckBox(groupOptions);
-		strip_CC_PC.setText(TuxGuitar.getProperty("export.midi.strip-cc-pc"));
-		strip_CC_PC.setSelected(false);
-		groupOptionsLayout.set(strip_CC_PC, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
+		if (mode == TGPersistenceSettingsMode.WRITE) {
+			UITableLayout groupOptionsLayout = new UITableLayout();
+			groupOptions.setLayout(groupOptionsLayout);
+			groupOptions.setText(TuxGuitar.getProperty("options"));
+			dialogLayout.set(groupOptions, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
+	
+			strip_CC_PC.setText(TuxGuitar.getProperty("export.midi.strip-cc-pc"));
+			strip_CC_PC.setSelected(false);
+			groupOptionsLayout.set(strip_CC_PC, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
+		}
 
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
@@ -82,7 +95,7 @@ public class MidiSettingsDialog {
 			public void onSelect(UISelectionEvent event) {
 				Integer transposition = transposeCombo.getSelectedValue();
 				settings.setTranspose(transposition != null ? transposition : 0);
-				if (strip_CC_PC.isSelected()) {
+				if ((mode == TGPersistenceSettingsMode.WRITE) && strip_CC_PC.isSelected()) {
 					settings.setFlags(MidiSequenceParser.NO_CONTROL_CHANGE_PROGRAM_CHANGE);
 				}
 				dialog.dispose();

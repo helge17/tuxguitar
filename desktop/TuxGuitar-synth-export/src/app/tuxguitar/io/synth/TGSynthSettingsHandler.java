@@ -23,7 +23,7 @@ public class TGSynthSettingsHandler implements TGPersistenceSettingsHandler {
 		return TGPersistenceSettingsMode.WRITE;
 	}
 
-	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
+	public void handleSettings(final TGSongStreamContext context, final Runnable callback, TGPersistenceSettingsMode mode) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				final TGSynthAudioSettings midiToAudioSettings = new TGSynthAudioSettings();

@@ -33,7 +33,7 @@ public class PDFSettingsHandler implements TGPersistenceSettingsHandler, TGPlugi
 		return TGPersistenceSettingsMode.WRITE;
 	}
 
-	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
+	public void handleSettings(final TGSongStreamContext context, final Runnable callback, TGPersistenceSettingsMode mode) {
 		TGLayoutStyles tgLayoutStyles = new PDFLayoutStylesUI(TGConfigManager.getInstance(this.context), this.context);
 		context.setAttribute(TGLayoutStyles.class.getName(), tgLayoutStyles);
 

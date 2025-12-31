@@ -9,5 +9,5 @@ public interface TGPersistenceSettingsHandler {
 
 	TGPersistenceSettingsMode getMode();
 
-	void handleSettings(TGSongStreamContext context, Runnable callback);
+	void handleSettings(TGSongStreamContext context, Runnable callback, TGPersistenceSettingsMode mode);
 }
