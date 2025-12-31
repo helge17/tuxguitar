@@ -23,12 +23,12 @@ public class MidiSettingsHandler implements TGPersistenceSettingsHandler {
 		return TGPersistenceSettingsMode.READ_WRITE;
 	}
 
-	public void handleSettings(final TGSongStreamContext context, final Runnable callback) {
+	public void handleSettings(final TGSongStreamContext context, final Runnable callback, TGPersistenceSettingsMode mode) {
 		TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 			public void run() {
 				final MidiSettings settings = new MidiSettings();
 
-				new MidiSettingsDialog(MidiSettingsHandler.this.context).open(settings, new Runnable() {
+				new MidiSettingsDialog(MidiSettingsHandler.this.context, mode).open(settings, new Runnable() {
 					public void run() {
 						if( settings != null ) {
 							context.setAttribute(MidiSettings.class.getName(), settings);
