@@ -37,7 +37,7 @@ Si vous avez trouvé une erreur ou si vous souhaitez demander une nouvelle fonct
 Contribuer
 ==============================================================
 
-Si vous souhaitez contribuer au développement de TuxGuitar, les instructions dans le dossier [doc](https://github.com/helge17/tuxguitar/blob/master/doc/) sont un bon point de départ.
+Si vous souhaitez contribuer au développement de TuxGuitar, les instructions dans le dossier [docs](https://github.com/helge17/tuxguitar/tree/master/docs/) sont un bon point de départ.
 
 Code Source
 ==============================================================
