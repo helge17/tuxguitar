@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Строй</string>
 	<string name="action_track_change_string_count">Количество линий</string>
 
+	<string name="action_measure_first">Первый</string>
+	<string name="action_measure_previous">Предыдущий</string>
+	<string name="action_measure_next">Следующий</string>
+	<string name="action_measure_last">Последний</string>
 	<string name="action_measure_add">Добавить</string>
 	<string name="action_measure_clean">Очистить</string>
 	<string name="action_measure_remove">Удалить</string>

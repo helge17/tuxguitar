@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Doinua</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Lehenengoa</string>
+	<string name="action_measure_previous">Aurrekoa</string>
+	<string name="action_measure_next">Hurrengoa</string>
+	<string name="action_measure_last">Azkena</string>
 	<string name="action_measure_add">Jarri Kompas bat</string>
 	<string name="action_measure_clean">Ezabatu Kompasa</string>
 	<string name="action_measure_remove">Kendu kompasa</string>

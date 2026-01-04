@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Lên dây</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Ô nhịp đầu tiên</string>
+	<string name="action_measure_previous">Ô nhịp trước</string>
+	<string name="action_measure_next">Ô nhịp kế</string>
+	<string name="action_measure_last">Ô nhịp cuối cùng</string>
 	<string name="action_measure_add">Thêm ô nhịp</string>
 	<string name="action_measure_clean">Xoá ô nhịp</string>
 	<string name="action_measure_remove">Bỏ ô nhịp</string>

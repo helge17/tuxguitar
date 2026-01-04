@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Stimmung</string>
 	<string name="action_track_change_string_count">Anzahl Zeilen</string>
 
+	<string name="action_measure_first">Erster Takt</string>
+	<string name="action_measure_previous">Vorheriger Takt</string>
+	<string name="action_measure_next">Nächster Takt</string>
+	<string name="action_measure_last">Letzter Takt</string>
 	<string name="action_measure_add">Takt hinzufügen</string>
 	<string name="action_measure_clean">Takt leeren</string>
 	<string name="action_measure_remove">Takt löschen</string>

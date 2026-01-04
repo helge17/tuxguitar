@@ -4,6 +4,18 @@
     android:id="@+id/action_menu_measure" >
 
     <item
+        android:id="@+id/action_measure_first"
+        android:title="@string/action_measure_first"/>
+    <item
+        android:id="@+id/action_measure_previous"
+        android:title="@string/action_measure_previous"/>
+    <item
+        android:id="@+id/action_measure_next"
+        android:title="@string/action_measure_next"/>
+    <item
+        android:id="@+id/action_measure_last"
+        android:title="@string/action_measure_last"/>
+    <item
         android:id="@+id/action_measure_add"
         android:title="@string/action_measure_add"/>
     <item

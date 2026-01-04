@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Derinimas</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Pirmas taktas</string>
+	<string name="action_measure_previous">Ankstesnis taktas</string>
+	<string name="action_measure_next">Kitas taktas</string>
+	<string name="action_measure_last">Paskiausias taktas</string>
 	<string name="action_measure_add">Pridėti taktą</string>
 	<string name="action_measure_clean">Nuimti takto ženklą</string>
 	<string name="action_measure_remove">Pašalinti taktą</string>

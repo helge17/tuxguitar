@@ -85,6 +85,10 @@
 	<string name="action_track_change_tuning">Tuning</string>
 	<string name="action_track_change_string_count">Line Count</string>
 
+	<string name="action_measure_first">First Measure</string>
+	<string name="action_measure_previous">Previous Measure</string>
+	<string name="action_measure_next">Next Measure</string>
+	<string name="action_measure_last">Last Measure</string>
 	<string name="action_measure_add">Add Measure</string>
 	<string name="action_measure_clean">Clean Measure</string>
 	<string name="action_measure_remove">Remove Measure</string>

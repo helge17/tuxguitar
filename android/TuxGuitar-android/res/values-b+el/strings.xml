@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Κούρδισμα</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Πρώτο Μέτρο</string>
+	<string name="action_measure_previous">Προηγούμενο Μέτρο</string>
+	<string name="action_measure_next">Επόμενο Μέτρο</string>
+	<string name="action_measure_last">Τελευταίο Μέτρο</string>
 	<string name="action_measure_add">Πρόσθεση Μέτρου</string>
 	<string name="action_measure_clean">Καθαρισμός Μέτρου</string>
 	<string name="action_measure_remove">Αφαίρεση Μέτρου</string>

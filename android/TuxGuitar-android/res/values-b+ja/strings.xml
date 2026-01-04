@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">チューニング</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">先頭の小節へ</string>
+	<string name="action_measure_previous">前の小節へ</string>
+	<string name="action_measure_next">次の小節へ</string>
+	<string name="action_measure_last">最後の小節へ</string>
 	<string name="action_measure_add">追加 (空小節)</string>
 	<string name="action_measure_clean">クリア (選択小節)</string>
 	<string name="action_measure_remove">削除 (範囲指定)</string>

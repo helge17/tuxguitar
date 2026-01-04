@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">튜닝</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">첫 마디</string>
+	<string name="action_measure_previous">이전 마디</string>
+	<string name="action_measure_next">다음 마디</string>
+	<string name="action_measure_last">마지막 마디</string>
 	<string name="action_measure_add">마디 추가</string>
 	<string name="action_measure_clean">마디 비우기</string>
 	<string name="action_measure_remove">마디 삭제하기</string>

@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">调整</string>
 	<string name="action_track_change_string_count">行数</string>
 
+	<string name="action_measure_first">第一小节</string>
+	<string name="action_measure_previous">上一小节</string>
+	<string name="action_measure_next">下一小节</string>
+	<string name="action_measure_last">最后一小节</string>
 	<string name="action_measure_add">新增小节</string>
 	<string name="action_measure_clean">清除小节内容</string>
 	<string name="action_measure_remove">移除小节</string>

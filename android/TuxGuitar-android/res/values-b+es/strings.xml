@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Afinación</string>
 	<string name="action_track_change_string_count">Número de Líneas</string>
 
+	<string name="action_measure_first">Primero</string>
+	<string name="action_measure_previous">Anterior</string>
+	<string name="action_measure_next">Siguiente</string>
+	<string name="action_measure_last">Último</string>
 	<string name="action_measure_add">Agregar compás</string>
 	<string name="action_measure_clean">Limpiar compás</string>
 	<string name="action_measure_remove">Borrar compás</string>

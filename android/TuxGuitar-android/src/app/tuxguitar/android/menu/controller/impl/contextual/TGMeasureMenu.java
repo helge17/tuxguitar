@@ -6,6 +6,10 @@ import android.view.MenuInflater;
 import java.util.List;
 
 import app.tuxguitar.android.R;
+import app.tuxguitar.android.action.impl.measure.TGGoFirstMeasureAction;
+import app.tuxguitar.android.action.impl.measure.TGGoPreviousMeasureAction;
+import app.tuxguitar.android.action.impl.measure.TGGoNextMeasureAction;
+import app.tuxguitar.android.action.impl.measure.TGGoLastMeasureAction;
 import app.tuxguitar.android.action.TGActionProcessorListener;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.menu.controller.TGMenuBase;
@@ -33,6 +37,8 @@ public class TGMeasureMenu extends TGMenuBase {
 	public void initializeItems(Menu menu) {
 		boolean running = MidiPlayer.getInstance(this.findContext()).isRunning();
 		TGCaret caret = TGSongViewController.getInstance(this.findContext()).getCaret();
+		boolean isFirst = (caret.getMeasure().getNumber() == 1);
+		boolean isLast = (caret.getMeasure().getNumber() == caret.getMeasure().getTrack().countMeasures());
 		List<TGMeasureError> listErrors = caret.getSongManager().getMeasureManager().getMeasureErrors(caret.getMeasure());
 		int voiceIndex = caret.getVoice();
 		boolean voiceCanBeFixed = false;
@@ -47,6 +53,10 @@ public class TGMeasureMenu extends TGMenuBase {
 				}
 			}
 		}
+		this.initializeItem(menu, R.id.action_measure_first, this.createActionProcessor(TGGoFirstMeasureAction.NAME), !isFirst);
+		this.initializeItem(menu, R.id.action_measure_previous, this.createActionProcessor(TGGoPreviousMeasureAction.NAME), !isFirst);
+		this.initializeItem(menu, R.id.action_measure_next, this.createActionProcessor(TGGoNextMeasureAction.NAME), !isLast);
+		this.initializeItem(menu, R.id.action_measure_last, this.createActionProcessor(TGGoLastMeasureAction.NAME), !isLast);
 		this.initializeItem(menu, R.id.action_measure_add, new TGMeasureAddDialogController(), !running);
 		this.initializeItem(menu, R.id.action_measure_clean, new TGMeasureCleanDialogController(), !running);
 		this.initializeItem(menu, R.id.action_measure_remove, new TGMeasureRemoveDialogController(), !running);

@@ -91,6 +91,10 @@
 	<!-- <string name="action_track_change_tuning"></string> -->
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Eerste maat</string>
+	<string name="action_measure_previous">Vorige maat</string>
+	<string name="action_measure_next">Volgende maat</string>
+	<string name="action_measure_last">Laatste maat</string>
 	<string name="action_measure_add">Voeg maat Toe</string>
 	<string name="action_measure_clean">Wis maat</string>
 	<string name="action_measure_remove">Verwijder maat</string>

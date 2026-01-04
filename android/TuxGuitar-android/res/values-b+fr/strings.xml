@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Accordage</string>
 	<string name="action_track_change_string_count">Nombre de lignes</string>
 
+	<string name="action_measure_first">Première mesure</string>
+	<string name="action_measure_previous">Mesure précédente</string>
+	<string name="action_measure_next">Mesure suivante</string>
+	<string name="action_measure_last">Dernière mesure</string>
 	<string name="action_measure_add">Ajouter une mesure</string>
 	<string name="action_measure_clean">Effacer la mesure</string>
 	<string name="action_measure_remove">Supprimer la mesure</string>

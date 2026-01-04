@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Стрій</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Перший такт</string>
+	<string name="action_measure_previous">Попередній такт</string>
+	<string name="action_measure_next">Наступний такт</string>
+	<string name="action_measure_last">Останній такт</string>
 	<string name="action_measure_add">Додати такт</string>
 	<string name="action_measure_clean">Очистити такт</string>
 	<string name="action_measure_remove">Видалити такт</string>

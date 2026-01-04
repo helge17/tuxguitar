@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Accordatura</string>
 	<string name="action_track_change_string_count">Numero righe</string>
 
+	<string name="action_measure_first">Prima misura</string>
+	<string name="action_measure_previous">Misura precedente</string>
+	<string name="action_measure_next">Misura successiva</string>
+	<string name="action_measure_last">Ultima misura</string>
 	<string name="action_measure_add">Aggiungi misura</string>
 	<string name="action_measure_clean">Svuota misura</string>
 	<string name="action_measure_remove">Rimuovi misura</string>

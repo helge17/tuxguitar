@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Viritys</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Ensimmäinen tahti</string>
+	<string name="action_measure_previous">Edellinen tahti</string>
+	<string name="action_measure_next">Seuraava tahti</string>
+	<string name="action_measure_last">Viimeinen tahti</string>
 	<string name="action_measure_add">Lisää tahti</string>
 	<string name="action_measure_clean">Tyhjennä tahti</string>
 	<string name="action_measure_remove">Poista tahti</string>

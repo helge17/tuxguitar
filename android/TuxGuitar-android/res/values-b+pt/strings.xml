@@ -91,6 +91,10 @@
 	<string name="action_track_change_tuning">Afinação</string>
 	<string name="action_track_change_string_count">Contagem de Linhas</string>
 
+	<string name="action_measure_first">Primeiro Compasso</string>
+	<string name="action_measure_previous">Compasso anterior</string>
+	<string name="action_measure_next">Próximo Compasso</string>
+	<string name="action_measure_last">Último Compasso</string>
 	<string name="action_measure_add">Adicionar Compasso</string>
 	<string name="action_measure_clean">Limpar Compasso</string>
 	<string name="action_measure_remove">Remover Compasso</string>
