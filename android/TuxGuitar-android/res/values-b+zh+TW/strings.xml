@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">任意的反覆</string>
 	<string name="action_change_properties">屬性</string>
 
+	<string name="action_track_first">第一軌</string>
+	<string name="action_track_previous">前一軌</string>
+	<string name="action_track_next">下一軌</string>
+	<string name="action_track_last">最末軌</string>
 	<string name="action_track_add">新增音軌</string>
-	<string name="action_track_remove">移除音軌</string>
 	<string name="action_track_clone">複製音軌</string>
+	<string name="action_track_remove">移除音軌</string>
 	<string name="action_track_move_up">上移音軌</string>
 	<string name="action_track_move_down">下移音軌</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">名稱</string>
 	<string name="action_track_set_channel">樂器</string>
 	<!-- <string name="action_track_change_tuning"></string> -->

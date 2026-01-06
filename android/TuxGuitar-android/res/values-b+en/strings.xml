@@ -79,13 +79,17 @@
 	<!-- <string name="action_change_repeat_alternative"></string> -->
 	<!-- <string name="action_change_properties"></string> -->
 
+	<!-- <string name="action_track_first"></string> -->
+	<!-- <string name="action_track_previous"></string> -->
+	<!-- <string name="action_track_next"></string> -->
+	<!-- <string name="action_track_last"></string> -->
 	<!-- <string name="action_track_add"></string> -->
-	<!-- <string name="action_track_remove"></string> -->
 	<!-- <string name="action_track_clone"></string> -->
+	<!-- <string name="action_track_remove"></string> -->
 	<!-- <string name="action_track_move_up"></string> -->
 	<!-- <string name="action_track_move_down"></string> -->
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_set_name"></string> -->
 	<!-- <string name="action_track_set_channel"></string> -->
 	<!-- <string name="action_track_change_tuning"></string> -->

@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Alternativni završeci</string>
 	<string name="action_change_properties">Osobine</string>
 
+	<string name="action_track_first">Prva staza</string>
+	<string name="action_track_previous">Prethodna staza</string>
+	<string name="action_track_next">Sledeća staza</string>
+	<string name="action_track_last">Poslednja staza</string>
 	<string name="action_track_add">Dodaj stazu</string>
-	<string name="action_track_remove">Ukloni stazu</string>
 	<string name="action_track_clone">Kloniraj stazu</string>
+	<string name="action_track_remove">Ukloni stazu</string>
 	<string name="action_track_move_up">Pomeri gore</string>
 	<string name="action_track_move_down">Pomeri dole</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Naziv</string>
 	<!-- <string name="action_track_set_channel"></string> -->
 	<string name="action_track_change_tuning">Stim</string>

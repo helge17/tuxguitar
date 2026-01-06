@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Alternatyvūs kartojimai</string>
 	<string name="action_change_properties">Takelių nuostatos</string>
 
+	<string name="action_track_first">Pirmas takelis</string>
+	<string name="action_track_previous">Ankstesnis takelis</string>
+	<string name="action_track_next">Kitas takelis</string>
+	<string name="action_track_last">Paskiausias takelis</string>
 	<string name="action_track_add">Pridėti takelį</string>
-	<string name="action_track_remove">Pašalinti takelį</string>
 	<string name="action_track_clone">Klonuoti takelį</string>
+	<string name="action_track_remove">Pašalinti takelį</string>
 	<string name="action_track_move_up">Takelį perkelti aukštyn</string>
 	<string name="action_track_move_down">Takelį perkelti žemyn</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Pavadinimas</string>
 	<string name="action_track_set_channel">Instrumentas</string>
 	<string name="action_track_change_tuning">Derinimas</string>

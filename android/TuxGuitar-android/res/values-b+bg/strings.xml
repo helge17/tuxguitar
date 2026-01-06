@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Алтернативни повторения</string>
 	<string name="action_change_properties">Свойства</string>
 
+	<string name="action_track_first">Първа писта</string>
+	<string name="action_track_previous">Предишна писта</string>
+	<string name="action_track_next">Следваща писта</string>
+	<string name="action_track_last">Последна писта</string>
 	<string name="action_track_add">Добавяне на писта</string>
-	<string name="action_track_remove">Премахване на писта</string>
 	<string name="action_track_clone">Дублиране на писта</string>
+	<string name="action_track_remove">Премахване на писта</string>
 	<string name="action_track_move_up">Преместване пистата нагоре</string>
 	<string name="action_track_move_down">Преместване пистата надолу</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Име</string>
 	<string name="action_track_set_channel">Инструмент</string>
 	<string name="action_track_change_tuning">Фини настройки</string>

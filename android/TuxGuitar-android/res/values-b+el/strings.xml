@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Επαναλήψεις με εναλλαγές</string>
 	<string name="action_change_properties">Ιδιότητες</string>
 
+	<string name="action_track_first">Πρώτο Κομμάτι</string>
+	<string name="action_track_previous">Προηγούμενο Κομμάτι</string>
+	<string name="action_track_next">Επόμενο Κομμάτι</string>
+	<string name="action_track_last">Τελευταίο Κομμάτι</string>
 	<string name="action_track_add">Πρόσθεση Κομματιού</string>
-	<string name="action_track_remove">Αφαίρεση Κομματιού</string>
 	<string name="action_track_clone">Κλωνοποίηση Κομματιού</string>
+	<string name="action_track_remove">Αφαίρεση Κομματιού</string>
 	<string name="action_track_move_up">Μετακίνηση κομματιού προς τα πάνω</string>
 	<string name="action_track_move_down">Μετακίνηση κομματιού προς τα κάτω</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Όνομα</string>
 	<string name="action_track_set_channel">Όργανο</string>
 	<string name="action_track_change_tuning">Κούρδισμα</string>

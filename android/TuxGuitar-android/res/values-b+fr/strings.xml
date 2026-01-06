@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Autres reprises</string>
 	<string name="action_change_properties">Propriétés de la piste</string>
 
+	<string name="action_track_first">Première piste</string>
+	<string name="action_track_previous">Piste précédente</string>
+	<string name="action_track_next">Piste suivante</string>
+	<string name="action_track_last">Dernière piste</string>
 	<string name="action_track_add">Ajouter une piste</string>
-	<string name="action_track_remove">Supprimer la piste</string>
 	<string name="action_track_clone">Dupliquer la piste</string>
+	<string name="action_track_remove">Supprimer la piste</string>
 	<string name="action_track_move_up">Déplacer la piste vers le haut</string>
 	<string name="action_track_move_down">Déplacer la piste vers le bas</string>
-	<string name="action_track_change_mute">Définir une piste muette</string>
 	<string name="action_track_change_solo">Définir une piste de solo</string>
+	<string name="action_track_change_mute">Définir une piste muette</string>
 	<string name="action_track_set_name">Nom</string>
 	<string name="action_track_set_channel">Instrument</string>
 	<string name="action_track_change_tuning">Accordage</string>

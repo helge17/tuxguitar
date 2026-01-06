@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Repetição Alternativa</string>
 	<string name="action_change_properties">Propriedades</string>
 
+	<string name="action_track_first">Primeira Faixa</string>
+	<string name="action_track_previous">Faixa Anterior</string>
+	<string name="action_track_next">Próxima Faixa</string>
+	<string name="action_track_last">Última Faixa</string>
 	<string name="action_track_add">Adicionar Faixa</string>
-	<string name="action_track_remove">Remover Faixa</string>
 	<string name="action_track_clone">Duplicar Faixa</string>
+	<string name="action_track_remove">Remover Faixa</string>
 	<string name="action_track_move_up">Mover para cima</string>
 	<string name="action_track_move_down">Mover para baixo</string>
-	<string name="action_track_change_mute">Definir Faixa como Muda</string>
 	<string name="action_track_change_solo">Definir Faixa como Solo</string>
+	<string name="action_track_change_mute">Definir Faixa como Muda</string>
 	<string name="action_track_set_name">Nome</string>
 	<string name="action_track_set_channel">Instrumento</string>
 	<string name="action_track_change_tuning">Afinação</string>

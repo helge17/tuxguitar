@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Варианты повтора</string>
 	<string name="action_change_properties">Свойства</string>
 
+	<string name="action_track_first">Первый</string>
+	<string name="action_track_previous">Предыдущий</string>
+	<string name="action_track_next">Следующий</string>
+	<string name="action_track_last">Последний</string>
 	<string name="action_track_add">Добавить</string>
-	<string name="action_track_remove">Удалить</string>
 	<string name="action_track_clone">Клонировать</string>
+	<string name="action_track_remove">Удалить</string>
 	<string name="action_track_move_up">Переместить трек выше</string>
 	<string name="action_track_move_down">Переместить трек ниже</string>
-	<string name="action_track_change_mute">Установить трек как заглушённый</string>
 	<string name="action_track_change_solo">Установить трек как соло</string>
+	<string name="action_track_change_mute">Установить трек как заглушённый</string>
 	<string name="action_track_set_name">Имя</string>
 	<string name="action_track_set_channel">Инструмент</string>
 	<string name="action_track_change_tuning">Строй</string>

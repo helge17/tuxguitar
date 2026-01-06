@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">反复跳跃</string>
 	<string name="action_change_properties">属性</string>
 
+	<string name="action_track_first">第一声部</string>
+	<string name="action_track_previous">上一声部</string>
+	<string name="action_track_next">下一声部</string>
+	<string name="action_track_last">最末声部</string>
 	<string name="action_track_add">添加声部</string>
-	<string name="action_track_remove">移除声部</string>
 	<string name="action_track_clone">克隆声部</string>
+	<string name="action_track_remove">移除声部</string>
 	<string name="action_track_move_up">声部上移</string>
 	<string name="action_track_move_down">声部下移</string>
-	<string name="action_track_change_mute">声部静音</string>
 	<string name="action_track_change_solo">声部独奏</string>
+	<string name="action_track_change_mute">声部静音</string>
 	<string name="action_track_set_name">名称</string>
 	<string name="action_track_set_channel">乐器</string>
 	<string name="action_track_change_tuning">调整</string>

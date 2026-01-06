@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Volta (alternatywna repetycja)</string>
 	<string name="action_change_properties">Właściwości</string>
 
+	<string name="action_track_first">Pierwsza ścieżka</string>
+	<string name="action_track_previous">Poprzednia ścieżka</string>
+	<string name="action_track_next">Następna ścieżka</string>
+	<string name="action_track_last">Ostatnia ścieżka</string>
 	<string name="action_track_add">Dodaj ścieżkę</string>
-	<string name="action_track_remove">Usuń ścieżkę</string>
 	<string name="action_track_clone">Powiel ścieżkę</string>
+	<string name="action_track_remove">Usuń ścieżkę</string>
 	<string name="action_track_move_up">Przesuń ścieżkę w górę</string>
 	<string name="action_track_move_down">Przesuń ścieżkę w dół</string>
-	<string name="action_track_change_mute">Ustaw „Cisza” na ścieżce</string>
 	<string name="action_track_change_solo">Ustaw „Solo” na ścieżce</string>
+	<string name="action_track_change_mute">Ustaw „Cisza” na ścieżce</string>
 	<string name="action_track_set_name">Nazwa</string>
 	<string name="action_track_set_channel">Instrument</string>
 	<string name="action_track_change_tuning">Strojenie</string>

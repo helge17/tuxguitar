@@ -73,13 +73,17 @@
 	<string name="action_change_repeat_alternative">Alternative Repeats</string>
 	<string name="action_change_properties">Properties</string>
 
+	<string name="action_track_first">First Track</string>
+	<string name="action_track_previous">Previous Track</string>
+	<string name="action_track_next">Next Track</string>
+	<string name="action_track_last">Last Track</string>
 	<string name="action_track_add">Add Track</string>
-	<string name="action_track_remove">Remove Track</string>
 	<string name="action_track_clone">Clone Track</string>
+	<string name="action_track_remove">Remove Track</string>
 	<string name="action_track_move_up">Move Track up</string>
 	<string name="action_track_move_down">Move Track down</string>
-	<string name="action_track_change_mute">Set Track mute</string>
 	<string name="action_track_change_solo">Set Track solo</string>
+	<string name="action_track_change_mute">Set Track mute</string>
 	<string name="action_track_set_name">Name</string>
 	<string name="action_track_set_channel">Instrument</string>
 	<string name="action_track_change_tuning">Tuning</string>

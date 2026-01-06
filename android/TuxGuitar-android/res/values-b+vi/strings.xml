@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Lặp khác đi</string>
 	<string name="action_change_properties">Thuộc tính</string>
 
+	<string name="action_track_first">Dải đầu</string>
+	<string name="action_track_previous">Dải trước</string>
+	<string name="action_track_next">Dải kế</string>
+	<string name="action_track_last">Dải cuối</string>
 	<string name="action_track_add">Thêm dải</string>
-	<string name="action_track_remove">Xoá dải</string>
 	<string name="action_track_clone">Nhân đôi dải</string>
+	<string name="action_track_remove">Xoá dải</string>
 	<string name="action_track_move_up">Đưa dải lên</string>
 	<string name="action_track_move_down">Đưa dải xuống</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Tên</string>
 	<string name="action_track_set_channel">Nhạc cụ</string>
 	<string name="action_track_change_tuning">Lên dây</string>

@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Alternative Endungen</string>
 	<string name="action_change_properties">Eigenschaften</string>
 
+	<string name="action_track_first">Erste Spur</string>
+	<string name="action_track_previous">Vorherige Spur</string>
+	<string name="action_track_next">Nächste Spur</string>
+	<string name="action_track_last">Letzte Spur</string>
 	<string name="action_track_add">Spur hinzufügen</string>
-	<string name="action_track_remove">Spur entfernen</string>
 	<string name="action_track_clone">Spur duplizieren</string>
+	<string name="action_track_remove">Spur entfernen</string>
 	<string name="action_track_move_up">Spur nach oben verschieben</string>
 	<string name="action_track_move_down">Spur nach unten verschieben</string>
-	<string name="action_track_change_mute">Spur stummschalten (Mute)</string>
 	<string name="action_track_change_solo">Spur auf Solo schalten</string>
+	<string name="action_track_change_mute">Spur stummschalten (Mute)</string>
 	<!-- <string name="action_track_set_name"></string> -->
 	<!-- <string name="action_track_set_channel"></string> -->
 	<string name="action_track_change_tuning">Stimmung</string>

@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">선택 반복</string>
 	<string name="action_change_properties">속성</string>
 
+	<string name="action_track_first">첫 트랙</string>
+	<string name="action_track_previous">이전 트랙</string>
+	<string name="action_track_next">다음 트랙</string>
+	<string name="action_track_last">마지막 트랙</string>
 	<string name="action_track_add">트랙 추가하기</string>
-	<string name="action_track_remove">트랙 지우기</string>
 	<string name="action_track_clone">트랙 복제하기</string>
+	<string name="action_track_remove">트랙 지우기</string>
 	<string name="action_track_move_up">트랙 위로 이동</string>
 	<string name="action_track_move_down">트랙 아래로 이동</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">이름</string>
 	<string name="action_track_set_channel">악기</string>
 	<string name="action_track_change_tuning">튜닝</string>

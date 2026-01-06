@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Kertauksen vaihtoeht. maalit</string>
 	<string name="action_change_properties">Ominaisuudet</string>
 
+	<string name="action_track_first">Ensimmäinen raita</string>
+	<string name="action_track_previous">Edellinen raita</string>
+	<string name="action_track_next">Seuraava raita</string>
+	<string name="action_track_last">Viimeinen raita</string>
 	<string name="action_track_add">Lisää raita</string>
-	<string name="action_track_remove">Poista raita</string>
 	<string name="action_track_clone">Kopioi raita</string>
+	<string name="action_track_remove">Poista raita</string>
 	<string name="action_track_move_up">Siirrä raitaa ylös</string>
 	<string name="action_track_move_down">Siirrä raitaa alas</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Nimi</string>
 	<string name="action_track_set_channel">Instrumentti</string>
 	<string name="action_track_change_tuning">Viritys</string>

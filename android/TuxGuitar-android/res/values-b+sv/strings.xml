@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Alternativa repriser</string>
 	<string name="action_change_properties">Egenskaper</string>
 
+	<string name="action_track_first">Första spåret</string>
+	<string name="action_track_previous">Föregående spår</string>
+	<string name="action_track_next">Nästa spår</string>
+	<string name="action_track_last">Sista spåret</string>
 	<string name="action_track_add">Lägg till spår</string>
-	<string name="action_track_remove">Ta bort spår</string>
 	<string name="action_track_clone">Klona spår</string>
+	<string name="action_track_remove">Ta bort spår</string>
 	<string name="action_track_move_up">Flytta upp</string>
 	<string name="action_track_move_down">Flytta ner</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Namn</string>
 	<!-- <string name="action_track_set_channel"></string> -->
 	<string name="action_track_change_tuning">Stämning</string>

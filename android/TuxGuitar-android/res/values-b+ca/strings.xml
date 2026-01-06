@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Repetició alternativa</string>
 	<string name="action_change_properties">Propietats</string>
 
+	<string name="action_track_first">Primera</string>
+	<string name="action_track_previous">Anterior</string>
+	<string name="action_track_next">Següent</string>
+	<string name="action_track_last">Darrera</string>
 	<string name="action_track_add">Afegeix pista</string>
-	<string name="action_track_remove">Esborra pista</string>
 	<string name="action_track_clone">Clona pista</string>
+	<string name="action_track_remove">Esborra pista</string>
 	<string name="action_track_move_up">Mou amunt</string>
 	<string name="action_track_move_down">Mou avall</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Nom</string>
 	<!-- <string name="action_track_set_channel"></string> -->
 	<string name="action_track_change_tuning">Afinació</string>

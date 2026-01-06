@@ -79,13 +79,17 @@
 	<string name="action_change_repeat_alternative">Альтернативні кінцівки</string>
 	<string name="action_change_properties">Властивості</string>
 
+	<string name="action_track_first">Перша доріжка</string>
+	<string name="action_track_previous">Попередня доріжка</string>
+	<string name="action_track_next">Наступна доріжка</string>
+	<string name="action_track_last">Остання доріжка</string>
 	<string name="action_track_add">Додати доріжку</string>
-	<string name="action_track_remove">Видалити доріжку</string>
 	<string name="action_track_clone">Дублювати доріжку</string>
+	<string name="action_track_remove">Видалити доріжку</string>
 	<string name="action_track_move_up">Пересунути вниз</string>
 	<string name="action_track_move_down">Пересунути вгору</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Ім\&apos;я</string>
 	<string name="action_track_set_channel">Інструмент</string>
 	<string name="action_track_change_tuning">Стрій</string>
