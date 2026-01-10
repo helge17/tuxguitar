@@ -120,6 +120,7 @@ import app.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import app.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
+import app.tuxguitar.app.action.impl.transport.TGChangeTempoPercentageAction;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayStopAction;
@@ -552,6 +553,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGTransportModeAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGTransportSetLoopSHeaderAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGTransportSetLoopEHeaderAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGChangeTempoPercentageAction.NAME, LOCKABLE | SHORTCUT);
 
 		//marker actions
 		this.map(TGUpdateMarkerAction.NAME, LOCKABLE, new TGUpdateModifiedMarkerController(), new TGUndoableMarkerGenericController());
