@@ -111,6 +111,7 @@ task generateSources {
 	}
 	// plugins shared with desktop app, and including unit tests
 	fileNames.add('../../../../common/TuxGuitar-compat/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin')
+	fileNames.add('../../../../common/TuxGuitar-midi/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin')
 
 	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin');
  	file.getParentFile().mkdirs()
