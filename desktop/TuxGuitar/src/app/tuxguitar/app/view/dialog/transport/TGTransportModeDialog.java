@@ -467,7 +467,7 @@ public class TGTransportModeDialog {
 		public void updateLoopEHeader(){
 			Integer sHeader = this.loopSHeader.getSelectedValue();
 			Integer eHeader = this.loopEHeader.getSelectedValue();
-			if( eHeader != null && sHeader != null && sHeader > eHeader ){
+			if( eHeader != null && sHeader != null && sHeader > eHeader && eHeader != -1 ){
 				eHeader = sHeader;
 			}
 			this.updateLoopEHeader(sHeader , eHeader);
