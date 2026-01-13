@@ -6,7 +6,7 @@ TuxGuitar is an open source multitrack tablature editor and player written in Ja
 
 ## License
 
-TuxGuitar is released under the GNU Lesser General Public License.
+TuxGuitar is released under the GNU Lesser General Public License v2.1 only
 
 Copyright (C) 2005-2022 Julián Casadesús
               2023-2025 guiv42, helge17
