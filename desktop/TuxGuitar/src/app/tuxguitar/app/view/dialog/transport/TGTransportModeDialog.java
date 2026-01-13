@@ -282,9 +282,9 @@ public class TGTransportModeDialog {
 		Integer loopEHeader = this.loopEHeader.getSelectedValue();
 
 		// move caret to loop start if loop defined
-		if (loop && loopSHeader != null && loopSHeader>0) {
+		if (loop && loopSHeader != null) {
 			TGTrack track = (TGTrack) TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-			TGBeat beat = track.getMeasure(loopSHeader-1).getBeat(0);
+			TGBeat beat = track.getMeasure(loopSHeader > 0 ? loopSHeader-1 : 0).getBeat(0);
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGMoveToAction.NAME);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT,beat);
 			tgActionProcessor.process();
