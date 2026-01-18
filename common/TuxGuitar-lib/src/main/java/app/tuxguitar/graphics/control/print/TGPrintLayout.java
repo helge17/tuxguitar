@@ -11,12 +11,14 @@ import app.tuxguitar.graphics.control.TGMeasureImpl;
 import app.tuxguitar.graphics.control.TGTrackImpl;
 import app.tuxguitar.graphics.control.TGTrackSpacing;
 import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.resource.UIFont;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.resource.UIResourceFactory;
 import app.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGPrintLayout extends TGLayout {
 
@@ -227,8 +229,54 @@ public class TGPrintLayout extends TGLayout {
 				);
 				headerOffset += 20.0f * getScale();
 			}
+
+			String tuningLabel = getTuningLabel(track);
+			if (tuningLabel != null && tuningLabel.length() > 0) {
+				painter.setFont(getTrackNameFont());
+				painter.drawString(
+					tuningLabel,
+					x,
+					fmTopLine + y + Math.round(headerOffset)
+				);
+				headerOffset += 20.0f * getScale();
+			}
 		}
 		return headerOffset;
+	}
+
+	private String getTuningLabel(TGTrack track) {
+		if (track == null || track.isPercussion()) {
+			return null;
+		}
+		StringBuilder tuningLabel = new StringBuilder(TGMessagesManager.getProperty("tuning")).append(": ");
+		String tuningName = track.getTuningName();
+		String stringsTuning = getStringsTuningLabel(track);
+		if (tuningName != null && !tuningName.isEmpty()) {
+			tuningLabel.append(tuningName).append(" (").append(stringsTuning).append(")");
+		} else {
+			tuningLabel.append(stringsTuning);
+		}
+		return tuningLabel.toString();
+	}
+
+	private String getStringsTuningLabel(TGTrack track) {
+		List<TGString> strings = new ArrayList<>(track.getStrings());
+		if (strings.isEmpty()) {
+			return "";
+		}
+		// it should print strings from the lowest to the highest
+		StringBuilder label = new StringBuilder();
+		for (int i = strings.size() - 1; i >= 0; i--) {
+			TGString string = strings.get(i);
+			String noteName = TGMusicKeyUtils.sharpNoteName(string.getValue());
+			if (noteName != null && !noteName.isEmpty()) {
+				if (label.length() > 0) {
+					label.append(' ');
+				}
+				label.append(noteName);
+			}
+		}
+		return label.toString();
 	}
 
 	private void paintFooter(UIPainter painter){

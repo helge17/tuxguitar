@@ -30,6 +30,7 @@ public abstract class TGTrack {
 	private boolean solo;
 	private boolean mute;
 	private String name;
+	private String tuningName;
 	private List<TGMeasure> measures;
 	private List<TGString> strings;
 	private TGColor color;
@@ -119,6 +120,14 @@ public abstract class TGTrack {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getTuningName() {
+		return this.tuningName;
+	}
+
+	public void setTuningName(String tuningName) {
+		this.tuningName = tuningName;
 	}
 
 	public int getOffset() {
@@ -240,6 +249,7 @@ public abstract class TGTrack {
 		this.clear();
 		this.setNumber(track.getNumber());
 		this.setName(track.getName());
+		this.setTuningName(track.getTuningName());
 		this.setOffset(track.getOffset());
 		this.setSolo(track.isSolo());
 		this.setMute(track.isMute());

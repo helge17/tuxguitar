@@ -18,6 +18,7 @@ import java.util.List;
 
 public class TuningManager {
 
+	private static final int TOP_TUNING_PRIORITY = 1;
 	static String TG_TUNING_FILE = "tunings" + File.separator + "tunings.xml";
 
 	private TGContext context;
@@ -75,6 +76,22 @@ public class TuningManager {
 		return priorityTunings;
 	}
 
+	public String getDefaultTuningName() {
+		return this.tgTuningsGroup.getTunings().stream()
+				.filter(tuning -> Objects.equals(TOP_TUNING_PRIORITY, tuning.getPriority()))
+				.findFirst()
+				.map(TGTuning::getName)
+				.orElseThrow(() -> new IllegalStateException("No tuning with priority " + TOP_TUNING_PRIORITY + " found"));
+	}
+
+	public String findTuningName(int[] values) {
+		String name = findTuningNameInGroup(values, this.customTuningsGroup);
+		if (name != null) {
+			return name;
+		}
+		return findTuningNameInGroup(values, this.tgTuningsGroup);
+	}
+
 	public void saveCustomTunings(TuningGroup group) {
 		TuningWriter.write(group, TGUserFileUtils.PATH_USER_TUNINGS);
 	}
@@ -90,6 +107,24 @@ public class TuningManager {
 		} catch (Throwable e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}
+	}
+
+	private String findTuningNameInGroup(int[] values, TuningGroup group) {
+		if (values == null || group == null) {
+			return null;
+		}
+		for (TuningGroup subGroup : group.getGroups()) {
+			String name = findTuningNameInGroup(values, subGroup);
+			if (name != null) {
+				return name;
+			}
+		}
+		for (TuningPreset preset : group.getTunings()) {
+			if (Arrays.equals(values, preset.getValues())) {
+				return preset.getName();
+			}
+		}
+		return null;
 	}
 
 	public static TuningManager getInstance(TGContext context) {
