@@ -11,6 +11,7 @@ public class JackChannelProxy implements MidiChannel {
 	private JackPort jackPort;
 	private MidiChannel midiChannel;
 	private boolean exclusive;
+	private boolean stripPC;
 
 	public JackChannelProxy(int jackChannelId, JackSynthesizer jackSynthesizer) {
 		this.jackChannelId = jackChannelId;
@@ -36,7 +37,7 @@ public class JackChannelProxy implements MidiChannel {
 	}
 
 	public void sendProgramChange(int value) throws MidiPlayerException {
-		if( this.midiChannel != null ){
+		if( (this.midiChannel != null) && !this.stripPC ){
 			this.midiChannel.sendProgramChange(value);
 		}
 	}
@@ -59,6 +60,8 @@ public class JackChannelProxy implements MidiChannel {
 			if( this.exclusive != exclusive ){
 				this.jackSynthesizer.openChannel(getJackChannelId(), exclusive);
 			}
+		} else if (JackChannelParameter.PARAMETER_STRIP_PC.equals(key)) {
+			this.stripPC = Boolean.TRUE.toString().equals(value);
 		} else if( this.midiChannel != null ){
 			this.midiChannel.sendParameter(key, value);
 		}
@@ -91,4 +94,5 @@ public class JackChannelProxy implements MidiChannel {
 	public void setExclusive(boolean exclusive) {
 		this.exclusive = exclusive;
 	}
+
 }
