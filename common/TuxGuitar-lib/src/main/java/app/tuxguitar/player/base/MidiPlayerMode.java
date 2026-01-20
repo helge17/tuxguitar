@@ -27,7 +27,7 @@ public class MidiPlayerMode{
 		this.simplePercent = DEFAULT_TEMPO_PERCENT;
 		this.customPercentFrom = DEFAULT_TEMPO_PERCENT;
 		this.customPercentTo = DEFAULT_TEMPO_PERCENT;
-		this.customPercentIncrement = 0;
+		this.customPercentIncrement = 1;
 		this.loopSHeader = -1;
 		this.loopEHeader = -1;
 		this.reset();
