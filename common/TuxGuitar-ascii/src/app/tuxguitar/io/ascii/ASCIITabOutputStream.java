@@ -14,6 +14,7 @@ import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class ASCIITabOutputStream {
 
@@ -22,23 +23,25 @@ public class ASCIITabOutputStream {
 	private static final int MAX_LINE_LENGTH = 80;
 
 	private TGSongManager manager;
+	private TGContext context;
 	private PrintStream stream;
 	private ASCIIOutputStream out;
 
-	public ASCIITabOutputStream(PrintStream stream){
+	public ASCIITabOutputStream(TGContext context, PrintStream stream){
+		this.context = context;
 		this.stream = stream;
 	}
 
-	public ASCIITabOutputStream(OutputStream stream){
-		this(new PrintStream(stream));
+	public ASCIITabOutputStream(TGContext context, OutputStream stream){
+		this(context, new PrintStream(stream));
 	}
 
-	public ASCIITabOutputStream(String fileName) throws FileNotFoundException{
-		this(new FileOutputStream(fileName));
+	public ASCIITabOutputStream(TGContext context, String fileName) throws FileNotFoundException{
+		this(context, new FileOutputStream(fileName));
 	}
 
 	public void writeSong(TGSong song){
-		this.manager = new TGSongManager();
+		this.manager = new TGSongManager(this.context);
 
 		this.out = new ASCIIOutputStream(this.stream);
 		this.drawSong(song);

@@ -37,6 +37,7 @@ import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.util.TGContext;
 
 public class GP5InputStream extends GTPInputStream {
 
@@ -53,8 +54,8 @@ public class GP5InputStream extends GTPInputStream {
 	private int keySignature;
 	private int[] keySignatures;
 
-	public GP5InputStream(GTPSettings settings) {
-		super(settings, SUPPORTED_VERSIONS);
+	public GP5InputStream(TGContext context, GTPSettings settings) {
+		super(context, settings, SUPPORTED_VERSIONS);
 	}
 
 	public TGFileFormat getFileFormat(){
@@ -515,7 +516,7 @@ public class GP5InputStream extends GTPInputStream {
 			}
 			if( channel.getChannelId() <= 0 ){
 				channel.setChannelId(song.countChannels() + 1);
-				channel.setName(new TGSongManager(getFactory()).createChannelNameFromProgram(song, channel));
+				channel.setName(new TGSongManager(getContext(), getFactory()).createChannelNameFromProgram(song, channel));
 				channel.addParameter(gmChannel1Param);
 				channel.addParameter(gmChannel2Param);
 				song.addChannel(channel);

@@ -19,7 +19,7 @@ public class TESongReaderPlugin extends TGSongReaderPlugin {
 	}
 
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
-		return new TESongReader();
+		return new TESongReader(context);
 	}
 
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {

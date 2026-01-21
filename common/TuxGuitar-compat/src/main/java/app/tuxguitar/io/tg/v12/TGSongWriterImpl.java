@@ -40,20 +40,23 @@ import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.util.TGContext;
 
 public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 	private TGFactory factory;
 	private GMChannelRouter channelRouter;
 	private DataOutputStream dataOutputStream;
+	private TGContext context;
 
-	public TGSongWriterImpl() {
+	public TGSongWriterImpl(TGContext context) {
 		super();
+		this.context = context;
 	}
 
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try{
-			TGSongManager songManager = new TGSongManager(handle.getFactory());
+			TGSongManager songManager = new TGSongManager(this.context, handle.getFactory());
 			TGSong song = handle.getSong();
 
 			this.factory = songManager.getFactory();
@@ -153,7 +156,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		}
 
 		//obtengo las cuerdas a escribir
-		List<TGString> strings = TGStringLimitUtil.createWritableStrings(track);
+		List<TGString> strings = TGStringLimitUtil.createWritableStrings(this.context, track);
 
 		//escribo la cantidad de cuerdas
 		writeByte(strings.size());
@@ -712,7 +715,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	private TGChannel getChannel( TGSong song, TGTrack track ){
-		TGSongManager tgSongManager = new TGSongManager(this.factory);
+		TGSongManager tgSongManager = new TGSongManager(this.context, this.factory);
 		TGChannel tgChannel = tgSongManager.getChannel(song, track.getChannelId() );
 		if( tgChannel == null ){
 			tgChannel = this.factory.newChannel();

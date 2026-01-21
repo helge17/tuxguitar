@@ -41,6 +41,7 @@ import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.util.TGContext;
 
 public class GPXDocumentParser {
 
@@ -51,8 +52,10 @@ public class GPXDocumentParser {
 
 	private TGFactory factory;
 	private GPXDocument document;
+	private TGContext context;
 
-	public GPXDocumentParser(TGFactory factory, GPXDocument document) {
+	public GPXDocumentParser(TGContext context, TGFactory factory, GPXDocument document) {
+		this.context = context;
 		this.factory = factory;
 		this.document = document;
 	}
@@ -78,7 +81,7 @@ public class GPXDocumentParser {
 	}
 
 	private void parseTracks(TGSong tgSong) {
-		TGSongManager tgSongManager = new TGSongManager(this.factory);
+		TGSongManager tgSongManager = new TGSongManager(this.context, this.factory);
 
 		List<GPXTrack> tracks = this.document.getTracks();
 		for (int i = 0; i < tracks.size(); i++) {

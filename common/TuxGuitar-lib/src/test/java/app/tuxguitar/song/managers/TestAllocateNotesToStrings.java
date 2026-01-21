@@ -11,6 +11,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.util.TGContext;
 
 public class TestAllocateNotesToStrings {
 
@@ -42,7 +43,7 @@ public class TestAllocateNotesToStrings {
 
 	@Test
 	public void testMove1note() {
-		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
+		TGTrackManager trackManager = new TGTrackManager(new TGSongManager(new TGContext()));
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringA2.getValue());
@@ -68,7 +69,7 @@ public class TestAllocateNotesToStrings {
 
 	@Test
 	public void testMove1chord() {
-		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
+		TGTrackManager trackManager = new TGTrackManager(new TGSongManager(new TGContext()));
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringG3.getValue());
@@ -125,7 +126,7 @@ public class TestAllocateNotesToStrings {
 
 	@Test
 	public void testDistributeNotes() {
-		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
+		TGTrackManager trackManager = new TGTrackManager(new TGSongManager(new TGContext()));
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(0);
@@ -188,7 +189,7 @@ public class TestAllocateNotesToStrings {
 
 	@Test
 	public void testNoTuningChange() {
-		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
+		TGTrackManager trackManager = new TGTrackManager(new TGSongManager(new TGContext()));
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringG3.getValue());
@@ -218,7 +219,7 @@ public class TestAllocateNotesToStrings {
 
 	@Test
 	public void testToTrackWithLessStrings() {
-		TGTrackManager trackManager = new TGTrackManager(new TGSongManager());
+		TGTrackManager trackManager = new TGTrackManager(new TGSongManager(new TGContext()));
 
 		List<Integer> fromStrings = new ArrayList<Integer>();
 		fromStrings.add(stringG3.getValue());

@@ -8,17 +8,21 @@ import app.tuxguitar.io.base.TGSongWriterHandle;
 import app.tuxguitar.player.base.MidiSequenceParser;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class MidiSongWriter extends MidiFileFormat implements TGSongWriter {
 
-	public MidiSongWriter() {
+	private TGContext context;
+
+	public MidiSongWriter(TGContext context) {
 		super();
+		this.context = context;
 	}
 
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try {
 			TGSong tgSong = handle.getSong();
-			TGSongManager tgSongManager = new TGSongManager();
+			TGSongManager tgSongManager = new TGSongManager(this.context);
 
 			GMChannelRouter gmChannelRouter = new GMChannelRouter();
 			GMChannelRouterConfigurator gmChannelRouterConfigurator = new GMChannelRouterConfigurator(gmChannelRouter);

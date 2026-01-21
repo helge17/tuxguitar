@@ -38,6 +38,7 @@ import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.util.TGContext;
 
 public class TGSongReaderImpl extends TGStream implements TGSongReader{
 
@@ -45,9 +46,11 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 
 	private DataInputStream dataInputStream;
 	private TGFactory factory;
+	private TGContext context;
 
-	public TGSongReaderImpl() {
+	public TGSongReaderImpl(TGContext context) {
 		super();
+		this.context = context;
 	}
 
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
@@ -286,7 +289,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 		}
 		if( channel.getChannelId() <= 0 ){
 			channel.setChannelId( song.countChannels() + 1 );
-			channel.setName(new TGSongManager(this.factory).createChannelNameFromProgram(song, channel));
+			channel.setName(new TGSongManager(this.context, this.factory).createChannelNameFromProgram(song, channel));
 			channel.addParameter(gmChannel1Param);
 			channel.addParameter(gmChannel2Param);
 			song.addChannel(channel);

@@ -36,7 +36,7 @@ public class TestTiedNotes {
 	public TestTiedNotes() throws IOException {
 		this.context = new TGContext();
 		this.actionManager = TGActionManager.getInstance(context);
-		this.songManager = new TGSongManager();
+		this.songManager = new TGSongManager(this.context);
 		this.actionContext = new TGActionContext() {
 		};
 		this.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, songManager);

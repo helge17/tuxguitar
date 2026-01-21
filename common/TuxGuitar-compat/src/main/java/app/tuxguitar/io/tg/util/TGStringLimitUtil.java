@@ -5,17 +5,18 @@ import java.util.List;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public class TGStringLimitUtil {
 
 	public static final int MINIMUM = 4;
 	public static final int MAXIMUM = 7;
 
-	public static List<TGString> createWritableStrings(TGTrack track) {
-		return createWritableStrings(track, MINIMUM, MAXIMUM);
+	public static List<TGString> createWritableStrings(TGContext context, TGTrack track) {
+		return createWritableStrings(context, track, MINIMUM, MAXIMUM);
 	}
 
-	public static List<TGString> createWritableStrings(TGTrack track, int minimum, int maximum) {
+	public static List<TGString> createWritableStrings(TGContext context, TGTrack track, int minimum, int maximum) {
 		int count = track.stringCount();
 		if( count >= minimum && count <= maximum ) {
 			return track.getStrings();
@@ -28,7 +29,7 @@ public class TGStringLimitUtil {
 			writableCount = maximum;
 		}
 		List<TGString> strings = track.getStrings();
-		List<TGString> writableStrings = createDefaultStrings(track, writableCount);
+		List<TGString> writableStrings = createDefaultStrings(context, track, writableCount);
 		for(TGString string : strings) {
 			if( string.getNumber() >= minimum && string.getNumber() <= maximum ) {
 				for(TGString writableString : writableStrings) {
@@ -41,8 +42,8 @@ public class TGStringLimitUtil {
 		return writableStrings;
 	}
 
-	private static List<TGString> createDefaultStrings(TGTrack track, int count) {
-		TGSongManager songManager = new TGSongManager();
+	private static List<TGString> createDefaultStrings(TGContext context, TGTrack track, int count) {
+		TGSongManager songManager = new TGSongManager(context);
 		if( track.isPercussion() ) {
 			return  songManager.createPercussionStrings(count);
 		}

@@ -39,7 +39,7 @@ public class TestImportMidi {
 		handleWrite.setFactory(new TGFactory());
 		handleWrite.setSong(originalSong);
 		handleWrite.setOutputStream(outputStream);
-		MidiSongWriter writer = new MidiSongWriter();
+		MidiSongWriter writer = new MidiSongWriter(new TGContext());
 		writer.write(handleWrite);
 		byte[] rawMidiFileBuffer = outputStream.toByteArray();
 		

@@ -20,6 +20,7 @@ import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.util.TGContext;
 import org.junit.jupiter.api.Test;
 
 public class TestFreeEditionMode {
@@ -29,7 +30,7 @@ public class TestFreeEditionMode {
 	
 	public TestFreeEditionMode() {
 		this.factory = new TGFactory();
-		this.songMgr = new TGSongManager();
+		this.songMgr = new TGSongManager(new TGContext());
 	}
 	
 	@Test

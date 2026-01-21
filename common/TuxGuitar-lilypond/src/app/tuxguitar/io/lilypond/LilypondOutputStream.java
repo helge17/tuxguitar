@@ -25,6 +25,7 @@ import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
+import app.tuxguitar.util.TGContext;
 
 public class LilypondOutputStream {
 
@@ -48,8 +49,10 @@ public class LilypondOutputStream {
 	private LilypondSettings settings;
 
 	private LilypondTempData temp;
+	private TGContext context;
 
-	public LilypondOutputStream(OutputStream stream,LilypondSettings settings){
+	public LilypondOutputStream(TGContext context, OutputStream stream, LilypondSettings settings){
+		this.context = context;
 		this.durations = new HashMap<Integer, String>();
 		this.durations.put(TGDuration.WHOLE, "1");
 		this.durations.put(TGDuration.HALF, "2");
@@ -62,7 +65,7 @@ public class LilypondOutputStream {
 	}
 
 	public void writeSong(TGSong song){
-		this.manager = new TGSongManager();
+		this.manager = new TGSongManager(this.context);
 
 		this.addFunctions();
 		this.addVersion();

@@ -16,15 +16,18 @@ import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWriter{
 
 	private GMChannelRouter channelRouter;
 	private OutputStream outputStream;
 	private int[] keySignatures;
+	private TGContext context;
 
-	public GTPOutputStream(GTPSettings settings){
+	public GTPOutputStream(TGContext context, GTPSettings settings){
 		super(settings);
+		this.context = context;
 	}
 
 	public abstract void writeSong(TGSong song) throws TGFileFormatException;
@@ -140,10 +143,11 @@ public abstract class GTPOutputStream extends GTPFileFormat implements TGSongWri
 	}
 
 	protected List<TGString> createDefaultStrings(TGTrack track, int count) {
+		TGSongManager songManager = new TGSongManager(this.context);
 		if( this.isPercussionChannel(track.getSong(), track.getChannelId()) ) {
-			return new TGSongManager().createPercussionStrings(count);
+			return songManager.createPercussionStrings(count);
 		}
-		return new TGSongManager().createDefaultInstrumentStrings(count);
+		return songManager.createDefaultInstrumentStrings(count);
 	}
 
 	protected void configureChannelRouter( TGSong song ){

@@ -12,7 +12,7 @@ public class GP3InputStreamPlugin extends GTPInputStreamPlugin{
 	}
 
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
-		return new GP3InputStream(GTPSettingsManager.getInstance(context).getSettings());
+		return new GP3InputStream(context, GTPSettingsManager.getInstance(context).getSettings());
 	}
 
 	public TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {

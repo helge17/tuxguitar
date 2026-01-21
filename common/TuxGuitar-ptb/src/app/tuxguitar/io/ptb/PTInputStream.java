@@ -19,6 +19,7 @@ import app.tuxguitar.io.ptb.base.PTTempo;
 import app.tuxguitar.io.ptb.base.PTTrack;
 import app.tuxguitar.io.ptb.base.PTTrackInfo;
 import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.util.TGContext;
 
 public class PTInputStream implements TGSongReader{
 
@@ -27,9 +28,10 @@ public class PTInputStream implements TGSongReader{
 	private InputStream stream;
 	private PTSong song;
 	private PTSongParser parser;
+	private TGContext context;
 
-	public PTInputStream(){
-		super();
+	public PTInputStream(TGContext context){
+		this.context = context;
 	}
 
 	public TGFileFormat getFileFormat(){
@@ -39,7 +41,7 @@ public class PTInputStream implements TGSongReader{
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
 		try {
 			this.stream = handle.getInputStream();
-			this.parser = new PTSongParser(handle.getFactory());
+			this.parser = new PTSongParser(this.context, handle.getFactory());
 
 			TGFileFormat fileFormat = new PTFileFormatDetector().getFileFormat(this.stream);
 			if( fileFormat == null || !fileFormat.equals(this.getFileFormat())) {

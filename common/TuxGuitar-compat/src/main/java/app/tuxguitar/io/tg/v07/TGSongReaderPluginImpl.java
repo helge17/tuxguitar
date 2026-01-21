@@ -10,7 +10,7 @@ import app.tuxguitar.util.plugin.TGPluginException;
 public class TGSongReaderPluginImpl extends TGAbstractSongReaderPlugin{
 
 	protected TGSongReader createInputStream(TGContext context) throws TGPluginException {
-		return new TGSongReaderImpl();
+		return new TGSongReaderImpl(context);
 	}
 
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {

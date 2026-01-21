@@ -18,6 +18,6 @@ public class MusicXMLSongWriterPlugin extends TGSongWriterPlugin{
 	}
 
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
-		return new MusicXMLSongWriter();
+		return new MusicXMLSongWriter(context);
 	}
 }

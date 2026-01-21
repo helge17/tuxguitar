@@ -13,6 +13,7 @@ import app.tuxguitar.io.base.TGSongReaderHandle;
 import app.tuxguitar.io.base.TGSongWriterHandle;
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.util.TGContext;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ public class TestFileFormat20 {
 	private TGSongManager songManager;
 	
 	public TestFileFormat20() {
-		this.songManager = new TGSongManager();
+		this.songManager = new TGSongManager(new TGContext());
 	}
 	
 	@Test

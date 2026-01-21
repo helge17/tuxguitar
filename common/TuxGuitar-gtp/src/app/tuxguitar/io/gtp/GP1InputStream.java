@@ -26,6 +26,7 @@ import app.tuxguitar.song.models.TGVelocities;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.util.TGContext;
 
 public class GP1InputStream extends GTPInputStream {
 
@@ -53,8 +54,8 @@ public class GP1InputStream extends GTPInputStream {
 	private int trackCount;
 	private int keySignature;
 
-	public GP1InputStream(GTPSettings settings){
-		super(settings, SUPPORTED_VERSIONS);
+	public GP1InputStream(TGContext context, GTPSettings settings){
+		super(context, settings, SUPPORTED_VERSIONS);
 	}
 
 	public TGFileFormat getFileFormat(){
@@ -131,7 +132,7 @@ public class GP1InputStream extends GTPInputStream {
 				previous = header;
 			}
 
-			TGSongManager tgSongManager = new TGSongManager(getFactory());
+			TGSongManager tgSongManager = new TGSongManager(getContext(), getFactory());
 			tgSongManager.autoCompleteSilences(song);
 
 			this.updateChannelNames(tgSongManager, song);

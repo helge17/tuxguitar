@@ -21,7 +21,7 @@ public class TestSequenceParser {
 	public void testTempoTimestampMap() throws IOException {
 		TGContext context = new TGContext();
 		TGSong song = new TestFileFormat20().readSong("tempo_20.tg", true).getSong();
-		MidiSequenceParser parser = new MidiSequenceParser(song, new TGSongManager(), 0);
+		MidiSequenceParser parser = new MidiSequenceParser(song, new TGSongManager(context), 0);
 		MidiSequencerImpl sequencer = new MidiSequencerImpl(context);
 		MidiSequenceHandlerImpl seqHandler = new MidiSequenceHandlerImpl(sequencer,1);
 		parser.parse(seqHandler);

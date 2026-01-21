@@ -12,13 +12,14 @@ import app.tuxguitar.io.tg.TestFileFormat20;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public class TestTrackManager {
 
 	@Test
 	public void testGetNextTiedNote() throws IOException {
 		TGSong song = new TestFileFormat20().readSong("getNextTied_20.tg", true).getSong();
-		TGSongManager songMgr = new TGSongManager();
+		TGSongManager songMgr = new TGSongManager(new TGContext());
 		TGTrackManager trackMgr = songMgr.getTrackManager();
 
 		TGMeasure measure = song.getTrack(0).getMeasure(0);

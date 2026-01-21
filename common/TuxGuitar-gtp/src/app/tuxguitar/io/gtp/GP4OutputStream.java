@@ -41,6 +41,7 @@ import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import app.tuxguitar.util.TGContext;
 /**
  * @author julian
  *
@@ -52,8 +53,8 @@ public class GP4OutputStream extends GTPOutputStream{
 	private static final int GP_BEND_SEMITONE = 25;
 	private static final int GP_BEND_POSITION = 60;
 
-	public GP4OutputStream(GTPSettings settings){
-		super(settings);
+	public GP4OutputStream(TGContext context, GTPSettings settings){
+		super(context, settings);
 	}
 
 	public TGFileFormat getFileFormat(){

@@ -6,13 +6,16 @@ import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.util.TGContext;
 
 public class SVGSongWriter implements TGSongWriter {
 
 	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("Scalable Vector Graphics", "image/svg+xml", new String[]{"svg"});
 
-	public SVGSongWriter() {
-		super();
+	private TGContext context;
+
+	public SVGSongWriter(TGContext context) {
+		this.context = context;
 	}
 
 	public TGFileFormat getFileFormat() {
@@ -29,7 +32,7 @@ public class SVGSongWriter implements TGSongWriter {
 
 			StringBuffer svgBuffer = new StringBuffer();
 
-			SVGController svgController = new SVGController(styles);
+			SVGController svgController = new SVGController(this.context, styles);
 			svgController.load(handle.getSong().clone(svgController.getSongManager().getFactory()));
 			svgController.write(svgBuffer);
 			svgController.getResourceBuffer().disposeAllResources();

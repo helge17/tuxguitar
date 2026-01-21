@@ -1,7 +1,6 @@
 package app.tuxguitar.document;
 
 import app.tuxguitar.graphics.control.TGFactoryImpl;
-import app.tuxguitar.song.helpers.tuning.TGDefaultTuningNameResolver;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
@@ -14,8 +13,7 @@ public class TGDocumentManager {
 	private TGSong song;
 
 	private TGDocumentManager(TGContext context) {
-		this.songManager = new TGSongManager(new TGFactoryImpl());
-		this.songManager.setTuningNameResolver(new TGDefaultTuningNameResolver(context));
+		this.songManager = new TGSongManager(context, new TGFactoryImpl());
 		this.song = this.songManager.newSong();
 	}
 

@@ -46,7 +46,7 @@ public class ImageExporterStream implements TGSongStream{
 		ImageExporterSettings settings = this.streamContext.getAttribute(ImageExporterSettings.class.getName());
 		if( settings != null ){
 			TGSong song = this.streamContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+			TGSongManager manager = new TGSongManager(this.context, new TGFactoryImpl());
 			TGSong clonedSong = song.clone(manager.getFactory());
 			UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);
 			UIInset pageMargins = new UIInset(MARGIN_TOP, MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM);

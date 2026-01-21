@@ -6,7 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.helpers.TGMeasureError;
-import app.tuxguitar.song.helpers.tuning.TGTuningNameResolver;
+import app.tuxguitar.song.helpers.tuning.TuningManager;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDuration;
@@ -18,6 +18,7 @@ import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMessagesManager;
 
 public class TGSongManager {
@@ -31,17 +32,19 @@ public class TGSongManager {
 		{64,59,55,50,45,40,35},
 	};
 
+	private TGContext context;
 	private TGFactory factory;
 	private TGTrackManager trackManager;
+	private TuningManager tuningManager;
 	private TGMeasureManager measureManager;
 	private boolean freeEditionMode;
-	private TGTuningNameResolver tuningNameResolver;
 
-	public TGSongManager(){
-		this(new TGFactory());
+	public TGSongManager(TGContext context){
+		this(context, new TGFactory());
 	}
 
-	public TGSongManager(TGFactory factory){
+	public TGSongManager(TGContext context, TGFactory factory){
+		this.context = context;
 		this.factory = factory;
 	}
 
@@ -58,6 +61,13 @@ public class TGSongManager {
 			this.trackManager = new TGTrackManager(this);
 		}
 		return this.trackManager;
+	}
+
+	public TuningManager getTuningManager(){
+		if(this.tuningManager == null){
+			this.tuningManager = TuningManager.getInstance(this.context);
+		}
+		return this.tuningManager;
 	}
 
 	public TGMeasureManager getMeasureManager(){
@@ -907,19 +917,6 @@ public class TGSongManager {
 		}
 	}
 
-	public void setTuningNameResolver(TGTuningNameResolver resolver) {
-		this.tuningNameResolver = resolver;
-	}
-
-	public void applyTuningName(TGTrack track) {
-		if (this.tuningNameResolver != null
-			&& (track.getTuningName() == null || track.getTuningName().length() == 0)
-			&& !track.isPercussion()
-			&& track.stringCount() > 0) {
-			track.setTuningName(this.tuningNameResolver.resolve(track));
-		}
-	}
-
 	public void orderBeats(TGSong song){
 		Iterator<TGTrack> it = song.getTracks();
 		while(it.hasNext()){
@@ -937,7 +934,11 @@ public class TGSongManager {
 	}
 
 	private String getDefaultTuningName() {
-		return this.tuningNameResolver.getDefaultTuningName();
+		return getTuningManager().getDefaultTuningName();
+	}
+
+	public void applyTuningName(TGTrack track) {
+		track.setTuningName(getTuningManager().getTuningNameForTrack(track));
 	}
 
 	public List<TGString> createPercussionStrings(int stringCount) {

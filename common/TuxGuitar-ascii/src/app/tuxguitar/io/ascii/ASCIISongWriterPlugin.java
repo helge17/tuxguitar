@@ -18,6 +18,6 @@ public class ASCIISongWriterPlugin extends TGSongWriterPlugin {
 	}
 
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
-		return new ASCIISongWriter();
+		return new ASCIISongWriter(context);
 	}
 }

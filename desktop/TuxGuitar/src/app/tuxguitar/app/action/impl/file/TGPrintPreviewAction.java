@@ -61,7 +61,7 @@ public class TGPrintPreviewAction extends TGActionBase{
 			zoomValue = 100;
 		}
 
-		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+		TGSongManager manager = new TGSongManager(getContext(), new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		UISize pageSize = new UISize(PAGE_WIDTH, PAGE_HEIGHT);

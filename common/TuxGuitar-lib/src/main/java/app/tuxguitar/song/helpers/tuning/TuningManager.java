@@ -3,6 +3,7 @@ package app.tuxguitar.song.helpers.tuning;
 import app.tuxguitar.resource.TGResourceManager;
 import app.tuxguitar.song.helpers.tuning.xml.TuningReader;
 import app.tuxguitar.song.helpers.tuning.xml.TuningWriter;
+import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGTuning;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGUserFileUtils;
@@ -13,8 +14,10 @@ import app.tuxguitar.util.singleton.TGSingletonUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class TuningManager {
 
@@ -77,11 +80,22 @@ public class TuningManager {
 	}
 
 	public String getDefaultTuningName() {
-		return this.tgTuningsGroup.getTunings().stream()
-				.filter(tuning -> Objects.equals(TOP_TUNING_PRIORITY, tuning.getPriority()))
-				.findFirst()
-				.map(TGTuning::getName)
-				.orElseThrow(() -> new IllegalStateException("No tuning with priority " + TOP_TUNING_PRIORITY + " found"));
+		TuningPreset defaultTuning = findFirstTuningWithPriority(TOP_TUNING_PRIORITY, this.tgTuningsGroup);
+		if (defaultTuning != null) {
+			return defaultTuning.getName();
+		}
+		throw new IllegalStateException("No tuning with priority " + TOP_TUNING_PRIORITY + " found");
+	}
+
+	public String getTuningNameForTrack(TGTrack track) {
+		if (track == null || track.isPercussion() || track.stringCount() == 0) {
+			return null;
+		}
+		int[] values = new int[track.stringCount()];
+		for (int i = 0; i < track.stringCount(); i++) {
+			values[i] = track.getString(i + 1).getValue();
+		}
+		return findTuningName(values);
 	}
 
 	public String findTuningName(int[] values) {
@@ -122,6 +136,21 @@ public class TuningManager {
 		for (TuningPreset preset : group.getTunings()) {
 			if (Arrays.equals(values, preset.getValues())) {
 				return preset.getName();
+			}
+		}
+		return null;
+	}
+
+	private TuningPreset findFirstTuningWithPriority(int priority, TuningGroup group) {
+		for (TuningGroup subGroup : group.getGroups()) {
+			TuningPreset tuning = findFirstTuningWithPriority(priority, subGroup);
+			if (tuning != null) {
+				return tuning;
+			}
+		}
+		for (TuningPreset preset : group.getTunings()) {
+			if (Objects.equals(priority, preset.getPriority())) {
+				return preset;
 			}
 		}
 		return null;
