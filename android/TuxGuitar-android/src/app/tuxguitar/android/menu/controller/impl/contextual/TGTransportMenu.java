@@ -5,13 +5,13 @@ import android.view.MenuInflater;
 
 import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.impl.layout.TGToggleHighlightPlayedBeatAction;
-import app.tuxguitar.android.action.impl.transport.TGTransportCountDownAction;
-import app.tuxguitar.android.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.menu.controller.TGMenuBase;
 import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
+import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.util.TGContext;

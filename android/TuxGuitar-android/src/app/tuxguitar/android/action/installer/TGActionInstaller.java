@@ -57,9 +57,7 @@ import app.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoToTrackAction;
-import app.tuxguitar.android.action.impl.transport.TGTransportCountDownAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
-import app.tuxguitar.android.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
@@ -173,6 +171,8 @@ import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import app.tuxguitar.editor.action.track.TGSetTrackNameAction;
 import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
 import app.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
+import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
+import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.util.TGContext;
 
 public class TGActionInstaller {
