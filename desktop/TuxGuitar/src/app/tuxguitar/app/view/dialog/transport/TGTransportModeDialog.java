@@ -5,7 +5,6 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.app.system.config.TGConfigKeys;
@@ -15,6 +14,7 @@ import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGBeat;

@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import app.tuxguitar.action.TGActionContext;
-import app.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.document.TGDocumentListAttributes;
 import app.tuxguitar.app.document.TGDocumentListManager;
@@ -15,6 +14,7 @@ import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.util.TGContext;
