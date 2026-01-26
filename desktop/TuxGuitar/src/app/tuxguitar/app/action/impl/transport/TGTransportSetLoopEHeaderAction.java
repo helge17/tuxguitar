@@ -32,6 +32,13 @@ public class TGTransportSetLoopEHeaderAction extends TGActionBase {
 					document.getMidiPlayerMode().setLoopEHeader(measureNb);
 				}
 
+				// if loop start would now be behind loop end, set it to loop end
+				if (pm.getLoopSHeader() != -1 && pm.getLoopEHeader() != -1 && pm.getLoopSHeader() > measureNb) {
+					pm.setLoopSHeader(measureNb);
+					if ((document != null) && (document.getMidiPlayerMode() != null)) {
+						document.getMidiPlayerMode().setLoopSHeader(measureNb);
+					}
+				}
 			}
 		}
 	}
