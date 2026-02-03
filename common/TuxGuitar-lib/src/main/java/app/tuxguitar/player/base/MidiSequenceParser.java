@@ -552,15 +552,13 @@ public class MidiSequenceParser {
 						TGNote nextNote = voice.getNote( n );
 						if (!nextNote.equals(note) || mIndex != m ) {
 							if (letRing) {
-								// end of letRing chain?
-								if (!nextNote.getEffect().isLetRing()) {
-									if ((mIndex == m) || (nextNote.isTiedNote()) ) {
-										realDuration += voice.getDuration().getTime();
-									}
+								// letRing does not survive a repeat close
+								if ((mIndex != m) && (note.getVoice().getBeat().getMeasure().getRepeatClose() > 0)) {
 									return applyDurationEffects(note, tempo, realDuration);
 								}
-								if ((mIndex != m) && !(nextNote.isTiedNote())) {
-									// measure changed, found a non tied note, end of letRing
+								// end of letRing chain?
+								if (!nextNote.getEffect().isLetRing()) {
+									realDuration += voice.getDuration().getTime();
 									return applyDurationEffects(note, tempo, realDuration);
 								}
 							}
