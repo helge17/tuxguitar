@@ -60,6 +60,8 @@ import app.tuxguitar.android.action.impl.track.TGGoToTrackAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportSetLoopSHeaderAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
 import app.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import app.tuxguitar.editor.action.TGActionBase;
@@ -341,6 +343,8 @@ public class TGActionInstaller {
 		installAction(new TGTransportStopAction(context));
 		installAction(new TGTransportMetronomeAction(context));
 		installAction(new TGTransportCountDownAction(context));
+		installAction(new TGTransportSetLoopSHeaderAction(context));
+		installAction(new TGTransportSetLoopEHeaderAction(context));
 		installAction(new TGTransportLoadSettingsAction(context));
 
 		//layout actions

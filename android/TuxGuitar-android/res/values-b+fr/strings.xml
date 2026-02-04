@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Arrêter la lecture</string>
 	<string name="action_transport_metronome">Métronome</string>
 	<string name="action_transport_count_down">Décompte</string>
+	<string name="action_transport_mode">Mode de lecture</string>
+	<string name="action_transport_set_loop_start">Définir le début de la boucle</string>
+	<string name="action_transport_set_loop_end">Définir la fin de la boucle</string>
 	<string name="action_transport_highlight_played_beat">Encadrer le temps joué</string>
 
 	<string name="action_go_up">Déplacer le curseur vers le haut</string>
@@ -483,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">Réverbe:</string>
 	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
 	<string name="channel_edit_dlg_tremolo_label">Trémolo:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Mode de lecture</string>
+	<string name="transport_mode_dlg_simple">Mode simple</string>
+	<string name="transport_mode_dlg_trainer">Mode d\&apos;apprentissage</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Pourcentage de tempo:</string>
+	<string name="transport_mode_dlg_simple_loop">Lecture en boucle</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempo:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">À:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Incrémenter de:</string>
+	<string name="transport_mode_dlg_loop_range_label">Plage de la boucle</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Lire depuis la mesure:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">depuis le début</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Lire jusqu\&apos;à la mesure:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">jusqu\&apos;à la fin</string>
 
 </resources>

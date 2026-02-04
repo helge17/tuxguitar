@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Остановить проигрывание</string>
 	<string name="action_transport_metronome">Метроном</string>
 	<string name="action_transport_count_down">Вводный счёт</string>
+	<string name="action_transport_mode">Режим проигрывания</string>
+	<string name="action_transport_set_loop_start">Установить начальную точку</string>
+	<string name="action_transport_set_loop_end">Установить конечную точку</string>
 	<string name="action_transport_highlight_played_beat">Выделить сыгранную долю</string>
 
 	<string name="action_go_up">Переместить курсор вверх</string>
@@ -483,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">Реверберация:</string>
 	<string name="channel_edit_dlg_phaser_label">Фэйзер:</string>
 	<string name="channel_edit_dlg_tremolo_label">Тремоло:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Режим проигрывания</string>
+	<string name="transport_mode_dlg_simple">Простой режим</string>
+	<string name="transport_mode_dlg_trainer">Тренировочный режим</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Темп в процентах:</string>
+	<string name="transport_mode_dlg_simple_loop">Зацикливание</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Темп:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">до:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Увеличивать на:</string>
+	<string name="transport_mode_dlg_loop_range_label">Настройка зацикливания</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Играть с такта:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">с начала</string>
+	<string name="transport_mode_dlg_loop_range_to_label">До такта:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">до конца</string>
 
 </resources>

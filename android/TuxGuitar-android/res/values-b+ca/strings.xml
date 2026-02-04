@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Atura la reproducció</string>
 	<string name="action_transport_metronome">Metrònom</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">Mode de reproducció</string>
+	<string name="action_transport_set_loop_start">Defineix el punt d\&apos;inici de la repetició</string>
+	<string name="action_transport_set_loop_end">Defineix el punt final de la repetició</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -483,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Mode de reproducció</string>
+	<string name="transport_mode_dlg_simple">Mode normal</string>
+	<string name="transport_mode_dlg_trainer">Mode d\&apos;entrenament</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Percentatge de temps:</string>
+	<string name="transport_mode_dlg_simple_loop">Repeteix infinitament</string>
+	<!-- <string name="transport_mode_dlg_trainer_tempo_percent_from_label"></string> -->
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Fins a:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Incrementa percentatge:</string>
+	<string name="transport_mode_dlg_loop_range_label">Repeteix rang</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Reprodueix des del compàs:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">Des del principi</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Reprodueix el compàs:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">Fins a la fi</string>
 
 </resources>

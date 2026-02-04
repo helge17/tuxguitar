@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Ngừng phát</string>
 	<string name="action_transport_metronome">Dậm nhịp</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">Chế độ phát</string>
+	<!-- <string name="action_transport_set_loop_start"></string> -->
+	<!-- <string name="action_transport_set_loop_end"></string> -->
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -483,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Chế độ phát</string>
+	<string name="transport_mode_dlg_simple">Chế độ đơn giản</string>
+	<string name="transport_mode_dlg_trainer">Tập theo</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Phần trăm nhịp độ:</string>
+	<string name="transport_mode_dlg_simple_loop">Phát lặp lại</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Nhịp độ:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Đến:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Tăng lên:</string>
+	<!-- <string name="transport_mode_dlg_loop_range_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_from_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_from_default"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_to_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_to_default"></string> -->
 
 </resources>

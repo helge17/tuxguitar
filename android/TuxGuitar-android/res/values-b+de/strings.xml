@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Wiedergabe stoppen</string>
 	<string name="action_transport_metronome">Metronom</string>
 	<string name="action_transport_count_down">Einzählen</string>
+	<string name="action_transport_mode">Abspielmodus</string>
+	<string name="action_transport_set_loop_start">Anfang der Schleife setzen</string>
+	<string name="action_transport_set_loop_end">Ende der Schleife setzen</string>
 	<string name="action_transport_highlight_played_beat">Abgespielte Note umranden</string>
 
 	<string name="action_go_up">Cursor nach oben</string>
@@ -483,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">Hall:</string>
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Abspielmodus</string>
+	<string name="transport_mode_dlg_simple">Normaler Modus</string>
+	<string name="transport_mode_dlg_trainer">Übungsmodus</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Prozent des Tempos:</string>
+	<string name="transport_mode_dlg_simple_loop">In Schleife abspielen</string>
+	<!-- <string name="transport_mode_dlg_trainer_tempo_percent_from_label"></string> -->
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">bis:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Erhöhen um:</string>
+	<string name="transport_mode_dlg_loop_range_label">Schleife</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Abspielen ab Takt:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">Vom Anfang</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Abspielen bis Takt:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">Bis zum Liedende</string>
 
 </resources>

@@ -7,13 +7,17 @@ import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.impl.layout.TGToggleHighlightPlayedBeatAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportSetLoopSHeaderAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.menu.controller.TGMenuBase;
+import app.tuxguitar.android.view.dialog.transport.TGTransportModeDialogController;
 import app.tuxguitar.android.view.tablature.TGSongViewController;
 import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
 import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.util.TGContext;
 
 public class TGTransportMenu extends TGMenuBase {
@@ -29,7 +33,9 @@ public class TGTransportMenu extends TGMenuBase {
 
 	public void initializeItems(Menu menu) {
 		TGContext context = findContext();
+		int measureNb = TGSongViewController.getInstance(context).getCaret().getMeasure().getNumber();
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(context);
+		MidiPlayerMode pm = midiPlayer.getMode();
 		boolean running = midiPlayer.isRunning();
 		TGLayout layout = TGSongViewController.getInstance(context).getLayout();
 		int style = layout.getStyle();
@@ -38,6 +44,9 @@ public class TGTransportMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_transport_stop, this.createActionProcessor(TGTransportStopAction.NAME), running);
 		this.initializeItem(menu, R.id.action_transport_metronome, this.createActionProcessor(TGTransportMetronomeAction.NAME), true, midiPlayer.isMetronomeEnabled());
 		this.initializeItem(menu, R.id.action_transport_count_down, this.createActionProcessor(TGTransportCountDownAction.NAME), true, midiPlayer.getCountDown().isEnabled());
+		this.initializeItem(menu, R.id.action_transport_mode, new TGTransportModeDialogController(), true);
+		this.initializeItem(menu, R.id.action_transport_set_loop_start, this.createActionProcessor(TGTransportSetLoopSHeaderAction.NAME), pm.isLoop(), measureNb == pm.getLoopSHeader());
+		this.initializeItem(menu, R.id.action_transport_set_loop_end, this.createActionProcessor(TGTransportSetLoopEHeaderAction.NAME), pm.isLoop(), measureNb == pm.getLoopEHeader());
 		this.initializeItem(menu, R.id.action_transport_highlight_played_beat, this.createActionProcessor(TGToggleHighlightPlayedBeatAction.NAME), true, (style & TGLayout.HIGHLIGHT_PLAYED_BEAT) != 0 );
 	}
 }

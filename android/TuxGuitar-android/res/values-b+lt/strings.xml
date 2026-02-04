@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Stabdyti grojimą</string>
 	<string name="action_transport_metronome">Metronomas</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">Kaip groti</string>
+	<string name="action_transport_set_loop_start">Nustatyti pakartojimo pradžią</string>
+	<string name="action_transport_set_loop_end">Nustatyti pakartojimo pabaigą</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -483,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">Reverberacija:</string>
 	<string name="channel_edit_dlg_phaser_label">Fazeris:</string>
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Kaip groti</string>
+	<string name="transport_mode_dlg_simple">Įprastai</string>
+	<string name="transport_mode_dlg_trainer">Mokymosi veiksena</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Tempo pakeitimas procentais:</string>
+	<string name="transport_mode_dlg_simple_loop">Groti kartojant</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempas:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Iki:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Padidinti per:</string>
+	<string name="transport_mode_dlg_loop_range_label">Pakartojimo rėžis</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Groti nuo takto:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">Groti nuo pradžių</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Groti iki takto:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">Iki galo</string>
 
 </resources>

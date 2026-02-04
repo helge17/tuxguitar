@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	style="?attr/dialogStyle">
+
+	<GridLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:columnCount="2" >
+
+		<RadioGroup
+			android:id="@+id/transport_mode_dlg_mode"
+			android:layout_columnSpan="2"
+			android:layout_gravity="fill_horizontal|center_vertical" >
+
+			<RadioButton
+				android:id="@+id/transport_mode_dlg_simple"
+				android:text="@string/transport_mode_dlg_simple"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<RadioButton
+				android:id="@+id/transport_mode_dlg_trainer"
+				android:text="@string/transport_mode_dlg_trainer"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</RadioGroup>
+
+		<Space
+			android:layout_gravity="fill"
+			android:layout_columnSpan="2"
+			style="?attr/dialogVerticalSpacerStyle" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_simple_label"
+			android:text="@string/transport_mode_dlg_simple"
+			android:layout_columnSpan="2"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_simple_tempo_percent_label"
+			android:text="@string/transport_mode_dlg_simple_tempo_percent_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/transport_mode_dlg_simple_tempo_percent_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<CheckBox
+			android:id="@+id/transport_mode_dlg_simple_loop"
+			android:text="@string/transport_mode_dlg_simple_loop"
+			android:layout_gravity="fill_horizontal|center_vertical"
+			android:layout_columnSpan="2" />
+
+		<Space
+			android:layout_gravity="fill"
+			android:layout_columnSpan="2"
+			style="?attr/dialogVerticalSpacerStyle" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_trainer_label"
+			android:text="@string/transport_mode_dlg_trainer"
+			android:layout_columnSpan="2"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_trainer_tempo_percent_from_label"
+			android:text="@string/transport_mode_dlg_trainer_tempo_percent_from_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/transport_mode_dlg_trainer_tempo_percent_from_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_trainer_tempo_percent_to_label"
+			android:text="@string/transport_mode_dlg_trainer_tempo_percent_to_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/transport_mode_dlg_trainer_tempo_percent_to_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_trainer_tempo_increment_label"
+			android:text="@string/transport_mode_dlg_trainer_tempo_increment_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/transport_mode_dlg_trainer_tempo_increment_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Space
+			android:layout_gravity="fill"
+			android:layout_columnSpan="2"
+			style="?attr/dialogVerticalSpacerStyle" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_loop_range_label"
+			android:text="@string/transport_mode_dlg_loop_range_label"
+			android:layout_columnSpan="2"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_loop_range_from_label"
+			android:text="@string/transport_mode_dlg_loop_range_from_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/transport_mode_dlg_loop_range_from_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
+			android:id="@+id/transport_mode_dlg_loop_range_to_label"
+			android:text="@string/transport_mode_dlg_loop_range_to_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/transport_mode_dlg_loop_range_to_value"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+	</GridLayout>
+
+</ScrollView>

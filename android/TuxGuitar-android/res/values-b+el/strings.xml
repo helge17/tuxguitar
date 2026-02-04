@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Λήξη Αναπαραγωγής</string>
 	<string name="action_transport_metronome">Μετρονόμος</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">Λειτουργία Αναπαραγωγής</string>
+	<string name="action_transport_set_loop_start">Όρισε την αρχή της επανάληψης</string>
+	<string name="action_transport_set_loop_end">Όρισε το τέλος της επανάληψης</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -483,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Λειτουργία Αναπαραγωγής</string>
+	<string name="transport_mode_dlg_simple">Απλή Λειτουργία</string>
+	<string name="transport_mode_dlg_trainer">Λειτουργία Προπόνησης</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Επί τοις εκατό του τέμπο:</string>
+	<string name="transport_mode_dlg_simple_loop">Αναπαραγωγή με επανάληψη</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Τέμπο:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Έως:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Αύξηση κατά:</string>
+	<string name="transport_mode_dlg_loop_range_label">Εύρος Επανάληψης</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Αναπαραγωγή από το μέτρο:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">Από την αρχή</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Αναπαραγωγή του μέτρου:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">Στο τέλος</string>
 
 </resources>

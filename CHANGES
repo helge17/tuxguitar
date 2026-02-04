@@ -12,7 +12,7 @@ TuxGuitar 2.1.0 (2026-xx-xx) changes:
 * Detect dark mode on startup (macOS, Linux/KDE)
 * Enable TuxGuitar Synthesizer LV2 extension plugin on FreeBSD
 * Android: Keep screen on during playback
-* Android: Add some basic player controls
+* Android: Add player controls
 * More small improvements and cleanups
 
 TuxGuitar 2.0.1 (2025-12-22) changes:

@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Zatrzymaj odtwarzanie</string>
 	<string name="action_transport_metronome">Metronom</string>
 	<string name="action_transport_count_down">Wybijanie taktu</string>
+	<string name="action_transport_mode">Tryb odtwarzania</string>
+	<string name="action_transport_set_loop_start">Ustaw początek pętli</string>
+	<string name="action_transport_set_loop_end">Ustaw koniec pętli</string>
 	<string name="action_transport_highlight_played_beat">Podświetl odtwarzany rytm</string>
 
 	<string name="action_go_up">Przesuń kursor w górę</string>
@@ -483,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">Pogłos:</string>
 	<string name="channel_edit_dlg_phaser_label">Fazer:</string>
 	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Tryb odtwarzania</string>
+	<string name="transport_mode_dlg_simple">Tryb odtwarzania</string>
+	<string name="transport_mode_dlg_trainer">Tryb ćwiczenia</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Tempo w procentach:</string>
+	<string name="transport_mode_dlg_simple_loop">Odtwarzaj w pętli</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempo:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Do:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Zwiększ o:</string>
+	<string name="transport_mode_dlg_loop_range_label">Zakres pętli</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Odtwarzaj od taktu:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">Odtwarzaj od początku</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Odtwarzaj do taktu:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">Odtwarzaj do końca</string>
 
 </resources>

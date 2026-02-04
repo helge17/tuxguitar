@@ -56,6 +56,9 @@
 	<string name="action_transport_stop">Stop Playing</string>
 	<string name="action_transport_metronome">Metronome</string>
 	<string name="action_transport_count_down">Count In</string>
+	<string name="action_transport_mode">Play Mode</string>
+	<string name="action_transport_set_loop_start">Set loop start point</string>
+	<string name="action_transport_set_loop_end">Set loop end point</string>
 	<string name="action_transport_highlight_played_beat">Highlight Played Beat</string>
 
 	<string name="action_go_up">Move cursor up</string>
@@ -477,5 +480,20 @@
 	<string name="channel_edit_dlg_reverb_label">Reverb:</string>
 	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
 	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Play Mode</string>
+	<string name="transport_mode_dlg_simple">Simple Mode</string>
+	<string name="transport_mode_dlg_trainer">Training Mode</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Percentage of Tempo:</string>
+	<string name="transport_mode_dlg_simple_loop">Play looped</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempo:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">To:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Increment by:</string>
+	<string name="transport_mode_dlg_loop_range_label">Loop Range</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Play from Measure:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">From the beginning</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Play to Measure:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">To the end</string>
 
 </resources>

@@ -62,6 +62,9 @@
 	<!-- <string name="action_transport_stop"></string> -->
 	<string name="action_transport_metronome">메트로놈</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">재생 모드</string>
+	<!-- <string name="action_transport_set_loop_start"></string> -->
+	<!-- <string name="action_transport_set_loop_end"></string> -->
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -483,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">재생 모드</string>
+	<string name="transport_mode_dlg_simple">단순 모드</string>
+	<string name="transport_mode_dlg_trainer">훈련 모드</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">템포 비율:</string>
+	<string name="transport_mode_dlg_simple_loop">반복 재생</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">템포:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">끝 마디:</string>
+	<!-- <string name="transport_mode_dlg_trainer_tempo_increment_label"></string> -->
+	<string name="transport_mode_dlg_loop_range_label">반복 범위</string>
+	<string name="transport_mode_dlg_loop_range_from_label">재생 시작 마디:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">처음부터</string>
+	<string name="transport_mode_dlg_loop_range_to_label">재생 끝 마디:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">끝까지</string>
 
 </resources>

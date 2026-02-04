@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Gelditu</string>
 	<!-- <string name="action_transport_metronome"></string> -->
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">Erreproduzio modua</string>
+	<!-- <string name="action_transport_set_loop_start"></string> -->
+	<!-- <string name="action_transport_set_loop_end"></string> -->
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -483,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Erreproduzio modua</string>
+	<string name="transport_mode_dlg_simple">Modu Normalean</string>
+	<string name="transport_mode_dlg_trainer">Modo de Entrenamiento</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Denbora Porzentaia:</string>
+	<string name="transport_mode_dlg_simple_loop">Errepikatu infinitoki</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tiempo:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">-raino:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Areagotu porzentaia:</string>
+	<string name="transport_mode_dlg_loop_range_label">Errepikatu Range</string>
+	<!-- <string name="transport_mode_dlg_loop_range_from_label"></string> -->
+	<string name="transport_mode_dlg_loop_range_from_default">Hasieratik</string>
+	<!-- <string name="transport_mode_dlg_loop_range_to_label"></string> -->
+	<string name="transport_mode_dlg_loop_range_to_default">Bukaeraino</string>
 
 </resources>
