@@ -2,7 +2,11 @@ package app.tuxguitar.player.base;
 
 public class MidiPlayerMode{
 
-	public static final int DEFAULT_TEMPO_PERCENT = 100;
+	public static final int SIMPLE_DEFAULT_TEMPO_PERCENT = 100;
+
+	public static final int CUSTOM_DEFAULT_TEMPO_PERCENT_FROM = 80;
+	public static final int CUSTOM_DEFAULT_TEMPO_PERCENT_TO = 100;
+	public static final int CUSTOM_DEFAULT_TEMPO_PERCENT_INCREMENT = 5;
 
 	public static final int TYPE_SIMPLE = 1;
 	public static final int TYPE_CUSTOM = 2;
@@ -24,10 +28,10 @@ public class MidiPlayerMode{
 	public void clear(){
 		this.loop = false;
 		this.type = TYPE_SIMPLE;
-		this.simplePercent = DEFAULT_TEMPO_PERCENT;
-		this.customPercentFrom = DEFAULT_TEMPO_PERCENT;
-		this.customPercentTo = DEFAULT_TEMPO_PERCENT;
-		this.customPercentIncrement = 1;
+		this.simplePercent = SIMPLE_DEFAULT_TEMPO_PERCENT;
+		this.customPercentFrom = CUSTOM_DEFAULT_TEMPO_PERCENT_FROM;
+		this.customPercentTo = CUSTOM_DEFAULT_TEMPO_PERCENT_TO;
+		this.customPercentIncrement = CUSTOM_DEFAULT_TEMPO_PERCENT_INCREMENT;
 		this.loopSHeader = -1;
 		this.loopEHeader = -1;
 		this.reset();

@@ -294,7 +294,7 @@ public class TGTransportModeDialog {
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setType(type);
 		mode.setLoop(loop);
-		mode.setSimplePercent(simplePercent != null ? simplePercent : MidiPlayerMode.DEFAULT_TEMPO_PERCENT);
+		mode.setSimplePercent(simplePercent != null ? simplePercent : MidiPlayerMode.SIMPLE_DEFAULT_TEMPO_PERCENT);
 		mode.setCustomPercentFrom(this.customFrom.getValue());
 		mode.setCustomPercentTo(this.customTo.getValue());
 		mode.setCustomPercentIncrement(this.customIncrement.getValue());
