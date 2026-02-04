@@ -4,13 +4,16 @@ import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.util.TGContext;
 
 public class LilypondSongWriter implements TGSongWriter {
 
 	public static final TGFileFormat FILE_FORMAT = new TGFileFormat("LilyPond", "text/x-lilypond", new String[]{"ly"});
 
-	public LilypondSongWriter() {
-		super();
+	private TGContext context;
+
+	public LilypondSongWriter(TGContext context) {
+		this.context = context;
 	}
 
 	public TGFileFormat getFileFormat() {
@@ -24,7 +27,7 @@ public class LilypondSongWriter implements TGSongWriter {
 				settings = LilypondSettings.getDefaults();
 			}
 
-			new LilypondOutputStream(handle.getOutputStream(), settings).writeSong(handle.getSong());
+			new LilypondOutputStream(this.context, handle.getOutputStream(), settings).writeSong(handle.getSong());
 		}catch(Throwable throwable){
 			throw new TGFileFormatException(throwable);
 		}

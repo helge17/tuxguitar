@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.helpers.TGMeasureError;
+import app.tuxguitar.song.helpers.tuning.TuningManager;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDuration;
@@ -17,6 +18,7 @@ import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMessagesManager;
 
 public class TGSongManager {
@@ -30,16 +32,19 @@ public class TGSongManager {
 		{64,59,55,50,45,40,35},
 	};
 
+	private TGContext context;
 	private TGFactory factory;
 	private TGTrackManager trackManager;
+	private TuningManager tuningManager;
 	private TGMeasureManager measureManager;
 	private boolean freeEditionMode;
 
-	public TGSongManager(){
-		this(new TGFactory());
+	public TGSongManager(TGContext context){
+		this(context, new TGFactory());
 	}
 
-	public TGSongManager(TGFactory factory){
+	public TGSongManager(TGContext context, TGFactory factory){
+		this.context = context;
 		this.factory = factory;
 	}
 
@@ -58,6 +63,13 @@ public class TGSongManager {
 		return this.trackManager;
 	}
 
+	public TuningManager getTuningManager(){
+		if(this.tuningManager == null){
+			this.tuningManager = TuningManager.getInstance(this.context);
+		}
+		return this.tuningManager;
+	}
+
 	public TGMeasureManager getMeasureManager(){
 		if(this.measureManager == null){
 			this.measureManager = new TGMeasureManager(this);
@@ -68,15 +80,15 @@ public class TGSongManager {
 	public void toggleFreeEditionMode() {
 		this.freeEditionMode = !this.freeEditionMode;
 	}
-	
+
 	public void setFreeEditionMode(boolean newMode) {
 		this.freeEditionMode = newMode;
 	}
-	
+
 	public boolean isFreeEditionMode(TGMeasure measure) {
 		return (this.freeEditionMode || !getMeasureManager().isMeasureDurationValid(measure));
 	}
-	
+
 	public List<TGMeasureError> getMeasureErrors(TGSong song) {
 		TGMeasureManager measureManager = getMeasureManager();
 		List<TGMeasureError> list = new ArrayList<TGMeasureError>();
@@ -90,7 +102,7 @@ public class TGSongManager {
 		}
 		return list;
 	}
-	
+
 	// major error present in song?
 	public boolean hasMajorError(TGSong song) {
 		for (TGMeasureError err : this.getMeasureErrors(song)) {
@@ -133,6 +145,7 @@ public class TGSongManager {
 		track.setName(getDefaultTrackName(track));
 		track.setChannelId(channel.getChannelId());
 		track.setStrings(createDefaultInstrumentStrings());
+		track.setTuningName(getDefaultTuningName());
 		track.addMeasure(getFactory().newMeasure(header));
 		track.getColor().copyFrom(TGColor.RED);
 
@@ -329,6 +342,7 @@ public class TGSongManager {
 			tgTrack.addMeasure(measure);
 		}
 		tgTrack.setStrings(createDefaultInstrumentStrings());
+		tgTrack.setTuningName(getDefaultTuningName());
 		tgTrack.getColor().copyFrom(TGColor.RED);
 
 		return tgTrack;
@@ -917,6 +931,14 @@ public class TGSongManager {
 
 	public List<TGString> createDefaultInstrumentStrings(int stringCount) {
 		return createStrings(stringCount, DEFAULT_TUNING_VALUES);
+	}
+
+	private String getDefaultTuningName() {
+		return getTuningManager().getDefaultTuningName();
+	}
+
+	public void applyTuningName(TGTrack track) {
+		track.setTuningName(getTuningManager().getTuningNameForTrack(track));
 	}
 
 	public List<TGString> createPercussionStrings(int stringCount) {

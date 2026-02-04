@@ -16,6 +16,7 @@ import app.tuxguitar.ui.resource.UIFont;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.resource.UIResourceFactory;
+import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMessagesManager;
 
 public class SVGController implements TGController {
@@ -28,9 +29,9 @@ public class SVGController implements TGController {
 	private UIResourceFactory tgResourceFactory;
 	private TGLayoutVertical tgLayout;
 
-	public SVGController(SVGStyles tgStyles){
+	public SVGController(TGContext context, SVGStyles tgStyles){
 		this.tgStyles = tgStyles;
-		this.tgSongManager = new TGSongManager();
+		this.tgSongManager = new TGSongManager(context);
 		this.tgSongManager.setFactory(new TGFactoryImpl());
 		this.tgResourceFactory = new SVGResourceFactory();
 		this.tgResourceBuffer = new TGResourceBuffer();

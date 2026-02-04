@@ -13,7 +13,7 @@ public class GPXInputStreamPlugin extends TGSongReaderPlugin{
 	}
 
 	protected TGSongReader createInputStream(TGContext context) {
-		return new GPXInputStream();
+		return new GPXInputStream(context);
 	}
 
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) {

@@ -17,6 +17,7 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 
 	public static final String ATTRIBUTE_OFFSET = "offset";
 	public static final String ATTRIBUTE_STRINGS = "strings";
+	public static final String ATTRIBUTE_TUNING_NAME = "tuningName";
 
 	public TGChangeTrackTuningAction(TGContext context) {
 		super(context, NAME);
@@ -60,6 +61,9 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 			}
 			if( offset != null ) {
 				songManager.getTrackManager().changeOffset(track, offset);
+			}
+			if (context.hasAttribute(ATTRIBUTE_TUNING_NAME)) {
+				songManager.getTrackManager().changeTuningName(track, context.getAttribute(ATTRIBUTE_TUNING_NAME));
 			}
 		}
 	}

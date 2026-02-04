@@ -58,7 +58,7 @@ public class TGPrintAction extends TGActionBase{
 			return;
 		}
 
-		TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+		TGSongManager manager = new TGSongManager(getContext(), new TGFactoryImpl());
 		TGSong sourceSong = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		TGSong targetSong = sourceSong.clone(manager.getFactory());
 		UIRectangle printerArea = this.getPrinterArea(printer, 10f);

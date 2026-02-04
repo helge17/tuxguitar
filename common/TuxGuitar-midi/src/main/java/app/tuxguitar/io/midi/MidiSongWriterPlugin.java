@@ -16,6 +16,6 @@ public class MidiSongWriterPlugin extends TGSongWriterPlugin {
 	}
 
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
-		return new MidiSongWriter();
+		return new MidiSongWriter(context);
 	}
 }

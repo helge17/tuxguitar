@@ -47,7 +47,7 @@ public class TGConverter {
 		try {
 			this.getListener().notifyFileProcess(convertFileName);
 
-			TGSongManager manager = new TGSongManager();
+			TGSongManager manager = new TGSongManager(this.context);
 			TGSong song = null;
 			TGSongReaderHandle tgSongLoaderHandle = new TGSongReaderHandle();
 			try {

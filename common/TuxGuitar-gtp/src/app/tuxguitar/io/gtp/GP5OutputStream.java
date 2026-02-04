@@ -42,6 +42,7 @@ import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.util.TGContext;
 /**
  * @author julian
  *
@@ -67,8 +68,8 @@ public class GP5OutputStream extends GTPOutputStream {
 		"Moderate",
 	};
 
-	public GP5OutputStream(GTPSettings settings) {
-		super(settings);
+	public GP5OutputStream(TGContext context, GTPSettings settings) {
+		super(context, settings);
 	}
 
 	public TGFileFormat getFileFormat(){

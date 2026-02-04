@@ -79,7 +79,7 @@ public class TGTrackManager {
 		}
 		return nextTiedNote;
 	}
-	
+
 	// look for a previous note to be tied to
 	public TGNote getPreviousNoteForTie(TGNote note) {
 		return this.getPreviousNoteForTie(note.getVoice(), note.getString(), note.getValue());
@@ -101,7 +101,7 @@ public class TGTrackManager {
 		// look for a valid tied note
 		TGNote previousNoteForTie = null;
 		for (TGNote previousNote : previousVoice.getNotes()) {
-			if ((previousNote.getString() == string) && 
+			if ((previousNote.getString() == string) &&
 					((value==null) || (previousNote.getValue() == value)) ) {
 				previousNoteForTie = previousNote;
 				break;
@@ -423,6 +423,10 @@ public class TGTrackManager {
 		track.setOffset(offset);
 	}
 
+	public void changeTuningName(TGTrack track, String tuningName) {
+		track.setTuningName(tuningName);
+	}
+
 	public void changeStringCount(TGTrack track, int count){
 		if( track.stringCount() != count ) {
 			if( count < track.getStrings().size() ){
@@ -434,6 +438,7 @@ public class TGTrackManager {
 			} else {
 				track.setStrings(getSongManager().createDefaultInstrumentStrings(count));
 			}
+			getSongManager().applyTuningName(track);
 		}
 	}
 
@@ -466,6 +471,7 @@ public class TGTrackManager {
 			} else {
 				track.setStrings(getSongManager().createDefaultInstrumentStrings(track.stringCount()));
 			}
+			getSongManager().applyTuningName(track);
 		}
 	}
 

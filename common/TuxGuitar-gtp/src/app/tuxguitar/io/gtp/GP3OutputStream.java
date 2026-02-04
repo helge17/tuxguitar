@@ -30,6 +30,7 @@ import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.util.TGContext;
 
 public class GP3OutputStream extends GTPOutputStream {
 
@@ -37,8 +38,8 @@ public class GP3OutputStream extends GTPOutputStream {
 	private static final int GP_BEND_SEMITONE = 25;
 	private static final int GP_BEND_POSITION = 60;
 
-	public GP3OutputStream(GTPSettings settings){
-		super(settings);
+	public GP3OutputStream(TGContext context, GTPSettings settings){
+		super(context, settings);
 	}
 
 	public TGFileFormat getFileFormat(){

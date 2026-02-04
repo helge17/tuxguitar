@@ -47,6 +47,7 @@ import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
+import app.tuxguitar.util.TGContext;
 
 public class TESongParser {
 
@@ -60,8 +61,8 @@ public class TESongParser {
 
 	private TGSongManager manager;
 
-	public TESongParser(TGFactory factory) {
-		this.manager = new TGSongManager(factory);
+	public TESongParser(TGContext context, TGFactory factory) {
+		this.manager = new TGSongManager(context, factory);
 	}
 
 	public TGSong parseSong(TESong teSong){

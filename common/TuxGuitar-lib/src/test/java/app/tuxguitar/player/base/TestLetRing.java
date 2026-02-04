@@ -31,7 +31,7 @@ public class TestLetRing {
 	public TestLetRing() throws IOException {
 		TGContext context = new TGContext();
 		TGSong song = new TestFileFormat20().readSong("letRing_20.tg", true).getSong();
-		MidiSequenceParser parser = new MidiSequenceParser(song, new TGSongManager(), 0);
+		MidiSequenceParser parser = new MidiSequenceParser(song, new TGSongManager(context), 0);
 		MidiSequencerImplForTest sequencer = new MidiSequencerImplForTest(context);
 		MidiSequenceHandlerImpl seqHandler = new MidiSequenceHandlerImpl(sequencer,1);
 		parser.parse(seqHandler);

@@ -94,7 +94,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				parseEvents(tickEvents, seqTrackNb, trackNumber);
 			}
 
-			tgSongManager = new TGSongManager(this.factory);
+			tgSongManager = new TGSongManager(this.context, this.factory);
 			TGSong tgSong = this.factory.newSong();
 			tgSong.setName(sequenceName);
 

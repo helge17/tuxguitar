@@ -39,10 +39,16 @@ import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
+import app.tuxguitar.util.TGContext;
 
 public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 	private DataOutputStream dataOutputStream;
+	private TGContext context;
+
+	public TGSongWriterImpl(TGContext context) {
+		this.context = context;
+	}
 
 	public TGFileFormat getFileFormat(){
 		return TG_FORMAT;
@@ -152,7 +158,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		}
 
 		//obtengo las cuerdas a escribir
-		List<TGString> strings = TGStringLimitUtil.createWritableStrings(track);
+		List<TGString> strings = TGStringLimitUtil.createWritableStrings(this.context, track);
 
 		//escribo la cantidad de cuerdas
 		writeByte(strings.size());

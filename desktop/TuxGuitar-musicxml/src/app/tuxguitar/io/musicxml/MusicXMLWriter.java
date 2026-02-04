@@ -44,6 +44,7 @@ import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMusicKeyUtils;
 import app.tuxguitar.util.TGVersion;
 import org.w3c.dom.Attr;
@@ -75,10 +76,12 @@ public class MusicXMLWriter{
 	private TGSongManager manager;
 
 	private OutputStream stream;
+	private TGContext context;
 
 	private Document document;
 
-	public MusicXMLWriter(OutputStream stream){
+	public MusicXMLWriter(TGContext context, OutputStream stream){
+		this.context = context;
 		this.stream = stream;
 		this.durations = new HashMap<Integer, String>();
 		this.durations.put(TGDuration.WHOLE, DURATION_NAMES[0]);
@@ -90,7 +93,7 @@ public class MusicXMLWriter{
 
 	public void writeSong(TGSong song) throws TGFileFormatException{
 		try{
-			this.manager = new TGSongManager();
+			this.manager = new TGSongManager(this.context);
 			this.document = newDocument();
 
 			Node node = this.addNode(this.document, "score-partwise");
@@ -486,7 +489,7 @@ public class MusicXMLWriter{
 
 
 	private void writeBeats(Node parent, TGMeasure measure, int nVoice, boolean measureIsEmpty, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
-		TGTrackManager trackMgr = new TGSongManager().getTrackManager();
+		TGTrackManager trackMgr = this.manager.getTrackManager();
 		int ks = measure.getKeySignature();
 		int beatCount = measure.countBeats();
 		int lyricIndex = 0;

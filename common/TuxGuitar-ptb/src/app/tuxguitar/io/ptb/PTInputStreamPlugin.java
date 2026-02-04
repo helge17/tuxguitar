@@ -15,7 +15,7 @@ public class PTInputStreamPlugin extends TGSongReaderPlugin{
 	}
 
 	protected TGSongReader createInputStream(TGContext context) {
-		return new PTInputStream();
+		return new PTInputStream(context);
 	}
 
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {

@@ -64,7 +64,7 @@ public class PDFSongWriter implements TGSongWriter {
 				styles = new PDFLayoutStyles(this.context);
 			}
 
-			TGSongManager manager = new TGSongManager(new TGFactoryImpl());
+			TGSongManager manager = new TGSongManager(this.context, new TGFactoryImpl());
 			TGSong clonedSong = handle.getSong().clone(manager.getFactory());
 
 			UIResourceFactory factory = new PDFResourceFactory();

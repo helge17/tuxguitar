@@ -28,14 +28,15 @@ import app.tuxguitar.song.models.TGStroke;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.util.TGContext;
 
 public class PTSongParser {
 
 	private TGSongManager manager;
 	private TrackHelper helper;
 
-	public PTSongParser(TGFactory factory){
-		this.manager = new TGSongManager(factory);
+	public PTSongParser(TGContext context, TGFactory factory){
+		this.manager = new TGSongManager(context, factory);
 		this.helper = new TrackHelper();
 	}
 

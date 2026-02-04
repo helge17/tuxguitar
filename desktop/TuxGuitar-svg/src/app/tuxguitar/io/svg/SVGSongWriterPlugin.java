@@ -18,6 +18,6 @@ public class SVGSongWriterPlugin extends TGSongWriterPlugin {
 	}
 
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
-		return new SVGSongWriter();
+		return new SVGSongWriter(context);
 	}
 }

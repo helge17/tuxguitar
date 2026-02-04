@@ -18,6 +18,6 @@ public class LilypondSongWriterPlugin extends TGSongWriterPlugin {
 	}
 
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
-		return new LilypondSongWriter();
+		return new LilypondSongWriter(context);
 	}
 }

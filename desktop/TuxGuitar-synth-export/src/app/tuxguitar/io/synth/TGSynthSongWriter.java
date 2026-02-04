@@ -50,7 +50,7 @@ public class TGSynthSongWriter implements TGSongWriter {
 
 			OutputStream out = handle.getOutputStream();
 			TGSong tgSong = handle.getSong();
-			TGSongManager tgSongManager = new TGSongManager();
+			TGSongManager tgSongManager = new TGSongManager(this.context);
 
 			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(tgSong, tgSongManager, MidiSequenceParser.DEFAULT_EXPORT_FLAGS | MidiSequenceParser.ADD_BANK_SELECT);
 			TGSynthSequenceHandler midiSequenceHandler = new TGSynthSequenceHandler(tgSong.countTracks());

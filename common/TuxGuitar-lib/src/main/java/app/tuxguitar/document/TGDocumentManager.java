@@ -12,8 +12,8 @@ public class TGDocumentManager {
 	private TGSongManager songManager;
 	private TGSong song;
 
-	private TGDocumentManager() {
-		this.songManager = new TGSongManager(new TGFactoryImpl());
+	private TGDocumentManager(TGContext context) {
+		this.songManager = new TGSongManager(context, new TGFactoryImpl());
 		this.song = this.songManager.newSong();
 	}
 
@@ -29,13 +29,16 @@ public class TGDocumentManager {
 		if( song != null ){
 			this.song = song;
 			this.songManager.autoCompleteSilences(this.song);
+			for (int i = 0; i < this.song.countTracks(); i++) {
+				this.songManager.applyTuningName(this.song.getTrack(i));
+			}
 		}
 	}
 
 	public static TGDocumentManager getInstance(TGContext context) {
 		return TGSingletonUtil.getInstance(context, TGDocumentManager.class.getName(), new TGSingletonFactory<TGDocumentManager>() {
 			public TGDocumentManager createInstance(TGContext context) {
-				return new TGDocumentManager();
+				return new TGDocumentManager(context);
 			}
 		});
 	}

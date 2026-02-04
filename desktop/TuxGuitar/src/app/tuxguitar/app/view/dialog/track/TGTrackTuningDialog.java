@@ -706,6 +706,7 @@ public class TGTrackTuningDialog {
 		final Integer offset = ((songManager.isPercussionChannel(song, track.getChannelId())) ? 0 : this.offsetSpinner.getValue());
 		final boolean offsetChanges = (offset != null && !offset.equals(track.getOffset()));
 		final boolean tuningChanges = hasTuningChanges(track, strings);
+		final String tuningName = this.currentSelectedPreset != null ? this.currentSelectedPreset.getName() : null;
 
 		if( this.validateTrackTuning(strings)) {
 			if( tuningChanges || offsetChanges ){
@@ -715,6 +716,7 @@ public class TGTrackTuningDialog {
 
 				if( tuningChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_STRINGS, strings);
+					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_TUNING_NAME, tuningName);
 				}
 				if( offsetChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);

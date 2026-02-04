@@ -7,16 +7,23 @@ import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongReader;
 import app.tuxguitar.io.base.TGSongReaderHandle;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGContext;
 
 public abstract class GTPInputStream extends GTPFileFormat implements TGSongReader{
 
 	private GTPFileFormatVersion version;
 	private GTPFileFormatVersion[] versions;
 	private InputStream stream;
+	private TGContext context;
 
-	public GTPInputStream(GTPSettings settings, GTPFileFormatVersion[] versions){
+	public GTPInputStream(TGContext context, GTPSettings settings, GTPFileFormatVersion[] versions){
 		super(settings);
+		this.context = context;
 		this.versions = versions;
+	}
+
+	protected TGContext getContext(){
+		return this.context;
 	}
 
 	public abstract TGSong readSong() throws TGFileFormatException;

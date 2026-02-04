@@ -4,11 +4,14 @@ import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.util.TGContext;
 
 public class ASCIISongWriter implements TGSongWriter {
 
-	public ASCIISongWriter() {
-		super();
+	private TGContext context;
+
+	public ASCIISongWriter(TGContext context) {
+		this.context = context;
 	}
 
 	public TGFileFormat getFileFormat() {
@@ -17,7 +20,7 @@ public class ASCIISongWriter implements TGSongWriter {
 
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
 		try{
-			new ASCIITabOutputStream(handle.getOutputStream()).writeSong(handle.getSong());
+			new ASCIITabOutputStream(this.context, handle.getOutputStream()).writeSong(handle.getSong());
 		}catch(Throwable throwable){
 			throw new TGFileFormatException(throwable);
 		}
