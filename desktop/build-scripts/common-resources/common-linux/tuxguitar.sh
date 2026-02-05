@@ -12,7 +12,7 @@ getTheme() {
 }
 
 ##SCRIPT DIR
-TG_DIR=`dirname $(realpath "$0")`
+TG_DIR=`dirname "$(realpath "$0")"`
 ##JAVA
 JAVA=`which java`
 ##LIBRARY_PATH
@@ -29,4 +29,4 @@ export LD_LIBRARY_PATH
 ##Avoid problems with Accelerated Compositing mode in SWT/WebKitGTK
 export WEBKIT_DISABLE_COMPOSITING_MODE=1
 ##LAUNCH
-${JAVA} -cp :${CLASSPATH} -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
+${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
