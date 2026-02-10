@@ -70,15 +70,7 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		this.tempoPercentSpinner.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
-				MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
-				MidiPlayerMode mode = midiPlayer.getMode();
 				int tempoPercent = tempoPercentSpinner.getValue();
-				
-				if (mode.getType() == MidiPlayerMode.TYPE_CUSTOM && 
-						tempoPercent > mode.getCustomPercentTo()) {
-					// make sure spinner value doesn't go above percent to in training mode
-					tempoPercent = mode.getCustomPercentTo();
-				}
 				
 				TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGChangeTempoPercentageAction.NAME);
 				tgActionProcessor.setAttribute(

@@ -18,15 +18,19 @@ public class TGChangeTempoPercentageAction extends TGActionBase {
 	@Override
 	protected void processAction(TGActionContext context) {
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
-		MidiPlayerMode pm = midiPlayer.getMode();
+		MidiPlayerMode mode = midiPlayer.getMode();
 		int tempoPercent = (int) context.getAttribute(ATTRIBUTE_PERCENTAGE_VALUE);
 		
-		if (pm.getType() == MidiPlayerMode.TYPE_CUSTOM) {
-			pm.setCustomPercentFrom(tempoPercent);	
+		if (mode.getType() == MidiPlayerMode.TYPE_CUSTOM) {
+			mode.setCustomPercentFrom(tempoPercent);
+			
+			if (tempoPercent > mode.getCustomPercentTo()) {
+				mode.setCustomPercentTo(tempoPercent);
+			}
 		} else {
-			pm.setSimplePercent(tempoPercent);
+			mode.setSimplePercent(tempoPercent);
 		}
-		pm.setCurrentPercent(tempoPercent);
+		
+		mode.setCurrentPercent(tempoPercent);
 	}
-	
 }
