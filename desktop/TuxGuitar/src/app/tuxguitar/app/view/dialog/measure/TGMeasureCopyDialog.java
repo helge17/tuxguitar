@@ -3,6 +3,13 @@ package app.tuxguitar.app.view.dialog.measure;
 import java.util.Iterator;
 
 import app.tuxguitar.app.TuxGuitar;
+
+/**
+ * Dialog for copying measures with range selection.
+ * 
+ * @modified 2026-02-18 Added "First Measure" and "Last Measure" buttons
+ * @author TuxGuitar Team
+ */
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
@@ -109,10 +116,46 @@ public class TGMeasureCopyDialog {
 		copyMarkers.setSelected(initCopyMarkers);
 		optionsLayout.set(copyMarkers, rowCheckBox, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
-		fromSpinner.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				int fromSelection = fromSpinner.getValue();
-				int toSelection = toSpinner.getValue();
+		// ========== FEATURE ADDED: First/Last Measure Buttons ==========
+		// Added 2026-02-18: Buttons to quickly select first or last measure
+		// These buttons are created here (after copyMarkers) so they can reference it
+		
+		// First Measure button - sets 'From' value to 1 (aligned with fromSpinner)
+		final UIButton firstMeasureButton = uiFactory.createButton(range);
+		firstMeasureButton.setText(TuxGuitar.getProperty("measure.first"));
+	rangeLayout.set(firstMeasureButton, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+	
+	// Last Measure button - sets 'To' value to last measure (aligned with toSpinner)
+	final UIButton lastMeasureButton = uiFactory.createButton(range);
+	lastMeasureButton.setText(TuxGuitar.getProperty("measure.last"));
+	rangeLayout.set(lastMeasureButton, 2, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+	
+	// Add listeners after both buttons are created so they can reference each other
+	firstMeasureButton.addSelectionListener(new UISelectionListener() {
+		public void onSelect(UISelectionEvent event) {
+			// Set 'From' value to the first measure in the song
+			fromSpinner.setValue(1);
+			// Update marker checkbox state based on the new range
+			updateCopyMarkers(song, 1, toSpinner.getValue(), copyMarkers);
+			updateButtonStates(firstMeasureButton, lastMeasureButton, 1, toSpinner.getValue(), measureCount);
+		}
+	});
+	
+	lastMeasureButton.addSelectionListener(new UISelectionListener() {
+		public void onSelect(UISelectionEvent event) {
+			// Set 'To' value to the last measure in the song
+			toSpinner.setValue(measureCount);
+			// Update marker checkbox state based on the new range
+			updateCopyMarkers(song, fromSpinner.getValue(), measureCount, copyMarkers);
+			updateButtonStates(firstMeasureButton, lastMeasureButton, fromSpinner.getValue(), measureCount, measureCount);
+		}
+	});
+	// ========== END FEATURE ==========
+
+	fromSpinner.addSelectionListener(new UISelectionListener() {
+		public void onSelect(UISelectionEvent event) {
+			int fromSelection = fromSpinner.getValue();
+			int toSelection = toSpinner.getValue();
 
 				if(fromSelection < minSelection){
 					fromSpinner.setValue(minSelection);
@@ -122,6 +165,7 @@ public class TGMeasureCopyDialog {
 					fromSelection = toSelection;
 				}
 				updateCopyMarkers(song, fromSelection, toSelection, copyMarkers);
+				updateButtonStates(firstMeasureButton, lastMeasureButton, fromSpinner.getValue(), toSpinner.getValue(), measureCount);
 			}
 		});
 		toSpinner.addSelectionListener(new UISelectionListener() {
@@ -136,9 +180,12 @@ public class TGMeasureCopyDialog {
 					toSelection = maxSelection;
 				}
 				updateCopyMarkers(song, fromSelection, toSelection, copyMarkers);
+				updateButtonStates(firstMeasureButton, lastMeasureButton, fromSelection, toSelection, measureCount);
 			}
 		});
 		updateCopyMarkers(song, fromSpinner.getValue(), toSpinner.getValue(), copyMarkers);
+		// Initialize button states based on current spinner values
+		updateButtonStates(firstMeasureButton, lastMeasureButton, fromSpinner.getValue(), toSpinner.getValue(), measureCount);
 
 		//------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
@@ -197,5 +244,24 @@ public class TGMeasureCopyDialog {
 		if (!atLeastOneMarker) {
 			copyMarkers.setSelected(false);
 		}
+	}
+
+	/**
+	 * Update the enabled state of first/last measure buttons based on current spinner values.
+	 * Disables firstMeasureButton when fromSpinner is at measure 1.
+	 * Disables lastMeasureButton when toSpinner is at the last measure.
+	 * 
+	 * @param firstMeasureButton Button to set 'From' to first measure
+	 * @param lastMeasureButton Button to set 'To' to last measure
+	 * @param fromValue Current value of the 'From' spinner
+	 * @param toValue Current value of the 'To' spinner
+	 * @param measureCount Total number of measures in the song
+	 */
+	private void updateButtonStates(UIButton firstMeasureButton, UIButton lastMeasureButton, 
+									int fromValue, int toValue, int measureCount) {
+		// Disable first measure button if already at first measure
+		firstMeasureButton.setEnabled(fromValue > 1);
+		// Disable last measure button if already at last measure
+		lastMeasureButton.setEnabled(toValue < measureCount);
 	}
 }
