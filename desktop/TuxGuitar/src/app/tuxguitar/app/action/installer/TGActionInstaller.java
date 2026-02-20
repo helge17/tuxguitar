@@ -219,6 +219,7 @@ import app.tuxguitar.editor.action.note.TGCleanBeatAction;
 import app.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGFixTiedNoteAction;
 import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGInsertChordAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
@@ -312,6 +313,7 @@ public class TGActionInstaller {
 		installAction(new TGToggleFreeEditionModeAction(context));
 		installAction(new TGOpenMeasureErrorsDialogAction(context));
 		installAction(new TGFixMeasureVoiceAction(context));
+		installAction(new TGFixTiedNoteAction(context));
 
 		//tablature actions
 		installAction(new TGMouseClickAction(context));
