@@ -143,6 +143,23 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	// - if approximate is set, list closest to target is returned
 	//
 	// if not all criteria can be fulfilled, null is returned
+	
+/*
+ * principle of the algorithm:
+ * All valid durations are subdivisions of a whole
+ * a whole's duration is encoded by the product of all prime numbers of possible divisions: 3*5*7*...
+ * so a whole's duration is divisible by all possible values of TGDivision.enters
+ * (warning: 9 is not a prime)
+ * when splitting D into multiple TGDuration di:
+ * - if none of these di use a division 8/13, then the sum shall remain divisible by 13
+ * - logically: if D is NOT divisible by 13, then it must contain some TGDuration di with TGDivision 8/13
+ * - if so, compute how many instances of TGDuration with the lowest possible duration and this division
+ *          shall be subtracted from D to make sure the remaining value becomes divisible by 13
+ * - when it's done, look if the remaining value of D is divisible by 11
+ * - etc
+ * 
+ */
+	
 	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory) {
 		return splitPreciseDuration(timeToSplit, max, factory, null, null, false);
 	}
@@ -159,6 +176,9 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 
 		long D = timeToSplit;
 		List<TGDuration> list = new ArrayList<TGDuration>();
+		if (D == 0) {
+			return list;
+		}
 
 		// max: power of 2, no longer than a whole
 		max = Math.min(max, TGDuration.WHOLE_PRECISE_DURATION);
@@ -169,7 +189,12 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 
 		// look for all division types, starting with longest divisions, except excluded ones
 		for (TGDivisionType dt : divisionTypes) {
-			if ((dt.getEnters()==1) || ((D % dt.getEnters() != 0) && (maxDivision==null || dt.getEnters()<=maxDivision))) {
+			int enters = dt.getEnters();
+			// specific case if maxDivision < 9, since 9 is not a prime number
+			if ((maxDivision != null) && (maxDivision < 9) && (dt.getEnters()==3)) {
+				enters *= 3;
+			}
+			if ((dt.getEnters()==1) || ((D % enters != 0) && (maxDivision==null || dt.getEnters()<=maxDivision))) {
 				// D contains notes with this time division
 				boolean foundDurationWithTimeDivision = false;
 
@@ -191,7 +216,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 					} else {
 						// subtract as many occurrences of base to D so that D does not contain any more duration with this time division
 						toSubtract = base;
-						while( ((D-toSubtract) % dt.getEnters() != 0) && (toSubtract <= D)) {
+						while( ((D-toSubtract) % enters != 0) && (toSubtract <= D)) {
 							toSubtract += base;
 						}
 					}
@@ -210,7 +235,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 							nBase = toSubtract / base;
 						}
 						// merge powers of 2
-						while ((nBase % 2 == 0) && (n*2*base <= max)) {
+						while ((nBase != 0) && (nBase % 2 == 0) && (n*2*base <= max)) {
 							n *= 2;
 							nBase /= 2;
 						}

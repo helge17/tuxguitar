@@ -232,12 +232,8 @@ public class TestTGDuration {
 		// less trivial
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION*13/15, TGDuration.WHOLE_PRECISE_DURATION, factory);
 		assertNotNull(list);
-		long sum = 0;
-		for(int i=0; i<list.size(); i++) {
-			sum += list.get(i).getPreciseTime();
-		}
+		long sum = getListSumDuration(list, TGDuration.WHOLE_PRECISE_DURATION);
 		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION*13/15);
-
 
 		// test max
 		list = TGDuration.splitPreciseDuration(3*TGDuration.WHOLE_PRECISE_DURATION, TGDuration.WHOLE_PRECISE_DURATION, factory);
@@ -281,12 +277,7 @@ public class TestTGDuration {
 		long max = TGDuration.WHOLE_PRECISE_DURATION*5/16;
 		list = TGDuration.splitPreciseDuration(TGDuration.WHOLE_PRECISE_DURATION, max, factory);
 		assertNotNull(list);
-		sum = 0;
-		for(int i=0; i<list.size(); i++) {
-			long preciseTime =list.get(i).getPreciseTime(); 
-			assertTrue(preciseTime <= max, "KO, max " + String.valueOf(max) + " / " + String.valueOf(preciseTime));
-			sum += preciseTime;
-		}
+		sum = getListSumDuration(list, max);
 		assertEquals(sum, TGDuration.WHOLE_PRECISE_DURATION);
 
 		// when time to fill is very long
@@ -298,5 +289,45 @@ public class TestTGDuration {
 		}
 		catch (Throwable e) {}
 		assert(ok);
+
+		// triplet 16th
+		long toSplit = TGDuration.WHOLE_PRECISE_DURATION*2/3/16;
+		list = TGDuration.splitPreciseDuration(toSplit, TGDuration.WHOLE_PRECISE_DURATION, factory);
+		assertNotNull(list);
+		sum = getListSumDuration(list, null);
+		assertEquals(sum, toSplit);
+
+		// limit division to 3, and value to 16, to avoid getting 3 * 9-tuplet of 64th
+		list = TGDuration.splitPreciseDuration(toSplit, TGDuration.WHOLE_PRECISE_DURATION, factory,
+				16, 3);
+		assertNotNull(list);
+		sum = getListSumDuration(list, null);
+		assertEquals(sum, toSplit);
+		for (TGDuration d : list) {
+			assertTrue(d.getDivision().getEnters() <= 3);
+		}
+
+		// limit division to 3, and value to 32, should give the same result
+		list = TGDuration.splitPreciseDuration(toSplit, TGDuration.WHOLE_PRECISE_DURATION, factory,
+				32, 3);
+		assertNotNull(list);
+		sum = getListSumDuration(list, null);
+		assertEquals(sum, toSplit);
+		for (TGDuration d : list) {
+			assertTrue(d.getDivision().getEnters() <= 3);
+		}
+	}
+
+	// get sum of notes list duration, and check max (if specified)
+	private long getListSumDuration(List<TGDuration> list, Long max) {
+		long sum = 0;
+		for(int i=0; i<list.size(); i++) {
+			long preciseTime = list.get(i).getPreciseTime();
+			if (max != null) {
+				assertTrue(preciseTime <= max, "KO, max " + String.valueOf(max) + " / " + String.valueOf(preciseTime));
+			}
+			sum += preciseTime;
+		}
+		return sum;
 	}
 }
