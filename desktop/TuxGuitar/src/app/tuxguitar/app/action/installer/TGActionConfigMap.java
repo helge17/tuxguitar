@@ -243,6 +243,7 @@ import app.tuxguitar.editor.action.note.TGCleanBeatAction;
 import app.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGFixTiedNoteAction;
 import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGInsertChordAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
@@ -383,6 +384,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGToggleFreeEditionModeAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenMeasureErrorsDialogAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGFixTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 
 		//tablature actions
 		this.map(TGMouseClickAction.NAME, LOCKABLE);

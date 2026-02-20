@@ -16,7 +16,7 @@ import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
-import app.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
+import app.tuxguitar.editor.action.note.TGFixTiedNoteAction;
 import app.tuxguitar.editor.event.TGUpdateEvent;
 import app.tuxguitar.editor.util.TGProcess;
 import app.tuxguitar.editor.util.TGSyncProcessLocked;
@@ -134,7 +134,7 @@ public class TGMeasureErrorDialog implements TGEventListener {
 				TGMeasureError err = TGMeasureErrorDialog.this.currentError;
 				if (err != null) {
 					String actionName = (err.getErrorType() == TGMeasureError.TYPE_VOICE_DURATION_ERROR ? 
-							TGFixMeasureVoiceAction.NAME : TGChangeTiedNoteAction.NAME);
+							TGFixMeasureVoiceAction.NAME : TGFixTiedNoteAction.NAME);
 					TGActionProcessor actionProcessor = new TGActionProcessor(context, actionName);
 					actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE,
 							err.getMeasure());
