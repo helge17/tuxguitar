@@ -4,6 +4,18 @@
     android:id="@+id/action_menu_track" >
 
     <item
+        android:id="@+id/action_track_first"
+        android:title="@string/action_track_first"/>
+    <item
+        android:id="@+id/action_track_previous"
+        android:title="@string/action_track_previous"/>
+    <item
+        android:id="@+id/action_track_next"
+        android:title="@string/action_track_next"/>
+    <item
+        android:id="@+id/action_track_last"
+        android:title="@string/action_track_last"/>
+    <item
         android:id="@+id/action_track_add"
         android:title="@string/action_track_add"/>
     <item
@@ -19,13 +31,13 @@
         android:id="@+id/action_track_move_down"
         android:title="@string/action_track_move_down"/>
     <item
-        android:id="@+id/action_track_change_mute"
-        android:checkable="true"
-        android:title="@string/action_track_change_mute"/>
-    <item
         android:id="@+id/action_track_change_solo"
         android:checkable="true"
         android:title="@string/action_track_change_solo"/>
+    <item
+        android:id="@+id/action_track_change_mute"
+        android:checkable="true"
+        android:title="@string/action_track_change_mute"/>
     <item
         android:id="@+id/action_track_set_name"
         android:title="@string/action_track_set_name"/>

@@ -1,3 +1,20 @@
+TuxGuitar 2.1.0 (2026-xx-xx) changes:
+
+* Allow continuous scrolling when playing
+* Add anticipation to discrete scrolling when playing
+* Allow tempo changes on selection
+* Add option to insert chord diagram without notes
+* Add plausibility checks to the "Play Mode" dialog
+* Improve MIDI import
+* Add option to remove CC/PC events from Midi export
+* Improve support for DLS soundbanks
+* Improve documentation of the sound settings
+* Detect dark mode on startup (macOS, Linux/KDE)
+* Enable TuxGuitar Synthesizer LV2 extension plugin on FreeBSD
+* Android: Keep screen on during playback
+* Android: Add player controls
+* More small improvements and cleanups
+
 TuxGuitar 2.0.1 (2025-12-22) changes:
 
 * Fix note duration change when empty space in measure is longer than a whole

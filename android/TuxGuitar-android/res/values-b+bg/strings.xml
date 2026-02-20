@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Спиране на изпълнението</string>
 	<string name="action_transport_metronome">Метроном</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">Режим да изпълнение</string>
+	<string name="action_transport_set_loop_start">Задаване начало на повторението</string>
+	<string name="action_transport_set_loop_end">Задаване край на повторението</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -79,18 +82,26 @@
 	<string name="action_change_repeat_alternative">Алтернативни повторения</string>
 	<string name="action_change_properties">Свойства</string>
 
+	<string name="action_track_first">Първа писта</string>
+	<string name="action_track_previous">Предишна писта</string>
+	<string name="action_track_next">Следваща писта</string>
+	<string name="action_track_last">Последна писта</string>
 	<string name="action_track_add">Добавяне на писта</string>
-	<string name="action_track_remove">Премахване на писта</string>
 	<string name="action_track_clone">Дублиране на писта</string>
+	<string name="action_track_remove">Премахване на писта</string>
 	<string name="action_track_move_up">Преместване пистата нагоре</string>
 	<string name="action_track_move_down">Преместване пистата надолу</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Име</string>
 	<string name="action_track_set_channel">Инструмент</string>
 	<string name="action_track_change_tuning">Фини настройки</string>
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Първи такт</string>
+	<string name="action_measure_previous">Предишен такт</string>
+	<string name="action_measure_next">Следващ такт</string>
+	<string name="action_measure_last">Последен такт</string>
 	<string name="action_measure_add">Добавяне на такт</string>
 	<string name="action_measure_clean">Изчистване на такт</string>
 	<string name="action_measure_remove">Премахване на такт</string>
@@ -475,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">Ехо:</string>
 	<string name="channel_edit_dlg_phaser_label">Фазер:</string>
 	<string name="channel_edit_dlg_tremolo_label">Тремоло:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Режим да изпълнение</string>
+	<string name="transport_mode_dlg_simple">Прост режим</string>
+	<string name="transport_mode_dlg_trainer">Тренировъчен режим</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Процент от темпото:</string>
+	<string name="transport_mode_dlg_simple_loop">Циклично изпълнение</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Темпо:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">До:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Нарастване с:</string>
+	<string name="transport_mode_dlg_loop_range_label">Обхват на повторението</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Изпълнение от такт:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">От началото</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Изпълнение до такт:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">До края</string>
 
 </resources>

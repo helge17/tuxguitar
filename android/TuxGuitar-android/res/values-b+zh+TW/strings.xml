@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">停止</string>
 	<string name="action_transport_metronome">節拍器</string>
 	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_mode">放音模式</string>
+	<string name="action_transport_set_loop_start">設定反覆播放的起點</string>
+	<string name="action_transport_set_loop_end">設定反覆播放的終點</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -79,18 +82,26 @@
 	<string name="action_change_repeat_alternative">任意的反覆</string>
 	<string name="action_change_properties">屬性</string>
 
+	<string name="action_track_first">第一軌</string>
+	<string name="action_track_previous">前一軌</string>
+	<string name="action_track_next">下一軌</string>
+	<string name="action_track_last">最末軌</string>
 	<string name="action_track_add">新增音軌</string>
-	<string name="action_track_remove">移除音軌</string>
 	<string name="action_track_clone">複製音軌</string>
+	<string name="action_track_remove">移除音軌</string>
 	<string name="action_track_move_up">上移音軌</string>
 	<string name="action_track_move_down">下移音軌</string>
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">名稱</string>
 	<string name="action_track_set_channel">樂器</string>
 	<!-- <string name="action_track_change_tuning"></string> -->
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">第一小節</string>
+	<string name="action_measure_previous">上個小節</string>
+	<string name="action_measure_next">下個小節</string>
+	<string name="action_measure_last">最後小節</string>
 	<string name="action_measure_add">新增小節</string>
 	<string name="action_measure_clean">清除小節</string>
 	<string name="action_measure_remove">移除小節</string>
@@ -475,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">混響效果:</string>
 	<string name="channel_edit_dlg_phaser_label">移相器:</string>
 	<string name="channel_edit_dlg_tremolo_label">顫音/震音:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">放音模式</string>
+	<string name="transport_mode_dlg_simple">簡單模式</string>
+	<string name="transport_mode_dlg_trainer">練習模式</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">數度的百分比:</string>
+	<string name="transport_mode_dlg_simple_loop">循環播放</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">節奏:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">到:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">漸快:</string>
+	<string name="transport_mode_dlg_loop_range_label">反覆的段落</string>
+	<string name="transport_mode_dlg_loop_range_from_label">從某小節播放:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">從頭</string>
+	<string name="transport_mode_dlg_loop_range_to_label">播放到小節:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">播到結束</string>
 
 </resources>

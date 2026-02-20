@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Parar reproducción</string>
 	<string name="action_transport_metronome">Metrónomo</string>
 	<string name="action_transport_count_down">Cuenta Regresiva</string>
+	<string name="action_transport_mode">Modo de Reproducción</string>
+	<string name="action_transport_set_loop_start">Marcar inicio de repetición</string>
+	<string name="action_transport_set_loop_end">Marcar final de repetición</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<string name="action_go_up">Mover cursor hacia arriba</string>
@@ -79,18 +82,26 @@
 	<string name="action_change_repeat_alternative">Repetición Alternativa</string>
 	<string name="action_change_properties">Propiedades</string>
 
+	<string name="action_track_first">Primera Pista</string>
+	<string name="action_track_previous">Pista Anterior</string>
+	<string name="action_track_next">Siguiente Pista</string>
+	<string name="action_track_last">Última Pista</string>
 	<string name="action_track_add">Agregar pista</string>
-	<string name="action_track_remove">Borrar Pista</string>
 	<string name="action_track_clone">Clonar Pista</string>
+	<string name="action_track_remove">Borrar Pista</string>
 	<string name="action_track_move_up">Mover Arriba</string>
 	<string name="action_track_move_down">Mover Abajo</string>
-	<string name="action_track_change_mute">Silenciar Pista</string>
 	<string name="action_track_change_solo">Dejar Pista Sola</string>
+	<string name="action_track_change_mute">Silenciar Pista</string>
 	<string name="action_track_set_name">Nombre</string>
 	<string name="action_track_set_channel">Instrumento</string>
 	<string name="action_track_change_tuning">Afinación</string>
 	<string name="action_track_change_string_count">Número de Líneas</string>
 
+	<string name="action_measure_first">Primero</string>
+	<string name="action_measure_previous">Anterior</string>
+	<string name="action_measure_next">Siguiente</string>
+	<string name="action_measure_last">Último</string>
 	<string name="action_measure_add">Agregar compás</string>
 	<string name="action_measure_clean">Limpiar compás</string>
 	<string name="action_measure_remove">Borrar compás</string>
@@ -475,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<string name="channel_edit_dlg_tremolo_label">Trémolo:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Modo de Reproducción</string>
+	<string name="transport_mode_dlg_simple">Modo Normal</string>
+	<string name="transport_mode_dlg_trainer">Modo de Entrenamiento</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Porcentaje de tiempo:</string>
+	<string name="transport_mode_dlg_simple_loop">Repetir infinitamente</string>
+	<!-- <string name="transport_mode_dlg_trainer_tempo_percent_from_label"></string> -->
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Hasta:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Incrementar porcentaje:</string>
+	<string name="transport_mode_dlg_loop_range_label">Rango de Repeticiones</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Reproducir desde el compás:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">Desde el principio</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Reproducir hasta el compás:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">Hasta el final</string>
 
 </resources>

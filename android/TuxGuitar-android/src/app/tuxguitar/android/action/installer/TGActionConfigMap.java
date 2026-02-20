@@ -56,11 +56,11 @@ import app.tuxguitar.android.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.android.action.impl.track.TGGoToTrackAction;
-import app.tuxguitar.android.action.impl.transport.TGTransportCountDownAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportLoadSettingsAction;
-import app.tuxguitar.android.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportStopAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportSetLoopSHeaderAction;
+import app.tuxguitar.android.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.android.action.impl.view.TGShowSmartMenuAction;
 import app.tuxguitar.android.action.impl.view.TGToggleTabKeyboardAction;
 import app.tuxguitar.android.action.listener.cache.TGUpdateController;
@@ -188,6 +188,8 @@ import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import app.tuxguitar.editor.action.track.TGSetTrackNameAction;
 import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
 import app.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
+import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
+import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.editor.undo.TGUndoableActionController;
 import app.tuxguitar.editor.undo.impl.channel.TGUndoableChannelGenericController;
 import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
@@ -390,6 +392,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGTransportStopAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGTransportMetronomeAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGTransportCountDownAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGTransportSetLoopSHeaderAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
+		this.map(TGTransportSetLoopEHeaderAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 		this.map(TGTransportLoadSettingsAction.NAME, LOCKABLE, UPDATE_ITEMS_CTL);
 
 		//layout actions

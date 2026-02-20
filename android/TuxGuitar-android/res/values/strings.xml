@@ -56,6 +56,9 @@
 	<string name="action_transport_stop">Stop Playing</string>
 	<string name="action_transport_metronome">Metronome</string>
 	<string name="action_transport_count_down">Count In</string>
+	<string name="action_transport_mode">Play Mode</string>
+	<string name="action_transport_set_loop_start">Set loop start point</string>
+	<string name="action_transport_set_loop_end">Set loop end point</string>
 	<string name="action_transport_highlight_played_beat">Highlight Played Beat</string>
 
 	<string name="action_go_up">Move cursor up</string>
@@ -73,18 +76,26 @@
 	<string name="action_change_repeat_alternative">Alternative Repeats</string>
 	<string name="action_change_properties">Properties</string>
 
+	<string name="action_track_first">First Track</string>
+	<string name="action_track_previous">Previous Track</string>
+	<string name="action_track_next">Next Track</string>
+	<string name="action_track_last">Last Track</string>
 	<string name="action_track_add">Add Track</string>
-	<string name="action_track_remove">Remove Track</string>
 	<string name="action_track_clone">Clone Track</string>
+	<string name="action_track_remove">Remove Track</string>
 	<string name="action_track_move_up">Move Track up</string>
 	<string name="action_track_move_down">Move Track down</string>
-	<string name="action_track_change_mute">Set Track mute</string>
 	<string name="action_track_change_solo">Set Track solo</string>
+	<string name="action_track_change_mute">Set Track mute</string>
 	<string name="action_track_set_name">Name</string>
 	<string name="action_track_set_channel">Instrument</string>
 	<string name="action_track_change_tuning">Tuning</string>
 	<string name="action_track_change_string_count">Line Count</string>
 
+	<string name="action_measure_first">First Measure</string>
+	<string name="action_measure_previous">Previous Measure</string>
+	<string name="action_measure_next">Next Measure</string>
+	<string name="action_measure_last">Last Measure</string>
 	<string name="action_measure_add">Add Measure</string>
 	<string name="action_measure_clean">Clean Measure</string>
 	<string name="action_measure_remove">Remove Measure</string>
@@ -469,5 +480,20 @@
 	<string name="channel_edit_dlg_reverb_label">Reverb:</string>
 	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
 	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">Play Mode</string>
+	<string name="transport_mode_dlg_simple">Simple Mode</string>
+	<string name="transport_mode_dlg_trainer">Training Mode</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Percentage of Tempo:</string>
+	<string name="transport_mode_dlg_simple_loop">Play looped</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempo:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">To:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Increment by:</string>
+	<string name="transport_mode_dlg_loop_range_label">Loop Range</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Play from Measure:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">From the beginning</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Play to Measure:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">To the end</string>
 
 </resources>

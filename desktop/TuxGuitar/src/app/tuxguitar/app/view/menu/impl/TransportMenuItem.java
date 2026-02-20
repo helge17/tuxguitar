@@ -2,8 +2,6 @@ package app.tuxguitar.app.view.menu.impl;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopSHeaderAction;
@@ -11,6 +9,8 @@ import app.tuxguitar.app.action.impl.transport.TGTransportStopAction;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
+import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleHighlightPlayedBeatAction;

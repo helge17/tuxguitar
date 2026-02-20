@@ -18,6 +18,17 @@
         android:checkable="true"
         android:title="@string/action_transport_count_down"/>
     <item
+        android:id="@+id/action_transport_mode"
+        android:title="@string/action_transport_mode"/>
+    <item
+        android:id="@+id/action_transport_set_loop_start"
+        android:checkable="true"
+        android:title="@string/action_transport_set_loop_start"/>
+    <item
+        android:id="@+id/action_transport_set_loop_end"
+        android:checkable="true"
+        android:title="@string/action_transport_set_loop_end"/>
+    <item
         android:id="@+id/action_transport_highlight_played_beat"
         android:checkable="true"
         android:title="@string/action_transport_highlight_played_beat"/>

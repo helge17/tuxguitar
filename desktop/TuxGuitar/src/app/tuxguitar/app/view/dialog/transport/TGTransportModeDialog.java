@@ -5,7 +5,6 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.app.system.config.TGConfigKeys;
@@ -15,6 +14,7 @@ import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGBeat;
@@ -282,9 +282,9 @@ public class TGTransportModeDialog {
 		Integer loopEHeader = this.loopEHeader.getSelectedValue();
 
 		// move caret to loop start if loop defined
-		if (loop && loopSHeader != null && loopSHeader>0) {
+		if (loop && loopSHeader != null) {
 			TGTrack track = (TGTrack) TGTransportModeDialog.this.context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-			TGBeat beat = track.getMeasure(loopSHeader-1).getBeat(0);
+			TGBeat beat = track.getMeasure(loopSHeader > 0 ? loopSHeader-1 : 0).getBeat(0);
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context.getContext(), TGMoveToAction.NAME);
 			tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT,beat);
 			tgActionProcessor.process();
@@ -294,7 +294,7 @@ public class TGTransportModeDialog {
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setType(type);
 		mode.setLoop(loop);
-		mode.setSimplePercent(simplePercent != null ? simplePercent : MidiPlayerMode.DEFAULT_TEMPO_PERCENT);
+		mode.setSimplePercent(simplePercent != null ? simplePercent : MidiPlayerMode.SIMPLE_DEFAULT_TEMPO_PERCENT);
 		mode.setCustomPercentFrom(this.customFrom.getValue());
 		mode.setCustomPercentTo(this.customTo.getValue());
 		mode.setCustomPercentIncrement(this.customIncrement.getValue());
@@ -467,7 +467,7 @@ public class TGTransportModeDialog {
 		public void updateLoopEHeader(){
 			Integer sHeader = this.loopSHeader.getSelectedValue();
 			Integer eHeader = this.loopEHeader.getSelectedValue();
-			if( eHeader != null && sHeader != null && sHeader > eHeader ){
+			if( eHeader != null && sHeader != null && sHeader > eHeader && eHeader != -1 ){
 				eHeader = sHeader;
 			}
 			this.updateLoopEHeader(sHeader , eHeader);

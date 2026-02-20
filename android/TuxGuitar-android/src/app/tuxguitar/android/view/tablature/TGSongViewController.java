@@ -206,12 +206,16 @@ public class TGSongViewController implements TGController {
 
 	public boolean isLoopSHeader(TGMeasureHeader measureHeader) {
 		MidiPlayerMode pm = MidiPlayer.getInstance(this.context).getMode();
-		return (pm.isLoop() && pm.getLoopSHeader() == measureHeader.getNumber());
+		return ( pm.isLoop() &&
+				(pm.getLoopSHeader() == measureHeader.getNumber()
+					|| (pm.getLoopSHeader() == -1 && measureHeader.getNumber() == 1)) );
 	}
 
 	public boolean isLoopEHeader(TGMeasureHeader measureHeader) {
 		MidiPlayerMode pm = MidiPlayer.getInstance(this.context).getMode();
-		return (pm.isLoop() && pm.getLoopEHeader() == measureHeader.getNumber());
+		return ( pm.isLoop() &&
+				(pm.getLoopEHeader() == measureHeader.getNumber()
+					|| (pm.getLoopEHeader() == -1 && measureHeader.getNumber() == measureHeader.getSong().countMeasureHeaders())) );
 	}
 
 	public boolean isScaleActionAvailable() {

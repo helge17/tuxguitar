@@ -116,16 +116,25 @@ public class TGKeySignatureDialog {
 		buttons.setLayout(buttonsLayout);
 		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
 
+		final UIButton buttonApply = uiFactory.createButton(buttons);
+		buttonApply.setText(TuxGuitar.getProperty("apply"));
+		buttonApply.setDefaultButton();
+		buttonApply.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				changeKeySignature(context.getContext(), track, measure, keySignatures.getSelectedValue(), beatRange, applyToSelection.isSelected(), toEnd.isSelected());
+			}
+		});
+		buttonsLayout.set(buttonApply, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+
 		final UIButton buttonOK = uiFactory.createButton(buttons);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
-		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				changeKeySignature(context.getContext(), track, measure, keySignatures.getSelectedValue(), beatRange, applyToSelection.isSelected(), toEnd.isSelected());
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -134,7 +143,7 @@ public class TGKeySignatureDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);

@@ -116,16 +116,19 @@ public class TestLetRing {
 		assertNoteTiming(3, 4, 1);
 	}
 
-	// 4 quarters with letRing, first note of following measure not tied
-	// all notes stop together with 4th
+	// 4 quarters with letRing, first note of following measure not tied, not "let ring"
+	// all notes stop together with 1st note of next measure
 	@Test
 	public void testMeasure14() {
 		this.notes = this.getNotesTiming(14);
 		assertEquals(4, notes.size());
-		assertNoteTiming(0, 1, 4);
-		assertNoteTiming(1, 2, 3);
-		assertNoteTiming(2, 3, 2);
-		assertNoteTiming(3, 4, 1);
+		assertNoteTiming(0, 1, 5);
+		assertNoteTiming(1, 2, 4);
+		assertNoteTiming(2, 3, 3);
+		assertNoteTiming(3, 4, 2);
+		this.notes = this.getNotesTiming(15);
+		assertEquals(1, notes.size());
+		assertNoteTiming(0, 1, 1);
 	}
 
 	// measure with 4 quarters, all with letRing, and then a repeat

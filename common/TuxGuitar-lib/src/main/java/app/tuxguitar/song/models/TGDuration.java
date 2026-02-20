@@ -138,9 +138,25 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	// - each di is less than or equal to specified max
 	// - for one time division, all di are identical. E.g. [3*eighths triplet] instead  of [1 quarter triplet + 1 eighth triplet]
 	// - di with highest denominator of time division appear first in returned list (i.e. quintuplets before triplets)
+	// - each di is longer than min duration (value smaller than maxValue) if specified
+	// - each di has time division.enters smaller than or equal to maxDivision if specified
+	// - if approximate is set, list closest to target is returned
 	//
 	// if not all criteria can be fulfilled, null is returned
 	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory) {
+		return splitPreciseDuration(timeToSplit, max, factory, null, null, false);
+	}
+	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory,
+			Integer maxDurationValue, Integer maxDivision) {
+		return splitPreciseDuration(timeToSplit, max, factory, maxDurationValue, maxDivision, false);
+	}
+	public static List<TGDuration> splitPreciseDurationApproximately(long timeToSplit, long max, TGFactory factory,
+			Integer maxDurationValue, Integer maxDivision) {
+		return splitPreciseDuration(timeToSplit, max, factory, maxDurationValue, maxDivision, true);
+	}
+	private static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory,
+			Integer maxDurationValue, Integer maxDivision, boolean approximate) {
+
 		long D = timeToSplit;
 		List<TGDuration> list = new ArrayList<TGDuration>();
 
@@ -151,18 +167,22 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 			maxBase /= 2;
 		}
 
-		// look for all division types, starting with longest divisions
+		// look for all division types, starting with longest divisions, except excluded ones
 		for (TGDivisionType dt : divisionTypes) {
-			if ((dt.getEnters()==1) || (D % dt.getEnters() != 0)) {
+			if ((dt.getEnters()==1) || ((D % dt.getEnters() != 0) && (maxDivision==null || dt.getEnters()<=maxDivision))) {
 				// D contains notes with this time division
 				boolean foundDurationWithTimeDivision = false;
 
 				// try successively to match with no dotted/no double-dotted, then with dotted, then with double-dotted
 				for (int subDivision = 1; subDivision <= 4 && !foundDurationWithTimeDivision; subDivision*=2) {
-					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
+					int shortest = (maxDurationValue == null ? SHORTEST : maxDurationValue);
+					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * shortest);  // shortest possible duration for this time division
 					base /= subDivision;
 
 					if (base > maxBase)  {
+						break;
+					}
+					if ((maxDurationValue != null) && (subDivision != 1)) {
 						break;
 					}
 					long toSubtract;
@@ -176,11 +196,20 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						}
 					}
 					// if the amount of time to subtract removes the contribution of time division, then let's go
-					if ((toSubtract % base == 0) && (toSubtract <= D)) {
-						// number of occurrences of base duration
-						long nBase = toSubtract / base;
-						// look for longest note duration with this time division that can fit (successive powers of 2)
-						long n=1;
+					if ((approximate || (toSubtract % base == 0)) && (toSubtract <= D)) {
+						long nBase;
+						long n = 1;
+						if (approximate) {
+							// number of occurrences of base duration (rounded)
+							// apply -1 offset, because Math.round(1.5)==2, and 1 is preferred
+							// (better a bit too short than too long)
+							nBase = Math.round((float)(toSubtract-1) / (float)base);
+						}
+						else {
+							// number of occurrences of base duration
+							nBase = toSubtract / base;
+						}
+						// merge powers of 2
 						while ((nBase % 2 == 0) && (n*2*base <= max)) {
 							n *= 2;
 							nBase /= 2;
@@ -215,21 +244,23 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						}
 
 						if (ok) {
+							long handled = 0;
 							for (int i=0; i<nBase; i++) {
 								TGDuration duration = factory.newDuration();
 								duration.setPreciseValue(n* base);
 								duration.setDotted(dotted);
 								duration.setDoubleDotted(doubleDotted);
 								list.add(duration);
+								handled += duration.getPreciseTime();
 							}
-							D -= toSubtract;
+							D -= handled;
 							foundDurationWithTimeDivision = true;
 						}
 					}
 				}
 			}
 		}
-		if (D != 0) {
+		if (!approximate && (D != 0)) {
 			return null;
 		}
 		return list;

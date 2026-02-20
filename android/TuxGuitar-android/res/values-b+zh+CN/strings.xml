@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">停止播放</string>
 	<string name="action_transport_metronome">节拍器</string>
 	<string name="action_transport_count_down">倒计时</string>
+	<string name="action_transport_mode">演奏模式</string>
+	<string name="action_transport_set_loop_start">设置循环起点</string>
+	<string name="action_transport_set_loop_end">设置循环终点</string>
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<string name="action_go_up">上移</string>
@@ -79,18 +82,26 @@
 	<string name="action_change_repeat_alternative">反复跳跃</string>
 	<string name="action_change_properties">属性</string>
 
+	<string name="action_track_first">第一声部</string>
+	<string name="action_track_previous">上一声部</string>
+	<string name="action_track_next">下一声部</string>
+	<string name="action_track_last">最末声部</string>
 	<string name="action_track_add">添加声部</string>
-	<string name="action_track_remove">移除声部</string>
 	<string name="action_track_clone">克隆声部</string>
+	<string name="action_track_remove">移除声部</string>
 	<string name="action_track_move_up">声部上移</string>
 	<string name="action_track_move_down">声部下移</string>
-	<string name="action_track_change_mute">声部静音</string>
 	<string name="action_track_change_solo">声部独奏</string>
+	<string name="action_track_change_mute">声部静音</string>
 	<string name="action_track_set_name">名称</string>
 	<string name="action_track_set_channel">乐器</string>
 	<string name="action_track_change_tuning">调整</string>
 	<string name="action_track_change_string_count">行数</string>
 
+	<string name="action_measure_first">第一小节</string>
+	<string name="action_measure_previous">上一小节</string>
+	<string name="action_measure_next">下一小节</string>
+	<string name="action_measure_last">最后一小节</string>
 	<string name="action_measure_add">新增小节</string>
 	<string name="action_measure_clean">清除小节内容</string>
 	<string name="action_measure_remove">移除小节</string>
@@ -475,5 +486,20 @@
 	<string name="channel_edit_dlg_reverb_label">混响:</string>
 	<string name="channel_edit_dlg_phaser_label">相位:</string>
 	<string name="channel_edit_dlg_tremolo_label">抖动:</string>
+
+	<!-- Play Mode dialog -->
+	<string name="transport_mode_dlg_title">演奏模式</string>
+	<string name="transport_mode_dlg_simple">简单模式</string>
+	<string name="transport_mode_dlg_trainer">练习模式</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">速度:</string>
+	<string name="transport_mode_dlg_simple_loop">循环播放</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">速度:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">到:</string>
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">每次递增:</string>
+	<string name="transport_mode_dlg_loop_range_label">区间循环</string>
+	<string name="transport_mode_dlg_loop_range_from_label">从当前小节开始:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">从头开始</string>
+	<string name="transport_mode_dlg_loop_range_to_label">至当前小节结束:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">直到结束</string>
 
 </resources>

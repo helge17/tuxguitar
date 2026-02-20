@@ -122,9 +122,6 @@ import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import app.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportCountDownAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportMetronomeAction;
-import app.tuxguitar.app.action.impl.transport.TGTransportModeAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayStopAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
@@ -222,6 +219,7 @@ import app.tuxguitar.editor.action.note.TGCleanBeatAction;
 import app.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGFixTiedNoteAction;
 import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGInsertChordAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
@@ -258,6 +256,9 @@ import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import app.tuxguitar.editor.action.track.TGSetTrackNameAction;
 import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
 import app.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
+import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
+import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
+import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.util.TGContext;
 
 public class TGActionInstaller {
@@ -312,6 +313,7 @@ public class TGActionInstaller {
 		installAction(new TGToggleFreeEditionModeAction(context));
 		installAction(new TGOpenMeasureErrorsDialogAction(context));
 		installAction(new TGFixMeasureVoiceAction(context));
+		installAction(new TGFixTiedNoteAction(context));
 
 		//tablature actions
 		installAction(new TGMouseClickAction(context));

@@ -31,13 +31,13 @@
         android:title="@string/action_track_move_down"
         android:visible="false"/>
     <item
-        android:id="@+id/action_track_change_mute"
-        android:checkable="true"
-        android:title="@string/action_track_change_mute"/>
-    <item
         android:id="@+id/action_track_change_solo"
         android:checkable="true"
         android:title="@string/action_track_change_solo"/>
+    <item
+        android:id="@+id/action_track_change_mute"
+        android:checkable="true"
+        android:title="@string/action_track_change_mute"/>
     <item
         android:id="@+id/action_track_change_tuning"
         android:title="@string/action_track_change_tuning"

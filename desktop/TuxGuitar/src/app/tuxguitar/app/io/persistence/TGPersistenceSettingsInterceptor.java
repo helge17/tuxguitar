@@ -78,7 +78,7 @@ public class TGPersistenceSettingsInterceptor implements TGActionInterceptor {
 					actionContext.setAttribute(ATTRIBUTE_STREAM_CONTEXT, streamContext);
 				}
 
-				handler.handleSettings(streamContext, createCallBackThread(id, actionContext));
+				handler.handleSettings(streamContext, createCallBackThread(id, actionContext), mode);
 
 				return true;
 			}

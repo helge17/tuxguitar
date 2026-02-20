@@ -62,6 +62,9 @@
 	<string name="action_transport_stop">Leállítás</string>
 	<!-- <string name="action_transport_metronome"></string> -->
 	<!-- <string name="action_transport_count_down"></string> -->
+	<!-- <string name="action_transport_mode"></string> -->
+	<!-- <string name="action_transport_set_loop_start"></string> -->
+	<!-- <string name="action_transport_set_loop_end"></string> -->
 	<!-- <string name="action_transport_highlight_played_beat"></string> -->
 
 	<!-- <string name="action_go_up"></string> -->
@@ -79,18 +82,26 @@
 	<!-- <string name="action_change_repeat_alternative"></string> -->
 	<string name="action_change_properties">Tulajdonságok</string>
 
+	<string name="action_track_first">Elsõ sáv</string>
+	<string name="action_track_previous">Elõzõ sáv</string>
+	<string name="action_track_next">Következõ sáv</string>
+	<string name="action_track_last">Utolsó sáv</string>
 	<string name="action_track_add">Új sáv</string>
-	<string name="action_track_remove">Sáv eltávolítása</string>
 	<string name="action_track_clone">Sáv klónozása</string>
+	<string name="action_track_remove">Sáv eltávolítása</string>
 	<!-- <string name="action_track_move_up"></string> -->
 	<!-- <string name="action_track_move_down"></string> -->
-	<!-- <string name="action_track_change_mute"></string> -->
 	<!-- <string name="action_track_change_solo"></string> -->
+	<!-- <string name="action_track_change_mute"></string> -->
 	<string name="action_track_set_name">Név</string>
 	<string name="action_track_set_channel">Hangszer</string>
 	<!-- <string name="action_track_change_tuning"></string> -->
 	<!-- <string name="action_track_change_string_count"></string> -->
 
+	<string name="action_measure_first">Elsõ ütem</string>
+	<string name="action_measure_previous">Elõzõ ütem</string>
+	<string name="action_measure_next">Következõ ütem</string>
+	<string name="action_measure_last">Utolsó ütem</string>
 	<string name="action_measure_add">Új ütem</string>
 	<string name="action_measure_clean">Csendes ütem</string>
 	<string name="action_measure_remove">Ütem eltávolítása</string>
@@ -475,5 +486,20 @@
 	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+
+	<!-- Play Mode dialog -->
+	<!-- <string name="transport_mode_dlg_title"></string> -->
+	<!-- <string name="transport_mode_dlg_simple"></string> -->
+	<!-- <string name="transport_mode_dlg_trainer"></string> -->
+	<!-- <string name="transport_mode_dlg_simple_tempo_percent_label"></string> -->
+	<!-- <string name="transport_mode_dlg_simple_loop"></string> -->
+	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempó:</string>
+	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Vége:</string>
+	<!-- <string name="transport_mode_dlg_trainer_tempo_increment_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_from_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_from_default"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_to_label"></string> -->
+	<!-- <string name="transport_mode_dlg_loop_range_to_default"></string> -->
 
 </resources>

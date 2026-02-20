@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.dialog.channel.TGChannelSettingsDialog;
 import app.tuxguitar.app.view.util.TGDialogUtil;
@@ -18,6 +19,8 @@ import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UICloseEvent;
+import app.tuxguitar.ui.event.UICloseListener;
 import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
@@ -49,7 +52,13 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private UIDropDownSelect<Integer> gmChannel1Combo;
 	private UIDropDownSelect<Integer> gmChannel2Combo;
 	private UICheckBox exclusiveButton;
+	private UICheckBox stripPCButton;
 	private JackMidiPlayerListener jackMidiPlayerListener;
+	// to detect a parameter change
+	private Integer initChannel1;
+	private Integer initChannel2;
+	private boolean initExclusive;
+	private boolean initStripPC;
 
 	public JackChannelSettingsDialog(TGContext context, TGChannel channel, TGSong song){
 		this.context = context;
@@ -115,17 +124,46 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 				updateExclusive();
 			}
 		});
+		optionsLayout.set(this.exclusiveButton, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+
+		this.stripPCButton = uiFactory.createCheckBox(optionsGroup);
+		this.stripPCButton.setText(TuxGuitar.getProperty("jack.settings.channel.strip-pc"));
+		this.stripPCButton.setSelected(stripPC());
+		this.stripPCButton.setEnabled(isExclusive());
+		this.stripPCButton.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				updateStripPC();
+			}
+		});
+		optionsLayout.set(this.stripPCButton, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 
 		//-------------------- Jack Options-------------------------------
 
-		this.updateDefaultExclusiveChannels();
 		this.updateChannelCombos();
 		this.updateControls();
+		this.initChannel1 = this.gmChannel1Combo.getSelectedValue();
+		this.initChannel2 = this.gmChannel2Combo.getSelectedValue();
+		this.initExclusive = this.exclusiveButton.isSelected();
+		this.initStripPC = this.stripPCButton.isSelected();
 
 		this.addMidiPlayerListener();
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				removeMidiPlayerListener();
+			}
+		});
+		this.dialog.addCloseListener(new UICloseListener() {
+			@Override
+			public void onClose(UICloseEvent event) {
+				boolean updated = (JackChannelSettingsDialog.this.initChannel1 != JackChannelSettingsDialog.this.gmChannel1Combo.getSelectedValue());
+				updated |= (JackChannelSettingsDialog.this.initChannel2 != JackChannelSettingsDialog.this.gmChannel2Combo.getSelectedValue());
+				updated |= (JackChannelSettingsDialog.this.initExclusive != JackChannelSettingsDialog.this.exclusiveButton.isSelected());
+				updated |= (JackChannelSettingsDialog.this.initStripPC != JackChannelSettingsDialog.this.stripPCButton.isSelected());
+				if (updated) {
+					TGDocumentListManager.getInstance(JackChannelSettingsDialog.this.context).findCurrentDocument().setUnsaved(true);
+				}
+				JackChannelSettingsDialog.this.close();
 			}
 		});
 
@@ -182,7 +220,7 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 	private void reloadExclusiveChannelCombos(){
 		List<Integer> channels = new ArrayList<Integer>();
 		for(int i = 0 ; i < MAX_CHANNELS ; i ++){
-			channels.add(new Integer(i));
+			channels.add(Integer.valueOf(i));
 		}
 
 		int channel1 = getIntegerChannelParameter(this.channel, JackChannelParameter.PARAMETER_GM_CHANNEL_1, -1);
@@ -220,10 +258,26 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		this.removeChannelParameter(this.channel, JackChannelParameter.PARAMETER_GM_CHANNEL_1);
 		this.removeChannelParameter(this.channel, JackChannelParameter.PARAMETER_GM_CHANNEL_2);
 
+		if (!exclusive) {
+			this.stripPCButton.setSelected(false);
+			this.updateStripPC();
+		}
+		this.stripPCButton.setEnabled(exclusive);
+
 		this.configureRouter(true);
 		this.updateDefaultExclusiveChannels();
 		this.updateChannelCombos();
 		this.updatePlayerChannels();
+	}
+
+	public void updateStripPC(){
+		boolean strip = this.stripPCButton.isSelected();
+
+		if (strip) {
+			this.setChannelParameter(this.channel, JackChannelParameter.PARAMETER_STRIP_PC, Boolean.toString(true));
+		} else {
+			this.removeChannelParameter(this.channel, JackChannelParameter.PARAMETER_STRIP_PC);
+		}
 	}
 
 	public void updateChannel(){
@@ -338,9 +392,16 @@ public class JackChannelSettingsDialog implements TGChannelSettingsDialog{
 		return false;
 	}
 
-
 	private boolean isExclusive() {
 		return isExclusive(this.channel);
+	}
+
+	private boolean stripPC() {
+		TGChannelParameter tgChannelParameter = findChannelParameter(this.channel, JackChannelParameter.PARAMETER_STRIP_PC);
+		if( tgChannelParameter != null ){
+			return isExclusive() && Boolean.TRUE.toString().equals( tgChannelParameter.getValue() );
+		}
+		return false;
 	}
 
 	private Iterator<TGChannel> findGmChannels(){

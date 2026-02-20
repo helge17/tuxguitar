@@ -28,4 +28,4 @@ ls lib/*swt*.jar > /dev/null 2>&1 && SWT_ARGS="-XstartOnFirstThread"
 export CLASSPATH
 export LD_LIBRARY_PATH
 ##LAUNCH
-"${JAVA}" ${SWT_ARGS} -cp :${CLASSPATH} -Dtuxguitar.home.path="${TG_DIR}" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
+"${JAVA}" ${SWT_ARGS} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
