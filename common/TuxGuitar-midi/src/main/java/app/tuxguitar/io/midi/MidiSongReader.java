@@ -428,7 +428,8 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	// with all notes in temporary notes list
 	// or with rests if this list is empty
 	private void createTempNotesBefore(long nEnd, int track){
-		boolean done = false;
+		// avoid creating a new measure if several notes end at the last measure end
+		boolean done = (nEnd == lastBeatEnd);
 		while (!done) {
 			TGMeasure measure = getMeasure(getTrack(track), this.lastBeatEnd);
 			long measureEnd = measure.getStart() + measure.getLength();
@@ -472,6 +473,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				else {
 					this.lastBeatEnd = measureEnd;
 				}
+			}
+			if (durationList.isEmpty() && (nEnd > measureEnd)) {
+				// need to fill a space that goes beyond current measure, but end of measure
+				// cannot be filled. This may lead to an invalid measure (too short voice)
+				this.lastBeatEnd = measureEnd;
 			}
 			done = (nEnd <= measureEnd);
 		}
