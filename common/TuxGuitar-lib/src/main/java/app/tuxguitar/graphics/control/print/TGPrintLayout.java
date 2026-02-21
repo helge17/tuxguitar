@@ -11,12 +11,14 @@ import app.tuxguitar.graphics.control.TGMeasureImpl;
 import app.tuxguitar.graphics.control.TGTrackImpl;
 import app.tuxguitar.graphics.control.TGTrackSpacing;
 import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.resource.UIFont;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.resource.UIResourceFactory;
 import app.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGPrintLayout extends TGLayout {
 
@@ -227,8 +229,42 @@ public class TGPrintLayout extends TGLayout {
 				);
 				headerOffset += 20.0f * getScale();
 			}
+
+			if (!track.isPercussion()) {
+				String tuningLabel = getStringsTuningLabel(track);
+				if (tuningLabel != null && !tuningLabel.isEmpty()) {
+					String tuningLine = TGMessagesManager.getProperty("tuning") + ": " + tuningLabel;
+					painter.setFont(getTrackNameFont());
+					painter.drawString(
+						tuningLine,
+						x,
+						fmTopLine + y + Math.round(headerOffset)
+					);
+					headerOffset += 20.0f * getScale();
+				}
+			}
 		}
 		return headerOffset;
+	}
+
+	private String getStringsTuningLabel(TGTrack track) {
+		List<TGString> strings = track.getStrings();
+		if (strings == null || strings.isEmpty()) {
+			return null;
+		}
+		// print strings from highest string number (lowest pitch) to lowest string number (highest pitch)
+		StringBuilder label = new StringBuilder();
+		for (int i = strings.size() - 1; i >= 0; i--) {
+			TGString string = strings.get(i);
+			String noteName = TGMusicKeyUtils.sharpNoteName(string.getValue());
+			if (noteName != null && !noteName.isEmpty()) {
+				if (label.length() > 0) {
+					label.append(' ');
+				}
+				label.append(noteName);
+			}
+		}
+		return label.toString();
 	}
 
 	private void paintFooter(UIPainter painter){
