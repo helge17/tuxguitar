@@ -211,7 +211,8 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						break;
 					}
 					long toSubtract;
-					if (dt.getEnters() == 1) {
+					boolean isPowerOf2 = (D % base == 0) && (((D/base) & (D/base - 1)) == 0);
+					if ((dt.getEnters() == 1) || isPowerOf2) {
 						toSubtract = D;
 					} else {
 						// subtract as many occurrences of base to D so that D does not contain any more duration with this time division
