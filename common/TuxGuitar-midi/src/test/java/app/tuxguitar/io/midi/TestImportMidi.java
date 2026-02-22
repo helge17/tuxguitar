@@ -195,5 +195,30 @@ public class TestImportMidi {
 		// especially, check tied notes are valid (on the same string)
 		TGSongManager songManager = new TGSongManager();
 		assertTrue(songManager.getMeasureErrors(importedSong).isEmpty());
+
+		// import short triplet with different parameters
+		TGMeasure refMeasure = originalSong.getTrack(1).getMeasure(8);
+		assertTrue(identicalRhythm(refMeasure, importedSong.getTrack(1).getMeasure(8)));
+		// re-import with smaller max duration
+		settings.setMaxDurationValue(TGDuration.SIXTY_FOURTH);
+		handleRead.getContext().setAttribute(MidiSettings.class.getName(), settings);
+		writer.write(handleWrite);
+		rawMidiFileBuffer = outputStream.toByteArray();
+		handleRead.setSong(null);
+		handleRead.setInputStream(new ByteArrayInputStream(rawMidiFileBuffer));
+		handleRead.getContext().setAttribute(MidiSettings.class.getName(), settings);
+		midiSongReader.read(handleRead);
+		importedSong = handleRead.getSong();
+		assertTrue(identicalRhythm(refMeasure, importedSong.getTrack(1).getMeasure(8)));
+	}
+
+	private boolean identicalRhythm(TGMeasure meas1, TGMeasure meas2) {
+		if ((meas1 == null) || (meas2 == null)) return false;
+		if (meas1.getBeats().isEmpty() || meas2.getBeats().isEmpty()) return false;
+		if (meas1.getBeats().size() != meas2.getBeats().size()) return false;
+		for (int i = 0; i < meas1.getBeats().size(); i++) {
+			if (meas1.getBeat(i).getPreciseStart() != meas1.getBeat(i).getPreciseStart()) return false;
+		}
+		return true;
 	}
 }
