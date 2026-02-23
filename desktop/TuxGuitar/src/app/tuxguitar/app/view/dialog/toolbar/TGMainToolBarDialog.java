@@ -16,6 +16,8 @@ import app.tuxguitar.app.view.toolbar.main.TGMainToolBarConfigMap;
 import app.tuxguitar.app.view.toolbar.main.TGMainToolBarItemConfig;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
@@ -133,6 +135,12 @@ public class TGMainToolBarDialog {
 		layout.set(this.deleteButton, 1, 4, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
 
 		this.newToolBarName = uiFactory.createTextField(panel);
+		this.newToolBarName.addModifyListener(new UIModifyListener() {
+			@Override
+			public void onModify(UIModifyEvent event) {
+				saveAsButton.setEnabled(!newToolBarName.getText().equals(""));
+			}
+		});
 		layout.set(this.newToolBarName, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		this.saveAsButton = uiFactory.createButton(panel);
