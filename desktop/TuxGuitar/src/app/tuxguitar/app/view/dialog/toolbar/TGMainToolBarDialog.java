@@ -150,6 +150,9 @@ public class TGMainToolBarDialog {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				TGMainToolBarDialog.this.saveAs();
+				TGMainToolBarDialog.this.fillToolBarNames();
+				TGMainToolBarDialog.this.fillAreaControlsList();
+				TGMainToolBarDialog.this.setUntitledToolBarName();
 			}
 		});
 		layout.set(this.saveAsButton, 2, 3, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
@@ -498,9 +501,6 @@ public class TGMainToolBarDialog {
 			this.config.setName(newName);
 			configMgr.saveConfig(this.config);
 			this.modified = false;
-			this.fillToolBarNames();
-			this.fillAreaControlsList();
-			this.setUntitledToolBarName();
 		}
 	}
 
