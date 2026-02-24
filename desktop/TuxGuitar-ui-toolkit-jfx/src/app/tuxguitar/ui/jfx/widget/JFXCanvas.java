@@ -19,6 +19,7 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 
 	private JFXPaintListenerManager paintListener;
 	private JFXResizeListenerManager resizeListener;
+	private Tooltip tooltip;
 
 	public JFXCanvas(JFXContainer<? extends Region> parent, boolean bordered) {
 		super(new Canvas(), parent);
@@ -92,6 +93,11 @@ public class JFXCanvas extends JFXNode<Canvas> implements UICanvas {
 	}
 
 	public void setToolTipText(String text) {
-		Tooltip.install(this.getControl(), new Tooltip(text));
+		if( text == null || text.isEmpty() ) {
+			Tooltip.uninstall(this.getControl(), tooltip);
+		} else {
+			tooltip = new Tooltip(text);
+			Tooltip.install(this.getControl(), tooltip);
+		}
 	}
 }
