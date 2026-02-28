@@ -201,6 +201,7 @@ import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import app.tuxguitar.editor.action.measure.TGCopyBeatAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
 import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
@@ -301,6 +302,7 @@ public class TGActionInstaller {
 		//edit actions
 		installAction(new TGCutAction(context));
 		installAction(new TGCopyAction(context));
+		installAction(new TGCopyBeatAction(context));
 		installAction(new TGPasteAction(context));
 		installAction(new TGRepeatAction(context));
 		installAction(new TGUndoAction(context));
