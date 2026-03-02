@@ -255,7 +255,7 @@ public class TGChordDialog {
 						minValue = note.getValue();
 					}
 				}
-				if(maxValue > TGChordImpl.MAX_FRETS  && minValue > 0){
+				if(maxValue >= TGChordImpl.MAX_FRETS  && minValue > 0){
 					chord.setFirstFret((short)(minValue));
 				}
 
