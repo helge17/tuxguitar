@@ -20,6 +20,8 @@ import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListener;
 import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
 import app.tuxguitar.ui.event.UIMouseEvent;
 import app.tuxguitar.ui.event.UISelectionEvent;
@@ -405,8 +407,14 @@ public class TGTrackTuningDialog {
 				presetsPanelLayout.set(buttonPresetSave, 1+nDropDown, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				newPresetName = factory.createTextField(presetsPanel);
 				newPresetName.setEnabled(true);
+				newPresetName.setText(findUnsavedPresetName());
 				// if preset name gets to long, it might break the UI layout
 				newPresetName.setTextLimit(20);
+				newPresetName.addModifyListener(new UIModifyListener() {
+					public void onModify(UIModifyEvent event) {
+						buttonPresetSaveAs.setEnabled(!newPresetName.getText().equals(""));
+					}
+				});
 				presetsPanelLayout.set(newPresetName, 2+nDropDown, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 				buttonPresetSaveAs = factory.createButton(presetsPanel);
 				buttonPresetSaveAs.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.FILE_SAVE_AS));
