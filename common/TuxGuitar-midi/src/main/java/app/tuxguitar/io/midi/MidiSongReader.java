@@ -18,6 +18,7 @@ import app.tuxguitar.io.midi.base.MidiSequence;
 import app.tuxguitar.io.midi.base.MidiTrack;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.helpers.tuning.TuningManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
@@ -780,6 +781,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		private void process(TGMeasure measure, boolean isPercussionTrack, int maxFret){
 			tgSongManager.getMeasureManager().updateBeatsPreciseStart(measure);
 			tgSongManager.getMeasureManager().autoCompleteSilences(measure);
+			// some measures may be a little short, if the empty space at measure end could not be filled because of quantization constraints
+			// fix them: it's preferred to have all measures valid even if some trailing rests do not respect quantization criteria
+			for (TGMeasureError err : tgSongManager.getMeasureManager().getMeasureErrors(measure)) {
+				tgSongManager.getMeasureManager().fixVoice(measure, err.getVoiceIndex(), err.getErrCode());
+			}
 			adjustStrings(measure, isPercussionTrack, maxFret);
 		}
 
