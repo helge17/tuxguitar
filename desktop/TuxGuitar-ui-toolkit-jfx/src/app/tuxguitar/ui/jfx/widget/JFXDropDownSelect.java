@@ -58,7 +58,10 @@ public class JFXDropDownSelect<T> extends JFXControl<ComboBox<JFXDropDownSelectI
 	}
 
 	public void removeItems() {
+		// Temporarily ignore events during clear to prevent the selection listener from being called without a selected item
+		this.setIgnoreEvents(true);
 		this.getControl().getItems().clear();
+		this.setIgnoreEvents(false);
 	}
 
 	public int getItemCount() {

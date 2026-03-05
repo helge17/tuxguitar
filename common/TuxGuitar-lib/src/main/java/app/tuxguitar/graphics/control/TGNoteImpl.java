@@ -31,7 +31,7 @@ public class TGNoteImpl extends TGNote {
 	}
 
 	public void update(TGLayout layout) {
-		if(!getMeasureImpl().getTrack().isPercussion()) {
+		if(!getMeasureImpl().getTrack().isPercussion() && !this.getEffect().isDeadNote()) {
 			this.accidental = getMeasureImpl().getNoteAccidental( layout.getSongManager().getMeasureManager().getRealNoteValue(this), this.isAltEnharmonic() );
 		}
 
@@ -325,19 +325,19 @@ public class TGNoteImpl extends TGNote {
 			layout.setScoreNoteStyle(painter,playing);
 
 			//----------sostenido--------------------------------------
-			if(this.accidental == TGMusicKeyUtils.NATURAL){
+			if((this.accidental == TGMusicKeyUtils.NATURAL) && !this.getEffect().isDeadNote()){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintNatural(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
 				painter.closePath();
 			}
-			else if(this.accidental == TGMusicKeyUtils.SHARP){
+			else if((this.accidental == TGMusicKeyUtils.SHARP) && !this.getEffect().isDeadNote()){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintSharp(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
 				painter.closePath();
 			}
-			else if(this.accidental == TGMusicKeyUtils.FLAT){
+			else if((this.accidental == TGMusicKeyUtils.FLAT) && !this.getEffect().isDeadNote()){
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setLineWidth(layout.getLineWidth(0));
 				TGKeySignaturePainter.paintFlat(painter,(x - (scale - (scale / 4)) ),(y1 + (scale / 2)), scale);
