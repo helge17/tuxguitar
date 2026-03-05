@@ -387,15 +387,6 @@ public class TGTrackTuningDialog {
 
 			// create buttons if needed (custom tuning or no tuning selected)
 			if (currentSelectedPreset==null || isCustomTuningPreset(currentSelectedPreset)) {
-				buttonPresetDelete = factory.createButton(presetsPanel);
-				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
-				buttonPresetDelete.setToolTipText(TuxGuitar.getProperty("tuning.preset.delete"));
-				buttonPresetDelete.addSelectionListener(new UISelectionListener() {
-					public void onSelect(UISelectionEvent event) {
-						TGTrackTuningDialog.this.onDeletePreset();
-					}
-				});
-				presetsPanelLayout.set(buttonPresetDelete, 1+nDropDown, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				buttonPresetSave = factory.createButton(presetsPanel);
 				buttonPresetSave.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.FILE_SAVE));
 				buttonPresetSave.setToolTipText(TuxGuitar.getProperty("tuning.preset.save"));
@@ -404,7 +395,16 @@ public class TGTrackTuningDialog {
 						TGTrackTuningDialog.this.onSavePreset();
 					}
 				});
-				presetsPanelLayout.set(buttonPresetSave, 1+nDropDown, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
+				presetsPanelLayout.set(buttonPresetSave, 1+nDropDown, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
+				buttonPresetDelete = factory.createButton(presetsPanel);
+				buttonPresetDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
+				buttonPresetDelete.setToolTipText(TuxGuitar.getProperty("tuning.preset.delete"));
+				buttonPresetDelete.addSelectionListener(new UISelectionListener() {
+					public void onSelect(UISelectionEvent event) {
+						TGTrackTuningDialog.this.onDeletePreset();
+					}
+				});
+				presetsPanelLayout.set(buttonPresetDelete, 1+nDropDown, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
 				newPresetName = factory.createTextField(presetsPanel);
 				newPresetName.setEnabled(true);
 				newPresetName.setText(findUnsavedPresetName());
@@ -476,6 +476,19 @@ public class TGTrackTuningDialog {
 		UIFactory factory = this.getUIFactory();
 		UITableLayout parentLayout = (UITableLayout) parent.getLayout();
 
+		UIButton buttonApply = factory.createButton(parent);
+		buttonApply.setText(TuxGuitar.getProperty("apply"));
+		buttonApply.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				new TGSyncProcessLocked(getContext().getContext(), new Runnable() {
+					public void run() {
+						TGTrackTuningDialog.this.updateTrackTuning();
+					}
+				}).process();
+			}
+		});
+		parentLayout.set(buttonApply, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+
 		UIButton buttonOK = factory.createButton(parent);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
 		buttonOK.setDefaultButton();
@@ -490,7 +503,7 @@ public class TGTrackTuningDialog {
 				}).process();
 			}
 		});
-		parentLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		parentLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 
 		UIButton buttonCancel = factory.createButton(parent);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -499,7 +512,7 @@ public class TGTrackTuningDialog {
 				TGTrackTuningDialog.this.dialog.dispose();
 			}
 		});
-		parentLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		parentLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
 		parentLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 
