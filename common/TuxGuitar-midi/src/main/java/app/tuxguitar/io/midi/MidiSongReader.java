@@ -218,7 +218,19 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			createTempNotesBefore(tick,track);
 			getTempChannel(channel).addTrack(track);
 			getTrackTuningHelper(track).checkValue(value + this.settings.getTranspose());
-			this.tempNotes.add(new TempNote(channel,value));
+			// add in temp notes list, only if it's not already there
+			// seen in some midi files: several successive noteOn events for the same note
+			// without intermediate noteOff
+			boolean found = false;
+			for (TempNote tn : this.tempNotes) {
+				if (tn.value == value) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				this.tempNotes.add(new TempNote(channel,value));
+			}
 		}
 	}
 
@@ -440,11 +452,20 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			List<TGDuration> durationList = TGDuration.splitPreciseDuration(preciseTimeToFill, measure.getPreciseLength(), factory,
 					MidiSongReader.this.settings.getMaxDurationValue(),
 					MidiSongReader.this.settings.getMaxDivision());
-			// if it failed, split approximately
-			if (durationList == null) {
-				durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
+			boolean heterogeneousDivision = false;
+			if (durationList != null) {
+				for (TGDuration d : durationList) {
+					heterogeneousDivision |= (!d.getDivision().isEqual(durationList.get(0).getDivision()));
+				}
+			}
+			// if it failed, or if divisions are not homogeneous, try to split approximately
+			if ((durationList == null) || heterogeneousDivision) {
+				List<TGDuration> approximativeDurationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
 					MidiSongReader.this.settings.getMaxDurationValue(),
 					MidiSongReader.this.settings.getMaxDivision());
+				if (approximativeDurationList != null) {
+					durationList = approximativeDurationList;
+				}
 			}
 			for (TGDuration duration : durationList) {
 				long beatEnd = this.lastBeatEnd + duration.getTime();
