@@ -87,7 +87,7 @@ public class MidiSettingsDialog {
 			TGIconManager iconManager = TGIconManager.getInstance(context);
 			UITableLayout groupQuantizationLayout = new UITableLayout();
 			groupQuantization.setLayout(groupQuantizationLayout);
-			groupQuantization.setText(TuxGuitar.getProperty("import.quantization"));
+			groupQuantization.setText(TuxGuitar.getProperty("import.quantization") + ":");
 			dialogLayout.set(groupQuantization, optionRow, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
 			optionRow ++;
 
@@ -98,7 +98,7 @@ public class MidiSettingsDialog {
 			groupQuantizationLayout.set(groupDuration, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 			UILabel labelMaxDuration = uiFactory.createLabel(groupDuration);
-			labelMaxDuration.setText(TuxGuitar.getProperty("import.quantization.max-duration-value"));
+			labelMaxDuration.setText(TuxGuitar.getProperty("import.quantization.max-duration-value") + ":");
 			groupDurationLayout.set(labelMaxDuration, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 
 			List<OptionItem> durationItems = new ArrayList<OptionItem>();
@@ -130,7 +130,7 @@ public class MidiSettingsDialog {
 			groupQuantizationLayout.set(groupDivision, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 			UILabel labelMaxDivision = uiFactory.createLabel(groupDivision);
-			labelMaxDivision.setText(TuxGuitar.getProperty("import.quantization.max-division"));
+			labelMaxDivision.setText(TuxGuitar.getProperty("import.quantization.max-division") + ":");
 			groupDivisionLayout.set(labelMaxDivision, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 
 			List<OptionItem> divisionItems = new ArrayList<OptionItem>();
