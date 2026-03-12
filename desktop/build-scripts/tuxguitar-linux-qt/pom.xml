@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>app.tuxguitar</groupId>
-		<version>${revision}</version>
+		<version>9.99-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
 
