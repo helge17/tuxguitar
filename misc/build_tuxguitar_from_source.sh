@@ -568,7 +568,7 @@ function copy_to_github {
       REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground and may not be stable!\n\n'
       RELEASE_TYPE=--prerelease
     fi
-    REL_NOTES=$REL_NOTES$'**Please note:** TuxGuitar versions 2.0.0 and later use a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
+    REL_NOTES=$REL_NOTES$'**Security notice:** The packages available here are not officially signed. To install them, you must temporarily disable the digital signature verification of your operating system (called "disable Gatekeeper" on macOS, "allow installation from unknown sources" on Windows, "Sideloading" on Android).\n\n**Please note:** TuxGuitar versions 2.0.0 and later use a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
     gh release create --target $GIT_BRANCH $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
@@ -631,8 +631,8 @@ function copy_to_github {
 [ "$#" -lt 1 ] && usage && exit 1
 [ $build_linux ]    && [ `uname` != Linux ]   && echo -e "\nError: Linux version can only be built on Linux."            && abort_build
 [ $build_windows ]  && [ `uname` != Linux ]   && echo -e "\nError: Windows version can only be built on Linux."          && abort_build
-[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannot be built on/from FreeBSD."      && abort_build
-[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from macOS."      && abort_build
+[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannot be built on/from FreeBSD."       && abort_build
+[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from macOS."       && abort_build
 [ $build_android ]  && [ `uname` != Linux ]   && echo -e "\nError: Android version can only be built on Linux."          && abort_build
 [ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new GitHub release can only be created from Linux." && abort_build
 

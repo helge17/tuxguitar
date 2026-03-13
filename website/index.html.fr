@@ -21,6 +21,8 @@ Nous fournissons des paquets d'installation prêts à l'emploi pour Linux, Windo
 * **<script>document.write("[Dernière version stable "+tg_stable+"](https://github.com/helge17/tuxguitar/releases/tag/"+tg_stable+")");</script>**
 * [Versions de développement et versions antérieures](https://github.com/helge17/tuxguitar/releases)
 
+**Avis de sécurité :** Les paquets disponibles ici ne sont pas signés officiellement. Pour les installer, vous devez désactiver temporairement la vérification des signatures numériques de votre système d'exploitation (option « désactiver Gatekeeper » sous macOS, « autoriser l'installation à partir de sources inconnues » sous Windows, « Sideloading » sous Android).
+
 **Remarque :** Les versions 2.0.0 et ultérieures de TuxGuitar utilisent un **nouveau format de fichier** qui ne peut pas être ouvert par les versions antérieures. Vous pouvez toujours exporter vos tablatures dans l'ancien format afin de pouvoir les ouvrir avec les versions précédentes de TuxGuitar.
 
 Aide

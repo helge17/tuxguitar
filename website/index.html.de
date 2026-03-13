@@ -21,6 +21,8 @@ Wir stellen fertige Installationspakete für Linux, Windows, macOS, FreeBSD und 
 * **<script>document.write("[Stabile Version "+tg_stable+"](https://github.com/helge17/tuxguitar/releases/tag/"+tg_stable+")");</script>**
 * [Neueste Entwicklerversionen und ältere Ausgaben](https://github.com/helge17/tuxguitar/releases)
 
+**Sicherheitshinweis:** Die hier angebotenen Pakete sind nicht offiziell signiert. Für die Installation muss daher die Signatur-Prüfung des Betriebssystems temporär deaktiviert werden (genannt "Gatekeeper deaktivieren" unter macOS, "Programme unbekannter Herkunft installieren" unter Windows, "Sideloading" unter Android).
+
 **Bitte beachten:** Die TuxGuitar-Versionen 2.0.0 und höher verwenden ein **neues Dateiformat**, das von älteren Versionen nicht gelesen werden kann. Du kannst deine Tabulaturen aber weiterhin im alten Format exportieren, um sie mit älteren Versionen von TuxGuitar zu öffnen.
 
 Hilfe
