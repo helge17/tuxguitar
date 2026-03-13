@@ -55,7 +55,14 @@ public class TablatureScrollPlaying {
 		*/
 		boolean needToScroll = true;
 		TGTrack track = measure.getTrack();
-		if (mode.isLoop() && layout.isFullyVisible((TGMeasureImpl)track.getMeasure(mode.getLoopEHeader()), area)) {
+		int endLoopMeasureNumber = -1;
+		if (mode.isLoop()) {
+			endLoopMeasureNumber = mode.getLoopEHeader();
+			if (endLoopMeasureNumber == -1) {
+				endLoopMeasureNumber = track.countMeasures();
+			}
+		}
+		if (mode.isLoop() && layout.isFullyVisible((TGMeasureImpl)track.getMeasure(endLoopMeasureNumber - 1), area)) {
 			needToScroll = false;
 		} else {
 			// get last scrollable measure
