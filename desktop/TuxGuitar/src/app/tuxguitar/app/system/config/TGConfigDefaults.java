@@ -160,6 +160,9 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_DISCRETE_ANTICIPATION, 1);
 		loadProperty(properties, TGConfigKeys.SCROLLING_HORIZONTAL_MARGIN_PERCENT, 20);
 		loadProperty(properties, TGConfigKeys.SCROLLING_VERTICAL_MARGIN_PERCENT, 0);
+
+		loadProperty(properties, TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP, false);
+		loadProperty(properties, TGConfigKeys.MAX_LAST_OPEN_FILES, 10);
 	}
 
 	public static List<String> getKeys() {
