@@ -1,6 +1,9 @@
 package app.tuxguitar.app;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.app.action.TGActionAdapterManager;
@@ -10,8 +13,10 @@ import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import app.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import app.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.document.TGDocumentListAttributes;
 import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.helper.TGLastOpenFiles;
 import app.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
@@ -150,8 +155,24 @@ public class TuxGuitar {
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(TuxGuitar.this.context).open();
 
+		// Capture the last-open list NOW, before startSong() dispatches async
+		// file loading that will call setCurrentDocumentUri() →
+		// updateLastOpenFiles(), overwriting TGLastOpenFiles with only the
+		// Java-arg file before reopenLastFiles() has a chance to read it.
+		final List<URL> lastOpenUrls = getConfig().getBooleanValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP)
+				? new ArrayList<>(TGLastOpenFiles.getInstance(this.context).getURLs())
+				: new ArrayList<>();
+
 		this.startSong(url);
 		this.setInitialized(true);
+
+		if( !lastOpenUrls.isEmpty() ) {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+				public void run() {
+					reopenLastFiles(lastOpenUrls);
+				}
+			});
+		}
 	}
 
 	private void startSong(URL url){
@@ -176,6 +197,42 @@ public class TuxGuitar {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGLoadTemplateAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, true);
 		tgActionProcessor.process();
+	}
+
+	private void reopenLastFiles(List<URL> lastOpenUrls) {
+		List<URL> notFoundUrls = new ArrayList<URL>();
+		List<URL> currentUrls = new ArrayList<URL>();
+		for(TGDocument doc : TGDocumentListManager.getInstance(this.context).getDocuments()) {
+			if(doc.getUri() != null) {
+				try {
+					currentUrls.add(doc.getUri().toURL());
+				} catch (Exception e) {
+					// skip invalid URIs
+				}
+			}
+		}
+		for(URL url : lastOpenUrls) {
+			if(TGFileUtils.isLocalFile(url)) {
+				try {
+					if(!new File(url.toURI()).exists()) {
+						notFoundUrls.add(url);
+						continue;
+					}
+				} catch (Exception e) {
+					// skip invalid URIs
+				}
+			}
+			if(!currentUrls.contains(url)) {
+				TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
+				tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
+				tgActionProcessor.process();
+			}
+		}
+		if(!notFoundUrls.isEmpty()) {
+			List<URL> updatedUrls = new ArrayList<URL>(TGLastOpenFiles.getInstance(this.context).getURLs());
+			updatedUrls.removeAll(notFoundUrls);
+			TGLastOpenFiles.getInstance(this.context).save(updatedUrls);
+		}
 	}
 
 	public void restoreControlsConfig(){
