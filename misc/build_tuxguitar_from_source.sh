@@ -507,9 +507,8 @@ for GUI_TK in swt jfx; do
 
   TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
-  # Copy locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  mkdir target/$TARGET.app/Contents/MacOS/jre
-  cp -ai /usr/local/opt/openjdk/* target/$TARGET.app/Contents/MacOS/jre
+  # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
+  /usr/local/opt/openjdk/bin/jlink --add-modules java.desktop --output target/$TARGET.app/Contents/MacOS/jre
 
   rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app

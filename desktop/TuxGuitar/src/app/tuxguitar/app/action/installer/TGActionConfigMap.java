@@ -225,6 +225,7 @@ import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import app.tuxguitar.editor.action.measure.TGCopyBeatAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
 import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
@@ -243,6 +244,7 @@ import app.tuxguitar.editor.action.note.TGCleanBeatAction;
 import app.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGFixTiedNoteAction;
 import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGInsertChordAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
@@ -383,6 +385,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGToggleFreeEditionModeAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenMeasureErrorsDialogAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		this.map(TGFixTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_TRACK_GENERIC);
 
 		//tablature actions
 		this.map(TGMouseClickAction.NAME, LOCKABLE);
@@ -454,6 +457,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGInsertMeasuresAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
 		this.map(TGCopyMeasureAction.NAME, LOCKABLE |DISABLE_ON_PLAY);
 		this.map(TGPasteMeasureAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_SONG_CTL, UNDOABLE_SONG_GENERIC);
+		this.map(TGCopyBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 
 		//beat actions
 		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);

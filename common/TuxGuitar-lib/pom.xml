@@ -24,8 +24,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.10.1</version>
 					<configuration>
-						<source>9</source>
-						<target>9</target>
+						<release>9</release>
 						<showWarnings>true</showWarnings>
 						<compilerArgs>
 							<arg>-Xlint:all</arg>

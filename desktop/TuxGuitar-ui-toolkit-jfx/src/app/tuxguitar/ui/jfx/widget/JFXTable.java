@@ -65,6 +65,7 @@ public class JFXTable<T> extends JFXControl<TableView<UITableItem<T>>> implement
 
 			while(columns.size() < count) {
 				TableColumn<UITableItem<T>, JFXTableCellValue<T>> tableColumn = new TableColumn<UITableItem<T>, JFXTableCellValue<T>>();
+				tableColumn.setSortable(false);
 				tableColumn.setCellFactory(this.cellFactory);
 				tableColumn.setCellValueFactory(this.cellValueFactory);
 

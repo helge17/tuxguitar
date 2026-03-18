@@ -6,6 +6,11 @@ android {
 
 	compileSdkVersion 31
 
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_9
+		targetCompatibility JavaVersion.VERSION_1_9
+	}
+
 	defaultConfig {
 		minSdkVersion 24
 		targetSdkVersion 33

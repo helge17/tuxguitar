@@ -16,6 +16,8 @@ import app.tuxguitar.app.view.toolbar.main.TGMainToolBarConfigMap;
 import app.tuxguitar.app.view.toolbar.main.TGMainToolBarItemConfig;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.ui.UIFactory;
+import app.tuxguitar.ui.event.UIModifyEvent;
+import app.tuxguitar.ui.event.UIModifyListener;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
@@ -112,7 +114,7 @@ public class TGMainToolBarDialog {
 
 		this.saveButton = uiFactory.createButton(panel);
 		this.saveButton.setImage(this.iconManager.getImageByName(TGIconManager.FILE_SAVE));
-		this.saveButton.setToolTipText(TuxGuitar.getProperty("file.save"));
+		this.saveButton.setToolTipText(TuxGuitar.getProperty("toolbar.settings.save"));
 		this.saveButton.setEnabled(false);
 		this.saveButton.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -133,10 +135,16 @@ public class TGMainToolBarDialog {
 		layout.set(this.deleteButton, 1, 4, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, false, false);
 
 		this.newToolBarName = uiFactory.createTextField(panel);
+		this.newToolBarName.addModifyListener(new UIModifyListener() {
+			@Override
+			public void onModify(UIModifyEvent event) {
+				saveAsButton.setEnabled(!newToolBarName.getText().equals(""));
+			}
+		});
 		layout.set(this.newToolBarName, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		this.saveAsButton = uiFactory.createButton(panel);
-		this.saveAsButton.setToolTipText(TuxGuitar.getProperty("file.save-as"));
+		this.saveAsButton.setToolTipText(TuxGuitar.getProperty("toolbar.settings.save-as"));
 		this.saveAsButton.setImage(this.iconManager.getImageByName(TGIconManager.FILE_SAVE_AS));
 		this.saveAsButton.addSelectionListener(new UISelectionListener() {
 			@Override
@@ -244,6 +252,7 @@ public class TGMainToolBarDialog {
 		this.downButton.setImage(iconManager.getImageByName(TGIconManager.ARROW_DOWN));
 		upDownLayout.set(this.downButton, 2, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_TOP, true, true);
 		layout.set(upDownPanel, 2, 4, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_FILL, true, true);
+		TGMainToolBarDialog.this.fillAreaControlsList();
 	}
 
 	private void initButtons(UIPanel panel, UITableLayout layout, UIFactory uiFactory) {
@@ -271,10 +280,12 @@ public class TGMainToolBarDialog {
 
 		UIButton buttonOK = uiFactory.createButton(panel);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
+		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
-				TGMainToolBarDialog.this.OK();
+				TGMainToolBarDialog.this.apply();
+				TGMainToolBarDialog.this.dialog.dispose();
 			}
 		});
 		layout.set(buttonOK, 1, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
@@ -393,13 +404,14 @@ public class TGMainToolBarDialog {
 
 	private void updateButtons() {
 		this.newToolBarName.setEnabled(true);
-		String selectedToolBarName = this.configMgr.getConfigNames().get(this.selectToolbarName.getSelectedValue());
+		String selectedToolBarName = (this.selectToolbarName.getSelectedValue() == null
+				? "" : this.configMgr.getConfigNames().get(this.selectToolbarName.getSelectedValue()));
 		if (this.newToolBarName.getText().equals("")) {
 			this.setUntitledToolBarName();
 		}
 		this.saveButton.setEnabled(this.modified && !selectedToolBarName.equals(""));
 		this.saveAsButton.setEnabled(true);
-		this.deleteButton.setEnabled(!this.config.getName().equals(""));
+		this.deleteButton.setEnabled(!(this.config.getName() == null || this.config.getName().equals("")));
 
 		Integer areaIndex = this.selectArea.getSelectedValue();
 		Integer areaControlIndex = this.tableAreaControls.getSelectedValue();
@@ -485,24 +497,17 @@ public class TGMainToolBarDialog {
 	}
 
 	private void saveAs() {
-		String newName = this.newToolBarName.getText();
-		if (!newName.equals("")) {
-			this.config.setName(newName);
-			configMgr.saveConfig(this.config);
-			this.modified = false;
-			this.fillToolBarNames();
-			this.fillAreaControlsList();
-			this.setUntitledToolBarName();
-		}
+		this.config.setName(this.newToolBarName.getText());
+		configMgr.saveConfig(this.config);
+		this.modified = false;
+		this.fillToolBarNames();
+		this.fillAreaControlsList();
+		this.setUntitledToolBarName();
 	}
 
 	private void delete() {
-		boolean apply = (this.mainToolBar.getConfig().getName().equals(this.config.getName()));
 		configMgr.deleteConfig(this.config);
 		this.setDefaults();
-		if (apply) {
-			this.apply();
-		}
 	}
 
 	private void setDefaults() {
@@ -513,22 +518,13 @@ public class TGMainToolBarDialog {
 	}
 
 	private void apply() {
+		if (this.modified) {
+			// unsaved config is applied
+			config.setName(null);
+		}
 		this.mainToolBar.setConfig(config);
 		this.mainToolBar.layout();
 		this.mainToolBar.updateItems();
 		TGConfigManager.getInstance(context).setValue(TGConfigKeys.MAIN_TOOLBAR_NAME, config.getName());
-	}
-
-	private void OK() {
-		this.apply();
-		if (this.modified) {
-			if (this.mainToolBar.getConfig().getName().equals("")) {
-				this.saveAs();
-				TGConfigManager.getInstance(context).setValue(TGConfigKeys.MAIN_TOOLBAR_NAME, config.getName());
-			} else {
-				this.save();
-			}
-		}
-		this.dialog.dispose();
 	}
 }

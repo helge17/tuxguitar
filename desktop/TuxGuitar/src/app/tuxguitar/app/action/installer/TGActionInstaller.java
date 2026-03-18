@@ -201,6 +201,7 @@ import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureListAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCleanMeasureListAction;
+import app.tuxguitar.editor.action.measure.TGCopyBeatAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureFromAction;
 import app.tuxguitar.editor.action.measure.TGFixMeasureVoiceAction;
@@ -219,6 +220,7 @@ import app.tuxguitar.editor.action.note.TGCleanBeatAction;
 import app.tuxguitar.editor.action.note.TGDecrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteAction;
 import app.tuxguitar.editor.action.note.TGDeleteNoteOrRestAction;
+import app.tuxguitar.editor.action.note.TGFixTiedNoteAction;
 import app.tuxguitar.editor.action.note.TGIncrementNoteSemitoneAction;
 import app.tuxguitar.editor.action.note.TGInsertChordAction;
 import app.tuxguitar.editor.action.note.TGInsertRestBeatAction;
@@ -300,6 +302,7 @@ public class TGActionInstaller {
 		//edit actions
 		installAction(new TGCutAction(context));
 		installAction(new TGCopyAction(context));
+		installAction(new TGCopyBeatAction(context));
 		installAction(new TGPasteAction(context));
 		installAction(new TGRepeatAction(context));
 		installAction(new TGUndoAction(context));
@@ -312,6 +315,7 @@ public class TGActionInstaller {
 		installAction(new TGToggleFreeEditionModeAction(context));
 		installAction(new TGOpenMeasureErrorsDialogAction(context));
 		installAction(new TGFixMeasureVoiceAction(context));
+		installAction(new TGFixTiedNoteAction(context));
 
 		//tablature actions
 		installAction(new TGMouseClickAction(context));

@@ -84,7 +84,25 @@ public class TGTrackManager {
 	public TGNote getPreviousNoteForTie(TGNote note) {
 		return this.getPreviousNoteForTie(note.getVoice(), note.getString(), note.getValue());
 	}
+
 	public TGNote getPreviousNoteForTie(TGVoice voice, int string, Integer value) {
+		TGVoice previousVoice = getPreviousVoice(voice);
+		if (previousVoice == null) {
+			return null;
+		}
+		// look for a valid tied note
+		TGNote previousNoteForTie = null;
+		for (TGNote previousNote : previousVoice.getNotes()) {
+			if ((previousNote.getString() == string) &&
+					((value==null) || (previousNote.getValue() == value)) ) {
+				previousNoteForTie = previousNote;
+				break;
+			}
+		}
+		return previousNoteForTie;
+	}
+
+	public TGVoice getPreviousVoice(TGVoice voice) {
 		TGVoice previousVoice = getSongManager().getMeasureManager().getPreviousVoice(
 				voice.getBeat().getMeasure().getBeats(), voice.getBeat(), voice.getIndex());
 		if (previousVoice == null) {
@@ -95,19 +113,76 @@ public class TGTrackManager {
 			previousVoice = getSongManager().getMeasureManager().getLastVoice(
 					previousMeasure.getBeats(), voice.getIndex());
 		}
-		if (previousVoice == null) {
-			return null;
+		return (previousVoice);
+	}
+
+	public void fixInvalidTiedNotes(TGTrack track) {
+		TGMeasureManager measureManager = getSongManager().getMeasureManager();
+		Iterator<TGMeasure> itMeasure = track.getMeasures();
+		while (itMeasure.hasNext()) {
+			for (TGMeasureError err : measureManager.getMeasureErrors(itMeasure.next())) {
+				if (err.getErrorType() == TGMeasureError.TYPE_TIED_NOTE_ERROR) {
+					fixInvalidTiedNote(err.getInvalidTiedNote());
+				}
+			}
 		}
-		// look for a valid tied note
+	}
+
+	// fix an invalid tied note
+	public void fixInvalidTiedNote(TGNote note) {
+		if(!note.isTiedNote()) return;
+		TGMeasure measure = note.getVoice().getBeat().getMeasure();
+
+		// look for a note with same pitch in previous voice
+		int notePitch = getSongManager().getMeasureManager().getRealNoteValue(note);
+		TGVoice previousVoice = getPreviousVoice(note.getVoice());
+		if (previousVoice == null) {
+			// nothing found, just remove the tie
+			note.setTiedNote(false);
+			return;
+		}
 		TGNote previousNoteForTie = null;
 		for (TGNote previousNote : previousVoice.getNotes()) {
-			if ((previousNote.getString() == string) && 
-					((value==null) || (previousNote.getValue() == value)) ) {
+			if (getSongManager().getMeasureManager().getRealNoteValue(previousNote) == notePitch) {
 				previousNoteForTie = previousNote;
 				break;
 			}
 		}
-		return previousNoteForTie;
+		if (previousNoteForTie == null) {
+			// nothing found, just remove the tie
+			note.setTiedNote(false);
+			return;
+		}
+		// possible to reallocate note on the same string as previous note?
+		if (changeString(note, measure.getTrack().getString(previousNoteForTie.getString())) ) {
+			// OK, fixed
+			return;
+		}
+		// possible to reallocate previous note on the same string as current one?
+		if (!previousNoteForTie.isTiedNote() && changeString(previousNoteForTie, measure.getTrack().getString(note.getString()))) {
+			// OK, fixed
+			return;
+		}
+		// no solution found, just remove the tie
+		note.setTiedNote(false);
+	}
+
+	// try to reallocate one note on another string
+	// returns true if success
+	private boolean changeString(TGNote note, TGString string) {
+		TGNote concurrentNote = getSongManager().getMeasureManager().getNote(note.getVoice().getBeat(), string.getNumber());
+		if (concurrentNote != null) {
+			return false;
+		}
+		int notePitch = getSongManager().getMeasureManager().getRealNoteValue(note);
+		int newFret = notePitch - string.getValue();
+		if ((newFret >= 0) && (newFret <= note.getVoice().getBeat().getMeasure().getTrack().getMaxFret())) {
+			// reallocate current note
+			note.setString(string.getNumber());
+			note.setValue(newFret);
+			return true;
+		}
+		return false;
 	}
 
 	// returns true if a note in following voice is tied to current note, and tie is valid

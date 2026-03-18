@@ -123,9 +123,14 @@ public class TGKeyBindingSelector {
 		}
 
 		else {
+			String actionKeys = kb.toString();
+			String actionName = TuxGuitar.getProperty(this.editor.findKeyBindingAction(kb).getAction());
+			String message = TuxGuitar.getProperty("key-bindings-editor-override");
+			message = message.replace("{0}", actionKeys);
+			message = message.replace("{1}", actionName);
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.editor.getContext().getContext(), TGOpenViewAction.NAME);
 			tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
-			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("key-bindings-editor-override"));
+			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, message);
 			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_NO);
 			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_NO);
 			tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, new Runnable() {
