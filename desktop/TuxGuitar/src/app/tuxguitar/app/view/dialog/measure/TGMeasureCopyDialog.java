@@ -154,31 +154,18 @@ public class TGMeasureCopyDialog {
 
 	fromSpinner.addSelectionListener(new UISelectionListener() {
 		public void onSelect(UISelectionEvent event) {
-			int fromSelection = fromSpinner.getValue();
 			int toSelection = toSpinner.getValue();
-
-				if(fromSelection < minSelection){
-					fromSpinner.setValue(minSelection);
-					fromSelection = minSelection;
-				}else if(fromSelection > toSelection){
-					fromSpinner.setValue(toSelection);
-					fromSelection = toSelection;
-				}
+			int fromSelection = clampFromSelection(fromSpinner.getValue(), toSelection, minSelection);
+			fromSpinner.setValue(fromSelection);
 				updateCopyMarkers(song, fromSelection, toSelection, copyMarkers);
 				updateButtonStates(firstMeasureButton, lastMeasureButton, fromSpinner.getValue(), toSpinner.getValue(), measureCount);
 			}
 		});
 		toSpinner.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				int toSelection = toSpinner.getValue();
 				int fromSelection = fromSpinner.getValue();
-				if(toSelection < fromSelection){
-					toSpinner.setValue(fromSelection);
-					toSelection = fromSelection;
-				}else if(toSelection > maxSelection){
-					toSpinner.setValue(maxSelection);
-					toSelection = maxSelection;
-				}
+				int toSelection = clampToSelection(toSpinner.getValue(), fromSelection, maxSelection);
+				toSpinner.setValue(toSelection);
 				updateCopyMarkers(song, fromSelection, toSelection, copyMarkers);
 				updateButtonStates(firstMeasureButton, lastMeasureButton, fromSelection, toSelection, measureCount);
 			}
@@ -259,9 +246,35 @@ public class TGMeasureCopyDialog {
 	 */
 	private void updateButtonStates(UIButton firstMeasureButton, UIButton lastMeasureButton, 
 									int fromValue, int toValue, int measureCount) {
-		// Disable first measure button if already at first measure
-		firstMeasureButton.setEnabled(fromValue > 1);
-		// Disable last measure button if already at last measure
-		lastMeasureButton.setEnabled(toValue < measureCount);
+		firstMeasureButton.setEnabled(isFirstMeasureButtonEnabled(fromValue));
+		lastMeasureButton.setEnabled(isLastMeasureButtonEnabled(toValue, measureCount));
+	}
+
+	static int clampFromSelection(int fromSelection, int toSelection, int minSelection) {
+		if (fromSelection < minSelection) {
+			return minSelection;
+		}
+		if (fromSelection > toSelection) {
+			return toSelection;
+		}
+		return fromSelection;
+	}
+
+	static int clampToSelection(int toSelection, int fromSelection, int maxSelection) {
+		if (toSelection < fromSelection) {
+			return fromSelection;
+		}
+		if (toSelection > maxSelection) {
+			return maxSelection;
+		}
+		return toSelection;
+	}
+
+	static boolean isFirstMeasureButtonEnabled(int fromValue) {
+		return (fromValue > 1);
+	}
+
+	static boolean isLastMeasureButtonEnabled(int toValue, int measureCount) {
+		return (toValue < measureCount);
 	}
 }
