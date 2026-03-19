@@ -2,6 +2,14 @@ package app.tuxguitar.android.view.dialog.measure;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+
+/**
+ * Android dialog for copying measures with range selection.
+ * Allows users to select a range of measures to copy to clipboard.
+ * 
+ * @modified 2026-02-11 Added "Copy to End" button feature
+ * @author TuxGuitar Team
+ */
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
@@ -49,6 +58,10 @@ public class TGMeasureCopyDialog extends TGModalFragment {
 		});
 	}
 
+	/**
+	 * Initializes the dialog view after inflation.
+	 * Sets up range spinners, checkboxes, and quick range buttons.
+	 */
 	@SuppressLint("InflateParams")
 	public void onPostInflateView() {
 		this.fillRanges();
@@ -56,6 +69,24 @@ public class TGMeasureCopyDialog extends TGModalFragment {
 		CheckBox copyAllTracks = (CheckBox) this.getView().findViewById(R.id.measure_copy_dlg_options_all_tracks);
 		copyAllTracks.setChecked(true);
 		copyAllTracks.setEnabled(this.getSong().countTracks() > 1);
+
+		Button copyToStartButton = (Button) this.getView().findViewById(R.id.measure_copy_dlg_copy_to_start_button);
+		copyToStartButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Spinner fromSpinner = (Spinner) getView().findViewById(R.id.measure_copy_dlg_from_value);
+				updateSpinnerSelection(fromSpinner, 1);
+			}
+		});
+
+		Button copyToEndButton = (Button) this.getView().findViewById(R.id.measure_copy_dlg_copy_to_end_button);
+		copyToEndButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Spinner toSpinner = (Spinner) getView().findViewById(R.id.measure_copy_dlg_to_value);
+				updateSpinnerSelection(toSpinner, getTrack().countMeasures());
+			}
+		});
 	}
 
 	public TGSelectableItem[] createRangeValues(int minimum, int maximum) {
