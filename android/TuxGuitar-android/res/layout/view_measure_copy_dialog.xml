@@ -27,15 +27,17 @@
 			android:id="@+id/measure_copy_dlg_to_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
 
-		<!-- ADDED 2026-02-11: Copy to End button -->
-		<!-- Provides quick access to copy from current measure to the last measure -->
+		<Button
+			android:id="@+id/measure_copy_dlg_copy_to_start_button"
+			android:text="@string/measure_copy_dlg_copy_to_start"
+			android:layout_gravity="fill_horizontal|center_vertical"
+			style="?attr/buttonBarButtonStyle" />
+
 		<Button
 			android:id="@+id/measure_copy_dlg_copy_to_end_button"
 			android:text="@string/measure_copy_dlg_copy_to_end"
 			android:layout_gravity="fill_horizontal|center_vertical"
-			android:layout_columnSpan="2"
 			style="?attr/buttonBarButtonStyle" />
-		<!-- END ADDED -->
 
 		<Space
 			android:layout_gravity="fill"

@@ -367,9 +367,8 @@
 	<string name="measure_copy_dlg_title">Copy Measure</string>
 	<string name="measure_copy_dlg_from_label">From:</string>
 	<string name="measure_copy_dlg_to_label">To:</string>
-	<!-- ADDED 2026-02-11: Copy to End feature button text -->
+	<string name="measure_copy_dlg_copy_to_start">Copy to Start</string>
 	<string name="measure_copy_dlg_copy_to_end">Copy to End</string>
-	<!-- END ADDED -->
 	<string name="measure_copy_dlg_options_all_tracks">All Tracks</string>
 
 	<!-- Measure paste dialog -->
