@@ -148,7 +148,9 @@ public class TGControl {
 				// if user did not move scrollbars, follow player
 				if ((this.scrollX==this.lastScrollX) && (this.scrollY==this.lastScrollY)
 						&& (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
-					if ((this.tablature.getViewLayout().getStyle() & TGLayout.CONTINUOUS_SCROLL) != 0) {
+					// continuous scrolling can only be applied if the played measure remains in the same track
+					if (((this.tablature.getViewLayout().getStyle() & TGLayout.CONTINUOUS_SCROLL) != 0)
+							&& (this.lastPaintedPlayedMeasure != null) && (this.lastPaintedPlayedMeasure.getTrack() == playedMeasure.getTrack())) {
 						if (this.scrollPlayingTo(playedMeasure, MidiPlayer.getInstance(this.context).getMode(), this.canvas.getBounds())) {
 							this.lastPaintedPLayedBeat = null; // force redraw of current played beat
 						};
