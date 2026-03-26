@@ -160,7 +160,8 @@ public class TGKeyBindingEditor {
 			item.setText(0, TuxGuitar.getProperty(kbAction.getAction()));
 			item.setText(1, (kbAction.getCombination() != null ? formatter.format(kbAction.getCombination().getKeyStrings()) : ""));
 
-			if (item.getText(0).toLowerCase().contains(this.filterText.getText().toLowerCase())) {
+			if (item.getText(0).toLowerCase().contains(this.filterText.getText().toLowerCase())
+					|| item.getText(1).toLowerCase().contains(this.filterText.getText().toLowerCase())) {
 				this.table.addItem(item);
 			}
 		}
