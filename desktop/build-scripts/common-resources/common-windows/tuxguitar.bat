@@ -5,7 +5,7 @@ SET "TG_START=%cd%"
 cd %~dp0
 SET "TG_DIR=."
 ::JAVA
-SET "JAVA=jre\bin\java"
+IF EXIST "jre\bin\java.exe" (SET "JAVA=jre\bin\java") ELSE (SET "JAVA=java")
 ::LIBRARY_PATH
 SET "JAVA_LIBRARY_PATH=%JAVA_LIBRARY_PATH%;lib\"
 ::CLASSPATH
