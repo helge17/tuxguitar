@@ -2,14 +2,6 @@ package app.tuxguitar.android.view.dialog.measure;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-/**
- * Android dialog for copying measures with range selection.
- * Allows users to select a range of measures to copy to clipboard.
- * 
- * @modified 2026-02-11 Added "Copy to End" button feature
- * @author TuxGuitar Team
- */
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,10 +50,6 @@ public class TGMeasureCopyDialog extends TGModalFragment {
 		});
 	}
 
-	/**
-	 * Initializes the dialog view after inflation.
-	 * Sets up range spinners, checkboxes, and quick range buttons.
-	 */
 	@SuppressLint("InflateParams")
 	public void onPostInflateView() {
 		this.fillRanges();
