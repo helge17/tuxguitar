@@ -76,14 +76,16 @@ public class TGUnsavedDocumentInterceptor implements TGActionInterceptor, TGEven
 	}
 
 	public void openSaveDialog(TGActionContext context) {
+		boolean hasMoreUnsaved = this.containsUnsavedDocument(context);
 		int style = TGConfirmDialog.BUTTON_YES | TGConfirmDialog.BUTTON_NO | TGConfirmDialog.BUTTON_CANCEL;
-		if(this.containsUnsavedDocument(context)) {
+		if(hasMoreUnsaved) {
 			style |= TGConfirmDialog.BUTTON_DISCARD_ALL;
 		}
 
+		String messageKey = hasMoreUnsaved ? "file.save-changes-question-many" : "file.save-changes-question";
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGOpenViewAction.NAME);
 		tgActionProcessor.setAttribute(TGOpenViewAction.ATTRIBUTE_CONTROLLER, new TGConfirmDialogController());
-		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty("file.save-changes-question"));
+		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_MESSAGE, TuxGuitar.getProperty(messageKey));
 		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_STYLE, style);
 		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_DEFAULT_BUTTON, TGConfirmDialog.BUTTON_YES);
 		tgActionProcessor.setAttribute(TGConfirmDialog.ATTRIBUTE_RUNNABLE_YES, this.createThreadRunnable(createSaveActionRunnable(context)));
