@@ -27,6 +27,18 @@
 			android:id="@+id/measure_copy_dlg_to_value"
 			android:layout_gravity="fill_horizontal|center_vertical" />
 
+		<Button
+			android:id="@+id/measure_copy_dlg_copy_to_start_button"
+			android:text="@string/action_measure_first"
+			android:layout_gravity="fill_horizontal|center_vertical"
+			style="?attr/buttonBarButtonStyle" />
+
+		<Button
+			android:id="@+id/measure_copy_dlg_copy_to_end_button"
+			android:text="@string/action_measure_last"
+			android:layout_gravity="fill_horizontal|center_vertical"
+			style="?attr/buttonBarButtonStyle" />
+
 		<Space
 			android:layout_gravity="fill"
 			android:layout_columnSpan="2"
