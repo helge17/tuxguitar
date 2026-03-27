@@ -55,7 +55,7 @@ public class TGUserFileUtils {
 		// Look for the system property
 		String configPath = System.getProperty(TG_CONFIG_PATH);
 
-		// Default System User Home
+		// Default System User App Dir
 		if( configPath == null ){
 			configPath = (getDefaultUserAppDir() + File.separator + "config");
 		}
@@ -78,7 +78,12 @@ public class TGUserFileUtils {
 		if (os.contains("Windows")) {
 			return joinPath(home, "AppData", "Roaming", folderName);
 		}
-		return joinPath(home, ".config", folderName);
+		String xdgConfigHome = System.getenv("XDG_CONFIG_HOME");
+		if (xdgConfigHome == null || xdgConfigHome.trim().length() == 0) {
+			return joinPath(home, ".config", folderName);
+		} else {
+			return joinPath(xdgConfigHome, folderName);
+		}
 	}
 
 	private static String getUserPluginsConfigDir(){
@@ -97,9 +102,9 @@ public class TGUserFileUtils {
 		// Look for the system property
 		String userSharePath = System.getProperty(TG_USER_SHARE_PATH);
 
-		// Use configuration path as default.
+		// Default System User Shared Path
 		if( userSharePath == null){
-			userSharePath = (getDefaultUserAppDir() + File.separator + "cache");
+			userSharePath = (getDefaultUserSharedPath() + File.separator + "cache");
 		}
 
 		// Check if the path exists
@@ -110,6 +115,23 @@ public class TGUserFileUtils {
 		return userSharePath;
 	}
 
+	private static String getDefaultUserSharedPath(){
+		String home = System.getProperty("user.home");
+		String folderName = "tuxguitar";
+		String os = System.getProperty("os.name");
+		if (os.equals("Mac OS X")) {
+			return joinPath(home, "Library", "Caches", folderName);
+		}
+		if (os.contains("Windows")) {
+			return joinPath(home, "AppData", "Roaming", folderName);
+		}
+		String xdgCacheHome = System.getenv("XDG_CACHE_HOME");
+		if (xdgCacheHome == null || xdgCacheHome.trim().length() == 0) {
+			return joinPath(home, ".cache", folderName);
+		} else {
+			return joinPath(xdgCacheHome, folderName);
+		}
+	}
 
 	public static boolean isExistentAndReadable( File file ){
 		try{
