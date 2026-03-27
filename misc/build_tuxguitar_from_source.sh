@@ -226,7 +226,7 @@ fi
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
 
 echo -e "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ..."
-find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
+find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
 # Also set the version in the "Help - About" dialog
 sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
 echo "# OK."

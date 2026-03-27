@@ -5,7 +5,7 @@
 	<groupId>app.tuxguitar</groupId>
 	<artifactId>tuxguitar-pom</artifactId>
 	<packaging>pom</packaging>
-	<version>9.99-SNAPSHOT</version>
+	<version>${revision}</version>
 	<name>${project.artifactId}</name>
 
 	<dependencyManagement>
@@ -374,6 +374,7 @@
 	</build>
 
 	<properties>
+		<revision>9.99-SNAPSHOT</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Timestamp for reproducible jar files -->
 		<project.build.outputTimestamp>2025-11-02T00:00:00Z</project.build.outputTimestamp>

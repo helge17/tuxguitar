@@ -605,13 +605,13 @@ public class TGMeasureManager {
 				if(!voice.isEmpty() && (bPreciseStart + vPreciseDuration) > (mPreciseStart + mPreciseLength) ){
 					// voice does not fit in measure, need to split
 					long toSplitInsideMeasure = mPreciseStart + mPreciseLength - bPreciseStart;
-					List<TGDuration> durations = TGDuration.splitPreciseDuration(toSplitInsideMeasure, TGDuration.WHOLE_PRECISE_DURATION, getSongManager().getFactory());
+					List<TGDuration> durations = TGDuration.splitPreciseDuration(toSplitInsideMeasure, newMeasure.getPreciseLength(), getSongManager().getFactory());
 					boolean ok = (durations != null);
 					long remainder = vPreciseDuration - toSplitInsideMeasure;
 					while (ok && (remainder > 0)) {
 						// one fragment per measure
 						long toSplit = Math.min(remainder, mPreciseLength);
-						List<TGDuration> split = TGDuration.splitPreciseDuration(toSplit, TGDuration.WHOLE_PRECISE_DURATION, getSongManager().getFactory());
+						List<TGDuration> split = TGDuration.splitPreciseDuration(toSplit, newMeasure.getPreciseLength(), getSongManager().getFactory());
 						ok &= (split != null);
 						if (ok) {
 							durations.addAll(split);
@@ -1287,7 +1287,7 @@ public class TGMeasureManager {
 		long gapToFill = measurePreciseEnd - voice.getBeat().getPreciseStart() - voice.getDuration().getPreciseTime();
 		while (gapToFill > 0) {
 			// try to fill with rests if possible
-			List<TGDuration> listDurations =  TGDuration.splitPreciseDuration(gapToFill, TGDuration.WHOLE_PRECISE_DURATION, getSongManager().getFactory());
+			List<TGDuration> listDurations =  TGDuration.splitPreciseDuration(gapToFill, measure.getPreciseLength(), getSongManager().getFactory());
 			if (listDurations != null) {
 				this.autoCompleteSilences(measure);
 				gapToFill = 0;
@@ -1296,7 +1296,7 @@ public class TGMeasureManager {
 				// cannot fill with rests, try to increase duration of last voice
 				// if it fails, remove last voice
 				long durationToFill = measurePreciseEnd - voice.getBeat().getPreciseStart();
-				listDurations =  TGDuration.splitPreciseDuration(durationToFill, TGDuration.WHOLE_PRECISE_DURATION, getSongManager().getFactory());
+				listDurations =  TGDuration.splitPreciseDuration(durationToFill, measure.getPreciseLength(), getSongManager().getFactory());
 				if (listDurations!=null && listDurations.size()==1) {
 					// replace current duration by new one, this fixes measure's voice
 					voice.setDuration(listDurations.get(0).clone(getSongManager().getFactory()));
