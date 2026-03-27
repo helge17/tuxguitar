@@ -49,7 +49,7 @@ public class TGKeyBindingEditor {
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
 
-		this.dialog = uiFactory.createWindow(uiParent, true, false);
+		this.dialog = uiFactory.createWindow(uiParent, true, true);
 		this.dialog.setLayout(dialogLayout);
 		this.dialog.setText(TuxGuitar.getProperty("key-bindings-editor"));
 
@@ -60,7 +60,7 @@ public class TGKeyBindingEditor {
 				TGKeyBindingEditor.this.updateTableItems();
 			}
 		});
-		dialogLayout.set(filterText, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(filterText, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 
 		this.table = uiFactory.createTable(this.dialog, true);
 		this.table.setColumns(2);
@@ -91,7 +91,7 @@ public class TGKeyBindingEditor {
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(this.dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 
 		UIButton defaults = uiFactory.createButton(buttons);
 		defaults.setText(TuxGuitar.getProperty("defaults"));
@@ -120,6 +120,7 @@ public class TGKeyBindingEditor {
 		});
 
 		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+		this.dialog.setMinimumSize((int)this.dialog.getBounds().getWidth(), (int)this.dialog.getBounds().getHeight());
 	}
 
 	public void createKeyBindingActions(List<KeyBindingAction> keyBindingActions) {
