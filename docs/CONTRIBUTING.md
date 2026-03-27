@@ -55,4 +55,6 @@ Refer to [IDEs](https://github.com/helge17/tuxguitar/tree/master/docs/IDEs.md) f
 ## Submit a contribution
 
 If you want to implement one feature request or to fix an issue, mention it explicitly in the issue's discussion, so that others do not try to address it in parallel.
-To submit a contribution, follow the GitHub [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request. If your pull request implements or fixes an issue, make this explicit in the pull request's description (e.g. "should fix issue #xxx").
+To submit a contribution, follow the GitHub [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request (PR). If your PR implements or fixes an issue, make this explicit in the PR's description (e.g. "should fix issue #xxx").
+
+Most of the work on TuxGuitar takes place in the `master` branch, so you should create your PR in that branch. For risky modifications, you can open the PR in the `tuxguitar-next` branch. If the change proves to be stable enough, it will be merged into `master` and included in the upcoming release.
