@@ -57,7 +57,7 @@ public class TGUpdateLoadedSongController extends TGUpdateItemsController {
 			}
 
 			if( uri != null ) {
-				tgDocumentListManager.findCurrentDocument().setUri(uri);
+				tgDocumentListManager.setCurrentDocumentUri(uri);
 			}
 
 			TGTransport.getInstance(context).getCache().reset();
