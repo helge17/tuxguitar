@@ -104,16 +104,16 @@
     <p><strong>*</strong> The <strong>TuxGuitar Sequencer</strong> is built-in and always available, even if no plugin is enabled. There is no built-in MIDI port, all MIDI ports are provided via plugins.</p>
     <h2 id="tuxguitar_synth">TuxGuitar Synthesizer</h2>
     <p>The TuxGuitar Synthesizer consists of four plugins that depend on each other.</p>
-    <h3 id="tuxguitar_synth">TuxGuitar Synthesizer output plugin</h3>
+    <h3 id="tuxguitar_synth_plugin">TuxGuitar Synthesizer output plugin</h3>
     <p>The <strong>TuxGuitar Synthesizer output plugin</strong> adds the TuxGuitar Synthesizer MIDI Port, but cannot produce any sound output on its own.</p>
-    <h3 id="tuxguitar_synth">Gervill and LV2 extensions</h3>
+    <h3 id="tuxguitar_synth_gervill_lv2">Gervill and LV2 extensions</h3>
     <p>The audio output is handled by the <strong>Gervill extension</strong> plugin. In the plugin settings, you can select an SF2 or a DLS soundfont for the sound generation. By default, the "Magic Sound Font 2.0" is used.</p>
     <img src="images/sound_synth_soundbank.png" />
     <p>With the Gervill extension, you can also select an individual soundfont and choose different MIDI settings for each instrument, as you can see in the screenshot below.</p>
     <p>The <strong>LV2 extension</strong> is optional. It allows you to activate LV2 effect plugins for your instruments. TuxGuitar itself does not include any LV2 plugins, but you can load all LV2 plugins provided by the <strong>Guitarix</strong> virtual amplifier, for example. On Linux, just install the package named "guitarix-lv2" or similar, and TuxGuitar will automatically find all LV2 plugins on startup.</p>
     <p>Both the Gervill and the LV2 extension are set up in the instrument settings of the <strong><a href="editing_song.html#instruments_dialog">Instuments dialog</a></strong> box. Please note that all the settings you make here are not stored in your computer's local TuxGuitar settings, but directly in the TuxGuitar tablature file.</p>
     <img src="images/sound_synth_gervill_lv2.png" />
-    <h3 id="tuxguitar_synth">Audio file export</h3>
+    <h3 id="tuxguitar_synth_export">Audio file export</h3>
     <p>With the <strong>Audio file export</strong> extension, you can write your song to an audio file using the TuxGuitar Synthesizer with the Gervill and LV2 extension settings from above. Please note that this extension does not allow you to export the audio stream from other output plugins such as FluidSynth or ALSA.</p>
     <img src="images/sound_synth_export.png" />
     <h2 id="java_sound">Java Sound API</h2>
