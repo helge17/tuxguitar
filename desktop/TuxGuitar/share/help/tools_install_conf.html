@@ -89,10 +89,10 @@
       <li><strong>tuxguitar.sh, tuxguitar.exe/tuxguitar.bat</strong>: Start commands for Java and TuxGuitar</li>
     </ul>
     <h2 id="config">Configuration files</h2>
-    <p>The configuration files for TuxGuitar are stored in subdirectories below your user home directory (<em>$HOME</em>). The path within your home directory depends on the operating system:</p>
+    <p>The location of the configuration files depends on your operating system:</p>
     <ul>
-      <li><strong>Linux</strong>, <strong>FreeBSD</strong>: <em>$HOME</em>/.config/tuxguitar/</li>
-      <li><strong>Windows</strong>: <em>$HOME</em>/AppData/Roaming/tuxguitar/</li>
+      <li><strong>Linux</strong>, <strong>FreeBSD</strong>: The default location is <em>$HOME</em>/.config/tuxguitar/. If you set the <em>$XDG_CONFIG_HOME</em> environment variable, the configuration will be saved in <em>$XDG_CONFIG_HOME</em>/tuxguitar/.</li>
+      <li><strong>Windows</strong>: <em>%USERPROFILE%</em>/AppData/Roaming/tuxguitar/</li>
       <li><strong>macOS</strong>: <em>$HOME</em>/Library/Application Support/tuxguitar/</li>
     </ul>
     <p>Most of these settings are changed in the TuxGuitar menus, but some unusual settings can only be modified manually by editing the corresponding configuration file.</p>
