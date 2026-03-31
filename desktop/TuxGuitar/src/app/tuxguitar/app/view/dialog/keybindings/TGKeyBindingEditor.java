@@ -160,7 +160,6 @@ public class TGKeyBindingEditor {
 			UITableItem<KeyBindingAction> item = new UITableItem<KeyBindingAction>(kbAction);
 			item.setText(0, TuxGuitar.getProperty(kbAction.getAction()));
 			item.setText(1, (kbAction.getCombination() != null ? formatter.format(kbAction.getCombination().getKeyStrings()) : ""));
-																								   //Search by Key binding
 			if (item.getText(0).toLowerCase().contains(this.filterText.getText().toLowerCase()) || item.getText(1).toLowerCase().contains(this.filterText.getText().toLowerCase().replaceAll("\\s", ""))) {
 				this.table.addItem(item);
 			}
