@@ -32,7 +32,7 @@ android {
 
 	namespace = 'app.tuxguitar.android.application'
 
-	compileSdkVersion 31
+	compileSdkVersion 35
 
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_9
@@ -42,7 +42,7 @@ android {
 	defaultConfig {
 		applicationId "app.tuxguitar.android.application"
 		minSdkVersion 24
-		targetSdkVersion 33
+		targetSdkVersion 35
 		multiDexEnabled true
 		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
 		versionName "9.99-SNAPSHOT"
