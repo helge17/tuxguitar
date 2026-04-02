@@ -94,7 +94,7 @@ public class TGMarkerList implements TGEventListener {
 		UITableLayout buttonsLayout = new UITableLayout();
 		this.compositeButtons = uiFactory.createPanel(this.dialog, false);
 		this.compositeButtons.setLayout(buttonsLayout);
-		dialogLayout.set(this.compositeButtons, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(this.compositeButtons, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
 
 		this.buttonAdd = uiFactory.createButton(this.compositeButtons);
 		this.buttonAdd.addSelectionListener(new UISelectionListener() {
