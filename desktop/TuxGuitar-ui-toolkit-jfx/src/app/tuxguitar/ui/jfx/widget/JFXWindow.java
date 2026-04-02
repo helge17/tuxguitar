@@ -399,7 +399,10 @@ public class JFXWindow extends JFXPaneContainer<Pane> implements UIWindow {
 
 	@Override
 	public void setMinimumSize(int width, int height) {
-		this.stage.setMinWidth(width);
-		this.stage.setMinHeight(height);
+		// Add window decoration
+		int borderWidth = (int) ( this.stage.getScene().getWindow().getWidth() - this.stage.getScene().getWidth() );
+		int borderHeight = (int) ( this.stage.getScene().getWindow().getHeight() - this.stage.getScene().getHeight() );
+		this.stage.setMinWidth(width + borderWidth);
+		this.stage.setMinHeight(height + borderHeight);
 	}
 }
