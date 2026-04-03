@@ -12,12 +12,12 @@ allprojects {
 }
 
 javafx {
-    version = "23.0.2"
+    version = "21.0.5"
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.graphics', 'javafx.base' ]
 }
 
 application {
-    mainClass = 'app.tuxguitar.ui.jfx.JFXApplicationLauncher'
+    mainClass = 'app.HelloFX'//tuxguitar.ui.jfx.JFXApplicationLauncher'
 }
 
 dependencies {
@@ -29,7 +29,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 

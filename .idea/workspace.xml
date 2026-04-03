@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="base refactoring">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/android-gradle.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/freebsd-maven.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/macos-maven.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ubuntu-maven.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TuxGuitar-editor-utils/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-editor-utils/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TuxGuitar-lib/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-lib/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +42,12 @@
                 <item name="TuxGuitar-Desktop" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="application" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="TuxGuitar-Desktop" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -90,6 +89,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.JFXApplicationLauncher.executor": "Run",
+    "Gradle.tuxguitar [clean].executor": "Run",
     "Gradle.tuxguitar [run].executor": "Run",
     "Maven.tuxguitar-pom [compile].executor": "Run",
     "Maven.tuxguitar-pom [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
@@ -104,6 +104,7 @@
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Dell/StudioProjects/tuxguitar",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
@@ -120,7 +121,29 @@
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\desktop" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.tuxguitar [run]">
+    <configuration name="tuxguitar [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="tuxguitar [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -157,6 +180,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.tuxguitar [run]" />
+        <item itemvalue="Gradle.tuxguitar [clean]" />
       </list>
     </recent_temporary>
   </component>
@@ -224,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775249771275</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="base refactoring">
+      <option name="closed" value="true" />
+      <created>1775253451085</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1775253451085</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

@@ -9,7 +9,7 @@ sourceSets {
 }
 
 javafx {
-    version = "23.0.2"
+    version = "21.0.5"
     modules = ["javafx.base", "javafx.controls", "javafx.graphics", "javafx.fxml", "javafx.web"]
 }
 
