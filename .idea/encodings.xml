@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-awt-graphics/src" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-awt-graphics/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-editor-utils/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-editor-utils/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-lib/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-lib/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-ui-toolkit-jfx/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-ui-toolkit-jfx/src" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-ui-toolkit/share" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar-ui-toolkit/src" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar/src" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/TuxGuitar/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-awt-graphics/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-awt-graphics/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-editor-utils/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-editor-utils/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-lib/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-lib/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-ui-toolkit/share" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar-ui-toolkit/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TuxGuitar/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

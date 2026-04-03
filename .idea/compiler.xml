@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="tuxguitar-ui-toolkit-jfx" />
-        <module name="tuxguitar-ui-toolkit" />
-        <module name="tuxguitar" />
-        <module name="tuxguitar-lib" />
-        <module name="tuxguitar-awt-graphics" />
-        <module name="tuxguitar-editor-utils" />
-      </profile>
-    </annotationProcessing>
+    <bytecodeTargetLevel target="17">
+      <module name="tuxguitar" target="9" />
+      <module name="tuxguitar-awt-graphics" target="9" />
+      <module name="tuxguitar-editor-utils" target="9" />
+      <module name="tuxguitar-lib" target="9" />
+      <module name="tuxguitar-pom" target="9" />
+      <module name="tuxguitar-ui-toolkit" target="9" />
+      <module name="tuxguitar-ui-toolkit-jfx" target="9" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

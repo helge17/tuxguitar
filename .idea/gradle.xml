@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/TuxGuitar" />
+            <option value="$PROJECT_DIR$/TuxGuitar-awt-graphics" />
+            <option value="$PROJECT_DIR$/TuxGuitar-editor-utils" />
+            <option value="$PROJECT_DIR$/TuxGuitar-lib" />
+            <option value="$PROJECT_DIR$/TuxGuitar-ui-toolkit" />
+            <option value="$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
