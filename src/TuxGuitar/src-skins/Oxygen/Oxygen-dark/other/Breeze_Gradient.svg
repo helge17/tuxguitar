@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg1" version="1.2" xmlns="http://www.w3.org/2000/svg">
+ <defs id="defs1">
+  <linearGradient id="Gradient1" x1="11.548" x2="11.548" y1="7.7522" y2="14.248" gradientUnits="userSpaceOnUse">
+   <stop id="stop1" stop-color="#eff0f1" offset="0"/>
+   <stop id="stop2" stop-color="#fff" offset=".5"/>
+   <stop id="stop3" stop-color="#dfe0e1" offset="1"/>
+  </linearGradient>
+ </defs>
+</svg>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<templates>
+	<template resource="template-1.tg" name="Blues Trio"/>
+	<template resource="template-2.tg" name="Classical Guitar Duo"/>
+</templates>
