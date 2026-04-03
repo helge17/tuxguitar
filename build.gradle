@@ -11,10 +11,20 @@ allprojects {
     }
 }
 
+javafx {
+    version = "23.0.2"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.graphics', 'javafx.base' ]
+}
+
+application {
+    mainClass = 'app.tuxguitar.ui.jfx.JFXApplicationLauncher'
+}
+
 dependencies {
     testImplementation(libs.junit)
     implementation  "org.apache.commons:commons-compress:1.26.0"
     implementation  "commons-io:commons-io:2.15.1"
+    implementation project(':TuxGuitar-ui-toolkit-jfx')
 }
 
 java {
@@ -26,6 +36,3 @@ java {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-mainClassName = 'HelloFX'
-// mainClassName = 'JFXApplicationLauncher'

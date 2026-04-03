@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 sourceSets {
@@ -8,8 +9,8 @@ sourceSets {
 }
 
 javafx {
-    version = "21"
-    modules = ["javafx.base", "javafx.controls", "javafx.graphics"]
+    version = "23.0.2"
+    modules = ["javafx.base", "javafx.controls", "javafx.graphics", "javafx.fxml", "javafx.web"]
 }
 
 dependencies {
@@ -17,4 +18,3 @@ dependencies {
     implementation project(':TuxGuitar-awt-graphics')
     implementation project(':TuxGuitar-ui-toolkit')
 }
-
