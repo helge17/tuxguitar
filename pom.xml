@@ -8,39 +8,17 @@
 	<version>9.99-DESKTOP</version>
 	<name>${project.artifactId}</name>
 
+	<modules>
+		<module>src/TuxGuitar</module>
+		<module>src/TuxGuitar-lib</module>
+		<module>src/TuxGuitar-ui-toolkit</module>
+		<module>src/TuxGuitar-awt-graphics</module>
+		<module>src/TuxGuitar-editor-utils</module>
+		<module>src/TuxGuitar-ui-toolkit-jfx</module>
+	</modules>
+
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-lib</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-ui-toolkit</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-awt-graphics</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>tuxguitar-ui-toolkit-jfx</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<!-- commons compress -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>
@@ -51,7 +29,6 @@
 				<artifactId>commons-io</artifactId>
 				<version>2.15.1</version>
 			</dependency>
-			<!-- /commons compress -->
 		</dependencies>
 	</dependencyManagement>
 

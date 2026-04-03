@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="tuxguitar-ui-toolkit-jfx" />
+        <module name="tuxguitar-ui-toolkit" />
+        <module name="tuxguitar" />
+        <module name="tuxguitar-lib" />
+        <module name="tuxguitar-awt-graphics" />
+        <module name="tuxguitar-editor-utils" />
+      </profile>
+    </annotationProcessing>
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="tuxguitar" options="-Xlint:all" />
+      <module name="tuxguitar-awt-graphics" options="-Xlint:all" />
+      <module name="tuxguitar-editor-utils" options="-Xlint:all" />
+      <module name="tuxguitar-lib" options="-Xlint:all" />
       <module name="tuxguitar-pom" options="-Xlint:all" />
+      <module name="tuxguitar-ui-toolkit" options="-Xlint:all" />
+      <module name="tuxguitar-ui-toolkit-jfx" options="-Xlint:all" />
     </option>
   </component>
 </project>

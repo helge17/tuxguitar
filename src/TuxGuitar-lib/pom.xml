@@ -5,7 +5,7 @@
 	<groupId>app.tuxguitar</groupId>
 	<artifactId>tuxguitar-lib</artifactId>
 	<packaging>jar</packaging>
-	<version>9.99-SNAPSHOT</version>
+	<version>9.99-DESKTOP</version>
 	<name>${project.artifactId}</name>
 
 	<properties>
