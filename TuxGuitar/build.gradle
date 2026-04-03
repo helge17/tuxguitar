@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+sourceSets {
+    main.java.srcDirs = ["src"]
+}
+
+dependencies {
+    implementation project(':TuxGuitar-lib')
+    implementation project(':TuxGuitar-editor-utils')
+    implementation project(':TuxGuitar-ui-toolkit-jfx')
+}

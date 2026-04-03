@@ -1,0 +1,31 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencies {
+    testImplementation(libs.junit)
+    implementation  "org.apache.commons:commons-compress:1.26.0"
+    implementation  "commons-io:commons-io:2.15.1"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+mainClassName = 'HelloFX'
+// mainClassName = 'JFXApplicationLauncher'

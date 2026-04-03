@@ -1,0 +1,8 @@
+rootProject.name = 'TuxGuitar-Desktop'
+include('TuxGuitar',
+        'TuxGuitar-awt-graphics',
+        'TuxGuitar-editor-utils',
+        'TuxGuitar-lib',
+        'TuxGuitar-ui-toolkit',
+        'TuxGuitar-ui-toolkit-jfx'
+)

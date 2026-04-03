@@ -1,0 +1,10 @@
+[versions]
+junit = "4.13.2"
+junitVersion = "1.3.0"
+
+[libraries]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+[plugins]
+
+
