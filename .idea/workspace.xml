@@ -7,6 +7,8 @@
     <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="base refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TuxGuitar-editor-utils/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-editor-utils/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TuxGuitar-lib/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-lib/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +88,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775236223621</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="base refactoring">
+      <option name="closed" value="true" />
+      <created>1775236988963</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775236988963</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
