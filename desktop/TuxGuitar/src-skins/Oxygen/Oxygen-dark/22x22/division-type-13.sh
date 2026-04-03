@@ -1,1 +1,0 @@
-../../Oxygen/22x22/division-type-13.sh

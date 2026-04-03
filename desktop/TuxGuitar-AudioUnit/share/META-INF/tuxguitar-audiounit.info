@@ -1,5 +1,0 @@
-### Plugin Information ###
-plugin.name=macOS Audio Unit output plugin
-plugin.description=This plugin enables the sound output via the Audio Unit interface on macOS.
-plugin.author=Auria
-plugin.version=1.0

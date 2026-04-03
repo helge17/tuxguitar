@@ -1,3 +1,0 @@
-# Add here the TGPlugin implementation class names.
-app.tuxguitar.io.svg.SVGSongWriterPlugin
-app.tuxguitar.io.svg.SVGStylesHandlerPlugin

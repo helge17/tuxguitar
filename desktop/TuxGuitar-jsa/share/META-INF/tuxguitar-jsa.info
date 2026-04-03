@@ -1,5 +1,0 @@
-### Plugin Information ###
-plugin.name=Java Sound API output plugin
-plugin.description=This plugin enables the sound output via the Java Sound API.
-plugin.author=Julián Casadesús
-plugin.version=1.0

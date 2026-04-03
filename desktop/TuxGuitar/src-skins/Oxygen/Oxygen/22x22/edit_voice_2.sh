@@ -1,1 +1,0 @@
-edit_voice_1.sh

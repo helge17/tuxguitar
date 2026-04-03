@@ -1,1 +1,0 @@
-../../Oxygen/22x22/table_viewer.sh

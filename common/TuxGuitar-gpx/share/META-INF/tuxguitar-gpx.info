@@ -1,5 +1,0 @@
-### Plugin Information ###
-plugin.name=Guitar Pro 6 and 7 file import plugin
-plugin.description=Plugin to open Guitar Pro 6 (GPX) and 7 (GP) files
-plugin.author=Jørgen von Bargen, Julián Casadesús, b4dc0d3r
-plugin.version=0.2

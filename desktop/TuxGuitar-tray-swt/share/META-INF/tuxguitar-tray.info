@@ -1,5 +1,0 @@
-### Plugin Information ###
-plugin.name=System tray plugin
-plugin.description=This plugin adds a TuxGuitar icon to the system tray where you\ncan hide and unhide the TuxGuitar window and control the audio\nplayback.
-plugin.author=Julián Casadesús
-plugin.version=1.0

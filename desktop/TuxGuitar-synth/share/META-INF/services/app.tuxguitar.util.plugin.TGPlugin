@@ -1,3 +1,0 @@
-# Add here the TGPlugin implementation class names.
-app.tuxguitar.midi.synth.TGSynthPortProviderPlugin
-app.tuxguitar.midi.synth.ui.TGSynthDialogPlugin

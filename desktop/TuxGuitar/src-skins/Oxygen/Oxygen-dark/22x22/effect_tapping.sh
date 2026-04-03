@@ -1,1 +1,0 @@
-../../Oxygen/22x22/effect_tapping.sh

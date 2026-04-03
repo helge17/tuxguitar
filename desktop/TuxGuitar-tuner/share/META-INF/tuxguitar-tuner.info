@@ -1,5 +1,0 @@
-### Plugin Information ###
-plugin.name=Guitar Tuner
-plugin.description=Visual guitar tuner that analyses the most dominant frequency\nfrom your microphone and displays it on the tuner scale.
-plugin.author=Nikola Kolarovic
-plugin.version=0.01b
