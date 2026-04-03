@@ -5,10 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="base refactoring">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TuxGuitar-awt-graphics/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-awt-graphics/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TuxGuitar-editor-utils/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-editor-utils/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TuxGuitar-lib/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-lib/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TuxGuitar-ui-toolkit-jfx/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-ui-toolkit-jfx/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TuxGuitar-ui-toolkit/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar-ui-toolkit/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TuxGuitar/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/TuxGuitar/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +36,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.JFXApplicationLauncher.executor": "Run",
     "Maven.tuxguitar-pom [compile].executor": "Run",
+    "Maven.tuxguitar-pom [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -96,7 +103,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775236988963</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="base refactoring">
+      <option name="closed" value="true" />
+      <created>1775238809736</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775238809736</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

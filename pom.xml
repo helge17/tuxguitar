@@ -5,7 +5,7 @@
 	<groupId>app.tuxguitar</groupId>
 	<artifactId>tuxguitar-pom</artifactId>
 	<packaging>pom</packaging>
-	<version>9.99-DESKTOP</version>
+	<version>${project.version}</version>
 	<name>${project.artifactId}</name>
 
 	<modules>
@@ -104,6 +104,7 @@
 	</build>
 
 	<properties>
+        <project.version>9.99-DESKTOP</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>23.0.2</javafx.version>
         <javafx.platform>win</javafx.platform>

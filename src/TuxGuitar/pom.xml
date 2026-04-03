@@ -5,6 +5,7 @@
 		<artifactId>tuxguitar-pom</artifactId>
 		<groupId>app.tuxguitar</groupId>
 		<version>9.99-DESKTOP</version>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -20,16 +21,19 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-lib</artifactId>
+            <version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-editor-utils</artifactId>
+            <version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-ui-toolkit</artifactId>
+            <version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
