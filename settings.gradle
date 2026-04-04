@@ -4,5 +4,7 @@ include('TuxGuitar',
         'TuxGuitar-editor-utils',
         'TuxGuitar-lib',
         'TuxGuitar-ui-toolkit',
-        'TuxGuitar-ui-toolkit-jfx'
+        'TuxGuitar-ui-toolkit-jfx',
+        'TuxGuitar-gm-utils',
+        'TuxGuitar-jsa'
 )

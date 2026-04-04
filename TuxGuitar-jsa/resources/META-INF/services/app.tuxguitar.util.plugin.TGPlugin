@@ -1,0 +1,3 @@
+app.tuxguitar.player.impl.jsa.midiport.MidiOutputPortProviderPlugin
+app.tuxguitar.player.impl.jsa.sequencer.MidiSequencerProviderPlugin
+app.tuxguitar.player.impl.jsa.settings.MidiSettingsPlugin

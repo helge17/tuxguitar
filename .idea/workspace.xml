@@ -4,33 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="svg refactoring">
+    <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="refactoring">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/messages.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_bg.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_ca.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_cs.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_de.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_el.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_es.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_eu.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_fi.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_fr.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_hu.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_it.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_ja.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_ko.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_lt.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_nl.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_pl.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_pt.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_ru.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_sr.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_sv.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_uk.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_vi.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_zh_CN.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/messages_zh_TW.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,18 +106,18 @@
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Dell/StudioProjects/tuxguitar/resources/icons",
+    "last_opened_file_path": "C:/Users/Dell/StudioProjects/tuxguitar/TuxGuitar-jsa",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-jsa" />
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-gm-utils" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources\icons" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources\skins\Breeze" />
-      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-ui-toolkit" />
-      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-awt-graphics" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources\icons" />
@@ -330,13 +308,22 @@
       <option name="project" value="LOCAL" />
       <updated>1775337569999</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="refactoring">
+      <option name="closed" value="true" />
+      <created>1775338589891</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1775338589891</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="base refactoring" />
     <MESSAGE value="svg refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="svg refactoring" />
+    <MESSAGE value="refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
