@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="audio">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TuxGuitar-jsa/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-jsa/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TuxGuitar/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar-gm-utils/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-gm-utils/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -324,7 +321,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775341404754</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="audio">
+      <option name="closed" value="true" />
+      <created>1775344998315</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1775344998315</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

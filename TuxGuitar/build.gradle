@@ -9,7 +9,6 @@ sourceSets {
 
 dependencies {
     runtimeOnly project(':TuxGuitar-jsa')
-    runtimeOnly project(':TuxGuitar-gm-utils')
 
     implementation project(':TuxGuitar-lib')
     implementation project(':TuxGuitar-editor-utils')
