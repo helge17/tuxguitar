@@ -1,1 +1,0 @@
-../../Oxygen/22x22/highlight_played_beat.sh

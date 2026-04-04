@@ -1,1 +1,0 @@
-../../Oxygen/22x22/stroke_up.sh

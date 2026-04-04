@@ -1,1 +1,0 @@
-../../Oxygen/22x22/edit_voice_1.sh
