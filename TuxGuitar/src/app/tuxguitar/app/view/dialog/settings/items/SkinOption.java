@@ -107,7 +107,7 @@ public class SkinOption extends TGSettingsOption{
 		new Thread(new Runnable() {
 			public void run() {
 				SkinOption.this.skins = new ArrayList<SkinInfo>();
-				String[] skinNames = TGFileUtils.getFileNames(getViewContext().getContext(), "skins");
+				String[] skinNames = TGFileUtils.getFileNames(getViewContext().getContext(), "icons");
 				if( skinNames != null ){
 					for(int i = 0;i < skinNames.length;i++) {
 						TGProperties properties = TGSkinManager.getInstance(getViewContext().getContext()).getSkinInfo(skinNames[i]);
@@ -170,7 +170,7 @@ public class SkinOption extends TGSettingsOption{
 					skinInfoRect.setSize(SkinOption.this.skinInfoComposite.getPackedContentSize());
 					SkinOption.this.skinInfoComposite.setBounds(skinInfoRect);
 					if( info.getPreview() != null){
-						SkinOption.this.preview = TGFileUtils.loadImage(getViewContext().getContext(), info.getSkin(), info.getPreview());
+						SkinOption.this.preview = TGFileUtils.loadImage(getViewContext().getContext(), info.getPreview());
 					}
 					SkinOption.this.previewArea.redraw();
 

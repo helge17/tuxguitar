@@ -6,7 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="base refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar-ui-toolkit-jfx/src/app/HelloFX.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/share/skins/Breeze/help_doc.png" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/share/skins/Breeze/help_doc.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src-skins/Breeze/build_skin.sh" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src-skins/Breeze/build_skin.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/TGMainSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/TGMainSingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/system/icons/TGIconManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/system/icons/TGIconManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/system/icons/TGSkinInfoHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/system/icons/TGSkinInfoHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/system/icons/TGSkinPropertiesHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/system/icons/TGSkinPropertiesHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/util/TGFileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/util/TGFileUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/view/dialog/settings/items/SkinOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/src/app/tuxguitar/app/view/dialog/settings/items/SkinOption.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,8 +98,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.JFXApplicationLauncher.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
     "Gradle.tuxguitar [clean].executor": "Run",
     "Gradle.tuxguitar [run].executor": "Run",
+    "Gradle.tuxguitar:TuxGuitar-ui-toolkit-jfx [:TuxGuitar-ui-toolkit-jfx:app.tuxguitar.ui.jfx.JFXApplicationLauncher.main()].executor": "Debug",
     "Maven.tuxguitar-pom [compile].executor": "Run",
     "Maven.tuxguitar-pom [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -103,25 +114,44 @@
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Dell/StudioProjects/tuxguitar",
+    "last_opened_file_path": "C:/Users/Dell/StudioProjects/tuxguitar/resources/icons",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources\icons" />
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources" />
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources\skins\Breeze" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-ui-toolkit" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-awt-graphics" />
-      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-editor-utils" />
-      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-lib" />
-      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\TuxGuitar-ui-toolkit-jfx" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources\icons" />
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\resources" />
+      <recent name="C:\Users\Dell\StudioProjects\tuxguitar\docs" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar" />
       <recent name="C:\Users\Dell\StudioProjects\tuxguitar\desktop" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.tuxguitar [run]">
+    <configuration name="JFXApplicationLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="app.tuxguitar.ui.jfx.JFXApplicationLauncher" />
+      <module name="TuxGuitar-Desktop.TuxGuitar-ui-toolkit-jfx.main" />
+      <option name="VM_PARAMETERS" value="--module-path=&quot;C:\Users\Dell\StudioProjects\tuxguitar\resources\javafx-sdk-17.0.18\lib&quot; --add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="app.tuxguitar.ui.jfx.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="tuxguitar [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -177,9 +207,15 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.JFXApplicationLauncher" />
+      <item itemvalue="Gradle.tuxguitar [clean]" />
+      <item itemvalue="Gradle.tuxguitar [run]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.tuxguitar [run]" />
+        <item itemvalue="Application.JFXApplicationLauncher" />
         <item itemvalue="Gradle.tuxguitar [clean]" />
       </list>
     </recent_temporary>
@@ -256,11 +292,30 @@
       <option name="project" value="LOCAL" />
       <updated>1775253451085</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="base refactoring">
+      <option name="closed" value="true" />
+      <created>1775253955384</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1775253955384</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="base refactoring" />
     <option name="LAST_COMMIT_MESSAGE" value="base refactoring" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.jdks/openjdk-25/lib/src.zip!/java.base/java/lang/Runnable.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

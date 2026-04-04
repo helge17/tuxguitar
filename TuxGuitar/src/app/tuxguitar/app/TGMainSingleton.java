@@ -19,8 +19,10 @@ import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGSynchronizer;
 
 public class TGMainSingleton {
+    // --module-path="C:\Users\Dell\StudioProjects\tuxguitar\resources\javafx-sdk-17.0.18\lib"
+    // --add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics
 
-	private static final Long CHECK_DELAY = 100L;
+    private static final Long CHECK_DELAY = 100L;
 	private static final Long LOCK_FILE_TIMEOUT = (CHECK_DELAY * 50);
 	private static final String EMPTY_URL = "url:empty";
 

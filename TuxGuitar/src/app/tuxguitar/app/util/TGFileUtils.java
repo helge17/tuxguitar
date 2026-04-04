@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import app.tuxguitar.app.system.icons.TGSvgToPngConverter;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.resource.TGResourceManager;
 import app.tuxguitar.ui.UIFactory;
@@ -115,15 +116,29 @@ public class TGFileUtils {
 		return null;
 	}
 
-	public static UIImage loadImage(TGContext context, String skin, String name){
+	public static UIImage loadImage(TGContext context, String name){
 		UIFactory uiFactory = TGApplication.getInstance(context).getFactory();
 		try{
-			InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream("skins/" + skin + "/" + name);
-			if( stream != null ){
-				return uiFactory.createImage(stream);
-			}
-			System.err.println("Icon " + name + " not found in skin " + skin);
+            if(name.endsWith(".png")){
+                InputStream stream = TGResourceManager.getInstance(context).getResourceAsStream("icons/" + name);
+                if( stream != null ){
+                    return uiFactory.createImage(stream);
+                }
+                System.err.println("Icon " + name + " not found");
+            } else {
+                InputStream svg = TGResourceManager.getInstance(context).getResourceAsStream("icons/" + name);
+                String[] size = name.split("\\.")[1].split("x");
+                float width = Float.parseFloat(size[0]);
+                float height = Float.parseFloat(size[1]);
+
+                if( svg != null ){
+                    InputStream stream = TGSvgToPngConverter.convertSvgToPng(svg, width, height);
+                    return uiFactory.createImage(stream);
+                }
+                System.err.println("Icon " + name + " not found");
+            }
 		}catch(Throwable throwable){
+            System.out.println(name);
 			throwable.printStackTrace();
 		}
 		return uiFactory.createImage(16, 16);

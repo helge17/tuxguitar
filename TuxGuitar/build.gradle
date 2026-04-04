@@ -4,10 +4,15 @@ plugins {
 
 sourceSets {
     main.java.srcDirs = ["src"]
+    main.resources.srcDirs = ["../resources"]
 }
 
 dependencies {
     implementation project(':TuxGuitar-lib')
     implementation project(':TuxGuitar-editor-utils')
+    implementation project(':TuxGuitar-ui-toolkit')
     implementation project(':TuxGuitar-ui-toolkit-jfx')
+
+    implementation 'org.apache.xmlgraphics:batik-transcoder:1.17'
+    implementation 'org.apache.xmlgraphics:batik-codec:1.17'
 }
