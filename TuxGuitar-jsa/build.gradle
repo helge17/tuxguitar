@@ -3,14 +3,14 @@ plugins {
 }
 
 sourceSets {
-    main.java.srcDirs = ["src/main/java"]
+    main.java.srcDirs = ["src"]
     main.resources.srcDirs = ["resources"]
 }
 
 dependencies {
+    implementation project(':TuxGuitar')
     implementation project(':TuxGuitar-lib')
     implementation project(':TuxGuitar-gm-utils')
     implementation project(':TuxGuitar-editor-utils')
     implementation project(':TuxGuitar-ui-toolkit')
-    implementation project(':TuxGuitar')
 }

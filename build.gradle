@@ -24,7 +24,7 @@ dependencies {
     testImplementation(libs.junit)
     implementation  "org.apache.commons:commons-compress:1.26.0"
     implementation  "commons-io:commons-io:2.15.1"
-    implementation project(':TuxGuitar-jsa')
+    implementation project(':TuxGuitar')
 }
 
 java {

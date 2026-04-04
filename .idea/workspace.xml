@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="refactoring">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="561a149f-1a74-431b-9a15-2a59b2771938" name="Changes" comment="audio">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar-jsa/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar-jsa/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TuxGuitar/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TuxGuitar/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,8 +207,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.tuxguitar [run]" />
-        <item itemvalue="Application.JFXApplicationLauncher" />
         <item itemvalue="Gradle.tuxguitar [clean]" />
+        <item itemvalue="Application.JFXApplicationLauncher" />
       </list>
     </recent_temporary>
   </component>
@@ -316,14 +316,23 @@
       <option name="project" value="LOCAL" />
       <updated>1775338589891</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="audio">
+      <option name="closed" value="true" />
+      <created>1775341404754</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1775341404754</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="base refactoring" />
     <MESSAGE value="svg refactoring" />
     <MESSAGE value="refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring" />
+    <MESSAGE value="audio" />
+    <option name="LAST_COMMIT_MESSAGE" value="audio" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
