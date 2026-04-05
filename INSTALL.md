@@ -20,7 +20,7 @@ You can also try to build TuxGuitar using the [GitHub Actions](https://docs.gith
 
 ## Prerequisites
 
-- JDK 9 or higher
+- JDK 17 or higher
 - Maven 3.3 or higher
 - FluidSynth (optional)
 - Jack (optional)
