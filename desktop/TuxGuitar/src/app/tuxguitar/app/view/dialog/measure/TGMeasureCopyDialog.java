@@ -3,13 +3,6 @@ package app.tuxguitar.app.view.dialog.measure;
 import java.util.Iterator;
 
 import app.tuxguitar.app.TuxGuitar;
-
-/**
- * Dialog for copying measures with range selection.
- * 
- * @modified 2026-02-18 Added "First Measure" and "Last Measure" buttons
- * @author TuxGuitar Team
- */
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
