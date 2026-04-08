@@ -58,8 +58,8 @@ public class TGTableColorModel {
 		colorModels[EVEN_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetHighlightForeground);
 		colorModels[ODD_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetLightBackground);
 		colorModels[ODD_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetLightForeground);
-		colorModels[SELECTED_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground);
-		colorModels[SELECTED_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.WidgetSelectedForeground);
+		colorModels[SELECTED_LINE_BACKGROUND] = appearance.getColorModel(UIColorAppearance.InputSelectedBackground);
+		colorModels[SELECTED_LINE_FOREGROUND] = appearance.getColorModel(UIColorAppearance.InputSelectedForeground);
 		colorModels[CELL_BACKGROUND] = appearance.getColorModel(UIColorAppearance.WidgetLightBackground);
 		colorModels[CELL_REST_MEASURE] = appearance.getColorModel(UIColorAppearance.WidgetSelectedBackground);
 
