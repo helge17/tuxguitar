@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
@@ -128,7 +129,7 @@ public class TGMatrixEditor implements TGEventListener {
 		this.dialog = getUIFactory().createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setText(TuxGuitar.getProperty("matrix.editor"));
 		this.dialog.setImage(TuxGuitar.getInstance().getIconManager().getAppIcon());
-		this.dialog.setBounds(new UIRectangle(new UISize(DEFAULT_WIDTH, DEFAULT_HEIGHT)));
+		this.dialog.setBounds(new UIRectangle(new UISize(TGDisplayScale.scale(DEFAULT_WIDTH), TGDisplayScale.scale(DEFAULT_HEIGHT))));
 		this.dialog.addDisposeListener(new DisposeListenerImpl());
 		this.bufferDisposer = new BufferDisposer();
 
@@ -293,14 +294,14 @@ public class TGMatrixEditor implements TGEventListener {
 		this.editor.addMouseExitListener(mouseListener);
 		this.editor.addMouseMoveListener(mouseListener);
 
-		this.canvasPanel.getHScroll().setIncrement(SCROLL_INCREMENT);
+		this.canvasPanel.getHScroll().setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.canvasPanel.getHScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				redraw();
 			}
 		});
 
-		this.canvasPanel.getVScroll().setIncrement(SCROLL_INCREMENT);
+		this.canvasPanel.getVScroll().setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.canvasPanel.getVScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				redraw();
@@ -323,11 +324,11 @@ public class TGMatrixEditor implements TGEventListener {
 	}
 
 	private int getValueAt(float y){
-		if(this.clientArea == null || (y - BORDER_HEIGHT) < 0 || y + BORDER_HEIGHT > this.clientArea.getHeight()){
+		if(this.clientArea == null || (y - TGDisplayScale.scaleInt(BORDER_HEIGHT)) < 0 || y + TGDisplayScale.scaleInt(BORDER_HEIGHT) > this.clientArea.getHeight()){
 			return -1;
 		}
 		int scroll = this.canvasPanel.getVScroll().getValue();
-		int value = (this.maxNote -  ((int)(  (y + scroll - BORDER_HEIGHT)  / this.lineHeight)) );
+		int value = (this.maxNote -  ((int)(  (y + scroll - TGDisplayScale.scaleInt(BORDER_HEIGHT))  / this.lineHeight)) );
 		return value;
 	}
 
@@ -345,17 +346,17 @@ public class TGMatrixEditor implements TGEventListener {
 			UIImage buffer = getBuffer();
 
 			this.width = this.bufferWidth;
-			this.height = (this.bufferHeight + (BORDER_HEIGHT *2));
+			this.height = (this.bufferHeight + (TGDisplayScale.scaleInt(BORDER_HEIGHT) *2));
 
 			this.updateScroll();
 			int scrollX = this.canvasPanel.getHScroll().getValue();
 			int scrollY = this.canvasPanel.getVScroll().getValue();
 
-			painter.drawImage(buffer,-scrollX,(BORDER_HEIGHT - scrollY));
-			this.paintMeasure(painter,(-scrollX), (BORDER_HEIGHT - scrollY) );
+			painter.drawImage(buffer,-scrollX,(TGDisplayScale.scaleInt(BORDER_HEIGHT) - scrollY));
+			this.paintMeasure(painter,(-scrollX), (TGDisplayScale.scaleInt(BORDER_HEIGHT) - scrollY) );
 			this.paintBorders(painter,(-scrollX),0);
 			this.paintPosition(painter,(-scrollX),0);
-			this.paintSelection(painter, (-scrollX), (BORDER_HEIGHT - scrollY) );
+			this.paintSelection(painter, (-scrollX), (TGDisplayScale.scaleInt(BORDER_HEIGHT) - scrollY) );
 		}
 	}
 
@@ -413,7 +414,7 @@ public class TGMatrixEditor implements TGEventListener {
 				int rows = (this.maxNote - this.minNote);
 
 				this.leftSpacing = minimumNameWidth + 10;
-				this.lineHeight = Math.max(minimumNameHeight,( (this.clientArea.getHeight() - (BORDER_HEIGHT * 2.0f))/ (rows + 1.0f)));
+				this.lineHeight = Math.max(minimumNameHeight,( (this.clientArea.getHeight() - (TGDisplayScale.scaleInt(BORDER_HEIGHT) * 2.0f))/ (rows + 1.0f)));
 				this.timeWidth = Math.max((10 * (TGDuration.SIXTY_FOURTH / measure.getTimeSignature().getDenominator().getValue())),( (this.clientArea.getWidth() - this.leftSpacing) / cols)  );
 				this.bufferWidth = this.leftSpacing + (this.timeWidth * cols);
 				this.bufferHeight = (this.lineHeight * (rows + 1));
@@ -468,8 +469,8 @@ public class TGMatrixEditor implements TGEventListener {
 
 	private void paintBeat(UIPainter painter,TGMeasure measure,TGBeat beat,float fromX, float fromY){
 		if( this.clientArea != null ){
-			float minimumY = BORDER_HEIGHT;
-			float maximumY = (this.clientArea.getHeight() - BORDER_HEIGHT);
+			float minimumY = TGDisplayScale.scaleInt(BORDER_HEIGHT);
+			float maximumY = (this.clientArea.getHeight() - TGDisplayScale.scaleInt(BORDER_HEIGHT));
 			TGSongManager songManager = TGDocumentManager.getInstance(this.context).getSongManager();
 
 			for( int v = 0; v < beat.countVoices(); v ++ ){
@@ -505,8 +506,8 @@ public class TGMatrixEditor implements TGEventListener {
 			painter.setBackground(this.config.getColorBorder());
 			painter.initPath(UIPainter.PATH_FILL);
 			painter.setAntialias(false);
-			painter.addRectangle(fromX,fromY,this.bufferWidth ,BORDER_HEIGHT);
-			painter.addRectangle(fromX,fromY + (this.clientArea.getHeight() - BORDER_HEIGHT),this.bufferWidth ,BORDER_HEIGHT);
+			painter.addRectangle(fromX,fromY,this.bufferWidth ,TGDisplayScale.scaleInt(BORDER_HEIGHT));
+			painter.addRectangle(fromX,fromY + (this.clientArea.getHeight() - TGDisplayScale.scaleInt(BORDER_HEIGHT)),this.bufferWidth ,TGDisplayScale.scaleInt(BORDER_HEIGHT));
 			painter.closePath();
 
 			painter.initPath();
@@ -527,12 +528,12 @@ public class TGMatrixEditor implements TGEventListener {
 				painter.setBackground(this.config.getColorPosition());
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
-				painter.addRectangle(fromX + (this.leftSpacing + x),fromY , width,BORDER_HEIGHT);
+				painter.addRectangle(fromX + (this.leftSpacing + x),fromY , width,TGDisplayScale.scaleInt(BORDER_HEIGHT));
 				painter.closePath();
 
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
-				painter.addRectangle(fromX + (this.leftSpacing + x),fromY + (this.clientArea.getHeight() - BORDER_HEIGHT), width,BORDER_HEIGHT);
+				painter.addRectangle(fromX + (this.leftSpacing + x),fromY + (this.clientArea.getHeight() - TGDisplayScale.scaleInt(BORDER_HEIGHT)), width,TGDisplayScale.scaleInt(BORDER_HEIGHT));
 				painter.closePath();
 			}
 		}
