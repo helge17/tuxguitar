@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.action.impl.measure.TGGoFirstMeasureAction;
 import app.tuxguitar.app.action.impl.measure.TGGoLastMeasureAction;
 import app.tuxguitar.app.action.impl.measure.TGGoNextMeasureAction;
@@ -169,7 +170,7 @@ public class TGTransportDialog implements TGEventListener {
 		this.metronome
 				.addSelectionListener(new TGActionProcessorListener(this.context, TGTransportMetronomeAction.NAME));
 		compositeLayout.set(this.metronome, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, true);
-		compositeLayout.set(this.metronome, UITableLayout.MINIMUM_PACKED_WIDTH, 100f);
+		compositeLayout.set(this.metronome, UITableLayout.MINIMUM_PACKED_WIDTH, TGDisplayScale.scale(100f));
 
 		this.mode = factory.createButton(composite);
 		this.mode.addSelectionListener(
