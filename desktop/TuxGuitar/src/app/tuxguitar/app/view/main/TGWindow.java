@@ -8,6 +8,7 @@ import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinManager;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import app.tuxguitar.app.view.component.table.TGTableViewer;
 import app.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
@@ -56,6 +57,8 @@ public class TGWindow implements TGEventListener {
 
 		this.window = uiFactory.createWindow();
 		this.window.addCloseListener(new TGActionProcessorListener(this.context, TGDisposeAction.NAME));
+
+		TGDisplayScale.init(TGApplication.getInstance(this.context).getApplication().getDisplayScale());
 
 		this.createShellComposites(uiFactory);
 		this.createShellListeners();
