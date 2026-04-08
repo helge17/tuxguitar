@@ -51,6 +51,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.SHOW_TRACKS, true);
 		loadProperty(properties, TGConfigKeys.LAYOUT_MODE, TGLayout.MODE_VERTICAL);
 		loadProperty(properties, TGConfigKeys.LAYOUT_STYLE, (TGLayout.DISPLAY_TABLATURE | TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_COMPACT | TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.HIGHLIGHT_PLAYED_BEAT));
+		loadProperty(properties, TGConfigKeys.LAYOUT_SCALE, "1.0");
 		loadProperty(properties, TGConfigKeys.LANGUAGE, "");
 		loadProperty(properties, TGConfigKeys.EDITOR_MOUSE_MODE, EditorKit.MOUSE_MODE_SELECTION);
 		loadProperty(properties, TGConfigKeys.EDITOR_NATURAL_KEY_MODE, true);

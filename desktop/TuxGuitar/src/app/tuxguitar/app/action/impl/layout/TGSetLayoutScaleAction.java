@@ -1,6 +1,8 @@
 package app.tuxguitar.app.action.impl.layout;
 
 import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.editor.action.TGActionBase;
@@ -21,5 +23,9 @@ public class TGSetLayoutScaleAction extends TGActionBase{
 
 		Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
 		tablature.scale(scale);
+
+		// Persist zoom level to config
+		TGConfigManager config = TGConfigManager.getInstance(getContext());
+		config.setValue(TGConfigKeys.LAYOUT_SCALE, Float.toString(scale));
 	}
 }

@@ -49,11 +49,13 @@ public class Tablature implements TGController {
 	private TGLayout viewLayout;
 	private EditorKit editorKit;
 	private Float scale;
+	private float displayScale;
 
 	public Tablature(TGContext context, TGDocumentManager documentManager) {
 		this.context = context;
 		this.documentManager = documentManager;
 		this.scale = DEFAULT_SCALE;
+		this.displayScale = 1.0f;
 		this.caret = new Caret(this);
 		this.selector = new Selector(this);
 		this.editorKit = new EditorKit(this);
@@ -66,6 +68,10 @@ public class Tablature implements TGController {
 				getResourceBuffer().disposeUnregisteredResources();
 			}
 		});
+	}
+
+	public void initDisplayScale(float displayScale) {
+		this.displayScale = Math.max(1.0f, Math.min(displayScale, 3.0f));
 	}
 
 	public void updateTablature(){
@@ -169,7 +175,7 @@ public class Tablature implements TGController {
 
 	public void reloadStyles() {
 		if( this.getViewLayout() != null ){
-			this.getViewLayout().loadStyles(this.scale);
+			this.getViewLayout().loadStyles(this.displayScale * this.scale);
 		}
 		this.loadCaretStyles();
 	}
