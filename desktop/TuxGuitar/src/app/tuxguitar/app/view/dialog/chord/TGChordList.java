@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.graphics.control.TGChordImpl;
 import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.graphics.control.TGResourceBuffer;
@@ -99,10 +100,10 @@ public class TGChordList {
 				redraw();
 			}
 		});
-		scrollBarLayout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, MIN_HEIGHT, 0f);
+		scrollBarLayout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, null, TGDisplayScale.scale(MIN_HEIGHT), 0f);
 
 		final UIScrollBar uiScrollBar = this.control.getVScroll();
-		uiScrollBar.setIncrement(SCROLL_INCREMENT);
+		uiScrollBar.setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		uiScrollBar.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				redraw();
@@ -146,10 +147,10 @@ public class TGChordList {
 			chord.setColor(color);
 			chord.setNoteColor(color);
 			chord.setTonicColor(this.dialog.getColor(TGChordStyleAdapter.COLOR_TONIC));
-			chord.setFirstFretSpacing(CHORD_FIRST_FRET_SPACING);
-			chord.setStringSpacing(CHORD_STRING_SPACING);
-			chord.setFretSpacing(CHORD_FRET_SPACING);
-			chord.setNoteSize(CHORD_NOTE_SIZE);
+			chord.setFirstFretSpacing(TGDisplayScale.scale(CHORD_FIRST_FRET_SPACING));
+			chord.setStringSpacing(TGDisplayScale.scale(CHORD_STRING_SPACING));
+			chord.setFretSpacing(TGDisplayScale.scale(CHORD_FRET_SPACING));
+			chord.setNoteSize(TGDisplayScale.scale(CHORD_NOTE_SIZE));
 			chord.setLineWidth(CHORD_LINE_WIDTH);
 			chord.setFirstFretFont(getFont());
 			chord.setStyle(TGLayout.DISPLAY_CHORD_DIAGRAM);
