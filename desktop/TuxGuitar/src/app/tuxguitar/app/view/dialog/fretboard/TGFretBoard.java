@@ -9,6 +9,7 @@ import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import app.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
 import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.transport.TGTransport;
 import app.tuxguitar.app.ui.TGApplication;
@@ -320,11 +321,11 @@ public class TGFretBoard {
 	}
 
 	private void initStrings(int count) {
-		int fromY = TOP_SPACING;
+		int fromY = TGDisplayScale.scaleInt(TOP_SPACING);
 		this.strings = new int[count];
 
 		for (int i = 0; i < this.strings.length; i++) {
-			this.strings[i] = fromY + (this.stringSpacing * i);
+			this.strings[i] = fromY + (TGDisplayScale.scaleInt(this.stringSpacing) * i);
 		}
 	}
 
@@ -367,7 +368,7 @@ public class TGFretBoard {
 			UIFactory factory = getUIFactory();
 			UIRectangle area = this.control.getChildArea();
 
-			this.fretBoard = factory.createImage(area.getWidth(), (this.stringSpacing * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING);
+			this.fretBoard = factory.createImage(area.getWidth(), (TGDisplayScale.scaleInt(this.stringSpacing) * (this.strings.length - 1)) + TGDisplayScale.scaleInt(TOP_SPACING) + TGDisplayScale.scaleInt(BOTTOM_SPACING));
 
 			UIPainter painterBuffer = this.fretBoard.createPainter();
 
@@ -420,8 +421,8 @@ public class TGFretBoard {
 			if (fret == 0) {
 				int size = getOvalSize();
 				int x = this.frets[fretIndex] + ((this.frets[fretIndex + 1] - this.frets[fretIndex]) / 2);
-				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - this.stringSpacing;
-				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + this.stringSpacing;
+				int y1 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) - TGDisplayScale.scaleInt(this.stringSpacing);
+				int y2 = this.strings[0] + ((this.strings[this.strings.length - 1] - this.strings[0]) / 2) + TGDisplayScale.scaleInt(this.stringSpacing);
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.addCircle(x, y1, size);
 				painter.addCircle(x, y2, size);
@@ -521,7 +522,7 @@ public class TGFretBoard {
 
 			float fmWidth = painter.getFMWidth(text);
 			float fmHeight = painter.getFMHeight();
-			int ovalSize = (int)Math.max(fmWidth, fmHeight) + this.stringSpacing/10;
+			int ovalSize = (int)Math.max(fmWidth, fmHeight) + TGDisplayScale.scaleInt(this.stringSpacing)/10;
 			ovalSize = Math.min(ovalSize, this.getMaxOvalSize());
 			this.paintKeyOval(painter, background, x, y, ovalSize);
 			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
@@ -630,11 +631,13 @@ public class TGFretBoard {
 	}
 
 	private int getOvalSize(){
-		return ((this.stringSpacing / 2) + (this.stringSpacing / 10));
+		int scaled = TGDisplayScale.scaleInt(this.stringSpacing);
+		return ((scaled / 2) + (scaled / 10));
 	}
 
 	private int getMaxOvalSize() {
-		return (this.stringSpacing - this.stringSpacing/10);
+		int scaled = TGDisplayScale.scaleInt(this.stringSpacing);
+		return (scaled - scaled/10);
 	}
 
 	private void addNote(int fret, int string) {
@@ -739,7 +742,7 @@ public class TGFretBoard {
 	}
 
 	public void computePackedSize() {
-		this.control.getLayout().set(this.fretBoardComposite, UITableLayout.PACKED_HEIGHT, Float.valueOf((this.stringSpacing * (this.strings.length - 1)) + TOP_SPACING + BOTTOM_SPACING));
+		this.control.getLayout().set(this.fretBoardComposite, UITableLayout.PACKED_HEIGHT, Float.valueOf((TGDisplayScale.scaleInt(this.stringSpacing) * (this.strings.length - 1)) + TGDisplayScale.scaleInt(TOP_SPACING) + TGDisplayScale.scaleInt(BOTTOM_SPACING)));
 		this.control.computePackedSize(null, null);
 	}
 
