@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.dialog.settings.items;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.chooser.UIColorChooser;
@@ -145,7 +146,7 @@ public class StylesOption extends TGSettingsOption {
 		UIColorButton button = new UIColorButton(getWindow(), parent, text);
 
 		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
-		uiLayout.set(button.getControl(), row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, BUTTON_WIDTH, null, null);
+		uiLayout.set(button.getControl(), row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(BUTTON_WIDTH), null, null);
 
 		return button;
 	}
@@ -155,7 +156,7 @@ public class StylesOption extends TGSettingsOption {
 		uiButton.setText("-");
 
 		UITableLayout uiLayout = (UITableLayout) parent.getLayout();
-		uiLayout.set(uiButton, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, BUTTON_WIDTH, null, null);
+		uiLayout.set(uiButton, row, col, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(BUTTON_WIDTH), null, null);
 
 		this.addFontButtonListeners(uiButton, fontModel);
 
