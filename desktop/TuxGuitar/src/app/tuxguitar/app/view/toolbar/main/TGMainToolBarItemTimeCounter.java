@@ -15,6 +15,7 @@ import app.tuxguitar.app.system.icons.TGColorManager;
 import app.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.editor.event.TGRedrawEvent;
 import app.tuxguitar.editor.util.TGSyncProcessLocked;
 import app.tuxguitar.event.TGEvent;
@@ -217,14 +218,14 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 		// performance optimization: recalculate dimensions only if they change or were
 		// never computed
 		if (this.fontChanged || (size.getWidth() < TIMESTAMP_MIN_WIDTH + 2f)) {
-			newWidth = painter.getFMWidth(time) + 2f * TIMESTAMP_H_MARGIN;
+			newWidth = painter.getFMWidth(time) + 2f * TGDisplayScale.scale(TIMESTAMP_H_MARGIN);
 			newHeight = this.font.getHeight() * TIMESTAMP_V_MARGIN_FACTOR;
 			boolean doLayout = false;
 			boolean doWindowLayout = false;
 			if (newWidth != size.getWidth()) {
 				this.parentPanel.getLayout().set(this.timestampCanvas, UITableLayout.PACKED_WIDTH, newWidth);
 				// warning, font may not be monospaced, avoid permanent layout
-				if ((newWidth - size.getWidth()) > TIMESTAMP_H_MARGIN) {
+				if ((newWidth - size.getWidth()) > TGDisplayScale.scale(TIMESTAMP_H_MARGIN)) {
 					doLayout = true;
 				}
 			}
@@ -251,7 +252,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 		painter.addRectangle(0f, 0f, newWidth, newHeight);
 		painter.closePath();
 		painter.setForeground(this.foregroundColor);
-		painter.drawString(time, TIMESTAMP_H_MARGIN, this.yTimestamp);
+		painter.drawString(time, TGDisplayScale.scale(TIMESTAMP_H_MARGIN), this.yTimestamp);
 	}
 
 }
