@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.app.view.controller.TGViewContext;
@@ -487,7 +488,7 @@ public class TGTrackTuningDialog {
 				}).process();
 			}
 		});
-		parentLayout.set(buttonApply, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		parentLayout.set(buttonApply, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 
 		UIButton buttonOK = factory.createButton(parent);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
@@ -503,7 +504,7 @@ public class TGTrackTuningDialog {
 				}).process();
 			}
 		});
-		parentLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		parentLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 
 		UIButton buttonCancel = factory.createButton(parent);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -512,7 +513,7 @@ public class TGTrackTuningDialog {
 				TGTrackTuningDialog.this.dialog.dispose();
 			}
 		});
-		parentLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		parentLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 		parentLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 
