@@ -6,6 +6,7 @@ import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.system.keybindings.KeyBindingActionManager;
 import app.tuxguitar.app.transport.TGTransport;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.util.TGBufferedPainterListenerLocked;
 import app.tuxguitar.graphics.control.TGBeatImpl;
 import app.tuxguitar.graphics.control.TGLayout;
@@ -100,14 +101,14 @@ public class TGControl {
 		this.canvas.addMouseDragListener(this.tablature.getEditorKit().getMouseKit());
 		this.canvas.addZoomListener(this.tablature.getEditorKit().getMouseKit());
 
-		this.hScroll.setIncrement(SCROLL_INCREMENT);
+		this.hScroll.setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.hScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGControl.this.redraw();
 			}
 		});
 
-		this.vScroll.setIncrement(SCROLL_INCREMENT);
+		this.vScroll.setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.vScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGControl.this.redraw();

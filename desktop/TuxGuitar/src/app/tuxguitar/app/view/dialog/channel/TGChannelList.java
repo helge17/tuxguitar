@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
@@ -35,7 +36,7 @@ public class TGChannelList {
 		this.channelItemAreaSC = uiFactory.createScrollBarPanel(parent, true, false, true);
 		this.channelItemAreaSC.setLayout(new UIScrollBarPanelLayout(false, true, true, true, false, true));
 
-		this.channelItemAreaSC.getVScroll().setIncrement(SCROLL_INCREMENT);
+		this.channelItemAreaSC.getVScroll().setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.channelItemAreaSC.getVScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGChannelList.this.channelItemAreaSC.layout();

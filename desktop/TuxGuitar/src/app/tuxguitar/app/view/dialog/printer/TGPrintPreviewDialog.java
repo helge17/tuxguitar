@@ -8,6 +8,7 @@ import app.tuxguitar.app.system.icons.TGColorManager;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.ui.UIFactory;
@@ -187,7 +188,7 @@ public class TGPrintPreviewDialog{
 		previewLayout.set(this.pageComposite, UITableLayout.PACKED_WIDTH, this.size.getWidth());
 		previewLayout.set(this.pageComposite, UITableLayout.PACKED_HEIGHT, this.size.getHeight());
 
-		this.previewComposite.getVScroll().setIncrement(SCROLL_INCREMENT);
+		this.previewComposite.getVScroll().setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.previewComposite.getVScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGPrintPreviewDialog.this.pageComposite.redraw();
