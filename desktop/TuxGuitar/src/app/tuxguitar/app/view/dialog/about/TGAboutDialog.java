@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.dialog.about;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
@@ -71,10 +72,10 @@ public class TGAboutDialog {
 				float height = TGAboutDialog.this.image.getHeight();
 
 				UIPainter tgPainter = event.getPainter();
-				tgPainter.drawImage(TGAboutDialog.this.image, ((IMAGE_WIDTH - width) / 2f),((IMAGE_HEIGHT - height) / 2f));
+				tgPainter.drawImage(TGAboutDialog.this.image, ((TGDisplayScale.scale(IMAGE_WIDTH) - width) / 2f),((TGDisplayScale.scale(IMAGE_HEIGHT) - height) / 2f));
 			}
 		});
-		headerLayout.set(this.imageComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, IMAGE_WIDTH, IMAGE_HEIGHT, null);
+		headerLayout.set(this.imageComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false, 1, 1, TGDisplayScale.scale(IMAGE_WIDTH), TGDisplayScale.scale(IMAGE_HEIGHT), null);
 
 		final UIColor titleColor = uiFactory.createColor(0xc0, 0xc0, 0xc0);
 		final UIFont titleFont = uiFactory.createFont(configManager.getFontModelConfigValue(TGConfigKeys.FONT_ABOUT_DIALOG_TITLE));
@@ -97,7 +98,7 @@ public class TGAboutDialog {
 		dialogLayout.set(tabs, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		final UITabFolder tabFolder = uiFactory.createTabFolder(tabs, false);
-		tabsLayout.set(tabFolder, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TAB_ITEM_WIDTH, TAB_ITEM_HEIGHT, null);
+		tabsLayout.set(tabFolder, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(TAB_ITEM_WIDTH), TGDisplayScale.scale(TAB_ITEM_HEIGHT), null);
 
 		TGAboutContentReader docReader = new TGAboutContentReader(context.getContext());
 
@@ -133,7 +134,7 @@ public class TGAboutDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonClose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonClose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 
 		tabFolder.setSelectedIndex(0);
 

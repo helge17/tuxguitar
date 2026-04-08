@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.dialog.info;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
@@ -39,7 +40,7 @@ public class TGSongInfoDialog {
 		UILegendPanel group = uiFactory.createLegendPanel(dialog);
 		group.setText(TuxGuitar.getProperty("composition.properties"));
 		group.setLayout(groupLayout);
-		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, GROUP_WIDTH, null, null);
+		dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(GROUP_WIDTH), null, null);
 
 		//-------NAME------------------------------------
 		UILabel nameLabel = uiFactory.createLabel(group);
@@ -139,7 +140,7 @@ public class TGSongInfoDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -148,7 +149,7 @@ public class TGSongInfoDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);

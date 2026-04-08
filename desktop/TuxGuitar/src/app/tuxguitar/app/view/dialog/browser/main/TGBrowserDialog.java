@@ -10,6 +10,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.document.TGDocumentListAttributes;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.icons.TGSkinManager;
@@ -119,7 +120,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		this.updateCollections(null);
 		this.updateTable();
 
-		this.dialog.setBounds(new UIRectangle(0, 0, SHELL_WIDTH,SHELL_HEIGHT));
+		this.dialog.setBounds(new UIRectangle(0, 0, TGDisplayScale.scale(SHELL_WIDTH),TGDisplayScale.scale(SHELL_HEIGHT)));
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				exit();

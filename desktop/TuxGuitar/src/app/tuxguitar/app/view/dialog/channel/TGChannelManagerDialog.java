@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.dialog.channel;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.language.TGLanguageEvent;
 import app.tuxguitar.app.ui.TGApplication;
@@ -139,8 +140,8 @@ public class TGChannelManagerDialog implements TGEventListener {
 
 	private UISize createPreferredSize(UISize size) {
 		UISize preferredSize = new UISize(size.getWidth(), size.getHeight());
-		if( preferredSize.getHeight() < MINIMUN_HEIGHT ) {
-			preferredSize.setHeight(MINIMUN_HEIGHT);
+		if( preferredSize.getHeight() < TGDisplayScale.scale(MINIMUN_HEIGHT) ) {
+			preferredSize.setHeight(TGDisplayScale.scale(MINIMUN_HEIGHT));
 		}
 		return preferredSize;
 	}
