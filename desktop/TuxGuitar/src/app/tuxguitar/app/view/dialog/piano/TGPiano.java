@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.tools.TGOpenScaleDialogAction;
@@ -99,8 +100,8 @@ public class TGPiano {
 		UITableLayout uiLayout = new UITableLayout(0f);
 		uiLayout.set(this.toolComposite, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 		uiLayout.set(this.canvas, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-		uiLayout.set(this.canvas, UITableLayout.PACKED_WIDTH, Float.valueOf(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)));
-		uiLayout.set(this.canvas, UITableLayout.PACKED_HEIGHT, Float.valueOf(NATURAL_HEIGHT));
+		uiLayout.set(this.canvas, UITableLayout.PACKED_WIDTH, Float.valueOf(TGDisplayScale.scaleInt(NATURAL_WIDTH) * (MAX_OCTAVES * NATURAL_NOTES)));
+		uiLayout.set(this.canvas, UITableLayout.PACKED_HEIGHT, Float.valueOf(TGDisplayScale.scaleInt(NATURAL_HEIGHT)));
 
 		this.control.setLayout(uiLayout);
 	}
@@ -221,7 +222,7 @@ public class TGPiano {
 	 */
 	private UIImage makePianoImage(){
 		UIFactory factory = getUIFactory();
-		UIImage image = factory.createImage((NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES)), NATURAL_HEIGHT);
+		UIImage image = factory.createImage((TGDisplayScale.scaleInt(NATURAL_WIDTH) * (MAX_OCTAVES * NATURAL_NOTES)), TGDisplayScale.scaleInt(NATURAL_HEIGHT));
 		UIPainter painter = image.createPainter();
 		painter.setFont(this.config.getFont());
 
@@ -229,7 +230,7 @@ public class TGPiano {
 		final int y = 0;
 		painter.setBackground(this.config.getColorNatural());
 		painter.initPath(UIPainter.PATH_FILL);
-		painter.addRectangle(x,y,(NATURAL_WIDTH * (MAX_OCTAVES * NATURAL_NOTES) ),NATURAL_HEIGHT);
+		painter.addRectangle(x,y,(TGDisplayScale.scaleInt(NATURAL_WIDTH) * (MAX_OCTAVES * NATURAL_NOTES) ),TGDisplayScale.scaleInt(NATURAL_HEIGHT));
 		painter.closePath();
 		for(int i = MIN_NOTE; i < MAX_NOTE; i ++){
 
@@ -237,7 +238,7 @@ public class TGPiano {
 				painter.setForeground(this.config.getColorNotNatural());
 				painter.initPath();
 				painter.setAntialias(false);
-				painter.addRectangle(x,y,NATURAL_WIDTH,NATURAL_HEIGHT);
+				painter.addRectangle(x,y,TGDisplayScale.scaleInt(NATURAL_WIDTH),TGDisplayScale.scaleInt(NATURAL_HEIGHT));
 				painter.closePath();
 
 				// If it is a C key, the number of the octave is written.
@@ -249,7 +250,7 @@ public class TGPiano {
 						float fmTopLine = painter.getFMTopLine();
 						final float verticalOffset = 2;
 
-						int   availableSpace = NATURAL_WIDTH - SHARP_WIDTH/2;
+						int   availableSpace = TGDisplayScale.scaleInt(NATURAL_WIDTH) - TGDisplayScale.scaleInt(SHARP_WIDTH)/2;
 						float textWidth = painter.getFMWidth(octaveText);
 						float horizontalOffset = ((float)availableSpace - textWidth) / 2.0f;
 						final float minimalHOffset = 1.0f;
@@ -260,12 +261,12 @@ public class TGPiano {
 					}
 				}
 
-				x += NATURAL_WIDTH;
+				x += TGDisplayScale.scaleInt(NATURAL_WIDTH);
 			}else{
 				painter.setBackground(this.config.getColorNotNatural());
 				painter.initPath(UIPainter.PATH_FILL);
 				painter.setAntialias(false);
-				painter.addRectangle(x - (SHARP_WIDTH / 2),y,SHARP_WIDTH,SHARP_HEIGHT);
+				painter.addRectangle(x - (TGDisplayScale.scaleInt(SHARP_WIDTH) / 2),y,TGDisplayScale.scaleInt(SHARP_WIDTH),TGDisplayScale.scaleInt(SHARP_HEIGHT));
 				painter.closePath();
 			}
 		}
@@ -289,33 +290,33 @@ public class TGPiano {
 			int width = 0;
 
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
-				width = NATURAL_WIDTH;
+				width = TGDisplayScale.scaleInt(NATURAL_WIDTH);
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
-					width -= ((SHARP_WIDTH / 2));
+					width -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 				}
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
-					width -= ((SHARP_WIDTH / 2));
+					width -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 				}
 			}else{
-				width = SHARP_WIDTH;
+				width = TGDisplayScale.scaleInt(SHARP_WIDTH);
 			}
 
 			if(TuxGuitar.getInstance().getScaleManager().getScale().getNote(i)){
 				if(TYPE_NOTES[i % TYPE_NOTES.length] ){
 					int x = posX;
 					if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
-						x -= ((SHARP_WIDTH / 2));
+						x -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 					}
 
-					int size = SHARP_WIDTH;
+					int size = TGDisplayScale.scaleInt(SHARP_WIDTH);
 					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
-					painter.addRectangle( (x + 1 + (((NATURAL_WIDTH - size) / 2))) ,(NATURAL_HEIGHT - size - (((NATURAL_WIDTH - size) / 2))),size,size);
+					painter.addRectangle( (x + 1 + (((TGDisplayScale.scaleInt(NATURAL_WIDTH) - size) / 2))) ,(TGDisplayScale.scaleInt(NATURAL_HEIGHT) - size - (((TGDisplayScale.scaleInt(NATURAL_WIDTH) - size) / 2))),size,size);
 					painter.closePath();
 				}else{
 					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
-					painter.addRectangle(posX + 1, SHARP_HEIGHT - SHARP_WIDTH + 1,SHARP_WIDTH - 2,SHARP_WIDTH - 2);
+					painter.addRectangle(posX + 1, TGDisplayScale.scaleInt(SHARP_HEIGHT) - TGDisplayScale.scaleInt(SHARP_WIDTH) + 1,TGDisplayScale.scaleInt(SHARP_WIDTH) - 2,TGDisplayScale.scaleInt(SHARP_WIDTH) - 2);
 					painter.closePath();
 				}
 			}
@@ -341,33 +342,33 @@ public class TGPiano {
 			int width = 0;
 
 			if(TYPE_NOTES[i % TYPE_NOTES.length]){
-				width = NATURAL_WIDTH;
+				width = TGDisplayScale.scaleInt(NATURAL_WIDTH);
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
-					width -= ((SHARP_WIDTH / 2));
+					width -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 				}
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
-					width -= ((SHARP_WIDTH / 2));
+					width -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 				}
 			}else{
-				width = SHARP_WIDTH;
+				width = TGDisplayScale.scaleInt(SHARP_WIDTH);
 			}
 
 			if(i == value){
 				if(TYPE_NOTES[i % TYPE_NOTES.length]){
 					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
-					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT);
+					painter.addRectangle(posX + 1,y + 1,width - 1,TGDisplayScale.scaleInt(SHARP_HEIGHT));
 
 					int x = posX;
 					if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
-						x -= ((SHARP_WIDTH / 2));
+						x -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 					}
-					painter.addRectangle(x + 1,(y + SHARP_HEIGHT) + 1,NATURAL_WIDTH - 1,(NATURAL_HEIGHT - SHARP_HEIGHT) - 1);
+					painter.addRectangle(x + 1,(y + TGDisplayScale.scaleInt(SHARP_HEIGHT)) + 1,TGDisplayScale.scaleInt(NATURAL_WIDTH) - 1,(TGDisplayScale.scaleInt(NATURAL_HEIGHT) - TGDisplayScale.scaleInt(SHARP_HEIGHT)) - 1);
 					painter.closePath();
 				}else{
 					painter.initPath(UIPainter.PATH_FILL);
 					painter.setAntialias(false);
-					painter.addRectangle(posX + 1,y + 1,width - 1,SHARP_HEIGHT - 1);
+					painter.addRectangle(posX + 1,y + 1,width - 1,TGDisplayScale.scaleInt(SHARP_HEIGHT) - 1);
 					painter.closePath();
 				}
 				return;
@@ -415,10 +416,10 @@ public class TGPiano {
 		
 		for (int i = MIN_NOTE; i < MAX_NOTE; i ++) {
 			if (TYPE_NOTES[i % TYPE_NOTES.length]) { // it is a natural key?
-				if (x>=posX && x<posX+NATURAL_WIDTH) {
+				if (x>=posX && x<posX+TGDisplayScale.scaleInt(NATURAL_WIDTH)) {
 					return i;
 				}
-				posX += NATURAL_WIDTH;
+				posX += TGDisplayScale.scaleInt(NATURAL_WIDTH);
 			}
 		}
 
@@ -433,21 +434,21 @@ public class TGPiano {
 		for (int i = MIN_NOTE; i < MAX_NOTE; i ++) {
 			float width = 0f;
 			boolean isSharp = false;
-			
+
 			if (TYPE_NOTES[i % TYPE_NOTES.length]) { // is a natural key?
-				width = NATURAL_WIDTH;
+				width = TGDisplayScale.scaleInt(NATURAL_WIDTH);
 				if(i > 0 && !TYPE_NOTES[(i - 1)  % TYPE_NOTES.length]){
-					width -= ((SHARP_WIDTH / 2));
+					width -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 				}
 				if(!TYPE_NOTES[(i + 1)  % TYPE_NOTES.length]){
-					width -= ((SHARP_WIDTH / 2));
+					width -= ((TGDisplayScale.scaleInt(SHARP_WIDTH) / 2));
 				}
 			} else { // is sharp
-				width = SHARP_WIDTH;
+				width = TGDisplayScale.scaleInt(SHARP_WIDTH);
 				isSharp = true;
 			}
 
-			if (x>=posX && x<posX+width && isSharp && y<SHARP_HEIGHT) {
+			if (x>=posX && x<posX+width && isSharp && y<TGDisplayScale.scaleInt(SHARP_HEIGHT)) {
 				return i;
 			}
 
