@@ -52,6 +52,10 @@ public class QTApplication extends QTComponent<QTApplicationHandle> implements U
 		return (this.uiThread == Thread.currentThread());
 	}
 
+	public float getDisplayScale() {
+		return 1.0f;
+	}
+
 	public void start(Runnable runnable) {
 		this.uiThread = Thread.currentThread();
 		this.getControl().initialize();

@@ -8,6 +8,7 @@ import app.tuxguitar.ui.appearance.UIAppearance;
 import app.tuxguitar.ui.jfx.appearance.JFXAppearance;
 
 import javafx.application.Platform;
+import javafx.stage.Screen;
 
 public class JFXApplication extends JFXComponent<JFXApplicationHandle> implements UIApplication {
 
@@ -43,6 +44,21 @@ public class JFXApplication extends JFXComponent<JFXApplicationHandle> implement
 
 	public boolean isInUiThread() {
 		return Platform.isFxApplicationThread();
+	}
+
+	public float getDisplayScale() {
+		try {
+			Screen primary = Screen.getPrimary();
+			if( primary != null ) {
+				float scale = (float) primary.getOutputScaleX();
+				if( scale > 1.0f ) {
+					return Math.min(scale, 3.0f);
+				}
+			}
+			return 1.0f;
+		} catch(Exception e) {
+			return 1.0f;
+		}
 	}
 
 	public void start(Runnable runnable) {
