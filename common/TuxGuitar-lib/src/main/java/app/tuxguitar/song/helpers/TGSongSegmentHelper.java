@@ -135,8 +135,8 @@ public class TGSongSegmentHelper {
 			long nextStart =  (replace.getStart() + replace.getLength());
 			while(nextHeaders.hasNext()){
 				TGMeasureHeader next = nextHeaders.next();
-				this.sm.moveMeasureComponents(song, next, (nextStart - next.getStart() ));
 				this.sm.moveMeasureHeader(next, (nextStart - next.getStart() ) , 0);
+				this.sm.moveMeasureComponents(song, next, (nextStart - next.getStart() ));
 				nextStart = (next.getStart() + next.getLength());
 			}
 			measureHeaders.add(replace);
