@@ -241,8 +241,10 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		int value = (length > 1)?(data[1] & 0xFF):0;
 
 		TempNote tempNote = getTempNote(channel, value);
-		createTempNotesBefore(tick, track);
-		this.tempNotes.remove(tempNote);
+		if (tempNote != null) {
+			createTempNotesBefore(tick, track);
+			this.tempNotes.remove(tempNote);
+		}
 	}
 
 	private void parseProgramChange(byte[] data){
@@ -448,25 +450,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			long measureEnd = measure.getStart() + measure.getLength();
 			long coarseTimeToFill = Math.min(nEnd, measureEnd) - this.lastBeatEnd;
 			long preciseTimeToFill = TGDuration.toPreciseTime(coarseTimeToFill);
-			// try to split exactly
-			List<TGDuration> durationList = TGDuration.splitPreciseDuration(preciseTimeToFill, measure.getPreciseLength(), factory,
+			
+			List<TGDuration> durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
 					MidiSongReader.this.settings.getMaxDurationValue(),
 					MidiSongReader.this.settings.getMaxDivision());
-			boolean heterogeneousDivision = false;
-			if (durationList != null) {
-				for (TGDuration d : durationList) {
-					heterogeneousDivision |= (!d.getDivision().isEqual(durationList.get(0).getDivision()));
-				}
-			}
-			// if it failed, or if divisions are not homogeneous, try to split approximately
-			if ((durationList == null) || heterogeneousDivision) {
-				List<TGDuration> approximativeDurationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
-					MidiSongReader.this.settings.getMaxDurationValue(),
-					MidiSongReader.this.settings.getMaxDivision());
-				if (approximativeDurationList != null) {
-					durationList = approximativeDurationList;
-				}
-			}
+
 			for (TGDuration duration : durationList) {
 				long beatEnd = this.lastBeatEnd + duration.getTime();
 				if (beatEnd <= measureEnd) {

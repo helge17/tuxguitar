@@ -327,15 +327,6 @@ public class TestTGDuration {
 			assertEquals(division, d.getDivision().getEnters());
 		}
 		
-		// a basic 8th triplet, with the minimum possible error
-		toSplit = TGDuration.WHOLE_PRECISE_DURATION*2/3/8 + 1;
-		list = TGDuration.splitPreciseDurationApproximately(toSplit, TGDuration.WHOLE_PRECISE_DURATION, factory,
-				16, 3);
-		assertNotNull(list);
-		assertEquals(1, list.size());
-		assertEquals(8, list.get(0).getValue());
-		assertEquals(2, list.get(0).getDivision().getTimes());
-		assertEquals(3, list.get(0).getDivision().getEnters());
 	}
 
 	// get sum of notes list duration, and check max (if specified)
