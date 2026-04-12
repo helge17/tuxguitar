@@ -67,7 +67,6 @@ import app.tuxguitar.util.TGException;
 import app.tuxguitar.util.TGLock;
 import app.tuxguitar.util.TGMessagesManager;
 import app.tuxguitar.util.TGSynchronizer;
-import app.tuxguitar.util.error.TGErrorHandler;
 import app.tuxguitar.util.error.TGErrorManager;
 import app.tuxguitar.util.plugin.TGPluginManager;
 import app.tuxguitar.util.properties.TGPropertiesManager;
@@ -155,41 +154,32 @@ public class TuxGuitar {
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(TuxGuitar.this.context).open();
 
-		// Capture the last-open list NOW, before startSong() dispatches async
-		// file loading that will call setCurrentDocumentUri() →
-		// updateLastOpenFiles(), overwriting TGLastOpenFiles with only the
-		// Java-arg file before reopenLastFiles() has a chance to read it.
-		final List<URL> lastOpenUrls = getConfig().getBooleanValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP)
-				? new ArrayList<>(TGLastOpenFiles.getInstance(this.context).getURLs())
-				: new ArrayList<>();
+		TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnwanted(true);
 
-		this.startSong(url);
+		final List<URL> urlsToOpen = new ArrayList<>();
+		if (getConfig().getBooleanValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP)) {
+			urlsToOpen.addAll(TGLastOpenFiles.getInstance(this.context).getURLs());
+		}
+		if (url != null && !urlsToOpen.contains(url)) {
+			try {
+				if (!TGFileUtils.isLocalFile(url) || new File(url.toURI()).exists()) {
+					urlsToOpen.add(url);
+				}
+			} catch (Exception e) {
+				// skip invalid URI
+			}
+		}
+
 		this.setInitialized(true);
 
-		if( !lastOpenUrls.isEmpty() ) {
+		if (urlsToOpen.isEmpty()) {
+			this.startDefaultSong();
+		} else {
 			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
 				public void run() {
-					reopenLastFiles(lastOpenUrls);
+					reopenLastFiles(urlsToOpen);
 				}
 			});
-		}
-	}
-
-	private void startSong(URL url){
-		TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnwanted(true);
-		if( url != null ){
-			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
-			tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
-			tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
-				public void handleError(Throwable throwable) {
-					startDefaultSong();
-
-					TGErrorManager.getInstance(getContext()).handleError(throwable);
-				}
-			});
-			tgActionProcessor.process();
-		} else {
-			this.startDefaultSong();
 		}
 	}
 
