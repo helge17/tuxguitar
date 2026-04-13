@@ -149,7 +149,28 @@ function release_checks_before_prepare_source {
     head -1 CHANGES
     echo -e "# OK.\n"
   else
-    echo -e "first line not matching \"TuxGuitar $TGVERSION (YYYY-MM-DD) changes:\"."
+    echo -e "first line not matching \"TuxGuitar $TGVERSION (YYYY-MM-DD) changes:\":"
+    head -1 CHANGES
+    abort_build
+  fi
+
+  echo -n "# Checking versionCode ${TGVERSION//\./} for Android ... "
+  if [ "$(grep "^\s*versionCode ${TGVERSION//\./}000000$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
+    echo -e "found:"
+    grep "^\s*versionCode ${TGVERSION//\./}000000$" android/build-scripts/tuxguitar-android/apk/build.gradle
+    echo -e "# OK.\n"
+  else
+    echo -e "not found."
+    abort_build
+  fi
+
+  echo -n "# Checking versionName \"$TGVERSION\" for Android ... "
+  if [ "$(grep "^\s*versionName \"${TGVERSION//\./\\\.}\"$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
+    echo -e "found:"
+    grep "^\s*versionName \"${TGVERSION//\./\\\.}\"$" android/build-scripts/tuxguitar-android/apk/build.gradle
+    echo -e "# OK.\n"
+  else
+    echo -e "not found."
     abort_build
   fi
 
@@ -225,11 +246,13 @@ fi
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
 
-echo -e "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ..."
-find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
-# Also set the version in the "Help - About" dialog
+echo -en "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ... "
+find . \( -name "*.xml" -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
+echo -n "in \"Help - About\" dialog ... "
 sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
-echo "# OK."
+echo -n "for Android ... "
+sed -i -e "s/versionName \".*\"/versionName \"$TGVERSION\"/" android/build-scripts/tuxguitar-android/apk/build.gradle
+echo "OK."
 
 echo $TGVERSION > .build-version
 

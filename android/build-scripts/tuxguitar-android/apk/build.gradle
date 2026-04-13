@@ -2,10 +2,6 @@ plugins {
 	id 'base'
 }
 
-base {
-	archivesName = "tuxguitar-android-9.99-SNAPSHOT"
-}
-
 apply plugin: 'com.android.application'
 
 // different path structure for the different plugins:
@@ -44,8 +40,8 @@ android {
 		minSdkVersion 24
 		targetSdkVersion 35
 		multiDexEnabled true
-		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
-		versionName "9.99-SNAPSHOT"
+		versionCode 210000000
+		versionName "2.1.0"
 	}
 
 	buildTypes {
@@ -60,6 +56,10 @@ android {
 			resources.srcDirs = ['./build/generated/tuxguitar-android-apk-src/share']
 		}
 	}
+}
+
+base {
+	archivesName = "tuxguitar-android-${android.defaultConfig.versionName}"
 }
 
 task generateSources {
