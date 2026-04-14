@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
@@ -56,6 +57,24 @@ public class TGMeasureCopyDialog extends TGModalFragment {
 		CheckBox copyAllTracks = (CheckBox) this.getView().findViewById(R.id.measure_copy_dlg_options_all_tracks);
 		copyAllTracks.setChecked(true);
 		copyAllTracks.setEnabled(this.getSong().countTracks() > 1);
+
+		Button copyToStartButton = (Button) this.getView().findViewById(R.id.measure_copy_dlg_copy_to_start_button);
+		copyToStartButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Spinner fromSpinner = (Spinner) getView().findViewById(R.id.measure_copy_dlg_from_value);
+				updateSpinnerSelection(fromSpinner, 1);
+			}
+		});
+
+		Button copyToEndButton = (Button) this.getView().findViewById(R.id.measure_copy_dlg_copy_to_end_button);
+		copyToEndButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Spinner toSpinner = (Spinner) getView().findViewById(R.id.measure_copy_dlg_to_value);
+				updateSpinnerSelection(toSpinner, getTrack().countMeasures());
+			}
+		});
 	}
 
 	public TGSelectableItem[] createRangeValues(int minimum, int maximum) {

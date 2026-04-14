@@ -24,10 +24,12 @@ public class TGConfirmDialog {
 	public static final String ATTRIBUTE_RUNNABLE_YES = "yesRunnable";
 	public static final String ATTRIBUTE_RUNNABLE_NO = "noRunnable";
 	public static final String ATTRIBUTE_RUNNABLE_CANCEL = "cancelRunnable";
+	public static final String ATTRIBUTE_RUNNABLE_DISCARD_ALL = "discardAllRunnable";
 
 	public static int BUTTON_CANCEL = 0x01;
 	public static int BUTTON_YES = 0x02;
 	public static int BUTTON_NO = 0x04;
+	public static int BUTTON_DISCARD_ALL = 0x08;
 
 	public void show(final TGViewContext context) {
 		final String message = context.getAttribute(ATTRIBUTE_MESSAGE);
@@ -36,6 +38,7 @@ public class TGConfirmDialog {
 		final Runnable yesRunnable = context.getAttribute(ATTRIBUTE_RUNNABLE_YES);
 		final Runnable noRunnable = context.getAttribute(ATTRIBUTE_RUNNABLE_NO);
 		final Runnable cancelRunnable = context.getAttribute(ATTRIBUTE_RUNNABLE_CANCEL);
+		final Runnable discardAllRunnable = context.getAttribute(ATTRIBUTE_RUNNABLE_DISCARD_ALL);
 
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
@@ -71,6 +74,9 @@ public class TGConfirmDialog {
 		}
 		if((style & BUTTON_NO) != 0){
 			addCloseButton(uiFactory, dialog, buttons, TuxGuitar.getProperty("no"), noRunnable, (defaultButton == BUTTON_NO), ++columns);
+		}
+		if((style & BUTTON_DISCARD_ALL) != 0){
+			addCloseButton(uiFactory, dialog, buttons, TuxGuitar.getProperty("file.discard-all-changes"), discardAllRunnable, (defaultButton == BUTTON_DISCARD_ALL), ++columns);
 		}
 		if((style & BUTTON_CANCEL) != 0){
 			addCloseButton(uiFactory, dialog, buttons, TuxGuitar.getProperty("cancel"), cancelRunnable, (defaultButton == BUTTON_CANCEL), ++columns);
