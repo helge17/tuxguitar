@@ -154,17 +154,37 @@ function release_checks_before_prepare_source {
     abort_build
   fi
 
-  echo -n "# Checking versionCode ${TGVERSION//\./} for Android ... "
-  if [ "$(grep "^\s*versionCode ${TGVERSION//\./}000000$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
+  A_VC=${TGVERSION//\./}000000
+  echo -n "# Checking Android versionCode $A_VC ... "
+  if [ "$(grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
     echo -e "found:"
-    grep "^\s*versionCode ${TGVERSION//\./}000000$" android/build-scripts/tuxguitar-android/apk/build.gradle
+    grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle
     echo -e "# OK.\n"
   else
     echo -e "not found."
     abort_build
   fi
 
-  echo -n "# Checking versionName \"$TGVERSION\" for Android ... "
+  A_CL_FILE=fastlane/metadata/android/en-US/changelogs/$A_VC.txt
+  echo -n "# Checking Android changelog $A_CL_FILE ... "
+  if [ ! -f $A_CL_FILE ]; then
+    echo "file not found."
+    abort_build
+  fi
+  D_CL=`head -1 CHANGES`
+  A_CL=`head -1 $A_CL_FILE`
+  if [ "$D_CL" == "$A_CL" ]; then
+    echo "first line matches the CHANGES file:"
+    echo $D_CL
+    echo -e "# OK.\n"
+  else
+    echo -e "first line does not match the CHANGES file:\n"
+    echo "CHANGES: $D_CL"
+    echo "Android: $A_CL"
+    abort_build
+  fi
+
+  echo -n "# Checking Android versionName \"$TGVERSION\" ... "
   if [ "$(grep "^\s*versionName \"${TGVERSION//\./\\\.}\"$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
     echo -e "found:"
     grep "^\s*versionName \"${TGVERSION//\./\\\.}\"$" android/build-scripts/tuxguitar-android/apk/build.gradle

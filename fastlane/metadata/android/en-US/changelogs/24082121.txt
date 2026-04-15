@@ -1,0 +1,4 @@
+TuxGuitar 1.6.4 (2024-08-23) changes:
+
+* Updated Polish and Russian translation
+* Show dead note correctly in score

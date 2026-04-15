@@ -1,0 +1,6 @@
+TuxGuitar 1.6.5 (2024-12-14) changes:
+
+* Improved GP import
+* Export only audible tracks to MIDI and audio files
+* Fix playback of alternative repeats
+* Fix playback of grace notes in percussion tracks

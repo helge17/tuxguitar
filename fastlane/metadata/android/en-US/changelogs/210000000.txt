@@ -1,0 +1,5 @@
+TuxGuitar 2.1.0 (2026-xx-xx) changes:
+
+* Improve MIDI import
+* Keep screen on during playback
+* Add player controls
