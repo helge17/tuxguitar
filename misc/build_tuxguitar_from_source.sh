@@ -154,7 +154,9 @@ function release_checks_before_prepare_source {
     abort_build
   fi
 
-  A_VC=${TGVERSION//\./}000000
+  # versionCode must not decrease!
+  # Last value in date format was 25122320 (TuxGuitar 2.0.1), highest possible value is 2100000000.
+  A_VC=25${TGVERSION//\./}000
   echo -n "# Checking Android versionCode $A_VC ... "
   if [ "$(grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
     echo -e "found:"

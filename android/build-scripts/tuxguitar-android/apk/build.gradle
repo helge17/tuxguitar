@@ -40,7 +40,8 @@ android {
 		minSdkVersion 24
 		targetSdkVersion 35
 		multiDexEnabled true
-		versionCode 210000000
+		// versionCode must not decrease! Highest possible value is 2100000000.
+		versionCode 25210000
 		versionName "2.1.0"
 	}
 
