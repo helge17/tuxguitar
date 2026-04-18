@@ -217,11 +217,17 @@ public class TGSynthChannelProcessor {
 
 	public void balance(TGAudioBuffer buffer, int volume, int balance) {
 		synchronized (this.lock) {
+			// Constant-power panning law: use sine/cosine so that the total
+			// power (left² + right²) remains constant across all pan positions.
+			// At center (balance=63.5) both channels get cos(π/4) ≈ 0.707,
+			// whereas a linear law would give 0.5 — a 3 dB centre-hole.
+			float pan = (balance / 127f) * ((float) Math.PI / 2f);
+			float gain = volume / 127f;
 			buffer.balance(new float[] {
 				// left channel
-				(volume / 127f) * ((127 - balance) / 127f),
+				gain * (float) Math.cos(pan),
 				// right channel
-				(volume / 127f) * ((balance) / 127f)
+				gain * (float) Math.sin(pan)
 			});
 		}
 	}
