@@ -74,10 +74,16 @@ $ tuxguitar
 
 On Non-Debian-based systems install the prerequisites and git using your package manager. Then download and install SWT and download the TuxGuitar sources as described for Debian above.
 
+### Build and install Java core module 
+```sh
+$ cd desktop
+$ mvn install -DskipTests
+```
+
 ### Build and Start TuxGuitar
 
 ```sh
-$ cd desktop/build-scripts/tuxguitar-linux-swt
+$ cd build-scripts/tuxguitar-linux-swt
 $ mvn -e clean verify -P native-modules
 ```
 
