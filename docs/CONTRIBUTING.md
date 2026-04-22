@@ -58,3 +58,7 @@ If you want to implement one feature request or to fix an issue, mention it expl
 To submit a contribution, follow the GitHub [guidelines](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project#making-a-pull-request) and create a pull request (PR). If your PR implements or fixes an issue, make this explicit in the PR's description (e.g. "should fix issue #xxx").
 
 Most of the work on TuxGuitar takes place in the `master` branch, so you should create your PR in that branch. For risky modifications, you can open the PR in the `tuxguitar-next` branch. If the change proves to be stable enough, it will be merged into `master` and included in the upcoming release.
+
+### Use of AI
+
+Use of generative AI and/or coding agents is **discouraged** but not strictly forbidden. If such tools can save time for developers they can also move the burden on the shoulders of maintainers (typically for code reviews). Whatever the method used for development, you shall remain able to explain and justify each single line of code submitted with a PR.
