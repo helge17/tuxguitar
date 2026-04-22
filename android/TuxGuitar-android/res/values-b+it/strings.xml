@@ -217,7 +217,7 @@
 	<string name="browser_save_label">Salva</string>
 	<!-- <string name="browser_add_collection"></string> -->
 	<!-- <string name="browser_remove_collection"></string> -->
-	<string name="browser_file_overwrite_question">Questo file esiste già, vuoi sovrascriverlo??</string>
+	<string name="browser_file_overwrite_question">Questo file esiste già, vuoi sovrascriverlo?</string>
 	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
 	<!-- <string name="browser_element_icon_description"></string> -->
 
@@ -347,7 +347,6 @@
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Errore</string>
 	<string name="track_tuning_dlg_range_error">Il numero delle corde deve essere fra %1$d e %2$d</string>
-	<string name="track_tuning_dlg_empty_value_error">Valore non può essere vuoto</string>
 
 	<string name="track_string_count_dlg_title">Numero righe</string>
 	<string name="track_string_count_dlg_count_label">Numero righe:</string>

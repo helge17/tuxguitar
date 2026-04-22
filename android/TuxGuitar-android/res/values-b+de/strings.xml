@@ -142,10 +142,10 @@
 	<string name="action_set_duration_division_type_6">6 - Sextole</string>
 	<string name="action_set_duration_division_type_7">7 - Septole</string>
 	<string name="action_set_duration_division_type_9">9 - Nonole</string>
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_10">Dezimole</string>
+	<string name="action_set_duration_division_type_11">Undezimole</string>
+	<string name="action_set_duration_division_type_12">Duodecimole</string>
+	<string name="action_set_duration_division_type_13">Tredezimole</string>
 
 	<!-- <string name="action_set_velocity_ppp"></string> -->
 	<!-- <string name="action_set_velocity_pp"></string> -->
@@ -347,7 +347,6 @@
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Fehler</string>
 	<string name="track_tuning_dlg_range_error">Die Anzahl der Saiten muss zwischen %1$d und %2$d liegen</string>
-	<string name="track_tuning_dlg_empty_value_error">Wert darf nicht leer sein</string>
 
 	<string name="track_string_count_dlg_title">Anzahl Zeilen</string>
 	<string name="track_string_count_dlg_count_label">Anzahl Zeilen:</string>

@@ -101,23 +101,10 @@ public class TGTrackTuningModelDialog extends TGModalFragment {
 		TGTrackTuningModel model = new TGTrackTuningModel();
 		model.setValue(this.findSelectedValue());
 
-		if( model.getValue() == null ) {
-			showErrorMessage(this.findActivity().getString(R.string.track_tuning_dlg_empty_value_error));
-			return false;
-		}
 		TGTrackTuningModelHandler handler = this.getAttribute(TGTrackTuningModelDialogController.ATTRIBUTE_HANDLER);
 		if( handler != null ) {
 			handler.handleSelection(model);
 		}
 		return true;
-	}
-
-	public void showErrorMessage(String message) {
-		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.findContext(), TGOpenDialogAction.NAME);
-		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, this.findActivity());
-		tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGMessageDialogController());
-		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_TITLE, this.findActivity().getString(R.string.track_tuning_dlg_error_title));
-		tgActionProcessor.setAttribute(TGMessageDialogController.ATTRIBUTE_MESSAGE, message);
-		tgActionProcessor.process();
 	}
 }

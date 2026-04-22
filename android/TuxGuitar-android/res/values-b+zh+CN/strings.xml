@@ -347,7 +347,6 @@
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">错误</string>
 	<string name="track_tuning_dlg_range_error">此数值必须介于 %1$d 和 %2$d 之间</string>
-	<string name="track_tuning_dlg_empty_value_error">值不能为空</string>
 
 	<string name="track_string_count_dlg_title">行数</string>
 	<string name="track_string_count_dlg_count_label">行数:</string>
