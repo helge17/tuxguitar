@@ -1,6 +1,9 @@
 package app.tuxguitar.app;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.app.action.TGActionAdapterManager;
@@ -10,8 +13,10 @@ import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import app.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import app.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.document.TGDocumentListAttributes;
 import app.tuxguitar.app.document.TGDocumentListManager;
+import app.tuxguitar.app.helper.TGLastOpenFiles;
 import app.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
@@ -62,7 +67,6 @@ import app.tuxguitar.util.TGException;
 import app.tuxguitar.util.TGLock;
 import app.tuxguitar.util.TGMessagesManager;
 import app.tuxguitar.util.TGSynchronizer;
-import app.tuxguitar.util.error.TGErrorHandler;
 import app.tuxguitar.util.error.TGErrorManager;
 import app.tuxguitar.util.plugin.TGPluginManager;
 import app.tuxguitar.util.properties.TGPropertiesManager;
@@ -150,25 +154,32 @@ public class TuxGuitar {
 		// Priority 4 ----------------------------------------------//
 		TGWindow.getInstance(TuxGuitar.this.context).open();
 
-		this.startSong(url);
-		this.setInitialized(true);
-	}
-
-	private void startSong(URL url){
 		TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnwanted(true);
-		if( url != null ){
-			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
-			tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
-			tgActionProcessor.setAttribute(TGErrorHandler.class.getName(), new TGErrorHandler() {
-				public void handleError(Throwable throwable) {
-					startDefaultSong();
 
-					TGErrorManager.getInstance(getContext()).handleError(throwable);
+		final List<URL> urlsToOpen = new ArrayList<>();
+		if (getConfig().getBooleanValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP)) {
+			urlsToOpen.addAll(TGLastOpenFiles.getInstance(this.context).getURLs());
+		}
+		if (url != null && !urlsToOpen.contains(url)) {
+			try {
+				if (!TGFileUtils.isLocalFile(url) || new File(url.toURI()).exists()) {
+					urlsToOpen.add(url);
+				}
+			} catch (Exception e) {
+				// skip invalid URI
+			}
+		}
+
+		this.setInitialized(true);
+
+		if (urlsToOpen.isEmpty()) {
+			this.startDefaultSong();
+		} else {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+				public void run() {
+					reopenLastFiles(urlsToOpen);
 				}
 			});
-			tgActionProcessor.process();
-		} else {
-			this.startDefaultSong();
 		}
 	}
 
@@ -176,6 +187,42 @@ public class TuxGuitar {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGLoadTemplateAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentListAttributes.ATTRIBUTE_UNWANTED, true);
 		tgActionProcessor.process();
+	}
+
+	private void reopenLastFiles(List<URL> lastOpenUrls) {
+		List<URL> notFoundUrls = new ArrayList<URL>();
+		List<URL> currentUrls = new ArrayList<URL>();
+		for(TGDocument doc : TGDocumentListManager.getInstance(this.context).getDocuments()) {
+			if(doc.getUri() != null) {
+				try {
+					currentUrls.add(doc.getUri().toURL());
+				} catch (Exception e) {
+					// skip invalid URIs
+				}
+			}
+		}
+		for(URL url : lastOpenUrls) {
+			if(TGFileUtils.isLocalFile(url)) {
+				try {
+					if(!new File(url.toURI()).exists()) {
+						notFoundUrls.add(url);
+						continue;
+					}
+				} catch (Exception e) {
+					// skip invalid URIs
+				}
+			}
+			if(!currentUrls.contains(url)) {
+				TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
+				tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
+				tgActionProcessor.process();
+			}
+		}
+		if(!notFoundUrls.isEmpty()) {
+			List<URL> updatedUrls = new ArrayList<URL>(TGLastOpenFiles.getInstance(this.context).getURLs());
+			updatedUrls.removeAll(notFoundUrls);
+			TGLastOpenFiles.getInstance(this.context).save(updatedUrls);
+		}
 	}
 
 	public void restoreControlsConfig(){

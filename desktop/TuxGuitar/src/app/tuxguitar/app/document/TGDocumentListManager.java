@@ -1,8 +1,11 @@
 package app.tuxguitar.app.document;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.tuxguitar.app.helper.TGLastOpenFiles;
 import app.tuxguitar.app.util.TGFileChooser;
 import app.tuxguitar.app.util.TGFileUtils;
 import app.tuxguitar.document.TGDocumentManager;
@@ -74,6 +77,11 @@ public class TGDocumentListManager {
 		return this.findDocument(song);
 	}
 
+	public void setCurrentDocumentUri(URI uri) {
+		this.findCurrentDocument().setUri(uri);
+		this.updateLastOpenFiles();
+	}
+
 	public TGDocument findCurrentDocument() {
 		return this.findDocument(this.getLoadedSong());
 	}
@@ -103,10 +111,26 @@ public class TGDocumentListManager {
 
 	public void removeDocument(TGDocument document) {
 		this.documents.remove(document);
+		this.updateLastOpenFiles();
 	}
 
 	public void removeDocuments(List<TGDocument> documents) {
 		this.documents.removeAll(documents);
+		this.updateLastOpenFiles();
+	}
+
+	private void updateLastOpenFiles() {
+		List<URL> urls = new ArrayList<URL>();
+		for (TGDocument doc : this.documents) {
+			if (doc.getUri() != null && !doc.isUnwanted()) {
+				try {
+					urls.add(doc.getUri().toURL());
+				} catch (Exception e) {
+					// skip invalid URIs
+				}
+			}
+		}
+		TGLastOpenFiles.getInstance(this.context).save(urls);
 	}
 
 	public int countDocuments() {
