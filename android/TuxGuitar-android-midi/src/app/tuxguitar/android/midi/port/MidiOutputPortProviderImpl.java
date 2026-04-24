@@ -31,18 +31,16 @@ public class MidiOutputPortProviderImpl implements MidiOutputPortProvider{
 			this.ports.clear();
 		}
 
-		if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
-			TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
-			if( activity != null && activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
-				MidiManager midiManager = (MidiManager) activity.getSystemService(Context.MIDI_SERVICE);
-				MidiDeviceInfo[] infos = midiManager.getDevices();
-				for(MidiDeviceInfo info : infos) {
-					if( info.getInputPortCount() > 0 ) {
-						MidiDeviceInfo.PortInfo[] portInfos = info.getPorts();
-						for(MidiDeviceInfo.PortInfo portInfo : portInfos) {
-							if( portInfo.getType() == MidiDeviceInfo.PortInfo.TYPE_INPUT) {
-								this.ports.add(new MidiOutputPortImpl(this.context, info, portInfo));
-							}
+		TGActivity activity = TGActivityController.getInstance(this.context).getActivity();
+		if( activity != null && activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
+			MidiManager midiManager = (MidiManager) activity.getSystemService(Context.MIDI_SERVICE);
+			MidiDeviceInfo[] infos = midiManager.getDevices();
+			for(MidiDeviceInfo info : infos) {
+				if( info.getInputPortCount() > 0 ) {
+					MidiDeviceInfo.PortInfo[] portInfos = info.getPorts();
+					for(MidiDeviceInfo.PortInfo portInfo : portInfos) {
+						if( portInfo.getType() == MidiDeviceInfo.PortInfo.TYPE_INPUT) {
+							this.ports.add(new MidiOutputPortImpl(this.context, info, portInfo));
 						}
 					}
 				}
