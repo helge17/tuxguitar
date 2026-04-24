@@ -674,7 +674,23 @@ public class TGMainToolBarConfigMap {
 		registerItem(getCheckableEffect("effects.vibrato", TGChangeVibratoNoteAction.NAME, TGIconManager.EFFECT_VIBRATO, false, e -> e.isVibrato()));
 		registerItem(getCheckableEffect("effects.bend", TGOpenBendDialogAction.NAME, TGIconManager.EFFECT_BEND , false, e -> e.isBend()));
 		registerItem(getCheckableEffect("effects.tremolo-bar", TGOpenTremoloBarDialogAction.NAME, TGIconManager.EFFECT_TREMOLO_BAR , false, e -> e.isTremoloBar()));
-		registerItem(getCheckableEffect("effects.deadnote", TGChangeDeadNoteAction.NAME, TGIconManager.EFFECT_DEAD , false, e -> e.isDeadNote()));
+
+		// specific case for "dead note" effect: action is enabled also if current beat is a rest
+		TGMainToolBarItemUpdater deadNoteUpdater = new TGMainToolBarItemUpdater() {
+			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				boolean isPercussion = TablatureEditor.getInstance(context).getTablature().getCaret().getTrack().isPercussion();
+				return (!isRunning && !isPercussion);
+			}
+			@Override
+			public boolean checked(TGContext context, boolean isRunning) {
+				TGNote note = TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getSelectedNote();
+				return ((note != null) && (note.getEffect() != null) && (note.getEffect().isDeadNote()));
+			}
+		};
+		registerItem(new TGMainToolBarItemConfig(this.groupName, "effects.deadnote", TGMainToolBarItem.CHECKABLE_ITEM, TGMainToolBarSection.TYPE_TOOLITEMS,
+				TGChangeDeadNoteAction.NAME, TGIconManager.EFFECT_DEAD, deadNoteUpdater, false));
+
 		registerItem(getCheckableEffect("effects.slide", TGChangeSlideNoteAction.NAME, TGIconManager.EFFECT_SLIDE , false, e -> e.isSlide()));
 		registerItem(getCheckableEffect("effects.hammer", TGChangeHammerNoteAction.NAME, TGIconManager.EFFECT_HAMMER , false, e -> e.isHammer()));
 		registerItem(getCheckableEffect("effects.ghostnote", TGChangeGhostNoteAction.NAME, TGIconManager.EFFECT_GHOST , true, e -> e.isGhostNote()));
