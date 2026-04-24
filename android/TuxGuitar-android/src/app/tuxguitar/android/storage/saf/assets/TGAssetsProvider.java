@@ -25,7 +25,9 @@ public class TGAssetsProvider extends DocumentsProvider {
 			DocumentsContract.Root.COLUMN_ROOT_ID,
 			DocumentsContract.Root.COLUMN_FLAGS,
 			DocumentsContract.Root.COLUMN_TITLE,
-			DocumentsContract.Root.COLUMN_DOCUMENT_ID
+			DocumentsContract.Root.COLUMN_SUMMARY,
+			DocumentsContract.Root.COLUMN_DOCUMENT_ID,
+			DocumentsContract.Root.COLUMN_ICON
 	};
 
 	private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
@@ -46,10 +48,11 @@ public class TGAssetsProvider extends DocumentsProvider {
 		MatrixCursor.RowBuilder row = result.newRow();
 
 		row.add(DocumentsContract.Root.COLUMN_ROOT_ID, ROOT_ID);
-		row.add(DocumentsContract.Root.COLUMN_SUMMARY, getContext().getString(R.string.storage_saf_assets_provider_title));
 		row.add(DocumentsContract.Root.COLUMN_FLAGS, DocumentsContract.Root.FLAG_SUPPORTS_RECENTS | DocumentsContract.Root.FLAG_SUPPORTS_SEARCH);
-		row.add(DocumentsContract.Root.COLUMN_TITLE, getContext().getString(R.string.storage_saf_assets_provider_title));
+		row.add(DocumentsContract.Root.COLUMN_TITLE, getContext().getString(R.string.app_name));
+		row.add(DocumentsContract.Root.COLUMN_SUMMARY, getContext().getString(R.string.storage_saf_assets_provider_title));
 		row.add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, ROOT_ID);
+		row.add(DocumentsContract.Root.COLUMN_ICON, R.drawable.ic_launcher);
 
 		return result;
 	}

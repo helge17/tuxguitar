@@ -8,6 +8,7 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+	<uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
 	<application
 		android:name="app.tuxguitar.android.application.TGApplication"
@@ -110,5 +111,15 @@
 				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.tef" />
 			</intent-filter>
 		</activity>
+		<provider
+			android:name="app.tuxguitar.android.storage.saf.assets.TGAssetsProvider"
+			android:authorities="app.tuxguitar.android.assets.demo-songs"
+			android:exported="true"
+			android:grantUriPermissions="true"
+			android:permission="android.permission.MANAGE_DOCUMENTS">
+			<intent-filter>
+				<action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+			</intent-filter>
+		</provider>
 	</application>
 </manifest>

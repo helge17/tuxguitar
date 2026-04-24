@@ -198,7 +198,7 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_saf_file_format_chooser_title">Select a File Format</string>
-	<string name="storage_saf_assets_provider_title">Demo Songs</string>
+	<string name="storage_saf_assets_provider_title">Demo Songs (Read Only)</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
