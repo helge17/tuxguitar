@@ -67,7 +67,7 @@
 		<attr name="browserElementIconFileStyle" format="reference"/>
 		<attr name="browserElementIconFolderStyle" format="reference"/>
 		<attr name="browserElementNameStyle" format="reference"/>
-		<attr name="browserCollectionsDlgImageButtonSubmitStyle" format="reference"/>
+		<attr name="browserCollectionsDlgImageButtonAddStyle" format="reference"/>
 		<attr name="browserCollectionsDlgImageButtonDeleteStyle" format="reference"/>
 
 		<attr name="channelListStyle" format="reference"/>
