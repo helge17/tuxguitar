@@ -491,7 +491,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGToggleNoteEnharmonicAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 
 		//effect actions
-		this.map(TGChangeDeadNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_BEAT_RANGE_CTL, UNDOABLE_NOTE_RANGE); // beat range controller: can create new note
+		this.map(TGChangeDeadNoteAction.NAME,             LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_BEAT_RANGE_CTL, UNDOABLE_BEAT_RANGE_GENERIC); // beat range controller: can create new note
 		this.map(TGChangeAccentuatedNoteAction.NAME,      LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE);
 		this.map(TGChangeBendNoteAction.NAME,             LOCKABLE | DISABLE_ON_PLAY,            UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE); // no shortcut (need to use dialog)
 		this.map(TGChangeFadeInAction.NAME,               LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_NOTE_RANGE_CTL, UNDOABLE_NOTE_RANGE);

@@ -208,7 +208,7 @@ public class TGEditToolBarSectionEffect extends TGEditToolBarSection {
 		this.slide.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
 		this.slide.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isSlide()));
 
-		this.deadNote.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
+		this.deadNote.setEnabled(!running && !isPercussion);
 		this.deadNote.setChecked(!noteRange.isEmpty() && noteRange.getNotes().stream().allMatch(n -> n.getEffect().isDeadNote()));
 
 		this.hammer.setEnabled(!running && !noteRange.isEmpty() && !isPercussion);
