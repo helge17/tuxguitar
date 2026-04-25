@@ -111,13 +111,20 @@ public class TGAudioBuffer {
 			short maxValue = Short.MAX_VALUE;
 			short minValue = Short.MIN_VALUE;
 
+			// Constant-power mix: mix() stores the running average (sum/N).
+			// Multiplying back by sqrt(N) gives sum/sqrt(N), which keeps the
+			// total output power constant as instruments are added regardless
+			// of N (for uncorrelated sources).  The previous factor of N
+			// reconstructed the raw sum, whose amplitude grew linearly with N.
+			float sqrtN = (float) Math.sqrt(this.buffers);
+
 			for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 				for (int j = 0; j < CHANNELS; j++) {
 					sampleValue = 0;
 					for( int n = 0; n < 2; n ++){
 						sampleValue |= ((this.buffer[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
 					}
-					ampValue = (short) (Math.max(Math.min(sampleValue * this.buffers, maxValue), minValue) & 0xFFFF);
+					ampValue = (short) (Math.max(Math.min(Math.round(sampleValue * sqrtN), (int) maxValue), (int) minValue) & 0xFFFF);
 
 					this.buffer[index++] = (byte) ((BIGENDIAN ? ((ampValue & 0xFF00) >> 8) : ((ampValue & 0x00FF) >> 0) ) & 0xFF);
 					this.buffer[index++] = (byte) ((BIGENDIAN ? ((ampValue & 0x00FF) >> 0) : ((ampValue & 0xFF00) >> 8) ) & 0xFF);
