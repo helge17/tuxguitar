@@ -61,8 +61,8 @@ foreach my $messages_LANG (glob("$messages_list")) {
   while (<MSG_DFLT>) {
     chomp;
     $line++;
-    # Skip the first 144 lines (Default language codes)
-    next if $line < 145;
+    # Skip the first 143 lines (Default language codes)
+    next if $line < 144;
     if (/^(.+?)=(.+)$/) {
       if ($msg_lang{$1} && $msg_lang{$1} ne $2) {
         # message is translated and is not the same as in the default messages.properties
