@@ -3,6 +3,9 @@ package app.tuxguitar.app.view.component.tab;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.editor.TGEditorManager;
 import app.tuxguitar.editor.event.TGUpdateEvent;
@@ -27,6 +30,17 @@ public class TablatureEditor implements TGEventListener{
 
 	public void initialize() {
 		this.tablature = new Tablature(this.context, TGDocumentManager.getInstance(this.context));
+
+		// Initialize display scale from system DPI detection
+		float displayScale = TGApplication.getInstance(this.context).getApplication().getDisplayScale();
+		this.tablature.initDisplayScale(displayScale);
+
+		// Restore saved zoom level from config, clamped to valid range
+		TGConfigManager config = TGConfigManager.getInstance(this.context);
+		float savedScale = config.getFloatValue(TGConfigKeys.LAYOUT_SCALE, Tablature.DEFAULT_SCALE);
+		savedScale = Math.max(0.5f, Math.min(savedScale, 3.0f));
+		this.tablature.scale(savedScale);
+
 		this.tablature.reloadViewLayout();
 		this.tablature.updateTablature();
 		this.tablature.resetCaret();

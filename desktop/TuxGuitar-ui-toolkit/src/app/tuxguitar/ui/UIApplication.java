@@ -17,4 +17,8 @@ public interface UIApplication extends UIComponent {
 	void runInUiThread(Runnable runnable);
 
 	boolean isInUiThread();
+
+	default float getDisplayScale() {
+		return 1.0f;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.plugins.TGPluginSettingsManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
@@ -62,8 +63,8 @@ public class TGPluginListDialog {
 		table.setColumnName(1, TuxGuitar.getProperty("plugin.column.name"));
 
 		dialogLayout.set(table, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		dialogLayout.set(table, UITableLayout.PACKED_WIDTH, TABLE_WIDTH);
-		dialogLayout.set(table, UITableLayout.PACKED_HEIGHT, TABLE_HEIGHT);
+		dialogLayout.set(table, UITableLayout.PACKED_WIDTH, TGDisplayScale.scale(TABLE_WIDTH));
+		dialogLayout.set(table, UITableLayout.PACKED_HEIGHT, TGDisplayScale.scale(TABLE_HEIGHT));
 
 		this.updateTableItems(context.getContext());
 
@@ -84,7 +85,7 @@ public class TGPluginListDialog {
 				}
 			}
 		});
-		buttonsLayout.set(buttonSetup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonSetup, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 
 		final UIButton buttonInfo = uiFactory.createButton(buttons);
 		buttonInfo.setText(TuxGuitar.getProperty("info"));
@@ -98,7 +99,7 @@ public class TGPluginListDialog {
 				}
 			}
 		});
-		buttonsLayout.set(buttonInfo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonInfo, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 
 		UIButton buttonClose = uiFactory.createButton(buttons);
 		buttonClose.setText(TuxGuitar.getProperty("close"));
@@ -107,7 +108,7 @@ public class TGPluginListDialog {
 				dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonClose, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+		buttonsLayout.set(buttonClose, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 		buttonsLayout.set(buttonClose, UITableLayout.MARGIN_RIGHT, 0f);
 
 		table.addSelectionListener(new UISelectionListener() {

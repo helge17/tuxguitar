@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
@@ -265,7 +266,7 @@ public class TGMainToolBarDialog {
 			}
 		});
 		layout.set(buttonDefaults, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
-		layout.set(buttonDefaults, UITableLayout.MINIMUM_PACKED_WIDTH, MINIMUM_BUTTON_WIDTH);
+		layout.set(buttonDefaults, UITableLayout.MINIMUM_PACKED_WIDTH, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH));
 
 		UIButton buttonApply = uiFactory.createButton(panel);
 		buttonApply.setText(TuxGuitar.getProperty("apply"));
@@ -276,7 +277,7 @@ public class TGMainToolBarDialog {
 			}
 		});
 		layout.set(buttonApply, 1, 2, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
-		layout.set(buttonApply, UITableLayout.MINIMUM_PACKED_WIDTH, MINIMUM_BUTTON_WIDTH);
+		layout.set(buttonApply, UITableLayout.MINIMUM_PACKED_WIDTH, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH));
 
 		UIButton buttonOK = uiFactory.createButton(panel);
 		buttonOK.setText(TuxGuitar.getProperty("ok"));
@@ -289,7 +290,7 @@ public class TGMainToolBarDialog {
 			}
 		});
 		layout.set(buttonOK, 1, 3, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
-		layout.set(buttonOK, UITableLayout.MINIMUM_PACKED_WIDTH, MINIMUM_BUTTON_WIDTH);
+		layout.set(buttonOK, UITableLayout.MINIMUM_PACKED_WIDTH, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH));
 
 		UIButton buttonCancel = uiFactory.createButton(panel);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -300,7 +301,7 @@ public class TGMainToolBarDialog {
 			}
 		});
 		layout.set(buttonCancel, 1, 4, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, false, false);
-		layout.set(buttonCancel, UITableLayout.MINIMUM_PACKED_WIDTH, MINIMUM_BUTTON_WIDTH);
+		layout.set(buttonCancel, UITableLayout.MINIMUM_PACKED_WIDTH, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH));
 	}
 
 	private void addDropDownSelectionListeners() {

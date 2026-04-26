@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGColorManager;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.icons.TGColorManager.TGSkinnableColor;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
@@ -69,15 +70,15 @@ public class TGBendDialog {
 	private void init(){
 		this.x = new int[X_LENGTH];
 		this.y = new int[Y_LENGTH];
-		this.width = ((X_SPACING * X_LENGTH) - X_SPACING);
-		this.height = ((Y_SPACING * Y_LENGTH) - Y_SPACING);
+		this.width = ((TGDisplayScale.scaleInt(X_SPACING) * X_LENGTH) - TGDisplayScale.scaleInt(X_SPACING));
+		this.height = ((TGDisplayScale.scaleInt(Y_SPACING) * Y_LENGTH) - TGDisplayScale.scaleInt(Y_SPACING));
 		this.points = new ArrayList<UIPosition>();
 
 		for(int i = 0;i < this.x.length;i++){
-			this.x[i] = ((i + 1) * X_SPACING);
+			this.x[i] = ((i + 1) * TGDisplayScale.scaleInt(X_SPACING));
 		}
 		for(int i = 0;i < this.y.length;i++){
-			this.y[i] = ((i + 1) * Y_SPACING);
+			this.y[i] = ((i + 1) * TGDisplayScale.scaleInt(Y_SPACING));
 		}
 	}
 
@@ -136,7 +137,7 @@ public class TGBendDialog {
 					TGBendDialog.this.editor.redraw();
 				}
 			});
-			leftCompositeLayout.set(this.editor, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, getWidth() + (X_SPACING * 2f), getHeight() + (Y_SPACING * 2f), null);
+			leftCompositeLayout.set(this.editor, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, getWidth() + (TGDisplayScale.scaleInt(X_SPACING) * 2f), getHeight() + (TGDisplayScale.scaleInt(Y_SPACING) * 2f), null);
 
 			//-------------DEFAULT BEND LIST---------------------------------------------------
 			final List<UISelectItem<TGEffectBend>> presetItems = this.createPresetItems();
@@ -210,16 +211,16 @@ public class TGBendDialog {
 			this.setStyleX(painter,i);
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.moveTo(this.x[i],Y_SPACING);
-			painter.lineTo(this.x[i],Y_SPACING + this.height);
+			painter.moveTo(this.x[i],TGDisplayScale.scaleInt(Y_SPACING));
+			painter.lineTo(this.x[i],TGDisplayScale.scaleInt(Y_SPACING) + this.height);
 			painter.closePath();
 		}
 		for(int i = 0;i < this.y.length;i++){
 			this.setStyleY(painter,i);
 			painter.initPath();
 			painter.setAntialias(false);
-			painter.moveTo(X_SPACING,this.y[i]);
-			painter.lineTo(X_SPACING + this.width,this.y[i]);
+			painter.moveTo(TGDisplayScale.scaleInt(X_SPACING),this.y[i]);
+			painter.lineTo(TGDisplayScale.scaleInt(X_SPACING) + this.width,this.y[i]);
 			painter.closePath();
 		}
 

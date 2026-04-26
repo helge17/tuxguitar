@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.app.system.icons.TGIconManager;
@@ -98,7 +99,7 @@ public class TGLyricEditor implements TGEventListener {
 
 		this.dialog = uiFactory.createWindow(TGWindow.getInstance(this.context).getWindow(), false, true);
 		this.dialog.setLayout(new UITableLayout(0f));
-		this.dialog.setBounds(new UIRectangle(0, 0, EDITOR_WIDTH, EDITOR_HEIGHT));
+		this.dialog.setBounds(new UIRectangle(0, 0, TGDisplayScale.scale(EDITOR_WIDTH), TGDisplayScale.scale(EDITOR_HEIGHT)));
 		this.dialog.addDisposeListener(new UIDisposeListener() {
 			public void onDispose(UIDisposeEvent event) {
 				TGLyricEditor.this.onDispose();

@@ -77,4 +77,6 @@
 	<shortcut keys="F9" action="action.gui.open-transport-mode-dialog"/>
 	<shortcut keys="Space" action="action.transport.play"/>
 	<shortcut keys="Ctrl t" action="action.gui.toggle-transport-dialog"/>
+	<shortcut keys="Ctrl =" action="action.view.layout-increment-scale"/>
+	<shortcut keys="Ctrl -" action="action.view.layout-decrement-scale"/>
 </shortcuts>

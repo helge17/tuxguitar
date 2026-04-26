@@ -4,6 +4,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import app.tuxguitar.app.action.impl.view.TGOpenViewAction;
 import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
@@ -138,7 +139,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 			}
 		});
 
-		legendLayout.set(this.nameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_LEFT_CONTROLS_WIDTH, null, null);
+		legendLayout.set(this.nameText, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_LEFT_CONTROLS_WIDTH), null, null);
 
 		//-----------------------COLOR---------------------------------
 		UILabel colorLabel = factory.createLabel(legendPanel);
@@ -172,7 +173,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 				TGTrackPropertiesDialog.this.disposeColorButtonBackground();
 			}
 		});
-		legendLayout.set(this.colorButton, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_LEFT_CONTROLS_WIDTH, null, null);
+		legendLayout.set(this.colorButton, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_LEFT_CONTROLS_WIDTH), null, null);
 
 		//------------Instrument Combo-------------------------------------
 		UILabel instrumentLabel = factory.createLabel(legendPanel);
@@ -244,7 +245,7 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 				TGTrackPropertiesDialog.this.dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonClose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonClose, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 		buttonsLayout.set(buttonClose, UITableLayout.MARGIN_RIGHT, 0f);
 	}
 

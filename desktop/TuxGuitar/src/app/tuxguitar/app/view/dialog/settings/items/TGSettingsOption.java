@@ -1,6 +1,7 @@
 package app.tuxguitar.app.view.dialog.settings.items;
 
 import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
@@ -129,7 +130,7 @@ public abstract class TGSettingsOption implements UISelectionListener {
 	}
 
 	protected void indent(UIControl control, int row, int col, int alignX, int alignY, boolean fillX, boolean fillY){
-		this.indent(control, row, col, alignX, alignY, fillX, fillY, DEFAULT_INDENT);
+		this.indent(control, row, col, alignX, alignY, fillX, fillY, TGDisplayScale.scale(DEFAULT_INDENT));
 	}
 
 	protected void indent(UIControl control, int row, int col, int alignX, int alignY, boolean fillX, boolean fillY, float indent){

@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigKeys;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.icons.TGSkinManager;
 import app.tuxguitar.app.util.TGFileUtils;
 import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
@@ -97,8 +98,8 @@ public class SkinOption extends TGSettingsOption{
 			}
 		});
 		skinPreviewLayout.set(this.previewArea, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, false, false);
-		skinPreviewLayout.set(this.previewArea, UITableLayout.PACKED_WIDTH, PREVIEW_WIDTH);
-		skinPreviewLayout.set(this.previewArea, UITableLayout.PACKED_HEIGHT, PREVIEW_HEIGHT);
+		skinPreviewLayout.set(this.previewArea, UITableLayout.PACKED_WIDTH, TGDisplayScale.scale(PREVIEW_WIDTH));
+		skinPreviewLayout.set(this.previewArea, UITableLayout.PACKED_HEIGHT, TGDisplayScale.scale(PREVIEW_HEIGHT));
 
 		this.loadConfig();
 	}

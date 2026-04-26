@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.graphics.control.TGChordImpl;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChord;
@@ -78,8 +79,8 @@ public class TGChordEditor {
 		this.firstFrets = new boolean[this.maxStrings];
 		this.strings = new int[this.maxStrings];
 		this.frets = new int[TGChordImpl.MAX_FRETS];
-		this.width = ((STRING_SPACING * this.maxStrings) - STRING_SPACING);
-		this.height = ((FRET_SPACING * TGChordImpl.MAX_FRETS) - FRET_SPACING);
+		this.width = ((TGDisplayScale.scaleInt(STRING_SPACING) * this.maxStrings) - TGDisplayScale.scaleInt(STRING_SPACING));
+		this.height = ((TGDisplayScale.scaleInt(FRET_SPACING) * TGChordImpl.MAX_FRETS) - TGDisplayScale.scaleInt(FRET_SPACING));
 		this.points = new ArrayList<UIPosition>();
 
 		for (int i = 0; i < this.firstFrets.length; i++) {
@@ -87,11 +88,11 @@ public class TGChordEditor {
 		}
 
 		for (int i = 0; i < this.strings.length; i++) {
-			this.strings[i] = ((i + 1) * STRING_SPACING);
+			this.strings[i] = ((i + 1) * TGDisplayScale.scaleInt(STRING_SPACING));
 		}
 
 		for (int i = 0; i < this.frets.length; i++) {
-			this.frets[i] = ((i + 1) * FRET_SPACING);
+			this.frets[i] = ((i + 1) * TGDisplayScale.scaleInt(FRET_SPACING));
 		}
 
 		UITableLayout compositeLayout = new UITableLayout();
@@ -106,8 +107,8 @@ public class TGChordEditor {
 
 		this.canvas = uiFactory.createCanvas(this.scrollBarPanel, false);
 
-		float minimumWidth = (getWidth() + (STRING_SPACING * 2f));
-		float minimumHeight = (getHeight() + (FRET_SPACING * 2f));
+		float minimumWidth = (getWidth() + (TGDisplayScale.scaleInt(STRING_SPACING) * 2f));
+		float minimumHeight = (getHeight() + (TGDisplayScale.scaleInt(FRET_SPACING) * 2f));
 		scrollBarLayout.set(this.canvas, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, minimumWidth, minimumHeight, 0f);
 
 		UITableLayout nameLayout = new UITableLayout(0f);
@@ -154,7 +155,7 @@ public class TGChordEditor {
 	}
 
 	private void paintEditor(UIPainter painter) {
-		int noteSize = (FRET_SPACING / 2);
+		int noteSize = (TGDisplayScale.scaleInt(FRET_SPACING) / 2);
 
 		painter.setLineWidth(UIPainter.THINNEST_LINE_WIDTH);
 
@@ -170,18 +171,18 @@ public class TGChordEditor {
 		// dibujo el puente
 		painter.initPath();
 		painter.setAntialias(false);
-		painter.moveTo((STRING_SPACING - 10), (FRET_SPACING - 10));
-		painter.lineTo(STRING_SPACING + (this.width + 10), (FRET_SPACING - 10));
+		painter.moveTo((TGDisplayScale.scaleInt(STRING_SPACING) - 10), (TGDisplayScale.scaleInt(FRET_SPACING) - 10));
+		painter.lineTo(TGDisplayScale.scaleInt(STRING_SPACING) + (this.width + 10), (TGDisplayScale.scaleInt(FRET_SPACING) - 10));
 		painter.closePath();
 
-		painter.drawString(Integer.toString(getFret()), FRET_SPACING - 25,STRING_SPACING);
+		painter.drawString(Integer.toString(getFret()), TGDisplayScale.scaleInt(FRET_SPACING) - 25,TGDisplayScale.scaleInt(STRING_SPACING));
 
 		// dibujo las cuerdas
 		painter.initPath();
 		painter.setAntialias(false);
 		for (int i = 0; i < this.strings.length; i++) {
-			painter.moveTo(this.strings[i], FRET_SPACING);
-			painter.lineTo(this.strings[i], FRET_SPACING + this.height);
+			painter.moveTo(this.strings[i], TGDisplayScale.scaleInt(FRET_SPACING));
+			painter.lineTo(this.strings[i], TGDisplayScale.scaleInt(FRET_SPACING) + this.height);
 		}
 		painter.closePath();
 
@@ -189,8 +190,8 @@ public class TGChordEditor {
 		painter.initPath();
 		painter.setAntialias(false);
 		for (int i = 0; i < this.frets.length; i++) {
-			painter.moveTo(STRING_SPACING, this.frets[i]);
-			painter.lineTo(STRING_SPACING + this.width, this.frets[i]);
+			painter.moveTo(TGDisplayScale.scaleInt(STRING_SPACING), this.frets[i]);
+			painter.lineTo(TGDisplayScale.scaleInt(STRING_SPACING) + this.width, this.frets[i]);
 		}
 		painter.closePath();
 
@@ -199,7 +200,7 @@ public class TGChordEditor {
 
 		for(UIPosition point : this.points) {
 			painter.initPath(UIPainter.PATH_FILL);
-			painter.addCircle(point.getX(), point.getY() + (FRET_SPACING / 2), noteSize);
+			painter.addCircle(point.getX(), point.getY() + (TGDisplayScale.scaleInt(FRET_SPACING) / 2), noteSize);
 			painter.closePath();
 		}
 
@@ -228,10 +229,10 @@ public class TGChordEditor {
 		int stringIndex = getStringIndex(x);
 		int fretIndex = getFretIndex(y);
 
-		if (y < FRET_SPACING) {
+		if (y < TGDisplayScale.scaleInt(FRET_SPACING)) {
 			this.firstFrets[stringIndex] = !this.firstFrets[stringIndex];
 			this.removePointsAtStringLine(this.strings[stringIndex]);
-		} else if (y < (FRET_SPACING * TGChordImpl.MAX_FRETS)) {
+		} else if (y < (TGDisplayScale.scaleInt(FRET_SPACING) * TGChordImpl.MAX_FRETS)) {
 			UIPosition point = new UIPosition(this.strings[stringIndex], this.frets[fretIndex]);
 			if (!this.removePoint(point)) {
 				this.firstFrets[stringIndex] = false;
@@ -307,8 +308,8 @@ public class TGChordEditor {
 			if (index < 0) {
 				index = i;
 			} else {
-				float distanceX = Math.abs(y - (this.frets[index] + (FRET_SPACING / 2)));
-				float currDistanceX = Math.abs(y - (this.frets[i] + (FRET_SPACING / 2)));
+				float distanceX = Math.abs(y - (this.frets[index] + (TGDisplayScale.scaleInt(FRET_SPACING) / 2)));
+				float currDistanceX = Math.abs(y - (this.frets[i] + (TGDisplayScale.scaleInt(FRET_SPACING) / 2)));
 				if ( currDistanceX < distanceX) {
 					index = i;
 				}
@@ -340,7 +341,7 @@ public class TGChordEditor {
 		if (value < 0) {
 			for(UIPosition point : this.points) {
 				if (string == (this.maxStrings - getStringIndex(point.getX()))) {
-					value = (getFretIndex(point.getY() + (FRET_SPACING / 2)) + 1);
+					value = (getFretIndex(point.getY() + (TGDisplayScale.scaleInt(FRET_SPACING) / 2)) + 1);
 					value += (getFret() - 1);
 				}
 			}

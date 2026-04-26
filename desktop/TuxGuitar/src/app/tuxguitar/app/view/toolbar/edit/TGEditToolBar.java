@@ -1,6 +1,7 @@
 package app.tuxguitar.app.view.toolbar.edit;
 
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import app.tuxguitar.app.view.toolbar.model.TGToolBarModel;
 import app.tuxguitar.ui.UIFactory;
@@ -36,7 +37,7 @@ public class TGEditToolBar extends TGToolBarModel implements UIFocusGainedListen
 		this.control.setVisible(visible);
 		this.control.setLayout(new UIScrollBarPanelLayout(false, true, false, false, false, false));
 		this.control.addFocusGainedListener(this);
-		this.control.getVScroll().setIncrement(SCROLL_INCREMENT);
+		this.control.getVScroll().setIncrement(TGDisplayScale.scaleInt(SCROLL_INCREMENT));
 		this.control.getVScroll().addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGEditToolBar.this.getControl().layout();

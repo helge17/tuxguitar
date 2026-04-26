@@ -1,6 +1,7 @@
 package app.tuxguitar.app.view.dialog.chord;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.song.models.TGChord;
 import app.tuxguitar.ui.UIFactory;
@@ -48,7 +49,7 @@ public class TGChordCustomList {
 			}
 		});
 		compositeLayout.set(this.chords, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
-		compositeLayout.set(this.chords, UITableLayout.MAXIMUM_PACKED_HEIGHT, MAXIMUM_LIST_PACKED_HEIGHT);
+		compositeLayout.set(this.chords, UITableLayout.MAXIMUM_PACKED_HEIGHT, TGDisplayScale.scale(MAXIMUM_LIST_PACKED_HEIGHT));
 
 		//-------------BUTTONS-----------------------------
 		UITableLayout buttonsLayout = new UITableLayout();

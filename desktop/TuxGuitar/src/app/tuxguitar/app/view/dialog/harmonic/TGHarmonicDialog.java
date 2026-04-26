@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.ui.TGApplication;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
@@ -60,7 +61,7 @@ public class TGHarmonicDialog {
 			UILegendPanel group = uiFactory.createLegendPanel(dialog);
 			group.setLayout(groupLayout);
 			group.setText(TuxGuitar.getProperty("effects.harmonic.type-of-harmonic"));
-			dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, null, null, WIDTH, null, null);
+			dialogLayout.set(group, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, null, null, TGDisplayScale.scale(WIDTH), null, null);
 
 			this.typeButtons = new UIRadioButton[5];
 			UISelectionListener listener = new UISelectionListener() {
@@ -109,7 +110,7 @@ public class TGHarmonicDialog {
 					dialog.dispose();
 				}
 			});
-			buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+			buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 
 			UIButton buttonClean = uiFactory.createButton(buttons);
 			buttonClean.setText(TuxGuitar.getProperty("clean"));
@@ -126,7 +127,7 @@ public class TGHarmonicDialog {
 					dialog.dispose();
 				}
 			});
-			buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+			buttonsLayout.set(buttonClean, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 
 			UIButton buttonCancel = uiFactory.createButton(buttons);
 			buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -135,7 +136,7 @@ public class TGHarmonicDialog {
 					dialog.dispose();
 				}
 			});
-			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
+			buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(80f), TGDisplayScale.scale(25f), null);
 			buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 			this.initDefaults(noteRange);

@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.dialog.marker;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.marker.TGModifyMarkerAction;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
@@ -84,7 +85,7 @@ public class TGMarkerEditor {
 				}
 			}
 		});
-		groupLayout.set(this.measureSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
+		groupLayout.set(this.measureSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_CONTROL_WIDTH), null, null);
 
 		// Title
 		UILabel titleLabel = uiFactory.createLabel(group);
@@ -93,7 +94,7 @@ public class TGMarkerEditor {
 
 		this.titleText = uiFactory.createTextField(group);
 		this.titleText.setText(this.marker.getTitle());
-		groupLayout.set(this.titleText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
+		groupLayout.set(this.titleText, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_CONTROL_WIDTH), null, null);
 		this.titleText.setFocus();
 		this.titleText.selectAll();
 
@@ -132,7 +133,7 @@ public class TGMarkerEditor {
 			}
 		});
 		this.setButtonColor(uiFactory);
-		groupLayout.set(this.colorButton, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
+		groupLayout.set(this.colorButton, 3, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_CONTROL_WIDTH), null, null);
 
 		// ------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
@@ -149,7 +150,7 @@ public class TGMarkerEditor {
 				TGMarkerEditor.this.dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 
 		UIButton buttonCancel = uiFactory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -158,7 +159,7 @@ public class TGMarkerEditor {
 				TGMarkerEditor.this.dialog.dispose();
 			}
 		});
-		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonCancel, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 		TGDialogUtil.openDialog(this.dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);

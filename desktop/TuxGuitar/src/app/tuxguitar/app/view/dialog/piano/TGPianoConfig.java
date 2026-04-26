@@ -2,6 +2,7 @@ package app.tuxguitar.app.view.dialog.piano;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigDefaults;
+import app.tuxguitar.app.util.TGDisplayScale;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.app.ui.TGApplication;
@@ -166,7 +167,7 @@ public class TGPianoConfig {
 				applyChanges();
 			}
 		});
-		buttonsLayout.set(buttonDefaults, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonDefaults, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 
 		final UIButton buttonOK = factory.createButton(buttons);
 		buttonOK.setDefaultButton();
@@ -179,7 +180,7 @@ public class TGPianoConfig {
 				applyChanges();
 			}
 		});
-		buttonsLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonOK, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 
 		final UIButton buttonCancel = factory.createButton(buttons);
 		buttonCancel.setText(TuxGuitar.getProperty("cancel"));
@@ -188,7 +189,7 @@ public class TGPianoConfig {
 				window.dispose();
 			}
 		});
-		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, MINIMUM_BUTTON_WIDTH, MINIMUM_BUTTON_HEIGHT, null);
+		buttonsLayout.set(buttonCancel, 1, 3, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_BUTTON_WIDTH), TGDisplayScale.scale(MINIMUM_BUTTON_HEIGHT), null);
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 		TGDialogUtil.openDialog(window, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
@@ -211,7 +212,7 @@ public class TGPianoConfig {
 
 		ButtonColor button = new ButtonColor(window, parent, TuxGuitar.getProperty("choose"));
 		button.loadColor(new UIColorModel(rgb.getRed(), rgb.getGreen(), rgb.getBlue()));
-		layout.set(button.getControl(), row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, MINIMUM_CONTROL_WIDTH, null, null);
+		layout.set(button.getControl(), row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, TGDisplayScale.scale(MINIMUM_CONTROL_WIDTH), null, null);
 
 		return button.getValue();
 	}
