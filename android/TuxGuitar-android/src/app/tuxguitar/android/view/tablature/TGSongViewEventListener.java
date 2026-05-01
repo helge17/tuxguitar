@@ -9,6 +9,9 @@ import app.tuxguitar.editor.event.TGUpdateMeasuresEvent;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.util.TGAbstractContext;
+import app.tuxguitar.android.menu.controller.impl.fragment.TGMainMenu;
+import app.tuxguitar.android.activity.TGActivity;
+import app.tuxguitar.android.activity.TGActivityController;
 
 public class TGSongViewEventListener implements TGEventListener {
 
@@ -46,8 +49,26 @@ public class TGSongViewEventListener implements TGEventListener {
 		int type = ((Integer)event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
 		if( type == TGRedrawEvent.NORMAL ){
 			this.songView.redraw();
+			TGActivity activity = TGActivityController.getInstance(this.songView.getContext()).getActivity();
+			if (activity != null) {
+				activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						TGMainMenu.getInstance(TGSongViewEventListener.this.songView.getContext()).updateTempoDisplay();
+					}
+				});
+			}
 		}else if( type == TGRedrawEvent.PLAYING_NEW_BEAT ){
 			this.songView.redrawPlayingMode();
+			TGActivity activity = TGActivityController.getInstance(this.songView.getContext()).getActivity();
+			if (activity != null) {
+				activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						TGMainMenu.getInstance(TGSongViewEventListener.this.songView.getContext()).updateTempoDisplay();
+					}
+				});
+			}
 		}
 	}
 

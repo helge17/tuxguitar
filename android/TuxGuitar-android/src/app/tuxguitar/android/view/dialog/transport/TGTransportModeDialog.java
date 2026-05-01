@@ -21,6 +21,8 @@ import android.graphics.Color;
 
 import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.impl.caret.TGMoveToAction;
+import app.tuxguitar.android.menu.controller.TGMenuController;
+import app.tuxguitar.android.menu.controller.impl.fragment.TGMainMenu;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
@@ -109,7 +111,9 @@ public class TGTransportModeDialog extends TGModalFragment {
 				mode.setCustomPercentIncrement((int) customIncrement.getSelectedItem());
 				mode.setLoopSHeader(loopSHeader);
 				mode.setLoopEHeader(loopEHeader);
-
+				// update of the current Tempo on the menu
+				mode.reset();
+				TGMainMenu.getInstance(findContext()).updateTempoDisplay();
 				TGTransportModeDialog.this.close();
 
 				return true;
