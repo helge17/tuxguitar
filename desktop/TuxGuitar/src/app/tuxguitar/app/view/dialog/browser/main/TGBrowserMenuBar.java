@@ -128,15 +128,15 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 	}
 
 	public void loadProperties(){
-		this.menuFileItem.setText(TuxGuitar.getProperty("browser.menu.file"));
+		this.menuFileItem.setText(TuxGuitar.getProperty("file"));
 		this.menuCollectionItem.setText(TuxGuitar.getProperty("browser.menu.collection"));
 		this.menuGoItem.setText(TuxGuitar.getProperty("browser.menu.go"));
-		this.open.setText(TuxGuitar.getProperty("browser.open"));
-		this.exit.setText(TuxGuitar.getProperty("browser.exit"));
-		this.newItem.setText(TuxGuitar.getProperty("browser.collection.new"));
-		this.openItem.setText(TuxGuitar.getProperty("browser.collection.open"));
-		this.removeItem.setText(TuxGuitar.getProperty("browser.collection.remove"));
-		this.close.setText(TuxGuitar.getProperty("browser.collection.close"));
+		this.open.setText(TuxGuitar.getProperty("open"));
+		this.exit.setText(TuxGuitar.getProperty("exit"));
+		this.newItem.setText(TuxGuitar.getProperty("add"));
+		this.openItem.setText(TuxGuitar.getProperty("open"));
+		this.removeItem.setText(TuxGuitar.getProperty("remove"));
+		this.close.setText(TuxGuitar.getProperty("close"));
 		this.root.setText(TuxGuitar.getProperty("browser.go-root"));
 		this.back.setText(TuxGuitar.getProperty("browser.go-back"));
 		this.refresh.setText(TuxGuitar.getProperty("browser.refresh"));

@@ -136,7 +136,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	}
 
 	public void loadProperties(){
-		this.newBrowser.setToolTipText(TuxGuitar.getProperty("browser.collection.new"));
+		this.newBrowser.setToolTipText(TuxGuitar.getProperty("add"));
 		this.root.setToolTipText(TuxGuitar.getProperty("browser.go-root"));
 		this.back.setToolTipText(TuxGuitar.getProperty("browser.go-back"));
 		this.refresh.setToolTipText(TuxGuitar.getProperty("browser.refresh"));
