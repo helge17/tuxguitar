@@ -4,26 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:key="midi.settings"
-        android:title="@string/preferences_midi_category_title"
+        android:key="general.settings"
+        android:title="@string/preferences_general_title"
+        app:iconSpaceReserved="false">
+
+        <CheckBoxPreference
+            android:key="storage.use.collection.browser"
+            android:title="@string/preferences_general_use_collection_browser_title"
+            android:summary="@string/preferences_general_use_collection_browser_summary"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="sound.settings"
+        android:title="@string/preferences_sound_category_title"
         app:iconSpaceReserved="false">
 
         <ListPreference
             android:key="midi.output.port"
             android:title="@string/preferences_midi_output_port_title"
-            app:iconSpaceReserved="false"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="storage.settings"
-        android:title="@string/preferences_storage_category_title"
-        app:iconSpaceReserved="false">
-
-        <CheckBoxPreference
-            android:key="storage.use.saf.provider"
-            android:title="@string/preferences_storage_storage_use_saf_provider_title"
-            android:summary="@string/preferences_storage_storage_use_saf_provider_summary"
-            android:enabled="@bool/storage_saf_available"
             app:iconSpaceReserved="false"/>
     </PreferenceCategory>
 </PreferenceScreen>

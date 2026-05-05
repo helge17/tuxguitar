@@ -10,7 +10,7 @@ public class TGStorageProperties {
 	public static final String MODULE = "tuxguitar";
 	public static final String RESOURCE = "settings";
 
-	public static final String PROPERTY_SAF_PROVIDER = "storage.use.saf.provider";
+	public static final String PROPERTY_COLLECTION_BROWSER = "storage.use.collection.browser";
 
 	private TGContext context;
 	private TGProperties properties;
@@ -25,7 +25,7 @@ public class TGStorageProperties {
 		TGPropertiesManager.getInstance(this.context).readProperties(this.properties, RESOURCE, MODULE);
 	}
 
-	public boolean isUseSafProvider() {
-		return TGPropertiesUtil.getBooleanValue(this.properties, PROPERTY_SAF_PROVIDER);
+	public boolean isUseCollectionBrowser() {
+		return TGPropertiesUtil.getBooleanValue(this.properties, PROPERTY_COLLECTION_BROWSER);
 	}
 }
