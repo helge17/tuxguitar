@@ -59,6 +59,10 @@ public abstract class TGBrowserBar implements TGEventListener{
 		return collection;
 	}
 
+	public void addDemoCollection(){
+		getBrowser().addDemoCollection();
+	}
+
 	protected void openCollection(TGBrowserCollection collection){
 		getBrowser().setCollection(collection);
 		getBrowser().openCollection();

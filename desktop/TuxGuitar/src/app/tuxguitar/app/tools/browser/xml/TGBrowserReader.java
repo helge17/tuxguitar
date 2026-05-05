@@ -23,13 +23,11 @@ public class TGBrowserReader {
 	private static final String ATTRIBUTE_DATA = "data";
 
 	public void loadCollections(TGBrowserManager manager,File file){
-		if (file.exists()){
-			try {
-				Document doc = getDocument(file);
-				loadCollections(manager,doc.getFirstChild());
-			} catch (Throwable throwable) {
-				throwable.printStackTrace();
-			}
+		try {
+			Document doc = getDocument(file);
+			loadCollections(manager,doc.getFirstChild());
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
 		}
 	}
 

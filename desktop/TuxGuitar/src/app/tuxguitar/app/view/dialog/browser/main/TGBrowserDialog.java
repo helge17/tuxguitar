@@ -231,6 +231,13 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		this.elements = elements;
 	}
 
+	public void addDemoCollection(){
+		TGBrowserCollection collection = TGBrowserManager.getInstance(this.context).loadDemoCollection();
+		this.updateCollections(collection);
+		this.setCollection(collection);
+		this.openCollection();
+	}
+
 	public void removeCollection(TGBrowserCollection collection){
 		if(collection != null){
 			TGBrowserManager.getInstance(this.context).removeCollection(collection);

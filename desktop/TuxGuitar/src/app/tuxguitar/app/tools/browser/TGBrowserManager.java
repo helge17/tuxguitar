@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import app.tuxguitar.app.tools.browser.filesystem.TGBrowserFactoryImpl;
@@ -120,7 +121,12 @@ public class TGBrowserManager {
 	}
 
 	public void readCollections(){
-		new TGBrowserReader().loadCollections(this,new File(getCollectionsFileName()));
+		File file = new File(getCollectionsFileName());
+		if (file.exists()){
+			new TGBrowserReader().loadCollections(this,file);
+		} else {
+			loadDemoCollection();
+		}
 		this.changes = false;
 	}
 
@@ -129,6 +135,15 @@ public class TGBrowserManager {
 			new TGBrowserWriter().saveCollections(this,getCollectionsFileName());
 		}
 		this.changes = false;
+	}
+
+	public TGBrowserCollection loadDemoCollection(){
+		TGBrowserCollection collection = new TGBrowserCollection();
+		collection.setType("file.system");
+		collection.setData(new TGBrowserSettings());
+		collection.getData().setTitle(TuxGuitar.getProperty("browser.collection.demo-songs"));
+		collection.getData().setData(TGFileUtils.PATH_HOME + File.separator + System.getProperty("tuxguitar.share.path") + File.separator + "demo-songs");
+		return this.addCollection(collection);
 	}
 
 	private String getCollectionsFileName(){

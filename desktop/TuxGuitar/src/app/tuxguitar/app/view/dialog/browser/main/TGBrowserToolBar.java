@@ -24,6 +24,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	private UIToolActionItem back;
 	private UIToolActionItem refresh;
 	private UIToolMenuItem newBrowser;
+	private UIMenuActionItem demoSongs;
 	private UIToolCustomItem collectionsItem;
 	private UIDropDownSelect<TGBrowserCollection> collections;
 	private TGBrowserCollection currentCollection;
@@ -52,6 +53,16 @@ public class TGBrowserToolBar extends TGBrowserBar{
 				}
 			});
 		}
+
+		this.newBrowser.getMenu().createSeparator();
+
+		this.demoSongs = this.newBrowser.getMenu().createActionItem();
+		this.demoSongs.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
+		this.demoSongs.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				addDemoCollection();
+			}
+		});
 
 		this.toolBar.createSeparator();
 
@@ -137,6 +148,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 
 	public void loadProperties(){
 		this.newBrowser.setToolTipText(TuxGuitar.getProperty("add"));
+		this.demoSongs.setText(TuxGuitar.getProperty("browser.collection.demo-songs"));
 		this.root.setToolTipText(TuxGuitar.getProperty("browser.go-root"));
 		this.back.setToolTipText(TuxGuitar.getProperty("browser.go-back"));
 		this.refresh.setToolTipText(TuxGuitar.getProperty("browser.refresh"));
