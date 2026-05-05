@@ -2,6 +2,7 @@ package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 
+import app.tuxguitar.android.R;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.activity.TGActivityController;
 import app.tuxguitar.android.browser.model.TGBrowserFactory;

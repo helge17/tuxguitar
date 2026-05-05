@@ -212,7 +212,7 @@
 
 	<string name="browser_refresh">Atnaujinti</string>
 	<string name="browser_back">Atgal</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">Pradžia</string>
 	<string name="browser_settings">Nuostatos</string>
 	<string name="browser_save_label">Įrašyti</string>
 	<!-- <string name="browser_add_collection"></string> -->
@@ -222,7 +222,7 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Naršyklė</string>
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -231,6 +231,10 @@
 	<string name="browser_settings_fs_dlg_title">Kolekcija failų sistemoje</string>
 	<string name="browser_settings_fs_name_label">Pavadinimas:</string>
 	<string name="browser_settings_fs_path_label">Aplankas:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Pasirinkite numatytąjį aplanką savo kūriniams</string>
 
 	<string name="browser_settings_fs_error_title">Klaida</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->

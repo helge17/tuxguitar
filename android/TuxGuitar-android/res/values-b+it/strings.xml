@@ -204,7 +204,7 @@
 	<!-- =================================================================== -->
 
 	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
-	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+	<string name="storage_saf_assets_provider_title">Brani dimostrativi</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
@@ -222,7 +222,7 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Browser collezioni</string>
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -231,6 +231,10 @@
 	<string name="browser_settings_fs_dlg_title">Collezione file system</string>
 	<string name="browser_settings_fs_name_label">Nome:</string>
 	<string name="browser_settings_fs_path_label">Cartella:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Scegli la cartella della collezione</string>
 
 	<string name="browser_settings_fs_error_title">Errore</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.UriPermission;
 import android.net.Uri;
 
+import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import app.tuxguitar.android.action.impl.gui.TGStartActivityForResultAction;
 import app.tuxguitar.android.activity.TGActivity;

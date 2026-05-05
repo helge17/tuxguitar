@@ -212,7 +212,7 @@
 
 	<string name="browser_refresh">Обновить</string>
 	<string name="browser_back">Назад</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">Домой</string>
 	<string name="browser_settings">Настройки</string>
 	<string name="browser_save_label">Сохранить</string>
 	<!-- <string name="browser_add_collection"></string> -->
@@ -222,7 +222,7 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Браузер</string>
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -231,6 +231,10 @@
 	<string name="browser_settings_fs_dlg_title">Коллекция файловой системы</string>
 	<string name="browser_settings_fs_name_label">Имя:</string>
 	<string name="browser_settings_fs_path_label">Папка:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Укажите папку с коллекцией</string>
 
 	<string name="browser_settings_fs_error_title">Ошибка</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->

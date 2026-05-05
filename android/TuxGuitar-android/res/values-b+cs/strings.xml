@@ -232,6 +232,10 @@
 	<string name="browser_settings_fs_name_label">Jméno:</string>
 	<!-- <string name="browser_settings_fs_path_label"></string> -->
 
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<!-- <string name="browser_settings_saf_uri_request_msg"></string> -->
+
 	<string name="browser_settings_fs_error_title">Chyba</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
 	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->

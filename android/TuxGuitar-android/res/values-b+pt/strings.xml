@@ -160,7 +160,7 @@
 	<!-- <string name="action_change_bend"></string> -->
 	<!-- <string name="action_change_dead_note"></string> -->
 	<!-- <string name="action_change_slide"></string> -->
-	<string name="action_change_hammer">Hammer-on/Pull-off</string>
+	<!-- <string name="action_change_hammer"></string> -->
 	<string name="action_change_tremolo_bar">Trêmolo</string>
 	<!-- <string name="action_change_ghost_note"></string> -->
 	<string name="action_change_accentuated_note">Nota Acentuada</string>
@@ -168,7 +168,7 @@
 	<string name="action_change_harmonic">Harmonico</string>
 	<string name="action_change_grace">Apogiatura</string>
 	<string name="action_change_trill">Trilo</string>
-	<string name="action_change_tremolo_picking">Tremolo Picking</string>
+	<!-- <string name="action_change_tremolo_picking"></string> -->
 	<string name="action_change_palm_mute">Nota Abafada</string>
 	<string name="action_change_let_ring">Deixar Soar</string>
 	<!-- <string name="action_change_staccato"></string> -->
@@ -212,7 +212,7 @@
 
 	<string name="browser_refresh">Atualizar</string>
 	<string name="browser_back">Voltar</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">Início</string>
 	<string name="browser_settings">Configurações</string>
 	<string name="browser_save_label">Salvar</string>
 	<!-- <string name="browser_add_collection"></string> -->
@@ -222,7 +222,7 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Navegador</string>
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -231,6 +231,10 @@
 	<string name="browser_settings_fs_dlg_title">Arquivos de coleção</string>
 	<string name="browser_settings_fs_name_label">Nome:</string>
 	<string name="browser_settings_fs_path_label">Pasta:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Escolha a sua Pasta de Coleção</string>
 
 	<string name="browser_settings_fs_error_title">Erro</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
@@ -403,7 +407,7 @@
 	<string name="tremolo_bar_dlg_preset_return">Volta da Barra de Trêmolo</string>
 
 	<!-- Tremolo picking dialog -->
-	<string name="tremolo_picking_dlg_title">Tremolo Picking</string>
+	<!-- <string name="tremolo_picking_dlg_title"></string> -->
 	<string name="tremolo_picking_dlg_duration_8">Colcheia</string>
 	<string name="tremolo_picking_dlg_duration_16">Semicolcheia</string>
 	<string name="tremolo_picking_dlg_duration_32">Fusa</string>

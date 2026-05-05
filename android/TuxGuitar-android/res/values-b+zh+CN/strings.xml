@@ -212,7 +212,7 @@
 
 	<string name="browser_refresh">刷新</string>
 	<string name="browser_back">后退</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">主目录</string>
 	<string name="browser_settings">设置</string>
 	<string name="browser_save_label">保存</string>
 	<!-- <string name="browser_add_collection"></string> -->
@@ -222,7 +222,7 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">浏览常用文件夹</string>
 	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<!-- filesystem -->
@@ -231,6 +231,10 @@
 	<string name="browser_settings_fs_dlg_title">文件系统</string>
 	<string name="browser_settings_fs_name_label">名称:</string>
 	<string name="browser_settings_fs_path_label">文件夹:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">选择文件夹</string>
 
 	<string name="browser_settings_fs_error_title">错误</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->

@@ -232,6 +232,10 @@
 	<string name="browser_settings_fs_name_label">Naam:</string>
 	<string name="browser_settings_fs_path_label">Map:</string>
 
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Kies een Collectie Map</string>
+
 	<string name="browser_settings_fs_error_title">Fout</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
 	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->

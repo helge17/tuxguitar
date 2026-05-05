@@ -198,7 +198,7 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_saf_file_format_chooser_title">Select a File Format</string>
-	<string name="storage_saf_assets_provider_title">Demo Songs (Read Only)</string>
+	<string name="storage_saf_assets_provider_title">Demo Songs</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
@@ -206,7 +206,7 @@
 
 	<string name="browser_refresh">Refresh</string>
 	<string name="browser_back">Back</string>
-	<string name="browser_root">Root</string>
+	<string name="browser_root">Home</string>
 	<string name="browser_settings">Settings</string>
 	<string name="browser_save_label">Save</string>
 	<string name="browser_add_collection">Add Collection</string>
@@ -216,7 +216,7 @@
 	<string name="browser_element_icon_description">Browser Element</string>
 
 	<!-- collections -->
-	<string name="browser_collections_dlg_title">Collections</string>
+	<string name="browser_collections_dlg_title">Collection Browser</string>
 	<string name="browser_collections_dlg_remove_confirm_question">Are you sure you want to remove this collection?</string>
 
 	<!-- filesystem -->
@@ -225,6 +225,10 @@
 	<string name="browser_settings_fs_dlg_title">File System Collection</string>
 	<string name="browser_settings_fs_name_label">Name:</string>
 	<string name="browser_settings_fs_path_label">Folder:</string>
+
+	<string name="browser_settings_title_format">%1$s</string>
+	<string name="browser_settings_saf_error_uri_access">Couldn\'t get access to uri</string>
+	<string name="browser_settings_saf_uri_request_msg">Choose your collection folder</string>
 
 	<string name="browser_settings_fs_error_title">Error</string>
 	<string name="browser_settings_fs_error_empty_name">Name must not be empty</string>
