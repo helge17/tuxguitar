@@ -15,5 +15,5 @@ SET "JAVA_CLASSPATH=%JAVA_CLASSPATH%;dist\"
 ::MAINCLASS
 SET "TG_MAIN_CLASS=app.tuxguitar.app.TGMainSingleton"
 ::LAUNCH
-%JAVA% -cp %JAVA_CLASSPATH% -Dtuxguitar.home.path=%TG_DIR% -Djava.library.path=%JAVA_LIBRARY_PATH% %TG_MAIN_CLASS% %1 %2 %3 %4 %5 %6 %7 %8 %9 %10
+%JAVA% -cp %JAVA_CLASSPATH% -Dtuxguitar.home.path=%TG_DIR% -Dtuxguitar.share.path="share" -Djava.library.path=%JAVA_LIBRARY_PATH% %TG_MAIN_CLASS% %1 %2 %3 %4 %5 %6 %7 %8 %9 %10
 cd %TG_START%
