@@ -23,15 +23,16 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 	private UIMenuSubMenuItem menuFileItem;
 	private UIMenuSubMenuItem menuCollectionItem;
 	private UIMenuSubMenuItem menuGoItem;
+
 	private UIMenuActionItem open;
 	private UIMenuActionItem exit;
 
 	private UIMenuSubMenuItem newItem;
 	private UIMenuSubMenuItem openItem;
 	private UIMenuSubMenuItem removeItem;
-
 	private UIMenuActionItem demoSongs;
 	private UIMenuActionItem close;
+
 	private UIMenuActionItem root;
 	private UIMenuActionItem back;
 	private UIMenuActionItem refresh;
@@ -43,7 +44,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 	public void createMenuBar(UIWindow window){
 		this.menu = this.getBrowser().getUIFactory().createMenuBar(window);
 
-		//---File menu------------------------------------------------------
+		//---File menu-----------------------------------------------------------
 		this.menuFileItem = this.menu.createSubMenuItem();
 
 		this.open = this.menuFileItem.getMenu().createActionItem();
@@ -64,26 +65,18 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 			}
 		});
 
-		//---Collection menu------------------------------------------------------
+		//---Collection menu-----------------------------------------------------
 		this.menuCollectionItem = this.menu.createSubMenuItem();
 
+		//---New Collection------------------------------------------------------
 		this.newItem = this.menuCollectionItem.getMenu().createSubMenuItem();
 		this.newItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserNew());
-		this.updateTypes();
 
-		this.newItem.getMenu().createSeparator();
-
-		this.demoSongs = this.newItem.getMenu().createActionItem();
-		this.demoSongs.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
-		this.demoSongs.addSelectionListener(new UISelectionListener() {
-			public void onSelect(UISelectionEvent event) {
-				addDemoCollection();
-			}
-		});
-
+		//---Open Collection-----------------------------------------------------
 		this.openItem = this.menuCollectionItem.getMenu().createSubMenuItem();
 		this.openItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.FILE_OPEN));
 
+		//---Remove Collection---------------------------------------------------
 		this.removeItem = this.menuCollectionItem.getMenu().createSubMenuItem();
 		this.removeItem.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.LIST_REMOVE));
 
@@ -97,9 +90,10 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 			}
 		});
 
-		//---Go menu------------------------------------------------------
+		//---Go menu-------------------------------------------------------------
 		this.menuGoItem = this.menu.createSubMenuItem();
 
+		//---Root Folder---------------------------------------------------------
 		this.root = this.menuGoItem.getMenu().createActionItem();
 		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
 		this.root.addSelectionListener(new UISelectionListener() {
@@ -108,7 +102,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 			}
 		});
 
-		//---Back Folder------------------------------------------------------
+		//---Back Folder---------------------------------------------------------
 		this.back = this.menuGoItem.getMenu().createActionItem();
 		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
 		this.back.addSelectionListener(new UISelectionListener() {
@@ -138,20 +132,35 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		this.close.setEnabled(!getBrowser().getConnection().isLocked());
 	}
 
-	public void loadProperties(){
-		this.menuFileItem.setText(TuxGuitar.getProperty("file"));
-		this.menuCollectionItem.setText(TuxGuitar.getProperty("browser.menu.collection"));
-		this.menuGoItem.setText(TuxGuitar.getProperty("browser.menu.go"));
-		this.open.setText(TuxGuitar.getProperty("open"));
-		this.exit.setText(TuxGuitar.getProperty("exit"));
-		this.newItem.setText(TuxGuitar.getProperty("add"));
+	public void updateTypes() {
+		List<UIMenuItem> newItems = this.newItem.getMenu().getItems();
+		for(UIMenuItem uiMenuItem : newItems){
+			uiMenuItem.dispose();
+		}
+
+		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
+		while(bookTypes.hasNext()){
+			final TGBrowserFactory bookType = bookTypes.next();
+			UIMenuActionItem item = this.newItem.getMenu().createActionItem();
+			item.setText(bookType.getName());
+			item.setImage(bookType.getIcon());
+			item.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					newCollection( bookType.getType());
+				}
+			});
+		}
+
+		this.newItem.getMenu().createSeparator();
+
+		this.demoSongs = this.newItem.getMenu().createActionItem();
 		this.demoSongs.setText(TuxGuitar.getProperty("browser.collection.demo-songs"));
-		this.openItem.setText(TuxGuitar.getProperty("open"));
-		this.removeItem.setText(TuxGuitar.getProperty("remove"));
-		this.close.setText(TuxGuitar.getProperty("close"));
-		this.root.setText(TuxGuitar.getProperty("browser.go-root"));
-		this.back.setText(TuxGuitar.getProperty("browser.go-back"));
-		this.refresh.setText(TuxGuitar.getProperty("browser.refresh"));
+		this.demoSongs.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
+		this.demoSongs.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				addDemoCollection();
+			}
+		});
 	}
 
 	public void updateCollections(TGBrowserCollection selection){
@@ -190,24 +199,20 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		}
 	}
 
-	public void updateTypes() {
-		List<UIMenuItem> newItems = this.newItem.getMenu().getItems();
-		for(UIMenuItem uiMenuItem : newItems){
-			uiMenuItem.dispose();
-		}
-
-		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
-		while(bookTypes.hasNext()){
-			final TGBrowserFactory bookType = bookTypes.next();
-			UIMenuActionItem item = this.newItem.getMenu().createActionItem();
-			item.setText(bookType.getName());
-			item.setImage(bookType.getIcon());
-			item.addSelectionListener(new UISelectionListener() {
-				public void onSelect(UISelectionEvent event) {
-					newCollection( bookType.getType());
-				}
-			});
-		}
+	public void loadProperties(){
+		this.menuFileItem.setText(TuxGuitar.getProperty("file"));
+		this.menuCollectionItem.setText(TuxGuitar.getProperty("browser.menu.collection"));
+		this.menuGoItem.setText(TuxGuitar.getProperty("browser.menu.go"));
+		this.open.setText(TuxGuitar.getProperty("open"));
+		this.exit.setText(TuxGuitar.getProperty("exit"));
+		this.newItem.setText(TuxGuitar.getProperty("add"));
+		this.updateTypes();
+		this.openItem.setText(TuxGuitar.getProperty("open"));
+		this.removeItem.setText(TuxGuitar.getProperty("remove"));
+		this.close.setText(TuxGuitar.getProperty("close"));
+		this.root.setText(TuxGuitar.getProperty("browser.go-root"));
+		this.back.setText(TuxGuitar.getProperty("browser.go-back"));
+		this.refresh.setText(TuxGuitar.getProperty("browser.refresh"));
 	}
 
 	public void reload(UIWindow window){
