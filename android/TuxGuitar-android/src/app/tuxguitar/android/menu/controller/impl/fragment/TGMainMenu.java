@@ -67,6 +67,10 @@ public class TGMainMenu implements TGMenuController {
 		menu.findItem(R.id.action_menu_effects).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
 		menu.findItem(R.id.action_menu_transport).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGTransportMenu(getActivity())));
 		menu.findItem(R.id.action_menu_settings).setOnMenuItemClickListener(createFragmentActionProcessor(new TGPreferencesFragmentController()));
+		this.initializeTempoDisplay(menu);
+	}
+
+	private void initializeTempoDisplay(Menu menu) {
 		this.tempoDisplayItem = menu.findItem(R.id.action_tempo_display);
 		try {
 			this.updateTempoDisplay();
