@@ -2,6 +2,7 @@ package app.tuxguitar.app.tools.browser.ftp;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -206,7 +207,7 @@ class TGBrowserDataDialog{
 			public void onSelect(UISelectionEvent event) {
 				String name = nameText.getText();
 				String host = hostText.getText();
-				String path = pathText.getText();
+				String path = Paths.get(pathText.getText()).normalize().toString().replace("\\", "/");
 				String user = userText.getText();
 				String password = passwordText.getText();
 				String proxyHost = proxyHostText.getText();

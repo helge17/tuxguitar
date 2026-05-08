@@ -1,6 +1,7 @@
 package app.tuxguitar.app.tools.browser.filesystem;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
@@ -97,7 +98,7 @@ public class TGBrowserDataDialog {
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				String selectedTitle = titleValue.getText();
-				String selectedPath = pathValue.getText();
+				String selectedPath = Paths.get(pathValue.getText()).normalize().toString();
 				if(!isValidPath(selectedPath)){
 					TGMessageDialogUtil.errorMessage(TGBrowserDataDialog.this.context, dialog, TuxGuitar.getProperty("browser.collection.fs.invalid-path"));
 					return;
