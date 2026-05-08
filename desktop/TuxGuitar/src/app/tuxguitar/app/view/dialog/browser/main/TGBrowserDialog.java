@@ -96,7 +96,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 		return this.dialog;
 	}
 
-	public void exit(){
+	private void exit(){
 		this.closeCollection(true);
 
 		TGBrowserManager.getInstance(this.context).writeCollections();
