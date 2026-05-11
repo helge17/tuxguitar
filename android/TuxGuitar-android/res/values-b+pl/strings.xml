@@ -223,7 +223,6 @@
 
 	<!-- collections -->
 	<string name="browser_collections_dlg_title">Przeglądarka kolekcji</string>
-	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<string name="browser_settings_fs_dlg_title">Kolekcja w systemie plików</string>
 	<string name="browser_settings_fs_name_label">Nazwa:</string>

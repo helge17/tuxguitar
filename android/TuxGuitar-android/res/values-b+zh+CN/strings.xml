@@ -223,7 +223,6 @@
 
 	<!-- collections -->
 	<string name="browser_collections_dlg_title">浏览常用文件夹</string>
-	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<string name="browser_settings_fs_dlg_title">文件系统</string>
 	<string name="browser_settings_fs_name_label">名称:</string>

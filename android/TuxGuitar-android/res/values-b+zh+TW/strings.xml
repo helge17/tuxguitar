@@ -223,7 +223,6 @@
 
 	<!-- collections -->
 	<string name="browser_collections_dlg_title">瀏覽</string>
-	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
 
 	<string name="browser_settings_fs_dlg_title">檔案總管的曲集</string>
 	<string name="browser_settings_fs_name_label">名稱:</string>

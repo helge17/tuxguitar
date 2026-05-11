@@ -217,7 +217,6 @@
 
 	<!-- collections -->
 	<string name="browser_collections_dlg_title">Collection Browser</string>
-	<string name="browser_collections_dlg_remove_confirm_question">Are you sure you want to remove this collection?</string>
 
 	<string name="browser_settings_fs_dlg_title">File System Collection</string>
 	<string name="browser_settings_fs_name_label">Name:</string>
