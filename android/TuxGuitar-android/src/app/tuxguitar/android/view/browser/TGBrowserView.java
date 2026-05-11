@@ -21,11 +21,9 @@ import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.TGBrowserEmptyCallBack;
 import app.tuxguitar.android.browser.TGBrowserManager;
 import app.tuxguitar.android.browser.assets.TGAssetBrowserFactory;
-import app.tuxguitar.android.browser.filesystem.TGFsBrowserFactory;
 import app.tuxguitar.android.browser.model.TGBrowserElement;
 import app.tuxguitar.android.browser.model.TGBrowserException;
 import app.tuxguitar.android.browser.model.TGBrowserSession;
-import app.tuxguitar.android.view.browser.filesystem.TGBrowserSettingsFactoryImpl;
 import app.tuxguitar.android.view.util.TGSelectableAdapter;
 import app.tuxguitar.android.view.util.TGSelectableItem;
 import app.tuxguitar.editor.TGEditorManager;
@@ -190,7 +188,6 @@ public class TGBrowserView extends RelativeLayout {
 		TGContext context = this.findContext();
 		TGBrowserManager browserManager = TGBrowserManager.getInstance(context);
 		browserManager.addFactory(new TGAssetBrowserFactory(context));
-		browserManager.addFactory(new TGFsBrowserFactory(context, new TGBrowserSettingsFactoryImpl(context, findActivity())));
 		browserManager.restoreCollections();
 	}
 
