@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=NSM session management plugin
+plugin.description=Integrates TuxGuitar into a Non Session Manager (NSM) session.\nActivates automatically when the NSM_URL environment variable is set.
+plugin.author=TuxGuitar contributors
+plugin.version=1.0
