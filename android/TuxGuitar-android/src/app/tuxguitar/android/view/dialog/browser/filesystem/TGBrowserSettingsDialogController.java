@@ -1,7 +1,7 @@
 package app.tuxguitar.android.view.dialog.browser.filesystem;
 
-import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragmentController;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
 
 public class TGBrowserSettingsDialogController extends TGModalFragmentController<TGBrowserSettingsDialog> {
 

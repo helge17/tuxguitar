@@ -1,5 +1,7 @@
 package app.tuxguitar.android.browser.model;
 
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;

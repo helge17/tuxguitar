@@ -5,9 +5,9 @@ import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
@@ -177,9 +177,9 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 		Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getBrowser().getContext()).getCollections();
 		while(it.hasNext()){
 			final TGBrowserCollection collection = it.next();
-			if( collection.getData() != null) {
+			if( collection.getSettings() != null) {
 				UIMenuActionItem openItem = this.openItem.getMenu().createActionItem();
-				openItem.setText(collection.getData().getTitle());
+				openItem.setText(collection.getSettings().getTitle());
 				openItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
 				openItem.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {
@@ -188,7 +188,7 @@ public class TGBrowserMenuBar extends TGBrowserBar{
 				});
 
 				UIMenuActionItem removeItem = this.removeItem.getMenu().createActionItem();
-				removeItem.setText(collection.getData().getTitle());
+				removeItem.setText(collection.getSettings().getTitle());
 				removeItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
 				removeItem.addSelectionListener(new UISelectionListener() {
 					public void onSelect(UISelectionEvent event) {

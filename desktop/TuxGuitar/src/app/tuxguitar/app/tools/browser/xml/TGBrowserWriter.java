@@ -19,8 +19,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -61,11 +62,11 @@ public class TGBrowserWriter {
 
 			//title attribute
 			Attr titleAttr = document.createAttribute(ATTRIBUTE_TITLE);
-			titleAttr.setNodeValue(collection.getData().getTitle());
+			titleAttr.setNodeValue(collection.getSettings().getTitle());
 
 			//data attribute
 			Attr dataAttr = document.createAttribute(ATTRIBUTE_DATA);
-			dataAttr.setNodeValue(collection.getData().getData());
+			dataAttr.setNodeValue(collection.getSettings().getData());
 
 			node.getAttributes().setNamedItem(typeAttr);
 			node.getAttributes().setNamedItem(titleAttr);

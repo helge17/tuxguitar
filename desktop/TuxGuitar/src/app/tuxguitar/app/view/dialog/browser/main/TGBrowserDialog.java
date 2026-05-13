@@ -14,13 +14,11 @@ import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.system.icons.TGSkinEvent;
 import app.tuxguitar.app.system.icons.TGSkinManager;
 import app.tuxguitar.app.system.language.TGLanguageEvent;
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserConnection;
 import app.tuxguitar.app.tools.browser.TGBrowserConnectionHandler;
 import app.tuxguitar.app.tools.browser.TGBrowserFactoryListener;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowser;
-import app.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
@@ -34,6 +32,8 @@ import app.tuxguitar.editor.action.file.TGReadSongAction;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
@@ -265,7 +265,7 @@ public class TGBrowserDialog implements TGBrowserFactoryListener, TGBrowserConne
 					public void handleError(Throwable throwable) {
 						TGBrowserDialog.this.notifyError(throwable);
 					}
-				}, getCollection().getData());
+				}, getCollection().getSettings());
 			} else {
 				this.closeCollection();
 			}

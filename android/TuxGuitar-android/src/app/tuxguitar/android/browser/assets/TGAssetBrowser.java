@@ -1,9 +1,9 @@
 package app.tuxguitar.android.browser.assets;
 
 import app.tuxguitar.android.browser.model.TGBrowser;
-import app.tuxguitar.android.browser.model.TGBrowserCallBack;
 import app.tuxguitar.android.browser.model.TGBrowserElement;
 import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.util.TGContext;
 
 import java.io.InputStream;

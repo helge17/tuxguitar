@@ -1,4 +1,4 @@
-package app.tuxguitar.android.browser.model;
+package app.tuxguitar.tools.browser.base;
 
 public class TGBrowserSettings {
 

@@ -12,10 +12,10 @@ import android.widget.TextView;
 import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import app.tuxguitar.android.browser.filesystem.TGFsBrowserSettings;
-import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import app.tuxguitar.android.view.dialog.message.TGMessageDialogController;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
 
 import java.io.File;
 

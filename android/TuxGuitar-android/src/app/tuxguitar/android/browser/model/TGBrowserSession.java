@@ -1,6 +1,6 @@
 package app.tuxguitar.android.browser.model;
 
-import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.io.base.TGFileFormat;
 
 import java.util.List;

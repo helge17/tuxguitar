@@ -6,12 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import app.tuxguitar.app.tools.browser.filesystem.TGBrowserFactoryImpl;
 import app.tuxguitar.app.tools.browser.xml.TGBrowserReader;
 import app.tuxguitar.app.tools.browser.xml.TGBrowserWriter;
 import app.tuxguitar.app.util.TGFileUtils;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonFactory;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
@@ -91,8 +92,8 @@ public class TGBrowserManager {
 	}
 
 	public TGBrowserCollection addCollection(TGBrowserCollection collection){
-		if( collection.getData() != null ){
-			TGBrowserCollection existent = getCollection(collection.getType(), collection.getData());
+		if( collection.getSettings() != null ){
+			TGBrowserCollection existent = getCollection(collection.getType(), collection.getSettings());
 			if( existent != null ){
 				return existent;
 			}
@@ -106,7 +107,7 @@ public class TGBrowserManager {
 		Iterator<TGBrowserCollection> it = this.getCollections();
 		while( it.hasNext() ){
 			TGBrowserCollection collection = it.next();
-			if( collection.getType().equals(type) && collection.getData().getTitle().equals(data.getTitle()) && collection.getData().getData().equals(data.getData()) ){
+			if( collection.getType().equals(type) && collection.getSettings().getTitle().equals(data.getTitle()) && collection.getSettings().getData().equals(data.getData()) ){
 				return collection;
 			}
 		}
@@ -140,9 +141,9 @@ public class TGBrowserManager {
 	public TGBrowserCollection loadDemoCollection(){
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType("file.system");
-		collection.setData(new TGBrowserSettings());
-		collection.getData().setTitle(TuxGuitar.getProperty("browser.collection.demo-songs"));
-		collection.getData().setData(TGFileUtils.PATH_HOME + File.separator + System.getProperty("tuxguitar.share.path") + File.separator + "demo-songs");
+		collection.setSettings(new TGBrowserSettings());
+		collection.getSettings().setTitle(TuxGuitar.getProperty("browser.collection.demo-songs"));
+		collection.getSettings().setData(TGFileUtils.PATH_HOME + File.separator + System.getProperty("tuxguitar.share.path") + File.separator + "demo-songs");
 		return this.addCollection(collection);
 	}
 

@@ -1,5 +1,7 @@
 package app.tuxguitar.app.tools.browser.base;
 
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
+
 import java.io.InputStream;
 import java.util.List;
 

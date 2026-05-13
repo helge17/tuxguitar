@@ -17,7 +17,6 @@ import app.tuxguitar.android.action.TGActionAdapterManager;
 import app.tuxguitar.android.action.impl.browser.TGBrowserRefreshAction;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.application.TGApplicationUtil;
-import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.TGBrowserEmptyCallBack;
 import app.tuxguitar.android.browser.TGBrowserManager;
 import app.tuxguitar.android.browser.assets.TGAssetBrowserFactory;
@@ -31,6 +30,7 @@ import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatManager;
 import app.tuxguitar.io.base.TGFileFormatUtils;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.error.TGErrorManager;
 

@@ -4,8 +4,8 @@ import app.tuxguitar.android.browser.TGBrowserManager;
 import app.tuxguitar.android.browser.model.TGBrowserException;
 import app.tuxguitar.android.browser.model.TGBrowserFactory;
 import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
-import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.TGContext;
 
 public class TGAssetBrowserFactory implements TGBrowserFactory{

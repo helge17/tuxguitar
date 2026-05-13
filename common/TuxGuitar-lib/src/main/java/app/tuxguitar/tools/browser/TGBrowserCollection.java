@@ -1,6 +1,6 @@
-package app.tuxguitar.app.tools.browser;
+package app.tuxguitar.tools.browser;
 
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 
 public class TGBrowserCollection {
 
@@ -11,11 +11,11 @@ public class TGBrowserCollection {
 		super();
 	}
 
-	public TGBrowserSettings getData() {
+	public TGBrowserSettings getSettings() {
 		return this.data;
 	}
 
-	public void setData(TGBrowserSettings data) {
+	public void setSettings(TGBrowserSettings data) {
 		this.data = data;
 	}
 

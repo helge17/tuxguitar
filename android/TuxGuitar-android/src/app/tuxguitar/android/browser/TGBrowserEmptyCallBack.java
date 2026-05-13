@@ -1,6 +1,6 @@
 package app.tuxguitar.android.browser;
 
-import app.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 
 public class TGBrowserEmptyCallBack<T> implements TGBrowserCallBack<T> {
 

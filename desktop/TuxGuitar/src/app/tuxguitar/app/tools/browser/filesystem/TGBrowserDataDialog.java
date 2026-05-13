@@ -5,12 +5,12 @@ import java.nio.file.Paths;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.icons.TGIconManager;
-import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.chooser.UIDirectoryChooser;
 import app.tuxguitar.ui.chooser.UIDirectoryChooserHandler;

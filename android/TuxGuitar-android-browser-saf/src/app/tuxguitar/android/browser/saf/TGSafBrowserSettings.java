@@ -2,7 +2,7 @@ package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 
 public class TGSafBrowserSettings {
 

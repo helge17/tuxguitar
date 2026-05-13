@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
@@ -138,8 +138,8 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getBrowser().getContext()).getCollections();
 		while(it.hasNext()){
 			TGBrowserCollection collection = it.next();
-			if( collection.getData() != null ) {
-				this.collections.addItem(new UISelectItem<TGBrowserCollection>(collection.getData().getTitle(), collection));
+			if( collection.getSettings() != null ) {
+				this.collections.addItem(new UISelectItem<TGBrowserCollection>(collection.getSettings().getTitle(), collection));
 			}
 		}
 

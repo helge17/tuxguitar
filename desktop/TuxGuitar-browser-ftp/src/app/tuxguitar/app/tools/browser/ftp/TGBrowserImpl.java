@@ -11,8 +11,8 @@ import java.util.Properties;
 
 import app.tuxguitar.app.tools.browser.TGBrowserException;
 import app.tuxguitar.app.tools.browser.base.TGBrowser;
-import app.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 
 public class TGBrowserImpl implements TGBrowser {
 

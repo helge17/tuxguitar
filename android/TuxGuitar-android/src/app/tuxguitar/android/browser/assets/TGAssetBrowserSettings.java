@@ -1,6 +1,6 @@
 package app.tuxguitar.android.browser.assets;
 
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 
 public class TGAssetBrowserSettings  {
 

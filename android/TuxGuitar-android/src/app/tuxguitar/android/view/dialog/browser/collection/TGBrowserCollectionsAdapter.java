@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.tuxguitar.android.R;
-import app.tuxguitar.android.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 
 import android.content.Context;
 import android.view.LayoutInflater;

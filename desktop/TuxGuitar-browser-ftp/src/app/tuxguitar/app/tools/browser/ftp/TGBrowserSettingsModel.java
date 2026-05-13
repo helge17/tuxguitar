@@ -1,6 +1,6 @@
 package app.tuxguitar.app.tools.browser.ftp;
 
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.base64.Base64Decoder;
 import app.tuxguitar.util.base64.Base64Encoder;
 

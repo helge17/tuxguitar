@@ -1,11 +1,11 @@
 package app.tuxguitar.app.view.dialog.browser.main;
 
 import app.tuxguitar.app.system.language.TGLanguageEvent;
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
-import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
 
@@ -51,7 +51,7 @@ public abstract class TGBrowserBar implements TGEventListener{
 	protected TGBrowserCollection addCollection(TGBrowserFactory factory, TGBrowserSettings data, boolean reload){
 		TGBrowserCollection collection = new TGBrowserCollection();
 		collection.setType(factory.getType());
-		collection.setData(data);
+		collection.setSettings(data);
 		collection = TGBrowserManager.getInstance(getBrowser().getContext()).addCollection(collection);
 		if( reload ){
 			getBrowser().updateCollections(collection);

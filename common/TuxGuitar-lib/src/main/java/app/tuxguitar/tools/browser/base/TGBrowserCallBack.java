@@ -1,4 +1,4 @@
-package app.tuxguitar.android.browser.model;
+package app.tuxguitar.tools.browser.base;
 
 import app.tuxguitar.util.error.TGErrorHandler;
 

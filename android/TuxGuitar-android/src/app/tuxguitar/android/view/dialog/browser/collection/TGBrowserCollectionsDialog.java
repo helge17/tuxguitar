@@ -10,13 +10,13 @@ import android.widget.Spinner;
 
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.android.R;
-import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.TGBrowserManager;
 import app.tuxguitar.android.browser.model.TGBrowserFactory;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import app.tuxguitar.android.view.util.TGSelectableItem;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
