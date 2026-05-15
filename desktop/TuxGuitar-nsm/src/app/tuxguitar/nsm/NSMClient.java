@@ -53,6 +53,7 @@ public class NSMClient implements TGActionInterceptor {
 
 	private Thread receiveThread;
 	private volatile boolean running;
+	private volatile boolean quitting;
 
 	// Unblocks earlyInit() as soon as /nsm/client/open is received.
 	private final CountDownLatch openLatch = new CountDownLatch(1);
@@ -67,6 +68,7 @@ public class NSMClient implements TGActionInterceptor {
 		this.appReady = false;
 		this.pendingFilePath = null;
 		this.sessionFilePath = null;
+		this.quitting = false;
 
 		// Parse "osc.udp://host:port[/]"
 		String spec = nsmUrl.trim();
@@ -101,6 +103,7 @@ public class NSMClient implements TGActionInterceptor {
 		this.receiveThread.start();
 
 		sendAnnounce();
+		registerSigtermHandler();
 	}
 
 	// Block until /nsm/client/open is received or the timeout expires.
@@ -128,6 +131,39 @@ public class NSMClient implements TGActionInterceptor {
 
 	public void activateInterceptor() {
 		TGActionManager.getInstance(this.context).addInterceptor(this);
+	}
+
+	// RaySession (and many other NSM session managers) terminate clients via
+	// SIGTERM rather than /nsm/client/quit.  This handler intercepts SIGTERM
+	// and routes it through TuxGuitar's normal exit path so the "save before
+	// exit?" dialog appears when there are unsaved changes.
+	//
+	// sun.misc.Signal is a private JDK API; we access it via reflection so the
+	// plugin compiles without --add-exports flags.  If the class is absent or
+	// the signal cannot be registered, we log a warning and fall through to
+	// the JVM's default SIGTERM behaviour.
+	private void registerSigtermHandler() {
+		try {
+			Class<?> signalClass  = Class.forName("sun.misc.Signal");
+			Class<?> handlerClass = Class.forName("sun.misc.SignalHandler");
+			java.lang.reflect.Method handleMethod =
+					signalClass.getMethod("handle", signalClass, handlerClass);
+			Object termSignal = signalClass.getConstructor(String.class).newInstance("TERM");
+			Object handler = java.lang.reflect.Proxy.newProxyInstance(
+					NSMClient.class.getClassLoader(),
+					new Class<?>[]{ handlerClass },
+					(proxy, method, args) -> {
+						if ("handle".equals(method.getName())) {
+							System.err.println("[NSM] SIGTERM received — dispatching quit");
+							handleQuit();
+						}
+						return null;
+					});
+			handleMethod.invoke(null, termSignal, handler);
+			System.out.println("[NSM] SIGTERM handler registered");
+		} catch (Throwable t) {
+			System.err.println("[NSM] could not register SIGTERM handler: " + t);
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -305,6 +341,10 @@ public class NSMClient implements TGActionInterceptor {
 	// -------------------------------------------------------------------------
 
 	private void handleQuit() {
+		if (this.quitting) {
+			return;
+		}
+		this.quitting = true;
 		// TGExitAction calls TGWindow.getWindow().close(), which fires the
 		// existing window-close listener.  That listener dispatches TGDisposeAction
 		// (SAVE_BEFORE), so the "save before exit?" dialog appears when there are
