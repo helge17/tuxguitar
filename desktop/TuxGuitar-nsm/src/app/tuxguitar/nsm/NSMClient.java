@@ -324,6 +324,10 @@ public class NSMClient implements TGActionInterceptor {
 		proc.setOnFinish(new Runnable() {
 			public void run() {
 				System.out.println("[NSM] save onFinish — sending reply");
+				// Re-install our sigaction just before replying: libjack overrides it
+				// when FluidSynth connects to JACK, but SIGTERM always arrives after
+				// the save reply, so reinstalling here guarantees we intercept it.
+				try { NSMSignal.reinstallSigtermHandler(); } catch (UnsatisfiedLinkError ignored) {}
 				sendReply("/nsm/client/save", "saved");
 				System.out.println("[NSM] save reply sent");
 			}

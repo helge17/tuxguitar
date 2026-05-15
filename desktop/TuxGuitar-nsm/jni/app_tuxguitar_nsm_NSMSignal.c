@@ -16,6 +16,31 @@ static void sigterm_handler(int sig) {
     }
 }
 
+static int install_sigterm_handler(void) {
+    struct sigaction sa;
+    memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = sigterm_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    return sigaction(SIGTERM, &sa, NULL);
+}
+
+/*
+ * Class:     app_tuxguitar_nsm_NSMSignal
+ * Method:    reinstallSigtermHandler
+ * Signature: ()V
+ *
+ * Re-installs our sigterm_handler without creating a new pipe.  Call this
+ * just before sending any NSM reply so our handler is the last one installed
+ * (libjack overrides it when FluidSynth connects to JACK).
+ */
+JNIEXPORT void JNICALL
+Java_app_tuxguitar_nsm_NSMSignal_reinstallSigtermHandler(JNIEnv *env, jclass cls) {
+    if (sigterm_pipe_write != -1) {
+        install_sigterm_handler();
+    }
+}
+
 /*
  * Class:     app_tuxguitar_nsm_NSMSignal
  * Method:    registerSigtermPipe
@@ -33,12 +58,7 @@ Java_app_tuxguitar_nsm_NSMSignal_registerSigtermPipe(JNIEnv *env, jclass cls) {
     }
     sigterm_pipe_write = fds[1];
 
-    struct sigaction sa;
-    memset(&sa, 0, sizeof(sa));
-    sa.sa_handler = sigterm_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    if (sigaction(SIGTERM, &sa, NULL) != 0) {
+    if (install_sigterm_handler() != 0) {
         close(fds[0]);
         close(fds[1]);
         sigterm_pipe_write = -1;

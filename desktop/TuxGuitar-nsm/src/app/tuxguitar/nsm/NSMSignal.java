@@ -21,6 +21,9 @@ public class NSMSignal {
     /** Creates a pipe, installs the C SIGTERM handler, returns the read-end fd. Returns -1 on failure. */
     public static native int registerSigtermPipe();
 
+    /** Re-installs the C SIGTERM handler without creating a new pipe. Safe to call multiple times. */
+    public static native void reinstallSigtermHandler();
+
     /** Blocks until SIGTERM fires (pipe readable). Returns 0 on success, -1 on error. */
     public static native int waitSigterm(int readFd);
 }
