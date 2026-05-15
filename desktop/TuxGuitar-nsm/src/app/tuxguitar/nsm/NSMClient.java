@@ -209,6 +209,7 @@ public class NSMClient implements TGActionInterceptor {
 
 	private void handleMessage(OSCMessage msg) {
 		String addr = msg.getAddress();
+		System.out.println("[NSM] received: " + addr);
 		if ("/nsm/client/open".equals(addr)) {
 			if (msg.argCount() >= 1) {
 				handleOpen(msg.getStringArg(0));
@@ -216,6 +217,7 @@ public class NSMClient implements TGActionInterceptor {
 		} else if ("/nsm/client/save".equals(addr)) {
 			handleSave();
 		} else if ("/nsm/client/quit".equals(addr)) {
+			System.out.println("[NSM] quit requested — dispatching TGExitAction");
 			handleQuit();
 		} else if ("/reply".equals(addr) && msg.argCount() >= 2
 				&& "/nsm/server/announce".equals(msg.getStringArg(0))) {
@@ -308,7 +310,14 @@ public class NSMClient implements TGActionInterceptor {
 		// (SAVE_BEFORE), so the "save before exit?" dialog appears when there are
 		// unsaved changes — exactly the same path as File > Exit in the menu.
 		TGActionProcessor proc = new TGActionProcessor(this.context, TGExitAction.NAME);
+		proc.setErrorHandler(new TGErrorHandler() {
+			public void handleError(Throwable e) {
+				System.err.println("[NSM] quit action failed: " + e);
+				e.printStackTrace();
+			}
+		});
 		proc.process();
+		System.out.println("[NSM] quit action dispatched");
 	}
 
 	// -------------------------------------------------------------------------
