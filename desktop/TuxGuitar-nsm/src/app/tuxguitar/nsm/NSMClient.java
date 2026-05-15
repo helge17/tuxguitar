@@ -143,19 +143,47 @@ public class NSMClient implements TGActionInterceptor {
 	// the signal cannot be registered, we log a warning and fall through to
 	// the JVM's default SIGTERM behaviour.
 	private void registerSigtermHandler() {
+		// JVM shutdown hook: fires if System.exit() is called (e.g. JVM default SIGTERM
+		// handler) — lets us know whether the JVM is receiving SIGTERM at all.
+		Runtime.getRuntime().addShutdownHook(new Thread(() ->
+				System.err.println("[NSM] JVM shutdown hook triggered"),
+				"NSM-shutdown-diagnostic"));
+
 		try {
 			Class<?> signalClass  = Class.forName("sun.misc.Signal");
 			Class<?> handlerClass = Class.forName("sun.misc.SignalHandler");
 			java.lang.reflect.Method handleMethod =
 					signalClass.getMethod("handle", signalClass, handlerClass);
 			Object termSignal = signalClass.getConstructor(String.class).newInstance("TERM");
+			// Use system class loader so the proxy can always reach sun.misc.SignalHandler
+			// regardless of which plugin class loader loaded NSMClient.
+			ClassLoader proxyLoader = ClassLoader.getSystemClassLoader();
 			Object handler = java.lang.reflect.Proxy.newProxyInstance(
-					NSMClient.class.getClassLoader(),
+					proxyLoader,
 					new Class<?>[]{ handlerClass },
 					(proxy, method, args) -> {
-						if ("handle".equals(method.getName())) {
-							System.err.println("[NSM] SIGTERM received — dispatching quit");
-							handleQuit();
+						try {
+							if ("handle".equals(method.getName())) {
+								System.err.println("[NSM] SIGTERM received — dispatching quit");
+								handleQuit();
+								// Hard fallback: if the normal exit path is stuck, force the
+								// JVM to terminate after 15 seconds.  Runtime.halt() bypasses
+								// all shutdown hooks and non-daemon threads.
+								Thread watchdog = new Thread(() -> {
+									try {
+										Thread.sleep(15000);
+										System.err.println("[NSM] watchdog: normal exit timed out — halting JVM");
+										Runtime.getRuntime().halt(0);
+									} catch (InterruptedException ignored) {
+										// TuxGuitar exited normally; daemon thread is killed.
+									}
+								}, "NSM-exit-watchdog");
+								watchdog.setDaemon(true);
+								watchdog.start();
+							}
+						} catch (Throwable t) {
+							System.err.println("[NSM] SIGTERM handler error: " + t);
+							t.printStackTrace(System.err);
 						}
 						return null;
 					});
@@ -309,14 +337,17 @@ public class NSMClient implements TGActionInterceptor {
 	// -------------------------------------------------------------------------
 
 	private void handleSave() {
+		System.out.println("[NSM] save requested");
 		final String filePath;
 		synchronized (this) {
 			filePath = this.sessionFilePath;
 		}
 		if (filePath == null) {
+			System.err.println("[NSM] save failed: no session file path");
 			sendError("/nsm/client/save", 1, "no session file path");
 			return;
 		}
+		System.out.println("[NSM] saving to: " + filePath);
 		File file = new File(filePath);
 		if (file.getParentFile() != null) {
 			file.getParentFile().mkdirs();
@@ -325,15 +356,20 @@ public class NSMClient implements TGActionInterceptor {
 		proc.setAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME, filePath);
 		proc.setOnFinish(new Runnable() {
 			public void run() {
+				System.out.println("[NSM] save onFinish — sending reply");
 				sendReply("/nsm/client/save", "saved");
+				System.out.println("[NSM] save reply sent");
 			}
 		});
 		proc.setErrorHandler(new TGErrorHandler() {
 			public void handleError(Throwable e) {
+				System.err.println("[NSM] save error: " + e);
+				e.printStackTrace(System.err);
 				sendError("/nsm/client/save", 1, e.getMessage() != null ? e.getMessage() : "save error");
 			}
 		});
 		proc.process();
+		System.out.println("[NSM] save action dispatched");
 	}
 
 	// -------------------------------------------------------------------------
