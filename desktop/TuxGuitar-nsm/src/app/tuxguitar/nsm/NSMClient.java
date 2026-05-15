@@ -103,7 +103,34 @@ public class NSMClient implements TGActionInterceptor {
 		this.receiveThread.start();
 
 		sendAnnounce();
-		registerSigtermHandler();
+	}
+
+	// Called from NSMPlugin.connect() — after all native plugins (including
+	// FluidSynth) have loaded, so our sigaction is the last one installed.
+	public void registerNativeSigtermHandler() {
+		try {
+			final int readFd = NSMSignal.registerSigtermPipe();
+			if (readFd < 0) {
+				System.err.println("[NSM] registerSigtermPipe() failed — SIGTERM will not be caught");
+				return;
+			}
+			System.out.println("[NSM] native SIGTERM handler registered (pipe read-fd=" + readFd + ")");
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					int rc = NSMSignal.waitSigterm(readFd);
+					if (rc == 0) {
+						System.err.println("[NSM] SIGTERM received via native pipe — dispatching quit");
+						handleQuit();
+					} else {
+						System.err.println("[NSM] waitSigterm returned " + rc + " (pipe closed or error)");
+					}
+				}
+			}, "NSM-sigterm-reader");
+			t.setDaemon(true);
+			t.start();
+		} catch (UnsatisfiedLinkError e) {
+			System.err.println("[NSM] native library not available — SIGTERM will not be caught: " + e);
+		}
 	}
 
 	// Block until /nsm/client/open is received or the timeout expires.
@@ -133,66 +160,6 @@ public class NSMClient implements TGActionInterceptor {
 		TGActionManager.getInstance(this.context).addInterceptor(this);
 	}
 
-	// RaySession (and many other NSM session managers) terminate clients via
-	// SIGTERM rather than /nsm/client/quit.  This handler intercepts SIGTERM
-	// and routes it through TuxGuitar's normal exit path so the "save before
-	// exit?" dialog appears when there are unsaved changes.
-	//
-	// sun.misc.Signal is a private JDK API; we access it via reflection so the
-	// plugin compiles without --add-exports flags.  If the class is absent or
-	// the signal cannot be registered, we log a warning and fall through to
-	// the JVM's default SIGTERM behaviour.
-	private void registerSigtermHandler() {
-		// JVM shutdown hook: fires if System.exit() is called (e.g. JVM default SIGTERM
-		// handler) — lets us know whether the JVM is receiving SIGTERM at all.
-		Runtime.getRuntime().addShutdownHook(new Thread(() ->
-				System.err.println("[NSM] JVM shutdown hook triggered"),
-				"NSM-shutdown-diagnostic"));
-
-		try {
-			Class<?> signalClass  = Class.forName("sun.misc.Signal");
-			Class<?> handlerClass = Class.forName("sun.misc.SignalHandler");
-			java.lang.reflect.Method handleMethod =
-					signalClass.getMethod("handle", signalClass, handlerClass);
-			Object termSignal = signalClass.getConstructor(String.class).newInstance("TERM");
-			// Use system class loader so the proxy can always reach sun.misc.SignalHandler
-			// regardless of which plugin class loader loaded NSMClient.
-			ClassLoader proxyLoader = ClassLoader.getSystemClassLoader();
-			Object handler = java.lang.reflect.Proxy.newProxyInstance(
-					proxyLoader,
-					new Class<?>[]{ handlerClass },
-					(proxy, method, args) -> {
-						try {
-							if ("handle".equals(method.getName())) {
-								System.err.println("[NSM] SIGTERM received — dispatching quit");
-								handleQuit();
-								// Hard fallback: if the normal exit path is stuck, force the
-								// JVM to terminate after 15 seconds.  Runtime.halt() bypasses
-								// all shutdown hooks and non-daemon threads.
-								Thread watchdog = new Thread(() -> {
-									try {
-										Thread.sleep(15000);
-										System.err.println("[NSM] watchdog: normal exit timed out — halting JVM");
-										Runtime.getRuntime().halt(0);
-									} catch (InterruptedException ignored) {
-										// TuxGuitar exited normally; daemon thread is killed.
-									}
-								}, "NSM-exit-watchdog");
-								watchdog.setDaemon(true);
-								watchdog.start();
-							}
-						} catch (Throwable t) {
-							System.err.println("[NSM] SIGTERM handler error: " + t);
-							t.printStackTrace(System.err);
-						}
-						return null;
-					});
-			handleMethod.invoke(null, termSignal, handler);
-			System.out.println("[NSM] SIGTERM handler registered");
-		} catch (Throwable t) {
-			System.err.println("[NSM] could not register SIGTERM handler: " + t);
-		}
-	}
 
 	// -------------------------------------------------------------------------
 	// Shutdown

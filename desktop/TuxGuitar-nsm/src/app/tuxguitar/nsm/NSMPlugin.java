@@ -67,7 +67,12 @@ public class NSMPlugin implements TGEarlyInitPlugin {
 
 	@Override
 	public void connect(TGContext context) throws TGPluginException {
-		// initialization is done in earlyInit
+		// Register the native SIGTERM handler here, after all plugins (including
+		// FluidSynth) have loaded their native libraries and potentially overridden
+		// the JVM's sigaction.  Installing ours last makes us the active handler.
+		if (this.nsmClient != null) {
+			this.nsmClient.registerNativeSigtermHandler();
+		}
 	}
 
 	@Override
