@@ -19,10 +19,6 @@
 		<tuxguitar-nsm.jni.library.name>libtuxguitar-nsm-jni.so</tuxguitar-nsm.jni.library.name>
 	</properties>
 
-	<modules>
-		<module>${project.parent.relativePath}/TuxGuitar-nsm</module>
-	</modules>
-
 	<build>
 		<plugins>
 			<plugin>
