@@ -387,7 +387,6 @@
 				<module>../native-modules/tuxguitar-jack-linux</module>
 				<module>../native-modules/tuxguitar-fluidsynth-linux</module>
 				<module>../native-modules/tuxguitar-synth-lv2-linux</module>
-				<module>../native-modules/tuxguitar-nsm-linux</module>
 			</modules>
 
 			<build>
@@ -397,6 +396,25 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<version>1.7</version>
 						<executions>
+							<execution>
+								<id>compile-nsm-native</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target name="compile-nsm-native">
+										<exec dir="${basedir}/../../TuxGuitar-nsm/jni" executable="make" failonerror="true">
+											<env key="CC" value="gcc" />
+											<env key="CFLAGS" value="-I${basedir}/../native-modules/common-include -fPIC" />
+											<env key="LDFLAGS" value="-fPIC" />
+											<env key="LDLIBS" value="" />
+											<env key="LDPATH" value="" />
+											<env key="LIBRARY" value="libtuxguitar-nsm-jni.so" />
+										</exec>
+									</target>
+								</configuration>
+							</execution>
 							<execution>
 								<id>native-module-copy</id>
 								<phase>package</phase>
@@ -415,8 +433,9 @@
 										<copy todir="${project.build.directory}/${project.finalName}/">
 											<fileset dir="../native-modules/tuxguitar-synth-lv2-linux/target/build" />
 										</copy>
-										<copy todir="${project.build.directory}/${project.finalName}/">
-											<fileset dir="../native-modules/tuxguitar-nsm-linux/target/build" />
+										<mkdir dir="${project.build.directory}/${project.finalName}/lib" />
+										<copy todir="${project.build.directory}/${project.finalName}/lib">
+											<fileset file="${basedir}/../../TuxGuitar-nsm/jni/libtuxguitar-nsm-jni.so" />
 										</copy>
 										<chmod file="${project.build.directory}/${project.finalName}/lv2-client/*.bin" perm="755" />
 										<!-- /PLUGINS FILES -->
