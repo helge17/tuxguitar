@@ -13,12 +13,9 @@ import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionException;
 import app.tuxguitar.action.TGActionInterceptor;
 import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.action.impl.file.TGExitAction;
 import app.tuxguitar.app.action.impl.file.TGReadURLAction;
 import app.tuxguitar.app.action.impl.file.TGWriteFileAction;
-import app.tuxguitar.app.action.impl.system.TGDisposeAction;
-import app.tuxguitar.app.action.listener.save.TGUnsavedDocumentInterceptor;
-import app.tuxguitar.app.document.TGDocument;
-import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import app.tuxguitar.nsm.osc.OSCMessage;
@@ -306,29 +303,12 @@ public class NSMClient implements TGActionInterceptor {
 	// -------------------------------------------------------------------------
 
 	private void handleQuit() {
-		TGActionProcessor proc = new TGActionProcessor(this.context, TGDisposeAction.NAME);
-		// If nothing has changed there is nothing to save, so bypass the
-		// "save before exit?" dialog — it would block indefinitely under NSM
-		// because nobody is there to click it.  When there ARE unsaved changes
-		// the dialog appears normally; after the user saves, TGDisposeAction is
-		// re-dispatched by TGUnsavedDocumentInterceptor with bypass=true.
-		if (!hasUnsavedDocuments()) {
-			proc.setAttribute(TGUnsavedDocumentInterceptor.UNSAVED_INTERCEPTOR_BY_PASS, Boolean.TRUE);
-		}
+		// TGExitAction calls TGWindow.getWindow().close(), which fires the
+		// existing window-close listener.  That listener dispatches TGDisposeAction
+		// (SAVE_BEFORE), so the "save before exit?" dialog appears when there are
+		// unsaved changes — exactly the same path as File > Exit in the menu.
+		TGActionProcessor proc = new TGActionProcessor(this.context, TGExitAction.NAME);
 		proc.process();
-	}
-
-	private boolean hasUnsavedDocuments() {
-		try {
-			for (TGDocument doc : TGDocumentListManager.getInstance(this.context).getDocuments()) {
-				if (doc.isUnsaved()) {
-					return true;
-				}
-			}
-		} catch (Exception e) {
-			return true; // fail safe: show the dialog rather than silently discard unsaved work
-		}
-		return false;
 	}
 
 	// -------------------------------------------------------------------------
