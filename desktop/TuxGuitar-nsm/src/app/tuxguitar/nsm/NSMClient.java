@@ -115,7 +115,9 @@ public class NSMClient implements TGActionInterceptor {
 				return;
 			}
 			System.out.println("[NSM] native SIGTERM handler registered (pipe read-fd=" + readFd + ")");
-			Thread t = new Thread(new Runnable() {
+
+			// Wakes up when SIGTERM fires the native handler.
+			Thread reader = new Thread(new Runnable() {
 				public void run() {
 					int rc = NSMSignal.waitSigterm(readFd);
 					if (rc == 0) {
@@ -126,8 +128,27 @@ public class NSMClient implements TGActionInterceptor {
 					}
 				}
 			}, "NSM-sigterm-reader");
-			t.setDaemon(true);
-			t.start();
+			reader.setDaemon(true);
+			reader.start();
+
+			// libjack reinstalls its own SIGTERM sigaction when other JACK clients
+			// disconnect (e.g. during session close).  This watchdog reclaims our
+			// handler every 100 ms so the window for SIGTERM to slip through is tiny.
+			Thread watchdog = new Thread(new Runnable() {
+				public void run() {
+					while (running) {
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							break;
+						}
+						NSMSignal.reinstallSigtermHandler();
+					}
+				}
+			}, "NSM-sigterm-watchdog");
+			watchdog.setDaemon(true);
+			watchdog.start();
+
 		} catch (UnsatisfiedLinkError e) {
 			System.err.println("[NSM] native library not available — SIGTERM will not be caught: " + e);
 		}
