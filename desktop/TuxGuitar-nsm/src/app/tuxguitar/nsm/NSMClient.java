@@ -152,6 +152,35 @@ public class NSMClient implements TGActionInterceptor {
 		} catch (UnsatisfiedLinkError e) {
 			System.err.println("[NSM] native library not available — SIGTERM will not be caught: " + e);
 		}
+		// Always register SIGUSR2: the bash wrapper sends USR2 when it receives
+		// SIGTERM from the session manager, bypassing JACK's sigaction override.
+		registerSigusr2Handler();
+	}
+
+	// sun.misc.Signal via reflection — avoids --add-exports and compiles cleanly.
+	private void registerSigusr2Handler() {
+		try {
+			Class<?> signalClass  = Class.forName("sun.misc.Signal");
+			Class<?> handlerClass = Class.forName("sun.misc.SignalHandler");
+			java.lang.reflect.Method handleMethod =
+					signalClass.getMethod("handle", signalClass, handlerClass);
+			Object usr2Signal = signalClass.getConstructor(String.class).newInstance("USR2");
+			ClassLoader proxyLoader = ClassLoader.getSystemClassLoader();
+			Object handler = java.lang.reflect.Proxy.newProxyInstance(
+					proxyLoader,
+					new Class<?>[]{ handlerClass },
+					(proxy, method, args) -> {
+						if ("handle".equals(method.getName())) {
+							System.err.println("[NSM] SIGUSR2 received — dispatching quit");
+							handleQuit();
+						}
+						return null;
+					});
+			handleMethod.invoke(null, usr2Signal, handler);
+			System.out.println("[NSM] SIGUSR2 handler registered");
+		} catch (Throwable t) {
+			System.err.println("[NSM] could not register SIGUSR2 handler: " + t);
+		}
 	}
 
 	// Block until /nsm/client/open is received or the timeout expires.
@@ -199,7 +228,17 @@ public class NSMClient implements TGActionInterceptor {
 	// -------------------------------------------------------------------------
 
 	private void sendAnnounce() {
+		// Announce the launcher script's PID when available so the session
+		// manager sends SIGTERM to the bash wrapper instead of the JVM.
+		// The wrapper converts SIGTERM → SIGUSR2 which Java handles cleanly.
 		int pid = (int) ProcessHandle.current().pid();
+		String launcherPid = System.getenv("NSM_LAUNCHER_PID");
+		if (launcherPid != null && !launcherPid.isEmpty()) {
+			try {
+				pid = Integer.parseInt(launcherPid.trim());
+				System.out.println("[NSM] announcing launcher PID " + pid + " (bash wrapper active)");
+			} catch (NumberFormatException ignored) {}
+		}
 		OSCMessage msg = new OSCMessage("/nsm/server/announce");
 		msg.addString("TuxGuitar");
 		msg.addString("");          // capabilities: none declared

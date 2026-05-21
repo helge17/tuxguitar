@@ -28,5 +28,13 @@ export CLASSPATH
 export LD_LIBRARY_PATH
 ##Avoid problems with Accelerated Compositing mode in SWT/WebKitGTK
 export WEBKIT_DISABLE_COMPOSITING_MODE=1
+## Announce this script's PID to the NSM session manager so SIGTERM is sent
+## here instead of to the JVM.  The trap below converts it to SIGUSR2, which
+## Java handles cleanly without JACK/SWT sigaction interference.
+export NSM_LAUNCHER_PID=$$
 ##LAUNCH
-${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
+${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@" &
+_tg_pid=$!
+_tg_sigterm() { kill -USR2 "$_tg_pid" 2>/dev/null; wait "$_tg_pid" 2>/dev/null; exit 0; }
+trap _tg_sigterm TERM
+wait $_tg_pid
