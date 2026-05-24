@@ -559,6 +559,30 @@ public class TestFileFormat20 {
 
 	}
 
+	@Test
+	public void testInvalidArchiveContent() throws IOException {
+		boolean caught = false;
+		TGSongReaderHandle handle = null;
+		try {
+			handle = readSong("invalidContent.tg", true);
+			}
+		catch (TGFileFormatException e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		assertNull(handle);
+		
+		caught = false;
+		try {
+			handle = readSong("invalidContent2.tg", true);
+			}
+		catch (TGFileFormatException e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		assertNull(handle);
+	}
+
 	private byte[] saveToXml(TGSong song, TGFactory factory) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		TGSongWriterHandle handleWrite = new TGSongWriterHandle();
