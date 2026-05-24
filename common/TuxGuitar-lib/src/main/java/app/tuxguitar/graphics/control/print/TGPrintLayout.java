@@ -230,7 +230,7 @@ public class TGPrintLayout extends TGLayout {
 				headerOffset += 20.0f * getScale();
 			}
 
-			if (!track.isPercussion()) {
+			if (!track.isPercussion() && ((getStyle() & DISPLAY_TABLATURE) != 0)) {
 				String tuningLabel = getStringsTuningLabel(track);
 				if (tuningLabel != null && !tuningLabel.isEmpty()) {
 					String tuningLine = TGMessagesManager.getProperty("tuning") + ": " + tuningLabel;
