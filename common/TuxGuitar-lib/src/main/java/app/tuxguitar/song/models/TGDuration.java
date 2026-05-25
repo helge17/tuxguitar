@@ -340,19 +340,34 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						// apply -1 offset, because Math.round(1.5)==2, and 1 is preferred
 						// (better a bit too short than too long)
 						long nBase = Math.round((float)(timeToSplit-1) / (float)base);
-						long n = 1;
 						// merge powers of 2
-						while ((nBase != 0) && (nBase % 2 == 0) && (n*2*base <= max)) {
-							n *= 2;
-							nBase /= 2;
-						}
 						long listPreciseDuration = 0;
-						for (int i=0; i<nBase; i++) {
-							TGDuration duration = factory.newDuration();
-							duration.setPreciseValue(n* base);
-							list.add(duration);
-							listPreciseDuration += duration.getPreciseTime();
+						while (nBase > 0) {
+							long baseToAdd = 0;
+							long nBaseToAdd = 0;
+							if (2 * base > max) {
+								baseToAdd = base;
+								nBaseToAdd = nBase;
+								nBase = 0;
+							}
+							else if ((nBase % 2) != 0) {
+								baseToAdd = base;
+								nBaseToAdd = 1;
+								nBase --;
+							}
+							else {
+								nBase /= 2;
+								base *= 2;
+							}
+							for (int i=0; i<nBaseToAdd; i++) {
+								TGDuration duration = factory.newDuration();
+								duration.setPreciseValue(baseToAdd);
+								list.add(duration);
+								listPreciseDuration += duration.getPreciseTime();
+							}
 						}
+						Collections.reverse(list);
+						
 						long error = Math.abs(timeToSplit - listPreciseDuration);
 						if ((approximateSplit.size() == 0) || (error <= bestError)) {
 							approximateSplit = list;

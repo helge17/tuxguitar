@@ -326,7 +326,14 @@ public class TestTGDuration {
 		for (TGDuration d : list) {
 			assertEquals(division, d.getDivision().getEnters());
 		}
-		
+
+		// 9 * sixteenth with 1/32 precision: shall return 1/2 tied to 1/16 in this order
+		list = TGDuration.splitPreciseDurationApproximately(TGDuration.WHOLE_PRECISE_DURATION * 9 / 16, TGDuration.WHOLE_PRECISE_DURATION, factory,
+				32, 3);
+		assertNotNull(list);
+		assertEquals(2, list.size());
+		assertEquals(2, list.get(0).getValue());
+		assertEquals(16, list.get(1).getValue());
 	}
 
 	// get sum of notes list duration, and check max (if specified)

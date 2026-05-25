@@ -210,6 +210,18 @@ public class TestImportMidi {
 		midiSongReader.read(handleRead);
 		importedSong = handleRead.getSong();
 		assertTrue(identicalRhythm(refMeasure, importedSong.getTrack(1).getMeasure(8)));
+
+		// alignment: when (1/16 + 1/2) is more readable than (1/2 + 1/16)
+		measure = importedSong.getTrack(1).getMeasure(9);
+		assertEquals(5, measure.countBeats());
+		assertEquals(4, measure.getBeat(0).getVoice(0).getDuration().getValue());
+		assertEquals(16, measure.getBeat(1).getVoice(0).getDuration().getValue());
+		assertTrue(measure.getBeat(1).getVoice(0).getNote(0).isTiedNote());
+		assertEquals(8, measure.getBeat(2).getVoice(0).getDuration().getValue());
+		assertEquals(16, measure.getBeat(3).getVoice(0).getDuration().getValue());
+		assertEquals(2, measure.getBeat(4).getVoice(0).getDuration().getValue());
+		assertTrue(measure.getBeat(4).getVoice(0).getNote(0).isTiedNote());
+
 	}
 
 	private boolean identicalRhythm(TGMeasure meas1, TGMeasure meas2) {
