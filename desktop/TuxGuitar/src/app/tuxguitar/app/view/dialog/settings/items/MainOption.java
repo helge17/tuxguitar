@@ -33,6 +33,7 @@ public class MainOption extends TGSettingsOption {
 	private UICheckBox showSplash;
 	private UICheckBox autoSizeTable;
 	private UICheckBox playWhenMoving;
+	private UICheckBox reopenLastFiles;
 	private UITextField windowTitle;
 
 	public MainOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
@@ -99,6 +100,10 @@ public class MainOption extends TGSettingsOption {
 		this.playWhenMoving.setText(TuxGuitar.getProperty("settings.config.main.play-when-moving"));
 		optionsLayout.set(this.playWhenMoving, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+		this.reopenLastFiles = uiFactory.createCheckBox(options);
+		this.reopenLastFiles.setText(TuxGuitar.getProperty("settings.config.main.reopen-last-files"));
+		optionsLayout.set(this.reopenLastFiles, 4, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
 		this.loadConfig();
 	}
 
@@ -109,6 +114,7 @@ public class MainOption extends TGSettingsOption {
 				final boolean showSplash = getConfig().getBooleanValue(TGConfigKeys.SHOW_SPLASH);
 				final boolean autoSizeTable = getConfig().getBooleanValue(TGConfigKeys.TABLE_AUTO_SIZE);
 				final boolean playWhenMoving = getConfig().getBooleanValue(TGConfigKeys.PLAY_WHEN_MOVING);
+				final boolean reopenLastFiles = getConfig().getBooleanValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP);
 				TGSynchronizer.getInstance(getViewContext().getContext()).executeLater(new Runnable() {
 					public void run() {
 						if(!isDisposed()){
@@ -116,6 +122,7 @@ public class MainOption extends TGSettingsOption {
 							MainOption.this.showSplash.setSelected(showSplash);
 							MainOption.this.autoSizeTable.setSelected(autoSizeTable);
 							MainOption.this.playWhenMoving.setSelected(playWhenMoving);
+							MainOption.this.reopenLastFiles.setSelected(reopenLastFiles);
 							MainOption.this.initialized = true;
 							MainOption.this.pack();
 						}
@@ -131,6 +138,7 @@ public class MainOption extends TGSettingsOption {
 			getConfig().setValue(TGConfigKeys.SHOW_SPLASH,this.showSplash.isSelected());
 			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE,this.autoSizeTable.isSelected());
 			getConfig().setValue(TGConfigKeys.PLAY_WHEN_MOVING, this.playWhenMoving.isSelected());
+			getConfig().setValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP, this.reopenLastFiles.isSelected());
 		}
 	}
 
@@ -140,6 +148,7 @@ public class MainOption extends TGSettingsOption {
 			getConfig().setValue(TGConfigKeys.SHOW_SPLASH, getDefaults().getValue(TGConfigKeys.SHOW_SPLASH));
 			getConfig().setValue(TGConfigKeys.TABLE_AUTO_SIZE, getDefaults().getValue(TGConfigKeys.TABLE_AUTO_SIZE));
 			getConfig().setValue(TGConfigKeys.PLAY_WHEN_MOVING, getDefaults().getValue(TGConfigKeys.PLAY_WHEN_MOVING));
+			getConfig().setValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP, getDefaults().getValue(TGConfigKeys.REOPEN_LAST_FILES_ON_STARTUP));
 		}
 	}
 

@@ -27,7 +27,7 @@ public class TGUpdateWrittenFileController extends TGUpdateItemsController {
 				URI uri = new File(fileName).toURI();
 				URL url = uri.toURL();
 
-				TGDocumentListManager.getInstance(context).findCurrentDocument().setUri(uri);
+				TGDocumentListManager.getInstance(context).setCurrentDocumentUri(uri);
 
 				TGFileHistory tgFileHistory = TGFileHistory.getInstance(context);
 				tgFileHistory.reset(url);
