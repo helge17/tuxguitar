@@ -2,6 +2,7 @@ package app.tuxguitar.io.midi;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -454,6 +455,16 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			List<TGDuration> durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
 					MidiSongReader.this.settings.getMaxDurationValue(),
 					MidiSongReader.this.settings.getMaxDivision());
+
+			// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)
+			// note: won't work in all cases...
+			if (durationList.size() > 0) {
+				long relativeBeatPreciseStart = TGDuration.toPreciseTime(this.lastBeatEnd - measure.getStart());
+				if (    ((relativeBeatPreciseStart % durationList.get(0).getPreciseTime()) != 0) 
+					 && ((relativeBeatPreciseStart % durationList.get(durationList.size()-1).getPreciseTime()) == 0) ) {
+						Collections.reverse(durationList);
+				}
+			}
 
 			for (TGDuration duration : durationList) {
 				long beatEnd = this.lastBeatEnd + duration.getTime();
