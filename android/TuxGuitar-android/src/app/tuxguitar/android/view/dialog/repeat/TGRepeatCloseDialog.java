@@ -46,26 +46,29 @@ public class TGRepeatCloseDialog extends TGModalFragment {
 		if( repeatCloseDefault < 1 ) {
 			repeatCloseDefault = 1;
 		}
+		// Show total play count (stored value + 1).
+		int displayDefault = repeatCloseDefault + 1;
 
 		ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createRepeatValues());
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.repeat_close_dlg_count_value);
 		spinner.setAdapter(arrayAdapter);
-		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(repeatCloseDefault)));
+		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(displayDefault)));
 	}
 
 	public Integer[] createRepeatValues() {
-		Integer[] items = new Integer[101];
+		// Values 2..101 represent "play N times" (stored as N-1 internally).
+		Integer[] items = new Integer[100];
 		for (int i = 0; i < items.length; i++) {
-			items[i] = Integer.valueOf(i);
+			items[i] = Integer.valueOf(i + 2);
 		}
 		return items;
 	}
 
 	public int parseRepeatValue() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.repeat_close_dlg_count_value);
-		return ((Integer)spinner.getSelectedItem()).intValue();
+		return ((Integer)spinner.getSelectedItem()).intValue() - 1;
 	}
 
 	public void changeRepeatClose() {

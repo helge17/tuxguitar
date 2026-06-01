@@ -39,6 +39,9 @@ public class TGRepeatCloseDialog {
 		if (currentRepeatClose < 1) {
 			currentRepeatClose = 1;
 		}
+		// The spinner shows total play count (stored value + 1).
+		// Stored N means "go back N times" = play N+1 times total.
+		int displayRepeatClose = currentRepeatClose + 1;
 
 		UITableLayout groupLayout = new UITableLayout();
 		UILegendPanel group = uiFactory.createLegendPanel(dialog);
@@ -51,9 +54,9 @@ public class TGRepeatCloseDialog {
 		groupLayout.set(repeatCloseLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 
 		final UISpinner repeatClose = uiFactory.createSpinner(group);
-		repeatClose.setMinimum(0);
-		repeatClose.setMaximum(100);
-		repeatClose.setValue(currentRepeatClose);
+		repeatClose.setMinimum(2);
+		repeatClose.setMaximum(101);
+		repeatClose.setValue(displayRepeatClose);
 		groupLayout.set(repeatClose, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 100f, null, null);
 
 		//----------------------BUTTONS--------------------------------
@@ -67,7 +70,7 @@ public class TGRepeatCloseDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				changeRepeatClose(context.getContext(), song, header, repeatClose.getValue());
+				changeRepeatClose(context.getContext(), song, header, repeatClose.getValue() - 1);
 				dialog.dispose();
 			}
 		});
