@@ -1,4 +1,22 @@
 #!/bin/sh
+
+if [ "$(uname -s)" = "FreeBSD" ]; then
+    pkgs="swt fluidsynth lilv suil"
+    missing=""
+
+    for p in $pkgs; do
+        pkg info -q "$p" || missing="$missing $p"
+    done
+
+    if [ -n "$missing" ]; then
+        missing=$(echo "$missing" | xargs)
+
+        echo "missing packages: $missing"
+        echo "Please install them by:"
+        echo "  doas pkg install $missing"
+        exit 1
+    fi
+fi
 ##SCRIPT DIR
 TG_DIR=`dirname "$(realpath "$0")"`
 ##JAVA
