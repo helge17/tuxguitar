@@ -97,8 +97,8 @@ public class KeyBindingReader {
 	/**
 	 * Read shortcuts from xml file
 	 *
-	 * @param shortcutsNode
-	 * @return
+	 * @param shortcutsNode XML node to read data from.
+	 * @return Shortcuts list.
 	 */
 	private static List<KeyBindingAction> getBindings(Node shortcutsNode){
 		List<KeyBindingAction> list = new ArrayList<KeyBindingAction>();
