@@ -100,6 +100,7 @@ public class TestImportMidi {
 		handleRead.setSong(null);
 		handleRead.setInputStream(new ByteArrayInputStream(rawMidiFileBuffer));
 		MidiSettings settings = new MidiSettings();
+		settings.setQuantization(true);
 		settings.setMaxDivision(3);
 		settings.setMaxDurationValue(TGDuration.SIXTEENTH);
 		handleRead.getContext().setAttribute(MidiSettings.class.getName(), settings);

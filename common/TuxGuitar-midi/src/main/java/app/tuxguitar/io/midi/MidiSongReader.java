@@ -452,9 +452,16 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			long coarseTimeToFill = Math.min(nEnd, measureEnd) - this.lastBeatEnd;
 			long preciseTimeToFill = TGDuration.toPreciseTime(coarseTimeToFill);
 			
-			List<TGDuration> durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
-					MidiSongReader.this.settings.getMaxDurationValue(),
-					MidiSongReader.this.settings.getMaxDivision());
+			List<TGDuration> durationList = null;
+			if (this.settings.getQuantization()) {
+				durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
+					this.settings.getMaxDurationValue(),
+					this.settings.getMaxDivision());
+			}
+			else {
+				durationList = new ArrayList<TGDuration>();
+				durationList.add(TGDuration.fromTime(this.factory, coarseTimeToFill));
+			}
 
 			// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)
 			// note: won't work in all cases...

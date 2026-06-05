@@ -17,6 +17,7 @@ import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.widget.UIButton;
 import app.tuxguitar.ui.widget.UICheckBox;
+import app.tuxguitar.ui.widget.UIControl;
 import app.tuxguitar.ui.widget.UIDropDownSelect;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UILegendPanel;
@@ -32,11 +33,15 @@ public class MidiSettingsDialog {
 	public static final int MIN_TRANSPOSE = -24;
 
 	// static, to keep values when dialog is closed / reopened
-	private static int maxDurationValue = TGDuration.SIXTEENTH;
-	private static int maxDivision = 3;
+	private static int maxDurationValue = MidiSettings.DEFAULT_MAX_DURATION;
+	private static int maxDivision = MidiSettings.DEFAULT_MAX_DIVISION;
+	private static boolean quantization = MidiSettings.DEFAULT_QUANTIZATION;
 
 	private TGContext context;
 	private TGPersistenceSettingsMode mode;
+	private UIPanel groupDuration;
+	private UIPanel groupDivision;
+	private UICheckBox quantizationCheck;
 
 	public MidiSettingsDialog(TGContext context, TGPersistenceSettingsMode mode){
 		this.context = context;
@@ -83,16 +88,27 @@ public class MidiSettingsDialog {
 
 		//------------------ quantization options (import only) ------------------
 		if (mode == TGPersistenceSettingsMode.READ) {
-			UILegendPanel groupQuantization = uiFactory.createLegendPanel(dialog);
+			this.quantizationCheck = uiFactory.createCheckBox(dialog);
+			quantizationCheck.setText(TuxGuitar.getProperty("import.quantization"));
+			quantizationCheck.setSelected(quantization);
+			quantizationCheck.addSelectionListener(new UISelectionListener() {
+				@Override
+				public void onSelect(UISelectionEvent event) {
+					MidiSettingsDialog.this.updateQuantizationItems();
+				}
+			});
+			dialogLayout.set(quantizationCheck, optionRow, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
+			optionRow ++;
+			
+			UIPanel groupQuantization = uiFactory.createPanel(dialog, true);
 			TGIconManager iconManager = TGIconManager.getInstance(context);
 			UITableLayout groupQuantizationLayout = new UITableLayout();
 			groupQuantization.setLayout(groupQuantizationLayout);
-			groupQuantization.setText(TuxGuitar.getProperty("import.quantization") + ":");
 			dialogLayout.set(groupQuantization, optionRow, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 320f, null, null);
 			optionRow ++;
 
 			// durations
-			UIPanel groupDuration = uiFactory.createPanel(groupQuantization, false);
+			this.groupDuration = uiFactory.createPanel(groupQuantization, false);
 			UITableLayout groupDurationLayout = new UITableLayout();
 			groupDuration.setLayout(groupDurationLayout);
 			groupQuantizationLayout.set(groupDuration, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
@@ -124,7 +140,7 @@ public class MidiSettingsDialog {
 			}
 
 			// divisions
-			UIPanel groupDivision = uiFactory.createPanel(groupQuantization, false);
+			this.groupDivision = uiFactory.createPanel(groupQuantization, false);
 			UITableLayout groupDivisionLayout = new UITableLayout();
 			groupDivision.setLayout(groupDivisionLayout);
 			groupQuantizationLayout.set(groupDivision, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
@@ -153,6 +169,7 @@ public class MidiSettingsDialog {
 				groupDivisionLayout.set(button, 2, column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 				column ++;
 			}
+			this.updateQuantizationItems();
 		}
 
 		//------------------ write options (export only) ------------------
@@ -188,6 +205,7 @@ public class MidiSettingsDialog {
 					settings.setFlags(MidiSequenceParser.NO_CONTROL_CHANGE_PROGRAM_CHANGE);
 				}
 				if (mode == TGPersistenceSettingsMode.READ) {
+					settings.setQuantization(quantization);
 					settings.setMaxDurationValue(maxDurationValue);
 					settings.setMaxDivision(maxDivision);
 				}
@@ -208,6 +226,16 @@ public class MidiSettingsDialog {
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+	}
+
+	private void updateQuantizationItems() {
+		quantization = this.quantizationCheck.isSelected();
+		for (UIControl control : this.groupDuration.getChildren()) {
+			control.setEnabled(quantization);
+		}
+		for (UIControl control : this.groupDivision.getChildren()) {
+			control.setEnabled(quantization);
+		}
 	}
 
 	private class OptionItem {
