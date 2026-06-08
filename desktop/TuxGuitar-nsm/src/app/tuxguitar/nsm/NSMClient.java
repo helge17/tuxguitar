@@ -20,6 +20,8 @@ import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import app.tuxguitar.nsm.osc.OSCMessage;
 import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.TGException;
+import app.tuxguitar.util.TGSynchronizer;
 import app.tuxguitar.util.error.TGErrorHandler;
 import app.tuxguitar.util.error.TGErrorManager;
 
@@ -327,9 +329,11 @@ public class NSMClient implements TGActionInterceptor {
 		new File(path).mkdirs();
 		String filePath = path + File.separator + "tuxguitar.tg";
 
+		boolean readyNow;
 		synchronized (this) {
 			this.sessionFilePath = filePath;
-			if (this.appReady) {
+			readyNow = this.appReady;
+			if (readyNow) {
 				processOpen(filePath);
 			} else {
 				this.pendingFilePath = filePath;
@@ -337,8 +341,24 @@ public class NSMClient implements TGActionInterceptor {
 		}
 		// Unblock earlyInit() so config can be redirected before TuxGuitar reads it.
 		openLatch.countDown();
-		// Acknowledge immediately — the actual file load is asynchronous.
-		sendReply("/nsm/client/open", "opened");
+		if (readyNow) {
+			// App already started (re-open): reply after the action has been dispatched.
+			sendOpenReplyLater();
+		}
+		// else: reply is deferred to intercept() which fires after startup completes.
+	}
+
+	private void sendOpenReplyLater() {
+		try {
+			TGSynchronizer.getInstance(this.context).executeLater(new Runnable() {
+				public void run() {
+					sendReply("/nsm/client/open", "opened");
+				}
+			});
+		} catch (TGException e) {
+			// Synchronizer unavailable — fall back to immediate reply.
+			sendReply("/nsm/client/open", "opened");
+		}
 	}
 
 	private void processOpen(String filePath) {
@@ -444,6 +464,10 @@ public class NSMClient implements TGActionInterceptor {
 			}
 			if (filePath != null) {
 				processOpen(filePath);
+				// Reply after the splash screen closes.  executeLater() queues this
+				// task AFTER the current event-loop task (startUIContext + splash.finish()),
+				// so the session manager only sees us as ready once the UI is fully up.
+				sendOpenReplyLater();
 			}
 			// Suppress the default template load; processOpen() handles the song.
 			return true;

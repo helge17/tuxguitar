@@ -20,3 +20,4 @@ Exec=tuxguitar %F
 Icon=tuxguitar
 Terminal=false
 StartupNotify=false
+X-NSM-Capable=true
