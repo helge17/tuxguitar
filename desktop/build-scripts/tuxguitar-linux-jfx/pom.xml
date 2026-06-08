@@ -51,6 +51,7 @@
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
 		<module>../../TuxGuitar-debug-helper</module>
+		<module>../../TuxGuitar-nsm</module>
 	</modules>
 
 	<build>
@@ -331,6 +332,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-debug-helper</artifactId>
 									<destFileName>tuxguitar-debug-helper.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-nsm</artifactId>
+									<destFileName>tuxguitar-nsm.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<!-- /PLUGINS -->

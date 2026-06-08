@@ -932,7 +932,7 @@ public class TGMeasureImpl extends TGMeasure{
 				if( addInfo ){
 					layout.setDivisionsStyle(painter,false);
 
-					String repetitions = ("x" + this.getRepeatClose());
+					String repetitions = ("x" + (this.getRepeatClose() + 1));
 					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, y1 + painter.getFMBaseLine() - (2f * scale));
 				}
 			}

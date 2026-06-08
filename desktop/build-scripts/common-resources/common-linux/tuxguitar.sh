@@ -29,4 +29,20 @@ export LD_LIBRARY_PATH
 ##Avoid problems with Accelerated Compositing mode in SWT/WebKitGTK
 export WEBKIT_DISABLE_COMPOSITING_MODE=1
 ##LAUNCH
-${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
+if [ -n "$NSM_URL" ]; then
+    ## NSM mode: run Java in background so this script can intercept SIGTERM
+    ## (sent by the session manager) and convert it to SIGUSR2, which Java
+    ## handles cleanly without JACK/SWT sigaction interference.
+    export NSM_LAUNCHER_PID=$$
+    ${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@" &
+    _tg_pid=$!
+    _tg_sigterm() { kill -USR2 "$_tg_pid" 2>/dev/null; wait "$_tg_pid" 2>/dev/null; exit 0; }
+    _tg_sigint()  { kill -INT  "$_tg_pid" 2>/dev/null; wait "$_tg_pid" 2>/dev/null; exit 130; }
+    trap _tg_sigterm TERM
+    trap _tg_sigint  INT
+    wait $_tg_pid
+else
+    ## Normal mode: replace this script with Java so signals are delivered
+    ## directly to the JVM (preserves original Ctrl+C / SIGTERM behavior).
+    exec ${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share/" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme=$(getTheme) ${MAINCLASS} "$@"
+fi
