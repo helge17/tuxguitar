@@ -1,10 +1,17 @@
 package app.tuxguitar.nsm;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +23,8 @@ import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.app.action.impl.file.TGExitAction;
 import app.tuxguitar.app.action.impl.file.TGReadURLAction;
 import app.tuxguitar.app.action.impl.file.TGWriteFileAction;
+import app.tuxguitar.app.document.TGDocumentFileManager;
+import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import app.tuxguitar.nsm.osc.OSCMessage;
@@ -361,11 +370,33 @@ public class NSMClient implements TGActionInterceptor {
 		}
 	}
 
-	private void processOpen(String filePath) {
-		File file = new File(filePath);
-		if (file.exists()) {
+	private void processOpen(String backupPath) {
+		String sessionDir = new File(backupPath).getParent();
+
+		// Prefer the real file recorded by the last NSM save; fall back to the backup.
+		String realPath = readPointerFile(sessionDir);
+		File targetFile = null;
+
+		if (realPath != null) {
+			File realFile = new File(realPath);
+			if (realFile.exists()) {
+				targetFile = realFile;
+				System.out.println("[NSM] opening real file: " + realPath);
+			} else {
+				System.out.println("[NSM] real file missing (" + realPath + "), falling back to backup");
+			}
+		}
+		if (targetFile == null) {
+			File backupFile = new File(backupPath);
+			if (backupFile.exists()) {
+				targetFile = backupFile;
+				System.out.println("[NSM] opening backup: " + backupPath);
+			}
+		}
+
+		if (targetFile != null) {
 			try {
-				URL url = file.toURI().toURL();
+				URL url = targetFile.toURI().toURL();
 				TGActionProcessor proc = new TGActionProcessor(this.context, TGReadURLAction.NAME);
 				proc.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);
 				proc.process();
@@ -373,7 +404,8 @@ public class NSMClient implements TGActionInterceptor {
 				TGErrorManager.getInstance(this.context).handleError(e);
 			}
 		} else {
-			// Brand-new session: load an empty template (interceptor already removed).
+			// Brand-new session: load an empty template.
+			System.out.println("[NSM] new session, loading empty template");
 			TGActionProcessor proc = new TGActionProcessor(this.context, TGLoadTemplateAction.NAME);
 			proc.process();
 		}
@@ -385,28 +417,63 @@ public class NSMClient implements TGActionInterceptor {
 
 	private void handleSave() {
 		System.out.println("[NSM] save requested");
-		final String filePath;
+		final String backupPath;
 		synchronized (this) {
-			filePath = this.sessionFilePath;
+			backupPath = this.sessionFilePath;
 		}
-		if (filePath == null) {
+		if (backupPath == null) {
 			System.err.println("[NSM] save failed: no session file path");
 			sendError("/nsm/client/save", 1, "no session file path");
 			return;
 		}
-		System.out.println("[NSM] saving to: " + filePath);
-		File file = new File(filePath);
-		if (file.getParentFile() != null) {
-			file.getParentFile().mkdirs();
+		new File(backupPath).getParentFile().mkdirs();
+
+		// Get the document's current real path (may differ from the session backup).
+		final String realPath = getRealDocumentPath();
+		System.out.println("[NSM] backup path : " + backupPath);
+		System.out.println("[NSM] real path   : " + (realPath != null ? realPath : "(none — new document)"));
+
+		if (realPath != null && !realPath.equals(backupPath)) {
+			// Save to the real path first, then write backup and reply.
+			saveToPath(realPath, new Runnable() {
+				public void run() {
+					saveBackupThenReply(backupPath, realPath);
+				}
+			}, new TGErrorHandler() {
+				public void handleError(Throwable e) {
+					System.err.println("[NSM] real-path save error (backup will still be written): " + e);
+					saveBackupThenReply(backupPath, null);
+				}
+			});
+		} else {
+			// New/unsaved document or already working from the session dir.
+			saveBackupThenReply(backupPath, null);
 		}
+		System.out.println("[NSM] save dispatched");
+	}
+
+	private void saveToPath(String path, final Runnable onFinish, final TGErrorHandler onError) {
 		TGActionProcessor proc = new TGActionProcessor(this.context, TGWriteFileAction.NAME);
-		proc.setAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME, filePath);
+		proc.setAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME, path);
+		proc.setOnFinish(onFinish);
+		proc.setErrorHandler(onError);
+		proc.process();
+	}
+
+	private void saveBackupThenReply(final String backupPath, final String realPath) {
+		System.out.println("[NSM] writing backup: " + backupPath);
+		TGActionProcessor proc = new TGActionProcessor(this.context, TGWriteFileAction.NAME);
+		proc.setAttribute(TGWriteFileAction.ATTRIBUTE_FILE_NAME, backupPath);
 		proc.setOnFinish(new Runnable() {
 			public void run() {
+				// The backup save updated the document URI to the backup path.
+				// Restore it to the real path so TuxGuitar keeps working on the right file.
+				if (realPath != null) {
+					restoreDocumentUri(realPath);
+				}
+				// Record which real file was open so we can restore it next session.
+				writePointerFile(backupPath, realPath);
 				System.out.println("[NSM] save onFinish — sending reply");
-				// Re-install our sigaction just before replying: libjack overrides it
-				// when FluidSynth connects to JACK, but SIGTERM always arrives after
-				// the save reply, so reinstalling here guarantees we intercept it.
 				try { NSMSignal.reinstallSigtermHandler(); } catch (UnsatisfiedLinkError ignored) {}
 				sendReply("/nsm/client/save", "saved");
 				System.out.println("[NSM] save reply sent");
@@ -414,13 +481,64 @@ public class NSMClient implements TGActionInterceptor {
 		});
 		proc.setErrorHandler(new TGErrorHandler() {
 			public void handleError(Throwable e) {
-				System.err.println("[NSM] save error: " + e);
+				System.err.println("[NSM] backup save error: " + e);
 				e.printStackTrace(System.err);
-				sendError("/nsm/client/save", 1, e.getMessage() != null ? e.getMessage() : "save error");
+				sendError("/nsm/client/save", 1, e.getMessage() != null ? e.getMessage() : "backup save error");
 			}
 		});
 		proc.process();
-		System.out.println("[NSM] save action dispatched");
+	}
+
+	// Returns the full path of the currently open document, or null for a new/unsaved file.
+	private String getRealDocumentPath() {
+		TGDocumentFileManager fm = TGDocumentFileManager.getInstance(this.context);
+		if (fm.isLocalFile()) {
+			String dir  = fm.getCurrentFilePath();
+			String name = fm.getCurrentFileName(null);
+			if (dir != null && name != null) {
+				return dir + File.separator + name;
+			}
+		}
+		return null;
+	}
+
+	// Restores the document URI after the backup save changed it to the backup path.
+	private void restoreDocumentUri(String realPath) {
+		try {
+			URI uri = new File(realPath).toURI();
+			TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUri(uri);
+		} catch (Exception e) {
+			System.err.println("[NSM] failed to restore document URI: " + e);
+		}
+	}
+
+	// Writes a one-line pointer file recording which real file is open in this session.
+	private void writePointerFile(String backupPath, String realPath) {
+		File pointerFile = new File(new File(backupPath).getParent(), "tuxguitar-source.path");
+		try {
+			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(pointerFile), "UTF-8"));
+			pw.println(realPath != null ? realPath : "");
+			pw.close();
+		} catch (Exception e) {
+			System.err.println("[NSM] failed to write pointer file: " + e);
+		}
+	}
+
+	// Reads the pointer file; returns the real path or null if absent/empty.
+	private String readPointerFile(String sessionDir) {
+		File pointerFile = new File(sessionDir, "tuxguitar-source.path");
+		if (!pointerFile.exists()) {
+			return null;
+		}
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(pointerFile), "UTF-8"));
+			String line = br.readLine();
+			br.close();
+			return (line != null && !line.trim().isEmpty()) ? line.trim() : null;
+		} catch (Exception e) {
+			System.err.println("[NSM] failed to read pointer file: " + e);
+			return null;
+		}
 	}
 
 	// -------------------------------------------------------------------------
