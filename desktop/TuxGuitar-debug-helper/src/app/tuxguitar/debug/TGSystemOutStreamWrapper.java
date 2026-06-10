@@ -29,8 +29,20 @@ public class TGSystemOutStreamWrapper extends OutputStream {
 
 	@Override
 	public void close() throws IOException {
-		for(OutputStream outputStream : this.outputStreams) {
-			outputStream.close();
+		IOException first = null;
+		for (OutputStream outputStream : this.outputStreams) {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				if (first == null) {
+					first = e;
+				} else {
+					first.addSuppressed(e);
+				}
+			}
+		}
+		if (first != null) {
+			throw first;
 		}
 	}
 }
