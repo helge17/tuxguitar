@@ -5,7 +5,7 @@ TuxGuitar 2.1.0 (2026-06-30) changes:
 * Allow tempo changes on selection
 * Add option to insert chord diagram without notes
 * Add plausibility checks to the "Play Mode" dialog
-* Improve MIDI import
+* Add quantization to MIDI import
 * Add option to remove CC/PC events from Midi export
 * Improve support for DLS soundbanks
 * Improve documentation of the sound settings
