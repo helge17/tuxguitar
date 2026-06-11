@@ -234,3 +234,15 @@ $ cp -r desktop/build-scripts/tuxguitar-windows-swt-x86_64/target/tuxguitar-9.99
 ```
 
 This will copy the files to c:\tuxguitar on your Windows machine, adjust the /mnt/ folder as you wish. From there, you can simply launch TuxGuitar from your Windows machine by launching the exe in this folder.
+
+## Troubleshooting
+
+There may be some cases where the build fails. Just a few examples (not exhaustive list):
+- TuxGuitar sources have been placed in a folder whose absolute path contains non-ASCII characters
+- During development of a feature some unit tests are broken
+- other configuration-specific issues
+
+In these cases it is possible to build TuxGuitar without running the unit tests. This can be done by adding a flag `-DskipTests` to the build command:
+`$ mvn -e clean verify -P native-modules -DskipTests`
+
+Note that disabling unit tests is **not recommended**.

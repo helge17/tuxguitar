@@ -26,6 +26,7 @@ import app.tuxguitar.song.models.TGStroke;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
+import app.tuxguitar.util.TGMessagesManager;
 import app.tuxguitar.util.TGVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -334,21 +335,25 @@ public class TGStream {
 	}
 
 	public InputStream[] getDecompressedVersionAndContent(InputStream inputStream) throws IOException {
-		return this.getDecompressedFiles(inputStream, new String[] {VERSION_FILE_NAME, CONTENT_FILE_NAME});
+		return this.getDecompressedFiles(inputStream, new String[] {VERSION_FILE_NAME, CONTENT_FILE_NAME}, true);
 	}
 
 	private InputStream getDecompressedFile(InputStream inputStream, String fileName) throws IOException {
-		return this.getDecompressedFiles(inputStream, new String[] {fileName})[0];
+		return this.getDecompressedFiles(inputStream, new String[] {fileName}, false)[0];
 	}
 
-	private InputStream[] getDecompressedFiles(InputStream inputStream, String[] fileNames) throws IOException {
+	private InputStream[] getDecompressedFiles(InputStream inputStream, String[] fileNames, boolean checkContent) throws IOException {
+		int nbFilesFound = 0;
+		int nbFiles = 0;
 		InputStream[] streams = new InputStream[fileNames.length];
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 		ZipArchiveInputStream zipInputStream = new ZipArchiveInputStream(bufferedInputStream);
 		ArchiveEntry zipEntry = null;
 		while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+			nbFiles ++;
 			for (int i=0; i<fileNames.length;i++) {
 				if (zipEntry.getName().equals(fileNames[i])) {
+					nbFilesFound ++;
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 					BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 					IOUtils.copy(zipInputStream, bufferedOutputStream);
@@ -357,6 +362,9 @@ public class TGStream {
 					streams[i] = new ByteArrayInputStream(buffer);
 				}
 			}
+		}
+		if (checkContent && ((nbFiles != fileNames.length) || (nbFiles != nbFilesFound))) {
+			throw new TGFileFormatException(TGMessagesManager.getProperty("error.unsupported-format"));
 		}
 		zipInputStream.close();
 		return streams;
