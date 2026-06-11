@@ -144,20 +144,19 @@ function release_checks_before_prepare_source {
   fi
 
   echo -n "# Checking newest entry in CHANGES file ... "
-  if [ -n "$(head -1 CHANGES | grep "^TuxGuitar ${TGVERSION//\./\\\.} ([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) changes:$")" ]; then
+  D_CL1=`head -1 CHANGES`
+  if [[ $D_CL1 =~ ^TuxGuitar\ ${TGVERSION//\./\\\.}\ \([0-9][0-9]([0-9][0-9])-([0-9][0-9])-([0-9][0-9])\)\ changes:$ ]]; then
     echo -e "found:"
     head -1 CHANGES
     echo -e "# OK.\n"
+    A_VC=${BASH_REMATCH[1]}${BASH_REMATCH[2]}${BASH_REMATCH[3]}00
   else
     echo -e "first line not matching \"TuxGuitar $TGVERSION (YYYY-MM-DD) changes:\":"
     head -1 CHANGES
     abort_build
   fi
 
-  # versionCode must not decrease!
-  # Last value in date format was 25122320 (TuxGuitar 2.0.1), highest possible value is 2100000000.
-  A_VC=25${TGVERSION//\./}000
-  echo -n "# Checking Android versionCode $A_VC ... "
+  echo -n "# Check if Android versionCode matches the CHANGES date $A_VC ... "
   if [ "$(grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
     echo -e "found:"
     grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle
@@ -173,16 +172,15 @@ function release_checks_before_prepare_source {
     echo "file not found."
     abort_build
   fi
-  D_CL=`head -1 CHANGES`
-  A_CL=`head -1 $A_CL_FILE`
-  if [ "$D_CL" == "$A_CL" ]; then
+  A_CL1=`head -1 $A_CL_FILE`
+  if [ "$D_CL1" == "$A_CL1" ]; then
     echo "first line matches the CHANGES file:"
-    echo $D_CL
+    echo $D_CL1
     echo -e "# OK.\n"
   else
     echo -e "first line does not match the CHANGES file:\n"
-    echo "CHANGES: $D_CL"
-    echo "Android: $A_CL"
+    echo "CHANGES: $D_CL1"
+    echo "Android: $A_CL1"
     abort_build
   fi
 
