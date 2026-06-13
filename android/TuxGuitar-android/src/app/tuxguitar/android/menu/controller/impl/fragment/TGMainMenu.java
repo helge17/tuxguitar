@@ -2,6 +2,7 @@ package app.tuxguitar.android.menu.controller.impl.fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.TGActionProcessorListener;
@@ -26,6 +27,10 @@ import app.tuxguitar.android.menu.controller.impl.contextual.TGVelocityMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGViewMenu;
 import app.tuxguitar.android.menu.util.TGToggleStyledIconHandler;
 import app.tuxguitar.android.menu.util.TGToggleStyledIconHelper;
+import app.tuxguitar.android.view.dialog.TGDialogContext;
+import app.tuxguitar.android.view.dialog.tempo.TGTempoDialogController;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonFactory;
@@ -35,7 +40,7 @@ public class TGMainMenu implements TGMenuController {
 
 	private TGContext context;
 	private TGToggleStyledIconHelper styledIconHelper;
-
+	private MenuItem tempoDisplayItem;
 	private TGMainMenu(TGContext context) {
 		this.context = context;
 		this.styledIconHelper = new TGToggleStyledIconHelper(context);
@@ -62,6 +67,50 @@ public class TGMainMenu implements TGMenuController {
 		menu.findItem(R.id.action_menu_effects).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
 		menu.findItem(R.id.action_menu_transport).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGTransportMenu(getActivity())));
 		menu.findItem(R.id.action_menu_settings).setOnMenuItemClickListener(createFragmentActionProcessor(new TGPreferencesFragmentController()));
+		this.initializeTempoDisplay(menu);
+	}
+
+	private void initializeTempoDisplay(Menu menu) {
+		this.tempoDisplayItem = menu.findItem(R.id.action_tempo_display);
+		try {
+			this.updateTempoDisplay();
+		} catch (Exception e) {
+			// not yet ready
+		}
+		android.view.View actionView = this.tempoDisplayItem.getActionView();
+		if (actionView != null) {
+			actionView.setOnClickListener(new android.view.View.OnClickListener() {
+				@Override
+				public void onClick(android.view.View v) {
+					TGSongViewController songView = TGSongViewController.getInstance(getContext());
+					TGDialogContext dialogContext = new TGDialogContext();
+					dialogContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, songView.getCaret().getMeasure().getHeader().getSong());
+					dialogContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, songView.getCaret().getMeasure().getHeader());
+					new TGTempoDialogController().showDialog(getActivity(), dialogContext);
+				}
+			});
+		}
+	}
+
+	public void updateTempoDisplay() {
+		if (this.tempoDisplayItem == null) return;
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
+		int tempoValue;
+		int tempoPercent = midiPlayer.getMode().getCurrentPercent();
+
+		if ((midiPlayer.isRunning() && (midiPlayer.getCurrentTempo() != null))) {
+			tempoValue = midiPlayer.getCurrentTempo().getRawValue() * tempoPercent / 100;
+		} else {
+			tempoValue = TGSongViewController.getInstance(getContext()).getCaret().getMeasure().getTempo().getRawValue() * tempoPercent / 100;
+		}
+		String label = "= " + tempoValue;
+		android.view.View actionView = this.tempoDisplayItem.getActionView();
+		if (actionView != null) {
+			android.widget.TextView textView = actionView.findViewById(R.id.tempo_display_text);
+			if (textView != null) {
+				textView.setText(label);
+			}
+		}
 	}
 
 	public void fillStyledIconHandlers() {
@@ -116,3 +165,4 @@ public class TGMainMenu implements TGMenuController {
 		});
 	}
 }
+

@@ -14,6 +14,11 @@
         android:title="@string/action_transport_play"
         app:showAsAction="always"/>
     <item
+        android:id="@+id/action_tempo_display"
+        android:title="= --"
+        app:actionLayout="@layout/view_tempo_menu_item"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_menu_edit"
         android:title="@string/action_menu_edit"/>
     <item
