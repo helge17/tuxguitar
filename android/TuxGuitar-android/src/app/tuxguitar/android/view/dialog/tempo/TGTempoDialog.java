@@ -78,7 +78,7 @@ public class TGTempoDialog extends TGModalFragment {
 		spinner.setAdapter(arrayAdapter);
 		spinner.setSelection(arrayAdapter.getPosition(Integer.valueOf(tempo.getRawValue())));
 
-		int applyToDefault = TGChangeTempoRangeAction.APPLY_TO_ALL;
+		int applyToDefault = TGChangeTempoRangeAction.APPLY_TO_NEXT;
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.tempo_dlg_options_apply_to_song), TGChangeTempoRangeAction.APPLY_TO_ALL, applyToDefault);
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.tempo_dlg_options_apply_to_end), TGChangeTempoRangeAction.APPLY_TO_END, applyToDefault);
 		this.updateRadio((RadioButton) this.getView().findViewById(R.id.tempo_dlg_options_apply_to_next_marker), TGChangeTempoRangeAction.APPLY_TO_NEXT, applyToDefault);
