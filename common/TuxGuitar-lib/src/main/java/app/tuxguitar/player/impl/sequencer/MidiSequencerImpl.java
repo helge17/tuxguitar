@@ -14,7 +14,6 @@ public class MidiSequencerImpl implements MidiSequencer {
 
 	private boolean reset;
 	private boolean running;
-	private boolean stopped;
 	private Object lock;
 	private TGContext context;
 	private MidiTransmitter transmitter;
@@ -25,7 +24,6 @@ public class MidiSequencerImpl implements MidiSequencer {
 
 	public MidiSequencerImpl(TGContext context) {
 		this.running = false;
-		this.stopped = true;
 		this.context = context;
 		this.lock = new Object();
 		this.midiTickPlayer = new MidiTickPlayer();
@@ -91,14 +89,12 @@ public class MidiSequencerImpl implements MidiSequencer {
 					this.reset = false;
 					this.midiEventPlayer.reset();
 				}
-				this.stopped = false;
 				this.midiTickPlayer.process();
 				this.midiEventPlayer.process();
 				if (this.getTickPosition() > this.getTickLength()) {
 					this.stop();
 				}
-			} else if (!this.stopped) {
-				this.stopped = true;
+			} else {
 				this.midiEventPlayer.clearEvents();
 				this.midiTickPlayer.clearTick();
 				this.reset();
