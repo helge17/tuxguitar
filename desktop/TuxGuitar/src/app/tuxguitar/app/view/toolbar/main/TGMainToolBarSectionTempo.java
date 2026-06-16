@@ -34,11 +34,14 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 	private int currentTempoBase;
 	private boolean currentTempoDotted;
 	private int currentTempoValue;
+	private UIPanel parentPanel;
+	private int tempoStringLength = 0;
 
 	public TGMainToolBarSectionTempo(TGContext context, UIPanel parentPanel) {
 		super(context);
 		UIFactory uiFactory = TGApplication.getInstance(this.getContext()).getFactory();
 
+		this.parentPanel = parentPanel;
 		this.tempoImage = uiFactory.createImageView(parentPanel);
 		this.controls.add(this.tempoImage);
 		this.tempoLabel = uiFactory.createLabel(parentPanel);
@@ -103,10 +106,9 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 	@Override
 	public void loadProperties() {
 		if (this.currentTempoValue != 0) {
-			this.tempoLabel.setText("= " + String.valueOf(this.currentTempoValue));
+			this.updateTempoLabel("= " + String.valueOf(this.currentTempoValue));
 		} else {
-			// still load an icon, to make sure layout is ok (it will be refreshed after)
-			this.tempoLabel.setText("= 120");
+			this.updateTempoLabel("= 120");
 		}
 	}
 
@@ -132,8 +134,16 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		int tempoValue = tempo.getRawValue() * tempoPercent / 100;
 		if (tempoValue != this.currentTempoValue) {
 			this.currentTempoValue = tempoValue;
-			this.tempoLabel.setText("= " + String.valueOf(this.currentTempoValue));
+			this.updateTempoLabel("= " + String.valueOf(this.currentTempoValue));
 		}
+	}
+
+	private void updateTempoLabel(String newTempoString) {
+		this.tempoLabel.setText(newTempoString);
+		if (newTempoString.length() > this.tempoStringLength) {
+			parentPanel.layout();
+		}
+		this.tempoStringLength = newTempoString.length();
 	}
 
 	@Override
