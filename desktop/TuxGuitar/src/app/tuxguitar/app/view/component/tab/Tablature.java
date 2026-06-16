@@ -37,6 +37,8 @@ import app.tuxguitar.util.TGNoteRange;
 public class Tablature implements TGController {
 
 	public static final Float DEFAULT_SCALE = 1f;
+	public static final Float MIN_SCALE = 0.5f;
+	public static final Float MAX_SCALE = 2f;
 
 	private TGContext context;
 	private UIResourceFactory resourceFactory;
@@ -205,6 +207,7 @@ public class Tablature implements TGController {
 	}
 
 	public void scale(Float scale) {
+		scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
 		if(!this.scale.equals(scale)) {
 			this.scale = (scale != null ? scale : DEFAULT_SCALE);
 			this.reloadStyles();
