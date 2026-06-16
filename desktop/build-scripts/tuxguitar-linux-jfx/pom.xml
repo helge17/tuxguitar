@@ -51,6 +51,7 @@
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
 		<module>../../TuxGuitar-debug-helper</module>
+		<module>../../TuxGuitar-osc</module>
 		<module>../../TuxGuitar-nsm</module>
 	</modules>
 
