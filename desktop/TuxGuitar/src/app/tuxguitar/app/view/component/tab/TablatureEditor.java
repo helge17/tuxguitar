@@ -30,10 +30,9 @@ public class TablatureEditor implements TGEventListener{
 	public void initialize() {
 		this.tablature = new Tablature(this.context, TGDocumentManager.getInstance(this.context));
 
-		// Restore saved zoom level from config, clamped to valid range
+		// Restore saved zoom level from config
 		TGConfigManager config = TGConfigManager.getInstance(this.context);
 		float savedScale = config.getFloatValue(TGConfigKeys.LAYOUT_SCALE, Tablature.DEFAULT_SCALE);
-		savedScale = Math.max(0.5f, Math.min(savedScale, 2.0f));
 		this.tablature.scale(savedScale);
 
 		this.tablature.reloadViewLayout();

@@ -11,7 +11,6 @@ public class TGSetLayoutScaleIncrementAction extends TGActionBase{
 
 	public static final String NAME = "action.view.layout-increment-scale";
 
-	private static final Float MAXIMUM_VALUE = 2f;
 	private static final Float INCREMENT_VALUE = 0.1f;
 
 	public TGSetLayoutScaleIncrementAction(TGContext context) {
@@ -20,7 +19,7 @@ public class TGSetLayoutScaleIncrementAction extends TGActionBase{
 
 	protected void processAction(TGActionContext tgActionContext) {
 		Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
-		Float scale = Math.min((tablature.getScale() + INCREMENT_VALUE), MAXIMUM_VALUE);
+		Float scale = tablature.getScale() + INCREMENT_VALUE;
 
 		tgActionContext.setAttribute(TGSetLayoutScaleAction.ATTRIBUTE_SCALE, scale);
 		TGActionManager.getInstance(getContext()).execute(TGSetLayoutScaleAction.NAME, tgActionContext);
