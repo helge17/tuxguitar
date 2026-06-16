@@ -27,7 +27,8 @@ import app.tuxguitar.app.document.TGDocumentFileManager;
 import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
-import app.tuxguitar.nsm.osc.OSCMessage;
+import app.tuxguitar.osc.OSCClient;
+import app.tuxguitar.osc.OSCMessage;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGException;
 import app.tuxguitar.util.TGSynchronizer;
@@ -59,8 +60,7 @@ public class NSMClient implements TGActionInterceptor {
 
 	private final TGContext context;
 	private final DatagramSocket socket;
-	private final InetAddress serverAddress;
-	private final int serverPort;
+	private final OSCClient oscClient;
 
 	private Thread receiveThread;
 	private volatile boolean running;
@@ -94,9 +94,9 @@ public class NSMClient implements TGActionInterceptor {
 		String host = spec.substring(0, colon);
 		int port = Integer.parseInt(spec.substring(colon + 1));
 
-		this.serverAddress = InetAddress.getByName(host);
-		this.serverPort = port;
+		InetAddress serverAddress = InetAddress.getByName(host);
 		this.socket = new DatagramSocket();
+		this.oscClient = new OSCClient(serverAddress, port, this.socket);
 	}
 
 	// -------------------------------------------------------------------------
@@ -277,9 +277,7 @@ public class NSMClient implements TGActionInterceptor {
 
 	private void sendMessage(OSCMessage msg) {
 		try {
-			byte[] data = msg.encode();
-			DatagramPacket packet = new DatagramPacket(data, data.length, this.serverAddress, this.serverPort);
-			this.socket.send(packet);
+			this.oscClient.send(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

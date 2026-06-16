@@ -234,6 +234,12 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-osc</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>tuxguitar-nsm</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>

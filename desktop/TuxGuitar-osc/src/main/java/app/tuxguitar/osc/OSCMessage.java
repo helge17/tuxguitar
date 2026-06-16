@@ -1,4 +1,4 @@
-package app.tuxguitar.nsm.osc;
+package app.tuxguitar.osc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
