@@ -2,7 +2,10 @@ TuxGuitar 2.1.0 (2026-06-30) changes:
 
 * Allow continuous scrolling when playing
 * Add anticipation to discrete scrolling when playing
+* Security fix for CVE-2026-55543: Prevent embedding or loading malicious Java
+  classes in a TG file
 * Allow tempo changes on selection
+* Save and restore zoom level across sessions
 * Add option to insert chord diagram without notes
 * Add plausibility checks to the "Play Mode" dialog
 * Add quantization to MIDI import
