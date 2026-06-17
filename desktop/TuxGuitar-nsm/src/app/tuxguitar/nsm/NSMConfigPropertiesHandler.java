@@ -60,7 +60,7 @@ public class NSMConfigPropertiesHandler implements TGPropertiesReader, TGPropert
 
 	// -------------------------------------------------------------------------
 
-	private String filePrefix(String module) {
+	String filePrefix(String module) {
 		if (MAIN_MODULE.equals(module)) {
 			return this.sessionDir + File.separator;
 		}

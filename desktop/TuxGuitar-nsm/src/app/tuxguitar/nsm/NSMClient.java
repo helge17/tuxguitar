@@ -1,12 +1,6 @@
 package app.tuxguitar.nsm;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -81,22 +75,9 @@ public class NSMClient implements TGActionInterceptor {
 		this.sessionFilePath = null;
 		this.quitting = false;
 
-		// Parse "osc.udp://host:port[/]"
-		String spec = nsmUrl.trim();
-		if (!spec.startsWith("osc.udp://")) {
-			throw new IllegalArgumentException("Unsupported NSM_URL scheme: " + nsmUrl);
-		}
-		spec = spec.substring("osc.udp://".length());
-		if (spec.endsWith("/")) {
-			spec = spec.substring(0, spec.length() - 1);
-		}
-		int colon = spec.lastIndexOf(':');
-		String host = spec.substring(0, colon);
-		int port = Integer.parseInt(spec.substring(colon + 1));
-
-		InetAddress serverAddress = InetAddress.getByName(host);
+		NSMUrl parsedUrl = new NSMUrl(nsmUrl);
 		this.socket = new DatagramSocket();
-		this.oscClient = new OSCClient(serverAddress, port, this.socket);
+		this.oscClient = new OSCClient(parsedUrl.address, parsedUrl.port, this.socket);
 	}
 
 	// -------------------------------------------------------------------------
@@ -510,33 +491,12 @@ public class NSMClient implements TGActionInterceptor {
 		}
 	}
 
-	// Writes a one-line pointer file recording which real file is open in this session.
 	private void writePointerFile(String backupPath, String realPath) {
-		File pointerFile = new File(new File(backupPath).getParent(), "tuxguitar-source.path");
-		try {
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(pointerFile), "UTF-8"));
-			pw.println(realPath != null ? realPath : "");
-			pw.close();
-		} catch (Exception e) {
-			System.err.println("[NSM] failed to write pointer file: " + e);
-		}
+		NSMPointerFile.write(new File(backupPath).getParent(), realPath);
 	}
 
-	// Reads the pointer file; returns the real path or null if absent/empty.
 	private String readPointerFile(String sessionDir) {
-		File pointerFile = new File(sessionDir, "tuxguitar-source.path");
-		if (!pointerFile.exists()) {
-			return null;
-		}
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(pointerFile), "UTF-8"));
-			String line = br.readLine();
-			br.close();
-			return (line != null && !line.trim().isEmpty()) ? line.trim() : null;
-		} catch (Exception e) {
-			System.err.println("[NSM] failed to read pointer file: " + e);
-			return null;
-		}
+		return NSMPointerFile.read(sessionDir);
 	}
 
 	// -------------------------------------------------------------------------

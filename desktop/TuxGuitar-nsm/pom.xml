@@ -19,6 +19,25 @@
 				<directory>share</directory>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
+				<configuration>
+					<release>9</release>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.1.2</version>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
@@ -41,6 +60,12 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
