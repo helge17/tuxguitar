@@ -30,6 +30,9 @@
 					<compilerArgs>
 						<arg>-Xlint:all</arg>
 					</compilerArgs>
+					<excludes>
+						<exclude>test/**</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
