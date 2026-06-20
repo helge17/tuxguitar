@@ -7,9 +7,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -23,13 +24,11 @@ public class TGBrowserReader {
 	private static final String ATTRIBUTE_DATA = "data";
 
 	public void loadCollections(TGBrowserManager manager,File file){
-		if (file.exists()){
-			try {
-				Document doc = getDocument(file);
-				loadCollections(manager,doc.getFirstChild());
-			} catch (Throwable throwable) {
-				throwable.printStackTrace();
-			}
+		try {
+			Document doc = getDocument(file);
+			loadCollections(manager,doc.getFirstChild());
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
 		}
 	}
 
@@ -47,9 +46,9 @@ public class TGBrowserReader {
 				if(type != null){
 					TGBrowserCollection collection = new TGBrowserCollection();
 					collection.setType(type);
-					collection.setData(new TGBrowserSettings());
-					collection.getData().setTitle(title);
-					collection.getData().setData(data);
+					collection.setSettings(new TGBrowserSettings());
+					collection.getSettings().setTitle(title);
+					collection.getSettings().setData(data);
 					manager.addCollection(collection);
 				}
 			}

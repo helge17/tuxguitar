@@ -2,14 +2,15 @@ package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 
+import app.tuxguitar.android.R;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.activity.TGActivityController;
 import app.tuxguitar.android.browser.model.TGBrowser;
-import app.tuxguitar.android.browser.model.TGBrowserCallBack;
 import app.tuxguitar.android.browser.model.TGBrowserElement;
 import app.tuxguitar.android.browser.model.TGBrowserElementComparator;
 import app.tuxguitar.android.browser.model.TGBrowserException;
 import app.tuxguitar.android.util.TGStreamUtil;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.util.TGContext;
 
 import java.io.InputStream;

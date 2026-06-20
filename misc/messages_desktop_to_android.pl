@@ -6,6 +6,7 @@ use feature "switch";
 
 $COMMAND=basename($0);
 $SCRIPT_DIR=dirname($0);
+$TMPDIR=$ENV{TMPDIR} || "/tmp";
 
 my $messages_list = "$SCRIPT_DIR/../common/resources/lang/messages_*.properties";
 
@@ -77,7 +78,7 @@ while (<MSGS_EN_DESKTOP>) {
   }
 }
 
-my $key_list="/tmp/keys_android-keys_desktop-values_android.csv";
+my $key_list="$TMPDIR/keys_android-keys_desktop-values_android.csv";
 
 print "Write mapping of the english messages of the desktop and the Android version to\n";
 print "$key_list ";

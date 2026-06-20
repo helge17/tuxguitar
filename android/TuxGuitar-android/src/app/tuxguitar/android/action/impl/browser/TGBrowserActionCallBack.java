@@ -5,7 +5,7 @@ import app.tuxguitar.action.TGActionException;
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.android.action.TGActionAsyncProcess;
 import app.tuxguitar.android.action.TGActionBase;
-import app.tuxguitar.android.browser.model.TGBrowserCallBack;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 
 public abstract class TGBrowserActionCallBack<T> extends TGActionAsyncProcess implements TGBrowserCallBack<T> {
 

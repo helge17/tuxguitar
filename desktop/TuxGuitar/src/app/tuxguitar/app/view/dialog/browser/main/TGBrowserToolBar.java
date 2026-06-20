@@ -1,14 +1,16 @@
 package app.tuxguitar.app.view.dialog.browser.main;
 
 import java.util.Iterator;
+import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
+import app.tuxguitar.ui.menu.UIMenuItem;
 import app.tuxguitar.ui.toolbar.UIToolActionItem;
 import app.tuxguitar.ui.toolbar.UIToolBar;
 import app.tuxguitar.ui.toolbar.UIToolCustomItem;
@@ -20,10 +22,14 @@ import app.tuxguitar.ui.widget.UISelectItem;
 public class TGBrowserToolBar extends TGBrowserBar{
 
 	private UIToolBar toolBar;
+
+	private UIToolMenuItem newItem;
+	private UIMenuActionItem demoSongs;
+
 	private UIToolActionItem root;
 	private UIToolActionItem back;
 	private UIToolActionItem refresh;
-	private UIToolMenuItem newBrowser;
+
 	private UIToolCustomItem collectionsItem;
 	private UIDropDownSelect<TGBrowserCollection> collections;
 	private TGBrowserCollection currentCollection;
@@ -35,27 +41,13 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	public void createToolBar(UIContainer parent){
 		this.toolBar = this.getBrowser().getUIFactory().createHorizontalToolBar(parent);
 
-		//---New Book----------------------------------------------------------
-		this.newBrowser = this.toolBar.createMenuItem();
-		this.newBrowser.setImage(TuxGuitar.getInstance().getIconManager().getBrowserNew());
-
-		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
-		while(bookTypes.hasNext()) {
-			final TGBrowserFactory bookType = bookTypes.next();
-
-			UIMenuActionItem item = this.newBrowser.getMenu().createActionItem();
-			item.setText(bookType.getName());
-			item.setData(TGBrowserFactory.class.getName(), bookType);
-			item.addSelectionListener(new UISelectionListener() {
-				public void onSelect(UISelectionEvent event) {
-					newCollection( bookType.getType());
-				}
-			});
-		}
+		//---New Collection------------------------------------------------------
+		this.newItem = this.toolBar.createMenuItem();
+		this.newItem.setImage(TuxGuitar.getInstance().getIconManager().getBrowserNew());
 
 		this.toolBar.createSeparator();
 
-		//---Root Folder------------------------------------------------------
+		//---Root Folder---------------------------------------------------------
 		this.root = this.toolBar.createActionItem();
 		this.root.setImage(TuxGuitar.getInstance().getIconManager().getBrowserRoot());
 		this.root.addSelectionListener(new UISelectionListener() {
@@ -64,7 +56,7 @@ public class TGBrowserToolBar extends TGBrowserBar{
 			}
 		});
 
-		//---Back Folder------------------------------------------------------
+		//---Back Folder---------------------------------------------------------
 		this.back = this.toolBar.createActionItem();
 		this.back.setImage(TuxGuitar.getInstance().getIconManager().getBrowserBack());
 		this.back.addSelectionListener(new UISelectionListener() {
@@ -82,10 +74,9 @@ public class TGBrowserToolBar extends TGBrowserBar{
 			}
 		});
 
-		//---Finish tool bar
 		this.toolBar.createSeparator();
 
-		//---Collections-------------------------------------------------------------
+		//---Collections---------------------------------------------------------
 		this.collectionsItem = this.toolBar.createCustomItem();
 		this.collectionsItem.setLayoutAttribute(UIToolCustomItem.FILL, true);
 		this.collectionsItem.setLayoutAttribute(UIToolCustomItem.PACKED_WIDTH, 0f);
@@ -99,11 +90,43 @@ public class TGBrowserToolBar extends TGBrowserBar{
 	}
 
 	public void updateItems(){
-		this.newBrowser.setEnabled(!getBrowser().getConnection().isLocked());
+		this.newItem.setEnabled(!getBrowser().getConnection().isLocked());
 		this.collections.setEnabled(!getBrowser().getConnection().isLocked());
 		this.root.setEnabled(!getBrowser().getConnection().isLocked() && getBrowser().getConnection().isOpen());
 		this.back.setEnabled(!getBrowser().getConnection().isLocked() && getBrowser().getConnection().isOpen());
 		this.refresh.setEnabled(!getBrowser().getConnection().isLocked() && getBrowser().getConnection().isOpen());
+	}
+
+	public void updateTypes() {
+		List<UIMenuItem> newItems = this.newItem.getMenu().getItems();
+		for(UIMenuItem uiMenuItem : newItems){
+			uiMenuItem.dispose();
+		}
+
+		Iterator<TGBrowserFactory> bookTypes = TGBrowserManager.getInstance(getBrowser().getContext()).getFactories();
+
+		while(bookTypes.hasNext()) {
+			final TGBrowserFactory bookType = bookTypes.next();
+			UIMenuActionItem item = this.newItem.getMenu().createActionItem();
+			item.setText(bookType.getName());
+			item.setImage(bookType.getIcon());
+			item.addSelectionListener(new UISelectionListener() {
+				public void onSelect(UISelectionEvent event) {
+					newCollection( bookType.getType());
+				}
+			});
+		}
+
+		this.newItem.getMenu().createSeparator();
+
+		this.demoSongs = this.newItem.getMenu().createActionItem();
+		this.demoSongs.setText(TuxGuitar.getProperty("browser.collection.demo-songs"));
+		this.demoSongs.setImage(TuxGuitar.getInstance().getIconManager().getBrowserCollection());
+		this.demoSongs.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				addDemoCollection();
+			}
+		});
 	}
 
 	public void updateCollections(TGBrowserCollection selection){
@@ -115,13 +138,22 @@ public class TGBrowserToolBar extends TGBrowserBar{
 		Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getBrowser().getContext()).getCollections();
 		while(it.hasNext()){
 			TGBrowserCollection collection = it.next();
-			if( collection.getData() != null ) {
-				this.collections.addItem(new UISelectItem<TGBrowserCollection>(collection.getData().getTitle(), collection));
+			if( collection.getSettings() != null ) {
+				this.collections.addItem(new UISelectItem<TGBrowserCollection>(collection.getSettings().getTitle(), collection));
 			}
 		}
 
 		this.collections.setSelectedValue(this.currentCollection);
 		this.collections.setIgnoreEvents(false);
+	}
+
+	public void loadProperties(){
+		this.newItem.setToolTipText(TuxGuitar.getProperty("add"));
+		this.updateTypes();
+		this.root.setToolTipText(TuxGuitar.getProperty("browser.go-root"));
+		this.back.setToolTipText(TuxGuitar.getProperty("browser.go-back"));
+		this.refresh.setToolTipText(TuxGuitar.getProperty("browser.refresh"));
+		this.updateCollections(getBrowser().getCollection());
 	}
 
 	public void reload(){
@@ -133,14 +165,6 @@ public class TGBrowserToolBar extends TGBrowserBar{
 			this.loadProperties();
 			this.updateItems();
 		}
-	}
-
-	public void loadProperties(){
-		this.newBrowser.setToolTipText(TuxGuitar.getProperty("browser.collection.new"));
-		this.root.setToolTipText(TuxGuitar.getProperty("browser.go-root"));
-		this.back.setToolTipText(TuxGuitar.getProperty("browser.go-back"));
-		this.refresh.setToolTipText(TuxGuitar.getProperty("browser.refresh"));
-		this.updateCollections(getBrowser().getCollection());
 	}
 
 	public void updateCollection() {

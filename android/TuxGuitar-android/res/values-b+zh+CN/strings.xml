@@ -212,7 +212,7 @@
 
 	<string name="browser_refresh">刷新</string>
 	<string name="browser_back">后退</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">主目录</string>
 	<string name="browser_settings">设置</string>
 	<string name="browser_save_label">保存</string>
 	<!-- <string name="browser_add_collection"></string> -->
@@ -222,15 +222,15 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
-
-	<!-- filesystem -->
-	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">浏览常用文件夹</string>
 
 	<string name="browser_settings_fs_dlg_title">文件系统</string>
 	<string name="browser_settings_fs_name_label">名称:</string>
 	<string name="browser_settings_fs_path_label">文件夹:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">选择文件夹</string>
 
 	<string name="browser_settings_fs_error_title">错误</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
@@ -238,23 +238,18 @@
 	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
 	<!-- <string name="browser_settings_fs_error_nonfolder_path"></string> -->
 
-	<!-- default filesystem location -->
-	<!-- <string name="browser_settings_fs_root_folder_title"></string> -->
-	<!-- <string name="browser_settings_fs_external_storage_title"></string> -->
-	<!-- <string name="browser_settings_fs_secondary_storage_title"></string> -->
-
 	<!-- =================================================================== -->
 	<!-- ======================= PREFERENCES =============================== -->
 	<!-- =================================================================== -->
 
-	<!-- <string name="preferences_midi_category_title"></string> -->
-	<!-- <string name="preferences_midi_output_port_title"></string> -->
+	<string name="preferences_general_title">常规</string>
+	<string name="preferences_general_use_collection_browser_title">浏览常用文件夹</string>
+	<!-- <string name="preferences_general_use_collection_browser_summary"></string> -->
+
+	<string name="preferences_sound_category_title">声音</string>
+	<string name="preferences_midi_output_port_title">MIDI 端口</string>
 	<!-- <string name="preferences_midi_output_port_summary"></string> -->
 	<!-- <string name="preferences_midi_output_port_summary_empty"></string> -->
-
-	<!-- <string name="preferences_storage_category_title"></string> -->
-	<!-- <string name="preferences_storage_storage_use_saf_provider_title"></string> -->
-	<!-- <string name="preferences_storage_storage_use_saf_provider_summary"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ========================= DIALOGS ================================= -->
@@ -347,7 +342,6 @@
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">错误</string>
 	<string name="track_tuning_dlg_range_error">此数值必须介于 %1$d 和 %2$d 之间</string>
-	<string name="track_tuning_dlg_empty_value_error">值不能为空</string>
 
 	<string name="track_string_count_dlg_title">行数</string>
 	<string name="track_string_count_dlg_count_label">行数:</string>

@@ -1,0 +1,8 @@
+TuxGuitar 1.6.0 (2023-09-06) changes:
+
+* Fix percussion channel issues in GP importer
+* Improve MIDI import/export
+* Enhance bend display
+* Improve horizontal scrolling during playback
+* Add translations
+* Add basic support for hardware keyboards

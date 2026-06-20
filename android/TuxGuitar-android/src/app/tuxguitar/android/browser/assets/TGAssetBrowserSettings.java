@@ -1,12 +1,12 @@
 package app.tuxguitar.android.browser.assets;
 
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 
 public class TGAssetBrowserSettings  {
 
 	private static final String DEFAULT_ID = "browser-assets";
 	private static final String DEFAULT_PATH = "demo-songs";
-	private static final String DEFAULT_TITLE = (TGAssetBrowserFactory.BROWSER_NAME + " (Read Only)");
+	private static final String DEFAULT_TITLE = TGAssetBrowserFactory.BROWSER_NAME;
 
 	public TGAssetBrowserSettings(){
 		super();

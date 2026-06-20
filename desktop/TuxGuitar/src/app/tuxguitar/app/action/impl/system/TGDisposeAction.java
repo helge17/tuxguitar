@@ -7,6 +7,7 @@ import app.tuxguitar.app.system.icons.TGSkinManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.app.view.component.table.TGTableViewer;
+import app.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
 import app.tuxguitar.app.view.dialog.fretboard.TGFretBoardEditor;
 import app.tuxguitar.app.view.dialog.marker.TGMarkerList;
 import app.tuxguitar.app.view.dialog.transport.TGTransportDialog;
@@ -29,6 +30,11 @@ public class TGDisposeAction extends TGActionBase {
 	}
 
 	protected void processAction(TGActionContext context){
+		TGBrowserDialog browser = TGBrowserDialog.getInstance(getContext());
+		if(!browser.isDisposed()) {
+			browser.dispose();
+		}
+
 		this.closeModules();
 		this.saveConfig();
 		this.dispose();
@@ -40,6 +46,7 @@ public class TGDisposeAction extends TGActionBase {
 
 		config.setValue(TGConfigKeys.LAYOUT_MODE,TablatureEditor.getInstance(getContext()).getTablature().getViewLayout().getMode());
 		config.setValue(TGConfigKeys.LAYOUT_STYLE,TablatureEditor.getInstance(getContext()).getTablature().getViewLayout().getStyle());
+		config.setValue(TGConfigKeys.LAYOUT_SCALE, TablatureEditor.getInstance(getContext()).getTablature().getScale());
 		config.setValue(TGConfigKeys.SHOW_PIANO,!TuxGuitar.getInstance().getPianoEditor().isDisposed());
 		config.setValue(TGConfigKeys.SHOW_MATRIX,!TuxGuitar.getInstance().getMatrixEditor().isDisposed());
 		config.setValue(TGConfigKeys.SHOW_FRETBOARD,TuxGuitar.getInstance().getFretBoardEditor().isVisible());

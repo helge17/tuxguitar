@@ -1,9 +1,9 @@
 package app.tuxguitar.android.view.dialog.browser.collection;
 
-import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.TGBrowserManager;
-import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.error.TGErrorManager;
 
 public class TGBrowserCollectionsSettingsHandler implements TGBrowserFactorySettingsHandler {

@@ -1,0 +1,11 @@
+TuxGuitar 2.0.0 (2025-11-02) changes:
+
+* New file format, not readable by older versions
+* Base duration for tempo is now configurable, not necessarily a quarter
+* Added pick stroke up/down effect on beat
+* Enable ASCII export
+* Fix an old issue with tuplets that could lead to invalid measures
+* Better handling of tied notes
+* Import TEF v3 files
+* Improved ASCII and pdf export
+* Improved Guitar Pro import

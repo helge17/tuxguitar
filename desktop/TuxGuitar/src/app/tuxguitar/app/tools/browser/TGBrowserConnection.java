@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import app.tuxguitar.app.tools.browser.base.TGBrowser;
-import app.tuxguitar.app.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.app.tools.browser.base.TGBrowserElement;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGLock;
 

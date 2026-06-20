@@ -65,12 +65,12 @@ public class TGPreferencesFragment extends PreferenceFragmentCompat implements S
 	public void createUpdateActionsMap() {
 		this.updateActionsMap = new HashMap<String, String>();
 		this.updateActionsMap.put(TGTransportProperties.PROPERTY_MIDI_OUTPUT_PORT, TGTransportLoadSettingsAction.NAME);
-		this.updateActionsMap.put(TGStorageProperties.PROPERTY_SAF_PROVIDER, TGStorageLoadSettingsAction.NAME);
+		this.updateActionsMap.put(TGStorageProperties.PROPERTY_COLLECTION_BROWSER, TGStorageLoadSettingsAction.NAME);
 	}
 
 	public void createSafPreferences() {
-		CheckBoxPreference checkBoxPreference = (CheckBoxPreference) this.findPreference(TGStorageProperties.PROPERTY_SAF_PROVIDER);
-		checkBoxPreference.setChecked(new TGStorageProperties(this.findContext()).isUseSafProvider());
+		CheckBoxPreference checkBoxPreference = (CheckBoxPreference) this.findPreference(TGStorageProperties.PROPERTY_COLLECTION_BROWSER);
+		checkBoxPreference.setChecked(new TGStorageProperties(this.findContext()).isUseCollectionBrowser());
 	}
 
 	public void createOutputPortPreferences() {

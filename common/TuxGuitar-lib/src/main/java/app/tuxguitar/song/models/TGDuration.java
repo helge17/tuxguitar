@@ -138,11 +138,39 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	// - each di is less than or equal to specified max
 	// - for one time division, all di are identical. E.g. [3*eighths triplet] instead  of [1 quarter triplet + 1 eighth triplet]
 	// - di with highest denominator of time division appear first in returned list (i.e. quintuplets before triplets)
+	// - each di is longer than min duration (value smaller than maxValue) if specified
+	// - each di has time division.enters smaller than or equal to maxDivision if specified
+	// - if approximate is set, list closest to target is returned
 	//
 	// if not all criteria can be fulfilled, null is returned
+	
+/*
+ * principle of the algorithm:
+ * All valid durations are subdivisions of a whole
+ * a whole's duration is encoded by the product of all prime numbers of possible divisions: 3*5*7*...
+ * so a whole's duration is divisible by all possible values of TGDivision.enters
+ * (warning: 9 is not a prime)
+ * when splitting D into multiple TGDuration di:
+ * - if none of these di use a division 8/13, then the sum shall remain divisible by 13
+ * - logically: if D is NOT divisible by 13, then it must contain some TGDuration di with TGDivision 8/13
+ * - if so, compute how many instances of TGDuration with the lowest possible duration and this division
+ *          shall be subtracted from D to make sure the remaining value becomes divisible by 13
+ * - when it's done, look if the remaining value of D is divisible by 11
+ * - etc
+ * 
+ */
+	
 	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory) {
+		return splitPreciseDuration(timeToSplit, max, factory, null, null);
+	}
+	public static List<TGDuration> splitPreciseDuration(long timeToSplit, long max, TGFactory factory,
+			Integer maxDurationValue, Integer maxDivision) {
+
 		long D = timeToSplit;
 		List<TGDuration> list = new ArrayList<TGDuration>();
+		if (D == 0) {
+			return list;
+		}
 
 		// max: power of 2, no longer than a whole
 		max = Math.min(max, TGDuration.WHOLE_PRECISE_DURATION);
@@ -151,27 +179,37 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 			maxBase /= 2;
 		}
 
-		// look for all division types, starting with longest divisions
+		// look for all division types, starting with longest divisions, except excluded ones
 		for (TGDivisionType dt : divisionTypes) {
-			if ((dt.getEnters()==1) || (D % dt.getEnters() != 0)) {
+			int enters = dt.getEnters();
+			// specific case if maxDivision < 9, since 9 is not a prime number
+			if ((maxDivision != null) && (maxDivision < 9) && (dt.getEnters()==3)) {
+				enters *= 3;
+			}
+			if ((dt.getEnters()==1) || ((D % enters != 0) && (maxDivision==null || dt.getEnters()<=maxDivision))) {
 				// D contains notes with this time division
 				boolean foundDurationWithTimeDivision = false;
 
 				// try successively to match with no dotted/no double-dotted, then with dotted, then with double-dotted
 				for (int subDivision = 1; subDivision <= 4 && !foundDurationWithTimeDivision; subDivision*=2) {
-					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * SHORTEST);  // shortest possible duration for this time division
+					int shortest = (maxDurationValue == null ? SHORTEST : maxDurationValue);
+					long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * shortest);  // shortest possible duration for this time division
 					base /= subDivision;
 
 					if (base > maxBase)  {
 						break;
 					}
+					if ((maxDurationValue != null) && (subDivision != 1)) {
+						break;
+					}
 					long toSubtract;
-					if (dt.getEnters() == 1) {
+					boolean isPowerOf2 = (D % base == 0) && (((D/base) & (D/base - 1)) == 0);
+					if ((dt.getEnters() == 1) || isPowerOf2) {
 						toSubtract = D;
 					} else {
 						// subtract as many occurrences of base to D so that D does not contain any more duration with this time division
 						toSubtract = base;
-						while( ((D-toSubtract) % dt.getEnters() != 0) && (toSubtract <= D)) {
+						while( ((D-toSubtract) % enters != 0) && (toSubtract <= D)) {
 							toSubtract += base;
 						}
 					}
@@ -179,9 +217,9 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 					if ((toSubtract % base == 0) && (toSubtract <= D)) {
 						// number of occurrences of base duration
 						long nBase = toSubtract / base;
-						// look for longest note duration with this time division that can fit (successive powers of 2)
-						long n=1;
-						while ((nBase % 2 == 0) && (n*2*base <= max)) {
+						long n = 1;
+						// merge powers of 2
+						while ((nBase != 0) && (nBase % 2 == 0) && (n*2*base <= max)) {
 							n *= 2;
 							nBase /= 2;
 						}
@@ -215,14 +253,16 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						}
 
 						if (ok) {
+							long handled = 0;
 							for (int i=0; i<nBase; i++) {
 								TGDuration duration = factory.newDuration();
 								duration.setPreciseValue(n* base);
 								duration.setDotted(dotted);
 								duration.setDoubleDotted(doubleDotted);
 								list.add(duration);
+								handled += duration.getPreciseTime();
 							}
-							D -= toSubtract;
+							D -= handled;
 							foundDurationWithTimeDivision = true;
 						}
 					}
@@ -233,6 +273,140 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 			return null;
 		}
 		return list;
+	}
+
+	public static List<TGDuration> splitPreciseDurationApproximately(long timeToSplit, long max, TGFactory factory,
+			Integer maxDurationValue, Integer maxDivision) {
+
+		if (timeToSplit == 0) {
+			return new ArrayList<TGDuration>();
+		}
+
+		// try to split exactly, then approximately, and take the "best" solution
+		List<TGDuration> exactSplit = splitPreciseDuration(timeToSplit, max, factory, maxDurationValue, maxDivision);
+		List<TGDuration> approximateSplit = null;
+
+		long shortest = (maxDurationValue == null ? TGDuration.SHORTEST : maxDurationValue);
+		// look for a single duration with an acceptable error
+		long bestError = -1;
+		TGDuration bestDuration = null;
+		// is zero acceptable?
+		if (timeToSplit <= TGDuration.WHOLE_PRECISE_DURATION / shortest) {
+			bestError = timeToSplit;
+			approximateSplit = new ArrayList<TGDuration>();
+		}
+		
+		for (TGDuration d : durationMap.values()) {
+			// exclude double-dotted: purely arbitrary criterion
+			if ((d.getValue() <= shortest) && ((maxDivision == null) || (d.getDivision().getEnters() <= maxDivision)) && !d.isDoubleDotted()) {
+				long maxError = TGDuration.WHOLE_PRECISE_DURATION * d.getDivision().getTimes() / shortest / d.getDivision().getEnters();
+				long error = Math.abs(d.getPreciseTime() - timeToSplit);
+				if ((error <= maxError) &&
+						((bestError < 0)
+						 || (d.moreComplexThan(bestDuration) < 0)
+						 || ((d.moreComplexThan(bestDuration) == 0) && (error < bestError || bestError < 0)))) {
+					bestDuration = d;
+					bestError = error;
+				}
+			}
+		}
+		if (bestDuration != null) {
+			// found
+			approximateSplit = new ArrayList<TGDuration>();
+			approximateSplit.add(bestDuration.clone(factory));
+		}
+
+		// if no single duration found, try a combination of several
+		if (approximateSplit == null) {
+			approximateSplit = new ArrayList<TGDuration>();
+			bestError = 0;
+	
+			// max: power of 2, no longer than a whole
+			max = Math.min(max, TGDuration.WHOLE_PRECISE_DURATION);
+			long maxBase = TGDuration.WHOLE_PRECISE_DURATION;
+			while (max < maxBase) {
+				maxBase /= 2;
+			}
+			// look for all division types, starting with longest divisions, except excluded ones
+			for (TGDivisionType dt : divisionTypes) {
+				if ((maxDivision == null) || (dt.getEnters() <= maxDivision)) {
+					List<TGDuration> list = new ArrayList<TGDuration>();
+					if ((maxDivision==null || dt.getEnters()<=maxDivision)) {
+						long base = TGDuration.WHOLE_PRECISE_DURATION * dt.getTimes() / (dt.getEnters() * shortest);  // shortest possible duration for this time division
+						if (base > maxBase)  {
+							break;
+						}
+						// number of occurrences of base duration (rounded)
+						// apply -1 offset, because Math.round(1.5)==2, and 1 is preferred
+						// (better a bit too short than too long)
+						long nBase = Math.round((float)(timeToSplit-1) / (float)base);
+						// merge powers of 2
+						long listPreciseDuration = 0;
+						while (nBase > 0) {
+							long baseToAdd = 0;
+							long nBaseToAdd = 0;
+							if (2 * base > max) {
+								baseToAdd = base;
+								nBaseToAdd = nBase;
+								nBase = 0;
+							}
+							else if ((nBase % 2) != 0) {
+								baseToAdd = base;
+								nBaseToAdd = 1;
+								nBase --;
+							}
+							else {
+								nBase /= 2;
+								base *= 2;
+							}
+							for (int i=0; i<nBaseToAdd; i++) {
+								TGDuration duration = factory.newDuration();
+								duration.setPreciseValue(baseToAdd);
+								list.add(duration);
+								listPreciseDuration += duration.getPreciseTime();
+							}
+						}
+						Collections.reverse(list);
+						
+						long error = Math.abs(timeToSplit - listPreciseDuration);
+						if ((approximateSplit.size() == 0) || (error <= bestError)) {
+							approximateSplit = list;
+							bestError = error;
+						}
+					}
+				}
+			}
+		}
+		// compare exact split with approximate (arbitrary criteria)
+		if (exactSplit == null) {
+			return approximateSplit;
+		}
+		boolean heterogeneousDivision = false;
+		for (TGDuration d : exactSplit) {
+			heterogeneousDivision |= (!d.getDivision().isEqual(exactSplit.get(0).getDivision()));
+		}
+		if (heterogeneousDivision || (approximateSplit.size() < exactSplit.size())) {
+			return approximateSplit;
+		}
+		return exactSplit;
+	}
+
+	// arbitrary complexity criteria
+	// returns a positive value if more complex, negative if less complex, zero if equivalent
+	private int moreComplexThan(TGDuration d) {
+		if (d == null) {
+			// zero duration is "as simple as" no dotted, no time division
+			if (this.dotted || this.doubleDotted || !this.getDivision().isEqual(TGDivisionType.NORMAL)) {
+				return 1;
+			}
+			return 0;
+		}
+		if (this.isDoubleDotted() && !d.isDoubleDotted()) return 1;
+		if (this.getDivision().getEnters() != d.getDivision().getEnters()) {
+			return this.getDivision().getEnters() > d.getDivision().getEnters() ? 1 : -1;
+		}
+		if (this.isDotted() && !d.isDotted()) return 1;
+		return 0;
 	}
 
 	private static long gcd(long a, long b) {

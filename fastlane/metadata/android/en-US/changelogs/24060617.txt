@@ -1,0 +1,6 @@
+TuxGuitar 1.6.3 (2024-06-06) changes:
+
+* "Currently played beat" highlight improved
+* Made caret more visible
+* Improved MusicXML, MIDI and PDF export
+* Improved note spacing

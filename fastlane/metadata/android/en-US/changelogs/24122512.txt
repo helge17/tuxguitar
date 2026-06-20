@@ -1,0 +1,4 @@
+TuxGuitar 1.6.6 (2024-12-27) changes:
+
+* Fixed several issues when first track is muted
+* Improved TEF v2 import

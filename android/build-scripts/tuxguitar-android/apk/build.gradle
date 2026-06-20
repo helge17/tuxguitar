@@ -2,10 +2,6 @@ plugins {
 	id 'base'
 }
 
-base {
-	archivesName = "tuxguitar-android-9.99-SNAPSHOT"
-}
-
 apply plugin: 'com.android.application'
 
 // different path structure for the different plugins:
@@ -32,7 +28,7 @@ android {
 
 	namespace = 'app.tuxguitar.android.application'
 
-	compileSdkVersion 31
+	compileSdkVersion 35
 
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_9
@@ -42,10 +38,11 @@ android {
 	defaultConfig {
 		applicationId "app.tuxguitar.android.application"
 		minSdkVersion 24
-		targetSdkVersion 33
+		targetSdkVersion 35
 		multiDexEnabled true
-		versionCode Integer.parseInt(new Date().format('yyMMddHH'))
-		versionName "9.99-SNAPSHOT"
+		// Format:  yyMMddHH
+		versionCode 26063000
+		versionName "2.1.0"
 	}
 
 	buildTypes {
@@ -60,6 +57,10 @@ android {
 			resources.srcDirs = ['./build/generated/tuxguitar-android-apk-src/share']
 		}
 	}
+}
+
+base {
+	archivesName = "tuxguitar-android-${android.defaultConfig.versionName}"
 }
 
 task generateSources {
@@ -113,7 +114,7 @@ task generateSources {
 	fileNames.add('../../../../common/TuxGuitar-compat/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin')
 	fileNames.add('../../../../common/TuxGuitar-midi/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin')
 
-	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin');
+	File file = new File('apk/build/generated/tuxguitar-android-apk-src/share/META-INF/services/app.tuxguitar.util.plugin.TGPlugin')
  	file.getParentFile().mkdirs()
  	file.text = files(fileNames).collect{it.getText()}.join("\n")
 }

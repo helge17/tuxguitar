@@ -144,12 +144,53 @@ function release_checks_before_prepare_source {
   fi
 
   echo -n "# Checking newest entry in CHANGES file ... "
-  if [ -n "$(head -1 CHANGES | grep "^TuxGuitar ${TGVERSION//\./\\\.} ([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) changes:$")" ]; then
+  D_CL1=`head -1 CHANGES`
+  if [[ $D_CL1 =~ ^TuxGuitar\ ${TGVERSION//\./\\\.}\ \([0-9][0-9]([0-9][0-9])-([0-9][0-9])-([0-9][0-9])\)\ changes:$ ]]; then
     echo -e "found:"
     head -1 CHANGES
     echo -e "# OK.\n"
+    A_VC=${BASH_REMATCH[1]}${BASH_REMATCH[2]}${BASH_REMATCH[3]}00
   else
-    echo -e "first line not matching \"TuxGuitar $TGVERSION (YYYY-MM-DD) changes:\"."
+    echo -e "first line not matching \"TuxGuitar $TGVERSION (YYYY-MM-DD) changes:\":"
+    head -1 CHANGES
+    abort_build
+  fi
+
+  echo -n "# Check if Android versionCode matches the CHANGES date $A_VC ... "
+  if [ "$(grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
+    echo -e "found:"
+    grep "^\s*versionCode $A_VC$" android/build-scripts/tuxguitar-android/apk/build.gradle
+    echo -e "# OK.\n"
+  else
+    echo -e "not found."
+    abort_build
+  fi
+
+  A_CL_FILE=fastlane/metadata/android/en-US/changelogs/$A_VC.txt
+  echo -n "# Checking Android changelog $A_CL_FILE ... "
+  if [ ! -f $A_CL_FILE ]; then
+    echo "file not found."
+    abort_build
+  fi
+  A_CL1=`head -1 $A_CL_FILE`
+  if [ "$D_CL1" == "$A_CL1" ]; then
+    echo "first line matches the CHANGES file:"
+    echo $D_CL1
+    echo -e "# OK.\n"
+  else
+    echo -e "first line does not match the CHANGES file:\n"
+    echo "CHANGES: $D_CL1"
+    echo "Android: $A_CL1"
+    abort_build
+  fi
+
+  echo -n "# Checking Android versionName \"$TGVERSION\" ... "
+  if [ "$(grep "^\s*versionName \"${TGVERSION//\./\\\.}\"$" android/build-scripts/tuxguitar-android/apk/build.gradle | wc -l)" -eq 1 ]; then
+    echo -e "found:"
+    grep "^\s*versionName \"${TGVERSION//\./\\\.}\"$" android/build-scripts/tuxguitar-android/apk/build.gradle
+    echo -e "# OK.\n"
+  else
+    echo -e "not found."
     abort_build
   fi
 
@@ -225,11 +266,13 @@ fi
 
 echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
 
-echo -e "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ..."
-find . \( -name "*.xml" -or -name "*.gradle"  -or -name "*.properties" -or -name "*.html" -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
-# Also set the version in the "Help - About" dialog
+echo -en "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ... "
+find . \( -name "*.xml" -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
+echo -n "in \"Help - About\" dialog ... "
 sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
-echo "# OK."
+echo -n "for Android ... "
+sed -i -e "s/versionName \".*\"/versionName \"$TGVERSION\"/" android/build-scripts/tuxguitar-android/apk/build.gradle
+echo "OK."
 
 echo $TGVERSION > .build-version
 
@@ -568,7 +611,7 @@ function copy_to_github {
       REL_NOTES=$'**Warning:** This version of TuxGuitar is our development playground and may not be stable!\n\n'
       RELEASE_TYPE=--prerelease
     fi
-    REL_NOTES=$REL_NOTES$'**Please note:** TuxGuitar versions 2.0.0 and later use a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
+    REL_NOTES=$REL_NOTES$'**Security notice:** The packages available here are not officially signed. To install them, you must temporarily disable the digital signature verification of your operating system (called "disable Gatekeeper" on macOS, "allow installation from unknown sources" on Windows, "Sideloading" on Android).\n\n**Please note:** TuxGuitar versions 2.0.0 and later use a **new file format** which cannot be read by older versions. You can still export your tablatures in the old format so that you can open them with older versions of TuxGuitar.\n\nThe Windows packages include OpenJDK from portableapps.com.\nThe macOS package includes OpenJDK from brew.sh.'
     gh release create --target $GIT_BRANCH $RELEASE_TYPE --draft --title $TGVERSION --notes "$REL_NOTES" $TGVERSION
     # It may take a few sec until the release is ready
     sleep 5
@@ -631,8 +674,8 @@ function copy_to_github {
 [ "$#" -lt 1 ] && usage && exit 1
 [ $build_linux ]    && [ `uname` != Linux ]   && echo -e "\nError: Linux version can only be built on Linux."            && abort_build
 [ $build_windows ]  && [ `uname` != Linux ]   && echo -e "\nError: Windows version can only be built on Linux."          && abort_build
-[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannot be built on/from FreeBSD."      && abort_build
-[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from macOS."      && abort_build
+[ $build_macos ]    && [ `uname` == FreeBSD ] && echo -e "\nError: macOS version cannot be built on/from FreeBSD."       && abort_build
+[ $build_bsd ]      && [ `uname` == Darwin ]  && echo -e "\nError: FreeBSD version cannot be built on/from macOS."       && abort_build
 [ $build_android ]  && [ `uname` != Linux ]   && echo -e "\nError: Android version can only be built on Linux."          && abort_build
 [ $copy_to_github ] && [ `uname` != Linux ]   && echo -e "\nError: A new GitHub release can only be created from Linux." && abort_build
 

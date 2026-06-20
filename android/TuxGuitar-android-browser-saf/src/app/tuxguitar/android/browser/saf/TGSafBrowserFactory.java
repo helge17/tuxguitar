@@ -2,12 +2,13 @@ package app.tuxguitar.android.browser.saf;
 
 import android.net.Uri;
 
+import app.tuxguitar.android.R;
 import app.tuxguitar.android.activity.TGActivity;
 import app.tuxguitar.android.activity.TGActivityController;
 import app.tuxguitar.android.browser.model.TGBrowserFactory;
 import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
-import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.TGContext;
 
 import androidx.documentfile.provider.DocumentFile;

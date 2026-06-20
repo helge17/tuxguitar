@@ -1,5 +1,8 @@
 package app.tuxguitar.android.browser.model;
 
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
+
 public interface TGBrowserFactory {
 
 	String getName();

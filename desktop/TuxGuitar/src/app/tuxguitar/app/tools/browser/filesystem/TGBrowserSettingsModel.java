@@ -1,6 +1,6 @@
 package app.tuxguitar.app.tools.browser.filesystem;
 
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 
 public class TGBrowserSettingsModel {
 

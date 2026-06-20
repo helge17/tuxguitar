@@ -2,22 +2,23 @@ package app.tuxguitar.app.tools.browser.ftp;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import app.tuxguitar.app.TuxGuitar;
-import app.tuxguitar.app.tools.browser.TGBrowserCollection;
 import app.tuxguitar.app.tools.browser.TGBrowserManager;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
-import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.app.view.dialog.browser.main.TGBrowserDialog;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
@@ -206,7 +207,7 @@ class TGBrowserDataDialog{
 			public void onSelect(UISelectionEvent event) {
 				String name = nameText.getText();
 				String host = hostText.getText();
-				String path = pathText.getText();
+				String path = Paths.get(pathText.getText()).normalize().toString().replace("\\", "/");
 				String user = userText.getText();
 				String password = passwordText.getText();
 				String proxyHost = proxyHostText.getText();
@@ -257,7 +258,7 @@ class TGBrowserDataDialog{
 			Iterator<TGBrowserCollection> it = TGBrowserManager.getInstance(getContext()).getCollections();
 			while(it.hasNext()){
 				TGBrowserCollection collection = it.next();
-				if(name.equals(collection.getData().getTitle())){
+				if(name.equals(collection.getSettings().getTitle())){
 					errors.add("A collection named \"" + name + "\" already exists");
 					break;
 				}

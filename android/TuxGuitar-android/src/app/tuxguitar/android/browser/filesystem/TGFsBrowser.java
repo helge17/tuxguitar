@@ -8,9 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 import app.tuxguitar.android.browser.model.TGBrowser;
-import app.tuxguitar.android.browser.model.TGBrowserCallBack;
 import app.tuxguitar.android.browser.model.TGBrowserElement;
 import app.tuxguitar.android.browser.model.TGBrowserElementComparator;
+import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGExpressionResolver;
 

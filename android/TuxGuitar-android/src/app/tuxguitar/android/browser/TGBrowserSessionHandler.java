@@ -5,6 +5,7 @@ import app.tuxguitar.android.browser.model.TGBrowser;
 import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
 import app.tuxguitar.android.browser.model.TGBrowserSession;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.error.TGErrorManager;
 

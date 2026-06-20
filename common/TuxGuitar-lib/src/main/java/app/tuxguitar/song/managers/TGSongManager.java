@@ -302,7 +302,7 @@ public class TGSongManager {
 	}
 
 	public String createDefaultChannelName(TGSong song, TGChannel channel) {
-		return this.createChannelName(song, channel, "Unnamed");
+		return this.createChannelName(song, channel, TGMessagesManager.getProperty("file.save.default-name"));
 	}
 
 	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {

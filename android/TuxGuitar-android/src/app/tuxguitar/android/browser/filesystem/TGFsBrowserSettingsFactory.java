@@ -1,6 +1,6 @@
 package app.tuxguitar.android.browser.filesystem;
 
-import app.tuxguitar.android.browser.model.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
 
 public interface TGFsBrowserSettingsFactory {
 

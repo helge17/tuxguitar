@@ -13,6 +13,8 @@ public interface UIRadioButton extends UIControl {
 
 	void setImage(UIImage image);
 
+	void setToolTipText(String text);
+
 	boolean isSelected();
 
 	void setSelected(boolean selected);

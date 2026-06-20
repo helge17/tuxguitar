@@ -42,7 +42,7 @@ public class TGPluginListDialog {
 		final UIFactory uiFactory = TGApplication.getInstance(context.getContext()).getFactory();
 		final UIWindow uiParent = context.getAttribute(TGViewContext.ATTRIBUTE_PARENT);
 		final UITableLayout dialogLayout = new UITableLayout();
-		final UIWindow dialog = uiFactory.createWindow(uiParent, true, false);
+		final UIWindow dialog = uiFactory.createWindow(uiParent, true, true);
 
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("plugins"));
@@ -54,7 +54,7 @@ public class TGPluginListDialog {
 				TGPluginListDialog.this.updateTableItems(context.getContext());
 			}
 		});
-		dialogLayout.set(filterText, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(filterText, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
 
 		this.table = uiFactory.createCheckTable(dialog, true);
 		table.setColumns(2);
@@ -71,7 +71,7 @@ public class TGPluginListDialog {
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = uiFactory.createPanel(dialog, false);
 		buttons.setLayout(buttonsLayout);
-		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, true);
+		dialogLayout.set(buttons, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false);
 
 		final UIButton buttonSetup = uiFactory.createButton(buttons);
 		buttonSetup.setText(TuxGuitar.getProperty("configure"));
@@ -133,6 +133,7 @@ public class TGPluginListDialog {
 		});
 
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
+		dialog.setMinimumSize((int)dialog.getBounds().getWidth(), (int)dialog.getBounds().getHeight());
 	}
 
 	public void updateTableItems(TGContext context) {

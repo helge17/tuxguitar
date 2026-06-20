@@ -3,9 +3,9 @@ package app.tuxguitar.android.action.impl.browser;
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionException;
 import app.tuxguitar.android.action.TGActionBase;
-import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.TGBrowserManager;
 import app.tuxguitar.android.browser.model.TGBrowserException;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.util.TGContext;
 
 public class TGBrowserRemoveCollectionAction extends TGActionBase{

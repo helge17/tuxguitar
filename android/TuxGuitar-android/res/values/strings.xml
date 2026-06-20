@@ -206,7 +206,7 @@
 
 	<string name="browser_refresh">Refresh</string>
 	<string name="browser_back">Back</string>
-	<string name="browser_root">Root</string>
+	<string name="browser_root">Home</string>
 	<string name="browser_settings">Settings</string>
 	<string name="browser_save_label">Save</string>
 	<string name="browser_add_collection">Add Collection</string>
@@ -216,15 +216,15 @@
 	<string name="browser_element_icon_description">Browser Element</string>
 
 	<!-- collections -->
-	<string name="browser_collections_dlg_title">Collections</string>
-	<string name="browser_collections_dlg_remove_confirm_question">Are you sure you want to remove this collection?</string>
-
-	<!-- filesystem -->
-	<string name="browser_settings_fs_mount_point_dlg_title">Select a storage mount point</string>
+	<string name="browser_collections_dlg_title">Collection Browser</string>
 
 	<string name="browser_settings_fs_dlg_title">File System Collection</string>
 	<string name="browser_settings_fs_name_label">Name:</string>
 	<string name="browser_settings_fs_path_label">Folder:</string>
+
+	<string name="browser_settings_title_format">%1$s</string>
+	<string name="browser_settings_saf_error_uri_access">Couldn\'t get access to uri</string>
+	<string name="browser_settings_saf_uri_request_msg">Choose your collection folder</string>
 
 	<string name="browser_settings_fs_error_title">Error</string>
 	<string name="browser_settings_fs_error_empty_name">Name must not be empty</string>
@@ -232,23 +232,18 @@
 	<string name="browser_settings_fs_error_nonexistent_path">Nonexistent Path</string>
 	<string name="browser_settings_fs_error_nonfolder_path">Path must be a folder</string>
 
-	<!-- default filesystem location -->
-	<string name="browser_settings_fs_root_folder_title">Root Folder</string>
-	<string name="browser_settings_fs_external_storage_title">Device Storage</string>
-	<string name="browser_settings_fs_secondary_storage_title">SD memory card</string>
-
 	<!-- =================================================================== -->
 	<!-- ======================= PREFERENCES =============================== -->
 	<!-- =================================================================== -->
 
-	<string name="preferences_midi_category_title">MIDI Settings</string>
-	<string name="preferences_midi_output_port_title">MIDI Output Port</string>
-	<string name="preferences_midi_output_port_summary">Selected Port: %1$s</string>
-	<string name="preferences_midi_output_port_summary_empty">No MIDI port selected</string>
+	<string name="preferences_general_title">General</string>
+	<string name="preferences_general_use_collection_browser_title">Collection Browser</string>
+	<string name="preferences_general_use_collection_browser_summary">Use Collection Browser to browse files</string>
 
-	<string name="preferences_storage_category_title">Storage Settings</string>
-	<string name="preferences_storage_storage_use_saf_provider_title">Use SAF provider</string>
-	<string name="preferences_storage_storage_use_saf_provider_summary">Use Storage Access Framework to browse files</string>
+	<string name="preferences_sound_category_title">Sound</string>
+	<string name="preferences_midi_output_port_title">MIDI Port</string>
+	<string name="preferences_midi_output_port_summary">%1$s</string>
+	<string name="preferences_midi_output_port_summary_empty">-</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= DIALOGS ================================= -->
@@ -341,7 +336,6 @@
 	<string name="track_tuning_dlg_preset_select_value">-- Presets --</string>
 	<string name="track_tuning_dlg_error_title">Error</string>
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
-	<string name="track_tuning_dlg_empty_value_error">Value cannot be empty</string>
 
 	<string name="track_string_count_dlg_title">Line Count</string>
 	<string name="track_string_count_dlg_count_label">Line Count:</string>

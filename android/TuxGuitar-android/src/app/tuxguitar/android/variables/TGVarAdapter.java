@@ -16,8 +16,6 @@ public class TGVarAdapter {
 		variables.put(TGVarSongAuthor.NAME, new TGVarSongAuthor(context));
 		variables.put(TGVarSongAlbum.NAME, new TGVarSongAlbum(context));
 		variables.put(TGVarSongArtist.NAME, new TGVarSongArtist(context));
-		variables.put(TGVarEnvExternalStorageDirectory.NAME, new TGVarEnvExternalStorageDirectory());
-		variables.put(TGVarEnvSecondaryStorageDirectory.NAME, new TGVarEnvSecondaryStorageDirectory());
 
 		TGExpressionResolver.getInstance(context).addResolver(new TGExpressionResolver.MapPropertyResolver(variables));
 	}

@@ -3,9 +3,9 @@ package app.tuxguitar.android.browser.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.model.TGBrowserException;
-import app.tuxguitar.android.browser.model.TGBrowserSettings;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.properties.TGProperties;
 import app.tuxguitar.util.properties.TGPropertiesManager;

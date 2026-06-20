@@ -14,15 +14,11 @@ public class TGSafBrowserPlugin extends TGBrowserPlugin {
 	}
 
 	public void connect(TGContext context) throws TGPluginException {
-		if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP ) {
-			super.connect(context);
-		}
+		super.connect(context);
 	}
 
 	public void disconnect(TGContext context) throws TGPluginException {
-		if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP ) {
-			super.disconnect(context);
-		}
+		super.disconnect(context);
 	}
 
 	public TGBrowserFactory getFactory(TGContext context) {

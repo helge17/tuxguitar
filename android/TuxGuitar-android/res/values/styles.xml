@@ -70,7 +70,7 @@
 		<item name="browserElementIconFileStyle">@style/browserElementIconFileStyle</item>
 		<item name="browserElementIconFolderStyle">@style/browserElementIconFolderStyle</item>
 		<item name="browserElementNameStyle">@style/browserElementNameStyle</item>
-		<item name="browserCollectionsDlgImageButtonSubmitStyle">@style/TGImageButton.Submit</item>
+		<item name="browserCollectionsDlgImageButtonAddStyle">@style/TGImageButton.Add</item>
 		<item name="browserCollectionsDlgImageButtonDeleteStyle">@style/TGImageButton.Delete</item>
 
 		<item name="channelListStyle">@style/channelListStyle</item>
@@ -114,8 +114,8 @@
 		<item name="android:src">@drawable/ic_save_gray_24dp</item>
 	</style>
 
-	<style name="TGImageButton.Submit" >
-		<item name="android:src">@drawable/ic_send_gray_24dp</item>
+	<style name="TGImageButton.Add" >
+		<item name="android:src">@drawable/ic_add_gray_24dp</item>
 	</style>
 
 	<style name="TGImageButton.Delete" >

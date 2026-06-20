@@ -7,7 +7,6 @@ import app.tuxguitar.android.action.impl.browser.TGBrowserOpenSessionAction;
 import app.tuxguitar.android.action.impl.browser.TGBrowserSaveElementAction;
 import app.tuxguitar.android.action.impl.browser.TGBrowserSaveNewElementAction;
 import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
-import app.tuxguitar.android.browser.TGBrowserCollection;
 import app.tuxguitar.android.browser.TGBrowserManager;
 import app.tuxguitar.android.browser.model.TGBrowserElement;
 import app.tuxguitar.android.browser.model.TGBrowserSession;
@@ -15,6 +14,7 @@ import app.tuxguitar.android.view.dialog.TGDialogController;
 import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 
 public class TGBrowserActionHandler {
 

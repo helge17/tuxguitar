@@ -29,7 +29,7 @@
 
 	<string name="action_menu_edit">Édition</string>
 	<string name="action_menu_view">Affichage</string>
-	<string name="action_menu_composition">Composition</string>
+	<!-- <string name="action_menu_composition"></string> -->
 	<string name="action_menu_track">Piste</string>
 	<string name="action_menu_measure">Mesure</string>
 	<string name="action_menu_beat">Note</string>
@@ -53,7 +53,7 @@
 	<string name="action_copy">Copier</string>
 	<string name="action_paste">Coller</string>
 
-	<string name="action_view_channel_list">Instruments</string>
+	<!-- <string name="action_view_channel_list"></string> -->
 	<string name="action_view_layout_show_score">Afficher la portée</string>
 	<string name="action_view_layout_show_chord_name">Afficher le nom des accords</string>
 	<string name="action_view_layout_show_chord_diagram">Afficher les diagrammes d\&apos;accords</string>
@@ -94,7 +94,7 @@
 	<string name="action_track_change_solo">Définir une piste de solo</string>
 	<string name="action_track_change_mute">Définir une piste muette</string>
 	<string name="action_track_set_name">Nom</string>
-	<string name="action_track_set_channel">Instrument</string>
+	<!-- <string name="action_track_set_channel"></string> -->
 	<string name="action_track_change_tuning">Accordage</string>
 	<string name="action_track_change_string_count">Nombre de lignes</string>
 
@@ -148,19 +148,19 @@
 	<string name="action_set_duration_division_type_13">13-olet</string>
 
 	<string name="action_set_velocity_ppp">Pianississimo</string>
-	<string name="action_set_velocity_pp">Pianissimo</string>
-	<string name="action_set_velocity_p">Piano</string>
+	<!-- <string name="action_set_velocity_pp"></string> -->
+	<!-- <string name="action_set_velocity_p"></string> -->
 	<string name="action_set_velocity_mp">Mezzo piano</string>
 	<string name="action_set_velocity_mf">Mezzo forte</string>
-	<string name="action_set_velocity_f">Forte</string>
-	<string name="action_set_velocity_ff">Fortissimo</string>
+	<!-- <string name="action_set_velocity_f"></string> -->
+	<!-- <string name="action_set_velocity_ff"></string> -->
 	<string name="action_set_velocity_fff">Fortississimo</string>
 
-	<string name="action_change_vibrato">Vibrato</string>
-	<string name="action_change_bend">Bend</string>
+	<!-- <string name="action_change_vibrato"></string> -->
+	<!-- <string name="action_change_bend"></string> -->
 	<string name="action_change_dead_note">Note morte</string>
-	<string name="action_change_slide">Slide</string>
-	<string name="action_change_hammer">Hammer-on/Pull-off</string>
+	<!-- <string name="action_change_slide"></string> -->
+	<!-- <string name="action_change_hammer"></string> -->
 	<string name="action_change_tremolo_bar">Tremolo bar</string>
 	<string name="action_change_ghost_note">Ghost note</string>
 	<string name="action_change_accentuated_note">Note accentuée</string>
@@ -171,10 +171,10 @@
 	<string name="action_change_tremolo_picking">Tremolo picking</string>
 	<string name="action_change_palm_mute">Palm mute</string>
 	<string name="action_change_let_ring">Let ring</string>
-	<string name="action_change_staccato">Staccato</string>
-	<string name="action_change_tapping">Tapping</string>
-	<string name="action_change_slapping">Slapping</string>
-	<string name="action_change_popping">Popping</string>
+	<!-- <string name="action_change_staccato"></string> -->
+	<!-- <string name="action_change_tapping"></string> -->
+	<!-- <string name="action_change_slapping"></string> -->
+	<!-- <string name="action_change_popping"></string> -->
 	<string name="action_change_fade_in">Fondu à l\&apos;ouverture</string>
 
 	<string name="action_channel_list_add">Ajouter</string>
@@ -212,7 +212,7 @@
 
 	<string name="browser_refresh">Actualiser</string>
 	<string name="browser_back">Précédent</string>
-	<!-- <string name="browser_root"></string> -->
+	<string name="browser_root">Accueil</string>
 	<string name="browser_settings">Configuration</string>
 	<string name="browser_save_label">Enregistrer</string>
 	<!-- <string name="browser_add_collection"></string> -->
@@ -222,15 +222,15 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
-	<!-- <string name="browser_collections_dlg_remove_confirm_question"></string> -->
-
-	<!-- filesystem -->
-	<!-- <string name="browser_settings_fs_mount_point_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Navigateur</string>
 
 	<string name="browser_settings_fs_dlg_title">Système de fichiers de collection</string>
 	<string name="browser_settings_fs_name_label">Nom:</string>
 	<string name="browser_settings_fs_path_label">Dossier:</string>
+
+	<!-- <string name="browser_settings_title_format"></string> -->
+	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Sélectionnez votre dossier de collection</string>
 
 	<string name="browser_settings_fs_error_title">Erreur</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
@@ -238,23 +238,18 @@
 	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
 	<!-- <string name="browser_settings_fs_error_nonfolder_path"></string> -->
 
-	<!-- default filesystem location -->
-	<!-- <string name="browser_settings_fs_root_folder_title"></string> -->
-	<!-- <string name="browser_settings_fs_external_storage_title"></string> -->
-	<!-- <string name="browser_settings_fs_secondary_storage_title"></string> -->
-
 	<!-- =================================================================== -->
 	<!-- ======================= PREFERENCES =============================== -->
 	<!-- =================================================================== -->
 
-	<!-- <string name="preferences_midi_category_title"></string> -->
-	<!-- <string name="preferences_midi_output_port_title"></string> -->
+	<string name="preferences_general_title">Général</string>
+	<string name="preferences_general_use_collection_browser_title">Navigateur</string>
+	<!-- <string name="preferences_general_use_collection_browser_summary"></string> -->
+
+	<string name="preferences_sound_category_title">Son</string>
+	<string name="preferences_midi_output_port_title">Port MIDI</string>
 	<!-- <string name="preferences_midi_output_port_summary"></string> -->
 	<!-- <string name="preferences_midi_output_port_summary_empty"></string> -->
-
-	<!-- <string name="preferences_storage_category_title"></string> -->
-	<!-- <string name="preferences_storage_storage_use_saf_provider_title"></string> -->
-	<!-- <string name="preferences_storage_storage_use_saf_provider_summary"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ========================= DIALOGS ================================= -->
@@ -265,7 +260,7 @@
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Modifier le tempo</string>
-	<string name="tempo_dlg_tempo_label">Tempo:</string>
+	<!-- <string name="tempo_dlg_tempo_label"></string> -->
 	<string name="tempo_dlg_options_apply_to_song">Appliquer ce tempo au morceau entier</string>
 	<string name="tempo_dlg_options_apply_to_end">Appliquer ce tempo jusqu\&apos;à la fin</string>
 	<string name="tempo_dlg_options_apply_to_next_marker">Appliquer ce tempo jusqu\&apos;au prochain marqueur de tempo</string>
@@ -323,9 +318,9 @@
 	<string name="song_properties_dlg_title">Propriétés de la piste</string>
 	<string name="song_properties_dlg_name_label">Nom:</string>
 	<string name="song_properties_dlg_artist_label">Interprète:</string>
-	<string name="song_properties_dlg_album_label">Album:</string>
+	<!-- <string name="song_properties_dlg_album_label"></string> -->
 	<string name="song_properties_dlg_author_label">Auteur/compositeur:</string>
-	<string name="song_properties_dlg_date_label">Date:</string>
+	<!-- <string name="song_properties_dlg_date_label"></string> -->
 	<string name="song_properties_dlg_copyright_label">Droits d\&apos;auteur:</string>
 	<string name="song_properties_dlg_writer_label">Créateur de la tablature:</string>
 	<string name="song_properties_dlg_transcriber_label">Transcrit par:</string>
@@ -336,8 +331,8 @@
 	<string name="track_name_dlg_name_label">Nom:</string>
 
 	<!-- Track channel dialog -->
-	<string name="track_channel_dlg_channel_label">Instrument:</string>
-	<string name="track_channel_dlg_settings_label">Instruments</string>
+	<!-- <string name="track_channel_dlg_channel_label"></string> -->
+	<!-- <string name="track_channel_dlg_settings_label"></string> -->
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Accordage</string>
@@ -347,7 +342,6 @@
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Erreur</string>
 	<string name="track_tuning_dlg_range_error">Le nombre de cordes doit être compris entre %1$d et %2$d</string>
-	<string name="track_tuning_dlg_empty_value_error">La valeur ne peut pas être nulle</string>
 
 	<string name="track_string_count_dlg_title">Nombre de lignes</string>
 	<string name="track_string_count_dlg_count_label">Nombre de lignes:</string>
@@ -387,7 +381,7 @@
 	<!-- Bend dialog -->
 	<string name="bend_dlg_title">Éditeur de bends</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
-	<string name="bend_dlg_preset_bend">Bend</string>
+	<!-- <string name="bend_dlg_preset_bend"></string> -->
 	<string name="bend_dlg_preset_bend_release">Bend/relâche</string>
 	<string name="bend_dlg_preset_bend_release_bend">Bend/relâche/bend</string>
 	<string name="bend_dlg_preset_prebend">Pré-bend</string>
@@ -420,7 +414,7 @@
 	<string name="grace_dlg_title">Grace note</string>
 	<string name="grace_dlg_fret_label">Case:</string>
 	<string name="grace_dlg_dead_note_label">Note morte</string>
-	<string name="grace_dlg_position_label">Position</string>
+	<!-- <string name="grace_dlg_position_label"></string> -->
 	<string name="grace_dlg_position_before_beat">Avant le temps</string>
 	<string name="grace_dlg_position_on_beat">Sur le temps</string>
 	<string name="grace_dlg_duration_label">Durée de la note ou du silence</string>
@@ -429,17 +423,17 @@
 	<string name="grace_dlg_duration_64">Quadruple-croche</string>
 	<string name="grace_dlg_dynamic_label">Expression</string>
 	<string name="grace_dlg_dynamic_ppp">Pianississimo</string>
-	<string name="grace_dlg_dynamic_pp">Pianissimo</string>
-	<string name="grace_dlg_dynamic_p">Piano</string>
+	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
+	<!-- <string name="grace_dlg_dynamic_p"></string> -->
 	<string name="grace_dlg_dynamic_mp">Mezzo piano</string>
 	<string name="grace_dlg_dynamic_mf">Mezzo forte</string>
-	<string name="grace_dlg_dynamic_f">Forte</string>
-	<string name="grace_dlg_dynamic_ff">Fortissimo</string>
+	<!-- <string name="grace_dlg_dynamic_f"></string> -->
+	<!-- <string name="grace_dlg_dynamic_ff"></string> -->
 	<string name="grace_dlg_dynamic_fff">Fortississimo</string>
-	<string name="grace_dlg_transition_label">Transition</string>
+	<!-- <string name="grace_dlg_transition_label"></string> -->
 	<string name="grace_dlg_transition_none">Aucune</string>
-	<string name="grace_dlg_transition_bend">Bend</string>
-	<string name="grace_dlg_transition_slide">Slide</string>
+	<!-- <string name="grace_dlg_transition_bend"></string> -->
+	<!-- <string name="grace_dlg_transition_slide"></string> -->
 	<string name="grace_dlg_transition_hammer">Hammering</string>
 
 	<!-- Harmonic dialog -->
@@ -470,21 +464,21 @@
 	<string name="pickstroke_dlg_direction_down">Médiator vers le bas</string>
 
 	<!-- Channels view -->
-	<string name="channel_list">Instruments</string>
+	<!-- <string name="channel_list"></string> -->
 
 	<!-- Channel edit dialog -->
-	<string name="channel_edit_dlg_title">Instrument</string>
+	<!-- <string name="channel_edit_dlg_title"></string> -->
 	<string name="channel_edit_dlg_name_label">Nom:</string>
 	<string name="channel_edit_dlg_program_label">Programme:</string>
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
 	<string name="channel_edit_dlg_bank_label">Banque:</string>
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<string name="channel_edit_dlg_percussion_label">Canal de percussions</string>
-	<string name="channel_edit_dlg_volume_label">Volume:</string>
-	<string name="channel_edit_dlg_balance_label">Balance:</string>
-	<string name="channel_edit_dlg_chorus_label">Chorus:</string>
+	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
+	<!-- <string name="channel_edit_dlg_balance_label"></string> -->
+	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<string name="channel_edit_dlg_reverb_label">Réverbe:</string>
-	<string name="channel_edit_dlg_phaser_label">Phaser:</string>
+	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
 	<string name="channel_edit_dlg_tremolo_label">Trémolo:</string>
 
 	<!-- Play Mode dialog -->
@@ -493,7 +487,7 @@
 	<string name="transport_mode_dlg_trainer">Mode d\&apos;apprentissage</string>
 	<string name="transport_mode_dlg_simple_tempo_percent_label">Pourcentage de tempo:</string>
 	<string name="transport_mode_dlg_simple_loop">Lecture en boucle</string>
-	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempo:</string>
+	<!-- <string name="transport_mode_dlg_trainer_tempo_percent_from_label"></string> -->
 	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">À:</string>
 	<string name="transport_mode_dlg_trainer_tempo_increment_label">Incrémenter de:</string>
 	<string name="transport_mode_dlg_loop_range_label">Plage de la boucle</string>

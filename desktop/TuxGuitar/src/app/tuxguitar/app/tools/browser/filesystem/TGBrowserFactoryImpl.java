@@ -3,8 +3,8 @@ package app.tuxguitar.app.tools.browser.filesystem;
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactory;
 import app.tuxguitar.app.tools.browser.base.TGBrowserFactoryHandler;
-import app.tuxguitar.app.tools.browser.base.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.app.tools.browser.base.TGBrowserSettings;
+import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
+import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.util.TGContext;
 
