@@ -6,11 +6,11 @@ package app.tuxguitar.app.view.toolbar.main;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.composition.TGOpenTempoDialogAction;
-import app.tuxguitar.app.action.impl.transport.TGChangeTempoPercentageAction;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.transport.TGChangeTempoPercentageAction;
 import app.tuxguitar.editor.event.TGRedrawEvent;
 import app.tuxguitar.editor.util.TGSyncProcessLocked;
 import app.tuxguitar.event.TGEvent;
@@ -70,11 +70,16 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		
 		this.tempoPercentSpinner = uiFactory.createSpinner(parentPanel);
 		this.tempoPercentSpinner.setVisible(true);
+		this.tempoPercentSpinner.setEnabled(true);
+		this.tempoPercentSpinner.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
+		this.tempoPercentSpinner.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
+		this.tempoPercentSpinner.setValue(MidiPlayerMode.SIMPLE_DEFAULT_TEMPO_PERCENT);
+		
 		this.tempoPercentSpinner.addSelectionListener(new UISelectionListener() {
 			@Override
 			public void onSelect(UISelectionEvent event) {
 				int tempoPercent = tempoPercentSpinner.getValue();
-				
+
 				TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGChangeTempoPercentageAction.NAME);
 				tgActionProcessor.setAttribute(
 					TGChangeTempoPercentageAction.ATTRIBUTE_PERCENTAGE_VALUE, 
@@ -86,6 +91,7 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		this.controls.add(this.tempoPercentSpinner);
 		
 		this.tempoPercentLabel = uiFactory.createLabel(parentPanel);
+		this.tempoPercentLabel.setText("%");
 		this.controls.add(this.tempoPercentLabel);
 		
 		this.loadIcons();
@@ -138,14 +144,6 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		} else {
 			this.updateTempoLabel("= 120");
 		}
-
-		this.tempoPercentSpinner.setMinimum(0);
-		this.tempoPercentSpinner.setMaximum(100);
-		this.tempoPercentSpinner.setIncrement(1);
-		this.tempoPercentSpinner.setValue(100);
-		this.tempoPercentSpinner.setEnabled(true);
-		
-		this.tempoPercentLabel.setText("%");
 	}
 
 	@Override
@@ -159,12 +157,10 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 			tempo = midiPlayer.getCurrentTempo();
 			// update tempoPercent as midiPlayer is playing
 			tempoPercent = midiPlayer.getMode().getCurrentPercent();
-			this.tempoLabel.setIgnoreEvents(true);
-			this.tempoPercentSpinner.setIgnoreEvents(true);
+			this.tempoPercentSpinner.setEnabled(false);
 		} else {
 			tempo = TablatureEditor.getInstance(getContext()).getTablature().getCaret().getMeasure().getTempo();
-			this.tempoLabel.setIgnoreEvents(false);
-			this.tempoPercentSpinner.setIgnoreEvents(false);
+			this.tempoPercentSpinner.setEnabled(true);
 		}
 		if ((tempo.getBase() != this.currentTempoBase) || (tempo.isDotted() != this.currentTempoDotted)) {
 			this.currentTempoBase = tempo.getBase();
