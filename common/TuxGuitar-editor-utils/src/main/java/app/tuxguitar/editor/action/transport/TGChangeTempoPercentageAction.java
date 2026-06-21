@@ -1,4 +1,4 @@
-package app.tuxguitar.app.action.impl.transport;
+package app.tuxguitar.editor.action.transport;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.editor.action.TGActionBase;

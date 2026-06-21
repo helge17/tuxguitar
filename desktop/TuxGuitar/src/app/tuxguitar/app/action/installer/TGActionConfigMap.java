@@ -120,9 +120,6 @@ import app.tuxguitar.app.action.impl.track.TGGoToTrackAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
 import app.tuxguitar.app.action.impl.track.TGToggleLyricEditorAction;
-import app.tuxguitar.app.action.impl.transport.TGChangeTempoPercentageAction;
-import app.tuxguitar.app.action.impl.transport.TGDecrementTempoPercentageAction;
-import app.tuxguitar.app.action.impl.transport.TGIncrementTempoPercentageAction;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayStopAction;
@@ -284,6 +281,9 @@ import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import app.tuxguitar.editor.action.track.TGSetTrackNameAction;
 import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
 import app.tuxguitar.editor.action.track.TGSetTrackStringCountAction;
+import app.tuxguitar.editor.action.transport.TGChangeTempoPercentageAction;
+import app.tuxguitar.editor.action.transport.TGDecrementTempoPercentageAction;
+import app.tuxguitar.editor.action.transport.TGIncrementTempoPercentageAction;
 import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
 import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.editor.action.transport.TGTransportModeAction;
@@ -559,7 +559,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGTransportModeAction.NAME, LOCKABLE, UPDATE_SONG_CTL);
 		this.map(TGTransportSetLoopSHeaderAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGTransportSetLoopEHeaderAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
-        this.map(TGChangeTempoPercentageAction.NAME, LOCKABLE);
+		this.map(TGChangeTempoPercentageAction.NAME, LOCKABLE);
 		this.map(TGIncrementTempoPercentageAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGDecrementTempoPercentageAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 

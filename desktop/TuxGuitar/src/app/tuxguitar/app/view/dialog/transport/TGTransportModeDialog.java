@@ -44,9 +44,6 @@ import app.tuxguitar.util.TGBeatRange;
 
 public class TGTransportModeDialog {
 
-	protected static final int MIN_SELECTION = 1;
-	protected static final int MAX_SELECTION = 500;
-
 	private TGViewContext context;
 	protected UIRadioButton simple;
 	protected UICheckBox simpleLoop;
@@ -114,8 +111,8 @@ public class TGTransportModeDialog {
 		simpleAdapter.addControl(simplePercentLabel);
 
 		this.simplePercent = uiFactory.createSpinner(simpleGroup);
-		this.simplePercent.setMinimum(MIN_SELECTION);
-		this.simplePercent.setMaximum(MAX_SELECTION);
+		this.simplePercent.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
+		this.simplePercent.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
 		this.simplePercent.setValue(mode.getSimplePercent());
 		simpleLayout.set(this.simplePercent, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		simpleAdapter.addControl(this.simplePercent);
@@ -151,8 +148,8 @@ public class TGTransportModeDialog {
 		customAdapter.addControl(tempoLabel);
 
 		this.customFrom = uiFactory.createSpinner(customGroup);
-		this.customFrom.setMinimum(MIN_SELECTION);
-		this.customFrom.setMaximum(MAX_SELECTION);
+		this.customFrom.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
+		this.customFrom.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
 		this.customFrom.setValue(mode.getCustomPercentFrom());
 		customAdapter.addControl(this.customFrom);
 		customLayout.set(this.customFrom, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
@@ -168,8 +165,8 @@ public class TGTransportModeDialog {
 		customAdapter.addControl(tempoToLabel);
 
 		this.customTo = uiFactory.createSpinner(customGroup);
-		this.customTo.setMinimum(MIN_SELECTION);
-		this.customTo.setMaximum(MAX_SELECTION);
+		this.customTo.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
+		this.customTo.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
 		this.customTo.setValue(mode.getCustomPercentTo());
 		customLayout.set(this.customTo, 1, 5, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		customAdapter.addControl(this.customTo);
@@ -185,8 +182,8 @@ public class TGTransportModeDialog {
 		customAdapter.addControl(incrementLabel);
 
 		this.customIncrement = uiFactory.createSpinner(customGroup);
-		this.customIncrement.setMinimum(MIN_SELECTION);
-		this.customIncrement.setMaximum(MAX_SELECTION);
+		this.customIncrement.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
+		this.customIncrement.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
 		this.customIncrement.setValue(mode.getCustomPercentIncrement());
 		customLayout.set(this.customIncrement, 2, 5, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 		customAdapter.addControl(this.customIncrement);
@@ -351,8 +348,8 @@ public class TGTransportModeDialog {
 		public void onSelect(UISelectionEvent event) {
 			boolean ok = true;
 			if (event.getComponent().equals(this.from)) {
-				if( this.from.getValue() < MIN_SELECTION){
-					this.from.setValue(MIN_SELECTION);
+				if( this.from.getValue() < MidiPlayerMode.DEFAULT_MIN_PERCENTAGE){
+					this.from.setValue(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
 				}
 				if (this.from.getValue() >= this.to.getValue()) {
 					// invalid
@@ -361,8 +358,8 @@ public class TGTransportModeDialog {
 					this.to.setBgColor(TGTransportModeDialog.this.colorOK);
 				}
 			} else if (event.getComponent().equals(this.to)) {
-				if (this.to.getValue() > MAX_SELECTION){
-					this.to.setValue(MAX_SELECTION);
+				if (this.to.getValue() > MidiPlayerMode.DEFAULT_MAX_PERCENTAGE){
+					this.to.setValue(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
 				}
 				if(this.to.getValue() <= this.from.getValue()) {
 					// invalid
