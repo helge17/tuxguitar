@@ -43,6 +43,7 @@ public class TGTrackTuningDialog {
 	private List<TGTrackTuningModel> tuning;
 	private UITable<TGTrackTuningModel> tuningTable;
 	private UISpinner offsetSpinner;
+	private UICheckBox applyOffsetToAllTracks;
 	private UIButton buttonEdit;
 	private UIButton buttonDelete;
 	private UIButton buttonMoveUp;
@@ -470,6 +471,10 @@ public class TGTrackTuningDialog {
 		this.offsetSpinner.setValue(track.getOffset());
 		topLayout.set(this.offsetSpinner, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 
+		this.applyOffsetToAllTracks = factory.createCheckBox(top);
+		this.applyOffsetToAllTracks.setText(TuxGuitar.getProperty("tuning.offset.apply-to-all-tracks"));
+		this.applyOffsetToAllTracks.setSelected(false);
+		topLayout.set(this.applyOffsetToAllTracks, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 	}
 
 	private void initButtons(UILayoutContainer parent) {
@@ -741,6 +746,19 @@ public class TGTrackTuningDialog {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
 				}
 				tgActionProcessor.process();
+
+				if( offsetChanges && this.applyOffsetToAllTracks.isSelected() ) {
+					for( int i = 0 ; i < song.countTracks() ; i ++ ){
+						TGTrack trackItem = song.getTrack( i );
+						if( trackItem != track && !songManager.isPercussionChannel(song, trackItem.getChannelId()) ) {
+							TGActionProcessor tp = new TGActionProcessor(this.context.getContext(), TGChangeTrackTuningAction.NAME);
+							tp.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
+							tp.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, trackItem);
+							tp.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
+							tp.process();
+						}
+					}
+				}
 			}
 			return true;
 		}
