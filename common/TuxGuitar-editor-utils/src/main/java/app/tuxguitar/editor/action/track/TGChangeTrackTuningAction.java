@@ -7,6 +7,7 @@ import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -17,6 +18,7 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 
 	public static final String ATTRIBUTE_OFFSET = "offset";
 	public static final String ATTRIBUTE_STRINGS = "strings";
+	public static final String ATTRIBUTE_APPLY_TO_ALL_TRACKS = "applyToAllTracks";
 
 	public TGChangeTrackTuningAction(TGContext context) {
 		super(context, NAME);
@@ -25,8 +27,10 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 	@SuppressWarnings("unchecked")
 	protected void processAction(TGActionContext context){
 		TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+		TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		Integer offset = context.getAttribute(ATTRIBUTE_OFFSET);
 		List<TGString> strings = ((List<TGString>) context.getAttribute(ATTRIBUTE_STRINGS));
+		Boolean applyToAllTracks = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_APPLY_TO_ALL_TRACKS));
 		if( track != null ) {
 			TGSongManager songManager = getSongManager(context);
 			if( strings != null ){
@@ -59,7 +63,16 @@ public class TGChangeTrackTuningAction extends TGActionBase {
 				}
 			}
 			if( offset != null ) {
-				songManager.getTrackManager().changeOffset(track, offset);
+				if( applyToAllTracks && song != null ) {
+					for( int i = 0 ; i < song.countTracks() ; i ++ ){
+						TGTrack trackItem = song.getTrack( i );
+						if( !songManager.isPercussionChannel(song, trackItem.getChannelId()) ) {
+							songManager.getTrackManager().changeOffset(trackItem, offset);
+						}
+					}
+				} else {
+					songManager.getTrackManager().changeOffset(track, offset);
+				}
 			}
 		}
 	}

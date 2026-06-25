@@ -472,7 +472,7 @@ public class TGTrackTuningDialog {
 		topLayout.set(this.offsetSpinner, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 
 		this.applyOffsetToAllTracks = factory.createCheckBox(top);
-		this.applyOffsetToAllTracks.setText(TuxGuitar.getProperty("tuning.offset.apply-to-all-tracks"));
+		this.applyOffsetToAllTracks.setText(TuxGuitar.getProperty("edit.all-tracks"));
 		this.applyOffsetToAllTracks.setSelected(false);
 		topLayout.set(this.applyOffsetToAllTracks, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 	}
@@ -745,20 +745,10 @@ public class TGTrackTuningDialog {
 				if( offsetChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
 				}
-				tgActionProcessor.process();
-
 				if( offsetChanges && this.applyOffsetToAllTracks.isSelected() ) {
-					for( int i = 0 ; i < song.countTracks() ; i ++ ){
-						TGTrack trackItem = song.getTrack( i );
-						if( trackItem != track && !songManager.isPercussionChannel(song, trackItem.getChannelId()) ) {
-							TGActionProcessor tp = new TGActionProcessor(this.context.getContext(), TGChangeTrackTuningAction.NAME);
-							tp.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
-							tp.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, trackItem);
-							tp.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
-							tp.process();
-						}
-					}
+					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_APPLY_TO_ALL_TRACKS, true);
 				}
+				tgActionProcessor.process();
 			}
 			return true;
 		}
