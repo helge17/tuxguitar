@@ -21,6 +21,6 @@ public class MidiSongReaderPlugin extends TGSongReaderPlugin {
 	}
 
 	protected TGFileFormatDetector createFileFormatDetector(TGContext context) throws TGPluginException {
-		return null;
+		return new MidiFileFormatDetector();
 	}
 }
