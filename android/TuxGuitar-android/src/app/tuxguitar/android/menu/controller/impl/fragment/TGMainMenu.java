@@ -2,9 +2,12 @@ package app.tuxguitar.android.menu.controller.impl.fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.TGActionProcessorListener;
+import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import app.tuxguitar.android.action.impl.gui.TGOpenFragmentAction;
 import app.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import app.tuxguitar.android.action.impl.transport.TGTransportPlayAction;
@@ -26,7 +29,10 @@ import app.tuxguitar.android.menu.controller.impl.contextual.TGVelocityMenu;
 import app.tuxguitar.android.menu.controller.impl.contextual.TGViewMenu;
 import app.tuxguitar.android.menu.util.TGToggleStyledIconHandler;
 import app.tuxguitar.android.menu.util.TGToggleStyledIconHelper;
+import app.tuxguitar.android.view.dialog.tempo.TGTempoDialogController;
+import app.tuxguitar.android.view.tablature.TGSongViewController;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonFactory;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
@@ -35,6 +41,7 @@ public class TGMainMenu implements TGMenuController {
 
 	private TGContext context;
 	private TGToggleStyledIconHelper styledIconHelper;
+	private TextView tempoDisplayItem;
 
 	private TGMainMenu(TGContext context) {
 		this.context = context;
@@ -62,6 +69,40 @@ public class TGMainMenu implements TGMenuController {
 		menu.findItem(R.id.action_menu_effects).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGEffectMenu(getActivity())));
 		menu.findItem(R.id.action_menu_transport).setOnMenuItemClickListener(createContextMenuActionProcessor(new TGTransportMenu(getActivity())));
 		menu.findItem(R.id.action_menu_settings).setOnMenuItemClickListener(createFragmentActionProcessor(new TGPreferencesFragmentController()));
+
+		this.tempoDisplayItem =  (TextView) menu.findItem(R.id.action_tempo_display).getActionView().findViewById(R.id.tempo_display_item);
+		this.tempoDisplayItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (MidiPlayer.getInstance(getContext()).isRunning()) return;
+				TGActionProcessorListener tgActionProcessor = new TGActionProcessorListener(getContext(), TGOpenDialogAction.NAME);
+				tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_ACTIVITY, getActivity());
+				tgActionProcessor.setAttribute(TGOpenDialogAction.ATTRIBUTE_DIALOG_CONTROLLER, new TGTempoDialogController());
+				tgActionProcessor.process();
+			}
+		});
+		this.updateTempoDisplay();
+	}
+
+	public void updateTempoDisplay() {
+		if (this.tempoDisplayItem == null) return;
+
+		TGTempo tempo;
+		int tempoPercent = 100;
+
+		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
+		if ((midiPlayer.isRunning() && (midiPlayer.getCurrentTempo() != null))) {
+			tempo = midiPlayer.getCurrentTempo();
+			tempoPercent = midiPlayer.getMode().getCurrentPercent();
+		} else {
+			tempo = TGSongViewController.getInstance(getContext()).getCaret().getMeasure().getTempo();
+		}
+		String iconName = "duration_" + tempo.getBase();
+		if(tempo.isDotted()) iconName += "dotted";
+		int iconId = getActivity().getResources().getIdentifier(iconName, "drawable", getActivity().getPackageName());
+		this.tempoDisplayItem.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(iconId), null, null, null);
+		int tempoValue = tempo.getRawValue() * tempoPercent / 100;
+		this.tempoDisplayItem.setText("= " + tempoValue + " ");
 	}
 
 	public void fillStyledIconHandlers() {

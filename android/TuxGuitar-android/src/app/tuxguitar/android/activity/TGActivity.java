@@ -191,7 +191,7 @@ public class TGActivity extends AppCompatActivity implements ActivityCompat.OnRe
 				tgActionManager.execute(TGChangeVibratoNoteAction.NAME);
 				return true;
 			default:
-				return super.onKeyUp(keyCode, event);
+				return super.onKeyDown(keyCode, event);
 		}
 	}
 
