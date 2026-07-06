@@ -38,13 +38,18 @@ jobs:
     - name : install SWT
       run: mkdir swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && cd swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && unzip ../swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=${{ env.SWT_VERSION }}
     - name: Build with Maven
-      run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify
+      run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify -P native-modules
+    - name: Bundle JRE into app
+      run: $JAVA_HOME/bin/jlink --add-modules java.desktop,jdk.unsupported --output desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app/Contents/MacOS/jre
     - name: Rename app depending of arch
       run: mv desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
+    # tar to preserve executable permissions, upload-artifact does not keep them
+    - name: Pack app
+      run: tar --directory=desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target -czf tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app.tar.gz tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
     - uses: actions/upload-artifact@v4
       with:
         name: Package-MacOS-${{ matrix.os }}
-        path: desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
+        path: tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app.tar.gz
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
