@@ -10,20 +10,25 @@ import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.editor.action.TGActionProcessor;
+import app.tuxguitar.editor.action.transport.TGChangeTempoPercentageAction;
 import app.tuxguitar.editor.event.TGRedrawEvent;
 import app.tuxguitar.editor.util.TGSyncProcessLocked;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
 import app.tuxguitar.ui.event.UIMouseDownListener;
 import app.tuxguitar.ui.event.UIMouseEvent;
+import app.tuxguitar.ui.event.UISelectionEvent;
+import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.widget.UIImageView;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UIPanel;
+import app.tuxguitar.ui.widget.UISpinner;
 import app.tuxguitar.util.TGContext;
 
 public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements TGEventListener {
@@ -36,6 +41,9 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 	private int currentTempoValue;
 	private UIPanel parentPanel;
 	private int tempoStringLength = 0;
+
+	private UILabel tempoPercentLabel;
+	private UISpinner tempoPercentSpinner;
 
 	public TGMainToolBarSectionTempo(TGContext context, UIPanel parentPanel) {
 		super(context);
@@ -59,7 +67,33 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 			}
 		});
 		this.controls.add(this.tempoLabel);
+		
+		this.tempoPercentSpinner = uiFactory.createSpinner(parentPanel);
+		this.tempoPercentSpinner.setVisible(true);
+		this.tempoPercentSpinner.setEnabled(true);
+		this.tempoPercentSpinner.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
+		this.tempoPercentSpinner.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
+		this.tempoPercentSpinner.setValue(MidiPlayerMode.SIMPLE_DEFAULT_TEMPO_PERCENT);
+		
+		this.tempoPercentSpinner.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				int tempoPercent = tempoPercentSpinner.getValue();
 
+				TGActionProcessor tgActionProcessor = new TGActionProcessor(getContext(), TGChangeTempoPercentageAction.NAME);
+				tgActionProcessor.setAttribute(
+					TGChangeTempoPercentageAction.ATTRIBUTE_PERCENTAGE_VALUE, 
+					tempoPercent
+				);
+				tgActionProcessor.process();
+			}
+		});
+		this.controls.add(this.tempoPercentSpinner);
+		
+		this.tempoPercentLabel = uiFactory.createLabel(parentPanel);
+		this.tempoPercentLabel.setText("%");
+		this.controls.add(this.tempoPercentLabel);
+		
 		this.loadIcons();
 		this.createSyncProcesses();
 		this.appendListeners();
@@ -115,16 +149,18 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 	@Override
 	public void updateItems() {
 		TGTempo tempo;
-		int tempoPercent = 100;
 
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(getContext());
+		int tempoPercent = midiPlayer.getMode().getCurrentPercent();
+		
 		if ((midiPlayer.isRunning() && (midiPlayer.getCurrentTempo() != null))) {
 			tempo = midiPlayer.getCurrentTempo();
+			// update tempoPercent as midiPlayer is playing
 			tempoPercent = midiPlayer.getMode().getCurrentPercent();
-			this.tempoLabel.setIgnoreEvents(true);
+			this.tempoPercentSpinner.setEnabled(false);
 		} else {
 			tempo = TablatureEditor.getInstance(getContext()).getTablature().getCaret().getMeasure().getTempo();
-			this.tempoLabel.setIgnoreEvents(false);
+			this.tempoPercentSpinner.setEnabled(true);
 		}
 		if ((tempo.getBase() != this.currentTempoBase) || (tempo.isDotted() != this.currentTempoDotted)) {
 			this.currentTempoBase = tempo.getBase();
@@ -136,6 +172,7 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 			this.currentTempoValue = tempoValue;
 			this.updateTempoLabel("= " + String.valueOf(this.currentTempoValue));
 		}
+		this.tempoPercentSpinner.setValue(tempoPercent);
 	}
 
 	private void updateTempoLabel(String newTempoString) {
