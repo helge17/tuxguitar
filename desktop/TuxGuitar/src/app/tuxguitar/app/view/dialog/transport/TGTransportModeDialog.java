@@ -50,6 +50,7 @@ public class TGTransportModeDialog {
 	private TGViewContext context;
 	protected UIRadioButton simple;
 	protected UICheckBox simpleLoop;
+	protected UICheckBox dontStopElapsedTimeDuringLoop;
 	protected UISpinner simplePercent;
 
 	protected UIRadioButton custom;
@@ -130,6 +131,14 @@ public class TGTransportModeDialog {
 		this.simpleLoop.setSelected(mode.isLoop());
 		simpleLayout.set(this.simpleLoop, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 2);
 		simpleAdapter.addControl(this.simpleLoop);
+
+		this.dontStopElapsedTimeDuringLoop = uiFactory.createCheckBox(simpleGroup);
+		this.dontStopElapsedTimeDuringLoop.setText(TuxGuitar.getProperty("transport.mode.elapsed-time.dont-stop-during-loop"));
+		this.dontStopElapsedTimeDuringLoop.setSelected(false);
+		simpleLayout.set(this.dontStopElapsedTimeDuringLoop, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 3);
+
+		ElapsedTimeDontStopController elapsedTimeController = new ElapsedTimeDontStopController(this.simpleLoop, this.dontStopElapsedTimeDuringLoop);
+		elapsedTimeController.update();
 
 		//---Trainer---
 		this.custom = uiFactory.createRadioButton(dialog);
@@ -302,6 +311,9 @@ public class TGTransportModeDialog {
 		mode.setLoopEHeader(loop && loopEHeader != null ? loopEHeader : -1 );
 		tgActionProcessor.setAttribute(TGTransportModeAction.ATTRIBUTE_PLAYER_MODE, mode);
 		tgActionProcessor.process();
+		TGConfigManager manager = TGConfigManager.getInstance(this.context.getContext());
+		manager.setValue(TGConfigKeys.DONT_STOP_ELAPSED_TIME_DURING_LOOP, this.dontStopElapsedTimeDuringLoop.isSelected());
+		manager.save();
 
 		TGDocument document = TGDocumentListManager.getInstance(context.getContext()).findCurrentDocument();
 		if (document != null) {
@@ -487,6 +499,26 @@ public class TGTransportModeDialog {
 					updateLoopEHeader();
 				}
 			});
+		}
+	}
+
+	private class ElapsedTimeDontStopController implements UISelectionListener {
+
+		private UICheckBox simpleLoop;
+		private UICheckBox dontStopElapsedTimeDuringLoop;
+
+		public ElapsedTimeDontStopController(UICheckBox simpleLoop, UICheckBox dontStopElapsedTimeDuringLoop) {
+			this.simpleLoop = simpleLoop;
+			this.dontStopElapsedTimeDuringLoop = dontStopElapsedTimeDuringLoop;
+			this.simpleLoop.addSelectionListener(this);
+		}
+
+		public void update() {
+			this.dontStopElapsedTimeDuringLoop.setEnabled(this.simpleLoop.isSelected());
+		}
+
+		public void onSelect(UISelectionEvent event) {
+			this.update();
 		}
 	}
 }
