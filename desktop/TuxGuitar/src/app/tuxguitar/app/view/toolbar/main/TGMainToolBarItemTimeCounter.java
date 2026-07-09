@@ -19,6 +19,7 @@ import app.tuxguitar.editor.event.TGRedrawEvent;
 import app.tuxguitar.editor.util.TGSyncProcessLocked;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
+import app.tuxguitar.player.base.ElapsedTimeLoopAccumulator;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.chooser.UIFontChooser;
@@ -67,6 +68,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 	private long timestamp = -1;
 	private float yTimestamp;
 	private boolean fontChanged;
+	private ElapsedTimeLoopAccumulator elapsedTimeLoopAccumulator;
 	private TGContext context;
 
 	public TGMainToolBarItemTimeCounter(TGMainToolBarItemConfig toolBarItemConfig, TGContext context, UIPanel parentPanel, UIWindow parentWindow) {
@@ -117,6 +119,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 		tgColorManager.appendSkinnableColors(SKINNABLE_COLORS);
 		this.loadFont();
 		this.loadColors();
+		this.elapsedTimeLoopAccumulator = new ElapsedTimeLoopAccumulator();
 
 		this.createSyncProcesses();
 		this.appendListeners();
@@ -153,11 +156,16 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 				MidiPlayer midiPlayer = MidiPlayer.getInstance(TGMainToolBarItemTimeCounter.this.context);
 				if ((midiPlayer.isRunning()) && (midiPlayer.getCurrentTimestamp() != null)) {
 					long tMs = midiPlayer.getCurrentTimestamp();
+					if (TGConfigManager.getInstance(TGMainToolBarItemTimeCounter.this.context).getBooleanValue(TGConfigKeys.DONT_STOP_ELAPSED_TIME_DURING_LOOP)) {
+						tMs = this.elapsedTimeLoopAccumulator.accumulate(tMs);
+					}
 					if (tMs / 100 != this.timestamp / 100) {
 						this.redrawProcess.process();
 						this.timestamp = tMs;
 					}
-				} else {
+				} else if (!midiPlayer.isPaused()) {
+					this.elapsedTimeLoopAccumulator.reset();
+					this.timestamp = -1;
 					this.redrawProcess.process();
 				}
 			}

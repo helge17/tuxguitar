@@ -427,7 +427,7 @@ public class MidiPlayer{
 		return false;
 	}
 
-	private boolean isPaused() {
+	public boolean isPaused() {
 		try {
 			this.lock();
 

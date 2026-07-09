@@ -87,6 +87,8 @@ public class TGTransportListener implements TGEventListener{
 					TGTransport tgTransport = TGTransport.getInstance(TGTransportListener.this.context);
 					tgTransport.gotoPlayerPosition();
 					tgTransport.getCache().reset();
+
+					tgEditorManager.redrawPlayingThread();
 				} catch (Throwable throwable) {
 					TGErrorManager.getInstance(TGTransportListener.this.context).handleError(throwable);
 				}
