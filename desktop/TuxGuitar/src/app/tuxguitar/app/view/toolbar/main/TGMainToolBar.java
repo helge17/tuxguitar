@@ -114,7 +114,15 @@ public class TGMainToolBar extends TGToolBarModel {
 				this.layoutControls(mainToolBarLayout, area, col, controls);
 				col += controls.size();
 			}
+			if (area == RIGHT_AREA) {
+				TGMainToolBarSection sessionTimeSection = new TGMainToolBarSectionSessionTime(getContext(), this.panel);
+				this.addSection(sessionTimeSection);
+				for (UIControl control : sessionTimeSection.getControls()) {
+					mainToolBarLayout.set(control, 1, col, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, true);
+				}
+			}
 		}
+
 		this.panel.layout();
 	}
 
