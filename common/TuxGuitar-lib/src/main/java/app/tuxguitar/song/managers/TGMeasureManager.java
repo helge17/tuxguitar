@@ -132,7 +132,24 @@ public class TGMeasureManager {
 	}
 
 	public void addNote(TGBeat beat, TGNote note, TGDuration duration, int voice){
+		// TODO don't rely on imprecise start, since target beat and voice are correctly identified
 		addNote(beat, note, duration, beat.getStart(),voice);
+		
+	}
+
+	public void addNote(TGBeat beat, TGNote note, int voiceIndex){
+		// delete other note on the same string (theoretically maximum one)
+		TGNote toDelete = null;
+		for(TGNote voiceNote : beat.getVoice(voiceIndex).getNotes()) {
+			if (voiceNote.getString() == note.getString()) {
+				toDelete = voiceNote;
+				break;
+			}
+		}
+		if (toDelete != null) {
+			removeNote(toDelete, false);
+		}
+		beat.getVoice(voiceIndex).addNote(note);
 	}
 
 	public void addNote(TGBeat beat, TGNote note, TGDuration duration, long start, int voice){
@@ -140,7 +157,6 @@ public class TGMeasureManager {
 		if( emptyVoice ){
 			beat.getVoice( voice ).setEmpty( false );
 		}
-
 		//Verifico si entra en el compas
 		if(validateDuration(beat.getMeasure(),beat, voice, duration,true,true)){
 			//Borro lo que haya en la misma posicion

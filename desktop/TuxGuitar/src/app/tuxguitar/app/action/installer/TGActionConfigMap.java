@@ -332,6 +332,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
 	private static final TGUpdateController UPDATE_NOTE_RANGE_CTL = new TGUpdateNoteRangeController();
 	private static final TGUpdateController UPDATE_BEAT_RANGE_CTL = new TGUpdateBeatRangeController();
+	private static final TGUpdateController UPDATE_MODIFIED_NOTE_CTL = new TGUpdateModifiedNoteController();
 
 	private static final TGUndoableActionController UNDOABLE_SONG_GENERIC = new TGUndoableSongGenericController();
 	private static final TGUndoableActionController UNDOABLE_MEASURE_GENERIC = new TGUndoableMeasureGenericController();
@@ -460,7 +461,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGCopyBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 
 		//beat actions
-		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MODIFIED_NOTE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangePickStrokeUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangePickStrokeDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
@@ -486,7 +487,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGInsertChordAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGRemoveChordAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		for( int i = 0 ; i < 10 ; i ++ ){
-			this.map(TGSetNoteFretNumberAction.getActionName(i), LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+			this.map(TGSetNoteFretNumberAction.getActionName(i), LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MODIFIED_NOTE_CTL, UNDOABLE_MEASURE_GENERIC);
 		}
 		this.map(TGToggleNoteEnharmonicAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 

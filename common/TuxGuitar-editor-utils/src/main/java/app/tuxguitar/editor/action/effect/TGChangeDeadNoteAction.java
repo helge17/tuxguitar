@@ -5,8 +5,6 @@ import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
-import app.tuxguitar.song.models.TGDuration;
-import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
@@ -38,10 +36,8 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 			}
 		}
 		else if( note == null && !track.isPercussion()){
-			TGMeasure measure = ((TGMeasure) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE));
 			TGBeat beat = ((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
 			TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
-			TGDuration duration = ((TGDuration) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION));
 			TGString string = ((TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING));
 			int velocity = ((Integer) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY)).intValue();
 
@@ -50,9 +46,7 @@ public class TGChangeDeadNoteAction extends TGActionBase {
 			note.setVelocity(velocity);
 			note.setString(string.getNumber());
 
-			TGDuration noteDuration = duration.clone(songManager.getFactory());
-
-			songManager.getMeasureManager().addNote(measure, beat.getStart(), note, noteDuration, voice.getIndex());
+			songManager.getMeasureManager().addNote(beat, note, voice.getIndex());
 			songManager.getMeasureManager().changeDeadNote(note);
 		}
 	}
