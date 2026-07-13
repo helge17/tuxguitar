@@ -16,8 +16,8 @@
 	<!-- <string name="global_error_message"></string> -->
 	<!-- <string name="global_exit_confirm_message"></string> -->
 
-	<!-- <string name="global_button_ok"></string> -->
-	<!-- <string name="global_button_cancel"></string> -->
+	<string name="global_button_ok">Confirmar</string>
+	<string name="global_button_cancel">Cancelar</string>
 	<string name="global_button_clean">Limpar</string>
 	<string name="global_button_add">Adicionar</string>
 
@@ -53,7 +53,7 @@
 	<string name="action_copy">Copiar</string>
 	<string name="action_paste">Colar</string>
 
-	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_channel_list">Instrumentos</string>
 	<string name="action_view_layout_show_score">Exibir Partitura</string>
 	<string name="action_view_layout_show_chord_name">Exibir Nomes dos Acordes</string>
 	<string name="action_view_layout_show_chord_diagram">Exibir Diagramas de acorde</string>
@@ -158,9 +158,9 @@
 
 	<!-- <string name="action_change_vibrato"></string> -->
 	<!-- <string name="action_change_bend"></string> -->
-	<!-- <string name="action_change_dead_note"></string> -->
-	<!-- <string name="action_change_slide"></string> -->
-	<!-- <string name="action_change_hammer"></string> -->
+	<string name="action_change_dead_note">Nota Morta</string>
+	<string name="action_change_slide">Slider</string>
+	<string name="action_change_hammer">Hammer</string>
 	<string name="action_change_tremolo_bar">Trêmolo</string>
 	<!-- <string name="action_change_ghost_note"></string> -->
 	<string name="action_change_accentuated_note">Nota Acentuada</string>
@@ -196,7 +196,7 @@
 	<!-- ========================= Storage ================================= -->
 	<!-- =================================================================== -->
 
-	<!-- <string name="storage_default_filename"></string> -->
+	<string name="storage_default_filename">Sem Título</string>
 	<!-- <string name="storage_export_to"></string> -->
 
 	<!-- =================================================================== -->
@@ -204,7 +204,7 @@
 	<!-- =================================================================== -->
 
 	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
-	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+	<string name="storage_saf_assets_provider_title">Músicas de exemplo</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
@@ -321,7 +321,7 @@
 	<string name="song_properties_dlg_album_label">Álbum:</string>
 	<string name="song_properties_dlg_author_label">Autor:</string>
 	<string name="song_properties_dlg_date_label">Data:</string>
-	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
+	<string name="song_properties_dlg_copyright_label">Direitos Autorais:</string>
 	<string name="song_properties_dlg_writer_label">Criador da Tablatura:</string>
 	<string name="song_properties_dlg_transcriber_label">Transcrito por:</string>
 	<string name="song_properties_dlg_comments_label">Comentários:</string>
@@ -332,7 +332,7 @@
 
 	<!-- Track channel dialog -->
 	<string name="track_channel_dlg_channel_label">Instrumento:</string>
-	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+	<string name="track_channel_dlg_settings_label">Instrumentos</string>
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Afinação</string>
@@ -385,7 +385,7 @@
 	<string name="bend_dlg_preset_bend_release">bend/release</string>
 	<string name="bend_dlg_preset_bend_release_bend">bend/release/bend</string>
 	<!-- <string name="bend_dlg_preset_prebend"></string> -->
-	<!-- <string name="bend_dlg_preset_prebend_release"></string> -->
+	<string name="bend_dlg_preset_prebend_release">Pre-Bend Soltar</string>
 
 	<!-- Tremolo Bar dialog -->
 	<string name="tremolo_bar_dlg_title">Trêmolo</string>
@@ -413,7 +413,7 @@
 	<!-- Grace dialog -->
 	<string name="grace_dlg_title">Apogiatura</string>
 	<string name="grace_dlg_fret_label">Braço:</string>
-	<!-- <string name="grace_dlg_dead_note_label"></string> -->
+	<string name="grace_dlg_dead_note_label">Nota Morta</string>
 	<string name="grace_dlg_position_label">Posição</string>
 	<string name="grace_dlg_position_before_beat">Antes da batida</string>
 	<string name="grace_dlg_position_on_beat">Durante a batida</string>
@@ -433,7 +433,7 @@
 	<string name="grace_dlg_transition_label">Transição</string>
 	<string name="grace_dlg_transition_none">Nenhum</string>
 	<!-- <string name="grace_dlg_transition_bend"></string> -->
-	<!-- <string name="grace_dlg_transition_slide"></string> -->
+	<string name="grace_dlg_transition_slide">Slider</string>
 	<!-- <string name="grace_dlg_transition_hammer"></string> -->
 
 	<!-- Harmonic dialog -->
@@ -464,14 +464,14 @@
 	<string name="pickstroke_dlg_direction_down">Palhetar Para Baixo</string>
 
 	<!-- Channels view -->
-	<!-- <string name="channel_list"></string> -->
+	<string name="channel_list">Instrumentos</string>
 
 	<!-- Channel edit dialog -->
 	<string name="channel_edit_dlg_title">Instrumento</string>
 	<string name="channel_edit_dlg_name_label">Nome:</string>
-	<!-- <string name="channel_edit_dlg_program_label"></string> -->
+	<string name="channel_edit_dlg_program_label">Programa:</string>
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
-	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
+	<string name="channel_edit_dlg_bank_label">Banco:</string>
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<string name="channel_edit_dlg_percussion_label">Canal de Percussão</string>
 	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
