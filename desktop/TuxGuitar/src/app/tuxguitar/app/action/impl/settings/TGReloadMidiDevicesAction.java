@@ -27,6 +27,7 @@ public class TGReloadMidiDevicesAction extends TGActionBase {
 		String midiPort = config.getStringValue(TGConfigKeys.MIDI_PORT);
 		if( force || !midiPlayer.isOutputPortOpen(midiPort) ){
 			midiPlayer.openOutputPort(midiPort, false);
+			midiPlayer.resetChannels();
 		}
 	}
 }
