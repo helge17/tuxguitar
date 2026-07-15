@@ -20,9 +20,9 @@ import app.tuxguitar.editor.util.TGSyncProcessLocked;
 import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerEvent;
+import app.tuxguitar.app.view.dialog.fontpicker.TGFontPickerDialog;
 import app.tuxguitar.ui.UIFactory;
-import app.tuxguitar.ui.chooser.UIFontChooser;
-import app.tuxguitar.ui.chooser.UIFontChooserHandler;
 import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
 import app.tuxguitar.ui.event.UIMouseDownListener;
@@ -56,6 +56,10 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 	public static final float TIMESTAMP_MIN_WIDTH = 2f;
 	public static final float TIMESTAMP_MIN_HEIGHT = 2f;
 
+	private static final int STATE_STOPPED = 0;
+	private static final int STATE_RUNNING = 1;
+	private static final int STATE_PAUSED = 2;
+
 	private UICanvas timestampCanvas;
 	private TGSyncProcessLocked redrawProcess;
 	private UIPanel parentPanel;
@@ -68,6 +72,10 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 	private float yTimestamp;
 	private boolean fontChanged;
 	private TGContext context;
+
+	private int sessionState = STATE_STOPPED;
+	private long sessionStartTime = 0;
+	private long accumulatedTime = 0;
 
 	public TGMainToolBarItemTimeCounter(TGMainToolBarItemConfig toolBarItemConfig, TGContext context, UIPanel parentPanel, UIWindow parentWindow) {
 		super(toolBarItemConfig);
@@ -86,20 +94,8 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 			@Override
 			public void onMouseDown(UIMouseEvent event) {
 				if (!MidiPlayer.getInstance(context).isRunning()) {
-					UIFactory uiFactory = TGApplication.getInstance(TGMainToolBarItemTimeCounter.this.context)
-							.getFactory();
-					UIFontChooser uiFontChooser = uiFactory.createFontChooser(parentWindow);
-					uiFontChooser.setDefaultModel(TGMainToolBarItemTimeCounter.this.fontModel);
-					uiFontChooser.choose(new UIFontChooserHandler() {
-						public void onSelectFont(UIFontModel selection) {
-							if (selection != null) {
-								TGConfigManager.getInstance(TGMainToolBarItemTimeCounter.this.context)
-										.setValue(TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP, selection);
-								TGMainToolBarItemTimeCounter.this.loadFont();
-								TGMainToolBarItemTimeCounter.this.timestampCanvas.redraw();
-							}
-						}
-					});
+					TGFontPickerDialog dialog = new TGFontPickerDialog(context, parentWindow);
+					dialog.show();
 				}
 			}
 		});
@@ -110,6 +106,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 					TGMainToolBarItemTimeCounter.this.font.dispose();
 				}
 				TuxGuitar.getInstance().getEditorManager().removeRedrawListener(TGMainToolBarItemTimeCounter.this);
+				MidiPlayer.getInstance(TGMainToolBarItemTimeCounter.this.context).removeListener(TGMainToolBarItemTimeCounter.this);
 			}
 		});
 
@@ -143,15 +140,43 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 
 	private void appendListeners() {
 		TuxGuitar.getInstance().getEditorManager().addRedrawListener(this);
+		MidiPlayer.getInstance(this.context).addListener(this);
 	}
 
 	@Override
 	public void processEvent(final TGEvent event) {
-		if (TGRedrawEvent.EVENT_TYPE.equals(event.getEventType())) {
+		if (MidiPlayerEvent.EVENT_TYPE.equals(event.getEventType())) {
+			if (this.isPerSessionMode()) {
+				int type = ((Integer) event.getAttribute(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE)).intValue();
+				if (type == MidiPlayerEvent.NOTIFY_STARTED) {
+					if (this.sessionState == STATE_STOPPED) {
+						this.sessionStartTime = System.currentTimeMillis();
+						this.accumulatedTime = 0;
+						this.sessionState = STATE_RUNNING;
+					} else if (this.sessionState == STATE_PAUSED) {
+						this.sessionStartTime = System.currentTimeMillis();
+						this.sessionState = STATE_RUNNING;
+					}
+				} else if (type == MidiPlayerEvent.NOTIFY_STOPPED) {
+					boolean paused = ((Boolean) event.getAttribute(MidiPlayerEvent.PROPERTY_PAUSED)).booleanValue();
+					if (paused) {
+						this.accumulatedTime = this.getCurrentSessionTime();
+						this.sessionState = STATE_PAUSED;
+					} else {
+						this.sessionState = STATE_STOPPED;
+						this.accumulatedTime = 0;
+					}
+				}
+			}
+		} else if (TGRedrawEvent.EVENT_TYPE.equals(event.getEventType())) {
 			int type = ((Integer) event.getAttribute(TGRedrawEvent.PROPERTY_REDRAW_MODE)).intValue();
 			if (type == TGRedrawEvent.PLAYING_THREAD || type == TGRedrawEvent.PLAYING_NEW_BEAT) {
 				MidiPlayer midiPlayer = MidiPlayer.getInstance(TGMainToolBarItemTimeCounter.this.context);
-				if ((midiPlayer.isRunning()) && (midiPlayer.getCurrentTimestamp() != null)) {
+				if (this.isPerSessionMode()) {
+					if (this.sessionState == STATE_RUNNING) {
+						this.redrawProcess.process();
+					}
+				} else if ((midiPlayer.isRunning()) && (midiPlayer.getCurrentTimestamp() != null)) {
 					long tMs = midiPlayer.getCurrentTimestamp();
 					if (tMs / 100 != this.timestamp / 100) {
 						this.redrawProcess.process();
@@ -162,6 +187,17 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 				}
 			}
 		}
+	}
+
+	private boolean isPerSessionMode() {
+		return "perSession".equals(TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE));
+	}
+
+	private long getCurrentSessionTime() {
+		if (this.sessionState == STATE_RUNNING) {
+			return this.accumulatedTime + (System.currentTimeMillis() - this.sessionStartTime);
+		}
+		return this.accumulatedTime;
 	}
 
 	// called when skin changes
@@ -198,17 +234,21 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 	}
 
 	private void paintTimestamp(UIPainter painter) {
-		String time;
+		// don't display timestamp while not playing, it's meaningless (e.g. repeats not
+		// considered, etc.)
+		String time = "-:--:--.-";
 
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(TGMainToolBarItemTimeCounter.this.context);
-		if (midiPlayer.isRunning()) {
+		if (this.isPerSessionMode()) {
+			if (this.sessionState != STATE_STOPPED) {
+				long tMs = this.getCurrentSessionTime();
+				time = String.format("%d:%02d:%02d.%01d", tMs / 3600000, (tMs / 60000) % 60, (tMs / 1000) % 60,
+						(tMs / 100) % 10);
+			}
+		} else if (midiPlayer.isRunning()) {
 			long tMs = this.timestamp;
 			time = String.format("%d:%02d:%02d.%01d", tMs / 3600000, (tMs / 60000) % 60, (tMs / 1000) % 60,
 					(tMs / 100) % 10);
-		} else {
-			// don't display timestamp while not playing, it's meaningless (e.g. repeats not
-			// considered, etc.)
-			time = "-:--:--.-";
 		}
 		painter.setFont(this.font);
 		float newWidth;
