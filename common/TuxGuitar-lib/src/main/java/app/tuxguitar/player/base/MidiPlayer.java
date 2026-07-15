@@ -133,6 +133,7 @@ public class MidiPlayer{
 			this.setPaused(paused);
 			this.stopSequencer();
 			this.setRunning(false);
+			this.notifyStopped(paused);
 		} finally {
 			this.unlock();
 		}
@@ -164,6 +165,7 @@ public class MidiPlayer{
 
 			final boolean notifyStarted = (!this.isRunning());
 			this.setRunning(true);
+			this.setPaused(false);
 			this.stopSequencer();
 			this.checkDevices();
 			this.updateLoop(true);
@@ -307,7 +309,7 @@ public class MidiPlayer{
 				}
 
 				if(!this.isRunning() ){
-					this.notifyStopped();
+					this.notifyStopped(isPaused());
 				}
 			} finally {
 				this.unlock();
@@ -1261,8 +1263,8 @@ public class MidiPlayer{
 		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STARTED));
 	}
 
-	public void notifyStopped(){
-		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STOPPED));
+	public void notifyStopped(boolean paused){
+		TGEventManager.getInstance(this.context).fireEvent(new MidiPlayerEvent(MidiPlayerEvent.NOTIFY_STOPPED, paused));
 	}
 
 	public void notifyCountDownStarted(){
