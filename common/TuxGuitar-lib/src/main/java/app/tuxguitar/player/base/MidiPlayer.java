@@ -115,10 +115,7 @@ public class MidiPlayer{
 	public void stopSequencer() {
 		try {
 			this.lock();
-
-			if( this.getSequencer().isRunning() ){
-				this.getSequencer().stop();
-			}
+			this.getSequencer().stop();
 		} catch (MidiPlayerException e) {
 			e.printStackTrace();
 		} finally {
