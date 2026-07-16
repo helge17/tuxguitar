@@ -8,7 +8,6 @@ import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChord;
-import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
@@ -51,10 +50,7 @@ public class TGInsertChordAction extends TGActionBase {
 					note.setVelocity(velocity);
 					note.setString(string.getNumber());
 
-					TGDuration duration = songManager.getFactory().newDuration();
-					duration.copyFrom(voice.getDuration());
-
-					songManager.getMeasureManager().addNote(beat, note, duration, voice.getIndex());
+					songManager.getMeasureManager().addNote(beat, note, voice.getIndex());
 				}
 			}
 			songManager.getMeasureManager().addChord(beat, chord);

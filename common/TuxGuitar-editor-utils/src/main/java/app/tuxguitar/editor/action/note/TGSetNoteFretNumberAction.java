@@ -1,11 +1,14 @@
 package app.tuxguitar.editor.action.note;
 
 import app.tuxguitar.action.TGActionContext;
-import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.util.TGContext;
 
 public class TGSetNoteFretNumberAction extends TGActionBase  {
@@ -27,15 +30,18 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 	}
 
 	protected void processAction(TGActionContext context){
+		TGSongManager songManager = getSongManager(context);
 		TGTrack track = (TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		TGString string = (TGString) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING);
-		Long start = (Long) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION);
-
+		TGBeat beat = (TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
+		TGVoice voice = ((TGVoice) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
+		long preciseStart = beat.getPreciseStart();
+		
 		int fret = this.number;
 		long time = System.currentTimeMillis();
 
 		if( this.number < 10 ){
-			if( lastAddedStart == start.longValue() && lastAddedString == string.getNumber() ){
+			if( lastAddedStart == preciseStart && lastAddedString == string.getNumber() ){
 				if( lastAddedFret > 0 && lastAddedFret < 10 && time <  ( lastAddedTime + DELAY ) ){
 					int newFret = ( ( lastAddedFret * 10 ) + fret );
 					if( newFret <= track.getMaxFret() || track.isPercussion() ){
@@ -45,14 +51,14 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 			}
 			lastAddedTime = time;
 			lastAddedFret = fret;
-			lastAddedStart = start.longValue();
+			lastAddedStart = preciseStart;
 			lastAddedString = string.getNumber();
 		}
 
-		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_FRET, Integer.valueOf(fret));
-
-		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
-		tgActionManager.execute(TGChangeNoteAction.NAME, context);
+		TGNote note = songManager.getFactory().newNote();
+		note.setString(lastAddedString);
+		note.setValue(fret);
+		songManager.getMeasureManager().addNote(beat, note, voice.getIndex());
 	}
 
 	public static final String getActionName(int number){
