@@ -52,6 +52,7 @@ public class GP5InputStream extends GTPInputStream {
 
 	private int keySignature;
 	private int[] keySignatures;
+	private int[] clefs;	// clef associated to track in gp5, to measure in tg: temporary storage (index of table = track nb)
 
 	public GP5InputStream(GTPSettings settings) {
 		super(settings, SUPPORTED_VERSIONS);
@@ -92,6 +93,7 @@ public class GP5InputStream extends GTPInputStream {
 
 			int measures = readInt();
 			int tracks = readInt();
+			this.clefs = new int[tracks];
 
 			this.keySignatures = new int[measures];
 			if (measures > 0) {
@@ -415,7 +417,7 @@ public class GP5InputStream extends GTPInputStream {
 			TGBeat beat = it.next();
 			measure.removeBeat( beat );
 		}
-		measure.setClef( getClef(track) );
+		measure.setClef( this.clefs[track.getNumber()-1] );
 		int index = measure.getNumber() - 1;
 		measure.setKeySignature(this.keySignatures[index]);
 	}
@@ -475,10 +477,13 @@ public class GP5InputStream extends GTPInputStream {
 		}
 		readInt();
 		readChannel(song, track, channels);
-		readInt();
+		readInt();	// fret count
 		track.setOffset(readInt());
 		readColor(track.getColor());
-		skip( (getVersion().getVersionCode() > 0)? 49 : 44);
+		skip(5);
+		int clef = readInt();
+		this.clefs[number-1] = (clef == 12 ? TGMeasure.CLEF_BASS : TGMeasure.CLEF_TREBLE);
+		skip( (getVersion().getVersionCode() > 0)? 40 : 35);
 		if(getVersion().getVersionCode() > 0){
 			readStringByteSizeOfInteger();
 			readStringByteSizeOfInteger();
@@ -807,19 +812,6 @@ public class GP5InputStream extends GTPInputStream {
 	private short toChannelShort(byte b){
 		short value = (short)(( b * 8 ) - 1);
 		return (short)Math.max(value,0);
-	}
-
-	private int getClef( TGTrack track ){
-		if(!isPercussionChannel(track.getSong(),track.getChannelId())){
-			Iterator<TGString> it = track.getStrings().iterator();
-			while( it.hasNext() ){
-				TGString string = it.next();
-				if( string.getValue() <= 34 ){
-					return TGMeasure.CLEF_BASS;
-				}
-			}
-		}
-		return TGMeasure.CLEF_TREBLE;
 	}
 
 	private TGBeat getBeat(TGMeasure measure, long start){

@@ -282,7 +282,9 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeInt(24);
 		writeInt(track.getOffset());
 		writeColor(track.getColor());
-		writeBytes(new byte[]{ 67, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1});
+		writeBytes(new byte[]{ 67, 1, 0, 0, 0});
+		writeInt(track.getMeasure(0).getClef()==TGMeasure.CLEF_BASS ? 12 : 0);
+		writeBytes(new byte[]{ 0, 0, 0, 0, 100, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1});
 	}
 
 	private void writeMeasures(TGSong song, TGTempo tempo) throws IOException{
