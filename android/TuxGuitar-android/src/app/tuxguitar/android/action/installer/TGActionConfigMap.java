@@ -164,6 +164,7 @@ import app.tuxguitar.editor.action.note.TGMoveBeatsAction;
 import app.tuxguitar.editor.action.note.TGMoveBeatsLeftAction;
 import app.tuxguitar.editor.action.note.TGMoveBeatsRightAction;
 import app.tuxguitar.editor.action.note.TGRemoveTextAction;
+import app.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceAutoAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceDownAction;
 import app.tuxguitar.editor.action.note.TGSetVoiceUpAction;
@@ -229,6 +230,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 	private static final TGUpdateController UPDATE_SONG_LOADED_CTL = new TGUpdateLoadedSongController();
 	private static final TGUpdateController UPDATE_SONG_SAVED_CTL = new TGUpdateSavedSongController();
 	private static final TGUpdateController UPDATE_CHANNELS_CTL = new TGUpdateChannelsController();
+	private static final TGUpdateController UPDATE_MODIFIED_NOTE_CTL = new TGUpdateModifiedNoteController();
 
 	private static final TGUndoableActionController UNDOABLE_SONG_GENERIC = new TGUndoableSongGenericController();
 	private static final TGUndoableActionController UNDOABLE_MEASURE_GENERIC = new TGUndoableMeasureGenericController();
@@ -308,7 +310,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGFixMeasureVoiceAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 
 		//beat actions
-		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedNoteController(), UNDOABLE_MEASURE_GENERIC);
+		this.map(TGChangeNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MODIFIED_NOTE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeTiedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGChangeVelocityAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateModifiedVelocityController(), UNDOABLE_MEASURE_GENERIC);
 		this.map(TGCleanBeatAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
@@ -330,6 +332,9 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGChangeStrokeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGInsertTextAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
 		this.map(TGRemoveTextAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
+		for( int i = 0 ; i < 10 ; i ++ ){
+			this.map(TGSetNoteFretNumberAction.getActionName(i), LOCKABLE | DISABLE_ON_PLAY, UPDATE_MODIFIED_NOTE_CTL, UNDOABLE_MEASURE_GENERIC);
+		}
 
 		//effect actions
 		this.map(TGChangeAccentuatedNoteAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, UNDOABLE_MEASURE_GENERIC);
