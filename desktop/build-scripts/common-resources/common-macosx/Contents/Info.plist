@@ -95,6 +95,25 @@
 				<key>LSTypeIsPackage</key>
 				<false />
 			</dict>
+			<dict>
+				<key>CFBundleTypeExtensions</key>
+				<array>
+					<string>mid</string>
+					<string>midi</string>
+				</array>
+				<key>LSItemContentTypes</key>
+				<array>
+					<string>public.midi-audio</string>
+				</array>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>LSIsAppleDefaultForType</key>
+				<true />
+				<key>LSTypeIsPackage</key>
+				<false />
+				<key>LSHandlerRank</key>
+				<string>Alternate</string>
+			</dict>
 		</array>
 	</dict>
 </plist>

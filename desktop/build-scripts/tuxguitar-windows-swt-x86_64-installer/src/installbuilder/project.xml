@@ -193,6 +193,18 @@
 			<type>REG_SZ</type>
 			<value>TuxGuitar.File</value>
 		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.mid</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
+		<registrySet>
+			<key>HKEY_CLASSES_ROOT\.midi</key>
+			<name></name>
+			<type>REG_SZ</type>
+			<value>TuxGuitar.File</value>
+		</registrySet>
 	</postInstallationActionList>
 	<postUninstallationActionList>
 		<registryDelete>
@@ -229,6 +241,14 @@
 		</registryDelete>
 		<registryDelete>
 			<key>HKEY_CLASSES_ROOT\.tef</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.mid</key>
+			<name></name>
+		</registryDelete>
+		<registryDelete>
+			<key>HKEY_CLASSES_ROOT\.midi</key>
 			<name></name>
 		</registryDelete>
 		<registryDelete>

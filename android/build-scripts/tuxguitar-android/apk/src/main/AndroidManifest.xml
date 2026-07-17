@@ -103,6 +103,24 @@
 				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.tef" />
 				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.tef" />
 				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.tef" />
+
+				<data android:mimeType="audio/midi" />
+				<data android:mimeType="audio/x-midi" />
+				<data android:mimeType="application/x-midi" />
+				<data android:pathPattern=".*\\.mid" />
+				<data android:pathPattern=".*\\..*\\.mid" />
+				<data android:pathPattern=".*\\..*\\..*\\.mid" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.mid" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mid" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.mid" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.mid" />
+				<data android:pathPattern=".*\\.midi" />
+				<data android:pathPattern=".*\\..*\\.midi" />
+				<data android:pathPattern=".*\\..*\\..*\\.midi" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\.midi" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.midi" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.midi" />
+				<data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.midi" />
 			</intent-filter>
 		</activity>
 		<provider
