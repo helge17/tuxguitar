@@ -309,6 +309,10 @@ public class TGNoteImpl extends TGNote {
 					float tNoteY = (fromY + getScorePosY());
 					tX = tNoteX + (10.0f * layoutScale);
 					tY = (tNoteY + (layout.getScoreLineSpacing() / 2f));
+					// minimize conflict with preceding dotted/double-dotted note
+					if (noteForTie.getVoice().getDuration().isDotted() || noteForTie.getVoice().getDuration().isDoubleDotted()) {
+						tY += (yDirection * 1.5f * layoutScale);
+					}
 				}
 				float tWidth = (x - tX) - (3.0f * layoutScale);
 				float tHeight1 = (layout.getScoreLineSpacing() / 2f);
