@@ -135,6 +135,10 @@ public class TGBrowserManager {
 		this.properties.save();
 	}
 
+	public boolean hasStoredCollections() {
+		return this.properties.hasCollections();
+	}
+
 	public void restoreCollections() throws TGBrowserException {
 		this.collections.clear();
 

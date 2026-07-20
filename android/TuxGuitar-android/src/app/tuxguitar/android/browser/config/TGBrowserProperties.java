@@ -51,13 +51,17 @@ public class TGBrowserProperties {
 		TGPropertiesUtil.setValue(this.properties, PROPERTY_DEFAULT_COLLECTION, index);
 	}
 
+	public boolean hasCollections() {
+		String jsonCollections = this.properties.getValue(PROPERTY_COLLECTIONS);
+		return (jsonCollections != null && jsonCollections.length() > 0);
+	}
+
 	public List<TGBrowserCollection> getCollections() throws TGBrowserException{
 		try {
 			List<TGBrowserCollection> collections =  new ArrayList<TGBrowserCollection>();
 
-			String jsonCollections = this.properties.getValue(PROPERTY_COLLECTIONS);
-			if( jsonCollections != null && jsonCollections.length() > 0 ) {
-				JSONArray jsonArray = new JSONArray(jsonCollections);
+			if( this.hasCollections() ) {
+				JSONArray jsonArray = new JSONArray(this.properties.getValue(PROPERTY_COLLECTIONS));
 				for(int i = 0; i< jsonArray.length() ; i++){
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
 

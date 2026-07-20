@@ -1,9 +1,9 @@
 package app.tuxguitar.android.browser.assets;
 
 import app.tuxguitar.android.browser.TGBrowserManager;
-import app.tuxguitar.android.browser.model.TGBrowserException;
 import app.tuxguitar.android.browser.model.TGBrowserFactory;
 import app.tuxguitar.android.browser.model.TGBrowserFactoryHandler;
+import app.tuxguitar.tools.browser.TGBrowserCollection;
 import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
 import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.util.TGContext;
@@ -11,14 +11,13 @@ import app.tuxguitar.util.TGContext;
 public class TGAssetBrowserFactory implements TGBrowserFactory{
 
 	public static final String BROWSER_TYPE = "assets";
-	public static final String BROWSER_NAME = "Demo Songs";
 
 	private TGContext context;
 	private TGAssetBrowserSettings settings;
 
 	public TGAssetBrowserFactory(TGContext context) {
 		this.context = context;
-		this.settings = new TGAssetBrowserSettings();
+		this.settings = new TGAssetBrowserSettings(context);
 	}
 
 	public String getType(){
@@ -26,7 +25,7 @@ public class TGAssetBrowserFactory implements TGBrowserFactory{
 	}
 
 	public String getName(){
-		return BROWSER_NAME;
+		return this.getDefaultSettings().getTitle();
 	}
 
 	public TGAssetBrowserSettings getDefaultSettings() {
@@ -38,15 +37,10 @@ public class TGAssetBrowserFactory implements TGBrowserFactory{
 	}
 
 	public void createSettings(TGBrowserFactorySettingsHandler handler) {
-		try {
-			TGBrowserSettings settings = this.getDefaultSettings().toBrowserSettings();
-			if (TGBrowserManager.getInstance(this.context).getCollection(this.getType(), settings) != null) {
-				throw new TGBrowserException(BROWSER_NAME + " already exists.");
-			}
+		handler.onCreateSettings(this.getDefaultSettings().toBrowserSettings());
+	}
 
-			handler.onCreateSettings(settings);
-		} catch(TGBrowserException e) {
-			handler.handleError(e);
-		}
+	public TGBrowserCollection createDemoCollection() {
+		return TGBrowserManager.getInstance(this.context).createCollection(this.getType(), this.getDefaultSettings().toBrowserSettings());
 	}
 }

@@ -187,8 +187,13 @@ public class TGBrowserView extends RelativeLayout {
 	public void addBrowserDefaults() throws TGBrowserException {
 		TGContext context = this.findContext();
 		TGBrowserManager browserManager = TGBrowserManager.getInstance(context);
-		browserManager.addFactory(new TGAssetBrowserFactory(context));
+		TGAssetBrowserFactory assetBrowserFactory = new TGAssetBrowserFactory(context);
+		browserManager.addFactory(assetBrowserFactory);
 		browserManager.restoreCollections();
+
+		if( !browserManager.hasStoredCollections() ) {
+			browserManager.addCollection(assetBrowserFactory.createDemoCollection());
+		}
 	}
 
 	public void requestRefresh() {
