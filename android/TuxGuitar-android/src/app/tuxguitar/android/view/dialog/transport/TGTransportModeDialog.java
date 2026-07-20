@@ -24,7 +24,6 @@ import app.tuxguitar.android.action.impl.caret.TGMoveToAction;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
-import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGBeat;

@@ -21,7 +21,6 @@ import app.tuxguitar.editor.template.TGTemplateManager;
 import app.tuxguitar.event.TGEventManager;
 import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatManager;
-import app.tuxguitar.io.tg.TGStream;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;

@@ -9,7 +9,6 @@ import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.gm.port.GMReceiver;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.player.base.MidiOutputPort;
-import app.tuxguitar.player.impl.midiport.audiounit.MidiPortReaderPlugin;
 import app.tuxguitar.player.impl.midiport.audiounit.utils.MidiConfigUtils;
 import app.tuxguitar.util.plugin.TGPluginInfo;
 import app.tuxguitar.util.TGContext;

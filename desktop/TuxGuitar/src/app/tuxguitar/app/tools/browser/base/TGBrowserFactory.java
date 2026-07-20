@@ -1,7 +1,6 @@
 package app.tuxguitar.app.tools.browser.base;
 
 import app.tuxguitar.tools.browser.base.TGBrowserFactorySettingsHandler;
-import app.tuxguitar.tools.browser.base.TGBrowserCallBack;
 import app.tuxguitar.tools.browser.base.TGBrowserSettings;
 import app.tuxguitar.ui.resource.UIImage;
 

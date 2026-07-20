@@ -2,8 +2,6 @@ package app.tuxguitar.android.browser.model;
 
 import java.util.Comparator;
 
-import app.tuxguitar.android.browser.model.TGBrowserElement;
-
 public class TGBrowserElementComparator implements Comparator<TGBrowserElement> {
 
 	private static final int RESULT_LESS = -1;

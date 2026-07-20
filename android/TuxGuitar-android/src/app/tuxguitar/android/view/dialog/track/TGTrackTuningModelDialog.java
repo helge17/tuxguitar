@@ -11,11 +11,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import app.tuxguitar.android.R;
-import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
-import app.tuxguitar.android.view.dialog.message.TGMessageDialogController;
 import app.tuxguitar.android.view.util.TGSelectableItem;
-import app.tuxguitar.editor.action.TGActionProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

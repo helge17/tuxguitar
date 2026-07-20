@@ -1,6 +1,5 @@
 package app.tuxguitar.android.view.dialog.browser.collection;
 
-import app.tuxguitar.android.R;
 import app.tuxguitar.android.action.TGActionProcessorListener;
 import app.tuxguitar.android.action.impl.browser.TGBrowserAddCollectionAction;
 import app.tuxguitar.android.action.impl.browser.TGBrowserRemoveCollectionAction;
@@ -8,8 +7,6 @@ import app.tuxguitar.android.action.impl.gui.TGOpenDialogAction;
 import app.tuxguitar.android.action.impl.gui.TGOpenMenuAction;
 import app.tuxguitar.android.menu.controller.TGMenuController;
 import app.tuxguitar.android.view.dialog.TGDialogController;
-import app.tuxguitar.android.view.dialog.confirm.TGConfirmDialogController;
-import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.tools.browser.TGBrowserCollection;
 
 public class TGBrowserCollectionsActionHandler {

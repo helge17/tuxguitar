@@ -2,11 +2,9 @@ package app.tuxguitar.android.action.impl.transport;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.android.action.TGActionBase;
-import app.tuxguitar.android.transport.TGTransport;
 import app.tuxguitar.android.view.tablature.TGSongViewController;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
-import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.util.TGContext;
 
 public class TGTransportSetLoopEHeaderAction extends TGActionBase {

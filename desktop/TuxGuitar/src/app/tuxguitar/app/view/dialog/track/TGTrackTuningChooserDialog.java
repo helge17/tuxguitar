@@ -1,7 +1,6 @@
 package app.tuxguitar.app.view.dialog.track;
 
 import app.tuxguitar.app.TuxGuitar;
-import app.tuxguitar.app.util.TGMessageDialogUtil;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UISelectionEvent;
