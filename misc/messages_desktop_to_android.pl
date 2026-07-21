@@ -54,6 +54,10 @@ sub special_cases {
       $_[1] =~ s/\{1\}/%2\$d/g;
       return $_[1];
     }
+    when ("file.export-as") {
+      $_[1] =~ s/\{0\}/%1\$s/g;
+      return $_[1];
+    }
     default {
       if ($_[2] =~ /:$/) {
         # Desktop messages contain no colon at the end (the colon is attached in the Java code),

@@ -197,7 +197,7 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_default_filename">Sense títol</string>
-	<!-- <string name="storage_export_to"></string> -->
+	<string name="storage_export_to">Exportar com a %1$s</string>
 
 	<!-- =================================================================== -->
 	<!-- ======================= SAF Storage =============================== -->

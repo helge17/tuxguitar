@@ -197,7 +197,7 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_default_filename">Izenburu gabea</string>
-	<!-- <string name="storage_export_to"></string> -->
+	<string name="storage_export_to">Exportatu %1$s gisa</string>
 
 	<!-- =================================================================== -->
 	<!-- ======================= SAF Storage =============================== -->

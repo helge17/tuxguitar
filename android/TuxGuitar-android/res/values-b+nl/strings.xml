@@ -197,7 +197,7 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_default_filename">Naamloos</string>
-	<!-- <string name="storage_export_to"></string> -->
+	<string name="storage_export_to">Exporteren Als %1$s</string>
 
 	<!-- =================================================================== -->
 	<!-- ======================= SAF Storage =============================== -->

@@ -197,7 +197,7 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_default_filename">Senza titolo</string>
-	<!-- <string name="storage_export_to"></string> -->
+	<string name="storage_export_to">Esporta come %1$s</string>
 
 	<!-- =================================================================== -->
 	<!-- ======================= SAF Storage =============================== -->
