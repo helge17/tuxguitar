@@ -450,6 +450,18 @@ public class TGNoteImpl extends TGNote {
 						painter.setLineWidth(layout.getLineWidth(1));
 					}
 				}
+
+				// draw note name (learning mode)
+				if((layout.getStyle() & TGLayout.DISPLAY_NOTE_NAME) != 0 && !getMeasureImpl().getTrack().isPercussion()){
+					int realNoteValue = layout.getSongManager().getMeasureManager().getRealNoteValue(this);
+					int keySignature = getMeasureImpl().getKeySignature();
+					String noteName = TGMusicKeyUtils.noteName(realNoteValue, keySignature);
+
+					layout.setScoreEffectStyle(painter);
+					float noteNameX = x + (scoreNoteWidth / 2f);
+					float noteNameY = (fromY + getVoiceImpl().getBeatGroup().getMinNote().getScorePosY() - layout.getScoreLineSpacing() - (2f * layoutScale));
+					painter.drawString(noteName, noteNameX, noteNameY);
+				}
 			}
 		}
 	}

@@ -32,6 +32,7 @@ public abstract class TGLayout {
 	public static final int DISPLAY_MODE_BLACK_WHITE = 0x40;
 	public static final int HIGHLIGHT_PLAYED_BEAT = 0x80;
 	public static final int CONTINUOUS_SCROLL = 0x0100;
+	public static final int DISPLAY_NOTE_NAME = 0x0200;
 
 	private int style;
 	private float scale;

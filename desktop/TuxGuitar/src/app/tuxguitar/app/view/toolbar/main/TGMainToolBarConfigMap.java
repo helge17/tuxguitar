@@ -60,6 +60,7 @@ import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
 import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
 import app.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
+import app.tuxguitar.app.action.impl.layout.TGSetNoteNameEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
@@ -375,6 +376,14 @@ public class TGMainToolBarConfigMap {
 				return ((style & TGLayout.DISPLAY_TABLATURE) != 0);
 			}
 		});
+		registerCheckable("view.layout.note-name", TGSetNoteNameEnabledAction.NAME,
+				TGIconManager.LAYOUT_SCORE, new TGMainToolBarItemUpdater() {
+					@Override
+					public boolean checked(TGContext context, boolean isRunning) {
+						int style = TablatureEditor.getInstance(context).getTablature().getViewLayout().getStyle();
+						return ((style & TGLayout.DISPLAY_NOTE_NAME) != 0);
+					}
+				});
 		registerCheckable("view.layout.compact", TGSetCompactViewAction.NAME,
 				TGIconManager.LAYOUT_COMPACT, new TGMainToolBarItemUpdater() {
 					@Override

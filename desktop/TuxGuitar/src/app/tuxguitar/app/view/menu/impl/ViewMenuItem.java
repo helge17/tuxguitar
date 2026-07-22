@@ -4,6 +4,7 @@ package app.tuxguitar.app.view.menu.impl;
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.impl.layout.TGSetChordDiagramEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetChordNameEnabledAction;
+import app.tuxguitar.app.action.impl.layout.TGSetNoteNameEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetCompactViewAction;
 import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleDecrementAction;
 import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleIncrementAction;
@@ -63,6 +64,7 @@ public class ViewMenuItem extends TGMenuItem {
 	private UIMenuSubMenuItem chordMenuItem;
 	private UIMenuCheckableItem chordName;
 	private UIMenuCheckableItem chordDiagram;
+	private UIMenuCheckableItem noteName;
 
 	public ViewMenuItem(UIMenu parent) {
 		this.layoutMenuItem = parent.createSubMenuItem();
@@ -142,6 +144,9 @@ public class ViewMenuItem extends TGMenuItem {
 		this.chordDiagram = this.chordMenuItem.getMenu().createCheckItem();
 		this.chordDiagram.addSelectionListener(this.createActionProcessor(TGSetChordDiagramEnabledAction.NAME));
 
+		this.noteName = this.layoutMenuItem.getMenu().createCheckItem();
+		this.noteName.addSelectionListener(this.createActionProcessor(TGSetNoteNameEnabledAction.NAME));
+
 		this.layoutMenuItem.getMenu().createSeparator();
 
 		//--ZOOM IN--
@@ -180,6 +185,7 @@ public class ViewMenuItem extends TGMenuItem {
 		this.compact.setChecked( this.compact.isEnabled() && ((style & TGLayout.DISPLAY_COMPACT) != 0) );
 		this.chordName.setChecked( (style & TGLayout.DISPLAY_CHORD_NAME) != 0 );
 		this.chordDiagram.setChecked( (style & TGLayout.DISPLAY_CHORD_DIAGRAM) != 0 );
+		this.noteName.setChecked( (style & TGLayout.DISPLAY_NOTE_NAME) != 0 );
 		this.zoomReset.setEnabled(!Tablature.DEFAULT_SCALE.equals(tablature.getScale()));
 	}
 
@@ -203,6 +209,7 @@ public class ViewMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.chordMenuItem, "view.layout.chord-style", null);
 		setMenuItemTextAndAccelerator(this.chordName, "view.layout.chord-name", TGSetChordNameEnabledAction.NAME);
 		setMenuItemTextAndAccelerator(this.chordDiagram, "view.layout.chord-diagram", TGSetChordDiagramEnabledAction.NAME);
+		setMenuItemTextAndAccelerator(this.noteName, "view.layout.note-name", TGSetNoteNameEnabledAction.NAME);
 		setMenuItemTextAndAccelerator(this.zoomIn, "view.zoom.in", TGSetLayoutScaleIncrementAction.NAME);
 		setMenuItemTextAndAccelerator(this.zoomOut, "view.zoom.out", TGSetLayoutScaleDecrementAction.NAME);
 		setMenuItemTextAndAccelerator(this.zoomReset, "view.zoom.reset", TGSetLayoutScaleResetAction.NAME);

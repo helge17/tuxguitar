@@ -68,6 +68,7 @@ import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
 import app.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
+import app.tuxguitar.app.action.impl.layout.TGSetNoteNameEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
@@ -572,6 +573,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGSetLinearLayoutAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetMultitrackViewAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetScoreEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
+		this.map(TGSetNoteNameEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetTablatureEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetCompactViewAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
 		this.map(TGSetChordNameEnabledAction.NAME, LOCKABLE | SHORTCUT, UPDATE_SONG_CTL);
