@@ -69,6 +69,7 @@ import app.tuxguitar.app.action.impl.layout.TGSetLayoutScaleResetAction;
 import app.tuxguitar.app.action.impl.layout.TGSetLinearLayoutAction;
 import app.tuxguitar.app.action.impl.layout.TGSetMultitrackViewAction;
 import app.tuxguitar.app.action.impl.layout.TGSetPageLayoutAction;
+import app.tuxguitar.app.action.impl.layout.TGSetNoteNameEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetScoreEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGSetTablatureEnabledAction;
 import app.tuxguitar.app.action.impl.layout.TGToggleContinuousScrollingAction;
@@ -502,6 +503,7 @@ public class TGActionInstaller {
 		installAction(new TGSetMultitrackViewAction(context));
 		installAction(new TGSetScoreEnabledAction(context));
 		installAction(new TGSetTablatureEnabledAction(context));
+		installAction(new TGSetNoteNameEnabledAction(context));
 		installAction(new TGSetCompactViewAction(context));
 		installAction(new TGSetChordNameEnabledAction(context));
 		installAction(new TGSetChordDiagramEnabledAction(context));

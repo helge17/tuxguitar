@@ -457,9 +457,10 @@ public class TGNoteImpl extends TGNote {
 					int keySignature = getMeasureImpl().getKeySignature();
 					String noteName = TGMusicKeyUtils.noteName(realNoteValue, keySignature);
 
+					painter.setFont(layout.getResources().getDefaultFont());
 					layout.setScoreEffectStyle(painter);
-					float noteNameX = x + (scoreNoteWidth / 2f);
-					float noteNameY = (fromY + getVoiceImpl().getBeatGroup().getMinNote().getScorePosY() - layout.getScoreLineSpacing() - (2f * layoutScale));
+					float noteNameX = x - (scoreNoteWidth / 2f) - (8f * layoutScale);
+					float noteNameY = (fromY + getScorePosY() - (layout.getScoreLineSpacing() / 4f));
 					painter.drawString(noteName, noteNameX, noteNameY);
 				}
 			}
