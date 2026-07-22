@@ -5,6 +5,7 @@ import java.net.URL;
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.app.action.TGActionAdapterManager;
 import app.tuxguitar.app.action.impl.file.TGReadURLAction;
+import app.tuxguitar.app.helper.TGFileHistory;
 import app.tuxguitar.app.action.impl.marker.TGToggleMarkerListAction;
 import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
@@ -156,6 +157,15 @@ public class TuxGuitar {
 
 	private void startSong(URL url){
 		TGDocumentListManager.getInstance(this.context).findCurrentDocument().setUnwanted(true);
+
+		// auto-load last file if no URL given and setting enabled
+		if( url == null && getConfig().getBooleanValue(TGConfigKeys.AUTO_LOAD_LAST_FILE) ){
+			java.util.List<java.net.URL> urls = TGFileHistory.getInstance(this.context).getURLs();
+			if( urls != null && !urls.isEmpty() ){
+				url = urls.get(0);
+			}
+		}
+
 		if( url != null ){
 			TGActionProcessor tgActionProcessor = new TGActionProcessor(this.context, TGReadURLAction.NAME);
 			tgActionProcessor.setAttribute(TGReadURLAction.ATTRIBUTE_URL, url);

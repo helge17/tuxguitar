@@ -90,6 +90,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.MIDI_PORT, "tuxguitar-synth.port");
 		loadProperty(properties, TGConfigKeys.MIDI_SEQUENCER, "tuxguitar.sequencer");
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES, 10);
+		loadProperty(properties, TGConfigKeys.AUTO_LOAD_LAST_FILE, true);
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STRING_SPACING, 20);
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STYLE, TGFretBoardConfig.DISPLAY_TEXT_SCALE);
 		loadProperty(properties, TGConfigKeys.FRETBOARD_FONT, (DEFAULT_FONT_NAME + ",8,true,false"));

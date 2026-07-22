@@ -97,6 +97,13 @@ public class FileMenuItem extends TGMenuItem {
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
 
+		//--OPEN RECENT--
+		this.historyItem = this.fileMenuItem.getMenu().createSubMenuItem();
+		this.updateHistoryFiles();
+
+		//--SEPARATOR--
+		this.fileMenuItem.getMenu().createSeparator();
+
 		//-- CUSTOM TEMPLATE--
 		this.selectCustomTemplate = this.fileMenuItem.getMenu().createActionItem();
 		this.selectCustomTemplate.addSelectionListener(this.createActionProcessor(TGCustomTemplateSelectAction.NAME));
@@ -169,13 +176,6 @@ public class FileMenuItem extends TGMenuItem {
 		//--PRINT--
 		this.print = this.fileMenuItem.getMenu().createActionItem();
 		this.print.addSelectionListener(this.createActionProcessor(TGPrintAction.NAME));
-
-		//--SEPARATOR--
-		this.fileMenuItem.getMenu().createSeparator();
-
-		//--HISTORY--
-		this.historyItem = this.fileMenuItem.getMenu().createSubMenuItem();
-		this.updateHistoryFiles();
 
 		//--SEPARATOR--
 		this.fileMenuItem.getMenu().createSeparator();
@@ -340,7 +340,7 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.saveAs, "file.save-as", TGSaveAsFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.printPreview, "file.print-preview", TGPrintPreviewAction.NAME);
 		setMenuItemTextAndAccelerator(this.print, "file.print", TGPrintAction.NAME);
-		setMenuItemTextAndAccelerator(this.historyItem, "file.history", null);
+		setMenuItemTextAndAccelerator(this.historyItem, "file.open-recent", null);
 		setMenuItemTextAndAccelerator(this.exit, "file.exit", TGExitAction.NAME);
 
 		if( this.importItem != null ){
