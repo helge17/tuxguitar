@@ -56,7 +56,6 @@ public class JFXImageView extends JFXNode<ImageView> implements UIImageView {
 	}
 
 	public void redraw() {
-		this.getControl().requestFocus();
 	}
 
 	public void addResizeListener(UIResizeListener listener) {
