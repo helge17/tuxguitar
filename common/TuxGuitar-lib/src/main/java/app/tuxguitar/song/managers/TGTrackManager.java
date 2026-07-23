@@ -9,6 +9,7 @@ import app.tuxguitar.graphics.control.TGDrumMap;
 import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
@@ -459,7 +460,7 @@ public class TGTrackManager {
 	/**
 	 * Cambia el Clef
 	 */
-	public void changeClef(TGTrack track,TGMeasure measure,int clef,boolean toEnd){
+	public void changeClef(TGTrack track,TGMeasure measure, TGClef clef,boolean toEnd){
 		//asigno el nuevo clef
 		measure.setClef(clef);
 

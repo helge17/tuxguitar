@@ -19,24 +19,18 @@ import app.tuxguitar.song.factory.TGFactory;
  */
 public abstract class TGMeasure {
 
-	public static final int CLEF_TREBLE = 1;
-	public static final int CLEF_BASS = 2;
-	public static final int CLEF_TENOR = 3;
-	public static final int CLEF_ALTO = 4;
-
-	public static final int DEFAULT_CLEF = CLEF_TREBLE;
 	public static final int DEFAULT_KEY_SIGNATURE= 0;
 
 	private TGMeasureHeader header;
 	private TGTrack track;
-	private int clef;
+	private TGClef clef;
 	private int keySignature;
 
 	private List<TGBeat> beats;
 
 	public TGMeasure(TGMeasureHeader header){
 		this.header = header;
-		this.clef = DEFAULT_CLEF;
+		this.clef = TGClef.DEFAULT_CLEF;
 		this.keySignature = DEFAULT_KEY_SIGNATURE;
 		this.beats = new ArrayList<TGBeat>();
 	}
@@ -49,11 +43,37 @@ public abstract class TGMeasure {
 		this.track = track;
 	}
 
-	public int getClef() {
+	public int getClefIndex() {
+		return this.clef.getBaseClefIndex();
+	}
+
+	// for compatibility with older versions (up to 2.1)
+	// do NOT use this method any more, use .setClef(TGClef)
+	@Deprecated
+	public void setClef(int clefIndex) {
+		switch(clefIndex) {
+			case TGClef.INDEX_CLEF_TREBLE:
+				this.clef = TGClef.CLEF_TREBLE_8;
+				break;
+			case TGClef.INDEX_CLEF_BASS:
+				this.clef = TGClef.CLEF_BASS_8;
+				break;
+			case TGClef.INDEX_CLEF_TENOR:
+				this.clef = TGClef.CLEF_TENOR_8;
+				break;
+			case TGClef.INDEX_CLEF_ALTO:
+				this.clef = TGClef.CLEF_ALTO_8;
+				break;
+			default:
+				this.clef = TGClef.DEFAULT_CLEF;
+		}
+	}
+
+	public TGClef getClef() {
 		return this.clef;
 	}
 
-	public void setClef(int clef) {
+	public void setClef(TGClef clef) {
 		this.clef = clef;
 	}
 

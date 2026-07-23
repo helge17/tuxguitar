@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Muuta nuottiavainta</string>
 	<string name="clef_dlg_clef_label">Nuottiavain:</string>
-	<string name="clef_dlg_clef_value_treble">G-avain</string>
-	<string name="clef_dlg_clef_value_bass">F-avain</string>
-	<string name="clef_dlg_clef_value_tenor">Tenori</string>
-	<string name="clef_dlg_clef_value_alto">Altto</string>
+	<string name="clef_dlg_clef_value_treble_8">G-avain</string>
+	<string name="clef_dlg_clef_value_bass_8">F-avain</string>
+	<string name="clef_dlg_clef_value_tenor_8">Tenori</string>
+	<string name="clef_dlg_clef_value_alto_8">Altto</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Aseta tämä nuottiavain kappaleen loppuun</string>
 
 	<!-- Key Signature dialog -->

@@ -34,6 +34,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMarker;
@@ -74,10 +75,10 @@ public class TestFileFormat20 {
 
 	@Test
 	public void testXmlCanBeExtended() throws IOException {
-		TGSongReaderHandle handle = readSong("Untitled_extended_21.xml", false);
+		TGSongReaderHandle handle = readSong("Untitled_extended_2_99.xml", false);
 		assertNotNull(handle.getSong());
-		assertTrue(detectsFormat("Untitled_extended_21.tg"));
-		handle = readSong("Untitled_extended_21.tg", true);
+		assertTrue(detectsFormat("Untitled_extended_2_99.tg"));
+		handle = readSong("Untitled_extended_2_99.tg", true);
 		assertNotNull(handle.getSong());
 	}
 
@@ -85,7 +86,7 @@ public class TestFileFormat20 {
 	public void testCanOpenCompatibleExtendedFormat() throws IOException {
 		// compressed xml + version file
 		// check context attribute has been set to suggest app upgrade to user
-		TGSongReaderHandle  handle = readSong("Untitled_extended_21.tg", true);
+		TGSongReaderHandle  handle = readSong("Untitled_extended_2_99.tg", true);
 		assertNotNull(handle.getSong());
 		assertTrue(handle.isNewerFileFormatDetected());
 	}
@@ -263,7 +264,7 @@ public class TestFileFormat20 {
 		assertEquals(song.getMeasureHeader(0), measure.getHeader());
 		assertEquals(track, measure.getTrack());
 		assertEquals(1, measure.getNumber());
-		assertEquals(TGMeasure.CLEF_TREBLE, measure.getClef());
+		assertEquals(TGClef.CLEF_TREBLE_8, measure.getClef());
 		assertEquals(8, measure.getKeySignature());
 		// track1, measure 1, beat 1
 		List<TGBeat> beats = measure.getBeats();

@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.managers.TGTrackManager;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
@@ -93,7 +94,7 @@ public class TGSongSegmentHelper {
 				if ((measures == null) || (tSegment.isPercussionTrack() != this.sm.isPercussionChannel(song, currTrack.getChannelId()))) {
 					TGTrackManager tm = this.sm.getTrackManager();
 					TGMeasure measure = (fromNumber > 1 ? tm.getMeasure(currTrack , (fromNumber - 1) ) : tm.getMeasure(currTrack, headerNumber ));
-					int clef = ( measure != null ? measure.getClef() : TGMeasure.DEFAULT_CLEF );
+					TGClef clef = ( measure != null ? measure.getClef() : TGClef.DEFAULT_CLEF );
 					int keySignature = ( measure != null ? measure.getKeySignature() : TGMeasure.DEFAULT_KEY_SIGNATURE );
 					measures = getEmptyMeasures(segment.getHeaders().size(), clef, keySignature);
 				}
@@ -161,7 +162,7 @@ public class TGSongSegmentHelper {
 		}
 	}
 
-	private List<TGMeasure> getEmptyMeasures(int count, int clef, int keySignature) {
+	private List<TGMeasure> getEmptyMeasures(int count, TGClef clef, int keySignature) {
 		List<TGMeasure> measures = new ArrayList<TGMeasure>();
 		for(int i = 0 ; i < count ; i ++ ){
 			TGMeasure measure = this.sm.getFactory().newMeasure(null);

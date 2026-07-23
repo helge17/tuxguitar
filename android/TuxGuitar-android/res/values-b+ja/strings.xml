@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">拍子: 音部記号</string>
 	<string name="clef_dlg_clef_label">音部記号:</string>
-	<string name="clef_dlg_clef_value_treble">ト音記号 - G - トレブル</string>
-	<string name="clef_dlg_clef_value_bass">ヘ音記号 - F - バス</string>
-	<string name="clef_dlg_clef_value_tenor">ハ音記号 - C - テノール</string>
-	<string name="clef_dlg_clef_value_alto">ハ音記号 - C -  アルト</string>
+	<string name="clef_dlg_clef_value_treble_8">ト音記号 - G - トレブル</string>
+	<string name="clef_dlg_clef_value_bass_8">ヘ音記号 - F - バス</string>
+	<string name="clef_dlg_clef_value_tenor_8">ハ音記号 - C - テノール</string>
+	<string name="clef_dlg_clef_value_alto_8">ハ音記号 - C -  アルト</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">最後まで適用する</string>
 
 	<!-- Key Signature dialog -->

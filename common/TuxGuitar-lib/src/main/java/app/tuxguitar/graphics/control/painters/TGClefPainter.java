@@ -5,9 +5,19 @@ import app.tuxguitar.graphics.command.TGLineTo;
 import app.tuxguitar.graphics.command.TGMoveTo;
 import app.tuxguitar.graphics.command.TGPaintCommand;
 import app.tuxguitar.graphics.command.TGPaintModel;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGClefPainter {
+
+	// drawing of "8" character below clefs: offsets, versus treble
+	private static final float X_OFFSET_BASS_8 = -0.42488536f;
+	private static final float Y_OFFSET_BASS_8 = -2.5737364f;
+	private static final float X_OFFSET_TENOR_8 = -0.2173191f;
+	private static final float Y_OFFSET_TENOR_8 = -2.6936596f;
+	// same drawing for alto and tenor, y offset:
+	private static final float Y_OFFSET_ALTO_TENOR = 1f;
+	
 
 	private static final TGPaintCommand TREBLE_MODEL = new TGPaintModel(
 		new TGMoveTo(0.9706216f, -0.9855771f),
@@ -106,6 +116,30 @@ public class TGClefPainter {
 		new TGCubicTo(1.8174533f, 2.9510455f, 1.7389826f, 2.8235304f, 1.6278152f, 2.735251f),
 		new TGCubicTo(1.5591533f, 2.6829367f, 1.4676039f, 2.6371622f, 1.3924028f, 2.617545f)
 	);
+	
+	// one octave offset for treble clef
+	private static final TGPaintCommand OCTAVE_OFFSET_MODEL = new TGPaintModel(
+		new TGMoveTo(1.0451682f, 5.25331980f),
+		new TGCubicTo(1.13326512f, 5.217697f, 1.23279332f, 5.2288464f, 1.27048118f, 5.2382182f),
+		new TGCubicTo(1.34937329f, 5.25819560f, 1.39517632f, 5.31658699f, 1.40503431f, 5.4015526f),
+		new TGCubicTo(1.40707483f, 5.48183059f, 1.34008227f, 5.538348f, 1.25117353f, 5.6013144f),
+		new TGCubicTo(1.32962652f, 5.66971520f, 1.36201747f, 5.71523720f, 1.3595967f, 5.8037046f),
+		new TGCubicTo(1.34142993f, 5.92594939f, 1.17012819f, 6.04609719f, 0.97133111f, 5.9956268f),
+		new TGCubicTo(0.85165161f, 5.94365180f, 0.83025147f, 5.8571258f, 0.85192975f, 5.76211660f),
+		new TGCubicTo(0.88916397f, 5.65917060f, 0.96720559f, 5.62940980f, 1.00371683f, 5.613442f),
+		new TGCubicTo(0.90892817f, 5.52154419f, 0.91860867f, 5.4517416f, 0.93006632f, 5.4000526f),
+		new TGCubicTo(0.94519732f, 5.3317924f, 0.97649584f, 5.2967848f, 1.02778004f, 5.26398f),
+		new TGMoveTo(1.24219212f, 5.31781060f),
+		new TGCubicTo(1.17386475f, 5.2668142f, 1.1036268f, 5.3018178f, 1.08685836f, 5.32241100f),
+		new TGCubicTo(1.05857374f, 5.34596540f, 1.03743025f, 5.39815060f, 1.05263681f, 5.43472760f),
+		new TGCubicTo(1.07202353f, 5.48135880f, 1.09427898f, 5.51183100f, 1.19964211f, 5.52739160f),
+		new TGCubicTo(1.31250838f, 5.4703844f, 1.30846425f, 5.39112760f, 1.25762507f, 5.32654420f),
+		new TGMoveTo(1.03655202f, 5.66678f),
+		new TGCubicTo(0.96919352f, 5.69611120f, 0.89994382f, 5.815906f, 0.99963918f, 5.9134236f),
+		new TGCubicTo(1.05675090f, 5.9495996f, 1.15179946f, 5.9234186f, 1.17595102f, 5.90339579f),
+		new TGCubicTo(1.203699f, 5.885456f, 1.2255294f, 5.83579599f, 1.22824697f, 5.79170639f),
+		new TGCubicTo(1.22026571f, 5.68989239f, 1.14400089f, 5.66260259f, 1.05276639f, 5.6636798f)
+	);
 
 	private static final TGPaintCommand BASS_MODEL = new TGPaintModel(
 		new TGMoveTo(0.71937084f, 0.16147426f),
@@ -148,105 +182,6 @@ public class TGClefPainter {
 		new TGCubicTo(2.1391733f, 1.5205193f, 2.0784159f, 1.5684855f, 2.0048683f, 1.5684855f),
 		new TGCubicTo(1.9153309f, 1.5684855f, 1.8449808f, 1.4981354f, 1.8449808f, 1.4117955f),
 		new TGCubicTo(1.8449808f, 1.338248f, 1.8929471f, 1.2774905f, 1.9632971f, 1.2583042f)
-	);
-
-	private static final TGPaintCommand ALTO_MODEL = new TGPaintModel(
-		new TGMoveTo(0.026545623f, 0.5470838f),
-		new TGCubicTo(0.03553187f, 0.5410925f, 0.053504374f, 0.5410925f, 0.21525937f, 0.5410925f),
-		new TGLineTo(0.39498562f, 0.5410925f),
-		new TGLineTo(0.40397188f, 0.55007875f),
-		new TGCubicTo(0.40996313f, 0.55607f, 0.41595438f, 0.56206f, 0.41894937f, 0.5680513f),
-		new TGCubicTo(0.42494062f, 0.5800325f, 0.42494062f, 0.69086504f, 0.42494062f, 2.038815f),
-		new TGCubicTo(0.42494062f, 3.386765f, 0.42494062f, 3.4975975f, 0.41894937f, 3.5095787f),
-		new TGCubicTo(0.41595438f, 3.51557f, 0.40996313f, 3.52156f, 0.40397188f, 3.5275512f),
-		new TGLineTo(0.39498562f, 3.5335424f),
-		new TGLineTo(0.21226312f, 3.5335424f),
-		new TGLineTo(0.029541872f, 3.5335424f),
-		new TGLineTo(0.020554373f, 3.5275512f),
-		new TGCubicTo(0.014564373f, 3.52156f, 0.008573122f, 3.51557f, 0.0055781226f, 3.5095787f),
-		new TGCubicTo(-4.131275E-4f, 3.4975975f, -4.131275E-4f, 3.386765f, -4.131275E-4f, 2.03582f),
-		new TGLineTo(0.0025818725f, 0.5710463f),
-		new TGLineTo(0.008573122f, 0.56206f),
-		new TGCubicTo(0.014564373f, 0.55607f, 0.020554373f, 0.55007875f, 0.026545623f, 0.5470838f),
-		new TGMoveTo(0.6016719f, 0.5470838f),
-		new TGCubicTo(0.6106581f, 0.5410925f, 0.6196444f, 0.5410925f, 0.6525944f, 0.5410925f),
-		new TGCubicTo(0.6915344f, 0.5410925f, 0.6945306f, 0.5440875f, 0.7035169f, 0.55007875f),
-		new TGCubicTo(0.72748065f, 0.5680513f, 0.7244844f, 0.49915627f, 0.7244844f, 1.2779713f),
-		new TGLineTo(0.7244844f, 1.9759114f),
-		new TGLineTo(0.74245685f, 1.9609337f),
-		new TGCubicTo(0.8173431f, 1.8890426f, 0.8862381f, 1.7782114f, 0.92517936f, 1.6793613f),
-		new TGCubicTo(0.9491431f, 1.6074712f, 0.9641206f, 1.5265937f, 0.9701106f, 1.4397264f),
-		new TGCubicTo(0.9701106f, 1.400785f, 0.97310686f, 1.3947937f, 0.97909814f, 1.3858075f),
-		new TGCubicTo(0.9850881f, 1.3768213f, 1.0060569f, 1.36484f, 1.0210332f, 1.36484f),
-		new TGCubicTo(1.0360106f, 1.36484f, 1.0539831f, 1.3738263f, 1.0629693f, 1.3828125f),
-		new TGCubicTo(1.0689607f, 1.3947937f, 1.0719569f, 1.39779f, 1.0749519f, 1.4547038f),
-		new TGCubicTo(1.0839381f, 1.5775163f, 1.1258744f, 1.6793613f, 1.1947694f, 1.7512524f),
-		new TGCubicTo(1.2636644f, 1.8171525f, 1.3445419f, 1.8441112f, 1.4433919f, 1.8321288f),
-		new TGCubicTo(1.5122869f, 1.8231425f, 1.5632094f, 1.802175f, 1.6021507f, 1.7632337f),
-		new TGCubicTo(1.6440868f, 1.7212975f, 1.6680493f, 1.6733713f, 1.6860231f, 1.598485f),
-		new TGCubicTo(1.7039956f, 1.532585f, 1.7099856f, 1.466685f, 1.7129818f, 1.3318901f),
-		new TGCubicTo(1.7189732f, 0.86759627f, 1.6321044f, 0.67888254f, 1.3894731f, 0.6459325f),
-		new TGCubicTo(1.2936194f, 0.63395125f, 1.2307143f, 0.6519238f, 1.2037556f, 0.696855f),
-		new TGCubicTo(1.1977656f, 0.7088375f, 1.1977656f, 0.7118325f, 1.1977656f, 0.7357963f),
-		new TGCubicTo(1.1977656f, 0.76275504f, 1.1977656f, 0.76575124f, 1.2067518f, 0.7837238f),
-		new TGCubicTo(1.2157382f, 0.8016963f, 1.2217281f, 0.81068254f, 1.2576743f, 0.84662753f),
-		new TGCubicTo(1.2936194f, 0.8795775f, 1.2996106f, 0.89156f, 1.3085968f, 0.9065363f),
-		new TGCubicTo(1.3295643f, 0.95146877f, 1.3205781f, 1.0173688f, 1.2876282f, 1.0772775f),
-		new TGCubicTo(1.2756469f, 1.098245f, 1.2337106f, 1.1401813f, 1.2127419f, 1.1521637f),
-		new TGCubicTo(1.1378556f, 1.197095f, 1.0509881f, 1.197095f, 0.9761019f, 1.1521637f),
-		new TGCubicTo(0.9551344f, 1.1401813f, 0.9131981f, 1.098245f, 0.9012156f, 1.0772775f),
-		new TGCubicTo(0.8712619f, 1.026355f, 0.8622756f, 0.9724363f, 0.8712619f, 0.90354127f),
-		new TGCubicTo(0.8862381f, 0.81667376f, 0.92517936f, 0.74178755f, 0.9880844f, 0.6758875f),
-		new TGCubicTo(1.0539831f, 0.6129825f, 1.1348606f, 0.5710463f, 1.2307143f, 0.55007875f),
-		new TGCubicTo(1.2876282f, 0.53809625f, 1.3984594f, 0.53809625f, 1.4943144f, 0.55307376f),
-		new TGCubicTo(1.8477769f, 0.6039963f, 2.0364895f, 0.81966877f, 2.0634482f, 1.197095f),
-		new TGCubicTo(2.0724356f, 1.3139175f, 2.0634482f, 1.39779f, 2.0364895f, 1.4846575f),
-		new TGCubicTo(1.9526169f, 1.7302837f, 1.7279594f, 1.9070151f, 1.4583694f, 1.933975f),
-		new TGCubicTo(1.3715006f, 1.9429612f, 1.3475369f, 1.93697f, 1.2666606f, 1.8830512f),
-		new TGCubicTo(1.2187331f, 1.8501024f, 1.1947694f, 1.83812f, 1.1708056f, 1.8321288f),
-		new TGCubicTo(1.1348606f, 1.8231425f, 1.0989156f, 1.8321288f, 1.0719569f, 1.8560925f),
-		new TGCubicTo(1.0390068f, 1.8830512f, 1.0240294f, 1.939965f, 1.0240294f, 2.038815f),
-		new TGCubicTo(1.0240294f, 2.137665f, 1.0390068f, 2.194579f, 1.0719569f, 2.2215376f),
-		new TGCubicTo(1.0989156f, 2.2455013f, 1.1348606f, 2.2544875f, 1.1708056f, 2.2455013f),
-		new TGCubicTo(1.1947694f, 2.23951f, 1.2187331f, 2.2275276f, 1.2666606f, 2.194579f),
-		new TGCubicTo(1.3475369f, 2.14066f, 1.3715006f, 2.1346688f, 1.4583694f, 2.143655f),
-		new TGCubicTo(1.7279594f, 2.170615f, 1.9526169f, 2.3473463f, 2.0364895f, 2.5929725f),
-		new TGCubicTo(2.0634482f, 2.6798398f, 2.0724356f, 2.7637124f, 2.0634482f, 2.8775399f),
-		new TGCubicTo(2.0334945f, 3.2909112f, 1.8178219f, 3.5035875f, 1.4044507f, 3.5335424f),
-		new TGCubicTo(1.3056006f, 3.5395336f, 1.2367057f, 3.5335424f, 1.1678107f, 3.5095787f),
-		new TGCubicTo(1.0330156f, 3.4646475f, 0.92218435f, 3.3568113f, 0.88324314f, 3.2280061f),
-		new TGCubicTo(0.8592794f, 3.1381438f, 0.8652706f, 3.0662525f, 0.9012156f, 3.0003524f),
-		new TGCubicTo(0.9131981f, 2.979385f, 0.9551344f, 2.9374487f, 0.9761019f, 2.9254663f),
-		new TGCubicTo(1.0509881f, 2.880535f, 1.1378556f, 2.880535f, 1.2127419f, 2.9254663f),
-		new TGCubicTo(1.2337106f, 2.9374487f, 1.2756469f, 2.979385f, 1.2876282f, 3.0003524f),
-		new TGCubicTo(1.3205781f, 3.0602612f, 1.3295643f, 3.126161f, 1.3085968f, 3.1710937f),
-		new TGCubicTo(1.2996106f, 3.18607f, 1.2936194f, 3.1980524f, 1.2576743f, 3.2310026f),
-		new TGCubicTo(1.2217281f, 3.2669475f, 1.2157382f, 3.2759337f, 1.2067518f, 3.2939062f),
-		new TGCubicTo(1.1977656f, 3.3118787f, 1.1977656f, 3.314875f, 1.1977656f, 3.3388388f),
-		new TGCubicTo(1.1977656f, 3.3657975f, 1.1977656f, 3.3687925f, 1.2037556f, 3.380775f),
-		new TGCubicTo(1.2307143f, 3.4257061f, 1.2936194f, 3.4436786f, 1.3894731f, 3.4316974f),
-		new TGCubicTo(1.5362506f, 3.4107287f, 1.6261132f, 3.3328474f, 1.6710457f, 3.1770837f),
-		new TGCubicTo(1.7009994f, 3.0752387f, 1.7159768f, 2.9374487f, 1.7129818f, 2.74574f),
-		new TGCubicTo(1.7099856f, 2.610945f, 1.7039956f, 2.545045f, 1.6860231f, 2.47615f),
-		new TGCubicTo(1.6500769f, 2.3323689f, 1.5751907f, 2.2604775f, 1.4433919f, 2.2455013f),
-		new TGCubicTo(1.3445419f, 2.2335188f, 1.2636644f, 2.2604775f, 1.1947694f, 2.3263776f),
-		new TGCubicTo(1.1258744f, 2.3982687f, 1.0839381f, 2.5001137f, 1.0749519f, 2.6229262f),
-		new TGCubicTo(1.0719569f, 2.6798398f, 1.0689607f, 2.6828363f, 1.0629693f, 2.6948175f),
-		new TGCubicTo(1.0539831f, 2.7038038f, 1.0360106f, 2.71279f, 1.0210332f, 2.71279f),
-		new TGCubicTo(1.0060569f, 2.71279f, 0.9850881f, 2.7008088f, 0.97909814f, 2.6918225f),
-		new TGCubicTo(0.97310686f, 2.6828363f, 0.9701106f, 2.676845f, 0.9701106f, 2.6379037f),
-		new TGCubicTo(0.9641206f, 2.5180862f, 0.9401569f, 2.4282224f, 0.8922294f, 2.3233826f),
-		new TGCubicTo(0.8562844f, 2.2514913f, 0.79637563f, 2.170615f, 0.74245685f, 2.1166964f),
-		new TGLineTo(0.7244844f, 2.1017187f),
-		new TGLineTo(0.7244844f, 2.7996588f),
-		new TGCubicTo(0.7244844f, 3.5784738f, 0.72748065f, 3.5095787f, 0.7035169f, 3.5275512f),
-		new TGCubicTo(0.6945306f, 3.5335424f, 0.6915344f, 3.5335424f, 0.6495981f, 3.5335424f),
-		new TGCubicTo(0.6076619f, 3.5335424f, 0.6046669f, 3.5335424f, 0.59568065f, 3.5275512f),
-		new TGCubicTo(0.5896894f, 3.52156f, 0.58369815f, 3.51557f, 0.58070314f, 3.5095787f),
-		new TGCubicTo(0.57471186f, 3.4975975f, 0.57471186f, 3.386765f, 0.57471186f, 2.03582f),
-		new TGLineTo(0.5777081f, 0.5710463f),
-		new TGLineTo(0.58369815f, 0.56206f),
-		new TGCubicTo(0.5896894f, 0.55607f, 0.59568065f, 0.55007875f, 0.6016719f, 0.5470838f)
 	);
 
 	private static final TGPaintCommand TENOR_MODEL = new TGPaintModel(
@@ -359,20 +294,36 @@ public class TGClefPainter {
 		new TGLineTo(1.5f, 1.0f)
 	);
 
-	public static void paintTreble(UIPainter painter, float x, float y,float scale){
-		TREBLE_MODEL.paint(painter, x, y, scale);
-	}
-
-	public static void paintBass(UIPainter painter, float x, float y,float scale){
-		BASS_MODEL.paint(painter, x, y, scale);
-	}
-
-	public static void paintAlto(UIPainter painter, float x, float y,float scale){
-		ALTO_MODEL.paint(painter, x, y, scale);
-	}
-
-	public static void paintTenor(UIPainter painter, float x, float y,float scale){
-		TENOR_MODEL.paint(painter, x, y, scale);
+	// NOT for percussion tracks
+	public static void paintClefNotNeutral(TGClef clef, UIPainter painter, float x, float y,float scale) {
+		switch (clef.getBaseClefIndex()) {
+			case TGClef.INDEX_CLEF_TREBLE:
+				TREBLE_MODEL.paint(painter, x, y, scale);
+				if (clef.getOctaveShift() != 0) {
+					OCTAVE_OFFSET_MODEL.paint(painter, x, y, scale);
+				}
+				break;
+			case TGClef.INDEX_CLEF_BASS:
+				BASS_MODEL.paint(painter, x, y, scale);
+				if (clef.getOctaveShift() != 0) {
+					OCTAVE_OFFSET_MODEL.paint(painter, x+X_OFFSET_BASS_8*scale, y+Y_OFFSET_BASS_8*scale, scale);
+				}
+				break;
+			case TGClef.INDEX_CLEF_ALTO:
+				TENOR_MODEL.paint(painter, x, y+Y_OFFSET_ALTO_TENOR*scale, scale);
+				if (clef.getOctaveShift() != 0) {
+					OCTAVE_OFFSET_MODEL.paint(painter, x+X_OFFSET_TENOR_8*scale, y+(Y_OFFSET_TENOR_8+Y_OFFSET_ALTO_TENOR)*scale, scale);
+				}
+				break;
+			case TGClef.INDEX_CLEF_TENOR:
+				TENOR_MODEL.paint(painter, x, y, scale);
+				if (clef.getOctaveShift() != 0) {
+					OCTAVE_OFFSET_MODEL.paint(painter, x+X_OFFSET_TENOR_8*scale, y+Y_OFFSET_TENOR_8*scale, scale);
+				}
+				break;
+			default:
+				// do nothing
+		}
 	}
 
 	public static void paintNeutral(UIPainter painter, float x, float y, float scale) {

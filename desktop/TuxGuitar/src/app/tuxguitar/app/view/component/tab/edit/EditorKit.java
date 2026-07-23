@@ -35,11 +35,6 @@ public class EditorKit {
 	public static final int MOUSE_MODE_SELECTION = 1;
 	public static final int MOUSE_MODE_EDITION = 2;
 
-	// TODO: move these clef-specific attributes in a dedicated class representing Clef object
-	// first line note: treble -> F4, bass -> A2, tenor -> E3, alto -> G3
-	private static final int FIRST_LINE_NOTE_INDEX[] = new int[] {3,5,2,4};
-	private static final int FIRST_LINE_NOTE_OCTAVE[] = new int[] {4,2,3,3};
-
 	private int mouseMode;
 	private boolean natural;
 	private Tablature tablature;
@@ -293,8 +288,8 @@ public class EditorKit {
 				if(y >= (yFirstLine - topHeight) && y  < (yLastLine + bottomHeight)){
 					int keySignature = measure.getKeySignature();
 					// find note pitch, by comparison with first line note
-					int noteIndexFirstLine = FIRST_LINE_NOTE_INDEX[measure.getClef()-1];
-					int octaveFirstLine = FIRST_LINE_NOTE_OCTAVE[measure.getClef()-1];
+					int noteIndexFirstLine = measure.getClef().getFirstLineNoteIndex();
+					int octaveFirstLine = measure.getClef().getFirstLineNoteOctave();
 					// distance of selected note to first line note, in number of notes (1 note = lineSpacing/2)
 					int noteIndexOffset = Math.round(2 * (yFirstLine - y) / lineSpacing);
 					// get selected note index and octave
@@ -444,8 +439,8 @@ public class EditorKit {
 
 						painter.setForeground(layout.getResources().getLineColor());
 						// reference: first line of score, move up line per line (2 notes) until too high
-						int noteIndex=FIRST_LINE_NOTE_INDEX[measure.getClef()-1];
-						int noteOctave=FIRST_LINE_NOTE_OCTAVE[measure.getClef() -1];
+						int noteIndex = measure.getClef().getFirstLineNoteIndex();
+						int noteOctave = measure.getClef().getFirstLineNoteOctave();
 						for(float y = (yFirstLine - lineSpacing); y >= (yFirstLine - topHeight); y -= lineSpacing){
 							noteOctave = TGMusicKeyUtils.noteOctaveAddInterval(noteIndex, noteOctave, 2);
 							noteIndex = TGMusicKeyUtils.noteIndexAddInterval(noteIndex, 2);
@@ -460,9 +455,9 @@ public class EditorKit {
 							painter.closePath();
 						}
 						// reference: last line of score, move down line per line (2 notes) until too low
-						noteIndex=TGMusicKeyUtils.noteIndexAddInterval(FIRST_LINE_NOTE_INDEX[measure.getClef()-1], -8);
+						noteIndex=TGMusicKeyUtils.noteIndexAddInterval(measure.getClef().getFirstLineNoteIndex(), -8);
 						noteOctave=TGMusicKeyUtils.noteOctaveAddInterval(
-								FIRST_LINE_NOTE_INDEX[measure.getClef()-1], FIRST_LINE_NOTE_OCTAVE[measure.getClef()-1], -8);
+								measure.getClef().getFirstLineNoteIndex(), measure.getClef().getFirstLineNoteOctave(), -8);
 						for(float y = yLastLine + lineSpacing; y <= (yLastLine + bottomHeight); y += lineSpacing){
 							noteOctave = TGMusicKeyUtils.noteOctaveAddInterval(noteIndex, noteOctave, -2);
 							noteIndex = TGMusicKeyUtils.noteIndexAddInterval(noteIndex, -2);

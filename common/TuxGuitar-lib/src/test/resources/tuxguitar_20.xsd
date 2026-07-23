@@ -31,6 +31,30 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="clefName">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="treble"/>
+    <xs:enumeration value="bass"/>
+    <xs:enumeration value="tenor"/>
+    <xs:enumeration value="alto"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="clefType">
+    <xs:simpleContent>
+      <xs:extension base="clefName">
+        <xs:attribute name="octave-shift">
+          <xs:simpleType>
+            <xs:restriction base="xs:integer">
+              <xs:enumeration value="-1"/>
+              <xs:enumeration value="0"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
   <xs:simpleType name="keySignatureType">
     <xs:restriction base="xs:integer">
       <xs:minInclusive value="0"/>
@@ -380,18 +404,10 @@
 
   <xs:complexType name="measureType">
     <xs:sequence>
-      <xs:element name="clef" minOccurs="0">
+      <xs:element name="clef" type="clefType" minOccurs="0">
         <xs:annotation><xs:documentation>
         Re-use clef of preceding measure if undefined
         </xs:documentation></xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="treble"/>
-            <xs:enumeration value="bass"/>
-            <xs:enumeration value="tenor"/>
-            <xs:enumeration value="alto"/>
-          </xs:restriction>
-        </xs:simpleType>
       </xs:element>
       <xs:element name="keySignature" type="keySignatureType" minOccurs="0">
         <xs:annotation><xs:documentation>

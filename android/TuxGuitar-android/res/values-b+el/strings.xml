@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Αλλαγή Κλειδιού</string>
 	<string name="clef_dlg_clef_label">Κλειδί:</string>
-	<string name="clef_dlg_clef_value_treble">Σοπράνος (Treble)</string>
-	<string name="clef_dlg_clef_value_bass">Μπάσο (Bass)</string>
-	<string name="clef_dlg_clef_value_tenor">Τενόρος (Tenor)</string>
-	<string name="clef_dlg_clef_value_alto">Κοντράλτο (Alto)</string>
+	<string name="clef_dlg_clef_value_treble_8">Σοπράνος (Treble)</string>
+	<string name="clef_dlg_clef_value_bass_8">Μπάσο (Bass)</string>
+	<string name="clef_dlg_clef_value_tenor_8">Τενόρος (Tenor)</string>
+	<string name="clef_dlg_clef_value_alto_8">Κοντράλτο (Alto)</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Εφάρμοσε αυτό το κλειδί στο τέλος</string>
 
 	<!-- Key Signature dialog -->

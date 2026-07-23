@@ -16,6 +16,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
@@ -218,7 +219,7 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 		readBeats(measure, data);
 
 		//leo la clave
-		measure.setClef( (lastMeasure == null)?TGMeasure.CLEF_TREBLE:lastMeasure.getClef());
+		measure.setClef( (lastMeasure == null)?TGClef.INDEX_CLEF_TREBLE:lastMeasure.getClefIndex());
 		if(((header & MEASURE_CLEF) != 0)){
 			measure.setClef(readByte());
 		}

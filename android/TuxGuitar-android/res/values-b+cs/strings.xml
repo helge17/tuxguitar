@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Změnit klíč</string>
 	<string name="clef_dlg_clef_label">Klíč ...:</string>
-	<string name="clef_dlg_clef_value_treble">Houslový</string>
-	<string name="clef_dlg_clef_value_bass">Basový</string>
-	<string name="clef_dlg_clef_value_tenor">Tenorový</string>
-	<string name="clef_dlg_clef_value_alto">Altový</string>
+	<string name="clef_dlg_clef_value_treble_8">Houslový</string>
+	<string name="clef_dlg_clef_value_bass_8">Basový</string>
+	<string name="clef_dlg_clef_value_tenor_8">Tenorový</string>
+	<string name="clef_dlg_clef_value_alto_8">Altový</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Použít tento klíč až do konce</string>
 
 	<!-- Key Signature dialog -->

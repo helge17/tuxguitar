@@ -30,6 +30,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
@@ -224,8 +225,13 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		while (measures.hasNext()) {
 			TGMeasure measure = measures.next();
 			Node nodeMeasure = this.addNode(nodeTrack, TAG_TGMEASURE);
-			if ((precedingMeasure == null) || (precedingMeasure.getClef() != measure.getClef())) {
-				this.addNode(nodeMeasure, TAG_CLEF, this.mapWriteClefs.get(measure.getClef()));
+			TGClef measureClef = measure.getClef();
+			if ((precedingMeasure == null) || (precedingMeasure.getClef() != measureClef)) {
+				Node nodeClef = this.addNode(nodeMeasure, TAG_CLEF, this.mapWriteClefs.get(measure.getClefIndex()));
+				// standard clefs: no octave shift
+				if (measureClef.getOctaveShift() == 0) {
+					this.addAttributeInt(nodeClef, TAG_CLEF_OCTAVE_SHIFT, 0);
+				}
 			}
 			if ((precedingMeasure==null) || (precedingMeasure.getKeySignature() != measure.getKeySignature())) {
 				this.addNodeInt(nodeMeasure, TAG_KEYSIGNATURE, measure.getKeySignature());

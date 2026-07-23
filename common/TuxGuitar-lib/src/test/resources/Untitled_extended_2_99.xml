@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- manually generated file, to emulate a compatible upgrade of 2.0 file format -->
 <TuxGuitarFile>
-    <TGVersion major="2" minor="0" revision="0"/>
+    <TGVersion major="2" minor="99" revision="0"/>
     <TGSong>
         <name/>
         <artist/>

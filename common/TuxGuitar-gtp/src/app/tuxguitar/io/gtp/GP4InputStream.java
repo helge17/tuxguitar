@@ -13,6 +13,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGLyric;
@@ -748,11 +749,11 @@ public class GP4InputStream extends GTPInputStream {
 			while( it.hasNext() ){
 				TGString string = it.next();
 				if( string.getValue() <= 34 ){
-					return TGMeasure.CLEF_BASS;
+					return TGClef.INDEX_CLEF_BASS;
 				}
 			}
 		}
-		return TGMeasure.CLEF_TREBLE;
+		return TGClef.INDEX_CLEF_TREBLE;
 	}
 
 	private boolean isPercussionChannel( TGSong song, int channelId ){

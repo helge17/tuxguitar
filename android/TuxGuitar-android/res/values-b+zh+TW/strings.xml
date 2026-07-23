@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">變更譜號</string>
 	<string name="clef_dlg_clef_label">譜號:</string>
-	<string name="clef_dlg_clef_value_treble">高音譜記號</string>
-	<string name="clef_dlg_clef_value_bass">低音譜記號</string>
-	<string name="clef_dlg_clef_value_tenor">次中音譜記號</string>
-	<string name="clef_dlg_clef_value_alto">中音譜記號</string>
+	<string name="clef_dlg_clef_value_treble_8">高音譜記號</string>
+	<string name="clef_dlg_clef_value_bass_8">低音譜記號</string>
+	<string name="clef_dlg_clef_value_tenor_8">次中音譜記號</string>
+	<string name="clef_dlg_clef_value_alto_8">中音譜記號</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">套用這個譜號到結尾</string>
 
 	<!-- Key Signature dialog -->

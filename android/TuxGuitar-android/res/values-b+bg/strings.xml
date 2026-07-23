@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Промяна на ключ</string>
 	<string name="clef_dlg_clef_label">Ключ:</string>
-	<string name="clef_dlg_clef_value_treble">Високи</string>
-	<string name="clef_dlg_clef_value_bass">Бас</string>
-	<string name="clef_dlg_clef_value_tenor">Тенор</string>
-	<string name="clef_dlg_clef_value_alto">Алт</string>
+	<string name="clef_dlg_clef_value_treble_8">Високи</string>
+	<string name="clef_dlg_clef_value_bass_8">Бас</string>
+	<string name="clef_dlg_clef_value_tenor_8">Тенор</string>
+	<string name="clef_dlg_clef_value_alto_8">Алт</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Прилагане на този ключ до края</string>
 
 	<!-- Key Signature dialog -->

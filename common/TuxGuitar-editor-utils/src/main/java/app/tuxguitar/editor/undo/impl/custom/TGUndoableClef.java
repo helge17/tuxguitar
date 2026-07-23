@@ -11,6 +11,7 @@ import app.tuxguitar.editor.action.composition.TGChangeClefAction;
 import app.tuxguitar.editor.undo.TGCannotRedoException;
 import app.tuxguitar.editor.undo.TGCannotUndoException;
 import app.tuxguitar.editor.undo.impl.TGUndoableEditBase;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -19,8 +20,8 @@ public class TGUndoableClef extends TGUndoableEditBase {
 
 	private int doAction;
 	private long position;
-	private int redoableClef;
-	private int undoableClef;
+	private TGClef redoableClef;
+	private TGClef undoableClef;
 	private List<Object> nextClefPositions;
 	private boolean toEnd;
 	private TGTrack track;
@@ -69,12 +70,12 @@ public class TGUndoableClef extends TGUndoableEditBase {
 		undoable.track = track;
 		undoable.nextClefPositions = new ArrayList<Object>();
 
-		int prevClef = undoable.undoableClef;
+		TGClef prevClef = undoable.undoableClef;
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasure nextMeasure = it.next();
 			if(nextMeasure.getStart() > undoable.position){
-				int currClef = nextMeasure.getClef();
+				TGClef currClef = nextMeasure.getClef();
 				if(prevClef != currClef){
 					ClefPosition tsp = new ClefPosition(nextMeasure.getStart(),currClef);
 					undoable.nextClefPositions.add(tsp);
@@ -86,7 +87,7 @@ public class TGUndoableClef extends TGUndoableEditBase {
 		return undoable;
 	}
 
-	public TGUndoableClef endUndo(int clef, boolean toEnd){
+	public TGUndoableClef endUndo(TGClef clef, boolean toEnd){
 		this.redoableClef = clef;
 		this.toEnd = toEnd;
 		return this;
@@ -96,7 +97,7 @@ public class TGUndoableClef extends TGUndoableEditBase {
 		return getSongManager().getTrackManager().getMeasureAt(track, start);
 	}
 
-	public void changeClef(TGActionContext context, TGTrack track, TGMeasure measure, Integer clef, Boolean applyToEnd) {
+	public void changeClef(TGActionContext context, TGTrack track, TGMeasure measure, TGClef clef, Boolean applyToEnd) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGChangeClefAction.NAME);
 		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_CLEF, clef);
 		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
@@ -107,9 +108,9 @@ public class TGUndoableClef extends TGUndoableEditBase {
 
 	private static class ClefPosition{
 		private long position;
-		private int clef;
+		private TGClef clef;
 
-		public ClefPosition(long position,int clef) {
+		public ClefPosition(long position, TGClef clef) {
 			this.position = position;
 			this.clef = clef;
 		}
@@ -118,7 +119,7 @@ public class TGUndoableClef extends TGUndoableEditBase {
 			return this.position;
 		}
 
-		public int getClef() {
+		public TGClef getClef() {
 			return this.clef;
 		}
 	}

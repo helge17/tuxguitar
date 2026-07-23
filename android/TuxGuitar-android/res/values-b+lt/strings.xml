@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Keisti raktą</string>
 	<string name="clef_dlg_clef_label">Raktas:</string>
-	<string name="clef_dlg_clef_value_treble">Smuiko</string>
-	<string name="clef_dlg_clef_value_bass">Boso</string>
-	<string name="clef_dlg_clef_value_tenor">Tenoro</string>
-	<!-- <string name="clef_dlg_clef_value_alto"></string> -->
+	<string name="clef_dlg_clef_value_treble_8">Smuiko</string>
+	<string name="clef_dlg_clef_value_bass_8">Boso</string>
+	<string name="clef_dlg_clef_value_tenor_8">Tenoro</string>
+	<!-- <string name="clef_dlg_clef_value_alto_8"></string> -->
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Taikyti šį raktą iki pabaigos</string>
 
 	<!-- Key Signature dialog -->

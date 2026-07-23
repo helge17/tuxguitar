@@ -22,6 +22,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMarker;
 import app.tuxguitar.song.models.TGMeasure;
@@ -253,12 +254,19 @@ public class GPXDocumentParser {
 	private void parseBar(GPXBar bar, TGMeasure tgMeasure) {
 		if (bar.getClef() != null) {
 			String clef = bar.getClef();
-			if (clef.equals("F4")) {
-				tgMeasure.setClef(TGMeasure.CLEF_BASS);
+			int octaveShift = -1;
+			if (tgMeasure.getTrack().getNumber() <= this.document.getTracks().size()) {
+				octaveShift = this.document.getTracks().get(tgMeasure.getTrack().getNumber()-1).getOctaveShift();
+			}
+			if (clef.equals("G2") && (octaveShift == 0)) {
+				tgMeasure.setClef(TGClef.CLEF_TREBLE_STANDARD);
+			}
+			else if (clef.equals("F4")) {
+				tgMeasure.setClef(octaveShift == 0 ? TGClef.CLEF_BASS_STANDARD : TGClef.CLEF_BASS_8);
 			} else if (clef.equals("C3")) {
-				tgMeasure.setClef(TGMeasure.CLEF_ALTO);
+				tgMeasure.setClef(octaveShift == 0 ? TGClef.CLEF_ALTO_STANDARD : TGClef.CLEF_ALTO_8);
 			} else if (clef.equals("C4")) {
-				tgMeasure.setClef(TGMeasure.CLEF_TENOR);
+				tgMeasure.setClef(octaveShift == 0 ? TGClef.CLEF_TENOR_STANDARD : TGClef.CLEF_TENOR_8);
 			}
 		}
 

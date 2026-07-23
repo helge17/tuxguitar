@@ -28,6 +28,7 @@ import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.managers.TGTrackManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMarker;
@@ -368,7 +369,7 @@ public class MusicXMLWriter{
 		this.addNode(key, "fifths",Integer.toString( value ));
 	}
 
-	private void writeClef(Node parent, int clef, boolean isStart, boolean isPercussion){
+	private void writeClef(Node parent, TGClef clef, boolean isStart, boolean isPercussion){
 		// first clef: score
 		Node node = this.addNode(parent, "clef");
 
@@ -384,24 +385,26 @@ public class MusicXMLWriter{
 			this.addNode(node, "sign", "percussion");
 		}
 		else {
-			if(clef == TGMeasure.CLEF_TREBLE){
+			if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_TREBLE){
 				this.addNode(node, "sign", "G");
 				this.addNode(node, "line", "2");
 			}
-			else if(clef == TGMeasure.CLEF_BASS){
+			else if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_BASS){
 				this.addNode(node, "sign", "F");
 				this.addNode(node, "line", "4");
 			}
-			else if(clef == TGMeasure.CLEF_TENOR){
+			else if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_TENOR){
 				this.addNode(node, "sign", "C");
 				this.addNode(node, "line", "4");
 			}
-			else if(clef == TGMeasure.CLEF_ALTO){
+			else if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_ALTO){
 				this.addNode(node, "sign", "C");
 				this.addNode(node, "line", "3");
 			}
 			// this is incorrect, but leave it for now for correct import
-			this.addNode(node, "clef-octave-change", String.valueOf(-1));
+			if (clef.getOctaveShift() != 0) {
+				this.addNode(node, "clef-octave-change", String.valueOf(clef.getOctaveShift()));
+			}
 		}
 
 		// second clef: tablature

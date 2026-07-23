@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Kulcs változtatása</string>
 	<string name="clef_dlg_clef_label">Kulcs:</string>
-	<string name="clef_dlg_clef_value_treble">Violin</string>
-	<string name="clef_dlg_clef_value_bass">Basszus</string>
-	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
-	<string name="clef_dlg_clef_value_alto">Alt</string>
+	<string name="clef_dlg_clef_value_treble_8">Violin</string>
+	<string name="clef_dlg_clef_value_bass_8">Basszus</string>
+	<!-- <string name="clef_dlg_clef_value_tenor_8"></string> -->
+	<string name="clef_dlg_clef_value_alto_8">Alt</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Maradjon ez a darab végéig</string>
 
 	<!-- Key Signature dialog -->

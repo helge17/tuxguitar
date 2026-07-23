@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Modifier la clé</string>
 	<string name="clef_dlg_clef_label">Clé:</string>
-	<string name="clef_dlg_clef_value_treble">sol</string>
-	<string name="clef_dlg_clef_value_bass">fa</string>
-	<string name="clef_dlg_clef_value_tenor">ut quatrième ligne</string>
-	<string name="clef_dlg_clef_value_alto">ut troisième ligne</string>
+	<string name="clef_dlg_clef_value_treble_8">sol (-8), guitare</string>
+	<string name="clef_dlg_clef_value_bass_8">fa (-8), guitare</string>
+	<string name="clef_dlg_clef_value_tenor_8">ut quatrième ligne (-8)</string>
+	<string name="clef_dlg_clef_value_alto_8">ut troisième ligne (-8)</string>
+	<string name="clef_dlg_clef_value_treble_standard">sol (standard)</string>
+	<string name="clef_dlg_clef_value_bass_standard">fa (standard)</string>
+	<string name="clef_dlg_clef_value_tenor_standard">ut quatrième ligne</string>
+	<string name="clef_dlg_clef_value_alto_standard">ut troisième ligne</string>
 	<string name="clef_dlg_options_apply_to_end">Appliquer cette clé jusqu\&apos;à la fin</string>
 
 	<!-- Key Signature dialog -->

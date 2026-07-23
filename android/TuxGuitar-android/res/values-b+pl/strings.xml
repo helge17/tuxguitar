@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Zmień klucz</string>
 	<string name="clef_dlg_clef_label">Klucz:</string>
-	<string name="clef_dlg_clef_value_treble">Wiolinowy</string>
-	<string name="clef_dlg_clef_value_bass">Basowy</string>
-	<string name="clef_dlg_clef_value_tenor">Tenorowy</string>
-	<string name="clef_dlg_clef_value_alto">Altowy</string>
+	<string name="clef_dlg_clef_value_treble_8">Wiolinowy</string>
+	<string name="clef_dlg_clef_value_bass_8">Basowy</string>
+	<string name="clef_dlg_clef_value_tenor_8">Tenorowy</string>
+	<string name="clef_dlg_clef_value_alto_8">Altowy</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Zastosuj ten klucz do końca</string>
 
 	<!-- Key Signature dialog -->
