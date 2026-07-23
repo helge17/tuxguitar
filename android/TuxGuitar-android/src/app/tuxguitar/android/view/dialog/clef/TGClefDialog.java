@@ -15,6 +15,7 @@ import app.tuxguitar.android.view.util.TGSelectableItem;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.composition.TGChangeClefAction;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
@@ -59,17 +60,21 @@ public class TGClefDialog extends TGModalFragment {
 
 	public TGSelectableItem[] createClefValues() {
 		return new TGSelectableItem[]  {
-			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_TREBLE), getString(R.string.clef_dlg_clef_value_treble)),
-			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_BASS), getString(R.string.clef_dlg_clef_value_bass)),
-			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_TENOR), getString(R.string.clef_dlg_clef_value_tenor)),
-			new TGSelectableItem(Integer.valueOf(TGMeasure.CLEF_ALTO), getString(R.string.clef_dlg_clef_value_alto))
-		};
+			new TGSelectableItem(TGClef.CLEF_TREBLE_8, getString(R.string.clef_dlg_clef_value_treble_8)),
+			new TGSelectableItem(TGClef.CLEF_BASS_8, getString(R.string.clef_dlg_clef_value_bass_8)),
+			new TGSelectableItem(TGClef.CLEF_TREBLE_STANDARD, getString(R.string.clef_dlg_clef_value_treble_standard)),
+			new TGSelectableItem(TGClef.CLEF_BASS_STANDARD, getString(R.string.clef_dlg_clef_value_bass_standard)),
+			new TGSelectableItem(TGClef.CLEF_TENOR_8, getString(R.string.clef_dlg_clef_value_tenor_8)),
+			new TGSelectableItem(TGClef.CLEF_ALTO_8, getString(R.string.clef_dlg_clef_value_alto_8)),
+			new TGSelectableItem(TGClef.CLEF_TENOR_STANDARD, getString(R.string.clef_dlg_clef_value_tenor_standard)),
+			new TGSelectableItem(TGClef.CLEF_ALTO_STANDARD, getString(R.string.clef_dlg_clef_value_alto_standard))
+	};
 	}
 
-	public Integer parseClefValue() {
+	public TGClef parseClefValue() {
 		Spinner spinner = (Spinner) this.getView().findViewById(R.id.clef_dlg_clef_value);
 
-		return (Integer) ((TGSelectableItem) spinner.getSelectedItem()).getItem();
+		return (TGClef) ((TGSelectableItem) spinner.getSelectedItem()).getItem();
 	}
 
 	public Boolean parseApplyToEnd() {

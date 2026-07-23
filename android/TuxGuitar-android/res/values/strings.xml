@@ -262,10 +262,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Change Clef</string>
 	<string name="clef_dlg_clef_label">Clef:</string>
-	<string name="clef_dlg_clef_value_treble">Treble</string>
-	<string name="clef_dlg_clef_value_bass">Bass</string>
-	<string name="clef_dlg_clef_value_tenor">Tenor</string>
-	<string name="clef_dlg_clef_value_alto">Alto</string>
+	<string name="clef_dlg_clef_value_treble_8">Treble (-8), guitar</string>
+	<string name="clef_dlg_clef_value_bass_8">Bass (-8), guitar</string>
+	<string name="clef_dlg_clef_value_tenor_8">Tenor (-8)</string>
+	<string name="clef_dlg_clef_value_alto_8">Alto (-8)</string>
+	<string name="clef_dlg_clef_value_treble_standard">Treble (standard)</string>
+	<string name="clef_dlg_clef_value_bass_standard">Bass (standard)</string>
+	<string name="clef_dlg_clef_value_tenor_standard">Tenor (standard)</string>
+	<string name="clef_dlg_clef_value_alto_standard">Alto (standard)</string>
 	<string name="clef_dlg_options_apply_to_end">Apply this Clef to the end</string>
 
 	<!-- Key Signature dialog -->

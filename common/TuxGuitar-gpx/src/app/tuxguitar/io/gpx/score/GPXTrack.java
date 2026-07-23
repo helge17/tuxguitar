@@ -7,6 +7,7 @@ public class GPXTrack {
 	private int[] color;
 	private String name;
 	private int capo;
+	private int octaveShift;
 
 	private int gmProgram;
 	private int gmChannel1;
@@ -14,6 +15,7 @@ public class GPXTrack {
 
 	public GPXTrack(){
 		super();
+		this.octaveShift = -1;
 	}
 
 	public int getId() {
@@ -78,5 +80,13 @@ public class GPXTrack {
 
 	public void setGmChannel2(int gmChannel2) {
 		this.gmChannel2 = gmChannel2;
+	}
+
+	public int getOctaveShift() {
+		return this.octaveShift;
+	}
+
+	public void setOctaveShift(int shift) {
+		this.octaveShift = shift;
 	}
 }

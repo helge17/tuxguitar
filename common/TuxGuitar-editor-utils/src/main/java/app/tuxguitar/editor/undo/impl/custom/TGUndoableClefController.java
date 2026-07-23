@@ -5,6 +5,7 @@ import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.composition.TGChangeClefAction;
 import app.tuxguitar.editor.undo.TGUndoableActionController;
 import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -19,7 +20,7 @@ public class TGUndoableClefController implements TGUndoableActionController {
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
-		int clef = ((Integer) actionContext.getAttribute(TGChangeClefAction.ATTRIBUTE_CLEF)).intValue();
+		TGClef clef = (TGClef) actionContext.getAttribute(TGChangeClefAction.ATTRIBUTE_CLEF);
 		boolean applyToEnd = ((Boolean) actionContext.getAttribute(TGChangeClefAction.ATTRIBUTE_APPLY_TO_END)).booleanValue();
 
 		return ((TGUndoableClef) undoableEdit).endUndo(clef, applyToEnd);

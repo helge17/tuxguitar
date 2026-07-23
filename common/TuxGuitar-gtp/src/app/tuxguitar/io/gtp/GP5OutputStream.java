@@ -18,6 +18,7 @@ import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
@@ -283,7 +284,7 @@ public class GP5OutputStream extends GTPOutputStream {
 		writeInt(track.getOffset());
 		writeColor(track.getColor());
 		writeBytes(new byte[]{ 67, 1, 0, 0, 0});
-		writeInt(track.getMeasure(0).getClef()==TGMeasure.CLEF_BASS ? 12 : 0);
+		writeInt(track.getMeasure(0).getClefIndex() == TGClef.INDEX_CLEF_BASS ? 12 : 0);
 		writeBytes(new byte[]{ 0, 0, 0, 0, 100, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1});
 	}
 

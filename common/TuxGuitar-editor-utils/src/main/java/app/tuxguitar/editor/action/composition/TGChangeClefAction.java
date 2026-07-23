@@ -3,6 +3,7 @@ package app.tuxguitar.editor.action.composition;
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -19,7 +20,7 @@ public class TGChangeClefAction extends TGActionBase {
 	}
 
 	protected void processAction(TGActionContext context){
-		int clef = ((Integer) context.getAttribute(ATTRIBUTE_CLEF)).intValue();
+		TGClef clef = ((TGClef) context.getAttribute(ATTRIBUTE_CLEF));
 		boolean applyToEnd = ((Boolean) context.getAttribute(ATTRIBUTE_APPLY_TO_END)).booleanValue();
 
 		TGTrack track = ((TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK));

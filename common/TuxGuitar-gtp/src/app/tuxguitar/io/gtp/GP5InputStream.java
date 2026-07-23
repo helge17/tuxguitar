@@ -13,6 +13,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGLyric;
@@ -52,7 +53,7 @@ public class GP5InputStream extends GTPInputStream {
 
 	private int keySignature;
 	private int[] keySignatures;
-	private int[] clefs;	// clef associated to track in gp5, to measure in tg: temporary storage (index of table = track nb)
+	private TGClef[] clefs;	// clef associated to track in gp5, to measure in tg: temporary storage (index of table = track nb)
 
 	public GP5InputStream(GTPSettings settings) {
 		super(settings, SUPPORTED_VERSIONS);
@@ -93,7 +94,7 @@ public class GP5InputStream extends GTPInputStream {
 
 			int measures = readInt();
 			int tracks = readInt();
-			this.clefs = new int[tracks];
+			this.clefs = new TGClef[tracks];
 
 			this.keySignatures = new int[measures];
 			if (measures > 0) {
@@ -482,7 +483,7 @@ public class GP5InputStream extends GTPInputStream {
 		readColor(track.getColor());
 		skip(5);
 		int clef = readInt();
-		this.clefs[number-1] = (clef == 12 ? TGMeasure.CLEF_BASS : TGMeasure.CLEF_TREBLE);
+		this.clefs[number-1] = (clef == 12 ? TGClef.CLEF_BASS_8 : TGClef.CLEF_TREBLE_8);
 		skip( (getVersion().getVersionCode() > 0)? 40 : 35);
 		if(getVersion().getVersionCode() > 0){
 			readStringByteSizeOfInteger();
@@ -828,14 +829,4 @@ public class GP5InputStream extends GTPInputStream {
 		return beat;
 	}
 
-	private boolean isPercussionChannel( TGSong song, int channelId ){
-		Iterator<TGChannel> it = song.getChannels();
-		while( it.hasNext() ){
-			TGChannel channel = it.next();
-			if( channel.getChannelId() == channelId ){
-				return channel.isPercussionChannel();
-			}
-		}
-		return false;
-	}
 }

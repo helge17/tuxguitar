@@ -14,6 +14,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGLyric;
 import app.tuxguitar.song.models.TGMarker;
@@ -283,14 +284,35 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		boolean isFirstMeasure = true;
 		Node nodeMeasure = getChildNode(nodeTrack, TAG_TGMEASURE);
 		int index = 1;
-		int clef = TGMeasure.CLEF_TREBLE;	// default
+		TGClef clef = TGClef.DEFAULT_CLEF;
 		int keySignature = 0;	// default
 		while (nodeMeasure != null) {
 			TGMeasure measure = this.factory.newMeasure(track.getSong().getMeasureHeader(index-1));
 			// clef
 			Node node = getChildNode(nodeMeasure, TAG_CLEF);
 			if (node != null) {
-				clef = this.mapReadClefs.get(node.getTextContent());
+				int clefIndex = this.mapReadClefs.get(node.getTextContent());
+				int octaveShift = -1;
+				if (node.getAttributes().getNamedItem(TAG_CLEF_OCTAVE_SHIFT) != null) {
+					octaveShift = readAttributeInt(node, TAG_CLEF_OCTAVE_SHIFT);
+				}
+				switch(clefIndex) {
+					case TGClef.INDEX_CLEF_TREBLE:
+						clef = (octaveShift == 0 ? TGClef.CLEF_TREBLE_STANDARD : TGClef.CLEF_TREBLE_8);
+						break;
+					case TGClef.INDEX_CLEF_BASS:
+						clef = (octaveShift == 0 ? TGClef.CLEF_BASS_STANDARD : TGClef.CLEF_BASS_8);
+						break;
+					case TGClef.INDEX_CLEF_TENOR:
+						clef = (octaveShift == 0 ? TGClef.CLEF_TENOR_STANDARD : TGClef.CLEF_TENOR_8);
+						break;
+					case TGClef.INDEX_CLEF_ALTO:
+						clef = (octaveShift == 0 ? TGClef.CLEF_ALTO_STANDARD : TGClef.CLEF_ALTO_8);
+						break;
+					default:
+						clef = TGClef.CLEF_BASS_8;
+						break;
+				}
 			}
 			measure.setClef(clef);
 			// keySignature

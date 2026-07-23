@@ -37,20 +37,6 @@ import app.tuxguitar.util.TGMusicKeyUtils;
  */
 public class TGMeasureImpl extends TGMeasure{
 
-	public static final int SCORE_KEY_SHARP_POSITIONS[][] = new int[][]{
-		new int[] { 1 , 4, 0, 3, 6, 2 , 5 } ,
-		new int[] { 3 , 6, 2, 5, 8, 4 , 7 } ,
-		new int[] { 7 , 3, 6, 2, 5, 1 , 4 } ,
-		new int[] { 2 , 5, 1, 4, 7, 3 , 6 } ,
-	};
-
-	public static final int SCORE_KEY_FLAT_POSITIONS[][] = new int[][]{
-		new int[] { 5, 2, 6, 3, 7, 4, 8 } ,
-		new int[] { 7, 4, 8, 5, 9, 6, 10 } ,
-		new int[] { 4, 1, 5, 2, 6, 3, 7 } ,
-		new int[] { 6, 3, 7, 4, 8, 5, 9 } ,
-	};
-
 	private static final int SELECTION_ALPHA = 18;
 
 	/**
@@ -964,17 +950,8 @@ public class TGMeasureImpl extends TGMeasure{
 			if(this.getTrack().isPercussion()) {
 				TGClefPainter.paintNeutral(painter, x, y, layout.getScoreLineSpacing());
 			}
-			else if(this.getClef() == TGMeasure.CLEF_TREBLE){
-				TGClefPainter.paintTreble(painter, x, y,layout.getScoreLineSpacing());
-			}
-			else if(this.getClef() == TGMeasure.CLEF_BASS){
-				TGClefPainter.paintBass(painter, x, y,layout.getScoreLineSpacing());
-			}
-			else if(this.getClef() == TGMeasure.CLEF_TENOR){
-				TGClefPainter.paintTenor(painter, x, y,layout.getScoreLineSpacing());
-			}
-			else if(this.getClef() == TGMeasure.CLEF_ALTO){
-				TGClefPainter.paintAlto(painter, x, y,layout.getScoreLineSpacing());
+			else {
+				TGClefPainter.paintClefNotNeutral(this.getClef(), painter, x, y,layout.getScoreLineSpacing());
 			}
 			painter.closePath();
 		}
@@ -988,7 +965,6 @@ public class TGMeasureImpl extends TGMeasure{
 			float scale = layout.getScoreLineSpacing();
 			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getClefSpacing(layout));
 			float y = (fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES));
-			int clefIndex = (this.getClef() - 1);
 			int currentKey = this.getKeySignature();
 			int previousKey = (this.previousMeasure != null ? this.previousMeasure.getKeySignature() : 0);
 
@@ -998,7 +974,7 @@ public class TGMeasureImpl extends TGMeasure{
 			if(previousKey >= 1 && previousKey <= 7){
 				int naturalFrom =  (currentKey >= 1 && currentKey <= 7) ? currentKey : 0;
 				for(int i = naturalFrom; i < previousKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
+					float offset =  ( ( (scale / 2) * this.getClef().getSharpPosition(i) )  - (scale / 2) );
 					painter.initPath(UIPainter.PATH_FILL);
 					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
 					painter.closePath();
@@ -1008,7 +984,7 @@ public class TGMeasureImpl extends TGMeasure{
 			else if(previousKey >= 8 && previousKey <= 14){
 				int naturalFrom =  (currentKey >= 8 && currentKey <= 14) ? currentKey : 7;
 				for(int i = naturalFrom; i < previousKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
+					float offset =  ( ( (scale / 2) * this.getClef().getFlatPosition(i - 7) )  - (scale / 2) );
 					painter.initPath(UIPainter.PATH_FILL);
 					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
 					painter.closePath();
@@ -1019,7 +995,7 @@ public class TGMeasureImpl extends TGMeasure{
 			//sharps
 			if(currentKey >= 1 && currentKey <= 7){
 				for(int i = 0; i < currentKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
+					float offset =  ( ( (scale / 2) * this.getClef().getSharpPosition(i)  - (scale / 2) ) );
 					painter.initPath(UIPainter.PATH_FILL);
 					TGKeySignaturePainter.paintSharp(painter,x, (y +  offset  ), scale);
 					painter.closePath();
@@ -1029,7 +1005,7 @@ public class TGMeasureImpl extends TGMeasure{
 			//flats
 			else if(currentKey >= 8 && currentKey <= 14){
 				for(int i = 7; i < currentKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
+					float offset =  ( ( (scale / 2) * this.getClef().getFlatPosition(i - 7)  - (scale / 2) ) );
 					painter.initPath(UIPainter.PATH_FILL);
 					TGKeySignaturePainter.paintFlat(painter,x, (y +  offset  ), scale);
 					painter.closePath();

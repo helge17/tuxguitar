@@ -172,7 +172,14 @@ public class TGIconManager {
 	public static final String HELP_DOC = "help_doc.png";
 	public static final String HELP_ABOUT = "help_about.png";
 	public static final String GO_HOME = "browser_root.png";
-
+	public static final String CLEF_TREBLE_8 = "clefTreble_8.png";
+	public static final String CLEF_BASS_8 = "clefBass_8.png";
+	public static final String CLEF_TREBLE_STANDARD = "clefTreble.png";
+	public static final String CLEF_BASS_STANDARD = "clefBass.png";
+	public static final String CLEF_TENOR_8 = "clefTenor_8.png";
+	public static final String CLEF_ALTO_8 = "clefAlto_8.png";
+	public static final String CLEF_TENOR_STANDARD = "clefTenor.png";
+	public static final String CLEF_ALTO_STANDARD = "clefAlto.png";;
 
 	private UIImage[] durations;
 	private UIImage[] durationsDotted;
@@ -460,6 +467,14 @@ public class TGIconManager {
 		loadIcon(ZOOM_IN);
 		this.OK = loadIcon("measure_status_ok.png");
 		this.KO = loadIcon("measure_status_error.png");
+		loadIcon(CLEF_TREBLE_8);
+		loadIcon(CLEF_BASS_8);
+		loadIcon(CLEF_TREBLE_STANDARD);
+		loadIcon(CLEF_BASS_STANDARD);
+		loadIcon(CLEF_TENOR_8);
+		loadIcon(CLEF_ALTO_8);
+		loadIcon(CLEF_TENOR_STANDARD);
+		loadIcon(CLEF_ALTO_STANDARD);
 	}
 
 	private UIImage loadIcon(String name) {

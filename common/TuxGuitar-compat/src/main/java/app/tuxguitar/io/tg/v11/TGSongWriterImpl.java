@@ -233,7 +233,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			header |= MEASURE_KEYSIGNATURE;
 		}else{
 			//Clef
-			if(measure.getClef() != lastMeasure.getClef()){
+			if(measure.getClefIndex() != lastMeasure.getClefIndex()){
 				header |= MEASURE_CLEF;
 			}
 			//KeySignature
@@ -250,7 +250,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 		//escribo la clave
 		if(((header & MEASURE_CLEF) != 0)){
-			writeByte(measure.getClef());
+			writeByte(measure.getClefIndex());
 		}
 
 		//escribo el key signature

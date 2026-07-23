@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Cambia chiave</string>
 	<string name="clef_dlg_clef_label">Chiave:</string>
-	<string name="clef_dlg_clef_value_treble">Chiave di sol</string>
-	<string name="clef_dlg_clef_value_bass">Chiave di basso</string>
-	<string name="clef_dlg_clef_value_tenor">Chiave di tenore</string>
-	<string name="clef_dlg_clef_value_alto">Chiave di contralto</string>
+	<string name="clef_dlg_clef_value_treble_8">Chiave di sol</string>
+	<string name="clef_dlg_clef_value_bass_8">Chiave di basso</string>
+	<string name="clef_dlg_clef_value_tenor_8">Chiave di tenore</string>
+	<string name="clef_dlg_clef_value_alto_8">Chiave di contralto</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Applica questa chiave fino alla fine</string>
 
 	<!-- Key Signature dialog -->

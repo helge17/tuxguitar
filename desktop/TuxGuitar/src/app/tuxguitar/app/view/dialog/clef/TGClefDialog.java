@@ -1,12 +1,14 @@
 package app.tuxguitar.app.view.dialog.clef;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.controller.TGViewContext;
 import app.tuxguitar.app.view.util.TGDialogUtil;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.editor.action.composition.TGChangeClefAction;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
@@ -17,6 +19,7 @@ import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.widget.UIButton;
 import app.tuxguitar.ui.widget.UICheckBox;
 import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UIImageView;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UILegendPanel;
 import app.tuxguitar.ui.widget.UIPanel;
@@ -26,7 +29,13 @@ import app.tuxguitar.util.TGContext;
 
 public class TGClefDialog {
 
+	private UIDropDownSelect<TGClef> clefs;
+	private UIImageView clefImage;
+	private TGIconManager iconManager;
+
 	public void show(final TGViewContext context) {
+		this.iconManager = TGIconManager.getInstance(context.getContext());
+		
 		final TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 		final TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
 		final TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
@@ -50,13 +59,25 @@ public class TGClefDialog {
 		numeratorLabel.setText(TuxGuitar.getProperty("composition.clef") + ":");
 		clefLayout.set(numeratorLabel, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, true);
 
-		final UIDropDownSelect<Integer> clefs = uiFactory.createDropDownSelect(clef);
-		clefs.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.clef.treble"), TGMeasure.CLEF_TREBLE));
-		clefs.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.clef.bass"), TGMeasure.CLEF_BASS));
-		clefs.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.clef.tenor"), TGMeasure.CLEF_TENOR));
-		clefs.addItem(new UISelectItem<Integer>(TuxGuitar.getProperty("composition.clef.alto"), TGMeasure.CLEF_ALTO));
-		clefs.setSelectedValue(measure.getClef());
-		clefLayout.set(clefs, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 150f, null, null);
+		this.clefs = uiFactory.createDropDownSelect(clef);
+		for (TGClef newClef : TGClef.CLEFS) {
+			clefs.addItem(new UISelectItem<TGClef>(TuxGuitar.getProperty(newClef.getName()), newClef));
+			if (newClef == measure.getClef()) {
+				clefs.setSelectedValue(newClef);
+			}
+		}
+		clefs.addSelectionListener(new UISelectionListener() {
+			@Override
+			public void onSelect(UISelectionEvent event) {
+				TGClefDialog.this.loadImage();
+			}
+		});
+		clefLayout.set(clefs, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true, 1, 1, 150f, null, null);
+
+		// image
+		this.clefImage = uiFactory.createImageView(clef);
+		clefLayout.set(this.clefImage, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, true, true);
+		this.loadImage();
 
 		//--------------------To End Checkbox-------------------------------
 		UITableLayout checkLayout = new UITableLayout();
@@ -81,7 +102,7 @@ public class TGClefDialog {
 		buttonOK.setDefaultButton();
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				changeClef(context.getContext(), song, track, measure, clefs.getSelectedValue(), toEnd.isSelected());
+				changeClef(context.getContext(), song, track, measure, clefs.getSelectedValue() , toEnd.isSelected());
 				dialog.dispose();
 			}
 		});
@@ -100,12 +121,16 @@ public class TGClefDialog {
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 
-	public void changeClef(TGContext context, TGSong song, TGTrack track, TGMeasure measure, Integer value, Boolean applyToEnd) {
+	private void loadImage() {
+		this.clefImage.setImage(this.iconManager.getImageByName(clefs.getSelectedValue().getIconFileName()));
+	}
+
+	private void changeClef(TGContext context, TGSong song, TGTrack track, TGMeasure measure, TGClef clef, Boolean applyToEnd) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGChangeClefAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
-		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_CLEF, value);
+		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_CLEF, clef);
 		tgActionProcessor.setAttribute(TGChangeClefAction.ATTRIBUTE_APPLY_TO_END, applyToEnd);
 		tgActionProcessor.processOnNewThread();
 	}

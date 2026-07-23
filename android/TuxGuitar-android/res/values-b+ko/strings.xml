@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<!-- <string name="clef_dlg_title"></string> -->
 	<string name="clef_dlg_clef_label">음자리표:</string>
-	<string name="clef_dlg_clef_value_treble">높은</string>
-	<string name="clef_dlg_clef_value_bass">낮은</string>
-	<string name="clef_dlg_clef_value_tenor">테너</string>
-	<string name="clef_dlg_clef_value_alto">알토</string>
+	<string name="clef_dlg_clef_value_treble_8">높은</string>
+	<string name="clef_dlg_clef_value_bass_8">낮은</string>
+	<string name="clef_dlg_clef_value_tenor_8">테너</string>
+	<string name="clef_dlg_clef_value_alto_8">알토</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">이 음자리표를 끝까지 적용</string>
 
 	<!-- Key Signature dialog -->

@@ -18,8 +18,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.io.IOUtils;
 import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDuration;
-import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGStroke;
@@ -37,11 +37,11 @@ public class TGStream {
 
 	public static final String MODULE_NAME = "dev-fileformat";
 
-	protected static final TGVersion FILE_FORMAT_TGVERSION = new TGVersion(2,0,0);
+	protected static final TGVersion FILE_FORMAT_TGVERSION = new TGVersion(2,2,0);
 
 	public static final String TG_FORMAT_NAME = ("TuxGuitar File Format");
 	public static final String TG_FORMAT_CODE = ("tg");
-	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 2.0", "application/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
+	public static final TGFileFormat TG_FORMAT = new TGFileFormat("TuxGuitar 2.2", "application/x-tuxguitar", new String[]{ TG_FORMAT_CODE });
 
 	// XML tags and values of enums
 	protected static final String CONTENT_FILE_NAME = "content.xml";
@@ -103,6 +103,7 @@ public class TGStream {
 	protected static final String TAG_FROM = "from";
 	protected static final String TAG_TGMEASURE = "TGMeasure";
 	protected static final String TAG_CLEF = "clef";
+	protected static final String TAG_CLEF_OCTAVE_SHIFT = "octave-shift";
 	protected static final String TAG_KEYSIGNATURE = "keySignature";
 	protected static final String TAG_TGBEAT = "TGBeat";
 	protected static final String TAG_PRECISE_START = "preciseStart";
@@ -182,10 +183,10 @@ public class TGStream {
 		this.tripletsWriteMap = this.revertMap(this.tripletsReadMap);
 
 		this.mapReadClefs = new HashMap<String, Integer>();
-		this.mapReadClefs.put("treble", TGMeasure.CLEF_TREBLE);
-		this.mapReadClefs.put("bass", TGMeasure.CLEF_BASS);
-		this.mapReadClefs.put("tenor", TGMeasure.CLEF_TENOR);
-		this.mapReadClefs.put("alto", TGMeasure.CLEF_ALTO);
+		this.mapReadClefs.put("treble", TGClef.INDEX_CLEF_TREBLE);
+		this.mapReadClefs.put("bass", TGClef.INDEX_CLEF_BASS);
+		this.mapReadClefs.put("tenor", TGClef.INDEX_CLEF_TENOR);
+		this.mapReadClefs.put("alto", TGClef.INDEX_CLEF_ALTO);
 		this.mapWriteClefs = this.revertMap(this.mapReadClefs);
 
 		this.mapReadStroke = new HashMap<String, Integer>();

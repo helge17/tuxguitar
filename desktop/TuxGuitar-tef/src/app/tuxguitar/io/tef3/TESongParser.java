@@ -28,6 +28,7 @@ import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGLyric;
 import app.tuxguitar.song.models.TGMeasure;
@@ -173,19 +174,19 @@ public class TESongParser {
 				switch (teTrack.getClef())
 				{
 					case TrebleClef:
-						tgMeasure.setClef(TGMeasure.CLEF_TREBLE);
+						tgMeasure.setClef(TGClef.CLEF_TREBLE_8);
 						break;
 					case BassClef:
-						tgMeasure.setClef(TGMeasure.CLEF_BASS);
+						tgMeasure.setClef(TGClef.CLEF_BASS_8);
 						break;
 					case TenorClef:
-						tgMeasure.setClef(TGMeasure.CLEF_TENOR);
+						tgMeasure.setClef(TGClef.CLEF_TENOR_8);
 						break;
 					case AltoClef:
-						tgMeasure.setClef(TGMeasure.CLEF_ALTO);
+						tgMeasure.setClef(TGClef.CLEF_ALTO_8);
 						break;
 					default:
-						tgMeasure.setClef(TGMeasure.DEFAULT_CLEF);
+						tgMeasure.setClef(TGClef.DEFAULT_CLEF);
 						break;
 				}
 			}

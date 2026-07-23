@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Canvia la clau</string>
 	<string name="clef_dlg_clef_label">Clau:</string>
-	<string name="clef_dlg_clef_value_treble">Agut</string>
-	<string name="clef_dlg_clef_value_bass">Baix</string>
-	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
-	<string name="clef_dlg_clef_value_alto">Alt</string>
+	<string name="clef_dlg_clef_value_treble_8">Agut</string>
+	<string name="clef_dlg_clef_value_bass_8">Baix</string>
+	<!-- <string name="clef_dlg_clef_value_tenor_8"></string> -->
+	<string name="clef_dlg_clef_value_alto_8">Alt</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Aplica aquesta clau fins a la fi</string>
 
 	<!-- Key Signature dialog -->

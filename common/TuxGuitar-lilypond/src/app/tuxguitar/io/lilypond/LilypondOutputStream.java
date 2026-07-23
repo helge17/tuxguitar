@@ -11,6 +11,7 @@ import java.util.Map;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGClef;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
@@ -434,22 +435,25 @@ public class LilypondOutputStream {
 		}
 	}
 
-	private void addClef(int clef,int indent){
+	private void addClef(TGClef clef,int indent){
 		String clefName = "";
-		if(clef == TGMeasure.CLEF_TREBLE){
+		if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_TREBLE){
 			clefName = "treble";
 		}
-		else if(clef == TGMeasure.CLEF_BASS){
+		else if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_BASS){
 			clefName = "bass";
 		}
-		else if(clef == TGMeasure.CLEF_ALTO){
+		else if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_ALTO){
 			clefName = "alto";
 		}
-		else if(clef == TGMeasure.CLEF_TENOR){
+		else if(clef.getBaseClefIndex() == TGClef.INDEX_CLEF_TENOR){
 			clefName = "tenor";
 		}
+		if(clef.getOctaveShift() == -1){
+			clefName = clefName + "_8";
+		}
 		if(clefName!=""){
-			this.writer.println(indent(indent) + "\\clef #(if inTab \"tab\" \"" + clefName + "_8\")");
+			this.writer.println(indent(indent) + "\\clef #(if inTab \"tab\" \"" + clefName + "\")");
 		}
 	}
 

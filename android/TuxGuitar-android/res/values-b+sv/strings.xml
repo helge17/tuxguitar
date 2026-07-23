@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Ändra klav</string>
 	<string name="clef_dlg_clef_label">Klav:</string>
-	<string name="clef_dlg_clef_value_treble">Diskant</string>
-	<string name="clef_dlg_clef_value_bass">Bas</string>
-	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
-	<string name="clef_dlg_clef_value_alto">Alt</string>
+	<string name="clef_dlg_clef_value_treble_8">Diskant</string>
+	<string name="clef_dlg_clef_value_bass_8">Bas</string>
+	<!-- <string name="clef_dlg_clef_value_tenor_8"></string> -->
+	<string name="clef_dlg_clef_value_alto_8">Alt</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Tillämpa denna klaven till slutet</string>
 
 	<!-- Key Signature dialog -->

@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Notenschlüssel ändern</string>
 	<string name="clef_dlg_clef_label">Notenschlüssel:</string>
-	<string name="clef_dlg_clef_value_treble">Sopran</string>
-	<!-- <string name="clef_dlg_clef_value_bass"></string> -->
-	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
-	<string name="clef_dlg_clef_value_alto">Alt</string>
+	<string name="clef_dlg_clef_value_treble_8">Sopran</string>
+	<!-- <string name="clef_dlg_clef_value_bass_8"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_8"></string> -->
+	<string name="clef_dlg_clef_value_alto_8">Alt</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Diesen Notenschlüssel bis zum Liedende verwenden</string>
 
 	<!-- Key Signature dialog -->

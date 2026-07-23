@@ -197,6 +197,24 @@ public class GPXDocumentReader {
 						}
 					}
 
+					// clef transposition
+					// only transpositions handled by TG: 0 (standard clefs) or -1 octave (guitar clefs, default)
+					if (this.version == GP6) {
+						Node partSoundingNode = getChildNode(trackNode, "PartSounding");
+						if ((partSoundingNode != null) && (getChildNodeIntegerContent(partSoundingNode,"TranspositionPitch",0) == 0)) {
+							// TranspositionPitch = -12 for guitar clefs (-1 octave shift = TG default), 0 for standard clefs
+							track.setOctaveShift(0);
+						}
+					}
+					else if (this.version == GP7) {
+						Node transpositionNode = getChildNode(trackNode, "Transpose");
+						if ((transpositionNode != null) && (getChildNodeIntegerContent(transpositionNode,"Chromatic",0) == 0)) {
+							if (getChildNodeIntegerContent(transpositionNode, "Octave", -1) == 0) {
+								track.setOctaveShift(0);
+							}
+						}
+					}
+
 					this.gpxDocument.getTracks().add( track );
 					this.readChords(propertiesNode);
 				}

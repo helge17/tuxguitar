@@ -268,10 +268,14 @@
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Cambiar clave</string>
 	<string name="clef_dlg_clef_label">Clave:</string>
-	<string name="clef_dlg_clef_value_treble">Sol</string>
-	<string name="clef_dlg_clef_value_bass">Fa</string>
-	<string name="clef_dlg_clef_value_tenor">Do en cuarta</string>
-	<string name="clef_dlg_clef_value_alto">Do en tercera</string>
+	<string name="clef_dlg_clef_value_treble_8">Sol</string>
+	<string name="clef_dlg_clef_value_bass_8">Fa</string>
+	<string name="clef_dlg_clef_value_tenor_8">Do en cuarta</string>
+	<string name="clef_dlg_clef_value_alto_8">Do en tercera</string>
+	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
+	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
 	<string name="clef_dlg_options_apply_to_end">Aplicar esta clave hasta el final</string>
 
 	<!-- Key Signature dialog -->
