@@ -42,7 +42,7 @@
 						<configuration>
 							<target name="compile-native-jni">
 								<exec dir="${tuxguitar-synth-lv2.jni.path}" executable="gmake" failonerror="true" >
-									<env key="CXX" value="g++12" />
+									<env key="CXX" value="g++" />
 									<env key="CFLAGS" value="-I${basedir}/../common-include -I/usr/local/include/lilv-0/lilv -fPIC -fpermissive" />
 									<env key="LDFLAGS" value="-fPIC" />
 									<env key="LDLIBS" value="-llilv-0 -lsuil-0" />
@@ -62,7 +62,7 @@
 						<configuration>
 							<target name="compile-native-ui">
 								<exec dir="${tuxguitar-synth-lv2.cxx.path}" executable="gmake" failonerror="true" >
-									<env key="CXX" value="g++12" />
+									<env key="CXX" value="g++" />
 									<env key="CFLAGS" value="-I/usr/local/include/lilv-0/lilv -I/usr/local/include/suil-0/suil `pkg-config Qt5Core --cflags` `pkg-config Qt5Widgets --cflags` -fPIC -fpermissive" />
 									<env key="LDFLAGS" value="-fPIC" />
 									<env key="LDLIBS" value="-llilv-0 -lsuil-0 -lpthread `pkg-config Qt5Core --libs` `pkg-config Qt5Widgets --libs`" />

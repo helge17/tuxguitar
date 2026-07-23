@@ -26,7 +26,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install -y curl openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git
+          pkg install -y curl openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git lv2 lilv suil pkgconf qt5-core qt5-widgets
       # wqy-fonts-20100803_10,1
 
         run: |
