@@ -425,6 +425,21 @@
 			</properties>
 		</profile>
 		<profile>
+			<!-- Activated on top of platform-macos-cocoa on Apple Silicon: OpenJFX publishes
+			     separate artifacts with the "mac-aarch64" classifier for this architecture -->
+			<id>platform-macos-cocoa-aarch64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>mac os x</name>
+					<arch>aarch64</arch>
+				</os>
+			</activation>
+			<properties>
+				<javafx.platform>mac-aarch64</javafx.platform>
+			</properties>
+		</profile>
+		<profile>
 			<id>platform-freebsd</id>
 			<activation>
 				<os>

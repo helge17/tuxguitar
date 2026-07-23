@@ -308,7 +308,8 @@ else
 
     # I could not find any repo for current SWT versions, so SWT must be installed manually.
     # See https://github.com/pcarmona79/tuxguitar/issues/1
-    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-`uname -m`
+    # Eclipse names Apple Silicon downloads "aarch64" while `uname -m` reports "arm64" on macOS
+    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-`uname -m | sed 's/^arm64$/aarch64/'`
     SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
     SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
 
@@ -538,7 +539,8 @@ scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tu
 
 function build_tg_for_macos {
 
-BUILD_ARCH=`uname -m`
+# Use "aarch64" instead of "arm64" in package names, consistent with the GitHub CI builds
+BUILD_ARCH=`uname -m | sed 's/^arm64$/aarch64/'`
 
 install_eclipse_swt
 
@@ -551,7 +553,11 @@ for GUI_TK in swt jfx; do
   TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
   # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  /usr/local/opt/openjdk/bin/jlink --add-modules java.desktop --output target/$TARGET.app/Contents/MacOS/jre
+  # Homebrew lives in /usr/local on Intel and /opt/homebrew on Apple Silicon, so ask brew for the path.
+  # If brew is not on the PATH (e.g. non-interactive shells), fall back to the Intel path used before.
+  OPENJDK_PREFIX=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
+  # jdk.unsupported provides sun.misc.Unsafe, required by the JavaFX Marlin renderer
+  $OPENJDK_PREFIX/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
 
   rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
