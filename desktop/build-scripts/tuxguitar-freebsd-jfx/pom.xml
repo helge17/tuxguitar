@@ -123,46 +123,6 @@
 
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
-									<groupId>org.openjfx</groupId>
-									<artifactId>javafx-base</artifactId>
-									<destFileName>javafx-base.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-									<classifier>${javafx.platform}</classifier>
-									<version>${javafx.version}</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.openjfx</groupId>
-									<artifactId>javafx-controls</artifactId>
-									<destFileName>javafx-controls.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-									<classifier>${javafx.platform}</classifier>
-									<version>${javafx.version}</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.openjfx</groupId>
-									<artifactId>javafx-graphics</artifactId>
-									<destFileName>javafx-graphics.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-									<classifier>${javafx.platform}</classifier>
-									<version>${javafx.version}</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.openjfx</groupId>
-									<artifactId>javafx-web</artifactId>
-									<destFileName>javafx-web.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-									<classifier>${javafx.platform}</classifier>
-									<version>${javafx.version}</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.openjfx</groupId>
-									<artifactId>javafx-media</artifactId>
-									<destFileName>javafx-media.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-									<classifier>${javafx.platform}</classifier>
-									<version>${javafx.version}</version>
-								</artifactItem>
-								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
 									<destFileName>itext-pdf.jar</destFileName>

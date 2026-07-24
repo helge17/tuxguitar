@@ -166,7 +166,7 @@ The application is now located in the `desktop/build-scripts/tuxguitar-macosx-sw
 ### Install Prerequisites
 
 ```sh
-$ sudo pkg install openjdk11 alsa-plugins maven swt gcc gmake fluidsynth wget git lilv suil
+$ doas pkg install FreeBSD-clibs-dev pkgconf maven gcc gmake wget git openjdk11 alsa-plugins fluidsynth lilv suil swt webkit2-gtk_40
 ```
 
 In order for Asian characters to be displayed correctly, you may also need to install the `wqy-fonts-20100803_10,1` font package.

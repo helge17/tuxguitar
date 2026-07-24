@@ -298,72 +298,64 @@ function install_eclipse_swt {
 
 SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}-$SWT_VERSION.jar
 
-if [ -e $SWT_DEST ]; then
+if [ "$SWT_PLATFORM" = 'gtk-linux' ] || [ "$SWT_PLATFORM" = 'cocoa-macosx' ] || [ "$SWT_PLATFORM" = 'win32-win32' ]; then
 
-  echo "# $SWT_DEST is already installed."
-
-else
-
-  if [ "$SWT_PLATFORM" = 'gtk-linux' ] || [ "$SWT_PLATFORM" = 'cocoa-macosx' ] || [ "$SWT_PLATFORM" = 'win32-win32' ]; then
-
-    # I could not find any repo for current SWT versions, so SWT must be installed manually.
-    # See https://github.com/pcarmona79/tuxguitar/issues/1
-    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-`uname -m`
-    SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
-    SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
-
-    echo "# Installing $SWT_DEST from $SWT_LINK ..."
-    if [ ! -e $SWT_JARF ]; then
-      [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
-      rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
-    fi
-
-  elif [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
-
-    # On FreeBSD we use SWT from the OS
-    SWT_JARF=/usr/local/share/java/classes/swt.jar
-
+  if [ -e $SWT_DEST ]; then
+    echo "# $SWT_DEST is already installed."
+    return
   fi
 
-  mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.} -Dpackaging=jar -Dversion=$SWT_VERSION
-  echo "# OK."
+  # I could not find any repo for current SWT versions, so SWT must be installed manually.
+  # See https://github.com/pcarmona79/tuxguitar/issues/1
+  SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-`uname -m`
+  SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
+  SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
+
+  if [ ! -e $SWT_JARF ]; then
+    [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
+    rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
+  fi
+
+elif [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
+
+  # On FreeBSD we use SWT from the OS
+  SWT_JARF=/usr/local/share/java/classes/swt.jar
+
+  # Delete and reinstall, so that always the newest version from the OS is used
+  rm -f $SWT_DEST
 
 fi
+
+echo "# Installing $SWT_DEST from $SWT_JARF ..."
+mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.} -Dpackaging=jar -Dversion=$SWT_VERSION
+echo "# OK."
 
 }
 
-function install_openjfx {
+function install_openjfx_bsd {
 
-# On FreeBSD we also install JFX from the OS
-if [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
+# On FreeBSD we use JFX from the OS
+JFX_DIR=$SW_DIR/OpenJFX
 
-  JFX_DIR=$SW_DIR/OpenJFX
+for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
 
-  for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
+  JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION-freebsd.jar
+  JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
 
-    JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION-freebsd.jar
-    JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
+  mkdir -p $JFX_DIR
+  if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
+    wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
+    sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
+  fi
 
-    if [ -e $JFX_DEST ]; then
+  # Delete and reinstall, so that always the newest version from the OS is used
+  rm -f $JFX_DEST
 
-      echo "# $JFX_DEST is already installed."
+  echo "# Installing $JFX_DEST from $JFX_JARF ..."
+  mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VERSION.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VERSION -Dclassifier=freebsd
+  echo "# OK."
 
-    else
-
-      echo "# Installing $JFX_DEST from $JFX_JARF ..."
-      mkdir -p $JFX_DIR
-      if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
-        wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
-        sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
-      fi
-      mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VERSION.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VERSION -Dclassifier=freebsd
-      echo "# OK."
-
-    fi
-
-  done
-
-fi
+done
 
 }
 
@@ -488,7 +480,7 @@ function build_tg_for_bsd {
 BUILD_ARCH=`uname -m`
 
 install_eclipse_swt
-install_openjfx
+install_openjfx_bsd
 
 for GUI_TK in swt jfx; do
   echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ...\n"
@@ -497,9 +489,6 @@ for GUI_TK in swt jfx; do
   mvn --batch-mode -e clean verify -P native-modules
 
   TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK
-
-  # Copy local JFX libs into TAR.GZ package
-  [ "$GUI_TK" == "jfx" ] && cp -a /usr/local/openjfx14/lib/*.so target/$TARGET/lib
 
   rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH

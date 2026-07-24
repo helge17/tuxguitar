@@ -125,12 +125,6 @@
 
 								<!-- 3RD PARTY LIBRARIES -->
 								<artifactItem>
-									<groupId>${org.eclipse.swt.groupId}</groupId>
-									<artifactId>${org.eclipse.swt.artifactId}</artifactId>
-									<destFileName>swt.jar</destFileName>
-									<outputDirectory>${project.build.directory}/${project.finalName}/lib</outputDirectory>
-								</artifactItem>
-								<artifactItem>
 									<groupId>com.itextpdf</groupId>
 									<artifactId>itextpdf</artifactId>
 									<destFileName>itext-pdf.jar</destFileName>
