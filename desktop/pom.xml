@@ -357,7 +357,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
 				<configuration>
-					<release>9</release>
+					<release>11</release>
 					<showWarnings>true</showWarnings>
 					<useIncrementalCompilation>false</useIncrementalCompilation>
 					<compilerArgs>
