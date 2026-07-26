@@ -528,7 +528,7 @@ scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tu
 
 function build_tg_for_macos {
 
-BUILD_ARCH=`uname -m`
+BUILD_ARCH=`uname -m | sed 's/arm64/aarch64/'`
 
 install_eclipse_swt
 
@@ -541,8 +541,10 @@ for GUI_TK in swt jfx; do
   TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
   # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
+  # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
+  BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
   # jdk.unsupported is required for the MarlinFX renderer from JFX
-  /usr/local/opt/openjdk/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
+  $BREW_JAVA_HOME/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
 
   rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
