@@ -540,7 +540,8 @@ for GUI_TK in swt jfx; do
   TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
   # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  /usr/local/opt/openjdk/bin/jlink --add-modules java.desktop --output target/$TARGET.app/Contents/MacOS/jre
+  # jdk.unsupported is required for the MarlinFX renderer from JFX
+  /usr/local/opt/openjdk/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
 
   rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
   tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
