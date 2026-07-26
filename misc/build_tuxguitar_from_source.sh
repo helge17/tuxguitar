@@ -307,7 +307,7 @@ if [ "$SWT_PLATFORM" = 'gtk-linux' ] || [ "$SWT_PLATFORM" = 'cocoa-macosx' ] || 
 
   # I could not find any repo for current SWT versions, so SWT must be installed manually.
   # See https://github.com/pcarmona79/tuxguitar/issues/1
-  SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-`uname -m`
+  SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
   SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
   SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
 
@@ -374,7 +374,8 @@ fi
 
 function build_tg_for_linux {
 
-BUILD_ARCH=`dpkg --print-architecture`
+BUILD_ARCH=`uname -m`
+DPKG_ARCH=`dpkg --print-architecture`
 
 install_eclipse_swt
 
@@ -383,34 +384,34 @@ install_eclipse_swt
 # -P native-modules: Build with native modules
 
 for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package ...\n"
+  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $DPKG_ARCH TAR.GZ & DEB & RPM package ...\n"
 
   cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-deb
   mvn --batch-mode -e clean verify -P native-modules
 
   TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK
 
-  cp -a target/$TARGET.deb $DIST_DIR/$TARGET-$BUILD_ARCH.deb
+  cp -a target/$TARGET.deb $DIST_DIR/$TARGET-$DPKG_ARCH.deb
   cd - > /dev/null
 
   cd desktop/build-scripts/tuxguitar-linux-$GUI_TK
-  rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
-  tar --owner=root --group=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
+  rm -rf target/$TARGET-$DPKG_ARCH && mv -i target/$TARGET target/$TARGET-$DPKG_ARCH
+  tar --owner=root --group=root --directory=target -czf $DIST_DIR/$TARGET-$DPKG_ARCH.tar.gz $TARGET-$DPKG_ARCH
   cd - > /dev/null
 
   # Create RPM from DEB
   cd $DIST_DIR
-  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET-$BUILD_ARCH.deb
+  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET-$DPKG_ARCH.deb
   cd - > /dev/null
 
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $BUILD_ARCH TAR.GZ & DEB & RPM package done.\n"
+  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $DPKG_ARCH TAR.GZ & DEB & RPM package done.\n"
 done
 
 }
 
-function build_tg_for_windows {
+function build_tg_on_linux_for_windows {
 
-BUILD_ARCH=x86_64
+BUILD_ARCH=`uname -m`
 
 # To build the installer package you must install the VMware InstallBuilder for Linux from https://installbuilder.com/ and link the binary /opt/installbuilder-<version>/bin/builder to /usr/local/bin/builder
 # E.g. download and start installbuilder-enterprise-21.9.0-linux-x64-installer.run, then link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
@@ -723,7 +724,7 @@ if [ $build_windows ]; then
   # Get Java for Windows 64 bit from https://portableapps.com/apps/utilities/OpenJDKJRE64
   PA_JAVA=OpenJDKJRE64_21.0.7-6.paf
   PA_LINK="https://portableapps.com/redir2/?a=OpenJDKJRE64&s=s&d=pa&f=$PA_JAVA.exe"
-  [ `uname` == Linux ] && build_tg_for_windows
+  [ `uname` == Linux ] && build_tg_on_linux_for_windows
 fi
 
 # Android build (local on Linux)

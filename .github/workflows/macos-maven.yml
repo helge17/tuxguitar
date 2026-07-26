@@ -29,22 +29,22 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name : Set value of TUX_ARCH
-      run:  echo "TUX_ARCH=`uname -m | sed 's/arm64/aarch64/'`" >> "$GITHUB_ENV"
+    - name : Set value of BUILD_ARCH
+      run:  echo "BUILD_ARCH=`uname -m | sed 's/arm64/aarch64/'`" >> "$GITHUB_ENV"
     - name : Set value of SWT_VERSION
       run:  echo "SWT_VERSION=4.37" >> "$GITHUB_ENV"
     - name : Download SWT
-      run: curl -o swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.37-202509050730/swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip
+      run: curl -o swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.BUILD_ARCH }}.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.37-202509050730/swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.BUILD_ARCH }}.zip
     - name : install SWT
-      run: mkdir swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && cd swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }} && unzip ../swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.TUX_ARCH }}.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=${{ env.SWT_VERSION }}
+      run: mkdir swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.BUILD_ARCH }} && cd swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.BUILD_ARCH }} && unzip ../swt-${{ env.SWT_VERSION }}-cocoa-macosx-${{ env.BUILD_ARCH }}.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.cocoa.macosx -Dpackaging=jar -Dversion=${{ env.SWT_VERSION }}
     - name: Build with Maven
-      run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify
+      run: cd desktop/build-scripts/tuxguitar-macosx-swt-cocoa && mvn -e clean verify -P native-modules
     - name: Rename app depending of arch
-      run: mv desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
+      run: mv desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.BUILD_ARCH }}-swt-cocoa.app
     - uses: actions/upload-artifact@v4
       with:
         name: Package-MacOS-${{ matrix.os }}
-        path: desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
+        path: desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.BUILD_ARCH }}-swt-cocoa.app
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
