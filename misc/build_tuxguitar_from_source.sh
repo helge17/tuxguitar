@@ -688,7 +688,7 @@ prepare_source
 
 # BSD (on BSD, remote or local)
 if [ $build_bsd ]; then
-  # SWT & JFX versions in FreeBSD 14.2
+  # SWT & JFX versions in FreeBSD 15.1
   SWT_VERSION=4.21
   SWT_PLATFORM=gtk-freebsd
   JFX_VERSION=14.0.2.1
