@@ -194,6 +194,7 @@ public class TGMeasureImpl extends TGMeasure{
 
 		this.width += getFirstNoteSpacing(layout);
 		this.width += (this.getRepeatClose() > 0) ? (20f * layout.getScale()) : 0;
+		this.width += this.isDoubleBar() ? (4f * layout.getScale()) : 0;
 		this.width += getHeaderImpl().getLeftSpacing(layout);
 		this.width += getHeaderImpl().getRightSpacing(layout);
 
@@ -923,7 +924,15 @@ public class TGMeasureImpl extends TGMeasure{
 				}
 			}
 		} else {
-			if (islastOfLine()) {
+			if (this.isDoubleBar()) {
+				painter.setLineWidth(layout.getLineWidth(0));
+				painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
+				painter.setAntialias(false);
+				painter.moveTo((x2 + getSpacing())-3f*scale, y1);
+				painter.lineTo((x2 + getSpacing())-3f*scale, y2);
+				painter.closePath();
+			}
+			if (isLastOfLine()) {
 				painter.setLineWidth(layout.getLineWidth(0));
 				painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
 				painter.setAntialias(false);
@@ -1331,7 +1340,7 @@ public class TGMeasureImpl extends TGMeasure{
 		this.firstOfLine = firstOfLine;
 	}
 
-	public boolean islastOfLine() {
+	public boolean isLastOfLine() {
 		return this.lastOfLine;
 	}
 

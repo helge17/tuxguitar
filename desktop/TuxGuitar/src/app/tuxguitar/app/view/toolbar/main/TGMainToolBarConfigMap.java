@@ -114,6 +114,7 @@ import app.tuxguitar.app.view.dialog.transport.TGTransportDialog;
 import app.tuxguitar.app.view.toolbar.edit.TGEditToolBar;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import app.tuxguitar.editor.action.duration.TGChangeDottedDurationAction;
 import app.tuxguitar.editor.action.duration.TGChangeDoubleDottedDurationAction;
@@ -439,9 +440,47 @@ public class TGMainToolBarConfigMap {
 			}
 		});
 		registerButton("composition.tripletfeel", TGOpenTripletFeelDialogAction.NAME, TGIconManager.TRIPLET_FEEL, DISABLE_ON_PLAY);
-		registerButton("repeat.open", TGRepeatOpenAction.NAME, TGIconManager.REPEAT_OPEN, DISABLE_ON_PLAY);
-		registerButton("repeat.close", TGOpenRepeatCloseDialogAction.NAME, TGIconManager.REPEAT_CLOSE, DISABLE_ON_PLAY);
-		registerButton("repeat.alternative", TGOpenRepeatAlternativeDialogAction.NAME, TGIconManager.REPEAT_ALTERNATIVE, DISABLE_ON_PLAY);
+		registerCheckable("repeat.open", TGRepeatOpenAction.NAME, TGIconManager.REPEAT_OPEN, new TGMainToolBarItemUpdater() {
+			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				return (!isRunning);
+			}
+			@Override
+			public boolean checked(TGContext context, boolean isRunning) {
+				return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().isRepeatOpen();
+			}
+		});
+		registerCheckable("repeat.close", TGOpenRepeatCloseDialogAction.NAME, TGIconManager.REPEAT_CLOSE, new TGMainToolBarItemUpdater() {
+			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				return (!isRunning);
+			}
+			@Override
+			public boolean checked(TGContext context, boolean isRunning) {
+				return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().getRepeatClose() > 0;
+			}
+		});
+		registerCheckable("repeat.alternative", TGOpenRepeatAlternativeDialogAction.NAME, TGIconManager.REPEAT_ALTERNATIVE, new TGMainToolBarItemUpdater() {
+			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				return (!isRunning);
+			}
+			@Override
+			public boolean checked(TGContext context, boolean isRunning) {
+				return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().getHeader().getRepeatAlternative() > 0;
+			}
+		});
+		registerCheckable("composition.double-bar", TGDoubleBarAction.NAME, TGIconManager.DOUBLE_BAR, new TGMainToolBarItemUpdater() {
+			@Override
+			public boolean enabled(TGContext context, boolean isRunning) {
+				return (!isRunning);
+			}
+			@Override
+			public boolean checked(TGContext context, boolean isRunning) {
+				return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getMeasure().isDoubleBar();
+			}
+		});
+
 		registerButton("composition.properties", TGOpenSongInfoDialogAction.NAME, TGIconManager.SONG_PROPERTIES, DISABLE_ON_PLAY);
 
 		//------- TRACK --------

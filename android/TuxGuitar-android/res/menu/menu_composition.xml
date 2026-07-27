@@ -28,6 +28,9 @@
         android:id="@+id/action_change_repeat_alternative"
         android:title="@string/action_change_repeat_alternative"/>
     <item
+        android:id="@+id/action_change_double_bar"
+        android:title="@string/action_change_double_bar"/>
+    <item
         android:id="@+id/action_change_properties"
         android:title="@string/action_change_properties"/>
 

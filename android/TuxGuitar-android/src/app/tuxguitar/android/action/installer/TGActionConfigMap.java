@@ -93,6 +93,7 @@ import app.tuxguitar.editor.action.composition.TGChangeTempoAction;
 import app.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
 import app.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
 import app.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatAlternativeAction;
 import app.tuxguitar.editor.action.composition.TGRepeatCloseAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
@@ -197,6 +198,7 @@ import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
 import app.tuxguitar.editor.undo.impl.custom.TGUndoableAltRepeatController;
 import app.tuxguitar.editor.undo.impl.custom.TGUndoableClefController;
 import app.tuxguitar.editor.undo.impl.custom.TGUndoableCloseRepeatController;
+import app.tuxguitar.editor.undo.impl.custom.TGUndoableDoubleBarController;
 import app.tuxguitar.editor.undo.impl.custom.TGUndoableKeySignatureController;
 import app.tuxguitar.editor.undo.impl.custom.TGUndoableOpenRepeatController;
 import app.tuxguitar.editor.undo.impl.custom.TGUndoableSongInfoController;
@@ -384,6 +386,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGRepeatOpenAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableOpenRepeatController());
 		this.map(TGRepeatCloseAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableCloseRepeatController());
 		this.map(TGRepeatAlternativeAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableAltRepeatController());
+		this.map(TGDoubleBarAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_MEASURE_CTL, new TGUndoableDoubleBarController());
 
 		//channel actions
 		this.map(TGSetChannelsAction.NAME, LOCKABLE | DISABLE_ON_PLAY, UPDATE_CHANNELS_CTL, UNDOABLE_CHANNEL_GENERIC);

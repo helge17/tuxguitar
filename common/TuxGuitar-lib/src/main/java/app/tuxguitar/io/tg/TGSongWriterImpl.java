@@ -166,6 +166,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (header.getRepeatClose() != 0) {
 			this.addNodeInt(nodeMeasureHeader, TAG_REPEAT_CLOSE, header.getRepeatClose());
 		}
+		if (header.isDoubleBar()) {
+			this.addNode(nodeMeasureHeader, TAG_DOUBLE_BAR);
+		}
 		if (header.getRepeatAlternative() != 0) {
 			node = this.addNode(nodeMeasureHeader, TAG_REPEAT_ALTERNATIVE);
 			// bit map

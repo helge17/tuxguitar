@@ -14,6 +14,7 @@ import app.tuxguitar.android.view.dialog.repeat.TGRepeatCloseDialogController;
 import app.tuxguitar.android.view.dialog.tempo.TGTempoDialogController;
 import app.tuxguitar.android.view.dialog.timeSignature.TGTimeSignatureDialogController;
 import app.tuxguitar.android.view.dialog.tripletFeel.TGTripletFeelDialogController;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import app.tuxguitar.player.base.MidiPlayer;
 
@@ -40,5 +41,6 @@ public class TGCompositionMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_change_repeat_alternative, new TGRepeatAlternativeDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_repeat_close, new TGRepeatCloseDialogController(), !running);
 		this.initializeItem(menu, R.id.action_change_repeat_open, this.createActionProcessor(TGRepeatOpenAction.NAME), !running);
+		this.initializeItem(menu, R.id.action_change_double_bar, this.createActionProcessor(TGDoubleBarAction.NAME), !running);
 	}
 }

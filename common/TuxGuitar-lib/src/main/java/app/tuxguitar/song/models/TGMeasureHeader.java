@@ -36,6 +36,7 @@ public abstract class TGMeasureHeader {
 	private boolean repeatOpen;
 	private int repeatAlternative;
 	private int repeatClose;
+	private boolean doubleBar;
 	private int tripletFeel;
 	private TGSong song;
 	private boolean lineBreak;
@@ -89,6 +90,14 @@ public abstract class TGMeasureHeader {
 
 	public void setRepeatOpen(boolean repeatOpen) {
 		this.repeatOpen = repeatOpen;
+	}
+
+	public boolean isDoubleBar() {
+		return this.doubleBar;
+	}
+
+	public void setDoubleBar(boolean doubleBar) {
+		this.doubleBar = doubleBar;
 	}
 
 	public long getStart() {

@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Ouvrir une reprise</string>
 	<string name="action_change_repeat_close">Fermer une reprise</string>
 	<string name="action_change_repeat_alternative">Autres reprises</string>
+	<string name="action_change_double_bar">Double barre de mesure</string>
 	<string name="action_change_properties">Propriétés de la piste</string>
 
 	<string name="action_track_first">Première piste</string>

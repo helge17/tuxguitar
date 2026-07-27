@@ -153,6 +153,7 @@ import app.tuxguitar.editor.action.composition.TGChangeTempoAction;
 import app.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
 import app.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
 import app.tuxguitar.editor.action.composition.TGChangeTripletFeelAction;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatAlternativeAction;
 import app.tuxguitar.editor.action.composition.TGRepeatCloseAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
@@ -468,6 +469,7 @@ public class TGActionInstaller {
 		installAction(new TGRepeatOpenAction(context));
 		installAction(new TGRepeatCloseAction(context));
 		installAction(new TGRepeatAlternativeAction(context));
+		installAction(new TGDoubleBarAction(context));
 
 		//channel actions
 		installAction(new TGSetChannelsAction(context));
