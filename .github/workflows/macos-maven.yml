@@ -45,11 +45,11 @@ jobs:
       run: mv desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-swt-cocoa.app desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target/tuxguitar-9.99-SNAPSHOT-macosx-${{ env.BUILD_ARCH }}-swt-cocoa.app
     # tar to preserve executable permissions, upload-artifact does not keep them
     - name: Pack app
-      run: tar --directory=desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target -czf tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app.tar.gz tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app
+      run: tar --directory=desktop/build-scripts/tuxguitar-macosx-swt-cocoa/target -czf tuxguitar-9.99-SNAPSHOT-macosx-${{ env.BUILD_ARCH }}-swt-cocoa.app.tar.gz tuxguitar-9.99-SNAPSHOT-macosx-${{ env.BUILD_ARCH }}-swt-cocoa.app
     - uses: actions/upload-artifact@v4
       with:
         name: Package-MacOS-${{ matrix.os }}
-        path: tuxguitar-9.99-SNAPSHOT-macosx-${{ env.TUX_ARCH }}-swt-cocoa.app.tar.gz
+        path: tuxguitar-9.99-SNAPSHOT-macosx-${{ env.BUILD_ARCH }}-swt-cocoa.app.tar.gz
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     ##- name: Update dependency graph

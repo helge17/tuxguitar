@@ -543,6 +543,10 @@ for GUI_TK in swt jfx; do
   # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
   # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
   BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
+  if [ ! -x "$BREW_JAVA_HOME/bin/jlink" ]; then
+    echo -e "\nError: jlink not found at $BREW_JAVA_HOME/bin/jlink. Please install OpenJDK with \"brew install openjdk\"."
+    abort_build
+  fi
   # jdk.unsupported is required for the MarlinFX renderer from JFX
   $BREW_JAVA_HOME/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
 
