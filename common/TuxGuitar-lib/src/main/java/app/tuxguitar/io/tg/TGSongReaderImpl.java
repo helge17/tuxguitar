@@ -181,6 +181,13 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			if (node != null) {
 				header.setRepeatClose(readInt(node));
 			}
+			// double bar (exclusive with repeat close)
+			else {
+				if (getChildNode(nodeMeasureHeader, TAG_DOUBLE_BAR) != null) {
+					header.setDoubleBar(true);
+				}
+			}
+
 			byte repeatAlternative = 0;
 			node = getChildNode(nodeMeasureHeader, TAG_REPEAT_ALTERNATIVE);
 			if (node!=null) {

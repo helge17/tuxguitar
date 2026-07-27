@@ -13,6 +13,7 @@ import app.tuxguitar.android.view.dialog.repeat.TGRepeatCloseDialogController;
 import app.tuxguitar.android.view.dialog.tempo.TGTempoDialogController;
 import app.tuxguitar.android.view.dialog.timeSignature.TGTimeSignatureDialogController;
 import app.tuxguitar.android.view.dialog.tripletFeel.TGTripletFeelDialogController;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 
 public class TGSelectedMeasureMenu extends TGMenuBase {
@@ -35,5 +36,6 @@ public class TGSelectedMeasureMenu extends TGMenuBase {
 		this.initializeItem(menu, R.id.action_change_repeat_alternative, new TGRepeatAlternativeDialogController(), true);
 		this.initializeItem(menu, R.id.action_change_repeat_close, new TGRepeatCloseDialogController(), true);
 		this.initializeItem(menu, R.id.action_change_repeat_open, this.createActionProcessor(TGRepeatOpenAction.NAME), true);
+		this.initializeItem(menu, R.id.action_change_double_bar, this.createActionProcessor(TGDoubleBarAction.NAME), true);
 	}
 }

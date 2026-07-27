@@ -17,6 +17,9 @@
         android:icon="@drawable/ic_repeat_alternative_white_24dp"
         android:showAsAction="always"/>
     <item
+        android:id="@+id/action_change_double_bar"
+        android:title="@string/action_change_double_bar"/>
+    <item
         android:id="@+id/action_change_time_signature"
         android:title="@string/action_change_time_signature"
         android:icon="@drawable/ic_time_signature_white_24dp"

@@ -546,6 +546,10 @@ public class TGSongManager {
 		header.setRepeatAlternative(repeatAlternative);
 	}
 
+	public void changeDoubleBar(TGMeasureHeader header) {
+		header.setDoubleBar(!header.isDoubleBar());
+	}
+
 	public TGMeasureHeader addNewMeasureBeforeEnd(TGSong song){
 		TGMeasureHeader lastHeader = getLastMeasureHeader(song);
 		TGMeasureHeader header = getFactory().newHeader();

@@ -6,6 +6,7 @@ import app.tuxguitar.app.action.impl.composition.TGOpenTimeSignatureDialogAction
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
 import app.tuxguitar.app.system.icons.TGIconManager;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.ui.toolbar.UIToolActionItem;
@@ -21,6 +22,7 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 	private UIToolCheckableItem repeatOpen;
 	private UIToolCheckableItem repeatClose;
 	private UIToolCheckableItem repeatAlternative;
+	private UIToolCheckableItem doubleBar;
 
 	public TGEditToolBarSectionComposition(TGEditToolBar toolBar) {
 		super(toolBar, SECTION_TITLE);
@@ -35,8 +37,6 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		this.tempo = toolBar.createActionItem();
 		this.tempo.addSelectionListener(this.createActionProcessor(TGOpenTempoDialogAction.NAME));
 
-		toolBar.createSeparator();
-
 		this.repeatOpen = toolBar.createCheckItem();
 		this.repeatOpen.addSelectionListener(this.createActionProcessor(TGRepeatOpenAction.NAME));
 
@@ -45,6 +45,9 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 
 		this.repeatAlternative = toolBar.createCheckItem();
 		this.repeatAlternative.addSelectionListener(this.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
+
+		this.doubleBar = toolBar.createCheckItem();
+		this.doubleBar.addSelectionListener(this.createActionProcessor(TGDoubleBarAction.NAME));
 	}
 
 	public void updateSectionItems() {
@@ -59,6 +62,8 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		this.repeatClose.setChecked(measure != null && measure.getRepeatClose() > 0);
 		this.repeatAlternative.setEnabled( !running );
 		this.repeatAlternative.setChecked(measure != null && measure.getHeader().getRepeatAlternative() > 0);
+		this.doubleBar.setEnabled(!running);
+		this.doubleBar.setChecked(measure.isDoubleBar());
 	}
 
 	public void loadSectionProperties() {
@@ -67,6 +72,7 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		this.repeatOpen.setToolTipText(this.getText("repeat.open"));
 		this.repeatClose.setToolTipText(this.getText("repeat.close"));
 		this.repeatAlternative.setToolTipText(this.getText("repeat.alternative"));
+		this.doubleBar.setToolTipText(this.getText("composition.double-bar"));
 	}
 
 	public void loadSectionIcons() {
@@ -75,5 +81,6 @@ public class TGEditToolBarSectionComposition extends TGEditToolBarSection {
 		this.repeatOpen.setImage(this.getIconManager().getImageByName(TGIconManager.REPEAT_OPEN));
 		this.repeatClose.setImage(this.getIconManager().getImageByName(TGIconManager.REPEAT_CLOSE));
 		this.repeatAlternative.setImage(this.getIconManager().getImageByName(TGIconManager.REPEAT_ALTERNATIVE));
+		this.doubleBar.setImage(this.getIconManager().getImageByName(TGIconManager.DOUBLE_BAR));
 	}
 }

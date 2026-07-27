@@ -1,6 +1,7 @@
 package app.tuxguitar.editor.action.composition;
 
 import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.song.managers.TGSongManager;
@@ -25,6 +26,11 @@ public class TGRepeatCloseAction extends TGActionBase {
 		int repeatCount = ((Integer) context.getAttribute(ATTRIBUTE_REPEAT_COUNT)).intValue();
 		if( repeatCount >= 0 ){
 			songManager.changeCloseRepeat(song, measureHeader.getStart(), repeatCount);
+		}
+		// conflict with double bar?
+		if ((repeatCount > 0) && measureHeader.isDoubleBar()) {
+			TGActionManager actionManager = TGActionManager.getInstance(getContext());
+			actionManager.execute(TGDoubleBarAction.NAME, context);
 		}
 	}
 }

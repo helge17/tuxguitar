@@ -11,6 +11,7 @@ import app.tuxguitar.app.action.impl.insert.TGOpenRepeatAlternativeDialogAction;
 import app.tuxguitar.app.action.impl.insert.TGOpenRepeatCloseDialogAction;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
+import app.tuxguitar.editor.action.composition.TGDoubleBarAction;
 import app.tuxguitar.editor.action.composition.TGRepeatOpenAction;
 import app.tuxguitar.ui.menu.UIMenu;
 import app.tuxguitar.ui.menu.UIMenuActionItem;
@@ -26,6 +27,7 @@ public class CompositionMenuItem extends TGMenuItem {
 	private UIMenuActionItem repeatOpen;
 	private UIMenuActionItem repeatClose;
 	private UIMenuActionItem repeatAlternative;
+	private UIMenuActionItem doubleBar;
 	private UIMenuActionItem tripletFeel;
 	private UIMenuActionItem properties;
 
@@ -69,6 +71,10 @@ public class CompositionMenuItem extends TGMenuItem {
 		this.repeatAlternative = this.compositionMenuItem.getMenu().createActionItem();
 		this.repeatAlternative.addSelectionListener(this.createActionProcessor(TGOpenRepeatAlternativeDialogAction.NAME));
 
+		//--DOUBLE BAR--
+		this.doubleBar = this.compositionMenuItem.getMenu().createActionItem();
+		this.doubleBar.addSelectionListener(this.createActionProcessor(TGDoubleBarAction.NAME));
+
 		//--SEPARATOR--
 		this.compositionMenuItem.getMenu().createSeparator();
 
@@ -91,6 +97,7 @@ public class CompositionMenuItem extends TGMenuItem {
 		this.repeatOpen.setEnabled(!running);
 		this.repeatClose.setEnabled(!running);
 		this.repeatAlternative.setEnabled(!running);
+		this.doubleBar.setEnabled(!running);
 	}
 
 	public void loadProperties(){
@@ -103,6 +110,7 @@ public class CompositionMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.repeatOpen, "repeat.open", TGRepeatOpenAction.NAME);
 		setMenuItemTextAndAccelerator(this.repeatClose, "repeat.close", TGOpenRepeatCloseDialogAction.NAME);
 		setMenuItemTextAndAccelerator(this.repeatAlternative, "repeat.alternative", TGOpenRepeatAlternativeDialogAction.NAME);
+		setMenuItemTextAndAccelerator(this.doubleBar, "composition.double-bar", TGDoubleBarAction.NAME);
 		setMenuItemTextAndAccelerator(this.properties, "composition.properties", TGOpenSongInfoDialogAction.NAME);
 	}
 
@@ -115,6 +123,7 @@ public class CompositionMenuItem extends TGMenuItem {
 		this.repeatOpen.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REPEAT_OPEN));
 		this.repeatClose.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REPEAT_CLOSE));
 		this.repeatAlternative.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.REPEAT_ALTERNATIVE));
+		this.doubleBar.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.DOUBLE_BAR));
 		this.properties.setImage(TuxGuitar.getInstance().getIconManager().getImageByName(TGIconManager.SONG_PROPERTIES));
 	}
 }

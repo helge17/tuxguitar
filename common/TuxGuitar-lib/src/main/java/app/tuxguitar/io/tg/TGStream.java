@@ -83,6 +83,7 @@ public class TGStream {
 	protected static final String TAG_REPEAT_OPEN = "repeatOpen";
 	protected static final String TAG_REPEAT_CLOSE = "repeatClose";
 	protected static final String TAG_REPEAT_ALTERNATIVE = "repeatAlternative";
+	protected static final String TAG_DOUBLE_BAR = "doubleBar";
 	protected static final String TAG_ALTERNATIVE = "alternative";
 	protected static final String TAG_MARKER = "marker";
 	protected static final String TAG_COLOR_R = "R";

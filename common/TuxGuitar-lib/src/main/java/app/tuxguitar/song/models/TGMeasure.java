@@ -140,6 +140,10 @@ public abstract class TGMeasure {
 		return this.header.getRepeatClose();
 	}
 
+	public boolean isDoubleBar() {
+		return this.header.isDoubleBar();
+	}
+
 	public long getStart() {
 		return this.header.getStart();
 	}

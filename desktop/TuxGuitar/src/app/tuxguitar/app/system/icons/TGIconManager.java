@@ -71,6 +71,7 @@ public class TGIconManager {
 	public static final String REPEAT_OPEN ="openrepeat.png";
 	public static final String REPEAT_CLOSE ="closerepeat.png";
 	public static final String REPEAT_ALTERNATIVE ="repeat_alternative.png";
+	public static final String DOUBLE_BAR = "doubleBar.png";
 	public static final String SONG_PROPERTIES = "song_properties.png";
 	public static final String TRACK_FIRST = "track_first.png";
 	public static final String TRACK_LAST = "track_last.png";
@@ -328,6 +329,7 @@ public class TGIconManager {
 		loadIcon(REPEAT_OPEN);
 		loadIcon(REPEAT_CLOSE);
 		loadIcon(REPEAT_ALTERNATIVE);
+		loadIcon(DOUBLE_BAR);
 		loadIcon(SONG_PROPERTIES);
 		loadIcon(TRACK_FIRST);
 		loadIcon(TRACK_LAST);
