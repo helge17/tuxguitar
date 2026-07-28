@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Ireki errepikapena</string>
 	<string name="action_change_repeat_close">Itxi errepikapena</string>
 	<string name="action_change_repeat_alternative">Errepikapen Alternatiboa</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Propietateak</string>
 
 	<string name="action_track_first">Lehengoa</string>

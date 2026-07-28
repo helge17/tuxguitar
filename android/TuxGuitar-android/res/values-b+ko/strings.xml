@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">도돌이표 열기</string>
 	<string name="action_change_repeat_close">도돌이표 닫기</string>
 	<string name="action_change_repeat_alternative">선택 반복</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">속성</string>
 
 	<string name="action_track_first">첫 트랙</string>

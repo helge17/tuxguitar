@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Otvori ponavljanje</string>
 	<string name="action_change_repeat_close">Zatvori ponavljanje</string>
 	<string name="action_change_repeat_alternative">Alternativni završeci</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Osobine</string>
 
 	<string name="action_track_first">Prva staza</string>

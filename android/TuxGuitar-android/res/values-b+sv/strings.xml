@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Öppna repris</string>
 	<string name="action_change_repeat_close">Stäng repris</string>
 	<string name="action_change_repeat_alternative">Alternativa repriser</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Egenskaper</string>
 
 	<string name="action_track_first">Första spåret</string>

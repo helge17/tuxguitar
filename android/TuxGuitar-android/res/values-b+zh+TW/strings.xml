@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">開始反覆區段</string>
 	<string name="action_change_repeat_close">結束反覆區段</string>
 	<string name="action_change_repeat_alternative">任意的反覆</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">屬性</string>
 
 	<string name="action_track_first">第一軌</string>

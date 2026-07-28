@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Відкрити репризу</string>
 	<string name="action_change_repeat_close">Закрити репризу</string>
 	<string name="action_change_repeat_alternative">Альтернативні кінцівки</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Властивості</string>
 
 	<string name="action_track_first">Перша доріжка</string>

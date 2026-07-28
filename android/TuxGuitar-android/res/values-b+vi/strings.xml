@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Mở dấu lặp</string>
 	<string name="action_change_repeat_close">Đóng dấu lặp</string>
 	<string name="action_change_repeat_alternative">Lặp khác đi</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Thuộc tính</string>
 
 	<string name="action_track_first">Dải đầu</string>

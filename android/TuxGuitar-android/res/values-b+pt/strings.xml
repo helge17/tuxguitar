@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Abrir Repetição</string>
 	<string name="action_change_repeat_close">Fechar Repetição</string>
 	<string name="action_change_repeat_alternative">Repetição Alternativa</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Propriedades</string>
 
 	<string name="action_track_first">Primeira Faixa</string>

@@ -73,13 +73,14 @@
 	<string name="action_go_right">Cursore destara</string>
 
 	<string name="action_change_tempo">Modifica velocità tempo</string>
-	<string name="action_change_clef">Cambia chiave</string>
+	<string name="action_change_clef">Cambia chiave musicale</string>
 	<string name="action_change_key_signature">Cambia tonalità</string>
 	<string name="action_change_time_signature">Modifica tempo</string>
 	<string name="action_change_triplet_feel">Modifica terzina</string>
 	<string name="action_change_repeat_open">Ripeti apri</string>
 	<string name="action_change_repeat_close">Ripeti chiudi</string>
 	<string name="action_change_repeat_alternative">Ripeti alternative</string>
+	<string name="action_change_double_bar">Doppia stanghetta</string>
 	<string name="action_change_properties">Proprietà</string>
 
 	<string name="action_track_first">Prima traccia</string>
@@ -266,16 +267,16 @@
 	<string name="tempo_dlg_options_apply_to_next_marker">Applica questo Tempo fino al prossimo indicatore Tempo</string>
 
 	<!-- Clef dialog -->
-	<string name="clef_dlg_title">Cambia chiave</string>
-	<string name="clef_dlg_clef_label">Chiave:</string>
-	<string name="clef_dlg_clef_value_treble_8">Chiave di sol</string>
-	<string name="clef_dlg_clef_value_bass_8">Chiave di basso</string>
-	<string name="clef_dlg_clef_value_tenor_8">Chiave di tenore</string>
-	<string name="clef_dlg_clef_value_alto_8">Chiave di contralto</string>
-	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
-	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
-	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
-	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
+	<string name="clef_dlg_title">Cambia chiave musicale</string>
+	<string name="clef_dlg_clef_label">Chiave musicale:</string>
+	<string name="clef_dlg_clef_value_treble_8">Chiave di Sol un\&apos;ottava sotto (chitarra)</string>
+	<string name="clef_dlg_clef_value_bass_8">Chiave di basso un\&apos;ottava sotto (chitarra)</string>
+	<string name="clef_dlg_clef_value_tenor_8">Chiave di tenore un\&apos;ottava sotto</string>
+	<string name="clef_dlg_clef_value_alto_8">Chiave di contralto un\&apos;ottava sotto</string>
+	<string name="clef_dlg_clef_value_treble_standard">Chiave di Sol (standard)</string>
+	<string name="clef_dlg_clef_value_bass_standard">Chiave di basso (standard)</string>
+	<string name="clef_dlg_clef_value_tenor_standard">Chiave di tenore (standard)</string>
+	<string name="clef_dlg_clef_value_alto_standard">Chiave di contralto (standard)</string>
 	<string name="clef_dlg_options_apply_to_end">Applica questa chiave fino alla fine</string>
 
 	<!-- Key Signature dialog -->

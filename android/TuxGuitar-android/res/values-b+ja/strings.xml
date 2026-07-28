@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">リピート開始</string>
 	<string name="action_change_repeat_close">リピート終了</string>
 	<string name="action_change_repeat_alternative">カッコ</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">トラックのプロパティ</string>
 
 	<string name="action_track_first">先頭トラック</string>

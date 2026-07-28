@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Kertauksen aloitusmerkki</string>
 	<string name="action_change_repeat_close">Kertauksen lopetusmerkki</string>
 	<string name="action_change_repeat_alternative">Kertauksen vaihtoeht. maalit</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Ominaisuudet</string>
 
 	<string name="action_track_first">Ensimmäinen raita</string>

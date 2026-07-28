@@ -74,7 +74,7 @@
 	<string name="action_change_repeat_open">Open Repeat</string>
 	<string name="action_change_repeat_close">Close Repeat</string>
 	<string name="action_change_repeat_alternative">Alternative Repeats</string>
-	<string name="action_change_double_bar">Double Bar Line</string>
+	<string name="action_change_double_bar">Double bar line</string>
 	<string name="action_change_properties">Properties</string>
 
 	<string name="action_track_first">First Track</string>

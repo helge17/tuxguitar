@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Άνοιγμα Επανάληψης</string>
 	<string name="action_change_repeat_close">Κλείσιμο Επανάληψης</string>
 	<string name="action_change_repeat_alternative">Επαναλήψεις με εναλλαγές</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Ιδιότητες</string>
 
 	<string name="action_track_first">Πρώτο Κομμάτι</string>

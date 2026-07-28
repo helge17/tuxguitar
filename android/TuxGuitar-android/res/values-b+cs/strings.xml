@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Začátek repetice</string>
 	<string name="action_change_repeat_close">Konec repetice</string>
 	<!-- <string name="action_change_repeat_alternative"></string> -->
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Vlastnosti</string>
 
 	<string name="action_track_first">První stopa</string>

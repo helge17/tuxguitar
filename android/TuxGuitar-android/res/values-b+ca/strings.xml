@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Obre repetició</string>
 	<string name="action_change_repeat_close">Tanca repetició</string>
 	<string name="action_change_repeat_alternative">Repetició alternativa</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Propietats</string>
 
 	<string name="action_track_first">Primera</string>

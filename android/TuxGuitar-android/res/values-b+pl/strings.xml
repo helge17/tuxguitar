@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Początek repetycji</string>
 	<string name="action_change_repeat_close">Koniec repetycji</string>
 	<string name="action_change_repeat_alternative">Volta (alternatywna repetycja)</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Właściwości</string>
 
 	<string name="action_track_first">Pierwsza ścieżka</string>

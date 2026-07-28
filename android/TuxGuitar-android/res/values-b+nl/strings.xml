@@ -80,6 +80,7 @@
 	<!-- <string name="action_change_repeat_open"></string> -->
 	<string name="action_change_repeat_close">Sluit Repeat</string>
 	<string name="action_change_repeat_alternative">Alternatieve Repeats</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Eigenschappen</string>
 
 	<string name="action_track_first">Eerste Track</string>

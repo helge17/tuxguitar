@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">Kartojimo pradžia</string>
 	<string name="action_change_repeat_close">Kartojimo pabaiga</string>
 	<string name="action_change_repeat_alternative">Alternatyvūs kartojimai</string>
+	<!-- <string name="action_change_double_bar"></string> -->
 	<string name="action_change_properties">Takelių nuostatos</string>
 
 	<string name="action_track_first">Pirmas takelis</string>

@@ -80,6 +80,7 @@
 	<string name="action_change_repeat_open">反复开始</string>
 	<string name="action_change_repeat_close">反复结束</string>
 	<string name="action_change_repeat_alternative">反复跳跃</string>
+	<string name="action_change_double_bar">段落线</string>
 	<string name="action_change_properties">属性</string>
 
 	<string name="action_track_first">第一声部</string>
