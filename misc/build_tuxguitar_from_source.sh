@@ -252,32 +252,32 @@ function release_checks_before_prepare_source {
 
 function prepare_source {
 
-if [ -e .build-version ]; then
-  OLDVERSION=`cat .build-version`
-  if [ "$TGVERSION" == "$OLDVERSION" ]; then
-    echo -e "\n# Skipping hacks, sources are already prepared to build version $TGVERSION.\n"
-    return
-  else
-    echo -e "\n# Build version was already set to $OLDVERSION in a previous run of `basename $0`."
-    echo "# Please confirm that you want to build version $OLDVERSION with the option '-r $OLDVERSION'."
-    abort_build
+  if [ -e .build-version ]; then
+    OLDVERSION=`cat .build-version`
+    if [ "$TGVERSION" == "$OLDVERSION" ]; then
+      echo -e "\n# Skipping hacks, sources are already prepared to build version $TGVERSION.\n"
+      return
+    else
+      echo -e "\n# Build version was already set to $OLDVERSION in a previous run of `basename $0`."
+      echo "# Please confirm that you want to build version $OLDVERSION with the option '-r $OLDVERSION'."
+      abort_build
+    fi
   fi
-fi
 
-echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
+  echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
 
-echo -en "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ... "
-find . \( -name "*.xml" -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
-echo -n "in \"Help - About\" dialog ... "
-sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
-echo -n "for Android ... "
-sed -i -e "s/versionName \".*\"/versionName \"$TGVERSION\"/" android/build-scripts/tuxguitar-android/apk/build.gradle
-echo "OK."
+  echo -en "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ... "
+  find . \( -name "*.xml" -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
+  echo -n "in \"Help - About\" dialog ... "
+  sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
+  echo -n "for Android ... "
+  sed -i -e "s/versionName \".*\"/versionName \"$TGVERSION\"/" android/build-scripts/tuxguitar-android/apk/build.gradle
+  echo "OK."
 
-echo $TGVERSION > .build-version
+  echo $TGVERSION > .build-version
 
-echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
-echo
+  echo -e "\n### Host: "`hostname -s`" ########### Hacks done."
+  echo
 
 }
 
@@ -296,298 +296,298 @@ function release_checks_after_prepare_source {
 
 function install_eclipse_swt {
 
-SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}-$SWT_VERSION.jar
+  SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}-$SWT_VERSION.jar
 
-if [ "$SWT_PLATFORM" = 'gtk-linux' ] || [ "$SWT_PLATFORM" = 'cocoa-macosx' ] || [ "$SWT_PLATFORM" = 'win32-win32' ]; then
+  if [ "$SWT_PLATFORM" = 'gtk-linux' ] || [ "$SWT_PLATFORM" = 'cocoa-macosx' ] || [ "$SWT_PLATFORM" = 'win32-win32' ]; then
 
-  if [ -e $SWT_DEST ]; then
-    echo "# $SWT_DEST is already installed."
-    return
+    if [ -e $SWT_DEST ]; then
+      echo "# $SWT_DEST is already installed."
+      return
+    fi
+
+    # I could not find any repo for current SWT versions, so SWT must be installed manually.
+    # See https://github.com/pcarmona79/tuxguitar/issues/1
+    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
+    SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
+    SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
+
+    if [ ! -e $SWT_JARF ]; then
+      [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
+      rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
+    fi
+
+  elif [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
+
+    # On FreeBSD we use SWT from the OS
+    SWT_JARF=/usr/local/share/java/classes/swt.jar
+
+    # Delete and reinstall, so that always the newest version from the OS is used
+    rm -f $SWT_DEST
+
   fi
 
-  # I could not find any repo for current SWT versions, so SWT must be installed manually.
-  # See https://github.com/pcarmona79/tuxguitar/issues/1
-  SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
-  SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
-  SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
-
-  if [ ! -e $SWT_JARF ]; then
-    [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
-    rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
-  fi
-
-elif [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
-
-  # On FreeBSD we use SWT from the OS
-  SWT_JARF=/usr/local/share/java/classes/swt.jar
-
-  # Delete and reinstall, so that always the newest version from the OS is used
-  rm -f $SWT_DEST
-
-fi
-
-echo "# Installing $SWT_DEST from $SWT_JARF ..."
-mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.} -Dpackaging=jar -Dversion=$SWT_VERSION
-echo "# OK."
+  echo "# Installing $SWT_DEST from $SWT_JARF ..."
+  mvn install:install-file -Dfile=$SWT_JARF -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.${SWT_PLATFORM//-/.} -Dpackaging=jar -Dversion=$SWT_VERSION
+  echo "# OK."
 
 }
 
 function install_openjfx_bsd {
 
-# On FreeBSD we use JFX from the OS
-JFX_DIR=$SW_DIR/OpenJFX
+  # On FreeBSD we use JFX from the OS
+  JFX_DIR=$SW_DIR/OpenJFX
 
-for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
+  for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
 
-  JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION-freebsd.jar
-  JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
+    JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION-freebsd.jar
+    JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
 
-  mkdir -p $JFX_DIR
-  if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
-    wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
-    sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
-  fi
+    mkdir -p $JFX_DIR
+    if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
+      wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
+      sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
+    fi
 
-  # Delete and reinstall, so that always the newest version from the OS is used
-  rm -f $JFX_DEST
+    # Delete and reinstall, so that always the newest version from the OS is used
+    rm -f $JFX_DEST
 
-  echo "# Installing $JFX_DEST from $JFX_JARF ..."
-  mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VERSION.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VERSION -Dclassifier=freebsd
-  echo "# OK."
+    echo "# Installing $JFX_DEST from $JFX_JARF ..."
+    mvn install:install-file -Dfile=$JFX_JARF -DpomFile=$JFX_DIR/$JFX_PKG-$JFX_VERSION.pom -DartifactId=$JFX_PKG -DgroupId=org.openjfx -Dpackaging=jar -Dversion=$JFX_VERSION -Dclassifier=freebsd
+    echo "# OK."
 
-done
+  done
 
 }
 
 function get_java_win {
 
-if [ -e $SW_DIR/$PA_JAVA ]; then
-  echo -e "\n# Using Java for Windows in $SW_DIR/$PA_JAVA.\n"
-else
-  echo -e "\n# Getting Java for Windows $PA_JAVA.exe from $PA_LINK ...\n"
-  [ ! -e $SW_DIR/$PA_JAVA.exe ] && wget $PA_LINK -O $SW_DIR/$PA_JAVA.exe
-  rm -rf $SW_DIR/$PA_JAVA && mkdir $SW_DIR/$PA_JAVA && ( cd $SW_DIR/$PA_JAVA && 7z x -xr'!_DO NOT store your files here or in subfolders.txt' -xr'!$PLUGINSDIR' ../$PA_JAVA.exe )
-  echo -e "\n# OK."
-fi
+  if [ -e $SW_DIR/$PA_JAVA ]; then
+    echo -e "\n# Using Java for Windows in $SW_DIR/$PA_JAVA.\n"
+  else
+    echo -e "\n# Getting Java for Windows $PA_JAVA.exe from $PA_LINK ...\n"
+    [ ! -e $SW_DIR/$PA_JAVA.exe ] && wget $PA_LINK -O $SW_DIR/$PA_JAVA.exe
+    rm -rf $SW_DIR/$PA_JAVA && mkdir $SW_DIR/$PA_JAVA && ( cd $SW_DIR/$PA_JAVA && 7z x -xr'!_DO NOT store your files here or in subfolders.txt' -xr'!$PLUGINSDIR' ../$PA_JAVA.exe )
+    echo -e "\n# OK."
+  fi
 
 }
 
 function build_tg_for_linux {
 
-BUILD_ARCH=`uname -m`
-DPKG_ARCH=`dpkg --print-architecture`
+  BUILD_ARCH=`uname -m`
+  DPKG_ARCH=`dpkg --print-architecture`
 
-install_eclipse_swt
+  install_eclipse_swt
 
-# --batch-mode:      Disables output color to avoid problems when you redirect the output to a file
-# -e clean verify:   Avoids problems when trying to build for Linux after having built for Windows
-# -P native-modules: Build with native modules
+  # --batch-mode:      Disables output color to avoid problems when you redirect the output to a file
+  # -e clean verify:   Avoids problems when trying to build for Linux after having built for Windows
+  # -P native-modules: Build with native modules
 
-for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $DPKG_ARCH TAR.GZ & DEB & RPM package ...\n"
+  for GUI_TK in swt jfx; do
+    echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $DPKG_ARCH TAR.GZ & DEB & RPM package ...\n"
 
-  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-deb
-  mvn --batch-mode -e clean verify -P native-modules
+    cd desktop/build-scripts/tuxguitar-linux-$GUI_TK-deb
+    mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK
+    TARGET=tuxguitar-$TGVERSION-linux-$GUI_TK
 
-  cp -a target/$TARGET.deb $DIST_DIR/$TARGET-$DPKG_ARCH.deb
-  cd - > /dev/null
+    cp -a target/$TARGET.deb $DIST_DIR/$TARGET-$DPKG_ARCH.deb
+    cd - > /dev/null
 
-  cd desktop/build-scripts/tuxguitar-linux-$GUI_TK
-  rm -rf target/$TARGET-$DPKG_ARCH && mv -i target/$TARGET target/$TARGET-$DPKG_ARCH
-  tar --owner=root --group=root --directory=target -czf $DIST_DIR/$TARGET-$DPKG_ARCH.tar.gz $TARGET-$DPKG_ARCH
-  cd - > /dev/null
+    cd desktop/build-scripts/tuxguitar-linux-$GUI_TK
+    rm -rf target/$TARGET-$DPKG_ARCH && mv -i target/$TARGET target/$TARGET-$DPKG_ARCH
+    tar --owner=root --group=root --directory=target -czf $DIST_DIR/$TARGET-$DPKG_ARCH.tar.gz $TARGET-$DPKG_ARCH
+    cd - > /dev/null
 
-  # Create RPM from DEB
-  cd $DIST_DIR
-  fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET-$DPKG_ARCH.deb
-  cd - > /dev/null
+    # Create RPM from DEB
+    cd $DIST_DIR
+    fakeroot alien --verbose --keep-version --scripts --to-rpm $TARGET-$DPKG_ARCH.deb
+    cd - > /dev/null
 
-  echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $DPKG_ARCH TAR.GZ & DEB & RPM package done.\n"
-done
+    echo -e "\n### Host: "`hostname -s`" ########### Building Linux $GUI_TK $DPKG_ARCH TAR.GZ & DEB & RPM package done.\n"
+  done
 
 }
 
 function build_tg_on_linux_for_windows {
 
-BUILD_ARCH=`uname -m`
+  BUILD_ARCH=`uname -m`
 
-# To build the installer package you must install the VMware InstallBuilder for Linux from https://installbuilder.com/ and link the binary /opt/installbuilder-<version>/bin/builder to /usr/local/bin/builder
-# E.g. download and start installbuilder-enterprise-21.9.0-linux-x64-installer.run, then link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
+  # To build the installer package you must install the VMware InstallBuilder for Linux from https://installbuilder.com/ and link the binary /opt/installbuilder-<version>/bin/builder to /usr/local/bin/builder
+  # E.g. download and start installbuilder-enterprise-21.9.0-linux-x64-installer.run, then link with "sudo ln -s /opt/installbuilder-21.9.0/bin/builder /usr/local/bin/"
 
-# Create selfsigned Windows code signing certificate:
-#   cd ~/Software/TuxGuitar/
-#   openssl genrsa -out github_helge17_win-sign.key 4096
-#   openssl req -new -subj '/CN=helge17/' -x509 -days 36500 -key github_helge17_win-sign.key -out github_helge17_win-sign.crt
-#   pwgen 12 1 > github_helge17_win-sign.p12pass
-#   openssl pkcs12 -export -out github_helge17_win-sign.p12 -passout file:github_helge17_win-sign.p12pass -inkey github_helge17_win-sign.key -in github_helge17_win-sign.crt
-# Show content of the certificate and the pkcs12 container
-#   openssl x509 -in github_helge17_win-sign.crt -noout -text
-#   openssl pkcs12 -in github_helge17_win-sign.p12 -passin file:github_helge17_win-sign.p12pass -passout 'pass:DummyPass'
+  # Create selfsigned Windows code signing certificate:
+  #   cd ~/Software/TuxGuitar/
+  #   openssl genrsa -out github_helge17_win-sign.key 4096
+  #   openssl req -new -subj '/CN=helge17/' -x509 -days 36500 -key github_helge17_win-sign.key -out github_helge17_win-sign.crt
+  #   pwgen 12 1 > github_helge17_win-sign.p12pass
+  #   openssl pkcs12 -export -out github_helge17_win-sign.p12 -passout file:github_helge17_win-sign.p12pass -inkey github_helge17_win-sign.key -in github_helge17_win-sign.crt
+  # Show content of the certificate and the pkcs12 container
+  #   openssl x509 -in github_helge17_win-sign.crt -noout -text
+  #   openssl pkcs12 -in github_helge17_win-sign.p12 -passin file:github_helge17_win-sign.p12pass -passout 'pass:DummyPass'
 
-# Set certificate for InstallBuilder
-export WIN_SIGN_P12_FILE=~/Software/TuxGuitar/github_helge17_win-sign.p12
-export WIN_SIGN_P12_PASS=`cat ~/Software/TuxGuitar/github_helge17_win-sign.p12pass`
+  # Set certificate for InstallBuilder
+  export WIN_SIGN_P12_FILE=~/Software/TuxGuitar/github_helge17_win-sign.p12
+  export WIN_SIGN_P12_PASS=`cat ~/Software/TuxGuitar/github_helge17_win-sign.p12pass`
 
-install_eclipse_swt
-get_java_win
+  install_eclipse_swt
+  get_java_win
 
-# Copy Java to get it integrated in the ZIP & INSTALL packages
-rm -rf desktop/build-scripts/common-resources/common-windows/jre
-cp -ai $SW_DIR/$PA_JAVA desktop/build-scripts/common-resources/common-windows/jre
+  # Copy Java to get it integrated in the ZIP & INSTALL packages
+  rm -rf desktop/build-scripts/common-resources/common-windows/jre
+  cp -ai $SW_DIR/$PA_JAVA desktop/build-scripts/common-resources/common-windows/jre
 
-for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ...\n"
+  for GUI_TK in swt jfx; do
+    echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL (including Java) ...\n"
 
-  cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
-  # As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
-  mvn --batch-mode -e clean verify -P native-modules -P -platform-linux -P platform-windows
+    cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH-installer
+    # As we are building the Windows version on Linux, we explicitly deactivate the Linux profile and select the Windows profile manually to avoid confusion.
+    mvn --batch-mode -e clean verify -P native-modules -P -platform-linux -P platform-windows
 
-  TARGET=tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH
+    TARGET=tuxguitar-$TGVERSION-windows-$GUI_TK-$BUILD_ARCH
 
-  cp -a target/$TARGET-installer.exe $DIST_DIR
-  cd - > /dev/null
+    cp -a target/$TARGET-installer.exe $DIST_DIR
+    cd - > /dev/null
 
-  (
-    cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH/target
-    zip -r $DIST_DIR/$TARGET.zip $TARGET
-  )
+    (
+      cd desktop/build-scripts/tuxguitar-windows-$GUI_TK-$BUILD_ARCH/target
+      zip -r $DIST_DIR/$TARGET.zip $TARGET
+    )
 
-  echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL done.\n"
-done
+    echo -e "\n### Host: "`hostname -s`" ########### Building Windows $GUI_TK $BUILD_ARCH ZIP & INSTALL done.\n"
+  done
 
 }
 
 function start_remote_bsd_build {
 
-BUILD_HOST=$USER@172.16.208.131
+  BUILD_HOST=$USER@172.16.208.131
 
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ on $BUILD_HOST ..."
-SRC_PATH=/home/$USER/tg-build-bsd
-echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
-ssh $BUILD_HOST mkdir -p $SRC_PATH
-rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
-echo "# OK."
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ done."
+  echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ on $BUILD_HOST ..."
+  SRC_PATH=/home/$USER/tg-build-bsd
+  echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
+  ssh $BUILD_HOST mkdir -p $SRC_PATH
+  rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
+  echo "# OK."
+  echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for BSD TAR.GZ done."
 
-ssh $BUILD_HOST "cd $SRC_PATH && misc/$SCRIPT -b -r $TGVERSION"
-scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-*.tar.gz $DIST_DIR
+  ssh $BUILD_HOST "cd $SRC_PATH && misc/$SCRIPT -b -r $TGVERSION"
+  scp -p $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-freebsd-*-*.tar.gz $DIST_DIR
 
 }
 
 function build_tg_for_bsd {
 
-BUILD_ARCH=`uname -m`
+  BUILD_ARCH=`uname -m`
 
-install_eclipse_swt
-install_openjfx_bsd
+  install_eclipse_swt
+  install_openjfx_bsd
 
-for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ...\n"
+  for GUI_TK in swt jfx; do
+    echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ ...\n"
 
-  cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK
-  mvn --batch-mode -e clean verify -P native-modules
+    cd desktop/build-scripts/tuxguitar-freebsd-$GUI_TK
+    mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK
+    TARGET=tuxguitar-$TGVERSION-freebsd-$GUI_TK
 
-  rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
-  cd - > /dev/null
+    rm -rf target/$TARGET-$BUILD_ARCH && mv -i target/$TARGET target/$TARGET-$BUILD_ARCH
+    tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.tar.gz $TARGET-$BUILD_ARCH
+    cd - > /dev/null
 
-  echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
-done
+    echo -e "\n### Host: "`hostname -s`" ########### Building BSD $GUI_TK $BUILD_ARCH TAR.GZ done.\n"
+  done
 
 }
 
 function start_remote_macos_build {
 
-# 172.16.208.132: macOS 11 x86_64 (Big Sur)
-# 172.16.208.133: macOS 14 x86_64 (Sonoma)
-BUILD_HOST=$USER@172.16.208.133
+  # 172.16.208.132: macOS 11 x86_64 (Big Sur)
+  # 172.16.208.133: macOS 14 x86_64 (Sonoma)
+  BUILD_HOST=$USER@172.16.208.133
 
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP on $BUILD_HOST ..."
-SRC_PATH=/Users/$USER/tg-build-macos
-echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
-ssh $BUILD_HOST mkdir -p $SRC_PATH
-rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
-echo "# OK."
-echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP done."
+  echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP on $BUILD_HOST ..."
+  SRC_PATH=/Users/$USER/tg-build-macos
+  echo -e "\n# Copy sources to $BUILD_HOST:$SRC_PATH/ ..."
+  ssh $BUILD_HOST mkdir -p $SRC_PATH
+  rsync --verbose --archive --delete --exclude=00-Binary_Packages/* --delete-excluded `pwd`/ $BUILD_HOST:$SRC_PATH/
+  echo "# OK."
+  echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP done."
 
-ssh $BUILD_HOST "cd $SRC_PATH && misc/$SCRIPT -m -r $TGVERSION"
-# On my macOS 14 VM, the outgoing transfer rate via scp is terribly slow.
-# Without -X options:                 ~ 15KB/s  (always!!!)
-# With -X nrequests=1 -X buffer=2048: ~ 250KB/s (bridged -> WLAN -> Linux system), 5MB/s (NAT -> local VMware host)
-# The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the macOS system or on the target system.
-# Incoming transfers via scp are OK, outgoing transfers via https are also OK.
-# Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed duplex and speed settings, ...) did not help.
-# macOS 11 is fine and the -X options do not harm.
-scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-*.app.tar.gz $DIST_DIR
+  ssh $BUILD_HOST "cd $SRC_PATH && misc/$SCRIPT -m -r $TGVERSION"
+  # On my macOS 14 VM, the outgoing transfer rate via scp is terribly slow.
+  # Without -X options:                 ~ 15KB/s  (always!!!)
+  # With -X nrequests=1 -X buffer=2048: ~ 250KB/s (bridged -> WLAN -> Linux system), 5MB/s (NAT -> local VMware host)
+  # The problem only exists in the outgoing direction and only for scp, but regardless of whether scp was started on the macOS system or on the target system.
+  # Incoming transfers via scp are OK, outgoing transfers via https are also OK.
+  # Experimenting with the MTU size or other parameters of the network interfaces (NAT, bridged, fixed duplex and speed settings, ...) did not help.
+  # macOS 11 is fine and the -X options do not harm.
+  scp -p -X nrequests=1 -X buffer=2048 $BUILD_HOST:$SRC_PATH/00-Binary_Packages/tuxguitar-$TGVERSION-macosx-*-cocoa-*.app.tar.gz $DIST_DIR
 
 }
 
 function build_tg_for_macos {
 
-BUILD_ARCH=`uname -m | sed 's/arm64/aarch64/'`
+  BUILD_ARCH=`uname -m | sed 's/arm64/aarch64/'`
 
-install_eclipse_swt
+  install_eclipse_swt
 
-for GUI_TK in swt jfx; do
-  echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP ...\n"
+  for GUI_TK in swt jfx; do
+    echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP ...\n"
 
-  cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
-  mvn --batch-mode -e clean verify -P native-modules
+    cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
+    mvn --batch-mode -e clean verify -P native-modules
 
-  TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
+    TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
 
-  # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
-  # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
-  BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
-  if [ ! -x "$BREW_JAVA_HOME/bin/jlink" ]; then
-    echo -e "\nError: jlink not found at $BREW_JAVA_HOME/bin/jlink. Please install OpenJDK with \"brew install openjdk\"."
-    abort_build
-  fi
-  # jdk.unsupported is required for the MarlinFX renderer from JFX
-  $BREW_JAVA_HOME/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
+    # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
+    # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
+    BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
+    if [ ! -x "$BREW_JAVA_HOME/bin/jlink" ]; then
+      echo -e "\nError: jlink not found at $BREW_JAVA_HOME/bin/jlink. Please install OpenJDK with \"brew install openjdk\"."
+      abort_build
+    fi
+    # jdk.unsupported is required for the MarlinFX renderer from JFX
+    $BREW_JAVA_HOME/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
 
-  rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
-  tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
-  cd - > /dev/null
+    rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
+    tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
+    cd - > /dev/null
 
-  echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP done.\n"
-done
+    echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP done.\n"
+  done
 
 }
 
 function build_tg_for_android {
 
-# Install Android Studio from https://developer.android.com/studio/
-# Android Studio    downloaded to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux.tar.gz    & unpacked to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux/
-# Android SDK Tools downloaded to $SW_DIR/android-studio/commandlinetools-linux-11076708_latest.zip & unpacked to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux/cmdline-tools/latest/
-# Initial setup:
-#   export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2024.2.1.12-linux
-#   cd $ANDROID_HOME/bin && ./studio
-# Agree to all licenses:
-#   yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-# Create signature key:
-#   cd ~/Software/TuxGuitar/
-#   pwgen 12 1 > github_helge17_apk-sign.storepass
-#   $ANDROID_HOME/jre/bin/keytool -genkeypair -keyalg RSA -dname 'CN=helge17' -v -keystore github_helge17_apk-sign.keystore -storepass:file github_helge17_apk-sign.storepass -validity 36500 -alias tuguitar
+  # Install Android Studio from https://developer.android.com/studio/
+  # Android Studio    downloaded to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux.tar.gz    & unpacked to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux/
+  # Android SDK Tools downloaded to $SW_DIR/android-studio/commandlinetools-linux-11076708_latest.zip & unpacked to $SW_DIR/android-studio/android-studio-2024.2.1.12-linux/cmdline-tools/latest/
+  # Initial setup:
+  #   export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2024.2.1.12-linux
+  #   cd $ANDROID_HOME/bin && ./studio
+  # Agree to all licenses:
+  #   yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+  # Create signature key:
+  #   cd ~/Software/TuxGuitar/
+  #   pwgen 12 1 > github_helge17_apk-sign.storepass
+  #   $ANDROID_HOME/jre/bin/keytool -genkeypair -keyalg RSA -dname 'CN=helge17' -v -keystore github_helge17_apk-sign.keystore -storepass:file github_helge17_apk-sign.storepass -validity 36500 -alias tuguitar
 
-echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
-cd android/build-scripts/tuxguitar-android
-export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2024.2.1.12-linux
-echo -e "\n# Executing gradlew:"
-./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
-echo -e "\n# Executing gradlew assembleRelease:"
-./gradlew assembleRelease  # Build the APK
-cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
-cd $DIST_DIR
-cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
-$ANDROID_HOME/build-tools/30.0.3/apksigner sign --ks-key-alias tuguitar --ks $HOME/Software/TuxGuitar/github_helge17_apk-sign.keystore --ks-pass file:$HOME/Software/TuxGuitar/github_helge17_apk-sign.storepass tuxguitar-android-$TGVERSION-release-signed.apk
-# Install apk on a phone connected via USB
-#$ANDROID_HOME/platform-tools/adb install tuxguitar-android-$TGVERSION-release-signed.apk
-echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
+  echo -e "\n### Host: "`hostname -s`" ########### Building Android APK ...\n"
+  cd android/build-scripts/tuxguitar-android
+  export ANDROID_HOME=$SW_DIR/android-studio/android-studio-2024.2.1.12-linux
+  echo -e "\n# Executing gradlew:"
+  ./gradlew                  # Install the required Gradle version and other stuff into the .gradle/ directory
+  echo -e "\n# Executing gradlew assembleRelease:"
+  ./gradlew assembleRelease  # Build the APK
+  cp -a apk/build/outputs/apk/release/tuxguitar-android-$TGVERSION-release-unsigned.apk $DIST_DIR
+  cd $DIST_DIR
+  cp -a tuxguitar-android-$TGVERSION-release-unsigned.apk tuxguitar-android-$TGVERSION-release-signed.apk
+  $ANDROID_HOME/build-tools/30.0.3/apksigner sign --ks-key-alias tuguitar --ks $HOME/Software/TuxGuitar/github_helge17_apk-sign.keystore --ks-pass file:$HOME/Software/TuxGuitar/github_helge17_apk-sign.storepass tuxguitar-android-$TGVERSION-release-signed.apk
+  # Install apk on a phone connected via USB
+  #$ANDROID_HOME/platform-tools/adb install tuxguitar-android-$TGVERSION-release-signed.apk
+  echo -e "\n### Host: "`hostname -s`" ########### Building Android APK done.\n"
 
 }
 
