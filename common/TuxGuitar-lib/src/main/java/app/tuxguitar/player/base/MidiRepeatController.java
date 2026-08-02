@@ -101,7 +101,7 @@ public class MidiRepeatController {
 
 			//si hay una repeticion la hago
 			// repeat close (ignored if it's the last measure in loop)
-			if (this.repeatOpen && (header.getRepeatClose() > 0) && (this.eHeader < 0 || header.getNumber() < this.eHeader)) {
+			if (this.repeatOpen && (header.getRepeatClose() > 0)) {
 				if (this.repeatNumber < header.getRepeatClose() || (this.repeatAlternative > 0)) {
 					this.repeatEnd = header.getStart() + header.getLength();
 					this.repeatMove += this.repeatEnd - this.repeatStart;

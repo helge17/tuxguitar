@@ -36,15 +36,15 @@ public class TestRepeatController {
 	@Test
 	public void testLoop123() {
 		checkSequence(new MidiRepeatController(this.song, 1, 3),
-				new int[] {1,2,3},
-				new int[] {0,0,0});
+				new int[] {1,2,3, 1},
+				new int[] {0,0,0, 3});
 	}
 
 	@Test
 	public void testLooPAltRepeat2_3() {
 		checkSequence(new MidiRepeatController(this.song, 4, 5),
-				new int[] {4,5},
-				new int[] {0,0});
+				new int[] {4,5, 4,5},
+				new int[] {0,0, 2,2});
 	}
 
 	@Test
