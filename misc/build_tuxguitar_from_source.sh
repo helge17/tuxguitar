@@ -64,6 +64,7 @@ function usage {
   echo "# -m, -b: When started on Linux, the script connects to a remote macOS/FreeBSD system to"
   echo "#         build TuxGuitar. When started on macOS/FreeBSD, TuxGuitar is built on the local"
   echo "#         system."
+  echo "#         If started on an Intel Mac, the script also creates ARM packages."
   echo "#"
   echo "# -A: Same as -lwamb"
   echo "#"
@@ -294,6 +295,21 @@ function release_checks_after_prepare_source {
 
 }
 
+function download_eclipse_swt {
+
+  # I could not find any repo for current SWT versions, so SWT must be installed manually.
+  # See https://github.com/pcarmona79/tuxguitar/issues/1
+  SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$1
+  SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
+  SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
+
+  if [ ! -e $SWT_JARF ]; then
+    [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
+    rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
+  fi
+
+}
+
 function install_eclipse_swt {
 
   SWT_DEST=~/.m2/repository/org/eclipse/swt/org.eclipse.swt.${SWT_PLATFORM//-/.}/$SWT_VERSION/org.eclipse.swt.${SWT_PLATFORM//-/.}-$SWT_VERSION.jar
@@ -305,16 +321,7 @@ function install_eclipse_swt {
       return
     fi
 
-    # I could not find any repo for current SWT versions, so SWT must be installed manually.
-    # See https://github.com/pcarmona79/tuxguitar/issues/1
-    SWT_NAME=swt-$SWT_VERSION-$SWT_PLATFORM-$BUILD_ARCH
-    SWT_LINK=https://archive.eclipse.org/eclipse/downloads/drops4/R-$SWT_VERSION-$SWT_DATE/$SWT_NAME.zip
-    SWT_JARF=$SW_DIR/$SWT_NAME/swt.jar
-
-    if [ ! -e $SWT_JARF ]; then
-      [ ! -e $SW_DIR/$SWT_NAME.zip ] && wget $SWT_LINK -O $SW_DIR/$SWT_NAME.zip
-      rm -rf $SW_DIR/$SWT_NAME && mkdir $SW_DIR/$SWT_NAME && unzip $SW_DIR/$SWT_NAME.zip -d $SW_DIR/$SWT_NAME
-    fi
+    download_eclipse_swt $BUILD_ARCH
 
   elif [ "$SWT_PLATFORM" = 'gtk-freebsd' ]; then
 
@@ -332,17 +339,25 @@ function install_eclipse_swt {
 
 }
 
+function replace_swt_intel_arm_macos {
+  download_eclipse_swt "aarch64"
+  cp -a $SW_DIR/$SWT_NAME/swt.jar target/$TARGET-aarch64.app/Contents/MacOS/lib
+}
+
 function install_openjfx_bsd {
 
   # On FreeBSD we use JFX from the OS
-  JFX_DIR=$SW_DIR/OpenJFX
+  local JFX_DIR=$SW_DIR/OpenJFX_FreeBSD
+  local JFX_VERSION=$(mvn help:evaluate -q -f $SRC_DIR/desktop/pom.xml -Pplatform-freebsd -Dexpression=javafx.version -DforceStdout)
+  local JFX_LIBS="javafx-base javafx-controls javafx-graphics javafx-web javafx-media"
 
-  for JFX_PKG in javafx-base javafx-controls javafx-graphics javafx-web javafx-media; do
+  mkdir -p $JFX_DIR
+
+  for JFX_PKG in $JFX_LIBS; do
 
     JFX_DEST=~/.m2/repository/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION-freebsd.jar
     JFX_JARF=/usr/local/openjfx14/lib/${JFX_PKG//-/.}.jar
 
-    mkdir -p $JFX_DIR
     if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
       wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
       sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
@@ -359,6 +374,28 @@ function install_openjfx_bsd {
 
 }
 
+function replace_openjfx_intel_arm_macos {
+
+  local JFX_DIR=$SW_DIR/OpenJFX_macOS
+  local JFX_VERSION=$(mvn help:evaluate -q -f $SRC_DIR/desktop/pom.xml -Pplatform-macos-cocoa-aarch64 -Dexpression=javafx.version -DforceStdout)
+  local JFX_LIBS=$(sed -n 's|.*<artifactId>\(javafx-.*\)</artifactId>.*|\1|p' pom.xml)
+
+  mkdir -p $JFX_DIR
+
+  for JFX_PKG in $JFX_LIBS; do
+
+    JFX_JARF=$JFX_PKG-$JFX_VERSION-mac-aarch64.jar
+
+    if [ ! -e $JFX_DIR/$JFX_JARF ]; then
+      wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_JARF
+    fi
+
+    cp -a $JFX_DIR/$JFX_JARF target/$TARGET-aarch64.app/Contents/MacOS/lib/$JFX_PKG.jar
+
+  done
+
+}
+
 function get_java_win {
 
   if [ -e $SW_DIR/$PA_JAVA ]; then
@@ -368,6 +405,59 @@ function get_java_win {
     [ ! -e $SW_DIR/$PA_JAVA.exe ] && wget $PA_LINK -O $SW_DIR/$PA_JAVA.exe
     rm -rf $SW_DIR/$PA_JAVA && mkdir $SW_DIR/$PA_JAVA && ( cd $SW_DIR/$PA_JAVA && 7z x -xr'!_DO NOT store your files here or in subfolders.txt' -xr'!$PLUGINSDIR' ../$PA_JAVA.exe )
     echo -e "\n# OK."
+  fi
+
+}
+
+function get_java_arm_macos {
+
+  BREW_OJDK_X86_VER=$($BREW_JAVA_HOME/bin/java -version 2>&1 | awk -F '"' '/version/ {print $2}')
+  BREW_OJDK_ARM_TAG=arm64_sonoma
+  BREW_OJDK_ARM_DIR=$SW_DIR/openjdk-$BREW_OJDK_X86_VER.$BREW_OJDK_ARM_TAG
+
+  if [ -d $BREW_OJDK_ARM_DIR/bin ]; then
+    echo -e "\n# Using OpenJDK version $BREW_OJDK_X86_VER for macOS on ARM in $BREW_OJDK_ARM_DIR.\n"
+  else
+    BREW_OJDK_JSN_URL="https://formulae.brew.sh/api/formula/openjdk.json"
+    echo -e "\n# OpenJDK version $BREW_OJDK_X86_VER for macOS on ARM not found in $BREW_OJDK_ARM_DIR.\n"
+    echo "# Checking latest stable version of OpenJDK form Homebrew:"
+    echo "# JSON URL:            $BREW_OJDK_JSN_URL"
+    BREW_OJDK_JSN_TXT=$(curl -fsSL "$BREW_OJDK_JSN_URL")
+    BREW_OJDK_ARM_URL=$(echo $BREW_OJDK_JSN_TXT | jq -r ".bottle.stable.files.$BREW_OJDK_ARM_TAG.url")
+    BREW_OJDK_ARM_SHA=$(echo $BREW_OJDK_JSN_TXT | jq -r ".bottle.stable.files.$BREW_OJDK_ARM_TAG.sha256")
+    BREW_OJDK_ARM_VER=$(echo $BREW_OJDK_JSN_TXT | jq -r '.versions.stable')
+    echo "# ARM package URL:     $BREW_OJDK_ARM_URL"
+    echo "# ARM package version: $BREW_OJDK_ARM_VER"
+    if [ $BREW_OJDK_ARM_VER == $BREW_OJDK_X86_VER ]; then
+      echo -e "# OpenJDK packages for Intel and ARM have the same version, fine!\n"
+    else
+      echo -e "\n########### Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      echo "# Warning: OpenJDK packages for Intel and ARM have different versions!"
+      echo "# OpenJDK Intel: $BREW_OJDK_X86_VER"
+      echo "# OpenJDK ARM:   $BREW_OJDK_ARM_VER"
+      echo "# Consider upgrading the installed OpenJDK package for macOS on Intel to version $BREW_OJDK_ARM_VER."
+      echo "# Continuing anyway."
+      echo -e "########### Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+      BREW_OJDK_ARM_DIR=$SW_DIR/openjdk-$BREW_OJDK_ARM_VER.$BREW_OJDK_ARM_TAG
+    fi
+    if [ -d $BREW_OJDK_ARM_DIR/bin ]; then
+      echo -e "# Using OpenJDK version $BREW_OJDK_ARM_VER for macOS on ARM in $BREW_OJDK_ARM_DIR.\n"
+    else
+      BREW_OJDK_ARM_TGZ=$BREW_OJDK_ARM_DIR.tar.gz
+      if [ ! -e $BREW_OJDK_ARM_TGZ ]; then
+        echo "# Downloading OpenJDK for macOS ARM from $BREW_OJDK_ARM_URL to $BREW_OJDK_ARM_TGZ ..."
+        curl -fL -H "Authorization: Bearer QQ==" -o "$BREW_OJDK_ARM_TGZ" "$BREW_OJDK_ARM_URL"
+        echo "# OK."
+      else
+        echo "# $BREW_OJDK_ARM_TGZ already existing."
+      fi
+      echo "# Checking sha256 sum of $BREW_OJDK_ARM_TGZ ..."
+      echo "$BREW_OJDK_ARM_SHA  $BREW_OJDK_ARM_TGZ" | shasum -a 256 -q -c - || abort_build
+      echo "# OK."
+      echo "# Extracting $BREW_OJDK_ARM_TGZ to $BREW_OJDK_ARM_DIR ..."
+      rm -rf $BREW_OJDK_ARM_DIR && mkdir $BREW_OJDK_ARM_DIR && tar -xzf $BREW_OJDK_ARM_TGZ --directory=$BREW_OJDK_ARM_DIR --strip-components=2
+      echo -e "# OK.\n"
+    fi
   fi
 
 }
@@ -502,8 +592,6 @@ function build_tg_for_bsd {
 
 function start_remote_macos_build {
 
-  # 172.16.208.132: macOS 11 x86_64 (Big Sur)
-  # 172.16.208.133: macOS 14 x86_64 (Sonoma)
   BUILD_HOST=$USER@172.16.208.133
 
   echo -e "\n### Host: "`hostname -s`" ########### Preparing the build for macOS APP on $BUILD_HOST ..."
@@ -531,6 +619,7 @@ function build_tg_for_macos {
   BUILD_ARCH=`uname -m | sed 's/arm64/aarch64/'`
 
   install_eclipse_swt
+  [ $BUILD_ARCH == "x86_64" ] && get_java_arm_macos
 
   for GUI_TK in swt jfx; do
     echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP ...\n"
@@ -538,23 +627,34 @@ function build_tg_for_macos {
     cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
     mvn --batch-mode -e clean verify -P native-modules
 
-    TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
-
-    # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
     # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
     BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
-    if [ ! -x "$BREW_JAVA_HOME/bin/jlink" ]; then
-      echo -e "\nError: jlink not found at $BREW_JAVA_HOME/bin/jlink. Please install OpenJDK with \"brew install openjdk\"."
-      abort_build
-    fi
-    # jdk.unsupported is required for the MarlinFX renderer from JFX
-    $BREW_JAVA_HOME/bin/jlink --add-modules java.desktop,jdk.unsupported --output target/$TARGET.app/Contents/MacOS/jre
 
-    rm -rf target/$TARGET-$BUILD_ARCH.app && mv -i target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
+    # jdk.unsupported is required for the MarlinFX renderer from JFX
+    JAVA_MODULES="java.desktop,jdk.unsupported"
+
+    TARGET=tuxguitar-$TGVERSION-macosx-$GUI_TK-cocoa
+
+    rm -rf target/$TARGET-$BUILD_ARCH.app && cp -a target/$TARGET.app target/$TARGET-$BUILD_ARCH.app
+
+    # Extract JRE from locally installed openjdk (from Homebrew) to get it integrated in the APP.TAR.GZ packages
+    $BREW_JAVA_HOME/bin/jlink --add-modules $JAVA_MODULES --output target/$TARGET-$BUILD_ARCH.app/Contents/MacOS/jre
+
     tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-$BUILD_ARCH.app.tar.gz $TARGET-$BUILD_ARCH.app
+    echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP done.\n"
+
+    if [ $BUILD_ARCH == "x86_64" ]; then
+      echo -e "### Host: "`hostname -s`" ########### Assembling macOS $GUI_TK aarch64 APP ...\n"
+      rm -rf target/$TARGET-aarch64.app && cp -a target/$TARGET.app target/$TARGET-aarch64.app
+      $BREW_JAVA_HOME/bin/jlink --module-path $BREW_OJDK_ARM_DIR/libexec/openjdk.jdk/Contents/Home/jmods --add-modules $JAVA_MODULES --output target/$TARGET-aarch64.app/Contents/MacOS/jre
+      [ $GUI_TK == "swt" ] && replace_swt_intel_arm_macos
+      [ $GUI_TK == "jfx" ] && replace_openjfx_intel_arm_macos
+      tar --uname=root --gname=root --directory=target -czf $DIST_DIR/$TARGET-aarch64.app.tar.gz $TARGET-aarch64.app
+      echo -e "### Host: "`hostname -s`" ########### Assembling macOS $GUI_TK aarch64 APP done.\n"
+    fi
+
     cd - > /dev/null
 
-    echo -e "\n### Host: "`hostname -s`" ########### Building macOS $GUI_TK $BUILD_ARCH APP done.\n"
   done
 
 }
@@ -695,10 +795,9 @@ prepare_source
 
 # BSD (on BSD, remote or local)
 if [ $build_bsd ]; then
-  # SWT & JFX versions in FreeBSD 15.1
+  # SWT version in FreeBSD 15.1
   SWT_VERSION=4.21
   SWT_PLATFORM=gtk-freebsd
-  JFX_VERSION=14.0.2.1
   [ `uname` == Linux ] && start_remote_bsd_build
   [ `uname` == FreeBSD ] && build_tg_for_bsd
 fi
