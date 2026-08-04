@@ -100,8 +100,12 @@ public class MidiRepeatController {
 			this.lastIndex = Math.max(this.lastIndex,this.index);
 
 			//si hay una repeticion la hago
-			// execute repeat close (even if it's on the last measure of a loop, as bounds are handled naturally)
-			if (this.repeatOpen && (header.getRepeatClose() > 0)) {
+			// repeat close (ignored if it's the last measure in the loop, UNLESS the repeat open is strictly inside the loop)
+			boolean isLastMeasureOfLoop = (this.eHeader >= 0 && header.getNumber() == this.eHeader);
+			boolean repeatOpenInsideLoop = (this.song.getMeasureHeader(this.repeatStartIndex).getNumber() > this.sHeader);
+			boolean ignoreRepeatClose = (isLastMeasureOfLoop && !repeatOpenInsideLoop);
+
+			if (this.repeatOpen && (header.getRepeatClose() > 0) && !ignoreRepeatClose) {
 				if (this.repeatNumber < header.getRepeatClose() || (this.repeatAlternative > 0)) {
 					this.repeatEnd = header.getStart() + header.getLength();
 					this.repeatMove += this.repeatEnd - this.repeatStart;
