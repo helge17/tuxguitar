@@ -54,6 +54,15 @@ public class TestRepeatController {
 				new int[] {0,0});
 	}
 
+	// https://github.com/helge17/tuxguitar/issues/1146
+	@Test
+	public void testConsecutiveRepeats() throws IOException {
+		TGSong customSong = new TestFileFormat20().readSong("consecutiveRepeatsLoop_20.tg", true).getSong();
+		checkSequence(new MidiRepeatController(customSong, 1, 2),
+				new int[] {1,1, 2,2},
+				new int[] {0,1, 1,2});
+	}
+
 	private void checkSequence(MidiRepeatController controller, int[] expectedMeasures, int[] expectedMoveNbMeasures) {
 		int i=0;
 		while (!controller.finished()) {
