@@ -77,7 +77,10 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.saveDocument(outputStream);
 			outputStream.closeArchiveEntry();
 			outputStream.close();
-		} catch (ArchiveException | IOException e) {
+		} catch (ArchiveException e) {
+			e.printStackTrace();
+			throw new TGFileFormatException(e);
+		} catch (IOException e) {
 			e.printStackTrace();
 			throw new TGFileFormatException(e);
 		}
