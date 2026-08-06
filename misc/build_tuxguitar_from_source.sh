@@ -426,38 +426,35 @@ function get_java_arm_macos {
     BREW_OJDK_ARM_URL=$(echo $BREW_OJDK_JSN_TXT | jq -r ".bottle.stable.files.$BREW_OJDK_ARM_TAG.url")
     BREW_OJDK_ARM_SHA=$(echo $BREW_OJDK_JSN_TXT | jq -r ".bottle.stable.files.$BREW_OJDK_ARM_TAG.sha256")
     BREW_OJDK_ARM_VER=$(echo $BREW_OJDK_JSN_TXT | jq -r '.versions.stable')
-    echo "# ARM package URL:     $BREW_OJDK_ARM_URL"
-    echo "# ARM package version: $BREW_OJDK_ARM_VER"
+    if [ -z "$BREW_OJDK_ARM_URL" ] || [ "$BREW_OJDK_ARM_URL" == 'null' ]; then
+      echo -e "\n# Error: Homebrew does not offer the bottle $BREW_OJDK_ARM_TAG for OpenJDK."
+      echo "# Please use a valid  bottle tag listed in $BREW_OJDK_JSN_URL."
+      abort_build
+    fi
     if [ $BREW_OJDK_ARM_VER == $BREW_OJDK_X86_VER ]; then
-      echo -e "# OpenJDK packages for Intel and ARM have the same version, fine!\n"
+      echo -e "# OpenJDK packages for Intel and ARM have the same version $BREW_OJDK_X86_VER, fine!\n"
     else
-      echo -e "\n########### Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      echo "# Warning: OpenJDK packages for Intel and ARM have different versions!"
+      echo -e "# Error: OpenJDK packages for Intel and ARM have different versions!"
       echo "# OpenJDK Intel: $BREW_OJDK_X86_VER"
       echo "# OpenJDK ARM:   $BREW_OJDK_ARM_VER"
-      echo "# Consider upgrading the installed OpenJDK package for macOS on Intel to version $BREW_OJDK_ARM_VER."
-      echo "# Continuing anyway."
-      echo -e "########### Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
-      BREW_OJDK_ARM_DIR=$SW_DIR/openjdk-$BREW_OJDK_ARM_VER.$BREW_OJDK_ARM_TAG
+      echo "# jlink cannot assemble an image from jmods of a different release."
+      echo "# Please upgrade the installed OpenJDK package for macOS on Intel to version $BREW_OJDK_ARM_VER."
+      abort_build
     fi
-    if [ -d $BREW_OJDK_ARM_DIR/bin ]; then
-      echo -e "# Using OpenJDK version $BREW_OJDK_ARM_VER for macOS on ARM in $BREW_OJDK_ARM_DIR.\n"
-    else
-      BREW_OJDK_ARM_TGZ=$BREW_OJDK_ARM_DIR.tar.gz
-      if [ ! -e $BREW_OJDK_ARM_TGZ ]; then
-        echo "# Downloading OpenJDK for macOS ARM from $BREW_OJDK_ARM_URL to $BREW_OJDK_ARM_TGZ ..."
-        curl -fL -H "Authorization: Bearer QQ==" -o "$BREW_OJDK_ARM_TGZ" "$BREW_OJDK_ARM_URL"
-        echo "# OK."
-      else
-        echo "# $BREW_OJDK_ARM_TGZ already existing."
-      fi
-      echo "# Checking sha256 sum of $BREW_OJDK_ARM_TGZ ..."
-      echo "$BREW_OJDK_ARM_SHA  $BREW_OJDK_ARM_TGZ" | shasum -a 256 -q -c - || abort_build
+    BREW_OJDK_ARM_TGZ=$BREW_OJDK_ARM_DIR.tar.gz
+    if [ ! -e $BREW_OJDK_ARM_TGZ ]; then
+      echo "# Downloading OpenJDK for macOS ARM from $BREW_OJDK_ARM_URL to $BREW_OJDK_ARM_TGZ ..."
+      curl -fL -H "Authorization: Bearer QQ==" -o "$BREW_OJDK_ARM_TGZ" "$BREW_OJDK_ARM_URL"
       echo "# OK."
-      echo "# Extracting $BREW_OJDK_ARM_TGZ to $BREW_OJDK_ARM_DIR ..."
-      rm -rf $BREW_OJDK_ARM_DIR && mkdir $BREW_OJDK_ARM_DIR && tar -xzf $BREW_OJDK_ARM_TGZ --directory=$BREW_OJDK_ARM_DIR --strip-components=2
-      echo -e "# OK.\n"
+    else
+      echo "# $BREW_OJDK_ARM_TGZ already existing."
     fi
+    echo "# Checking sha256 sum of $BREW_OJDK_ARM_TGZ ..."
+    echo "$BREW_OJDK_ARM_SHA  $BREW_OJDK_ARM_TGZ" | shasum -a 256 -q -c - || abort_build
+    echo "# OK."
+    echo "# Extracting $BREW_OJDK_ARM_TGZ to $BREW_OJDK_ARM_DIR ..."
+    rm -rf $BREW_OJDK_ARM_DIR && mkdir $BREW_OJDK_ARM_DIR && tar -xzf $BREW_OJDK_ARM_TGZ --directory=$BREW_OJDK_ARM_DIR --strip-components=2
+    echo -e "# OK.\n"
   fi
 
 }
@@ -618,6 +615,9 @@ function build_tg_for_macos {
 
   BUILD_ARCH=`uname -m | sed 's/arm64/aarch64/'`
 
+  # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
+  BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
+
   install_eclipse_swt
   [ $BUILD_ARCH == "x86_64" ] && get_java_arm_macos
 
@@ -626,9 +626,6 @@ function build_tg_for_macos {
 
     cd desktop/build-scripts/tuxguitar-macosx-$GUI_TK-cocoa
     mvn --batch-mode -e clean verify -P native-modules
-
-    # Homebrew lives in /usr/local on Intel and /opt/homebrew on ARM - fall back to the Intel path
-    BREW_JAVA_HOME=`brew --prefix openjdk 2>/dev/null || echo /usr/local/opt/openjdk`
 
     # jdk.unsupported is required for the MarlinFX renderer from JFX
     JAVA_MODULES="java.desktop,jdk.unsupported"
