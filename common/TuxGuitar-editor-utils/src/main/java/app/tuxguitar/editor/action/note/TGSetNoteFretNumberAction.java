@@ -59,6 +59,7 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 		note.setString(lastAddedString);
 		note.setValue(fret);
 		songManager.getMeasureManager().addNote(beat, note, voice.getIndex());
+		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
 
 	public static final String getActionName(int number){

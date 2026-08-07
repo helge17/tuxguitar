@@ -442,6 +442,7 @@ public class TGFretBoard {
 		TGTrack track = getTrack();
 		TGScale scale = TuxGuitar.getInstance().getScaleManager().getScale();
 		int keySignature = TGMusicKeyUtils.getKeySignature(scale);
+		int tonicKey = scale.getKey();
 
 		for (int i = 0; i < this.strings.length; i++) {
 			TGString string = track.getString(i + 1);
@@ -455,12 +456,16 @@ public class TGFretBoard {
 					}
 					int y = this.strings[i];
 
+					boolean isTonic = ((noteValue % 12) == tonicKey);
+					UIColor ovalColor = isTonic ? this.config.getColorTonic() : this.config.getColorScale();
+
 					if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_SCALE) != 0 ){
 						String noteName = TGMusicKeyUtils.noteName(noteValue, keySignature);
-						paintKeyText(painter,this.config.getColorScaleText(), this.config.getColorScale(),x,y,noteName);
+						UIColor textColor = isTonic ? this.config.getColorTonicText() : this.config.getColorScaleText();
+						paintKeyText(painter, textColor, ovalColor, x, y, noteName);
 					}
 					else{
-						paintKeyOval(painter,this.config.getColorScale(),x,y);
+						paintKeyOval(painter, ovalColor, x, y);
 					}
 				}
 			}

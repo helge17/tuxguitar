@@ -331,17 +331,17 @@ public class GPXDocumentParser {
 							if (beat.getChordId() != null) {
 								GPXChord gpChord = this.document.getChord(beat.getChordId());
 								if (gpChord != null) {
-									TGChord chord = this.factory.newChord(gpChord.getFrets().length);
+									TGChord chord = this.factory.newChord(gpChord.getStringCount());
 									if (gpChord.getName() != null) {
 										chord.setName(gpChord.getName());
 									}
 									if (gpChord.getBaseFret() != null) {
 										chord.setFirstFret(gpChord.getBaseFret());
 									}
-									for (int f = 0; f < gpChord.getFrets().length; f++) {
-										Integer value = gpChord.getFrets()[f];
+									for (int s = 0; s < gpChord.getStringCount(); s++) {
+										Integer value = gpChord.getFrets()[s];
 										if (value != null) {
-											chord.addFretValue(f, value);
+											chord.addFretValue(s, value);
 										}
 									}
 									tgBeat.setChord(chord);

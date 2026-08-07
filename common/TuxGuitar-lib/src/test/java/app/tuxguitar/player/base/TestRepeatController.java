@@ -22,8 +22,8 @@ public class TestRepeatController {
 	@Test
 	public void testNominalSequence() {
 		checkSequence(new MidiRepeatController(this.song, -1, -1),
-				new int[] {1,2,3, 1, 4,5, 1, 4,5, 1, 6,7,  8,9, 8,9, 8,9, 10},
-				new int[] {0,0,0, 3, 1,1, 6, 4,4, 9, 5,5,  5,5, 7,7, 9,9,  9});
+				new int[] {1,2,3, 1, 4,5, 1, 4,5, 1, 6,7,  8,9, 8,9, 8,9, 10,  11,11, 12,12, 13},
+				new int[] {0,0,0, 3, 1,1, 6, 4,4, 9, 5,5,  5,5, 7,7, 9,9,  9,   9,10, 10,11, 11});
 	}
 
 	@Test
@@ -52,6 +52,14 @@ public class TestRepeatController {
 	checkSequence(new MidiRepeatController(this.song, 6, 7),
 				new int[] {6,7},
 				new int[] {0,0});
+	}
+
+	// https://github.com/helge17/tuxguitar/issues/1146
+	@Test
+	public void testConsecutiveRepeats() {
+		checkSequence(new MidiRepeatController(this.song, 11, 12),
+				new int[] {11,11, 12,12},
+				new int[] {0,1, 1,2});
 	}
 
 	private void checkSequence(MidiRepeatController controller, int[] expectedMeasures, int[] expectedMoveNbMeasures) {

@@ -98,6 +98,7 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.FRETBOARD_COLOR_FRET_POINT, "192,192,192");
 		loadProperty(properties, TGConfigKeys.FRETBOARD_COLOR_NOTE, "42,85,128");
 		loadProperty(properties, TGConfigKeys.FRETBOARD_COLOR_SCALE, "128,32,32");
+		loadProperty(properties, TGConfigKeys.FRETBOARD_COLOR_TONIC, "0,0,0");
 		loadProperty(properties, TGConfigKeys.FRETBOARD_DIRECTION, TGFretBoardConfig.DIRECTION_RIGHT);
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_KEY_NATURAL, "255,255,255");
 		loadProperty(properties, TGConfigKeys.PIANO_COLOR_KEY_NOT_NATURAL, "0,0,0");
