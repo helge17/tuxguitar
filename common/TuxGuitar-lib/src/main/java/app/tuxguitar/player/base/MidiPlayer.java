@@ -133,7 +133,6 @@ public class MidiPlayer{
 			this.setPaused(paused);
 			this.stopSequencer();
 			this.setRunning(false);
-			this.notifyStopped(paused);
 		} finally {
 			this.unlock();
 		}
