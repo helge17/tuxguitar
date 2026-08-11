@@ -66,7 +66,7 @@ public class TGFontPickerDialog {
 		String displayMode = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE);
 
 		UIRadioButton perLoopRadio = uiFactory.createRadioButton(panel);
-		perLoopRadio.setText(TuxGuitar.getProperty("toolbar.timeCounter.perLoop"));
+		perLoopRadio.setText(TuxGuitar.getProperty("toolbar.timeCounter.loopTimestamp"));
 		perLoopRadio.setSelected("perLoop".equals(displayMode));
 		perLoopRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
