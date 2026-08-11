@@ -13,7 +13,6 @@ import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.resource.UIFontModel;
 import app.tuxguitar.ui.widget.UIButton;
-import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UIRadioButton;
 import app.tuxguitar.ui.widget.UISeparator;
@@ -24,6 +23,8 @@ public class TGMainToolBarTimeCounterDialog {
 
 	private TGContext context;
 	private UIWindow parentWindow;
+	private UIFontModel selectedFont;
+	private boolean displayLoopTimestamp;
 
 	public TGMainToolBarTimeCounterDialog(TGContext context, UIWindow parentWindow) {
 		this.context = context;
@@ -34,6 +35,10 @@ public class TGMainToolBarTimeCounterDialog {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
 		UITableLayout dialogLayout = new UITableLayout();
 		UIWindow dialog = uiFactory.createWindow(this.parentWindow, true, false);
+		this.selectedFont = TGConfigManager.getInstance(this.context)
+				.getFontModelConfigValue(TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP);
+		this.displayLoopTimestamp = TGConfigManager.getInstance(this.context)
+				.getBooleanValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE);
 
 		dialog.setLayout(dialogLayout);
 		dialog.setText(TuxGuitar.getProperty("toolbar.timeCounter.dialogTitle"));
@@ -43,62 +48,79 @@ public class TGMainToolBarTimeCounterDialog {
 		panel.setLayout(panelLayout);
 		dialogLayout.set(panel, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, true, true);
 
-		UILabel selectLabel = uiFactory.createLabel(panel);
-		selectLabel.setText(TuxGuitar.getProperty("toolbar.timeCounter.selectFont"));
-		panelLayout.set(selectLabel, 1, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
-
 		UIButton selectButton = uiFactory.createButton(panel);
-		selectButton.setText(TuxGuitar.getProperty("toolbar.timeCounter.select"));
+		selectButton.setText(TuxGuitar.getProperty("toolbar.timeCounter.selectFont"));
 		selectButton.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				openFontChooser(dialog);
 			}
 		});
-		panelLayout.set(selectButton, 1, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		panelLayout.set(selectButton, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 
 		UISeparator separator = uiFactory.createHorizontalSeparator(panel);
-		panelLayout.set(separator, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 2, 0f, 0f, null);
-
-		UILabel displayModeLabel = uiFactory.createLabel(panel);
-		displayModeLabel.setText(TuxGuitar.getProperty("toolbar.timeCounter.displayMode"));
-		panelLayout.set(displayModeLabel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
-
-		boolean displayLoopTimestamp = TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE);
+		panelLayout.set(separator, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 		UIRadioButton perLoopRadio = uiFactory.createRadioButton(panel);
 		perLoopRadio.setText(TuxGuitar.getProperty("toolbar.timeCounter.loopTimestamp"));
-		perLoopRadio.setSelected(displayLoopTimestamp);
+		perLoopRadio.setSelected(this.displayLoopTimestamp);
 		perLoopRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, true);
+				TGMainToolBarTimeCounterDialog.this.displayLoopTimestamp = true;
 			}
 		});
-		panelLayout.set(perLoopRadio, 3, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		panelLayout.set(perLoopRadio, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 
 		UIRadioButton perSessionRadio = uiFactory.createRadioButton(panel);
 		perSessionRadio.setText(TuxGuitar.getProperty("toolbar.timeCounter.perSession"));
-		perSessionRadio.setSelected(!displayLoopTimestamp);
+		perSessionRadio.setSelected(!this.displayLoopTimestamp);
 		perSessionRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, false);
+				TGMainToolBarTimeCounterDialog.this.displayLoopTimestamp = false;
 			}
 		});
-		panelLayout.set(perSessionRadio, 4, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		panelLayout.set(perSessionRadio, 4, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+
+		separator = uiFactory.createHorizontalSeparator(panel);
+		panelLayout.set(separator, 5, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
+
+		UITableLayout buttonsLayout = new UITableLayout(0f);
+		UIPanel buttons = uiFactory.createPanel(panel, false);
+		buttons.setLayout(buttonsLayout);
+		panelLayout.set(buttons, 6, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, true, false);
+
+		UIButton cancelButton = uiFactory.createButton(buttons);
+		cancelButton.setText(TuxGuitar.getProperty("cancel"));
+		cancelButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				dialog.dispose();
+			}
+		});
+		buttonsLayout.set(cancelButton, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
+		UIButton okButton = uiFactory.createButton(buttons);
+		okButton.setDefaultButton();
+		okButton.setText(TuxGuitar.getProperty("ok"));
+		okButton.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				TGConfigManager config = TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context);
+				config.setValue(TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP, TGMainToolBarTimeCounterDialog.this.selectedFont);
+				config.setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, TGMainToolBarTimeCounterDialog.this.displayLoopTimestamp);
+				dialog.dispose();
+			}
+		});
+		buttonsLayout.set(okButton, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		TGDialogUtil.openDialog(dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 
 	private void openFontChooser(UIWindow dialog) {
 		UIFactory uiFactory = TGApplication.getInstance(this.context).getFactory();
-		UIFontModel fontModel = TGConfigManager.getInstance(this.context)
-				.getFontModelConfigValue(TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP);
 		UIFontChooser uiFontChooser = uiFactory.createFontChooser(dialog);
-		uiFontChooser.setDefaultModel(fontModel);
+		uiFontChooser.setDefaultModel(this.selectedFont);
 		uiFontChooser.choose(new UIFontChooserHandler() {
 			public void onSelectFont(UIFontModel selection) {
 				if (selection != null) {
-					TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context)
-							.setValue(TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP, selection);
+					TGMainToolBarTimeCounterDialog.this.selectedFont = selection;
 				}
 			}
 		});
