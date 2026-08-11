@@ -47,6 +47,7 @@ public class TGMainToolBarTimeCounterDialog {
 		UIPanel panel = uiFactory.createPanel(dialog, false);
 		panel.setLayout(panelLayout);
 		dialogLayout.set(panel, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, true, true);
+		dialogLayout.set(panel, UITableLayout.MINIMUM_PACKED_WIDTH, 300f);
 
 		UIButton selectButton = uiFactory.createButton(panel);
 		selectButton.setText(TuxGuitar.getProperty("toolbar.timeCounter.selectFont"));
