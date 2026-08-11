@@ -1,4 +1,4 @@
-package app.tuxguitar.app.view.dialog.fontpicker;
+package app.tuxguitar.app.view.dialog.toolbar;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigKeys;
@@ -20,12 +20,12 @@ import app.tuxguitar.ui.widget.UISeparator;
 import app.tuxguitar.ui.widget.UIWindow;
 import app.tuxguitar.util.TGContext;
 
-public class TGFontPickerDialog {
+public class TGMainToolBarTimeCounterDialog {
 
 	private TGContext context;
 	private UIWindow parentWindow;
 
-	public TGFontPickerDialog(TGContext context, UIWindow parentWindow) {
+	public TGMainToolBarTimeCounterDialog(TGContext context, UIWindow parentWindow) {
 		this.context = context;
 		this.parentWindow = parentWindow;
 	}
@@ -70,7 +70,7 @@ public class TGFontPickerDialog {
 		perLoopRadio.setSelected(displayLoopTimestamp);
 		perLoopRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGConfigManager.getInstance(TGFontPickerDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, true);
+				TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, true);
 			}
 		});
 		panelLayout.set(perLoopRadio, 3, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
@@ -80,7 +80,7 @@ public class TGFontPickerDialog {
 		perSessionRadio.setSelected(!displayLoopTimestamp);
 		perSessionRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGConfigManager.getInstance(TGFontPickerDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, false);
+				TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, false);
 			}
 		});
 		panelLayout.set(perSessionRadio, 4, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
@@ -97,7 +97,7 @@ public class TGFontPickerDialog {
 		uiFontChooser.choose(new UIFontChooserHandler() {
 			public void onSelectFont(UIFontModel selection) {
 				if (selection != null) {
-					TGConfigManager.getInstance(TGFontPickerDialog.this.context)
+					TGConfigManager.getInstance(TGMainToolBarTimeCounterDialog.this.context)
 							.setValue(TGConfigKeys.FONT_MAINTOOLBAR_TIMESTAMP, selection);
 				}
 			}

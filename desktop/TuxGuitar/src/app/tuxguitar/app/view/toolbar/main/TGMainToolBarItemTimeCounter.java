@@ -21,7 +21,7 @@ import app.tuxguitar.event.TGEvent;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerEvent;
-import app.tuxguitar.app.view.dialog.fontpicker.TGFontPickerDialog;
+import app.tuxguitar.app.view.dialog.toolbar.TGMainToolBarTimeCounterDialog;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
@@ -94,7 +94,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 			@Override
 			public void onMouseDown(UIMouseEvent event) {
 				if (!MidiPlayer.getInstance(context).isRunning()) {
-					TGFontPickerDialog dialog = new TGFontPickerDialog(context, parentWindow);
+					TGMainToolBarTimeCounterDialog dialog = new TGMainToolBarTimeCounterDialog(context, parentWindow);
 					dialog.show();
 				}
 			}
