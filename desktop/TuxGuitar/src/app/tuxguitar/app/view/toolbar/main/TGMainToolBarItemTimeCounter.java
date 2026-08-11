@@ -242,13 +242,11 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 		if (this.isPerSessionMode()) {
 			if (this.sessionState != STATE_STOPPED) {
 				long tMs = this.getCurrentSessionTime();
-				time = String.format("%d:%02d:%02d.%01d", tMs / 3600000, (tMs / 60000) % 60, (tMs / 1000) % 60,
-						(tMs / 100) % 10);
+				time = this.formatTimestamp(tMs);
 			}
 		} else if (midiPlayer.isRunning()) {
 			long tMs = this.timestamp;
-			time = String.format("%d:%02d:%02d.%01d", tMs / 3600000, (tMs / 60000) % 60, (tMs / 1000) % 60,
-					(tMs / 100) % 10);
+			time = this.formatTimestamp(tMs);
 		}
 		painter.setFont(this.font);
 		float newWidth;
@@ -294,4 +292,8 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 		painter.drawString(time, TIMESTAMP_H_MARGIN, this.yTimestamp);
 	}
 
+	private String formatTimestamp(long tMs) {
+		return String.format("%d:%02d:%02d.%01d", tMs / 3600000, (tMs / 60000) % 60, (tMs / 1000) % 60,
+				(tMs / 100) % 10);
+	}
 }
