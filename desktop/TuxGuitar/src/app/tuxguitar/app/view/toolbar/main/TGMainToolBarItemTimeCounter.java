@@ -190,7 +190,7 @@ public class TGMainToolBarItemTimeCounter extends TGMainToolBarItem implements T
 	}
 
 	private boolean isPerSessionMode() {
-		return "perSession".equals(TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE));
+		return !TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE);
 	}
 
 	private long getCurrentSessionTime() {

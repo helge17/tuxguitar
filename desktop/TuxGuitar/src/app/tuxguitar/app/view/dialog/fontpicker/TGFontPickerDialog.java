@@ -63,24 +63,24 @@ public class TGFontPickerDialog {
 		displayModeLabel.setText(TuxGuitar.getProperty("toolbar.timeCounter.displayMode"));
 		panelLayout.set(displayModeLabel, 3, 1, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_CENTER, false, false);
 
-		String displayMode = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE);
+		boolean displayLoopTimestamp = TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE);
 
 		UIRadioButton perLoopRadio = uiFactory.createRadioButton(panel);
 		perLoopRadio.setText(TuxGuitar.getProperty("toolbar.timeCounter.loopTimestamp"));
-		perLoopRadio.setSelected("perLoop".equals(displayMode));
+		perLoopRadio.setSelected(displayLoopTimestamp);
 		perLoopRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGConfigManager.getInstance(TGFontPickerDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, "perLoop");
+				TGConfigManager.getInstance(TGFontPickerDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, true);
 			}
 		});
 		panelLayout.set(perLoopRadio, 3, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
 
 		UIRadioButton perSessionRadio = uiFactory.createRadioButton(panel);
 		perSessionRadio.setText(TuxGuitar.getProperty("toolbar.timeCounter.perSession"));
-		perSessionRadio.setSelected("perSession".equals(displayMode));
+		perSessionRadio.setSelected(!displayLoopTimestamp);
 		perSessionRadio.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGConfigManager.getInstance(TGFontPickerDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, "perSession");
+				TGConfigManager.getInstance(TGFontPickerDialog.this.context).setValue(TGConfigKeys.TIMECOUNTER_DISPLAY_MODE, false);
 			}
 		});
 		panelLayout.set(perSessionRadio, 4, 2, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
