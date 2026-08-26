@@ -970,7 +970,30 @@ public class TGSongManager {
 		}
 	}
 
+	public void updatePreciseStart(TGSong song, long fromPreciseStart) {
+		Iterator<TGMeasureHeader> headers =  song.getMeasureHeaders();
+		long preciseStart = TGDuration.getPreciseStartingPoint();
+		while (headers.hasNext()) {
+			TGMeasureHeader header = headers.next();
+			if (header.getPreciseStart() > fromPreciseStart) {
+				header.setPreciseStart(preciseStart);
+			}
+			preciseStart += header.getPreciseLength();
+		}
+		Iterator<TGTrack> itTrack = song.getTracks();
+		while (itTrack.hasNext()) {
+			this.updatePreciseStart(itTrack.next(), fromPreciseStart);
+		}
+	}
+
 	public void updatePreciseStart(TGTrack track) {
+		Iterator<TGMeasure> itMeasures = track.getMeasures();
+		while(itMeasures.hasNext()) {
+			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
+		}
+	}
+
+	public void updatePreciseStart(TGTrack track, long fromPreciseStart) {
 		Iterator<TGMeasure> itMeasures = track.getMeasures();
 		while(itMeasures.hasNext()) {
 			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
