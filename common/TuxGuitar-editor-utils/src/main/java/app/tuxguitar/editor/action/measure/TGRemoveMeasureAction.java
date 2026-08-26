@@ -34,12 +34,11 @@ public class TGRemoveMeasureAction extends TGActionBase {
 					context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, prevHeader);
 					TGActionManager.getInstance(getContext()).execute(TGDoubleBarAction.NAME, context);
 					context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_HEADER, header);
+				}
 			}
-
 			// effectively remove measure
 			tgSongManager.removeMeasure(song, number);
-			}
-
+	
 			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		}
 	}
