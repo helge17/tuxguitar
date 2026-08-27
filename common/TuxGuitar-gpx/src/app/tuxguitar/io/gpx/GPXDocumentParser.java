@@ -341,7 +341,7 @@ public class GPXDocumentParser {
 									for (int s = 0; s < gpChord.getStringCount(); s++) {
 										Integer value = gpChord.getFrets()[s];
 										if (value != null) {
-											chord.addFretValue(s, value);
+											chord.addFretValue(gpChord.getStringCount() - s - 1, value + gpChord.getBaseFret());
 										}
 									}
 									tgBeat.setChord(chord);

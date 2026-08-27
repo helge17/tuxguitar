@@ -241,21 +241,18 @@ public class GPXDocumentReader {
 										chord.setId(getAttributeIntegerValue(itemNode, "id"));
 										chord.setName(getAttributeValue(itemNode, "name"));
 										chord.setStringCount(getAttributeIntegerValue(diagramNode, "stringCount"));
-										chord.setFretCount(getAttributeIntegerValue(diagramNode, "fretCount"));
 										chord.setBaseFret(getAttributeIntegerValue(diagramNode, "baseFret"));
-										if( chord.getFretCount() != null ) {
-											chord.setFrets(new Integer[chord.getStringCount()]);
-											for( int f = 0 ; f < fretsNode.getLength() ; f ++ ){
-												Node fretNode = fretsNode.item( f );
-												if (fretNode.getNodeName().equals("Fret")) {
-													Integer string = getAttributeIntegerValue(fretNode, "string");
-													if( string != null && string > 0 && string <= chord.getStringCount() ) {
-														chord.getFrets()[string - 1] = getAttributeIntegerValue(fretNode, "fret");
-													}
+										chord.setFrets(new Integer[chord.getStringCount()]);
+										for( int f = 0 ; f < fretsNode.getLength() ; f ++ ){
+											Node fretNode = fretsNode.item( f );
+											if (fretNode.getNodeName().equals("Fret")) {
+												Integer string = getAttributeIntegerValue(fretNode, "string");
+												if( string != null && string < chord.getStringCount() ) {
+													chord.getFrets()[string] = getAttributeIntegerValue(fretNode, "fret");
 												}
 											}
-											this.gpxDocument.getChords().add(chord);
 										}
+										this.gpxDocument.getChords().add(chord);
 									}
 								}
 							}

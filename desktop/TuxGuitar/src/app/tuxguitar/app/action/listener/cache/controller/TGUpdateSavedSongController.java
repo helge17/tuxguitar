@@ -18,8 +18,6 @@ public class TGUpdateSavedSongController extends TGUpdateItemsController {
 
 	@Override
 	public void update(TGContext context, TGActionContext actionContext) {
-		// ------------------------------------------------------ //
-		TGUndoableManager.getInstance(context).discardAllEdits();
 
 		TGDocument tgDocument = TGDocumentListManager.getInstance(context).findCurrentDocument();
 		tgDocument.setUnwanted(false);
@@ -32,7 +30,6 @@ public class TGUpdateSavedSongController extends TGUpdateItemsController {
 
 		TGTransport.getInstance(context).getCache().reset();
 		TGWindow.getInstance(context).loadTitle();
-		// ------------------------------------------------------ //
 
 		this.findUpdateBuffer(context, actionContext).requestUpdateSavedSong();
 

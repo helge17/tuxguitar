@@ -1806,6 +1806,7 @@ public class TGMeasureManager {
 	}
 
 	public void changeDuration(TGMeasure measure,TGBeat beat,TGDuration duration,int voiceIndex, boolean tryMove){
+		boolean measureWasValid = isMeasureDurationValid(measure);
 		if (getSongManager().isFreeEditionMode(measure)) {
 			beat.getVoice(voiceIndex).getDuration().copyFrom(duration);
 			this.updateBeatsPreciseStart(measure);
@@ -1827,6 +1828,11 @@ public class TGMeasureManager {
 		}
 		if (getSongManager().isFreeEditionMode(measure)) {
 			this.updateBeatsPreciseStart(measure);
+			// if changing the duration made the measure valid, then possibly the starting point of all
+			// following measures shall be updated
+			if (isMeasureDurationValid(measure) && !measureWasValid) {
+				this.songManager.updatePreciseStart(measure.getTrack().getSong(), measure.getPreciseStart());
+			}
 		}
 	}
 

@@ -101,6 +101,19 @@ public class TGSongManager {
 		return false;
 	}
 
+	
+	// duration of one measure for all tracks OK?
+	public boolean areAllMeasuresValid(TGSong song, TGMeasureHeader header) {
+		boolean OK = true;
+		Iterator<TGTrack> tracks = song.getTracks();
+		while (tracks.hasNext()) {
+			TGTrack track = tracks.next();
+			OK &= getMeasureManager().isMeasureDurationValid(track.getMeasure(header.getNumber()-1));
+		}
+		return OK;
+	}
+	
+
 	public void setProperties(TGSong song, String name,String artist,String album,String author,String date,String copyright,String writer,String transcriber,String comments){
 		song.setName(name);
 		song.setArtist(artist);
@@ -470,8 +483,10 @@ public class TGSongManager {
 	}
 
 	public void changeTimeSignature(TGSong song, TGMeasureHeader header,TGTimeSignature timeSignature,boolean toEnd){
+		boolean movedNextHeader = false;
 		//asigno el nuevo ritmo
 		header.getTimeSignature().copyFrom(timeSignature);
+		autoCompleteSilences(song, header);
 
 		long nextStart = header.getStart() + header.getLength();
 		List<TGMeasureHeader> measures = getMeasureHeadersBeforeEnd(song, header.getStart() + 1);
@@ -479,15 +494,20 @@ public class TGSongManager {
 		while(it.hasNext()){
 			TGMeasureHeader nextHeader = it.next();
 			long theMove = nextStart - nextHeader.getStart();
-			if (!this.freeEditionMode) {
+			if (!this.freeEditionMode || areAllMeasuresValid(song, header)) {
 				moveMeasureHeader(nextHeader,theMove,0);
+				movedNextHeader = true;
 			}
 			if(toEnd){
 				nextHeader.getTimeSignature().copyFrom(timeSignature);
 			}
 			nextStart = nextHeader.getStart() + nextHeader.getLength();
 		}
-		if (!this.freeEditionMode) {
+		if (this.freeEditionMode) {
+			if (movedNextHeader) {
+				updatePreciseStart(song, header.getPreciseStart());
+			}
+		} else {
 			moveOutOfBoundsBeatsToNewMeasure(song, header.getStart());
 		}
 	}
@@ -907,6 +927,14 @@ public class TGSongManager {
 		}
 	}
 
+	public void autoCompleteSilences(TGSong song, TGMeasureHeader header){
+		Iterator<TGTrack> it = song.getTracks();
+		while(it.hasNext()){
+			TGTrack track = it.next();
+			getMeasureManager().autoCompleteSilences(track.getMeasure(header.getNumber()-1));
+		}
+	}
+
 	public void orderBeats(TGSong song){
 		Iterator<TGTrack> it = song.getTracks();
 		while(it.hasNext()){
@@ -974,7 +1002,30 @@ public class TGSongManager {
 		}
 	}
 
+	public void updatePreciseStart(TGSong song, long fromPreciseStart) {
+		Iterator<TGMeasureHeader> headers =  song.getMeasureHeaders();
+		long preciseStart = TGDuration.getPreciseStartingPoint();
+		while (headers.hasNext()) {
+			TGMeasureHeader header = headers.next();
+			if (header.getPreciseStart() > fromPreciseStart) {
+				header.setPreciseStart(preciseStart);
+			}
+			preciseStart += header.getPreciseLength();
+		}
+		Iterator<TGTrack> itTrack = song.getTracks();
+		while (itTrack.hasNext()) {
+			this.updatePreciseStart(itTrack.next(), fromPreciseStart);
+		}
+	}
+
 	public void updatePreciseStart(TGTrack track) {
+		Iterator<TGMeasure> itMeasures = track.getMeasures();
+		while(itMeasures.hasNext()) {
+			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
+		}
+	}
+
+	public void updatePreciseStart(TGTrack track, long fromPreciseStart) {
 		Iterator<TGMeasure> itMeasures = track.getMeasures();
 		while(itMeasures.hasNext()) {
 			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
