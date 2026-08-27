@@ -207,7 +207,7 @@ wsl --install
 
 ```
 
-This installs WSL2, the Ubuntu distro by default, and sets everything up. If it says you need a restart, do it. After reboot, open "Ubuntu" from the Start Menu. Let it finish installing and set up a UNIX username/password. Since WSL2 is seperate from your main machine, in order to connect to GitHub, you will need to generate an SSH key if you don't have one.
+This installs WSL2, the Ubuntu distro by default, and sets everything up. If it says you need a restart, do it. After reboot, open "Ubuntu" from the Start Menu. Let it finish installing and set up a UNIX username/password. Since WSL2 is separate from your main machine, in order to connect to GitHub, you will need to generate an SSH key if you don't have one.
 
 ### Installing Prerequisites
 
