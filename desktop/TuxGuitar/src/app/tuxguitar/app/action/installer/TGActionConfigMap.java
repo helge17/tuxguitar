@@ -32,6 +32,8 @@ import app.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
+import app.tuxguitar.app.action.impl.layout.TGScrollPageDownAction;
+import app.tuxguitar.app.action.impl.layout.TGScrollPageUpAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import app.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import app.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
@@ -393,6 +395,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGMouseMoveAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateItemsOnSuccessController());
 		this.map(TGMouseExitAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGMenuShownAction.NAME, LOCKABLE);
+		this.map(TGScrollPageUpAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGScrollPageDownAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
 
 		//caret actions
 		this.map(TGMoveToAction.NAME, LOCKABLE, new TGUpdateTransportPositionController());

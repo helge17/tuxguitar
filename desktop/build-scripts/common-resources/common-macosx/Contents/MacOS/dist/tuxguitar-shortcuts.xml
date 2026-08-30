@@ -16,6 +16,8 @@
 	<shortcut keys="-" action="action.note.duration.decrement-duration"/>
 	<shortcut keys="Up" action="action.caret.go-up"/>
 	<shortcut keys="Down" action="action.caret.go-down"/>
+	<shortcut keys="PgUp" action="action.view.scroll-page-up"/>
+	<shortcut keys="PgDn" action="action.view.scroll-page-down"/>
 	<shortcut keys="Left" action="action.caret.go-left"/>
 	<shortcut keys="Right" action="action.caret.go-right"/>
 	<shortcut keys="F5" action="action.gui.open-song-info-dialog"/>
