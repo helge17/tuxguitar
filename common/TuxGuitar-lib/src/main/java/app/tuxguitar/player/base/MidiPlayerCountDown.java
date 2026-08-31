@@ -39,6 +39,7 @@ public class MidiPlayerCountDown {
 					long tickStart = System.currentTimeMillis();
 
 					int tickIndex = 0;
+					int countInKey = MidiPlayer.DEFAULT_METRONOME_BELL_KEY;
 					
 					int localTickCount = (this.tickCount != 0) ? this.tickCount : header.getTimeSignature().getNumerator();
 					while( this.isRunning() && tickIndex <= localTickCount ){
@@ -47,11 +48,12 @@ public class MidiPlayerCountDown {
 								tickStart += tickLength;
 								tickIndex ++;
 								if( tickIndex <= localTickCount ){
-									this.player.getOutputTransmitter().sendNoteOn(channelId, 37, TGVelocities.DEFAULT, -1, false);
+									this.player.getOutputTransmitter().sendNoteOn(channelId, countInKey, TGVelocities.DEFAULT, -1, false);
 									synchronized (timerLock) {
 										timerLock.wait( 1 );
 									}
-									this.player.getOutputTransmitter().sendNoteOff(channelId, 37, TGVelocities.DEFAULT, -1, false);
+									this.player.getOutputTransmitter().sendNoteOff(channelId, countInKey, TGVelocities.DEFAULT, -1, false);
+									countInKey = MidiPlayer.DEFAULT_METRONOME_CLICK_KEY;
 								}
 							}
 						synchronized (timerLock) {

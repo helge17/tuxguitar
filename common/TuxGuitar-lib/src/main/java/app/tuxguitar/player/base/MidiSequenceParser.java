@@ -36,8 +36,6 @@ public class MidiSequenceParser {
 	public static final int DEFAULT_PLAY_FLAGS = (ADD_METRONOME);
 	public static final int DEFAULT_EXPORT_FLAGS = (ADD_FIRST_TICK_MOVE | ADD_DEFAULT_CONTROLS | ADD_MIXER_MESSAGES);
 
-	private static final int DEFAULT_METRONOME_CLICK_KEY = 33;
-	private static final int DEFAULT_METRONOME_BELL_KEY = 34;
 	private static final int DEFAULT_DURATION_PM = 60;
 	private static final int DEFAULT_DURATION_DEAD = 30;
 	private static final int DEFAULT_BEND = 64;
@@ -347,10 +345,10 @@ public class MidiSequenceParser {
 			if( this.metronomeChannelId >= 0 ){
 				long start = (startMove + header.getStart());
 				long length = header.getTimeSignature().getDenominator().getTime();
-				int metronomeKey = DEFAULT_METRONOME_BELL_KEY;
+				int metronomeKey = MidiPlayer.DEFAULT_METRONOME_BELL_KEY;
 				for(int i = 1; i <= header.getTimeSignature().getNumerator();i ++){
 					addNote(sh,getMetronomeTrack(),metronomeKey,start,length,TGVelocities.DEFAULT,this.metronomeChannelId,-1,false);
-					metronomeKey = DEFAULT_METRONOME_CLICK_KEY;
+					metronomeKey = MidiPlayer.DEFAULT_METRONOME_CLICK_KEY;
 					start += length;
 				}
 			}

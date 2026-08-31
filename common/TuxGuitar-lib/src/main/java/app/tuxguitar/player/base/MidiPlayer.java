@@ -30,6 +30,8 @@ import app.tuxguitar.util.singleton.TGSingletonUtil;
 public class MidiPlayer{
 
 	public static final int MAX_VOLUME = 10;
+	public static final int DEFAULT_METRONOME_CLICK_KEY = 33;
+	public static final int DEFAULT_METRONOME_BELL_KEY = 34;
 	private static final long TIMER_DELAY = 10;
 
 	private TGContext context;
