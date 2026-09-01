@@ -58,8 +58,8 @@ public class TGChordXMLReader {
 	/**
 	 * Read shortcuts from xml file
 	 *
-	 * @param shortcutsNode
-	 * @return
+	 * @param chordsNode XML node to read from.
+	 * @param chords A collection that will contain results. Should be empty.
 	 */
 	private static void loadChords(Node chordsNode,List<TGChord> chords){
 		try{

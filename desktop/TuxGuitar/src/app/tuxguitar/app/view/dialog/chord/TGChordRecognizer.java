@@ -121,9 +121,9 @@ public class TGChordRecognizer {
 		} ).start();
 	}
 
-	/** Fills the component's list with alternative names
+	/**
+	 * Fills the component's list with alternative names
 	 * @param chord TGChord to be recognized
-	 * @return parameters for adjustWidgets and getChordName methods
 	 */
 	protected void makeProposals(long processId, TGChord chord, boolean sharp, boolean redecorate, boolean setChordName) {
 		List<int[]> proposalParameters = new ArrayList<int[]>();
@@ -471,7 +471,6 @@ public class TGChordRecognizer {
 	 * -- a little adopted
 	 * @param a List of Proposals, unsorted
 	 * @param sortIndex 1 to sort by don'tHaveGrade, 2 to sort by unusualGrade
-	 * @return sorted list by selected criteria
 	 */
 	public void shellsort( List<Proposal> a, int sortIndex ){
 		int length = a.size();
