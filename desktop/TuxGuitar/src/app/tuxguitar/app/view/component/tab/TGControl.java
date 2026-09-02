@@ -115,7 +115,9 @@ public class TGControl {
 		this.vScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGControl.this.scrollY = TGControl.this.vScroll.getValue();
-				TGControl.this.activateManualVerticalScroll();
+				if (!MidiPlayer.getInstance(TGControl.this.context).isRunning()) {
+					TGControl.this.activateManualVerticalScroll();
+				}
 				TGControl.this.redraw();
 			}
 		});
@@ -141,6 +143,10 @@ public class TGControl {
 		this.painting = true;
 		try{
 			isPlaying = MidiPlayer.getInstance(this.context).isRunning();
+			if (isPlaying && !this.wasPlaying && manualVerticalScroll) {
+				this.manualVerticalScroll = false;
+				manualVerticalScroll = false;
+			}
 			float canvasWidth = this.canvas.getBounds().getWidth();
 			float canvasHeight = this.canvas.getBounds().getHeight();
 			float marginRight = this.getMargins().getWidth();
@@ -435,7 +441,8 @@ public class TGControl {
 	}
 
 	public void scrollVerticalPage(int direction) {
-		if (this.isDisposed() || direction == 0 || !this.vScroll.isVisible()) {
+		if (this.isDisposed() || MidiPlayer.getInstance(this.context).isRunning()
+				|| direction == 0 || !this.vScroll.isVisible()) {
 			return;
 		}
 
