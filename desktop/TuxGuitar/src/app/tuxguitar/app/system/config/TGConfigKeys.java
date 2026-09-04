@@ -90,6 +90,8 @@ public class TGConfigKeys {
 	public static final String MATRIX_COLOR_NOTE = "matrix.color.note";
 	public static final String MATRIX_COLOR_PLAY_NOTE = "matrix.color.play-note";
 	public static final String TABLE_AUTO_SIZE = "table.auto-size";
+	public static final String PLAYER_METRONOME_ON = "player.metronome-on";
+	public static final String PLAYER_COUNT_IN_ON = "player.count-in-on";
 
 	public static final String STYLE_MIN_BUFFER_SEPARATOR = "style.minBufferSeparator";
 	public static final String STYLE_MIN_TOP_SPACING = "style.minTopSpacing";

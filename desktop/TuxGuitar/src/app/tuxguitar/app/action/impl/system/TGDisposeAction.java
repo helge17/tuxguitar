@@ -61,6 +61,8 @@ public class TGDisposeAction extends TGActionBase {
 		config.setValue(TGConfigKeys.HEIGHT, tgWindow.getWindow().getBounds().getHeight());
 		config.setValue(TGConfigKeys.EDITOR_MOUSE_MODE,TablatureEditor.getInstance(getContext()).getTablature().getEditorKit().getMouseMode());
 		config.setValue(TGConfigKeys.MATRIX_GRIDS,TuxGuitar.getInstance().getMatrixEditor().getGrids());
+		config.setValue(TGConfigKeys.PLAYER_METRONOME_ON, MidiPlayer.getInstance(getContext()).isMetronomeEnabled());
+		config.setValue(TGConfigKeys.PLAYER_COUNT_IN_ON, MidiPlayer.getInstance(getContext()).getCountDown().isEnabled());
 
 		TuxGuitar.getInstance().getConfig().save();
 	}

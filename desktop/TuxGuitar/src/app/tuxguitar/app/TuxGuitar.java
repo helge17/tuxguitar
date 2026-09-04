@@ -348,6 +348,14 @@ public class TuxGuitar {
 
 		//check midi port
 		getPlayer().openOutputPort(getConfig().getStringValue(TGConfigKeys.MIDI_PORT), true);
+
+		// metronome and count-in activation
+		if (getConfig().getBooleanValue(TGConfigKeys.PLAYER_METRONOME_ON)) {
+			getPlayer().setMetronomeEnabled(true);
+		}
+		if (getConfig().getBooleanValue(TGConfigKeys.PLAYER_COUNT_IN_ON)) {
+			getPlayer().getCountDown().setEnabled(true);
+		}
 	}
 
 	public void updateCache(final boolean updateItems){
