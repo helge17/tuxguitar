@@ -2069,7 +2069,8 @@ public class TGMeasureManager {
 		}
 
 		// Si el primer o ultimo componente, quedan fuera del compas, entonces el movimiento no es satisfactorio
-		if(first != null && last != null && lastDuration != null){
+		boolean isFreeEditionMode = getSongManager().isFreeEditionMode(measure);
+		if(!isFreeEditionMode && first != null && last != null && lastDuration != null){
 			if((first.getBeat().getPreciseStart() + thePreciseMove) < measurePreciseStart || (last.getBeat().getPreciseStart() + lastDuration.getPreciseTime() + thePreciseMove) > measurePreciseEnd){
 				success = false;
 			}
