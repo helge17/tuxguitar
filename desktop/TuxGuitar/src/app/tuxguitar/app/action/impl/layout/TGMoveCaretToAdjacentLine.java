@@ -10,7 +10,6 @@ import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.graphics.control.TGBeatImpl;
-import app.tuxguitar.graphics.control.TGLayout;
 import app.tuxguitar.graphics.control.TGMeasureImpl;
 import app.tuxguitar.graphics.control.TGTrackImpl;
 import app.tuxguitar.song.models.TGBeat;
@@ -33,8 +32,6 @@ final class TGMoveCaretToAdjacentLine {
 		TGMeasureImpl currentMeasure = caret.getMeasure();
 		TGBeatImpl currentBeat = caret.getSelectedBeat();
 		TGTrackImpl track = caret.getTrack();
-		TGLayout layout = tablature.getViewLayout();
-
 		if (currentMeasure == null || currentBeat == null || track == null) {
 			return;
 		}
@@ -55,7 +52,7 @@ final class TGMoveCaretToAdjacentLine {
 			return;
 		}
 
-		float currentX = getBeatX(currentMeasure, currentBeat, layout);
+		float currentMeasureX = currentMeasure.getPosX();
 		TGMeasureImpl targetMeasure = null;
 		float bestDistance = Float.MAX_VALUE;
 
@@ -63,10 +60,7 @@ final class TGMoveCaretToAdjacentLine {
 		while (measures.hasNext()) {
 			TGMeasureImpl measure = (TGMeasureImpl) measures.next();
 			if (measure.getPosY() == targetY.floatValue()) {
-				float measureStartX = measure.getPosX();
-				float measureEndX = measureStartX + measure.getWidth(layout) + measure.getSpacing();
-				float distance = (currentX < measureStartX ? measureStartX - currentX
-						: (currentX > measureEndX ? currentX - measureEndX : 0));
+				float distance = Math.abs(currentMeasureX - measure.getPosX());
 				if (distance < bestDistance) {
 					bestDistance = distance;
 					targetMeasure = measure;
@@ -83,11 +77,6 @@ final class TGMoveCaretToAdjacentLine {
 			actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, caret.getSelectedString());
 			TGActionManager.getInstance(context).execute(TGMoveToAction.NAME, actionContext);
 		}
-	}
-
-	private static float getBeatX(TGMeasureImpl measure, TGBeatImpl beat, TGLayout layout) {
-		return (measure.getPosX() + measure.getHeaderImpl().getLeftSpacing(layout)
-				+ beat.getPosX() + beat.getSpacing(layout));
 	}
 
 	private static TGBeat findCorrespondingBeat(TGMeasureImpl currentMeasure, TGBeat currentBeat,
