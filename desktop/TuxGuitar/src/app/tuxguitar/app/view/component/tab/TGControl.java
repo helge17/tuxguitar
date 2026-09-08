@@ -440,29 +440,6 @@ public class TGControl {
 		}
 	}
 
-	public void scrollVerticalPage(int direction) {
-		if (this.isDisposed() || MidiPlayer.getInstance(this.context).isRunning()
-				|| direction == 0 || !this.vScroll.isVisible()) {
-			return;
-		}
-
-		int pageSize = Math.max(
-			SCROLL_INCREMENT,
-			Math.round(this.canvas.getBounds().getHeight() * 0.8f));
-		int value = Math.max(
-			this.vScroll.getMinimum(),
-			Math.min(
-				this.vScroll.getMaximum(),
-				this.scrollY + (direction * pageSize)));
-
-		this.scrollY = value;
-		this.activateManualVerticalScroll();
-		this.tablature.getCaret().setChanges(false);
-		this.vScroll.setValue(value);
-		this.tabScroll.reset(TGLayout.MODE_VERTICAL);
-		this.redraw();
-	}
-
 	private void activateManualVerticalScroll() {
 		Caret caret = this.tablature.getCaret();
 		this.manualVerticalScroll = true;

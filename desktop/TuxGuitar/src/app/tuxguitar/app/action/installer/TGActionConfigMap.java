@@ -395,8 +395,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGMouseMoveAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateItemsOnSuccessController());
 		this.map(TGMouseExitAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGMenuShownAction.NAME, LOCKABLE);
-		this.map(TGScrollPageUpAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
-		this.map(TGScrollPageDownAction.NAME, LOCKABLE | SYNC_THREAD | SHORTCUT);
+		this.map(TGScrollPageUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGScrollPageDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 
 		//caret actions
 		this.map(TGMoveToAction.NAME, LOCKABLE, new TGUpdateTransportPositionController());
