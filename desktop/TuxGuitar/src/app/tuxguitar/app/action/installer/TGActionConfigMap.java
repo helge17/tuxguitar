@@ -34,6 +34,8 @@ import app.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import app.tuxguitar.app.action.impl.layout.TGScrollPageDownAction;
 import app.tuxguitar.app.action.impl.layout.TGScrollPageUpAction;
+import app.tuxguitar.app.action.impl.layout.TGScrollLineDownAction;
+import app.tuxguitar.app.action.impl.layout.TGScrollLineUpAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import app.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import app.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
@@ -395,6 +397,8 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGMouseMoveAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateItemsOnSuccessController());
 		this.map(TGMouseExitAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGMenuShownAction.NAME, LOCKABLE);
+		this.map(TGScrollLineUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGScrollLineDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGScrollPageUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGScrollPageDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 

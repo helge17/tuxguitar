@@ -35,6 +35,8 @@ import app.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
 import app.tuxguitar.app.action.impl.layout.TGScrollPageDownAction;
 import app.tuxguitar.app.action.impl.layout.TGScrollPageUpAction;
+import app.tuxguitar.app.action.impl.layout.TGScrollLineDownAction;
+import app.tuxguitar.app.action.impl.layout.TGScrollLineUpAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import app.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import app.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
@@ -324,6 +326,8 @@ public class TGActionInstaller {
 		installAction(new TGMouseMoveAction(context));
 		installAction(new TGMouseExitAction(context));
 		installAction(new TGMenuShownAction(context));
+		installAction(new TGScrollLineUpAction(context));
+		installAction(new TGScrollLineDownAction(context));
 		installAction(new TGScrollPageUpAction(context));
 		installAction(new TGScrollPageDownAction(context));
 

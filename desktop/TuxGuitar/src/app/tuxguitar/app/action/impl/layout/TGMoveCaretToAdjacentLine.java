@@ -8,6 +8,8 @@ import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
 import app.tuxguitar.app.view.component.tab.Caret;
 import app.tuxguitar.app.view.component.tab.Tablature;
 import app.tuxguitar.app.view.component.tab.TablatureEditor;
+import app.tuxguitar.app.view.component.tab.TGControl;
+import app.tuxguitar.app.view.component.tabfolder.TGTabFolder;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.graphics.control.TGBeatImpl;
 import app.tuxguitar.graphics.control.TGMeasureImpl;
@@ -22,7 +24,19 @@ final class TGMoveCaretToAdjacentLine {
 		super();
 	}
 
-	public static void process(TGContext context, TGActionContext actionContext, int direction) {
+	public static void processLine(TGContext context, TGActionContext actionContext, int direction) {
+		process(context, actionContext, direction, 0f);
+	}
+
+	public static void processPage(TGContext context, TGActionContext actionContext, int direction) {
+		TGControl control = TGTabFolder.getInstance(context).findSelectedControl();
+		if (control != null && !control.isDisposed()) {
+			process(context, actionContext, direction, control.getCanvas().getBounds().getHeight());
+		}
+	}
+
+	private static void process(TGContext context, TGActionContext actionContext, int direction,
+			float verticalDistance) {
 		if (direction == 0) {
 			return;
 		}
@@ -35,17 +49,35 @@ final class TGMoveCaretToAdjacentLine {
 		if (currentMeasure == null || currentBeat == null || track == null) {
 			return;
 		}
+		TGControl pageControl = null;
+		if (verticalDistance > 0f) {
+			pageControl = TGTabFolder.getInstance(context).findSelectedControl();
+			if (pageControl == null || pageControl.isDisposed()) {
+				return;
+			}
+		}
 
 		float currentY = currentMeasure.getPosY();
 		Float targetY = null;
+		float expectedY = currentY + (direction * verticalDistance);
+		float bestYDistance = Float.MAX_VALUE;
+		boolean targetWithinPage = false;
 		Iterator<TGMeasure> measures = track.getMeasures();
 		while (measures.hasNext()) {
 			float measureY = ((TGMeasureImpl) measures.next()).getPosY();
-			if ((direction < 0 && measureY < currentY
-					&& (targetY == null || measureY > targetY.floatValue()))
-					|| (direction > 0 && measureY > currentY
-					&& (targetY == null || measureY < targetY.floatValue()))) {
-				targetY = measureY;
+			if ((direction < 0 && measureY < currentY) || (direction > 0 && measureY > currentY)) {
+				boolean withinPage = (verticalDistance == 0f
+						|| (direction < 0 && measureY >= expectedY)
+						|| (direction > 0 && measureY <= expectedY));
+				float distance = (verticalDistance > 0f
+						? Math.abs(expectedY - measureY)
+						: Math.abs(currentY - measureY));
+				if ((withinPage && !targetWithinPage)
+						|| (withinPage == targetWithinPage && distance < bestYDistance)) {
+					bestYDistance = distance;
+					targetY = measureY;
+					targetWithinPage = withinPage;
+				}
 			}
 		}
 		if (targetY == null) {
@@ -75,6 +107,10 @@ final class TGMoveCaretToAdjacentLine {
 			actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, targetMeasure);
 			actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, targetBeat);
 			actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, caret.getSelectedString());
+			if (pageControl != null) {
+				pageControl.requestCaretVerticalScroll(
+						Math.round(targetY.floatValue() - currentY));
+			}
 			TGActionManager.getInstance(context).execute(TGMoveToAction.NAME, actionContext);
 		}
 	}
