@@ -63,10 +63,6 @@ public class TGControl {
 
 	private boolean painting;
 	private boolean wasPlaying;
-	private boolean manualVerticalScroll;
-	private int manualScrollCaretTrack;
-	private long manualScrollCaretPosition;
-	private int manualScrollCaretString;
 
 	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
@@ -114,10 +110,6 @@ public class TGControl {
 		this.vScroll.setIncrement(SCROLL_INCREMENT);
 		this.vScroll.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
-				TGControl.this.scrollY = TGControl.this.vScroll.getValue();
-				if (!MidiPlayer.getInstance(TGControl.this.context).isRunning()) {
-					TGControl.this.activateManualVerticalScroll();
-				}
 				TGControl.this.redraw();
 			}
 		});
@@ -138,15 +130,10 @@ public class TGControl {
 		boolean isPlaying;
 		boolean moved = false;
 		TGMeasureImpl playedMeasure = null;
-		boolean manualVerticalScroll = this.manualVerticalScroll;
 
 		this.painting = true;
 		try{
 			isPlaying = MidiPlayer.getInstance(this.context).isRunning();
-			if (isPlaying && !this.wasPlaying && manualVerticalScroll) {
-				this.manualVerticalScroll = false;
-				manualVerticalScroll = false;
-			}
 			float canvasWidth = this.canvas.getBounds().getWidth();
 			float canvasHeight = this.canvas.getBounds().getHeight();
 			float marginRight = this.getMargins().getWidth();
@@ -159,8 +146,7 @@ public class TGControl {
 				this.scrollX = this.hScroll.getValue();
 				this.scrollY = this.vScroll.getValue();
 				// if user did not move scrollbars, follow player
-				if (!manualVerticalScroll
-						&& (this.scrollX==this.lastScrollX) && (this.scrollY==this.lastScrollY)
+				if ((this.scrollX==this.lastScrollX) && (this.scrollY==this.lastScrollY)
 						&& (playedMeasure != null) && playedMeasure.hasTrack(this.tablature.getCaret().getTrack().getNumber())){
 					// continuous scrolling can only be applied if the played measure remains in the same track
 					if (((this.tablature.getViewLayout().getStyle() & TGLayout.CONTINUOUS_SCROLL) != 0)
@@ -179,24 +165,14 @@ public class TGControl {
 				// new scrollbar attributes shall be defined from position in tab, not the opposite
 				// else :
 				if (!wasPlaying) {
-					if (manualVerticalScroll && this.tablature.getCaret().hasChanges()) {
-						if (this.hasCaretMovedSinceManualScroll()) {
-							this.manualVerticalScroll = false;
-							manualVerticalScroll = false;
-						} else {
-							this.tablature.getCaret().setChanges(false);
-						}
-					}
-					if (!manualVerticalScroll) {
-						// follow caret movement or user actions on scrollbars
-						if(this.tablature.getCaret().hasChanges()){
-							this.tablature.getCaret().setChanges(false);
-							this.jumpTo(this.tablature.getCaret().getMeasure(), false);
-							moved = true;
-						} else {
-							this.scrollX = this.hScroll.getValue();
-							this.scrollY = this.vScroll.getValue();
-						}
+					// follow caret movement or user actions on scrollbars
+					if(this.tablature.getCaret().hasChanges()){
+						this.tablature.getCaret().setChanges(false);
+						this.jumpTo(this.tablature.getCaret().getMeasure(), false);
+						moved = true;
+					} else {
+						this.scrollX = this.hScroll.getValue();
+						this.scrollY = this.vScroll.getValue();
 					}
 				}
 			}
@@ -438,21 +414,6 @@ public class TGControl {
 		if(!this.isDisposed() && !this.painting && MidiPlayer.getInstance(this.context).isRunning()) {
 			this.redraw();
 		}
-	}
-
-	private void activateManualVerticalScroll() {
-		Caret caret = this.tablature.getCaret();
-		this.manualVerticalScroll = true;
-		this.manualScrollCaretTrack = caret.getTrack().getNumber();
-		this.manualScrollCaretPosition = caret.getPosition();
-		this.manualScrollCaretString = caret.getStringNumber();
-	}
-
-	private boolean hasCaretMovedSinceManualScroll() {
-		Caret caret = this.tablature.getCaret();
-		return (this.manualScrollCaretTrack != caret.getTrack().getNumber()
-				|| this.manualScrollCaretPosition != caret.getPosition()
-				|| this.manualScrollCaretString != caret.getStringNumber());
 	}
 
 	public UICanvas getCanvas() {
