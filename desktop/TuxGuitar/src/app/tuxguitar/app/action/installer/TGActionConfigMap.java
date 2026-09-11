@@ -2,7 +2,11 @@ package app.tuxguitar.app.action.installer;
 
 import app.tuxguitar.app.action.TGActionMap;
 import app.tuxguitar.app.action.impl.caret.TGGoDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoLineDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoLineUpAction;
 import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
+import app.tuxguitar.app.action.impl.caret.TGGoPageDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoPageUpAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.caret.TGGoUpAction;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
@@ -32,10 +36,6 @@ import app.tuxguitar.app.action.impl.effects.TGOpenGraceDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenHarmonicDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloBarDialogAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTremoloPickingDialogAction;
-import app.tuxguitar.app.action.impl.layout.TGScrollPageDownAction;
-import app.tuxguitar.app.action.impl.layout.TGScrollPageUpAction;
-import app.tuxguitar.app.action.impl.layout.TGScrollLineDownAction;
-import app.tuxguitar.app.action.impl.layout.TGScrollLineUpAction;
 import app.tuxguitar.app.action.impl.effects.TGOpenTrillDialogAction;
 import app.tuxguitar.app.action.impl.file.TGCloseAllDocumentsAction;
 import app.tuxguitar.app.action.impl.file.TGCloseCurrentDocumentAction;
@@ -397,10 +397,6 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGMouseMoveAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateItemsOnSuccessController());
 		this.map(TGMouseExitAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 		this.map(TGMenuShownAction.NAME, LOCKABLE);
-		this.map(TGScrollLineUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGScrollLineDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGScrollPageUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
-		this.map(TGScrollPageDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 
 		//caret actions
 		this.map(TGMoveToAction.NAME, LOCKABLE, new TGUpdateTransportPositionController());
@@ -408,6 +404,10 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGGoLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGGoUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGGoDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoLineUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoLineDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoPageUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoPageDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 
 		//selector actions
 		this.map(TGExtendSelectionLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);

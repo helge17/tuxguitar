@@ -21,6 +21,7 @@ import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
@@ -257,6 +258,131 @@ public class Caret {
 				moveTo(getTrack(), measure, beat, getStringNumber());
 			}
 		}
+	}
+
+	public boolean moveLineUp() {
+		return this.moveVertical(-1, 0f);
+	}
+
+	public boolean moveLineDown() {
+		return this.moveVertical(1, 0f);
+	}
+
+	public boolean movePageUp(float visibleHeight) {
+		return this.moveVertical(-1, visibleHeight);
+	}
+
+	public boolean movePageDown(float visibleHeight) {
+		return this.moveVertical(1, visibleHeight);
+	}
+
+	/**
+	 * Moves between score lines while preserving the approximate horizontal and
+	 * musical position. Measures sharing the same {@code posY} belong to the same
+	 * score line. Searching only the selected track prevents a multi-track layout
+	 * from redirecting the caret to another track.
+	 */
+	private boolean moveVertical(int direction, float verticalDistance) {
+		if (direction == 0 || this.selectedMeasure == null || this.selectedBeat == null
+				|| this.selectedTrack == null) {
+			return false;
+		}
+
+		float currentY = this.selectedMeasure.getPosY();
+		Float targetY = null;
+		float expectedY = currentY + (direction * verticalDistance);
+		float bestYDistance = Float.MAX_VALUE;
+		boolean targetWithinPage = false;
+
+		/*
+		 * For line movement, choose the nearest distinct Y coordinate. For page
+		 * movement, prefer the line closest to the page boundary without crossing it.
+		 * This keeps one previously visible line as orientation. If no line fits within
+		 * the page, use the nearest line beyond the boundary so movement still occurs.
+		 */
+		Iterator<TGMeasure> measures = this.selectedTrack.getMeasures();
+		while (measures.hasNext()) {
+			float measureY = ((TGMeasureImpl) measures.next()).getPosY();
+			/* Ignore the current line and lines opposite to the requested direction. */
+			if ((direction < 0 && measureY < currentY) || (direction > 0 && measureY > currentY)) {
+				/* A page candidate is inside the page if it has not crossed expectedY. */
+				boolean withinPage = (verticalDistance == 0f
+						|| (direction < 0 && measureY >= expectedY)
+						|| (direction > 0 && measureY <= expectedY));
+				float distance = (verticalDistance > 0f
+						? Math.abs(expectedY - measureY)
+						: Math.abs(currentY - measureY));
+				/* Prefer a line inside the page, then the closest line in that category. */
+				if ((withinPage && !targetWithinPage)
+						|| (withinPage == targetWithinPage && distance < bestYDistance)) {
+					bestYDistance = distance;
+					targetY = measureY;
+					targetWithinPage = withinPage;
+				}
+			}
+		}
+		if (targetY == null) {
+			return false;
+		}
+
+		/* Preserve the visual column by selecting the measure closest to the current X. */
+		float currentMeasureX = this.selectedMeasure.getPosX();
+		TGMeasureImpl targetMeasure = null;
+		float bestDistance = Float.MAX_VALUE;
+		measures = this.selectedTrack.getMeasures();
+		while (measures.hasNext()) {
+			TGMeasureImpl measure = (TGMeasureImpl) measures.next();
+			if (measure.getPosY() == targetY.floatValue()) {
+				float distance = Math.abs(currentMeasureX - measure.getPosX());
+				if (distance < bestDistance) {
+					bestDistance = distance;
+					targetMeasure = measure;
+				}
+			}
+		}
+
+		TGBeat targetBeat = this.findCorrespondingBeat(this.selectedMeasure,
+				this.selectedBeat, targetMeasure, this.voice);
+		if (targetBeat == null) {
+			return false;
+		}
+
+		this.moveTo(this.selectedTrack, targetMeasure, targetBeat, this.selectedString.getNumber());
+		return true;
+	}
+
+	private TGBeat findCorrespondingBeat(TGMeasureImpl currentMeasure, TGBeat currentBeat,
+			TGMeasureImpl targetMeasure, int selectedVoice) {
+		if (targetMeasure == null || targetMeasure.getBeats().isEmpty()) {
+			return null;
+		}
+
+		/* Mapping the relative position retains the musical column across time signatures. */
+		double relativePosition = ((double) (currentBeat.getStart() - currentMeasure.getStart())
+				/ Math.max(1L, currentMeasure.getLength()));
+		long targetPosition = targetMeasure.getStart()
+				+ Math.round(relativePosition * targetMeasure.getLength());
+		TGBeat targetBeat = this.findClosestBeat(targetMeasure, targetPosition, selectedVoice, true);
+		return (targetBeat != null ? targetBeat
+				: this.findClosestBeat(targetMeasure, targetPosition, selectedVoice, false));
+	}
+
+	private TGBeat findClosestBeat(TGMeasureImpl measure, long targetPosition, int selectedVoice,
+			boolean requireVoiceContent) {
+		TGBeat targetBeat = null;
+		long bestDistance = Long.MAX_VALUE;
+		Iterator<TGBeat> beats = measure.getBeats().iterator();
+		while (beats.hasNext()) {
+			TGBeat beat = beats.next();
+			if (!requireVoiceContent || !beat.getVoice(selectedVoice).isEmpty()) {
+				long distance = Math.abs(targetPosition - beat.getStart());
+				if (distance < bestDistance) {
+					bestDistance = distance;
+					targetBeat = beat;
+				}
+			}
+		}
+		return targetBeat;
 	}
 
 	/**
