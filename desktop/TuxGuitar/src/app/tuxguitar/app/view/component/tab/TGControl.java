@@ -63,6 +63,7 @@ public class TGControl {
 
 	private boolean painting;
 	private boolean wasPlaying;
+	private Float caretVerticalScrollOrigin;
 
 	public TGControl(TGContext context, UIContainer parent) {
 		this.context = context;
@@ -168,7 +169,14 @@ public class TGControl {
 					// follow caret movement or user actions on scrollbars
 					if(this.tablature.getCaret().hasChanges()){
 						this.tablature.getCaret().setChanges(false);
-						this.jumpTo(this.tablature.getCaret().getMeasure(), false);
+						if (this.caretVerticalScrollOrigin != null) {
+							this.scrollY = this.vScroll.getValue() + Math.round(
+									this.tablature.getCaret().getMeasure().getPosY()
+									- this.caretVerticalScrollOrigin);
+							this.caretVerticalScrollOrigin = null;
+						} else {
+							this.jumpTo(this.tablature.getCaret().getMeasure(), false);
+						}
 						moved = true;
 					} else {
 						this.scrollX = this.hScroll.getValue();
@@ -418,6 +426,19 @@ public class TGControl {
 
 	public UICanvas getCanvas() {
 		return canvas;
+	}
+
+	public float getVisibleHeight() {
+		return this.canvas.getBounds().getHeight();
+	}
+
+	public void requestCaretVerticalScroll() {
+		TGMeasureImpl measure = this.tablature.getCaret().getMeasure();
+		this.caretVerticalScrollOrigin = (measure != null ? measure.getPosY() : null);
+	}
+
+	public void cancelCaretVerticalScroll() {
+		this.caretVerticalScrollOrigin = null;
 	}
 
 	public boolean isDisposed() {
