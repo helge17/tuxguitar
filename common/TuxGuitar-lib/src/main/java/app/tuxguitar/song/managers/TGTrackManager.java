@@ -758,6 +758,22 @@ public class TGTrackManager {
 		}
 	}
 
+	// intended for percussion tracks
+	public void replacePercussionNotes(TGTrack track, int find, int replace) {
+		Iterator<TGMeasure> measures = track.getMeasures();
+		while (measures.hasNext()) {
+			for (TGBeat beat : measures.next().getBeats()) {
+				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+					for (TGNote note : beat.getVoice(v).getNotes()) {
+						if (note.getValue() == find) {
+							note.setValue(replace);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private void moveNotesToStringZero(List<Integer> fromStringValues, List<TGNote> listNotes) {
 		for (TGNote note : listNotes) {
 			note.setValue(fromStringValues.get(note.getString()-1) + note.getValue());

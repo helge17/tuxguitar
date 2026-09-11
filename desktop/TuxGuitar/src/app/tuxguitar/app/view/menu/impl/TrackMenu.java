@@ -4,6 +4,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.app.action.impl.track.TGGoFirstTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
+import app.tuxguitar.app.action.impl.track.TGOpenReplacePercussionDialogAction;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
@@ -36,6 +37,7 @@ public class TrackMenu extends TGMenuItem {
 	private UIMenuCheckableItem changeSolo;
 	private UIMenuCheckableItem changeMute;
 	private UIMenuActionItem lyrics;
+	private UIMenuActionItem replacePercussion;
 	private UIMenuActionItem properties;
 
 	public TrackMenu(UIMenu menu) {
@@ -108,6 +110,12 @@ public class TrackMenu extends TGMenuItem {
 			this.lyrics = this.menu.createActionItem();
 			this.lyrics.addSelectionListener(this.createActionProcessor(TGToggleLyricEditorAction.NAME));
 
+			//--REPLACE PERCUSSION--
+			this.replacePercussion = this.menu.createActionItem();
+			this.replacePercussion.addSelectionListener(this.createActionProcessor(TGOpenReplacePercussionDialogAction.NAME));
+			// default: safe option (should be updated)
+			this.replacePercussion.setEnabled(false);
+
 			//--PROPERTIES--
 			this.properties = this.menu.createActionItem();
 			this.properties.addSelectionListener(this.createActionProcessor(TGOpenTrackPropertiesDialogAction.NAME));
@@ -131,6 +139,7 @@ public class TrackMenu extends TGMenuItem {
 			setMenuItemTextAndAccelerator(this.changeSolo, "track.solo", TGChangeTrackSoloAction.NAME);
 			setMenuItemTextAndAccelerator(this.changeMute, "track.mute", TGChangeTrackMuteAction.NAME);
 			setMenuItemTextAndAccelerator(this.lyrics, "track.lyrics", TGToggleLyricEditorAction.NAME);
+			setMenuItemTextAndAccelerator(this.replacePercussion, "track.replace-percussion", TGOpenReplacePercussionDialogAction.NAME);
 			setMenuItemTextAndAccelerator(this.properties, "track.properties", TGOpenTrackPropertiesDialogAction.NAME);
 		}
 	}
@@ -153,6 +162,7 @@ public class TrackMenu extends TGMenuItem {
 			this.moveDown.setEnabled(!running && tracks > 1);
 			this.changeSolo.setChecked(track.isSolo());
 			this.changeMute.setChecked(track.isMute());
+			this.replacePercussion.setEnabled(track.isPercussion());
 			this.properties.setEnabled(!running);
 		}
 	}
