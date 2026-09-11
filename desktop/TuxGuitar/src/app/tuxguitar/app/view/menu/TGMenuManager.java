@@ -82,6 +82,7 @@ public class TGMenuManager implements TGEventListener {
 			this.loadedMenuItems.add(new ToolMenuItem(this.menu));
 			this.loadedMenuItems.add(new HelpMenuItem(this.menu));
 			this.showMenuItems(this.loadedMenuItems);
+			this.updateItems();
 		}
 	}
 
