@@ -53,6 +53,7 @@ public class TGFretBoardConfig {
 	private UIColor colorString;
 	private UIColor colorFretPoint;
 	private UIColor colorNote;
+	private UIColor colorNoteMeasure;
 	private UIColor colorScale;
 	private UIColor colorTonic;
 	private UIColor colorNoteText;
@@ -85,6 +86,10 @@ public class TGFretBoardConfig {
 
 	public UIColor getColorNote() {
 		return this.colorNote;
+	}
+
+	public UIColor getColorNoteMeasure() {
+		return this.colorNoteMeasure;
 	}
 
 	public UIColor getColorScale() {
@@ -129,6 +134,7 @@ public class TGFretBoardConfig {
 		this.colorString = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
 		this.colorFretPoint = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
+		this.colorNoteMeasure = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
 		this.colorTonic = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_TONIC));
 		this.colorNoteText = createColor(factory, this.colorForeground(this.colorNote));
@@ -154,11 +160,12 @@ public class TGFretBoardConfig {
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_STRING,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_SCALE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_TONIC,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_TONIC));
 	}
 
-	public void save(int style, int direction, UIFontModel fm, UIColorModel rgbBackground, UIColorModel rgbString, UIColorModel rgbFretPoint, UIColorModel rgbNote, UIColorModel rgbScale, UIColorModel rgbTonic){
+	public void save(int style, int direction, UIFontModel fm, UIColorModel rgbBackground, UIColorModel rgbString, UIColorModel rgbFretPoint, UIColorModel rgbNote, UIColorModel rgbNoteMeasure, UIColorModel rgbScale, UIColorModel rgbTonic){
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		config.setValue(TGConfigKeys.FRETBOARD_STYLE,style);
 		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,direction);
@@ -167,6 +174,7 @@ public class TGFretBoardConfig {
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_STRING,rgbString);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,rgbFretPoint);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE,rgbNote);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE,rgbNoteMeasure);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_SCALE,rgbScale);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_TONIC,rgbTonic);
 	}
@@ -214,6 +222,7 @@ public class TGFretBoardConfig {
 		final UIColorModel rgbString = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.string-color") + ":", this.colorString, ++groupRow);
 		final UIColorModel rgbFretPoint = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.fretpoint-color") + ":", this.colorFretPoint, ++groupRow);
 		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.note-color") + ":", this.colorNote, ++groupRow);
+		final UIColorModel rgbNoteMeasure = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.note-measure-color") + ":", this.colorNoteMeasure, ++groupRow);
 		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.scale-note-color") + ":", this.colorScale, ++groupRow);
 		final UIColorModel rgbTonic = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.tonic-color") + ":", this.colorTonic, ++groupRow);
 
@@ -280,7 +289,7 @@ public class TGFretBoardConfig {
 
 				window.dispose();
 
-				save(style, direction, fontData, rgbBackground, rgbString, rgbFretPoint, rgbNote, rgbScale, rgbTonic);
+				save(style, direction, fontData, rgbBackground, rgbString, rgbFretPoint, rgbNote, rgbNoteMeasure, rgbScale, rgbTonic);
 				applyChanges();
 			}
 		});

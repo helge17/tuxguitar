@@ -69,6 +69,7 @@ public class TGConfigKeys {
 	public static final String FRETBOARD_COLOR_STRING = "fretboard.color.string";
 	public static final String FRETBOARD_COLOR_FRET_POINT = "fretboard.color.fret-point";
 	public static final String FRETBOARD_COLOR_NOTE = "fretboard.color.note";
+	public static final String FRETBOARD_COLOR_NOTE_MEASURE = "fretboard.color.notemeasure";
 	public static final String FRETBOARD_COLOR_SCALE = "fretboard.color.scale";
 	public static final String FRETBOARD_COLOR_TONIC = "fretboard.color.tonic";
 	public static final String FRETBOARD_DIRECTION = "fretboard.direction";
