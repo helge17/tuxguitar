@@ -43,6 +43,8 @@ public class TGTrackTuningDialog {
 	private List<TGTrackTuningModel> tuning;
 	private UITable<TGTrackTuningModel> tuningTable;
 	private UISpinner offsetSpinner;
+	private UIRadioButton keepNotes;
+	private UIRadioButton keepFrets;
 	private UIButton buttonEdit;
 	private UIButton buttonDelete;
 	private UIButton buttonMoveUp;
@@ -54,6 +56,7 @@ public class TGTrackTuningDialog {
 	private UITextField newPresetName;
 	private TuningPreset currentSelectedPreset;
 	private boolean isNewPreset;
+	private int initialNbStrings;
 
 	public TGTrackTuningDialog(TGViewContext context) {
 		this.context = context;
@@ -69,6 +72,7 @@ public class TGTrackTuningDialog {
 
 	public void show() {
 		TGTrack track = this.findTrack();
+		this.initialNbStrings = track.getStrings().size();
 
 		if(!track.isPercussion()) {
 			this.tuning = getTuningFromTrack(track);
@@ -429,9 +433,10 @@ public class TGTrackTuningDialog {
 			}
 			presetsPanel.layout();
 		}
-		// enable/disable buttons if needed (custom tuning or no tuning selected)
+		// enable/disable buttons and options if needed (custom tuning or no tuning selected)
 		updatePresetsButtons();
 		updateTuningButtons();
+		updateOptions();
 	}
 
 	private void updatePresetsButtons() {
@@ -459,6 +464,11 @@ public class TGTrackTuningDialog {
 		top.setLayout(topLayout);
 		panelLayout.set(top, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_TOP, true, true, 1, 1, null, null, 0f);
 
+		UITableLayout bottomLayout = new UITableLayout(0f);
+		UIPanel bottom = factory.createPanel(panel, false);
+		bottom.setLayout(bottomLayout);
+		panelLayout.set(bottom, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_BOTTOM, true, true, 1, 1, null, null, 0f);
+
 		//---------------------------------OFFSET--------------------------------
 		UILabel offsetLabel = factory.createLabel(top);
 		offsetLabel.setText(TuxGuitar.getProperty("tuning.offset") + ":");
@@ -468,8 +478,17 @@ public class TGTrackTuningDialog {
 		this.offsetSpinner.setMinimum(TGTrack.MIN_OFFSET);
 		this.offsetSpinner.setMaximum(TGTrack.MAX_OFFSET);
 		this.offsetSpinner.setValue(track.getOffset());
-		topLayout.set(this.offsetSpinner, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+		topLayout.set(this.offsetSpinner, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 
+		//---------------- KEEP NOTES vs. KEEP FRETS ------------------
+		this.keepNotes = factory.createRadioButton(bottom);
+		this.keepNotes.setText(TuxGuitar.getProperty("tuning.keep-notes"));
+		bottomLayout.set(this.keepNotes, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
+
+		this.keepFrets = factory.createRadioButton(bottom);
+		this.keepFrets.setText(TuxGuitar.getProperty("tuning.keep-frets"));
+		bottomLayout.set(this.keepFrets, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_BOTTOM, true, true);
+		this.keepNotes.setSelected(true);
 	}
 
 	private void initButtons(UILayoutContainer parent) {
@@ -689,6 +708,13 @@ public class TGTrackTuningDialog {
 		this.updateTuningTable();
 		this.updatePresetsPanel(null, findTuningInGroup(this.tuning, this.allTuningsGroup));
 		this.updateTuningButtons();
+		this.updateOptions();
+	}
+
+	private void updateOptions() {
+		boolean nbStringUnchanged = (this.tuning.size() == this.initialNbStrings);
+		this.keepNotes.setEnabled(nbStringUnchanged);
+		this.keepFrets.setEnabled(nbStringUnchanged);
 	}
 
 	private static List<TGTrackTuningModel> getTuningFromTrack(TGTrack track) {
@@ -739,6 +765,9 @@ public class TGTrackTuningDialog {
 				}
 				if( offsetChanges ) {
 					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_OFFSET, offset);
+				}
+				if (this.keepFrets.isEnabled() && this.keepFrets.isSelected()) {
+					tgActionProcessor.setAttribute(TGChangeTrackTuningAction.ATTRIBUTE_KEEP_FRETS, true);
 				}
 				tgActionProcessor.process();
 			}
