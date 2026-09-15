@@ -18,7 +18,10 @@ public class TGTransposeAction extends TGActionBase{
 	public static final String ATTRIBUTE_APPLY_TO_CHORDS = "applyToChords";
 	public static final String ATTRIBUTE_APPLY_TO_ALL_TRACKS = "applyToAllTracks";
 	public static final String ATTRIBUTE_APPLY_TO_ALL_MEASURES = "applyToAllMeasures";
-
+	public static final String ATTRIBUTE_APPLY_TO_MEASURE_RANGE = "applyToMeasureRange";
+	public static final String ATTRIBUTE_MEASURE_FROM = "measureFrom";
+	public static final String ATTRIBUTE_MEASURE_TO = "measureTo";
+	
 	public TGTransposeAction(TGContext context) {
 		super(context, NAME);
 	}
@@ -34,8 +37,30 @@ public class TGTransposeAction extends TGActionBase{
 		Boolean applyToChords = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_APPLY_TO_CHORDS));
 		Boolean applyToAllTracks = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_APPLY_TO_ALL_TRACKS));
 		Boolean applyToAllMeasures = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_APPLY_TO_ALL_MEASURES));
-
-		if( applyToAllMeasures ){
+		Boolean applyToMeasureRange = Boolean.TRUE.equals(context.getAttribute(ATTRIBUTE_APPLY_TO_MEASURE_RANGE));
+		Integer from = context.getAttribute(ATTRIBUTE_MEASURE_FROM);
+		Integer to = context.getAttribute(ATTRIBUTE_MEASURE_TO);
+		
+		if( applyToMeasureRange && (from != null) && (to != null)) {
+			if( applyToAllTracks ){
+				for( int i = 0 ; i < song.countTracks() ; i ++ ){
+					TGTrack track = song.getTrack( i );
+					for( int m = from ; m <= to ; m ++ ) {
+						TGMeasure measure = songManager.getTrackManager().getMeasure(track, m );
+						if( measure != null ){
+							transposeMeasure(songManager, song, measure, transposition , tryKeepString , applyToChords);
+						}
+					}
+				}
+			} else {
+				for( int m = from ; m <= to ; m ++ ) {
+					TGMeasure measure = songManager.getTrackManager().getMeasure( contextTrack, m );
+					if( measure != null ){
+						transposeMeasure(songManager, song, measure, transposition , tryKeepString , applyToChords);
+					}
+				}
+			}
+		} else if( applyToAllMeasures ){
 			if( applyToAllTracks ){
 				for( int i = 0 ; i < song.countTracks() ; i ++ ){
 					transposeTrack(songManager, song, song.getTrack( i ) , transposition , tryKeepString , applyToChords);
