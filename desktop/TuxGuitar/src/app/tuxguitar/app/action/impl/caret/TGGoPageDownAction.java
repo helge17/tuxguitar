@@ -23,13 +23,10 @@ public class TGGoPageDownAction extends TGActionBase {
 		if (control != null && !control.isDisposed()) {
 			Tablature tablature = TablatureEditor.getInstance(getContext()).getTablature();
 			Caret caret = tablature.getCaret();
-			control.requestCaretVerticalScroll();
 			if (caret.movePageDown(control.getVisibleHeight())) {
 				if (!Boolean.TRUE.equals(context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_KEEP_SELECTION))) {
 					tablature.getSelector().clearSelection();
 				}
-			} else {
-				control.cancelCaretVerticalScroll();
 			}
 		}
 	}

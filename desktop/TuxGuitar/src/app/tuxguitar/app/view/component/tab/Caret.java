@@ -261,19 +261,27 @@ public class Caret {
 	}
 
 	public boolean moveLineUp() {
-		return this.moveVertical(-1, 0f);
+		return this.moveLine(-1);
 	}
 
 	public boolean moveLineDown() {
-		return this.moveVertical(1, 0f);
+		return this.moveLine(1);
 	}
 
 	public boolean movePageUp(float visibleHeight) {
-		return this.moveVertical(-1, visibleHeight);
+		return this.movePage(-1, visibleHeight);
 	}
 
 	public boolean movePageDown(float visibleHeight) {
-		return this.moveVertical(1, visibleHeight);
+		return this.movePage(1, visibleHeight);
+	}
+
+	private boolean moveLine(int direction) {
+		return this.moveVertical(direction, 0f, false);
+	}
+
+	private boolean movePage(int direction, float visibleHeight) {
+		return this.moveVertical(direction, visibleHeight, true);
 	}
 
 	/**
@@ -282,7 +290,7 @@ public class Caret {
 	 * score line. Searching only the selected track prevents a multi-track layout
 	 * from redirecting the caret to another track.
 	 */
-	private boolean moveVertical(int direction, float verticalDistance) {
+	private boolean moveVertical(int direction, float movementDistance, boolean pageMovement) {
 		if (direction == 0 || this.selectedMeasure == null || this.selectedBeat == null
 				|| this.selectedTrack == null) {
 			return false;
@@ -290,7 +298,7 @@ public class Caret {
 
 		float currentY = this.selectedMeasure.getPosY();
 		Float targetY = null;
-		float expectedY = currentY + (direction * verticalDistance);
+		float expectedY = currentY + (direction * movementDistance);
 		float bestYDistance = Float.MAX_VALUE;
 		boolean targetWithinPage = false;
 
@@ -306,10 +314,10 @@ public class Caret {
 			/* Ignore the current line and lines opposite to the requested direction. */
 			if ((direction < 0 && measureY < currentY) || (direction > 0 && measureY > currentY)) {
 				/* A page candidate is inside the page if it has not crossed expectedY. */
-				boolean withinPage = (verticalDistance == 0f
+				boolean withinPage = (!pageMovement
 						|| (direction < 0 && measureY >= expectedY)
 						|| (direction > 0 && measureY <= expectedY));
-				float distance = (verticalDistance > 0f
+				float distance = (pageMovement
 						? Math.abs(expectedY - measureY)
 						: Math.abs(currentY - measureY));
 				/* Prefer a line inside the page, then the closest line in that category. */
