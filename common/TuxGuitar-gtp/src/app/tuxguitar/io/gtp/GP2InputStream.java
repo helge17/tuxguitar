@@ -130,6 +130,7 @@ public class GP2InputStream extends GTPInputStream {
 			}
 
 			TGSongManager tgSongManager = new TGSongManager(getFactory());
+			tgSongManager.updatePreciseStart(song);
 			tgSongManager.autoCompleteSilences(song);
 
 			this.updateChannelNames(tgSongManager, song);
