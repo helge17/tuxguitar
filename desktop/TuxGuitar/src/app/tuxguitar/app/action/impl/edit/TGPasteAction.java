@@ -16,7 +16,6 @@ import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.managers.TGTrackManager;
 import app.tuxguitar.song.models.TGBeat;
-import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
@@ -40,9 +39,11 @@ public class TGPasteAction extends TGActionBase {
 			TGFactory factory = getSongManager(tgActionContext).getFactory();
 			TGSongManager songManager = this.getSongManager(tgActionContext);
 			TGTrackManager trackManager = songManager.getTrackManager();
+			TGMeasureManager measureManager = songManager.getMeasureManager();
 			TGBeat beat = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 			TGBeatRange beatRange = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 			TGTrack destTrack = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+			TGSong song = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
 
 			// where to paste to?
 			TGBeat destinationBeat = beat;
@@ -58,31 +59,41 @@ public class TGPasteAction extends TGActionBase {
 				trackManager.allocateNotesToStrings(beatsListToPaste.getStringValues(), beatsListToPaste.getBeats(),
 						destTrack.getStrings(), destTrack.getMaxFret());
 
+				// need to add new measure(s)?
+				TGMeasureHeader lastHeader = songManager.getLastMeasureHeader(song);
+				long endSong = lastHeader.getPreciseStart() + lastHeader.getPreciseLength();
+				long endLastBeatToPaste = 0;
+				for (TGBeat beatToInsert : beatsListToPaste.getBeats()) {
+					endLastBeatToPaste = Math.max(endLastBeatToPaste, destinationBeat.getPreciseStart() + beatToInsert.getPreciseStart() + measureManager.getMaximumDuration(beatToInsert).getPreciseTime());
+				}
+				while (endLastBeatToPaste > endSong) {
+					lastHeader = songManager.addNewMeasureBeforeEnd(song);
+					measureManager.autoCompleteSilences(destTrack.getMeasure(lastHeader.getNumber()-1));
+					endSong = lastHeader.getPreciseStart() + lastHeader.getPreciseLength();
+				}
+
 				// replace beats at required position
 				List<TGBeat> newBeats = trackManager.replaceBeats(destTrack, beatsListToPaste.getBeats(), destinationBeat.getPreciseStart());
-
-				// need to add extra beats at the end? (e.g. when pasting at end of song)
-				if (beatsListToPaste.getBeats().size() > newBeats.size()) {
-					TGMeasureManager measureManager = songManager.getMeasureManager();
-					TGSong song = tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-					TGMeasureHeader newHeader = songManager.addNewMeasureBeforeEnd(song);
-					TGMeasure newMeasure = destTrack.getMeasure(newHeader.getNumber()-1);
-					long beatPreciseStart = newHeader.getPreciseStart();
-					for (int i=newBeats.size(); i<beatsListToPaste.getBeats().size(); i++) {
-						TGBeat beatToInsert = beatsListToPaste.getBeats().get(i);
-						beatToInsert.setPreciseStart(beatPreciseStart);
-						beatPreciseStart += measureManager.getMinimumDuration(beatToInsert) .getPreciseTime();
-						measureManager.addBeat(newMeasure, beatToInsert);
-						newBeats.add(beatToInsert);
-					}
-					trackManager.moveOutOfBoundsBeatsToNewMeasure(destTrack, newHeader.getStart());
-				}
 
 				// re-select new beats
 				if ((newBeats!=null) && (newBeats.size()>0))  {	// test is theoretically useless, just a precaution
 					Selector selector = TablatureEditor.getInstance(getContext()).getTablature().getSelector();
 					selector.initializeSelection(newBeats.get(0));
-					selector.updateSelection(newBeats.get(newBeats.size()-1));
+					// look for last updated beat (after pasting)
+					TGBeat lastUpdatedBeat = newBeats.get(newBeats.size()-1);
+					long endLastUpdatedBeat = lastUpdatedBeat.getPreciseStart() + measureManager.getMaximumDuration(lastUpdatedBeat).getPreciseTime();
+					while (endLastUpdatedBeat < endLastBeatToPaste) {
+						// last updated beat has been split over several measures, need to find the last one to re-select
+						TGBeat nextBeat = measureManager.getBeatPrecise(destTrack, endLastUpdatedBeat);
+						if (nextBeat != null) {
+							lastUpdatedBeat = nextBeat;
+							endLastUpdatedBeat = lastUpdatedBeat.getPreciseStart() + measureManager.getMaximumDuration(lastUpdatedBeat).getPreciseTime();;
+						}
+						else {
+							break;
+						}
+					}
+					selector.updateSelection(lastUpdatedBeat);
 				}
 			}
 		}
