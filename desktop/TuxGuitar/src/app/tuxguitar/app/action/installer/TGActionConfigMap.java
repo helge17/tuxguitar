@@ -2,7 +2,11 @@ package app.tuxguitar.app.action.installer;
 
 import app.tuxguitar.app.action.TGActionMap;
 import app.tuxguitar.app.action.impl.caret.TGGoDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoLineDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoLineUpAction;
 import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
+import app.tuxguitar.app.action.impl.caret.TGGoPageDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoPageUpAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.caret.TGGoUpAction;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
@@ -400,6 +404,10 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGGoLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGGoUpAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGGoDownAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoLineUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoLineDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoPageUpAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGGoPageDownAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 
 		//selector actions
 		this.map(TGExtendSelectionLeftAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT);

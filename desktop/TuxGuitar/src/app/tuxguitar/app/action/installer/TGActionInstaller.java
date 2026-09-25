@@ -3,7 +3,11 @@ package app.tuxguitar.app.action.installer;
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.app.action.TGActionAdapterManager;
 import app.tuxguitar.app.action.impl.caret.TGGoDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoLineDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoLineUpAction;
 import app.tuxguitar.app.action.impl.caret.TGGoLeftAction;
+import app.tuxguitar.app.action.impl.caret.TGGoPageDownAction;
+import app.tuxguitar.app.action.impl.caret.TGGoPageUpAction;
 import app.tuxguitar.app.action.impl.caret.TGGoRightAction;
 import app.tuxguitar.app.action.impl.caret.TGGoUpAction;
 import app.tuxguitar.app.action.impl.caret.TGMoveToAction;
@@ -329,6 +333,10 @@ public class TGActionInstaller {
 		installAction(new TGGoLeftAction(context));
 		installAction(new TGGoUpAction(context));
 		installAction(new TGGoDownAction(context));
+		installAction(new TGGoLineUpAction(context));
+		installAction(new TGGoLineDownAction(context));
+		installAction(new TGGoPageUpAction(context));
+		installAction(new TGGoPageDownAction(context));
 
 		//selector actions
 		installAction(new TGClearSelectionAction(context));
