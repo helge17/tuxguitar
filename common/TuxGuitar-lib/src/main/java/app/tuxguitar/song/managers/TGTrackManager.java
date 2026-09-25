@@ -415,6 +415,7 @@ public class TGTrackManager {
 						// need to cleanup measures following the updated one, possibly impacted by updated beat duration change
 						measureManager.autoCompleteSilences(measure);
 						measureManager.removeOverlappingRestBeats(measure);
+						measureManager.updateBeatsPreciseStart(measure);
 						if (!found) {
 							for (TGBeat beat : measureManager.getBeatsBeforeEndPrecise(measure.getBeats(), updatedBeat.getPreciseStart())) {
 								if (beat.getPreciseStart() >= expectedPreciseStart) {
