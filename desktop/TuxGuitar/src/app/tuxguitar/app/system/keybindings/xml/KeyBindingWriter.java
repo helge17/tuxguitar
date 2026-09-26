@@ -76,8 +76,8 @@ public class KeyBindingWriter {
 	/**
 	 * Write shortcuts to xml file
 	 *
-	 * @param shortcutsNode
-	 * @return
+	 * @param userKeyBindingsList A list of keybindings to write.
+	 * @param document XML document to write into.
 	 */
 	private static void setBindings(List<KeyBindingAction> userKeyBindingsList,Document document){
 		Node shortcutsNode = document.createElement(SHORTCUT_ROOT);
