@@ -1,6 +1,7 @@
 package app.tuxguitar.app.view.dialog.fretboard;
 
 import java.util.Iterator;
+import java.util.ArrayList;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
@@ -52,6 +53,7 @@ import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UISelectItem;
 import app.tuxguitar.ui.widget.UISeparator;
+import app.tuxguitar.util.TGBeatRange;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMusicKeyUtils;
 
@@ -82,6 +84,8 @@ public class TGFretBoard {
 	private UIImage fretBoard;
 	private TGBeat beat;
 	private TGBeat externalBeat;
+	private TGBeatRange selectedBeatRange;
+	private ArrayList<TGBeat> beats = new ArrayList<TGBeat>();
 	private int[] frets;
 	private int[] strings;
 	private float fretSpacing;
@@ -336,6 +340,17 @@ public class TGFretBoard {
 				this.beat = this.externalBeat;
 			}else{
 				this.beat = TablatureEditor.getInstance(this.context).getTablature().getCaret().getSelectedBeat();
+				this.selectedBeatRange = TablatureEditor.getInstance(this.context).getTablature().getCurrentBeatRange();
+			}
+
+			this.beats.clear();
+			if (this.beat != null) {
+				TGMeasure measure = this.beat.getMeasure();
+				if (measure != null) {
+					for (TGBeat measureBeat : measure.getBeats()) {
+						this.beats.add(measureBeat);
+					}
+				}
 			}
 
 			if ((this.strings.length != getStringCount()) || (this.stringSpacing != this.lastStringSpacing)) {
@@ -474,13 +489,13 @@ public class TGFretBoard {
 		painter.setForeground(this.config.getColorBackground());
 	}
 
-	private void paintNotes(UIPainter painter) {
-		if(this.beat != null){
+	private void paintBeatNotes(UIPainter painter, TGBeat beat, UIColor color) {
+		if(beat != null){
 			TGTrack track = getTrack();
-			int keySignature = this.beat.getMeasure().getKeySignature();
+			int keySignature = beat.getMeasure().getKeySignature();
 
-			for(int v = 0; v < this.beat.countVoices(); v ++){
-				TGVoice voice = this.beat.getVoice( v );
+			for(int v = 0; v < beat.countVoices(); v ++){
+				TGVoice voice = beat.getVoice( v );
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
 					TGNote note = it.next();
@@ -495,15 +510,23 @@ public class TGFretBoard {
 
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNoteText(), this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
+							paintKeyText(painter,this.config.getColorNoteText(), color, x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
 						}
 						else{
-							paintKeyOval(painter,this.config.getColorNote(), x, y);
+							paintKeyOval(painter,color, x, y);
 						}
 					}
 				}
 			}
 			painter.setLineWidth(1);
+		}
+	}
+
+	private void paintBeatNotes(UIPainter painter, ArrayList<TGBeat> beats, UIColor color) {
+		if(beats != null){
+			for(TGBeat beat : beats){
+				paintBeatNotes(painter, beat, color);
+			}
 		}
 	}
 
@@ -537,7 +560,18 @@ public class TGFretBoard {
 		this.updateEditor();
 		if (this.frets.length > 0 && this.strings.length > 0) {
 			paintFretBoard(painter);
-			paintNotes(painter);
+			paintBeatNotes(painter, this.beats, this.config.getColorNoteMeasure());
+
+			// If the player is not running, paint the notes of the current measure and selected beat range
+			if(!MidiPlayer.getInstance(this.context).isRunning()){
+				if (this.selectedBeatRange != null) {
+					for (TGBeat beat : this.selectedBeatRange.getBeats()) {
+						paintBeatNotes(painter, beat, this.config.getColorNoteMeasure());
+					}
+				}
+			}
+
+			paintBeatNotes(painter, this.beat, this.config.getColorNote());
 		}
 	}
 
