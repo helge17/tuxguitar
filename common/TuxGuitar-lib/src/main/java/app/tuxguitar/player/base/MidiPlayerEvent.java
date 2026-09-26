@@ -7,6 +7,7 @@ public class MidiPlayerEvent extends TGEvent {
 	public static final String EVENT_TYPE = "midi-player-notification";
 
 	public static final String PROPERTY_NOTIFICATION_TYPE = "notificationType";
+	public static final String PROPERTY_PAUSED = "paused";
 
 	public static final int NOTIFY_STARTED = 1;
 	public static final int NOTIFY_STOPPED = 2;
@@ -15,8 +16,13 @@ public class MidiPlayerEvent extends TGEvent {
 	public static final int NOTIFY_LOOP = 5;
 
 	public MidiPlayerEvent(int notificationType) {
+		this(notificationType, false);
+	}
+
+	public MidiPlayerEvent(int notificationType, boolean paused) {
 		super(EVENT_TYPE);
 
 		this.setAttribute(PROPERTY_NOTIFICATION_TYPE, Integer.valueOf(notificationType));
+		this.setAttribute(PROPERTY_PAUSED, paused);
 	}
 }
