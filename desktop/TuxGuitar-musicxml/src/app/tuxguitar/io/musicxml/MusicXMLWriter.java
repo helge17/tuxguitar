@@ -37,6 +37,7 @@ import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTempo;
+import app.tuxguitar.song.models.TGText;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVelocities;
@@ -484,6 +485,18 @@ public class MusicXMLWriter{
 		}
 	}
 
+	private void writeBeatText(Node parent, TGBeat beat, boolean isTablature, int nVoice){
+		if (isTablature || nVoice != 0 || !beat.isTextBeat()){
+			return;
+		}
+		TGText text = beat.getText();
+		if (text == null || text.isEmpty()){
+			return;
+		}
+		Node direction = this.addAttribute(this.addNode(parent, "direction"), "placement", "above");
+		Node directionType = this.addNode(direction, "direction-type");
+		this.addNode(directionType, "words", text.getValue());
+	}
 
 	private void writeBeats(Node parent, TGMeasure measure, int nVoice, boolean measureIsEmpty, boolean isTablature, MusicXMLMeasureLyric[] lyrics){
 		TGTrackManager trackMgr = new TGSongManager().getTrackManager();
@@ -514,15 +527,18 @@ public class MusicXMLWriter{
 			// need to insert rests before?
 			if (!firstBeats.isEmpty()){
 				for (TGBeat restBeat : firstBeats){
+					writeBeatText(parent, restBeat, isTablature, nVoice);
 					insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
 				}
 				firstBeats.clear();
 			}
 			if(voice.isRestVoice()){
 				if (beat.getStart() >= lastWrittenNoteEnd){
+					writeBeatText(parent, beat, isTablature, nVoice);
 					insertRest(parent, voice.getDuration(), nVoice, isTablature);
 				}
 			} else{
+				writeBeatText(parent, beat, isTablature, nVoice);
 				int noteCount = voice.countNotes();
 
 				for(int n = 0; n < noteCount; n ++){
@@ -642,6 +658,7 @@ public class MusicXMLWriter{
 		// empty measure? If so, fill with rests
 		if (!wroteSomething && measureIsEmpty && !firstBeats.isEmpty()){
 			for (TGBeat restBeat : firstBeats){
+				writeBeatText(parent, restBeat, isTablature, nVoice);
 				insertRest(parent, restBeat.getVoice(nVoice).getDuration(), nVoice, isTablature);
 			}
 		}
