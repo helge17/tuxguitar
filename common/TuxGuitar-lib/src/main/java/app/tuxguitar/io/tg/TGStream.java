@@ -60,6 +60,7 @@ public class TGStream {
 	protected static final String TAG_WRITER = "writer";
 	protected static final String TAG_TRANSCRIBER = "transcriber";
 	protected static final String TAG_COMMENTS = "comments";
+	protected static final String TAG_BACKING_TRACK = "backingTrack";
 	protected static final String TAG_CHANNEL = "TGChannel";
 	protected static final String TAG_ID = "id";
 	protected static final String TAG_BANK = "bank";

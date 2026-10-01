@@ -477,6 +477,28 @@ public class TestFileFormat20 {
 	}
 
 	@Test
+	public void testBackingTrack() throws IOException {
+		TGFactory factory = new TGFactory();
+		// no backing track in the reference song
+		TGSongReaderHandle handle = readSong("reference_20.tg", true);
+		TGSong song = handle.getSong();
+		assertNull(song.getBackingTrack());
+		// attach one, save, re-read
+		song.setBackingTrack("/music/backing track.mp3");
+		byte[] bufferXml = saveToXml(song, factory);
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		song = readFromXml(bufferXml, factory);
+		assertEquals("/music/backing track.mp3", song.getBackingTrack());
+		// cloning keeps the reference (undo/redo and document copy rely on it)
+		assertEquals("/music/backing track.mp3", song.clone(factory).getBackingTrack());
+		// removing the backing track does not write the tag anymore
+		song.setBackingTrack(null);
+		bufferXml = saveToXml(song, factory);
+		assertTrue(validatesSchema(new ByteArrayInputStream(bufferXml), false));
+		assertNull(readFromXml(bufferXml, factory).getBackingTrack());
+	}
+
+	@Test
 	public void testMaxFret() throws IOException {
 		TGFactory factory = new TGFactory();
 		TGSongReaderHandle handle = readSong("reference_20.tg", true);

@@ -29,6 +29,7 @@ public abstract class TGSong {
 	private String writer;
 	private String transcriber;
 	private String comments;
+	private String backingTrack;
 	private List<TGTrack> tracks;
 	private List<TGMeasureHeader> measureHeaders;
 	private List<TGChannel> channels;
@@ -118,6 +119,14 @@ public abstract class TGSong {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public String getBackingTrack() {
+		return this.backingTrack;
+	}
+
+	public void setBackingTrack(String backingTrack) {
+		this.backingTrack = backingTrack;
 	}
 
 	public int countMeasureHeaders(){
@@ -241,6 +250,7 @@ public abstract class TGSong {
 		this.setWriter(song.getWriter());
 		this.setTranscriber(song.getTranscriber());
 		this.setComments(song.getComments());
+		this.setBackingTrack(song.getBackingTrack());
 		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
 			TGMeasureHeader header = headers.next();

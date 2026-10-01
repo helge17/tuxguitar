@@ -10,6 +10,8 @@ import app.tuxguitar.app.action.impl.view.TGToggleChannelsDialogAction;
 import app.tuxguitar.app.action.impl.view.TGToggleMatrixEditorAction;
 import app.tuxguitar.app.action.impl.view.TGTogglePianoEditorAction;
 import app.tuxguitar.app.action.impl.view.TGToggleTransportDialogAction;
+import app.tuxguitar.app.backingtrack.TGBackingTrackListener;
+import app.tuxguitar.app.backingtrack.TGBackingTrackManager;
 import app.tuxguitar.app.document.TGDocumentListAttributes;
 import app.tuxguitar.app.document.TGDocumentListManager;
 import app.tuxguitar.app.synchronizer.TGSynchronizerControllerImpl;
@@ -332,6 +334,8 @@ public class TuxGuitar {
 	public void initMidiPlayer(){
 		MidiPlayer midiPlayer = MidiPlayer.getInstance(this.context);
 		midiPlayer.addListener( new TGTransportListener(this.context) );
+		midiPlayer.addListener( new TGBackingTrackListener(this.context) );
+		getActionManager().addPostExecutionListener( TGBackingTrackManager.getInstance(this.context) );
 		try {
 			getPlayer().addSequencerProvider(new MidiSequencerProviderImpl(this.context), false);
 		} catch (MidiPlayerException e) {

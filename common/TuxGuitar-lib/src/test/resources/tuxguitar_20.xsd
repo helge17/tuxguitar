@@ -461,6 +461,7 @@
               <xs:element name="writer" type="xs:string"/>
               <xs:element name="transcriber" type="xs:string"/>
               <xs:element name="comments" type="xs:string"/>
+              <xs:element name="backingTrack" type="xs:string" minOccurs="0"/>
               <xs:element name="TGChannel" type="channelType" minOccurs ="1" maxOccurs="16"/>
               <xs:element name="TGMeasureHeader" type="measureHeaderType" minOccurs ="1" maxOccurs="unbounded"/>
               <xs:element name="TGTrack" type="trackType" minOccurs ="1" maxOccurs="unbounded"/>
