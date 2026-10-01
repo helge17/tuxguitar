@@ -35,7 +35,8 @@
 		<dependency>
 			<groupId>javazoom</groupId>
 			<artifactId>jlayer</artifactId>
-			<scope>provided</scope>
+			<!-- 改为默认 compile 作用域，确保运行期一定可用；
+			     依赖管理已在 desktop/pom.xml 锁定 javazoom:jlayer:1.0.1 -->
 		</dependency>
 	</dependencies>
 </project>

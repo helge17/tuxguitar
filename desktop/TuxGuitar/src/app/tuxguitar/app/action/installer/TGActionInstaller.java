@@ -198,6 +198,7 @@ import app.tuxguitar.editor.action.file.TGLoadSongAction;
 import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import app.tuxguitar.editor.action.file.TGNewSongAction;
 import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.editor.action.file.TGSetBackingTrackAction;
 import app.tuxguitar.editor.action.file.TGWriteSongAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureListAction;
@@ -290,6 +291,7 @@ public class TGActionInstaller {
 		installAction(new TGSaveFileAction(context));
 		installAction(new TGReadURLAction(context));
 		installAction(new TGSelectBackingTrackAction(context));
+		installAction(new TGSetBackingTrackAction(context));
 		installAction(new TGRemoveBackingTrackAction(context));
 		installAction(new TGOpenFileAction(context));
 		installAction(new TGImportSongAction(context));
