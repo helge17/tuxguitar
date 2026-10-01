@@ -22,8 +22,10 @@ import app.tuxguitar.app.action.impl.file.TGOpenURLAction;
 import app.tuxguitar.app.action.impl.file.TGPrintAction;
 import app.tuxguitar.app.action.impl.file.TGPrintPreviewAction;
 import app.tuxguitar.app.action.impl.file.TGReadURLAction;
+import app.tuxguitar.app.action.impl.file.TGRemoveBackingTrackAction;
 import app.tuxguitar.app.action.impl.file.TGSaveAsFileAction;
 import app.tuxguitar.app.action.impl.file.TGSaveFileAction;
+import app.tuxguitar.app.action.impl.file.TGSelectBackingTrackAction;
 import app.tuxguitar.app.helper.TGFileHistory;
 import app.tuxguitar.app.system.icons.TGIconManager;
 import app.tuxguitar.app.view.menu.TGMenuItem;
@@ -53,6 +55,8 @@ public class FileMenuItem extends TGMenuItem {
 	private UIMenuActionItem deleteCustomTemplate;
 	private UIMenuActionItem save;
 	private UIMenuActionItem saveAs;
+	private UIMenuActionItem selectBackingTrack;
+	private UIMenuActionItem removeBackingTrack;
 	private UIMenuActionItem close;
 	private UIMenuActionItem closeOthers;
 	private UIMenuActionItem closeAll;
@@ -128,6 +132,17 @@ public class FileMenuItem extends TGMenuItem {
 		//--SAVE AS--
 		this.saveAs = this.fileMenuItem.getMenu().createActionItem();
 		this.saveAs.addSelectionListener(this.createActionProcessor(TGSaveAsFileAction.NAME));
+
+		//--SEPARATOR--
+		this.fileMenuItem.getMenu().createSeparator();
+
+		//--SET BACKING TRACK--
+		this.selectBackingTrack = this.fileMenuItem.getMenu().createActionItem();
+		this.selectBackingTrack.addSelectionListener(this.createActionProcessor(TGSelectBackingTrackAction.NAME));
+
+		//--REMOVE BACKING TRACK--
+		this.removeBackingTrack = this.fileMenuItem.getMenu().createActionItem();
+		this.removeBackingTrack.addSelectionListener(this.createActionProcessor(TGRemoveBackingTrackAction.NAME));
 
 		//--IMPORT | EXPORT--
 		TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(this.findContext());
@@ -338,6 +353,8 @@ public class FileMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.closeAll, "file.close-all", TGCloseAllDocumentsAction.NAME);
 		setMenuItemTextAndAccelerator(this.save, "file.save", TGSaveFileAction.NAME);
 		setMenuItemTextAndAccelerator(this.saveAs, "file.save-as", TGSaveAsFileAction.NAME);
+		this.selectBackingTrack.setText(TuxGuitar.getProperty("file.backing-track.select"));
+		this.removeBackingTrack.setText(TuxGuitar.getProperty("file.backing-track.remove"));
 		setMenuItemTextAndAccelerator(this.printPreview, "file.print-preview", TGPrintPreviewAction.NAME);
 		setMenuItemTextAndAccelerator(this.print, "file.print", TGPrintAction.NAME);
 		setMenuItemTextAndAccelerator(this.historyItem, "file.history", null);

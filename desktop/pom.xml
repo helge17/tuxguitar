@@ -347,6 +347,14 @@
 				<version>2.15.1</version>
 			</dependency>
 			<!-- /commons compress -->
+
+			<!-- backing track (mp3 decoder) -->
+			<dependency>
+				<groupId>javazoom</groupId>
+				<artifactId>jlayer</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+			<!-- /backing track -->
 		</dependencies>
 	</dependencyManagement>
 

@@ -93,6 +93,11 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 		song.setWriter(readSibling(nodeElement, TAG_WRITER));
 		song.setTranscriber(readSibling(nodeElement, TAG_TRANSCRIBER));
 		song.setComments(readSibling(nodeElement, TAG_COMMENTS));
+		Node nodeBackingTrack = getSiblingNode(nodeElement, TAG_BACKING_TRACK);
+		if( nodeBackingTrack != null ) {
+			String backingTrack = nodeBackingTrack.getTextContent();
+			song.setBackingTrack((backingTrack == null || backingTrack.trim().isEmpty()) ? null : backingTrack);
+		}
 		this.readChannels(song, nodeSong);
 		this.readMeasureHeaders(song, nodeSong);
 		this.readTracks(song, nodeSong);

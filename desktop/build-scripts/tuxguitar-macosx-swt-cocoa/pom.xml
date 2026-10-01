@@ -155,6 +155,12 @@
 									<destFileName>commons-io.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
 								</artifactItem>
+								<artifactItem>
+									<groupId>javazoom</groupId>
+									<artifactId>jlayer</artifactId>
+									<destFileName>jlayer.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</outputDirectory>
+								</artifactItem>
 								<!-- /3RD PARTY LIBRARIES -->
 
 								<!-- PLUGINS -->

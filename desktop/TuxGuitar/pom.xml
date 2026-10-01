@@ -32,5 +32,10 @@
 			<artifactId>tuxguitar-ui-toolkit</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>javazoom</groupId>
+			<artifactId>jlayer</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
