@@ -12,6 +12,7 @@ public class TGSetBackingTrackAction extends TGActionBase {
 
 	public static final String ATTRIBUTE_PATH = "backing-track.path";
 	public static final String ATTRIBUTE_REMOVE = "backing-track.remove";
+	public static final String ATTRIBUTE_VOLUME = "backing-track.volume";
 
 	public TGSetBackingTrackAction(TGContext context) {
 		super(context, NAME);
@@ -29,6 +30,10 @@ public class TGSetBackingTrackAction extends TGActionBase {
 			if( path != null && !path.trim().isEmpty() ) {
 				song.setBackingTrack(path);
 			}
+		}
+		Object volumeAttribute = context.getAttribute(ATTRIBUTE_VOLUME);
+		if( volumeAttribute instanceof Float ) {
+			song.setBackingTrackVolume(((Float) volumeAttribute).floatValue());
 		}
 	}
 }

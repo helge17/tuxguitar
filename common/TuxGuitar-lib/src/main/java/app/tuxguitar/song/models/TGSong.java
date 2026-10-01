@@ -30,6 +30,7 @@ public abstract class TGSong {
 	private String transcriber;
 	private String comments;
 	private String backingTrack;
+	private float backingTrackVolume = 1.0f;
 	private List<TGTrack> tracks;
 	private List<TGMeasureHeader> measureHeaders;
 	private List<TGChannel> channels;
@@ -127,6 +128,14 @@ public abstract class TGSong {
 
 	public void setBackingTrack(String backingTrack) {
 		this.backingTrack = backingTrack;
+	}
+
+	public float getBackingTrackVolume() {
+		return this.backingTrackVolume;
+	}
+
+	public void setBackingTrackVolume(float backingTrackVolume) {
+		this.backingTrackVolume = backingTrackVolume;
 	}
 
 	public int countMeasureHeaders(){
@@ -251,6 +260,7 @@ public abstract class TGSong {
 		this.setTranscriber(song.getTranscriber());
 		this.setComments(song.getComments());
 		this.setBackingTrack(song.getBackingTrack());
+		this.setBackingTrackVolume(song.getBackingTrackVolume());
 		Iterator<TGMeasureHeader> headers = song.getMeasureHeaders();
 		while(headers.hasNext()){
 			TGMeasureHeader header = headers.next();

@@ -13,7 +13,7 @@ import app.tuxguitar.util.error.TGErrorManager;
 public class TGBackingTrackListener implements TGEventListener {
 
 	private static final int SYNC_PERIOD_MS = 100;
-	private static final long DRIFT_THRESHOLD_MS = 100L;
+	private static final long DRIFT_THRESHOLD_MS = 1000L;
 
 	private TGContext context;
 	private volatile boolean syncActive;

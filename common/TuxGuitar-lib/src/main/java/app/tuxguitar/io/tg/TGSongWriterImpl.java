@@ -114,6 +114,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		this.addNode(nodeSong, TAG_COMMENTS, song.getComments());
 		if( song.getBackingTrack() != null && !song.getBackingTrack().isEmpty() ) {
 			this.addNode(nodeSong, TAG_BACKING_TRACK, song.getBackingTrack());
+			this.addNode(nodeSong, TAG_BACKING_TRACK_VOLUME, Float.toString(song.getBackingTrackVolume()));
 		}
 		// channels
 		Iterator<TGChannel> channels = song.getChannels();

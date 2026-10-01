@@ -15,6 +15,8 @@ public class TGUndoableBackingTrack extends TGUndoableEditBase {
 	private int doAction;
 	private String undoPath;
 	private String redoPath;
+	private float undoVolume;
+	private float redoVolume;
 
 	private TGUndoableBackingTrack(TGContext context){
 		super(context);
@@ -24,7 +26,7 @@ public class TGUndoableBackingTrack extends TGUndoableEditBase {
 		if(!canRedo()){
 			throw new TGCannotRedoException();
 		}
-		this.changeBackingTrack(actionContext, getSong(), this.redoPath);
+		this.changeBackingTrack(actionContext, getSong(), this.redoPath, this.redoVolume);
 		this.doAction = UNDO_ACTION;
 	}
 
@@ -32,7 +34,7 @@ public class TGUndoableBackingTrack extends TGUndoableEditBase {
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.changeBackingTrack(actionContext, getSong(), this.undoPath);
+		this.changeBackingTrack(actionContext, getSong(), this.undoPath, this.undoVolume);
 		this.doAction = REDO_ACTION;
 	}
 
@@ -49,18 +51,21 @@ public class TGUndoableBackingTrack extends TGUndoableEditBase {
 		TGUndoableBackingTrack undoable = new TGUndoableBackingTrack(context);
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoPath = song.getBackingTrack();
+		undoable.undoVolume = song.getBackingTrackVolume();
 		return undoable;
 	}
 
 	public TGUndoableBackingTrack endUndo(){
 		this.redoPath = getSong().getBackingTrack();
+		this.redoVolume = getSong().getBackingTrackVolume();
 		return this;
 	}
 
-	public void changeBackingTrack(TGActionContext context, TGSong song, String path) {
+	public void changeBackingTrack(TGActionContext context, TGSong song, String path, float volume) {
 		TGActionProcessor tgActionProcessor = this.createByPassUndoableAction(TGSetBackingTrackAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
 		tgActionProcessor.setAttribute(TGSetBackingTrackAction.ATTRIBUTE_REMOVE, Boolean.TRUE);
+		tgActionProcessor.setAttribute(TGSetBackingTrackAction.ATTRIBUTE_VOLUME, Float.valueOf(volume));
 		if( path != null ) {
 			tgActionProcessor.setAttribute(TGSetBackingTrackAction.ATTRIBUTE_PATH, path);
 			tgActionProcessor.setAttribute(TGSetBackingTrackAction.ATTRIBUTE_REMOVE, Boolean.FALSE);

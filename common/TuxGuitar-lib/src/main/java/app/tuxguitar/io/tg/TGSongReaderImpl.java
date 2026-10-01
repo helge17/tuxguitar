@@ -98,6 +98,15 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			String backingTrack = nodeBackingTrack.getTextContent();
 			song.setBackingTrack((backingTrack == null || backingTrack.trim().isEmpty()) ? null : backingTrack);
 		}
+		Node nodeBackingTrackVolume = getSiblingNode(nodeElement, TAG_BACKING_TRACK_VOLUME);
+		if( nodeBackingTrackVolume != null ) {
+			try {
+				float volume = Float.valueOf(nodeBackingTrackVolume.getTextContent());
+				song.setBackingTrackVolume((volume < 0f || volume > 1f) ? 1.0f : volume);
+			} catch (Throwable throwable) {
+				song.setBackingTrackVolume(1.0f);
+			}
+		}
 		this.readChannels(song, nodeSong);
 		this.readMeasureHeaders(song, nodeSong);
 		this.readTracks(song, nodeSong);

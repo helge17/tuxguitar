@@ -6,6 +6,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 
 import app.tuxguitar.action.TGActionEvent;
 import app.tuxguitar.action.TGActionPostExecutionEvent;
@@ -42,10 +43,12 @@ public class TGBackingTrackManager implements TGEventListener {
 	private long baseFrames;
 	private long baseNanos;
 	private long pendingPlayMs;
+	private float volume;
 
 	private TGBackingTrackManager(TGContext context) {
 		this.context = context;
 		this.pendingPlayMs = NO_PENDING;
+		this.volume = 1.0f;
 	}
 
 	public static TGBackingTrackManager getInstance(TGContext context) {
@@ -123,6 +126,8 @@ public class TGBackingTrackManager implements TGEventListener {
 			this.errorFileName = null;
 			this.baseFrames = 0;
 			this.baseNanos = System.nanoTime();
+			this.syncVolumeFromSong();
+			this.applyVolume();
 			if( this.pendingPlayMs != NO_PENDING && MidiPlayer.getInstance(this.context).isRunning() ) {
 				long positionMs = this.pendingPlayMs;
 				this.pendingPlayMs = NO_PENDING;
@@ -178,13 +183,71 @@ public class TGBackingTrackManager implements TGEventListener {
 			this.pendingPlayMs = NO_PENDING;
 			return;
 		}
+		// Avoid an audible cut: when already playing and close to the target frame,
+		// keep the clip running instead of stop/start (which restarts audio output).
+		if( this.playing ) {
+			try {
+				int currentFrame = this.clip.getFramePosition();
+				long tolerance = Math.max(1L, (long) (this.format.getFrameRate() * 0.25));
+				if( Math.abs(currentFrame - frames) <= tolerance ) {
+					this.applyVolume();
+					this.pendingPlayMs = NO_PENDING;
+					return;
+				}
+			} catch (Throwable throwable) {
+			}
+		}
 		this.clip.stop();
 		this.clip.setFramePosition((int) frames);
 		this.clip.start();
+		this.applyVolume();
 		this.baseFrames = frames;
 		this.baseNanos = System.nanoTime();
 		this.playing = true;
 		this.pendingPlayMs = NO_PENDING;
+	}
+
+	public synchronized void setVolume(float volume) {
+		if( volume < 0f ) {
+			volume = 0f;
+		}
+		if( volume > 1f ) {
+			volume = 1f;
+		}
+		this.volume = volume;
+		this.applyVolume();
+	}
+
+	public synchronized float getVolume() {
+		return this.volume;
+	}
+
+	private void syncVolumeFromSong() {
+		TGSong song = null;
+		try {
+			song = TGDocumentManager.getInstance(this.context).getSong();
+		} catch (Throwable throwable) {
+		}
+		float volume = (song != null) ? song.getBackingTrackVolume() : 1.0f;
+		if( volume < 0f || volume > 1f ) {
+			volume = 1.0f;
+		}
+		this.volume = volume;
+	}
+
+	private void applyVolume() {
+		Clip clip = this.clip;
+		if( clip == null ) {
+			return;
+		}
+		try {
+			if( clip.isControlSupported(FloatControl.Type.MASTER_GAIN) ) {
+				FloatControl gain = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+				float dB = (this.volume <= 0.001f) ? gain.getMinimum() : (float) (20.0 * Math.log10(this.volume));
+				gain.setValue(dB);
+			}
+		} catch (Throwable throwable) {
+		}
 	}
 
 	public synchronized void pause() {
