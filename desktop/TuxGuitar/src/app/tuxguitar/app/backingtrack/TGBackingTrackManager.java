@@ -7,6 +7,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 
 import app.tuxguitar.action.TGActionEvent;
 import app.tuxguitar.action.TGActionPostExecutionEvent;
@@ -43,6 +45,8 @@ public class TGBackingTrackManager implements TGEventListener {
 	private long baseFrames;
 	private long baseNanos;
 	private long pendingPlayMs;
+	private volatile long lastInternalStopNanos;
+	private volatile long repositionNanos;
 	private float volume;
 
 	private TGBackingTrackManager(TGContext context) {
@@ -112,8 +116,15 @@ public class TGBackingTrackManager implements TGEventListener {
 		this.loading = false;
 		this.loadingPath = null;
 		try {
-			Clip newClip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, data.getFormat()));
-			newClip.open(data.getFormat(), data.getPcm(), 0, data.getPcm().length);
+		Clip newClip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, data.getFormat()));
+		newClip.addLineListener(new LineListener() {
+			public void update(LineEvent event) {
+				if( LineEvent.Type.STOP.equals(event.getType()) ) {
+					TGBackingTrackManager.this.onClipStoppedSpontaneously();
+				}
+			}
+		});
+		newClip.open(data.getFormat(), data.getPcm(), 0, data.getPcm().length);
 			newClip.setFramePosition(0);
 			this.closeClip();
 			this.clip = newClip;
@@ -178,7 +189,7 @@ public class TGBackingTrackManager implements TGEventListener {
 			this.playing = false;
 			this.baseFrames = frameCount;
 			this.baseNanos = System.nanoTime();
-			this.clip.stop();
+			this.stopClipInternal();
 			this.clip.setFramePosition((int) frameCount);
 			this.pendingPlayMs = NO_PENDING;
 			return;
@@ -187,7 +198,7 @@ public class TGBackingTrackManager implements TGEventListener {
 		// keep the clip running instead of stop/start (which restarts audio output).
 		if( this.playing ) {
 			try {
-				int currentFrame = this.clip.getFramePosition();
+				long currentFrame = this.clip.getLongFramePosition();
 				long tolerance = Math.max(1L, (long) (this.format.getFrameRate() * 0.25));
 				if( Math.abs(currentFrame - frames) <= tolerance ) {
 					this.applyVolume();
@@ -197,7 +208,7 @@ public class TGBackingTrackManager implements TGEventListener {
 			} catch (Throwable throwable) {
 			}
 		}
-		this.clip.stop();
+		this.stopClipInternal();
 		this.clip.setFramePosition((int) frames);
 		this.clip.start();
 		this.applyVolume();
@@ -205,6 +216,44 @@ public class TGBackingTrackManager implements TGEventListener {
 		this.baseNanos = System.nanoTime();
 		this.playing = true;
 		this.pendingPlayMs = NO_PENDING;
+		this.repositionNanos = System.nanoTime();
+	}
+
+	/**
+	 * Stops the clip as part of an internal operation (reposition or pause).
+	 * Records the timestamp so the LineListener ignores the STOP event we cause ourselves.
+	 */
+	private void stopClipInternal() {
+		this.lastInternalStopNanos = System.nanoTime();
+		if( this.clip != null ) {
+			try {
+				this.clip.stop();
+			} catch (Throwable throwable) {
+			}
+		}
+	}
+
+	/**
+	 * Called from the LineListener when the clip stops on its own (audio underrun
+	 * or end of media). Without this, the internal state keeps assuming playback
+	 * continues and the position estimate runs away from reality.
+	 */
+	private synchronized void onClipStoppedSpontaneously() {
+		// Ignore STOP events caused by our own stop() calls (repositioning / pause).
+		if( System.nanoTime() - this.lastInternalStopNanos < 400000000L ) {
+			return;
+		}
+		Clip clip = this.clip;
+		if( clip == null || !this.playing ) {
+			return;
+		}
+		try {
+			this.baseFrames = clip.getLongFramePosition();
+		} catch (Throwable throwable) {
+			this.baseFrames = this.getFrameCount();
+		}
+		this.baseNanos = System.nanoTime();
+		this.playing = false;
 	}
 
 	public synchronized void setVolume(float volume) {
@@ -256,14 +305,21 @@ public class TGBackingTrackManager implements TGEventListener {
 			this.baseFrames = this.getCurrentFrames();
 			this.baseNanos = System.nanoTime();
 		}
-		if( this.clip != null ) {
-			this.clip.stop();
-		}
+		this.stopClipInternal();
 		this.playing = false;
 	}
 
 	public synchronized boolean isPlaying() {
 		return this.playing && this.clip != null;
+	}
+
+	/**
+	 * True shortly after an internal reposition, when the clip's reported frame
+	 * position may still be stale. The sync loop must not "correct" against it,
+	 * or it would restart the clip in a loop (audible repeated cuts).
+	 */
+	public synchronized boolean isInRepositionGrace() {
+		return (System.nanoTime() - this.repositionNanos) < 400000000L;
 	}
 
 	public synchronized boolean isLoading() {
@@ -346,6 +402,17 @@ public class TGBackingTrackManager implements TGEventListener {
 		if( !this.playing || this.clip == null || this.format == null ) {
 			return this.baseFrames;
 		}
+		// Prefer the clip's real playback position: it reflects audio underruns/stalls,
+		// while a wall-clock estimate would silently drift away from what is audible.
+		try {
+			long realFrames = this.clip.getLongFramePosition();
+			if( realFrames >= 0L ) {
+				long frameCount = this.getFrameCount();
+				return (realFrames > frameCount) ? frameCount : realFrames;
+			}
+		} catch (Throwable throwable) {
+		}
+		// Fallback: wall-clock estimate.
 		long elapsedNanos = System.nanoTime() - this.baseNanos;
 		long elapsedFrames = (elapsedNanos * (long) this.format.getFrameRate()) / 1000000000L;
 		long frames = this.baseFrames + elapsedFrames;

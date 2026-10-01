@@ -13,10 +13,12 @@ import app.tuxguitar.util.error.TGErrorManager;
 public class TGBackingTrackListener implements TGEventListener {
 
 	private static final int SYNC_PERIOD_MS = 100;
-	private static final long DRIFT_THRESHOLD_MS = 1000L;
+	private static final long DRIFT_THRESHOLD_MS = 400L;
+	private static final int DRIFT_CONFIRMATIONS = 2;
 
 	private TGContext context;
 	private volatile boolean syncActive;
+	private int driftStrikes;
 
 	public TGBackingTrackListener(TGContext context) {
 		this.context = context;
@@ -105,8 +107,25 @@ public class TGBackingTrackListener implements TGEventListener {
 				return true;
 			}
 			long driftMs = manager.getPositionMs() - targetMs;
-			if( !manager.isPlaying() || Math.abs(driftMs) > DRIFT_THRESHOLD_MS ) {
+			if( manager.isInRepositionGrace() ) {
+				// The clip was just (re)started; its reported position may be stale.
+				this.driftStrikes = 0;
+			} else if( !manager.isPlaying() ) {
+				// Clip stopped on its own (audio underrun / end of media): restart at
+				// the score position right away.
 				manager.playAt(targetMs);
+				this.driftStrikes = 0;
+			} else if( Math.abs(driftMs) > DRIFT_THRESHOLD_MS ) {
+				// Real drift (both clocks are actual playback positions now). Require
+				// two consecutive readings so a single sequencer hiccup does not cut
+				// the audio, then jump the clip back to the score position.
+				this.driftStrikes++;
+				if( this.driftStrikes >= DRIFT_CONFIRMATIONS ) {
+					manager.playAt(targetMs);
+					this.driftStrikes = 0;
+				}
+			} else {
+				this.driftStrikes = 0;
 			}
 		} catch (Throwable throwable) {
 			synchronized( this ) {
