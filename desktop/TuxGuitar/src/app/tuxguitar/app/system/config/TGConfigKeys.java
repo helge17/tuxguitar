@@ -69,10 +69,11 @@ public class TGConfigKeys {
 	public static final String FRETBOARD_COLOR_STRING = "fretboard.color.string";
 	public static final String FRETBOARD_COLOR_FRET_POINT = "fretboard.color.fret-point";
 	public static final String FRETBOARD_COLOR_NOTE = "fretboard.color.note";
-	public static final String FRETBOARD_COLOR_NOTE_MEASURE = "fretboard.color.notemeasure";
+	public static final String FRETBOARD_COLOR_PREVIEW_NOTE = "fretboard.preview-note-color";
 	public static final String FRETBOARD_COLOR_SCALE = "fretboard.color.scale";
 	public static final String FRETBOARD_COLOR_TONIC = "fretboard.color.tonic";
 	public static final String FRETBOARD_DIRECTION = "fretboard.direction";
+	public static final String FRETBOARD_PREVIEW_NOTES = "fretboard.preview-notes";
 	public static final String PIANO_COLOR_KEY_NATURAL = "piano.color.natural-key";
 	public static final String PIANO_COLOR_KEY_NOT_NATURAL = "piano.color.not-natural-key";
 	public static final String PIANO_COLOR_NOTE = "piano.color.note";

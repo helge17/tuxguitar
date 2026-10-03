@@ -489,7 +489,7 @@ public class TGFretBoard {
 		painter.setForeground(this.config.getColorBackground());
 	}
 
-	private void paintBeatNotes(UIPainter painter, TGBeat beat, UIColor color) {
+	private void paintBeatNotes(UIPainter painter, TGBeat beat, UIColor color, UIColor foregroundColor) {
 		if(beat != null){
 			TGTrack track = getTrack();
 			int keySignature = beat.getMeasure().getKeySignature();
@@ -510,7 +510,7 @@ public class TGFretBoard {
 
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNoteText(), color, x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
+							paintKeyText(painter, foregroundColor, color, x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
 						}
 						else{
 							paintKeyOval(painter,color, x, y);
@@ -522,10 +522,10 @@ public class TGFretBoard {
 		}
 	}
 
-	private void paintBeatNotes(UIPainter painter, ArrayList<TGBeat> beats, UIColor color) {
+	private void paintBeatNotes(UIPainter painter, ArrayList<TGBeat> beats, UIColor color, UIColor foregroundColor) {
 		if(beats != null){
 			for(TGBeat beat : beats){
-				paintBeatNotes(painter, beat, color);
+				paintBeatNotes(painter, beat, color, foregroundColor);
 			}
 		}
 	}
@@ -560,18 +560,21 @@ public class TGFretBoard {
 		this.updateEditor();
 		if (this.frets.length > 0 && this.strings.length > 0) {
 			paintFretBoard(painter);
-			paintBeatNotes(painter, this.beats, this.config.getColorNoteMeasure());
 
-			// If the player is not running, paint the notes of the current measure and selected beat range
-			if(!MidiPlayer.getInstance(this.context).isRunning()){
-				if (this.selectedBeatRange != null) {
-					for (TGBeat beat : this.selectedBeatRange.getBeats()) {
-						paintBeatNotes(painter, beat, this.config.getColorNoteMeasure());
+			if (this.config.getPreviewNotes()) {
+				paintBeatNotes(painter, this.beats, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
+
+				// If the player is not running, paint the notes of the current measure and selected beat range
+				if(!MidiPlayer.getInstance(this.context).isRunning()){
+					if (this.selectedBeatRange != null) {
+						for (TGBeat beat : this.selectedBeatRange.getBeats()) {
+							paintBeatNotes(painter, beat, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
+						}
 					}
 				}
 			}
 
-			paintBeatNotes(painter, this.beat, this.config.getColorNote());
+			paintBeatNotes(painter, this.beat, this.config.getColorNote(), this.config.getColorNoteText());
 		}
 	}
 

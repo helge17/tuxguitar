@@ -48,15 +48,17 @@ public class TGFretBoardConfig {
 	private TGContext context;
 	private int style;
 	private int direction;
+	private boolean previewNotes;
 	private UIFont font;
 	private UIColor colorBackground;
 	private UIColor colorString;
 	private UIColor colorFretPoint;
 	private UIColor colorNote;
-	private UIColor colorNoteMeasure;
+	private UIColor colorPreviewNote;
 	private UIColor colorScale;
 	private UIColor colorTonic;
 	private UIColor colorNoteText;
+	private UIColor colorPreviewNoteText;
 	private UIColor colorScaleText;
 	private UIColor colorTonicText;
 
@@ -88,8 +90,8 @@ public class TGFretBoardConfig {
 		return this.colorNote;
 	}
 
-	public UIColor getColorNoteMeasure() {
-		return this.colorNoteMeasure;
+	public UIColor getColorPreviewNote() {
+		return this.colorPreviewNote;
 	}
 
 	public UIColor getColorScale() {
@@ -104,6 +106,10 @@ public class TGFretBoardConfig {
 		return colorNoteText;
 	}
 
+	public UIColor getColorPreviewNoteText() {
+		return colorPreviewNoteText;
+	}
+
 	public UIColor getColorScaleText() {
 		return colorScaleText;
 	}
@@ -114,6 +120,10 @@ public class TGFretBoardConfig {
 
 	public int getDirection(){
 		return this.direction;
+	}
+
+	public boolean getPreviewNotes(){
+		return this.previewNotes;
 	}
 
 	public UIFont createFont(UIFactory factory, UIFontModel fm) {
@@ -129,15 +139,17 @@ public class TGFretBoardConfig {
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		this.style = config.getIntegerValue(TGConfigKeys.FRETBOARD_STYLE);
 		this.direction = config.getIntegerValue(TGConfigKeys.FRETBOARD_DIRECTION, DIRECTION_RIGHT );
+		this.previewNotes = config.getBooleanValue(TGConfigKeys.FRETBOARD_PREVIEW_NOTES, false);
 		this.font = createFont(factory, config.getFontModelConfigValue(TGConfigKeys.FRETBOARD_FONT));
 		this.colorBackground = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
 		this.colorString = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
 		this.colorFretPoint = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
 		this.colorNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
-		this.colorNoteMeasure = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE));
+		this.colorPreviewNote = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_PREVIEW_NOTE));
 		this.colorScale = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
 		this.colorTonic = createColor(factory,config.getColorModelConfigValue(TGConfigKeys.FRETBOARD_COLOR_TONIC));
 		this.colorNoteText = createColor(factory, this.colorForeground(this.colorNote));
+		this.colorPreviewNoteText = createColor(factory, this.colorForeground(this.colorPreviewNote));
 		this.colorScaleText = createColor(factory, this.colorForeground(this.colorScale));
 		this.colorTonicText = createColor(factory, this.colorForeground(this.colorTonic));
 	}
@@ -155,26 +167,28 @@ public class TGFretBoardConfig {
 		TGProperties defaults = TGConfigDefaults.createDefaults();
 		config.setValue(TGConfigKeys.FRETBOARD_STYLE,defaults.getValue(TGConfigKeys.FRETBOARD_STYLE));
 		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,defaults.getValue(TGConfigKeys.FRETBOARD_DIRECTION));
+		config.setValue(TGConfigKeys.FRETBOARD_PREVIEW_NOTES,defaults.getValue(TGConfigKeys.FRETBOARD_PREVIEW_NOTES));
 		config.setValue(TGConfigKeys.FRETBOARD_FONT,defaults.getValue(TGConfigKeys.FRETBOARD_FONT));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_STRING,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_STRING));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_NOTE));
-		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE));
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_PREVIEW_NOTE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_PREVIEW_NOTE));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_SCALE,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_SCALE));
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_TONIC,defaults.getValue(TGConfigKeys.FRETBOARD_COLOR_TONIC));
 	}
 
-	public void save(int style, int direction, UIFontModel fm, UIColorModel rgbBackground, UIColorModel rgbString, UIColorModel rgbFretPoint, UIColorModel rgbNote, UIColorModel rgbNoteMeasure, UIColorModel rgbScale, UIColorModel rgbTonic){
+	public void save(int style, int direction, boolean previewNotes, UIFontModel fm, UIColorModel rgbBackground, UIColorModel rgbString, UIColorModel rgbFretPoint, UIColorModel rgbNote, UIColorModel rgbPreviewNote, UIColorModel rgbScale, UIColorModel rgbTonic){
 		TGConfigManager config = TuxGuitar.getInstance().getConfig();
 		config.setValue(TGConfigKeys.FRETBOARD_STYLE,style);
 		config.setValue(TGConfigKeys.FRETBOARD_DIRECTION,direction);
+		config.setValue(TGConfigKeys.FRETBOARD_PREVIEW_NOTES,previewNotes);
 		config.setValue(TGConfigKeys.FRETBOARD_FONT,fm);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_BACKGROUND,rgbBackground);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_STRING,rgbString);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_FRET_POINT,rgbFretPoint);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE,rgbNote);
-		config.setValue(TGConfigKeys.FRETBOARD_COLOR_NOTE_MEASURE,rgbNoteMeasure);
+		config.setValue(TGConfigKeys.FRETBOARD_COLOR_PREVIEW_NOTE,rgbPreviewNote);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_SCALE,rgbScale);
 		config.setValue(TGConfigKeys.FRETBOARD_COLOR_TONIC,rgbTonic);
 	}
@@ -222,7 +236,7 @@ public class TGFretBoardConfig {
 		final UIColorModel rgbString = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.string-color") + ":", this.colorString, ++groupRow);
 		final UIColorModel rgbFretPoint = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.fretpoint-color") + ":", this.colorFretPoint, ++groupRow);
 		final UIColorModel rgbNote = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.note-color") + ":", this.colorNote, ++groupRow);
-		final UIColorModel rgbNoteMeasure = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.note-measure-color") + ":", this.colorNoteMeasure, ++groupRow);
+		final UIColorModel rgbPreviewNote = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.preview-note-color") + ":", this.colorPreviewNote, ++groupRow);
 		final UIColorModel rgbScale = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.scale-note-color") + ":", this.colorScale, ++groupRow);
 		final UIColorModel rgbTonic = getColorChooser(window, group, TuxGuitar.getProperty("fretboard.tonic-color") + ":", this.colorTonic, ++groupRow);
 
@@ -256,6 +270,11 @@ public class TGFretBoardConfig {
 		displayTextScale.setEnabled( !isPercussion );
 		groupLayout.set(displayTextScale, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+		final UICheckBox previewNotesCheckBox = factory.createCheckBox(group);
+		previewNotesCheckBox.setText(TuxGuitar.getProperty("fretboard.preview-notes"));
+		previewNotesCheckBox.setSelected(this.previewNotes);
+		groupLayout.set(previewNotesCheckBox, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
 		// ------------------BUTTONS--------------------------
 		UITableLayout buttonsLayout = new UITableLayout(0f);
 		UIPanel buttons = factory.createPanel(window, false);
@@ -287,9 +306,11 @@ public class TGFretBoardConfig {
 					direction = DIRECTION_RIGHT;
 				}
 
+				boolean previewNotes = previewNotesCheckBox.isSelected();
+
 				window.dispose();
 
-				save(style, direction, fontData, rgbBackground, rgbString, rgbFretPoint, rgbNote, rgbNoteMeasure, rgbScale, rgbTonic);
+				save(style, direction, previewNotes, fontData, rgbBackground, rgbString, rgbFretPoint, rgbNote, rgbPreviewNote, rgbScale, rgbTonic);
 				applyChanges();
 			}
 		});
