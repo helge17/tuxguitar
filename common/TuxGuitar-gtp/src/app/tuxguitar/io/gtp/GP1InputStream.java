@@ -133,6 +133,7 @@ public class GP1InputStream extends GTPInputStream {
 			}
 
 			TGSongManager tgSongManager = new TGSongManager(getFactory());
+			tgSongManager.updatePreciseStart(song);
 			tgSongManager.autoCompleteSilences(song);
 
 			this.updateChannelNames(tgSongManager, song);
