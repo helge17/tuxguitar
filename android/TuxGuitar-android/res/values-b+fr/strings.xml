@@ -353,7 +353,7 @@
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Ajouter une mesure</string>
-	<string name="measure_add_dlg_count_label">Ajouter le numéro:</string>
+	<string name="measure_add_dlg_count_label">Nombre de mesure(s):</string>
 	<string name="measure_add_dlg_options_before_position">Ajouter une mesure avant la position actuelle</string>
 	<string name="measure_add_dlg_options_after_position">Ajouter une mesure après la position actuelle</string>
 	<string name="measure_add_dlg_options_at_end">Ajouter une mesure à la fin</string>
