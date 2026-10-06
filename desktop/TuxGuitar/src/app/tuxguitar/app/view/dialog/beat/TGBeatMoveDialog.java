@@ -187,12 +187,12 @@ public class TGBeatMoveDialog {
 		buttonOK.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				final int directionValue = getDirection(directionCombo);
-				final long duration1 = getDuration1(duration1Combo, count1Spinner.getValue());
-				final long duration2 = getDuration2(duration2Combo, type2Combo, division2Combo, count2Spinner.getValue());
-				final long duration = ( ( duration1 + duration2 ) * directionValue );
+				final long preciseDuration1 = getPreciseDuration1(duration1Combo, count1Spinner.getValue());
+				final long preciseDuration2 = getPreciseDuration2(duration2Combo, type2Combo, division2Combo, count2Spinner.getValue());
+				final long preciseDuration = ( (preciseDuration1 + preciseDuration2 ) * directionValue );
 
 				dialog.dispose();
-				moveBeats(context.getContext(), track, measure, beat, duration);
+				moveBeats(context.getContext(), track, measure, beat, preciseDuration);
 			}
 		});
 		buttonsLayout.set(buttonOK, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 1, 80f, 25f, null);
@@ -262,7 +262,7 @@ public class TGBeatMoveDialog {
 		return (value != null ? value : 0);
 	}
 
-	public long getDuration1(UIDropDownSelect<Integer> durationCombo, int count){
+	public long getPreciseDuration1(UIDropDownSelect<Integer> durationCombo, int count){
 		Integer value = durationCombo.getSelectedValue();
 		if( count > 0 && value != null ){
 			TGDuration duration = new TGFactory().newDuration();
@@ -271,12 +271,12 @@ public class TGBeatMoveDialog {
 			duration.setDoubleDotted(false);
 			duration.getDivision().setTimes(1);
 			duration.getDivision().setEnters(1);
-			return (duration.getTime() * count);
+			return (duration.getPreciseTime() * count);
 		}
 		return 0;
 	}
 
-	public long getDuration2(UIDropDownSelect<Integer> durationCombo, UIDropDownSelect<boolean[]> typeCombo , UIDropDownSelect<int[]> divisionCombo, int count){
+	public long getPreciseDuration2(UIDropDownSelect<Integer> durationCombo, UIDropDownSelect<boolean[]> typeCombo , UIDropDownSelect<int[]> divisionCombo, int count){
 		Integer value = durationCombo.getSelectedValue();
 		boolean[] type = typeCombo.getSelectedValue();
 		int[] division = divisionCombo.getSelectedValue();
@@ -288,7 +288,7 @@ public class TGBeatMoveDialog {
 			duration.setDoubleDotted(type[1]);
 			duration.getDivision().setEnters(division[0]);
 			duration.getDivision().setTimes(division[1]);
-			return ( duration.getTime() * count );
+			return (duration.getPreciseTime() * count);
 		}
 		return 0;
 	}
@@ -299,12 +299,12 @@ public class TGBeatMoveDialog {
 		}
 	}
 
-	public void moveBeats(TGContext context, TGTrack track, TGMeasure measure, TGBeat beat, Long theMove) {
+	public void moveBeats(TGContext context, TGTrack track, TGMeasure measure, TGBeat beat, Long thePreciseMove) {
 		TGActionProcessor tgActionProcessor = new TGActionProcessor(context, TGMoveBeatsAction.NAME);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, track);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE, measure);
 		tgActionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT, beat);
-		tgActionProcessor.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, theMove);
+		tgActionProcessor.setAttribute(TGMoveBeatsAction.ATTRIBUTE_PRECISE_MOVE, thePreciseMove);
 		tgActionProcessor.process();
 	}
 }

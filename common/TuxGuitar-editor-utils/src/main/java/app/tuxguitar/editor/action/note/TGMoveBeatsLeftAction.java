@@ -18,7 +18,7 @@ public class TGMoveBeatsLeftAction extends TGActionBase {
 	protected void processAction(TGActionContext tgActionContext) {
 		TGVoice voice = ((TGVoice) tgActionContext.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_VOICE));
 		if( voice != null ){
-			tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_MOVE, Long.valueOf(-voice.getDuration().getTime()));
+			tgActionContext.setAttribute(TGMoveBeatsAction.ATTRIBUTE_PRECISE_MOVE, Long.valueOf(-voice.getDuration().getPreciseTime()));
 			TGActionManager.getInstance(getContext()).execute(TGMoveBeatsAction.NAME, tgActionContext);
 		}
 	}

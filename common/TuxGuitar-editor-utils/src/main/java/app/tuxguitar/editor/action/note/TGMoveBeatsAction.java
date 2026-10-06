@@ -12,7 +12,7 @@ public class TGMoveBeatsAction extends TGActionBase {
 
 	public static final String NAME = "action.beat.general.move";
 
-	public static final String ATTRIBUTE_MOVE = "move";
+	public static final String ATTRIBUTE_PRECISE_MOVE = "precise-move";
 
 	public TGMoveBeatsAction(TGContext context) {
 		super(context, NAME);
@@ -22,9 +22,9 @@ public class TGMoveBeatsAction extends TGActionBase {
 		TGBeat beat = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT);
 		TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
 		TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-		Long theMove = context.getAttribute(ATTRIBUTE_MOVE);
-		if( beat != null && measure != null && track != null && theMove != null ){
-			getSongManager(context).getTrackManager().moveTrackBeats(track, measure.getStart(), beat.getStart(), theMove);
+		Long thePreciseMove = context.getAttribute(ATTRIBUTE_PRECISE_MOVE);
+		if( beat != null && measure != null && track != null && thePreciseMove != null ){
+			getSongManager(context).getTrackManager().moveTrackBeatsPrecise(track, measure.getStart(), beat.getPreciseStart(), thePreciseMove);
 		}
 	}
 }
