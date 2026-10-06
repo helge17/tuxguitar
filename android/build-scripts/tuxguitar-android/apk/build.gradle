@@ -41,8 +41,8 @@ android {
 		targetSdkVersion 35
 		multiDexEnabled true
 		// Format:  yyMMddHH
-		versionCode 26063000
-		versionName "2.1.0"
+		versionCode 26102300
+		versionName "2.1.1"
 	}
 
 	buildTypes {
