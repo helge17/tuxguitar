@@ -115,8 +115,8 @@ public class TGMeasureManager {
 		}
 	}
 
-	public void removeBeatsBetween(TGMeasure measure,long p1, long p2){
-		List<TGBeat> beats = getBeatsBeetween( measure.getBeats() , p1, p2 );
+	public void removeBeatsBetweenPrecise(TGMeasure measure,long preciseStart1, long preciseStart2){
+		List<TGBeat> beats = getBeatsBeetweenPrecise( measure.getBeats() , preciseStart1, preciseStart2);
 		Iterator<TGBeat> it = beats.iterator();
 		while(it.hasNext()){
 			TGBeat beat =  it.next();
@@ -580,12 +580,12 @@ public class TGMeasureManager {
 		return list;
 	}
 
-	public List<TGBeat> getBeatsBeetween(List<TGBeat> beats,long p1, long p2) {
+	public List<TGBeat> getBeatsBeetweenPrecise(List<TGBeat> beats,long preciseStart1, long preciseStart2) {
 		List<TGBeat> list = new ArrayList<TGBeat>();
 		Iterator<TGBeat> it = beats.iterator();
 		while(it.hasNext()){
 			TGBeat current = it.next();
-			if (current.getStart() >= p1 && current.getStart() < p2 ) {
+			if (current.getPreciseStart() >= preciseStart1 && current.getPreciseStart() < preciseStart2 ) {
 				list.add(current);
 			}
 		}
@@ -804,10 +804,8 @@ public class TGMeasureManager {
 		this.updateBeatsPreciseStart(measure);
 	}
 
-	public void moveBeats(TGMeasure measure, long start, long theMove){
-		moveBeats(getBeatsBeforeEnd(measure.getBeats(), start),theMove);
-		// refresh precise start
-		this.updateBeatsPreciseStart(measure);
+	public void moveBeatsPrecise(TGMeasure measure, long preciseStart, long thePreciseMove){
+		moveBeatsPrecise(getBeatsBeforeEndPrecise(measure.getBeats(), preciseStart),thePreciseMove);
 	}
 
 	/**
