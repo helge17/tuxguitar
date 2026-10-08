@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=Windows dark mode plugin
+plugin.description=This plugin provides dark mode for TuxGuitar in Windows SWT environment.
+plugin.author=guiv42
+plugin.version=1.0

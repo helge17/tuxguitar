@@ -3,8 +3,10 @@ package app.tuxguitar.app.system.icons;
 import app.tuxguitar.app.system.config.TGConfigDefaults;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.event.TGEventListener;
 import app.tuxguitar.event.TGEventManager;
+import app.tuxguitar.ui.appearance.UIThemeColor;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.properties.TGProperties;
 import app.tuxguitar.util.properties.TGPropertiesManager;
@@ -15,7 +17,7 @@ public class TGSkinManager {
 
 	private TGContext context;
 	private String currentSkin;
-
+	private boolean systemThemeResolved;
 	// received from system properties
 	private static final String PROPERTY_THEME = "tuxguitar.theme";
 	private static final String THEME_DARK = "dark";
@@ -60,24 +62,36 @@ public class TGSkinManager {
 	public String getCurrentSkin() {
 		String configuredSkin = TGConfigManager.getInstance(this.context).getStringValue(TGConfigKeys.SKIN);
 		Boolean skinDarkAuto = Boolean.TRUE.equals(TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.SKIN_DARK_AUTO));
-		
-		// try to switch light/dark theme automatically when requested by system property (when app starts)
-		String systemPropertyTheme = System.getProperty(PROPERTY_THEME);
-		if (skinDarkAuto && (systemPropertyTheme != null) && (!"".equals(systemPropertyTheme)) ) {
-			System.setProperty(PROPERTY_THEME,"");
-			String selectedSkin = null;
-			if ((systemPropertyTheme.equals(THEME_LIGHT) && configuredSkin.endsWith(SUFFIX_DARK))) {
-				selectedSkin = configuredSkin.substring(0, configuredSkin.length() - SUFFIX_DARK.length());
-			}
-			else if ((systemPropertyTheme.equals(THEME_DARK) && !configuredSkin.endsWith(SUFFIX_DARK))) {
-				selectedSkin = configuredSkin + SUFFIX_DARK;
-			}
-			if ((selectedSkin != null) && (getSkinInfo(selectedSkin).getValue("name") != null)) {
-				TGConfigManager.getInstance(this.context).setValue(TGConfigKeys.SKIN, selectedSkin);
-				return selectedSkin;
+
+		// try to switch light/dark theme automatically when app starts
+		if (!this.systemThemeResolved) {
+			this.systemThemeResolved = true;
+			if (skinDarkAuto) {
+				// 1st criterion: is data provided by UI framework?
+				UIThemeColor themeColor = TGApplication.getInstance(this.context).getAppearance().getThemeColor();
+				// 2nd criterion, system property provided by command line parameter
+				if (themeColor == UIThemeColor.Unknown) {
+					String systemPropertyTheme = System.getProperty(PROPERTY_THEME);
+					if (THEME_LIGHT.equals(systemPropertyTheme)) {
+						themeColor = UIThemeColor.Light;
+					} else if (THEME_DARK.equals(systemPropertyTheme)) {
+						themeColor = UIThemeColor.Dark;
+					}
+				}
+				String selectedSkin = null;
+				if ((themeColor == UIThemeColor.Light) && configuredSkin.endsWith(SUFFIX_DARK)) {
+					selectedSkin = configuredSkin.substring(0, configuredSkin.length() - SUFFIX_DARK.length());
+				}
+				else if ((themeColor == UIThemeColor.Dark) && !configuredSkin.endsWith(SUFFIX_DARK)) {
+					selectedSkin = configuredSkin + SUFFIX_DARK;
+				}
+				if ((selectedSkin != null) && (getSkinInfo(selectedSkin).getValue("name") != null)) {
+					TGConfigManager.getInstance(this.context).setValue(TGConfigKeys.SKIN, selectedSkin);
+					return selectedSkin;
+				}
 			}
 		}
-		
+
 		// does skin exist?
 		TGProperties skinInfo = getSkinInfo(configuredSkin);
 		if (skinInfo.getValue("name") != null) {
