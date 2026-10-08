@@ -420,6 +420,10 @@ public class TGControl {
 		return canvas;
 	}
 
+	public float getVisibleHeight() {
+		return this.canvas.getBounds().getHeight();
+	}
+
 	public boolean isDisposed() {
 		return (this.container == null || this.container.isDisposed() || this.canvas == null || this.canvas.isDisposed());
 	}
