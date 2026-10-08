@@ -533,6 +533,7 @@ public class TGFretBoard {
 	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
 		this.paintKeyOval(painter, background, x, y, this.getOvalSize());
 	}
+
 	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y, int ovalSize) {
 		painter.setBackground(background);
 		painter.initPath(UIPainter.PATH_FILL);
@@ -562,10 +563,13 @@ public class TGFretBoard {
 			paintFretBoard(painter);
 
 			if (this.config.getPreviewNotes()) {
-				paintBeatNotes(painter, this.beats, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
 
-				// If the player is not running, paint the notes of the current measure and selected beat range
-				if(!MidiPlayer.getInstance(this.context).isRunning()){
+				// If the player is running, paint the notes in the current measure
+				if(MidiPlayer.getInstance(this.context).isRunning()){
+					paintBeatNotes(painter, this.beats, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
+				}
+				else{
+					// Paint the notes in the selected range
 					if (this.selectedBeatRange != null) {
 						for (TGBeat beat : this.selectedBeatRange.getBeats()) {
 							paintBeatNotes(painter, beat, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
@@ -721,7 +725,7 @@ public class TGFretBoard {
 		if(!this.isDisposed()){
 			this.fretBoardComposite.redraw();
 		}
-	 }
+	}
 
 	public void setVisible(boolean visible) {
 		this.control.setVisible(visible);
