@@ -46,6 +46,9 @@ import app.tuxguitar.ui.widget.UIControl;
 
 public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> implements UIControl {
 
+	// entry point to override colors normally defined by SWT
+	private static SWTControlCustomizer controlsCustomizer = null;
+
 	private SWTContainer<? extends Composite> parent;
 	private SWTDisposeListenerManager disposeListener;
 	private SWTResizeListenerManager resizeListener;
@@ -64,6 +67,12 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 	private UIFont font;
 	private UICursor cursor;
 	private UIPopupMenu popupMenu;
+	private Color defaultBgColor;
+	private Color defaultFgColor;
+
+	static public void setControlsCustomizer(SWTControlCustomizer customizer) {
+		controlsCustomizer = customizer;
+	}
 
 	public SWTControl(T control, SWTContainer<? extends Composite> parent) {
 		super(control);
@@ -83,6 +92,12 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 		this.mouseTrackListener = new SWTMouseTrackListenerManager(this);
 		this.focusListener = new SWTFocusListenerManager(this);
 		this.zoomListener = new SWTZoomListenerManager(this);
+		this.defaultBgColor = null;	// default: set by SWT
+		this.defaultFgColor = null;	// default: set by SWT
+
+		if (controlsCustomizer != null) {
+			controlsCustomizer.customize(this);
+		}
 	}
 
 	public UIControl getParent() {
@@ -171,7 +186,7 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 
 	public void setBgColor(UIColor color) {
 		this.bgColor = color;
-		this.getControl().setBackground(this.bgColor != null ? ((SWTColor) this.bgColor).getHandle() : null);
+		this.getControl().setBackground(this.bgColor != null ? ((SWTColor) this.bgColor).getHandle() : this.defaultBgColor);
 	}
 
 	public UIColor getFgColor() {
@@ -183,7 +198,15 @@ public abstract class SWTControl<T extends Control> extends SWTEventReceiver<T> 
 
 	public void setFgColor(UIColor color) {
 		this.fgColor = color;
-		this.getControl().setForeground(this.fgColor != null ? ((SWTColor) this.fgColor).getHandle() : null);
+		this.getControl().setForeground(this.fgColor != null ? ((SWTColor) this.fgColor).getHandle() : this.defaultFgColor);
+	}
+
+	public void setDefaultBgColor(Color color) {
+		this.defaultBgColor = color;
+	}
+
+	public void setDefaultFgColor(Color color) {
+		this.defaultFgColor = color;
 	}
 
 	public UIFont getFont(Font handle) {

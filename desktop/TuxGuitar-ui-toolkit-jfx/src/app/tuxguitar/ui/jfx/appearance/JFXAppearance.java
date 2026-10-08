@@ -5,6 +5,7 @@ import java.util.Map;
 
 import app.tuxguitar.ui.appearance.UIAppearance;
 import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.appearance.UIThemeColor;
 import app.tuxguitar.ui.jfx.resource.JFXColor;
 import app.tuxguitar.ui.resource.UIColorModel;
 
@@ -27,7 +28,6 @@ public class JFXAppearance implements UIAppearance {
 		this.colorMap.put(UIColorAppearance.WidgetHighlightBackground, "-fx-shadow-highlight-color");
 		this.colorMap.put(UIColorAppearance.WidgetHighlightForeground, "-fx-text-background-color");
 		this.colorMap.put(UIColorAppearance.WidgetSelectedBackground, "-fx-pressed-base");
-		this.colorMap.put(UIColorAppearance.WidgetSelectedForeground, "-fx-text-background-color");
 		this.colorMap.put(UIColorAppearance.InputBackground, "-fx-control-inner-background");
 		this.colorMap.put(UIColorAppearance.InputForeground, "-fx-text-inner-color");
 		this.colorMap.put(UIColorAppearance.InputSelectedBackground, "-fx-selection-bar");
@@ -39,5 +39,9 @@ public class JFXAppearance implements UIAppearance {
 			return new JFXColor(new JFXStyleableColor(this.colorMap.get(colorAppearance)).getColor()).getControl();
 		}
 		return new UIColorModel(0x00, 0x00, 0x00);
+	}
+
+	public UIThemeColor getThemeColor() {
+		return UIThemeColor.Unknown;
 	}
 }

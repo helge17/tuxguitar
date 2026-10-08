@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import app.tuxguitar.ui.appearance.UIAppearance;
 import app.tuxguitar.ui.appearance.UIColorAppearance;
+import app.tuxguitar.ui.appearance.UIThemeColor;
 import app.tuxguitar.ui.resource.UIColorModel;
 
 public class SWTAppearance implements UIAppearance {
@@ -29,11 +30,15 @@ public class SWTAppearance implements UIAppearance {
 		this.colorMap.put(UIColorAppearance.WidgetHighlightBackground, this.createColorModel(SWT.COLOR_WIDGET_BACKGROUND, SWT.COLOR_WIDGET_NORMAL_SHADOW));
 		this.colorMap.put(UIColorAppearance.WidgetHighlightForeground, this.createColorModel(SWT.COLOR_WIDGET_FOREGROUND));
 		this.colorMap.put(UIColorAppearance.WidgetSelectedBackground, this.createColorModel(SWT.COLOR_WIDGET_BACKGROUND, SWT.COLOR_WIDGET_NORMAL_SHADOW));
-		this.colorMap.put(UIColorAppearance.WidgetSelectedForeground, this.createColorModel(SWT.COLOR_LIST_SELECTION_TEXT));
 		this.colorMap.put(UIColorAppearance.InputBackground, this.createColorModel(SWT.COLOR_LIST_BACKGROUND));
 		this.colorMap.put(UIColorAppearance.InputForeground, this.createColorModel(SWT.COLOR_LIST_FOREGROUND));
 		this.colorMap.put(UIColorAppearance.InputSelectedBackground, this.createColorModel(SWT.COLOR_LIST_SELECTION));
 		this.colorMap.put(UIColorAppearance.InputSelectedForeground, this.createColorModel(SWT.COLOR_LIST_SELECTION_TEXT));
+	}
+
+	// when colors need to be set externally
+	public void setColorMap(HashMap<UIColorAppearance, UIColorModel> map) {
+		this.colorMap = map;
 	}
 
 	public UIColorModel createColorModel(int style) {
@@ -49,25 +54,14 @@ public class SWTAppearance implements UIAppearance {
 		return new UIColorModel(((c1.getRed() + c2.getRed()) / 2), ((c1.getGreen() + c2.getGreen()) / 2), ((c1.getBlue() + c2.getBlue()) / 2));
 	}
 
-//	public UIColorModel getColorModel(UIColorAppearance colorAppearance) {
-//		if( UIColorAppearance.WidgetLightBackground.equals(colorAppearance)) {
-//			Color c1 = this.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
-//			Color c2 = this.display.getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW);
-//
-//			return new UIColorModel(((c1.getRed() + c2.getRed()) / 2), ((c1.getGreen() + c2.getGreen()) / 2), ((c1.getBlue() + c2.getBlue()) / 2));
-//		}
-//
-//		if( this.colorMap.containsKey(colorAppearance)) {
-//			Color color = this.display.getSystemColor(this.colorMap.get(colorAppearance));
-//			return new UIColorModel(color.getRed(), color.getGreen(), color.getBlue());
-//		}
-//		return new UIColorModel(0x00, 0x00, 0x00);
-//	}
-
 	public UIColorModel getColorModel(UIColorAppearance colorAppearance) {
 		if( this.colorMap.containsKey(colorAppearance)) {
 			return this.colorMap.get(colorAppearance);
 		}
 		return new UIColorModel(0x00, 0x00, 0x00);
+	}
+
+	public UIThemeColor getThemeColor() {
+		return Display.isSystemDarkTheme() ? UIThemeColor.Dark : UIThemeColor.Light;
 	}
 }

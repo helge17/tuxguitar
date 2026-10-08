@@ -290,6 +290,12 @@
 				<artifactId>tuxguitar-ui-toolkit-jfx</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>tuxguitar-windark-swt</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
 
 			<!-- SWT Platforms -->
 			<dependency>
