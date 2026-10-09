@@ -3,6 +3,9 @@ package app.tuxguitar.android.action.listener.lock;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionErrorEvent;
 import app.tuxguitar.action.TGActionEvent;
@@ -20,12 +23,16 @@ public class TGLockableActionListener extends TGSyncThreadAction implements TGAc
 
 	private static final String INTERCEPTOR_BY_PASS = TGLockableActionListener.class.getSimpleName() + "-interceptor-by-pass";
 
+	private static final long RETRY_DELAY = 20;
+
 	private List<String> actionIds;
+	private Handler retryHandler;
 
 	public TGLockableActionListener(TGContext context){
 		super(context);
 
 		this.actionIds = new ArrayList<String>();
+		this.retryHandler = new Handler(Looper.getMainLooper());
 	}
 
 	public boolean containsActionId(String id) {
@@ -95,7 +102,15 @@ public class TGLockableActionListener extends TGSyncThreadAction implements TGAc
 			}
 		} else {
 			// try later
-			this.runInUiThread(actionId, context);
+			this.retryInUiThread(actionId, context);
 		}
+	}
+
+	private void retryInUiThread(final String actionId, final TGActionContext context) {
+		this.retryHandler.postDelayed(new Runnable() {
+			public void run() {
+				runInUiThread(actionId, context);
+			}
+		}, RETRY_DELAY);
 	}
 }
