@@ -334,14 +334,14 @@ public class TGTrackManager {
 		}
 	}
 
-	public void moveTrackBeats(TGTrack track, long measureStart, long moveStart, long theMove ){
+	public void moveTrackBeatsPrecise(TGTrack track, long measureStart, long movePreciseStart, long thePreciseMove ){
 		List<TGMeasure> measures = getMeasuresBeforeEnd(track,measureStart);
 		for( int i = 0 ; i < measures.size() ; i ++ ){
 			TGMeasure measure = measures.get(i);
-			if( moveStart + theMove < moveStart ){
-				getSongManager().getMeasureManager().removeBeatsBetween(measure, moveStart, (moveStart + Math.abs(theMove)));
+			if( thePreciseMove < 0 ){
+				getSongManager().getMeasureManager().removeBeatsBetweenPrecise(measure, movePreciseStart, (movePreciseStart + Math.abs(thePreciseMove)));
 			}
-			getSongManager().getMeasureManager().moveBeats(measure, moveStart, theMove);
+			getSongManager().getMeasureManager().moveBeatsPrecise(measure, movePreciseStart, thePreciseMove);
 		}
 		for( int i = 0 ; i < measures.size() ; i ++ ){
 			TGMeasure measure = measures.get(i);
