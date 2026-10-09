@@ -1,5 +1,14 @@
 #!/bin/sh
 
+## try to read light/dark theme from dbus color-scheme
+# 0: no preference (defaults to light)
+# 1: dark
+# 2: light
+tuxguitarTheme="none"
+dbusTheme=$(dbus-send --reply-timeout=1000 --session --print-reply=literal --dest=org.freedesktop.portal.Desktop /org/freedesktop/portal/desktop org.freedesktop.portal.Settings.Read string:org.freedesktop.appearance string:color-scheme 2>/dev/null)
+[ -n "$( echo $dbusTheme | sed -n '/uint32 [02]/p' )" ] && tuxguitarTheme="light"
+[ -n "$( echo $dbusTheme | sed -n '/uint32 1/p' )" ] && tuxguitarTheme="dark" && export GTK_THEME=Adwaita:dark
+
 ##SCRIPT DIR
 TG_DIR=`dirname "$(realpath "$0")"`
 
@@ -46,4 +55,4 @@ MAINCLASS=app.tuxguitar.app.TGMainSingleton
 export CLASSPATH
 export LD_LIBRARY_PATH
 ##LAUNCH
-${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share" -Djava.library.path="${LD_LIBRARY_PATH}" ${MAINCLASS} "$@"
+${JAVA} -cp ":${CLASSPATH}" -Dtuxguitar.home.path="${TG_DIR}" -Dtuxguitar.share.path="share" -Djava.library.path="${LD_LIBRARY_PATH}" -Dtuxguitar.theme="${tuxguitarTheme}" ${MAINCLASS} "$@"
