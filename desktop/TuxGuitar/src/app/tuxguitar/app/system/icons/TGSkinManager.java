@@ -18,10 +18,6 @@ public class TGSkinManager {
 	private TGContext context;
 	private String currentSkin;
 	private boolean systemThemeResolved;
-	// received from system properties
-	private static final String PROPERTY_THEME = "tuxguitar.theme";
-	private static final String THEME_DARK = "dark";
-	private static final String THEME_LIGHT = "light";
 	// naming convention for skins
 	private static final String SUFFIX_DARK = "-dark";
 
@@ -67,17 +63,7 @@ public class TGSkinManager {
 		if (!this.systemThemeResolved) {
 			this.systemThemeResolved = true;
 			if (skinDarkAuto) {
-				// 1st criterion: is data provided by UI framework?
 				UIThemeColor themeColor = TGApplication.getInstance(this.context).getAppearance().getThemeColor();
-				// 2nd criterion, system property provided by command line parameter
-				if (themeColor == UIThemeColor.Unknown) {
-					String systemPropertyTheme = System.getProperty(PROPERTY_THEME);
-					if (THEME_LIGHT.equals(systemPropertyTheme)) {
-						themeColor = UIThemeColor.Light;
-					} else if (THEME_DARK.equals(systemPropertyTheme)) {
-						themeColor = UIThemeColor.Dark;
-					}
-				}
 				String selectedSkin = null;
 				if ((themeColor == UIThemeColor.Light) && configuredSkin.endsWith(SUFFIX_DARK)) {
 					selectedSkin = configuredSkin.substring(0, configuredSkin.length() - SUFFIX_DARK.length());
