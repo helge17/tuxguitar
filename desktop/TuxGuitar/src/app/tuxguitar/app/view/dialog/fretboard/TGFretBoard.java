@@ -563,18 +563,14 @@ public class TGFretBoard {
 			paintFretBoard(painter);
 
 			if (this.config.getPreviewNotes()) {
-
-				// If the player is running, paint the notes in the current measure
-				if(MidiPlayer.getInstance(this.context).isRunning()){
-					paintBeatNotes(painter, this.beats, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
-				}
-				else{
-					// Paint the notes in the selected range
-					if (this.selectedBeatRange != null) {
-						for (TGBeat beat : this.selectedBeatRange.getBeats()) {
-							paintBeatNotes(painter, beat, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
-						}
+				// If the player is not running and something is selected, then paint selected beat range, else paint the notes of current measure
+				if(!MidiPlayer.getInstance(this.context).isRunning() && TuxGuitar.getInstance().getTablatureEditor().getTablature().getSelector().isActive()) {
+					for (TGBeat beat : this.selectedBeatRange.getBeats()) {
+						paintBeatNotes(painter, beat, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
 					}
+				}
+				else {
+					paintBeatNotes(painter, this.beats, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
 				}
 			}
 
