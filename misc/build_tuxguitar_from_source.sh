@@ -268,11 +268,11 @@ function prepare_source {
   echo -e "\n### Host: "`hostname -s`" ########### Hacks ..."
 
   echo -en "\n# Change build version from $TGDEVVER to $TGVERSION in config and help files ... "
-  find . \( -name "*.xml" -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
+  find . \( -name pom.xml -or -name project.xml -or -name "*.properties" -or -name init.js -or -name control -or -name Info.plist -or -name CHANGES \) -and -not -path "./website/*" -and -type f -exec sed -i'.bak' -e "s/${TGDEVVER//./\\.}/$TGVERSION/g" '{}' \;
   echo -n "in \"Help - About\" dialog ... "
-  sed -i -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
+  sed -i'.bak' -e "s/static final String RELEASE_NAME =.*/static final String RELEASE_NAME = (TGApplication.NAME + \" $TGVERSION\");/" desktop/TuxGuitar/src/app/tuxguitar/app/view/dialog/about/TGAboutDialog.java
   echo -n "for Android ... "
-  sed -i -e "s/versionName \".*\"/versionName \"$TGVERSION\"/" android/build-scripts/tuxguitar-android/apk/build.gradle
+  sed -i'.bak' -e "s/versionName \".*\"/versionName \"$TGVERSION\"/" android/build-scripts/tuxguitar-android/apk/build.gradle
   echo "OK."
 
   echo $TGVERSION > .build-version
@@ -360,7 +360,7 @@ function install_openjfx_bsd {
 
     if [ ! -e $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom ]; then
       wget -P $JFX_DIR https://repo.maven.apache.org/maven2/org/openjfx/$JFX_PKG/$JFX_VERSION/$JFX_PKG-$JFX_VERSION.pom
-      sed -i '.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
+      sed -i'.orig' -e 's/${javafx.platform}/freebsd/' $JFX_DIR/$JFX_PKG-$JFX_VERSION.pom
     fi
 
     # Delete and reinstall, so that always the newest version from the OS is used
