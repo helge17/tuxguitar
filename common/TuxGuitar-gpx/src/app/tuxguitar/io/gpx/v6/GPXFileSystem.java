@@ -137,8 +137,9 @@ public class GPXFileSystem {
 	private byte[] getBytes(InputStream in) throws Throwable {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		int read = 0;
-		while((read = in.read()) != -1){
-			out.write(read);
+		byte[] buffer = new byte[8192];
+		while((read = in.read(buffer)) != -1){
+			out.write(buffer, 0, read);
 		}
 		byte[] bytes = out.toByteArray();
 		in.close();
