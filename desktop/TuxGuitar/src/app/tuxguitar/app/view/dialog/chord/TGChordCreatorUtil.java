@@ -263,7 +263,7 @@ public class TGChordCreatorUtil {
 	/**
 	 * Creates the TGChord ArrayList out of StringValue's ArrayLists
 	 *
-	 * @param Highest rated StringValues
+	 * @param top Highest rated StringValues
 	 * @return TGChord collection
 	 */
 	private List<TGChord> createChords(List<List<StringValue>> top) {
@@ -294,12 +294,8 @@ public class TGChordCreatorUtil {
 	}
 
 	/**
-	 *
 	 * If string/fret combination is needed for the chord formation, add it into
 	 * List
-	 *
-	 * @return true if the note is needed for chord formation
-	 *
 	 */
 	private void find(int stringTone, int stringIndex, int fret,List<StringValue> stringList){
 		if(!isValidProcess()){
@@ -473,7 +469,7 @@ public class TGChordCreatorUtil {
 	/**
 	 * Makes a combination of string indices
 	 *
-	 * @param lastLevelCombination
+	 * @param lastLevelCombinationRef
 	 *            structure to be expanded by current level
 	 *
 	 * @return structure of stringCombination is AL { AL(0), AL(0,1),

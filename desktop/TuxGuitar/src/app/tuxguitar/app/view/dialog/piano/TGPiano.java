@@ -217,7 +217,7 @@ public class TGPiano {
 	/**
 	 * Crea la imagen del piano
 	 *
-	 * @return
+	 * @return Piano image object.
 	 */
 	private UIImage makePianoImage(){
 		UIFactory factory = getUIFactory();
@@ -277,8 +277,7 @@ public class TGPiano {
 	/**
 	 * Pinta la nota a partir del indice
 	 *
-	 * @param gc
-	 * @param value
+	 * @param painter Painter of user interface.
 	 */
 	private void paintScale(UIPainter painter){
 		painter.setBackground(this.config.getColorScale());
@@ -327,8 +326,9 @@ public class TGPiano {
 	/**
 	 * Pinta la nota a partir del indice
 	 *
-	 * @param gc
-	 * @param value
+	 * @param painter Painter of user interface.
+	 * @param value Note value.
+	 * @param playable Is note playable.
 	 */
 	protected void paintNote(UIPainter painter,int value, boolean playable){
 		if (value < 0)
