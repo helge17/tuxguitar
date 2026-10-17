@@ -25,6 +25,15 @@ Nous fournissons des paquets d'installation prêts à l'emploi pour Linux, Windo
 
 **Remarque :** Les versions 2.0.0 et ultérieures de TuxGuitar utilisent un **nouveau format de fichier** qui ne peut pas être ouvert par les versions antérieures. Vous pouvez toujours exporter vos tablatures dans l'ancien format afin de pouvoir les ouvrir avec les versions précédentes de TuxGuitar.
 
+Agenda: TuxGuitar à Lyon en novembre
+==============================================================
+Le **26 novembre 2026** au soir se déroulera à **Lyon** un atelier participatif. Au programme : découverte de TuxGuitar par la pratique, des fonctionnalités de base aux options plus élaborées.
+Atelier animé par un contributeur au développement de l'application.
+
+Que vous soyez débutant curieux ou utilisateur expérimenté vous êtes bienvenu.
+
+Atelier ouvert à toutes et tous, entrée libre et gratuite, inscription recommandée (facilite l'organisation). Détails sur [le site de l'ALDIL](https://www.aldil.org/events/decouverte-tuxguitar-pratique).
+
 Aide
 ==============================================================
 
