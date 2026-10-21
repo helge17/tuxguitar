@@ -23,6 +23,16 @@ public class TGSkinManager {
 	// naming convention for skins
 	private static final String SUFFIX_DARK = "-dark";
 
+	public static boolean isDarkSkin(String skin) {
+		return (skin != null && skin.endsWith(SUFFIX_DARK));
+	}
+
+	// the sheet canvas is darkened for dark skins, only if the user opted in
+	public boolean isDarkCanvas() {
+		return isDarkSkin(this.getCurrentSkin())
+				&& TGConfigManager.getInstance(this.context).getBooleanValue(TGConfigKeys.SKIN_DARK_CANVAS, false);
+	}
+
 	private TGSkinManager(TGContext context){
 		this.context = context;
 		this.loadSkin();
