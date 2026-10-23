@@ -130,7 +130,7 @@ dependencies {
 
 	implementation 'com.itextpdf:itextpdf:5.5.13.3'
 	implementation 'com.itextpdf.tool:xmlworker:5.5.13.1'
-	implementation 'org.apache.commons:commons-compress:1.26.0'
+	implementation 'org.apache.commons:commons-compress:1.28.0'
 	implementation 'commons-io:commons-io:2.16.1'
 	implementation 'org.apache.commons:commons-lang3:3.17.0'
 }
