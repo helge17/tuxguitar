@@ -118,6 +118,7 @@ import app.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoToTrackAction;
+import app.tuxguitar.app.action.impl.track.TGOpenNewTrackDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenReplacePercussionDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
@@ -565,6 +566,7 @@ public class TGActionInstaller {
 		installAction(new TGOpenMeasurePasteDialogAction(context));
 		installAction(new TGOpenTrackTuningDialogAction(context));
 		installAction(new TGOpenTrackPropertiesDialogAction(context));
+		installAction(new TGOpenNewTrackDialogAction(context));
 		installAction(new TGOpenReplacePercussionDialogAction(context));
 		installAction(new TGOpenScaleDialogAction(context));
 		installAction(new TGOpenURLAction(context));
