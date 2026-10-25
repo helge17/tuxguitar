@@ -117,6 +117,7 @@ import app.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoToTrackAction;
+import app.tuxguitar.app.action.impl.track.TGOpenNewTrackDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenReplacePercussionDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackPropertiesDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenTrackTuningDialogAction;
@@ -422,7 +423,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGClearSongAction.NAME, LOCKABLE | DISABLE_ON_PLAY);
 
 		//track actions
-		this.map(TGAddNewTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY | SHORTCUT, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
+		this.map(TGAddNewTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
 		this.map(TGAddTrackAction.NAME, LOCKABLE | DISABLE_ON_PLAY, new TGUpdateAddedTrackController(), new TGUndoableAddTrackController());
 		this.map(TGSetTrackMuteAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
 		this.map(TGSetTrackSoloAction.NAME, LOCKABLE, new TGUpdatePlayerTracksController(), new TGUndoableTrackSoloMuteController());
@@ -638,6 +639,7 @@ public class TGActionConfigMap extends TGActionMap<TGActionConfig> {
 		this.map(TGOpenMeasurePasteDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenTrackTuningDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenTrackPropertiesDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
+		this.map(TGOpenNewTrackDialogAction.NAME, LOCKABLE | SYNC_THREAD | DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenReplacePercussionDialogAction.NAME, LOCKABLE | SYNC_THREAD |DISABLE_ON_PLAY | SHORTCUT);
 		this.map(TGOpenScaleDialogAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);
 		this.map(TGOpenURLAction.NAME, LOCKABLE | SYNC_THREAD |SHORTCUT);

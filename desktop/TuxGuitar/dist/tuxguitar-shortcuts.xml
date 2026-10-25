@@ -70,7 +70,7 @@
 	<shortcut keys="l" action="action.note.duration.tied"/>
 	<shortcut keys="F7" action="action.gui.open-settings-editor"/>
 	<shortcut keys="Ctrl b" action="action.gui.toggle-browser-dialog"/>
-	<shortcut keys="Ctrl Shift Ins" action="action.track.add-new"/>
+	<shortcut keys="Ctrl Shift Ins" action="action.gui.open-new-track-dialog"/>
 	<shortcut keys="Ctrl Shift Up" action="action.track.go-previous"/>
 	<shortcut keys="Ctrl Shift Down" action="action.track.go-next"/>
 	<shortcut keys="Ctrl Shift Del" action="action.track.remove"/>
