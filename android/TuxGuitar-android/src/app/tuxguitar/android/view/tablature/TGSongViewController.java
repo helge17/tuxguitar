@@ -2,6 +2,8 @@ package app.tuxguitar.android.view.tablature;
 
 import java.util.List;
 
+import android.content.res.Resources;
+
 import app.tuxguitar.android.graphics.TGResourceFactoryImpl;
 import app.tuxguitar.android.transport.TGTransport;
 import app.tuxguitar.document.TGDocumentManager;
@@ -56,6 +58,7 @@ public class TGSongViewController implements TGController {
 		this.smartMenu = new TGSongViewSmartMenu(this);
 		this.axisSelector = new TGSongViewAxisSelector(this);
 
+		this.layout.loadStyles(getSystemScale());
 		this.resetCaret();
 		this.resetScroll();
 		this.updateTablature();
@@ -84,6 +87,10 @@ public class TGSongViewController implements TGController {
 				getResourceBuffer().disposeUnregisteredResources();
 			}
 		});
+	}
+
+	private static float getSystemScale() {
+		return Resources.getSystem().getDisplayMetrics().density;
 	}
 
 	public void updateTablature() {
