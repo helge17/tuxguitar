@@ -19,6 +19,7 @@ import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.toolbar.UIToolBar;
 import app.tuxguitar.ui.widget.UICanvas;
+import app.tuxguitar.ui.widget.UICheckBox;
 import app.tuxguitar.ui.widget.UIDropDownSelect;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UILayoutContainer;
@@ -36,6 +37,7 @@ public class SkinOption extends TGSettingsOption{
 	private boolean initialized;
 	private List<SkinInfo> skins;
 	private UIDropDownSelect<SkinInfo> combo;
+	private UICheckBox darkCanvas;
 	private UILabel nameLabel;
 	private UILabel authorLabel;
 	private UILabel versionLabel;
@@ -65,6 +67,12 @@ public class SkinOption extends TGSettingsOption{
 
 		this.combo = uiFactory.createDropDownSelect(composite);
 		compositeLayout.set(this.combo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
+
+		compositeLayout.set(UITableLayout.IGNORE_INVISIBLE, true);
+		this.darkCanvas = uiFactory.createCheckBox(composite);
+		this.darkCanvas.setText(TuxGuitar.getProperty("settings.config.skin.dark-canvas"));
+		this.darkCanvas.setVisible(false);
+		compositeLayout.set(this.darkCanvas, 2, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
 		UITableLayout skinInfoLayout = new UITableLayout();
 		skinInfoComposite = uiFactory.createPanel(getPanel(), false);
@@ -137,6 +145,7 @@ public class SkinOption extends TGSettingsOption{
 								}
 							});
 
+							SkinOption.this.darkCanvas.setSelected(getConfig().getBooleanValue(TGConfigKeys.SKIN_DARK_CANVAS, false));
 							SkinOption.this.showSkinInfo();
 							SkinOption.this.initialized = true;
 							SkinOption.this.pack();
@@ -174,6 +183,12 @@ public class SkinOption extends TGSettingsOption{
 					}
 					SkinOption.this.previewArea.redraw();
 
+					boolean darkCanvas = TGSkinManager.isDarkSkin(info.getSkin());
+					if( SkinOption.this.darkCanvas.isVisible() != darkCanvas ) {
+						SkinOption.this.darkCanvas.setVisible(darkCanvas);
+						SkinOption.this.pack();
+					}
+
 					loadCursor(UICursor.NORMAL);
 				}
 			}
@@ -185,6 +200,9 @@ public class SkinOption extends TGSettingsOption{
 			SkinInfo skinInfo = this.combo.getSelectedValue();
 			if( skinInfo != null ){
 				getConfig().setValue(TGConfigKeys.SKIN, skinInfo.getSkin());
+				if( TGSkinManager.isDarkSkin(skinInfo.getSkin()) ) {
+					getConfig().setValue(TGConfigKeys.SKIN_DARK_CANVAS, this.darkCanvas.isSelected());
+				}
 			}
 		}
 	}
@@ -192,6 +210,7 @@ public class SkinOption extends TGSettingsOption{
 	public void updateDefaults(){
 		if(this.initialized){
 			getConfig().setValue(TGConfigKeys.SKIN, getDefaults().getValue(TGConfigKeys.SKIN));
+			getConfig().setValue(TGConfigKeys.SKIN_DARK_CANVAS, getDefaults().getValue(TGConfigKeys.SKIN_DARK_CANVAS));
 		}
 	}
 
