@@ -42,6 +42,7 @@ public class TGConfigKeys {
 	public static final String FONT_PRINTER_GRACE = "font.printer.grace";
 	public static final String FONT_ABOUT_DIALOG_TITLE = "font.about.dialog.title";
 	public static final String FONT_MAINTOOLBAR_TIMESTAMP = "font.main-toolbar.timestamp";
+	public static final String TIMECOUNTER_DISPLAY_MODE = "timecounter.display-mode";
 	public static final String COLOR_FOREGROUND = "color.foreground";
 	public static final String COLOR_BACKGROUND = "color.background";
 
