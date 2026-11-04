@@ -4,10 +4,10 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.view.menu.TGMenuItem;
 import app.tuxguitar.app.action.impl.track.TGGoFirstTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
+import app.tuxguitar.app.action.impl.track.TGOpenNewTrackDialogAction;
 import app.tuxguitar.app.action.impl.track.TGOpenReplacePercussionDialogAction;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
-import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import app.tuxguitar.editor.action.track.TGCloneTrackAction;
 import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
 import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
@@ -71,7 +71,7 @@ public class TrackMenu extends TGMenuItem {
 
 			//--ADD TRACK--
 			this.addTrack = this.menu.createActionItem();
-			this.addTrack.addSelectionListener(this.createActionProcessor(TGAddNewTrackAction.NAME));
+			this.addTrack.addSelectionListener(this.createActionProcessor(TGOpenNewTrackDialogAction.NAME));
 
 			//--CLONE TRACK--
 			this.cloneTrack = this.menu.createActionItem();
@@ -131,7 +131,7 @@ public class TrackMenu extends TGMenuItem {
 			setMenuItemTextAndAccelerator(this.previous, "track.previous", TGGoPreviousTrackAction.NAME);
 			setMenuItemTextAndAccelerator(this.next, "track.next", TGGoNextTrackAction.NAME);
 			setMenuItemTextAndAccelerator(this.last, "track.last", TGGoLastTrackAction.NAME);
-			setMenuItemTextAndAccelerator(this.addTrack, "track.add", TGAddNewTrackAction.NAME);
+			setMenuItemTextAndAccelerator(this.addTrack, "track.add", TGOpenNewTrackDialogAction.NAME);
 			setMenuItemTextAndAccelerator(this.cloneTrack, "track.clone", TGCloneTrackAction.NAME);
 			setMenuItemTextAndAccelerator(this.removeTrack, "track.remove", TGRemoveTrackAction.NAME);
 			setMenuItemTextAndAccelerator(this.moveUp, "track.move-up", TGMoveTrackUpAction.NAME);

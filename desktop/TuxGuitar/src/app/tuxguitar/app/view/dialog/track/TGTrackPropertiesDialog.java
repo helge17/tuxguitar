@@ -26,7 +26,6 @@ import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGSong;
-import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.chooser.UIColorChooser;
@@ -52,7 +51,6 @@ import app.tuxguitar.ui.widget.UISelectItem;
 import app.tuxguitar.ui.widget.UISpinner;
 import app.tuxguitar.ui.widget.UITextField;
 import app.tuxguitar.ui.widget.UIWindow;
-import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackPropertiesDialog implements TGEventListener {
 
@@ -274,21 +272,10 @@ public class TGTrackPropertiesDialog implements TGEventListener {
 	}
 
 	private void updateTuningText() {
-		StringBuilder label = new StringBuilder();
-		boolean isValid = true;
-		List<TGString> tuning = this.findTrack().getStrings();
-		for(int i = 0 ; i < tuning.size(); i ++) {
-			if( i > 0 ) {
-				label.append(" ");
-			}
-			String noteName = TGMusicKeyUtils.sharpNoteName(tuning.get(tuning.size() - i - 1).getValue());
-			isValid &= (noteName!=null);
-			label.append(noteName);
-		}
+		String stringNames = findSongManager().getTrackManager().getStringsNames(this.findTrack());
 
 		boolean enabled = !this.isPercussionChannel();
-
-		this.tuningText.setText((enabled && isValid) ? label.toString() : "");
+		this.tuningText.setText(enabled  ? stringNames : "");
 		this.tuningText.setEnabled(enabled);
 	}
 

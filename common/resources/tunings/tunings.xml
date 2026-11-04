@@ -104,6 +104,9 @@
 		</group>
 	</group>
 	<group name="Double Bass">
+		<group name="4-String">
+			<tuning name="Standard" notes="43,38,33,28" />
+		</group>
 		<group name="5-String">
 			<tuning name="Standard" notes="43,38,33,28,24" />
 		</group>
@@ -116,4 +119,60 @@
 			<tuning name="Classic" notes="62,57,52,47,42,37,24,31,38,45,52,59" />
 		</group>
 	</group>
+
+	<instruments>
+	<!-- besides guitars (used as defaults), only non-default values are useful here -->
+		<instrument from="0" to="8">
+			<!-- some keyboards -->
+			<clef>CLEF_TREBLE_STANDARD</clef>
+		</instrument>
+		<instrument from="24" to="31">
+			<!-- guitars -->
+			<clef>CLEF_TREBLE_8</clef>
+			<tuningGroup>Guitar</tuningGroup>
+			<tuningSubGroup>6-String</tuningSubGroup>
+			<tuning>E Tuning</tuning>
+		</instrument>
+		<instrument from="32" to="39">
+			<!-- bass guitars -->
+			<clef>CLEF_BASS_8</clef>
+			<tuningGroup>Bass</tuningGroup>
+			<tuningSubGroup>4-String</tuningSubGroup>
+			<tuning>E Tuning</tuning>
+		</instrument>
+		<instrument from="40" to="40">
+			<!-- violin -->
+			<clef>CLEF_TREBLE_STANDARD</clef>
+			<tuningGroup>Violin</tuningGroup>
+			<tuningSubGroup>4-String</tuningSubGroup>
+			<tuning>Standard</tuning>
+		</instrument>
+		<instrument from="41" to="41">
+			<!-- viola -->
+			<clef>CLEF_ALTO_STANDARD</clef>
+			<tuningGroup>Viola</tuningGroup>
+			<tuningSubGroup>4-String</tuningSubGroup>
+			<tuning>Standard</tuning>
+		</instrument>
+		<instrument from="42" to="42">
+			<!-- cello -->
+			<clef>CLEF_BASS_STANDARD</clef>
+			<tuningGroup>Cello</tuningGroup>
+			<tuningSubGroup>4-String</tuningSubGroup>
+			<tuning>Standard</tuning>
+		</instrument>
+		<instrument from="43" to="43">
+			<!-- double bass -->
+			<clef>CLEF_BASS_8</clef>
+			<tuningGroup>Double Bass</tuningGroup>
+			<tuningSubGroup>4-String</tuningSubGroup>
+			<tuning>Standard</tuning>
+		</instrument>
+		<instrument from="105" to="105">
+			<!-- banjo -->
+			<tuningGroup>Banjo</tuningGroup>
+			<tuningSubGroup>5-String</tuningSubGroup>
+			<tuning>Standard</tuning>
+		</instrument>
+	</instruments>
 </tunings>

@@ -17,6 +17,7 @@ import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVoice;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGTrackManager {
 
@@ -40,6 +41,20 @@ public class TGTrackManager {
 			}
 		}
 		return firstMeasure;
+	}
+
+	public String getStringsNames(TGTrack track) {
+		StringBuilder label = new StringBuilder();
+		boolean isValid = true;
+		for(int i = 0 ; i < track.getStrings().size(); i ++) {
+			if( i > 0 ) {
+				label.append(" ");
+			}
+			String noteName = TGMusicKeyUtils.sharpNoteName(track.getStrings().get(track.getStrings().size() - i - 1).getValue());
+			isValid &= (noteName!=null);
+			label.append(noteName);
+		}
+		return isValid ? label.toString() : "";
 	}
 
 	public TGMeasure getLastMeasure(TGTrack track){

@@ -89,6 +89,7 @@ import app.tuxguitar.app.action.impl.track.TGGoFirstTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoLastTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoNextTrackAction;
 import app.tuxguitar.app.action.impl.track.TGGoPreviousTrackAction;
+import app.tuxguitar.app.action.impl.track.TGOpenNewTrackDialogAction;
 import app.tuxguitar.app.action.impl.transport.TGOpenTransportModeDialogAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportPlayPauseAction;
 import app.tuxguitar.app.action.impl.transport.TGTransportSetLoopEHeaderAction;
@@ -148,7 +149,6 @@ import app.tuxguitar.editor.action.note.TGChangePickStrokeUpAction;
 import app.tuxguitar.editor.action.note.TGChangeTiedNoteAction;
 import app.tuxguitar.editor.action.note.TGChangeVelocityAction;
 import app.tuxguitar.editor.action.note.TGToggleNoteEnharmonicAction;
-import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import app.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
 import app.tuxguitar.editor.action.track.TGChangeTrackSoloAction;
 import app.tuxguitar.editor.action.track.TGCloneTrackAction;
@@ -485,7 +485,7 @@ public class TGMainToolBarConfigMap {
 
 		//------- TRACK --------
 		this.groupName = "track";
-		registerButton("track.add", TGAddNewTrackAction.NAME, TGIconManager.TRACK_ADD, DISABLE_ON_PLAY);
+		registerButton("track.add", TGOpenNewTrackDialogAction.NAME, TGIconManager.TRACK_ADD, DISABLE_ON_PLAY);
 		registerButton("track.remove", TGRemoveTrackAction.NAME, TGIconManager.TRACK_REMOVE, DISABLE_ON_PLAY);
 		registerButton("track.first", TGGoFirstTrackAction.NAME, TGIconManager.TRACK_FIRST, new TGMainToolBarItemUpdater() {
 			@Override
