@@ -15,6 +15,8 @@ import app.tuxguitar.ui.event.UIDisposeEvent;
 import app.tuxguitar.ui.event.UIDisposeListener;
 import app.tuxguitar.ui.event.UIFocusEvent;
 import app.tuxguitar.ui.event.UIFocusLostListener;
+import app.tuxguitar.ui.event.UIMouseDoubleClickListener;
+import app.tuxguitar.ui.event.UIMouseEvent;
 import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
@@ -154,6 +156,8 @@ public class TGChannelItem implements TGContinuousControl{
 		this.volumeScale.setMaximum(TGChannel.MAX_VOLUME);
 		this.volumeScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.volumeScale.addSelectionListener(scaleSelectionListener);
+		this.addKnobToolTipUpdateOnSelect(this.volumeScale, "instrument.volume");
+		this.addKnobResetOnDoubleClick(this.volumeScale, TGChannel.DEFAULT_VOLUME);
 		controllerScalesLayout.set(this.volumeScale, 1, 1, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.balanceScale = uiFactory.createKnob(controllerScalesComposite);
@@ -161,6 +165,8 @@ public class TGChannelItem implements TGContinuousControl{
 		this.balanceScale.setMaximum(MAXIMUM_KNOB_VALUE);
 		this.balanceScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.balanceScale.addSelectionListener(scaleSelectionListener);
+		this.addKnobToolTipUpdateOnSelect(this.balanceScale, "instrument.balance");
+		this.addKnobResetOnDoubleClick(this.balanceScale, TGChannel.DEFAULT_BALANCE);
 		controllerScalesLayout.set(this.balanceScale, 1, 2, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.reverbScale = uiFactory.createKnob(controllerScalesComposite);
@@ -168,6 +174,8 @@ public class TGChannelItem implements TGContinuousControl{
 		this.reverbScale.setMaximum(MAXIMUM_KNOB_VALUE);
 		this.reverbScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.reverbScale.addSelectionListener(scaleSelectionListener);
+		this.addKnobToolTipUpdateOnSelect(this.reverbScale, "instrument.reverb");
+		this.addKnobResetOnDoubleClick(this.reverbScale, TGChannel.DEFAULT_REVERB);
 		controllerScalesLayout.set(this.reverbScale, 1, 3, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.chorusScale = uiFactory.createKnob(controllerScalesComposite);
@@ -175,6 +183,8 @@ public class TGChannelItem implements TGContinuousControl{
 		this.chorusScale.setMaximum(MAXIMUM_KNOB_VALUE);
 		this.chorusScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.chorusScale.addSelectionListener(scaleSelectionListener);
+		this.addKnobToolTipUpdateOnSelect(this.chorusScale, "instrument.chorus");
+		this.addKnobResetOnDoubleClick(this.chorusScale, TGChannel.DEFAULT_CHORUS);
 		controllerScalesLayout.set(this.chorusScale, 1, 4, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.tremoloScale = uiFactory.createKnob(controllerScalesComposite);
@@ -182,6 +192,8 @@ public class TGChannelItem implements TGContinuousControl{
 		this.tremoloScale.setMaximum(MAXIMUM_KNOB_VALUE);
 		this.tremoloScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.tremoloScale.addSelectionListener(scaleSelectionListener);
+		this.addKnobToolTipUpdateOnSelect(this.tremoloScale, "instrument.tremolo");
+		this.addKnobResetOnDoubleClick(this.tremoloScale, TGChannel.DEFAULT_TREMOLO);
 		controllerScalesLayout.set(this.tremoloScale, 1, 5, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 
 		this.phaserScale = uiFactory.createKnob(controllerScalesComposite);
@@ -189,6 +201,8 @@ public class TGChannelItem implements TGContinuousControl{
 		this.phaserScale.setMaximum(MAXIMUM_KNOB_VALUE);
 		this.phaserScale.setIncrement(MINIMUM_KNOB_INCREMENT);
 		this.phaserScale.addSelectionListener(scaleSelectionListener);
+		this.addKnobToolTipUpdateOnSelect(this.phaserScale, "instrument.phaser");
+		this.addKnobResetOnDoubleClick(this.phaserScale, TGChannel.DEFAULT_PHASER);
 		controllerScalesLayout.set(this.phaserScale, 1, 6, UITableLayout.ALIGN_CENTER, UITableLayout.ALIGN_CENTER, false, false);
 
 		//--------------------------------------------------------------//
@@ -213,13 +227,64 @@ public class TGChannelItem implements TGContinuousControl{
 			this.removeChannelButton.setText(TuxGuitar.getProperty("remove"));
 			this.setupChannelButton.setToolTipText(TuxGuitar.getProperty("settings"));
 
-			this.volumeScale.setToolTipText(TuxGuitar.getProperty("instrument.volume"));
-			this.balanceScale.setToolTipText(TuxGuitar.getProperty("instrument.balance"));
-			this.reverbScale.setToolTipText(TuxGuitar.getProperty("instrument.reverb"));
-			this.chorusScale.setToolTipText(TuxGuitar.getProperty("instrument.chorus"));
-			this.tremoloScale.setToolTipText(TuxGuitar.getProperty("instrument.tremolo"));
-			this.phaserScale.setToolTipText(TuxGuitar.getProperty("instrument.phaser"));
+			this.updateKnobToolTips();
 		}
+	}
+
+	private void updateKnobToolTips() {
+		this.updateKnobToolTip(this.volumeScale, "instrument.volume");
+		this.updateKnobToolTip(this.balanceScale, "instrument.balance");
+		this.updateKnobToolTip(this.reverbScale, "instrument.reverb");
+		this.updateKnobToolTip(this.chorusScale, "instrument.chorus");
+		this.updateKnobToolTip(this.tremoloScale, "instrument.tremolo");
+		this.updateKnobToolTip(this.phaserScale, "instrument.phaser");
+	}
+
+	private void updateKnobToolTip(UIKnob knob, String knobLabelKey) {
+		knob.setToolTipText(TuxGuitar.getProperty(knobLabelKey) + ": " + this.getKnobPositionText(knob));
+	}
+
+	private void addKnobToolTipUpdateOnSelect(final UIKnob knob, final String knobLabelKey) {
+		knob.addSelectionListener(new UISelectionListener() {
+			public void onSelect(UISelectionEvent event) {
+				updateKnobToolTip(knob, knobLabelKey);
+			}
+		});
+	}
+
+	private String getKnobPositionText(UIKnob knob) {
+		if( knob == this.balanceScale ) {
+			return this.getBalancePosition();
+		}
+		return this.getKnobPercent(knob) + "%";
+	}
+
+	private void addKnobResetOnDoubleClick(final UIKnob knob, final int defaultKnobValue) {
+		knob.addMouseDoubleClickListener(new UIMouseDoubleClickListener() {
+			public void onMouseDoubleClick(UIMouseEvent event) {
+				knob.setValue(defaultKnobValue);
+			}
+		});
+	}
+
+	private String getBalancePosition() {
+		int balance = this.balanceScale.getValue();
+		int centerBalance = TGChannel.DEFAULT_BALANCE;
+		if( balance < centerBalance ) {
+			return TuxGuitar.getProperty("instrument.balance.left") + " " + Math.round(100f * (centerBalance - balance) / (centerBalance - this.balanceScale.getMinimum())) + "%";
+		}
+		if( balance > centerBalance ) {
+			return TuxGuitar.getProperty("instrument.balance.right") + " " + Math.round(100f * (balance - centerBalance) / (this.balanceScale.getMaximum() - centerBalance)) + "%";
+		}
+		return TuxGuitar.getProperty("instrument.balance.center");
+	}
+
+	private int getKnobPercent(UIKnob knob) {
+		int knobRange = (knob.getMaximum() - knob.getMinimum());
+		if( knobRange <= 0 ) {
+			return 0;
+		}
+		return Math.round(100f * (knob.getValue() - knob.getMinimum()) / knobRange);
 	}
 
 	public void loadIcons(){
@@ -248,6 +313,7 @@ public class TGChannelItem implements TGContinuousControl{
 			this.chorusScale.setValue(getChannel().getChorus());
 			this.tremoloScale.setValue(getChannel().getTremolo());
 			this.phaserScale.setValue(getChannel().getPhaser());
+			this.updateKnobToolTips();
 
 			this.updateBankCombo(playerRunning);
 			this.updateProgramCombo(playerRunning);
