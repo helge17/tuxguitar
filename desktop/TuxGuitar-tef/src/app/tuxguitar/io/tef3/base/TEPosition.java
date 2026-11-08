@@ -36,7 +36,10 @@ public class TEPosition {
 			int maxPositionsInMeasure = (int)(maxPositionsInFourFour * timeSignatureRatio);
 			int valueForWholeMeasure = valuePerPosition * maxPositionsInMeasure;
 
-			if ((location - valueForWholeMeasure) <= 0)
+			// A component exactly at the measure boundary belongs to the
+			// following measure at position zero, not to the previous measure
+			// at its (out-of-range) end position.
+			if ((location - valueForWholeMeasure) < 0)
 			{
 				positionOfComponentInMeasure = location / valuePerPosition;
 				location %= valuePerPosition;
