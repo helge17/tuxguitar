@@ -144,24 +144,24 @@ public class TESongParser {
 		}
 	}
 
-	private TGBeat getBeat(TGMeasure measure, long start){
-		TGBeat beat = this.manager.getMeasureManager().getBeat(measure, start);
+	private TGBeat getBeatPrecise(TGMeasure measure, long preciseStart){
+		TGBeat beat = this.manager.getMeasureManager().getBeatPrecise(measure, preciseStart);
 		if(beat == null){
 			beat = this.manager.getFactory().newBeat();
-			beat.setStart(start);
+			beat.setPreciseStart(preciseStart);
 			measure.addBeat(beat);
 		}
 		return beat;
 	}
 
-	private long getStart(TGDuration duration, TGMeasure measure,int position){
+	private long getPreciseStart(TGDuration duration, TGMeasure measure,int position){
 		float fixedPosition = position;
 		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.NORMAL)){
 			fixedPosition = (( fixedPosition - (fixedPosition % 64)) + ((((fixedPosition % 64) * 2) * 2) / 3) );
 		}
-		long start = ((long) (measure.getStart() + ( (fixedPosition * TGDuration.QUARTER_TIME)  / 64)) );
+		long preciseStart = ((long) (measure.getPreciseStart() + ( (fixedPosition * TGDuration.toPreciseTime(TGDuration.QUARTER_TIME))  / 64)) );
 
-		return start;
+		return preciseStart;
 	}
 
 	private TGDuration getDuration(int duration){
@@ -246,7 +246,7 @@ public class TESongParser {
 		this.applyTechniques(note, tgNote);
 
 		TGDuration tgDuration = getDuration( note.getDuration() );
-		TGBeat tgBeat = getBeat(tgMeasure, getStart(tgDuration, tgMeasure, note.getPosition()));
+		TGBeat tgBeat = getBeatPrecise(tgMeasure, getPreciseStart(tgDuration, tgMeasure, note.getPosition()));
 		tgBeat.getVoice(0).getDuration().copyFrom(tgDuration);
 		tgBeat.getVoice(0).addNote(tgNote);
 	}
@@ -446,7 +446,7 @@ public class TESongParser {
 				tgChord.addFretValue(i,value);
 			}
 			if(tgChord.countNotes() > 0){
-				TGBeat tgBeat = getBeat(tgMeasure, getStart(null, tgMeasure, component.getPosition()));
+				TGBeat tgBeat = getBeatPrecise(tgMeasure, getPreciseStart(null, tgMeasure, component.getPosition()));
 				tgBeat.setChord(tgChord);
 			}
 		}
@@ -590,7 +590,9 @@ class TGSongAdjuster{
 			}
 			previous = beat;
 		}
-		if(!finish){
+		if(finish){
+			this.manager.getMeasureManager().autoCompleteSilences(measure);
+		} else {
 			adjustBeats(measure);
 		}
 	}

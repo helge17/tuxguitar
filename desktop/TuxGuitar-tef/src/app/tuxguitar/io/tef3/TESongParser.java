@@ -223,7 +223,7 @@ public class TESongParser {
 			TETrack teTrack = teTracks.get(componentTrackIndex);
 			TGTrack tgTrack = tgSong.getTrack(componentTrackIndex);
 			TGMeasure tgMeasure = tgTrack.getMeasure(measure);
-			TGBeat tgBeat = getBeat(tgMeasure, this.getGridPosition(tgMeasure, component.getPosition()));
+			TGBeat tgBeat = getBeatPrecise(tgMeasure, this.getGridPrecisePosition(tgMeasure, component.getPosition()));
 
 			if(component instanceof TEComponentNote) {
 				TGNote tgNote = this.addNote(teTrack, (TEComponentNote)component, tgBeat);
@@ -283,11 +283,11 @@ public class TESongParser {
 		});
 	}
 
-	private TGBeat getBeat(TGMeasure measure, long start){
-		TGBeat beat = this.manager.getMeasureManager().getBeat(measure, start);
+	private TGBeat getBeatPrecise(TGMeasure measure, long preciseStart){
+		TGBeat beat = this.manager.getMeasureManager().getBeatPrecise(measure, preciseStart);
 		if(beat == null){
 			beat = this.manager.getFactory().newBeat();
-			beat.setStart(start);
+			beat.setPreciseStart(preciseStart);
 			measure.addBeat(beat);
 		}
 		return beat;
@@ -296,16 +296,16 @@ public class TESongParser {
 	// TablEdit uses a 16th note grid.
 	// Anything smaller than a 16th note is padded with rests to be a 16th note.
 	// So a 1/64th note is actually 1/64th note, with 3 1/64th note rests after it.
-	private long getGridPosition(TGMeasure measure, TEPosition position){
-		long measureStart = measure.getStart();
+	private long getGridPrecisePosition(TGMeasure measure, TEPosition position){
+		long measurePreciseStart = measure.getPreciseStart();
 		int positionInMeasure = position.getPositionInMeasure();
 
 		float durationOfSixteenthNote = (float)TGDuration.QUARTER / TGDuration.SIXTEENTH;
-		float sizePerGridPosition = TGDuration.QUARTER_TIME * durationOfSixteenthNote;
+		float preciseSizePerGridPosition = TGDuration.toPreciseTime(TGDuration.QUARTER_TIME) * durationOfSixteenthNote;
 
-		long gridPosition = (long) (measureStart + (sizePerGridPosition * positionInMeasure));
+		long gridPrecisePosition = (long) (measurePreciseStart + (preciseSizePerGridPosition * positionInMeasure));
 
-		return gridPosition;
+		return gridPrecisePosition;
 	}
 
 	private TGDuration getDuration(int duration){
@@ -832,7 +832,10 @@ class TGSongAdjuster {
 			}
 			previous = beat;
 		}
-		if(!finish){
+		if(finish){
+			this.manager.getMeasureManager().autoCompleteSilences(measure);
+		}
+		else {
 			adjustBeats(measure);
 		}
 	}
