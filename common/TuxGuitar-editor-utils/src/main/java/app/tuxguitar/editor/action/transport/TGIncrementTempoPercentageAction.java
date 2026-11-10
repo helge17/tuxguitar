@@ -25,11 +25,7 @@ public class TGIncrementTempoPercentageAction extends TGActionBase {
 			increment = mode.getCustomPercentIncrement();
 		}
 		
-		if (mode.getCurrentPercent() <= (MidiPlayerMode.DEFAULT_MAX_PERCENTAGE - increment)) {
-			increasedTempo = mode.getCurrentPercent() + increment;
-		} else {
-			increasedTempo = MidiPlayerMode.DEFAULT_MAX_PERCENTAGE;
-		}
+		increasedTempo = Math.min(MidiPlayerMode.MAX_TEMPO_PERCENTAGE, mode.getCurrentPercent() + increment);
 		
 		context.setAttribute(TGChangeTempoPercentageAction.ATTRIBUTE_PERCENTAGE_VALUE, increasedTempo);
 		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());

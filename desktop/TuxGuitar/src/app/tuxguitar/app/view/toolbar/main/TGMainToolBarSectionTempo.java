@@ -71,8 +71,8 @@ public class TGMainToolBarSectionTempo extends TGMainToolBarSection implements T
 		this.tempoPercentSpinner = uiFactory.createSpinner(parentPanel);
 		this.tempoPercentSpinner.setVisible(true);
 		this.tempoPercentSpinner.setEnabled(true);
-		this.tempoPercentSpinner.setMinimum(MidiPlayerMode.DEFAULT_MIN_PERCENTAGE);
-		this.tempoPercentSpinner.setMaximum(MidiPlayerMode.DEFAULT_MAX_PERCENTAGE);
+		this.tempoPercentSpinner.setMinimum(MidiPlayerMode.MIN_TEMPO_PERCENTAGE);
+		this.tempoPercentSpinner.setMaximum(MidiPlayerMode.MAX_TEMPO_PERCENTAGE);
 		this.tempoPercentSpinner.setValue(MidiPlayerMode.SIMPLE_DEFAULT_TEMPO_PERCENT);
 		
 		this.tempoPercentSpinner.addSelectionListener(new UISelectionListener() {

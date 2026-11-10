@@ -25,11 +25,7 @@ public class TGDecrementTempoPercentageAction extends TGActionBase {
 			decrement = mode.getCustomPercentIncrement();
 		}
 		
-		if (mode.getCurrentPercent() > decrement) {
-			decreasedTempo = mode.getCurrentPercent() - decrement;
-		} else {
-			decreasedTempo = MidiPlayerMode.DEFAULT_MIN_PERCENTAGE;
-		}
+		decreasedTempo = Math.min(MidiPlayerMode.MIN_TEMPO_PERCENTAGE, mode.getCurrentPercent() - decrement);
 		
 		context.setAttribute(TGChangeTempoPercentageAction.ATTRIBUTE_PERCENTAGE_VALUE, decreasedTempo);
 		TGActionManager tgActionManager = TGActionManager.getInstance(getContext());
