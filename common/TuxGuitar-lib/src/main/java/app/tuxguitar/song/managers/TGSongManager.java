@@ -860,59 +860,37 @@ public class TGSongManager {
 	}
 
 	public TGMarker getPreviousMarker(TGSong song, int from){
-		TGMeasureHeader previous = null;
-		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if(header.hasMarker() && header.getNumber() < from){
-				if(previous == null || previous.getNumber() < header.getNumber()){
-					previous = header;
-				}
-			}
-		}
-		return (previous != null)?previous.getMarker():null;
+		return getNearestMarker(song, from, -1);
 	}
 
 	public TGMarker getNextMarker(TGSong song, int from){
-		TGMeasureHeader next = null;
-		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if(header.hasMarker() && header.getNumber() > from){
-				if(next == null || next.getNumber() > header.getNumber()){
-					next = header;
-				}
-			}
-		}
-		return (next != null)?next.getMarker():null;
+		return getNearestMarker(song, from, 1);
 	}
 
 	public TGMarker getFirstMarker(TGSong song){
-		TGMeasureHeader first = null;
-		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if(header.hasMarker()){
-				if(first == null || header.getNumber() < first.getNumber()){
-					first = header;
-				}
-			}
-		}
-		return (first != null)?first.getMarker():null;
+		return getNextMarker(song, Integer.MIN_VALUE);
 	}
 
 	public TGMarker getLastMarker(TGSong song){
-		TGMeasureHeader next = null;
+		return getPreviousMarker(song, Integer.MAX_VALUE);
+	}
+
+	// the marker nearest to measure "from" on the side "direction" points to (1 = after, -1 = before), "from" excluded
+	private TGMarker getNearestMarker(TGSong song, int from, int direction){
+		TGMeasureHeader nearest = null;
 		Iterator<TGMeasureHeader> it = song.getMeasureHeaders();
 		while(it.hasNext()){
 			TGMeasureHeader header = it.next();
-			if(header.hasMarker()){
-				if(next == null || header.getNumber() > next.getNumber()){
-					next = header;
-				}
+			if(header.hasMarker() && isBeyond(header, from, direction) && (nearest == null || isBeyond(nearest, header.getNumber(), direction))){
+				nearest = header;
 			}
 		}
-		return (next != null)?next.getMarker():null;
+		return (nearest != null)?nearest.getMarker():null;
+	}
+
+	// whether the header's measure lies past measure "number" on the side "direction" points to
+	private boolean isBeyond(TGMeasureHeader header, int number, int direction){
+		return Long.signum((long) header.getNumber() - number) == direction;
 	}
 
 	public void autoCompleteSilences(TGSong song){
@@ -1008,20 +986,10 @@ public class TGSongManager {
 			}
 			preciseStart += header.getPreciseLength();
 		}
-		Iterator<TGTrack> itTrack = song.getTracks();
-		while (itTrack.hasNext()) {
-			this.updatePreciseStart(itTrack.next(), fromPreciseStart);
-		}
+		this.updatePreciseStart(song);
 	}
 
 	public void updatePreciseStart(TGTrack track) {
-		Iterator<TGMeasure> itMeasures = track.getMeasures();
-		while(itMeasures.hasNext()) {
-			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
-		}
-	}
-
-	public void updatePreciseStart(TGTrack track, long fromPreciseStart) {
 		Iterator<TGMeasure> itMeasures = track.getMeasures();
 		while(itMeasures.hasNext()) {
 			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
