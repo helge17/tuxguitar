@@ -22,43 +22,51 @@ public class TGRemoveUnusedVoiceAction extends TGActionBase {
 	}
 
 	protected void processAction(TGActionContext context){
-		List<TGBeat> beats = null;
+		List<TGBeat> beats = this.findBeats(context);
+		int voiceIndexToRemove = this.findLastUnusedVoice(beats);
+		if (voiceIndexToRemove >= 0) {
+			TGMeasureManager measureMgr = getSongManager(context).getMeasureManager();
+			List<TGMeasure> measuresDone = new ArrayList<TGMeasure>();
+			for (TGBeat beat : beats) {
+				TGMeasure measure = beat.getMeasure();
+				if (!measuresDone.contains(measure)) {
+					measureMgr.removeMeasureVoices( measure, voiceIndexToRemove );
+					measuresDone.add(measure);
+				}
+			}
+		}
+	}
+
+	// the selected beats, else the current beat
+	private List<TGBeat> findBeats(TGActionContext context){
 		TGBeatRange beatRange = (TGBeatRange) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE);
 		if ((beatRange != null) && !beatRange.isEmpty()) {
-			beats = beatRange.getBeats();
-		} else {
-			beats = new ArrayList<TGBeat>();
-			beats.add((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
+			return beatRange.getBeats();
 		}
+		List<TGBeat> beats = new ArrayList<TGBeat>();
+		beats.add((TGBeat) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT));
+		return beats;
+	}
+
+	// voice to remove: the last voice unused in all beats, -1 if none (or no beats)
+	private int findLastUnusedVoice(List<TGBeat> beats){
 		if (!beats.isEmpty()) {
-			int nbVoices = TGBeat.MAX_VOICES;
-			// looking for an unused voice in all measures
-			boolean[] unused = new boolean[nbVoices];
-			for (int voiceIndex=0; voiceIndex<nbVoices; voiceIndex++) {
-				unused[voiceIndex] = true;
-			}
-			for (TGBeat beat : beats) {
-				for (int voiceIndex=0; voiceIndex<nbVoices; voiceIndex++) {
-					TGVoice voice = beat.getVoice(voiceIndex);
-					unused[voiceIndex] &= (voice.isEmpty() || voice.isRestVoice());
-				}
-			}
-			// voice to remove: the last unused voice
-			int voiceIndexToRemove = -1;
-			for (int voiceIndex=0; voiceIndex<nbVoices; voiceIndex++) {
-				if (unused[voiceIndex]) voiceIndexToRemove = voiceIndex;
-			}
-			if (voiceIndexToRemove >= 0) {
-				TGMeasureManager measureMgr = getSongManager(context).getMeasureManager();
-				List<TGMeasure> measuresDone = new ArrayList<TGMeasure>();
-				for (TGBeat beat : beats) {
-					TGMeasure measure = beat.getMeasure();
-					if (!measuresDone.contains(measure)) {
-						measureMgr.removeMeasureVoices( measure, voiceIndexToRemove );
-						measuresDone.add(measure);
-					}
+			for (int voiceIndex = TGBeat.MAX_VOICES - 1; voiceIndex >= 0; voiceIndex--) {
+				if (isUnused(beats, voiceIndex)) {
+					return voiceIndex;
 				}
 			}
 		}
+		return -1;
+	}
+
+	private static boolean isUnused(List<TGBeat> beats, int voiceIndex){
+		for (TGBeat beat : beats) {
+			TGVoice voice = beat.getVoice(voiceIndex);
+			if (!voice.isEmpty() && !voice.isRestVoice()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
