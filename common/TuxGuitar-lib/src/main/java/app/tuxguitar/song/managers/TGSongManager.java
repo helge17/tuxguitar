@@ -986,20 +986,10 @@ public class TGSongManager {
 			}
 			preciseStart += header.getPreciseLength();
 		}
-		Iterator<TGTrack> itTrack = song.getTracks();
-		while (itTrack.hasNext()) {
-			this.updatePreciseStart(itTrack.next(), fromPreciseStart);
-		}
+		this.updatePreciseStart(song);
 	}
 
 	public void updatePreciseStart(TGTrack track) {
-		Iterator<TGMeasure> itMeasures = track.getMeasures();
-		while(itMeasures.hasNext()) {
-			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
-		}
-	}
-
-	public void updatePreciseStart(TGTrack track, long fromPreciseStart) {
 		Iterator<TGMeasure> itMeasures = track.getMeasures();
 		while(itMeasures.hasNext()) {
 			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
