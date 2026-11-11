@@ -17,28 +17,29 @@ public class TGStringLimitUtil {
 
 	public static List<TGString> createWritableStrings(TGTrack track, int minimum, int maximum) {
 		int count = track.stringCount();
-		if( count >= minimum && count <= maximum ) {
+		if( isWithin(count, minimum, maximum) ) {
 			return track.getStrings();
 		}
-		int writableCount = count;
-		if( writableCount < minimum ) {
-			writableCount = minimum;
-		}
-		if( writableCount > maximum ) {
-			writableCount = maximum;
-		}
-		List<TGString> strings = track.getStrings();
-		List<TGString> writableStrings = createDefaultStrings(track, writableCount);
-		for(TGString string : strings) {
-			if( string.getNumber() >= minimum && string.getNumber() <= maximum ) {
-				for(TGString writableString : writableStrings) {
-					if( writableString.getNumber() == string.getNumber() ) {
-						writableString.setValue(string.getValue());
-					}
-				}
+		List<TGString> writableStrings = createDefaultStrings(track, Math.min(Math.max(count, minimum), maximum));
+		for(TGString string : track.getStrings()) {
+			if( isWithin(string.getNumber(), minimum, maximum) ) {
+				copyValue(string, writableStrings);
 			}
 		}
 		return writableStrings;
+	}
+
+	private static boolean isWithin(int value, int minimum, int maximum) {
+		return (value >= minimum && value <= maximum);
+	}
+
+	/** Copies the value of string to the writable string that has the same number. */
+	private static void copyValue(TGString string, List<TGString> writableStrings) {
+		for(TGString writableString : writableStrings) {
+			if( writableString.getNumber() == string.getNumber() ) {
+				writableString.setValue(string.getValue());
+			}
+		}
 	}
 
 	private static List<TGString> createDefaultStrings(TGTrack track, int count) {

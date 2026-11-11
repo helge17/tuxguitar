@@ -11,6 +11,7 @@ import app.tuxguitar.gm.GMChannelRouterConfigurator;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.io.tg.util.TGMeasureHeaderFlags;
 import app.tuxguitar.io.tg.util.TGStringLimitUtil;
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.managers.TGSongManager;
@@ -42,6 +43,10 @@ import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class TGSongWriterImpl extends TGStream implements TGSongWriter {
+
+	private static final TGMeasureHeaderFlags MEASURE_HEADER_FLAGS = new TGMeasureHeaderFlags(
+			MEASURE_HEADER_TIMESIGNATURE, MEASURE_HEADER_TEMPO, MEASURE_HEADER_REPEAT_OPEN, MEASURE_HEADER_REPEAT_CLOSE,
+			MEASURE_HEADER_REPEAT_ALTERNATIVE, MEASURE_HEADER_MARKER, MEASURE_HEADER_TRIPLET_FEEL);
 
 	private TGFactory factory;
 	private GMChannelRouter channelRouter;
@@ -163,35 +168,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	private void writeMeasureHeader(TGMeasureHeader measureheader,TGMeasureHeader lastMeasureHeader){
-		int header = 0;
-		if(lastMeasureHeader == null){
-			header |= MEASURE_HEADER_TIMESIGNATURE;
-			header |= MEASURE_HEADER_TEMPO;
-			if(measureheader.getTripletFeel() != TGMeasureHeader.TRIPLET_FEEL_NONE){
-				header |= MEASURE_HEADER_TRIPLET_FEEL;
-			}
-		}else{
-			//Time Signature
-			int numerator = measureheader.getTimeSignature().getNumerator();
-			int value = measureheader.getTimeSignature().getDenominator().getValue();
-			int prevNumerator = lastMeasureHeader.getTimeSignature().getNumerator();
-			int prevValue = lastMeasureHeader.getTimeSignature().getDenominator().getValue();
-			if(numerator != prevNumerator || value != prevValue){
-				header |= MEASURE_HEADER_TIMESIGNATURE;
-			}
-			//Tempo
-			if(measureheader.getTempo().getQuarterValue() != lastMeasureHeader.getTempo().getQuarterValue()){
-				header |= MEASURE_HEADER_TEMPO;
-			}
-			//Triplet Feel
-			if(measureheader.getTripletFeel() != lastMeasureHeader.getTripletFeel()){
-				header |= MEASURE_HEADER_TRIPLET_FEEL;
-			}
-		}
-		header = (measureheader.isRepeatOpen())?header |= MEASURE_HEADER_REPEAT_OPEN:header;
-		header = (measureheader.getRepeatClose() > 0)?header |= MEASURE_HEADER_REPEAT_CLOSE:header;
-		header = (measureheader.getRepeatAlternative() > 0)?header |= MEASURE_HEADER_REPEAT_ALTERNATIVE:header;
-		header = (measureheader.hasMarker())?header |= MEASURE_HEADER_MARKER:header;
+		int header = MEASURE_HEADER_FLAGS.create(measureheader, lastMeasureHeader);
 
 		writeHeader(header);
 
@@ -492,30 +469,44 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	private void writeNoteEffect(TGNoteEffect effect){
-		int header = 0;
-
-		header = (effect.isBend())?header |= EFFECT_BEND:header;
-		header = (effect.isTremoloBar())?header |= EFFECT_TREMOLO_BAR:header;
-		header = (effect.isHarmonic())?header |= EFFECT_HARMONIC:header;
-		header = (effect.isGrace())?header |= EFFECT_GRACE:header;
-		header = (effect.isTrill())?header |= EFFECT_TRILL:header;
-		header = (effect.isTremoloPicking())?header |= EFFECT_TREMOLO_PICKING:header;
-		header = (effect.isVibrato())?header |= EFFECT_VIBRATO:header;
-		header = (effect.isDeadNote())?header |= EFFECT_DEAD:header;
-		header = (effect.isSlide())?header |= EFFECT_SLIDE:header;
-		header = (effect.isHammer())?header |= EFFECT_HAMMER:header;
-		header = (effect.isGhostNote())?header |= EFFECT_GHOST:header;
-		header = (effect.isAccentuatedNote())?header |= EFFECT_ACCENTUATED:header;
-		header = (effect.isHeavyAccentuatedNote())?header |= EFFECT_HEAVY_ACCENTUATED:header;
-		header = (effect.isPalmMute())?header |= EFFECT_PALM_MUTE:header;
-		header = (effect.isStaccato())?header |= EFFECT_STACCATO:header;
-		header = (effect.isTapping())?header |= EFFECT_TAPPING:header;
-		header = (effect.isSlapping())?header |= EFFECT_SLAPPING:header;
-		header = (effect.isPopping())?header |= EFFECT_POPPING:header;
-		header = (effect.isFadeIn())?header |= EFFECT_FADE_IN:header;
+		int header = createNoteEffectHeader(effect);
 
 		writeHeader(header,3);
 
+		writeNoteEffectData(header, effect);
+	}
+
+	private int createNoteEffectHeader(TGNoteEffect effect){
+		int header = 0;
+
+		header |= flag(effect.isBend(), EFFECT_BEND);
+		header |= flag(effect.isTremoloBar(), EFFECT_TREMOLO_BAR);
+		header |= flag(effect.isHarmonic(), EFFECT_HARMONIC);
+		header |= flag(effect.isGrace(), EFFECT_GRACE);
+		header |= flag(effect.isTrill(), EFFECT_TRILL);
+		header |= flag(effect.isTremoloPicking(), EFFECT_TREMOLO_PICKING);
+		header |= flag(effect.isVibrato(), EFFECT_VIBRATO);
+		header |= flag(effect.isDeadNote(), EFFECT_DEAD);
+		header |= flag(effect.isSlide(), EFFECT_SLIDE);
+		header |= flag(effect.isHammer(), EFFECT_HAMMER);
+		header |= flag(effect.isGhostNote(), EFFECT_GHOST);
+		header |= flag(effect.isAccentuatedNote(), EFFECT_ACCENTUATED);
+		header |= flag(effect.isHeavyAccentuatedNote(), EFFECT_HEAVY_ACCENTUATED);
+		header |= flag(effect.isPalmMute(), EFFECT_PALM_MUTE);
+		header |= flag(effect.isStaccato(), EFFECT_STACCATO);
+		header |= flag(effect.isTapping(), EFFECT_TAPPING);
+		header |= flag(effect.isSlapping(), EFFECT_SLAPPING);
+		header |= flag(effect.isPopping(), EFFECT_POPPING);
+		header |= flag(effect.isFadeIn(), EFFECT_FADE_IN);
+
+		return header;
+	}
+
+	private static int flag(boolean enabled, int bit){
+		return (enabled ? bit : 0);
+	}
+
+	private void writeNoteEffectData(int header, TGNoteEffect effect){
 		//escribo el bend
 		if(((header & EFFECT_BEND) != 0)){
 			writeBendEffect(effect.getBend());
