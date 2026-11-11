@@ -3,8 +3,8 @@ package app.tuxguitar.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -51,23 +51,24 @@ public class TGServiceReader {
 		private void initialize(){
 			List<String> providers = new ArrayList<String>();
 			while (this.urls.hasMoreElements()) {
-				URL url = this.urls.nextElement();
-				try {
-					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-					String line = null;
-					while((line = reader.readLine()) != null){
-						String provider = uncommentLine(line).trim();
-						if( provider != null && provider.length() > 0 ){
-							providers.add(provider);
-						}
-					}
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				readProviders(this.urls.nextElement(), providers);
 			}
 			this.iterator = providers.iterator();
+		}
+
+		// adds the class names listed in the service file; one that cannot be read is reported and skipped
+		private void readProviders(URL url, List<String> providers){
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
+				String line = null;
+				while((line = reader.readLine()) != null){
+					String provider = uncommentLine(line).trim();
+					if( provider.length() > 0 ){
+						providers.add(provider);
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		private String uncommentLine(String line){
