@@ -103,7 +103,12 @@ class MeasureFixture {
 
 	// a note at a fret of a string, in voice 0 of the beat at "offset" from the measure start
 	TGNote fretted(long offset, int string, int fret) {
-		TGVoice voice = beatAt(offset).getVoice(0);
+		return fretted(offset, string, fret, 0);
+	}
+
+	// a note at a fret of a string, in voice "voiceIndex" of the beat at "offset" from the measure start
+	TGNote fretted(long offset, int string, int fret, int voiceIndex) {
+		TGVoice voice = beatAt(offset).getVoice(voiceIndex);
 		TGNote note = factory.newNote();
 		note.setString(string);
 		note.setValue(fret);
