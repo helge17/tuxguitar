@@ -9,13 +9,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import app.tuxguitar.graphics.control.print.TGPrintController;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChord;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGStroke;
-import app.tuxguitar.ui.resource.UIRectangle;
 
 /**
  * Pins what a beat paints around its voices (TGBeatImpl.paint): offline, the chord, stroke and pick
@@ -28,8 +26,6 @@ import app.tuxguitar.ui.resource.UIRectangle;
 public class TestBeatPainting {
 
 	private final LayoutHarness harness = new LayoutHarness();
-	private boolean playMode;
-	private boolean running = true;
 	private TGBeatImpl beat;
 
 	public TestBeatPainting() {
@@ -89,14 +85,16 @@ public class TestBeatPainting {
 		TGChord chord = harness.factory.newChord(6);
 		chord.setName("C");
 		beat.setChord(chord);
-		playMode = true;
+		harness.playMode = true;
 
 		assertEquals("", afterVoices(TAB | CHORDS, false));
 	}
 
 	@Test
-	public void thePlayedBeatIsBoxedOnTheTablature() {
-		playMode = true;
+	public void thePlayedBeatIsBoxedOnTheTablatureAndOnTheScoreTheBoxStretchesToNotesOutsideTheStaff() {
+		harness.playMode = true;
+		String onTablature = afterVoices(TAB, true);
+		notesOutsideTheStaff();
 
 		assertEquals(""
 			+ "setLineWidth 1.0\n"
@@ -111,16 +109,8 @@ public class TestBeatPainting {
 			+ "lineTo 60.0 20.0\n"
 			+ "cubicTo 60.0 18.343145 58.656853 17.0 57.0 17.0\n"
 			+ "lineTo 40.0 17.0\n"
-			+ "closePath"
-			, afterVoices(TAB, true));
-	}
-
-	@Test
-	public void theBoxStretchesToNotesAboveAndBelowTheStaffWhenOnlyTheScoreIsShown() {
-		notesOutsideTheStaff();
-		playMode = true;
-
-		assertEquals(""
+			+ "closePath\n"
+			+ "--\n"
 			+ "setLineWidth 1.0\n"
 			+ "initPath\n"
 			+ "setAntialias false\n"
@@ -134,13 +124,13 @@ public class TestBeatPainting {
 			+ "cubicTo 96.0 14.343145 94.65685 13.0 93.0 13.0\n"
 			+ "lineTo 76.0 13.0\n"
 			+ "closePath"
-			, afterVoices(SCORE, true));
+			, onTablature + "\n--\n" + afterVoices(SCORE, true));
 	}
 
 	@Test
 	public void theBoxStretchesOnlyUpwardsWhenTheTablatureIsShownToo() {
 		notesOutsideTheStaff();
-		playMode = true;
+		harness.playMode = true;
 
 		assertEquals(""
 			+ "setLineWidth 1.0\n"
@@ -164,12 +154,12 @@ public class TestBeatPainting {
 		String notHighlighted;
 		String notPlaying;
 		String offline;
-		playMode = true;
+		harness.playMode = true;
 		notHighlighted = afterVoices(TAB, false);
-		running = false;
+		harness.playing = false;
 		notPlaying = afterVoices(TAB, true);
-		running = true;
-		playMode = false;
+		harness.playing = true;
+		harness.playMode = false;
 		offline = afterVoices(TAB, true);
 
 		assertEquals("||", notHighlighted + "|" + notPlaying + "|" + offline);
@@ -182,29 +172,9 @@ public class TestBeatPainting {
 		harness.note(0, TGDuration.QUARTER, 0, 6, 0);
 	}
 
-	private TGLayout layout(int style) {
-		TGController controller = new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), new LayoutHarness.TestLayoutStyles()) {
-			public boolean isRunning(TGBeat played) {
-				return running;
-			}
-		};
-		TGLayout layout = new TGLayoutVertical(controller, style) {
-			public boolean isPlayModeEnabled() {
-				return playMode;
-			}
-		};
-		boolean painting = playMode;
-		playMode = false;
-		layout.loadStyles(1f);
-		layout.updateSong();
-		layout.paintSong(harness.painter, new UIRectangle(0, 0, 800, 2000), 0, 0);
-		playMode = painting;
-		return layout;
-	}
-
 	// what beat.paint draws after its voices: the voices are painted alone first, then the beat
 	private String afterVoices(int style, boolean highlight) {
-		TGLayout layout = layout(style);
+		TGLayout layout = harness.screen(style);
 		int skipped = extraLineCalls(layout) + voiceCalls(layout);
 		harness.painter.clear();
 		beat.paint(layout, harness.painter, 0, 0, highlight);

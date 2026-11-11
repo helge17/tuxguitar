@@ -219,78 +219,78 @@ public class TGNoteImpl extends TGNote {
 		// fromXtab,fromYtab = top-left corner of display zone within current measure, in tablature
 		// this includes some spacing on the left (x), and is fully aligned with 1st string (y)
 
-		int style = layout.getStyle();
-		if((style & TGLayout.DISPLAY_TABLATURE) != 0) {
-			UIInset margin = new UIInset();
+		if((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0) {
+			return;
+		}
+		UIInset margin = new UIInset();
+		float x = (fromXtab + getPosX() + spacing);
+		// x = center of the displayed fret number in the tab (middle of the digits)
+		boolean scoreHidden = ((layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0);
+		boolean running = (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout));
 
-			float scale = layout.getScale();
-			float x = (fromXtab + getPosX() + spacing);
-			float y = (fromYtab + getTabPosY());
-			// x,y = center of the displayed fret number in the tab (middle of the digits, vertically centered on the string)
-			float stringSpacing = layout.getStringSpacing();
+		if(!isTiedNote()) {
+			this.paintTablatureNoteValue(layout, painter, margin, x, (fromYtab + getTabPosY()), running);
+		} else if(scoreHidden) {
+			this.paintTablatureTie(layout, painter, fromXtab, fromYtab, x, running);
+		}
 
-			boolean running = (layout.isPlayModeEnabled() && getBeatImpl().isPlaying(layout));
-
-			//-------------ligadura--------------------------------------
-			if (isTiedNote() && (style & TGLayout.DISPLAY_SCORE) == 0) {
-				float tX = 0;
-				float tY = (fromYtab + getTabPosY() + (stringSpacing / 2f));
-				// tY = in tab, just under fret digit, the top-right point of "tied to preceding note" drawing
-
-				TGNoteImpl noteForTie = getNoteForTie();
-				if (noteForTie != null) {
-					tX = (fromXtab + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout) + (5.0f * scale));
-				}else{
-					tX = (fromXtab + this.getPosX() + this.getBeatImpl().getSpacing(layout) - (stringSpacing * 2));
-				}
-				// tX = left point of the "tied to preceding note" drawing, aligned on the right of the tied note (note n-1 or n-2... n-x) if any
-				// if no tied note, fixed distance from current
-
-				float tWidth = (x - tX);
-				float tHeight1 = (stringSpacing / 3f);
-				float tHeight2 = (tHeight1 + (scale * 2f));
-
-				layout.setTabTiedStyle(painter, running);
-				painter.initPath(UIPainter.PATH_FILL);
-				painter.moveTo(tX, tY);
-				painter.cubicTo(tX, tY + tHeight1, tX + tWidth, tY + tHeight1, tX + tWidth, tY);
-				painter.cubicTo(tX + tWidth, tY + tHeight2, tX, tY + tHeight2, tX, tY);
-				painter.closePath();
-
-			//-------------nota--------------------------------------
-			} else if(!isTiedNote()) {
-				this.paintTablatureNoteValue(layout, painter, margin, x, y, running);
-			}
-
-			//-------------efectos--------------------------------------
-			if(! layout.isPlayModeEnabled() ){
-
-				paintEffects(layout, painter, margin, fromXtab, fromY, spacing);
-
-				if((style & TGLayout.DISPLAY_SCORE) == 0){
-
-					//-------------tremolo picking--------------------------------------
-					if(getEffect().isTremoloPicking()){
-						float y1 = (fromYtab + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
-						float y2 = (fromYtab + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
-						// y1 = top-level of "tremolo picking" under tab, displayed only if score is masked
-						// y2 = bottom-level
-
-						layout.setTabEffectStyle(painter);
-						painter.setLineWidth(layout.getLineWidth(2));
-						painter.initPath();
-						float posy = (y1 + ((y2 - y1) / 2));
-						for(int i = TGDuration.EIGHTH;i <= getEffect().getTremoloPicking().getDuration().getValue(); i += i){
-							painter.moveTo(x - (3f * scale), posy - (1f * scale));
-							painter.lineTo(x + (4f * scale), posy + (1f * scale));
-							posy += (4f * scale);
-						}
-						painter.closePath();
-						painter.setLineWidth(layout.getLineWidth(1));
-					}
-				}
+		if(!layout.isPlayModeEnabled()) {
+			this.paintEffects(layout, painter, margin, fromXtab, fromY, spacing);
+			if(scoreHidden && getEffect().isTremoloPicking()) {
+				this.paintTremoloPicking(layout, painter, fromYtab, x);
 			}
 		}
+	}
+
+	// the "tied to preceding note" curve, just under the fret, ending at x (the center of the fret number)
+	private void paintTablatureTie(TGLayout layout, UIPainter painter, float fromXtab, float fromYtab, float x, boolean running) {
+		float scale = layout.getScale();
+		float stringSpacing = layout.getStringSpacing();
+		float tX = tablatureTieStartX(layout, fromXtab);
+		float tY = (fromYtab + getTabPosY() + (stringSpacing / 2f));
+		// tY = in tab, just under fret digit, the top-right point of "tied to preceding note" drawing
+
+		float tWidth = (x - tX);
+		float tHeight1 = (stringSpacing / 3f);
+		float tHeight2 = (tHeight1 + (scale * 2f));
+
+		layout.setTabTiedStyle(painter, running);
+		painter.initPath(UIPainter.PATH_FILL);
+		painter.moveTo(tX, tY);
+		painter.cubicTo(tX, tY + tHeight1, tX + tWidth, tY + tHeight1, tX + tWidth, tY);
+		painter.cubicTo(tX + tWidth, tY + tHeight2, tX, tY + tHeight2, tX, tY);
+		painter.closePath();
+	}
+
+	// left point of the tie: on the right of the note tied to (note n-1 or n-2... n-x) if any,
+	// else at a fixed distance from this note
+	private float tablatureTieStartX(TGLayout layout, float fromXtab) {
+		TGNoteImpl noteForTie = getNoteForTie();
+		if (noteForTie != null) {
+			return (fromXtab + noteForTie.getPosX() + noteForTie.getBeatImpl().getSpacing(layout) + (5.0f * layout.getScale()));
+		}
+		return (fromXtab + this.getPosX() + this.getBeatImpl().getSpacing(layout) - (layout.getStringSpacing() * 2));
+	}
+
+	// one stroke per halving of the duration from an eighth, under the tablature (shown only when the score is hidden)
+	private void paintTremoloPicking(TGLayout layout, UIPainter painter, float fromYtab, float x) {
+		float scale = layout.getScale();
+		float stringSpacing = layout.getStringSpacing();
+		float y1 = (fromYtab + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
+		float y2 = (fromYtab + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
+		// y1 = top-level of "tremolo picking" under tab, y2 = bottom-level
+
+		layout.setTabEffectStyle(painter);
+		painter.setLineWidth(layout.getLineWidth(2));
+		painter.initPath();
+		float posy = (y1 + ((y2 - y1) / 2));
+		for(int i = TGDuration.EIGHTH;i <= getEffect().getTremoloPicking().getDuration().getValue(); i += i){
+			painter.moveTo(x - (3f * scale), posy - (1f * scale));
+			painter.lineTo(x + (4f * scale), posy + (1f * scale));
+			posy += (4f * scale);
+		}
+		painter.closePath();
+		painter.setLineWidth(layout.getLineWidth(1));
 	}
 
 	private void paintScoreNote(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing) {
@@ -632,21 +632,28 @@ public class TGNoteImpl extends TGNote {
 		return false;
 	}
 
+	// the last note on this string, in this voice, before this beat; none when a rest comes first
 	private TGNoteImpl getNoteForTie() {
 		for (int i = getMeasureImpl().countBeats() - 1; i >= 0; i--) {
 			TGBeat beat = getMeasureImpl().getBeat(i);
-			TGVoice voice = beat.getVoice( getVoice().getIndex() );
 			if (beat.getStart() < getBeatImpl().getStart()) {
+				TGVoice voice = beat.getVoice( getVoice().getIndex() );
 				if (voice.isRestVoice()) {
 					return null;
 				}
-				Iterator<TGNote> it = voice.getNotes().iterator();
-				while(it.hasNext()){
-					TGNoteImpl note = (TGNoteImpl)it.next();
-					if (note.getString() == getString()) {
-						return note;
-					}
+				TGNoteImpl note = findNoteOnString(voice);
+				if (note != null) {
+					return note;
 				}
+			}
+		}
+		return null;
+	}
+
+	private TGNoteImpl findNoteOnString(TGVoice voice) {
+		for (TGNote note : voice.getNotes()) {
+			if (note.getString() == getString()) {
+				return (TGNoteImpl) note;
 			}
 		}
 		return null;
@@ -1066,29 +1073,30 @@ public class TGNoteImpl extends TGNote {
 		painter.closePath();
 	}
 
+	// ">" opening to the left
 	private void paintAccentuated(TGLayout layout, UIPainter painter,float fromX,float fromY){
 		float scale = layout.getScale();
 		float x = fromX;
 		float y = fromY + (2f * scale );
-		painter.setLineWidth(layout.getLineWidth(1));
-		painter.initPath();
-		painter.moveTo( x , y );
-		painter.lineTo( x + (6.0f * scale ) , y + (2.5f * scale ));
-		painter.moveTo( x + (6.0f * scale ) , y + (2.5f * scale ));
-		painter.lineTo( x , y + (5.0f * scale ));
-		painter.closePath();
+		paintChevron(layout, painter, x, y, x + (6.0f * scale ), y + (2.5f * scale ), x, y + (5.0f * scale ));
 	}
 
+	// "^" opening downwards
 	private void paintHeavyAccentuated(TGLayout layout, UIPainter painter,float fromX,float fromY){
 		float scale = layout.getScale();
 		float x = fromX;
 		float y = fromY;
+		paintChevron(layout, painter, x, y + (5.0f * scale ), x + (3.0f * scale ), y + (1.0f * scale ), x + (6.0f * scale ), y + (5.0f * scale ));
+	}
+
+	// two strokes meeting at the tip (tipX, tipY)
+	private void paintChevron(TGLayout layout, UIPainter painter, float x1, float y1, float tipX, float tipY, float x2, float y2){
 		painter.setLineWidth(layout.getLineWidth(1));
 		painter.initPath();
-		painter.moveTo( x , y + (5.0f * scale ) );
-		painter.lineTo( x + (3.0f * scale ) , y + (1.0f * scale ));
-		painter.moveTo( x + (3.0f * scale ) , y + (1.0f * scale ));
-		painter.lineTo( x + (6.0f * scale ) , y + (5.0f * scale ) );
+		painter.moveTo( x1 , y1 );
+		painter.lineTo( tipX , tipY );
+		painter.moveTo( tipX , tipY );
+		painter.lineTo( x2 , y2 );
 		painter.closePath();
 	}
 
