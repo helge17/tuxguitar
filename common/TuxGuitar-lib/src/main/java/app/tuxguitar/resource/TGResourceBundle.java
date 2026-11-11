@@ -41,25 +41,13 @@ public class TGResourceBundle {
 		// load default
 		TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
 
-		// load language
-		bundleName += "_";
-		if(locale.getLanguage() != null && locale.getLanguage().length() > 0){
-			bundleName += locale.getLanguage();
-			TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
-		}
-
-		// load country
-		bundleName += "_";
-		if(locale.getCountry() != null && locale.getCountry().length() > 0){
-			bundleName += locale.getCountry();
-			TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
-		}
-
-		// load variant
-		bundleName += "_";
-		if(locale.getVariant() != null && locale.getVariant().length() > 0){
-			bundleName += locale.getVariant();
-			TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
+		// load language, country and variant: each part that is set overrides the ones before
+		// (Locale returns "" for a part that is not set, never null)
+		for(String part : new String[] {locale.getLanguage(), locale.getCountry(), locale.getVariant()}){
+			bundleName += ("_" + part);
+			if( part.length() > 0 ){
+				TGResourceBundle.loadResources(context, (bundleName + bundleExtension ), properties);
+			}
 		}
 
 		return new TGResourceBundle(locale, properties);
@@ -71,7 +59,9 @@ public class TGResourceBundle {
 			while (enumeration.hasMoreElements()) {
 				URL url = enumeration.nextElement();
 				Properties properties = new Properties();
-				properties.load( new InputStreamReader(url.openStream(),StandardCharsets.UTF_8) );
+				try (InputStreamReader reader = new InputStreamReader(url.openStream(),StandardCharsets.UTF_8)) {
+					properties.load( reader );
+				}
 				p.putAll(properties);
 			}
 		} catch (IOException e) {
