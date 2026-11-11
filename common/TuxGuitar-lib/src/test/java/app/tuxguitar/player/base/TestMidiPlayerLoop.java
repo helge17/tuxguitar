@@ -4,13 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import app.tuxguitar.document.TGDocumentManager;
-import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGDuration;
-import app.tuxguitar.song.models.TGMeasure;
-import app.tuxguitar.song.models.TGSong;
-import app.tuxguitar.util.TGContext;
 
 /**
  * Pins how the player bounds its loop (MidiPlayer.updateLoop): a complete selection wins, else the
@@ -20,16 +15,8 @@ import app.tuxguitar.util.TGContext;
  */
 public class TestMidiPlayerLoop {
 
-	private final TGContext context = new TGContext();
-	private final MidiPlayer player = MidiPlayer.getInstance(context);
-	private final TGSongManager songManager = TGDocumentManager.getInstance(context).getSongManager();
-	private final TGSong song = TGDocumentManager.getInstance(context).getSong();
-
-	public TestMidiPlayerLoop() {
-		for (int i = 1; i < 4; i++) {
-			songManager.addNewMeasureBeforeEnd(song);
-		}
-	}
+	private final PlayerSongFixture fixture = new PlayerSongFixture();
+	private final MidiPlayer player = fixture.player;
 
 	@Test
 	public void withoutLoopModeOrSelectionThereIsNoLoop() {
@@ -58,18 +45,13 @@ public class TestMidiPlayerLoop {
 	}
 
 	@Test
-	public void aCompleteSelectionWinsOverTheLoopMode() {
+	public void aCompleteSelectionLoopsWithOrWithoutTheLoopMode() {
+		player.setSelection(beat(2), beat(2));
+		String withoutLoopMode = loop(true);
 		loopMode(1, 4);
 		player.setSelection(beat(3), beat(4));
 
-		assertEquals("3-4 @ " + start(3), loop(true));
-	}
-
-	@Test
-	public void aSelectionLoopsEvenWithoutLoopMode() {
-		player.setSelection(beat(2), beat(2));
-
-		assertEquals("2-2 @ " + start(2), loop(true));
+		assertEquals("2-2 @ " + start(2) + " | 3-4 @ " + start(3), withoutLoopMode + " | " + loop(true));
 	}
 
 	@Test
@@ -99,21 +81,15 @@ public class TestMidiPlayerLoop {
 	// ---- helpers ----
 
 	private void loopMode(int from, int to) {
-		player.getMode().setLoop(true);
-		player.getMode().setLoopSHeader(from);
-		player.getMode().setLoopEHeader(to);
+		fixture.loopMode(from, to);
 	}
 
 	private TGBeat beat(int measureNumber) {
-		TGMeasure measure = song.getTrack(0).getMeasure(measureNumber - 1);
-		TGBeat beat = songManager.getFactory().newBeat();
-		beat.setStart(measure.getStart());
-		songManager.getMeasureManager().addBeat(measure, beat);
-		return beat;
+		return fixture.beat(measureNumber);
 	}
 
 	private long start(int headerNumber) {
-		return song.getMeasureHeader(headerNumber - 1).getStart();
+		return fixture.start(headerNumber);
 	}
 
 	private String loop(boolean force) {

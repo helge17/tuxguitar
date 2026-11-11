@@ -227,26 +227,8 @@ public class MidiPlayer{
 				this.notifyStarted();
 			}
 
-			if( this.getCountDown().isEnabled() ){
-				this.notifyCountDownStarted();
-				this.getCountDown().start();
-				this.notifyCountDownStopped();
-			}
-
-			try {
-				this.lock();
-				if( this.isRunning() ){
-					if( this.isChangeTickPosition() ){
-						this.changeTickPosition();
-					}
-					this.getSequencer().start();
-				}
-
-				this.tickLength = getSequencer().getTickLength();
-				this.tickPosition = getSequencer().getTickPosition();
-			} finally {
-				this.unlock();
-			}
+			this.playCountDown();
+			this.startSequencer();
 
 			// Play loop
 			runPlayLoop();
@@ -254,6 +236,32 @@ public class MidiPlayer{
 			this.reset();
 
 			throwable.printStackTrace();
+		}
+	}
+
+	private void playCountDown() {
+		if( this.getCountDown().isEnabled() ){
+			this.notifyCountDownStarted();
+			this.getCountDown().start();
+			this.notifyCountDownStopped();
+		}
+	}
+
+	// a running player starts its sequencer, from the new position if one was set; then reads where it is
+	private void startSequencer() throws MidiPlayerException {
+		try {
+			this.lock();
+			if( this.isRunning() ){
+				if( this.isChangeTickPosition() ){
+					this.changeTickPosition();
+				}
+				this.getSequencer().start();
+			}
+
+			this.tickLength = getSequencer().getTickLength();
+			this.tickPosition = getSequencer().getTickPosition();
+		} finally {
+			this.unlock();
 		}
 	}
 
@@ -534,13 +542,7 @@ public class MidiPlayer{
 		try {
 			this.lock();
 			if( this.isRunning()){
-				if (this.isNewSelection && this.selectionStartBeat!=null && this.selectionEndBeat!=null) {
-					this.tickPosition = this.selectionStartBeat.getMeasure().getStart();
-					this.isNewSelection = false;
-				}
-				else if( this.tickPosition < this.getLoopSPosition() ){
-					this.tickPosition = this.getLoopSPosition();
-				}
+				this.tickPosition = this.findPlayPosition();
 				this.getSequencer().setTickPosition(this.tickPosition);
 			}
 			setChangeTickPosition(false);
@@ -549,6 +551,15 @@ public class MidiPlayer{
 		} finally {
 			this.unlock();
 		}
+	}
+
+	// the first measure of a selection made since the last move (once), else the position, but not before the loop start
+	private long findPlayPosition() {
+		if( this.isNewSelection && this.hasSelection() ){
+			this.isNewSelection = false;
+			return this.selectionStartBeat.getMeasure().getStart();
+		}
+		return Math.max(this.tickPosition, this.getLoopSPosition());
 	}
 
 	public void addSequence() {
