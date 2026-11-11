@@ -15,19 +15,21 @@ public class TGExclusiveThreadHandler implements TGThreadHandler {
 	}
 
 	public void loop(final TGThreadLoop loop) {
+		Object mutex = new Object();
+
+		Long timeout = loop.process();
+		while(!TGThreadLoop.BREAK.equals(timeout)) {
+			pause(mutex, timeout);
+			timeout = loop.process();
+		}
+	}
+
+	// waits the given milliseconds, if any
+	private void pause(Object mutex, Long timeout) {
 		try {
-			Object mutex = new Object();
-
-			while(true) {
-				Long timeout = loop.process();
-				if( TGThreadLoop.BREAK.equals(timeout)) {
-					return;
-				}
-
-				if( timeout != null && timeout > 0 ) {
-					synchronized(mutex) {
-						mutex.wait(timeout);
-					}
+			if( timeout != null && timeout > 0 ) {
+				synchronized(mutex) {
+					mutex.wait(timeout);
 				}
 			}
 		} catch (InterruptedException e) {
