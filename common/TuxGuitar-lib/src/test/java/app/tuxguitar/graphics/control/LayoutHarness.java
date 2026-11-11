@@ -20,6 +20,7 @@ import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.ui.resource.UIInset;
 import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.resource.UISize;
 
 /**
@@ -42,9 +43,15 @@ public class LayoutHarness implements TGPrintDocument {
 	public final TGSong song = songManager.newSong();
 	public final RecordingPainter painter = new RecordingPainter();
 
+	public final TGLayoutStyles styles = new TestLayoutStyles();
+
 	public boolean paintable = true;
 	public float scale = 1f;
 	private TGPrintLayout layout;
+
+	// for screen layouts: whether the layout is in play mode, and whether its controller reports beats as playing
+	public boolean playMode = false;
+	public boolean playing = true;
 
 	public TGMeasureImpl measure() {
 		return measure(0);
@@ -140,13 +147,36 @@ public class LayoutHarness implements TGPrintDocument {
 
 	/** Lays the song out (create + update of every measure), as the editor does before painting. */
 	public TGPrintLayout update(int style) {
-		TGLayoutStyles styles = new TestLayoutStyles();
-		TGController controller = new TGPrintController(song, songManager, new FakeResourceFactory(), styles);
+		TGController controller = new TGPrintController(song, songManager, new FakeResourceFactory(), this.styles);
 		TGPrintSettings settings = new TGPrintSettings(TGPrintSettings.ALL_TRACKS, 1, song.countMeasureHeaders(), style);
 		this.layout = new TGPrintLayout(controller, settings);
 		this.layout.loadStyles(this.scale);
 		this.layout.updateSong();
 		return this.layout;
+	}
+
+	/**
+	 * Lays the song out offline on a vertical screen layout and paints it; the layout is then in play mode when
+	 * {@link #playMode} is set, and its controller reports every beat as playing while {@link #playing} is set.
+	 */
+	public TGLayout screen(int style) {
+		TGController controller = new TGPrintController(song, songManager, new FakeResourceFactory(), this.styles) {
+			public boolean isRunning(TGBeat played) {
+				return playing;
+			}
+		};
+		TGLayout screen = new TGLayoutVertical(controller, style) {
+			public boolean isPlayModeEnabled() {
+				return playMode;
+			}
+		};
+		boolean painting = this.playMode;
+		this.playMode = false;
+		screen.loadStyles(this.scale);
+		screen.updateSong();
+		screen.paintSong(this.painter, new UIRectangle(0, 0, 800, 2000), 0, 0);
+		this.playMode = painting;
+		return screen;
 	}
 
 	/** Lays the song out, then prints it; returns the painter holding every drawing call. */

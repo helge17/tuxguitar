@@ -3,9 +3,9 @@ package app.tuxguitar.io.tg;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Builds the bytes of a pre-1.0 .tg file (formats 0.8 and 0.9) for the reader tests,
+ * Builds the bytes of a pre-1.0 .tg file (formats 0.7, 0.8 and 0.9) for the reader tests,
  * since TuxGuitar no longer has writers for those formats.
- * Encodes the way the readers decode: bytes, big endian shorts, and strings as a length
+ * Encodes the way the readers decode: bytes, big endian shorts, ints and longs, and strings as a length
  * byte followed by UTF-16 chars.
  */
 public final class LegacyStreamEncoder {
@@ -24,11 +24,30 @@ public final class LegacyStreamEncoder {
 		return this;
 	}
 
-	public LegacyStreamEncoder shorts(int... values) {
-		for (int value : values) {
-			this.bytes(value >> 8, value);
+	public LegacyStreamEncoder shorts(long... values) {
+		return this.numbers(2, values);
+	}
+
+	public LegacyStreamEncoder ints(long... values) {
+		return this.numbers(4, values);
+	}
+
+	public LegacyStreamEncoder longs(long... values) {
+		return this.numbers(8, values);
+	}
+
+	private LegacyStreamEncoder numbers(int size, long... values) {
+		for (long value : values) {
+			this.number(size, value);
 		}
 		return this;
+	}
+
+	// big endian, on the given number of bytes
+	private void number(int size, long value) {
+		for (int shift = 8 * (size - 1); shift >= 0; shift -= 8) {
+			this.out.write((int) (value >> shift));
+		}
 	}
 
 	public LegacyStreamEncoder string(String text) {

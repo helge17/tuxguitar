@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Supplier;
 
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.event.TGEventListener;
@@ -87,6 +88,28 @@ public class MidiPlayer{
 		this.lock.unlock();
 	}
 
+	// runs the action while holding the player's lock
+	private void runLocked(Runnable action) {
+		try {
+			this.lock();
+
+			action.run();
+		} finally {
+			this.unlock();
+		}
+	}
+
+	// reads the value while holding the player's lock
+	private <T> T readLocked(Supplier<T> value) {
+		try {
+			this.lock();
+
+			return value.get();
+		} finally {
+			this.unlock();
+		}
+	}
+
 	public void reset(){
 		try {
 			this.lock();
@@ -139,23 +162,11 @@ public class MidiPlayer{
 	}
 
 	public void stop() {
-		try {
-			this.lock();
-
-			this.stop(false);
-		} finally {
-			this.unlock();
-		}
+		this.runLocked(() -> this.stop(false));
 	}
 
 	public void pause(){
-		try {
-			this.lock();
-
-			this.stop(true);
-		} finally {
-			this.unlock();
-		}
+		this.runLocked(() -> this.stop(true));
 	}
 
 	public synchronized void play() throws MidiPlayerException{
@@ -227,26 +238,8 @@ public class MidiPlayer{
 				this.notifyStarted();
 			}
 
-			if( this.getCountDown().isEnabled() ){
-				this.notifyCountDownStarted();
-				this.getCountDown().start();
-				this.notifyCountDownStopped();
-			}
-
-			try {
-				this.lock();
-				if( this.isRunning() ){
-					if( this.isChangeTickPosition() ){
-						this.changeTickPosition();
-					}
-					this.getSequencer().start();
-				}
-
-				this.tickLength = getSequencer().getTickLength();
-				this.tickPosition = getSequencer().getTickPosition();
-			} finally {
-				this.unlock();
-			}
+			this.playCountDown();
+			this.startSequencer();
 
 			// Play loop
 			runPlayLoop();
@@ -254,6 +247,32 @@ public class MidiPlayer{
 			this.reset();
 
 			throwable.printStackTrace();
+		}
+	}
+
+	private void playCountDown() {
+		if( this.getCountDown().isEnabled() ){
+			this.notifyCountDownStarted();
+			this.getCountDown().start();
+			this.notifyCountDownStopped();
+		}
+	}
+
+	// a running player starts its sequencer, from the new position if one was set; then reads where it is
+	private void startSequencer() throws MidiPlayerException {
+		try {
+			this.lock();
+			if( this.isRunning() ){
+				if( this.isChangeTickPosition() ){
+					this.changeTickPosition();
+				}
+				this.getSequencer().start();
+			}
+
+			this.tickLength = getSequencer().getTickLength();
+			this.tickPosition = getSequencer().getTickPosition();
+		} finally {
+			this.unlock();
 		}
 	}
 
@@ -394,13 +413,7 @@ public class MidiPlayer{
 	}
 
 	public int getVolume() {
-		try {
-			this.lock();
-
-			return this.volume;
-		} finally {
-			this.unlock();
-		}
+		return this.readLocked(() -> this.volume);
 	}
 
 	public void setVolume(int volume) {
@@ -419,13 +432,7 @@ public class MidiPlayer{
 	}
 
 	public void setRunning(boolean running) {
-		try {
-			this.lock();
-
-			this.running = running;
-		} finally {
-			this.unlock();
-		}
+		this.runLocked(() -> this.running = running);
 	}
 
 	public boolean isRunning() {
@@ -442,43 +449,19 @@ public class MidiPlayer{
 	}
 
 	private boolean isPaused() {
-		try {
-			this.lock();
-
-			return this.paused;
-		} finally {
-			this.unlock();
-		}
+		return this.readLocked(() -> this.paused);
 	}
 
 	private void setPaused(boolean paused) {
-		try {
-			this.lock();
-
-			this.paused = paused;
-		} finally {
-			this.unlock();
-		}
+		this.runLocked(() -> this.paused = paused);
 	}
 
 	protected boolean isChangeTickPosition() {
-		try {
-			this.lock();
-
-			return this.changeTickPosition;
-		} finally {
-			this.unlock();
-		}
+		return this.readLocked(() -> this.changeTickPosition);
 	}
 
 	private void setChangeTickPosition(boolean changeTickPosition) {
-		try {
-			this.lock();
-
-			this.changeTickPosition = changeTickPosition;
-		} finally {
-			this.unlock();
-		}
+		this.runLocked(() -> this.changeTickPosition = changeTickPosition);
 	}
 
 	public void setTickPosition(long position) {
@@ -493,13 +476,7 @@ public class MidiPlayer{
 	}
 
 	public long getTickPosition() {
-		try {
-			this.lock();
-
-			return this.tickPosition;
-		} finally {
-			this.unlock();
-		}
+		return this.readLocked(() -> this.tickPosition);
 	}
 
 	public TGTempo getCurrentTempo() {
@@ -534,13 +511,7 @@ public class MidiPlayer{
 		try {
 			this.lock();
 			if( this.isRunning()){
-				if (this.isNewSelection && this.selectionStartBeat!=null && this.selectionEndBeat!=null) {
-					this.tickPosition = this.selectionStartBeat.getMeasure().getStart();
-					this.isNewSelection = false;
-				}
-				else if( this.tickPosition < this.getLoopSPosition() ){
-					this.tickPosition = this.getLoopSPosition();
-				}
+				this.tickPosition = this.findPlayPosition();
 				this.getSequencer().setTickPosition(this.tickPosition);
 			}
 			setChangeTickPosition(false);
@@ -549,6 +520,15 @@ public class MidiPlayer{
 		} finally {
 			this.unlock();
 		}
+	}
+
+	// the first measure of a selection made since the last move (once), else the position, but not before the loop start
+	private long findPlayPosition() {
+		if( this.isNewSelection && this.hasSelection() ){
+			this.isNewSelection = false;
+			return this.selectionStartBeat.getMeasure().getStart();
+		}
+		return Math.max(this.tickPosition, this.getLoopSPosition());
 	}
 
 	public void addSequence() {

@@ -108,6 +108,24 @@ public class TestOfflineEffectsPainting {
 	}
 
 	@Test
+	public void aHeavyAccentGrowsWithTheScale() {
+		harness.scale = 2f;
+
+		assertEquals(""
+			+ "setForeground rgb(0,0,0)\n"
+			+ "setBackground rgb(0,0,0)\n"
+			+ "setFont font(0.0)\n"
+			+ "setLineWidth 2.0\n"
+			+ "initPath\n"
+			+ "moveTo 90.0 18.0\n"
+			+ "lineTo 96.0 10.0\n"
+			+ "moveTo 96.0 10.0\n"
+			+ "lineTo 102.0 18.0\n"
+			+ "closePath"
+			, paint(TAB, effect -> effect.setHeavyAccentuatedNote(true)));
+	}
+
+	@Test
 	public void accentsAndFadeInAreSymbols() {
 		assertEquals(""
 			+ "setForeground rgb(0,0,0)\n"
