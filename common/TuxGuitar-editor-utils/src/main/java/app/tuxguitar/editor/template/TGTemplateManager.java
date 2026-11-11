@@ -1,5 +1,6 @@
 package app.tuxguitar.editor.template;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -57,18 +58,23 @@ public class TGTemplateManager {
 	}
 
 	public TGSong getDefaultTemplateAsSong() {
+		return getDefaultTemplateAsSong(TGUserFileUtils.PATH_USER_TEMPLATE, TGMessagesManager.getInstance().getLocale());
+	}
+
+	public TGSong getDefaultTemplateAsSong(String userTemplatePath, Locale locale) {
 		TGSong song = null;
 		TGTemplate tgTemplate = new TGTemplate();
 		tgTemplate.setName(new String());
-		if (TGUserFileUtils.isUserTemplateReadable()) {
-			tgTemplate.setResource(TGUserFileUtils.PATH_USER_TEMPLATE);
+		File userTemplate = new File(userTemplatePath);
+		if (TGUserFileUtils.isExistentAndReadable(userTemplate)) {
+			tgTemplate.setResource(userTemplatePath);
 			tgTemplate.setUserTemplate();
 			song = getTemplateAsSong(tgTemplate);
 			if (song != null) {
 				return song;
 			} else {
 				// user template readable, but cannot be used to create a new song. Corrupted?
-				TGUserFileUtils.deleteUserTemplate();
+				userTemplate.delete();
 			}
 		}
 		// no user-defined template, try to load language-specific template
@@ -78,7 +84,6 @@ public class TGTemplateManager {
 		song = getTemplateAsSong(tgTemplate);
 
 		// locale-specific if it exists
-		Locale locale = TGMessagesManager.getInstance().getLocale();
 		String baseName = TEMPLATE_DEFAULT_RESOURCE + "_" + locale.getLanguage();
 		tgTemplate.setResource(baseName + TEMPLATE_EXTENSION);
 		TGSong localeSong = getTemplateAsSong(tgTemplate);
