@@ -20,6 +20,7 @@ import app.tuxguitar.io.tef3.base.TEComponentTextEvent;
 import app.tuxguitar.io.tef3.base.TELyrics;
 import app.tuxguitar.io.tef3.base.TEMeasure;
 import app.tuxguitar.io.tef3.base.TEPosition;
+import app.tuxguitar.io.tef3.base.TEReadingListEntry;
 import app.tuxguitar.io.tef3.base.TESong;
 import app.tuxguitar.io.tef3.base.TETimeSignature;
 import app.tuxguitar.io.tef3.base.TETrack;
@@ -72,8 +73,46 @@ public class TESongParser {
 		this.addMeasures(tgSong, teSong);
 		this.sortComponents(teSong);
 		this.addComponents(tgSong, teSong);
+		this.applyReadingList(tgSong, teSong.getReadingListEntries());
 
 		return new TGSongAdjuster(this.manager, tgSong).process();
+	}
+
+	/** Apply TablEdit reading-list ranges to repeat and alternative-ending headers. */
+	private void applyReadingList(TGSong song, List<TEReadingListEntry> entries) {
+		if (entries == null) {
+			return;
+		}
+		for (int i = 0; i + 2 < entries.size(); i++) {
+			TEReadingListEntry first = entries.get(i);
+			TEReadingListEntry repeated = entries.get(i + 1);
+			TEReadingListEntry secondEnding = entries.get(i + 2);
+			int firstStart = first.getStartMeasure();
+			int firstEnd = first.getEndMeasure();
+			if (firstStart <= 0 || firstEnd < firstStart
+					|| repeated.getStartMeasure() < firstStart || repeated.getEndMeasure() >= firstEnd
+					|| secondEnding.getStartMeasure() <= repeated.getEndMeasure()) {
+				continue;
+			}
+			TGMeasureHeader openHeader = getHeader(song, repeated.getStartMeasure());
+			TGMeasureHeader closeHeader = getHeader(song, firstEnd);
+			TGMeasureHeader secondHeader = getHeader(song, secondEnding.getStartMeasure());
+			if (openHeader != null && closeHeader != null) {
+				openHeader.setRepeatOpen(true);
+				closeHeader.setRepeatClose(Math.max(1, closeHeader.getRepeatClose()));
+				closeHeader.setRepeatAlternative(closeHeader.getRepeatAlternative() | 1);
+			}
+			if (secondHeader != null) {
+				secondHeader.setRepeatAlternative(secondHeader.getRepeatAlternative() | 2);
+			}
+		}
+	}
+
+	private TGMeasureHeader getHeader(TGSong song, int measureNumber) {
+		if (measureNumber < 1 || measureNumber > song.countMeasureHeaders()) {
+			return null;
+		}
+		return song.getMeasureHeader(measureNumber - 1);
 	}
 
 	private void addSongHeader(TGSong tgSong, TESong teSong) {
@@ -739,10 +778,13 @@ public class TESongParser {
 
 		int endingNumber = teEnding.getEndingNumber();
 
+		if (endingNumber > 0) {
+			measureHeader.setRepeatAlternative(
+				measureHeader.getRepeatAlternative() | (1 << (endingNumber - 1)));
+		}
+
 		if (teEnding.getIsCloseBracket() && endingNumber >= 2) {
 			measureHeader.setRepeatClose(endingNumber - 1);
-		} else if (measureHeader.getRepeatClose() == 0 && endingNumber != 0) {
-			measureHeader.setRepeatAlternative(1 << (endingNumber - 1));
 		}
 	}
 }
