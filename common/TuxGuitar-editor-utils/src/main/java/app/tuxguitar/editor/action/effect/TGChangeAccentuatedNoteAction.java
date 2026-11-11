@@ -1,13 +1,12 @@
 package app.tuxguitar.editor.action.effect;
 
-import app.tuxguitar.action.TGActionContext;
-import app.tuxguitar.document.TGDocumentContextAttributes;
-import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGNoteEffect;
+import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
-import app.tuxguitar.util.TGNoteRange;
 
-public class TGChangeAccentuatedNoteAction extends TGActionBase {
+public class TGChangeAccentuatedNoteAction extends TGToggleNoteEffectAction {
 
 	public static final String NAME = "action.note.effect.change-accentuated";
 
@@ -15,17 +14,16 @@ public class TGChangeAccentuatedNoteAction extends TGActionBase {
 		super(context, NAME);
 	}
 
-	protected void processAction(TGActionContext context){
-		TGNoteRange noteRange = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE);
+	protected boolean hasEffect(TGNoteEffect effect) {
+		return effect.isAccentuatedNote();
+	}
 
-		if (noteRange!=null && !noteRange.isEmpty()) {
-			boolean newValue = true;
-			if (noteRange.getNotes().stream().allMatch(n -> n.getEffect().isAccentuatedNote())) {
-				newValue = false;
-			}
-			for (TGNote note : noteRange.getNotes()) {
-				getSongManager(context).getMeasureManager().setAccentuatedNote(note, newValue);
-			}
-		}
+	protected void setEffect(TGMeasureManager measureManager, TGNote note, boolean value) {
+		measureManager.setAccentuatedNote(note, value);
+	}
+
+	// applies on a percussion track too
+	protected boolean appliesTo(TGTrack track) {
+		return true;
 	}
 }
