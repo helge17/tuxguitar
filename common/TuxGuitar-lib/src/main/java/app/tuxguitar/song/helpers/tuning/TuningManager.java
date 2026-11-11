@@ -43,24 +43,27 @@ public class TuningManager {
 	private List<TGTuning> getTuningsInGroup(String prefix, TuningGroup group, boolean isPrioritized) {
 		List<TGTuning> list = new ArrayList<TGTuning>();
 		for (TuningGroup subGroup : group.getGroups()) {
-			String groupPrefix = (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
-			list.addAll(getTuningsInGroup(groupPrefix, subGroup, isPrioritized));
+			list.addAll(getTuningsInGroup(getGroupPrefix(prefix, subGroup), subGroup, isPrioritized));
 		}
 		for (TuningPreset preset : group.getTunings()) {
-			TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
-
-			// Add every tunings if we don't want a priority list.
-			if (!isPrioritized)
-				list.add((TGTuning)tgTuning);
-
-			// If we want a priority list, we only add the ones that have priority value,
-			// discard ones that don't
-			if (isPrioritized && preset.getPriority() != null) {
-				tgTuning.setPriority(preset.getPriority());
-				list.add((TGTuning)tgTuning);
+			// a priority list only keeps the tunings that have a priority value
+			if (!isPrioritized || preset.getPriority() != null) {
+				list.add(copyTuning(prefix, preset, isPrioritized));
 			}
 		}
 		return(list);
+	}
+
+	private static String getGroupPrefix(String prefix, TuningGroup subGroup) {
+		return (prefix.equals("") ? "" : (prefix + " / ")) + subGroup.getName();
+	}
+
+	private static TGTuning copyTuning(String prefix, TuningPreset preset, boolean withPriority) {
+		TuningPreset tgTuning = new TuningPreset(null, prefix + " / " + preset.getName(), preset.getValues());
+		if (withPriority) {
+			tgTuning.setPriority(preset.getPriority());
+		}
+		return tgTuning;
 	}
 
 	// flat list of tunings, prefixed with group names (recursively)
