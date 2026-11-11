@@ -228,18 +228,12 @@ public class TGSongReaderImpl implements TGSongReader {
 
 	private void readChannel(TGSong song, TGTrack track){
 		TGChannel channel = this.factory.newChannel();
-		TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
-		TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
 
 		//leo el canal
 		int channel1 = readShort();
-		gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
-		gmChannel1Param.setValue(Integer.toString(channel1));
 
 		//leo el canal de efectos
 		int channel2 = readShort();
-		gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
-		gmChannel2Param.setValue(Integer.toString(channel2));
 
 		// Parseo el banco de sonidos
 		channel.setBank( channel1 == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
@@ -266,25 +260,45 @@ public class TGSongReaderImpl implements TGSongReader {
 		channel.setTremolo(readShort());
 
 		//------------------------------------------//
-		for( int i = 0 ; i < song.countChannels() ; i ++ ){
-			TGChannel channelAux = song.getChannel(i);
-			for( int n = 0 ; n < channelAux.countParameters() ; n ++ ){
-				TGChannelParameter channelParameter = channelAux.getParameter( n );
-				if( channelParameter.getKey().equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1) ){
-					if( Integer.toString(channel1).equals(channelParameter.getValue()) ){
-						channel.setChannelId(channelAux.getChannelId());
-					}
-				}
-			}
-		}
+		channel.setChannelId(findChannelId(song, channel1));
 		if( channel.getChannelId() <= 0 ){
 			channel.setChannelId( song.countChannels() + 1 );
 			channel.setName(new TGSongManager(this.factory).createChannelNameFromProgram(song, channel));
-			channel.addParameter(gmChannel1Param);
-			channel.addParameter(gmChannel2Param);
+			channel.addParameter(newChannelParameter(GMChannelRoute.PARAMETER_GM_CHANNEL_1, channel1));
+			channel.addParameter(newChannelParameter(GMChannelRoute.PARAMETER_GM_CHANNEL_2, channel2));
 			song.addChannel(channel);
 		}
 		track.setChannelId(channel.getChannelId());
+	}
+
+	// the id of the last song channel routed to this GM channel, 0 when none is
+	private int findChannelId(TGSong song, int gmChannel1){
+		int channelId = 0;
+		for( int i = 0 ; i < song.countChannels() ; i ++ ){
+			TGChannel channel = song.getChannel(i);
+			if( isOnGMChannel(channel, gmChannel1) ){
+				channelId = channel.getChannelId();
+			}
+		}
+		return channelId;
+	}
+
+	private boolean isOnGMChannel(TGChannel channel, int gmChannel1){
+		String value = Integer.toString(gmChannel1);
+		for( int n = 0 ; n < channel.countParameters() ; n ++ ){
+			TGChannelParameter channelParameter = channel.getParameter( n );
+			if( channelParameter.getKey().equals(GMChannelRoute.PARAMETER_GM_CHANNEL_1) && value.equals(channelParameter.getValue()) ){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private TGChannelParameter newChannelParameter(String key, int value){
+		TGChannelParameter parameter = this.factory.newChannelParameter();
+		parameter.setKey(key);
+		parameter.setValue(Integer.toString(value));
+		return parameter;
 	}
 
 	private TGBeat readSilence(TGMeasure measure, TGBeat previous){
