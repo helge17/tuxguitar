@@ -34,56 +34,14 @@ public class TGLayoutHorizontal extends TGLayout{
 		this.setHeight(0);
 		this.clearTrackPositions();
 
-		int style = getStyle();
 		int number = getComponent().getTrackSelection();
 		float posY = Math.round(fromY + getFirstTrackSpacing());
 		float height = getFirstTrackSpacing();
-		float trackHeight;
 		Iterator<TGTrack> tracks = getSong().getTracks();
 		while(tracks.hasNext()){
 			TGTrackImpl track = (TGTrackImpl) tracks.next();
 			if(number < 0 || track.getNumber() == number){
-
-				TGTrackSpacing ts = new TGTrackSpacing(this) ;
-				ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0 ?( (getScoreLineSpacing() * 5) ):0));
-				((TGLyricImpl)track.getLyrics()).start();
-
-				//------AUTO_SPACING---------------------------------------
-				float maxY = 0;
-				float minY = 0;
-				// Need to score extra-lines in edition mode
-				if( (style & DISPLAY_TABLATURE) == 0 && (style & DISPLAY_SCORE) != 0 ){
-					maxY = ((getScoreLineSpacing() * 4) + (getScoreLineSpacing() * 4));
-					minY = -(getScoreLineSpacing() * 3);
-				}
-
-				Iterator<TGMeasure> measures = track.getMeasures();
-				while(measures.hasNext()){
-					TGMeasureImpl measure = (TGMeasureImpl)measures.next();
-					maxY = (measure.getMaxY() > maxY)?measure.getMaxY():maxY;
-					minY = (measure.getMinY() < minY)?measure.getMinY():minY;
-					measure.registerSpacing(this,ts);
-				}
-				ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, ( (style & DISPLAY_SCORE) != 0 ?Math.abs(minY):0));
-				if((style & DISPLAY_SCORE) != 0 && maxY > track.getScoreHeight()){
-					ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (maxY - track.getScoreHeight()) );
-				}
-				if((style & DISPLAY_TABLATURE) != 0){
-					ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(minY), getStringSpacing()) ));
-					ts.setSize(TGTrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max(maxY, track.getTabHeight() + getStringSpacing() + 1) ));
-				}
-				ts.setSize(TGTrackSpacing.POSITION_LYRIC,10);
-				checkDefaultSpacing(ts);
-
-				//----------------------------------------------------
-				paintMeasures(track,painter,fromX,posY,ts,clientArea);
-				paintLines(track,ts,painter,fromX + (getWidth() + (2f * getScale())),posY, (clientArea.getWidth() - (fromX + getWidth()) ));
-
-				trackHeight = ts.getSize();
-				addTrackPosition(track.getNumber(),posY,trackHeight);
-
-				float trackHeightWithSpacing = Math.round(trackHeight + getTrackSpacing() + 0.5f);
-
+				float trackHeightWithSpacing = paintTrack(track, painter, clientArea, fromX, posY);
 				posY += trackHeightWithSpacing;
 				height += trackHeightWithSpacing;
 			}
@@ -94,6 +52,30 @@ public class TGLayoutHorizontal extends TGLayout{
 		}
 		this.setHeight(height);
 		this.updateTimeToScroll();
+	}
+
+	// the whole track on one line; returns the height it takes, with the spacing to the next track
+	private float paintTrack(TGTrackImpl track, UIPainter painter, UIRectangle clientArea, float fromX, float posY){
+		TGTrackSpacing ts = new TGTrackSpacing(this) ;
+		((TGLyricImpl)track.getLyrics()).start();
+
+		float maxY = getStaffMaxY();
+		float minY = getStaffMinY();
+		Iterator<TGMeasure> measures = track.getMeasures();
+		while(measures.hasNext()){
+			TGMeasureImpl measure = (TGMeasureImpl)measures.next();
+			maxY = Math.max(measure.getMaxY(), maxY);
+			minY = Math.min(measure.getMinY(), minY);
+			measure.registerSpacing(this,ts);
+		}
+		setStaffSpacing(ts, track, minY, maxY);
+
+		paintMeasures(track,painter,fromX,posY,ts,clientArea);
+		paintLines(track,ts,painter,fromX + (getWidth() + (2f * getScale())),posY, (clientArea.getWidth() - (fromX + getWidth()) ));
+
+		float trackHeight = ts.getSize();
+		addTrackPosition(track.getNumber(),posY,trackHeight);
+		return Math.round(trackHeight + getTrackSpacing() + 0.5f);
 	}
 
 	private void updateTimeToScroll() {

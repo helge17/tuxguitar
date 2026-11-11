@@ -343,27 +343,41 @@ public class MidiPlayer{
 			this.lock();
 
 			if( force || !this.isRunning() ){
+				int hCount = this.getSong().countMeasureHeaders();
 				this.loopSHeader = -1;
 				this.loopEHeader = -1;
-				this.loopSPosition = TGDuration.QUARTER_TIME;
-				int hCount = this.getSong().countMeasureHeaders();
-				if( getMode().isLoop() && (this.selectionStartBeat==null || this.selectionEndBeat==null)){
-					this.loopSHeader = ( getMode().getLoopSHeader() <= hCount ? getMode().getLoopSHeader() : -1 ) ;
-					this.loopEHeader = ( getMode().getLoopEHeader() <= hCount ? getMode().getLoopEHeader() : -1 ) ;
-				} else if (this.selectionStartBeat!=null && this.selectionEndBeat!=null) {
+				if( this.hasSelection() ){
 					this.loopSHeader = this.selectionStartBeat.getMeasure().getNumber();
 					this.loopEHeader = this.selectionEndBeat.getMeasure().getNumber();
+				} else if( getMode().isLoop() ){
+					this.loopSHeader = existingHeader(getMode().getLoopSHeader(), hCount);
+					this.loopEHeader = existingHeader(getMode().getLoopEHeader(), hCount);
 				}
-				if( this.loopSHeader > 0 && this.loopSHeader <= hCount ){
-					TGMeasureHeader header = this.getSongManager().getMeasureHeader( getSong(), this.loopSHeader );
-					if( header != null ){
-						this.loopSPosition = header.getStart();
-					}
-				}
+				this.loopSPosition = this.findLoopStartPosition(hCount);
 			}
 		} finally {
 			this.unlock();
 		}
+	}
+
+	private boolean hasSelection() {
+		return (this.selectionStartBeat != null && this.selectionEndBeat != null);
+	}
+
+	// the header number, or -1 when it is beyond the song's headers
+	private static int existingHeader(int header, int hCount) {
+		return (header <= hCount ? header : -1);
+	}
+
+	// the start of the loop's first header, or the song start when the loop has none
+	private long findLoopStartPosition(int hCount) {
+		if( this.loopSHeader > 0 && this.loopSHeader <= hCount ){
+			TGMeasureHeader header = this.getSongManager().getMeasureHeader( getSong(), this.loopSHeader );
+			if( header != null ){
+				return header.getStart();
+			}
+		}
+		return TGDuration.QUARTER_TIME;
 	}
 
 	public void checkDevices() throws Throwable {
@@ -597,46 +611,47 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			// Remove unused channels.
-			List<Integer> oldChannelIds = getChannelRouter().getMidiChannelIds();
-			Iterator<Integer> iterator = oldChannelIds.iterator();
-			while( iterator.hasNext() ){
-				int channelId = iterator.next().intValue();
-
-				boolean removableChannel = ( this.getSongManager().getChannel(getSong(), channelId) == null );
-				if(!removableChannel ){
-					MidiChannel midiChannel = getChannelRouter().getMidiChannel(channelId);
-					if( midiChannel != null ){
-						removableChannel = (!this.getSynthesizerProxy().isChannelOpen(midiChannel));
-					}
-				}
-
-				if( removableChannel ){
-					this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
-					this.getChannelRouter().removeMidiChannel(channelId);
-				}
-			}
-
-			// Add channels
-			List<Integer> newChannelIds = getChannelRouter().getMidiChannelIds();
-			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
-			while( tgChannels.hasNext() ){
-				TGChannel tgChannel = tgChannels.next();
-				if(!newChannelIds.contains(Integer.valueOf(tgChannel.getChannelId())) ){
-					MidiChannel midiChannel = this.getSynthesizerProxy().openChannel(tgChannel.getChannelId());
-					if( midiChannel != null ){
-						this.getChannelRouter().addMidiChannel(tgChannel.getChannelId(), midiChannel);
-					}
-				}
-			}
+			this.removeUnusedChannels();
+			this.openMissingChannels();
 
 			// Update channels
-			tgChannels = this.getSong().getChannels();
+			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
 			while( tgChannels.hasNext() ){
 				this.updateChannel(tgChannels.next());
 			}
 		} finally {
 			this.unlock();
+		}
+	}
+
+	// Remove the channels no longer in the song, or no longer open in the synthesizer.
+	// The router never holds a null channel: openMissingChannels adds only the ones the synthesizer opened.
+	private void removeUnusedChannels() throws MidiPlayerException {
+		Iterator<Integer> iterator = getChannelRouter().getMidiChannelIds().iterator();
+		while( iterator.hasNext() ){
+			int channelId = iterator.next().intValue();
+			MidiChannel midiChannel = getChannelRouter().getMidiChannel(channelId);
+
+			boolean removableChannel = ( this.getSongManager().getChannel(getSong(), channelId) == null || !this.getSynthesizerProxy().isChannelOpen(midiChannel));
+			if( removableChannel ){
+				this.getSynthesizerProxy().closeChannel(midiChannel);
+				this.getChannelRouter().removeMidiChannel(channelId);
+			}
+		}
+	}
+
+	// Open a channel for every song channel without one, when the synthesizer can open it.
+	private void openMissingChannels() throws MidiPlayerException {
+		List<Integer> channelIds = getChannelRouter().getMidiChannelIds();
+		Iterator<TGChannel> tgChannels = this.getSong().getChannels();
+		while( tgChannels.hasNext() ){
+			TGChannel tgChannel = tgChannels.next();
+			if(!channelIds.contains(Integer.valueOf(tgChannel.getChannelId())) ){
+				MidiChannel midiChannel = this.getSynthesizerProxy().openChannel(tgChannel.getChannelId());
+				if( midiChannel != null ){
+					this.getChannelRouter().addMidiChannel(tgChannel.getChannelId(), midiChannel);
+				}
+			}
 		}
 	}
 
@@ -980,17 +995,7 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			if(this.outputPortKey != null && !this.isOutputPortOpen(this.outputPortKey)){
-				this.closeOutputPort();
-				for(int i = 0; i < ports.size(); i ++){
-					MidiOutputPort port = ports.get(i);
-					if(port.getKey().equals(this.outputPortKey)){
-						if(this.loadOutputPort(port)){
-							return;
-						}
-					}
-				}
-			}
+			this.reopenOutputPort(ports);
 			if(getOutputPort() == null && !ports.isEmpty() && tryFirst){
 				this.loadOutputPort(ports.get(0));
 			}
@@ -999,6 +1004,29 @@ public class MidiPlayer{
 		} finally {
 			this.unlock();
 		}
+	}
+
+	// when the port of the chosen key is not the open one, opens it instead
+	private void reopenOutputPort(List<MidiOutputPort> ports){
+		if(this.outputPortKey == null || this.isOutputPortOpen(this.outputPortKey)){
+			return;
+		}
+		this.closeOutputPort();
+		for(MidiOutputPort port : withKey(ports, this.outputPortKey)){
+			if(this.loadOutputPort(port)){
+				return;
+			}
+		}
+	}
+
+	private static <T extends MidiDevice> List<T> withKey(List<T> devices, String key){
+		List<T> matching = new ArrayList<T>();
+		for(T device : devices){
+			if(device.getKey().equals(key)){
+				matching.add(device);
+			}
+		}
+		return matching;
 	}
 
 	public void openSequencer(String key) {
@@ -1028,26 +1056,27 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			if(this.sequencerKey != null && !this.isSequencerOpen(this.sequencerKey)){
-				this.closeSequencer();
-				for(int i = 0; i < sequencers.size(); i ++){
-					MidiSequencer sequencer = sequencers.get(i);
-					if(sequencer.getKey().equals(this.sequencerKey)){
-						if(this.loadSequencer(sequencer)){
-							return;
-						}
-					}
-				}
-			}
-
+			this.reopenSequencer(sequencers);
 			if(getSequencer() instanceof MidiSequencerEmpty && !sequencers.isEmpty() && tryFirst){
 				this.loadSequencer(sequencers.get(0));
 			}
-
 		} catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(),throwable);
 		} finally {
 			this.unlock();
+		}
+	}
+
+	// when the sequencer of the chosen key is not the open one, opens it instead
+	private void reopenSequencer(List<MidiSequencer> sequencers) throws MidiPlayerException {
+		if(this.sequencerKey == null || this.isSequencerOpen(this.sequencerKey)){
+			return;
+		}
+		this.closeSequencer();
+		for(MidiSequencer sequencer : withKey(sequencers, this.sequencerKey)){
+			if(this.loadSequencer(sequencer)){
+				return;
+			}
 		}
 	}
 

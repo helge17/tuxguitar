@@ -1,7 +1,5 @@
 package app.tuxguitar.graphics.control;
 
-import java.util.Iterator;
-
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChord;
@@ -302,63 +300,75 @@ public class TGBeatImpl extends TGBeat{
 	}
 
 	public void paint(TGLayout layout,UIPainter painter, float fromX, float fromY, boolean highlightPlayedBeat) {
-		if(!layout.isPlayModeEnabled() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
+		boolean playMode = layout.isPlayModeEnabled();
+		if(!playMode && (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			paintExtraLines(painter, layout,fromX, fromY);
 		}
 		for(int v = 0; v < TGBeat.MAX_VOICES; v ++){
 			getVoiceImpl(v).paint(layout, painter, fromX, fromY);
 		}
-		if(!layout.isPlayModeEnabled()){
-			if(isChordBeat()){
-				TGChordImpl chord = (TGChordImpl)getChord();
-				chord.paint(layout, painter, fromX, fromY);
-			}
-			if(getStroke().getDirection() != TGStroke.STROKE_NONE){
-				paintStroke(layout, painter, fromX, fromY);
-			}
-			if(getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE){
-				paintPickStroke(layout, painter, fromX, fromY);
-			}
+		if(!playMode){
+			paintOfflineMarks(layout, painter, fromX, fromY);
+		} else if(isPlaying(layout) && highlightPlayedBeat){
+			paintPlayedBeatHighlight(layout, painter, fromX);
 		}
-		if(layout.isPlayModeEnabled() && isPlaying(layout) && highlightPlayedBeat){
-			TGMeasureImpl measureImpl = getMeasureImpl();
-			UIRectangle playedMeasure = measureImpl.getVerticalPosition(layout);
-			float scale = layout.getScale();
-			float leftSpacing = 8f* scale;
-			float rightSpacing = 15f* scale;
-			float width = this.effectWidth + leftSpacing + rightSpacing;
-			int style = layout.getStyle();
-			float yHighestNote = 0;
-			float yLowestNote = 0;
-			if ( (style & TGLayout.DISPLAY_SCORE) != 0) {
-				for( int v = 0; v < MAX_VOICES; v ++){
-					TGVoiceImpl voice = (TGVoiceImpl)getVoice(v);
-					if(!voice.isEmpty()){
-						Iterator<TGNote> it = voice.getNotes().iterator();
-						while(it.hasNext()){
-							TGNoteImpl note = (TGNoteImpl)it.next();
-							yHighestNote = Math.min(note.getScorePosY(), yHighestNote);
-							yLowestNote = Math.max(note.getScorePosY(), yLowestNote);
-						}
-					}
+	}
+
+	// chord diagram, stroke and pick stroke: hidden in play mode
+	private void paintOfflineMarks(TGLayout layout,UIPainter painter, float fromX, float fromY) {
+		if(isChordBeat()){
+			TGChordImpl chord = (TGChordImpl)getChord();
+			chord.paint(layout, painter, fromX, fromY);
+		}
+		if(getStroke().getDirection() != TGStroke.STROKE_NONE){
+			paintStroke(layout, painter, fromX, fromY);
+		}
+		if(getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE){
+			paintPickStroke(layout, painter, fromX, fromY);
+		}
+	}
+
+	// a rounded box around the played beat, over the measure height, stretched to the notes outside the staff
+	private void paintPlayedBeatHighlight(TGLayout layout,UIPainter painter, float fromX) {
+		UIRectangle playedMeasure = getMeasureImpl().getVerticalPosition(layout);
+		float scale = layout.getScale();
+		float leftSpacing = 8f* scale;
+		float rightSpacing = 15f* scale;
+		float width = this.effectWidth + leftSpacing + rightSpacing;
+		int style = layout.getStyle();
+		boolean scoreShown = ((style & TGLayout.DISPLAY_SCORE) != 0);
+		float[] notesY = (scoreShown ? findScoreNotesYRange() : new float[] {0f, 0f});
+		float y1 = playedMeasure.getY();
+		float y2 = y1 + playedMeasure.getHeight();
+		// adapt to lowest note, only if tablature is not displayed
+		if ((style & TGLayout.DISPLAY_TABLATURE) == 0) {
+			y2 = Math.max(y2, y1 + notesY[1] + 3*layout.getScoreLineSpacing());
+		}
+		// adapt to highest note, only if score is displayed
+		if (scoreShown) {
+			y1 += notesY[0];
+		}
+		painter.setLineWidth(layout.getLineWidth(1));
+		painter.initPath();
+		painter.setAntialias(false);
+		painter.addRoundedRectangle(fromX+getPosX()-leftSpacing+getSpacing(layout), y1, width , y2-y1, 3f*scale);
+		painter.closePath();
+	}
+
+	// {highest, lowest} score position of the beat's notes: at most 0 and at least 0
+	private float[] findScoreNotesYRange() {
+		float[] range = {0f, 0f};
+		for( int v = 0; v < MAX_VOICES; v ++){
+			TGVoice voice = getVoice(v);
+			if(!voice.isEmpty()){
+				for(TGNote note : voice.getNotes()){
+					float scorePosY = ((TGNoteImpl)note).getScorePosY();
+					range[0] = Math.min(scorePosY, range[0]);
+					range[1] = Math.max(scorePosY, range[1]);
 				}
 			}
-			float y1 = playedMeasure.getY();
-			float y2 = y1 + playedMeasure.getHeight();
-			// adapt to lowest note, only if tablature is not displayed
-			if ((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) == 0) {
-				y2 = Math.max(y2, y1 + yLowestNote + 3*layout.getScoreLineSpacing());
-			}
-			// adapt to highest note, only if score is displayed
-			if ((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0) {
-				y1 += yHighestNote;
-			}
-			painter.setLineWidth(layout.getLineWidth(1));
-			painter.initPath();
-			painter.setAntialias(false);
-			painter.addRoundedRectangle(fromX+getPosX()-leftSpacing+getSpacing(layout), y1, width , y2-y1, 3f*scale);
-			painter.closePath();
 		}
+		return range;
 	}
 
 	public void paintExtraLines(UIPainter painter,TGLayout layout,float fromX, float fromY){

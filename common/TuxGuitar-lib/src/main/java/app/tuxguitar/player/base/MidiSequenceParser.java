@@ -13,6 +13,7 @@ import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGNoteEffect;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGStroke;
 import app.tuxguitar.song.models.TGTempo;
@@ -21,9 +22,11 @@ import app.tuxguitar.song.models.TGVelocities;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
+import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
+import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class MidiSequenceParser {
 
@@ -195,123 +198,128 @@ public class MidiSequenceParser {
 			for (int noteIdx = 0; noteIdx < voice.countNotes(); noteIdx++) {
 				TGNote note = voice.getNote(noteIdx);
 				if (!note.isTiedNote()) {
-					int key = (this.transpose + track.getOffset() + note.getValue() + track.getStrings().get(note.getString() - 1).getValue());
-
-					long start = applyStrokeStart(note, (th.getStart() + startMove) , stroke);
-					long duration = applyStrokeDuration(note, getRealNoteDuration(sh, track, note, tempo, th.getDuration(), mIndex,bIndex), stroke);
-
-					int velocity = getRealVelocity(sh, note, track, tgChannel, mIndex, bIndex);
-					int channel = tgChannel.getChannelId();
-					int midiVoice = note.getString();
-					boolean bendMode = false;
-
-					boolean percussionChannel = tgChannel.isPercussionChannel();
-					//---Fade In---
-					if((note.getEffect().isFadeIn()) && ((this.flags & ADD_MIXER_MESSAGES) != 0)) {
-						addFadeIn(sh,track.getNumber(), start, duration, tgChannel.getVolume(), channel);
-					}
-					//---Grace---
-					if(note.getEffect().isGrace()) {
-						bendMode = !percussionChannel;
-						int graceKey = track.getOffset() + note.getEffect().getGrace().getFret() + track.getStrings().get(note.getString() - 1).getValue();
-						int graceLength = note.getEffect().getGrace().getDurationTime();
-						int graceVelocity = note.getEffect().getGrace().getDynamic();
-						long graceDuration = ((note.getEffect().getGrace().isDead())?applyStaticDuration(tempo, DEFAULT_DURATION_DEAD, graceLength):graceLength);
-
-						if(note.getEffect().getGrace().isOnBeat() || (start - graceLength) < TGDuration.QUARTER_TIME){
-							start += graceLength;
-							duration -= graceLength;
-						}
-						addNote(sh,track.getNumber(), graceKey,start - graceLength,graceDuration,graceVelocity,channel,midiVoice, bendMode);
-
-					}
-					//---Trill---
-					if(note.getEffect().isTrill() && !percussionChannel ){
-						int trillKey = track.getOffset() + note.getEffect().getTrill().getFret() + track.getStrings().get(note.getString() - 1).getValue();
-						long trillLength = note.getEffect().getTrill().getDuration().getTime();
-
-						boolean realKey = true;
-						long tick = start;
-						while(true){
-							if(tick + 10 >= (start + duration)){
-								break ;
-							}else if( (tick + trillLength) >= (start + duration)){
-								trillLength = (((start + duration) - tick) - 1);
-							}
-							addNote(sh,track.getNumber(),((realKey)?key:trillKey),tick,trillLength,velocity,channel,midiVoice,bendMode);
-							realKey = (!realKey);
-							tick += trillLength;
-						}
-						continue;
-					}
-					//---Tremolo Picking---
-					if(note.getEffect().isTremoloPicking()){
-						long tpLength = note.getEffect().getTremoloPicking().getDuration().getTime();
-						long tick = start;
-						while(true){
-							if(tick + 10 >= (start + duration)){
-								break ;
-							}else if( (tick + tpLength) >= (start + duration)){
-								tpLength = (((start + duration) - tick) - 1);
-							}
-							addNote(sh,track.getNumber(),key,tick,tpLength,velocity,channel,midiVoice,bendMode);
-							tick += tpLength;
-						}
-						continue;
-					}
-
-					//---Bend---
-					if( note.getEffect().isBend() && !percussionChannel ){
-						bendMode = true;
-						addBend(sh,track.getNumber(),start,duration,note.getEffect().getBend(),channel,midiVoice,bendMode);
-					}
-					//---TremoloBar---
-					else if( note.getEffect().isTremoloBar() && !percussionChannel ){
-						bendMode = true;
-						addTremoloBar(sh,track.getNumber(),start,duration,note.getEffect().getTremoloBar(),channel,midiVoice,bendMode);
-					}
-					//---Slide---
-					else if( note.getEffect().isSlide() && !percussionChannel){
-						bendMode = true;
-						addSlide(sh, note, track, mIndex, bIndex, startMove, channel,midiVoice,bendMode);
-					}
-					//---Vibrato---
-					else if( note.getEffect().isVibrato() && !percussionChannel){
-						bendMode = true;
-						addVibrato(sh,track.getNumber(),start,duration,channel,midiVoice,bendMode);
-					}
-					//---Harmonic---
-					if( note.getEffect().isHarmonic() && !percussionChannel){
-						int orig = key;
-
-						//Natural
-						if(note.getEffect().getHarmonic().isNatural()){
-							for(int i = 0;i < TGEffectHarmonic.NATURAL_FREQUENCIES.length;i ++){
-								if((note.getValue() % 12) ==  (TGEffectHarmonic.NATURAL_FREQUENCIES[i][0] % 12) ){
-									key = ((orig + TGEffectHarmonic.NATURAL_FREQUENCIES[i][1]) - note.getValue());
-									break;
-								}
-							}
-						}
-						//Artificial/Tapped/Pinch/Semi
-						else{
-							if( note.getEffect().getHarmonic().isSemi() && !percussionChannel ){
-								addNote(sh,track.getNumber(),Math.min(127,orig), start, duration,Math.max(TGVelocities.MIN_VELOCITY,velocity - (TGVelocities.VELOCITY_INCREMENT * 3)),channel,midiVoice,bendMode);
-							}
-							key = (orig + TGEffectHarmonic.NATURAL_FREQUENCIES[note.getEffect().getHarmonic().getData()][1]);
-
-						}
-						if( (key - 12) > 0 ){
-							int hVelocity = Math.max(TGVelocities.MIN_VELOCITY,velocity - (TGVelocities.VELOCITY_INCREMENT * 4));
-							addNote(sh,track.getNumber(),(key - 12), start, duration,hVelocity,channel,midiVoice,bendMode);
-						}
-					}
-
-					//---Normal Note---
-					addNote(sh,track.getNumber(), Math.min(127,key), start, duration, velocity,channel,midiVoice,bendMode);
+					PlayedNote played = new PlayedNote(sh, tgChannel, track, note, tempo, mIndex, bIndex, startMove);
+					played.key = (this.transpose + fretKey(track, note, note.getValue()));
+					played.start = applyStrokeStart(note, (th.getStart() + startMove) , stroke);
+					played.duration = applyStrokeDuration(note, getRealNoteDuration(sh, track, note, tempo, th.getDuration(), mIndex,bIndex), stroke);
+					played.velocity = getRealVelocity(sh, note, track, tgChannel, mIndex, bIndex);
+					addPlayedNote(played);
 				}
 			}
 		}
+	}
+
+	// key of a fret on the note's string, without transposition
+	private int fretKey(TGTrack track, TGNote note, int fret) {
+		return (track.getOffset() + fret + track.getStrings().get(note.getString() - 1).getValue());
+	}
+
+	private void addPlayedNote(PlayedNote played) {
+		TGNoteEffect effect = played.note.getEffect();
+		if (effect.isFadeIn() && ((this.flags & ADD_MIXER_MESSAGES) != 0)) {
+			addFadeIn(played.sh, played.track.getNumber(), played.start, played.duration, played.tgChannel.getVolume(), played.channel);
+		}
+		if (effect.isGrace()) {
+			addGrace(played);
+		}
+		// trill and tremolo picking replace the note
+		if (effect.isTrill() && !played.percussion) {
+			TGEffectTrill trill = effect.getTrill();
+			addRepeatedNote(played, fretKey(played.track, played.note, trill.getFret()), trill.getDuration().getTime());
+			return;
+		}
+		if (effect.isTremoloPicking()) {
+			addRepeatedNote(played, played.key, effect.getTremoloPicking().getDuration().getTime());
+			return;
+		}
+		addPitchEffect(played);
+		int key = addHarmonic(played);
+		addNote(played, Math.min(127, key), played.start, played.duration, played.velocity);
+	}
+
+	// the grace note is played before the note, or on the beat (delaying the note) when asked or when there is no room before
+	private void addGrace(PlayedNote played) {
+		TGEffectGrace grace = played.note.getEffect().getGrace();
+		played.bendMode = !played.percussion;
+		int graceKey = fretKey(played.track, played.note, grace.getFret());
+		int graceLength = grace.getDurationTime();
+		long graceDuration = (grace.isDead() ? applyStaticDuration(played.tempo, DEFAULT_DURATION_DEAD, graceLength) : graceLength);
+		if (grace.isOnBeat() || (played.start - graceLength) < TGDuration.QUARTER_TIME) {
+			played.start += graceLength;
+			played.duration -= graceLength;
+		}
+		addNote(played, graceKey, played.start - graceLength, graceDuration, grace.getDynamic());
+	}
+
+	// repeats the note every length ticks, alternating its key with alternateKey, until less than 10 ticks of it remain
+	private void addRepeatedNote(PlayedNote played, int alternateKey, long length) {
+		long end = (played.start + played.duration);
+		boolean realKey = true;
+		for (long tick = played.start; tick + 10 < end; tick += length) {
+			if ((tick + length) >= end) {
+				length = ((end - tick) - 1);
+			}
+			addNote(played, (realKey ? played.key : alternateKey), tick, length, played.velocity);
+			realKey = !realKey;
+		}
+	}
+
+	// bend, tremolo bar, slide and vibrato exclude each other, in that order of precedence
+	private void addPitchEffect(PlayedNote played) {
+		if (played.percussion) {
+			return;
+		}
+		TGNoteEffect effect = played.note.getEffect();
+		int track = played.track.getNumber();
+		if (effect.isBend()) {
+			played.bendMode = true;
+			addBend(played.sh, track, played.start, played.duration, effect.getBend(), played.channel, played.midiVoice, played.bendMode);
+		} else if (effect.isTremoloBar()) {
+			played.bendMode = true;
+			addTremoloBar(played.sh, track, played.start, played.duration, effect.getTremoloBar(), played.channel, played.midiVoice, played.bendMode);
+		} else if (effect.isSlide()) {
+			played.bendMode = true;
+			addSlide(played.sh, played.note, played.track, played.mIndex, played.bIndex, played.startMove, played.channel, played.midiVoice, played.bendMode);
+		} else if (effect.isVibrato()) {
+			played.bendMode = true;
+			addVibrato(played.sh, track, played.start, played.duration, played.channel, played.midiVoice, played.bendMode);
+		}
+	}
+
+	// plays the octave below the harmonic (and the fretted note for a semi harmonic), returns the key to play the note with
+	private int addHarmonic(PlayedNote played) {
+		TGNoteEffect effect = played.note.getEffect();
+		if (!effect.isHarmonic() || played.percussion) {
+			return played.key;
+		}
+		TGEffectHarmonic harmonic = effect.getHarmonic();
+		int key;
+		if (harmonic.isNatural()) {
+			key = naturalHarmonicKey(played.key, played.note.getValue());
+		} else {
+			// artificial, tapped, pinch, semi
+			if (harmonic.isSemi()) {
+				addNote(played, Math.min(127, played.key), played.start, played.duration, Math.max(TGVelocities.MIN_VELOCITY, played.velocity - (TGVelocities.VELOCITY_INCREMENT * 3)));
+			}
+			key = (played.key + TGEffectHarmonic.NATURAL_FREQUENCIES[harmonic.getData()][1]);
+		}
+		if ((key - 12) > 0) {
+			addNote(played, (key - 12), played.start, played.duration, Math.max(TGVelocities.MIN_VELOCITY, played.velocity - (TGVelocities.VELOCITY_INCREMENT * 4)));
+		}
+		return key;
+	}
+
+	private int naturalHarmonicKey(int key, int fret) {
+		for (int[] frequency : TGEffectHarmonic.NATURAL_FREQUENCIES) {
+			if ((fret % 12) == (frequency[0] % 12)) {
+				return ((key + frequency[1]) - fret);
+			}
+		}
+		return key;
+	}
+
+	private void addNote(PlayedNote played, int key, long start, long duration, int velocity) {
+		addNote(played.sh, played.track.getNumber(), key, start, duration, velocity, played.channel, played.midiVoice, played.bendMode);
 	}
 
 	private void addNote(MidiSequenceHelper sh,int track, int key, long start, long duration, int velocity, int channel, int midiVoice, boolean bendMode) {
@@ -675,58 +683,55 @@ public class MidiSequenceParser {
 	}
 
 	private MidiTickHelper checkTripletFeel(TGVoice voice,int bIndex){
+		int tripletFeel = voice.getBeat().getMeasure().getTripletFeel();
+		if (tripletFeel == TGMeasureHeader.TRIPLET_FEEL_EIGHTH) {
+			return applyTripletFeel(voice, bIndex, TGDuration.EIGHTH, TGDuration.QUARTER_TIME);
+		}
+		if (tripletFeel == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH) {
+			return applyTripletFeel(voice, bIndex, TGDuration.SIXTEENTH, (TGDuration.QUARTER_TIME / 2));
+		}
+		return new MidiTickHelper(voice.getBeat().getStart(), voice.getDuration().getTime());
+	}
+
+	// a pair of notes of the given duration value, the first one starting on a multiple of pairLength,
+	// is played as a triplet quarter followed by a triplet eighth (relative to that value)
+	private MidiTickHelper applyTripletFeel(TGVoice voice, int bIndex, int value, long pairLength){
 		long bStart = voice.getBeat().getStart();
-		long bDuration =  voice.getDuration().getTime();
-		if(voice.getBeat().getMeasure().getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-			if(voice.getDuration().isEqual(newDuration(TGDuration.EIGHTH))){
-				//first time
-				if( (bStart % TGDuration.QUARTER_TIME) == 0){
-					TGVoice v = getNextBeat(voice,bIndex);
-					if(v == null || ( v.getBeat().getStart() > (bStart + voice.getDuration().getTime()) || v.getDuration().isEqual(newDuration(TGDuration.EIGHTH)))  ){
-						TGDuration duration = newDuration(TGDuration.EIGHTH);
-						duration.getDivision().setEnters(3);
-						duration.getDivision().setTimes(2);
-						bDuration = (duration.getTime() * 2);
-					}
-				}
-				//second time
-				else if( (bStart % (TGDuration.QUARTER_TIME / 2)) == 0){
-					TGVoice v = getPreviousBeat(voice,bIndex);
-					if(v == null || ( v.getBeat().getStart() < (bStart - voice.getDuration().getTime())  || v.getDuration().isEqual(newDuration(TGDuration.EIGHTH)) )){
-						TGDuration duration = newDuration(TGDuration.EIGHTH);
-						duration.getDivision().setEnters(3);
-						duration.getDivision().setTimes(2);
-						bStart = ( (bStart - voice.getDuration().getTime()) + (duration.getTime() * 2));
-						bDuration = duration.getTime();
-					}
-				}
+		long bDuration = voice.getDuration().getTime();
+		if (!voice.getDuration().isEqual(newDuration(value))) {
+			return new MidiTickHelper(bStart, bDuration);
+		}
+		long tripletTime = newTripletDuration(value).getTime();
+		if ((bStart % pairLength) == 0) {
+			// first time
+			if (isFirstOfTripletPair(voice, bIndex, value)) {
+				bDuration = (tripletTime * 2);
 			}
-		}else if(voice.getBeat().getMeasure().getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-			if(voice.getDuration().isEqual(newDuration(TGDuration.SIXTEENTH))){
-				//first time
-				if( (bStart % (TGDuration.QUARTER_TIME / 2)) == 0){
-					TGVoice v = getNextBeat(voice,bIndex);
-					if(v == null || ( v.getBeat().getStart() > (bStart + voice.getDuration().getTime()) || v.getDuration().isEqual(newDuration(TGDuration.SIXTEENTH)))  ){
-						TGDuration duration = newDuration(TGDuration.SIXTEENTH);
-						duration.getDivision().setEnters(3);
-						duration.getDivision().setTimes(2);
-						bDuration = (duration.getTime() * 2);
-					}
-				}
-				//second time
-				else if( (bStart % (TGDuration.QUARTER_TIME / 4)) == 0){
-					TGVoice v = getPreviousBeat(voice,bIndex);
-					if(v == null || ( v.getBeat().getStart() < (bStart - voice.getDuration().getTime())  || v.getDuration().isEqual(newDuration(TGDuration.SIXTEENTH)) )){
-						TGDuration duration = newDuration(TGDuration.SIXTEENTH);
-						duration.getDivision().setEnters(3);
-						duration.getDivision().setTimes(2);
-						bStart = ( (bStart - voice.getDuration().getTime()) + (duration.getTime() * 2));
-						bDuration = duration.getTime();
-					}
-				}
-			}
+		} else if ((bStart % (pairLength / 2)) == 0 && isSecondOfTripletPair(voice, bIndex, value)) {
+			// second time
+			bStart = ((bStart - bDuration) + (tripletTime * 2));
+			bDuration = tripletTime;
 		}
 		return new MidiTickHelper(bStart, bDuration);
+	}
+
+	// no next note in the voice, or it starts after a gap, or it has the same duration
+	private boolean isFirstOfTripletPair(TGVoice voice, int bIndex, int value){
+		TGVoice next = getNextBeat(voice, bIndex);
+		return (next == null || next.getBeat().getStart() > (voice.getBeat().getStart() + voice.getDuration().getTime()) || next.getDuration().isEqual(newDuration(value)));
+	}
+
+	// no previous note in the voice, or it starts more than one such duration earlier, or it has the same duration
+	private boolean isSecondOfTripletPair(TGVoice voice, int bIndex, int value){
+		TGVoice previous = getPreviousBeat(voice, bIndex);
+		return (previous == null || previous.getBeat().getStart() < (voice.getBeat().getStart() - voice.getDuration().getTime()) || previous.getDuration().isEqual(newDuration(value)));
+	}
+
+	private TGDuration newTripletDuration(int value){
+		TGDuration duration = newDuration(value);
+		duration.getDivision().setEnters(3);
+		duration.getDivision().setTimes(2);
+		return duration;
 	}
 
 	private TGDuration newDuration(int value){
@@ -843,6 +848,40 @@ public class MidiSequenceParser {
 
 		public long getStart() {
 			return this.start;
+		}
+	}
+
+	// a (not tied) note being turned into MIDI events: where it is, and the values its effects adjust
+	private class PlayedNote {
+		private final MidiSequenceHelper sh;
+		private final TGChannel tgChannel;
+		private final TGTrack track;
+		private final TGNote note;
+		private final TGTempo tempo;
+		private final int mIndex;
+		private final int bIndex;
+		private final long startMove;
+		private final int channel;
+		private final int midiVoice;
+		private final boolean percussion;
+		private int key;
+		private long start;
+		private long duration;
+		private int velocity;
+		private boolean bendMode;
+
+		public PlayedNote(MidiSequenceHelper sh, TGChannel tgChannel, TGTrack track, TGNote note, TGTempo tempo, int mIndex, int bIndex, long startMove){
+			this.sh = sh;
+			this.tgChannel = tgChannel;
+			this.track = track;
+			this.note = note;
+			this.tempo = tempo;
+			this.mIndex = mIndex;
+			this.bIndex = bIndex;
+			this.startMove = startMove;
+			this.channel = tgChannel.getChannelId();
+			this.midiVoice = note.getString();
+			this.percussion = tgChannel.isPercussionChannel();
 		}
 	}
 

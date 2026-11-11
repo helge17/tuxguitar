@@ -125,53 +125,42 @@ public class TGBeatGroup {
 		return scoreLineY;
 	}
 
+	// the end of the stem at x: on the beam, below the lowest notes for stems down, above the highest for stems up
 	public float getY2(TGLayout layout, float x){
-		float maxDistance = (10f * layout.getScale());
-		float upOffset = TGBeatGroup.getUpOffset(layout);
-		float downOffset = TGBeatGroup.getDownOffset(layout);
 		if(this.direction == DIRECTION_DOWN){
-			if( this.maxNote != this.firstMaxNote && this.maxNote != this.lastMaxNote ){
-				return (getY1(layout, this.maxNote) + downOffset);
-			}
-
-			float y = 0;
-			float x1 = this.firstMaxNote.getPosX() + this.firstMaxNote.getBeatImpl().getSpacing(layout);
-			float x2 = this.lastMaxNote.getPosX() + this.lastMaxNote.getBeatImpl().getSpacing(layout);
-			float y1 =  (getY1(layout, this.firstMaxNote) +  downOffset);
-			float y2 =  (getY1(layout, this.lastMaxNote) +  downOffset);
-
-			if( y1 > y2 && (y1 - y2) > maxDistance ) {
-				y2 = (y1 - maxDistance);
-			}
-			if( y2 > y1 && (y2 - y1) > maxDistance ) {
-				y1 = (y2 - maxDistance);
-			}
-
-			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
-				y = (((y1 -y2) / (x1 - x2)) * (x1 - x));
-			}
-			return y1 - y;
-		}else if(this.minNote != this.firstMinNote && this.minNote != this.lastMinNote){
-			return (getY1(layout, this.minNote) - upOffset);
-		}else{
-			float y = 0;
-			float x1 = this.firstMinNote.getPosX() + this.firstMinNote.getBeatImpl().getSpacing(layout);
-			float x2 = this.lastMinNote.getPosX() + this.lastMinNote.getBeatImpl().getSpacing(layout);
-			float y1 = (getY1(layout,this.firstMinNote) - upOffset);
-			float y2 = (getY1(layout,this.lastMinNote) - upOffset);
-
-			if( y1 < y2 && (y2 - y1) > maxDistance ) {
-				y2 = (y1 + maxDistance);
-			}
-			if( y2 < y1 && (y1 - y2) > maxDistance ) {
-				y1 = (y2 + maxDistance);
-			}
-
-			if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
-				y = (((y1 - y2) / (x1 - x2)) * (x1 - x));
-			}
-			return y1 - y;
+			return getBeamY(layout, x, this.maxNote, this.firstMaxNote, this.lastMaxNote, getDownOffset(layout));
 		}
+		return getBeamY(layout, x, this.minNote, this.firstMinNote, this.lastMinNote, -getUpOffset(layout));
+	}
+
+	// flat at the outermost note when it is inside the group, else slanted from the first to the last note
+	private float getBeamY(TGLayout layout, float x, TGNoteImpl outermost, TGNoteImpl first, TGNoteImpl last, float offset){
+		if( outermost != first && outermost != last ){
+			return (getY1(layout, outermost) + offset);
+		}
+		float y1 = (getY1(layout, first) + offset);
+		float y2 = (getY1(layout, last) + offset);
+		// the slope is limited: the end nearer the notes moves toward the end further out
+		float maxDistance = (10f * layout.getScale());
+		float limit = (this.direction == DIRECTION_DOWN ? Math.max(y1, y2) - maxDistance : Math.min(y1, y2) + maxDistance);
+		return getLineY(getStemX(layout, first), limitTo(y1, limit), getStemX(layout, last), limitTo(y2, limit), x);
+	}
+
+	private float limitTo(float y, float limit){
+		return (this.direction == DIRECTION_DOWN ? Math.max(y, limit) : Math.min(y, limit));
+	}
+
+	private static float getStemX(TGLayout layout, TGNoteImpl note){
+		return note.getPosX() + note.getBeatImpl().getSpacing(layout);
+	}
+
+	// y at x on the line through (x1, y1) and (x2, y2); y1 when that line is vertical
+	private static float getLineY(float x1, float y1, float x2, float y2, float x){
+		float y = 0;
+		if( (y1 - y2) != 0 && (x1 - x2) != 0 && (x1 - x) != 0 ){
+			y = (((y1 - y2) / (x1 - x2)) * (x1 - x));
+		}
+		return y1 - y;
 	}
 
 	public int getDirection() {

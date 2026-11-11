@@ -612,7 +612,6 @@ public class TestFileFormat20 {
 			InputStream streamToValidate = (compressed ? new TGStream().getDecompressedContent(inputStream) : inputStream);
 			schema.newValidator().validate(new StreamSource(streamToValidate));
 		} catch (SAXException | IOException e) {
-			e.printStackTrace();
 			return false;
 		}
 		return true;

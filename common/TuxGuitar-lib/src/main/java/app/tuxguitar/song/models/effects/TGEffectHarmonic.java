@@ -83,6 +83,14 @@ public abstract class TGEffectHarmonic {
 		return (this.type == TYPE_SEMI);
 	}
 
+	// the label of each type, indexed by type ("" for no type)
+	private static final String[] KEYS = {"", KEY_NATURAL, KEY_ARTIFICIAL, KEY_TAPPED, KEY_PINCH, KEY_SEMI};
+
+	/** The label of this harmonic's type ("N.H", "A.H"...), or "" for an unknown type. */
+	public String getKey(){
+		return ((this.type >= 0 && this.type < KEYS.length) ? KEYS[this.type] : "");
+	}
+
 	public TGEffectHarmonic clone(TGFactory factory){
 		TGEffectHarmonic effect = factory.newEffectHarmonic();
 		effect.setType(getType());

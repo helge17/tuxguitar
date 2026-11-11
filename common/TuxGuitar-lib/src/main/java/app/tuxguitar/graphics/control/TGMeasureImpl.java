@@ -18,6 +18,7 @@ import app.tuxguitar.graphics.control.painters.TGTripletFeelPainter;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMarker;
@@ -215,87 +216,20 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	private void calculateBeats(TGLayout layout) {
-		TGChord previousChord = null;
-		TGDuration minDuration = null;
+		boolean chordEnabled = ((layout.getStyle() & (TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.DISPLAY_CHORD_NAME)) != 0);
+		BeatsCalculation calculation = new BeatsCalculation();
 		TGBeatImpl previousBeat = null;
-		TGVoiceImpl[] previousVoices = new TGVoiceImpl[TGBeat.MAX_VOICES];
-		TGBeatGroup[] groups = new TGBeatGroup[TGBeat.MAX_VOICES];
-
-		int style = layout.getStyle();
-		long minimumChordLength = 0;
-
-		boolean[] notEmptyVoicesChecked = new boolean[TGBeat.MAX_VOICES];
-		boolean chordEnabled = ((style & (TGLayout.DISPLAY_CHORD_DIAGRAM | TGLayout.DISPLAY_CHORD_NAME)) != 0);
-		this.widthBeats = 0;
-		this.notEmptyBeats = 0;
-		this.notEmptyVoices = 0;
-		this.effectWidth = 0.0f;
-		for(int v = 0 ; v < TGBeat.MAX_VOICES; v ++){
-			this.voiceGroups[v].clear();
-		}
+		this.resetBeatsCalculation();
 
 		for (int i = 0; i < countBeats(); i++) {
 			TGBeatImpl beat = (TGBeatImpl)getBeat(i);
 			beat.reset();
-
-			if(chordEnabled && beat.getChord() != null){
-				if(previousChord != null){
-					long length = (beat.getStart() - previousChord.getBeat().getStart());
-					minimumChordLength = (minimumChordLength > 0) ? Math.min(minimumChordLength, Math.abs(length)) : length;
-				}
-				previousChord = beat.getChord();
+			if(chordEnabled){
+				calculation.checkChord(beat);
 			}
-			boolean emptyBeat = true;
-			float beatEffectWidth = 0.0f;
-			for( int v = 0; v < TGBeat.MAX_VOICES; v ++){
-				TGVoiceImpl voice = (TGVoiceImpl)beat.getVoice(v);
-				if(!voice.isEmpty()){
-					emptyBeat = false;
-
-					voice.reset();
-					if (minDuration == null || voice.getDuration().getTime() <= minDuration.getTime()) {
-						minDuration = voice.getDuration();
-					}
-					if( !notEmptyVoicesChecked[v] ){
-						notEmptyVoicesChecked[v] = true;
-						this.notEmptyVoices ++;
-					}
-
-					Iterator<TGNote> it = voice.getNotes().iterator();
-					while(it.hasNext()){
-						TGNoteImpl note = (TGNoteImpl)it.next();
-						voice.check(layout, note);
-					}
-					float voiceEffectWidth = voice.getEffectWidth(layout);
-					if (voiceEffectWidth > beatEffectWidth) beatEffectWidth = voiceEffectWidth;
-
-					if(!voice.isRestVoice()){
-						beat.check( layout, voice.getMinNote() );
-						beat.check( layout, voice.getMaxNote() );
-						if( ( groups[v] == null ) || !canJoin(layout.getSongManager(),voice,previousVoices[v]) ){
-							groups[v] = new TGBeatGroup(v);
-							this.voiceGroups[v].add(groups[v]);
-						}
-						groups[v].check(layout, voice);
-					}else{
-						for( int v2 = 0; v2 < TGBeat.MAX_VOICES; v2 ++){
-							if(v2 != voice.getIndex()){
-								TGVoiceImpl voice2 = beat.getVoiceImpl(v2);
-								if( !voice2.isEmpty() && voice2.getDuration().isEqual(voice.getDuration())){
-									if(!voice2.isRestVoice() || !voice2.isHiddenSilence()){
-										voice.setHiddenSilence(true);
-										break;
-									}
-								}
-							}
-						}
-					}
-					makeVoice(layout, voice, previousVoices[v], groups[v], voiceEffectWidth);
-					previousVoices[v] = voice;
-				}
-			}
+			float beatEffectWidth = calculateVoices(layout, beat, calculation);
 			beat.setEffectWidth(beatEffectWidth);
-			if (emptyBeat){
+			if (!hasVoices(beat)){
 				System.out.println( "Empty Beat !!!!!! " + beat.getStart() + "  " + i);
 			}
 			this.effectWidth += beatEffectWidth;
@@ -304,22 +238,149 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		this.getHeaderImpl().notifyEffectWidth(this.effectWidth);
 
+		this.finishVoiceGroups(layout);
+
+		if(!this.compactMode) {
+			this.updateQuarterSpacing(layout, calculation, chordEnabled);
+		}
+	}
+
+	private void resetBeatsCalculation() {
+		this.widthBeats = 0;
+		this.notEmptyBeats = 0;
+		this.notEmptyVoices = 0;
+		this.effectWidth = 0.0f;
+		for(int v = 0 ; v < TGBeat.MAX_VOICES; v ++){
+			this.voiceGroups[v].clear();
+		}
+	}
+
+	private boolean hasVoices(TGBeat beat) {
+		for( int v = 0; v < TGBeat.MAX_VOICES; v ++){
+			if(!beat.getVoice(v).isEmpty()){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// returns the beat effect width: the widest effect among its non-empty voices
+	private float calculateVoices(TGLayout layout, TGBeatImpl beat, BeatsCalculation calculation) {
+		float beatEffectWidth = 0.0f;
+		for( int v = 0; v < TGBeat.MAX_VOICES; v ++){
+			TGVoiceImpl voice = (TGVoiceImpl)beat.getVoice(v);
+			if(!voice.isEmpty()){
+				float voiceEffectWidth = calculateVoice(layout, beat, voice, v, calculation);
+				if (voiceEffectWidth > beatEffectWidth) beatEffectWidth = voiceEffectWidth;
+			}
+		}
+		return beatEffectWidth;
+	}
+
+	// returns the voice effect width
+	private float calculateVoice(TGLayout layout, TGBeatImpl beat, TGVoiceImpl voice, int v, BeatsCalculation calculation) {
+		voice.reset();
+		calculation.checkDuration(voice);
+		if( calculation.markNotEmpty(v) ){
+			this.notEmptyVoices ++;
+		}
+		for (TGNote note : voice.getNotes()) {
+			voice.check(layout, (TGNoteImpl)note);
+		}
+		float voiceEffectWidth = voice.getEffectWidth(layout);
+
+		if(!voice.isRestVoice()){
+			groupVoice(layout, beat, voice, v, calculation);
+		}else{
+			checkHiddenSilence(beat, voice);
+		}
+		makeVoice(layout, voice, calculation.previousVoices[v], calculation.groups[v], voiceEffectWidth);
+		calculation.previousVoices[v] = voice;
+		return voiceEffectWidth;
+	}
+
+	// joins the voice to the beam group of the previous one when possible, else starts a new group
+	private void groupVoice(TGLayout layout, TGBeatImpl beat, TGVoiceImpl voice, int v, BeatsCalculation calculation) {
+		beat.check( layout, voice.getMinNote() );
+		beat.check( layout, voice.getMaxNote() );
+		if( ( calculation.groups[v] == null ) || !canJoin(layout.getSongManager(),voice,calculation.previousVoices[v]) ){
+			calculation.groups[v] = new TGBeatGroup(v);
+			this.voiceGroups[v].add(calculation.groups[v]);
+		}
+		calculation.groups[v].check(layout, voice);
+	}
+
+	// a rest is hidden by another voice of the same duration, unless that voice is itself a hidden rest
+	private void checkHiddenSilence(TGBeatImpl beat, TGVoiceImpl rest) {
+		for( int v = 0; v < TGBeat.MAX_VOICES; v ++){
+			if( v != rest.getIndex() && hidesSilence(beat.getVoiceImpl(v), rest) ){
+				rest.setHiddenSilence(true);
+				return;
+			}
+		}
+	}
+
+	private boolean hidesSilence(TGVoiceImpl voice, TGVoiceImpl rest) {
+		return ( !voice.isEmpty() && voice.getDuration().isEqual(rest.getDuration()) && (!voice.isRestVoice() || !voice.isHiddenSilence()) );
+	}
+
+	private void finishVoiceGroups(TGLayout layout) {
 		for(int v = 0; v < this.voiceGroups.length; v ++){
-			Iterator<TGBeatGroup> voiceGroups = this.voiceGroups[v].iterator();
-			while (voiceGroups.hasNext()) {
-				TGBeatGroup group = voiceGroups.next();
+			for (TGBeatGroup group : this.voiceGroups[v]) {
 				group.finish(layout,this);
 			}
 		}
+	}
 
-		if(!this.compactMode) {
-			this.quarterSpacing = (minDuration != null ? layout.getSpacingForQuarter(minDuration): layout.getMinimumDurationWidth());
-			if(chordEnabled && minimumChordLength > 0){
-				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (((float)getTrack().stringCount()) * layout.getChordStringSpacing()));
-				float minimumSpacing = ((((float)TGDuration.QUARTER_TIME) * chordWidth) / ((float)minimumChordLength));
-				this.quarterSpacing = Math.max(minimumSpacing,this.quarterSpacing);
+	// the shortest duration sets the quarter spacing, widened so that close chord diagrams do not overlap
+	private void updateQuarterSpacing(TGLayout layout, BeatsCalculation calculation, boolean chordEnabled) {
+		this.quarterSpacing = (calculation.minDuration != null ? layout.getSpacingForQuarter(calculation.minDuration): layout.getMinimumDurationWidth());
+		if(chordEnabled && calculation.minimumChordLength > 0){
+			float minimumSpacing = ((((float)TGDuration.QUARTER_TIME) * getChordWidth(layout)) / ((float)calculation.minimumChordLength));
+			this.quarterSpacing = Math.max(minimumSpacing,this.quarterSpacing);
+		}
+		this.getHeaderImpl().notifyQuarterSpacing(this.quarterSpacing);
+	}
+
+	private float getChordWidth(TGLayout layout) {
+		return (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (getTrack().stringCount() * layout.getChordStringSpacing()));
+	}
+
+	/** What calculateBeats carries from one beat to the next. */
+	private static class BeatsCalculation {
+
+		private TGChord previousChord;
+		private long minimumChordLength;
+		private TGDuration minDuration;
+		private final TGVoiceImpl[] previousVoices = new TGVoiceImpl[TGBeat.MAX_VOICES];
+		private final TGBeatGroup[] groups = new TGBeatGroup[TGBeat.MAX_VOICES];
+		private final boolean[] notEmptyVoicesChecked = new boolean[TGBeat.MAX_VOICES];
+
+		// keeps the shortest distance between two successive chords
+		void checkChord(TGBeat beat) {
+			if( beat.getChord() == null ){
+				return;
 			}
-			this.getHeaderImpl().notifyQuarterSpacing(this.quarterSpacing);
+			if(this.previousChord != null){
+				long length = (beat.getStart() - this.previousChord.getBeat().getStart());
+				this.minimumChordLength = (this.minimumChordLength > 0) ? Math.min(this.minimumChordLength, Math.abs(length)) : length;
+			}
+			this.previousChord = beat.getChord();
+		}
+
+		void checkDuration(TGVoiceImpl voice) {
+			if (this.minDuration == null || voice.getDuration().getTime() <= this.minDuration.getTime()) {
+				this.minDuration = voice.getDuration();
+			}
+		}
+
+		// true the first time a voice index is found not empty
+		boolean markNotEmpty(int v) {
+			if( this.notEmptyVoicesChecked[v] ){
+				return false;
+			}
+			this.notEmptyVoicesChecked[v] = true;
+			return true;
 		}
 	}
 
@@ -378,8 +439,7 @@ public class TGMeasureImpl extends TGMeasure{
 
 			if(chordEnabled && beat.isChordBeat() && previousBeat.isChordBeat()){
 				float previousWidth = previousBeat.getMinimumWidth();
-				float chordWidth = (layout.getChordFretIndexSpacing() + layout.getChordStringSpacing() + (getTrack().stringCount() * layout.getChordStringSpacing()));
-				previousBeat.setWidth(Math.max(chordWidth,previousWidth));
+				previousBeat.setWidth(Math.max(getChordWidth(layout),previousWidth));
 				this.widthBeats -= previousWidth;
 				this.widthBeats += previousBeat.getMinimumWidth();
 			}
@@ -436,15 +496,7 @@ public class TGMeasureImpl extends TGMeasure{
 
 		float spacing = getFirstNoteSpacing(layout);
 		float tmpX = spacing;
-		this.effectWidth = 0.0f;
-		for (TGBeat beat : getBeats()) {
-			float beatEffectWidth = 0.0f;
-			for (int i=0; i< beat.countVoices();i++) {
-				float voiceEffectWidth = ((TGVoiceImpl)beat.getVoice(i)).getEffectWidth(layout);
-				beatEffectWidth = (voiceEffectWidth > beatEffectWidth ? voiceEffectWidth : beatEffectWidth);
-			}
-			this.effectWidth += beatEffectWidth;
-		}
+		updateEffectWidth(layout);
 
 		float noteEffectOffset = 0.0f;
 		for (int i = 0; i < countBeats(); i++) {
@@ -457,89 +509,148 @@ public class TGMeasureImpl extends TGMeasure{
 				tmpX += beat.getMinimumWidth();
 			}
 			else{
-				float quarterWidth = getMaxQuarterSpacing(layout) + (this.getMaxEffectWidth(layout)-this.effectWidth)/this.getTimeSignature().getQuartersInSignature();
-				float x1 = (spacing + getDisplayPosition(beat.getStart(), quarterWidth));
-				float minimumWidth = -1;
-				for(int v = 0 ; v < beat.countVoices(); v ++){
-					TGVoiceImpl voice = beat.getVoiceImpl(v);
-					if(!voice.isEmpty()){
-						float x2 = (spacing + getDisplayPosition(beat.getStart() + voice.getDuration().getTime(), quarterWidth));
-						float width = ( x2 - x1 );
-						if( minimumWidth < 0 || width < minimumWidth ){
-							minimumWidth = width;
-						}
-						voice.setWidth( width );
-					}
-				}
-				beat.setPosX( x1 + noteEffectOffset);
-				beat.setWidth( minimumWidth );
+				updateBeatPosition(layout, beat, spacing, noteEffectOffset);
 			}
 
-			float beatEffectWidth = 0.0f;
-			for(int v = 0 ; v < beat.countVoices(); v ++){
-				TGVoiceImpl voice = beat.getVoiceImpl(v);
-				if(!voice.isEmpty()){
-					Iterator<TGNote> notes = voice.getNotes().iterator();
-					while(notes.hasNext()){
-						TGNoteImpl note = (TGNoteImpl)notes.next();
-						beat.updateEffectsSpacing(layout, note.getEffect());
-						note.update(layout);
-					}
-					float voiceEffectWidth = voice.getEffectWidth(layout);
-					if (!this.compactMode) {
-						voice.setWidth(voice.getWidth() + voiceEffectWidth);
-						if (voiceEffectWidth > beatEffectWidth) beatEffectWidth = voiceEffectWidth;
-					}
-					voice.update(layout);
-
-					if(!this.division1 && (v % 2 == 0) && !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
-						this.division1 = true;
-					}
-					if(!this.division2 && (v % 2 == 1) && !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)){
-						this.division2 = true;
-					}
-					if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 || (voice.isRestVoice() && !voice.isHiddenSilence()) ){
-						if( voice.getMaxY() > this.maxY ){
-							this.maxY = voice.getMaxY();
-						}
-						if( voice.getMinY() < this.minY ){
-							this.minY = voice.getMinY();
-						}
-					}
-				}
-			}
+			float beatEffectWidth = updateVoices(layout, beat);
 			if (!this.compactMode) {
 				beat.setWidth(beat.getMinimumWidth() + beatEffectWidth);
 				noteEffectOffset += beatEffectWidth;
 			}
-			float bsSize = beat.getEffectsSpacing(layout);
-			if( bsSize > this.beatEffectVerticalSpacing ){
-				this.beatEffectVerticalSpacing = bsSize;
-			}
-
-			if(!this.chord && beat.isChordBeat()){
-				this.chord = true;
-			}
-
-			if(!this.text && beat.isTextBeat()){
-				this.text = true;
-			}
-			if(!this.pickStroke && beat.isPickStroke()) {
-				this.pickStroke = true;
-			}
-			if (!this.bend && beat.isBend()) {
-				this.bend = true;
-			}
+			updateBeatEffectVerticalSpacing(layout, beat);
+			updateBeatFlags(beat);
 		}
 
-		if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0){
-			for(int i = 0; i < this.voiceGroups.length; i ++){
-				Iterator<TGBeatGroup> groups = this.voiceGroups[i].iterator();
-				while (groups.hasNext()) {
-					TGBeatGroup group = groups.next();
-					checkValue(layout,group.getMinNote(),group.getDirection());
-					checkValue(layout,group.getMaxNote(),group.getDirection());
+		if( isScoreEnabled(layout) ){
+			checkVoiceGroupValues(layout);
+		}
+	}
+
+	private boolean isScoreEnabled(TGLayout layout) {
+		return ( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 );
+	}
+
+	private void updateEffectWidth(TGLayout layout) {
+		this.effectWidth = 0.0f;
+		for (TGBeat beat : getBeats()) {
+			this.effectWidth += getMaxVoiceEffectWidth(layout, beat);
+		}
+	}
+
+	private float getMaxVoiceEffectWidth(TGLayout layout, TGBeat beat) {
+		float beatEffectWidth = 0.0f;
+		for (int i=0; i< beat.countVoices();i++) {
+			float voiceEffectWidth = ((TGVoiceImpl)beat.getVoice(i)).getEffectWidth(layout);
+			beatEffectWidth = (voiceEffectWidth > beatEffectWidth ? voiceEffectWidth : beatEffectWidth);
+		}
+		return beatEffectWidth;
+	}
+
+	// non-compact mode: position the beat proportionally to its start, and size each voice by its duration
+	private void updateBeatPosition(TGLayout layout, TGBeatImpl beat, float spacing, float noteEffectOffset) {
+		float quarterWidth = getMaxQuarterSpacing(layout) + (this.getMaxEffectWidth(layout)-this.effectWidth)/this.getTimeSignature().getQuartersInSignature();
+		float x1 = (spacing + getDisplayPosition(beat.getStart(), quarterWidth));
+		float minimumWidth = -1;
+		for(int v = 0 ; v < beat.countVoices(); v ++){
+			TGVoiceImpl voice = beat.getVoiceImpl(v);
+			if(!voice.isEmpty()){
+				float x2 = (spacing + getDisplayPosition(beat.getStart() + voice.getDuration().getTime(), quarterWidth));
+				float width = ( x2 - x1 );
+				if( minimumWidth < 0 || width < minimumWidth ){
+					minimumWidth = width;
 				}
+				voice.setWidth( width );
+			}
+		}
+		beat.setPosX( x1 + noteEffectOffset);
+		beat.setWidth( minimumWidth );
+	}
+
+	// returns the beat effect width: the widest effect among its non-empty voices (0 in compact mode)
+	private float updateVoices(TGLayout layout, TGBeatImpl beat) {
+		float beatEffectWidth = 0.0f;
+		for(int v = 0 ; v < beat.countVoices(); v ++){
+			TGVoiceImpl voice = beat.getVoiceImpl(v);
+			if(!voice.isEmpty()){
+				beatEffectWidth = updateVoice(layout, beat, voice, v, beatEffectWidth);
+			}
+		}
+		return beatEffectWidth;
+	}
+
+	private float updateVoice(TGLayout layout, TGBeatImpl beat, TGVoiceImpl voice, int v, float beatEffectWidth) {
+		float maxEffectWidth = beatEffectWidth;
+		updateNotes(layout, beat, voice);
+		float voiceEffectWidth = voice.getEffectWidth(layout);
+		if (!this.compactMode) {
+			voice.setWidth(voice.getWidth() + voiceEffectWidth);
+			if (voiceEffectWidth > maxEffectWidth) maxEffectWidth = voiceEffectWidth;
+		}
+		voice.update(layout);
+
+		updateDivisionFlags(voice, v);
+		updateVerticalBounds(layout, voice);
+		return maxEffectWidth;
+	}
+
+	private void updateNotes(TGLayout layout, TGBeatImpl beat, TGVoiceImpl voice) {
+		Iterator<TGNote> notes = voice.getNotes().iterator();
+		while(notes.hasNext()){
+			TGNoteImpl note = (TGNoteImpl)notes.next();
+			beat.updateEffectsSpacing(layout, note.getEffect());
+			note.update(layout);
+		}
+	}
+
+	private void updateDivisionFlags(TGVoiceImpl voice, int v) {
+		if (v % 2 == 0) {
+			this.division1 = (this.division1 || hasIrregularDivision(voice));
+		} else {
+			this.division2 = (this.division2 || hasIrregularDivision(voice));
+		}
+	}
+
+	private boolean hasIrregularDivision(TGVoiceImpl voice) {
+		return !voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL);
+	}
+
+	private void updateVerticalBounds(TGLayout layout, TGVoiceImpl voice) {
+		if( isScoreEnabled(layout) && !isVisibleRest(voice) ){
+			return;
+		}
+		if( voice.getMaxY() > this.maxY ){
+			this.maxY = voice.getMaxY();
+		}
+		if( voice.getMinY() < this.minY ){
+			this.minY = voice.getMinY();
+		}
+	}
+
+	private boolean isVisibleRest(TGVoiceImpl voice) {
+		return ( voice.isRestVoice() && !voice.isHiddenSilence() );
+	}
+
+	private void updateBeatEffectVerticalSpacing(TGLayout layout, TGBeatImpl beat) {
+		float bsSize = beat.getEffectsSpacing(layout);
+		if( bsSize > this.beatEffectVerticalSpacing ){
+			this.beatEffectVerticalSpacing = bsSize;
+		}
+	}
+
+	private void updateBeatFlags(TGBeatImpl beat) {
+		this.chord = (this.chord || beat.isChordBeat());
+		this.text = (this.text || beat.isTextBeat());
+		this.pickStroke = (this.pickStroke || beat.isPickStroke());
+		this.bend = (this.bend || beat.isBend());
+	}
+
+	private void checkVoiceGroupValues(TGLayout layout) {
+		for(int i = 0; i < this.voiceGroups.length; i ++){
+			Iterator<TGBeatGroup> groups = this.voiceGroups[i].iterator();
+			while (groups.hasNext()) {
+				TGBeatGroup group = groups.next();
+				checkValue(layout,group.getMinNote(),group.getDirection());
+				checkValue(layout,group.getMaxNote(),group.getDirection());
 			}
 		}
 	}
@@ -741,48 +852,77 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	public void paintDivisionTypes(TGLayout layout, UIPainter painter, float fromX, float fromY, int voiceIndex){
-		float x1 = 0;
-		float x2 = 0;
+		for(Tuplet tuplet : this.findTuplets(layout, fromX, voiceIndex)) {
+			this.paintDivisionType(layout, painter, tuplet.divisionType, tuplet.x1, tuplet.x2, fromY, voiceIndex);
+		}
+	}
 
-		long tupletPreciseDuration = 0;	// sum of all notes precise duration inside the tuplet
-		long tupletShortestPreciseDuration = 0;	// the shortest note duration inside the tuplet
-
-		TGDivisionType divisionType = null;
-		Iterator<TGBeat> it = getBeats().iterator();
-		while(it.hasNext()) {
-			TGBeatImpl beat = (TGBeatImpl)it.next();
+	// the voice's tuplets, in order
+	private List<Tuplet> findTuplets(TGLayout layout, float fromX, int voiceIndex){
+		List<Tuplet> tuplets = new ArrayList<Tuplet>();
+		Tuplet tuplet = null;
+		for(TGBeat tgBeat : getBeats()) {
+			TGBeatImpl beat = (TGBeatImpl)tgBeat;
 			TGVoiceImpl voice = beat.getVoiceImpl(voiceIndex);
 			if( !voice.isEmpty() ) {
-				// end of tuplet?
-				if( divisionType != null &&
-						// change of time division OR tuplet effective duration is a multiple of shortest note * Enters
-						// e.g. for a triolet of eighth, shortest in triolet is (2/3)*(1/8), so duration shall reach a multiple of (2/3) * (1/8) * 3 = 2*1/8 = 2 eighth
-						((!voice.getDuration().getDivision().isEqual(divisionType)) || (tupletPreciseDuration % (divisionType.getEnters() * tupletShortestPreciseDuration) == 0) )) {
-					this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
-					divisionType = null;
-					tupletPreciseDuration = 0;
-					tupletShortestPreciseDuration = 0;
-				}
-				// beginning of tuplet?
-				if(!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
-					x2 = (fromX + beat.getPosX() + beat.getSpacing(layout));
-					if( divisionType == null ) {
-						divisionType = voice.getDuration().getDivision();
-						x1 = x2;
-					}
-				}
+				tuplet = this.nextTuplet(tuplet, tuplets, voice.getDuration(), (fromX + beat.getPosX() + beat.getSpacing(layout)));
 			}
 			// update current tuplet if any
-			if (divisionType!=null) {
-				tupletPreciseDuration += voice.getDuration().getPreciseTime();
-				if ((tupletShortestPreciseDuration == 0) || (voice.getDuration().getPreciseTime() < tupletShortestPreciseDuration)) {
-					tupletShortestPreciseDuration = voice.getDuration().getPreciseTime();
-				}
+			if( tuplet != null ) {
+				tuplet.add(voice.getDuration());
 			}
 		}
 		// end of measure, with a tuplet already started?
-		if( divisionType != null ) {
-			this.paintDivisionType(layout, painter, divisionType, x1, x2, fromY, voiceIndex);
+		if( tuplet != null ) {
+			tuplets.add(tuplet);
+		}
+		return tuplets;
+	}
+
+	// the tuplet a note of this duration at x belongs to: the current one is closed first if it ends there
+	private Tuplet nextTuplet(Tuplet current, List<Tuplet> tuplets, TGDuration duration, float x){
+		Tuplet tuplet = current;
+		// end of tuplet?
+		if( tuplet != null && tuplet.endsBefore(duration) ) {
+			tuplets.add(tuplet);
+			tuplet = null;
+		}
+		// beginning of tuplet?
+		if( !duration.getDivision().isEqual(TGDivisionType.NORMAL) ) {
+			if( tuplet == null ) {
+				tuplet = new Tuplet(duration.getDivision(), x);
+			}
+			tuplet.x2 = x;
+		}
+		return tuplet;
+	}
+
+	/** A run of beats in one tuplet division, bracketed from x1 to x2. */
+	private static class Tuplet {
+		private final TGDivisionType divisionType;
+		private final float x1;
+		private float x2;
+		private long preciseDuration;	// sum of all notes precise duration inside the tuplet
+		private long shortestPreciseDuration;	// the shortest note duration inside the tuplet
+
+		Tuplet(TGDivisionType divisionType, float x) {
+			this.divisionType = divisionType;
+			this.x1 = x;
+			this.x2 = x;
+		}
+
+		// change of time division OR tuplet effective duration is a multiple of shortest note * Enters
+		// e.g. for a triolet of eighth, shortest in triolet is (2/3)*(1/8), so duration shall reach a multiple of (2/3) * (1/8) * 3 = 2*1/8 = 2 eighth
+		boolean endsBefore(TGDuration duration) {
+			return ((!duration.getDivision().isEqual(this.divisionType)) || (this.preciseDuration % (this.divisionType.getEnters() * this.shortestPreciseDuration) == 0));
+		}
+
+		void add(TGDuration duration) {
+			long preciseTime = duration.getPreciseTime();
+			this.preciseDuration += preciseTime;
+			if ((this.shortestPreciseDuration == 0) || (preciseTime < this.shortestPreciseDuration)) {
+				this.shortestPreciseDuration = preciseTime;
+			}
 		}
 	}
 
@@ -994,49 +1134,53 @@ public class TGMeasureImpl extends TGMeasure{
 
 			layout.setKeySignatureStyle(painter);
 
-			//natural
-			if(previousKey >= 1 && previousKey <= 7){
-				int naturalFrom =  (currentKey >= 1 && currentKey <= 7) ? currentKey : 0;
-				for(int i = naturalFrom; i < previousKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
-					painter.initPath(UIPainter.PATH_FILL);
-					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
-					painter.closePath();
-					x += (scale - (scale / 4));
-				}
-			}
-			else if(previousKey >= 8 && previousKey <= 14){
-				int naturalFrom =  (currentKey >= 8 && currentKey <= 14) ? currentKey : 7;
-				for(int i = naturalFrom; i < previousKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
-					painter.initPath(UIPainter.PATH_FILL);
-					TGKeySignaturePainter.paintNatural(painter,x, (y +  offset  ), scale);
-					painter.closePath();
-					x += (scale - (scale / 4));
-				}
-			}
-
-			//sharps
-			if(currentKey >= 1 && currentKey <= 7){
-				for(int i = 0; i < currentKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_SHARP_POSITIONS[clefIndex][i] )  - (scale / 2) );
-					painter.initPath(UIPainter.PATH_FILL);
-					TGKeySignaturePainter.paintSharp(painter,x, (y +  offset  ), scale);
-					painter.closePath();
-					x += (scale - (scale / 4));
-				}
-			}
-			//flats
-			else if(currentKey >= 8 && currentKey <= 14){
-				for(int i = 7; i < currentKey; i ++ ){
-					float offset =  ( ( (scale / 2) * SCORE_KEY_FLAT_POSITIONS[clefIndex][i - 7] )  - (scale / 2) );
-					painter.initPath(UIPainter.PATH_FILL);
-					TGKeySignaturePainter.paintFlat(painter,x, (y +  offset  ), scale);
-					painter.closePath();
-					x += (scale - (scale / 4));
-				}
-			}
+			// naturals cancel the previous key's accidentals the current key does not keep
+			int kept = (isFlatKey(previousKey) == isFlatKey(currentKey) ? countAccidentals(currentKey) : 0);
+			x = paintKeyAccidentals(painter, TGKeySignaturePainter::paintNatural, keyPositions(previousKey, clefIndex), kept, countAccidentals(previousKey), x, y, scale);
+			paintKeyAccidentals(painter, keySymbol(currentKey), keyPositions(currentKey, clefIndex), 0, countAccidentals(currentKey), x, y, scale);
 		}
+	}
+
+	private interface TGKeySymbol {
+		void paint(UIPainter painter, float x, float y, float scale);
+	}
+
+	// key 1 to 7 is that many sharps, key 8 to 14 that many flats (minus 7), anything else none
+	private static boolean isSharpKey(int key) {
+		return (key >= 1 && key <= 7);
+	}
+
+	private static boolean isFlatKey(int key) {
+		return (key >= 8 && key <= 14);
+	}
+
+	private static int countAccidentals(int key) {
+		if( isSharpKey(key) ) {
+			return key;
+		}
+		return (isFlatKey(key) ? key - 7 : 0);
+	}
+
+	private static TGKeySymbol keySymbol(int key) {
+		return (isFlatKey(key) ? TGKeySignaturePainter::paintFlat : TGKeySignaturePainter::paintSharp);
+	}
+
+	// the score positions of the key's accidentals, in order, for the clef
+	private static int[] keyPositions(int key, int clefIndex) {
+		return (isFlatKey(key) ? SCORE_KEY_FLAT_POSITIONS[clefIndex] : SCORE_KEY_SHARP_POSITIONS[clefIndex]);
+	}
+
+	// paints the symbol at positions [from, to), left to right from x; returns the x after the last one
+	private static float paintKeyAccidentals(UIPainter painter, TGKeySymbol symbol, int[] positions, int from, int to, float x, float y, float scale) {
+		float nextX = x;
+		for(int i = from; i < to; i ++ ){
+			float offset =  ( ( (scale / 2) * positions[i] )  - (scale / 2) );
+			painter.initPath(UIPainter.PATH_FILL);
+			symbol.paint(painter, nextX, (y +  offset  ), scale);
+			painter.closePath();
+			nextX += (scale - (scale / 4));
+		}
+		return nextX;
 	}
 
 	private void paintTimeSignature(TGLayout layout,UIPainter painter, float fromX, float fromY){
@@ -1092,48 +1236,57 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	private void paintTripletFeel(TGLayout layout,UIPainter painter, float fromX, float fromY){
-		if(this.getHeaderImpl().shouldPaintTripletFeel()){
-			float scale = (5f * layout.getScale());
-			float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getHeaderImpl().getTempoSpacing(layout));
-			float y = fromY;
-			float lineSpacing = (Math.max(layout.getScoreLineSpacing() , layout.getStringSpacing()));
-			int style = layout.getStyle();
-			if( (style & TGLayout.DISPLAY_SCORE) != 0 ){
-				y += ( getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - lineSpacing );
-			}else if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
-				y += ( getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - (getTrack().stringCount() > 1 ? lineSpacing : (lineSpacing * 2f)));
-			}
+		if(!this.getHeaderImpl().shouldPaintTripletFeel()){
+			return;
+		}
+		float scale = (5f * layout.getScale());
+		float x = (fromX + getHeaderImpl().getLeftSpacing(layout) + getHeaderImpl().getTempoSpacing(layout));
+		float y = (fromY + getTripletFeelOffsetY(layout));
 
-			layout.setTripletFeelStyle(painter, true);
-			String equal = (" = ");
-			float fontX = (x + (3.2f * scale));
-			float fontY = (y - (0.75f * scale) + painter.getFMBaseLine());
-			painter.drawString(equal, fontX , fontY);
+		layout.setTripletFeelStyle(painter, true);
+		String equal = (" = ");
+		float fontX = (x + (3.2f * scale));
+		float fontY = (y - (0.75f * scale) + painter.getFMBaseLine());
+		painter.drawString(equal, fontX , fontY);
 
-			layout.setTripletFeelStyle(painter, false);
-			float x1 = x;
-			float x2 = x + ( (3.2f * scale) + painter.getFMWidth(equal));
-			float y1 = y - (( (1.0f * scale) + (2.5f * scale) ) + 2);
-			float y2 = y - (( (1.0f * scale) + (2.5f * scale) + (1.0f * scale)) + 2);
+		layout.setTripletFeelStyle(painter, false);
+		float x1 = x;
+		float x2 = x + ( (3.2f * scale) + painter.getFMWidth(equal));
+		float y1 = y - (( (1.0f * scale) + (2.5f * scale) ) + 2);
+		float y2 = y - (( (1.0f * scale) + (2.5f * scale) + (1.0f * scale)) + 2);
 
-			if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.previousMeasure != null){
-				int previous = this.previousMeasure.getTripletFeel();
-				if(previous == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-					TGTripletFeelPainter.paintTripletFeel8(painter, x1, y2, scale );
-					TGTripletFeelPainter.paintTripletFeelNone8(painter, x2 , y1, scale );
-				}
-				else if(previous == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-					TGTripletFeelPainter.paintTripletFeel16(painter, x1, y2, scale );
-					TGTripletFeelPainter.paintTripletFeelNone16(painter, x2 , y1, scale );
-				}
+		// written = played: straight then swung when a triplet feel starts, swung then straight when it ends
+		boolean ends = (getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_NONE && this.previousMeasure != null);
+		int feel = (ends ? this.previousMeasure.getTripletFeel() : getTripletFeel());
+		paintTripletFeelPair(painter, feel, ends, x1, y1, y2, scale);
+		paintTripletFeelPair(painter, feel, !ends, x2, y1, y2, scale);
+	}
+
+	// above the score middle lines, else above the tablature (leaving room for the line of a single string)
+	private float getTripletFeelOffsetY(TGLayout layout){
+		float lineSpacing = (Math.max(layout.getScoreLineSpacing() , layout.getStringSpacing()));
+		if( (layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
+			return ( getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - lineSpacing );
+		}
+		if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 ){
+			return ( getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - (getTrack().stringCount() > 1 ? lineSpacing : (lineSpacing * 2f)));
+		}
+		return 0;
+	}
+
+	// a pair of eighths or sixteenths of the triplet feel, swung (painted higher, at y2) or straight (at y1)
+	private static void paintTripletFeelPair(UIPainter painter, int feel, boolean swung, float x, float y1, float y2, float scale){
+		if(feel == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
+			if(swung){
+				TGTripletFeelPainter.paintTripletFeel8(painter, x, y2, scale );
+			}else{
+				TGTripletFeelPainter.paintTripletFeelNone8(painter, x, y1, scale );
 			}
-			else if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_EIGHTH){
-				TGTripletFeelPainter.paintTripletFeelNone8(painter, x1, y1, scale );
-				TGTripletFeelPainter.paintTripletFeel8(painter, x2 , y2, scale );
-			}
-			else if(getTripletFeel() == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
-				TGTripletFeelPainter.paintTripletFeelNone16(painter, x1, y1, scale );
-				TGTripletFeelPainter.paintTripletFeel16(painter, x2 , y2, scale );
+		}else if(feel == TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH){
+			if(swung){
+				TGTripletFeelPainter.paintTripletFeel16(painter, x, y2, scale );
+			}else{
+				TGTripletFeelPainter.paintTripletFeelNone16(painter, x, y1, scale );
 			}
 		}
 	}
@@ -1433,19 +1586,19 @@ public class TGMeasureImpl extends TGMeasure{
 
 	public UIColor getMarkerColor(TGResourceBuffer buffer, UIResourceFactory factory){
 		String resourceKey = this.getMarkerRegistryKey();
-		TGMarker m = getMarker();
+		TGColor color = getMarker().getColor();
 		UIColor markerColor = buffer.getResource(resourceKey);
-		if( markerColor != null && !markerColor.isDisposed() ){
-			if( markerColor.getRed() != m.getColor().getR() || markerColor.getGreen() != m.getColor().getG() || markerColor.getBlue() != m.getColor().getB() ){
-				buffer.disposeResource(resourceKey);
-			}
-		}
-		if( markerColor == null || markerColor.isDisposed() ){
-			markerColor = factory.createColor(m.getColor().getR(), m.getColor().getG(), m.getColor().getB());
+		if( markerColor == null || markerColor.isDisposed() || !isSameColor(markerColor, color) ){
+			markerColor = factory.createColor(color.getR(), color.getG(), color.getB());
 
+			// replacing the kept color disposes it
 			buffer.setResource(resourceKey, markerColor);
 		}
 		return markerColor;
+	}
+
+	private static boolean isSameColor(UIColor uiColor, TGColor color){
+		return (uiColor.getRed() == color.getR() && uiColor.getGreen() == color.getG() && uiColor.getBlue() == color.getB());
 	}
 	public void paintInternalSelection(TGLayout layout, UIPainter painter, TGBeat from, TGBeat to) {
 		float x = getBeatLeftEdge(layout, (TGBeatImpl) from);

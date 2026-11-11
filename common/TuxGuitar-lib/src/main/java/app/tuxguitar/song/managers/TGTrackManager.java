@@ -131,40 +131,34 @@ public class TGTrackManager {
 	// fix an invalid tied note
 	public void fixInvalidTiedNote(TGNote note) {
 		if(!note.isTiedNote()) return;
-		TGMeasure measure = note.getVoice().getBeat().getMeasure();
+		TGNote previousNoteForTie = findPreviousNoteWithSamePitch(note);
+		if (previousNoteForTie == null || !reallocateOnSameString(note, previousNoteForTie)) {
+			// no solution found, just remove the tie
+			note.setTiedNote(false);
+		}
+	}
 
-		// look for a note with same pitch in previous voice
-		int notePitch = getSongManager().getMeasureManager().getRealNoteValue(note);
+	// look for a note with same pitch in previous voice
+	private TGNote findPreviousNoteWithSamePitch(TGNote note) {
 		TGVoice previousVoice = getPreviousVoice(note.getVoice());
 		if (previousVoice == null) {
-			// nothing found, just remove the tie
-			note.setTiedNote(false);
-			return;
+			return null;
 		}
-		TGNote previousNoteForTie = null;
+		int notePitch = getSongManager().getMeasureManager().getRealNoteValue(note);
 		for (TGNote previousNote : previousVoice.getNotes()) {
 			if (getSongManager().getMeasureManager().getRealNoteValue(previousNote) == notePitch) {
-				previousNoteForTie = previousNote;
-				break;
+				return previousNote;
 			}
 		}
-		if (previousNoteForTie == null) {
-			// nothing found, just remove the tie
-			note.setTiedNote(false);
-			return;
-		}
-		// possible to reallocate note on the same string as previous note?
-		if (changeString(note, measure.getTrack().getString(previousNoteForTie.getString())) ) {
-			// OK, fixed
-			return;
-		}
-		// possible to reallocate previous note on the same string as current one?
-		if (!previousNoteForTie.isTiedNote() && changeString(previousNoteForTie, measure.getTrack().getString(note.getString()))) {
-			// OK, fixed
-			return;
-		}
-		// no solution found, just remove the tie
-		note.setTiedNote(false);
+		return null;
+	}
+
+	// reallocate note on the same string as previous note, else previous note on the same string as current one
+	// returns true if success
+	private boolean reallocateOnSameString(TGNote note, TGNote previousNote) {
+		TGTrack track = note.getVoice().getBeat().getMeasure().getTrack();
+		return (changeString(note, track.getString(previousNote.getString()))
+				|| (!previousNote.isTiedNote() && changeString(previousNote, track.getString(note.getString()))));
 	}
 
 	// try to reallocate one note on another string
@@ -353,83 +347,102 @@ public class TGTrackManager {
 		// and this may break some structures (e.g. split notes over several measures)
 		// need to replace beats *in situ*
 		List<TGBeat> updatedBeats = new ArrayList<TGBeat>();
-		TGMeasureManager measureManager = getSongManager().getMeasureManager();
-
 		Long nextUpdatePreciseStart = preciseStart;	// start time of next available beat to update
 		for (TGBeat beatToInsert : beatsToInsert) {
-			TGBeat updatedBeat = null;
-			TGMeasure updatedMeasure = null;
-			if (nextUpdatePreciseStart != null) {
-				TGMeasure startMeasure = getMeasureAtPreciseStart(track, nextUpdatePreciseStart);
-				long updatePreciseStart = nextUpdatePreciseStart;
-				nextUpdatePreciseStart = null;
-				// make some room, to make sure beat update is safe (modification remains local)
-				long clearedTime = 0;
-				long neededClearTime = measureManager.getMaximumDuration(beatToInsert).getPreciseTime();
-				boolean enoughRoomAvailable = false;
-				for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
-					if (!enoughRoomAvailable) {
-						for (TGBeat beat : measureManager.getBeatsBeforeEndPrecise(measure.getBeats(), updatePreciseStart)) {
-							if (!enoughRoomAvailable) {
-								if (updatedBeat == null) {
-									// first beat cleared: update shall take place here
-									updatedBeat = beat;
-									updatedMeasure = measure;
-								}
-								for (int i=0; i<beat.countVoices(); i++) {
-									beat.getVoice(i).clearNotes();
-								}
-								clearedTime += measureManager.getMinimumDuration(beat).getPreciseTime();
-								enoughRoomAvailable = (clearedTime >= neededClearTime);
-							}
-						}
-					}
-				}
-				if (enoughRoomAvailable) {
-					// OK to update beat
-					for (int i=0; i<beatToInsert.countVoices(); i++) {
-						// Warning: after this, measure may be invalid
-						// Typically this can create overlapping beats
-						// This overlapping can only concern rest beat(s), since enough room was made available before doing this
-						if (!beatToInsert.getVoice(i).isEmpty()) {
-							measureManager.changeDuration(updatedMeasure, updatedBeat, beatToInsert.getVoice(i).getDuration(), i, true);
-						}
-					}
-					// replace all beat attributes, except start
-					long updatedPreciseStart = updatedBeat.getPreciseStart();
-					updatedBeat.copyFrom(beatToInsert, songManager.getFactory());
-					updatedBeat.setPreciseStart(updatedPreciseStart);
-					// now, some cleanup is needed in measure
-					measureManager.removeOverlappingRestBeats(updatedMeasure);
-					// recompute measure to consider new beat duration, this may split updated beat in several beats over measures boundaries
-					// this can create overlapping rest beats in following measure(s), or missing rest beats
-					// note: several following measures may be impacted (e.g. when inserting a whole in measure with time signature 1/4)
-					measureManager.moveOutOfBoundsBeatsToNewMeasure(updatedMeasure);
-
-					updatedBeats.add(updatedBeat);
-					// look for next beat available for update
-					startMeasure = getMeasureAtPreciseStart(track, updatedBeat.getPreciseStart());
-					long expectedPreciseStart = updatedBeat.getPreciseStart() + measureManager.getMinimumDuration(beatToInsert).getPreciseTime();
-					boolean found=false;
-					for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
-						// need to cleanup measures following the updated one, possibly impacted by updated beat duration change
-						measureManager.autoCompleteSilences(measure);
-						measureManager.removeOverlappingRestBeats(measure);
-						measureManager.updateBeatsPreciseStart(measure);
-						if (!found) {
-							for (TGBeat beat : measureManager.getBeatsBeforeEndPrecise(measure.getBeats(), updatedBeat.getPreciseStart())) {
-								if (beat.getPreciseStart() >= expectedPreciseStart) {
-									nextUpdatePreciseStart = beat.getPreciseStart();
-									found=true;
-									break;
-								}
-							}
-						}
-					}
-				}
+			TGBeat updatedBeat = replaceBeat(track, beatToInsert, nextUpdatePreciseStart);
+			if (updatedBeat == null) {
+				// no room left: the following beats are not inserted
+				break;
+			}
+			updatedBeats.add(updatedBeat);
+			nextUpdatePreciseStart = tidyAfter(track, updatedBeat, beatToInsert);
+			if (nextUpdatePreciseStart == null) {
+				break;
 			}
 		}
 		return updatedBeats;
+	}
+
+	// makes room for the beat from preciseStart on, then turns the first beat cleared into it; null when there is no room
+	private TGBeat replaceBeat(TGTrack track, TGBeat beatToInsert, long preciseStart) {
+		TGMeasureManager measureManager = getSongManager().getMeasureManager();
+		TGBeat updatedBeat = clearRoomFor(track, beatToInsert, preciseStart);
+		if (updatedBeat == null) {
+			return null;
+		}
+		TGMeasure updatedMeasure = updatedBeat.getMeasure();
+		for (int i=0; i<beatToInsert.countVoices(); i++) {
+			// Warning: after this, measure may be invalid
+			// Typically this can create overlapping beats
+			// This overlapping can only concern rest beat(s), since enough room was made available before doing this
+			if (!beatToInsert.getVoice(i).isEmpty()) {
+				measureManager.changeDuration(updatedMeasure, updatedBeat, beatToInsert.getVoice(i).getDuration(), i, true);
+			}
+		}
+		// replace all beat attributes, except start
+		long updatedPreciseStart = updatedBeat.getPreciseStart();
+		updatedBeat.copyFrom(beatToInsert, songManager.getFactory());
+		updatedBeat.setPreciseStart(updatedPreciseStart);
+		// now, some cleanup is needed in measure
+		measureManager.removeOverlappingRestBeats(updatedMeasure);
+		// recompute measure to consider new beat duration, this may split updated beat in several beats over measures boundaries
+		// this can create overlapping rest beats in following measure(s), or missing rest beats
+		// note: several following measures may be impacted (e.g. when inserting a whole in measure with time signature 1/4)
+		measureManager.moveOutOfBoundsBeatsToNewMeasure(updatedMeasure);
+		return updatedBeat;
+	}
+
+	// make some room, to make sure beat update is safe (modification remains local):
+	// clears the beats from preciseStart on until they last as long as the beat to insert, and returns the first one;
+	// null when the track ends before (the beats cleared stay cleared)
+	private TGBeat clearRoomFor(TGTrack track, TGBeat beatToInsert, long preciseStart) {
+		TGMeasureManager measureManager = getSongManager().getMeasureManager();
+		long neededClearTime = measureManager.getMaximumDuration(beatToInsert).getPreciseTime();
+		long clearedTime = 0;
+		TGBeat firstCleared = null;
+		TGMeasure startMeasure = getMeasureAtPreciseStart(track, preciseStart);
+		for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
+			for (TGBeat beat : measureManager.getBeatsBeforeEndPrecise(measure.getBeats(), preciseStart)) {
+				firstCleared = (firstCleared == null ? beat : firstCleared);
+				for (int i=0; i<beat.countVoices(); i++) {
+					beat.getVoice(i).clearNotes();
+				}
+				clearedTime += measureManager.getMinimumDuration(beat).getPreciseTime();
+				if (clearedTime >= neededClearTime) {
+					return firstCleared;
+				}
+			}
+		}
+		return null;
+	}
+
+	// tidies the measures from the updated beat on (possibly impacted by its duration change),
+	// and returns the start of the first beat after it, where the next beat goes; null when there is none
+	private Long tidyAfter(TGTrack track, TGBeat updatedBeat, TGBeat beatToInsert) {
+		TGMeasureManager measureManager = getSongManager().getMeasureManager();
+		TGMeasure startMeasure = getMeasureAtPreciseStart(track, updatedBeat.getPreciseStart());
+		long expectedPreciseStart = updatedBeat.getPreciseStart() + measureManager.getMinimumDuration(beatToInsert).getPreciseTime();
+		Long nextUpdatePreciseStart = null;
+		for (TGMeasure measure : getMeasuresBeforeEnd(track, startMeasure.getStart())) {
+			measureManager.autoCompleteSilences(measure);
+			measureManager.removeOverlappingRestBeats(measure);
+			measureManager.updateBeatsPreciseStart(measure);
+			if (nextUpdatePreciseStart == null) {
+				// the updated beat may have moved while tidying: its start is read again
+				nextUpdatePreciseStart = findStartFrom(measure, updatedBeat.getPreciseStart(), expectedPreciseStart);
+			}
+		}
+		return nextUpdatePreciseStart;
+	}
+
+	// the start of the first beat of the measure, from "from" on, that starts at "expected" or later
+	private Long findStartFrom(TGMeasure measure, long from, long expected) {
+		for (TGBeat beat : getSongManager().getMeasureManager().getBeatsBeforeEndPrecise(measure.getBeats(), from)) {
+			if (beat.getPreciseStart() >= expected) {
+				return beat.getPreciseStart();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -718,44 +731,39 @@ public class TGTrackManager {
 		for (TGBeat beat : beats) {
 			List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
 			for (int i=0; i<beat.countVoices(); i++) {
-				TGVoice voice = beat.getVoice(i);
-				List <TGNote> listNotes = voice.getNotes();
-				// sort by ascending preferred string number
-				Collections.sort(listNotes, (a,b) -> (drumMap.getPreferredStringNumber(a.getValue()) - drumMap.getPreferredStringNumber(b.getValue())));
-				moveNotesToStringZero(fromStringValues, listNotes);
-				for (TGNote note : listNotes) {
-					// try to allocate to preferred string
-					int preferred = drumMap.getPreferredStringNumber(note.getValue());
-					TGString newString = null;
-					for (TGString string : freeStrings) {
-						if (string.getNumber() == preferred) {
-							newString = string;
-							note.setString(preferred);
-							freeStrings.remove(newString);
-							break;
-						}
-					}
-					// if not possible, try to find closest string
-					if (newString == null) {
-						int minDistance = -1;
-						for (TGString string : freeStrings) {
-							int distance = Math.abs(string.getNumber() - preferred);
-							if (distance <= minDistance || minDistance<0) {
-								newString = string;
-								minDistance = distance;
-							}
-						}
-						if (newString!=null) {
-							// found a place
-							note.setString(newString.getNumber());
-							freeStrings.remove(newString);
-						}
-					}
-				}
-				// Remove notes with no allocation found
-				this.removeUnallocatedNotes(voice);
+				allocatePercussionVoice(drumMap, fromStringValues, beat.getVoice(i), freeStrings);
 			}
 		}
+	}
+
+	// lays the notes of a voice on the free strings, taking them; removes the notes left without one
+	private void allocatePercussionVoice(TGDrumMap drumMap, List<Integer> fromStringValues, TGVoice voice, List<TGString> freeStrings) {
+		List <TGNote> listNotes = voice.getNotes();
+		// sort by ascending preferred string number
+		Collections.sort(listNotes, (a,b) -> (drumMap.getPreferredStringNumber(a.getValue()) - drumMap.getPreferredStringNumber(b.getValue())));
+		moveNotesToStringZero(fromStringValues, listNotes);
+		for (TGNote note : listNotes) {
+			TGString newString = closestString(freeStrings, drumMap.getPreferredStringNumber(note.getValue()));
+			if (newString != null) {
+				note.setString(newString.getNumber());
+				freeStrings.remove(newString);
+			}
+		}
+		this.removeUnallocatedNotes(voice);
+	}
+
+	// the preferred string when free, else the closest free one (the last of equally close ones); null when none is free
+	private static TGString closestString(List<TGString> freeStrings, int preferred) {
+		TGString closest = null;
+		int minDistance = -1;
+		for (TGString string : freeStrings) {
+			int distance = Math.abs(string.getNumber() - preferred);
+			if (distance <= minDistance || minDistance < 0) {
+				closest = string;
+				minDistance = distance;
+			}
+		}
+		return closest;
 	}
 
 	private void moveNotesToStringZero(List<Integer> fromStringValues, List<TGNote> listNotes) {

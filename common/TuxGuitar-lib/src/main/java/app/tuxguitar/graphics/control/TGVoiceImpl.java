@@ -244,99 +244,88 @@ public class TGVoiceImpl extends TGVoice{
 	public void updateSilenceSpacing(TGLayout layout) {
 		this.silenceY = 0;
 		this.silenceHeight = 0;
+		if( isHiddenSilence() ){
+			return;
+		}
+		boolean score = ((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0);
+		float lineSpacing = (score ? layout.getScoreLineSpacing() : layout.getStringSpacing());
+		int lineCount = (score ? 5 : getBeat().getMeasure().getTrack().stringCount());
+		float scale = (lineSpacing / (score ? 9.0f : 10.0f));
 
-		if(!isHiddenSilence()){
-			int style = layout.getStyle();
-			int lineCount = 0;
-			float scale = 0;
-			float lineSpacing = 0;
-			if((style & TGLayout.DISPLAY_SCORE) != 0 ){
-				lineSpacing = layout.getScoreLineSpacing();
-				lineCount = 5;
-				scale = (lineSpacing / 9.0f);
-			}else{
-				lineSpacing = layout.getStringSpacing();
-				lineCount = getBeat().getMeasure().getTrack().stringCount();
-				scale = (lineSpacing / 10.0f);
+		this.placeSilence(score, lineSpacing, lineCount, scale);
+		for( int v = 0; v < getBeat().countVoices(); v ++){
+			TGVoiceImpl voice = getBeatImpl().getVoiceImpl( v );
+			if( v != getIndex() && !voice.isEmpty() ){
+				this.avoidVoice(layout, voice, lineSpacing);
 			}
+		}
+		this.minY = this.silenceY;
+		this.maxY = (this.silenceY + this.silenceHeight);
+	}
 
-			int duration = getDuration().getValue();
-			if( duration == TGDuration.WHOLE) {
-				this.silenceHeight = (scale * 3.6513581f);
-				this.silenceY = ((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing : (lineSpacing * ((lineCount - 1) / 2)));
-			}
-			else if(duration == TGDuration.HALF) {
-				this.silenceHeight = (scale * 3.6513581f);
-				this.silenceY = (((style & TGLayout.DISPLAY_SCORE) != 0 ? lineSpacing * 2 : (lineSpacing * (lineCount / 2))) - this.silenceHeight);
-			}
-			else if(duration == TGDuration.QUARTER) {
-				this.silenceHeight = (scale * 16);
-				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
-			}
-			else if(duration == TGDuration.EIGHTH) {
-				this.silenceHeight = (scale * 12);
-				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
-			}
-			else if(duration == TGDuration.SIXTEENTH) {
-				this.silenceHeight = (scale * 16);
-				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
-			}
-			else if(duration == TGDuration.THIRTY_SECOND) {
-				this.silenceHeight = (scale * 24);
-				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
-			}
-			else if(duration == TGDuration.SIXTY_FOURTH) {
-				this.silenceHeight = (scale * 28);
-				this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
-			}
+	// the rest alone on its staff: whole and half rests hang from / sit on a line, shorter ones are centred
+	private void placeSilence(boolean score, float lineSpacing, int lineCount, float scale) {
+		int duration = getDuration().getValue();
+		if( duration == TGDuration.WHOLE) {
+			this.silenceHeight = (scale * 3.6513581f);
+			this.silenceY = (score ? lineSpacing : (lineSpacing * ((lineCount - 1) / 2)));
+		}
+		else if(duration == TGDuration.HALF) {
+			this.silenceHeight = (scale * 3.6513581f);
+			this.silenceY = ((score ? lineSpacing * 2 : (lineSpacing * (lineCount / 2))) - this.silenceHeight);
+		}
+		else if(getSilenceHeight(duration) > 0) {
+			this.silenceHeight = (scale * getSilenceHeight(duration));
+			this.silenceY = ((lineSpacing * (lineCount - 1)) / 2) - (this.silenceHeight / 2);
+		}
+	}
 
-			for( int v = 0; v < getBeat().countVoices(); v ++){
-				if( v != getIndex() ){
-					TGVoiceImpl voice = getBeatImpl().getVoiceImpl( v );
-					if( !voice.isEmpty() ){
-						if( voice.isRestVoice()){
-							if( !voice.isHiddenSilence() ){
-								float maxSilenceHeight = (lineSpacing * 3);
-								float firstPosition = (this.silenceY - (maxSilenceHeight / getBeat().countVoices()));
-								this.silenceY = (firstPosition + ( maxSilenceHeight * getIndex() ));
-							}
-						}
-						else if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
-							int direction = voice.getBeatGroup().getDirection();
-							float y1 = voice.getBeatGroup().getY1(layout, voice.getMaxNote());
-							float y2 = voice.getBeatGroup().getY1(layout, voice.getMinNote());
+	// height of a centred rest, in eighths of a score line spacing (0 for an unknown duration)
+	private static int getSilenceHeight(int duration) {
+		switch (duration) {
+			case TGDuration.QUARTER: return 16;
+			case TGDuration.EIGHTH: return 12;
+			case TGDuration.SIXTEENTH: return 16;
+			case TGDuration.THIRTY_SECOND: return 24;
+			case TGDuration.SIXTY_FOURTH: return 28;
+			default: return 0;
+		}
+	}
 
-							if(direction == TGBeatGroup.DIRECTION_UP){
-								float position = (y1 + (lineSpacing * 2));
-								if( position > this.silenceY ){
-									this.silenceY = position;
-								}
-							} else if(direction == TGBeatGroup.DIRECTION_DOWN){
-								float position = (y2 - (this.silenceHeight + lineSpacing));
-								if( position < this.silenceY ){
-									this.silenceY = position;
-								}
-							}
-						}else if((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 ){
-							int direction = voice.getBeatGroup().getDirection();
-							if(direction == TGBeatGroup.DIRECTION_UP){
-								float position = (lineSpacing * voice.getMaxString() );
-								if( position > this.silenceY ){
-									this.silenceY = position;
-								}
-							}
-							else if(direction == TGBeatGroup.DIRECTION_DOWN){
-								float position = ((lineSpacing * (voice.getMinString() - 1) ) - (this.silenceHeight + lineSpacing));
-								if( position < this.silenceY ){
-									this.silenceY = position;
-								}
-							}
-						}
-					}
-				}
+	// moves the rest out of the way of another voice of its beat
+	private void avoidVoice(TGLayout layout, TGVoiceImpl voice, float lineSpacing) {
+		if( voice.isRestVoice() ){
+			if( !voice.isHiddenSilence() ){
+				this.stackSilence(lineSpacing);
 			}
-			this.minY = this.silenceY;
-			this.maxY = (this.silenceY + this.silenceHeight);
+		}
+		else if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
+			TGBeatGroup group = voice.getBeatGroup();
+			float y1 = group.getY1(layout, voice.getMaxNote());
+			float y2 = group.getY1(layout, voice.getMinNote());
+			this.avoidStem(group.getDirection(), (y1 + (lineSpacing * 2)), (y2 - (this.silenceHeight + lineSpacing)));
+		}
+		else if((layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 ){
+			float below = (lineSpacing * voice.getMaxString() );
+			float above = ((lineSpacing * (voice.getMinString() - 1) ) - (this.silenceHeight + lineSpacing));
+			this.avoidStem(voice.getBeatGroup().getDirection(), below, above);
+		}
+	}
+
+	// rests of several voices share a 3 lines high band, one slot per voice
+	private void stackSilence(float lineSpacing) {
+		float maxSilenceHeight = (lineSpacing * 3);
+		float firstPosition = (this.silenceY - (maxSilenceHeight / getBeat().countVoices()));
+		this.silenceY = (firstPosition + ( maxSilenceHeight * getIndex() ));
+	}
+
+	// up stems push the rest down to "below" at least, down stems push it up to "above" at most
+	private void avoidStem(int direction, float below, float above) {
+		if(direction == TGBeatGroup.DIRECTION_UP && below > this.silenceY){
+			this.silenceY = below;
+		}
+		else if(direction == TGBeatGroup.DIRECTION_DOWN && above < this.silenceY){
+			this.silenceY = above;
 		}
 	}
 
@@ -510,105 +499,152 @@ public class TGVoiceImpl extends TGVoice{
 		float vX = ( fromX + getPosX() + spacing );
 
 		//dibujo el pie
-		if( getDuration().getValue() >= TGDuration.HALF ){
-			layout.setScoreNoteFooterStyle(painter);
+		if( getDuration().getValue() < TGDuration.HALF ){
+			return;
+		}
+		layout.setScoreNoteFooterStyle(painter);
 
-			float scale = layout.getScale();
-			float lineSpacing = layout.getScoreLineSpacing();
-			int direction = this.group.getDirection();
-			int dir = (direction == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
+		float scale = layout.getScale();
+		float lineSpacing = layout.getScoreLineSpacing();
+		int direction = this.group.getDirection();
+		int dir = (direction == TGBeatGroup.DIRECTION_DOWN ? 1 : -1);
 
-			float scoreNoteWidth = layout.getScoreNoteWidth();
-			float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0f);
-			float yMove = ((lineSpacing / 2f) + (((lineSpacing / 10f) * 1.20f)) * dir);
+		float scoreNoteWidth = layout.getScoreNoteWidth();
+		float xMove = (direction == TGBeatGroup.DIRECTION_UP ? scoreNoteWidth : 0f);
+		float yMove = ((lineSpacing / 2f) + (((lineSpacing / 10f) * 1.20f)) * dir);
 
-			float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.minNote.getScorePosY() : this.maxNote.getScorePosY() );
-			float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing);
+		float vY1 = fromY + ( direction == TGBeatGroup.DIRECTION_DOWN ? this.minNote.getScorePosY() : this.maxNote.getScorePosY() );
+		float vY2 = fromY + this.group.getY2(layout,getPosX() + spacing);
 
-			painter.setLineWidth(layout.getLineWidth(0));
+		paintScoreStem(layout, painter, vX + xMove, vY1 + yMove, vY2, scale);
+		paintScoreFlagsOrBeams(layout, painter, fromX, fromY, spacing, xMove, dir, scale, lineSpacing);
+	}
+
+	private void paintScoreStem(TGLayout layout, UIPainter painter, float x, float y1, float y2, float scale){
+		painter.setLineWidth(layout.getLineWidth(0));
+		painter.initPath(UIPainter.PATH_FILL);
+		painter.moveTo(x - (0.5f * scale), y1);
+		painter.lineTo(x + (0.5f * scale), y1);
+		painter.lineTo(x + (0.5f * scale), y2);
+		painter.lineTo(x - (0.5f * scale), y2);
+		painter.moveTo(x - (0.5f * scale), y1);
+		painter.closePath();
+	}
+
+	private void paintScoreFlagsOrBeams(TGLayout layout, UIPainter painter, float fromX, float fromY, float spacing, float xMove, int dir, float scale, float lineSpacing){
+		if( getDuration().getValue() < TGDuration.EIGHTH ) {
+			return;
+		}
+		int index =  ( getDuration().getIndex() - 3);
+		if( index < 0 ) {
+			return;
+		}
+		int joinedType = getJoinedType();
+		boolean joinedGreaterThanQuarter = isJoinedGreaterThanQuarter();
+
+		if( isUnjoined(joinedType, joinedGreaterThanQuarter) ){
+			paintScoreFlags(layout, painter, fromX, fromY, spacing, xMove, dir, scale, lineSpacing, index);
+		} else {
+			paintScoreBeams(layout, painter, fromX, fromY, spacing, xMove, dir, scale, index, joinedType);
+		}
+	}
+
+	private static boolean isUnjoined(int joinedType, boolean joinedGreaterThanQuarter){
+		return ((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT || joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT) && !joinedGreaterThanQuarter);
+	}
+
+	private void paintScoreFlags(TGLayout layout, UIPainter painter, float fromX, float fromY, float spacing, float xMove, int dir, float scale, float lineSpacing, int index){
+		float hX = (fromX + xMove + getPosX() + spacing - (0.5f * scale));
+		float hY = ((fromY + this.group.getY2(layout,getPosX() + spacing)) - ( (lineSpacing * 2)* dir )) ;
+		for(int i = 0; i <= index; i ++){
 			painter.initPath(UIPainter.PATH_FILL);
-			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
-			painter.lineTo(vX + xMove + (0.5f * scale), vY1 + yMove);
-			painter.lineTo(vX + xMove + (0.5f * scale), vY2);
-			painter.lineTo(vX + xMove - (0.5f * scale), vY2);
-			painter.moveTo(vX + xMove - (0.5f * scale), vY1 + yMove);
+			TGNotePainter.paintFooter(painter, hX, (hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
 			painter.closePath();
+		}
+	}
 
-			if( getDuration().getValue() >= TGDuration.EIGHTH ) {
-				int index =  ( getDuration().getIndex() - 3);
-				if( index >= 0 ) {
-					int joinedType = getJoinedType();
-					boolean joinedGreaterThanQuarter = isJoinedGreaterThanQuarter();
+	private void paintScoreBeams(TGLayout layout, UIPainter painter, float fromX, float fromY, float spacing, float xMove, int dir, float scale, int index, int joinedType){
+		float hX = (getPosX() + spacing);
+		float hLineWidth = layout.getLineWidth(2);
+		float hLineMargin = hLineWidth;
+		int nIndex = getBeamIndex(this.next);
+		int pIndex = getBeamIndex(this.previous);
+		boolean pathInitialized = false;
 
-					if((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT || joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT) && !joinedGreaterThanQuarter){
-						float hX = (fromX + xMove + getPosX() + spacing - (0.5f * scale));
-						float hY = ((fromY + this.group.getY2(layout,getPosX() + spacing)) - ( (lineSpacing * 2)* dir )) ;
-						for(int i = 0; i <= index; i ++){
-							painter.initPath(UIPainter.PATH_FILL);
-							TGNotePainter.paintFooter(painter, hX, (hY - ( (i * (lineSpacing / 2.0f)) * dir)),dir,lineSpacing);
-							painter.closePath();
-						}
-					} else {
-						float hX = (getPosX() + spacing);
-						float hX1 = 0;
-						float hX2 = 0;
-						float hY1 = 0;
-						float hY2 = 0;
-						float currHX1 = 0;
-						float currHX2 = 0;
-						float hLineWidth = layout.getLineWidth(2);
-						float hLineMargin = hLineWidth;
-						int nIndex = (this.next != null ? this.next.getDuration().getIndex() - 3 : -1);
-						int pIndex = (this.previous != null ? this.previous.getDuration().getIndex() - 3 : -1);
-						boolean pathInitialized = false;
+		float hX1 = getBeamX1(layout, joinedType, hX, spacing, scale);
+		float hX2 = getBeamX2(layout, joinedType, hX, spacing, scale);
 
-						if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
-							hX1 = hX;
-							hX2 = getPosX() + spacing + (6f * scale);
-						}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
-							hX1 = getPosX() + spacing - (5f * scale);
-							hX2 = hX;
-						}else{
-							hX1 = getJoin1().getPosX() + getJoin1().getBeatImpl().getSpacing(layout);
-							hX2 = getJoin2().getPosX() + getJoin2().getBeatImpl().getSpacing(layout);
-						}
-
-						for(int i = 0; i <= index; i ++) {
-							currHX1 = hX1;
-							currHX2 = hX2;
-							if( this.previous != null && this.previous.getJoin2() != null && this.previous.getJoin2().equals(this) ) {
-								if((this.getJoin1() != null && this.getJoin1().equals(this.previous)) || i <= pIndex ) {
-									currHX1 = hX;
-								}
-							}
-							if( this.next != null && this.next.getJoin1() != null && this.next.getJoin1().equals(this) ) {
-								if((this.getJoin1() == null || !this.getJoin2().equals(this.next)) && i <= nIndex ) {
-									currHX2 = hX;
-								}
-							}
-							if( currHX1 != currHX2 ) {
-								if(!pathInitialized) {
-									pathInitialized = true;
-									painter.initPath(UIPainter.PATH_FILL);
-								}
-								hY1 = fromY + this.group.getY2(layout, currHX1);
-								hY2 = fromY + this.group.getY2(layout, currHX2);
-
-								painter.moveTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
-								painter.lineTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) + hLineWidth);
-								painter.lineTo(fromX + xMove + currHX2 + (0.5f * scale), hY2 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) + hLineWidth);
-								painter.lineTo(fromX + xMove + currHX2 + (0.5f * scale), hY2 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
-								painter.lineTo(fromX + xMove + currHX1 - (0.5f * scale), hY1 - ((i * ((hLineWidth * 2f) + hLineMargin)) * dir) - hLineWidth);
-							}
-						}
-
-						if( pathInitialized) {
-							painter.closePath();
-						}
-					}
+		for(int i = 0; i <= index; i ++) {
+			float currHX1 = getBeamSegmentX1(i, pIndex, hX, hX1);
+			float currHX2 = getBeamSegmentX2(i, nIndex, hX, hX2);
+			if( currHX1 != currHX2 ) {
+				if(!pathInitialized) {
+					pathInitialized = true;
+					painter.initPath(UIPainter.PATH_FILL);
 				}
+				float hY1 = fromY + this.group.getY2(layout, currHX1);
+				float hY2 = fromY + this.group.getY2(layout, currHX2);
+				float yOffset = ((i * ((hLineWidth * 2f) + hLineMargin)) * dir);
+
+				paintScoreBeamSegment(painter, fromX + xMove + currHX1 - (0.5f * scale), fromX + xMove + currHX2 + (0.5f * scale), hY1 - yOffset, hY2 - yOffset, hLineWidth);
 			}
 		}
+
+		if( pathInitialized) {
+			painter.closePath();
+		}
+	}
+
+	private static int getBeamIndex(TGVoiceImpl voice){
+		return (voice != null ? voice.getDuration().getIndex() - 3 : -1);
+	}
+
+	private float getBeamX1(TGLayout layout, int joinedType, float hX, float spacing, float scale){
+		if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
+			return hX;
+		}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
+			return getPosX() + spacing - (5f * scale);
+		}
+		return getJoin1().getPosX() + getJoin1().getBeatImpl().getSpacing(layout);
+	}
+
+	private float getBeamX2(TGLayout layout, int joinedType, float hX, float spacing, float scale){
+		if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
+			return getPosX() + spacing + (6f * scale);
+		}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
+			return hX;
+		}
+		return getJoin2().getPosX() + getJoin2().getBeatImpl().getSpacing(layout);
+	}
+
+	private float getBeamSegmentX1(int i, int pIndex, float hX, float hX1){
+		if( isJoinedFromPrevious() && ((this.getJoin1() != null && this.getJoin1().equals(this.previous)) || i <= pIndex) ) {
+			return hX;
+		}
+		return hX1;
+	}
+
+	private float getBeamSegmentX2(int i, int nIndex, float hX, float hX2){
+		if( isJoinedToNext() && ((this.getJoin1() == null || !this.getJoin2().equals(this.next)) && i <= nIndex) ) {
+			return hX;
+		}
+		return hX2;
+	}
+
+	private boolean isJoinedFromPrevious(){
+		return ( this.previous != null && this.previous.getJoin2() != null && this.previous.getJoin2().equals(this) );
+	}
+
+	private boolean isJoinedToNext(){
+		return ( this.next != null && this.next.getJoin1() != null && this.next.getJoin1().equals(this) );
+	}
+
+	private static void paintScoreBeamSegment(UIPainter painter, float x1, float x2, float y1, float y2, float hLineWidth){
+		painter.moveTo(x1, y1 - hLineWidth);
+		painter.lineTo(x1, y1 + hLineWidth);
+		painter.lineTo(x2, y2 + hLineWidth);
+		painter.lineTo(x2, y2 - hLineWidth);
+		painter.lineTo(x1, y1 - hLineWidth);
 	}
 
 	public void paintDot(TGLayout layout,UIPainter painter,float fromX, float fromY, float scale){

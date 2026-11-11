@@ -3,6 +3,7 @@ package app.tuxguitar.graphics.control.print;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import app.tuxguitar.graphics.control.TGController;
 import app.tuxguitar.graphics.control.TGLayout;
@@ -21,6 +22,10 @@ import app.tuxguitar.util.TGMessagesManager;
 import app.tuxguitar.util.TGMusicKeyUtils;
 
 public class TGPrintLayout extends TGLayout {
+
+	private static final int ALIGN_LEFT = 0;
+	private static final int ALIGN_CENTER = 1;
+	private static final int ALIGN_RIGHT = 2;
 
 	private TGPrintSettings settings;
 	private TGPrintDocument document;
@@ -57,7 +62,6 @@ public class TGPrintLayout extends TGLayout {
 		this.setWidth(0);
 		this.setHeight(0);
 
-		int style = getStyle();
 		float posY = 0f;
 		float height = getFirstTrackSpacing();
 		float lineHeight = 0;
@@ -77,19 +81,7 @@ public class TGPrintLayout extends TGLayout {
 				TempLine line = getTempLines(track,( this.settings.getFromMeasure() - 1 ),ts);
 				while(!line.measures.isEmpty()){
 
-					ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0 ? ((getScoreLineSpacing() * 5) ) : 0));
-					if((style & DISPLAY_SCORE) != 0){
-						ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
-						if(line.maxY > track.getScoreHeight()){
-							ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - track.getScoreHeight()) );
-						}
-					}
-					if((style & DISPLAY_TABLATURE) != 0){
-						ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
-						ts.setSize(TGTrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
-					}
-					ts.setSize(TGTrackSpacing.POSITION_LYRIC,10);
-					checkDefaultSpacing(ts);
+					setStaffSpacing(ts, track, line.minY, line.maxY);
 
 					lineHeight = ts.getSize();
 					//Verifico si entra en la pagina actual
@@ -120,131 +112,85 @@ public class TGPrintLayout extends TGLayout {
 	}
 
 	public float paintHeader(UIPainter painter, TGTrack track){
-		float headerOffset = 0f;
-		if( this.document.isPaintable(this.page) ){
-			float x = this.document.getMargins().getLeft();
-			float y = this.document.getMargins().getTop();
-			float fmTopLine = painter.getFMTopLine();
-			String songName = getSong().getName();
-			String songAuthor = getSong().getAuthor();
-			String artistName = getSong().getArtist();
-			String albumName = getSong().getAlbum();
-			String releaseYear = getSong().getDate();
-			String copyright = getSong().getCopyright();
-			String transcriber = getSong().getTranscriber();
-			String tabCreator = getSong().getWriter();
-			String trackName = track.getName();
-
-			if( songName != null && songName.length() > 0 ){
-				painter.setFont(getSongNameFont());
-				painter.drawString(songName,(x + getCenter(painter,songName)), (fmTopLine + y));
-				headerOffset += (20.0f * getScale());
-			}
-
-			if (artistName != null && artistName.length() > 0) {
-
-				painter.setFont(getArtistFont());
-				painter.drawString(
-					artistName,
-					x + getCenter(painter, artistName),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 20.0f * getScale();
-			}
-
-			if ((albumName != null && albumName.length() > 0) ||
-				(releaseYear != null && releaseYear.length() > 0)) {
-
-				String albumNameReleaseYear = "";
-				if( albumName != null && albumName.length() > 0 )
-					albumNameReleaseYear += TGMessagesManager.getProperty("composition.album") + " " + albumName + " ";
-				if( releaseYear != null && releaseYear.length() > 0 )
-					albumNameReleaseYear += "(" + releaseYear + ")";
-
-				painter.setFont(getAlbumNameYearFont());
-				painter.drawString(
-					albumNameReleaseYear,
-					x + getCenter(painter, albumNameReleaseYear),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 20.0f * getScale();
-			}
-
-			if (trackName != null && trackName.length() > 0) {
-
-				trackName = TGMessagesManager.getProperty("track") + " " + trackName;
-				painter.setFont(getTrackNameFont());
-				painter.drawString(
-					trackName,
-					x + getCenter(painter,trackName),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 20.0f * getScale();
-			}
-
-			if (songAuthor != null && songAuthor.length() > 0) {
-
-				songAuthor = TGMessagesManager.getProperty("composition.author") + " " + songAuthor;
-				painter.setFont(getSongAuthorFont());
-				painter.drawString(
-					songAuthor,
-					x + getRight(painter, songAuthor),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 10.0f * getScale();
-			}
-
-			if (copyright != null && copyright.length() > 0) {
-
-				copyright = TGMessagesManager.getProperty("composition.copyright") + " " + copyright;
-				painter.setFont(getSongAuthorFont());
-				painter.drawString(
-					copyright,
-					x + getRight(painter, copyright),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 10.0f * getScale();
-			}
-
-			if (transcriber != null && transcriber.length() > 0) {
-
-				transcriber = TGMessagesManager.getProperty("composition.transcriber") + " " + transcriber;
-				painter.setFont(getSongAuthorFont());
-				painter.drawString(
-					transcriber,
-					x + getRight(painter, transcriber),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 10.0f * getScale();
-			}
-
-			if( tabCreator != null && tabCreator.length() > 0 ){
-
-				tabCreator = TGMessagesManager.getProperty("composition.writer") + " " + tabCreator;
-				painter.setFont(getSongAuthorFont());
-				painter.drawString(
-					tabCreator,
-					x + getRight(painter, tabCreator),
-					fmTopLine + y + Math.round(headerOffset)
-				);
-				headerOffset += 20.0f * getScale();
-			}
-
-			if (!track.isPercussion() && ((getStyle() & DISPLAY_TABLATURE) != 0)) {
-				String tuningLabel = getStringsTuningLabel(track);
-				if (tuningLabel != null && !tuningLabel.isEmpty()) {
-					String tuningLine = TGMessagesManager.getProperty("tuning") + ": " + tuningLabel;
-					painter.setFont(getTrackNameFont());
-					painter.drawString(
-						tuningLine,
-						x,
-						fmTopLine + y + Math.round(headerOffset)
-					);
-					headerOffset += 20.0f * getScale();
-				}
-			}
+		if(!this.document.isPaintable(this.page) ){
+			return 0f;
 		}
-		return headerOffset;
+		HeaderLines lines = new HeaderLines(painter);
+		lines.paint(this::getSongNameFont, getSong().getName(), ALIGN_CENTER, 20.0f);
+		lines.paint(this::getArtistFont, getSong().getArtist(), ALIGN_CENTER, 20.0f);
+		lines.paint(this::getAlbumNameYearFont, getAlbumNameReleaseYear(), ALIGN_CENTER, 20.0f);
+		lines.paint(this::getTrackNameFont, labelled("track", track.getName()), ALIGN_CENTER, 20.0f);
+		lines.paint(this::getSongAuthorFont, labelled("composition.author", getSong().getAuthor()), ALIGN_RIGHT, 10.0f);
+		lines.paint(this::getSongAuthorFont, labelled("composition.copyright", getSong().getCopyright()), ALIGN_RIGHT, 10.0f);
+		lines.paint(this::getSongAuthorFont, labelled("composition.transcriber", getSong().getTranscriber()), ALIGN_RIGHT, 10.0f);
+		lines.paint(this::getSongAuthorFont, labelled("composition.writer", getSong().getWriter()), ALIGN_RIGHT, 20.0f);
+		lines.paint(this::getTrackNameFont, getTuningLine(track), ALIGN_LEFT, 20.0f);
+		return lines.offset;
+	}
+
+	private static boolean isEmpty(String text) {
+		return (text == null || text.isEmpty());
+	}
+
+	// "<message> <value>", or null when there is no value
+	private static String labelled(String messageKey, String value) {
+		return (isEmpty(value) ? null : TGMessagesManager.getProperty(messageKey) + " " + value);
+	}
+
+	private String getAlbumNameReleaseYear() {
+		String albumName = getSong().getAlbum();
+		String releaseYear = getSong().getDate();
+		String albumNameReleaseYear = "";
+		if(!isEmpty(albumName)) {
+			albumNameReleaseYear += TGMessagesManager.getProperty("composition.album") + " " + albumName + " ";
+		}
+		if(!isEmpty(releaseYear)) {
+			albumNameReleaseYear += "(" + releaseYear + ")";
+		}
+		return albumNameReleaseYear;
+	}
+
+	// the tuning is printed for tablatures of tuned instruments only
+	private String getTuningLine(TGTrack track) {
+		if (track.isPercussion() || (getStyle() & DISPLAY_TABLATURE) == 0) {
+			return null;
+		}
+		String tuningLabel = getStringsTuningLabel(track);
+		return (isEmpty(tuningLabel) ? null : TGMessagesManager.getProperty("tuning") + ": " + tuningLabel);
+	}
+
+	private float getAlignedX(UIPainter painter, String text, int alignment) {
+		float x = this.document.getMargins().getLeft();
+		if( alignment == ALIGN_CENTER ){
+			return x + getCenter(painter, text);
+		}
+		if( alignment == ALIGN_RIGHT ){
+			return x + getRight(painter, text);
+		}
+		return x;
+	}
+
+	/** Header lines, painted one under the other from the top margin; empty lines are skipped. */
+	private class HeaderLines {
+
+		private final UIPainter painter;
+		// the font top line is the one of the font in use before the header
+		private final float top;
+		private float offset;
+
+		HeaderLines(UIPainter painter) {
+			this.painter = painter;
+			this.top = painter.getFMTopLine() + TGPrintLayout.this.document.getMargins().getTop();
+		}
+
+		void paint(Supplier<UIFont> font, String text, int alignment, float spacing) {
+			if( isEmpty(text) ){
+				return;
+			}
+			this.painter.setFont(font.get());
+			this.painter.drawString(text, getAlignedX(this.painter, text, alignment), this.top + Math.round(this.offset));
+			this.offset += spacing * getScale();
+		}
 	}
 
 	private String getStringsTuningLabel(TGTrack track) {
@@ -493,22 +439,14 @@ public class TGPrintLayout extends TGLayout {
 
 	public void disposeLayout(){
 		super.disposeLayout();
-		if( this.songNameFont != null && !this.songNameFont.isDisposed() ){
-			this.songNameFont.dispose();
+		for( UIFont font : new UIFont[] { this.songNameFont, this.songAuthorFont, this.trackNameFont, this.artistFont, this.albumNameYearFont } ){
+			disposeFont(font);
 		}
-		if( this.songAuthorFont != null && !this.songAuthorFont.isDisposed() ){
-			this.songAuthorFont.dispose();
-		}
-		if( this.trackNameFont != null && !this.trackNameFont.isDisposed() ){
-			this.trackNameFont.dispose();
-		}
-		if( this.artistFont != null && !this.artistFont.isDisposed() ){
-			this.artistFont.dispose();
-		}
-		if( this.albumNameYearFont != null &&
-			!this.albumNameYearFont.isDisposed() ){
+	}
 
-			this.albumNameYearFont.dispose();
+	private static void disposeFont(UIFont font){
+		if( font != null && !font.isDisposed() ){
+			font.dispose();
 		}
 	}
 

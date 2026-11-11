@@ -194,20 +194,23 @@ public abstract class TGLayout {
 	}
 
 	public void updateMeasureNumbers(List<Integer> numbers) {
+		// a header no longer in the song has no index (-1), which updateMeasureIndex ignores
+		for(TGMeasureHeader header : findHeadersToUpdate(numbers)) {
+			updateMeasureIndex(getSongManager().getMeasureHeaderIndex(getSong(), header));
+		}
+	}
+
+	// the headers of the given numbers, plus their dependants (once), in number order
+	private List<TGMeasureHeader> findHeadersToUpdate(List<Integer> numbers) {
 		List<TGMeasureHeader> headersToUpdate = new ArrayList<TGMeasureHeader>();
 		for(Integer number : numbers) {
 			TGMeasureHeader header = getSongManager().getMeasureHeader(getSong(), number);
-			if( header != null && !headersToUpdate.contains(header)) {
-				headersToUpdate.add(header);
-			}
-			if( this.updateDependants.containsKey(header)) {
-				List<TGMeasureHeader> dependants = this.updateDependants.get(header);
+			addHeaderToUpdate(headersToUpdate, header);
+			List<TGMeasureHeader> dependants = this.updateDependants.remove(header);
+			if( dependants != null ) {
 				for(TGMeasureHeader dependant : dependants) {
-					if(!headersToUpdate.contains(dependant)) {
-						headersToUpdate.add(dependant);
-					}
+					addHeaderToUpdate(headersToUpdate, dependant);
 				}
-				this.updateDependants.remove(header);
 			}
 		}
 
@@ -216,12 +219,12 @@ public abstract class TGLayout {
 				return Integer.valueOf(o1.getNumber()).compareTo(Integer.valueOf(o2.getNumber()));
 			}
 		});
+		return headersToUpdate;
+	}
 
-		for(TGMeasureHeader header : headersToUpdate) {
-			int index = getSongManager().getMeasureHeaderIndex(getSong(), header);
-			if( index >= 0 ) {
-				updateMeasureIndex(index);
-			}
+	private static void addHeaderToUpdate(List<TGMeasureHeader> headersToUpdate, TGMeasureHeader header) {
+		if( header != null && !headersToUpdate.contains(header)) {
+			headersToUpdate.add(header);
 		}
 	}
 
@@ -322,6 +325,50 @@ public abstract class TGLayout {
 		float v2 = ((this.style & DISPLAY_TABLATURE) != 0 ? getStringSpacing() : 0 );
 		float scale = (Math.max(v1,v2) / 10.0f);
 		return scale;
+	}
+
+	// score-only (edition) mode keeps room for ledger lines above and below the staff
+	private boolean isScoreOnly(){
+		return ((this.style & DISPLAY_TABLATURE) == 0 && (this.style & DISPLAY_SCORE) != 0);
+	}
+
+	/** The lowest y a line of measures starts from: some room above the staff in score-only mode. */
+	protected float getStaffMinY(){
+		return (isScoreOnly() ? -(getScoreLineSpacing() * 3) : 0);
+	}
+
+	/** The highest y a line of measures starts from: some room below the staff in score-only mode. */
+	protected float getStaffMaxY(){
+		return (isScoreOnly() ? ((getScoreLineSpacing() * 4) + (getScoreLineSpacing() * 4)) : 0);
+	}
+
+	/**
+	 * Sizes the staves of a line of a track, whose measures reach from minY (above the staff) to maxY (below it).
+	 * Track spacing sizes only grow: a size that is not larger than the current one is ignored.
+	 */
+	protected void setStaffSpacing(TGTrackSpacing ts, TGTrackImpl track, float minY, float maxY){
+		if( (this.style & DISPLAY_SCORE) != 0 ){
+			ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, (getScoreLineSpacing() * 5));
+			ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(minY));
+			ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (maxY - track.getScoreHeight()));
+		}
+		if( (this.style & DISPLAY_TABLATURE) != 0 ){
+			setTablatureSpacing(ts, track, minY, maxY);
+		}
+		ts.setSize(TGTrackSpacing.POSITION_LYRIC, 10);
+		checkDefaultSpacing(ts);
+	}
+
+	// under a score, the tablature takes its own height; alone, it also makes room for what the measures hold
+	private void setTablatureSpacing(TGTrackSpacing ts, TGTrackImpl track, float minY, float maxY){
+		float tablatureHeight = (track.getTabHeight() + getStringSpacing() + 1);
+		if( (this.style & DISPLAY_SCORE) != 0 ){
+			ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, getMinScoreTabSpacing());
+			ts.setSize(TGTrackSpacing.POSITION_TABLATURE, tablatureHeight);
+		}else{
+			ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, Math.max(Math.abs(minY), getStringSpacing()));
+			ts.setSize(TGTrackSpacing.POSITION_TABLATURE, Math.max(maxY, tablatureHeight));
+		}
 	}
 
 	protected void checkDefaultSpacing(TGTrackSpacing ts){

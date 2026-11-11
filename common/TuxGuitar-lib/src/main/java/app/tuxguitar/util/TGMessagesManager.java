@@ -122,19 +122,15 @@ public class TGMessagesManager {
 
 	public String getLanguage() {
 		if(this.resources != null){
+			// a Locale's language, country and variant are never null, but may be empty
 			Locale locale = this.resources.getLocale();
-			boolean language = (locale.getLanguage() != null && locale.getLanguage().length() > 0);
-			boolean country = (locale.getCountry() != null && locale.getCountry().length() > 0);
-			boolean variant = (locale.getVariant() != null && locale.getVariant().length() > 0);
+			boolean country = !locale.getCountry().isEmpty();
 
-			String localeId = new String();
-			if( language ){
-				localeId += locale.getLanguage();
-			}
+			String localeId = locale.getLanguage();
 			if( country ){
 				localeId += "_" + locale.getCountry();
 			}
-			if( variant ){
+			if( !locale.getVariant().isEmpty() ){
 				localeId += "_" + ( country ? locale.getVariant() : ("_" + locale.getVariant()) );
 			}
 			return localeId;

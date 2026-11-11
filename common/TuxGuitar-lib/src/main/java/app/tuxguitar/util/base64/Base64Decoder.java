@@ -1,11 +1,13 @@
 package app.tuxguitar.util.base64;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class Base64Decoder {
 
-	private static final int BUFFER_SIZE = 1024;
+	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+	// the value of the '=' padding character: past the 6 bit values of the alphabet
+	private static final int PAD = 64;
 
 	private static int get1(byte buf[], int off) {
 		return ((buf[off] & 0x3f) << 2) | ((buf[off + 1] & 0x30) >>> 4);
@@ -19,78 +21,37 @@ public class Base64Decoder {
 		return ((buf[off + 2] & 0x03) << 6) | (buf[off + 3] & 0x3f);
 	}
 
+	// the 6 bit value of a character, PAD for '=', -1 for a character outside the alphabet
 	private static int check(int ch) {
-		if ((ch >= 'A') && (ch <= 'Z')) {
-			return ch - 'A';
-		} else if ((ch >= 'a') && (ch <= 'z')) {
-			return ch - 'a' + 26;
-		} else if ((ch >= '0') && (ch <= '9')) {
-			return ch - '0' + 52;
-		} else {
-			switch (ch) {
-				case '=':
-					return 65;
-				case '+':
-					return 62;
-				case '/':
-					return 63;
-				default:
-					return -1;
-			}
-		}
+		return (ALPHABET + "=").indexOf(ch);
 	}
 
+	// characters outside the alphabet are skipped; decoding stops at the first padded group;
+	// input whose characters do not fill whole groups is returned unchanged
 	public static byte[] decode(byte[] bytes){
-		try{
-			ByteArrayInputStream  in  = new ByteArrayInputStream( bytes );
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-			byte buffer[] = new byte[BUFFER_SIZE];
-			byte chunk[] = new byte[4];
-			int got = -1;
-			int ready = 0;
-
-			fill: while ((got = in.read(buffer)) > 0) {
-				int skipped = 0;
-
-				while (skipped < got) {
-
-					while (ready < 4) {
-						if (skipped >= got){
-							continue fill;
-						}
-						int ch = check(buffer[skipped++]);
-						if (ch >= 0) {
-							chunk[ready++] = (byte) ch;
-						}
-					}
-
-					if (chunk[2] == 65) {
-						out.write(get1(chunk, 0));
-						return out.toByteArray();
-					}
-					else if (chunk[3] == 65) {
-						out.write(get1(chunk, 0));
-						out.write(get2(chunk, 0));
-						return out.toByteArray();
-					}
-					else {
-						out.write(get1(chunk, 0));
-						out.write(get2(chunk, 0));
-						out.write(get3(chunk, 0));
-					}
-					ready = 0;
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte chunk[] = new byte[4];
+		int ready = 0;
+		for (byte b : bytes) {
+			int ch = check(b);
+			if (ch >= 0) {
+				chunk[ready++] = (byte) ch;
+			}
+			if (ready == 4) {
+				if (decodeGroup(chunk, out) < 3) {
+					return out.toByteArray();
 				}
+				ready = 0;
 			}
-			if (ready == 0){
-				out.flush();
-				return out.toByteArray();
-			}
-
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
 		}
+		return (ready == 0 ? out.toByteArray() : bytes);
+	}
 
-		return bytes;
+	// writes the 1 to 3 bytes of a group of 4 values, returns how many
+	private static int decodeGroup(byte chunk[], ByteArrayOutputStream out) {
+		int length = (chunk[2] == PAD ? 1 : (chunk[3] == PAD ? 2 : 3));
+		byte[] decoded = { (byte) get1(chunk, 0), (byte) get2(chunk, 0), (byte) get3(chunk, 0) };
+		out.write(decoded, 0, length);
+		return length;
 	}
 }

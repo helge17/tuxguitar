@@ -366,26 +366,39 @@ public abstract class TGNoteEffect {
 	}
 
 	public boolean hasAnyEffect(){
+		return (hasParameterizedEffect() || hasArticulation() || hasTechnique());
+	}
+
+	// effects described by an object of their own
+	private boolean hasParameterizedEffect(){
 		return (isBend() ||
 				isTremoloBar() ||
 				isHarmonic() ||
 				isGrace() ||
 				isTrill() ||
-				isTremoloPicking() ||
-				isVibrato() ||
-				isDeadNote() ||
-				isSlide() ||
-				isHammer() ||
+				isTremoloPicking());
+	}
+
+	// how the note is attacked, held or muted
+	private boolean hasArticulation(){
+		return (isDeadNote() ||
 				isGhostNote() ||
 				isAccentuatedNote() ||
 				isHeavyAccentuatedNote() ||
 				isPalmMute() ||
 				isLetRing() ||
 				isStaccato() ||
+				isFadeIn());
+	}
+
+	// how the note is played
+	private boolean hasTechnique(){
+		return (isVibrato() ||
+				isSlide() ||
+				isHammer() ||
 				isTapping() ||
 				isSlapping() ||
-				isPopping() ||
-				isFadeIn());
+				isPopping());
 	}
 
 	public TGNoteEffect clone(TGFactory factory){

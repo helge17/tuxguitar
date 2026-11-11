@@ -6,6 +6,10 @@
  */
 package app.tuxguitar.graphics.control;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+
 import app.tuxguitar.song.models.TGChord;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGTrack;
@@ -13,6 +17,7 @@ import app.tuxguitar.ui.resource.UIColor;
 import app.tuxguitar.ui.resource.UIFont;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIPainter;
+import app.tuxguitar.ui.resource.UIResource;
 import app.tuxguitar.ui.resource.UIResourceFactory;
 /**
  * @author julian
@@ -87,9 +92,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setTonic(int tonic){
-		if(!this.isDisposed() && this.tonic != tonic){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.tonic != tonic);
 		this.tonic = tonic;
 	}
 
@@ -98,9 +101,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setForegroundColor(UIColor foregroundColor) {
-		if(!this.isDisposed() && !this.isSameColor(this.foregroundColor, foregroundColor)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.foregroundColor, foregroundColor));
 		this.foregroundColor = foregroundColor;
 	}
 
@@ -109,9 +110,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setBackgroundColor(UIColor backgroundColor) {
-		if(!this.isDisposed() && !this.isSameColor(this.backgroundColor, backgroundColor)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.backgroundColor, backgroundColor));
 		this.backgroundColor = backgroundColor;
 	}
 
@@ -120,9 +119,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setColor(UIColor color) {
-		if(!this.isDisposed() && !this.isSameColor(this.color, color)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.color, color));
 		this.color = color;
 	}
 
@@ -131,9 +128,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setNoteColor(UIColor noteColor) {
-		if(!this.isDisposed() && !this.isSameColor(this.noteColor, noteColor)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.noteColor, noteColor));
 		this.noteColor = noteColor;
 	}
 
@@ -142,9 +137,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setTonicColor(UIColor tonicColor) {
-		if(!this.isDisposed() && !this.isSameColor(this.tonicColor, tonicColor)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.tonicColor, tonicColor));
 		this.tonicColor = tonicColor;
 	}
 
@@ -153,9 +146,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setFirstFretSpacing(float firstFretSpacing) {
-		if(!this.isDisposed() && this.firstFretSpacing != firstFretSpacing){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.firstFretSpacing != firstFretSpacing);
 		this.firstFretSpacing = firstFretSpacing;
 	}
 
@@ -164,9 +155,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setFretSpacing(float fretSpacing) {
-		if(!this.isDisposed() && this.fretSpacing != fretSpacing){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.fretSpacing != fretSpacing);
 		this.fretSpacing = fretSpacing;
 	}
 
@@ -175,9 +164,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setStringSpacing(float stringSpacing) {
-		if(!this.isDisposed() && this.stringSpacing != stringSpacing){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.stringSpacing != stringSpacing);
 		this.stringSpacing = stringSpacing;
 	}
 
@@ -186,9 +173,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setNoteSize(float noteSize) {
-		if(!this.isDisposed() && this.noteSize != noteSize){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.noteSize != noteSize);
 		this.noteSize = noteSize;
 	}
 
@@ -197,9 +182,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setLineWidth(float lineWidth) {
-		if(!this.isDisposed() && this.lineWidth != lineWidth){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.lineWidth != lineWidth);
 		this.lineWidth = lineWidth;
 	}
 
@@ -208,9 +191,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setFont(UIFont font) {
-		if(!this.isDisposed() && !this.isSameFont(this.font, font)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.font, font));
 		this.font = font;
 	}
 
@@ -219,9 +200,7 @@ public class TGChordImpl extends TGChord {
 	}
 
 	public void setFirstFretFont(UIFont firstFretFont) {
-		if(!this.isDisposed() && !this.isSameFont(this.firstFretFont, firstFretFont)){
-			this.dispose();
-		}
+		this.releaseDiagramIf(!isSame(this.firstFretFont, firstFretFont));
 		this.firstFretFont = firstFretFont;
 	}
 
@@ -439,42 +418,36 @@ public class TGChordImpl extends TGChord {
 		return (TGBeatImpl)getBeat();
 	}
 
-	private boolean isSameFont(UIFont f1, UIFont f2){
-		if( f1 == null && f2 == null ){
-			return true;
+	// a changed setting releases the buffered diagram, drawn with the former one
+	private void releaseDiagramIf(boolean changed){
+		if( changed ){
+			this.dispose();
 		}
-		if( f1 != null && f2 != null && !f1.isDisposed() && !f2.isDisposed()){
-			boolean sameName = (f1.getName().equals(f2.getName()));
-			boolean sameBold = (f1.isBold() == f2.isBold());
-			boolean sameItalic = (f1.isItalic() == f2.isItalic());
-			boolean sameHeight = (f1.getHeight() == f2.getHeight());
-
-			return (sameName && sameBold && sameItalic && sameHeight);
-		}
-		return false;
 	}
 
-	private boolean isSameColor(UIColor c1, UIColor c2){
-		if( c1 == null && c2 == null ){
-			return true;
+	private static boolean isSame(UIFont f1, UIFont f2){
+		return isSame(f1, f2, font -> Arrays.<Object>asList(font.getName(), font.getHeight(), font.isBold(), font.isItalic()));
+	}
+
+	private static boolean isSame(UIColor c1, UIColor c2){
+		return isSame(c1, c2, color -> Arrays.<Object>asList(color.getRed(), color.getGreen(), color.getBlue()));
+	}
+
+	// two resources are the same when both are missing, or both are alive with the same attributes
+	private static <T extends UIResource> boolean isSame(T r1, T r2, Function<T, List<Object>> attributes){
+		if( r1 == null || r2 == null ){
+			return (r1 == r2);
 		}
-		if( c1 != null && c2 != null && !c1.isDisposed() && !c2.isDisposed()){
-			return ( c1.getRed() == c2.getRed() && c1.getGreen() == c2.getGreen() && c1.getBlue() == c2.getBlue() );
-		}
-		return false;
+		return (!r1.isDisposed() && !r2.isDisposed() && attributes.apply(r1).equals(attributes.apply(r2)));
 	}
 
 	public void addFretValue(int string,int fret){
-		if(!isDisposed() && this.getFretValue(string) != fret){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.getFretValue(string) != fret);
 		super.addFretValue(string, fret);
 	}
 
 	public void setFirstFret(int firstFret) {
-		if(!isDisposed() && this.getFirstFret() != firstFret){
-			this.dispose();
-		}
+		this.releaseDiagramIf(this.getFirstFret() != firstFret);
 		super.setFirstFret(firstFret);
 	}
 }

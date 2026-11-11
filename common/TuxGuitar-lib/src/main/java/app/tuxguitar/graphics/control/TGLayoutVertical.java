@@ -43,79 +43,86 @@ public class TGLayoutVertical extends TGLayout{
 		this.clearTrackPositions();
 		this.measureLines = new ArrayList<Integer>();
 
-		int style = getStyle();
-		int number = getComponent().getTrackSelection();
-		float posY = Math.round(fromY + getFirstTrackSpacing());
-		float height = getFirstTrackSpacing();
-		float lineHeight = 0;
-
+		LinePosition position = new LinePosition(Math.round(fromY + getFirstTrackSpacing()), getFirstTrackSpacing());
 		int measureCount = getSong().countMeasureHeaders();
 		int nextMeasureIndex = 0;
-		int lineNb = 0;
 		while(measureCount > nextMeasureIndex){
-			TempLine line = null;
-			Iterator<TGTrack> tracks = getSong().getTracks();
-			while(tracks.hasNext()){
-				TGTrackImpl track = (TGTrackImpl) tracks.next();
-				if(number < 0 || track.getNumber() == number){
-
-					TGTrackSpacing ts = new TGTrackSpacing(this) ;
-					ts.setSize(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES, ((style & DISPLAY_SCORE) != 0 ?( (getScoreLineSpacing() * 5) ):0));
-
-					if(nextMeasureIndex == 0){
-						((TGLyricImpl)track.getLyrics()).start();
-					}
-
-					line = getTempLines(track,nextMeasureIndex,ts);
-					if( (style & DISPLAY_SCORE) != 0 ){
-						ts.setSize(TGTrackSpacing.POSITION_SCORE_UP_LINES, Math.abs(line.minY));
-						if(line.maxY > track.getScoreHeight()){
-							ts.setSize(TGTrackSpacing.POSITION_SCORE_DOWN_LINES, (line.maxY - track.getScoreHeight()) );
-						}
-					}
-					if((style & DISPLAY_TABLATURE) != 0){
-						ts.setSize(TGTrackSpacing.POSITION_TABLATURE_TOP_SEPARATOR, ((style & DISPLAY_SCORE) != 0 ? getMinScoreTabSpacing() : Math.max(Math.abs(line.minY), getStringSpacing()) ));
-						ts.setSize(TGTrackSpacing.POSITION_TABLATURE, ((style & DISPLAY_SCORE) != 0 ?  track.getTabHeight() + getStringSpacing() + 1 : Math.max( line.maxY, track.getTabHeight() + getStringSpacing() + 1) ));
-					}
-					ts.setSize(TGTrackSpacing.POSITION_LYRIC,10);
-					checkDefaultSpacing(ts);
-
-					paintLine(track, line, painter, fromX, posY, ts, clientArea);
-
-					lineHeight = ts.getSize();
-					addTrackPosition(track.getNumber(),posY,lineHeight);
-
-					float emptyX = (this.marginLeft + fromX + line.tempWith + 2);
-					float emptyWith = ( this.maximumWidth - emptyX );
-					if((emptyWith - 20) > 0 && (line.lastIndex + 1) >= measureCount){
-						if(emptyX < (clientArea.getX() + clientArea.getWidth())){
-							emptyX = (emptyX < clientArea.getX() ? clientArea.getX() :emptyX);
-							emptyWith = ( emptyWith > clientArea.getWidth() ? clientArea.getWidth() : emptyWith );
-							paintLines(track,ts,painter, emptyX ,posY, emptyWith);
-						}
-					}
-
-					float lineHeightWithSpacing = Math.round(lineHeight + getTrackSpacing() + 0.5f);
-
-					posY += lineHeightWithSpacing;
-					height += lineHeightWithSpacing;
-					for (int mIndex : line.measures) {
-						if ((mIndex>=this.measureLines.size()) || (this.measureLines.get(mIndex) == 0)) {
-							this.measureLines.add(mIndex, lineNb);
-						}
-					}
-					lineNb++;
-				}
-			}
-			if(line != null){
-				nextMeasureIndex = line.lastIndex + 1;
-			}
+			nextMeasureIndex = paintTrackLines(painter, clientArea, fromX, nextMeasureIndex, position);
 		}
 
-		this.setHeight(height);
+		this.setHeight(position.height);
 		this.setWidth( getWidth() + this.marginRight );
 		this.updateTimeToScroll();
-		
+	}
+
+	// one line of each shown track, from the given measure on; returns the measure the next line starts with
+	// (that of the last track: when no track is shown, it is the same measure again)
+	private int paintTrackLines(UIPainter painter, UIRectangle clientArea, float fromX, int fromIndex, LinePosition position){
+		int nextIndex = fromIndex;
+		int number = getComponent().getTrackSelection();
+		Iterator<TGTrack> tracks = getSong().getTracks();
+		while(tracks.hasNext()){
+			TGTrackImpl track = (TGTrackImpl) tracks.next();
+			if(number < 0 || track.getNumber() == number){
+				nextIndex = (paintTrackLine(track, painter, clientArea, fromX, fromIndex, position).lastIndex + 1);
+			}
+		}
+		return nextIndex;
+	}
+
+	private TempLine paintTrackLine(TGTrackImpl track, UIPainter painter, UIRectangle clientArea, float fromX, int fromIndex, LinePosition position){
+		TGTrackSpacing ts = new TGTrackSpacing(this) ;
+		if(fromIndex == 0){
+			((TGLyricImpl)track.getLyrics()).start();
+		}
+		TempLine line = getTempLines(track, fromIndex, ts);
+		setStaffSpacing(ts, track, line.minY, line.maxY);
+
+		paintLine(track, line, painter, fromX, position.posY, ts, clientArea);
+
+		float lineHeight = ts.getSize();
+		addTrackPosition(track.getNumber(), position.posY, lineHeight);
+		paintStaffAfterSong(track, line, ts, painter, fromX, position.posY, clientArea);
+		registerMeasureLines(line, position.lineNumber);
+		position.next(Math.round(lineHeight + getTrackSpacing() + 0.5f));
+		return line;
+	}
+
+	// on the line holding the last measure, the empty staff runs on to the right margin (within the client area)
+	private void paintStaffAfterSong(TGTrackImpl track, TempLine line, TGTrackSpacing ts, UIPainter painter, float fromX, float posY, UIRectangle clientArea){
+		float emptyX = (this.marginLeft + fromX + line.tempWith + 2);
+		float emptyWith = ( this.maximumWidth - emptyX );
+		boolean lastLine = ((line.lastIndex + 1) >= getSong().countMeasureHeaders());
+		if( lastLine && (emptyWith - 20) > 0 && emptyX < (clientArea.getX() + clientArea.getWidth()) ){
+			paintLines(track, ts, painter, Math.max(emptyX, clientArea.getX()), posY, Math.min(emptyWith, clientArea.getWidth()));
+		}
+	}
+
+	private void registerMeasureLines(TempLine line, int lineNumber){
+		for (int mIndex : line.measures) {
+			if ((mIndex>=this.measureLines.size()) || (this.measureLines.get(mIndex) == 0)) {
+				this.measureLines.add(mIndex, lineNumber);
+			}
+		}
+	}
+
+	/** Where the next staff line goes: its y, the height of the song so far, and its number. */
+	private static class LinePosition {
+
+		private float posY;
+		private float height;
+		private int lineNumber;
+
+		LinePosition(float posY, float height){
+			this.posY = posY;
+			this.height = height;
+		}
+
+		void next(float lineHeightWithSpacing){
+			this.posY += lineHeightWithSpacing;
+			this.height += lineHeightWithSpacing;
+			this.lineNumber ++;
+		}
 	}
 
 	private void updateTimeToScroll() {
@@ -201,17 +208,9 @@ public class TGLayoutVertical extends TGLayout{
 	}
 
 	public TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {
-		int style = getStyle();
-
 		TempLine line = new TempLine();
-		line.maxY = 0;
-		line.minY = 0;
-
-		// Need to score extra-lines in edition mode
-		if( (style & DISPLAY_TABLATURE) == 0 && (style & DISPLAY_SCORE) != 0 ){
-			line.maxY = ((getScoreLineSpacing() * 4) + (getScoreLineSpacing() * 4));
-			line.minY = -(getScoreLineSpacing() * 3);
-		}
+		line.maxY = getStaffMaxY();
+		line.minY = getStaffMinY();
 
 		int measureCount = track.countMeasures();
 		boolean lineBreak = false;

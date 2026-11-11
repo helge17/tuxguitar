@@ -488,41 +488,7 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 	}
 
 	public static TGDuration fromTime(TGFactory factory, long time, TGDuration minDuration){
-		// The value of `threshold` is dependent on the value of
-		// `TGDuration.QUARTER_TIME` and the tuplets that are expected to be supported.
-		short threshold = 0;
-
-		long quaterTimeConstant = QUARTER_TIME; // Local variable to suppress warnings
-		if(quaterTimeConstant == 960) {
-			// Patches for when QUARTER_TIME = 960
-			if(time < 60) {
-				// Notes shorter then the normal 64th note
-				threshold = 2;
-			}
-			else if(time == 95) {
-				// Fix going from any 64th tuplet note to a 64th 9-tuplet note
-				threshold = 3;
-			}
-			else if(time == 138) {
-				// Fix going from 8th 7-tuplet note to 16th 7-tuplet note in a 4/16 measure
-				// also fixes going from 8th 7-tuplet note to 16th 7-tuplet note in a 4/8 measure | if(time == 412 || time == 549)
-				// also fixes going from 32th 7-tuplet note to 16th 7-tuplet note | if(time > 822 && time < 2882)
-				threshold = 1;
-			}
-			else if(time == 177) {
-				// Fix going from 64th 11-tuplet note to 32th 11-tuplet note
-				threshold = 3;
-			}
-			else if(time == 748) {
-				// Fix going from 16th 9-tuplet note to 32th 9-tuplet note
-				threshold = 2;
-			}
-			else if(time == 854) {
-				// Fix going from 64th 9-tuplet note to 32th 9-tuplet note
-				threshold = 1;
-			}
-		}
-		return fromTime(factory, time, minDuration, threshold);
+		return fromTime(factory, time, minDuration, (short) 0);
 	}
 
 	public static TGDuration fromTime(TGFactory factory, long time, TGDuration minimum, short threshold) {

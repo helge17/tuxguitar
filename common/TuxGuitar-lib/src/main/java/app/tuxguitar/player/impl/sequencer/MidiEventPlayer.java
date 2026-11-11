@@ -37,28 +37,22 @@ public class MidiEventPlayer{
 			return false;
 		}
 		if(event.getTick() > lastTick) {
-			if(event.getTrack() != MidiEvent.ALL_TRACKS){
-				if(this.sequencer.getMidiTrackController().isMute(event.getTrack())){
-					return false;
-				}
-				if(this.sequencer.getMidiTrackController().isAnySolo() && !this.sequencer.getMidiTrackController().isSolo(event.getTrack())){
-					return false;
-				}
-			}
+			return isAudible(event.getTrack());
+		}
+		return (this.reset && isChannelSetup(event.getType()));
+	}
+
+	private boolean isAudible(int track){
+		if(track == MidiEvent.ALL_TRACKS){
 			return true;
 		}
-		if(this.reset){
-			if(event.getType() == MidiEvent.MIDI_SYSTEM_EVENT){
-				return true;
-			}
-			if(event.getType() == MidiEvent.MIDI_EVENT_CONTROL_CHANGE){
-				return true;
-			}
-			if(event.getType() == MidiEvent.MIDI_EVENT_PROGRAM_CHANGE){
-				return true;
-			}
-		}
-		return false;
+		MidiTrackController controller = this.sequencer.getMidiTrackController();
+		return (!controller.isMute(track) && (!controller.isAnySolo() || controller.isSolo(track)));
+	}
+
+	// the events resent after a reset, for the channels to be set up as they were
+	private static boolean isChannelSetup(int type){
+		return (type == MidiEvent.MIDI_SYSTEM_EVENT || type == MidiEvent.MIDI_EVENT_CONTROL_CHANGE || type == MidiEvent.MIDI_EVENT_PROGRAM_CHANGE);
 	}
 
 	public void addEvent(MidiEvent event){

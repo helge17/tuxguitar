@@ -1,11 +1,12 @@
 package app.tuxguitar.util.base64;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 
 public class Base64Encoder {
 
-	private static final int BUFFER_SIZE = 1024;
+	// 19 groups of 3 bytes: 76 characters per line
+	private static final int BYTES_PER_LINE = 57;
 
 	private static byte ENCODING[] = {
 		(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F', (byte) 'G', (byte) 'H',
@@ -36,97 +37,29 @@ public class Base64Encoder {
 	}
 
 	public static byte[] encode(byte[] bytes) {
-		try{
-
-			ByteArrayInputStream  in  = new ByteArrayInputStream( bytes );
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-			byte buffer[] = new byte[BUFFER_SIZE];
-			int got = -1;
-			int off = 0;
-			int count = 0;
-			while ((got = in.read(buffer, off, BUFFER_SIZE - off)) > 0) {
-				if ((got + off) >= 3) {
-					got += off;
-					off = 0;
-					while (off + 3 <= got) {
-						int c1 = get1(buffer, off);
-						int c2 = get2(buffer, off);
-						int c3 = get3(buffer, off);
-						int c4 = get4(buffer, off);
-						switch (count) {
-							case 73:
-								out.write(ENCODING[c1]);
-								out.write(ENCODING[c2]);
-								out.write(ENCODING[c3]);
-								out.write('\n');
-								out.write(ENCODING[c4]);
-								count = 1;
-								break;
-							case 74:
-								out.write(ENCODING[c1]);
-								out.write(ENCODING[c2]);
-								out.write('\n');
-								out.write(ENCODING[c3]);
-								out.write(ENCODING[c4]);
-								count = 2;
-								break;
-							case 75:
-								out.write(ENCODING[c1]);
-								out.write('\n');
-								out.write(ENCODING[c2]);
-								out.write(ENCODING[c3]);
-								out.write(ENCODING[c4]);
-								count = 3;
-								break;
-							case 76:
-								out.write('\n');
-								out.write(ENCODING[c1]);
-								out.write(ENCODING[c2]);
-								out.write(ENCODING[c3]);
-								out.write(ENCODING[c4]);
-								count = 4;
-								break;
-							default:
-								out.write(ENCODING[c1]);
-								out.write(ENCODING[c2]);
-								out.write(ENCODING[c3]);
-								out.write(ENCODING[c4]);
-								count += 4;
-								break;
-						}
-						off += 3;
-					}
-
-					for (int i = 0; i < 3; i++){
-						buffer[i] = (i < got - off) ? buffer[off + i] : ((byte) 0);
-					}
-					off = got - off;
-				} else {
-					off += got;
-				}
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		int tail = (bytes.length % 3);
+		int full = (bytes.length - tail);
+		for (int off = 0; off < full; off += 3) {
+			if (off != 0 && (off % BYTES_PER_LINE) == 0) {
+				out.write('\n');
 			}
-
-			switch (off) {
-				case 1:
-					out.write(ENCODING[get1(buffer, 0)]);
-					out.write(ENCODING[get2(buffer, 0)]);
-					out.write('=');
-					out.write('=');
-					break;
-				case 2:
-					out.write(ENCODING[get1(buffer, 0)]);
-					out.write(ENCODING[get2(buffer, 0)]);
-					out.write(ENCODING[get3(buffer, 0)]);
-					out.write('=');
-			}
-
-			return out.toByteArray();
-
-		}catch(Throwable throwable){
-			throwable.printStackTrace();
+			out.write(encodeGroup(bytes, off), 0, 4);
 		}
+		if (tail > 0) {
+			out.write(encodeTail(bytes, full, tail), 0, 4);
+		}
+		return out.toByteArray();
+	}
 
-		return bytes;
+	private static byte[] encodeGroup(byte buf[], int off) {
+		return new byte[] { ENCODING[get1(buf, off)], ENCODING[get2(buf, off)], ENCODING[get3(buf, off)], ENCODING[get4(buf, off)] };
+	}
+
+	// the last 1 or 2 bytes, zero filled to a group, whose characters past the data are '=' padding
+	private static byte[] encodeTail(byte bytes[], int off, int tail) {
+		byte[] chars = encodeGroup(Arrays.copyOfRange(bytes, off, off + 3), 0);
+		Arrays.fill(chars, tail + 1, 4, (byte) '=');
+		return chars;
 	}
 }
