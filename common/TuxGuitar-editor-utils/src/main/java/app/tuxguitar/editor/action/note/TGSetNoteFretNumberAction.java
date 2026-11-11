@@ -38,7 +38,7 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 		long preciseStart = beat.getPreciseStart();
 		
 		int fret = this.number;
-		long time = System.currentTimeMillis();
+		long time = this.currentTimeMillis();
 
 		if( this.number < 10 ){
 			if( lastAddedStart == preciseStart && lastAddedString == string.getNumber() ){
@@ -60,6 +60,10 @@ public class TGSetNoteFretNumberAction extends TGActionBase  {
 		note.setValue(fret);
 		songManager.getMeasureManager().addNote(beat, note, voice.getIndex());
 		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+	}
+
+	protected long currentTimeMillis(){
+		return System.currentTimeMillis();
 	}
 
 	public static final String getActionName(int number){
