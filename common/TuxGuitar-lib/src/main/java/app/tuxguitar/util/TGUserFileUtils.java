@@ -21,24 +21,20 @@ public class TGUserFileUtils {
 	public static final String PATH_USER_TOOLBAR = getUserToolBarPath();
 
 	private static String getHomePath(){
-		// Look for the system property
-		String homePath = System.getProperty(TG_HOME_PATH);
-		if( homePath != null ) {
-			File file = new File(homePath).getAbsoluteFile();
-			if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
-				return file.getAbsolutePath();
+		// the system property, else the default user dir
+		return getHomePath(System.getProperty(TG_HOME_PATH), System.getProperty("user.dir"));
+	}
+
+	// the first of the paths that is a readable directory, else the current directory
+	static String getHomePath(String... paths){
+		for( String path : paths ) {
+			if( path != null ) {
+				File file = new File(path).getAbsoluteFile();
+				if( isDirectoryAndReadable( file )){
+					return file.getAbsolutePath();
+				}
 			}
 		}
-
-		// Default user dir
-		homePath = System.getProperty("user.dir");
-		if( homePath != null ) {
-			File file = new File(homePath).getAbsoluteFile();
-			if( isExistentAndReadable( file ) && isDirectoryAndReadable( file )){
-				return file.getAbsolutePath();
-			}
-		}
-
 		return new File(".").getAbsolutePath();
 	}
 
@@ -69,20 +65,28 @@ public class TGUserFileUtils {
 	}
 
 	private static String getDefaultUserAppDir(){
-		String home = System.getProperty("user.home");
+		return getDefaultUserDir("XDG_CONFIG_HOME", "Application Support", ".config");
+	}
+
+	private static String getDefaultUserDir(String xdgVariable, String macFolder, String xdgFolder){
+		return getDefaultUserDir(System.getProperty("user.home"), System.getProperty("os.name"), System.getenv(xdgVariable),
+			macFolder, xdgFolder);
+	}
+
+	// the tuxguitar folder in the user's macOS Library sub-folder, Windows roaming app data, or XDG base directory
+	// (the XDG_*_HOME variable, else the folder of that name in the user's home)
+	static String getDefaultUserDir(String home, String os, String xdgHome, String macFolder, String xdgFolder){
 		String folderName = "tuxguitar";
-		String os = System.getProperty("os.name");
 		if (os.equals("Mac OS X")) {
-			return joinPath(home, "Library", "Application Support", folderName);
+			return joinPath(home, "Library", macFolder, folderName);
 		}
 		if (os.contains("Windows")) {
 			return joinPath(home, "AppData", "Roaming", folderName);
 		}
-		String xdgConfigHome = System.getenv("XDG_CONFIG_HOME");
-		if (xdgConfigHome == null || xdgConfigHome.trim().length() == 0) {
-			return joinPath(home, ".config", folderName);
+		if (xdgHome == null || xdgHome.trim().length() == 0) {
+			return joinPath(home, xdgFolder, folderName);
 		} else {
-			return joinPath(xdgConfigHome, folderName);
+			return joinPath(xdgHome, folderName);
 		}
 	}
 
@@ -116,21 +120,7 @@ public class TGUserFileUtils {
 	}
 
 	private static String getDefaultUserSharedPath(){
-		String home = System.getProperty("user.home");
-		String folderName = "tuxguitar";
-		String os = System.getProperty("os.name");
-		if (os.equals("Mac OS X")) {
-			return joinPath(home, "Library", "Caches", folderName);
-		}
-		if (os.contains("Windows")) {
-			return joinPath(home, "AppData", "Roaming", folderName);
-		}
-		String xdgCacheHome = System.getenv("XDG_CACHE_HOME");
-		if (xdgCacheHome == null || xdgCacheHome.trim().length() == 0) {
-			return joinPath(home, ".cache", folderName);
-		} else {
-			return joinPath(xdgCacheHome, folderName);
-		}
+		return getDefaultUserDir("XDG_CACHE_HOME", "Caches", ".cache");
 	}
 
 	public static boolean isExistentAndReadable( File file ){
