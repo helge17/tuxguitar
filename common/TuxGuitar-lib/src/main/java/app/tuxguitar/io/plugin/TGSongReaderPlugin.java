@@ -26,23 +26,32 @@ public abstract class TGSongReaderPlugin implements TGPlugin{
 			TGFileFormatManager fileFormatManager = TGFileFormatManager.getInstance(context);
 
 			if( this.stream == null ) {
-				this.stream = createInputStream(context);
-
-				fileFormatManager.addReader(this.stream);
-
-				if( this.commonFileFormat ) {
-					fileFormatManager.addCommonReadFileFormat(this.stream.getFileFormat());
-				}
+				this.connectReader(context, fileFormatManager);
 			}
 			if( this.detector == null ) {
-				this.detector = createFileFormatDetector(context);
-
-				if( this.detector != null ) {
-					fileFormatManager.addFileFormatDetector(this.detector);
-				}
+				this.connectDetector(context, fileFormatManager);
 			}
 		} catch (Throwable throwable) {
 			throw new TGPluginException(throwable.getMessage(),throwable);
+		}
+	}
+
+	private void connectReader(TGContext context, TGFileFormatManager fileFormatManager) throws TGPluginException {
+		this.stream = createInputStream(context);
+
+		fileFormatManager.addReader(this.stream);
+
+		if( this.commonFileFormat ) {
+			fileFormatManager.addCommonReadFileFormat(this.stream.getFileFormat());
+		}
+	}
+
+	// a plugin may have no detector
+	private void connectDetector(TGContext context, TGFileFormatManager fileFormatManager) throws TGPluginException {
+		this.detector = createFileFormatDetector(context);
+
+		if( this.detector != null ) {
+			fileFormatManager.addFileFormatDetector(this.detector);
 		}
 	}
 

@@ -6,9 +6,10 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import app.tuxguitar.util.error.TGErrorManager;
@@ -34,14 +35,16 @@ public class TGLibraryLoader {
 
 	public void loadLibraries(File folder, String prefix, String extension){
 		if(folder != null && folder.exists()){
-			List<String> libraries = findLibrariesToLoad(folder, prefix, extension);
-			for(int i = 0; i < libraries.size(); i ++){
-				String library = libraries.get(i);
-				File file = new File(getLibraryFileName(folder, library));
-				if(file.exists() && !file.isDirectory()){
-					loadLibrary(file);
-				}
+			for(String library : findLibrariesToLoad(folder, prefix, extension)){
+				loadLibraryFile(new File(getLibraryFileName(folder, library)));
 			}
+		}
+	}
+
+	// a folder that matches the library name is not loaded
+	private void loadLibraryFile(File file){
+		if(file.exists() && !file.isDirectory()){
+			loadLibrary(file);
 		}
 	}
 
@@ -72,19 +75,11 @@ public class TGLibraryLoader {
 		return null;
 	}
 
+	// the first dependency of the expected library still to load (recursively), else the expected library
 	private String findNextLibraryToLoad(List<String> libraries, File folder, String[] files, String expectedLib){
-		List<String> dependencies = findDependencyLibraries(folder, expectedLib);
-		if( dependencies != null ){
-			Iterator<String> it = dependencies.iterator();
-			while(it.hasNext()){
-				String dependency = it.next();
-				if(!libraries.contains(dependency)){
-					for(int i = 0; i < files.length; i ++){
-						if( dependency.equals(files[i]) ){
-							return findNextLibraryToLoad(libraries, folder, files, dependency);
-						}
-					}
-				}
+		for(String dependency : findDependencyLibraries(folder, expectedLib)){
+			if(!libraries.contains(dependency) && Arrays.asList(files).contains(dependency)){
+				return findNextLibraryToLoad(libraries, folder, files, dependency);
 			}
 		}
 		return expectedLib;
@@ -94,32 +89,26 @@ public class TGLibraryLoader {
 		return findDependencyLibraries(new File(getLibraryDependenciesFileName(folder, library)));
 	}
 
+	// a dependencies file that cannot be read is reported and lists nothing
 	private List<String> findDependencyLibraries(File file){
-		try {
-			List<String> libraries = new ArrayList<String>();
-			if( file.exists() ){
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+		List<String> libraries = new ArrayList<String>();
+		if( file.exists() ){
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 				String library = null;
 				while((library = reader.readLine()) != null){
 					libraries.add(library.trim());
 				}
-				reader.close();
+			} catch (IOException e) {
+				TGErrorManager.getInstance(this.context).handleError(e);
+				return Collections.emptyList();
 			}
-			return libraries;
-		} catch (UnsupportedEncodingException e) {
-			TGErrorManager.getInstance(this.context).handleError(e);
-		} catch (IOException e) {
-			TGErrorManager.getInstance(this.context).handleError(e);
 		}
-		return null;
+		return libraries;
 	}
 
 	private FilenameFilter createFilenameFilter(final String prefix, final String extension){
 		return new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				if(name == null){
-					return false;
-				}
 				if(prefix != null && prefix.length() > 0){
 					int index = name.indexOf(prefix);
 					if(index != 0){

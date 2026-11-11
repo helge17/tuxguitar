@@ -44,12 +44,9 @@ public class TGTuning implements Comparable<TGTuning> {
 
 	@Override
 	public int compareTo(TGTuning other) {
-		if (this.priority == null && other.getPriority() == null)
-			return 0;
-		else if (this.priority != null && other.getPriority() == null)
-			return -1;
-		else if (this.priority == null && other.getPriority() != null)
-			return 1 ;
+		// a tuning without priority goes after one with it
+		if (this.priority == null || other.getPriority() == null)
+			return Boolean.compare(this.priority == null, other.getPriority() == null);
 
 		return this.priority.intValue() - other.getPriority().intValue();
 	}
