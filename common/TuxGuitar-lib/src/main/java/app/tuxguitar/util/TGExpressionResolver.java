@@ -11,6 +11,9 @@ import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 public class TGExpressionResolver {
 
+	// ${name}, optionally with a quoted prefix and suffix: ${'prefix'name'suffix'}
+	private static final Pattern EXPRESSION = Pattern.compile("\\$+\\{+('+.+'+)?([a-zA-Z0-9_\\-\\.]+)+('+.+'+)?\\}+");
+
 	private PropertyResolver defaultResolver;
 	private List<PropertyResolver> resolvers;
 
@@ -29,35 +32,30 @@ public class TGExpressionResolver {
 
 	public String resolve(String source, PropertyResolver customPropertyResolver) {
 		if( source != null ) {
-			Pattern pattern = Pattern.compile("\\$+\\{+('+.+'+)?([a-zA-Z0-9_\\-\\.]+)+('+.+'+)?\\}+");
-			Matcher matcher = pattern.matcher(source);
+			Matcher matcher = EXPRESSION.matcher(source);
 			StringBuffer sb = new StringBuffer();
 			while (matcher.find()) {
-				String propertyPrefix = matcher.group(1);
-				String property = matcher.group(2);
-				String propertySuffix = matcher.group(3);
-				StringBuilder replacement = new StringBuilder();
-
-				Object value = this.findProperty(property, customPropertyResolver);
-				if( value != null ) {
-					String stringValue = value.toString();
-					if( stringValue != null ) {
-						if( propertyPrefix != null ) {
-							replacement.append(propertyPrefix.substring(1, propertyPrefix.length() -1));
-						}
-						replacement.append(Matcher.quoteReplacement(stringValue));
-						if( propertySuffix != null ) {
-							replacement.append(propertySuffix.substring(1, propertySuffix.length() -1));
-						}
-					}
-				}
-				matcher.appendReplacement(sb, replacement.toString());
+				matcher.appendReplacement(sb, this.getReplacement(matcher, customPropertyResolver));
 			}
 			matcher.appendTail(sb);
 
 			return sb.toString();
 		}
 		return null;
+	}
+
+	// the value with its prefix and suffix, or nothing when there is no value
+	private String getReplacement(Matcher matcher, PropertyResolver customPropertyResolver) {
+		Object value = this.findProperty(matcher.group(2), customPropertyResolver);
+		String stringValue = (value != null ? value.toString() : null);
+		if( stringValue == null ) {
+			return "";
+		}
+		return (unquote(matcher.group(1)) + Matcher.quoteReplacement(stringValue) + unquote(matcher.group(3)));
+	}
+
+	private static String unquote(String quoted) {
+		return (quoted != null ? quoted.substring(1, quoted.length() -1) : "");
 	}
 
 	private final Object findProperty(String key, PropertyResolver customResolver) {
