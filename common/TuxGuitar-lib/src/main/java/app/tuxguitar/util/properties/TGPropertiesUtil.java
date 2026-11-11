@@ -71,23 +71,23 @@ public class TGPropertiesUtil {
 
 	public static float[] getFloatArrayValue(TGProperties properties, String key, float[] defaultValue) {
 		try{
-			String propertyValue = properties.getValue(key);
-			if( propertyValue != null ) {
-				String[] stringValues = propertyValue.split(ARRAY_SEPARATOR);
-				if( stringValues != null ) {
-					float[] floatValues = new float[stringValues.length];
-					for(int i = 0; i < floatValues.length; i ++) {
-						if( stringValues[i].trim().length() > 0 ) {
-							floatValues[i] = Float.parseFloat(stringValues[i].trim());
-						}
-					}
-					return floatValues;
-				}
-			}
-			return defaultValue;
+			String value = properties.getValue(key);
+			return (value == null) ? defaultValue : parseFloatArray(value);
 		}catch(Throwable throwable){
 			return defaultValue;
 		}
+	}
+
+	private static float[] parseFloatArray(String value) {
+		String[] stringValues = value.split(ARRAY_SEPARATOR);
+		float[] floatValues = new float[stringValues.length];
+		for(int i = 0; i < floatValues.length; i ++) {
+			// a blank value stays 0
+			if( stringValues[i].trim().length() > 0 ) {
+				floatValues[i] = Float.parseFloat(stringValues[i].trim());
+			}
+		}
+		return floatValues;
 	}
 
 	public static float[] getFloatArrayValue(TGProperties properties, String key) {
