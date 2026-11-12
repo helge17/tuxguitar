@@ -65,6 +65,10 @@ public class TestTrackMeasures extends SegmentFixture {
 
 		song.getMeasureHeader(0).setStart(start(3) + 1);
 		assertEquals("2 2", firsts());
+
+		// of two starting together, the one before in the track
+		song.getMeasureHeader(2).setStart(start(2));
+		assertEquals("2 2", firsts());
 	}
 
 	@Test

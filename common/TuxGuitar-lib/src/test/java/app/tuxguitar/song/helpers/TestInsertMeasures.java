@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import app.tuxguitar.song.models.TGMeasureHeader;
+
 /**
  * Pins TGSongSegmentHelper.insertMeasures, as pasting or inserting measures does: the segment's headers are
  * inserted at a measure number, the following measures move after them, and each track gets the segment's
@@ -28,12 +30,19 @@ public class TestInsertMeasures extends SegmentFixture {
 	@Test
 	public void pastingSeveralTimesInsertsCopiesOfTheSegmentOneAfterTheOther() {
 		TGSongSegment segment = helper.copyMeasures(song, 1, 2);
-		TGSongSegment copies = helper.createSegmentCopies(segment, 2);
+		TGSongSegment copies = helper.createSegmentCopies(segment, 3);
+		StringBuilder numbers = new StringBuilder();
+		for (TGMeasureHeader header : copies.getHeaders()) {
+			numbers.append(header.getNumber());
+		}
+		assertEquals("123456", numbers.toString());
 		helper.insertMeasures(song, copies, 3, start(3) - start(1), 0);
 
 		assertEquals(""
-			+ "track 1: 1@1/1/1:11+0 2@5/2/2:12+0 3@9/1/1:11+0 4@13/2/2:12+0 5@17/1/1:11+0 6@21/2/2:12+0 7@25/3/3:13+0\n"
-			+ "track 2: 1@1/1/1:21+0 2@5/2/2:22+0 3@9/1/1:21+0 4@13/2/2:22+0 5@17/1/1:21+0 6@21/2/2:22+0 7@25/3/3:23+0\n"
+			+ "track 1: 1@1/1/1:11+0 2@5/2/2:12+0 3@9/1/1:11+0 4@13/2/2:12+0 5@17/1/1:11+0 6@21/2/2:12+0"
+			+ " 7@25/1/1:11+0 8@29/2/2:12+0 9@33/3/3:13+0\n"
+			+ "track 2: 1@1/1/1:21+0 2@5/2/2:22+0 3@9/1/1:21+0 4@13/2/2:22+0 5@17/1/1:21+0 6@21/2/2:22+0"
+			+ " 7@25/1/1:21+0 8@29/2/2:22+0 9@33/3/3:23+0\n"
 			, describe());
 		assertEquals(2, segment.getHeaders().size());
 	}

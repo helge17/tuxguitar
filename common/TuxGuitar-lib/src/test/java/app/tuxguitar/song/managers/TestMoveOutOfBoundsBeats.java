@@ -215,8 +215,9 @@ public class TestMoveOutOfBoundsBeats {
 	}
 
 	@Test
-	public void movingTheTrackBeatsLaterPushesTheLastBeatOfAMeasureIntoTheNext() {
-		fiveNotes().moveTrackBeats(QUARTER);
+	public void movingTheTrackBeatsLaterPushesTheLastBeatOfAMeasureIntoTheNextAndDropsARestPushedPastTheSongEnd() {
+		fiveNotes().beat(1, 3 * QUARTER, TGDuration.QUARTER, false);
+		moveTrackBeats(QUARTER);
 		assertEquals(""
 			+ "1: n1@0/4 n2@2/4 n3@3/4\n"
 			+ "2: n4@0/4 n5@1/4\n"

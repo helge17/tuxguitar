@@ -83,6 +83,11 @@ public class TestAllocateNotesToStrings {
 		// the highest fret allowed still fits, for the note and for its grace note
 		assertEquals("s1f6", retune("s1f5", STANDARD, 6, 63, 58, 54, 49, 44, 39));
 		assertEquals("s1f3g6", retune("s1f2g5", STANDARD, 6, 63, 58, 54, 49, 44, 39));
+		// even where a lower fret exists on another string (string 2, fret 2)
+		assertEquals("s3f6", retune("s3f5", STANDARD, MAX_FRET, 63, 58, 54, 49, 44, 39));
+		// a string of the same pitch is the closest; of two equally close, the first
+		assertEquals("s1f0", retune("s1f0", Arrays.asList(64, 59), MAX_FRET, 64, 59, 40));
+		assertEquals("s1f0", retune("s1f2", Arrays.asList(62), MAX_FRET, 64, 60));
 	}
 
 	@Test
@@ -110,6 +115,9 @@ public class TestAllocateNotesToStrings {
 		// an A major chord, all on that string, is distributed over the strings
 		assertEquals("s1f5 s2f5 s3f6 s4f7 s5f7 s6f5",
 			retune("s1f69 s1f64 s1f61 s1f57 s1f52 s1f45", Arrays.asList(0), MAX_FRET, 64, 59, 55, 50, 45, 40));
+		// not to the closest string (string 2, fret 24); of two strings giving the same fret, the first
+		assertEquals("s1f0", retune("s1f64", Arrays.asList(0), MAX_FRET, 64, 40));
+		assertEquals("s1f0", retune("s1f64", Arrays.asList(0), MAX_FRET, 64, 64));
 		// pitch 70 is above fret 5 of every string; pitch 66 takes fret 2 of string 1
 		assertEquals("s1f2", retune("s1f70 s1f66", Arrays.asList(0), 5, 64, 59));
 		// fret 5 is still allowed
