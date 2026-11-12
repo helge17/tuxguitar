@@ -658,15 +658,9 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	private void checkTracks(TGSongManager songManager){
 		for (TGTrack track : this.tracks) {
 			TGChannel trackChannel = null;
-
 			for (TempChannel tempChannel : this.tempChannels) {
 				if (tempChannel.getTracks().contains(track.getNumber())) {
-					for (TGChannel tgChannel : this.channels) {
-						GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
-						if (gmChannelRoute != null && tempChannel.getChannel() == gmChannelRoute.getChannel1()) {
-							trackChannel = tgChannel;
-						}
-					}
+					trackChannel = findChannelStartingOn(tempChannel.getChannel(), trackChannel);
 				}
 			}
 
@@ -679,6 +673,18 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings(track.getMaxFret()));
 			}
 		}
+	}
+
+	// the last song channel whose route starts on the MIDI channel, else the given channel
+	private TGChannel findChannelStartingOn(int midiChannel, TGChannel found){
+		TGChannel channel = found;
+		for (TGChannel tgChannel : this.channels) {
+			GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
+			if (gmChannelRoute != null && midiChannel == gmChannelRoute.getChannel1()) {
+				channel = tgChannel;
+			}
+		}
+		return channel;
 	}
 
 	private class TempNote{
