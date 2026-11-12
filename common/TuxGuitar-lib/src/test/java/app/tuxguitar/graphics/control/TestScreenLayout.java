@@ -27,6 +27,9 @@ public class TestScreenLayout {
 
 	private final LayoutHarness harness = new LayoutHarness();
 	private int trackSelection = -1;
+	// where the song is painted from (a scroll), and whether measures are buffered
+	private float fromX = 0;
+	private boolean buffered = false;
 
 	public TestScreenLayout() {
 		harness.songManager.addTrack(harness.song);
@@ -41,12 +44,14 @@ public class TestScreenLayout {
 		layout.loadStyles(1f);
 		layout.updateSong();
 		harness.painter.clear();
-		layout.paintSong(harness.painter, clientArea, 0, 0);
+		layout.paintSong(harness.painter, clientArea, fromX, 0);
 		return layout;
 	}
 
 	private TGController controller() {
-		return new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), new LayoutHarness.TestLayoutStyles()) {
+		TGLayoutStyles styles = new LayoutHarness.TestLayoutStyles();
+		styles.setBufferEnabled(buffered);
+		return new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), styles) {
 			public int getTrackSelection() {
 				return trackSelection;
 			}
@@ -204,6 +209,71 @@ public class TestScreenLayout {
 			+ "t1 y=5.0 h=91.0 x=15.0 170.0 235.0 300.0 365.0 430.0 495.0 560.0\n"
 			+ "t2 y=102.0 h=79.0 x=15.0 115.0 180.0 245.0 310.0 375.0 440.0 505.0\n"
 			, vertical(TAB, area(0, 0, 2000, 2000)));
+	}
+
+	@Test
+	public void verticalShiftsItsLinesByTheScroll() {
+		fromX = -50;
+
+		assertEquals(""
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=1147\n"
+			+ "t1 y=5.0 h=91.0 x=-35.0 126.25 197.5 268.75\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=-35.0 30.0 95.0\n"
+			+ "t2 y=102.0 h=79.0 x=-35.0 68.0 136.0 204.0 272.0\n"
+			+ "t2 y=272.0 h=79.0 x=-35.0 30.0 95.0\n"
+			+ ""
+			, vertical(TAB, area(0, 0, 400, 2000)));
+	}
+
+	@Test
+	public void verticalPaintsAMeasureOnlyWhenItOverlapsTheArea() {
+		assertEquals(""
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=543\n"
+			+ "t1 y=5.0 h=91.0 x=15.0* 176.25 247.5 318.75\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0* 80.0* 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0* 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0* 80.0* 145.0\n"
+			+ "--\n"
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=1029\n"
+			+ "t1 y=5.0 h=91.0 x=15.0 176.25 247.5 318.75*\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0*\n"
+			+ "t2 y=272.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "--\n"
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=764\n"
+			+ "t1 y=5.0 h=91.0 x=15.0* 176.25* 247.5* 318.75*\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "--\n"
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=809\n"
+			+ "t1 y=5.0 h=91.0 x=15.0 176.25 247.5 318.75\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0* 80.0* 145.0*\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0* 80.0* 145.0*\n"
+			+ ""
+			, vertical(TAB, area(176.25f, 0, 400, 2000)) + "--\n" + vertical(TAB, area(-81.25f, 0, 400, 2000))
+			+ "--\n" + vertical(TAB, area(0, 96, 400, 2000)) + "--\n" + vertical(TAB, area(0, 0, 400, 107)));
+	}
+
+	@Test
+	public void bufferedVerticalLinesSpreadWholeUnitsOverTheirMeasures() {
+		buffered = true;
+
+		assertEquals(""
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=79\n"
+			+ "t1 y=5.0 h=91.0 x=15.0 176.0 248.0 319.0\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ ""
+			, vertical(TAB, area(0, 0, 400, 2000)));
 	}
 
 	// ---- horizontal ----

@@ -174,6 +174,89 @@ public class TestMeasurePainting {
 	}
 
 	@Test
+	public void onScreenAMeasureStartingALineHasItsBarLineRunDownToTheTablature() {
+		harness.song.getMeasureHeader(1).setLineBreak(true);
+		TGLayout layout = harness.screen(SCORE | TAB);
+		harness.painter.clear();
+		harness.measure(1).paintMeasure(layout, harness.painter);
+		String lineStart = barLines(harness.painter.calls());
+		harness.painter.clear();
+		harness.measure(2).paintMeasure(layout, harness.painter);
+
+		assertEquals(""
+			+ "setFont font(0.0)\n"
+			+ "setBackground rgb(0,0,0)\n"
+			+ "setForeground rgb(4,5,6)\n"
+			+ "drawString '2' 16.0 175.0\n"
+			+ "setFont font(0.0)\n"
+			+ "setBackground rgb(1,2,3)\n"
+			+ "setForeground rgb(1,2,3)\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "moveTo 15.0 171.0\n"
+			+ "lineTo 15.0 232.625\n"
+			+ "closePath\n"
+			+ "setLineWidth 1.0\n"
+			+ "setFont font(0.0)\n"
+			+ "setBackground rgb(1,2,3)\n"
+			+ "setForeground rgb(1,2,3)\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "moveTo 15.0 232.625\n"
+			+ "lineTo 15.0 272.625\n"
+			+ "closePath\n"
+			+ "setLineWidth 1.0\n"
+			+ "--\n"
+			+ "setFont font(0.0)\n"
+			+ "setBackground rgb(0,0,0)\n"
+			+ "setForeground rgb(4,5,6)\n"
+			+ "drawString '3' 136.0 175.0\n"
+			+ "setFont font(0.0)\n"
+			+ "setBackground rgb(1,2,3)\n"
+			+ "setForeground rgb(1,2,3)\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "moveTo 135.0 171.0\n"
+			+ "lineTo 135.0 199.0\n"
+			+ "closePath\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "addRectangle 249.0 171.0 1.0 28.0\n"
+			+ "closePath\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "addRectangle 252.0 171.0 3.0 28.0\n"
+			+ "closePath\n"
+			+ "setLineWidth 1.0\n"
+			+ "setFont font(0.0)\n"
+			+ "setBackground rgb(1,2,3)\n"
+			+ "setForeground rgb(1,2,3)\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "moveTo 135.0 232.625\n"
+			+ "lineTo 135.0 272.625\n"
+			+ "closePath\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "addRectangle 249.0 232.625 1.0 40.0\n"
+			+ "closePath\n"
+			+ "setLineWidth 0.0\n"
+			+ "initPath 3\n"
+			+ "setAntialias false\n"
+			+ "addRectangle 252.0 232.625 3.0 40.0\n"
+			+ "closePath\n"
+			+ "setLineWidth 1.0"
+			, lineStart + NEW_LINE + "--" + NEW_LINE + barLines(harness.painter.calls()));
+	}
+
+	@Test
 	public void barLinesAndRepeatDotsScaleAndSitAtTheEndOfAWiderMeasure() {
 		harness.scale = 2f;
 		harness.song.getMeasureHeader(1).setRepeatOpen(true);
