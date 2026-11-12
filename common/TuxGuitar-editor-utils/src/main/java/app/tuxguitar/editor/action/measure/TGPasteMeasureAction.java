@@ -1,5 +1,7 @@
 package app.tuxguitar.editor.action.measure;
 
+import java.util.List;
+
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
@@ -30,41 +32,54 @@ public class TGPasteMeasureAction extends TGActionBase{
 	protected void processAction(TGActionContext context){
 		Integer pasteMode = context.getAttribute(ATTRIBUTE_PASTE_MODE);
 		Integer pasteCount = context.getAttribute(ATTRIBUTE_PASTE_COUNT);
-
-		if( pasteMode > 0 && pasteCount > 0 ) {
+		TGSongSegment segment = TGClipboard.getInstance(this.getContext()).getSegment();
+		if( pasteMode > 0 && pasteCount > 0 && segment != null ) {
 			TGSongManager songManager = this.getSongManager(context);
 			TGSongSegmentHelper helper = new TGSongSegmentHelper(songManager);
-			TGSongSegment segment = TGClipboard.getInstance(this.getContext()).getSegment();
-			if( segment != null ) {
-				segment = helper.createSegmentCopies(segment, pasteCount);
-				if(!segment.isEmpty()) {
-					TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
-					TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
-					TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
-					TGMeasureHeader first = segment.getHeaders().get(0);
-
-					//Si el segmento tiene una sola pista,
-					//la pego en la pista seleccionada
-					int toTrack = (segment.getTracks().size() == 1 ? track.getNumber() : 0);
-
-					if( pasteMode.equals(TRANSFER_TYPE_REPLACE)) {
-						int count = segment.getHeaders().size();
-						int freeSpace =  (track.countMeasures() - (measure.getNumber() - 1));
-						long theMove = (measure.getStart() - first.getStart());
-
-						for(int i = freeSpace; i < count; i ++){
-							songManager.addNewMeasureBeforeEnd(song);
-						}
-						segment = segment.clone(songManager.getFactory());
-						helper.replaceMeasures(song, segment, theMove, toTrack);
-					} else if( pasteMode.equals(TRANSFER_TYPE_INSERT)) {
-						int fromNumber = measure.getNumber();
-						long theMove = (measure.getStart() - first.getStart());
-						segment = segment.clone(songManager.getFactory());
-						helper.insertMeasures(song, segment, fromNumber, theMove, toTrack);
-					}
-				}
+			TGTrack track = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK);
+			segment = helper.createSegmentCopies(segment, pasteCount);
+			if(!segment.isEmpty() && fitsTrack(segment, track)) {
+				this.paste(context, helper, segment, pasteMode, track);
 			}
 		}
+	}
+
+	private void paste(TGActionContext context, TGSongSegmentHelper helper, TGSongSegment segment, Integer pasteMode, TGTrack track){
+		TGSongManager songManager = this.getSongManager(context);
+		TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		TGMeasure measure = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_MEASURE);
+		TGMeasureHeader first = segment.getHeaders().get(0);
+
+		//Si el segmento tiene una sola pista,
+		//la pego en la pista seleccionada
+		int toTrack = (segment.getTracks().size() == 1 ? track.getNumber() : 0);
+
+		if( pasteMode.equals(TRANSFER_TYPE_REPLACE)) {
+			int count = segment.getHeaders().size();
+			int freeSpace =  (track.countMeasures() - (measure.getNumber() - 1));
+			long theMove = (measure.getStart() - first.getStart());
+
+			for(int i = freeSpace; i < count; i ++){
+				songManager.addNewMeasureBeforeEnd(song);
+			}
+			helper.replaceMeasures(song, segment.clone(songManager.getFactory()), theMove, toTrack);
+			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+		} else if( pasteMode.equals(TRANSFER_TYPE_INSERT)) {
+			int fromNumber = measure.getNumber();
+			long theMove = (measure.getStart() - first.getStart());
+			helper.insertMeasures(song, segment.clone(songManager.getFactory()), fromNumber, theMove, toTrack);
+			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+		}
+	}
+
+	// measures of one track paste onto a track of their kind: audio onto an audio track, notes onto any other
+	private boolean fitsTrack(TGSongSegment segment, TGTrack track) {
+		if( segment.getTracks().size() != 1 ) {
+			return true;
+		}
+		List<TGMeasure> measures = segment.getTracks().get(0).getMeasures();
+		boolean audio = measures.stream().anyMatch(measure -> !measure.getTakeClips().isEmpty());
+		boolean notes = measures.stream().flatMap(measure -> measure.getBeats().stream()).anyMatch(beat -> !beat.isRestBeat());
+		return (track.isAudio() ? !notes : !audio);
 	}
 }
