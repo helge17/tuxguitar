@@ -185,10 +185,6 @@ public class TGMeasureManager {
 
 	public void addNoteWithoutControl(TGBeat beat, TGNote note, TGDuration duration, int voiceIndex) {
 		TGVoice voice = beat.getVoice(voiceIndex);
-		boolean emptyVoice = voice.isEmpty();
-		if(emptyVoice){
-			voice.setEmpty( false );
-		}
 		// delete other notes on the same string
 		for( int v = 0 ; v < beat.countVoices() ; v ++ ){
 			removeNote(beat.getMeasure(),beat.getStart(), v, note.getString(), false);
@@ -948,55 +944,68 @@ public class TGMeasureManager {
 	public void updateBeatsPreciseStart(TGMeasure measure) {
 		List<TGBeat> beatsToDelete = new ArrayList<TGBeat>();
 		Collections.sort(measure.getBeats());
-		long voiceEnd[] = new long[TGBeat.MAX_VOICES];
-		boolean isFirstBeat = true;
+		long voiceEnd[] = null;
 		for (TGBeat beat : measure.getBeats()) {
-			if (isFirstBeat) {
-				// align beat at measure start
-				beat.setPreciseStart(beat.getMeasure().getPreciseStart());
-				long minVoiceEnd=0;
-				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
-					if (!beat.getVoice(v).isEmpty()) {
-						voiceEnd[v] = beat.getPreciseStart() + beat.getVoice(v).getDuration().getPreciseTime();
-						if ((minVoiceEnd == 0) || (voiceEnd[v] < minVoiceEnd)) {
-							minVoiceEnd = voiceEnd[v];
-						}
-					}
-				}
-				// theoretically useless: if one voice of first beat is empty, logically the voice
-				// shall be empty in the full measure. But we never know
-				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
-					voiceEnd[v] = Math.max(voiceEnd[v], minVoiceEnd);
-					}
+			if (voiceEnd == null) {
+				voiceEnd = alignFirstBeat(beat);
 			}
-			else {
-				// align beat left, avoiding conflicts ("holes" are easier to fix than overlaps)
-				long beatPreciseStart = 0;
-				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
-					if (!beat.getVoice(v).isEmpty()) {
-						if ((beatPreciseStart == 0) || (voiceEnd[v] > beatPreciseStart)) {
-							beatPreciseStart = voiceEnd[v];
-						}
-					}
-				}
-				if (beatPreciseStart == 0) {
-					// empty beat?!
-					beatsToDelete.add(beat);
-				}
-				else {
-					beat.setPreciseStart(beatPreciseStart);
-					for (int v=0; v<TGBeat.MAX_VOICES; v++) {
-						if (!beat.getVoice(v).isEmpty()) {
-							voiceEnd[v] = beat.getPreciseStart() + beat.getVoice(v).getDuration().getPreciseTime();
-						}
-					}
-				}
+			else if (!alignBeatLeft(beat, voiceEnd)) {
+				// empty beat?!
+				beatsToDelete.add(beat);
 			}
-			isFirstBeat = false;
 		}
-		for (TGBeat beat : beatsToDelete) {
-			this.removeBeat(beat);
+		removeBeats(beatsToDelete);
+	}
+
+	// aligns the beat at the measure start; returns where each voice ends, an empty voice where the shortest one ends
+	private long[] alignFirstBeat(TGBeat beat) {
+		beat.setPreciseStart(beat.getMeasure().getPreciseStart());
+		long voiceEnd[] = new long[TGBeat.MAX_VOICES];
+		setVoiceEnds(beat, voiceEnd);
+		// theoretically useless: if one voice of first beat is empty, logically the voice
+		// shall be empty in the full measure. But we never know
+		long minVoiceEnd = getShortestVoiceEnd(beat, voiceEnd);
+		for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+			voiceEnd[v] = Math.max(voiceEnd[v], minVoiceEnd);
 		}
+		return voiceEnd;
+	}
+
+	// aligns the beat left, where the last of its voices ends, avoiding conflicts ("holes" are easier to fix than
+	// overlaps), and records where its voices end; false when it has no voice, and was left in place
+	private boolean alignBeatLeft(TGBeat beat, long[] voiceEnd) {
+		long beatPreciseStart = 0;
+		for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+			if (!beat.getVoice(v).isEmpty()) {
+				beatPreciseStart = Math.max(beatPreciseStart, voiceEnd[v]);
+			}
+		}
+		if (beatPreciseStart == 0) {
+			return false;
+		}
+		beat.setPreciseStart(beatPreciseStart);
+		setVoiceEnds(beat, voiceEnd);
+		return true;
+	}
+
+	// records where each voice of the beat ends, for the voices it has
+	private void setVoiceEnds(TGBeat beat, long[] voiceEnd) {
+		for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+			if (!beat.getVoice(v).isEmpty()) {
+				voiceEnd[v] = getPreciseEnd(beat, beat.getVoice(v).getDuration());
+			}
+		}
+	}
+
+	// where the shortest voice of the beat ends, 0 when it has none
+	private long getShortestVoiceEnd(TGBeat beat, long[] voiceEnd) {
+		long minVoiceEnd = 0;
+		for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+			if (!beat.getVoice(v).isEmpty() && ((minVoiceEnd == 0) || (voiceEnd[v] < minVoiceEnd))) {
+				minVoiceEnd = voiceEnd[v];
+			}
+		}
+		return minVoiceEnd;
 	}
 
 	/**
@@ -1101,29 +1110,22 @@ public class TGMeasureManager {
 	}
 
 	public boolean changePickStrokeUp(TGMeasure measure, long start){
-		TGBeat beat = getBeat(measure, start);
-		if( beat != null ){
-			if (beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_UP){
-				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_UP);
-			} else {
-				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
-			}
-			return true;
-		}
-		return false;
+		return togglePickStroke(measure, start, TGPickStroke.PICK_STROKE_UP);
 	}
 
 	public boolean changePickStrokeDown(TGMeasure measure, long start){
+		return togglePickStroke(measure, start, TGPickStroke.PICK_STROKE_DOWN);
+	}
+
+	// sets the pick stroke of the beat at "start" to "direction", or clears it when it already has it; false without beat
+	private boolean togglePickStroke(TGMeasure measure, long start, int direction){
 		TGBeat beat = getBeat(measure, start);
-		if( beat != null ){
-			if (beat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_DOWN){
-				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_DOWN);
-			} else {
-				beat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
-			}
-			return true;
+		if( beat == null ){
+			return false;
 		}
-		return false;
+		boolean toggledOff = (beat.getPickStroke().getDirection() == direction);
+		beat.getPickStroke().setDirection(toggledOff ? TGPickStroke.PICK_STROKE_NONE : direction);
+		return true;
 	}
 
 	public void autoCompleteSilences(TGMeasure measure){
