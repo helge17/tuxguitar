@@ -1,9 +1,10 @@
 # Audio features (BDD with Cucumber): audio tracks, line-in recording, VST3 hosting
 
 Specification of audio tracks, line-in recording, VST3 effects and instruments, keeping audio in sync, saving and
-exporting it. It is written ahead of the implementation: every feature here is tagged `@planned`, its steps are not
-defined yet, and the normal run leaves it out (`src/test/resources/junit-platform.properties`). Remove the tag from a
-scenario when you start implementing it.
+exporting it. It is written ahead of the implementation: a scenario not implemented yet is tagged `@planned` (on the
+scenario, on an `Examples` block, or on the whole feature), and the normal run leaves it out
+(`src/test/resources/junit-platform.properties`). Remove the tag from a scenario when you start implementing it.
+Implemented so far: the model-level scenarios of `tracks/audio_tracks` and `recording/takes` (no rendering yet).
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions
@@ -12,7 +13,8 @@ are past-tense `Given`s; boundaries in Scenario Outlines; every `Then` fails if 
 | What | Where |
 |---|---|
 | Feature files | `src/test/resources/features/<area>/<name>.feature` (this folder) |
-| Step definitions | `src/test/java/app/tuxguitar/audio/features/*Steps.java` (none yet) |
+| Step definitions | `src/test/java/app/tuxguitar/audio/features/*Steps.java` |
+| Scenario state | `AudioWorld`: the song of a document (for undo), the Test Interface, remembered takes |
 | Runner | `TestFeatures` |
 
 ```
