@@ -348,33 +348,51 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return track;
 	}
 
+	// the header holding the tick, appending headers up to it; ticks before the first measure fall in it
 	private TGMeasureHeader getHeader(long tick){
-		long realTick = (tick >= TGDuration.QUARTER_TIME)?tick:TGDuration.QUARTER_TIME;
-
-		Iterator<TGMeasureHeader> it = this.headers.iterator();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if(realTick >= header.getStart() && realTick < header.getStart() + header.getLength()){
+		long realTick = toSongTick(tick);
+		for (TGMeasureHeader header : this.headers) {
+			if (contains(header.getStart(), header.getLength(), realTick)) {
 				return header;
 			}
 		}
+		appendHeader();
+		return getHeader(realTick);
+	}
+
+	private static long toSongTick(long tick){
+		return Math.max(tick, TGDuration.QUARTER_TIME);
+	}
+
+	private static boolean contains(long start, long length, long tick){
+		return (tick >= start && tick < start + length);
+	}
+
+	private void appendHeader(){
 		TGMeasureHeader last = getLastHeader();
 		TGMeasureHeader header = this.factory.newHeader();
-		header.setNumber((last != null)?last.getNumber() + 1:1);
-		header.setStart((last != null)?(last.getStart() + last.getLength()):TGDuration.QUARTER_TIME);
-		header.getTempo().setQuarterValue(  (last != null)?last.getTempo().getQuarterValue():120 );
-		if(last != null){
-			header.getTimeSignature().copyFrom(last.getTimeSignature());
-		}else{
-			header.getTimeSignature().setNumerator(4);
-			header.getTimeSignature().getDenominator().setValue(TGDuration.QUARTER);
+		if (last != null) {
+			continueHeader(header, last);
+		} else {
+			startFirstHeader(header);
 		}
 		this.headers.add(header);
+	}
 
-		if(realTick >= header.getStart() && realTick < header.getStart() + header.getLength()){
-			return header;
-		}
-		return getHeader(realTick);
+	private static void startFirstHeader(TGMeasureHeader header){
+		header.setNumber(1);
+		header.setStart(TGDuration.QUARTER_TIME);
+		header.getTempo().setQuarterValue(120);
+		header.getTimeSignature().setNumerator(4);
+		header.getTimeSignature().getDenominator().setValue(TGDuration.QUARTER);
+	}
+
+	// right after the last header, with its tempo and time signature
+	private static void continueHeader(TGMeasureHeader header, TGMeasureHeader last){
+		header.setNumber(last.getNumber() + 1);
+		header.setStart(last.getStart() + last.getLength());
+		header.getTempo().setQuarterValue(last.getTempo().getQuarterValue());
+		header.getTimeSignature().copyFrom(last.getTimeSignature());
 	}
 
 	private TGMeasureHeader getLastHeader(){
@@ -385,11 +403,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	}
 
 	private TGMeasure getMeasure(TGTrack track, long tick){
-		long realTick = (tick >= TGDuration.QUARTER_TIME)?tick:TGDuration.QUARTER_TIME;
+		long realTick = toSongTick(tick);
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasure measure = it.next();
-			if(realTick >= measure.getStart() && realTick < measure.getStart() + measure.getLength()){
+			if(contains(measure.getStart(), measure.getLength(), realTick)){
 				return measure;
 			}
 		}
