@@ -290,7 +290,19 @@ public class TestTGDuration {
 		assertNotNull(list);
 		sum = getListSumDuration(list, null);
 		assertEquals(sum, toSplit);
+	}
 
+	@Test
+	public void testSplitDurationTriplet() {
+		// one specific test case (that failed)
+		// 2 triplet eighth, shall not go beyond 3:2 time division
+		long toSplit = TGDuration.WHOLE_PRECISE_DURATION*2*2/8/3;
+		List<TGDuration> list = TGDuration.splitPreciseDuration(toSplit, TGDuration.WHOLE_PRECISE_DURATION, factory);
+		long sum = getListSumDuration(list, null);
+		assertEquals(sum, toSplit);
+		for (TGDuration d : list) {
+			assertTrue(d.getDivision().getEnters() <= 3, "unexpected time division, Enters=" + String.valueOf(d.getDivision().getEnters()));
+		}
 	}
 
 	@Test
