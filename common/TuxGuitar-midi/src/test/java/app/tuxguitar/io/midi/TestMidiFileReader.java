@@ -8,8 +8,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.stream.Stream;
 
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import app.tuxguitar.io.midi.base.MidiSequence;
 
@@ -56,45 +59,23 @@ public class TestMidiFileReader {
 		assertTrue(stream.closed);
 	}
 
-	@Test
-	public void rejectsWrongMagic() {
-		assertRejected("not a MIDI file: wrong header magic", HEADER_MAGIC + 1, 6, 1, 1, PPQ_480);
+	// each header is rejected with its message; the SMPTE division is 25 frames per second (-25 in the high byte), 40 ticks per frame
+	@TestFactory
+	public Stream<DynamicTest> rejectsInvalidHeaders() {
+		return Stream.of(
+				rejected("not a MIDI file: wrong header magic", HEADER_MAGIC + 1, 6, 1, 1, PPQ_480),
+				rejected("corrupt MIDI file: wrong header length", HEADER_MAGIC, 5, 1, 1, PPQ_480),
+				rejected("corrupt MIDI file: illegal type", HEADER_MAGIC, 6, -1, 1, PPQ_480),
+				rejected("corrupt MIDI file: illegal type", HEADER_MAGIC, 6, 3, 1, PPQ_480),
+				rejected("this implementation doesn't support type 2 MIDI files", HEADER_MAGIC, 6, 2, 1, PPQ_480),
+				rejected("corrupt MIDI file: number of tracks must be positive", HEADER_MAGIC, 6, 1, 0, PPQ_480),
+				rejected("corrupt MIDI file: type 0 files must contain exactly one track", HEADER_MAGIC, 6, 0, 2, PPQ_480),
+				rejected("corrupt MIDI file: illegal frame division type", HEADER_MAGIC, 6, 1, 1, 0xe728));
 	}
 
-	@Test
-	public void rejectsShortHeader() {
-		assertRejected("corrupt MIDI file: wrong header length", HEADER_MAGIC, 5, 1, 1, PPQ_480);
-	}
-
-	@Test
-	public void rejectsNegativeType() {
-		assertRejected("corrupt MIDI file: illegal type", HEADER_MAGIC, 6, -1, 1, PPQ_480);
-	}
-
-	@Test
-	public void rejectsTypeAboveTwo() {
-		assertRejected("corrupt MIDI file: illegal type", HEADER_MAGIC, 6, 3, 1, PPQ_480);
-	}
-
-	@Test
-	public void rejectsTypeTwo() {
-		assertRejected("this implementation doesn't support type 2 MIDI files", HEADER_MAGIC, 6, 2, 1, PPQ_480);
-	}
-
-	@Test
-	public void rejectsZeroTracks() {
-		assertRejected("corrupt MIDI file: number of tracks must be positive", HEADER_MAGIC, 6, 1, 0, PPQ_480);
-	}
-
-	@Test
-	public void rejectsTypeZeroWithSeveralTracks() {
-		assertRejected("corrupt MIDI file: type 0 files must contain exactly one track", HEADER_MAGIC, 6, 0, 2, PPQ_480);
-	}
-
-	// 25 frames per second (-25 in the high byte), 40 ticks per frame
-	@Test
-	public void rejectsSmpteDivision() {
-		assertRejected("corrupt MIDI file: illegal frame division type", HEADER_MAGIC, 6, 1, 1, 0xe728);
+	private static DynamicTest rejected(String message, int magic, int headerLength, int type, int tracks, int division) {
+		String name = message + " (length " + headerLength + ", type " + type + ", tracks " + tracks + ")";
+		return DynamicTest.dynamicTest(name, () -> assertRejected(message, magic, headerLength, type, tracks, division));
 	}
 
 	private static void assertRejected(String message, int magic, int headerLength, int type, int tracks, int division) {

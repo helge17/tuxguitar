@@ -21,52 +21,14 @@ public class MidiFileReader implements MidiFileHeader{
 
 	public MidiSequence getSequence(InputStream stream)throws MidiFileException, IOException{
 		DataInputStream	in = new DataInputStream(stream);
-		if (in.readInt() != HEADER_MAGIC){
-			throw new MidiFileException("not a MIDI file: wrong header magic");
-		}
-		int headerLength = in.readInt();
-		if (headerLength < HEADER_LENGTH){
-			throw new MidiFileException("corrupt MIDI file: wrong header length");
-		}
-		int type = in.readShort();
-		if (type < 0 || type > 2){
-			throw new MidiFileException("corrupt MIDI file: illegal type");
-		}
-		if (type == 2){
-			throw new MidiFileException("this implementation doesn't support type 2 MIDI files");
-		}
-		int trackCount = in.readShort();
-		if (trackCount <= 0){
-			throw new MidiFileException("corrupt MIDI file: number of tracks must be positive");
-		}
-		if (type == 0 && trackCount != 1){
-			throw new MidiFileException("corrupt MIDI file: type 0 files must contain exactly one track");
-		}
-		float divisionType = -1.0F;
-		int resolution = -1;
-		int division = in.readUnsignedShort();
-		if ((division & 0x8000) != 0){
-			int frameType = -((division >>> 8) & 0xFF);
-			if(frameType == 24){
-				divisionType = MidiSequence.SMPTE_24;
-			}else if(frameType == 25){
-				divisionType = MidiSequence.SMPTE_25;
-			}else if(frameType == 29){
-				divisionType = MidiSequence.SMPTE_30DROP;
-			}else if(frameType == 30){
-				divisionType = MidiSequence.SMPTE_30;
-			}else{
-				throw new MidiFileException("corrupt MIDI file: illegal frame division type");
-			}
-			resolution = division & 0xff;
-		}else{
-			divisionType = MidiSequence.PPQ;
-			resolution = division & 0x7fff;
-		}
+		int headerLength = readHeaderLength(in);
+		int type = readType(in);
+		int trackCount = readTrackCount(in, type);
+		int resolution = readResolution(in);
 
 		in.skip(headerLength - HEADER_LENGTH);
 
-		MidiSequence sequence = new MidiSequence(divisionType,resolution);
+		MidiSequence sequence = new MidiSequence(MidiSequence.PPQ,resolution);
 		for (int i = 0; i < trackCount; i++){
 			MidiTrack track = new MidiTrack();
 			sequence.addTrack(track);
@@ -76,6 +38,50 @@ public class MidiFileReader implements MidiFileHeader{
 		in.close();
 
 		return sequence;
+	}
+
+	private static int readHeaderLength(DataInputStream in)throws MidiFileException, IOException{
+		if (in.readInt() != HEADER_MAGIC){
+			throw new MidiFileException("not a MIDI file: wrong header magic");
+		}
+		int headerLength = in.readInt();
+		if (headerLength < HEADER_LENGTH){
+			throw new MidiFileException("corrupt MIDI file: wrong header length");
+		}
+		return headerLength;
+	}
+
+	private static int readType(DataInputStream in)throws MidiFileException, IOException{
+		int type = in.readShort();
+		if (type < 0 || type > 2){
+			throw new MidiFileException("corrupt MIDI file: illegal type");
+		}
+		if (type == 2){
+			throw new MidiFileException("this implementation doesn't support type 2 MIDI files");
+		}
+		return type;
+	}
+
+	private static int readTrackCount(DataInputStream in, int type)throws MidiFileException, IOException{
+		int trackCount = in.readShort();
+		if (trackCount <= 0){
+			throw new MidiFileException("corrupt MIDI file: number of tracks must be positive");
+		}
+		if (type == 0 && trackCount != 1){
+			throw new MidiFileException("corrupt MIDI file: type 0 files must contain exactly one track");
+		}
+		return trackCount;
+	}
+
+	// only PPQ (ticks per quarter note) time division is read.
+	// SMPTE time division (high bit set) was always rejected: its frame type was decoded as -(high byte & 0xFF),
+	// which is never 24, 25, 29 or 30, so the SMPTE frame rate branches could not be reached.
+	private static int readResolution(DataInputStream in)throws MidiFileException, IOException{
+		int division = in.readUnsignedShort();
+		if ((division & 0x8000) != 0){
+			throw new MidiFileException("corrupt MIDI file: illegal frame division type");
+		}
+		return division & 0x7fff;
 	}
 
 	private void readTrack(DataInputStream in, MidiTrack track)throws MidiFileException, IOException{
