@@ -36,6 +36,7 @@ import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGTuning;
+import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.util.TGContext;
 
 public class MidiSongReader extends MidiFileFormat implements TGSongReader {
@@ -482,58 +483,9 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		while (!done) {
 			TGMeasure measure = getMeasure(getTrack(track), this.lastBeatEnd);
 			long measureEnd = measure.getStart() + measure.getLength();
-			long coarseTimeToFill = Math.min(nEnd, measureEnd) - this.lastBeatEnd;
-			long preciseTimeToFill = TGDuration.toPreciseTime(coarseTimeToFill);
-			
-			List<TGDuration> durationList = null;
-			if (this.settings.getQuantization()) {
-				durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
-					this.settings.getMaxDurationValue(),
-					this.settings.getMaxDivision());
-			}
-			else {
-				durationList = new ArrayList<TGDuration>();
-				durationList.add(TGDuration.fromTime(this.factory, coarseTimeToFill));
-			}
-
-			// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)
-			// note: won't work in all cases...
-			if (durationList.size() > 0) {
-				long relativeBeatPreciseStart = TGDuration.toPreciseTime(this.lastBeatEnd - measure.getStart());
-				if (    ((relativeBeatPreciseStart % durationList.get(0).getPreciseTime()) != 0) 
-					 && ((relativeBeatPreciseStart % durationList.get(durationList.size()-1).getPreciseTime()) == 0) ) {
-						Collections.reverse(durationList);
-				}
-			}
-
+			List<TGDuration> durationList = getDurationsToFill(measure, Math.min(nEnd, measureEnd) - this.lastBeatEnd);
 			for (TGDuration duration : durationList) {
-				long beatEnd = this.lastBeatEnd + duration.getTime();
-				if (beatEnd <= measureEnd) {
-					TGBeat beat = getBeat(measure, this.lastBeatEnd);
-					beat.getVoice(0).getDuration().copyFrom(duration);
-					if (this.tempNotes.isEmpty()) {
-						// rest beat
-						beat.getVoice(0).setEmpty(false);
-					}
-					else {
-						// fill with all notes
-						for (TempNote tempNote : this.tempNotes) {
-							int nValue = (tempNote.getValue() + this.settings.getTranspose());
-							int nVelocity = 64;
-							TGNote note = this.factory.newNote();
-							note.setValue(nValue);
-							note.setString(1);
-							note.setVelocity(nVelocity);
-							note.setTiedNote(tempNote.shallBeTied());
-							tempNote.setShallBeTied();
-							beat.getVoice(0).addNote(note);
-						}
-					}
-					this.lastBeatEnd = beatEnd;
-				}
-				else {
-					this.lastBeatEnd = measureEnd;
-				}
+				addTempNotesBeat(measure, measureEnd, duration);
 			}
 			if (durationList.isEmpty() && (nEnd > measureEnd)) {
 				// need to fill a space that goes beyond current measure, but end of measure
@@ -541,6 +493,65 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				this.lastBeatEnd = measureEnd;
 			}
 			done = (nEnd <= measureEnd);
+		}
+	}
+
+	// the beat durations filling the time from the last beat end, in the order they are written
+	private List<TGDuration> getDurationsToFill(TGMeasure measure, long coarseTimeToFill){
+		List<TGDuration> durationList = splitTimeToFill(measure, coarseTimeToFill);
+		// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)
+		// note: won't work in all cases...
+		if (!durationList.isEmpty()) {
+			long relativeBeatPreciseStart = TGDuration.toPreciseTime(this.lastBeatEnd - measure.getStart());
+			if (    ((relativeBeatPreciseStart % durationList.get(0).getPreciseTime()) != 0)
+				 && ((relativeBeatPreciseStart % durationList.get(durationList.size()-1).getPreciseTime()) == 0) ) {
+					Collections.reverse(durationList);
+			}
+		}
+		return durationList;
+	}
+
+	private List<TGDuration> splitTimeToFill(TGMeasure measure, long coarseTimeToFill){
+		if (this.settings.getQuantization()) {
+			return TGDuration.splitPreciseDurationApproximately(TGDuration.toPreciseTime(coarseTimeToFill), measure.getPreciseLength(), factory,
+				this.settings.getMaxDurationValue(),
+				this.settings.getMaxDivision());
+		}
+		List<TGDuration> durationList = new ArrayList<TGDuration>();
+		durationList.add(TGDuration.fromTime(this.factory, coarseTimeToFill));
+		return durationList;
+	}
+
+	// a beat at the last beat end holding the temporary notes, or a rest; a beat that would cross the measure end
+	// is not written, the measure end becomes the last beat end
+	private void addTempNotesBeat(TGMeasure measure, long measureEnd, TGDuration duration){
+		long beatEnd = this.lastBeatEnd + duration.getTime();
+		if (beatEnd > measureEnd) {
+			this.lastBeatEnd = measureEnd;
+			return;
+		}
+		TGVoice voice = getBeat(measure, this.lastBeatEnd).getVoice(0);
+		voice.getDuration().copyFrom(duration);
+		if (this.tempNotes.isEmpty()) {
+			// rest beat
+			voice.setEmpty(false);
+		}
+		else {
+			addTempNotes(voice);
+		}
+		this.lastBeatEnd = beatEnd;
+	}
+
+	// every temporary note, tied when it was already written in an earlier beat
+	private void addTempNotes(TGVoice voice){
+		for (TempNote tempNote : this.tempNotes) {
+			TGNote note = this.factory.newNote();
+			note.setValue(tempNote.getValue() + this.settings.getTranspose());
+			note.setString(1);
+			note.setVelocity(64);
+			note.setTiedNote(tempNote.shallBeTied());
+			tempNote.setShallBeTied();
+			voice.addNote(note);
 		}
 	}
 
