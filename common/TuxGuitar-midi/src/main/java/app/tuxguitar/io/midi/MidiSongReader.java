@@ -99,15 +99,13 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		this.tempNotes.clear();
 		int trackNumber = getNextTrackNumber();
 		// group simultaneous events in a list, then process the list
-		long previousTick = -1;
 		List<MidiEvent> tickEvents = new ArrayList<MidiEvent>();
 		for(int eventNb = 0;eventNb < track.size();eventNb ++){
 			MidiEvent event = track.get(eventNb);
-			if (event.getTick() > previousTick) {
+			if (!tickEvents.isEmpty() && event.getTick() > tickEvents.get(0).getTick()) {
 				parseEvents(tickEvents, seqTrackNb, trackNumber);
 			}
 			tickEvents.add(event);
-			previousTick = event.getTick();
 		}
 		parseEvents(tickEvents, seqTrackNb, trackNumber);
 	}
@@ -487,12 +485,12 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			for (TGDuration duration : durationList) {
 				addTempNotesBeat(measure, measureEnd, duration);
 			}
-			if (durationList.isEmpty() && (nEnd > measureEnd)) {
+			done = (nEnd <= measureEnd);
+			if (durationList.isEmpty() && !done) {
 				// need to fill a space that goes beyond current measure, but end of measure
 				// cannot be filled. This may lead to an invalid measure (too short voice)
 				this.lastBeatEnd = measureEnd;
 			}
-			done = (nEnd <= measureEnd);
 		}
 	}
 

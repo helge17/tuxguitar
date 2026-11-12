@@ -145,6 +145,14 @@ public class TestMidiSongReader {
 		assertEquals(127, song.getChannel(0).getVolume());
 	}
 
+	// a whole then a quarter fill a 5/4 measure; the whole starts on the beat, so the order is kept
+	@Test
+	public void keepsDurationsThatStartOnTheirOwnBeat() throws Exception {
+		TGSong song = read(null, track(meta(0, TIME_SIGNATURE, 5, 2), on(0, 0, 60), off(5 * Q, 0, 60)));
+
+		assertEquals(Arrays.asList("0:1 [60]", "3840:4 [60~]"), beats(song, 0, 0));
+	}
+
 	// ---- song structure
 
 	@Test
@@ -320,34 +328,25 @@ public class TestMidiSongReader {
 
 	// ---- tunings
 
-	@Test
-	public void tunesTrackWithTheFirstPriorityTuningCoveringItsNotes() throws Exception {
-		TGSong song = read(tunings(), unquantized(), track(on(0, 0, 45), off(Q, 0, 45), on(0, 0, 64), off(Q, 0, 64)));
-
-		assertEquals(Arrays.asList(64, 59, 55, 50, 45, 40), strings(song.getTrack(0)));
+	// the track plays the lowest and the highest key; the fret range is 29
+	@TestFactory
+	public Stream<DynamicTest> tunesTrackFromItsNoteRange() {
+		return Stream.of(
+				tuning("first priority tuning covering the notes", 45, 64, 64, 59, 55, 50, 45, 40),
+				tuning("lower priority tuning when the first does not cover", 30, 30, 43, 38, 33, 28),
+				// (70 - (29 - 4) - 10) / 6 = 5 semitones apart, from 10 up
+				tuning("six strings spread over a narrow range", 10, 70, 35, 30, 25, 20, 15, 10),
+				// (100 - 25 - 10) / 6 is over 5: 7 strings (100 - 25 - 10) / 7 = 9 semitones apart
+				tuning("seven strings spread over a wide range", 10, 100, 64, 55, 46, 37, 28, 19, 10));
 	}
 
-	@Test
-	public void tunesTrackWithALowerPriorityTuningWhenTheFirstDoesNotCover() throws Exception {
-		TGSong song = read(tunings(), unquantized(), track(on(0, 0, 30), off(Q, 0, 30)));
+	private DynamicTest tuning(String name, int lowest, int highest, Integer... strings) {
+		return DynamicTest.dynamicTest(name, () -> {
+			TGSong song = read(tunings(), unquantized(), track(on(0, 0, lowest), off(Q, 0, lowest), on(0, 0, highest), off(Q, 0, highest)));
 
-		assertEquals(Arrays.asList(43, 38, 33, 28), strings(song.getTrack(0)));
-	}
-
-	@Test
-	public void spreadsSixStringsOverANarrowRangeWithoutTuning() throws Exception {
-		TGSong song = read(tunings(), unquantized(), track(on(0, 0, 10), off(Q, 0, 10), on(0, 0, 70), off(Q, 0, 70)));
-
-		// (70 - (29 - 4) - 10) / 6 = 5 semitones apart, from 10 up
-		assertEquals(Arrays.asList(35, 30, 25, 20, 15, 10), strings(song.getTrack(0)));
-	}
-
-	@Test
-	public void spreadsSevenStringsOverAWideRangeWithoutTuning() throws Exception {
-		TGSong song = read(tunings(), unquantized(), track(on(0, 0, 10), off(Q, 0, 10), on(0, 0, 100), off(Q, 0, 100)));
-
-		// (100 - 25 - 10) / 6 is over 5: 7 strings (100 - 25 - 10) / 7 = 9 semitones apart
-		assertEquals(Arrays.asList(64, 55, 46, 37, 28, 19, 10), strings(song.getTrack(0)));
+			assertEquals(Arrays.asList(strings), strings(song.getTrack(0)));
+			assertEquals(numbersFromOne(strings.length), stringNumbers(song.getTrack(0)));
+		});
 	}
 
 	// ---- events
@@ -479,7 +478,7 @@ public class TestMidiSongReader {
 
 	private DynamicTest denominator(int exponent, int expected) {
 		return DynamicTest.dynamicTest(exponent + " -> " + expected, () -> {
-			TGSong song = read(unquantized(), track(meta(0, TIME_SIGNATURE, 2, exponent, 24, 8), on(0, 0, 60), off(Q / 4, 0, 60)));
+			TGSong song = read(unquantized(), track(meta(0, TIME_SIGNATURE, 2, exponent), on(0, 0, 60), off(Q / 4, 0, 60)));
 
 			assertEquals("1 @960 2/" + expected + " 120", headers(song).get(0));
 		});
@@ -551,5 +550,21 @@ public class TestMidiSongReader {
 			strings.add(string.getValue());
 		}
 		return strings;
+	}
+
+	private static List<Integer> stringNumbers(TGTrack track) {
+		List<Integer> numbers = new ArrayList<Integer>();
+		for (TGString string : track.getStrings()) {
+			numbers.add(string.getNumber());
+		}
+		return numbers;
+	}
+
+	private static List<Integer> numbersFromOne(int count) {
+		List<Integer> numbers = new ArrayList<Integer>();
+		for (int number = 1; number <= count; number++) {
+			numbers.add(number);
+		}
+		return numbers;
 	}
 }
