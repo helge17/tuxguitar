@@ -112,12 +112,15 @@ public final class TGMidiTaps {
 			TGAudioBuffer buffer = new TGAudioBuffer();
 			model.getChannelById(tap.getKey()).fillChain(buffer);
 			buffer.read(samples);
-			System.arraycopy(samples[0], 0, tap.getValue()[0], (int) block, count);
-			System.arraycopy(samples[1], 0, tap.getValue()[1], (int) block, count);
+			for (int side = 0; side < samples.length; side++) {
+				System.arraycopy(samples[side], 0, tap.getValue()[side], (int) block, count);
+			}
 		}
 	}
 
-	// the parser's events, each at the sample of the timeline where its tick plays (none outside it)
+	// the parser's events, each at the sample of the timeline where its tick plays (none outside it); the events before
+	// where playing starts (the channel settings at the start of the sequence among them) fall before sample 0, so they
+	// go out with the first block, in tick order
 	private static TreeMap<Long, List<Event>> schedule(TGSongManager songManager, TGSong song, MidiPlayerMode mode, TGTimeline timeline) {
 		MidiSequenceParser parser = new MidiSequenceParser(song, songManager, FLAGS);
 		if (mode.isLoop()) {
@@ -131,11 +134,9 @@ public final class TGMidiTaps {
 		for (int i = 0; i < timeline.count(); i++) {
 			TGPlayedMeasure measure = timeline.get(i);
 			long start = measure.getHeader().getStart() + moves.get(measure.getStep());
-			// the channel settings at the very start of the sequence are sent before the first measure
 			long from = (i == 0 ? Long.MIN_VALUE : start + measure.getFrom());
 			for (Event event : events.between(from, start + measure.getTo())) {
-				long sample = (i == 0 && event.tick < start + measure.getFrom() ? 0 : timeline.sampleAt(i, event.tick - start));
-				scheduled.computeIfAbsent(sample, key -> new ArrayList<Event>()).add(event);
+				scheduled.computeIfAbsent(timeline.sampleAt(i, event.tick - start), key -> new ArrayList<Event>()).add(event);
 			}
 		}
 		return scheduled;

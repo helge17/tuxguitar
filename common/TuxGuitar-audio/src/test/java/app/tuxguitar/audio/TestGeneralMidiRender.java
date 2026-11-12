@@ -66,6 +66,11 @@ public class TestGeneralMidiRender {
 
 	// from measure 1, or another one
 	private TGRender render(int sampleRate, int fromMeasure) throws MidiPlayerException {
+		return render(sampleRate, fromMeasure, Long.MAX_VALUE);
+	}
+
+	// from the start of a measure until a tick is reached
+	private TGRender render(int sampleRate, int fromMeasure, long stop) throws MidiPlayerException {
 		TGAudioSession session = TGAudioSession.getInstance(this.context);
 		session.setDevice(new TGAudioDevice() {
 			public int getSampleRate() {
@@ -78,7 +83,7 @@ public class TestGeneralMidiRender {
 		});
 		MidiPlayerMode mode = new MidiPlayerMode();
 		long start = song.getMeasureHeader(fromMeasure - 1).getStart();
-		TGTimeline timeline = new TGTimeline(song, TGSongTime.play(song, mode, start, Long.MAX_VALUE, 1), sampleRate);
+		TGTimeline timeline = new TGTimeline(song, TGSongTime.play(song, mode, start, stop, 1), sampleRate);
 		return new TGRenderer(this.context, this.songManager, this.song, session).render(timeline, mode, false, true);
 	}
 
@@ -140,6 +145,19 @@ public class TestGeneralMidiRender {
 		assertTrue(Meters.peak(render(44100).getTap(song.getTrack(0)), 0, 20000) > 0.01);
 	}
 
+	// at 48000 Hz and 120 bpm a tick is 25 samples: a note at tick 512 falls on sample 12800, the first of a block, so
+	// it goes out with a note at tick 513 (sample 12825), not with the block before
+	@Test
+	public void aNoteOnTheFirstSampleOfABlockGoesOutWithThatBlock() throws MidiPlayerException {
+		assertEquals(firstSoundOfANoteAt(513), firstSoundOfANoteAt(512));
+	}
+
+	private int firstSoundOfANoteAt(long tick) throws MidiPlayerException {
+		song.getTrack(0).getMeasure(0).clear();
+		note(song.getTrack(0).getMeasure(0), tick);
+		return firstSound(render(48000).getTap(song.getTrack(0)));
+	}
+
 	// a song of two measures, a note in measure 2 only
 	private void twoMeasures() {
 		songManager.addNewMeasureBeforeEnd(song);
@@ -152,6 +170,36 @@ public class TestGeneralMidiRender {
 		twoMeasures();
 		float[] tap = render(44100).getTap(song.getTrack(0));
 		assertEquals(88200, firstSound(tap), 512);
+	}
+
+	// the same note on beat 1 of measures 1 and 2: the one on the measure line goes out once, as loud as the other
+	@Test
+	public void aNoteOnAMeasureLineGoesOutOnce() throws MidiPlayerException {
+		twoMeasures();
+		note(song.getTrack(0).getMeasure(0), 0);
+		float[] tap = render(44100).getTap(song.getTrack(0));
+		float first = Meters.peak(tap, 0, 30000);
+		assertTrue(first > 0.01);
+		assertEquals(first, Meters.peak(tap, 88200, 118200), first * 0.05);
+	}
+
+	// a note sounds as loud whether or not the measure after it is played
+	@Test
+	public void aNoteSoundsAsLoudWhenTheMeasureAfterItPlays() throws MidiPlayerException {
+		twoMeasures();
+		note(song.getTrack(0).getMeasure(0), 0);
+		float alone = Meters.peak(render(44100, 1, song.getMeasureHeader(1).getStart()).getTap(song.getTrack(0)), 0, 30000);
+		assertTrue(alone > 0.01);
+		assertEquals(alone, Meters.peak(render(44100).getTap(song.getTrack(0)), 0, 30000), alone * 0.05);
+	}
+
+	// playing stops where measure 2 starts: its note, on that tick, is not sent
+	@Test
+	public void aNoteWherePlayingStopsIsNotSent() throws MidiPlayerException {
+		twoMeasures();
+		float[] tap = render(44100, 1, song.getMeasureHeader(1).getStart()).getTap(song.getTrack(0));
+		assertEquals(88200, tap.length);
+		assertEquals(0, Meters.peak(tap, 0, tap.length), 0.001);
 	}
 
 	// the channel's program, sent before measure 1, is sent when playing starts later
