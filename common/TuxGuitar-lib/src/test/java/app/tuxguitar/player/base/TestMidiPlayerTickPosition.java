@@ -2,7 +2,6 @@ package app.tuxguitar.player.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -18,68 +17,17 @@ import app.tuxguitar.song.models.TGBeat;
  * plays the count down between its own notifications, moves the sequencer when a new position was set, starts it,
  * then reads back where the sequencer is; on a failure the player resets.
  *
- * The song has 4 measures; no thread handler is installed, so the play loop that follows does not run. The sequencer
- * logs "start", "stop" and "seek position"; the player's notifications are logged by name.
+ * The song has 4 measures and plays through a FakeSequencer (see PlayingFixture); the play loop that follows is
+ * only handed to the thread handler, not run.
  */
 public class TestMidiPlayerTickPosition {
 
-	private static final long SEQUENCE_LENGTH = 16320;
+	private static final long SEQUENCE_LENGTH = FakeSequencer.SEQUENCE_LENGTH;
 
-	private final PlayerSongFixture fixture = new PlayerSongFixture();
+	private final PlayingFixture fixture = new PlayingFixture();
 	private final MidiPlayer player = fixture.player;
-	private final FakeSequencer sequencer = new FakeSequencer();
-	private final List<String> log = new ArrayList<String>();
-
-	private class FakeSequencer implements MidiSequencer {
-		private long position = 1234;
-		private boolean running = false;
-		private boolean broken = false;
-
-		public String getKey() { return "fake"; }
-		public String getName() { return "fake"; }
-		public void open() { }
-		public void close() { }
-		public void check() { }
-		public void setTransmitter(MidiTransmitter transmitter) { }
-		public MidiSequenceHandler createSequence(int tracks) { return null; }
-		public void setSolo(int index, boolean solo) { }
-		public void setMute(int index, boolean mute) { }
-		public boolean isRunning() { return this.running; }
-		public long getTickPosition() { return this.position; }
-		public long getTickLength() { return SEQUENCE_LENGTH; }
-
-		public void start() throws MidiPlayerException {
-			fail("start");
-			log.add("start");
-		}
-
-		public void stop() {
-			log.add("stop");
-			this.running = false;
-		}
-
-		public void setTickPosition(long tickPosition) throws MidiPlayerException {
-			fail("seek");
-			log.add("seek " + tickPosition);
-			this.position = tickPosition;
-		}
-
-		private void fail(String action) throws MidiPlayerException {
-			if (this.broken) {
-				throw new MidiPlayerException("cannot " + action);
-			}
-		}
-	}
-
-	private static final String[] NOTIFICATIONS = {"", "started", "stopped", "count down started", "count down stopped", "loop"};
-
-	public TestMidiPlayerTickPosition() {
-		player.loadSequencer(sequencer);
-		player.addListener(event -> {
-			int type = (Integer) event.getAttribute(MidiPlayerEvent.PROPERTY_NOTIFICATION_TYPE);
-			log.add(NOTIFICATIONS[type]);
-		});
-	}
+	private final FakeSequencer sequencer = fixture.sequencer;
+	private final List<String> log = fixture.log;
 
 	// ---- changeTickPosition ----
 

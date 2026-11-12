@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasureHeader;
@@ -335,6 +336,86 @@ public class TestSequenceParserNotes {
 		note.getEffect().setVibrato(true);
 		note.getEffect().setTremoloBar(tremoloBar);
 		assertEquals(events(INITIAL_BEND, bend(1440, 69), bend(1920, 64), note(960, 1920, 64, 95, 1, 1)), song.notesAndBends());
+	}
+
+	// ---- pitch curves: a bend or tremolo bar through several points, on a quarter note from 960 to 1920 ----
+
+	// adds the points, given as position, value pairs
+	private static void points(BiConsumer<Integer, Integer> addPoint, int... positionsAndValues) {
+		for (int i = 0; i < positionsAndValues.length; i += 2) {
+			addPoint.accept(positionsAndValues[i], positionsAndValues[i + 1]);
+		}
+	}
+
+	private List<String> bentQuarter(int... positionsAndValues) {
+		TGEffectBend bend = song.factory.newEffectBend();
+		points(bend::addPoint, positionsAndValues);
+		song.quarter(1, 0).getEffect().setBend(bend);
+		return song.notesAndBends();
+	}
+
+	private List<String> tremoloBarQuarter(int... positionsAndValues) {
+		TGEffectTremoloBar tremoloBar = song.factory.newEffectTremoloBar();
+		points(tremoloBar::addPoint, positionsAndValues);
+		song.quarter(1, 0).getEffect().setTremoloBar(tremoloBar);
+		return song.notesAndBends();
+	}
+
+	// the events of the quarter note played with these bends
+	private static List<String> quarterWith(String... bends) {
+		return events(INITIAL_BEND, bends, note(960, 1920, 64, 95, 1, 1));
+	}
+
+	@Test
+	public void bendRisesOneStepAtATimeToTheNextPoint() {
+		assertEquals(quarterWith(bend(960, 64),
+				bend(1056, 65), bend(1152, 66), bend(1248, 67), bend(1344, 68), bend(1440, 69),
+				bend(1440, 69), bend(1920, 64)), bentQuarter(0, 0, 6, 2));
+	}
+
+	@Test
+	public void bendHoldsBetweenEqualPointsThenFallsOneStepAtATime() {
+		assertEquals(quarterWith(bend(960, 69), bend(1440, 69),
+				bend(1536, 68), bend(1632, 67), bend(1728, 66), bend(1824, 65), bend(1920, 64),
+				bend(1920, 64), bend(1920, 64)), bentQuarter(0, 2, 6, 2, 12, 0));
+	}
+
+	@Test
+	public void bendStepsAreWholeTicksApart() {
+		// 80 ticks for 11 steps: 7 ticks each
+		assertEquals(quarterWith(bend(960, 64),
+				bend(967, 65), bend(974, 66), bend(981, 67), bend(988, 68), bend(995, 69), bend(1002, 70),
+				bend(1009, 71), bend(1016, 72), bend(1023, 73), bend(1030, 74), bend(1037, 75),
+				bend(1040, 75), bend(1920, 64)), bentQuarter(0, 0, 1, 4));
+	}
+
+	@Test
+	public void tremoloBarRisesAndFallsOneStepAtATime() {
+		assertEquals(quarterWith(bend(960, 64),
+				bend(1056, 65), bend(1152, 66), bend(1248, 67), bend(1344, 68), bend(1440, 69),
+				bend(1440, 69),
+				bend(1536, 68), bend(1632, 67), bend(1728, 66), bend(1824, 65), bend(1920, 64),
+				bend(1920, 64), bend(1920, 64)), tremoloBarQuarter(0, 0, 6, 1, 12, 0));
+	}
+
+	@Test
+	public void tremoloBarStepsStopAtTheHighestPitch() {
+		assertEquals(quarterWith(bend(960, 124),
+				bend(1040, 125), bend(1120, 126), bend(1200, 127), bend(1280, 127), bend(1360, 127), bend(1440, 127),
+				bend(1440, 127), bend(1920, 64)), tremoloBarQuarter(0, 11, 6, 12));
+	}
+
+	@Test
+	public void aTremoloBarHeldAboveThePitchRangeStepsTowardsItsValueOutsideIt() {
+		// 12 is pitch 130 (played 127), -12 is pitch -2 (played 0): the steps go from the played pitch to the value
+		assertEquals(quarterWith(bend(960, 127), bend(1280, 127), bend(1600, 127), bend(1920, 127), bend(1920, 127),
+				bend(1920, 64)), tremoloBarQuarter(0, 12, 12, 12));
+	}
+
+	@Test
+	public void aTremoloBarHeldBelowThePitchRangeStepsTowardsItsValueOutsideIt() {
+		assertEquals(quarterWith(bend(960, 0), bend(1440, 0), bend(1920, 0), bend(1920, 0),
+				bend(1920, 64)), tremoloBarQuarter(0, -12, 12, -12));
 	}
 
 	@Test

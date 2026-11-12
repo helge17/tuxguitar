@@ -14,7 +14,8 @@ import app.tuxguitar.util.TGContext;
 /**
  * Pins how the player picks its output port and sequencer from a list (MidiPlayer.openOutputPort /
  * openSequencer): the device with the chosen key, unless it is already open; else, when asked to, the first device
- * of the list, but only while none is open.
+ * of the list, but only while none is open. Removing a sequencer provider (MidiPlayer.removeSequencerProvider) closes
+ * the open sequencer when the provider lists one with its key.
  *
  * Devices log "open key" and "close key"; a device named with a '!' fails to open. A key is chosen the way the
  * application does, through openOutputPort(key, tryFirst) / openSequencer(key, tryFirst), among the devices listed
@@ -100,15 +101,17 @@ public class TestMidiPlayerDevices {
 	private List<MidiOutputPort> availablePorts = new ArrayList<MidiOutputPort>();
 	private List<MidiSequencer> availableSequencers = new ArrayList<MidiSequencer>();
 
+	private final MidiSequencerProvider sequencerProvider = new MidiSequencerProvider() {
+		public List<MidiSequencer> listSequencers() { return availableSequencers; }
+		public void closeAll() { }
+	};
+
 	public TestMidiPlayerDevices() throws MidiPlayerException {
 		player.addOutputPortProvider(new MidiOutputPortProvider() {
 			public List<MidiOutputPort> listPorts() { return availablePorts; }
 			public void closeAll() { }
 		}, false);
-		player.addSequencerProvider(new MidiSequencerProvider() {
-			public List<MidiSequencer> listSequencers() { return availableSequencers; }
-			public void closeAll() { }
-		}, false);
+		player.addSequencerProvider(sequencerProvider, false);
 	}
 
 	// the log of choosing a key among the available ports, then the key of the open port
@@ -124,8 +127,19 @@ public class TestMidiPlayerDevices {
 		availableSequencers = sequencers;
 		log.clear();
 		player.openSequencer(key, tryFirst);
+		return String.join(", ", log) + " -> " + openSequencerKey();
+	}
+
+	// removes the provider of the available sequencers: the log, the key of the open sequencer, how many are listed
+	private String removeSequencerProvider() throws MidiPlayerException {
+		log.clear();
+		player.removeSequencerProvider(sequencerProvider);
+		return String.join(", ", log) + " -> " + openSequencerKey() + ", listed " + player.listSequencers().size();
+	}
+
+	private String openSequencerKey() {
 		MidiSequencer open = player.getSequencer();
-		return String.join(", ", log) + " -> " + (open instanceof MidiSequencerEmpty ? "none" : open.getKey());
+		return (open instanceof MidiSequencerEmpty ? "none" : open.getKey());
 	}
 
 	@Test
@@ -233,6 +247,23 @@ public class TestMidiPlayerDevices {
 		assertEquals("open a -> a", openSequencer(null, sequencers("a", "b"), true));
 		assertEquals(" -> a", openSequencer(null, sequencers("c"), true));
 		assertEquals(" -> a", openSequencer(null, sequencers(), true));
+	}
+
+	@Test
+	public void removingTheProviderOfTheOpenSequencerClosesItOnly() throws MidiPlayerException {
+		openSequencer("b", sequencers("a", "b"), false);
+		availableSequencers = sequencers("c");
+		String another = removeSequencerProvider();
+		availableSequencers = sequencers("a", "b");
+
+		assertEquals(" -> b, listed 0 / close b -> none, listed 0", another + " / " + removeSequencerProvider());
+	}
+
+	@Test
+	public void withoutAnOpenSequencerRemovingAProviderClosesNothing() throws MidiPlayerException {
+		availableSequencers = sequencers("a");
+
+		assertEquals(" -> none, listed 0", removeSequencerProvider());
 	}
 
 	@Test

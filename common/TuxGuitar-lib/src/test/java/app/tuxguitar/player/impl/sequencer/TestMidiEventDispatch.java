@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import app.tuxguitar.player.base.MidiReceiver;
+import app.tuxguitar.player.base.MidiReceiverRecorder;
 import app.tuxguitar.player.base.MidiTransmitter;
 import app.tuxguitar.util.TGContext;
 
@@ -15,7 +15,7 @@ import app.tuxguitar.util.TGContext;
  * Pins what the sequencer does with an event it sends (MidiEventDispacher.dispatch): channel events reach the
  * receivers of its transmitter, a tempo event changes its tempo, and other events are dropped.
  *
- * A received call is written "kind a b c ...", in argument order; bend mode is written 0/1.
+ * A received call is written as MidiReceiverRecorder writes it.
  */
 public class TestMidiEventDispatch {
 
@@ -29,7 +29,7 @@ public class TestMidiEventDispatch {
 
 	public TestMidiEventDispatch() {
 		MidiTransmitter transmitter = new MidiTransmitter();
-		transmitter.addReceiver("recorder", new Recorder());
+		transmitter.addReceiver("recorder", new MidiReceiverRecorder(received));
 		sequencer.setTransmitter(transmitter);
 	}
 
@@ -70,52 +70,5 @@ public class TestMidiEventDispatch {
 	public void otherEventsAreDropped() throws Exception {
 		assertEquals("", send(new MidiEvent(0, MidiEvent.MIDI_SYSTEM_EVENT, new byte[] {0x2F, 0x20, (byte) 0xA1, 0x07})));
 		assertEquals("", send(MidiEvent.trackName(0, 0, "name")));
-	}
-
-	private class Recorder implements MidiReceiver {
-
-		private void record(String kind, int... values) {
-			StringBuilder call = new StringBuilder(kind);
-			for (int value : values) {
-				call.append(' ').append(value);
-			}
-			received.add(call.toString());
-		}
-
-		private int bit(boolean value) {
-			return value ? 1 : 0;
-		}
-
-		public void sendNoteOn(int channel, int key, int velocity, int voice, boolean bendMode) {
-			record("on", channel, key, velocity, voice, bit(bendMode));
-		}
-
-		public void sendNoteOff(int channel, int key, int velocity, int voice, boolean bendMode) {
-			record("off", channel, key, velocity, voice, bit(bendMode));
-		}
-
-		public void sendPitchBend(int channel, int value, int voice, boolean bendMode) {
-			record("bend", channel, value, voice, bit(bendMode));
-		}
-
-		public void sendProgramChange(int channel, int value) {
-			record("program", channel, value);
-		}
-
-		public void sendControlChange(int channel, int controller, int value) {
-			record("cc", channel, controller, value);
-		}
-
-		public void sendParameter(int channelId, String key, String value) {
-			received.add("parameter " + channelId + " " + key + "=" + value);
-		}
-
-		public void sendAllNotesOff() {
-			received.add("all notes off");
-		}
-
-		public void sendPitchBendReset() {
-			received.add("pitch bend reset");
-		}
 	}
 }

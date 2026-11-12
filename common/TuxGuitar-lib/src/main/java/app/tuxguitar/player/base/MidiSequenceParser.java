@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
@@ -21,11 +23,9 @@ import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVelocities;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
-import app.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
 import app.tuxguitar.song.models.effects.TGEffectHarmonic;
 import app.tuxguitar.song.models.effects.TGEffectTremoloBar;
-import app.tuxguitar.song.models.effects.TGEffectTremoloBar.TremoloBarPoint;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class MidiSequenceParser {
@@ -381,76 +381,47 @@ public class MidiSequenceParser {
 	}
 
 	public void addBend(MidiSequenceHelper sh,int track,long start, long duration, TGEffectBend bend, int channel, int midiVoice, boolean bendMode){
-		List<BendPoint> points = bend.getPoints();
-		for(int i=0;i<points.size();i++){
-			TGEffectBend.BendPoint point = points.get(i);
-			long bendStart = start + point.getTime(duration);
-			int value = DEFAULT_BEND + (int)(point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
-			value = ((value <= 127)?value:127);
-			value = ((value >= 0)?value:0);
-			addBend(sh, track, bendStart, value, channel, midiVoice, bendMode);
-
-			if(points.size() > i + 1){
-				TGEffectBend.BendPoint nextPoint = points.get(i + 1);
-				int nextValue = DEFAULT_BEND + (int)(nextPoint.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH);
-				long nextBendStart = start + nextPoint.getTime(duration);
-				if(nextValue != value){
-					double width = ( (nextBendStart - bendStart) / Math.abs(  (nextValue - value) ) );
-					//ascendente
-					if(value < nextValue){
-						while(value < nextValue){
-							value ++;
-							bendStart +=width;
-							addBend(sh, track, bendStart,((value <= 127) ? value : 127), channel, midiVoice, bendMode);
-						}
-						//descendente
-					}else if(value > nextValue){
-						while(value > nextValue){
-							value --;
-							bendStart +=width;
-							addBend(sh, track, bendStart,((value >= 0) ? value : 0), channel, midiVoice, bendMode);
-						}
-					}
-				}
-			}
-		}
-		addBend(sh, track, start + duration, DEFAULT_BEND, channel, midiVoice, bendMode);
+		List<PitchPoint> curve = pitchCurve(bend.getPoints(), point -> start + point.getTime(duration),
+				point -> DEFAULT_BEND + (int)(point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH));
+		addPitchCurve(sh, track, curve, start + duration, channel, midiVoice, bendMode);
 	}
 
+	// a tremolo bar point's value counts whole tones
 	public void addTremoloBar(MidiSequenceHelper sh,int track,long start, long duration, TGEffectTremoloBar effect, int channel, int midiVoice, boolean bendMode){
-		List<TremoloBarPoint> points = effect.getPoints();
-		for(int i=0;i<points.size();i++){
-			TGEffectTremoloBar.TremoloBarPoint point = points.get(i);
-			long pointStart = start + point.getTime(duration);
-			int value = DEFAULT_BEND + (int)(point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2) );
-			value = ((value <= 127)?value:127);
-			value = ((value >= 0)?value:0);
-			addBend(sh, track, pointStart, value, channel, midiVoice, bendMode);
-			if(points.size() > i + 1){
-				TGEffectTremoloBar.TremoloBarPoint nextPoint = points.get(i + 1);
-				int nextValue = DEFAULT_BEND + (int)(nextPoint.getValue() * (DEFAULT_BEND_SEMI_TONE * 2));
-				long nextPointStart = start + nextPoint.getTime(duration);
-				if(nextValue != value){
-					double width = ( (nextPointStart - pointStart) / Math.abs(  (nextValue - value) ) );
-					//ascendente
-					if(value < nextValue){
-						while(value < nextValue){
-							value ++;
-							pointStart +=width;
-							addBend(sh, track, pointStart,((value <= 127) ? value : 127), channel, midiVoice, bendMode);
-						}
-					//descendente
-					}else if(value > nextValue){
-						while(value > nextValue){
-							value --;
-							pointStart += width;
-							addBend(sh, track, pointStart,((value >= 0) ? value : 0), channel, midiVoice, bendMode);
-						}
-					}
-				}
+		List<PitchPoint> curve = pitchCurve(effect.getPoints(), point -> start + point.getTime(duration),
+				point -> DEFAULT_BEND + (int)(point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2)));
+		addPitchCurve(sh, track, curve, start + duration, channel, midiVoice, bendMode);
+	}
+
+	// the points of a bend or tremolo bar as a pitch curve: when each point is, and its pitch bend value
+	private <P> List<PitchPoint> pitchCurve(List<P> points, ToLongFunction<P> start, ToIntFunction<P> pitch) {
+		List<PitchPoint> curve = new ArrayList<PitchPoint>();
+		for(P point : points){
+			curve.add(new PitchPoint(start.applyAsLong(point), pitch.applyAsInt(point)));
+		}
+		return curve;
+	}
+
+	// plays each point's pitch then steps towards the next point's, and returns to the normal pitch at the end
+	private void addPitchCurve(MidiSequenceHelper sh, int track, List<PitchPoint> curve, long end, int channel, int midiVoice, boolean bendMode) {
+		for(int i = 0; i < curve.size(); i++){
+			PitchPoint point = curve.get(i).played();
+			addBend(sh, track, point.start, point.pitch, channel, midiVoice, bendMode);
+			if(i + 1 < curve.size()){
+				addPitchSteps(sh, track, point, curve.get(i + 1), channel, midiVoice, bendMode);
 			}
 		}
-		addBend(sh, track, start + duration, DEFAULT_BEND, channel, midiVoice, bendMode);
+		addBend(sh, track, end, DEFAULT_BEND, channel, midiVoice, bendMode);
+	}
+
+	// one pitch bend per value from a point's pitch to the next point's, a whole number of ticks apart
+	private void addPitchSteps(MidiSequenceHelper sh, int track, PitchPoint from, PitchPoint to, int channel, int midiVoice, boolean bendMode) {
+		int steps = Math.abs(to.pitch - from.pitch);
+		int direction = Integer.signum(to.pitch - from.pitch);
+		long width = (to.start - from.start) / Math.max(steps, 1);
+		for(int step = 1; step <= steps; step++){
+			addBend(sh, track, from.start + (width * step), from.pitch + (direction * step), channel, midiVoice, bendMode);
+		}
 	}
 
 	private void addSlide(MidiSequenceHelper sh, TGNote note, TGTrack track, int mIndex, int bIndex, long startMove ,int channel, int midiVoice, boolean bendMode){
@@ -831,6 +802,22 @@ public class MidiSequenceParser {
 
 	private int fix(int value) {
 		return this.fix(value, 0, 127);
+	}
+
+	// a point of a pitch curve: when it is, and its pitch bend value, which may lie outside the MIDI range
+	private class PitchPoint {
+		private final long start;
+		private final int pitch;
+
+		public PitchPoint(long start, int pitch){
+			this.start = start;
+			this.pitch = pitch;
+		}
+
+		// the point as played, its pitch within the MIDI range
+		public PitchPoint played() {
+			return new PitchPoint(this.start, fix(this.pitch));
+		}
 	}
 
 	private class MidiTickHelper{
