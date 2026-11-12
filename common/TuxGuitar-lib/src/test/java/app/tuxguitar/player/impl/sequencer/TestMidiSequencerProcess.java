@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiReceiverRecorder;
 import app.tuxguitar.player.base.MidiSequenceHandler;
 import app.tuxguitar.player.base.MidiTransmitter;
 import app.tuxguitar.util.TGContext;

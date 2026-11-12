@@ -1,18 +1,16 @@
-package app.tuxguitar.player.impl.sequencer;
+package app.tuxguitar.player.base;
 
 import java.util.List;
-
-import app.tuxguitar.player.base.MidiReceiver;
 
 /**
  * A MidiReceiver that writes each call it receives as one line, "kind a b c ..." in argument order; bend mode is
  * written 0/1.
  */
-class MidiReceiverRecorder implements MidiReceiver {
+public class MidiReceiverRecorder implements MidiReceiver {
 
 	private final List<String> received;
 
-	MidiReceiverRecorder(List<String> received) {
+	public MidiReceiverRecorder(List<String> received) {
 		this.received = received;
 	}
 
