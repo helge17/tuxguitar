@@ -74,6 +74,32 @@ public class TestSelectionPainting {
 			, selection(TAB, beat(0, 2), beat(2, 1)));
 	}
 
+	@Test
+	public void theSelectionScalesAndFollowsTheBeatsOfAWiderMeasure() {
+		harness.scale = 2f;
+		harness.print(TAB);
+		TGLayout layout = harness.layout();
+		harness.measure(0).setSpacing(40f);
+		harness.measure(1).setSpacing(40f);
+		harness.painter.clear();
+		((TGTrackImpl) harness.song.getTrack(0)).paintBeatSelection(layout, harness.painter, beat(0, 1), beat(1, 2));
+
+		assertEquals(""
+			+ "addRectangle 175.0 134.0 195.0 112.0\n"
+			+ "--\n"
+			+ "addRectangle 20.0 316.0 175.0 112.0\n"
+			+ "--\n"
+			+ "setLineWidth 2.0\n"
+			+ "--\n"
+			+ "setLineWidth 2.0\n"
+			+ "--\n"
+			+ "setLineWidth 2.0\n"
+			+ "--\n"
+			+ "setLineWidth 2.0"
+			, String.join(SEPARATOR, harness.painter.callsStartingWith("addRectangle")) + SEPARATOR
+			+ String.join(SEPARATOR, harness.painter.callsStartingWith("setLineWidth")));
+	}
+
 	// ---- expected drawings ----
 
 	// a translucent box, then its outline

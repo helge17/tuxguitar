@@ -79,10 +79,13 @@ public class FakeResourceFactory implements UIResourceFactory {
 
 	private static class FakeImage extends FakeResource implements UIImage {
 		private final float width, height;
+		private final RecordingPainter painter = new RecordingPainter();
 
 		FakeImage(float width, float height) { this.width = width; this.height = height; }
 		public float getWidth() { return this.width; }
 		public float getHeight() { return this.height; }
-		public UIPainter createPainter() { return new RecordingPainter(); }
+		// every painter of the image records into the same calls
+		public UIPainter createPainter() { return this.painter; }
+		public String toString() { return "image(" + this.width + "x" + this.height + ")"; }
 	}
 }

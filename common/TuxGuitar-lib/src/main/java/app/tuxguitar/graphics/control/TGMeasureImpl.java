@@ -415,22 +415,8 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	private void makeBeat(TGLayout layout,TGBeatImpl beat,TGBeatImpl previousBeat, boolean chordEnabled){
-		float minimumWidth = -1;
-		boolean restBeat = true;
-		for(int v = 0 ; v < TGBeat.MAX_VOICES; v ++){
-			TGVoiceImpl voice = beat.getVoiceImpl(v);
-			if(!voice.isEmpty()){
-				if( minimumWidth < 0 || voice.getWidth() < minimumWidth ){
-					minimumWidth = voice.getWidth();
-				}
-				if( !voice.isRestVoice() ){
-					restBeat = false;
-				}
-			}
-		}
-
-		beat.setWidth( minimumWidth );
-		this.notEmptyBeats += (restBeat ? 0 : 1);
+		beat.setWidth( getNarrowestVoiceWidth(beat) );
+		this.notEmptyBeats += (beat.isRestBeat() ? 0 : 1);
 		this.widthBeats += beat.getMinimumWidth();
 
 		if(previousBeat != null){
@@ -438,12 +424,29 @@ public class TGMeasureImpl extends TGMeasure{
 			previousBeat.setNextBeat(beat);
 
 			if(chordEnabled && beat.isChordBeat() && previousBeat.isChordBeat()){
-				float previousWidth = previousBeat.getMinimumWidth();
-				previousBeat.setWidth(Math.max(getChordWidth(layout),previousWidth));
-				this.widthBeats -= previousWidth;
-				this.widthBeats += previousBeat.getMinimumWidth();
+				widenForChord(layout, previousBeat);
 			}
 		}
+	}
+
+	// the width of the narrowest voice with something in it; -1 when every voice is empty
+	private static float getNarrowestVoiceWidth(TGBeatImpl beat){
+		float minimumWidth = -1;
+		for(int v = 0 ; v < TGBeat.MAX_VOICES; v ++){
+			TGVoiceImpl voice = beat.getVoiceImpl(v);
+			if(!voice.isEmpty() && ( minimumWidth < 0 || voice.getWidth() < minimumWidth )){
+				minimumWidth = voice.getWidth();
+			}
+		}
+		return minimumWidth;
+	}
+
+	// a chord beat followed by another one is widened to make room for its chord
+	private void widenForChord(TGLayout layout, TGBeatImpl beat){
+		float previousWidth = beat.getMinimumWidth();
+		beat.setWidth(Math.max(getChordWidth(layout),previousWidth));
+		this.widthBeats -= previousWidth;
+		this.widthBeats += beat.getMinimumWidth();
 	}
 
 	/**
@@ -714,20 +717,31 @@ public class TGMeasureImpl extends TGMeasure{
 	}
 
 	public void registerSpacing(TGLayout layout,TGTrackSpacing ts){
+		registerHeaderSpacing(layout, ts);
+		registerBeatSpacing(layout, ts);
+		registerEffectSpacing(layout, ts);
+	}
+
+	// room for what the measure header shows: loop markers, a marker, a repeat ending
+	private void registerHeaderSpacing(TGLayout layout,TGTrackSpacing ts){
 		if(layout.hasLoopMarker( this.getHeader() )){
 			ts.setSize(TGTrackSpacing.POSITION_LOOP_MARKER,layout.getLoopMarkerSpacing());
 		}
 		if(this.hasMarker()){
 			ts.setSize(TGTrackSpacing.POSITION_MARKER,layout.getMarkerSpacing());
 		}
+		if(this.getHeader().getRepeatAlternative() > 0){
+			ts.setSize(TGTrackSpacing.POSITION_REPEAT_ENDING,layout.getRepeatEndingSpacing());
+		}
+	}
+
+	// room for what the beats show above the staves: chords, texts, tuplets
+	private void registerBeatSpacing(TGLayout layout,TGTrackSpacing ts){
 		if(this.chord){
 			ts.setSize(TGTrackSpacing.POSITION_CHORD,layout.getDefaultChordSpacing());
 		}
 		if(this.text){
 			ts.setSize(TGTrackSpacing.POSITION_TEXT,layout.getTextSpacing());
-		}
-		if(this.getHeader().getRepeatAlternative() > 0){
-			ts.setSize(TGTrackSpacing.POSITION_REPEAT_ENDING,layout.getRepeatEndingSpacing());
 		}
 		if(this.division1){
 			ts.setSize(TGTrackSpacing.POSITION_DIVISION_TYPE_1,layout.getDivisionTypeSpacing());
@@ -735,6 +749,10 @@ public class TGMeasureImpl extends TGMeasure{
 		if(this.division2){
 			ts.setSize(TGTrackSpacing.POSITION_DIVISION_TYPE_2,layout.getDivisionTypeSpacing());
 		}
+	}
+
+	// room for the pick strokes, the effects and the bends of the beats
+	private void registerEffectSpacing(TGLayout layout,TGTrackSpacing ts){
 		if(this.pickStroke){
 			ts.setSize(TGTrackSpacing.POSITION_PICK_STROKES,layout.getPickStrokeSpacing());
 		}
@@ -762,30 +780,13 @@ public class TGMeasureImpl extends TGMeasure{
 			painter.setBackground(background);
 
 			if(!bufferEnabled || shouldRepaintBuffer(resourceBuffer, this.isPlaying(layout), layout.isLastMeasure(this))){
-				UIPainter bufferPainter = painter;
-				float x = (bufferEnabled ? 0 : getPosX());
-				float y = (bufferEnabled ? 0 : getPosY());
 				if( bufferEnabled ){
 					UIResourceFactory factory = layout.getComponent().getResourceFactory();
-					bufferPainter = getBuffer().createBuffer(resourceBuffer, factory, getWidth(layout) + getSpacing(), getTs().getSize(), background);
-				}
-				// change color of lines if measure validity is KO
-				boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureDurationValid(this));
-				layout.paintLines(getTrackImpl(), getTs(), bufferPainter, x, y, getWidth(layout) + getSpacing(), measureIsValid);
-				paintTimeSignature(layout, bufferPainter, x, y);
-				paintClef(layout, bufferPainter, x, y);
-				paintKeySignature(layout, bufferPainter, x, y);
-				paintComponents(layout, bufferPainter, x, y);
-				paintDivisions(layout,bufferPainter, x, y);
-				paintMarker(layout, bufferPainter, x, y);
-				paintTexts(layout, bufferPainter, x, y);
-				paintTempo(layout, bufferPainter, x, y);
-				paintTripletFeel(layout, bufferPainter, x, y);
-				paintRepeatEnding(layout, bufferPainter, x, y);
-				paintLoopMarker(layout, bufferPainter, x, y);
-				
-				if( bufferEnabled ){
+					UIPainter bufferPainter = getBuffer().createBuffer(resourceBuffer, factory, getWidth(layout) + getSpacing(), getTs().getSize(), background);
+					paintContents(layout, bufferPainter, 0, 0);
 					bufferPainter.dispose();
+				}else{
+					paintContents(layout, painter, getPosX(), getPosY());
 				}
 				setBufferCreated(true);
 			}
@@ -796,6 +797,23 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 		this.wasPlayingWhenLastPainted = this.isPlaying(layout);
 		this.wasLastWhenLastPainted = layout.isLastMeasure(this);
+	}
+
+	// the staff lines (in the invalid color when the measure's durations do not add up), then all the measure shows
+	private void paintContents(TGLayout layout, UIPainter painter, float x, float y){
+		boolean measureIsValid = (layout.getSongManager().getMeasureManager().isMeasureDurationValid(this));
+		layout.paintLines(getTrackImpl(), getTs(), painter, x, y, getWidth(layout) + getSpacing(), measureIsValid);
+		paintTimeSignature(layout, painter, x, y);
+		paintClef(layout, painter, x, y);
+		paintKeySignature(layout, painter, x, y);
+		paintComponents(layout, painter, x, y);
+		paintDivisions(layout,painter, x, y);
+		paintMarker(layout, painter, x, y);
+		paintTexts(layout, painter, x, y);
+		paintTempo(layout, painter, x, y);
+		paintTripletFeel(layout, painter, x, y);
+		paintRepeatEnding(layout, painter, x, y);
+		paintLoopMarker(layout, painter, x, y);
 	}
 
 	private boolean shouldRepaintBuffer(TGResourceBuffer resourceBuffer, boolean isPlaying, boolean isLast){
@@ -962,41 +980,41 @@ public class TGMeasureImpl extends TGMeasure{
 	 * Pinta las divisiones del compas
 	 */
 	private void paintDivisions(TGLayout layout,UIPainter painter, float fromX, float fromY) {
-		float x1 = fromX;
-		float x2 = x1 + getWidth(layout);
-		float y1 = 0;
-		float y2 = 0;
-		float offsetY = 0;
 		int style = layout.getStyle();
-		boolean addInfo = false;
-		//-----SCORE ------------------------------------//
 		if((style & TGLayout.DISPLAY_SCORE) != 0 ){
-			y1 = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
-			y2 = y1 + (layout.getScoreLineSpacing() * 4);
-			addInfo = true;
-			if( (style & TGLayout.DISPLAY_TABLATURE) != 0 && (layout.isFirstMeasure(this) || isFirstOfLine())){
-				offsetY = ( fromY + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE)) - y2;
-			}
-			paintDivisions(layout, painter, x1, y1, x2, y2, offsetY, addInfo );
+			paintScoreDivisions(layout, painter, fromX, fromY);
 		}
-		//-----TABLATURE ------------------------------------//
 		if( (style & TGLayout.DISPLAY_TABLATURE) != 0 ){
-			y1 = fromY + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
-			y2 = y1 + (getTrack().stringCount() > 1 ? ((getTrack().stringCount() - 1 ) * layout.getStringSpacing()) : 0f);
-			if( y1 == y2 ) {
-				y1 -= layout.getStringSpacing();
-				y2 += layout.getStringSpacing();
-			}
-			addInfo = ( (style & TGLayout.DISPLAY_SCORE) == 0 );
-			offsetY = 0;
-			paintDivisions(layout, painter, x1, y1, x2, y2, offsetY, addInfo );
+			paintTablatureDivisions(layout, painter, fromX, fromY);
 		}
+	}
+
+	// on the score, with the measure number; at the start of a line, the start bar runs down to the tablature
+	private void paintScoreDivisions(TGLayout layout,UIPainter painter, float fromX, float fromY) {
+		float y1 = fromY + getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES);
+		float y2 = y1 + (layout.getScoreLineSpacing() * 4);
+		float offsetY = 0;
+		if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 && (layout.isFirstMeasure(this) || isFirstOfLine())){
+			offsetY = ( fromY + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE)) - y2;
+		}
+		paintDivisions(layout, painter, fromX, y1, fromX + getWidth(layout), y2, offsetY, true );
+	}
+
+	// on the tablature, from its first to its last string (a string spacing around a single string), with the
+	// measure number when the score is hidden
+	private void paintTablatureDivisions(TGLayout layout,UIPainter painter, float fromX, float fromY) {
+		float y1 = fromY + getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE);
+		float y2 = y1 + (getTrack().stringCount() > 1 ? ((getTrack().stringCount() - 1 ) * layout.getStringSpacing()) : 0f);
+		if( y1 == y2 ) {
+			y1 -= layout.getStringSpacing();
+			y2 += layout.getStringSpacing();
+		}
+		boolean addInfo = ( (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 );
+		paintDivisions(layout, painter, fromX, y1, fromX + getWidth(layout), y2, 0, addInfo );
 	}
 
 	private void paintDivisions(TGLayout layout,UIPainter painter,float x1, float y1, float x2, float y2, float offsetY, boolean addInfo) {
 		float scale = layout.getScale();
-		float lineWidthSmall = layout.getLineWidth(1);
-		float lineWidthBig = layout.getLineWidth(3);
 
 		//numero de compas
 		if( addInfo ){
@@ -1006,69 +1024,43 @@ public class TGMeasureImpl extends TGMeasure{
 		}
 
 		layout.setDivisionsStyle(painter, true);
+		paintStartDivision(layout, painter, x1, y1, y2, offsetY);
+		paintEndDivision(layout, painter, x2, y1, y2, addInfo);
+		painter.setLineWidth(layout.getLineWidth(1));
+	}
 
-		//principio
+	// thick at the start of the song or of a repeat (with the repeat's dots), else thin
+	private void paintStartDivision(TGLayout layout,UIPainter painter,float x1, float y1, float y2, float offsetY) {
+		float scale = layout.getScale();
+		float lineWidthSmall = layout.getLineWidth(1);
+		float lineWidthBig = layout.getLineWidth(3);
 		if( this.isRepeatOpen() || layout.isFirstMeasure(this) ){
-			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.addRectangle(x1, y1, lineWidthBig, (y2 + offsetY) - y1);
-			painter.closePath();
-
-			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.addRectangle(x1 + lineWidthBig + (2f * scale), y1, lineWidthSmall, (y2 + offsetY) - y1);
-			painter.closePath();
+			paintBar(layout, painter, x1, y1, lineWidthBig, (y2 + offsetY) - y1);
+			paintBar(layout, painter, x1 + lineWidthBig + (2f * scale), y1, lineWidthSmall, (y2 + offsetY) - y1);
 
 			if( this.isRepeatOpen() ){
 				float size = layout.getLineWidth(4);
 				float xMove = (((lineWidthBig + scale + lineWidthSmall) + (2f * scale)) + size);
-				float yMove = size;
-
-				painter.setLineWidth(lineWidthSmall);
-				painter.initPath(UIPainter.PATH_FILL);
-				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2f) - yMove);
-				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2f) - yMove, size);
-				painter.moveTo(x1 + xMove, y1 + ((y2 - y1) / 2f) + yMove);
-				painter.addCircle(x1 + xMove, y1 + ((y2 - y1) / 2f) + yMove, size);
-				painter.closePath();
+				paintRepeatDots(layout, painter, x1 + xMove, y1, y2, size);
 			}
 		} else {
-			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.moveTo(x1, y1);
-			painter.lineTo(x1, (y2 + offsetY));
-			painter.closePath();
+			paintBarLine(layout, painter, x1, y1, (y2 + offsetY));
 		}
+	}
 
-		//fin
+	// thick at the end of the song or of a repeat (with the repeat's dots and count), thin at the end of a line
+	private void paintEndDivision(TGLayout layout,UIPainter painter,float x2, float y1, float y2, boolean addInfo) {
+		float scale = layout.getScale();
+		float lineWidthSmall = layout.getLineWidth(1);
+		float lineWidthBig = layout.getLineWidth(3);
 		if( this.getRepeatClose() > 0 || layout.isLastMeasure(this) ){
-			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.addRectangle((x2 + getSpacing()) - (lineWidthBig + lineWidthSmall + (2f * scale)), y1, lineWidthSmall, (y2 - y1));
-			painter.closePath();
-
-			painter.setLineWidth(layout.getLineWidth(0));
-			painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-			painter.setAntialias(false);
-			painter.addRectangle((x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, (y2 - y1));
-			painter.closePath();
+			paintBar(layout, painter, (x2 + getSpacing()) - (lineWidthBig + lineWidthSmall + (2f * scale)), y1, lineWidthSmall, (y2 - y1));
+			paintBar(layout, painter, (x2 + getSpacing()) - lineWidthBig, y1, lineWidthBig, (y2 - y1));
 
 			if( this.getRepeatClose() > 0 ){
 				float size = layout.getLineWidth(4);
 				float xMove = (((lineWidthBig + scale + lineWidthSmall) + (2f * scale)) + size);
-				float yMove = size;
-
-				painter.setLineWidth(lineWidthSmall);
-				painter.initPath(UIPainter.PATH_FILL);
-				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2f) - yMove);
-				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2f) - yMove, size);
-				painter.moveTo((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2f) + yMove);
-				painter.addCircle((x2 - xMove) + getSpacing(), y1 + ((y2 - y1) / 2f) + yMove, size);
-				painter.closePath();
+				paintRepeatDots(layout, painter, (x2 - xMove) + getSpacing(), y1, y2, size);
 				if( addInfo ){
 					layout.setDivisionsStyle(painter,false);
 
@@ -1076,18 +1068,37 @@ public class TGMeasureImpl extends TGMeasure{
 					painter.drawString(repetitions, x2 - painter.getFMWidth(repetitions) + getSpacing() - size, y1 + painter.getFMBaseLine() - (2f * scale));
 				}
 			}
-		} else {
-			if (islastOfLine()) {
-				painter.setLineWidth(layout.getLineWidth(0));
-				painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-				painter.setAntialias(false);
-				painter.moveTo((x2 + getSpacing())-1, y1);
-				painter.lineTo((x2 + getSpacing())-1, y2);
-				painter.closePath();
-			}
+		} else if (islastOfLine()) {
+			paintBarLine(layout, painter, (x2 + getSpacing())-1, y1, y2);
 		}
+	}
 
-		painter.setLineWidth(lineWidthSmall);
+	private static void paintBar(TGLayout layout,UIPainter painter,float x, float y, float width, float height) {
+		painter.setLineWidth(layout.getLineWidth(0));
+		painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
+		painter.setAntialias(false);
+		painter.addRectangle(x, y, width, height);
+		painter.closePath();
+	}
+
+	private static void paintBarLine(TGLayout layout,UIPainter painter,float x, float y1, float y2) {
+		painter.setLineWidth(layout.getLineWidth(0));
+		painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
+		painter.setAntialias(false);
+		painter.moveTo(x, y1);
+		painter.lineTo(x, y2);
+		painter.closePath();
+	}
+
+	// two dots, above and below the middle of the staff
+	private static void paintRepeatDots(TGLayout layout,UIPainter painter,float x, float y1, float y2, float size) {
+		painter.setLineWidth(layout.getLineWidth(1));
+		painter.initPath(UIPainter.PATH_FILL);
+		painter.moveTo(x, y1 + ((y2 - y1) / 2f) - size);
+		painter.addCircle(x, y1 + ((y2 - y1) / 2f) - size, size);
+		painter.moveTo(x, y1 + ((y2 - y1) / 2f) + size);
+		painter.addCircle(x, y1 + ((y2 - y1) / 2f) + size, size);
+		painter.closePath();
 	}
 
 	/**
@@ -1695,11 +1706,10 @@ public class TGMeasureImpl extends TGMeasure{
 		return getPosX() + getWidth(layout) + getSpacing();
 	}
 
+	// a line spacing above the top staff: the score when shown, else the tablature
 	private float getTopEdge(TGLayout layout) {
 		int style = layout.getStyle();
-		if ((style & (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) == (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) {
-			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
-		} else if ((style & TGLayout.DISPLAY_SCORE) != 0) {
+		if ((style & TGLayout.DISPLAY_SCORE) != 0) {
 			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) - layout.getScoreLineSpacing());
 		} else if ((style & TGLayout.DISPLAY_TABLATURE) != 0) {
 			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) - layout.getStringSpacing());
@@ -1707,14 +1717,13 @@ public class TGMeasureImpl extends TGMeasure{
 		return getPosY();
 	}
 
+	// a line spacing below the bottom staff: the tablature when shown, else the score
 	private float getBottomEdge(TGLayout layout) {
 		int style = layout.getStyle();
-		if ((style & (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) == (TGLayout.DISPLAY_SCORE | TGLayout.DISPLAY_TABLATURE)) {
+		if ((style & TGLayout.DISPLAY_TABLATURE) != 0) {
 			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
 		} else if ((style & TGLayout.DISPLAY_SCORE) != 0) {
 			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + (layout.getScoreLineSpacing() * 5));
-		} else if ((style & TGLayout.DISPLAY_TABLATURE) != 0) {
-			return getPosY() + (getTs().getPosition(TGTrackSpacing.POSITION_TABLATURE) + getTrackImpl().getTabHeight() + layout.getStringSpacing());
 		}
 		return getPosY();
 	}
