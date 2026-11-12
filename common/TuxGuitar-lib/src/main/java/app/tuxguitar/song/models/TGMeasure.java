@@ -75,12 +75,7 @@ public abstract class TGMeasure {
 	}
 
 	public int getHighestFret() {
-		int highestFret = -1;
-		for (TGBeat beat : this.beats) {
-			int beatHighestFret = beat.getHighestFret();
-			highestFret = (beatHighestFret > highestFret ? beatHighestFret : highestFret);
-		}
-		return highestFret;
+		return this.beats.stream().mapToInt(TGBeat::getHighestFret).max().orElse(-1);
 	}
 
 	public void addBeat(TGBeat beat){

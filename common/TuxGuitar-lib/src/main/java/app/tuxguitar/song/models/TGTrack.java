@@ -83,12 +83,7 @@ public abstract class TGTrack {
 	}
 
 	public int getHighestFret() {
-		int highestFret = -1;
-		for (TGMeasure measure : this.measures) {
-			int measureHighestFret = measure.getHighestFret();
-			highestFret = (measureHighestFret > highestFret ? measureHighestFret : highestFret);
-		}
-		return highestFret;
+		return this.measures.stream().mapToInt(TGMeasure::getHighestFret).max().orElse(-1);
 	}
 
 	public void removeMeasure(int index){
