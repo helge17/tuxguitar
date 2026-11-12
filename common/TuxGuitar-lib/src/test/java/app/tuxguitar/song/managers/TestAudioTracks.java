@@ -29,7 +29,7 @@ public class TestAudioTracks {
 
 	private final TGSongManager songManager = new TGSongManager();
 	private final TGSong song = songManager.newSong();
-	private final TGTake take = new TGTake(1, new float[] { 0.25f, -0.5f });
+	private final TGTake take = new TGTake(1, new float[] { 0.25f, -0.5f }, 44100);
 
 	private TGTrack addAudioTrack() {
 		return songManager.addAudioTrack(song, TGAudioInput.mono(2));
@@ -150,7 +150,7 @@ public class TestAudioTracks {
 	@Test
 	public void removingATakeFromAMeasureRemovesItsClipsAndTheChoiceOfIt() {
 		TGMeasure measure = song.getTrack(0).getMeasure(0);
-		TGTake other = new TGTake(2, new float[] { 0f });
+		TGTake other = new TGTake(2, new float[] { 0f }, 44100);
 		measure.addTakeClip(new TGTakeClip(take, 0, 960, 0, 120));
 		measure.addTakeClip(new TGTakeClip(other, 960, 1920, 0, 120));
 		measure.addTakeClip(new TGTakeClip(take, 1920, 3840, 0, 120));
@@ -168,7 +168,7 @@ public class TestAudioTracks {
 		TGMeasure measure = song.getTrack(0).getMeasure(0);
 		measure.setChosenTake(take);
 
-		measure.removeTake(new TGTake(2, new float[] { 0f }));
+		measure.removeTake(new TGTake(2, new float[] { 0f }, 44100));
 
 		assertSame(take, measure.getChosenTake());
 	}
@@ -176,10 +176,11 @@ public class TestAudioTracks {
 	@Test
 	public void aTakeKeepsItsSamplesWhateverHappensToTheArrayItWasMadeFrom() {
 		float[] samples = { 0.25f, -0.5f };
-		TGTake made = new TGTake(3, samples);
+		TGTake made = new TGTake(3, samples, 44100);
 		samples[0] = 1f;
 
 		assertEquals(3, made.getNumber());
+		assertEquals(44100, made.getSampleRate());
 		assertEquals(2, made.countSamples());
 		assertEquals(0.25f, made.getSample(0));
 		assertEquals(-0.5f, made.getSample(1));
@@ -194,5 +195,27 @@ public class TestAudioTracks {
 		assertEquals(1920, clip.getEnd());
 		assertEquals(22050, clip.getFirstSample());
 		assertEquals(96.0, clip.getTempo());
+		assertSame(take, clip.getSource());
+	}
+
+	@Test
+	public void aClipCountsTheSamplesOfItsTicksAtItsTempo() {
+		TGTakeClip clip = new TGTakeClip(take, 960, 3840, 1000, 96.0);
+
+		assertEquals(1000, clip.sampleAt(960));
+		assertEquals(1000 + 27563, clip.sampleAt(1920));
+	}
+
+	@Test
+	public void partOfAClipCopiedToAnotherTakePlaysTheSameSamples() {
+		TGTake pasted = new TGTake(2, new float[0], 44100);
+		TGTakeClip copy = new TGTakeClip(take, 960, 3840, 1000, 120.0).copy(pasted, 1920, 2880);
+
+		assertSame(pasted, copy.getTake());
+		assertSame(take, copy.getSource());
+		assertEquals(1920, copy.getStart());
+		assertEquals(2880, copy.getEnd());
+		assertEquals(1000 + 22050, copy.getFirstSample());
+		assertEquals(120.0, copy.getTempo());
 	}
 }

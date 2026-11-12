@@ -1,6 +1,6 @@
 package app.tuxguitar.audio;
 
-import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGTakeClip;
 import app.tuxguitar.song.models.TGMeasureHeader;
 
 /**
@@ -18,6 +18,6 @@ public final class TGSampleTime {
 	}
 
 	public static int samples(long ticks, double tempo, int sampleRate) {
-		return (int) Math.round(ticks * 60.0 * sampleRate / (TGDuration.QUARTER_TIME * tempo));
+		return TGTakeClip.samples(ticks, tempo, sampleRate);
 	}
 }

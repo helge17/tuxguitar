@@ -309,7 +309,6 @@ Feature: Takes
     When I remove measure 2
     Then track 2's takes read ""
 
-  @planned
   Scenario: pasting a measure pastes the audio that plays there, as a new take
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have copied measure 1 and pasted it over measure 3
@@ -317,7 +316,6 @@ Feature: Takes
     Then track 2's takes read "take 2: m3b1 to m4b1, take 1: m1b1 to m5b1"
     And track 2 sounds 220, 330, 220 and 550 Hz in measures 1 to 4
 
-  @planned
   Scenario: pasting a measure where two takes play pastes both as one new take
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And track 2 has a take of a 660 Hz tone peaking at 0.4 from measure 1 beat 3 to measure 2 beat 1
@@ -326,7 +324,6 @@ Feature: Takes
     Then track 2's takes read "take 3: m3b1 to m4b1, take 2: m1b3 to m2b1, take 1: m1b1 to m5b1"
     And track 2 sounds 220 Hz then 660 Hz from beat 3 in measure 3
 
-  @planned
   Scenario: pasting a measure that plays nothing leaves the target's audio as it was
     Given track 2 has a take of a tone per measure of 220, 330 and 440 Hz from measure 2 beat 1 to the end of measure 4
     And I have copied measure 1 and pasted it over measure 3

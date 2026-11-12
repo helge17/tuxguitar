@@ -1,6 +1,7 @@
 package app.tuxguitar.editor.action.measure;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +82,7 @@ public class TestPasteMeasureAction {
 		track(2).getMeasure(0).clear();
 		TGChannel channel = fixture.songManager.getChannel(fixture.song, track(2).getChannelId());
 		channel.setAudioInput(TGAudioInput.mono(1));
-		track(2).getMeasure(0).addTakeClip(new TGTakeClip(new TGTake(1, new float[] { 0.5f }), 0, 960, 0, 120));
+		track(2).getMeasure(0).addTakeClip(new TGTakeClip(new TGTake(1, new float[] { 0.5f }, 44100), 0, 960, 0, 120));
 		return this;
 	}
 
@@ -125,8 +126,32 @@ public class TestPasteMeasureAction {
 					test -> test.audioOnTrack2().copy(2, 1, 1, false).replace(1, 1, 2)),
 			pasting("notes are not pasted onto an audio track", "s1f1 | s1f2 | s1f3 /  | s1f12 | s1f13",
 					test -> test.audioOnTrack2().copy(1, 1, 1, false).replace(1, 2, 2)),
-			pasting("audio is pasted onto an audio track", "s1f1 | s1f2 | s1f3 /  |  | s1f13 / success",
+			pasting("audio is pasted onto an audio track, as a new take over what was there", "s1f1 | s1f2 | s1f3 /  | s1f12 | s1f13 / success",
 					test -> test.audioOnTrack2().copy(2, 1, 1, false).replace(1, 2, 2)));
+	}
+
+	// what played in the copied measure becomes a new take in the target, playing the same samples
+	@Test
+	public void pastedAudioIsANewTakeThatPlaysTheSameSamples() {
+		audioOnTrack2();
+		track(2).setNextTakeNumber(2);
+		TGTake recorded = track(2).getMeasure(0).getTakeClips().get(0).getTake();
+		copy(2, 1, 1, false).replace(1, 2, 2);
+		TGTakeClip pasted = track(2).getMeasure(1).getTakeClips().get(0);
+		// take, start, end, first sample, tempo
+		assertEquals("2|0|960|0|120.0", pasted.getTake().getNumber() + "|" + pasted.getStart() + "|" + pasted.getEnd() + "|" + pasted.getFirstSample() + "|" + pasted.getTempo());
+		assertSame(recorded, pasted.getSource());
+		assertEquals(3, track(2).getNextTakeNumber());
+	}
+
+	@Test
+	public void pastingAMeasureThatPlaysNothingLeavesTheTargetAsItWas() {
+		audioOnTrack2();
+		track(2).setNextTakeNumber(2);
+		track(2).getMeasure(2).clear();
+		copy(2, 3, 3, false).replace(1, 2, 1);
+		assertEquals(1, track(2).getMeasure(0).getTakeClips().size());
+		assertEquals(2, track(2).getNextTakeNumber());
 	}
 
 	// a case run on a new song: copying then pasting gives the song read back

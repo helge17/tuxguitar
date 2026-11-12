@@ -9,7 +9,6 @@ import java.util.List;
 
 import app.tuxguitar.audio.TGRecording;
 import app.tuxguitar.audio.TGSongTime;
-import app.tuxguitar.audio.TGTakeSegment;
 import app.tuxguitar.audio.TGTakeSpan;
 import app.tuxguitar.audio.TGTakes;
 import app.tuxguitar.audio.action.TGChooseTakeAction;
@@ -18,6 +17,7 @@ import app.tuxguitar.audio.undo.TGUndoableTakesController;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTakeSegment;
 import app.tuxguitar.song.models.TGTrack;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;

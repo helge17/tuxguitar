@@ -2,6 +2,7 @@ package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.measure.TGCopyMeasureAction;
@@ -62,5 +63,13 @@ public class PasteSteps {
 	public void stillHasNotes(int number, int notes, int measure) {
 		TGMeasure trackMeasure = world.track(number).getMeasure(measure - 1);
 		assertEquals(notes, trackMeasure.getBeats().stream().mapToInt((TGBeat beat) -> beat.getVoice(0).countNotes()).sum());
+	}
+
+	// on the audio track (track 2 in the takes feature)
+	@Given("I have copied measure {int} and pasted it over measure {int}")
+	public void copyAndPaste(int from, int to) {
+		copyMeasure(from, 2);
+		pasteOver(to, 2);
+		assertTrue(world.succeeded());
 	}
 }

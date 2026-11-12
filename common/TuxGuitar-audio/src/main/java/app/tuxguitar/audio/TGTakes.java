@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTake;
+import app.tuxguitar.song.helpers.TGTakePlayback;
 import app.tuxguitar.song.models.TGTakeClip;
+import app.tuxguitar.song.models.TGTakeSegment;
 import app.tuxguitar.song.models.TGTrack;
 
 /**
@@ -55,7 +55,7 @@ public final class TGTakes {
 	// a new take over the played measures from first to last of the timeline, numbered from the track's next take
 	// number; it plays where it was recorded. Each measure's clip starts at its sample of the take and keeps the tempo
 	public static TGTake record(TGTrack track, float[] samples, TGTimeline timeline, int first, int last) {
-		TGTake take = new TGTake(track.getNextTakeNumber(), samples);
+		TGTake take = new TGTake(track.getNextTakeNumber(), samples, timeline.getSampleRate());
 		track.setNextTakeNumber(take.getNumber() + 1);
 		for (int i = first; i <= last; i++) {
 			TGPlayedMeasure measure = timeline.get(i);
@@ -89,41 +89,11 @@ public final class TGTakes {
 
 	// which take the measure plays, from where to where: one segment per change
 	public static List<TGTakeSegment> playback(TGMeasure measure) {
-		List<TGTakeSegment> segments = new ArrayList<TGTakeSegment>();
-		for (long tick : boundaries(measure)) {
-			TGTake take = playing(measure, tick);
-			if (segments.isEmpty() || segments.get(segments.size() - 1).getTake() != take) {
-				segments.add(new TGTakeSegment(tick, take));
-			}
-		}
-		return segments;
-	}
-
-	// the measure's start, and every start or end of a clip inside it
-	private static SortedSet<Long> boundaries(TGMeasure measure) {
-		SortedSet<Long> ticks = new TreeSet<Long>();
-		ticks.add(0L);
-		for (TGTakeClip clip : measure.getTakeClips()) {
-			ticks.add(clip.getStart());
-			ticks.add(clip.getEnd());
-		}
-		return ticks.headSet(measure.getLength());
-	}
-
-	// the chosen take where it covers the tick, else the newest take there
-	private static TGTake playing(TGMeasure measure, long tick) {
-		TGTake chosen = measure.getChosenTake();
-		if (clipsAt(measure, tick).anyMatch(clip -> clip.getTake() == chosen)) {
-			return chosen;
-		}
-		return clipsAt(measure, tick).map(TGTakeClip::getTake).max(Comparator.comparingInt(TGTake::getNumber)).orElse(null);
+		return TGTakePlayback.of(measure);
 	}
 
 	private static Stream<TGTakeClip> clips(TGMeasure measure) {
 		return measure.getTakeClips().stream();
 	}
 
-	private static Stream<TGTakeClip> clipsAt(TGMeasure measure, long tick) {
-		return clips(measure).filter(clip -> clip.getStart() <= tick && tick < clip.getEnd());
-	}
 }

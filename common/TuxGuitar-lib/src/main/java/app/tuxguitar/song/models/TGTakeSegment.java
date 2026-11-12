@@ -1,6 +1,5 @@
-package app.tuxguitar.audio;
+package app.tuxguitar.song.models;
 
-import app.tuxguitar.song.models.TGTake;
 
 /**
  * Where, in ticks from a measure's start, a take starts playing there; the take is null where none plays.

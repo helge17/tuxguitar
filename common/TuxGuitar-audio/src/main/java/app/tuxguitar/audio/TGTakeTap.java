@@ -7,6 +7,7 @@ import java.util.Map;
 
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTake;
+import app.tuxguitar.song.helpers.TGTakePlayback;
 import app.tuxguitar.song.models.TGTakeClip;
 import app.tuxguitar.song.models.TGTrack;
 
@@ -101,34 +102,47 @@ public final class TGTakeTap {
 			this.samples = samples;
 		}
 
+		// the clips that play, cut to the measure as played, silence between them
 		List<TGTakePiece> pieces() {
 			List<TGTakePiece> pieces = new ArrayList<TGTakePiece>();
-			List<TGTakeSegment> segments = TGTakes.playback(this.measure);
-			for (int k = 0; k < segments.size(); k++) {
-				long from = Math.max(segments.get(k).getStart(), this.played.getFrom());
-				long to = Math.min((k + 1 < segments.size() ? segments.get(k + 1).getStart() : this.measure.getLength()), this.played.getTo());
+			long tick = this.played.getFrom();
+			for (TGTakeClip clip : TGTakePlayback.clips(this.measure)) {
+				long from = Math.max(clip.getStart(), this.played.getFrom());
+				long to = Math.min(clip.getEnd(), this.played.getTo());
 				if (to > from) {
-					pieces.add(this.piece(segments.get(k).getTake(), from, to));
+					this.silence(pieces, tick, from);
+					pieces.add(this.piece(clip, from, to));
+					tick = to;
 				}
 			}
+			this.silence(pieces, tick, this.played.getTo());
 			return pieces;
 		}
 
-		private TGTakePiece piece(TGTake take, long from, long to) {
-			long start = this.timeline.sampleAt(this.index, from);
-			long end = (to == this.played.getTo() ? this.timeline.end(this.index) : this.timeline.sampleAt(this.index, to));
-			boolean jump = (from == this.played.getFrom() && this.played.isJump());
-			Map<TGTake, int[]> under = this.under(from, to);
-			if (take == null) {
-				return new TGTakePiece(start, end, jump, null, under);
+		private void silence(List<TGTakePiece> pieces, long from, long to) {
+			if (to > from) {
+				pieces.add(new TGTakePiece(this.sampleAt(from), this.sampleAt(to), this.jumpsTo(from), null, this.under(from, to)));
 			}
-			TGTakeClip clip = this.clip(take, from);
+		}
+
+		private long sampleAt(long tick) {
+			return (tick == this.played.getTo() ? this.timeline.end(this.index) : this.timeline.sampleAt(this.index, tick));
+		}
+
+		private boolean jumpsTo(long tick) {
+			return (tick == this.played.getFrom() && this.played.isJump());
+		}
+
+		private TGTakePiece piece(TGTakeClip clip, long from, long to) {
+			long start = this.sampleAt(from);
+			long end = this.sampleAt(to);
+			TGTake take = clip.getTake();
 			int takeStart = this.sampleOf(clip, from);
 			int takeEnd = this.sampleOf(clip, to);
-			float[] source = this.samples.computeIfAbsent(take, TGTakeTap::samplesOf);
+			float[] source = this.samples.computeIfAbsent(clip.getSource(), TGTakeTap::samplesOf);
 			float[] audio = (clip.getTempo() == this.played.getTempo() ? null : this.stretch(source, takeStart, takeEnd, (int) (end - start)));
 			int rank = (this.measure.getChosenTake() == take ? TGTakePiece.CHOSEN_RANK : take.getNumber());
-			return new TGTakePiece(start, end, jump, take, rank, takeStart, takeEnd, source, audio, under);
+			return new TGTakePiece(start, end, this.jumpsTo(from), take, rank, takeStart, takeEnd, source, audio, this.under(from, to));
 		}
 
 		private float[] stretch(float[] source, int from, int to, int length) {
@@ -148,22 +162,13 @@ public final class TGTakeTap {
 			return under;
 		}
 
-		private TGTakeClip clip(TGTake take, long tick) {
-			for (TGTakeClip clip : this.measure.getTakeClips()) {
-				if (clip.getTake() == take && clip.getStart() <= tick && tick < clip.getEnd()) {
-					return clip;
-				}
-			}
-			throw new IllegalStateException("take " + take.getNumber() + " plays where it has no clip");
-		}
-
 		// the sample of the take at the tick: counted on the output clock at the tempo it was recorded at, so it plays
 		// sample for sample; counted at its recording tempo otherwise
 		private int sampleOf(TGTakeClip clip, long tick) {
 			if (clip.getTempo() == this.played.getTempo()) {
 				return (int) (clip.getFirstSample() + this.timeline.sampleAt(this.index, tick) - this.timeline.sampleAt(this.index, clip.getStart()));
 			}
-			return clip.getFirstSample() + TGSampleTime.samples(tick - clip.getStart(), clip.getTempo(), this.timeline.getSampleRate());
+			return clip.sampleAt(tick);
 		}
 	}
 

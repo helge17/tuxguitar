@@ -8,10 +8,13 @@ import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.editor.clipboard.TGClipboard;
 import app.tuxguitar.song.helpers.TGSongSegment;
 import app.tuxguitar.song.helpers.TGSongSegmentHelper;
+import app.tuxguitar.song.helpers.TGTakePlayback;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTake;
+import app.tuxguitar.song.models.TGTakeClip;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
 
@@ -62,13 +65,36 @@ public class TGPasteMeasureAction extends TGActionBase{
 			for(int i = freeSpace; i < count; i ++){
 				songManager.addNewMeasureBeforeEnd(song);
 			}
-			helper.replaceMeasures(song, segment.clone(songManager.getFactory()), theMove, toTrack);
+			if( track.isAudio() && segment.getTracks().size() == 1 ) {
+				pasteTakes(segment.getTracks().get(0).getMeasures(), track, measure.getNumber());
+			} else {
+				helper.replaceMeasures(song, segment.clone(songManager.getFactory()), theMove, toTrack);
+			}
 			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		} else if( pasteMode.equals(TRANSFER_TYPE_INSERT)) {
 			int fromNumber = measure.getNumber();
 			long theMove = (measure.getStart() - first.getStart());
 			helper.insertMeasures(song, segment.clone(songManager.getFactory()), fromNumber, theMove, toTrack);
 			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+		}
+	}
+
+	// audio onto an audio track: what played in the copied measures becomes one new take where they are pasted, its
+	// clips playing the same samples; it plays there, newest. A copied measure that played nothing leaves its target
+	// as it was, and when none played anything there is no new take
+	private void pasteTakes(List<TGMeasure> measures, TGTrack track, int firstNumber) {
+		TGTake take = null;
+		for(int i = 0; i < measures.size(); i ++) {
+			TGMeasure source = measures.get(i);
+			TGMeasure target = track.getMeasure(firstNumber - 1 + i);
+			for(TGTakeClip clip : TGTakePlayback.clips(source)) {
+				take = (take != null ? take : new TGTake(track.getNextTakeNumber(), new float[0], clip.getSource().getSampleRate()));
+				target.addTakeClip(clip.copy(take, clip.getStart(), clip.getEnd()));
+				target.setChosenTake(null);
+			}
+		}
+		if( take != null ) {
+			track.setNextTakeNumber(take.getNumber() + 1);
 		}
 	}
 

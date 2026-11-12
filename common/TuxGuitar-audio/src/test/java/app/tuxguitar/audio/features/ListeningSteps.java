@@ -9,11 +9,11 @@ import java.util.List;
 
 import app.tuxguitar.audio.Meters;
 import app.tuxguitar.audio.TGPlayedMeasure;
-import app.tuxguitar.audio.TGTakeSegment;
 import app.tuxguitar.audio.TGTakes;
 import app.tuxguitar.audio.TGTimeline;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTake;
+import app.tuxguitar.song.models.TGTakeSegment;
 import app.tuxguitar.song.models.TGTakeClip;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Then;
@@ -247,5 +247,15 @@ public class ListeningSteps {
 		for (int i = from; i < to; i++) {
 			assertEquals(played.getSample(clip.getFirstSample() + i - from), tap[i], 0f, "sample " + i);
 		}
+	}
+
+	@Then("track {int} sounds {int} Hz then {int} Hz from beat {int} in measure {int}")
+	public void soundsThenFromBeat(int number, int first, int second, int beat, int measure) {
+		int[] bounds = heard().measure(measure);
+		long beatTicks = world.song().getMeasureHeader(measure - 1).getTimeSignature().getDenominator().getTime();
+		int change = heard().sampleIn(measure, (beat - 1) * beatTicks);
+		List<String> tones = Arrays.asList(Integer.toString(first), Integer.toString(second));
+		assertTone(tap(number), bounds[0] + FADE, change - FADE, tones.get(0), tones, "measure " + measure + " before beat " + beat);
+		assertTone(tap(number), change + FADE, bounds[1] - FADE, tones.get(1), tones, "measure " + measure + " from beat " + beat);
 	}
 }
