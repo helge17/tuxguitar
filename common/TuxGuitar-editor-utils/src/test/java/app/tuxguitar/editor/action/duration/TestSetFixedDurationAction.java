@@ -22,7 +22,7 @@ import app.tuxguitar.util.TGContext;
  * empty or has it too.
  *
  * The first measure holds one quarter beat with a note, under the caret; the duration to set starts dotted. It reads
- * back as "beat duration / duration to set", a dotted duration ending in ".".
+ * back as "beat duration / duration to set", a dotted duration ending in ".", a double dotted one in ":".
  */
 public class TestSetFixedDurationAction {
 
@@ -45,7 +45,7 @@ public class TestSetFixedDurationAction {
 	}
 
 	private static String read(TGDuration duration) {
-		return duration.getValue() + (duration.isDotted() ? "." : "");
+		return duration.getValue() + (duration.isDotted() ? "." : "") + (duration.isDoubleDotted() ? ":" : "");
 	}
 
 	@TestFactory
@@ -57,7 +57,13 @@ public class TestSetFixedDurationAction {
 			setting("eighth", "8 / 8", TGSetEighthDurationAction::new, TGDuration.QUARTER),
 			setting("sixteenth", "16 / 16", TGSetSixteenthDurationAction::new, TGDuration.QUARTER),
 			setting("thirty-second", "32 / 32", TGSetThirtySecondDurationAction::new, TGDuration.QUARTER),
-			setting("sixty-fourth", "64 / 64", TGSetSixtyFourthDurationAction::new, TGDuration.QUARTER));
+			setting("sixty-fourth", "64 / 64", TGSetSixtyFourthDurationAction::new, TGDuration.QUARTER),
+			reads("a double dotted duration to set loses its dots", "8 / 8", () -> {
+				TestSetFixedDurationAction test = new TestSetFixedDurationAction();
+				test.duration.setDotted(false);
+				test.duration.setDoubleDotted(true);
+				return test.set(TGSetEighthDurationAction::new, TGDuration.QUARTER);
+			}));
 	}
 
 	@TestFactory
