@@ -327,11 +327,7 @@ public class TGStream {
 	}
 
 	protected Node getChildNode(Node node, String nodeName) {
-		Node n = node.getFirstChild();
-		while (n!=null && !nodeName.equals(n.getNodeName())) {
-			n = n.getNextSibling();
-		}
-		return n;
+		return getSiblingNode(node.getFirstChild(), nodeName);
 	}
 
 	protected Node getSiblingNode(Node node, String nodeName) {

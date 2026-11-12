@@ -55,9 +55,11 @@ public class TestFileFormatManager {
 	}
 
 	@Test
-	public void findsTheReadFormatOfACodeAmongTheCommonFormatsFirst() {
+	public void findsTheReadFormatAmongTheCommonFormatsFirst() {
 		assertEquals("Shared | Other | TuxGuitar 2.0 | - | -",
 			found(manager::findReaderFileFormatByCode, "abc", "xyz", "tg", "mid", null));
+		assertEquals("Shared | Other | TuxGuitar 2.0 | - | -", found(manager::findReaderFileFormatByMimeType,
+			"audio/x-shared", "audio/x-other", "application/x-tuxguitar", "audio/x-written", null));
 	}
 
 	@Test
@@ -65,12 +67,6 @@ public class TestFileFormatManager {
 		assertEquals("Other | Other | -", found(code -> manager.findReaderFileFormatByCode(code, false), "abc", "xyz", "tg"));
 		assertEquals("Shared | - | TuxGuitar 2.0", found(code -> manager.findReaderFileFormatByCode(code, true), "abc", "xyz", "tg"));
 		assertEquals("TuxGuitar 2.0 | Other", found(code -> manager.findReaderFileFormatByCode(code, null), "tg", "abc"));
-	}
-
-	@Test
-	public void findsTheReadFormatOfAMimeTypeAmongTheCommonFormatsFirst() {
-		assertEquals("Shared | Other | TuxGuitar 2.0 | - | -", found(manager::findReaderFileFormatByMimeType,
-			"audio/x-shared", "audio/x-other", "application/x-tuxguitar", "audio/x-written", null));
 	}
 
 	@Test

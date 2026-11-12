@@ -101,48 +101,38 @@ public class TestSequenceParserNotes {
 		assertEquals(events(note(960, 1920, 55, 95, 3, 0), note(960, 1920, 64)), song.notes());
 	}
 
-	@Test
-	public void downStrokeDelaysHigherStrings() {
-		song.quarter(1, 0);
-		song.quarter(2, 0);
+	// quarters at fret 0 on the strings (a negative string: a tied note) of the first beat, stroked with value 8
+	// (60 ticks from one string to the next): the notes played
+	private List<String> stroked(int direction, int... strings) {
+		for (int string : strings) {
+			song.quarter(Math.abs(string), 0).setTiedNote(string < 0);
+		}
 		TGStroke stroke = song.beat(0, 0).getStroke();
-		stroke.setDirection(TGStroke.STROKE_DOWN);
+		stroke.setDirection(direction);
 		stroke.setValue(8);
-		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 59, 95, 2, 0)), song.notes());
+		return song.notes();
 	}
 
 	@Test
-	public void upStrokeDelaysLowerStrings() {
-		song.quarter(1, 0);
-		song.quarter(3, 0);
-		TGStroke stroke = song.beat(0, 0).getStroke();
-		stroke.setDirection(TGStroke.STROKE_UP);
-		stroke.setValue(8);
-		assertEquals(events(note(960, 1920, 64), note(1020, 1920, 55, 95, 3, 0)), song.notes());
+	public void aDownStrokeDelaysHigherStringsAndAnUpStrokeLowerOnes() {
+		List<String> down = stroked(TGStroke.STROKE_DOWN, 1, 2);
+		song.beat(0, 0).getVoice(0).getNotes().clear();
+
+		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 59, 95, 2, 0)), down);
+		assertEquals(events(note(960, 1920, 64), note(1020, 1920, 55, 95, 3, 0)), stroked(TGStroke.STROKE_UP, 1, 3));
 	}
 
 	@Test
 	public void tiedNotesTakeNoPlaceInTheStroke() {
-		song.quarter(1, 0);
-		song.quarter(2, 0).setTiedNote(true);
-		song.quarter(3, 0);
-		TGStroke stroke = song.beat(0, 0).getStroke();
-		stroke.setDirection(TGStroke.STROKE_DOWN);
-		stroke.setValue(8);
-		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 55, 95, 3, 0)), song.notes());
+		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 55, 95, 3, 0)), stroked(TGStroke.STROKE_DOWN, 1, -2, 3));
 	}
 
 	@Test
 	public void aBeatWithoutStrokeAfterAStrokedOneIsNotDelayed() {
-		song.quarter(1, 0);
-		song.quarter(2, 0);
 		song.note(4, TGDuration.QUARTER, 1, 0);
 		song.note(4, TGDuration.QUARTER, 2, 0);
-		TGStroke stroke = song.beat(0, 0).getStroke();
-		stroke.setDirection(TGStroke.STROKE_DOWN);
-		stroke.setValue(8);
 		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 59, 95, 2, 0),
-				note(1920, 2880, 64), note(1920, 2880, 59, 95, 2, 0)), song.notes());
+				note(1920, 2880, 64), note(1920, 2880, 59, 95, 2, 0)), stroked(TGStroke.STROKE_DOWN, 1, 2));
 	}
 
 	// ---- metronome ----
