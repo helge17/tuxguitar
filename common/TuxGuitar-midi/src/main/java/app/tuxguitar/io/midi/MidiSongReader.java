@@ -40,6 +40,10 @@ import app.tuxguitar.util.TGContext;
 
 public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
+	private static final int[] DENOMINATORS = {
+		TGDuration.WHOLE, TGDuration.HALF, TGDuration.QUARTER, TGDuration.EIGHTH, TGDuration.SIXTEENTH, TGDuration.THIRTY_SECOND
+	};
+
 	private int resolution;
 	private List<TGChannel> channels;
 	private List<TGMeasureHeader> headers;
@@ -306,22 +310,17 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		if(data.length >= 2){
 			TGTimeSignature timeSignature = this.factory.newTimeSignature();
 			timeSignature.setNumerator(data[0]);
-			timeSignature.getDenominator().setValue(TGDuration.QUARTER);
-			if (data[1] == 0) {
-				timeSignature.getDenominator().setValue(TGDuration.WHOLE);
-			} else if (data[1] == 1) {
-				timeSignature.getDenominator().setValue(TGDuration.HALF);
-			} else if (data[1] == 2) {
-				timeSignature.getDenominator().setValue(TGDuration.QUARTER);
-			} else if (data[1] == 3) {
-				timeSignature.getDenominator().setValue(TGDuration.EIGHTH);
-			} else if (data[1] == 4) {
-				timeSignature.getDenominator().setValue(TGDuration.SIXTEENTH);
-			} else if (data[1] == 5) {
-				timeSignature.getDenominator().setValue(TGDuration.THIRTY_SECOND);
-			}
+			timeSignature.getDenominator().setValue(getDenominator(data[1]));
 			getHeader(tick).setTimeSignature(timeSignature);
 		}
+	}
+
+	// the denominator is stored as a power of two, 0 for a whole up to 5 for a thirty-second; anything else is a quarter
+	private static int getDenominator(int exponent){
+		if (exponent >= 0 && exponent < DENOMINATORS.length) {
+			return DENOMINATORS[exponent];
+		}
+		return TGDuration.QUARTER;
 	}
 
 	private void parseTempo(long tick, byte[] data){
