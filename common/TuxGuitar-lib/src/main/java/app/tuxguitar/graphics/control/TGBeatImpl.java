@@ -1,5 +1,7 @@
 package app.tuxguitar.graphics.control;
 
+import java.util.Arrays;
+
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChord;
@@ -45,17 +47,8 @@ public class TGBeatImpl extends TGBeat{
 	private TGBeatSpacing bs;
 	private float effectWidth;
 
-	private boolean accentuated;
-	private boolean heavyAccentuated;
-	private boolean harmonic;
-	private boolean tapping;
-	private boolean slapping;
-	private boolean popping;
-	private boolean palmMute;
-	private boolean letRing;
-	private boolean vibrato;
-	private boolean trill;
-	private boolean fadeIn;
+	// the effects some note of the beat has, by their TGBeatSpacing position
+	private final boolean[] effects = new boolean[TGBeatSpacing.EFFECT_COUNT];
 	private boolean bend;
 
 	public TGBeatImpl(TGFactory factory){
@@ -197,92 +190,38 @@ public class TGBeatImpl extends TGBeat{
 
 	public void resetEffectsSpacing( TGLayout layout ){
 		this.bs = new TGBeatSpacing( layout );
-		this.accentuated = false;
-		this.heavyAccentuated = false;
-		this.harmonic = false;
-		this.tapping = false;
-		this.slapping = false;
-		this.popping = false;
-		this.palmMute = false;
-		this.letRing = false;
-		this.fadeIn = false;
-		this.vibrato = false;
-		this.trill = false;
+		Arrays.fill(this.effects, false);
 		this.bend = false;
 	}
 
 	public void updateEffectsSpacing(TGLayout layout,TGNoteEffect effect){
-		if(effect.isAccentuatedNote()){
-			this.accentuated = true;
-		}
-		if(effect.isHeavyAccentuatedNote()){
-			this.heavyAccentuated = true;
-		}
-		if(effect.isHarmonic() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0 ){
-			this.harmonic = true;
-		}
-		if(effect.isTapping()){
-			this.tapping = true;
-		}
-		if(effect.isSlapping()){
-			this.slapping = true;
-		}
-		if(effect.isPopping()){
-			this.popping = true;
-		}
-		if(effect.isPalmMute()){
-			this.palmMute = true;
-		}
-		if(effect.isLetRing()){
-			this.letRing = true;
-		}
-		if(effect.isFadeIn()){
-			this.fadeIn = true;
-		}
-		if(effect.isVibrato()){
-			this.vibrato = true;
-		}
-		if(effect.isTrill()){
-			this.trill = true;
-		}
+		addEffect(TGBeatSpacing.POSITION_ACCENTUATED_EFFECT, effect.isAccentuatedNote());
+		addEffect(TGBeatSpacing.POSITION_HEAVY_ACCENTUATED_EFFECT, effect.isHeavyAccentuatedNote());
+		addEffect(TGBeatSpacing.POSITION_HARMONIC_EFFECT, effect.isHarmonic() && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0);
+		addEffect(TGBeatSpacing.POSITION_TAPPING_EFFECT, effect.isTapping());
+		addEffect(TGBeatSpacing.POSITION_SLAPPING_EFFECT, effect.isSlapping());
+		addEffect(TGBeatSpacing.POSITION_POPPING_EFFECT, effect.isPopping());
+		addEffect(TGBeatSpacing.POSITION_PALM_MUTE_EFFECT, effect.isPalmMute());
+		addEffect(TGBeatSpacing.POSITION_LET_RING_EFFECT, effect.isLetRing());
+		addEffect(TGBeatSpacing.POSITION_FADE_IN_EFFECT, effect.isFadeIn());
+		addEffect(TGBeatSpacing.POSITION_VIBRATO_EFFECT, effect.isVibrato());
+		addEffect(TGBeatSpacing.POSITION_TRILL_EFFECT, effect.isTrill());
 		if(effect.isBend()) {
 			this.bend = true;
 		}
 	}
 
+	private void addEffect(int position, boolean present){
+		if( present ){
+			this.effects[position] = true;
+		}
+	}
+
 	public float getEffectsSpacing(TGLayout layout){
-		if(this.accentuated){
-			this.bs.setSize(TGBeatSpacing.POSITION_ACCENTUATED_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.heavyAccentuated){
-			this.bs.setSize(TGBeatSpacing.POSITION_HEAVY_ACCENTUATED_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.harmonic){
-			this.bs.setSize(TGBeatSpacing.POSITION_HARMONIC_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.tapping){
-			this.bs.setSize(TGBeatSpacing.POSITION_TAPPING_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.slapping){
-			this.bs.setSize(TGBeatSpacing.POSITION_SLAPPING_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.popping){
-			this.bs.setSize(TGBeatSpacing.POSITION_POPPING_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.palmMute){
-			this.bs.setSize(TGBeatSpacing.POSITION_PALM_MUTE_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.letRing){
-			this.bs.setSize(TGBeatSpacing.POSITION_LET_RING_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.fadeIn){
-			this.bs.setSize(TGBeatSpacing.POSITION_FADE_IN_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.vibrato){
-			this.bs.setSize(TGBeatSpacing.POSITION_VIBRATO_EFFECT,layout.getEffectSpacing());
-		}
-		if(this.trill){
-			this.bs.setSize(TGBeatSpacing.POSITION_TRILL_EFFECT,layout.getEffectSpacing());
+		for(int position = 0; position < this.effects.length; position ++){
+			if( this.effects[position] ){
+				this.bs.setSize(position, layout.getEffectSpacing());
+			}
 		}
 		return this.bs.getSize();
 	}
