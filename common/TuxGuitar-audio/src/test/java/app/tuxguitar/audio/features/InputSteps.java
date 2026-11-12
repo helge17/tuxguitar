@@ -1,9 +1,13 @@
 package app.tuxguitar.audio.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
+import app.tuxguitar.audio.TGInputMeter;
+import app.tuxguitar.audio.action.TGResetClipIndicatorAction;
 import app.tuxguitar.audio.action.TGSetInputChannelsAction;
 import app.tuxguitar.audio.undo.TGUndoableOnSuccess;
 import app.tuxguitar.document.TGDocumentContextAttributes;
@@ -11,10 +15,12 @@ import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
 import app.tuxguitar.song.models.TGAudioInput;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 /**
- * Steps on what an audio track records from: its input channel(s).
+ * Steps on what an audio track records from: its input channel(s), and its input level, metered while TuxGuitar is
+ * stopped as the Test Interface delivers the player's signal.
  */
 public class InputSteps {
 
@@ -43,5 +49,46 @@ public class InputSteps {
 	public void haveSetInputChannels(int number, TGAudioInput input) {
 		setInputChannels(number, input);
 		assertTrue(world.succeeded());
+	}
+
+	// the device's clock runs while TuxGuitar is stopped: the input delivers that many seconds of its signal
+	@When("the input has delivered {int} second(s)")
+	public void theInputHasDelivered(int seconds) {
+		world.session().listen(world.fixture().songManager, world.song(), seconds * world.device().getSampleRate());
+	}
+
+	private TGInputMeter meter(int number) {
+		return world.session().getInputMeter(world.track(number));
+	}
+
+	@Then("track {int}'s input level reads {double} dBFS within 0.01 dB")
+	public void inputLevelReads(int number, double level) {
+		assertEquals(level, meter(number).getLevel(), 0.01);
+	}
+
+	@Then("track {int}'s input is clipping")
+	public void isClipping(int number) {
+		assertTrue(meter(number).isClipping());
+	}
+
+	@Then("track {int}'s input is not clipping")
+	public void isNotClipping(int number) {
+		assertFalse(meter(number).isClipping());
+	}
+
+	@Then("track {int}'s input has clipped")
+	public void hasClipped(int number) {
+		assertTrue(meter(number).hasClipped());
+	}
+
+	@Then("track {int}'s input has not clipped")
+	public void hasNotClipped(int number) {
+		assertFalse(meter(number).hasClipped());
+	}
+
+	@When("I reset track {int}'s clip indicator")
+	public void resetTheClipIndicator(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.execute(new TGResetClipIndicatorAction(world.fixture().context));
 	}
 }

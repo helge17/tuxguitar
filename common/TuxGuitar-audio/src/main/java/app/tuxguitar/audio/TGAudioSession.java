@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -15,20 +17,27 @@ import app.tuxguitar.util.singleton.TGSingletonFactory;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 /**
- * What the audio features keep outside the song: the audio device, which tracks are armed, the punch range. It is not
- * saved, not undoable, and changing it does not mark the song modified. One per context.
+ * What the audio features keep outside the song: the audio device, which tracks are armed, their monitoring and input
+ * level, the punch range. It is not saved, not undoable, and changing it does not mark the song modified. One per
+ * context.
  */
 public final class TGAudioSession {
 
 	// the MIDI Port of the TuxGuitar Synthesizer (desktop's TGSynthPortProvider), the only one audio tracks sound through
 	public static final String SYNTHESIZER_PORT_KEY = "tuxguitar-synth.port";
 
+	// the audio device delivers its input in blocks of this many samples
+	private static final int BLOCK = 512;
+
 	// tracks are armed as objects: a track brought back by undo is a new one, so it comes back not armed
 	private final Set<TGTrack> armedTracks = new HashSet<TGTrack>();
 	// kept while a track is disarmed and armed again
 	private final Map<TGTrack, TGMonitoring> monitoring = new HashMap<TGTrack, TGMonitoring>();
+	private final Map<TGTrack, TGInputMeter> meters = new HashMap<TGTrack, TGInputMeter>();
 	private TGAudioDevice device;
 	private TGPunchRange punchRange;
+	// the device's clock while TuxGuitar is stopped: how much input it has delivered
+	private long listened;
 
 	private TGAudioSession() {
 	}
@@ -80,6 +89,24 @@ public final class TGAudioSession {
 
 	public void setMonitoring(TGTrack track, TGMonitoring monitoring) {
 		this.monitoring.put(track, monitoring);
+	}
+
+	// the audio device delivered count more samples while TuxGuitar is stopped: each armed track's input channel(s)
+	// feed its input meter, a block at a time
+	public void listen(TGSongManager songManager, TGSong song, int count) {
+		for (int done = 0; done < count; done += BLOCK) {
+			int frames = Math.min(BLOCK, count - done);
+			for (TGTrack track : this.getArmedTracks(song)) {
+				TGAudioInput input = songManager.getChannel(song, track.getChannelId()).getAudioInput();
+				this.getInputMeter(track).deliver(this.device.capture(input, this.listened, frames));
+			}
+			this.listened += frames;
+		}
+	}
+
+	// the track's input level, at the audio device's rate
+	public TGInputMeter getInputMeter(TGTrack track) {
+		return this.meters.computeIfAbsent(track, key -> new TGInputMeter(this.device.getSampleRate()));
 	}
 
 	public void setPunchRange(TGPunchRange punchRange) {

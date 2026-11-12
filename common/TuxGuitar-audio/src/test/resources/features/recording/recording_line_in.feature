@@ -226,7 +226,6 @@ Feature: Recording line-in audio
 
   # Input level
 
-  @planned
   Scenario Outline: the input level shows the peak an input channel delivered, and whether it is clipping
     Given I have armed track 2
     And the player plays <signal> on input channel 1
@@ -241,7 +240,6 @@ Feature: Recording line-in audio
       | a constant level of 0.98856       | -0.1  | is clipping     |
       | a constant level of 1.0           | 0     | is clipping     |
 
-  @planned
   Scenario: an input that clipped shows it has clipped until I reset it
     Given I have armed track 2
     And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1
@@ -249,7 +247,6 @@ Feature: Recording line-in audio
     Then track 2's input is not clipping
     And track 2's input has clipped
 
-  @planned
   Scenario: resetting the clip indicator clears it
     Given I have armed track 2
     And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1

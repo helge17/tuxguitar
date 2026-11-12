@@ -58,7 +58,8 @@ public class TakeSteps {
 		world.rememberTakes(number);
 	}
 
-	@Given("the player plays {signal} on input channel {int}")
+	// "<signal> for N samples, then <signal>, on input channel N" closes the sequence with a comma
+	@Given("the player plays {signal}(,) on input channel {int}")
 	public void thePlayerPlays(String signal, int inputChannel) {
 		world.device().play(inputChannel, Signals.parse(signal, world.song(), world.device(), 1));
 	}

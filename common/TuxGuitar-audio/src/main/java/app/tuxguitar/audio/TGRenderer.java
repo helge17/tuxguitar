@@ -9,7 +9,6 @@ import java.util.Map;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.managers.TGSongManager;
-import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
@@ -63,14 +62,9 @@ public final class TGRenderer {
 		return TGTakeTap.render(track, timeline, this.stretcher, sources, input);
 	}
 
-	// what the track's input channel(s) deliver over the timeline: one side, or a pair
+	// what the track's input channel(s) deliver over the timeline
 	private float[][] input(TGTrack track, TGTimeline timeline) {
-		TGAudioInput input = this.channel(track).getAudioInput();
-		float[][] sides = new float[input.countChannels()][];
-		for (int side = 0; side < sides.length; side++) {
-			sides[side] = this.session.getDevice().capture(input.getChannel(side), timeline.getClock(), (int) timeline.length());
-		}
-		return sides;
+		return this.session.getDevice().capture(this.channel(track).getAudioInput(), timeline.getClock(), (int) timeline.length());
 	}
 
 	// where the track records it sounds its input (monitoring Auto or Always) or nothing (Off); with monitoring

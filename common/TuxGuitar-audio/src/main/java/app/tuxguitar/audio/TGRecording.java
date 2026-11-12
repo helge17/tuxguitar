@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.tuxguitar.song.managers.TGSongManager;
-import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 
@@ -69,13 +68,7 @@ public final class TGRecording {
 		return tracks.size();
 	}
 
-	// what the track's input channel(s) delivered: one side for a mono input, two for a pair
 	private float[][] capture(TGTrack track, long clock, int count) {
-		TGAudioInput input = this.songManager.getChannel(this.song, track.getChannelId()).getAudioInput();
-		float[][] samples = new float[input.countChannels()][];
-		for (int side = 0; side < samples.length; side++) {
-			samples[side] = this.device.capture(input.getChannel(side), clock, count);
-		}
-		return samples;
+		return this.device.capture(this.songManager.getChannel(this.song, track.getChannelId()).getAudioInput(), clock, count);
 	}
 }
