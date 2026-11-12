@@ -61,65 +61,69 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	}
 
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
-		this.settings = null;
-		try {
-			this.settings = handle.getContext().getAttribute(MidiSettings.class.getName());
-		}
-		catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
-		if( this.settings == null ) {
-			this.settings = MidiSettings.getDefaults();
-		}
-
+		this.settings = readSettings(handle);
 		try {
 			this.factory = handle.getFactory();
 
 			MidiSequence sequence = new MidiFileReader().getSequence(handle.getInputStream());
 			initFields(sequence);
 			for(int seqTrackNb = 0; seqTrackNb < sequence.countTracks(); seqTrackNb++){
-				this.lastBeatEnd = TGDuration.QUARTER_TIME;
-				this.tempNotes.clear();
-				MidiTrack track = sequence.getTrack(seqTrackNb);
-				int trackNumber = getNextTrackNumber();
-				int eventsCount = track.size();
-				// group simultaneous events in a list, then process the list
-				long previousTick = -1;
-				List<MidiEvent> tickEvents = new ArrayList<MidiEvent>();
-				for(int eventNb = 0;eventNb < eventsCount;eventNb ++){
-					MidiEvent event = track.get(eventNb);
-					if (event.getTick() > previousTick) {
-						parseEvents(tickEvents, seqTrackNb, trackNumber);
-					}
-					tickEvents.add(event);
-					previousTick = event.getTick();
-				}
-				parseEvents(tickEvents, seqTrackNb, trackNumber);
+				parseTrack(sequence.getTrack(seqTrackNb), seqTrackNb);
 			}
 
-			tgSongManager = new TGSongManager(this.factory);
-			TGSong tgSong = this.factory.newSong();
-			tgSong.setName(sequenceName);
-
-			this.checkAll(tgSongManager);
-
-			Iterator<TGChannel> channels = this.channels.iterator();
-			while(channels.hasNext()){
-				tgSong.addChannel(channels.next());
-			}
-			Iterator<TGMeasureHeader> headers = this.headers.iterator();
-			while(headers.hasNext()){
-				tgSong.addMeasureHeader(headers.next());
-			}
-			Iterator<TGTrack> tracks = this.tracks.iterator();
-			while(tracks.hasNext()){
-				tgSong.addTrack(tracks.next());
-			}
-
-			handle.setSong(new SongAdjuster(this.factory, tgSong).adjustSong());
+			handle.setSong(new SongAdjuster(this.factory, createSong()).adjustSong());
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}
+	}
+
+	// the settings stored in the handle context, else the defaults
+	private static MidiSettings readSettings(TGSongReaderHandle handle) {
+		MidiSettings settings = null;
+		try {
+			settings = handle.getContext().getAttribute(MidiSettings.class.getName());
+		}
+		catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+		return (settings != null) ? settings : MidiSettings.getDefaults();
+	}
+
+	private void parseTrack(MidiTrack track, int seqTrackNb) {
+		this.lastBeatEnd = TGDuration.QUARTER_TIME;
+		this.tempNotes.clear();
+		int trackNumber = getNextTrackNumber();
+		// group simultaneous events in a list, then process the list
+		long previousTick = -1;
+		List<MidiEvent> tickEvents = new ArrayList<MidiEvent>();
+		for(int eventNb = 0;eventNb < track.size();eventNb ++){
+			MidiEvent event = track.get(eventNb);
+			if (event.getTick() > previousTick) {
+				parseEvents(tickEvents, seqTrackNb, trackNumber);
+			}
+			tickEvents.add(event);
+			previousTick = event.getTick();
+		}
+		parseEvents(tickEvents, seqTrackNb, trackNumber);
+	}
+
+	private TGSong createSong() throws Exception {
+		tgSongManager = new TGSongManager(this.factory);
+		TGSong tgSong = this.factory.newSong();
+		tgSong.setName(sequenceName);
+
+		this.checkAll(tgSongManager);
+
+		for (TGChannel channel : this.channels) {
+			tgSong.addChannel(channel);
+		}
+		for (TGMeasureHeader header : this.headers) {
+			tgSong.addMeasureHeader(header);
+		}
+		for (TGTrack track : this.tracks) {
+			tgSong.addTrack(track);
+		}
+		return tgSong;
 	}
 
 	// parse list of simultaneous events: parse "note off" events first, to avoid creating false notes
