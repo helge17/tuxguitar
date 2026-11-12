@@ -15,6 +15,27 @@
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<!-- the test classes as a test-jar, so tuxguitar-audio's features drive actions through SongActionFixture;
+				without this module's features, which would run again in every module that has the jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>features/**</exclude>
+								<exclude>app/tuxguitar/editor/features/**</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<!-- Cucumber 7 is the last line that runs on Java 8+ and JUnit 5 (8 needs Java 17 and JUnit 6); one JUnit

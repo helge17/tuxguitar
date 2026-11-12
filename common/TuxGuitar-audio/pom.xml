@@ -46,6 +46,30 @@
 			<artifactId>tuxguitar-lib</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- editing actions and undo -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-editor-utils</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- the scenarios run the actions through editor-utils' SongActionFixture, and read MIDI routes -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-editor-utils</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-gm-utils</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-suite</artifactId>
