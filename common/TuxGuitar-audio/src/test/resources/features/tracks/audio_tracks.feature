@@ -8,7 +8,6 @@ Feature: Audio tracks
     And I have set the audio device to "Test Interface"
     And the VST3 folders hold the test plugins
 
-  @planned
   Scenario: a new audio track has no strings, no takes and a channel of its own
     When I add an audio track recording input channel 2
     Then the action succeeds

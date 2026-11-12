@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.helpers.TGMeasureError;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDuration;
@@ -356,6 +357,18 @@ public class TGSongManager {
 		tgChannel.setName(createChannelNameFromProgram(song, tgChannel));
 
 		TGTrack tgTrack = createTrack(song);
+		tgTrack.setChannelId(tgChannel.getChannelId());
+		addTrack(song, tgTrack);
+		return tgTrack;
+	}
+
+	// a new audio track at the end of the song: no strings, on a new channel of its own that records from the input
+	public TGTrack addAudioTrack(TGSong song, TGAudioInput input){
+		TGChannel tgChannel = addChannel(song);
+		tgChannel.setAudioInput(input);
+
+		TGTrack tgTrack = createTrack(song);
+		tgTrack.setStrings(new ArrayList<TGString>());
 		tgTrack.setChannelId(tgChannel.getChannelId());
 		addTrack(song, tgTrack);
 		return tgTrack;
