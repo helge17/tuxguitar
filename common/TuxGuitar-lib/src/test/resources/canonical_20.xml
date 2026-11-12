@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Every optional element of format 2.0, as TGSongWriterImpl writes it (indented here for reading).
+     Reading this file and writing the song back gives the same TGSong element, whitespace aside.
+     Voices without a division type still get <divisionType enters="1" times="1"/>: the writer compares
+     the division by identity with TGDivisionType.NORMAL, which a read song never holds. -->
+<TuxGuitarFile>
+	<TGVersion major="2" minor="0" revision="0"/>
+	<TGSong>
+		<name>every option</name>
+		<artist>artist</artist>
+		<album>album</album>
+		<author>author</author>
+		<date>date</date>
+		<copyright>copyright</copyright>
+		<writer>writer</writer>
+		<transcriber>transcriber</transcriber>
+		<comments>comments</comments>
+		<TGChannel>
+			<id>1</id>
+			<bank>0</bank>
+			<program>25</program>
+			<volume>127</volume>
+			<balance>64</balance>
+			<chorus>10</chorus>
+			<reverb>20</reverb>
+			<phaser>30</phaser>
+			<tremolo>40</tremolo>
+			<name>Guitar</name>
+			<TGChannelParameter key="k1" value="v1"/>
+			<TGChannelParameter key="k2" value="v2"/>
+		</TGChannel>
+		<TGChannel>
+			<id>2</id>
+			<bank>128</bank>
+			<program>0</program>
+			<volume>100</volume>
+			<balance>64</balance>
+			<chorus>0</chorus>
+			<reverb>0</reverb>
+			<phaser>0</phaser>
+			<tremolo>0</tremolo>
+			<name>Drums</name>
+		</TGChannel>
+		<TGMeasureHeader>
+			<timeSignature denominator="8" numerator="3"/>
+			<tempo>110</tempo>
+			<repeatOpen/>
+		</TGMeasureHeader>
+		<TGMeasureHeader>
+			<timeSignature denominator="8" numerator="3"/>
+			<tempo base="8" dotted="true">90</tempo>
+			<repeatAlternative>
+				<alternative>1</alternative>
+				<alternative>3</alternative>
+			</repeatAlternative>
+			<marker B="2" G="1" R="255">chorus</marker>
+			<lineBreak/>
+		</TGMeasureHeader>
+		<TGMeasureHeader>
+			<timeSignature denominator="8" numerator="3"/>
+			<tempo base="2">40</tempo>
+			<repeatClose>2</repeatClose>
+			<tripletFeel>eighth</tripletFeel>
+		</TGMeasureHeader>
+		<TGMeasureHeader>
+			<timeSignature denominator="4" numerator="4"/>
+			<tempo>110</tempo>
+			<tripletFeel>sixteenth</tripletFeel>
+		</TGMeasureHeader>
+		<TGTrack maxFret="22">
+			<name>solo track</name>
+			<soloMute>solo</soloMute>
+			<channelId>1</channelId>
+			<offset>-1</offset>
+			<color B="30" G="20" R="10"/>
+			<TGString>64</TGString>
+			<TGString>59</TGString>
+			<TGString>55</TGString>
+			<TGString>50</TGString>
+			<TGString>45</TGString>
+			<TGString>40</TGString>
+			<TGLyric from="2">some lyrics</TGLyric>
+			<TGMeasure>
+				<clef>treble</clef>
+				<keySignature>8</keySignature>
+				<TGBeat>
+					<preciseStart>2882880</preciseStart>
+					<stroke direction="up" value="2"/>
+					<pickStroke>down</pickStroke>
+					<chord>
+						<name>Bm</name>
+						<firstFret>2</firstFret>
+						<string>0</string>
+						<string>3</string>
+						<string>4</string>
+						<string>4</string>
+						<string>2</string>
+						<string/>
+					</chord>
+					<text>beat text</text>
+					<voice direction="up">
+						<duration dotted="doubleDotted" value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+						<note string="1" value="12" velocity="90">
+							<vibrato/>
+							<deadNote/>
+							<ghostNote/>
+							<palmMute/>
+							<tapping/>
+							<fadeIn/>
+						</note>
+						<note string="2" tiedNote="true" value="1">
+							<heavyAccentuatedNote/>
+							<staccato/>
+							<slapping/>
+							<alternativeEnharmonic/>
+						</note>
+						<note string="3" value="3" velocity="100">
+							<slide/>
+							<accentuatedNote/>
+							<popping/>
+							<letRing/>
+						</note>
+						<note string="4" value="4">
+							<hammer/>
+						</note>
+						<note string="5" value="5" velocity="80">
+							<bend>
+								<point position="1" value="2"/>
+								<point position="3" value="4"/>
+							</bend>
+						</note>
+						<note string="6" value="6">
+							<tremoloBar>
+								<point position="5" value="6"/>
+								<point position="7" value="8"/>
+							</tremoloBar>
+						</note>
+					</voice>
+					<voice direction="down" empty="true">
+						<duration dotted="dotted" value="2">
+							<divisionType enters="3" times="2"/>
+						</duration>
+					</voice>
+				</TGBeat>
+				<TGBeat>
+					<preciseStart>3000000</preciseStart>
+					<stroke direction="down" value="4"/>
+					<pickStroke>up</pickStroke>
+					<voice>
+						<duration value="16">
+							<divisionType enters="1" times="1"/>
+						</duration>
+						<note string="1" value="5" velocity="80">
+							<harmonic data="12" type="A.H"/>
+							<grace dead="false" duration="64" dynamic="50" fret="5" onBeat="true" transition="slide"/>
+						</note>
+						<note string="2" value="6">
+							<harmonic data="0" type="N.H"/>
+							<grace dead="true" duration="32" dynamic="60" fret="3" onBeat="false" transition="hammer"/>
+						</note>
+						<note string="3" value="7">
+							<trill duration="32" fret="3"/>
+						</note>
+						<note string="4" value="8">
+							<tremoloPicking duration="16"/>
+						</note>
+					</voice>
+					<voice empty="false">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<clef>bass</clef>
+				<TGBeat>
+					<preciseStart>4000000</preciseStart>
+					<voice empty="true">
+						<duration value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<keySignature>2</keySignature>
+				<TGBeat>
+					<preciseStart>5000000</preciseStart>
+					<voice empty="true">
+						<duration value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>6000000</preciseStart>
+					<voice empty="true">
+						<duration value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="8">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+		</TGTrack>
+		<TGTrack>
+			<name>drums</name>
+			<soloMute>mute</soloMute>
+			<channelId>2</channelId>
+			<color B="23" G="22" R="21"/>
+			<TGString>0</TGString>
+			<TGLyric from="1"/>
+			<TGMeasure>
+				<clef>treble</clef>
+				<keySignature>0</keySignature>
+				<TGBeat>
+					<preciseStart>2882880</preciseStart>
+					<voice>
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+						<note string="1" value="36" velocity="127"/>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>4000000</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>5000000</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>6000000</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+		</TGTrack>
+		<TGTrack maxFret="24">
+			<name>plain track</name>
+			<channelId>1</channelId>
+			<color B="3" G="2" R="1"/>
+			<TGString>64</TGString>
+			<TGLyric from="1"/>
+			<TGMeasure>
+				<clef>treble</clef>
+				<keySignature>0</keySignature>
+				<TGBeat>
+					<preciseStart>2882880</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>4000000</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>5000000</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+			<TGMeasure>
+				<TGBeat>
+					<preciseStart>6000000</preciseStart>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+					<voice empty="true">
+						<duration value="4">
+							<divisionType enters="1" times="1"/>
+						</duration>
+					</voice>
+				</TGBeat>
+			</TGMeasure>
+		</TGTrack>
+	</TGSong>
+</TuxGuitarFile>

@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -581,6 +582,68 @@ public class TestFileFormat20 {
 		}
 		assertTrue(caught);
 		assertNull(handle);
+	}
+
+	// every optional element of the format, see canonical_20.xml
+	@Test
+	public void readingThenWritingTheCanonicalFileGivesItBack() throws IOException {
+		String canonical = resourceText("canonical_20.xml");
+		TGFactory factory = new TGFactory();
+
+		TGSong song = readFromXml(canonical.getBytes(StandardCharsets.UTF_8), factory);
+		String written = new String(saveToXml(song, factory), StandardCharsets.UTF_8);
+
+		assertEquals(songElement(canonical.replaceAll(">\\s+<", "><")), songElement(written));
+	}
+
+	// a header without time signature or tempo keeps the previous ones, the first header defaults to 4/4 at 120
+	@Test
+	public void missingHeaderValuesAreTakenFromThePreviousHeader() {
+		String xml = "<TuxGuitarFile><TGSong><name/><artist/><album/><author/><date/><copyright/><writer/>"
+				+ "<transcriber/><comments/>"
+				+ "<TGMeasureHeader/>"
+				+ "<TGMeasureHeader><timeSignature numerator=\"3\" denominator=\"8\"/><tempo base=\"8\" dotted=\"true\">90</tempo></TGMeasureHeader>"
+				+ "<TGMeasureHeader/>"
+				+ "<TGMeasureHeader><tempo>60</tempo></TGMeasureHeader>"
+				+ "</TGSong></TuxGuitarFile>";
+
+		TGSong song = readFromXml(xml.getBytes(StandardCharsets.UTF_8), new TGFactory());
+
+		assertEquals("4/4 120 4 false", headerSummary(song.getMeasureHeader(0)));
+		assertEquals("3/8 90 8 true", headerSummary(song.getMeasureHeader(1)));
+		assertEquals("3/8 90 8 true", headerSummary(song.getMeasureHeader(2)));
+		assertEquals("3/8 60 4 false", headerSummary(song.getMeasureHeader(3)));
+		assertEquals(TGDuration.QUARTER_TIME, song.getMeasureHeader(0).getStart());
+		assertEquals(TGDuration.QUARTER_TIME * 5, song.getMeasureHeader(1).getStart());
+		assertEquals(4, song.getMeasureHeader(3).getNumber());
+	}
+
+	// what reads back as the same song is not written: empty beat texts, the max fret of percussion tracks
+	@Test
+	public void emptyBeatTextsAreNotWritten() throws IOException {
+		TGFactory factory = new TGFactory();
+		TGSong song = readFromXml(resourceText("canonical_20.xml").getBytes(StandardCharsets.UTF_8), factory);
+		song.getTrack(0).getMeasure(0).getBeat(0).getText().setValue("");
+
+		String written = new String(saveToXml(song, factory), StandardCharsets.UTF_8);
+
+		assertFalse(written.contains("<text>"));
+		assertTrue(written.contains("<chord>"));
+	}
+
+	private static String headerSummary(TGMeasureHeader header) {
+		return header.getTimeSignature().getNumerator() + "/" + header.getTimeSignature().getDenominator().getValue()
+				+ " " + header.getTempo().getRawValue() + " " + header.getTempo().getBase() + " " + header.getTempo().isDotted();
+	}
+
+	private static String songElement(String xml) {
+		return xml.substring(xml.indexOf("<TGSong>"), xml.indexOf("</TGSong>"));
+	}
+
+	private String resourceText(String resourceFileName) throws IOException {
+		try (InputStream stream = getClass().getClassLoader().getResource(resourceFileName).openStream()) {
+			return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+		}
 	}
 
 	private byte[] saveToXml(TGSong song, TGFactory factory) {
