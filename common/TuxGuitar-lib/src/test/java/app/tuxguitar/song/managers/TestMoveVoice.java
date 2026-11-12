@@ -68,30 +68,29 @@ public class TestMoveVoice {
 		return beats();
 	}
 
-	@Test
-	public void aVoiceAloneInItsBeatTakesEverythingAlongAndItsBeatIsRemoved() {
-		fixture.note(0, 4, 0);
-		decorated();
-
-		assertEquals("1:n_ text chord stroke -1 pick 1", moveVoice0ToTheSecondQuarter());
+	// moves voice 0 of the decorated beat at quarter 0, holding a note, beside voice 1: "_" empty, "r" a rest, "n" a note
+	private static String movedBeside(String other) {
+		TestMoveVoice test = new TestMoveVoice();
+		test.fixture.note(0, 4, 0);
+		if (other.equals("r")) {
+			test.fixture.rest(0, 4, 1);
+		} else if (other.equals("n")) {
+			test.fixture.note(0, 4, 1);
+		}
+		test.decorated();
+		return test.moveVoice0ToTheSecondQuarter();
 	}
 
 	@Test
-	public void aVoiceBesideARestLeavesTheTextButTakesTheChordAndStrokes() {
-		fixture.note(0, 4, 0);
-		fixture.rest(0, 4, 1);
-		decorated();
-
-		assertEquals("0:_r text, 1:n_ chord stroke -1 pick 1", moveVoice0ToTheSecondQuarter());
-	}
-
-	@Test
-	public void aVoiceBesideNotesLeavesEverythingBehind() {
-		fixture.note(0, 4, 0);
-		fixture.note(0, 4, 1);
-		decorated();
-
-		assertEquals("0:_n text chord stroke -1 pick 1, 1:n_", moveVoice0ToTheSecondQuarter());
+	public void aVoiceTakesTheTextAlongWhenAloneAndTheChordAndStrokesWhenNoOtherVoiceHasNotes() {
+		assertEquals(String.join("\n",
+			// alone: everything goes, and the emptied beat is removed
+			"1:n_ text chord stroke -1 pick 1",
+			// beside a rest: the text stays
+			"0:_r text, 1:n_ chord stroke -1 pick 1",
+			// beside notes: everything stays
+			"0:_n text chord stroke -1 pick 1, 1:n_"),
+			String.join("\n", movedBeside("_"), movedBeside("r"), movedBeside("n")));
 	}
 
 	@Test

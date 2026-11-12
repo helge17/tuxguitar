@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Test;
 
 import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.models.TGBeat;
-import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGVoice;
 
 /**
  * Pins how TGMeasureManager reads and repairs the timing of the voices of a 4/4 measure: realigning the beats
  * (updateBeatsPreciseStart), filling the gaps with rests (autoCompleteSilences) and listing the errors
- * (getMeasureErrors). A beat is "position:<voice 0>|<voice 1>", position in quarters from the measure start,
- * a voice "n<duration>" (notes), "r<duration>" (rest) or "_" (empty).
+ * (getMeasureErrors). Notes are given as (precise offset, duration value, voice) triples. A beat is
+ * "position:<voice 0>|<voice 1>", position in quarters from the measure start, a voice "n<duration>" (notes),
+ * "r<duration>" (rest) or "_" (empty).
  */
 public class TestVoiceTiming {
 
@@ -45,113 +45,89 @@ public class TestVoiceTiming {
 		return String.join(" ", described);
 	}
 
+	// adds a note for each (precise offset from the measure start, duration value, voice) triple
+	private void notes(long... triples) {
+		for (int i = 0; i < triples.length; i += 3) {
+			fixture.note(triples[i], (int) triples[i + 1], (int) triples[i + 2]);
+		}
+	}
+
 	// --- realigning the beats ---
+
+	private String realigned(long... triples) {
+		notes(triples);
+		manager.updateBeatsPreciseStart(fixture.measure);
+		return beats();
+	}
 
 	@Test
 	public void eachBeatMovesToWhereThePreviousOneEnds() {
-		fixture.note(5, TGDuration.QUARTER, 0);
-		fixture.note(QUARTER + 7, TGDuration.HALF, 0);
-		fixture.note(3 * QUARTER + 5, TGDuration.QUARTER, 0);
-
-		manager.updateBeatsPreciseStart(fixture.measure);
-
-		assertEquals("0:n4|_ 1:n2|_ 3:n4|_", beats());
+		assertEquals("0:n4|_ 1:n2|_ 3:n4|_", realigned(5, 4, 0, QUARTER + 7, 2, 0, 3 * QUARTER + 5, 4, 0));
 	}
 
 	@Test
 	public void aBeatClosesTheHoleBeforeItAndLeavesTheOverlap() {
-		fixture.note(0, TGDuration.QUARTER, 0);
-		fixture.note(2 * QUARTER, TGDuration.HALF, 0);
-		fixture.note(3 * QUARTER, TGDuration.QUARTER, 0);
-
-		manager.updateBeatsPreciseStart(fixture.measure);
-
-		assertEquals("0:n4|_ 1:n2|_ 3:n4|_", beats());
+		assertEquals("0:n4|_ 1:n2|_ 3:n4|_", realigned(0, 4, 0, 2 * QUARTER, 2, 0, 3 * QUARTER, 4, 0));
 	}
 
 	@Test
 	public void aBeatWaitsForTheLastOfItsVoicesToEnd() {
-		fixture.note(0, TGDuration.QUARTER, 0);
-		fixture.note(0, TGDuration.HALF, 1);
-		fixture.note(QUARTER, TGDuration.QUARTER, 0);
-		fixture.note(QUARTER, TGDuration.QUARTER, 1);
-
-		manager.updateBeatsPreciseStart(fixture.measure);
-
-		assertEquals("0:n4|n2 2:n4|n4", beats());
+		assertEquals("0:n4|n2 2:n4|n4", realigned(0, 4, 0, 0, 2, 1, QUARTER, 4, 0, QUARTER, 4, 1));
 	}
 
 	@Test
 	public void aVoiceEmptyInTheFirstBeatStartsWhereTheShortestVoiceEnds() {
-		fixture.note(0, TGDuration.HALF, 1);
-		fixture.note(QUARTER, TGDuration.QUARTER, 0);
-
-		manager.updateBeatsPreciseStart(fixture.measure);
-
-		assertEquals("0:_|n2 2:n4|_", beats());
+		assertEquals("0:_|n2 2:n4|_", realigned(0, 2, 1, QUARTER, 4, 0));
 	}
 
 	@Test
 	public void aBeatWithoutVoicesAfterTheFirstIsRemoved() {
-		fixture.note(0, TGDuration.QUARTER, 0);
 		fixture.beatAt(QUARTER);
-		fixture.note(2 * QUARTER, TGDuration.QUARTER, 0);
 
-		manager.updateBeatsPreciseStart(fixture.measure);
-
-		assertEquals("0:n4|_ 1:n4|_", beats());
+		assertEquals("0:n4|_ 1:n4|_", realigned(0, 4, 0, 2 * QUARTER, 4, 0));
 	}
 
 	@Test
 	public void theFirstBeatIsAlignedEvenWithoutVoices() {
 		fixture.beatAt(5);
 
-		manager.updateBeatsPreciseStart(fixture.measure);
-
-		assertEquals("0:_|_", beats());
+		assertEquals("0:_|_", realigned());
 	}
 
 	// --- filling the gaps with rests ---
 
+	private String completed(long... triples) {
+		notes(triples);
+		manager.autoCompleteSilences(fixture.measure);
+		return beats();
+	}
+
 	@Test
 	public void aMeasureWithoutBeatsIsFilledWithARestInTheFirstVoice() {
-		manager.autoCompleteSilences(fixture.measure);
-
-		assertEquals("0:r1|_", beats());
+		assertEquals("0:r1|_", completed());
 	}
 
 	@Test
 	public void aMeasureWithoutVoicesIsFilledWithARestInTheFirstVoice() {
 		fixture.beatAt(QUARTER);
 
-		manager.autoCompleteSilences(fixture.measure);
-
-		assertEquals("0:r1|_ 1:_|_", beats());
+		assertEquals("0:r1|_ 1:_|_", completed());
 	}
 
 	@Test
 	public void eachVoiceIsFilledBeforeItsFirstBeatBetweenItsBeatsAndUpToTheMeasureEnd() {
-		fixture.note(QUARTER, TGDuration.QUARTER, 0);
-		fixture.note(3 * QUARTER, TGDuration.QUARTER, 0);
-		fixture.note(2 * QUARTER, TGDuration.QUARTER, 1);
-
-		manager.autoCompleteSilences(fixture.measure);
-
-		assertEquals("0:r4|r2 1:n4|_ 2:r4|n4 3:n4|r4", beats());
+		assertEquals("0:r4|r2 1:n4|_ 2:r4|n4 3:n4|r4", completed(QUARTER, 4, 0, 3 * QUARTER, 4, 0, 2 * QUARTER, 4, 1));
 	}
 
 	@Test
 	public void aFullVoiceGetsNoRest() {
-		fixture.quarterNotes(0, 1, 2, 3);
-
-		manager.autoCompleteSilences(fixture.measure);
-
-		assertEquals("0:n4|_ 1:n4|_ 2:n4|_ 3:n4|_", beats());
+		assertEquals("0:n4|_ 1:n4|_ 2:n4|_ 3:n4|_", completed(0, 4, 0, QUARTER, 4, 0, 2 * QUARTER, 4, 0, 3 * QUARTER, 4, 0));
 	}
 
 	// --- listing the errors ---
 
-	private String errors() {
+	private String errors(long... triples) {
+		notes(triples);
 		List<String> errors = new ArrayList<String>();
 		for (TGMeasureError error : manager.getMeasureErrors(fixture.measure)) {
 			if (error.getErrorType() == TGMeasureError.TYPE_TIED_NOTE_ERROR) {
@@ -165,43 +141,29 @@ public class TestVoiceTiming {
 
 	@Test
 	public void aFullMeasureHasNoError() {
-		fixture.quarterNotes(0, 1, 2, 3);
-
-		assertEquals(" valid", errors());
+		assertEquals(" valid", errors(0, 4, 0, QUARTER, 4, 0, 2 * QUARTER, 4, 0, 3 * QUARTER, 4, 0));
 	}
 
 	@Test
 	public void aVoiceWithAGapIsDiscontinuousAndOneWithAnOverlapOverlaps() {
-		fixture.quarterNotes(0, 2, 3);
-		fixture.note(0, TGDuration.HALF, 1);
-		fixture.note(QUARTER, TGDuration.HALF, 1);
-		fixture.note(3 * QUARTER, TGDuration.QUARTER, 1);
-
-		assertEquals("v0:" + TGMeasureError.VOICE_DISCONTINUOUS + " v1:" + TGMeasureError.VOICE_OVERLAP + " invalid", errors());
+		assertEquals("v0:" + TGMeasureError.VOICE_DISCONTINUOUS + " v1:" + TGMeasureError.VOICE_OVERLAP + " invalid",
+			errors(0, 4, 0, 2 * QUARTER, 4, 0, 3 * QUARTER, 4, 0, 0, 2, 1, QUARTER, 2, 1, 3 * QUARTER, 4, 1));
 	}
 
 	@Test
 	public void aVoiceEndingBeforeTheMeasureEndIsTooShortAndOneEndingAfterIsTooLong() {
-		fixture.quarterNotes(0, 1, 2);
-		fixture.note(0, TGDuration.HALF, 1);
-		fixture.note(2 * QUARTER, TGDuration.WHOLE, 1);
-
-		assertEquals("v0:" + TGMeasureError.VOICE_TOO_SHORT + " v1:" + TGMeasureError.VOICE_TOO_LONG + " invalid", errors());
+		assertEquals("v0:" + TGMeasureError.VOICE_TOO_SHORT + " v1:" + TGMeasureError.VOICE_TOO_LONG + " invalid",
+			errors(0, 4, 0, QUARTER, 4, 0, 2 * QUARTER, 4, 0, 0, 2, 1, 2 * QUARTER, 1, 1));
 	}
 
 	@Test
 	public void aVoiceStartingBeforeTheMeasureStartsEarlyAndErrorsAddUp() {
-		fixture.note(-QUARTER, TGDuration.HALF, 0);
-		fixture.note(QUARTER, TGDuration.HALF, 0);
-
-		assertEquals("v0:" + (TGMeasureError.VOICE_EARLY_START | TGMeasureError.VOICE_TOO_SHORT) + " invalid", errors());
+		assertEquals("v0:" + (TGMeasureError.VOICE_EARLY_START | TGMeasureError.VOICE_TOO_SHORT) + " invalid", errors(-QUARTER, 2, 0, QUARTER, 2, 0));
 	}
 
 	@Test
 	public void aVoiceStartingAfterTheMeasureStartIsOnlyTooShort() {
-		fixture.note(QUARTER, TGDuration.HALF, 0);
-
-		assertEquals("v0:" + TGMeasureError.VOICE_TOO_SHORT + " invalid", errors());
+		assertEquals("v0:" + TGMeasureError.VOICE_TOO_SHORT + " invalid", errors(QUARTER, 2, 0));
 	}
 
 	@Test

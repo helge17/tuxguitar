@@ -113,42 +113,26 @@ public class TestMeasureEdits {
 	}
 
 	@Test
-	public void replacingTheOnlyNoteOfABeatKeepsItsChordAndStroke() {
+	public void replacingTheOnlyNoteOfABeatWithOrWithoutControlKeepsItsChordAndStroke() {
 		TGBeat beat = beatWithOneNoteAChordAndAStroke();
 
 		manager.addNote(beat, newNote(1, 7), 0);
+		String withControl = keptOnReplace(beat);
+		manager.addNoteWithoutControl(beat, newNote(1, 8), fixture.duration(TGDuration.HALF), 0);
 
-		assertEquals("0:s1f7/4|_ chord true stroke 1", keptOnReplace(beat));
+		assertEquals("0:s1f7/4|_ chord true stroke 1 ; 0:s1f8/2|_ chord true stroke 1", withControl + " ; " + keptOnReplace(beat));
 	}
 
 	@Test
-	public void replacingTheOnlyNoteOfABeatWithoutControlKeepsItsChordAndStroke() {
-		TGBeat beat = beatWithOneNoteAChordAndAStroke();
-
-		manager.addNoteWithoutControl(beat, newNote(1, 7), fixture.duration(TGDuration.HALF), 0);
-
-		assertEquals("0:s1f7/2|_ chord true stroke 1", keptOnReplace(beat));
-	}
-
-	@Test
-	public void addingANoteWithoutControlTakesTheStringFromEveryVoiceAndSetsTheDuration() {
+	public void addingANoteWithoutControlTakesTheStringFromEveryVoiceKeepsTheOtherNotesAndSetsTheDuration() {
 		fixture.note(0, TGDuration.QUARTER, 1);
 		fixture.fretted(0, 2, 5, 1);
-		TGBeat beat = fixture.beatAt(0);
+		fixture.fretted(QUARTER, 2, 5, 0);
 
-		manager.addNoteWithoutControl(beat, newNote(1, 9), fixture.duration(TGDuration.HALF), 0);
+		manager.addNoteWithoutControl(fixture.beatAt(0), newNote(1, 9), fixture.duration(TGDuration.HALF), 0);
+		manager.addNoteWithoutControl(fixture.beatAt(QUARTER), newNote(1, 9), fixture.duration(TGDuration.EIGHTH), 0);
 
-		assertEquals("0:s1f9/2|s2f5/4", voices());
-	}
-
-	@Test
-	public void addingANoteWithoutControlToAVoiceThatHasNotesKeepsThem() {
-		fixture.fretted(0, 2, 5, 0);
-		TGBeat beat = fixture.beatAt(0);
-
-		manager.addNoteWithoutControl(beat, newNote(1, 9), fixture.duration(TGDuration.EIGHTH), 0);
-
-		assertEquals("0:s2f5 s1f9/8|_", voices());
+		assertEquals("0:s1f9/2|s2f5/4 1:s2f5 s1f9/8|_", voices());
 	}
 
 	@Test
@@ -223,51 +207,33 @@ public class TestMeasureEdits {
 		return fixture.beatAt(quarter * QUARTER).getVoice(0).getNote(0);
 	}
 
-	@Test
-	public void aNoteIsTiedWhenThePreviousNoteHasItsStringAndFret() {
-		fullMeasure();
-		TGNote note = noteAt(1);
+	// toggles the tie of the dead note at quarter 1 of a full measure of s1f0 notes, once given "fret" and "tied"
+	private static String tieToggled(int fret, boolean tied, boolean freeEditionMode) {
+		TestMeasureEdits test = new TestMeasureEdits();
+		test.fullMeasure();
+		TGNote note = test.noteAt(1);
+		note.setValue(fret);
+		note.setTiedNote(tied);
 		note.getEffect().setDeadNote(true);
+		test.fixture.songManager.setFreeEditionMode(freeEditionMode);
 
-		manager.changeTieNote(note);
+		test.manager.changeTieNote(note);
 
-		assertEquals("tied true dead false", "tied " + note.isTiedNote() + " dead " + note.getEffect().isDeadNote());
+		return "tied " + note.isTiedNote() + " dead " + note.getEffect().isDeadNote();
 	}
 
 	@Test
-	public void aNoteIsNotTiedWhenThePreviousNoteHasAnotherFret() {
-		fullMeasure();
-		TGNote note = noteAt(1);
-		note.setValue(2);
-		note.getEffect().setDeadNote(true);
-
-		manager.changeTieNote(note);
-
-		assertEquals("tied false dead true", "tied " + note.isTiedNote() + " dead " + note.getEffect().isDeadNote());
-	}
-
-	@Test
-	public void aTiedNoteIsAlwaysUntied() {
-		fullMeasure();
-		TGNote note = noteAt(1);
-		note.setValue(2);
-		note.setTiedNote(true);
-
-		manager.changeTieNote(note);
-
-		assertEquals(false, note.isTiedNote());
-	}
-
-	@Test
-	public void inFreeEditionModeAnyNoteCanBeTied() {
-		fullMeasure();
-		TGNote note = noteAt(1);
-		note.setValue(2);
-		fixture.songManager.setFreeEditionMode(true);
-
-		manager.changeTieNote(note);
-
-		assertEquals(true, note.isTiedNote());
+	public void aNoteIsTiedToAPreviousNoteOfItsStringAndFretOrInFreeEditionModeAndATiedNoteIsUntied() {
+		assertEquals(String.join("\n",
+			// the previous note has the same string and fret: tied, no longer dead
+			"tied true dead false",
+			// another fret: left alone
+			"tied false dead true",
+			// in free edition mode, any note
+			"tied true dead false",
+			// a tied note is untied, whatever the previous note
+			"tied false dead false"),
+			String.join("\n", tieToggled(0, false, false), tieToggled(2, false, false), tieToggled(2, false, true), tieToggled(2, true, false)));
 	}
 
 	// --- pick strokes ---

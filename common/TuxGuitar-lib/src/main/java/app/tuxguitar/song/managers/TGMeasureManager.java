@@ -415,13 +415,9 @@ public class TGMeasureManager {
 	public TGBeat getBeatPrecise(TGTrack track,long preciseStart) {
 		Iterator<TGMeasure> measures = track.getMeasures();
 		while( measures.hasNext() ){
-			TGMeasure measure = measures.next();
-			Iterator<TGBeat> beats = measure.getBeats().iterator();
-			while(beats.hasNext()){
-				TGBeat beat = beats.next();
-				if (beat.getPreciseStart() == preciseStart) {
-					return beat;
-				}
+			TGBeat beat = getBeatPrecise(measures.next(), preciseStart);
+			if (beat != null) {
+				return beat;
 			}
 		}
 		return null;
@@ -525,28 +521,25 @@ public class TGMeasureManager {
 	 * Retorna el Primer Componente
 	 */
 	public TGBeat getFirstBeat(List<TGBeat> components) {
-		TGBeat first = null;
-		for (int i = 0; i < components.size(); i++) {
-			TGBeat component =  components.get(i);
-			if (first == null || component.getStart() < first.getStart()) {
-				first = component;
-			}
-		}
-		return first;
+		return findBeatByStart(components, -1);
 	}
 
 	/**
 	 * Retorna el Ultimo Componente
 	 */
 	public TGBeat getLastBeat(List<TGBeat> components) {
-		TGBeat last = null;
-		for (int i = 0; i < components.size(); i++) {
-			TGBeat component =  components.get(i);
-			if (last == null || last.getStart() < component.getStart()) {
-				last = component;
+		return findBeatByStart(components, 1);
+	}
+
+	// the beat starting first (direction -1) or last (direction 1); the earliest in the list among those starting together
+	private TGBeat findBeatByStart(List<TGBeat> beats, int direction) {
+		TGBeat found = null;
+		for (TGBeat beat : beats) {
+			if (found == null || direction * Long.compare(beat.getStart(), found.getStart()) > 0) {
+				found = beat;
 			}
 		}
-		return last;
+		return found;
 	}
 
 	/**
@@ -1638,28 +1631,29 @@ public class TGMeasureManager {
 	 * Retorna el Primer Componente
 	 */
 	public TGVoice getFirstVoice(List<TGBeat> beats, int index) {
-		TGVoice first = null;
-		for (int i = 0; i < beats.size(); i++) {
-			TGBeat current =  beats.get(i);
-			if ( (first == null || current.getStart() < first.getBeat().getStart() ) && !current.getVoice(index).isEmpty()) {
-				first = current.getVoice(index);
-			}
-		}
-		return first;
+		return getVoiceOf(getFirstBeat(getBeatsWithVoice(beats, index)), index);
 	}
 
 	/**
 	 * Retorna el Ultimo Componente
 	 */
 	public TGVoice getLastVoice(List<TGBeat> beats, int index) {
-		TGVoice last = null;
-		for (int i = 0; i < beats.size(); i++) {
-			TGBeat current =  beats.get(i);
-			if ( (last == null || last.getBeat().getStart() < current.getStart()) && !current.getVoice(index).isEmpty() ) {
-				last = current.getVoice(index);
+		return getVoiceOf(getLastBeat(getBeatsWithVoice(beats, index)), index);
+	}
+
+	// the beats, in list order, where the voice of that index is not empty
+	private List<TGBeat> getBeatsWithVoice(List<TGBeat> beats, int index) {
+		List<TGBeat> withVoice = new ArrayList<TGBeat>();
+		for (TGBeat beat : beats) {
+			if (!beat.getVoice(index).isEmpty()) {
+				withVoice.add(beat);
 			}
 		}
-		return last;
+		return withVoice;
+	}
+
+	private TGVoice getVoiceOf(TGBeat beat, int index) {
+		return (beat == null ? null : beat.getVoice(index));
 	}
 
 
