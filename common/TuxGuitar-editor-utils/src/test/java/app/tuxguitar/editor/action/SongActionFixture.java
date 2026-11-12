@@ -47,9 +47,15 @@ public class SongActionFixture {
 	}
 
 	public void execute(TGActionBase action) {
-		TGActionManager actionManager = TGActionManager.getInstance(context);
-		actionManager.mapAction(action.getName(), action);
-		actionManager.execute(action.getName(), actionContext);
+		map(action);
+		TGActionManager.getInstance(context).execute(action.getName(), actionContext);
+	}
+
+	// maps actions that the executed action runs in turn
+	public void map(TGActionBase... actions) {
+		for (TGActionBase action : actions) {
+			TGActionManager.getInstance(context).mapAction(action.getName(), action);
+		}
 	}
 
 	public void select(TGNote... notes) {
