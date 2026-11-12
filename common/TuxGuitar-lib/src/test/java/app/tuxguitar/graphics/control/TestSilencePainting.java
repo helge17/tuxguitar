@@ -58,8 +58,8 @@ public class TestSilencePainting {
 	@Test
 	public void aDottedRestHasOneDotAndADoubleDottedRestTwo() {
 		assertEquals(""
-			+ "rgb(0,0,255) 82.63599 27.814543 x44, dots in rgb(0,0,255): addCircle 91.0 29.777779 3.0\n"
-			+ "rgb(0,255,0) 45.682728 33.637814 x46, dots in rgb(0,255,0): addCircle 54.0 35.6 3.0 addCircle 59.0 35.6 3.0"
+			+ "rgb(0,0,255) 82.63599 27.814543 x44, dots in rgb(0,0,255) on rgb(0,0,255): addCircle 91.0 29.777779 3.0\n"
+			+ "rgb(0,255,0) 45.682728 33.637814 x46, dots in rgb(0,255,0) on rgb(0,255,0): addCircle 54.0 35.6 3.0 addCircle 59.0 35.6 3.0"
 			, rest(SCORE | TAB, TGDuration.QUARTER, true, false) + "\n" + rest(TAB, TGDuration.QUARTER, false, true));
 	}
 
@@ -100,6 +100,12 @@ public class TestSilencePainting {
 		return paintAlone(rest, harness.layout());
 	}
 
+	// the argument of the last call of that name
+	private String last(String name) {
+		List<String> calls = harness.painter.callsStartingWith(name);
+		return calls.get(calls.size() - 1).substring(name.length() + 1);
+	}
+
 	private String paintAlone(TGVoiceImpl rest, TGLayout layout) {
 		harness.painter.clear();
 		rest.paint(layout, harness.painter, 0, 0);
@@ -109,8 +115,7 @@ public class TestSilencePainting {
 			+ " x" + calls.size();
 		List<String> dots = harness.painter.callsStartingWith("addCircle");
 		if (!dots.isEmpty()) {
-			List<String> colors = harness.painter.callsStartingWith("setForeground");
-			description += ", dots in " + colors.get(colors.size() - 1).substring("setForeground ".length()) + ": " + String.join(" ", dots);
+			description += ", dots in " + last("setForeground") + " on " + last("setBackground") + ": " + String.join(" ", dots);
 		}
 		return description;
 	}
