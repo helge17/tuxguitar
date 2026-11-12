@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.util.SystemErrCapture;
 
 /**
  * Pins how the player moves its sequencer to the position to play from (MidiPlayer.changeTickPosition) and how it
@@ -15,7 +17,8 @@ import app.tuxguitar.song.models.TGBeat;
  * A running player moves the sequencer to its position: to the first measure of a selection made since the last
  * move, else not before the loop start; a stopped player leaves it. Starting notifies the start (when asked to),
  * plays the count down between its own notifications, moves the sequencer when a new position was set, starts it,
- * then reads back where the sequencer is; on a failure the player resets.
+ * then reads back where the sequencer is; on a failure the player resets. Each failure is printed to System.err,
+ * captured here.
  *
  * The song has 4 measures and plays through a FakeSequencer (see PlayingFixture); the play loop that follows is
  * only handed to the thread handler, not run.
@@ -23,6 +26,9 @@ import app.tuxguitar.song.models.TGBeat;
 public class TestMidiPlayerTickPosition {
 
 	private static final long SEQUENCE_LENGTH = FakeSequencer.SEQUENCE_LENGTH;
+
+	@RegisterExtension
+	final SystemErrCapture err = new SystemErrCapture();
 
 	private final PlayingFixture fixture = new PlayingFixture();
 	private final MidiPlayer player = fixture.player;
@@ -86,7 +92,7 @@ public class TestMidiPlayerTickPosition {
 		player.setTickPosition(5000);
 		player.changeTickPosition();
 
-		assertEquals("5000 pending", player.getTickPosition() + pending());
+		assertEquals("5000 pending | " + FakeSequencer.FAILURE + "cannot seek", player.getTickPosition() + pending() + " | " + err.reported());
 	}
 
 	// ---- runPlayStartProcess ----
@@ -127,7 +133,8 @@ public class TestMidiPlayerTickPosition {
 		player.setTickPosition(5000);
 		sequencer.broken = true;
 
-		assertEquals("started -> 960 of 0", playStart(true));
+		assertEquals("started -> 960 of 0 | " + FakeSequencer.FAILURE + "cannot seek, " + FakeSequencer.FAILURE + "cannot start",
+			playStart(true) + " | " + err.reported());
 	}
 
 	// ---- helpers ----

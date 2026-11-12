@@ -9,6 +9,8 @@ import java.util.List;
 class FakeSequencer implements MidiSequencer {
 
 	static final long SEQUENCE_LENGTH = 16320;
+	// how a failure of the sequencer is printed, before its message ("cannot seek", "cannot start", ...)
+	static final String FAILURE = MidiPlayerException.class.getName() + ": ";
 
 	private final List<String> log;
 	long position = 1234;

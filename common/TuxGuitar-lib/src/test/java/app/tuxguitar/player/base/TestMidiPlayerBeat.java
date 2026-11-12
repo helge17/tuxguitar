@@ -7,15 +7,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.util.SystemErrCapture;
 
 /**
  * Pins how the player sounds a beat by itself, outside of a song being played (MidiPlayer.playBeat): each note is
  * turned on, one interval after the other, held for the duration, then all are turned off; a failure stops the beat
  * silently. A beat of the song is played in a thread, on its track's channel, its notes held half a second; a track
- * without a channel in the song plays nothing.
+ * without a channel in the song plays nothing. A failure is printed to System.err, captured here.
  *
  * The chord is played on channel 2. A beat first sets the song's channels up; only the notes that reach the player's
  * output are written here, as MidiReceiverRecorder writes them. The song has 4 measures (see PlayingFixture).
@@ -25,6 +27,9 @@ public class TestMidiPlayerBeat {
 	private static final int[][] CHORD = {{60, 90}, {64, 80}, {67, 70}};
 	private static final String CHORD_NOTES = "on 2 60 90 -1 0, on 2 64 80 -1 0, on 2 67 70 -1 0, "
 			+ "off 2 60 90 -1 0, off 2 64 80 -1 0, off 2 67 70 -1 0";
+
+	@RegisterExtension
+	final SystemErrCapture err = new SystemErrCapture();
 
 	private final List<String> received = new ArrayList<String>();
 	private final PlayingFixture fixture = new PlayingFixture();
@@ -93,6 +98,6 @@ public class TestMidiPlayerBeat {
 			}
 		});
 
-		assertEquals("on 2 60 90 -1 0", playChord(60, 0));
+		assertEquals("on 2 60 90 -1 0 | java.lang.IllegalStateException: broken", playChord(60, 0) + " | " + err.reported());
 	}
 }

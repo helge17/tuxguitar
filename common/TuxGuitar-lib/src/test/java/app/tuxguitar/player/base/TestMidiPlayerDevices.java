@@ -8,20 +8,26 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
+import app.tuxguitar.util.SystemErrCapture;
 import app.tuxguitar.util.TGContext;
 
 /**
  * Pins how the player picks its output port and sequencer from a list (MidiPlayer.openOutputPort /
  * openSequencer): the device with the chosen key, unless it is already open; else, when asked to, the first device
  * of the list, but only while none is open. Removing a sequencer provider (MidiPlayer.removeSequencerProvider) closes
- * the open sequencer when the provider lists one with its key.
+ * the open sequencer when the provider lists one with its key. A failure swallowed is printed to System.err, captured
+ * here.
  *
  * Devices log "open key" and "close key"; a device named with a '!' fails to open. A key is chosen the way the
  * application does, through openOutputPort(key, tryFirst) / openSequencer(key, tryFirst), among the devices listed
  * by a registered provider.
  */
 public class TestMidiPlayerDevices {
+
+	@RegisterExtension
+	final SystemErrCapture err = new SystemErrCapture();
 
 	private final MidiPlayer player = MidiPlayer.getInstance(new TGContext());
 	private final List<String> log = new ArrayList<String>();
@@ -283,6 +289,7 @@ public class TestMidiPlayerDevices {
 			public String getKey() { return null; }
 		};
 
-		assertEquals(" -> none", openPort("b", Arrays.asList(keyless), true));
+		assertEquals(" -> none | true", openPort("b", Arrays.asList(keyless), true) + " | "
+				+ err.reported().startsWith("java.lang.NullPointerException"));
 	}
 }

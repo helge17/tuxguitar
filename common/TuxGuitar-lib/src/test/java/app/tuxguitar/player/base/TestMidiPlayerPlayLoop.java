@@ -3,8 +3,10 @@ package app.tuxguitar.player.base;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.util.SystemErrCapture;
 
 /**
  * Pins the loop that follows a play (MidiPlayer.runPlayLoopProcess) and how a play ends (MidiPlayer.runPlayEndProcess).
@@ -12,7 +14,7 @@ import app.tuxguitar.song.models.TGDuration;
  * While the sequencer runs, each turn of the loop makes a move set meanwhile, then follows the sequencer's position;
  * once it stops, the loop ends the play. A play ended before the last half beat of its sequence stops where it is;
  * one that reached it returns to where it began, unless the loop mode plays the song again (not a selection). The
- * stop is notified; a failure resets the player.
+ * stop is notified; a failure resets the player and is printed to System.err, captured here.
  *
  * The song has 4 measures and plays through a FakeSequencer (see PlayingFixture) whose sequence is 16320 ticks long:
  * its last half beat starts at 15840. A player that has not played yet began at the song start, 960.
@@ -20,6 +22,9 @@ import app.tuxguitar.song.models.TGDuration;
 public class TestMidiPlayerPlayLoop {
 
 	private static final long LAST_HALF_BEAT = FakeSequencer.SEQUENCE_LENGTH - TGDuration.QUARTER_TIME / 2;
+
+	@RegisterExtension
+	final SystemErrCapture err = new SystemErrCapture();
 
 	private final PlayingFixture fixture = new PlayingFixture();
 	private final MidiPlayer player = fixture.player;
@@ -67,7 +72,7 @@ public class TestMidiPlayerPlayLoop {
 		sequencer.running = true;
 		sequencer.broken = true;
 
-		assertEquals("stop | false | 960 | false", loopTurn());
+		assertEquals("stop | false | 960 | false | " + FakeSequencer.FAILURE + "cannot read", loopTurn() + " | " + err.reported());
 	}
 
 	// ---- runPlayEndProcess ----
@@ -103,6 +108,6 @@ public class TestMidiPlayerPlayLoop {
 		player.setRunning(true);
 		sequencer.broken = true;
 
-		assertEquals("loop | 960 | false", endAt(LAST_HALF_BEAT));
+		assertEquals("loop | 960 | false | " + FakeSequencer.FAILURE + "cannot check", endAt(LAST_HALF_BEAT) + " | " + err.reported());
 	}
 }
