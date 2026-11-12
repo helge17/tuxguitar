@@ -42,6 +42,16 @@ public class ListeningSteps {
 		return heard().tap(world.track(number));
 	}
 
+	// measures: "2", "1, 3 and 4"
+	@ParameterType("\\d+(?:(?:, | and )\\d+)*")
+	public List<Integer> measures(String text) {
+		List<Integer> measures = new ArrayList<Integer>();
+		for (String measure : text.split(", | and ")) {
+			measures.add(Integer.valueOf(measure));
+		}
+		return measures;
+	}
+
 	// a tone per measure, or nothing: "220, 660, nothing and 550"
 	@ParameterType("(?:\\d+|nothing)(?:(?:, | and )(?:\\d+|nothing))*")
 	public List<String> tones(String text) {
@@ -257,5 +267,49 @@ public class ListeningSteps {
 		List<String> tones = Arrays.asList(Integer.toString(first), Integer.toString(second));
 		assertTone(tap(number), bounds[0] + FADE, change - FADE, tones.get(0), tones, "measure " + measure + " before beat " + beat);
 		assertTone(tap(number), change + FADE, bounds[1] - FADE, tones.get(1), tones, "measure " + measure + " from beat " + beat);
+	}
+
+	@Then("the output holds a {int} Hz tone above -60 dBFS in measure(s) {measures}")
+	public void theOutputHoldsAToneIn(int frequency, List<Integer> measures) {
+		for (int measure : measures) {
+			assertTrue(outputLevel(frequency, measure) >= SILENT, "measure " + measure + ": " + outputLevel(frequency, measure));
+		}
+	}
+
+	@Then("the output holds no {int} Hz tone above -60 dBFS in measure(s) {measures}")
+	public void theOutputHoldsNoToneIn(int frequency, List<Integer> measures) {
+		for (int measure : measures) {
+			assertTrue(outputLevel(frequency, measure) < SILENT, "measure " + measure + ": " + outputLevel(frequency, measure));
+		}
+	}
+
+	// the measure, but for FADE samples at each end
+	private double outputLevel(int frequency, int measure) {
+		int[] bounds = heard().measure(measure);
+		float[] left = heard().left();
+		return Meters.level(left, bounds[0] + FADE, bounds[1] - FADE, frequency, TestInterface.SAMPLE_RATE);
+	}
+
+	@Then("track {int} sounds a {int} Hz tone within 1% in measures {int} to {int}")
+	public void soundsAToneInMeasures(int number, int frequency, int first, int last) {
+		for (int measure = first; measure <= last; measure++) {
+			soundsAToneInMeasure(number, frequency, measure);
+		}
+	}
+
+	@Then("track {int} sounds a {int} Hz tone and no {int} Hz tone above -60 dBFS in measures {measures}")
+	public void soundsOneToneAndNotAnother(int number, int frequency, int other, List<Integer> measures) {
+		for (int measure : measures) {
+			int[] bounds = heard().measure(measure);
+			assertTone(tap(number), bounds[0] + FADE, bounds[1] - FADE, Integer.toString(frequency), Arrays.asList(Integer.toString(frequency), Integer.toString(other)), "measure " + measure);
+		}
+	}
+
+	// from the start of the first measure to the end of the last, but for the FADE samples at each end
+	@Then("track {int} sounds a {int} Hz tone and no {int} Hz tone above -60 dBFS in measures {int} to {int}, but for 256 samples at each end")
+	public void soundsOneToneAndNotAnotherBetween(int number, int frequency, int other, int first, int last) {
+		int from = heard().measure(first)[0] + FADE;
+		int to = heard().measure(last)[1] - FADE;
+		assertTone(tap(number), from, to, Integer.toString(frequency), Arrays.asList(Integer.toString(frequency), Integer.toString(other)), "measures " + first + " to " + last);
 	}
 }

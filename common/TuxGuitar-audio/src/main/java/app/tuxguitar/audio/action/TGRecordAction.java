@@ -16,7 +16,8 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Records the armed tracks while the song plays from a position until another one is reached in the last pass, or
- * until that pass ends. It needs the TuxGuitar Synthesizer as the MIDI Port. It succeeds when it made a take. What was
+ * until that pass ends. It needs an armed track and the TuxGuitar Synthesizer as the MIDI Port, and then succeeds,
+ * whether or not it made a take (ATTRIBUTE_TAKES says how many). What was
  * heard while recording is left in the context as TGPlayAction.ATTRIBUTE_RENDER.
  */
 public class TGRecordAction extends TGActionBase {
@@ -26,6 +27,8 @@ public class TGRecordAction extends TGActionBase {
 	public static final String ATTRIBUTE_START = "start";
 	public static final String ATTRIBUTE_STOP = "stop";
 	public static final String ATTRIBUTE_PASSES = "passes";
+	// how many takes it made
+	public static final String ATTRIBUTE_TAKES = "takes";
 
 	public TGRecordAction(TGContext context) {
 		super(context, NAME);
@@ -36,7 +39,7 @@ public class TGRecordAction extends TGActionBase {
 		TGAudioSession session = TGAudioSession.getInstance(getContext());
 		MidiPlayer player = MidiPlayer.getInstance(getContext());
 		List<TGTrack> tracks = session.getArmedTracks(song);
-		if (!player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY)) {
+		if (tracks.isEmpty() || !player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY)) {
 			return;
 		}
 		Long start = context.getAttribute(ATTRIBUTE_START);
@@ -45,8 +48,7 @@ public class TGRecordAction extends TGActionBase {
 		List<TGPlayedMeasure> played = TGSongTime.play(song, player.getMode(), start, stop, passes);
 		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, TGPlayAction.play(getContext(), context, getSongManager(context), true));
 		TGRecording recording = new TGRecording(getSongManager(context), song, session.getDevice(), session.getPunchRange(song));
-		if (recording.record(tracks, played) > 0) {
-			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
-		}
+		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, played));
+		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
 }

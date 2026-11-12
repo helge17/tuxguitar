@@ -53,6 +53,10 @@ public final class TGAudioSession {
 		this.armedTracks.add(track);
 	}
 
+	public void disarm(TGTrack track) {
+		this.armedTracks.remove(track);
+	}
+
 	public boolean isArmed(TGTrack track) {
 		return this.armedTracks.contains(track);
 	}

@@ -87,8 +87,14 @@ public class RecordingSteps {
 		record(from, stop.tick(world.song()), 2);
 	}
 
+	@When("I record from {position} and do not stop it")
+	public void recordAndDoNotStop(SongPosition from) {
+		record(from, Long.MAX_VALUE, 1);
+	}
+
 	private void record(SongPosition from, long stop, int passes) {
 		historyBeforeRecording = world.undoHistory();
+		world.playAlong(from.tick(world.song()), stop, passes);
 		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_START, from.tick(world.song()));
 		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_STOP, stop);
 		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_PASSES, passes);

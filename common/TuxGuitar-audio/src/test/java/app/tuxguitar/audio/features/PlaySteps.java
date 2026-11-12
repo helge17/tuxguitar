@@ -33,6 +33,7 @@ public class PlaySteps {
 	}
 
 	private void play(SongPosition from, long stop, int passes) {
+		world.playAlong(from.tick(world.song()), stop, passes);
 		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_START, from.tick(world.song()));
 		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_STOP, stop);
 		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_PASSES, passes);

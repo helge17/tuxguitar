@@ -183,7 +183,6 @@ Feature: Takes
     Then there is no punch range
     And the song has 2 measures
 
-  @planned
   Scenario: outside the punch range I hear the take below, inside it the input
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
     And I have set track 2's monitoring to Auto
@@ -201,7 +200,6 @@ Feature: Takes
     Then track 2's takes read "take 3: m2b1 to m4b1, take 2: m2b1 to m4b1, take 1: m2b1 to m4b1"
     And track 2's playback reads "m1: none, m2: take 3, m3: take 3, m4: none"
 
-  @planned
   Scenario: each loop pass's take holds what was played on that pass
     Given I have turned Play looped on over measures 2 to 3
     And the player plays a 440 Hz tone on input channel 1 on the first pass and a 880 Hz tone on the second
@@ -242,7 +240,6 @@ Feature: Takes
     When I record from measure 2 beat 1 for 2 passes
     Then track 2's takes read "take 2: m3b1 to m4b1, take 1: m3b1 to m4b1"
 
-  @planned
   Scenario: in Training Mode each pass is recorded at its own Percentage of Tempo
     Given I have turned Training Mode on from 80% to 100% by 10% over measures 2 to 3
     And the player plays clicks of -0.25 on every beat on input channel 1

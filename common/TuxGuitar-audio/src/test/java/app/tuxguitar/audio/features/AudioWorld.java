@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.audio.TGSongTime;
+import app.tuxguitar.audio.TGTimeline;
+import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.audio.TGTakeSpan;
 import app.tuxguitar.audio.TGTakes;
 import app.tuxguitar.editor.action.SongActionFixture;
@@ -99,6 +103,12 @@ public class AudioWorld {
 		if (edit != null) {
 			TGUndoableManager.getInstance(this.fixture.context).addEdit(edit);
 		}
+	}
+
+	// the player (the scenario's musician) plays along with what is about to be played
+	public void playAlong(long start, long stop, int passes) {
+		MidiPlayerMode mode = MidiPlayer.getInstance(this.fixture.context).getMode();
+		this.device.setPlayed(new TGTimeline(song(), TGSongTime.play(song(), mode, start, stop, passes), this.device.getSampleRate()));
 	}
 
 	public boolean succeeded() {

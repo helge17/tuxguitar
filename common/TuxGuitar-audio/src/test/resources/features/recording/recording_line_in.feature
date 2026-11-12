@@ -10,7 +10,6 @@ Feature: Recording line-in audio
     And the VST3 folders hold the test plugins
     And I have added an audio track recording input channel 1
 
-  @planned
   Scenario: an armed audio track records a take from where recording started
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have armed track 2
@@ -18,7 +17,6 @@ Feature: Recording line-in audio
     Then track 2's takes read "take 1: m2b1 to m4b1"
     And take 1 of track 2 holds 8 clicks, each within 1 sample of a beat
 
-  @planned
   Scenario Outline: a take sits on the beats at the audio device's sample rate
     Given I have set the audio device to "Test Interface" at <rate> Hz
     And the player plays clicks of -0.25 on every beat on input channel 1
@@ -32,14 +30,12 @@ Feature: Recording line-in audio
       | 44100 | 176400 | 88200          |
       | 48000 | 192000 | 96000          |
 
-  @planned
   Scenario: a take ends where I stopped, not on a measure line
     Given I have armed track 2
     When I record from measure 1 beat 1 to measure 2 beat 2.5
     Then track 2's takes read "take 1: m1b1 to m2b2.5"
     And take 1 of track 2 is 121275 samples long
 
-  @planned
   Scenario: recording stops by itself at the end of the song
     Given I have armed track 2
     When I record from measure 3 beat 1 and do not stop it
@@ -47,7 +43,6 @@ Feature: Recording line-in audio
     And track 2's takes read "take 1: m3b1 to m5b1"
     And take 1 of track 2 is 176400 samples long
 
-  @planned
   Scenario: a take follows the tempo changes of the song as it is recorded
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have set the tempo from measure 3 to the end to 60 bpm
@@ -56,7 +51,6 @@ Feature: Recording line-in audio
     Then take 1 of track 2 is 529200 samples long
     And take 1 of track 2 holds 16 clicks, each within 1 sample of a beat
 
-  @planned
   Scenario: a take follows a time signature change of the song
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have set the time signature of measure 2 only to 3/4
@@ -65,19 +59,16 @@ Feature: Recording line-in audio
     Then take 1 of track 2 is 154350 samples long
     And take 1 of track 2 holds 7 clicks, each within 1 sample of a beat
 
-  @planned
   Scenario: recording with no armed track is refused
     When I record from measure 1 beat 1 to measure 2 beat 1
     Then the action is refused
     And track 2's takes read ""
 
-  @planned
   Scenario: a guitar track cannot be armed
     When I arm track 1
     Then the action is refused
     And track 1 is not armed
 
-  @planned
   Scenario: a recording stopped where it started keeps no take and adds no undo step
     Given I have armed track 2
     When I record from measure 2 beat 1 to measure 2 beat 1
@@ -113,7 +104,6 @@ Feature: Recording line-in audio
     And the left side of take 1 of track 2 holds 4 clicks and no 440 Hz tone
     And the right side of take 1 of track 2 holds a 440 Hz tone and no clicks
 
-  @planned
   Scenario: two armed tracks each record their own input channel at once
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 2
@@ -124,7 +114,6 @@ Feature: Recording line-in audio
     Then take 1 of track 2 holds 4 clicks and no 440 Hz tone
     And take 1 of track 3 holds a 440 Hz tone and no clicks
 
-  @planned
   Scenario: a recording on two armed tracks is one undo step
     Given I have added an audio track recording input channel 2
     And I have armed track 2
@@ -134,7 +123,6 @@ Feature: Recording line-in audio
     Then track 2's takes read ""
     And track 3's takes read ""
 
-  @planned
   Scenario: two armed tracks on the same input channel record the same take
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have added an audio track recording input channel 1
@@ -144,7 +132,6 @@ Feature: Recording line-in audio
     Then take 1 of track 3 is sample for sample take 1 of track 2
     And take 1 of track 2 holds 4 clicks, each within 1 sample of a beat
 
-  @planned
   Scenario: a muted armed track still records
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have armed track 2
@@ -275,12 +262,10 @@ Feature: Recording line-in audio
 
   # Monitoring
 
-  @planned
   Scenario: a track's monitoring is Off until I set it
     When I arm track 2
     Then track 2's monitoring is Off
 
-  @planned
   Scenario: a track's monitoring is kept when I disarm and arm it again
     Given I have armed track 2
     And I have set track 2's monitoring to Always
@@ -298,7 +283,6 @@ Feature: Recording line-in audio
     Then track 2 sounds a 440 Hz tone peaking at 0.8 within 0.01 in measure 1
     And take 1 of track 2 holds a 440 Hz tone peaking at 0.4 within 0.01
 
-  @planned
   Scenario: with monitoring off the input is recorded but not heard
     Given I have armed track 2
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
@@ -345,7 +329,6 @@ Feature: Recording line-in audio
     Then track 2 sounds a 880 Hz tone peaking at 0.8 within 0.01 on every pass
     And track 2's takes read ""
 
-  @planned
   Scenario: while recording, the armed track's earlier takes are silent where it records
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
     And I have armed track 2
@@ -375,7 +358,6 @@ Feature: Recording line-in audio
 
   # Recording at another Percentage of Tempo
 
-  @planned
   Scenario: a take recorded at a lower Percentage of Tempo is stored as played
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have set the Percentage of Tempo to 80
@@ -384,7 +366,6 @@ Feature: Recording line-in audio
     Then take 1 of track 2 is 220500 samples long
     And take 1 of track 2 holds 8 clicks, each within 1 sample of a beat at 80%
 
-  @planned
   Scenario: a take recorded at a lower Percentage of Tempo plays on the beats at 100%, at its pitch
     Given the player plays a 440 Hz tone peaking at 0.4 on input channel 1
     And I have set the Percentage of Tempo to 80
@@ -395,7 +376,6 @@ Feature: Recording line-in audio
     Then track 2 plays for 4 seconds within 5 ms
     And track 2 sounds a 440 Hz tone within 1% in measures 1 to 2
 
-  @planned
   Scenario: a take played at the Percentage of Tempo it was recorded at plays sample for sample
     Given the player plays a 440 Hz tone peaking at 0.4 on input channel 1
     And I have set the Percentage of Tempo to 80

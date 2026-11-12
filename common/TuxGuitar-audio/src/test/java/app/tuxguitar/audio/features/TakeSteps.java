@@ -6,8 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.LongToDoubleFunction;
 
+import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRecording;
+import app.tuxguitar.audio.TGTimeline;
 import app.tuxguitar.audio.TGSongTime;
 import app.tuxguitar.audio.TGTakeSpan;
 import app.tuxguitar.audio.TGTakes;
@@ -45,15 +48,25 @@ public class TakeSteps {
 	@Given("track {int} has a take of {signal} from {position} to {position}")
 	public void hasATake(int number, String signal, SongPosition from, SongPosition to) {
 		TestInterface device = new TestInterface();
-		device.play(world.channel(world.track(number)).getAudioInput().getChannel(), Signals.parse(signal, world.song(), TestInterface.SAMPLE_RATE, from.measure()));
+		device.setSampleRate(world.device().getSampleRate());
+		List<TGPlayedMeasure> played = TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1);
+		device.setPlayed(new TGTimeline(world.song(), played, device.getSampleRate()));
+		device.play(world.channel(world.track(number)).getAudioInput().getChannel(), Signals.parse(signal, world.song(), device, from.measure()));
 		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null);
-		recording.record(List.of(world.track(number)), TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1));
+		recording.record(List.of(world.track(number)), played);
 		world.rememberTakes(number);
 	}
 
 	@Given("the player plays {signal} on input channel {int}")
 	public void thePlayerPlays(String signal, int inputChannel) {
-		world.device().play(inputChannel, Signals.parse(signal, world.song(), TestInterface.SAMPLE_RATE, 1));
+		world.device().play(inputChannel, Signals.parse(signal, world.song(), world.device(), 1));
+	}
+
+	@Given("the player plays {signal} on input channel {int} on the first pass and {signal} on the second")
+	public void thePlayerPlaysPerPass(String first, int inputChannel, String second) {
+		LongToDoubleFunction onFirst = Signals.parse(first, world.song(), world.device(), 1);
+		LongToDoubleFunction onSecond = Signals.parse(second, world.song(), world.device(), 1);
+		world.device().play(inputChannel, sample -> (world.device().passAt(sample) == 0 ? onFirst : onSecond).applyAsDouble(sample));
 	}
 
 	// newest first: "take 2: m2b1 to m4b1, take 1: m1b1 to m3b1"

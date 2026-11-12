@@ -4,6 +4,7 @@ import java.util.List;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.audio.action.TGRecordAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.editor.undo.TGUndoableActionController;
@@ -29,7 +30,8 @@ public class TGUndoableRecordingController implements TGUndoableActionController
 	}
 
 	public TGUndoableEdit endUndoable(TGContext context, TGActionContext actionContext, TGUndoableEdit undoableEdit) {
-		if (!Boolean.TRUE.equals(actionContext.getAttribute(TGActionBase.ATTRIBUTE_SUCCESS))) {
+		Integer takes = actionContext.getAttribute(TGRecordAction.ATTRIBUTE_TAKES);
+		if (!Boolean.TRUE.equals(actionContext.getAttribute(TGActionBase.ATTRIBUTE_SUCCESS)) || takes == null || takes == 0) {
 			return null;
 		}
 		List<TGUndoableEdit> edits = ((TGUndoableEditComposite) undoableEdit).getEdits();
