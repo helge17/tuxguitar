@@ -731,30 +731,23 @@ public class MidiSequenceParser {
 			MidiMeasureHelper mh = pHelper.getMeasureHelper( m );
 
 			TGMeasure measure = track.getMeasure( mh.getIndex() );
-			if( this.isPlayedFrom(measure) ){
-				nextBIndex = (nextBIndex < 0 ? measure.countBeats() : nextBIndex);
-				for (int b = (nextBIndex - 1); b >= 0; b--) {
-					TGBeat beat = measure.getBeat( b );
-					TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
-					if( !voice.isEmpty() ){
-						TGNote current = noteOnString(voice, note.getString());
-						if( current != null ){
-							return new MidiNoteHelper(mh,current);
-						}
-						if( breakAtRest ){
-							return null;
-						}
+			nextBIndex = (nextBIndex < 0 ? measure.countBeats() : nextBIndex);
+			for (int b = (nextBIndex - 1); b >= 0; b--) {
+				TGBeat beat = measure.getBeat( b );
+				TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
+				if( !voice.isEmpty() ){
+					TGNote current = noteOnString(voice, note.getString());
+					if( current != null ){
+						return new MidiNoteHelper(mh,current);
+					}
+					if( breakAtRest ){
+						return null;
 					}
 				}
 			}
 			nextBIndex = -1;
 		}
 		return null;
-	}
-
-	// whether the measure is played: there is no start header, or it is not before it
-	private boolean isPlayedFrom(TGMeasure measure) {
-		return ( this.sHeader == -1 || this.sHeader <= measure.getNumber() );
 	}
 
 	// the first note of the voice on the string, or null

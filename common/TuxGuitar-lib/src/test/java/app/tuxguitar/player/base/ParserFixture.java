@@ -32,6 +32,7 @@ class ParserFixture {
 	int flags = 0;
 	int transpose = 0;
 	int metronomeChannelId = 0;
+	int sHeader = -1;
 
 	TGMeasure measure(int index) {
 		while (track.countMeasures() <= index) {
@@ -83,6 +84,7 @@ class ParserFixture {
 		MidiSequenceParser parser = new MidiSequenceParser(song, songManager, flags);
 		parser.setTranspose(transpose);
 		parser.setMetronomeChannelId(metronomeChannelId);
+		parser.setSHeader(sHeader);
 		MidiEventRecorder recorder = new MidiEventRecorder(song.countTracks() + 2);
 		parser.parse(recorder);
 		return recorder;

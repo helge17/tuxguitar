@@ -88,6 +88,24 @@ public class TestSequenceParserNotes {
 	}
 
 	@Test
+	public void aChainOfTiedNotesLastsAsLongAsAllOfThem() {
+		song.quarter(1, 5);
+		song.note(4, TGDuration.QUARTER, 1, 5).setTiedNote(true);
+		song.note(8, TGDuration.QUARTER, 1, 5).setTiedNote(true);
+		assertEquals(events(note(960, 3840, 69)), song.notes());
+	}
+
+	// on the second pass of a repeat the tie is measured from the repeated note
+	@Test
+	public void aNoteTiedOverTheBarLastsAsLongOnEveryPassOfARepeat() {
+		song.measure(0).getHeader().setRepeatOpen(true);
+		song.measure(1).getHeader().setRepeatClose(1);
+		song.note(12, TGDuration.QUARTER, 1, 5);
+		song.note(1, 0, TGDuration.QUARTER, 1, 5, 0).setTiedNote(true);
+		assertEquals(events(note(3840, 5760, 69), note(11520, 13440, 69)), song.notes());
+	}
+
+	@Test
 	public void voicesArePlayedInOrder() {
 		song.note(0, 0, TGDuration.QUARTER, 1, 0, 0);
 		song.note(0, 0, TGDuration.HALF, 2, 0, 1);
@@ -119,12 +137,13 @@ public class TestSequenceParserNotes {
 		song.beat(0, 0).getVoice(0).getNotes().clear();
 
 		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 59, 95, 2, 0)), down);
-		assertEquals(events(note(960, 1920, 64), note(1020, 1920, 55, 95, 3, 0)), stroked(TGStroke.STROKE_UP, 1, 3));
+		assertEquals(events(note(960, 1920, 59, 95, 2, 0), note(1020, 1920, 55, 95, 3, 0)), stroked(TGStroke.STROKE_UP, 2, 3));
 	}
 
 	@Test
 	public void tiedNotesTakeNoPlaceInTheStroke() {
-		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 55, 95, 3, 0)), stroked(TGStroke.STROKE_DOWN, 1, -2, 3));
+		assertEquals(events(note(1080, 1920, 64), note(1020, 1920, 55, 95, 3, 0), note(960, 1920, 40, 95, 6, 0)),
+				stroked(TGStroke.STROKE_DOWN, 1, -2, 3, 6));
 	}
 
 	@Test
@@ -152,14 +171,13 @@ public class TestSequenceParserNotes {
 	// ---- metronome ----
 
 	private static String[] tick(long start, long end) {
-		String rest = " t2 c9 k37 v95 s-1 b0";
+		String rest = " t2 c0 k37 v95 s-1 b0";
 		return new String[] {"on " + start + rest, "off " + end + rest};
 	}
 
 	@Test
 	public void metronomeTicksEveryBeatOfTheTimeSignatureOnTheLastTrack() {
 		song.flags = MidiSequenceParser.ADD_METRONOME;
-		song.metronomeChannelId = 9;
 		song.song.getMeasureHeader(0).getTimeSignature().setNumerator(3);
 		song.song.getMeasureHeader(0).getTimeSignature().getDenominator().setValue(TGDuration.EIGHTH);
 		assertEquals(events(tick(960, 1440), tick(1440, 1920), tick(1920, 2400)), song.notes());
@@ -219,6 +237,29 @@ public class TestSequenceParserNotes {
 		song.quarter(1, 0).getEffect().setHammer(true);
 		song.note(4, TGDuration.QUARTER, 1, 2);
 		assertEquals(events(note(960, 1920, 64), note(1920, 2880, 66, 70, 1, 0)), song.notes());
+	}
+
+	@Test
+	public void aHammerNoteIsNotSofterItself() {
+		song.quarter(1, 0).getEffect().setHammer(true);
+		assertEquals(events(note(960, 1920, 64)), song.notes());
+	}
+
+	@Test
+	public void noteAfterAHammerInThePreviousMeasureIsSofter() {
+		song.note(0, TGDuration.QUARTER, 2, 0);
+		song.note(12, TGDuration.QUARTER, 1, 0).getEffect().setHammer(true);
+		song.note(1, 0, TGDuration.QUARTER, 1, 2, 0);
+		assertEquals(events(note(960, 1920, 59, 95, 2, 0), note(3840, 4800, 64), note(4800, 5760, 66, 70, 1, 0)), song.notes());
+	}
+
+	// played from the second measure, whose first note is a hammer
+	@Test
+	public void noteAfterAHammerInTheFirstMeasurePlayedIsSofter() {
+		song.sHeader = 2;
+		song.note(1, 0, TGDuration.QUARTER, 1, 0, 0).getEffect().setHammer(true);
+		song.note(1, 4, TGDuration.QUARTER, 1, 2, 0);
+		assertEquals(events(note(4800, 5760, 64), note(5760, 6720, 66, 70, 1, 0)), song.notes());
 	}
 
 	@Test
@@ -479,6 +520,18 @@ public class TestSequenceParserNotes {
 	public void aTremoloBarHeldBelowThePitchRangeStepsTowardsItsValueOutsideIt() {
 		assertEquals(quarterWith(bend(960, 0), bend(1440, 0), bend(1920, 0), bend(1920, 0),
 				bend(1920, 64)), tremoloBarQuarter(0, -12, 12, -12));
+	}
+
+	@Test
+	public void slideBendsTowardsTheNextNoteInTheNextMeasure() {
+		TGNote note = song.note(12, TGDuration.QUARTER, 1, 0);
+		note.getEffect().setVibrato(true);
+		note.getEffect().setSlide(true);
+		song.note(1, 0, TGDuration.QUARTER, 1, 2, 0);
+		assertEquals(events(INITIAL_BEND,
+				bend(3960, 65), bend(4080, 66), bend(4200, 68), bend(4320, 69),
+				bend(4440, 70), bend(4560, 72), bend(4680, 73), bend(4800, 75), bend(4800, 64),
+				note(3840, 4800, 64, 95, 1, 1), note(4800, 5760, 66)), song.notesAndBends());
 	}
 
 	@Test
