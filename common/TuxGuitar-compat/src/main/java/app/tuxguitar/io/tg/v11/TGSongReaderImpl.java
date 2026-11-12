@@ -10,6 +10,7 @@ import app.tuxguitar.io.base.TGSongReader;
 import app.tuxguitar.io.base.TGSongReaderHandle;
 import app.tuxguitar.io.tg.v15.TGFileFormatDetectorImpl;
 import app.tuxguitar.io.tg.TGFileFormatVersion;
+import app.tuxguitar.io.tg.util.TGMeasureHeaderFlags;
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
@@ -41,6 +42,10 @@ import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class TGSongReaderImpl extends TGStream implements TGSongReader{
+
+	private static final TGMeasureHeaderFlags MEASURE_HEADER_FLAGS = new TGMeasureHeaderFlags(
+			MEASURE_HEADER_TIMESIGNATURE, MEASURE_HEADER_TEMPO, MEASURE_HEADER_REPEAT_OPEN, MEASURE_HEADER_REPEAT_CLOSE,
+			MEASURE_HEADER_REPEAT_ALTERNATIVE, MEASURE_HEADER_MARKER, MEASURE_HEADER_TRIPLET_FEEL);
 
 	public static final TGFileFormatVersion SUPPORTED_FORMAT = new TGFileFormatVersion(TG_FORMAT, TG_FORMAT_VERSION);
 
@@ -171,15 +176,11 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 		//leo el time signature
 		if(((header & MEASURE_HEADER_TIMESIGNATURE) != 0)){
 			readTimeSignature(measureHeader.getTimeSignature());
-		}else if(lastMeasureHeader != null){
-			measureHeader.getTimeSignature().copyFrom(lastMeasureHeader.getTimeSignature());
 		}
 
 		//leo el tempo
 		if(((header & MEASURE_HEADER_TEMPO) != 0)){
 			readTempo(measureHeader.getTempo());
-		}else if(lastMeasureHeader != null){
-			measureHeader.getTempo().copyFrom(lastMeasureHeader.getTempo());
 		}
 
 		//leo el comienzo de la repeticion
@@ -200,10 +201,12 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader{
 			measureHeader.setMarker(readMarker(number));
 		}
 
-		measureHeader.setTripletFeel((lastMeasureHeader != null)?lastMeasureHeader.getTripletFeel():TGMeasureHeader.TRIPLET_FEEL_NONE);
 		if(((header & MEASURE_HEADER_TRIPLET_FEEL) != 0)){
 			measureHeader.setTripletFeel(readByte());
 		}
+
+		//what the header does not store comes from the previous one
+		MEASURE_HEADER_FLAGS.inheritUnstored(header, measureHeader, lastMeasureHeader);
 
 		return measureHeader;
 	}

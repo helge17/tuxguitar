@@ -93,10 +93,14 @@ public abstract class LegacyMeasureHeaderWriterContract {
 	}
 
 	@Test
-	public void firstHeaderStoresItsTripletFeel() throws Exception {
-		TGSong song = LegacyFormatFixture.emptySong(this.factory);
+	public void firstHeaderStoresItsTripletFeelAndTheNextHeaderInheritsIt() throws Exception {
+		TGSongManager manager = new TGSongManager(this.factory);
+		TGSong song = manager.newSong();
 		song.getMeasureHeader(0).setTripletFeel(TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH);
-		assertEquals(Arrays.asList("#1 @960 4/4 q120 open=false close=0 triplet=3"), describeHeaders(this.roundTrip(song)));
+		this.addMeasure(manager, song).setTripletFeel(TGMeasureHeader.TRIPLET_FEEL_SIXTEENTH);
+		assertEquals(Arrays.asList(
+				"#1 @960 4/4 q120 open=false close=0 triplet=3",
+				"#2 @4800 4/4 q120 open=false close=0 triplet=3"), describeHeaders(this.roundTrip(song)));
 	}
 
 	@Test
