@@ -15,6 +15,12 @@ import org.junit.jupiter.api.DynamicTest;
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.edit.TGRedoAction;
+import app.tuxguitar.editor.action.edit.TGUndoAction;
+import app.tuxguitar.editor.undo.TGUndoableActionController;
+import app.tuxguitar.editor.undo.TGUndoableEdit;
+import app.tuxguitar.editor.undo.TGUndoableManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGDuration;
@@ -29,26 +35,74 @@ import app.tuxguitar.util.TGNoteRange;
 
 /**
  * A new song (one guitar track in standard tuning, one measure) and an action context on it, to run editor actions
- * the way the app does: mapped in the action manager and executed by name.
+ * the way the app does: mapped in the action manager and executed by name. Undoable edits read the song of the
+ * document: for them the fixture is made on it, and an action can be executed with its undoable edit kept for undo
+ * and redo, which run on a new action context, as in the app.
  *
  * A beat reads back as its voice 0 notes, lowest string number first: "s<string>f<fret> ...".
  */
 public class SongActionFixture {
 
-	public final TGContext context = new TGContext();
-	public final TGSongManager songManager = new TGSongManager();
-	public final TGSong song = songManager.newSong();
-	public final TGActionContext actionContext = new TGActionContext() {
-	};
+	public final TGContext context;
+	public final TGSongManager songManager;
+	public final TGSong song;
+	public final TGActionContext actionContext;
 
 	public SongActionFixture() {
-		actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, songManager);
-		actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
+		this(new TGContext(), new TGSongManager());
+	}
+
+	private SongActionFixture(TGContext context, TGSongManager songManager) {
+		this(context, songManager, songManager.newSong());
+	}
+
+	private SongActionFixture(TGContext context, TGSongManager songManager, TGSong song) {
+		this.context = context;
+		this.songManager = songManager;
+		this.song = song;
+		this.actionContext = newActionContext();
+	}
+
+	// a fixture on the song of the document of a new context
+	public static SongActionFixture onDocument() {
+		TGContext context = new TGContext();
+		TGDocumentManager document = TGDocumentManager.getInstance(context);
+		return new SongActionFixture(context, document.getSongManager(), document.getSong());
+	}
+
+	private TGActionContext newActionContext() {
+		TGActionContext newContext = new TGActionContext() {
+		};
+		newContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, songManager);
+		newContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song);
+		return newContext;
 	}
 
 	public void execute(TGActionBase action) {
+		execute(action, actionContext);
+	}
+
+	private void execute(TGActionBase action, TGActionContext onContext) {
 		map(action);
-		TGActionManager.getInstance(context).execute(action.getName(), actionContext);
+		TGActionManager.getInstance(context).execute(action.getName(), onContext);
+	}
+
+	// executes the action the way the app's undoable listener does: the controller starts the undoable edit before
+	// the action and ends it after, and the undo manager keeps it; returns the edit
+	public TGUndoableEdit executeUndoable(TGActionBase action, TGUndoableActionController controller) {
+		TGUndoableEdit started = controller.startUndoable(context, actionContext);
+		execute(action);
+		TGUndoableEdit edit = controller.endUndoable(context, actionContext, started);
+		TGUndoableManager.getInstance(context).addEdit(edit);
+		return edit;
+	}
+
+	public void undo() {
+		execute(new TGUndoAction(context), newActionContext());
+	}
+
+	public void redo() {
+		execute(new TGRedoAction(context), newActionContext());
 	}
 
 	// maps actions that the executed action runs in turn
