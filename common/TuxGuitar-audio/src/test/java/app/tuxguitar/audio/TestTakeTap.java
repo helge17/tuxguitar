@@ -192,12 +192,13 @@ public class TestTakeTap {
 	// rounding can put a measure's first sample of the take one off from where the measure before stopped
 	@Test
 	public void aTakeGoingOnWithinASampleIsNotFaded() {
-		TGTake take1 = take(1, 4 * M, 1);
+		// its level changes where it goes on (1, then 0.5), so a crossfade with itself would show
+		TGTake take1 = take(1, 4 * M, 1, 0.5f);
 		clip(take1, 1, 0, BAR, 0);
 		clip(take1, 2, 0, BAR, M + 1);
 		float[] tap = tap(wholeSong(100));
 
-		assertSamples(new double[] {1, 1}, tap, M - 1, M);
+		assertSamples(new double[] {1, 1, 0.5}, tap, M - 256, M - 1, M);
 	}
 
 	@Test
