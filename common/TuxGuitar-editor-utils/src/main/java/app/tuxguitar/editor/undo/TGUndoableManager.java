@@ -1,5 +1,7 @@
 package app.tuxguitar.editor.undo;
 
+import java.util.List;
+
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonFactory;
@@ -95,19 +97,18 @@ public class TGUndoableManager {
 	}
 
 	private TGUndoableEdit editToBeUndone() {
-		TGUndoableBuffer buffer = this.getBuffer();
-		int index = (buffer.getIndexOfNextAdd() - 1);
-		if (index >= 0 && index < buffer.getEdits().size()) {
-			return buffer.getEdits().get(index);
-		}
-		return null;
+		return this.editAt(this.getBuffer().getIndexOfNextAdd() - 1);
 	}
 
 	private TGUndoableEdit editToBeRedone() {
-		TGUndoableBuffer buffer = this.getBuffer();
-		int index = (buffer.getIndexOfNextAdd());
-		if (index >= 0 && index < buffer.getEdits().size()) {
-			return buffer.getEdits().get(index);
+		return this.editAt(this.getBuffer().getIndexOfNextAdd());
+	}
+
+	// the edit at the index, or null when there is none
+	private TGUndoableEdit editAt(int index) {
+		List<TGUndoableEdit> edits = this.getBuffer().getEdits();
+		if (index >= 0 && index < edits.size()) {
+			return edits.get(index);
 		}
 		return null;
 	}
