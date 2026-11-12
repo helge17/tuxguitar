@@ -12,8 +12,9 @@ import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTrack;
 
 /**
- * Pins how TGTrackManager finds the measures of a track by time, and changes the key signature or clef of a measure,
- * or of every measure from it to the end. The song is the {@link SegmentFixture}; measures are named by number.
+ * Pins how TGTrackManager finds the measures of a track by time (and TGSongManager the first measure header),
+ * and changes the key signature or clef of a measure, or of every measure from it to the end.
+ * The song is the {@link SegmentFixture}; measures are named by number.
  */
 public class TestTrackMeasures extends SegmentFixture {
 
@@ -53,12 +54,17 @@ public class TestTrackMeasures extends SegmentFixture {
 		assertEquals("", numbers(manager.getMeasuresBetween(track, start(3), start(3))));
 	}
 
+	// the numbers of the first measure of the track and of the first measure header of the song
+	private String firsts() {
+		return manager.getFirstMeasure(track).getNumber() + " " + songManager.getFirstMeasureHeader(song).getNumber();
+	}
+
 	@Test
 	public void theFirstMeasureIsTheOneStartingFirstWhereverItIsInTheTrack() {
-		assertEquals(1, manager.getFirstMeasure(track).getNumber());
+		assertEquals("1 1", firsts());
 
 		song.getMeasureHeader(0).setStart(start(3) + 1);
-		assertEquals(2, manager.getFirstMeasure(track).getNumber());
+		assertEquals("2 2", firsts());
 	}
 
 	@Test

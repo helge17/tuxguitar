@@ -181,6 +181,25 @@ public class TestVoiceTiming {
 		assertEquals("tie s1f2 valid", errors());
 	}
 
+	@Test
+	public void anErrorListedAgainIsEqualToItselfOnly() {
+		notes(0, 4, 0, QUARTER, 4, 0, 2 * QUARTER, 4, 0, 0, 2, 1, 2 * QUARTER, 1, 1);
+		List<TGMeasureError> before = manager.getMeasureErrors(fixture.measure);
+		List<TGMeasureError> again = manager.getMeasureErrors(fixture.measure);
+		fixture.songManager.addNewMeasureBeforeEnd(fixture.measure.getTrack().getSong());
+		TGMeasureError tooShort = before.get(0);
+
+		List<String> equal = new ArrayList<String>();
+		for (TGMeasureError error : before) {
+			equal.add(error.isEqualTo(again.get(0)) + "/" + error.isEqualTo(again.get(1)));
+		}
+		equal.add("other code " + tooShort.isEqualTo(new TGMeasureError(fixture.measure, 0, TGMeasureError.VOICE_TOO_LONG)));
+		equal.add("other voice " + tooShort.isEqualTo(new TGMeasureError(fixture.measure, 1, TGMeasureError.VOICE_TOO_SHORT)));
+		equal.add("other measure " + tooShort.isEqualTo(new TGMeasureError(fixture.measure.getTrack().getMeasure(1), 0, TGMeasureError.VOICE_TOO_SHORT)));
+		equal.add("none " + tooShort.isEqualTo(null));
+		assertEquals("true/false, false/true, other code false, other voice false, other measure false, none false", String.join(", ", equal));
+	}
+
 	// --- major errors: a voice duration error anywhere in the track (TGTrackManager) or the song (TGSongManager) ---
 
 	private String majorErrors(long... triples) {

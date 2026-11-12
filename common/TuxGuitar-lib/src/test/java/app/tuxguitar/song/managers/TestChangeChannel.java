@@ -62,6 +62,22 @@ public class TestChangeChannel {
 				journey(otherMelodic, null, percussion, null, percussion, melodic));
 	}
 
+	// whether a track plays on the first melodic channel, on the other one, and whether the song has a percussion channel
+	private String channelUse() {
+		return manager.isAnyTrackConnectedToChannel(song, melodic.getChannelId())
+				+ " " + manager.isAnyTrackConnectedToChannel(song, otherMelodic.getChannelId())
+				+ " " + manager.isAnyPercussionChannel(song);
+	}
+
+	@Test
+	public void aChannelIsInUseWhileATrackPlaysOnIt() {
+		assertEquals("true false true", channelUse());
+
+		manager.getTrackManager().changeChannel(track, otherMelodic);
+		manager.removeChannel(song, percussion);
+		assertEquals("false true false", channelUse());
+	}
+
 	// one line per string count: the tuning, then the notes left as "s<string>f<fret>"
 	private String countJourney(int... counts) {
 		StringBuilder journey = new StringBuilder();

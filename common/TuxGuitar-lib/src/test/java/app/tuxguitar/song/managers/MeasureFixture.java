@@ -19,27 +19,27 @@ import app.tuxguitar.song.models.TGVoice;
  * "kind@position", position in quarters from the measure start;
  * n = note, r = rest, t = rest carrying a text, _ = beat whose voice 0 is empty.
  */
-class MeasureFixture {
+public class MeasureFixture {
 
-	static final long QUARTER = TGDuration.WHOLE_PRECISE_DURATION / 4;
+	public static final long QUARTER = TGDuration.WHOLE_PRECISE_DURATION / 4;
 
-	final TGSongManager songManager = new TGSongManager();
-	final TGFactory factory = songManager.getFactory();
-	final TGMeasureManager manager = songManager.getMeasureManager();
-	final TGMeasure measure = songManager.newSong().getTrack(0).getMeasure(0);
+	public final TGSongManager songManager = new TGSongManager();
+	public final TGFactory factory = songManager.getFactory();
+	public final TGMeasureManager manager = songManager.getMeasureManager();
+	public final TGMeasure measure = songManager.newSong().getTrack(0).getMeasure(0);
 
 	// absolute precise position of "offset" from the measure start
-	long at(long offset) {
+	public long at(long offset) {
 		return measure.getPreciseStart() + offset;
 	}
 
-	TGDuration duration(int value) {
+	public TGDuration duration(int value) {
 		TGDuration duration = factory.newDuration();
 		duration.setValue(value);
 		return duration;
 	}
 
-	TGBeat beatAt(long offset) {
+	public TGBeat beatAt(long offset) {
 		TGBeat beat = manager.getBeatPrecise(measure, at(offset));
 		if (beat == null) {
 			beat = factory.newBeat();
@@ -51,14 +51,14 @@ class MeasureFixture {
 		return beat;
 	}
 
-	TGVoice rest(long offset, int value, int voiceIndex) {
+	public TGVoice rest(long offset, int value, int voiceIndex) {
 		TGVoice voice = beatAt(offset).getVoice(voiceIndex);
 		voice.setEmpty(false);
 		voice.getDuration().copyFrom(duration(value));
 		return voice;
 	}
 
-	TGVoice textRest(long offset, int value, int voiceIndex) {
+	public TGVoice textRest(long offset, int value, int voiceIndex) {
 		TGVoice voice = rest(offset, value, voiceIndex);
 		TGText text = factory.newText();
 		text.setValue("text");
@@ -66,7 +66,7 @@ class MeasureFixture {
 		return voice;
 	}
 
-	TGVoice note(long offset, int value, int voiceIndex) {
+	public TGVoice note(long offset, int value, int voiceIndex) {
 		TGVoice voice = rest(offset, value, voiceIndex);
 		TGNote note = factory.newNote();
 		note.setString(1);
@@ -75,14 +75,14 @@ class MeasureFixture {
 	}
 
 	// quarter notes in voice 0 at each of the given quarter positions
-	void quarterNotes(int... positions) {
+	public void quarterNotes(int... positions) {
 		for (int position : positions) {
 			note(position * QUARTER, TGDuration.QUARTER, 0);
 		}
 	}
 
 	// in position order: some operations append beats without sorting the measure
-	String layout() {
+	public String layout() {
 		List<TGBeat> beats = new ArrayList<TGBeat>(measure.getBeats());
 		beats.sort(Comparator.comparingLong(TGBeat::getPreciseStart));
 		StringBuilder layout = new StringBuilder();
@@ -97,17 +97,17 @@ class MeasureFixture {
 	}
 
 	// a note at a fret of a string, in voice 0 of the beat at the measure start
-	TGNote fretted(int string, int fret) {
+	public TGNote fretted(int string, int fret) {
 		return fretted(0, string, fret);
 	}
 
 	// a note at a fret of a string, in voice 0 of the beat at "offset" from the measure start
-	TGNote fretted(long offset, int string, int fret) {
+	public TGNote fretted(long offset, int string, int fret) {
 		return fretted(offset, string, fret, 0);
 	}
 
 	// a note at a fret of a string, in voice "voiceIndex" of the beat at "offset" from the measure start
-	TGNote fretted(long offset, int string, int fret, int voiceIndex) {
+	public TGNote fretted(long offset, int string, int fret, int voiceIndex) {
 		TGVoice voice = beatAt(offset).getVoice(voiceIndex);
 		TGNote note = factory.newNote();
 		note.setString(string);
@@ -118,7 +118,7 @@ class MeasureFixture {
 	}
 
 	// the track plays on the percussion channel
-	void percussion() {
+	public void percussion() {
 		TGTrack track = measure.getTrack();
 		songManager.getChannel(track.getSong(), track.getChannelId()).setBank(TGChannel.DEFAULT_PERCUSSION_BANK);
 	}

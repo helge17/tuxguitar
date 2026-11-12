@@ -26,6 +26,19 @@ public class TestInsertMeasures extends SegmentFixture {
 	}
 
 	@Test
+	public void pastingSeveralTimesInsertsCopiesOfTheSegmentOneAfterTheOther() {
+		TGSongSegment segment = helper.copyMeasures(song, 1, 2);
+		TGSongSegment copies = helper.createSegmentCopies(segment, 2);
+		helper.insertMeasures(song, copies, 3, start(3) - start(1), 0);
+
+		assertEquals(""
+			+ "track 1: 1@1/1/1:11+0 2@5/2/2:12+0 3@9/1/1:11+0 4@13/2/2:12+0 5@17/1/1:11+0 6@21/2/2:12+0 7@25/3/3:13+0\n"
+			+ "track 2: 1@1/1/1:21+0 2@5/2/2:22+0 3@9/1/1:21+0 4@13/2/2:22+0 5@17/1/1:21+0 6@21/2/2:22+0 7@25/3/3:23+0\n"
+			, describe());
+		assertEquals(2, segment.getHeaders().size());
+	}
+
+	@Test
 	public void insertsAtTheSongStart() {
 		TGSongSegment segment = helper.copyMeasures(song, 3, 3);
 		helper.insertMeasures(song, segment, 1, start(1) - start(3), 0);
