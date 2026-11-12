@@ -30,13 +30,14 @@ public class TuningWriter {
 			Node root = document.createElement(TUNINGS_ROOT);
 			write(group, root);
 			document.appendChild(root);
-			FileOutputStream fs = new FileOutputStream(file);
-			TransformerFactory xformFactory = TransformerFactory.newInstance();
-			Transformer idTransform = xformFactory.newTransformer();
-			Source input = new DOMSource(document);
-			Result output = new StreamResult(fs);
-			idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
-			idTransform.transform(input, output);
+			try (FileOutputStream fs = new FileOutputStream(file)) {
+				TransformerFactory xformFactory = TransformerFactory.newInstance();
+				Transformer idTransform = xformFactory.newTransformer();
+				Source input = new DOMSource(document);
+				Result output = new StreamResult(fs);
+				idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
+				idTransform.transform(input, output);
+			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
