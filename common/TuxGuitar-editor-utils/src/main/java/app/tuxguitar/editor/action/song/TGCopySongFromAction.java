@@ -23,5 +23,6 @@ public class TGCopySongFromAction extends TGActionBase {
 		TGSong from = ((TGSong) context.getAttribute(ATTRIBUTE_FROM));
 
 		songManager.copySongFrom(song, from);
+		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
 }
