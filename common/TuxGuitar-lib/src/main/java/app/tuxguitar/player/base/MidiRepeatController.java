@@ -42,7 +42,7 @@ public class MidiRepeatController {
 		TGMeasureHeader header = this.song.getMeasureHeader(this.index);
 
 		// parsing is already finished if measure is after range
-		if( this.eHeader >= 0 && header.getNumber() > this.eHeader ) {
+		if( this.isAfterRange(header) ) {
 			this.shouldPlay = false;
 			this.index ++;
 			return;
@@ -50,87 +50,121 @@ public class MidiRepeatController {
 
 		//Abro repeticion siempre para el primer compas.
 		// first measure is default open repeat
-		if( (this.sHeader >= 0 && header.getNumber() == this.sHeader ) || header.getNumber() == 1 ){
-			this.repeatStartIndex = this.index;
-			this.repeatStart = header.getStart();
-			this.repeatOpen = true;
+		if( this.isRangeStart(header) ){
+			this.openRepeat(header);
 		}
 
 		//Por defecto el compas deberia sonar
 		// by default measure shall be played
 		this.shouldPlay = true;
 
-		//En caso de existir una repeticion nueva,
-		//guardo el indice de el compas donde empieza una repeticion
-		// if repeat opens, store where it starts
 		if (header.isRepeatOpen()) {
-			this.repeatStartIndex = this.index;
-			this.repeatStart = header.getStart();
-			this.repeatOpen = true;
-
-			//Si es la primer vez que paso por este compas
-			//Pongo numero de repeticion y final alternativo en cero
-			// reset repeat counter if this is the first time this measure is parsed
-			if(this.index > this.lastIndex){
-				this.repeatNumber = 0;
-				this.repeatAlternative = 0;
-			}
+			this.startRepeat(header);
 		}
 		else{
-			//verifico si hay un final alternativo abierto
-			// update current repeat alternative
-			if(this.repeatAlternative == 0){
-				this.repeatAlternative = header.getRepeatAlternative();
-			}
-			//Si estoy en un final alternativo.
-			//el compas solo puede sonar si el numero de repeticion coincide con el numero de final alternativo.
-			// if in an alternative repeat, measure shall only be played if it corresponds to current repeat number
-			if (this.repeatOpen && (this.repeatAlternative > 0) && ((this.repeatAlternative & (1 << (this.repeatNumber))) == 0)){
-				this.repeatMove -= header.getLength();
-				if (header.getRepeatClose() >0){
-					this.repeatAlternative = 0;
-				}
-				this.shouldPlay = false;
-			}
+			this.checkAlternative(header);
 		}
 
 		//antes de ejecutar una posible repeticion
 		//guardo el indice del ultimo compas tocado
 		if (this.shouldPlay) {
 			this.lastIndex = Math.max(this.lastIndex,this.index);
-
-			//si hay una repeticion la hago
-			// repeat close (ignored if it's the last measure in the loop, UNLESS the repeat open is strictly inside the loop)
-			boolean isLastMeasureOfLoop = (this.eHeader >= 0 && header.getNumber() == this.eHeader);
-			boolean repeatOpenInsideLoop = (this.song.getMeasureHeader(this.repeatStartIndex).getNumber() > this.sHeader);
-			boolean ignoreRepeatClose = (isLastMeasureOfLoop && !repeatOpenInsideLoop);
-
-			if (this.repeatOpen && (header.getRepeatClose() > 0) && !ignoreRepeatClose) {
-				if (this.repeatNumber < header.getRepeatClose() || (this.repeatAlternative > 0)) {
-					this.repeatEnd = header.getStart() + header.getLength();
-					this.repeatMove += this.repeatEnd - this.repeatStart;
-					this.index = this.repeatStartIndex - 1;
-					this.repeatNumber++;
-				} else{
-					this.repeatStart = 0;
-					this.repeatNumber = 0;
-					this.repeatEnd = 0;
-					this.repeatOpen = false;
-				}
-				this.repeatAlternative = 0;
-			}
+			this.closeRepeat(header);
 		}
 		this.index ++;
+		this.applyRange(header);
+	}
 
-		//Verifica si el compas esta dentro del rango.
-		// check measure is in loop range (if any loop defined)
-		if( (this.sHeader >= 0 && header.getNumber() < this.sHeader) || ( this.eHeader >= 0 && header.getNumber() > this.eHeader ) ){
+	//Verifica si el compas esta dentro del rango.
+	// check measure is in loop range (if any loop defined)
+	private void applyRange(TGMeasureHeader header) {
+		if( this.isBeforeRange(header) || this.isAfterRange(header) ){
 			this.shouldPlay = false;
 		}
 		// no repeat move before starting loop (if any)
-		if( this.sHeader >= 0 && header.getNumber() < this.sHeader ) {
+		if( this.isBeforeRange(header) ) {
 			this.repeatMove = 0;
 		}
+	}
+
+	// the first measure, or the first of the range, opens a repeat
+	private boolean isRangeStart(TGMeasureHeader header) {
+		return ((this.sHeader >= 0 && header.getNumber() == this.sHeader ) || header.getNumber() == 1);
+	}
+
+	private boolean isBeforeRange(TGMeasureHeader header) {
+		return (this.sHeader >= 0 && header.getNumber() < this.sHeader);
+	}
+
+	private boolean isAfterRange(TGMeasureHeader header) {
+		return (this.eHeader >= 0 && header.getNumber() > this.eHeader);
+	}
+
+	// the repeat now starts at this measure
+	private void openRepeat(TGMeasureHeader header) {
+		this.repeatStartIndex = this.index;
+		this.repeatStart = header.getStart();
+		this.repeatOpen = true;
+	}
+
+	//En caso de existir una repeticion nueva,
+	//guardo el indice de el compas donde empieza una repeticion
+	// if repeat opens, store where it starts
+	private void startRepeat(TGMeasureHeader header) {
+		this.openRepeat(header);
+
+		//Si es la primer vez que paso por este compas
+		//Pongo numero de repeticion y final alternativo en cero
+		// reset repeat counter if this is the first time this measure is parsed
+		if(this.index > this.lastIndex){
+			this.repeatNumber = 0;
+			this.repeatAlternative = 0;
+		}
+	}
+
+	private void checkAlternative(TGMeasureHeader header) {
+		//verifico si hay un final alternativo abierto
+		// update current repeat alternative
+		if(this.repeatAlternative == 0){
+			this.repeatAlternative = header.getRepeatAlternative();
+		}
+		//Si estoy en un final alternativo.
+		//el compas solo puede sonar si el numero de repeticion coincide con el numero de final alternativo.
+		// if in an alternative repeat, measure shall only be played if it corresponds to current repeat number
+		if (this.repeatOpen && (this.repeatAlternative > 0) && ((this.repeatAlternative & (1 << (this.repeatNumber))) == 0)){
+			this.repeatMove -= header.getLength();
+			if (header.getRepeatClose() >0){
+				this.repeatAlternative = 0;
+			}
+			this.shouldPlay = false;
+		}
+	}
+
+	//si hay una repeticion la hago
+	private void closeRepeat(TGMeasureHeader header) {
+		if (!this.repeatClosesAt(header)) {
+			return;
+		}
+		if (this.repeatNumber < header.getRepeatClose() || (this.repeatAlternative > 0)) {
+			this.repeatEnd = header.getStart() + header.getLength();
+			this.repeatMove += this.repeatEnd - this.repeatStart;
+			this.index = this.repeatStartIndex - 1;
+			this.repeatNumber++;
+		} else{
+			this.repeatStart = 0;
+			this.repeatNumber = 0;
+			this.repeatEnd = 0;
+			this.repeatOpen = false;
+		}
+		this.repeatAlternative = 0;
+	}
+
+	// repeat close (ignored if it's the last measure in the loop, UNLESS the repeat open is strictly inside the loop)
+	private boolean repeatClosesAt(TGMeasureHeader header) {
+		boolean isLastMeasureOfLoop = (this.eHeader >= 0 && header.getNumber() == this.eHeader);
+		boolean repeatOpenInsideLoop = (this.song.getMeasureHeader(this.repeatStartIndex).getNumber() > this.sHeader);
+		boolean ignoreRepeatClose = (isLastMeasureOfLoop && !repeatOpenInsideLoop);
+		return (this.repeatOpen && (header.getRepeatClose() > 0) && !ignoreRepeatClose);
 	}
 
 	public boolean finished(){
