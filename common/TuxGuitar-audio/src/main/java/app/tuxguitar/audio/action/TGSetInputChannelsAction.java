@@ -9,14 +9,15 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Sets the input channel(s) of the audio device that an audio channel records from: one for mono takes, a pair for
- * stereo ones. They are part of the song: the change is undone like any channel change. Refused on a channel that
- * plays notes.
+ * stereo ones (any two different channels, in either order). They are part of the song: the change is undone like any
+ * channel change. Refused on a channel that plays notes, and for a pair of one channel.
  */
 public class TGSetInputChannelsAction extends TGActionBase {
 
 	public static final String NAME = "action.audio.channel.set-input-channels";
 
-	public static final String ATTRIBUTE_INPUT = "audioInput";
+	// the input channels as picked (int[]): one, or a pair, left then right
+	public static final String ATTRIBUTE_INPUT_CHANNELS = "inputChannels";
 
 	public TGSetInputChannelsAction(TGContext context) {
 		super(context, NAME);
@@ -24,8 +25,8 @@ public class TGSetInputChannelsAction extends TGActionBase {
 
 	protected void processAction(TGActionContext context) {
 		TGChannel channel = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL);
-		TGAudioInput input = context.getAttribute(ATTRIBUTE_INPUT);
-		if (channel.isAudioChannel()) {
+		TGAudioInput input = TGAudioInput.of(context.<int[]>getAttribute(ATTRIBUTE_INPUT_CHANNELS));
+		if (channel.isAudioChannel() && input != null) {
 			channel.setAudioInput(input);
 			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		}

@@ -12,7 +12,6 @@ import app.tuxguitar.audio.action.TGSetInputChannelsAction;
 import app.tuxguitar.audio.undo.TGUndoableOnSuccess;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
-import app.tuxguitar.song.models.TGAudioInput;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -30,24 +29,23 @@ public class InputSteps {
 		this.world = world;
 	}
 
-	// "input channel 2" (mono) or "input channels 1 and 2" (stereo: left, then right)
+	// "input channel 2" (mono) or "input channels 1 and 2" (stereo: left, then right), as picked
 	@ParameterType("input channels? \\d+(?: and \\d+)?")
-	public TGAudioInput inputs(String text) {
-		int[] channels = Arrays.stream(text.replaceAll("[^\\d]+", " ").trim().split(" ")).mapToInt(Integer::parseInt).toArray();
-		return (channels.length == 1 ? TGAudioInput.mono(channels[0]) : TGAudioInput.stereo(channels[0], channels[1]));
+	public int[] inputs(String text) {
+		return Arrays.stream(text.replaceAll("[^\\d]+", " ").trim().split(" ")).mapToInt(Integer::parseInt).toArray();
 	}
 
 	// a change of the song: the app undoes it as a channel change
 	@When("I set track {int} to record {inputs}")
-	public void setInputChannels(int number, TGAudioInput input) {
+	public void setInputChannels(int number, int[] inputChannels) {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, world.channel(world.track(number)));
-		world.fixture().actionContext.setAttribute(TGSetInputChannelsAction.ATTRIBUTE_INPUT, input);
+		world.fixture().actionContext.setAttribute(TGSetInputChannelsAction.ATTRIBUTE_INPUT_CHANNELS, inputChannels);
 		world.executeUndoable(new TGSetInputChannelsAction(world.fixture().context), new TGUndoableOnSuccess(new TGUndoableModifyChannelController()));
 	}
 
 	@Given("I have set track {int} to record {inputs}")
-	public void haveSetInputChannels(int number, TGAudioInput input) {
-		setInputChannels(number, input);
+	public void haveSetInputChannels(int number, int[] inputChannels) {
+		setInputChannels(number, inputChannels);
 		assertTrue(world.succeeded());
 	}
 

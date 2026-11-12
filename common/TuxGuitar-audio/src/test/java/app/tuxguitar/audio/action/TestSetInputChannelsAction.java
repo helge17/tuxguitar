@@ -17,8 +17,9 @@ import app.tuxguitar.song.models.TGChannel;
 
 /**
  * Setting the input channel(s) of an audio track's channel is a change of the song: undone and redone like a channel
- * change, under the controller the app maps to it. A channel that plays notes is refused, and a refused change is no
- * undo step.
+ * change, under the controller the app maps to it. The input channels are given as picked: one, or a pair of any two
+ * different ones in either order. A pair of one channel is refused, as is a channel that plays notes, and a refused
+ * change is no undo step.
  *
  * The song (of a document, for undo) has a guitar track and an audio track recording input channel 1. A channel reads
  * as its input channels joined by "+", "none" without any, then "success" when the action reported it.
@@ -35,10 +36,10 @@ public class TestSetInputChannelsAction {
 		audio = fixture.songManager.getChannel(fixture.song, fixture.songManager.addAudioTrack(fixture.song, TGAudioInput.mono(1)).getChannelId());
 	}
 
-	private String set(TGChannel channel, TGAudioInput input) {
+	private String set(TGChannel channel, int... inputChannels) {
 		fixture.actionContext.setAttribute(TGActionBase.ATTRIBUTE_SUCCESS, null);
 		fixture.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, channel);
-		fixture.actionContext.setAttribute(TGSetInputChannelsAction.ATTRIBUTE_INPUT, input);
+		fixture.actionContext.setAttribute(TGSetInputChannelsAction.ATTRIBUTE_INPUT_CHANNELS, inputChannels);
 		TGUndoableOnSuccess controller = new TGUndoableOnSuccess(new TGUndoableModifyChannelController());
 		TGUndoableEdit started = controller.startUndoable(fixture.context, fixture.actionContext);
 		fixture.execute(new TGSetInputChannelsAction(fixture.context));
@@ -63,19 +64,31 @@ public class TestSetInputChannelsAction {
 
 	@Test
 	public void anAudioChannelRecordsTheInputChannelsSet() {
-		assertEquals("2 success", set(audio, TGAudioInput.mono(2)));
-		assertEquals("1+2 success", set(audio, TGAudioInput.stereo(1, 2)));
+		assertEquals("2 success", set(audio, 2));
+		assertEquals("1+2 success", set(audio, 1, 2));
+	}
+
+	@Test
+	public void aPairIsAnyTwoDifferentChannelsInEitherOrder() {
+		assertEquals("3+7 success", set(audio, 3, 7));
+		assertEquals("2+1 success", set(audio, 2, 1));
+	}
+
+	@Test
+	public void aPairOfOneChannelIsRefused() {
+		assertEquals("1", set(audio, 1, 1));
+		assertEquals(false, TGUndoableManager.getInstance(fixture.context).canUndo());
 	}
 
 	@Test
 	public void aChannelThatPlaysNotesIsRefused() {
-		assertEquals("none", set(guitar, TGAudioInput.mono(2)));
+		assertEquals("none", set(guitar, 2));
 		assertEquals(false, TGUndoableManager.getInstance(fixture.context).canUndo());
 	}
 
 	@Test
 	public void undoSetsTheInputChannelsBackAndRedoAgain() {
-		set(audio, TGAudioInput.stereo(1, 2));
+		set(audio, 1, 2);
 
 		fixture.undo();
 		assertEquals("1", read(audio));
