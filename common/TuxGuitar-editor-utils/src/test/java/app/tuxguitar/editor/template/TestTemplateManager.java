@@ -4,31 +4,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import app.tuxguitar.editor.InMemoryResources;
 import app.tuxguitar.io.base.TGFileFormatException;
-import app.tuxguitar.io.base.TGSongWriterHandle;
-import app.tuxguitar.io.tg.TGSongWriterImpl;
-import app.tuxguitar.resource.TGResourceLoader;
-import app.tuxguitar.resource.TGResourceManager;
-import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
 
@@ -51,29 +41,11 @@ public class TestTemplateManager {
 	private final ByteArrayOutputStream printed = new ByteArrayOutputStream();
 	private PrintStream systemErr;
 
-	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
 	private final TGContext context = new TGContext();
+	private final InMemoryResources resources = new InMemoryResources(context);
 	private final TGTemplateManager templateManager;
 
 	public TestTemplateManager() {
-		TGResourceManager.getInstance(context).setResourceLoader(new TGResourceLoader() {
-			public <T> Class<T> loadClass(String name) {
-				return null;
-			}
-
-			public InputStream getResourceAsStream(String name) {
-				byte[] bytes = resources.get(name);
-				return (bytes == null ? null : new ByteArrayInputStream(bytes));
-			}
-
-			public URL getResource(String name) {
-				return null;
-			}
-
-			public Enumeration<URL> getResources(String name) {
-				return null;
-			}
-		});
 		templateManager = new TGTemplateManager(context);
 	}
 
@@ -88,22 +60,9 @@ public class TestTemplateManager {
 		System.setErr(systemErr);
 	}
 
-	private static byte[] song(String name) throws TGFileFormatException {
-		TGSongManager songManager = new TGSongManager();
-		TGSong song = songManager.newSong();
-		song.setName(name);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		TGSongWriterHandle handle = new TGSongWriterHandle();
-		handle.setFactory(songManager.getFactory());
-		handle.setSong(song);
-		handle.setOutputStream(bytes);
-		new TGSongWriterImpl().write(handle);
-		return bytes.toByteArray();
-	}
-
 	// a bundled template, "template-default<suffix>.tg", holding a song named after the suffix
 	private void bundled(String suffix) throws TGFileFormatException {
-		resources.put("templates/template-default" + suffix + ".tg", song("default" + suffix));
+		resources.put("templates/template-default" + suffix + ".tg", InMemoryResources.song("default" + suffix));
 	}
 
 	private Path userTemplate() {
@@ -145,7 +104,7 @@ public class TestTemplateManager {
 	@Test
 	public void theUserTemplateComesFirst() throws IOException {
 		bundled("_fr");
-		Files.write(userTemplate(), song("user"));
+		Files.write(userTemplate(), InMemoryResources.song("user"));
 
 		assertEquals("user", newSong(Locale.FRENCH));
 	}
