@@ -15,6 +15,7 @@ import app.tuxguitar.io.tg.LegacyStreamEncoder;
 public class TestReadFormat08 extends LegacyReaderContract {
 
 	private static final int VIBRATO_AND_DEAD_NOTE = 0x05;
+	private static final int BEND = 0x02;
 
 	protected TGSongReader newReader() {
 		return new TGSongReaderImpl();
@@ -33,11 +34,12 @@ public class TestReadFormat08 extends LegacyReaderContract {
 	}
 
 	@Test
-	public void notesReadTheirOwnVelocityAndOnlyFlaggedEffects() throws Exception {
-		LegacyStreamEncoder encoder = this.measureOf(2);
+	public void notesReadTheirOwnVelocityAndOnlyFlaggedEffectsWithBendValuesHalved() throws Exception {
+		LegacyStreamEncoder encoder = this.measureOf(3);
 		encoder.bytes(NOTE | EFFECT, 5, 80, 1, VIBRATO_AND_DEAD_NOTE);
-		encoder.bytes(NOTE | NEXT_BEAT, 7, 110, 2);
-		assertEquals(Arrays.asList("@960 s1 f5 v80 vibrato dead", "@1920 s2 f7 v110"),
+		encoder.bytes(NOTE | NEXT_BEAT | EFFECT, 6, 90, 2, BEND, 4, 0, 0, 3, 1, 6, 8, 12, 3);
+		encoder.bytes(NOTE | NEXT_BEAT, 7, 110, 3);
+		assertEquals(Arrays.asList("@960 s1 f5 v80 vibrato dead", "@1920 s2 f6 v90 bend[0:0][3:0][6:4][12:1]", "@2880 s3 f7 v110"),
 				describeNotes(this.readMeasure(encoder), false));
 	}
 }
