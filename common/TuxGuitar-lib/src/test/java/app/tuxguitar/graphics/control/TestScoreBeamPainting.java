@@ -20,7 +20,7 @@ import app.tuxguitar.song.models.TGVoice;
  *
  * Notes are on the high E string, one after another (from the measure start unless the test moves them), beamed
  * in one group. Each voice paints its score beat alone at (0, 0); the result lists what each voice draws after its
- * stem, separated by "--".
+ * stem (one path of beams, or nothing), separated by "--".
  */
 public class TestScoreBeamPainting {
 
@@ -32,20 +32,12 @@ public class TestScoreBeamPainting {
 	// where the notes start, from the measure start
 	private long start = 0;
 
-	// two eighths, stems down: the first draws the beam to the second, which draws nothing
-	private static final String TWO_EIGHTHS = ""
-		+ "initPath 2\n"
-		+ "moveTo 80.5 18.125\n"
-		+ "lineTo 80.5 22.125\n"
-		+ "lineTo 99.5 22.125\n"
-		+ "lineTo 99.5 18.125\n"
-		+ "lineTo 80.5 18.125\n"
-		+ "closePath\n"
-		+ "--\n";
-
 	@Test
 	public void twoEighthsShareOneBeamDrawnByTheFirst() {
-		assertEquals(TWO_EIGHTHS, beams(TGVoice.DIRECTION_DOWN, 8, 8));
+		assertEquals(voices(
+			path(beam(80.5f, 99.5f, 18.125f, 22.125f)),
+			""
+			), beams(TGVoice.DIRECTION_DOWN, 8, 8));
 	}
 
 	@Test
@@ -53,167 +45,83 @@ public class TestScoreBeamPainting {
 		harness.quarterNotes(0, 1, 2);
 		start = 3 * LayoutHarness.QUARTER;
 
-		assertEquals(""
-			+ "initPath 2\n"
-			+ "moveTo 188.5 18.125\n"
-			+ "lineTo 188.5 22.125\n"
-			+ "lineTo 207.5 22.125\n"
-			+ "lineTo 207.5 18.125\n"
-			+ "lineTo 188.5 18.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			, beams(TGVoice.DIRECTION_DOWN, 8, 8));
+		assertEquals(voices(
+			path(beam(188.5f, 207.5f, 18.125f, 22.125f)),
+			""
+			), beams(TGVoice.DIRECTION_DOWN, 8, 8));
 	}
 
 	@Test
 	public void withStemsUpTheBeamRunsAboveFromTheRightOfTheNoteHeads() {
-		assertEquals(""
-			+ "initPath 2\n"
-			+ "moveTo 88.095 -37.0\n"
-			+ "lineTo 88.095 -33.0\n"
-			+ "lineTo 107.095 -33.0\n"
-			+ "lineTo 107.095 -37.0\n"
-			+ "lineTo 88.095 -37.0\n"
-			+ "closePath\n"
-			+ "--\n"
-			, beams(TGVoice.DIRECTION_UP, 8, 8));
+		assertEquals(voices(
+			path(beam(88.095f, 107.095f, -37f, -33f)),
+			""
+			), beams(TGVoice.DIRECTION_UP, 8, 8));
 	}
 
 	@Test
 	public void eachShorterValueAddsABeamFurtherInwardAndALastShorterNoteDrawsBackToThePreviousStem() {
-		assertEquals(""
-			+ "initPath 2\n"
-			+ "moveTo 80.5 18.125\n"
-			+ "lineTo 80.5 22.125\n"
-			+ "lineTo 97.5 22.125\n"
-			+ "lineTo 97.5 18.125\n"
-			+ "lineTo 80.5 18.125\n"
-			+ "moveTo 80.5 12.125\n"
-			+ "lineTo 80.5 16.125\n"
-			+ "lineTo 97.5 16.125\n"
-			+ "lineTo 97.5 12.125\n"
-			+ "lineTo 80.5 12.125\n"
-			+ "moveTo 80.5 6.125\n"
-			+ "lineTo 80.5 10.125\n"
-			+ "lineTo 97.5 10.125\n"
-			+ "lineTo 97.5 6.125\n"
-			+ "lineTo 80.5 6.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 96.5 18.125\n"
-			+ "lineTo 96.5 22.125\n"
-			+ "lineTo 113.5 22.125\n"
-			+ "lineTo 113.5 18.125\n"
-			+ "lineTo 96.5 18.125\n"
-			+ "moveTo 96.5 12.125\n"
-			+ "lineTo 96.5 16.125\n"
-			+ "lineTo 113.5 16.125\n"
-			+ "lineTo 113.5 12.125\n"
-			+ "lineTo 96.5 12.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 112.5 18.125\n"
-			+ "lineTo 112.5 22.125\n"
-			+ "lineTo 145.5 22.125\n"
-			+ "lineTo 145.5 18.125\n"
-			+ "lineTo 112.5 18.125\n"
-			+ "closePath"
-			, beams(TGVoice.DIRECTION_DOWN, 32, 32, 16, 8));
+		assertEquals(voices(
+			path(beam(80.5f, 97.5f, 18.125f, 22.125f), beam(80.5f, 97.5f, 12.125f, 16.125f), beam(80.5f, 97.5f, 6.125f, 10.125f)),
+			"",
+			path(beam(96.5f, 113.5f, 18.125f, 22.125f), beam(96.5f, 113.5f, 12.125f, 16.125f)),
+			path(beam(112.5f, 145.5f, 18.125f, 22.125f))
+			), beams(TGVoice.DIRECTION_DOWN, 32, 32, 16, 8));
 	}
 
 	@Test
 	public void anEighthBeforeSixteenthsBeamsOnlyToTheFirstSixteenth() {
-		assertEquals(""
-			+ "initPath 2\n"
-			+ "moveTo 80.5 18.125\n"
-			+ "lineTo 80.5 22.125\n"
-			+ "lineTo 113.5 22.125\n"
-			+ "lineTo 113.5 18.125\n"
-			+ "lineTo 80.5 18.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 112.5 18.125\n"
-			+ "lineTo 112.5 22.125\n"
-			+ "lineTo 129.5 22.125\n"
-			+ "lineTo 129.5 18.125\n"
-			+ "lineTo 112.5 18.125\n"
-			+ "moveTo 112.5 12.125\n"
-			+ "lineTo 112.5 16.125\n"
-			+ "lineTo 129.5 16.125\n"
-			+ "lineTo 129.5 12.125\n"
-			+ "lineTo 112.5 12.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			, beams(TGVoice.DIRECTION_DOWN, 8, 16, 16));
+		assertEquals(voices(
+			path(beam(80.5f, 113.5f, 18.125f, 22.125f)),
+			path(beam(112.5f, 129.5f, 18.125f, 22.125f), beam(112.5f, 129.5f, 12.125f, 16.125f)),
+			""
+			), beams(TGVoice.DIRECTION_DOWN, 8, 16, 16));
 	}
 
 	@Test
 	public void aSixteenthBesideOnlyAnEighthGetsAStubTowardsIt() {
-		assertEquals(""
-			+ "initPath 2\n"
-			+ "moveTo 80.5 12.125\n"
-			+ "lineTo 80.5 16.125\n"
-			+ "lineTo 87.5 16.125\n"
-			+ "lineTo 87.5 12.125\n"
-			+ "lineTo 80.5 12.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 80.5 18.125\n"
-			+ "lineTo 80.5 22.125\n"
-			+ "lineTo 129.5 22.125\n"
-			+ "lineTo 129.5 18.125\n"
-			+ "lineTo 80.5 18.125\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 123.5 12.125\n"
-			+ "lineTo 123.5 16.125\n"
-			+ "lineTo 129.5 16.125\n"
-			+ "lineTo 129.5 12.125\n"
-			+ "lineTo 123.5 12.125\n"
-			+ "closePath"
-			, beams(TGVoice.DIRECTION_DOWN, 16, 8, 16));
+		assertEquals(voices(
+			path(beam(80.5f, 87.5f, 12.125f, 16.125f)),
+			path(beam(80.5f, 129.5f, 18.125f, 22.125f)),
+			path(beam(123.5f, 129.5f, 12.125f, 16.125f))
+			), beams(TGVoice.DIRECTION_DOWN, 16, 8, 16));
 	}
 
 	@Test
 	public void stubsAndBeamsScaleAndFollowTheBeatsSpreadOverAWiderMeasure() {
+		harness.quarterNotes(0);
+		start = LayoutHarness.QUARTER;
 		harness.scale = 2f;
 		measureSpacing = 40f;
 
-		assertEquals(""
-			+ "initPath 2\n"
-			+ "moveTo 161.0 24.25\n"
-			+ "lineTo 161.0 32.25\n"
-			+ "lineTo 175.0 32.25\n"
-			+ "lineTo 175.0 24.25\n"
-			+ "lineTo 161.0 24.25\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 161.0 36.25\n"
-			+ "lineTo 161.0 44.25\n"
-			+ "lineTo 266.5 44.25\n"
-			+ "lineTo 266.5 36.25\n"
-			+ "lineTo 161.0 36.25\n"
-			+ "closePath\n"
-			+ "--\n"
-			+ "initPath 2\n"
-			+ "moveTo 254.5 24.25\n"
-			+ "lineTo 254.5 32.25\n"
-			+ "lineTo 266.5 32.25\n"
-			+ "lineTo 266.5 24.25\n"
-			+ "lineTo 254.5 24.25\n"
-			+ "closePath"
-			, beams(TGVoice.DIRECTION_DOWN, 16, 8, 16));
+		assertEquals(voices(
+			path(beam(299f, 313f, 24.25f, 32.25f)),
+			path(beam(299f, 404.5f, 36.25f, 44.25f)),
+			path(beam(392.5f, 404.5f, 24.25f, 32.25f))
+			), beams(TGVoice.DIRECTION_DOWN, 16, 8, 16));
 	}
 
-	// ---- helpers ----
+	// ---- expected drawings ----
+
+	private static String voices(String... drawn) {
+		return String.join("\n--\n", drawn);
+	}
+
+	// one filled path holding the given beams
+	private static String path(String... beams) {
+		return "initPath 2\n" + String.join("\n", beams) + "\nclosePath";
+	}
+
+	// the outline of a flat beam from x1 to x2, between the top and bottom y
+	private static String beam(float x1, float x2, float top, float bottom) {
+		return "moveTo " + x1 + " " + top + "\n"
+			+ "lineTo " + x1 + " " + bottom + "\n"
+			+ "lineTo " + x2 + " " + bottom + "\n"
+			+ "lineTo " + x2 + " " + top + "\n"
+			+ "lineTo " + x1 + " " + top;
+	}
+
+	// ---- painting ----
 
 	// lays out notes of the given values from the start offset, stems in the given direction, then what each one
 	// draws after its stem
@@ -232,7 +140,7 @@ public class TestScoreBeamPainting {
 		for (TGVoiceImpl voice : voices) {
 			beams.add(afterStem(layout, voice));
 		}
-		return String.join("\n--\n", beams);
+		return voices(beams.toArray(new String[0]));
 	}
 
 	// the voice paints its score beat: the footer style (2 calls) and the stem (8 calls), then its beams
