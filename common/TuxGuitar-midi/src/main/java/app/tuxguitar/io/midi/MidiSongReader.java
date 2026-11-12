@@ -177,34 +177,46 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 	private void parseMessage(int trackIdx,int trackNumber,long tick,MidiMessage message){
 		long parsedTick = parseTick(tick + this.resolution);
+		if(message.getType() == MidiMessage.TYPE_SHORT){
+			parseShortMessage(trackNumber, parsedTick, message);
+		}
+		else if(message.getType() == MidiMessage.TYPE_META){
+			parseMetaMessage(trackIdx, trackNumber, parsedTick, message);
+		}
+	}
 
-		//NOTE ON
-		if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.NOTE_ON){
-			parseNoteOn(trackNumber,parsedTick,message.getData());
+	private void parseShortMessage(int trackNumber, long tick, MidiMessage message){
+		switch(message.getCommand()){
+			case MidiMessage.NOTE_ON:
+				parseNoteOn(trackNumber, tick, message.getData());
+				break;
+			case MidiMessage.NOTE_OFF:
+				parseNoteOff(trackNumber, tick, message.getData());
+				break;
+			case MidiMessage.PROGRAM_CHANGE:
+				parseProgramChange(message.getData());
+				break;
+			case MidiMessage.CONTROL_CHANGE:
+				parseControlChange(message.getData());
+				break;
+			default:
+				break;
 		}
-		//NOTE OFF
-		else if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.NOTE_OFF){
-			parseNoteOff(trackNumber,parsedTick,message.getData());
-		}
-		//PROGRAM CHANGE
-		else if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.PROGRAM_CHANGE){
-			parseProgramChange(message.getData());
-		}
-		//CONTROL CHANGE
-		else if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.CONTROL_CHANGE){
-			parseControlChange(message.getData());
-		}
-		//TRACK NAME
-		else if(message.getType() == MidiMessage.TYPE_META && message.getCommand() == MidiMessage.TRACK_NAME){
-			parseTrackName(trackIdx, trackNumber, message.getData());
-		}
-		//TIME SIGNATURE
-		else if(message.getType() == MidiMessage.TYPE_META && message.getCommand() == MidiMessage.TIME_SIGNATURE_CHANGE){
-			parseTimeSignature(parsedTick,message.getData());
-		}
-		//TEMPO
-		else if(message.getType() == MidiMessage.TYPE_META && message.getCommand() == MidiMessage.TEMPO_CHANGE){
-			parseTempo(parsedTick,message.getData());
+	}
+
+	private void parseMetaMessage(int trackIdx, int trackNumber, long tick, MidiMessage message){
+		switch(message.getCommand()){
+			case MidiMessage.TRACK_NAME:
+				parseTrackName(trackIdx, trackNumber, message.getData());
+				break;
+			case MidiMessage.TIME_SIGNATURE_CHANGE:
+				parseTimeSignature(tick, message.getData());
+				break;
+			case MidiMessage.TEMPO_CHANGE:
+				parseTempo(tick, message.getData());
+				break;
+			default:
+				break;
 		}
 	}
 
