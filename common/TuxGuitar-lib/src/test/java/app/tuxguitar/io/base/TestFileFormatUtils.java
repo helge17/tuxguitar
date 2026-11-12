@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestFactory;
 /**
  * Pins TGFileFormatUtils.isSupportedFormat: a file name is supported when the text after its last "." is a format
  * code of any of the formats, ignoring case. A missing name, a name without an extension, or an empty extension
- * is never supported.
+ * is never supported. Also pins getDefaultExtension.
  */
 public class TestFileFormatUtils {
 
@@ -41,5 +41,13 @@ public class TestFileFormatUtils {
 	@Test
 	public void nothingIsSupportedWithoutFormats() {
 		assertFalse(TGFileFormatUtils.isSupportedFormat(List.of(), "song.tg"));
+	}
+
+	// the default extension of a format is its first format code, else the given default (".tg" when none is given)
+	@Test
+	public void theDefaultExtensionIsTheFirstFormatCode() {
+		assertEquals(".gp4", TGFileFormatUtils.getDefaultExtension(FORMATS.get(1)));
+		assertEquals(".mid", TGFileFormatUtils.getDefaultExtension(new TGFileFormat("Codeless", "audio/x-none", new String[0]), ".mid"));
+		assertEquals(".tg", TGFileFormatUtils.getDefaultExtension(new TGFileFormat("Codeless", "audio/x-none", null)));
 	}
 }
