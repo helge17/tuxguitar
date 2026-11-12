@@ -13,18 +13,14 @@ public class TGSynthSettings {
 	private static final Integer REMOTE_HOST_DEFAULT_SERVER_PORT_VALUE = 60982;
 	private static final String REMOTE_HOST_DEFAULT_SERVER_PORT = "synth.host.default.server.port";
 
-	private TGContext context;
-	private TGConfigManager config;
+	private TGLazyConfig config;
 
 	public TGSynthSettings(TGContext context){
-		this.context = context;
+		this.config = new TGLazyConfig(context, "tuxguitar-synth");
 	}
 
 	public TGConfigManager getConfig(){
-		if( this.config == null ){
-			this.config = new TGConfigManager(this.context, "tuxguitar-synth");
-		}
-		return this.config;
+		return this.config.get();
 	}
 
 	public void save(){

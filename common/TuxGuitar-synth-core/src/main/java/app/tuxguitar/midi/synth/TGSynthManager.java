@@ -39,18 +39,16 @@ public class TGSynthManager {
 	}
 
 	public TGMidiProcessorFactory findMidiProcessorFactory(String type) {
-		List<TGMidiProcessorFactory> factories = this.getExtensions(TGMidiProcessorFactory.class);
-		for(TGMidiProcessorFactory factory : factories) {
-			if( factory.getType().equals(type) ){
-				return factory;
-			}
-		}
-		return null;
+		return find(this.getExtensions(TGMidiProcessorFactory.class), type);
 	}
 
 	public TGAudioProcessorFactory findAudioProcessorFactory(String type) {
-		List<TGAudioProcessorFactory> factories = this.getExtensions(TGAudioProcessorFactory.class);
-		for(TGAudioProcessorFactory factory : factories) {
+		return find(this.getExtensions(TGAudioProcessorFactory.class), type);
+	}
+
+	// the first factory of the type, or null
+	private static <T extends TGAbstractProcessorFactory<?>> T find(List<T> factories, String type) {
+		for(T factory : factories) {
 			if( factory.getType().equals(type) ){
 				return factory;
 			}

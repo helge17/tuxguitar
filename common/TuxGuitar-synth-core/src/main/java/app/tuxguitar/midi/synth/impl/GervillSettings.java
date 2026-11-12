@@ -1,5 +1,6 @@
 package app.tuxguitar.midi.synth.impl;
 
+import app.tuxguitar.midi.synth.TGLazyConfig;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.configuration.TGConfigManager;
 
@@ -8,18 +9,14 @@ public class GervillSettings {
 	public static final String GERVILL_SOUNDBANK_PATH = "tuxguitar-synth-gervill.soundbank.path";
 	public static final String GERVILL_SOUNDBANK_FOLDER = "tuxguitar-synth-gervill.soundbank.folder";
 
-	private TGContext context;
-	private TGConfigManager config;
+	private TGLazyConfig config;
 
 	public GervillSettings(TGContext context){
-		this.context = context;
+		this.config = new TGLazyConfig(context, "tuxguitar-synth-gervill");
 	}
 
 	public TGConfigManager getConfig(){
-		if( this.config == null ){
-			this.config = new TGConfigManager(this.context, "tuxguitar-synth-gervill");
-		}
-		return this.config;
+		return this.config.get();
 	}
 
 	public void save(){

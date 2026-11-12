@@ -131,6 +131,16 @@ public class TestAudioBuffer {
 	}
 
 	@Test
+	public void balanceWithMoreVolumesThanSidesLeavesTheRestOut() {
+		TGAudioBuffer buffer = level(0.5f, 0.5f);
+		buffer.balance(new float[] {0.5f, 0.5f, 0f});
+		float[] frame = firstFrame(buffer);
+		assertEquals(8191 * STEP, frame[0], STEP);
+		assertEquals(8191 * STEP, frame[1], STEP);
+		assertEquals(8191 * STEP, frame[2], STEP);
+	}
+
+	@Test
 	public void readingIntoOneSideKeepsTheRightSide() {
 		float[][] mono = new float[1][FakeProcessors.FRAMES];
 		level(0.5f, 0.25f).read(mono);

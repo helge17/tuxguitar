@@ -67,12 +67,17 @@ public class TestGervillProcessor {
 	}
 
 	private GervillProcessor loaded(String program, String channelMode) throws InterruptedException {
+		return loaded(program, channelMode, null);
+	}
+
+	private GervillProcessor loaded(String program, String channelMode, String soundbank) throws InterruptedException {
 		GervillProcessor processor = (GervillProcessor) new GervillProcessorFactory(this.context).createProcessor();
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("gervil.program", program);
 		if (channelMode != null) {
 			parameters.put("gervil.channel.mode", channelMode);
 		}
+		parameters.put("gervil.soundbank.path", soundbank);
 		processor.restoreParameters(parameters);
 		long deadline = System.currentTimeMillis() + 30000;
 		while (processor.isBusy() && System.currentTimeMillis() < deadline) {
@@ -152,6 +157,14 @@ public class TestGervillProcessor {
 	}
 
 	@Test
+	public void aControlChangeReachesTheSynthesizer() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendControlChange(7, 0);
+		processor.sendNoteOn(69, 127, 0, false);
+		assertEquals(0, peak(render(processor, 8)), 0.0001);
+	}
+
+	@Test
 	public void aPitchBendRaisesTheNote() throws InterruptedException {
 		GervillProcessor processor = loaded("0:80", null);
 		processor.sendPitchBend(127, 0, false);
@@ -194,6 +207,65 @@ public class TestGervillProcessor {
 		assertEquals(8, voice.resolveChannel(8, false));
 		assertEquals(10, voice.resolveChannel(9, false));
 		assertEquals(10, voice.resolveChannel(-1, false));
+	}
+
+	// each channel mode opens as many of Gervill's channels as it sends notes to
+	@Test
+	public void everyChannelModeSoundsItsNotes() throws InterruptedException {
+		GervillProcessor single = loaded("0:80", "1");
+		single.sendNoteOn(69, 127, 3, true);
+		assertTrue(peak(render(single, 8)) > 0.05);
+		GervillProcessor bend = loaded("0:80", "2");
+		bend.sendNoteOn(69, 127, 3, true);
+		assertTrue(peak(render(bend, 8)) > 0.05);
+		GervillProcessor voice = loaded("0:80", "3");
+		voice.sendNoteOn(69, 127, 8, false);
+		voice.sendNoteOn(72, 127, 9, false);
+		assertTrue(peak(render(voice, 8)) > 0.05);
+	}
+
+	@Test
+	public void anEmptySoundbankPathPlaysTheDefaultSoundbank() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null, "");
+		processor.sendNoteOn(69, 127, 0, false);
+		assertTrue(peak(render(processor, 8)) > 0.05);
+	}
+
+	@Test
+	public void aShortSoundbankPathThatIsNoFileLeavesTheProgramSilent() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null, "x");
+		processor.sendNoteOn(69, 127, 0, false);
+		assertEquals(0, peak(render(processor, 4)), 0);
+	}
+
+	@Test
+	public void aProgramPlaysFromTheSoundbankFileItNames() throws Exception {
+		java.io.File file = java.io.File.createTempFile("soundbank", ".sf2");
+		file.deleteOnExit();
+		media.sound.EmergencySoundbank.createSoundbank().save(file);
+		GervillProcessor processor = loaded("0:80", null, file.getAbsolutePath());
+		processor.sendNoteOn(69, 127, 0, false);
+		render(processor, 4);
+		assertEquals(440, strongestFrequency(render(processor, 8)), 9);
+	}
+
+	@Test
+	public void theDefaultSoundbankIsTheOneOfTheSettingsOrElseTheEmergencySoundbank() throws Exception {
+		java.io.File file = java.io.File.createTempFile("soundbank", ".sf2");
+		file.deleteOnExit();
+		media.sound.SF2Soundbank saved = media.sound.EmergencySoundbank.createSoundbank();
+		saved.setName("from the settings");
+		saved.save(file);
+		GervillSoundbankFactory factory = new GervillSoundbankFactory();
+		assertEquals("from the settings", factory.createDefaultSoundbank(withSoundbank(file.getAbsolutePath())).getName());
+		assertNotEquals("from the settings", factory.createDefaultSoundbank(withSoundbank(null)).getName());
+		assertNotEquals("from the settings", factory.createDefaultSoundbank(withSoundbank("no-such-soundbank.sf2")).getName());
+	}
+
+	private static TGContext withSoundbank(String soundbankPath) {
+		TestGervillProcessor test = new TestGervillProcessor();
+		test.config.put(GervillSettings.GERVILL_SOUNDBANK_PATH, soundbankPath);
+		return test.context;
 	}
 
 	@Test

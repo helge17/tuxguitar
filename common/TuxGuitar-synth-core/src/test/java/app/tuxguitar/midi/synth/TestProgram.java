@@ -34,6 +34,9 @@ public class TestProgram {
 		TGProgram program = program("source", "a", "b", "c");
 		program.moveOutputUp(program.getOutput(2));
 		assertEquals("source > a > c > b", read(program));
+		program.moveOutputUp(program.getOutput(1));
+		assertEquals("source > c > a > b", read(program));
+		program.moveOutputDown(program.getOutput(0));
 		program.moveOutputUp(program.getOutput(0));
 		assertEquals("source > a > c > b", read(program));
 		program.moveOutputDown(program.getOutput(0));
@@ -132,6 +135,7 @@ public class TestProgram {
 		properties.setValue("x.id", "source");
 		properties.setValue("x.type", "source");
 		properties.setValue("x.output.count", "2");
+		properties.setValue("x.output.0.id", "no type");
 		properties.setValue("x.output.1.id", "b");
 		properties.setValue("x.output.1.type", "b");
 		properties.setValue("x.param.count", "1");
@@ -140,5 +144,21 @@ public class TestProgram {
 		assertEquals("source > b", read(read));
 		assertTrue(read.getReceiver().getParameters().isEmpty());
 		assertTrue(read.getReceiver().isEnabled());
+	}
+
+	@Test
+	public void channelPropertiesTakeJavaPropertiesAsText() {
+		TGSynthChannelProperties properties = new TGSynthChannelProperties();
+		properties.setValue("kept", "1");
+		properties.setValue("gone", "2");
+		properties.remove("gone");
+		java.util.Properties update = new java.util.Properties();
+		update.put("a", Integer.valueOf(3));
+		properties.update(update);
+		assertEquals("{a=3, kept=1}", new TreeMap<String, String>(properties.getProperties()).toString());
+		assertEquals("3", properties.getValue("a"));
+		assertEquals("[a, kept]", new java.util.TreeSet<String>(properties.getStringKeys()).toString());
+		properties.clear();
+		assertTrue(properties.getProperties().isEmpty());
 	}
 }

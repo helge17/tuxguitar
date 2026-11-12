@@ -22,42 +22,32 @@ public class TGProgram {
 	}
 
 	public void addOutput(TGProgramElement output){
-		if( output != null ){
-			this.outputs.add(output);
-		}
+		TGSynthLists.addPresent(this.outputs, output);
 	}
 
+	// the element given, or one with its id; null or an element not there changes nothing
 	public void removeOutput(TGProgramElement output){
-		if( output != null && this.outputs.contains(output)){
-			this.outputs.remove(output);
-		}
+		this.outputs.remove(output);
 	}
 
 	public void moveOutputUp(TGProgramElement output){
-		if( output != null ) {
-			int index = this.outputs.indexOf(output);
-			if( index >= 1 && index < this.outputs.size() ){
-				this.outputs.remove(output);
-				this.outputs.add(index - 1, output);
-			}
+		int index = this.outputs.indexOf(output);
+		if( index >= 1 ){
+			this.outputs.remove(output);
+			this.outputs.add(index - 1, output);
 		}
 	}
 
 	public void moveOutputDown(TGProgramElement output){
-		if( output != null ) {
-			int index = this.outputs.indexOf(output);
-			if( index >= 0 && index < (this.outputs.size() - 1)){
-				this.outputs.remove(output);
-				this.outputs.add(index + 1, output);
-			}
+		int index = this.outputs.indexOf(output);
+		if( index >= 0 && index < (this.outputs.size() - 1)){
+			this.outputs.remove(output);
+			this.outputs.add(index + 1, output);
 		}
 	}
 
 	public TGProgramElement getOutput(int index){
-		if( index >= 0 && index < this.outputs.size() ){
-			return this.outputs.get(index);
-		}
-		return null;
+		return TGSynthLists.get(this.outputs, index);
 	}
 
 	public int countOutputs(){

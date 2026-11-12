@@ -7,6 +7,7 @@ public class TGAudioBuffer {
 	public static final int CHANNELS = 2;
 	public static final int BUFFER_SIZE = 1024;
 	public static final float SAMPLE_RATE = 44100f;
+	// the samples are little-endian
 	public static final boolean BIGENDIAN = false;
 	// the format of the samples in a buffer: what the audio line plays and what Gervill renders
 	public static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, 16, CHANNELS, true, BIGENDIAN);
@@ -46,27 +47,17 @@ public class TGAudioBuffer {
 	}
 
 	public void write(float[][] sample) {
-		int index = 0;
-		short sampleValue = 0;
 		for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 			for (int j = 0; j < CHANNELS; j++) {
-				sampleValue = (short) (sample[(j % sample.length)][i] * Short.MAX_VALUE);
-				this.buffer[index++] = (byte) (BIGENDIAN ? ((sampleValue & 0xFF00) >> 8) : ((sampleValue & 0x00FF) >> 0) ) ;
-				this.buffer[index++] = (byte) (BIGENDIAN ? ((sampleValue & 0x00FF) >> 0) : ((sampleValue & 0xFF00) >> 8) ) ;
+				this.setSample(i, j, (short) (sample[(j % sample.length)][i] * Short.MAX_VALUE));
 			}
 		}
 	}
 
 	public void read(float[][] bufferToFill) {
-		int index = 0;
-		short bufferValue = 0;
 		for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 			for(int j = 0; j < CHANNELS; j++) {
-				bufferValue = 0;
-				for( int n = 0; n < 2; n ++){
-					bufferValue |= ((this.buffer[index++] & 0xff ) << ( 8 * ( BIGENDIAN ? 1 - n : n )));
-				}
-				bufferToFill[(j % bufferToFill.length)][i] = ((float) bufferValue / (float) Short.MAX_VALUE);
+				bufferToFill[(j % bufferToFill.length)][i] = ((float) this.getSample(i, j) / (float) Short.MAX_VALUE);
 			}
 		}
 	}
@@ -79,28 +70,13 @@ public class TGAudioBuffer {
 		if( this.buffer.length == sample.length ) {
 			this.buffers ++;
 
-			int index = 0;
-			short s1Value = 0;
-			short s2Value = 0;
-			short mixedValue = 0;
 			float mixAmp = (1f / this.buffers);
 
 			for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 				for (int j = 0; j < CHANNELS; j++) {
-					s1Value = 0;
-					s2Value = 0;
-					for( int n = 0; n < 2; n ++){
-						s1Value |= ((this.buffer[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
-						s2Value |= ((sample[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
-					}
-
-					float f1 = (((float) s1Value / Short.MAX_VALUE) * (1f - mixAmp));
-					float f2 = (((float) s2Value / Short.MAX_VALUE) * mixAmp);
-
-					mixedValue = (short) ((f1 + f2) * Short.MAX_VALUE);
-
-					this.buffer[index++] = (byte) ((BIGENDIAN ? ((mixedValue & 0xFF00) >> 8) : ((mixedValue & 0x00FF) >> 0) ) & 0xFF);
-					this.buffer[index++] = (byte) ((BIGENDIAN ? ((mixedValue & 0x00FF) >> 0) : ((mixedValue & 0xFF00) >> 8) ) & 0xFF);
+					float f1 = (((float) this.getSample(i, j) / Short.MAX_VALUE) * (1f - mixAmp));
+					float f2 = (((float) sampleAt(sample, index(i, j)) / Short.MAX_VALUE) * mixAmp);
+					this.setSample(i, j, (short) ((f1 + f2) * Short.MAX_VALUE));
 				}
 			}
 		}
@@ -108,44 +84,48 @@ public class TGAudioBuffer {
 
 	public void clip() {
 		if( this.buffers > 1 ) {
-			int index = 0;
-
-			short sampleValue = 0;
-			short ampValue = 0;
-			short maxValue = Short.MAX_VALUE;
-			short minValue = Short.MIN_VALUE;
-
 			for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 				for (int j = 0; j < CHANNELS; j++) {
-					sampleValue = 0;
-					for( int n = 0; n < 2; n ++){
-						sampleValue |= ((this.buffer[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
-					}
-					ampValue = (short) (Math.max(Math.min(sampleValue * this.buffers, maxValue), minValue) & 0xFFFF);
-
-					this.buffer[index++] = (byte) ((BIGENDIAN ? ((ampValue & 0xFF00) >> 8) : ((ampValue & 0x00FF) >> 0) ) & 0xFF);
-					this.buffer[index++] = (byte) ((BIGENDIAN ? ((ampValue & 0x00FF) >> 0) : ((ampValue & 0xFF00) >> 8) ) & 0xFF);
+					this.setSample(i, j, (short) Math.max(Math.min(this.getSample(i, j) * this.buffers, Short.MAX_VALUE), Short.MIN_VALUE));
 				}
 			}
 		}
 	}
 
+	// odd, pinned: with fewer volumes than sides, the samples scaled are the first ones of the buffer, one per volume
+	// and frame, whatever their side
 	public void balance(float[] volumes) {
 		int index = 0;
-		short sample = 0;
 		for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 			for(int c = 0; c < CHANNELS; c++) {
 				if( c < volumes.length ) {
-					sample = 0;
-					for( int n = 0; n < 2; n ++){
-						sample |= ((this.buffer[(index + n)] & 0xff) << ( 8 * (BIGENDIAN ? 1 - n : n)));
-					}
-					sample = (short) (Math.round(Math.max(Math.min(sample * volumes[c], Short.MAX_VALUE), Short.MIN_VALUE)) & 0xFFFF);
-
-					this.buffer[index++] = (byte) ((BIGENDIAN ? ((sample & 0xFF00) >> 8) : ((sample & 0x00FF) >> 0) ) & 0xFF);
-					this.buffer[index++] = (byte) ((BIGENDIAN ? ((sample & 0x00FF) >> 0) : ((sample & 0xFF00) >> 8) ) & 0xFF);
+					short sample = sampleAt(this.buffer, index);
+					writeSample(this.buffer, index, (short) Math.round(Math.max(Math.min(sample * volumes[c], Short.MAX_VALUE), Short.MIN_VALUE)));
+					index += 2;
 				}
 			}
 		}
+	}
+
+	// where the sample of the frame and side starts: the samples are 16 bits, little-endian, sides interleaved
+	private static int index(int frame, int side) {
+		return (frame * CHANNELS + side) * 2;
+	}
+
+	private short getSample(int frame, int side) {
+		return sampleAt(this.buffer, index(frame, side));
+	}
+
+	private void setSample(int frame, int side, short value) {
+		writeSample(this.buffer, index(frame, side), value);
+	}
+
+	private static short sampleAt(byte[] bytes, int index) {
+		return (short) ((bytes[index] & 0xff) | ((bytes[index + 1] & 0xff) << 8));
+	}
+
+	private static void writeSample(byte[] bytes, int index, short value) {
+		bytes[index] = (byte) (value & 0xFF);
+		bytes[index + 1] = (byte) ((value >> 8) & 0xFF);
 	}
 }

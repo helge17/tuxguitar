@@ -246,6 +246,14 @@ public class TestSynthChannel {
 	}
 
 	@Test
+	public void withoutACustomProgramTheParametersBringBackProgramZero() throws MidiPlayerException {
+		this.model.getProgram(0, 0).copyFrom(program("source"));
+		this.channel.sendProgramChange(0);
+		sendCustomProgram(null);
+		assertEquals(SOURCE, left(), QUANTUM);
+	}
+
+	@Test
 	public void withoutACustomProgramOrAProgramChangeTheParametersSilenceTheChannel() throws MidiPlayerException {
 		sendCustomProgram("other");
 		sendCustomProgram(null);
@@ -260,6 +268,10 @@ public class TestSynthChannel {
 		this.channel.getProgram().addOutput(FakeProcessors.element("lift", "lift"));
 		this.channel.updateProgram();
 		assertEquals(SOURCE + 0.1f, left(), QUANTUM);
+		this.channel.updateProgram();
+		assertEquals(1, this.source.created.size());
+		assertEquals(1, this.lift.created.size());
+		assertTrue(this.source.last().isOpen());
 	}
 
 	@Test

@@ -171,18 +171,13 @@ public class TGSynthChannelProcessor {
 
 	public void addOutput(TGAudioProcessor effect){
 		synchronized (this.lock) {
-			if( effect != null ){
-				this.outputs.add( effect );
-			}
+			TGSynthLists.addPresent(this.outputs, effect);
 		}
 	}
 
 	public TGAudioProcessor getOutput( int index ){
 		synchronized (this.lock) {
-			if( index >= 0 && index < this.outputs.size() ){
-				return this.outputs.get( index );
-			}
-			return null;
+			return TGSynthLists.get(this.outputs, index);
 		}
 	}
 

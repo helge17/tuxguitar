@@ -73,27 +73,36 @@ public class GervillSoundbankFactory {
 		synchronized (GervillProcessorFactory.class) {
 			if( defaultInstruments == null ) {
 				defaultInstruments = new Instrument[129][128];
-
-				Soundbank soundbank = null;
-				String soundbankPath = new GervillSettings(context).getSoundbankPath();
-				if( soundbankPath != null && soundbankPath.length() > 0 ) {
-					soundbank = this.createSoundbank(context, soundbankPath);
-				}
-				if( soundbank == null ) {
-					soundbank = EmergencySoundbank.createSoundbank();
-				}
-				if( soundbank != null ) {
-					Instrument[] instruments = soundbank.getInstruments();
-					for(Instrument instrument : instruments) {
-						ModelPatch patch = (ModelPatch) instrument.getPatch();
-						if( patch.getProgram() < 128 && patch.getBank() < 128 ) {
-							defaultInstruments[patch.isPercussion() ? 128 : patch.getBank()][patch.getProgram()] = instrument;
-						}
-					}
-				}
+				fillDefaultInstruments(this.createDefaultSoundbank(context));
 			}
 		}
 		return defaultInstruments[program.getBank()][program.getProgram()];
+	}
+
+	// the soundbank of the settings, or Gervill's emergency soundbank when there is none or it cannot be read
+	Soundbank createDefaultSoundbank(TGContext context) throws Exception {
+		Soundbank soundbank = null;
+		String soundbankPath = new GervillSettings(context).getSoundbankPath();
+		if( soundbankPath != null && soundbankPath.length() > 0 ) {
+			soundbank = this.createSoundbank(context, soundbankPath);
+		}
+		if( soundbank == null ) {
+			soundbank = EmergencySoundbank.createSoundbank();
+		}
+		return soundbank;
+	}
+
+	// percussion goes to bank 128
+	private static void fillDefaultInstruments(Soundbank soundbank) {
+		if( soundbank != null ) {
+			Instrument[] instruments = soundbank.getInstruments();
+			for(Instrument instrument : instruments) {
+				ModelPatch patch = (ModelPatch) instrument.getPatch();
+				if( patch.getProgram() < 128 && patch.getBank() < 128 ) {
+					defaultInstruments[patch.isPercussion() ? 128 : patch.getBank()][patch.getProgram()] = instrument;
+				}
+			}
+		}
 	}
 
 	private Soundbank createSoundbank(TGContext context, String soundbankPath) {

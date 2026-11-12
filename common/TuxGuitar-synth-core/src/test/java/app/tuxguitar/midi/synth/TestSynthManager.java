@@ -115,8 +115,10 @@ public class TestSynthManager {
 	@Test
 	public void theSettingsLoadTheProgramsTheyKeep() {
 		TGSynthModel model = new TGSynthModel(this.context);
-		settings("synth.program.128.3.id", "drums", "synth.program.128.3.type", "source", "synth.audio.buffer.size", "4").loadPrograms(model);
+		settings("synth.program.128.3.id", "drums", "synth.program.128.3.type", "source", "synth.program.0.0.id", "piano",
+			"synth.program.0.0.type", "source", "synth.audio.buffer.size", "4").loadPrograms(model);
 		assertEquals("drums", model.getProgram(128, 3).getReceiver().getId());
+		assertEquals("piano", model.getProgram(0, 0).getReceiver().getId());
 		assertNull(model.getProgram(0, 3).getReceiver());
 	}
 
