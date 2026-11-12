@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import app.tuxguitar.audio.TGPunchRange;
 import app.tuxguitar.audio.action.TGArmTrackAction;
@@ -59,53 +60,29 @@ public class RecordingSteps {
 		assertFalse(world.session().isArmed(world.track(number)));
 	}
 
-	@When("I record from {position} to {position}")
-	public void recordTo(SongPosition from, SongPosition to) {
-		record(from, to.tick(world.song()), 1);
+	@ParameterType(RecordingStop.PATTERN)
+	public RecordingStop stop(String to, String passes, String inTheSecondPass) {
+		return RecordingStop.of(to, passes, inTheSecondPass);
 	}
 
-	@Given("I have recorded from {position} to {position}")
-	public void haveRecordedTo(SongPosition from, SongPosition to) {
-		recordTo(from, to);
-		assertTrue(world.succeeded());
-	}
-
-	@When("I record from {position} until the song ends")
-	public void recordUntilTheSongEnds(SongPosition from) {
-		record(from, Long.MAX_VALUE, 1);
-	}
-
-	@When("I record from {position} for {int} passes")
-	public void recordPasses(SongPosition from, int passes) {
-		record(from, Long.MAX_VALUE, passes);
-	}
-
-	@Given("I have recorded from {position} for {int} passes")
-	public void haveRecordedPasses(SongPosition from, int passes) {
-		recordPasses(from, passes);
-		assertTrue(world.succeeded());
-	}
-
-	@When("I record from {position} and stop at {position} of the second pass")
-	public void recordAndStopInTheSecondPass(SongPosition from, SongPosition stop) {
-		record(from, stop.tick(world.song()), 2);
-	}
-
-	@When("I record from {position} and do not stop it")
-	public void recordAndDoNotStop(SongPosition from) {
-		record(from, Long.MAX_VALUE, 1);
-	}
-
-	private void record(SongPosition from, long stop, int passes) {
+	@When("I record from {position} {stop}")
+	public void record(SongPosition from, RecordingStop stop) {
 		historyBeforeRecording = world.undoHistory();
-		world.playAlong(from.tick(world.song()), stop, passes);
-		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_START, from.tick(world.song()));
-		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_STOP, stop);
-		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_PASSES, passes);
+		long start = from.tick(world.song());
+		world.playAlong(start, stop.tick(world.song()), stop.passes());
+		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_START, start);
+		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_STOP, stop.tick(world.song()));
+		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_PASSES, stop.passes());
 		world.executeUndoable(new TGRecordAction(world.fixture().context), new TGUndoableRecordingController());
 		for (int number = 1; number <= world.song().countTracks(); number++) {
 			world.rememberTakes(number);
 		}
+	}
+
+	@Given("I have recorded from {position} {stop}")
+	public void haveRecorded(SongPosition from, RecordingStop stop) {
+		record(from, stop);
+		assertTrue(world.succeeded());
 	}
 
 	// a recording from the position, with no stop, left under way: the device holds its first capture until the scenario
@@ -116,7 +93,7 @@ public class RecordingSteps {
 		world.playAlong(from.tick(world.song()), Long.MAX_VALUE, 1);
 		recording = world.executeInBackground(new TGRecordAction(world.fixture().context), new TGUndoableRecordingController(),
 			Map.<String, Object>of(TGRecordAction.ATTRIBUTE_START, from.tick(world.song()), TGRecordAction.ATTRIBUTE_STOP, Long.MAX_VALUE, TGRecordAction.ATTRIBUTE_PASSES, 1));
-		assertTrue(world.device().awaitWaiting(), "the recording reached the device");
+		assertTrue(world.device().awaitWaiting(recording), "the recording reached the device");
 		assertTrue(world.session().isRecording());
 	}
 
@@ -124,7 +101,7 @@ public class RecordingSteps {
 	public void stopTheRecording() throws InterruptedException {
 		world.device().release();
 		if (recording != null) {
-			recording.join(60000);
+			recording.join(TimeUnit.SECONDS.toMillis(TestInterface.WAIT_SECONDS));
 		}
 	}
 

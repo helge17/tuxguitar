@@ -23,6 +23,8 @@ import app.tuxguitar.audio.TGTimeline;
 final class TestInterface implements TGAudioDevice {
 
 	static final int SAMPLE_RATE = 44100;
+	// the longest a held recording waits for the scenario, and the scenario for it: the steps take milliseconds
+	static final int WAIT_SECONDS = 5;
 
 	private final Map<Integer, LongToDoubleFunction> inputs = new HashMap<Integer, LongToDoubleFunction>();
 	private final Set<Long> beats = new HashSet<Long>();
@@ -80,9 +82,16 @@ final class TestInterface implements TGAudioDevice {
 		this.release.set(new CountDownLatch(1));
 	}
 
-	// waits until a capture is waiting
-	boolean awaitWaiting() throws InterruptedException {
-		return this.waiting.await(60, TimeUnit.SECONDS);
+	// waits until a capture is waiting, or the recording has ended without one: a recording reaches the device in
+	// milliseconds, so the wait gives up after a few seconds
+	boolean awaitWaiting(Thread recording) throws InterruptedException {
+		long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(WAIT_SECONDS);
+		while (recording.isAlive() && System.nanoTime() < deadline) {
+			if (this.waiting.await(10, TimeUnit.MILLISECONDS)) {
+				return true;
+			}
+		}
+		return (this.waiting.getCount() == 0);
 	}
 
 	void release() {
@@ -97,7 +106,7 @@ final class TestInterface implements TGAudioDevice {
 		if (held != null) {
 			this.waiting.countDown();
 			try {
-				held.await(60, TimeUnit.SECONDS);
+				held.await(WAIT_SECONDS, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
