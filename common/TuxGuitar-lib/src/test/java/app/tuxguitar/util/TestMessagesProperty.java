@@ -1,6 +1,7 @@
 package app.tuxguitar.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Locale;
 import java.util.Properties;
@@ -90,5 +91,21 @@ public class TestMessagesProperty {
 		};
 
 		assertEquals(WELCOME, TGMessagesManager.getProperty("welcome", new Object[] {"Ann", noText}));
+	}
+
+	// instruments are the messages midi.instrument-0, -1, ... up to the first one missing
+	@Test
+	public void instrumentsAreReadByIndexUpToTheFirstMissingOne() {
+		Properties properties = new Properties();
+		properties.setProperty("midi.instrument-0", "Piano");
+		properties.setProperty("midi.instrument-1", "Organ");
+		properties.setProperty("midi.instrument-3", "Unreachable");
+		TGMessagesManager.getInstance().setResources(new TGResourceBundle(Locale.ROOT, properties));
+
+		assertEquals("Piano", TGMessagesManager.getMidiInstrument(0).getName());
+		assertEquals("Organ", TGMessagesManager.getMidiInstrument(1).getName());
+		assertNull(TGMessagesManager.getMidiInstrument(2));
+		assertNull(TGMessagesManager.getMidiInstrument(-1));
+		assertEquals(2, TGMessagesManager.getMidiInstrumentsNumber());
 	}
 }

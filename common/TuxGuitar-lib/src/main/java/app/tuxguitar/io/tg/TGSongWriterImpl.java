@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,6 +31,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
@@ -40,6 +42,7 @@ import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
 import app.tuxguitar.song.models.TGStroke;
+import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend.BendPoint;
@@ -152,37 +155,11 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		Node node = this.addNode(nodeMeasureHeader, TAG_TIME_SIGNATURE);
 		this.addAttributeInt(node, TAG_NUMERATOR ,header.getTimeSignature().getNumerator());
 		this.addAttributeInt(node, TAG_DENOMINATOR ,header.getTimeSignature().getDenominator().getValue());
-		Node nodeTempo = this.addNodeInt(nodeMeasureHeader, TAG_TEMPO, header.getTempo().getRawValue());
-		if (header.getTempo().getBase() != TGDuration.QUARTER) {
-			this.addAttributeInt(nodeTempo, TAG_TEMPO_BASE, header.getTempo().getBase());
-		}
-		if (header.getTempo().isDotted()) {
-			this.addAttribute(nodeTempo, TAG_TEMPO_DOTTED, "true");
-		}
-		if (header.isRepeatOpen()) {
-			this.addNode(nodeMeasureHeader, TAG_REPEAT_OPEN);
-		}
-		if (header.getRepeatClose() != 0) {
-			this.addNodeInt(nodeMeasureHeader, TAG_REPEAT_CLOSE, header.getRepeatClose());
-		}
-		if (header.getRepeatAlternative() != 0) {
-			node = this.addNode(nodeMeasureHeader, TAG_REPEAT_ALTERNATIVE);
-			// bit map
-			int flag = header.getRepeatAlternative();
-			int alternative = 1;
-			while (flag != 0) {
-				if ((flag & 0x01) != 0) {
-					this.addNodeInt(node, TAG_ALTERNATIVE, alternative);
-				}
-				flag >>= 1;
-				alternative ++;
-			}
-		}
+		this.writeTempo(header.getTempo(), nodeMeasureHeader);
+		this.writeRepeats(header, nodeMeasureHeader);
 		if (header.hasMarker()) {
 			Node nodeMarker = this.addNode(nodeMeasureHeader, TAG_MARKER, header.getMarker().getTitle());
-			this.addAttributeInt(nodeMarker, TAG_COLOR_R, header.getMarker().getColor().getR());
-			this.addAttributeInt(nodeMarker, TAG_COLOR_G, header.getMarker().getColor().getG());
-			this.addAttributeInt(nodeMarker, TAG_COLOR_B, header.getMarker().getColor().getB());
+			this.writeColor(header.getMarker().getColor(), nodeMarker);
 		}
 		if (header.getTripletFeel() != TGMeasureHeader.TRIPLET_FEEL_NONE) {
 			this.addNode(nodeMeasureHeader, TAG_TRIPLET_FEEL, this.tripletsWriteMap.get(header.getTripletFeel()));
@@ -190,6 +167,47 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (header.isLineBreak()) {
 			this.addNode(nodeMeasureHeader, TAG_LINE_BREAK);
 		}
+	}
+
+	private void writeTempo(TGTempo tempo, Node nodeMeasureHeader) {
+		Node nodeTempo = this.addNodeInt(nodeMeasureHeader, TAG_TEMPO, tempo.getRawValue());
+		if (tempo.getBase() != TGDuration.QUARTER) {
+			this.addAttributeInt(nodeTempo, TAG_TEMPO_BASE, tempo.getBase());
+		}
+		if (tempo.isDotted()) {
+			this.addAttribute(nodeTempo, TAG_TEMPO_DOTTED, "true");
+		}
+	}
+
+	private void writeRepeats(TGMeasureHeader header, Node nodeMeasureHeader) {
+		if (header.isRepeatOpen()) {
+			this.addNode(nodeMeasureHeader, TAG_REPEAT_OPEN);
+		}
+		if (header.getRepeatClose() != 0) {
+			this.addNodeInt(nodeMeasureHeader, TAG_REPEAT_CLOSE, header.getRepeatClose());
+		}
+		if (header.getRepeatAlternative() != 0) {
+			this.writeRepeatAlternatives(header.getRepeatAlternative(), this.addNode(nodeMeasureHeader, TAG_REPEAT_ALTERNATIVE));
+		}
+	}
+
+	// bit map: one alternative for each bit set, 1 for the lowest bit
+	private void writeRepeatAlternatives(int repeatAlternative, Node node) {
+		int flag = repeatAlternative;
+		int alternative = 1;
+		while (flag != 0) {
+			if ((flag & 0x01) != 0) {
+				this.addNodeInt(node, TAG_ALTERNATIVE, alternative);
+			}
+			flag >>= 1;
+			alternative ++;
+		}
+	}
+
+	private void writeColor(TGColor color, Node node) {
+		this.addAttributeInt(node, TAG_COLOR_R, color.getR());
+		this.addAttributeInt(node, TAG_COLOR_G, color.getG());
+		this.addAttributeInt(node, TAG_COLOR_B, color.getB());
 	}
 
 	private void writeTrack(TGTrack track, Node nodeTrack) {
@@ -206,10 +224,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if (track.getOffset() != 0) {
 			this.addNodeInt(nodeTrack, TAG_OFFSET, track.getOffset());
 		}
-		Node nodeColor = this.addNode(nodeTrack, TAG_COLOR);
-		this.addAttributeInt(nodeColor, TAG_COLOR_R, track.getColor().getR());
-		this.addAttributeInt(nodeColor, TAG_COLOR_G, track.getColor().getG());
-		this.addAttributeInt(nodeColor, TAG_COLOR_B, track.getColor().getB());
+		this.writeColor(track.getColor(), this.addNode(nodeTrack, TAG_COLOR));
 		for (TGString string : track.getStrings()) {
 			this.addNodeInt(nodeTrack, TAG_TGSTRING, string.getValue());
 		}
@@ -300,60 +315,12 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 	private void writeNote(TGNote note, TGNote previousNote, Node nodeNote) {
 		TGNoteEffect effect = note.getEffect();
-		if (effect.isVibrato()) { this.addNode(nodeNote, TAG_VIBRATO); }
-		if (effect.isDeadNote()) { this.addNode(nodeNote, TAG_DEADNOTE); }
-		if (effect.isSlide()) { this.addNode(nodeNote, TAG_SLIDE); }
-		if (effect.isHammer()) { this.addNode(nodeNote, TAG_HAMMER); }
-		if (effect.isGhostNote()) { this.addNode(nodeNote, TAG_GHOSTNOTE); }
-		if (effect.isAccentuatedNote()) { this.addNode(nodeNote, TAG_ACCENTUATEDNOTE); }
-		if (effect.isHeavyAccentuatedNote()) { this.addNode(nodeNote, TAG_HEAVYACCENTUATEDNOTE); }
-		if (effect.isPalmMute()) { this.addNode(nodeNote, TAG_PALMMUTE); }
-		if (effect.isStaccato()) { this.addNode(nodeNote, TAG_STACCATO); }
-		if (effect.isTapping()) { this.addNode(nodeNote, TAG_TAPPING); }
-		if (effect.isSlapping()) { this.addNode(nodeNote, TAG_SLAPPING); }
-		if (effect.isPopping()) { this.addNode(nodeNote, TAG_POPPING); }
-		if (effect.isFadeIn()) { this.addNode(nodeNote, TAG_FADEIN); }
-		if (effect.isLetRing()) { this.addNode(nodeNote, TAG_LETRING); }
-		if (effect.isBend()) {
-			Node nodeBend = this.addNode(nodeNote, TAG_BEND);
-			for (BendPoint point : effect.getBend().getPoints()) {
-				Node nodePoint = this.addNode(nodeBend, TAG_POINT);
-				this.addAttributeInt(nodePoint, TAG_POSITION, point.getPosition());
-				this.addAttributeInt(nodePoint, TAG_VALUE, point.getValue());
+		for (NoteFlag flag : NOTE_FLAGS) {
+			if (flag.isOn(effect)) {
+				this.addNode(nodeNote, flag.getTag());
 			}
 		}
-		if (effect.isTremoloBar()) {
-			Node nodeTremoloBar = this.addNode(nodeNote, TAG_TREMOLOBAR);
-			for (TremoloBarPoint point : effect.getTremoloBar().getPoints()) {
-				Node nodePoint = this.addNode(nodeTremoloBar, TAG_POINT);
-				this.addAttributeInt(nodePoint, TAG_POSITION, point.getPosition());
-				this.addAttributeInt(nodePoint, TAG_VALUE, point.getValue());
-			}
-		}
-		if (effect.isHarmonic()) {
-			Node nodeHarmonic = this.addNode(nodeNote, TAG_HARMONIC);
-			this.addAttribute(nodeHarmonic, TAG_TYPE, this.harmonicWritedMap.get(effect.getHarmonic().getType()));
-			this.addAttributeInt(nodeHarmonic, TAG_DATA, effect.getHarmonic().getData());
-		}
-		if (effect.isGrace()) {
-			TGEffectGrace grace = effect.getGrace();
-			Node nodeGrace = this.addNode(nodeNote, TAG_GRACE);
-			this.addAttributeInt(nodeGrace, TAG_FRET, grace.getFret());
-			this.addAttributeInt(nodeGrace, TAG_DURATION, this.mapWriteGraceDuration.get(grace.getDuration()));
-			this.addAttributeInt(nodeGrace, TAG_DYNAMIC, grace.getDynamic());
-			this.addAttribute(nodeGrace, TAG_TRANSITION, this.mapWriteTransition.get(grace.getTransition()));
-			this.addAttributeBool(nodeGrace, TAG_ONBEAT, grace.isOnBeat());
-			this.addAttributeBool(nodeGrace, TAG_DEAD, grace.isDead());
-		}
-		if (effect.isTrill()) {
-			Node nodeTrill = this.addNode(nodeNote, TAG_TRILL);
-			this.addAttributeInt(nodeTrill, TAG_FRET, effect.getTrill().getFret());
-			this.addAttributeInt(nodeTrill, TAG_DURATION, effect.getTrill().getDuration().getValue());
-		}
-		if (effect.isTremoloPicking()) {
-			Node nodeTremoloPicking = this.addNode(nodeNote, TAG_TREMOLOPICKING);
-			this.addAttributeInt(nodeTremoloPicking, TAG_DURATION, effect.getTremoloPicking().getDuration().getValue());
-		}
+		this.writeNoteEffects(effect, nodeNote);
 		if (note.isAltEnharmonic()) {
 			this.addNode(nodeNote, TAG_ALT_ENHARMONIC);
 		}
@@ -365,6 +332,50 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if ((previousNote == null) || (previousNote.getVelocity() != note.getVelocity())) {
 			this.addAttributeInt(nodeNote, TAG_VELOCITY, note.getVelocity());
 		}
+	}
+
+	// the effects of a note that have values, each an element of the note
+	private void writeNoteEffects(TGNoteEffect effect, Node nodeNote) {
+		if (effect.isBend()) {
+			this.writePoints(effect.getBend().getPoints(), BendPoint::getPosition, BendPoint::getValue, this.addNode(nodeNote, TAG_BEND));
+		}
+		if (effect.isTremoloBar()) {
+			this.writePoints(effect.getTremoloBar().getPoints(), TremoloBarPoint::getPosition, TremoloBarPoint::getValue, this.addNode(nodeNote, TAG_TREMOLOBAR));
+		}
+		if (effect.isHarmonic()) {
+			Node nodeHarmonic = this.addNode(nodeNote, TAG_HARMONIC);
+			this.addAttribute(nodeHarmonic, TAG_TYPE, this.harmonicWritedMap.get(effect.getHarmonic().getType()));
+			this.addAttributeInt(nodeHarmonic, TAG_DATA, effect.getHarmonic().getData());
+		}
+		if (effect.isGrace()) {
+			this.writeGrace(effect.getGrace(), this.addNode(nodeNote, TAG_GRACE));
+		}
+		if (effect.isTrill()) {
+			Node nodeTrill = this.addNode(nodeNote, TAG_TRILL);
+			this.addAttributeInt(nodeTrill, TAG_FRET, effect.getTrill().getFret());
+			this.addAttributeInt(nodeTrill, TAG_DURATION, effect.getTrill().getDuration().getValue());
+		}
+		if (effect.isTremoloPicking()) {
+			Node nodeTremoloPicking = this.addNode(nodeNote, TAG_TREMOLOPICKING);
+			this.addAttributeInt(nodeTremoloPicking, TAG_DURATION, effect.getTremoloPicking().getDuration().getValue());
+		}
+	}
+
+	private <P> void writePoints(List<P> points, ToIntFunction<P> position, ToIntFunction<P> value, Node nodePoints) {
+		for (P point : points) {
+			Node nodePoint = this.addNode(nodePoints, TAG_POINT);
+			this.addAttributeInt(nodePoint, TAG_POSITION, position.applyAsInt(point));
+			this.addAttributeInt(nodePoint, TAG_VALUE, value.applyAsInt(point));
+		}
+	}
+
+	private void writeGrace(TGEffectGrace grace, Node nodeGrace) {
+		this.addAttributeInt(nodeGrace, TAG_FRET, grace.getFret());
+		this.addAttributeInt(nodeGrace, TAG_DURATION, this.mapWriteGraceDuration.get(grace.getDuration()));
+		this.addAttributeInt(nodeGrace, TAG_DYNAMIC, grace.getDynamic());
+		this.addAttribute(nodeGrace, TAG_TRANSITION, this.mapWriteTransition.get(grace.getTransition()));
+		this.addAttributeBool(nodeGrace, TAG_ONBEAT, grace.isOnBeat());
+		this.addAttributeBool(nodeGrace, TAG_DEAD, grace.isDead());
 	}
 
 	private void addVersion(OutputStream stream) throws IOException {

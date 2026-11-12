@@ -126,4 +126,17 @@ public class TestMidiPlayerChannels {
 
 		assertEquals("open 1, open 2 -> []", update());
 	}
+
+	// the volume is kept, and only while playing are the channels updated at once
+	@Test
+	public void aNewVolumeUpdatesTheChannelsWhilePlayingOnly() {
+		player.setVolume(5);
+		String stopped = String.join(", ", log) + " -> " + player.getVolume();
+		player.setRunning(true);
+		player.setVolume(7);
+		player.setRunning(false);
+
+		assertEquals(" -> 5 | open 1, open 2, program 1=25, program 2=30 -> 7",
+			stopped + " | " + String.join(", ", log) + " -> " + player.getVolume());
+	}
 }

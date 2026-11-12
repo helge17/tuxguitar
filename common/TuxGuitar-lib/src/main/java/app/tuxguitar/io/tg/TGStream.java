@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -21,6 +24,7 @@ import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGNoteEffect;
 import app.tuxguitar.song.models.TGPickStroke;
 import app.tuxguitar.song.models.TGStroke;
 import app.tuxguitar.song.models.TGVoice;
@@ -156,6 +160,48 @@ public class TGStream {
 	protected static final String TAG_TRANSITION = "transition";
 	protected static final String TAG_PICK_STROKE = "pickStroke";
 
+	// an effect of a note that is on or off, written as an empty element of the note when on
+	protected static final class NoteFlag {
+		private final String tag;
+		private final Predicate<TGNoteEffect> on;
+		private final BiConsumer<TGNoteEffect, Boolean> setter;
+
+		private NoteFlag(String tag, Predicate<TGNoteEffect> on, BiConsumer<TGNoteEffect, Boolean> setter) {
+			this.tag = tag;
+			this.on = on;
+			this.setter = setter;
+		}
+
+		protected String getTag() {
+			return this.tag;
+		}
+
+		protected boolean isOn(TGNoteEffect effect) {
+			return this.on.test(effect);
+		}
+
+		protected void setOn(TGNoteEffect effect, boolean on) {
+			this.setter.accept(effect, on);
+		}
+	}
+
+	// in the order they are written and read; the order matters when reading, as turning one on turns others off
+	protected static final List<NoteFlag> NOTE_FLAGS = List.of(
+			new NoteFlag(TAG_VIBRATO, TGNoteEffect::isVibrato, TGNoteEffect::setVibrato),
+			new NoteFlag(TAG_DEADNOTE, TGNoteEffect::isDeadNote, TGNoteEffect::setDeadNote),
+			new NoteFlag(TAG_SLIDE, TGNoteEffect::isSlide, TGNoteEffect::setSlide),
+			new NoteFlag(TAG_HAMMER, TGNoteEffect::isHammer, TGNoteEffect::setHammer),
+			new NoteFlag(TAG_GHOSTNOTE, TGNoteEffect::isGhostNote, TGNoteEffect::setGhostNote),
+			new NoteFlag(TAG_ACCENTUATEDNOTE, TGNoteEffect::isAccentuatedNote, TGNoteEffect::setAccentuatedNote),
+			new NoteFlag(TAG_HEAVYACCENTUATEDNOTE, TGNoteEffect::isHeavyAccentuatedNote, TGNoteEffect::setHeavyAccentuatedNote),
+			new NoteFlag(TAG_PALMMUTE, TGNoteEffect::isPalmMute, TGNoteEffect::setPalmMute),
+			new NoteFlag(TAG_STACCATO, TGNoteEffect::isStaccato, TGNoteEffect::setStaccato),
+			new NoteFlag(TAG_TAPPING, TGNoteEffect::isTapping, TGNoteEffect::setTapping),
+			new NoteFlag(TAG_SLAPPING, TGNoteEffect::isSlapping, TGNoteEffect::setSlapping),
+			new NoteFlag(TAG_POPPING, TGNoteEffect::isPopping, TGNoteEffect::setPopping),
+			new NoteFlag(TAG_FADEIN, TGNoteEffect::isFadeIn, TGNoteEffect::setFadeIn),
+			new NoteFlag(TAG_LETRING, TGNoteEffect::isLetRing, TGNoteEffect::setLetRing));
+
 	protected Map<String, Integer> tripletsReadMap;
 	protected Map<Integer, String> tripletsWriteMap;
 	protected Map<String, Integer> mapReadClefs;
@@ -281,11 +327,7 @@ public class TGStream {
 	}
 
 	protected Node getChildNode(Node node, String nodeName) {
-		Node n = node.getFirstChild();
-		while (n!=null && !nodeName.equals(n.getNodeName())) {
-			n = n.getNextSibling();
-		}
-		return n;
+		return getSiblingNode(node.getFirstChild(), nodeName);
 	}
 
 	protected Node getSiblingNode(Node node, String nodeName) {

@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,33 +17,9 @@ public class TestPropertiesUtil {
 
 	private static final float[] DEFAULT = new float[] {9f};
 
-	private final Map<String, String> values = new HashMap<String, String>();
+	private final MapProperties properties = new MapProperties();
 
-	private final TGProperties properties = new TGProperties() {
-		public String getValue(String key) {
-			return values.get(key);
-		}
-
-		public void setValue(String key, String value) {
-			values.put(key, value);
-		}
-
-		public void remove(String key) {
-			values.remove(key);
-		}
-
-		public void clear() {
-			values.clear();
-		}
-
-		public void update(Properties newProperties) {
-			throw new UnsupportedOperationException();
-		}
-
-		public Set<String> getStringKeys() {
-			return values.keySet();
-		}
-	};
+	private final Map<String, String> values = this.properties.values;
 
 	private float[] read(String value) {
 		this.values.put("key", value);

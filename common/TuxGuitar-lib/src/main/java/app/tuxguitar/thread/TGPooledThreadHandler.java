@@ -9,7 +9,7 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 
 	private static final int WORKER_COUNT = 10;
 
-	private boolean running;
+	private volatile boolean running;
 	private Object mutex;
 	private List<Runnable> queue;
 
@@ -70,7 +70,7 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 	public void waitForNextThread() {
 		try {
 			synchronized (this.mutex) {
-				if( this.queue.isEmpty()) {
+				if( this.queue.isEmpty() && this.running ) {
 					this.mutex.wait();
 				} else {
 					Thread.yield();
@@ -92,8 +92,12 @@ public class TGPooledThreadHandler implements TGThreadHandler, Runnable {
 		Thread.yield();
 	}
 
+	// wakes the waiting workers, so that they end once the queue is done
 	public void dispose() {
-		this.running = false;
+		synchronized (this.mutex) {
+			this.running = false;
+			this.mutex.notifyAll();
+		}
 	}
 
 	public Object getThreadId() {

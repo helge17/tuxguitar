@@ -6,9 +6,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 
 import app.tuxguitar.io.tg.TestFileFormat20;
+import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 public class TestRepeatController {
 
@@ -80,5 +86,58 @@ public class TestRepeatController {
 			}
 		}
 		assertEquals(i,expectedMeasures.length, "too short sequence");
+	}
+
+	// ---- hand-made songs of 4/4 measures ----
+
+	// a new song with one measure per mark: "|:" opens a repeat, ":|" closes it once, "2." plays on the second
+	// pass only, "-" is a plain measure
+	private static TGSong song(String... marks) {
+		TGSongManager songManager = new TGSongManager();
+		TGSong song = songManager.newSong();
+		for (int i = 1; i < marks.length; i++) {
+			songManager.addNewMeasureBeforeEnd(song);
+		}
+		for (int i = 0; i < marks.length; i++) {
+			TGMeasureHeader header = song.getMeasureHeader(i);
+			header.setRepeatOpen(marks[i].equals("|:"));
+			header.setRepeatClose(marks[i].equals(":|") ? 1 : 0);
+			header.setRepeatAlternative(marks[i].equals("2.") ? 2 : 0);
+		}
+		return song;
+	}
+
+	// the measures played, each as "number@move", the move in measures
+	private static String played(TGSong song, int sHeader, int eHeader) {
+		MidiRepeatController controller = new MidiRepeatController(song, sHeader, eHeader);
+		long measureLength = song.getMeasureHeader(0).getLength();
+		StringBuilder played = new StringBuilder();
+		while (!controller.finished()) {
+			int index = controller.getIndex();
+			long move = controller.getRepeatMove();
+			controller.process();
+			if (controller.shouldPlay()) {
+				played.append(played.length() == 0 ? "" : " ").append(index + 1).append("@").append(move / measureLength);
+			}
+		}
+		return played.toString();
+	}
+
+	private static DynamicTest plays(String name, String expected, int sHeader, int eHeader, String... marks) {
+		return DynamicTest.dynamicTest(name, () -> assertEquals(expected, played(song(marks), sHeader, eHeader)));
+	}
+
+	@TestFactory
+	public Stream<DynamicTest> handMadeSongs() {
+		return Stream.of(
+			// a repeat closed in a loop goes back to the loop start
+			plays("a loop start opens a repeat", "2@0 3@0 2@2 3@2 4@2", 2, 4, "-", "-", ":|", "-"),
+			// a later repeat close without a new repeat open is ignored
+			plays("a finished repeat stays closed", "1@0 2@0 1@2 2@2 3@2 4@2", -1, -1, "|:", ":|", ":|", "-"),
+			// looks odd, pinned as is: a second ending right after the repeat open is skipped on the first pass, and
+			// so is the repeat close after it, so the repeat is never played again
+			plays("a second ending is skipped on the first pass", "1@0 4@-2", -1, -1, "|:", "2.", ":|", "-"),
+			plays("a repeat before the loop does not count in it", "2@0 3@0 2@2 3@2 4@2", 2, 4, ":|", "-", ":|", "-"),
+			plays("a range ending at 0 plays nothing", "", -1, 0, "-", "-"));
 	}
 }
