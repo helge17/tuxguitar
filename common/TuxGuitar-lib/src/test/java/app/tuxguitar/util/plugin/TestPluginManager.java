@@ -22,6 +22,9 @@ import app.tuxguitar.resource.TGResourceLoader;
 import app.tuxguitar.resource.TGResourceManager;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.error.TGErrorManager;
+import app.tuxguitar.util.properties.MapProperties;
+import app.tuxguitar.util.properties.TGPropertiesException;
+import app.tuxguitar.util.properties.TGPropertiesManager;
 
 /**
  * Pins how TGPluginManager looks up its plugins: the TGPlugin providers listed in the service resources, kept in
@@ -62,12 +65,72 @@ public class TestPluginManager {
 			return this.moduleId;
 		}
 
+		public void connect(TGContext context) throws TGPluginException {
+			CALLS.add("connect " + this.moduleId);
+		}
+
+		public void disconnect(TGContext context) throws TGPluginException {
+			CALLS.add("disconnect " + this.moduleId);
+		}
+	}
+
+	// a second plugin of module alpha
+	public static class AlphaToo extends ModulePlugin {
+		public AlphaToo() {
+			super("alpha");
+		}
+	}
+
+	public static class Early extends ModulePlugin implements TGEarlyInitPlugin {
+		public Early() {
+			super("early");
+		}
+
+		public void earlyInit(TGContext context) {
+			CALLS.add("early init early");
+		}
+	}
+
+	// fails every call with a plugin error
+	public static class Refusing extends ModulePlugin implements TGEarlyInitPlugin {
+		public Refusing() {
+			super("refusing");
+		}
+
+		public void connect(TGContext context) throws TGPluginException {
+			throw new TGPluginException("refused");
+		}
+
+		public void disconnect(TGContext context) throws TGPluginException {
+			throw new TGPluginException("refused");
+		}
+
+		public void earlyInit(TGContext context) throws TGPluginException {
+			throw new TGPluginException("refused");
+		}
+	}
+
+	// fails every call with an unexpected error
+	public static class Broken extends ModulePlugin implements TGEarlyInitPlugin {
+		public Broken() {
+			super("broken");
+		}
+
 		public void connect(TGContext context) {
+			throw new IllegalStateException();
 		}
 
 		public void disconnect(TGContext context) {
+			throw new IllegalStateException();
+		}
+
+		public void earlyInit(TGContext context) {
+			throw new IllegalStateException();
 		}
 	}
+
+	// what the plugins were asked to do, in order
+	private static final List<String> CALLS = new ArrayList<String>();
 
 	@TempDir
 	File folder;
@@ -100,7 +163,22 @@ public class TestPluginManager {
 	};
 
 	public TestPluginManager() {
-		TGErrorManager.getInstance(this.context).addErrorHandler(error -> this.errors.add(error.getMessage() + ": " + error.getCause().getClass().getName()));
+		CALLS.clear();
+		TGErrorManager.getInstance(this.context).addErrorHandler(error -> this.errors.add(error.getMessage() + ": "
+				+ (error.getCause() == null ? "-" : error.getCause().getClass().getName())));
+	}
+
+	// plugin settings kept in memory, every plugin enabled but the given ones
+	private void disabled(String... moduleIds) {
+		TGPropertiesManager.getInstance(this.context).setPropertiesFactory(MapProperties::new);
+		for (String moduleId : moduleIds) {
+			TGPluginProperties.getInstance(this.context).setEnabled(moduleId, false);
+		}
+	}
+
+	private TGPluginManager managerOf(String... providers) throws IOException {
+		providers(providers);
+		return TGPluginManager.getInstance(this.context);
 	}
 
 	private void providers(String... names) throws IOException {
@@ -146,5 +224,98 @@ public class TestPluginManager {
 		manager.lookupPlugins();
 
 		assertEquals(List.of("beta"), moduleIds(manager));
+	}
+
+	@Test
+	public void connectsTheEnabledPluginsAndDisconnectsThemAll() throws IOException {
+		disabled("beta");
+		TGPluginManager manager = managerOf(Alpha.class.getName(), Beta.class.getName(), Early.class.getName());
+
+		manager.connectEnabled();
+		manager.disconnectAll();
+
+		assertEquals(List.of("connect alpha", "connect early", "disconnect alpha", "disconnect beta", "disconnect early"), CALLS);
+		assertEquals(List.of(), this.errors);
+	}
+
+	@Test
+	public void initializesEarlyTheEnabledEarlyInitPluginsOnly() throws IOException {
+		disabled("refusing");
+		TGPluginManager manager = managerOf(Alpha.class.getName(), Early.class.getName(), Refusing.class.getName());
+
+		manager.earlyInitPlugins();
+
+		assertEquals(List.of("early init early"), CALLS);
+		assertEquals(List.of(), this.errors);
+	}
+
+	@Test
+	public void connectsAndDisconnectsEveryPluginOfAModule() throws IOException {
+		TGPluginManager manager = managerOf(Alpha.class.getName(), Beta.class.getName(), AlphaToo.class.getName());
+
+		manager.connectPlugins("alpha");
+		manager.disconnectPlugins("alpha");
+
+		assertEquals(List.of("connect alpha", "connect alpha", "disconnect alpha", "disconnect alpha"), CALLS);
+	}
+
+	@Test
+	public void enablingAModuleSavesItAndConnectsIt() throws IOException {
+		disabled("alpha");
+		TGPluginManager manager = managerOf(Alpha.class.getName(), Beta.class.getName());
+
+		manager.updatePluginStatus("alpha", true);
+		boolean enabled = manager.isEnabled("alpha");
+		manager.updatePluginStatus("beta", false);
+
+		assertEquals(List.of("connect alpha", "disconnect beta"), CALLS);
+		assertEquals(List.of(true, false), List.of(enabled, manager.isEnabled("beta")));
+	}
+
+	@Test
+	public void aStatusThatCannotBeSavedIsReportedAndChangesNothing() throws IOException {
+		TGPluginManager manager = managerOf(Alpha.class.getName());
+
+		manager.updatePluginStatus("alpha", true);
+
+		assertEquals(List.of(), CALLS);
+		assertEquals(List.of("An error occurred when trying to set plugin status: java.lang.NullPointerException"), this.errors);
+	}
+
+	@Test
+	public void aStatusThatCannotBeReadIsReportedAsDisabled() throws IOException {
+		TGPluginManager manager = managerOf(Alpha.class.getName());
+		TGPropertiesManager.getInstance(this.context).setPropertiesFactory(() -> {
+			throw new TGPropertiesException("unreadable");
+		});
+
+		assertEquals(false, manager.isEnabled("alpha"));
+		assertEquals(List.of("An error occurred when trying to get plugin status: " + TGPropertiesException.class.getName()), this.errors);
+	}
+
+	@Test
+	public void pluginFailuresAreReportedAndUnexpectedOnesWrapped() throws IOException {
+		TGPluginManager manager = managerOf(Refusing.class.getName(), Broken.class.getName());
+
+		manager.connectEnabled();
+		manager.earlyInitPlugins();
+		manager.disconnectAll();
+
+		assertEquals(List.of(
+				"refused: -",
+				"An error occurred when trying to connect plugin: java.lang.IllegalStateException",
+				"refused: -",
+				"An error occurred when trying to initialize plugin early: java.lang.IllegalStateException",
+				"refused: -",
+				"An error occurred when trying to disconnect plugin: java.lang.IllegalStateException"), this.errors);
+	}
+
+	@Test
+	public void findsThePluginsOfAType() throws IOException {
+		TGPluginManager manager = managerOf(Alpha.class.getName(), Early.class.getName(), Refusing.class.getName());
+
+		assertEquals(List.of("early", "refusing"), manager.getPluginInstances(TGEarlyInitPlugin.class).stream()
+				.map(TGPlugin::getModuleId).collect(Collectors.toList()));
+		assertEquals(List.of(), manager.getPluginInstances(Beta.class));
 	}
 }
