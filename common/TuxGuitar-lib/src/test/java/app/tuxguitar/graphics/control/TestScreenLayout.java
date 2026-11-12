@@ -262,4 +262,83 @@ public class TestScreenLayout {
 			+ "t2 y=102.0 h=79.0 x=15.0 115.0 180.0 245.0 310.0 375.0 440.0 505.0\n"
 			, horizontal(TAB, area(0, 0, 400, 2000)));
 	}
+
+	// ---- what the scrolling editor asks the layout about a measure ----
+
+	private TGMeasureImpl firstMeasure() {
+		return (TGMeasureImpl) harness.song.getTrack(0).getMeasure(0);
+	}
+
+	private String visibility(TGLayout layout, float fromX, float fromY, UIRectangle area) {
+		layout.paintSong(harness.painter, area(0, 0, 400, 2000), fromX, fromY);
+		TGMeasureImpl measure = firstMeasure();
+		return measure.getPosX() + "," + measure.getPosY() + " " + measure.getWidth(layout) + "x" + measure.getTs().getSize()
+			+ (layout.isFullyVisible(measure, area) ? " visible" : " hidden");
+	}
+
+	@Test
+	public void aMeasureIsFullyVisibleWhenItLiesInsideTheArea() {
+		TGLayout layout = paint(new TGLayoutHorizontal(controller(), TAB), area(0, 0, 400, 2000));
+
+		assertEquals("15.0,5.0 155.0x91.0 visible", visibility(layout, 0, 0, area(0, 0, 170, 96)));
+		assertEquals("15.0,5.0 155.0x91.0 hidden", visibility(layout, 0, 0, area(0, 0, 169, 96)));
+		assertEquals("15.0,5.0 155.0x91.0 hidden", visibility(layout, 0, 0, area(0, 0, 170, 95)));
+		assertEquals("0.0,0.0 155.0x91.0 visible", visibility(layout, -15, -5, area(0, 0, 170, 96)));
+		assertEquals("-1.0,0.0 155.0x91.0 hidden", visibility(layout, -16, -5, area(0, 0, 170, 96)));
+		assertEquals("0.0,-1.0 155.0x91.0 hidden", visibility(layout, -15, -6, area(0, 0, 170, 96)));
+	}
+
+	@Test
+	public void aMeasureNotYetLaidOutIsNeverFullyVisible() {
+		TGLayout layout = new TGLayoutVertical(controller(), TAB);
+
+		assertEquals(false, layout.isFullyVisible(firstMeasure(), area(0, 0, 2000, 2000)));
+		assertEquals(null, layout.getMeasureScrollableSize(firstMeasure()));
+	}
+
+	@Test
+	public void verticalScrollsByTheStaffHeightAndHorizontalByTheMeasureWidth() {
+		TGLayout vertical = paint(new TGLayoutVertical(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals(Float.valueOf(91f), vertical.getMeasureScrollableSize(firstMeasure()));
+
+		TGLayout horizontal = paint(new TGLayoutHorizontal(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals(Float.valueOf(155f), horizontal.getMeasureScrollableSize(firstMeasure()));
+
+		assertEquals(null, harness.update(TAB).getMeasureScrollableSize(firstMeasure()));
+	}
+
+	@Test
+	public void theLineNumberOfAMeasureIsKnownOnlyInTheVerticalLayout() {
+		TGLayout vertical = paint(new TGLayoutVertical(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals("1 1 2 -1 -1", vertical.getMeasureLineNumber(0) + " " + vertical.getMeasureLineNumber(4) + " "
+			+ vertical.getMeasureLineNumber(5) + " " + vertical.getMeasureLineNumber(-1) + " " + vertical.getMeasureLineNumber(12));
+
+		TGLayout horizontal = paint(new TGLayoutHorizontal(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals(-1, horizontal.getMeasureLineNumber(0));
+	}
+
+	private float checkScale(int style, float scoreLineSpacing, float stringSpacing) {
+		TGLayoutStyles styles = new LayoutHarness.TestLayoutStyles();
+		styles.setScoreLineSpacing(scoreLineSpacing);
+		styles.setStringSpacing(stringSpacing);
+		TGLayout layout = new TGLayoutVertical(new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), styles), style);
+		layout.loadStyles(1f);
+		return layout.checkScale();
+	}
+
+	@Test
+	public void theScaleCheckFollowsTheTallerOfScoreAndTablatureSpacing() {
+		assertEquals(0.875f, checkScale(SCORE | TAB, 7, 8));
+		assertEquals(0.875f, checkScale(SCORE, 7, 8));
+		assertEquals(0.8f, checkScale(TAB, 7, 8));
+		// a layout showing neither staff shows the tablature
+		assertEquals(0.8f, checkScale(LayoutHarness.CHORDS, 7, 8));
+	}
+
+	@Test
+	public void theScaleCheckIgnoresTheSpacingOfAHiddenStaff() {
+		assertEquals(0.08f, checkScale(SCORE | TAB, 0.4f, 0.8f));
+		assertEquals(0.05f, checkScale(SCORE, 0.4f, 0.8f));
+		assertEquals(0.08f, checkScale(TAB, 0.4f, 0.8f));
+	}
 }
