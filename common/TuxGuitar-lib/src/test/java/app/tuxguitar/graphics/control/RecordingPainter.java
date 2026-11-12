@@ -28,6 +28,11 @@ public class RecordingPainter implements UIPainter {
 		return this.calls.stream().filter(call -> call.startsWith(prefix)).collect(Collectors.toList());
 	}
 
+	// the calls from the given one on, joined by the separator
+	public String joined(int from, String separator) {
+		return String.join(separator, this.calls.subList(from, this.calls.size()));
+	}
+
 	public void clear() {
 		this.calls.clear();
 	}

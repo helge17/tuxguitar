@@ -27,6 +27,9 @@ public class TestScreenLayout {
 
 	private final LayoutHarness harness = new LayoutHarness();
 	private int trackSelection = -1;
+	// where the song is painted from (a scroll), and whether measures are buffered
+	private float fromX = 0;
+	private boolean buffered = false;
 
 	public TestScreenLayout() {
 		harness.songManager.addTrack(harness.song);
@@ -41,12 +44,14 @@ public class TestScreenLayout {
 		layout.loadStyles(1f);
 		layout.updateSong();
 		harness.painter.clear();
-		layout.paintSong(harness.painter, clientArea, 0, 0);
+		layout.paintSong(harness.painter, clientArea, fromX, 0);
 		return layout;
 	}
 
 	private TGController controller() {
-		return new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), new LayoutHarness.TestLayoutStyles()) {
+		TGLayoutStyles styles = new LayoutHarness.TestLayoutStyles();
+		styles.setBufferEnabled(buffered);
+		return new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), styles) {
 			public int getTrackSelection() {
 				return trackSelection;
 			}
@@ -206,6 +211,71 @@ public class TestScreenLayout {
 			, vertical(TAB, area(0, 0, 2000, 2000)));
 	}
 
+	@Test
+	public void verticalShiftsItsLinesByTheScroll() {
+		fromX = -50;
+
+		assertEquals(""
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=1147\n"
+			+ "t1 y=5.0 h=91.0 x=-35.0 126.25 197.5 268.75\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=-35.0 30.0 95.0\n"
+			+ "t2 y=102.0 h=79.0 x=-35.0 68.0 136.0 204.0 272.0\n"
+			+ "t2 y=272.0 h=79.0 x=-35.0 30.0 95.0\n"
+			+ ""
+			, vertical(TAB, area(0, 0, 400, 2000)));
+	}
+
+	@Test
+	public void verticalPaintsAMeasureOnlyWhenItOverlapsTheArea() {
+		assertEquals(""
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=543\n"
+			+ "t1 y=5.0 h=91.0 x=15.0* 176.25 247.5 318.75\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0* 80.0* 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0* 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0* 80.0* 145.0\n"
+			+ "--\n"
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=1029\n"
+			+ "t1 y=5.0 h=91.0 x=15.0 176.25 247.5 318.75*\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0*\n"
+			+ "t2 y=272.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "--\n"
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=764\n"
+			+ "t1 y=5.0 h=91.0 x=15.0* 176.25* 247.5* 318.75*\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "--\n"
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=809\n"
+			+ "t1 y=5.0 h=91.0 x=15.0 176.25 247.5 318.75\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0* 80.0* 145.0*\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0* 80.0* 145.0*\n"
+			+ ""
+			, vertical(TAB, area(176.25f, 0, 400, 2000)) + "--\n" + vertical(TAB, area(-81.25f, 0, 400, 2000))
+			+ "--\n" + vertical(TAB, area(0, 96, 400, 2000)) + "--\n" + vertical(TAB, area(0, 0, 400, 107)));
+	}
+
+	@Test
+	public void bufferedVerticalLinesSpreadWholeUnitsOverTheirMeasures() {
+		buffered = true;
+
+		assertEquals(""
+			+ "size=400.0x357.0 lines=[1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0] scroll=[10000, 8000, 6000, 4000, 2000, 0, 0, 0] calls=79\n"
+			+ "t1 y=5.0 h=91.0 x=15.0 176.0 248.0 319.0\n"
+			+ "t1 y=0.0 h=91.0 x=0.0*\n"
+			+ "t1 y=187.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ "t2 y=102.0 h=79.0 x=15.0 118.0 186.0 254.0 322.0\n"
+			+ "t2 y=272.0 h=79.0 x=15.0 80.0 145.0\n"
+			+ ""
+			, vertical(TAB, area(0, 0, 400, 2000)));
+	}
+
 	// ---- horizontal ----
 
 	@Test
@@ -261,5 +331,84 @@ public class TestScreenLayout {
 			+ "t1 y=5.0 h=91.0 x=15.0 170.0 235.0 300.0 365.0 430.0 495.0 560.0\n"
 			+ "t2 y=102.0 h=79.0 x=15.0 115.0 180.0 245.0 310.0 375.0 440.0 505.0\n"
 			, horizontal(TAB, area(0, 0, 400, 2000)));
+	}
+
+	// ---- what the scrolling editor asks the layout about a measure ----
+
+	private TGMeasureImpl firstMeasure() {
+		return (TGMeasureImpl) harness.song.getTrack(0).getMeasure(0);
+	}
+
+	private String visibility(TGLayout layout, float fromX, float fromY, UIRectangle area) {
+		layout.paintSong(harness.painter, area(0, 0, 400, 2000), fromX, fromY);
+		TGMeasureImpl measure = firstMeasure();
+		return measure.getPosX() + "," + measure.getPosY() + " " + measure.getWidth(layout) + "x" + measure.getTs().getSize()
+			+ (layout.isFullyVisible(measure, area) ? " visible" : " hidden");
+	}
+
+	@Test
+	public void aMeasureIsFullyVisibleWhenItLiesInsideTheArea() {
+		TGLayout layout = paint(new TGLayoutHorizontal(controller(), TAB), area(0, 0, 400, 2000));
+
+		assertEquals("15.0,5.0 155.0x91.0 visible", visibility(layout, 0, 0, area(0, 0, 170, 96)));
+		assertEquals("15.0,5.0 155.0x91.0 hidden", visibility(layout, 0, 0, area(0, 0, 169, 96)));
+		assertEquals("15.0,5.0 155.0x91.0 hidden", visibility(layout, 0, 0, area(0, 0, 170, 95)));
+		assertEquals("0.0,0.0 155.0x91.0 visible", visibility(layout, -15, -5, area(0, 0, 170, 96)));
+		assertEquals("-1.0,0.0 155.0x91.0 hidden", visibility(layout, -16, -5, area(0, 0, 170, 96)));
+		assertEquals("0.0,-1.0 155.0x91.0 hidden", visibility(layout, -15, -6, area(0, 0, 170, 96)));
+	}
+
+	@Test
+	public void aMeasureNotYetLaidOutIsNeverFullyVisible() {
+		TGLayout layout = new TGLayoutVertical(controller(), TAB);
+
+		assertEquals(false, layout.isFullyVisible(firstMeasure(), area(0, 0, 2000, 2000)));
+		assertEquals(null, layout.getMeasureScrollableSize(firstMeasure()));
+	}
+
+	@Test
+	public void verticalScrollsByTheStaffHeightAndHorizontalByTheMeasureWidth() {
+		TGLayout vertical = paint(new TGLayoutVertical(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals(Float.valueOf(91f), vertical.getMeasureScrollableSize(firstMeasure()));
+
+		TGLayout horizontal = paint(new TGLayoutHorizontal(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals(Float.valueOf(155f), horizontal.getMeasureScrollableSize(firstMeasure()));
+
+		assertEquals(null, harness.update(TAB).getMeasureScrollableSize(firstMeasure()));
+	}
+
+	@Test
+	public void theLineNumberOfAMeasureIsKnownOnlyInTheVerticalLayout() {
+		TGLayout vertical = paint(new TGLayoutVertical(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals("1 1 2 -1 -1", vertical.getMeasureLineNumber(0) + " " + vertical.getMeasureLineNumber(4) + " "
+			+ vertical.getMeasureLineNumber(5) + " " + vertical.getMeasureLineNumber(-1) + " " + vertical.getMeasureLineNumber(12));
+
+		TGLayout horizontal = paint(new TGLayoutHorizontal(controller(), TAB), area(0, 0, 400, 2000));
+		assertEquals(-1, horizontal.getMeasureLineNumber(0));
+	}
+
+	private float checkScale(int style, float scoreLineSpacing, float stringSpacing) {
+		TGLayoutStyles styles = new LayoutHarness.TestLayoutStyles();
+		styles.setScoreLineSpacing(scoreLineSpacing);
+		styles.setStringSpacing(stringSpacing);
+		TGLayout layout = new TGLayoutVertical(new TGPrintController(harness.song, harness.songManager, new FakeResourceFactory(), styles), style);
+		layout.loadStyles(1f);
+		return layout.checkScale();
+	}
+
+	@Test
+	public void theScaleCheckFollowsTheTallerOfScoreAndTablatureSpacing() {
+		assertEquals(0.875f, checkScale(SCORE | TAB, 7, 8));
+		assertEquals(0.875f, checkScale(SCORE, 7, 8));
+		assertEquals(0.8f, checkScale(TAB, 7, 8));
+		// a layout showing neither staff shows the tablature
+		assertEquals(0.8f, checkScale(LayoutHarness.CHORDS, 7, 8));
+	}
+
+	@Test
+	public void theScaleCheckIgnoresTheSpacingOfAHiddenStaff() {
+		assertEquals(0.08f, checkScale(SCORE | TAB, 0.4f, 0.8f));
+		assertEquals(0.05f, checkScale(SCORE, 0.4f, 0.8f));
+		assertEquals(0.08f, checkScale(TAB, 0.4f, 0.8f));
 	}
 }

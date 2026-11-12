@@ -13,6 +13,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
@@ -52,6 +53,11 @@ public class LayoutHarness implements TGPrintDocument {
 	// for screen layouts: whether the layout is in play mode, and whether its controller reports beats as playing
 	public boolean playMode = false;
 	public boolean playing = true;
+
+	// the numbers of the measures the controller reports as loop start, loop end and playing (-1: none)
+	public int loopStart = -1;
+	public int loopEnd = -1;
+	public int playingMeasure = -1;
 
 	public TGMeasureImpl measure() {
 		return measure(0);
@@ -147,7 +153,7 @@ public class LayoutHarness implements TGPrintDocument {
 
 	/** Lays the song out (create + update of every measure), as the editor does before painting. */
 	public TGPrintLayout update(int style) {
-		TGController controller = new TGPrintController(song, songManager, new FakeResourceFactory(), this.styles);
+		TGController controller = new HarnessController();
 		TGPrintSettings settings = new TGPrintSettings(TGPrintSettings.ALL_TRACKS, 1, song.countMeasureHeaders(), style);
 		this.layout = new TGPrintLayout(controller, settings);
 		this.layout.loadStyles(this.scale);
@@ -160,7 +166,7 @@ public class LayoutHarness implements TGPrintDocument {
 	 * {@link #playMode} is set, and its controller reports every beat as playing while {@link #playing} is set.
 	 */
 	public TGLayout screen(int style) {
-		TGController controller = new TGPrintController(song, songManager, new FakeResourceFactory(), this.styles) {
+		TGController controller = new HarnessController() {
 			public boolean isRunning(TGBeat played) {
 				return playing;
 			}
@@ -183,6 +189,25 @@ public class LayoutHarness implements TGPrintDocument {
 	public RecordingPainter print(int style) {
 		update(style).makeDocument(this);
 		return this.painter;
+	}
+
+	/** A print controller reporting the harness's loop and playing measures. */
+	private class HarnessController extends TGPrintController {
+		HarnessController() {
+			super(song, songManager, new FakeResourceFactory(), styles);
+		}
+
+		public boolean isLoopSHeader(TGMeasureHeader header) {
+			return (header.getNumber() == loopStart);
+		}
+
+		public boolean isLoopEHeader(TGMeasureHeader header) {
+			return (header.getNumber() == loopEnd);
+		}
+
+		public boolean isRunning(TGMeasure measure) {
+			return (measure.getNumber() == playingMeasure);
+		}
 	}
 
 	// ---- TGPrintDocument: one 550x800 page with 20 margins ----

@@ -4,6 +4,7 @@ import static app.tuxguitar.graphics.control.LayoutHarness.SCORE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import app.tuxguitar.song.models.TGVoice;
  * A voice draws each of its levels from the first to the last stem it is joined with, except where a neighbour
  * draws it: a previous voice beamed to it draws the levels both have up to its stem, and so does a longer next
  * voice beamed back to it. A level only one note has, beside a longer note, is a stub: 7 units right of a first
- * note, 6 left of a last one. All of it scales, and moves with the beats when the line widens the measure.
+ * note, 6 left of a last one. A lone eighth has a flag instead. All of it scales, and moves with the beats when the line widens the measure.
  *
  * Notes are on the high E string, one after another (from the measure start unless the test moves them), beamed
  * in one group. Each voice paints its score beat alone at (0, 0); the result lists what each voice draws after its
@@ -101,6 +102,18 @@ public class TestScoreBeamPainting {
 			), beams(TGVoice.DIRECTION_DOWN, 16, 8, 16));
 	}
 
+	@Test
+	public void aLoneEighthHasAFlagRatherThanABeam() {
+		start = 3 * LayoutHarness.QUARTER;
+
+		String[] drawn = beams(TGVoice.DIRECTION_DOWN, 8).split("\n");
+		long curves = Arrays.stream(drawn).filter(call -> call.startsWith("cubicTo")).count();
+
+		// the flag: one filled outline of curves from the top of the stem
+		assertEquals("initPath 2, moveTo 193.00626 6.16875, 13 curves, closePath",
+			drawn[0] + ", " + drawn[1] + ", " + curves + " curves, " + drawn[drawn.length - 1]);
+	}
+
 	// ---- expected drawings ----
 
 	private static String voices(String... drawn) {
@@ -153,7 +166,6 @@ public class TestScoreBeamPainting {
 	private String afterStem(TGLayout layout, TGVoiceImpl voice) {
 		harness.painter.clear();
 		voice.paintScoreBeat(layout, harness.painter, 0, 0, voice.getBeatImpl().getSpacing(layout));
-		List<String> calls = harness.painter.calls();
-		return String.join("\n", calls.subList(10, calls.size()));
+		return harness.painter.joined(10, "\n");
 	}
 }

@@ -47,22 +47,26 @@ public class TGLyricImpl extends TGLyric{
 	public void paintCurrentNoteBeats(UIPainter painter,TGLayout layout,TGMeasureImpl currentMeasure ,float fromX,float fromY){
 		int from = currentMeasure.getLyricBeatIndex();
 		String[] beats = getLyricBeats();
-		if(beats != null && from >= 0 && from < beats.length){
+		if(beats != null && from >= 0){
 			int beatIndex = 0;
 			for(int i = 0;i < currentMeasure.countBeats();i ++){
 				TGBeatImpl beat = (TGBeatImpl)currentMeasure.getBeat(i);
 				if(!beat.isRestBeat()){
 					if((from + beatIndex) < beats.length){
-						String str = beats[from + beatIndex].trim();
-						if(str.length() > 0){
-							float x = (fromX + beat.getPosX() + beat.getSpacing(layout) + 2);
-							layout.setLyricStyle(painter,(layout.isPlayModeEnabled() && beat.isPlaying(layout)));
-							painter.drawString(str,x + 13,(fromY + currentMeasure.getTs().getPosition(TGTrackSpacing.POSITION_LYRIC)));
-						}
+						paintWord(painter, layout, currentMeasure, beat, beats[from + beatIndex].trim(), fromX, fromY);
 					}
 					beatIndex ++;
 				}
 			}
+		}
+	}
+
+	// the word under its beat, in the play color while the beat plays; an empty word leaves the beat blank
+	private void paintWord(UIPainter painter, TGLayout layout, TGMeasureImpl measure, TGBeatImpl beat, String word, float fromX, float fromY){
+		if(word.length() > 0){
+			float x = (fromX + beat.getPosX() + beat.getSpacing(layout) + 2);
+			layout.setLyricStyle(painter,(layout.isPlayModeEnabled() && beat.isPlaying(layout)));
+			painter.drawString(word,x + 13,(fromY + measure.getTs().getPosition(TGTrackSpacing.POSITION_LYRIC)));
 		}
 	}
 

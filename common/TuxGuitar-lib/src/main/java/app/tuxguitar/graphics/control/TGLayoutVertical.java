@@ -164,29 +164,11 @@ public class TGLayoutVertical extends TGLayout{
 		//verifico si esta en el area de cliente
 		boolean isAtY = (posY + ts.getSize() > clientArea.getY() && posY < clientArea.getY() + clientArea.getHeight() + (getScale() * 80f));
 
-		float defaultMeasureSpacing = 0;
-		if( line.fullLine ){
-			float diff = ( this.maximumWidth - line.tempWith);
-			if( diff != 0 && line.measures.size() > 0 ){
-				defaultMeasureSpacing = (diff / line.measures.size());
-			}
-		}
-
+		float defaultMeasureSpacing = getDefaultMeasureSpacing(line);
 		float measureSpacing = defaultMeasureSpacing;
 
 		for(int i = 0;i < line.measures.size();i ++){
-			int index = line.measures.get(i).intValue();
-			TGMeasureImpl currMeasure = (TGMeasureImpl)track.getMeasure(index);
-
-			//asigno la posicion dentro del compas
-			currMeasure.setPosX(posX);
-			currMeasure.setPosY(posY);
-			currMeasure.setTs(ts);
-
-			((TGLyricImpl)track.getLyrics()).setCurrentMeasure(currMeasure);
-
-			currMeasure.setFirstOfLine(i == 0);
-			currMeasure.setLastOfLine(i == line.measures.size()-1);
+			TGMeasureImpl currMeasure = placeMeasure(track, line, i, posX, posY, ts);
 
 			float measureWidth = currMeasure.getWidth(this);
 			float measureWidthWithSpacing = (this.isBufferEnabled() ? Math.round(measureWidth + measureSpacing) : (measureWidth + measureSpacing));
@@ -205,6 +187,28 @@ public class TGLayoutVertical extends TGLayout{
 			measureSpacing = (defaultMeasureSpacing + (measureSpacing - measureSpacingAfterRound));
 		}
 		this.setWidth(Math.max(getWidth(), width));
+	}
+
+	// a full line spreads what is left of the maximum width evenly over its measures
+	private float getDefaultMeasureSpacing(TempLine line) {
+		if( line.fullLine && line.measures.size() > 0 ){
+			return (( this.maximumWidth - line.tempWith) / line.measures.size());
+		}
+		return 0;
+	}
+
+	// the i-th measure of the line, placed at the given position, its lyrics counted
+	private TGMeasureImpl placeMeasure(TGTrackImpl track, TempLine line, int i, float posX, float posY, TGTrackSpacing ts) {
+		TGMeasureImpl measure = (TGMeasureImpl)track.getMeasure(line.measures.get(i).intValue());
+		measure.setPosX(posX);
+		measure.setPosY(posY);
+		measure.setTs(ts);
+
+		((TGLyricImpl)track.getLyrics()).setCurrentMeasure(measure);
+
+		measure.setFirstOfLine(i == 0);
+		measure.setLastOfLine(i == line.measures.size()-1);
+		return measure;
 	}
 
 	public TempLine getTempLines(TGTrack track,int fromIndex,TGTrackSpacing ts) {

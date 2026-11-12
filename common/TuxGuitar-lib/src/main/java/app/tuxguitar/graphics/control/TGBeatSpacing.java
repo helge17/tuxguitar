@@ -30,6 +30,8 @@ public class TGBeatSpacing extends TGSpacing {
 		POSITION_FADE_IN_EFFECT,
 	};
 
+	public static final int EFFECT_COUNT = EFFECT_POSITIONS.length;
+
 	private static final int[][] POSITIONS = new int[][]{
 		/** SCORE **/
 		EFFECT_POSITIONS ,
