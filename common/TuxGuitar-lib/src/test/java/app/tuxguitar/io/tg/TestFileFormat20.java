@@ -620,6 +620,19 @@ public class TestFileFormat20 {
 		assertEquals(4, song.getMeasureHeader(3).getNumber());
 	}
 
+	// looks wrong, pinned as is: the alternatives are summed in a byte, so alternative 8 reads as a negative bit map
+	@Test
+	public void repeatAlternativesAreReadIntoAByte() {
+		String xml = SONG_START
+				+ "<TGMeasureHeader><repeatAlternative><alternative>1</alternative><alternative>3</alternative></repeatAlternative></TGMeasureHeader>"
+				+ "<TGMeasureHeader><repeatAlternative><alternative>8</alternative></repeatAlternative></TGMeasureHeader>"
+				+ "</TGSong></TuxGuitarFile>";
+
+		TGSong song = readFromXml(xml.getBytes(StandardCharsets.UTF_8), new TGFactory());
+
+		assertEquals(List.of(5, -128), List.of(song.getMeasureHeader(0).getRepeatAlternative(), song.getMeasureHeader(1).getRepeatAlternative()));
+	}
+
 	// a measure without clef or key signature is in treble clef, key 0; strings are numbered from 1
 	@Test
 	public void aTrackReadsWithItsDefaults() {
