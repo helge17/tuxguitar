@@ -3,8 +3,9 @@ package app.tuxguitar.audio;
 import app.tuxguitar.song.models.TGMeasureHeader;
 
 /**
- * A measure as the song plays it, from one tick to another of it (in ticks from its start). It starts a stretch when
- * song time jumps to it: a repeat, an alternate ending, the jump back of a loop. Immutable.
+ * A measure as the song plays it, from one tick to another of it (in ticks from its start), in a pass (from 0) at the
+ * Percentage of Tempo of that pass. It starts a stretch when song time jumps to it: a repeat, an alternate ending, the
+ * jump back of a loop. Immutable.
  */
 public final class TGPlayedMeasure {
 
@@ -12,12 +13,16 @@ public final class TGPlayedMeasure {
 	private final long from;
 	private final long to;
 	private final boolean jump;
+	private final int pass;
+	private final int percent;
 
-	public TGPlayedMeasure(TGMeasureHeader header, long from, long to, boolean jump) {
+	public TGPlayedMeasure(TGMeasureHeader header, long from, long to, boolean jump, int pass, int percent) {
 		this.header = header;
 		this.from = from;
 		this.to = to;
 		this.jump = jump;
+		this.pass = pass;
+		this.percent = percent;
 	}
 
 	public TGMeasureHeader getHeader() {
@@ -34,5 +39,18 @@ public final class TGPlayedMeasure {
 
 	public boolean isJump() {
 		return this.jump;
+	}
+
+	public int getPass() {
+		return this.pass;
+	}
+
+	public int getPercent() {
+		return this.percent;
+	}
+
+	// quarter notes per minute as it sounds
+	public double getTempo() {
+		return TGSampleTime.tempo(this.header, this.percent);
 	}
 }

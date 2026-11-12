@@ -52,8 +52,10 @@ public class TestRecording {
 	// positions are in ticks from the start of measure 1
 	private int record(long start, long stop, int percent, TGPunchRange punchRange) {
 		long origin = song.getMeasureHeader(0).getStart();
-		TGRecording recording = new TGRecording(songManager, song, device, punchRange, percent);
-		return recording.record(List.of(track), TGSongTime.play(song, new MidiPlayerMode(), origin + start, origin + stop, 1));
+		TGRecording recording = new TGRecording(songManager, song, device, punchRange);
+		MidiPlayerMode mode = new MidiPlayerMode();
+		mode.setCurrentPercent(percent);
+		return recording.record(List.of(track), TGSongTime.play(song, mode, origin + start, origin + stop, 1));
 	}
 
 	@Test
@@ -115,5 +117,25 @@ public class TestRecording {
 		TGPunchRange range = new TGPunchRange(4, 6).endingWith(song);
 
 		assertEquals("4 to 4", range.getFirst() + " to " + range.getLast());
+	}
+
+	// "first sample @ tempo" of each clip of the take, measure by measure
+	private String clips() {
+		List<String> clips = new ArrayList<String>();
+		for (int m = 0; m < 4; m++) {
+			for (app.tuxguitar.song.models.TGTakeClip clip : track.getMeasure(m).getTakeClips()) {
+				clips.add("m" + (m + 1) + ":" + clip.getFirstSample() + "@" + clip.getTempo());
+			}
+		}
+		return String.join(" ", clips);
+	}
+
+	@Test
+	public void eachClipKnowsWhereItsAudioStartsInTheTakeAndTheTempoItWasRecordedAt() {
+		song.getMeasureHeader(1).getTempo().setQuarterValue(60);
+		record(2 * QUARTER, 3 * MEASURE, 80, null);
+
+		assertEquals("m1:0@96.0 m2:55125@48.0 m3:275625@96.0", clips());
+		assertEquals(List.of("2:55125+385875"), captures);
 	}
 }

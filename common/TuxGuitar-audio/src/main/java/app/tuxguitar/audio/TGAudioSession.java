@@ -1,9 +1,11 @@
 package app.tuxguitar.audio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import app.tuxguitar.song.models.TGSong;
@@ -23,6 +25,8 @@ public final class TGAudioSession {
 
 	// tracks are armed as objects: a track brought back by undo is a new one, so it comes back not armed
 	private final Set<TGTrack> armedTracks = new HashSet<TGTrack>();
+	// kept while a track is disarmed and armed again
+	private final Map<TGTrack, TGMonitoring> monitoring = new HashMap<TGTrack, TGMonitoring>();
 	private TGAudioDevice device;
 	private TGPunchRange punchRange;
 
@@ -64,6 +68,14 @@ public final class TGAudioSession {
 			}
 		}
 		return tracks;
+	}
+
+	public TGMonitoring getMonitoring(TGTrack track) {
+		return this.monitoring.getOrDefault(track, TGMonitoring.OFF);
+	}
+
+	public void setMonitoring(TGTrack track, TGMonitoring monitoring) {
+		this.monitoring.put(track, monitoring);
 	}
 
 	public void setPunchRange(TGPunchRange punchRange) {

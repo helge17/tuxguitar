@@ -136,7 +136,7 @@ public class TestAudioTracks {
 	@Test
 	public void aCopiedMeasureSharesItsTakeClipsAndChosenTake() {
 		TGMeasure measure = song.getTrack(0).getMeasure(0);
-		TGTakeClip clip = new TGTakeClip(take, 960, 1920);
+		TGTakeClip clip = new TGTakeClip(take, 960, 1920, 0, 120);
 		measure.addTakeClip(clip);
 		measure.setChosenTake(take);
 
@@ -151,9 +151,9 @@ public class TestAudioTracks {
 	public void removingATakeFromAMeasureRemovesItsClipsAndTheChoiceOfIt() {
 		TGMeasure measure = song.getTrack(0).getMeasure(0);
 		TGTake other = new TGTake(2, new float[] { 0f });
-		measure.addTakeClip(new TGTakeClip(take, 0, 960));
-		measure.addTakeClip(new TGTakeClip(other, 960, 1920));
-		measure.addTakeClip(new TGTakeClip(take, 1920, 3840));
+		measure.addTakeClip(new TGTakeClip(take, 0, 960, 0, 120));
+		measure.addTakeClip(new TGTakeClip(other, 960, 1920, 0, 120));
+		measure.addTakeClip(new TGTakeClip(take, 1920, 3840, 0, 120));
 		measure.setChosenTake(take);
 
 		measure.removeTake(take);
@@ -186,11 +186,13 @@ public class TestAudioTracks {
 	}
 
 	@Test
-	public void aClipIsTheTakeBetweenTwoTicksOfItsMeasure() {
-		TGTakeClip clip = new TGTakeClip(take, 960, 1920);
+	public void aClipIsTheTakeBetweenTwoTicksOfItsMeasureFromASampleAtTheTempoItWasRecordedAt() {
+		TGTakeClip clip = new TGTakeClip(take, 960, 1920, 22050, 96.0);
 
 		assertSame(take, clip.getTake());
 		assertEquals(960, clip.getStart());
 		assertEquals(1920, clip.getEnd());
+		assertEquals(22050, clip.getFirstSample());
+		assertEquals(96.0, clip.getTempo());
 	}
 }

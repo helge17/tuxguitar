@@ -112,7 +112,6 @@ Feature: Audio tracks
     And track 1 is armed
     And track 1's takes read "take 1: m1b1 to m2b1"
 
-  @planned
   Scenario Outline: audio tracks are muted and soloed as other tracks are
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
@@ -127,7 +126,6 @@ Feature: Audio tracks
       | soloed track 2 | holds a       |
       | muted track 1  | holds a       |
 
-  @planned
   Scenario Outline: audio tracks sound only when the MIDI Port is the TuxGuitar Synthesizer
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1

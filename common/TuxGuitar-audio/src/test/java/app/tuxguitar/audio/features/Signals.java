@@ -19,7 +19,7 @@ import app.tuxguitar.song.models.TGSong;
 final class Signals {
 
 	static final String PATTERN = "clicks of -?[\\d.]+ on every beat|a [\\d.]+ Hz tone(?: peaking at [\\d.]+)?|a constant level of -?[\\d.]+"
-		+ "|a tone per measure of [\\d, ]+(?: and \\d+)? Hz";
+		+ "|a tone per measure of [\\d, ]+(?: and \\d+)? Hz|one click of -?[\\d.]+ at measure \\d+ beat [\\d.]+";
 
 	private interface Signal {
 		LongToDoubleFunction parse(Matcher matcher, TGSong song, int sampleRate, int firstMeasure);
@@ -32,6 +32,15 @@ final class Signals {
 		SIGNALS.put(Pattern.compile("a ([\\d.]+) Hz tone(?: peaking at ([\\d.]+))?"), Signals::tone);
 		SIGNALS.put(Pattern.compile("a constant level of (-?[\\d.]+)"), Signals::level);
 		SIGNALS.put(Pattern.compile("a tone per measure of ([\\d, ]+(?: and \\d+)?) Hz"), Signals::tonePerMeasure);
+		SIGNALS.put(Pattern.compile("one click of (-?[\\d.]+) at (measure \\d+ beat [\\d.]+)"), Signals::oneClick);
+	}
+
+	// at the song's first tempo, from the start of the song
+	private static LongToDoubleFunction oneClick(Matcher matcher, TGSong song, int sampleRate, int firstMeasure) {
+		double value = Double.parseDouble(matcher.group(1));
+		long ticks = SongPosition.parse(matcher.group(2)).tick(song) - song.getMeasureHeader(0).getStart();
+		long at = Math.round(ticks * sampleRate * 60.0 / (960.0 * song.getMeasureHeader(0).getTempo().getQuarterValue()));
+		return sample -> (sample == at ? value : 0);
 	}
 
 	private Signals() {

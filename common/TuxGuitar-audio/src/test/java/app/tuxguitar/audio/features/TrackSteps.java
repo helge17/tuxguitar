@@ -10,6 +10,8 @@ import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.track.TGCloneTrackAction;
 import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
 import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
+import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableCloneTrackController;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableMoveTrackUpController;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableRemoveTrackController;
@@ -104,5 +106,21 @@ public class TrackSteps {
 		TGTrack track = world.track(number);
 		assertNotEquals(world.track(other).getChannelId(), track.getChannelId());
 		assertEquals(track.getChannelId(), world.channel(track).getChannelId());
+	}
+
+	@Given("I have muted track {int}")
+	public void mute(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.fixture().actionContext.setAttribute(TGSetTrackMuteAction.ATTRIBUTE_MUTE, Boolean.TRUE);
+		world.execute(new TGSetTrackMuteAction(world.fixture().context));
+		assertTrue(world.track(number).isMute());
+	}
+
+	@Given("I have soloed track {int}")
+	public void solo(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.fixture().actionContext.setAttribute(TGSetTrackSoloAction.ATTRIBUTE_SOLO, Boolean.TRUE);
+		world.execute(new TGSetTrackSoloAction(world.fixture().context));
+		assertTrue(world.track(number).isSolo());
 	}
 }

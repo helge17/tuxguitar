@@ -119,6 +119,13 @@ public class SongSteps {
 		world.executeUndoable(new TGAddMeasureAction(world.fixture().context), new TGUndoableAddMeasureController());
 	}
 
+	@Given("I have inserted a measure before measure {int}")
+	public void haveInsertedAMeasure(int number) {
+		int count = world.song().countMeasureHeaders();
+		insertAMeasure(number);
+		assertEquals(count + 1, world.song().countMeasureHeaders());
+	}
+
 	@When("I remove measure {int}")
 	public void removeMeasure(int number) {
 		world.fixture().actionContext.setAttribute(TGRemoveMeasureAction.ATTRIBUTE_MEASURE_NUMBER, number);

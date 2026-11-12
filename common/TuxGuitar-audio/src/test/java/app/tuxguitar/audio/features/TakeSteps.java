@@ -46,7 +46,7 @@ public class TakeSteps {
 	public void hasATake(int number, String signal, SongPosition from, SongPosition to) {
 		TestInterface device = new TestInterface();
 		device.play(world.channel(world.track(number)).getAudioInput().getChannel(), Signals.parse(signal, world.song(), TestInterface.SAMPLE_RATE, from.measure()));
-		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null, 100);
+		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null);
 		recording.record(List.of(world.track(number)), TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1));
 		world.rememberTakes(number);
 	}

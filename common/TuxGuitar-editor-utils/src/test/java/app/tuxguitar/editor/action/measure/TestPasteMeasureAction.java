@@ -81,7 +81,7 @@ public class TestPasteMeasureAction {
 		track(2).getMeasure(0).clear();
 		TGChannel channel = fixture.songManager.getChannel(fixture.song, track(2).getChannelId());
 		channel.setAudioInput(TGAudioInput.mono(1));
-		track(2).getMeasure(0).addTakeClip(new TGTakeClip(new TGTake(1, new float[] { 0.5f }), 0, 960));
+		track(2).getMeasure(0).addTakeClip(new TGTakeClip(new TGTake(1, new float[] { 0.5f }), 0, 960, 0, 120));
 		return this;
 	}
 

@@ -35,8 +35,8 @@ public class TestTakePlayback {
 
 	@Test
 	public void theOlderTakePlaysAgainWhereTheNewerEnds() {
-		measure.addTakeClip(new TGTakeClip(new TGTake(1, new float[0]), 0, 3840));
-		measure.addTakeClip(new TGTakeClip(new TGTake(2, new float[0]), 960, 1920));
+		measure.addTakeClip(new TGTakeClip(new TGTake(1, new float[0]), 0, 3840, 0, 120));
+		measure.addTakeClip(new TGTakeClip(new TGTake(2, new float[0]), 960, 1920, 0, 120));
 
 		assertEquals("0:1 960:2 1920:1", playback());
 	}

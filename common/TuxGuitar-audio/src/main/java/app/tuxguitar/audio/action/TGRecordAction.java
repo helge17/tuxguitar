@@ -16,7 +16,8 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Records the armed tracks while the song plays from a position until another one is reached in the last pass, or
- * until that pass ends. It needs the TuxGuitar Synthesizer as the MIDI Port. It succeeds when it made a take.
+ * until that pass ends. It needs the TuxGuitar Synthesizer as the MIDI Port. It succeeds when it made a take. What was
+ * heard while recording is left in the context as TGPlayAction.ATTRIBUTE_RENDER.
  */
 public class TGRecordAction extends TGActionBase {
 
@@ -42,7 +43,8 @@ public class TGRecordAction extends TGActionBase {
 		Long stop = context.getAttribute(ATTRIBUTE_STOP);
 		Integer passes = context.getAttribute(ATTRIBUTE_PASSES);
 		List<TGPlayedMeasure> played = TGSongTime.play(song, player.getMode(), start, stop, passes);
-		TGRecording recording = new TGRecording(getSongManager(context), song, session.getDevice(), session.getPunchRange(song), player.getMode().getCurrentPercent());
+		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, TGPlayAction.play(getContext(), context, getSongManager(context), true));
+		TGRecording recording = new TGRecording(getSongManager(context), song, session.getDevice(), session.getPunchRange(song));
 		if (recording.record(tracks, played) > 0) {
 			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		}
