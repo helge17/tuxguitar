@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.tuxguitar.io.base.TGFileFormat;
@@ -64,6 +65,8 @@ import org.xml.sax.SAXException;
 
 public class TestFileFormat20 {
 	private static final String XSD_SCHEMA = "tuxguitar_20.xsd";
+	private static final String SONG_START = "<TuxGuitarFile><TGSong><name/><artist/><album/><author/><date/><copyright/><writer/>"
+			+ "<transcriber/><comments/>";
 
 	@Test
 	public void testRecognizeValidFile() throws FileNotFoundException {
@@ -599,8 +602,7 @@ public class TestFileFormat20 {
 	// a header without time signature or tempo keeps the previous ones, the first header defaults to 4/4 at 120
 	@Test
 	public void missingHeaderValuesAreTakenFromThePreviousHeader() {
-		String xml = "<TuxGuitarFile><TGSong><name/><artist/><album/><author/><date/><copyright/><writer/>"
-				+ "<transcriber/><comments/>"
+		String xml = SONG_START
 				+ "<TGMeasureHeader/>"
 				+ "<TGMeasureHeader><timeSignature numerator=\"3\" denominator=\"8\"/><tempo base=\"8\" dotted=\"true\">90</tempo></TGMeasureHeader>"
 				+ "<TGMeasureHeader/>"
@@ -616,6 +618,33 @@ public class TestFileFormat20 {
 		assertEquals(TGDuration.QUARTER_TIME, song.getMeasureHeader(0).getStart());
 		assertEquals(TGDuration.QUARTER_TIME * 5, song.getMeasureHeader(1).getStart());
 		assertEquals(4, song.getMeasureHeader(3).getNumber());
+	}
+
+	// a measure without clef or key signature is in treble clef, key 0; strings are numbered from 1
+	@Test
+	public void aTrackReadsWithItsDefaults() {
+		TGSong song = readFromXml(oneMeasureSong(TGDuration.getPreciseStartingPoint()), new TGFactory());
+
+		TGTrack track = song.getTrack(0);
+		assertEquals(TGMeasure.CLEF_TREBLE, track.getMeasure(0).getClef());
+		assertEquals(0, track.getMeasure(0).getKeySignature());
+		assertEquals("1:64 2:59", track.getString(1).getNumber() + ":" + track.getString(1).getValue()
+				+ " " + track.getString(2).getNumber() + ":" + track.getString(2).getValue());
+	}
+
+	// a song of another (development) version, whose first beat is not where songs start, is refused
+	@Test
+	public void aFirstBeatNotAtTheSongStartIsRefused() {
+		byte[] xml = oneMeasureSong(TGDuration.getPreciseStartingPoint() + 1);
+
+		assertThrows(TGFileFormatException.class, () -> readFromXml(xml, new TGFactory()));
+	}
+
+	private static byte[] oneMeasureSong(long firstBeatStart) {
+		return (SONG_START + "<TGMeasureHeader/><TGTrack><name>t</name><channelId>1</channelId><color R=\"0\" G=\"0\" B=\"0\"/>"
+				+ "<TGString>64</TGString><TGString>59</TGString>"
+				+ "<TGMeasure><TGBeat><preciseStart>" + firstBeatStart + "</preciseStart><voice><duration value=\"4\"/></voice></TGBeat></TGMeasure>"
+				+ "</TGTrack></TGSong></TuxGuitarFile>").getBytes(StandardCharsets.UTF_8);
 	}
 
 	// what reads back as the same song is not written: empty beat texts, the max fret of percussion tracks
