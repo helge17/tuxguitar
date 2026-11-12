@@ -24,6 +24,7 @@ public class TGAddMeasureAction extends TGActionBase {
 		if( number > 0 && number <=  (song.countMeasureHeaders() + 1)){
 			TGSongManager tgSongManager = getSongManager(context);
 			tgSongManager.addNewMeasure(song, number);
+			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		}
 	}
 }

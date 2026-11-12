@@ -20,5 +20,6 @@ public class TGTransportModeAction extends TGActionBase {
 		MidiPlayerMode mode = MidiPlayer.getInstance(getContext()).getMode();
 		mode.copyFrom((MidiPlayerMode)context.getAttribute(ATTRIBUTE_PLAYER_MODE));
 		mode.reset();
+		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
 }
