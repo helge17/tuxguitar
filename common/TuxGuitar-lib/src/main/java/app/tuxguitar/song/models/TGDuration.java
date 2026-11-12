@@ -436,20 +436,22 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 
 	// arbitrary complexity criteria
 	// returns a positive value if more complex, negative if less complex, zero if equivalent
+	// (approximations are never double-dotted: see acceptsApproximation)
 	private int moreComplexThan(TGDuration d) {
 		if (d == null) {
 			// zero duration is "as simple as" no dotted, no time division
-			if (this.dotted || this.doubleDotted || !this.getDivision().isEqual(TGDivisionType.NORMAL)) {
-				return 1;
-			}
-			return 0;
+			return (isPlain() ? 0 : 1);
 		}
-		if (this.isDoubleDotted() && !d.isDoubleDotted()) return 1;
-		if (this.getDivision().getEnters() != d.getDivision().getEnters()) {
-			return this.getDivision().getEnters() > d.getDivision().getEnters() ? 1 : -1;
+		int byDivision = Integer.compare(this.getDivision().getEnters(), d.getDivision().getEnters());
+		if (byDivision != 0) {
+			return byDivision;
 		}
-		if (this.isDotted() && !d.isDotted()) return 1;
-		return 0;
+		return ((this.isDotted() && !d.isDotted()) ? 1 : 0);
+	}
+
+	// not dotted, no time division
+	private boolean isPlain() {
+		return !this.dotted && !this.doubleDotted && this.getDivision().isEqual(TGDivisionType.NORMAL);
 	}
 
 	private static long gcd(long a, long b) {
