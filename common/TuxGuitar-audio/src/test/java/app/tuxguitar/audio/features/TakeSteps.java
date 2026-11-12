@@ -16,7 +16,8 @@ import app.tuxguitar.audio.TGTakeSpan;
 import app.tuxguitar.audio.TGTakes;
 import app.tuxguitar.audio.action.TGChooseTakeAction;
 import app.tuxguitar.audio.action.TGDeleteTakeAction;
-import app.tuxguitar.audio.undo.TGUndoableTakesController;
+import app.tuxguitar.audio.undo.TGUndoableOnSuccess;
+import app.tuxguitar.editor.undo.impl.track.TGUndoableTrackGenericController;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGMeasure;
@@ -112,7 +113,7 @@ public class TakeSteps {
 		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_TAKE, take);
 		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_FIRST_MEASURE, first);
 		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_LAST_MEASURE, last);
-		world.executeUndoable(new TGChooseTakeAction(world.fixture().context), new TGUndoableTakesController());
+		world.executeUndoable(new TGChooseTakeAction(world.fixture().context), new TGUndoableOnSuccess(new TGUndoableTrackGenericController()));
 	}
 
 	@Given("I have chosen take {int} of track {int} for measures {int} to {int}")
@@ -125,7 +126,7 @@ public class TakeSteps {
 	public void delete(int take, int number) {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
 		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_TAKE, take);
-		world.executeUndoable(new TGDeleteTakeAction(world.fixture().context), new TGUndoableTakesController());
+		world.executeUndoable(new TGDeleteTakeAction(world.fixture().context), new TGUndoableOnSuccess(new TGUndoableTrackGenericController()));
 	}
 
 	@Given("I have deleted take {int} of track {int}")

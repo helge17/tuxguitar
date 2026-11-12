@@ -115,6 +115,16 @@ public class LineInSteps {
 		return AudioWorld.samples(take(take, number));
 	}
 
+	@Then("take {int} of track {int} is mono")
+	public void isMono(int take, int number) {
+		assertEquals(1, take(take, number).countChannels());
+	}
+
+	@Then("take {int} of track {int} is stereo")
+	public void isStereo(int take, int number) {
+		assertEquals(2, take(take, number).countChannels());
+	}
+
 	@Then("take {int} of track {int} is {int} samples long")
 	public void isSamplesLong(int take, int number, int length) {
 		assertEquals(length, take(take, number).countSamples());

@@ -78,7 +78,6 @@ Feature: Recording line-in audio
 
   # Input channels
 
-  @planned
   Scenario Outline: a mono take records the one input channel its track is set to
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 2

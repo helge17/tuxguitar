@@ -17,6 +17,7 @@ import app.tuxguitar.audio.TGTakes;
 import app.tuxguitar.editor.action.SongActionFixture;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.editor.action.channel.TGAddChannelAction;
+import app.tuxguitar.editor.action.channel.TGUpdateChannelAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.editor.action.measure.TGInsertMeasuresAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
@@ -59,7 +60,8 @@ public class AudioWorld {
 			new TGMoveTrackDownAction(this.fixture.context), new TGCopyTrackFromAction(this.fixture.context),
 			new TGAddChannelAction(this.fixture.context), new TGAddMeasureAction(this.fixture.context),
 			new TGRemoveMeasureAction(this.fixture.context), new TGInsertMeasuresAction(this.fixture.context),
-			new TGCopySongFromAction(this.fixture.context), new TGChangeTempoAction(this.fixture.context));
+			new TGCopySongFromAction(this.fixture.context), new TGChangeTempoAction(this.fixture.context),
+			new TGUpdateChannelAction(this.fixture.context));
 		TGUndoableManager.getInstance(this.fixture.context).setBuffer(this.undoHistory);
 		TGPropertiesManager.getInstance(this.fixture.context).setPropertiesFactory(MapProperties::new);
 	}
