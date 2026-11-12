@@ -52,6 +52,13 @@ public class TestAudioTracks {
 		assertFalse(track.isPercussion());
 	}
 
+	// an audio track holds no notes: its highest fret is the one of no note at all
+	@Test
+	public void aTrackWithoutNotesOrMeasuresHasNoHighestFret() {
+		assertEquals(-1, addAudioTrack().getHighestFret());
+		assertEquals(-1, new TGFactory().newTrack().getHighestFret());
+	}
+
 	@Test
 	public void aGuitarTrackIsNoAudioTrack() {
 		assertFalse(song.getTrack(0).isAudio());
