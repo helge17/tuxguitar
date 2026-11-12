@@ -1,11 +1,15 @@
 package app.tuxguitar.midi.synth;
 
+import javax.sound.sampled.AudioFormat;
+
 public class TGAudioBuffer {
 
 	public static final int CHANNELS = 2;
 	public static final int BUFFER_SIZE = 1024;
 	public static final float SAMPLE_RATE = 44100f;
 	public static final boolean BIGENDIAN = false;
+	// the format of the samples in a buffer: what the audio line plays and what Gervill renders
+	public static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, 16, CHANNELS, true, BIGENDIAN);
 
 	private int buffers;
 	private byte[] buffer;

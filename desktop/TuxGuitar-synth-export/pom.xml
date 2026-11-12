@@ -32,6 +32,12 @@
 			<artifactId>tuxguitar-synth</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- the synthesizer host core and the Gervill source, headless (common/TuxGuitar-synth-core) -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-synth-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar</artifactId>

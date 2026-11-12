@@ -11,7 +11,6 @@ import javax.sound.midi.Receiver;
 import javax.sound.sampled.AudioInputStream;
 
 import app.tuxguitar.midi.synth.TGAudioBuffer;
-import app.tuxguitar.midi.synth.TGAudioLine;
 import app.tuxguitar.midi.synth.TGMidiProcessor;
 import app.tuxguitar.util.TGContext;
 
@@ -96,7 +95,7 @@ public class GervillProcessor implements TGMidiProcessor {
 			if( this.synth.isOpen()) {
 				this.synth.close();
 			}
-			this.stream = this.synth.openStream(TGAudioLine.AUDIO_FORMAT, this.createSynthInfo());
+			this.stream = this.synth.openStream(TGAudioBuffer.AUDIO_FORMAT, this.createSynthInfo());
 			this.receiver = this.synth.getReceiver();
 
 			this.soundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {

@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>app.tuxguitar</groupId>
+		<version>9.99-SNAPSHOT</version>
+		<relativePath>../../desktop/</relativePath>
+	</parent>
+
+	<!-- The TuxGuitar Synthesizer's host core, headless: programs (a MIDI receiver followed by audio processors), its
+		channels, the processor factories plugins add, the 16-bit audio buffer, and the Gervill source of General MIDI
+		programs. Moved out of desktop/TuxGuitar-synth and desktop/TuxGuitar-synth-gervill, which keep the audio line,
+		the MIDI Port and the UI, so the audio module renders without the app. -->
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-synth-core</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.14.4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-lib</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>media.sound</groupId>
+			<artifactId>gervill</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

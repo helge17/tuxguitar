@@ -50,6 +50,7 @@
 		<module>../../TuxGuitar-svg</module>
 		<module>../../TuxGuitar-image-swt</module>
 		<module>../../TuxGuitar-cocoa-integration-swt</module>
+		<module>../../../common/TuxGuitar-synth-core</module>
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
@@ -288,6 +289,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-cocoa-integration-swt</artifactId>
 									<destFileName>tuxguitar-cocoa-integration-swt.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-core</artifactId>
+									<destFileName>tuxguitar-synth-core.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

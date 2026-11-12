@@ -47,6 +47,7 @@
 		<module>../../TuxGuitar-tef</module>
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
+		<module>../../../common/TuxGuitar-synth-core</module>
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
@@ -307,6 +308,12 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-svg</artifactId>
 									<destFileName>tuxguitar-svg.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-core</artifactId>
+									<destFileName>tuxguitar-synth-core.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>

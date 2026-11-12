@@ -14,25 +14,12 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
 		<resources>
 			<resource>
 				<directory>share</directory>
 			</resource>
 		</resources>
 	</build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.junit</groupId>
-				<artifactId>junit-bom</artifactId>
-				<version>5.14.4</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -45,6 +32,13 @@
 			<artifactId>tuxguitar-editor-utils</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- the synthesizer host core, headless (common/TuxGuitar-synth-core); this module keeps the audio line, the
+			MIDI Port and the UI -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-synth-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar</artifactId>
@@ -54,11 +48,6 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tuxguitar-ui-toolkit</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
