@@ -1,6 +1,7 @@
 package app.tuxguitar.io.tg.v13;
 
 import app.tuxguitar.io.base.TGFileFormat;
+import app.tuxguitar.io.tg.util.TGWrittenVoice;
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGDuration;
@@ -156,7 +157,7 @@ public class TGStream {
 		}
 	}
 
-	protected class TGVoiceData {
+	protected class TGVoiceData implements TGWrittenVoice {
 		private long start;
 		private int velocity;
 		private int flags;
