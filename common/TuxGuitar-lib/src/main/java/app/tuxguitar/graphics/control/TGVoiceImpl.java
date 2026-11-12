@@ -1,6 +1,8 @@
 package app.tuxguitar.graphics.control;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import app.tuxguitar.graphics.control.painters.TGNotePainter;
 import app.tuxguitar.graphics.control.painters.TGSilencePainter;
@@ -184,52 +186,57 @@ public class TGVoiceImpl extends TGVoice{
 	}
 
 	public void updateNoteVoice(TGLayout layout) {
-		this.joinedType = JOINED_TYPE_NONE_RIGHT;
 		this.joinedGreaterThanQuarter = false;
 		this.setJoin1(this);
 		this.setJoin2(this);
 
-		boolean noteJoined = false;
-		boolean withPrev = false;
+		boolean withPrev = getMeasureImpl().canJoin(layout.getSongManager(), this, this.previous);
+		boolean joinedPrev = (withPrev && joinPrevious());
+		boolean joinedNext = (getMeasureImpl().canJoin(layout.getSongManager(), this, this.next) && joinNext());
+		this.joinedType = getJoinedType(withPrev, joinedPrev, joinedNext);
 
-		//trato de unir con el componente anterior
-		if (this.previous != null && !this.previous.isRestVoice()) {
-			if (getMeasureImpl().canJoin(layout.getSongManager(),this, this.previous)) {
-				withPrev = true;
-				if (this.previous.getDuration().getValue() >= getDuration().getValue()) {
-					this.setJoin1(this.previous);
-					this.setJoin2(this);
-					this.joinedType = JOINED_TYPE_LEFT;
-					noteJoined = true;
-				}
-				if (this.previous.getDuration().getValue() > TGDuration.QUARTER){
-					this.joinedGreaterThanQuarter = true;
-				}
-			}
+		updateTablatureStemSpacing(layout);
+	}
+
+	// beamed to a joinable previous voice at least as long
+	private boolean joinPrevious() {
+		this.checkJoinedGreaterThanQuarter(this.previous);
+		if (this.previous.getDuration().getValue() >= getDuration().getValue()) {
+			this.setJoin1(this.previous);
+			return true;
 		}
+		return false;
+	}
 
-		//trato de unir con el componente que le sigue
-		if (this.next != null && !this.next.isRestVoice() ) {
-			if (getMeasureImpl().canJoin(layout.getSongManager(),this, this.next)) {
-				if (this.next.getDuration().getValue() >= getDuration().getValue()) {
-					this.setJoin2(this.next);
-					if (this.previous == null || this.previous.isRestVoice() || this.previous.getDuration().getValue() < getDuration().getValue()) {
-						this.setJoin1(this);
-					}
-					noteJoined = true;
-					this.joinedType = JOINED_TYPE_RIGHT;
-				}
-				if (this.next.getDuration().getValue() > TGDuration.QUARTER){
-					this.joinedGreaterThanQuarter = true;
-				}
-			}
+	// beamed to a joinable next voice at least as long
+	private boolean joinNext() {
+		this.checkJoinedGreaterThanQuarter(this.next);
+		if (this.next.getDuration().getValue() >= getDuration().getValue()) {
+			this.setJoin2(this.next);
+			return true;
 		}
+		return false;
+	}
 
-		//si no hubo union decido para que lado girar la figura
-		if (!noteJoined && withPrev) {
-			this.joinedType = JOINED_TYPE_NONE_LEFT;
+	private void checkJoinedGreaterThanQuarter(TGVoiceImpl joinable) {
+		if (joinable.getDuration().getValue() > TGDuration.QUARTER){
+			this.joinedGreaterThanQuarter = true;
 		}
+	}
 
+	// beamed to the next voice, else to the previous one; unbeamed, the flag turns away from a joinable previous voice
+	private static int getJoinedType(boolean withPrev, boolean joinedPrev, boolean joinedNext) {
+		if (joinedNext) {
+			return JOINED_TYPE_RIGHT;
+		}
+		if (joinedPrev) {
+			return JOINED_TYPE_LEFT;
+		}
+		return (withPrev ? JOINED_TYPE_NONE_LEFT : JOINED_TYPE_NONE_RIGHT);
+	}
+
+	// on the tablature alone, the voice reserves room for its stem below (or above) the strings
+	private void updateTablatureStemSpacing(TGLayout layout) {
 		if( (layout.getStyle() & TGLayout.DISPLAY_TABLATURE) != 0 && (layout.getStyle() & TGLayout.DISPLAY_SCORE) == 0){
 			this.minY = 0;
 			this.maxY = getBeatImpl().getMeasureImpl().getTrackImpl().getTabHeight();
@@ -348,52 +355,45 @@ public class TGVoiceImpl extends TGVoice{
 	}
 
 	//----silence
+	private interface SilenceSymbol {
+		void paint(UIPainter painter, float x, float y, float scale);
+	}
+
+	// the rest symbol of each duration value
+	private static final Map<Integer, SilenceSymbol> SILENCE_SYMBOLS = new HashMap<Integer, SilenceSymbol>();
+	static {
+		SILENCE_SYMBOLS.put(TGDuration.WHOLE, TGSilencePainter::paintWhole);
+		SILENCE_SYMBOLS.put(TGDuration.HALF, TGSilencePainter::paintHalf);
+		SILENCE_SYMBOLS.put(TGDuration.QUARTER, TGSilencePainter::paintQuarter);
+		SILENCE_SYMBOLS.put(TGDuration.EIGHTH, TGSilencePainter::paintEighth);
+		SILENCE_SYMBOLS.put(TGDuration.SIXTEENTH, TGSilencePainter::paintSixteenth);
+		SILENCE_SYMBOLS.put(TGDuration.THIRTY_SECOND, TGSilencePainter::paintThirtySecond);
+		SILENCE_SYMBOLS.put(TGDuration.SIXTY_FOURTH, TGSilencePainter::paintSixtyFourth);
+	}
+
 	public void paintSilence(TGLayout layout,UIPainter painter, float fromX, float fromY) {
-		int style = layout.getStyle();
 		float x = 0;
-		float lineSpacing = 0;
 		float y = 0;
 		float scale = 0;
 		float layoutScale = layout.getScale();
 
-		if((style & TGLayout.DISPLAY_SCORE) != 0 ){
+		// on the score when it is shown, else on the tablature
+		if((layout.getStyle() & TGLayout.DISPLAY_SCORE) != 0 ){
 			x = fromX + getPosX() + getBeatImpl().getSpacing(layout);
 			y = fromY + getPaintPosition(TGTrackSpacing.POSITION_SCORE_MIDDLE_LINES) + this.silenceY;
-			lineSpacing = layout.getScoreLineSpacing();
-			scale = (lineSpacing / 9.0f);
+			scale = (layout.getScoreLineSpacing() / 9.0f);
 		}else{
 			x = fromX + getPosX() + getBeatImpl().getSpacing(layout) - 1;
 			y = fromY + getPaintPosition(TGTrackSpacing.POSITION_TABLATURE) + this.silenceY;
-			lineSpacing = layout.getStringSpacing();
-			scale = (lineSpacing / 10.0f);
+			scale = (layout.getStringSpacing() / 10.0f);
 		}
 
 		setStyle(layout, painter,(layout.isPlayModeEnabled() && isPlaying(layout)));
 		painter.initPath(UIPainter.PATH_FILL);
-
-		int duration = getDuration().getValue();
-		if(duration == TGDuration.WHOLE){
-			TGSilencePainter.paintWhole(painter, x, y , scale);
+		SilenceSymbol symbol = SILENCE_SYMBOLS.get(getDuration().getValue());
+		if( symbol != null ){
+			symbol.paint(painter, x, y, scale);
 		}
-		else if(duration == TGDuration.HALF){
-			TGSilencePainter.paintHalf(painter, x, y , scale);
-		}
-		else if(duration == TGDuration.QUARTER){
-			TGSilencePainter.paintQuarter(painter, x, y, scale);
-		}
-		else if(duration == TGDuration.EIGHTH){
-			TGSilencePainter.paintEighth(painter, x, y, scale);
-		}
-		else if(duration == TGDuration.SIXTEENTH){
-			TGSilencePainter.paintSixteenth(painter, x, y, scale);
-		}
-		else if(duration == TGDuration.THIRTY_SECOND){
-			TGSilencePainter.paintThirtySecond(painter, x, y, scale);
-		}
-		else if(duration == TGDuration.SIXTY_FOURTH){
-			TGSilencePainter.paintSixtyFourth(painter, x, y, scale);
-		}
-
 		painter.closePath();
 
 		if( getDuration().isDotted() || getDuration().isDoubleDotted()) {
@@ -425,74 +425,102 @@ public class TGVoiceImpl extends TGVoice{
 
 	public void paintTablatureBeat(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing){
 		if(!isRestVoice() ){
-			float scale = layout.getScale();
-			float xMove = (2f * scale);
-			float x = ( fromX + getPosX() + spacing + xMove );
+			float x = ( fromX + getPosX() + spacing + (2f * layout.getScale()) );
 			float y1 = 0;
 			float y2 = 0;
-			float verticalLineWidth = layout.getLineWidth(1);
-			float horizontalLineWidth = layout.getLineWidth(2);
 			float stringSpacing = layout.getStringSpacing();
-			float direction = (getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ? 1f : -1f);
-			if( getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN ){
+			boolean down = (getBeatGroup().getDirection() == TGBeatGroup.DIRECTION_DOWN);
+			if( down ){
 				y1 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + (stringSpacing / 2));
 				y2 = (fromY + getMeasureImpl().getTrackImpl().getTabHeight() + ((stringSpacing / 2) * 5));
 			}else{
-				y1 = (fromY - (stringSpacing / 2) - horizontalLineWidth);
+				y1 = (fromY - (stringSpacing / 2) - layout.getLineWidth(2));
 				y2 = (fromY - ((stringSpacing / 2) * 5));
 			}
+			float direction = (down ? 1f : -1f);
 			if (getDuration().getValue() >= TGDuration.QUARTER) {
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath(UIPainter.PATH_DRAW | UIPainter.PATH_FILL);
-				painter.setAntialias(false);
-				painter.setLineWidth( verticalLineWidth );
-				painter.moveTo(x, y1);
-				painter.lineTo(x, y2);
-				if (getDuration().getValue() >= TGDuration.EIGHTH) {
-					float x1 = 0;
-					float x2 = 0;
-					int joinedType = getJoinedType();
-					if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
-						x1 = getPosX() + xMove + spacing;
-						x2 = getPosX() + xMove + spacing + (6 * scale);
-					}else if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
-						x1 = getPosX() + xMove + spacing - (5 * scale);
-						x2 = getPosX() + xMove + spacing;
-					}else{
-						x1 = getJoin1().getPosX() + xMove + getJoin1().getBeatImpl().getSpacing(layout);
-						x2 = getJoin2().getPosX() + xMove + getJoin2().getBeatImpl().getSpacing(layout);
-					}
-					int index = ( getDuration().getIndex() - 2);
-					if(index > 0){
-						float height = (layout.getStringSpacing() / 2);
-						for(int i = index; i > 0 ;i --){
-							painter.moveTo(fromX + x1, y2 + ((height - (i * height)) * direction));
-							painter.lineTo(fromX + x2, y2 + ((height - (i * height)) * direction));
-							painter.lineTo(fromX + x2, y2 + ((height - (i * height)) * direction) + (horizontalLineWidth * direction));
-							painter.lineTo(fromX + x1, y2 + ((height - (i * height)) * direction) + (horizontalLineWidth * direction));
-							painter.lineTo(fromX + x1, y2 + ((height - (i * height)) * direction));
-						}
-					}
-				}
+				paintTabStem(layout, painter, x, y1, y2);
+				paintTabBeams(layout, painter, fromX, spacing, y2, direction);
 				painter.closePath();
 			} else if (getDuration().getValue() == TGDuration.HALF) {
 				layout.setTabNoteFooterStyle(painter);
 				painter.initPath();
-				painter.setAntialias(false);
-				painter.setLineWidth( verticalLineWidth );
-				painter.moveTo(x, (y1 + ((y2 - y1) / 2)));
-				painter.lineTo(x, y2);
+				paintTabStem(layout, painter, x, (y1 + ((y2 - y1) / 2)), y2);
 				painter.closePath();
 			}
+			paintTabDots(layout, painter, x, y2, direction);
+		}
+	}
 
-			//-------------puntillo--------------------------------------
-			if (getDuration().isDotted() || getDuration().isDoubleDotted()) {
-				int joinedType = getJoinedType();
-				float posX = ((getDuration().getValue() > TGDuration.WHOLE)?((joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT || joinedType == TGVoiceImpl.JOINED_TYPE_RIGHT)?(x+ (4.0f * scale)):(x- (5.0f * scale))):x);
-				float posY = (y2 - ((getDuration().getValue() >= TGDuration.EIGHTH ? ((stringSpacing / 2f) * (getDuration().getIndex() - 2)) : scale) * direction));
-				paintDot(layout, painter, posX, posY, scale);
+	private static void paintTabStem(TGLayout layout, UIPainter painter, float x, float y1, float y2){
+		painter.setAntialias(false);
+		painter.setLineWidth( layout.getLineWidth(1) );
+		painter.moveTo(x, y1);
+		painter.lineTo(x, y2);
+	}
+
+	// one beam (or flag) per duration shorter than a quarter, stacked from the stem end towards the strings
+	private void paintTabBeams(TGLayout layout, UIPainter painter, float fromX, float spacing, float y2, float direction){
+		if (getDuration().getValue() >= TGDuration.EIGHTH) {
+			float xMove = (2f * layout.getScale());
+			float x1 = (fromX + getTabBeamStart(layout, xMove, spacing));
+			float x2 = (fromX + getTabBeamEnd(layout, xMove, spacing));
+			float height = (layout.getStringSpacing() / 2);
+			float lineWidth = layout.getLineWidth(2);
+			for(int i = ( getDuration().getIndex() - 2); i > 0 ;i --){
+				float y = (y2 + ((height - (i * height)) * direction));
+				painter.moveTo(x1, y);
+				painter.lineTo(x2, y);
+				painter.lineTo(x2, y + (lineWidth * direction));
+				painter.lineTo(x1, y + (lineWidth * direction));
+				painter.lineTo(x1, y);
 			}
 		}
+	}
+
+	// a beam starts at the first stem it joins; a flag starts at the stem, or 5 to its left after a joinable voice
+	private float getTabBeamStart(TGLayout layout, float xMove, float spacing){
+		int joinedType = getJoinedType();
+		if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
+			return getPosX() + xMove + spacing;
+		}
+		if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
+			return getPosX() + xMove + spacing - (5 * layout.getScale());
+		}
+		return getJoin1().getPosX() + xMove + getJoin1().getBeatImpl().getSpacing(layout);
+	}
+
+	// a beam ends at the last stem it joins; a flag ends 6 right of the stem, or at the stem after a joinable voice
+	private float getTabBeamEnd(TGLayout layout, float xMove, float spacing){
+		int joinedType = getJoinedType();
+		if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT){
+			return getPosX() + xMove + spacing + (6 * layout.getScale());
+		}
+		if(joinedType == TGVoiceImpl.JOINED_TYPE_NONE_LEFT){
+			return getPosX() + xMove + spacing;
+		}
+		return getJoin2().getPosX() + xMove + getJoin2().getBeatImpl().getSpacing(layout);
+	}
+
+	// the dots sit by the stem end, or under the beams
+	private void paintTabDots(TGLayout layout, UIPainter painter, float x, float y2, float direction){
+		if (getDuration().isDotted() || getDuration().isDoubleDotted()) {
+			float scale = layout.getScale();
+			float posY = (y2 - ((getDuration().getValue() >= TGDuration.EIGHTH ? ((layout.getStringSpacing() / 2f) * (getDuration().getIndex() - 2)) : scale) * direction));
+			paintDot(layout, painter, getTabDotX(x, scale), posY, scale);
+		}
+	}
+
+	// right of the stem when beamed or flagged to the right, else left of it; a whole note has no stem to avoid
+	private float getTabDotX(float x, float scale){
+		if( getDuration().getValue() > TGDuration.WHOLE ){
+			int joinedType = getJoinedType();
+			boolean right = (joinedType == TGVoiceImpl.JOINED_TYPE_NONE_RIGHT || joinedType == TGVoiceImpl.JOINED_TYPE_RIGHT);
+			return (right ? (x + (4.0f * scale)) : (x - (5.0f * scale)));
+		}
+		return x;
 	}
 
 	public void paintScoreBeat(TGLayout layout,UIPainter painter, float fromX, float fromY, float spacing){
