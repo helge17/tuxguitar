@@ -96,7 +96,7 @@ public class TestWsolaKnobs {
 	// end, so the click sounds once, where the piece stretched to twice its length ends
 	@Test
 	public void aShortPieceDoesNotReadPastItsEnd() {
-		float[] output = stretcher.stretch(clicksAt(4096, 1280), 0, 4096, 8192);
+		float[] output = stretcher.stretch(new float[][] {clicksAt(4096, 1280)}, 0, 4096, 8192)[0];
 		assertEquals(List.of(2560), Meters.clicks(output, 0, output.length));
 	}
 
@@ -107,10 +107,31 @@ public class TestWsolaKnobs {
 		for (int i = 0; i < input.length; i++) {
 			input[i] = i / 10000f;
 		}
-		float[] output = stretcher.stretch(input, 2000, 2500, 1000);
+		float[] output = stretcher.stretch(new float[][] {input}, 2000, 2500, 1000)[0];
 		assertEquals(0.2f, output[0], 1e-6);
 		assertEquals(0.20005f, output[1], 1e-6);
 		assertEquals(0.2499f, output[999], 1e-6);
+	}
+
+	// a 440 Hz tone on the left, noise on the right: both sides are read at the positions chosen on their mean, so
+	// the two sides stretched add up to twice their mean stretched
+	@Test
+	public void bothSidesAreReadAtTheSamePositionsChosenOnTheirMean() {
+		Random random = new Random(3);
+		float[][] sides = new float[2][44100];
+		float[] mean = new float[44100];
+		for (int i = 0; i < mean.length; i++) {
+			sides[0][i] = (float) (0.4 * Math.sin(2 * Math.PI * 440 * i / 44100));
+			sides[1][i] = 0.2f * (random.nextFloat() - 0.5f);
+			mean[i] = (sides[0][i] + sides[1][i]) / 2;
+		}
+		float[][] stereo = stretcher.stretch(sides, 0, 44100, 70000);
+		float[] mono = stretcher.stretch(new float[][] {mean}, 0, 44100, 70000)[0];
+
+		assertEquals(2, stereo.length);
+		for (int i = 0; i < mono.length; i++) {
+			assertEquals(2 * mono[i], stereo[0][i] + stereo[1][i], 1e-5, "sample " + i);
+		}
 	}
 
 	// a stretch of exactly a frame is time-stretched, keeping its pitch, not resampled
@@ -120,7 +141,7 @@ public class TestWsolaKnobs {
 		for (int i = 0; i < input.length; i++) {
 			input[i] = (float) (0.4 * Math.sin(2 * Math.PI * 2000 * i / 44100));
 		}
-		float[] output = stretcher.stretch(input, 0, 1024, 2048);
+		float[] output = stretcher.stretch(new float[][] {input}, 0, 1024, 2048)[0];
 		assertEquals(2000, Meters.frequency(output, 0, output.length, 44100), 40);
 	}
 }

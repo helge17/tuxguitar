@@ -5,6 +5,7 @@ package app.tuxguitar.audio;
  */
 public interface TGTimeStretcher {
 
-	// the input from (included) to (excluded) played over length samples
-	float[] stretch(float[] input, int from, int to, int length);
+	// the input's sides (one for mono, left and right for stereo) from (included) to (excluded) played over length
+	// samples; every side is read at the same places, so the sides stay together
+	float[][] stretch(float[][] input, int from, int to, int length);
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
@@ -47,8 +48,7 @@ public final class TGRenderer {
 			while (tracks.hasNext()) {
 				TGTrack track = tracks.next();
 				if (track.isAudio()) {
-					float[] tap = this.tap(track, timeline, recording);
-					taps.put(track.getChannelId(), new float[][] {tap, tap});
+					taps.put(track.getChannelId(), this.tap(track, timeline, recording));
 				}
 			}
 			taps.putAll(TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, new HashSet<Integer>(taps.keySet())));
@@ -57,14 +57,20 @@ public final class TGRenderer {
 		return new TGRender(timeline, taps, output);
 	}
 
-	private float[] tap(TGTrack track, TGTimeline timeline, boolean recording) {
+	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording) {
 		TGTrackSource[] sources = this.sources(track, timeline, recording);
-		float[] input = null;
-		if (Arrays.asList(sources).contains(TGTrackSource.INPUT)) {
-			int channel = this.channel(track).getAudioInput().getChannel(0);
-			input = this.session.getDevice().capture(channel, timeline.getClock(), (int) timeline.length());
-		}
+		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline) : null);
 		return TGTakeTap.render(track, timeline, this.stretcher, sources, input);
+	}
+
+	// what the track's input channel(s) deliver over the timeline: one side, or a pair
+	private float[][] input(TGTrack track, TGTimeline timeline) {
+		TGAudioInput input = this.channel(track).getAudioInput();
+		float[][] sides = new float[input.countChannels()][];
+		for (int side = 0; side < sides.length; side++) {
+			sides[side] = this.session.getDevice().capture(input.getChannel(side), timeline.getClock(), (int) timeline.length());
+		}
+		return sides;
 	}
 
 	// where the track records it sounds its input (monitoring Auto or Always) or nothing (Off); with monitoring
@@ -93,9 +99,10 @@ public final class TGRenderer {
 			float[][] tap = taps.get(track.getChannelId());
 			if (tap != null && !track.isMute() && (!solo || track.isSolo())) {
 				float[] gains = gains(this.channel(track));
-				for (int i = 0; i < tap[0].length; i++) {
-					output[0][i] += tap[0][i] * gains[0];
-					output[1][i] += tap[1][i] * gains[1];
+				for (int side = 0; side < output.length; side++) {
+					for (int i = 0; i < output[side].length; i++) {
+						output[side][i] += tap[side][i] * gains[side];
+					}
 				}
 			}
 		}

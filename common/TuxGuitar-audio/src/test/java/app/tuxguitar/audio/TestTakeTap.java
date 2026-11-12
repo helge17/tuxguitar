@@ -25,9 +25,9 @@ import app.tuxguitar.song.models.TGTrack;
  * from 255/256 to 0 over the same samples, reading on past where it stopped.
  *
  * The song has 4 measures of 4/4 at 120 bpm: 88200 samples each at 44100 Hz. Clips are made by hand, measure by
- * measure, as recording and editing make them. The stretcher used when the tempo differs plays half the level of the
- * first sample it is given, and keeps what it was asked for, so a stretched stretch tells itself from the take's own
- * samples.
+ * measure, as recording and editing make them. The stretcher used when the tempo differs plays, on each side, half the
+ * level of the first sample it is given, and keeps what it was asked for, so a stretched stretch tells itself from the
+ * take's own samples. The tap has two sides; a mono take sounds on both, a stereo one on its own.
  */
 public class TestTakeTap {
 
@@ -42,8 +42,10 @@ public class TestTakeTap {
 
 	private final TGTimeStretcher halfOfTheFirstSample = (input, from, to, length) -> {
 		stretches.add(from + "-" + to + ":" + length);
-		float[] output = new float[length];
-		Arrays.fill(output, input[from] / 2);
+		float[][] output = new float[input.length][length];
+		for (int side = 0; side < input.length; side++) {
+			Arrays.fill(output[side], input[side][from] / 2);
+		}
 		return output;
 	};
 
@@ -91,14 +93,19 @@ public class TestTakeTap {
 		return played(mode, 0, 4 * BAR, 1);
 	}
 
-	private float[] tap(TGTimeline timeline, TGTrackSource[] sources, float[] input) {
-		return TGTakeTap.render(track, timeline, halfOfTheFirstSample, sources, input);
+	// the left side of the tap
+	private float[] tap(TGTimeline timeline, TGTrackSource[] sources, float[][] input) {
+		return TGTakeTap.render(track, timeline, halfOfTheFirstSample, sources, input)[0];
 	}
 
 	private float[] tap(TGTimeline timeline) {
+		return sides(timeline)[0];
+	}
+
+	private float[][] sides(TGTimeline timeline) {
 		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
 		Arrays.fill(sources, TGTrackSource.TAKES);
-		return tap(timeline, sources, null);
+		return TGTakeTap.render(track, timeline, halfOfTheFirstSample, sources, null);
 	}
 
 	private static void assertSamples(double[] expected, float[] tap, int... at) {
@@ -230,7 +237,7 @@ public class TestTakeTap {
 		float[] monitored = new float[4 * M];
 		Arrays.fill(monitored, input);
 		TGTrackSource[] sources = {TGTrackSource.TAKES, source, TGTrackSource.TAKES, TGTrackSource.TAKES};
-		return tap(wholeSong(100), sources, monitored);
+		return tap(wholeSong(100), sources, new float[][] {monitored});
 	}
 
 	@Test
@@ -313,6 +320,57 @@ public class TestTakeTap {
 		float[] tap = tap(wholeSong(100));
 
 		assertSamples(new double[] {1, 0}, tap, 2 * M - 1, 2 * M);
+	}
+
+	// the song's length of a level on the left and another on the right
+	private static float[][] stereo(float left, float right) {
+		float[][] sides = new float[2][4 * M];
+		Arrays.fill(sides[0], left);
+		Arrays.fill(sides[1], right);
+		return sides;
+	}
+
+	// a stereo take at 1 on the left and 0.5 on the right, take 2 (mono, silent) over measure 2: each side fades as
+	// the take does
+	@Test
+	public void aStereoTakeSoundsEachSideOnItsOwnSideOfTheTap() {
+		clips(new TGTake(1, stereo(1, 0.5f), 44100), 1, 4);
+		clips(take(2, M, 0), 2, 2);
+		float[][] tap = sides(wholeSong(100));
+
+		assertSamples(new double[] {1, 255 / F}, tap[0], M - 1, M);
+		assertSamples(new double[] {0.5, 0.5 * 255 / F}, tap[1], M - 1, M);
+	}
+
+	@Test
+	public void aMonoTakeSoundsOnBothSides() {
+		clips(take(1, 4 * M, 1, 0.5f), 1, 4);
+		float[][] tap = sides(wholeSong(100));
+
+		assertArrayEquals(tap[0], tap[1]);
+		assertSamples(new double[] {1, 0.5}, tap[1], M - 1, M);
+	}
+
+	// at 50% each measure is stretched once, both sides together
+	@Test
+	public void aStretchedStereoTakeIsStretchedOnBothSidesAtOnce() {
+		clips(new TGTake(1, stereo(1, 0.5f), 44100), 1, 4);
+		float[][] tap = sides(wholeSong(50));
+
+		assertSamples(new double[] {0.5}, tap[0], 0);
+		assertSamples(new double[] {0.25}, tap[1], 0);
+		assertEquals(4, stretches.size());
+	}
+
+	@Test
+	public void aMonitoredPairOfInputChannelsSoundsOnItsSides() {
+		float[][] input = stereo(1, 0.5f);
+		TGTrackSource[] sources = new TGTrackSource[4];
+		Arrays.fill(sources, TGTrackSource.INPUT);
+		float[][] tap = TGTakeTap.render(track, wholeSong(100), halfOfTheFirstSample, sources, input);
+
+		assertSamples(new double[] {1, 1}, tap[0], 0, 4 * M - 1);
+		assertSamples(new double[] {0.5, 0.5}, tap[1], 0, 4 * M - 1);
 	}
 
 	// playing stops at measure 1 beat 3, where take 2 ends over take 1: the tap ends at full level

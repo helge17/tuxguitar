@@ -16,6 +16,8 @@ import java.util.List;
  *
  * The search reaches 4.6 ms either side of where a frame should be read, so what happens inside the audio stays
  * within 5 ms of where it should be, and tones down to 108 Hz find a whole period to align on.
+ *
+ * A stereo input is cut and searched on the mean of its sides, and both sides are read at the places found there.
  */
 public final class TGWsolaStretcher implements TGTimeStretcher {
 
@@ -43,18 +45,40 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 		}
 	}
 
-	public float[] stretch(float[] input, int from, int to, int length) {
-		float[] output = new float[length];
-		List<Integer> onsets = onsets(input, from, to);
+	public float[][] stretch(float[][] input, int from, int to, int length) {
+		float[][] output = new float[input.length][length];
+		Piece piece = new Piece(input, from, to);
+		List<Integer> onsets = onsets(piece.guide, 0, to - from);
 		double scale = (double) length / (to - from);
 		for (int i = 0; i < onsets.size(); i++) {
 			int start = onsets.get(i);
-			int end = (i + 1 < onsets.size() ? onsets.get(i + 1) : to);
-			int outStart = (int) Math.round((start - from) * scale);
-			int outEnd = (int) Math.round((end - from) * scale);
-			stretchPiece(input, start, end, output, outStart, outEnd - outStart);
+			int end = (i + 1 < onsets.size() ? onsets.get(i + 1) : to - from);
+			int outStart = (int) Math.round(start * scale);
+			int outEnd = (int) Math.round(end * scale);
+			stretchPiece(piece, start, end, output, outStart, outEnd - outStart);
 		}
 		return output;
+	}
+
+	// the stretch of the input being stretched: its sides, read from an offset, and the mean of its sides (the guide),
+	// which is cut at onsets and searched; positions here count from the stretch's start
+	private static final class Piece {
+		private final float[][] sides;
+		private final int offset;
+		private final float[] guide;
+
+		Piece(float[][] sides, int from, int to) {
+			this.sides = sides;
+			this.offset = from;
+			this.guide = new float[to - from];
+			for (int i = 0; i < this.guide.length; i++) {
+				float sum = 0;
+				for (float[] side : sides) {
+					sum += side[from + i];
+				}
+				this.guide[i] = sum / sides.length;
+			}
+		}
 	}
 
 	// where the pieces start: the start, and every onset at least a frame after the one before and before the end
@@ -75,27 +99,32 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 		return (jump > ONSET_JUMP && jump > ONSET_SUDDENNESS * Math.abs(input[i - 1] - input[i - 2]));
 	}
 
-	private void stretchPiece(float[] input, int start, int end, float[] output, int outStart, int length) {
-		if (end - start == length) {
-			System.arraycopy(input, start, output, outStart, length);
-			return;
+	// a piece played at its length is read sample for sample (resampling at rate 1 reads each sample whole)
+	private void stretchPiece(Piece piece, int start, int end, float[][] output, int outStart, int length) {
+		if (end - start == length || end - start < this.frame) {
+			for (int side = 0; side < output.length; side++) {
+				resample(piece.sides[side], piece.offset + start, piece.offset + end, output[side], outStart, length);
+			}
+		} else {
+			this.overlapAdd(piece, start, end, output, outStart, length);
 		}
-		if (end - start < this.frame) {
-			resample(input, start, end, output, outStart, length);
-			return;
-		}
-		float[] sum = new float[length];
+	}
+
+	private void overlapAdd(Piece piece, int start, int end, float[][] output, int outStart, int length) {
+		float[][] sum = new float[output.length][length];
 		float[] weight = new float[length];
 		double rate = (double) (end - start) / length;
 		int previous = start;
 		for (int k = 0; k * this.hop < length; k++) {
 			int ideal = start + (int) Math.round(k * this.hop * rate);
-			int position = (k == 0 ? start : this.bestPosition(input, start, end, previous + this.hop, ideal));
-			this.addFrame(input, position, end, (k == 0 ? this.firstWindow : this.window), sum, weight, k * this.hop);
+			int position = (k == 0 ? start : this.bestPosition(piece.guide, start, end, previous + this.hop, ideal));
+			this.addFrame(piece, position, end, (k == 0 ? this.firstWindow : this.window), sum, weight, k * this.hop);
 			previous = position;
 		}
-		for (int i = 0; i < length; i++) {
-			output[outStart + i] = (weight[i] > 0 ? sum[i] / weight[i] : 0f);
+		for (int side = 0; side < output.length; side++) {
+			for (int i = 0; i < length; i++) {
+				output[side][outStart + i] = (weight[i] > 0 ? sum[side][i] / weight[i] : 0f);
+			}
 		}
 	}
 
@@ -129,10 +158,12 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 		return sum / Math.sqrt(energy);
 	}
 
-	private void addFrame(float[] input, int position, int end, float[] frameWindow, float[] sum, float[] weight, int at) {
-		int count = Math.min(this.frame, Math.min(end - position, sum.length - at));
+	private void addFrame(Piece piece, int position, int end, float[] frameWindow, float[][] sum, float[] weight, int at) {
+		int count = Math.min(this.frame, Math.min(end - position, weight.length - at));
 		for (int i = 0; i < count; i++) {
-			sum[at + i] += input[position + i] * frameWindow[i];
+			for (int side = 0; side < sum.length; side++) {
+				sum[side][at + i] += piece.sides[side][piece.offset + position + i] * frameWindow[i];
+			}
 			weight[at + i] += frameWindow[i];
 		}
 	}

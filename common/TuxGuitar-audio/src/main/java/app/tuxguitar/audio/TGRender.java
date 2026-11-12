@@ -24,11 +24,15 @@ public final class TGRender {
 		return this.timeline;
 	}
 
-	// the left side of the tap of the track's channel (an audio channel's tap is mono); silence for a channel that
-	// sounded nothing
+	// the left side of the tap of the track's channel, the one side of a mono tap
 	public float[] getTap(TGTrack track) {
+		return this.getTap(track, 0);
+	}
+
+	// a side of the tap of the track's channel (0 left, 1 right); silence for a channel that sounded nothing
+	public float[] getTap(TGTrack track, int side) {
 		float[][] tap = this.taps.get(track.getChannelId());
-		return (tap != null ? tap[0] : new float[this.output[0].length]);
+		return (tap != null ? tap[side] : new float[(int) this.timeline.length()]);
 	}
 
 	public float[] getLeft() {

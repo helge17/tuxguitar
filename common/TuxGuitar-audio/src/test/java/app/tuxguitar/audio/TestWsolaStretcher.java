@@ -29,6 +29,11 @@ public class TestWsolaStretcher {
 		return samples;
 	}
 
+	// a mono input stretched: its one side
+	private float[] stretch(float[] input, int from, int to, int length) {
+		return this.stretcher.stretch(new float[][] {input}, from, to, length)[0];
+	}
+
 	private static int stretched(int length, int percent) {
 		return (int) Math.round(length * 100.0 / percent);
 	}
@@ -37,7 +42,7 @@ public class TestWsolaStretcher {
 	public void atTheSameLengthTheSamplesAreUnchanged() {
 		float[] input = sine(440, 0.4, 3000);
 		input[1500] = 0.9f;
-		float[] output = this.stretcher.stretch(input, 100, 2100, 2000);
+		float[] output = stretch(input, 100, 2100, 2000);
 		assertArrayEquals(Arrays.copyOfRange(input, 100, 2100), output);
 	}
 
@@ -45,7 +50,7 @@ public class TestWsolaStretcher {
 	public void theOutputHasTheLengthAskedFor() {
 		float[] input = sine(440, 0.4, MEASURE);
 		for (int length : new int[] {1, 511, 1024, 17641, 220500, 70560}) {
-			assertEquals(length, this.stretcher.stretch(input, 0, MEASURE, length).length);
+			assertEquals(length, stretch(input, 0, MEASURE, length).length);
 		}
 	}
 
@@ -53,7 +58,7 @@ public class TestWsolaStretcher {
 	public void aToneKeepsItsPitchAcrossThePercentageOfTempoRange() {
 		float[] input = sine(440, 0.4, MEASURE);
 		for (int percent : PERCENTS) {
-			float[] output = this.stretcher.stretch(input, 0, MEASURE, stretched(MEASURE, percent));
+			float[] output = stretch(input, 0, MEASURE, stretched(MEASURE, percent));
 			double frequency = Meters.frequency(output, 0, output.length, RATE);
 			assertEquals(440, frequency, 4.4, "at " + percent + "%");
 			assertEquals(0.4, Meters.peak(output, 0, output.length), 0.02, "peak at " + percent + "%");
@@ -65,7 +70,7 @@ public class TestWsolaStretcher {
 		for (double tone : new double[] {110, 220, 770, 2000}) {
 			float[] input = sine(tone, 0.4, MEASURE);
 			for (int percent : new int[] {50, 200}) {
-				float[] output = this.stretcher.stretch(input, 0, MEASURE, stretched(MEASURE, percent));
+				float[] output = stretch(input, 0, MEASURE, stretched(MEASURE, percent));
 				assertEquals(tone, Meters.frequency(output, 0, output.length, RATE), tone / 100, tone + " Hz at " + percent + "%");
 			}
 		}
@@ -79,7 +84,7 @@ public class TestWsolaStretcher {
 		}
 		for (int percent : PERCENTS) {
 			int length = stretched(MEASURE, percent);
-			float[] output = this.stretcher.stretch(input, 0, MEASURE, length);
+			float[] output = stretch(input, 0, MEASURE, length);
 			List<Integer> expected = Arrays.asList(0, length / 4, length / 2, 3 * length / 4);
 			List<Integer> clicks = Meters.clicks(output, 0, length);
 			assertEquals(4, clicks.size(), "at " + percent + "%: " + clicks);
@@ -98,7 +103,7 @@ public class TestWsolaStretcher {
 		}
 		for (int percent : PERCENTS) {
 			int length = stretched(MEASURE, percent);
-			List<Integer> bursts = Meters.clicks(this.stretcher.stretch(input, 0, MEASURE, length), 0, length);
+			List<Integer> bursts = Meters.clicks(stretch(input, 0, MEASURE, length), 0, length);
 			assertEquals(4, bursts.size(), "at " + percent + "%: " + bursts);
 			for (int beat = 0; beat < 4; beat++) {
 				assertEquals(beat * length / 4.0, bursts.get(beat), 1, "burst " + beat + " at " + percent + "%");
@@ -114,7 +119,7 @@ public class TestWsolaStretcher {
 		for (int beat = 1; beat < 4; beat++) {
 			input[beat * 22050] = 0.05f;
 		}
-		float[] output = this.stretcher.stretch(input, 0, MEASURE, 2 * MEASURE);
+		float[] output = stretch(input, 0, MEASURE, 2 * MEASURE);
 		for (int beat = 1; beat < 4; beat++) {
 			assertEquals(0.05f, output[beat * 44100], 0.0001f, "beat " + beat);
 			assertEquals(0.3f, output[beat * 44100 + 1], 0.0001f, "after beat " + beat);
@@ -131,7 +136,7 @@ public class TestWsolaStretcher {
 		}
 		for (int percent : new int[] {25, 200}) {
 			int length = stretched(MEASURE, percent);
-			float[] output = this.stretcher.stretch(input, 0, MEASURE, length);
+			float[] output = stretch(input, 0, MEASURE, length);
 			for (int at = 0; at + 100 <= length; at += 100) {
 				assertTrue(Meters.peak(output, at, at + 100) > 0.05, "at " + percent + "%, samples " + at + " to " + (at + 100));
 			}
@@ -144,7 +149,7 @@ public class TestWsolaStretcher {
 		for (int i = 0; i < input.length; i++) {
 			input[i] = i / 1000f;
 		}
-		float[] output = this.stretcher.stretch(input, 100, 400, 600);
+		float[] output = stretch(input, 100, 400, 600);
 		assertEquals(0.1f, output[0], 0.00001f);
 		assertEquals(0.1005f, output[1], 0.00001f);
 		assertEquals(0.399f, output[599], 0.00001f);
@@ -155,7 +160,7 @@ public class TestWsolaStretcher {
 		float[] input = new float[MEASURE];
 		Arrays.fill(input, 0.4f);
 		for (int percent : PERCENTS) {
-			float[] output = this.stretcher.stretch(input, 0, MEASURE, stretched(MEASURE, percent));
+			float[] output = stretch(input, 0, MEASURE, stretched(MEASURE, percent));
 			for (int i = 0; i < output.length; i++) {
 				assertEquals(0.4f, output[i], 0.0001f, "sample " + i + " at " + percent + "%");
 			}
@@ -175,7 +180,7 @@ public class TestWsolaStretcher {
 		}
 		for (int percent : PERCENTS) {
 			int length = stretched(MEASURE, percent);
-			float[] output = this.stretcher.stretch(input, MEASURE, 2 * MEASURE, length);
+			float[] output = stretch(input, MEASURE, 2 * MEASURE, length);
 			int louder = 0;
 			while (Math.abs(output[louder]) <= 0.2) {
 				louder++;
@@ -192,7 +197,7 @@ public class TestWsolaStretcher {
 		Arrays.fill(input, 0, 1000, 0.9f);
 		Arrays.fill(input, 1000, 5000, 0.2f);
 		Arrays.fill(input, 5000, MEASURE, 0.9f);
-		float[] output = this.stretcher.stretch(input, 1000, 5000, 8000);
+		float[] output = stretch(input, 1000, 5000, 8000);
 		assertEquals(0.2f, Meters.peak(output, 0, output.length), 0.0001f);
 		assertEquals(0.2f, output[0], 0.0001f);
 		assertEquals(0.2f, output[7999], 0.0001f);

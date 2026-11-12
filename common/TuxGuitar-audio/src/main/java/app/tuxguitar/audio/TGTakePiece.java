@@ -8,7 +8,8 @@ import app.tuxguitar.song.models.TGTake;
  * A stretch of the output where an audio track plays one thing without a break: a take from one of its samples to
  * another (time-stretched to the stretch when the tempo differs from the one it was recorded at), its monitored input,
  * or silence. It knows the takes under it, to tell a take that goes on from a take that is cut, and it fades in or out
- * over FADE samples on either side of its bounds as the crossfade rules say.
+ * over FADE samples on either side of its bounds as the crossfade rules say. Its audio has one side (mono, heard on
+ * both sides of the tap) or two (left and right).
  */
 final class TGTakePiece {
 
@@ -28,8 +29,8 @@ final class TGTakePiece {
 	final int takeEnd;
 	// the takes covering the stretch, with the samples of each that would play there: {start, end}
 	final Map<TGTake, int[]> under;
-	private final float[] audio;
-	private final float[] source;
+	private final float[][] audio;
+	private final float[][] source;
 
 	boolean fadeIn;
 	boolean fadeOut;
@@ -38,7 +39,7 @@ final class TGTakePiece {
 
 	// a take from takeStart to takeEnd of its samples (source), the audio over the stretch given (null when it plays the
 	// samples as they are)
-	TGTakePiece(long start, long end, boolean jump, TGTake take, int rank, int takeStart, int takeEnd, float[] source, float[] audio, Map<TGTake, int[]> under) {
+	TGTakePiece(long start, long end, boolean jump, TGTake take, int rank, int takeStart, int takeEnd, float[][] source, float[][] audio, Map<TGTake, int[]> under) {
 		this.start = start;
 		this.end = end;
 		this.jump = jump;
@@ -53,7 +54,7 @@ final class TGTakePiece {
 	}
 
 	// the monitored input (its samples on the output clock), or silence when input is null
-	TGTakePiece(long start, long end, boolean jump, float[] input, Map<TGTake, int[]> under) {
+	TGTakePiece(long start, long end, boolean jump, float[][] input, Map<TGTake, int[]> under) {
 		this.start = start;
 		this.end = end;
 		this.jump = jump;
@@ -93,14 +94,18 @@ final class TGTakePiece {
 
 	// the take has audio past where this one stops: stopping here cuts it
 	boolean hasMore() {
-		return this.input || (this.take != null && this.takeEnd < this.source.length - 1);
+		return this.input || (this.take != null && this.takeEnd < this.source[0].length - 1);
 	}
 
-	void addTo(float[] tap) {
+	// adds it to each side of the tap: a mono piece's one side to both
+	void addTo(float[][] tap) {
 		long from = Math.max(0, this.start - (this.head ? FADE : 0));
-		long to = Math.min(tap.length, this.end + (this.tail ? FADE : 0));
-		for (long o = from; o < to; o++) {
-			tap[(int) o] += (float) (this.gain(o) * this.sample(o));
+		long to = Math.min(tap[0].length, this.end + (this.tail ? FADE : 0));
+		for (int side = 0; side < tap.length; side++) {
+			int own = Math.min(side, this.source.length - 1);
+			for (long o = from; o < to; o++) {
+				tap[side][(int) o] += (float) (this.gain(o) * this.sample(own, o));
+			}
 		}
 	}
 
@@ -122,19 +127,19 @@ final class TGTakePiece {
 	}
 
 	// the audio at the output sample: the stretched audio inside, the take's own samples next to it
-	private float sample(long o) {
+	private float sample(int side, long o) {
 		if (this.input) {
-			return this.source[(int) o];
+			return this.source[side][(int) o];
 		}
 		if (this.audio != null && o >= this.start && o < this.end) {
-			return this.audio[(int) (o - this.start)];
+			return this.audio[side][(int) (o - this.start)];
 		}
-		return this.takeSample(o);
+		return this.takeSample(this.source[side], o);
 	}
 
 	// the take's own sample there, counted from where it starts or stops; silence outside the take
-	private float takeSample(long o) {
+	private float takeSample(float[] samples, long o) {
 		long index = (o < this.end ? this.takeStart + (o - this.start) : this.takeEnd + (o - this.end));
-		return (index >= 0 && index < this.source.length ? this.source[(int) index] : 0f);
+		return (index >= 0 && index < samples.length ? samples[(int) index] : 0f);
 	}
 }
