@@ -47,6 +47,7 @@ public class TestFileFormatUtils {
 	@Test
 	public void theDefaultExtensionIsTheFirstFormatCode() {
 		assertEquals(".gp4", TGFileFormatUtils.getDefaultExtension(FORMATS.get(1)));
+		assertEquals(".tg", TGFileFormatUtils.getDefaultExtension(FORMATS.get(0), ".mid"));
 		assertEquals(".mid", TGFileFormatUtils.getDefaultExtension(new TGFileFormat("Codeless", "audio/x-none", new String[0]), ".mid"));
 		assertEquals(".tg", TGFileFormatUtils.getDefaultExtension(new TGFileFormat("Codeless", "audio/x-none", null)));
 	}
