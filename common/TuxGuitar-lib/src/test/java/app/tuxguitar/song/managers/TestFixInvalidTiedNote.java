@@ -20,6 +20,7 @@ import app.tuxguitar.song.models.TGVoice;
  * Standard tuning: string 1 is E4 (64), string 2 is B3 (59), string 3 is G3 (55). A scenario is
  * "previous beat | beat -> previous beat | beat": the first quarter of a 4/4 measure, then the second, before and
  * after fixing the first note of the second beat. A beat lists its notes as "s<string>f<fret>", "~" when tied.
+ * TGTrackManager.fixInvalidTiedNotes fixes every invalid tie of a track this way.
  */
 public class TestFixInvalidTiedNote {
 
@@ -72,6 +73,24 @@ public class TestFixInvalidTiedNote {
 			// the tie is removed when neither note can move, or without a previous note of its pitch
 			"s2f5 s1f3 | s1f0~ s2f1 -> s2f5 s1f3 | s1f0 s2f1",
 			"s2f4 | s1f0~ -> s2f4 | s1f0");
+	}
+
+	@Test
+	public void fixingTheTrackFixesTheTiesFoundInvalidBeforeItStarts() {
+		fixture = new MeasureFixture();
+		beat(0, "s1f3~ s3f2");
+		beat(QUARTER, "s3f2~ s2f5");
+		beat(2 * QUARTER, "s1f0~");
+		beat(3 * QUARTER, "s2f5~");
+		fixture.songManager.getTrackManager().fixInvalidTiedNotes(fixture.measure.getTrack());
+
+		List<String> beats = new ArrayList<String>();
+		for (int quarter = 0; quarter < 4; quarter++) {
+			beats.add(describe(fixture.beatAt(quarter * QUARTER).getVoice(0)));
+		}
+		// looks wrong: the last tie was invalid before fixing the third beat moved its note onto string 2,
+		// and is then removed although it has become valid (the list of invalid ties is not read again)
+		assertEquals("s1f3 s3f2 | s3f2~ s2f5 | s2f5~ | s2f5", String.join(" | ", beats));
 	}
 
 	@Test

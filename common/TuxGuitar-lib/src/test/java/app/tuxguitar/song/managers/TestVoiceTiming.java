@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVoice;
 
 /**
@@ -178,5 +179,28 @@ public class TestVoiceTiming {
 		invalid.setTiedNote(true);
 
 		assertEquals("tie s1f2 valid", errors());
+	}
+
+	// --- major errors: a voice duration error anywhere in the track (TGTrackManager) or the song (TGSongManager) ---
+
+	private String majorErrors(long... triples) {
+		notes(triples);
+		TGTrack track = fixture.measure.getTrack();
+		return "track " + fixture.songManager.getTrackManager().hasMeasureDurationError(track)
+			+ ", song " + fixture.songManager.hasMajorError(track.getSong());
+	}
+
+	@Test
+	public void aVoiceDurationErrorIsAMajorError() {
+		assertEquals("track true, song true", majorErrors(QUARTER, 2, 0));
+	}
+
+	@Test
+	public void anInvalidTiedNoteIsNotAMajorError() {
+		fixture.quarterNotes(0, 1, 2, 3);
+		fixture.beatAt(QUARTER).getVoice(0).getNote(0).setValue(2);
+		fixture.beatAt(QUARTER).getVoice(0).getNote(0).setTiedNote(true);
+
+		assertEquals("track false, song false", majorErrors());
 	}
 }
