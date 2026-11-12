@@ -134,6 +134,29 @@ public class TestPasteMeasureAction {
 		return DynamicTest.dynamicTest(name, () -> assertEquals(expected, copyThenPaste.apply(new TestPasteMeasureAction())));
 	}
 
+	// where the first pasted beat starts, from the start of the measure it was pasted in
+	private long pastedBeatOffset(int measure) {
+		TGMeasure pasted = track(1).getMeasure(measure - 1);
+		return pasted.getBeat(0).getStart() - pasted.getStart();
+	}
+
+	@Test
+	public void pastedBeatsMoveToTheMeasureTheyArePastedIn() {
+		copy(1, 1, 1, false).replace(1, 1, 3);
+		assertEquals(0, pastedBeatOffset(3));
+
+		copy(1, 1, 1, false).insert(1, 1, 2);
+		assertEquals(0, pastedBeatOffset(2));
+	}
+
+	@Test
+	public void measuresOfEveryTrackBringTheirMeasureSettings() {
+		fixture.song.getMeasureHeader(0).getTempo().setQuarterValue(60);
+		copy(1, 1, 1, true).replace(1, 1, 3);
+
+		assertEquals(60, fixture.song.getMeasureHeader(2).getTempo().getQuarterValue());
+	}
+
 	@Test
 	public void pastingNeedsACountAndAKnownMode() {
 		copy(1, 1, 1, false);
