@@ -411,7 +411,15 @@ public class TGSongManager {
 			}
 
 		}
+		removeOwnChannel(song, trackToRemove);
 		song.removeTrack(trackToRemove);
+	}
+
+	// an audio track's channel is its own: it goes with the track
+	private void removeOwnChannel(TGSong song, TGTrack track){
+		if( track.isAudio() ){
+			removeChannel(song, getChannel(song, track.getChannelId()));
+		}
 	}
 
 	private void orderTracks(TGSong song){

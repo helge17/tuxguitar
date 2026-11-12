@@ -17,7 +17,6 @@ Feature: Audio tracks
     And track 2's sound chain reads "takes"
     And track 2's channel is not track 1's channel
 
-  @planned
   Scenario: an audio track can be added when no MIDI channel is free, and takes none
     Given I have added guitar tracks, each on a channel of its own, until no MIDI channel is free
     When I add an audio track recording input channel 1
@@ -25,7 +24,6 @@ Feature: Audio tracks
     And the last track is an audio track
     And the last track's channel is given no MIDI channel
 
-  @planned
   Scenario: an audio track holds no notes
     Given I have added an audio track recording input channel 1
     And I have moved the caret to track 2
@@ -33,7 +31,6 @@ Feature: Audio tracks
     Then the action is refused
     And track 2 holds no notes
 
-  @planned
   Scenario Outline: an audio track and another track cannot share a channel
     Given I have added an audio track recording input channel 1
     When I set track <from>'s channel to the channel of track <to>
@@ -46,7 +43,6 @@ Feature: Audio tracks
       | 1    | 2  |
       | 2    | 1  |
 
-  @planned
   Scenario Outline: an audio track's channel takes no General MIDI program, and a guitar track cannot become an audio track
     Given I have added an audio track recording input channel 1
     When I <change>
@@ -93,7 +89,6 @@ Feature: Audio tracks
     Then track 3's takes read "take 3: m3b1 to m4b1, take 2: m1b1 to m3b1, take 1: m1b1 to m3b1"
     And track 3's playback reads "m1: take 2, m2: take 1, m3: take 3, m4: none"
 
-  @planned
   Scenario: removing an audio track removes its channel
     Given I have added an audio track recording input channel 1
     When I remove track 2

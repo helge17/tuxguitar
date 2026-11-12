@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.audio.action.TGAddAudioTrackAction;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.editor.undo.impl.track.TGUndoableRemoveTrackController;
 import app.tuxguitar.song.models.TGTrack;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -31,7 +34,18 @@ public class TrackSteps {
 	@Given("I have added an audio track recording input channel {int}")
 	public void haveAddedAnAudioTrack(int inputChannel) {
 		addAnAudioTrack(inputChannel);
+		theLastTrackIsAnAudioTrack();
+	}
+
+	@Then("the last track is an audio track")
+	public void theLastTrackIsAnAudioTrack() {
 		assertTrue(world.lastTrack().isAudio());
+	}
+
+	@When("I remove track {int}")
+	public void removeTrack(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.executeUndoable(new TGRemoveTrackAction(world.fixture().context), new TGUndoableRemoveTrackController());
 	}
 
 	@Then("track {int} is an audio track with {int} strings")

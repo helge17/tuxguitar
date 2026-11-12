@@ -18,8 +18,14 @@ public class TGSetTrackChannelAction extends TGActionBase {
 	protected void processAction(TGActionContext context){
 		TGTrack track = ((TGTrack) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK));
 		TGChannel channel = ((TGChannel) context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL));
-		if( track != null ){
+		if( track != null && !isAudio(track, channel) ){
 			getSongManager(context).getTrackManager().changeChannel(track, channel);
+			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		}
+	}
+
+	// an audio track has a channel of its own: it moves to no other channel, and no other track moves to its channel
+	private boolean isAudio(TGTrack track, TGChannel channel) {
+		return (track.isAudio() || (channel != null && channel.isAudioChannel()));
 	}
 }
