@@ -193,9 +193,11 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **Playback reading**: which take a track plays, measure by measure: `"m1: take 1, m2: take 2, m3: take 2, m4: none"`.
   A measure where the take changes inside it is split by beat: `"m2b1: take 1, m2b3: take 2"`.
 - **Crossfade**: where a track goes from one take to another, the fade lies on the newer take's side of the boundary
-  (a take chosen for a measure counts as the newer there): going to a newer take, it fades in over its first 256
-  samples while the older fades out; going back to an older take, the newer fades out over its last 256 samples before
-  the boundary while the older fades in. Where a take starts or ends against silence there is no fade. At a jump in song
+  (a take chosen for a measure counts as the newer there; between takes chosen for neighbouring measures, the newer is
+  the one recorded later): going to a newer take, it fades in over its first 256 samples while the older fades out;
+  going back to an older take, the newer fades out over its last 256 samples before the boundary while the older fades
+  in. Where a take starts or ends against silence there is no fade, except between two chosen takes: there the newer
+  one fades on its side even where the older has no audio under the fade (it just fades in, or out). At a jump in song
   time (a loop's jump back, a repeat, an alternate ending), and where a take's audio is cut inside it (a removed
   measure, an inserted one, a shortened measure), the audio before fades out over its last 256 samples and the audio
   after starts at full level. At a punch range boundary, the monitored input counts as the newer take.

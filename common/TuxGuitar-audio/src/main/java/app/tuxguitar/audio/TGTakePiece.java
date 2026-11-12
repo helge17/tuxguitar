@@ -15,14 +15,17 @@ final class TGTakePiece {
 
 	static final int FADE = 256;
 
-	// a chosen take counts as newer than any take, the monitored input as newer still
-	static final int CHOSEN_RANK = Integer.MAX_VALUE - 1;
+	// how new what a piece plays is: a take by its number; a take chosen for its measure counts as newer than any take
+	// not chosen (its rank is CHOSEN_RANK + its number, so between two chosen takes the one recorded later is newer),
+	// the monitored input as newer still
+	static final int CHOSEN_RANK = 1 << 30;
 	static final int INPUT_RANK = Integer.MAX_VALUE;
 
 	final long start;
 	final long end;
 	final boolean jump;
 	final TGTake take;
+	final boolean chosen;
 	final boolean input;
 	final int rank;
 	final int takeStart;
@@ -37,15 +40,16 @@ final class TGTakePiece {
 	boolean head;
 	boolean tail;
 
-	// a take from takeStart to takeEnd of its samples (source), the audio over the stretch given (null when it plays the
-	// samples as they are)
-	TGTakePiece(long start, long end, boolean jump, TGTake take, int rank, int takeStart, int takeEnd, float[][] source, float[][] audio, Map<TGTake, int[]> under) {
+	// a take (chosen for its measure or not) from takeStart to takeEnd of its samples (source), the audio over the
+	// stretch given (null when it plays the samples as they are)
+	TGTakePiece(long start, long end, boolean jump, TGTake take, boolean chosen, int takeStart, int takeEnd, float[][] source, float[][] audio, Map<TGTake, int[]> under) {
 		this.start = start;
 		this.end = end;
 		this.jump = jump;
 		this.take = take;
+		this.chosen = chosen;
 		this.input = false;
-		this.rank = rank;
+		this.rank = rank(take, chosen);
 		this.takeStart = takeStart;
 		this.takeEnd = takeEnd;
 		this.source = source;
@@ -59,6 +63,7 @@ final class TGTakePiece {
 		this.end = end;
 		this.jump = jump;
 		this.take = null;
+		this.chosen = false;
 		this.input = (input != null);
 		this.rank = INPUT_RANK;
 		this.takeStart = 0;
@@ -68,9 +73,14 @@ final class TGTakePiece {
 		this.under = under;
 	}
 
+	private static int rank(TGTake take, boolean chosen) {
+		return (chosen ? CHOSEN_RANK + take.getNumber() : take.getNumber());
+	}
+
 	boolean sounds() {
 		return (this.take != null || this.input);
 	}
+
 
 	// the next one goes on with the same audio, without a jump: the same take from where this one stops, or the input
 	boolean playsOnInto(TGTakePiece next) {

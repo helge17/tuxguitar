@@ -278,19 +278,91 @@ public class TestTakeTap {
 		assertSamples(new double[] {255 / F, 0, 1}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
 	}
 
-	// take 2 chosen for measure 2, take 1 for measure 3: both count as the newer take there, so neither fades over the
-	// other: take 2 fades out before measure 3 and take 1 starts there at full level
-	@Test
-	public void betweenTwoChosenTakesTheFirstFadesOutAndTheSecondStartsAtFullLevel() {
-		TGTake take1 = take(1, 4 * M, 1);
-		TGTake take2 = take(2, 4 * M, 0);
+	// the first take chosen for measure 2, the second for measure 3; between two chosen takes the one recorded later
+	// (the higher number) is the newer
+	private float[] chosen(TGTake inMeasure2, TGTake inMeasure3) {
+		track.getMeasure(1).setChosenTake(inMeasure2);
+		track.getMeasure(2).setChosenTake(inMeasure3);
+		return tap(wholeSong(100));
+	}
+
+	// takes 1 and 2 over the song at their levels, take 2 chosen for measure 2 and take 1 for measure 3
+	private float[] newerChosenFirst(float older, float newer) {
+		TGTake take1 = take(1, 4 * M, older);
+		TGTake take2 = take(2, 4 * M, newer);
 		clips(take1, 1, 4);
 		clips(take2, 1, 4);
-		track.getMeasure(1).setChosenTake(take2);
+		return chosen(take2, take1);
+	}
+
+	@Test
+	public void betweenTwoChosenTakesTheNewerFadesOutOverItsLastSamplesWhileTheOlderFadesIn() {
+		int[] at = {2 * M - 257, 2 * M - 256, 2 * M - 1, 2 * M};
+
+		assertSamples(new double[] {0, 1 / F, 1, 1}, new TestTakeTap().newerChosenFirst(1, 0), at);
+		assertSamples(new double[] {1, 255 / F, 0, 0}, new TestTakeTap().newerChosenFirst(0, 1), at);
+	}
+
+	@Test
+	public void betweenTwoChosenTakesTheNewerFadesInOverItsFirstSamplesWhileTheOlderFadesOut() {
+		TGTake take1 = take(1, 4 * M, 1);
+		TGTake take2 = take(2, 4 * M, 0.5f);
+		clips(take1, 1, 4);
+		clips(take2, 1, 4);
+		float[] tap = chosen(take1, take2);
+
+		assertSamples(new double[] {1, 255 / F + 0.5 / F, 0.5, 0.5}, tap, 2 * M - 1, 2 * M, 2 * M + 255, 2 * M + 256);
+	}
+
+	// take 1 over measures 1 and 2 only, so it has no audio past measure 2; take 2 over the song
+	@Test
+	public void betweenTwoChosenTakesTheNewerFadesInWhereTheOlderHasNoAudio() {
+		TGTake take1 = take(1, 2 * M, 0);
+		TGTake take2 = take(2, 4 * M, 1);
+		clips(take1, 1, 2);
+		clips(take2, 1, 4);
+		float[] tap = chosen(take1, take2);
+
+		assertSamples(new double[] {0, 1 / F, 1}, tap, 2 * M - 1, 2 * M, 2 * M + 255);
+	}
+
+	// take 2 over measures 1 and 2 only, take 1 over measures 3 and 4 only: the older has no audio before measure 3
+	@Test
+	public void betweenTwoChosenTakesTheNewerFadesOutWhereTheOlderHasNoAudioAndTheOlderStartsAtFullLevel() {
+		TGTake take1 = take(1, 2 * M, 0.5f);
+		TGTake take2 = take(2, 2 * M, 1);
+		clips(take2, 1, 2);
+		clips(take1, 3, 4);
+		float[] tap = chosen(take2, take1);
+
+		assertSamples(new double[] {255 / F, 0, 0.5}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
+	}
+
+	// take 2 over measures 1 and 2 only (not chosen), take 1 over measures 3 and 4 only, chosen for measure 3: a chosen
+	// take after one that is not is newer, but starts against silence, so at full level
+	@Test
+	public void aChosenTakeStartingWhereATakeNotChosenEndsStartsAtFullLevel() {
+		TGTake take1 = take(1, 2 * M, 1);
+		clips(take(2, 2 * M, 0), 1, 2);
+		clips(take1, 3, 4);
 		track.getMeasure(2).setChosenTake(take1);
 		float[] tap = tap(wholeSong(100));
 
-		assertSamples(new double[] {0, 0, 1}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
+		assertSamples(new double[] {0, 1, 1}, tap, 2 * M - 1, 2 * M, 2 * M + 1);
+	}
+
+	// take 1 chosen for measures 2 and 3, its audio of a removed measure cut out between them: the audio before the cut
+	// fades out, the audio after starts at full level
+	@Test
+	public void whereAChosenTakeIsCutTheAudioAfterTheCutStartsAtFullLevel() {
+		TGTake take1 = take(1, 4 * M, 1, 1, 0.5f);
+		clip(take1, 2, 0, BAR, 0);
+		clip(take1, 3, 0, BAR, 2 * M);
+		track.getMeasure(1).setChosenTake(take1);
+		track.getMeasure(2).setChosenTake(take1);
+		float[] tap = tap(wholeSong(100));
+
+		assertSamples(new double[] {255 / F, 0, 0.5, 0.5}, tap, 2 * M - 256, 2 * M - 1, 2 * M, 2 * M + 1);
 	}
 
 	// take 1 recorded to measure 2 beat 3, take 2 from there: one ends as the other starts, nothing fades
@@ -302,14 +374,13 @@ public class TestTakeTap {
 		return tap(wholeSong(100));
 	}
 
+	// the older is not faded, the newer starts at full level
 	@Test
-	public void aTakeEndingWhereANewerStartsIsNotFaded() {
-		assertSamples(new double[] {1, 0}, endToStart(1, 0), M + M / 2 - 1, M + M / 2);
-	}
+	public void whereATakeEndsAsANewerStartsNothingFades() {
+		int[] at = {M + M / 2 - 1, M + M / 2};
 
-	@Test
-	public void aNewerTakeStartingWhereAnOlderEndsStartsAtFullLevel() {
-		assertSamples(new double[] {0, 1}, endToStart(0, 1), M + M / 2 - 1, M + M / 2);
+		assertSamples(new double[] {1, 0}, new TestTakeTap().endToStart(1, 0), at);
+		assertSamples(new double[] {0, 1}, new TestTakeTap().endToStart(0, 1), at);
 	}
 
 	// take 2 over measure 2 only, take 1 over measures 3 and 4 only

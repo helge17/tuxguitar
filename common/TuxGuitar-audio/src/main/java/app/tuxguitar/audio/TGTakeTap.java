@@ -71,16 +71,21 @@ public final class TGTakeTap {
 		}
 	}
 
-	// from one take to another: the newer one's side crossfades when the other one goes on there; else a cut
+	// from one take to another: the newer one's side crossfades when the older one goes on there; else a cut. Between
+	// two different chosen takes the newer one fades on its side even where the older has no audio. Two pieces of the
+	// same take that do not play on into each other (a cut inside it) are as going back down to an older take that
+	// was not going on under it: the audio before fades out if the take goes on past it
 	private static void crossfade(TGTakePiece before, TGTakePiece after) {
-		if (after.rank > before.rank && before.goesOnUnder(after)) {
-			after.fadeIn = true;
-			before.tail = true;
-		} else if (after.rank < before.rank && before.wasGoingOnUnder(after)) {
-			before.fadeOut = true;
-			after.head = true;
+		boolean comp = (before.take != after.take && before.chosen && after.chosen);
+		if (after.rank > before.rank) {
+			boolean under = before.goesOnUnder(after);
+			after.fadeIn = (under || comp);
+			before.tail = under;
+			before.fadeOut = (!under && before.hasMore());
 		} else {
-			before.fadeOut = before.hasMore();
+			boolean under = before.wasGoingOnUnder(after);
+			before.fadeOut = (under || comp || before.hasMore());
+			after.head = under;
 		}
 	}
 
@@ -141,8 +146,8 @@ public final class TGTakeTap {
 			int takeEnd = this.sampleOf(clip, to);
 			float[][] source = this.samples.computeIfAbsent(clip.getSource(), TGTakeTap::samplesOf);
 			float[][] audio = (clip.getTempo() == this.played.getTempo() ? null : this.stretch(source, takeStart, takeEnd, (int) (end - start)));
-			int rank = (this.measure.getChosenTake() == take ? TGTakePiece.CHOSEN_RANK : take.getNumber());
-			return new TGTakePiece(start, end, this.jumpsTo(from), take, rank, takeStart, takeEnd, source, audio, this.under(from, to));
+			boolean chosen = (this.measure.getChosenTake() == take);
+			return new TGTakePiece(start, end, this.jumpsTo(from), take, chosen, takeStart, takeEnd, source, audio, this.under(from, to));
 		}
 
 		private float[][] stretch(float[][] source, int from, int to, int length) {

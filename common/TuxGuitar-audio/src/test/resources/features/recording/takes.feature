@@ -91,6 +91,15 @@ Feature: Takes
     Then track 2 goes from -0.4 to 0.4 over the 256 samples from measure 2 beat 1, within 1 sample
     And track 2 goes from 0.4 to -0.4 over the 256 samples before measure 3 beat 1, within 1 sample
 
+  Scenario: between two takes chosen for neighbouring measures, the newer one's side crossfades
+    Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to measure 4 beat 1
+    And track 2 has a take of a constant level of -0.4 from measure 1 beat 1 to measure 4 beat 1
+    And I have chosen take 2 of track 2 for measures 2 to 2
+    And I have chosen take 1 of track 2 for measures 3 to 3
+    When I play the song from measure 1 beat 1
+    Then track 2 goes from -0.4 to 0.4 over the 256 samples before measure 3 beat 1, within 1 sample
+    And no two consecutive samples of track 2 differ by more than 0.01 from measure 2 beat 1 to measure 4 beat 1
+
   Scenario: at the jump back of a loop, the audio fades out before the jump and starts at full level after it
     Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to the end of measure 4
     And I have turned Play looped on over measures 2 to 3
