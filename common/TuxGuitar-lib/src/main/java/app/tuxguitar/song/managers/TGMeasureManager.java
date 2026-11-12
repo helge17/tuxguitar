@@ -1131,116 +1131,109 @@ public class TGMeasureManager {
 	public void autoCompleteSilences(TGMeasure measure){
 		TGBeat beat = getFirstBeat( measure.getBeats() );
 
-		// no beat: fill measure and return
-		if( beat == null ){
+		// no beat or no voice: fill measure and return
+		if( beat == null || !completeSilencesBeforeFirstVoices(measure) ){
 			createSilences(measure, measure.getPreciseStart(), measure.getPreciseLength(), 0);
 			return;
-		}
-
-		// complete silences before first note
-		boolean hasVoices = false;
-		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
-			TGVoice voice = getFirstVoice( measure.getBeats() , v );
-			if( voice != null && voice.getBeat().getPreciseStart() > measure.getPreciseStart() ){
-				createSilences(measure, measure.getPreciseStart(), voice.getBeat().getPreciseStart() - measure.getPreciseStart(), v);
-			}
-			hasVoices = (hasVoices || voice != null);
-		}
-
-		// no voice: fill measure and return
-		if(!hasVoices) {
-			createSilences(measure, measure.getPreciseStart(), measure.getPreciseLength(), 0);
-			return;
-		}
-
-		long[] start = new long[beat.countVoices()];
-		long[] uncompletedLength = new long[beat.countVoices()];
-		for( int v = 0; v < uncompletedLength.length; v ++ ){
-			start[v] = 0;
-			uncompletedLength[v] = 0;
 		}
 
 		// in each voice, look for empty spaces between notes, and until end of measure
 		while (beat != null) {
-			for( int v = 0; v < beat.countVoices(); v ++ ){
-				TGVoice voice = beat.getVoice( v );
-				if( !voice.isEmpty() ){
-					long voiceEnd = beat.getPreciseStart() + voice.getDuration().getPreciseTime();
-					long nextPosition = measure.getPreciseStart() + measure.getPreciseLength();
-
-					TGVoice nextVoice = getNextVoice(measure.getBeats(), beat, voice.getIndex());
-					if(nextVoice != null){
-						nextPosition = nextVoice.getBeat().getPreciseStart();
-					}
-					if( voiceEnd < nextPosition){
-						start[v] = voiceEnd;
-						uncompletedLength[v] = (nextPosition - voiceEnd);
-					}
-				}
-			}
-
-			for( int v = 0; v < uncompletedLength.length; v ++ ){
-				if( uncompletedLength[v] > 0 ){
-					createSilences(measure,start[v],uncompletedLength[v], v);
-				}
-				start[v] = 0;
-				uncompletedLength[v] = 0;
-			}
+			completeSilencesAfter(measure, beat);
 			beat = getNextBeat(measure.getBeats(), beat );
+		}
+	}
+
+	// rests from the measure start up to the first beat of each voice; false when no voice has a beat
+	private boolean completeSilencesBeforeFirstVoices(TGMeasure measure){
+		boolean hasVoices = false;
+		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
+			TGVoice voice = getFirstVoice( measure.getBeats() , v );
+			if( voice != null ){
+				hasVoices = true;
+				long gap = voice.getBeat().getPreciseStart() - measure.getPreciseStart();
+				if( gap > 0 ){
+					createSilences(measure, measure.getPreciseStart(), gap, v);
+				}
+			}
+		}
+		return hasVoices;
+	}
+
+	// rests after each voice of the beat, up to the next beat of that voice or the measure end;
+	// every gap is found before any rest is added
+	private void completeSilencesAfter(TGMeasure measure, TGBeat beat){
+		long[] gapStart = new long[beat.countVoices()];
+		long[] gapEnd = new long[beat.countVoices()];
+		for( int v = 0; v < beat.countVoices(); v ++ ){
+			TGVoice voice = beat.getVoice( v );
+			if( !voice.isEmpty() ){
+				gapStart[v] = getPreciseEnd(beat, voice.getDuration());
+				gapEnd[v] = getPreciseStartOrMeasureEnd(measure, getNextVoice(measure.getBeats(), beat, voice.getIndex()));
+			}
+		}
+		for( int v = 0; v < gapStart.length; v ++ ){
+			if( gapEnd[v] > gapStart[v] ){
+				createSilences(measure, gapStart[v], gapEnd[v] - gapStart[v], v);
+			}
 		}
 	}
 
 	// checks if a measure is valid: all notes/rests in each voice are contiguous, all voices durations are OK
 	public List<TGMeasureError> getMeasureErrors(TGMeasure measure) {
 		List<TGMeasureError> list = new ArrayList<TGMeasureError>();
-
 		for (int voiceIndex=0; voiceIndex<TGBeat.MAX_VOICES; voiceIndex++) {
-			int errCode = TGMeasureError.OK;
-			boolean isEmpty = true;
-			long firstPreciseStart = -1;
-			long lastPreciseEnd = -1;
-			for (TGBeat beat : measure.getBeats()) {
-				long beatPreciseStart = beat.getPreciseStart();
-				TGVoice voice = beat.getVoice(voiceIndex);
-				// check tied notes
-				for (TGNote note : voice.getNotes()) {
-					if (note.isTiedNote() && (getSongManager().getTrackManager().getPreviousNoteForTie(note) == null)) {
-						list.add(new TGMeasureError(measure, note));
-					}
-				}
-				// check duration
-				if (!voice.isEmpty()) {
-					isEmpty = false;
-					if (firstPreciseStart < 0) {
-						if (beatPreciseStart < measure.getPreciseStart()) {
-							errCode |= TGMeasureError.VOICE_EARLY_START;
-						}
-						firstPreciseStart = beat.getPreciseStart();
-					} else {
-						if (beatPreciseStart < lastPreciseEnd) {
-							errCode |= TGMeasureError.VOICE_OVERLAP;
-						}
-						else if (beatPreciseStart > lastPreciseEnd) {
-							errCode |= TGMeasureError.VOICE_DISCONTINUOUS;
-						}
-					}
-					lastPreciseEnd = beatPreciseStart + voice.getDuration().getPreciseTime();
-				}
-			}
-			if (!isEmpty) {
-				long measurePreciseEnd = measure.getPreciseStart() + measure.getPreciseLength();
-				if (lastPreciseEnd < measurePreciseEnd) {
-					errCode |= TGMeasureError.VOICE_TOO_SHORT;
-				}
-				else if (lastPreciseEnd > measurePreciseEnd) {
-					errCode |= TGMeasureError.VOICE_TOO_LONG;
-				}
-			}
+			addInvalidTiedNoteErrors(measure, voiceIndex, list);
+			int errCode = getVoiceDurationErrors(measure, voiceIndex);
 			if (errCode != TGMeasureError.OK) {
 				list.add(new TGMeasureError(measure, voiceIndex, errCode));
 			}
 		}
 		return list;
+	}
+
+	// a tied note of the voice is invalid when no previous note can be tied to it
+	private void addInvalidTiedNoteErrors(TGMeasure measure, int voiceIndex, List<TGMeasureError> list) {
+		for (TGBeat beat : measure.getBeats()) {
+			for (TGNote note : beat.getVoice(voiceIndex).getNotes()) {
+				if (note.isTiedNote() && (getSongManager().getTrackManager().getPreviousNoteForTie(note) == null)) {
+					list.add(new TGMeasureError(measure, note));
+				}
+			}
+		}
+	}
+
+	// the duration errors of a voice: where its first beat starts, whether its beats follow each other, where it ends
+	private int getVoiceDurationErrors(TGMeasure measure, int voiceIndex) {
+		int errCode = TGMeasureError.OK;
+		long lastPreciseEnd = -1;
+		for (TGBeat beat : measure.getBeats()) {
+			TGVoice voice = beat.getVoice(voiceIndex);
+			if (!voice.isEmpty()) {
+				errCode |= getVoiceStartError(measure, beat.getPreciseStart(), lastPreciseEnd);
+				lastPreciseEnd = getPreciseEnd(beat, voice.getDuration());
+			}
+		}
+		if (lastPreciseEnd < 0) {
+			return errCode;
+		}
+		return errCode | getPositionError(lastPreciseEnd, getMeasurePreciseEnd(measure), TGMeasureError.VOICE_TOO_SHORT, TGMeasureError.VOICE_TOO_LONG);
+	}
+
+	// the first beat of a voice (none ends before it) must not start before the measure; any other where the previous one ends
+	private int getVoiceStartError(TGMeasure measure, long beatPreciseStart, long lastPreciseEnd) {
+		if (lastPreciseEnd < 0) {
+			return getPositionError(beatPreciseStart, measure.getPreciseStart(), TGMeasureError.VOICE_EARLY_START, TGMeasureError.OK);
+		}
+		return getPositionError(beatPreciseStart, lastPreciseEnd, TGMeasureError.VOICE_OVERLAP, TGMeasureError.VOICE_DISCONTINUOUS);
+	}
+
+	// "ifEarly" when the position comes before the expected one, "ifLate" when after, OK when they match
+	private static int getPositionError(long position, long expected, int ifEarly, int ifLate) {
+		if (position < expected) {
+			return ifEarly;
+		}
+		return (position > expected ? ifLate : TGMeasureError.OK);
 	}
 
 	public boolean isMeasureDurationValid(TGMeasure measure) {
