@@ -76,7 +76,6 @@ Feature: Audio tracks
     And track 3's channel is not track 2's channel
     And track 3 is not armed
 
-  @planned
   Scenario: a cloned audio track keeps the takes chosen per measure and the next take number
     Given I have added an audio track recording input channel 1
     And I have armed track 2
@@ -94,7 +93,6 @@ Feature: Audio tracks
     When I remove track 2
     Then the song has 1 channel
 
-  @planned
   Scenario: removing an armed audio track and undoing brings it back with its takes, not armed
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
@@ -105,7 +103,6 @@ Feature: Audio tracks
     And take 1 of track 2 is sample for sample what it was
     And track 2 is not armed
 
-  @planned
   Scenario: moving an armed audio track keeps it armed and keeps its takes
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
@@ -143,7 +140,6 @@ Feature: Audio tracks
       | TuxGuitar Synthesizer | holds a  |
       | Test MIDI Out         | holds no |
 
-  @planned
   Scenario Outline: recording needs the TuxGuitar Synthesizer as the MIDI Port
     Given I have added an audio track recording input channel 1
     And I have armed track 2

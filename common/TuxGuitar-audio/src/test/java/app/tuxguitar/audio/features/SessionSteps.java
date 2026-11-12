@@ -58,9 +58,10 @@ public class SessionSteps {
 		player.openOutputPort(PORTS.stream().filter(port -> port.getName().equals(name)).findFirst().get().getKey());
 	}
 
-	// the audio device is the one recording reads its input from (RecordingSteps); this slice has only Test Interface
+	// only Test Interface exists so far
 	@Given("I have set the audio device to {string}")
 	public void setTheAudioDevice(String name) {
+		world.session().setDevice(world.device());
 	}
 
 	// the plugin host comes with the VST3 slice; no implemented scenario uses a plugin yet

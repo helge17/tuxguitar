@@ -1,16 +1,32 @@
 package app.tuxguitar.audio.features;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import app.tuxguitar.audio.TGRecording;
+import app.tuxguitar.audio.TGSongTime;
+import app.tuxguitar.audio.TGTakeSegment;
 import app.tuxguitar.audio.TGTakeSpan;
 import app.tuxguitar.audio.TGTakes;
+import app.tuxguitar.audio.action.TGChooseTakeAction;
+import app.tuxguitar.audio.action.TGDeleteTakeAction;
+import app.tuxguitar.audio.undo.TGUndoableTakesController;
+import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGTrack;
+import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
- * Steps on the takes of audio tracks: reading them, choosing and deleting them.
+ * Steps on the takes of audio tracks: putting takes on a track, the player's signals, reading takes and what plays
+ * where, choosing and deleting takes.
  */
 public class TakeSteps {
 
@@ -18,6 +34,26 @@ public class TakeSteps {
 
 	public TakeSteps(AudioWorld world) {
 		this.world = world;
+	}
+
+	@ParameterType(Signals.PATTERN)
+	public String signal(String text) {
+		return text;
+	}
+
+	// as if recorded at the song's tempo, from the player playing the signal on the track's input
+	@Given("track {int} has a take of {signal} from {position} to {position}")
+	public void hasATake(int number, String signal, SongPosition from, SongPosition to) {
+		TestInterface device = new TestInterface();
+		device.play(world.channel(world.track(number)).getAudioInput().getChannel(), Signals.parse(signal, world.song(), TestInterface.SAMPLE_RATE, from.measure()));
+		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null, 100);
+		recording.record(List.of(world.track(number)), TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1));
+		world.rememberTakes(number);
+	}
+
+	@Given("the player plays {signal} on input channel {int}")
+	public void thePlayerPlays(String signal, int inputChannel) {
+		world.device().play(inputChannel, Signals.parse(signal, world.song(), TestInterface.SAMPLE_RATE, 1));
 	}
 
 	// newest first: "take 2: m2b1 to m4b1, take 1: m1b1 to m3b1"
@@ -28,5 +64,65 @@ public class TakeSteps {
 			takes.add("take " + span.getTake().getNumber() + ": " + Positions.read(world.song(), span.getStart()) + " to " + Positions.read(world.song(), span.getEnd()));
 		}
 		assertEquals(expected, String.join(", ", takes));
+	}
+
+	// measure by measure, "m1: take 1, m2: none"; a measure where the take changes inside it, by beat: "m2b1: take 1, m2b3: take 2"
+	@Then("track {int}'s playback reads {string}")
+	public void playbackReads(int number, String expected) {
+		List<String> measures = new ArrayList<String>();
+		TGTrack track = world.track(number);
+		for (int index = 0; index < track.countMeasures(); index++) {
+			measures.add(playback(track.getMeasure(index)));
+		}
+		assertEquals(expected, String.join(", ", measures));
+	}
+
+	private String playback(TGMeasure measure) {
+		List<TGTakeSegment> segments = TGTakes.playback(measure);
+		if (segments.size() == 1) {
+			return "m" + measure.getNumber() + ": " + take(segments.get(0));
+		}
+		List<String> parts = new ArrayList<String>();
+		for (TGTakeSegment segment : segments) {
+			parts.add(Positions.read(world.song(), measure.getStart() + segment.getStart()) + ": " + take(segment));
+		}
+		return String.join(", ", parts);
+	}
+
+	private static String take(TGTakeSegment segment) {
+		return (segment.getTake() == null ? "none" : "take " + segment.getTake().getNumber());
+	}
+
+	@When("I choose take {int} of track {int} for measures {int} to {int}")
+	public void choose(int take, int number, int first, int last) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_TAKE, take);
+		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_FIRST_MEASURE, first);
+		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_LAST_MEASURE, last);
+		world.executeUndoable(new TGChooseTakeAction(world.fixture().context), new TGUndoableTakesController());
+	}
+
+	@Given("I have chosen take {int} of track {int} for measures {int} to {int}")
+	public void haveChosen(int take, int number, int first, int last) {
+		choose(take, number, first, last);
+		assertTrue(world.succeeded());
+	}
+
+	@When("I delete take {int} of track {int}")
+	public void delete(int take, int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.fixture().actionContext.setAttribute(TGChooseTakeAction.ATTRIBUTE_TAKE, take);
+		world.executeUndoable(new TGDeleteTakeAction(world.fixture().context), new TGUndoableTakesController());
+	}
+
+	@Given("I have deleted take {int} of track {int}")
+	public void haveDeleted(int take, int number) {
+		delete(take, number);
+		assertTrue(world.succeeded());
+	}
+
+	@Then("take {int} of track {int} is sample for sample what it was")
+	public void isSampleForSampleWhatItWas(int take, int number) {
+		assertArrayEquals(world.rememberedSamples(number, take), AudioWorld.samples(TGTakes.find(world.track(number), take)));
 	}
 }

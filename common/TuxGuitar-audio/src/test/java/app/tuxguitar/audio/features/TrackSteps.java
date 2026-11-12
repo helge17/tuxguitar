@@ -7,7 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.audio.action.TGAddAudioTrackAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.track.TGCloneTrackAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
 import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
+import app.tuxguitar.editor.undo.impl.track.TGUndoableCloneTrackController;
+import app.tuxguitar.editor.undo.impl.track.TGUndoableMoveTrackUpController;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableRemoveTrackController;
 import app.tuxguitar.song.models.TGTrack;
 import io.cucumber.java.en.Given;
@@ -46,6 +50,32 @@ public class TrackSteps {
 	public void removeTrack(int number) {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
 		world.executeUndoable(new TGRemoveTrackAction(world.fixture().context), new TGUndoableRemoveTrackController());
+	}
+
+	@Given("I have removed track {int}")
+	public void haveRemovedTrack(int number) {
+		int tracks = world.song().countTracks();
+		removeTrack(number);
+		assertEquals(tracks - 1, world.song().countTracks());
+	}
+
+	@When("I clone track {int}")
+	public void cloneTrack(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.executeUndoable(new TGCloneTrackAction(world.fixture().context), new TGUndoableCloneTrackController());
+	}
+
+	@Given("I have cloned track {int}")
+	public void haveClonedTrack(int number) {
+		int tracks = world.song().countTracks();
+		cloneTrack(number);
+		assertEquals(tracks + 1, world.song().countTracks());
+	}
+
+	@When("I move track {int} up")
+	public void moveTrackUp(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.executeUndoable(new TGMoveTrackUpAction(world.fixture().context), new TGUndoableMoveTrackUpController());
 	}
 
 	@Then("track {int} is an audio track with {int} strings")

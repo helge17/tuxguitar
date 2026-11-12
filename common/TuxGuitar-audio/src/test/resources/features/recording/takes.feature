@@ -13,14 +13,12 @@ Feature: Takes
 
   # Which take plays
 
-  @planned
   Scenario: a second take plays over the first where they overlap, and keeps it
     Given I have recorded from measure 1 beat 1 to measure 3 beat 1
     When I record from measure 2 beat 1 to measure 4 beat 1
     Then track 2's takes read "take 2: m2b1 to m4b1, take 1: m1b1 to m3b1"
     And track 2's playback reads "m1: take 1, m2: take 2, m3: take 2, m4: none"
 
-  @planned
   Scenario: choosing a take for some measures plays it there
     Given I have recorded from measure 1 beat 1 to the end of measure 4
     And I have recorded from measure 1 beat 1 to the end of measure 4
@@ -29,7 +27,6 @@ Feature: Takes
     Then track 2's takes read "take 3: m1b1 to m5b1, take 2: m1b1 to m5b1, take 1: m1b1 to m5b1"
     And track 2's playback reads "m1: take 3, m2: take 1, m3: take 3, m4: take 3"
 
-  @planned
   Scenario: a new recording plays where it recorded, over a take I had chosen there
     Given I have recorded from measure 1 beat 1 to the end of measure 4
     And I have recorded from measure 1 beat 1 to the end of measure 4
@@ -37,14 +34,12 @@ Feature: Takes
     When I record from measure 3 beat 1 to measure 4 beat 1
     Then track 2's playback reads "m1: take 2, m2: take 1, m3: take 3, m4: take 2"
 
-  @planned
   Scenario: choosing a take for measures it only partly covers applies where it covers them
     Given I have recorded from measure 1 beat 1 to measure 3 beat 1
     And I have recorded from measure 2 beat 1 to the end of measure 4
     When I choose take 1 of track 2 for measures 2 to 4
     Then track 2's playback reads "m1: take 1, m2: take 1, m3: take 2, m4: take 2"
 
-  @planned
   Scenario: choosing a take for measures it does not cover is refused
     Given I have recorded from measure 1 beat 1 to measure 2 beat 1
     And I have recorded from measure 2 beat 1 to measure 3 beat 1
@@ -52,7 +47,6 @@ Feature: Takes
     Then the action is refused
     And track 2's playback reads "m1: take 1, m2: take 2, m3: none, m4: none"
 
-  @planned
   Scenario: deleting a take uncovers what is below it, and the others keep their numbers
     Given I have recorded from measure 1 beat 1 to measure 3 beat 1
     And I have recorded from measure 2 beat 1 to measure 4 beat 1
@@ -61,7 +55,6 @@ Feature: Takes
     Then track 2's takes read "take 3: m3b1 to m4b1, take 1: m1b1 to m3b1"
     And track 2's playback reads "m1: take 1, m2: take 1, m3: take 3, m4: none"
 
-  @planned
   Scenario: a deleted take's number is not given again
     Given I have recorded from measure 1 beat 1 to measure 2 beat 1
     And I have recorded from measure 2 beat 1 to measure 3 beat 1
@@ -69,7 +62,6 @@ Feature: Takes
     When I record from measure 3 beat 1 to measure 4 beat 1
     Then track 2's takes read "take 3: m3b1 to m4b1, take 1: m1b1 to m2b1"
 
-  @planned
   Scenario: an undone recording's number is given again
     Given I have recorded from measure 1 beat 1 to measure 2 beat 1
     And I have recorded from measure 2 beat 1 to measure 3 beat 1
@@ -118,7 +110,6 @@ Feature: Takes
 
   # Undo
 
-  @planned
   Scenario Outline: choosing and deleting takes can be undone
     Given I have recorded from measure 1 beat 1 to measure 3 beat 1
     And I have recorded from measure 2 beat 1 to measure 4 beat 1
@@ -133,7 +124,6 @@ Feature: Takes
       | deleted take 2 of track 2                    |
       | deleted take 1 of track 2                    |
 
-  @planned
   Scenario: redoing a recording brings back the same take, sample for sample
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And I have recorded from measure 1 beat 1 to measure 2 beat 1
@@ -153,7 +143,6 @@ Feature: Takes
 
   # Punch-in
 
-  @planned
   Scenario Outline: a recording keeps only what falls inside the punch range
     Given I have set the punch range to measures 2 to 3
     When I record from <from> to <to>
@@ -166,39 +155,33 @@ Feature: Takes
       | measure 1 beat 1 | measure 2 beat 3     | take 1: m2b1 to m2b3 |
       | measure 2 beat 1 | measure 4 beat 1     | take 1: m2b1 to m4b1 |
 
-  @planned
   Scenario: a recording that never reaches the punch range keeps no take and adds no undo step
     Given I have set the punch range to measures 3 to 4
     When I record from measure 1 beat 1 to measure 2 beat 1
     Then track 2's takes read ""
     And the undo history is as it was before the recording
 
-  @planned
   Scenario: a take that starts inside a measure splits the playback reading by beat
     Given I have recorded from measure 1 beat 1 to the end of measure 4
     And I have set the punch range to measures 2 to 3
     When I record from measure 2 beat 3 to the end of measure 4
     Then track 2's playback reads "m1: take 1, m2b1: take 1, m2b3: take 2, m3: take 2, m4: take 1"
 
-  @planned
   Scenario: a punch range past the end of the song ends with the song
     When I set the punch range to measures 3 to 6
     Then the punch range is measures 3 to 4
 
-  @planned
   Scenario: a punch range that starts past the end of the song is refused
     When I set the punch range to measures 5 to 6
     Then the action is refused
     And there is no punch range
 
-  @planned
   Scenario: a punch range stays on its measure numbers when measures are inserted
     Given I have set the punch range to measures 2 to 3
     When I insert a measure before measure 1
     Then the punch range is measures 2 to 3
     And the song has 5 measures
 
-  @planned
   Scenario: removing all the measures of a punch range removes it
     Given I have set the punch range to measures 3 to 4
     When I remove measures 3 to 4
@@ -217,7 +200,6 @@ Feature: Takes
 
   # Loop recording
 
-  @planned
   Scenario: with Play looped on, each pass over the Loop Range records a take
     Given I have turned Play looped on over measures 2 to 3
     When I record from measure 2 beat 1 for 3 passes
@@ -241,14 +223,12 @@ Feature: Takes
     Then take 1 of track 2 holds 8 clicks, each within 1 sample of a beat
     And take 2 of track 2 holds 8 clicks, each within 1 sample of a beat
 
-  @planned
   Scenario: loop recording is one undo step
     Given I have turned Play looped on over measures 2 to 3
     And I have recorded from measure 2 beat 1 for 3 passes
     When I undo
     Then track 2's takes read ""
 
-  @planned
   Scenario: stopping in the middle of a pass keeps that pass's take up to where I stopped
     Given I have turned Play looped on over measures 2 to 3
     When I record from measure 2 beat 1 and stop at measure 3 beat 2 of the second pass
@@ -261,7 +241,6 @@ Feature: Takes
     When I record from measure 2 beat 1 for 3 passes
     Then the output holds 4 Count In clicks, all before measure 2 beat 1 of the first pass
 
-  @planned
   Scenario: with a punch range, each loop pass keeps only what falls inside it
     Given I have turned Play looped on over measures 2 to 3
     And I have set the punch range to measures 3 to 4
@@ -285,14 +264,12 @@ Feature: Takes
     When I play the song from measure 1 beat 1
     Then the output holds 24 clicks, each within 1 sample of a beat in song time
 
-  @planned
   Scenario: recording through a repeat makes a take per pass, and the second pass plays on both
     Given I have repeated measures 2 to 3 once
     When I record from measure 1 beat 1 until the song ends
     Then track 2's takes read "take 2: m2b1 to m5b1, take 1: m1b1 to m4b1"
     And track 2's playback reads "m1: take 1, m2: take 2, m3: take 2, m4: take 2"
 
-  @planned
   Scenario: recording through alternate endings makes a take at every jump
     Given I have repeated measure 2 once, with measure 3 as the first ending and measure 4 as the second
     When I record from measure 1 beat 1 until the song ends
@@ -300,7 +277,6 @@ Feature: Takes
 
   # Editing the song under takes
 
-  @planned
   Scenario: a take moves with its measures when a measure is inserted before them
     Given I have recorded from measure 2 beat 1 to measure 3 beat 1
     When I insert a measure before measure 1
@@ -330,7 +306,6 @@ Feature: Takes
     Then track 2 fades from 0.4 to 0 over the 256 samples before measure 2 beat 1, within 1 sample
     And track 2's sample at measure 2 beat 1 is 0.4
 
-  @planned
   Scenario: removing a measure under a take and undoing brings its audio back sample for sample
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have removed measure 2
@@ -338,7 +313,6 @@ Feature: Takes
     Then take 1 of track 2 is sample for sample what it was
     And track 2's takes read "take 1: m1b1 to m5b1"
 
-  @planned
   Scenario: removing every measure a take covers removes the take
     Given I have recorded from measure 2 beat 1 to measure 3 beat 1
     When I remove measure 2
@@ -369,7 +343,6 @@ Feature: Takes
     Then track 2's takes read "take 1: m2b1 to m5b1"
     And track 2 sounds nothing, 220, 330 and 440 Hz in measures 1 to 4
 
-  @planned
   Scenario Outline: audio and notes are pasted only onto their own kind of track
     Given track 1 has a quarter note on every beat
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1

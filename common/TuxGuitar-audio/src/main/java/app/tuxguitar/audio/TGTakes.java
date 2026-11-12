@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTake;
@@ -13,7 +16,8 @@ import app.tuxguitar.song.models.TGTakeClip;
 import app.tuxguitar.song.models.TGTrack;
 
 /**
- * The takes of a track, read from the clips its measures hold: a take is on the track while one of its clips is.
+ * The takes of a track, read from and written to the clips its measures hold: a take is on the track while one of its
+ * clips is. At each point a track plays the newest take there, unless a take was chosen for that measure (comping).
  */
 public final class TGTakes {
 
@@ -41,5 +45,82 @@ public final class TGTakes {
 
 	private static TGTakeSpan cover(TGTakeSpan a, TGTakeSpan b) {
 		return new TGTakeSpan(a.getTake(), Math.min(a.getStart(), b.getStart()), Math.max(a.getEnd(), b.getEnd()));
+	}
+
+	// the take of that number on the track, or null
+	public static TGTake find(TGTrack track, int number) {
+		return list(track).stream().map(TGTakeSpan::getTake).filter(take -> take.getNumber() == number).findFirst().orElse(null);
+	}
+
+	// a new take over the played measures, numbered from the track's next take number; it plays where it was recorded
+	public static TGTake record(TGTrack track, float[] samples, List<TGPlayedMeasure> played) {
+		TGTake take = new TGTake(track.getNextTakeNumber(), samples);
+		track.setNextTakeNumber(take.getNumber() + 1);
+		for (TGPlayedMeasure measure : played) {
+			TGMeasure trackMeasure = track.getMeasure(measure.getHeader().getNumber() - 1);
+			trackMeasure.setChosenTake(null);
+			trackMeasure.addTakeClip(new TGTakeClip(take, measure.getFrom(), measure.getTo()));
+		}
+		return take;
+	}
+
+	// chooses the take for the measures it covers among them; false when it covers none
+	public static boolean choose(TGTrack track, TGTake take, int firstMeasure, int lastMeasure) {
+		boolean covers = false;
+		for (int number = firstMeasure; number <= lastMeasure; number++) {
+			TGMeasure measure = track.getMeasure(number - 1);
+			if (measure != null && clips(measure).anyMatch(clip -> clip.getTake() == take)) {
+				measure.setChosenTake(take);
+				covers = true;
+			}
+		}
+		return covers;
+	}
+
+	public static void delete(TGTrack track, TGTake take) {
+		Iterator<TGMeasure> measures = track.getMeasures();
+		while (measures.hasNext()) {
+			measures.next().removeTake(take);
+		}
+	}
+
+	// which take the measure plays, from where to where: one segment per change
+	public static List<TGTakeSegment> playback(TGMeasure measure) {
+		List<TGTakeSegment> segments = new ArrayList<TGTakeSegment>();
+		for (long tick : boundaries(measure)) {
+			TGTake take = playing(measure, tick);
+			if (segments.isEmpty() || segments.get(segments.size() - 1).getTake() != take) {
+				segments.add(new TGTakeSegment(tick, take));
+			}
+		}
+		return segments;
+	}
+
+	// the measure's start, and every start or end of a clip inside it
+	private static SortedSet<Long> boundaries(TGMeasure measure) {
+		SortedSet<Long> ticks = new TreeSet<Long>();
+		ticks.add(0L);
+		for (TGTakeClip clip : measure.getTakeClips()) {
+			ticks.add(clip.getStart());
+			ticks.add(clip.getEnd());
+		}
+		return ticks.headSet(measure.getLength());
+	}
+
+	// the chosen take where it covers the tick, else the newest take there
+	private static TGTake playing(TGMeasure measure, long tick) {
+		TGTake chosen = measure.getChosenTake();
+		if (clipsAt(measure, tick).anyMatch(clip -> clip.getTake() == chosen)) {
+			return chosen;
+		}
+		return clipsAt(measure, tick).map(TGTakeClip::getTake).max(Comparator.comparingInt(TGTake::getNumber)).orElse(null);
+	}
+
+	private static Stream<TGTakeClip> clips(TGMeasure measure) {
+		return measure.getTakeClips().stream();
+	}
+
+	private static Stream<TGTakeClip> clipsAt(TGMeasure measure, long tick) {
+		return clips(measure).filter(clip -> clip.getStart() <= tick && tick < clip.getEnd());
 	}
 }
