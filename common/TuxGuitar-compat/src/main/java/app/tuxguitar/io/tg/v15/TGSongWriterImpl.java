@@ -8,6 +8,7 @@ import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
+import app.tuxguitar.io.tg.util.TGMeasureHeaderFlags;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
@@ -39,6 +40,10 @@ import app.tuxguitar.song.models.effects.TGEffectTremoloPicking;
 import app.tuxguitar.song.models.effects.TGEffectTrill;
 
 public class TGSongWriterImpl extends TGStream implements TGSongWriter {
+
+	private static final TGMeasureHeaderFlags MEASURE_HEADER_FLAGS = new TGMeasureHeaderFlags(
+			MEASURE_HEADER_TIMESIGNATURE, MEASURE_HEADER_TEMPO, MEASURE_HEADER_REPEAT_OPEN, MEASURE_HEADER_REPEAT_CLOSE,
+			MEASURE_HEADER_REPEAT_ALTERNATIVE, MEASURE_HEADER_MARKER, MEASURE_HEADER_TRIPLET_FEEL);
 
 	private DataOutputStream dataOutputStream;
 
@@ -172,35 +177,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	private void writeMeasureHeader(TGMeasureHeader measureheader,TGMeasureHeader lastMeasureHeader) throws IOException{
-		int header = 0;
-		if(lastMeasureHeader == null){
-			header |= MEASURE_HEADER_TIMESIGNATURE;
-			header |= MEASURE_HEADER_TEMPO;
-			if(measureheader.getTripletFeel() != TGMeasureHeader.TRIPLET_FEEL_NONE){
-				header |= MEASURE_HEADER_TRIPLET_FEEL;
-			}
-		}else{
-			//Time Signature
-			int numerator = measureheader.getTimeSignature().getNumerator();
-			int value = measureheader.getTimeSignature().getDenominator().getValue();
-			int prevNumerator = lastMeasureHeader.getTimeSignature().getNumerator();
-			int prevValue = lastMeasureHeader.getTimeSignature().getDenominator().getValue();
-			if(numerator != prevNumerator || value != prevValue){
-				header |= MEASURE_HEADER_TIMESIGNATURE;
-			}
-			//Tempo
-			if(measureheader.getTempo().getQuarterValue() != lastMeasureHeader.getTempo().getQuarterValue()){
-				header |= MEASURE_HEADER_TEMPO;
-			}
-			//Triplet Feel
-			if(measureheader.getTripletFeel() != lastMeasureHeader.getTripletFeel()){
-				header |= MEASURE_HEADER_TRIPLET_FEEL;
-			}
-		}
-		header = (measureheader.isRepeatOpen())?header |= MEASURE_HEADER_REPEAT_OPEN:header;
-		header = (measureheader.getRepeatClose() > 0)?header |= MEASURE_HEADER_REPEAT_CLOSE:header;
-		header = (measureheader.getRepeatAlternative() > 0)?header |= MEASURE_HEADER_REPEAT_ALTERNATIVE:header;
-		header = (measureheader.hasMarker())?header |= MEASURE_HEADER_MARKER:header;
+		int header = MEASURE_HEADER_FLAGS.create(measureheader, lastMeasureHeader);
 
 		writeHeader(header);
 
