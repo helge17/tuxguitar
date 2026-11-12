@@ -58,7 +58,7 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 	}
 
 	// where the pieces start: the start, and every onset at least a frame after the one before and before the end
-	private List<Integer> onsets(float[] input, int from, int to) {
+	List<Integer> onsets(float[] input, int from, int to) {
 		List<Integer> onsets = new ArrayList<Integer>();
 		onsets.add(from);
 		for (int i = from + 2; i <= to - this.frame; i++) {
@@ -102,7 +102,7 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 	// near the ideal position, the one whose waveform is most like the natural continuation of the frame before; past
 	// what the first frame played at full level, so the piece's attack is played once, and leaving a whole frame
 	// before its end
-	private int bestPosition(float[] input, int start, int end, int natural, int ideal) {
+	int bestPosition(float[] input, int start, int end, int natural, int ideal) {
 		int low = Math.max(start + this.hop, Math.min(ideal - this.tolerance, end - this.frame));
 		int high = Math.max(low, Math.min(end - this.frame, ideal + this.tolerance));
 		int best = low;
@@ -118,7 +118,7 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 	}
 
 	// the correlation of the two waveforms, divided by the candidate's energy, so a louder candidate is not preferred
-	private double similarity(float[] input, int natural, int position, int end) {
+	double similarity(float[] input, int natural, int position, int end) {
 		double sum = 0;
 		double energy = 1e-9;
 		int count = Math.min(this.hop, Math.min(end - natural, end - position));
