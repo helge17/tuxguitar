@@ -126,6 +126,18 @@ public class TestScoreBeamPainting {
 	// lays out notes of the given values from the start offset, stems in the given direction, then what each one
 	// draws after its stem
 	private String beams(int direction, int... durationValues) {
+		List<TGVoiceImpl> voices = notes(direction, durationValues);
+		TGLayout layout = harness.update(SCORE);
+		harness.measure().setSpacing(measureSpacing);
+		List<String> beams = new ArrayList<String>();
+		for (TGVoiceImpl voice : voices) {
+			beams.add(afterStem(layout, voice));
+		}
+		return voices(beams.toArray(new String[0]));
+	}
+
+	// adds notes of the given values one after another from the start offset, stems in the given direction
+	private List<TGVoiceImpl> notes(int direction, int... durationValues) {
 		List<TGVoiceImpl> voices = new ArrayList<TGVoiceImpl>();
 		long offset = start;
 		for (int durationValue : durationValues) {
@@ -134,13 +146,7 @@ public class TestScoreBeamPainting {
 			offset += voice.getDuration().getPreciseTime();
 			voices.add(voice);
 		}
-		TGLayout layout = harness.update(SCORE);
-		harness.measure().setSpacing(measureSpacing);
-		List<String> beams = new ArrayList<String>();
-		for (TGVoiceImpl voice : voices) {
-			beams.add(afterStem(layout, voice));
-		}
-		return voices(beams.toArray(new String[0]));
+		return voices;
 	}
 
 	// the voice paints its score beat: the footer style (2 calls) and the stem (8 calls), then its beams
