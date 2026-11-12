@@ -111,6 +111,65 @@ public class TestSequenceParserNotes {
 		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 59, 95, 2, 0)), song.notes());
 	}
 
+	@Test
+	public void upStrokeDelaysLowerStrings() {
+		song.quarter(1, 0);
+		song.quarter(3, 0);
+		TGStroke stroke = song.beat(0, 0).getStroke();
+		stroke.setDirection(TGStroke.STROKE_UP);
+		stroke.setValue(8);
+		assertEquals(events(note(960, 1920, 64), note(1020, 1920, 55, 95, 3, 0)), song.notes());
+	}
+
+	@Test
+	public void tiedNotesTakeNoPlaceInTheStroke() {
+		song.quarter(1, 0);
+		song.quarter(2, 0).setTiedNote(true);
+		song.quarter(3, 0);
+		TGStroke stroke = song.beat(0, 0).getStroke();
+		stroke.setDirection(TGStroke.STROKE_DOWN);
+		stroke.setValue(8);
+		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 55, 95, 3, 0)), song.notes());
+	}
+
+	@Test
+	public void aBeatWithoutStrokeAfterAStrokedOneIsNotDelayed() {
+		song.quarter(1, 0);
+		song.quarter(2, 0);
+		song.note(4, TGDuration.QUARTER, 1, 0);
+		song.note(4, TGDuration.QUARTER, 2, 0);
+		TGStroke stroke = song.beat(0, 0).getStroke();
+		stroke.setDirection(TGStroke.STROKE_DOWN);
+		stroke.setValue(8);
+		assertEquals(events(note(1020, 1920, 64), note(960, 1920, 59, 95, 2, 0),
+				note(1920, 2880, 64), note(1920, 2880, 59, 95, 2, 0)), song.notes());
+	}
+
+	// ---- metronome ----
+
+	private static String[] tick(long start, long end) {
+		String rest = " t2 c9 k37 v95 s-1 b0";
+		return new String[] {"on " + start + rest, "off " + end + rest};
+	}
+
+	@Test
+	public void metronomeTicksEveryBeatOfTheTimeSignatureOnTheLastTrack() {
+		song.flags = MidiSequenceParser.ADD_METRONOME;
+		song.metronomeChannelId = 9;
+		song.song.getMeasureHeader(0).getTimeSignature().setNumerator(3);
+		song.song.getMeasureHeader(0).getTimeSignature().getDenominator().setValue(TGDuration.EIGHTH);
+		assertEquals(events(tick(960, 1440), tick(1440, 1920), tick(1920, 2400)), song.notes());
+	}
+
+	@Test
+	public void noMetronomeWithoutItsFlagOrWithoutItsChannel() {
+		song.metronomeChannelId = 9;
+		List<String> withoutFlag = song.notes();
+		song.flags = MidiSequenceParser.ADD_METRONOME;
+		song.metronomeChannelId = -1;
+		assertEquals(List.of(List.of(), List.of()), List.of(withoutFlag, song.notes()));
+	}
+
 	// ---- duration effects ----
 
 	@Test
