@@ -6,15 +6,15 @@ import app.tuxguitar.song.models.TGTrack;
 
 /**
  * What playing (or recording) sounded, offline: the timeline it played, each channel's tap (where it joins the output
- * mix, before Volume and Balance) and the output, left and right. Taps are mono for audio channels.
+ * mix, before Volume and Balance, left and right) and the output, left and right.
  */
 public final class TGRender {
 
 	private final TGTimeline timeline;
-	private final Map<Integer, float[]> taps;
+	private final Map<Integer, float[][]> taps;
 	private final float[][] output;
 
-	public TGRender(TGTimeline timeline, Map<Integer, float[]> taps, float[][] output) {
+	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] output) {
 		this.timeline = timeline;
 		this.taps = taps;
 		this.output = output;
@@ -24,9 +24,11 @@ public final class TGRender {
 		return this.timeline;
 	}
 
-	// the tap of the track's channel; silence for a channel that sounded nothing
+	// the left side of the tap of the track's channel (an audio channel's tap is mono); silence for a channel that
+	// sounded nothing
 	public float[] getTap(TGTrack track) {
-		return this.taps.getOrDefault(track.getChannelId(), new float[this.output[0].length]);
+		float[][] tap = this.taps.get(track.getChannelId());
+		return (tap != null ? tap[0] : new float[this.output[0].length]);
 	}
 
 	public float[] getLeft() {

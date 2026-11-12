@@ -15,14 +15,21 @@ public final class TGPlayedMeasure {
 	private final boolean jump;
 	private final int pass;
 	private final int percent;
+	private final int step;
 
-	public TGPlayedMeasure(TGMeasureHeader header, long from, long to, boolean jump, int pass, int percent) {
+	// step: where it comes in its pass, from 0
+	public TGPlayedMeasure(TGMeasureHeader header, long from, long to, boolean jump, int pass, int percent, int step) {
 		this.header = header;
 		this.from = from;
 		this.to = to;
 		this.jump = jump;
 		this.pass = pass;
 		this.percent = percent;
+		this.step = step;
+	}
+
+	public int getStep() {
+		return this.step;
 	}
 
 	public TGMeasureHeader getHeader() {

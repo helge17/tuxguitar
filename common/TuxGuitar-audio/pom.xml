@@ -46,6 +46,18 @@
 			<artifactId>tuxguitar-lib</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- the TuxGuitar Synthesizer's host core and its Gervill source, headless: General MIDI programs -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-synth-core</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>media.sound</groupId>
+			<artifactId>gervill</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!-- editing actions and undo -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>

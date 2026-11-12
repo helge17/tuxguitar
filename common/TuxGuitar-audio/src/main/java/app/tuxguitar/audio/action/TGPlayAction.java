@@ -9,6 +9,7 @@ import app.tuxguitar.audio.TGTimeline;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
@@ -44,7 +45,11 @@ public class TGPlayAction extends TGActionBase {
 		Long stop = actionContext.getAttribute(ATTRIBUTE_STOP);
 		Integer passes = actionContext.getAttribute(ATTRIBUTE_PASSES);
 		TGTimeline timeline = new TGTimeline(song, TGSongTime.play(song, player.getMode(), start, stop, passes), session.getDevice().getSampleRate());
-		TGRenderer renderer = new TGRenderer(songManager, song, session);
-		return renderer.render(timeline, recording, player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY));
+		TGRenderer renderer = new TGRenderer(context, songManager, song, session);
+		try {
+			return renderer.render(timeline, player.getMode(), recording, player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY));
+		} catch (MidiPlayerException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 }

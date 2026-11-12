@@ -32,7 +32,7 @@ public final class TGSongTime {
 		List<TGPlayedMeasure> played = new ArrayList<TGPlayedMeasure>();
 		int[] percents = percents(mode, passes);
 		for (int i = first; i <= last; i++) {
-			TGPlayedMeasure measure = played(sequence, i, first, last, start, stop, percents[i / pass.size()], i / pass.size());
+			TGPlayedMeasure measure = played(sequence, i, first, last, start, stop, percents[i / pass.size()], pass.size());
 			if (measure.getTo() > measure.getFrom()) {
 				played.add(measure);
 			}
@@ -42,12 +42,12 @@ public final class TGSongTime {
 
 	// the measure of the sequence at i: the first from start on, the last until stop when it holds it; a measure that
 	// does not follow the one before it starts a stretch
-	private static TGPlayedMeasure played(List<TGMeasureHeader> sequence, int i, int first, int last, long start, long stop, int percent, int pass) {
+	private static TGPlayedMeasure played(List<TGMeasureHeader> sequence, int i, int first, int last, long start, long stop, int percent, int passLength) {
 		TGMeasureHeader header = sequence.get(i);
 		long from = (i == first ? start - header.getStart() : 0);
 		long to = (i == last ? Math.min(header.getLength(), stop - header.getStart()) : header.getLength());
 		boolean jump = (i > first && header.getNumber() != sequence.get(i - 1).getNumber() + 1);
-		return new TGPlayedMeasure(header, from, to, jump, pass, percent);
+		return new TGPlayedMeasure(header, from, to, jump, i / passLength, percent, i % passLength);
 	}
 
 	// the Percentage of Tempo of each pass: Training Mode raises it after each pass, as the player does
@@ -64,16 +64,29 @@ public final class TGSongTime {
 
 	// one pass, in song order: the whole song, or the Loop Range when Play looped is on
 	private static List<TGMeasureHeader> pass(TGSong song, MidiPlayerMode mode) {
-		MidiRepeatController controller = (mode.isLoop() ? new MidiRepeatController(song, mode.getLoopSHeader(), mode.getLoopEHeader()) : new MidiRepeatController(song, -1, -1));
 		List<TGMeasureHeader> headers = new ArrayList<TGMeasureHeader>();
+		walk(song, mode, (index, move) -> headers.add(song.getMeasureHeader(index)));
+		return headers;
+	}
+
+	// for each step of a pass, how far the MIDI sequence parser moves the measure's ticks (repeats are unrolled)
+	public static List<Long> moves(TGSong song, MidiPlayerMode mode) {
+		List<Long> moves = new ArrayList<Long>();
+		walk(song, mode, (index, move) -> moves.add(move));
+		return moves;
+	}
+
+	// the measures of a pass as the MIDI sequence parser walks them
+	private static void walk(TGSong song, MidiPlayerMode mode, java.util.function.BiConsumer<Integer, Long> played) {
+		MidiRepeatController controller = (mode.isLoop() ? new MidiRepeatController(song, mode.getLoopSHeader(), mode.getLoopEHeader()) : new MidiRepeatController(song, -1, -1));
 		while (!controller.finished()) {
 			int index = controller.getIndex();
+			long move = controller.getRepeatMove();
 			controller.process();
 			if (controller.shouldPlay()) {
-				headers.add(song.getMeasureHeader(index));
+				played.accept(index, move);
 			}
 		}
-		return headers;
 	}
 
 	// the first measure of the sequence, from the given index on, that holds the tick; -1 when none does

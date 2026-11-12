@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import app.tuxguitar.audio.MapProperties;
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.util.properties.TGPropertiesManager;
 import app.tuxguitar.audio.TGSongTime;
 import app.tuxguitar.audio.TGTimeline;
 import app.tuxguitar.player.base.MidiPlayer;
@@ -59,6 +61,7 @@ public class AudioWorld {
 			new TGRemoveMeasureAction(this.fixture.context), new TGInsertMeasuresAction(this.fixture.context),
 			new TGCopySongFromAction(this.fixture.context), new TGChangeTempoAction(this.fixture.context));
 		TGUndoableManager.getInstance(this.fixture.context).setBuffer(this.undoHistory);
+		TGPropertiesManager.getInstance(this.fixture.context).setPropertiesFactory(MapProperties::new);
 	}
 
 	public SongActionFixture fixture() {
