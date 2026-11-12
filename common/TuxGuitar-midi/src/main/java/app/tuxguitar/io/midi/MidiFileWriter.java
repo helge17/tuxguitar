@@ -83,7 +83,7 @@ public class MidiFileWriter implements MidiFileHeader{
 	private static int writeVariableLengthQuantity(long value, OutputStream out)throws IOException{
 		int length = 0;
 		// the three high 7-bit groups (bits 21-27, 14-20, 7-13), from the first non-zero one, with the continuation bit
-		for (int shift = 21; shift > 0; shift -= 7){
+		for (int shift = 21; shift >= 7; shift -= 7){
 			int data = (int) ((value >> shift) & 0x7f);
 			if (data != 0 || length > 0){
 				writeByte(data | 0x80, out);
