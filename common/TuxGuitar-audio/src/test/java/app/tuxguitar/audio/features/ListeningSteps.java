@@ -255,7 +255,7 @@ public class ListeningSteps {
 		int from = heard().measure(first)[0];
 		int to = heard().measure(last)[1];
 		for (int i = from; i < to; i++) {
-			assertEquals(played.getSample(clip.getFirstSample() + i - from), tap[i], 0f, "sample " + i);
+			assertEquals(played.getSample(0, clip.getFirstSample() + i - from), tap[i], 0f, "sample " + i);
 		}
 	}
 

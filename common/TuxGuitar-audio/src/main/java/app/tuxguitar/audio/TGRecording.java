@@ -63,7 +63,7 @@ public final class TGRecording {
 		long clock = timeline.getClock() + timeline.start(first);
 		int count = (int) (timeline.end(last) - timeline.start(first));
 		for (TGTrack track : tracks) {
-			int input = this.songManager.getChannel(this.song, track.getChannelId()).getAudioInput().getChannel();
+			int input = this.songManager.getChannel(this.song, track.getChannelId()).getAudioInput().getChannel(0);
 			TGTakes.record(track, this.device.capture(input, clock, count), timeline, first, last);
 		}
 		return tracks.size();

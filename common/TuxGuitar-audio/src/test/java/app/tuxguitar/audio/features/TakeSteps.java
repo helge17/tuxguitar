@@ -51,7 +51,7 @@ public class TakeSteps {
 		device.setSampleRate(world.device().getSampleRate());
 		List<TGPlayedMeasure> played = TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1);
 		device.setPlayed(new TGTimeline(world.song(), played, device.getSampleRate()));
-		device.play(world.channel(world.track(number)).getAudioInput().getChannel(), Signals.parse(signal, world.song(), device, from.measure()));
+		device.play(world.channel(world.track(number)).getAudioInput().getChannel(0), Signals.parse(signal, world.song(), device, from.measure()));
 		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null);
 		recording.record(List.of(world.track(number)), played);
 		world.rememberTakes(number);

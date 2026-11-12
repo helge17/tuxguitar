@@ -139,7 +139,7 @@ public class AudioWorld {
 	public static float[] samples(TGTake take) {
 		float[] samples = new float[take.countSamples()];
 		for (int i = 0; i < samples.length; i++) {
-			samples[i] = take.getSample(i);
+			samples[i] = take.getSample(0, i);
 		}
 		return samples;
 	}

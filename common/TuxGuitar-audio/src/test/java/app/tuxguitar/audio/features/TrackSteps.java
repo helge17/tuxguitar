@@ -93,7 +93,7 @@ public class TrackSteps {
 
 	@Then("track {int} records input channel {int}")
 	public void recordsInputChannel(int number, int inputChannel) {
-		assertEquals(inputChannel, world.channel(world.track(number)).getAudioInput().getChannel());
+		assertEquals(inputChannel, world.channel(world.track(number)).getAudioInput().getChannel(0));
 	}
 
 	@Then("track {int}'s sound chain reads {string}")

@@ -47,7 +47,8 @@ public class TestAudioTracks {
 		assertEquals(2, track.getNumber());
 		assertEquals(song.countMeasureHeaders(), track.countMeasures());
 		assertEquals(2, song.countChannels());
-		assertEquals(2, channelOf(track).getAudioInput().getChannel());
+		assertEquals(1, channelOf(track).getAudioInput().countChannels());
+		assertEquals(2, channelOf(track).getAudioInput().getChannel(0));
 		assertTrue(track.isAudio());
 		assertFalse(track.isPercussion());
 	}
@@ -105,7 +106,7 @@ public class TestAudioTracks {
 
 		assertEquals(3, song.countChannels());
 		assertEquals(3, clone.getChannelId());
-		assertEquals(2, channelOf(clone).getAudioInput().getChannel());
+		assertEquals(2, channelOf(clone).getAudioInput().getChannel(0));
 		assertEquals(90, channelOf(clone).getVolume());
 		assertEquals(2, track.getChannelId());
 	}
@@ -181,9 +182,33 @@ public class TestAudioTracks {
 
 		assertEquals(3, made.getNumber());
 		assertEquals(44100, made.getSampleRate());
+		assertEquals(1, made.countChannels());
 		assertEquals(2, made.countSamples());
-		assertEquals(0.25f, made.getSample(0));
-		assertEquals(-0.5f, made.getSample(1));
+		assertEquals(0.25f, made.getSample(0, 0));
+		assertEquals(-0.5f, made.getSample(0, 1));
+	}
+
+	@Test
+	public void aStereoTakeKeepsItsTwoSidesWhateverHappensToTheArraysItWasMadeFrom() {
+		float[][] samples = { { 0.25f, -0.5f }, { 0.125f, 1f } };
+		TGTake made = new TGTake(3, samples, 44100);
+		samples[1][0] = 0f;
+		samples[0] = new float[0];
+
+		assertEquals(2, made.countChannels());
+		assertEquals(2, made.countSamples());
+		assertEquals(0.25f, made.getSample(0, 0));
+		assertEquals(0.125f, made.getSample(1, 0));
+		assertEquals(1f, made.getSample(1, 1));
+	}
+
+	@Test
+	public void aStereoInputRecordsFromAPairOfInputChannelsLeftThenRight() {
+		TGAudioInput input = TGAudioInput.stereo(3, 1);
+
+		assertEquals(2, input.countChannels());
+		assertEquals(3, input.getChannel(0));
+		assertEquals(1, input.getChannel(1));
 	}
 
 	@Test

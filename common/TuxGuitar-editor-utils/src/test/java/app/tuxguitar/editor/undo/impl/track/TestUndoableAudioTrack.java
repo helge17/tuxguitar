@@ -62,7 +62,7 @@ public class TestUndoableAudioTrack {
 		}
 		for (Iterator<TGChannel> it = fixture.song.getChannels(); it.hasNext();) {
 			TGChannel channel = it.next();
-			parts.add(channel.getChannelId() + (channel.isAudioChannel() ? "<" + channel.getAudioInput().getChannel() : ""));
+			parts.add(channel.getChannelId() + (channel.isAudioChannel() ? "<" + channel.getAudioInput().getChannel(0) : ""));
 		}
 		return String.join(" ", parts);
 	}

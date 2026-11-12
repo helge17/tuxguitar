@@ -61,7 +61,7 @@ public final class TGRenderer {
 		TGTrackSource[] sources = this.sources(track, timeline, recording);
 		float[] input = null;
 		if (Arrays.asList(sources).contains(TGTrackSource.INPUT)) {
-			int channel = this.channel(track).getAudioInput().getChannel();
+			int channel = this.channel(track).getAudioInput().getChannel(0);
 			input = this.session.getDevice().capture(channel, timeline.getClock(), (int) timeline.length());
 		}
 		return TGTakeTap.render(track, timeline, this.stretcher, sources, input);
