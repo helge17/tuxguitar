@@ -92,7 +92,6 @@ Feature: Recording line-in audio
       | input channel 1 | 4 clicks and no 440 Hz tone |
       | input channel 2 | a 440 Hz tone and no clicks |
 
-  @planned
   Scenario: a stereo take records a pair of input channels, one on each side
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 2

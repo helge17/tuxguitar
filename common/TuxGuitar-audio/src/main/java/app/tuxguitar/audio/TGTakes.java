@@ -52,9 +52,10 @@ public final class TGTakes {
 		return list(track).stream().map(TGTakeSpan::getTake).filter(take -> take.getNumber() == number).findFirst().orElse(null);
 	}
 
-	// a new take over the played measures from first to last of the timeline, numbered from the track's next take
-	// number; it plays where it was recorded. Each measure's clip starts at its sample of the take and keeps the tempo
-	public static TGTake record(TGTrack track, float[] samples, TGTimeline timeline, int first, int last) {
+	// a new take of the samples (one array per side) over the played measures from first to last of the timeline,
+	// numbered from the track's next take number; it plays where it was recorded. Each measure's clip starts at its
+	// sample of the take and keeps the tempo
+	public static TGTake record(TGTrack track, float[][] samples, TGTimeline timeline, int first, int last) {
 		TGTake take = new TGTake(track.getNextTakeNumber(), samples, timeline.getSampleRate());
 		track.setNextTakeNumber(take.getNumber() + 1);
 		for (int i = first; i <= last; i++) {

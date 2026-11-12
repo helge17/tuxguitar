@@ -138,10 +138,15 @@ public class AudioWorld {
 		return this.takeSamples.get(key(trackNumber, takeNumber));
 	}
 
+	// a mono take's samples, or a stereo one's left side
 	public static float[] samples(TGTake take) {
+		return samples(take, 0);
+	}
+
+	public static float[] samples(TGTake take, int side) {
 		float[] samples = new float[take.countSamples()];
 		for (int i = 0; i < samples.length; i++) {
-			samples[i] = take.getSample(0, i);
+			samples[i] = take.getSample(side, i);
 		}
 		return samples;
 	}

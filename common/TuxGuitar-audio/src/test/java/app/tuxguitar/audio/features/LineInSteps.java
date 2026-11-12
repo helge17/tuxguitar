@@ -25,6 +25,7 @@ import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTake;
 import app.tuxguitar.song.models.TGTakeClip;
 import app.tuxguitar.song.models.TGTrack;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -185,15 +186,36 @@ public class LineInSteps {
 
 	@Then("take {int} of track {int} holds {int} clicks and no {int} Hz tone")
 	public void holdsClicksAndNoTone(int take, int number, int count, int frequency) {
-		float[] samples = samples(take, number);
+		assertClicksAndNoTone(samples(take, number), count, frequency);
+	}
+
+	@ParameterType("left|right")
+	public Integer side(String side) {
+		return (side.equals("left") ? 0 : 1);
+	}
+
+	@Then("the {side} side of take {int} of track {int} holds {int} clicks and no {int} Hz tone")
+	public void sideHoldsClicksAndNoTone(int side, int take, int number, int count, int frequency) {
+		assertClicksAndNoTone(AudioWorld.samples(take(take, number), side), count, frequency);
+	}
+
+	private void assertClicksAndNoTone(float[] samples, int count, int frequency) {
 		assertEquals(count, Meters.clicks(samples, 0, samples.length).size());
 		assertTrue(level(samples, frequency) < SILENT);
 	}
 
-	// no clicks: no jump of more than 0.1 between two samples
 	@Then("take {int} of track {int} holds a {int} Hz tone and no clicks")
 	public void holdsAToneAndNoClicks(int take, int number, int frequency) {
-		float[] samples = samples(take, number);
+		assertToneAndNoClicks(samples(take, number), frequency);
+	}
+
+	@Then("the {side} side of take {int} of track {int} holds a {int} Hz tone and no clicks")
+	public void sideHoldsAToneAndNoClicks(int side, int take, int number, int frequency) {
+		assertToneAndNoClicks(AudioWorld.samples(take(take, number), side), frequency);
+	}
+
+	// no clicks: no jump of more than 0.1 between two samples
+	private void assertToneAndNoClicks(float[] samples, int frequency) {
 		assertEquals(frequency, Meters.frequency(samples, 0, samples.length, rate()), frequency / 100.0);
 		for (int i = 1; i < samples.length; i++) {
 			assertTrue(Math.abs(samples[i] - samples[i - 1]) <= 0.1, "a jump at sample " + i);

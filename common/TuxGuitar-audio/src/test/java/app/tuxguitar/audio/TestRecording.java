@@ -64,6 +64,16 @@ public class TestRecording {
 		assertEquals(List.of("2:0+176400"), captures);
 	}
 
+	// a pair of input channels makes a stereo take: left from the first, right from the second
+	@Test
+	public void aPairOfInputChannelsIsReadSideBySide() {
+		songManager.getChannel(song, track.getChannelId()).setAudioInput(TGAudioInput.stereo(3, 1));
+		record(0, MEASURE, 100, null);
+
+		assertEquals(List.of("3:0+88200", "1:0+88200"), captures);
+		assertEquals(2, TGTakes.list(track).get(0).getTake().countChannels());
+	}
+
 	@Test
 	public void theClockCountsTheMeasuresAndBeatsBeforeTheStart() {
 		record(2 * MEASURE + 2 * QUARTER, 3 * MEASURE, 100, null);
