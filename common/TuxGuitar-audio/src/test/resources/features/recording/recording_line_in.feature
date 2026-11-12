@@ -77,21 +77,29 @@ Feature: Recording line-in audio
 
   # Input channels
 
-  Scenario Outline: a take records the input channels its track is set to
+  Scenario Outline: a mono take records the one input channel its track is set to
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 2
-    And I have set track 2 to record input channels <channels>
+    And I have set track 2 to record <channel>
     And I have armed track 2
     When I record from measure 1 beat 1 to measure 2 beat 1
-    Then take 1 of track 2 has <count> channels
-    And channel 1 of take 1 of track 2 holds <first>
-    And channel 2 of take 1 of track 2 holds <second>
+    Then take 1 of track 2 is mono
+    And take 1 of track 2 holds <holds>
 
     Examples:
-      | channels | count | first                           | second                          |
-      | 1        | 1     | 4 clicks and no 440 Hz tone     | nothing                         |
-      | 2        | 1     | a 440 Hz tone and no clicks     | nothing                         |
-      | 1 and 2  | 2     | 4 clicks and no 440 Hz tone     | a 440 Hz tone and no clicks     |
+      | channel         | holds                       |
+      | input channel 1 | 4 clicks and no 440 Hz tone |
+      | input channel 2 | a 440 Hz tone and no clicks |
+
+  Scenario: a stereo take records a pair of input channels, one on each side
+    Given the player plays clicks of -0.25 on every beat on input channel 1
+    And the player plays a 440 Hz tone peaking at 0.4 on input channel 2
+    And I have set track 2 to record input channels 1 and 2
+    And I have armed track 2
+    When I record from measure 1 beat 1 to measure 2 beat 1
+    Then take 1 of track 2 is stereo
+    And the left side of take 1 of track 2 holds 4 clicks and no 440 Hz tone
+    And the right side of take 1 of track 2 holds a 440 Hz tone and no clicks
 
   Scenario: two armed tracks each record their own input channel at once
     Given the player plays clicks of -0.25 on every beat on input channel 1
@@ -100,8 +108,8 @@ Feature: Recording line-in audio
     And I have armed track 2
     And I have armed track 3
     When I record from measure 1 beat 1 to measure 2 beat 1
-    Then channel 1 of take 1 of track 2 holds 4 clicks and no 440 Hz tone
-    And channel 1 of take 1 of track 3 holds a 440 Hz tone and no clicks
+    Then take 1 of track 2 holds 4 clicks and no 440 Hz tone
+    And take 1 of track 3 holds a 440 Hz tone and no clicks
 
   Scenario: a recording on two armed tracks is one undo step
     Given I have added an audio track recording input channel 2
@@ -128,7 +136,7 @@ Feature: Recording line-in audio
     When I record from measure 1 beat 1 to measure 2 beat 1
     Then take 1 of track 2 holds 4 clicks, each within 1 sample of a beat
 
-  Scenario Outline: the song, the Play Mode, arming and input channels cannot change during a recording
+  Scenario Outline: the song, the Play Mode, the punch range, arming and input channels cannot change during a recording
     Given I have armed track 2
     And I am recording from measure 1 beat 1
     When I <change>
@@ -136,17 +144,26 @@ Feature: Recording line-in audio
     And <unchanged>
 
     Examples:
-      | change                                          | unchanged                               |
-      | set the Percentage of Tempo to 80               | the Percentage of Tempo is 100          |
-      | insert a measure before measure 3               | the song has 4 measures                 |
-      | disarm track 2                                  | track 2 is armed                        |
-      | set track 2 to record input channels 2          | track 2 records input channel 1         |
+      | change                                   | unchanged                       |
+      | set the Percentage of Tempo to 80        | the Percentage of Tempo is 100  |
+      | insert a measure before measure 3        | the song has 4 measures         |
+      | set the punch range to measures 2 to 3   | there is no punch range         |
+      | disarm track 2                           | track 2 is armed                |
+      | set track 2 to record input channel 2    | track 2 records input channel 1 |
+
+  Scenario: a gesture in a plugin's editor during a recording is undone after the recording
+    Given I have added the VST3 effect "Test Gain" to track 1
+    And I have armed track 2
+    And I have recorded from measure 1 beat 1 to measure 3 beat 1 while the plugin set "Gain" of VST3 effect 1 of track 1 to 3.0 at measure 2 beat 1
+    When I undo
+    Then track 2's takes read ""
+    And "Gain" of VST3 effect 1 of track 1 is 3.0
 
   # Count In
 
-  Scenario Outline: Count In clicks one beat apart before recording starts, and is not recorded
+  Scenario Outline: Count In clicks one beat apart before recording starts, and the take starts where recording started
     Given the player plays clicks of -0.25 on every beat on input channel 1
-    And I have <percussion>
+    And <percussion>
     And I have turned Count In on
     And I have armed track 2
     When I record from measure 2 beat 1 to measure 3 beat 1
@@ -156,9 +173,9 @@ Feature: Recording line-in audio
     And take 1 of track 2 holds 4 clicks, each within 1 sample of a beat
 
     Examples:
-      | percussion                             |
-      | left the song without a percussion channel |
-      | added a percussion track                |
+      | percussion                           |
+      | the song has no percussion channel   |
+      | I have added a percussion track      |
 
   Scenario Outline: Count In follows the time signature, tempo and Percentage of Tempo of the measure recording starts in
     Given I have set the time signature of measure 2 only to <signature>
@@ -195,7 +212,8 @@ Feature: Recording line-in audio
     Given I have turned Count In on
     And I have armed track 2
     When I record from measure 2 beat 1 and stop after the second Count In click
-    Then track 2's takes read ""
+    Then the output holds 2 Count In clicks
+    And track 2's takes read ""
     And the undo history is as it was before the recording
 
   # Input level
@@ -211,19 +229,21 @@ Feature: Recording line-in audio
       | signal                            | level | clipping        |
       | a 440 Hz tone peaking at -6 dBFS  | -6    | is not clipping |
       | a constant level of 0.97724       | -0.2  | is not clipping |
-      | a constant level of 0.98855       | -0.1  | is clipping     |
+      | a constant level of 0.98856       | -0.1  | is clipping     |
       | a constant level of 1.0           | 0     | is clipping     |
 
   Scenario: an input that clipped shows it has clipped until I reset it
     Given I have armed track 2
-    And the player has played a constant level of 1.0 for 1 sample on input channel 1, then 10 seconds at -20 dBFS
-    When I look at track 2's input
+    And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1
+    When the input has delivered 10 seconds
     Then track 2's input is not clipping
     And track 2's input has clipped
 
   Scenario: resetting the clip indicator clears it
     Given I have armed track 2
-    And the player has played a constant level of 1.0 for 1 sample on input channel 1, then 10 seconds at -20 dBFS
+    And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1
+    And the input has delivered 10 seconds
+    And track 2's input has clipped
     When I reset track 2's clip indicator
     Then track 2's input has not clipped
 
@@ -231,12 +251,12 @@ Feature: Recording line-in audio
 
   Scenario: arming a track leaves monitoring off
     When I arm track 2
-    Then monitoring is off for track 2
+    Then track 2's monitoring is Off
 
-  Scenario: with monitoring on I hear the input through the armed track's sound chain while recording
+  Scenario: with monitoring on Auto I hear the input through the armed track's sound chain while recording
     Given I have added the VST3 effect "Test Gain" to track 2
     And I have armed track 2
-    And I have turned monitoring on for track 2
+    And I have set track 2's monitoring to Auto
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
     When I record from measure 1 beat 1 to measure 2 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.8 within 0.01 in measure 1
@@ -249,22 +269,41 @@ Feature: Recording line-in audio
     Then the output holds no 440 Hz tone above -60 dBFS
     And take 1 of track 2 holds a 440 Hz tone peaking at 0.4 within 0.01
 
-  Scenario: with monitoring on I hear the input through the sound chain while stopped
+  Scenario: with monitoring on Auto I hear the input through the sound chain while stopped
     Given I have added the VST3 effect "Test Gain" to track 2
     And I have armed track 2
-    And I have turned monitoring on for track 2
+    And I have set track 2's monitoring to Auto
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
     When the input has delivered 1 second
     Then track 2 sounds a 440 Hz tone peaking at 0.8 within 0.01
     And track 2's takes read ""
 
-  Scenario: with monitoring on, just playing plays the track's takes, not the input
+  Scenario Outline: just playing, monitoring decides whether I hear the takes or my input
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
+    And I have added the VST3 effect "Test Gain" to track 2
     And I have armed track 2
-    And I have turned monitoring on for track 2
+    And I have set track 2's monitoring to <monitoring>
     And the player plays a 880 Hz tone peaking at 0.4 on input channel 1
     When I play the song from measure 1 beat 1
-    Then track 2 sounds a 440 Hz tone and no 880 Hz tone above -60 dBFS in measures 1 to 4
+    Then track 2 sounds a <heard> Hz tone peaking at 0.8 within 0.01 and no <silent> Hz tone above -60 dBFS in measures 1 to 4
+    And track 2's takes read "take 1: m1b1 to m5b1"
+
+    Examples:
+      | monitoring | heard | silent |
+      | Off        | 440   | 880    |
+      | Auto       | 440   | 880    |
+      | Always     | 880   | 440    |
+
+  Scenario: with monitoring on Always I practise through the sound chain along with a looped, slowed song
+    Given I have added the VST3 effect "Test Gain" to track 2
+    And I have armed track 2
+    And I have set track 2's monitoring to Always
+    And I have set the Percentage of Tempo to 80
+    And I have turned Play looped on over measures 2 to 3
+    And the player plays a 880 Hz tone peaking at 0.4 on input channel 1
+    When I play the song from measure 2 beat 1 for 3 passes
+    Then track 2 sounds a 880 Hz tone peaking at 0.8 within 0.01 on every pass
+    And track 2's takes read ""
 
   Scenario: while recording, the armed track's earlier takes are silent where it records
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
@@ -281,7 +320,7 @@ Feature: Recording line-in audio
     And I have added the VST3 effect "Test Latency" to track 2
     And I have set "Latency" of VST3 effect 1 of track 2 to <own>
     And I have armed track 2
-    And I have turned monitoring on for track 2
+    And I have set track 2's monitoring to Auto
     And the player plays one click of -0.25 at measure 1 beat 2 on input channel 1
     When I record from measure 1 beat 1 to measure 2 beat 1
     Then the click reaches the output <late> samples after the player played it, within 1 sample

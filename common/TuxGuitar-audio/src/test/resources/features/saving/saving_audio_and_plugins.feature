@@ -34,6 +34,19 @@ Feature: Saving audio tracks and plugins
     When I record from measure 3 beat 1 to measure 4 beat 1
     Then track 2's takes read "take 3: m3b1 to m4b1, take 1: m1b1 to m2b1"
 
+  Scenario: a take keeps the tempo it was recorded at across saving
+    Given I have added an audio track recording input channel 1
+    And I have armed track 2
+    And I have set the Percentage of Tempo to 80
+    And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
+    And I have recorded from measure 1 beat 1 to measure 3 beat 1
+    And I have saved the song as a TuxGuitar file
+    And I have opened it again
+    And I have set the Percentage of Tempo to 100
+    When I play the song from measure 1 beat 1
+    Then track 2 plays for 4 seconds within 5 ms
+    And track 2 sounds a 440 Hz tone within 1% in measures 1 to 2
+
   Scenario: each audio track's input channels are saved with the song
     Given I have added an audio track recording input channel 2
     And I have added an audio track recording input channels 1 and 2
@@ -75,7 +88,7 @@ Feature: Saving audio tracks and plugins
     Examples:
       | done                                   | after                         |
       | armed track 2                          | track 2 is not armed          |
-      | armed track 2 and turned monitoring on | monitoring is off for track 2 |
+      | armed track 2 and set its monitoring to Auto | track 2's monitoring is Off   |
       | set the punch range to measures 2 to 3 | there is no punch range       |
 
   Scenario: the audio device is a TuxGuitar setting, not part of the song
@@ -114,12 +127,13 @@ Feature: Saving audio tracks and plugins
     And I have added the VST3 effect "Test Gain" to track 1
     When I save the song as a TuxGuitar file
     Then the file's format version is 2.0
-    And a reader of file format 2.0 finds track 1's channel on the General MIDI program "Distortion Electric Guitar" with no synthesizer program of its own
+    And a reader of file format 2.0 finds track 1's channel on the General MIDI program "Distortion Electric Guitar" with no "synth.program" keys
 
   # Other file formats
 
   Scenario Outline: file formats that cannot hold audio leave the audio tracks out
-    Given I have added an audio track recording input channel 1
+    Given I have entered fret 5 on string 1
+    And I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     When I export the song as a <format> file
     Then TuxGuitar reads the exported file back with 1 track
@@ -130,7 +144,8 @@ Feature: Saving audio tracks and plugins
       | GP5    |
 
   Scenario Outline: a track with a VST3 instrument exports with the General MIDI program it had
-    Given I have set the General MIDI program of track 1's channel to "Distortion Electric Guitar"
+    Given I have entered fret 5 on string 1
+    And I have set the General MIDI program of track 1's channel to "Distortion Electric Guitar"
     And I have chosen the VST3 instrument "Test Sine" for track 1
     When I export the song as a <format> file
     Then TuxGuitar reads the exported file back with track 1 on the General MIDI program "Distortion Electric Guitar"

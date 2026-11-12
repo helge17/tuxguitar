@@ -55,7 +55,7 @@ Feature: Keeping audio in sync
 
   Scenario: when a plugin's latency changes while playing, the tracks are together again from the next beat
     Given I have added the VST3 effect "Test Latency" to track 2
-    When I play the song from measure 1 beat 1 and "Latency" of VST3 effect 1 of track 2 changes to 2048 at measure 2 beat 1
+    When I play the song from measure 1 beat 1 while the plugin sets "Latency" of VST3 effect 1 of track 2 to 2048 at measure 2 beat 1
     Then from measure 2 beat 2 on, the left and right clicks of every beat reach the output within 1 sample of each other
 
   Scenario: playing to the end of the song runs on until the most delayed track has sounded its last beat
@@ -78,12 +78,12 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1
     Then the last Count In click reaches the output 22050 samples before the left click of measure 1 beat 1, within 1 sample
 
-  Scenario Outline: the player reports a beat when the output sounds it
+  Scenario Outline: TuxGuitar reports a beat as played when the output sounds it
     Given I have set the audio device to "Test Interface" with 0 samples of input latency and <output> of output latency
     And I have added the VST3 effect "Test Latency" to track 2
     And I have set "Latency" of VST3 effect 1 of track 2 to <plugin>
     When I play the song from measure 1 beat 1
-    Then the player reports each of the 16 beats within 512 samples of the output sounding it
+    Then TuxGuitar reports each of the 16 beats within 512 samples of the output sounding it
 
     Examples:
       | output | plugin |
@@ -144,16 +144,17 @@ Feature: Keeping audio in sync
       | 100     | 1 sample  |
       | 80      | 5 ms      |
 
-  Scenario: stopping and playing again starts the take back on the beat
-    Given I have played the song from measure 1 beat 1 and stopped at measure 2 beat 3
+  Scenario: stopping and playing again starts the take back at the matching point
+    Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
+    And I have played the song from measure 1 beat 1 and stopped at measure 2 beat 3
     When I play the song from measure 2 beat 3
-    Then on every beat the left and right clicks reach the output within 1 sample of each other
+    Then track 2 sounds 330 Hz, then 440 Hz from the left click of measure 3 beat 1 on, within 1 sample
 
   Scenario: stopping clears the effects' tails
     Given I have added the VST3 effect "Test Echo" to track 2
-    And I have played the song from measure 1 beat 1 and stopped at measure 2 beat 1
+    And I have played the song from measure 1 beat 1 and stopped at measure 1 beat 4.5
     When I play the song from measure 4 beat 1
-    Then the first thing on the output's right side is the click of measure 4 beat 1
+    Then the output's right side holds 8 clicks: the 4 of measure 4 and their echoes
 
   Scenario: looping over the Loop Range keeps the take on the beats on every pass
     Given I have turned Play looped on over measures 2 to 3
@@ -165,14 +166,14 @@ Feature: Keeping audio in sync
 
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3
-    And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4.5 to measure 4 beat 1
+    And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
     And I have added the VST3 effect "Test Echo" to track 2
     When I play the song from measure 2 beat 1 for 2 passes
     Then the echo of the click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample
 
   Scenario: a tail carries across a repeat
     Given I have repeated measures 2 to 3 once
-    And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4.5 to measure 4 beat 1
+    And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
     And I have added the VST3 effect "Test Echo" to track 2
     When I play the song from measure 1 beat 1
     Then the echo of the first pass's click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample

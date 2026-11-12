@@ -28,6 +28,13 @@ Feature: Takes
     Then track 2's takes read "take 3: m1b1 to m5b1, take 2: m1b1 to m5b1, take 1: m1b1 to m5b1"
     And track 2's playback reads "m1: take 3, m2: take 1, m3: take 3, m4: take 3"
 
+  Scenario: a new recording plays where it recorded, over a take I had chosen there
+    Given I have recorded from measure 1 beat 1 to the end of measure 4
+    And I have recorded from measure 1 beat 1 to the end of measure 4
+    And I have chosen take 1 of track 2 for measures 2 to 3
+    When I record from measure 3 beat 1 to measure 4 beat 1
+    Then track 2's playback reads "m1: take 2, m2: take 1, m3: take 3, m4: take 2"
+
   Scenario: choosing a take for measures it only partly covers applies where it covers them
     Given I have recorded from measure 1 beat 1 to measure 3 beat 1
     And I have recorded from measure 2 beat 1 to the end of measure 4
@@ -63,12 +70,34 @@ Feature: Takes
     When I record from measure 3 beat 1 to measure 4 beat 1
     Then track 2's takes read "take 2: m3b1 to m4b1, take 1: m1b1 to m2b1"
 
-  Scenario: going from one take to another crossfades inside the take it goes to
+  Scenario: going up to a newer take crossfades inside the newer take, after the boundary
     Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to measure 3 beat 1
     And track 2 has a take of a constant level of -0.4 from measure 2 beat 1 to measure 3 beat 1
     When I play the song from measure 1 beat 1
     Then track 2 goes from 0.4 to -0.4 over the 256 samples from measure 2 beat 1, within 1 sample
-    And no two consecutive samples of track 2 differ by more than 0.01 from measure 1 beat 1 to measure 3 beat 1
+    And no two consecutive samples of track 2 differ by more than 0.01 in measures 1 and 2
+
+  Scenario: going back down to an older take crossfades inside the newer take, before the boundary
+    Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to measure 4 beat 1
+    And track 2 has a take of a constant level of -0.4 from measure 2 beat 1 to measure 3 beat 1
+    When I play the song from measure 1 beat 1
+    Then track 2 goes from -0.4 to 0.4 over the 256 samples before measure 3 beat 1, within 1 sample
+    And no two consecutive samples of track 2 differ by more than 0.01 in measures 2 and 3
+
+  Scenario: a take chosen for a measure counts as the newer one at its boundaries
+    Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to measure 4 beat 1
+    And track 2 has a take of a constant level of -0.4 from measure 1 beat 1 to measure 4 beat 1
+    And I have chosen take 1 of track 2 for measures 2 to 2
+    When I play the song from measure 1 beat 1
+    Then track 2 goes from -0.4 to 0.4 over the 256 samples from measure 2 beat 1, within 1 sample
+    And track 2 goes from 0.4 to -0.4 over the 256 samples before measure 3 beat 1, within 1 sample
+
+  Scenario: at the jump back of a loop, the audio fades out before the jump and starts at full level after it
+    Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to the end of measure 4
+    And I have turned Play looped on over measures 2 to 3
+    When I play the song from measure 2 beat 1 for 2 passes
+    Then track 2 fades from 0.4 to 0 over the last 256 samples of the first pass, within 1 sample
+    And track 2's first sample of the second pass is 0.4
 
   Scenario: a take that starts against silence starts at full level
     Given track 2 has a take of a constant level of 0.4 from measure 2 beat 1 to measure 3 beat 1
@@ -137,14 +166,26 @@ Feature: Takes
     When I set the punch range to measures 3 to 6
     Then the punch range is measures 3 to 4
 
+  Scenario: a punch range that starts past the end of the song is refused
+    When I set the punch range to measures 5 to 6
+    Then the action is refused
+    And there is no punch range
+
   Scenario: a punch range stays on its measure numbers when measures are inserted
     Given I have set the punch range to measures 2 to 3
     When I insert a measure before measure 1
     Then the punch range is measures 2 to 3
+    And the song has 5 measures
+
+  Scenario: removing all the measures of a punch range removes it
+    Given I have set the punch range to measures 3 to 4
+    When I remove measures 3 to 4
+    Then there is no punch range
+    And the song has 2 measures
 
   Scenario: outside the punch range I hear the take below, inside it the input
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
-    And I have turned monitoring on for track 2
+    And I have set track 2's monitoring to Auto
     And the player plays a 880 Hz tone peaking at 0.4 on input channel 1
     And I have set the punch range to measures 2 to 3
     When I record from measure 1 beat 1 to the end of measure 4
@@ -210,7 +251,7 @@ Feature: Takes
     Given I have repeated measures 2 to 3 once
     And track 2 has a take of clicks of -0.25 on every beat from measure 1 beat 1 to the end of measure 4
     When I play the song from measure 1 beat 1
-    Then the output holds 24 negative clicks, each within 1 sample of a beat in song time
+    Then the output holds 24 clicks, each within 1 sample of a beat in song time
 
   Scenario: recording through a repeat makes a take per pass, and the second pass plays on both
     Given I have repeated measures 2 to 3 once
@@ -230,11 +271,13 @@ Feature: Takes
     When I insert a measure before measure 1
     Then track 2's takes read "take 1: m3b1 to m4b1"
 
-  Scenario: a measure inserted inside a take is silent, and the rest of the take moves on
+  Scenario: a measure inserted inside takes is silent for all of them, and the takes span over it
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
+    And track 2 has a take of a tone per measure of 660, 770, 880 and 990 Hz from measure 2 beat 1 to the end of measure 3
     And I have inserted a measure before measure 3
     When I play the song from measure 1 beat 1
-    Then track 2 sounds 220, 330, nothing, 440 and 550 Hz in measures 1 to 5
+    Then track 2's takes read "take 2: m2b1 to m5b1, take 1: m1b1 to m6b1"
+    And track 2 sounds 220, 660, nothing, 770 and 550 Hz in measures 1 to 5
 
   Scenario: removing a measure inside a take removes its audio
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
@@ -260,6 +303,34 @@ Feature: Takes
     When I play the song from measure 1 beat 1
     Then track 2's takes read "take 2: m3b1 to m4b1, take 1: m1b1 to m5b1"
     And track 2 sounds 220, 330, 220 and 550 Hz in measures 1 to 4
+
+  Scenario: pasting a measure where two takes play pastes both as one new take
+    Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
+    And track 2 has a take of a 660 Hz tone peaking at 0.4 from measure 1 beat 3 to measure 2 beat 1
+    And I have copied measure 1 and pasted it over measure 3
+    When I play the song from measure 1 beat 1
+    Then track 2's takes read "take 3: m3b1 to m4b1, take 2: m1b3 to m2b1, take 1: m1b1 to m5b1"
+    And track 2 sounds 220 Hz then 660 Hz from beat 3 in measure 3
+
+  Scenario: pasting a measure that plays nothing leaves the target's audio as it was
+    Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 2 beat 1 to the end of measure 4
+    And I have copied measure 1 and pasted it over measure 3
+    When I play the song from measure 1 beat 1
+    Then track 2's takes read "take 1: m2b1 to m5b1"
+    And track 2 sounds nothing, 220, 330 and 440 Hz in measures 1 to 4
+
+  Scenario Outline: audio and notes are pasted only onto their own kind of track
+    Given track 1 has a quarter note on every beat
+    And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
+    And I have copied measure 1 of track <from>
+    When I paste it over measure 3 of track <to>
+    Then the action is refused
+    And <unchanged>
+
+    Examples:
+      | from | to | unchanged                              |
+      | 2    | 1  | track 1 still has 4 notes in measure 3 |
+      | 1    | 2  | track 2 holds no notes                 |
 
   Scenario Outline: changing a measure's time signature keeps the audio on its beats
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4

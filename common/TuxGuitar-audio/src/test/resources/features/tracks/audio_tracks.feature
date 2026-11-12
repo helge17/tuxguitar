@@ -18,11 +18,12 @@ Feature: Audio tracks
     And track 2's sound chain reads "takes"
     And track 2's channel is not track 1's channel
 
-  Scenario: an audio track can be added when all 16 MIDI channels are in use
-    Given the song has 16 guitar tracks, each on a MIDI channel of its own
+  Scenario: an audio track can be added when no MIDI channel is free, and takes none
+    Given I have added guitar tracks, each on a channel of its own, until no MIDI channel is free
     When I add an audio track recording input channel 1
     Then the action succeeds
-    And track 17 is an audio track
+    And the last track is an audio track
+    And the last track's channel is given no MIDI channel
 
   Scenario: an audio track holds no notes
     Given I have added an audio track recording input channel 1
@@ -43,7 +44,7 @@ Feature: Audio tracks
       | 1    | 2  |
       | 2    | 1  |
 
-  Scenario Outline: a guitar track cannot become an audio track, nor an audio track a guitar track
+  Scenario Outline: an audio track's channel takes no General MIDI program, and a guitar track cannot become an audio track
     Given I have added an audio track recording input channel 1
     When I <change>
     Then the action is refused
@@ -51,10 +52,10 @@ Feature: Audio tracks
     And track 2's sound chain reads "takes"
 
     Examples:
-      | change                                                                         |
+      | change                                                                            |
       | set the General MIDI program of track 2's channel to "Distortion Electric Guitar" |
-      | set the General MIDI program of track 2's channel to "Standard Kit"            |
-      | give track 1's channel the source "takes"                                      |
+      | make track 2's channel a percussion channel                                       |
+      | give track 1's channel the source "takes"                                         |
 
   Scenario: cloning an audio track clones its takes and sound chain onto a new channel
     Given I have added an audio track recording input channel 1
@@ -69,6 +70,18 @@ Feature: Audio tracks
     And "Gain" of VST3 effect 1 of track 3 is 3.0
     And track 3's channel is not track 2's channel
     And track 3 is not armed
+
+  Scenario: a cloned audio track keeps the takes chosen per measure and the next take number
+    Given I have added an audio track recording input channel 1
+    And I have armed track 2
+    And I have recorded from measure 1 beat 1 to measure 3 beat 1
+    And I have recorded from measure 1 beat 1 to measure 3 beat 1
+    And I have chosen take 1 of track 2 for measures 2 to 2
+    And I have cloned track 2
+    And I have armed track 3
+    When I record from measure 3 beat 1 to measure 4 beat 1
+    Then track 3's takes read "take 3: m3b1 to m4b1, take 2: m1b1 to m3b1, take 1: m1b1 to m3b1"
+    And track 3's playback reads "m1: take 2, m2: take 1, m3: take 3, m4: none"
 
   Scenario: removing an audio track removes its channel
     Given I have added an audio track recording input channel 1
@@ -99,25 +112,25 @@ Feature: Audio tracks
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     And I have <done>
     When I play the song from measure 1 beat 1
-    Then the output <result> a 440 Hz tone above -60 dBFS
+    Then the output <result> 440 Hz tone above -60 dBFS
 
     Examples:
       | done           | result        |
       | muted track 2  | holds no      |
       | soloed track 1 | holds no      |
-      | soloed track 2 | holds         |
-      | muted track 1  | holds         |
+      | soloed track 2 | holds a       |
+      | muted track 1  | holds a       |
 
   Scenario Outline: audio tracks sound only when the MIDI Port is the TuxGuitar Synthesizer
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     And I have set the MIDI Port to "<port>"
     When I play the song from measure 1 beat 1
-    Then the output <result> a 440 Hz tone above -60 dBFS
+    Then the output <result> 440 Hz tone above -60 dBFS
 
     Examples:
       | port                  | result   |
-      | TuxGuitar Synthesizer | holds    |
+      | TuxGuitar Synthesizer | holds a  |
       | Test MIDI Out         | holds no |
 
   Scenario Outline: recording needs the TuxGuitar Synthesizer as the MIDI Port

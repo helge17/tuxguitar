@@ -37,11 +37,17 @@ Feature: Exporting audio
     When I export the song as a WAV file at 44100 Hz in 16 bits
     Then the file's left and right clicks of measure 1 beat 1 are at sample 0 within 1 sample
     And on every beat the file's left and right clicks are within 1 sample of each other
+    And the file lasts 352800 samples, within 1 sample
 
   Scenario: VST3 effects are in the exported file
     Given I have added the VST3 effect "Test Gain" to track 2
     When I export the song as a WAV file at 44100 Hz in 32-bit float
-    Then the file's right clicks are twice as high as without the VST3 effect, within 1%
+    Then the file's right clicks peak at 0.5 within 1%
+
+  Scenario: a take recorded at 44100 Hz keeps its pitch in a file exported at 48000 Hz
+    Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
+    When I export the song as a WAV file at 48000 Hz in 24 bits
+    Then the file's right side sounds a 440 Hz tone within 1% in measure 1
 
   Scenario: without tails the file ends with the last measure
     When I export the song as a WAV file at 44100 Hz in 16 bits
@@ -53,10 +59,17 @@ Feature: Exporting audio
     Then the file lasts 366030 samples, within 1 sample
     And the file holds the echo of the click of measure 4 beat 4, 13230 samples after it, within 1 sample
 
-  Scenario: an effect with an endless tail runs the file on for 10 seconds
+  Scenario Outline: an effect with an endless tail runs the file on for 10 seconds, unless it is not heard
     Given I have added the VST3 effect "Test Drone" to track 2
+    And I have <done>
     When I export the song as a WAV file at 44100 Hz in 16 bits
-    Then the file lasts 793800 samples, within 1 sample
+    Then the file lasts <length> samples, within 1 sample
+
+    Examples:
+      | done                               | length |
+      | left it enabled                    | 793800 |
+      | disabled VST3 effect 1 of track 2  | 352800 |
+      | muted track 2                      | 352800 |
 
   Scenario: the exported file follows the repeats of the song
     Given I have repeated measures 2 to 3 once
@@ -70,7 +83,7 @@ Feature: Exporting audio
     And I have turned Count In on
     And I have turned the Metronome on
     And I have armed track 2
-    And I have turned monitoring on for track 2
+    And I have set track 2's monitoring to Auto
     And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
     When I export the song as a WAV file at 44100 Hz in 16 bits
     Then the file lasts 352800 samples, within 1 sample

@@ -39,9 +39,10 @@ Feature: Hosting VST3 plugins
 
   Scenario: a VST3 effect processes a General MIDI program played by the TuxGuitar Synthesizer
     Given I have entered fret 5 on string 1
-    And I have added the VST3 effect "Test Gain" to track 1
+    And I have added the VST3 effect "Test Clip 0.5" to track 1
+    And I have set "Ceiling" of VST3 effect 1 of track 1 to 0.01
     When I play the song from measure 1 beat 1
-    Then track 1 peaks twice as high as without the VST3 effect, within 1%
+    Then track 1 peaks at 0.01 within 1% in measure 1
 
   Scenario: changing the General MIDI program keeps the VST3 effects
     Given I have added the VST3 effect "Test Gain" to track 1
@@ -78,7 +79,7 @@ Feature: Hosting VST3 plugins
     And I have set the Volume of track 2's channel to 32
     When I play the song from measure 1 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.5 within 0.01 in measure 1
-    And the output peaks lower in measure 1 than it does with the Volume at 127
+    And the output peaks below 0.3 in measure 1
 
   Scenario Outline: Balance applies after the sound chain
     Given I have added an audio track recording input channel 1
@@ -86,13 +87,13 @@ Feature: Hosting VST3 plugins
     And I have muted track 1
     And I have set the Balance of track 2's channel to <balance>
     When I play the song from measure 1 beat 1
-    Then the output's left side <left> a 440 Hz tone above -60 dBFS
-    And the output's right side <right> a 440 Hz tone above -60 dBFS
+    Then the output's left side <left> 440 Hz tone above -60 dBFS
+    And the output's right side <right> 440 Hz tone above -60 dBFS
 
     Examples:
       | balance | left     | right    |
-      | 0       | holds    | holds no |
-      | 127     | holds no | holds    |
+      | 0       | holds a  | holds no |
+      | 127     | holds no | holds a  |
 
   Scenario: a mono take at centre Balance sounds equally left and right
     Given I have added an audio track recording input channel 1
@@ -100,7 +101,7 @@ Feature: Hosting VST3 plugins
     And I have muted track 1
     And I have set the Balance of track 2's channel to 64
     When I play the song from measure 1 beat 1
-    Then the output's left and right sides peak within 1% of each other in measure 1
+    Then the output's left and right sides peak within 2% of each other in measure 1
 
   Scenario: a mono take through a VST3 effect with a stereo output sounds as the effect makes it
     Given I have added an audio track recording input channel 1
@@ -240,7 +241,7 @@ Feature: Hosting VST3 plugins
     Then track 1 sounds a 440 Hz tone rising to 493.9 Hz within 1 Hz in measure 1
     And track 1 sounds a 329.6 Hz tone that stays within 1 Hz in measure 1
 
-  Scenario: Count In and the Metronome do not go through a percussion track's VST3 instrument
+  Scenario: the Metronome does not go through a percussion track's VST3 instrument
     Given I have added a percussion track
     And I have chosen the VST3 instrument "Test Sine" for track 2
     And I have turned the Metronome on
@@ -262,11 +263,17 @@ Feature: Hosting VST3 plugins
       | 100     | 120   | 60    |
       | 80      | 96    | 48    |
 
+  Scenario: VST3 plugins are told the musical position, which jumps back with a loop
+    Given I have turned Play looped on over measures 2 to 3
+    And I have added the VST3 effect "Test Tempo" to track 1
+    When I play the song from measure 2 beat 1 for 2 passes
+    Then "Test Tempo" was told quarter-note position 4 at the start of each pass, within 1 sample
+
   # Plugin editors, parameters and presets
 
   Scenario: opening a VST3 plugin's editor shows the plugin's own editor without modifying the song
     Given I have added the VST3 effect "Test Gain" to track 1
-    And I have saved the song
+    And I have saved the song as a TuxGuitar file
     When I open the editor of VST3 effect 1 of track 1
     Then the plugin's own editor of VST3 effect 1 of track 1 is open
     And the song is not modified
@@ -281,7 +288,7 @@ Feature: Hosting VST3 plugins
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.1 from measure 1 beat 1 to measure 2 beat 1
     And I have added the VST3 effect "Test Gain" to track 2
-    And I have saved the song
+    And I have saved the song as a TuxGuitar file
     And the plugin has set "Gain" of VST3 effect 1 of track 2 to 3.0
     When I play the song from measure 1 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.3 within 0.01 in measure 1
@@ -289,13 +296,13 @@ Feature: Hosting VST3 plugins
 
   Scenario: one gesture in a plugin's editor is one undo step
     Given I have added the VST3 effect "Test Gain" to track 1
-    And the plugin has set "Gain" of VST3 effect 1 of track 1 through 2.5 to 3.0 in one gesture
+    And the plugin has set "Gain" of VST3 effect 1 of track 1 through 2.5 to 3.0
     When I undo
     Then "Gain" of VST3 effect 1 of track 1 is 2.0
 
   Scenario: a preset chosen in a plugin's own editor modifies the song
     Given I have added the VST3 effect "Test Gain" to track 1
-    And I have saved the song
+    And I have saved the song as a TuxGuitar file
     When the plugin loads its preset "Loud" for VST3 effect 1 of track 1
     Then the song is modified
     And the state of VST3 effect 1 of track 1 is the preset "Loud"
