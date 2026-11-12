@@ -16,7 +16,10 @@ public class TGSynthChannelProcessor {
 	private Map<TGProgramElement, TGAudioProcessor> processorMap;
 	private Object lock;
 
-	public TGSynthChannelProcessor() {
+	private float sampleRate;
+
+	public TGSynthChannelProcessor(float sampleRate) {
+		this.sampleRate = sampleRate;
 		this.lock = new Object();
 		this.buffer = new TGAudioBuffer();
 		this.outputs = new ArrayList<TGAudioProcessor>();
@@ -41,6 +44,7 @@ public class TGSynthChannelProcessor {
 				TGMidiProcessorFactory factory = synthManager.findMidiProcessorFactory(receiver.getType());
 				if( factory != null ) {
 					processor = factory.createProcessor();
+					processor.setSampleRate(this.sampleRate);
 				}
 			}
 			if( processor != null ) {
@@ -65,6 +69,7 @@ public class TGSynthChannelProcessor {
 				TGAudioProcessorFactory factory = synthManager.findAudioProcessorFactory(output.getType());
 				if( factory != null ) {
 					processor = factory.createProcessor();
+					processor.setSampleRate(this.sampleRate);
 				}
 			}
 			if( processor != null ) {
@@ -191,13 +196,22 @@ public class TGSynthChannelProcessor {
 		synchronized (this.lock) {
 			if( this.processor != null && this.processor.isOpen() ){
 				this.buffer.clear();
-				this.fillBuffer(this.buffer, this.processor);
-				for( int i = 0 ; i < this.countOutputs() ;i ++){
-					this.fillBuffer(this.buffer, this.getOutput(i));
-				}
+				this.fillChain(this.buffer);
 				this.balance(this.buffer, volume, balance);
 
 				buffer.mix(this.buffer);
+			}
+		}
+	}
+
+	// the receiver, then each output in processing order, into the buffer; nothing when the receiver is not open
+	public void fillChain(TGAudioBuffer buffer) {
+		synchronized (this.lock) {
+			if( this.processor != null && this.processor.isOpen() ){
+				this.fillBuffer(buffer, this.processor);
+				for( int i = 0 ; i < this.countOutputs() ;i ++){
+					this.fillBuffer(buffer, this.getOutput(i));
+				}
 			}
 		}
 	}

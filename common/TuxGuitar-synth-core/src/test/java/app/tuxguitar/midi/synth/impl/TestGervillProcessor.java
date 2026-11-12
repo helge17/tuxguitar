@@ -108,15 +108,19 @@ public class TestGervillProcessor {
 		return peak;
 	}
 
-	// the frequency, in whole Hz from 100 to 2000, where the samples have the most energy
 	private static int strongestFrequency(float[] samples) {
+		return strongestFrequency(samples, TGAudioBuffer.SAMPLE_RATE);
+	}
+
+	// the frequency, in whole Hz from 100 to 2000, where the samples have the most energy
+	private static int strongestFrequency(float[] samples, float sampleRate) {
 		int strongest = 0;
 		double most = -1;
 		for (int frequency = 100; frequency <= 2000; frequency++) {
 			double re = 0;
 			double im = 0;
 			for (int i = 0; i < samples.length; i++) {
-				double phase = 2 * Math.PI * frequency * i / TGAudioBuffer.SAMPLE_RATE;
+				double phase = 2 * Math.PI * frequency * i / sampleRate;
 				re += samples[i] * Math.cos(phase);
 				im += samples[i] * Math.sin(phase);
 			}
@@ -325,5 +329,36 @@ public class TestGervillProcessor {
 		assertEquals("banks", settings.getSoundbankFolder());
 		settings.save();
 		assertEquals("gervill", new GervillProcessorFactory(this.context).getType());
+	}
+
+	// a synthesizer opened at the audio device's rate renders its notes at that rate, so they keep their pitch
+	@Test
+	public void aSynthesizerAtAnotherSampleRateSoundsNotesAtTheirPitch() throws Exception {
+		app.tuxguitar.midi.synth.TGSynthManager.getInstance(this.context).addExtension(app.tuxguitar.midi.synth.TGMidiProcessorFactory.class, new GervillProcessorFactory(this.context));
+		app.tuxguitar.midi.synth.TGSynthModel model = new app.tuxguitar.midi.synth.TGSynthModel(this.context, 48000);
+		app.tuxguitar.midi.synth.TGProgram program = new app.tuxguitar.midi.synth.TGProgram();
+		app.tuxguitar.midi.synth.TGProgramElement receiver = new app.tuxguitar.midi.synth.TGProgramElement();
+		receiver.setId("gm");
+		receiver.setType(GervillProcessorFactory.TYPE);
+		receiver.setParameter("gervil.program", "0:80");
+		program.setReceiver(receiver);
+		model.getProgram(0, 80).copyFrom(program);
+		app.tuxguitar.midi.synth.TGSynthChannel channel = (app.tuxguitar.midi.synth.TGSynthChannel) model.openChannel(1);
+		channel.sendProgramChange(80);
+		while (model.isBusy()) {
+			Thread.sleep(5);
+		}
+		channel.sendNoteOn(69, 127, 0, false);
+		float[] left = new float[12 * FRAMES];
+		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
+		for (int b = 0; b < 12; b++) {
+			TGAudioBuffer buffer = new TGAudioBuffer();
+			channel.fillChain(buffer);
+			buffer.read(samples);
+			System.arraycopy(samples[0], 0, left, b * FRAMES, FRAMES);
+		}
+		float[] sounding = java.util.Arrays.copyOfRange(left, 4 * FRAMES, left.length);
+		assertEquals(440, strongestFrequency(sounding, 48000), 9);
+		assertEquals(48000f, model.getSampleRate(), 0f);
 	}
 }

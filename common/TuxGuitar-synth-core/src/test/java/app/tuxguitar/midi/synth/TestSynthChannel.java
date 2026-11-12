@@ -103,6 +103,27 @@ public class TestSynthChannel {
 		assertEquals(0.17789f, samples[1][0], QUANTUM);
 	}
 
+	// what the chain sounds before Volume and Balance: the tap of the channel
+	@Test
+	public void theChainSoundsBeforeVolumeAndBalance() throws MidiPlayerException {
+		this.model.getProgram(0, 5).copyFrom(program("source", "lift"));
+		this.channel.sendProgramChange(5);
+		this.channel.sendControlChange(MidiControllers.VOLUME, 10);
+		TGAudioBuffer buffer = new TGAudioBuffer();
+		this.channel.fillChain(buffer);
+		float[][] samples = FakeProcessors.read(buffer);
+		assertEquals(SOURCE + 0.1f, samples[0][0], QUANTUM);
+		assertEquals(SOURCE + 0.1f, samples[1][0], QUANTUM);
+		assertEquals(44100f, this.model.getSampleRate(), 0f);
+	}
+
+	@Test
+	public void aChannelWithoutAProgramHasASilentChain() throws MidiPlayerException {
+		TGAudioBuffer buffer = FakeProcessors.level(0.5f, 0.5f);
+		this.channel.fillChain(buffer);
+		assertEquals(0f, FakeProcessors.read(buffer)[0][0], 0f);
+	}
+
 	@Test
 	public void effectsRunInProcessingOrder() throws MidiPlayerException {
 		this.model.getProgram(0, 5).copyFrom(program("source", "twice", "lift"));

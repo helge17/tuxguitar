@@ -14,11 +14,18 @@ public class TGSynthModel implements MidiSynthesizer{
 	public static final int PROGRAMS_LENGTH = 128;
 
 	private TGContext context;
+	private float sampleRate;
 	private TGProgram[][] programs;
 	private List<TGSynthChannel> channels;
 
 	public TGSynthModel(TGContext context){
+		this(context, TGAudioBuffer.SAMPLE_RATE);
+	}
+
+	// a synthesizer whose processors render at the sample rate (the audio device's)
+	public TGSynthModel(TGContext context, float sampleRate){
 		this.context = context;
+		this.sampleRate = sampleRate;
 		this.channels = new ArrayList<TGSynthChannel>();
 		this.programs = new TGProgram[BANKS_LENGTH][PROGRAMS_LENGTH];
 		for( int b = 0; b < BANKS_LENGTH ; b ++ ){
@@ -89,6 +96,10 @@ public class TGSynthModel implements MidiSynthesizer{
 			}
 		}
 		return null;
+	}
+
+	public float getSampleRate() {
+		return this.sampleRate;
 	}
 
 	public TGContext getContext() {

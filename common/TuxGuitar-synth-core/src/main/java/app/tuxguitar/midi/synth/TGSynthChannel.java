@@ -59,7 +59,7 @@ public class TGSynthChannel implements MidiChannel {
 	public void openProcessor() {
 		if( this.program.getReceiver() != null ) {
 			if( this.processor == null ) {
-				this.processor = new TGSynthChannelProcessor();
+				this.processor = new TGSynthChannelProcessor(this.synthesizer.getSampleRate());
 			}
 			this.processor.open(this.synthesizer.getContext(), this.program);
 		}
@@ -70,6 +70,14 @@ public class TGSynthChannel implements MidiChannel {
 			this.processor.close();
 			this.processor = null;
 			this.pendingEvents.clear();
+		}
+	}
+
+	// what the channel's chain sounds, before Volume and Balance; silence without a program
+	public void fillChain(TGAudioBuffer buffer){
+		buffer.clear();
+		if( this.processor != null){
+			this.processor.fillChain(buffer);
 		}
 	}
 

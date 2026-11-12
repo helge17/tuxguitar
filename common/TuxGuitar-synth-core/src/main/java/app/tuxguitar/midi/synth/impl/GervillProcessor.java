@@ -8,6 +8,7 @@ import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.Patch;
 import javax.sound.midi.Receiver;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
 import app.tuxguitar.midi.synth.TGAudioBuffer;
@@ -34,6 +35,7 @@ public class GervillProcessor implements TGMidiProcessor {
 	private GervillSoundbankFactory soundbankFactory;
 	private byte[] buffer;
 	private float[][] outputs;
+	private AudioFormat format;
 
 	public GervillProcessor(TGContext context) {
 		this.context = context;
@@ -46,6 +48,7 @@ public class GervillProcessor implements TGMidiProcessor {
 			this.outputs[i] = new float[TGAudioBuffer.BUFFER_SIZE / 2];
 		}
 		this.program.setProgram(-1);
+		this.format = TGAudioBuffer.AUDIO_FORMAT;
 	}
 
 	public void close() {
@@ -83,6 +86,10 @@ public class GervillProcessor implements TGMidiProcessor {
 		}
 	}
 
+	public void setSampleRate(float sampleRate) {
+		this.format = new AudioFormat(sampleRate, 16, TGAudioBuffer.CHANNELS, true, TGAudioBuffer.BIGENDIAN);
+	}
+
 	public void loadProgram(GervillProgram program) {
 		if(!this.program.equals(program)) {
 			this.program.copyFrom(program);
@@ -95,7 +102,7 @@ public class GervillProcessor implements TGMidiProcessor {
 			if( this.synth.isOpen()) {
 				this.synth.close();
 			}
-			this.stream = this.synth.openStream(TGAudioBuffer.AUDIO_FORMAT, this.createSynthInfo());
+			this.stream = this.synth.openStream(this.format, this.createSynthInfo());
 			this.receiver = this.synth.getReceiver();
 
 			this.soundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
