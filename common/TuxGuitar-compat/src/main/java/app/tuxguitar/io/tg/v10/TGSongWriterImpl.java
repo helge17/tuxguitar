@@ -12,6 +12,7 @@ import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
 import app.tuxguitar.io.tg.util.TGMeasureHeaderFlags;
+import app.tuxguitar.io.tg.util.TGNoteEffectFlags;
 import app.tuxguitar.io.tg.util.TGStringLimitUtil;
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.managers.TGSongManager;
@@ -46,6 +47,11 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	private static final TGMeasureHeaderFlags MEASURE_HEADER_FLAGS = new TGMeasureHeaderFlags(
 			MEASURE_HEADER_TIMESIGNATURE, MEASURE_HEADER_TEMPO, MEASURE_HEADER_REPEAT_OPEN, MEASURE_HEADER_REPEAT_CLOSE,
 			MEASURE_HEADER_REPEAT_ALTERNATIVE, MEASURE_HEADER_MARKER, MEASURE_HEADER_TRIPLET_FEEL);
+
+	private static final TGNoteEffectFlags NOTE_EFFECT_FLAGS = new TGNoteEffectFlags(
+			EFFECT_BEND, EFFECT_TREMOLO_BAR, EFFECT_HARMONIC, EFFECT_GRACE, EFFECT_TRILL, EFFECT_TREMOLO_PICKING,
+			EFFECT_VIBRATO, EFFECT_DEAD, EFFECT_SLIDE, EFFECT_HAMMER, EFFECT_GHOST, EFFECT_ACCENTUATED, EFFECT_HEAVY_ACCENTUATED,
+			EFFECT_PALM_MUTE, EFFECT_STACCATO, EFFECT_TAPPING, EFFECT_SLAPPING, EFFECT_POPPING, EFFECT_FADE_IN);
 
 	private TGFactory factory;
 	private GMChannelRouter channelRouter;
@@ -280,28 +286,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	private void writeBeat(TGBeat beat,TGBeatData data, boolean hasNext){
 		TGVoice voice = beat.getVoice( 0 );
 
-		int header = hasNext ? BEAT_HAS_NEXT : 0;
-
-		//Berifico si hay cambio de duracion
-		if(!voice.getDuration().isEqual(data.getDuration())){
-			header |= BEAT_NEXT_DURATION;
-			data.setDuration(voice.getDuration());
-		}
-
-		//Berifico si tiene notas
-		if(!beat.isRestBeat()){
-			header |= BEAT_HAS_NOTES;
-		}
-
-		//Berifico si tiene acorde
-		if(beat.getChord() != null){
-			header |= BEAT_HAS_CHORD;
-		}
-
-		//Berifico si tiene texto
-		if(beat.getText() != null){
-			header |= BEAT_HAS_TEXT;
-		}
+		int header = createBeatHeader(beat, voice, data, hasNext);
 
 		// escribo la cabecera
 		writeHeader(header);
@@ -325,6 +310,33 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if(((header & BEAT_HAS_TEXT) != 0)){
 			writeText(beat.getText());
 		}
+	}
+
+	// the header of a beat of one voice; a new duration becomes the written one
+	private int createBeatHeader(TGBeat beat, TGVoice voice, TGBeatData data, boolean hasNext){
+		int header = hasNext ? BEAT_HAS_NEXT : 0;
+
+		//Berifico si hay cambio de duracion
+		if(!voice.getDuration().isEqual(data.getDuration())){
+			header |= BEAT_NEXT_DURATION;
+			data.setDuration(voice.getDuration());
+		}
+
+		//Berifico si tiene notas
+		if(!beat.isRestBeat()){
+			header |= BEAT_HAS_NOTES;
+		}
+
+		//Berifico si tiene acorde
+		if(beat.getChord() != null){
+			header |= BEAT_HAS_CHORD;
+		}
+
+		//Berifico si tiene texto
+		if(beat.getText() != null){
+			header |= BEAT_HAS_TEXT;
+		}
+		return header;
 	}
 
 	private void writeNotes(TGVoice voice,TGBeatData data){
@@ -427,41 +439,11 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	private void writeNoteEffect(TGNoteEffect effect){
-		int header = createNoteEffectHeader(effect);
+		int header = NOTE_EFFECT_FLAGS.create(effect);
 
 		writeHeader(header,3);
 
 		writeNoteEffectData(header, effect);
-	}
-
-	private int createNoteEffectHeader(TGNoteEffect effect){
-		int header = 0;
-
-		header |= flag(effect.isBend(), EFFECT_BEND);
-		header |= flag(effect.isTremoloBar(), EFFECT_TREMOLO_BAR);
-		header |= flag(effect.isHarmonic(), EFFECT_HARMONIC);
-		header |= flag(effect.isGrace(), EFFECT_GRACE);
-		header |= flag(effect.isTrill(), EFFECT_TRILL);
-		header |= flag(effect.isTremoloPicking(), EFFECT_TREMOLO_PICKING);
-		header |= flag(effect.isVibrato(), EFFECT_VIBRATO);
-		header |= flag(effect.isDeadNote(), EFFECT_DEAD);
-		header |= flag(effect.isSlide(), EFFECT_SLIDE);
-		header |= flag(effect.isHammer(), EFFECT_HAMMER);
-		header |= flag(effect.isGhostNote(), EFFECT_GHOST);
-		header |= flag(effect.isAccentuatedNote(), EFFECT_ACCENTUATED);
-		header |= flag(effect.isHeavyAccentuatedNote(), EFFECT_HEAVY_ACCENTUATED);
-		header |= flag(effect.isPalmMute(), EFFECT_PALM_MUTE);
-		header |= flag(effect.isStaccato(), EFFECT_STACCATO);
-		header |= flag(effect.isTapping(), EFFECT_TAPPING);
-		header |= flag(effect.isSlapping(), EFFECT_SLAPPING);
-		header |= flag(effect.isPopping(), EFFECT_POPPING);
-		header |= flag(effect.isFadeIn(), EFFECT_FADE_IN);
-
-		return header;
-	}
-
-	private static int flag(boolean enabled, int bit){
-		return (enabled ? bit : 0);
 	}
 
 	private void writeNoteEffectData(int header, TGNoteEffect effect){

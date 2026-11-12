@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import app.tuxguitar.io.base.TGSongReader;
@@ -13,6 +14,7 @@ import app.tuxguitar.io.base.TGSongWriterHandle;
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGChord;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
@@ -21,6 +23,7 @@ import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGNoteEffect;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGStroke;
 import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.song.models.effects.TGEffectBend;
 import app.tuxguitar.song.models.effects.TGEffectGrace;
@@ -38,6 +41,9 @@ public final class LegacyFormatFixture {
 
 	/** Start of the first measure of a song built by TGSongManager.newSong(). */
 	public static final long MEASURE_START = TGDuration.QUARTER_TIME;
+
+	/** How describeBeatFeatures shows TGVoice.DIRECTION_NONE, DIRECTION_UP and DIRECTION_DOWN. */
+	private static final String[] DIRECTIONS = {"", " up", " down"};
 
 	private LegacyFormatFixture() {
 	}
@@ -58,6 +64,10 @@ public final class LegacyFormatFixture {
 		handle.setInputStream(new ByteArrayInputStream(bytes));
 		reader.read(handle);
 		return handle.getSong();
+	}
+
+	public static TGSong roundTrip(TGSongWriter writer, TGSongReader reader, TGFactory factory, TGSong song) throws Exception {
+		return read(reader, factory, write(writer, factory, song));
 	}
 
 	public static String sha256(byte[] bytes) throws Exception {
@@ -287,23 +297,58 @@ public final class LegacyFormatFixture {
 		TGMeasure measure = firstMeasure(song);
 		for (int b = 0; b < measure.countBeats(); b++) {
 			TGBeat beat = measure.getBeat(b);
-			TGVoice voice = beat.getVoice(0);
-			StringBuilder line = new StringBuilder("+" + (beat.getStart() - MEASURE_START) + " d" + voice.getDuration().getValue());
-			if (voice.getDuration().isDotted()) {
-				line.append(".");
-			}
-			if (!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
-				line.append("/" + voice.getDuration().getDivision().getEnters() + ":" + voice.getDuration().getDivision().getTimes());
-			}
-			if (voice.isRestVoice()) {
-				line.append(" rest");
-			}
-			for (TGNote note : voice.getNotes()) {
-				line.append(" s" + note.getString() + "f" + note.getValue());
-			}
-			lines.add(line.toString());
+			lines.add("+" + (beat.getStart() - MEASURE_START) + " " + describeVoice(beat.getVoice(0)));
 		}
 		return lines;
+	}
+
+	/** Duration, rest or notes of a voice. */
+	private static String describeVoice(TGVoice voice) {
+		StringBuilder text = new StringBuilder("d" + voice.getDuration().getValue());
+		if (voice.getDuration().isDotted()) {
+			text.append(".");
+		}
+		if (!voice.getDuration().getDivision().isEqual(TGDivisionType.NORMAL)) {
+			text.append("/" + voice.getDuration().getDivision().getEnters() + ":" + voice.getDuration().getDivision().getTimes());
+		}
+		if (voice.isRestVoice()) {
+			text.append(" rest");
+		}
+		for (TGNote note : voice.getNotes()) {
+			text.append(" s" + note.getString() + "f" + note.getValue());
+		}
+		return text.toString();
+	}
+
+	/** One line per beat of the first measure: start, every non empty voice with its direction, stroke, chord and text. */
+	public static List<String> describeBeatFeatures(TGSong song) {
+		List<String> lines = new ArrayList<String>();
+		TGMeasure measure = firstMeasure(song);
+		for (int b = 0; b < measure.countBeats(); b++) {
+			lines.add(describeBeatFeatures(measure.getBeat(b)));
+		}
+		return lines;
+	}
+
+	private static String describeBeatFeatures(TGBeat beat) {
+		StringBuilder text = new StringBuilder("+" + (beat.getStart() - MEASURE_START));
+		for (int v = 0; v < TGBeat.MAX_VOICES; v++) {
+			TGVoice voice = beat.getVoice(v);
+			if (!voice.isEmpty()) {
+				text.append(" v" + v + ":" + describeVoice(voice) + DIRECTIONS[voice.getDirection()]);
+			}
+		}
+		if (beat.getStroke().getDirection() != TGStroke.STROKE_NONE) {
+			text.append(" stroke" + beat.getStroke().getDirection() + ":" + beat.getStroke().getValue());
+		}
+		if (beat.getChord() != null) {
+			TGChord chord = beat.getChord();
+			text.append(" chord[" + chord.getName() + " " + chord.getFirstFret() + " " + Arrays.toString(chord.getStrings()) + "]");
+		}
+		if (beat.getText() != null) {
+			text.append(" text[" + beat.getText().getValue() + "]");
+		}
+		return text.toString();
 	}
 
 	/** One line per measure header: number, start, time signature, tempo, repeats, triplet feel and marker. */
