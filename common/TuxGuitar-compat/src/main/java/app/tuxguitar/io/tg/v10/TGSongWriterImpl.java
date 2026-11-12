@@ -286,28 +286,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	private void writeBeat(TGBeat beat,TGBeatData data, boolean hasNext){
 		TGVoice voice = beat.getVoice( 0 );
 
-		int header = hasNext ? BEAT_HAS_NEXT : 0;
-
-		//Berifico si hay cambio de duracion
-		if(!voice.getDuration().isEqual(data.getDuration())){
-			header |= BEAT_NEXT_DURATION;
-			data.setDuration(voice.getDuration());
-		}
-
-		//Berifico si tiene notas
-		if(!beat.isRestBeat()){
-			header |= BEAT_HAS_NOTES;
-		}
-
-		//Berifico si tiene acorde
-		if(beat.getChord() != null){
-			header |= BEAT_HAS_CHORD;
-		}
-
-		//Berifico si tiene texto
-		if(beat.getText() != null){
-			header |= BEAT_HAS_TEXT;
-		}
+		int header = createBeatHeader(beat, voice, data, hasNext);
 
 		// escribo la cabecera
 		writeHeader(header);
@@ -331,6 +310,33 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		if(((header & BEAT_HAS_TEXT) != 0)){
 			writeText(beat.getText());
 		}
+	}
+
+	// the header of a beat of one voice; a new duration becomes the written one
+	private int createBeatHeader(TGBeat beat, TGVoice voice, TGBeatData data, boolean hasNext){
+		int header = hasNext ? BEAT_HAS_NEXT : 0;
+
+		//Berifico si hay cambio de duracion
+		if(!voice.getDuration().isEqual(data.getDuration())){
+			header |= BEAT_NEXT_DURATION;
+			data.setDuration(voice.getDuration());
+		}
+
+		//Berifico si tiene notas
+		if(!beat.isRestBeat()){
+			header |= BEAT_HAS_NOTES;
+		}
+
+		//Berifico si tiene acorde
+		if(beat.getChord() != null){
+			header |= BEAT_HAS_CHORD;
+		}
+
+		//Berifico si tiene texto
+		if(beat.getText() != null){
+			header |= BEAT_HAS_TEXT;
+		}
+		return header;
 	}
 
 	private void writeNotes(TGVoice voice,TGBeatData data){
