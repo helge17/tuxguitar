@@ -5,7 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.action.TGActionException;
+import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.audio.MapProperties;
+import app.tuxguitar.audio.action.TGRecordingVeto;
+import app.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
+import app.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
+import app.tuxguitar.editor.action.edit.TGRedoAction;
+import app.tuxguitar.editor.action.edit.TGUndoAction;
+import app.tuxguitar.editor.action.measure.TGPasteMeasureAction;
+import app.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
+import app.tuxguitar.editor.action.note.TGChangeNoteAction;
+import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
+import app.tuxguitar.editor.action.track.TGSetTrackChannelAction;
+import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.audio.TGAudioSession;
 import app.tuxguitar.util.properties.TGPropertiesManager;
 import app.tuxguitar.audio.TGSongTime;
@@ -64,6 +78,13 @@ public class AudioWorld {
 			new TGUpdateChannelAction(this.fixture.context));
 		TGUndoableManager.getInstance(this.fixture.context).setBuffer(this.undoHistory);
 		TGPropertiesManager.getInstance(this.fixture.context).setPropertiesFactory(MapProperties::new);
+		// as the app refuses, during a recording, the editing actions it disables while playing (desktop's
+		// TGActionConfigMap, DISABLE_ON_PLAY), among those the steps run
+		TGRecordingVeto.getInstance(this.fixture.context).refuse(TGAddTrackAction.NAME, TGAddNewTrackAction.NAME,
+			TGRemoveTrackAction.NAME, TGCloneTrackAction.NAME, TGCopyTrackFromAction.NAME, TGAddChannelAction.NAME,
+			TGAddMeasureAction.NAME, TGRemoveMeasureAction.NAME, TGRemoveMeasureRangeAction.NAME, TGInsertMeasuresAction.NAME,
+			TGPasteMeasureAction.NAME, TGChangeTempoAction.NAME, TGChangeTempoRangeAction.NAME, TGChangeTimeSignatureAction.NAME,
+			TGSetTrackChannelAction.NAME, TGChangeNoteAction.NAME, TGUndoAction.NAME, TGRedoAction.NAME);
 	}
 
 	public SongActionFixture fixture() {
@@ -114,6 +135,31 @@ public class AudioWorld {
 	public void playAlong(long start, long stop, int passes) {
 		MidiPlayerMode mode = MidiPlayer.getInstance(this.fixture.context).getMode();
 		this.device.setPlayed(new TGTimeline(song(), TGSongTime.play(song(), mode, start, stop, passes), this.device.getSampleRate()));
+	}
+
+	// runs the action on a thread of its own and an action context of its own, as the app runs a recording on the audio
+	// thread while actions go on; its undoable edit is kept as executeUndoable keeps it
+	public Thread executeInBackground(TGActionBase action, TGUndoableActionController controller, Map<String, Object> attributes) {
+		TGActionContext context = new TGActionContext() {
+		};
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, this.fixture.songManager);
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song());
+		attributes.forEach(context::setAttribute);
+		this.fixture.map(action);
+		Thread thread = new Thread(() -> {
+			TGUndoableEdit started = controller.startUndoable(this.fixture.context, context);
+			try {
+				TGActionManager.getInstance(this.fixture.context).execute(action.getName(), context);
+			} catch (TGActionException e) {
+				throw new IllegalStateException(e);
+			}
+			TGUndoableEdit edit = controller.endUndoable(this.fixture.context, context, started);
+			if (edit != null) {
+				TGUndoableManager.getInstance(this.fixture.context).addEdit(edit);
+			}
+		});
+		thread.start();
+		return thread;
 	}
 
 	public boolean succeeded() {

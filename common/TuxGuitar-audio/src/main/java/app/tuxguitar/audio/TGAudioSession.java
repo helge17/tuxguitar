@@ -13,7 +13,6 @@ import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
-import app.tuxguitar.util.singleton.TGSingletonFactory;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 /**
@@ -38,16 +37,14 @@ public final class TGAudioSession {
 	private TGPunchRange punchRange;
 	// the device's clock while TuxGuitar is stopped: how much input it has delivered
 	private long listened;
+	// a recording is under way (the recording runs on the audio thread, actions on another)
+	private volatile boolean recording;
 
 	private TGAudioSession() {
 	}
 
 	public static TGAudioSession getInstance(TGContext context) {
-		return TGSingletonUtil.getInstance(context, TGAudioSession.class.getName(), new TGSingletonFactory<TGAudioSession>() {
-			public TGAudioSession createInstance(TGContext context) {
-				return new TGAudioSession();
-			}
-		});
+		return TGSingletonUtil.getInstance(context, TGAudioSession.class.getName(), key -> new TGAudioSession());
 	}
 
 	public TGAudioDevice getDevice() {
@@ -107,6 +104,14 @@ public final class TGAudioSession {
 	// the track's input level, at the audio device's rate
 	public TGInputMeter getInputMeter(TGTrack track) {
 		return this.meters.computeIfAbsent(track, key -> new TGInputMeter(this.device.getSampleRate()));
+	}
+
+	public boolean isRecording() {
+		return this.recording;
+	}
+
+	public void setRecording(boolean recording) {
+		this.recording = recording;
 	}
 
 	public void setPunchRange(TGPunchRange punchRange) {

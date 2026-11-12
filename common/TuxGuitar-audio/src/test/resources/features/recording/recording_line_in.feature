@@ -137,7 +137,6 @@ Feature: Recording line-in audio
     When I record from measure 1 beat 1 to measure 2 beat 1
     Then take 1 of track 2 holds 4 clicks, each within 1 sample of a beat
 
-  @planned
   Scenario Outline: the song, the Play Mode, the punch range, arming and input channels cannot change during a recording
     Given I have armed track 2
     And I am recording from measure 1 beat 1

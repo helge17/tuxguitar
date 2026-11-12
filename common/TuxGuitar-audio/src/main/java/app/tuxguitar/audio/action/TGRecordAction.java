@@ -18,7 +18,8 @@ import app.tuxguitar.util.TGContext;
  * Records the armed tracks while the song plays from a position until another one is reached in the last pass, or
  * until that pass ends. It needs an armed track and the TuxGuitar Synthesizer as the MIDI Port, and then succeeds,
  * whether or not it made a take (ATTRIBUTE_TAKES says how many). What was
- * heard while recording is left in the context as TGPlayAction.ATTRIBUTE_RENDER.
+ * heard while recording is left in the context as TGPlayAction.ATTRIBUTE_RENDER. While it runs, the session says a
+ * recording is under way.
  */
 public class TGRecordAction extends TGActionBase {
 
@@ -42,10 +43,20 @@ public class TGRecordAction extends TGActionBase {
 		if (tracks.isEmpty() || !player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY)) {
 			return;
 		}
+		TGRecordingVeto.getInstance(getContext());
+		session.setRecording(true);
+		try {
+			this.record(context, song, session, tracks);
+		} finally {
+			session.setRecording(false);
+		}
+	}
+
+	private void record(TGActionContext context, TGSong song, TGAudioSession session, List<TGTrack> tracks) {
 		Long start = context.getAttribute(ATTRIBUTE_START);
 		Long stop = context.getAttribute(ATTRIBUTE_STOP);
 		Integer passes = context.getAttribute(ATTRIBUTE_PASSES);
-		List<TGPlayedMeasure> played = TGSongTime.play(song, player.getMode(), start, stop, passes);
+		List<TGPlayedMeasure> played = TGSongTime.play(song, MidiPlayer.getInstance(getContext()).getMode(), start, stop, passes);
 		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, TGPlayAction.play(getContext(), context, getSongManager(context), true));
 		TGRecording recording = new TGRecording(getSongManager(context), song, session.getDevice(), session.getPunchRange(song));
 		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, played));

@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongToDoubleFunction;
 
 import app.tuxguitar.audio.TGAudioDevice;
@@ -14,7 +17,8 @@ import app.tuxguitar.audio.TGTimeline;
 /**
  * The audio device of the features: 44100 Hz unless a scenario says otherwise; each input channel delivers the signal
  * the player plays on it, or silence. The player plays along with what is being played: it knows where its beats
- * and passes fall on the device's clock. No latency yet.
+ * and passes fall on the device's clock. No latency yet. Held, it keeps the next capture waiting until released, so a
+ * recording can be left under way while a scenario does something else.
  */
 final class TestInterface implements TGAudioDevice {
 
@@ -25,6 +29,8 @@ final class TestInterface implements TGAudioDevice {
 	private final TreeMap<Long, Integer> passes = new TreeMap<Long, Integer>();
 	private int sampleRate = SAMPLE_RATE;
 	private boolean playing;
+	private final AtomicReference<CountDownLatch> release = new AtomicReference<CountDownLatch>();
+	private final CountDownLatch waiting = new CountDownLatch(1);
 
 	void play(int inputChannel, LongToDoubleFunction signal) {
 		this.inputs.put(inputChannel, signal);
@@ -69,7 +75,37 @@ final class TestInterface implements TGAudioDevice {
 		return (pass == null ? 0 : pass.getValue());
 	}
 
+	// the next capture waits until release
+	void hold() {
+		this.release.set(new CountDownLatch(1));
+	}
+
+	// waits until a capture is waiting
+	boolean awaitWaiting() throws InterruptedException {
+		return this.waiting.await(60, TimeUnit.SECONDS);
+	}
+
+	void release() {
+		CountDownLatch held = this.release.getAndSet(null);
+		if (held != null) {
+			held.countDown();
+		}
+	}
+
+	private void waitIfHeld() {
+		CountDownLatch held = this.release.get();
+		if (held != null) {
+			this.waiting.countDown();
+			try {
+				held.await(60, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
 	public float[] capture(int inputChannel, long from, int count) {
+		this.waitIfHeld();
 		LongToDoubleFunction signal = this.inputs.getOrDefault(inputChannel, sample -> 0);
 		float[] samples = new float[count];
 		for (int i = 0; i < count; i++) {

@@ -19,6 +19,7 @@ import app.tuxguitar.audio.action.TGArmTrackAction;
 import app.tuxguitar.audio.action.TGDisarmTrackAction;
 import app.tuxguitar.audio.action.TGSetMonitoringAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGMeasure;
@@ -54,11 +55,26 @@ public class LineInSteps {
 		return MidiPlayer.getInstance(world.fixture().context).getMode();
 	}
 
-	@Given("I have set the Percentage of Tempo to {int}")
+	// as the Play Mode dialog sets it: a simple Play Mode at that percentage, through the action
+	@When("I set the Percentage of Tempo to {int}")
 	public void setThePercentageOfTempo(int percent) {
-		mode().setType(MidiPlayerMode.TYPE_SIMPLE);
-		mode().setSimplePercent(percent);
-		mode().reset();
+		MidiPlayerMode mode = new MidiPlayerMode();
+		mode.copyFrom(mode());
+		mode.setType(MidiPlayerMode.TYPE_SIMPLE);
+		mode.setSimplePercent(percent);
+		world.fixture().actionContext.setAttribute(TGTransportModeAction.ATTRIBUTE_PLAYER_MODE, mode);
+		world.execute(new TGTransportModeAction(world.fixture().context));
+	}
+
+	@Given("I have set the Percentage of Tempo to {int}")
+	public void haveSetThePercentageOfTempo(int percent) {
+		setThePercentageOfTempo(percent);
+		assertTrue(world.succeeded());
+	}
+
+	@Then("the Percentage of Tempo is {int}")
+	public void thePercentageOfTempoIs(int percent) {
+		assertEquals(percent, mode().getCurrentPercent());
 	}
 
 	// as the Play Mode dialog applies it: the mode starts at its first percentage

@@ -6,15 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 
 import app.tuxguitar.audio.TGPunchRange;
 import app.tuxguitar.audio.action.TGArmTrackAction;
+import app.tuxguitar.audio.action.TGDisarmTrackAction;
 import app.tuxguitar.audio.action.TGRecordAction;
 import app.tuxguitar.audio.action.TGSetPunchRangeAction;
 import app.tuxguitar.audio.undo.TGUndoableRecordingController;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
+import io.cucumber.java.After;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,6 +31,7 @@ public class RecordingSteps {
 
 	private final AudioWorld world;
 	private List<Object> historyBeforeRecording;
+	private Thread recording;
 
 	public RecordingSteps(AudioWorld world) {
 		this.world = world;
@@ -102,6 +106,32 @@ public class RecordingSteps {
 		for (int number = 1; number <= world.song().countTracks(); number++) {
 			world.rememberTakes(number);
 		}
+	}
+
+	// a recording from the position, with no stop, left under way: the device holds its first capture until the scenario
+	// ends
+	@Given("I am recording from {position}")
+	public void recordingFrom(SongPosition from) throws InterruptedException {
+		world.device().hold();
+		world.playAlong(from.tick(world.song()), Long.MAX_VALUE, 1);
+		recording = world.executeInBackground(new TGRecordAction(world.fixture().context), new TGUndoableRecordingController(),
+			Map.<String, Object>of(TGRecordAction.ATTRIBUTE_START, from.tick(world.song()), TGRecordAction.ATTRIBUTE_STOP, Long.MAX_VALUE, TGRecordAction.ATTRIBUTE_PASSES, 1));
+		assertTrue(world.device().awaitWaiting(), "the recording reached the device");
+		assertTrue(world.session().isRecording());
+	}
+
+	@After
+	public void stopTheRecording() throws InterruptedException {
+		world.device().release();
+		if (recording != null) {
+			recording.join(60000);
+		}
+	}
+
+	@When("I disarm track {int}")
+	public void disarm(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
+		world.execute(new TGDisarmTrackAction(world.fixture().context));
 	}
 
 	@Then("the undo history is as it was before the recording")
