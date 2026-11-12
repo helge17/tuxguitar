@@ -1,7 +1,12 @@
 package app.tuxguitar.graphics.command;
+import java.util.function.Function;
+
 import app.tuxguitar.ui.resource.UIPainter;
 
 public class TGPaintModel implements TGPaintCommand {
+
+	private static final boolean UPWARD = true;
+	private static final boolean DOWNWARD = false;
 
 	private TGPaintCommand[] commands;
 
@@ -16,47 +21,19 @@ public class TGPaintModel implements TGPaintCommand {
 	}
 
 	public float getMaximumX() {
-		Float maximum = null;
-		for(TGPaintCommand command : this.commands) {
-			Float current = command.getMaximumX();
-			if( maximum == null || current > maximum ) {
-				maximum = current;
-			}
-		}
-		return maximum != null ? maximum : 0f;
+		return this.getOutermost(TGPaintCommand::getMaximumX, UPWARD);
 	}
 
 	public float getMaximumY() {
-		Float maximum = null;
-		for(TGPaintCommand command : this.commands) {
-			Float current = command.getMaximumY();
-			if( maximum == null || current > maximum ) {
-				maximum = current;
-			}
-		}
-		return maximum != null ? maximum : 0f;
+		return this.getOutermost(TGPaintCommand::getMaximumY, UPWARD);
 	}
 
 	public float getMinimumX() {
-		Float minimum = null;
-		for(TGPaintCommand command : this.commands) {
-			Float current = command.getMinimumX();
-			if( minimum == null || current < minimum ) {
-				minimum = current;
-			}
-		}
-		return minimum != null ? minimum : 0f;
+		return this.getOutermost(TGPaintCommand::getMinimumX, DOWNWARD);
 	}
 
 	public float getMinimumY() {
-		Float minimum = null;
-		for(TGPaintCommand command : this.commands) {
-			Float current = command.getMinimumY();
-			if( minimum == null || current < minimum ) {
-				minimum = current;
-			}
-		}
-		return minimum != null ? minimum : 0f;
+		return this.getOutermost(TGPaintCommand::getMinimumY, DOWNWARD);
 	}
 
 	public float getWidth() {
@@ -65,5 +42,21 @@ public class TGPaintModel implements TGPaintCommand {
 
 	public float getHeight() {
 		return (this.getMaximumY() - this.getMinimumY());
+	}
+
+	// the bound of the command lying furthest outward, or 0 without commands
+	private float getOutermost(Function<TGPaintCommand, Float> bound, boolean upward) {
+		Float outermost = null;
+		for(TGPaintCommand command : this.commands) {
+			Float current = bound.apply(command);
+			if( outermost == null || isBeyond(current, outermost, upward) ) {
+				outermost = current;
+			}
+		}
+		return outermost != null ? outermost : 0f;
+	}
+
+	private static boolean isBeyond(float value, float bound, boolean upward) {
+		return (upward ? value > bound : value < bound);
 	}
 }

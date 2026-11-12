@@ -148,7 +148,7 @@ public class TGNoteImpl extends TGNote {
 
 	public void paintTablatureNoteValuePathMode(TGLayout layout, UIPainter painter, UIInset margin, float fromX, float fromY, boolean running) {
 		float noteSize = (layout.getStringSpacing() - 2f);
-		float noteWidth = (this.getEffect().isDeadNote() ? 6f * layout.getScale() : TGNumberPainter.getDigitsWidth(getValue(), noteSize));
+		float noteWidth = this.getPathNoteWidth(layout, noteSize);
 		float ghostWidth = (this.getEffect().isGhostNote() ? 3f * layout.getScale() : 0f);
 
 		margin.setTop(noteSize / 2f);
@@ -158,39 +158,46 @@ public class TGNoteImpl extends TGNote {
 
 		this.fillBackground(layout, painter, margin, fromX, fromY);
 		layout.setTabNotePathStyle(painter, running);
-		if( this.getEffect().isDeadNote() ) {
-			painter.initPath(UIPainter.PATH_DRAW);
-			painter.moveTo(fromX - (margin.getLeft() - ghostWidth), fromY - margin.getTop());
-			painter.lineTo(fromX + (margin.getRight() - ghostWidth), fromY + margin.getBottom());
-			painter.moveTo(fromX + (margin.getRight() - ghostWidth), fromY - margin.getTop());
-			painter.lineTo(fromX - (margin.getLeft() - ghostWidth), fromY + margin.getBottom());
 
-			painter.closePath();
-		} else {
-			TGNumberPainter.paintDigits(getValue(), painter, fromX - (margin.getLeft() - ghostWidth), fromY - margin.getTop(), noteSize);
-		}
+		float x1 = fromX - (margin.getLeft() - ghostWidth);
+		float x2 = fromX + (margin.getRight() - ghostWidth);
+		float y1 = fromY - margin.getTop();
+		float y2 = fromY + margin.getBottom();
+		this.paintPathNoteValue(painter, x1, y1, x2, y2, noteSize);
 
 		if( this.getEffect().isGhostNote() ) {
 			float ghostLineWidth = (2f * layout.getScale());
-			float ghostY1 = fromY - margin.getTop();
-			float ghostY2 = fromY + margin.getBottom();
-			float ghostLeftX1 = fromX - (margin.getLeft() - ghostWidth);
-			float ghostLeftX2 = fromX - margin.getLeft();
-			float ghostRightX1 = fromX + (margin.getRight() - ghostWidth);
-			float ghostRightX2 = fromX + margin.getRight();
-
-			painter.initPath(UIPainter.PATH_FILL);
-			painter.moveTo(ghostLeftX1, ghostY1);
-			painter.cubicTo(ghostLeftX2 - ghostLineWidth, ghostY1, ghostLeftX2 - ghostLineWidth, ghostY2, ghostLeftX1, ghostY2);
-			painter.cubicTo(ghostLeftX2, ghostY2, ghostLeftX2, ghostY1, ghostLeftX1, ghostY1);
-			painter.closePath();
-
-			painter.initPath(UIPainter.PATH_FILL);
-			painter.moveTo(ghostRightX1, ghostY1);
-			painter.cubicTo(ghostRightX2 + ghostLineWidth, ghostY1, ghostRightX2 + ghostLineWidth, ghostY2, ghostRightX1, ghostY2);
-			painter.cubicTo(ghostRightX2, ghostY2, ghostRightX2, ghostY1, ghostRightX1, ghostY1);
-			painter.closePath();
+			paintGhostParenthesis(painter, x1, fromX - margin.getLeft(), -ghostLineWidth, y1, y2);
+			paintGhostParenthesis(painter, x2, fromX + margin.getRight(), ghostLineWidth, y1, y2);
 		}
+	}
+
+	// a dead note is 6 units wide (scaled); any other note as wide as the digits of its fret
+	private float getPathNoteWidth(TGLayout layout, float noteSize) {
+		return (this.getEffect().isDeadNote() ? 6f * layout.getScale() : TGNumberPainter.getDigitsWidth(getValue(), noteSize));
+	}
+
+	// within the box from (x1, y1) to (x2, y2): a cross for a dead note, else the digits of its fret
+	private void paintPathNoteValue(UIPainter painter, float x1, float y1, float x2, float y2, float noteSize) {
+		if( this.getEffect().isDeadNote() ) {
+			painter.initPath(UIPainter.PATH_DRAW);
+			painter.moveTo(x1, y1);
+			painter.lineTo(x2, y2);
+			painter.moveTo(x2, y1);
+			painter.lineTo(x1, y2);
+			painter.closePath();
+		} else {
+			TGNumberPainter.paintDigits(getValue(), painter, x1, y1, noteSize);
+		}
+	}
+
+	// a crescent from y1 to y2, its points at x, its inner curve through outerX, its outer curve bulging by lineWidth
+	private static void paintGhostParenthesis(UIPainter painter, float x, float outerX, float lineWidth, float y1, float y2) {
+		painter.initPath(UIPainter.PATH_FILL);
+		painter.moveTo(x, y1);
+		painter.cubicTo(outerX + lineWidth, y1, outerX + lineWidth, y2, x, y2);
+		painter.cubicTo(outerX, y2, outerX, y1, x, y1);
+		painter.closePath();
 	}
 
 	public void paintTablatureNoteValueTextMode(TGLayout layout, UIPainter painter, UIInset margin, float fromX, float fromY, boolean running) {
