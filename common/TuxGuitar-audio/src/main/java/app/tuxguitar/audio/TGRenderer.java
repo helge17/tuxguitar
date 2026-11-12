@@ -1,5 +1,6 @@
 package app.tuxguitar.audio;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -59,11 +60,9 @@ public final class TGRenderer {
 	private float[] tap(TGTrack track, TGTimeline timeline, boolean recording) {
 		TGTrackSource[] sources = this.sources(track, timeline, recording);
 		float[] input = null;
-		for (TGTrackSource source : sources) {
-			if (source == TGTrackSource.INPUT && input == null) {
-				int channel = this.channel(track).getAudioInput().getChannel();
-				input = this.session.getDevice().capture(channel, timeline.getClock(), (int) timeline.length() + TGTakePiece.FADE);
-			}
+		if (Arrays.asList(sources).contains(TGTrackSource.INPUT)) {
+			int channel = this.channel(track).getAudioInput().getChannel();
+			input = this.session.getDevice().capture(channel, timeline.getClock(), (int) timeline.length());
 		}
 		return TGTakeTap.render(track, timeline, this.stretcher, sources, input);
 	}

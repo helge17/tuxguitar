@@ -33,15 +33,27 @@ public class TestGeneralMidiRender {
 
 	public TestGeneralMidiRender() {
 		TGPropertiesManager.getInstance(this.context).setPropertiesFactory(MapProperties::new);
-		TGMeasure measure = song.getTrack(0).getMeasure(0);
+		note(song.getTrack(0).getMeasure(0), 0);
+		channel().setProgram((short) 80);
+	}
+
+	// fret 5 on string 1, a quarter note at the tick from the measure's start
+	private void note(TGMeasure measure, long tick) {
 		TGBeat beat = songManager.getFactory().newBeat();
-		beat.setStart(measure.getStart());
+		beat.setStart(measure.getStart() + tick);
 		TGNote note = songManager.getFactory().newNote();
 		note.setValue(5);
 		note.setString(1);
 		beat.getVoice(0).addNote(note);
 		measure.addBeat(beat);
-		channel().setProgram((short) 80);
+	}
+
+	private int firstSound(float[] tap) {
+		int first = 0;
+		while (first < tap.length && Math.abs(tap[first]) <= 0.001) {
+			first++;
+		}
+		return first;
 	}
 
 	private TGChannel channel() {
@@ -49,6 +61,11 @@ public class TestGeneralMidiRender {
 	}
 
 	private TGRender render(int sampleRate) throws MidiPlayerException {
+		return render(sampleRate, 1);
+	}
+
+	// from measure 1, or another one
+	private TGRender render(int sampleRate, int fromMeasure) throws MidiPlayerException {
 		TGAudioSession session = TGAudioSession.getInstance(this.context);
 		session.setDevice(new TGAudioDevice() {
 			public int getSampleRate() {
@@ -60,7 +77,7 @@ public class TestGeneralMidiRender {
 			}
 		});
 		MidiPlayerMode mode = new MidiPlayerMode();
-		long start = song.getMeasureHeader(0).getStart();
+		long start = song.getMeasureHeader(fromMeasure - 1).getStart();
 		TGTimeline timeline = new TGTimeline(song, TGSongTime.play(song, mode, start, Long.MAX_VALUE, 1), sampleRate);
 		return new TGRenderer(this.context, this.songManager, this.song, session).render(timeline, mode, false, true);
 	}
@@ -92,13 +109,68 @@ public class TestGeneralMidiRender {
 		assertEquals(440, strongest(tap, 2048, 20000, 48000), 4.4);
 	}
 
+	// today's constant-power law: left and right scaled by volume / 127 times the cosine and sine of balance / 127 of a
+	// quarter turn
 	@Test
 	public void theOutputScalesTheTapByVolumeAndBalance() throws MidiPlayerException {
-		channel().setBalance((short) 0);
+		channel().setVolume((short) 64);
+		channel().setBalance((short) 100);
 		TGRender render = render(44100);
 		float[] tap = render.getTap(song.getTrack(0));
-		assertEquals(Meters.peak(tap, 0, 20000) * channel().getVolume() / 127f, Meters.peak(render.getLeft(), 0, 20000), 0.001);
-		assertEquals(0, Meters.peak(render.getRight(), 0, 20000), 0.0001);
+		double pan = 100 / 127.0 * Math.PI / 2;
+		for (int i : new int[] {0, 1000, 5000}) {
+			assertEquals(tap[i] * 64 / 127.0 * Math.cos(pan), render.getLeft()[i], 0.00001, "left at " + i);
+			assertEquals(tap[i] * 64 / 127.0 * Math.sin(pan), render.getRight()[i], 0.00001, "right at " + i);
+		}
+		assertTrue(Meters.peak(render.getRight(), 0, 20000) > 0.01);
+	}
+
+	// as the synthesizer does today, an event goes out at the start of the block of 512 samples it falls in
+	@Test
+	public void aNoteSoundsFromTheStartOfTheBlockOfItsBeat() throws MidiPlayerException {
+		song.getTrack(0).getMeasure(0).clear();
+		note(song.getTrack(0).getMeasure(0), 960);
+		int first = firstSound(render(44100).getTap(song.getTrack(0)));
+		assertTrue(first >= 22016 && first < 22016 + 512, "the note of beat 2 (sample 22050) sounds from " + first);
+	}
+
+	@Test
+	public void theGeneralMidiProgramZeroSoundsToo() throws MidiPlayerException {
+		channel().setProgram((short) 0);
+		assertTrue(Meters.peak(render(44100).getTap(song.getTrack(0)), 0, 20000) > 0.01);
+	}
+
+	// a song of two measures, a note in measure 2 only
+	private void twoMeasures() {
+		songManager.addNewMeasureBeforeEnd(song);
+		song.getTrack(0).getMeasure(0).clear();
+		note(song.getTrack(0).getMeasure(1), 0);
+	}
+
+	@Test
+	public void aNoteSoundsOnlyInItsMeasure() throws MidiPlayerException {
+		twoMeasures();
+		float[] tap = render(44100).getTap(song.getTrack(0));
+		assertEquals(88200, firstSound(tap), 512);
+	}
+
+	// the channel's program, sent before measure 1, is sent when playing starts later
+	@Test
+	public void playingFromALaterMeasureSoundsItsNotes() throws MidiPlayerException {
+		twoMeasures();
+		float[] tap = render(44100, 2).getTap(song.getTrack(0));
+		assertEquals(0, firstSound(tap), 1024);
+	}
+
+	// repeats are unrolled: measure 1 played twice puts measure 2 third
+	@Test
+	public void aRepeatPutsTheMeasuresAfterItLater() throws MidiPlayerException {
+		twoMeasures();
+		song.getMeasureHeader(0).setRepeatOpen(true);
+		song.getMeasureHeader(0).setRepeatClose(1);
+		float[] tap = render(44100).getTap(song.getTrack(0));
+		assertEquals(3 * 88200, tap.length);
+		assertEquals(2 * 88200, firstSound(tap), 512);
 	}
 
 	// as the player does today, the MIDI sequence leaves out a muted track's notes

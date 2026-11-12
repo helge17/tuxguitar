@@ -23,8 +23,8 @@ public final class TGTakeTap {
 	private TGTakeTap() {
 	}
 
-	// sources: what the track sounds in each played measure; input: the monitored input on the output clock, FADE
-	// samples longer than the timeline (or null when no measure plays it)
+	// sources: what the track sounds in each played measure; input: the monitored input on the output clock, as long
+	// as the timeline (or null when no measure plays it)
 	public static float[] render(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, float[] input) {
 		List<TGTakePiece> pieces = pieces(track, timeline, stretcher, sources, input);
 		fade(pieces);
