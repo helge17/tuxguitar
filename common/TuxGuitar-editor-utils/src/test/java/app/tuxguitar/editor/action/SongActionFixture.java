@@ -1,10 +1,16 @@
 package app.tuxguitar.editor.action;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.DynamicTest;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionManager;
@@ -66,10 +72,7 @@ public class SongActionFixture {
 
 	// the beats, separated by " | ", then "success" when the action reported it
 	public String outcome(TGBeat... beats) {
-		List<String> descriptions = new ArrayList<String>();
-		for (TGBeat beat : beats) {
-			descriptions.add(describe(beat));
-		}
+		List<String> descriptions = Arrays.stream(beats).map(SongActionFixture::describe).collect(Collectors.toCollection(ArrayList::new));
 		if (Boolean.TRUE.equals(actionContext.getAttribute(TGActionBase.ATTRIBUTE_SUCCESS))) {
 			descriptions.add("success");
 		}
@@ -87,12 +90,34 @@ public class SongActionFixture {
 		return beat;
 	}
 
+	// adds measures at the song end, so the song has the given number of measures
+	public void measureCount(int count) {
+		while (song.countMeasureHeaders() < count) {
+			songManager.addNewMeasureBeforeEnd(song);
+		}
+	}
+
+	// the measures of the first track, each read by the given function, separated by " | "
+	public String measures(Function<TGMeasure, String> reading) {
+		TGTrack track = song.getTrack(0);
+		List<String> descriptions = new ArrayList<String>();
+		for (int m = 0; m < track.countMeasures(); m++) {
+			descriptions.add(reading.apply(track.getMeasure(m)));
+		}
+		return String.join(" | ", descriptions);
+	}
+
 	public TGNote note(TGBeat beat, int string, int fret) {
 		TGNote note = songManager.getFactory().newNote();
 		note.setString(string);
 		note.setValue(fret);
 		beat.getVoice(0).addNote(note);
 		return note;
+	}
+
+	// a table case: what the run reads back, on its own new song, is the expected
+	public static DynamicTest reads(String name, String expected, Supplier<String> run) {
+		return DynamicTest.dynamicTest(name, () -> assertEquals(expected, run.get()));
 	}
 
 	public static String describe(TGBeat beat) {
