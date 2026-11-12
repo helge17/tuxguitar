@@ -91,76 +91,45 @@ public class TestTransposeNotes {
 		return description.toString();
 	}
 
-	@Test
-	public void aNoteKeepsItsStringWhenAsked() {
-		beat(at(3, 5));
-		assertEquals(""
-			+ "s3f7"
-			, transpose(2, true));
+	// runs each scenario "<notes> <transposition> keep|move -> <notes>" on a new beat, keeping the string when asked
+	private static void assertTransposes(String... scenarios) {
+		List<String> results = new ArrayList<String>();
+		for (String scenario : scenarios) {
+			String given = scenario.split(" -> ")[0];
+			String[] parts = given.split(" ");
+			int[][] notes = new int[parts.length - 2][];
+			for (int i = 0; i < notes.length; i++) {
+				String[] stringAndFret = parts[i].substring(1).split("f");
+				notes[i] = at(Integer.parseInt(stringAndFret[0]), Integer.parseInt(stringAndFret[1]));
+			}
+			TestTransposeNotes test = new TestTransposeNotes();
+			test.beat(notes);
+			results.add(given + " -> " + test.transpose(Integer.parseInt(parts[notes.length]), parts[notes.length + 1].equals("keep")));
+		}
+		assertEquals(String.join("\n", scenarios), String.join("\n", results));
 	}
 
 	@Test
-	public void aNoteMovesToTheNextStringWhenNotAsked() {
-		beat(at(3, 5));
-		assertEquals(""
-			+ "s2f3"
-			, transpose(2, false));
-	}
-
-	@Test
-	public void aNoteBeyondTheLastFretMovesToAHigherString() {
-		beat(at(3, 11));
-		assertEquals(""
-			+ "s2f10"
-			, transpose(3, true));
-	}
-
-	@Test
-	public void aNoteBelowTheNutMovesToALowerString() {
-		beat(at(2, 0));
-		assertEquals(""
-			+ "s3f2"
-			, transpose(-2, true));
-	}
-
-	@Test
-	public void aNoteThatFitsNowhereIsRemoved() {
-		beat(at(1, 11), at(3, 5));
-		assertEquals(""
-			+ "s3f8"
-			, transpose(3, true));
-	}
-
-	@Test
-	public void aNoteStaysOnItsStringWhenTheNextOneIsTaken() {
-		beat(at(3, 5), at(2, 0));
-		assertEquals(""
-			+ "s2f2 s3f7"
-			, transpose(2, false));
-	}
-
-	@Test
-	public void aNoteInTheWayIsPushedToTheNextString() {
-		beat(at(3, 11), at(2, 12));
-		assertEquals(""
-			+ "s1f10 s2f10"
-			, transpose(3, true));
-	}
-
-	@Test
-	public void aNoteInTheWayThatCannotMoveIsRemoved() {
-		beat(at(3, 11), at(2, 2), at(1, 0));
-		assertEquals(""
-			+ "s1f3 s2f10"
-			, transpose(3, true));
-	}
-
-	@Test
-	public void aNoteFindsTheFirstFreeStringFurtherOn() {
-		beat(at(4, 12), at(3, 4));
-		assertEquals(""
-			+ "s1f10 s2f12"
-			, transpose(12, true));
+	public void aNoteGoesOnItsStringWhenAskedElseOnTheNextStringTowardTheTranspositionPushingOrRemovingNotesInTheWay() {
+		assertTransposes(
+			// a note keeps its string when asked, else moves to the next string
+			"s3f5 2 keep -> s3f7",
+			"s3f5 2 move -> s2f3",
+			// beyond the last fret it moves to a higher string, below the nut to a lower one
+			"s3f11 3 keep -> s2f10",
+			"s2f0 -2 keep -> s3f2",
+			// the lowest string comes first in the strings searched upward, the highest in those searched downward
+			"s1f5 s6f3 2 keep -> s1f7 s6f5",
+			"s1f5 s6f3 -2 keep -> s1f3 s6f1",
+			// a note that fits nowhere is removed
+			"s1f11 s3f5 3 keep -> s3f8",
+			// a note stays on its string when the next one is taken
+			"s3f5 s2f0 2 move -> s2f2 s3f7",
+			// a note in the way is pushed to the next string, or removed when it cannot move
+			"s3f11 s2f12 3 keep -> s1f10 s2f10",
+			"s3f11 s2f2 s1f0 3 keep -> s1f3 s2f10",
+			// a note finds the first free string further on
+			"s4f12 s3f4 12 keep -> s1f10 s2f12");
 	}
 
 	@Test
