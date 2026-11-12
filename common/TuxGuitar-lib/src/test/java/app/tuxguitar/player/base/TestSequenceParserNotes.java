@@ -90,9 +90,10 @@ public class TestSequenceParserNotes {
 	@Test
 	public void aChainOfTiedNotesLastsAsLongAsAllOfThem() {
 		song.quarter(1, 5);
-		song.note(4, TGDuration.QUARTER, 1, 5).setTiedNote(true);
-		song.note(8, TGDuration.QUARTER, 1, 5).setTiedNote(true);
-		assertEquals(events(note(960, 3840, 69)), song.notes());
+		for (int sixteenth = 4; sixteenth <= 12; sixteenth += 4) {
+			song.note(sixteenth, TGDuration.QUARTER, 1, 5).setTiedNote(true);
+		}
+		assertEquals(events(note(960, 4800, 69)), song.notes());
 	}
 
 	// on the second pass of a repeat the tie is measured from the repeated note

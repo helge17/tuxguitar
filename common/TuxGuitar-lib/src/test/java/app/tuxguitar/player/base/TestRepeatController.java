@@ -8,8 +8,13 @@ import java.io.IOException;
 import app.tuxguitar.io.tg.TestFileFormat20;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGDuration;
+import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 public class TestRepeatController {
 
@@ -85,12 +90,19 @@ public class TestRepeatController {
 
 	// ---- hand-made songs of 4/4 measures ----
 
-	// a new song of the given number of measures
-	private static TGSong song(int measures) {
+	// a new song with one measure per mark: "|:" opens a repeat, ":|" closes it once, "2." plays on the second
+	// pass only, "-" is a plain measure
+	private static TGSong song(String... marks) {
 		TGSongManager songManager = new TGSongManager();
 		TGSong song = songManager.newSong();
-		for (int i = 1; i < measures; i++) {
+		for (int i = 1; i < marks.length; i++) {
 			songManager.addNewMeasureBeforeEnd(song);
+		}
+		for (int i = 0; i < marks.length; i++) {
+			TGMeasureHeader header = song.getMeasureHeader(i);
+			header.setRepeatOpen(marks[i].equals("|:"));
+			header.setRepeatClose(marks[i].equals(":|") ? 1 : 0);
+			header.setRepeatAlternative(marks[i].equals("2.") ? 2 : 0);
 		}
 		return song;
 	}
@@ -111,50 +123,21 @@ public class TestRepeatController {
 		return played.toString();
 	}
 
-	// a loop starting after the first measure opens a repeat at its start: a repeat closed in the loop goes back there
-	@Test
-	public void aLoopStartOpensARepeat() {
-		TGSong song = song(4);
-		song.getMeasureHeader(2).setRepeatClose(1);
-
-		assertEquals("2@0 3@0 2@2 3@2 4@2", played(song, 2, 4));
+	private static DynamicTest plays(String name, String expected, int sHeader, int eHeader, String... marks) {
+		return DynamicTest.dynamicTest(name, () -> assertEquals(expected, played(song(marks), sHeader, eHeader)));
 	}
 
-	// a repeat already played through is closed: a later repeat close without a new repeat open is ignored
-	@Test
-	public void aRepeatCloseAfterAFinishedRepeatIsIgnored() {
-		TGSong song = song(4);
-		song.getMeasureHeader(0).setRepeatOpen(true);
-		song.getMeasureHeader(1).setRepeatClose(1);
-		song.getMeasureHeader(2).setRepeatClose(1);
-
-		assertEquals("1@0 2@0 1@2 2@2 3@2 4@2", played(song, -1, -1));
-	}
-
-	// a measure for the second ending only is skipped on the first pass, even right after the repeat open
-	@Test
-	public void aSecondEndingIsSkippedOnTheFirstPass() {
-		TGSong song = song(4);
-		song.getMeasureHeader(0).setRepeatOpen(true);
-		song.getMeasureHeader(1).setRepeatAlternative(2);
-		song.getMeasureHeader(2).setRepeatClose(1);
-
-		assertEquals("1@0 4@-2", played(song, -1, -1));
-	}
-
-	// a repeat played through before the loop leaves the repeat count of the loop alone
-	@Test
-	public void aRepeatBeforeTheLoopDoesNotCountInIt() {
-		TGSong song = song(4);
-		song.getMeasureHeader(0).setRepeatClose(1);
-		song.getMeasureHeader(2).setRepeatClose(1);
-
-		assertEquals("2@0 3@0 2@2 3@2 4@2", played(song, 2, 4));
-	}
-
-	// a range ending at 0 ends before every measure
-	@Test
-	public void aRangeEndingAtZeroPlaysNothing() {
-		assertEquals("", played(song(2), -1, 0));
+	@TestFactory
+	public Stream<DynamicTest> handMadeSongs() {
+		return Stream.of(
+			// a repeat closed in a loop goes back to the loop start
+			plays("a loop start opens a repeat", "2@0 3@0 2@2 3@2 4@2", 2, 4, "-", "-", ":|", "-"),
+			// a later repeat close without a new repeat open is ignored
+			plays("a finished repeat stays closed", "1@0 2@0 1@2 2@2 3@2 4@2", -1, -1, "|:", ":|", ":|", "-"),
+			// looks odd, pinned as is: a second ending right after the repeat open is skipped on the first pass, and
+			// so is the repeat close after it, so the repeat is never played again
+			plays("a second ending is skipped on the first pass", "1@0 4@-2", -1, -1, "|:", "2.", ":|", "-"),
+			plays("a repeat before the loop does not count in it", "2@0 3@0 2@2 3@2 4@2", 2, 4, ":|", "-", ":|", "-"),
+			plays("a range ending at 0 plays nothing", "", -1, 0, "-", "-"));
 	}
 }
