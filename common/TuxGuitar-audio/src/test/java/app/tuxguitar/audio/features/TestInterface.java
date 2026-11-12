@@ -16,9 +16,11 @@ import app.tuxguitar.audio.TGTimeline;
 
 /**
  * The audio device of the features: 44100 Hz unless a scenario says otherwise; each input channel delivers the signal
- * the player plays on it, or silence. The player plays along with what is being played: it knows where its beats
- * and passes fall on the device's clock. No latency yet. Held, it keeps the next capture waiting until released, so a
- * recording can be left under way while a scenario does something else.
+ * the player plays on it, or silence. The player plays along with what is being heard: it knows where the beats and
+ * passes of what is played fall on the device's clock, and hears them the output latency later; what it plays reaches
+ * the input the input latency later still. It reports its input latency (or what a scenario says it reports) and its
+ * output latency; none by default. Held, it keeps the next capture waiting until released, so a recording can be left
+ * under way while a scenario does something else.
  */
 final class TestInterface implements TGAudioDevice {
 
@@ -30,6 +32,9 @@ final class TestInterface implements TGAudioDevice {
 	private final Set<Long> beats = new HashSet<Long>();
 	private final TreeMap<Long, Integer> passes = new TreeMap<Long, Integer>();
 	private int sampleRate = SAMPLE_RATE;
+	private int inputLatency;
+	private int outputLatency;
+	private int reportedInputLatency;
 	private boolean playing;
 	private final AtomicReference<CountDownLatch> release = new AtomicReference<CountDownLatch>();
 	private final CountDownLatch waiting = new CountDownLatch(1);
@@ -44,6 +49,25 @@ final class TestInterface implements TGAudioDevice {
 
 	public int getSampleRate() {
 		return this.sampleRate;
+	}
+
+	// the input latency is reported as it is, until reportInputLatency says otherwise
+	void setLatency(int input, int output) {
+		this.inputLatency = input;
+		this.outputLatency = output;
+		this.reportedInputLatency = input;
+	}
+
+	void reportInputLatency(int reported) {
+		this.reportedInputLatency = reported;
+	}
+
+	public int getInputLatency() {
+		return this.reportedInputLatency;
+	}
+
+	public int getOutputLatency() {
+		return this.outputLatency;
 	}
 
 	// what is about to be played: its beats and passes on the device's clock
@@ -116,9 +140,10 @@ final class TestInterface implements TGAudioDevice {
 	public float[] capture(int inputChannel, long from, int count) {
 		this.waitIfHeld();
 		LongToDoubleFunction signal = this.inputs.getOrDefault(inputChannel, sample -> 0);
+		long played = from - this.outputLatency - this.inputLatency;
 		float[] samples = new float[count];
 		for (int i = 0; i < count; i++) {
-			samples[i] = (float) signal.applyAsDouble(from + i);
+			samples[i] = (float) signal.applyAsDouble(played + i);
 		}
 		return samples;
 	}

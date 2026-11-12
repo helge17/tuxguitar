@@ -64,6 +64,26 @@ public class SessionSteps {
 		world.session().setDevice(world.device());
 	}
 
+	@Given("I have set the audio device to {string} with {int} samples of input latency and {int} of output latency")
+	public void setTheAudioDeviceWithLatency(String name, int input, int output) {
+		world.device().setLatency(input, output);
+		setTheAudioDevice(name);
+	}
+
+	// the device reports another input latency than it has
+	@Given("I have set the audio device to {string} with {int} samples of input latency, reporting {int}")
+	public void setTheAudioDeviceReporting(String name, int input, int reported) {
+		world.device().setLatency(input, 0);
+		world.device().reportInputLatency(reported);
+		setTheAudioDevice(name);
+	}
+
+	// a setting of the session, as the audio settings set it
+	@Given("I have set the recording offset to {int} samples")
+	public void setTheRecordingOffset(int samples) {
+		world.session().setRecordingOffset(samples);
+	}
+
 	// the plugin host comes with the VST3 slice; no implemented scenario uses a plugin yet
 	@Given("the VST3 folders hold the test plugins")
 	public void theVst3FoldersHoldTheTestPlugins() {

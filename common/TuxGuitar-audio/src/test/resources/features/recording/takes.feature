@@ -216,7 +216,6 @@ Feature: Takes
     Then take 1 of track 2 holds a 440 Hz tone within 1% and no 880 Hz tone above -60 dBFS
     And take 2 of track 2 holds a 880 Hz tone within 1% and no 440 Hz tone above -60 dBFS
 
-  @planned
   Scenario: what I play late on a pass, by the input's latency, stays in that pass's take
     Given I have set the audio device to "Test Interface" with 300 samples of input latency and 1024 of output latency
     And I have turned Play looped on over measures 2 to 3

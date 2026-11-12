@@ -58,7 +58,7 @@ public class TGRecordAction extends TGActionBase {
 		Integer passes = context.getAttribute(ATTRIBUTE_PASSES);
 		List<TGPlayedMeasure> played = TGSongTime.play(song, MidiPlayer.getInstance(getContext()).getMode(), start, stop, passes);
 		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, TGPlayAction.play(getContext(), context, getSongManager(context), true));
-		TGRecording recording = new TGRecording(getSongManager(context), song, session.getDevice(), session.getPunchRange(song));
+		TGRecording recording = new TGRecording(getSongManager(context), song, session.getDevice(), session.getPunchRange(song), session.getRoundTrip());
 		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, played));
 		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}

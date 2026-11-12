@@ -17,7 +17,7 @@ import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 /**
  * What the audio features keep outside the song: the audio device, which tracks are armed, their monitoring and input
- * level, the punch range. It is not saved, not undoable, and changing it does not mark the song modified. One per
+ * level, the punch range, the recording offset. It is not saved, not undoable, and changing it does not mark the song modified. One per
  * context.
  */
 public final class TGAudioSession {
@@ -35,6 +35,8 @@ public final class TGAudioSession {
 	private final Map<TGTrack, TGInputMeter> meters = new HashMap<TGTrack, TGInputMeter>();
 	private TGAudioDevice device;
 	private TGPunchRange punchRange;
+	// samples added to the input latency the audio device reports, for drivers that report it wrong
+	private int recordingOffset;
 	// the device's clock while TuxGuitar is stopped: how much input it has delivered
 	private long listened;
 	// a recording is under way (the recording runs on the audio thread, actions on another)
@@ -104,6 +106,21 @@ public final class TGAudioSession {
 	// the track's input level, at the audio device's rate
 	public TGInputMeter getInputMeter(TGTrack track) {
 		return this.meters.computeIfAbsent(track, key -> new TGInputMeter(this.device.getSampleRate()));
+	}
+
+	public int getRecordingOffset() {
+		return this.recordingOffset;
+	}
+
+	public void setRecordingOffset(int samples) {
+		this.recordingOffset = samples;
+	}
+
+	// how much later than the output's clock the input delivers what was played in time with the output: the output
+	// latency, the input latency the device reports, and the recording offset (the plugin delay compensation of what is
+	// heard comes with plugins)
+	public int getRoundTrip() {
+		return this.device.getOutputLatency() + this.device.getInputLatency() + this.recordingOffset;
 	}
 
 	public boolean isRecording() {

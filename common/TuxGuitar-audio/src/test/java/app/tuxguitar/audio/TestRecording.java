@@ -15,8 +15,8 @@ import app.tuxguitar.song.models.TGTrack;
 
 /**
  * Pins what TGRecording asks the audio device for: from which sample of its clock (counting from the start of the
- * song) and how many samples, at the measures' tempo and the Percentage of Tempo; and where song time puts the
- * measures it records.
+ * song, placed later by the round trip) and how many samples, at the measures' tempo and the Percentage of Tempo; and
+ * where song time puts the measures it records.
  *
  * The song has 4 measures of 4/4 at 120 bpm (88200 samples each at 44100 Hz) and an audio track on input channel 2.
  * The device reads back each capture as "input:from+count".
@@ -30,6 +30,7 @@ public class TestRecording {
 	private final TGSong song = songManager.newSong();
 	private final TGTrack track;
 	private final List<String> captures = new ArrayList<String>();
+	private int roundTrip;
 
 	private final TGAudioDevice device = new TGAudioDevice() {
 		public int getSampleRate() {
@@ -52,7 +53,7 @@ public class TestRecording {
 	// positions are in ticks from the start of measure 1
 	private int record(long start, long stop, int percent, TGPunchRange punchRange) {
 		long origin = song.getMeasureHeader(0).getStart();
-		TGRecording recording = new TGRecording(songManager, song, device, punchRange);
+		TGRecording recording = new TGRecording(songManager, song, device, punchRange, roundTrip);
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setCurrentPercent(percent);
 		return recording.record(List.of(track), TGSongTime.play(song, mode, origin + start, origin + stop, 1));
@@ -72,6 +73,16 @@ public class TestRecording {
 
 		assertEquals(List.of("3:0+88200", "1:0+88200"), captures);
 		assertEquals(2, TGTakes.list(track).get(0).getTake().countChannels());
+	}
+
+	// what was played in time with the output reaches the input one round trip after the clock: the take is read that
+	// much later, so it lands on the beat
+	@Test
+	public void theDeviceIsReadOneRoundTripLater() {
+		roundTrip = 1388;
+		record(MEASURE, 2 * MEASURE, 100, new TGPunchRange(2, 2));
+
+		assertEquals(List.of("2:89588+88200"), captures);
 	}
 
 	@Test

@@ -45,7 +45,8 @@ public class TakeSteps {
 		return text;
 	}
 
-	// as if recorded at the song's tempo, from the player playing the signal on the track's input
+	// as if recorded at the song's tempo, from the player playing the signal on the track's input, on a device of its own
+	// without latency (so no round trip)
 	@Given("track {int} has a take of {signal} from {position} to {position}")
 	public void hasATake(int number, String signal, SongPosition from, SongPosition to) {
 		TestInterface device = new TestInterface();
@@ -53,7 +54,7 @@ public class TakeSteps {
 		List<TGPlayedMeasure> played = TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1);
 		device.setPlayed(new TGTimeline(world.song(), played, device.getSampleRate()));
 		device.play(world.channel(world.track(number)).getAudioInput().getChannel(0), Signals.parse(signal, world.song(), device, from.measure()));
-		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null);
+		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null, 0);
 		recording.record(List.of(world.track(number)), played);
 		world.rememberTakes(number);
 	}
