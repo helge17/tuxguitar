@@ -2,11 +2,11 @@ package app.tuxguitar.editor.action.effect;
 
 import static app.tuxguitar.editor.action.SongActionFixture.reads;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -93,16 +93,15 @@ public class TestChangeNoteEffectAction {
 		return held == given ? "*" : "+";
 	}
 
+	// each action gives the selected notes its effect, and without selection changes nothing
 	@TestFactory
-	public List<DynamicTest> eachActionGivesTheSelectedNotesItsEffect() {
-		return CHANGES.stream().map(change -> reads(change.name, "s1f0 s3f5* | s2f7*", () -> new TestChangeNoteEffectAction().change(change, SELECTION)))
-				.collect(Collectors.toList());
-	}
-
-	@TestFactory
-	public List<DynamicTest> withoutSelectionEachActionChangesNothing() {
-		return CHANGES.stream().map(change -> reads(change.name, "s1f0 s3f5 | s2f7", () -> new TestChangeNoteEffectAction().change(change, NO_SELECTION)))
-				.collect(Collectors.toList());
+	public List<DynamicTest> eachAction() {
+		List<DynamicTest> tests = new ArrayList<DynamicTest>();
+		for (Change change : CHANGES) {
+			tests.add(reads(change.name + " with a selection", "s1f0 s3f5* | s2f7*", () -> new TestChangeNoteEffectAction().change(change, SELECTION)));
+			tests.add(reads(change.name + " without selection", "s1f0 s3f5 | s2f7", () -> new TestChangeNoteEffectAction().change(change, NO_SELECTION)));
+		}
+		return tests;
 	}
 
 	@TestFactory

@@ -1,12 +1,16 @@
 package app.tuxguitar.editor.undo;
 
+import static app.tuxguitar.editor.action.SongActionFixture.reads;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import app.tuxguitar.action.TGActionException;
 import app.tuxguitar.editor.action.SongActionFixture;
@@ -17,7 +21,8 @@ import app.tuxguitar.editor.action.SongActionFixture;
  * undone; only the last 100 edits are kept. Undoing or redoing without an edit, or with an edit that fails, is an
  * error, and the failing edit stays where it was.
  *
- * Each edit writes what it does to the log, read back as "undo a, redo a, ...".
+ * A script of steps is run: "+a" adds the edit a, "u" runs the undo action, "r" the redo action, "x" discards all
+ * edits. Each edit writes what it does to the log, read back as "undo a, redo a, ...".
  */
 public class TestUndoableManager {
 
@@ -26,39 +31,35 @@ public class TestUndoableManager {
 	private final List<String> log = new ArrayList<String>();
 
 	private RecordingEdit add(String name) {
-		RecordingEdit edit = new RecordingEdit(name, log);
-		manager.addEdit(edit);
-		return edit;
+		return RecordingEdit.addedTo(manager::addEdit, name, log);
 	}
 
-	private String log() {
+	private String run(String script) {
+		for (String step : script.split(" ")) {
+			if (step.startsWith("+")) {
+				add(step.substring(1));
+			} else if (step.equals("u")) {
+				fixture.undo();
+			} else if (step.equals("r")) {
+				fixture.redo();
+			} else {
+				manager.discardAllEdits();
+			}
+		}
 		return String.join(", ", log);
 	}
 
-	@Test
-	public void undoGoesBackFromTheLastEditAndRedoForwardAgain() {
-		add("a");
-		add("b");
-
-		fixture.undo();
-		fixture.undo();
-		fixture.redo();
-		fixture.redo();
-
-		assertEquals("undo b, undo a, redo a, redo b", log());
+	@TestFactory
+	public List<DynamicTest> undoingAndRedoing() {
+		return Arrays.asList(
+			running("undo goes back from the last edit, redo forward again", "+a +b u u r r", "undo b, undo a, redo a, redo b"),
+			running("undo and redo stop at the ends", "+a r u u r r", "undo a, redo a"),
+			running("a new edit drops the edits undone", "+a +b u +c r u u", "undo b, undo c, undo a"),
+			running("after discarding, new edits are kept as usual", "+a x +b u u", "undo b"));
 	}
 
-	@Test
-	public void undoAndRedoStopAtTheEnds() {
-		add("a");
-
-		fixture.redo();
-		fixture.undo();
-		fixture.undo();
-		fixture.redo();
-		fixture.redo();
-
-		assertEquals("undo a, redo a", log());
+	private static DynamicTest running(String name, String script, String expected) {
+		return reads(name, expected, () -> new TestUndoableManager().run(script));
 	}
 
 	@Test
@@ -66,33 +67,16 @@ public class TestUndoableManager {
 		add("a");
 		add("b").undoable = false;
 
-		fixture.undo();
-
-		assertEquals("false / ", manager.canUndo() + " / " + log());
+		assertEquals("false / ", manager.canUndo() + " / " + run("u"));
 	}
 
 	@Test
 	public void anEditThatCannotBeRedoneIsLeftAsIs() {
 		add("a").redoable = false;
-		fixture.undo();
 
-		fixture.redo();
+		String undone = run("u r");
 
-		assertEquals("false / undo a", manager.canRedo() + " / " + log());
-	}
-
-	@Test
-	public void aNewEditDropsTheEditsUndone() {
-		add("a");
-		add("b");
-		fixture.undo();
-		add("c");
-
-		fixture.redo();
-		fixture.undo();
-		fixture.undo();
-
-		assertEquals("undo b, undo c, undo a", log());
+		assertEquals("false / undo a", manager.canRedo() + " / " + undone);
 	}
 
 	@Test
@@ -110,23 +94,9 @@ public class TestUndoableManager {
 
 	@Test
 	public void discardingAllEditsLeavesNothingToUndo() {
-		add("a");
-
-		manager.discardAllEdits();
+		run("+a x");
 
 		assertEquals("false false", manager.canUndo() + " " + manager.canRedo());
-	}
-
-	@Test
-	public void afterDiscardingNewEditsAreKeptAsUsual() {
-		add("a");
-		manager.discardAllEdits();
-		add("b");
-
-		fixture.undo();
-		fixture.undo();
-
-		assertEquals("undo b", log());
 	}
 
 	@Test
@@ -141,28 +111,21 @@ public class TestUndoableManager {
 		assertThrows(TGCannotRedoException.class, () -> manager.redo(fixture.actionContext));
 	}
 
-	@Test
-	public void aFailingUndoFailsTheActionAndTheEditStaysToBeUndone() {
-		RecordingEdit edit = add("a");
+	// the edit fails the step, which fails the action; once mended, the same step reaches it again
+	private String failThenMend(RecordingEdit edit, Runnable step) {
 		edit.failing = true;
-
-		assertThrows(TGActionException.class, fixture::undo);
+		assertThrows(TGActionException.class, step::run);
 		edit.failing = false;
-		fixture.undo();
-
-		assertEquals("undo a", log());
+		step.run();
+		return String.join(", ", log);
 	}
 
 	@Test
-	public void aFailingRedoFailsTheActionAndTheEditStaysToBeRedone() {
+	public void aFailingEditFailsTheActionAndStaysWhereItWas() {
 		RecordingEdit edit = add("a");
-		fixture.undo();
-		edit.failing = true;
 
-		assertThrows(TGActionException.class, fixture::redo);
-		edit.failing = false;
-		fixture.redo();
+		failThenMend(edit, fixture::undo);
 
-		assertEquals("undo a, redo a", log());
+		assertEquals("undo a, redo a", failThenMend(edit, fixture::redo));
 	}
 }

@@ -26,9 +26,7 @@ public class TestUndoableEditComposite {
 	private final RecordingEdit second = add("b");
 
 	private RecordingEdit add(String name) {
-		RecordingEdit edit = new RecordingEdit(name, log);
-		composite.addEdit(edit);
-		return edit;
+		return RecordingEdit.addedTo(composite::addEdit, name, log);
 	}
 
 	private String can() {
@@ -41,17 +39,11 @@ public class TestUndoableEditComposite {
 	}
 
 	@Test
-	public void itCannotUndoWhenOneEditCannot() {
+	public void itCannotWhenOneEditCannot() {
 		second.undoable = false;
-
-		assertEquals("undo false, redo true", can());
-	}
-
-	@Test
-	public void itCannotRedoWhenOneEditCannot() {
 		first.redoable = false;
 
-		assertEquals("undo true, redo false", can());
+		assertEquals("undo false, redo false", can());
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 package app.tuxguitar.editor.undo;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import app.tuxguitar.action.TGActionContext;
 
@@ -22,18 +23,26 @@ public class RecordingEdit implements TGUndoableEdit {
 		this.log = log;
 	}
 
+	// a new edit, given to the adder (an undo manager or a composite edit)
+	public static RecordingEdit addedTo(Consumer<TGUndoableEdit> adder, String name, List<String> log) {
+		RecordingEdit edit = new RecordingEdit(name, log);
+		adder.accept(edit);
+		return edit;
+	}
+
 	public void undo(TGActionContext actionContext) throws TGCannotUndoException {
-		if (failing) {
-			throw new IllegalStateException(name);
-		}
-		log.add("undo " + name);
+		record("undo");
 	}
 
 	public void redo(TGActionContext actionContext) throws TGCannotRedoException {
+		record("redo");
+	}
+
+	private void record(String what) {
 		if (failing) {
 			throw new IllegalStateException(name);
 		}
-		log.add("redo " + name);
+		log.add(what + " " + name);
 	}
 
 	public boolean canUndo() {
