@@ -38,8 +38,7 @@ public abstract class LegacyMeasureHeaderWriterContract {
 	protected abstract String goldenSha256();
 
 	private TGSong roundTrip(TGSong song) throws Exception {
-		byte[] bytes = LegacyFormatFixture.write(this.newWriter(), this.factory, song);
-		return LegacyFormatFixture.read(this.newReader(), this.factory, bytes);
+		return LegacyFormatFixture.roundTrip(this.newWriter(), this.newReader(), this.factory, song);
 	}
 
 	/**
