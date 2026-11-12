@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Pins the bounds of a paint model (TGPaintModel): the outermost bound of its commands on each side, whichever
- * command holds it, and 0 on every side when it has no commands.
+ * command holds it (the first one on a tie), and 0 on every side when it has no commands.
  */
 public class TestPaintModel {
 
@@ -33,6 +33,14 @@ public class TestPaintModel {
 		TGPaintModel withRectangle = new TGPaintModel(new TGMoveTo(0, 0), new TGRectangle(1, -3, 2, 10));
 
 		assertEquals("x 0.0..3.0 y -3.0..7.0", bounds(withRectangle));
+	}
+
+	@Test
+	public void onATieTheFirstCommandsBoundIsKept() {
+		// -0.0 and 0.0 are equal bounds, told apart only by their sign
+		TGPaintModel tied = new TGPaintModel(new TGMoveTo(-0f, -0f), new TGMoveTo(0f, 0f));
+
+		assertEquals("x -0.0..-0.0 y -0.0..-0.0", bounds(tied));
 	}
 
 	@Test
