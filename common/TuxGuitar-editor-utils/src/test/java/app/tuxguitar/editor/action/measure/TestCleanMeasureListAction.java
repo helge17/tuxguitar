@@ -51,6 +51,7 @@ public class TestCleanMeasureListAction {
 		return Arrays.asList(
 			cleaning("the measures between the numbers are cleaned", "1 | 0 | 0", 2, 3),
 			cleaning("a single measure can be cleaned", "1 | 0 | 1", 2, 2),
+			cleaning("the first measure can be cleaned", "0 | 0 | 1", 1, 2),
 			cleaning("numbers past the track end are skipped", "1 | 1 | 0", 3, 5),
 			cleaning("a first number of zero cleans nothing", "1 | 1 | 1", 0, 2),
 			cleaning("a first number past the second cleans nothing", "1 | 1 | 1", 3, 2));

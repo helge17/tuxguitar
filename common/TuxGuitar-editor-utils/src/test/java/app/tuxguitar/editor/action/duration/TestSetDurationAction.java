@@ -16,7 +16,8 @@ import app.tuxguitar.util.TGBeatRange;
 
 /**
  * Pins TGSetDurationAction: the selected beats take the duration in the caret voice; without a selection (or with an
- * empty one) the caret beat does, and without a caret beat nothing changes. A shortened beat is followed by a rest.
+ * empty one) the caret beat does, and without a caret beat nothing changes. A shortened beat is followed by a rest; a
+ * lengthened beat pushes the next beats into the rests that end the measure.
  *
  * The first measure is filled with four quarter beats, each holding one note, and the caret is on the second; the
  * measure reads back as its beats, each the duration value of voice 0, "r" for a rest.
@@ -47,6 +48,13 @@ public class TestSetDurationAction {
 		return String.join(" ", beats);
 	}
 
+	// the last two beats become rests, the duration to set becomes a half
+	private void lengthenToHalfBeforeRests() {
+		fixture.songManager.getMeasureManager().cleanBeat(measure.getBeat(2));
+		fixture.songManager.getMeasureManager().cleanBeat(measure.getBeat(3));
+		fixture.actionContext.<TGDuration>getAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION).setValue(TGDuration.HALF);
+	}
+
 	private static String durationOf(TGBeat beat) {
 		return beat.getVoice(0).getDuration().getValue() + (beat.isRestBeat() ? "r" : "");
 	}
@@ -68,6 +76,22 @@ public class TestSetDurationAction {
 		fixture.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_BEAT_RANGE, TGBeatRange.empty());
 
 		assertEquals("4 8 8r 4 4", setDuration());
+	}
+
+	@Test
+	public void lengtheningTheSelectedBeatsPushesTheNextBeats() {
+		lengthenToHalfBeforeRests();
+		fixture.selectBeats(measure.getBeat(0));
+
+		assertEquals("2 4", setDuration());
+	}
+
+	@Test
+	public void lengtheningTheCaretBeatPushesTheNextBeats() {
+		lengthenToHalfBeforeRests();
+		fixture.caret(measure.getBeat(0), 1);
+
+		assertEquals("2 4", setDuration());
 	}
 
 	@Test

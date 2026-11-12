@@ -39,6 +39,7 @@ public class TestAddMeasureListAction {
 		return Arrays.asList(
 			adding("the measures go in before the measure number", " |  | s1f1", 1, 2),
 			adding("the measures can go after the song end", "s1f1 |  | ", 2, 2),
+			adding("a count of one adds one measure", " | s1f1", 1, 1),
 			adding("a number past the song end adds nothing", "s1f1", 3, 2),
 			adding("a number before the first measure adds nothing", "s1f1", 0, 2),
 			adding("a count of zero adds nothing", "s1f1", 1, 0));
