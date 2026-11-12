@@ -9,14 +9,19 @@ import org.junit.jupiter.api.Test;
 
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.editor.action.channel.TGUpdateChannelAction;
 import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
+import app.tuxguitar.editor.action.song.TGCopySongFromAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackDownAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
 import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import app.tuxguitar.editor.action.transport.TGTransportModeAction;
 import app.tuxguitar.util.TGContext;
 
 /**
  * The action manager refuses, while a recording is under way, the audio features' own changes, the Play Mode and what
- * the app says edits the song; nothing at other times, and never mute.
+ * the app says edits the song, moving tracks and copying a song in; nothing at other times, and never mute, Volume or
+ * Balance.
  */
 public class TestRecordingVeto {
 
@@ -42,12 +47,14 @@ public class TestRecordingVeto {
 	}
 
 	@Test
-	public void duringARecordingTheAudioChangesThePlayModeAndTheSongEditsTheAppNamesAreRefused() throws Exception {
+	public void duringARecordingTheAudioChangesThePlayModeMovingATrackCopyingASongInAndTheSongEditsTheAppNamesAreRefused() throws Exception {
 		TGRecordingVeto.getInstance(context).refuse(TGAddMeasureAction.NAME);
 		TGRecordingVeto.getInstance(context);
 		TGAudioSession.getInstance(context).setRecording(true);
 
-		assertEquals(List.of(TGSetPunchRangeAction.NAME, TGTransportModeAction.NAME, TGAddMeasureAction.NAME),
-			refused(TGSetPunchRangeAction.NAME, TGTransportModeAction.NAME, TGAddMeasureAction.NAME, TGSetTrackMuteAction.NAME));
+		assertEquals(List.of(TGSetPunchRangeAction.NAME, TGTransportModeAction.NAME, TGMoveTrackUpAction.NAME, TGMoveTrackDownAction.NAME,
+			TGCopySongFromAction.NAME, TGAddMeasureAction.NAME),
+			refused(TGSetPunchRangeAction.NAME, TGTransportModeAction.NAME, TGMoveTrackUpAction.NAME, TGMoveTrackDownAction.NAME,
+				TGCopySongFromAction.NAME, TGAddMeasureAction.NAME, TGSetTrackMuteAction.NAME, TGUpdateChannelAction.NAME));
 	}
 }

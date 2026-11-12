@@ -151,6 +151,9 @@ Feature: Recording line-in audio
       | set the punch range to measures 2 to 3   | there is no punch range         |
       | disarm track 2                           | track 2 is armed                |
       | set track 2 to record input channel 2    | track 2 records input channel 1 |
+      | move track 2 up                          | track 2 is an audio track       |
+      | move track 1 down                        | track 2 is an audio track       |
+      | copy in a song of 2 measures             | the song has 4 measures         |
 
   @planned
   Scenario: a gesture in a plugin's editor during a recording is undone after the recording

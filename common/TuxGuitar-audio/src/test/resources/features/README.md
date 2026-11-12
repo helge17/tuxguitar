@@ -119,9 +119,9 @@ These features change how TuxGuitar works today. They are requirements, not side
   offset are not part of the song. A track's monitoring is `Off` until I set it, and is kept while the track is
   disarmed and armed again. They are not saved, not undoable, and do not mark the song modified. Each audio
   track's input channel(s) and each track's next take number are part of the song.
-- **During a recording** the song cannot be edited and Play Mode, the punch range, arming and input channels cannot be
-  changed; such actions are refused. Mute, solo, monitoring and gestures in a plugin's editor still work; mute and solo
-  change what is heard, never what is recorded. An undo step made during a recording comes before the recording's.
+- **During a recording** the song cannot be edited (moving a track and copying a song in included) and Play Mode, the
+  punch range, arming and input channels cannot be changed; such actions are refused. Mute, solo, a channel's Volume and
+  Balance, monitoring and gestures in a plugin's editor still work; they change what is heard, never what is recorded. An undo step made during a recording comes before the recording's.
 - **Recording stops at the end of the song**: to keep the ring of a last chord, add an empty measure.
 
 ## Glossary

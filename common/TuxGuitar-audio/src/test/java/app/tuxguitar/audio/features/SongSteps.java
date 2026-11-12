@@ -14,11 +14,14 @@ import java.util.Properties;
 import app.tuxguitar.editor.action.measure.TGAddMeasureAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureAction;
 import app.tuxguitar.editor.action.measure.TGRemoveMeasureRangeAction;
+import app.tuxguitar.editor.action.song.TGCopySongFromAction;
 import app.tuxguitar.editor.undo.TGUndoableManager;
+import app.tuxguitar.editor.undo.impl.song.TGUndoableSongGenericController;
 import app.tuxguitar.editor.undo.impl.measure.TGUndoableAddMeasureController;
 import app.tuxguitar.editor.undo.impl.measure.TGUndoableRemoveMeasureController;
 import app.tuxguitar.resource.TGResourceBundle;
 import app.tuxguitar.song.models.TGMeasureHeader;
+import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGMessagesManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -111,6 +114,17 @@ public class SongSteps {
 	@When("I redo")
 	public void redo() {
 		world.fixture().redo();
+	}
+
+	// a song of one track and that many measures copied over the song, under the controller the app maps to it
+	@When("I copy in a song of {int} measures")
+	public void copyInASong(int measures) {
+		TGSong from = world.fixture().songManager.newSong();
+		while (from.countMeasureHeaders() < measures) {
+			world.fixture().songManager.addNewMeasureBeforeEnd(from);
+		}
+		world.fixture().actionContext.setAttribute(TGCopySongFromAction.ATTRIBUTE_FROM, from);
+		world.executeUndoable(new TGCopySongFromAction(world.fixture().context), new TGUndoableSongGenericController());
 	}
 
 	@When("I insert a measure before measure {int}")

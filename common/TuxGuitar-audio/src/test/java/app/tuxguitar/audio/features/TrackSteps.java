@@ -8,14 +8,17 @@ import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.audio.action.TGAddAudioTrackAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.track.TGCloneTrackAction;
+import app.tuxguitar.editor.action.track.TGMoveTrackDownAction;
 import app.tuxguitar.editor.action.track.TGMoveTrackUpAction;
 import app.tuxguitar.editor.action.track.TGRemoveTrackAction;
 import app.tuxguitar.editor.action.track.TGSetTrackMuteAction;
 import app.tuxguitar.editor.action.track.TGSetTrackSoloAction;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableCloneTrackController;
+import app.tuxguitar.editor.undo.impl.track.TGUndoableMoveTrackDownController;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableMoveTrackUpController;
 import app.tuxguitar.editor.undo.impl.track.TGUndoableRemoveTrackController;
 import app.tuxguitar.song.models.TGTrack;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -74,10 +77,20 @@ public class TrackSteps {
 		assertEquals(tracks + 1, world.song().countTracks());
 	}
 
-	@When("I move track {int} up")
-	public void moveTrackUp(int number) {
+	@ParameterType("up|down")
+	public Boolean upOrDown(String direction) {
+		return direction.equals("up");
+	}
+
+	// up: true, down: false
+	@When("I move track {int} {upOrDown}")
+	public void moveTrack(int number, Boolean up) {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
-		world.executeUndoable(new TGMoveTrackUpAction(world.fixture().context), new TGUndoableMoveTrackUpController());
+		if (up) {
+			world.executeUndoable(new TGMoveTrackUpAction(world.fixture().context), new TGUndoableMoveTrackUpController());
+		} else {
+			world.executeUndoable(new TGMoveTrackDownAction(world.fixture().context), new TGUndoableMoveTrackDownController());
+		}
 	}
 
 	@Then("track {int} is an audio track with {int} strings")
