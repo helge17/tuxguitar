@@ -141,7 +141,19 @@ public class TestPasteMeasureAction {
 		// take, start, end, first sample, tempo
 		assertEquals("2|0|960|0|120.0", pasted.getTake().getNumber() + "|" + pasted.getStart() + "|" + pasted.getEnd() + "|" + pasted.getFirstSample() + "|" + pasted.getTempo());
 		assertSame(recorded, pasted.getSource());
+		assertEquals(0, pasted.getTake().countSamples());
 		assertEquals(3, track(2).getNextTakeNumber());
+	}
+
+	@Test
+	public void pastedMeasuresEachGetTheAudioOfTheirOwnCopiedMeasure() {
+		audioOnTrack2();
+		TGTake recorded = track(2).getMeasure(0).getTakeClips().get(0).getTake();
+		track(2).getMeasure(1).clear();
+		track(2).getMeasure(1).addTakeClip(new TGTakeClip(recorded, 960, 1920, 7, 120));
+		copy(2, 1, 2, false).replace(1, 2, 2);
+		assertEquals(0, track(2).getMeasure(1).getTakeClips().stream().filter(clip -> clip.getTake() != recorded).findFirst().get().getFirstSample());
+		assertEquals(7, track(2).getMeasure(2).getTakeClips().get(0).getFirstSample());
 	}
 
 	@Test

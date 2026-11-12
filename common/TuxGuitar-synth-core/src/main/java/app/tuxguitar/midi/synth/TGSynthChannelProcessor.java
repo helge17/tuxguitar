@@ -194,9 +194,9 @@ public class TGSynthChannelProcessor {
 
 	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance) {
 		synchronized (this.lock) {
-			if( this.processor != null && this.processor.isOpen() ){
+			if( this.isOpen() ){
 				this.buffer.clear();
-				this.fillChain(this.buffer);
+				this.fillProcessors(this.buffer);
 				this.balance(this.buffer, volume, balance);
 
 				buffer.mix(this.buffer);
@@ -207,12 +207,20 @@ public class TGSynthChannelProcessor {
 	// the receiver, then each output in processing order, into the buffer; nothing when the receiver is not open
 	public void fillChain(TGAudioBuffer buffer) {
 		synchronized (this.lock) {
-			if( this.processor != null && this.processor.isOpen() ){
-				this.fillBuffer(buffer, this.processor);
-				for( int i = 0 ; i < this.countOutputs() ;i ++){
-					this.fillBuffer(buffer, this.getOutput(i));
-				}
+			if( this.isOpen() ){
+				this.fillProcessors(buffer);
 			}
+		}
+	}
+
+	private boolean isOpen() {
+		return (this.processor != null && this.processor.isOpen());
+	}
+
+	private void fillProcessors(TGAudioBuffer buffer) {
+		this.fillBuffer(buffer, this.processor);
+		for( int i = 0 ; i < this.countOutputs() ;i ++){
+			this.fillBuffer(buffer, this.getOutput(i));
 		}
 	}
 

@@ -348,6 +348,9 @@ public class TestGervillProcessor {
 		while (model.isBusy()) {
 			Thread.sleep(5);
 		}
+		TGAudioBuffer silence = new TGAudioBuffer();
+		channel.fillChain(silence);
+		assertEquals(0f, FakeSilence.peak(silence), 0f, "signed 16-bit: silence is 0");
 		channel.sendNoteOn(69, 127, 0, false);
 		float[] left = new float[12 * FRAMES];
 		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
@@ -360,5 +363,17 @@ public class TestGervillProcessor {
 		float[] sounding = java.util.Arrays.copyOfRange(left, 4 * FRAMES, left.length);
 		assertEquals(440, strongestFrequency(sounding, 48000), 9);
 		assertEquals(48000f, model.getSampleRate(), 0f);
+	}
+
+	private static final class FakeSilence {
+		static float peak(TGAudioBuffer buffer) {
+			float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
+			buffer.read(samples);
+			float peak = 0;
+			for (float sample : samples[0]) {
+				peak = Math.max(peak, Math.abs(sample));
+			}
+			return peak;
+		}
 	}
 }

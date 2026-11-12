@@ -118,6 +118,16 @@ public class TestSynthChannel {
 	}
 
 	@Test
+	public void aClosedSourceHasASilentChain() throws MidiPlayerException {
+		this.model.getProgram(0, 5).copyFrom(program("source", "lift"));
+		this.channel.sendProgramChange(5);
+		this.source.last().close();
+		TGAudioBuffer buffer = new TGAudioBuffer();
+		this.channel.fillChain(buffer);
+		assertEquals(0f, FakeProcessors.read(buffer)[0][0], 0f);
+	}
+
+	@Test
 	public void aChannelWithoutAProgramHasASilentChain() throws MidiPlayerException {
 		TGAudioBuffer buffer = FakeProcessors.level(0.5f, 0.5f);
 		this.channel.fillChain(buffer);
