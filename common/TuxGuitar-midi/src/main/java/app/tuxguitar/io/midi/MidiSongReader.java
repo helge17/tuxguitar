@@ -593,63 +593,66 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 	}
 
+	// a song channel for every MIDI channel that plays notes and is not already routed to a song channel
 	private void checkChannels(){
 		for(int tc = 0 ; tc < this.tempChannels.size() ; tc ++ ){
 			TempChannel tempChannel = this.tempChannels.get( tc );
-			if( !tempChannel.getTracks().isEmpty() ){
-				boolean channelExists = false;
-				for(int c = 0 ; c < this.channels.size() ; c ++ ){
-					TGChannel tgChannel = this.channels.get(c);
-					GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
-					if( gmChannelRoute != null ){
-						if( gmChannelRoute.getChannel1() == tempChannel.getChannel() || gmChannelRoute.getChannel2() == tempChannel.getChannel() ){
-							channelExists = true;
-						}
-					}
-				}
+			if( !tempChannel.getTracks().isEmpty() && !isRouted(tempChannel) ){
+				this.channels.add( createChannel(tc, tempChannel) );
+			}
+		}
+	}
 
-				if(!channelExists){
-					TGChannel tgChannel = this.factory.newChannel();
-					tgChannel.setChannelId(this.channels.size() + 1);
-					tgChannel.setProgram((short)tempChannel.getInstrument());
-					tgChannel.setVolume((short)tempChannel.getVolume());
-					tgChannel.setBalance((short)tempChannel.getBalance());
-					tgChannel.setName(("#" + tgChannel.getChannelId()));
-					tgChannel.setBank(tempChannel.getChannel() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+	private boolean isRouted(TempChannel tempChannel){
+		for (TGChannel tgChannel : this.channels) {
+			GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
+			if( gmChannelRoute != null && (gmChannelRoute.getChannel1() == tempChannel.getChannel() || gmChannelRoute.getChannel2() == tempChannel.getChannel()) ){
+				return true;
+			}
+		}
+		return false;
+	}
 
-					GMChannelRoute gmChannelRoute = new GMChannelRoute(tgChannel.getChannelId());
-					gmChannelRoute.setChannel1(tempChannel.getChannel());
-					gmChannelRoute.setChannel2(tempChannel.getChannel());
+	private TGChannel createChannel(int tc, TempChannel tempChannel){
+		TGChannel tgChannel = this.factory.newChannel();
+		tgChannel.setChannelId(this.channels.size() + 1);
+		tgChannel.setProgram((short)tempChannel.getInstrument());
+		tgChannel.setVolume((short)tempChannel.getVolume());
+		tgChannel.setBalance((short)tempChannel.getBalance());
+		tgChannel.setName(("#" + tgChannel.getChannelId()));
+		tgChannel.setBank(tempChannel.getChannel() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 
-					for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
-						TempChannel tempChannelAux = this.tempChannels.get( tcAux );
-						if( tempChannel.getTracks().equals(tempChannelAux.getTracks()) ){
-							if( gmChannelRoute.getChannel2() == gmChannelRoute.getChannel1() ){
-								gmChannelRoute.setChannel2( tempChannelAux.getChannel() );
-							}else{
-								tempChannelAux.clearTracks();
-							}
-						}
-					}
+		GMChannelRoute gmChannelRoute = new GMChannelRoute(tgChannel.getChannelId());
+		gmChannelRoute.setChannel1(tempChannel.getChannel());
+		gmChannelRoute.setChannel2(tempChannel.getChannel());
+		mergeChannelsWithSameTracks(tc, tempChannel, gmChannelRoute);
+		this.channelRouter.configureRoutes(gmChannelRoute, (tempChannel.getChannel() == 9));
 
-					this.channelRouter.configureRoutes(gmChannelRoute, (tempChannel.getChannel() == 9));
+		tgChannel.addParameter(newChannelParameter(GMChannelRoute.PARAMETER_GM_CHANNEL_1, gmChannelRoute.getChannel1()));
+		tgChannel.addParameter(newChannelParameter(GMChannelRoute.PARAMETER_GM_CHANNEL_2, gmChannelRoute.getChannel2()));
+		return tgChannel;
+	}
 
-					TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
-					TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
-
-					gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
-					gmChannel1Param.setValue(Integer.toString(gmChannelRoute.getChannel1()));
-
-					gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
-					gmChannel2Param.setValue(Integer.toString(gmChannelRoute.getChannel2()));
-
-					tgChannel.addParameter(gmChannel1Param);
-					tgChannel.addParameter(gmChannel2Param);
-
-					this.channels.add( tgChannel );
+	// the next MIDI channel played by exactly the same tracks becomes the route's second channel; any further one
+	// loses its tracks
+	private void mergeChannelsWithSameTracks(int tc, TempChannel tempChannel, GMChannelRoute gmChannelRoute){
+		for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
+			TempChannel tempChannelAux = this.tempChannels.get( tcAux );
+			if( tempChannel.getTracks().equals(tempChannelAux.getTracks()) ){
+				if( gmChannelRoute.getChannel2() == gmChannelRoute.getChannel1() ){
+					gmChannelRoute.setChannel2( tempChannelAux.getChannel() );
+				}else{
+					tempChannelAux.clearTracks();
 				}
 			}
 		}
+	}
+
+	private TGChannelParameter newChannelParameter(String key, int value){
+		TGChannelParameter parameter = this.factory.newChannelParameter();
+		parameter.setKey(key);
+		parameter.setValue(Integer.toString(value));
+		return parameter;
 	}
 
 	private void checkTracks(TGSongManager songManager){
