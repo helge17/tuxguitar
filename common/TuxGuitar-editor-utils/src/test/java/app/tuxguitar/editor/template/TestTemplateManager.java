@@ -2,11 +2,13 @@ package app.tuxguitar.editor.template;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -16,6 +18,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -37,11 +41,15 @@ import app.tuxguitar.util.TGContext;
  *
  * The bundled templates are served from memory, each a song named after its locale; the result is read back as the
  * name of the song, or "none". A locale without country (or variant) looks for no template ending in "_" for it.
+ * A template that cannot be read is printed to System.err, captured here.
  */
 public class TestTemplateManager {
 
 	@TempDir
 	Path userConfig;
+
+	private final ByteArrayOutputStream printed = new ByteArrayOutputStream();
+	private PrintStream systemErr;
 
 	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
 	private final TGContext context = new TGContext();
@@ -67,6 +75,17 @@ public class TestTemplateManager {
 			}
 		});
 		templateManager = new TGTemplateManager(context);
+	}
+
+	@BeforeEach
+	public void captureSystemErr() {
+		systemErr = System.err;
+		System.setErr(new PrintStream(printed, true));
+	}
+
+	@AfterEach
+	public void restoreSystemErr() {
+		System.setErr(systemErr);
 	}
 
 	private static byte[] song(String name) throws TGFileFormatException {
@@ -138,6 +157,7 @@ public class TestTemplateManager {
 		newSong(Locale.FRENCH);
 
 		assertFalse(Files.exists(userTemplate()));
+		assertTrue(printed.toString().startsWith(TGFileFormatException.class.getName() + ": "));
 	}
 
 	@Test
@@ -145,6 +165,8 @@ public class TestTemplateManager {
 		bundled("");
 		Files.write(userTemplate(), "not a song".getBytes(StandardCharsets.UTF_8));
 
-		assertEquals("none", newSong(Locale.FRENCH));
+		assertEquals("none | true | true", newSong(Locale.FRENCH)
+				+ " | " + printed.toString().contains("FileNotFoundException: template-default.tg ")
+				+ " | " + printed.toString().contains("FileNotFoundException: template-default_fr.tg "));
 	}
 }
