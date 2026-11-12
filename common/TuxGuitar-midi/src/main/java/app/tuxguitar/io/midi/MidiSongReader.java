@@ -36,9 +36,14 @@ import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGTuning;
+import app.tuxguitar.song.models.TGVoice;
 import app.tuxguitar.util.TGContext;
 
 public class MidiSongReader extends MidiFileFormat implements TGSongReader {
+
+	private static final int[] DENOMINATORS = {
+		TGDuration.WHOLE, TGDuration.HALF, TGDuration.QUARTER, TGDuration.EIGHTH, TGDuration.SIXTEENTH, TGDuration.THIRTY_SECOND
+	};
 
 	private int resolution;
 	private List<TGChannel> channels;
@@ -61,65 +66,67 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	}
 
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
-		this.settings = null;
-		try {
-			this.settings = handle.getContext().getAttribute(MidiSettings.class.getName());
-		}
-		catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
-		if( this.settings == null ) {
-			this.settings = MidiSettings.getDefaults();
-		}
-
+		this.settings = readSettings(handle);
 		try {
 			this.factory = handle.getFactory();
 
 			MidiSequence sequence = new MidiFileReader().getSequence(handle.getInputStream());
 			initFields(sequence);
 			for(int seqTrackNb = 0; seqTrackNb < sequence.countTracks(); seqTrackNb++){
-				this.lastBeatEnd = TGDuration.QUARTER_TIME;
-				this.tempNotes.clear();
-				MidiTrack track = sequence.getTrack(seqTrackNb);
-				int trackNumber = getNextTrackNumber();
-				int eventsCount = track.size();
-				// group simultaneous events in a list, then process the list
-				long previousTick = -1;
-				List<MidiEvent> tickEvents = new ArrayList<MidiEvent>();
-				for(int eventNb = 0;eventNb < eventsCount;eventNb ++){
-					MidiEvent event = track.get(eventNb);
-					if (event.getTick() > previousTick) {
-						parseEvents(tickEvents, seqTrackNb, trackNumber);
-					}
-					tickEvents.add(event);
-					previousTick = event.getTick();
-				}
-				parseEvents(tickEvents, seqTrackNb, trackNumber);
+				parseTrack(sequence.getTrack(seqTrackNb), seqTrackNb);
 			}
 
-			tgSongManager = new TGSongManager(this.factory);
-			TGSong tgSong = this.factory.newSong();
-			tgSong.setName(sequenceName);
-
-			this.checkAll(tgSongManager);
-
-			Iterator<TGChannel> channels = this.channels.iterator();
-			while(channels.hasNext()){
-				tgSong.addChannel(channels.next());
-			}
-			Iterator<TGMeasureHeader> headers = this.headers.iterator();
-			while(headers.hasNext()){
-				tgSong.addMeasureHeader(headers.next());
-			}
-			Iterator<TGTrack> tracks = this.tracks.iterator();
-			while(tracks.hasNext()){
-				tgSong.addTrack(tracks.next());
-			}
-
-			handle.setSong(new SongAdjuster(this.factory, tgSong).adjustSong());
+			handle.setSong(new SongAdjuster(this.factory, createSong()).adjustSong());
 		} catch (Throwable throwable) {
 			throw new TGFileFormatException(throwable);
 		}
+	}
+
+	// the settings stored in the handle context, else the defaults
+	private static MidiSettings readSettings(TGSongReaderHandle handle) {
+		MidiSettings settings = null;
+		try {
+			settings = handle.getContext().getAttribute(MidiSettings.class.getName());
+		}
+		catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+		return (settings != null) ? settings : MidiSettings.getDefaults();
+	}
+
+	private void parseTrack(MidiTrack track, int seqTrackNb) {
+		this.lastBeatEnd = TGDuration.QUARTER_TIME;
+		this.tempNotes.clear();
+		int trackNumber = getNextTrackNumber();
+		// group simultaneous events in a list, then process the list
+		List<MidiEvent> tickEvents = new ArrayList<MidiEvent>();
+		for(int eventNb = 0;eventNb < track.size();eventNb ++){
+			MidiEvent event = track.get(eventNb);
+			if (!tickEvents.isEmpty() && event.getTick() > tickEvents.get(0).getTick()) {
+				parseEvents(tickEvents, seqTrackNb, trackNumber);
+			}
+			tickEvents.add(event);
+		}
+		parseEvents(tickEvents, seqTrackNb, trackNumber);
+	}
+
+	private TGSong createSong() throws Exception {
+		tgSongManager = new TGSongManager(this.factory);
+		TGSong tgSong = this.factory.newSong();
+		tgSong.setName(sequenceName);
+
+		this.checkAll(tgSongManager);
+
+		for (TGChannel channel : this.channels) {
+			tgSong.addChannel(channel);
+		}
+		for (TGMeasureHeader header : this.headers) {
+			tgSong.addMeasureHeader(header);
+		}
+		for (TGTrack track : this.tracks) {
+			tgSong.addTrack(track);
+		}
+		return tgSong;
 	}
 
 	// parse list of simultaneous events: parse "note off" events first, to avoid creating false notes
@@ -173,34 +180,46 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 
 	private void parseMessage(int trackIdx,int trackNumber,long tick,MidiMessage message){
 		long parsedTick = parseTick(tick + this.resolution);
+		if(message.getType() == MidiMessage.TYPE_SHORT){
+			parseShortMessage(trackNumber, parsedTick, message);
+		}
+		else if(message.getType() == MidiMessage.TYPE_META){
+			parseMetaMessage(trackIdx, trackNumber, parsedTick, message);
+		}
+	}
 
-		//NOTE ON
-		if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.NOTE_ON){
-			parseNoteOn(trackNumber,parsedTick,message.getData());
+	private void parseShortMessage(int trackNumber, long tick, MidiMessage message){
+		switch(message.getCommand()){
+			case MidiMessage.NOTE_ON:
+				parseNoteOn(trackNumber, tick, message.getData());
+				break;
+			case MidiMessage.NOTE_OFF:
+				parseNoteOff(trackNumber, tick, message.getData());
+				break;
+			case MidiMessage.PROGRAM_CHANGE:
+				parseProgramChange(message.getData());
+				break;
+			case MidiMessage.CONTROL_CHANGE:
+				parseControlChange(message.getData());
+				break;
+			default:
+				break;
 		}
-		//NOTE OFF
-		else if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.NOTE_OFF){
-			parseNoteOff(trackNumber,parsedTick,message.getData());
-		}
-		//PROGRAM CHANGE
-		else if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.PROGRAM_CHANGE){
-			parseProgramChange(message.getData());
-		}
-		//CONTROL CHANGE
-		else if(message.getType() == MidiMessage.TYPE_SHORT && message.getCommand() == MidiMessage.CONTROL_CHANGE){
-			parseControlChange(message.getData());
-		}
-		//TRACK NAME
-		else if(message.getType() == MidiMessage.TYPE_META && message.getCommand() == MidiMessage.TRACK_NAME){
-			parseTrackName(trackIdx, trackNumber, message.getData());
-		}
-		//TIME SIGNATURE
-		else if(message.getType() == MidiMessage.TYPE_META && message.getCommand() == MidiMessage.TIME_SIGNATURE_CHANGE){
-			parseTimeSignature(parsedTick,message.getData());
-		}
-		//TEMPO
-		else if(message.getType() == MidiMessage.TYPE_META && message.getCommand() == MidiMessage.TEMPO_CHANGE){
-			parseTempo(parsedTick,message.getData());
+	}
+
+	private void parseMetaMessage(int trackIdx, int trackNumber, long tick, MidiMessage message){
+		switch(message.getCommand()){
+			case MidiMessage.TRACK_NAME:
+				parseTrackName(trackIdx, trackNumber, message.getData());
+				break;
+			case MidiMessage.TIME_SIGNATURE_CHANGE:
+				parseTimeSignature(tick, message.getData());
+				break;
+			case MidiMessage.TEMPO_CHANGE:
+				parseTempo(tick, message.getData());
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -290,22 +309,17 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		if(data.length >= 2){
 			TGTimeSignature timeSignature = this.factory.newTimeSignature();
 			timeSignature.setNumerator(data[0]);
-			timeSignature.getDenominator().setValue(TGDuration.QUARTER);
-			if (data[1] == 0) {
-				timeSignature.getDenominator().setValue(TGDuration.WHOLE);
-			} else if (data[1] == 1) {
-				timeSignature.getDenominator().setValue(TGDuration.HALF);
-			} else if (data[1] == 2) {
-				timeSignature.getDenominator().setValue(TGDuration.QUARTER);
-			} else if (data[1] == 3) {
-				timeSignature.getDenominator().setValue(TGDuration.EIGHTH);
-			} else if (data[1] == 4) {
-				timeSignature.getDenominator().setValue(TGDuration.SIXTEENTH);
-			} else if (data[1] == 5) {
-				timeSignature.getDenominator().setValue(TGDuration.THIRTY_SECOND);
-			}
+			timeSignature.getDenominator().setValue(getDenominator(data[1]));
 			getHeader(tick).setTimeSignature(timeSignature);
 		}
+	}
+
+	// the denominator is stored as a power of two, 0 for a whole up to 5 for a thirty-second; anything else is a quarter
+	private static int getDenominator(int exponent){
+		if (exponent >= 0 && exponent < DENOMINATORS.length) {
+			return DENOMINATORS[exponent];
+		}
+		return TGDuration.QUARTER;
 	}
 
 	private void parseTempo(long tick, byte[] data){
@@ -333,33 +347,51 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		return track;
 	}
 
+	// the header holding the tick, appending headers up to it; ticks before the first measure fall in it
 	private TGMeasureHeader getHeader(long tick){
-		long realTick = (tick >= TGDuration.QUARTER_TIME)?tick:TGDuration.QUARTER_TIME;
-
-		Iterator<TGMeasureHeader> it = this.headers.iterator();
-		while(it.hasNext()){
-			TGMeasureHeader header = it.next();
-			if(realTick >= header.getStart() && realTick < header.getStart() + header.getLength()){
+		long realTick = toSongTick(tick);
+		for (TGMeasureHeader header : this.headers) {
+			if (contains(header.getStart(), header.getLength(), realTick)) {
 				return header;
 			}
 		}
+		appendHeader();
+		return getHeader(realTick);
+	}
+
+	private static long toSongTick(long tick){
+		return Math.max(tick, TGDuration.QUARTER_TIME);
+	}
+
+	private static boolean contains(long start, long length, long tick){
+		return (tick >= start && tick < start + length);
+	}
+
+	private void appendHeader(){
 		TGMeasureHeader last = getLastHeader();
 		TGMeasureHeader header = this.factory.newHeader();
-		header.setNumber((last != null)?last.getNumber() + 1:1);
-		header.setStart((last != null)?(last.getStart() + last.getLength()):TGDuration.QUARTER_TIME);
-		header.getTempo().setQuarterValue(  (last != null)?last.getTempo().getQuarterValue():120 );
-		if(last != null){
-			header.getTimeSignature().copyFrom(last.getTimeSignature());
-		}else{
-			header.getTimeSignature().setNumerator(4);
-			header.getTimeSignature().getDenominator().setValue(TGDuration.QUARTER);
+		if (last != null) {
+			continueHeader(header, last);
+		} else {
+			startFirstHeader(header);
 		}
 		this.headers.add(header);
+	}
 
-		if(realTick >= header.getStart() && realTick < header.getStart() + header.getLength()){
-			return header;
-		}
-		return getHeader(realTick);
+	private static void startFirstHeader(TGMeasureHeader header){
+		header.setNumber(1);
+		header.setStart(TGDuration.QUARTER_TIME);
+		header.getTempo().setQuarterValue(120);
+		header.getTimeSignature().setNumerator(4);
+		header.getTimeSignature().getDenominator().setValue(TGDuration.QUARTER);
+	}
+
+	// right after the last header, with its tempo and time signature
+	private static void continueHeader(TGMeasureHeader header, TGMeasureHeader last){
+		header.setNumber(last.getNumber() + 1);
+		header.setStart(last.getStart() + last.getLength());
+		header.getTempo().setQuarterValue(last.getTempo().getQuarterValue());
+		header.getTimeSignature().copyFrom(last.getTimeSignature());
 	}
 
 	private TGMeasureHeader getLastHeader(){
@@ -370,11 +402,11 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 	}
 
 	private TGMeasure getMeasure(TGTrack track, long tick){
-		long realTick = (tick >= TGDuration.QUARTER_TIME)?tick:TGDuration.QUARTER_TIME;
+		long realTick = toSongTick(tick);
 		Iterator<TGMeasure> it = track.getMeasures();
 		while(it.hasNext()){
 			TGMeasure measure = it.next();
-			if(realTick >= measure.getStart() && realTick < measure.getStart() + measure.getLength()){
+			if(contains(measure.getStart(), measure.getLength(), realTick)){
 				return measure;
 			}
 		}
@@ -449,65 +481,75 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		while (!done) {
 			TGMeasure measure = getMeasure(getTrack(track), this.lastBeatEnd);
 			long measureEnd = measure.getStart() + measure.getLength();
-			long coarseTimeToFill = Math.min(nEnd, measureEnd) - this.lastBeatEnd;
-			long preciseTimeToFill = TGDuration.toPreciseTime(coarseTimeToFill);
-			
-			List<TGDuration> durationList = null;
-			if (this.settings.getQuantization()) {
-				durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill, measure.getPreciseLength(), factory,
-					this.settings.getMaxDurationValue(),
-					this.settings.getMaxDivision());
-			}
-			else {
-				durationList = new ArrayList<TGDuration>();
-				durationList.add(TGDuration.fromTime(this.factory, coarseTimeToFill));
-			}
-
-			// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)
-			// note: won't work in all cases...
-			if (durationList.size() > 0) {
-				long relativeBeatPreciseStart = TGDuration.toPreciseTime(this.lastBeatEnd - measure.getStart());
-				if (    ((relativeBeatPreciseStart % durationList.get(0).getPreciseTime()) != 0) 
-					 && ((relativeBeatPreciseStart % durationList.get(durationList.size()-1).getPreciseTime()) == 0) ) {
-						Collections.reverse(durationList);
-				}
-			}
-
+			List<TGDuration> durationList = getDurationsToFill(measure, Math.min(nEnd, measureEnd) - this.lastBeatEnd);
 			for (TGDuration duration : durationList) {
-				long beatEnd = this.lastBeatEnd + duration.getTime();
-				if (beatEnd <= measureEnd) {
-					TGBeat beat = getBeat(measure, this.lastBeatEnd);
-					beat.getVoice(0).getDuration().copyFrom(duration);
-					if (this.tempNotes.isEmpty()) {
-						// rest beat
-						beat.getVoice(0).setEmpty(false);
-					}
-					else {
-						// fill with all notes
-						for (TempNote tempNote : this.tempNotes) {
-							int nValue = (tempNote.getValue() + this.settings.getTranspose());
-							int nVelocity = 64;
-							TGNote note = this.factory.newNote();
-							note.setValue(nValue);
-							note.setString(1);
-							note.setVelocity(nVelocity);
-							note.setTiedNote(tempNote.shallBeTied());
-							tempNote.setShallBeTied();
-							beat.getVoice(0).addNote(note);
-						}
-					}
-					this.lastBeatEnd = beatEnd;
-				}
-				else {
-					this.lastBeatEnd = measureEnd;
-				}
+				addTempNotesBeat(measure, measureEnd, duration);
 			}
-			if (durationList.isEmpty() && (nEnd > measureEnd)) {
+			done = (nEnd <= measureEnd);
+			if (durationList.isEmpty() && !done) {
 				// need to fill a space that goes beyond current measure, but end of measure
 				// cannot be filled. This may lead to an invalid measure (too short voice)
 				this.lastBeatEnd = measureEnd;
 			}
-			done = (nEnd <= measureEnd);
+		}
+	}
+
+	// the beat durations filling the time from the last beat end, in the order they are written
+	private List<TGDuration> getDurationsToFill(TGMeasure measure, long coarseTimeToFill){
+		List<TGDuration> durationList = splitTimeToFill(measure, coarseTimeToFill);
+		// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)
+		// note: won't work in all cases...
+		if (!durationList.isEmpty()) {
+			long relativeBeatPreciseStart = TGDuration.toPreciseTime(this.lastBeatEnd - measure.getStart());
+			if (    ((relativeBeatPreciseStart % durationList.get(0).getPreciseTime()) != 0)
+				 && ((relativeBeatPreciseStart % durationList.get(durationList.size()-1).getPreciseTime()) == 0) ) {
+					Collections.reverse(durationList);
+			}
+		}
+		return durationList;
+	}
+
+	private List<TGDuration> splitTimeToFill(TGMeasure measure, long coarseTimeToFill){
+		if (this.settings.getQuantization()) {
+			return TGDuration.splitPreciseDurationApproximately(TGDuration.toPreciseTime(coarseTimeToFill), measure.getPreciseLength(), factory,
+				this.settings.getMaxDurationValue(),
+				this.settings.getMaxDivision());
+		}
+		List<TGDuration> durationList = new ArrayList<TGDuration>();
+		durationList.add(TGDuration.fromTime(this.factory, coarseTimeToFill));
+		return durationList;
+	}
+
+	// a beat at the last beat end holding the temporary notes, or a rest; a beat that would cross the measure end
+	// is not written, the measure end becomes the last beat end
+	private void addTempNotesBeat(TGMeasure measure, long measureEnd, TGDuration duration){
+		long beatEnd = this.lastBeatEnd + duration.getTime();
+		if (beatEnd > measureEnd) {
+			this.lastBeatEnd = measureEnd;
+			return;
+		}
+		TGVoice voice = getBeat(measure, this.lastBeatEnd).getVoice(0);
+		voice.getDuration().copyFrom(duration);
+		if (this.tempNotes.isEmpty()) {
+			// rest beat
+			voice.setEmpty(false);
+		}
+		else {
+			addTempNotes(voice);
+		}
+		this.lastBeatEnd = beatEnd;
+	}
+
+	// every temporary note, tied when it was already written in an earlier beat
+	private void addTempNotes(TGVoice voice){
+		for (TempNote tempNote : this.tempNotes) {
+			TGNote note = this.factory.newNote();
+			note.setValue(tempNote.getValue() + this.settings.getTranspose());
+			note.setString(1);
+			note.setVelocity(64);
+			note.setTiedNote(tempNote.shallBeTied());
+			tempNote.setShallBeTied();
+			voice.addNote(note);
 		}
 	}
 
@@ -549,77 +591,74 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 		}
 	}
 
+	// a song channel for every MIDI channel that plays notes and is not already routed to a song channel
 	private void checkChannels(){
 		for(int tc = 0 ; tc < this.tempChannels.size() ; tc ++ ){
 			TempChannel tempChannel = this.tempChannels.get( tc );
-			if( !tempChannel.getTracks().isEmpty() ){
-				boolean channelExists = false;
-				for(int c = 0 ; c < this.channels.size() ; c ++ ){
-					TGChannel tgChannel = this.channels.get(c);
-					GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
-					if( gmChannelRoute != null ){
-						if( gmChannelRoute.getChannel1() == tempChannel.getChannel() || gmChannelRoute.getChannel2() == tempChannel.getChannel() ){
-							channelExists = true;
-						}
-					}
-				}
+			if( !tempChannel.getTracks().isEmpty() && !isRouted(tempChannel) ){
+				this.channels.add( createChannel(tc, tempChannel) );
+			}
+		}
+	}
 
-				if(!channelExists){
-					TGChannel tgChannel = this.factory.newChannel();
-					tgChannel.setChannelId(this.channels.size() + 1);
-					tgChannel.setProgram((short)tempChannel.getInstrument());
-					tgChannel.setVolume((short)tempChannel.getVolume());
-					tgChannel.setBalance((short)tempChannel.getBalance());
-					tgChannel.setName(("#" + tgChannel.getChannelId()));
-					tgChannel.setBank(tempChannel.getChannel() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
+	private boolean isRouted(TempChannel tempChannel){
+		for (TGChannel tgChannel : this.channels) {
+			GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
+			if( gmChannelRoute != null && (gmChannelRoute.getChannel1() == tempChannel.getChannel() || gmChannelRoute.getChannel2() == tempChannel.getChannel()) ){
+				return true;
+			}
+		}
+		return false;
+	}
 
-					GMChannelRoute gmChannelRoute = new GMChannelRoute(tgChannel.getChannelId());
-					gmChannelRoute.setChannel1(tempChannel.getChannel());
-					gmChannelRoute.setChannel2(tempChannel.getChannel());
+	private TGChannel createChannel(int tc, TempChannel tempChannel){
+		TGChannel tgChannel = this.factory.newChannel();
+		tgChannel.setChannelId(this.channels.size() + 1);
+		tgChannel.setProgram((short)tempChannel.getInstrument());
+		tgChannel.setVolume((short)tempChannel.getVolume());
+		tgChannel.setBalance((short)tempChannel.getBalance());
+		tgChannel.setName(("#" + tgChannel.getChannelId()));
+		tgChannel.setBank(tempChannel.getChannel() == 9 ? TGChannel.DEFAULT_PERCUSSION_BANK : TGChannel.DEFAULT_BANK);
 
-					for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
-						TempChannel tempChannelAux = this.tempChannels.get( tcAux );
-						if( tempChannel.getTracks().equals(tempChannelAux.getTracks()) ){
-							if( gmChannelRoute.getChannel2() == gmChannelRoute.getChannel1() ){
-								gmChannelRoute.setChannel2( tempChannelAux.getChannel() );
-							}else{
-								tempChannelAux.clearTracks();
-							}
-						}
-					}
+		GMChannelRoute gmChannelRoute = new GMChannelRoute(tgChannel.getChannelId());
+		gmChannelRoute.setChannel1(tempChannel.getChannel());
+		gmChannelRoute.setChannel2(tempChannel.getChannel());
+		mergeChannelsWithSameTracks(tc, tempChannel, gmChannelRoute);
+		this.channelRouter.configureRoutes(gmChannelRoute, (tempChannel.getChannel() == 9));
 
-					this.channelRouter.configureRoutes(gmChannelRoute, (tempChannel.getChannel() == 9));
+		tgChannel.addParameter(newChannelParameter(GMChannelRoute.PARAMETER_GM_CHANNEL_1, gmChannelRoute.getChannel1()));
+		tgChannel.addParameter(newChannelParameter(GMChannelRoute.PARAMETER_GM_CHANNEL_2, gmChannelRoute.getChannel2()));
+		return tgChannel;
+	}
 
-					TGChannelParameter gmChannel1Param = this.factory.newChannelParameter();
-					TGChannelParameter gmChannel2Param = this.factory.newChannelParameter();
-
-					gmChannel1Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_1);
-					gmChannel1Param.setValue(Integer.toString(gmChannelRoute.getChannel1()));
-
-					gmChannel2Param.setKey(GMChannelRoute.PARAMETER_GM_CHANNEL_2);
-					gmChannel2Param.setValue(Integer.toString(gmChannelRoute.getChannel2()));
-
-					tgChannel.addParameter(gmChannel1Param);
-					tgChannel.addParameter(gmChannel2Param);
-
-					this.channels.add( tgChannel );
+	// the next MIDI channel played by exactly the same tracks becomes the route's second channel; any further one
+	// loses its tracks
+	private void mergeChannelsWithSameTracks(int tc, TempChannel tempChannel, GMChannelRoute gmChannelRoute){
+		for(int tcAux = (tc + 1) ; tcAux < this.tempChannels.size() ; tcAux ++ ){
+			TempChannel tempChannelAux = this.tempChannels.get( tcAux );
+			if( tempChannel.getTracks().equals(tempChannelAux.getTracks()) ){
+				if( gmChannelRoute.getChannel2() == gmChannelRoute.getChannel1() ){
+					gmChannelRoute.setChannel2( tempChannelAux.getChannel() );
+				}else{
+					tempChannelAux.clearTracks();
 				}
 			}
 		}
 	}
 
+	private TGChannelParameter newChannelParameter(String key, int value){
+		TGChannelParameter parameter = this.factory.newChannelParameter();
+		parameter.setKey(key);
+		parameter.setValue(Integer.toString(value));
+		return parameter;
+	}
+
 	private void checkTracks(TGSongManager songManager){
 		for (TGTrack track : this.tracks) {
 			TGChannel trackChannel = null;
-
 			for (TempChannel tempChannel : this.tempChannels) {
 				if (tempChannel.getTracks().contains(track.getNumber())) {
-					for (TGChannel tgChannel : this.channels) {
-						GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
-						if (gmChannelRoute != null && tempChannel.getChannel() == gmChannelRoute.getChannel1()) {
-							trackChannel = tgChannel;
-						}
-					}
+					trackChannel = findChannelStartingOn(tempChannel.getChannel(), trackChannel);
 				}
 			}
 
@@ -632,6 +671,18 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 				track.setStrings(getTrackTuningHelper(track.getNumber()).getStrings(track.getMaxFret()));
 			}
 		}
+	}
+
+	// the last song channel whose route starts on the MIDI channel, else the given channel
+	private TGChannel findChannelStartingOn(int midiChannel, TGChannel found){
+		TGChannel channel = found;
+		for (TGChannel tgChannel : this.channels) {
+			GMChannelRoute gmChannelRoute = this.channelRouter.getRoute(tgChannel.getChannelId());
+			if (gmChannelRoute != null && midiChannel == gmChannelRoute.getChannel1()) {
+				channel = tgChannel;
+			}
+		}
+		return channel;
 	}
 
 	private class TempNote{

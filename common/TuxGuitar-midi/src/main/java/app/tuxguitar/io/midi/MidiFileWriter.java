@@ -81,36 +81,23 @@ public class MidiFileWriter implements MidiFileHeader{
 	}
 
 	private static int writeVariableLengthQuantity(long value, OutputStream out)throws IOException{
-		boolean started = false;
 		int length = 0;
-		int data = (int) ((value >> 21) & 0x7f);
-		if (data != 0){
-			if (out != null){
-				out.write(data | 0x80);
+		// the three high 7-bit groups (bits 21-27, 14-20, 7-13), from the first non-zero one, with the continuation bit
+		for (int shift = 21; shift >= 7; shift -= 7){
+			int data = (int) ((value >> shift) & 0x7f);
+			if (data != 0 || length > 0){
+				writeByte(data | 0x80, out);
+				length++;
 			}
-			length++;
-			started = true;
 		}
-		data = (int) ((value >> 14) & 0x7f);
-		if (data != 0 || started){
-			if (out != null){
-				out.write(data | 0x80);
-			}
-			length++;
-			started = true;
-		}
-		data = (int) ((value >> 7) & 0x7f);
-		if (data != 0 || started){
-			if (out != null){
-				out.write(data | 0x80);
-			}
-			length++;
-		}
-		data = (int) (value & 0x7f);
+		writeByte((int) (value & 0x7f), out);
+		return (length + 1);
+	}
+
+	// a null stream only counts the bytes
+	private static void writeByte(int data, OutputStream out)throws IOException{
 		if (out != null){
 			out.write(data);
 		}
-		length++;
-		return length;
 	}
 }

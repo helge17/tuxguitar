@@ -106,88 +106,86 @@ public class MidiFileReader implements MidiFileHeader{
 		}
 	}
 
+	// a byte below 0x80 is the first data byte of a message repeating the running status
 	private static MidiEvent readEvent(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
 		int statusByte = readUnsignedByte(in, helper);
-		int savedByte = 0;
-		boolean runningStatusApplies = false;
-
 		if (statusByte < 0x80){
-			if (helper.runningStatusByte != -1){
-				runningStatusApplies = true;
-				savedByte = statusByte;
-				statusByte = helper.runningStatusByte;
-			}else{
-				throw new MidiFileException("corrupt MIDI file: status byte missing");
-			}
+			return readRunningStatusEvent(in, helper, statusByte);
 		}
-
 		int type = getType(statusByte);
-		if(type == STATUS_ONE_BYTE){
-			int data = 0;
-			if (runningStatusApplies){
-				data = savedByte;
-			}else{
-				data = readUnsignedByte(in, helper);
-				helper.runningStatusByte = statusByte;
-			}
-
-			return new MidiEvent(MidiMessage.shortMessage((statusByte & 0xF0),(statusByte & 0x0F) , data), helper.ticks);
-		}else if(type == STATUS_TWO_BYTES){
-			int	data1 = 0;
-			if (runningStatusApplies){
-				data1 = savedByte;
-			}else{
-				data1 = readUnsignedByte(in, helper);
-				helper.runningStatusByte = statusByte;
-			}
-
-			return new MidiEvent(MidiMessage.shortMessage((statusByte & 0xF0),(statusByte & 0x0F) , data1, readUnsignedByte(in, helper)), helper.ticks);
-		}else if(type == STATUS_SYSEX){
-			if (CANCEL_RUNNING_STATUS_ON_META_AND_SYSEX){
-				helper.runningStatusByte = -1;
-			}
-			int dataLength = (int) readVariableLengthQuantity(in, helper);
-			byte[] data = new byte[dataLength];
-			for (int i = 0; i < dataLength; i++){
-				data[i] = (byte) readUnsignedByte(in, helper);
-			}
-		}else if(type == STATUS_META){
-			if (CANCEL_RUNNING_STATUS_ON_META_AND_SYSEX){
-				helper.runningStatusByte = -1;
-			}
-			int typeByte = readUnsignedByte(in, helper);
-			int dataLength = (int) readVariableLengthQuantity(in, helper);
-			byte[] data = new byte[dataLength];
-			for (int i = 0; i < dataLength; i++){
-				data[i] = (byte) readUnsignedByte(in, helper);
-			}
-
-			return new MidiEvent(MidiMessage.metaMessage(typeByte, data), helper.ticks);
+		if (type == STATUS_SYSEX){
+			readSysexData(in, helper);
+			return null;
 		}
-
-		return null;
+		if (type == STATUS_META){
+			return readMetaEvent(in, helper);
+		}
+		if (type == STATUS_NONE){
+			return null;
+		}
+		helper.runningStatusByte = statusByte;
+		return readChannelEvent(in, helper, statusByte, readUnsignedByte(in, helper));
 	}
 
-	private static int getType(int statusByte){
-		if (statusByte < 0xf0) {
-			int command = statusByte & 0xf0;
-			if(command == 0x80 || command == 0x90 || command == 0xa0 || command == 0xb0 || command == 0xe0){
-				return STATUS_TWO_BYTES;
-			}
-			else if(command == 0xc0 || command == 0xd0){
-				return STATUS_ONE_BYTE;
-			}
-			return STATUS_NONE;
+	private static MidiEvent readRunningStatusEvent(DataInputStream in, MidiTrackReaderHelper helper, int data1)throws MidiFileException, IOException{
+		if (helper.runningStatusByte == -1){
+			throw new MidiFileException("corrupt MIDI file: status byte missing");
 		}
-		else if (statusByte == 0xf0 || statusByte == 0xf7){
+		return readChannelEvent(in, helper, helper.runningStatusByte, data1);
+	}
+
+	// the status byte is a channel voice status: its command takes one or two data bytes
+	private static MidiEvent readChannelEvent(DataInputStream in, MidiTrackReaderHelper helper, int statusByte, int data1)throws IOException{
+		int command = (statusByte & 0xF0);
+		int channel = (statusByte & 0x0F);
+		if (getType(statusByte) == STATUS_ONE_BYTE){
+			return new MidiEvent(MidiMessage.shortMessage(command, channel, data1), helper.ticks);
+		}
+		return new MidiEvent(MidiMessage.shortMessage(command, channel, data1, readUnsignedByte(in, helper)), helper.ticks);
+	}
+
+	// system exclusive data is skipped
+	private static void readSysexData(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
+		cancelRunningStatus(helper);
+		readData(in, helper);
+	}
+
+	private static MidiEvent readMetaEvent(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
+		cancelRunningStatus(helper);
+		int typeByte = readUnsignedByte(in, helper);
+		return new MidiEvent(MidiMessage.metaMessage(typeByte, readData(in, helper)), helper.ticks);
+	}
+
+	private static void cancelRunningStatus(MidiTrackReaderHelper helper){
+		if (CANCEL_RUNNING_STATUS_ON_META_AND_SYSEX){
+			helper.runningStatusByte = -1;
+		}
+	}
+
+	// a variable-length quantity giving the data length, then the data
+	private static byte[] readData(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
+		int dataLength = (int) readVariableLengthQuantity(in, helper);
+		byte[] data = new byte[dataLength];
+		for (int i = 0; i < dataLength; i++){
+			data[i] = (byte) readUnsignedByte(in, helper);
+		}
+		return data;
+	}
+
+	// only called with a status byte (0x80 and above): below 0xf0 every command is a channel voice message
+	private static int getType(int statusByte){
+		if (statusByte >= 0xf0){
+			return getSystemType(statusByte);
+		}
+		int command = statusByte & 0xf0;
+		return (command == 0xc0 || command == 0xd0) ? STATUS_ONE_BYTE : STATUS_TWO_BYTES;
+	}
+
+	private static int getSystemType(int statusByte){
+		if (statusByte == 0xf0 || statusByte == 0xf7){
 			return STATUS_SYSEX;
 		}
-		else if (statusByte == 0xff){
-			return STATUS_META;
-		}
-		else{
-			return STATUS_NONE;
-		}
+		return (statusByte == 0xff) ? STATUS_META : STATUS_NONE;
 	}
 
 	public static long readVariableLengthQuantity(DataInputStream in, MidiTrackReaderHelper helper)throws MidiFileException, IOException{
