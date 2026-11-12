@@ -875,8 +875,8 @@ public class MidiPlayer{
 
 			Object sync = new Object();
 
-			for(int i = 0; i < beat.length; i ++){
-				this.getOutputTransmitter().sendNoteOn(channelId,beat[i][0], beat[i][1], -1, false);
+			for(int[] note : beat){
+				this.getOutputTransmitter().sendNoteOn(channelId,note[0], note[1], -1, false);
 
 				if( interval > 0 ){
 					synchronized (sync) {
@@ -889,8 +889,8 @@ public class MidiPlayer{
 				sync.wait(duration);
 			}
 
-			for(int i = 0; i < beat.length; i ++){
-				this.getOutputTransmitter().sendNoteOff(channelId,beat[i][0], beat[i][1], -1, false);
+			for(int[] note : beat){
+				this.getOutputTransmitter().sendNoteOff(channelId,note[0], note[1], -1, false);
 			}
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
@@ -1243,7 +1243,7 @@ public class MidiPlayer{
 			this.sequencerProviders.remove(provider);
 
 			MidiSequencer current = getSequencer();
-			if(!(current instanceof MidiSequencerEmpty) && current != null){
+			if(!(current instanceof MidiSequencerEmpty)){
 				Iterator<MidiSequencer> it = provider.listSequencers().iterator();
 				while(it.hasNext()){
 					MidiSequencer sequencer = it.next();
