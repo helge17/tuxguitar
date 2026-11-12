@@ -619,70 +619,49 @@ public class TGTrackManager {
 	// returns true in case of success, else false
 	private boolean allocateNotesToClosestString(List<Integer> fromStringValues, TGBeat beat, List<TGString> toStrings, int maxFret) {
 		// only possible if old tuning is valid
-		boolean oldTuningIsValid = true;
-		for (int stringValue : fromStringValues) {
-			oldTuningIsValid &= (stringValue!=0);
-		}
-		if (!oldTuningIsValid) {
+		if (fromStringValues.contains(0)) {
 			return false;
 		}
-
 		List<TGString> freeStrings = new ArrayList<TGString>(toStrings);
 		TGBeat newBeat = beat.clone(getSongManager().getFactory());
-		boolean ok = true;
-
 		for (int voiceIndex=0; voiceIndex<newBeat.countVoices(); voiceIndex++) {
-			TGVoice voice = newBeat.getVoice(voiceIndex);
-			if (ok) {
-				for (TGNote note : voice.getNotes()) {
-					// look for closest string
-					int noteStringValue = fromStringValues.get(note.getString()-1);
-					int minDistance = -1;
-					TGString closestString = null;
-					for (TGString string : toStrings) {
-						int distance = Math.abs(noteStringValue - string.getValue());
-						if (minDistance<0 || distance<minDistance) {
-							closestString = string;
-							minDistance = distance;
-						}
-					}
-					if (freeStrings.contains(closestString)) {
-						int newFret = noteStringValue + note.getValue() - closestString.getValue();
-						boolean canMove = newFret>=0 && newFret<=maxFret;
-						int newGraceFret = 0;
-						if (note.getEffect().isGrace()) {
-							newGraceFret = noteStringValue + note.getEffect().getGrace().getFret() - closestString.getValue();
-							canMove &= (newGraceFret>=0 && newGraceFret<=maxFret);
-						}
-						if (canMove) {
-							note.setValue(newFret);
-							note.setString(closestString.getNumber());
-							if (note.getEffect().isGrace()) {
-								note.getEffect().getGrace().setFret(newGraceFret);
-							}
-							freeStrings.remove(closestString);
-						}
-						else {
-							// can't place note on closest string, note does not fit
-							ok = false;
-							break;
-						}
-					}
-					else {
-						// can't place note on closest string, already occupied, abort
-						ok = false;
-						break;
-					}
+			for (TGNote note : newBeat.getVoice(voiceIndex).getNotes()) {
+				if (!moveToClosestString(note, fromStringValues.get(note.getString()-1), toStrings, freeStrings, maxFret)) {
+					// can't place note on closest string: already occupied, or note does not fit
+					return false;
 				}
 			}
 		}
-		if (ok) {
-			// all notes found a place: keep this result
-			for (int voiceIndex=0; voiceIndex<newBeat.countVoices(); voiceIndex++) {
-				beat.setVoice(voiceIndex, newBeat.getVoice(voiceIndex));
+		// all notes found a place: keep this result
+		for (int voiceIndex=0; voiceIndex<newBeat.countVoices(); voiceIndex++) {
+			beat.setVoice(voiceIndex, newBeat.getVoice(voiceIndex));
+		}
+		return true;
+	}
+
+	// moves the note, from its string of value "stringValue", to the string closest in pitch when free and when it fits there, taking that string
+	private static boolean moveToClosestString(TGNote note, int stringValue, List<TGString> toStrings, List<TGString> freeStrings, int maxFret) {
+		TGString closestString = closestInPitch(toStrings, stringValue);
+		int shift = stringValue - closestString.getValue();
+		if (!freeStrings.contains(closestString) || !fits(note, shift, maxFret)) {
+			return false;
+		}
+		placeOnString(note, closestString, shift, freeStrings);
+		return true;
+	}
+
+	// the first of the strings whose value is the closest to "value"
+	private static TGString closestInPitch(List<TGString> strings, int value) {
+		TGString closestString = null;
+		int minDistance = -1;
+		for (TGString string : strings) {
+			int distance = Math.abs(value - string.getValue());
+			if (minDistance<0 || distance<minDistance) {
+				closestString = string;
+				minDistance = distance;
 			}
 		}
-		return ok;
+		return closestString;
 	}
 
 	// allocate each note to the lowest possible fret, discard notes with no place found
@@ -698,31 +677,51 @@ public class TGTrackManager {
 			Collections.sort(listNotes);
 			Collections.reverse(listNotes);
 			for (TGNote note : listNotes) {
-				int minFret = -1;
-				TGString newString = null;
-				for (TGString string : freeStrings) {
-					int fret = note.getValue() - string.getValue();
-					boolean canMove = (fret>=0 && fret<=maxFret);
-					if (note.getEffect().isGrace()) {
-						int graceFret = note.getEffect().getGrace().getFret() - string.getValue();
-						canMove &= (graceFret>=0 & graceFret<=maxFret);
-					}
-					if (canMove && (minFret<0 || fret<minFret) ) {
-						newString = string;
-						minFret = fret;
-					}
-				}
+				TGString newString = lowestFretString(note, freeStrings, maxFret);
 				if (newString != null) {
-					note.setValue(note.getValue() - newString.getValue());
-					note.setString(newString.getNumber());
-					if (note.getEffect().isGrace()) {
-						note.getEffect().getGrace().setFret(note.getEffect().getGrace().getFret() - newString.getValue());
-					}
-					freeStrings.remove(newString);
+					placeOnString(note, newString, -newString.getValue(), freeStrings);
 				}
 			}
 			// Remove notes with no allocation found
 			removeUnallocatedNotes(voice);
+		}
+	}
+
+	// the first of the strings where the note, now on string "zero", fits at the lowest fret; null when it fits on none
+	private static TGString lowestFretString(TGNote note, List<TGString> strings, int maxFret) {
+		TGString lowestString = null;
+		int minFret = -1;
+		for (TGString string : strings) {
+			int fret = note.getValue() - string.getValue();
+			if (fits(note, -string.getValue(), maxFret) && (minFret<0 || fret<minFret)) {
+				lowestString = string;
+				minFret = fret;
+			}
+		}
+		return lowestString;
+	}
+
+	// whether the note, and its grace note, stay on the neck when their frets are shifted
+	private static boolean fits(TGNote note, int shift, int maxFret) {
+		return isOnNeck(note.getValue() + shift, maxFret)
+				&& (!note.getEffect().isGrace() || isOnNeck(note.getEffect().getGrace().getFret() + shift, maxFret));
+	}
+
+	private static boolean isOnNeck(int fret, int maxFret) {
+		return (fret>=0 && fret<=maxFret);
+	}
+
+	// shifts the frets of the note and of its grace note, and puts it on the string, taking that string
+	private static void placeOnString(TGNote note, TGString string, int shift, List<TGString> freeStrings) {
+		shiftFrets(note, shift);
+		note.setString(string.getNumber());
+		freeStrings.remove(string);
+	}
+
+	private static void shiftFrets(TGNote note, int shift) {
+		note.setValue(note.getValue() + shift);
+		if (note.getEffect().isGrace()) {
+			note.getEffect().getGrace().setFret(note.getEffect().getGrace().getFret() + shift);
 		}
 	}
 
@@ -768,10 +767,7 @@ public class TGTrackManager {
 
 	private void moveNotesToStringZero(List<Integer> fromStringValues, List<TGNote> listNotes) {
 		for (TGNote note : listNotes) {
-			note.setValue(fromStringValues.get(note.getString()-1) + note.getValue());
-			if (note.getEffect().isGrace()) {
-				note.getEffect().getGrace().setFret(fromStringValues.get(note.getString()-1) + note.getEffect().getGrace().getFret());
-			}
+			shiftFrets(note, fromStringValues.get(note.getString()-1));
 			note.setString(0);
 		}
 	}

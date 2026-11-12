@@ -18,7 +18,8 @@ import app.tuxguitar.song.models.TGVoice;
  * Pins how beats lying beyond their 4/4 measure are moved where they belong
  * (TGMeasureManager.moveOutOfBoundsBeatsToNewMeasure, through locateBeat): into the measure holding their start,
  * with a voice running past its measure end cut there and continued by tied notes in the following measures,
- * and measures added at the end of the song when needed.
+ * and measures added at the end of the song when needed. Also pins TGTrackManager.moveTrackBeatsPrecise, which
+ * shifts the beats of a track from a point on, then moves those left beyond their measure this way.
  *
  * Tracks are described as in TrackDescription.
  */
@@ -194,6 +195,52 @@ public class TestMoveOutOfBoundsBeats {
 		assertEquals(""
 			+ "1:\n"
 			+ "2: n3@1/4\n"
+			, describe());
+	}
+
+	// quarter notes of frets 1 to 4 filling measure 1, and of fret 5 starting measure 2
+	private TestMoveOutOfBoundsBeats fiveNotes() {
+		measures(2);
+		for (int q = 0; q < 4; q++) {
+			note(0, q * QUARTER, TGDuration.QUARTER, false, q + 1);
+		}
+		note(1, 0, TGDuration.QUARTER, false, 5);
+		return this;
+	}
+
+	// TGTrackManager.moveTrackBeatsPrecise, from the second quarter of measure 1, as moving beats does
+	private void moveTrackBeats(long thePreciseMove) {
+		TGMeasure first = track.getMeasure(0);
+		songManager.getTrackManager().moveTrackBeatsPrecise(track, first.getStart(), first.getPreciseStart() + QUARTER, thePreciseMove);
+	}
+
+	@Test
+	public void movingTheTrackBeatsLaterPushesTheLastBeatOfAMeasureIntoTheNextAndDropsARestPushedPastTheSongEnd() {
+		fiveNotes().beat(1, 3 * QUARTER, TGDuration.QUARTER, false);
+		moveTrackBeats(QUARTER);
+		assertEquals(""
+			+ "1: n1@0/4 n2@2/4 n3@3/4\n"
+			+ "2: n4@0/4 n5@1/4\n"
+			, describe());
+	}
+
+	@Test
+	public void movingTheTrackBeatsEarlierRemovesTheBeatsCoveredAndPullsTheNextMeasureBack() {
+		fiveNotes().moveTrackBeats(-QUARTER);
+		assertEquals(""
+			+ "1: n1@0/4 n3@1/4 n4@2/4 n5@3/4\n"
+			+ "2:\n"
+			, describe());
+	}
+
+	@Test
+	public void movingTheTrackBeatsLeavesTheMeasuresBeforeTheStartMeasureAlone() {
+		fiveNotes();
+		TGMeasure second = track.getMeasure(1);
+		songManager.getTrackManager().moveTrackBeatsPrecise(track, second.getStart(), track.getMeasure(0).getPreciseStart(), QUARTER);
+		assertEquals(""
+			+ "1: n1@0/4 n2@1/4 n3@2/4 n4@3/4\n"
+			+ "2: n5@1/4\n"
 			, describe());
 	}
 

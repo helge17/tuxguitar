@@ -21,7 +21,7 @@ import app.tuxguitar.song.models.TGVoice;
  * (10 * t + n) on string 1, key signature n and clef n; read back as one line per track:
  * "track t: number@start/key/clef:fret+beat ..." (start and beat in quarters; a percussion track has no key).
  */
-abstract class SegmentFixture {
+public abstract class SegmentFixture {
 
 	protected final TGSongManager songManager = new TGSongManager();
 	protected final TGFactory factory = songManager.getFactory();

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import app.tuxguitar.song.helpers.TGMeasureError;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGNote;
+import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVoice;
 
 /**
@@ -178,5 +179,47 @@ public class TestVoiceTiming {
 		invalid.setTiedNote(true);
 
 		assertEquals("tie s1f2 valid", errors());
+	}
+
+	@Test
+	public void anErrorListedAgainIsEqualToItselfOnly() {
+		notes(0, 4, 0, QUARTER, 4, 0, 2 * QUARTER, 4, 0, 0, 2, 1, 2 * QUARTER, 1, 1);
+		List<TGMeasureError> before = manager.getMeasureErrors(fixture.measure);
+		List<TGMeasureError> again = manager.getMeasureErrors(fixture.measure);
+		fixture.songManager.addNewMeasureBeforeEnd(fixture.measure.getTrack().getSong());
+		TGMeasureError tooShort = before.get(0);
+
+		List<String> equal = new ArrayList<String>();
+		for (TGMeasureError error : before) {
+			equal.add(error.isEqualTo(again.get(0)) + "/" + error.isEqualTo(again.get(1)));
+		}
+		equal.add("other code " + tooShort.isEqualTo(new TGMeasureError(fixture.measure, 0, TGMeasureError.VOICE_TOO_LONG)));
+		equal.add("other voice " + tooShort.isEqualTo(new TGMeasureError(fixture.measure, 1, TGMeasureError.VOICE_TOO_SHORT)));
+		equal.add("other measure " + tooShort.isEqualTo(new TGMeasureError(fixture.measure.getTrack().getMeasure(1), 0, TGMeasureError.VOICE_TOO_SHORT)));
+		equal.add("none " + tooShort.isEqualTo(null));
+		assertEquals("true/false, false/true, other code false, other voice false, other measure false, none false", String.join(", ", equal));
+	}
+
+	// --- major errors: a voice duration error anywhere in the track (TGTrackManager) or the song (TGSongManager) ---
+
+	private String majorErrors(long... triples) {
+		notes(triples);
+		TGTrack track = fixture.measure.getTrack();
+		return "track " + fixture.songManager.getTrackManager().hasMeasureDurationError(track)
+			+ ", song " + fixture.songManager.hasMajorError(track.getSong());
+	}
+
+	@Test
+	public void aVoiceDurationErrorIsAMajorError() {
+		assertEquals("track true, song true", majorErrors(QUARTER, 2, 0));
+	}
+
+	@Test
+	public void anInvalidTiedNoteIsNotAMajorError() {
+		fixture.quarterNotes(0, 1, 2, 3);
+		fixture.beatAt(QUARTER).getVoice(0).getNote(0).setValue(2);
+		fixture.beatAt(QUARTER).getVoice(0).getNote(0).setTiedNote(true);
+
+		assertEquals("track false, song false", majorErrors());
 	}
 }
