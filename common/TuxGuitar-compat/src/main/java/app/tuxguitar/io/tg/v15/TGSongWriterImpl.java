@@ -9,6 +9,7 @@ import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongWriter;
 import app.tuxguitar.io.base.TGSongWriterHandle;
 import app.tuxguitar.io.tg.util.TGMeasureHeaderFlags;
+import app.tuxguitar.io.tg.util.TGNoteEffectFlags;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
@@ -44,6 +45,11 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	private static final TGMeasureHeaderFlags MEASURE_HEADER_FLAGS = new TGMeasureHeaderFlags(
 			MEASURE_HEADER_TIMESIGNATURE, MEASURE_HEADER_TEMPO, MEASURE_HEADER_REPEAT_OPEN, MEASURE_HEADER_REPEAT_CLOSE,
 			MEASURE_HEADER_REPEAT_ALTERNATIVE, MEASURE_HEADER_MARKER, MEASURE_HEADER_TRIPLET_FEEL);
+
+	private static final TGNoteEffectFlags NOTE_EFFECT_FLAGS = new TGNoteEffectFlags(
+			EFFECT_BEND, EFFECT_TREMOLO_BAR, EFFECT_HARMONIC, EFFECT_GRACE, EFFECT_TRILL, EFFECT_TREMOLO_PICKING,
+			EFFECT_VIBRATO, EFFECT_DEAD, EFFECT_SLIDE, EFFECT_HAMMER, EFFECT_GHOST, EFFECT_ACCENTUATED, EFFECT_HEAVY_ACCENTUATED,
+			EFFECT_PALM_MUTE, EFFECT_STACCATO, EFFECT_TAPPING, EFFECT_SLAPPING, EFFECT_POPPING, EFFECT_FADE_IN, EFFECT_LET_RING);
 
 	private DataOutputStream dataOutputStream;
 
@@ -506,28 +512,7 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 	}
 
 	private void writeNoteEffect(TGNoteEffect effect) throws IOException{
-		int header = 0;
-
-		header = (effect.isBend())?header |= EFFECT_BEND:header;
-		header = (effect.isTremoloBar())?header |= EFFECT_TREMOLO_BAR:header;
-		header = (effect.isHarmonic())?header |= EFFECT_HARMONIC:header;
-		header = (effect.isGrace())?header |= EFFECT_GRACE:header;
-		header = (effect.isTrill())?header |= EFFECT_TRILL:header;
-		header = (effect.isTremoloPicking())?header |= EFFECT_TREMOLO_PICKING:header;
-		header = (effect.isVibrato())?header |= EFFECT_VIBRATO:header;
-		header = (effect.isDeadNote())?header |= EFFECT_DEAD:header;
-		header = (effect.isSlide())?header |= EFFECT_SLIDE:header;
-		header = (effect.isHammer())?header |= EFFECT_HAMMER:header;
-		header = (effect.isGhostNote())?header |= EFFECT_GHOST:header;
-		header = (effect.isAccentuatedNote())?header |= EFFECT_ACCENTUATED:header;
-		header = (effect.isHeavyAccentuatedNote())?header |= EFFECT_HEAVY_ACCENTUATED:header;
-		header = (effect.isPalmMute())?header |= EFFECT_PALM_MUTE:header;
-		header = (effect.isStaccato())?header |= EFFECT_STACCATO:header;
-		header = (effect.isTapping())?header |= EFFECT_TAPPING:header;
-		header = (effect.isSlapping())?header |= EFFECT_SLAPPING:header;
-		header = (effect.isPopping())?header |= EFFECT_POPPING:header;
-		header = (effect.isFadeIn())?header |= EFFECT_FADE_IN:header;
-		header = (effect.isLetRing())?header |= EFFECT_LET_RING:header;
+		int header = NOTE_EFFECT_FLAGS.create(effect);
 
 		writeHeader(header,3);
 
