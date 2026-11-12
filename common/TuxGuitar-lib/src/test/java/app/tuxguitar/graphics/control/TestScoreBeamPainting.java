@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGVoice;
 
 /**
@@ -19,8 +18,9 @@ import app.tuxguitar.song.models.TGVoice;
  * voice beamed back to it. A level only one note has, beside a longer note, is a stub: 7 units right of a first
  * note, 6 left of a last one. All of it scales, and moves with the beats when the line widens the measure.
  *
- * Notes are on the high E string, one after another from the measure start, beamed in one group. Each voice
- * paints its score beat alone at (0, 0); the result lists what each voice draws after its stem, separated by "--".
+ * Notes are on the high E string, one after another (from the measure start unless the test moves them), beamed
+ * in one group. Each voice paints its score beat alone at (0, 0); the result lists what each voice draws after its
+ * stem, separated by "--".
  */
 public class TestScoreBeamPainting {
 
@@ -29,15 +29,37 @@ public class TestScoreBeamPainting {
 	// the extra width the line gives the measure, spread over its beats (0: the measure keeps its own width)
 	private float measureSpacing = 0f;
 
+	// where the notes start, from the measure start
+	private long start = 0;
+
+	// two eighths, stems down: the first draws the beam to the second, which draws nothing
+	private static final String TWO_EIGHTHS = ""
+		+ "initPath 2\n"
+		+ "moveTo 80.5 18.125\n"
+		+ "lineTo 80.5 22.125\n"
+		+ "lineTo 99.5 22.125\n"
+		+ "lineTo 99.5 18.125\n"
+		+ "lineTo 80.5 18.125\n"
+		+ "closePath\n"
+		+ "--\n";
+
 	@Test
 	public void twoEighthsShareOneBeamDrawnByTheFirst() {
+		assertEquals(TWO_EIGHTHS, beams(TGVoice.DIRECTION_DOWN, 8, 8));
+	}
+
+	@Test
+	public void aGroupEndingTheMeasureIsBeamedAlike() {
+		harness.quarterNotes(0, 1, 2);
+		start = 3 * LayoutHarness.QUARTER;
+
 		assertEquals(""
 			+ "initPath 2\n"
-			+ "moveTo 80.5 18.125\n"
-			+ "lineTo 80.5 22.125\n"
-			+ "lineTo 99.5 22.125\n"
-			+ "lineTo 99.5 18.125\n"
-			+ "lineTo 80.5 18.125\n"
+			+ "moveTo 188.5 18.125\n"
+			+ "lineTo 188.5 22.125\n"
+			+ "lineTo 207.5 22.125\n"
+			+ "lineTo 207.5 18.125\n"
+			+ "lineTo 188.5 18.125\n"
 			+ "closePath\n"
 			+ "--\n"
 			, beams(TGVoice.DIRECTION_DOWN, 8, 8));
@@ -193,26 +215,28 @@ public class TestScoreBeamPainting {
 
 	// ---- helpers ----
 
-	// lays out notes of the given values, stems in the given direction, then what each one draws after its stem
+	// lays out notes of the given values from the start offset, stems in the given direction, then what each one
+	// draws after its stem
 	private String beams(int direction, int... durationValues) {
-		long offset = 0;
+		List<TGVoiceImpl> voices = new ArrayList<TGVoiceImpl>();
+		long offset = start;
 		for (int durationValue : durationValues) {
-			TGVoice voice = harness.note(offset, durationValue, 0, 1, 5).getVoice();
+			TGVoiceImpl voice = harness.note(offset, durationValue, 0, 1, 5).getVoiceImpl();
 			voice.setDirection(direction);
 			offset += voice.getDuration().getPreciseTime();
+			voices.add(voice);
 		}
 		TGLayout layout = harness.update(SCORE);
 		harness.measure().setSpacing(measureSpacing);
 		List<String> beams = new ArrayList<String>();
-		for (int i = 0; i < durationValues.length; i++) {
-			beams.add(afterStem(layout, harness.measure().getBeat(i)));
+		for (TGVoiceImpl voice : voices) {
+			beams.add(afterStem(layout, voice));
 		}
 		return String.join("\n--\n", beams);
 	}
 
-	// the beat's voice paints its score beat: the footer style (2 calls) and the stem (8 calls), then its beams
-	private String afterStem(TGLayout layout, TGBeat beat) {
-		TGVoiceImpl voice = ((TGBeatImpl) beat).getVoiceImpl(0);
+	// the voice paints its score beat: the footer style (2 calls) and the stem (8 calls), then its beams
+	private String afterStem(TGLayout layout, TGVoiceImpl voice) {
 		harness.painter.clear();
 		voice.paintScoreBeat(layout, harness.painter, 0, 0, voice.getBeatImpl().getSpacing(layout));
 		List<String> calls = harness.painter.calls();
