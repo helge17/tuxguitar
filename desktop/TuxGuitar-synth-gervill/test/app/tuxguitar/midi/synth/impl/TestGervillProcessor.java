@@ -1,0 +1,257 @@
+package app.tuxguitar.midi.synth.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import org.junit.jupiter.api.Test;
+
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.properties.TGProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
+
+/**
+ * Pins the Gervill source of the TuxGuitar Synthesizer today, headless: it loads a General MIDI program from the
+ * soundbank in its settings (Gervill's emergency soundbank when there is none) on a thread of its own, then sounds
+ * the notes it is sent into 16-bit buffers at 44100 Hz.
+ */
+public class TestGervillProcessor {
+
+	private static final int FRAMES = TGAudioBuffer.BUFFER_SIZE / 2;
+
+	private final TGContext context = new TGContext();
+	private final Map<String, String> config = new HashMap<String, String>();
+
+	public TestGervillProcessor() {
+		TGPropertiesManager properties = TGPropertiesManager.getInstance(this.context);
+		properties.setPropertiesFactory(MapProperties::new);
+		properties.addPropertiesReader("config", (TGProperties read, String module) -> {
+			if (module.equals("tuxguitar-synth-gervill")) {
+				this.config.forEach(read::setValue);
+			}
+		});
+	}
+
+	static final class MapProperties implements TGProperties {
+		private final Map<String, String> values = new HashMap<String, String>();
+
+		public String getValue(String key) {
+			return this.values.get(key);
+		}
+
+		public void setValue(String key, String value) {
+			this.values.put(key, value);
+		}
+
+		public void remove(String key) {
+			this.values.remove(key);
+		}
+
+		public void clear() {
+			this.values.clear();
+		}
+
+		public void update(Properties properties) {
+		}
+
+		public Set<String> getStringKeys() {
+			return this.values.keySet();
+		}
+	}
+
+	private GervillProcessor loaded(String program, String channelMode) throws InterruptedException {
+		GervillProcessor processor = (GervillProcessor) new GervillProcessorFactory(this.context).createProcessor();
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("gervil.program", program);
+		if (channelMode != null) {
+			parameters.put("gervil.channel.mode", channelMode);
+		}
+		processor.restoreParameters(parameters);
+		long deadline = System.currentTimeMillis() + 30000;
+		while (processor.isBusy() && System.currentTimeMillis() < deadline) {
+			Thread.sleep(5);
+		}
+		assertFalse(processor.isBusy());
+		return processor;
+	}
+
+	// the left side of the next buffers
+	private static float[] render(GervillProcessor processor, int buffers) {
+		float[] left = new float[buffers * FRAMES];
+		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
+		for (int b = 0; b < buffers; b++) {
+			TGAudioBuffer buffer = new TGAudioBuffer();
+			processor.fillBuffer(buffer);
+			buffer.read(samples);
+			System.arraycopy(samples[0], 0, left, b * FRAMES, FRAMES);
+		}
+		return left;
+	}
+
+	private static double peak(float[] samples) {
+		double peak = 0;
+		for (float sample : samples) {
+			peak = Math.max(peak, Math.abs(sample));
+		}
+		return peak;
+	}
+
+	// the frequency, in whole Hz from 100 to 2000, where the samples have the most energy
+	private static int strongestFrequency(float[] samples) {
+		int strongest = 0;
+		double most = -1;
+		for (int frequency = 100; frequency <= 2000; frequency++) {
+			double re = 0;
+			double im = 0;
+			for (int i = 0; i < samples.length; i++) {
+				double phase = 2 * Math.PI * frequency * i / TGAudioBuffer.SAMPLE_RATE;
+				re += samples[i] * Math.cos(phase);
+				im += samples[i] * Math.sin(phase);
+			}
+			if (re * re + im * im > most) {
+				most = re * re + im * im;
+				strongest = frequency;
+			}
+		}
+		return strongest;
+	}
+
+	@Test
+	public void aLoadedProgramIsSilentUntilANote() throws InterruptedException {
+		GervillProcessor processor = loaded("0:0", null);
+		assertTrue(processor.isOpen());
+		assertEquals(0, peak(render(processor, 4)), 0);
+	}
+
+	@Test
+	public void aNoteSoundsAtItsPitch() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendNoteOn(69, 127, 0, false);
+		render(processor, 4);
+		float[] sounding = render(processor, 8);
+		assertTrue(peak(sounding) > 0.05, "peak " + peak(sounding));
+		assertEquals(440, strongestFrequency(sounding), 9);
+	}
+
+	@Test
+	public void aNoteOffEndsTheNote() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendNoteOn(69, 127, 0, false);
+		double sounding = peak(render(processor, 8));
+		processor.sendNoteOff(69, 0, 0, false);
+		render(processor, 130);
+		double released = peak(render(processor, 4));
+		assertTrue(released < sounding / 10, "released " + released + ", sounding " + sounding);
+	}
+
+	@Test
+	public void aPitchBendRaisesTheNote() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendPitchBend(127, 0, false);
+		processor.sendNoteOn(69, 127, 0, false);
+		render(processor, 4);
+		assertEquals(494, strongestFrequency(render(processor, 8)), 10);
+	}
+
+	@Test
+	public void theProgramIsKeptInItsParameters() throws InterruptedException {
+		GervillProcessor processor = loaded(" 0 : 25 ", "3");
+		Map<String, String> parameters = new HashMap<String, String>();
+		processor.storeParameters(parameters);
+		assertEquals("{gervil.channel.mode=3, gervil.program=0:25, gervil.soundbank.path=null}", new java.util.TreeMap<String, String>(parameters).toString());
+	}
+
+	@Test
+	public void aProgramThatIsNotBankAndProgramLoadsTheFirstProgram() throws InterruptedException {
+		GervillProcessor processor = loaded("25", null);
+		assertEquals(0, processor.getProgram().getBank());
+		assertEquals(0, processor.getProgram().getProgram());
+		assertEquals(GervillProgram.CHANNEL_MODE_BEND, processor.getProgram().getChannelMode());
+	}
+
+	@Test
+	public void aProgramThatIsNotANumberIsIgnored() throws InterruptedException {
+		GervillProcessor processor = loaded("a:b", null);
+		assertEquals(-1, processor.getProgram().getProgram());
+	}
+
+	@Test
+	public void theChannelModeChoosesGervillsChannelPerVoiceOrBend() throws InterruptedException {
+		GervillProcessor single = loaded("0:0", "1");
+		assertEquals(0, single.resolveChannel(5, true));
+		GervillProcessor bend = loaded("0:0", "2");
+		assertEquals(1, bend.resolveChannel(5, true));
+		assertEquals(0, bend.resolveChannel(5, false));
+		GervillProcessor voice = loaded("0:0", "3");
+		assertEquals(0, voice.resolveChannel(0, false));
+		assertEquals(8, voice.resolveChannel(8, false));
+		assertEquals(10, voice.resolveChannel(9, false));
+		assertEquals(10, voice.resolveChannel(-1, false));
+	}
+
+	@Test
+	public void aClosedProcessorIsNotOpenAndFillsNothing() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendNoteOn(69, 127, 0, false);
+		processor.finalize();
+		assertFalse(processor.isOpen());
+		assertFalse(processor.isBusy());
+		assertEquals(0, peak(render(processor, 1)), 0);
+	}
+
+	@Test
+	public void aSoundbankThatCannotBeReadLeavesTheProgramSilent() throws InterruptedException {
+		GervillProcessor processor = new GervillProcessor(this.context);
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("gervil.program", "0:80");
+		parameters.put("gervil.soundbank.path", "no-such-soundbank.sf2");
+		processor.restoreParameters(parameters);
+		while (processor.isBusy()) {
+			Thread.sleep(5);
+		}
+		processor.sendNoteOn(69, 127, 0, false);
+		assertEquals(0, peak(render(processor, 4)), 0);
+	}
+
+	@Test
+	public void programsAreEqualByBankProgramChannelModeAndSoundbank() {
+		GervillProgram a = new GervillProgram();
+		GervillProgram b = new GervillProgram();
+		b.setSoundbankPath("");
+		assertEquals(a, b);
+		b.setBank(1);
+		assertNotEquals(a, b);
+		b.copyFrom(a);
+		b.setProgram(2);
+		assertNotEquals(a, b);
+		b.copyFrom(a);
+		b.setChannelMode(GervillProgram.CHANNEL_MODE_VOICE);
+		assertNotEquals(a, b);
+		b.copyFrom(a);
+		b.setSoundbankPath("x.sf2");
+		assertNotEquals(a, b);
+		assertNotEquals(a, "a");
+		b.copyFrom(a);
+		assertEquals(a, b);
+	}
+
+	@Test
+	public void theSettingsKeepTheSoundbank() {
+		this.config.put(GervillSettings.GERVILL_SOUNDBANK_PATH, "a.sf2");
+		GervillSettings settings = new GervillSettings(this.context);
+		assertEquals("a.sf2", settings.getSoundbankPath());
+		settings.setSoundbankPath("b.sf2");
+		settings.setSoundbankFolder("banks");
+		assertEquals("b.sf2", settings.getSoundbankPath());
+		assertEquals("banks", settings.getSoundbankFolder());
+		settings.save();
+		assertEquals("gervill", new GervillProcessorFactory(this.context).getType());
+	}
+}

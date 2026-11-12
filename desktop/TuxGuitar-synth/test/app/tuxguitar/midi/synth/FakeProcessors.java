@@ -1,0 +1,165 @@
+package app.tuxguitar.midi.synth;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
+
+/**
+ * Processors for the synthesizer's tests: a source that sounds a constant level on both sides and keeps what it was
+ * sent, and effects that change each sample by a function. Their factories are registered by type.
+ */
+final class FakeProcessors {
+
+	static final int FRAMES = TGAudioBuffer.BUFFER_SIZE / 2;
+
+	private FakeProcessors() {
+	}
+
+	static class Effect implements TGAudioProcessor {
+		private final DoubleUnaryOperator change;
+		final Map<String, String> restored = new HashMap<String, String>();
+		boolean open = true;
+		boolean busy;
+
+		Effect(DoubleUnaryOperator change) {
+			this.change = change;
+		}
+
+		public void close() {
+			this.open = false;
+		}
+
+		public void finalize() {
+		}
+
+		public boolean isOpen() {
+			return this.open;
+		}
+
+		public boolean isBusy() {
+			return this.busy;
+		}
+
+		public void fillBuffer(TGAudioBuffer buffer) {
+			float[][] samples = read(buffer);
+			for (float[] side : samples) {
+				for (int i = 0; i < side.length; i++) {
+					side[i] = (float) this.change.applyAsDouble(side[i]);
+				}
+			}
+			buffer.write(samples);
+		}
+
+		public void storeParameters(Map<String, String> parameters) {
+			parameters.putAll(this.restored);
+		}
+
+		public void restoreParameters(Map<String, String> parameters) {
+			this.restored.putAll(parameters);
+		}
+	}
+
+	static class Source extends Effect implements TGMidiProcessor {
+		final List<String> received = new ArrayList<String>();
+
+		Source(float level) {
+			super(sample -> level);
+		}
+
+		public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) {
+			this.received.add("on " + key + " " + velocity + " " + voice + " " + bendMode);
+		}
+
+		public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) {
+			this.received.add("off " + key + " " + velocity + " " + voice + " " + bendMode);
+		}
+
+		public void sendPitchBend(int value, int voice, boolean bendMode) {
+			this.received.add("bend " + value + " " + voice + " " + bendMode);
+		}
+
+		public void sendControlChange(int controller, int value) {
+			this.received.add("cc " + controller + " " + value);
+		}
+	}
+
+	static class SourceFactory implements TGMidiProcessorFactory {
+		private final String type;
+		private final float level;
+		final List<Source> created = new ArrayList<Source>();
+
+		SourceFactory(String type, float level) {
+			this.type = type;
+			this.level = level;
+		}
+
+		public String getType() {
+			return this.type;
+		}
+
+		public Source createProcessor() {
+			Source source = new Source(this.level);
+			this.created.add(source);
+			return source;
+		}
+
+		Source last() {
+			return this.created.get(this.created.size() - 1);
+		}
+	}
+
+	static class EffectFactory implements TGAudioProcessorFactory {
+		private final String type;
+		private final DoubleUnaryOperator change;
+		final List<Effect> created = new ArrayList<Effect>();
+
+		EffectFactory(String type, DoubleUnaryOperator change) {
+			this.type = type;
+			this.change = change;
+		}
+
+		public String getType() {
+			return this.type;
+		}
+
+		public Effect createProcessor() {
+			Effect effect = new Effect(this.change);
+			this.created.add(effect);
+			return effect;
+		}
+	}
+
+	static float[][] read(TGAudioBuffer buffer) {
+		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
+		buffer.read(samples);
+		return samples;
+	}
+
+	static TGAudioBuffer level(float left, float right) {
+		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
+		java.util.Arrays.fill(samples[0], left);
+		java.util.Arrays.fill(samples[1], right);
+		TGAudioBuffer buffer = new TGAudioBuffer();
+		buffer.write(samples);
+		return buffer;
+	}
+
+	static TGProgramElement element(String id, String type) {
+		TGProgramElement element = new TGProgramElement();
+		element.setId(id);
+		element.setType(type);
+		return element;
+	}
+
+	// a program of the receiver type and the effects types, in processing order; ids are the types
+	static TGProgram program(String receiver, String... outputs) {
+		TGProgram program = new TGProgram();
+		program.setReceiver(element(receiver, receiver));
+		for (String output : outputs) {
+			program.addOutput(element(output, output));
+		}
+		return program;
+	}
+}
