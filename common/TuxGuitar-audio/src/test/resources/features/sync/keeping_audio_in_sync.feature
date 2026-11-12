@@ -55,7 +55,8 @@ Feature: Keeping audio in sync
 
   Scenario: when a plugin's latency changes while playing, the tracks are together again from the next beat
     Given I have added the VST3 effect "Test Latency" to track 2
-    When I play the song from measure 1 beat 1 while the plugin sets "Latency" of VST3 effect 1 of track 2 to 2048 at measure 2 beat 1
+    And I am playing the song from measure 1 beat 1
+    When the plugin sets "Latency" of VST3 effect 1 of track 2 to 2048 at measure 2 beat 1
     Then from measure 2 beat 2 on, the left and right clicks of every beat reach the output within 1 sample of each other
 
   Scenario: playing to the end of the song runs on until the most delayed track has sounded its last beat

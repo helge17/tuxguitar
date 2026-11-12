@@ -48,8 +48,11 @@ clock runs while TuxGuitar is stopped too.
 Where playing and recording stop: "play the song from A" plays until the song ends; "for N passes" stops at the end of
 pass N; "to B" or "until B" stops at B. All of them run on until the most delayed track has sounded everything before
 the stop point, and a recording keeps taking input for one round trip after it, so what was played before the stop
-point is in the take. "Stop at X" stops at once. A range "from A to B" includes A and ends just before B.
-"I am recording from A" means a recording from A is under way when the `When` happens.
+point is in the take. That run-on is TuxGuitar's, not the step's: the step captures the output until TuxGuitar reports
+it has stopped. "Stop at X" stops at once; "stop after X" stops at the first block after X sounds. "And do not stop it"
+waits up to 10 seconds past the end of the song for TuxGuitar to stop on its own, and fails if it does not. A range
+"from A to B" includes A and ends just before B. "I am recording from A" and "I am playing the song from A" mean that
+recording or playing from A is under way when the `When` happens.
 
 The test plugins are real VST3 bundles built for the tests, so scanning, loading in the helper process and the
 plugin's own editor are exercised for real; their audio behaviour is fixed below, so every number can be checked
@@ -57,7 +60,9 @@ exactly. One integration test outside the features loads the VST3 SDK's `again` 
 
 The module needs, besides `tuxguitar-lib`: `tuxguitar-editor-utils` (editing actions and undo), the synthesizer host
 core and Gervill moved out of `desktop/TuxGuitar-synth` so they run headless, and at test scope `tuxguitar-midi` and
-`tuxguitar-gtp` for the other-format scenarios. Once implemented, the module goes into the build-scripts POMs.
+`tuxguitar-gtp` for the other-format scenarios. Sounding a note as it is entered is desktop code today
+(`TGUpdateModifiedNoteController` calls `MidiPlayer.playBeat`); the module rebuilds that listener. Once implemented, the
+module goes into the build-scripts POMs.
 
 A past-tense `Given` checks that its action happened: "I have recorded from A to B" fails if the recording made no
 take, so a scenario that then undoes it cannot pass when nothing was ever recorded.
@@ -74,7 +79,9 @@ These features change how TuxGuitar works today. They are requirements, not side
   LV2 entries appear in the readings and the numbering like VST3 ones. When the source is a General MIDI program it
   follows the channel's Bank and Program, and the sound chain reading names it from them. Today a custom program
   freezes Gervill's own `bank:program` and ignores Program changes; that stops, and a format 2.0 file whose program
-  holds a different `bank:program` plays the channel's Program.
+  holds a different `bank:program` plays the channel's Program (the program's soundbank and channel mode are kept). The
+  per-instrument presets in the synthesizer settings (`synth.program.<bank>.<program>`) are not changed by this
+  feature: they apply where they apply today.
 - **Plugins run apart from TuxGuitar, with no network port.** VST3 and LV2 plugins run in a helper process that talks to
   TuxGuitar over pipes or shared memory and never listens on a network port. LV2 moves off its TCP socket
   (`TGRemoteHost`). Plugins load only from the VST3 (or LV2) folders. VST2 hosting was removed in 2024 because its
@@ -89,22 +96,26 @@ These features change how TuxGuitar works today. They are requirements, not side
   whether or not the song has a percussion channel, on the sample clock, at the exact Percentage of Tempo (today's
   Count In rounds the tempo down to a whole bpm), and delayed like the tracks by plugin delay compensation. A Count In
   or Metronome click's position is the sample on which its note reaches the drums.
-- **File format 3.0** for a song with an audio track. A reader of format 2.0 refuses it with its "please upgrade"
-  message (the step compares the message of the innermost cause). This version still opens format 2.0 files, and saves
+- **File format 3.0** for a song with an audio track. A reader of format 2.0 opening it as a `.tg` file refuses it with
+  its "please upgrade" message (the step compares the message of the innermost cause). This version still opens format 2.0 files, and saves
   a song without audio tracks as format 2.0. A VST3 sound chain is saved under channel parameter keys outside the
   `synth.program` prefix, which older versions keep but do not use, so they play the General MIDI program.
-- **Audio export** gets sample rate and bit depth options next to its File Type ("WAVE", "AIFF") and File Encoding.
-  Takes recorded at another sample rate are resampled. The file runs on for the longest tail of an effect or a VST3
-  instrument that is heard; tails of muted or left-out tracks and of disabled effects do not count.
+- **Audio export** gets sample rate and bit depth options (16 bits, 24 bits, 32-bit float) next to its File Type
+  (as today: WAVE, AIFF, AU) and File Encoding; 32-bit float is the PCM_FLOAT encoding it offers today. Takes recorded at
+  another sample rate are resampled. Exporting always renders through the TuxGuitar Synthesizer, whatever the MIDI
+  Port. The file runs on for the longest tail of an effect or a VST3 instrument that is heard; tails of muted or
+  left-out tracks and of disabled effects do not count.
 
 ## Rules every feature relies on
 
-- **The TuxGuitar Synthesizer**: sound chains, audio tracks and VST3 plugins work only when the MIDI Port is
-  "TuxGuitar Synthesizer". Any other MIDI Port bypasses them.
+- **The TuxGuitar Synthesizer**: while playing and recording, sound chains, audio tracks and VST3 plugins work only
+  when the MIDI Port is "TuxGuitar Synthesizer"; any other MIDI Port bypasses them. Exporting audio always renders
+  through the TuxGuitar Synthesizer.
 - **Takes are shared, never copied**: a take's samples never change once recorded. Cloning, pasting and undo snapshots
   share them, so undo does not multiply memory.
 - **The song and the session**: arming, monitoring, input level, the punch range, the audio device and the recording
-  offset are not part of the song. They are not saved, not undoable, and do not mark the song modified. Each audio
+  offset are not part of the song. A track's monitoring is `Off` until I set it, and is kept while the track is
+  disarmed and armed again. They are not saved, not undoable, and do not mark the song modified. Each audio
   track's input channel(s) and each track's next take number are part of the song.
 - **During a recording** the song cannot be edited and Play Mode, the punch range, arming and input channels cannot be
   changed; such actions are refused. Mute, solo, monitoring and gestures in a plugin's editor still work; mute and solo
@@ -149,7 +160,8 @@ These features change how TuxGuitar works today. They are requirements, not side
   track are not bent.
 - **Volume and Balance**: the channel's, applied after the sound chain, with today's laws. Balance 0 is full left, 127
   full right, 64 the centre (today's constant-power law leaves the two sides up to 1.3% apart there). Volume 127 with
-  Balance 0 or 127 passes the signal unchanged to its side. On a stereo signal Balance lowers the opposite side.
+  Balance 0 or 127 passes the signal unchanged to its side. On a stereo signal the same law applies to each side: the
+  left side is scaled as a mono signal's left, the right as its right.
 
 ### Recording
 
@@ -158,9 +170,11 @@ These features change how TuxGuitar works today. They are requirements, not side
   stereo. Two audio tracks may record the same input channel.
 - **Arm**: mark an audio track to record from its input channel(s). Only audio tracks can be armed.
 - **Take**: one recording on an audio track over a stretch of song time with no jump in it: the dry input (effects are
-  never recorded into it), stored as 32-bit float at the audio device's sample rate, anchored to the song's measures by
-  its position in quarter-note time (a measure changed from 4/4 to 8/8 keeps its audio where it was). When the song's tempo differs from the tempo it was recorded at, it is time-stretched so its beats stay on the
-  song's beats; at the tempo it was recorded at, it plays its samples unchanged. A recording that crosses a repeat, an
+  never recorded into it), stored as 32-bit float at the audio device's sample rate, anchored measure by measure: each
+  measure's audio sits at its offset from the measure's start in quarter-note time (a measure changed from 4/4 to 8/8
+  keeps its audio where it was; audio past the end of a shortened measure is not heard, and comes back only by undo).
+  When the tempo the song sounds at (its tempo × Percentage of Tempo) differs from the one the take was recorded at, the
+  take is time-stretched so its beats stay on the song's beats; at the same tempo it plays its samples unchanged. A recording that crosses a repeat, an
   alternate ending or the jump back of a loop makes one take per stretch. Takes get numbers in recording order from the
   track's next take number, which undo restores and deleting a take never lowers.
 - **Takes reading**: a track's takes, newest first, as `take <n>: <from> to <to>` joined by `, `:
@@ -180,19 +194,23 @@ These features change how TuxGuitar works today. They are requirements, not side
   (a take chosen for a measure counts as the newer there): going to a newer take, it fades in over its first 256
   samples while the older fades out; going back to an older take, the newer fades out over its last 256 samples before
   the boundary while the older fades in. Where a take starts or ends against silence there is no fade. At a jump in song
-  time (a loop's jump back, a repeat, an alternate ending) the audio before the jump fades out over its last 256
-  samples and the audio after it starts at full level.
+  time (a loop's jump back, a repeat, an alternate ending), and where a take's audio is cut inside it (a removed
+  measure, an inserted one, a shortened measure), the audio before fades out over its last 256 samples and the audio
+  after starts at full level. At a punch range boundary, the monitored input counts as the newer take.
 - **Punch range**: measures outside which a recording keeps nothing. It stays on measure numbers and ends with the
   song; one that starts past the end of the song is refused, and removing all its measures removes it.
 - **Loop recording**: recording with Play looped on: each pass over the Loop Range records a take. One recording is
   one undo step, however many takes it makes.
-- **Monitoring**: hearing an armed track's input through its sound chain. Each armed track's monitoring is `Off`,
-  `Auto` or `Always`. `Auto`: the input is heard while stopped, and while recording inside the punch range (or
-  everywhere, without one); while just playing, the track plays its takes. `Always`: the input is heard whenever the
-  track is armed, and the track's takes are not, so I can practise along with the song without recording. A track's
-  monitoring is `Off` when it is armed.
-- **Input level**: the peak of what an input channel delivered in the last second, in dBFS. At -0.1 dBFS or above the
-  input is **clipping**; it shows **has clipped** until I reset it.
+- **Monitoring**: hearing an armed track's input through its sound chain. Each audio track's monitoring is `Off`,
+  `Auto` or `Always`; it only matters while the track is armed. `Auto`: the input is heard while stopped, and while
+  recording inside the punch range (or everywhere, without one); while just playing, the track plays its takes.
+  `Always`: the input is heard whenever the track is armed, and the track's takes are not, so I can practise along with
+  the song without recording. `Off`: the input is never heard. Whatever the monitoring, while recording the armed
+  track's takes are silent where it records (inside the punch range, or everywhere without one).
+- **Input level**: the peak of what a track's input channel(s) delivered in the last second, in dBFS (the higher of
+  the two for a pair). At -0.1 dBFS or above the input is **clipping**; it shows **has clipped** until I reset it.
+- **Round trip**: output latency + the plugin delay compensation of what I hear + input latency + recording offset.
+  A take is placed earlier by its round trip.
 - **Latency**: how many samples late something delivers its sound: a plugin, the audio input or the audio output.
 - **Recording offset**: a setting, in samples, added to the input latency the audio device reports, because drivers
   sometimes report it wrong.
@@ -221,6 +239,9 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **Peak**: the largest absolute sample value, 1.0 being full scale (0 dBFS).
 - **A tone within 1% (or 1 Hz)**: by its fundamental frequency. **No ... above -60 dBFS**: by the level at that
   frequency. **Nothing**, in a list of tones per measure: no tone above -60 dBFS there.
+- **Nothing else above -60 dBFS**: no sample other than the named signals above 0.001.
+- **Musical position**: quarter notes from the start of the song, in song order as written (measure 2 beat 1 of a
+  4/4 song is quarter-note position 4).
 - **TuxGuitar reports a beat**: the beat the player shows as played (the played-beat highlight).
 - **A beat at P%**: where the beat falls when the song plays at P% Percentage of Tempo.
 
@@ -233,7 +254,7 @@ These features change how TuxGuitar works today. They are requirements, not side
 | `Test Gain` | VST3 effect | multiplies the signal by its parameter `Gain` (2.0 by default) | 0 | 0 |
 | `Test Clip 0.5` | VST3 effect | clips the signal to plus or minus its parameter `Ceiling` (0.5 by default); no editor of its own | 0 | 0 |
 | `Test Latency` | VST3 effect | delays the signal by its parameter `Latency` in samples (0 by default) | `Latency` | 0 |
-| `Test Echo` | VST3 effect | adds one copy of the signal at half its level, 13230 samples (0.3 s) later | 0 | 13230 |
+| `Test Echo` | VST3 effect | adds one copy of the signal at half its level, 0.3 s later (13230 samples at 44100 Hz) | 0 | 0.3 s |
 | `Test Drone` | VST3 effect | passes the signal and adds a 100 Hz tone at 0.1 forever | 0 | infinite |
 | `Test Stereo` | VST3 effect | mono in, stereo out: the signal on the left, half of it on the right | 0 | 0 |
 | `Test Tempo` | VST3 effect | passes the signal and records the tempo, time signature, play state and musical position it is given | 0 | 0 |
@@ -253,10 +274,12 @@ them (44100 Hz and 2 by default). Each delivers the input late by its input late
 output latency (0 by default), and reports those latencies unless a scenario says it reports something else.
 
 Signals: "the player plays ..." is what reaches the input: the scenario's musician (not TuxGuitar's player), playing
-in time with what they hear at the output; "... , then <signal>" plays one signal after the other. "Track N has a take of ..." puts a take on the track directly, as if recorded at the song's tempo.
-A signal is `clicks of -0.25 on every beat`, `one click of -0.25 at <position>`, `a <f> Hz tone peaking at <p>` (a
-sine; `<p>` may be in dBFS; 0.4 when not given), `a tone per measure of <f1>, <f2>, ... Hz` (a different tone in each
-measure, so a shift by whole beats shows), or `a constant level of <v>`. "Track N sounds 220, 330 and 440 Hz in
+in time with what they hear at the output. "Track N has a take of ..." puts a take on the track directly, as if
+recorded at the song's tempo. A signal is `clicks of -0.25 on every beat`, `one click of -0.25 at <position>`,
+`a <f> Hz tone peaking at <p>` (a sine; `<p>` may be in dBFS; 0.4 when not given), `a tone per measure of <f1>, <f2>,
+... Hz` (a different tone in each measure from the take's first, one per measure it covers, so a shift by whole beats
+shows), or `a constant level of <v>`. `<signal> for <duration>, then <signal>` plays one after the other;
+`<signal> on the first pass and <signal> on the second` changes with the pass. "Track N sounds 220, 330 and 440 Hz in
 measures 1 to 3" means each measure sounds its tone, within 1%, and no other above -60 dBFS.
 
 ## Out of scope

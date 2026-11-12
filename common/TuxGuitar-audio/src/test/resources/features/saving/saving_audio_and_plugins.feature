@@ -1,8 +1,9 @@
 @planned
 Feature: Saving audio tracks and plugins
   A song saved as a TuxGuitar file keeps its audio tracks with their takes sample for sample, and every sound chain
-  with each plugin's state. A song with an audio track needs file format 3.0, which older TuxGuitar versions refuse
-  with their "please upgrade" message; any other song stays in format 2.0, which older versions still open.
+  with each plugin's state. A song with an audio track needs file format 3.0, which older TuxGuitar versions opening
+  it as a .tg file refuse with their "please upgrade" message; any other song stays in format 2.0, which they still
+  open.
 
   Background:
     Given a new song with one guitar track and 4 measures of 4/4 at 120 bpm
@@ -86,10 +87,10 @@ Feature: Saving audio tracks and plugins
     Then <after>
 
     Examples:
-      | done                                   | after                         |
-      | armed track 2                          | track 2 is not armed          |
-      | armed track 2 and set its monitoring to Auto | track 2's monitoring is Off   |
-      | set the punch range to measures 2 to 3 | there is no punch range       |
+      | done                                         | after                       |
+      | armed track 2                                | track 2 is not armed        |
+      | armed track 2 and set its monitoring to Auto | track 2's monitoring is Off |
+      | set the punch range to measures 2 to 3       | there is no punch range     |
 
   Scenario: the audio device is a TuxGuitar setting, not part of the song
     Given I have saved the song as a TuxGuitar file

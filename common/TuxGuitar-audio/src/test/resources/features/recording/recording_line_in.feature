@@ -37,10 +37,12 @@ Feature: Recording line-in audio
     Then track 2's takes read "take 1: m1b1 to m2b2.5"
     And take 1 of track 2 is 121275 samples long
 
-  Scenario: recording stops at the end of the song
+  Scenario: recording stops by itself at the end of the song
     Given I have armed track 2
-    When I record from measure 3 beat 1 until the song ends
-    Then track 2's takes read "take 1: m3b1 to m5b1"
+    When I record from measure 3 beat 1 and do not stop it
+    Then the recording has stopped by itself at measure 5 beat 1
+    And track 2's takes read "take 1: m3b1 to m5b1"
+    And take 1 of track 2 is 176400 samples long
 
   Scenario: a take follows the tempo changes of the song as it is recorded
     Given the player plays clicks of -0.25 on every beat on input channel 1
@@ -249,9 +251,16 @@ Feature: Recording line-in audio
 
   # Monitoring
 
-  Scenario: arming a track leaves monitoring off
+  Scenario: a track's monitoring is Off until I set it
     When I arm track 2
     Then track 2's monitoring is Off
+
+  Scenario: a track's monitoring is kept when I disarm and arm it again
+    Given I have armed track 2
+    And I have set track 2's monitoring to Always
+    And I have disarmed track 2
+    When I arm track 2
+    Then track 2's monitoring is Always
 
   Scenario: with monitoring on Auto I hear the input through the armed track's sound chain while recording
     Given I have added the VST3 effect "Test Gain" to track 2
@@ -350,3 +359,11 @@ Feature: Recording line-in audio
     When I play the song from measure 1 beat 1
     Then track 2 plays for 4 seconds within 5 ms
     And track 2 sounds a 440 Hz tone within 1% in measures 1 to 2
+
+  Scenario: a take played at the Percentage of Tempo it was recorded at plays sample for sample
+    Given the player plays a 440 Hz tone peaking at 0.4 on input channel 1
+    And I have set the Percentage of Tempo to 80
+    And I have armed track 2
+    And I have recorded from measure 1 beat 1 to measure 3 beat 1
+    When I play the song from measure 1 beat 1
+    Then track 2 sounds take 1 sample for sample in measures 1 to 2

@@ -75,14 +75,14 @@ Feature: Takes
     And track 2 has a take of a constant level of -0.4 from measure 2 beat 1 to measure 3 beat 1
     When I play the song from measure 1 beat 1
     Then track 2 goes from 0.4 to -0.4 over the 256 samples from measure 2 beat 1, within 1 sample
-    And no two consecutive samples of track 2 differ by more than 0.01 in measures 1 and 2
+    And no two consecutive samples of track 2 differ by more than 0.01 from measure 1 beat 1 to measure 3 beat 1
 
   Scenario: going back down to an older take crossfades inside the newer take, before the boundary
     Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to measure 4 beat 1
     And track 2 has a take of a constant level of -0.4 from measure 2 beat 1 to measure 3 beat 1
     When I play the song from measure 1 beat 1
     Then track 2 goes from -0.4 to 0.4 over the 256 samples before measure 3 beat 1, within 1 sample
-    And no two consecutive samples of track 2 differ by more than 0.01 in measures 2 and 3
+    And no two consecutive samples of track 2 differ by more than 0.01 from measure 2 beat 1 to measure 4 beat 1
 
   Scenario: a take chosen for a measure counts as the newer one at its boundaries
     Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to measure 4 beat 1
@@ -190,7 +190,7 @@ Feature: Takes
     And I have set the punch range to measures 2 to 3
     When I record from measure 1 beat 1 to the end of measure 4
     Then track 2 sounds a 440 Hz tone and no 880 Hz tone above -60 dBFS in measures 1 and 4
-    And track 2 sounds a 880 Hz tone and no 440 Hz tone above -60 dBFS in measures 2 to 3
+    And track 2 sounds a 880 Hz tone and no 440 Hz tone above -60 dBFS in measures 2 to 3, but for 256 samples at each end
 
   # Loop recording
 
@@ -273,7 +273,7 @@ Feature: Takes
 
   Scenario: a measure inserted inside takes is silent for all of them, and the takes span over it
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
-    And track 2 has a take of a tone per measure of 660, 770, 880 and 990 Hz from measure 2 beat 1 to the end of measure 3
+    And track 2 has a take of a tone per measure of 660 and 770 Hz from measure 2 beat 1 to the end of measure 3
     And I have inserted a measure before measure 3
     When I play the song from measure 1 beat 1
     Then track 2's takes read "take 2: m2b1 to m5b1, take 1: m1b1 to m6b1"
@@ -284,6 +284,13 @@ Feature: Takes
     And I have removed measure 2
     When I play the song from measure 1 beat 1
     Then track 2 sounds 220, 440 and 550 Hz in measures 1 to 3
+
+  Scenario: where a measure's audio is cut out of a take, the audio before the cut fades out
+    Given track 2 has a take of a constant level of 0.4 from measure 1 beat 1 to the end of measure 4
+    And I have removed measure 2
+    When I play the song from measure 1 beat 1
+    Then track 2 fades from 0.4 to 0 over the 256 samples before measure 2 beat 1, within 1 sample
+    And track 2's sample at measure 2 beat 1 is 0.4
 
   Scenario: removing a measure under a take and undoing brings its audio back sample for sample
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
@@ -313,7 +320,7 @@ Feature: Takes
     And track 2 sounds 220 Hz then 660 Hz from beat 3 in measure 3
 
   Scenario: pasting a measure that plays nothing leaves the target's audio as it was
-    Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 2 beat 1 to the end of measure 4
+    Given track 2 has a take of a tone per measure of 220, 330 and 440 Hz from measure 2 beat 1 to the end of measure 4
     And I have copied measure 1 and pasted it over measure 3
     When I play the song from measure 1 beat 1
     Then track 2's takes read "take 1: m2b1 to m5b1"
@@ -336,14 +343,14 @@ Feature: Takes
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have set the time signature of measure 2 only to <signature>
     When I play the song from measure 1 beat 1
-    Then track 2 sounds 330 Hz for <sounding> and nothing for <silent> in measure 2
+    Then track 2 sounds 330 Hz for the first <sounding> of measure 2 and nothing for the rest of it
     And track 2 sounds 440 and 550 Hz in measures 3 to 4
 
     Examples:
-      | signature | sounding | silent  |
-      | 3/4       | 3 beats  | 0 beats |
-      | 5/4       | 4 beats  | 1 beat  |
-      | 8/8       | 8 beats  | 0 beats |
+      | signature | sounding |
+      | 3/4       | 3 beats  |
+      | 5/4       | 4 beats  |
+      | 8/8       | 8 beats  |
 
   Scenario: editing the tempo under a take stretches it so its beats stay on the song's beats
     Given the player plays clicks of -0.25 on every beat on input channel 1

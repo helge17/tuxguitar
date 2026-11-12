@@ -111,6 +111,16 @@ Feature: Hosting VST3 plugins
     Then track 2's left side sounds a 440 Hz tone peaking at 0.4 within 0.01 in measure 1
     And track 2's right side sounds a 440 Hz tone peaking at 0.2 within 0.01 in measure 1
 
+  Scenario: Balance scales each side of a stereo signal by today's law
+    Given I have added an audio track recording input channel 1
+    And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
+    And I have added the VST3 effect "Test Stereo" to track 2
+    And I have muted track 1
+    And I have set the Balance of track 2's channel to 64
+    When I play the song from measure 1 beat 1
+    Then the output's left side peaks at 0.281 within 0.005 in measure 1
+    And the output's right side peaks at 0.142 within 0.005 in measure 1
+
   Scenario: moving a VST3 effect up changes the order it processes in
     Given I have added the VST3 effect "Test Gain" to track 1
     And I have added the VST3 effect "Test Clip 0.5" to track 1
@@ -267,7 +277,7 @@ Feature: Hosting VST3 plugins
     Given I have turned Play looped on over measures 2 to 3
     And I have added the VST3 effect "Test Tempo" to track 1
     When I play the song from measure 2 beat 1 for 2 passes
-    Then "Test Tempo" was told quarter-note position 4 at the start of each pass, within 1 sample
+    Then "Test Tempo" was told musical position 4 at the start of each pass, within 1/22050 of a quarter note
 
   # Plugin editors, parameters and presets
 
@@ -284,15 +294,19 @@ Feature: Hosting VST3 plugins
     Then TuxGuitar's parameter editor of VST3 effect 1 of track 1 is open
     And the parameters of VST3 effect 1 of track 1 read "Ceiling"
 
-  Scenario: a change made in a plugin's editor changes the sound and modifies the song
+  Scenario: a change made in a plugin's editor changes the sound
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.1 from measure 1 beat 1 to measure 2 beat 1
     And I have added the VST3 effect "Test Gain" to track 2
-    And I have saved the song as a TuxGuitar file
     And the plugin has set "Gain" of VST3 effect 1 of track 2 to 3.0
     When I play the song from measure 1 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.3 within 0.01 in measure 1
-    And the song is modified
+
+  Scenario: a change made in a plugin's editor modifies the song
+    Given I have added the VST3 effect "Test Gain" to track 1
+    And I have saved the song as a TuxGuitar file
+    When the plugin sets "Gain" of VST3 effect 1 of track 1 to 3.0
+    Then the song is modified
 
   Scenario: one gesture in a plugin's editor is one undo step
     Given I have added the VST3 effect "Test Gain" to track 1
