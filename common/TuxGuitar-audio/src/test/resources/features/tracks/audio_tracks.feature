@@ -58,7 +58,12 @@ Feature: Audio tracks
       | change                                                                            |
       | set the General MIDI program of track 2's channel to "Distortion Electric Guitar" |
       | make track 2's channel a percussion channel                                       |
-      | give track 1's channel the source "takes"                                         |
+
+    # choosing a sound chain's source comes with VST3 instruments
+    @planned
+    Examples:
+      | change                                    |
+      | give track 1's channel the source "takes" |
 
   @planned
   Scenario: cloning an audio track clones its takes and sound chain onto a new channel
