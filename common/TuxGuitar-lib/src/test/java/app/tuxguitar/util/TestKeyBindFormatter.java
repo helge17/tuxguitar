@@ -24,6 +24,7 @@ public class TestKeyBindFormatter {
 	public void joinsTheKeysWithPlus() {
 		assertEquals("Ctrl+Shift+S", formatter.format(List.of("Ctrl", "Shift", "S")));
 		assertEquals("F1", formatter.format(List.of("F1")));
+		assertEquals("A+B", formatter.format(List.of("A", "B")));
 		assertEquals("", formatter.format(List.of()));
 	}
 
