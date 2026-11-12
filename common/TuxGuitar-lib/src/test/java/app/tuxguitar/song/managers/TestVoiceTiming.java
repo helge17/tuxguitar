@@ -77,7 +77,9 @@ public class TestVoiceTiming {
 
 	@Test
 	public void aVoiceEmptyInTheFirstBeatStartsWhereTheShortestVoiceEnds() {
-		assertEquals("0:_|n2 2:n4|_", realigned(0, 2, 1, QUARTER, 4, 0));
+		String firstVoiceAlone = new TestVoiceTiming().realigned(0, 2, 0, QUARTER, 4, 1);
+
+		assertEquals("0:_|n2 2:n4|_ ; 0:n2|_ 2:_|n4", realigned(0, 2, 1, QUARTER, 4, 0) + " ; " + firstVoiceAlone);
 	}
 
 	@Test

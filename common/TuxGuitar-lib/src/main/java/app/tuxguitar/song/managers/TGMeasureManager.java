@@ -1199,7 +1199,7 @@ public class TGMeasureManager {
 	// the duration errors of a voice: where its first beat starts, whether its beats follow each other, where it ends
 	private int getVoiceDurationErrors(TGMeasure measure, int voiceIndex) {
 		int errCode = TGMeasureError.OK;
-		long lastPreciseEnd = -1;
+		Long lastPreciseEnd = null;
 		for (TGBeat beat : measure.getBeats()) {
 			TGVoice voice = beat.getVoice(voiceIndex);
 			if (!voice.isEmpty()) {
@@ -1207,15 +1207,15 @@ public class TGMeasureManager {
 				lastPreciseEnd = getPreciseEnd(beat, voice.getDuration());
 			}
 		}
-		if (lastPreciseEnd < 0) {
+		if (lastPreciseEnd == null) {
 			return errCode;
 		}
 		return errCode | getPositionError(lastPreciseEnd, getMeasurePreciseEnd(measure), TGMeasureError.VOICE_TOO_SHORT, TGMeasureError.VOICE_TOO_LONG);
 	}
 
-	// the first beat of a voice (none ends before it) must not start before the measure; any other where the previous one ends
-	private int getVoiceStartError(TGMeasure measure, long beatPreciseStart, long lastPreciseEnd) {
-		if (lastPreciseEnd < 0) {
+	// the first beat of a voice (no previous beat end) must not start before the measure; any other where the previous one ends
+	private int getVoiceStartError(TGMeasure measure, long beatPreciseStart, Long lastPreciseEnd) {
+		if (lastPreciseEnd == null) {
 			return getPositionError(beatPreciseStart, measure.getPreciseStart(), TGMeasureError.VOICE_EARLY_START, TGMeasureError.OK);
 		}
 		return getPositionError(beatPreciseStart, lastPreciseEnd, TGMeasureError.VOICE_OVERLAP, TGMeasureError.VOICE_DISCONTINUOUS);
