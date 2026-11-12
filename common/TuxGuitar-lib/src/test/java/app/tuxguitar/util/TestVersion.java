@@ -2,6 +2,7 @@ package app.tuxguitar.util;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestVersion {
@@ -58,6 +59,16 @@ public class TestVersion {
 		assertTrue(new TGVersion("2.3").compareTo(new TGVersion(2,3,4)) < 0);
 
 		assertEquals(0, new TGVersion(2,3,4).compareTo(new TGVersion("2.3.4")));
+	}
+
+	@Test
+	public void sameVersionWhenMajorMinorAndRevisionAllMatch() {
+		TGVersion version = new TGVersion(2, 3, 4);
+		assertTrue(version.isSameVersion(new TGVersion("2.3.4")));
+		assertFalse(version.isSameVersion(new TGVersion(1, 3, 4)));
+		assertFalse(version.isSameVersion(new TGVersion(2, 2, 4)));
+		assertFalse(version.isSameVersion(new TGVersion(2, 3, 5)));
+		assertFalse(version.isSameVersion(null));
 	}
 
 }
