@@ -90,6 +90,28 @@ public class TestAudioTracks {
 	}
 
 	@Test
+	public void aClonedAudioTrackGetsACopyOfItsChannel() {
+		TGTrack track = addAudioTrack();
+		channelOf(track).setVolume((short) 90);
+
+		TGTrack clone = songManager.cloneTrack(song, track);
+
+		assertEquals(3, song.countChannels());
+		assertEquals(3, clone.getChannelId());
+		assertEquals(2, channelOf(clone).getAudioInput().getChannel());
+		assertEquals(90, channelOf(clone).getVolume());
+		assertEquals(2, track.getChannelId());
+	}
+
+	@Test
+	public void aClonedGuitarTrackSharesItsChannel() {
+		TGTrack clone = songManager.cloneTrack(song, song.getTrack(0));
+
+		assertEquals(1, song.countChannels());
+		assertEquals(1, clone.getChannelId());
+	}
+
+	@Test
 	public void aCopiedChannelSharesTheAudioInput() {
 		TGChannel channel = channelOf(addAudioTrack());
 

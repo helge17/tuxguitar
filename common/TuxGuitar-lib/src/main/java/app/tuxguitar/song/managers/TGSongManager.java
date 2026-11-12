@@ -477,6 +477,12 @@ public class TGSongManager {
 	public TGTrack cloneTrack(TGSong song, TGTrack track){
 		TGTrack clone = track.clone(getFactory(),song);
 		clone.setNumber(getNextTrackNumber(song));
+		if( track.isAudio() ){
+			// an audio track's channel is its own: the clone gets a copy of it
+			TGChannel channel = getChannel(song, track.getChannelId()).clone(getFactory());
+			channel.setChannelId(getNextChannelId(song));
+			clone.setChannelId(addChannel(song, channel).getChannelId());
+		}
 		addTrack(song, clone);
 		return clone;
 	}
