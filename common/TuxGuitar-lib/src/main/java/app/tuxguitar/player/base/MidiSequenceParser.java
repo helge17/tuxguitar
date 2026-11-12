@@ -1,6 +1,7 @@
 package app.tuxguitar.player.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -182,11 +183,9 @@ public class MidiSequenceParser {
 
 	private void addBeats(MidiSequenceHelper sh, TGChannel channel, TGTrack track, TGMeasure measure, int mIndex, long startMove) {
 		int[] stroke = new int[track.stringCount()];
-		TGBeat previous = null;
 		for (int bIndex = 0; bIndex < measure.countBeats(); bIndex++) {
 			TGBeat beat = measure.getBeat(bIndex);
-			addNotes( sh, channel, track, beat, measure.getTempo(), mIndex, bIndex, startMove, getStroke(beat, previous, stroke) );
-			previous = beat;
+			addNotes( sh, channel, track, beat, measure.getTempo(), mIndex, bIndex, startMove, getStroke(beat, stroke) );
 		}
 	}
 
@@ -508,10 +507,8 @@ public class MidiSequenceParser {
 	}
 
 	private long getRealNoteDuration(MidiSequenceHelper sh, TGTrack track, TGNote note, TGTempo tempo, long duration,int mIndex, int bIndex) {
-		boolean letRing = (note.getEffect().isLetRing());
-		boolean letRingBeatChanged = false;
 		long lastEnd = (note.getVoice().getBeat().getStart() + note.getVoice().getDuration().getTime() + sh.getMeasureHelper(mIndex).getMove());
-		long realDuration = duration;
+		SoundingNote sounding = new SoundingNote(note, mIndex, duration, lastEnd);
 		int nextBIndex = (bIndex + 1);
 		int mCount = sh.getMeasureHelpers().size();
 		for (int m = mIndex; m < mCount; m++) {
@@ -522,47 +519,13 @@ public class MidiSequenceParser {
 			for (int b = nextBIndex; b < beatCount; b++) {
 				TGBeat beat = measure.getBeat(b);
 				TGVoice voice = beat.getVoice(note.getVoice().getIndex());
-				if(!voice.isEmpty()){
-					if(voice.isRestVoice()){
-						return applyDurationEffects(note, tempo, realDuration);
-					}
-					int noteCount = voice.countNotes();
-					for (int n = 0; n < noteCount; n++) {
-						TGNote nextNote = voice.getNote( n );
-						if (!nextNote.equals(note) || mIndex != m ) {
-							if (letRing) {
-								// letRing does not survive a repeat close
-								if ((mIndex != m) && (note.getVoice().getBeat().getMeasure().getRepeatClose() > 0)) {
-									return applyDurationEffects(note, tempo, realDuration);
-								}
-								// end of letRing chain?
-								if (!nextNote.getEffect().isLetRing()) {
-									realDuration += voice.getDuration().getTime();
-									return applyDurationEffects(note, tempo, realDuration);
-								}
-							}
-							if (nextNote.getString() == note.getString()) {
-								if (nextNote.isTiedNote()) {
-									realDuration += (mh.getMove() + beat.getStart() - lastEnd) + (nextNote.getVoice().getDuration().getTime());
-									lastEnd = (mh.getMove() + beat.getStart() + voice.getDuration().getTime());
-									letRing = (nextNote.getEffect().isLetRing());
-									letRingBeatChanged = true;
-								} else {
-									return applyDurationEffects(note, tempo, realDuration);
-								}
-							}
-						}
-					}
-					if(letRing && !letRingBeatChanged){
-						realDuration += ( voice.getDuration().getTime() );
-						lastEnd += voice.getDuration().getTime();
-					}
-					letRingBeatChanged = false;
+				if(!voice.isEmpty() && sounding.endsAt(mh, m, beat, voice)){
+					return applyDurationEffects(note, tempo, sounding.duration);
 				}
 			}
 			nextBIndex = 0;
 		}
-		return applyDurationEffects(note, tempo, realDuration);
+		return applyDurationEffects(note, tempo, sounding.duration);
 	}
 
 	private long applyDurationEffects(TGNote note, TGTempo tempo, long duration){
@@ -609,40 +572,39 @@ public class MidiSequenceParser {
 		return ((velocity > 127)?127:velocity);
 	}
 
-	private int[] getStroke(TGBeat beat, TGBeat previous, int[] stroke){
+	// the delay of each string in the stroke of the beat; a beat without stroke delays none
+	private int[] getStroke(TGBeat beat, int[] stroke){
 		int direction = beat.getStroke().getDirection();
-		if( previous == null || !(direction == TGStroke.STROKE_NONE && previous.getStroke().getDirection() == TGStroke.STROKE_NONE)){
-			if( direction == TGStroke.STROKE_NONE ){
-				for( int i = 0 ; i < stroke.length ; i ++ ){
-					stroke[ i ] = 0;
-				}
-			}else{
-				int stringUseds = 0;
-				int stringCount = 0;
-				for( int vIndex = 0; vIndex < beat.countVoices(); vIndex ++ ){
-					TGVoice voice = beat.getVoice(vIndex);
-					for (int nIndex = 0; nIndex < voice.countNotes(); nIndex++) {
-						TGNote note = voice.getNote(nIndex);
-						if( !note.isTiedNote() ){
-							stringUseds |= 0x01 << ( note.getString() - 1 );
-							stringCount ++;
-						}
-					}
-				}
-				if( stringCount > 0 ){
-					int strokeMove = 0;
-					int strokeIncrement = beat.getStroke().getIncrementTime(beat);
-					for( int i = 0 ; i < stroke.length ; i ++ ){
-						int index = ( direction == TGStroke.STROKE_DOWN ? (stroke.length - 1) - i : i );
-						if( (stringUseds & ( 0x01 << index ) ) != 0 ){
-							stroke[ index ] = strokeMove;
-							strokeMove += strokeIncrement;
-						}
-					}
+		if( direction == TGStroke.STROKE_NONE ){
+			Arrays.fill(stroke, 0);
+		}else{
+			int stringsUsed = this.stringsStruck(beat);
+			int strokeMove = 0;
+			int strokeIncrement = beat.getStroke().getIncrementTime(beat);
+			for( int i = 0 ; i < stroke.length ; i ++ ){
+				int index = ( direction == TGStroke.STROKE_DOWN ? (stroke.length - 1) - i : i );
+				if( (stringsUsed & ( 0x01 << index ) ) != 0 ){
+					stroke[ index ] = strokeMove;
+					strokeMove += strokeIncrement;
 				}
 			}
 		}
 		return stroke;
+	}
+
+	// the strings of the notes of the beat that are not tied, one bit each, string 1 the lowest bit
+	private int stringsStruck(TGBeat beat) {
+		int stringsUsed = 0;
+		for( int vIndex = 0; vIndex < beat.countVoices(); vIndex ++ ){
+			TGVoice voice = beat.getVoice(vIndex);
+			for (int nIndex = 0; nIndex < voice.countNotes(); nIndex++) {
+				TGNote note = voice.getNote(nIndex);
+				if( !note.isTiedNote() ){
+					stringsUsed |= 0x01 << ( note.getString() - 1 );
+				}
+			}
+		}
+		return stringsUsed;
 	}
 
 	private long applyStrokeStart( TGNote note, long start , int[] stroke){
@@ -749,12 +711,9 @@ public class MidiSequenceParser {
 				TGBeat beat = measure.getBeat( b );
 				TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
 				if( !voice.isEmpty() ){
-					int noteCount = voice.countNotes();
-					for (int n = 0; n < noteCount; n++) {
-						TGNote nextNote = voice.getNote( n );
-						if(nextNote.getString() == note.getString()){
-							return new MidiNoteHelper(mh,nextNote);
-						}
+					TGNote nextNote = noteOnString(voice, note.getString());
+					if( nextNote != null ){
+						return new MidiNoteHelper(mh,nextNote);
 					}
 					if( breakAtRest ){
 						return null;
@@ -772,18 +731,15 @@ public class MidiSequenceParser {
 			MidiMeasureHelper mh = pHelper.getMeasureHelper( m );
 
 			TGMeasure measure = track.getMeasure( mh.getIndex() );
-			if( this.sHeader == -1 || this.sHeader <= measure.getNumber() ){
+			if( this.isPlayedFrom(measure) ){
 				nextBIndex = (nextBIndex < 0 ? measure.countBeats() : nextBIndex);
 				for (int b = (nextBIndex - 1); b >= 0; b--) {
 					TGBeat beat = measure.getBeat( b );
 					TGVoice voice = beat.getVoice( note.getVoice().getIndex() );
 					if( !voice.isEmpty() ){
-						int noteCount = voice.countNotes();
-						for (int n = 0; n < noteCount; n ++) {
-							TGNote current = voice.getNote( n );
-							if(current.getString() == note.getString()){
-								return new MidiNoteHelper(mh,current);
-							}
+						TGNote current = noteOnString(voice, note.getString());
+						if( current != null ){
+							return new MidiNoteHelper(mh,current);
 						}
 						if( breakAtRest ){
 							return null;
@@ -792,6 +748,23 @@ public class MidiSequenceParser {
 				}
 			}
 			nextBIndex = -1;
+		}
+		return null;
+	}
+
+	// whether the measure is played: there is no start header, or it is not before it
+	private boolean isPlayedFrom(TGMeasure measure) {
+		return ( this.sHeader == -1 || this.sHeader <= measure.getNumber() );
+	}
+
+	// the first note of the voice on the string, or null
+	private TGNote noteOnString(TGVoice voice, int string) {
+		int noteCount = voice.countNotes();
+		for (int n = 0; n < noteCount; n++) {
+			TGNote current = voice.getNote( n );
+			if( current.getString() == string ){
+				return current;
+			}
 		}
 		return null;
 	}
@@ -817,6 +790,79 @@ public class MidiSequenceParser {
 		// the point as played, its pitch within the MIDI range
 		public PitchPoint played() {
 			return new PitchPoint(this.start, fix(this.pitch));
+		}
+	}
+
+	// a note while it sounds: how long it lasts so far, through the tied notes and (letting ring) the beats after it
+	private static class SoundingNote {
+		private final TGNote note;
+		private final int mIndex;
+		private boolean letRing;
+		private boolean letRingBeatChanged;
+		private long lastEnd;
+		private long duration;
+
+		public SoundingNote(TGNote note, int mIndex, long duration, long lastEnd) {
+			this.note = note;
+			this.mIndex = mIndex;
+			this.duration = duration;
+			this.lastEnd = lastEnd;
+			this.letRing = note.getEffect().isLetRing();
+			this.letRingBeatChanged = false;
+		}
+
+		// goes on through a voice that is not empty: whether the note stops sounding there
+		public boolean endsAt(MidiMeasureHelper mh, int m, TGBeat beat, TGVoice voice) {
+			if(voice.isRestVoice()){
+				return true;
+			}
+			int noteCount = voice.countNotes();
+			for (int n = 0; n < noteCount; n++) {
+				TGNote nextNote = voice.getNote( n );
+				if ((!nextNote.equals(this.note) || this.mIndex != m) && this.endsWith(nextNote, mh, beat, m, voice)) {
+					return true;
+				}
+			}
+			this.ringThrough(voice);
+			return false;
+		}
+
+		private void ringThrough(TGVoice voice) {
+			if(this.letRing && !this.letRingBeatChanged){
+				this.duration += ( voice.getDuration().getTime() );
+				this.lastEnd += voice.getDuration().getTime();
+			}
+			this.letRingBeatChanged = false;
+		}
+
+		// whether a following note ends this one; a tied note on its string lengthens it instead
+		private boolean endsWith(TGNote nextNote, MidiMeasureHelper mh, TGBeat beat, int m, TGVoice voice) {
+			if (this.letRing && this.letRingEndsAt(nextNote, m, voice)) {
+				return true;
+			}
+			if (nextNote.getString() != this.note.getString()) {
+				return false;
+			}
+			if (!nextNote.isTiedNote()) {
+				return true;
+			}
+			this.duration += (mh.getMove() + beat.getStart() - this.lastEnd) + (nextNote.getVoice().getDuration().getTime());
+			this.lastEnd = (mh.getMove() + beat.getStart() + voice.getDuration().getTime());
+			this.letRing = (nextNote.getEffect().isLetRing());
+			this.letRingBeatChanged = true;
+			return false;
+		}
+
+		// letting ring ends at a repeat close, or, sounding through this voice, at a note that does not let ring
+		private boolean letRingEndsAt(TGNote nextNote, int m, TGVoice voice) {
+			if ((this.mIndex != m) && (this.note.getVoice().getBeat().getMeasure().getRepeatClose() > 0)) {
+				return true;
+			}
+			if (!nextNote.getEffect().isLetRing()) {
+				this.duration += voice.getDuration().getTime();
+				return true;
+			}
+			return false;
 		}
 	}
 
