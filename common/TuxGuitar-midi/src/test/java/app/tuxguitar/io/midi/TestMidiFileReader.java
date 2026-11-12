@@ -130,19 +130,13 @@ public class TestMidiFileReader {
 			events(0, 0xf1, 0, 0xfe, 0, 0xff, END_OF_TRACK, 0));
 	}
 
-	@Test
-	public void rejectsDataByteWithoutAnyStatus() {
-		assertStatusMissing(0, 0x3c, 0x64);
-	}
-
-	@Test
-	public void systemExclusiveCancelsRunningStatus() {
-		assertStatusMissing(0, 0x90, 0x3c, 0x64, 0, 0xf0, 0x01, 0xf7, 0, 0x3c, 0x00);
-	}
-
-	@Test
-	public void metaEventCancelsRunningStatus() {
-		assertStatusMissing(0, 0x90, 0x3c, 0x64, 0, 0xff, 0x01, 0x00, 0, 0x3c, 0x00);
+	// a data byte without running status: none set yet, or cancelled by a sysex or meta event
+	@TestFactory
+	public Stream<DynamicTest> rejectsDataByteWithoutRunningStatus() {
+		return Stream.of(
+				statusMissing("no status yet", 0, 0x3c, 0x64),
+				statusMissing("after sysex", 0, 0x90, 0x3c, 0x64, 0, 0xf0, 0x01, 0xf7, 0, 0x3c, 0x00),
+				statusMissing("after meta event", 0, 0x90, 0x3c, 0x64, 0, 0xff, 0x01, 0x00, 0, 0x3c, 0x00));
 	}
 
 	@Test
@@ -176,9 +170,11 @@ public class TestMidiFileReader {
 		});
 	}
 
-	private static void assertStatusMissing(int... body) {
-		MidiFileException error = assertThrows(MidiFileException.class, () -> events(body));
-		assertEquals("corrupt MIDI file: status byte missing", error.getMessage());
+	private static DynamicTest statusMissing(String name, int... body) {
+		return DynamicTest.dynamicTest(name, () -> {
+			MidiFileException error = assertThrows(MidiFileException.class, () -> events(body));
+			assertEquals("corrupt MIDI file: status byte missing", error.getMessage());
+		});
 	}
 
 	// the events of a one-track file holding the given track body, as "@tick type command [data]"
