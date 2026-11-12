@@ -13,11 +13,18 @@ import app.tuxguitar.song.models.TGVoice;
  * note of the group, beyond the outermost notes (below the lowest for stems down, above the highest for stems up),
  * its slope limited to 10 units, and flat when a note inside the group is further out than both ends.
  *
- * Notes are on the high E string; a group is described as "y@x" at each stem, then at the middle of the group.
+ * A chord counts at its lowest note for stems down and at its highest for stems up; a repeated outermost note counts
+ * at its first occurrence, so the beam slants from it rather than lying flat.
+ *
+ * Notes are on the high E string (with, for chords, a note on the B string); a group is described as "y@x" at each stem, then at the middle of the group.
  */
 public class TestBeamSlope {
 
 	private LayoutHarness harness;
+	// per beat, a fret on the B string sounding with the high E note, or NONE
+	private int[] chordFrets = new int[0];
+
+	private static final int NONE = -1;
 
 	// notes of the given value, on the given frets, in one beam group, with stems forced in one direction
 	private String beam(int direction, int durationValue, int... frets) {
@@ -25,6 +32,9 @@ public class TestBeamSlope {
 		long length = (TGDuration.WHOLE_PRECISE_DURATION / durationValue);
 		for (int i = 0; i < frets.length; i++) {
 			harness.note(i * length, durationValue, 0, 1, frets[i]).getVoice().setDirection(direction);
+			if (i < chordFrets.length && chordFrets[i] != NONE) {
+				harness.note(i * length, durationValue, 0, 2, chordFrets[i]);
+			}
 		}
 		harness.update(SCORE);
 
@@ -99,5 +109,31 @@ public class TestBeamSlope {
 		beam(TGVoice.DIRECTION_DOWN, TGDuration.EIGHTH, 0, 2);
 		TGBeatGroup group = ((TGBeatImpl) harness.measure().getBeat(0)).getVoiceImpl(0).getBeatGroup();
 		assertEquals("39.958336@33.0", describe(group, 33f));
+	}
+
+	// ---- chords and repeated notes: which note the beam starts, ends, or lies flat at ----
+
+	@Test
+	public void stemsDownStartAndEndAtTheLowestNoteOfAChord() {
+		chordFrets = new int[] {0, NONE};
+		String chordFirst = beam(TGVoice.DIRECTION_DOWN, TGDuration.EIGHTH, 0, 2);
+		chordFrets = new int[] {NONE, 0};
+		String chordLast = beam(TGVoice.DIRECTION_DOWN, TGDuration.EIGHTH, 2, 0);
+
+		assertEquals("41.125@81.0 31.125@99.0 36.125@90.0 | 31.125@81.0 41.125@99.0 36.125@90.0", chordFirst + " | " + chordLast);
+	}
+
+	@Test
+	public void stemsUpEndAtTheHighestNoteOfAChord() {
+		chordFrets = new int[] {NONE, 0};
+
+		assertEquals("-24.5@81.0 -24.5@99.0 -24.5@90.0", beam(TGVoice.DIRECTION_UP, TGDuration.EIGHTH, 0, 0));
+	}
+
+	@Test
+	public void aRepeatedOutermostNoteCountsAtItsFirstOccurrence() {
+		assertEquals("30.625@81.0 25.625@97.0 20.625@113.0 25.625@97.0 | -35.0@81.0 -30.0@97.0 -25.0@113.0 -30.0@97.0",
+			beam(TGVoice.DIRECTION_DOWN, TGDuration.SIXTEENTH, 0, 0, 5)
+			+ " | " + beam(TGVoice.DIRECTION_UP, TGDuration.SIXTEENTH, 5, 5, 0));
 	}
 }

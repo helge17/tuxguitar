@@ -14,6 +14,13 @@ public class TGBeatGroup {
 	private static final int UP_OFFSET = 28;
 	private static final int DOWN_OFFSET = 35;
 
+	// which side of the current pick a note must be on to replace it: in time, then in score position
+	private static final int EARLIER = -1;
+	private static final int LATER = 1;
+	private static final int ANYTIME = 0;
+	private static final int SMALLER = -1;
+	private static final int GREATER = 1;
+
 	private int voice;
 	private int direction;
 	private List<TGVoice> voices;
@@ -53,46 +60,29 @@ public class TGBeatGroup {
 	private void check(TGLayout layout, TGNoteImpl note){
 		int value = TGNotation.computePosition(layout, note);
 
-		//FIRST MIN NOTE
-		if( this.firstMinNote == null || note.getVoice().getBeat().getStart() < this.firstMinNote.getVoice().getBeat().getStart()){
-			this.firstMinNote = note;
-		}else if(note.getVoice().getBeat().getStart() == this.firstMinNote.getVoice().getBeat().getStart()){
-			if( value < TGNotation.computePosition(layout, this.firstMinNote)){
-				this.firstMinNote = note;
-			}
-		}
-		//FIRST MAX NOTE
-		if( this.firstMaxNote == null || note.getVoice().getBeat().getStart() < this.firstMaxNote.getVoice().getBeat().getStart()){
-			this.firstMaxNote = note;
-		}else if(note.getVoice().getBeat().getStart() == this.firstMaxNote.getVoice().getBeat().getStart()){
-			if( value > TGNotation.computePosition(layout, this.firstMaxNote)){
-				this.firstMaxNote = note;
-			}
-		}
+		this.firstMinNote = pick(layout, this.firstMinNote, note, value, EARLIER, SMALLER);
+		this.firstMaxNote = pick(layout, this.firstMaxNote, note, value, EARLIER, GREATER);
+		this.lastMinNote = pick(layout, this.lastMinNote, note, value, LATER, SMALLER);
+		this.lastMaxNote = pick(layout, this.lastMaxNote, note, value, LATER, GREATER);
+		this.maxNote = pick(layout, this.maxNote, note, value, ANYTIME, GREATER);
+		this.minNote = pick(layout, this.minNote, note, value, ANYTIME, SMALLER);
+	}
 
-		//LAST MIN NOTE
-		if( this.lastMinNote == null || note.getVoice().getBeat().getStart() > this.lastMinNote.getVoice().getBeat().getStart()){
-			this.lastMinNote = note;
-		}else if(note.getVoice().getBeat().getStart() == this.lastMinNote.getVoice().getBeat().getStart()){
-			if( value < TGNotation.computePosition(layout, this.lastMinNote)){
-				this.lastMinNote = note;
-			}
+	// the note (at position value) replaces the current pick when there is none yet, when it starts on the wanted
+	// side of it, or when it starts with it and its position is on the wanted side; ties keep the current pick
+	private static TGNoteImpl pick(TGLayout layout, TGNoteImpl current, TGNoteImpl note, int value, int startSide, int positionSide){
+		if( current == null ){
+			return note;
 		}
-		//LAST MIN NOTE
-		if( this.lastMaxNote == null || note.getVoice().getBeat().getStart() > this.lastMaxNote.getVoice().getBeat().getStart()){
-			this.lastMaxNote = note;
-		}else if(note.getVoice().getBeat().getStart() == this.lastMaxNote.getVoice().getBeat().getStart()){
-			if( value > TGNotation.computePosition(layout, this.lastMaxNote)){
-				this.lastMaxNote = note;
-			}
+		int side = (Long.compare(getStart(note), getStart(current)) * startSide);
+		if( side == 0 ){
+			side = (Integer.compare(value, TGNotation.computePosition(layout, current)) * positionSide);
 		}
+		return (side > 0 ? note : current);
+	}
 
-		if( this.maxNote == null || value > TGNotation.computePosition(layout, this.maxNote)){
-			this.maxNote = note;
-		}
-		if( this.minNote == null || value < TGNotation.computePosition(layout, this.minNote)){
-			this.minNote = note;
-		}
+	private static long getStart(TGNoteImpl note){
+		return note.getVoice().getBeat().getStart();
 	}
 
 	public void finish(TGLayout layout, TGMeasureImpl measure){
