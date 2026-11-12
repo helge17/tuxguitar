@@ -1,60 +1,89 @@
 @planned
 Feature: Audio tracks
-  An audio track sounds its takes instead of notes. It has no strings, holds no notes, and has a channel of its own.
-  Audio tracks need the TuxGuitar Synthesizer as the MIDI Port.
+  An audio track sounds its takes instead of notes. It has no strings, holds no notes, and has a channel of its own,
+  outside the 16 MIDI channels. Audio tracks need the TuxGuitar Synthesizer as the MIDI Port.
 
   Background:
     Given a new song with one guitar track and 4 measures of 4/4 at 120 bpm
-    And the MIDI Port is "TuxGuitar Synthesizer"
-    And the audio device is "Test Interface"
+    And I have set the MIDI Port to "TuxGuitar Synthesizer"
+    And I have set the audio device to "Test Interface"
+    And the VST3 folders hold the test plugins
 
-  Scenario: a new audio track has no strings and no takes, and sounds its takes
-    When I add an audio track recording input channel 1
+  Scenario: a new audio track has no strings, no takes and a channel of its own
+    When I add an audio track recording input channel 2
     Then the action succeeds
-    And the song has 2 tracks
     And track 2 is an audio track with 0 strings
+    And track 2 records input channel 2
     And track 2's takes read ""
     And track 2's sound chain reads "takes"
+    And track 2's channel is not track 1's channel
 
-  Scenario: an audio track gets a channel of its own
+  Scenario: an audio track can be added when all 16 MIDI channels are in use
+    Given the song has 16 guitar tracks, each on a MIDI channel of its own
     When I add an audio track recording input channel 1
-    Then track 2's channel is not track 1's channel
+    Then the action succeeds
+    And track 17 is an audio track
 
   Scenario: an audio track holds no notes
     Given I have added an audio track recording input channel 1
-    And the caret is on track 2
+    And I have moved the caret to track 2
     When I enter fret 5 on string 1
     Then the action is refused
+    And track 2 holds no notes
 
-  Scenario: no other track can use an audio track's channel
+  Scenario Outline: an audio track and another track cannot share a channel
     Given I have added an audio track recording input channel 1
-    When I set track 1's channel to the channel of track 2
+    When I set track <from>'s channel to the channel of track <to>
     Then the action is refused
+    And track 1's sound chain reads "Steel String Acoustic Guitar"
     And track 2's sound chain reads "takes"
 
-  Scenario: an audio track cannot use another track's channel
+    Examples:
+      | from | to |
+      | 1    | 2  |
+      | 2    | 1  |
+
+  Scenario Outline: a guitar track cannot become an audio track, nor an audio track a guitar track
     Given I have added an audio track recording input channel 1
-    When I set track 2's channel to the channel of track 1
+    When I <change>
     Then the action is refused
+    And track 1's sound chain reads "Steel String Acoustic Guitar"
+    And track 2's sound chain reads "takes"
+
+    Examples:
+      | change                                                                         |
+      | set the General MIDI program of track 2's channel to "Distortion Electric Guitar" |
+      | set the General MIDI program of track 2's channel to "Standard Kit"            |
+      | give track 1's channel the source "takes"                                      |
 
   Scenario: cloning an audio track clones its takes and sound chain onto a new channel
-    Given the VST3 folders hold the test plugins
-    And I have added an audio track recording input channel 1
+    Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     And I have added the VST3 effect "Test Gain" to track 2
+    And I have set "Gain" of VST3 effect 1 of track 2 to 3.0
+    And I have armed track 2
     When I clone track 2
     Then track 3 is an audio track
     And track 3's takes read "take 1: m1b1 to m2b1"
     And track 3's sound chain reads "takes > Test Gain"
+    And "Gain" of VST3 effect 1 of track 3 is 3.0
     And track 3's channel is not track 2's channel
+    And track 3 is not armed
 
-  Scenario: removing an audio track and undoing brings its takes back sample for sample
+  Scenario: removing an audio track removes its channel
+    Given I have added an audio track recording input channel 1
+    When I remove track 2
+    Then the song has 1 channel
+
+  Scenario: removing an armed audio track and undoing brings it back with its takes, not armed
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
+    And I have armed track 2
     And I have removed track 2
     When I undo
     Then track 2 is an audio track
-    And take 1 of track 2 is sample for sample what it was before
+    And take 1 of track 2 is sample for sample what it was
+    And track 2 is not armed
 
   Scenario: moving an armed audio track keeps it armed and keeps its takes
     Given I have added an audio track recording input channel 1
@@ -65,13 +94,7 @@ Feature: Audio tracks
     And track 1 is armed
     And track 1's takes read "take 1: m1b1 to m2b1"
 
-  Scenario: a guitar track cannot become an audio track, nor an audio track a guitar track
-    Given I have added an audio track recording input channel 1
-    When I give track 1 the source "takes"
-    Then the action is refused
-    And track 1's sound chain reads "Steel String Acoustic Guitar"
-
-  Scenario Outline: muting and soloing work on audio tracks as on other tracks
+  Scenario Outline: audio tracks are muted and soloed as other tracks are
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     And I have <done>
@@ -79,28 +102,33 @@ Feature: Audio tracks
     Then the output <result> a 440 Hz tone above -60 dBFS
 
     Examples:
-      | done              | result        |
-      | muted track 2     | does not hold |
-      | soloed track 1    | does not hold |
-      | soloed track 2    | holds         |
-      | left both unmuted | holds         |
+      | done           | result        |
+      | muted track 2  | holds no      |
+      | soloed track 1 | holds no      |
+      | soloed track 2 | holds         |
+      | muted track 1  | holds         |
 
-  Scenario Outline: audio tracks are silent and cannot record unless the MIDI Port is the TuxGuitar Synthesizer
+  Scenario Outline: audio tracks sound only when the MIDI Port is the TuxGuitar Synthesizer
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
-    And the MIDI Port is "<port>"
+    And I have set the MIDI Port to "<port>"
     When I play the song from measure 1 beat 1
     Then the output <result> a 440 Hz tone above -60 dBFS
 
     Examples:
-      | port                  | result        |
-      | TuxGuitar Synthesizer | holds         |
-      | Test MIDI Out         | does not hold |
+      | port                  | result   |
+      | TuxGuitar Synthesizer | holds    |
+      | Test MIDI Out         | holds no |
 
-  Scenario: recording is refused unless the MIDI Port is the TuxGuitar Synthesizer
+  Scenario Outline: recording needs the TuxGuitar Synthesizer as the MIDI Port
     Given I have added an audio track recording input channel 1
     And I have armed track 2
-    And the MIDI Port is "Test MIDI Out"
+    And I have set the MIDI Port to "<port>"
     When I record from measure 1 beat 1 to measure 2 beat 1
-    Then the action is refused
-    And track 2's takes read ""
+    Then the action <outcome>
+    And track 2's takes read "<takes>"
+
+    Examples:
+      | port                  | outcome    | takes                |
+      | TuxGuitar Synthesizer | succeeds   | take 1: m1b1 to m2b1 |
+      | Test MIDI Out         | is refused |                      |
