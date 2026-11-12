@@ -135,6 +135,20 @@ public class TestSequenceParserNotes {
 				note(1920, 2880, 64), note(1920, 2880, 59, 95, 2, 0)), stroked(TGStroke.STROKE_DOWN, 1, 2));
 	}
 
+	// ---- default controls ----
+
+	// with default controls, every channel gets its pitch bend range (12 semitones) on the info track, at the song start
+	@Test
+	public void defaultControlsSetThePitchBendRangeOfEveryChannel() {
+		List<String> without = song.parse().events("cc");
+		song.flags = MidiSequenceParser.ADD_DEFAULT_CONTROLS;
+		List<String> infoTrack = new ArrayList<String>(song.parse().events("cc"));
+		infoTrack.removeIf(event -> !event.contains(" t0 "));
+
+		assertEquals(List.of(), without);
+		assertEquals(List.of("cc 960 t0 c1 101=0", "cc 960 t0 c1 100=0", "cc 960 t0 c1 6=12", "cc 960 t0 c1 38=0"), infoTrack);
+	}
+
 	// ---- metronome ----
 
 	private static String[] tick(long start, long end) {
