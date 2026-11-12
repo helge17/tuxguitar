@@ -1,11 +1,14 @@
 package app.tuxguitar.song.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import app.tuxguitar.song.factory.TGFactory;
@@ -66,6 +70,20 @@ public class TestTGDurationSplitPins {
 			TGDuration.splitPreciseDuration(time, max, FACTORY, value, division);
 	private static final Splitter APPROXIMATE = (time, max, value, division) ->
 			TGDuration.splitPreciseDurationApproximately(time, max, FACTORY, value, division);
+
+	// zero needs no duration, even when the limits would allow none (negative max)
+	@Test
+	public void zeroIsSplitIntoNothingWhateverTheLimits() {
+		assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+			assertEquals(0, TGDuration.splitPreciseDuration(0, -1, FACTORY).size());
+			assertEquals(0, TGDuration.splitPreciseDurationApproximately(0, -1, FACTORY, null, null).size());
+		});
+	}
+
+	@Test
+	public void aSingleTickCannotBeSplitExactly() {
+		assertNull(TGDuration.splitPreciseDuration(1, WHOLE, FACTORY));
+	}
 
 	@TestFactory
 	public Stream<DynamicTest> splitResultsMatchRecordedDigests() {
