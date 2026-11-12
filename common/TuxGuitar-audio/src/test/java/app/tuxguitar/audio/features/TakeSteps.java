@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.LongToDoubleFunction;
 
+import app.tuxguitar.audio.TGAudioSession;
 import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRecording;
 import app.tuxguitar.audio.TGTimeline;
@@ -23,6 +24,7 @@ import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGTakeSegment;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -46,7 +48,7 @@ public class TakeSteps {
 	}
 
 	// as if recorded at the song's tempo, from the player playing the signal on the track's input, on a device of its own
-	// without latency (so no round trip)
+	// without latency (so no round trip), in a session of its own (no punch range, nothing armed)
 	@Given("track {int} has a take of {signal} from {position} to {position}")
 	public void hasATake(int number, String signal, SongPosition from, SongPosition to) {
 		TestInterface device = new TestInterface();
@@ -54,7 +56,9 @@ public class TakeSteps {
 		List<TGPlayedMeasure> played = TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1);
 		device.setPlayed(new TGTimeline(world.song(), played, device.getSampleRate()));
 		device.play(world.channel(world.track(number)).getAudioInput().getChannel(0), Signals.parse(signal, world.song(), device, from.measure()));
-		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), device, null, 0);
+		TGAudioSession session = TGAudioSession.getInstance(new TGContext());
+		session.setDevice(device);
+		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), session);
 		recording.record(List.of(world.track(number)), played);
 		world.rememberTakes(number);
 	}

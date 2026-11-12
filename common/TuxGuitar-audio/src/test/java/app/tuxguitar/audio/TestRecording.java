@@ -3,6 +3,7 @@ package app.tuxguitar.audio;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 
 /**
  * Pins what TGRecording asks the audio device for: from which sample of its clock (counting from the start of the
@@ -19,7 +21,8 @@ import app.tuxguitar.song.models.TGTrack;
  * where song time puts the measures it records.
  *
  * The song has 4 measures of 4/4 at 120 bpm (88200 samples each at 44100 Hz) and an audio track on input channel 2.
- * The device reads back each capture as "input:from+count".
+ * The device reads back each capture as "input:from+count", and delivers a constant level of 0.5. The track is not
+ * armed in the session unless a test arms it.
  */
 public class TestRecording {
 
@@ -30,7 +33,7 @@ public class TestRecording {
 	private final TGSong song = songManager.newSong();
 	private final TGTrack track;
 	private final List<String> captures = new ArrayList<String>();
-	private int roundTrip;
+	private final TGAudioSession session = TGAudioSession.getInstance(new TGContext());
 
 	private final TGAudioDevice device = new TGAudioDevice() {
 		public int getSampleRate() {
@@ -39,7 +42,9 @@ public class TestRecording {
 
 		public float[] capture(int inputChannel, long from, int count) {
 			captures.add(inputChannel + ":" + from + "+" + count);
-			return new float[count];
+			float[] samples = new float[count];
+			Arrays.fill(samples, 0.5f);
+			return samples;
 		}
 	};
 
@@ -48,12 +53,14 @@ public class TestRecording {
 			songManager.addNewMeasureBeforeEnd(song);
 		}
 		track = songManager.addAudioTrack(song, TGAudioInput.mono(2));
+		session.setDevice(device);
 	}
 
 	// positions are in ticks from the start of measure 1
 	private int record(long start, long stop, int percent, TGPunchRange punchRange) {
 		long origin = song.getMeasureHeader(0).getStart();
-		TGRecording recording = new TGRecording(songManager, song, device, punchRange, roundTrip);
+		session.setPunchRange(punchRange);
+		TGRecording recording = new TGRecording(songManager, song, session);
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setCurrentPercent(percent);
 		return recording.record(List.of(track), TGSongTime.play(song, mode, origin + start, origin + stop, 1));
@@ -79,10 +86,22 @@ public class TestRecording {
 	// much later, so it lands on the beat
 	@Test
 	public void theDeviceIsReadOneRoundTripLater() {
-		roundTrip = 1388;
+		session.setRecordingOffset(1388);
 		record(MEASURE, 2 * MEASURE, 100, new TGPunchRange(2, 2));
 
 		assertEquals(List.of("2:89588+88200"), captures);
+	}
+
+	// while recording, an armed track's input meter is fed what its input delivered, a block at a time, whether or not
+	// it is kept (here nothing is: the punch range is not reached), from one round trip after the clock as the takes
+	@Test
+	public void anArmedTracksInputIsMeteredWhileRecording() {
+		session.arm(track);
+		session.setRecordingOffset(100);
+		record(0, MEASURE, 100, new TGPunchRange(3, 3));
+
+		assertEquals(-6.02, session.getInputMeter(track).getLevel(), 0.01);
+		assertEquals(List.of("2:100+512", "2:88164+136"), List.of(captures.get(0), captures.get(captures.size() - 1)));
 	}
 
 	@Test

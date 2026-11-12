@@ -91,15 +91,21 @@ public final class TGAudioSession {
 	}
 
 	// the audio device delivered count more samples while TuxGuitar is stopped: each armed track's input channel(s)
-	// feed its input meter, a block at a time
+	// feed its input meter
 	public void listen(TGSongManager songManager, TGSong song, int count) {
+		this.meter(songManager, song, this.listened, count);
+		this.listened += count;
+	}
+
+	// what the audio device delivered over count samples of its clock from the given one: each armed track's input
+	// channel(s) feed its input meter, a block at a time (while stopped, and while recording)
+	public void meter(TGSongManager songManager, TGSong song, long from, int count) {
 		for (int done = 0; done < count; done += BLOCK) {
 			int frames = Math.min(BLOCK, count - done);
 			for (TGTrack track : this.getArmedTracks(song)) {
 				TGAudioInput input = songManager.getChannel(song, track.getChannelId()).getAudioInput();
-				this.getInputMeter(track).deliver(this.device.capture(input, this.listened, frames));
+				this.getInputMeter(track).deliver(this.device.capture(input, from + done, frames));
 			}
-			this.listened += frames;
 		}
 	}
 

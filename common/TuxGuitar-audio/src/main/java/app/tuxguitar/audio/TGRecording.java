@@ -8,26 +8,29 @@ import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 
 /**
- * A recording of measures as the song played them: for each armed track, what its input channel delivered inside the
- * punch range (everywhere, without one), one take per stretch of song time without a jump. What was played in time
- * with the output reaches the input one round trip after the clock that played it: each take is read that much later,
- * so it is placed earlier by its round trip and lands on the beat (and the recording goes on taking input for one round
- * trip past where it stops).
+ * A recording of measures as the song played them, on the session's audio device: for each armed track, what its input
+ * channel delivered inside the session's punch range (everywhere, without one), one take per stretch of song time
+ * without a jump. What was played in time with the output reaches the input one round trip after the clock that played
+ * it: each take is read that much later, so it is placed earlier by its round trip and lands on the beat (and the
+ * recording goes on taking input for one round trip past where it stops). What the inputs delivered over the measures
+ * played, kept or not, feeds the armed tracks' input meters.
  */
 public final class TGRecording {
 
 	private final TGSongManager songManager;
 	private final TGSong song;
+	private final TGAudioSession session;
 	private final TGAudioDevice device;
 	private final TGPunchRange punchRange;
 	private final int roundTrip;
 
-	public TGRecording(TGSongManager songManager, TGSong song, TGAudioDevice device, TGPunchRange punchRange, int roundTrip) {
+	public TGRecording(TGSongManager songManager, TGSong song, TGAudioSession session) {
 		this.songManager = songManager;
 		this.song = song;
-		this.device = device;
-		this.punchRange = punchRange;
-		this.roundTrip = roundTrip;
+		this.session = session;
+		this.device = session.getDevice();
+		this.punchRange = session.getPunchRange(song);
+		this.roundTrip = session.getRoundTrip();
 	}
 
 	// records the played measures on the tracks; returns how many takes it made
@@ -37,6 +40,7 @@ public final class TGRecording {
 		for (int[] stretch : stretches(timeline)) {
 			takes += take(tracks, timeline, stretch[0], stretch[1]);
 		}
+		this.session.meter(this.songManager, this.song, timeline.getClock() + this.roundTrip, (int) timeline.length());
 		return takes;
 	}
 
